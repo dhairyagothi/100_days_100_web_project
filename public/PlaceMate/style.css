@@ -375,6 +375,26 @@ body {
 #updateBtn:hover {
   transform: translateY(-3px);
 }
+.action-buttons{
+  display:flex;
+  gap:15px;
+  flex-wrap:wrap;
+}
+
+#downloadReportBtn{
+  padding:14px 24px;
+  border:none;
+  border-radius:14px;
+  background:linear-gradient(135deg,#16a34a,#22c55e);
+  color:white;
+  cursor:pointer;
+  font-size:16px;
+  transition:0.3s ease;
+}
+
+#downloadReportBtn:hover{
+  transform:translateY(-3px);
+}
 
 @media (max-width: 900px) {
 
@@ -479,6 +499,16 @@ body.light-mode .theme-toggle {
 
   color: white;
 }
+.resume-section{
+  margin-bottom:40px;
+}
+
+.resume-card{
+  background:var(--card-bg);
+  border:1px solid var(--border-color);
+  border-radius:20px;
+  padding:25px;
+}
 
 /* login */
 .auth-container{
@@ -538,4 +568,47 @@ body.light-mode .theme-toggle {
 
 #logoutBtn{
   background:#ef4444;
+}
+.insights-section{
+  margin-bottom:40px;
+}
+
+.insights-card{
+  background:var(--card-bg);
+  border:1px solid var(--border-color);
+  backdrop-filter:blur(12px);
+  border-radius:20px;
+  padding:25px;
+}
+
+.insights-card h3{
+  margin-bottom:12px;
+  margin-top:15px;
+}
+
+.insights-card ul{
+  padding-left:20px;
+}
+
+.insights-card li{
+  margin-bottom:10px;
+  color:var(--subtitle-color);
+.badge-section{
+  margin-top:40px;
+}
+
+.badge-grid{
+  display:grid;
+  grid-template-columns:
+    repeat(auto-fit,minmax(220px,1fr));
+  gap:20px;
+}
+
+.badge-card{
+  background:var(--card-bg);
+  border:1px solid var(--border-color);
+  padding:20px;
+  border-radius:16px;
+  text-align:center;
+  font-weight:bold;
 }

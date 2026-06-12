@@ -11,7 +11,6 @@ const eatSound = document.getElementById('eatSound');
 const gameOverSound = document.getElementById('gameOverSound');
 
 let snake, dir, nextDir, food, score, level, speed, running, paused;
-let lastTickTime = 0; // For smooth modern frame accumulation tracking
 
 let highScore = 0;
 let isGameOver = false;
@@ -21,6 +20,35 @@ let finalScore = 0;
 let rafId        = null;   // requestAnimationFrame handle (main loop)
 let lastTickTime = 0;      // timestamp of last logic tick
 let accumulator  = 0;      // ms accumulated since last tick
+// ──────────────────────────────────────────────────────────────────────────
+
+// ─── Page Visibility API — pause/resume on tab switch ─────────────────────
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) {
+    if (running && !paused) {
+      setPaused(true);
+      paused_by_visibility = true;
+    }
+  } else {
+    if (paused_by_visibility) {
+      setPaused(false);
+      paused_by_visibility = false;
+    }
+  }
+});
+let paused_by_visibility = false; // tracks auto-pause vs user-pause
+
+function setPaused(value) {
+  paused = value;
+  const overlay = document.getElementById('pauseOverlay');
+  if (overlay) {
+    value ? overlay.classList.remove('hidden') : overlay.classList.add('hidden');
+  }
+  if (!value) {
+    lastTickTime = performance.now();
+    accumulator  = 0;
+  }
+}
 // ──────────────────────────────────────────────────────────────────────────
 
 // ─── Web Audio sound engine ────────────────────────────────────────────────
@@ -94,7 +122,7 @@ function initGame() {
   level = 1;
   speed = 160;
   running = false;
-  paused = false;
+  setPaused(false);
 
   placeFood();
   updateHUD();
@@ -249,7 +277,12 @@ function gameEngine(timestamp) {
 
   if (running && !paused) {
     const elapsed = timestamp - lastTickTime;
-    if (elapsed >= speed) {
+
+    // Guard: if the tab was hidden and visibility API didn't fire (edge case),
+    // a huge elapsed value would cause multiple rapid ticks. Cap it to one tick worth.
+    if (elapsed > speed * 3) {
+      lastTickTime = timestamp;
+    } else if (elapsed >= speed) {
       tick();
       lastTickTime = timestamp;
     }
@@ -353,13 +386,10 @@ function handleKeyDown(e) {
     }
   }
 
-  if (e.key === ' ' && running) {
-    paused = !paused;
-    if (!paused) {
-      lastTickTime = performance.now();
-      accumulator  = 0;
-    }
-  }
+  if ((e.key === 'p' || e.key === 'P') && running) {
+  e.preventDefault();
+  setPaused(!paused);
+ }
 }
 
 document.addEventListener('keydown', handleKeyDown);
@@ -468,3 +498,25 @@ requestAnimationFrame(gameEngine);
   window.addEventListener('resize', toggle);
   console.log('✅ Mobile touch controls loaded');
 })();
+
+const themeToggle = document.getElementById("themeToggle");
+
+let isLight = localStorage.getItem("theme") === "light";
+
+function applyTheme() {
+  if (isLight) {
+    document.body.classList.add("light");
+    themeToggle.textContent = "☀️ Light Mode";
+  } else {
+    document.body.classList.remove("light");
+    themeToggle.textContent = "🌙 Dark Mode";
+  }
+}
+
+applyTheme();
+
+themeToggle.addEventListener("click", () => {
+  isLight = !isLight;
+  localStorage.setItem("theme", isLight ? "light" : "dark");
+  applyTheme();
+});

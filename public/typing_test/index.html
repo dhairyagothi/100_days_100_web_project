@@ -4,12 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Typer - Relaxing Typing Test</title>
+
+    <link rel="stylesheet" href="style.css">
+
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
             --bg-primary: #ffffff;
@@ -43,25 +42,22 @@
             align-items: center;
             justify-content: center;
             padding: 20px;
-            overflow: hidden;
         }
 
         body::before {
             content: '';
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.05) 0%, transparent 50%),
-                        radial-gradient(circle at 80% 80%, rgba(74, 222, 128, 0.05) 0%, transparent 50%);
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: radial-gradient(circle at 20% 50%, rgba(59,130,246,0.05) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(74,222,128,0.05) 0%, transparent 50%);
             z-index: -1;
             pointer-events: none;
         }
 
         html.dark-mode body::before {
-            background: radial-gradient(circle at 20% 50%, rgba(96, 165, 250, 0.08) 0%, transparent 50%),
-                        radial-gradient(circle at 80% 80%, rgba(74, 222, 128, 0.08) 0%, transparent 50%);
+            background: radial-gradient(circle at 20% 50%, rgba(96,165,250,0.08) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(74,222,128,0.08) 0%, transparent 50%);
         }
 
         .container {
@@ -71,21 +67,15 @@
         }
 
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(10px); }
+            to   { opacity: 1; transform: translateY(0); }
         }
 
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 50px;
+            margin-bottom: 40px;
             padding: 0 20px;
         }
 
@@ -100,8 +90,7 @@
         }
 
         .theme-toggle {
-            width: 60px;
-            height: 60px;
+            width: 60px; height: 60px;
             border-radius: 50%;
             border: 2px solid var(--border-color);
             background-color: var(--bg-secondary);
@@ -121,32 +110,116 @@
             transform: scale(1.05);
         }
 
-        .theme-toggle:active {
-            transform: scale(0.95);
+        /* Difficulty Selector */
+        .difficulty-selector {
+            margin-bottom: 20px;
+            padding: 0 4px;
         }
 
+        .difficulty-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+        }
+
+        .diff-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .diff-btn {
+            flex: 1;
+            padding: 14px 16px;
+            border-radius: 12px;
+            border: 2px solid var(--border-color);
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .diff-btn .diff-icon { font-size: 1.5rem; }
+        .diff-btn .diff-name { font-size: 0.9rem; font-weight: 700; letter-spacing: 0.3px; }
+        .diff-btn .diff-desc { font-size: 0.75rem; color: var(--text-secondary); font-weight: 400; line-height: 1.3; text-align: center; }
+
+        .diff-btn:hover { transform: translateY(-2px); }
+
+        .diff-btn[data-diff="easy"].active,
+        .diff-btn[data-diff="easy"]:hover {
+            border-color: #4ade80;
+            background-color: rgba(74,222,128,0.08);
+            box-shadow: 0 4px 16px rgba(74,222,128,0.2);
+        }
+        .diff-btn[data-diff="easy"].active .diff-name { color: #16a34a; }
+
+        .diff-btn[data-diff="medium"].active,
+        .diff-btn[data-diff="medium"]:hover {
+            border-color: #facc15;
+            background-color: rgba(250,204,21,0.08);
+            box-shadow: 0 4px 16px rgba(250,204,21,0.2);
+        }
+        .diff-btn[data-diff="medium"].active .diff-name { color: #b45309; }
+
+        .diff-btn[data-diff="hard"].active,
+        .diff-btn[data-diff="hard"]:hover {
+            border-color: #ef4444;
+            background-color: rgba(239,68,68,0.08);
+            box-shadow: 0 4px 16px rgba(239,68,68,0.2);
+        }
+        .diff-btn[data-diff="hard"].active .diff-name { color: #dc2626; }
+
+        /* Test area */
         .test-area {
             background-color: var(--bg-secondary);
             border-radius: 20px;
-            padding: 60px 40px;
-            margin-bottom: 40px;
+            padding: 50px 40px;
+            margin-bottom: 20px;
             border: 1px solid var(--border-color);
             position: relative;
-            overflow: hidden;
+        }
+
+        .test-area-header {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+        }
+
+        .difficulty-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 14px;
+            border-radius: 20px;
+            border: 1.5px solid;
+            font-size: 0.82rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
         }
 
         .text-display {
-            font-size: 1.8rem;
-            line-height: 1.8;
+            font-size: 1.6rem;
+            line-height: 1.9;
             font-weight: 500;
             text-align: center;
             letter-spacing: 0.5px;
-            margin-bottom: 40px;
-            word-wrap: break-word;
-            min-height: 100px;
+            margin-bottom: 36px;
+            word-break: break-word;
+            min-height: 80px;
             display: flex;
             align-items: center;
             justify-content: center;
+            flex-wrap: wrap;
         }
 
         .text-display span {
@@ -154,35 +227,14 @@
             transition: all 0.1s ease;
         }
 
-        .text-display span.correct {
-            color: var(--correct);
-        }
-
-        .text-display span.wrong {
-            color: var(--wrong);
-            background-color: rgba(239, 68, 68, 0.1);
-            border-radius: 2px;
-        }
-
-        .text-display span.current {
-            background-color: var(--cursor);
-            color: white;
-            border-radius: 2px;
-            padding: 2px 4px;
-            animation: blink 1s ease-in-out infinite;
-        }
+        .text-display span.correct  { color: var(--correct); }
+        .text-display span.wrong    { color: var(--wrong); background-color: rgba(239,68,68,0.1); border-radius: 2px; }
+        .text-display span.current  { background-color: var(--cursor); color: white; border-radius: 2px; padding: 2px 4px; animation: blink 1s ease-in-out infinite; }
+        .text-display span.untyped  { color: var(--text-secondary); }
 
         @keyframes blink {
-            0%, 49% { opacity: 1; }
-            50%, 100% { opacity: 0.5; }
-        }
-
-        .text-display span.untyped {
-            color: var(--text-secondary);
-        }
-
-        .input-section {
-            margin-bottom: 20px;
+            0%, 49%  { opacity: 1; }
+            50%, 100%{ opacity: 0.5; }
         }
 
         #userInput {
@@ -196,18 +248,18 @@
             font-family: 'Courier New', monospace;
             transition: border-color var(--transition), box-shadow var(--transition);
             outline: none;
+            margin-bottom: 20px;
         }
 
         #userInput:focus {
             border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
         }
 
         .controls {
             display: flex;
             gap: 15px;
             justify-content: center;
-            margin-top: 30px;
         }
 
         button {
@@ -229,14 +281,8 @@
             max-width: 200px;
         }
 
-        .btn-start:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
-        }
-
-        .btn-start:active {
-            transform: translateY(0);
-        }
+        .btn-start:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(59,130,246,0.3); }
+        .btn-start:active { transform: translateY(0); }
 
         .btn-reset {
             background-color: var(--bg-secondary);
@@ -244,65 +290,9 @@
             border: 2px solid var(--border-color);
         }
 
-        .btn-reset:hover {
-            border-color: var(--accent);
-            background-color: var(--accent);
-            color: white;
-        }
+        .btn-reset:hover { border-color: var(--accent); background-color: var(--accent); color: white; }
 
-        /* Results section */
-        .results {
-            display: none;
-            text-align: center;
-            animation: slideIn 0.5s ease-out;
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .results h2 {
-            font-size: 1.8rem;
-            margin-bottom: 30px;
-            color: var(--accent);
-        }
-
-        .results-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .result-item {
-            background-color: var(--bg-primary);
-            padding: 25px;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-        }
-
-        .result-label {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 10px;
-        }
-
-        .result-value {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--accent);
-        }
-
-        /* Stats display during typing */
+        /* Stats */
         .stats {
             display: flex;
             justify-content: space-around;
@@ -311,125 +301,163 @@
             border-radius: 12px;
             margin-top: 20px;
             border: 1px solid var(--border-color);
-            font-size: 0.95rem;
         }
 
-        .stat-item {
+        .stat-item { text-align: center; }
+        .stat-label { color: var(--text-secondary); font-size: 0.85rem; text-transform: uppercase; margin-bottom: 5px; }
+        .stat-value { font-size: 1.5rem; font-weight: 700; color: var(--text-primary); }
+
+        /* Results */
+        .results {
+            display: none;
             text-align: center;
+            animation: slideIn 0.5s ease-out;
         }
 
-        .stat-label {
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            margin-bottom: 5px;
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
         }
 
-        .stat-value {
-            font-size: 1.5rem;
+        .results h2 { font-size: 1.8rem; margin-bottom: 8px; color: var(--accent); }
+
+        .results-difficulty {
+            font-size: 1rem;
             font-weight: 700;
-            color: var(--text-primary);
+            margin-bottom: 28px;
+            display: block;
         }
 
-        @media (max-width: 768px) {
-            .title {
-                font-size: 1.8rem;
-            }
-
-            .text-display {
-                font-size: 1.3rem;
-                padding: 20px;
-            }
-
-            .test-area {
-                padding: 30px 20px;
-            }
-
-            .results-grid {
-                grid-template-columns: 1fr;
-            }
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 16px;
+            margin-bottom: 28px;
         }
 
-        /* Visibility control styles */
-        .hidden {
-            display: none !important;
+        .result-item {
+            background-color: var(--bg-primary);
+            padding: 24px 16px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .result-label { font-size: 0.85rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+        .result-value { font-size: 2rem; font-weight: 700; color: var(--accent); }
+
+        .hidden { display: none !important; }
+
+        @media (max-width: 640px) {
+            .title { font-size: 1.8rem; }
+            .text-display { font-size: 1.2rem; }
+            .test-area { padding: 30px 20px; }
+            .diff-buttons { flex-direction: column; }
+            .diff-btn { flex-direction: row; gap: 10px; align-items: center; }
+            .diff-btn .diff-desc { text-align: left; }
         }
     </style>
+>>>>>>> upstream/Main
 </head>
 <body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter,system-ui,sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
 
-    <div class="container">
-        <div class="header">
-            <h1 class="title">Typer</h1>
-            <button class="theme-toggle" id="themeToggle">🌙</button>
-        </div>
+<div class="container">
+    <div class="header">
+        <h1 class="title">Typer</h1>
+        <button class="theme-toggle" id="themeToggle">🌙</button>
+    </div>
 
-        <div class="test-area">
-            <!-- Game Workspace Content -->
-            <div id="gameContent">
-                <div class="text-display" id="textDisplay"></div>
-                <div class="input-section">
-                    <input 
-                        type="text" 
-                        id="userInput" 
-                        placeholder="Click here and start typing..." 
-                        autocomplete="off"
-                        spellcheck="false"
-                    >
-                </div>
-                <div class="controls">
-                    <button class="btn-start" id="startBtn">Start Test</button>
-                    <button class="btn-reset" id="resetBtn">Reset</button>
-                </div>
-                <div class="stats hidden" id="stats">
-                    <div class="stat-item">
-                        <div class="stat-label">Time</div>
-                        <div class="stat-value" id="timerDisplay">0:00</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-label">WPM</div>
-                        <div class="stat-value" id="wpmDisplay">0</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-label">Accuracy</div>
-                        <div class="stat-value" id="accuracyDisplay">0%</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-label">Typed</div>
-                        <div class="stat-value" id="typedDisplay">0</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Score / Result Content directly inside the card boundaries -->
-            <div class="results" id="results">
-                <h2>Test Complete! 🎉</h2>
-                <div class="results-grid">
-                    <div class="result-item">
-                        <div class="result-label">Words Per Minute</div>
-                        <div class="result-value" id="finalWpm">0</div>
-                    </div>
-                    <div class="result-item">
-                        <div class="result-label">Accuracy</div>
-                        <div class="result-value" id="finalAccuracy">0%</div>
-                    </div>
-                    <div class="result-item">
-                        <div class="result-label">Time</div>
-                        <div class="result-value" id="finalTime">0s</div>
-                    </div>
-                    <div class="result-item">
-                        <div class="result-label">Errors</div>
-                        <div class="result-value" id="finalErrors">0</div>
-                    </div>
-                </div>
-                <div class="controls">
-                    <button class="btn-start" id="retryBtn">Try Again</button>
-                </div>
-            </div>
+    <!-- Difficulty Selector -->
+    <div class="difficulty-selector" id="difficultySelector">
+        <div class="difficulty-label">Choose Difficulty</div>
+        <div class="diff-buttons">
+            <button class="diff-btn" data-diff="easy">
+                <span class="diff-icon">🟢</span>
+                <span class="diff-name">Easy</span>
+                <span class="diff-desc">Short sentences & common words</span>
+            </button>
+            <button class="diff-btn" data-diff="medium">
+                <span class="diff-icon">🟡</span>
+                <span class="diff-name">Medium</span>
+                <span class="diff-desc">Moderate length & mixed vocabulary</span>
+            </button>
+            <button class="diff-btn" data-diff="hard">
+                <span class="diff-icon">🔴</span>
+                <span class="diff-name">Hard</span>
+                <span class="diff-desc">Complex text, numbers & special chars</span>
+            </button>
         </div>
     </div>
 
-    <script src="script.js" defer></script>
+    <div class="test-area">
+        <div id="gameContent">
+            <div class="test-area-header">
+                <span class="difficulty-badge" id="difficultyBadge"></span>
+            </div>
+
+            <div class="text-display" id="textDisplay"></div>
+
+            <input
+                type="text"
+                id="userInput"
+                placeholder="Click here and start typing..."
+                autocomplete="off"
+                spellcheck="false"
+            >
+
+            <div class="controls">
+                <button class="btn-start" id="startBtn">Start Test</button>
+                <button class="btn-reset" id="resetBtn">Reset</button>
+            </div>
+
+            <div class="stats hidden" id="stats">
+                <div class="stat-item">
+                    <div class="stat-label">Time</div>
+                    <div class="stat-value" id="timerDisplay">0:00</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">WPM</div>
+                    <div class="stat-value" id="wpmDisplay">0</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Accuracy</div>
+                    <div class="stat-value" id="accuracyDisplay">0%</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Typed</div>
+                    <div class="stat-value" id="typedDisplay">0</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="results" id="results">
+            <h2>Test Complete! 🎉</h2>
+            <span class="results-difficulty" id="finalDifficulty"></span>
+            <div class="results-grid">
+                <div class="result-item">
+                    <div class="result-label">Words Per Minute</div>
+                    <div class="result-value" id="finalWpm">0</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label">Accuracy</div>
+                    <div class="result-value" id="finalAccuracy">0%</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label">Time</div>
+                    <div class="result-value" id="finalTime">0s</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label">Errors</div>
+                    <div class="result-value" id="finalErrors">0</div>
+                </div>
+            </div>
+            <div class="controls">
+                <button class="btn-start" id="retryBtn">Try Again</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="script.js" defer></script>
 </body>
 </html>

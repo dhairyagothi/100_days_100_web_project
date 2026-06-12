@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="MoodMusic – Discover the perfect songs for how you're feeling right now.">
+    <title>MoodMusic – Mood-Based Music Recommender</title>
+    <link rel="stylesheet" href="/public/Mood_Based_Music_Recommender/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- ── HEADER ──────────────────────────────────────────── -->
+    <header class="app-header">
+        <div class="header-inner">
+            <div class="brand">
+                <i class="fa-solid fa-headphones-simple"></i>
+                <span>MoodMusic</span>
+            </div>
+            <div class="header-actions">
+                <button class="icon-btn" id="favToggleBtn" title="Liked Songs">
+                    <i class="fa-regular fa-heart"></i>
+                    <span class="fav-badge" id="favBadge" style="display:none">0</span>
+                </button>
+                <a href="/public/Mood_Based_Music_Recommender/settings" class="icon-btn" title="Settings">
+                    <i class="fa-solid fa-gear"></i>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ── HERO ────────────────────────────────────────────── -->
+    <section class="hero" id="heroSection">
+        <div class="hero-inner">
+            <p class="hero-eyebrow">Your personal music guide</p>
+            <h1>How are you feeling<br><span class="gradient-text">right now?</span></h1>
+            <p class="hero-sub">Pick a mood and we'll suggest the perfect songs for the moment.</p>
+
+            <!-- Mood Grid -->
+            <div class="mood-grid" id="moodGrid">
+                <!-- injected by JS -->
+            </div>
+
+            <button class="surprise-btn" id="surpriseBtn">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> Surprise Me
+            </button>
+        </div>
+    </section>
+
+    <!-- ── RECOMMENDATIONS ────────────────────────────────── -->
+    <section class="recs-section" id="recsSection" style="display:none">
+        <div class="recs-inner">
+
+            <!-- Back + heading -->
+            <div class="recs-topbar">
+                <button class="back-btn" id="backBtn">
+                    <i class="fa-solid fa-arrow-left"></i> Change mood
+                </button>
+                <div class="recs-heading">
+                    <span class="mood-emoji-large" id="recEmoji"></span>
+                    <div>
+                        <h2 id="recTitle"></h2>
+                        <p id="recSub"></p>
+                    </div>
+                </div>
+                <button class="surprise-btn-sm" id="surpriseBtnRec" title="Surprise me">
+                    <i class="fa-solid fa-shuffle"></i>
+                </button>
+            </div>
+
+            <!-- Filters -->
+            <div class="filters-row">
+                <div class="search-wrap">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="searchInput" placeholder="Search songs or artists…">
+                </div>
+                <select id="genreFilter" class="genre-select">
+                    <option value="all">All Genres</option>
+                </select>
+            </div>
+
+            <!-- Song Cards -->
+            <div class="song-grid" id="songGrid">
+                <!-- injected by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ── LIKED SONGS DRAWER ─────────────────────────────── -->
+    <aside class="fav-drawer" id="favDrawer">
+        <div class="fav-drawer-header">
+            <span><i class="fa-solid fa-heart"></i> Liked Songs</span>
+            <button id="closeFavDrawer"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <ul class="fav-list" id="favList">
+            <li class="fav-empty">No liked songs yet.<br>Heart a song to save it.</li>
+        </ul>
+    </aside>
+    <div class="fav-overlay" id="favOverlay"></div>
+
+    <!-- ── TOAST ──────────────────────────────────────────── -->
+    <div class="toast" id="toast"></div>
+
+    <script src="/public/Mood_Based_Music_Recommender/script.js"></script>
+</body>
+</html>

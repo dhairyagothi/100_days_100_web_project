@@ -3,59 +3,189 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Unit Converter</title>
+
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="aurora">
 
   <div class="uc-wrap">
+
     <div class="glass-card">
+
+      <!-- Theme Selector -->
+      <div class="top-bar">
+
+        <div class="theme-selector">
+          <i class="ti ti-palette"></i>
+
+          <select id="themeSelect">
+            <option value="aurora">Aurora</option>
+            <option value="ocean">Ocean</option>
+            <option value="emerald">Emerald</option>
+            <option value="sunset">Sunset</option>
+            <option value="midnight">Midnight</option>
+          </select>
+        </div>
+
+      </div>
+
+      <!-- Title -->
       <h1 class="card-title">
-        <i class="ti ti-arrows-exchange" aria-hidden="true"></i>
+        <i class="ti ti-arrows-exchange"></i>
         Unit Converter
       </h1>
 
+      <!-- Category Tabs -->
       <div class="tabs" id="tabs">
-        <button class="tab-btn active" data-cat="length">Length</button>
-        <button class="tab-btn" data-cat="weight">Weight</button>
-        <button class="tab-btn" data-cat="temperature">Temp</button>
-        <button class="tab-btn" data-cat="time">Time</button>
-        <button class="tab-btn" data-cat="speed">Speed</button>
-      </div>
 
-      <div class="field-group">
-        <div class="field-label">From</div>
-        <div class="row">
-          <input class="glass-input" type="number" id="fromInput" value="1" placeholder="0">
-          <div class="select-wrap">
-            <select class="glass-select" id="fromUnit"></select>
-          </div>
-        </div>
-      </div>
-
-      <div class="swap-row">
-        <button class="swap-btn" id="swapBtn" title="Swap units" aria-label="Swap units">
-          <i class="ti ti-arrows-up-down" aria-hidden="true"></i>
+        <button class="tab-btn active" data-cat="length">
+          <i class="ti ti-ruler"></i>
+          Length
         </button>
+
+        <button class="tab-btn" data-cat="weight">
+          <i class="ti ti-barbell"></i>
+          Weight
+        </button>
+
+        <button class="tab-btn" data-cat="temperature">
+          <i class="ti ti-temperature"></i>
+          Temp
+        </button>
+
+        <button class="tab-btn" data-cat="time">
+          <i class="ti ti-clock-hour-4"></i>
+          Time
+        </button>
+
+        <button class="tab-btn" data-cat="speed">
+          <i class="ti ti-gauge"></i>
+          Speed
+        </button>
+
       </div>
 
+      <!-- From Section -->
       <div class="field-group">
-        <div class="field-label">To</div>
-        <div class="row">
-          <input class="glass-input" type="number" id="toInput" readonly placeholder="—">
-          <div class="select-wrap">
-            <select class="glass-select" id="toUnit"></select>
-          </div>
+
+        <div class="field-label">
+          From
         </div>
+
+        <div class="row">
+
+          <input
+            class="glass-input"
+            type="number"
+            id="fromInput"
+            value="1"
+            placeholder="Enter value"
+          >
+
+          <div class="select-wrap">
+            <select
+              class="glass-select"
+              id="fromUnit"
+            ></select>
+          </div>
+
+        </div>
+
       </div>
 
-      <div class="result-banner" id="output">Enter a value above</div>
+      <!-- Swap Button -->
+      <div class="swap-row">
+
+        <button
+          class="swap-btn"
+          id="swapBtn"
+          title="Swap Units"
+          aria-label="Swap Units"
+        >
+          <i class="ti ti-arrows-up-down"></i>
+        </button>
+
+      </div>
+
+      <!-- To Section -->
+      <div class="field-group">
+
+        <div class="field-label">
+          To
+        </div>
+
+        <div class="row">
+
+          <input
+            class="glass-input"
+            type="number"
+            id="toInput"
+            readonly
+            placeholder="Converted value"
+          >
+
+          <div class="select-wrap">
+            <select
+              class="glass-select"
+              id="toUnit"
+            ></select>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Result Banner -->
+      <div class="result-banner" id="output">
+        Enter a value above
+      </div>
+
+      <!-- Conversion History -->
+      <div class="history-section">
+
+        <div class="history-header">
+
+          <span>
+            <i class="ti ti-history"></i>
+            Recent Conversions
+          </span>
+
+          <button id="clearHistoryBtn">
+            Clear
+          </button>
+
+        </div>
+
+        <div id="historyList" class="history-list">
+
+          <div class="history-empty">
+            No conversions yet
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Footer -->
+      <div class="footer-note">
+        <i class="ti ti-sparkles"></i>
+        Fast • Accurate • Multi-Theme Converter
+      </div>
+
     </div>
+
   </div>
 
   <script src="script.js"></script>
+
 </body>
 </html>

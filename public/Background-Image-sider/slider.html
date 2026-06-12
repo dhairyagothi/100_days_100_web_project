@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,12 +7,9 @@
   <link rel="icon" href="../favv.png" type="image/x-icon" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap"
-    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="slider.css" />
 </head>
-
 <body id="top">
 
   <!-- Background layers for crossfade -->
@@ -21,19 +17,66 @@
   <div id="wl-bg-next" aria-hidden="true"></div>
   <div class="wl-overlay" aria-hidden="true"></div>
 
+  <!-- Panel overlay -->
+  <div id="panelOverlay"></div>
+
+  <!-- ⭐ RATING PANEL -->
+  <div class="feature-panel" id="ratingPanel" role="dialog" aria-modal="true">
+    <div class="panel-header">
+      <div class="panel-title">⭐ Rate Destination</div>
+      <button class="panel-close" aria-label="Close">✕</button>
+    </div>
+    <div class="panel-body">
+      <div class="rating-stars-row"></div>
+      <textarea id="reviewText" placeholder="Share your experience (optional)…"></textarea>
+      <button id="ratingSubmitBtn">Submit Review</button>
+    </div>
+  </div>
+
+  <!-- 🌤 WEATHER PANEL -->
+  <div class="feature-panel" id="weatherPanel" role="dialog" aria-modal="true">
+    <div class="panel-header">
+      <div class="panel-title">🌤 Weather</div>
+      <button class="panel-close" aria-label="Close">✕</button>
+    </div>
+    <div class="panel-body">
+      <div class="weather-body">
+        <div class="weather-loading">Loading weather…</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ❤️ WISHLIST PANEL -->
+  <div class="feature-panel" id="wishlistPanel" role="dialog" aria-modal="true">
+    <div class="panel-header">
+      <div class="panel-title">❤️ My Wishlist</div>
+      <button class="panel-close" aria-label="Close">✕</button>
+    </div>
+    <div class="panel-body">
+      <div class="wishlist-items"></div>
+    </div>
+  </div>
+
+  <!-- 📅 TRIP PLANNER PANEL -->
+  <div class="feature-panel" id="tripPanel" role="dialog" aria-modal="true">
+    <div class="panel-header">
+      <div class="panel-title">📅 Trip Planner</div>
+      <button class="panel-close" aria-label="Close">✕</button>
+    </div>
+    <div class="panel-body">
+      <button class="trip-add-btn" id="addToTrip">+ Add Current Destination to Trip</button>
+      <div class="trip-summary"></div>
+      <div class="trip-list"></div>
+      <button class="trip-clear-btn" id="clearTrip" style="margin-top:14px;">Clear All</button>
+    </div>
+  </div>
 
   <!-- Header -->
   <header class="wl-header">
-    <a href="/" class="project-back-button">
-      ← Back to Home
-    </a>
-
-    <div class="wl-logo">
-      ✈ Wanderlust <span>· Discover</span>
-    </div>
-
+    <a href="/" class="project-back-button">← Back to Home</a>
+    <div class="wl-logo">✈ Wanderlust <span>· Discover</span></div>
     <nav class="wl-nav" aria-label="Site navigation">
-      <a href="#top">Home</a>
+      <a href="#top" id="homeLink">Home</a>
       <a href="#about">About</a>
       <a href="#contact">Contact</a>
       <a href="#services">Services</a>
@@ -46,8 +89,23 @@
 
       <div class="wl-country-label" id="placeRegion">Europe · Destination 1 of 14</div>
       <h1 class="wl-place-title" id="placeTitle">Iceland</h1>
-      <p class="wl-place-desc" id="placeDescription">Explore glaciers, geysers, and the ethereal Northern Lights across
-        volcanic landscapes.</p>
+
+      <!-- Star display -->
+      <div class="wl-stars-row">
+        <span class="star-input" aria-hidden="true">★</span>
+        <span class="star-input" aria-hidden="true">★</span>
+        <span class="star-input" aria-hidden="true">★</span>
+        <span class="star-input" aria-hidden="true">★</span>
+        <span class="star-input" aria-hidden="true">★</span>
+      </div>
+
+      <p class="review-preview" id="reviewPreview"></p>
+      <p class="wl-place-desc" id="placeDescription">Explore glaciers, geysers, and the ethereal Northern Lights across volcanic landscapes.</p>
+
+      <!-- Weather badge -->
+      <div style="display:flex;justify-content:center;margin-bottom:16px;">
+        <span class="weather-badge" id="weatherBadge" title="Click for full weather" onclick="document.getElementById('openWeather').click()">🌡 Loading…</span>
+      </div>
 
       <div class="wl-controls-row">
         <button class="wl-nav-btn" id="prevBtn" aria-label="Previous destination">&#8592;</button>
@@ -58,11 +116,18 @@
         <button class="wl-nav-btn" id="nextBtn" aria-label="Next destination">&#8594;</button>
       </div>
 
-      <!-- Indicator dots (generated by JS) -->
-      <div id="destinationIndicators" class="destination-indicators" role="tablist" aria-label="Destination navigation">
-      </div>
+      <div id="destinationIndicators" class="destination-indicators" role="tablist" aria-label="Destination navigation"></div>
 
       <button class="booking" id="bookingButton">Book a Trip to Iceland</button>
+
+      <!-- Feature toolbar -->
+      <div class="wl-feature-bar">
+        <button class="feature-btn" id="openRatings" title="Rate & Review"><span class="fb-icon">⭐</span> Rate</button>
+        <button class="feature-btn" id="openWeather" title="Live Weather"><span class="fb-icon">🌤</span> Weather</button>
+        <button class="feature-btn" id="openWishlist" title="View Wishlist"><span class="fb-icon">❤️</span> Wishlist</button>
+        <button class="feature-btn" id="openTripPlanner" title="Trip Planner"><span class="fb-icon">📅</span> Plan Trip</button>
+        <button class="feature-btn" id="wishlistBtn" title="Add to Wishlist" aria-label="Add to wishlist">❤️</button>
+      </div>
 
       <div class="wl-autoplay-row">
         <button class="wl-autoplay-btn" id="autoplayBtn" aria-label="Toggle autoplay">
@@ -75,65 +140,33 @@
         <div class="wl-progress-bar" id="progressBar"></div>
       </div>
 
-
-      placeSelector.addEventListener('change', function () {
-      updatePlace(placeSelector.value);
-      });
-
-
-      // Booking button functionality
-      bookingButton.addEventListener('click', function () {
-      const selectedPlace = placeSelector.value;
-
-      alert(`Your trip to ${selectedPlace} has been booked successfully!`);
-
-      bookingButton.textContent = `Trip Booked to ${selectedPlace} ✓`;
-
-      bookingButton.classList.add("booked");
-      });
-
-
-      window.onload = function () {
-      const defaultPlace = "Iceland";
-      updatePlace(defaultPlace);
-      placeSelector.value = defaultPlace;
-      };
-      </script>
-
-</body>
-
-</html>
-</div>
-</div>
-
-<!-- Footer -->
-<footer id="contact">
-  <div class="footer-grid">
-    <div>
-      <h3>Contact Us</h3>
-      <p>📧 contact@wanderlust.com</p>
-      <p>📞 +1 800 123 4567</p>
-      <p>🕐 Mon–Fri, 9am–6pm</p>
-    </div>
-    <div id="about">
-      <h3>About Us</h3>
-      <p>We are a travel platform helping you discover the most beautiful destinations around the world. Our mission is
-        to make travel planning simple, beautiful and inspiring.</p>
-    </div>
-    <div id="services">
-      <h3>Services</h3>
-      <p>✈️ Flight Booking</p>
-      <p>🏨 Hotel Reservations</p>
-      <p>🗺️ Tour Packages</p>
-      <p>🚗 Car Rentals</p>
     </div>
   </div>
-  <div class="footer-bottom">
-    &copy; 2026 Wanderlust. All rights reserved.
-  </div>
-</footer>
 
-<script src="script.js"></script>
+  <!-- Footer -->
+  <footer id="contact">
+    <div class="footer-grid">
+      <div>
+        <h3>Contact Us</h3>
+        <p>📧 contact@wanderlust.com</p>
+        <p>📞 +1 800 123 4567</p>
+        <p>🕐 Mon–Fri, 9am–6pm</p>
+      </div>
+      <div id="about">
+        <h3>About Us</h3>
+        <p>We are a travel platform helping you discover the most beautiful destinations around the world. Our mission is to make travel planning simple, beautiful and inspiring.</p>
+      </div>
+      <div id="services">
+        <h3>Services</h3>
+        <p>✈️ Flight Booking</p>
+        <p>🏨 Hotel Reservations</p>
+        <p>🗺️ Tour Packages</p>
+        <p>🚗 Car Rentals</p>
+      </div>
+    </div>
+    <div class="footer-bottom">&copy; 2026 Wanderlust. All rights reserved.</div>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
-
 </html>

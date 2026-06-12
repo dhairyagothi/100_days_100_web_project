@@ -4,13 +4,20 @@ class GuessingGame {
         this.attempts = 0;
         this.maxAttempts = 10;
         this.guessHistory = [];
-        this.bestScore = localStorage.getItem('bestScore') || null;
+        const storedBestScore = localStorage.getItem('bestScore'); 
+        this.bestScore = storedBestScore ? parseInt(storedBestScore, 10) : null;
         this.difficulty = 'medium';
         this.range = { min: 1, max: 100 };
         
-        this.initializeElements();
-        this.setupEventListeners();
-        this.newGame();
+        this.initializeElements(); 
+        if (!this.guessInput || !this.guessBtn || !this.resetBtn || 
+            !this.messageEl || !this.attemptsEl || !this.bestScoreEl 
+            || !this.hintEl || !this.historyListEl ) {
+                console.error('Required DOM elements are missing.'); 
+                return; 
+            }
+        this.setupEventListeners(); 
+        this.newGame(); 
         this.updateBestScoreDisplay();
     }
     
@@ -29,9 +36,9 @@ class GuessingGame {
     setupEventListeners() {
         this.guessBtn.addEventListener('click', () => this.makeGuess());
         this.resetBtn.addEventListener('click', () => this.newGame());
-        this.guessInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') this.makeGuess();
-        });
+        this.guessInput.addEventListener('keydown', (e) => { 
+            if (e.key === 'Enter') { 
+                this.makeGuess(); } });
         
         this.difficultyBtns.forEach(btn => {
             btn.addEventListener('click', (e) => {
@@ -79,7 +86,9 @@ class GuessingGame {
         this.updateHint('');
         this.guessInput.focus();
         
-        console.log(`Secret number: ${this.secretNumber}`);
+        if (window.location.hostname === 'localhost') {
+            console.log(`Secret number: ${this.secretNumber}`);
+        }
     }
     
     makeGuess() {

@@ -12,7 +12,6 @@
       rel="stylesheet"
     />
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script src="default-config.js" defer></script>
   </head>
   <body>
     <!-- ONBOARDING OVERLAY (first visit) -->
@@ -267,7 +266,7 @@
                 <span class="eye-icon"></span>
               </button>
 
-              <button class="settings-save-key-btn" onclick="saveKey('gemini')">Save</button>
+              <button id="save-key-btn" class="settings-save-key-btn" onclick="saveKey('gemini')">Save</button>
             </div>
 
             <div class="settings-hint">
@@ -804,7 +803,10 @@
           <span id="pinned-count">0 pinned messages</span>
           <button onclick="togglePinnedView()">View</button>
         </div>
-
+        
+        <div id="empty-state" class="empty-state">
+<h2>How can I help you today?</h2>
+</div>
         <!-- INPUT AREA -->
         <div class="input-area">
           <div id="image-preview-wrap" class="image-preview-wrap hidden">
@@ -888,10 +890,12 @@
             <span class="input-disclaimer">Lumix can make mistakes. Verify important info.</span>
             <span id="char-counter" class="char-counter"></span>
           </div>
+
+
         </div>
       </main>
     </div>
 
-  <script src="chatbot.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
