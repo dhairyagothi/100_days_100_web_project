@@ -1259,6 +1259,7 @@ function initCartPage() {
         renderCart();
         renderSaved();
         if (window.updateCartCount) window.updateCartCount();
+        updateGiftCardCheckout();
     }
 
     function renderCart() {
@@ -1432,6 +1433,23 @@ function initCartPage() {
                 return;
             }
             
+            // Deduct GC balance if checked
+            const useGC = localStorage.getItem('useGCBalance') !== 'false';
+            if (useGC) {
+                const gcBalance = parseFloat(localStorage.getItem('gcBalance')) || 0;
+                if (gcBalance > 0) {
+                    let subtotal = 0;
+                    cart.forEach(item => {
+                        const qty = item.qty || 1;
+                        const price = parseFloat(String(item.price).replace(/[^0-9.]/g, '')) || 0;
+                        subtotal += price * qty;
+                    });
+                    const deduction = Math.min(gcBalance, subtotal);
+                    const remaining = gcBalance - deduction;
+                    localStorage.setItem('gcBalance', remaining.toFixed(2));
+                }
+            }
+
             let orders = JSON.parse(localStorage.getItem("amazonOrders")) || [];
             
             cart.forEach(item => {
@@ -1454,7 +1472,394 @@ function initCartPage() {
             window.location.href = "Customer-Service/index.html#tile-orders";
         });
     }
+
+    function updateGiftCardCheckout() {
+        const subtotalBox = document.querySelector('.cart-subtotal-box');
+        if (!subtotalBox) return;
+
+        const gcBalance = parseFloat(localStorage.getItem('gcBalance')) || 0;
+        
+        // Remove old GC section if it exists
+        const oldGC = subtotalBox.querySelector('.gc-cart-section');
+        if (oldGC) oldGC.remove();
+
+        const cart = getCart();
+        let subtotal = 0;
+        cart.forEach(item => {
+            const qty = item.qty || 1;
+            const priceNum = parseFloat(String(item.price).replace(/[^0-9.]/g, '')) || 0;
+            subtotal += priceNum * qty;
+        });
+
+        if (gcBalance > 0 && subtotal > 0) {
+            const gcSection = document.createElement('div');
+            gcSection.className = 'gc-cart-section';
+            gcSection.style.cssText = 'margin-top: 12px; padding-top: 12px; border-top: 1px dashed #ddd; text-align: left;';
+            
+            // Check if user opted to use GC or default to true
+            const useGC = localStorage.getItem('useGCBalance') !== 'false';
+            const deduction = useGC ? Math.min(gcBalance, subtotal) : 0;
+            const finalTotal = subtotal - deduction;
+            const currencySymbol = '₹';
+
+            gcSection.innerHTML = `
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; font-size:13px;">
+                    <span style="color:#067d62; font-weight:600; display:flex; align-items:center; gap:4px;">
+                        <i class="fa-solid fa-wallet"></i> Gift Card Balance:
+                    </span>
+                    <strong style="color:#067d62;">${currencySymbol}${gcBalance.toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2})}</strong>
+                </div>
+                <label style="display:flex; align-items:center; gap:8px; font-size:13px; color:#333; cursor:pointer; margin-bottom:8px; user-select:none;">
+                    <input type="checkbox" id="gc-apply-balance" style="width:16px; height:16px; cursor:pointer;" ${useGC ? 'checked' : ''}>
+                    Use Gift Card Balance
+                </label>
+                ${useGC ? `
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; font-size:13px; color:#555;">
+                    <span>Deduction:</span>
+                    <span>-${currencySymbol}${deduction.toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2})}</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; align-items:center; font-size:15px; font-weight:700; color:#B12704; border-top:1px solid #eee; padding-top:6px;">
+                    <span>Total to pay:</span>
+                    <span>${currencySymbol}${finalTotal.toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2})}</span>
+                </div>
+                ` : ''}
+            `;
+
+            // Insert before the proceed button
+            const proceedBtn = subtotalBox.querySelector('.proceed-buy-btn');
+            if (proceedBtn) {
+                subtotalBox.insertBefore(gcSection, proceedBtn);
+            } else {
+                subtotalBox.appendChild(gcSection);
+            }
+
+            // Bind change event to checkbox
+            const checkbox = document.getElementById('gc-apply-balance');
+            if (checkbox) {
+                checkbox.addEventListener('change', (e) => {
+                    localStorage.setItem('useGCBalance', e.target.checked);
+                    renderAll();
+                });
+            }
+        }
+    }
 }
 
 document.addEventListener("DOMContentLoaded", initCartPage);
 
+// ==========================================
+// GIFT CARD SYSTEM
+// ==========================================
+
+(function initGiftCardSystem() {
+    // Only run on gift.html
+    const isGiftPage = window.location.pathname.includes('gift.html');
+    if (!isGiftPage) return;
+
+    // ---- localStorage Helpers ----
+    function getGCBalance() {
+        return parseFloat(localStorage.getItem('gcBalance')) || 0;
+    }
+
+    function setGCBalance(val) {
+        localStorage.setItem('gcBalance', val.toFixed(2));
+    }
+
+    function getGiftCards() {
+        return JSON.parse(localStorage.getItem('giftCards')) || [];
+    }
+
+    function saveGiftCards(cards) {
+        localStorage.setItem('giftCards', JSON.stringify(cards));
+    }
+
+    // ---- Code Generator ----
+    function generateCode() {
+        const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+        let code = '';
+        for (let i = 0; i < 16; i++) {
+            if (i > 0 && i % 4 === 0) code += '-';
+            code += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        return code;
+    }
+
+    // ---- Update Balance Display ----
+    function updateBalanceDisplay() {
+        const balanceEl = document.getElementById('gc-balance-display');
+        if (balanceEl) {
+            balanceEl.textContent = '₹' + getGCBalance().toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2});
+            // Trigger micro-animation
+            balanceEl.classList.remove('gc-balance-pop');
+            void balanceEl.offsetWidth; // trigger reflow
+            balanceEl.classList.add('gc-balance-pop');
+        }
+    }
+
+    // ---- Render Purchase History ----
+    function renderHistory() {
+        const section = document.getElementById('gc-history-section');
+        const list = document.getElementById('gc-history-list');
+        if (!section || !list) return;
+
+        const cards = getGiftCards();
+        if (cards.length === 0) {
+            section.style.display = 'none';
+            return;
+        }
+
+        section.style.display = 'block';
+        list.innerHTML = '';
+
+      
+    cards.forEach(card => {
+        const iconEmoji = card.type === 'Birthday' ? '🎂' : card.type === 'Classic' ? '💳' : '🎁';
+        const iconClass = card.type === 'Birthday' ? 'birthday' : card.type === 'Classic' ? 'classic' : 'thankyou';
+        const statusClass = card.redeemed ? 'redeemed' : 'active';
+        const statusText = card.redeemed ? 'Redeemed' : 'Active';
+
+        const el = document.createElement('div');
+        el.className = 'gc-history-card';
+
+        // icon
+        const iconDiv = document.createElement('div');
+        iconDiv.className = `gc-history-icon ${iconClass}`;
+        iconDiv.textContent = iconEmoji;
+        el.appendChild(iconDiv);
+
+        // details
+        const detailsDiv = document.createElement('div');
+        detailsDiv.className = 'gc-history-details';
+
+        const title = document.createElement('h4');
+        title.textContent = `${card.type} Gift Card`;
+        detailsDiv.appendChild(title);
+
+        const codeDiv = document.createElement('div');
+        codeDiv.className = 'gc-history-code';
+        codeDiv.textContent = card.code;
+        detailsDiv.appendChild(codeDiv);
+
+        const statusSpan = document.createElement('span');
+        statusSpan.className = `gc-history-status ${statusClass}`;
+        statusSpan.textContent = statusText;
+        detailsDiv.appendChild(statusSpan);
+
+        el.appendChild(detailsDiv);
+
+        // amount
+        const amountDiv = document.createElement('div');
+        amountDiv.className = 'gc-history-amount';
+        amountDiv.textContent = `₹${card.amount.toLocaleString('en-IN', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        })}`;
+        el.appendChild(amountDiv);
+
+        list.appendChild(el);
+    });
+}
+
+
+    // ---- Quick Amount Buttons ----
+    document.querySelectorAll('.gc-quick-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const amount = btn.getAttribute('data-amount');
+            const card = btn.closest('.gc-card');
+            if (card) {
+                const input = card.querySelector('.gc-amount-input');
+                if (input) {
+                    input.value = amount;
+                    // highlight active quick btn
+                    card.querySelectorAll('.gc-quick-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                }
+            }
+        });
+    });
+
+    // ---- Clear quick btn active state on manual input ----
+    document.querySelectorAll('.gc-amount-input').forEach(input => {
+        input.addEventListener('input', () => {
+            const card = input.closest('.gc-card');
+            if (card) {
+                card.querySelectorAll('.gc-quick-btn').forEach(b => b.classList.remove('active'));
+            }
+        });
+    });
+
+    // ---- Buy Gift Card ----
+    document.querySelectorAll('.gc-buy-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const type = btn.getAttribute('data-type');
+            const card = btn.closest('.gc-card');
+            if (!card) return;
+
+            const input = card.querySelector('.gc-amount-input');
+            const amount = parseFloat(input ? input.value : 0);
+
+            if (!amount || amount < 100 || amount > 50000) {
+                alert('Please enter a valid amount between ₹100 and ₹50,000.');
+                if (input) input.focus();
+                return;
+            }
+
+            const code = generateCode();
+
+            // Save the gift card
+            const cards = getGiftCards();
+            cards.unshift({
+                code: code,
+                amount: amount,
+                type: type,
+                redeemed: false,
+                createdAt: new Date().toISOString()
+            });
+            saveGiftCards(cards);
+
+            // Show success modal
+            const overlay = document.getElementById('gc-modal-overlay');
+            const amountEl = document.getElementById('gc-modal-amount');
+            const codeEl = document.getElementById('gc-modal-code');
+
+            if (amountEl) amountEl.textContent = '₹' + amount.toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2});
+            if (codeEl) codeEl.textContent = code;
+            if (overlay) overlay.classList.add('active');
+
+            // Clear input
+            if (input) input.value = '';
+            card.querySelectorAll('.gc-quick-btn').forEach(b => b.classList.remove('active'));
+
+            // Re-render history
+            renderHistory();
+        });
+    });
+
+    // ---- Modal Close ----
+    const modalOverlay = document.getElementById('gc-modal-overlay');
+    const modalClose = document.getElementById('gc-modal-close');
+
+    if (modalClose) {
+        modalClose.addEventListener('click', () => {
+            if (modalOverlay) modalOverlay.classList.remove('active');
+        });
+    }
+
+    if (modalOverlay) {
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) {
+                modalOverlay.classList.remove('active');
+            }
+        });
+    }
+
+    // ESC to close modal
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modalOverlay) {
+            modalOverlay.classList.remove('active');
+        }
+    });
+
+    // ---- Copy Code ----
+    const copyBtn = document.getElementById('gc-copy-btn');
+    if (copyBtn) {
+        copyBtn.addEventListener('click', () => {
+            const codeEl = document.getElementById('gc-modal-code');
+            if (codeEl) {
+                const code = codeEl.textContent;
+                navigator.clipboard.writeText(code).then(() => {
+                    copyBtn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+                    setTimeout(() => {
+                        copyBtn.innerHTML = '<i class="fa-regular fa-copy"></i> Copy Code';
+                    }, 2000);
+                }).catch(() => {
+                    // Fallback
+                    const textarea = document.createElement('textarea');
+                    textarea.value = code;
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textarea);
+                    copyBtn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+                    setTimeout(() => {
+                        copyBtn.innerHTML = '<i class="fa-regular fa-copy"></i> Copy Code';
+                    }, 2000);
+                });
+            }
+        });
+    }
+
+    // ---- Redeem Gift Card ----
+    const redeemBtn = document.getElementById('gc-redeem-btn');
+    const redeemInput = document.getElementById('gc-redeem-code');
+    const redeemMsg = document.getElementById('gc-redeem-msg');
+
+    if (redeemBtn && redeemInput) {
+        redeemBtn.addEventListener('click', () => {
+            const code = redeemInput.value.trim().toUpperCase();
+
+            if (!code) {
+                showRedeemMsg('Please enter a gift card code.', 'error');
+                return;
+            }
+
+            const cards = getGiftCards();
+            const cardIndex = cards.findIndex(c => c.code === code && !c.redeemed);
+
+            if (cardIndex === -1) {
+                // Check if already redeemed
+                const alreadyRedeemed = cards.find(c => c.code === code && c.redeemed);
+                if (alreadyRedeemed) {
+                    showRedeemMsg('This gift card has already been redeemed.', 'error');
+                } else {
+                    showRedeemMsg('Invalid gift card code. Please check and try again.', 'error');
+                }
+                return;
+            }
+
+            // Redeem the card
+            const card = cards[cardIndex];
+            card.redeemed = true;
+            card.redeemedAt = new Date().toISOString();
+            saveGiftCards(cards);
+
+            // Add to balance
+            const newBalance = getGCBalance() + card.amount;
+            setGCBalance(newBalance);
+
+            // Update UI
+            updateBalanceDisplay();
+            renderHistory();
+            redeemInput.value = '';
+
+            showRedeemMsg(`✓ ₹${card.amount.toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2})} has been added to your balance!`, 'success');
+        });
+
+        // Auto-format code input with dashes
+        redeemInput.addEventListener('input', (e) => {
+            let val = e.target.value.replace(/[^A-Za-z0-9]/g, '').toUpperCase();
+            let formatted = '';
+            for (let i = 0; i < val.length && i < 16; i++) {
+                if (i > 0 && i % 4 === 0) formatted += '-';
+                formatted += val[i];
+            }
+            e.target.value = formatted;
+        });
+    }
+
+    function showRedeemMsg(text, type) {
+        if (redeemMsg) {
+            redeemMsg.textContent = text;
+            redeemMsg.className = 'gc-redeem-msg ' + type;
+            setTimeout(() => {
+                redeemMsg.textContent = '';
+                redeemMsg.className = 'gc-redeem-msg';
+            }, 5000);
+        }
+    }
+
+    // ---- Init ----
+    updateBalanceDisplay();
+    renderHistory();
+
+})();

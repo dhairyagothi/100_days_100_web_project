@@ -412,6 +412,12 @@ select:focus {
     color: white;
 }
 
+.btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+    transform: none;
+}
+
 /* ---------------- THEME BUTTON ---------------- */
 
 .theme-toggle-btn {
@@ -1138,4 +1144,32 @@ select:focus {
     width: auto;
 
     padding: 10px 16px;
+}
+.receipt-status {
+    font-size: 12px;
+    color: var(--text-secondary);
+    min-height: 16px;
+}
+
+.receipt-status.success {
+    color: var(--success);
+}
+
+.receipt-status.error {
+    color: var(--danger);
+}
+
+.receipt-status.loading {
+    color: var(--text-secondary);
+}
+
+.receipt-status.loading::after {
+    content: ' ...';
+    animation: dots 1s steps(5, end) infinite;
+}
+
+@keyframes dots {
+    0% { content: ' .'; }
+    33% { content: ' ..'; }
+    66% { content: ' ...'; }
 }

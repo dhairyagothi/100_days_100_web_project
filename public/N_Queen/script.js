@@ -91,6 +91,13 @@ document.addEventListener('DOMContentLoaded', () => {
     boardEl.style.gridTemplateColumns = `repeat(${boardSize}, ${cellPx}px)`;
     boardEl.style.setProperty('--cell-size', `${cellPx}px`);
 
+ fix-nqueen-input-validation
+function startGame() {
+    const n = parseInt(boardInput.value);
+    if (isNaN(n) || n < 4 || n > 12) {
+    alert("Please enter a valid board size between 4 and 12.");
+    return;
+}
     for (let r = 0; r < boardSize; r++) {
       for (let c = 0; c < boardSize; c++) {
         const sq = document.createElement('button');
@@ -104,6 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
   };
+ Main
 
   // ── Click handler ─────────────────────────────────────────────────
 

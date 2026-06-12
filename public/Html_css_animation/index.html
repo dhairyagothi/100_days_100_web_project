@@ -63,14 +63,80 @@
 
   <main class="gallery">
 
-  
+    <!-- ======================
+       NAVBAR
+======================= -->
     <header class="gallery-header">
-      <button id="themeToggle" class="theme-toggle">
-        🌙
-      </button>
-      <h1>Animation Collection</h1>
-      <p>Click any animation to preview and copy code</p>
+
+      <div class="navbar">
+
+        <div class="logo">
+          ✨ Animation Collection
+        </div>
+
+        <nav class="nav-links">
+          <a href="index.html">Home</a>
+          <a href="animation_gallery.html">Animations</a>
+          <a href="#About">About</a>
+          <a href="#footer">Contact</a>
+        </nav>
+
+        <div class="nav-actions">
+
+          <button class="subscribe-btn">
+            Subscribe
+          </button>
+
+          <!-- Dark Theme Toggle -->
+          <button id="themeToggle" class="theme-toggle">
+            🌙
+          </button>
+
+        </div>
+
+      </div>
+
     </header>
+
+    <!-- ======================
+       HERO SECTION
+======================= -->
+
+    <section class="hero-section">
+
+      <div class="hero-content">
+
+        <h1>Explore Amazing Animations</h1>
+
+        <p>
+          Discover creative CSS animations and use them in your projects.
+        </p>
+
+        <button class="hero-btn">
+          <a href="animation_gallery.html" style="text-decoration: none;">Explore Animations</a>
+        </button>
+
+
+      </div>
+
+    </section>
+
+    <!-- ======================
+       COLLECTION HEADER
+======================= -->
+
+    <section class="collection-header">
+
+      <h2>Animation Collection</h2>
+
+      <p>
+        Click any animation to preview and copy code.
+      </p>
+
+    </section>
+
+
+
 
     <div class="controls">
       <div class="search-box">
@@ -89,24 +155,6 @@
 
     <section class="animation-grid">
 
-      <!-- Floating Text -->
-
-      <article class="animation-card" data-animation="floatingText">
-        <button class="code-btn">&lt;/&gt;</button>
-
-        <div class="card-preview">
-          <span class="floating-preview">
-            Floating Text
-          </span>
-        </div>
-
-        <h3>Floating Text</h3>
-
-        <button class="preview-btn">
-          Preview Animation
-        </button>
-      </article>
-
       <!-- Loader -->
 
       <article class="animation-card" data-animation="loader" data-category="loader">
@@ -121,279 +169,6 @@
         <button class="preview-btn">
           Preview Animation
         </button>
-      </article>
-
-      <!-- Typewriter -->
-
-      <article class="animation-card" data-animation="typewriter" data-category="hover">
-        <button class="code-btn">&lt;/&gt;</button>
-
-        <div class="card-preview">
-          <span class="typewriter-preview">
-            Hello World
-          </span>
-        </div>
-
-        <h3>Typewriter Text</h3>
-
-        <button class="preview-btn">
-          Preview Animation
-        </button>
-      </article>
-
-      <!-- Rotating Doll -->
-
-      <article class="animation-card" data-animation="RotatingDoll" data-category="hover">
-        <button class="code-btn">&lt;/&gt;</button>
-
-        <div class="card-preview">
-          <div class="doll-preview">
-            🪆
-          </div>
-        </div>
-
-        <h3>Rotating Doll</h3>
-
-        <button class="preview-btn">
-          Preview Animation
-        </button>
-      </article>
-
-      <!-- Glitch Text -->
-
-      <article class="animation-card" data-animation="glitchtext" data-category="hover">
-        <button class="code-btn">&lt;/&gt;</button>
-
-        <div class="card-preview">
-          <span class="glitch-preview">
-            GLITCH
-          </span>
-        </div>
-
-        <h3>Glitch Text</h3>
-
-        <button class="preview-btn">
-          Preview Animation
-        </button>
-      </article>
-
-      <!-- Neon Button -->
-
-      <article class="animation-card" data-animation="neonButton" data-category="button">
-        <button class="code-btn">&lt;/&gt;</button>
-
-        <div class="card-preview">
-          <button class="neon-preview">
-            Hover Me
-          </button>
-        </div>
-
-        <h3>Neon Button</h3>
-
-        <button class="preview-btn">
-          Preview Animation
-        </button>
-      </article>
-
-
-      <!-- dancingRobot -->
-
-      <article class="animation-card" data-animation="dancingRobot" data-category="hover">
-
-        <button class="code-btn">&lt;/&gt;</button>
-
-        <div class="card-preview">
-          <div class="robot">🤖</div>
-        </div>
-
-        <h3>Dancing Robot</h3>
-
-        <button class="preview-btn">
-          Preview Animation
-        </button>
-
-      </article>
-
-      <!-- Jumping Emoji -->
-      <article class="animation-card" data-animation="jumpingEmoji" data-category="hover">
-
-        <button class="code-btn">&lt;/&gt;</button>
-
-        <div class="card-preview">
-          <div class="emoji">😀</div>
-        </div>
-
-        <h3>Jumping Emoji</h3>
-
-        <button class="preview-btn">
-          Preview Animation
-        </button>
-
-      </article>
-
-
-      <!-- Floating Balloon -->
-
-      <article class="animation-card" data-animation="floatingBalloon" data-category="hover">
-
-        <button class="code-btn">&lt;/&gt;</button>
-
-        <div class="card-preview">
-          <div class="balloon">🎈</div>
-        </div>
-
-        <h3>Floating Balloon</h3>
-
-        <button class="preview-btn">
-          Preview Animation
-        </button>
-
-      </article>
-
-
-      <!-- Walking Character -->
-      <article class="animation-card" data-animation="walkingCharacter" data-category="hover">
-
-        <button class="code-btn">&lt;/&gt;</button>
-
-        <div class="card-preview">
-          <div class="walker">🚶</div>
-        </div>
-
-        <h3>Walking Character</h3>
-
-        <button class="preview-btn">
-          Preview Animation
-        </button>
-
-      </article>
-
-      <!-- Rocket launch -->
-      <article class="animation-card" data-animation="rocketLaunch" data-category="hover">
-
-        <button class="code-btn">&lt;/&gt;</button>
-
-        <div class="card-preview">
-          <div class="rocket">🚀</div>
-        </div>
-
-        <h3>Rocket Launch</h3>
-
-        <button class="preview-btn">
-          Preview Animation
-        </button>
-
-      </article>
-
-      <!-- Spinning Planet -->
-      <article class="animation-card" data-animation="spinningPlanet" data-category="hover">
-
-        <button class="code-btn">&lt;/&gt;</button>
-
-        <div class="card-preview">
-          <div class="planet">🪐</div>
-        </div>
-
-        <h3>Spinning Planet</h3>
-
-        <button class="preview-btn">
-          Preview Animation
-        </button>
-
-      </article>
-
-      <!-- Bouncing Ball -->
-
-      <article class="animation-card" data-animation="bouncingBall" data-category="hover">
-
-        <button class="code-btn">&lt;/&gt;</button>
-
-        <div class="card-preview">
-          <div class="ball"></div>
-        </div>
-
-        <h3>Bouncing Ball</h3>
-
-        <button class="preview-btn">
-          Preview Animation
-        </button>
-
-      </article>
-
-      <!-- Skeleton loading -->
-
-      <article class="animation-card" data-animation="skeletonLoading" data-category="loader">
-
-        <button class="code-btn">&lt;/&gt;</button>
-
-        <div class="card-preview">
-          <div class="skeleton"></div>
-        </div>
-
-        <h3>Skeleton Loading</h3>
-
-        <button class="preview-btn">
-          Preview Animation
-        </button>
-
-      </article>
-
-      <!-- Toast Notification -->
-      <article class="animation-card" data-animation="toastNotification" data-category="hover">
-
-        <button class="code-btn">&lt;/&gt;</button>
-
-        <div class="card-preview">
-          <div class="toast">
-            Success ✓
-          </div>
-        </div>
-
-        <h3>Toast Notification</h3>
-
-        <button class="preview-btn">
-          Preview Animation
-        </button>
-
-      </article>
-
-      <!-- Progress Bar -->
-      <article class="animation-card" data-animation="progressBar" data-category="hover">
-
-        <button class="code-btn">&lt;/&gt;</button>
-
-        <div class="card-preview">
-          <div class="progress">
-            <div class="fill"></div>
-          </div>
-        </div>
-
-        <h3>Progress Bar</h3>
-
-        <button class="preview-btn">
-          Preview Animation
-        </button>
-
-      </article>
-
-
-      <!-- Animated tabs -->
-      <article class="animation-card" data-animation="animatedTabs" data-category="hover">
-
-        <button class="code-btn">&lt;/&gt;</button>
-
-        <div class="card-preview">
-          <div class="tabs">
-            <span>Home</span>
-          </div>
-        </div>
-
-        <h3>Animated Tabs</h3>
-
-        <button class="preview-btn">
-          Preview Animation
-        </button>
-
       </article>
 
       <!-- Accordion -->
@@ -412,26 +187,6 @@
         </button>
 
       </article>
-
-
-      <!-- Search Bar Expand -->
-
-      <article class="animation-card" data-animation="searchBarExpand" data-category="hover">
-
-        <button class="code-btn">&lt;/&gt;</button>
-
-        <div class="card-preview">
-          <input class="search-expand" placeholder="Search...">
-        </div>
-
-        <h3>Search Bar Expand</h3>
-
-        <button class="preview-btn">
-          Preview Animation
-        </button>
-
-      </article>
-
 
       <!-- Hamburger Menu -->
       <article class="animation-card" data-animation="hamburgerMenu" data-category="button">
@@ -511,6 +266,57 @@
   </div>
   <script src="animationsLibrary.js"></script>
   <script src="script.js"></script>
+
+  <!-- ======================
+       FOOTER
+======================= -->
+
+<footer class="footer">
+
+  <div class="footer-container">
+
+    <!-- Brand -->
+    <div class="footer-section">
+      <h3 style = "color: #fff;"    
+      >✨ Animation Collection</h3>
+      <p>
+        Discover and explore creative CSS animations for your web projects.
+      </p>
+    </div>
+
+    <!-- Quick Links -->
+    <div class="footer-section">
+      <h4>Quick Links</h4>
+
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Animations</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+
+    <!-- Social Links -->
+    <div class="footer-section">
+      <h4>Follow Us</h4>
+
+      <div class="social-links">
+        <a href="#"><i class="fab fa-github"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-linkedin"></i></a>
+        <a href="#"><i class="fab fa-discord"></i></a>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    <p>
+      © 2025 Animation Collection. All Rights Reserved.
+    </p>
+  </div>
+
+</footer>
 </body>
 
 </html>
