@@ -22,6 +22,18 @@ if(playGame){
     })
 }
 
+function toggleTheme() {
+    document.body.classList.toggle("dark");
+
+    const btn = document.querySelector(".theme-toggle");
+
+    if (document.body.classList.contains("dark")) {
+        btn.innerHTML = "☀️";
+    } else {
+        btn.innerHTML = "🌙";
+    }
+}
+
 function validateGuess(guess){
     if(isNaN(guess)){
         alert("Please enter a valid number")

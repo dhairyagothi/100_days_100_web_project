@@ -549,17 +549,62 @@ trackingToggle.addEventListener('change', ()=>{
 
 if (instructionsNavItem) {
   instructionsNavItem.addEventListener('click', (e) => {
-    // Avoid closing dropdown when clicking inside it
-    if (e.target.closest('#instructionsDropdown')) return;
-    instructionsNavItem.classList.toggle('active');
+    // On desktop: toggle active dropdown
+    // On mobile: handled by accordion (clicks inside panel are fine)
+    if (window.innerWidth > 768) {
+      if (e.target.closest('#instructionsDropdown')) return;
+      instructionsNavItem.classList.toggle('active');
+    }
   });
 }
 
-// Close instructions dropdown if clicked outside
+// Close instructions dropdown if clicked outside (desktop only)
 window.addEventListener('click', (e) => {
-  if (instructionsNavItem && !instructionsNavItem.contains(e.target)) {
+  if (window.innerWidth > 768 && instructionsNavItem && !instructionsNavItem.contains(e.target)) {
     instructionsNavItem.classList.remove('active');
   }
+});
+
+// --------------- Mobile Hamburger Menu ---------------
+const mobileMenuBtn   = document.getElementById('mobileMenuBtn');
+const navMenu         = document.getElementById('navMenu');
+const mobileOverlay   = document.getElementById('mobileOverlay');
+const mobilePanelClose = document.getElementById('mobilePanelClose');
+
+function openMobileMenu() {
+  navMenu.classList.add('mobile-open');
+  mobileMenuBtn.classList.add('open');
+  mobileMenuBtn.setAttribute('aria-expanded', 'true');
+  mobileOverlay.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeMobileMenu() {
+  navMenu.classList.remove('mobile-open');
+  mobileMenuBtn.classList.remove('open');
+  mobileMenuBtn.setAttribute('aria-expanded', 'false');
+  mobileOverlay.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+if (mobileMenuBtn) {
+  mobileMenuBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    navMenu.classList.contains('mobile-open') ? closeMobileMenu() : openMobileMenu();
+  });
+}
+
+if (mobilePanelClose) {
+  mobilePanelClose.addEventListener('click', closeMobileMenu);
+}
+
+if (mobileOverlay) {
+  mobileOverlay.addEventListener('click', closeMobileMenu);
+}
+
+// Close mobile menu on resize back to desktop
+window.addEventListener('resize', () => {
+  if (window.innerWidth > 768) closeMobileMenu();
 });
 
 window.addEventListener('keydown', (e)=>{
@@ -571,6 +616,9 @@ window.addEventListener('keydown', (e)=>{
     if (instructionsNavItem) {
       instructionsNavItem.classList.toggle('active');
     }
+  }
+  if(e.key === 'Escape') {
+    closeMobileMenu();
   }
 });
 

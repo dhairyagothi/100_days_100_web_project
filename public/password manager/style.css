@@ -1334,3 +1334,13 @@ tr:hover{
     transform: scale(1);
   }
 }
+
+/* =========================================================
+   COPY TO CLIPBOARD FEEDBACK
+========================================================= */
+
+.action-btn.copied {
+  background: rgba(34, 197, 94, 0.2);
+  color: #22c55e;
+  transform: translateY(-2px);
+}

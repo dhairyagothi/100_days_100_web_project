@@ -1,45 +1,35 @@
-// Theme Toggle Functionality
-const themeToggleBtn = document.getElementById("themeToggleBtn");
-const htmlElement = document.documentElement;
+// // Theme Toggle Functionality
+ const themeToggleBtn = document.getElementById("themeToggleBtn");
+ const htmlElement = document.documentElement;
 
-// Toggle theme
+// // Toggle theme
 const toggleTheme = () => {
     const currentTheme = htmlElement.getAttribute('data-theme');
     const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
     
     htmlElement.setAttribute('data-theme', newTheme);
+    document.body.classList.toggle('dark-mode', newTheme === 'dark'); // ADD THIS
     localStorage.setItem('theme', newTheme);
     
-    // Update button text/icon
-    if (themeToggleBtn) {
+//     // Update button text/icon
+     if (themeToggleBtn) {
         const icon = themeToggleBtn.querySelector('i');
-        if (icon) {
-            icon.className = newTheme === 'dark' ? 'ph ph-sun' : 'ph ph-moon';
-        }
+        const label = themeToggleBtn.querySelector('span');
+        if (icon) icon.className = theme === 'dark' ? 'ph ph-sun' : 'ph ph-moon';
+        if (label) label.textContent = theme === 'dark' ? 'Light Mode' : 'Dark Mode';
     }
+}
+
+const toggleTheme = () => {
+    const current = htmlElement.getAttribute('data-theme');
+    applyTheme(current === 'dark' ? 'light' : 'dark');
 };
 
-// Add click listener
 if (themeToggleBtn) {
     themeToggleBtn.addEventListener('click', toggleTheme);
 }
 
-// Load saved theme on page load
-window.addEventListener('DOMContentLoaded', () => {
-    const savedTheme = localStorage.getItem('theme') || 'light';
-    htmlElement.setAttribute('data-theme', savedTheme);
-    
-    // Update button icon
-    if (themeToggleBtn) {
-        const icon = themeToggleBtn.querySelector('i');
-        if (icon) {
-            icon.className = savedTheme === 'dark' ? 'ph ph-sun' : 'ph ph-moon';
-        }
-    }
-});
+const savedTheme = localStorage.getItem('theme') ||
+    (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
 
-// Respect system preference if no saved theme
-if (!localStorage.getItem('theme')) {
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    htmlElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
-}
+applyTheme(savedTheme);

@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>QuantumQR • QR Generator & Scanner</title>
-
+    <link rel="icon" href="favicon_qr.png">
     <!-- =====================================================
        GOOGLE FONTS
     ====================================================== -->
@@ -361,6 +361,10 @@
 
               <div class="select-wrapper">
                 <select id="error-correction">
+                    <option value="L">Low</option>
+                    <option value="M">Medium</option>
+                    <option value="Q">Quartile</option>
+                    <option value="H">High</option>
                   <option value="L">Low</option>
 
                   <option value="M">Medium</option>
@@ -437,6 +441,25 @@
               </div>
             </div>
 
+                <div id="qr-reader-results"></div>
+
+                <!-- Scanability feedback -->
+                <div class="scanability card" id="scanability-card" style="margin-top:12px;">
+                    <h3>Scanability</h3>
+                    <div id="scan-score" style="font-weight:700; font-size:18px;">Score: <span id="scan-score-value">—</span>/100</div>
+                    <div id="scan-recommendations" style="margin-top:6px; font-size:13px; color:#333;"></div>
+                </div>
+
+                <!-- History panel -->
+                <div class="history card" id="qr-history" style="margin-top:12px;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;">
+                        <h3 style="margin:0;">History</h3>
+                        <div>
+                            <button id="clear-history" title="Clear all history" style="font-size:12px;padding:6px;">Clear</button>
+                        </div>
+                    </div>
+                    <div id="history-list" style="margin-top:8px; max-height:220px; overflow:auto;"></div>
+                </div>
             <!-- STATUS -->
 
             <div id="status-message" class="status-message" aria-live="polite">

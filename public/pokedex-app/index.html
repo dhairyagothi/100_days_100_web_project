@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pokédex Explorer Hub</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="pokedex-wrapper">
+      <header>
+        <h1>Pokédex Database Explorer</h1>
+        <p class="subtitle">
+          Search and analyze Pokémon combat profiles and real-time statistics
+        </p>
+      </header>
+
+      <div class="search-container">
+        <input
+          type="text"
+          id="search-input"
+          placeholder="Enter Pokémon Name or Index ID (e.g., pikachu, 25)..."
+          autofocus
+        />
+        <button id="search-btn">Search</button>
+      </div>
+
+      <div id="error-message" class="error-hidden">
+        Could not match search queries to a known specimen. Try again!
+      </div>
+
+      <main class="explorer-card hidden" id="pokedex-card">
+        <div class="card-identity-section">
+          <span class="pokemon-id" id="poke-id">#001</span>
+          <h2 class="pokemon-name" id="poke-name">Bulbasaur</h2>
+          <div class="type-badges" id="poke-types"></div>
+        </div>
+
+        <div class="card-body-section">
+          <div class="sprite-frame">
+            <img id="poke-sprite" src="" alt="Specimen Graphic Rendering" />
+          </div>
+
+          <div class="stats-analytic-panel">
+            <h3>Combat Performance Profiles</h3>
+            <div class="stat-group">
+              <div class="stat-label-row">
+                <span class="stat-title">HP</span
+                ><span class="stat-value" id="val-hp">45</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-bar fill-hp" id="bar-hp"></div>
+              </div>
+            </div>
+            <div class="stat-group">
+              <div class="stat-label-row">
+                <span class="stat-title">Attack</span
+                ><span class="stat-value" id="val-attack">49</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-bar fill-attack" id="bar-attack"></div>
+              </div>
+            </div>
+            <div class="stat-group">
+              <div class="stat-label-row">
+                <span class="stat-title">Defense</span
+                ><span class="stat-value" id="val-defense">49</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-bar fill-defense" id="bar-defense"></div>
+              </div>
+            </div>
+            <div class="stat-group">
+              <div class="stat-label-row">
+                <span class="stat-title">Sp. Atk</span
+                ><span class="stat-value" id="val-spatk">65</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-bar fill-spatk" id="bar-spatk"></div>
+              </div>
+            </div>
+            <div class="stat-group">
+              <div class="stat-label-row">
+                <span class="stat-title">Sp. Def</span
+                ><span class="stat-value" id="val-spdef">65</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-bar fill-spdef" id="bar-spdef"></div>
+              </div>
+            </div>
+            <div class="stat-group">
+              <div class="stat-label-row">
+                <span class="stat-title">Speed</span
+                ><span class="stat-value" id="val-speed">45</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-bar fill-speed" id="bar-speed"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>

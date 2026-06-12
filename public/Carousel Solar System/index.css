@@ -86,6 +86,7 @@ body{
   letter-spacing:4px;
 
   background:linear-gradient(to right,#ffffff,#7aa7ff);
+  background-clip: text;
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
 }
@@ -662,15 +663,26 @@ span{
 }
 
 /* MOBILE */
-@media(max-width:768px){
+@media (max-width: 768px) {
 
   .project-back-button{
-    top:20px;
-    right:20px;
+    position:absolute;
 
-    padding:10px 18px;
+    top:75px;
+    left:20px;
+    right:auto;
 
+    z-index:100;
+
+    padding:8px 14px;
     font-size:0.75rem;
   }
 
+  .slide{
+    padding-top:90px;
+  }
+}
+
+.planet-item{
+  cursor:pointer;
 }

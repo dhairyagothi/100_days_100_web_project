@@ -4,6 +4,84 @@ let isCalculating = false;
 window.onload = function () {
     const button = document.getElementById("calculate");
     button.addEventListener("click", calculateLove);
+       // Existing logic plus new features
+const introScreen = document.getElementById('introScreen');
+const calcScreen = document.getElementById('calcScreen');
+const yesBtn = document.getElementById('yesBtn');
+const noBtn = document.getElementById('noBtn');
+const themeSelector = document.getElementById('themeSelector');
+
+// Navigation Logic
+yesBtn.addEventListener('click', () => {
+    introScreen.classList.add('hidden');
+    calcScreen.classList.remove('hidden');
+});
+
+// Playful "No" Button
+noBtn.addEventListener('mouseover', () => {
+    const x = Math.random() * (window.innerWidth - 150);
+    const y = Math.random() * (window.innerHeight - 150);
+    noBtn.style.position = 'fixed';
+    noBtn.style.left = `${x}px`;
+    noBtn.style.top = `${y}px`;
+});
+
+// Theme Switcher
+themeSelector.addEventListener('change', (e) => {
+    document.body.className = e.target.value;
+});
+
+// --- DYNAMIC EMOJI INPUT LOGIC ---
+const fnameInput = document.getElementById("fname");
+const cnameInput = document.getElementById("cname");
+
+const yourEmojis = ['😌', '🙈', '😳', '😎', '🤪', '🙂‍↔️'];
+const crushEmojis = ['🥰', '😘', '😚', '😍', '😋', '🤩', '😻'];
+
+// Function to update input style with emoji
+function updateEmojiOnInput(inputElement, displayId, emojiArray) {
+       const displaySpan = document.getElementById(displayId);
+       if (inputElement.value.length > 0) {
+           displaySpan.textContent = emojiArray[Math.floor(Math.random() * emojiArray.length)];
+       } else {
+           displaySpan.textContent = "";
+       }
+   }
+   // Call it like this:
+   fnameInput.addEventListener("input", () => updateEmojiOnInput(fnameInput, 'fname-emoji', yourEmojis));
+cnameInput.addEventListener("input", () => updateEmojiOnInput(cnameInput,'cname-emoji', crushEmojis));
+// --- END OF DYNAMIC EMOJI LOGIC ---
+
+// --- MUSIC BLOCK ---
+const musicToggle = document.getElementById("musicToggle");
+const songList = document.getElementById("songList");
+const audioPlayer = document.getElementById("audioPlayer");
+const stopMusic = document.getElementById("stopMusic");
+
+// Toggle the visibility of the song list
+musicToggle.addEventListener("click", () => {
+    songList.classList.toggle("hidden");
+});
+
+// Stop Music Logic
+stopMusic.addEventListener("click", () => {
+    audioPlayer.pause();
+    audioPlayer.currentTime = 0; // Reset to start
+    songList.classList.add("hidden");
+});
+
+// Play Song Logic
+// We select all song divs EXCEPT the stop button
+songList.querySelectorAll("div:not(#stopMusic)").forEach(song => {
+    song.addEventListener("click", () => {
+        const src = song.getAttribute("data-src");
+        if (src) {
+            audioPlayer.src = encodeURI(src);
+        }
+        audioPlayer.play();
+        songList.classList.add("hidden");
+    });
+});
 
     const toggle = document.getElementById("theme-toggle");
     if (toggle) {
@@ -153,6 +231,7 @@ function calculateLove() {
             msg = lowMessages[
                 Math.floor(Math.random() * lowMessages.length)
             ];
+            updateBackgroundEmojis(['😭']); 
 
         } else if (loveIndex <= 60) {
 
@@ -161,6 +240,7 @@ function calculateLove() {
             msg = mediumMessages[
                 Math.floor(Math.random() * mediumMessages.length)
             ];
+            updateBackgroundEmojis(['🤓', '🙈', '🫧']); 
 
         } else if (loveIndex <= 90) {
 
@@ -169,6 +249,7 @@ function calculateLove() {
             msg = highMessages[
                 Math.floor(Math.random() * highMessages.length)
             ];
+            updateBackgroundEmojis(['😍', '🥰', '❤️']); 
 
         } else {
 
@@ -177,6 +258,7 @@ function calculateLove() {
             msg = soulmateMessages[
                 Math.floor(Math.random() * soulmateMessages.length)
             ];
+            updateBackgroundEmojis(['❤️', '💕']);
         }
 
         // Display result
@@ -193,4 +275,21 @@ function calculateLove() {
         isCalculating = false;
         
     }, 1800);
+
+ 
+
+}
+//Adding changing background emojis
+function updateBackgroundEmojis(emojis) {
+    const heartsContainer = document.querySelector(".hearts");
+    heartsContainer.innerHTML = ""; // Clear existing hearts
+    
+    for (let i = 0; i < 20; i++) { // Generating 20 emojis
+        const span = document.createElement("span");
+        span.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        span.style.left = `${Math.random() * 95}%`;
+        span.style.animationDuration = `${Math.random() * 5 + 5}s`;
+        span.style.fontSize = `${Math.random() * 20 + 20}px`;
+        heartsContainer.appendChild(span);
+    }
 }

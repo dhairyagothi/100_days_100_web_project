@@ -1,3 +1,13 @@
+console.log("Blogs:", blogs);
+
+console.log(
+  document.getElementById("featuredBlog")
+);
+
+console.log(
+  document.getElementById("blogGrid")
+);
+
 // ============================================================
 // GLOBAL XSS SANITIZATION UTILITY (Fixes Issue #4360)
 // ============================================================
@@ -327,3 +337,81 @@ const addComment = () => {
 };
 
 renderComments();
+ // ======================
+// HOMEPAGE
+// ======================
+
+const featuredContainer = document.getElementById("featuredBlog");
+const blogGrid = document.getElementById("blogGrid");
+
+if (featuredContainer && blogGrid && typeof blogs !== "undefined") {
+
+    const featured = blogs[0];
+
+    featuredContainer.innerHTML = `
+        <div class="featured-card">
+            <div class="featured-image">
+                <img src="${featured.image}" alt="${featured.title}">
+            </div>
+
+            <div class="featured-content">
+                <span class="featured-badge">Featured Article</span>
+
+                <h1>${featured.title}</h1>
+
+                <p>${featured.content.slice(0,250)}...</p>
+
+                <a href="of.html?id=${featured.id}" class="read-btn">
+                    Read Full Article →
+                </a>
+            </div>
+        </div>
+    `;
+
+    blogGrid.innerHTML = blogs
+        .slice(1, 3)
+        .map(createBlogCard)
+        .join("");
+}
+
+// ======================
+// BLOGS PAGE
+// ======================
+
+const allBlogsGrid = document.getElementById("allBlogsGrid");
+
+if (allBlogsGrid && typeof blogs !== "undefined") {
+
+    allBlogsGrid.innerHTML = blogs
+        .map(createBlogCard)
+        .join("");
+}
+
+function createBlogCard(blog) {
+    return `
+        <div class="blog-card">
+
+            <img src="${blog.image}" alt="${blog.title}">
+
+            <div class="blog-card-content">
+
+                <span class="category">
+                    ${blog.category}
+                </span>
+
+                <h3>${blog.title}</h3>
+
+                <p>
+                    ${blog.content.slice(0,100)}...
+                </p>
+
+                <a href="of.html?id=${blog.id}"
+                   class="read-more-btn">
+                   Read More →
+                </a>
+
+            </div>
+
+        </div>
+    `;
+}
