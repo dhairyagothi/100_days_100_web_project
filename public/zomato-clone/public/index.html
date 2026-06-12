@@ -261,27 +261,10 @@
   Free delivery on your first 3 orders &nbsp;·&nbsp; Use code <strong>WELCOME50</strong> for 50% off
   <button class="banner-close" onclick="document.getElementById('topBanner').style.display='none'">×</button>
 </div>
+ 
+<!-- nav -->
 
-<!-- NAV -->
-<nav>
-  <div class="nav-logo">
-    <img src="https://b.zmtcdn.com/web_assets/b40b97e677bc7b2ca77c58c61db266fe1603954218.png" alt="Zomato" />
-  </div>
-  <div class="nav-links">
-    <a href="#" class="hide-mobile">Get the app</a>
-    <a href="#" class="hide-mobile">Add restaurant</a>
-    <a href="#" class="hide-mobile">Investor Relations</a>
-    <button class="btn-login">Log in</button>
-    <button class="btn-signup">Sign up</button>
-    <a href="restaurant.html">View Restaurants</a>
-    <!-- DARK MODE TOGGLE -->
-    <button class="dm-toggle" id="dmToggle" onclick="toggleDark()" title="Toggle dark mode">
-      <span class="dm-icon sun">☀️</span>
-      <span class="dm-icon moon">🌙</span>
-    </button>
-  </div>
-</nav>
-
+<div id="navbar"></div>
 <!-- HERO -->
 <section class="hero">
   <div class="hero-bg"></div>
@@ -459,52 +442,8 @@
   </div>
 </div>
 
-<!-- FOOTER -->
-<footer>
-  <div class="footer-grid">
-    <div class="footer-logo">
-      <a href="/">
-        <img src="images/zomato.png" alt="Company Name Logo">
-    
-    <div class="footer-brand footer-col">
-      <img src="https://b.zmtcdn.com/web_assets/b40b97e677bc7b2ca77c58c61db266fe1603954218.png" alt="Zomato" />
-      <p>Discover the best food & drinks in your city. Delivering joy, one meal at a time.</p>
-      <div class="socials">
-        <a href="https://www.linkedin.com/company/zomato/" target="_blank">in</a>
-        <a href="https://www.instagram.com/zomato/" target="_blank">ig</a>
-        <a href="https://twitter.com/zomato" target="_blank">tw</a>
-        <a href="https://www.youtube.com/zomato" target="_blank">yt</a>
-        <a href="https://www.facebook.com/Zomato" target="_blank">fb</a>
-        </a>
-    </div>
-      </div>
-    </div>
-    <div class="footer-col">
-      <h4>About Zomato</h4>
-      <ul><li>Who we are</li><li>Blog</li><li>Work with us</li><li>Investor Relations</li><li>Report Fraud</li><li>Contact us</li></ul>
-    </div>
-    <div class="footer-col">
-      <h4>Zomaverse</h4>
-      <ul><li>Zomato</li><li>Blinkit</li><li>Feeding India</li><li>Hyperpure</li><li>Zomaland</li></ul>
-    </div>
-    <div class="footer-col">
-      <h4>For Restaurants</h4>
-      <ul><li>Partner With Us</li><li>Apps for you</li></ul>
-      <h4 style="margin-top:20px">For Enterprises</h4>
-      <ul><li>Zomato For Enterprises</li></ul>
-      <h4 style="margin-top:20px">Learn More</h4>
-      <ul><li>Privacy</li><li>Security</li><li>Terms</li><li>Sitemap</li></ul>
-    </div>
-    <div class="footer-col">
-      <h4>Download App</h4>
-      <img src="https://b.zmtcdn.com/data/webuikit/23e930757c3df49840c482a8638bf5c31556001144.png" style="height:36px;border-radius:6px;margin-bottom:10px;display:block" />
-      <img src="https://b.zmtcdn.com/data/webuikit/9f0c85a5e33adb783fa0aef667075f9e1556003622.png" style="height:36px;border-radius:6px;display:block" />
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <span>By continuing past this page, you agree to our Terms of Service, Cookie Policy, Privacy Policy and Content Policies. All trademarks are properties of their respective owners. 2008-2023 © Zomato™ Ltd. All rights reserved.</span>
-  </div>
-</footer>
+<div id="footer"></div>
+
 
 <!-- TOAST -->
 <div class="dm-toast" id="dmToast"></div>
@@ -560,3 +499,20 @@
 </script>
 </body>
 </html>
+
+<script>
+async function loadComponent(id, file) {
+  const res = await fetch(file);
+  const data = await res.text();
+  document.getElementById(id).innerHTML = data;
+}
+
+// navbar load
+loadComponent("navbar", "components/navbar.html");
+
+
+// footer
+loadComponent("footer", "components/footer.html");
+
+</script>
+
