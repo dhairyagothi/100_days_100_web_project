@@ -29,7 +29,7 @@
         width: 40px;
         height: 40px;
         border-radius: 50%;
-        background: linear-gradient(45deg, #ff6b6b, #ffa500);
+        background: #ff6b6b;
         position: absolute;
         cursor: pointer;
         transition: transform 0.1s;
@@ -50,6 +50,28 @@
       button:hover {
         background: #0056b3;
       }
+      .customise {
+        margin-top: 14px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+        font-size: 14px;
+        color: #333;
+      }
+      .customise label {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .customise select {
+        padding: 4px 8px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        font-size: 14px;
+        cursor: pointer;
+      }
     </style>
   </head>
   <body>
@@ -62,15 +84,51 @@
       <button onclick="toggleGravity()">Toggle Gravity</button
       ><button onclick="resetBall()">Reset</button>
     </div>
+    <div class="customise">
+      <label>Color <input type="color" id="ballColor" value="#ff6b6b" /></label>
+      <label>Shape
+        <select id="ballShape">
+          <option value="circle">Circle</option>
+          <option value="square">Square</option>
+          <option value="triangle">Triangle</option>
+          <option value="star">Star</option>
+        </select>
+      </label>
+    </div>
     <script>
       const ball = document.getElementById('ball');
       const area = document.getElementById('playArea');
+      const colorPicker = document.getElementById('ballColor');
+      const shapeSelect = document.getElementById('ballShape');
       let x = 180,
         y = 180,
         vx = 0,
         vy = 0;
       let gravity = 0.5;
       let bouncing = true;
+
+      const clipPaths = {
+        circle:   '',
+        square:   '',
+        triangle: 'polygon(50% 0%, 0% 100%, 100% 100%)',
+        star:     'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)'
+      };
+
+      function applyShape(shape) {
+        ball.style.borderRadius = shape === 'circle' ? '50%' : '0';
+        ball.style.clipPath = clipPaths[shape];
+      }
+
+      colorPicker.addEventListener('input', () => {
+        ball.style.background = colorPicker.value;
+      });
+
+      shapeSelect.addEventListener('change', () => {
+        applyShape(shapeSelect.value);
+      });
+
+      ball.style.background = colorPicker.value;
+
       function update() {
         vy += gravity;
         x += vx;
