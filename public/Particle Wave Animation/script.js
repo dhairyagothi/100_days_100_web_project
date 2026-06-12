@@ -195,15 +195,27 @@ document.getElementById('connectSlider').addEventListener('input', e => {
   document.getElementById('connectVal').textContent = connectRange;
 });
 
-document.querySelectorAll('.theme-btn').forEach(btn => {
+function applyTheme(themeName) {
+  currentTheme = themeName;
+  particles.forEach(p => {
+    p.color = themes[currentTheme][Math.floor(Math.random() * themes[currentTheme].length)];
+  });
+}
+
+document.querySelectorAll('.theme-btn[data-theme]').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-    currentTheme = btn.dataset.theme;
-    particles.forEach(p => {
-      p.color = themes[currentTheme][Math.floor(Math.random() * themes[currentTheme].length)];
-    });
+    applyTheme(btn.dataset.theme);
   });
+});
+
+document.getElementById('randomThemeBtn').addEventListener('click', () => {
+  const themeKeys = Object.keys(themes);
+  const picked = themeKeys[Math.floor(Math.random() * themeKeys.length)];
+  document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector(`.theme-btn[data-theme="${picked}"]`).classList.add('active');
+  applyTheme(picked);
 });
 
 const pauseBtn = document.getElementById('pauseBtn');

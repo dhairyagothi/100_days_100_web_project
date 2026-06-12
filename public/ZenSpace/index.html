@@ -6,7 +6,7 @@
     <title>ZenSpace – Focus Dashboard</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="noise"></div>
@@ -40,7 +40,7 @@
                 <div class="session-picker">
                     <button class="pill active" data-mins="25">Focus 25</button>
                     <button class="pill" data-mins="5">Break 5</button>
-                    <button class="pill" data-mins="15">Long 15</button>
+                    <input type="number" id="custom-time" class="pill custom-input" placeholder="Custom" min="1">
                 </div>
             </section>
 
@@ -91,4 +91,4 @@
     <div class="toast" id="toast">🍅 Session complete! Time for a break.</div>
     <script src="app.js"></script>
 </body>
-</html>
+</html>>
