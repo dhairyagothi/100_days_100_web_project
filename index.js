@@ -7,7 +7,7 @@ if (typeof REPO_OWNER === "undefined") {
 }
 window.REPO_OWNER = window.REPO_OWNER || "dhairyagothi";
 window.REPO_NAME = window.REPO_NAME || "100_days_100_web_project";
-
+  
 let currentPage = 1;
 let itemsPerPage = 9;
 let projectData = [];
@@ -70,6 +70,8 @@ let projectsPromise = null;
 function hydrateProjects(data) {
   PROJECTS = data.map((project) => ({
     day: `Day ${project.projectNo}`,
+    projectNo: project.projectNo,
+    projectType: project.projectType,
     projectName: project.projectName,
     projectPath: project.projectPath,
     techStack: project.techStack,
@@ -407,7 +409,10 @@ function attachProjectCardInteraction(card, demoUrl, projectData = null) {
     if (!demoUrl) return;
 
     if (projectData) {
-      trackRecentProject(projectData);
+      const project = resolveProjectRecord(projectData);
+      if (project) {
+        trackRecentProject(project);
+      }
     }
 
     window.open(sanitizeUrl(demoUrl), "_blank", "noopener");
@@ -422,6 +427,34 @@ function attachProjectCardInteraction(card, demoUrl, projectData = null) {
       }
       activateCard(e);
     }
+  };
+}
+
+function resolveProjectRecord(projectData) {
+  if (!projectData) return null;
+
+  if (projectData.projectNo != null && projectData.projectType != null) {
+    return projectData;
+  }
+
+  const day = projectData.day || projectData.projectName || projectData.name || projectData[0];
+  const name = projectData.projectName || projectData.name || projectData[1];
+
+  if (day) {
+    const project = PROJECTS_BY_DAY.get(day) || PROJECTS_BY_NAME.get(day);
+    if (project) return project;
+  }
+
+  if (name) {
+    const project = PROJECTS_BY_NAME.get(name);
+    if (project) return project;
+  }
+
+  return {
+    ...projectData,
+    projectName: name || projectData.projectName,
+    projectPath: projectData.projectPath || projectData.url || projectData[2],
+    techStack: projectData.techStack || projectData.tags || projectData[3] || [],
   };
 }
 
@@ -1379,9 +1412,92 @@ function renderRecentProjects() {
     attachProjectCardInteraction(card, demoUrl, projectObj);
     recentGrid.appendChild(card);
   });
+
+  renderRecommendationsForLatestRecentProject();
+}
+
+function renderRecommendationsForProject(project) {
+  const container = document.getElementById("recommendationsContainer");
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  const header = document.createElement("div");
+  header.className = "projects-intro";
+  header.innerHTML = `
+    <p class="section-label">Build Similar Projects</p>
+    <h2 class="section-title">${project ? `Projects like ${escapeHTML(
+      project.projectName || project.name || "this project",
+    )}` : "Related Projects"}</h2>
+  `;
+  container.appendChild(header);
+
+  if (!project) {
+    const placeholder = document.createElement("p");
+    placeholder.className = "empty-state";
+    placeholder.textContent =
+      "Click a project card to discover related builds based on technologies and project type.";
+    container.appendChild(placeholder);
+    return;
+  }
+
+  const recommendations = getRecommendations(project, PROJECTS);
+  if (!recommendations.length) {
+    const noRecommendations = document.createElement("p");
+    noRecommendations.className = "empty-state";
+    noRecommendations.textContent =
+      "No similar projects were found for this selection yet.";
+    container.appendChild(noRecommendations);
+    return;
+  }
+
+  const grid = document.createElement("div");
+  grid.className = "project-grid";
+
+  recommendations.forEach((recommendation) => {
+    const category = getCategoryFromTags(
+      recommendation.techStack,
+      recommendation.projectName,
+    );
+    const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
+      day: recommendation.day,
+      name: recommendation.projectName,
+      url: recommendation.projectPath,
+      tags: recommendation.techStack,
+      category,
+      isBookmarked: bookmarkedProjects.some(
+        (item) => normalizeProjectEntry(item).day === recommendation.day,
+      ),
+      showDescription: true,
+    });
+
+    const card = document.createElement("div");
+    card.className = sourceOnly
+      ? "project-card source-only visible"
+      : "project-card visible";
+    card.innerHTML = html;
+    card.setAttribute("tabindex", "0");
+    card.setAttribute("role", "button");
+    attachProjectCardInteraction(card, demoUrl, recommendation);
+    grid.appendChild(card);
+  });
+
+  container.appendChild(grid);
+}
+
+function renderRecommendationsForLatestRecentProject() {
+  const validRecent = getRecentProjectsWithinWindow();
+  if (validRecent.length === 0) {
+    renderRecommendationsForProject(null);
+    return;
+  }
+
+  const latestProject = resolveProjectRecord(validRecent[0]);
+  renderRecommendationsForProject(latestProject);
 }
 
 cleanupExpiredRecentProjects();
+renderRecommendationsForLatestRecentProject();
 
 /* ============================================================
    VIEW ALL TOGGLE
