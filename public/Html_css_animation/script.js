@@ -245,3 +245,90 @@ document.addEventListener("keydown", (e) => {
     }
 
 });
+
+// ==========================
+// Search Animations
+// ==========================
+
+const searchInput = document.getElementById("searchInput");
+const clearSearch = document.getElementById("clearSearch");
+const filterSelect = document.getElementById("filterSelect");
+const animationCards = document.querySelectorAll(".animation-card");
+
+function filterCards() {
+  const searchTerm = searchInput.value.trim().toLowerCase();
+  const selectedCategory = filterSelect.value.toLowerCase();
+
+  animationCards.forEach((card) => {
+    // Search by animation title
+    const animationName = card
+      .querySelector("h3")
+      .textContent
+      .trim()
+      .toLowerCase();
+
+    // Filter by data-category
+    const cardCategory = (
+      card.dataset.category || ""
+    ).trim().toLowerCase();
+
+    const matchesSearch =
+      searchTerm === "" ||
+      animationName.includes(searchTerm);
+
+    const matchesCategory =
+      selectedCategory === "all" ||
+      cardCategory === selectedCategory;
+
+    if (matchesSearch && matchesCategory) {
+      card.style.display = "";
+    } else {
+      card.style.display = "none";
+    }
+  });
+
+  // Show/hide clear icon
+  clearSearch.style.display =
+    searchTerm.length > 0 ? "block" : "none";
+}
+
+// Search while typing
+searchInput.addEventListener("input", filterCards);
+
+// Filter dropdown change
+filterSelect.addEventListener("change", filterCards);
+
+// Clear search
+clearSearch.addEventListener("click", () => {
+  searchInput.value = "";
+  filterSelect.value = "all";
+  filterCards();
+});
+
+// Initial load
+filterCards();
+
+// ==========================
+// Theme Toggle
+// ==========================
+
+const themeToggle = document.getElementById("themeToggle");
+
+// Load saved theme
+if (localStorage.getItem("theme") === "dark") {
+  document.body.classList.add("dark-theme");
+  themeToggle.textContent = "☀️";
+}
+
+themeToggle.addEventListener("click", () => {
+  document.body.classList.toggle("dark-theme");
+
+  const isDark = document.body.classList.contains("dark-theme");
+
+  themeToggle.textContent = isDark ? "☀️" : "🌙";
+
+  localStorage.setItem(
+    "theme",
+    isDark ? "dark" : "light"
+  );
+});
