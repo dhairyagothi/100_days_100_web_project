@@ -2,59 +2,354 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FocusList App</title>
+
     <style>
-        body { font-family: sans-serif; display: flex; justify-content: center; padding-top: 50px; background: #f4f4f9; }
-        .container { background: white; padding: 2rem; width: 350px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        input { width: 70%; padding: 8px; }
-        button { padding: 8px; cursor: pointer; }
-        ul { list-style: none; padding: 0; margin-top: 20px; }
-        li { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #eee; }
-        .completed { text-decoration: line-through; color: gray; }
-        #progress { height: 10px; background: #4caf50; width: 0%; transition: width 0.3s; margin-top: 10px; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 450px;
+            background: white;
+            padding: 24px;
+            border-radius: 20px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        #clearCompleted {
+            border: none;
+            background: #ef4444;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        #clearCompleted:hover {
+            opacity: 0.9;
+        }
+
+        .progress-wrapper {
+            width: 100%;
+            height: 10px;
+            background: #e5e7eb;
+            border-radius: 999px;
+            overflow: hidden;
+            margin-bottom: 18px;
+        }
+
+        #progress {
+            height: 100%;
+            width: 0%;
+            background: #22c55e;
+            transition: all 0.4s ease;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            outline: none;
+        }
+
+        button {
+            padding: 10px 14px;
+            border: none;
+            border-radius: 10px;
+            background: #4f46e5;
+            color: white;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            margin-bottom: 10px;
+            background: #f9fafb;
+            border-radius: 10px;
+            animation: fadeIn 0.25s ease;
+        }
+
+        .task-text {
+            flex: 1;
+            cursor: pointer;
+            word-break: break-word;
+        }
+
+        .completed {
+            text-decoration: line-through;
+            color: gray;
+        }
+
+        .delete-btn {
+            background: #ef4444;
+            margin-left: 10px;
+            padding: 6px 10px;
+        }
+
+        #emptyState {
+            text-align: center;
+            color: #6b7280;
+            margin-top: 15px;
+            display: none;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 18px;
+            }
+
+            .input-group {
+                flex-direction: column;
+            }
+
+            button {
+                width: 100%;
+            }
+
+            .stats {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            #clearCompleted {
+                width: 100%;
+            }
+        }
     </style>
 </head>
+
 <body>
 
 <div class="container">
+
     <h2>FocusList</h2>
-    <div id="progress"></div>
-    <input type="text" id="taskInput" placeholder="Add a task...">
-    <button onclick="addTask()">Add</button>
+
+    <div class="stats">
+        <span id="taskCounter">0/0 completed</span>
+        <button id="clearCompleted" onclick="clearCompleted()">
+            Clear Completed
+        </button>
+    </div>
+
+    <div class="progress-wrapper">
+        <div id="progress"></div>
+    </div>
+
+    <div class="input-group">
+        <input
+            type="text"
+            id="taskInput"
+            placeholder="Add a task..."
+        >
+        <button onclick="addTask()">Add</button>
+    </div>
+
+    <p id="emptyState">No tasks yet. Add one above!</p>
+
     <ul id="taskList"></ul>
+
 </div>
 
 <script>
-    let tasks = [];
+
+    let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+    function saveTasks() {
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+    }
+
+    document
+        .getElementById("taskInput")
+        .addEventListener("keypress", function (e) {
+            if (e.key === "Enter") {
+                addTask();
+            }
+        });
 
     function addTask() {
-        const input = document.getElementById('taskInput');
-        if (!input.value) return;
-        tasks.push({ text: input.value, done: false });
-        input.value = '';
+
+        const input = document.getElementById("taskInput");
+        const value = input.value.trim();
+
+        if (!value) return;
+
+        tasks.push({
+            text: value,
+            done: false
+        });
+
+        input.value = "";
+
+        saveTasks();
         render();
     }
 
     function toggleTask(index) {
         tasks[index].done = !tasks[index].done;
+
+        saveTasks();
         render();
     }
 
+    function deleteTask(index) {
+        tasks.splice(index, 1);
+
+        saveTasks();
+        render();
+    }
+
+    function clearCompleted() {
+
+        tasks = tasks.filter(task => !task.done);
+
+        saveTasks();
+        render();
+    }
+
+    function editTask(index) {
+
+        const newText = prompt(
+            "Edit task",
+            tasks[index].text
+        );
+
+        if (newText && newText.trim()) {
+
+            tasks[index].text = newText.trim();
+
+            saveTasks();
+            render();
+        }
+    }
+
     function render() {
-        const list = document.getElementById('taskList');
-        list.innerHTML = '';
+
+        const list = document.getElementById("taskList");
+
+        list.innerHTML = "";
+
         let completedCount = 0;
-        
+
         tasks.forEach((task, index) => {
+
             if (task.done) completedCount++;
-            const li = document.createElement('li');
-            li.innerHTML = `<span class="${task.done ? 'completed' : ''}" onclick="toggleTask(${index})">${task.text}</span>
-                            <button onclick="tasks.splice(${index}, 1); render()">X</button>`;
+
+            const li = document.createElement("li");
+
+            const span = document.createElement("span");
+
+            span.className =
+                `task-text ${task.done ? "completed" : ""}`;
+
+            span.textContent = task.text;
+
+            span.onclick = () => toggleTask(index);
+
+            span.ondblclick = () => editTask(index);
+
+            const deleteBtn = document.createElement("button");
+
+            deleteBtn.textContent = "✕";
+
+            deleteBtn.className = "delete-btn";
+
+            deleteBtn.onclick = () => deleteTask(index);
+
+            li.appendChild(span);
+            li.appendChild(deleteBtn);
+
             list.appendChild(li);
         });
 
-        const progress = (completedCount / tasks.length) * 100 || 0;
-        document.getElementById('progress').style.width = progress + '%';
+        document.getElementById("emptyState").style.display =
+            tasks.length === 0 ? "block" : "none";
+
+        document.getElementById("taskCounter").textContent =
+            `${completedCount}/${tasks.length} completed`;
+
+        const progress =
+            tasks.length === 0
+                ? 0
+                : (completedCount / tasks.length) * 100;
+
+        const progressBar =
+            document.getElementById("progress");
+
+        progressBar.style.width = progress + "%";
+
+        if (progress < 40) {
+            progressBar.style.background = "#ef4444";
+        } else if (progress < 80) {
+            progressBar.style.background = "#f59e0b";
+        } else {
+            progressBar.style.background = "#22c55e";
+        }
     }
+
+    render();
+
 </script>
+
 </body>
+</html>
