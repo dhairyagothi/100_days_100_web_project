@@ -8,7 +8,7 @@
 "techStack":["javascript","todo"],
 "difficulty":"beginner",
 "projectPath":"./public/TO_DO_LIST/todolist.html",
- "thumbnail": "./public/thumbnails/Todo list screenshot 2.png"
+ "thumbnail": "./public/TO_DO_LIST/preview.png"
 },
 
 {
@@ -38,7 +38,8 @@
 "projectDesc":"Responsive navigation bar with expandable dropdown interactions.",
 "techStack":["css"],
 "difficulty":"beginner",
-"projectPath":"./public/dropdown_navbar/index.html"
+"projectPath":"./public/dropdown_navbar/index.html",
+"thumbnail":"public/dropdown_navbar/preview.png"
 },
 
 {
@@ -68,7 +69,8 @@
 "projectDesc":"Typing animation effect simulating text being written live.",
 "techStack":["html","css","javascript"],
 "difficulty":"advanced",
-"projectPath":"./public/typewriter/typewriter.html"
+"projectPath":"./public/typewriter/typewriter.html",
+"thumbnail":"public/typewriter/preview.png"
 },
 
 {
@@ -692,7 +694,8 @@
 "projectDesc":"Music streaming inspired interface replicating playlists and navigation patterns.",
 "techStack":["clone","api","javascript"],
 "difficulty":"intermediate",
-"projectPath":"./public/spotify-clone%20-project/index.html"
+"projectPath":"./public/spotify-clone%20-project/index.html",
+"thumbnail":"public/spotify-clone -project/preview.png"
 },
 
 {
@@ -912,7 +915,8 @@
 "projectDesc":"Backend-focused project handling votes and user interactions securely.",
 "techStack":["api","javascript"],
 "difficulty":"intermediate",
-"projectPath":"https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Voting_Application_Backend"
+"projectPath":"https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Voting_Application_Backend",
+"thumbnail":"public/Voting_Application_Backend/preview.png"
 },
 
 {
@@ -1614,7 +1618,7 @@
 "techStack":["tool","javascript","html","css"],
 "difficulty":"intermediate",
 "projectPath":"./public/Unit-Converter/index.html",
- "thumbnail": "./public/thumbnails/image.png"
+ "thumbnail": "./public/Unit-Converter/preview.png"
 },
 
 {
@@ -2153,7 +2157,8 @@
       "javascript"
     ],
     "difficulty": "beginner",
-    "projectPath": "./public/snake_game/index.html"
+    "projectPath": "./public/snake_game/index.html",
+    "thumbnail":"public/snake_game/preview.png"
   },
   {
     "projectNo": 30,
@@ -2165,7 +2170,8 @@
       "canvas"
     ],
     "difficulty": "intermediate",
-    "projectPath": "./public/Flappy-bird-main/index.html"
+    "projectPath": "./public/Flappy-bird-main/index.html",
+    "thumbnail":"public/Flappy-bird-main/preview.png"
   },
   {
     "projectNo": 31,
@@ -2201,7 +2207,8 @@
       "api"
     ],
     "difficulty": "intermediate",
-    "projectPath": "./public/Weather%20Forcasting/index.html"
+    "projectPath": "./public/Weather%20Forcasting/index.html",
+    "thumbnail":"public/Weather Forcasting/preview.png"
   },
   {
     "projectNo": 34,
@@ -2567,7 +2574,8 @@
       "css"
     ],
     "difficulty": "beginner",
-    "projectPath": "./public/zomato-clone/zomato.html"
+    "projectPath": "./public/zomato-clone/zomato.html",
+    "thumbnail":"public/zomato-clone/preview.png"
   },
   {
     "projectNo": 65,
