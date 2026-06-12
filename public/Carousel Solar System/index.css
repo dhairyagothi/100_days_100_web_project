@@ -86,6 +86,7 @@ body{
   letter-spacing:4px;
 
   background:linear-gradient(to right,#ffffff,#7aa7ff);
+  background-clip: text;
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
 }
@@ -628,14 +629,13 @@ span{
   right:250px;
   z-index:9999;
 
-  padding:12px 22px;
+  padding:8px 16px;
 
-  border-radius:50px;
+  border-radius:8px;
 
-  background:
-    linear-gradient(135deg,#6fa7ff,#8b5cff);
+  background:#1e293b;
 
-  color:white;
+  color:#3b82f6;
   text-decoration:none;
 
   font-family:'Orbitron',sans-serif;
@@ -643,34 +643,46 @@ span{
   font-weight:600;
   letter-spacing:1px;
 
+  border:1px solid #3b82f6;
+
   box-shadow:
     0 10px 30px rgba(111,167,255,0.35);
 
-  transition:0.35s;
+  transition:all 0.2s ease;
 }
 
 .project-back-button:hover{
+  background:#3b82f6;
+  color:#fff;
   transform:
     translateY(-3px)
     scale(1.04);
 
   box-shadow:
     0 15px 40px rgba(111,167,255,0.55);
-
-  background:
-    linear-gradient(135deg,#8b5cff,#6fa7ff);
 }
 
 /* MOBILE */
-@media(max-width:768px){
+@media (max-width: 768px) {
 
   .project-back-button{
-    top:20px;
-    right:20px;
+    position:absolute;
 
-    padding:10px 18px;
+    top:75px;
+    left:20px;
+    right:auto;
 
+    z-index:100;
+
+    padding:8px 14px;
     font-size:0.75rem;
   }
 
+  .slide{
+    padding-top:90px;
+  }
+}
+
+.planet-item{
+  cursor:pointer;
 }

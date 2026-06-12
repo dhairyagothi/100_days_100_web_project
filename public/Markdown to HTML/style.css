@@ -253,13 +253,19 @@ body {
     border-radius: 10px;
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
     transform: translateY(150%);
-    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease, visibility 0.4s ease;
     z-index: 1000;
     font-weight: 500;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
 }
 
 .toast.show {
     transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
 }
 
 /* --- Responsive --- */

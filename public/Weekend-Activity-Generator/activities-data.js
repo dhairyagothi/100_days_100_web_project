@@ -1,0 +1,422 @@
+const activitiesData = [
+  {
+    id: 1,
+    name: "The Sunlit Bookstore Cafe",
+    category: "cafe",
+    vibe: "cozy",
+    cost: "$$",
+    weather: "any",
+    locationType: "indoor",
+    duration: "1.5 - 2 hrs",
+    description: "A cozy local bookstore combined with a specialty coffee bar. Find a quiet wooden corner, grab a signature lavender latte, and browse dusty classics while soft vinyl jazz plays.",
+    checklist: [
+      "Find a hidden nook by the window",
+      "Order a lavender latte or hot chamomile tea",
+      "Read at least 20 pages of a new book",
+      "Write down a favorite quote in your journal"
+    ],
+    latOffset: 0.008,
+    lngOffset: -0.012,
+    icon: "fa-coffee",
+    color: "#d4a373"
+  },
+  {
+    id: 2,
+    name: "Wildflower Ridge Trail",
+    category: "hike",
+    vibe: "adventurous",
+    cost: "$",
+    weather: "sunny",
+    locationType: "outdoor",
+    duration: "3 - 4 hrs",
+    description: "A scenic hike winding up to a panoramic ridge. During the weekend, the trail is lined with colorful lupines and poppies. The final peak offers a view of the entire valley.",
+    checklist: [
+      "Spot three different types of wildflowers",
+      "Take a panoramic photo at the summit",
+      "Pack a reusable water bottle and trail mix",
+      "Pause for 5 minutes of silence at the top"
+    ],
+    latOffset: -0.025,
+    lngOffset: 0.032,
+    icon: "fa-mountain",
+    color: "#2a9d8f"
+  },
+  {
+    id: 3,
+    name: "Artisanal Sunday Market",
+    category: "market",
+    vibe: "lively",
+    cost: "$",
+    weather: "sunny",
+    locationType: "outdoor",
+    duration: "2 - 3 hrs",
+    description: "A bustling community market filled with local farmers, ceramicists, bakers, and musicians. Perfect for a lazy Sunday stroll with a warm pastry in hand.",
+    checklist: [
+      "Sample locally made honey or cheese",
+      "Buy a fresh bouquet of seasonal flowers",
+      "Listen to the live street musicians for a song",
+      "Get a warm cardamom bun from the bakery stall"
+    ],
+    latOffset: 0.015,
+    lngOffset: 0.018,
+    icon: "fa-store",
+    color: "#e76f51"
+  },
+  {
+    id: 4,
+    name: "Neon Retro Arcade Bar",
+    category: "entertainment",
+    vibe: "lively",
+    cost: "$$",
+    weather: "any",
+    locationType: "indoor",
+    duration: "2 hrs",
+    description: "Step back in time to the 80s! A neon-drenched room featuring rows of classic pinball, PAC-MAN, street fighter cabinets, and vintage theme sodas.",
+    checklist: [
+      "Beat a high score on pinball or Pac-Man",
+      "Try a pixelated cocktail or retro craft soda",
+      "Challenge a friend to an air hockey match",
+      "Take a neon-glowing Polaroid or photo"
+    ],
+    latOffset: -0.005,
+    lngOffset: -0.009,
+    icon: "fa-gamepad",
+    color: "#f72585"
+  },
+  {
+    id: 5,
+    name: "Misty Valley Botanical Glasshouse",
+    category: "relaxation",
+    vibe: "chill",
+    cost: "$$",
+    weather: "any",
+    locationType: "indoor",
+    duration: "1.5 hrs",
+    description: "A massive Victorian glass conservatory housing rare tropical ferns, towering palms, and colorful orchids. The air is warm and humid, carrying the scent of rich earth and blossoms.",
+    checklist: [
+      "Locate the giant water lily pads",
+      "Take a slow walk through the orchid pavilion",
+      "Sit on a bench and listen to the trickling waterfall",
+      "Read the plaque of a bizarre carnivorous plant"
+    ],
+    latOffset: 0.022,
+    lngOffset: -0.024,
+    icon: "fa-leaf",
+    color: "#4a7c59"
+  },
+  {
+    id: 6,
+    name: "Coastal Sunset Picnic",
+    category: "relaxation",
+    vibe: "cozy",
+    cost: "$",
+    weather: "sunny",
+    locationType: "outdoor",
+    duration: "2 - 3 hrs",
+    description: "Find a cozy spot overlooking the water. Pack a woven blanket, a collection of local cheeses, fresh sourdough, and grapes to enjoy as the sun dips below the horizon.",
+    checklist: [
+      "Lay out a comfortable plaid blanket",
+      "Watch the sun touch the horizon",
+      "Sketch the shoreline in a small notebook",
+      "Enjoy cheese, grapes, and local sparkling cider"
+    ],
+    latOffset: -0.042,
+    lngOffset: -0.038,
+    icon: "fa-umbrella-beach",
+    color: "#e9c46a"
+  },
+  {
+    id: 7,
+    name: "Clay & Sip Craft Studio",
+    category: "culture",
+    vibe: "creative",
+    cost: "$$$",
+    weather: "any",
+    locationType: "indoor",
+    duration: "2.5 hrs",
+    description: "A relaxed hand-building clay workshop led by a local ceramicist. Mold your own mug, dish, or plant pot while enjoying your choice of herbal tea or cider.",
+    checklist: [
+      "Learn the pinch-pot or coiling technique",
+      "Carve a custom texture into your clay mug",
+      "Sip warm jasmine tea from a handmade cup",
+      "Get your hands completely covered in clay clay"
+    ],
+    latOffset: 0.003,
+    lngOffset: 0.011,
+    icon: "fa-paint-brush",
+    color: "#b5838d"
+  },
+  {
+    id: 8,
+    name: "Ancient Cedars Trail Walk",
+    category: "hike",
+    vibe: "chill",
+    cost: "$",
+    weather: "any",
+    locationType: "outdoor",
+    duration: "2 hrs",
+    description: "A gentle, moss-covered trail that loops through a grove of ancient cedar and redwood trees. Ideal for a serene, refreshing forest bath, especially when it's slightly misty.",
+    checklist: [
+      "Feel the soft bark of a cedar tree",
+      "Count the rings on a fallen log stump",
+      "Spot a bright yellow banana slug or local bird",
+      "Take deep breaths of the pine-scented air"
+    ],
+    latOffset: -0.031,
+    lngOffset: 0.045,
+    icon: "fa-tree",
+    color: "#386641"
+  },
+  {
+    id: 9,
+    name: "Gourmet Street Food Truck Rally",
+    category: "market",
+    vibe: "lively",
+    cost: "$$",
+    weather: "sunny",
+    locationType: "outdoor",
+    duration: "1.5 hrs",
+    description: "A colorful gathering of local food trucks offering everything from fusion tacos and bubble waffles to artisan wood-fired pizzas. Picnic tables and string lights complete the vibe.",
+    checklist: [
+      "Try a dish from a cuisine you've never had before",
+      "Share an orders of truffle fries or sweet treats",
+      "Find a seat under the warm string lights",
+      "Vote for your favorite truck in your head"
+    ],
+    latOffset: 0.011,
+    lngOffset: -0.005,
+    icon: "fa-utensils",
+    color: "#f4a261"
+  },
+  {
+    id: 10,
+    name: "Candlelit Acoustic Basement Lounge",
+    category: "entertainment",
+    vibe: "cozy",
+    cost: "$$",
+    weather: "any",
+    locationType: "indoor",
+    duration: "3 hrs",
+    description: "A secret, sub-level music lounge lit entirely by warm candlelight. Host to intimate live acoustic sets, poetry slams, and vinyl listening sessions.",
+    checklist: [
+      "Order a warm spiced mulled cider or mocktail",
+      "Sit close enough to see the singer's fingers on the strings",
+      "Put your phone completely on Do Not Disturb",
+      "Buy a sticker or card from the artist's booth"
+    ],
+    latOffset: -0.002,
+    lngOffset: 0.006,
+    icon: "fa-music",
+    color: "#6d597a"
+  },
+  {
+    id: 11,
+    name: "Rooftop Sunrise Yoga & Tea",
+    category: "relaxation",
+    vibe: "chill",
+    cost: "$$",
+    weather: "sunny",
+    locationType: "outdoor",
+    duration: "1.5 hrs",
+    description: "A peaceful morning yoga flow set on a high rooftop. Watch the morning sun turn the sky orange and gold, followed by a warm herbal tea blending circle.",
+    checklist: [
+      "Complete a full sun salutation cycle",
+      "Watch the golden hour sun break over the buildings",
+      "Blend your own lavender and chamomile tea",
+      "Close your eyes and set a positive weekend intention"
+    ],
+    latOffset: 0.009,
+    lngOffset: -0.021,
+    icon: "fa-spa",
+    color: "#ffb703"
+  },
+  {
+    id: 12,
+    name: "Hidden Mossy Tea Garden",
+    category: "cafe",
+    vibe: "cozy",
+    cost: "$$",
+    weather: "sunny",
+    locationType: "outdoor",
+    duration: "1.5 hrs",
+    description: "Tucked behind high stone walls, this traditional garden features wooden bridges, koi ponds, and a tea pavilion. Try a flight of hand-whisked matcha or blooming teas.",
+    checklist: [
+      "Watch the orange koi fish swim under the bridge",
+      "Order a flight of ceremonial green teas",
+      "Enjoy a matcha-infused scone or tea cake",
+      "Sit cross-legged on the tatami mats"
+    ],
+    latOffset: 0.017,
+    lngOffset: 0.029,
+    icon: "fa-mug-hot",
+    color: "#adc178"
+  },
+  {
+    id: 13,
+    name: "Local Pottery & Ceramic Guild Exhibition",
+    category: "culture",
+    vibe: "creative",
+    cost: "$",
+    weather: "any",
+    locationType: "indoor",
+    duration: "1 - 2 hrs",
+    description: "A cooperative warehouse gallery showcasing unique functional mugs, abstract sculptures, and plates made by local artists. Meet the potters working at their wheels.",
+    checklist: [
+      "Watch a live demonstration of a pot being thrown on the wheel",
+      "Find a mug that perfectly fits your hand grip",
+      "Chat with one of the resident ceramicists about their glazing process",
+      "Cast a vote in the visitor's choice award"
+    ],
+    latOffset: -0.014,
+    lngOffset: 0.022,
+    icon: "fa-palette",
+    color: "#e07a5f"
+  },
+  {
+    id: 14,
+    name: "Silent Cinema Club: Indie Night",
+    category: "entertainment",
+    vibe: "chill",
+    cost: "$$",
+    weather: "any",
+    locationType: "indoor",
+    duration: "2.5 hrs",
+    description: "An intimate screening room where guests are provided high-fidelity wireless headphones. Watch rare indie films or vintage masterpieces without any ambient noise.",
+    checklist: [
+      "Get a custom bucket of caramel-sea salt popcorn",
+      "Adjust your headphone bass level to the movie soundtrack",
+      "Sit back in a plush velvet beanbag chair",
+      "Stay for the short post-movie director interview"
+    ],
+    latOffset: -0.008,
+    lngOffset: -0.018,
+    icon: "fa-film",
+    color: "#3d5a80"
+  },
+  {
+    id: 15,
+    name: "Vintage Flea & Thrift Crawl",
+    category: "market",
+    vibe: "creative",
+    cost: "$$",
+    weather: "any",
+    locationType: "indoor",
+    duration: "3 hrs",
+    description: "Explore a massive warehouse filled with booths of vintage denim, retro typography signs, old-school vinyl records, classic cameras, and eccentric home decor.",
+    checklist: [
+      "Find a cool graphic tee or woolen sweater",
+      "Flip through a crate of vinyl records for a gem",
+      "Hold and inspect a heavy vintage film camera",
+      "Find the strangest knick-knack on a shelf"
+    ],
+    latOffset: 0.005,
+    lngOffset: 0.026,
+    icon: "fa-tags",
+    color: "#8338ec"
+  },
+  {
+    id: 16,
+    name: "Peak Pine Lookout Trail",
+    category: "hike",
+    vibe: "adventurous",
+    cost: "$",
+    weather: "sunny",
+    locationType: "outdoor",
+    duration: "3 hrs",
+    description: "A moderately steep hike through dense pine woods leading to a fire tower lookout. The forest smells intensely of pine needles and fresh breeze.",
+    checklist: [
+      "Collect a giant, perfect pinecone",
+      "Climb up the wooden stairs of the fire tower look-out",
+      "Spot a hawk soaring in the thermals",
+      "Touch a patch of thick, bright green tree moss"
+    ],
+    latOffset: -0.029,
+    lngOffset: -0.015,
+    icon: "fa-compass",
+    color: "#1b4332"
+  },
+  {
+    id: 17,
+    name: "Acoustic Drawing & Sketch Club",
+    category: "culture",
+    vibe: "creative",
+    cost: "$$",
+    weather: "any",
+    locationType: "indoor",
+    duration: "2 hrs",
+    description: "A friendly, casual meetup where a live folk band plays soft melodies while participants draw, sketch, or color. Paper, charcoal, and pencils are fully provided.",
+    checklist: [
+      "Draw the silhouette of one of the band instruments",
+      "Use charcoal to shade your drawing",
+      "Compliment the artwork of the person sitting next to you",
+      "Drink a warm cup of cocoa while your drawing dries"
+    ],
+    latOffset: 0.006,
+    lngOffset: -0.003,
+    icon: "fa-pen-fancy",
+    color: "#9a031e"
+  },
+  {
+    id: 18,
+    name: "Hidden Mossy Waterfall Trail",
+    category: "hike",
+    vibe: "adventurous",
+    cost: "$",
+    weather: "any",
+    locationType: "outdoor",
+    duration: "2 hrs",
+    description: "A beautiful, shaded trail running along a creek. Follow the sound of rushing water to discover a spectacular 30-foot waterfall hidden inside a mossy grotto.",
+    checklist: [
+      "Walk close enough to feel the light cold mist on your face",
+      "Sit on a wet boulder and watch the swirling pools",
+      "Take a slow-motion video of the waterfall's flow",
+      "Find a heart-shaped river stone"
+    ],
+    latOffset: -0.035,
+    lngOffset: 0.012,
+    icon: "fa-tint",
+    color: "#0077b6"
+  },
+  {
+    id: 19,
+    name: "Brimming Artisanal Espresso Bar",
+    category: "cafe",
+    vibe: "chill",
+    cost: "$",
+    weather: "any",
+    locationType: "indoor",
+    duration: "1 hr",
+    description: "A minimal, concrete-and-wood coffee house dedicated to the art of espresso. They offer espresso flights, pour-overs from single-estate beans, and pastries baked at dawn.",
+    checklist: [
+      "Order a pour-over and ask the barista about the origin",
+      "Pair your drink with a warm pistachio croissant",
+      "Enjoy the coffee slowly without looking at your phone",
+      "Appreciate the complex fruity or chocolate notes"
+    ],
+    latOffset: 0.002,
+    lngOffset: -0.015,
+    icon: "fa-mug-hot",
+    color: "#6f4e37"
+  },
+  {
+    id: 20,
+    name: "Board & Brew Cozy Library",
+    category: "relaxation",
+    vibe: "cozy",
+    cost: "$",
+    weather: "any",
+    locationType: "indoor",
+    duration: "3 hrs",
+    description: "A warm community library filled with thousands of board games, comfy sofas, and large wooden tables. Serve yourself coffee and pick a game to play for hours.",
+    checklist: [
+      "Select a board game you've never heard of before",
+      "Read the rules together and set up the board",
+      "Play a full game, focusing on having fun rather than winning",
+      "Return all the pieces neatly to the game box"
+    ],
+    latOffset: -0.011,
+    lngOffset: 0.007,
+    icon: "fa-chess-board",
+    color: "#b76935"
+  }
+];

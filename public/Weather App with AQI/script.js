@@ -1,8 +1,10 @@
+
 /* ============================================================
    AirCast – Premium Weather & AQI Dashboard  |  script.js
    ============================================================ */
 
 const API_KEY = "Insert Your API Key";
+
 let lastAQI = null;
 
 // ── DOM References ────────────────────────────────────────────

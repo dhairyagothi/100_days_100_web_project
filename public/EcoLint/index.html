@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoLint // Green Code Checker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="logo">☘️ EcoLint</div>
+        <p>Analyze the digital carbon footprint and execution efficiency of your web code.</p>
+    </header>
+
+    <main class="dashboard">
+        <!-- Left Side: Code Input Area -->
+        <section class="editor-section">
+            <div class="panel-header">Paste Source Code (HTML, CSS, or JS)</div>
+            <textarea id="code-input" placeholder="Paste your code snippets here to analyze performance and carbon cost..."></textarea>
+            <button id="analyze-btn">Analyze Code Density</button>
+        </section>
+
+        <!-- Right Side: Metrics Display Dashboard -->
+        <section class="metrics-section">
+            <div class="panel-header">Sustainability Scorecard</div>
+            
+            <div class="score-row">
+                <div class="gauge-container">
+                    <div class="gauge-circle" id="eco-gauge">
+                        <span id="score-text">100</span>
+                    </div>
+                    <label>Eco Score</label>
+                </div>
+                
+                <div class="stats-box">
+                    <div class="stat">
+                        <span class="stat-val" id="size-val">0.00 KB</span>
+                        <label>Payload Size</label>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-val" id="carbon-val">0.00 mg</span>
+                        <label>Est. Monthly CO₂ (10k visits)</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-header">Detected Energy Leaks</div>
+            <div id="issues-list" class="issues-container">
+                <p class="empty-state">No code analyzed yet. Paste code on the left side to look for optimizations.</p>
+            </div>
+        </section>
+    </main>
+    <script src="app.js"></script>
+</body>
+</html>
