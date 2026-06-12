@@ -1822,80 +1822,51 @@ function hasProjectGrid() {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
-  readStateFromURL();
-
   initTheme();
   updateNavbar();
   initScrollBtn();
+  initCurrentYear();
+
   fetchRepoStats();
 
-  initCurrentYear();
-  initFilterChips();
-  initSearch();
-  initSorting();
-  initTechStackSearch();
-  initClearAllFilters();
-
-  updateGamifiedUI();
-
-  try {
-    await loadProjects();
+  if (hasProjectGrid()) {
+    readStateFromURL();
+    initFilterChips();
+    initSearch();
+    initSorting();
+    initTechStackSearch();
+    initClearAllFilters();
 
     updateGamifiedUI();
 
-    syncProjectCounts();
-
-    if (hasProjectGrid()) {
+    try {
+      await loadProjects();
+      updateGamifiedUI();
       loadBookmarksFromURL();
-
       renderGrid();
       renderBookmarks();
       renderRecentProjects();
+    } catch (error) {
+      console.error("Failed to load projects:", error);
+      const grid = document.getElementById("projectGrid");
+      if (grid) {
+        grid.innerHTML = `
+          <div class="error-message" style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--text-muted);">
+            Failed to load projects. Please try refreshing the page.
+          </div>
+        `;
+      }
     }
 
-    restoreStateFromURL();
-
-    syncProjectCounts();
-    fetchRepoStats();
-    initScrollBtn();
-  } catch (error) {
-    console.error("Failed to load projects:", error);
-
-    const grid = document.getElementById("projectGrid");
-
-    if (grid) {
-      grid.innerHTML = `
-        <div class="error-message" style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--text-muted);">
-          Failed to load projects. Please try refreshing the page.
-        </div>
-      `;
-    }
-  }
-
-  // Merged secondary DOMContentLoaded logic:
-  const searchInput =
-      document.getElementById("search") ||
-      document.querySelector('input[type="text"]') ||
-      document.querySelector(".search-input");
-  if (searchInput) {
-    searchInput.addEventListener(
-        "input",
-        debounce(() => {
-          const { category } = getQueryParams();
-          updateURL(searchInput.value, category);
-          applyFilters(searchInput.value, category);
-        }, 200),
-    );
-  }
-  const categoryFilter = document.getElementById("category");
-  if (categoryFilter) {
-    categoryFilter.addEventListener("change", () => {
-      const { search } = getQueryParams();
-      updateURL(search, categoryFilter.value);
-      applyFilters(search, categoryFilter.value);
+    window.addEventListener("popstate", () => {
+      readStateFromURL();
+      const chips = document.querySelectorAll(".chip[data-filter]");
+      chips.forEach((chip) => {
+        chip.classList.toggle("active", chip.dataset.filter === activeFilter);
+      });
+      renderGrid();
     });
   }
-  window.addEventListener("popstate", () => restoreStateFromURL());
 });
 
 (() => {
@@ -2318,51 +2289,6 @@ initTheme();
 
 // =============================================
 
-function getQueryParams() {
-  const params = new URLSearchParams(window.location.search);
-  return {
-    search: params.get("search") || "",
-    category: params.get("category") || "all",
-  };
-}
 
-function updateURL(search, category) {
-  const params = new URLSearchParams();
-  if (search) params.set("search", search);
-  if (category && category !== "all") params.set("category", category);
-  const newURL = params.toString()
-      ? `${window.location.pathname}?${params.toString()}`
-      : window.location.pathname;
-  history.pushState({ search, category }, "", newURL);
-}
-
-function restoreStateFromURL() {
-  const { search, category } = getQueryParams();
-  const searchInput =
-      document.getElementById("searchInput") ||
-      document.querySelector('input[type="text"]') ||
-      document.querySelector(".search-input");
-  if (searchInput && search) searchInput.value = search;
-  const categoryFilter = document.getElementById("category");
-  if (categoryFilter && category !== "all") categoryFilter.value = category;
-  if (search || category !== "all") applyFilters(search, category);
-}
-
-function applyFilters(search, category) {
-  searchQuery = search || "";
-  activeFilter = category || "all";
-  currentPage = 1;
-
-  const chips = document.querySelectorAll(".chip[data-filter]");
-  chips.forEach((chip) => {
-    if (chip.dataset.filter === activeFilter) {
-      chip.classList.add("active");
-    } else {
-      chip.classList.remove("active");
-    }
-  });
-
-  renderGrid();
-}
 
 document.getElementById("randomProjectBtn")?.addEventListener("click", renderRandomProject);
