@@ -7,15 +7,21 @@
 body {
     background: #f3f4f6;
     font-family: Arial, sans-serif;
-
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-
     padding: 30px;
-    box-sizing: border-box;
     max-width: 100%;
     overflow-x: hidden;
+}
+
+.blog-page-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 30px 15px;
+}
+
+.blog-page {
+    width: 100%;
+    max-width: 900px;
 }
 
 /* =========================
@@ -25,16 +31,24 @@ body {
 .blog-page {
     width: 100%;
     max-width: 900px;
-
+    flex-shrink: 0;      /* Prevent shrinking */
     background: white;
-
     padding: 30px;
-
     border-radius: 24px;
-
     box-shadow: 0 4px 10px rgba(0,0,0,0.08);
     box-sizing: border-box;
 }
+
+.blog-content {
+    width: 100%;
+}
+
+.blog-content p {
+    width: 100%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
 
 /* =========================
    BLOG IMAGE
@@ -157,4 +171,73 @@ body {
     .blog-author h3 {
         font-size: 18px;
     }
+}
+
+.footer {
+    width: 100%;
+    background: #071126;
+    color: #fff;
+    margin-top: 50px;
+    padding: 60px 0 20px;
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 40px;
+
+    padding: 0 20px;
+}
+
+.footer-section h2,
+.footer-section h3 {
+    margin-bottom: 15px;
+}
+
+.footer-section p,
+.footer-section li,
+.footer-section a {
+    color: #cbd5e1;
+    text-decoration: none;
+    line-height: 1.8;
+}
+
+.footer-section ul {
+    list-style: none;
+}
+
+.footer-section a:hover {
+    color: #22c55e;
+}
+
+.newsletter {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.newsletter input {
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+}
+
+.newsletter button {
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    background: #22c55e;
+    color: white;
+    cursor: pointer;
+}
+
+.footer-bottom {
+    text-align: center;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    color: #94a3b8;
 }
