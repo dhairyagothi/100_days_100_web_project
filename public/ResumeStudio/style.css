@@ -856,3 +856,96 @@ body.light-mode .resume-section h3{
     font-weight:600;
 }
 
+/* =========================================
+   TEMPLATE LAYOUT OVERRIDES (Fixes #7468)
+========================================= */
+
+/* --- 1. CLASSIC TEMPLATE LAYOUT --- */
+/* A traditional, formal aesthetic: Left-aligned, bold serif accents, subtle borders */
+.resume-sheet.classic-template {
+    border-top: 6px solid #111827; /* Charcoal/Black header border instead of blue */
+    font-family: "Georgia", "Times New Roman", serif;
+}
+
+.resume-sheet.classic-template .resume-header {
+    text-align: left; /* Left align classic format */
+    border-bottom: 2px solid #111827;
+    padding-bottom: 20px;
+}
+
+.resume-sheet.classic-template .resume-header h2 {
+    color: #4b5563; /* Muted subtitle */
+    font-size: 24px;
+}
+
+.resume-sheet.classic-template .resume-contact,
+.resume-sheet.classic-template .resume-links {
+    justify-content: flex-start;
+    color: #111827;
+}
+
+.resume-sheet.classic-template .resume-section h3 {
+    color: #111827;
+    border-bottom: 1px solid #111827;
+    text-transform: uppercase;
+    font-size: 18px;
+    letter-spacing: 1px;
+}
+
+.resume-sheet.classic-template .skill-tag {
+    background: #f3f4f6;
+    color: #111827;
+    border: 1px solid #d1d5db;
+}
+
+
+/* --- 2. MINIMAL TEMPLATE LAYOUT --- */
+/* Sleek, understated, compact: Clean sans-serif, no top accent bar, elegant layout spacing */
+.resume-sheet.minimal-template {
+    border-top: none; /* Strip off the loud top accent line */
+    padding: 40px;
+}
+
+.resume-sheet.minimal-template .resume-header {
+    text-align: left;
+    margin-bottom: 30px;
+}
+
+.resume-sheet.minimal-template .resume-header h1 {
+    font-size: 42px;
+    font-weight: 300; /* Ultra clean thin weight heading */
+    letter-spacing: -1px;
+}
+
+.resume-sheet.minimal-template .resume-header h2 {
+    color: #6b7280;
+    font-size: 20px;
+    margin-bottom: 12px;
+    font-weight: 400;
+}
+
+.resume-sheet.minimal-template .resume-contact,
+.resume-sheet.minimal-template .resume-links {
+    justify-content: flex-start;
+    gap: 16px;
+    font-size: 14px;
+    color: #6b7280;
+}
+
+.resume-sheet.minimal-template .resume-section {
+    margin-bottom: 28px;
+}
+
+.resume-sheet.minimal-template .resume-section h3 {
+    color: #374151;
+    font-size: 16px;
+    border-bottom: 1px solid #f3f4f6;
+    font-weight: 600;
+}
+
+.resume-sheet.minimal-template .skill-tag {
+    background: transparent;
+    color: #374151;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px; /* Boxier chips for minimal look */
+}

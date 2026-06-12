@@ -635,7 +635,7 @@
       "javascript"
     ],
     "difficulty": "intermediate",
-    "projectPath": "./public/Budget%20Tracker/index.html"
+    "projectPath": "./public/Budget_Tracker/index.html"
   },
   {
     "projectNo": 55,
@@ -751,7 +751,7 @@
       "css"
     ],
     "difficulty": "beginner",
-    "projectPath": "./public/zomato-clone/zomato.html"
+    "projectPath": "./public/zomato-clone/index.html"
   },
   {
     "projectNo": 65,
@@ -1862,7 +1862,7 @@
   },
   {
     "projectNo": 155,
-    "projectName": "Hangman Game",
+    "projectName": "Hangman Game (React TS)",
     "projectType": "Game",
     "projectDesc": "Advanced Hangman implementation using React and TypeScript architecture.",
     "techStack": [
@@ -2287,7 +2287,7 @@
   {
     "projectNo": 185,
     "projectName": "GitHub Repository Analyser",
-    "projectType": "tool",
+    "projectType": "Tool",
     "projectDesc": "A modern tool to quickly analyse a github repo , provides detail stats about repo.",
     "techStack": [
       "tool",
@@ -2359,7 +2359,7 @@
   {
     "projectNo": 190,
     "projectName": "Endless train game",
-    "projectType": "game",
+    "projectType": "Game",
     "projectDesc": "A game with train moving on rails and switching tails and earning coins.",
     "techStack": [
       "html",
@@ -2388,7 +2388,7 @@
   {
     "projectNo": 192,
     "projectName": "Interactive Story Player",
-    "projectType": "UI / Animation",
+    "projectType": "UI",
     "projectDesc": "A dynamic, choice-driven storytelling application where users shape their own narrative paths.",
     "techStack": [
       "ui",
@@ -2428,7 +2428,7 @@
   {
     "projectNo": 195,
     "projectName": "Complaint Management System",
-    "projectType": "Web Application",
+    "projectType": "Tool",
     "projectDesc": "A professional portal for submitting, tracking, and managing complaints efficiently with a premium modern UI.",
     "techStack": [
       "html",
@@ -2469,7 +2469,7 @@
   {
     "projectNo": 198,
     "projectName": "Theme-Toggler",
-    "projectType": "UI / Animation",
+    "projectType": "UI",
     "projectDesc": "A responsive theme toggler that switches between multiple premium themes (including Cyberpunk and Dracula) with smooth transitions.",
     "techStack": [
       "html",
@@ -2499,7 +2499,7 @@
   {
     "projectNo": 200,
     "projectName": "Dual-Genre Movie Matcher",
-    "projectType": "Web Application",
+    "projectType": "Tool",
     "projectDesc": "A web app to search the perfect movie. Comes with dark and light theme toggle.",
     "techStack": [
       "html",
@@ -2553,7 +2553,7 @@
   {
     "projectNo": 204,
     "projectName": "Movie Search App",
-    "projectType": "Web Application",
+    "projectType": "API",
     "projectDesc": "A responsive movie search application powered by the OMDb API that allows users to search movies and view detailed information including posters, ratings, genres, cast, runtime, and plot.",
     "techStack": [
       "html",
@@ -2567,7 +2567,7 @@
   {
     "projectNo": 205,
     "projectName": "Escape the Matrix Game",
-    "projectType": "Web Application",
+    "projectType": "Game",
     "projectDesc": "An immersive, interactive web-based survival and puzzle game challenging players to hack their way out of a simulated reality.",
     "techStack": [
       "html",
@@ -2594,7 +2594,7 @@
   {
     "projectNo": 207,
     "projectName": "AI Semiconductor Circuit Builder",
-    "projectType": "Web Application",
+    "projectType": "AI",
     "projectDesc": "An immersive, interactive web-based survival and puzzle game challenging players to hack their way out of a simulated reality.",
     "techStack": [
       "html",

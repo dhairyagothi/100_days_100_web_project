@@ -19,3 +19,13 @@ exports.deleteFood = async (req, res) => {
   await Food.findByIdAndDelete(req.params.id);
   res.json({ message: "Deleted" });
 };
+
+//ejs
+exports.renderFoods = async (req, res) => {
+  try {
+    const foods = await Food.find(); // DB se data lao
+    res.render("restaurant", { foods }); // EJS ko data bhejo
+  } catch (err) {
+    res.status(500).send("Error loading page");
+  }
+};
