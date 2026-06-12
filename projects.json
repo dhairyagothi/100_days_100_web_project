@@ -751,7 +751,7 @@
       "css"
     ],
     "difficulty": "beginner",
-    "projectPath": "./public/zomato-clone/index.html"
+    "projectPath": "./public/zomato-clone/public/index.html"
   },
   {
     "projectNo": 65,
@@ -2740,7 +2740,7 @@
       "vite"
     ],
     "difficulty": "advanced",
-    "projectPath": "./public/Gemini/dist/index.html"
+    "projectPath": "./public/Gemini/index.html"
   },
   {
     "projectNo": 218,
@@ -2862,7 +2862,7 @@
       "javascript"
     ],
     "difficulty": "advanced",
-    "projectPath": "./public/mind-reader/mind-reader/dist/index.html"
+    "projectPath": "./public/mind-reader/mind-reader/index.html"
   },
   {
     "projectNo": 227,
@@ -2881,7 +2881,7 @@
   {
     "projectNo": 228,
     "projectName": "3D Terrain Generator",
-    "projectType": "Web Application",
+    "projectType": "Tool",
     "projectDesc": "A stunning, interactive 3D terrain generator built with Three.js and Perlin Noise. Features dynamic lighting, wireframe toggles, adjustable flight speed, and multiple visual themes.",
     "techStack": [
       "html",

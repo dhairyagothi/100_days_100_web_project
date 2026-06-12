@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Zomato Clone</title>
+
+  <!-- CSS link -->
+  <link rel="stylesheet" href="/css/home.css">
+  <!-- <link rel="stylesheet" href="/css/navbar.css"> -->
+<link rel="stylesheet" href="/css/footer.css">
+<link rel="stylesheet" href="/resturant.css">
+
+  <style>
+    /* fallback basic style (agar css load na ho) */
+    body { font-family: Arial; margin: 0; padding: 0; }
+  </style>
+</head>
+
+<%- include('partials/navbar') %>
+<body>
+
+
+<!-- 🔥 Page Title -->
+<h1 class="title">Best Food in Delhi NCR</h1>
+
+<!-- 🔥 Card Container -->
+<div class="card-container">
+
+  <% foods.forEach(item => { %> <!-- loop start -->
+
+    <!-- 🔥 Single Card -->
+    <div class="card">
+
+      <!-- Image Section -->
+      
+
+      <!-- Content Section -->
+      <div class="card-content">
+
+        <!-- Top Row -->
+        <div class="top-row">
+          <h3><%= item.name %></h3> <!-- name -->
+          <span class="rating"><%= item.diningRating || "4.0" %>★</span> <!-- rating -->
+        </div>
+
+
+        <!-- Cuisine -->
+        <p class="cuisine">
+          <%= item.cuisines ? item.cuisines.join(", ") : "Food" %>
+        </p>
+        <br><br><br>
+        <!-- Bottom Row -->
+        <div class="bottom-row">
+
+        </div>
+
+      </div>
+
+    </div>
+
+  <% }) %> <!-- loop end -->
+
+</div>
+
+</body>
+</html>
+<%- include('partials/footer') %>
+
+
+
+</script>
+</body>
+</html>
+
+<script>
+const html = document.documentElement;
+
+// restore theme
+const saved = localStorage.getItem('zomato-theme');
+if (saved) html.setAttribute('data-theme', saved);
+
+function toggleDark() {
+  const isDark = html.getAttribute('data-theme') === 'dark';
+  const next = isDark ? 'light' : 'dark';
+
+  html.setAttribute('data-theme', next);
+  localStorage.setItem('zomato-theme', next);
+}
+</script>
