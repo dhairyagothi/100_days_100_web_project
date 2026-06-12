@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Neon Tic Tac Toe</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="favicon.png">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Rajdhani:wght@600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 </head>
 <body data-theme="neon">
@@ -70,6 +71,120 @@
             </div>
         </div>
 
+        <!-- STATISTICS DASHBOARD -->
+        <details class="settings-box stats-box" open>
+            <summary>📊 Statistics Dashboard</summary>
+            <div class="stats-container">
+                <!-- First row of stats -->
+                <div class="stats-grid">
+                    <div class="stat-card" data-stat="total">
+                        <span class="stat-icon">🎮</span>
+                        <div class="stat-content">
+                            <div class="stat-label">Total Games</div>
+                            <div class="stat-value" id="statTotal">0</div>
+                        </div>
+                    </div>
+                    <div class="stat-card" data-stat="x-wins">
+                        <span class="stat-icon">❌</span>
+                        <div class="stat-content">
+                            <div class="stat-label">Player X Wins</div>
+                            <div class="stat-value" id="statXWins">0</div>
+                        </div>
+                    </div>
+                    <div class="stat-card" data-stat="o-wins">
+                        <span class="stat-icon">⭕</span>
+                        <div class="stat-content">
+                            <div class="stat-label">Player O Wins</div>
+                            <div class="stat-value" id="statOWins">0</div>
+                        </div>
+                    </div>
+                    <div class="stat-card" data-stat="draws">
+                        <span class="stat-icon">🤝</span>
+                        <div class="stat-content">
+                            <div class="stat-label">Draws</div>
+                            <div class="stat-value" id="statDraws">0</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Streak stats -->
+                <div class="stats-grid">
+                    <div class="stat-card" data-stat="x-rate">
+                        <span class="stat-icon">📈</span>
+                        <div class="stat-content">
+                            <div class="stat-label">X Win Rate</div>
+                            <div class="stat-value" id="statXRate">0%</div>
+                        </div>
+                    </div>
+                    <div class="stat-card" data-stat="o-rate">
+                        <span class="stat-icon">📉</span>
+                        <div class="stat-content">
+                            <div class="stat-label">O Win Rate</div>
+                            <div class="stat-value" id="statORate">0%</div>
+                        </div>
+                    </div>
+                    <div class="stat-card" data-stat="current-streak">
+                        <span class="stat-icon">🔥</span>
+                        <div class="stat-content">
+                            <div class="stat-label">Current Streak</div>
+                            <div class="stat-value" id="statCurrentStreak">0</div>
+                        </div>
+                    </div>
+                    <div class="stat-card" data-stat="best-streak">
+                        <span class="stat-icon">🏆</span>
+                        <div class="stat-content">
+                            <div class="stat-label">Best Streak</div>
+                            <div class="stat-value" id="statBestStreak">0</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Progress bars -->
+                <div class="progress-section">
+                    <div class="progress-row">
+                        <span class="progress-label">X Win Rate</span>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar x-progress" id="progressX"></div>
+                        </div>
+                        <span class="progress-value" id="progressXVal">0%</span>
+                    </div>
+                    <div class="progress-row">
+                        <span class="progress-label">O Win Rate</span>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar o-progress" id="progressO"></div>
+                        </div>
+                        <span class="progress-value" id="progressOVal">0%</span>
+                    </div>
+                    <div class="progress-row">
+                        <span class="progress-label">Draw Percentage</span>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar d-progress" id="progressD"></div>
+                        </div>
+                        <span class="progress-value" id="progressDVal">0%</span>
+                    </div>
+                </div>
+
+                <!-- Reset button -->
+                <div class="stats-actions">
+                    <button class="btn-ghost" id="resetStatsBtn" type="button">
+                        🗑 Reset Statistics
+                    </button>
+                </div>
+            </div>
+        </details>
+
+        <!-- Confirmation Modal -->
+        <div class="confirm-modal" id="confirmModal" aria-hidden="true">
+            <div class="confirm-card">
+                <h3>Reset Statistics?</h3>
+                <p>This will erase all your saved stats and streaks.</p>
+                <div class="confirm-actions">
+                    <button id="confirmYes" class="btn-primary">Yes, Reset</button>
+                    <button id="confirmNo" class="btn-ghost">Cancel</button>
+                </div>
+            </div>
+        </div>
+
         <!-- SETTINGS -->
         <details class="settings-box">
             <summary>⚙ Game Settings</summary>
@@ -124,6 +239,6 @@
 
 <footer class="footer">Neon Tic Tac Toe</footer>
 
-<script src="script.js"></script>
+<script src="/public/TicTacToe/script.js"></script>
 </body>
 </html>

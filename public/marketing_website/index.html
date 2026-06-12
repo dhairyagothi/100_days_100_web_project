@@ -15,7 +15,7 @@
 <a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
 
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top" id="navbar">
+    <nav class="navbar navbar-expand-lg sticky-top" id="navbar">
         <a class="navbar-brand" href="#">WEB TEMPLATE</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -23,7 +23,34 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+
+                <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle"
+                        href="#services"
+                        id="servicesDropdown"
+                        role="button"
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false">
+                        Services
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="index2.html">SEO Optimization</a>
+                        <a class="dropdown-item" href="cm.html">Content Marketing</a>
+                        <a class="dropdown-item" href="#">Google Ads</a>
+                        <a class="dropdown-item" href="index2.html">Web Development</a>
+                    </div>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="#blog">Blog</a></li>
+                <li class="nav-item"><a class="nav-link" href="#case-study">Case Study</a></li>
+                <li class="nav-item"><a class="nav-link" href="#contact">Contact Us</a></li>
+                <li class="nav-item ml-lg-3">
+                    <button id="theme-toggle" class="btn btn-sm btn-outline-secondary mt-1 mt-lg-0">🌙</button>
+                </li>
+            </ul>
+
+                <li class="nav-item"><a class="nav-link active" href="index.html">Home</a></li>
                 <li class="nav-item dropdown">
  <a class="nav-link dropdown-toggle"
        href="#"
@@ -35,24 +62,25 @@
   Service List
     </a>
     <div class="dropdown-menu">
-        <a class="dropdown-item" href="#">SEO Optimization</a>
+        <a class="dropdown-item" href="seo.html">SEO Optimization</a>
         <a class="dropdown-item" href="cm.html">Content Marketing</a>
-        <a class="dropdown-item" href="#">Google Ads</a>
-        <a class="dropdown-item" href="#">Web Development</a>
+        <a class="dropdown-item" href="google-ads.html">Google Ads</a>
+        <a class="dropdown-item" href="web-development.html">Web Development</a>
     </div>
 </li>
-                <li class="nav-item"><a class="nav-link" href="#">Blog</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Case Study</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Contact Us</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Styleguide</a></li>
+                <li class="nav-item"><a class="nav-link" href="blog.html">Blog</a></li>
+                <li class="nav-item"><a class="nav-link" href="case-study.html">Case Study</a></li>
+                <li class="nav-item"><a class="nav-link" href="contact.html">Contact Us</a></li>
+                <li class="nav-item"><a class="nav-link" href="styleguide.html">Styleguide</a></li>
                    <li class="nav-item ml-3">
         <button id="theme-toggle">🌙</button>
     </li>
      </ul>
+
         </div>
     </nav>
 <!-- hero section -->
-<header class="hero-section">
+<header class="hero-section" id="home">
     <div class="hero-overlay"></div>
 
     <div class="container hero-content">
@@ -138,7 +166,7 @@
         </div>
     </section>
 <!-- feedback section -->
-<section class="testimonials-section">
+<section class="testimonials-section" id="case-study">
     <div class="container">
         <div class="testimonial-heading">
             <span class="testimonial-badge">TESTIMONIALS</span>
@@ -210,7 +238,7 @@
 </section>
 
     <!-- SEO Insights Section -->
-<section class="seo-insights">
+<section class="seo-insights" id="blog">
 <div class="container insights-container">
             <div class="insights-text">
         <span class="section-badge">                NEWSLETTER            </span>
@@ -237,7 +265,7 @@
 </section>
 
 <!-- Footer -->
-    <footer class="footer-section">
+    <footer class="footer-section" id="contact">
         <div class="container text-center">
             <div class="row">
                 <div class="col-md-4">
@@ -269,7 +297,40 @@ and high-performing websites that drive real business growth.
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="script.js"></script>
+    <script>
+        // Theme Toggle Logic
+        const themeToggle = document.getElementById('theme-toggle');
+        const root = document.documentElement;
+
+        // Check for saved theme preference or system preference
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            root.setAttribute('data-theme', savedTheme);
+            themeToggle.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+        }
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = root.getAttribute('data-theme') || 'light';
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            root.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            themeToggle.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+        });
+
+        // Smooth Scroll Logic
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                e.preventDefault();
+                document.querySelector(targetId).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>

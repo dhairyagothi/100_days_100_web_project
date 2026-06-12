@@ -2,6 +2,7 @@ const searchform = document.getElementById("searchform");
 const searchBox = document.getElementById("search-box");
 const searchResult = document.getElementById("search-result");
 const showMoreButton = document.getElementById("show-more-button");
+const resetButton = document.getElementById("reset-button");
 
 let keyword = "";
 let page = 1;
@@ -68,4 +69,13 @@ searchform.addEventListener("submit", (e) => {
 showMoreButton.addEventListener("click", () => {
     page++;
     searchImages();
+});
+
+resetButton.addEventListener("click", () => {
+    searchBox.value = "";
+    searchResult.innerHTML = "";
+    page = 1;
+    keyword = "";
+    showMoreButton.style.display = "none";
+    searchBox.focus();
 });

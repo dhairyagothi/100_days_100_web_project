@@ -3,53 +3,177 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CAPTCHA</title>
+    <title>CAPTCHA Challenge</title>
     <link rel="stylesheet" href="captcha.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="icon" href="../favv.png" type="image/x-icon" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
+    <a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0, 0.15);">← Back to Home</a>
 
-    <div class="container">
-        <div class="hero">
-            <span class="eyebrow">Interactive Security Check</span>
-            <header>CAPTCHA Challenge</header>
-            <p class="intro">Choose a CAPTCHA mode, solve the challenge, and submit to verify you're human.</p>
+                <div class="hero">
+                    <span class="eyebrow">Interactive Security Check</span>
+                    <header>CAPTCHA Challenge</header>
+                    <p class="intro">Choose a CAPTCHA mode, solve the challenge, and submit to verify you're human.</p>
+                </div>
+
+                <div class="field">
+                    <label for="captchaTypeSelect">Select CAPTCHA type</label>
+                    <select id="captchaTypeSelect">
+                        <option value="text">Text</option>
+                        <option value="image">Image</option>
+                        <option value="audio">Audio</option>
+                        <option value="math">Math</option>
+                    </select>
+                </div>
+
+                <div class="field voice-field hidden" id="voiceField">
+                    <label for="voiceSelect">Select voice</label>
+                    <select id="voiceSelect"></select>
+                </div>
+
+                <div id="captchaContainer" aria-live="polite"></div>
+
+                <div class="field textcaptcha">
+                    <label for="captchaInput">Your answer</label>
+                    <input id="captchaInput" type="text" placeholder="Enter CAPTCHA">
+                </div>
+
+                <div class="actions">
+                    <button class="refresh" aria-label="Refresh CAPTCHA">↻</button>
+                    <button class="submit" type="button">Submit CAPTCHA</button>
+                </div>
+
+                <p class="result" aria-live="assertive"></p>
+            </div>
         </div>
 
-        <div class="field">
-            <label for="captchaTypeSelect">Select CAPTCHA type</label>
-            <select id="captchaTypeSelect">
-                <option value="text">Text</option>
-                <option value="image">Image</option>
-                <option value="audio">Audio</option>
-                <option value="math">Math</option>
-            </select>
-        </div>
+        <!-- Right Column: Analytics Dashboard -->
+        <aside class="analytics-panel">
+            <!-- Dashboard Header -->
+            <div class="dashboard-header">
+                <h2><i class="fas fa-chart-line"></i> Analytics Dashboard</h2>
+            </div>
 
-        <div class="field voice-field hidden" id="voiceField">
-            <label for="voiceSelect">Select voice</label>
-            <select id="voiceSelect"></select>
-        </div>
+            <!-- Metrics Grid -->
+            <div class="metrics-grid">
+                <div class="metric-card attempts-card">
+                    <div class="metric-icon"><i class="fas fa-tasks"></i></div>
+                    <div class="metric-content">
+                        <div class="metric-label">Total Attempts</div>
+                        <div class="metric-value" id="stat-attempts">0</div>
+                    </div>
+                </div>
+                <div class="metric-card success-card">
+                    <div class="metric-icon"><i class="fas fa-check-circle"></i></div>
+                    <div class="metric-content">
+                        <div class="metric-label">Successful</div>
+                        <div class="metric-value" id="stat-successes">0</div>
+                    </div>
+                </div>
+                <div class="metric-card fail-card">
+                    <div class="metric-icon"><i class="fas fa-times-circle"></i></div>
+                    <div class="metric-content">
+                        <div class="metric-label">Failed</div>
+                        <div class="metric-value" id="stat-failures">0</div>
+                    </div>
+                </div>
+                <div class="metric-card streak-card">
+                    <div class="metric-icon"><i class="fas fa-fire"></i></div>
+                    <div class="metric-content">
+                        <div class="metric-label">Current Streak</div>
+                        <div class="metric-value" id="stat-streak">0</div>
+                    </div>
+                </div>
+            </div>
 
-        <div id="captchaContainer" aria-live="polite"></div>
+            <!-- Success Rate -->
+            <div class="progress-section">
+                <div class="progress-header">
+                    <span class="progress-label">Success Rate</span>
+                    <span class="progress-percent" id="stat-rate">0%</span>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="progress-bar" style="width:0%"></div>
+                </div>
+            </div>
 
-        <div class="field textcaptcha">
-            <label for="captchaInput">Your answer</label>
-            <input id="captchaInput" type="text" placeholder="Enter CAPTCHA">
-        </div>
+            <!-- Best Streak -->
+            <div class="best-streak-card">
+                <div class="best-streak-icon"><i class="fas fa-trophy"></i></div>
+                <div class="best-streak-content">
+                    <div class="best-streak-label">Best Streak</div>
+                    <div class="best-streak-value" id="stat-best-streak">0</div>
+                </div>
+            </div>
 
-        <div class="actions">
-            <button class="refresh" aria-label="Refresh CAPTCHA">↻</button>
-            <button class="submit" type="button">Submit CAPTCHA</button>
-        </div>
+            <!-- Achievements -->
+            <div class="achievements-section">
+                <h3 class="section-title-small">Achievements</h3>
+                <div class="achievements-grid">
+                    <div class="achievement-card" id="badge-beginner">
+                        <div class="achievement-icon"><i class="fas fa-medal"></i></div>
+                        <div class="achievement-content">
+                            <div class="achievement-title">Beginner</div>
+                            <div class="achievement-desc">5 successful CAPTCHAs</div>
+                        </div>
+                        <div class="achievement-status locked"><i class="fas fa-lock"></i></div>
+                    </div>
+                    <div class="achievement-card" id="badge-intermediate">
+                        <div class="achievement-icon"><i class="fas fa-award"></i></div>
+                        <div class="achievement-content">
+                            <div class="achievement-title">Intermediate</div>
+                            <div class="achievement-desc">20 successful CAPTCHAs</div>
+                        </div>
+                        <div class="achievement-status locked"><i class="fas fa-lock"></i></div>
+                    </div>
+                    <div class="achievement-card" id="badge-expert">
+                        <div class="achievement-icon"><i class="fas fa-crown"></i></div>
+                        <div class="achievement-content">
+                            <div class="achievement-title">Expert</div>
+                            <div class="achievement-desc">50 successful CAPTCHAs</div>
+                        </div>
+                        <div class="achievement-status locked"><i class="fas fa-lock"></i></div>
+                    </div>
+                </div>
+            </div>
 
-        <p class="result" aria-live="assertive"></p>
+            <!-- Performance Insights -->
+            <div class="insights-card" id="insights-card">
+                <div class="insights-icon"><i class="fas fa-lightbulb"></i></div>
+                <div class="insights-text" id="insights-text">Start solving CAPTCHAs to get insights!</div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="activity-section">
+                <h3 class="section-title-small">Recent Activity</h3>
+                <div class="activity-list" id="activity-list">
+                    <div class="empty-state">No activity yet</div>
+                </div>
+            </div>
+
+            <!-- Reset Button -->
+            <button class="reset-btn" id="reset-btn">
+                <i class="fas fa-trash-alt"></i> Reset Statistics
+            </button>
+        </aside>
     </div>
+
+    <!-- Reset Confirmation Modal -->
+    <div class="modal-overlay" id="reset-modal">
+        <div class="modal-card">
+            <h3 class="modal-title">Reset All Statistics?</h3>
+            <p class="modal-text">This will clear all analytics and history. This action cannot be undone.</p>
+            <div class="modal-actions">
+                <button class="modal-btn cancel-btn" id="cancel-reset">Cancel</button>
+                <button class="modal-btn confirm-btn" id="confirm-reset">Reset</button>
+            </div>
+        </div>
+    </div>
+
     <script src="captcha.js"></script>
 </body> 
 </html>

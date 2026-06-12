@@ -3,6 +3,40 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Recipe Finder</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="app-container">
+      <header>
+        <h1>Recipe Finder By Ingredient</h1>
+        <p class="subtitle">
+          Enter a primary ingredient to unlock matching culinary dishes
+        </p>
+      </header>
+
+      <div class="search-box">
+        <input
+          type="text"
+          id="ingredient-input"
+          placeholder="e.g., chicken, beef, tomato..."
+          autofocus
+        />
+        <button id="search-btn">Find Recipes</button>
+      </div>
+
+      <div id="status-message" class="hidden"></div>
+      <main id="recipes-grid" class="grid-layout"></main>
+    </div>
+
+    <div id="recipe-modal" class="modal hidden">
+      <div class="modal-content">
+        <span id="close-modal" class="close-btn">&times;</span>
+        <div id="modal-body"></div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
     <title>Recipe Finder App by Ingredients</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
@@ -17,24 +51,38 @@
       </header>
 
       <section class="search-console">
-        <input
-          type="text"
-          id="ingredientInput"
-          placeholder="Enter a main ingredient... (e.g., chicken, tomato, beef)"
-        />
+        <div class="tag-input-container" id="tagInputContainer">
+          <input
+            type="text"
+            id="ingredientInput"
+            placeholder="Type ingredient and press Enter or Comma..."
+          />
+        </div>
         <button id="searchBtn">Find Recipes</button>
       </section>
 
-      <div id="statusAlert" class="status-box hidden">
-        Sifting through culinary archives...
-      </div>
+      <section class="filter-controls-panel hidden" id="filterControlsPanel">
+        <select id="categoryFilter">
+          <option value="">All Categories</option>
+        </select>
+        <select id="areaFilter">
+          <option value="">All Cuisines</option>
+        </select>
+        <select id="sortControl">
+          <option value="default">Sort By: Default</option>
+          <option value="alpha">Alphabetical (A-Z)</option>
+          <option value="favorites">Favorites First</option>
+        </select>
+      </section>
+
+      <div id="statusAlert" class="status-box hidden"></div>
 
       <main class="recipe-grid" id="recipeDisplayGrid"></main>
     </div>
 
-    <div class="modal-overlay hidden" id="recipeModal">
+    <div class="modal-overlay hidden" id="recipeModal" role="dialog" aria-modal="true">
       <div class="modal-card">
-        <button class="close-modal-btn" id="closeModalBtn">&times;</button>
+        <button class="close-modal-btn" id="closeModalBtn" aria-label="Close modal">&times;</button>
         <div class="modal-scroll-body" id="modalDetailsContent"></div>
       </div>
     </div>

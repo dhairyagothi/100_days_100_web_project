@@ -189,6 +189,32 @@ body {
     transform: scale(1.1);
 }
 
+.mute-btn {
+    position: absolute;
+    top: 20px;
+    right: 80px;
+    width: 50px; 
+    height: 50px; 
+    background: #2c3e50; 
+    border: 2px solid #f1c40f; 
+    color: #f1c40f;
+    font-size: 1.4rem; 
+    font-weight: bold; 
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 25;
+    transition: transform 0.2s, background 0.2s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    line-height: 1;
+}
+
+.mute-btn:hover {
+    background: #34495e; 
+    transform: scale(1.1);
+}
+
 .mobile-controls {
     position: absolute; bottom: 150px; left: 0; width: 100%;
     display: flex; justify-content: space-between; padding: 0 20px; z-index: 15;

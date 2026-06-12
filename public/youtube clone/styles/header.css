@@ -17,20 +17,17 @@
   border-bottom-color: rgb(228, 228, 228);
 }
 
+
 .left-section {
   display: flex;
   align-items: center;
-  padding-left: 16px; /* Stabilizes the absolute start coordinate of the branding block */
+  padding-left: 16px;
 }
 
 .hamburger-menu {
   height: 24px;
   margin-left: 24px;
   margin-right: 24px;
-  cursor: pointer;
-}
-
-.hamburger-menu {
   cursor: pointer;
 }
 
@@ -48,8 +45,15 @@
   box-sizing: border-box;
 }
 
+/* ── Search wrapper: positions the dropdown relative to the input ── */
+.search-wrapper {
+  position: relative;
+  flex: 1;
+}
+
 .search-bar {
   flex: 1;
+  width: 100%;
   height: 40px;
   padding-left: 16px;
   font-size: 16px;
@@ -59,7 +63,6 @@
   border-bottom-left-radius: 40px;
   background-color: transparent;
   outline: none;
-  width: 0;
   box-sizing: border-box;
   transition: border-color 0.15s ease;
 }
@@ -73,11 +76,12 @@
   font-size: 16px;
 }
 
+
 .search-button {
-  display: flex;           
-  justify-content: center; 
-  align-items: center;    
-  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   height: 40px;
   width: 64px;
   background-color: #f8f8f8;
@@ -86,8 +90,9 @@
   border-bottom-right-radius: 40px;
   cursor: pointer;
   margin-right: 16px;
-  box-sizing: border-box;  /* Ensures borders match the input field height perfectly */
+  box-sizing: border-box;
   transition: background-color 0.15s ease;
+  position: relative;
 }
 
 .search-button:hover {
@@ -136,11 +141,12 @@
 .voice-search-button {
   height: 40px;
   width: 40px;
-  border-radius: 50%; /* Perfect geometric circle */
+  border-radius: 50%;
   border: none;
   background-color: #f9f9f9;
   cursor: pointer;
   transition: background-color 0.15s ease;
+  position: relative;
 }
 
 .voice-search-button:hover {
@@ -154,7 +160,7 @@
 .right-section {
   display: flex;
   align-items: center;
-  gap: 18px; /* Standard horizontal layout spacing engine */
+  gap: 18px;
   margin-right: 24px;
   flex-shrink: 0;
 }
@@ -186,7 +192,7 @@
   width: 16px;
 }
 
-/* Notification Container & Dynamic Capsule Badge */
+/* Notification Container */
 .notifications-container {
   position: relative;
   display: flex;
@@ -217,10 +223,9 @@
   font-family: Roboto, Arial, sans-serif;
   font-size: 11px;
   font-weight: 500;
-  /* Capsule geometry: asymmetric padding allows smooth text expansion */
   padding: 1px 5px;
   border-radius: 10px;
-  border: 2px solid white; /* Isolates the badge from the dark icon lines underneath */
+  border: 2px solid white;
   white-space: nowrap;
 }
 
@@ -239,4 +244,67 @@
   width: 32px;
   border-radius: 50%;
   object-fit: cover;
+}
+
+/* ════════════════════════════════════════
+   SEARCH SUGGESTIONS DROPDOWN
+   ════════════════════════════════════════ */
+
+.search-suggestions {
+  display: none;                       /* hidden by default; JS toggles this */
+  position: absolute;
+  top: calc(100% + 4px);              /* sits 4px below the input */
+  left: 0;
+  width: 100%;
+  z-index: 9999;
+
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15), 0 10px 25px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+
+  /* Subtle entrance animation */
+  animation: suggestFadeIn 0.12s ease-out;
+}
+
+@keyframes suggestFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Each suggestion row */
+.search-suggestions div {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-family: Roboto, Arial, sans-serif;
+  color: #0f0f0f;
+  cursor: pointer;
+  transition: background-color 0.1s ease;
+}
+
+.search-suggestions div:hover {
+  background-color: #f2f2f2;
+}
+
+/* Small search icon inside each suggestion */
+.suggestion-icon {
+  height: 16px;
+  width: 16px;
+  opacity: 0.55;
+  flex-shrink: 0;
+}
+
+/* Highlight matched text portion */
+.suggestion-match {
+  font-weight: 500;
+  color: #0f0f0f;
 }

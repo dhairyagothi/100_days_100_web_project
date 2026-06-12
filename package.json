@@ -7,6 +7,7 @@
     "generate-previews": "node scripts/generate-previews.js",
     "dev": "npx -y serve . -p 3000",
     "validate:projects": "node scripts/validate-projects.js",
+    "validate:projects-fixture": "node scripts/validate-projects-fixture.js",
     "lint": "eslint --no-config-lookup -c eslint.config.js .",
     "lint:all": "npx -y htmlhint '**/*.html' --ignore 'node_modules/**,**/node_modules/**'",
     "format": "prettier --config .prettierrc --write .",
@@ -37,6 +38,8 @@
     "eslint": "^10.4.1",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-html": "^8.1.4",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.2",
     "globals": "^17.6.0",
     "husky": "^9.0.11",
     "lint-staged": "^15.2.2",
@@ -47,7 +50,7 @@
     "stylelint-config-standard": "^40.0.0"
   },
   "lint-staged": {
-    "projects.json": "node scripts/validate-metadata.js",
+    "projects.json": "npm run validate:projects",
     "*.html": "npx htmlhint"
   }
 }
