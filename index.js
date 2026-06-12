@@ -633,8 +633,15 @@ function cleanupExpiredRecentProjects() {
   }
 }
 
-// Clean up every 5 minutes
-setInterval(cleanupExpiredRecentProjects, 5 * 60 * 1000);
+// Clean up every 5 minutes — clear previous interval to prevent timer leaks
+var recentProjectsTimer = null;
+function startRecentProjectsCleanup() {
+  if (recentProjectsTimer !== null) {
+    clearInterval(recentProjectsTimer);
+  }
+  recentProjectsTimer = setInterval(cleanupExpiredRecentProjects, 5 * 60 * 1000);
+}
+startRecentProjectsCleanup();
 
 const CATEGORY_LABEL = {
   beginner: "Beginner",
@@ -734,6 +741,7 @@ let searchQuery = "";
 let sortOption = "default";
 let techStackFilter = "all";
 let difficultyFilter = "all";
+let currentFilteredProjects = [];
 
 // FIX: Resize debounce timer handle — stored at module level so it can be
 // cleared across multiple rapid resize events without leaking timers.
@@ -869,6 +877,8 @@ function renderGrid() {
               .includes(term),
         );
 
+       
+
     // Tech stack dropdown filter
     let matchesTech = true;
     if (techStackFilter && techStackFilter !== "all") {
@@ -887,6 +897,7 @@ function renderGrid() {
 
     return matchesFilter && matchesSearch && matchesTech && matchesDifficulty;
   });
+  currentFilteredProjects = [...filtered];
 
   // Apply sorting
   if (sortOption === "az") {
@@ -996,7 +1007,68 @@ function renderGrid() {
   syncStateToURL();
   syncProjectCounts();
 }
+function renderRandomProject() {
+  const result =
+    document.getElementById(
+      "randomProjectResult"
+    );
 
+  if (!result) return;
+
+  const source =
+    currentFilteredProjects.length
+      ? currentFilteredProjects
+      : PROJECTS;
+
+  const randomProject =
+    source[
+      Math.floor(
+        Math.random() * source.length
+      )
+    ];
+
+  if (!randomProject) return;
+
+  const category =
+    getCategoryFromTags(
+      randomProject.techStack,
+      randomProject.projectName
+    );
+
+  const bookmarkedDays = new Set(
+    bookmarkedProjects.map(
+      (item) =>
+        normalizeProjectEntry(item).day
+    )
+  );
+
+  const { html, sourceOnly } =
+    buildProjectCardHTML({
+      day: randomProject.day,
+      name: randomProject.projectName,
+      url: randomProject.projectPath,
+      tags: randomProject.techStack,
+      category,
+      isBookmarked:
+        bookmarkedDays.has(
+          randomProject.day
+        ),
+      showDescription: true
+    });
+
+  result.innerHTML = "";
+
+  const card =
+    document.createElement("div");
+
+  card.className = sourceOnly
+    ? "project-card source-only visible"
+    : "project-card visible";
+
+  card.innerHTML = html;
+
+  result.appendChild(card);
+}
 function renderPagination(totalItems, totalPages) {
   const grid = document.getElementById("projectGrid");
   if (!grid) return;
@@ -1946,7 +2018,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   initTechStackSearch();
   initClearAllFilters();
 
-  initStreak();
   updateGamifiedUI();
 
   try {
@@ -2547,3 +2618,11 @@ function updateGamifiedUI() {
   if (elements.xpText) elements.xpText.textContent = `${totalXP} Total XP`;
   if (elements.bar) elements.bar.style.width = "0%";
 }
+document
+  .getElementById(
+    "randomProjectBtn"
+  )
+  ?.addEventListener(
+    "click",
+    renderRandomProject
+  );
