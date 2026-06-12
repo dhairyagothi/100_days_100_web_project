@@ -87,6 +87,7 @@
     .dm-icon.moon { right: 6px; opacity: 0; }
     [data-theme="dark"] .dm-icon.sun { opacity: 0; }
     [data-theme="dark"] .dm-icon.moon { opacity: 1; }
+   
 
     /* ── HERO ── */
     .hero { min-height: 90vh; position: relative; overflow: hidden; display: flex; align-items: center; padding: 60px 5%; }

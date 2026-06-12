@@ -20,8 +20,9 @@ function loadRecipes() {
   fetch("text.json")
     .then((res) => res.json())
     .then((data) => {
-      allRecipes = Array.isArray(data) ? data : Object.values(data);
-
+      allRecipes = Array.isArray(data)
+      ? data
+      : data.recipes || [];
       // Populate difficulty/category filter
       if (difficultySelect) {
         const categories = [...new Set(allRecipes.flatMap(r => r.tags || []))];
