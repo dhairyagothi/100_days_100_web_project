@@ -30,10 +30,24 @@ const paddle = {
     y: canvas.height - 20,
     w: 80,
     h: 10,
-    speed: 8,
+    speed: 10,
     dx: 0,
-};
+}; 
 
+const speedSlider = document.getElementById("speed-slider");
+const speedValue = document.getElementById("speed-value");
+speedSlider.addEventListener("input", () => {
+    paddle.speed = parseInt(speedSlider.value);
+    speedValue.textContent = speedSlider.value;
+    localStorage.setItem("breakoutSensitivity", speedSlider.value);
+});
+const savedSpeed = localStorage.getItem("breakoutSensitivity");
+
+if (savedSpeed) {
+    paddle.speed = parseInt(savedSpeed);
+    speedSlider.value = savedSpeed;
+    speedValue.textContent = savedSpeed;
+}
 const brickInfo = {
     w: 70,
     h: 20,
