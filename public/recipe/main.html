@@ -3,65 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Recipezzz - Home</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
 </head>
 <body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
 
-    <nav>
-        <h2 style="margin-right: 10px;">Recipezzz</h2>
-        <a href="#">Home</a>
-        <a href="#">Recipes</a>
-        <a href="#">About us</a>
-    </nav>
-    <h1>Recipes Selector</h1>
-    
-    <div class="data">
-        
-    <h3>Select your recipe</h3>
-    <select id="difficulty" aria-placeholder="Select your test type">
-        <option value="Grilled Cheese Sandwich">Grilled Cheese Sandwich</option>
-        <option value="Banana Smoothie">Banana Smoothie</option>
-        <option value="Lemonade">Lemonade</option>
-        <option value="French Toast">French Toast</option>
-        <option value="Garlic Bread">Garlic Bread</option>
-
-        <option value="Pancakes">Pancakes</option>
-        <option value="Vegetable Stir Fry">Vegetable Stir Fry</option>
-        <option value="Omelette">Omelette</option>
-        <option value="Caesar Salad">Caesar Salad</option>
-        <option value="Fried Rice">Fried Rice</option>
-
-        <option value="Chicken Biryani">Chicken Biryani</option>
-        <option value="Palak Paneer">Palak Paneer</option>
-        <option value="Chana Masala">Chana Masala</option>
-        <option value="Dal Tadka">Dal Tadka</option>
-        <option value="Masala Dosa">Masala Dosa</option>
-
-    </select>
-    <br>
-    <button id="start">Get Recipe</button>
-        <!-- <h2>
-            Typing Text below
-        </h2>
-        <h4>
-            Text
-        </h4>
-        <input type="text" placeholder="Text..."> -->
+<nav>
+    <h2 class="logo">Recipezzz</h2>
+    <div class="navlink">
+        <a href="main.html" class="active">Home</a>
+        <a href="rec.html">Recipes</a>
     </div>
+</nav>
+
+<section class="hero">
+    <div class="hero-content">
+        <div class="hero-badge">🍽️ Explore • Cook • Enjoy</div>
+        <h1>Discover Amazing<br><span class="hero-accent">Recipes</span></h1>
+        <p>Explore delicious recipes from around the world. Search meals, save favorites, get random suggestions, listen to cooking instructions, and enjoy a modern cooking experience with Recipezzz.</p>
+        <div class="hero-buttons">
+            <a href="rec.html" class="hero-btn primary-btn">Explore Recipes</a>
+            <a href="#features" class="hero-btn secondary-btn">Learn More</a>
+        </div>
+    </div>
+    <div class="hero-image-collage">
+        <div class="collage-img" style="background-image:url('https://source.unsplash.com/400x300/?biryani,food')"></div>
+        <div class="collage-img" style="background-image:url('https://source.unsplash.com/400x300/?pasta,food')"></div>
+        <div class="collage-img" style="background-image:url('https://source.unsplash.com/400x300/?pizza,food')"></div>
+        <div class="collage-img" style="background-image:url('https://source.unsplash.com/400x300/?salad,food')"></div>
+    </div>
+</section>
+
+<section id="features" class="features">
+    <div class="feature-card">
+        <div class="feature-icon">🔍</div>
+        <h3>Smart Search</h3>
+        <p>Quickly find recipes using an intuitive search experience.</p>
+    </div>
+    <div class="feature-card">
+        <div class="feature-icon">❤️</div>
+        <h3>Favorites</h3>
+        <p>Save recipes and revisit them anytime.</p>
+    </div>
+    <div class="feature-card">
+        <div class="feature-icon">🎲</div>
+        <h3>Random Recipe</h3>
+        <p>Get instant meal inspiration with one click.</p>
+    </div>
+    <div class="feature-card">
+        <div class="feature-icon">🔊</div>
+        <h3>Voice Assistant</h3>
+        <p>Listen to recipe instructions hands-free.</p>
+    </div>
+    <div class="feature-card">
+        <div class="feature-icon">📋</div>
+        <h3>Copy & Share</h3>
+        <p>Share recipes with family and friends easily.</p>
+    </div>
+    <div class="feature-card">
+        <div class="feature-icon">🖨️</div>
+        <h3>Print Support</h3>
+        <p>Print recipes for a distraction-free cooking experience.</p>
+    </div>
+</section>
+
+<section class="stats-section">
+    <div class="stat-card">
+        <h2>30+</h2>
+        <p>Recipes</p>
+    </div>
+    <div class="stat-card">
+        <h2>24/7</h2>
+        <p>Available</p>
+    </div>
+    <div class="stat-card">
+        <h2>∞</h2>
+        <p>Cooking Ideas</p>
+    </div>
+</section>
+
+<section class="cta-section">
+    <h2>Ready to Start Cooking?</h2>
+    <p>Browse recipes, discover new flavors, and build your personal recipe collection.</p>
+    <a href="rec.html" class="hero-btn primary-btn">Start Exploring</a>
+</section>
+
+<footer>
+    <p>Recipezzz © 2026 | Built with HTML, CSS &amp; JavaScript</p>
+</footer>
+
 </body>
-<script>
-    document.getElementById('start').addEventListener('click', function() {
-        
-        const difficulty = document.getElementById('difficulty').value;
-        
-
-        
-        sessionStorage.setItem('difficulty', difficulty);
-
-        window.location.href = 'rec.html';
-    });
-
-</script>
 </html>

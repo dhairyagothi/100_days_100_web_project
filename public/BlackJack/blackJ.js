@@ -1,11 +1,10 @@
 ﻿/**
- * blackJ.js ΓÇö BlackJack game logic, UI state, and event handling.
+ * blackJ.js — BlackJack game logic, UI state, and event handling.
  */
 
 /**
  * Card face values for all four suits.
- * Aces use [1, 11] ΓÇö the higher value is applied unless it causes a bust.
- * Defined at module level to prevent accidental mutation during resets.
+ * Aces use [1, 11] — the higher value is applied unless it causes a bust.
  */
 const CARD_VALUES = {
   '2C':2,  '3C':3,  '4C':4,  '5C':5,  '6C':6,  '7C':7,  '8C':8,  '9C':9,
@@ -18,10 +17,7 @@ const CARD_VALUES = {
   '10S':10,'KS':10, 'QS':10, 'JS':10, 'AS':[1,11]
 };
 
-/**
- * Returns a fresh 52-card deck for the start of each round.
- * @returns {string[]}
- */
+/** Returns a fresh 52-card deck for the start of each round. */
 function freshDeck() {
   return [
     '2C','3C','4C','5C','6C','7C','8C','9C','10C','KC','QC','JC','AC',
@@ -31,7 +27,7 @@ function freshDeck() {
   ];
 }
 
-/** Central game state. CARD_VALUES is excluded to prevent reset overwrites. */
+/** Central game state. */
 const BJgame = {
   you: {
     scoreSpan:     '#yourscore',
@@ -54,12 +50,11 @@ const Dealer = BJgame.dealer;
 
 /**
  * Single source of truth for whether a round is in progress.
- * Prevents duplicate findWinner() calls and stray Hit/Stand actions.
- * true  ΓåÆ round active; false ΓåÆ awaiting Deal or Play Again.
+ * true = round active; false = awaiting Deal or Play Again.
  */
 let gameActive = false;
 
-// Audio ΓÇö declared at module level; const is not hoisted so order matters.
+// Audio
 const hitsound  = new Audio('./static/sounds/swish.m4a');
 const tink      = new Audio('./static/sounds/tink.wav');
 const winSound  = new Audio('./static/sounds/cash.mp3');
@@ -70,7 +65,7 @@ const drawSound = new Audio('./static/sounds/ohh.mp3');
 /** @param {string} selector @returns {Element|null} */
 const $ = selector => document.querySelector(selector);
 
-// ΓöÇΓöÇ Button helpers ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+// ── Button helpers ──────────────────────────────────────────────────────────
 
 /** Disables Hit and Stand at round end so stale clicks are rejected. */
 function disableGameButtons() {
@@ -94,7 +89,7 @@ function enableGameButtons() {
   });
 }
 
-// ΓöÇΓöÇ Core logic ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+// ── Core logic ──────────────────────────────────────────────────────────────
 
 /**
  * Draws one card from the deck for the given player, renders its image,
@@ -121,12 +116,9 @@ function drawCard(activePlayer) {
 /**
  * Adds the drawn card's value to the player's running total.
  * Aces count as 11 only when that keeps the score at 21 or under.
- * @param {string} card
- * @param {Object} activePlayer
  */
 function updateScore(card, activePlayer) {
   const value = CARD_VALUES[card];
-
   if (Array.isArray(value)) {
     activePlayer.score +=
       (activePlayer.score + value[1] <= 21) ? value[1] : value[0];
@@ -135,57 +127,15 @@ function updateScore(card, activePlayer) {
   }
 }
 
-// Dealer's Logic (2nd player) OR Stand button
-document.querySelector('#stand').addEventListener('click', BJstand)
-
-function BJstand(){
-    if(You['score']===0){
-        alert('Please Hit Some Cards First!');
-    }
-    else{
-        while(Dealer['score']<16){
-            drawCard(Dealer);
-        }
-        setTimeout(function(){
-            showresults(findwinner());
-            scoreboard();
-            
-            // Show countdown message
-            const countdownEl = document.querySelector('#countdown-message');
-            let count = 3;
-            countdownEl.textContent = `Resetting in ${count}...`;
-            
-            // Countdown timer
-            const countdownInterval = setInterval(function() {
-                count--;
-                if (count > 0) {
-                    countdownEl.textContent = `Resetting in ${count}...`;
-                } else {
-                    countdownEl.textContent = '';
-                    clearInterval(countdownInterval);
-                }
-            }, 1000);
-            
-            // Auto-trigger Play Again after 3 seconds
-            setTimeout(function(){
-                BJdeal();
-            }, 3000);
-        }, 800); 
-    }
-}
-// Rules button
-
-document.querySelector('#rules-btn')
-.addEventListener('click', ()=>{
-
-let box =
-document.querySelector('#rules-box');
-
-if(box.style.display==="none"){
-box.style.display="block";
+/**
+ * Renders the current score into the matching badge element.
+ * @param {Object} activePlayer
+ */
+function showScore(activePlayer) {
+  $(activePlayer.scoreSpan).textContent = activePlayer.score;
 }
 
-// ΓöÇΓöÇ Round resolution ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+// ── Round resolution ────────────────────────────────────────────────────────
 
 /**
  * Compares final scores and increments the matching lifetime counter.
@@ -219,17 +169,17 @@ function showResults(winner) {
   const el = $('#command');
 
   if (winner === You) {
-    el.textContent = '≡ƒÅå You Won!';
+    el.textContent = '🏅 You Won!';
     el.style.color = '#4caf7d';
     winSound.play().catch(() => {});
-    cheers.volume = 0.4; // Must be set before play() to avoid volume spike
+    cheers.volume = 0.4;
     cheers.play().catch(() => {});
   } else if (winner === Dealer) {
-    el.textContent = '≡ƒÿö You Lost!';
+    el.textContent = '😖 You Lost!';
     el.style.color = '#e05252';
     loseSound.play().catch(() => {});
   } else {
-    el.textContent = "≡ƒñ¥ It's a Draw!";
+    el.textContent = "🤝 It's a Draw!";
     el.style.color = '#f0b429';
     drawSound.play().catch(() => {});
   }
@@ -260,11 +210,11 @@ function endRound(winner) {
   updateScoreboard();
 }
 
-// ΓöÇΓöÇ Button handlers ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+// ── Button handlers ─────────────────────────────────────────────────────────
 
 /**
  * Draws one card for the player.
- * Auto-resolves the round if the player busts ΓÇö no Stand click required.
+ * Auto-resolves the round if the player busts — no Stand click required.
  */
 function BJhit() {
   if (!gameActive) return;
@@ -291,17 +241,12 @@ function BJstand() {
 }
 
 /**
- * Starts a new round if none is active.
- * Blocks mid-round deal attempts with an alert.
+ * Starts a new round.
+ * Blocks mid-round deal attempts — player must Hit or Stand first.
  */
 function BJdeal() {
   if (gameActive) {
-    alert('Finish your current turn first ΓÇö Hit or Stand before dealing.');
-    return;
-  }
-  if (You.score === 0 && Dealer.score === 0 &&
-      BJgame.wins === 0 && BJgame.losses === 0 && BJgame.draws === 0) {
-    alert('Hit some cards to start playing!');
+    alert('Finish your current turn first — Hit or Stand before dealing.');
     return;
   }
   startNewRound();
@@ -309,7 +254,6 @@ function BJdeal() {
 
 /**
  * Resets board state for a fresh round without clearing the scoreboard.
- * Extracted from BJdeal() so Play Again can call it without triggering deal guards.
  */
 function startNewRound() {
   ['#your-cards', '#dealer-cards'].forEach(sel => {
@@ -333,23 +277,40 @@ function startNewRound() {
   gameActive = true;
 }
 
-// ΓöÇΓöÇ Rules toggle ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+// ── Rules toggle ────────────────────────────────────────────────────────────
 
-/** Toggles the rules panel and keeps aria-expanded in sync. */
+/**
+ * Toggles the rules panel and keeps aria-expanded in sync.
+ * Uses the `hidden` attribute which matches the CSS `.rules-box[hidden]` rule.
+ */
 function toggleRules() {
   const box      = $('#rules-box');
   const btn      = $('#rules-btn');
   const isHidden = box.hasAttribute('hidden');
 
-  box[isHidden ? 'removeAttribute' : 'setAttribute']('hidden', '');
+  if (isHidden) {
+    box.removeAttribute('hidden');
+  } else {
+    box.setAttribute('hidden', '');
+  }
   btn.setAttribute('aria-expanded', String(isHidden));
 }
 
-// ΓöÇΓöÇ Event listeners ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+// Close rules panel when clicking outside of it
+document.addEventListener('click', (e) => {
+  const box = $('#rules-box');
+  const btn = $('#rules-btn');
+  if (!box.hasAttribute('hidden') && !box.contains(e.target) && e.target !== btn) {
+    box.setAttribute('hidden', '');
+    btn.setAttribute('aria-expanded', 'false');
+  }
+});
 
-$('#hit').addEventListener('click',   BJhit);
-$('#stand').addEventListener('click', BJstand);
-$('#deal').addEventListener('click',  BJdeal);
+// ── Event listeners ─────────────────────────────────────────────────────────
+
+$('#hit').addEventListener('click',       BJhit);
+$('#stand').addEventListener('click',     BJstand);
+$('#deal').addEventListener('click',      BJdeal);
 $('#rules-btn').addEventListener('click', toggleRules);
 $('#play-again').addEventListener('click', startNewRound);
 
@@ -366,6 +327,5 @@ document.querySelector('.action-buttons').addEventListener('mouseover', e => {
   }
 });
 
-// Initialise with buttons disabled ΓÇö Deal opens the first round
+// Initialise: Hit/Stand disabled until Deal starts a round; Deal is always enabled
 disableGameButtons();
-});
