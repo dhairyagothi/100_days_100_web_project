@@ -246,6 +246,12 @@
 
     <section class="projects-section">
       <div class="projects-inner">
+        <div id="recommendationsContainer" class="recommendations-container"></div>
+      </div>
+    </section>
+
+    <section class="projects-section">
+      <div class="projects-inner">
         <div class="projects-intro">
           <p class="section-label">Saved Collection</p>
 
@@ -295,7 +301,7 @@
               id="filterAll"
               aria-label="Show all projects"
             >
-              All <span class="chip-count" id="allCount">Projects</span>
+              All <span class="chip-count" id="allCount" aria-live="polite">Projects</span>
             </button>
             <button
               class="chip"
@@ -393,23 +399,42 @@
 
         <div class="project-grid" id="projectGrid"></div>
 
-        <div class="no-results" id="noResults">
+        <div class="no-results" id="noResults" role="status" aria-live="assertive">
           <i class="fas fa-search" aria-hidden="true"></i>
           <p>No projects match your search.</p>
         </div>
       </div>
     </section>
 
-    <!-- ── CTA Banner (before footer) ── -->
-    <section class="cta-banner" aria-labelledby="ctaBannerTitle">
-      <div class="cta-banner-inner">
-        <h2 id="ctaBannerTitle">Ready to start your 100-day journey?</h2>
-        <p>Track your daily progress, earn XP, and level up your developer profile. Start tracking today.</p>
-        <a href="tracker.html" class="cta-banner-btn" aria-label="Open Daily Tracker">
-          Open Daily Tracker <span aria-hidden="true">🚀</span>
-        </a>
-      </div>
-    </section>
+    <section class="projects-section" id="randomProjectSection">
+  <div class="projects-inner">
+
+    <div class="projects-intro">
+      <p class="section-label">Need Inspiration?</p>
+      <h2 class="section-title">
+        Can't decide what to build next?
+      </h2>
+      <p class="hero-extra">
+        Generate a random project from the current archive.
+      </p>
+    </div>
+
+    <div class="random-project-wrapper">
+      <button
+        id="randomProjectBtn"
+        class="btn btn-primary"
+      >
+        🎲 Generate Random Project
+      </button>
+
+      <div
+        id="randomProjectResult"
+        class="project-grid"
+      ></div>
+    </div>
+
+  </div>
+</section>
 
     <footer class="footer homepage-footer">
       <div class="homepage-footer-shell">

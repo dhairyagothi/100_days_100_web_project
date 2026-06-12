@@ -100,6 +100,66 @@
 
             </div>
 
+            <!-- Category Limits Form -->
+            <div class="glass-panel">
+
+                <h3>Category Limits</h3>
+
+                <form id="category-limits-form" class="category-limits-form">
+
+                    <div class="form-group">
+                        <label for="limit-food">Food</label>
+                        <div class="input-group">
+                            <span class="currency-symbol">$</span>
+                            <input type="number" id="limit-food" data-category="Food" placeholder="No limit" min="0"
+                                step="any" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="limit-travel">Travel</label>
+                        <div class="input-group">
+                            <span class="currency-symbol">$</span>
+                            <input type="number" id="limit-travel" data-category="Travel" placeholder="No limit" min="0"
+                                step="any" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="limit-shopping">Shopping</label>
+                        <div class="input-group">
+                            <span class="currency-symbol">$</span>
+                            <input type="number" id="limit-shopping" data-category="Shopping" placeholder="No limit"
+                                min="0" step="any" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="limit-bills">Bills</label>
+                        <div class="input-group">
+                            <span class="currency-symbol">$</span>
+                            <input type="number" id="limit-bills" data-category="Bills" placeholder="No limit" min="0"
+                                step="any" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="limit-other">Other</label>
+                        <div class="input-group">
+                            <span class="currency-symbol">$</span>
+                            <input type="number" id="limit-other" data-category="Other" placeholder="No limit" min="0"
+                                step="any" />
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-secondary">
+                        Save Limits
+                    </button>
+
+                </form>
+
+            </div>
+
             <!-- Expense Form -->
             <div class="glass-panel">
 
@@ -172,6 +232,21 @@
                         </select>
 
                     </div>
+                    <!-- Receipt Scan -->
+                    <div class="form-group">
+                        <label for="receipt-upload">
+                            Scan Receipt (optional)
+                        </label>
+
+                        <input type="file" id="receipt-upload" accept="image/*" />
+
+                        <span class="receipt-status" id="receipt-status"></span>
+                    </div>
+                    <!-- Recurring -->
+                    <label class="checkbox-group" for="expense-recurring">
+                        <input type="checkbox" id="expense-recurring" />
+                        <span>Recurring (monthly)</span>
+                    </label>
 
                     <button type="submit" class="btn btn-gradient">
 
@@ -304,9 +379,9 @@
                 </div>
 
                 <!-- Budget Left -->
-                <div class="stat-card left glass-panel">
+                <div class="stat-card left glass-panel" id="budget-left-card">
 
-                    <div class="stat-icon">
+                    <div class="stat-icon" id="budget-left-icon">
                         📊
                     </div>
 
@@ -319,6 +394,9 @@
                         <h2 id="budget-left">
                             $0.00
                         </h2>
+
+                        <span class="budget-warning-message" id="budget-warning-message">
+                        </span>
 
                     </div>
 
@@ -471,7 +549,7 @@
         </main>
 
     </div>
-
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
     <script src="script.js"></script>
 
 </body>
