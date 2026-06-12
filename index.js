@@ -114,8 +114,8 @@ function loadProjects() {
       const isRoot = !window.location.pathname.includes("/contributors/");
       const base = isRoot ? "" : "../";
       const projectsUrl = new URL(
-        `${base}projects.json`,
-        window.location.href,
+          `${base}projects.json`,
+          window.location.href,
       ).toString();
       try {
         const response = await fetch(projectsUrl);
@@ -165,24 +165,24 @@ const EXTERNAL_DEMO_SOURCE_FOLDERS = {
 
 function isGithubTreeUrl(url) {
   return /^https:\/\/github\.com\/[^/]+\/[^/]+\/tree\/[^/]+\//i.test(
-    String(url || "").trim(),
+      String(url || "").trim(),
   );
 }
 
 function parseGithubTreePath(url) {
   const match = String(url || "")
-    .trim()
-    .match(/\/tree\/[^/]+\/(.+?)(?:\?|#|$)/);
+      .trim()
+      .match(/\/tree\/[^/]+\/(.+?)(?:\?|#|$)/);
   return match ? decodeURIComponent(match[1].replace(/\/$/, "")) : null;
 }
 
 function isSourceOnlyProject(day, tags) {
   if (day === "Day 13" || day === "Day 72") return true;
   const tagList = Array.isArray(tags)
-    ? tags
-    : String(tags || "")
-      .split(/\s+/)
-      .filter(Boolean);
+      ? tags
+      : String(tags || "")
+          .split(/\s+/)
+          .filter(Boolean);
   return tagList.includes(SOURCE_ONLY_TAG);
 }
 
@@ -240,18 +240,18 @@ function resolveProjectUrls(day, name, url, tags) {
 
 function getProjectDescription(project) {
   return (
-    (project && project.projectDesc) ||
-    "Explore this project to discover interactive functionality."
+      (project && project.projectDesc) ||
+      "Explore this project to discover interactive functionality."
   );
 }
 
 function escapeHTML(value) {
   return String(value)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/\"/g, "&quot;")
-    .replace(/'/g, "&#39;");
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/\"/g, "&quot;")
+      .replace(/'/g, "&#39;");
 }
 
 function sanitizeUrl(url) {
@@ -260,17 +260,17 @@ function sanitizeUrl(url) {
   if (!raw || raw === "#") return raw || "#";
 
   if (
-    raw.startsWith("./") ||
-    raw.startsWith("../") ||
-    raw.startsWith("/")
+      raw.startsWith("./") ||
+      raw.startsWith("../") ||
+      raw.startsWith("/")
   ) {
     return raw;
   }
   if (
-    !raw.includes(":") &&
-    (raw.includes(".html") ||
-      raw.startsWith("public/") ||
-      raw.startsWith("projects/"))
+      !raw.includes(":") &&
+      (raw.includes(".html") ||
+          raw.startsWith("public/") ||
+          raw.startsWith("projects/"))
   ) {
     return raw;
   }
@@ -293,24 +293,24 @@ function buildProjectCardHTML({
   showDescription = true,
 }) {
   const { demoUrl, sourceUrl, sourceOnly } = resolveProjectUrls(
-    day,
-    name,
-    url,
-    tags,
+      day,
+      name,
+      url,
+      tags,
   );
 
   const safeDemoUrl = sanitizeUrl(demoUrl);
   const safeSourceUrl = sanitizeUrl(sourceUrl);
 
   const tagsArray = Array.isArray(tags)
-    ? tags.filter((t) => t !== SOURCE_ONLY_TAG)
-    : String(tags || "")
-      .split(/\s+/)
-      .filter((t) => t && t !== SOURCE_ONLY_TAG);
+      ? tags.filter((t) => t !== SOURCE_ONLY_TAG)
+      : String(tags || "")
+          .split(/\s+/)
+          .filter((t) => t && t !== SOURCE_ONLY_TAG);
 
   const tagsHTML = tagsArray
-    .map((t) => `<span class="tag">${escapeHTML(t)}</span>`)
-    .join("");
+      .map((t) => `<span class="tag">${escapeHTML(t)}</span>`)
+      .join("");
 
   const project = PROJECTS_BY_NAME.get(name) || PROJECTS_BY_DAY.get(day);
 
@@ -324,24 +324,24 @@ function buildProjectCardHTML({
   const difficultyLabel = CATEGORY_LABEL[difficultyKey] || difficulty;
   const safeDifficultyLabel = escapeHTML(difficultyLabel);
   const difficultyBadge = difficulty
-    ? `<span class="card-difficulty ${difficultyKey}">${safeDifficultyLabel}</span>`
-    : "";
+      ? `<span class="card-difficulty ${difficultyKey}">${safeDifficultyLabel}</span>`
+      : "";
 
   const sourceOnlyBadge = sourceOnly
-    ? '<span class="source-only-badge" title="Requires local server setup">Source only</span>'
-    : "";
+      ? '<span class="source-only-badge" title="Requires local server setup">Source only</span>'
+      : "";
 
   const primaryLink = sourceOnly
-    ? `<a href="${safeSourceUrl}" target="_blank" class="card-link open-project" data-id="${safeDay}" rel="noopener noreferrer" onclick="event.stopPropagation()" aria-label="View source of ${safeName} (opens in a new tab)">
+      ? `<a href="${safeSourceUrl}" target="_blank" class="card-link open-project" data-id="${safeDay}" rel="noopener noreferrer" onclick="event.stopPropagation()" aria-label="View source of ${safeName} (opens in a new tab)">
                         <i class="fab fa-github" aria-hidden="true"></i> Source
                     </a>`
-    : `<a href="${safeDemoUrl}" target="_blank" class="card-link open-project" data-id="${safeDay}" rel="noopener noreferrer" onclick="event.stopPropagation()" aria-label="View demo of ${safeName} (opens in a new tab)">
+      : `<a href="${safeDemoUrl}" target="_blank" class="card-link open-project" data-id="${safeDay}" rel="noopener noreferrer" onclick="event.stopPropagation()" aria-label="View demo of ${safeName} (opens in a new tab)">
                         Demo <i class="fas fa-arrow-right" aria-hidden="true"></i>
                     </a>`;
 
   const codeLink = sourceOnly
-    ? ""
-    : `<a href="${safeSourceUrl}" target="_blank" class="card-link view-code-link" rel="noopener noreferrer" onclick="event.stopPropagation()" aria-label="View source code of ${safeName} on GitHub (opens in a new tab)">
+      ? ""
+      : `<a href="${safeSourceUrl}" target="_blank" class="card-link view-code-link" rel="noopener noreferrer" onclick="event.stopPropagation()" aria-label="View source code of ${safeName} on GitHub (opens in a new tab)">
                         <i class="fab fa-github" aria-hidden="true"></i> Code
                     </a>`;
 
@@ -367,7 +367,7 @@ function buildProjectCardHTML({
     ${description}
 </div>`
         : ""
-      }
+    }
             <div class="card-tags">${tagsHTML}</div>
             <div class="card-footer">
                 <div class="card-actions-left">
@@ -390,14 +390,21 @@ function attachProjectCardInteraction(card, demoUrl, projectData = null) {
   card.style.cursor = "pointer";
 
   const activateCard = (e) => {
-    if (e.target.closest("a, button")) return;
+    if (e.target.closest(".bookmark-btn, .complete-btn")) return;
+    if (e.target.closest("a:not(.open-project):not(.view-code-link)")) return;
+    if (e.target.closest("a")) e.preventDefault();
+
     if (!demoUrl) return;
 
     if (projectData) {
       trackRecentProject(projectData);
     }
 
-    window.open(sanitizeUrl(demoUrl), "_blank", "noopener");
+    if (window.openSandbox && projectData) {
+      window.openSandbox(projectData);
+    } else {
+      window.open(sanitizeUrl(demoUrl), "_blank", "noopener");
+    }
   };
 
   card.onclick = activateCard;
@@ -426,12 +433,12 @@ function matchesTechStack(projectTags) {
   if (!projectTags) return false;
 
   const tagSet = new Set(
-    (Array.isArray(projectTags)
-      ? projectTags
-      : String(projectTags).split(/\s+/)
-    )
-      .map((t) => t.toLowerCase().trim())
-      .filter(Boolean),
+      (Array.isArray(projectTags)
+              ? projectTags
+              : String(projectTags).split(/\s+/)
+      )
+          .map((t) => t.toLowerCase().trim())
+          .filter(Boolean),
   );
 
   return techStackFilters.every((filter) => tagSet.has(filter.toLowerCase()));
@@ -503,7 +510,7 @@ function getAllTechnologies() {
     const tags = project.techStack;
     if (tags) {
       const tagArray =
-        typeof tags === "string" ? tags.split(/\s+/).filter((t) => t) : tags;
+          typeof tags === "string" ? tags.split(/\s+/).filter((t) => t) : tags;
 
       tagArray.forEach((tag) => {
         techSet.add(tag.toLowerCase());
@@ -516,19 +523,19 @@ function getAllTechnologies() {
 
 /* ============================================================
    BOOKMARK + RECENT SYSTEM
-============================================================ */
+   ============================================================ */
 
 let bookmarkedProjects = [];
 let recentProjects = [];
 
 try {
   bookmarkedProjects =
-    JSON.parse(localStorage.getItem("bookmarkedProjects")) || [];
+      JSON.parse(localStorage.getItem("bookmarkedProjects")) || [];
   recentProjects = JSON.parse(localStorage.getItem("recentProjects")) || [];
 } catch (error) {
   console.warn(
-    "localStorage is not available or access is denied:",
-    error.message,
+      "localStorage is not available or access is denied:",
+      error.message,
   );
 }
 
@@ -622,10 +629,10 @@ async function fetchRepoStats() {
 
     const [repoRes, prRes] = await Promise.all([
       fetch(
-        `https://api.github.com/repos/${window.REPO_OWNER}/${window.REPO_NAME}`,
+          `https://api.github.com/repos/${window.REPO_OWNER}/${window.REPO_NAME}`,
       ),
       fetch(
-        `https://api.github.com/search/issues?q=repo:${window.REPO_OWNER}/${window.REPO_NAME}+type:pr+state:open`,
+          `https://api.github.com/search/issues?q=repo:${window.REPO_OWNER}/${window.REPO_NAME}+type:pr+state:open`,
       ),
     ]);
 
@@ -639,8 +646,8 @@ async function fetchRepoStats() {
     set("starCount", repo.stargazers_count.toLocaleString());
     set("forkCount", repo.forks_count.toLocaleString());
     set(
-      "issueCount",
-      Math.max(0, repo.open_issues_count - prs.total_count).toLocaleString(),
+        "issueCount",
+        Math.max(0, repo.open_issues_count - prs.total_count).toLocaleString(),
     );
     set("prCount", prs.total_count.toLocaleString());
   } catch (e) {
@@ -654,7 +661,7 @@ function generateReadme() {
     const lines = [];
     lines.push("# 100 Days · 100 Web Projects");
     lines.push(
-      "A curated archive of frontend experiments — browse, fork, contribute.",
+        "A curated archive of frontend experiments — browse, fork, contribute.",
     );
     lines.push("");
     lines.push("## Projects");
@@ -759,23 +766,23 @@ function renderGrid() {
     const category = getCategoryFromTags(tags, name);
     const targetCategory = FILTER_CATEGORY_MAP[activeFilter] || "all";
     const matchesFilter =
-      activeFilter === "all" || category === targetCategory;
+        activeFilter === "all" || category === targetCategory;
 
     // Search filter
     const q = searchQuery.toLowerCase().trim();
     const matchesSearch =
-      !q ||
-      q
-        .split(/\s+/)
-        .every(
-          (term) =>
-            name.toLowerCase().includes(term) ||
-            (project.projectDesc || "").toLowerCase().includes(term) ||
-            day.toLowerCase().includes(term) ||
-            (Array.isArray(tags) ? tags.join(" ") : tags || "")
-              .toLowerCase()
-              .includes(term),
-        );
+        !q ||
+        q
+            .split(/\s+/)
+            .every(
+                (term) =>
+                    name.toLowerCase().includes(term) ||
+                    (project.projectDesc || "").toLowerCase().includes(term) ||
+                    day.toLowerCase().includes(term) ||
+                    (Array.isArray(tags) ? tags.join(" ") : tags || "")
+                        .toLowerCase()
+                        .includes(term),
+            );
 
        
 
@@ -783,7 +790,7 @@ function renderGrid() {
     let matchesTech = true;
     if (techStackFilter && techStackFilter !== "all") {
       const tagStr = (
-        Array.isArray(tags) ? tags.join(" ") : tags || ""
+          Array.isArray(tags) ? tags.join(" ") : tags || ""
       ).toLowerCase();
       matchesTech = tagStr.includes(techStackFilter.toLowerCase());
     }
@@ -792,7 +799,7 @@ function renderGrid() {
     let matchesDifficulty = true;
     if (difficultyFilter && difficultyFilter !== "all") {
       matchesDifficulty =
-        (difficulty || "").toLowerCase() === difficultyFilter.toLowerCase();
+          (difficulty || "").toLowerCase() === difficultyFilter.toLowerCase();
     }
 
     return matchesFilter && matchesSearch && matchesTech && matchesDifficulty;
@@ -840,7 +847,7 @@ function renderGrid() {
   const fragment = document.createDocumentFragment();
 
   const bookmarkedDays = new Set(
-    bookmarkedProjects.map((item) => normalizeProjectEntry(item).day),
+      bookmarkedProjects.map((item) => normalizeProjectEntry(item).day),
   );
 
   pageItems.forEach((project) => {
@@ -865,8 +872,8 @@ function renderGrid() {
     });
 
     card.className = sourceOnly
-      ? "project-card source-only visible"
-      : "project-card visible";
+        ? "project-card source-only visible"
+        : "project-card visible";
 
     card.innerHTML = html;
     card.setAttribute("tabindex", "0");
@@ -884,61 +891,61 @@ function renderGrid() {
 }
 function renderRandomProject() {
   const result =
-    document.getElementById(
-      "randomProjectResult"
-    );
+      document.getElementById(
+          "randomProjectResult"
+      );
 
   if (!result) return;
 
   const source =
-    currentFilteredProjects.length
-      ? currentFilteredProjects
-      : PROJECTS;
+      currentFilteredProjects.length
+          ? currentFilteredProjects
+          : PROJECTS;
 
   const randomProject =
-    source[
-      Math.floor(
-        Math.random() * source.length
-      )
-    ];
+      source[
+          Math.floor(
+              Math.random() * source.length
+          )
+          ];
 
   if (!randomProject) return;
 
   const category =
-    getCategoryFromTags(
-      randomProject.techStack,
-      randomProject.projectName
-    );
+      getCategoryFromTags(
+          randomProject.techStack,
+          randomProject.projectName
+      );
 
   const bookmarkedDays = new Set(
-    bookmarkedProjects.map(
-      (item) =>
-        normalizeProjectEntry(item).day
-    )
+      bookmarkedProjects.map(
+          (item) =>
+              normalizeProjectEntry(item).day
+      )
   );
 
   const { html, sourceOnly } =
-    buildProjectCardHTML({
-      day: randomProject.day,
-      name: randomProject.projectName,
-      url: randomProject.projectPath,
-      tags: randomProject.techStack,
-      category,
-      isBookmarked:
-        bookmarkedDays.has(
-          randomProject.day
-        ),
-      showDescription: true
-    });
+      buildProjectCardHTML({
+        day: randomProject.day,
+        name: randomProject.projectName,
+        url: randomProject.projectPath,
+        tags: randomProject.techStack,
+        category,
+        isBookmarked:
+            bookmarkedDays.has(
+                randomProject.day
+            ),
+        showDescription: true
+      });
 
   result.innerHTML = "";
 
   const card =
-    document.createElement("div");
+      document.createElement("div");
 
   card.className = sourceOnly
-    ? "project-card source-only visible"
-    : "project-card visible";
+      ? "project-card source-only visible"
+      : "project-card visible";
 
   card.innerHTML = html;
 
@@ -1087,7 +1094,7 @@ function scrollToProjectSection() {
   const navbar = document.querySelector(".navbar");
   const offset = navbar ? navbar.offsetHeight - 50 : 30;
   const targetY =
-    header.getBoundingClientRect().top + window.pageYOffset - offset;
+      header.getBoundingClientRect().top + window.pageYOffset - offset;
   const startY = window.pageYOffset;
   const distance = targetY - startY;
 
@@ -1098,10 +1105,10 @@ function scrollToProjectSection() {
     if (startTime === null) startTime = currentTime;
     const timeElapsed = currentTime - startTime;
     const run = easeInOutQuad(
-      Math.min(timeElapsed, duration),
-      startY,
-      distance,
-      duration,
+        Math.min(timeElapsed, duration),
+        startY,
+        distance,
+        duration,
     );
     window.scrollTo(0, run);
     if (timeElapsed < duration) {
@@ -1109,6 +1116,7 @@ function scrollToProjectSection() {
     }
   }
 
+  // Easing function
   function easeInOutQuad(t, b, c, d) {
     t /= d / 2;
     if (t < 1) return (c / 2) * t * t + b;
@@ -1121,12 +1129,12 @@ function scrollToProjectSection() {
 
 function toggleBookmark(project) {
   const exists = bookmarkedProjects.find(
-    (item) => normalizeProjectEntry(item).day === project.day,
+      (item) => normalizeProjectEntry(item).day === project.day,
   );
 
   if (exists) {
     bookmarkedProjects = bookmarkedProjects.filter(
-      (item) => normalizeProjectEntry(item).day !== project.day,
+        (item) => normalizeProjectEntry(item).day !== project.day,
     );
     showToast("Bookmark removed");
   } else {
@@ -1138,8 +1146,8 @@ function toggleBookmark(project) {
 
   try {
     localStorage.setItem(
-      "bookmarkedProjects",
-      JSON.stringify(bookmarkedProjects),
+        "bookmarkedProjects",
+        JSON.stringify(bookmarkedProjects),
     );
   } catch (error) {
     console.warn("Could not save bookmark due to localStorage restrictions");
@@ -1154,7 +1162,7 @@ function updateBookmarkURL() {
 
   if (bookmarkedProjects.length > 0) {
     const bookmarkIds = bookmarkedProjects.map(
-      (project) => normalizeProjectEntry(project).day,
+        (project) => normalizeProjectEntry(project).day,
     );
     url.searchParams.set("bookmarks", bookmarkIds.join(","));
   } else {
@@ -1173,12 +1181,12 @@ function loadBookmarksFromURL() {
   const bookmarkIds = bookmarkParam.split(",").map((id) => id.trim());
 
   bookmarkedProjects = PROJECTS.filter((project) =>
-    bookmarkIds.includes(project.day),
+      bookmarkIds.includes(project.day),
   );
 
   localStorage.setItem(
-    "bookmarkedProjects",
-    JSON.stringify(bookmarkedProjects),
+      "bookmarkedProjects",
+      JSON.stringify(bookmarkedProjects),
   );
 }
 
@@ -1221,7 +1229,7 @@ function trackRecentProject(project) {
     localStorage.setItem("recentProjects", JSON.stringify(recentProjects));
   } catch (error) {
     console.warn(
-      "Could not save recent projects due to localStorage restrictions",
+        "Could not save recent projects due to localStorage restrictions",
     );
   }
   renderRecentProjects();
@@ -1279,14 +1287,14 @@ function renderBookmarks() {
   const bookmarkToggleBtn = document.getElementById("bookmarkToggleBtn");
   if (bookmarkToggleBtn) {
     bookmarkToggleBtn.style.display =
-      bookmarkedProjects.length <= INITIAL_VISIBLE_ITEMS
-        ? "none"
-        : "inline-flex";
+        bookmarkedProjects.length <= INITIAL_VISIBLE_ITEMS
+            ? "none"
+            : "inline-flex";
   }
 
   const visibleBookmarks = showAllBookmarks
-    ? bookmarkedProjects
-    : bookmarkedProjects.slice(0, INITIAL_VISIBLE_ITEMS);
+      ? bookmarkedProjects
+      : bookmarkedProjects.slice(0, INITIAL_VISIBLE_ITEMS);
 
   visibleBookmarks.forEach((project) => {
     const { day, name, url, tags } = normalizeProjectEntry(project);
@@ -1306,8 +1314,8 @@ function renderBookmarks() {
 
     const card = document.createElement("div");
     card.className = sourceOnly
-      ? "project-card source-only visible"
-      : "project-card visible";
+        ? "project-card source-only visible"
+        : "project-card visible";
     card.innerHTML = html;
     card.setAttribute("tabindex", "0");
     card.setAttribute("role", "button");
@@ -1335,12 +1343,12 @@ function renderRecentProjects() {
   const recentToggleBtn = document.getElementById("recentToggleBtn");
   if (recentToggleBtn) {
     recentToggleBtn.style.display =
-      validRecent.length <= INITIAL_VISIBLE_ITEMS ? "none" : "inline-flex";
+        validRecent.length <= INITIAL_VISIBLE_ITEMS ? "none" : "inline-flex";
   }
 
   const visibleRecent = showAllRecent
-    ? validRecent
-    : validRecent.slice(0, INITIAL_VISIBLE_ITEMS);
+      ? validRecent
+      : validRecent.slice(0, INITIAL_VISIBLE_ITEMS);
 
   visibleRecent.forEach((projectObj) => {
     const day = projectObj.day || projectObj[0];
@@ -1350,7 +1358,7 @@ function renderRecentProjects() {
 
     const category = getCategoryFromTags(tags, name);
     const isBookmarked = bookmarkedProjects.some(
-      (item) => normalizeProjectEntry(item).day === day,
+        (item) => normalizeProjectEntry(item).day === day,
     );
 
     const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
@@ -1365,8 +1373,8 @@ function renderRecentProjects() {
 
     const card = document.createElement("div");
     card.className = sourceOnly
-      ? "project-card source-only visible"
-      : "project-card visible";
+        ? "project-card source-only visible"
+        : "project-card visible";
     card.innerHTML = html;
     card.setAttribute("tabindex", "0");
     card.setAttribute("role", "button");
@@ -1404,15 +1412,15 @@ if (copyBookmarksBtn) {
       return;
     }
     const textToCopy = bookmarkedProjects
-      .map((p) => {
-        const { day, name, url, tags } = normalizeProjectEntry(p);
-        const { demoUrl } = resolveProjectUrls(day, name, url, tags);
-        const projectLink = demoUrl.startsWith("http")
-          ? demoUrl
-          : new URL(demoUrl, window.location.href).href;
-        return `${name} - ${projectLink}`;
-      })
-      .join("\n");
+        .map((p) => {
+          const { day, name, url, tags } = normalizeProjectEntry(p);
+          const { demoUrl } = resolveProjectUrls(day, name, url, tags);
+          const projectLink = demoUrl.startsWith("http")
+              ? demoUrl
+              : new URL(demoUrl, window.location.href).href;
+          return `${name} - ${projectLink}`;
+        })
+        .join("\n");
 
     try {
       await navigator.clipboard.writeText(textToCopy);
@@ -1494,8 +1502,8 @@ function resetAllFilters() {
   const chips = document.querySelectorAll(".chip[data-filter]");
   chips.forEach((c) => c.classList.remove("active"));
   const allChip =
-    document.getElementById("filterAll") ||
-    document.querySelector('.chip[data-filter="all"]');
+      document.getElementById("filterAll") ||
+      document.querySelector('.chip[data-filter="all"]');
   if (allChip) allChip.classList.add("active");
   activeFilter = "all";
 
@@ -1574,12 +1582,12 @@ function initSearch() {
   if (!input) return;
 
   input.addEventListener(
-    "input",
-    debounce(() => {
-      searchQuery = input.value.trim();
-      currentPage = 1;
-      renderGrid();
-    }, 180),
+      "input",
+      debounce(() => {
+        searchQuery = input.value.trim();
+        currentPage = 1;
+        renderGrid();
+      }, 180),
   );
 
   const techStack = document.getElementById("techStackFilter");
@@ -1622,20 +1630,20 @@ function initTechStackSearch() {
   if (!input) return;
 
   input.addEventListener(
-    "input",
-    debounce((e) => {
-      const value = e.target.value.trim().toLowerCase();
+      "input",
+      debounce((e) => {
+        const value = e.target.value.trim().toLowerCase();
 
-      if (value) {
-        const techs = value.split(/[,\s]+/).filter((t) => t.length > 0);
-        techStackFilters = [...new Set(techs)];
-        updateTechFilterDisplay();
-        currentPage = 1;
-        renderGrid();
-      } else {
-        clearAllTechFilters();
-      }
-    }, 300),
+        if (value) {
+          const techs = value.split(/[,\s]+/).filter((t) => t.length > 0);
+          techStackFilters = [...new Set(techs)];
+          updateTechFilterDisplay();
+          currentPage = 1;
+          renderGrid();
+        } else {
+          clearAllTechFilters();
+        }
+      }, 300),
   );
 
   if (clearBtn) {
@@ -1671,7 +1679,7 @@ function updateCategoryCounts(projects = PROJECTS) {
     const tags = project.techStack;
     const category = getCategoryFromTags(tags, name);
     const filterKey = Object.keys(FILTER_CATEGORY_MAP).find(
-      (key) => FILTER_CATEGORY_MAP[key] === category,
+        (key) => FILTER_CATEGORY_MAP[key] === category,
     );
     if (filterKey && filterKey !== "all") {
       counts[filterKey]++;
@@ -1699,11 +1707,11 @@ function syncProjectCounts() {
   if (searchQuery) {
     const q = searchQuery.toLowerCase();
     filtered = filtered.filter(
-      (project) =>
-        project.projectName.toLowerCase().includes(q) ||
-        (project.projectDesc || "").toLowerCase().includes(q) ||
-        project.day.toLowerCase().includes(q) ||
-        (Array.isArray(project.techStack) ? project.techStack.join(" ") : project.techStack || "").toLowerCase().includes(q),
+        (project) =>
+            project.projectName.toLowerCase().includes(q) ||
+            (project.projectDesc || "").toLowerCase().includes(q) ||
+            project.day.toLowerCase().includes(q) ||
+            (Array.isArray(project.techStack) ? project.techStack.join(" ") : project.techStack || "").toLowerCase().includes(q),
     );
   }
 
@@ -1765,7 +1773,7 @@ function initScrollBtn() {
   const updateScrollProgress = () => {
     const scrollTop = window.scrollY;
     const docHeight =
-      document.documentElement.scrollHeight - window.innerHeight;
+        document.documentElement.scrollHeight - window.innerHeight;
     const progress = docHeight > 0 ? scrollTop / docHeight : 0;
 
     btn.classList.toggle("show", scrollTop > 400);
@@ -1800,10 +1808,10 @@ function initScrollBtn() {
 
 function initCurrentYear() {
   document
-    .querySelectorAll("[data-current-year], #Current-Year")
-    .forEach((node) => {
-      node.textContent = new Date().getFullYear();
-    });
+      .querySelectorAll("[data-current-year], #Current-Year")
+      .forEach((node) => {
+        node.textContent = new Date().getFullYear();
+      });
 }
 
 /* ============================================================
@@ -1814,79 +1822,51 @@ function hasProjectGrid() {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
-  readStateFromURL();
-
   initTheme();
   updateNavbar();
   initScrollBtn();
+  initCurrentYear();
+
   fetchRepoStats();
 
-  initCurrentYear();
-  initFilterChips();
-  initSearch();
-  initSorting();
-  initTechStackSearch();
-  initClearAllFilters();
-
-  updateGamifiedUI();
-
-  try {
-    await loadProjects();
+  if (hasProjectGrid()) {
+    readStateFromURL();
+    initFilterChips();
+    initSearch();
+    initSorting();
+    initTechStackSearch();
+    initClearAllFilters();
 
     updateGamifiedUI();
 
-    syncProjectCounts();
-
-    if (hasProjectGrid()) {
+    try {
+      await loadProjects();
+      updateGamifiedUI();
       loadBookmarksFromURL();
-
       renderGrid();
       renderBookmarks();
       renderRecentProjects();
+    } catch (error) {
+      console.error("Failed to load projects:", error);
+      const grid = document.getElementById("projectGrid");
+      if (grid) {
+        grid.innerHTML = `
+          <div class="error-message" style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--text-muted);">
+            Failed to load projects. Please try refreshing the page.
+          </div>
+        `;
+      }
     }
 
-    restoreStateFromURL();
-
-    syncProjectCounts();
-    fetchRepoStats();
-    initScrollBtn();
-  } catch (error) {
-    console.error("Failed to load projects:", error);
-
-    const grid = document.getElementById("projectGrid");
-
-    if (grid) {
-      grid.innerHTML = `
-        <div class="error-message" style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--text-muted);">
-          Failed to load projects. Please try refreshing the page.
-        </div>
-      `;
-    }
-  }
-
-  const searchInput =
-    document.getElementById("search") ||
-    document.querySelector('input[type="text"]') ||
-    document.querySelector(".search-input");
-  if (searchInput) {
-    searchInput.addEventListener(
-      "input",
-      debounce(() => {
-        const { category } = getQueryParams();
-        updateURL(searchInput.value, category);
-        applyFilters(searchInput.value, category);
-      }, 200),
-    );
-  }
-  const categoryFilter = document.getElementById("category");
-  if (categoryFilter) {
-    categoryFilter.addEventListener("change", () => {
-      const { search } = getQueryParams();
-      updateURL(search, categoryFilter.value);
-      applyFilters(search, categoryFilter.value);
+    window.addEventListener("popstate", () => {
+      readStateFromURL();
+      const chips = document.querySelectorAll(".chip[data-filter]");
+      chips.forEach((chip) => {
+        chip.classList.toggle("active", chip.dataset.filter === activeFilter);
+      });
+      renderGrid();
     });
   }
-  window.addEventListener("popstate", () => restoreStateFromURL());
 });
 
 (() => {
@@ -1936,9 +1916,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     navButtons.addEventListener("click", (e) => {
       if (
-        e.target.closest(".btn") ||
-        e.target.closest("a") ||
-        e.target.closest("button")
+          e.target.closest(".btn") ||
+          e.target.closest("a") ||
+          e.target.closest("button")
       ) {
         closeMenu();
       }
@@ -1993,7 +1973,7 @@ initTheme();
     } catch (_) {}
     const coarsePointer = window.matchMedia("(pointer: coarse)").matches;
     const prefersReducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
+        "(prefers-reduced-motion: reduce)",
     ).matches;
     return cursorEnabled && !coarsePointer && !prefersReducedMotion;
   };
@@ -2038,17 +2018,17 @@ initTheme();
   };
 
   window.addEventListener(
-    "mousemove",
-    (event) => {
-      target.x = event.clientX;
-      target.y = event.clientY;
-      if (isKeyboardNavigating) {
-        isKeyboardNavigating = false;
-        updateCursorActivationState();
-      }
-      showCursor();
-    },
-    { passive: true },
+      "mousemove",
+      (event) => {
+        target.x = event.clientX;
+        target.y = event.clientY;
+        if (isKeyboardNavigating) {
+          isKeyboardNavigating = false;
+          updateCursorActivationState();
+        }
+        showCursor();
+      },
+      { passive: true },
   );
 
   window.addEventListener("mouseleave", hideCursor);
@@ -2062,7 +2042,7 @@ initTheme();
   });
 
   const reducedMotionQuery = window.matchMedia(
-    "(prefers-reduced-motion: reduce)",
+      "(prefers-reduced-motion: reduce)",
   );
   const coarsePointerQuery = window.matchMedia("(pointer: coarse)");
 
@@ -2079,7 +2059,7 @@ initTheme();
   }
 
   const hoverTargets =
-    'a, button, [role="button"], input, select, .chip, .project-card, .bookmark-btn';
+      'a, button, [role="button"], input, select, .chip, .project-card, .bookmark-btn';
 
   document.addEventListener("mouseover", (e) => {
     if (!getActivationState() || isKeyboardNavigating) return;
@@ -2116,7 +2096,7 @@ initTheme();
   if (!ctx) return;
 
   const reducedMotionQuery = window.matchMedia(
-    "(prefers-reduced-motion: reduce)",
+      "(prefers-reduced-motion: reduce)",
   );
   const coarsePointerQuery = window.matchMedia("(pointer: coarse)");
   const palette = [220, 250, 280];
@@ -2165,11 +2145,11 @@ initTheme();
     canvas.style.height = `${H}px`;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     particleCount = Math.min(
-      profile.maxParticles,
-      Math.max(
-        profile.minParticles,
-        Math.round((W * H) / profile.areaPerParticle),
-      ),
+        profile.maxParticles,
+        Math.max(
+            profile.minParticles,
+            Math.round((W * H) / profile.areaPerParticle),
+        ),
     );
     linkDistance = profile.linkDistance;
     maxDistanceSq = linkDistance * linkDistance;
@@ -2309,83 +2289,6 @@ initTheme();
 
 // =============================================
 
-function getQueryParams() {
-  const params = new URLSearchParams(window.location.search);
-  return {
-    search: params.get("search") || "",
-    category: params.get("category") || "all",
-  };
-}
 
-function updateURL(search, category) {
-  const params = new URLSearchParams();
-  if (search) params.set("search", search);
-  if (category && category !== "all") params.set("category", category);
-  const newURL = params.toString()
-    ? `${window.location.pathname}?${params.toString()}`
-    : window.location.pathname;
-  history.pushState({ search, category }, "", newURL);
-}
 
-function restoreStateFromURL() {
-  const { search, category } = getQueryParams();
-  const searchInput =
-    document.getElementById("searchInput") ||
-    document.querySelector('input[type="text"]') ||
-    document.querySelector(".search-input");
-  if (searchInput && search) searchInput.value = search;
-  const categoryFilter = document.getElementById("category");
-  if (categoryFilter && category !== "all") categoryFilter.value = category;
-  if (search || category !== "all") applyFilters(search, category);
-}
-
-function applyFilters(search, category) {
-  searchQuery = search || "";
-  activeFilter = category || "all";
-  currentPage = 1;
-
-  const chips = document.querySelectorAll(".chip[data-filter]");
-  chips.forEach((chip) => {
-    if (chip.dataset.filter === activeFilter) {
-      chip.classList.add("active");
-    } else {
-      chip.classList.remove("active");
-    }
-  });
-
-  renderGrid();
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  const searchInput =
-    document.getElementById("search") ||
-    document.querySelector('input[type="text"]') ||
-    document.querySelector(".search-input");
-  if (searchInput) {
-    searchInput.addEventListener(
-      "input",
-      debounce(() => {
-        const { category } = getQueryParams();
-        updateURL(searchInput.value, category);
-        applyFilters(searchInput.value, category);
-      }, 200),
-    );
-  }
-  const categoryFilter = document.getElementById("category");
-  if (categoryFilter) {
-    categoryFilter.addEventListener("change", () => {
-      const { search } = getQueryParams();
-      updateURL(search, categoryFilter.value);
-      applyFilters(search, categoryFilter.value);
-    });
-  }
-  window.addEventListener("popstate", () => restoreStateFromURL());
-});
-document
-  .getElementById(
-    "randomProjectBtn"
-  )
-  ?.addEventListener(
-    "click",
-    renderRandomProject
-  );
+document.getElementById("randomProjectBtn")?.addEventListener("click", renderRandomProject);
