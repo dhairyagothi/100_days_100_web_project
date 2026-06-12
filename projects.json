@@ -484,15 +484,16 @@
   },
   {
     "projectNo": 42,
-    "projectName": "Amazon App",
+    "projectName": "Amazon Clone",
     "projectType": "Clone",
     "projectDesc": "Frontend clone inspired by Amazon layouts and shopping interfaces.",
     "techStack": [
       "clone",
-      "javascript"
+      "HTML",
+      "CSS"
     ],
     "difficulty": "intermediate",
-    "projectPath": "./public/Amazon_Clone/index.html"
+    "projectPath": "./public/AmazonClone/index.html"
   },
   {
     "projectNo": 43,
@@ -634,7 +635,7 @@
       "javascript"
     ],
     "difficulty": "intermediate",
-    "projectPath": "./public/Budget%20Tracker/index.html"
+    "projectPath": "./public/Budget_Tracker/index.html"
   },
   {
     "projectNo": 55,
@@ -750,7 +751,7 @@
       "css"
     ],
     "difficulty": "beginner",
-    "projectPath": "./public/zomato-clone/zomato.html"
+    "projectPath": "./public/zomato-clone/index.html"
   },
   {
     "projectNo": 65,
@@ -928,7 +929,7 @@
     "projectNo": 79,
     "projectName": "Linkedin Homepage Clone",
     "projectType": "Clone",
-    "projectDesc": "Frontend recreation of LinkedIn’s homepage structure and styling.",
+    "projectDesc": "Frontend recreation of LinkedIn\u2019s homepage structure and styling.",
     "techStack": [
       "clone",
       "css"
@@ -1167,7 +1168,7 @@
     "projectNo": 99,
     "projectName": "NASA-APOD Extension",
     "projectType": "API",
-    "projectDesc": "Displays NASA’s Astronomy Picture of the Day automatically.",
+    "projectDesc": "Displays NASA\u2019s Astronomy Picture of the Day automatically.",
     "techStack": [
       "api",
       "javascript"
@@ -1419,7 +1420,7 @@
       "js"
     ],
     "difficulty": "intermediate",
-    "projectPath": "./public/code-visualizer-playground/index.html"
+    "projectPath": "./public/virtual-playground/index.html"
   },
   {
     "projectNo": 120,
@@ -1508,6 +1509,18 @@
   },
   {
     "projectNo": 127,
+    "projectName": "Particle Wave Animation",
+    "projectType": "UI",
+    "projectDesc": "Animated wave effects created through particle systems and motion.",
+    "techStack": [
+      "css",
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/particle-wave-animation/index.html"
+  },
+  {
+    "projectNo": 128,
     "projectName": "Reaction Time Test",
     "projectType": "Game",
     "projectDesc": "Measures how quickly users respond to visual prompts interactively.",
@@ -1523,7 +1536,7 @@
     "projectPath": "./public/reaction-time-tester/main.html"
   },
   {
-    "projectNo": 128,
+    "projectNo": 129,
     "projectName": "YouTube Clone",
     "projectType": "Clone",
     "projectDesc": "Frontend recreation of YouTube layouts including navigation and content sections.",
@@ -1535,7 +1548,7 @@
     "projectPath": "./public/youtube clone/index.html"
   },
   {
-    "projectNo": 129,
+    "projectNo": 130,
     "projectName": "Dino Game",
     "projectType": "Game",
     "projectDesc": "Endless runner inspired by the offline Chrome dinosaur game.",
@@ -1547,7 +1560,7 @@
     "projectPath": "./public/DinoGame/DinoGame-main/index.html"
   },
   {
-    "projectNo": 130,
+    "projectNo": 131,
     "projectName": "Retro Highway Racer",
     "projectType": "Game",
     "projectDesc": "Retro-style racing game featuring speed and obstacle navigation.",
@@ -1559,10 +1572,10 @@
     "projectPath": "./public/RetroHighwayRacer/index.html"
   },
   {
-    "projectNo": 131,
+    "projectNo": 132,
     "projectName": "Pokedex",
     "projectType": "Tool",
-    "projectDesc": "Browse Pokémon information through an interactive Pokédex interface.",
+    "projectDesc": "Browse Pok\u00e9mon information through an interactive Pok\u00e9dex interface.",
     "techStack": [
       "utility"
     ],
@@ -1570,7 +1583,7 @@
     "projectPath": "./public/Pokedex/index.html"
   },
   {
-    "projectNo": 132,
+    "projectNo": 133,
     "projectName": "Stock Market Simulator",
     "projectType": "Simulation",
     "projectDesc": "Simulate investment decisions and market behaviors without real risk.",
@@ -1581,7 +1594,7 @@
     "projectPath": "./public/stock-market-simulator/index.html"
   },
   {
-    "projectNo": 133,
+    "projectNo": 134,
     "projectName": "Coin Scratch",
     "projectType": "Game",
     "projectDesc": "Interactive scratch-card experience with satisfying reveal mechanics.",
@@ -1593,7 +1606,7 @@
     "projectPath": "./public/Coin Scratch/index.html"
   },
   {
-    "projectNo": 134,
+    "projectNo": 135,
     "projectName": "Shooting game",
     "projectType": "Game",
     "projectDesc": "Action game involving aiming, shooting and score progression.",
@@ -1605,7 +1618,7 @@
     "projectPath": "./public/shooting game/index.html"
   },
   {
-    "projectNo": 135,
+    "projectNo": 136,
     "projectName": "Sudoku Solver",
     "projectType": "Game",
     "projectDesc": "Automatically solves Sudoku puzzles while demonstrating algorithmic reasoning.",
@@ -1617,7 +1630,7 @@
     "projectPath": "./public/sudoku-solver/index.html"
   },
   {
-    "projectNo": 136,
+    "projectNo": 137,
     "projectName": "Maths Quiz Game",
     "projectType": "Game",
     "projectDesc": "Interactive quiz testing mathematical knowledge under game-like conditions.",
@@ -1629,7 +1642,7 @@
     "projectPath": "./public/maths-quiz-game/index.html"
   },
   {
-    "projectNo": 137,
+    "projectNo": 138,
     "projectName": "Age Calculator",
     "projectType": "Tool",
     "projectDesc": "Calculates age instantly from user-entered birth dates.",
@@ -1641,7 +1654,7 @@
     "projectPath": "./public/age-calculator/index.html"
   },
   {
-    "projectNo": 138,
+    "projectNo": 139,
     "projectName": "Ludo game",
     "projectType": "Game",
     "projectDesc": "Digital version of the classic Ludo board game with turn-based mechanics.",
@@ -1654,7 +1667,7 @@
     "projectPath": "./public/Ludo-game/index.html"
   },
   {
-    "projectNo": 139,
+    "projectNo": 140,
     "projectName": "Big Sales Prediction",
     "projectType": "AI",
     "projectDesc": "Machine learning project predicting sales trends from input data.",
@@ -1668,7 +1681,7 @@
     "projectPath": "./public/BigSales-Prediction/frontend/index.html"
   },
   {
-    "projectNo": 140,
+    "projectNo": 141,
     "projectName": "Dice Roller",
     "projectType": "Tool",
     "projectDesc": "Virtual dice simulator generating random outcomes instantly.",
@@ -1681,7 +1694,7 @@
     "projectPath": "./public/Dice-Roller/main.html"
   },
   {
-    "projectNo": 141,
+    "projectNo": 142,
     "projectName": "Geo Guesser game",
     "projectType": "Game",
     "projectDesc": "Location guessing challenge testing geographical knowledge interactively.",
@@ -1693,7 +1706,7 @@
     "projectPath": "./public/geo-guesser/index.html"
   },
   {
-    "projectNo": 142,
+    "projectNo": 143,
     "projectName": "Morse Code Translator",
     "projectType": "Tool",
     "projectDesc": "Convert text into Morse code and decode messages seamlessly.",
@@ -1706,7 +1719,7 @@
     "projectPath": "./public/MorseCodeTranslator/index.html"
   },
   {
-    "projectNo": 143,
+    "projectNo": 144,
     "projectName": "Car Racing game",
     "projectType": "Game",
     "projectDesc": "Fast-paced racing experience with movement controls and obstacles.",
@@ -1719,7 +1732,7 @@
     "projectPath": "./public/racing game/index.html"
   },
   {
-    "projectNo": 144,
+    "projectNo": 145,
     "projectName": "Magic 8 Ball",
     "projectType": "Simulation",
     "projectDesc": "Digital version of the classic prediction toy offering random responses.",
@@ -1733,7 +1746,7 @@
     "projectPath": "./public/magic-8ball/main.html"
   },
   {
-    "projectNo": 145,
+    "projectNo": 146,
     "projectName": "Data Structures Visualizer",
     "projectType": "Tool",
     "projectDesc": "Visual representation of data structures and their operations. Useful for understanding algorithms conceptually.",
@@ -1744,7 +1757,7 @@
     "projectPath": "./public/Data Structures Visualizer/index.html"
   },
   {
-    "projectNo": 146,
+    "projectNo": 147,
     "projectName": "Chronosphere",
     "projectType": "Game",
     "projectDesc": "Time-themed interactive experience with dynamic gameplay mechanics.",
@@ -1756,7 +1769,7 @@
     "projectPath": "./public/Chronosphere/index.html"
   },
   {
-    "projectNo": 147,
+    "projectNo": 148,
     "projectName": "Contest Tracker",
     "projectType": "Tool",
     "projectDesc": "Track coding contests and upcoming competitive programming events efficiently.",
@@ -1768,7 +1781,7 @@
     "projectPath": "./public/ContestTracker/index.html"
   },
   {
-    "projectNo": 148,
+    "projectNo": 149,
     "projectName": "GitHub Profile Battle",
     "projectType": "Tool",
     "projectDesc": "Compare GitHub profiles using metrics and statistics interactively.",
@@ -1780,7 +1793,7 @@
     "projectPath": "./public/Github-Profile-Battle/index.html"
   },
   {
-    "projectNo": 149,
+    "projectNo": 150,
     "projectName": "App Privacy Policy Generator",
     "projectType": "Tool",
     "projectDesc": "Generate privacy policies for applications through structured inputs.",
@@ -1792,7 +1805,7 @@
     "projectPath": "./public/AppPrivacyPolicyGenerator/index.html"
   },
   {
-    "projectNo": 150,
+    "projectNo": 151,
     "projectName": "Mini Carrom Game",
     "projectType": "Game",
     "projectDesc": "Digital carrom simulation recreating board-game mechanics interactively.",
@@ -1805,7 +1818,7 @@
     "projectPath": "./public/mini carrom/index.html"
   },
   {
-    "projectNo": 151,
+    "projectNo": 152,
     "projectName": "Physics Ball Simulation",
     "projectType": "Simulation",
     "projectDesc": "Ball movement simulation demonstrating gravity and physical interactions.",
@@ -1819,7 +1832,7 @@
     "projectPath": "./public/PhysicsBallSimulation/index.html"
   },
   {
-    "projectNo": 152,
+    "projectNo": 153,
     "projectName": "Material3 Showcase",
     "projectType": "UI",
     "projectDesc": "Collection of Material Design inspired UI components and interactions.",
@@ -1831,7 +1844,7 @@
     "projectPath": "./public/Material3Showcase/index.html"
   },
   {
-    "projectNo": 153,
+    "projectNo": 154,
     "projectName": "FocusRoom",
     "projectType": "Productivity",
     "projectDesc": "Productivity environment designed to support concentration and task completion.",
@@ -1848,7 +1861,23 @@
     "projectPath": "./public/FocusRoom/index.html"
   },
   {
-    "projectNo": 154,
+    "projectNo": 155,
+    "projectName": "Hangman Game (React TS)",
+    "projectType": "Game",
+    "projectDesc": "Advanced Hangman implementation using React and TypeScript architecture.",
+    "techStack": [
+      "tool",
+      "react",
+      "typescript",
+      "game",
+      "hangman",
+      "vite"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/hangman-react-ts/HangmanGame/index.html"
+  },
+  {
+    "projectNo": 156,
     "projectName": "Placement Predictor",
     "projectType": "Tool",
     "projectDesc": "Predicts placement possibilities using user-provided academic information.",
@@ -1862,7 +1891,7 @@
     "projectPath": "./public/Placement-Predictor/index.html"
   },
   {
-    "projectNo": 155,
+    "projectNo": 157,
     "projectName": "Map Route Tracker",
     "projectType": "Tool",
     "projectDesc": "Visualize routes and track paths using interactive map elements.",
@@ -1876,7 +1905,7 @@
     "projectPath": "./public/Vector-Map-Route-Tracer/index.html"
   },
   {
-    "projectNo": 156,
+    "projectNo": 158,
     "projectName": "GitHub Promo Maker",
     "projectType": "Tool",
     "projectDesc": "Create promotional GitHub banners or visuals quickly.",
@@ -1890,7 +1919,7 @@
     "projectPath": "./public/GitHubPromoMaker/index.html"
   },
   {
-    "projectNo": 157,
+    "projectNo": 159,
     "projectName": "Dining Philosophers Simulation",
     "projectType": "Simulation",
     "projectDesc": "Simulation of the classic synchronization problem in computer science.",
@@ -1903,7 +1932,7 @@
     "projectPath": "./public/Dining Philosophers Simulation/index.html"
   },
   {
-    "projectNo": 158,
+    "projectNo": 160,
     "projectName": "Website Personalizer",
     "projectType": "Tool",
     "projectDesc": "Customize website appearance and behavior through user preferences dynamically.",
@@ -1917,7 +1946,7 @@
     "projectPath": "./public/WebsitePersonalizer/index.html"
   },
   {
-    "projectNo": 159,
+    "projectNo": 161,
     "projectName": "Unit-Converter",
     "projectType": "Tool",
     "projectDesc": "Convert values between different measurement units instantly and accurately.",
@@ -1931,7 +1960,7 @@
     "projectPath": "./public/Unit-Converter/index.html"
   },
   {
-    "projectNo": 160,
+    "projectNo": 162,
     "projectName": "Color Palette From Art Generator",
     "projectType": "Tool",
     "projectDesc": "Generate color palettes automatically from artwork or uploaded images.",
@@ -1945,7 +1974,7 @@
     "projectPath": "./public/ColorPaletteArtGenerator/index.html"
   },
   {
-    "projectNo": 161,
+    "projectNo": 163,
     "projectName": "Ai Image Editor",
     "projectType": "AI",
     "projectDesc": "AI-powered image editing interface supporting visual transformations and enhancements.",
@@ -1957,8 +1986,22 @@
     "projectPath": "./public/image-editor/index.html"
   },
   {
-    "projectNo": 162,
-    "projectName": "Amazon Clone",
+    "projectNo": 164,
+    "projectName": "Code Visualizer Playground",
+    "projectType": "Tool",
+    "projectDesc": "Interactive environment for visualizing code execution and understanding logic flow.",
+    "techStack": [
+      "tool",
+      "javascript",
+      "html",
+      "css"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/code-visualizer-playground/index.html"
+  },
+  {
+    "projectNo": 165,
+    "projectName": "Amazon App",
     "projectType": "Clone",
     "projectDesc": "Frontend clone inspired by Amazon with shopping UI and responsive layouts.",
     "techStack": [
@@ -1970,10 +2013,10 @@
       "JavaScript"
     ],
     "difficulty": "beginner",
-    "projectPath": "./public/New-AmazonClone/index.html"
+    "projectPath": "./public/Amazon-App/index.html"
   },
   {
-    "projectNo": 163,
+    "projectNo": 166,
     "projectName": "Bordom Buster",
     "projectType": "Tool",
     "projectDesc": "Suggests activities and interactive ideas to overcome boredom quickly.",
@@ -1987,7 +2030,7 @@
     "projectPath": "./public/BordemBuster/index.html"
   },
   {
-    "projectNo": 164,
+    "projectNo": 167,
     "projectName": "scam-sms-detector",
     "projectType": "AI",
     "projectDesc": "Detect suspicious or scam-like SMS messages using classification techniques.",
@@ -2000,7 +2043,7 @@
     "projectPath": "./public/scam-sms-detector/index.html"
   },
   {
-    "projectNo": 165,
+    "projectNo": 168,
     "projectName": "Color Sort Puzzle game",
     "projectType": "Game",
     "projectDesc": "Puzzle game requiring players to organize colors strategically.",
@@ -2014,7 +2057,7 @@
     "projectPath": "./public/color%20sort%20puzzle/index.html"
   },
   {
-    "projectNo": 166,
+    "projectNo": 169,
     "projectName": "Subscription Tracker",
     "projectType": "Tool",
     "projectDesc": "Track subscriptions, expenses and renewal dates efficiently.",
@@ -2029,7 +2072,7 @@
     "projectPath": "./public/subscriptiontracker/tracker.html"
   },
   {
-    "projectNo": 167,
+    "projectNo": 170,
     "projectName": "Vector Flowchart Designer",
     "projectType": "Tool",
     "projectDesc": "Create and edit flowcharts visually through vector-based interactions.",
@@ -2043,7 +2086,7 @@
     "projectPath": "./public/VectorFlowchartDesigner/index.html"
   },
   {
-    "projectNo": 168,
+    "projectNo": 171,
     "projectName": "Glyph Pattern Maker",
     "projectType": "Tool",
     "projectDesc": "Generate creative glyphs and pattern combinations interactively.",
@@ -2057,7 +2100,7 @@
     "projectPath": "./public/GlyphPatternMaker/index.html"
   },
   {
-    "projectNo": 169,
+    "projectNo": 172,
     "projectName": "PlaceMate",
     "projectType": "Tool",
     "projectDesc": "Utility designed to assist with locations, placement or organizational tasks.",
@@ -2071,7 +2114,7 @@
     "projectPath": "./public/PlaceMate/index.html"
   },
   {
-    "projectNo": 170,
+    "projectNo": 173,
     "projectName": "AI-Resume-Analyzer",
     "projectType": "AI",
     "projectDesc": "Analyze resumes using AI techniques and provide structured feedback.",
@@ -2085,7 +2128,7 @@
     "projectPath": "./public/AI-Resume-Analyser/index.html"
   },
   {
-    "projectNo": 171,
+    "projectNo": 174,
     "projectName": "Smart Expense Splitter",
     "projectType": "Tool",
     "projectDesc": "Split shared expenses automatically and simplify cost calculations.",
@@ -2099,7 +2142,7 @@
     "projectPath": "./public/SpendSense/index.html"
   },
   {
-    "projectNo": 172,
+    "projectNo": 175,
     "projectName": "Dev Portfolio Generator",
     "projectType": "Tool",
     "projectDesc": "Generate developer portfolio layouts quickly from structured inputs.",
@@ -2113,7 +2156,7 @@
     "projectPath": "./public/Developer portfolio/index.html"
   },
   {
-    "projectNo": 173,
+    "projectNo": 176,
     "projectName": "AI Story Generator",
     "projectType": "AI",
     "projectDesc": "Generate creative stories automatically using AI-assisted text generation.",
@@ -2127,7 +2170,21 @@
     "projectPath": "./public/story/main.html"
   },
   {
-    "projectNo": 174,
+    "projectNo": 177,
+    "projectName": "Interview Prep Hub",
+    "projectType": "Tool",
+    "projectDesc": "Centralized platform for interview preparation resources and practice tools.",
+    "techStack": [
+      "tool",
+      "javascript",
+      "html",
+      "css"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/interview-prep-hub/index.html"
+  },
+  {
+    "projectNo": 178,
     "projectName": "Plane Take Off Simulation",
     "projectType": "Animation",
     "projectDesc": "Interactive airplane take-off simulation built using pure HTML and CSS animations without JavaScript.",
@@ -2141,7 +2198,7 @@
     "projectPath": "./public/Plane Take Off Simulation/index.html"
   },
   {
-    "projectNo": 175,
+    "projectNo": 179,
     "projectName": "Cyber Type Battle",
     "projectType": "Game",
     "projectDesc": "Fast-paced cyber typing battle game with arcade-style gameplay.",
@@ -2155,7 +2212,7 @@
     "projectPath": "./public/CYBER TYPE BATTLE/index.html"
   },
   {
-    "projectNo": 176,
+    "projectNo": 180,
     "projectName": "RouteMaster",
     "projectType": "Tool",
     "projectDesc": "Interactive route navigation and map tracking project with multiple navigation views and map interfaces.",
@@ -2169,7 +2226,7 @@
     "projectPath": "./public/RouteMaster/index.html"
   },
   {
-    "projectNo": 177,
+    "projectNo": 181,
     "projectName": "Aahar Share",
     "projectType": "Tool",
     "projectDesc": "A platform where surplus food can be accessed by those who require it.",
@@ -2183,7 +2240,7 @@
     "projectPath": "./public/Share_Byte/index.html"
   },
   {
-    "projectNo": 178,
+    "projectNo": 182,
     "projectName": "Code Execution Visualizer",
     "projectType": "Tool",
     "projectDesc": "Premium interactive visualizer to simulate C++ execution with step-by-step memory, stack, loop, sorting, and recursion insights.",
@@ -2199,7 +2256,7 @@
     "projectPath": "./public/code-execution-visualizer/index.html"
   },
   {
-    "projectNo": 179,
+    "projectNo": 183,
     "projectName": "LeetCode Progress Tracker",
     "projectType": "Tool",
     "projectDesc": "Track solved LeetCode problems, coding streaks, difficulty-wise progress and coding analytics through an interactive dashboard.",
@@ -2214,7 +2271,7 @@
     "projectPath": "./public/leetcode-progress-tracker/index.html"
   },
   {
-    "projectNo": 180,
+    "projectNo": 184,
     "projectName": "Minesweeper",
     "projectType": "Game",
     "projectDesc": "Classic Minesweeper game with a modern twist.",
@@ -2228,9 +2285,9 @@
     "projectPath": "./public/Minesweeper/index.html"
   },
   {
-    "projectNo": 181,
+    "projectNo": 185,
     "projectName": "GitHub Repository Analyser",
-    "projectType": "tool",
+    "projectType": "Tool",
     "projectDesc": "A modern tool to quickly analyse a github repo , provides detail stats about repo.",
     "techStack": [
       "tool",
@@ -2242,7 +2299,21 @@
     "projectPath": "./public/github-repository-analyser/index.html"
   },
   {
-    "projectNo": 182,
+    "projectNo": 186,
+    "projectName": "Multi-Track Video and Audio Editor",
+    "projectType": "Tool",
+    "projectDesc": "A browser-native media sequencer featuring multi-track composition, real-time clip trimming, transform controls, and high-performance canvas rendering.",
+    "techStack": [
+      "tool",
+      "html",
+      "css",
+      "javascript"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/canvas_multitrack_sequencer/index.html"
+  },
+  {
+    "projectNo": 187,
     "projectName": "Image Compressor Web App",
     "projectType": "Tool",
     "projectDesc": "Modern utility app to compress and optimize images directly in the browser with beautiful glassmorphism UI.",
@@ -2257,7 +2328,7 @@
     "projectPath": "./public/ImageCompressor/index.html"
   },
   {
-    "projectNo": 183,
+    "projectNo": 188,
     "projectName": "Leetcode Streak Visualizer",
     "projectType": "Tool",
     "projectDesc": "A web based tool to compare between 2 leetcode users. Uses Battery Like UI to compare and show stats.",
@@ -2271,7 +2342,7 @@
     "projectPath": "./public/Streak-Visualizer/index.html"
   },
   {
-    "projectNo": 184,
+    "projectNo": 189,
     "projectName": "PeerRTC Video Chat",
     "projectType": "Tool",
     "projectDesc": "Advanced Peer-to-Peer video conferencing app using WebRTC and PeerJS with screen sharing and media controls.",
@@ -2286,9 +2357,9 @@
     "projectPath": "./public/webrtc-video-chat/index.html"
   },
   {
-    "projectNo": 185,
+    "projectNo": 190,
     "projectName": "Endless train game",
-    "projectType": "game",
+    "projectType": "Game",
     "projectDesc": "A game with train moving on rails and switching tails and earning coins.",
     "techStack": [
       "html",
@@ -2299,7 +2370,7 @@
     "projectPath": "./public/endless_train_game/index.html"
   },
   {
-    "projectNo": 186,
+    "projectNo": 191,
     "projectName": "Saturn Particle Gesture",
     "projectType": "Animation",
     "projectDesc": "Interactive space visualization rendering a Saturn-like planet using 3000+ dynamic particles, controlled via real-time hand gesture recognition using webcam and MediaPipe.",
@@ -2315,7 +2386,21 @@
     "projectPath": "./public/Planet_gesture_formation/index.html"
   },
   {
-    "projectNo": 187,
+    "projectNo": 192,
+    "projectName": "Interactive Story Player",
+    "projectType": "UI",
+    "projectDesc": "A dynamic, choice-driven storytelling application where users shape their own narrative paths.",
+    "techStack": [
+      "ui",
+      "html",
+      "css",
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/story/story.html"
+  },
+  {
+    "projectNo": 193,
     "projectName": "Escape Room",
     "projectType": "Game",
     "projectDesc": "A thrilling escape room experience in your browser.",
@@ -2328,7 +2413,7 @@
     "projectPath": "./public/Escape_Room/index.html"
   },
   {
-    "projectNo": 188,
+    "projectNo": 194,
     "projectName": "Lost & Found Portal",
     "projectType": "Website",
     "projectDesc": "A modern web application to report lost items, report found items, browse listings, and contact item owners.",
@@ -2341,9 +2426,9 @@
     "projectPath": "./public/Lost_And_Found_Portal/index.html"
   },
   {
-    "projectNo": 189,
+    "projectNo": 195,
     "projectName": "Complaint Management System",
-    "projectType": "Web Application",
+    "projectType": "Tool",
     "projectDesc": "A professional portal for submitting, tracking, and managing complaints efficiently with a premium modern UI.",
     "techStack": [
       "html",
@@ -2354,7 +2439,7 @@
     "projectPath": "./public/Complaint_Management_System/index.html"
   },
   {
-    "projectNo": 190,
+    "projectNo": 196,
     "projectName": "AirCast",
     "projectType": "Tool",
     "projectDesc": "Weather forecasting application with real-time weather updates and Air Quality Index (AQI) monitoring.",
@@ -2369,7 +2454,7 @@
     "projectPath": "./public/Weather App with AQI/index.html"
   },
   {
-    "projectNo": 191,
+    "projectNo": 197,
     "projectName": "Flipkart Clone",
     "projectType": "E-Commerce",
     "projectDesc": "A responsive Flipkart-inspired e-commerce website featuring a modern navbar, product categories, hero carousel, brand spotlight section, promotional banners, home decor showcase, and a fully designed footer.",
@@ -2382,20 +2467,22 @@
     "projectPath": "./public/Flipkart-clone/index.html"
   },
   {
-    "projectNo": 192,
+    "projectNo": 198,
     "projectName": "Theme-Toggler",
-    "projectType": "UI / Animation",
-    "projectDesc": "A responsive theme toggler that switches between light and dark modes and saves the user's preference using localStorage.",
+    "projectType": "UI",
+    "projectDesc": "A responsive theme toggler that switches between multiple premium themes (including Cyberpunk and Dracula) with smooth transitions.",
     "techStack": [
+      "html",
+      "css",
       "react",
       "tailwindcss",
       "javascript"
     ],
     "difficulty": "advanced",
-    "projectPath": "./public/Theme-Toggler/src/App.jsx"
+    "projectPath": "./public/Theme-Toggler/index.html"
   },
   {
-    "projectNo": 193,
+    "projectNo": 199,
     "projectName": "Pac-Man",
     "projectType": "Game",
     "projectDesc": "A classic Pac-Man game built with HTML5 Canvas and JavaScript. Features all 4 ghosts, touch and keyboard controls, score tracking, sound toggle, and is fully responsive for all devices.",
@@ -2410,9 +2497,9 @@
     "projectPath": "./public/pacman/index.html"
   },
   {
-    "projectNo": 194,
+    "projectNo": 200,
     "projectName": "Dual-Genre Movie Matcher",
-    "projectType": "Web Application",
+    "projectType": "Tool",
     "projectDesc": "A web app to search the perfect movie. Comes with dark and light theme toggle.",
     "techStack": [
       "html",
@@ -2423,7 +2510,7 @@
     "projectPath": "./public/Movie-Matcher/index.html"
   },
   {
-    "projectNo": 195,
+    "projectNo": 201,
     "projectName": "Number Guesser Game",
     "projectType": "Game",
     "projectDesc": "A simple and interactive Number Guessing Game built using HTML, CSS, and JavaScript. The player must guess a randomly generated number between 1 and 100 within 10 attempts.",
@@ -2437,7 +2524,7 @@
     "projectPath": "./public/NumberGuessGame/index.html"
   },
   {
-    "projectNo": 196,
+    "projectNo": 202,
     "projectName": "Traffic signal game",
     "projectType": "Game",
     "projectDesc": "A traffic game with red , green , yellow light.",
@@ -2450,7 +2537,349 @@
     "projectPath": "./public/traffic_signal/index.html"
   },
   {
-    "projectNo": 197,
+    "projectNo": 203,
+    "projectName": "Pomodoro With Miu",
+    "projectType": "Tool",
+    "projectDesc": "A cute cat-themed Pomodoro timer built with Electron.js. Features 25/5 focus-break cycles, animated cat GIFs, meow sound notifications, and encouraging messages. Originally a desktop app \u2014 browser preview included.",
+    "projectPath": "./public/Pomodoro_With_Miu-Electronjs/index.html",
+    "techStack": [
+      "javascript",
+      "css",
+      "html",
+      "electron"
+    ],
+    "difficulty": "intermediate"
+  },
+  {
+    "projectNo": 204,
+    "projectName": "Movie Search App",
+    "projectType": "API",
+    "projectDesc": "A responsive movie search application powered by the OMDb API that allows users to search movies and view detailed information including posters, ratings, genres, cast, runtime, and plot.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript",
+      "api"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/Movie-Search-App/index.html"
+  },
+  {
+    "projectNo": 205,
+    "projectName": "Escape the Matrix Game",
+    "projectType": "Game",
+    "projectDesc": "An immersive, interactive web-based survival and puzzle game challenging players to hack their way out of a simulated reality.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/Escape The Matrix/index.html"
+  },
+  {
+    "projectNo": 206,
+    "projectName": "Gravity Well",
+    "projectType": "Animation",
+    "projectDesc": "Interactive physics-based gravity simulation allowing users to create gravitational wells.",
+    "techStack": [
+      "HTML",
+      "canvas",
+      "javascript",
+      "css"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/gravity-well/index.html"
+  },
+  {
+    "projectNo": 207,
+    "projectName": "AI Semiconductor Circuit Builder",
+    "projectType": "AI",
+    "projectDesc": "An immersive, interactive web-based survival and puzzle game challenging players to hack their way out of a simulated reality.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/AI-Semiconductor-Circuit-Builder/index.html"
+  },
+  {
+    "projectNo": 208,
+    "projectName": "crossword puzzle game",
+    "projectType": "Game",
+    "projectDesc": "A classic crossword puzzle game built with HTML, CSS, and JavaScript.",
+    "techStack": [
+      "ui",
+      "game",
+      "html",
+      "css",
+      "js"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/CrosswordPuzzleGame/index.html"
+  },
+  {
+    "projectNo": 209,
+    "projectName": "Kanban Board",
+    "projectType": "Tool",
+    "projectPath": "./public/Kanban_Board/index.html",
+    "techStack": [
+      "html",
+      "css",
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectDesc": "A responsive Kanban Board application featuring drag-and-drop task management, task creation, editing, deletion, local storage persistence, and dark/light theme support."
+  },
+  {
+    "projectNo": 210,
+    "projectName": "IP Address Tracker",
+    "projectType": "Tool",
+    "projectPath": "./public/Ip_Address_tracker/index.html",
+    "techStack": [
+      "html",
+      "css",
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectDesc": "A responsive IP Address Tracker application that allows users to search IP addresses, view location details, ISP information, timezone data, and visualize the location on an interactive map using Leaflet.js and IPAPI."
+  },
+  {
+    "projectNo": 211,
+    "projectName": "Cricket Scorecard",
+    "projectType": "Tool",
+    "projectPath": "./public/Cricket-Scorecard/index.html",
+    "techStack": [
+      "html",
+      "css",
+      "javascript"
+    ],
+    "difficulty": "advanced",
+    "projectDesc": "A tool to view the schedule of upcoming matches and watch live scorecard."
+  },
+  {
+    "projectNo": 212,
+    "projectName": "Tower Blocks Stacker",
+    "projectType": "Game",
+    "projectPath": "./public/tower_stacker/index.html",
+    "techStack": [
+      "html",
+      "css",
+      "javascript",
+      "canvas"
+    ],
+    "difficulty": "advanced",
+    "projectDesc": "A responsive physics-inspired arcade game challenging users to stack moving horizontal blocks cleanly. Implements strict boundary checking, block-slicing logic, dynamic camera tracking, and interactive start/pause state controls."
+  },
+  {
+    "projectNo": 213,
+    "projectName": "Photo Studio",
+    "projectType": "Website",
+    "projectPath": "./public/Photo Studio/Project.html",
+    "techStack": [
+      "html",
+      "css"
+    ],
+    "difficulty": "intermediate",
+    "projectDesc": "A responsive photography portfolio and gallery website designed to showcase visual content through structured layouts, image presentation sections, and modern styling. Features an engaging user interface optimized for desktop and mobile viewing."
+  },
+  {
+    "projectNo": 214,
+    "projectName": "AI Data Analyst",
+    "projectType": "Tool",
+    "projectDesc": "Upload CSV datasets and receive AI-powered exploratory data analysis, visualizations, correlation heatmaps, machine learning recommendations, AI-generated insights, and interactive dataset Q&A.",
+    "techStack": [
+      "javascript",
+      "ai",
+      "machine-learning",
+      "data-analysis",
+      "charts",
+      "api"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/AI-Data-Analyst/"
+  },
+  {
+    "projectNo": 215,
+    "projectName": "Mood-Based Music Recommender",
+    "projectType": "Tool",
+    "projectDesc": "An interactive web application that recommends music based on the user's current mood. Features a premium Spotify-inspired UI, smooth animations, and dynamic themes.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/Mood_Based_Music_Recommender/"
+  },
+  {
+    "projectNo": 216,
+    "projectName": "Runway Calculator",
+    "projectType": "Tool",
+    "projectDesc": "A web-based aviation utility that helps users calculate and determine runway numbers from runway headings. Features an intuitive interface, instant calculations, and responsive design for aviation enthusiasts, students, and professionals.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/Runway-Calculator/index.html"
+  },
+  {
+    "projectNo": 217,
+    "projectName": "Gemini Clone",
+    "projectType": "AI",
+    "projectDesc": "A modern clone of the Google Gemini AI chatbot interface, integrated with Google's GenAI API for generating dynamic responses.",
+    "techStack": [
+      "react",
+      "javascript",
+      "html",
+      "css",
+      "api",
+      "vite"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/Gemini/dist/index.html"
+  },
+  {
+    "projectNo": 218,
+    "projectName": "SkillBridge Career Roadmap Explorer",
+    "projectType": "Tool",
+    "projectDesc": "A Next.js career guidance platform that helps students explore technology career paths, required skills, structured learning roadmaps, recommended projects, and curated learning resources.",
+    "techStack": [
+      "nextjs",
+      "react",
+      "typescript",
+      "tailwindcss"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/SkillBridge"
+  },
+  {
+    "projectNo": 219,
+    "projectName": "The Cube - 3D Rubik's Cube Simulator",
+    "projectType": "Simulation",
+    "projectDesc": "An interactive 3D Rubik's Cube simulator built with Three.js that allows users to solve, scramble, customize, and track performance across multiple cube sizes with smooth animations and touch support.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript",
+      "threejs"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/the_cube/index.html"
+  },
+  {
+    "projectNo": 220,
+    "projectName": "NeoTetris - Premium Edition",
+    "projectType": "Game",
+    "projectDesc": "A premium Tetris experience featuring modern themes, particle effects, achievements, combo systems, daily challenges, responsive controls, synthesized retro audio, dynamic background music, and polished gameplay mechanics.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript",
+      "canvas",
+      "game"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/NeoTetris/index.html"
+  },
+  {
+    "projectNo": 221,
+    "projectName": "AI Tools Hub",
+    "projectType": "AI",
+    "projectDesc": "A modern platform for discovering and exploring AI tools across coding, design, writing, productivity, presentations, and media categories.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/AI-Tools-Hub/index.html"
+  },
+  {
+    "projectNo": 222,
+    "projectName": "Bus Game",
+    "projectType": "Game",
+    "projectDesc": "A modern bus game with lane and vehicles",
+    "techStack": [
+      "javascript",
+      "html",
+      "css"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/bus_game/index.html"
+  },
+  {
+    "projectNo": 223,
+    "projectName": "HTML & CSS Animation",
+    "projectType": "Animation",
+    "projectDesc": "Collection of HTML/CSS animations demonstrating keyframe effects and transitions.",
+    "techStack": [
+      "html",
+      "css",
+      "animation"
+    ],
+    "difficulty": "beginner",
+    "projectPath": "./public/Html_css_animation/index.html"
+  },
+  {
+    "projectNo": 224,
+    "projectName": "Bubble Game",
+    "projectType": "Game",
+    "projectDesc": "An interactive bubble-clicking game where players must quickly hit bubbles matching the target number before the timer runs out. Score points by selecting the correct bubbles and test your speed and accuracy.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/Bubble-Game/index.html"
+  },
+  {
+    "projectNo": 225,
+    "projectName": "Harryy Potter Spellbook",
+    "projectType": "API",
+    "projectDesc": "A magical, interactive web application built with vanilla web technologies. This project fetches live data from the Harry Potter API and features an interactive Spell Caster that dynamically alters the UI using CSS animations and state changes based on the spells you cast.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/Harry-Potter/index.html"
+  },
+  {
+    "projectNo": 226,
+    "projectName": "Mind Reader",
+    "projectType": "Game",
+    "projectDesc": "An interactive game where the Genie tries to read your mind and guess your character in 20 questions.",
+    "techStack": [
+      "react",
+      "html",
+      "css",
+      "javascript"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/mind-reader/mind-reader/dist/index.html"
+  },
+  {
+    "projectNo": 227,
+    "projectName": "Word Jumble",
+    "projectType": "Game",
+    "projectDesc": "A fun word puzzle game where players unscramble letters to form valid words within a time limit.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript",
+      "game"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/Word_Jumble/index.html"
+  },
+  {
+    "projectNo": 228,
     "projectName": "Neural Network Playground",
     "projectType": "Web Application",
     "projectDesc": "An interactive neural network visualizer with live backpropagation, decision boundary heatmaps, and configurable architectures.",
@@ -2463,7 +2892,7 @@
     "projectPath": "./public/NeuralNetworkPlayground/index.html"
   },
   {
-    "projectNo": 198,
+    "projectNo": 229,
     "projectName": "Pixel Art Studio",
     "projectType": "Web Application",
     "projectDesc": "A feature-rich pixel art editor with multi-frame animation, timeline UI, flood fill, undo/redo stack, and real-time collaboration via BroadcastChannel.",
