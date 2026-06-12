@@ -60,6 +60,14 @@ body {
 .nav-links a:hover::after {
   width: 100%;
 }
+.nav-links a:focus-visible::after {
+    width: 100%;
+}
+
+.nav-links a:focus-visible {
+    outline: 2px solid #22c55e;
+    outline-offset: 4px;
+}
 
 .nav-right {
   display: flex;
