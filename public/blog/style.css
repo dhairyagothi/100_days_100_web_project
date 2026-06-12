@@ -170,8 +170,7 @@ body:not(.dark-mode) .fa-sun {
 }
 
 .two-column-layout {
-    display: flex;
-    gap: 30px;
+    display: block;
 }
 
 .main-content {
@@ -179,7 +178,7 @@ body:not(.dark-mode) .fa-sun {
 }
 
 .sidebar {
-    flex: 1;
+    display: none;
 }
 
 .post {

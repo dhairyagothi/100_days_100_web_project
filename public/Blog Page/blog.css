@@ -8,13 +8,10 @@ body {
     background: #f3f4f6;
     font-family: Arial, sans-serif;
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display: block;
 
     padding: 30px;
 }
-
 /* =========================
    BLOG PAGE CONTAINER
 ========================= */
