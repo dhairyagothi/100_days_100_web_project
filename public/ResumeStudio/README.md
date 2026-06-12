@@ -1,101 +1,233 @@
-# Resume Studio
+# 🚀 Resume Studio Pro
 
-## Description
+## 📌 Description
 
-Resume Studio is a browser-based, AI-powered ATS resume builder built with vanilla HTML, CSS, and JavaScript. It lets users create professional resumes with a live A4 preview, choose from multiple templates, analyze their resume against ATS (Applicant Tracking System) criteria, and download a polished PDF — all without any login or backend.
+Resume Studio Pro is a modern browser-based ATS Resume Builder built using pure HTML, CSS, and JavaScript.
 
-## Features
+It allows users to create highly professional resumes with:
+- Live real-time preview
+- ATS score analysis
+- Multiple resume templates
+- Dark/Light mode
+- PDF export
+- Responsive design
+- Auto-save functionality
 
-- Live A4 resume preview that updates in real time as you type
-- Three resume templates — Modern, Classic, and Minimal
-- ATS Analyzer with a compatibility score, completeness checklist, and smart suggestions
-- Role-based keyword matching (Frontend, Backend, Fullstack, Data Science, PM, or Custom)
-- Sidebar progress indicators showing completion status for each section
-- PDF download using jsPDF + html2canvas (image-based, high resolution)
-- Vector print support via browser's native print dialog
-- Dark mode toggle
-- Auto-save to `localStorage` — your data persists across sessions
-- Demo data loader for quick preview
-- Fully responsive layout with a collapsible sidebar on mobile/tablet
+The project is fully frontend-based and requires no backend or authentication.
 
-## Technologies Used
+---
+
+# ✨ Features
+
+## 📝 Resume Builder
+- Live resume preview while typing
+- Professional A4 resume layout
+- Responsive and modern UI
+- Profile image upload support
+- Clean and ATS-friendly formatting
+
+---
+
+## 🎨 Multiple Templates
+- Modern Template
+- Classic Template
+- Minimal Template
+
+Users can instantly switch templates in real time.
+
+---
+
+## 📊 ATS Resume Analyzer
+- Dynamic ATS Score
+- Resume completeness analysis
+- Section-based scoring system
+- Smart improvement suggestions
+- Progress indicator with visual feedback
+
+---
+
+## ⚡ Quick Actions
+- Fill Demo Data
+- Clear Resume Form
+- Save Resume locally
+- Load Saved Resume
+- Print Resume
+- Download PDF
+
+---
+
+## 🌙 Theme Support
+- Dark Mode
+- Light Mode
+- Smooth theme switching
+- Improved text visibility in light mode
+
+---
+
+## 📄 PDF Export
+- High-quality PDF generation
+- Browser print support
+- Download resume as PDF
+- Optimized A4 layout
+
+---
+
+## 💾 Local Storage Support
+- Auto-save resume data
+- Persistent data across browser sessions
+- One-click load functionality
+
+---
+
+## 📱 Fully Responsive
+- Desktop optimized
+- Tablet responsive
+- Mobile-friendly layout
+- Adaptive sidebar behavior
+
+---
+
+# 🛠️ Technologies Used
 
 - HTML5
-- CSS3 (CSS Variables, Grid, Flexbox)
-- JavaScript ES6+
-- [html2canvas v1.4.1](https://html2canvas.hertzen.com/) — DOM-to-canvas rendering for PDF export
-- [jsPDF v2.5.1](https://github.com/parallax/jsPDF) — PDF generation in the browser
-- [Google Fonts](https://fonts.google.com/) — Inter, Outfit, Playfair Display, Fira Code
+- CSS3
+- JavaScript (ES6+)
 
-## Installation / Setup
+### Libraries & Tools
+- html2canvas
+- jsPDF
+- Font Awesome
+- Google Fonts (Inter)
 
-No build tools or installation required. This is a pure static project.
+---
 
-1. Clone or download the repository:
-   ```bash
-   git clone https://github.com/your-username/ResumeStudio.git
-   ```
-2. Navigate into the project folder:
-   ```bash
-   cd ResumeStudio
-   ```
-3. Open `index.html` directly in your browser:
-   ```bash
-   # On macOS
-   open index.html
+# 📂 Project Structure
 
-   # On Linux
-   xdg-open index.html
-
-   # On Windows — double-click index.html, or drag it into Chrome/Edge
-   ```
-4. No server, no `npm install`, no build step needed.
-
-> **Note:** An active internet connection is required on first load to fetch Google Fonts and CDN libraries (html2canvas, jsPDF).
-
-## Usage
-
-1. Fill in your details section by section using the left sidebar navigation (Personal Info → Summary → Experience → Projects → Education → Skills).
-2. Watch the live A4 preview update on the right panel in real time.
-3. Switch between **Modern**, **Classic**, and **Minimal** templates using the template selector.
-4. Navigate to the **ATS Analyzer** tab to see your compatibility score, checklist, and improvement suggestions.
-5. Click **Download PDF** to export your resume as a high-resolution PDF.
-6. Click **Print** to use the browser's native print dialog for a vector-quality PDF.
-7. Use **Fill Demo Data** to instantly populate all fields with sample content.
-
-## File Structure
-
-```
+```bash
 ResumeStudio/
-├── index.html      # Main app shell and HTML structure
-├── style.css       # All styles — layout, themes, templates, responsive rules
-└── script.js       # App logic — form handling, preview rendering, ATS engine, PDF export
+│
+├── index.html      # Main HTML structure
+├── style.css       # Complete styling and responsive design
+├── script.js       # Core application logic
+└── README.md       # Project documentation
 ```
 
-## Contributing
+---
 
-Contributions are welcome! To contribute:
+# ⚙️ Installation & Setup
 
-1. Fork the repository.
-2. Create a new branch for your feature or fix:
-   ```bash
-   git checkout -b feature/your-feature-name
-   ```
-3. Make your changes and commit with a clear message:
-   ```bash
-   git commit -m "feat: describe what you changed"
-   ```
-4. Push your branch and open a Pull Request against `main`.
-5. Fill in the PR template completely before submitting.
+No installation or build tools are required.
 
-Please make sure your changes are tested in Chrome and Firefox before raising a PR.
+## 1️⃣ Clone Repository
 
-## License
+```bash
+git clone https://github.com/your-username/ResumeStudio.git
+```
 
-MIT License
+## 2️⃣ Open Project Folder
 
-## README Author
+```bash
+cd ResumeStudio
+```
 
-- **Saubhagya Srivastava**
-- GitHub: [Saubhagya1621](https://github.com/Saubhagya1621)
-- LinkedIn: [Saubhagya Srivastava](https://www.linkedin.com/in/saubhagyasri/)🚀
+## 3️⃣ Run Project
+
+Simply open:
+
+```bash
+index.html
+```
+
+in your browser.
+
+---
+
+# 🚀 Usage
+
+## Step 1
+Fill your personal information in the editor panel.
+
+## Step 2
+Watch the live resume preview update instantly.
+
+## Step 3
+Choose your preferred template:
+- Modern
+- Classic
+- Minimal
+
+## Step 4
+Check your ATS score and optimize your resume.
+
+## Step 5
+Download or print your resume as PDF.
+
+---
+
+# 🌟 Recent Improvements
+
+- Improved Quick Actions UI
+- Fixed Light Mode text visibility
+- Enhanced responsiveness
+- Better resume preview scaling
+- Improved sidebar layout
+- More professional ATS section
+- Smoother theme switching
+- Modernized resume styling
+
+---
+
+# 🤝 Contributing
+
+Contributions are welcome!
+
+## Steps to Contribute
+
+1. Fork the repository
+
+2. Create a new branch
+
+```bash
+git checkout -b feature-name
+```
+
+3. Commit your changes
+
+```bash
+git commit -m "feat: add new feature"
+```
+
+4. Push your branch
+
+```bash
+git push origin feature-name
+```
+
+5. Open a Pull Request
+
+---
+
+# 📸 Screenshots
+
+> Add screenshots or GIFs here after uploading project images.
+
+---
+
+# 📄 License
+
+This project is licensed under the MIT License.
+
+---
+
+# 👨‍💻 Author
+
+## Saubhagya Srivastava
+
+- GitHub: https://github.com/Saubhagya1621
+- LinkedIn: https://www.linkedin.com/in/saubhagyasri/
+
+---
+
+# ⭐ Support
+
+If you like this project, please give it a ⭐ on GitHub.

@@ -2,441 +2,200 @@
 <html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Financial Insights Tracker</title>
 
-  <meta charset="UTF-8" />
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  />
-
-  <meta
-    name="description"
-    content="AI-driven personal finance tracker with intelligent spending analysis and financial insights."
-  />
-
-  <title>
-    AI Financial Insights Tracker
-  </title>
-
-  <link
-    rel="icon"
-    href="../favv.png"
-    type="image/x-icon"
-  />
-
-  <!-- GOOGLE FONT -->
-
-  <link
-    rel="preconnect"
-    href="https://fonts.googleapis.com"
-  />
-
-  <link
-    rel="preconnect"
-    href="https://fonts.gstatic.com"
-    crossorigin
-  />
-
-  <link
-    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
-    rel="stylesheet"
-  />
-
-  <!-- MAIN CSS -->
-
-  <link
-    rel="stylesheet"
-    href="css/style.css"
-  />
-
-  <link
-    rel="stylesheet"
-    href="css/dashboard.css"
-  />
-
-  <link
-    rel="stylesheet"
-    href="css/analytics.css"
-  />
-
-  <link
-    rel="stylesheet"
-    href="css/responsive.css"
-  />
-
-  <!-- CHART.JS -->
-
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
 
-  <!-- THEME TOGGLE -->
+    <button id="theme-toggle">🌙</button>
 
-  <button
-    id="theme-toggle"
-    aria-label="Toggle Theme"
-  >
-    🌙
-  </button>
+    <div class="container">
 
-  <!-- MAIN CONTAINER -->
+        <h1>AI Financial Insights Tracker</h1>
 
-  <div class="container">
-
-    <!-- HERO HEADER -->
-
-    <header>
-
-      <h1>
-        AI Financial Insights Tracker
-      </h1>
-
-      <p>
-        Intelligent spending analysis, smart budgeting,
-        AI-generated financial recommendations,
-        and advanced analytics dashboard.
-      </p>
-
-    </header>
-
-    <!-- DASHBOARD -->
-
-    <section class="dashboard">
-
-      <div class="card balance">
-
-        <h2>
-          Total Balance
-        </h2>
-
-        <p id="balance">
-          $0
+        <p class="subtitle">
+            Intelligent spending analysis, smart budgeting, and analytics dashboard.
         </p>
 
-      </div>
+        <!-- SUMMARY CARDS -->
+        <div class="cards">
 
-      <div class="card income">
+            <div class="card">
+                <h3>Total Balance</h3>
+                <p id="balance">$0</p>
+            </div>
 
-        <h2>
-          Total Income
-        </h2>
+            <div class="card">
+                <h3>Total Income</h3>
+                <p id="income">$0</p>
+            </div>
 
-        <p id="income">
-          $0
-        </p>
+            <div class="card">
+                <h3>Total Expense</h3>
+                <p id="expense">$0</p>
+            </div>
 
-      </div>
-
-      <div class="card expense">
-
-        <h2>
-          Total Expense
-        </h2>
-
-        <p id="expense">
-          $0
-        </p>
-
-      </div>
-
-      <div class="card">
-
-        <h2>
-          Total Transactions
-        </h2>
-
-        <p id="count">
-          0
-        </p>
-
-      </div>
-
-    </section>
-
-    <!-- TRANSACTION FORM -->
-
-    <section class="section">
-
-      <h2 class="section-title">
-        Add Financial Transaction
-      </h2>
-
-      <form id="transactionForm">
-
-        <div class="grid">
-
-          <input
-            type="text"
-            id="desc"
-            placeholder="Transaction Description"
-            required
-          />
-
-          <input
-            type="number"
-            id="amount"
-            placeholder="Transaction Amount"
-            required
-          />
-
-          <select id="type">
-
-            <option value="income">
-              Income
-            </option>
-
-            <option value="expense">
-              Expense
-            </option>
-
-          </select>
-
-          <select id="category">
-
-            <option value="salary">
-              Salary
-            </option>
-
-            <option value="food">
-              Food
-            </option>
-
-            <option value="rent">
-              Rent
-            </option>
-
-            <option value="travel">
-              Travel
-            </option>
-
-            <option value="shopping">
-              Shopping
-            </option>
-
-            <option value="entertainment">
-              Entertainment
-            </option>
-
-            <option value="investment">
-              Investment
-            </option>
-
-            <option value="health">
-              Health
-            </option>
-
-            <option value="education">
-              Education
-            </option>
-
-          </select>
+            <div class="card">
+                <h3>Total Transactions</h3>
+                <p id="total-transactions">0</p>
+            </div>
 
         </div>
 
-        <button
-          type="submit"
-          class="main-btn"
-        >
-          Add Transaction
-        </button>
+        <!-- TRANSACTION FORM -->
+        <div class="section">
 
-      </form>
+            <h2>Add Financial Transaction</h2>
 
-    </section>
+            <form id="transaction-form">
 
-    <!-- ANALYTICS -->
+                <input
+                    type="text"
+                    id="description"
+                    placeholder="Transaction Description"
+                    required
+                >
 
-    <section class="section">
+                <input
+                    type="number"
+                    id="amount"
+                    placeholder="Transaction Amount"
+                    required
+                >
 
-      <h2 class="section-title">
-        Financial Analytics
-      </h2>
+                <select id="type">
 
-      <div class="analytics">
+                    <option value="Income">
+                        Income
+                    </option>
 
-        <div class="analytics-card">
+                    <option value="Expense">
+                        Expense
+                    </option>
 
-          <h3>
-            Highest Expense
-          </h3>
+                </select>
 
-          <p id="highestExpense">
-            $0
-          </p>
+                <select id="category">
+
+                    <option value="Salary">
+                        Salary
+                    </option>
+
+                    <option value="Food">
+                        Food
+                    </option>
+
+                    <option value="Travel">
+                        Travel
+                    </option>
+
+                    <option value="Shopping">
+                        Shopping
+                    </option>
+
+                </select>
+
+                <button type="submit">
+                    Add Transaction
+                </button>
+
+            </form>
 
         </div>
 
-        <div class="analytics-card">
+        <!-- AI INSIGHTS -->
+        <div class="section">
 
-          <h3>
-            Highest Income
-          </h3>
+            <h2>AI Financial Insights</h2>
 
-          <p id="highestIncome">
-            $0
-          </p>
-
-        </div>
-
-        <div class="analytics-card">
-
-          <h3>
-            Savings Rate
-          </h3>
-
-          <p id="savingRate">
-            0%
-          </p>
+            <div id="insights-box">
+                Add transactions to receive insights.
+            </div>
 
         </div>
 
-      </div>
+        <!-- TRANSACTIONS -->
+        <div class="section">
 
-    </section>
+            <h2>Recent Transactions</h2>
 
-    <!-- FINANCIAL HEALTH SCORE -->
+            <table>
 
-    <section class="section">
+                <thead>
 
-      <h2 class="section-title">
-        Financial Health Score
-      </h2>
+                    <tr>
+                        <th>Description</th>
+                        <th>Amount</th>
+                        <th>Type</th>
+                        <th>Category</th>
+                        <th>Date</th>
+                        <th>Action</th>
+                    </tr>
 
-      <div class="score-card">
+                </thead>
 
-        <h1 id="financialScore">
-          0
-        </h1>
+                <tbody id="transaction-list">
 
-        <p>
-          AI-calculated financial stability indicator
-        </p>
+                </tbody>
 
-      </div>
+            </table>
 
-    </section>
+        </div>
 
-    <!-- AI INSIGHTS -->
+        <!-- SAVINGS GOALS -->
+        <div class="section">
 
-    <section class="section">
+            <h2>Savings Goals</h2>
 
-      <h2 class="section-title">
-        AI Financial Insights
-      </h2>
+            <form id="goal-form">
 
-      <div id="aiInsights"></div>
+                <input
+                    type="text"
+                    id="goal-name"
+                    placeholder="Savings Goal Name"
+                    required
+                >
 
-    </section>
+                <input
+                    type="number"
+                    id="goal-amount"
+                    placeholder="Target Amount"
+                    required
+                >
 
-    <!-- EXPENSE CHART -->
+                <button type="submit">
+                    Add Savings Goal
+                </button>
 
-    <section class="section chart-box">
+            </form>
 
-      <h2 class="section-title">
-        Expense Analytics Visualization
-      </h2>
+            <table>
 
-      <canvas id="chart"></canvas>
+                <thead>
 
-    </section>
+                    <tr>
+                        <th>Goal</th>
+                        <th>Amount</th>
+                        <th>Action</th>
+                    </tr>
 
-    <!-- TRANSACTION HISTORY -->
+                </thead>
 
-    <section class="section">
+                <tbody id="goal-list">
 
-      <h2 class="section-title">
-        Recent Transactions
-      </h2>
+                </tbody>
 
-      <input
-        type="text"
-        id="search"
-        placeholder="Search Transactions..."
-        class="search-box"
-      />
+            </table>
 
-      <table>
+        </div>
 
-        <thead>
+    </div>
 
-          <tr>
-
-            <th>
-              Description
-            </th>
-
-            <th>
-              Amount
-            </th>
-
-            <th>
-              Type
-            </th>
-
-            <th>
-              Category
-            </th>
-
-            <th>
-              Date
-            </th>
-
-          </tr>
-
-        </thead>
-
-        <tbody id="tbody"></tbody>
-
-      </table>
-
-    </section>
-
-    <!-- SAVINGS GOALS -->
-
-    <section class="section">
-
-      <h2 class="section-title">
-        Savings Goals
-      </h2>
-
-      <div class="grid">
-
-        <input
-          type="text"
-          id="goalName"
-          placeholder="Savings Goal Name"
-        />
-
-        <input
-          type="number"
-          id="goalAmount"
-          placeholder="Target Amount"
-        />
-
-      </div>
-
-      <button
-        class="main-btn"
-        onclick="addGoal()"
-      >
-        Create Savings Goal
-      </button>
-
-      <div id="goalsContainer"></div>
-
-    </section>
-
-  </div>
-
-  <!-- MAIN APP -->
-
-  <script
-    type="module"
-    src="js/app.js"
-  ></script>
+    <script type="module" src="js/app.js"></script>
 
 </body>
 

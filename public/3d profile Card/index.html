@@ -23,19 +23,7 @@
     <a
       href="/"
       class="project-back-button"
-      style="
-        position: fixed;
-        left: 18px;
-        top: 18px;
-        padding: 8px 12px;
-        border-radius: 8px;
-        background: white;
-        text-decoration: none;
-        z-index: 9999;
-        font-weight: 700;
-        font-family: Inter, system-ui, sans-serif;
-        box-shadow: 0 8px 20px rgba(0, 0, 0);
-      "
+      style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'"
     >
       ← Back to Home
     </a>
@@ -105,7 +93,14 @@
               <input type="url" id="instagramInput" placeholder="https://instagram.com/username" />
             </label>
           </div>
-
+            <label class="field">
+              <span>Portfolio URL</span>
+              <input
+                type="url"
+                id="portfolioInput"
+                placeholder="https://yourportfolio.com"
+              />
+          </label>
           <div class="control-row">
             <label class="color-picker">
               <span>Theme</span>
@@ -113,21 +108,34 @@
             </label>
 
             <fieldset class="segmented-control" aria-label="Card layout">
-              <label>
-                <input type="radio" name="layout" value="classic" checked />
-                <span>Classic</span>
-              </label>
 
-              <label>
-                <input type="radio" name="layout" value="compact" />
-                <span>Compact</span>
-              </label>
+  <label>
+    <input type="radio" name="layout" value="classic" checked />
+    <span>Classic</span>
+  </label>
 
-              <label>
-                <input type="radio" name="layout" value="poster" />
-                <span>Poster</span>
-              </label>
-            </fieldset>
+  <label>
+    <input type="radio" name="layout" value="compact" />
+    <span>Compact</span>
+  </label>
+
+  <label>
+    <input type="radio" name="layout" value="poster" />
+    <span>Poster</span>
+  </label>
+
+  <label>
+    <input type="radio" name="layout" value="executive" />
+    <span>Executive</span>
+  </label>
+
+  <label>
+    <input type="radio" name="layout" value="minimal" />
+    <span>Minimal</span>
+  </label>
+
+</fieldset>
+                
 
             <label class="mode-toggle" id="modeToggle" title="Switch to light mode">
               <input type="checkbox" id="darkModeInput" checked />
@@ -139,9 +147,37 @@
           <p class="validation-message" id="validationMessage" aria-live="polite"></p>
 
           <div class="action-row">
+            <button
+                type="button"
+                class="secondary-btn"
+                id="exportPortfolioBtn"
+              >
+                Export Portfolio
+            </button>
             <button type="button" class="secondary-btn" id="resetButton">Reset</button>
 
-            <button type="button" class="primary-btn" id="downloadButton">Download card</button>
+            <div class="download-wrapper" id="downloadWrapper">
+              <button type="button" class="primary-btn" id="downloadButton">
+                Download card
+                <svg class="chevron-icon" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path d="M3 5L7 9L11 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+              <div class="download-dropdown" id="downloadDropdown" role="menu" aria-label="Download format options">
+                <button class="dropdown-item" data-format="png" role="menuitem">
+                  <span class="format-badge">PNG</span>
+                  <span class="format-desc">Transparent background</span>
+                </button>
+                <button class="dropdown-item" data-format="jpg" role="menuitem">
+                  <span class="format-badge">JPG</span>
+                  <span class="format-desc">Smaller file size</span>
+                </button>
+                <button class="dropdown-item" data-format="pdf" role="menuitem">
+                  <span class="format-badge">PDF</span>
+                  <span class="format-desc">Print-ready document</span>
+                </button>
+              </div>
+            </div>
           </div>
         </form>
       </section>
@@ -169,7 +205,8 @@
               teams and serve customers.
             </p>
 
-            <div class="profile" id="socialLinks">
+            <div class="profile-footer">
+              <div class="profile" id="socialLinks">
               <a href="#" data-platform="github" aria-label="GitHub profile">
                 <img src="logo/github-142-svgrepo-com.svg" alt="" class="logo monochrome" />
               </a>
@@ -186,17 +223,22 @@
                 <img src="logo/instagram-svgrepo-com.svg" alt="" class="logo" />
               </a>
             </div>
+            <div id="qrContainer" class="qr-container"></div>
+            </div>
+            
           </div>
         </article>
       </section>
     </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     ></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="script.js"></script>
   </body>
 </html>

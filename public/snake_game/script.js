@@ -6,17 +6,105 @@ const ROWS = 24;
 const CELL = 20;
 canvas.width = COLS * CELL;
 canvas.height = ROWS * CELL;
-
 // Target audio tags loaded from HTML
 const eatSound = document.getElementById('eatSound');
 const gameOverSound = document.getElementById('gameOverSound');
 
 let snake, dir, nextDir, food, score, level, speed, running, paused;
-let lastTickTime = 0; // For smooth modern frame accumulation tracking
 
 let highScore = 0;
 let isGameOver = false;
 let finalScore = 0;
+
+// ─── RAF game loop state ───────────────────────────────────────────────────
+let rafId        = null;   // requestAnimationFrame handle (main loop)
+let lastTickTime = 0;      // timestamp of last logic tick
+let accumulator  = 0;      // ms accumulated since last tick
+// ──────────────────────────────────────────────────────────────────────────
+
+// ─── Page Visibility API — pause/resume on tab switch ─────────────────────
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) {
+    if (running && !paused) {
+      setPaused(true);
+      paused_by_visibility = true;
+    }
+  } else {
+    if (paused_by_visibility) {
+      setPaused(false);
+      paused_by_visibility = false;
+    }
+  }
+});
+let paused_by_visibility = false; // tracks auto-pause vs user-pause
+
+function setPaused(value) {
+  paused = value;
+  const overlay = document.getElementById('pauseOverlay');
+  if (overlay) {
+    value ? overlay.classList.remove('hidden') : overlay.classList.add('hidden');
+  }
+  if (!value) {
+    lastTickTime = performance.now();
+    accumulator  = 0;
+  }
+}
+// ──────────────────────────────────────────────────────────────────────────
+
+// ─── Web Audio sound engine ────────────────────────────────────────────────
+let audioCtx = null;
+
+function getAudioCtx() {
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+  // Some browsers suspend the context until a user gesture
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  return audioCtx;
+}
+
+
+function playTone(freq, type = 'square', duration = 0.08, gainPeak = 0.18) {
+  try {
+    const ac  = getAudioCtx();
+    const osc = ac.createOscillator();
+    const gain = ac.createGain();
+
+    osc.type = type;
+    osc.frequency.setValueAtTime(freq, ac.currentTime);
+
+    gain.gain.setValueAtTime(0, ac.currentTime);
+    gain.gain.linearRampToValueAtTime(gainPeak, ac.currentTime + 0.005);
+    gain.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + duration);
+
+    osc.connect(gain);
+    gain.connect(ac.destination);
+    osc.start(ac.currentTime);
+    osc.stop(ac.currentTime + duration + 0.01);
+  } catch (e) {
+
+  }
+}
+
+function soundEat() {
+  // Quick rising blip — classic 8-bit pick-up
+  playTone(440, 'square', 0.06, 0.15);
+  setTimeout(() => playTone(660, 'square', 0.08, 0.12), 40);
+}
+
+function soundLevelUp() {
+  // Ascending fanfare
+  [330, 440, 550, 660].forEach((f, i) =>
+    setTimeout(() => playTone(f, 'square', 0.12, 0.14), i * 60)
+  );
+}
+
+function soundDie() {
+  // Descending crunch
+  [220, 180, 140, 100].forEach((f, i) =>
+    setTimeout(() => playTone(f, 'sawtooth', 0.12, 0.20), i * 70)
+  );
+}
 
 function initGame() {
   const startX = Math.floor(COLS / 2);
@@ -26,13 +114,16 @@ function initGame() {
     { x: startX - 1, y: startY },
     { x: startX - 2, y: startY },
   ];
+
+
   dir = { x: 1, y: 0 };
   nextDir = { x: 1, y: 0 };
   score = 0;
   level = 1;
   speed = 160;
   running = false;
-  paused = false;
+  setPaused(false);
+
   placeFood();
   updateHUD();
 }
@@ -68,9 +159,11 @@ function updateHUD(bumped) {
 }
 
 function draw() {
+  // Background
   ctx.fillStyle = '#050a05';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+  // Grid dots
   ctx.fillStyle = '#0d1f0d';
   for (let r = 0; r < ROWS; r++) {
     for (let c = 0; c < COLS; c++) {
@@ -90,7 +183,7 @@ function draw() {
   ctx.arc(fx, fy, (CELL / 2 - 3) * pulse * 0.9 + 1, 0, Math.PI * 2);
   ctx.fill();
   ctx.restore();
-
+// Snake
   snake.forEach((seg, i) => {
     const isHead = i === 0;
     const t = i / (snake.length - 1 || 1);
@@ -112,6 +205,7 @@ function draw() {
     ctx.fillRect(x, y, size, size);
     ctx.restore();
 
+    // Eyes
     if (isHead) {
       ctx.fillStyle = '#050a05';
       const eyeSize = 3;
@@ -126,9 +220,8 @@ function draw() {
   });
 }
 
+// ─── Logic tick (called by RAF loop when enough time has elapsed) ──────────
 function tick() {
-  if (!running || paused) return;
-
   dir = { ...nextDir };
 
   const head = {
@@ -136,18 +229,20 @@ function tick() {
     y: snake[0].y + dir.y,
   };
 
+  // Wall collision
   if (head.x < 0 || head.x >= COLS || head.y < 0 || head.y >= ROWS) {
     endGame();
     return;
   }
 
+  // Self collision
   if (snake.some(s => s.x === head.x && s.y === head.y)) {
     endGame();
     return;
   }
 
   snake.unshift(head);
-
+  // Food eaten
   if (head.x === food.x && head.y === food.y) {
     score += level * 10;
     if (score > highScore) highScore = score;
@@ -163,6 +258,9 @@ function tick() {
     if (newLevel !== level) {
       level = newLevel;
       speed = Math.max(60, 150 - (level - 1) * 15);
+      soundLevelUp();
+    } else {
+      soundEat();
     }
 
     updateHUD(true);
@@ -179,7 +277,12 @@ function gameEngine(timestamp) {
 
   if (running && !paused) {
     const elapsed = timestamp - lastTickTime;
-    if (elapsed >= speed) {
+
+    // Guard: if the tab was hidden and visibility API didn't fire (edge case),
+    // a huge elapsed value would cause multiple rapid ticks. Cap it to one tick worth.
+    if (elapsed > speed * 3) {
+      lastTickTime = timestamp;
+    } else if (elapsed >= speed) {
       tick();
       lastTickTime = timestamp;
     }
@@ -195,6 +298,13 @@ function gameEngine(timestamp) {
   requestAnimationFrame(gameEngine);
 }
 
+function stopLoop() {
+  if (rafId) cancelAnimationFrame(rafId);
+  rafId = null;
+}
+
+// ──────────────────────────────────────────────────────────────────────────
+
 function startGame() {
   document.getElementById('startOverlay').classList.add('hidden');
   document.getElementById('gameOverOverlay').classList.add('hidden');
@@ -208,6 +318,7 @@ function startGame() {
   document.addEventListener('keydown', handleKeyDown);
 }
 
+// ─── Game-over flash — uses RAF, not a competing setInterval ──────────────
 function endGame() {
   finalScore = score;
   running = false;
@@ -275,16 +386,25 @@ function handleKeyDown(e) {
     }
   }
 
-  if (e.key === ' ' && running) {
-    paused = !paused;
-  }
+  if ((e.key === 'p' || e.key === 'P') && running) {
+  e.preventDefault();
+  setPaused(!paused);
+ }
 }
 
 document.addEventListener('keydown', handleKeyDown);
+
 document.getElementById('startBtn').addEventListener('click', startGame);
 document.getElementById('restartBtn').addEventListener('click', startGame);
 
-// Initialize game config and start single loop engine
+// Idle animation on start screen
+function animateIdle() {
+  if (!running && !isGameOver) {
+    draw();
+    rafId = requestAnimationFrame(animateIdle);
+  }
+}
+
 initGame();
 requestAnimationFrame(gameEngine);
 
@@ -320,40 +440,31 @@ requestAnimationFrame(gameEngine);
         startGame();
       }
       if (typeof nextDir !== 'undefined' && typeof dir !== 'undefined') {
-        if (newDir.x !== -dir.x || newDir.y !== -dir.y) {
-          nextDir = newDir;
-        }
+        if (newDir.x !== -dir.x || newDir.y !== -dir.y) nextDir = newDir;
       }
       return;
     }
 
-    if (typeof running !== 'undefined' && running && typeof paused !== 'undefined' && !paused) {
+    if (typeof running !== 'undefined' && running &&
+        typeof paused  !== 'undefined' && !paused) {
       if (typeof dir !== 'undefined' && typeof nextDir !== 'undefined') {
         if (newDir.x !== -dir.x || newDir.y !== -dir.y) {
           nextDir = newDir;
-          if ('vibrate' in navigator) {
-            navigator.vibrate(20);
-          }
+          if ('vibrate' in navigator) navigator.vibrate(20);
         }
       }
     }
   };
 
-  const buttons = document.querySelectorAll('.dpad-btn');
-  buttons.forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.preventDefault();
-      setDir(btn.dataset.dir);
-    });
-    btn.addEventListener('touchstart', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      setDir(btn.dataset.dir);
-    });
+  // D-pad buttons
+  document.querySelectorAll('.dpad-btn').forEach(btn => {
+    btn.addEventListener('click',      e => { e.preventDefault(); setDir(btn.dataset.dir); });
+    btn.addEventListener('touchstart', e => { e.preventDefault(); e.stopPropagation(); setDir(btn.dataset.dir); });
   });
 
+  // Swipe on canvas
   if (mobileCanvas) {
-    mobileCanvas.addEventListener('touchstart', (e) => {
+    mobileCanvas.addEventListener('touchstart', e => {
       e.preventDefault();
       startX = e.touches[0].clientX;
       startY = e.touches[0].clientY;
@@ -387,3 +498,25 @@ requestAnimationFrame(gameEngine);
   window.addEventListener('resize', toggle);
   console.log('✅ Mobile touch controls loaded');
 })();
+
+const themeToggle = document.getElementById("themeToggle");
+
+let isLight = localStorage.getItem("theme") === "light";
+
+function applyTheme() {
+  if (isLight) {
+    document.body.classList.add("light");
+    themeToggle.textContent = "☀️ Light Mode";
+  } else {
+    document.body.classList.remove("light");
+    themeToggle.textContent = "🌙 Dark Mode";
+  }
+}
+
+applyTheme();
+
+themeToggle.addEventListener("click", () => {
+  isLight = !isLight;
+  localStorage.setItem("theme", isLight ? "light" : "dark");
+  applyTheme();
+});

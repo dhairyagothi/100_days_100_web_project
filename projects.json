@@ -751,7 +751,7 @@
       "css"
     ],
     "difficulty": "beginner",
-    "projectPath": "./public/zomato-clone/index.html"
+    "projectPath": "./public/zomato-clone/public/index.html"
   },
   {
     "projectNo": 65,
@@ -2740,7 +2740,7 @@
       "vite"
     ],
     "difficulty": "advanced",
-    "projectPath": "./public/Gemini/dist/index.html"
+    "projectPath": "./public/Gemini/index.html"
   },
   {
     "projectNo": 218,
@@ -2862,7 +2862,7 @@
       "javascript"
     ],
     "difficulty": "advanced",
-    "projectPath": "./public/mind-reader/mind-reader/dist/index.html"
+    "projectPath": "./public/mind-reader/mind-reader/index.html"
   },
   {
     "projectNo": 227,
@@ -2881,7 +2881,7 @@
   {
     "projectNo": 228,
     "projectName": "Neural Network Playground",
-    "projectType": "Web Application",
+    "projectType": "AI",
     "projectDesc": "An interactive neural network visualizer with live backpropagation, decision boundary heatmaps, and configurable architectures.",
     "techStack": [
       "html",
@@ -2894,7 +2894,7 @@
   {
     "projectNo": 229,
     "projectName": "Pixel Art Studio",
-    "projectType": "Web Application",
+    "projectType": "Tool",
     "projectDesc": "A feature-rich pixel art editor with multi-frame animation, timeline UI, flood fill, undo/redo stack, and real-time collaboration via BroadcastChannel.",
     "techStack": [
       "html",

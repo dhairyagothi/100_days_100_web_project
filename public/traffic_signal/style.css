@@ -1,0 +1,330 @@
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600&display=swap");
+:root {
+  --red: #ff2222;
+  --yellow: #ffcc00;
+  --green: #00ff44;
+  --accent: #00f5ff;
+
+  --ui-bg: rgba(0, 0, 0, 0.72);
+  --glass: rgba(255, 255, 255, 0.05);
+
+  --accent-glow: rgba(0, 245, 255, 0.7);
+
+  --border:
+    rgba(0, 245, 255, 0.25);
+
+  --shadow:
+    0 0 10px rgba(0, 245, 255, 0.2),
+    0 0 30px rgba(0, 245, 255, 0.08);
+
+  --radius: 14px;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  background:
+    radial-gradient(circle at top,
+      rgba(0,245,255,.12),
+      transparent 40%),
+    radial-gradient(circle at bottom,
+      rgba(255,34,34,.08),
+      transparent 35%),
+    #050505;
+
+  font-family: "Rajdhani", sans-serif;
+  overflow: hidden;
+  user-select: none;
+}
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(
+      rgba(0,245,255,.08) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(0,245,255,.08) 1px,
+      transparent 1px
+    );
+  background-size: 40px 40px;
+  opacity: .25;
+  animation: gridMove 18s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes gridMove {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(40px);
+  }
+}
+#game-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+#hud {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 14px 20px;
+  pointer-events: none;
+  z-index: 10;
+}
+.hud-panel {
+  background: rgba(8, 12, 18, 0.7); 
+  border: 1px solid rgba(0,245,255,.25); 
+  border-radius: var(--radius);
+  padding: 12px 20px;
+  backdrop-filter: blur(14px);
+  box-shadow: var(--shadow);
+  position: relative;
+  overflow: hidden;
+}
+.hud-panel::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--accent);
+  box-shadow:
+    0 0 10px var(--accent),
+    0 0 20px var(--accent);
+}
+.hud-label {
+  font-family: "Orbitron", monospace;
+  color: var(--accent);
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.hud-value {
+  font-family: "Orbitron", monospace;
+  color: #fff;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.1;
+}
+#signal-panel {
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+  background: var(--ui-bg);
+  border: 1px solid var(--accent);
+  border-radius: 12px;
+  padding: 14px 12px;
+  z-index: 10;
+  backdrop-filter: blur(6px);
+}
+.signal-label {
+  font-family: "Orbitron", monospace;
+  color: var(--accent);
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  text-align: center;
+  margin-bottom: 8px;
+}
+.signal-box {
+  width: 32px;
+  background: #111;
+  border-radius: 6px;
+  border: 2px solid #333;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin: 0 auto;
+}
+.signal-light {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #1a1a1a;
+  transition: background 0.3s, box-shadow 0.3s;
+}
+.signal-light.active-red {
+  background: var(--red);
+  box-shadow: 0 0 12px var(--red);
+}
+.signal-light.active-yellow {
+  background: var(--yellow);
+  box-shadow: 0 0 12px var(--yellow);
+}
+.signal-light.active-green {
+  background: var(--green);
+  box-shadow: 0 0 12px var(--green);
+}
+.timer-bar-wrap {
+  margin-top: 8px;
+  background: #1a1a1a;
+  border-radius: 4px;
+  height: 6px;
+  overflow: hidden;
+  border: 1px solid #333;
+}
+#timer-bar {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.2s linear, background 0.3s;
+}
+#timer-count {
+  text-align: center;
+  margin-top: 5px;
+  font-family: "Orbitron", monospace;
+  font-size: 11px;
+  color: #fff;
+}
+#controls {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 10;
+}
+.ctrl-btn {
+  font-family: "Orbitron", monospace;
+  font-size: 11px;
+  letter-spacing: 1px;
+  padding: 8px 16px;
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  background: var(--ui-bg);
+  color: var(--accent);
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.ctrl-btn:hover {
+  background: rgba(0, 245, 255, 0.12);
+  box-shadow: 0 0 10px rgba(0, 245, 255, 0.3);
+}
+#overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.82);
+  z-index: 20;
+  backdrop-filter: blur(4px);
+}
+#overlay h1 {
+  font-family: "Orbitron", monospace;
+  font-size: clamp(28px, 6vw, 60px);
+  color: var(--accent);
+  text-shadow: 0 0 30px var(--accent);
+  letter-spacing: 4px;
+  margin-bottom: 8px;
+}
+#overlay .sub {
+  font-family: "Rajdhani", sans-serif;
+  color: #aaa;
+  font-size: 16px;
+  letter-spacing: 2px;
+  margin-bottom: 30px;
+}
+.stats-row {
+  display: flex;
+  gap: 30px;
+  margin-bottom: 28px;
+}
+.stat-box {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(0, 245, 255, 0.3);
+  border-radius: 8px;
+  padding: 10px 18px;
+  text-align: center;
+}
+.stat-val {
+  font-family: "Orbitron", monospace;
+  font-size: 22px;
+  color: #fff;
+}
+.stat-lbl {
+  font-size: 11px;
+  color: #888;
+  letter-spacing: 1px;
+}
+#start-btn {
+  font-family: "Orbitron", monospace;
+  font-size: 14px;
+  letter-spacing: 3px;
+  padding: 14px 40px;
+  border: 2px solid var(--accent);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--accent);
+  cursor: pointer;
+  transition: all 0.2s;
+  text-transform: uppercase;
+}
+#start-btn:hover {
+  background: var(--accent);
+  color: #000;
+  box-shadow: 0 0 30px var(--accent);
+}
+#diff-badge {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: "Orbitron", monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: #ffcc00;
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid #ffcc00;
+  border-radius: 20px;
+  padding: 4px 14px;
+  z-index: 10;
+}
+#collision-flash {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 0, 0, 0);
+  pointer-events: none;
+  z-index: 15;
+  transition: background 0.1s;
+}
+.signal-light.active-red,
+.signal-light.active-yellow,
+.signal-light.active-green {
+  animation: pulse 1.2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.12);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
