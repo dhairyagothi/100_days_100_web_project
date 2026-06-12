@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Memory Match • Dark</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container py-4">
+      <header class="text-center mb-5">
+        <h1 class="display-4 fw-bold neon-text">🧠 MEMORY MATCH</h1>
+        <p class="lead text-muted">Match the pairs • Test your memory</p>
+      </header>
+
+      <!-- Controls -->
+      <div class="controls mb-4 p-3 rounded-4">
+        <div class="row g-3 align-items-center">
+          <div class="col-md-3">
+            <select id="difficulty" class="form-select form-select-lg">
+              <option value="4">Easy (4×4)</option>
+              <option value="6" selected>Medium (6×6)</option>
+              <option value="8">Hard (8×8)</option>
+            </select>
+          </div>
+          <div class="col-md-2">
+            <button id="new-game" class="btn btn-neon w-100">New Game</button>
+          </div>
+          <div class="col-md-4">
+            <div
+              class="stats d-flex justify-content-around bg-dark p-3 rounded-3"
+            >
+              <div>
+                Moves: <span id="moves" class="fw-bold text-info">0</span>
+              </div>
+              <div>
+                Time: <span id="timer" class="fw-bold text-info">0s</span>
+              </div>
+              <div>
+                Progress:
+                <span id="progress" class="fw-bold text-success">0/0</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 text-end">
+            <button id="restart" class="btn btn-outline-light">Restart</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Game Board -->
+      <div class="game-container">
+        <div id="grid" class="grid"></div>
+      </div>
+    </div>
+
+    <!-- Win Modal -->
+    <div class="modal fade" id="winModal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-dark text-light border-0">
+          <div class="modal-header border-0">
+            <h3 class="modal-title">🎉 Victory!</h3>
+            <button
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body text-center">
+            <h2 class="mb-4">Excellent Memory!</h2>
+            <div class="stats-final mb-4">
+              <p>Moves: <strong id="final-moves" class="text-info"></strong></p>
+              <p>Time: <strong id="final-time" class="text-info"></strong></p>
+              <p>
+                Best Time: <strong id="best-time" class="text-success"></strong>
+              </p>
+            </div>
+          </div>
+          <div class="modal-footer border-0">
+            <button id="play-again" class="btn btn-neon px-5">
+              Play Again
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <canvas id="confetti" class="confetti-canvas"></canvas>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

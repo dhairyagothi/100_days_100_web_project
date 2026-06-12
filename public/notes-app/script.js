@@ -125,6 +125,14 @@ const elements = {
   confirmUnlock: document.getElementById("confirmUnlock"),
   cancelUnlock: document.getElementById("cancelUnlock"),
   unlockError: document.getElementById("unlockError"),
+  aiEnhanceBtn: document.getElementById("aiEnhanceBtn"),
+  resetKeyBtn: document.getElementById("resetKeyBtn"),
+  apiKeyModal: document.getElementById("apiKeyModal"),
+  closeApiKeyModal: document.getElementById("closeApiKeyModal"),
+  apiKeyForm: document.getElementById("apiKeyForm"),
+  apiKeyInput: document.getElementById("apiKeyInput"),
+  showKeyCheckbox: document.getElementById("showKeyCheckbox"),
+  clearKeyBtn: document.getElementById("clearKeyBtn"),
 };
 
 if (elements.lockedInput) {
@@ -933,6 +941,199 @@ document.addEventListener("keydown", (event) => {
       closeUnlockModal();
     }
   }
+});
+
+// ========================================
+// AI Features with User-Provided API Key
+// ========================================
+
+const API_KEY_STORAGE_KEY = "gemini-api-key:v1";
+
+function getStoredApiKey() {
+  return localStorage.getItem(API_KEY_STORAGE_KEY);
+}
+
+function saveApiKey(key) {
+  localStorage.setItem(API_KEY_STORAGE_KEY, key.trim());
+}
+
+function clearStoredApiKey() {
+  localStorage.removeItem(API_KEY_STORAGE_KEY);
+  elements.apiKeyInput.value = "";
+}
+
+function openApiKeyModal() {
+  const storedKey = getStoredApiKey();
+  elements.apiKeyInput.value = storedKey || "";
+  elements.apiKeyModal.hidden = false;
+  elements.apiKeyInput.focus();
+}
+
+function closeApiKeyModal() {
+  elements.apiKeyModal.hidden = true;
+}
+
+function toggleShowKey() {
+  const isPassword = elements.apiKeyInput.type === "password";
+  elements.apiKeyInput.type = isPassword ? "text" : "password";
+}
+
+async function callAIAPI(text) {
+  if (!text.trim()) {
+    showToast("Please write some text first.");
+    return null;
+  }
+
+  let apiKey = getStoredApiKey();
+  const button = elements.aiEnhanceBtn;
+
+  try {
+    button.disabled = true;
+    button.classList.add("loading");
+
+    // If no client API key, try the backend API server proxy first
+    if (!apiKey) {
+      try {
+        const response = await fetch("/api/ai-process", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ action: "enhance", text }),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          if (data.success && data.result) {
+            showToast("✨ Note fixed and formatted!");
+            return data.result;
+          }
+        }
+      } catch (backendError) {
+        console.log("Backend server proxy not available, prompting for client-side API key.", backendError);
+      }
+
+      // If backend proxy is not running or failed, ask user for their API key
+      button.classList.remove("loading");
+      button.disabled = false;
+      openApiKeyModal();
+      return null;
+    }
+
+    // Combined AI Enhance Prompt
+    const prompt = `You are an expert AI note-taking assistant. Your task is to correct all spelling, grammar, and punctuation mistakes, AND transform raw, unformatted, or shorthand notes into a beautifully structured Markdown document.
+You MUST:
+1. Fix all typos, spelling, capitalization, and grammatical errors.
+2. Add a main heading (#) and logical subheadings (##) to organize the content.
+3. Use bulleted lists (-) for lists and key concepts.
+4. Structure scattered thoughts into coherent paragraphs.
+5. Preserve all original technical terms, names, details, and user intent.
+6. DO NOT add bold formatting (**word**) to ordinary words unless they are section headings.
+7. Return ONLY the final corrected and formatted Markdown. No conversational filler, no introductions, no explanations.`;
+
+    const payload = {
+      model: "sarvam-30b",
+      messages: [
+        {
+          role: "system",
+          content: prompt,
+        },
+        {
+          role: "user",
+          content: text,
+        },
+      ],
+      temperature: 0.3,
+    };
+
+    const response = await fetch(
+      "https://api.sarvam.ai/v1/chat/completions",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "api-subscription-key": apiKey,
+        },
+        body: JSON.stringify(payload),
+      }
+    );
+
+    if (!response.ok) {
+      const error = await response.json();
+      const errorMsg = error.error?.message || "API request failed";
+      
+      if (errorMsg.toLowerCase().includes("key") || errorMsg.toLowerCase().includes("unauthorized") || errorMsg.toLowerCase().includes("subscription") || errorMsg.toLowerCase().includes("not valid")) {
+        showToast("Invalid Sarvam API key. Please try again.");
+        clearStoredApiKey();
+        openApiKeyModal();
+      } else {
+        throw new Error(errorMsg);
+      }
+      return null;
+    }
+
+    const data = await response.json();
+
+    // Extract generated text from OpenAI-compatible response format
+    if (data.choices && data.choices[0] && data.choices[0].message) {
+      const result = data.choices[0].message.content;
+      showToast("✨ Note fixed and formatted!");
+      return result;
+    }
+
+    throw new Error("Unexpected API response format");
+  } catch (error) {
+    console.error("AI API error:", error);
+    showToast(`Error: ${error.message}`);
+    return null;
+  } finally {
+    const button = elements.aiEnhanceBtn;
+    button.classList.remove("loading");
+    button.disabled = false;
+  }
+}
+
+async function enhanceNote() {
+  const enhancedText = await callAIAPI(elements.contentInput.value);
+  if (enhancedText) {
+    elements.contentInput.value = enhancedText;
+  }
+}
+
+elements.aiEnhanceBtn.addEventListener("click", enhanceNote);
+elements.resetKeyBtn.addEventListener("click", openApiKeyModal);
+
+// API Key Modal Event Listeners
+elements.closeApiKeyModal.addEventListener("click", closeApiKeyModal);
+elements.showKeyCheckbox.addEventListener("change", toggleShowKey);
+elements.clearKeyBtn.addEventListener("click", () => {
+  if (confirm("Clear your stored API key?")) {
+    clearStoredApiKey();
+    showToast("API key cleared.");
+  }
+});
+
+elements.apiKeyForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const apiKey = elements.apiKeyInput.value.trim();
+  
+  if (!apiKey) {
+    showToast("Please enter your API key.");
+    return;
+  }
+  
+  if (apiKey.length < 20) {
+    showToast("API key seems too short. Please check.");
+    return;
+  }
+  
+  saveApiKey(apiKey);
+  closeApiKeyModal();
+  showToast("✓ API key saved securely in your browser!");
+});
+
+elements.apiKeyModal.addEventListener("click", (event) => {
+  if (event.target === elements.apiKeyModal) closeApiKeyModal();
 });
 
 setTheme(localStorage.getItem(THEME_KEY) || "dark");

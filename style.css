@@ -3422,3 +3422,13 @@ body.custom-cursor-active .cursor-ring.is-visible {
 @media (pointer: coarse) {
   .cursor-switcher-container { display: none !important; }
 }
+.random-project-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+#randomProjectResult {
+  width: 100%;
+}

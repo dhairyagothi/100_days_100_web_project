@@ -51,24 +51,38 @@
       </header>
 
       <section class="search-console">
-        <input
-          type="text"
-          id="ingredientInput"
-          placeholder="Enter a main ingredient... (e.g., chicken, tomato, beef)"
-        />
+        <div class="tag-input-container" id="tagInputContainer">
+          <input
+            type="text"
+            id="ingredientInput"
+            placeholder="Type ingredient and press Enter or Comma..."
+          />
+        </div>
         <button id="searchBtn">Find Recipes</button>
       </section>
 
-      <div id="statusAlert" class="status-box hidden">
-        Sifting through culinary archives...
-      </div>
+      <section class="filter-controls-panel hidden" id="filterControlsPanel">
+        <select id="categoryFilter">
+          <option value="">All Categories</option>
+        </select>
+        <select id="areaFilter">
+          <option value="">All Cuisines</option>
+        </select>
+        <select id="sortControl">
+          <option value="default">Sort By: Default</option>
+          <option value="alpha">Alphabetical (A-Z)</option>
+          <option value="favorites">Favorites First</option>
+        </select>
+      </section>
+
+      <div id="statusAlert" class="status-box hidden"></div>
 
       <main class="recipe-grid" id="recipeDisplayGrid"></main>
     </div>
 
-    <div class="modal-overlay hidden" id="recipeModal">
+    <div class="modal-overlay hidden" id="recipeModal" role="dialog" aria-modal="true">
       <div class="modal-card">
-        <button class="close-modal-btn" id="closeModalBtn">&times;</button>
+        <button class="close-modal-btn" id="closeModalBtn" aria-label="Close modal">&times;</button>
         <div class="modal-scroll-body" id="modalDetailsContent"></div>
       </div>
     </div>
