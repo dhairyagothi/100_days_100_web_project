@@ -582,8 +582,15 @@ function cleanupExpiredRecentProjects() {
   }
 }
 
-// Clean up every 5 minutes
-setInterval(cleanupExpiredRecentProjects, 5 * 60 * 1000);
+// Clean up every 5 minutes — clear previous interval to prevent timer leaks
+var recentProjectsTimer = null;
+function startRecentProjectsCleanup() {
+  if (recentProjectsTimer !== null) {
+    clearInterval(recentProjectsTimer);
+  }
+  recentProjectsTimer = setInterval(cleanupExpiredRecentProjects, 5 * 60 * 1000);
+}
+startRecentProjectsCleanup();
 
 const CATEGORY_LABEL = {
   beginner: "Beginner",
@@ -1821,7 +1828,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   initTechStackSearch();
   initClearAllFilters();
 
-  initStreak();
   updateGamifiedUI();
 
   try {

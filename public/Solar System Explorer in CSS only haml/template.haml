@@ -1,496 +1,1270 @@
-%h1.logo
-    Solar explorer
-    %span in only CSS
-%input.planet20{:type => 'radio', :id => 'pluto', :name => 'planet'}
-%label.pluto.menu{:for => 'pluto'}
-    .preview
-    .info
-        %h2 
-            .pip
-            Pluto
-        %h3 39.5 AU
-%input.planet9{:type => 'radio', :id => 'neptune', :name => 'planet'}
-%label.neptune.menu{:for => 'neptune'}
-    .preview
-    .info
-        %h2 
-            .pip
-            Neptune
-        %h3 30.06 AU
-        
-%input.planet8{:type => 'radio', :id => 'uranus', :name => 'planet'}
-%label.uranus.menu{:for => 'uranus'}
-    .preview
-    .info
-        %h2 
-            .pip
-            Uranus
-        %h3 19.18 AU
-        
-%input.planet7{:type => 'radio', :id => 'saturn', :name => 'planet'}
-%label.saturn.menu{:for => 'saturn'}
-    .preview
-    .info
-        %h2 
-            .pip
-            Saturn
-        %h3 9.539 AU
-        
-%input.planet6{:type => 'radio', :id => 'jupiter', :name => 'planet'}
-%label.jupiter.menu{:for => 'jupiter'}
-    .preview
-    .info
-        %h2 
-            .pip
-            Jupiter
-        %h3 5.203 AU
-%input.planet5{:type => 'radio', :id => 'mars', :name => 'planet', :checked => 'checked'}
-%label.menu.mars{:for => 'mars'}
-    .preview
-        
-    .info
-        %h2 
-            .pip
-            Mars
-        %h3 1.524 AU
-%input.planet4{:type => 'radio', :id => 'earth', :name => 'planet', :checked => 'checked'}
-%label.menu.earth{:for => 'earth'}
-    .preview
-        
-    .info
-        %h2 
-            .pip
-            Earth
-        %h3 1 AU
-%input.planet3{:type => 'radio', :id => 'venus', :name => 'planet', :checked => 'checked'}
-%label.menu.venus{:for => 'venus'}
-    .preview
-        
-    .info
-        %h2 
-            .pip
-            Venus
-        %h3 0.723 AU
-%input.planet2{:type => 'radio', :id => 'mercury', :name => 'planet', :checked => 'checked'}
-%label.menu.mercury{:for => 'mercury'}
-    .preview
-        
-    .info
-        %h2 
-            .pip
-            Mercury
-        %h3 0.39 AU
-%input.planet1{:type => 'radio', :id => 'sun', :name => 'planet', :checked => 'checked'}
-%label.menu.sun{:for => 'sun'}
-    .preview
-        
-    .info
-        %h2 
-            .pip
-            Sun
-        %h3 0 AU
-.solar
-    .solar_systm
-        .planet.sun
-            .planet_description.sun
-                %h2 Star
-                %h1 Sun
-                %p The Sun is the star at the center of the Solar System. It is a nearly perfect sphere of hot plasma, central to the existence of life on Earth.
-                %label{:for => 'readSun'}
-                    %a 
-                        Read Mor
-                        %span e
-            .overlay
-    .solar_systm
-        .planet.mercury
-            .planet_description.mercury
-                %h2 Planet
-                %h1 Mercury
-                %p The closest planet to the sun. It circles the sun faster than all the other planets, which is why Romans named it after their swift-footed messenger god.
-                %label{:for => 'readMercury'}
-                    %a 
-                        Read Mor
-                        %span e
-            .overlay
-    .solar_systm
-        .planet.venus
-            .planet_description.venus
-                %h2 Planet
-                %h1 Venus
-                %p Named for the Roman goddess of love and beauty. In ancient times, Venus was often thought to be two different stars, the evening star and the morning star.
-                %label{:for => 'readVenus'}
-                    %a 
-                        Read Mor
-                        %span e
-            .overlay
-    .solar_systm
-        .planet.earth
-            .moon.moon
-                %h3 Moon
-                %h2 Moon
-            .trajectory.m
-            .planet_description.earth
-                %h2 Planet
-                %h1 Earth
-                %p Earth, our home. It is the only planet known to have an atmosphere containing free oxygen, oceans of liquid water on its surface, and, of course, life.
-                %label{:for => 'readEarth'}
-                    %a 
-                        Read Mor
-                        %span e
-            .overlay
-    .solar_systm
-        .planet.mars
-            .moon.deimos
-                %h3 Moon
-                %h2 Deimos
-            .trajectory.d
-            .moon.phoebos
-                %h3 Moon
-                %h2 Phoebos
-            .trajectory.p
-            .planet_description.mars
-                %h2 Planet
-                %h1 Mars
-                %p Fourth planet from the Sun and the second smallest planet in the solar systm. Named after the Roman god of war often described as the “Red Planet”.
-                %label{:for => 'readMars'}
-                    %a 
-                        Read Mor
-                        %span e
-            .overlay
-    .solar_systm
-        .planet.jupiter
-            .moon.lo
-                %h3 Moon
-                %h2 Io
-            .moon.europa
-                %h3 Moon
-                %h2 Europa
-            .moon.ganymede
-                %h3 Moon
-                %h2 Ganymede
-            .trajectory.lop
-            .trajectory.eu
-            .trajectory.ga
-            .planet_description.jupiter
-                %h2 Planet
-                %h1 Jupiter
-                %p Jupiter is the largest planet in the solar systm. Fittingly, it was named after the king of the gods in Roman mythology. 
-                %label{:for => 'readJupiter'}
-                    %a 
-                        Read Mor
-                        %span e
-            .overlay
-    .solar_systm
-        .planet.saturn
-            .moon.titan
-                %h3 Moon
-                %h2 Titan
-            .moon.dione
-                %h3 Moon
-                %h2 Dione
-            .moon.enceladus
-                %h3 Moon
-                %h2 Enceladus
-            .trajectory.ti
-            .trajectory.di
-            .trajectory.enc
-            .planet_description.saturn
-                %h2 Planet
-                %h1 Saturn
-                %p Saturn is the sixth planet from the sun and the second largest planet in the solar systm. Saturn was the Roman name for Cronus, the lord of the Titans.
-                %label{:for => 'readSaturn'}
-                    %a 
-                        Read Mor
-                        %span e
-            .overlay
-    .solar_systm
-        .planet.uranus
-            .moon.miranda
-                %h3 Moon
-                %h2 Miranda
-            .moon.ariel
-                %h3 Moon
-                %h2 Ariel
-            .moon.umbriel
-                %h3 Moon
-                %h2 Umbriel
-            .trajectory.mir
-            .trajectory.ari
-            .trajectory.umb
-            .planet_description.uranus
-                %h2 Planet
-                %h1 Uranus
-                %p The first planet to be discovered by scientists. The planet is notable for its dramatic tilt, which causes its axis to point nearly directly at the sun.
-                %label{:for => 'readUranus'}
-                    %a 
-                        Read Mor
-                        %span e
-            .overlay
-    .solar_systm
-        .planet.neptune
-            .moon.triton
-                %h3 Moon
-                %h2 Triton
-            .moon.proteus
-                %h3 Moon
-                %h2 Proteus
-            .moon.nereid
-                %h3 Moon
-                %h2 Nereid
-            .trajectory.tri
-            .trajectory.pro
-            .trajectory.ner
-            .planet_description.neptune
-                %h2 Planet
-                %h1 Neptune
-                %p Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                %label{:for => 'readNeptune'}
-                    %a 
-                        Read Mor
-                        %span e     
-            .overlay
-    .solar_systm
-        .planet.pluto
-            .planet_description.pluto
-                %h2 Dwarf planet
-                %h1 Pluto
-                %p Pluto, once considered the ninth and most distant planet from the sun, is now the largest known dwarf planet in the solar systm.
-                %label{:for => 'readPluto'}
-                    %a 
-                        Read Mor
-                        %span e     
-            .overlay                 
-                        
-%input.read{:type => 'radio', :id => 'readSun', :name => 'sunRead'}
-%label.closeBig{:for => 'closeSun'}
-%input.read{:type => 'radio', :id => 'closeSun', :name => 'sunRead'}
-.panel
-    %h1 Sun
-    
-    %p The Sun is the star at the center of the Solar System. It is a nearly perfect sphere of hot plasma, with internal convective motion that generates a magnetic field via a dynamo process.
+!!!
+%html{lang: "en"}
+  %head
+    %meta{charset: "UTF-8"}
+    %meta{name: "viewport", content: "width=device-width, initial-scale=1.0"}
+    %meta{name: "description", content: "Solar Explorer — an interactive educational guide to our solar system. Explore planets, moons, and fascinating space facts."}
+    %link{rel: "stylesheet", href: "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"}
+    %link{rel: "preconnect", href: "https://fonts.googleapis.com"}
+    %link{rel: "preconnect", href: "https://fonts.gstatic.com", crossorigin: true}
+    %link{href: "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap", rel: "stylesheet"}
+    %link{rel: "stylesheet", href: "style.css"}
+    %title Solar Explorer — Our Solar System
 
-    %img{:src => 'https://upload.wikimedia.org/wikipedia/commons/b/b4/The_Sun_by_the_Atmospheric_Imaging_Assembly_of_NASA%27s_Solar_Dynamics_Observatory_-_20100819.jpg'}
-    
-    %h2 The Sun accounts for 99.86% of the mass in the solar system.
-    %p It has a mass of around 330,000 times that of Earth.
-    %br
-                 
-                        
-%input.read{:type => 'radio', :id => 'readMercury', :name => 'mercuryRead'}
-%label.closeBig{:for => 'closeMercury'}
-%input.read{:type => 'radio', :id => 'closeMercury', :name => 'mercuryRead'}
-.panel
-    %h1 Mercury
-    
-    %p Mercury is the closest planet to the sun. As such, it circles the sun faster than all the other planets, which is why Romans named it after their swift-footed messenger god.
+  %body
+    / Back navigation
+    %a.project-back-button{href: "/", "aria-label": "Back to home"}
+      %i.fa-solid.fa-arrow-left{"aria-hidden": "true"}
+      Back to Home
 
-    %p The Sumerians also knew of Mercury since at least 5,000 years ago. It was often associated with Nabu, the god of writing. Mercury was also given separate names for its appearance as both a morning star and as an evening star. Greek astronomers knew, however, that the two names referred to the same body, and Heraclitus, around 500 B.C., correctly thought that both Mercury and Venus orbited the sun, not Earth.
-    
-    %img{:src => 'https://i2.wp.com/www.astronomytrek.com/wp-content/uploads/2012/11/mercury-1.jpg?fit=678%2C381&ssl=1'}
-    
-    %h2 A year on Mercury is just 88 days long.
-    %p One solar day (the time from noon to noon on the planet’s surface) on Mercury lasts the equivalent of 176 Earth days while the sidereal day (the time for 1 rotation in relation to a fixed point) lasts 59 Earth days. Mercury is nearly tidally locked to the Sun and over time this has slowed the rotation of the planet to almost match its orbit around the Sun. Mercury also has the highest orbital eccentricity of all the planets with its distance from the Sun ranging from 46 to 70 million km.
+    / Animated star field background
+    .star-field{"aria-hidden": "true"}
+      .stars.stars--small
+      .stars.stars--medium
+      .stars.stars--large
 
-    %h2 Mercury is the smallest planet in the Solar Systm.
-    %p One of five planets visible with the naked eye a, Mercury is just 4,879 Kilometres across its equator, compared with 12,742 Kilometres for the Earth.
+    .app-shell
+      / Header
+      %header.site-header{role: "banner"}
+        .site-header__brand
+          %h1.logo
+            %span.logo__icon{"aria-hidden": "true"} ☀
+            Solar Explorer
+            %span.logo__tagline Journey through our solar system
 
-    %h2 Mercury is the second densest planet. 
-    %p Even though the planet is small, Mercury is very dense. Each cubic centimetre has a density of 5.4 grams, with only the Earth having a higher density. This is largely due to Mercury being composed mainly of heavy metals and rock.
+        .site-header__controls
+          / Speed control
+          .speed-controls{role: "group", "aria-label": "Animation speed controls"}
+            %span.speed-controls__label Orbit Speed
+            .speed-controls__buttons
+              %button.speed-btn{"data-speed": "0.3", "aria-label": "Slow orbit speed", type: "button"} ½×
+              %button.speed-btn.speed-btn--active{"data-speed": "1", "aria-label": "Normal orbit speed", type: "button"} 1×
+              %button.speed-btn{"data-speed": "3", "aria-label": "Fast orbit speed", type: "button"} 3×
 
-    %h2 Mercury has wrinkles.
-    %p As the iron core of the planet cooled and contracted, the surface of the planet became wrinkled. Scientist have named these wrinkles, Lobate Scarps. These Scarps can be up to a mile high and hundreds of miles long.
-    %br
-    
-%input.read{:type => 'radio', :id => 'readVenus', :name => 'venusRead'}
-%label.closeBig{:for => 'closeVenus'}
-%input.read{:type => 'radio', :id => 'closeVenus', :name => 'venusRead'}
-.panel
-    %h1 Venus
-    %p Venus, the second planet from the sun, is named for the Roman goddess of love and beauty. The planet — the only planet named after a female — may have been named for the most beautiful deity of her pantheon because it shone the brightest of the five planets known to ancient astronomers.
+          / View mode toggle
+          .view-controls{role: "group", "aria-label": "View mode"}
+            %button.view-btn.view-btn--active#view-3d{"data-view": "3d", type: "button", "aria-label": "3D view", "aria-pressed": "true"}
+              %i.fa-solid.fa-cube{"aria-hidden": "true"}
+              3D
+            %button.view-btn#view-2d{"data-view": "2d", type: "button", "aria-label": "2D view", "aria-pressed": "false"}
+              %i.fa-solid.fa-map{"aria-hidden": "true"}
+              2D
 
-    %p In ancient times, Venus was often thought to be two different stars, the evening star and the morning star — that is, the ones that first appeared at sunset and sunrise. In Latin, they were respectively known as Vesper and Lucifer. In Christian times, Lucifer, or "light-bringer," became known as the name of Satan before his fall. However, further observations of Venus in the space age show a very hellish environment. This makes Venus a very difficult planet to observe from up close, because spacecraft do not survive long on its surface.
-    
-    %img{:src => 'https://3c1703fe8d.site.internapcdn.net/newman/gfx/news/hires/2014/2-whatistheave.jpg'}
-    
-    %h2 A day on Venus lasts longer than a year. 
-    %p It takes 243 Earth days to rotate once on its axis (sidereal day). The planet’s orbit around the Sun takes 225 Earth days, compared to the Earth’s 365. A day on the surface of Venus (solar day) takes 117 Earth days.
-    
-    %h2 Venus rotates in the opposite direction to most other planets. 
-    %p This means that Venus is rotating in the opposite direction to the Sun, this is also know as a retrograde rotation. A possible reason might be a collision in the past with an asteroid or other object that caused the planet to alter its rotational path. It also differs from most other planets in our solar systm by having no natural satellites.
-    
-    %h2 Venus is the second brightest object in the night sky. 
-    %p Only the Moon is brighter. With a magnitude of between -3.8 to -4.6 Venus is so bright it can be seen during daytime on a clear day.
+      / Exploration toolbar
+      .exploration-toolbar{role: "toolbar", "aria-label": "Exploration tools"}
+        .search-box
+          %label.search-box__label{for: "planet-search"}
+            %i.fa-solid.fa-magnifying-glass{"aria-hidden": "true"}
+            %span.sr-only Search celestial bodies
+          %input#planet-search.search-box__input{type: "search", placeholder: "Search planets, moons, dwarf planets…", "aria-autocomplete": "list", "aria-controls": "search-results"}
+          %ul#search-results.search-results{role: "listbox", hidden: true}
 
-    %h2 Atmospheric pressure on Venus is 92 times greater than the Earth’s. 
-    %p While its size and mass are similar to Earth, the small asteroids are crushed when entering its atmosphere, meaning no small craters lie on the surface of the planet. The pressure felt by a human on the surface would be equivalent to that experienced deep beneath the sea on Earth.
-    %br
-    
-%input.read{:type => 'radio', :id => 'readEarth', :name => 'earthRead'}
-%label.closeBig{:for => 'closeEarth'}
-%input.read{:type => 'radio', :id => 'closeEarth', :name => 'earthRead'}
-.panel
-    %h1 Earth
-    %p Earth, our home, is the third planet from the sun. It is the only planet known to have an atmosphere containing free oxygen, oceans of liquid water on its surface, and, of course, life.
+        .toolbar-actions
+          %button.toolbar-btn#zoom-in{type: "button", "aria-label": "Zoom in"}
+            %i.fa-solid.fa-magnifying-glass-plus{"aria-hidden": "true"}
+          %button.toolbar-btn#zoom-out{type: "button", "aria-label": "Zoom out"}
+            %i.fa-solid.fa-magnifying-glass-minus{"aria-hidden": "true"}
+          %button.toolbar-btn#reset-view{type: "button", "aria-label": "Reset view and focus on Earth"}
+            %i.fa-solid.fa-rotate-left{"aria-hidden": "true"}
+            Reset
+          %button.toolbar-btn#open-compare{type: "button", "aria-label": "Compare planets"}
+            %i.fa-solid.fa-scale-balanced{"aria-hidden": "true"}
+            Compare
+          %button.toolbar-btn#start-tour{type: "button", "aria-label": "Start guided tour"}
+            %i.fa-solid.fa-route{"aria-hidden": "true"}
+            Tour
+          %button.toolbar-btn#open-quiz{type: "button", "aria-label": "Open space quiz"}
+            %i.fa-solid.fa-graduation-cap{"aria-hidden": "true"}
+            Quiz
+          %button.toolbar-btn#open-timeline{type: "button", "aria-label": "Space exploration timeline"}
+            %i.fa-solid.fa-clock-rotate-left{"aria-hidden": "true"}
+            Timeline
+          %button.toolbar-btn#open-concepts{type: "button", "aria-label": "Astronomy concepts"}
+            %i.fa-solid.fa-lightbulb{"aria-hidden": "true"}
+            Concepts
 
-    %p Earth is the fifth largest of the planets in the solar systm — smaller than the four gas giants, Jupiter, Saturn, Uranusand Neptune, but larger than the three other rocky planets, 
-    
-    %img{:src => 'https://images.pexels.com/photos/414171/pexels-photo-414171.jpeg?auto=compress&cs=tinysrgb&h=350'}
-    
-    %h2 The Earth’s rotation is gradually slowing.
-    %p This deceleration is happening almost imperceptibly, at approximately 17 milliseconds per hundred years, although the rate at which it occurs is not perfectly uniform. This has the effect of lengthening our days, but it happens so slowly that it could be as much as 140 million years before the length of a day will have increased to 25 hours.
- 
-    %h2 The Earth was once believed to be the centre of the universe.
-    %p Due to the apparent movements of the Sun and planets in relation to their viewpoint, ancient scientists insisted that the Earth remained static, whilst other celestial bodies travelled in circular orbits around it. Eventually, the view that the Sun was at the centre of the universe was postulated by Copernicus, though this is also not the case.
-    
-    %h2 Earth has a powerful magnetic field.
-    %p This phenomenon is caused by the nickel-iron core of the planet, coupled with its rapid rotation. This field protects the Earth from the effects of solar wind.
+    / Sidebar header (visual only — does not break CSS sibling chain)
+    .planet-nav__header{role: "navigation", "aria-label": "Planet navigation"}
+      %p.planet-nav__heading Select a body
+      %p.planet-nav__hint
+        %i.fa-solid.fa-hand-pointer{"aria-hidden": "true"}
+        Click a body to explore · Hover for quick facts
+      %button.menu.menu--info.asteroid-belt{type: "button", "data-search": "asteroid belt ceres kuiper", "data-tooltip": "Millions of rocky fragments between Mars & Jupiter", "aria-label": "Learn about the asteroid belt"}
+        %span.menu__preview.menu__preview--belt{"aria-hidden": "true"}
+        %span.info
+          %span.info__name
+            %span.pip{"aria-hidden": "true"}
+            Asteroid Belt
+          %span.info__distance 2.2–3.2 AU · Region
+        %span.menu__arrow{"aria-hidden": "true"}
+          %i.fa-solid.fa-circle-info
 
-    %h2 There is only one natural satellite of the planet Earth.
-    %p As a percentage of the size of the body it orbits, the Moon is the largest satellite of any planet in our solar systm. In real terms, however, it is only the fifth largest natural satellite.
-    %br
-    
-%input.read{:type => 'radio', :id => 'readMars', :name => 'marsRead'}
-%label.closeBig{:for => 'closeMars'}
-%input.read{:type => 'radio', :id => 'closeMars', :name => 'marsRead'}
-.panel
-    %h1 Mars
-    
-    %p Mars is the fourth planet from the sun. Befitting the red planet's bloody color, the Romans named it after their god of war. The Romans copied the ancient Greeks, who also named the planet after their god of war, Ares. Other civilizations also typically gave the planet names based on its color — for example, the Egyptians named it "Her Desher," meaning "the red one," while ancient Chinese astronomers dubbed it "the fire star."
-    
-    %img{:src => 'https://1.bp.blogspot.com/-ou7Je3OVg6U/WYtxDqjNp_I/AAAAAAAACSQ/fsopS5VtFg4bmlv8hQNfiRYfJqTygCotQCLcBGAs/s2048/Martian%2Blandscape%2Bby%2BAmante%2BLombardi.jpg'}
-    
-    %h2 Mars and Earth have approximately the same landmass.
-    %p Even though Mars has only 15% of the Earth’s volume and just over 10% of the Earth’s mass, around two thirds of the Earth’s surface is covered in water. Martian surface gravity is only 37% of the Earth’s (meaning you could leap nearly three times higher on Mars).
+    / Planet inputs + labels — alternating order required for CSS 3D engine
+    %input.planet10#pluto{type: "radio", name: "planet", "aria-label": "Select Pluto"}
+    %label.menu.pluto{for: "pluto", role: "button", tabindex: "0", "data-search": "pluto dwarf planet kuiper charon", "data-tooltip": "Dwarf planet — Kuiper Belt king"}
+      %span.menu__preview{"aria-hidden": "true"}
+      %span.info
+        %span.info__name
+          %span.pip{"aria-hidden": "true"}
+          Pluto
+        %span.info__distance 39.5 AU · Dwarf Planet
+      %span.menu__arrow{"aria-hidden": "true"}
+        %i.fa-solid.fa-chevron-right
 
-    %h2 Mars is home to the tallest mountain in the solar systm.
-    %p Olympus Mons, a shield volcano, is 21km high and 600km in diameter. Despite having formed over billions of years, evidence from volcanic lava flows is so recent many scientists believe it could still be active.
+    %input.planet9#neptune{type: "radio", name: "planet", "aria-label": "Select Neptune"}
+    %label.menu.neptune{for: "neptune", role: "button", tabindex: "0", "data-search": "neptune planet ice giant triton", "data-tooltip": "Windiest planet — 2,100 km/h gusts"}
+      %span.menu__preview{"aria-hidden": "true"}
+      %span.info
+        %span.info__name
+          %span.pip{"aria-hidden": "true"}
+          Neptune
+        %span.info__distance 30.06 AU · Planet
+      %span.menu__arrow{"aria-hidden": "true"}
+        %i.fa-solid.fa-chevron-right
 
-    %h2 Only 18 missions to Mars have been successful.
-    %p As of September 2014 there have been 40 missions to Mars, including orbiters, landers and rovers but not counting flybys. The most recent arrivals include the Mars Curiosity mission in 2012, the MAVEN mission, which arrived on September 22, 2014, followed by the Indian Space Research Organization’s MOM Mangalyaan orbiter, which arrived on September 24, 2014. The next missions to arrive will be the European Space Agency’s ExoMars mission, comprising an orbiter, lander, and a rover, followed by NASA’s InSight robotic lander mission, slated for launch in March 2016 and a planned arrival in September, 2016.
-    
-    %h2 Mars has the largest dust storms in the solar systm.
-    %p They can last for months and cover the entire planet. The seasons are extreme because its elliptical (oval-shaped) orbital path around the Sun is more elongated than most other planets in the solar systm.
-    %br
-    
-%input.read{:type => 'radio', :id => 'readJupiter', :name => 'jupiterRead'}
-%label.closeBig{:for => 'closeJupiter'}
-%input.read{:type => 'radio', :id => 'closeJupiter', :name => 'jupiterRead'}
-.panel
-    %h1 Jupiter
-    %p Jupiter is the largest planet in the solar systm. Fittingly, it was named after the king of the gods in Roman mythology. In a similar manner, the ancient Greeks named the planet after Zeus, the king of the Greek pantheon.
+    %input.planet8#uranus{type: "radio", name: "planet", "aria-label": "Select Uranus"}
+    %label.menu.uranus{for: "uranus", role: "button", tabindex: "0", "data-search": "uranus planet ice giant tilted", "data-tooltip": "Ice giant — rolls on its side"}
+      %span.menu__preview{"aria-hidden": "true"}
+      %span.info
+        %span.info__name
+          %span.pip{"aria-hidden": "true"}
+          Uranus
+        %span.info__distance 19.18 AU · Planet
+      %span.menu__arrow{"aria-hidden": "true"}
+        %i.fa-solid.fa-chevron-right
 
-    %p Jupiter helped revolutionize the way we saw the universe and ourselves in 1610, when Galileo discovered Jupiter's four large moons — Io, Europa, Ganymede and Callisto, now known as the Galilean moons. This was the first time that celestial bodies were seen circling an object other than Earth, major support of the Copernican view that Earth was not the center of the universe.
-    
-    %img{:src => 'http://hanaleikauaivacation.com/wp-content/uploads/parser/jupiter-landscape-1.jpg'}
-    
-    %h2 Jupiter is the fourth brightest object in the solar systm.
-    %p Only the Sun, Moon and Venus are brighter. It is one of five planets visible to the naked eye from Earth.
-    
-    %h2 The ancient Babylonians were the first to record their sightings of Jupiter.
-    %p This was around the 7th or 8th century BC. Jupiter is named after the king of the Roman gods. To the Greeks, it represented Zeus, the god of thunder. The Mesopotamians saw Jupiter as the god Marduk and patron of the city of Babylon. Germanic tribes saw this planet as Donar, or Thor.
+    %input.planet7#saturn{type: "radio", name: "planet", "aria-label": "Select Saturn"}
+    %label.menu.saturn{for: "saturn", role: "button", tabindex: "0", "data-search": "saturn planet rings titan", "data-tooltip": "Iconic rings — 146 moons"}
+      %span.menu__preview{"aria-hidden": "true"}
+      %span.info
+        %span.info__name
+          %span.pip{"aria-hidden": "true"}
+          Saturn
+        %span.info__distance 9.539 AU · Planet
+      %span.menu__arrow{"aria-hidden": "true"}
+        %i.fa-solid.fa-chevron-right
 
-    %h2 Jupiter has the shortest day of all the planets.
-    %p It turns on its axis once every 9 hours and 55 minutes. The rapid rotation flattens the planet slightly, giving it an oblate shape.
+    %input.planet6#jupiter{type: "radio", name: "planet", "aria-label": "Select Jupiter"}
+    %label.menu.jupiter{for: "jupiter", role: "button", tabindex: "0", "data-search": "jupiter planet gas giant io europa", "data-tooltip": "Largest planet — 95 moons"}
+      %span.menu__preview{"aria-hidden": "true"}
+      %span.info
+        %span.info__name
+          %span.pip{"aria-hidden": "true"}
+          Jupiter
+        %span.info__distance 5.203 AU · Planet
+      %span.menu__arrow{"aria-hidden": "true"}
+        %i.fa-solid.fa-chevron-right
 
-    %h2 Jupiter orbits the Sun once every 11.8 Earth years.
-    %p From our point of view on Earth, it appears to move slowly in the sky, taking months to move from one constellation to another.
-    %br
+    %input.planet5#mars{type: "radio", name: "planet", "aria-label": "Select Mars"}
+    %label.menu.mars{for: "mars", role: "button", tabindex: "0", "data-search": "mars planet red phobos deimos", "data-tooltip": "The Red Planet — 2 moons"}
+      %span.menu__preview{"aria-hidden": "true"}
+      %span.info
+        %span.info__name
+          %span.pip{"aria-hidden": "true"}
+          Mars
+        %span.info__distance 1.524 AU · Planet
+      %span.menu__arrow{"aria-hidden": "true"}
+        %i.fa-solid.fa-chevron-right
 
-%input.read{:type => 'radio', :id => 'readSaturn', :name => 'saturnRead'}
-%label.closeBig{:for => 'closeSaturn'}
-%input.read{:type => 'radio', :id => 'closeSaturn', :name => 'saturnRead'}
-.panel
-    %h1 Saturn
-    
-    %p Saturn is the sixth planet from the sun and the second largest planet in the solar systm. Saturn was the Roman name for Cronus, the lord of the Titans in Greek mythology. Saturn is the root of the English word "Saturday."
+    %input.planet4#earth{type: "radio", name: "planet", checked: "checked", "aria-label": "Select Earth"}
+    %label.menu.earth{for: "earth", role: "button", tabindex: "0", "data-search": "earth planet home moon", "data-tooltip": "Our home — only known life"}
+      %span.menu__preview{"aria-hidden": "true"}
+      %span.info
+        %span.info__name
+          %span.pip{"aria-hidden": "true"}
+          Earth
+        %span.info__distance 1 AU · Planet
+      %span.menu__arrow{"aria-hidden": "true"}
+        %i.fa-solid.fa-chevron-right
 
-    %p Saturn is the farthest planet from Earth visible to the naked human eye, but it is through a telescope that the planet's most outstanding features can be seen: Saturn's rings. Although the other gas giants in the solar systm — Jupiter, Uranus and Neptune — also have rings, those of Saturn are without a doubt the most extraordinary.
-    
-    %img{:src => 'http://ak0.picdn.net/shutterstock/videos/4049260/thumb/1.jpg'}
-    
-    %h2 Saturn can be seen with the naked eye.
-    %p It is the fifth brightest object in the solar systm and is also easily studied through binoculars or a small telescope.
-    
-    %h2 Saturn was known to the ancients, including the Babylonians and Far Eastern observers.
-    %p It is named for the Roman god Saturnus, and was known to the Greeks as Cronus.
+    %input.planet3#venus{type: "radio", name: "planet", "aria-label": "Select Venus"}
+    %label.menu.venus{for: "venus", role: "button", tabindex: "0", "data-search": "venus planet morning star", "data-tooltip": "Hottest planet — 465°C surface"}
+      %span.menu__preview{"aria-hidden": "true"}
+      %span.info
+        %span.info__name
+          %span.pip{"aria-hidden": "true"}
+          Venus
+        %span.info__distance 0.723 AU · Planet
+      %span.menu__arrow{"aria-hidden": "true"}
+        %i.fa-solid.fa-chevron-right
 
-    %h2 Saturn is the flattest planet.
-    %p Its polar diameter is 90% of its equatorial diameter, this is due to its low density and fast rotation. Saturn turns on its axis once every 10 hours and 34 minutes giving it the second-shortest day of any of the solar systm’s planets.
+    %input.planet2#mercury{type: "radio", name: "planet", "aria-label": "Select Mercury"}
+    %label.menu.mercury{for: "mercury", role: "button", tabindex: "0", "data-search": "mercury planet rocky", "data-tooltip": "Smallest planet — 88-day year"}
+      %span.menu__preview{"aria-hidden": "true"}
+      %span.info
+        %span.info__name
+          %span.pip{"aria-hidden": "true"}
+          Mercury
+        %span.info__distance 0.39 AU · Planet
+      %span.menu__arrow{"aria-hidden": "true"}
+        %i.fa-solid.fa-chevron-right
 
-    %h2 Saturn orbits the Sun once every 29.4 Earth years.
-    %p Its slow movement against the backdrop of stars earned it the nickname of “Lubadsagush” from the ancient Assyrians. The name means “oldest of the old”.
-    %br
+    %input.planet1#sun{type: "radio", name: "planet", "aria-label": "Select Sun"}
+    %label.menu.sun{for: "sun", role: "button", tabindex: "0", "data-search": "sun star", "data-tooltip": "Our star — 99.86% of solar system mass"}
+      %span.menu__preview{"aria-hidden": "true"}
+      %span.info
+        %span.info__name
+          %span.pip{"aria-hidden": "true"}
+          Sun
+        %span.info__distance 0 AU · Star
+      %span.menu__arrow{"aria-hidden": "true"}
+        %i.fa-solid.fa-chevron-right
 
-%input.read{:type => 'radio', :id => 'readUranus', :name => 'uranusRead'}
-%label.closeBig{:for => 'closeUranus'}
--# CloseUranus...lol
-%input.read{:type => 'radio', :id => 'closeUranus', :name => 'uranusRead'}
-.panel
-    %h1 Uranus
-    
-    %p Uranus is the seventh planet from the sun and the first to be discovered by scientists. Although Uranus is visible to the naked eye, it was long mistaken as a star because of the planet's dimness and slow orbit. The planet is also notable for its dramatic tilt, which causes its axis to point nearly directly at the sun.
+    / Solar stage — must be a div immediately after label chain for CSS engine
+    .solar-stage#solar-stage
+      .solar-viewport#solar-viewport{role: "main", "aria-label": "Planet visualization"}
+        .solar-viewport__hud{"aria-hidden": "true"}
+          %span.viewport-hint
+            %i.fa-solid.fa-arrows-up-down-left-right
+            Drag to pan · Scroll to zoom
+        .solar-scene#solar-scene
+          .asteroid-belt-visual{"aria-hidden": "true"}
+            .asteroid-belt-visual__ring
+            .asteroid-belt-visual__label Asteroid Belt
+          .solar{"aria-live": "polite"}
 
-    %p British astronomer William Herschel discovered Uranus accidentally on March 13, 1781, with his telescope while surveying all stars down to those about 10 times dimmer than can be seen by the naked eye. One "star" seemed different, and within a year Uranus was shown to follow a planetary orbit.
-    
-    %img{:src => 'http://www.cosmosup.com/wp-content/uploads/2016/02/Uranus-Facts-About-the-Planet-Uranus-700x325.jpg'}
-    
-    %h2 Uranus was officially discovered by Sir William Herschel in 1781.
-    %p It is too dim to have been seen by the ancients. At first Herschel thought it was a comet, but several years later it was confirmed as a planet. Herscal tried to have his discovery named “Georgian Sidus” after King George III. The name Uranus was suggested by astronomer Johann Bode. The name comes from the ancient Greek deity Ouranos.
-    
-    %h2 Uranus turns on its axis once every 17 hours, 14 minutes.
-    %p The planet rotates in a retrograde direction, opposite to the way Earth and most other planets turn.
+          / Sun
+          %article.solar_systm{"aria-label": "Sun details"}
+            .sun.planet{role: "img", "aria-label": "Sun visualization"}
+              %section.sun.planet_description
+                %h2.planet_description__type
+                  %i.fa-solid.fa-star{"aria-hidden": "true"}
+                  Star
+                %h1.planet_description__name Sun
+                %p.planet_description__summary
+                  The Sun is the star at the center of our Solar System — a nearly perfect
+                  sphere of hot plasma generating energy through nuclear fusion at its core.
+                .planet_description__stats{"aria-label": "Quick facts"}
+                  .stat-chip
+                    %span.stat-chip__label Diameter
+                    %span.stat-chip__value 1.39M km
+                  .stat-chip
+                    %span.stat-chip__label Surface Temp
+                    %span.stat-chip__value 5,500°C
+                  .stat-chip
+                    %span.stat-chip__label Age
+                    %span.stat-chip__value 4.6B years
+                %label.planet_description__read-more{for: "readSun", role: "button", tabindex: "0"}
+                  %i.fa-solid.fa-book-open{"aria-hidden": "true"}
+                  Read Full Article
+              .overlay{"aria-hidden": "true"}
 
-    %h2 Uranus makes one trip around the Sun every 84 Earth years.
-    %p During some parts of its orbit one or the other of its poles point directly at the Sun and get about 42 years of direct sunlight. The rest of the time they are in darkness.
-    
-    %h2 Uranus is often referred to as an “ice giant” planet.
-    %p Like the other gas giants, it has a hydrogen upper layer, which has helium mixed in. Below that is an icy “mantle, which surrounds a rock and ice core. The upper atmosphere is made of water, ammonia and the methane ice crystals that give the planet its pale blue colour.
-    %br
-    
-%input.read{:type => 'radio', :id => 'readNeptune', :name => 'neptuneRead'}
-%label.closeBig{:for => 'closeNeptune'}
-%input.read{:type => 'radio', :id => 'closeNeptune', :name => 'neptuneRead'}
-.panel
-    %h1 Neptune
-    
-    %p Neptune is the eighth planet from the sun. It was the first planet to get its existence predicted by mathematical calculations before it was actually seen through a telescope on Sept. 23, 1846. Irregularities in the orbit of Uranus led French astronomer Alexis Bouvard to suggest that the gravitational pull from another celestial body might be responsible. German astronomer Johann Galle then relied on subsequent calculations to help spot Neptune via telescope. Previously, astronomer Galileo Galilei sketched the planet, but he mistook it for a star due to its slow motion. In accordance with all the other planets seen in the sky, this new world was given a name from Greek and Roman mythology — Neptune, the Roman god of the sea.
+          / Mercury
+          %article.solar_systm{"aria-label": "Mercury details"}
+            .mercury.planet{role: "img", "aria-label": "Mercury visualization"}
+              %section.mercury.planet_description
+                %h2.planet_description__type
+                  %i.fa-solid.fa-circle-dot{"aria-hidden": "true"}
+                  Planet
+                %h1.planet_description__name Mercury
+                %p.planet_description__summary
+                  The closest planet to the Sun, racing through its orbit so fast that the
+                  Romans named it after their swift-footed messenger god.
+                .planet_description__stats{"aria-label": "Quick facts"}
+                  .stat-chip
+                    %span.stat-chip__label Year Length
+                    %span.stat-chip__value 88 days
+                  .stat-chip
+                    %span.stat-chip__label Moons
+                    %span.stat-chip__value 0
+                  .stat-chip
+                    %span.stat-chip__label Gravity
+                    %span.stat-chip__value 3.7 m/s²
+                %label.planet_description__read-more{for: "readMercury", role: "button", tabindex: "0"}
+                  %i.fa-solid.fa-book-open{"aria-hidden": "true"}
+                  Read Full Article
+              .overlay{"aria-hidden": "true"}
 
-    %p Only one mission has flown by Neptune – Voyager 2 in 1989 – meaning that astronomers have done most studies using ground-based telescopes. Today, there are still many mysteries about the cool, blue planet, such as why its winds are so speedy and why its magnetic field is offset.
-    
-    %img{:src => 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQy8Dd14tbXAzh1iz-EJl9tulRwH7Bb-SxX6sXpKFDbqb-NKwpE'}
-    
-    %h2 Neptune was not known to the ancients.
-    %p It is not visible to the naked eye and was first observed in 1846. Its position was determined using mathematical predictions. It was named after the Roman god of the sea.
-    
-    %h2 Neptune spins on its axis very rapidly.
-    %p Its equatorial clouds take 18 hours to make one rotation. This is because Neptune is not solid body.
-    
-    %h2 Neptune is the smallest of the ice giants.
-    %p Despite being smaller than Uranus, Neptune has a greater mass. Below its heavy atmosphere, Uranus is made of layers of hydrogen, helium, and methane gases. They enclose a layer of water, ammonia and methane ice. The inner core of the planet is made of rock.
-    %h2 The atmosphere of Neptune is made of hydrogen and helium, with some methane.
-    %p The methane absorbs red light, which makes the planet appear a lovely blue. High, thin clouds drift in the upper atmosphere.
- 
-%input.read{:type => 'radio', :id => 'readPluto', :name => 'plutoRead'}
-%label.closeBig{:for => 'closePluto'}
-%input.read{:type => 'radio', :id => 'closePluto', :name => 'plutoRead'}
-.panel
-    %h1 Pluto
-    
-    %p Pluto, once considered the ninth and most distant planet from the sun, is now the largest known dwarf planet in the solar systm. It is also one of the largest known members of the Kuiper Belt, a shadowy zone beyond the orbit of Neptune thought to be populated by hundreds of thousands of rocky, icy bodies each larger than 62 miles (100 kilometers) across, along with 1 trillion or more comets. 
+          / Venus
+          %article.solar_systm{"aria-label": "Venus details"}
+            .planet.venus{role: "img", "aria-label": "Venus visualization"}
+              %section.planet_description.venus
+                %h2.planet_description__type
+                  %i.fa-solid.fa-circle-dot{"aria-hidden": "true"}
+                  Planet
+                %h1.planet_description__name Venus
+                %p.planet_description__summary
+                  Named for the Roman goddess of love and beauty, Venus shines the brightest
+                  of all planets — yet hides a hellish, crushing atmosphere beneath its clouds.
+                .planet_description__stats{"aria-label": "Quick facts"}
+                  .stat-chip
+                    %span.stat-chip__label Day Length
+                    %span.stat-chip__value 243 Earth days
+                  .stat-chip
+                    %span.stat-chip__label Moons
+                    %span.stat-chip__value 0
+                  .stat-chip
+                    %span.stat-chip__label Temp
+                    %span.stat-chip__value 465°C avg
+                %label.planet_description__read-more{for: "readVenus", role: "button", tabindex: "0"}
+                  %i.fa-solid.fa-book-open{"aria-hidden": "true"}
+                  Read Full Article
+              .overlay{"aria-hidden": "true"}
 
-    %p In 2006, Pluto was reclassified as a dwarf planet, a change widely thought of as a demotion. The question of Pluto's planet status has attracted controversy and stirred debate in the scientific community, and among the general public, since then. In 2017, a science group (including members of the New Horizon mission) proposed a new definition of planethood based on "round objects in space smaller than stars," which would make the number of planets in our solar systm expand from 8 to roughly 100.
+          / Earth
+          %article.solar_systm{"aria-label": "Earth details"}
+            .earth.planet{role: "img", "aria-label": "Earth visualization"}
+              .moon.moon{role: "img", "aria-label": "Moon"}
+                %span.moon__label Moon
+                %span.moon__name Moon
+              .m.trajectory{"aria-hidden": "true"}
+              %section.earth.planet_description
+                %h2.planet_description__type
+                  %i.fa-solid.fa-earth-americas{"aria-hidden": "true"}
+                  Planet
+                %h1.planet_description__name Earth
+                %p.planet_description__summary
+                  Our home. The only planet known to harbour life, with liquid oceans, a
+                  breathable atmosphere, and a magnetic field that shields us from solar wind.
+                .planet_description__stats{"aria-label": "Quick facts"}
+                  .stat-chip
+                    %span.stat-chip__label Year Length
+                    %span.stat-chip__value 365.25 days
+                  .stat-chip
+                    %span.stat-chip__label Moons
+                    %span.stat-chip__value 1
+                  .stat-chip
+                    %span.stat-chip__label Surface Water
+                    %span.stat-chip__value 71%
+                %label.planet_description__read-more{for: "readEarth", role: "button", tabindex: "0"}
+                  %i.fa-solid.fa-book-open{"aria-hidden": "true"}
+                  Read Full Article
+              .overlay{"aria-hidden": "true"}
 
-    %img{:src => 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/217233/asd.jpeg'}
-    
-    %h2 Pluto is named after the Greek god of the underworld.
-    %p This is a later name for the more well known Hades and was proposed by Venetia Burney an eleven year old schoolgirl from Oxford, England.
+          / Mars
+          %article.solar_systm{"aria-label": "Mars details"}
+            .mars.planet{role: "img", "aria-label": "Mars visualization"}
+              .deimos.moon{role: "img", "aria-label": "Deimos moon"}
+                %span.moon__label Moon
+                %span.moon__name Deimos
+              .d.trajectory{"aria-hidden": "true"}
+              .moon.phoebos{role: "img", "aria-label": "Phobos moon"}
+                %span.moon__label Moon
+                %span.moon__name Phobos
+              .p.trajectory{"aria-hidden": "true"}
+              %section.mars.planet_description
+                %h2.planet_description__type
+                  %i.fa-solid.fa-circle-dot{"aria-hidden": "true"}
+                  Planet
+                %h1.planet_description__name Mars
+                %p.planet_description__summary
+                  The Red Planet, named for the Roman god of war. Home to Olympus Mons —
+                  the tallest volcano in the solar system — and the target of humanity's
+                  greatest exploration missions.
+                .planet_description__stats{"aria-label": "Quick facts"}
+                  .stat-chip
+                    %span.stat-chip__label Year Length
+                    %span.stat-chip__value 687 days
+                  .stat-chip
+                    %span.stat-chip__label Moons
+                    %span.stat-chip__value 2
+                  .stat-chip
+                    %span.stat-chip__label Gravity
+                    %span.stat-chip__value 37% of Earth
+                %label.planet_description__read-more{for: "readMars", role: "button", tabindex: "0"}
+                  %i.fa-solid.fa-book-open{"aria-hidden": "true"}
+                  Read Full Article
+              .overlay{"aria-hidden": "true"}
 
-    %h2 Pluto was reclassified from a planet to a dwarf planet in 2006.
-    %p This is when the IAU formalised the definition of a planet as “A planet is a celestial body that (a) is in orbit around the Sun, (b) has sufficient mass for its self-gravity to overcome rigid body forces so that it assumes a hydrostatic equilibrium (nearly round) shape, and (c) has cleared the neighbourhood around its orbit.”
-    
-    %h2 Pluto was discovered on February 18th, 1930 by the Lowell Observatory.
-    %p For the 76 years between Pluto being discovered and the time it was reclassified as a dwarf planet it completed under a third of its orbit around the Sun.
+          / Jupiter
+          %article.solar_systm{"aria-label": "Jupiter details"}
+            .jupiter.planet{role: "img", "aria-label": "Jupiter visualization"}
+              .lo.moon{role: "img", "aria-label": "Io moon"}
+                %span.moon__label Moon
+                %span.moon__name Io
+              .europa.moon{role: "img", "aria-label": "Europa moon"}
+                %span.moon__label Moon
+                %span.moon__name Europa
+              .ganymede.moon{role: "img", "aria-label": "Ganymede moon"}
+                %span.moon__label Moon
+                %span.moon__name Ganymede
+              .lop.trajectory{"aria-hidden": "true"}
+              .eu.trajectory{"aria-hidden": "true"}
+              .ga.trajectory{"aria-hidden": "true"}
+              %section.jupiter.planet_description
+                %h2.planet_description__type
+                  %i.fa-solid.fa-circle-dot{"aria-hidden": "true"}
+                  Planet
+                %h1.planet_description__name Jupiter
+                %p.planet_description__summary
+                  The king of planets — the largest body in our solar system after the Sun.
+                  Its Great Red Spot, a storm larger than Earth, has raged for centuries.
+                .planet_description__stats{"aria-label": "Quick facts"}
+                  .stat-chip
+                    %span.stat-chip__label Year Length
+                    %span.stat-chip__value 11.8 Earth years
+                  .stat-chip
+                    %span.stat-chip__label Moons
+                    %span.stat-chip__value 95
+                  .stat-chip
+                    %span.stat-chip__label Day Length
+                    %span.stat-chip__value 9.9 hours
+                %label.planet_description__read-more{for: "readJupiter", role: "button", tabindex: "0"}
+                  %i.fa-solid.fa-book-open{"aria-hidden": "true"}
+                  Read Full Article
+              .overlay{"aria-hidden": "true"}
 
-    %h2 Pluto has five known moons.
-    %p The moons are Charon (discovered in 1978,), Hydra and Nix (both discovered in 2005), Kerberos originally P4 (discovered 2011) and Styx originally P5 (discovered 2012) official designations S/2011 (134340) 1 and  S/2012 (134340) 1.
- 
+          / Saturn
+          %article.solar_systm{"aria-label": "Saturn details"}
+            .planet.saturn{role: "img", "aria-label": "Saturn visualization"}
+              .moon.titan{role: "img", "aria-label": "Titan moon"}
+                %span.moon__label Moon
+                %span.moon__name Titan
+              .dione.moon{role: "img", "aria-label": "Dione moon"}
+                %span.moon__label Moon
+                %span.moon__name Dione
+              .enceladus.moon{role: "img", "aria-label": "Enceladus moon"}
+                %span.moon__label Moon
+                %span.moon__name Enceladus
+              .ti.trajectory{"aria-hidden": "true"}
+              .di.trajectory{"aria-hidden": "true"}
+              .enc.trajectory{"aria-hidden": "true"}
+              %section.planet_description.saturn
+                %h2.planet_description__type
+                  %i.fa-solid.fa-circle-dot{"aria-hidden": "true"}
+                  Planet
+                %h1.planet_description__name Saturn
+                %p.planet_description__summary
+                  The jewel of the solar system. Saturn's spectacular ring system —
+                  made of ice and rock — extends 282,000 km from the planet's surface.
+                .planet_description__stats{"aria-label": "Quick facts"}
+                  .stat-chip
+                    %span.stat-chip__label Year Length
+                    %span.stat-chip__value 29.4 Earth years
+                  .stat-chip
+                    %span.stat-chip__label Moons
+                    %span.stat-chip__value 146
+                  .stat-chip
+                    %span.stat-chip__label Ring Width
+                    %span.stat-chip__value 282,000 km
+                %label.planet_description__read-more{for: "readSaturn", role: "button", tabindex: "0"}
+                  %i.fa-solid.fa-book-open{"aria-hidden": "true"}
+                  Read Full Article
+              .overlay{"aria-hidden": "true"}
+
+          / Uranus
+          %article.solar_systm{"aria-label": "Uranus details"}
+            .planet.uranus{role: "img", "aria-label": "Uranus visualization"}
+              .miranda.moon{role: "img", "aria-label": "Miranda moon"}
+                %span.moon__label Moon
+                %span.moon__name Miranda
+              .ariel.moon{role: "img", "aria-label": "Ariel moon"}
+                %span.moon__label Moon
+                %span.moon__name Ariel
+              .moon.umbriel{role: "img", "aria-label": "Umbriel moon"}
+                %span.moon__label Moon
+                %span.moon__name Umbriel
+              .mir.trajectory{"aria-hidden": "true"}
+              .ari.trajectory{"aria-hidden": "true"}
+              .trajectory.umb{"aria-hidden": "true"}
+              %section.planet_description.uranus
+                %h2.planet_description__type
+                  %i.fa-solid.fa-circle-dot{"aria-hidden": "true"}
+                  Planet
+                %h1.planet_description__name Uranus
+                %p.planet_description__summary
+                  An ice giant rolling on its side — Uranus has a dramatic 98° axial tilt,
+                  meaning it orbits the Sun essentially on its side with poles pointing at it.
+                .planet_description__stats{"aria-label": "Quick facts"}
+                  .stat-chip
+                    %span.stat-chip__label Year Length
+                    %span.stat-chip__value 84 Earth years
+                  .stat-chip
+                    %span.stat-chip__label Moons
+                    %span.stat-chip__value 28
+                  .stat-chip
+                    %span.stat-chip__label Axial Tilt
+                    %span.stat-chip__value 98°
+                %label.planet_description__read-more{for: "readUranus", role: "button", tabindex: "0"}
+                  %i.fa-solid.fa-book-open{"aria-hidden": "true"}
+                  Read Full Article
+              .overlay{"aria-hidden": "true"}
+
+          / Neptune
+          %article.solar_systm{"aria-label": "Neptune details"}
+            .neptune.planet{role: "img", "aria-label": "Neptune visualization"}
+              .moon.triton{role: "img", "aria-label": "Triton moon"}
+                %span.moon__label Moon
+                %span.moon__name Triton
+              .moon.proteus{role: "img", "aria-label": "Proteus moon"}
+                %span.moon__label Moon
+                %span.moon__name Proteus
+              .moon.nereid{role: "img", "aria-label": "Nereid moon"}
+                %span.moon__label Moon
+                %span.moon__name Nereid
+              .trajectory.tri{"aria-hidden": "true"}
+              .pro.trajectory{"aria-hidden": "true"}
+              .ner.trajectory{"aria-hidden": "true"}
+              %section.neptune.planet_description
+                %h2.planet_description__type
+                  %i.fa-solid.fa-circle-dot{"aria-hidden": "true"}
+                  Planet
+                %h1.planet_description__name Neptune
+                %p.planet_description__summary
+                  The windiest planet in the solar system, with gusts reaching 2,100 km/h.
+                  Neptune was the first planet discovered through mathematical prediction
+                  rather than direct observation.
+                .planet_description__stats{"aria-label": "Quick facts"}
+                  .stat-chip
+                    %span.stat-chip__label Year Length
+                    %span.stat-chip__value 165 Earth years
+                  .stat-chip
+                    %span.stat-chip__label Moons
+                    %span.stat-chip__value 16
+                  .stat-chip
+                    %span.stat-chip__label Wind Speed
+                    %span.stat-chip__value 2,100 km/h
+                %label.planet_description__read-more{for: "readNeptune", role: "button", tabindex: "0"}
+                  %i.fa-solid.fa-book-open{"aria-hidden": "true"}
+                  Read Full Article
+              .overlay{"aria-hidden": "true"}
+
+          / Pluto
+          %article.solar_systm{"aria-label": "Pluto details"}
+            .planet.pluto{role: "img", "aria-label": "Pluto visualization"}
+              %section.planet_description.pluto
+                %h2.planet_description__type
+                  %i.fa-solid.fa-circle{"aria-hidden": "true"}
+                  Dwarf Planet
+                %h1.planet_description__name Pluto
+                %p.planet_description__summary
+                  Once the ninth planet, now the largest known dwarf planet. A member of
+                  the Kuiper Belt — a shadowy zone of icy bodies beyond Neptune's orbit.
+                .planet_description__stats{"aria-label": "Quick facts"}
+                  .stat-chip
+                    %span.stat-chip__label Year Length
+                    %span.stat-chip__value 248 Earth years
+                  .stat-chip
+                    %span.stat-chip__label Moons
+                    %span.stat-chip__value 5
+                  .stat-chip
+                    %span.stat-chip__label Reclassified
+                    %span.stat-chip__value 2006
+                %label.planet_description__read-more{for: "readPluto", role: "button", tabindex: "0"}
+                  %i.fa-solid.fa-book-open{"aria-hidden": "true"}
+                  Read Full Article
+              .overlay{"aria-hidden": "true"}
+
+        / Facts ticker
+        .facts-ticker{role: "region", "aria-label": "Space facts", "aria-live": "polite"}
+          %span.facts-ticker__badge
+            %i.fa-solid.fa-star{"aria-hidden": "true"}
+            Did you know?
+          %p.facts-ticker__text#fact-text Loading fascinating space facts…
+
+    / ============================================================
+    /  FEATURE OVERLAYS
+    / ============================================================
+
+    / Compare planets
+    .feature-overlay#compare-overlay{hidden: true, role: "dialog", "aria-modal": "true", "aria-labelledby": "compare-title"}
+      .feature-overlay__backdrop{"data-close": "compare"}
+      .feature-panel.feature-panel--wide
+        %header.feature-panel__header
+          %h2#compare-title.feature-panel__title
+            %i.fa-solid.fa-scale-balanced{"aria-hidden": "true"}
+            Planet Comparison
+          %button.feature-panel__close{"data-close": "compare", type: "button", "aria-label": "Close comparison"}
+            %i.fa-solid.fa-xmark{"aria-hidden": "true"}
+        .feature-panel__body
+          .compare-selectors
+            %label.compare-select
+              %span Body A
+              %select#compare-a{"aria-label": "Select first body to compare"}
+            %label.compare-select
+              %span Body B
+              %select#compare-b{"aria-label": "Select second body to compare"}
+          %table.compare-table#compare-table
+            %thead
+              %tr
+                %th Property
+                %th#compare-col-a Body A
+                %th#compare-col-b Body B
+            %tbody#compare-body
+
+    / Space quiz
+    .feature-overlay#quiz-overlay{hidden: true, role: "dialog", "aria-modal": "true", "aria-labelledby": "quiz-title"}
+      .feature-overlay__backdrop{"data-close": "quiz"}
+      .feature-panel
+        %header.feature-panel__header
+          %h2#quiz-title.feature-panel__title
+            %i.fa-solid.fa-graduation-cap{"aria-hidden": "true"}
+            Solar System Quiz
+          %button.feature-panel__close{"data-close": "quiz", type: "button", "aria-label": "Close quiz"}
+            %i.fa-solid.fa-xmark{"aria-hidden": "true"}
+        .feature-panel__body
+          %p.quiz-progress#quiz-progress Question 1 of 5
+          %p.quiz-question#quiz-question
+          .quiz-options#quiz-options
+          %p.quiz-feedback#quiz-feedback{"aria-live": "polite"}
+          %button.quiz-next#quiz-next{type: "button", hidden: true} Next Question
+
+    / Guided tour
+    .tour-overlay#tour-overlay{hidden: true, role: "dialog", "aria-modal": "true", "aria-labelledby": "tour-title"}
+      .tour-overlay__spotlight{"aria-hidden": "true"}
+      .tour-card
+        %h2#tour-title.tour-card__title Guided Tour
+        %p.tour-card__step#tour-step
+        %p.tour-card__body#tour-body
+        .tour-card__actions
+          %button.tour-btn#tour-prev{type: "button"} Back
+          %button.tour-btn.tour-btn--primary#tour-next{type: "button"} Next
+          %button.tour-btn#tour-skip{type: "button"} Skip Tour
+
+    / Space exploration timeline
+    .feature-overlay#timeline-overlay{hidden: true, role: "dialog", "aria-modal": "true", "aria-labelledby": "timeline-title"}
+      .feature-overlay__backdrop{"data-close": "timeline"}
+      .feature-panel.feature-panel--wide
+        %header.feature-panel__header
+          %h2#timeline-title.feature-panel__title
+            %i.fa-solid.fa-clock-rotate-left{"aria-hidden": "true"}
+            Space Exploration Timeline
+          %button.feature-panel__close{"data-close": "timeline", type: "button", "aria-label": "Close timeline"}
+            %i.fa-solid.fa-xmark{"aria-hidden": "true"}
+        .feature-panel__body
+          .timeline#mission-timeline
+            .timeline__item
+              %span.timeline__year 1957
+              %h3.timeline__event Sputnik 1
+              %p First artificial satellite — dawn of the Space Age.
+            .timeline__item
+              %span.timeline__year 1961
+              %h3.timeline__event Yuri Gagarin
+              %p First human in space aboard Vostok 1.
+            .timeline__item
+              %span.timeline__year 1969
+              %h3.timeline__event Apollo 11
+              %p Neil Armstrong and Buzz Aldrin walk on the Moon.
+            .timeline__item
+              %span.timeline__year 1977
+              %h3.timeline__event Voyager Probes
+              %p Twin spacecraft launched to explore the outer planets.
+            .timeline__item
+              %span.timeline__year 1990
+              %h3.timeline__event Hubble Space Telescope
+              %p Revolutionised our view of the cosmos from orbit.
+            .timeline__item
+              %span.timeline__year 2012
+              %h3.timeline__event Curiosity Rover
+              %p NASA's rover lands on Mars to search for ancient life.
+            .timeline__item
+              %span.timeline__year 2015
+              %h3.timeline__event New Horizons
+              %p First close-up images of Pluto and its heart-shaped plain.
+            .timeline__item
+              %span.timeline__year 2021
+              %h3.timeline__event James Webb Telescope
+              %p Most powerful space telescope begins science operations.
+
+    / Astronomy concepts
+    .feature-overlay#concepts-overlay{hidden: true, role: "dialog", "aria-modal": "true", "aria-labelledby": "concepts-title"}
+      .feature-overlay__backdrop{"data-close": "concepts"}
+      .feature-panel.feature-panel--wide
+        %header.feature-panel__header
+          %h2#concepts-title.feature-panel__title
+            %i.fa-solid.fa-lightbulb{"aria-hidden": "true"}
+            Astronomy Concepts
+          %button.feature-panel__close{"data-close": "concepts", type: "button", "aria-label": "Close concepts"}
+            %i.fa-solid.fa-xmark{"aria-hidden": "true"}
+        .feature-panel__body
+          .concept-grid
+            .concept-card
+              %h3
+                %i.fa-solid.fa-sun{"aria-hidden": "true"}
+                Seasons
+              %p Earth's 23.5° axial tilt causes seasons. When a hemisphere tilts toward the Sun, it receives more direct sunlight and experiences summer.
+              .concept-visual.concept-visual--seasons{"aria-hidden": "true"}
+            .concept-card
+              %h3
+                %i.fa-solid.fa-circle-half-stroke{"aria-hidden": "true"}
+                Eclipses
+              %p A solar eclipse occurs when the Moon passes between Earth and the Sun. A lunar eclipse happens when Earth casts its shadow on the Moon.
+              .concept-visual.concept-visual--eclipse{"aria-hidden": "true"}
+            .concept-card
+              %h3
+                %i.fa-solid.fa-rotate{"aria-hidden": "true"}
+                Orbital Motion
+              %p Planets orbit the Sun in elliptical paths. Closer planets move faster — Mercury completes an orbit in 88 days, Neptune in 165 years.
+              .concept-visual.concept-visual--orbit{"aria-hidden": "true"}
+            .concept-card
+              %h3
+                %i.fa-solid.fa-meteor{"aria-hidden": "true"}
+                Asteroid Belt
+              %p Between Mars and Jupiter lies a ring of rocky debris — remnants from the early solar system. Ceres, the largest object, is classified as a dwarf planet.
+              .concept-visual.concept-visual--belt{"aria-hidden": "true"}
+
+    / Asteroid belt info
+    .feature-overlay#belt-overlay{hidden: true, role: "dialog", "aria-modal": "true", "aria-labelledby": "belt-title"}
+      .feature-overlay__backdrop{"data-close": "belt"}
+      .feature-panel
+        %header.feature-panel__header
+          %h2#belt-title.feature-panel__title
+            %i.fa-solid.fa-meteor{"aria-hidden": "true"}
+            Asteroid Belt & Dwarf Planets
+          %button.feature-panel__close{"data-close": "belt", type: "button", "aria-label": "Close asteroid belt info"}
+            %i.fa-solid.fa-xmark{"aria-hidden": "true"}
+        .feature-panel__body
+          %p The asteroid belt contains millions of rocky fragments orbiting between Mars (1.5 AU) and Jupiter (5.2 AU), with a total mass less than Earth's Moon.
+          .panel__fact-card
+            %i.fa-solid.fa-lightbulb.panel__fact-icon{"aria-hidden": "true"}
+            %p
+              %strong Ceres
+              is the largest object in the belt — 940 km across — and was reclassified as a dwarf planet in 2006 alongside Pluto.
+          %h3 Notable Dwarf Planets
+          %ul.dwarf-list
+            %li
+              %strong Pluto
+              — Kuiper Belt, 2,377 km, 5 moons
+            %li
+              %strong Eris
+              — Scattered disc, slightly smaller than Pluto
+            %li
+              %strong Haumea
+              — Kuiper Belt, elongated rugby-ball shape
+            %li
+              %strong Makemake
+              — Kuiper Belt, reddish icy surface
+            %li
+              %strong Ceres
+              — Asteroid belt, only dwarf planet in inner solar system
+
+    / Tooltip container
+    #tooltip.tooltip{role: "tooltip", hidden: true}
+
+    / ============================================================
+    /  DETAIL PANELS
+    / ============================================================
+
+    / Sun panel
+    %input.read{id: "readSun", type: "radio", name: "sunRead", "aria-label": "Read more about the Sun"}
+    %label.closeBig{for: "closeSun", "aria-label": "Close Sun panel"}
+    %input.read{id: "closeSun", type: "radio", name: "sunRead", "aria-label": "Close Sun panel"}
+    %aside.panel{role: "complementary", "aria-label": "Sun detailed information"}
+      %button.panel__close{onclick: "document.getElementById('closeSun').click()", "aria-label": "Close panel"}
+        %i.fa-solid.fa-xmark{"aria-hidden": "true"}
+      .panel__header.panel__header--sun
+        %span.panel__type Star
+        %h1.panel__title Sun
+        %p.panel__subtitle The heart of our solar system
+      .panel__body
+        %p The Sun is the star at the center of the Solar System — a nearly perfect sphere of hot plasma, with internal convective motion that generates a magnetic field via a dynamo process.
+        %figure.panel__figure
+          %img{src: "https://upload.wikimedia.org/wikipedia/commons/b/b4/The_Sun_by_the_Atmospheric_Imaging_Assembly_of_NASA%27s_Solar_Dynamics_Observatory_-_20100819.jpg", alt: "The Sun photographed by NASA's Solar Dynamics Observatory showing its plasma surface"}
+          %figcaption NASA Solar Dynamics Observatory — 2010
+        .panel__fact-card
+          %i.fa-solid.fa-lightbulb.panel__fact-icon{"aria-hidden": "true"}
+          %p
+            The Sun accounts for
+            %strong 99.86%
+            of the total mass in the solar system — roughly 330,000 times the mass of Earth.
+
+    / Mercury panel
+    %input.read{id: "readMercury", type: "radio", name: "mercuryRead", "aria-label": "Read more about Mercury"}
+    %label.closeBig{for: "closeMercury", "aria-label": "Close Mercury panel"}
+    %input.read{id: "closeMercury", type: "radio", name: "mercuryRead", "aria-label": "Close Mercury panel"}
+    %aside.panel{role: "complementary", "aria-label": "Mercury detailed information"}
+      %button.panel__close{onclick: "document.getElementById('closeMercury').click()", "aria-label": "Close panel"}
+        %i.fa-solid.fa-xmark{"aria-hidden": "true"}
+      .panel__header.panel__header--mercury
+        %span.panel__type Planet
+        %h1.panel__title Mercury
+        %p.panel__subtitle The swift-footed messenger
+      .panel__body
+        %p Mercury is the closest planet to the Sun. It circles the Sun faster than all other planets, which is why Romans named it after their swift-footed messenger god.
+        %p The Sumerians knew of Mercury since at least 5,000 years ago. Heraclitus, around 500 B.C., correctly thought that both Mercury and Venus orbited the Sun, not Earth.
+        %figure.panel__figure
+          %img{src: "https://i2.wp.com/www.astronomytrek.com/wp-content/uploads/2012/11/mercury-1.jpg?fit=678%2C381&ssl=1", alt: "Close-up photograph of Mercury's heavily cratered grey surface"}
+          %figcaption Mercury's cratered surface
+        .panel__fact-card
+          %i.fa-solid.fa-lightbulb.panel__fact-icon{"aria-hidden": "true"}
+          %p
+            A year on Mercury is just
+            %strong 88 Earth days,
+            yet a solar day (noon to noon) lasts 176 Earth days — longer than its own year.
+        %h2 Smallest planet in the Solar System
+        %p Mercury is just 4,879 km across its equator, compared to 12,742 km for Earth. Despite its small size, it is the second densest planet — largely due to its heavy metallic core.
+        %h2 Mercury has wrinkles
+        %p As its iron core cooled and contracted, the surface buckled into ridges called Lobate Scarps — up to a mile high and hundreds of miles long.
+
+    / Venus panel
+    %input.read{id: "readVenus", type: "radio", name: "venusRead", "aria-label": "Read more about Venus"}
+    %label.closeBig{for: "closeVenus", "aria-label": "Close Venus panel"}
+    %input.read{id: "closeVenus", type: "radio", name: "venusRead", "aria-label": "Close Venus panel"}
+    %aside.panel{role: "complementary", "aria-label": "Venus detailed information"}
+      %button.panel__close{onclick: "document.getElementById('closeVenus').click()", "aria-label": "Close panel"}
+        %i.fa-solid.fa-xmark{"aria-hidden": "true"}
+      .panel__header.panel__header--venus
+        %span.panel__type Planet
+        %h1.panel__title Venus
+        %p.panel__subtitle Brightest object in the night sky
+      .panel__body
+        %p Venus, the second planet from the Sun, is named for the Roman goddess of love and beauty. It may have been named for the most beautiful deity because it shone the brightest of the five planets known to ancient astronomers.
+        %p In ancient times, Venus was thought to be two different stars — the evening star and the morning star. Further space-age observations reveal a hellish, crushing environment where spacecraft don't survive long on the surface.
+        %figure.panel__figure
+          %img{src: "https://3c1703fe8d.site.internapcdn.net/newman/gfx/news/hires/2014/2-whatistheave.jpg", alt: "False-colour radar map of Venus's surface showing highland regions"}
+          %figcaption Venus surface radar map
+        .panel__fact-card
+          %i.fa-solid.fa-lightbulb.panel__fact-icon{"aria-hidden": "true"}
+          %p
+            A day on Venus lasts longer than its year. It takes
+            %strong 243 Earth days
+            to rotate once, but only 225 days to orbit the Sun.
+        %h2 Spins backwards
+        %p Venus rotates in the opposite direction to most planets — a retrograde rotation — possibly caused by an ancient collision with a large asteroid.
+        %h2 Crushing atmosphere
+        %p Atmospheric pressure on Venus is 92 times greater than Earth's, equivalent to the pressure experienced 900 metres underwater.
+
+    / Earth panel
+    %input.read{id: "readEarth", type: "radio", name: "earthRead", "aria-label": "Read more about Earth"}
+    %label.closeBig{for: "closeEarth", "aria-label": "Close Earth panel"}
+    %input.read{id: "closeEarth", type: "radio", name: "earthRead", "aria-label": "Close Earth panel"}
+    %aside.panel{role: "complementary", "aria-label": "Earth detailed information"}
+      %button.panel__close{onclick: "document.getElementById('closeEarth').click()", "aria-label": "Close panel"}
+        %i.fa-solid.fa-xmark{"aria-hidden": "true"}
+      .panel__header.panel__header--earth
+        %span.panel__type Planet
+        %h1.panel__title Earth
+        %p.panel__subtitle Our pale blue dot
+      .panel__body
+        %p Earth is the third planet from the Sun and the only known world to harbour life. It is the only planet with free oxygen in its atmosphere, liquid oceans on its surface, and a rich biosphere.
+        %p Earth is the fifth largest planet — smaller than the four gas giants, but larger than the other rocky planets.
+        %figure.panel__figure
+          %img{src: "https://images.pexels.com/photos/414171/pexels-photo-414171.jpeg?auto=compress&cs=tinysrgb&h=350", alt: "Earth's blue ocean and white clouds photographed from space"}
+          %figcaption Earth from orbit
+        .panel__fact-card
+          %i.fa-solid.fa-lightbulb.panel__fact-icon{"aria-hidden": "true"}
+          %p
+            Earth's rotation is gradually slowing by about
+            %strong 17 milliseconds per century.
+            In 140 million years, a day will be 25 hours long.
+        %h2 Powerful magnetic field
+        %p Earth's nickel-iron core generates a magnetic field that deflects harmful solar wind and cosmic radiation, making complex life possible on the surface.
+        %h2 The Moon
+        %p Relative to the size of its parent planet, the Moon is the largest natural satellite in the solar system. Its gravitational pull stabilises Earth's axial tilt, helping maintain a stable climate over geological timescales.
+
+    / Mars panel
+    %input.read{id: "readMars", type: "radio", name: "marsRead", "aria-label": "Read more about Mars"}
+    %label.closeBig{for: "closeMars", "aria-label": "Close Mars panel"}
+    %input.read{id: "closeMars", type: "radio", name: "marsRead", "aria-label": "Close Mars panel"}
+    %aside.panel{role: "complementary", "aria-label": "Mars detailed information"}
+      %button.panel__close{onclick: "document.getElementById('closeMars').click()", "aria-label": "Close panel"}
+        %i.fa-solid.fa-xmark{"aria-hidden": "true"}
+      .panel__header.panel__header--mars
+        %span.panel__type Planet
+        %h1.panel__title Mars
+        %p.panel__subtitle The Red Planet
+      .panel__body
+        %p Mars is the fourth planet from the Sun. The Romans named it after their god of war. The Egyptians called it "Her Desher" — the red one — while ancient Chinese astronomers dubbed it "the fire star."
+        %figure.panel__figure
+          %img{src: "https://1.bp.blogspot.com/-ou7Je3OVg6U/WYtxDqjNp_I/AAAAAAAACSQ/fsopS5VtFg4bmlv8hQNfiRYfJqTygCotQCLcBGAs/s2048/Martian%2Blandscape%2Bby%2BAmante%2BLombardi.jpg", alt: "Artistic rendering of the Martian landscape with rust-coloured rocky terrain"}
+          %figcaption Martian landscape
+        .panel__fact-card
+          %i.fa-solid.fa-lightbulb.panel__fact-icon{"aria-hidden": "true"}
+          %p
+            Olympus Mons is the tallest mountain in the solar system —
+            %strong 21 km high
+            and 600 km in diameter, nearly three times the height of Everest.
+        %h2 Similar landmass to Earth
+        %p Despite only 15% of Earth's volume and 10% of its mass, Mars has roughly the same landmass — because two thirds of Earth's surface is covered in water. Martian gravity is 37% of Earth's.
+        %h2 Planetary dust storms
+        %p Mars experiences the largest dust storms in the solar system, capable of blanketing the entire planet for months at a time.
+
+    / Jupiter panel
+    %input.read{id: "readJupiter", type: "radio", name: "jupiterRead", "aria-label": "Read more about Jupiter"}
+    %label.closeBig{for: "closeJupiter", "aria-label": "Close Jupiter panel"}
+    %input.read{id: "closeJupiter", type: "radio", name: "jupiterRead", "aria-label": "Close Jupiter panel"}
+    %aside.panel{role: "complementary", "aria-label": "Jupiter detailed information"}
+      %button.panel__close{onclick: "document.getElementById('closeJupiter').click()", "aria-label": "Close panel"}
+        %i.fa-solid.fa-xmark{"aria-hidden": "true"}
+      .panel__header.panel__header--jupiter
+        %span.panel__type Planet
+        %h1.panel__title Jupiter
+        %p.panel__subtitle King of the planets
+      .panel__body
+        %p Jupiter is the largest planet in the solar system. Named after the king of the Roman gods, it was also called Zeus by the ancient Greeks. In 1610, Galileo's discovery of four of its moons revolutionised our understanding of the universe.
+        %p Galileo's observation that celestial bodies orbit something other than Earth was crucial support for the Copernican heliocentric model.
+        %figure.panel__figure
+          %img{src: "http://hanaleikauaivacation.com/wp-content/uploads/parser/jupiter-landscape-1.jpg", alt: "Jupiter's swirling cloud bands and Great Red Spot visible in this close-up"}
+          %figcaption Jupiter's atmospheric bands
+        .panel__fact-card
+          %i.fa-solid.fa-lightbulb.panel__fact-icon{"aria-hidden": "true"}
+          %p
+            Jupiter has the
+            %strong shortest day
+            of all planets — rotating once every 9 hours and 55 minutes, despite being 11 times Earth's diameter.
+        %h2 Fourth brightest object in the sky
+        %p Only the Sun, Moon, and Venus are brighter. Jupiter is one of five planets visible to the naked eye from Earth.
+        %h2 95 known moons
+        %p Jupiter's Galilean moons — Io, Europa, Ganymede, and Callisto — are four of the most geologically fascinating worlds in the solar system, with Io being the most volcanically active body we know of.
+
+    / Saturn panel
+    %input.read{id: "readSaturn", type: "radio", name: "saturnRead", "aria-label": "Read more about Saturn"}
+    %label.closeBig{for: "closeSaturn", "aria-label": "Close Saturn panel"}
+    %input.read{id: "closeSaturn", type: "radio", name: "saturnRead", "aria-label": "Close Saturn panel"}
+    %aside.panel{role: "complementary", "aria-label": "Saturn detailed information"}
+      %button.panel__close{onclick: "document.getElementById('closeSaturn').click()", "aria-label": "Close panel"}
+        %i.fa-solid.fa-xmark{"aria-hidden": "true"}
+      .panel__header.panel__header--saturn
+        %span.panel__type Planet
+        %h1.panel__title Saturn
+        %p.panel__subtitle Lord of the rings
+      .panel__body
+        %p Saturn is the sixth planet from the Sun and the second largest. Saturn was the Roman name for Cronus, lord of the Titans. Saturn is even the root of the English word "Saturday."
+        %p The most distant planet visible to the naked eye, Saturn is most remarkable through a telescope — its ring system has no equal in the solar system.
+        %figure.panel__figure
+          %img{src: "http://ak0.picdn.net/shutterstock/videos/4049260/thumb/1.jpg", alt: "Saturn and its iconic ring system photographed against the black of space"}
+          %figcaption Saturn and its ring system
+        .panel__fact-card
+          %i.fa-solid.fa-lightbulb.panel__fact-icon{"aria-hidden": "true"}
+          %p
+            Saturn is the
+            %strong flattest planet
+            — its polar diameter is only 90% of its equatorial diameter due to its low density and rapid rotation.
+        %h2 Less dense than water
+        %p Saturn has the lowest density of any planet — about 0.69 g/cm³, compared to water at 1 g/cm³. If you could find an ocean large enough, Saturn would float.
+        %h2 146 moons
+        %p Saturn has more moons than any other planet. Titan, its largest, is the only moon in the solar system with a thick atmosphere and liquid lakes — of methane — on its surface.
+
+    / Uranus panel
+    %input.read{id: "readUranus", type: "radio", name: "uranusRead", "aria-label": "Read more about Uranus"}
+    %label.closeBig{for: "closeUranus", "aria-label": "Close Uranus panel"}
+    %input.read{id: "closeUranus", type: "radio", name: "uranusRead", "aria-label": "Close Uranus panel"}
+    %aside.panel{role: "complementary", "aria-label": "Uranus detailed information"}
+      %button.panel__close{onclick: "document.getElementById('closeUranus').click()", "aria-label": "Close panel"}
+        %i.fa-solid.fa-xmark{"aria-hidden": "true"}
+      .panel__header.panel__header--uranus
+        %span.panel__type Planet
+        %h1.panel__title Uranus
+        %p.panel__subtitle The tilted ice giant
+      .panel__body
+        %p Uranus is the seventh planet and the first to be discovered by scientists. Although visible to the naked eye, it was long mistaken for a dim star because of its slow orbit.
+        %p British astronomer William Herschel discovered Uranus accidentally on March 13, 1781, while surveying the sky with his telescope. He first thought it was a comet.
+        %figure.panel__figure
+          %img{src: "http://www.cosmosup.com/wp-content/uploads/2016/02/Uranus-Facts-About-the-Planet-Uranus-700x325.jpg", alt: "Uranus shown as a pale blue sphere with its ring system visible edge-on"}
+          %figcaption Uranus and its faint ring system
+        .panel__fact-card
+          %i.fa-solid.fa-lightbulb.panel__fact-icon{"aria-hidden": "true"}
+          %p
+            Uranus has a dramatic
+            %strong 98° axial tilt
+            — it effectively rolls around the Sun on its side. During some orbital positions, one pole faces the Sun directly for 42 years.
+        %h2 An ice giant
+        %p Unlike the gas giants Jupiter and Saturn, Uranus is mostly composed of icy materials — water, methane, and ammonia — above a rocky core. Methane in the atmosphere gives it its distinctive pale blue-green colour.
+        %h2 Retrograde rotation
+        %p Uranus rotates in the opposite direction to the Sun — one of only two planets to do so — completing one rotation every 17 hours 14 minutes.
+
+    / Neptune panel
+    %input.read{id: "readNeptune", type: "radio", name: "neptuneRead", "aria-label": "Read more about Neptune"}
+    %label.closeBig{for: "closeNeptune", "aria-label": "Close Neptune panel"}
+    %input.read{id: "closeNeptune", type: "radio", name: "neptuneRead", "aria-label": "Close Neptune panel"}
+    %aside.panel{role: "complementary", "aria-label": "Neptune detailed information"}
+      %button.panel__close{onclick: "document.getElementById('closeNeptune').click()", "aria-label": "Close panel"}
+        %i.fa-solid.fa-xmark{"aria-hidden": "true"}
+      .panel__header.panel__header--neptune
+        %span.panel__type Planet
+        %h1.panel__title Neptune
+        %p.panel__subtitle The windswept ice giant
+      .panel__body
+        %p Neptune is the eighth planet from the Sun and the first to be predicted mathematically before it was ever observed. Irregularities in Uranus's orbit led astronomers to deduce Neptune's existence, and it was finally spotted on September 23, 1846.
+        %p Only one mission has flown by Neptune — Voyager 2 in 1989 — leaving many mysteries about this distant, azure world.
+        %figure.panel__figure
+          %img{src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQy8Dd14tbXAzh1iz-EJl9tulRwH7Bb-SxX6sXpKFDbqb-NKwpE", alt: "Neptune as a deep blue sphere photographed by Voyager 2 in 1989"}
+          %figcaption Neptune photographed by Voyager 2 — 1989
+        .panel__fact-card
+          %i.fa-solid.fa-lightbulb.panel__fact-icon{"aria-hidden": "true"}
+          %p
+            Neptune has the
+            %strong fastest winds
+            in the solar system — reaching up to 2,100 km/h, more than ten times the speed of Earth's most powerful hurricanes.
+        %h2 Smallest ice giant
+        %p Despite being smaller than Uranus, Neptune has greater mass. Below its hydrogen-helium atmosphere lies a mantle of water, ammonia, and methane ices above a rocky core.
+        %h2 Blue from methane
+        %p Methane in Neptune's upper atmosphere absorbs red light, reflecting blue — giving the planet its vivid, deep azure colour. Thin, high clouds drift above the blue haze.
+
+    / Pluto panel
+    %input.read{id: "readPluto", type: "radio", name: "plutoRead", "aria-label": "Read more about Pluto"}
+    %label.closeBig{for: "closePluto", "aria-label": "Close Pluto panel"}
+    %input.read{id: "closePluto", type: "radio", name: "plutoRead", "aria-label": "Close Pluto panel"}
+    %aside.panel{role: "complementary", "aria-label": "Pluto detailed information"}
+      %button.panel__close{onclick: "document.getElementById('closePluto').click()", "aria-label": "Close panel"}
+        %i.fa-solid.fa-xmark{"aria-hidden": "true"}
+      .panel__header.panel__header--pluto
+        %span.panel__type Dwarf Planet
+        %h1.panel__title Pluto
+        %p.panel__subtitle King of the Kuiper Belt
+      .panel__body
+        %p Pluto, once the ninth planet, is now the largest known dwarf planet in the solar system. It is also one of the largest known members of the Kuiper Belt — a vast region of icy bodies beyond Neptune.
+        %p In 2006, the IAU reclassified Pluto as a dwarf planet — a change that sparked debate in the scientific community and public alike. In 2017, a research group proposed expanding the planet count to roughly 100 based on a new "round objects in space" definition.
+        %figure.panel__figure
+          %img{src: "https://s3-us-west-2.amazonaws.com/s.cdpn.io/217233/asd.jpeg", alt: "Pluto photographed by New Horizons showing its heart-shaped nitrogen ice plain"}
+          %figcaption Pluto's heart — Tombaugh Regio (New Horizons, 2015)
+        .panel__fact-card
+          %i.fa-solid.fa-lightbulb.panel__fact-icon{"aria-hidden": "true"}
+          %p
+            Pluto was discovered on
+            %strong February 18, 1930
+            by the Lowell Observatory. In the 76 years before its reclassification, it completed less than a third of one orbit around the Sun.
+        %h2 Named by an 11-year-old
+        %p Venetia Burney, an eleven-year-old schoolgirl from Oxford, England, proposed the name Pluto — after the Greek god of the underworld — upon learning of the discovery.
+        %h2 Five moons
+        %p Pluto has five known moons: Charon (1978), Nix and Hydra (2005), Kerberos (2011), and Styx (2012). Charon is so large relative to Pluto that the two are sometimes considered a double dwarf planet system.
+
+    / JavaScript — interactivity layer
+    :javascript
+      (() => {
+        'use strict';
+
+        const $ = (sel, ctx = document) => ctx.querySelector(sel);
+        const $$ = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
+
+        const PLANET_DATA = {
+          sun:     { name: 'Sun',     type: 'Star',         distance: '0 AU',      diameter: '1.39M km',  mass: '1.989×10³⁰ kg', gravity: '274 m/s²',  period: '—' },
+          mercury: { name: 'Mercury', type: 'Planet',       distance: '0.39 AU',   diameter: '4,879 km',  mass: '3.30×10²³ kg',  gravity: '3.7 m/s²',  period: '88 days' },
+          venus:   { name: 'Venus',   type: 'Planet',       distance: '0.723 AU',  diameter: '12,104 km', mass: '4.87×10²⁴ kg',  gravity: '8.87 m/s²', period: '225 days' },
+          earth:   { name: 'Earth',   type: 'Planet',       distance: '1 AU',      diameter: '12,742 km', mass: '5.97×10²⁴ kg',  gravity: '9.81 m/s²', period: '365 days' },
+          mars:    { name: 'Mars',    type: 'Planet',       distance: '1.524 AU',  diameter: '6,779 km',  mass: '6.42×10²³ kg',  gravity: '3.71 m/s²', period: '687 days' },
+          jupiter: { name: 'Jupiter', type: 'Gas Giant',    distance: '5.203 AU',  diameter: '139,820 km',mass: '1.90×10²⁷ kg',  gravity: '24.79 m/s²',period: '11.9 years' },
+          saturn:  { name: 'Saturn',  type: 'Gas Giant',    distance: '9.539 AU',  diameter: '116,460 km',mass: '5.68×10²⁶ kg',  gravity: '10.44 m/s²',period: '29.5 years' },
+          uranus:  { name: 'Uranus',  type: 'Ice Giant',    distance: '19.18 AU',  diameter: '50,724 km', mass: '8.68×10²⁵ kg',  gravity: '8.69 m/s²', period: '84 years' },
+          neptune: { name: 'Neptune', type: 'Ice Giant',    distance: '30.06 AU',  diameter: '49,244 km', mass: '1.02×10²⁶ kg',  gravity: '11.15 m/s²',period: '165 years' },
+          pluto:   { name: 'Pluto',   type: 'Dwarf Planet', distance: '39.5 AU',   diameter: '2,377 km',  mass: '1.31×10²² kg',  gravity: '0.62 m/s²', period: '248 years' }
+        };
+
+        const FACTS = [
+          'Jupiter\'s Great Red Spot is a storm larger than Earth that has raged for over 400 years.',
+          'A day on Venus is longer than its year — 243 Earth days to rotate once.',
+          'Neptune\'s winds can reach 2,100 km/h — the fastest in the solar system.',
+          'Saturn would float in water — its density is less than 1 g/cm³.',
+          'The Sun contains 99.86% of all mass in our solar system.',
+          'Olympus Mons on Mars is nearly three times taller than Mount Everest.',
+          'Uranus rotates on its side with a 98° axial tilt.',
+          'Pluto was discovered in 1930 and reclassified as a dwarf planet in 2006.'
+        ];
+
+        const QUIZ = [
+          { q: 'Which planet has the most moons?', options: ['Saturn', 'Jupiter', 'Neptune', 'Mars'], answer: 0 },
+          { q: 'What is the hottest planet in our solar system?', options: ['Mercury', 'Venus', 'Mars', 'Jupiter'], answer: 1 },
+          { q: 'Which planet was discovered through mathematical prediction?', options: ['Uranus', 'Neptune', 'Pluto', 'Mercury'], answer: 1 },
+          { q: 'How long does light take to reach Earth from the Sun?', options: ['8 seconds', '8 minutes', '8 hours', '8 days'], answer: 1 },
+          { q: 'Which is the largest dwarf planet?', options: ['Ceres', 'Eris', 'Pluto', 'Haumea'], answer: 2 }
+        ];
+
+        const TOUR = [
+          { title: 'Welcome to Solar Explorer', body: 'This guided tour walks you through every major feature. Use the sidebar to pick any celestial body.', target: '.planet-nav__heading' },
+          { title: 'Explore the 3D Viewport', body: 'Drag to pan and scroll to zoom. Switch between 2D and 3D modes using the view toggle in the header.', target: '#solar-viewport' },
+          { title: 'Orbit Speed Controls', body: 'Adjust animation speed with ½×, 1×, or 3× buttons to watch planets rotate faster or slower.', target: '.speed-controls' },
+          { title: 'Search & Compare', body: 'Use the search bar to find bodies instantly, then open Compare to see size, mass, gravity, and orbital data side by side.', target: '.exploration-toolbar' },
+          { title: 'Learn More', body: 'Click "Read Full Article" on any planet for detailed science, images, and historical discoveries. Enjoy exploring!', target: '.facts-ticker' }
+        ];
+
+        let zoom = 1, panX = 0, panY = 0, quizIdx = 0, quizScore = 0, tourIdx = 0, factIdx = 0;
+
+        const scene = $('#solar-scene');
+        const viewport = $('#solar-viewport');
+
+        const applyTransform = () => {
+          if (!scene) return;
+          scene.style.transform = `translate(${panX}px, ${panY}px) scale(${zoom})`;
+        };
+
+        const setSpeed = (speed) => {
+          document.documentElement.style.setProperty('--orbit-speed-multiplier', speed);
+          $$('.speed-btn').forEach((btn) => {
+            btn.classList.toggle('speed-btn--active', parseFloat(btn.dataset.speed) === speed);
+          });
+        };
+
+        $$('.speed-btn').forEach((btn) => {
+          btn.addEventListener('click', () => setSpeed(parseFloat(btn.dataset.speed)));
+        });
+
+        $$('.view-btn').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            $$('.view-btn').forEach((b) => {
+              b.classList.toggle('view-btn--active', b === btn);
+              b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
+            });
+            document.body.classList.toggle('view-2d', btn.dataset.view === '2d');
+            document.body.classList.toggle('view-3d', btn.dataset.view === '3d');
+          });
+        });
+
+        const resetView = () => {
+          zoom = 1; panX = 0; panY = 0;
+          applyTransform();
+          const earth = $('#earth');
+          if (earth) earth.checked = true;
+        };
+
+        $('#zoom-in')?.addEventListener('click', () => { zoom = Math.min(zoom + 0.15, 2.5); applyTransform(); });
+        $('#zoom-out')?.addEventListener('click', () => { zoom = Math.max(zoom - 0.15, 0.5); applyTransform(); });
+        $('#reset-view')?.addEventListener('click', resetView);
+
+        let dragging = false, dragStart = { x: 0, y: 0 };
+        viewport?.addEventListener('mousedown', (e) => {
+          if (e.button !== 0) return;
+          dragging = true;
+          dragStart = { x: e.clientX - panX, y: e.clientY - panY };
+          viewport.classList.add('is-dragging');
+        });
+        window.addEventListener('mousemove', (e) => {
+          if (!dragging) return;
+          panX = e.clientX - dragStart.x;
+          panY = e.clientY - dragStart.y;
+          applyTransform();
+        });
+        window.addEventListener('mouseup', () => {
+          dragging = false;
+          viewport?.classList.remove('is-dragging');
+        });
+        viewport?.addEventListener('wheel', (e) => {
+          e.preventDefault();
+          zoom = Math.min(Math.max(zoom + (e.deltaY < 0 ? 0.08 : -0.08), 0.5), 2.5);
+          applyTransform();
+        }, { passive: false });
+
+        const openOverlay = (id) => {
+          const el = $(`#${id}-overlay`);
+          if (el) { el.hidden = false; document.body.classList.add('overlay-open'); }
+        };
+        const closeOverlay = (id) => {
+          const el = $(`#${id}-overlay`);
+          if (el) { el.hidden = true; document.body.classList.remove('overlay-open'); }
+        };
+
+        $('#open-compare')?.addEventListener('click', () => { populateCompare(); openOverlay('compare'); });
+        $('#open-quiz')?.addEventListener('click', () => { quizIdx = 0; quizScore = 0; renderQuiz(); openOverlay('quiz'); });
+        $('#start-tour')?.addEventListener('click', () => { tourIdx = 0; renderTour(); $('#tour-overlay').hidden = false; document.body.classList.add('overlay-open'); });
+        $('#open-timeline')?.addEventListener('click', () => openOverlay('timeline'));
+        $('#open-concepts')?.addEventListener('click', () => openOverlay('concepts'));
+        $('.asteroid-belt')?.addEventListener('click', () => openOverlay('belt'));
+
+        $$('[data-close]').forEach((el) => {
+          el.addEventListener('click', () => closeOverlay(el.dataset.close));
+        });
+
+        const populateCompare = () => {
+          const keys = Object.keys(PLANET_DATA);
+          ['#compare-a', '#compare-b'].forEach((sel, i) => {
+            const select = $(sel);
+            if (!select) return;
+            select.innerHTML = keys.map((k) => `<option value="${k}">${PLANET_DATA[k].name}</option>`).join('');
+            select.value = i === 0 ? 'earth' : 'mars';
+            select.addEventListener('change', updateCompare);
+          });
+          updateCompare();
+        };
+
+        const updateCompare = () => {
+          const a = PLANET_DATA[$('#compare-a')?.value] || PLANET_DATA.earth;
+          const b = PLANET_DATA[$('#compare-b')?.value] || PLANET_DATA.mars;
+          $('#compare-col-a').textContent = a.name;
+          $('#compare-col-b').textContent = b.name;
+          const rows = [
+            ['Type', 'type'], ['Distance from Sun', 'distance'], ['Diameter', 'diameter'],
+            ['Mass', 'mass'], ['Surface Gravity', 'gravity'], ['Orbital Period', 'period']
+          ];
+          $('#compare-body').innerHTML = rows.map(([label, key]) =>
+            `<tr><td>${label}</td><td>${a[key]}</td><td>${b[key]}</td></tr>`
+          ).join('');
+        };
+
+        const renderQuiz = () => {
+          const item = QUIZ[quizIdx];
+          $('#quiz-progress').textContent = `Question ${quizIdx + 1} of ${QUIZ.length}`;
+          $('#quiz-question').textContent = item.q;
+          $('#quiz-feedback').textContent = '';
+          $('#quiz-next').hidden = true;
+          $('#quiz-options').innerHTML = item.options.map((opt, i) =>
+            `<button class="quiz-option" type="button" data-idx="${i}">${opt}</button>`
+          ).join('');
+          $$('.quiz-option', $('#quiz-options')).forEach((btn) => {
+            btn.addEventListener('click', () => {
+              const correct = parseInt(btn.dataset.idx, 10) === item.answer;
+              if (correct) quizScore++;
+              $('#quiz-feedback').textContent = correct ? '✓ Correct!' : `✗ The answer is ${item.options[item.answer]}.`;
+              $$('.quiz-option').forEach((b) => b.disabled = true);
+              $('#quiz-next').hidden = false;
+              $('#quiz-next').textContent = quizIdx < QUIZ.length - 1 ? 'Next Question' : `Finish — Score: ${quizScore}/${QUIZ.length}`;
+            });
+          });
+        };
+
+        $('#quiz-next')?.addEventListener('click', () => {
+          if (quizIdx < QUIZ.length - 1) { quizIdx++; renderQuiz(); }
+          else { closeOverlay('quiz'); }
+        });
+
+        const renderTour = () => {
+          const step = TOUR[tourIdx];
+          $('#tour-step').textContent = `Step ${tourIdx + 1} of ${TOUR.length}: ${step.title}`;
+          $('#tour-body').textContent = step.body;
+          $$('.tour-highlight').forEach((el) => el.classList.remove('tour-highlight'));
+          const target = $(step.target);
+          if (target) { target.classList.add('tour-highlight'); target.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
+        };
+
+        $('#tour-next')?.addEventListener('click', () => {
+          if (tourIdx < TOUR.length - 1) { tourIdx++; renderTour(); }
+          else { $('#tour-overlay').hidden = true; document.body.classList.remove('overlay-open'); $$('.tour-highlight').forEach((el) => el.classList.remove('tour-highlight')); }
+        });
+        $('#tour-prev')?.addEventListener('click', () => { if (tourIdx > 0) { tourIdx--; renderTour(); } });
+        $('#tour-skip')?.addEventListener('click', () => { $('#tour-overlay').hidden = true; document.body.classList.remove('overlay-open'); });
+
+        const searchInput = $('#planet-search');
+        const searchResults = $('#search-results');
+        const searchable = $$('.menu[data-search]');
+
+        searchInput?.addEventListener('input', () => {
+          const q = searchInput.value.trim().toLowerCase();
+          if (!q) { searchResults.hidden = true; return; }
+          const matches = searchable.filter((el) => el.dataset.search.includes(q));
+          searchResults.innerHTML = matches.map((el) => {
+            const name = $('.info__name', el)?.textContent?.trim() || 'Result';
+            return `<li role="option" tabindex="0" data-target="${el.htmlFor || ''}">${name}</li>`;
+          }).join('');
+          searchResults.hidden = matches.length === 0;
+          $$('li', searchResults).forEach((li) => {
+            li.addEventListener('click', () => {
+              const target = $(`#${li.dataset.target}`);
+              if (target) target.checked = true;
+              else if (li.textContent.includes('Asteroid')) openOverlay('belt');
+              searchInput.value = '';
+              searchResults.hidden = true;
+            });
+          });
+        });
+
+        const tooltip = $('#tooltip');
+        $$('.menu[data-tooltip]').forEach((el) => {
+          el.addEventListener('mouseenter', (e) => {
+            if (!tooltip) return;
+            tooltip.textContent = el.dataset.tooltip;
+            tooltip.hidden = false;
+            tooltip.style.left = `${e.clientX + 12}px`;
+            tooltip.style.top = `${e.clientY + 12}px`;
+          });
+          el.addEventListener('mouseleave', () => { if (tooltip) tooltip.hidden = true; });
+        });
+
+        const rotateFact = () => {
+          const el = $('#fact-text');
+          if (el) { el.textContent = FACTS[factIdx % FACTS.length]; factIdx++; }
+        };
+        rotateFact();
+        setInterval(rotateFact, 8000);
+
+        $$('.menu, .planet_description__read-more').forEach((el) => {
+          el.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); el.click(); }
+          });
+        });
+
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape') {
+            $$('.feature-overlay:not([hidden])').forEach((o) => o.hidden = true);
+            $('#tour-overlay').hidden = true;
+            document.body.classList.remove('overlay-open');
+          }
+        });
+      })();
