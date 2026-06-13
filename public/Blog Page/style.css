@@ -1155,3 +1155,254 @@ body.dark-mode .text-gray-500{
 .read-more-btn:hover{
     background:#15803d;
 }
+/* ==========================
+   AUTH MODALS
+========================== */
+
+.auth-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(5px);
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.auth-modal.active {
+  display: flex;
+}
+
+/* ==========================
+   MODAL BOX
+========================== */
+
+.auth-box {
+  width: 100%;
+  max-width: 450px;
+  background: #ffffff;
+  padding: 35px;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  position: relative;
+  animation: modalPop 0.3s ease;
+}
+
+@keyframes modalPop {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ==========================
+   CLOSE BUTTON
+========================== */
+
+.close-modal {
+  position: absolute;
+  top: 15px;
+  right: 18px;
+  font-size: 1.8rem;
+  cursor: pointer;
+  color: #555;
+  transition: 0.3s;
+}
+
+.close-modal:hover {
+  color: #10b981;
+}
+
+/* ==========================
+   HEADINGS
+========================== */
+
+.auth-box h2 {
+  text-align: center;
+  color: #111827;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.auth-box p {
+  text-align: center;
+  color: #6b7280;
+  margin-bottom: 25px;
+}
+
+/* ==========================
+   FORM
+========================== */
+
+.auth-box form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 6px;
+  font-weight: 500;
+  color: #374151;
+}
+
+/* ==========================
+   INPUTS
+========================== */
+
+.auth-box input {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: 0.3s;
+}
+
+.auth-box input:focus {
+  border-color: #10b981;
+  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.15);
+}
+
+/* ==========================
+   BUTTON
+========================== */
+
+.auth-btn {
+  background: #10b981;
+  color: white;
+  border: none;
+  padding: 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.auth-btn:hover {
+  background: #059669;
+  transform: translateY(-2px);
+}
+
+/* ==========================
+   SWITCH LINK
+========================== */
+
+.switch-form {
+  text-align: center;
+  margin-top: 18px;
+  color: #6b7280;
+}
+
+.switch-form a {
+  color: #10b981;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.switch-form a:hover {
+  text-decoration: underline;
+}
+
+/* ==========================
+   NAVBAR BUTTONS
+========================== */
+
+.auth-buttons {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.auth-buttons button {
+  border: none;
+  cursor: pointer;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+#signupBtn {
+  background: #10b981;
+  color: white;
+}
+
+#signupBtn:hover {
+  background: #059669;
+}
+
+#loginBtn {
+  background: transparent;
+  border: 2px solid #10b981;
+  color: #10b981;
+}
+
+#loginBtn:hover {
+  background: #10b981;
+  color: white;
+}
+
+#createBlogBtn {
+  background: #2563eb;
+  color: white;
+}
+
+#logoutBtn {
+  background: #ef4444;
+  color: white;
+}
+
+/* ==========================
+   USER INFO
+========================== */
+
+#welcomeUser {
+  font-weight: 600;
+  color: #10b981;
+}
+
+/* ==========================
+   MOBILE
+========================== */
+
+@media (max-width: 500px) {
+  .auth-box {
+    padding: 25px;
+  }
+
+  .auth-box h2 {
+    font-size: 1.6rem;
+  }
+
+  .auth-buttons {
+    gap: 6px;
+  }
+
+  .auth-buttons button {
+    padding: 8px 14px;
+    font-size: 0.9rem;
+  }
+}
+.blog-image {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 12px;
+}

@@ -1,518 +1,1104 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Zomato – Discover the best food & drinks</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    /* ── LIGHT THEME ── */
-    :root {
-      --red: #e23744; --red-dark: #c0392b;
-      --bg: #fff9f7; --bg2: #ffffff; --bg3: #fff0ee;
-      --text: #1c1c1e; --muted: #6b6b6b;
-      --border: #ede8e4; --card-bg: #ffffff;
-      --nav-bg: rgba(255,255,255,0.95);
-      --shadow: rgba(0,0,0,0.08);
-      --input-bg: #ffffff;
-      --toggle-bg: #e5e7eb;
-      --toggle-knob: #ffffff;
-      --footer-bg: #1c1c1e;
-      --footer-text: #d1d1d1;
+  <title>Zomato Clone</title>
+
+  <!-- Prevent Dark Mode Flicker -->
+  <script>
+    (() => {
+      const savedTheme = localStorage.getItem("zomato-theme");
+
+      if (savedTheme) {
+        document.documentElement.setAttribute(
+          "data-theme",
+          savedTheme
+        );
+      }
+    })();
+  </script>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap"
+    rel="stylesheet">
+
+  <style>
+
+    /* RESET */
+
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
 
-    /* ── DARK THEME ── */
-    [data-theme="dark"] {
-      --bg: #0f0f0f; --bg2: #1a1a1a; --bg3: #2a1a1c;
-      --text: #f0f0f0; --muted: #9a9a9a;
-      --border: #2e2e2e; --card-bg: #1e1e1e;
-      --nav-bg: rgba(15,15,15,0.96);
-      --shadow: rgba(0,0,0,0.4);
-      --input-bg: #1e1e1e;
-      --toggle-bg: #e23744;
-      --toggle-knob: #ffffff;
-      --footer-bg: #0a0a0a;
-      --footer-text: #aaaaaa;
+    html {
+      scroll-behavior: smooth;
     }
 
     body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--bg); color: var(--text);
-      transition: background 0.3s, color 0.3s;
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      transition:
+        background 0.3s ease,
+        color 0.3s ease;
+      overflow-x: hidden;
     }
 
-    /* ── TOP BANNER ── */
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    button,
+    input {
+      font-family: inherit;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    /* VARIABLES */
+
+    :root {
+
+      --red: #e23744;
+      --red-dark: #c92d39;
+
+      --bg: #ffffff;
+      --bg-secondary: #f8f8f8;
+
+      --text: #1c1c1c;
+      --muted: #696969;
+
+      --border: #e8e8e8;
+
+      --card: #ffffff;
+
+      --shadow:
+        0 4px 20px rgba(0, 0, 0, 0.08);
+
+      --nav-bg:
+        rgba(255, 255, 255, 0.92);
+
+      --footer-bg: #1c1c1c;
+      --footer-text: #d0d0d0;
+
+      --toggle-bg: #e4e4e4;
+      --toggle-knob: #ffffff;
+    }
+
+    [data-theme="dark"] {
+
+      --bg: #121212;
+      --bg-secondary: #1c1c1c;
+
+      --text: #f5f5f5;
+      --muted: #a0a0a0;
+
+      --border: #2d2d2d;
+
+      --card: #1f1f1f;
+
+      --shadow:
+        0 4px 20px rgba(0, 0, 0, 0.45);
+
+      --nav-bg:
+        rgba(18, 18, 18, 0.94);
+
+      --footer-bg: #0b0b0b;
+      --footer-text: #9f9f9f;
+
+      --toggle-bg: #e23744;
+      --toggle-knob: #ffffff;
+    }
+
+    /* TOP BANNER */
+
     .top-banner {
-      background: linear-gradient(90deg, #e23744 0%, #ff6b35 50%, #e23744 100%);
-      background-size: 200% 100%; animation: bannerShift 6s linear infinite;
-      color: #fff; text-align: center; padding: 10px 20px;
-      font-size: 14px; font-weight: 600;
-      display: flex; align-items: center; justify-content: center; gap: 10px;
-      position: relative; z-index: 200;
-    }
-    @keyframes bannerShift { 0%{background-position:0%} 100%{background-position:200%} }
-    .banner-tag { background: rgba(255,255,255,0.25); border-radius: 20px; padding: 2px 10px; font-size: 11px; letter-spacing: 0.5px; text-transform: uppercase; }
-    .banner-close { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #fff; font-size: 20px; cursor: pointer; opacity: 0.8; line-height: 1; }
-    .banner-close:hover { opacity: 1; }
 
-    /* ── NAV ── */
+      background:
+        linear-gradient(
+          90deg,
+          #e23744,
+          #ff6b35,
+          #e23744
+        );
+
+      background-size: 200% 100%;
+
+      animation:
+        gradientMove 6s linear infinite;
+
+      color: white;
+
+      padding: 12px 20px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+
+      position: relative;
+
+      font-size: 14px;
+      font-weight: 600;
+
+      z-index: 999;
+    }
+
+    @keyframes gradientMove {
+
+      from {
+        background-position: 0%;
+      }
+
+      to {
+        background-position: 200%;
+      }
+    }
+
+    .banner-tag {
+
+      background:
+        rgba(255, 255, 255, 0.2);
+
+      padding: 4px 10px;
+
+      border-radius: 999px;
+
+      font-size: 11px;
+
+      text-transform: uppercase;
+
+      letter-spacing: 0.5px;
+    }
+
+    .banner-close {
+
+      position: absolute;
+
+      right: 18px;
+
+      border: none;
+      background: transparent;
+
+      color: white;
+
+      font-size: 22px;
+
+      cursor: pointer;
+
+      opacity: 0.8;
+    }
+
+    .banner-close:hover {
+      opacity: 1;
+    }
+
+    /* NAVBAR */
+
     nav {
-      position: sticky; top: 0; z-index: 100;
-      background: var(--nav-bg); backdrop-filter: blur(14px);
-      border-bottom: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 5%; height: 62px;
-      transition: background 0.3s, border-color 0.3s;
-    }
-    .nav-logo img { height: 28px; }
-    [data-theme="dark"] .nav-logo img { filter: brightness(0) invert(1); }
-    .nav-links { display: flex; align-items: center; gap: 22px; }
-    .nav-links a { text-decoration: none; color: var(--text); font-size: 14px; font-weight: 500; transition: color 0.2s; }
-    .nav-links a:hover { color: var(--red); }
-    .btn-login { padding: 8px 20px; border-radius: 8px; border: 1.5px solid var(--red); color: var(--red); background: transparent; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
-    .btn-login:hover { background: var(--red); color: #fff; }
-    .btn-signup { padding: 8px 20px; border-radius: 8px; background: var(--red); color: #fff; border: none; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
-    .btn-signup:hover { background: var(--red-dark); }
 
-    /* ── DARK MODE TOGGLE ── */
+      position: sticky;
+
+      top: 0;
+
+      height: 68px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      padding: 0 5%;
+
+      background: var(--nav-bg);
+
+      backdrop-filter: blur(14px);
+
+      border-bottom:
+        1px solid var(--border);
+
+      z-index: 500;
+    }
+
+    .nav-left img {
+      height: 28px;
+    }
+
+    [data-theme="dark"] .nav-left img {
+      filter: brightness(0) invert(1);
+    }
+
+    .nav-links {
+
+      display: flex;
+      align-items: center;
+      gap: 22px;
+    }
+
+    .nav-links a {
+
+      color: var(--text);
+
+      font-size: 14px;
+      font-weight: 500;
+
+      transition: 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--red);
+    }
+
+    .btn-login,
+    .btn-signup {
+
+      padding: 10px 18px;
+
+      border-radius: 10px;
+
+      font-size: 14px;
+      font-weight: 600;
+
+      cursor: pointer;
+
+      transition: 0.2s;
+    }
+
+    .btn-login {
+
+      border:
+        1.5px solid var(--red);
+
+      background: transparent;
+
+      color: var(--red);
+    }
+
+    .btn-login:hover {
+
+      background: var(--red);
+
+      color: white;
+    }
+
+    .btn-signup {
+
+      background: var(--red);
+
+      color: white;
+
+      border: none;
+    }
+
+    .btn-signup:hover {
+      background: var(--red-dark);
+    }
+
+    /* DARK MODE TOGGLE */
+
     .dm-toggle {
-      position: relative; width: 52px; height: 28px; cursor: pointer;
-      background: var(--toggle-bg); border-radius: 14px; border: none;
-      transition: background 0.3s; flex-shrink: 0;
+
+      width: 52px;
+      height: 28px;
+
+      border-radius: 999px;
+
+      border: none;
+
+      background: var(--toggle-bg);
+
+      position: relative;
+
+      cursor: pointer;
     }
+
     .dm-toggle::after {
-      content: ''; position: absolute; top: 3px; left: 3px;
-      width: 22px; height: 22px; border-radius: 50%;
+
+      content: "";
+
+      position: absolute;
+
+      width: 22px;
+      height: 22px;
+
       background: var(--toggle-knob);
-      transition: transform 0.3s, background 0.3s;
-      display: flex; align-items: center; justify-content: center;
+
+      border-radius: 50%;
+
+      top: 3px;
+      left: 3px;
+
+      transition: transform 0.3s ease;
     }
-    [data-theme="dark"] .dm-toggle::after { transform: translateX(24px); }
-    .dm-icon { font-size: 14px; position: absolute; top: 50%; transform: translateY(-50%); pointer-events: none; transition: opacity 0.3s; }
-    .dm-icon.sun { left: 6px; opacity: 1; }
-    .dm-icon.moon { right: 6px; opacity: 0; }
-    [data-theme="dark"] .dm-icon.sun { opacity: 0; }
-    [data-theme="dark"] .dm-icon.moon { opacity: 1; }
 
-    /* ── HERO ── */
-    .hero { min-height: 90vh; position: relative; overflow: hidden; display: flex; align-items: center; padding: 60px 5%; }
-    .hero-bg { position: absolute; inset: 0; background-image: url('https://b.zmtcdn.com/web_assets/81f3ff974d82520780078ba1cfbd453a1583259680.png'); background-size: cover; background-position: center; filter: brightness(0.3); transition: filter 0.3s; }
-    [data-theme="dark"] .hero-bg { filter: brightness(0.18); }
-    .hero-inner { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
-    .hero-left { color: #fff; }
-    .hero-tag { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.15); color: #fff; font-size: 12px; font-weight: 600; letter-spacing: 0.5px; padding: 6px 14px; border-radius: 20px; margin-bottom: 20px; text-transform: uppercase; backdrop-filter: blur(8px); }
-    h1 { font-family: 'Playfair Display', serif; font-size: clamp(34px, 4vw, 54px); line-height: 1.15; margin-bottom: 14px; }
-    h1 em { color: #ffb3b3; font-style: italic; }
-    .hero-sub { font-size: 16px; opacity: 0.8; margin-bottom: 36px; line-height: 1.6; }
+    [data-theme="dark"] .dm-toggle::after {
+      transform: translateX(24px);
+    }
 
-    /* SEARCH */
-    .search-bar { display: flex; background: var(--input-bg); border-radius: 14px; overflow: hidden; box-shadow: 0 12px 40px rgba(0,0,0,0.35); margin-bottom: 24px; border: 1px solid var(--border); transition: background 0.3s, border-color 0.3s; }
-    .search-loc { display: flex; align-items: center; gap: 8px; padding: 0 16px; border-right: 1.5px solid var(--border); flex-shrink: 0; min-width: 155px; transition: border-color 0.3s; }
-    .search-loc svg { color: var(--red); flex-shrink: 0; }
-    .search-loc input, .search-query input { border: none; outline: none; font-family: inherit; font-size: 14px; color: var(--text); background: transparent; transition: color 0.3s; }
-    .search-query { flex: 1; display: flex; align-items: center; padding: 0 16px; gap: 8px; }
-    .search-query input { flex: 1; }
-    .search-query input::placeholder, .search-loc input::placeholder { color: #aaa; }
-    .search-btn { margin: 8px; padding: 12px 22px; background: var(--red); color: #fff; border: none; border-radius: 10px; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer; transition: background 0.2s; white-space: nowrap; }
-    .search-btn:hover { background: var(--red-dark); }
+    /* HERO */
 
-    .quick-tags { display: flex; gap: 8px; flex-wrap: wrap; }
-    .qtag { padding: 6px 14px; border-radius: 20px; border: 1.5px solid rgba(255,255,255,0.35); background: rgba(255,255,255,0.12); backdrop-filter: blur(8px); font-size: 13px; color: #fff; cursor: pointer; transition: all 0.2s; font-weight: 500; }
-    .qtag:hover { background: rgba(255,255,255,0.25); border-color: rgba(255,255,255,0.6); }
+    .hero {
 
-    /* HERO RIGHT */
-    .hero-right { position: relative; display: flex; justify-content: center; align-items: center; }
-    .hero-circle { width: 320px; height: 320px; border-radius: 50%; background: rgba(255,255,255,0.08); backdrop-filter: blur(12px); border: 2px solid rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; overflow: hidden; }
-    .hero-circle img { width: 85%; object-fit: contain; }
-    .float-card { position: absolute; background: var(--card-bg); border-radius: 14px; padding: 10px 14px; box-shadow: 0 8px 24px rgba(0,0,0,0.25); font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 8px; animation: floatY 3s ease-in-out infinite; transition: background 0.3s; }
-    [data-theme="dark"] .float-card { box-shadow: 0 8px 24px rgba(0,0,0,0.6); }
-    .float-card.a { top: 30px; left: -10px; animation-delay: 0s; }
-    .float-card.b { top: 10px; right: -10px; animation-delay: 0.8s; }
-    .float-card.c { bottom: 50px; left: -20px; animation-delay: 1.6s; }
-    .dot { width: 10px; height: 10px; border-radius: 50%; }
-    .dot.g { background: #22c55e; } .dot.o { background: #f97316; } .dot.r { background: var(--red); }
-    .fc-label { font-size: 11px; color: var(--muted); font-weight: 500; }
-    @keyframes floatY { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+      position: relative;
 
-    /* ── SECTIONS ── */
-    section { padding: 60px 5%; background: var(--bg); transition: background 0.3s; }
-    .section-head { margin-bottom: 32px; }
-    .section-head h2 { font-family: 'Playfair Display', serif; font-size: 26px; margin-bottom: 6px; color: var(--text); }
-    .section-head p { color: var(--muted); font-size: 15px; }
+      min-height: 90vh;
 
-    /* NIGHTLIFE OPTION */
-    .option-card { display: flex; align-items: center; gap: 16px; background: var(--card-bg); border-radius: 16px; padding: 16px 20px; box-shadow: 0 4px 16px var(--shadow); cursor: pointer; transition: box-shadow 0.2s, background 0.3s; max-width: 360px; border: 1px solid var(--border); }
-    .option-card:hover { box-shadow: 0 8px 28px var(--shadow); }
-    .option-card img { width: 72px; height: 72px; border-radius: 12px; object-fit: cover; }
-    .option-card .info .title { font-size: 15px; font-weight: 700; margin-bottom: 4px; color: var(--text); }
-    .option-card .info .description { font-size: 13px; color: var(--muted); }
+      display: flex;
+      align-items: center;
 
-    /* CATEGORIES */
-    .cat-section { background: var(--bg2) !important; }
-    .categories { display: grid; grid-template-columns: repeat(auto-fill, minmax(105px, 1fr)); gap: 14px; }
-    .cat-card { background: var(--bg); border-radius: 14px; padding: 18px 10px; text-align: center; cursor: pointer; transition: all 0.2s; border: 1.5px solid var(--border); }
-    .cat-card:hover { border-color: var(--red); transform: translateY(-4px); background: var(--bg3); }
-    .cat-icon { font-size: 30px; margin-bottom: 8px; }
-    .cat-name { font-size: 12px; font-weight: 600; color: var(--text); }
+      padding: 80px 5%;
 
-    /* COLLECTIONS */
-    .collections-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 18px; }
-    .coll-card { border-radius: 16px; overflow: hidden; position: relative; cursor: pointer; box-shadow: 0 4px 16px var(--shadow); height: 195px; }
-    .coll-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
-    .coll-card:hover img { transform: scale(1.06); }
-    .coll-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 55%); padding: 14px; display: flex; flex-direction: column; justify-content: flex-end; color: #fff; }
-    .coll-title { font-size: 14px; font-weight: 700; line-height: 1.3; margin-bottom: 4px; }
-    .coll-places { font-size: 12px; opacity: 0.8; }
+      overflow: hidden;
+    }
 
-    /* LOCALITIES */
-    .loc-section { background: var(--bg2) !important; }
-    .localities-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(195px, 1fr)); gap: 12px; }
-    .loc-card { background: var(--card-bg); border: 1.5px solid var(--border); border-radius: 12px; padding: 14px 16px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: all 0.2s; }
-    .loc-card:hover { border-color: var(--red); background: var(--bg3); }
-    .loc-name { font-size: 14px; font-weight: 600; margin-bottom: 3px; color: var(--text); }
-    .loc-count { font-size: 12px; color: var(--muted); }
-    .loc-arrow { color: var(--red); font-size: 18px; }
+    .hero-bg {
 
-    /* BRANDS */
-    .brands-section { background: var(--bg2) !important; }
-    .brands-header { text-align: center; margin-bottom: 36px; }
-    .brands-header h2 { font-family: 'Playfair Display', serif; font-size: 30px; margin-bottom: 6px; color: var(--text); }
-    .brands-header p { color: var(--muted); font-size: 13px; letter-spacing: 1px; text-transform: uppercase; }
-    .brand-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 18px; }
-    .brand-card { border-radius: 18px; padding: 28px 22px; color: #fff; position: relative; overflow: hidden; }
-    .brand-card img { height: 36px; object-fit: contain; margin-bottom: 10px; }
-    .brand-card h3 { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
-    .brand-card p { font-size: 13px; opacity: 0.85; margin-bottom: 16px; line-height: 1.5; }
-    .brand-card a { color: #fff; font-size: 13px; font-weight: 700; text-decoration: none; opacity: 0.9; }
-    .brand-card a:hover { opacity: 1; }
-    .zomato-card  { background: linear-gradient(135deg, #e23744, #ff6b6b); }
-    .blinkit-card { background: linear-gradient(135deg, #f0c040, #e6a800); color: #1a1a00 !important; }
-    .blinkit-card p, .blinkit-card a { color: #1a1a00 !important; }
-    .district-card{ background: linear-gradient(135deg, #1a1a2e, #16213e); }
-    .hyperpure-card{ background: linear-gradient(135deg, #1e6b3c, #27ae60); }
+      position: absolute;
+      inset: 0;
 
-    /* APP SECTION */
-    .app-section { background: linear-gradient(135deg, #1a0005 0%, #3d0010 100%); color: #fff; border-radius: 24px; margin: 0 5% 60px; padding: 50px 60px; display: flex; align-items: center; gap: 60px; }
-    [data-theme="dark"] .app-section { background: linear-gradient(135deg, #0d0003 0%, #2a000a 100%); border: 1px solid #3d0010; }
-    .app-text { flex: 1; }
-    .app-text h2 { font-family: 'Playfair Display', serif; font-size: 30px; margin-bottom: 10px; }
-    .app-text p { font-size: 15px; opacity: 0.75; margin-bottom: 24px; }
-    .store-btns { display: flex; gap: 12px; }
-    .store-btns img { height: 40px; cursor: pointer; border-radius: 8px; transition: transform 0.2s; }
-    .store-btns img:hover { transform: scale(1.05); }
-    .app-phone img { height: 200px; }
+      background:
+        url("https://b.zmtcdn.com/web_assets/81f3ff974d82520780078ba1cfbd453a1583259680.png")
+        center/cover no-repeat;
+
+      filter: brightness(0.32);
+    }
+
+    .hero-content {
+
+      position: relative;
+
+      z-index: 2;
+
+      max-width: 700px;
+
+      color: white;
+    }
+
+    .hero-content h1 {
+
+      font-family: "Playfair Display", serif;
+
+      font-size: clamp(42px, 6vw, 68px);
+
+      line-height: 1.1;
+
+      margin-bottom: 18px;
+    }
+
+    .hero-content p {
+
+      font-size: 17px;
+
+      line-height: 1.7;
+
+      margin-bottom: 34px;
+
+      opacity: 0.9;
+    }
+
+    /* SEARCH BAR */
+
+    .search-bar {
+
+      display: flex;
+      align-items: center;
+
+      background: white;
+
+      border-radius: 16px;
+
+      overflow: hidden;
+
+      box-shadow:
+        0 12px 40px rgba(0, 0, 0, 0.28);
+
+      margin-bottom: 26px;
+    }
+
+    .search-loc,
+    .search-query {
+
+      display: flex;
+      align-items: center;
+
+      gap: 10px;
+
+      padding: 18px;
+    }
+
+    .search-loc {
+
+      min-width: 180px;
+
+      border-right:
+        1px solid #ececec;
+    }
+
+    .search-query {
+      flex: 1;
+    }
+
+    .search-loc input,
+    .search-query input {
+
+      border: none;
+      outline: none;
+
+      width: 100%;
+
+      font-size: 14px;
+    }
+
+    .search-btn {
+
+      margin: 8px;
+
+      padding: 14px 22px;
+
+      border-radius: 12px;
+
+      border: none;
+
+      background: var(--red);
+
+      color: white;
+
+      font-size: 14px;
+      font-weight: 600;
+
+      cursor: pointer;
+    }
+
+    .search-btn:hover {
+      background: var(--red-dark);
+    }
+
+    /* TAGS */
+
+    .quick-tags {
+
+      display: flex;
+      flex-wrap: wrap;
+
+      gap: 10px;
+    }
+
+    .qtag {
+
+      padding: 8px 14px;
+
+      border-radius: 999px;
+
+      background:
+        rgba(255, 255, 255, 0.12);
+
+      border:
+        1px solid rgba(255, 255, 255, 0.2);
+
+      color: white;
+
+      font-size: 13px;
+
+      cursor: pointer;
+
+      transition: 0.2s;
+    }
+
+    .qtag:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
 
     /* FOOTER */
-    footer { background: var(--footer-bg); color: var(--footer-text); padding: 50px 5% 28px; transition: background 0.3s, color 0.3s; }
-    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
-    .footer-brand p { font-size: 13px; line-height: 1.7; margin: 14px 0 20px; opacity: 0.7; }
-    .footer-brand img { height: 30px; filter: brightness(0) invert(1); }
-    .socials { display: flex; gap: 10px; }
-    .socials a { width: 34px; height: 34px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; color: #fff; text-decoration: none; font-size: 13px; font-weight: 700; transition: background 0.2s; }
-    .socials a:hover { background: var(--red); }
-    .footer-col h4 { color: #fff; font-size: 14px; font-weight: 700; margin-bottom: 14px; }
-    .footer-col ul { list-style: none; }
-    .footer-col ul li { font-size: 13px; margin-bottom: 10px; cursor: pointer; opacity: 0.7; transition: opacity 0.2s; }
-    .footer-col ul li:hover { opacity: 1; }
-    .footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; display: flex; justify-content: space-between; font-size: 12px; opacity: 0.5; flex-wrap: wrap; gap: 8px; }
-    .footer-logo img {
-  height: 40px; /* Control the size of your logo here */
-  width: auto;  /* Maintains aspect ratio */
-  display: block;
-}
 
-.footer-links a {
-  color: #ccc;
-  margin-left: 20px;
-  text-decoration: none;
-}
+    footer {
 
+      background: var(--footer-bg);
 
-    /* DARK MODE NOTICE TOAST */
-    .dm-toast {
-      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
-      background: var(--card-bg); color: var(--text); border: 1px solid var(--border);
-      border-radius: 12px; padding: 10px 20px; font-size: 13px; font-weight: 600;
-      box-shadow: 0 8px 24px var(--shadow); z-index: 9999;
-      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s;
-      opacity: 0; pointer-events: none; white-space: nowrap;
+      color: var(--footer-text);
+
+      padding: 60px 5% 30px;
     }
-    .dm-toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+    .footer-grid {
+
+      display: grid;
+
+      grid-template-columns:
+        2fr 1fr 1fr 1fr 1fr;
+
+      gap: 40px;
+
+      margin-bottom: 40px;
+    }
+
+    .footer-logo img {
+
+      height: 32px;
+
+      filter: brightness(0) invert(1);
+    }
+
+    .footer-brand p {
+
+      font-size: 13px;
+
+      line-height: 1.7;
+
+      margin: 18px 0;
+
+      opacity: 0.7;
+    }
+
+    .footer-col h4 {
+
+      color: white;
+
+      font-size: 14px;
+
+      margin-bottom: 16px;
+    }
+
+    .footer-col ul li {
+
+      margin-bottom: 10px;
+
+      font-size: 13px;
+
+      opacity: 0.75;
+
+      cursor: pointer;
+    }
+
+    .footer-col ul li:hover {
+      opacity: 1;
+    }
+
+    .socials {
+
+      display: flex;
+
+      gap: 10px;
+    }
+
+    .socials a {
+
+      width: 34px;
+      height: 34px;
+
+      border-radius: 50%;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      background:
+        rgba(255, 255, 255, 0.1);
+
+      color: white;
+
+      font-size: 13px;
+    }
+
+    .footer-bottom {
+
+      border-top:
+        1px solid rgba(255, 255, 255, 0.08);
+
+      padding-top: 20px;
+
+      font-size: 12px;
+
+      opacity: 0.55;
+
+      line-height: 1.7;
+    }
+
+    /* RESPONSIVE */
+
+    @media (max-width: 992px) {
+
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
 
     @media (max-width: 768px) {
-      .hero-inner { grid-template-columns: 1fr; }
-      .hero-right { display: none; }
-      .footer-grid { grid-template-columns: 1fr 1fr; }
-      .app-section { flex-direction: column; text-align: center; padding: 36px 24px; margin: 0 4% 40px; }
-      .store-btns { justify-content: center; }
-      .app-phone { display: none; }
-      .nav-links .hide-mobile { display: none; }
+
+      .nav-links .hide-mobile {
+        display: none;
+      }
+
+      .hero {
+        min-height: auto;
+        padding: 100px 5%;
+      }
+
+      .hero-content h1 {
+        font-size: 42px;
+      }
+
+      .search-bar {
+
+        flex-direction: column;
+
+        align-items: stretch;
+      }
+
+      .search-loc {
+
+        border-right: none;
+
+        border-bottom:
+          1px solid #ececec;
+      }
+
+      .search-btn {
+        width: calc(100% - 16px);
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
     }
+
   </style>
 </head>
+
 <body>
 
-<!-- TOP BANNER -->
-<div class="top-banner" id="topBanner">
-  <span class="banner-tag">🎉 New</span>
-  Free delivery on your first 3 orders &nbsp;·&nbsp; Use code <strong>WELCOME50</strong> for 50% off
-  <button class="banner-close" onclick="document.getElementById('topBanner').style.display='none'">×</button>
-</div>
- 
-<!-- nav -->
+  <!-- TOP BANNER -->
 
-<div id="navbar"></div>
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-inner">
-    <div class="hero-left">
-      <div class="hero-tag">🍽️ Food delivery & dining</div>
-      <h1>Discover the best<br>food & drinks in<br><em>Delhi NCR</em></h1>
-      <p class="hero-sub">Order online, explore restaurants, and enjoy<br>the city's best culinary experiences.</p>
-      <div class="search-bar">
-        <div class="search-loc">
-          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          <input id="locationInput" placeholder="Enter location" />
+  <div class="top-banner" id="topBanner">
+
+    <span class="banner-tag">
+      🎉 New
+    </span>
+
+    Free delivery on your first 3 orders ·
+    Use code <strong>WELCOME50</strong> for 50% off
+
+    <button
+      class="banner-close"
+      id="bannerCloseBtn"
+      aria-label="Close banner">
+
+      ×
+
+    </button>
+
+  </div>
+
+  <!-- NAVBAR -->
+
+  <nav>
+
+    <div class="nav-left">
+
+      <img
+        src="https://b.zmtcdn.com/web_assets/b40b97e677bc7b2ca77c58c61db266fe1603954218.png"
+        alt="Zomato Logo">
+
+    </div>
+
+    <div class="nav-links">
+
+      <a href="#" class="hide-mobile">
+        Get the App
+      </a>
+
+      <a href="#" class="hide-mobile">
+        Investor Relations
+      </a>
+
+      <a href="#" class="hide-mobile">
+        Add Restaurant
+      </a>
+
+      <button class="btn-login">
+        Log in
+      </button>
+
+      <button class="btn-signup">
+        Sign up
+      </button>
+
+      <button
+        class="dm-toggle"
+        id="dmToggle"
+        aria-label="Toggle dark mode">
+      </button>
+
+    </div>
+
+  </nav>
+
+  <!-- HERO -->
+
+  <main>
+
+    <section class="hero">
+
+      <div class="hero-bg"></div>
+
+      <div class="hero-content">
+
+        <h1>
+          Discover the best food & drinks in Delhi NCR
+        </h1>
+
+        <p>
+          Order food online, explore restaurants,
+          and experience the city's best dining moments.
+        </p>
+
+        <!-- SEARCH -->
+
+        <form
+          class="search-bar"
+          id="searchForm">
+
+          <div class="search-loc">
+
+            <span>📍</span>
+
+            <input
+              type="text"
+              id="locationInput"
+              placeholder="Enter location"
+              aria-label="Location">
+
+          </div>
+
+          <div class="search-query">
+
+            <span>🔍</span>
+
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="Search for restaurant, cuisine or dish"
+              aria-label="Search restaurants">
+
+          </div>
+
+          <button
+            type="submit"
+            class="search-btn">
+
+            Search
+
+          </button>
+
+        </form>
+
+        <!-- TAGS -->
+
+        <div class="quick-tags">
+
+          <span class="qtag">🍕 Pizza</span>
+          <span class="qtag">🍔 Burger</span>
+          <span class="qtag">🍜 Chinese</span>
+          <span class="qtag">🍛 Biryani</span>
+          <span class="qtag">🥟 Momos</span>
+          <span class="qtag">🍰 Desserts</span>
+
         </div>
-        <div class="search-query">
-          <svg width="16" height="16" fill="none" stroke="#aaa" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-          <input id="searchInput" placeholder="Search for restaurant, cuisine or a dish" />
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+
+  <footer>
+
+    <div class="footer-grid">
+
+      <div class="footer-brand footer-col">
+
+        <div class="footer-logo">
+
+          <a href="/">
+
+            <img
+              src="https://b.zmtcdn.com/web_assets/b40b97e677bc7b2ca77c58c61db266fe1603954218.png"
+              alt="Zomato Logo">
+
+          </a>
+
         </div>
-        <button class="search-btn" onclick="doSearch()">Search</button>
+
+        <p>
+          Discover the best food & drinks in your city.
+          Delivering joy, one meal at a time.
+        </p>
+
+        <div class="socials">
+
+          <a
+            href="https://www.linkedin.com/company/zomato/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="LinkedIn">
+
+            in
+
+          </a>
+
+          <a
+            href="https://www.instagram.com/zomato/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Instagram">
+
+            ig
+
+          </a>
+
+          <a
+            href="https://twitter.com/zomato"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Twitter">
+
+            tw
+
+          </a>
+
+          <a
+            href="https://www.youtube.com/zomato"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="YouTube">
+
+            yt
+
+          </a>
+
+          <a
+            href="https://www.facebook.com/Zomato"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Facebook">
+
+            fb
+
+          </a>
+
+        </div>
+
       </div>
-      <div class="quick-tags">
-        <span class="qtag">🍕 Pizza</span>
-        <span class="qtag">🍔 Burgers</span>
-        <span class="qtag">🍜 Chinese</span>
-        <span class="qtag">🍛 Biryani</span>
-        <span class="qtag">🥟 Momos</span>
-        <span class="qtag">🧁 Desserts</span>
+
+      <div class="footer-col">
+
+        <h4>About Zomato</h4>
+
+        <ul>
+
+          <li>Who We Are</li>
+          <li>Blog</li>
+          <li>Work With Us</li>
+          <li>Investor Relations</li>
+          <li>Report Fraud</li>
+          <li>Contact Us</li>
+
+        </ul>
+
       </div>
-    </div>
-    <div class="hero-right">
-      <div class="float-card a">
-        <div class="dot g"></div>
-        <div><div class="fc-label">Orders today</div><div>12,450+</div></div>
+
+      <div class="footer-col">
+
+        <h4>Zomaverse</h4>
+
+        <ul>
+
+          <li>Zomato</li>
+          <li>Blinkit</li>
+          <li>Feeding India</li>
+          <li>Hyperpure</li>
+          <li>Zomaland</li>
+
+        </ul>
+
       </div>
-      <div class="float-card b">
-        <div class="dot o"></div>
-        <div><div class="fc-label">Avg delivery</div><div>~30 mins</div></div>
+
+      <div class="footer-col">
+
+        <h4>For Restaurants</h4>
+
+        <ul>
+
+          <li>Partner With Us</li>
+          <li>Apps For You</li>
+
+        </ul>
+
       </div>
-      <div class="hero-circle">
-        <img src="https://b.zmtcdn.com/data/o2_assets/f773629053b24263e69f601925790f301680693809.png" alt="Food" />
+
+      <div class="footer-col">
+
+        <h4>Learn More</h4>
+
+        <ul>
+
+          <li>Privacy</li>
+          <li>Security</li>
+          <li>Terms</li>
+          <li>Sitemap</li>
+
+        </ul>
+
       </div>
-      <div class="float-card c">
-        <div class="dot r"></div>
-        <div><div class="fc-label">Restaurants</div><div>5,000+ nearby</div></div>
-      </div>
+
     </div>
-  </div>
-</section>
 
-<!-- NIGHTLIFE -->
-<section style="padding:32px 5%;">
-  <div class="option-card">
-    <img src="https://b.zmtcdn.com/webFrontend/d9d80ef91cb552e3fdfadb3d4f4379761647365057.jpeg?output-format=webp&fit=around|402:360&crop=402:360;*,*" />
-    <div class="info">
-      <div class="title">Nightlife and Clubs</div>
-      <div class="description">Explore the city's top nightlife outlets</div>
+    <div class="footer-bottom">
+
+      By continuing past this page, you agree to our
+      Terms of Service, Cookie Policy, Privacy Policy,
+      and Content Policies.
+
     </div>
-  </div>
-</section>
 
-<!-- CATEGORIES -->
-<section class="cat-section">
-  <div class="section-head">
-    <h2>What's on your mind?</h2>
-    <p>Browse by cuisine or category</p>
-  </div>
-  <div class="categories">
-    <div class="cat-card"><div class="cat-icon">🍕</div><div class="cat-name">Pizza</div></div>
-    <div class="cat-card"><div class="cat-icon">🍔</div><div class="cat-name">Burgers</div></div>
-    <div class="cat-card"><div class="cat-icon">🍜</div><div class="cat-name">Chinese</div></div>
-    <div class="cat-card"><div class="cat-icon">🍛</div><div class="cat-name">Biryani</div></div>
-    <div class="cat-card"><div class="cat-icon">🥗</div><div class="cat-name">Healthy</div></div>
-    <div class="cat-card"><div class="cat-icon">🍣</div><div class="cat-name">Sushi</div></div>
-    <div class="cat-card"><div class="cat-icon">🧁</div><div class="cat-name">Desserts</div></div>
-    <div class="cat-card"><div class="cat-icon">☕</div><div class="cat-name">Cafes</div></div>
-    <div class="cat-card"><div class="cat-icon">🍱</div><div class="cat-name">South Indian</div></div>
-    <div class="cat-card"><div class="cat-icon">🥩</div><div class="cat-name">Kebabs</div></div>
-    <div class="cat-card"><div class="cat-icon">🌮</div><div class="cat-name">Rolls</div></div>
-    <div class="cat-card"><div class="cat-icon">🥟</div><div class="cat-name">Momos</div></div>
-  </div>
-</section>
+  </footer>
 
-<!-- COLLECTIONS -->
-<section>
-  <div class="section-head" style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:12px">
-    <div>
-      <h2>Collections</h2>
-      <p>Explore curated lists of top restaurants, cafes, pubs, and bars in Delhi NCR, based on trends</p>
-    </div>
-    <a href="#" style="color:var(--red);font-size:14px;font-weight:600;text-decoration:none;white-space:nowrap">All collections in Delhi NCR →</a>
-  </div>
-  <div class="collections-grid">
-    <div class="coll-card">
-      <img src="https://b.zmtcdn.com/data/collections/77c1b9704985885cbe2cb094e9983eab_1682080540.jpg?output-format=webp" />
-      <div class="coll-overlay"><div class="coll-title">Winners of Zomato Restaurant Awards</div><div class="coll-places">32 Places ›</div></div>
-    </div>
-    <div class="coll-card">
-      <img src="https://b.zmtcdn.com/data/collections/16e3a8b363d4592a72b2c4f486c63fb8_1678096853.jpg?output-format=webp" />
-      <div class="coll-overlay"><div class="coll-title">22 Best Insta-worthy Places</div><div class="coll-places">22 Places ›</div></div>
-    </div>
-    <div class="coll-card">
-      <img src="https://b.zmtcdn.com/data/collections/8dd5adbf91d78c8d11796c6b230539ef_1674568824.jpg?output-format=webp" />
-      <div class="coll-overlay"><div class="coll-title">21 Romantic Dining Places</div><div class="coll-places">21 Places ›</div></div>
-    </div>
-    <div class="coll-card">
-      <img src="https://b.zmtcdn.com/data/collections/a1bafc59f9aa67998b9f8de61b9abbd4_1680160970.png?output-format=webp" />
-      <div class="coll-overlay"><div class="coll-title">18 Thrilling Live Cricket Screenings</div><div class="coll-places">18 Places ›</div></div>
-    </div>
-  </div>
-</section>
+  <!-- JAVASCRIPT -->
 
-<!-- LOCALITIES -->
-<section class="loc-section">
-  <div class="section-head">
-    <h2>Popular localities in and around <span style="color:var(--red)">Delhi NCR</span></h2>
-    <p>Find the best restaurants in your neighbourhood</p>
-  </div>
-  <div class="localities-grid">
-    <div class="loc-card"><div><div class="loc-name">Connaught Place</div><div class="loc-count">252 Places</div></div><span class="loc-arrow">›</span></div>
-    <div class="loc-card"><div><div class="loc-name">Sector 29</div><div class="loc-count">144 Places</div></div><span class="loc-arrow">›</span></div>
-    <div class="loc-card"><div><div class="loc-name">Sector 18, Noida</div><div class="loc-count">205 Places</div></div><span class="loc-arrow">›</span></div>
-    <div class="loc-card"><div><div class="loc-name">Rajouri Garden</div><div class="loc-count">296 Places</div></div><span class="loc-arrow">›</span></div>
-    <div class="loc-card"><div><div class="loc-name">Saket</div><div class="loc-count">307 Places</div></div><span class="loc-arrow">›</span></div>
-    <div class="loc-card"><div><div class="loc-name">DLF Cyber City</div><div class="loc-count">153 Places</div></div><span class="loc-arrow">›</span></div>
-    <div class="loc-card"><div><div class="loc-name">Golf Course Road</div><div class="loc-count">154 Places</div></div><span class="loc-arrow">›</span></div>
-    <div class="loc-card"><div><div class="loc-name">DLF Phase 4</div><div class="loc-count">221 Places</div></div><span class="loc-arrow">›</span></div>
-  </div>
-</section>
+  <script>
 
-<!-- BRANDS -->
-<section class="brands-section">
-  <div class="brands-header">
-    <h2>eternal</h2>
-    <p>Powering India's Changing Lifestyles</p>
-  </div>
-  <div class="brand-cards">
-    <div class="brand-card zomato-card">
-      <img src="images/zomato.png" onerror="this.style.display='none'" alt="Zomato" />
-      <h3>zomato</h3>
-      <p>Get the app now to start ordering your favorite dishes!</p>
-      <a href="#">Check it out →</a>
-    </div>
-    <div class="brand-card blinkit-card">
-      <img src="images/blinkit.png" onerror="this.style.display='none'" alt="Blinkit" />
-      <h3>blinkit</h3>
-      <p>Choose from 30,000+ products delivered to your doorstep.</p>
-      <a href="#">Check it out →</a>
-    </div>
-    <div class="brand-card district-card">
-      <img src="images/district.png" onerror="this.style.display='none'" alt="District" />
-      <h3>district</h3>
-      <p>The best of events, movies, dining, and everything you love!</p>
-      <a href="#">Check it out →</a>
-    </div>
-    <div class="brand-card hyperpure-card">
-      <img src="images/hyperpure.png" onerror="this.style.display='none'" alt="Hyperpure" />
-      <h3>hyperpure</h3>
-      <p>Offering complete supply chain solution for your restaurant.</p>
-      <a href="#">Check it out →</a>
-    </div>
-  </div>
-</section>
+    const html =
+      document.documentElement;
 
-<!-- APP SECTION -->
-<div class="app-section">
-  <div class="app-text">
-    <h2>Get the Zomato app</h2>
-    <p>We will send you a link, open it on your phone to download the app</p>
-    <div class="store-btns">
-      <img src="https://b.zmtcdn.com/data/webuikit/23e930757c3df49840c482a8638bf5c31556001144.png" alt="App Store" />
-      <img src="https://b.zmtcdn.com/data/webuikit/9f0c85a5e33adb783fa0aef667075f9e1556003622.png" alt="Google Play" />
-    </div>
-  </div>
-  <div class="app-phone">
-    <img src="https://b.zmtcdn.com/data/o2_assets/f773629053b24263e69f601925790f301680693809.png" alt="App" />
-  </div>
-</div>
+    // DARK MODE
 
-<div id="footer"></div>
+    function toggleDark() {
 
+      const isDark =
+        html.getAttribute("data-theme") === "dark";
 
-<!-- TOAST -->
-<div class="dm-toast" id="dmToast"></div>
+      const nextTheme =
+        isDark ? "light" : "dark";
 
-<script>
-  /* ── DARK MODE ── */
-  const html = document.documentElement;
-  const toast = document.getElementById('dmToast');
-  let toastTimer;
+      html.setAttribute(
+        "data-theme",
+        nextTheme
+      );
 
-  // Restore saved preference
-  const saved = localStorage.getItem('zomato-theme');
-  if (saved) html.setAttribute('data-theme', saved);
-
-  function toggleDark() {
-    const isDark = html.getAttribute('data-theme') === 'dark';
-    const next = isDark ? 'light' : 'dark';
-    html.setAttribute('data-theme', next);
-    localStorage.setItem('zomato-theme', next);
-    showToast(next === 'dark' ? '🌙 Dark mode on' : '☀️ Light mode on');
-  }
-
-  function showToast(msg) {
-    toast.textContent = msg;
-    toast.classList.add('show');
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => toast.classList.remove('show'), 2000);
-  }
-
-  /* ── SEARCH ── */
-  function doSearch() {
-    const q = document.getElementById('searchInput').value.trim();
-    const loc = document.getElementById('locationInput').value.trim();
-    if (!q) { alert('Please enter something!'); return; }
-    alert('You searched for: ' + q + (loc ? ' in ' + loc : ''));
-  }
-  document.getElementById('searchInput').addEventListener('keydown', e => { if (e.key === 'Enter') doSearch(); });
-  document.getElementById('locationInput').addEventListener('keydown', e => {
-    if (e.key === 'Enter') {
-      const loc = document.getElementById('locationInput').value.trim();
-      if (!loc) { alert('Please enter a location!'); return; }
-      alert('Location selected: ' + loc);
+      localStorage.setItem(
+        "zomato-theme",
+        nextTheme
+      );
     }
-  });
 
-  /* ── QUICK TAGS ── */
-  document.querySelectorAll('.qtag').forEach(tag => {
-    tag.addEventListener('click', () => {
-      document.getElementById('searchInput').value = tag.textContent.slice(2).trim();
-      document.getElementById('searchInput').focus();
-    });
-  });
-</script>
+    document
+      .getElementById("dmToggle")
+      .addEventListener(
+        "click",
+        toggleDark
+      );
+
+    // CLOSE BANNER
+
+    document
+      .getElementById("bannerCloseBtn")
+      .addEventListener(
+        "click",
+        () => {
+
+          document
+            .getElementById("topBanner")
+            .style
+            .display = "none";
+        }
+      );
+
+    // SEARCH
+
+    function doSearch() {
+
+      const query =
+        document
+          .getElementById("searchInput")
+          .value
+          .trim();
+
+      const location =
+        document
+          .getElementById("locationInput")
+          .value
+          .trim();
+
+      if (!query) {
+
+        alert(
+          "Please enter something to search."
+        );
+
+        return;
+      }
+
+      alert(
+        `You searched for "${query}"` +
+        (location ? ` in ${location}` : "")
+      );
+    }
+
+    document
+      .getElementById("searchForm")
+      .addEventListener(
+        "submit",
+        (e) => {
+
+          e.preventDefault();
+
+          doSearch();
+        }
+      );
+
+    // QUICK TAGS
+
+    document
+      .querySelectorAll(".qtag")
+      .forEach((tag) => {
+
+        tag.addEventListener(
+          "click",
+          () => {
+
+            document
+              .getElementById("searchInput")
+              .value =
+              tag.textContent
+                .replace(/[^\w\s]/gi, "")
+                .trim();
+
+            document
+              .getElementById("searchInput")
+              .focus();
+          }
+        );
+      });
+
+  </script>
+
 </body>
+
 </html>
-
-<script>
-async function loadComponent(id, file) {
-  const res = await fetch(file);
-  const data = await res.text();
-  document.getElementById(id).innerHTML = data;
-}
-
-// navbar load
-loadComponent("navbar", "components/navbar.html");
-
-
-// footer
-loadComponent("footer", "components/footer.html");
-
-</script>
-
