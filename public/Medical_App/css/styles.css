@@ -1307,3 +1307,77 @@ aside.sidebar:not(#sidebar) {
 }
 
 
+.user-actions-bar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:1rem;
+    width:90%;
+    max-width:1200px;
+    margin:20px auto;
+}
+
+.user-badge{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:10px 16px;
+    background:linear-gradient(135deg,#f0f9ff,#e0f2fe);
+    border:1px solid #bae6fd;
+    border-radius:12px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.08);
+}
+
+.user-avatar{
+    width:42px;
+    height:42px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:50%;
+    background:#2563eb;
+    color:white;
+    font-size:20px;
+    font-weight:600;
+}
+
+.user-meta{
+    display:flex;
+    flex-direction:column;
+}
+
+#userBadgeName{
+    font-weight:600;
+    color:#1e293b;
+}
+
+#userBadgeRole{
+    font-size:0.85rem;
+    color:#64748b;
+}
+#logoutBtn{
+    padding:10px 18px;
+    border:none;
+    border-radius:10px;
+    background:#ef4444;
+    color:white;
+    font-weight:600;
+    cursor:pointer;
+    transition:all 0.3s ease;
+}
+
+#logoutBtn:hover{
+    background:#dc2626;
+    transform:translateY(-2px);
+}
+
+@media (max-width:768px){
+    .user-actions-bar{
+        flex-direction:column;
+        align-items:stretch;
+    }
+
+    #logoutBtn{
+        width:100%;
+    }
+}

@@ -229,13 +229,6 @@ function resolveProjectUrls(day, name, url, tags) {
       }
     } catch (error) { }
   }
-  if (day === "Day 222") {
-    return {
-      demoUrl: "https://html-css-animation-01.netlify.app/",
-      sourceUrl: "https://github.com/dhairyagothi/100_day_100_web_project/blob/Main/public/Html_css_animation/index.html",
-      sourceOnly: false
-    };
-  }
 
   return { demoUrl, sourceUrl, sourceOnly };
 }
@@ -359,7 +352,14 @@ function buildProjectCardHTML({
             </div>
 
             <div class="card-preview-image-container" style="margin: 12px 0; border-radius: 8px; overflow: hidden; aspect-ratio: 16/9; background: #1a1a1a;">
-               <img src="${url && url.startsWith('./') ? url.substring(0, url.lastIndexOf('/')) : ''}/preview.png"alt="${safeName} preview" onerror="this.parentNode.style.display='none';" style="width: 100%; height: 100%; object-fit: cover;">
+             <img
+    src="${url && url.startsWith('./') ? url.substring(0, url.lastIndexOf('/')) : ''}/preview.webp"
+    alt="${safeName} preview"
+    loading="lazy"
+    decoding="async"
+    onerror="this.parentNode.style.display='none';"
+    style="width: 100%; height: 100%; object-fit: cover;"
+>
             </div>
 
             <h3 class="card-name">${safeName}</h3>
@@ -915,6 +915,12 @@ function renderGrid() {
   syncStateToURL();
   syncProjectCounts();
 }
+console.log("===== RENDER GRID =====");
+console.log("PROJECTS:", PROJECTS.length);
+console.log("activeFilter:", activeFilter);
+console.log("searchQuery:", searchQuery);
+console.log("techStackFilter:", techStackFilter);
+console.log("difficultyFilter:", difficultyFilter);
 function renderRandomProject() {
   const result =
     document.getElementById(
@@ -1944,26 +1950,26 @@ document.addEventListener("DOMContentLoaded", async () => {
   initTechStackSearch();
   initClearAllFilters();
 
-  updateGamifiedUI();
+  //updateGamifiedUI();
 
   try {
-    await loadProjects();
+  await loadProjects();
 
-    updateGamifiedUI();
+//updateGamifiedUI();
 
-    syncProjectCounts();
+restoreStateFromURL();
 
-    if (hasProjectGrid()) {
-      loadBookmarksFromURL();
+syncProjectCounts();
 
-      renderGrid();
-      renderBookmarks();
-      renderRecentProjects();
-    }
+if (hasProjectGrid()) {
+  loadBookmarksFromURL();
 
-    restoreStateFromURL();
+  renderGrid();
+  renderBookmarks();
+  renderRecentProjects();
+}
 
-    syncProjectCounts();
+syncProjectCounts();
     fetchRepoStats();
     initScrollBtn();
   } catch (error) {

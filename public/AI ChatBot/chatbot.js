@@ -1,7 +1,7 @@
 /* ===========================
    CONFIG
 =========================== */
-const API_URL = "https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent";
+const API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent";
 const STORAGE_KEY_API     = 'gemini_api_key';
 const STORAGE_KEY_HISTORY = 'gemini_chat_history';
 const STORAGE_KEY_THEME   = 'gemini_theme';
@@ -329,7 +329,8 @@ async function fetchGeminiResponse(userPrompt, fileAttachment) {
   showTypingIndicator();
 
   try {
-    const response = await fetch(`${API_URL}?key=${geminiApiKey}`, {
+    console.log('Gemini request key:', savedKey);
+    const response = await fetch(`${API_URL}?key=${savedKey}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ contents: chatHistory })

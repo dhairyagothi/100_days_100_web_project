@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', function(){
     const searchInput = document.getElementById('remedySearch');
     const chips = Array.from(document.querySelectorAll('.chip'));
@@ -6,6 +5,31 @@ document.addEventListener('DOMContentLoaded', function(){
     const modalBackdrop = document.getElementById('modalBackdrop');
     const modalBody = document.getElementById('modalBody');
     const modalClose = document.getElementById('modalClose');
+
+    // Theme Toggle Functionality
+const themeToggle = document.getElementById('themeToggle');
+
+if (themeToggle) {
+
+    // Load saved theme
+    const savedTheme = localStorage.getItem('theme');
+
+    if (savedTheme === 'dark') {
+        document.body.classList.add('dark-theme');
+        themeToggle.textContent = '☀️';
+    }
+
+    themeToggle.addEventListener('click', () => {
+
+        document.body.classList.toggle('dark-theme');
+
+        const isDark = document.body.classList.contains('dark-theme');
+
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+
+        themeToggle.textContent = isDark ? '☀️' : '🌙';
+    });
+}
 
     if(!grid) return;
 

@@ -122,3 +122,153 @@ body {
 .hourly-forecast div {
   text-align: center;
 }
+
+/* API Configuration Settings Button */
+.search-bar button#settingsBtn {
+  background: rgba(255, 255, 255, 0.15);
+  transition: background 0.3s, transform 0.2s;
+}
+
+.search-bar button#settingsBtn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: rotate(30deg);
+}
+
+/* Modal styling */
+.modal {
+  display: none; 
+  position: fixed; 
+  z-index: 1000; 
+  left: 0;
+  top: 0;
+  width: 100%; 
+  height: 100%; 
+  background-color: rgba(0, 0, 0, 0.5); 
+  backdrop-filter: blur(10px);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal.show {
+  display: flex;
+}
+
+.modal-content {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(25px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 30px;
+  border-radius: 26px;
+  width: 500px;
+  max-width: 90%;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+  position: relative;
+  animation: modalFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: scale(0.9) translateY(10px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.close-modal {
+  position: absolute;
+  top: 15px;
+  right: 25px;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: color 0.2s, transform 0.2s;
+}
+
+.close-modal:hover {
+  color: white;
+  transform: scale(1.1);
+}
+
+.modal-content h2 {
+  font-size: 22px;
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+
+.modal-description {
+  font-size: 14px;
+  line-height: 1.5;
+  opacity: 0.85;
+  margin-bottom: 20px;
+}
+
+.modal-description a {
+  color: #9bec00;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.modal-description a:hover {
+  text-decoration: underline;
+}
+
+.api-input-group {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.api-input-group input {
+  flex: 1;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  outline: none;
+  font-size: 14px;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.api-input-group input:focus {
+  border-color: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.api-input-group input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.api-input-group button {
+  border: none;
+  padding: 12px 24px;
+  border-radius: 12px;
+  background: #9bec00;
+  color: #059212;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s, box-shadow 0.2s;
+}
+
+.api-input-group button:hover {
+  background: #aaff2b;
+  box-shadow: 0 4px 12px rgba(155, 236, 0, 0.3);
+}
+
+.api-input-group button:active {
+  transform: scale(0.98);
+}
+
+.feedback-message {
+  font-size: 13px;
+  margin-top: 8px;
+  transition: color 0.3s;
+}
+
+.feedback-message.success {
+  color: #c6ff80;
+}
+
+.feedback-message.error {
+  color: #ffb3b3;
+}
