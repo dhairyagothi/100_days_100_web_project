@@ -1,0 +1,218 @@
+/* style.css - Dark Neon Memory Match */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #0a0a0a;
+  color: #e0e0e0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.container {
+  max-width: 1100px;
+}
+
+h1.neon-text {
+  color: #ffffff;
+  text-shadow:
+    0 0 10px #00ffcc,
+    0 0 20px #00ffcc,
+    0 0 40px #00ccff,
+    0 0 60px #00ccff;
+  letter-spacing: 2px;
+}
+
+/* Controls */
+.controls {
+  background: #1a1a2e;
+  border: 1px solid #00ffcc33;
+  box-shadow: 0 8px 32px rgba(0, 255, 204, 0.1);
+}
+
+.form-select {
+  background-color: #16213e;
+  color: #e0e0e0;
+  border: 2px solid #00ffcc44;
+}
+
+.form-select:focus {
+  border-color: #00ffcc;
+  box-shadow: 0 0 0 0.25rem rgba(0, 255, 204, 0.25);
+}
+
+.stats {
+  background: #0f0f1e;
+  border: 1px solid #334466;
+  color: #a0a0ff;
+}
+
+.btn-neon {
+  background: transparent;
+  color: #00ffcc;
+  border: 2px solid #00ffcc;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  text-shadow: 0 0 8px #00ffcc;
+}
+
+.btn-neon:hover {
+  background: #00ffcc;
+  color: #0a0a0a;
+  box-shadow: 0 0 20px #00ffcc;
+  transform: translateY(-2px);
+}
+
+.btn-outline-light {
+  border-color: #7788aa;
+  color: #ccddee;
+}
+
+.btn-outline-light:hover {
+  background: #334455;
+  color: white;
+}
+
+/* Game Board */
+.game-container {
+  display: flex;
+  justify-content: center;
+}
+
+#grid {
+  display: grid;
+  gap: 14px;
+  padding: 25px;
+  background: #111827;
+  border-radius: 24px;
+  border: 2px solid #1e2937;
+  box-shadow:
+    0 0 30px rgba(0, 255, 204, 0.15),
+    inset 0 0 20px rgba(0, 0, 0, 0.6);
+  max-width: fit-content;
+}
+
+/* Card Styles */
+.card {
+  width: 100%;
+  padding-top: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.65s cubic-bezier(0.25, 0.1, 0.25, 1);
+  cursor: pointer;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+}
+
+.card.flipped {
+  transform: rotateY(180deg);
+}
+
+.card-front,
+.card-back {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  box-shadow: inset 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.card-front {
+  background: linear-gradient(145deg, #1e2937, #334155);
+  border: 3px solid #475569;
+}
+
+.card-back {
+  background: linear-gradient(145deg, #1e3a8a, #3b82f6);
+  color: white;
+  transform: rotateY(180deg);
+  font-size: 3.5rem;
+  border: 3px solid #60a5fa;
+}
+
+.card.matched {
+  transform: rotateY(180deg);
+  opacity: 0.9;
+  pointer-events: none;
+  box-shadow: 0 0 25px #22ff88;
+}
+
+/* Grid Sizes */
+.grid-4 {
+  grid-template-columns: repeat(4, minmax(70px, 1fr));
+}
+.grid-6 {
+  grid-template-columns: repeat(6, minmax(60px, 1fr));
+}
+.grid-8 {
+  grid-template-columns: repeat(8, minmax(50px, 1fr));
+}
+
+@media (max-width: 576px) {
+  .card-front,
+  .card-back {
+    font-size: 2rem;
+  }
+  .card-back {
+    font-size: 2.4rem;
+  }
+  #grid {
+    gap: 10px;
+    padding: 15px;
+  }
+  .grid-4 {
+    grid-template-columns: repeat(4, minmax(65px, 1fr));
+  }
+  .grid-6 {
+    grid-template-columns: repeat(6, minmax(48px, 1fr));
+  }
+  .grid-8 {
+    grid-template-columns: repeat(8, minmax(38px, 1fr));
+  }
+}
+
+/* Hover Effect */
+.card:hover:not(.flipped):not(.matched) {
+  transform: scale(1.08) rotate(2deg);
+  box-shadow: 0 15px 30px rgba(0, 255, 204, 0.3);
+}
+
+/* Win Modal */
+.modal-content {
+  background: #0f172a;
+  border: 2px solid #00ffcc44;
+  box-shadow: 0 0 40px rgba(0, 255, 204, 0.3);
+}
+
+.modal-title {
+  color: #67e8f9;
+}
+
+.stats-final p {
+  font-size: 1.35rem;
+  margin: 12px 0;
+}
+
+/* Confetti Canvas */
+.confetti-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1055;
+}
+
+/* Progress Text */
+.text-success {
+  color: #22ff88 !important;
+}

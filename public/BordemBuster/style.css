@@ -388,6 +388,31 @@ body::after {
   display: flex;
   border-bottom: 1px solid var(--border);
 }
+
+/* ── Search & Filter Section ── */
+.search-filter-container {
+  padding: 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.filter-row {
+  display: flex;
+  gap: 10px;
+}
+
+.filter-row .glass-input {
+  flex: 1;
+}
+
+.results-count {
+  font-size: 0.85rem;
+  color: var(--text3);
+  text-align: center;
+}
+
 .tab {
   flex: 1;
   padding: 12px;

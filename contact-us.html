@@ -800,20 +800,9 @@
           <button type="button" class="reason-chip" data-reason="Other">Other</button>
         </div>
 
-        <!--
-          ═══════════════════════════════════════════════════════════════
-          FormSpree setup instructions:
-          1. Sign up / log in at https://formspree.io
-          2. Create a new form and copy your form ID (e.g., "xyzabcde")
-          3. Replace "yourFormID" in the data-endpoint attribute below:
-             data-endpoint="https://formspree.io/f/yourFormID"
-          ═══════════════════════════════════════════════════════════════
-        -->
-        <div class="form-banner" style="display:flex;background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.3);color:#fbbf24;border-radius:var(--radius-sm);padding:0.9rem 1rem;font-size:0.82rem;font-weight:600;margin-bottom:1rem;align-items:center;gap:0.6rem;">
-          <i class="fas fa-info-circle" aria-hidden="true"></i>
-          <span>Note: Replace <code style="background:rgba(0,0,0,0.2);padding:0.1rem 0.4rem;border-radius:4px;">yourFormID</code> in the form's <code style="background:rgba(0,0,0,0.2);padding:0.1rem 0.4rem;border-radius:4px;">data-endpoint</code> attribute with your FormSpree form ID to enable submissions.</span>
-        </div>
-        <form id="contactForm" novalidate data-endpoint="https://formspree.io/f/yourFormID">
+       
+        
+        <form id="contactForm" novalidate data-endpoint="https://formspree.io/f/xpwzgnjw">
           <!-- Hidden reason field populated by chip selection -->
           <input type="hidden" id="reasonField" value="General Question" />
 
@@ -1101,35 +1090,35 @@
       document.getElementById('reasonField').value = 'General Question';
     }
 
-    async function submitContactForm() {
-      const endpoint = form.dataset.endpoint?.trim();
+   async function submitContactForm() {
+  const endpoint = form.dataset.endpoint?.trim();
 
-      if (!endpoint || endpoint === 'https://formspree.io/f/yourFormID') {
-        throw new Error('FormSpree endpoint not configured. See the notice above the form for setup instructions, or reach out on GitHub.');
-      }
+  if (!endpoint) {
+    throw new Error('FormSpree endpoint not configured.');
+  }
 
-      const payload = {
-        name: document.getElementById('contactName').value.trim(),
-        email: document.getElementById('contactEmail').value.trim(),
-        subject: document.getElementById('contactSubject').value.trim(),
-        github: document.getElementById('contactGithub').value.trim(),
-        reason: document.getElementById('reasonField').value,
-        message: document.getElementById('contactMessage').value.trim()
-      };
+  const payload = {
+    name:    document.getElementById('contactName').value.trim(),
+    email:   document.getElementById('contactEmail').value.trim(),
+    subject: document.getElementById('contactSubject').value.trim(),
+    github:  document.getElementById('contactGithub').value.trim(),
+    reason:  document.getElementById('reasonField').value,
+    message: document.getElementById('contactMessage').value.trim()
+  };
 
-      const res = await fetch(endpoint, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify(payload)
-      });
+  const res = await fetch(endpoint, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    },
+    body: JSON.stringify(payload)
+  });
 
-      if (!res.ok) {
-        throw new Error(defaultErrorMessage);
-      }
-    }
+  if (!res.ok) {
+    throw new Error(defaultErrorMessage);
+  }
+}
 
     /* Clear error on input */
     ['contactName', 'contactEmail', 'contactSubject', 'contactMessage'].forEach(id => {

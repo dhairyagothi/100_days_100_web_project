@@ -533,20 +533,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
     }
 
-    function updateCartCount() {
-
-        const cartCounts =
-            document.querySelectorAll(".cart-count");
-
+    window.updateCartCount = function() {
+        const cartCounts = document.querySelectorAll(".cart-count");
+        let totalQty = 0;
+        let currentCart = JSON.parse(localStorage.getItem("cart")) || [];
+        currentCart.forEach(item => totalQty += (item.qty || 1));
         cartCounts.forEach(el => {
-
-            el.innerText = cart.length;
-
+            el.innerText = totalQty;
         });
+    };
 
-    }
+    window.updateCartCount();
 
-    updateCartCount();
+    // ==========================================
+    // NAV CART REDIRECT
+    // ==========================================
+    const navCartBtns = document.querySelectorAll(".nav-cart");
+    navCartBtns.forEach(btn => {
+        btn.addEventListener("click", () => {
+            window.location.href = "cart.html";
+        });
+    });
 
     // ==========================================
     // ADD TO CART BUTTONS
@@ -570,34 +577,25 @@ document.addEventListener("DOMContentLoaded", () => {
             card.appendChild(btn);
         }
 
-        // Add click event
+            // Add click event
         btn.addEventListener("click", () => {
 
             const product = {
-
-                id: index + 1,
-
-                title:
-                    card.querySelector("h4")?.innerText || "Product",
-
-                price:
-                    card.querySelector(".product-price span")
-                        ?.innerText || "0",
-
-                image:
-                    card.querySelector("img")?.src || ""
-
+                id: "idx_" + index,
+                title: card.querySelector("h4")?.innerText || "Product",
+                price: card.querySelector(".product-price span")?.innerText || "0",
+                image: card.querySelector("img")?.src || ""
             };
 
-            // Add to cart array
-            cart.push(product);
+            let existingItem = cart.find(item => item.id === product.id);
+            if (existingItem) {
+                existingItem.qty = (existingItem.qty || 1) + 1;
+            } else {
+                product.qty = 1;
+                cart.push(product);
+            }
 
-            // Save cart
             saveCart();
-
-            // Update cart count
-            updateCartCount();
-
             alert(`${product.title} added to cart`);
         });
 
@@ -1189,7 +1187,7 @@ if (window.location.pathname.includes("products.html")) {
                         <button class="btn-add-to-cart" onclick="addToCart('${p.id}', '${(p.title || '').replace(/'/g, '&apos;')}', ${priceNum}, '${p.thumbnail || ''}')">
                             Add to Cart
                         </button>
-                        <button class="btn-buy-now">
+                        <button class="btn-buy-now" onclick="buyNow('${p.id}', '${(p.title || '').replace(/'/g, '&apos;')}', ${priceNum}, '${p.thumbnail || ''}')">
                             Buy Now
                         </button>
                     </div>
@@ -1207,20 +1205,661 @@ if (window.location.pathname.includes("products.html")) {
 // CART SYSTEM
 // ==========================================
 window.addToCart = function (id, title, price, image) {
-
     let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-    cart.push({
-        id,
-        title,
-        price,
-        image: safeImage(image)
-    });
-
+    let existingItem = cart.find(item => item.id === id);
+    if (existingItem) {
+        existingItem.qty = (existingItem.qty || 1) + 1;
+    } else {
+        cart.push({
+            id,
+            title,
+            price,
+            image: safeImage(image),
+            qty: 1
+        });
+    }
     localStorage.setItem("cart", JSON.stringify(cart));
-
-    document.querySelectorAll(".cart-count")
-        .forEach(el => el.innerText = cart.length);
-
+    if(window.updateCartCount) window.updateCartCount();
     alert("Added to cart");
 };
+
+window.buyNow = function (id, title, price, image) {
+    const orderId = '112-' + Math.floor(1000000 + Math.random() * 9000000) + '-' + Math.floor(1000000 + Math.random() * 9000000);
+    const orderDate = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    let orders = JSON.parse(localStorage.getItem("amazonOrders")) || [];
+    orders.unshift({
+        id: orderId,
+        item: title,
+        price: price,
+        image: safeImage(image),
+        status: 'Processing',
+        date: orderDate
+    });
+    localStorage.setItem("amazonOrders", JSON.stringify(orders));
+    alert("Order placed successfully! Redirecting you to Your Orders in Customer Service...");
+    window.location.href = "Customer-Service/index.html#tile-orders";
+};
+
+// ==========================================
+// CART PAGE RENDERING
+// ==========================================
+function initCartPage() {
+    const cartItemsContainer = document.getElementById("cart-items-container");
+    if (!cartItemsContainer) return; // Not on cart page
+
+    const savedItemsContainer = document.getElementById("saved-items-container");
+    const savedSection = document.getElementById("saved-for-later-section");
+
+    function getCart() { return JSON.parse(localStorage.getItem("cart")) || []; }
+    function getSaved() { return JSON.parse(localStorage.getItem("savedForLater")) || []; }
+    function setCart(c) { localStorage.setItem("cart", JSON.stringify(c)); }
+    function setSaved(s) { localStorage.setItem("savedForLater", JSON.stringify(s)); }
+
+    function renderAll() {
+        renderCart();
+        renderSaved();
+        if (window.updateCartCount) window.updateCartCount();
+        updateGiftCardCheckout();
+    }
+
+    function renderCart() {
+        let cart = getCart();
+        cartItemsContainer.innerHTML = "";
+        let subtotal = 0;
+        let totalItems = 0;
+
+        if (cart.length === 0) {
+            cartItemsContainer.innerHTML = `
+                <div class="cart-empty-msg">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <p>Your cart is empty.</p>
+                </div>`;
+        } else {
+            cart.forEach((item, index) => {
+                const qty = item.qty || 1;
+                let priceNum = parseFloat(String(item.price).replace(/[^0-9.]/g, '')) || 0;
+                subtotal += priceNum * qty;
+                totalItems += qty;
+
+                const row = document.createElement("div");
+                row.className = "cart-item-row";
+                row.innerHTML = `
+                    <div class="cart-item-img">
+                        <img src="${item.image}" alt="${item.title}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22120%22 height=%22120%22%3E%3Crect fill=%22%23f0f0f0%22 width=%22120%22 height=%22120%22/%3E%3C/svg%3E';">
+                    </div>
+                    <div class="cart-item-details">
+                        <h3 class="cart-item-title">${item.title}</h3>
+                        <p class="cart-item-stock">In Stock</p>
+                        <p class="cart-item-price">₹${priceNum.toLocaleString('en-IN')}</p>
+                        <div class="cart-item-actions">
+                            <div class="cart-qty-box">
+                                Qty:
+                                <select class="cart-qty-select" data-index="${index}">
+                                    ${[1,2,3,4,5,6,7,8,9,10].map(n => `<option value="${n}" ${n === qty ? 'selected' : ''}>${n}</option>`).join('')}
+                                </select>
+                            </div>
+                            <span class="cart-action-divider">|</span>
+                            <span class="cart-action-btn delete-btn" data-index="${index}">Delete</span>
+                            <span class="cart-action-divider">|</span>
+                            <span class="cart-action-btn save-later-btn" data-index="${index}">Save for later</span>
+                        </div>
+                    </div>
+                `;
+                cartItemsContainer.appendChild(row);
+            });
+        }
+
+        // Update subtotal & item counts
+        document.querySelectorAll(".cart-total-items").forEach(el => el.innerText = totalItems);
+        document.querySelectorAll(".cart-subtotal-price").forEach(el =>
+            el.innerText = '₹' + subtotal.toLocaleString('en-IN', {minimumFractionDigits:0, maximumFractionDigits:2})
+        );
+        const countText = document.getElementById("cart-item-count-text");
+        if (countText) countText.innerText = `${totalItems} item${totalItems !== 1 ? 's' : ''} in your cart`;
+
+        // --- Delete ---
+        document.querySelectorAll(".delete-btn").forEach(btn => {
+            btn.addEventListener("click", e => {
+                const idx = parseInt(e.target.getAttribute("data-index"));
+                const cart = getCart();
+                cart.splice(idx, 1);
+                setCart(cart);
+                renderAll();
+            });
+        });
+
+        // --- Save for later ---
+        document.querySelectorAll(".save-later-btn").forEach(btn => {
+            btn.addEventListener("click", e => {
+                const idx = parseInt(e.target.getAttribute("data-index"));
+                let cart = getCart();
+                let saved = getSaved();
+                const [item] = cart.splice(idx, 1);    // remove from cart
+                item.qty = 1;                           // reset qty when saving
+                saved.push(item);
+                setCart(cart);
+                setSaved(saved);
+                renderAll();
+            });
+        });
+
+        // --- Qty change ---
+        document.querySelectorAll(".cart-qty-select").forEach(sel => {
+            sel.addEventListener("change", e => {
+                const idx = parseInt(e.target.getAttribute("data-index"));
+                let cart = getCart();
+                cart[idx].qty = parseInt(e.target.value);
+                setCart(cart);
+                renderAll();
+            });
+        });
+    }
+
+    function renderSaved() {
+        if (!savedItemsContainer || !savedSection) return;
+        let saved = getSaved();
+
+        const countEl = document.getElementById("saved-count");
+        const pluralEl = document.getElementById("saved-count-plural");
+        if (countEl) countEl.innerText = saved.length;
+        if (pluralEl) pluralEl.innerText = saved.length === 1 ? '' : 's';
+
+        savedSection.style.display = saved.length > 0 ? "block" : "none";
+        savedItemsContainer.innerHTML = "";
+
+        saved.forEach((item, index) => {
+            let priceNum = parseFloat(String(item.price).replace(/[^0-9.]/g, '')) || 0;
+
+            const row = document.createElement("div");
+            row.className = "cart-item-row saved-item-row";
+            row.innerHTML = `
+                <div class="cart-item-img">
+                    <img src="${item.image}" alt="${item.title}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22120%22 height=%22120%22%3E%3Crect fill=%22%23f0f0f0%22 width=%22120%22 height=%22120%22/%3E%3C/svg%3E';">
+                </div>
+                <div class="cart-item-details">
+                    <h3 class="cart-item-title">${item.title}</h3>
+                    <p class="cart-item-price">₹${priceNum.toLocaleString('en-IN')}</p>
+                    <div class="cart-item-actions">
+                        <button class="move-to-cart-btn" data-index="${index}">Move to cart</button>
+                        <span class="cart-action-divider">|</span>
+                        <span class="cart-action-btn delete-saved-btn" data-index="${index}">Delete</span>
+                    </div>
+                </div>
+            `;
+            savedItemsContainer.appendChild(row);
+        });
+
+        // --- Move to cart ---
+        document.querySelectorAll(".move-to-cart-btn").forEach(btn => {
+            btn.addEventListener("click", e => {
+                const idx = parseInt(e.target.getAttribute("data-index"));
+                let saved = getSaved();
+                let cart = getCart();
+                const [item] = saved.splice(idx, 1);
+                item.qty = 1;
+                // merge if already in cart
+                const existing = cart.find(c => c.id === item.id);
+                if (existing) {
+                    existing.qty = (existing.qty || 1) + 1;
+                } else {
+                    cart.push(item);
+                }
+                setSaved(saved);
+                setCart(cart);
+                renderAll();
+            });
+        });
+
+        // --- Delete saved item ---
+        document.querySelectorAll(".delete-saved-btn").forEach(btn => {
+            btn.addEventListener("click", e => {
+                const idx = parseInt(e.target.getAttribute("data-index"));
+                let saved = getSaved();
+                saved.splice(idx, 1);
+                setSaved(saved);
+                renderAll();
+            });
+        });
+    }
+
+    renderAll();
+
+    const proceedBuyBtn = document.querySelector(".proceed-buy-btn");
+    if (proceedBuyBtn) {
+        proceedBuyBtn.addEventListener("click", () => {
+            let cart = getCart();
+            if (cart.length === 0) {
+                alert("Your cart is empty!");
+                return;
+            }
+            
+            // Deduct GC balance if checked
+            const useGC = localStorage.getItem('useGCBalance') !== 'false';
+            if (useGC) {
+                const gcBalance = parseFloat(localStorage.getItem('gcBalance')) || 0;
+                if (gcBalance > 0) {
+                    let subtotal = 0;
+                    cart.forEach(item => {
+                        const qty = item.qty || 1;
+                        const price = parseFloat(String(item.price).replace(/[^0-9.]/g, '')) || 0;
+                        subtotal += price * qty;
+                    });
+                    const deduction = Math.min(gcBalance, subtotal);
+                    const remaining = gcBalance - deduction;
+                    localStorage.setItem('gcBalance', remaining.toFixed(2));
+                }
+            }
+
+            let orders = JSON.parse(localStorage.getItem("amazonOrders")) || [];
+            
+            cart.forEach(item => {
+                const orderId = '112-' + Math.floor(1000000 + Math.random() * 9000000) + '-' + Math.floor(1000000 + Math.random() * 9000000);
+                const orderDate = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                orders.unshift({
+                    id: orderId,
+                    item: item.title,
+                    price: item.price,
+                    image: item.image || '',
+                    status: 'Processing',
+                    date: orderDate
+                });
+            });
+            
+            localStorage.setItem("amazonOrders", JSON.stringify(orders));
+            localStorage.removeItem("cart"); // Clear cart
+            
+            alert("Order placed successfully! Redirecting you to Your Orders in Customer Service...");
+            window.location.href = "Customer-Service/index.html#tile-orders";
+        });
+    }
+
+    function updateGiftCardCheckout() {
+        const subtotalBox = document.querySelector('.cart-subtotal-box');
+        if (!subtotalBox) return;
+
+        const gcBalance = parseFloat(localStorage.getItem('gcBalance')) || 0;
+        
+        // Remove old GC section if it exists
+        const oldGC = subtotalBox.querySelector('.gc-cart-section');
+        if (oldGC) oldGC.remove();
+
+        const cart = getCart();
+        let subtotal = 0;
+        cart.forEach(item => {
+            const qty = item.qty || 1;
+            const priceNum = parseFloat(String(item.price).replace(/[^0-9.]/g, '')) || 0;
+            subtotal += priceNum * qty;
+        });
+
+        if (gcBalance > 0 && subtotal > 0) {
+            const gcSection = document.createElement('div');
+            gcSection.className = 'gc-cart-section';
+            gcSection.style.cssText = 'margin-top: 12px; padding-top: 12px; border-top: 1px dashed #ddd; text-align: left;';
+            
+            // Check if user opted to use GC or default to true
+            const useGC = localStorage.getItem('useGCBalance') !== 'false';
+            const deduction = useGC ? Math.min(gcBalance, subtotal) : 0;
+            const finalTotal = subtotal - deduction;
+            const currencySymbol = '₹';
+
+            gcSection.innerHTML = `
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; font-size:13px;">
+                    <span style="color:#067d62; font-weight:600; display:flex; align-items:center; gap:4px;">
+                        <i class="fa-solid fa-wallet"></i> Gift Card Balance:
+                    </span>
+                    <strong style="color:#067d62;">${currencySymbol}${gcBalance.toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2})}</strong>
+                </div>
+                <label style="display:flex; align-items:center; gap:8px; font-size:13px; color:#333; cursor:pointer; margin-bottom:8px; user-select:none;">
+                    <input type="checkbox" id="gc-apply-balance" style="width:16px; height:16px; cursor:pointer;" ${useGC ? 'checked' : ''}>
+                    Use Gift Card Balance
+                </label>
+                ${useGC ? `
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; font-size:13px; color:#555;">
+                    <span>Deduction:</span>
+                    <span>-${currencySymbol}${deduction.toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2})}</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; align-items:center; font-size:15px; font-weight:700; color:#B12704; border-top:1px solid #eee; padding-top:6px;">
+                    <span>Total to pay:</span>
+                    <span>${currencySymbol}${finalTotal.toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2})}</span>
+                </div>
+                ` : ''}
+            `;
+
+            // Insert before the proceed button
+            const proceedBtn = subtotalBox.querySelector('.proceed-buy-btn');
+            if (proceedBtn) {
+                subtotalBox.insertBefore(gcSection, proceedBtn);
+            } else {
+                subtotalBox.appendChild(gcSection);
+            }
+
+            // Bind change event to checkbox
+            const checkbox = document.getElementById('gc-apply-balance');
+            if (checkbox) {
+                checkbox.addEventListener('change', (e) => {
+                    localStorage.setItem('useGCBalance', e.target.checked);
+                    renderAll();
+                });
+            }
+        }
+    }
+}
+
+document.addEventListener("DOMContentLoaded", initCartPage);
+
+// ==========================================
+// GIFT CARD SYSTEM
+// ==========================================
+
+(function initGiftCardSystem() {
+    // Only run on gift.html
+    const isGiftPage = window.location.pathname.includes('gift.html');
+    if (!isGiftPage) return;
+
+    // ---- localStorage Helpers ----
+    function getGCBalance() {
+        return parseFloat(localStorage.getItem('gcBalance')) || 0;
+    }
+
+    function setGCBalance(val) {
+        localStorage.setItem('gcBalance', val.toFixed(2));
+    }
+
+    function getGiftCards() {
+        return JSON.parse(localStorage.getItem('giftCards')) || [];
+    }
+
+    function saveGiftCards(cards) {
+        localStorage.setItem('giftCards', JSON.stringify(cards));
+    }
+
+    // ---- Code Generator ----
+    function generateCode() {
+        const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+        let code = '';
+        for (let i = 0; i < 16; i++) {
+            if (i > 0 && i % 4 === 0) code += '-';
+            code += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        return code;
+    }
+
+    // ---- Update Balance Display ----
+    function updateBalanceDisplay() {
+        const balanceEl = document.getElementById('gc-balance-display');
+        if (balanceEl) {
+            balanceEl.textContent = '₹' + getGCBalance().toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2});
+            // Trigger micro-animation
+            balanceEl.classList.remove('gc-balance-pop');
+            void balanceEl.offsetWidth; // trigger reflow
+            balanceEl.classList.add('gc-balance-pop');
+        }
+    }
+
+    // ---- Render Purchase History ----
+    function renderHistory() {
+        const section = document.getElementById('gc-history-section');
+        const list = document.getElementById('gc-history-list');
+        if (!section || !list) return;
+
+        const cards = getGiftCards();
+        if (cards.length === 0) {
+            section.style.display = 'none';
+            return;
+        }
+
+        section.style.display = 'block';
+        list.innerHTML = '';
+
+      
+    cards.forEach(card => {
+        const iconEmoji = card.type === 'Birthday' ? '🎂' : card.type === 'Classic' ? '💳' : '🎁';
+        const iconClass = card.type === 'Birthday' ? 'birthday' : card.type === 'Classic' ? 'classic' : 'thankyou';
+        const statusClass = card.redeemed ? 'redeemed' : 'active';
+        const statusText = card.redeemed ? 'Redeemed' : 'Active';
+
+        const el = document.createElement('div');
+        el.className = 'gc-history-card';
+
+        // icon
+        const iconDiv = document.createElement('div');
+        iconDiv.className = `gc-history-icon ${iconClass}`;
+        iconDiv.textContent = iconEmoji;
+        el.appendChild(iconDiv);
+
+        // details
+        const detailsDiv = document.createElement('div');
+        detailsDiv.className = 'gc-history-details';
+
+        const title = document.createElement('h4');
+        title.textContent = `${card.type} Gift Card`;
+        detailsDiv.appendChild(title);
+
+        const codeDiv = document.createElement('div');
+        codeDiv.className = 'gc-history-code';
+        codeDiv.textContent = card.code;
+        detailsDiv.appendChild(codeDiv);
+
+        const statusSpan = document.createElement('span');
+        statusSpan.className = `gc-history-status ${statusClass}`;
+        statusSpan.textContent = statusText;
+        detailsDiv.appendChild(statusSpan);
+
+        el.appendChild(detailsDiv);
+
+        // amount
+        const amountDiv = document.createElement('div');
+        amountDiv.className = 'gc-history-amount';
+        amountDiv.textContent = `₹${card.amount.toLocaleString('en-IN', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        })}`;
+        el.appendChild(amountDiv);
+
+        list.appendChild(el);
+    });
+}
+
+
+    // ---- Quick Amount Buttons ----
+    document.querySelectorAll('.gc-quick-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const amount = btn.getAttribute('data-amount');
+            const card = btn.closest('.gc-card');
+            if (card) {
+                const input = card.querySelector('.gc-amount-input');
+                if (input) {
+                    input.value = amount;
+                    // highlight active quick btn
+                    card.querySelectorAll('.gc-quick-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                }
+            }
+        });
+    });
+
+    // ---- Clear quick btn active state on manual input ----
+    document.querySelectorAll('.gc-amount-input').forEach(input => {
+        input.addEventListener('input', () => {
+            const card = input.closest('.gc-card');
+            if (card) {
+                card.querySelectorAll('.gc-quick-btn').forEach(b => b.classList.remove('active'));
+            }
+        });
+    });
+
+    // ---- Buy Gift Card ----
+    document.querySelectorAll('.gc-buy-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const type = btn.getAttribute('data-type');
+            const card = btn.closest('.gc-card');
+            if (!card) return;
+
+            const input = card.querySelector('.gc-amount-input');
+            const amount = parseFloat(input ? input.value : 0);
+
+            if (!amount || amount < 100 || amount > 50000) {
+                alert('Please enter a valid amount between ₹100 and ₹50,000.');
+                if (input) input.focus();
+                return;
+            }
+
+            const code = generateCode();
+
+            // Save the gift card
+            const cards = getGiftCards();
+            cards.unshift({
+                code: code,
+                amount: amount,
+                type: type,
+                redeemed: false,
+                createdAt: new Date().toISOString()
+            });
+            saveGiftCards(cards);
+
+            // Show success modal
+            const overlay = document.getElementById('gc-modal-overlay');
+            const amountEl = document.getElementById('gc-modal-amount');
+            const codeEl = document.getElementById('gc-modal-code');
+
+            if (amountEl) amountEl.textContent = '₹' + amount.toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2});
+            if (codeEl) codeEl.textContent = code;
+            if (overlay) overlay.classList.add('active');
+
+            // Clear input
+            if (input) input.value = '';
+            card.querySelectorAll('.gc-quick-btn').forEach(b => b.classList.remove('active'));
+
+            // Re-render history
+            renderHistory();
+        });
+    });
+
+    // ---- Modal Close ----
+    const modalOverlay = document.getElementById('gc-modal-overlay');
+    const modalClose = document.getElementById('gc-modal-close');
+
+    if (modalClose) {
+        modalClose.addEventListener('click', () => {
+            if (modalOverlay) modalOverlay.classList.remove('active');
+        });
+    }
+
+    if (modalOverlay) {
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) {
+                modalOverlay.classList.remove('active');
+            }
+        });
+    }
+
+    // ESC to close modal
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modalOverlay) {
+            modalOverlay.classList.remove('active');
+        }
+    });
+
+    // ---- Copy Code ----
+    const copyBtn = document.getElementById('gc-copy-btn');
+    if (copyBtn) {
+        copyBtn.addEventListener('click', () => {
+            const codeEl = document.getElementById('gc-modal-code');
+            if (codeEl) {
+                const code = codeEl.textContent;
+                navigator.clipboard.writeText(code).then(() => {
+                    copyBtn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+                    setTimeout(() => {
+                        copyBtn.innerHTML = '<i class="fa-regular fa-copy"></i> Copy Code';
+                    }, 2000);
+                }).catch(() => {
+                    // Fallback
+                    const textarea = document.createElement('textarea');
+                    textarea.value = code;
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textarea);
+                    copyBtn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+                    setTimeout(() => {
+                        copyBtn.innerHTML = '<i class="fa-regular fa-copy"></i> Copy Code';
+                    }, 2000);
+                });
+            }
+        });
+    }
+
+    // ---- Redeem Gift Card ----
+    const redeemBtn = document.getElementById('gc-redeem-btn');
+    const redeemInput = document.getElementById('gc-redeem-code');
+    const redeemMsg = document.getElementById('gc-redeem-msg');
+
+    if (redeemBtn && redeemInput) {
+        redeemBtn.addEventListener('click', () => {
+            const code = redeemInput.value.trim().toUpperCase();
+
+            if (!code) {
+                showRedeemMsg('Please enter a gift card code.', 'error');
+                return;
+            }
+
+            const cards = getGiftCards();
+            const cardIndex = cards.findIndex(c => c.code === code && !c.redeemed);
+
+            if (cardIndex === -1) {
+                // Check if already redeemed
+                const alreadyRedeemed = cards.find(c => c.code === code && c.redeemed);
+                if (alreadyRedeemed) {
+                    showRedeemMsg('This gift card has already been redeemed.', 'error');
+                } else {
+                    showRedeemMsg('Invalid gift card code. Please check and try again.', 'error');
+                }
+                return;
+            }
+
+            // Redeem the card
+            const card = cards[cardIndex];
+            card.redeemed = true;
+            card.redeemedAt = new Date().toISOString();
+            saveGiftCards(cards);
+
+            // Add to balance
+            const newBalance = getGCBalance() + card.amount;
+            setGCBalance(newBalance);
+
+            // Update UI
+            updateBalanceDisplay();
+            renderHistory();
+            redeemInput.value = '';
+
+            showRedeemMsg(`✓ ₹${card.amount.toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2})} has been added to your balance!`, 'success');
+        });
+
+        // Auto-format code input with dashes
+        redeemInput.addEventListener('input', (e) => {
+            let val = e.target.value.replace(/[^A-Za-z0-9]/g, '').toUpperCase();
+            let formatted = '';
+            for (let i = 0; i < val.length && i < 16; i++) {
+                if (i > 0 && i % 4 === 0) formatted += '-';
+                formatted += val[i];
+            }
+            e.target.value = formatted;
+        });
+    }
+
+    function showRedeemMsg(text, type) {
+        if (redeemMsg) {
+            redeemMsg.textContent = text;
+            redeemMsg.className = 'gc-redeem-msg ' + type;
+            setTimeout(() => {
+                redeemMsg.textContent = '';
+                redeemMsg.className = 'gc-redeem-msg';
+            }, 5000);
+        }
+    }
+
+    // ---- Init ----
+    updateBalanceDisplay();
+    renderHistory();
+
+})();

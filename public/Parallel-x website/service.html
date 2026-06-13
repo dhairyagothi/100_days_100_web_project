@@ -8,17 +8,20 @@
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
 </head>
 <body>
-    <header>
+    <header id="header">
         <div class="name">GO-GREEN</div>
         <nav>
-                        <nav>
-                        <ul>
+            <ul>
                 <li><a href="parallal.html">Home</a></li>
                 <li><a href="about.html">About</a></li>
-                <li><a href="service.html" class="active">Service</a></li>
+                <li><a href="service.html">Service</a></li>
                 <li><a href="contact.html">Contact</a></li>
             </ul>
-            </nav>
+            <button id="themeToggle" class="theme-toggle">
+                🌙
+            </button>
+        </nav>
+        <a class="back-home" href="parallal.html" target="_blank">Back to Home</a>
     </header>
 
     <div class="page-hero" aria-label="Service page banner">
@@ -29,84 +32,99 @@
     </div>
 
     <section class="content service-page" aria-labelledby="service-heading">
-        <div id="service-heading">What We Offer</div>
-        <p class="intro-lead">From individual households to large enterprises, our services are designed to meet you exactly where you are on your sustainability journey — and take you further.</p>
-
-        <div class="service-list">
-
-            <div class="service-item">
-                <div class="service-icon">
-                    <span class="material-symbols-outlined" style="font-size: 48px;color:#ffffff; display:block; margin-bottom: 8px;">
-                        psychiatry
-                    </span>
-                </div>
-                <div class="service-body">
-                    <h3>Green Audits</h3>
-                    <p>Our certified auditors assess your home or office for energy waste, water usage, and carbon output. You receive a detailed report with prioritised, cost-effective recommendations tailored to your situation.</p>
-                    <ul class="service-features">
-                        <li>Full energy consumption analysis</li>
-                        <li>Water and waste audit</li>
-                        <li>Personalised action roadmap</li>
-                        <li>12-month follow-up check-in</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="service-item reverse">
-                <div class="service-icon">
-                    <span class="material-symbols-outlined" style="font-size: 48px;color:#ffffff; display:block; margin-bottom: 8px;">
-                        wb_sunny
-                    </span>
-                </div>
-                <div class="service-body">
-                    <h3>Renewable Energy Consulting</h3>
-                    <p>Navigating solar, wind, and battery storage options can be overwhelming. Our experts cut through the noise and guide you to the right renewable solution for your budget and location.</p>
-                    <ul class="service-features">
-                        <li>Solar panel feasibility study</li>
-                        <li>Grid vs off-grid comparison</li>
-                        <li>Vendor-neutral installer referrals</li>
-                        <li>Subsidy and incentive mapping</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="service-item">
-                <div class="service-icon">
-                    <span class="material-symbols-outlined" style="font-size: 48px;color:#ffffff; display:block; margin-bottom: 8px;">
-                        home_work
-                    </span>
-                </div>
-                <div class="service-body">
-                    <h3>School & Corporate Workshops</h3>
-                    <p>Engaging, hands-on sessions that build lasting eco-habits in students and employees. From climate science fundamentals to zero-waste office challenges — we make learning stick.</p>
-                    <ul class="service-features">
-                        <li>Age-appropriate curriculum design</li>
-                        <li>Interactive waste-sorting activities</li>
-                        <li>Corporate carbon-footprint challenges</li>
-                        <li>Certificate of Participation for attendees</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="service-item reverse">
-                <div class="service-icon">
-                    <span class="material-symbols-outlined" style="font-size: 48px;color:#ffffff; display:block; margin-bottom: 8px;">
-                        park
-                    </span>
-                </div>
-                <div class="service-body">
-                    <h3>Community Reforestation</h3>
-                    <p>Join our organised tree-planting drives or sponsor a grove in your name. Every sapling is tracked via our digital dashboard so you can watch your impact grow in real time.</p>
-                    <ul class="service-features">
-                        <li>Native species selection</li>
-                        <li>GPS-tagged planting records</li>
-                        <li>Sponsor-a-tree certificates</li>
-                        <li>Annual growth photo reports</li>
-                    </ul>
-                </div>
-            </div>
-
+        <div class="service-heading">
+            <h2>What we Offer ?</h2>
+            <p class="intro-lead">From individual households to large enterprises, our services are designed to meet you exactly where you are on your sustainability journey — and take you further.</p>
         </div>
+        
+
+     <div class="service-list">
+
+    <!-- Card 1 -->
+    <div class="service-item">
+        <div class="service-icon">
+            <span class="material-symbols-outlined" style="font-size:48px;color:#ffffff;">
+                psychiatry
+            </span>
+        </div>
+
+        <div class="service-body">
+            <h3>Green Audits</h3>
+            <p>Our certified auditors assess your home or office for energy waste, water usage, and carbon output.</p>
+
+            <ul class="service-features">
+                <li>Full energy consumption analysis</li>
+                <li>Water and waste audit</li>
+                <li>Personalised action roadmap</li>
+                <li>12-month follow-up check-in</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="service-item">
+        <div class="service-icon">
+            <span class="material-symbols-outlined" style="font-size:48px;color:#ffffff;">
+                wb_sunny
+            </span>
+        </div>
+
+        <div class="service-body">
+            <h3>Renewable Energy Consulting</h3>
+            <p>Navigating solar, wind, and battery storage options can be overwhelming.</p>
+
+            <ul class="service-features">
+                <li>Solar panel feasibility study</li>
+                <li>Grid vs off-grid comparison</li>
+                <li>Vendor-neutral installer referrals</li>
+                <li>Subsidy and incentive mapping</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="service-item">
+        <div class="service-icon">
+            <span class="material-symbols-outlined" style="font-size:48px;color:#ffffff;">
+                home_work
+            </span>
+        </div>
+
+        <div class="service-body">
+            <h3>School & Corporate Workshops</h3>
+            <p>Engaging, hands-on sessions that build lasting eco-habits in students and employees.</p>
+
+            <ul class="service-features">
+                <li>Age-appropriate curriculum design</li>
+                <li>Interactive waste-sorting activities</li>
+                <li>Corporate carbon-footprint challenges</li>
+                <li>Certificate of Participation</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Card 4 -->
+    <div class="service-item">
+        <div class="service-icon">
+            <span class="material-symbols-outlined" style="font-size:48px;color:#ffffff;">
+                park
+            </span>
+        </div>
+
+        <div class="service-body">
+            <h3>Community Reforestation</h3>
+            <p>Join our organised tree-planting drives or sponsor a grove in your name.</p>
+
+            <ul class="service-features">
+                <li>Native species selection</li>
+                <li>GPS-tagged planting records</li>
+                <li>Sponsor-a-tree certificates</li>
+                <li>Annual growth photo reports</li>
+            </ul>
+        </div>
+    </div>
+
+</div>
 
         <div class="pricing-note">
             <span class="material-symbols-outlined" style="font-size: 24px;color:#ffffff; display:block; margin-bottom: 8px;">
@@ -120,7 +138,7 @@
             <a href="contact.html" class="cta-btn">Contact Us →</a>
         </div>
     </section>
-
+   <script src="parallal.js"></script>
     <footer class="footer" aria-label="Site footer">
         <p>© 2026 GO-GREEN. All rights reserved.</p>
         <div class="footer-links">

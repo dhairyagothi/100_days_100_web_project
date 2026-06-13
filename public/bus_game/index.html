@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>City Bus Rush</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <div id="wrap">
+    <canvas id="c"></canvas>
+
+    <!-- HUD -->
+    <header id="hud">
+      <div class="hud-card">
+        <div class="hud-lbl">Earnings</div>
+        <div class="hud-val yellow" id="h-earn">₹0</div>
+      </div>
+
+      <div class="hud-card">
+        <div class="hud-lbl">Time Left</div>
+        <div class="hud-val" id="h-time">90</div>
+      </div>
+
+      <div class="hud-card">
+        <div class="hud-lbl">Delivered</div>
+        <div class="hud-val green" id="h-del">0</div>
+      </div>
+
+      <div class="hud-card">
+        <div class="hud-lbl">Crashes</div>
+        <div class="hud-val red" id="h-crash">0</div>
+      </div>
+    </header>
+
+    <!-- Weather -->
+    <div id="weather-badge">☀️ CLEAR</div>
+
+    <!-- Next Stop -->
+    <div id="next-stop">🚏 NEXT STOP: —</div>
+
+
+    <!-- Passenger Bar -->
+    <div id="pass-bar">
+      <span id="pass-label">ON BUS:</span>
+      <span class="pass-icon" id="p0">👤</span>
+      <span class="pass-icon" id="p1">👤</span>
+      <span class="pass-icon" id="p2">👤</span>
+      <span class="pass-icon" id="p3">👤</span>
+      <span class="pass-icon" id="p4">👤</span>
+    </div>
+
+    
+    <!-- Controls -->
+    <div id="ctrl">
+      <button id="leftBtn" class="ctrl-btn">←</button>
+      <button id="rightBtn" class="ctrl-btn">→</button>
+      <button id="upBtn" class="ctrl-btn">↑</button>
+      <button id="downBtn" class="ctrl-btn">↓</button>
+    </div>
+
+    <!-- Effects -->
+    <div id="flash"></div>
+    <div id="popup">+₹50 PASSENGERS!</div>
+
+    <!-- Start / End Overlay -->
+    <main id="overlay" role="dialog" aria-modal="true">
+      <h1>🚌 CITY BUS RUSH</h1>
+
+      <div class="tagline">
+        PICK UP · DELIVER · EARN
+      </div>
+
+      <div class="ov-stats" id="ov-stats" style="display:none">
+        <div class="ov-s">
+          <div class="v" id="ov-earn">₹0</div>
+          <div class="l">EARNED</div>
+        </div>
+
+        <div class="ov-s">
+          <div class="v" id="ov-del">0</div>
+          <div class="l">DELIVERED</div>
+        </div>
+
+        <div class="ov-s">
+          <div class="v" id="ov-crash">0</div>
+          <div class="l">CRASHES</div>
+        </div>
+
+        <div class="ov-s">
+          <div class="v" id="ov-rating">⭐</div>
+          <div class="l">RATING</div>
+        </div>
+      </div>
+
+      <button id="play-btn" type="button">
+        START DRIVING!
+      </button>
+    </main>
+  
+    <<div id="mini-map">
+    <div id="mini-road"></div>
+
+    <div id="mini-bus">🚌</div>
+
+    <div id="mini-target">📍</div>
+
+    <div id="mini-arrow">➡️</div>
+
+    <div id="mini-label">NEXT STOP</div>
+</div>
+
+<button id="pause-btn" onclick="pauseGame()">⏸ Pause</button>
+<button id="resume-btn" onclick="resumeGame()" style="display:none;">▶ Resume</button>
+<button id="restart-btn" onclick="restartGame()">🔄 Restart</button>
+
+  </div>
+
+  <script src="script.js"></script>
+
+  <script>
+    window.addEventListener("DOMContentLoaded", () => {
+
+      const btn = document.getElementById("play-btn");
+
+      if (btn && typeof startGame === "function") {
+        btn.addEventListener("click", startGame);
+      } else {
+        console.error("startGame() not found.");
+      }
+
+    });
+  </script>
+
+</body>
+
+</html>
