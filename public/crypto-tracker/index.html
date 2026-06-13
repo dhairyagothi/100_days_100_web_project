@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Live Cryptocurrency Price Tracker Dashboard</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="dashboard-container">
+      <header class="dashboard-header">
+        <div class="brand-info">
+          <h1>Crypto Price Tracker</h1>
+          <p>
+            Real-time asset valuations, market capitalization rankings, and 24h
+            market shifts
+          </p>
+        </div>
+        <button id="refreshBtn" class="refresh-action-btn">
+          <svg viewBox="0 0 24 24" class="refresh-icon">
+            <path
+              d="M17.65 6.35A7.958 7.958 0 0012 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"
+            />
+          </svg>
+          Sync Prices
+        </button>
+      </header>
+
+      <div id="statusIndicator" class="status-alert hidden">
+        Updating index pairs...
+      </div>
+
+      <main class="crypto-grid" id="marketCardsContainer"></main>
+    </div>
+    <script src="app.js"></script>
+  </body>
+</html>

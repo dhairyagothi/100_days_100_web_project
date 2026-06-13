@@ -1,0 +1,149 @@
+/* ── Reset & Base ─────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #edb348;
+    /* Use padding instead of margin-top so nothing bleeds outside */
+    padding: clamp(16px, 5vw, 40px) clamp(8px, 4vw, 16px);
+    min-height: 100dvh;
+    /* Prevent ANY horizontal scroll */
+    overflow-x: hidden;
+}
+
+/* ── Heading ──────────────────────────────────────────────── */
+h1 {
+    color: #000000;
+    margin-bottom: 6px;
+    /* Scale gracefully: 20px on tiny screens → 32px on desktop */
+    font-size: clamp(1.25rem, 6vw, 2rem);
+    word-break: break-word;
+}
+
+/* ── Instructions ─────────────────────────────────────────── */
+#instructions {
+    color: #000000;
+    margin-bottom: 20px;
+    /* Slightly smaller on very narrow screens */
+    font-size: clamp(0.75rem, 3vw, 0.875rem);
+    padding: 0 8px;
+    line-height: 1.4;
+}
+
+/* ── Game Container ───────────────────────────────────────── */
+#game-container {
+    display: inline-block;
+    /* Don't let it grow wider than the viewport */
+    max-width: 100%;
+    width: max-content;
+    background: rgb(255, 254, 254);
+    padding: clamp(12px, 4vw, 20px);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(50, 50, 50, 0.2);
+}
+
+/* ── Grid ─────────────────────────────────────────────────── */
+/*
+ * Use a CSS custom property for the cell size so every
+ * dimension (label column, gap, font) can scale off a single value.
+ *
+ * --cell: 44px on desktop, scales down to ~min(10vw, 44px) on mobile.
+ */
+.grid {
+    --cell: clamp(32px, 10vw, 50px);
+
+    display: grid;
+    /* First column = label (slightly narrower than cells) */
+    grid-template-columns: calc(var(--cell) * 0.65) repeat(5, var(--cell));
+    gap: clamp(3px, 1vw, 5px);
+    align-items: center;
+    justify-items: center;
+    /* Keep the grid from ever being wider than the container */
+    max-width: 100%;
+    overflow: hidden;
+}
+
+/* ── Cells ────────────────────────────────────────────────── */
+.cell {
+    width: var(--cell, 50px);
+    height: var(--cell, 50px);
+    background-color: #020000;
+    border: none;
+    border-radius: 4px;
+    font-size: clamp(0.75rem, 3vw, 1.125rem);
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    /* Cells must never overflow their grid track */
+    max-width: 100%;
+    max-height: 100%;
+    transition: background-color 0.15s ease;
+}
+
+.cell:hover:not(.revealed) {
+    background-color: #bbb;
+}
+
+.cell.revealed {
+    background-color: #05c215;
+    cursor: default;
+}
+
+.cell.bomb {
+    background-color: #b90c0c;
+    color: white;
+}
+
+/* ── Row / Column Labels ──────────────────────────────────── */
+.label {
+    font-weight: bold;
+    color: #555;
+    font-size: clamp(0.75rem, 3vw, 1rem);
+    /* Center within the narrower label column */
+    width: 100%;
+    text-align: center;
+}
+
+/* ── Message ──────────────────────────────────────────────── */
+#message {
+    margin-top: 20px;
+    font-size: clamp(1rem, 5vw, 1.25rem);
+    font-weight: bold;
+    min-height: 28px;
+    word-break: break-word;
+}
+
+/* ── Restart Button ───────────────────────────────────────── */
+#restart-btn {
+    margin-top: 15px;
+    padding: clamp(8px, 2vw, 10px) clamp(16px, 5vw, 20px);
+    font-size: clamp(0.875rem, 3.5vw, 1rem);
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: none;
+    transition: background-color 0.2s ease;
+}
+
+#restart-btn:hover {
+    background-color: #0056b3;
+}
+
+/* ── Extra-small screens (< 360 px) ──────────────────────── */
+@media (max-width: 360px) {
+    .grid {
+        --cell: 28px;
+    }
+}
