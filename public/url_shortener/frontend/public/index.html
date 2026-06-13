@@ -1,27 +1,161 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Web site created using create-react-app"
-    />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>URL Shortener</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #09090b; color: #f4f4f5; font-family: Inter, system-ui, sans-serif; min-height: 100vh; padding: 16px; }
+    .back-btn { position: fixed; left: 18px; top: 18px; padding: 8px 16px; border-radius: 8px; text-decoration: none; z-index: 9999; font-weight: 700; background: #1e293b; color: #3b82f6; border: 1px solid #3b82f6; transition: all 0.2s ease; }
+    .back-btn:hover { background: #3b82f6; color: #fff; }
+    .container { max-width: 900px; margin: 0 auto; padding-top: 80px; display: flex; flex-direction: column; gap: 24px; }
+    .hero { text-align: center; margin-bottom: 8px; }
+    .hero h1 { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 600; color: #eab308; margin-bottom: 12px; }
+    .hero p { color: #a1a1aa; font-size: 1rem; }
+    .error-msg { color: #ef4444; font-size: 0.875rem; margin-bottom: 12px; }
+    .card { background: rgba(24,24,27,0.8); border: 1px solid #27272a; border-radius: 16px; padding: 32px; }
+    .main-row { display: flex; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
+    .main-row input { flex: 1; min-width: 200px; background: #27272a; border: 1px solid #3f3f46; border-radius: 12px; padding: 12px 16px; color: #f4f4f5; font-size: 1rem; outline: none; }
+    .main-row input:focus { border-color: #3b82f6; }
+    .btn-shorten { background: #2563eb; color: white; font-weight: 600; padding: 12px 28px; border-radius: 12px; border: none; cursor: pointer; font-size: 1rem; white-space: nowrap; }
+    .btn-shorten:hover { background: #3b82f6; }
+    .options-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; }
+    .option-group label { display: block; color: #a1a1aa; font-size: 0.875rem; margin-bottom: 8px; }
+    .option-group input { width: 100%; background: #27272a; border: 1px solid #3f3f46; border-radius: 8px; padding: 10px 14px; color: #f4f4f5; font-size: 0.875rem; outline: none; }
+    .option-group input:focus { border-color: #3b82f6; }
+    .btn-qr { width: 100%; background: #27272a; border: 1px solid #3f3f46; border-radius: 8px; padding: 10px; color: #f4f4f5; font-size: 0.875rem; cursor: pointer; }
+    .btn-qr:hover { background: #3f3f46; }
+    .result-card { background: rgba(24,24,27,0.8); border: 1px solid #27272a; border-radius: 16px; padding: 24px; }
+    .result-card p { color: #a1a1aa; font-size: 0.875rem; margin-bottom: 12px; }
+    .result-row { display: flex; gap: 12px; flex-wrap: wrap; }
+    .result-row input { flex: 1; min-width: 150px; background: #27272a; border: 1px solid #3f3f46; border-radius: 8px; padding: 12px 14px; color: #f4f4f5; font-size: 0.875rem; }
+    .btn-copy { background: #2563eb; color: white; padding: 12px 20px; border-radius: 8px; border: none; cursor: pointer; font-size: 0.875rem; }
+    .btn-copy:hover { background: #3b82f6; }
+    .qr-section { display: flex; flex-direction: column; align-items: center; gap: 16px; margin-top: 8px; }
+    .qr-section img { width: 200px; height: 200px; border-radius: 8px; }
+    .btn-download { background: #16a34a; color: white; padding: 8px 18px; border-radius: 8px; text-decoration: none; font-size: 0.875rem; }
+    .loading-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; z-index: 50; flex-direction: column; gap: 16px; }
+    .spinner { width: 40px; height: 40px; border: 4px solid #3b82f6; border-top-color: transparent; border-radius: 50%; animation: spin 0.8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
 
-    <link rel="android" href="%PUBLIC_URL%/logo512.png" />
+<a href="/" class="back-btn">← Back to Home</a>
 
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+<div id="loading-overlay" class="loading-overlay hidden">
+  <div class="spinner"></div>
+  <p>Processing...</p>
+</div>
 
-    <title>React App</title>
-  </head>
-  <body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+<div class="container">
+  <div class="hero">
+    <div id="error-msg" class="error-msg hidden"></div>
+    <h1>Shorten Your Links</h1>
+    <p>Fast, secure and customizable URL shortening</p>
+  </div>
 
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
+  <div class="card">
+    <div class="main-row">
+      <input type="text" id="urlInput" placeholder="Enter your URL here" />
+      <button class="btn-shorten" onclick="shortenURL()">Shorten</button>
+    </div>
+    <div class="options-grid">
+      <div class="option-group">
+        <label>Custom Name</label>
+        <input type="text" id="customName" placeholder="Optional alias" />
+      </div>
+      <div class="option-group">
+        <label>Password</label>
+        <input type="text" id="password" placeholder="Optional" />
+      </div>
+      <div class="option-group">
+        <label>Expiry Date</label>
+        <input type="date" id="expiry" />
+      </div>
+      <div class="option-group">
+        <label>QR Code</label>
+        <button class="btn-qr" onclick="generateQR()">Generate QR</button>
+      </div>
+    </div>
+  </div>
 
-  </body>
+  <div class="result-card">
+    <p>Shortened URL</p>
+    <div class="result-row">
+      <input type="text" id="shortURLOutput" readonly placeholder="Your short URL will appear here" />
+      <button class="btn-copy" onclick="copyURL()">Copy</button>
+    </div>
+  </div>
+
+  <div id="qr-section" class="qr-section hidden">
+    <img id="qr-img" src="" alt="QR Code" />
+    <a id="qr-download" href="" download="qr-code.png" class="btn-download">Download QR</a>
+  </div>
+</div>
+
+<script>
+  function showError(msg) {
+    const el = document.getElementById('error-msg');
+    el.textContent = msg;
+    el.classList.remove('hidden');
+  }
+  function hideError() {
+    document.getElementById('error-msg').classList.add('hidden');
+  }
+  function setLoading(show) {
+    document.getElementById('loading-overlay').classList.toggle('hidden', !show);
+  }
+
+  async function shortenURL() {
+    const url = document.getElementById('urlInput').value.trim();
+    if (!url) return showError('URL is required');
+    hideError();
+    setLoading(true);
+    try {
+      const response = await fetch('/api/shorten', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({
+          originalURL: url,
+          customName: document.getElementById('customName').value,
+          Password: document.getElementById('password').value,
+          expiryDate: document.getElementById('expiry').value
+        })
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message || 'Failed');
+      document.getElementById('shortURLOutput').value = data.ShortURL;
+      if (data.qrcode) {
+        document.getElementById('qr-img').src = data.qrcode;
+        document.getElementById('qr-download').href = data.qrcode;
+      }
+    } catch (err) {
+      showError(err.message || 'Server is down or network issue.');
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  function copyURL() {
+    const val = document.getElementById('shortURLOutput').value;
+    if (!val) return;
+    navigator.clipboard.writeText(val);
+    alert('Copied to clipboard!');
+  }
+
+  function generateQR() {
+    const section = document.getElementById('qr-section');
+    const img = document.getElementById('qr-img');
+    if (img.src && img.src !== window.location.href) {
+      section.classList.remove('hidden');
+    } else {
+      showError('Shorten a URL first to generate QR code.');
+    }
+  }
+</script>
+</body>
 </html>

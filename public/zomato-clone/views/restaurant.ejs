@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zomato Clone</title>
+
+  <!-- ✅ CSS (correct path) -->
+  <link rel="stylesheet" href="/css/home.css">
+  <link rel="stylesheet" href="/css/resturant.css">
+
+  <style>
+    body {
+      font-family: Arial;
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ✅ Navbar -->
+  <%- include('partials/navbar') %>
+
+  <!-- 🔥 Page Title -->
+  <h1 class="title">Best Food in Delhi NCR</h1>
+
+  <!-- 🔥 Card Container -->
+  <div class="card-container">
+
+    <% foods.forEach(item => { %>
+
+      <div class="card">
+
+        <!-- ✅ Image Section -->
+        <!-- <div class="card-image">
+          <img src="<%= item.images[0] %>" alt="food image">
+          <span class="offer">Flat 10% OFF</span>
+        </div> -->
+
+        <br><br><br>
+
+        <!-- ✅ Content -->
+        <div class="card-content">
+
+          <div class="top-row">
+            <h3><%= item.name %></h3>
+            <span class="rating"><%= item.diningRating || "4.0" %>★</span>
+          </div>
+
+          <p class="cuisine">
+            <%= item.cuisines ? item.cuisines.join(", ") : "Food" %>
+          </p>
+
+          <div class="bottom-row">
+            <span><%= item.location || "Delhi" %></span>
+            <span>₹<%= item.priceForTwo || 500 %> for two</span>
+          </div>
+
+        </div>
+
+      </div>
+
+    <% }) %>
+
+  </div>
+
+  <!-- ✅ Footer -->
+  <%- include('partials/footer') %>
+
+  <!-- ✅ Script -->
+  <script>
+    const html = document.documentElement;
+
+    const saved = localStorage.getItem('zomato-theme');
+    if (saved) html.setAttribute('data-theme', saved);
+
+    function toggleDark() {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      const next = isDark ? 'light' : 'dark';
+
+      html.setAttribute('data-theme', next);
+      localStorage.setItem('zomato-theme', next);
+    }
+  </script>
+
+</body>
+</html>
