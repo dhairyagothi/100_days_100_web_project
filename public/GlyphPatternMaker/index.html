@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dot-Matrix Glyph Maker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <header>
+            <h1>Glyph Pattern Maker</h1>
+        </header>
+        <div class="controls">
+            <div class="control-group">
+                <label>Grid:</label>
+                <input type="number" id="cols" value="16" min="8" max="32">
+                <span>x</span>
+                <input type="number" id="rows" value="16" min="8" max="32">
+                <button id="update-size">Update</button>
+            </div>
+            <div class="control-group">
+                <label>Color:</label>
+                <div class="color-picker-wrapper" id="custom-color-wrapper" title="Custom Color">
+                    <input type="color" id="color-picker" value="#ffffff">
+                </div>
+                <div class="swatches" id="swatches">
+                    <button class="swatch active" data-color="#ffffff" style="background-color: #ffffff;" title="White"></button>
+                    <button class="swatch" data-color="#ff4757" style="background-color: #ff4757;" title="Red"></button>
+                    <button class="swatch" data-color="#ffa502" style="background-color: #ffa502;" title="Orange"></button>
+                    <button class="swatch" data-color="#eccc68" style="background-color: #eccc68;" title="Yellow"></button>
+                    <button class="swatch" data-color="#2ed573" style="background-color: #2ed573;" title="Green"></button>
+                    <button class="swatch" data-color="#70a1ff" style="background-color: #70a1ff;" title="Cyan"></button>
+                    <button class="swatch" data-color="#1e90ff" style="background-color: #1e90ff;" title="Blue"></button>
+                    <button class="swatch" data-color="#9b59b6" style="background-color: #9b59b6;" title="Purple"></button>
+                    <button class="swatch swatch-eraser" data-color="eraser" title="Eraser">
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 20H7L3 16C2 15 2 13 3 12L13 2L22 11L20 20Z"></path>
+                            <path d="M17 17L12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="control-group">
+                <button id="clear-btn">Clear Canvas</button>
+            </div>
+            <div class="control-group">
+                <select id="anim-type">
+                    <option value="none">No Animation</option>
+                    <option value="pulse">Pulse Effect</option>
+                    <option value="flash">Flash Effect</option>
+                    <option value="scroll-left">Scroll Left</option>
+                </select>
+                <button id="play-btn">Play</button>
+                <button id="stop-btn">Stop</button>
+            </div>
+            <div class="control-group">
+                <button id="export-btn">Export JSON</button>
+                <button id="import-btn">Import JSON</button>
+                <input type="file" id="import-input" accept=".json" style="display: none;">
+            </div>
+        </div>
+        <div class="matrix-wrapper">
+            <div id="matrix" class="matrix"></div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>

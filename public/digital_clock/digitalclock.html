@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -6,88 +6,419 @@
     <title>Digital Clock</title>
     <link rel="stylesheet" href="digitalclock.css" />
     <link rel="icon" href="../favv.png" type="image/x-icon" />
-    <script src="digitalclock.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&family=Poppins:wght@300;400;500;600;700&family=Share+Tech+Mono&family=Audiowide&family=Syncopate:wght@700&family=Plus+Jakarta+Sans:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
   </head>
-  <body class="bg-black flex flex-col items-center justify-center h-screen">
-    <div class="text-center">
-      <div
-        id="display"
-        class="relative font-mono text-4xl md:text-5xl text-white border-4 border-green-500 rounded-lg p-4 mb-4"
-        style="transition: opacity 0.3s ease;"
-      ></div>
-      <div
-        id="clock"
-        class="relative font-mono text-4xl md:text-5xl text-green-500 border-4 border-green-500 rounded-lg p-4"
-        style="transition: opacity 0.3s ease;"
-      ></div>
+  <body>
+    <a
+      href="/"
+      class="project-back-button"
+      style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'"
+      >← Back to Home</a
+    >
+
+    <main class="clock-app">
+      <!-- Status Chip -->
+      <div class="status-chip" role="status" aria-live="polite">
+        <span class="status-dot" aria-hidden="true"></span>
+        <span>Live &middot; Synchronized</span>
+      </div>
+      <!-- Dark Mode Toggle -->
+      <button
+        class="dark-mode-btn"
+        id="dark-mode-toggle"
+        onclick="toggleDarkMode()"
+        aria-label="Toggle dark mode"
+        title="Toggle dark mode"
+      >
+        🌙
+      </button>
+
+      <!-- Main Clock Card -->
+      <article class="clock-card" aria-label="Current time display">
+        <span class="theme-badge" id="theme-label" aria-live="polite"
+          >CLASSIC</span
+        >
+
+        <header class="clock-top-row">
+          <div class="date-block">
+            <p id="day-name" aria-label="Current day of the week">Wednesday</p>
+            <time id="full-date">20 May 2026</time>
+          </div>
+        </header>
+
+        <section class="clock-time" aria-label="Current time">
+          <span id="hours" aria-hidden="true">12</span>
+          <span class="colon" aria-hidden="true">:</span>
+          <span id="minutes" aria-hidden="true">00</span>
+          <span class="colon" aria-hidden="true">:</span>
+          <span id="seconds" aria-hidden="true">00</span>
+          <span id="ampm" class="ampm" aria-label="AM or PM">PM</span>
+        </section>
+
+        <button id="format-toggle" class="format-toggle">24H</button>
+
+        <footer class="bottom-info">
+          <div class="info-tag">
+            <span class="info-tag-dot" aria-hidden="true"></span>
+            <span class="info-tag-label">Timezone</span>
+            <span class="info-tag-value" id="timezone-label">Local Time</span>
+          </div>
+          <div class="info-tag">
+            <span class="info-tag-dot" aria-hidden="true"></span>
+            <span class="info-tag-label">Alarms</span>
+            <span class="info-tag-value" id="alarm-status">None Active</span>
+          </div>
+        </footer>
+      </article>
+
+      <!-- Dashboard Grid -->
+      <div class="dashboard-grid">
+        <!-- World Clocks Section -->
+        <section class="card" aria-labelledby="world-clocks-heading">
+          <header class="card-header">
+            <h2 class="card-title" id="world-clocks-heading">
+              <span class="card-title-dot" aria-hidden="true"></span>
+              World Clocks
+            </h2>
+            <button
+              class="btn btn-sm btn-outline"
+              onclick="toggleWorldClockModal()"
+              aria-label="Add world clock"
+            >
+              + Add
+            </button>
+          </header>
+          <div class="world-clocks-grid" id="world-clocks-list" role="list">
+            <p class="empty-state" role="status">
+              No secondary clocks added yet.
+            </p>
+          </div>
+        </section>
+
+        <!-- Controls Section -->
+        <section class="card" aria-labelledby="controls-heading">
+          <header class="card-header">
+            <h2 class="card-title" id="controls-heading">
+              <span class="card-title-dot" aria-hidden="true"></span>
+              Accent Color
+            </h2>
+          </header>
+
+          <nav class="theme-selector" aria-label="Accent color selection">
+            <button
+              class="theme-swatch swatch-classic active"
+              data-theme="classic"
+              onclick="setAccentColor('classic')"
+              title="Classic Orange"
+              aria-label="Classic Orange accent"
+            ></button>
+            <button
+              class="theme-swatch swatch-modern"
+              data-theme="modern"
+              onclick="setAccentColor('modern')"
+              title="Modern Blue"
+              aria-label="Modern Blue accent"
+            ></button>
+            <button
+              class="theme-swatch swatch-futuristic"
+              data-theme="futuristic"
+              onclick="setAccentColor('futuristic')"
+              title="Cyber Pink"
+              aria-label="Cyber Pink accent"
+            ></button>
+            <button
+              class="theme-swatch swatch-nebula"
+              data-theme="nebula"
+              onclick="setAccentColor('nebula')"
+              title="Nebula Purple"
+              aria-label="Nebula Purple accent"
+            ></button>
+          </nav>
+
+          <hr class="mt-2" aria-hidden="true" />
+
+          <h3 class="card-title" style="margin-bottom: 8px">
+            <span class="card-title-dot" aria-hidden="true"></span>
+            Timezone
+          </h3>
+          <div class="select-group" id="primary-timezone-wrapper">
+            <button
+              class="timezone-trigger"
+              onclick="toggleTimezoneDropdown(event)"
+              aria-haspopup="listbox"
+              aria-expanded="false"
+              aria-label="Select timezone"
+            >
+              <span id="selected-tz-display">Local Time</span>
+              <span class="tz-arrow" aria-hidden="true"></span>
+            </button>
+            <div
+              class="tz-dropdown hidden"
+              id="tz-options-container"
+              onclick="event.stopPropagation()"
+              role="listbox"
+              aria-label="Available timezones"
+            >
+              <input
+                type="text"
+                class="tz-search"
+                id="tz-search-input"
+                placeholder="Search city or region..."
+                oninput="filterTimezones()"
+                aria-label="Search timezone"
+              />
+              <div class="tz-options" id="tz-options-list" role="group">
+                <!-- Populated by JS -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </div>
-    <div class="mt-10 flex space-x-4">
-      <button
-        class="clock-face-btn px-4 py-2 hover:bg-green-700 hover:text-white border-2 border-green-500 text-green-500 rounded-lg"
-        onclick="setClockStyleAndFormat('classic', 'format1')"
-      >
-        Classic
-      </button>
-      <button
-        class="clock-face-btn px-4 py-2 hover:bg-blue-700 border-2 border-blue-500 text-blue-500 rounded-lg hover:text-white"
-        onclick="setClockStyleAndFormat('modern', 'format2')"
-      >
-        Modern
-      </button>
-      <button
-        class="clock-face-btn px-4 py-2 hover:bg-red-700 border-2 border-red-500 text-red-500 rounded-lg hover:text-white"
-        onclick="setClockStyleAndFormat('futuristic', 'format3')"
-      >
-        Futuristic
-      </button>
+
+<!-- Alarm Manager -->
+<section class="card" aria-labelledby="alarm-heading">
+  <header class="card-header">
+    <h2 class="card-title" id="alarm-heading">
+      <span class="card-title-dot" aria-hidden="true"></span>
+      Alarm Manager
+    </h2>
+  </header>
+  <form
+    class="alarm-form"
+    id="new-alarm-form"
+    novalidate
+  >
+    <div class="form-field">
+      <label for="alarm-time">Time</label>
+      <input type="time" id="alarm-time" required />
     </div>
-    <div class="mt-10">
-      <select
-        id="timezone"
-        class="px-3 hover:bg-green-700 hover:text-white py-2 border-2 border-green-500 text-green-500 rounded-lg"
-        onchange="updateClock()"
-      >
-        <option value="local">Local Time</option>
-        <option value="UTC">UTC</option>
-        <option value="America/New_York">New York (USA)</option>
-        <option value="Europe/London">London (UK)</option>
-        <option value="Asia/Kolkata">Kolkata (India)</option>
+  </form>
+</section>
+
+<!-- Pomodoro Timer -->
+<section class="card" aria-labelledby="pomodoro-heading">
+  <header class="card-header">
+    <h2 class="card-title" id="pomodoro-heading">
+      <span class="card-title-dot" aria-hidden="true"></span>
+      Pomodoro Timer
+    </h2>
+  </header>
+  <div class="pomodoro-display">
+    <span id="pomodoro-time">25:00</span>
+  </div>
+</section>
+
+    <div class="form-field">
+      <label for="alarm-label">Label</label>
+      <input
+        type="text"
+        id="alarm-label"
+        placeholder="e.g. Wake Up"
+      />
+    </div>
+
+    <div class="form-field">
+      <label for="alarm-tone">Tone</label>
+      <select id="alarm-tone">
+        <option value="classic">Classic Beep</option>
+        <option value="cyber">Cyber Pulse</option>
+        <option value="retro">Retro Chiptune</option>
+        <option value="mp3">MP3 Tone</option>
       </select>
     </div>
-    <div id="alarm-container" class="mt-10 flex flex-col items-center">
-      <button
-        class="hover:text-white clock-face-btn px-4 py-2 hover:bg-yellow-700 border-2 border-yellow-500 text-yellow-500 rounded-lg"
-        onclick="toggleAlarmMode()"
-      >
-        Set Alarm
+
+    <div class="form-field">
+      <label for="alarm-snooze">Snooze</label>
+      <select id="alarm-snooze">
+        <option value="5">5 min</option>
+        <option value="10">10 min</option>
+        <option value="15">15 min</option>
+      </select>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" id="add-alarm-btn" class="btn btn-primary">
+        Add Alarm
       </button>
-      <input
-        type="time"
-        id="alarm-time"
-        class="hidden mt-4 px-4 py-2 border-2 border-yellow-500 text-yellow-500 rounded-lg"
-        style="transition: all 0.3s ease;"
-      />
+
       <button
-        class="clock-face-btn hidden mt-4 px-4 py-2 hover:bg-yellow-700 border-2 border-yellow-500 text-yellow-500 rounded-lg"
-        onclick="setAlarm()"
+        type="button"
+        id="clear-all-btn"
+        class="btn btn-danger"
       >
-        Confirm Alarm
+        Clear All
       </button>
     </div>
-    <div
-      id="alarm-popup"
-      class="hidden fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-black text-yellow-500 border-4 border-yellow-500 rounded-lg p-4"
-      style="will-change: transform, opacity;"
+  </form>
+
+  <section aria-label="Your alarms">
+    <h4
+      style="
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 8px;
+      "
     >
-      <p>Alarm is ringing!</p>
-      <button
-        class="mt-4 px-4 py-2 hover:bg-yellow-700 border-2 border-yellow-500 text-yellow-500 rounded-lg"
-        onclick="stopAlarm()"
-      >
-        Stop Alarm
-      </button>
+      Your Alarms
+    </h4>
+
+    <div class="alarms-list" id="alarms-list" role="list">
+      <p class="empty-state" role="status">
+        No alarms set. Add one above!
+      </p>
     </div>
-    <audio id="alarm-sound" src="alarm.mp3" class="hidden"></audio>
+  </section>
+
+  <div
+    class="history-header"
+    onclick="toggleHistoryLogs()"
+    role="button"
+    tabindex="0"
+  >
+    <span>History</span>
+    <span id="history-chevron">&#9660;</span>
+  </div>
+
+  <div
+    class="history-logs hidden"
+    id="history-logs"
+    role="log"
+    aria-label="Alarm history logs"
+  >
+    <div class="log-entry">
+      History is empty.
+    </div>
+  </div>
+</section>
+
+<!-- Pomodoro Timer -->
+<section class="card" aria-labelledby="pomodoro-heading">
+  <header class="card-header">
+    <h2 class="card-title" id="pomodoro-heading">
+      <span class="card-title-dot" aria-hidden="true"></span>
+      Pomodoro Timer
+    </h2>
+  </header>
+
+  <div class="pomodoro-display">
+    <span id="pomodoro-time">25:00</span>
+  </div>
+
+  <div class="pomodoro-controls">
+    <button id="start-pomodoro" class="btn btn-primary">
+      Start
+    </button>
+
+    <button id="pause-pomodoro" class="btn btn-outline">
+      Pause
+    </button>
+
+    <button id="reset-pomodoro" class="btn btn-danger">
+      Reset
+    </button>
+  </div>
+
+  <p id="pomodoro-status">Focus Session</p>
+</section>
+
+          <!-- World Clock Modal -->
+          <div
+            id="world-clock-modal"
+            class="world-modal hidden"
+            onclick="closeWorldClockModal()"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="modal-heading"
+          >
+            <div class="modal-card" onclick="event.stopPropagation()">
+              <header class="modal-header">
+                <h3 id="modal-heading">Add Secondary Clock</h3>
+                <button
+                  class="modal-close"
+                  onclick="closeWorldClockModal()"
+                  aria-label="Close modal"
+                >
+                  &times;
+                </button>
+              </header>
+              <input
+                type="text"
+                class="modal-search"
+                id="world-search-input"
+                placeholder="Search country..."
+                aria-label="Search country"
+              />
+              <div
+                class="country-options"
+                id="world-tz-options-list"
+                role="listbox"
+                aria-label="Available countries"
+              >
+                <p
+                  style="
+                    color: var(--text-muted);
+                    padding: 12px;
+                    text-align: center;
+                    font-size: 13px;
+                  "
+                  role="status"
+                >
+                  Loading countries...
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Toast Notification -->
+          <div id="toast" class="toast" role="alert" aria-live="assertive">
+            Alarm set
+          </div>
+
+          <!-- Alarm Ringing Popup -->
+          <div
+            id="alarm-popup"
+            class="alarm-popup hidden"
+            role="alertdialog"
+            aria-modal="true"
+            aria-labelledby="popup-alarm-title"
+          >
+            <div class="popup-card">
+              <div class="ringing-icon" aria-hidden="true">&#9202;</div>
+              <h2 id="popup-alarm-title">Alarm!</h2>
+              <p id="popup-alarm-time">00:00</p>
+              <p id="popup-alarm-label">Your alarm is ready.</p>
+              <div class="popup-actions">
+                <button onclick="snoozeActiveAlarm()" class="btn btn-ghost">
+                  Snooze
+                </button>
+                <button onclick="stopActiveAlarm()" class="btn btn-danger">
+                  Stop Alarm
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <audio
+            id="alarm-sound"
+            src="alarm.mp3"
+            preload="auto"
+            aria-hidden="true"
+          ></audio>
+
+          <script src="digitalclock.js"></script>
+        </div>
+      </div>
+    </main>
   </body>
 </html>
