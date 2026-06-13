@@ -32,3 +32,31 @@ if (text1 && leaf && hill5 && hill1 && plant && hill4) {
         }
     }, { passive: true });
 }
+
+
+const toggle = document.getElementById("theme-toggle");
+
+toggle.addEventListener("click", () => {
+
+    document.body.classList.toggle("dark-theme");
+
+    if(document.body.classList.contains("dark-theme")){
+        localStorage.setItem("theme","dark");
+        toggle.textContent="☀️";
+    }else{
+        localStorage.setItem("theme","light");
+        toggle.textContent="🌙";
+    }
+
+});
+
+window.onload=()=>{
+
+    const theme=localStorage.getItem("theme");
+
+    if(theme==="dark"){
+        document.body.classList.add("dark-theme");
+        toggle.textContent="☀️";
+    }
+
+};

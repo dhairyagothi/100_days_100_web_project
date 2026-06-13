@@ -1,60 +1,349 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>FocusList App</title>
-    <style>
-        body { font-family: sans-serif; display: flex; justify-content: center; padding-top: 50px; background: #f4f4f9; }
-        .container { background: white; padding: 2rem; width: 350px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        input { width: 70%; padding: 8px; }
-        button { padding: 8px; cursor: pointer; }
-        ul { list-style: none; padding: 0; margin-top: 20px; }
-        li { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #eee; }
-        .completed { text-decoration: line-through; color: gray; }
-        #progress { height: 10px; background: #4caf50; width: 0%; transition: width 0.3s; margin-top: 10px; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FocusList App</title>
+<style>
+    * { box-sizing: border-box; }
+
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+        padding: 20px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .container {
+        background: white;
+        padding: 2rem;
+        width: 100%;
+        max-width: 380px;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    h2 {
+        margin-top: 0;
+        margin-bottom: 4px;
+        color: #333;
+    }
+
+    .subtitle {
+        font-size: 13px;
+        color: #888;
+        margin-bottom: 16px;
+    }
+
+    .progress-bar-bg {
+        width: 100%;
+        height: 10px;
+        background: #eee;
+        border-radius: 6px;
+        overflow: hidden;
+        margin-bottom: 16px;
+    }
+
+    #progress {
+        height: 100%;
+        width: 0%;
+        border-radius: 6px;
+        transition: width 0.3s ease, background-color 0.3s ease;
+    }
+
+    .input-row {
+        display: flex;
+        gap: 8px;
+    }
+
+    input[type="text"] {
+        flex: 1;
+        padding: 10px 12px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 14px;
+        outline: none;
+        transition: border-color 0.2s;
+    }
+
+    input[type="text"]:focus {
+        border-color: #764ba2;
+    }
+
+    button {
+        padding: 10px 16px;
+        cursor: pointer;
+        border: none;
+        border-radius: 8px;
+        background: #764ba2;
+        color: white;
+        font-size: 14px;
+        font-weight: 600;
+        transition: background 0.2s, transform 0.1s;
+    }
+
+    button:hover {
+        background: #5e3a85;
+    }
+
+    button:active {
+        transform: scale(0.97);
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+        margin-top: 20px;
+        max-height: 260px;
+        overflow-y: auto;
+    }
+
+    li {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 4px;
+        border-bottom: 1px solid #eee;
+        animation: fadeIn 0.25s ease;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-6px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    li span.task-text {
+        flex: 1;
+        cursor: pointer;
+        word-break: break-word;
+        padding-right: 8px;
+        transition: color 0.2s;
+        border-radius: 4px;
+    }
+
+    li span.task-text:hover {
+        background: #f7f7f7;
+    }
+
+    li input[type="checkbox"] {
+        margin-right: 10px;
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+        accent-color: #764ba2;
+        flex-shrink: 0;
+    }
+
+    li input.edit-input {
+        flex: 1;
+        padding: 4px 6px;
+        border: 1px solid #764ba2;
+        border-radius: 6px;
+        font-size: 14px;
+        margin-right: 8px;
+    }
+
+    .completed {
+        text-decoration: line-through;
+        color: #aaa;
+    }
+
+    .delete-btn {
+        background: transparent;
+        color: #e74c3c;
+        font-weight: bold;
+        padding: 4px 8px;
+        font-size: 14px;
+    }
+
+    .delete-btn:hover {
+        background: #fdecea;
+    }
+
+    .empty-state {
+        text-align: center;
+        color: #aaa;
+        font-size: 14px;
+        padding: 24px 0;
+    }
+
+    .footer-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 12px;
+        font-size: 13px;
+        color: #777;
+    }
+
+    .clear-btn {
+        background: transparent;
+        color: #764ba2;
+        font-weight: 600;
+        padding: 4px 8px;
+        font-size: 13px;
+        text-decoration: underline;
+    }
+
+    .clear-btn:hover {
+        background: transparent;
+        color: #5e3a85;
+    }
+</style>
 </head>
 <body>
 
 <div class="container">
     <h2>FocusList</h2>
-    <div id="progress"></div>
-    <input type="text" id="taskInput" placeholder="Add a task...">
-    <button onclick="addTask()">Add</button>
+    <div class="subtitle">Stay focused. Get things done.</div>
+
+    <div class="progress-bar-bg">
+        <div id="progress"></div>
+    </div>
+
+    <div class="input-row">
+        <input type="text" id="taskInput" placeholder="Add a task..." onkeydown="if(event.key === 'Enter') addTask()">
+        <button onclick="addTask()">Add</button>
+    </div>
+
     <ul id="taskList"></ul>
+
+    <div class="footer-row">
+        <span id="taskCounter"></span>
+        <button class="clear-btn" onclick="clearCompleted()">Clear completed</button>
+    </div>
 </div>
 
 <script>
-    let tasks = [];
+    let tasks = JSON.parse(localStorage.getItem('focusListTasks')) || [];
+
+    function saveTasks() {
+        localStorage.setItem('focusListTasks', JSON.stringify(tasks));
+    }
 
     function addTask() {
         const input = document.getElementById('taskInput');
-        if (!input.value) return;
-        tasks.push({ text: input.value, done: false });
+        const value = input.value.trim();
+        if (!value) return;
+        tasks.push({ text: value, done: false });
         input.value = '';
+        saveTasks();
         render();
     }
 
     function toggleTask(index) {
         tasks[index].done = !tasks[index].done;
+        saveTasks();
         render();
     }
 
-    function render() {
+    function deleteTask(index) {
+        tasks.splice(index, 1);
+        saveTasks();
+        render();
+    }
+
+    function clearCompleted() {
+        tasks = tasks.filter(task => !task.done);
+        saveTasks();
+        render();
+    }
+
+    function startEdit(index) {
+        render(index);
+    }
+
+    function finishEdit(index, newValue) {
+        const trimmed = newValue.trim();
+        if (trimmed) {
+            tasks[index].text = trimmed;
+        }
+        saveTasks();
+        render();
+    }
+
+    function getProgressColor(percent) {
+        if (percent < 34) return '#e74c3c';
+        if (percent < 67) return '#f1c40f';
+        return '#4caf50';
+    }
+
+    function render(editingIndex = -1) {
         const list = document.getElementById('taskList');
         list.innerHTML = '';
+
+        if (tasks.length === 0) {
+            const empty = document.createElement('div');
+            empty.className = 'empty-state';
+            empty.textContent = 'No tasks yet — add one above!';
+            list.appendChild(empty);
+        }
+
         let completedCount = 0;
-        
+
         tasks.forEach((task, index) => {
             if (task.done) completedCount++;
             const li = document.createElement('li');
-            li.innerHTML = `<span class="${task.done ? 'completed' : ''}" onclick="toggleTask(${index})">${task.text}</span>
-                            <button onclick="tasks.splice(${index}, 1); render()">X</button>`;
-            list.appendChild(li);
+
+            if (index === editingIndex) {
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.className = 'edit-input';
+                input.value = task.text;
+                input.onblur = () => finishEdit(index, input.value);
+                input.onkeydown = (e) => {
+                    if (e.key === 'Enter') input.blur();
+                };
+                li.appendChild(input);
+
+                const delBtn = document.createElement('button');
+                delBtn.className = 'delete-btn';
+                delBtn.textContent = '✕';
+                delBtn.onclick = () => deleteTask(index);
+                li.appendChild(delBtn);
+
+                list.appendChild(li);
+
+                setTimeout(() => { input.focus(); input.select(); }, 0);
+            } else {
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.checked = task.done;
+                checkbox.onchange = () => toggleTask(index);
+                li.appendChild(checkbox);
+
+                const span = document.createElement('span');
+                span.className = 'task-text' + (task.done ? ' completed' : '');
+                span.textContent = task.text;
+                span.onclick = () => toggleTask(index);
+                span.ondblclick = () => startEdit(index);
+                li.appendChild(span);
+
+                const delBtn = document.createElement('button');
+                delBtn.className = 'delete-btn';
+                delBtn.textContent = '✕';
+                delBtn.onclick = () => deleteTask(index);
+                li.appendChild(delBtn);
+
+                list.appendChild(li);
+            }
         });
 
-        const progress = (completedCount / tasks.length) * 100 || 0;
-        document.getElementById('progress').style.width = progress + '%';
+        const total = tasks.length;
+        const percent = total ? (completedCount / total) * 100 : 0;
+        const progressEl = document.getElementById('progress');
+        progressEl.style.width = percent + '%';
+        progressEl.style.backgroundColor = getProgressColor(percent);
+
+        document.getElementById('taskCounter').textContent =
+            total ? `${completedCount}/${total} completed` : '';
     }
+
+    render();
 </script>
 </body>
+</html>
