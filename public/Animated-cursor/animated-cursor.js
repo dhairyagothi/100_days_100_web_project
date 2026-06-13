@@ -311,3 +311,29 @@ window.addEventListener("resize", resizeCanvas);
 resizeCanvas();
 animate();
 
+const themeToggle = document.getElementById("themeToggle");
+const themeIcon = document.getElementById("themeIcon");
+
+// Default = DARK MODE
+let isLightMode = JSON.parse(localStorage.getItem("lightMode")) || false;
+
+// Apply theme on load
+function updateTheme() {
+    if (isLightMode) {
+        document.body.classList.add("light-theme");
+        themeIcon.textContent = "🌙"; // switch to dark icon
+    } else {
+        document.body.classList.remove("light-theme");
+        themeIcon.textContent = "☀️"; // switch to light icon
+    }
+}
+
+// Toggle theme
+themeToggle.addEventListener("click", () => {
+    isLightMode = !isLightMode;
+    localStorage.setItem("lightMode", JSON.stringify(isLightMode));
+    updateTheme();
+});
+
+// initialize
+updateTheme();
