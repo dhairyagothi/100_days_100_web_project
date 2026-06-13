@@ -192,7 +192,7 @@ const savedModel = localStorage.getItem(STORAGE.MODEL) || "gemini-2.5-flash";
 
 - Modern browser (Chrome or Edge recommended for voice features)
 - Internet connection (for Gemini and Hugging Face APIs)
-- Free Google AI Studio account
+- Free Google AI Studio account (required for Gemini API access)
 
 ---
 
