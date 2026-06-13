@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiz App with Timer</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="quiz-container" id="quiz-box">
+      <header class="quiz-header">
+        <h1>Dynamic Coding Quiz</h1>
+        <div class="timer-badge">
+          Time Left: <span id="time-left">15</span>s
+        </div>
+      </header>
+
+      <div class="progress-bar-container">
+        <div class="progress-bar" id="progress-indicator"></div>
+      </div>
+
+      <main class="quiz-body">
+        <h2 class="question-text" id="question-element">
+          Question text goes here?
+        </h2>
+        <div class="options-grid" id="options-element"></div>
+      </main>
+
+      <footer class="quiz-footer">
+        <span class="progress-text" id="counter-element">Question 1 of 5</span>
+        <button id="next-btn" class="control-btn hide">Next Question</button>
+      </footer>
+    </div>
+
+    <div class="quiz-container score-container hide" id="result-box">
+      <h2>Quiz Completed!</h2>
+      <p class="final-score-text">
+        You scored <span id="final-score">0</span> out of
+        <span id="total-questions">0</span>
+      </p>
+      <button id="restart-btn" class="control-btn restart-btn">
+        Restart Quiz
+      </button>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
