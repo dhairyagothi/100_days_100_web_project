@@ -151,13 +151,19 @@ function renderTasks() {
 
       const badge = document.createElement("div");
       badge.className = "category-badge";
-      badge.textContent = task.category; // textContent: never executes scripts
+      if (task.completed) {
+        badge.textContent = `${task.category} | ✅ Done`;
+        badge.style.opacity = "0.8";
+      } else {
+        badge.textContent = task.category;
+      }
 
       const btnGroup = document.createElement("div");
 
       const checkBtn = document.createElement("button");
       checkBtn.className = "note-check";
-      checkBtn.textContent = task.completed ? "✓" : "✔";
+      checkBtn.textContent = task.completed ? "↩" : "✔";
+      checkBtn.title = task.completed ? "Mark as Pending" : "Mark as Completed";
       checkBtn.addEventListener("click", () => toggleTask(task.id));
 
       const deleteBtn = document.createElement("button");
