@@ -27,8 +27,11 @@
 
         <div class="search-bar">
           <input type="text" id="cityInput" placeholder="Search city" />
-          <button onclick="getWeather()">
+          <button onclick="getWeather()" title="Search Weather">
             <span class="material-icons">search</span>
+          </button>
+          <button onclick="toggleSettings()" id="settingsBtn" title="API Configuration">
+            <span class="material-icons">settings</span>
           </button>
         </div>
       </header>
@@ -103,6 +106,20 @@
             <div class="pollutant"><span>CO</span><span id="co">--</span></div>
           </div>
         </div>
+      </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="modal">
+      <div class="modal-content">
+        <span class="close-modal" onclick="toggleSettings()">&times;</span>
+        <h2>API Configuration</h2>
+        <p class="modal-description">Please enter your OpenWeatherMap API Key. You can get a free key by registering at <a href="https://openweathermap.org/" target="_blank">openweathermap.org</a>.</p>
+        <div class="api-input-group">
+          <input type="password" id="apiKeyInput" placeholder="Paste API Key here" />
+          <button onclick="saveApiKey()">Save</button>
+        </div>
+        <p id="settingsFeedback" class="feedback-message"></p>
       </div>
     </div>
 

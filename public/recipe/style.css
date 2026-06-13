@@ -471,6 +471,7 @@ select option {
     font-family: 'Playfair Display', serif;
     font-size: 1.2rem;
     margin-bottom: 8px;
+    padding-left: 5px;
 }
 
 .recipe-info p {
@@ -519,6 +520,9 @@ select option {
     color: #64748b;
     padding: 60px;
     grid-column: 1/-1;
+}
+.recipe-card-body h3 {
+    padding-left: 6px;
 }
 
 /* =========================
