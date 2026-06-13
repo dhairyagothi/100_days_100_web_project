@@ -29,6 +29,81 @@ document.addEventListener('DOMContentLoaded', () => {
     const grassLeft = document.getElementById('grass-left');
     const grassRight = document.getElementById('grass-right');
 
+    // --- AUDIO SYSTEM FIX ---
+    // Root cause: The audio system was referenced but not defined. This caused either unhandled runtime ReferenceErrors 
+    // or silence because no audio assets were actually loaded.
+    // Fix: We load the provided .wav files as HTML5 Audio elements, handle looping, 
+    // and provide safe playSound/stopSound wrappers. We also manage mute state.
+    let isMuted = false;
+    const muteBtn = document.getElementById('mute-btn');
+
+    const sounds = {
+        bgm: new Audio('./audio/bgm.wav'),
+        engine: new Audio('./audio/engine_loop.wav'),
+        whoosh: new Audio('./audio/whoosh.wav'),
+        uiClick: new Audio('./audio/ui_click.wav'),
+        crash: new Audio('./audio/crash.wav')
+    };
+
+    // Configure loop
+    sounds.bgm.loop = true;
+    sounds.engine.loop = false; // Play only once at the start
+
+    // Volumes
+    sounds.engine.volume = 1.0;
+    sounds.bgm.volume = 0.6; // Restored BGM volume since engine plays first
+
+    let enginePhase = false;
+
+    sounds.engine.addEventListener('ended', () => {
+        enginePhase = false;
+        if (gameActive && !isPaused && !isMuted) {
+            playSound(sounds.bgm);
+        }
+    });
+
+    const playSound = (audioObj) => {
+        if (!audioObj || isMuted) return;
+        // Reset current time for sound effects so they can be spammed
+        if (audioObj !== sounds.bgm && audioObj !== sounds.engine) {
+            try {
+                // Prevent InvalidStateError if audio metadata isn't fully loaded yet
+                if (audioObj.readyState >= 1) {
+                    audioObj.currentTime = 0;
+                }
+            } catch (e) {}
+        }
+        audioObj.play().catch(e => {
+            console.warn("Audio playback prevented by browser:", e);
+        });
+    };
+
+    const stopSound = (audioObj) => {
+        if (!audioObj) return;
+        audioObj.pause();
+        try {
+            if (audioObj.readyState >= 1) {
+                audioObj.currentTime = 0;
+            }
+        } catch (e) {}
+    };
+
+    muteBtn.addEventListener('click', () => {
+        isMuted = !isMuted;
+        muteBtn.textContent = isMuted ? '🔇' : '🔊';
+        if (isMuted) {
+            sounds.bgm.pause();
+            sounds.engine.pause();
+        } else if (gameActive && !isPaused) {
+            if (enginePhase) {
+                playSound(sounds.engine);
+            } else {
+                playSound(sounds.bgm);
+            }
+        }
+    });
+    // --- END AUDIO SYSTEM FIX ---
+
     // 4. Game State
     let isPaused = false;
     let gameActive = false;
@@ -50,6 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Read difficulty buttons and set selectedDifficulty on click
     document.querySelectorAll('.difficulty-btn').forEach(btn => {
         btn.addEventListener('click', () => {
+            playSound(sounds.uiClick);
             document.querySelectorAll('.difficulty-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             selectedDifficulty = btn.dataset.difficulty;
@@ -89,7 +165,8 @@ document.addEventListener('DOMContentLoaded', () => {
         crashScreen.style.display = 'none';
         pauseScreen.style.display = 'none';
         pauseBtn.style.display = 'flex';
-        document.getElementById('mute-btn').style.display = 'flex';
+        const muteBtnElement = document.getElementById('mute-btn');
+        if (muteBtnElement) muteBtnElement.style.display = 'flex';
         
         // --- THIS IS THE FIX ---
         // We reset the position here to guarantee it's centered every single time
@@ -100,10 +177,10 @@ document.addEventListener('DOMContentLoaded', () => {
         clearInterval(gameLoopInterval);
         clearInterval(enemySpawnInterval);
 
-        // Start BGM and engine loop on race start
+        // Start engine loop on race start. BGM starts after engine finishes.
+        enginePhase = true;
         stopSound(sounds.bgm);
         stopSound(sounds.engine);
-        playSound(sounds.bgm);
         playSound(sounds.engine);
 
         gameLoopInterval = setInterval(updateGame, 1000 / 60); 
@@ -246,7 +323,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         crashScreen.style.display = 'flex';
         pauseBtn.style.display = 'none';
-        document.getElementById('mute-btn').style.display = 'none'; 
+        const muteBtnElement2 = document.getElementById('mute-btn');
+        if (muteBtnElement2) muteBtnElement2.style.display = 'none'; 
     };
 
     const togglePause = () => {
@@ -257,7 +335,13 @@ document.addEventListener('DOMContentLoaded', () => {
             sounds.bgm.pause();    // Pause BGM on pause
             sounds.engine.pause(); // Pause engine on pause
         } else {
-            if (!isMuted) { sounds.bgm.play().catch(() => {}); sounds.engine.play().catch(() => {}); }
+            if (!isMuted) { 
+                if (enginePhase) {
+                    sounds.engine.play().catch(() => {}); 
+                } else {
+                    sounds.bgm.play().catch(() => {}); 
+                }
+            }
         }
         pauseScreen.style.display = isPaused ? 'flex' : 'none';
         pauseBtn.style.display = isPaused ? 'none' : 'flex';
@@ -293,7 +377,7 @@ document.addEventListener('DOMContentLoaded', () => {
         loadBestScore(); // Refresh best score when returning to menu
     });
 
-    menuBtn.addEventListener('click', () => { crashScreen.style.display = 'none'; startScreen.style.display = 'flex'; loadBestScore(); });
+    menuBtn.addEventListener('click', () => { playSound(sounds.uiClick); crashScreen.style.display = 'none'; startScreen.style.display = 'flex'; loadBestScore(); });
     leftBtn.addEventListener('click', moveLeft);
     rightBtn.addEventListener('click', moveRight);
 

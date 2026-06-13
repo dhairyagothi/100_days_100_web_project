@@ -446,9 +446,19 @@
         />
 
         <!-- Note -->
-        <label for="contentInput">
-          Note
-        </label>
+        <div class="content-header">
+          <label for="contentInput">
+            Note
+          </label>
+          <div class="ai-buttons">
+            <button class="ai-button" id="aiEnhanceBtn" type="button" aria-label="Fix grammar and format note with AI">
+              <span class="icon">✨</span> Fix Grammar & Format
+            </button>
+            <button class="ai-button reset-key" id="resetKeyBtn" type="button" aria-label="Reset API key">
+              <span class="icon">🔑</span> API Key
+            </button>
+          </div>
+        </div>
 
         <textarea
           id="contentInput"
@@ -672,6 +682,44 @@
     role="status"
     aria-live="polite"
   ></div>
+
+  <!-- API Key Modal -->
+  <div class="modal-overlay" id="apiKeyModal" hidden>
+    <section class="api-key-dialog" role="dialog" aria-modal="true" aria-labelledby="apiKeyTitle">
+      <div class="dialog-header">
+        <h2 id="apiKeyTitle">🔑 Enter Your Sarvam AI API Key</h2>
+        <button class="icon-button" id="closeApiKeyModal" type="button" aria-label="Close">×</button>
+      </div>
+      <p class="dialog-info">
+        To use AI features, you need your own Sarvam AI subscription key. 
+        <a href="https://dashboard.sarvam.ai/" target="_blank" rel="noopener">Get one here (free credits available)</a>
+      </p>
+      <form id="apiKeyForm">
+        <label for="apiKeyInput">API Key:</label>
+        <input 
+          id="apiKeyInput" 
+          type="password" 
+          placeholder="Paste your Sarvam API subscription key here..." 
+          required
+          autocomplete="off"
+        >
+        <div class="key-toggle">
+          <label>
+            <input type="checkbox" id="showKeyCheckbox">
+            Show key
+          </label>
+        </div>
+        <div class="dialog-actions">
+          <button type="button" id="clearKeyBtn" class="secondary-action">Clear Stored Key</button>
+          <button type="submit" class="primary-action">Save & Continue</button>
+        </div>
+      </form>
+      <p class="privacy-note">
+        ℹ️ Your API key is stored only in your browser's local storage and never sent to any server. 
+        It's only used to call Sarvam AI's API directly.
+      </p>
+    </section>
+  </div>
 
   <script src="script.js"></script>
 

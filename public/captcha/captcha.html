@@ -12,11 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="app-container">
-        <!-- Left Column: CAPTCHA Challenge -->
-        <div class="main-area">
-            <div class="container">
-                <a href="/" class="back-home-button">← Back to Home</a>
+    <a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0, 0.15);">← Back to Home</a>
 
                 <div class="hero">
                     <span class="eyebrow">Interactive Security Check</span>
@@ -164,18 +160,6 @@
                 <i class="fas fa-trash-alt"></i> Reset Statistics
             </button>
         </aside>
-    </div>
-
-    <!-- Reset Confirmation Modal -->
-    <div class="modal-overlay" id="reset-modal">
-        <div class="modal-card">
-            <h3 class="modal-title">Reset All Statistics?</h3>
-            <p class="modal-text">This will clear all analytics and history. This action cannot be undone.</p>
-            <div class="modal-actions">
-                <button class="modal-btn cancel-btn" id="cancel-reset">Cancel</button>
-                <button class="modal-btn confirm-btn" id="confirm-reset">Reset</button>
-            </div>
-        </div>
     </div>
 
     <script src="captcha.js"></script>

@@ -567,6 +567,95 @@ html {
     scroll-behavior: smooth;
 }
 
+/* Tool Card - Favorite Button */
+.tool-card {
+    position: relative;
+}
+
+.favorite-btn {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: rgba(255, 255, 255, 0.15);
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.favorite-btn:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: scale(1.1);
+}
+
+.favorite-btn .heart-icon {
+    font-size: 1.25rem;
+    transition: transform 0.3s ease;
+}
+
+.favorite-btn.favorited .heart-icon {
+    content: '❤️';
+    animation: pulse 0.5s ease;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+    100% { transform: scale(1); }
+}
+
+/* Empty State */
+.empty-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 48px 32px;
+}
+
+.empty-state-icon {
+    font-size: 4rem;
+    margin-bottom: 16px;
+}
+
+.empty-state h4 {
+    font-size: 1.5rem;
+    color: var(--white);
+    margin-bottom: 8px;
+}
+
+.empty-state p {
+    color: #94a3b8;
+    font-size: 1.125rem;
+}
+
+/* Toast Notification */
+.toast {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: var(--white);
+    padding: 16px 32px;
+    border-radius: 12px;
+    font-weight: 600;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    transform: translateY(150%);
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1000;
+}
+
+.toast.show {
+    transform: translateY(0);
+    opacity: 1;
+}
+
 /* Focus styles for accessibility */
 a:focus-visible, button:focus-visible {
     outline: 3px solid rgba(99, 102, 241, 0.6);

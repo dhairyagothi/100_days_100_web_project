@@ -17,6 +17,11 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
+    <a
+      href="/"
+      class="project-back-button"
+      >← Back to Home</a
+    >
     <header class="header" id="header">
       <div class="header__container">
         <div class="header__brand">
@@ -139,10 +144,30 @@
             <label class="control-label">CSS Code</label>
             <div class="code-output">
               <code class="code-text" id="css-output"></code>
+              <span class="copy-clipboard" id="copy-clipboard">&#x1F4CB;</span>
             </div>
           </div>
         </div>
       </section>
+      <div id="confirm-modal" class="modal hidden" role="dialog" aria-modal="true">
+  <div class="modal__overlay"></div>
+
+  <div class="modal__content">
+    <h3 class="modal__title" id="modal-title">Confirm Action</h3>
+    <p class="modal__message" id="modal-message">
+      Are you sure?
+    </p>
+
+    <div class="modal__actions">
+      <button id="modal-cancel" class="modal__btn modal__btn--cancel">
+        Cancel
+      </button>
+      <button id="modal-confirm" class="modal__btn modal__btn--danger">
+        Confirm
+      </button>
+    </div>
+  </div>
+</div>
 
       <section class="saved-section" id="saved-section" aria-label="Saved Gradients">
         <div class="saved-card">

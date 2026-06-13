@@ -809,57 +809,25 @@ document.getElementById(
 "searchInput"
 );
 
-searchInput.addEventListener(
-"input",
+searchInput.addEventListener("input", function () {
+    const query = this.value.trim().toLowerCase();
 
-function(){
+    document.querySelectorAll(".element").forEach(el => {
+        el.classList.remove("search-active", "matched", "unmatched");
 
-const query =
-this.value
-.trim()
-.toLowerCase();
+        if (query === "") return;
 
-document
-.querySelectorAll(".element")
+        const name = el.dataset.name || "";
+        const symbol = el.dataset.symbol || "";
 
-.forEach(el=>{
+        const match = name.startsWith(query) || symbol === query;
 
-// Remove previous search state
-el.classList.remove(
-"search-active"
-);
-
-// Empty search → no popup
-if(query===""){
-return;
-}
-
-const name =
-el.dataset.name || "";
-
-const symbol =
-el.dataset.symbol || "";
-
-const match =
-
-name.startsWith(query)
-
-||
-
-symbol === query;
-
-
-// If matched → show popup
-if(match){
-
-el.classList.add(
-"search-active"
-);
-
-}
-
-});
-
+        if (match) {
+            el.classList.add("matched");
+        } else {
+            el.classList.add("unmatched");
+        }
+    });
 });
 const trendDefinitions={
 
