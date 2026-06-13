@@ -1,0 +1,277 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #0b0f17;
+  color: #f1f5f9;
+  font-family:
+    "Segoe UI",
+    system-ui,
+    -apple-system,
+    sans-serif;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.dashboard-container {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  max-width: 950px;
+  width: 100%;
+  background-color: #111827;
+  border: 1px solid #1f2937;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+}
+
+/* Sidebar Layout Surface Grid */
+.search-panel {
+  background-color: #1f2937;
+  padding: 25px;
+  border-right: 1px solid #374151;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.search-panel h2 {
+  font-size: 18px;
+  color: #38bdf8;
+  font-weight: 600;
+}
+
+.search-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.search-panel input {
+  background-color: #111827;
+  color: #f8fafc;
+  border: 1px solid #4b5563;
+  padding: 12px;
+  border-radius: 8px;
+  outline: none;
+  font-size: 14px;
+  transition: border-color 0.15s;
+}
+
+.search-panel input:focus {
+  border-color: #38bdf8;
+}
+
+.search-panel button {
+  background-color: #38bdf8;
+  color: #0f172a;
+  border: none;
+  padding: 12px;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.15s;
+  font-size: 14px;
+}
+
+.search-panel button:hover {
+  background-color: #0ea5e9;
+}
+
+.api-note {
+  margin-top: auto;
+  background-color: #111827;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px dashed #4b5563;
+}
+
+.api-note small {
+  color: #9ca3af;
+  font-size: 11px;
+  line-height: 1.4;
+  display: block;
+}
+
+/* Main Presentation Layout Panel Window */
+.weather-display {
+  padding: 35px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.welcome-box {
+  text-align: center;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.cloud-icon {
+  font-size: 64px;
+  margin-bottom: 15px;
+}
+
+.welcome-box h3 {
+  font-size: 18px;
+  margin-bottom: 8px;
+  color: #e5e7eb;
+}
+
+.welcome-box p {
+  color: #9ca3af;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Current Day Metrics Visual Card Output Grid */
+.current-card {
+  background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%);
+  border: 1px solid #312e81;
+  padding: 25px;
+  border-radius: 12px;
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.location-name {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.date-label {
+  font-size: 13px;
+  color: #9ca3af;
+  margin-bottom: 15px;
+}
+
+.temp-display {
+  font-size: 48px;
+  font-weight: 800;
+  color: #38bdf8;
+}
+
+.desc-label {
+  text-transform: capitalize;
+  font-size: 15px;
+  color: #e5e7eb;
+  margin-top: 4px;
+}
+
+.metrics-grid {
+  display: flex;
+  gap: 15px;
+}
+
+.metric-box {
+  background-color: rgba(17, 24, 39, 0.6);
+  border: 1px solid #374151;
+  padding: 15px 20px;
+  border-radius: 8px;
+  min-width: 110px;
+  text-align: center;
+}
+
+.m-label {
+  display: block;
+  font-size: 11px;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.m-val {
+  font-size: 16px;
+  font-weight: bold;
+  color: #f3f4f6;
+}
+
+/* Forecast Panel Extensions Mapping Grid */
+.forecast-area h2 {
+  font-size: 16px;
+  margin-bottom: 15px;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.forecast-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+}
+
+.forecast-card {
+  background-color: #1f2937;
+  border: 1px solid #374151;
+  padding: 15px 10px;
+  border-radius: 10px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.f-date {
+  font-size: 12px;
+  font-weight: 600;
+  color: #9ca3af;
+}
+
+.f-icon {
+  font-size: 24px;
+}
+
+.f-temp {
+  font-size: 16px;
+  font-weight: bold;
+  color: #38bdf8;
+}
+
+.f-desc {
+  font-size: 11px;
+  color: #d1d5db;
+  text-transform: capitalize;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hide {
+  display: none !important;
+}
+
+/* Responsive Adaptive Interface Rules */
+@media (max-width: 768px) {
+  .dashboard-container {
+    grid-template-columns: 1fr;
+  }
+  .search-panel {
+    border-right: none;
+    border-bottom: 1px solid #374151;
+  }
+  .current-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .metrics-grid {
+    width: 100%;
+  }
+  .metric-box {
+    flex: 1;
+  }
+  .forecast-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

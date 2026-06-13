@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weather Dashboard</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="dashboard-container">
+      <aside class="search-panel">
+        <h2>Weather Search</h2>
+        <div class="search-group">
+          <input
+            type="text"
+            id="city-input"
+            placeholder="Enter city name... (e.g., London, Tokyo)"
+            autocomplete="off"
+          />
+          <button id="search-btn">Search</button>
+        </div>
+        <div class="api-note">
+          <small
+            >Using built-in sandbox mock. Add an OpenWeatherMap API key in
+            <code>script.js</code> to use real-time requests!</small
+          >
+        </div>
+      </aside>
+
+      <main class="weather-display">
+        <section id="current-weather-card" class="current-card hide">
+          <div class="main-info">
+            <h1 id="location-name">City Name</h1>
+            <p id="current-date" class="date-label">Date Label</p>
+            <div class="temp-display"><span id="current-temp">0</span>°C</div>
+            <p id="weather-description" class="desc-label">Clear Sky</p>
+          </div>
+          <div class="metrics-grid">
+            <div class="metric-box">
+              <span class="m-label">Humidity</span>
+              <span id="humidity-value" class="m-val">0%</span>
+            </div>
+            <div class="metric-box">
+              <span class="m-label">Wind Speed</span>
+              <span id="wind-value" class="m-val">0 m/s</span>
+            </div>
+          </div>
+        </section>
+
+        <section id="forecast-section" class="forecast-area hide">
+          <h2>5-Day Forecast</h2>
+          <div id="forecast-grid" class="forecast-grid"></div>
+        </section>
+
+        <div id="welcome-message" class="welcome-box">
+          <div class="cloud-icon">🌤️</div>
+          <h3>Explore Current & 5-Day Extended Weather Matrix</h3>
+          <p>
+            Type a location on the left sidebar map panel to search atmospheric
+            criteria indicators.
+          </p>
+        </div>
+      </main>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
