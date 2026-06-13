@@ -158,9 +158,6 @@
                             <button id="home-btn" class="btn btn-secondary">
                                 <i aria-hidden="true" class="fas fa-home"></i> Home
                             </button>
-                             <button id="review-btn" class="btn" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin-top: 10px;">
-                        <i aria-hidden="true" class="fas fa-list"></i> Review All Answers
-                    </button>
                         </div>
                     </div>
                 </div>
