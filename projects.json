@@ -2676,14 +2676,13 @@
     "projectNo": 213,
     "projectName": "Photo Studio",
     "projectType": "Website",
-    "projectPath": "./public/Photo Studio/Project.html",
+    "projectDesc": "A responsive photography portfolio and gallery website designed to showcase visual content through structured layouts, image presentation sections, and modern styling. Features an engaging user interface optimized for desktop and mobile viewing.",
     "techStack": [
       "html",
       "css"
     ],
     "difficulty": "intermediate",
-    "projectDesc": "A responsive photography portfolio and gallery website designed to showcase visual content through structured layouts, image presentation sections, and modern styling. Features an engaging user interface optimized for desktop and mobile viewing.",
-    "projectType": "Website"
+    "projectPath": "./public/Photo Studio/Project.html"
   },
   {
     "projectNo": 214,
@@ -2820,5 +2819,22 @@
     ],
     "difficulty": "beginner",
     "projectPath": "./public/Html_css_animation/index.html"
+  },
+  {
+    "projectNo": 224,
+    "projectName": "Dad Jokes Application",
+    "projectType": "Game",
+    "projectDesc": "Click on a button and generate a new Dad Joke",
+    "techStack": [
+      "html",
+      "css",
+      "javascript",
+      "api-javascript",
+      "api",
+      "animation"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/dad_joke_generator/index.html"
   }
+
 ]
