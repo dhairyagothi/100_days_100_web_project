@@ -4,6 +4,224 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Audio-Reactive Particle Physics Matrix</title>
+    <style>
+        :root {
+            --bg-void: #04060a;
+            --panel-matte: rgba(13, 19, 33, 0.85);
+            --neon-cyan: #00f3ff;
+            --neon-magenta: #ff00bb;
+            --neon-yellow: #ffaa00;
+            --border-line: #1c2a45;
+            --text-light: #f1f5f9;
+            --text-gray: #64748b;
+        }
+
+        body {
+            background-color: var(--bg-void);
+            color: var(--text-light);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .studio-frame {
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        header h2 {
+            margin: 0 0 20px 0;
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-magenta));
+            -webkit-text-fill-color: transparent;
+        }
+
+        .console-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        @media (min-width: 900px) {
+            .console-grid {
+                grid-template-columns: 7fr 5fr;
+            }
+        }
+
+        .panel-card {
+            background: var(--panel-matte);
+            border: 1px solid var(--border-line);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .panel-header {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-gray);
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .panel-header::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: var(--neon-cyan);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--neon-cyan);
+        }
+
+        canvas {
+            background-color: #010305;
+            border: 1px solid var(--border-line);
+            border-radius: 8px;
+            width: 100%;
+            height: auto;
+            aspect-ratio: 16 / 9;
+            cursor: crosshair;
+        }
+
+        .control-block {
+            margin-bottom: 14px;
+        }
+
+        .control-block label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: #94a3b8;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            accent-color: var(--neon-magenta);
+            background: #090e17;
+        }
+
+        .btn-synth {
+            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-magenta));
+            border: none;
+            color: #fff;
+            font-weight: bold;
+            padding: 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            transition: box-shadow 0.2s, transform 0.1s;
+        }
+
+        .btn-synth:hover {
+            box-shadow: 0 0 20px rgba(255, 0, 187, 0.4);
+            transform: translateY(-1px);
+        }
+
+        .telemetry-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 9px 0;
+            border-bottom: 1px solid var(--border-line);
+            font-size: 0.9rem;
+        }
+
+        .telemetry-row:last-child {
+            border-bottom: none;
+        }
+
+        .telemetry-val {
+            font-family: monospace;
+            font-weight: bold;
+            color: var(--neon-cyan);
+        }
+
+        #audio-status-light {
+            width: 10px;
+            height: 10px;
+            background-color: #334155;
+            border-radius: 50%;
+            display: inline-block;
+            transition: background-color 0.3s;
+        }
+
+        .light-on {
+            background-color: var(--neon-cyan) !important;
+            box-shadow: 0 0 10px var(--neon-cyan);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="studio-frame">
+        <header>
+            <h2>Kinetic Audio-Reactive Nebula Engine</h2>
+        </header>
+
+        <div class="console-grid">
+            <div class="panel-card">
+                <div class="panel-header">Gravitational Particle Arena (Click & Drag to Create Singularities)</div>
+                <canvas id="physics-canvas" width="800" height="450"></canvas>
+            </div>
+
+            <div class="panel-card">
+                <div class="panel-header">Synthesizer Core Console</div>
+
+                <div class="control-block">
+                    <label><span>Gravitational Mass Factor:</span><span id="gravity-lbl">1.5x</span></label>
+                    <input type="range" id="gravity-slider" min="1" max="50" value="15">
+                </div>
+
+                <div class="control-block">
+                    <label><span>Particle Cloud Count:</span><span id="count-lbl">200</span></label>
+                    <input type="range" id="count-slider" min="50" max="500" value="200">
+                </div>
+
+                <button id="audio-toggle-btn" class="btn-synth">Engage Web Audio Matrix</button>
+
+                <div class="panel-header" style="margin-top: 25px; margin-bottom: 8px;">Telemetry Streaming Logs</div>
+                <div class="telemetry-row">
+                    <span>Audio Engine Node Status:</span>
+                    <span><span id="audio-status-light"></span> <span id="audio-txt"
+                            style="font-family: monospace; font-size: 0.8rem; margin-left: 5px;">MUTED</span></span>
+                </div>
+                <div class="telemetry-row">
+                    <span>Active Audio Frequency Output:</span>
+                    <span id="tel-freq" class="telemetry-val" style="color: var(--neon-yellow);">0.00 Hz</span>
+                </div>
+                <div class="telemetry-row">
+                    <span>Active Kinetic Energy Vector:</span>
+                    <span id="tel-kinetic" class="telemetry-val">0.00 ERG</span>
+                </div>
+                <div class="telemetry-row">
+                    <span>Frame Core Render Latency:</span>
+                    <span id="tel-latency" class="telemetry-val" style="color: var(--neon-magenta);">0.0000 ms</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="app.js"></script>
     <title>Audio-Reactive Particle Physics Sandbox</title>
     <link rel="stylesheet" href="styles.css">
 </head>
