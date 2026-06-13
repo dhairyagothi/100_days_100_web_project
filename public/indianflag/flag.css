@@ -935,3 +935,25 @@ body::before {
   from { opacity: 0; transform: translateX(30px); }
   to   { opacity: 1; transform: translateX(0); }
 }
+
+
+.know-more-section {
+  padding: 5px 20px 20px;
+  text-align: center;
+}
+
+.project-back-button {
+  position: fixed;
+  left: 18px;
+  top: 18px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: #1e293b;
+  border: 1px solid #3b82f6;
+  color: #3b82f6;
+  text-decoration: none;
+}
+
+
+
+

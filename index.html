@@ -85,6 +85,76 @@
       .btn-stats i {
         font-size: 0.85rem;
       }
+
+      /* ── CTA Banner ── */
+      .cta-banner {
+        position: relative;
+        overflow: hidden;
+        padding: 5rem 1.5rem;
+        text-align: center;
+        background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(15, 242, 200, 0.08) 0%, transparent 70%),
+                    linear-gradient(180deg, #0a0a1a 0%, #0d1117 100%);
+        border-top: 1px solid rgba(15, 242, 200, 0.08);
+      }
+      .cta-banner::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle 600px at 50% 50%, rgba(15, 242, 200, 0.05), transparent 70%);
+        pointer-events: none;
+      }
+      .cta-banner-inner {
+        position: relative;
+        max-width: 640px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.25rem;
+      }
+      .cta-banner h2 {
+        font-family: 'Inter Tight', sans-serif;
+        font-size: clamp(1.75rem, 4vw, 2.5rem);
+        font-weight: 800;
+        color: #ffffff;
+        line-height: 1.2;
+        margin: 0;
+      }
+      .cta-banner p {
+        font-family: 'Inter Tight', sans-serif;
+        font-size: 1rem;
+        color: rgba(255, 255, 255, 0.55);
+        line-height: 1.6;
+        margin: 0;
+        max-width: 480px;
+      }
+      .cta-banner-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.85rem 2rem;
+        border-radius: 50px;
+        background: #0ff2c8;
+        color: #0a0a1a;
+        font-family: 'Inter Tight', sans-serif;
+        font-size: 1rem;
+        font-weight: 700;
+        text-decoration: none;
+        cursor: pointer;
+        border: none;
+        letter-spacing: 0.01em;
+        transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+        box-shadow: 0 0 24px rgba(15, 242, 200, 0.35);
+        margin-top: 0.5rem;
+      }
+      .cta-banner-btn:hover {
+        background: #00e0b8;
+        transform: translateY(-2px);
+        box-shadow: 0 0 36px rgba(15, 242, 200, 0.5);
+      }
+      .cta-banner-btn:active {
+        transform: translateY(0);
+      }
     </style>
   </head>
 
@@ -176,6 +246,12 @@
 
     <section class="projects-section">
       <div class="projects-inner">
+        <div id="recommendationsContainer" class="recommendations-container"></div>
+      </div>
+    </section>
+
+    <section class="projects-section">
+      <div class="projects-inner">
         <div class="projects-intro">
           <p class="section-label">Saved Collection</p>
 
@@ -225,7 +301,7 @@
               id="filterAll"
               aria-label="Show all projects"
             >
-              All <span class="chip-count" id="allCount">Projects</span>
+              All <span class="chip-count" id="allCount" aria-live="polite">Projects</span>
             </button>
             <button
               class="chip"
@@ -323,12 +399,42 @@
 
         <div class="project-grid" id="projectGrid"></div>
 
-        <div class="no-results" id="noResults">
+        <div class="no-results" id="noResults" role="status" aria-live="assertive">
           <i class="fas fa-search" aria-hidden="true"></i>
           <p>No projects match your search.</p>
         </div>
       </div>
     </section>
+
+    <section class="projects-section" id="randomProjectSection">
+  <div class="projects-inner">
+
+    <div class="projects-intro">
+      <p class="section-label">Need Inspiration?</p>
+      <h2 class="section-title">
+        Can't decide what to build next?
+      </h2>
+      <p class="hero-extra">
+        Generate a random project from the current archive.
+      </p>
+    </div>
+
+    <div class="random-project-wrapper">
+      <button
+        id="randomProjectBtn"
+        class="btn btn-primary"
+      >
+        🎲 Generate Random Project
+      </button>
+
+      <div
+        id="randomProjectResult"
+        class="project-grid"
+      ></div>
+    </div>
+
+  </div>
+</section>
 
     <footer class="footer homepage-footer">
       <div class="homepage-footer-shell">
