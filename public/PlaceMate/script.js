@@ -22,6 +22,20 @@ const passwordInput =
 const logoutBtn =
   document.getElementById("logoutBtn");
 
+const downloadReportBtn =
+  document.getElementById("downloadReportBtn");
+
+const communication =
+  document.getElementById(
+    "communicationInput"
+  ).value;
+
+const development =
+  document.getElementById(
+    "developmentInput"
+  ).value;
+
+
 let isLogin = true;
 
 const progressCircle =
@@ -293,6 +307,34 @@ updateBtn.addEventListener("click", () => {
       document.getElementById("resumeInput").value
     );
 
+  const suggestions =
+    document.getElementById(
+      "resumeSuggestions"
+    );
+
+  if(resume >= 85){
+
+    suggestions.innerHTML = `
+      ✓ Excellent Resume<br>
+      ✓ Keep updating projects
+    `;
+
+  }else if(resume >= 70){
+
+    suggestions.innerHTML = `
+      ✓ Add measurable achievements<br>
+      ✓ Improve project descriptions
+    `;
+
+  }else{
+
+    suggestions.innerHTML = `
+      ✓ Add Projects<br>
+      ✓ Improve Keywords<br>
+      ✓ Add Quantified Achievements
+    `;
+  }
+
   const communication =
     parseInt(
       document.getElementById("communicationInput").value
@@ -381,6 +423,53 @@ updateBtn.addEventListener("click", () => {
   development
   });
 
+  updateAIInsights(
+  communication,
+  development,
+  aptitude,
+  resume
+  );
+
+  const badges = [];
+
+  if(dsa >= 300){
+    badges.push("🏅 DSA Master");
+  }
+
+  if(aptitude >= 90){
+    badges.push("🏅 Aptitude Expert");
+  }
+
+  if(readinessScore >= 80){
+    badges.push("🏅 Placement Ready");
+  }
+
+  if(mock >= 20){
+    badges.push("🏅 Consistency Champion");
+  }
+
+  const badgeContainer =
+    document.getElementById(
+      "badgeContainer"
+    );
+
+  if(badges.length){
+
+    badgeContainer.innerHTML =
+      badges
+        .map(
+          badge =>
+            `<div class="badge-card">${badge}</div>`
+        )
+        .join("");
+
+  }else{
+
+    badgeContainer.innerHTML =
+      `<div class="badge-card">
+        No badges earned yet
+      </div>`;
+  }
 
   const companyGrid =
     document.getElementById("companyGrid");
@@ -425,12 +514,344 @@ updateBtn.addEventListener("click", () => {
   }
 
 });
+
+function updateAIInsights(
+  communication,
+  development,
+  aptitude,
+  resume
+){
+
+  const weakAreas =
+    document.getElementById(
+      "weakAreas"
+    );
+
+  const recommendedActions =
+    document.getElementById(
+      "recommendedActions"
+    );
+
+  weakAreas.innerHTML = "";
+  recommendedActions.innerHTML = "";
+
+  const weaknesses = [];
+  const actions = [];
+
+  if (communication < 75) {
+
+    weaknesses.push(
+      "Communication"
+    );
+
+    actions.push(
+      "Practice HR questions"
+    );
+  }
+
+  if (development < 75) {
+
+    weaknesses.push(
+      "Development"
+    );
+
+    actions.push(
+      "Build one full-stack project"
+    );
+  }
+
+  if (aptitude < 75) {
+
+    weaknesses.push(
+      "Aptitude"
+    );
+
+    actions.push(
+      "Solve aptitude quizzes daily"
+    );
+  }
+
+  if (resume < 75) {
+
+    weaknesses.push(
+      "Resume"
+    );
+
+    actions.push(
+      "Improve project descriptions"
+    );
+  }
+
+  if (
+    weaknesses.length === 0
+  ) {
+
+    weakAreas.innerHTML =
+      "<li>No major weak areas detected 🎉</li>";
+
+    recommendedActions.innerHTML =
+      "<li>Keep practicing consistently</li>";
+
+    return;
+  }
+
+  weaknesses.forEach(item => {
+
+    weakAreas.innerHTML +=
+      `<li>${item}</li>`;
+  });
+
+  actions.forEach(item => {
+
+    recommendedActions.innerHTML +=
+      `<li>${item}</li>`;
+  });
+}
+
 function saveUserData(data) {
 
   localStorage.setItem(
     "placemateUserData",
     JSON.stringify(data)
   );
+}
+function generatePDFReport() {
+
+  const { jsPDF } = window.jspdf;
+
+  const doc = new jsPDF();
+  const fileDate =
+  new Date()
+    .toISOString()
+    .split("T")[0];
+
+  const username =
+    localStorage.getItem(
+      "placemateUser"
+    ) || "Guest";
+
+  const today =
+    new Date().toLocaleDateString();
+
+  const dsa =
+    document.getElementById(
+      "dsaSolved"
+    ).textContent;
+
+  const mock =
+    document.getElementById(
+      "mockSolved"
+    ).textContent;
+
+  const aptitude =
+    document.getElementById(
+      "aptitudeScore"
+    ).textContent;
+
+  const resume =
+    document.getElementById(
+      "resumeScore"
+    ).textContent;
+
+  const readiness =
+    document.getElementById(
+      "meterScore"
+    ).textContent;
+
+  const status =
+    document.getElementById(
+      "statusText"
+    ).textContent;
+
+  doc.setFontSize(20);
+
+  doc.text(
+    "PlaceMate Progress Report",
+    20,
+    10
+  );
+
+  doc.setFontSize(12);
+
+  doc.text(
+    `User: ${username}`,
+    20,
+    30
+  );
+
+  doc.text(
+    `Date: ${today}`,
+    20,
+    40
+  );
+
+  doc.text(
+    `DSA Solved: ${dsa}`,
+    20,
+    60
+  );
+
+  doc.text(
+    `Mock Interviews: ${mock}`,
+    20,
+    70
+  );
+
+  doc.text(
+    `Aptitude Score: ${aptitude}`,
+    20,
+    80
+  );
+
+  doc.text(
+    `Resume Score: ${resume}`,
+    20,
+    90
+  );
+
+  doc.text(
+    `Communication Skill: ${communication}%`,
+    20,
+    100
+  );
+
+  doc.text(
+    `Development Skill: ${development}%`,
+    20,
+    110
+  );
+
+  doc.text(
+    `Interview Readiness: ${readiness}`,
+    20,
+    120
+  );
+
+  doc.text(
+    `Status: ${status}`,
+    20,
+    130
+  );
+  let y = 150;
+
+  doc.text(
+  "Daily Goals:",
+  20,
+  y
+  );
+
+y += 10;
+
+document
+  .querySelectorAll(".goal-card")
+  .forEach(goal => {
+
+    const checked =
+      goal.querySelector(
+        "input"
+      ).checked;
+
+    const text =
+      goal.querySelector(
+        "span"
+      ).textContent;
+
+    doc.text(
+      `${checked ? "[Done]" : "[Pending]"} ${text}`,
+      25,
+      y
+    );
+
+    y += 10;
+  });
+y += 10;
+
+doc.text(
+  "Recommended Companies:",
+  20,
+  y
+);
+
+y += 10;
+
+document
+  .querySelectorAll(
+    ".company-card h3"
+  )
+  .forEach(company => {
+
+    doc.text(
+      company.textContent,
+      25,
+      y
+    );
+
+    y += 10;
+  });
+
+  const strengths = [];
+
+  if (
+    parseInt(aptitude) >= 80
+  ){
+    strengths.push("Aptitude");
+  }
+
+  if (
+    parseInt(resume) >= 80
+  ){
+    strengths.push("Resume");
+  }
+
+  y += 10;
+
+  doc.text(
+  "Strength Areas:",
+  20,
+  y
+  );
+
+  y += 10;
+
+  doc.text(
+  strengths.length
+    ? strengths.join(", ")
+    : "Keep improving all skills",
+  25,
+  y
+  );
+
+  doc.text(
+  `Generated at: ${new Date().toLocaleString()}`,
+  20,
+  280
+  );
+
+
+  
+  doc.text(
+  "Generated by PlaceMate Dashboard",
+  20,
+  290
+  );
+
+  doc.save(
+  `placemate-report-${fileDate}.pdf`
+  );
+
+
+  doc.setFontSize(10);
+
+
+}
+
+if (downloadReportBtn) {
+
+  downloadReportBtn.addEventListener(
+    "click",
+    generatePDFReport
+  );
+
 }
 
 function loadUserData() {
@@ -465,7 +886,43 @@ function loadUserData() {
   updateBtn.click();
 }
 window.addEventListener("load", () => {
+
   loadUserData();
+
+  const communication =
+    parseInt(
+      document.getElementById(
+        "communicationInput"
+      ).value
+    );
+
+  const development =
+    parseInt(
+      document.getElementById(
+        "developmentInput"
+      ).value
+    );
+
+  const aptitude =
+    parseInt(
+      document.getElementById(
+        "aptitudeInput"
+      ).value
+    );
+
+  const resume =
+    parseInt(
+      document.getElementById(
+        "resumeInput"
+      ).value
+    );
+
+  updateAIInsights(
+    communication,
+    development,
+    aptitude,
+    resume
+  );
 });
 
 /* =========================
@@ -627,6 +1084,7 @@ authBtn.addEventListener(
     showApp();
   }
 );
+
 logoutBtn.addEventListener(
   "click",
   () => {

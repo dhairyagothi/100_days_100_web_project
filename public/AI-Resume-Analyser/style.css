@@ -257,6 +257,9 @@ body {
 
 .insight-card h3 {
   margin-bottom: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .progress-bar {
@@ -400,4 +403,65 @@ body.light-mode .home-btn {
   background: rgba(0, 0, 0, 0.05);
   border: 1px solid rgba(0, 0, 0, 0.1);
   color: #0f172a;
+}
+
+.loading-section{
+  margin-bottom:40px;
+}
+
+.loading-card{
+  background:var(--card-bg);
+  border:1px solid var(--border);
+  backdrop-filter:blur(12px);
+  border-radius:20px;
+  padding:40px;
+  text-align:center;
+}
+
+.loader{
+  width:60px;
+  height:60px;
+  margin:0 auto 20px;
+
+  border:6px solid
+    rgba(255,255,255,.15);
+
+  border-top:6px solid
+    var(--blue);
+
+  border-radius:50%;
+
+  animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+  from{
+    transform:rotate(0deg);
+  }
+  to{
+    transform:rotate(360deg);
+  }
+.copy-btn{
+  margin-bottom:20px;
+  padding:10px 18px;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  font-size:14px;
+  font-weight:600;
+  background:linear-gradient(
+    135deg,
+    var(--purple),
+    var(--blue)
+  );
+  color:white;
+  transition:.3s ease;
+}
+
+.copy-btn:hover{
+  transform:translateY(-2px);
+}
+
+.copy-btn.copied{
+  opacity:.85;
 }

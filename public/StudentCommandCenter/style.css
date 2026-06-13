@@ -200,6 +200,10 @@ body {
     resize: none;
 }
 
+.notes-section h3{
+    margin:10px 0;
+}
+
 /* TIMER */
 .timer-box {
     font-size: 4rem;
@@ -276,6 +280,22 @@ body {
     background: #1e293b;
     padding: 10px 18px;
     border-radius: 10px;
+}
+
+/* STICKY NOTE STYLE */
+.note-card {
+    background: #fffa87;
+    padding: 10px;
+    min-height: 100px;
+    width: 25%;
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #333;
+    border-radius: 10px;
+    position: relative;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    word-wrap: break-word;
 }
 
 /* RESPONSIVE */
