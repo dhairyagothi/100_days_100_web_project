@@ -184,7 +184,7 @@
       "css"
     ],
     "difficulty": "beginner",
-    "projectPath": "./public/Custom Scroll Bar/index.html"
+   "projectPath": "./public/Custom-Scroll-Bar/index.html"
   },
   {
     "projectNo": 17,
@@ -2904,4 +2904,22 @@
     "difficulty": "advanced",
     "projectPath": "./public/PixelArtStudio/index.html"
   }
+]
+    "projectPath": "./public/Word_Jumble/index.html"
+  },
+  {
+    "projectNo": 230,
+    "projectName": "Beat Maker",
+    "projectType": "Music",
+    "projectDesc": "Generate beats ",
+    "techStack": [
+      "html",
+      "css",
+      "javascript",
+      "music"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/BeatMaker/demo.html"
+  }
+
 ]
