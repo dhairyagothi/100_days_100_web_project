@@ -29,3 +29,17 @@ exports.renderFoods = async (req, res) => {
     res.status(500).send("Error loading page");
   }
 };
+
+exports.getFoodById = async (req, res) => {
+  try {
+    const food = await Food.findById(req.params.id);
+
+    if (!food) {
+      return res.status(404).send("Restaurant not found");
+    }
+
+    res.render("restaurantDetail", { food });
+  } catch (err) {
+    res.status(500).send("Error fetching data");
+  }
+};
