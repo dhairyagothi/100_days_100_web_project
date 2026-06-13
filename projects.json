@@ -184,7 +184,7 @@
       "css"
     ],
     "difficulty": "beginner",
-    "projectPath": "./public/Custom Scroll Bar/index.html"
+   "projectPath": "./public/Custom-Scroll-Bar/index.html"
   },
   {
     "projectNo": 17,
@@ -2880,6 +2880,20 @@
   },
   {
     "projectNo": 228,
+    "projectName": "Beat Maker",
+    "projectType": "Music",
+    "projectDesc": "Generate beats ",
+    "techStack": [
+      "html",
+      "css",
+      "javascript",
+      "music"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/BeatMaker/demo.html"
+  },
+  {
+    "projectNo": 229,
     "projectName": "Neon Forge",
     "projectType": "Tool",
     "projectDesc": "An interactive CSS neon glow effects playground with live preview, presets, generated CSS, copy support, and PNG export.",
@@ -2891,4 +2905,5 @@
     "difficulty": "advanced",
     "projectPath": "./public/NeonForge/index.html"
 }
+
 ]

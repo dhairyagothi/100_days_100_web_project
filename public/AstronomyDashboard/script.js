@@ -3648,7 +3648,64 @@ function initFeatureAdditions() {
 
   // Notifications after 3 s to not clash with page load
   setTimeout(checkUpcomingEventNotifications, 3000);
+
 }
+
+
+// Safe theme initializer (no duplicate declarations)
+const themeToggleEl = document.getElementById("theme-toggle");
+const bodyEl = document.body;
+
+if (themeToggleEl) {
+    const saved = localStorage.getItem("theme");
+    if (saved === "light") {
+        bodyEl.classList.add("light-theme");
+    }
+
+    const updateIcon = () => {
+        if (bodyEl.classList.contains("light-theme")) {
+            themeToggleEl.textContent = "☀️";
+        } else {
+            themeToggleEl.textContent = "🌙";
+        }
+    };
+
+    themeToggleEl.addEventListener("click", () => {
+        const isLight = bodyEl.classList.toggle("light-theme");
+        localStorage.setItem("theme", isLight ? "light" : "dark");
+        updateIcon();
+    });
+
+    updateIcon();
+
+ocument.getElementByoggle
+toggle saved = localStorage.getItem("theme");
+    if (saved === "light") {
+        bodyEl.classList.add("light-theme");
+    }
+
+    const updateIcon = () => {
+        classLisht-theme")) {
+            themeToggleEl.textConten";
+        } else {
+            themeToggleEl.textContent = "🌙";t" : "dark")t);
+
+    updateIcon();
+
+avedTheme ===) {
+    body.classList.add("light-theme}
+
+
+themeToggle.addEventListener("click", () => {
+
+body.classList.toggle("light-theme"
+    if (body.classList.contains("light-theme")) {
+        localStorage.setItem("theme", "light");
+    } else {
+        localStorage.setItem("theme", "dark");
+    }
+
+});
 
 /*
 =======================================================================
