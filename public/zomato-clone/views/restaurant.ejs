@@ -20,8 +20,9 @@
 
       <% foods.forEach(item => { %>
 
-        <div class="card">
-
+      <!-- ✅ CHANGE 1: YAHI MAIN CARD HAI (onclick yahin lagaya) -->
+        <div class="card" onclick="goToDetail('<%= item._id %>')">
+ 
           <!-- IMAGE SECTION -->
           <div class="card-image-wrap">
             <img
@@ -98,6 +99,13 @@
       localStorage.setItem('zomato-theme', next);
     }
   </script>
+
+
+<script>
+function goToDetail(id) {
+  window.location.href = `/api/food/view/${id}`;
+}
+</script>
 
 </body>
 </html>
