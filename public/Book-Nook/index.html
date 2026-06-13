@@ -207,18 +207,168 @@
             <h2 id="currentShelfTitle">All Books</h2>
             <span class="book-count-badge" id="shelfBookCount">0 books</span>
           </div>
-          <button id="btnAddNewBook" class="btn-primary flex-center gap-2">
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
-              <line x1="12" y1="5" x2="12" y2="19" />
-              <line x1="5" y1="12" x2="19" y2="12" />
-            </svg>
-            <span>Log a Book</span>
-          </button>
+          <div class="workspace-header-actions">
+            <button id="btnAddNewBook" class="btn-primary flex-center gap-2">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <line x1="5" y1="12" x2="19" y2="12" />
+              </svg>
+              <span>Log a Book</span>
+            </button>
+          </div>
         </div>
 
-        <!-- Grid layout for Book cards -->
-        <div class="book-grid" id="bookGrid">
-          <!-- Dynamically populated or empty state placeholder -->
+        <!-- Tab Switcher Navigation -->
+        <div class="workspace-tabs">
+          <button class="workspace-tab active" id="tabBtnShelf">📚 My Shelf</button>
+          <button class="workspace-tab" id="tabBtnStreak">🔥 Reading Streak</button>
+          <button class="workspace-tab" id="tabBtnSocial">💬 Social Feed</button>
+        </div>
+
+        <!-- PANEL 1: Shelf (Default View) -->
+        <div id="panelShelf" class="workspace-panel">
+          <!-- Grid layout for Book cards -->
+          <div class="book-grid" id="bookGrid">
+            <!-- Dynamically populated or empty state placeholder -->
+          </div>
+        </div>
+
+        <!-- PANEL 2: Reading Streak Tracker (GitHub-style calendar grid) -->
+        <div id="panelStreak" class="workspace-panel hidden">
+          <div class="streak-analytics">
+            <div class="streak-stat-card">
+              <span class="streak-stat-icon">🔥</span>
+              <div class="streak-stat-info">
+                <span class="streak-stat-value" id="streakCurrent">0 days</span>
+                <span class="streak-stat-label">Current Streak</span>
+              </div>
+            </div>
+            <div class="streak-stat-card">
+              <span class="streak-stat-icon">🏆</span>
+              <div class="streak-stat-info">
+                <span class="streak-stat-value" id="streakLongest">0 days</span>
+                <span class="streak-stat-label">Longest Streak</span>
+              </div>
+            </div>
+            <div class="streak-stat-card">
+              <span class="streak-stat-icon">📖</span>
+              <div class="streak-stat-info">
+                <span class="streak-stat-value" id="streakTotalPages">0 pages</span>
+                <span class="streak-stat-label">Total Volume</span>
+              </div>
+            </div>
+            <div class="streak-stat-card">
+              <span class="streak-stat-icon">⏱️</span>
+              <div class="streak-stat-info">
+                <span class="streak-stat-value" id="streakTotalMinutes">0 mins</span>
+                <span class="streak-stat-label">Total Time</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="glass-card streak-log-card">
+            <h3>Log Daily Reading Session</h3>
+            <form id="streakLogForm" class="streak-log-form">
+              <div class="form-row">
+                <div class="form-group flex-1">
+                  <label for="streakLogDate">Date</label>
+                  <input type="date" id="streakLogDate" required>
+                </div>
+                <div class="form-group flex-1">
+                  <label for="streakLogPages">Pages Read</label>
+                  <input type="number" id="streakLogPages" min="1" placeholder="e.g. 20" required>
+                </div>
+                <div class="form-group flex-1">
+                  <label for="streakLogMinutes">Minutes Spent</label>
+                  <input type="number" id="streakLogMinutes" min="1" placeholder="e.g. 30" required>
+                </div>
+              </div>
+              <button type="submit" class="btn-primary btn-full flex-center gap-2">
+                <span>Save Session Log ✍️</span>
+              </button>
+            </form>
+          </div>
+
+          <div class="glass-card grid-card">
+            <div class="grid-card-header">
+              <h3>Reading Activity Grid</h3>
+              <div class="grid-legend">
+                <span>Less</span>
+                <span class="legend-cell level-0"></span>
+                <span class="legend-cell level-1"></span>
+                <span class="legend-cell level-2"></span>
+                <span class="legend-cell level-3"></span>
+                <span class="legend-cell level-4"></span>
+                <span>More</span>
+              </div>
+            </div>
+            <div class="calendar-grid-wrapper">
+              <div class="month-labels" id="monthLabels"></div>
+              <div class="calendar-grid-body">
+                <div class="day-labels">
+                  <span>Mon</span>
+                  <span>Wed</span>
+                  <span>Fri</span>
+                </div>
+                <div class="calendar-grid" id="calendarGrid"></div>
+              </div>
+            </div>
+            <p class="grid-help-text">Hover over a square to view the logged pages & minutes.</p>
+          </div>
+        </div>
+
+        <!-- PANEL 3: BookNook Social Feed (Real-time Timeline) -->
+        <div id="panelSocial" class="workspace-panel hidden">
+          <div class="glass-card social-creator-card">
+            <h3>Share Your Reading Journey</h3>
+            <form id="socialPostForm">
+              <div class="form-group">
+                <textarea id="socialPostText" rows="3" placeholder="What page are you on? Share your instant reaction or favorite quotes... 📝" required></textarea>
+              </div>
+              
+              <div class="form-row align-center justify-between">
+                <!-- Book attachment selector -->
+                <div class="form-group flex-1" style="margin-bottom: 0;">
+                  <label for="socialAttachBook" style="font-size: 0.85rem;">Tag Book (Optional)</label>
+                  <select id="socialAttachBook" class="select-dropdown-small">
+                    <option value="">-- No Book --</option>
+                  </select>
+                </div>
+                
+                <div class="form-group flex-1" style="margin-bottom: 0;">
+                  <label style="font-size: 0.85rem;">Add Cover Art</label>
+                  <div class="social-image-buttons">
+                    <button type="button" class="btn-tab-small active" id="btnSocialCoverNone">None</button>
+                    <button type="button" class="btn-tab-small" id="btnSocialCoverAttach">Book Cover</button>
+                    <button type="button" class="btn-tab-small" id="btnSocialCoverUpload">Upload 📁</button>
+                  </div>
+                  <input type="file" id="socialCoverFile" accept="image/*" class="hidden">
+                </div>
+              </div>
+
+              <!-- Preview container -->
+              <div id="socialCoverPreviewContainer" class="hidden">
+                <div class="cover-preview-wrapper">
+                  <span class="preview-close" id="btnSocialPreviewRemove">×</span>
+                  <div id="socialCoverPreview"></div>
+                </div>
+              </div>
+
+              <div class="form-actions" style="margin-top: 15px; padding-top: 0; border: none;">
+                <button type="submit" class="btn-primary flex-center gap-2" style="width: 100%;">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="22" y1="2" x2="11" y2="13" />
+                    <polygon points="22 2 15 22 11 13 2 9 22 2" />
+                  </svg>
+                  <span>Post Update to Feed 📢</span>
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <div class="social-feed-container" id="socialFeedContainer">
+            <!-- Dynamic feed items go here -->
+          </div>
         </div>
       </section>
 

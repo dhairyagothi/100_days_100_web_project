@@ -328,6 +328,15 @@ function loadLocalStorage() {
   } else {
     document.body.className = 'theme-berry-much';
   }
+
+  // Load Reading Streak logs
+  const storedStreakLogs = localStorage.getItem('cozy_nook_streak_logs');
+  if (storedStreakLogs) {
+    state.readingStreakLogs = JSON.parse(storedStreakLogs);
+  } else {
+    state.readingStreakLogs = generateDefaultStreakLogs();
+    saveStreakLogs();
+  }
 }
 
 // --- STORAGE SAVE HELPERS ---
@@ -445,7 +454,40 @@ const DOM = {
   btnCancelGoal: document.getElementById('btnCancelGoal'),
   
   // Toasts
-  toastContainer: document.getElementById('toastContainer')
+  toastContainer: document.getElementById('toastContainer'),
+
+  // Workspace Tabs navigation elements
+  tabBtnShelf: document.getElementById('tabBtnShelf'),
+  tabBtnStreak: document.getElementById('tabBtnStreak'),
+  tabBtnSocial: document.getElementById('tabBtnSocial'),
+  panelShelf: document.getElementById('panelShelf'),
+  panelStreak: document.getElementById('panelStreak'),
+  panelSocial: document.getElementById('panelSocial'),
+
+  // Reading Streak elements
+  streakCurrent: document.getElementById('streakCurrent'),
+  streakLongest: document.getElementById('streakLongest'),
+  streakTotalPages: document.getElementById('streakTotalPages'),
+  streakTotalMinutes: document.getElementById('streakTotalMinutes'),
+  streakLogForm: document.getElementById('streakLogForm'),
+  streakLogDate: document.getElementById('streakLogDate'),
+  streakLogPages: document.getElementById('streakLogPages'),
+  streakLogMinutes: document.getElementById('streakLogMinutes'),
+  calendarGrid: document.getElementById('calendarGrid'),
+  monthLabels: document.getElementById('monthLabels'),
+
+  // Social feed inputs
+  socialPostForm: document.getElementById('socialPostForm'),
+  socialPostText: document.getElementById('socialPostText'),
+  socialAttachBook: document.getElementById('socialAttachBook'),
+  btnSocialCoverNone: document.getElementById('btnSocialCoverNone'),
+  btnSocialCoverAttach: document.getElementById('btnSocialCoverAttach'),
+  btnSocialCoverUpload: document.getElementById('btnSocialCoverUpload'),
+  socialCoverFile: document.getElementById('socialCoverFile'),
+  socialCoverPreviewContainer: document.getElementById('socialCoverPreviewContainer'),
+  socialCoverPreview: document.getElementById('socialCoverPreview'),
+  btnSocialPreviewRemove: document.getElementById('btnSocialPreviewRemove'),
+  socialFeedContainer: document.getElementById('socialFeedContainer')
 };
 
 // --- EVENT ROUTING & TRIGGERS ---
@@ -700,6 +742,170 @@ function registerEvents() {
     showToast(`💌 ${nameStr} joined your Nook Circle!`);
     renderFriendsPanel();
   });
+
+  // Workspace Tab switch events
+  if (DOM.tabBtnShelf) DOM.tabBtnShelf.addEventListener('click', () => switchWorkspaceTab('shelf'));
+  if (DOM.tabBtnStreak) DOM.tabBtnStreak.addEventListener('click', () => switchWorkspaceTab('streak'));
+  if (DOM.tabBtnSocial) DOM.tabBtnSocial.addEventListener('click', () => switchWorkspaceTab('social'));
+
+  // Reading Streak Log Submit
+  if (DOM.streakLogForm) {
+    DOM.streakLogForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      playSound('write');
+      
+      const logDate = DOM.streakLogDate.value;
+      const logPages = parseInt(DOM.streakLogPages.value) || 0;
+      const logMinutes = parseInt(DOM.streakLogMinutes.value) || 0;
+      
+      if (!logDate || logPages <= 0 || logMinutes <= 0) {
+        showToast('⚠️ Please fill out all fields with valid numbers!');
+        return;
+      }
+      
+      if (!state.readingStreakLogs) state.readingStreakLogs = [];
+      
+      // Remove any existing log for this date to overwrite it
+      state.readingStreakLogs = state.readingStreakLogs.filter(log => log.date !== logDate);
+      
+      state.readingStreakLogs.push({
+        date: logDate,
+        pages: logPages,
+        minutes: logMinutes
+      });
+      
+      saveStreakLogs();
+      calculateStreakStats();
+      renderContributionGrid();
+      
+      // Clear inputs
+      DOM.streakLogPages.value = '';
+      DOM.streakLogMinutes.value = '';
+      
+      playSound('chime');
+      showToast('🎯 Reading session logged successfully!');
+    });
+  }
+
+  // Social feed book attachment cover selectors
+  if (DOM.socialAttachBook) {
+    DOM.socialAttachBook.addEventListener('change', () => {
+      if (socialCoverSelection === 'attach') {
+        updateSocialCoverPanel();
+      }
+    });
+  }
+
+  if (DOM.btnSocialCoverNone) {
+    DOM.btnSocialCoverNone.addEventListener('click', () => {
+      playSound('flip');
+      socialCoverSelection = 'none';
+      updateSocialCoverPanel();
+    });
+  }
+
+  if (DOM.btnSocialCoverAttach) {
+    DOM.btnSocialCoverAttach.addEventListener('click', () => {
+      playSound('flip');
+      socialCoverSelection = 'attach';
+      updateSocialCoverPanel();
+    });
+  }
+
+  if (DOM.btnSocialCoverUpload) {
+    DOM.btnSocialCoverUpload.addEventListener('click', () => {
+      playSound('flip');
+      DOM.socialCoverFile.click();
+    });
+  }
+
+  if (DOM.socialCoverFile) {
+    DOM.socialCoverFile.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        playSound('write');
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          socialCoverBase64 = event.target.result;
+          socialCoverSelection = 'upload';
+          updateSocialCoverPanel();
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  }
+
+  if (DOM.btnSocialPreviewRemove) {
+    DOM.btnSocialPreviewRemove.addEventListener('click', () => {
+      playSound('delete');
+      socialCoverSelection = 'none';
+      socialCoverBase64 = null;
+      updateSocialCoverPanel();
+    });
+  }
+
+  // Social feed Post creator form submit
+  if (DOM.socialPostForm) {
+    DOM.socialPostForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      playSound('write');
+      
+      const message = DOM.socialPostText.value.trim();
+      const bookId = DOM.socialAttachBook.value;
+      
+      if (!message) {
+        showToast('⚠️ Please write down a message to post!');
+        return;
+      }
+      
+      let bookTitle = '';
+      let bookAuthor = '';
+      let coverColors = '';
+      let image = null;
+      
+      if (bookId) {
+        const book = state.books.find(b => b.id === bookId);
+        if (book) {
+          bookTitle = book.title;
+          bookAuthor = book.author;
+          coverColors = book.coverColors;
+        }
+      }
+      
+      if (socialCoverSelection === 'upload' && socialCoverBase64) {
+        image = socialCoverBase64;
+      }
+
+      // Add to feed state
+      const newPost = {
+        id: 'user-post-' + Date.now(),
+        sender: 'You',
+        message: message,
+        bookTitle: bookTitle || undefined,
+        bookAuthor: bookAuthor || undefined,
+        coverColors: coverColors || undefined,
+        image: image || undefined,
+        timestamp: 'Just now',
+        likes: [],
+        comments: []
+      };
+
+      if (!state.feed) state.feed = [];
+      state.feed.push(newPost);
+      saveFeed();
+
+      // Clear creator fields
+      DOM.socialPostText.value = '';
+      DOM.socialAttachBook.value = '';
+      socialCoverSelection = 'none';
+      socialCoverBase64 = null;
+      updateSocialCoverPanel();
+
+      renderSocialFeedList();
+      playSound('chime');
+      showToast('📢 Reading journey update shared to community feed!');
+    });
+  }
 }
 
 // --- RENDER ROUTING MANAGER ---
@@ -1528,4 +1734,477 @@ function showToast(message) {
       toast.remove();
     }, 400);
   }, 4000);
+}
+
+// --- WORKSPACE TAB SWITCHER ---
+function switchWorkspaceTab(tab) {
+  playSound('flip');
+  DOM.tabBtnShelf.classList.remove('active');
+  DOM.tabBtnStreak.classList.remove('active');
+  DOM.tabBtnSocial.classList.remove('active');
+  
+  DOM.panelShelf.classList.add('hidden');
+  DOM.panelStreak.classList.add('hidden');
+  DOM.panelSocial.classList.add('hidden');
+  
+  if (tab === 'shelf') {
+    DOM.tabBtnShelf.classList.add('active');
+    DOM.panelShelf.classList.remove('hidden');
+    renderBooksGrid();
+  } else if (tab === 'streak') {
+    DOM.tabBtnStreak.classList.add('active');
+    DOM.panelStreak.classList.remove('hidden');
+    initReadingStreak();
+  } else if (tab === 'social') {
+    DOM.tabBtnSocial.classList.add('active');
+    DOM.panelSocial.classList.remove('hidden');
+    initSocialFeed();
+  }
+}
+
+// --- READING STREAK LOGIC ---
+function saveStreakLogs() {
+  localStorage.setItem('cozy_nook_streak_logs', JSON.stringify(state.readingStreakLogs));
+}
+
+function generateDefaultStreakLogs() {
+  const logs = [];
+  const today = new Date();
+  for (let i = 0; i < 45; i++) {
+    if (Math.random() > 0.4) {
+      const logDate = new Date(today);
+      logDate.setDate(today.getDate() - i);
+      const pages = Math.floor(Math.random() * 35) + 10;
+      const minutes = Math.floor(Math.random() * 40) + 15;
+      logs.push({
+        date: formatDateString(logDate),
+        pages: pages,
+        minutes: minutes
+      });
+    }
+  }
+  return logs;
+}
+
+function formatDateString(date) {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  const d = String(date.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+}
+
+function initReadingStreak() {
+  const todayStr = formatDateString(new Date());
+  DOM.streakLogDate.value = todayStr;
+  DOM.streakLogDate.max = todayStr;
+
+  calculateStreakStats();
+  renderContributionGrid();
+}
+
+function calculateStreakStats() {
+  const logs = state.readingStreakLogs || [];
+  
+  let totalPages = 0;
+  let totalMinutes = 0;
+  logs.forEach(log => {
+    totalPages += parseInt(log.pages) || 0;
+    totalMinutes += parseInt(log.minutes) || 0;
+  });
+
+  const uniqueDates = new Set(logs.map(log => log.date));
+  
+  let currentStreak = 0;
+  let longestStreak = 0;
+  
+  let checkDate = new Date();
+  
+  let readToday = uniqueDates.has(formatDateString(checkDate));
+  if (!readToday) {
+    checkDate.setDate(checkDate.getDate() - 1);
+  }
+  
+  while (uniqueDates.has(formatDateString(checkDate))) {
+    currentStreak++;
+    checkDate.setDate(checkDate.getDate() - 1);
+  }
+
+  let tempStreak = 0;
+  const sortedUniqueDates = Array.from(uniqueDates)
+    .map(d => new Date(d))
+    .sort((a, b) => a - b);
+
+  let prevDate = null;
+  sortedUniqueDates.forEach(date => {
+    if (prevDate === null) {
+      tempStreak = 1;
+    } else {
+      const diffTime = Math.abs(date - prevDate);
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      if (diffDays === 1) {
+        tempStreak++;
+      } else if (diffDays > 1) {
+        if (tempStreak > longestStreak) {
+          longestStreak = tempStreak;
+        }
+        tempStreak = 1;
+      }
+    }
+    prevDate = date;
+  });
+  if (tempStreak > longestStreak) {
+    longestStreak = tempStreak;
+  }
+
+  DOM.streakCurrent.textContent = `${currentStreak} day${currentStreak !== 1 ? 's' : ''}`;
+  DOM.streakLongest.textContent = `${longestStreak} day${longestStreak !== 1 ? 's' : ''}`;
+  DOM.streakTotalPages.textContent = `${totalPages} page${totalPages !== 1 ? 's' : ''}`;
+  DOM.streakTotalMinutes.textContent = `${totalMinutes} min${totalMinutes !== 1 ? 's' : ''}`;
+}
+
+function renderContributionGrid() {
+  DOM.calendarGrid.innerHTML = '';
+  DOM.monthLabels.innerHTML = '';
+  
+  const today = new Date();
+  
+  const startDate = new Date(today);
+  startDate.setDate(today.getDate() - 364);
+  const startDay = startDate.getDay();
+  startDate.setDate(startDate.getDate() - startDay);
+  
+  const logMap = {};
+  (state.readingStreakLogs || []).forEach(log => {
+    logMap[log.date] = (logMap[log.date] || 0) + (parseInt(log.pages) || 0);
+  });
+
+  const tempDate = new Date(startDate);
+  const totalDays = 371;
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  let currentMonthIndex = -1;
+  
+  for (let i = 0; i < totalDays; i++) {
+    const dateStr = formatDateString(tempDate);
+    const volume = logMap[dateStr] || 0;
+    
+    let level = 0;
+    if (volume > 0 && volume <= 15) level = 1;
+    else if (volume > 15 && volume <= 30) level = 2;
+    else if (volume > 30 && volume <= 50) level = 3;
+    else if (volume > 50) level = 4;
+    
+    if (tempDate.getDay() === 0) {
+      const month = tempDate.getMonth();
+      if (month !== currentMonthIndex) {
+        currentMonthIndex = month;
+        const colIndex = Math.floor(i / 7);
+        const monthLabel = document.createElement('span');
+        monthLabel.className = 'month-label';
+        monthLabel.textContent = months[month];
+        monthLabel.style.left = `${colIndex * 14 + 30}px`;
+        DOM.monthLabels.appendChild(monthLabel);
+      }
+    }
+
+    const cell = document.createElement('div');
+    cell.className = `grid-cell level-${level}`;
+    cell.dataset.date = dateStr;
+    
+    const readableDate = tempDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    const tooltipText = volume > 0 
+      ? `${readableDate}: Read ${volume} pages` 
+      : `${readableDate}: No reading logged`;
+    cell.setAttribute('data-tooltip', tooltipText);
+    
+    DOM.calendarGrid.appendChild(cell);
+    tempDate.setDate(tempDate.getDate() + 1);
+  }
+}
+
+// --- BOOKNOOK SOCIAL FEED LOGIC ---
+let socialCoverSelection = 'none';
+let socialCoverBase64 = null;
+
+function initSocialFeed() {
+  populateSocialBookDropdown();
+  updateSocialCoverPanel();
+  renderSocialFeedList();
+}
+
+function populateSocialBookDropdown() {
+  DOM.socialAttachBook.innerHTML = '<option value="">-- No Book --</option>';
+  state.books.forEach(book => {
+    const opt = document.createElement('option');
+    opt.value = book.id;
+    opt.textContent = `${book.title} (${book.author})`;
+    DOM.socialAttachBook.appendChild(opt);
+  });
+}
+
+function updateSocialCoverPanel() {
+  DOM.btnSocialCoverNone.classList.remove('active');
+  DOM.btnSocialCoverAttach.classList.remove('active');
+  DOM.btnSocialCoverUpload.classList.remove('active');
+  
+  if (socialCoverSelection === 'none') {
+    DOM.btnSocialCoverNone.classList.add('active');
+    DOM.socialCoverPreviewContainer.classList.add('hidden');
+  } else if (socialCoverSelection === 'attach') {
+    DOM.btnSocialCoverAttach.classList.add('active');
+    
+    const bookId = DOM.socialAttachBook.value;
+    if (!bookId) {
+      socialCoverSelection = 'none';
+      DOM.btnSocialCoverNone.classList.add('active');
+      DOM.socialCoverPreviewContainer.classList.add('hidden');
+      showToast('⚠️ Please select a book to attach its cover!');
+      return;
+    }
+    
+    const book = state.books.find(b => b.id === bookId);
+    if (book) {
+      DOM.socialCoverPreviewContainer.classList.remove('hidden');
+      DOM.socialCoverPreview.innerHTML = renderBookCoverSVGHtml(book);
+    }
+  } else if (socialCoverSelection === 'upload') {
+    DOM.btnSocialCoverUpload.classList.add('active');
+    if (socialCoverBase64) {
+      DOM.socialCoverPreviewContainer.classList.remove('hidden');
+      DOM.socialCoverPreview.innerHTML = `<img src="${socialCoverBase64}" style="width:100%; height:100%; object-fit:cover;">`;
+    } else {
+      DOM.socialCoverPreviewContainer.classList.add('hidden');
+    }
+  }
+}
+
+function renderBookCoverSVGHtml(book) {
+  const title = book.title || 'Untitled';
+  const author = book.author || 'Unknown';
+  const colors = (book.coverColors || '#7c3a2b,#4a1d13').split(',');
+  const c1 = colors[0];
+  const c2 = colors[1] || colors[0];
+  
+  return `
+    <svg viewBox="0 0 120 180" style="width: 100%; height: 100%; border-radius: 4px; box-shadow: var(--shadow-sm);">
+      <defs>
+        <linearGradient id="feed-grad-${book.id}" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="${c1}" />
+          <stop offset="100%" stop-color="${c2}" />
+        </linearGradient>
+      </defs>
+      <rect width="120" height="180" fill="url(#feed-grad-${book.id})" />
+      <rect x="5" y="5" width="110" height="170" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1" />
+      <line x1="12" y1="0" x2="12" y2="180" stroke="rgba(0,0,0,0.2)" stroke-width="2" />
+      
+      <!-- Text contents -->
+      <text x="65" y="45" font-family="'Gaegu', cursive" font-size="11" fill="#ffffff" font-weight="bold" text-anchor="middle" width="90">
+        ${title.substring(0, 15)}
+      </text>
+      <text x="65" y="145" font-family="'Gaegu', cursive" font-size="8" fill="rgba(255,255,255,0.8)" text-anchor="middle">
+        ${author.substring(0, 20)}
+      </text>
+    </svg>
+  `;
+}
+
+function renderSocialFeedList() {
+  DOM.socialFeedContainer.innerHTML = '';
+  
+  const feedItems = state.feed || [];
+  const reversedFeed = [...feedItems].reverse();
+
+  reversedFeed.forEach(post => {
+    const card = document.createElement('div');
+    card.className = 'social-post-card';
+    
+    let avatarColor = 'var(--primary-accent)';
+    let initials = 'U';
+    
+    if (post.sender === 'You') {
+      avatarColor = 'var(--primary-accent)';
+      initials = 'Y';
+    } else {
+      const friendObj = state.friends.find(f => f.name === post.sender);
+      if (friendObj) {
+        avatarColor = friendObj.color;
+        initials = friendObj.initials;
+      } else {
+        initials = post.sender.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+        avatarColor = 'var(--pink-rose)';
+      }
+    }
+
+    let bookEmbedHtml = '';
+    if (post.bookTitle) {
+      let bookCoverHtml = '';
+      if (post.image) {
+        bookCoverHtml = `<img src="${post.image}" style="width:100%; height:100%; object-fit:cover;">`;
+      } else {
+        const tempBook = {
+          id: post.id + '-book',
+          title: post.bookTitle,
+          author: post.bookAuthor || '',
+          coverColors: post.coverColors || '#7c3a2b,#4a1d13'
+        };
+        bookCoverHtml = renderBookCoverSVGHtml(tempBook);
+      }
+      
+      bookEmbedHtml = `
+        <div class="post-book-embed">
+          <div class="post-book-cover">${bookCoverHtml}</div>
+          <div class="post-book-info">
+            <span class="post-book-title">${post.bookTitle}</span>
+            <span class="post-book-author">${post.bookAuthor || ''}</span>
+          </div>
+        </div>
+      `;
+    }
+
+    const postLikes = post.likes || [];
+    const isLiked = postLikes.includes('You');
+    const likesCount = postLikes.length;
+    
+    const postComments = post.comments || [];
+    let commentsListHtml = '';
+    postComments.forEach(comment => {
+      commentsListHtml += `
+        <div class="comment-item">
+          <span class="comment-user">${comment.sender}:</span>
+          <span class="comment-text">${comment.text}</span>
+        </div>
+      `;
+    });
+
+    card.innerHTML = `
+      <div class="post-header">
+        <div class="post-avatar" style="background-color: ${avatarColor};">${initials}</div>
+        <div class="post-user-info">
+          <span class="post-author">${post.sender}</span>
+          <span class="post-time">${post.timestamp || 'Just now'}</span>
+        </div>
+      </div>
+      
+      <p class="post-content">${post.message}</p>
+      
+      ${bookEmbedHtml}
+      
+      <div class="post-actions">
+        <button class="post-action-btn btn-like-toggle ${isLiked ? 'liked' : ''}" data-post-id="${post.id}">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="${isLiked ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2">
+            <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+          </svg>
+          <span>${likesCount} Like${likesCount !== 1 ? 's' : ''}</span>
+        </button>
+        <button class="post-action-btn btn-comment-focus" data-post-id="${post.id}">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+          </svg>
+          <span>${postComments.length} Comment${postComments.length !== 1 ? 's' : ''}</span>
+        </button>
+      </div>
+      
+      <div class="post-comments-section">
+        <div class="comments-list" id="commentsList-${post.id}">
+          ${commentsListHtml || '<p style="font-size:0.8rem; color:var(--text-secondary); margin:0;">No comments yet. Start the conversation!</p>'}
+        </div>
+        <form class="comment-input-row" data-post-id="${post.id}">
+          <input type="text" placeholder="Write a comment..." class="comment-input" required>
+          <button type="submit" class="btn-comment-submit" title="Post Comment">
+            <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="22" y1="2" x2="11" y2="13" />
+              <polygon points="22 2 15 22 11 13 2 9 22 2" />
+            </svg>
+          </button>
+        </form>
+      </div>
+    `;
+
+    const btnLike = card.querySelector('.btn-like-toggle');
+    btnLike.addEventListener('click', () => togglePostLike(post.id));
+
+    const btnCommentFocus = card.querySelector('.btn-comment-focus');
+    btnCommentFocus.addEventListener('click', () => {
+      card.querySelector('.comment-input').focus();
+    });
+
+    const commentForm = card.querySelector('.comment-input-row');
+    commentForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const input = commentForm.querySelector('.comment-input');
+      submitComment(post.id, input.value);
+      input.value = '';
+    });
+
+    DOM.socialFeedContainer.appendChild(card);
+  });
+}
+
+function togglePostLike(postId) {
+  playSound('flip');
+  const post = state.feed.find(item => item.id === postId);
+  if (!post) return;
+  
+  if (!post.likes) post.likes = [];
+  
+  const userLikeIndex = post.likes.indexOf('You');
+  if (userLikeIndex > -1) {
+    post.likes.splice(userLikeIndex, 1);
+  } else {
+    post.likes.push('You');
+    playSound('chime');
+  }
+  
+  saveFeed();
+  renderSocialFeedList();
+}
+
+function submitComment(postId, text) {
+  playSound('write');
+  const post = state.feed.find(item => item.id === postId);
+  if (!post) return;
+  
+  if (!post.comments) post.comments = [];
+  
+  post.comments.push({
+    sender: 'You',
+    text: text.trim(),
+    timestamp: 'Just now'
+  });
+  
+  saveFeed();
+  renderSocialFeedList();
+  
+  triggerMockFriendCommentReply(post);
+}
+
+function triggerMockFriendCommentReply(post) {
+  if (Math.random() > 0.6) {
+    const potentialFriends = state.friends;
+    if (potentialFriends.length === 0) return;
+    
+    const randomFriend = potentialFriends[Math.floor(Math.random() * potentialFriends.length)];
+    
+    const mockReplies = [
+      "I was thinking the exact same thing! 🤩",
+      "That is a great observation.",
+      "Totally agree with this! 📖❤️",
+      "Wait, really? I need to re-read that chapter now!",
+      "Oh, I loved that part too! 😊",
+      "Yes! The character development there is unmatched."
+    ];
+    
+    setTimeout(() => {
+      post.comments.push({
+        sender: randomFriend.name,
+        text: mockReplies[Math.floor(Math.random() * mockReplies.length)],
+        timestamp: 'Just now'
+      });
+      saveFeed();
+      if (DOM.tabBtnSocial.classList.contains('active')) {
+        renderSocialFeedList();
+        playSound('chime');
+        showToast(`💬 New comment on feed from ${randomFriend.name}!`);
+      }
+    }, 3500);
+  }
 }
