@@ -1902,5 +1902,19 @@
     "techStack": ["ui","game","html","css","js"],
     "difficulty": "intermediate",
     "projectPath": "./public/Rock_Paper_Scissors/index.html"
-  }
-]
+  },
+
+    {
+      "projectNo": 228,
+      "projectName": "Blinkit-clone",
+      "projectType": "Clone",
+      "projectDesc": "A high-fidelity Blinkit quick-commerce clone with OTP login, cart drawer, coupon codes, live order tracking, delivery animation built with React and Vite.",
+      "techStack": [
+        "react",
+        "vite",
+        "css"
+      ],
+      "difficulty": "advanced",
+      "projectPath": "./public/blinkit-clone/index.html"
+    }
+  ]
