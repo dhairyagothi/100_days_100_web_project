@@ -5,7 +5,7 @@
     "projectType": "Tool",
     "projectDesc": "Manage daily tasks efficiently with an interactive checklist system. Add, track and organize activities using a simple productivity-focused interface.",
     "techStack": [
-      "javascript",
+      "javascript",  
       "todo"
     ],
     "difficulty": "beginner",
@@ -1673,7 +1673,7 @@
     "projectDesc": "Machine learning project predicting sales trends from input data.",
     "techStack": [
       "machine",
-      "learning",
+      "learning",  
       "python",
       "javascript"
     ],

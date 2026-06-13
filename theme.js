@@ -1,3 +1,4 @@
+
 (function initSharedTheme() {
   const STORAGE_KEY = "theme";
   const THEMES = new Set(["dark", "light", "sepia", "cyberpunk", "nord"]);

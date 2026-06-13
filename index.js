@@ -119,6 +119,8 @@ function loadProjects() {
         `${base}projects.json`,
         window.location.href,
       ).toString();
+      
+console.log("Projects URL:", projectsUrl);
       try {
         const response = await fetch(projectsUrl);
         if (!response.ok) {
