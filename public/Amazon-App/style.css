@@ -1424,7 +1424,6 @@ body.dark-theme .home-icon { color: #94a3b8; }
     line-height: 1.4;
     margin: 0 0 4px;
     display: -webkit-box;
-    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
@@ -1857,7 +1856,6 @@ body.dark-theme .home-icon { color: #94a3b8; }
     color: #0f1111;
     margin: 0 0 4px;
     display: -webkit-box;
-    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
     line-height: 1.4;
@@ -2178,4 +2176,904 @@ body.dark-theme .home-icon { color: #94a3b8; }
 
 .cart-empty-msg p {
     font-size: 16px;
+}
+/* ==========================================================================
+   GIFT CARD PAGE STYLES
+   ========================================================================== */
+
+/* ---- Active nav link for Gift Cards ---- */
+#nav-gift-cards-active {
+    color: #ff9900;
+    font-weight: 700;
+    border-bottom: 2px solid #ff9900;
+}
+
+/* ---- Hero Banner ---- */
+.gc-hero {
+    background: linear-gradient(135deg, #232f3e 0%, #131921 50%, #1a2332 100%);
+    padding: 50px 20px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.gc-hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,153,0,0.08) 0%, transparent 60%);
+    animation: gcHeroPulse 8s ease-in-out infinite;
+}
+
+@keyframes gcHeroPulse {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.1); opacity: 1; }
+}
+
+.gc-hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.gc-hero-icon {
+    font-size: 52px;
+    display: block;
+    margin-bottom: 12px;
+    animation: gcBounce 2s ease infinite;
+}
+
+@keyframes gcBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+.gc-hero-title {
+    font-size: 36px;
+    font-weight: 800;
+    color: #ff9900;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+}
+
+.gc-hero-subtitle {
+    font-size: 17px;
+    color: #aab8c8;
+    font-weight: 400;
+}
+
+/* ---- Balance Bar ---- */
+.gc-balance-bar {
+    background: linear-gradient(90deg, #fef9e7, #fffdf5, #fef9e7);
+    border-bottom: 2px solid #ffd814;
+    padding: 14px 20px;
+    text-align: center;
+}
+
+.gc-balance-inner {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    color: #0f1111;
+}
+
+.gc-balance-inner i {
+    color: #ff9900;
+    font-size: 20px;
+}
+
+.gc-balance-inner strong {
+    font-size: 22px;
+    color: #067d62;
+    font-weight: 800;
+}
+
+/* ---- Section Wrapper ---- */
+.gc-section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 36px 20px;
+}
+
+.gc-section-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #0f1111;
+    margin-bottom: 24px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid #ff9900;
+    display: inline-block;
+}
+
+/* ---- Card Grid ---- */
+.gc-card-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+/* ---- Individual Gift Card ---- */
+.gc-card {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    position: relative;
+}
+
+.gc-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 36px rgba(0,0,0,0.14);
+    border-color: #ff9900;
+}
+
+.gc-card-image-wrap {
+    position: relative;
+    background: linear-gradient(135deg, #f8f9fa, #eef0f2);
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 220px;
+    overflow: hidden;
+}
+
+.gc-card-image-wrap img {
+    max-width: 100%;
+    max-height: 180px;
+    object-fit: contain;
+    border-radius: 8px;
+    transition: transform 0.4s ease;
+}
+
+.gc-card:hover .gc-card-image-wrap img {
+    transform: scale(1.05);
+}
+
+.gc-card-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.3px;
+    box-shadow: 0 2px 8px rgba(238,90,36,0.3);
+}
+
+.gc-badge-gold {
+    background: linear-gradient(135deg, #f39c12, #e67e22);
+    box-shadow: 0 2px 8px rgba(243,156,18,0.3);
+}
+
+.gc-badge-green {
+    background: linear-gradient(135deg, #00b894, #00a378);
+    box-shadow: 0 2px 8px rgba(0,184,148,0.3);
+}
+
+.gc-card-body {
+    padding: 20px;
+}
+
+.gc-card-body h3 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #0f1111;
+    margin-bottom: 6px;
+}
+
+.gc-card-body p {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 16px;
+    line-height: 1.5;
+}
+
+/* ---- Amount Input Row ---- */
+.gc-amount-row {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.gc-amount-input-wrap {
+    display: flex;
+    align-items: center;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: border-color 0.25s ease;
+}
+
+.gc-amount-input-wrap:focus-within {
+    border-color: #ff9900;
+    box-shadow: 0 0 0 3px rgba(255,153,0,0.1);
+}
+
+.gc-currency {
+    padding: 10px 12px;
+    background: #f5f5f5;
+    font-weight: 700;
+    font-size: 16px;
+    color: #333;
+    border-right: 2px solid #ddd;
+}
+
+.gc-amount-input {
+    flex: 1;
+    padding: 10px 12px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #0f1111;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-family: inherit;
+}
+
+.gc-amount-input::placeholder {
+    color: #bbb;
+    font-weight: 400;
+}
+
+.gc-quick-amounts {
+    display: flex;
+    gap: 8px;
+}
+
+.gc-quick-btn {
+    flex: 1;
+    padding: 7px 10px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #0f1111;
+    background: #f5f5f5;
+    border: 1px solid #d5d5d5;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.gc-quick-btn:hover {
+    background: #fff3cd;
+    border-color: #ff9900;
+    color: #e67e22;
+}
+
+.gc-quick-btn.active {
+    background: #fff3cd;
+    border-color: #ff9900;
+    color: #e67e22;
+    box-shadow: 0 0 0 2px rgba(255,153,0,0.15);
+}
+
+/* ---- Buy Button ---- */
+.gc-buy-btn {
+    width: 100%;
+    padding: 12px 20px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #0f1111;
+    background: linear-gradient(180deg, #ffd814, #f7ca00);
+    border: 1px solid #c7a500;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    box-shadow: 0 2px 5px rgba(15,17,17,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.gc-buy-btn:hover {
+    background: linear-gradient(180deg, #f5c400, #e6b800);
+    box-shadow: 0 4px 10px rgba(15,17,17,0.2);
+    transform: translateY(-1px);
+}
+
+.gc-buy-btn:active {
+    transform: scale(0.97);
+    box-shadow: none;
+}
+
+/* ---- Redeem Section ---- */
+.gc-redeem-section {
+    background: #f5f5f5;
+    margin: 0;
+    max-width: none;
+    padding: 40px 20px;
+}
+
+.gc-redeem-box {
+    max-width: 1000px;
+    margin: 0 auto;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 32px;
+    display: flex;
+    gap: 32px;
+    align-items: center;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+
+.gc-redeem-left {
+    flex: 0 0 300px;
+}
+
+.gc-redeem-left h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #0f1111;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.gc-redeem-left h2 i {
+    color: #ff9900;
+}
+
+.gc-redeem-left p {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.6;
+}
+
+.gc-redeem-right {
+    flex: 1;
+}
+
+.gc-redeem-input-group {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.gc-redeem-input-group input {
+    flex: 1;
+    padding: 14px 16px;
+    font-size: 16px;
+    font-weight: 500;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    color: #0f1111;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: border-color 0.25s ease;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.gc-redeem-input-group input:focus {
+    border-color: #ff9900;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(255,153,0,0.1);
+}
+
+.gc-redeem-btn {
+    padding: 14px 24px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #0f1111;
+    background: linear-gradient(180deg, #ffd814, #f7ca00);
+    border: 1px solid #c7a500;
+    border-radius: 8px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.25s ease;
+    box-shadow: 0 2px 5px rgba(15,17,17,0.15);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.gc-redeem-btn:hover {
+    background: linear-gradient(180deg, #f5c400, #e6b800);
+    box-shadow: 0 4px 10px rgba(15,17,17,0.2);
+}
+
+.gc-redeem-msg {
+    margin-top: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    min-height: 20px;
+}
+
+.gc-redeem-msg.success {
+    color: #067d62;
+}
+
+.gc-redeem-msg.error {
+    color: #cc0c39;
+}
+
+/* ---- Gift Card History ---- */
+.gc-history-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+}
+
+.gc-history-card {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: all 0.25s ease;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+
+.gc-history-card:hover {
+    box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+}
+
+.gc-history-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+}
+
+.gc-history-icon.birthday { background: linear-gradient(135deg, #fee2e2, #fecaca); }
+.gc-history-icon.classic { background: linear-gradient(135deg, #dbeafe, #bfdbfe); }
+.gc-history-icon.thankyou { background: linear-gradient(135deg, #fef3c7, #fde68a); }
+
+.gc-history-details {
+    flex: 1;
+}
+
+.gc-history-details h4 {
+    font-size: 15px;
+    font-weight: 700;
+    color: #0f1111;
+    margin-bottom: 4px;
+}
+
+.gc-history-details .gc-history-code {
+    font-size: 12px;
+    color: #888;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 1px;
+}
+
+.gc-history-amount {
+    font-size: 18px;
+    font-weight: 800;
+    color: #067d62;
+}
+
+.gc-history-status {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 12px;
+    margin-top: 4px;
+    display: inline-block;
+}
+
+.gc-history-status.active {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.gc-history-status.redeemed {
+    background: #f0f0f0;
+    color: #888;
+}
+
+/* ---- Features Footer ---- */
+.gc-features {
+    background: linear-gradient(135deg, #232f3e, #1a2332);
+    padding: 28px 20px;
+    display: flex;
+    justify-content: center;
+    gap: 60px;
+    flex-wrap: wrap;
+}
+
+.gc-feature-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    color: #fff;
+}
+
+.gc-feature-item i {
+    font-size: 28px;
+    color: #ff9900;
+}
+
+.gc-feature-item strong {
+    display: block;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.gc-feature-item span {
+    font-size: 12px;
+    color: #aab8c8;
+}
+
+/* ---- Success Modal ---- */
+.gc-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.gc-modal-overlay.active {
+    display: flex;
+}
+
+.gc-modal {
+    background: #fff;
+    border-radius: 16px;
+    padding: 40px;
+    max-width: 440px;
+    width: 90%;
+    text-align: center;
+    position: relative;
+    animation: gcModalPop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+}
+
+@keyframes gcModalPop {
+    from { opacity: 0; transform: scale(0.8) translateY(20px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.gc-modal-close {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    font-size: 28px;
+    background: none;
+    color: #888;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.gc-modal-close:hover {
+    color: #333;
+}
+
+.gc-modal-icon {
+    font-size: 54px;
+    margin-bottom: 8px;
+}
+
+.gc-modal h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #0f1111;
+    margin-bottom: 6px;
+}
+
+.gc-modal-amount {
+    font-size: 36px;
+    font-weight: 800;
+    color: #067d62;
+    margin-bottom: 20px;
+}
+
+.gc-modal-code-box {
+    background: #f8f9fa;
+    border: 2px dashed #ddd;
+    border-radius: 10px;
+    padding: 18px;
+    margin-bottom: 16px;
+}
+
+.gc-modal-code-box label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.gc-modal-code {
+    font-size: 26px;
+    font-weight: 800;
+    color: #0f1111;
+    letter-spacing: 3px;
+    font-family: 'Courier New', Courier, monospace;
+    margin-bottom: 12px;
+    user-select: all;
+}
+
+.gc-copy-btn {
+    padding: 8px 20px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #0f1111;
+    background: #ffd814;
+    border: 1px solid #c7a500;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.gc-copy-btn:hover {
+    background: #f5c400;
+}
+
+.gc-modal-hint {
+    font-size: 13px;
+    color: #888;
+    margin-top: 8px;
+}
+
+/* ---- Responsive Gift Cards ---- */
+@media (max-width: 900px) {
+    .gc-card-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .gc-redeem-box {
+        flex-direction: column;
+        text-align: center;
+    }
+    .gc-redeem-left {
+        flex: none;
+    }
+    .gc-redeem-left h2 {
+        justify-content: center;
+    }
+    .gc-redeem-input-group {
+        flex-direction: column;
+    }
+    .gc-features {
+        gap: 30px;
+    }
+}
+
+@media (max-width: 600px) {
+    .gc-card-grid {
+        grid-template-columns: 1fr;
+    }
+    .gc-hero-title {
+        font-size: 26px;
+    }
+    .gc-hero-icon {
+        font-size: 40px;
+    }
+    .gc-hero-subtitle {
+        font-size: 14px;
+    }
+    .gc-balance-inner {
+        font-size: 14px;
+    }
+    .gc-balance-inner strong {
+        font-size: 18px;
+    }
+    .gc-features {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+    .gc-modal {
+        padding: 28px 20px;
+    }
+    .gc-modal-code {
+        font-size: 20px;
+        letter-spacing: 2px;
+    }
+    .gc-modal-amount {
+        font-size: 28px;
+    }
+}
+
+/* ---- Dark Mode Gift Cards ---- */
+.dark-theme .gc-hero {
+    background: linear-gradient(135deg, #0d1117 0%, #161b22 50%, #1a1f29 100%);
+}
+
+.dark-theme .gc-hero-subtitle {
+    color: #8b949e;
+}
+
+.dark-theme .gc-balance-bar {
+    background: linear-gradient(90deg, #1c2028, #21252d, #1c2028);
+    border-bottom-color: #e67e22;
+}
+
+.dark-theme .gc-balance-inner {
+    color: #e6edf3;
+}
+
+.dark-theme .gc-balance-inner strong {
+    color: #3fb950;
+}
+
+.dark-theme .gc-section-title {
+    color: #e6edf3;
+}
+
+.dark-theme .gc-card {
+    background: #161b22;
+    border-color: #30363d;
+}
+
+.dark-theme .gc-card:hover {
+    border-color: #ff9900;
+    box-shadow: 0 12px 36px rgba(0,0,0,0.4);
+}
+
+.dark-theme .gc-card-image-wrap {
+    background: linear-gradient(135deg, #1c2028, #21252d);
+}
+
+.dark-theme .gc-card-body h3 {
+    color: #e6edf3;
+}
+
+.dark-theme .gc-card-body p {
+    color: #8b949e;
+}
+
+.dark-theme .gc-currency {
+    background: #21252d;
+    color: #e6edf3;
+    border-right-color: #30363d;
+}
+
+.dark-theme .gc-amount-input-wrap {
+    border-color: #30363d;
+    background: #0d1117;
+}
+
+.dark-theme .gc-amount-input {
+    color: #e6edf3;
+}
+
+.dark-theme .gc-quick-btn {
+    background: #21252d;
+    border-color: #30363d;
+    color: #e6edf3;
+}
+
+.dark-theme .gc-quick-btn:hover,
+.dark-theme .gc-quick-btn.active {
+    background: #2d333b;
+    border-color: #ff9900;
+    color: #ff9900;
+}
+
+.dark-theme .gc-redeem-section {
+    background: #0d1117;
+}
+
+.dark-theme .gc-redeem-box {
+    background: #161b22;
+    border-color: #30363d;
+}
+
+.dark-theme .gc-redeem-left h2 {
+    color: #e6edf3;
+}
+
+.dark-theme .gc-redeem-left p {
+    color: #8b949e;
+}
+
+.dark-theme .gc-redeem-input-group input {
+    background: #0d1117;
+    border-color: #30363d;
+    color: #e6edf3;
+}
+
+.dark-theme .gc-redeem-input-group input:focus {
+    border-color: #ff9900;
+}
+
+.dark-theme .gc-history-card {
+    background: #161b22;
+    border-color: #30363d;
+}
+
+.dark-theme .gc-history-details h4 {
+    color: #e6edf3;
+}
+
+.dark-theme .gc-history-details .gc-history-code {
+    color: #8b949e;
+}
+
+.dark-theme .gc-history-amount {
+    color: #3fb950;
+}
+
+.dark-theme .gc-history-status.active {
+    background: rgba(63,185,80,0.15);
+    color: #3fb950;
+}
+
+.dark-theme .gc-history-status.redeemed {
+    background: rgba(139,148,158,0.15);
+    color: #8b949e;
+}
+
+.dark-theme .gc-features {
+    background: linear-gradient(135deg, #0d1117, #161b22);
+}
+
+.dark-theme .gc-modal {
+    background: #161b22;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+
+.dark-theme .gc-modal h2 {
+    color: #e6edf3;
+}
+
+.dark-theme .gc-modal-amount {
+    color: #3fb950;
+}
+
+.dark-theme .gc-modal-code-box {
+    background: #0d1117;
+    border-color: #30363d;
+}
+
+.dark-theme .gc-modal-code-box label {
+    color: #8b949e;
+}
+
+.dark-theme .gc-modal-code {
+    color: #e6edf3;
+}
+
+.dark-theme .gc-modal-hint {
+    color: #8b949e;
+}
+
+.dark-theme .gc-modal-close {
+    color: #8b949e;
+}
+
+.dark-theme .gc-modal-close:hover {
+    color: #e6edf3;
+}
+
+/* ---- Balance update pop animation ---- */
+@keyframes gcBalancePop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.15); color: #ff9900; }
+    100% { transform: scale(1); }
+}
+.gc-balance-pop {
+    display: inline-block;
+    animation: gcBalancePop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1;
 }

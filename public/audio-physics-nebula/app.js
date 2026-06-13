@@ -124,6 +124,7 @@ audioBtn.addEventListener('click', () => {
 // Run baseline startup initialization sequence
 engine.populateCloud(200);
 stepSimulationLoop();   
+stepSimulationLoop();   
 // ==========================================
 // 1. VECTOR MATH ENGINE
 // ==========================================

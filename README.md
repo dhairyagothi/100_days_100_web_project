@@ -82,7 +82,7 @@ The website features:
 
 ## 📚 Projects Catalog
 
-> The full list of all 221 projects is organized by category below. You can also explore them on the **[Live Website](https://100-days-100-web-project.vercel.app/)** or browse the raw **[projects.json](./public/projects.json)** file.
+> The full list of projects is organized by category below. You can also explore them on the **[Live Website](https://100-days-100-web-project.vercel.app/)** or browse the raw **[projects.json](./public/projects.json)** file.
 
 ### ⭐ Featured Projects
 

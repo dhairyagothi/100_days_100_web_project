@@ -1,0 +1,152 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #0f172a;
+  color: #e2e8f0;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.wpm-container {
+  background-color: #1e293b;
+  max-width: 750px;
+  width: 100%;
+  padding: 35px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+header {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+header h1 {
+  color: #38bdf8;
+  font-size: 28px;
+  margin-bottom: 6px;
+}
+
+header p {
+  color: #94a3b8;
+  font-size: 14px;
+}
+
+.stats-panel {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.stat-box {
+  background-color: #0f172a;
+  flex: 1;
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+  border: 1px solid #334155;
+}
+
+.stat-label {
+  display: block;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #94a3b8;
+  margin-bottom: 4px;
+}
+
+.stat-value {
+  font-size: 24px;
+  font-weight: bold;
+  color: #f8fafc;
+}
+
+.quote-box {
+  background-color: #0f172a;
+  padding: 20px;
+  border-radius: 8px;
+  font-size: 18px;
+  line-height: 1.6;
+  letter-spacing: 0.5px;
+  margin-bottom: 20px;
+  word-break: break-word;
+  border: 1px solid #334155;
+  user-select: none;
+}
+
+/* Character class hooks handled by validator script */
+.quote-box span {
+  position: relative;
+  color: #64748b;
+}
+
+.quote-box span.correct {
+  color: #22c55e;
+}
+
+.quote-box span.incorrect {
+  color: #ef4444;
+  background-color: rgba(239, 68, 68, 0.15);
+  border-radius: 2px;
+}
+
+.quote-box span.active {
+  color: #f8fafc;
+  border-left: 2px solid #38bdf8;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  50% {
+    border-color: transparent;
+  }
+}
+
+.input-area textarea {
+  width: 100%;
+  height: 110px;
+  background-color: #0f172a;
+  color: #f8fafc;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  padding: 15px;
+  font-size: 16px;
+  outline: none;
+  resize: none;
+  line-height: 1.5;
+  transition: border-color 0.2s;
+}
+
+.input-area textarea:focus {
+  border-color: #38bdf8;
+  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.1);
+}
+
+.action-btn {
+  display: block;
+  width: 100%;
+  background-color: #38bdf8;
+  color: #0f172a;
+  border: none;
+  padding: 12px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background-color 0.2s;
+}
+
+.action-btn:hover {
+  background-color: #0ea5e9;
+}

@@ -5,15 +5,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
-  <link rel="stylesheet" href="css/home.css">
+  <!-- <link rel="stylesheet" href="css/home.css">
   <link rel="stylesheet" href="css/navbar.css">
 <link rel="stylesheet" href="css/footer.css">
+<link rel="stylesheet" href="resturant.css"> -->
 </head>
 <body>
   
-<div id="navbar"></div>
+<!-- <div id="navbar"></div> -->
 <div id="food-container"></div>
-<div id="footer"></div>
+<!-- <div id="footer"></div> -->
 
 
 <script>
@@ -37,15 +38,6 @@ async function getFood() {
 getFood();
 </script>
 
-<script>
-async function loadComponent(id, file) {
-  const res = await fetch(file);
-  const data = await res.text();
-  document.getElementById(id).innerHTML = data;
-}
 
-loadComponent("navbar", "components/navbar.html");
-loadComponent("footer", "components/footer.html");
-</script>
-</body>
-</html>
+
+
