@@ -936,6 +936,29 @@ body {
   border-bottom: 1px solid var(--border);
 }
 
+.history-actions {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.history-action-btn {
+  background: rgba(59,130,246,0.15);
+  border: 1px solid rgba(59,130,246,0.3);
+  color: var(--accent-blue);
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-family: var(--font-display);
+  font-size: 0.65rem;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.history-action-btn:hover {
+  background: rgba(59,130,246,0.25);
+  transform: translateY(-1px);
+}
+
 .history-header h3 {
   font-family: var(--font-display);
   font-size: 0.7rem;

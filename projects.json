@@ -2877,5 +2877,20 @@
     ],
     "difficulty": "advanced",
     "projectPath": "./public/Word_Jumble/index.html"
+  },
+  {
+    "projectNo": 228,
+    "projectName": "Beat Maker",
+    "projectType": "Music",
+    "projectDesc": "Generate beats ",
+    "techStack": [
+      "html",
+      "css",
+      "javascript",
+      "music"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/BeatMaker/demo.html"
   }
+
 ]

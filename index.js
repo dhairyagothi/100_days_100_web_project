@@ -229,13 +229,6 @@ function resolveProjectUrls(day, name, url, tags) {
       }
     } catch (error) { }
   }
-  if (day === "Day 222") {
-    return {
-      demoUrl: "https://html-css-animation-01.netlify.app/",
-      sourceUrl: "https://github.com/dhairyagothi/100_day_100_web_project/blob/Main/public/Html_css_animation/index.html",
-      sourceOnly: false
-    };
-  }
 
   return { demoUrl, sourceUrl, sourceOnly };
 }
