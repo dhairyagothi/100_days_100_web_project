@@ -1,8 +1,9 @@
-
+*
 {
     margin:0px;
     padding:0px;
     font-family:Arial, Helvetica, sans-serif;
+    box-sizing: border-box;
 }
 nav
 {
@@ -269,8 +270,9 @@ nav div:hover
 /*main*/
 .main
 {
-    height:80vh;
+    min-height: 60vh;
     object-fit: cover;
+    overflow: hidden;
 }
 .hero
 {
@@ -310,29 +312,34 @@ nav div:hover
     justify-content: space-evenly;
     flex-wrap: wrap;
     flex-direction: row;
-    margin-top: -200px;
     gap:10px;
-    padding:15px 0px 15px 0px;
+    padding:15px;
 
 }
 
 .products div
 {
-    height:50vh;
+    height: auto;
+    min-height: 280px;
     width: 23%;
+    min-width: 160px;
     margin-top:10px;
     background-color: white;
     position: relative;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
+    padding: 12px;
 
 }
 .products div img
 {
-    width:85%;
-    max-height: 100%;
-    height:75%;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    max-height: 200px;
+    object-fit: contain;
+    display: block;
     margin-left:auto;
     margin-right:auto;
 }
@@ -345,9 +352,13 @@ nav div:hover
 }
 .products div p
 {
-    margin-left:20px;
-    font-size: larger;
+    margin-left: 8px;
+    font-size: 15px;
     font-weight: 700;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
 }
 .bk
 {
@@ -378,17 +389,121 @@ nav div:hover
     background-color:#415267;
 }
 
+/* =========================
+   MOBILE RESPONSIVE
+========================= */
+body {
+    overflow-x: hidden;
+}
+
+@media (max-width: 768px) {
+    nav {
+        height: auto;
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 8px 10px;
+        justify-content: space-between;
+    }
+
+    .location {
+        display: none;
+    }
+
+    .search {
+        order: 3;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .lang, .acc, .ro {
+        font-size: 12px;
+    }
+
+    .down {
+        height: auto;
+        flex-wrap: wrap;
+        padding: 6px 10px;
+        gap: 6px;
+        overflow-x: auto;
+        justify-content: flex-start;
+        white-space: nowrap;
+        scrollbar-width: none;
+    }
+    .down::-webkit-scrollbar { display: none; }
+
+    .down .items ul {
+        flex-wrap: nowrap;
+        height: auto;
+        gap: 10px;
+    }
+
+    .down .items {
+        width: auto;
+        overflow-x: auto;
+    }
+
+    .down .banner {
+        display: none;
+    }
+
+    .main {
+        min-height: auto;
+    }
+
+    .hero img {
+        height: 200px;
+        object-fit: cover;
+    }
+
+    .main .box {
+        margin-top: 0;
+        width: 95%;
+        height: auto;
+        padding: 10px;
+    }
+
+    .products {
+        gap: 10px;
+        padding: 12px;
+    }
+
+    .products div {
+        width: calc(50% - 10px);
+        min-width: 140px;
+    }
+}
+
+@media (max-width: 480px) {
+    .products div {
+        width: 100%;
+        min-width: unset;
+    }
+
+    .products div img {
+        max-height: 160px;
+    }
+
+    .cart-sidebar {
+        width: 100%;
+        right: -100%;
+    }
+
+    .cart-sidebar.open {
+        right: 0;
+    }
+}
+
 /* Cart Sidebar Drawer Style */
 .cart-sidebar {
     position: fixed;
     top: 0;
-    right: -400px; /* Fully hidden off-screen to the right */
+    right: -400px;
     width: 360px;
     height: 100%;
     background-color: #ffffff;
     box-shadow: -4px 0 15px rgba(0, 0, 0, 0.2);
     transition: right 0.3s ease-in-out;
-    z-index: 2000; /* Ensures it sits over the navigation bars */
+    z-index: 2000;
     padding: 20px;
     box-sizing: border-box;
     color: #111;
