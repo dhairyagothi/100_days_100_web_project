@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pro Markdown Editor</title>
+    <style>
+        body { margin: 0; display: flex; flex-direction: column; height: 100vh; font-family: sans-serif; }
+        header { padding: 15px 25px; background: #2c3e50; color: white; display: flex; justify-content: space-between; align-items: center; }
+        .container { display: flex; flex: 1; overflow: hidden; }
+        textarea, #preview { flex: 1; padding: 30px; overflow-y: auto; outline: none; }
+        textarea { border-right: 1px solid #ddd; background: #f4f4f4; font-family: monospace; }
+        #modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); justify-content: center; align-items: center; }
+        .modal-content { background: white; padding: 30px; border-radius: 8px; max-width: 400px; color: black; }
+    </style>
+</head>
+<body>
+
+<header>
+    <span>Pro Markdown Editor</span>
+    <div>
+        <button onclick="toggleModal(true)">Help</button>
+        <button onclick="downloadHTML()">Download</button>
+    </div>
+</header>
+
+<div id="modal" onclick="toggleModal(false)">
+    <div class="modal-content">
+        <h3>Markdown Syntax Guide</h3>
+        <ul>
+            <li><code># Heading 1</code></li>
+            <li><code>## Heading 2</code></li>
+            <li><code>**Bold Text**</code></li>
+            <li><code>*Italic Text*</code></li>
+            <li><code>- List Item</code></li>
+            <li><code>```Code```</code></li>
+        </ul>
+        <p>Click anywhere to close.</p>
+    </div>
+</div>
+
+<div class="container">
+    <textarea id="editor" placeholder="Type Markdown here..."></textarea>
+    <div id="preview"></div>
+</div>
+
+<script>
+    const editor = document.getElementById('editor');
+    const preview = document.getElementById('preview');
+    const modal = document.getElementById('modal');
+
+    function toggleModal(show) { modal.style.display = show ? 'flex' : 'none'; }
+
+    editor.addEventListener('input', () => {
+        preview.innerHTML = parseMarkdown(editor.value);
+    });
+
+    function parseMarkdown(text) {
+        return text
+            .replace(/^### (.*$)/gim, '<h3>$1</h3>')
+            .replace(/^## (.*$)/gim, '<h2>$1</h2>')
+            .replace(/^# (.*$)/gim, '<h1>$1</h1>')
+            .replace(/```([\s\S]*?)```/gim, '<pre><code>$1</code></pre>')
+            .replace(/\*\*(.*)\*\*/gim, '<b>$1</b>')
+            .replace(/\*(.*)\*/gim, '<i>$1</i>')
+            .replace(/- (.*$)/gim, '<ul><li>$1</li></ul>')
+            .replace(/\n/gim, '<br>');
+    }
+
+    function downloadHTML() {
+        const blob = new Blob([preview.innerHTML], {type: 'text/html'});
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'exported.html';
+        a.click();
+    }
+</script>
+</body>
+</html>

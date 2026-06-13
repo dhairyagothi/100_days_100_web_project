@@ -27,7 +27,7 @@ h1 {
 
 form {
     width: 90%;
-    max-width: 600px;
+    max-width: 750px;
     margin: 0 auto 30px auto;
     height: 60px;
     background: rgba(255, 255, 255, 0.05);
@@ -71,6 +71,24 @@ form button {
 form button:hover {
     background: #4f46e5;
     transform: scale(1.02);
+}
+
+#reset-button {
+    background: #ef4444;
+    margin-left: 10px;
+}
+
+#reset-button:hover {
+    background: #dc2626;
+}
+
+#reset-button {
+    background: #ef4444;
+    margin-left: 10px;
+}
+
+#reset-button:hover {
+    background: #dc2626;
 }
 
 ::placeholder {

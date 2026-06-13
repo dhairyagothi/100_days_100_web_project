@@ -5,26 +5,62 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Morse Code Translator</title>
     <link rel="stylesheet" href="style.css" />
+    <script>
+      (function () {
+        const savedTheme = localStorage.getItem("theme");
+        const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        if (savedTheme === "light" || (!savedTheme && !systemPrefersDark)) {
+          document.documentElement.classList.add("light-mode");
+        } else {
+          document.documentElement.classList.remove("light-mode");
+        }
+      })();
+    </script>
   </head>
   <body>
-    <a
-      href="/"
-      class="project-back-button"
-      style="
-        position: fixed;
-        left: 18px;
-        top: 18px;
-        padding: 8px 12px;
-        border-radius: 8px;
-        background: white;
-        text-decoration: none;
-        z-index: 9999;
-        font-weight: 700;
-        font-family: Inter, system-ui, sans-serif;
-        box-shadow: 0 8px 20px rgba(0, 0, 0);
-      "
-      >← Back to Home</a
+    <a href="/" class="project-back-button">← Back to Home</a>
+
+    <button
+      id="theme-toggle"
+      class="theme-toggle-btn"
+      aria-label="Toggle light/dark mode"
+      title="Toggle theme"
     >
+      <!-- Sun Icon (visible in Dark Mode) -->
+      <svg
+        class="sun-icon"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <circle cx="12" cy="12" r="4"></circle>
+        <path d="M12 2v2"></path>
+        <path d="M12 20v2"></path>
+        <path d="m4.93 4.93 1.41 1.41"></path>
+        <path d="m17.66 17.66 1.41 1.41"></path>
+        <path d="M2 12h2"></path>
+        <path d="M20 12h2"></path>
+        <path d="m6.34 17.66-1.41 1.41"></path>
+        <path d="m19.07 4.93-1.41 1.41"></path>
+      </svg>
+      <!-- Moon Icon (visible in Light Mode) -->
+      <svg
+        class="moon-icon"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+      </svg>
+    </button>
 
     <div class="bg-orbs" aria-hidden="true">
       <div class="orb orb-1"></div>
@@ -69,9 +105,6 @@
 
         <!-- ── NEW: swap button added inside existing divider ──────── -->
         <div class="divider" aria-hidden="true">
-          <div class="arrow-wrap">
-            <span class="arrow">→</span>
-          </div>
           <button
             class="swap-btn"
             id="swap-btn"

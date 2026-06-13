@@ -1,0 +1,47 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #020617;
+    font-family: 'Inter', sans-serif;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden; /* Prevents scrollbars */
+}
+
+canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* Allows mouse interaction with canvas below */
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 50px;
+}
+
+.hud-panel {
+    background: rgba(15, 23, 42, 0.4);
+    backdrop-filter: blur(8px);
+    padding: 20px 40px;
+    border: 1px solid rgba(56, 189, 248, 0.2);
+    border-radius: 12px;
+    text-align: center;
+    color: #f8fafc;
+}
+
+.divider { height: 1px; width: 60px; background: #38bdf8; margin: 10px auto; }
+.hud-panel h1 { margin: 0; font-size: 1.2rem; letter-spacing: 0.2rem; color: #38bdf8; }
+.hud-panel p { margin: 5px 0; font-size: 0.65rem; letter-spacing: 0.1rem; text-transform: uppercase; }
+.instruction { font-size: 0.6rem; opacity: 0.5; }

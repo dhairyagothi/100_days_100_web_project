@@ -1,38 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Micro-Learning Flashcard App</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Flashcard Learning</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="game-container">
-    <div class="score-board">
-      <p>Score: <span id="score">0</span></p>
-      <p>Progress: <span id="card-progress">1/5</span></p>
+
+<div class="container">
+
+    <div class="top-bar">
+        <h1>📚 Smart Flashcards</h1>
+
+        <button id="theme-toggle">
+            🌙
+        </button>
     </div>
 
+    <div class="stats">
+
+        <div class="stat">
+            <h3>Score</h3>
+            <span id="score">0</span>
+        </div>
+
+        <div class="stat">
+            <h3>Streak</h3>
+            <span id="streak">0</span>
+        </div>
+
+        <div class="stat">
+            <h3>XP</h3>
+            <span id="xp">0</span>
+        </div>
+
+    </div>
+
+    <div class="progress-container">
+        <div id="progress-bar"></div>
+    </div>
+
+    <p class="progress-text">
+        Card <span id="card-progress">1</span>
+    </p>
+
     <div class="flashcard-wrapper">
-      <div class="flashcard" id="flashcard">
-        <div class="card-face card-front">
-          <h2 id="word-title">Loading...</h2>
-          <p class="hint">Click to flip and reveal definition</p>
+
+        <div class="flashcard" id="flashcard">
+
+            <div class="card-face card-front">
+                <h2 id="word-title">Loading...</h2>
+                <small>Click to reveal answer</small>
+            </div>
+
+            <div class="card-face card-back">
+
+                <h3>Definition</h3>
+
+                <p id="word-definition"></p>
+
+                <p id="word-example"></p>
+
+                <button id="audio-btn">
+                    🔊 Pronounce
+                </button>
+
+            </div>
+
         </div>
-        <div class="card-face card-back">
-          <h3>Definition:</h3>
-          <p id="word-definition">...</p>
-          <p id="word-example" class="example">...</p>
-          <button id="audio-btn">🔊 Listen Pronunciation</button>
-        </div>
-      </div>
+
     </div>
 
     <div class="controls">
-      <button id="correct-btn" class="btn success">I Knew It</button>
-      <button id="incorrect-btn" class="btn danger">Got It Wrong</button>
+
+        <button id="prev-btn">
+            ⬅ Previous
+        </button>
+
+        <button id="correct-btn" class="success">
+            ✅ Knew It
+        </button>
+
+        <button id="incorrect-btn" class="danger">
+            ❌ Missed It
+        </button>
+
     </div>
-  </div>
-  <script src="app.js"></script>
+
+</div>
+
+<script src="app.js"></script>
+
 </body>
 </html>

@@ -1,31 +1,45 @@
 const express = require('express');
 const router = express.Router();
+const rateLimit = require('express-rate-limit');
 
 const User = require('./../models/user');
 const {jwtAuthMiddleware, generateToken} = require('./../jwt');
 
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  message: { error: 'Too many attempts. Try again in 15 minutes.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
 //POST route to add a person
-router.post('/signup', async(req, res)=>{
+router.post('/signup', authLimiter, async(req, res)=>{
     try{
-        const data = req.body
-        const adminUser = await User.findOne({ role: 'admin' });
-        if (data.role === 'admin' && adminUser) {
-            return res.status(400).json({ error: 'Admin user already exists' });
-        }
+        const { name, age, email, mobile, address, aadharCardNumber, password, setupKey } = req.body;
 
         // Validate Aadhar Card Number must have exactly 12 digit
-        if (!/^\d{12}$/.test(data.aadharCardNumber)) {
+        if (!/^\d{12}$/.test(aadharCardNumber)) {
             return res.status(400).json({ error: 'Aadhar Card Number must be exactly 12 digits' });
         }
 
         // Check if a user with the same Aadhar Card Number already exists
-        const existingUser = await User.findOne({ aadharCardNumber: data.aadharCardNumber });
+        const existingUser = await User.findOne({ aadharCardNumber: aadharCardNumber });
         if (existingUser) {
             return res.status(400).json({ error: 'User with the same Aadhar Card Number already exists' });
         }
 
+        // Whitelist fields so role cannot be set from the request body
+        const userData = { name, age, email, mobile, address, aadharCardNumber, password };
+
+        // Allow the first admin only via the server-side ADMIN_SETUP_KEY; otherwise role defaults to voter
+        const adminExists = await User.findOne({ role: 'admin' });
+        if (!adminExists && process.env.ADMIN_SETUP_KEY && setupKey === process.env.ADMIN_SETUP_KEY) {
+            userData.role = 'admin';
+        }
+
         //Create a new User documnet using the Mongoose model
-        const newUser = new User(data);
+        const newUser = new User(userData);
 
         //Save the new user to the database
         const response = await newUser.save();
@@ -35,13 +49,16 @@ router.post('/signup', async(req, res)=>{
             id: response.id
         }
 
-        console.log(JSON.stringify(payload));
         const token = generateToken(payload);
-        console.log("Token is : ",token);
         return res.status(201).json({
             message: "User registered successfully",
             token,
-            user: response
+            user: {
+                id: response._id,
+                name: response.name,
+                role: response.role,
+                aadharCardNumber: response.aadharCardNumber
+            }
         });
     }catch(err) {
         console.log(err);
@@ -50,7 +67,7 @@ router.post('/signup', async(req, res)=>{
 })
 
 //login Route
-router.post('/login', async(req, res)=> {
+router.post('/login', authLimiter, async(req, res)=> {
     try {
         //extract username and password from the request body
         const{aadharCardNumber, password} = req.body;
