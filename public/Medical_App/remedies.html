@@ -80,6 +80,52 @@
         mark.search-hit{ background:linear-gradient(90deg,#fff59d,#fffb8f); padding:0 2px; border-radius:3px }
 
         @media(max-width:640px){ .site-header{ padding:var(--spacing-lg) } .meta .icon{ width:48px; height:48px } }
+        .header-actions{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.theme-btn{
+    width:42px;
+    height:42px;
+    border:none;
+    border-radius:50%;
+    cursor:pointer;
+    font-size:1.1rem;
+    transition:all 0.3s ease;
+}
+
+.theme-btn{
+    position:fixed;
+    top:20px;
+    right:20px;
+    z-index:1000;
+}
+
+.site-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.theme-btn{
+    margin-left:auto;
+}
+
+.dark-theme{
+    background:#121212;
+    color:#f5f5f5;
+}
+
+.theme-btn:hover{
+    transform:scale(1.05);
+}
+@media (max-width:768px){
+    .header-actions{
+        justify-content:center;
+    }
+}
     </style>
 </head>
 
@@ -87,13 +133,20 @@
 <div id="appShell">
 <a href="/" class="project-back-button">← Back to Home</a>
     <header class="site-header" data-role="patient">
+                    <div class="header-actions">
+        <button id="themeToggle" class="theme-btn" aria-label="Toggle Theme">
+            🌙
+        </button>
+    </div>
         <h1>🏥 Basic Remedies</h1>
         <p>
             Simple first-aid and self-care guidance while waiting for professional consultation
         </p>
-    </header>
 
+    </header>
+   
     <div class="auth-page-actions" style="margin: 30px auto 0; width: 90%; max-width: 1200px;">
+        <div class="user-actions-bar">
         <div id="userBadge" class="user-badge compact hidden" aria-live="polite">
             <span id="userAvatar" class="user-avatar" aria-hidden="true">👤</span>
             <div class="user-meta">
@@ -102,6 +155,7 @@
             </div>
         </div>
         <button id="logoutBtn" class="auth-btn secondary is-role-hidden" type="button">Logout</button>
+        </div>
     </div>
 
     <div class="role-note is-role-hidden" data-role-fallback="patient" style="margin: 30px auto; width: 90%; max-width: 1200px;">
@@ -229,7 +283,7 @@
                 </p>
             </article>
             
-              <button id="themeToggle" class="theme-btn">🌙</button>
+              
         </section>
 
         <!-- Details modal -->
@@ -345,6 +399,31 @@ document.addEventListener('DOMContentLoaded', function(){
     const modalBackdrop = document.getElementById('modalBackdrop');
     const modalBody = document.getElementById('modalBody');
     const modalClose = document.getElementById('modalClose');
+
+    // Theme Toggle Functionality
+const themeToggle = document.getElementById('themeToggle');
+
+if (themeToggle) {
+
+    // Load saved theme
+    const savedTheme = localStorage.getItem('theme');
+
+    if (savedTheme === 'dark') {
+        document.body.classList.add('dark-theme');
+        themeToggle.textContent = '☀️';
+    }
+
+    themeToggle.addEventListener('click', () => {
+
+        document.body.classList.toggle('dark-theme');
+
+        const isDark = document.body.classList.contains('dark-theme');
+
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+
+        themeToggle.textContent = isDark ? '☀️' : '🌙';
+    });
+}
 
     if(!grid) return;
 

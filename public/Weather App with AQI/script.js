@@ -29,6 +29,65 @@ const o3 = document.getElementById("o3");
 const co = document.getElementById("co");
 const greetingEl = document.getElementById("greeting");
 
+// Settings Elements
+const settingsModal = document.getElementById("settingsModal");
+const apiKeyInput = document.getElementById("apiKeyInput");
+const settingsFeedback = document.getElementById("settingsFeedback");
+
+// Get active API key from localStorage or script default
+function getActiveApiKey() {
+  const savedKey = localStorage.getItem("openweather_api_key");
+  if (savedKey && savedKey.trim() !== "") {
+    return savedKey.trim();
+  }
+  return API_KEY;
+}
+
+// Toggle settings modal visibility
+function toggleSettings() {
+  if (settingsModal.classList.contains("show")) {
+    settingsModal.classList.remove("show");
+  } else {
+    // Populate input with current saved key
+    const currentKey = localStorage.getItem("openweather_api_key") || "";
+    apiKeyInput.value = currentKey;
+    settingsFeedback.innerText = "";
+    settingsFeedback.className = "feedback-message";
+    settingsModal.classList.add("show");
+  }
+}
+
+// Save API key to localStorage
+function saveApiKey() {
+  const keyVal = apiKeyInput.value.trim();
+  if (!keyVal) {
+    localStorage.removeItem("openweather_api_key");
+    settingsFeedback.innerText = "API key cleared. Using script default.";
+    settingsFeedback.className = "feedback-message success";
+  } else {
+    localStorage.setItem("openweather_api_key", keyVal);
+    settingsFeedback.innerText = "API key saved successfully!";
+    settingsFeedback.className = "feedback-message success";
+  }
+  setTimeout(() => {
+    toggleSettings();
+  }, 1000);
+}
+
+// Close settings modal if clicking outside modal content
+window.addEventListener("click", (e) => {
+  if (e.target === settingsModal) {
+    toggleSettings();
+  }
+});
+
+// Listen for Enter key press on search input
+cityInput.addEventListener("keypress", (e) => {
+  if (e.key === "Enter") {
+    getWeather();
+  }
+});
+
 // Automatic greeting
 function updateGreeting() {
   const hour = new Date().getHours();
@@ -45,12 +104,27 @@ function getWeather() {
   errorMessage.innerText = "";
   if (!city) return;
 
+  const key = getActiveApiKey();
+  if (!key || key === "Insert Your API Key") {
+    errorMessage.innerText = "Please configure your OpenWeatherMap API Key in Settings (gear icon).";
+    resetUI();
+    return;
+  }
+
   fetch(
-    `https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${API_KEY}`,
+    `https://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(city)}&limit=1&appid=${key}`,
   )
-    .then((res) => res.json())
+    .then((res) => {
+      if (!res.ok) {
+        if (res.status === 401) {
+          throw new Error("Invalid API key. Please check your settings.");
+        }
+        throw new Error("Failed to search city coordinates.");
+      }
+      return res.json();
+    })
     .then((loc) => {
-      if (!loc.length) {
+      if (!loc || !loc.length) {
         errorMessage.innerText = "Invalid city name.";
         resetUI();
         return;
@@ -58,17 +132,24 @@ function getWeather() {
       const { lat, lon, name, state, country } = loc[0];
       locationEl.innerText =
         name + (state ? ", " + state : "") + ", " + getCountryName(country);
-      fetchWeather(lat, lon);
-      fetchAQI(lat, lon);
+      fetchWeather(lat, lon, key);
+      fetchAQI(lat, lon, key);
+    })
+    .catch((err) => {
+      errorMessage.innerText = err.message || "Failed to retrieve location data.";
+      resetUI();
     });
 }
 
 // Weather + Extra Info + 5-hour forecast
-function fetchWeather(lat, lon) {
+function fetchWeather(lat, lon, key) {
   fetch(
-    `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`,
+    `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${key}`,
   )
-    .then((res) => res.json())
+    .then((res) => {
+      if (!res.ok) throw new Error("Failed to fetch current weather details.");
+      return res.json();
+    })
     .then((d) => {
       temperature.innerText = `${Math.round(d.main.temp)}°C`;
       condition.innerText = d.weather[0].description;
@@ -83,31 +164,44 @@ function fetchWeather(lat, lon) {
         [],
         { hour: "2-digit", minute: "2-digit" },
       );
+    })
+    .catch((err) => {
+      console.error(err);
+      errorMessage.innerText = err.message || "Failed to fetch weather details.";
     });
 
   fetch(
-    `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&cnt=5&appid=${API_KEY}`,
+    `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&cnt=5&appid=${key}`,
   )
-    .then((res) => res.json())
+    .then((res) => {
+      if (!res.ok) throw new Error("Failed to fetch forecast details.");
+      return res.json();
+    })
     .then((forecast) => {
       hourlyForecastEl.innerHTML = "";
       forecast.list.forEach((item) => {
         const hour = new Date(item.dt * 1000).getHours();
         const temp = Math.round(item.main.temp);
-        const iconUrl = `http://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`;
+        const iconUrl = `https://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`;
         const div = document.createElement("div");
         div.innerHTML = `<div><div>${hour}:00</div><img src="${iconUrl}" alt="icon"><span class="temp">${temp}°C</span></div>`;
         hourlyForecastEl.appendChild(div);
       });
+    })
+    .catch((err) => {
+      console.error(err);
     });
 }
 
 // AQI
-function fetchAQI(lat, lon) {
+function fetchAQI(lat, lon, key) {
   fetch(
-    `https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${API_KEY}`,
+    `https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${key}`,
   )
-    .then((res) => res.json())
+    .then((res) => {
+      if (!res.ok) throw new Error("Failed to fetch AQI details.");
+      return res.json();
+    })
     .then((d) => {
       const c = d.list[0].components;
       const aqi = calculateUSAQI(c.pm2_5);
@@ -132,6 +226,9 @@ function fetchAQI(lat, lon) {
       so2.innerText = c.so2 + " µg/m³";
       o3.innerText = c.o3 + " µg/m³";
       co.innerText = c.co + " µg/m³";
+    })
+    .catch((err) => {
+      console.error(err);
     });
 }
 
