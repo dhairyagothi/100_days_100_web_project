@@ -176,26 +176,83 @@ body::after {
   100% { transform: translateY(0) translateX(0); }
 }
 
-/* ── Back Button ── */
-.back-button {
+/* ── Premium Back to Home Button ── */
+.back-button{
   position: fixed;
-  left: 18px; top: 18px;
-  padding: 9px 18px;
-  border-radius: 9px;
-  background: var(--back-bg);
-  color: var(--text-back);
-  border: 1px solid var(--border-back);
-  text-decoration: none;
-  z-index: 9999;
-  font-weight: 700;
+  top: 22px;
+  left: 22px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 22px;
+  border-radius: 14px;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(25,28,50,.95),
+      rgba(10,12,28,.92)
+    );
+  border: 1px solid rgba(87,255,188,.28);
+  color: #d8f9ff;
   font-family: var(--font);
-  font-size: 0.82rem;
-  letter-spacing: 0.02em;
-  transition: all var(--transition);
-  backdrop-filter: blur(8px);
+  font-size: .9rem;
+  font-weight: 700;
+  letter-spacing: .03em;
+  text-decoration: none;
+  backdrop-filter: blur(16px);
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,.04),
+    0 10px 30px rgba(0,0,0,.55),
+    0 0 22px rgba(80,255,180,.18);
+  overflow: hidden;
+  z-index: 9999;
+  transition:
+    transform .35s ease,
+    box-shadow .35s ease,
+    border .35s ease;
 }
-.back-button:hover { background: var(--accent); color: #000; border-color: var(--accent); transform: translateX(-2px); }
-.back-button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+.back-button::before{
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -140%;
+  width: 80%;
+  height: 100%;
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,255,255,.18),
+      transparent
+    );
+  transform: skewX(-20deg);
+  transition: .7s;
+}
+
+.back-button:hover{
+  transform:
+    translateY(-2px)
+    scale(1.03);
+  border-color: #57ffbc;
+  color: white;
+  box-shadow:
+    0 0 30px rgba(87,255,188,.35),
+    0 12px 40px rgba(0,0,0,.65);
+}
+
+.back-button:hover::before{
+  left: 180%;
+}
+
+.back-button:active{
+  transform: scale(.97);
+}
+
+.back-button:focus-visible{
+  outline: 2px solid #57ffbc;
+  outline-offset: 4px;
+}
 
 /* ── Theme Toggle ── */
 .theme-toggle {
@@ -495,4 +552,14 @@ input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; 
 @media (max-width: 480px) {
   .myform { padding: 28px 20px 24px; }
   .form-header h1 { font-size: 1.5rem; }
+}
+@media (max-width:768px){
+  .back-button{
+    top: 14px;
+    left: 14px;
+
+    padding: 10px 16px;
+
+    font-size: .78rem;
+  }
 }
