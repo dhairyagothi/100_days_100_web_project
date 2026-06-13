@@ -1,77 +1,54 @@
-const habits =
-JSON.parse(localStorage.getItem("habits")) || [];
+const habits = JSON.parse(localStorage.getItem("habits")) || [];
+let deleteHabitId = null;
 
 const quotes = [
-"Small habits create big results.",
-"Progress beats perfection.",
-"Stay consistent.",
-"You become what you repeat.",
-"Success is built daily."
+  "Small habits create big results.",
+  "Progress beats perfection.",
+  "Stay consistent.",
+  "You become what you repeat.",
+  "Success is built daily.",
 ];
 
 document.getElementById("quote").textContent =
-quotes[Math.floor(Math.random()*quotes.length)];
+  quotes[Math.floor(Math.random() * quotes.length)];
 
-const habitList =
-document.getElementById("habitList");
+const habitList = document.getElementById("habitList");
 
-function saveHabits(){
-localStorage.setItem(
-"habits",
-JSON.stringify(habits)
-);
+function saveHabits() {
+  localStorage.setItem("habits", JSON.stringify(habits));
 }
 
-function renderStats(){
+function renderStats() {
+  document.getElementById("totalHabits").textContent = habits.length;
 
-document.getElementById(
-"totalHabits"
-).textContent = habits.length;
+  let completed = 0;
+  let bestStreak = 0;
 
-let completed = 0;
-let bestStreak = 0;
+  habits.forEach((h) => {
+    if (h.completedToday) completed++;
 
-habits.forEach(h=>{
+    if (h.streak > bestStreak) bestStreak = h.streak;
+  });
 
-if(h.completedToday)
-completed++;
+  document.getElementById("completedToday").textContent = completed;
 
-if(h.streak > bestStreak)
-bestStreak = h.streak;
-
-});
-
-document.getElementById(
-"completedToday"
-).textContent = completed;
-
-document.getElementById(
-"bestStreak"
-).textContent = bestStreak;
-
+  document.getElementById("bestStreak").textContent = bestStreak;
 }
 
-function renderHabits(){
+function renderHabits() {
+  habitList.innerHTML = "";
 
-habitList.innerHTML = "";
+  const search = document.getElementById("searchHabit").value.toLowerCase();
 
-const search =
-document.getElementById("searchHabit")
-.value
-.toLowerCase();
+  habits
+    .filter((h) => h.name.toLowerCase().includes(search))
+    .forEach((habit) => {
+      const div = document.createElement("div");
 
-habits
-.filter(h =>
-h.name.toLowerCase().includes(search)
-)
-.forEach(habit=>{
+      div.className = "habit-card";
+      div.style.borderLeft = `6px solid ${habit.color}`;
 
-const div =
-document.createElement("div");
-
-div.className = "habit-card";
-
-div.innerHTML = `
+      div.innerHTML = `
 <div class="habit-top">
 
 <div>
@@ -108,183 +85,138 @@ Delete
 </div>
 `;
 
-habitList.appendChild(div);
+      habitList.appendChild(div);
+    });
 
-});
-
-attachEvents();
-renderStats();
+  attachEvents();
+  renderStats();
 }
 
-function attachEvents(){
+function attachEvents() {
+  document.querySelectorAll(".deleteBtn").forEach((btn) => {
+    btn.onclick = () => {
+  deleteHabitId = Number(btn.dataset.id);
 
-document.querySelectorAll(".deleteBtn")
-.forEach(btn=>{
-
-btn.onclick = ()=>{
-
-const id = Number(btn.dataset.id);
-
-const index =
-habits.findIndex(
-h=>h.id===id
-);
-
-habits.splice(index,1);
-
-saveHabits();
-renderHabits();
-
+  document.getElementById("deleteModal").style.display = "flex";
 };
+  });
 
-});
+  document.querySelectorAll(".completeBtn").forEach((btn) => {
+    btn.onclick = () => {
+      const id = Number(btn.dataset.id);
 
-document.querySelectorAll(".completeBtn")
-.forEach(btn=>{
+      const habit = habits.find((h) => h.id === id);
 
-btn.onclick = ()=>{
+      if (!habit.completedToday) {
+        habit.completedToday = true;
 
-const id =
-Number(btn.dataset.id);
+        habit.streak += 1;
 
-const habit =
-habits.find(
-h=>h.id===id
-);
+        saveHabits();
 
-if(!habit.completedToday){
+        confetti();
 
-habit.completedToday = true;
-
-habit.streak += 1;
-
-saveHabits();
-
-confetti();
-
-renderHabits();
-
+        renderHabits();
+      }
+    };
+  });
 }
 
+document.getElementById("addHabitBtn").onclick = () => {
+  document.getElementById("habitModal").style.display = "flex";
 };
 
-});
+document.getElementById("saveHabitBtn").onclick = () => {
+  const name = document.getElementById("habitName").value;
 
+  if (!name) return;
+
+  habits.push({
+    id: Date.now(),
+
+    name,
+
+    category: document.getElementById("habitCategory").value,
+
+    color: document.getElementById("habitColor").value,
+
+    notes: document.getElementById("habitNotes").value,
+
+    streak: 0,
+
+    completedToday: false,
+  });
+
+  saveHabits();
+
+  renderHabits();
+
+  document.getElementById("habitModal").style.display = "none";
+};
+
+document.getElementById("searchHabit").addEventListener("input", renderHabits);
+
+const themeBtn = document.getElementById("themeBtn");
+
+themeBtn.onclick = () => {
+  document.body.classList.toggle("dark");
+
+  localStorage.setItem("theme", document.body.classList.contains("dark"));
+};
+
+if (localStorage.getItem("theme") === "true") {
+  document.body.classList.add("dark");
 }
 
-document
-.getElementById("addHabitBtn")
-.onclick = ()=>{
+function confetti() {
+  for (let i = 0; i < 40; i++) {
+    const conf = document.createElement("div");
 
-document
-.getElementById("habitModal")
-.style.display = "flex";
+    conf.className = "confetti";
 
-};
+    conf.style.left = Math.random() * 100 + "vw";
 
-document
-.getElementById("saveHabitBtn")
-.onclick = ()=>{
+    document.body.appendChild(conf);
 
-const name =
-document
-.getElementById("habitName")
-.value;
-
-if(!name)
-return;
-
-habits.push({
-
-id:Date.now(),
-
-name,
-
-category:
-document.getElementById(
-"habitCategory"
-).value,
-
-color:
-document.getElementById(
-"habitColor"
-).value,
-
-notes:
-document.getElementById(
-"habitNotes"
-).value,
-
-streak:0,
-
-completedToday:false
-
-});
-
-saveHabits();
+    setTimeout(() => {
+      conf.remove();
+    }, 2000);
+  }
+}
 
 renderHabits();
 
-document
-.getElementById("habitModal")
-.style.display = "none";
+document.getElementById("confirmDeleteBtn").onclick = () => {
 
+  const index = habits.findIndex(
+    (h) => h.id === deleteHabitId
+  );
+
+  if (index !== -1) {
+    habits.splice(index, 1);
+
+    saveHabits();
+    renderHabits();
+  }
+
+  deleteHabitId = null;
+
+  document.getElementById("deleteModal").style.display = "none";
 };
 
-document
-.getElementById("searchHabit")
-.addEventListener(
-"input",
-renderHabits
-);
+document.getElementById("cancelDeleteBtn").onclick = () => {
 
-const themeBtn =
-document.getElementById(
-"themeBtn"
-);
+  deleteHabitId = null;
 
-themeBtn.onclick = ()=>{
-
-document.body.classList.toggle(
-"dark"
-);
-
-localStorage.setItem(
-"theme",
-document.body.classList.contains("dark")
-);
-
+  document.getElementById("deleteModal").style.display = "none";
 };
 
-if(
-localStorage.getItem("theme")
-==="true"
-){
-document.body.classList.add(
-"dark"
-);
-}
+document.getElementById("deleteModal")
+  .addEventListener("click", (e) => {
 
-function confetti(){
+    if (e.target.id === "deleteModal") {
+      deleteHabitId = null;
 
-for(let i=0;i<40;i++){
-
-const conf =
-document.createElement("div");
-
-conf.className="confetti";
-
-conf.style.left=
-Math.random()*100+"vw";
-
-document.body.appendChild(conf);
-
-setTimeout(()=>{
-conf.remove();
-},2000);
-
-}
-
-}
-
-renderHabits();
+      e.target.style.display = "none";
+    }
+});
