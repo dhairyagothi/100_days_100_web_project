@@ -2877,5 +2877,18 @@
     ],
     "difficulty": "advanced",
     "projectPath": "./public/Word_Jumble/index.html"
-  }
+  },
+  {
+    "projectNo": 228,
+    "projectName": "Neon Forge",
+    "projectType": "Tool",
+    "projectDesc": "An interactive CSS neon glow effects playground with live preview, presets, generated CSS, copy support, and PNG export.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/NeonForge/index.html"
+}
 ]
