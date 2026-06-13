@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Markdown Previewer</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app-shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Developer Tool</p>
+        <h1>Markdown Previewer</h1>
+      </div>
+
+      <div class="topbar-actions" aria-label="View and export actions">
+        <button class="theme-button" id="themeToggle" type="button" aria-label="Switch to dark mode" aria-pressed="false" title="Toggle dark mode">
+          <span id="themeIcon" aria-hidden="true">&#9790;</span>
+        </button>
+        <button class="ghost-button" id="togglePreview" type="button" aria-pressed="false">
+          Preview
+        </button>
+        <button class="primary-button" id="downloadHtml" type="button">
+          Download HTML
+        </button>
+      </div>
+    </header>
+
+    <section class="toolbar" aria-label="Markdown formatting shortcuts">
+      <button type="button" data-format="heading" title="Heading">H1</button>
+      <button type="button" data-format="bold" title="Bold"><strong>B</strong></button>
+      <button type="button" data-format="italic" title="Italic"><em>I</em></button>
+      <button type="button" data-format="link" title="Link">Link</button>
+      <button type="button" data-format="code" title="Inline code">Code</button>
+      <button type="button" data-format="quote" title="Blockquote">Quote</button>
+      <button type="button" data-format="list" title="Bulleted list">List</button>
+    </section>
+
+    <section class="workspace" id="workspace">
+      <article class="pane editor-pane" aria-labelledby="editorTitle">
+        <div class="pane-header">
+          <h2 id="editorTitle">Markdown</h2>
+          <div class="editor-actions">
+            <span id="saveStatus">Saved locally</span>
+            <button class="clear-button" id="clearMarkdown" type="button">Clear</button>
+          </div>
+        </div>
+
+        <div class="editor-wrap">
+          <pre class="highlight-layer" aria-hidden="true"><code id="highlightedMarkdown"></code></pre>
+          <textarea id="markdownInput" spellcheck="false" aria-label="Markdown editor"></textarea>
+        </div>
+      </article>
+
+      <article class="pane preview-pane" aria-labelledby="previewTitle">
+        <div class="pane-header">
+          <h2 id="previewTitle">Preview</h2>
+          <span id="wordCount">0 words</span>
+        </div>
+
+        <div class="preview-content" id="previewOutput"></div>
+      </article>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
