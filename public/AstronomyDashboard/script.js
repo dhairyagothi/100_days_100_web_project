@@ -3071,6 +3071,34 @@ function initFeatureAdditions() {
     setTimeout(checkUpcomingEventNotifications, 3000);
 }
 
+
+// Safe theme initializer (no duplicate declarations)
+const themeToggleEl = document.getElementById("theme-toggle");
+const bodyEl = document.body;
+
+if (themeToggleEl) {
+    const saved = localStorage.getItem("theme");
+    if (saved === "light") {
+        bodyEl.classList.add("light-theme");
+    }
+
+    const updateIcon = () => {
+        if (bodyEl.classList.contains("light-theme")) {
+            themeToggleEl.textContent = "☀️";
+        } else {
+            themeToggleEl.textContent = "🌙";
+        }
+    };
+
+    themeToggleEl.addEventListener("click", () => {
+        const isLight = bodyEl.classList.toggle("light-theme");
+        localStorage.setItem("theme", isLight ? "light" : "dark");
+        updateIcon();
+    });
+
+    updateIcon();
+}
+
 /*
 =======================================================================
   FINAL STEP — at the VERY BOTTOM of script.js, change:

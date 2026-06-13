@@ -16,6 +16,8 @@
 
 /* Light Theme */
 body.light-theme {
+    background: #ffffff;
+    color: #222222;
     --bg: #eef3ff;
     --panel: rgba(255, 255, 255, 0.92);
     --panel-strong: rgba(255, 255, 255, 0.98);
@@ -34,6 +36,16 @@ body.light-theme {
     --warning: #ff8a3d;
 
     --shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+}
+
+body.light-theme .card {
+    background: #f5f5f5;
+    color: #222;
+}
+
+body.light-theme nav {
+    background: white;
+    color: black;
 }
 
 * {
@@ -72,7 +84,7 @@ body::before {
         radial-gradient(circle, rgba(255, 255, 255, 0.92) 0 1px, transparent 1.5px),
         radial-gradient(circle, rgba(157, 196, 255, 0.7) 0 1px, transparent 1.5px);
     background-size: 135px 135px, 210px 210px;
-    bodybackground-position: 0 0, 40px 75px;
+    background-position-x : 0 0, 40px 75px;
     opacity: 0.34;
     z-index: -1;
 }
