@@ -231,10 +231,48 @@
   <script src="index.js"></script>
 
   <script>
+    let focusModeActive = false;
+
+    function enableFocusMode() {
+      if (focusModeActive) return;
+
+      document.body.classList.add('focus-mode');
+
+      history.pushState(
+        { focusMode: true },
+        '',
+        '#focus'
+      );
+
+      focusModeActive = true;
+    }
+
+    function disableFocusMode() {
+      document.body.classList.remove('focus-mode');
+      focusModeActive = false;
+    }
+
     window.addEventListener('keydown', (e) => {
-      if (e.key.toLowerCase() === 'f' && !e.target.matches('input, textarea')) {
+
+      if (
+        e.key.toLowerCase() === 'f' &&
+        !e.target.matches('input, textarea')
+      ) {
+
         e.preventDefault();
-        document.body.classList.toggle('focus-mode');
+
+        if (!focusModeActive) {
+          enableFocusMode();
+        } else {
+          history.back();
+        }
+      }
+    });
+
+    window.addEventListener('popstate', () => {
+
+      if (focusModeActive) {
+        disableFocusMode();
       }
     });
   </script>

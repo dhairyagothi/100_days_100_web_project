@@ -73,6 +73,7 @@ export class RequestBatchingEngine {
     }
 }
 }
+}
   #queue = [];
   #timerId = null;
   #delay;
