@@ -751,7 +751,7 @@
       "css"
     ],
     "difficulty": "beginner",
-    "projectPath": "./public/zomato-clone/public/index.html"
+    "projectPath": "./public/zomato-clone/index.html"
   },
   {
     "projectNo": 65,
@@ -1067,7 +1067,7 @@
       "javascript"
     ],
     "difficulty": "beginner",
-    "projectPath": "./public/QuizApp Timer/index.html"
+    "projectPath": "./public/QuizeApp Timer/index1.html"
   },
   {
     "projectNo": 91,
@@ -2740,7 +2740,7 @@
       "vite"
     ],
     "difficulty": "advanced",
-    "projectPath": "./public/Gemini/index.html"
+    "projectPath": "./public/Gemini/dist/index.html"
   },
   {
     "projectNo": 218,
@@ -2862,7 +2862,7 @@
       "javascript"
     ],
     "difficulty": "advanced",
-    "projectPath": "./public/mind-reader/mind-reader/index.html"
+    "projectPath": "./public/mind-reader/mind-reader/dist/index.html"
   },
   {
     "projectNo": 227,
@@ -2876,6 +2876,21 @@
       "game"
     ],
     "difficulty": "advanced",
-    "projectPath": "./public/Word_jumble/index.html"
+    "projectPath": "./public/Word_Jumble/index.html"
+  },
+  {
+    "projectNo": 228,
+    "projectName": "Beat Maker",
+    "projectType": "Music",
+    "projectDesc": "Generate beats ",
+    "techStack": [
+      "html",
+      "css",
+      "javascript",
+      "music"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/BeatMaker/demo.html"
   }
+
 ]
