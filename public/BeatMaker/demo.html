@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+   <link rel="stylesheet" href="demo.css">
+</head>
+<body>
+    <div class="container">
+        <div class="audio-list">
+          <div class="audio snare-btn">
+            <p>Snare</p>
+            <audio id="sAudio">
+              <source src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1147877/snare.wav">
+              </source>
+            </audio>
+          </div>
+
+          <div class="audio kick-btn">
+            <p>Kick</p>
+            <audio id="kAudio">
+              <source src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1147877/kick.wav">
+              </source>
+            </audio>
+          </div>
+
+          <div class="audio boom-btn">
+            <p>Boom</p>
+            <audio id="bAudio">
+              <source src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1147877/boom.wav">
+              </source>
+            </audio>
+          </div>
+        </div>
+      
+        <div class="audio-board">
+          <div class="title">
+            <h1>Beat Maker</h1>
+          </div>
+          <div class="play-btn">
+            <div id="play" class="btn play" onclick="play();"></div>
+            <div id="stop" class="btn stop" onClick="stop();"></div>
+          </div>
+          <div class="snareColumn column">
+            <div class="square snare snare1"></div>
+            <div class="square snare snare2"></div>
+            <div class="square snare snare3"></div>
+            <div class="square snare snare4"></div>
+            <div class="square snare snare5"></div>
+            <div class="square snare snare6"></div>
+            <div class="square snare snare7"></div>
+            <div class="square snare snare8"></div>
+          </div>
+          <div class="boomColumn column">
+            <div class="square boom boom1"></div>
+            <div class="square boom boom2"></div>
+            <div class="square boom boom3"></div>
+            <div class="square boom boom4"></div>
+            <div class="square boom boom5"></div>
+            <div class="square boom boom6"></div>
+            <div class="square boom boom7"></div>
+            <div class="square boom boom8"></div>
+          </div>
+          <div class="kickColumn column">
+            <div class="square kick kick1"></div>
+            <div class="square kick kick2"></div>
+            <div class="square kick kick3"></div>
+            <div class="square kick kick4"></div>
+            <div class="square kick kick5"></div>
+            <div class="square kick kick6"></div>
+            <div class="square kick kick7"></div>
+            <div class="square kick kick8"></div>
+          </div>
+        </div>
+      </div>
+</body>
+<script src="demo.js"></script>
+</html>
