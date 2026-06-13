@@ -1,1 +1,32 @@
-{"projectId":"prj_RREHX04cEuudend7PzlwtKuvs58A","orgId":"team_pgm9yPlJuHPOWLXUJkUIatm2","projectName":"test-routing"}
+[
+  {
+    "name": "Custom Video Player",
+    "day": 71,
+    "projectPath": "./public/custom-video-player/index.html"
+  },
+  {
+    "name": "Expense Tracker",
+    "day": 72,
+    "projectPath": "./public/expense-tracker/index.html"
+  },
+  {
+    "name": "Markdown Previewer",
+    "day": 73,
+    "projectPath": "./public/markdown-previewer/index.html"
+  },
+  {
+    "name": "Virtual Drum Kit",
+    "day": 74,
+    "projectPath": "./public/virtual-drum-kit/index.html"
+  },
+  {
+    "name": "Typing Speed Tester",
+    "day": 75,
+    "projectPath": "./public/typing-speed-tester/index.html"
+  },
+  {
+    "name": "Flashcard App with Categories",
+    "day": 76,
+    "projectPath": "./public/flashcard-app/index.html"
+  }
+]
