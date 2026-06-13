@@ -1087,6 +1087,7 @@ body.theme-hazy .pollutant:hover {
   box-shadow: var(--glass-inner);
 }
 
+
 .api-input-group input:focus {
   border-color: var(--accent);
   background: var(--input-focus-bg);
@@ -1095,10 +1096,12 @@ body.theme-hazy .pollutant:hover {
 
 .api-input-group input::placeholder {
   color: var(--text-muted);
+
 }
 
 .api-input-group button {
   border: none;
+
   padding: 13px 26px;
   border-radius: 14px;
   background: var(--accent);
@@ -1119,10 +1122,12 @@ body.theme-hazy .pollutant:hover {
 
 .api-input-group button:active {
   transform: scale(0.97);
+
 }
 
 .feedback-message {
   font-size: 13px;
+
   font-weight: 500;
   margin-top: 8px;
   padding: 8px 12px;
@@ -1221,3 +1226,4 @@ body.theme-hazy .feedback-message.error {
   #temperature {
     font-size: 54px;
     letter-spacing: -2px;
+

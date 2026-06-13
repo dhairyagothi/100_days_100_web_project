@@ -34,6 +34,7 @@ const o3 = document.getElementById("o3");
 const co = document.getElementById("co");
 const greetingEl = document.getElementById("greeting");
 
+
 const settingsModal = document.getElementById("settingsModal");
 const apiKeyInput = document.getElementById("apiKeyInput");
 const settingsFeedback = document.getElementById("settingsFeedback");
@@ -45,16 +46,21 @@ function getActiveApiKey() {
   return (saved && saved.trim()) ? saved.trim() : API_KEY;
 }
 
+
 function toggleSettings() {
   if (settingsModal.classList.contains("show")) {
     settingsModal.classList.remove("show");
   } else {
+
     apiKeyInput.value = localStorage.getItem("openweather_api_key") || "";
+
     settingsFeedback.innerText = "";
     settingsFeedback.className = "feedback-message";
     settingsModal.classList.add("show");
   }
 }
+
+
 
 function saveApiKey() {
   const keyVal = apiKeyInput.value.trim();
@@ -64,6 +70,7 @@ function saveApiKey() {
     settingsFeedback.className = "feedback-message success";
   } else {
     localStorage.setItem("openweather_api_key", keyVal);
+l
     settingsFeedback.innerText = "✓ API key saved successfully!";
     settingsFeedback.className = "feedback-message success";
   }
@@ -81,6 +88,8 @@ cityInput.addEventListener("keypress", (e) => {
 });
 
 // ── Greeting ──────────────────────────────────────────────────
+
+
 function updateGreeting() {
   const h = new Date().getHours();
   if (h >= 5 && h < 12) greetingEl.innerText = "Good Morning ☀️";
@@ -152,10 +161,13 @@ function getWeather() {
 
   const key = getActiveApiKey();
   if (!key || key === "Insert Your API Key") {
+
     errorMessage.innerText = "⚠️ Please configure your OpenWeatherMap API Key via the Settings (gear) icon.";
+
     resetUI();
     return;
   }
+
 
   showLoader(true);
 
@@ -163,19 +175,22 @@ function getWeather() {
     .then((res) => {
       if (!res.ok) {
         if (res.status === 401) throw new Error("Invalid API key. Please check your Settings.");
+
         throw new Error("Failed to search city coordinates.");
       }
       return res.json();
     })
     .then((loc) => {
       if (!loc || !loc.length) {
-        errorMessage.innerText = "❌ Invalid city name. Please try again.";
+
+
         resetUI();
         showLoader(false);
         return;
       }
 
       const { lat, lon, name, state, country } = loc[0];
+
       locationEl.innerText = name + (state ? ", " + state : "") + ", " + getCountryName(country);
 
       Promise.all([
@@ -187,10 +202,12 @@ function getWeather() {
           errorMessage.innerText = err.message || "Failed to fetch complete weather data.";
           showLoader(false);
         });
+
     })
     .catch((err) => {
       errorMessage.innerText = err.message || "Failed to retrieve location data.";
       resetUI();
+
       showLoader(false);
     });
 }
@@ -202,6 +219,7 @@ function fetchWeather(lat, lon, key) {
   )
     .then((res) => {
       if (!res.ok) throw new Error("Failed to fetch current weather.");
+
       return res.json();
     })
     .then((d) => {
@@ -209,6 +227,7 @@ function fetchWeather(lat, lon, key) {
       condition.innerText = d.weather[0].description;
       humidity.innerText = d.main.humidity + "%";
       wind.innerText = (d.wind.speed * 3.6).toFixed(1) + " km/h";
+
       feelsLikeEl.innerText = `${Math.round(d.main.feels_like)}°C — ${getFeelsLikeComment(d.main.feels_like)}`;
       sunriseEl.innerText = new Date(d.sys.sunrise * 1000).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
       sunsetEl.innerText = new Date(d.sys.sunset * 1000).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
@@ -228,6 +247,7 @@ function fetchWeather(lat, lon, key) {
   )
     .then((res) => {
       if (!res.ok) throw new Error("Failed to fetch forecast.");
+
       return res.json();
     })
     .then((forecast) => {
@@ -237,6 +257,7 @@ function fetchWeather(lat, lon, key) {
         const temp = Math.round(item.main.temp);
         const iconUrl = `https://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`;
 
+
         const card = document.createElement("div");
         card.innerHTML = `
           <div>${hour}:00</div>
@@ -244,11 +265,16 @@ function fetchWeather(lat, lon, key) {
           <span class="temp">${temp}°C</span>
         `;
         hourlyForecastEl.appendChild(card);
+
       });
+    })
+    .catch((err) => {
+      console.error(err);
     });
 
   return Promise.all([weatherFetch, forecastFetch]);
 }
+
 
 // ── AQI Fetch ─────────────────────────────────────────────────
 function fetchAQI(lat, lon, key) {
@@ -257,6 +283,7 @@ function fetchAQI(lat, lon, key) {
   )
     .then((res) => {
       if (!res.ok) throw new Error("Failed to fetch AQI data.");
+
       return res.json();
     })
     .then((d) => {
@@ -278,6 +305,7 @@ function fetchAQI(lat, lon, key) {
       aqiValue.style.color = color;
       aqiStatus.style.color = color;
 
+
       // Animate the ring
       updateAQIRing(aqi);
 
@@ -287,6 +315,7 @@ function fetchAQI(lat, lon, key) {
       so2.innerText = c.so2.toFixed(1) + " µg/m³";
       o3.innerText = c.o3.toFixed(1) + " µg/m³";
       co.innerText = c.co.toFixed(1) + " µg/m³";
+
     });
 }
 
