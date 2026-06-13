@@ -3648,6 +3648,7 @@ function initFeatureAdditions() {
 
   // Notifications after 3 s to not clash with page load
   setTimeout(checkUpcomingEventNotifications, 3000);
+
 }
 
 
@@ -3676,7 +3677,35 @@ if (themeToggleEl) {
     });
 
     updateIcon();
-}
+
+ocument.getElementByoggle
+toggle saved = localStorage.getItem("theme");
+    if (saved === "light") {
+        bodyEl.classList.add("light-theme");
+    }
+
+    const updateIcon = () => {
+        classLisht-theme")) {
+            themeToggleEl.textConten";
+        } else {
+            themeToggleEl.textContent = "🌙";t" : "dark")t);
+
+    updateIcon();
+
+avedTheme ===) {
+    body.classList.add("light-theme}
+
+
+themeToggle.addEventListener("click", () => {
+
+body.classList.toggle("light-theme"
+    if (body.classList.contains("light-theme")) {
+        localStorage.setItem("theme", "light");
+    } else {
+        localStorage.setItem("theme", "dark");
+    }
+
+});
 
 /*
 =======================================================================
