@@ -24,6 +24,17 @@ const GEMINI_PROXY_ENDPOINT = "/api/gemini";
 
 /* STATE */
 let apiKey = localStorage.getItem(STORAGE.API_KEY) || DEFAULT_GEMINI_API_KEY || "";
+
+// Migration: check for old storage key from unused chatbot.js
+if (!apiKey) {
+  const oldKey = localStorage.getItem('gemini_api_key');
+  if (oldKey) {
+    apiKey = oldKey;
+    localStorage.setItem(STORAGE.API_KEY, apiKey);
+    console.log('✓ Migrated API key from old storage key');
+  }
+}
+
 let hfKey = localStorage.getItem(STORAGE.HF_KEY) || "";
 let sessions = loadSessions();
 let activeSessionId = null;
@@ -1151,37 +1162,83 @@ async function getAIResponse() {
   if (sysProm) body.systemInstruction = { parts: [{ text: sysProm }] };
 
   try {
-    const useProxy = !apiKey;
-    const fetchOptions = useProxy
-      ? {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            model,
-            contents: chatHistory,
-            systemPrompt: sysProm,
-          }),
-        }
-      : {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(body),
-        };
+    // Validate apiKey
+    console.log('📡 [Gemini] Starting request', { 
+      apiKey: apiKey ? `${apiKey.substring(0, 8)}...` : 'EMPTY',
+      apiKeyValid: apiKey && apiKey.length > 0,
+      model,
+      chatHistoryLength: chatHistory.length,
+      bodyKeys: Object.keys(body),
+      firstMessageRole: chatHistory[0]?.role,
+      firstMessagePartsCount: chatHistory[0]?.parts?.length
+    });
+    
+    if (!apiKey || apiKey.trim().length === 0) {
+      throw new Error("API key is missing. Please add your Gemini API key in Settings (gear icon).");
+    }
 
-    const requestUrl = useProxy ? GEMINI_PROXY_ENDPOINT : `${API_URL}?key=${apiKey}`;
+    // Validate API key format
+    if (!apiKey.startsWith('AIza')) {
+      console.warn('⚠️ [Gemini] API key does not start with "AIza" - this may be incorrect format');
+    }
+
+    // Validate chatHistory format
+    if (!chatHistory || chatHistory.length === 0) {
+      throw new Error("No chat history to send.");
+    }
+
+    const useProxy = false; // Disable proxy - always use direct Google API
+    
+    // Official Google Gemini API auth: use API key as query parameter
+    const fetchOptions = {
+      method: "POST",
+      headers: { 
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    };
+
+    const requestUrl = `${API_URL}?key=${encodeURIComponent(apiKey)}`;
+    
+    console.log('📡 [Gemini] Request URL:', requestUrl.replace(apiKey, '[API_KEY_REDACTED]'));
+    console.log('📡 [Gemini] Auth method:', 'Query parameter (?key=...)');
+    console.log('📡 [Gemini] Request body:', JSON.stringify(body, null, 2));
+    
     const res = await fetch(requestUrl, fetchOptions);
 
     removeTyping(typingRow);
 
+    const responseText = await res.text();
+    console.log('📡 [Gemini] Response status:', res.status);
+    console.log('📡 [Gemini] Response body:', responseText);
+
     if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
+      let err;
+      try {
+        err = JSON.parse(responseText);
+      } catch {
+        err = { error: responseText };
+      }
+      
       const message = err.error?.message || err.error || `HTTP ${res.status}`;
-      throw new Error(
-        message || "Unable to connect to Gemini. Check your hosted proxy or API key.",
-      );
+      const code = err.error?.code;
+      
+      // Specific error guidance
+      let userMessage = message;
+      if (code === 401 || message.includes('authentication') || message.includes('UNAUTHENTICATED')) {
+        userMessage = `Authentication Failed: Your API key may be invalid or have OAuth-only restrictions. 
+        
+1. Verify your Gemini API key starts with "AIza"
+2. Check in Google Cloud Console that the API key has "Generative Language API" enabled
+3. Ensure it's not restricted to OAuth only (check the key's application restrictions)
+4. Try creating a new unrestricted API key`;
+      }
+      
+      console.error('❌ [Gemini] Error:', { status: res.status, code, error: err });
+      throw new Error(userMessage || "Unable to connect to Gemini. Check your API key and try again.");
     }
 
-    const data = await res.json();
+    const data = JSON.parse(responseText);
 
     if (data.candidates && data.candidates[0]) {
       const candidate = data.candidates[0];
@@ -1223,6 +1280,7 @@ async function getAIResponse() {
     renderHistoryList();
   } catch (err) {
     removeTyping(typingRow);
+    console.error('❌ [Gemini] Final error caught:', err);
     renderMessage("ai", `**Error:** ${err.message}`, null, true);
   }
 }

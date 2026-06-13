@@ -184,7 +184,7 @@
       "css"
     ],
     "difficulty": "beginner",
-    "projectPath": "./public/Custom Scroll Bar/index.html"
+   "projectPath": "./public/Custom-Scroll-Bar/index.html"
   },
   {
     "projectNo": 17,
@@ -2883,6 +2883,13 @@
     "projectName": "3D Terrain Generator",
     "projectType": "Tool",
     "projectDesc": "A stunning, interactive 3D terrain generator built with Three.js and Perlin Noise. Features dynamic lighting, wireframe toggles, adjustable flight speed, and multiple visual themes.",
+    "projectPath": "./public/Word_Jumble/index.html"
+  },
+  {
+    "projectNo": 229,
+    "projectName": "Beat Maker",
+    "projectType": "Music",
+    "projectDesc": "Generate beats ",
     "techStack": [
       "html",
       "css",
@@ -2893,4 +2900,11 @@
     "difficulty": "advanced",
     "projectPath": "./public/3DTerrainGenerator/index.html"
   }
+]
+      "music"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/BeatMaker/demo.html"
+  }
+
 ]
