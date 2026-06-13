@@ -184,7 +184,7 @@
       "css"
     ],
     "difficulty": "beginner",
-    "projectPath": "./public/Custom Scroll Bar/index.html"
+   "projectPath": "./public/Custom-Scroll-Bar/index.html"
   },
   {
     "projectNo": 17,
@@ -2879,7 +2879,21 @@
     "projectPath": "./public/Word_Jumble/index.html"
   },
   {
-  "projectNo": 228,
+    "projectNo": 228,
+    "projectName": "Beat Maker",
+    "projectType": "Music",
+    "projectDesc": "Generate beats ",
+    "techStack": [
+      "html",
+      "css",
+      "javascript",
+      "music"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/BeatMaker/demo.html"
+  },
+  {
+  "projectNo": 229,
   "projectName": "MD Preview",
   "projectType": "Tool",
   "projectDesc": "Markdown preview tool that renders and checks .md content in a clean live preview interface.",
@@ -2891,4 +2905,5 @@
   "difficulty": "advanced",
   "projectPath": "./public/MD Preview/index.html"
 }
+
 ]

@@ -794,7 +794,7 @@ function importNotes(event) {
         elements.importInput.value = "";
       }
     }
-  });
+  );
 
   reader.readAsText(file);
 }
