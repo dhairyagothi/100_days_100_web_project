@@ -1,17 +1,23 @@
 /* ── Reset & base ─────────────────────────────────── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
 :root {
-  --bg:        #f5f4f0;
-  --surface:   #ffffff;
-  --border:    #e2e0d8;
-  --text:      #1a1a18;
-  --muted:     #6b6b66;
-  --accent:    #2d6a4f;
+  --bg: #f5f4f0;
+  --surface: #ffffff;
+  --border: #e2e0d8;
+  --text: #1a1a18;
+  --muted: #6b6b66;
+  --accent: #2d6a4f;
   --accent-lt: #d8f0e6;
-  --star-on:   #e89e2a;
-  --star-off:  #d6d3c8;
-  --danger:    #c0392b;
+  --star-on: #e89e2a;
+  --star-off: #d6d3c8;
+  --danger: #c0392b;
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 18px;
@@ -41,7 +47,9 @@ body {
   font-weight: 700;
   letter-spacing: -0.02em;
 }
-.page-header h1 span { color: var(--accent); }
+.page-header h1 span {
+  color: var(--accent);
+}
 .page-header p {
   color: var(--muted);
   font-size: 1rem;
@@ -73,8 +81,14 @@ body {
   line-height: 1;
   color: var(--text);
 }
-.avg-stars { display: flex; gap: 2px; }
-.avg-label { font-size: 0.78rem; color: var(--muted); }
+.avg-stars {
+  display: flex;
+  gap: 2px;
+}
+.avg-label {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
 
 .breakdown {
   flex: 1;
@@ -90,7 +104,9 @@ body {
   font-size: 0.8rem;
   color: var(--muted);
 }
-.bar-label { min-width: 24px; }
+.bar-label {
+  min-width: 24px;
+}
 .bar-track {
   flex: 1;
   height: 6px;
@@ -104,17 +120,24 @@ body {
   border-radius: 3px;
   transition: width 0.4s ease;
 }
-.bar-pct { min-width: 32px; text-align: right; }
+.bar-pct {
+  min-width: 32px;
+  text-align: right;
+}
 
 .total-count {
   font-size: 0.85rem;
   color: var(--muted);
   white-space: nowrap;
 }
-.total-count strong { color: var(--text); }
+.total-count strong {
+  color: var(--text);
+}
 
 /* ── Form section ─────────────────────────────────── */
-.form-section { margin-bottom: 1.8rem; }
+.form-section {
+  margin-bottom: 1.8rem;
+}
 .form-section h2 {
   font-size: 1.1rem;
   font-weight: 600;
@@ -135,7 +158,7 @@ body {
   gap: 12px;
   flex-wrap: wrap;
 }
-input[type="text"] {
+input[type='text'] {
   flex: 1;
   min-width: 160px;
   padding: 9px 14px;
@@ -147,7 +170,9 @@ input[type="text"] {
   outline: none;
   transition: border-color 0.2s;
 }
-input[type="text"]:focus { border-color: var(--accent); }
+input[type='text']:focus {
+  border-color: var(--accent);
+}
 
 textarea {
   width: 100%;
@@ -162,7 +187,9 @@ textarea {
   outline: none;
   transition: border-color 0.2s;
 }
-textarea:focus { border-color: var(--accent); }
+textarea:focus {
+  border-color: var(--accent);
+}
 
 /* Star picker */
 .star-picker {
@@ -173,19 +200,27 @@ textarea:focus { border-color: var(--accent); }
 }
 .star-picker span {
   color: var(--star-off);
-  transition: color 0.15s, transform 0.1s;
+  transition:
+    color 0.15s,
+    transform 0.1s;
   user-select: none;
   line-height: 1;
 }
 .star-picker span.active,
-.star-picker span.hover { color: var(--star-on); transform: scale(1.15); }
+.star-picker span.hover {
+  color: var(--star-on);
+  transform: scale(1.15);
+}
 
 .form-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-.char-count { font-size: 0.78rem; color: var(--muted); }
+.char-count {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
 
 button#submitBtn {
   background: var(--accent);
@@ -196,10 +231,16 @@ button#submitBtn {
   font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s, transform 0.1s;
+  transition:
+    background 0.2s,
+    transform 0.1s;
 }
-button#submitBtn:hover { background: #245c43; }
-button#submitBtn:active { transform: scale(0.97); }
+button#submitBtn:hover {
+  background: #245c43;
+}
+button#submitBtn:active {
+  transform: scale(0.97);
+}
 
 .form-error {
   font-size: 0.82rem;
@@ -268,8 +309,14 @@ select#sortSelect {
   animation: fadeUp 0.3s ease both;
 }
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 .card-top {
   display: flex;
@@ -287,11 +334,26 @@ select#sortSelect {
   font-weight: 700;
   flex-shrink: 0;
 }
-.avatar.c0 { background: #d8f0e6; color: #1a5c3a; }
-.avatar.c1 { background: #e6e4fc; color: #3b3182; }
-.avatar.c2 { background: #fde8df; color: #8a3010; }
-.avatar.c3 { background: #daeeff; color: #0c3e70; }
-.avatar.c4 { background: #fef3d8; color: #7a4a00; }
+.avatar.c0 {
+  background: #d8f0e6;
+  color: #1a5c3a;
+}
+.avatar.c1 {
+  background: #e6e4fc;
+  color: #3b3182;
+}
+.avatar.c2 {
+  background: #fde8df;
+  color: #8a3010;
+}
+.avatar.c3 {
+  background: #daeeff;
+  color: #0c3e70;
+}
+.avatar.c4 {
+  background: #fef3d8;
+  color: #7a4a00;
+}
 
 .user-info .name {
   font-size: 0.9rem;
@@ -303,12 +365,17 @@ select#sortSelect {
   color: var(--muted);
 }
 
-.card-stars { display: flex; gap: 2px; }
+.card-stars {
+  display: flex;
+  gap: 2px;
+}
 .card-stars .s {
   font-size: 0.95rem;
   color: var(--star-off);
 }
-.card-stars .s.on { color: var(--star-on); }
+.card-stars .s.on {
+  color: var(--star-on);
+}
 
 .card-text {
   font-size: 0.88rem;
@@ -341,7 +408,34 @@ select#sortSelect {
 
 /* ── Responsive ───────────────────────────────────── */
 @media (max-width: 500px) {
-  .summary-bar { gap: 1.25rem; }
-  .avg-score { font-size: 2.2rem; }
-  .page-wrapper { padding: 1.5rem 1rem 3rem; }
+  .summary-bar {
+    gap: 1.25rem;
+  }
+  .avg-score {
+    font-size: 2.2rem;
+  }
+  .page-wrapper {
+    padding: 1.5rem 1rem 3rem;
+  }
+}
+
+/* ── Search Bar ─────────────────────────────── */
+.search-container {
+  margin-bottom: 1rem;
+}
+
+#searchInput {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+#searchInput:focus {
+  border-color: var(--accent);
 }

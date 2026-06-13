@@ -1,149 +1,180 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Calculator</title>
-  <link href="styles.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <script src="script.js" defer></script>
-  <link rel="icon" href="favicon_calcs.png">
-</head>
-<body>
-
-  <div class="app-wrapper">
-
-    <!-- BASIC CALCULATOR -->
-    <div id="basic-calculator" class="calculator-grid">
-      <div class="output">
-        <button id="toggle-basic" class="toggle-btn" title="Switch to Scientific">
-          <img src="img/download (1).png" alt="Toggle">
-          <span class="toggle-label">SCI</span>
-        </button>
-        <div data-previous-operand class="previous-operand"></div>
-        <input type="text" data-current-operand class="current-operand" readonly>
-      </div>
-
-      <button data-all-clear class="btn btn-utility span-two">AC</button>
-      <button data-delete class="btn btn-utility">DEL</button>
-      <button data-operation class="btn btn-operator">÷</button>
-
-      <button data-number class="btn">1</button>
-      <button data-number class="btn">2</button>
-      <button data-number class="btn">3</button>
-      <button data-operation class="btn btn-operator">*</button>
-
-      <button data-number class="btn">4</button>
-      <button data-number class="btn">5</button>
-      <button data-number class="btn">6</button>
-      <button data-operation class="btn btn-operator">+</button>
-
-      <button data-number class="btn">7</button>
-      <button data-number class="btn">8</button>
-      <button data-number class="btn">9</button>
-      <button data-operation class="btn btn-operator">-</button>
-
-      <button data-number class="btn">.</button>
-      <button data-number class="btn">0</button>
-      <button data-equals class="btn btn-equals span-two">=</button>
-    </div>
-
-    <!-- SCIENTIFIC CALCULATOR -->
-    <div id="scientific-calculator" class="calculator-grid sci-grid hidden">
-      <div class="output">
-        <div class="output-top-row">
-          <button id="toggle-sci" class="toggle-btn" title="Switch to Basic">
-            <img src="img/download (1).png" alt="Toggle">
-            <span class="toggle-label">BASIC</span>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calculator</title>
+    <link href="styles.css" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <script src="script.js" defer></script>
+    <link rel="icon" href="favicon_calcs.png" />
+  </head>
+  <body>
+    <div class="app-wrapper">
+      <!-- BASIC CALCULATOR -->
+      <div id="basic-calculator" class="calculator-grid">
+        <div class="output">
+          <button
+            id="toggle-basic"
+            class="toggle-btn"
+            title="Switch to Scientific"
+          >
+            <img src="img/download (1).png" alt="Toggle" />
+            <span class="toggle-label">SCI</span>
           </button>
-          <div class="mode-badge" id="mode-badge">DEG</div>
+          <div data-previous-operand class="previous-operand"></div>
+          <input
+            type="text"
+            data-current-operand
+            class="current-operand"
+            readonly
+          />
         </div>
-        <div data-previous-operand class="previous-operand"></div>
-        <input type="text" data-current-operand class="current-operand" readonly>
+
+        <button data-all-clear class="btn btn-utility span-two">AC</button>
+        <button data-delete class="btn btn-utility">DEL</button>
+        <button data-operation class="btn btn-operator">÷</button>
+
+        <button data-number class="btn">1</button>
+        <button data-number class="btn">2</button>
+        <button data-number class="btn">3</button>
+        <button data-operation class="btn btn-operator">*</button>
+
+        <button data-number class="btn">4</button>
+        <button data-number class="btn">5</button>
+        <button data-number class="btn">6</button>
+        <button data-operation class="btn btn-operator">+</button>
+
+        <button data-number class="btn">7</button>
+        <button data-number class="btn">8</button>
+        <button data-number class="btn">9</button>
+        <button data-operation class="btn btn-operator">-</button>
+
+        <button data-number class="btn">.</button>
+        <button data-number class="btn">0</button>
+        <button data-equals class="btn btn-equals span-two">=</button>
       </div>
 
-      <!-- Row 1 -->
-      <button data-function="rad" class="btn btn-mode" id="rad-btn">Rad</button>
-      <button data-function="deg" class="btn btn-mode" id="deg-btn">Deg</button>
-      <button data-function="factorial" class="btn btn-fn">x!</button>
-      <button data-function="left-paren" class="btn btn-fn">(</button>
-      <button data-function="right-paren" class="btn btn-fn">)</button>
-      <button data-delete class="btn btn-utility">DEL</button>
-      <button data-all-clear class="btn btn-utility">AC</button>
+      <!-- SCIENTIFIC CALCULATOR -->
+      <div id="scientific-calculator" class="hidden calculator-grid sci-grid">
+        <div class="output">
+          <div class="output-top-row">
+            <button id="toggle-sci" class="toggle-btn" title="Switch to Basic">
+              <img src="img/download (1).png" alt="Toggle" />
+              <span class="toggle-label">BASIC</span>
+            </button>
+            <div class="mode-badge" id="mode-badge">DEG</div>
+          </div>
+          <div data-previous-operand class="previous-operand"></div>
+          <input
+            type="text"
+            data-current-operand
+            class="current-operand"
+            readonly
+          />
+        </div>
 
-      <!-- Row 2 -->
-      <button data-function="percent" class="btn btn-fn">%</button>
-      <button data-function="sin" class="btn btn-trig">sin</button>
-      <button data-function="ln" class="btn btn-fn">ln</button>
-      <button data-number class="btn">7</button>
-      <button data-number class="btn">8</button>
-      <button data-number class="btn">9</button>
-      <button data-operation class="btn btn-operator">÷</button>
+        <!-- Row 1 -->
+        <button data-function="rad" class="btn btn-mode" id="rad-btn">
+          Rad
+        </button>
+        <button data-function="deg" class="btn btn-mode" id="deg-btn">
+          Deg
+        </button>
+        <button data-function="factorial" class="btn btn-fn">x!</button>
+        <button data-function="left-paren" class="btn btn-fn">(</button>
+        <button data-function="right-paren" class="btn btn-fn">)</button>
+        <button data-delete class="btn btn-utility">DEL</button>
+        <button data-all-clear class="btn btn-utility">AC</button>
 
-      <!-- Row 3 -->
-      <button data-function="pi" class="btn btn-const">π</button>
-      <button data-function="cos" class="btn btn-trig">cos</button>
-      <button data-function="log" class="btn btn-fn">log</button>
-      <button data-number class="btn">4</button>
-      <button data-number class="btn">5</button>
-      <button data-number class="btn">6</button>
-      <button data-operation class="btn btn-operator">*</button>
+        <!-- Row 2 -->
+        <button data-function="percent" class="btn btn-fn">%</button>
+        <button data-function="sin" class="btn btn-trig">sin</button>
+        <button data-function="ln" class="btn btn-fn">ln</button>
+        <button data-number class="btn">7</button>
+        <button data-number class="btn">8</button>
+        <button data-number class="btn">9</button>
+        <button data-operation class="btn btn-operator">÷</button>
 
-      <!-- Row 4 -->
-      <button data-function="e" class="btn btn-const">e</button>
-      <button data-function="tan" class="btn btn-trig">tan</button>
-      <button data-function="sqrt" class="btn btn-fn">√</button>
-      <button data-number class="btn">1</button>
-      <button data-number class="btn">2</button>
-      <button data-number class="btn">3</button>
-      <button data-operation class="btn btn-operator">-</button>
+        <!-- Row 3 -->
+        <button data-function="pi" class="btn btn-const">π</button>
+        <button data-function="cos" class="btn btn-trig">cos</button>
+        <button data-function="log" class="btn btn-fn">log</button>
+        <button data-number class="btn">4</button>
+        <button data-number class="btn">5</button>
+        <button data-number class="btn">6</button>
+        <button data-operation class="btn btn-operator">*</button>
 
-      <!-- Row 5 -->
-      <button data-function="ans" class="btn btn-fn">Ans</button>
-      <button data-function="exp" class="btn btn-fn">EXP</button>
-      <button data-function="pow" class="btn btn-fn">x^y</button>
-      <button data-number class="btn">.</button>
-      <button data-number class="btn">0</button>
-      <button data-equals class="btn btn-equals">=</button>
-      <button data-operation class="btn btn-operator">+</button>
-    </div>
+        <!-- Row 4 -->
+        <button data-function="e" class="btn btn-const">e</button>
+        <button data-function="tan" class="btn btn-trig">tan</button>
+        <button data-function="sqrt" class="btn btn-fn">√</button>
+        <button data-number class="btn">1</button>
+        <button data-number class="btn">2</button>
+        <button data-number class="btn">3</button>
+        <button data-operation class="btn btn-operator">-</button>
 
-    <!-- INSTRUCTIONS PANEL -->
-    <div class="instructions">
-      <h2>KEYBOARD SHORTCUTS</h2>
-      <ul>
-        <li><kbd>s</kbd> sin</li>
-        <li><kbd>c</kbd> cos</li>
-        <li><kbd>t</kbd> tan</li>
-        <li><kbd>l</kbd> ln</li>
-        <li><kbd>g</kbd> log</li>
-        <li><kbd>p</kbd> π</li>
-        <li><kbd>r</kbd> √</li>
-        <li><kbd>e</kbd> e</li>
-        <li><kbd>x</kbd> EXP</li>
-        <li><kbd>%</kbd> %</li>
-        <li><kbd>d</kbd> deg</li>
-        <li><kbd>a</kbd> rad</li>
-        <li><kbd>f</kbd> x!</li>
-        <li><kbd>^</kbd> x^y</li>
-        <li><kbd>⌫</kbd> DEL</li>
-        <li><kbd>Esc</kbd> AC</li>
-        <li><kbd>↵</kbd> =</li>
-      </ul>
-    </div>
-
-    <!-- RIGHT SIDE: HISTORY PANEL -->
-    <div class="history-panel">
-      <div class="history-header">
-        <h3> Calculation History</h3>
-        <button id="clear-history" class="clear-history-btn">Clear All</button>
+        <!-- Row 5 -->
+        <button data-function="ans" class="btn btn-fn">Ans</button>
+        <button data-function="exp" class="btn btn-fn">EXP</button>
+        <button data-function="pow" class="btn btn-fn">x^y</button>
+        <button data-number class="btn">.</button>
+        <button data-number class="btn">0</button>
+        <button data-equals class="btn btn-equals">=</button>
+        <button data-operation class="btn btn-operator">+</button>
       </div>
-      <div id="history-list" class="history-list">
-        <div class="history-empty">No calculations yet<br>Click "=" to see history here</div>
+
+      <!-- INSTRUCTIONS PANEL -->
+      <div class="instructions">
+        <h2>KEYBOARD SHORTCUTS</h2>
+        <ul>
+          <li><kbd>s</kbd> sin</li>
+          <li><kbd>c</kbd> cos</li>
+          <li><kbd>t</kbd> tan</li>
+          <li><kbd>l</kbd> ln</li>
+          <li><kbd>g</kbd> log</li>
+          <li><kbd>p</kbd> π</li>
+          <li><kbd>r</kbd> √</li>
+          <li><kbd>e</kbd> e</li>
+          <li><kbd>x</kbd> EXP</li>
+          <li><kbd>%</kbd> %</li>
+          <li><kbd>d</kbd> deg</li>
+          <li><kbd>a</kbd> rad</li>
+          <li><kbd>f</kbd> x!</li>
+          <li><kbd>^</kbd> x^y</li>
+          <li><kbd>⌫</kbd> DEL</li>
+          <li><kbd>Esc</kbd> AC</li>
+          <li><kbd>↵</kbd> =</li>
+        </ul>
+      </div>
+
+      <!-- RIGHT SIDE: HISTORY PANEL -->
+      <div class="history-panel">
+        <div class="history-header">
+          <h3>Calculation History</h3>
+
+          <div class="history-actions">
+            <button id="copy-history" class="history-action-btn">Copy</button>
+
+            <button id="export-txt" class="history-action-btn">TXT</button>
+
+            <button id="export-csv" class="history-action-btn">CSV</button>
+
+            <button id="clear-history" class="clear-history-btn">
+              Clear All
+            </button>
+          </div>
+        </div>
+        <div id="history-list" class="history-list">
+          <div class="history-empty">
+            No calculations yet<br />Click "=" to see history here
+          </div>
+        </div>
       </div>
     </div>
-
-  </div><!-- end app-wrapper -->
-
-</body>
+    <!-- end app-wrapper -->
+  </body>
 </html>
