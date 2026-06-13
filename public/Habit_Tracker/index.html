@@ -1,107 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Habit Tracker Pro</title>
-<link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Habit Tracker Pro</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
 
-<div class="container">
+    <div class="container">
 
-<header>
+        <header>
 
-<h1>🌱 Habit Tracker Pro</h1>
+            <h1>🌱 Habit Tracker Pro</h1>
 
-<div class="header-actions">
+            <div class="header-actions">
 
-<input
-type="text"
-id="searchHabit"
-placeholder="Search habit..."
->
+                <input type="text" id="searchHabit" placeholder="Search habit...">
 
-<button id="addHabitBtn">
-+ Add Habit
-</button>
+                <button id="addHabitBtn">
+                    + Add Habit
+                </button>
 
-<button id="themeBtn">
-🌙
-</button>
+                <button id="themeBtn">
+                    🌙
+                </button>
 
-</div>
+            </div>
 
-</header>
+        </header>
 
-<div class="stats">
+        <div class="stats">
 
-<div class="card">
-<h3>Total Habits</h3>
-<p id="totalHabits">0</p>
-</div>
+            <div class="card">
+                <h3>Total Habits</h3>
+                <p id="totalHabits">0</p>
+            </div>
 
-<div class="card">
-<h3>Completed Today</h3>
-<p id="completedToday">0</p>
-</div>
+            <div class="card">
+                <h3>Completed Today</h3>
+                <p id="completedToday">0</p>
+            </div>
 
-<div class="card">
-<h3>Best Streak</h3>
-<p id="bestStreak">0</p>
-</div>
+            <div class="card">
+                <h3>Best Streak</h3>
+                <p id="bestStreak">0</p>
+            </div>
 
-</div>
+        </div>
 
-<div class="quote-box">
-<p id="quote"></p>
-</div>
+        <div class="quote-box">
+            <p id="quote"></p>
+        </div>
 
-<div id="habitList"></div>
+        <div id="habitList"></div>
 
-</div>
+    </div>
 
-<div class="modal" id="habitModal">
+    <div class="modal" id="habitModal">
 
-<div class="modal-content">
+        <div class="modal-content">
 
-<h2>Add Habit</h2>
+            <h2>Add Habit</h2>
 
-<input
-type="text"
-id="habitName"
-placeholder="Habit Name"
->
+            <input type="text" id="habitName" placeholder="Habit Name">
 
-<select id="habitCategory">
-<option>Health</option>
-<option>Study</option>
-<option>Fitness</option>
-<option>Personal</option>
-<option>Work</option>
-</select>
+            <select id="habitCategory">
+                <option>Health</option>
+                <option>Study</option>
+                <option>Fitness</option>
+                <option>Personal</option>
+                <option>Work</option>
+            </select>
 
-<input
-type="color"
-id="habitColor"
-value="#22c55e"
->
+            <input type="color" id="habitColor" value="#22c55e">
 
-<textarea
-id="habitNotes"
-placeholder="Notes..."
-></textarea>
+            <textarea id="habitNotes" placeholder="Notes..."></textarea>
 
-<button id="saveHabitBtn">
-Save Habit
-</button>
+            <button id="saveHabitBtn">
+                Save Habit
+            </button>
 
-</div>
+        </div>
 
-</div>
+    </div>
 
-<script src="script.js"></script>
+    <script src="script.js"></script>
 
 </body>
+
 </html>
