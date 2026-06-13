@@ -164,3 +164,38 @@ transform:translateY(100vh);
 }
 
 }
+
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    font-size:0.9rem;
+    width: min(400px, 90%);
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+#confirmDeleteBtn {
+    background: crimson;
+    color: white;
+}
+
+body.dark .modal-content {
+    background: #1f2937;
+    color: white;
+}
