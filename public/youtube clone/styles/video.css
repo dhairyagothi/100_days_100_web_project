@@ -37,7 +37,7 @@
 
 .video-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
   column-gap: 16px;
   row-gap: 40px;
   margin-left: 82px;
@@ -89,7 +89,7 @@
 
 @media (min-width: 1000px) {
   .video-grid {
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-columns: repeat(4, 1fr);
   }
 }
 
