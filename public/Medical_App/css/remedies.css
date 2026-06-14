@@ -97,6 +97,8 @@
     display:flex;
     justify-content:space-between;
     align-items:center;
+    gap:20px;
+    flex-wrap:wrap;
 }
 
 .theme-btn{
@@ -115,4 +117,88 @@
     .header-actions{
         justify-content:center;
     }
+}
+
+
+
+
+
+
+.site-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:20px;
+}
+
+.auth-brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-top:-6px;
+}
+
+.header-actions{
+    display:flex;
+    align-items:center;
+    margin-left:auto;
+}
+
+.auth-brand img{
+    width:48px;
+    height:48px;
+    object-fit:contain;
+}
+
+.auth-brand h1{
+    margin:0;
+}
+
+.auth-brand p{
+    margin:4px 0 0;
+}
+
+/* Theme Toggle Area */
+.header-actions{
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+    margin-left:auto;
+}
+
+/* Theme Button */
+.theme-btn{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    cursor:pointer;
+}
+
+/* Optional: dedicated remedies brand class */
+.remedies-brand{
+    display:flex;
+    align-items:center;
+    gap:16px;
+}
+
+.remedies-brand img{
+    width:48px;
+    height:48px;
+    object-fit:contain;
+}
+
+.auth-brand{
+    margin-top:-6px;
+    margin-left:-4px;
+}
+
+.remedies-brand h1{
+    margin:0;
+}
+
+.remedies-brand p{
+    margin:4px 0 0;
 }

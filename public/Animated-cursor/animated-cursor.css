@@ -315,12 +315,14 @@ body[data-cursor="crosshair"] .cursor::after {
 ========================= */
 
 .content {
-    margin-top: 200px;
+    margin-top: 100px;
     position: relative;
 
     z-index: 5;
 
-    width: min(90vw, 620px);
+  
+    width: min(95vw, 1400px);
+
 
     text-align: center;
 
@@ -1274,4 +1276,225 @@ body.light-theme .select-option,
 body.light-theme .select-option *,
 body.light-theme .select-menu li {
     color: #404654 !important;
+}
+/* =========================
+   CURSOR GALLERY
+========================= */
+
+.cursor-gallery {
+    width: min(1400px, 95vw);
+    margin: 40px auto;
+    z-index: 10;
+    position: relative;
+}
+
+
+/* Grid */
+
+.cursor-grid {
+    display: grid;
+    display: flex;
+    flex-wrap:wrap ;
+
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 28px;
+}
+
+/* Card */
+
+.cursor-card {
+    position: relative;
+    width: 200px;
+
+    overflow: hidden;
+    
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; 
+  align-items: center;
+  height: 100%; 
+
+
+    border-radius: 24px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,.08),
+            rgba(255,255,255,.03)
+        );
+
+    border: 1px solid rgba(255,255,255,.12);
+
+    backdrop-filter: blur(20px);
+
+    transition: all .35s ease;
+
+    min-height: 320px;
+}
+
+.cursor-card:hover {
+    transform: translateY(-8px);
+
+    border-color: rgba(var(--accent-rgb), .45);
+
+    box-shadow:
+        0 20px 60px rgba(0,0,0,.35),
+        0 0 40px rgba(var(--accent-rgb), .12);
+}
+
+
+/* Preview Area */
+
+.cursor-preview {
+    height: 200px;
+
+    position: relative;
+
+    overflow: hidden;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+.cursor-preview::before {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(var(--accent-rgb), .12),
+            transparent 70%
+        );
+}
+
+/* Footer */
+
+.cursor-card-footer {
+    padding: 18px;
+}
+
+.cursor-card-footer h3 {
+    font-size: 1.1rem;
+    margin-bottom: 6px;
+}
+
+.cursor-card-footer p {
+    font-size: .9rem;
+    color: rgba(255,255,255,.65);
+    margin-bottom: 18px;
+}
+
+/* Apply Button */
+
+.apply-btn {
+  width: 90%;
+  margin-top: auto; /* pushes button to bottom */
+  padding: 14px;
+  border: none;
+  border-radius: 14px;
+  font-size: .95rem;
+  font-weight: 700;
+  color: #fff;
+  cursor: none;
+  background: linear-gradient(135deg, var(--accent), var(--accent-two));
+  transition: all .3s ease;
+}
+
+.apply-btn:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 0 20px rgba(var(--accent-rgb), .35),
+        0 0 40px rgba(var(--accent-two-rgb), .2);
+}
+
+.apply-btn.active {
+    background: #10b981;
+}
+
+/* Empty State */
+
+.no-results {
+    text-align: center;
+
+    padding: 60px 20px;
+
+    color: rgba(255,255,255,.6);
+
+    font-size: 1rem;
+}
+
+/* =========================
+   LIGHT THEME
+========================= */
+
+body.light-theme .cursor-search {
+    background: rgba(255,255,255,.9);
+    color: #404654;
+
+    border: 1px solid rgba(0,0,0,.08);
+}
+
+body.light-theme .cursor-search::placeholder {
+    color: #7c8799;
+}
+
+body.light-theme .cursor-card {
+    background: rgba(255,255,255,.85);
+
+    border: 1px solid rgba(0,0,0,.06);
+
+    box-shadow: 0 8px 30px rgba(0,0,0,.05);
+}
+
+body.light-theme .cursor-card-footer h3 {
+    color: #404654;
+}
+
+body.light-theme .cursor-card-footer p {
+    color: #6b7280;
+}
+
+body.light-theme .cursor-preview {
+    border-bottom: 1px solid rgba(0,0,0,.06);
+}
+
+body.light-theme .no-results {
+    color: #64748b;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 768px) {
+
+    .cursor-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .cursor-card {
+        min-height: 280px;
+    }
+
+    .cursor-preview {
+        height: 180px;
+    }
+}
+.hero-btn {
+  padding: 15px 40px;
+  border: none;
+  border-radius: 10px;
+  background: #c076d1;
+  opacity: 0.9;
+  font-size: 1.2rem;
+  font-weight: 600;
+  cursor: pointer;
 }
