@@ -65,7 +65,10 @@ router.put("/:id", protect, requireRole("employer"), async (req, res) => {
     if (!job) return res.status(404).json({ message: "Job not found" });
     if (job.employer.toString() !== req.user._id.toString())
       return res.status(403).json({ message: "Not your job listing" });
-    Object.assign(job, req.body);
+    const allowedFields = ["title", "location", "type", "salary", "description", "techStack", "isOpen"];
+    for (const field of allowedFields) {
+      if (req.body[field] !== undefined) job[field] = req.body[field];
+    }
     const updated = await job.save();
     res.json(updated);
   } catch (e) { res.status(500).json({ message: e.message }); }
