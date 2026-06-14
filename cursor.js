@@ -325,7 +325,7 @@
     panel.id = "cursorStyleDropdown";
     panel.setAttribute("role", "menu");
     panel.style.cssText = `
-      display:none;position:absolute;top:calc(100% + 8px);right:0;
+      display:none;position:absolute;top:calc(100% + 8px);right:0; transform:translateX(-55px);
       min-width:190px;background:var(--bg-elevated,#111315);
       border:1px solid var(--border,#1b1f24);border-radius:12px;
       padding:6px;box-shadow:0 16px 40px rgba(0,0,0,0.4);

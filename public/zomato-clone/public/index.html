@@ -1,981 +1,282 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
   <title>Zomato Clone</title>
 
-  <!-- Prevent Dark Mode Flicker -->
+  <!-- Prevent dark mode flicker -->
   <script>
     (() => {
-      const savedTheme = localStorage.getItem("zomato-theme");
-
-      if (savedTheme) {
-        document.documentElement.setAttribute(
-          "data-theme",
-          savedTheme
-        );
-      }
+      const saved = localStorage.getItem("zomato-theme");
+      if (saved) document.documentElement.setAttribute("data-theme", saved);
     })();
   </script>
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
-
-  <link
-    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap"
-    rel="stylesheet">
-
-  <style>
-
-    /* RESET */
-
-    *,
-    *::before,
-    *::after {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      font-family: 'DM Sans', system-ui, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      transition:
-        background 0.3s ease,
-        color 0.3s ease;
-      overflow-x: hidden;
-    }
-
-    img {
-      max-width: 100%;
-      display: block;
-    }
-
-    button,
-    input {
-      font-family: inherit;
-    }
-
-    a {
-      text-decoration: none;
-    }
-
-    ul {
-      list-style: none;
-    }
-
-    /* VARIABLES */
-
-    :root {
-
-      --red: #e23744;
-      --red-dark: #c92d39;
-
-      --bg: #ffffff;
-      --bg-secondary: #f8f8f8;
-
-      --text: #1c1c1c;
-      --muted: #696969;
-
-      --border: #e8e8e8;
-
-      --card: #ffffff;
-
-      --shadow:
-        0 4px 20px rgba(0, 0, 0, 0.08);
-
-      --nav-bg:
-        rgba(255, 255, 255, 0.92);
-
-      --footer-bg: #1c1c1c;
-      --footer-text: #d0d0d0;
-
-      --toggle-bg: #e4e4e4;
-      --toggle-knob: #ffffff;
-    }
-
-    [data-theme="dark"] {
-
-      --bg: #121212;
-      --bg-secondary: #1c1c1c;
-
-      --text: #f5f5f5;
-      --muted: #a0a0a0;
-
-      --border: #2d2d2d;
-
-      --card: #1f1f1f;
-
-      --shadow:
-        0 4px 20px rgba(0, 0, 0, 0.45);
-
-      --nav-bg:
-        rgba(18, 18, 18, 0.94);
-
-      --footer-bg: #0b0b0b;
-      --footer-text: #9f9f9f;
-
-      --toggle-bg: #e23744;
-      --toggle-knob: #ffffff;
-    }
-
-    /* TOP BANNER */
-
-    .top-banner {
-
-      background:
-        linear-gradient(
-          90deg,
-          #e23744,
-          #ff6b35,
-          #e23744
-        );
-
-      background-size: 200% 100%;
-
-      animation:
-        gradientMove 6s linear infinite;
-
-      color: white;
-
-      padding: 12px 20px;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-
-      position: relative;
-
-      font-size: 14px;
-      font-weight: 600;
-
-      z-index: 999;
-    }
-
-    @keyframes gradientMove {
-
-      from {
-        background-position: 0%;
-      }
-
-      to {
-        background-position: 200%;
-      }
-    }
-
-    .banner-tag {
-
-      background:
-        rgba(255, 255, 255, 0.2);
-
-      padding: 4px 10px;
-
-      border-radius: 999px;
-
-      font-size: 11px;
-
-      text-transform: uppercase;
-
-      letter-spacing: 0.5px;
-    }
-
-    .banner-close {
-
-      position: absolute;
-
-      right: 18px;
-
-      border: none;
-      background: transparent;
-
-      color: white;
-
-      font-size: 22px;
-
-      cursor: pointer;
-
-      opacity: 0.8;
-    }
-
-    .banner-close:hover {
-      opacity: 1;
-    }
-
-    /* NAVBAR */
-
-    nav {
-
-      position: sticky;
-
-      top: 0;
-
-      height: 68px;
-
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      padding: 0 5%;
-
-      background: var(--nav-bg);
-
-      backdrop-filter: blur(14px);
-
-      border-bottom:
-        1px solid var(--border);
-
-      z-index: 500;
-    }
-
-    .nav-left img {
-      height: 28px;
-    }
-
-    [data-theme="dark"] .nav-left img {
-      filter: brightness(0) invert(1);
-    }
-
-    .nav-links {
-
-      display: flex;
-      align-items: center;
-      gap: 22px;
-    }
-
-    .nav-links a {
-
-      color: var(--text);
-
-      font-size: 14px;
-      font-weight: 500;
-
-      transition: 0.2s;
-    }
-
-    .nav-links a:hover {
-      color: var(--red);
-    }
-
-    .btn-login,
-    .btn-signup {
-
-      padding: 10px 18px;
-
-      border-radius: 10px;
-
-      font-size: 14px;
-      font-weight: 600;
-
-      cursor: pointer;
-
-      transition: 0.2s;
-    }
-
-    .btn-login {
-
-      border:
-        1.5px solid var(--red);
-
-      background: transparent;
-
-      color: var(--red);
-    }
-
-    .btn-login:hover {
-
-      background: var(--red);
-
-      color: white;
-    }
-
-    .btn-signup {
-
-      background: var(--red);
-
-      color: white;
-
-      border: none;
-    }
-
-    .btn-signup:hover {
-      background: var(--red-dark);
-    }
-
-    /* DARK MODE TOGGLE */
-
-    .dm-toggle {
-
-      width: 52px;
-      height: 28px;
-
-      border-radius: 999px;
-
-      border: none;
-
-      background: var(--toggle-bg);
-
-      position: relative;
-
-      cursor: pointer;
-    }
-
-    .dm-toggle::after {
-
-      content: "";
-
-      position: absolute;
-
-      width: 22px;
-      height: 22px;
-
-      background: var(--toggle-knob);
-
-      border-radius: 50%;
-
-      top: 3px;
-      left: 3px;
-
-      transition: transform 0.3s ease;
-    }
-
-    [data-theme="dark"] .dm-toggle::after {
-      transform: translateX(24px);
-    }
-
-    /* HERO */
-
-    .hero {
-
-      position: relative;
-
-      min-height: 90vh;
-
-      display: flex;
-      align-items: center;
-
-      padding: 80px 5%;
-
-      overflow: hidden;
-    }
-
-    .hero-bg {
-
-      position: absolute;
-      inset: 0;
-
-      background:
-        url("https://b.zmtcdn.com/web_assets/81f3ff974d82520780078ba1cfbd453a1583259680.png")
-        center/cover no-repeat;
-
-      filter: brightness(0.32);
-    }
-
-    .hero-content {
-
-      position: relative;
-
-      z-index: 2;
-
-      max-width: 700px;
-
-      color: white;
-    }
-
-    .hero-content h1 {
-
-      font-family: "Playfair Display", serif;
-
-      font-size: clamp(42px, 6vw, 68px);
-
-      line-height: 1.1;
-
-      margin-bottom: 18px;
-    }
-
-    .hero-content p {
-
-      font-size: 17px;
-
-      line-height: 1.7;
-
-      margin-bottom: 34px;
-
-      opacity: 0.9;
-    }
-
-    /* SEARCH BAR */
-
-    .search-bar {
-
-      display: flex;
-      align-items: center;
-
-      background: white;
-
-      border-radius: 16px;
-
-      overflow: hidden;
-
-      box-shadow:
-        0 12px 40px rgba(0, 0, 0, 0.28);
-
-      margin-bottom: 26px;
-    }
-
-    .search-loc,
-    .search-query {
-
-      display: flex;
-      align-items: center;
-
-      gap: 10px;
-
-      padding: 18px;
-    }
-
-    .search-loc {
-
-      min-width: 180px;
-
-      border-right:
-        1px solid #ececec;
-    }
-
-    .search-query {
-      flex: 1;
-    }
-
-    .search-loc input,
-    .search-query input {
-
-      border: none;
-      outline: none;
-
-      width: 100%;
-
-      font-size: 14px;
-    }
-
-    .search-btn {
-
-      margin: 8px;
-
-      padding: 14px 22px;
-
-      border-radius: 12px;
-
-      border: none;
-
-      background: var(--red);
-
-      color: white;
-
-      font-size: 14px;
-      font-weight: 600;
-
-      cursor: pointer;
-    }
-
-    .search-btn:hover {
-      background: var(--red-dark);
-    }
-
-    /* TAGS */
-
-    .quick-tags {
-
-      display: flex;
-      flex-wrap: wrap;
-
-      gap: 10px;
-    }
-
-    .qtag {
-
-      padding: 8px 14px;
-
-      border-radius: 999px;
-
-      background:
-        rgba(255, 255, 255, 0.12);
-
-      border:
-        1px solid rgba(255, 255, 255, 0.2);
-
-      color: white;
-
-      font-size: 13px;
-
-      cursor: pointer;
-
-      transition: 0.2s;
-    }
-
-    .qtag:hover {
-      background: rgba(255, 255, 255, 0.2);
-    }
-
-    /* FOOTER */
-
-    footer {
-
-      background: var(--footer-bg);
-
-      color: var(--footer-text);
-
-      padding: 60px 5% 30px;
-    }
-
-    .footer-grid {
-
-      display: grid;
-
-      grid-template-columns:
-        2fr 1fr 1fr 1fr 1fr;
-
-      gap: 40px;
-
-      margin-bottom: 40px;
-    }
-
-    .footer-logo img {
-
-      height: 32px;
-
-      filter: brightness(0) invert(1);
-    }
-
-    .footer-brand p {
-
-      font-size: 13px;
-
-      line-height: 1.7;
-
-      margin: 18px 0;
-
-      opacity: 0.7;
-    }
-
-    .footer-col h4 {
-
-      color: white;
-
-      font-size: 14px;
-
-      margin-bottom: 16px;
-    }
-
-    .footer-col ul li {
-
-      margin-bottom: 10px;
-
-      font-size: 13px;
-
-      opacity: 0.75;
-
-      cursor: pointer;
-    }
-
-    .footer-col ul li:hover {
-      opacity: 1;
-    }
-
-    .socials {
-
-      display: flex;
-
-      gap: 10px;
-    }
-
-    .socials a {
-
-      width: 34px;
-      height: 34px;
-
-      border-radius: 50%;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      background:
-        rgba(255, 255, 255, 0.1);
-
-      color: white;
-
-      font-size: 13px;
-    }
-
-    .footer-bottom {
-
-      border-top:
-        1px solid rgba(255, 255, 255, 0.08);
-
-      padding-top: 20px;
-
-      font-size: 12px;
-
-      opacity: 0.55;
-
-      line-height: 1.7;
-    }
-
-    /* RESPONSIVE */
-
-    @media (max-width: 992px) {
-
-      .footer-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-    }
-
-    @media (max-width: 768px) {
-
-      .nav-links .hide-mobile {
-        display: none;
-      }
-
-      .hero {
-        min-height: auto;
-        padding: 100px 5%;
-      }
-
-      .hero-content h1 {
-        font-size: 42px;
-      }
-
-      .search-bar {
-
-        flex-direction: column;
-
-        align-items: stretch;
-      }
-
-      .search-loc {
-
-        border-right: none;
-
-        border-bottom:
-          1px solid #ececec;
-      }
-
-      .search-btn {
-        width: calc(100% - 16px);
-      }
-
-      .footer-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-  </style>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+
+  <!-- ✅ ALL CSS FILES — no inline styles -->
+  <link rel="stylesheet" href="/css/index.css">
+  <link rel="stylesheet" href="/css/navbar.css">
+  <link rel="stylesheet" href="/css/footer.css">
 </head>
 
 <body>
 
-<!-- TOP BANNER -->
-<div class="top-banner" id="topBanner">
-  <span class="banner-tag">🎉 New</span>
-  Free delivery on your first 3 orders &nbsp;·&nbsp; Use code <strong>WELCOME50</strong> for 50% off
-  <button class="banner-close" onclick="document.getElementById('topBanner').style.display='none'">×</button>
-</div>
- 
-<!-- nav -->
+  <!-- TOP BANNER -->
+  <div class="top-banner" id="topBanner">
+    <span class="banner-tag">🎉 New</span>
+    Free delivery on your first 3 orders &nbsp;·&nbsp; Use code <strong>WELCOME50</strong> for 50% off
+    <button class="banner-close" onclick="document.getElementById('topBanner').style.display='none'">×</button>
+  </div>
 
-<div id="navbar"></div>
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-inner">
-    <div class="hero-left">
-      <div class="hero-tag">🍽️ Food delivery & dining</div>
-      <h1>Discover the best<br>food & drinks in<br><em>Delhi NCR</em></h1>
-      <p class="hero-sub">Order online, explore restaurants, and enjoy<br>the city's best culinary experiences.</p>
-      <div class="search-bar">
-        <div class="search-loc">
-          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          <input id="locationInput" placeholder="Enter location" />
-        </div>
-        <div class="search-query">
-          <svg width="16" height="16" fill="none" stroke="#aaa" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-          <input id="searchInput" placeholder="Search for restaurant, cuisine or a dish" />
+  <!-- NAVBAR (loaded from component) -->
+  <div id="navbar"></div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+
+    <div class="hero-inner">
+
+      <!-- Left -->
+      <div class="hero-left">
+        <div class="hero-tag">🍽️ Food delivery & dining</div>
+        <h1>Discover the best<br>food & drinks in<br><em>Delhi NCR</em></h1>
+        <p class="hero-sub">Order online, explore restaurants, and enjoy<br>the city's best culinary experiences.</p>
+
+        <div class="search-bar">
+          <div class="search-loc">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+              <circle cx="12" cy="10" r="3"/>
+            </svg>
+            <input id="locationInput" placeholder="Enter location" />
+          </div>
+          <div class="search-query">
+            <svg width="16" height="16" fill="none" stroke="#aaa" stroke-width="2" viewBox="0 0 24 24">
+              <circle cx="11" cy="11" r="8"/>
+              <path d="m21 21-4.35-4.35"/>
+            </svg>
+            <input id="searchInput" placeholder="Search for restaurant, cuisine or a dish" />
+          </div>
+          <button class="search-btn" onclick="doSearch()">Search</button>
         </div>
 
+        <div class="quick-tags">
+          <span class="qtag">🍕 Pizza</span>
+          <span class="qtag">🍔 Burgers</span>
+          <span class="qtag">🍜 Biryani</span>
+          <span class="qtag">🍣 Sushi</span>
+          <span class="qtag">🥗 Healthy</span>
+          <span class="qtag">☕ Cafe</span>
+        </div>
       </div>
 
-    </section>
+      <!-- Right: floating cards -->
+      <div class="hero-right">
+        <div class="hero-circle">
+          <img src="https://b.zmtcdn.com/data/o2_assets/f773629053b24263e69f601925790f301680693809.png" alt="food" />
+        </div>
+        <div class="float-card a">
+          <div class="dot g"></div>
+          <div>
+            <div>Order placed!</div>
+            <div class="fc-label">Just now</div>
+          </div>
+        </div>
+        <div class="float-card b">
+          <div class="dot o"></div>
+          <div>
+            <div>Out for delivery</div>
+            <div class="fc-label">5 min away</div>
+          </div>
+        </div>
+        <div class="float-card c">
+          <div class="dot r"></div>
+          <div>
+            <div>4.8 ★ Rating</div>
+            <div class="fc-label">Top restaurant</div>
+          </div>
+        </div>
+      </div>
 
-  </main>
+    </div>
+  </section>
+
+  <!-- BRANDS SECTION -->
+  <section class="brands-section">
+    <div class="brands-header">
+      <h2>eternal</h2>
+      <p>Powering India's Changing Lifestyles</p>
+    </div>
+    <div class="brand-cards">
+      <div class="brand-card zomato-card">
+        <img src="https://b.zmtcdn.com/web_assets/b40b97e677bc7b2ca77c58c61db266fe1603954218.png" alt="Zomato" />
+        <h3>zomato</h3>
+        <p>Get the app now to start ordering your favorite dishes!</p>
+        <a href="#">Check it out →</a>
+      </div>
+      <div class="brand-card blinkit-card">
+        <h3>blinkit</h3>
+        <p>Choose from 30,000+ products delivered to your doorstep.</p>
+        <a href="#">Check it out →</a>
+      </div>
+      <div class="brand-card district-card">
+        <h3>district</h3>
+        <p>The best of events, movies, dining, and everything you love!</p>
+        <a href="#">Check it out →</a>
+      </div>
+      <div class="brand-card hyperpure-card">
+        <h3>hyperpure</h3>
+        <p>Offering complete supply chain solution for your restaurant.</p>
+        <a href="#">Check it out →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- APP DOWNLOAD -->
+  <div class="app-section">
+    <div class="app-text">
+      <h2>Get the Zomato app</h2>
+      <p>We will send you a link, open it on your phone to download the app</p>
+      <div class="store-btns">
+        <img src="https://b.zmtcdn.com/data/webuikit/23e930757c3df49840c482a8638bf5c31556001144.png" alt="App Store" />
+        <img src="https://b.zmtcdn.com/data/webuikit/9f0c85a5e33adb783fa0aef667075f9e1556003622.png" alt="Google Play" />
+      </div>
+    </div>
+    <div class="app-phone">
+      <img src="https://b.zmtcdn.com/data/o2_assets/f773629053b24263e69f601925790f301680693809.png" alt="App mockup" />
+    </div>
+  </div>
 
   <!-- FOOTER -->
-
   <footer>
-
     <div class="footer-grid">
 
       <div class="footer-brand footer-col">
-
         <div class="footer-logo">
-
-          <a href="/">
-
-            <img
-              src="https://b.zmtcdn.com/web_assets/b40b97e677bc7b2ca77c58c61db266fe1603954218.png"
-              alt="Zomato Logo">
-
-          </a>
-
+          <img src="https://b.zmtcdn.com/web_assets/b40b97e677bc7b2ca77c58c61db266fe1603954218.png" alt="Zomato" />
         </div>
-
-        <p>
-          Discover the best food & drinks in your city.
-          Delivering joy, one meal at a time.
-        </p>
-
+        <p>Discover the best food & drinks in your city. Delivering joy, one meal at a time.</p>
         <div class="socials">
-
-          <a
-            href="https://www.linkedin.com/company/zomato/"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="LinkedIn">
-
-            in
-
-          </a>
-
-          <a
-            href="https://www.instagram.com/zomato/"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Instagram">
-
-            ig
-
-          </a>
-
-          <a
-            href="https://twitter.com/zomato"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Twitter">
-
-            tw
-
-          </a>
-
-          <a
-            href="https://www.youtube.com/zomato"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="YouTube">
-
-            yt
-
-          </a>
-
-          <a
-            href="https://www.facebook.com/Zomato"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Facebook">
-
-            fb
-
-          </a>
-
+          <a href="https://www.linkedin.com/company/zomato/" target="_blank" rel="noopener">in</a>
+          <a href="https://www.instagram.com/zomato/" target="_blank" rel="noopener">ig</a>
+          <a href="https://twitter.com/zomato" target="_blank" rel="noopener">tw</a>
+          <a href="https://www.youtube.com/zomato" target="_blank" rel="noopener">yt</a>
+          <a href="https://www.facebook.com/Zomato" target="_blank" rel="noopener">fb</a>
         </div>
-
       </div>
 
       <div class="footer-col">
-
         <h4>About Zomato</h4>
-
         <ul>
-
           <li>Who We Are</li>
           <li>Blog</li>
           <li>Work With Us</li>
           <li>Investor Relations</li>
           <li>Report Fraud</li>
           <li>Contact Us</li>
-
         </ul>
-
       </div>
 
       <div class="footer-col">
-
         <h4>Zomaverse</h4>
-
         <ul>
-
           <li>Zomato</li>
           <li>Blinkit</li>
           <li>Feeding India</li>
           <li>Hyperpure</li>
           <li>Zomaland</li>
-
         </ul>
-
       </div>
 
       <div class="footer-col">
-
         <h4>For Restaurants</h4>
-
         <ul>
-
           <li>Partner With Us</li>
           <li>Apps For You</li>
-
         </ul>
-
+        <h4 style="margin-top:20px">For Enterprises</h4>
+        <ul>
+          <li>Zomato For Enterprises</li>
+        </ul>
       </div>
 
       <div class="footer-col">
-
         <h4>Learn More</h4>
-
         <ul>
-
           <li>Privacy</li>
           <li>Security</li>
           <li>Terms</li>
           <li>Sitemap</li>
-
         </ul>
+      </div>
 
-<!-- BRANDS -->
-<section class="brands-section">
-  <div class="brands-header">
-    <h2>eternal</h2>
-    <p>Powering India's Changing Lifestyles</p>
-  </div>
-  <div class="brand-cards">
-    <div class="brand-card zomato-card">
-      <img src="images/zomato.png" onerror="this.style.display='none'" alt="Zomato" />
-      <h3>zomato</h3>
-      <p>Get the app now to start ordering your favorite dishes!</p>
-      <a href="#">Check it out →</a>
     </div>
-    <div class="brand-card blinkit-card">
-      <img src="images/blinkit.png" onerror="this.style.display='none'" alt="Blinkit" />
-      <h3>blinkit</h3>
-      <p>Choose from 30,000+ products delivered to your doorstep.</p>
-      <a href="#">Check it out →</a>
+
+    <div class="footer-bottom">
+      By continuing past this page, you agree to our Terms of Service, Cookie Policy, Privacy Policy and Content Policies.
+      All trademarks are properties of their respective owners. 2008-2025 © Zomato™ Ltd. All rights reserved.
     </div>
-    <div class="brand-card district-card">
-      <img src="images/district.png" onerror="this.style.display='none'" alt="District" />
-      <h3>district</h3>
-      <p>The best of events, movies, dining, and everything you love!</p>
-      <a href="#">Check it out →</a>
-    </div>
-    <div class="brand-card hyperpure-card">
-      <img src="images/hyperpure.png" onerror="this.style.display='none'" alt="Hyperpure" />
-      <h3>hyperpure</h3>
-      <p>Offering complete supply chain solution for your restaurant.</p>
-      <a href="#">Check it out →</a>
-    </div>
-  </div>
-</section>
+  </footer>
 
-<!-- APP SECTION -->
-<div class="app-section">
-  <div class="app-text">
-    <h2>Get the Zomato app</h2>
-    <p>We will send you a link, open it on your phone to download the app</p>
-    <div class="store-btns">
-      <img src="https://b.zmtcdn.com/data/webuikit/23e930757c3df49840c482a8638bf5c31556001144.png" alt="App Store" />
-      <img src="https://b.zmtcdn.com/data/webuikit/9f0c85a5e33adb783fa0aef667075f9e1556003622.png" alt="Google Play" />
-    </div>
-  </div>
-  <div class="app-phone">
-    <img src="https://b.zmtcdn.com/data/o2_assets/f773629053b24263e69f601925790f301680693809.png" alt="App" />
-  </div>
-</div>
+  <div class="dm-toast" id="dmToast"></div>
 
-<div id="footer"></div>
+  <script>
+    /* DARK MODE */
+    const html  = document.documentElement;
+    const toast = document.getElementById('dmToast');
+    let toastTimer;
 
-
-<!-- TOAST -->
-<div class="dm-toast" id="dmToast"></div>
-
-<script>
-  /* ── DARK MODE ── */
-  const html = document.documentElement;
-  const toast = document.getElementById('dmToast');
-  let toastTimer;
-
-  // Restore saved preference
-  const saved = localStorage.getItem('zomato-theme');
-  if (saved) html.setAttribute('data-theme', saved);
-
-  function toggleDark() {
-    const isDark = html.getAttribute('data-theme') === 'dark';
-    const next = isDark ? 'light' : 'dark';
-    html.setAttribute('data-theme', next);
-    localStorage.setItem('zomato-theme', next);
-    showToast(next === 'dark' ? '🌙 Dark mode on' : '☀️ Light mode on');
-  }
-
-  function showToast(msg) {
-    toast.textContent = msg;
-    toast.classList.add('show');
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => toast.classList.remove('show'), 2000);
-  }
-
-  /* ── SEARCH ── */
-  function doSearch() {
-    const q = document.getElementById('searchInput').value.trim();
-    const loc = document.getElementById('locationInput').value.trim();
-    if (!q) { alert('Please enter something!'); return; }
-    alert('You searched for: ' + q + (loc ? ' in ' + loc : ''));
-  }
-  document.getElementById('searchInput').addEventListener('keydown', e => { if (e.key === 'Enter') doSearch(); });
-  document.getElementById('locationInput').addEventListener('keydown', e => {
-    if (e.key === 'Enter') {
-      const loc = document.getElementById('locationInput').value.trim();
-      if (!loc) { alert('Please enter a location!'); return; }
-      alert('Location selected: ' + loc);
+    function toggleDark() {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      const next   = isDark ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      localStorage.setItem('zomato-theme', next);
+      showToast(next === 'dark' ? '🌙 Dark mode on' : '☀️ Light mode on');
     }
-  });
 
-  /* ── QUICK TAGS ── */
-  document.querySelectorAll('.qtag').forEach(tag => {
-    tag.addEventListener('click', () => {
-      document.getElementById('searchInput').value = tag.textContent.slice(2).trim();
-      document.getElementById('searchInput').focus();
+    function showToast(msg) {
+      toast.textContent = msg;
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove('show'), 2000);
+    }
+
+    /* SEARCH */
+    function doSearch() {
+      const q   = document.getElementById('searchInput').value.trim();
+      const loc = document.getElementById('locationInput').value.trim();
+      if (!q) { alert('Please enter something to search!'); return; }
+      alert('Searching for: ' + q + (loc ? ' in ' + loc : ''));
+    }
+    document.getElementById('searchInput').addEventListener('keydown', e => {
+      if (e.key === 'Enter') doSearch();
     });
-  });
-</script>
+
+    /* QUICK TAGS */
+    document.querySelectorAll('.qtag').forEach(tag => {
+      tag.addEventListener('click', () => {
+        document.getElementById('searchInput').value = tag.textContent.slice(2).trim();
+        document.getElementById('searchInput').focus();
+      });
+    });
+
+    /* LOAD NAVBAR */
+    async function loadComponent(id, file) {
+      try {
+        const res  = await fetch(file);
+        const text = await res.text();
+        document.getElementById(id).innerHTML = text;
+      } catch(e) {
+        console.warn('Could not load:', file);
+      }
+    }
+    loadComponent('navbar', '/components/navbar.html');
+  </script>
+
 </body>
 </html>
-
-<script>
-async function loadComponent(id, file) {
-  const res = await fetch(file);
-  const data = await res.text();
-  document.getElementById(id).innerHTML = data;
-}
-
-// navbar load
-loadComponent("navbar", "components/navbar.html");
-
-
-// footer
-loadComponent("footer", "components/footer.html");
-
-</script>
-
