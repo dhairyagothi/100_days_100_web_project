@@ -1,0 +1,175 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg-dark: #090d16;
+  --panel-dark: #111726;
+  --border-dark: #1f293d;
+  --text-main: #f8fafc;
+  --text-muted: #64748b;
+}
+
+body {
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  font-family: "Segoe UI", system-ui, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+}
+
+.app-header {
+  background-color: var(--panel-dark);
+  border-bottom: 1px solid var(--border-dark);
+  padding: 20px;
+  text-align: center;
+  z-index: 10;
+}
+
+.app-header h1 {
+  font-size: 1.6rem;
+  color: #6366f1;
+  margin-bottom: 4px;
+}
+
+.app-header p {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+kbd {
+  background-color: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-family: monospace;
+  color: #38bdf8;
+}
+
+.palette-canvas {
+  flex-grow: 1;
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.color-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  padding-bottom: 60px;
+  gap: 15px;
+  transition: background-color 0.2s ease;
+  position: relative;
+}
+
+.hex-value {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 1.3rem;
+  font-weight: bold;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: #ffffff;
+  padding: 6px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+  user-select: none;
+}
+
+.hex-value:hover {
+  transform: scale(1.05);
+}
+
+.lock-btn {
+  background-color: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+  font-size: 1.1rem;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.15s ease;
+}
+
+.color-column.is-locked .lock-btn {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.app-footer {
+  background-color: var(--panel-dark);
+  border-top: 1px solid var(--border-dark);
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+.action-btn {
+  background-color: #6366f1;
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.action-btn:hover {
+  background-color: #4f46e5;
+}
+
+#toast-notification {
+  position: fixed;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #10b981;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 30px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+  z-index: 100;
+  transition:
+    opacity 0.3s ease,
+    visibility 0.3s ease;
+}
+
+.toast-hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+@media (max-width: 600px) {
+  .palette-canvas {
+    flex-direction: column;
+  }
+  .color-column {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 15px 30px;
+    align-items: center;
+  }
+}
