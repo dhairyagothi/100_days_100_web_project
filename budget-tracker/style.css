@@ -1,0 +1,310 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #0b0f19;
+  color: #f1f5f9;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+}
+
+.dashboard-container {
+  max-width: 950px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.dashboard-header h1 {
+  font-size: 1.8rem;
+  color: #38bdf8;
+  margin-bottom: 4px;
+}
+
+.dashboard-header p {
+  color: #64748b;
+  font-size: 0.95rem;
+}
+
+/* Three-Column Summary Row Allocation */
+.summary-card-deck {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.summary-card {
+  background-color: #111827;
+  border: 1px solid #1f293d;
+  padding: 20px;
+  border-radius: 12px;
+}
+
+.summary-card h3 {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #94a3b8;
+  margin-bottom: 6px;
+}
+
+.summary-card p {
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.total-budget p {
+  color: #38bdf8;
+}
+.total-expenses p {
+  color: #f43f5e;
+}
+.remaining-balance p {
+  color: #10b981;
+}
+
+/* Geometric Stacked Bar Chart Progress Framework */
+.chart-container-box {
+  background-color: #111827;
+  border: 1px solid #1f293d;
+  padding: 20px;
+  border-radius: 12px;
+}
+
+.chart-container-box h3 {
+  font-size: 0.95rem;
+  margin-bottom: 14px;
+  color: #e2e8f0;
+}
+
+.visual-progress-track {
+  display: flex;
+  height: 24px;
+  background-color: #1f293d;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.chart-segment {
+  height: 100%;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Categorical Color Swatch Schemes */
+.chart-segment.food,
+.legend-chip.food::before {
+  background-color: #f59e0b;
+}
+.chart-segment.rent,
+.legend-chip.rent::before {
+  background-color: #3b82f6;
+}
+.chart-segment.utilities,
+.legend-chip.utilities::before {
+  background-color: #06b6d4;
+}
+.chart-segment.entertainment,
+.legend-chip.entertainment::before {
+  background-color: #ec4899;
+}
+
+.chart-legend-row {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.legend-chip {
+  font-size: 0.85rem;
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legend-chip::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  display: inline-block;
+}
+
+/* Split Ledger Input System Panel Grid Layout */
+.workspace-split-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1.5fr;
+  gap: 24px;
+}
+
+@media (max-width: 768px) {
+  .workspace-split-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.control-panel-card,
+.ledger-panel-card {
+  background-color: #111827;
+  border: 1px solid #1f293d;
+  padding: 24px;
+  border-radius: 14px;
+}
+
+.control-panel-card h3,
+.ledger-panel-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 16px;
+  border-bottom: 1px solid #1f293d;
+  padding-bottom: 8px;
+  color: #38bdf8;
+}
+
+.entry-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.input-group label {
+  font-size: 0.85rem;
+  color: #94a3b8;
+}
+
+.input-group input,
+.input-group select {
+  background-color: #1f293d;
+  border: 1px solid #334155;
+  padding: 10px 14px;
+  border-radius: 8px;
+  color: white;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.input-group input:focus,
+.input-group select:focus {
+  border-color: #38bdf8;
+}
+
+.input-row {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 12px;
+}
+
+.submit-action-btn {
+  background: linear-gradient(to right, #0ea5e9, #2563eb);
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: opacity 0.15s ease;
+}
+
+.submit-action-btn:hover {
+  filter: brightness(1.1);
+}
+
+.scrollable-ledger-box {
+  max-height: 260px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.ledger-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ledger-item {
+  background-color: #1f293d;
+  border-left: 4px solid #475569;
+  padding: 12px 16px;
+  border-radius: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  animation: listPopIn 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.2) forwards;
+}
+
+/* Inject context border outlines dynamically via transactional class hooks */
+.ledger-item.food {
+  border-left-color: #f59e0b;
+}
+.ledger-item.rent {
+  border-left-color: #3b82f6;
+}
+.ledger-item.utilities {
+  border-left-color: #06b6d4;
+}
+.ledger-item.entertainment {
+  border-left-color: #ec4899;
+}
+
+.item-info h4 {
+  font-size: 0.95rem;
+  color: #f8fafc;
+}
+
+.item-info span {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  text-transform: uppercase;
+}
+
+.item-value-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.item-amount {
+  font-weight: 700;
+  color: #ef4444;
+}
+
+.delete-item-btn {
+  background: none;
+  border: none;
+  color: #64748b;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: color 0.1s ease;
+}
+
+.delete-item-btn:hover {
+  color: #f43f5e;
+}
+
+@keyframes listPopIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

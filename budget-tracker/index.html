@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FinanceFlow - Interactive Budget Metrics Tracker</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="dashboard-container">
+      <header class="dashboard-header">
+        <h1>FinanceFlow Ledger 💼</h1>
+        <p>Track categorical expenses vs. your total budget limit</p>
+      </header>
+
+      <section class="summary-card-deck">
+        <div class="summary-card total-budget">
+          <h3>Total Limit</h3>
+          <p>$<span id="display-limit">2000</span></p>
+        </div>
+        <div class="summary-card total-expenses">
+          <h3>Spent So Far</h3>
+          <p>$<span id="display-spent">0</span></p>
+        </div>
+        <div class="summary-card remaining-balance">
+          <h3>Remaining</h3>
+          <p>$<span id="display-remaining">2000</span></p>
+        </div>
+      </section>
+
+      <section class="chart-container-box">
+        <h3>Categorical Budget Allocation Percentage</h3>
+        <div class="visual-progress-track">
+          <div
+            id="segment-food"
+            class="chart-segment food"
+            style="width: 0%"
+          ></div>
+          <div
+            id="segment-rent"
+            class="chart-segment rent"
+            style="width: 0%"
+          ></div>
+          <div
+            id="segment-utilities"
+            class="chart-segment utilities"
+            style="width: 0%"
+          ></div>
+          <div
+            id="segment-entertainment"
+            class="chart-segment entertainment"
+            style="width: 0%"
+          ></div>
+        </div>
+        <div class="chart-legend-row">
+          <span class="legend-chip food">🍔 Food</span>
+          <span class="legend-chip rent">🏠 Rent</span>
+          <span class="legend-chip utilities">⚡ Utilities</span>
+          <span class="legend-chip entertainment">🎬 Fun</span>
+        </div>
+      </section>
+
+      <div class="workspace-split-grid">
+        <main class="control-panel-card">
+          <h3>Add New Expense</h3>
+          <form id="expense-entry-form" class="entry-form">
+            <div class="input-group">
+              <label for="expense-title">Item Description</label>
+              <input
+                type="text"
+                id="expense-title"
+                placeholder="e.g., Grocery Shopping"
+                required
+              />
+            </div>
+
+            <div class="input-row">
+              <div class="input-group">
+                <label for="expense-amount">Amount ($)</label>
+                <input
+                  type="number"
+                  id="expense-amount"
+                  min="1"
+                  step="any"
+                  placeholder="45"
+                  required
+                />
+              </div>
+              <div class="input-group">
+                <label for="expense-category">Category</label>
+                <select id="expense-category" required>
+                  <option value="food">🍔 Food</option>
+                  <option value="rent">🏠 Rent</option>
+                  <option value="utilities">⚡ Utilities</option>
+                  <option value="entertainment">🎬 Entertainment</option>
+                </select>
+              </div>
+            </div>
+            <button type="submit" class="submit-action-btn">
+              Log Transaction ➕
+            </button>
+          </form>
+        </main>
+
+        <aside class="ledger-panel-card">
+          <h3>Transaction History</h3>
+          <div class="scrollable-ledger-box">
+            <ul id="ledger-item-list" class="ledger-list"></ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
