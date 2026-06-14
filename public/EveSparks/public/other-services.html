@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Other Services – EveSparks</title>
+  <meta name="description" content="EveSparks other services — DJ, makeup, mehndi, tent house, invitation design, security and more." />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .service-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap: 24px; }
+    .service-box {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 28px 22px; text-align: center;
+      transition: all .3s; cursor: pointer;
+    }
+    .service-box:hover { transform: translateY(-6px); box-shadow: 0 14px 36px rgba(0,0,0,.12); border-color: var(--accent); }
+    .service-box .icon { font-size: 2.4rem; margin-bottom: 14px; }
+    .service-box h3 { font-size: .98rem; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+    .service-box p { font-size: .82rem; color: var(--muted); line-height: 1.5; }
+    .service-box .tag { display:inline-block; background:rgba(255,123,156,.12); color:var(--accent); font-size:.72rem; font-weight:700; padding:3px 10px; border-radius:99px; margin-top:12px; }
+    .partner-logo { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--muted); font-size:.9rem; text-align:center; min-height:80px; transition:all .3s; }
+    .partner-logo:hover { border-color:var(--accent); color:var(--accent); }
+  </style>
+</head>
+<body class="light">
+<div id="nav-placeholder"></div>
+
+<!-- HERO -->
+<div class="page-hero">
+  <img src="image/festival.jpeg" class="hero-bg" alt="Other Services" />
+  <div class="hero-content">
+    <span class="badge-tag">🛎️ Other Services</span>
+    <h1>Everything Else Your Event Needs</h1>
+    <p>Beyond the basics — explore our full range of premium add-on services for a complete event experience.</p>
+  </div>
+</div>
+
+<!-- ALL SERVICES -->
+<div class="section">
+  <h2 class="section-title reveal">All Add-on Services</h2>
+  <p class="section-sub reveal">Mix and match any service to build your perfect event</p>
+  <div class="service-grid">
+    <div class="service-box reveal"><div class="icon">🎶</div><h3>DJ &amp; Sound System</h3><p>Professional DJ with high-end sound equipment for all events</p><span class="tag">₹10K–₹30K</span></div>
+    <div class="service-box reveal"><div class="icon">💄</div><h3>Bridal Makeup</h3><p>Expert bridal makeup artists for weddings &amp; special occasions</p><span class="tag">₹8K–₹25K</span></div>
+    <div class="service-box reveal"><div class="icon">🪷</div><h3>Mehndi Artists</h3><p>Traditional &amp; modern henna designs for brides &amp; guests</p><span class="tag">₹5K–₹15K</span></div>
+    <div class="service-box reveal"><div class="icon">🎪</div><h3>Tent House</h3><p>Premium tent, shamiana &amp; canopy setup for outdoor events</p><span class="tag">₹15K–₹50K</span></div>
+    <div class="service-box reveal"><div class="icon">🎠</div><h3>Kids Entertainment</h3><p>Bouncy castles, magicians, clowns &amp; face painters</p><span class="tag">₹8K–₹20K</span></div>
+    <div class="service-box reveal"><div class="icon">🍰</div><h3>Custom Cake</h3><p>Designer cakes for weddings, birthdays &amp; all celebrations</p><span class="tag">₹3K–₹15K</span></div>
+    <div class="service-box reveal"><div class="icon">✉️</div><h3>Invitation Design</h3><p>Custom digital &amp; printed invitation cards &amp; wedding stationery</p><span class="tag">₹2K–₹10K</span></div>
+    <div class="service-box reveal"><div class="icon">🚐</div><h3>Guest Transport</h3><p>Bus, van &amp; car rental for guest pickup &amp; drop arrangements</p><span class="tag">₹10K–₹40K</span></div>
+    <div class="service-box reveal"><div class="icon">🛡️</div><h3>Security Services</h3><p>Trained security personnel for crowd &amp; venue management</p><span class="tag">₹8K–₹30K</span></div>
+    <div class="service-box reveal"><div class="icon">🎁</div><h3>Return Gifts</h3><p>Customised gifting hampers &amp; corporate merchandise</p><span class="tag">₹50–₹500/pc</span></div>
+    <div class="service-box reveal"><div class="icon">🚁</div><h3>Drone Services</h3><p>Aerial photography &amp; videography for stunning venue shots</p><span class="tag">₹12K–₹30K</span></div>
+    <div class="service-box reveal"><div class="icon">🖼️</div><h3>Photo Booth</h3><p>Fun photo booth with props &amp; instant prints for guests</p><span class="tag">₹8K–₹18K</span></div>
+    <div class="service-box reveal"><div class="icon">📻</div><h3>Live Streaming</h3><p>Stream your event live on YouTube/social media for remote guests</p><span class="tag">₹10K–₹25K</span></div>
+    <div class="service-box reveal"><div class="icon">🌿</div><h3>Eco-Friendly Events</h3><p>Sustainable event planning with zero-plastic &amp; green decor</p><span class="tag">₹5K extra</span></div>
+    <div class="service-box reveal"><div class="icon">🍷</div><h3>Welcome Hamper</h3><p>Custom welcome kits &amp; gift bags for VIP guests</p><span class="tag">₹200–₹1K/pc</span></div>
+    <div class="service-box reveal"><div class="icon">🎭</div><h3>Entertainment Acts</h3><p>Folk dancers, fire shows, LED robots &amp; live musicians</p><span class="tag">₹15K–₹80K</span></div>
+  </div>
+</div>
+
+<!-- HOW TO BOOK -->
+<div style="background:var(--card);border-top:1px solid var(--border)">
+<div class="section">
+  <h2 class="section-title text-center reveal">How to Book a Service</h2>
+  <p class="section-sub text-center reveal">Simple 4-step process to add any service to your event</p>
+  <div class="row g-4 text-center">
+    <div class="col-md-3 reveal">
+      <div class="eve-card h-100"><div class="card-body">
+        <div style="font-size:2.4rem;margin-bottom:10px">1️⃣</div>
+        <h3 class="card-title">Choose Service</h3>
+        <p class="card-desc">Browse &amp; select the add-on service you need</p>
+      </div></div>
+    </div>
+    <div class="col-md-3 reveal">
+      <div class="eve-card h-100"><div class="card-body">
+        <div style="font-size:2.4rem;margin-bottom:10px">2️⃣</div>
+        <h3 class="card-title">Get Quote</h3>
+        <p class="card-desc">Call or WhatsApp us with your event date &amp; requirements</p>
+      </div></div>
+    </div>
+    <div class="col-md-3 reveal">
+      <div class="eve-card h-100"><div class="card-body">
+        <div style="font-size:2.4rem;margin-bottom:10px">3️⃣</div>
+        <h3 class="card-title">Confirm &amp; Pay</h3>
+        <p class="card-desc">Pay a small advance to secure your booking date</p>
+      </div></div>
+    </div>
+    <div class="col-md-3 reveal">
+      <div class="eve-card h-100"><div class="card-body">
+        <div style="font-size:2.4rem;margin-bottom:10px">4️⃣</div>
+        <h3 class="card-title">Enjoy!</h3>
+        <p class="card-desc">Our team handles everything on your special day</p>
+      </div></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- CONTACT CTA -->
+<div class="section">
+  <div style="background:linear-gradient(135deg,#e8506b,#ff7b9c);border-radius:var(--radius);padding:48px 40px;text-align:center;color:#fff" class="reveal">
+    <h2 style="font-size:2rem;font-weight:800;margin-bottom:12px">Not sure what you need?</h2>
+    <p style="opacity:.9;font-size:1rem;margin-bottom:28px;max-width:500px;margin-left:auto;margin-right:auto">Our event experts will help you choose the right services for your occasion and budget — for free!</p>
+    <div class="d-flex gap-3 justify-content-center flex-wrap">
+      <a href="tel:+919424065768" class="btn-outline" style="color:#fff;border-color:#fff"><i class="bi bi-telephone-fill"></i> Call Now</a>
+      <a href="budget-planner.html" class="btn-primary" style="background:#fff;color:#e8506b">Plan Budget</a>
+    </div>
+  </div>
+</div>
+
+<div id="foot-placeholder"></div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="nav.js"></script><script src="main.js"></script>
+<script>injectNav('services');</script>
+</body>
+</html>
