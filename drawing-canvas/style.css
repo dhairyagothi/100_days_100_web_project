@@ -1,0 +1,201 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #090d16;
+  color: #e2e8f0;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.canvas-workspace {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  height: 100vh;
+  width: 100vw;
+}
+
+/* Left Workspace Panel Structural Sidebar layout design */
+.control-sidebar {
+  background-color: #111726;
+  border-right: 1px solid #1f293d;
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  z-index: 10;
+  box-shadow: 5px 0 25px rgba(0, 0, 0, 0.3);
+}
+
+.sidebar-header h2 {
+  font-size: 18px;
+  color: #6366f1;
+  margin-bottom: 4px;
+}
+
+.sidebar-header p {
+  font-size: 12px;
+  color: #64748b;
+  line-height: 1.3;
+}
+
+.tool-group {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  background-color: #090d16;
+  padding: 16px;
+  border-radius: 10px;
+  border: 1px solid #1e293b;
+}
+
+.group-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #94a3b8;
+  font-weight: bold;
+}
+
+.control-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 13px;
+  color: #cbd5e1;
+}
+
+.slider-block {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.label-meta {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+#weight-val {
+  color: #6366f1;
+  font-weight: bold;
+}
+
+/* Custom Input Controls Styling hooks */
+.color-picker-wrapper {
+  width: 40px;
+  height: 26px;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid #334155;
+  cursor: pointer;
+}
+
+#brush-color {
+  border: none;
+  width: 60px;
+  height: 60px;
+  transform: translate(-10px, -10px);
+  cursor: pointer;
+}
+
+#brush-weight {
+  width: 100%;
+  accent-color: #6366f1;
+  cursor: pointer;
+}
+
+/* Functional Trigger Buttons Layout matrix block */
+.utility-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mode-btn,
+.clear-btn {
+  width: 100%;
+  border: 1px solid #1e293b;
+  padding: 10px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: left;
+  outline: none;
+  color: #cbd5e1;
+  background-color: #111726;
+  transition: all 0.15s ease;
+}
+
+.mode-btn:hover {
+  border-color: #475569;
+  color: #f8fafc;
+}
+
+.mode-btn.active {
+  background-color: #6366f1;
+  color: #ffffff;
+  border-color: #6366f1;
+}
+
+.clear-btn {
+  margin-top: 10px;
+  background-color: rgba(239, 68, 68, 0.05);
+  border-color: rgba(239, 68, 68, 0.2);
+  color: #f87171;
+}
+
+.clear-btn:hover {
+  background-color: #ef4444;
+  color: #ffffff;
+  border-color: #ef4444;
+}
+
+.footer-meta p {
+  font-size: 11px;
+  color: #475569;
+  line-height: 1.4;
+}
+
+/* Right Viewport Canvas Container Box layout */
+.canvas-viewport {
+  width: 100%;
+  height: 100%;
+  background-color: #090d16;
+  position: relative;
+  cursor: crosshair;
+}
+
+#main-drawing-board {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+@media (max-width: 768px) {
+  .canvas-workspace {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+  }
+  .control-sidebar {
+    width: 100%;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid #1f293d;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 15px;
+  }
+  .tool-group {
+    flex: 1 1 200px;
+  }
+  body {
+    overflow: auto;
+  }
+}

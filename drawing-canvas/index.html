@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Interactive Whiteboard Drawing Canvas</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="canvas-workspace">
+      <aside class="control-sidebar">
+        <header class="sidebar-header">
+          <h2>SketchPad Engine</h2>
+          <p>Vector matrix raster layout editor board</p>
+        </header>
+
+        <div class="tool-group">
+          <label class="group-label">Brush Parameters</label>
+          <div class="control-row">
+            <span>Color Fill:</span>
+            <div class="color-picker-wrapper">
+              <input type="color" id="brush-color" value="#6366f1" />
+            </div>
+          </div>
+
+          <div class="control-row slider-block">
+            <div class="label-meta">
+              <span>Brush Weight:</span>
+              <span id="weight-val">5px</span>
+            </div>
+            <input type="range" id="brush-weight" min="1" max="40" value="5" />
+          </div>
+        </div>
+
+        <div class="tool-group">
+          <label class="group-label">Utility Matrix Actions</label>
+          <div class="utility-actions">
+            <button id="tool-draw" class="mode-btn active">✏️ Draw Mode</button>
+            <button id="tool-erase" class="mode-btn">🧽 Eraser</button>
+            <button id="clear-board-btn" class="clear-btn">
+              🗑️ Clear Whiteboard
+            </button>
+          </div>
+        </div>
+
+        <div class="tool-group footer-meta">
+          <p>
+            Track coordinates on vector `X` / `Y` dimensions real-time via
+            pointer state observers.
+          </p>
+        </div>
+      </aside>
+
+      <main class="canvas-viewport">
+        <canvas id="main-drawing-board"></canvas>
+      </main>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
