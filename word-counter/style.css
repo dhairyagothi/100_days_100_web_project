@@ -1,0 +1,227 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #0b0f19;
+  color: #f1f5f9;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.analyzer-container {
+  background-color: #131a2e;
+  border: 1px solid #1e293b;
+  border-radius: 16px;
+  max-width: 800px;
+  width: 100%;
+  padding: 30px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+.analyzer-header {
+  margin-bottom: 25px;
+}
+
+.analyzer-header h1 {
+  font-size: 1.8rem;
+  color: #6366f1;
+  margin-bottom: 6px;
+}
+
+.analyzer-header p {
+  font-size: 0.95rem;
+  color: #94a3b8;
+}
+
+/* Real-time Metric Dashboard Layout grid blocks */
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 25px;
+}
+
+.metric-card {
+  background-color: #0b0f19;
+  border: 1px solid #1e293b;
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+  transition: border-color 0.2s ease;
+}
+
+.metric-card:hover {
+  border-color: #6366f1;
+}
+
+.metric-value {
+  display: block;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #38bdf8;
+  margin-bottom: 4px;
+}
+
+.metric-label {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #64748b;
+  font-weight: 600;
+}
+
+/* Core Input Elements Styling Hooks */
+.input-area {
+  margin-bottom: 30px;
+}
+
+#text-input {
+  width: 100%;
+  height: 220px;
+  background-color: #0b0f19;
+  border: 1px solid #1e293b;
+  border-radius: 12px;
+  padding: 16px;
+  color: #f1f5f9;
+  font-size: 1rem;
+  line-height: 1.6;
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+#text-input:focus {
+  border-color: #6366f1;
+}
+
+.textarea-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+}
+
+.case-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.action-btn {
+  background-color: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  color: #f87171;
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.action-btn:hover {
+  background-color: #ef4444;
+  color: white;
+}
+
+.action-btn.secondary {
+  background-color: rgba(99, 102, 241, 0.1);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  color: #818cf8;
+}
+
+.action-btn.secondary:hover {
+  background-color: #6366f1;
+  color: white;
+}
+
+/* Density Analytics Bars layout view rows */
+.analysis-section h2 {
+  font-size: 1.2rem;
+  color: #f1f5f9;
+  margin-bottom: 15px;
+}
+
+.density-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background-color: #0b0f19;
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid #1e293b;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.empty-state {
+  text-align: center;
+  color: #475569;
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
+.density-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.9rem;
+}
+
+.keyword-badge {
+  background-color: #1e293b;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-family: monospace;
+  color: #38bdf8;
+}
+
+.frequency-bar-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 65%;
+}
+
+.bar-bg {
+  background-color: #1e293b;
+  height: 8px;
+  border-radius: 4px;
+  flex-grow: 1;
+  overflow: hidden;
+}
+
+.bar-fill {
+  background-color: #6366f1;
+  height: 100%;
+  width: 0%;
+  border-radius: 4px;
+}
+
+.count-text {
+  min-width: 30px;
+  text-align: right;
+  font-weight: bold;
+  color: #94a3b8;
+}
+
+/* Custom layout responsive breakpoints controls */
+@media (max-width: 640px) {
+  .metrics-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .textarea-footer {
+    flex-direction: column;
+    gap: 12px;
+    align-items: stretch;
+  }
+  .case-controls {
+    justify-content: space-between;
+  }
+}

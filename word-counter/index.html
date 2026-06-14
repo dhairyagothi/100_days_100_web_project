@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Word Counter & Text Analyzer</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="analyzer-container">
+      <header class="analyzer-header">
+        <h1>Word Counter & Text Analyzer</h1>
+        <p>
+          Analyze your text metrics, reading time, and keyword densities in
+          real-time.
+        </p>
+      </header>
+
+      <section class="metrics-grid">
+        <div class="metric-card">
+          <span class="metric-value" id="word-count">0</span>
+          <span class="metric-label">Words</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-value" id="char-count">0</span>
+          <span class="metric-label">Characters</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-value" id="sentence-count">0</span>
+          <span class="metric-label">Sentences</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-value" id="reading-time">0m</span>
+          <span class="metric-label">Reading Time</span>
+        </div>
+      </section>
+
+      <main class="input-area">
+        <textarea
+          id="text-input"
+          placeholder="Type or paste your text here to begin analyzing..."
+        ></textarea>
+        <div class="textarea-footer">
+          <button id="clear-btn" class="action-btn">Clear Text</button>
+          <div class="case-controls">
+            <button id="uppercase-btn" class="action-btn secondary">
+              UPPERCASE
+            </button>
+            <button id="lowercase-btn" class="action-btn secondary">
+              lowercase
+            </button>
+          </div>
+        </div>
+      </main>
+
+      <section class="analysis-section">
+        <h2>Top Keyword Frequencies</h2>
+        <div id="keyword-density-list" class="density-container">
+          <p class="empty-state">
+            No keywords detected yet. Start typing above!
+          </p>
+        </div>
+      </section>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
