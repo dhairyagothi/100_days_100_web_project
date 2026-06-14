@@ -184,7 +184,7 @@
       "css"
     ],
     "difficulty": "beginner",
-    "projectPath": "./public/Custom Scroll Bar/index.html"
+   "projectPath": "./public/Custom-Scroll-Bar/index.html"
   },
   {
     "projectNo": 17,
@@ -2879,7 +2879,21 @@
     "projectPath": "./public/Word_Jumble/index.html"
   },
   {
-  "projectNo": 228,
+    "projectNo": 228,
+    "projectName": "Beat Maker",
+    "projectType": "Music",
+    "projectDesc": "Generate beats ",
+    "techStack": [
+      "html",
+      "css",
+      "javascript",
+      "music"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/BeatMaker/demo.html"
+  },
+  {
+  "projectNo": 229,
   "projectName": "Image Steganography Tool",
   "projectType": "Tool",
   "projectDesc": "A web-based tool that hides and extracts secret messages inside images using steganography techniques.",
@@ -2887,4 +2901,5 @@
   "difficulty": "advanced",
   "projectPath": "./public/ImageSteganographyTool/index.html"
  }
+
 ]

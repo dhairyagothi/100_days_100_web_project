@@ -84,12 +84,17 @@ const getStoredTheme = () => {
     }, 250);
   };
 
-  const toggleTheme = () => {
+ const toggleTheme = () => {
     const currentTheme = normalizeTheme(root.getAttribute("data-theme"));
-    const nextTheme = currentTheme === "light" ? "dark" : "light";
+    const themeArray = ["light", "dark", "sepia", "cyberpunk", "nord"];
+    
+    const currentIndex = themeArray.indexOf(currentTheme);
+    const nextIndex = (currentIndex + 1) % themeArray.length;
+    const nextTheme = themeArray[nextIndex];
+
     applyTheme(nextTheme);
     withTransitionGuard();
-  };
+};
 
   const setTheme = (themeName) => {
     applyTheme(themeName);
