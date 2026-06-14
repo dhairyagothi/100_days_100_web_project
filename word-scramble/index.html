@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LexiScramble - Word Scramble Challenge</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="scramble-card">
+      <header class="app-header">
+        <h1>LexiScramble Game</h1>
+        <div class="status-ribbon">
+          <span class="timer-badge"
+            >Time Left: <strong id="time-display">30</strong>s</span
+          >
+          <span class="score-badge"
+            >Score: <strong id="score-display">0</strong></span
+          >
+        </div>
+      </header>
+
+      <main class="game-arena">
+        <div id="scrambled-word-box" class="scrambled-word">------</div>
+
+        <p class="hint-text">
+          💡 Hint:
+          <span id="hint-display">Press start to generate a puzzle!</span>
+        </p>
+
+        <form id="guess-form" class="interaction-form">
+          <input
+            type="text"
+            id="user-guess-input"
+            placeholder="Type your guess here..."
+            autocomplete="off"
+            disabled
+          />
+          <div class="action-buttons-row">
+            <button
+              type="button"
+              id="refresh-btn"
+              class="action-btn secondary-btn"
+              disabled
+            >
+              Skip Word 🔁
+            </button>
+            <button
+              type="submit"
+              id="submit-btn"
+              class="action-btn primary-btn"
+              disabled
+            >
+              Check Guess Check ✅
+            </button>
+          </div>
+        </form>
+      </main>
+
+      <footer class="game-footer">
+        <button id="master-start-btn" class="start-btn">
+          Start Game Play 🎮
+        </button>
+      </footer>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
