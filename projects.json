@@ -1067,7 +1067,7 @@
       "javascript"
     ],
     "difficulty": "beginner",
-    "projectPath": "./public/QuizeApp Timer/index1.html"
+    "projectPath": "./public/QuizApp Timer/index.html"
   },
   {
     "projectNo": 91,
@@ -2877,12 +2877,11 @@
     ],
     "difficulty": "advanced",
     "projectPath": "./public/Word_jumble/index.html"
-    "projectPath": "./public/Word_Jumble/index.html"
   },
   {
     "projectNo": 228,
     "projectName": "Beat Maker",
-    "projectType": "Music",
+    "projectType": "Tool",
     "projectDesc": "Generate beats ",
     "techStack": [
       "html",
