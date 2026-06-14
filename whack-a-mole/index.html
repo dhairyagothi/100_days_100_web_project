@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Retro Whack-A-Mole Arcade Game</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="game-wrapper">
+      <header class="game-header">
+        <h1>Whack-A-Mole!</h1>
+        <div class="scoreboard-row">
+          <div class="score-badge">Score: <span id="game-score">0</span></div>
+          <div class="timer-badge">
+            Time Left: <span id="game-timer">30</span>s
+          </div>
+        </div>
+        <button id="start-game-btn" class="control-btn">Start Game 🕹️</button>
+      </header>
+
+      <main class="game-grid">
+        <div class="hole" data-id="0"><div class="mole"></div></div>
+        <div class="hole" data-id="1"><div class="mole"></div></div>
+        <div class="hole" data-id="2"><div class="mole"></div></div>
+        <div class="hole" data-id="3"><div class="mole"></div></div>
+        <div class="hole" data-id="4"><div class="mole"></div></div>
+        <div class="hole" data-id="5"><div class="mole"></div></div>
+        <div class="hole" data-id="6"><div class="mole"></div></div>
+        <div class="hole" data-id="7"><div class="mole"></div></div>
+        <div class="hole" data-id="8"><div class="mole"></div></div>
+      </main>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
