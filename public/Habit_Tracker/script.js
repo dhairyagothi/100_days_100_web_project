@@ -1,4 +1,5 @@
 const habits = JSON.parse(localStorage.getItem("habits")) || [];
+let deleteHabitId = null;
 
 const quotes = [
   "Small habits create big results.",
@@ -94,15 +95,10 @@ Delete
 function attachEvents() {
   document.querySelectorAll(".deleteBtn").forEach((btn) => {
     btn.onclick = () => {
-      const id = Number(btn.dataset.id);
+  deleteHabitId = Number(btn.dataset.id);
 
-      const index = habits.findIndex((h) => h.id === id);
-
-      habits.splice(index, 1);
-
-      saveHabits();
-      renderHabits();
-    };
+  document.getElementById("deleteModal").style.display = "flex";
+};
   });
 
   document.querySelectorAll(".completeBtn").forEach((btn) => {
@@ -189,3 +185,38 @@ function confetti() {
 }
 
 renderHabits();
+
+document.getElementById("confirmDeleteBtn").onclick = () => {
+
+  const index = habits.findIndex(
+    (h) => h.id === deleteHabitId
+  );
+
+  if (index !== -1) {
+    habits.splice(index, 1);
+
+    saveHabits();
+    renderHabits();
+  }
+
+  deleteHabitId = null;
+
+  document.getElementById("deleteModal").style.display = "none";
+};
+
+document.getElementById("cancelDeleteBtn").onclick = () => {
+
+  deleteHabitId = null;
+
+  document.getElementById("deleteModal").style.display = "none";
+};
+
+document.getElementById("deleteModal")
+  .addEventListener("click", (e) => {
+
+    if (e.target.id === "deleteModal") {
+      deleteHabitId = null;
+
+      e.target.style.display = "none";
+    }
+});

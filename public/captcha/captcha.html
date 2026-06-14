@@ -12,7 +12,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
-    <a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0, 0.15);">← Back to Home</a>
+    <a href="/" class="project-back-button">← Back to Home</a>
+
+        <!-- <div class="app-container"> -->
+            <div class="container">
 
                 <div class="hero">
                     <span class="eyebrow">Interactive Security Check</span>
@@ -20,20 +23,24 @@
                     <p class="intro">Choose a CAPTCHA mode, solve the challenge, and submit to verify you're human.</p>
                 </div>
 
-                <div class="field">
-                    <label for="captchaTypeSelect">Select CAPTCHA type</label>
-                    <select id="captchaTypeSelect">
-                        <option value="text">Text</option>
-                        <option value="image">Image</option>
-                        <option value="audio">Audio</option>
-                        <option value="math">Math</option>
-                    </select>
-                </div>
 
-                <div class="field voice-field hidden" id="voiceField">
-                    <label for="voiceSelect">Select voice</label>
-                    <select id="voiceSelect"></select>
+                <div class="selectors-row">
+                    <div class="field">
+                        <label for="captchaTypeSelect">Select CAPTCHA type</label>
+                        <select id="captchaTypeSelect">
+                            <option value="text">Text</option>
+                            <option value="image">Image</option>
+                            <option value="audio">Audio</option>
+                            <option value="math">Math</option>
+                        </select>
+                    </div>
+
+                    <div class="field voice-field hidden" id="voiceField">
+                        <label for="voiceSelect">Select voice</label>
+                        <select id="voiceSelect"></select>
+                    </div>
                 </div>
+                
 
                 <div id="captchaContainer" aria-live="polite"></div>
 
