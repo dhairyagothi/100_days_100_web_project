@@ -1,38 +1,102 @@
+/* =========================
+  CSS VARIABLES
+========================= */
+
 :root {
-  --primary-color: #1e3a8a;
+  --primary-color: #2563eb;
   --secondary-color: #dbeafe;
-  --bg-color: #f3f4f6;
+  --bg-color: #f5f7fb;
   --card-bg: #ffffff;
   --text-main: #1f2937;
   --text-muted: #6b7280;
   --live-color: #ef4444;
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 10px 20px rgba(0, 0, 0, 0.12);
 }
+
+/* =========================
+  DARK MODE VARIABLES
+========================= */
+
+body.dark {
+  --bg-color: #111827;
+  --card-bg: #1f2937;
+
+  --text-main: #f9fafb;
+  --text-muted: #d1d5db;
+
+  --secondary-color: #93c5fd;
+}
+
+/* =========================
+  GLOBAL RESET
+========================= */
 
 * {
-  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  box-sizing: border-box;
 }
+
+/* =========================
+  BODY
+========================= */
 
 body {
-  background-color: var(--bg-color);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: var(--bg-color);
   color: var(--text-main);
   line-height: 1.6;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
+/* =========================
+  HEADER
+========================= */
+
 .header {
-  background-color: var(--primary-color);
+  background: var(--primary-color);
   color: white;
   text-align: center;
   padding: 2rem 1rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-sm);
 }
 
 .header p {
-  color: var(--secondary-color);
   margin-top: 0.5rem;
+  color: var(--secondary-color);
 }
+
+/* =========================
+  THEME BUTTON
+========================= */
+
+.theme-btn {
+  margin-top: 1rem;
+  border: none;
+  outline: none;
+  padding: 0.75rem 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  background: white;
+  color: var(--primary-color);
+  font-weight: 600;
+  transition: all 0.25s ease;
+}
+
+.theme-btn:hover {
+  transform: translateY(-2px);
+}
+
+.theme-btn:active {
+  transform: scale(0.97);
+}
+
+/* =========================
+  MAIN CONTAINER
+========================= */
 
 .container {
   max-width: 1200px;
@@ -40,17 +104,25 @@ body {
   padding: 2rem 1rem;
 }
 
+/* =========================
+  SECTIONS
+========================= */
+
 .section {
   margin-bottom: 3rem;
 }
 
 .section__title {
-  margin-bottom: 1.5rem;
   font-size: 1.8rem;
-  border-bottom: 2px solid var(--primary-color);
+  margin-bottom: 1.5rem;
+  border-bottom: 3px solid var(--primary-color);
   display: inline-block;
   padding-bottom: 0.5rem;
 }
+
+/* =========================
+  MATCH GRID
+========================= */
 
 .matches-grid {
   display: grid;
@@ -58,72 +130,88 @@ body {
   gap: 1.5rem;
 }
 
+/* =========================
+  MATCH CARD
+========================= */
+
 .match-card {
-  background-color: var(--card-bg);
-  border-radius: 8px;
+  background: var(--card-bg);
+  border-radius: 12px;
   padding: 1.5rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-  transition: transform 0.2s ease-in-out;
-  border-top: 4px solid var(--primary-color);
+  border-top: 5px solid var(--primary-color);
+  box-shadow: var(--shadow-sm);
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    background-color 0.3s ease;
 }
 
 .match-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-lg);
 }
 
-.match-card.live-card {
-  border-top: 4px solid var(--live-color);
+.live-card {
+  border-top-color: var(--live-color);
 }
+
+/* =========================
+  MATCH STATUS
+========================= */
 
 .match-status {
-  font-size: 0.85rem;
-  font-weight: bold;
-  text-transform: uppercase;
-  margin-bottom: 1rem;
   display: inline-block;
-  padding: 0.25rem 0.5rem;
-  border-radius: 4px;
+  padding: 0.35rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
 }
-
 .status-live {
-  background-color: #fee2e2;
-  color: var(--live-color);
+  background: #fee2e2;
+  color: #dc2626;
 }
-
 .status-upcoming {
-  background-color: #e0e7ff;
-  color: var(--primary-color);
+  background: #dbeafe;
+  color: #1d4ed8;
 }
-
+/* =========================
+  MATCH DETAILS
+========================= */
 .match-teams {
+  margin-bottom: 0.75rem;
   font-size: 1.2rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
 }
-
 .match-score {
   font-size: 1.1rem;
   color: var(--primary-color);
   font-weight: 700;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
 }
-
 .match-info {
-  font-size: 0.9rem;
   color: var(--text-muted);
+  margin-bottom: 0.35rem;
 }
-
+/* =========================
+  LOADING
+========================= */
 .loading {
   text-align: center;
-  color: var(--text-muted);
   font-style: italic;
+  color: var(--text-muted);
   grid-column: 1 / -1;
 }
-
-/* Responsive */
+/* =========================
+  MOBILE
+========================= */
 @media (max-width: 600px) {
   .matches-grid {
     grid-template-columns: 1fr;
+  }
+  .section__title {
+    font-size: 1.5rem;
+  }
+  .header h1 {
+    font-size: 1.8rem;
   }
 }

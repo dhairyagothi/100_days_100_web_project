@@ -790,22 +790,8 @@ section {
 
 /* ---------- Completed Animation ---------- */
 .completed {
-  text-decoration: line-through;
   opacity: 0.60;
   position: relative;
-}
-
-.completed::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 50%;
-  width: 100%;
-  height: 2px;
-  background: var(--success);
-  border-radius: 2px;
-  animation: strikeThrough 0.35s ease forwards;
-  transform-origin: left;
 }
 
 @keyframes strikeThrough {
@@ -1429,4 +1415,57 @@ section {
 #pdfMessage,
 #toast {
   display: none !important;
-}
+}
+
+/* Completed card — subtle green tint on the card itself */
+.notes.completed {
+  border-left: 4px solid #14b8a6;
+  background: rgba(240, 253, 250, 0.97);
+}
+
+/* Completed task text — strikethrough + muted color */
+.notes.completed .note-text {
+  text-decoration: none;
+  color: #6b7280;
+  background: rgba(240, 253, 250, 0.60);
+}
+
+/* "Done ✅" badge — green pill when task is completed */
+.notes.completed .category-badge {
+  background: rgba(20, 184, 166, 0.15);
+  color: #0f766e;
+  border-color: rgba(20, 184, 166, 0.35);
+  font-weight: 800;
+}
+
+/* Undo button — amber/orange to signal "revert" action */
+.notes.completed .note-check {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  box-shadow: 0 4px 14px rgba(245, 158, 11, 0.30);
+}
+
+.notes.completed .note-check:hover {
+  box-shadow: 0 6px 18px rgba(245, 158, 11, 0.45);
+}
+
+.done-badge {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: 100px;
+  background: rgba(20, 184, 166, 0.15);
+  color: #0f766e;
+  border: 1px solid rgba(20, 184, 166, 0.35);
+  font-size: 12px;
+  font-weight: 700;
+  width: fit-content;
+}
+
+.note-text-done {
+  text-decoration: line-through;
+  color: #6b7280;
+  padding: 10px 14px;
+  min-height: 44px;
+  line-height: 1.6;
+  font-size: 16px;
+  font-weight: 600;
+}
