@@ -107,6 +107,8 @@
 }
 
 body.light-theme {
+    background: #ffffff;
+    color: #222222;
     --bg: #eef3ff;
     --panel: rgba(255, 255, 255, 0.92);
     --panel-strong: rgba(255, 255, 255, 0.98);
@@ -120,94 +122,9 @@ body.light-theme {
     --green: #10b981;
     --warning: #ff8a3d;
     --shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
-    /* Background Tokens (Light) */
-    --body-bg-gradient: 
-        radial-gradient(circle at 82% 7%, rgba(124, 77, 255, 0.08), transparent 24rem),
-        radial-gradient(circle at 100% 18%, rgba(0, 166, 199, 0.06), transparent 18rem),
-        linear-gradient(90deg, rgba(238, 243, 255, 0.96), rgba(225, 233, 255, 0.85));
-    --body-bg-image: url("https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&w=2200&q=85");
-    --body-bg-dots-opacity: 0.15;
-    --body-bg-dot-1: rgba(124, 77, 255, 0.2);
-    --body-bg-dot-2: rgba(0, 166, 199, 0.15);
-    /* Card & Panel Tokens (Light) */
-    --panel-border: var(--line);
-    --panel-bg-gradient: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(243, 246, 255, 0.95));
-    --panel-shadow-inset: inset 0 1px 0 rgba(255, 255, 255, 0.8);
-    --apod-glow: radial-gradient(circle at center, rgba(124, 77, 255, 0.15), transparent 68%);
-    --apod-img-overlay: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(0, 0, 0, 0.08));
-    /* Pill Tokens (Light) */
-    --pill-text: #4b5563;
-    --pill-border: rgba(124, 77, 255, 0.18);
-    --pill-bg: rgba(255, 255, 255, 0.9);
-    --pill-shadow-inset: inset 0 1px 0 rgba(255, 255, 255, 0.9);
-    --mini-pill-text: #7c4dff;
-    --mini-pill-green-text: #047857;
-    --mini-pill-green-bg: rgba(16, 185, 129, 0.1);
-    --mini-pill-green-border: rgba(16, 185, 129, 0.2);
-    /* Action Buttons Tokens (Light) */
-    --action-btn-border: rgba(124, 77, 255, 0.25);
-    --action-btn-text: #5e35b1;
-    --action-btn-bg: rgba(240, 237, 255, 0.7);
-    --primary-action-text: #ffffff;
-    --primary-action-bg: linear-gradient(100deg, #7c4dff, #00a6c7);
-    --primary-action-shadow: 0 8px 20px rgba(0, 166, 199, 0.12);
-    /* Fact Card Tokens (Light) */
-    --fact-bg-gradient: linear-gradient(90deg, rgba(243, 246, 255, 0.95), rgba(235, 240, 255, 0.9));
-    --fact-text: #1f2937;
-    /* Switcher & Tab Tokens (Light) */
-    --switcher-border: rgba(124, 77, 255, 0.18);
-    --switcher-bg-gradient: linear-gradient(145deg, rgba(255, 255, 255, 0.9), rgba(243, 246, 255, 0.85));
-    --tab-text: #5e35b1;
-    --tab-border: rgba(124, 77, 255, 0.2);
-    --tab-bg: rgba(240, 237, 255, 0.6);
-    --tab-active-text: #ffffff;
-    --tab-active-bg: linear-gradient(100deg, #7c4dff, #00c7b6);
-    /* Distances & Stats Tokens (Light) */
-    --stat-border: rgba(124, 77, 255, 0.18);
-    --stat-bg: rgba(255, 255, 255, 0.9);
-    /* Inputs Tokens (Light) */
-    --input-border: rgba(124, 77, 255, 0.25);
-    --input-bg: rgba(255, 255, 255, 0.95);
-    /* Item List Tokens (Light) */
-    --item-border: rgba(124, 77, 255, 0.1);
-    --item-bg: rgba(124, 77, 255, 0.04);
-    --item-bg-hover: rgba(124, 77, 255, 0.08);
-    --item-title-color: #1f2937;
-    /* Gradients Tokens (Light) */
-    --topic-icon-bg: linear-gradient(145deg, rgba(124, 77, 255, 0.15), rgba(0, 166, 199, 0.08));
-    --topic-icon-color: #5e35b1;
-    --scientist-avatar-bg: linear-gradient(145deg, rgba(0, 166, 199, 0.12), rgba(124, 77, 255, 0.12));
-    /* Calendar Events Tokens (Light) */
-    --event-date-text: #111827;
-    --event-date-bg: rgba(255, 255, 255, 0.95);
-    --event-date-border: rgba(124, 77, 255, 0.25);
-    /* News Detail Tokens (Light) */
-    --news-detail-desc: #374151;
-    /* Back Buttons Tokens (Light) */
-    --back-btn-text: #5e35b1;
-    --back-btn-border: rgba(124, 77, 255, 0.25);
-    --back-btn-bg: rgba(240, 237, 255, 0.7);
-    /* Scrollbars Tokens (Light) */
-    --scrollbar-thumb: rgba(124, 77, 255, 0.4);
-    --scrollbar-track: rgba(0, 0, 0, 0.03);
-    /* Focus & Moon Tokens (Light) */
-    --focus-shadow: 0 0 0 3px rgba(0, 166, 199, 0.15);
-    --moon-glow: 0 0 30px rgba(124, 77, 255, 0.12);
-    --skeleton-bg: rgba(0, 0, 0, 0.06);
-    --skeleton-shimmer: linear-gradient(
-        90deg,
-        rgba(0, 0, 0, 0) 0%,
-        rgba(0, 0, 0, 0.04) 20%,
-        rgba(0, 0, 0, 0.08) 60%,
-        rgba(0, 0, 0, 0) 100%
-    );
-    /* Back Button Project Tokens (Light) */
-    --project-btn-bg: #ffffff;
-    --project-btn-color: #2563eb;
-    --project-btn-border: #cbd5e1;
-    --project-btn-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-    --project-btn-shadow-inset: inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
+
+
 * {
   box-sizing: border-box;
 }
@@ -237,7 +154,7 @@ body::before {
         radial-gradient(circle, var(--body-bg-dot-2) 0 1px, transparent 1.5px);
     background-size: 135px 135px, 210px 210px;
     background-position: 0 0, 40px 75px;
-    opacity: var(--body-bg-dots-opacity);
+    opacity: 0.34;
     z-index: -1;
 }
 a {
