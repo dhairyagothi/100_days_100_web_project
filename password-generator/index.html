@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Secure Password Generator & Validator</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="generator-card">
+      <header class="app-header">
+        <h1>KeyGuard Engine</h1>
+        <p>
+          Generate cryptographic tokens and evaluate structural strength
+          parameters
+        </p>
+      </header>
+
+      <main class="output-display-container">
+        <input
+          type="text"
+          id="password-display"
+          placeholder="Click generate or start typing..."
+          autocomplete="off"
+        />
+        <button id="copy-btn" title="Copy text to clipboard">Copy</button>
+      </main>
+
+      <section class="validator-panel">
+        <div class="strength-bar-wrapper">
+          <span class="strength-label"
+            >Security Profile: <strong id="strength-text">Empty</strong></span
+          >
+          <div class="meter-track">
+            <div id="meter-fill" class="meter-fill"></div>
+          </div>
+        </div>
+
+        <ul class="criteria-list">
+          <li id="rule-length" class="rule invalid">Minimum 8 characters</li>
+          <li id="rule-upper" class="rule invalid">
+            At least one uppercase letter (A-Z)
+          </li>
+          <li id="rule-number" class="rule invalid">
+            At least one numeric integer (0-9)
+          </li>
+          <li id="rule-special" class="rule invalid">
+            At least one special symbol (#$%@!)
+          </li>
+        </ul>
+      </section>
+
+      <section class="controls-panel">
+        <div class="range-row">
+          <label for="length-slider"
+            >Token Length: <span id="length-val">12</span></label
+          >
+          <input type="range" id="length-slider" min="6" max="32" value="12" />
+        </div>
+
+        <div class="checkbox-matrix">
+          <label class="toggle-control">
+            <input type="checkbox" id="include-uppercase" checked />
+            <span class="box-check"></span> Include Uppercase
+          </label>
+          <label class="toggle-control">
+            <input type="checkbox" id="include-lowercase" checked />
+            <span class="box-check"></span> Include Lowercase
+          </label>
+          <label class="toggle-control">
+            <input type="checkbox" id="include-numbers" checked />
+            <span class="box-check"></span> Include Numbers
+          </label>
+          <label class="toggle-control">
+            <input type="checkbox" id="include-symbols" checked />
+            <span class="box-check"></span> Include Symbols
+          </label>
+        </div>
+      </section>
+
+      <button id="generate-btn" class="action-trigger-btn">
+        Generate Secure Token
+      </button>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
