@@ -1,9 +1,8 @@
 *{
     margin:0;
     padding:0;
-   border:border-box;
+    box-sizing:border-box;
     font-family:Arial;
-
 }
 .NavBar{
     height:60px;
@@ -53,6 +52,7 @@
     margin-left: 15px;
     background-color: pink;
     width:620px;
+    max-width:100%;
     height:40px;
     border-radius: 4px;
 }
@@ -130,13 +130,16 @@ span{
 .heromessage{
     background-color: white;
     color:black;
-    height:40px;
+    min-height:40px;
     width:80%;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 0.85rem;
     margin-bottom: 25px;
+    padding: 8px 12px;
+    text-align: center;
+    flex-wrap: wrap;
 }
 .heromessage a{
     color:#007185;
@@ -152,15 +155,18 @@ span{
 }
 .box{
     height:400px;
-     width: 23%;
-     background-color: white;
-     padding: 20px 0px 15px;
-     margin-top: 10px;
-    }
+    width: 23%;
+    min-width: 160px;
+    background-color: white;
+    padding: 20px 0px 15px;
+    margin-top: 10px;
+}
 .box-image{
-    height: 350px;
+    height: 280px;
     background-size: cover;
-    
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 100%;
 }
 .boxcontent{
     margin-left: 1rem;
@@ -190,14 +196,14 @@ footer{
     color:white;
     display:flex;
     justify-content:space-evenly;
-    height: 400px;
+    min-height: 400px;
+    height: auto;
     width: 100%;
     font-size: 0.7rem;
     font-weight: 600;
     gap: 20px;
     flex-wrap: wrap;
-    padding: 10px;
-
+    padding: 20px 10px;
 }
 ul{
     margin-top: 20px;
@@ -251,4 +257,128 @@ ul{
 }
 .copyright{
     padding-top: 5px;
+}
+
+/* =========================
+   MOBILE RESPONSIVE
+========================= */
+body {
+    overflow-x: hidden;
+}
+
+@media (max-width: 768px) {
+    .NavBar {
+        height: auto;
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 8px 10px;
+        justify-content: space-between;
+    }
+
+    .navadress {
+        display: none;
+    }
+
+    .navsearch {
+        order: 3;
+        width: 100%;
+        max-width: 100%;
+        margin-left: 0;
+    }
+
+    .nav-sign {
+        font-size: 0.75rem;
+    }
+
+    .panel {
+        overflow-x: auto;
+        justify-content: flex-start;
+        gap: 14px;
+        padding: 0 12px;
+        white-space: nowrap;
+        scrollbar-width: none;
+    }
+    .panel::-webkit-scrollbar { display: none; }
+
+    .paneloptions {
+        flex-shrink: 0;
+    }
+
+    .herosection {
+        height: 200px;
+        background-size: cover;
+    }
+
+    .heromessage {
+        width: 95%;
+        font-size: 0.75rem;
+    }
+
+    .shopsection {
+        gap: 10px;
+        padding: 10px;
+    }
+
+    .box {
+        width: calc(50% - 10px);
+        min-width: 140px;
+        height: auto;
+        padding: 12px 8px;
+    }
+
+    .box-image {
+        height: 160px;
+    }
+
+    .boxcontent h3 {
+        font-size: 0.85rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .footpanel2 {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 16px;
+        gap: 0;
+    }
+
+    .footpanel3 {
+        flex-direction: column;
+        gap: 10px;
+        height: auto;
+        padding: 14px;
+    }
+
+    .footpanel4 {
+        height: auto;
+        flex-direction: column;
+        gap: 8px;
+        padding: 12px;
+        text-align: center;
+    }
+
+    .pages {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+        padding-top: 0;
+    }
+}
+
+@media (max-width: 375px) {
+    .box {
+        width: 100%;
+        min-width: unset;
+    }
+
+    .box-image {
+        height: 180px;
+    }
+
+    .navcart i {
+        font-size: 22px;
+    }
 }

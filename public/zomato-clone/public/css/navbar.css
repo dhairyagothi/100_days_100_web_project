@@ -1,0 +1,39 @@
+
+    /* ── NAV ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--nav-bg); backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5%; height: 62px;
+      transition: background 0.3s, border-color 0.3s;
+    }
+    .nav-logo img { height: 28px;margin-left: 2px; }
+    [data-theme="dark"] .nav-logo img { filter: brightness(0) invert(1); }
+    .nav-links { display: flex; align-items: center; gap: 22px; }
+    .nav-links a { text-decoration: none; color: var(--text); font-size: 14px; font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--red); }
+    .btn-login { padding: 8px 20px; border-radius: 8px; border: 1.5px solid var(--red); color: var(--red); background: transparent; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+    .btn-login:hover { background: var(--red); color: #fff; }
+    .btn-signup { padding: 8px 20px; border-radius: 8px; background: var(--red); color: #fff; border: none; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+    .btn-signup:hover { background: var(--red-dark); }
+
+    /* ── DARK MODE TOGGLE ── */
+    .dm-toggle {
+      position: relative; width: 52px; height: 28px; cursor: pointer;
+      background: var(--toggle-bg); border-radius: 14px; border: none;
+      transition: background 0.3s; flex-shrink: 0;
+    }
+    .dm-toggle::after {
+      content: ''; position: absolute; top: 3px; left: 3px;
+      width: 22px; height: 22px; border-radius: 50%;
+      background: var(--toggle-knob);
+      transition: transform 0.3s, background 0.3s;
+      display: flex; align-items: center; justify-content: center;
+    }
+    [data-theme="dark"] .dm-toggle::after { transform: translateX(24px); }
+    .dm-icon { font-size: 14px; position: absolute; top: 50%; transform: translateY(-50%); pointer-events: none; transition: opacity 0.3s; }
+    .dm-icon.sun { left: 6px; opacity: 1; }
+    .dm-icon.moon { right: 6px; opacity: 0; }
+    [data-theme="dark"] .dm-icon.sun { opacity: 0; }
+    [data-theme="dark"] .dm-icon.moon { opacity: 1; } 
