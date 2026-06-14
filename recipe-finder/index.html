@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Culinary Recipe Finder</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="app-wrapper">
+      <aside class="filter-sidebar">
+        <h2>Recipe Finder</h2>
+        <p class="subtitle">Search and filter your next meal plan</p>
+
+        <div class="search-box">
+          <input
+            type="text"
+            id="search-input"
+            placeholder="Search ingredients or title..."
+            autocomplete="off"
+          />
+        </div>
+
+        <div class="filter-group">
+          <h3>Dietary Restrictions</h3>
+          <label class="check-container">
+            <input type="checkbox" class="diet-filter" value="vegetarian" />
+            <span class="checkmark"></span> Vegetarian
+          </label>
+          <label class="check-container">
+            <input type="checkbox" class="diet-filter" value="gluten-free" />
+            <span class="checkmark"></span> Gluten-Free
+          </label>
+          <label class="check-container">
+            <input type="checkbox" class="diet-filter" value="low-carb" />
+            <span class="checkmark"></span> Low-Carb
+          </label>
+        </div>
+
+        <div class="filter-group">
+          <h3>Meal Type</h3>
+          <select id="meal-type-select">
+            <option value="all">All Meals</option>
+            <option value="breakfast">Breakfast</option>
+            <option value="lunch">Lunch</option>
+            <option value="dinner">Dinner</option>
+          </select>
+        </div>
+      </aside>
+
+      <main class="content-viewport">
+        <div class="results-stats">
+          <p>Showing <span id="recipe-count">0</span> matching options</p>
+        </div>
+
+        <div class="recipe-grid" id="recipe-grid-element"></div>
+
+        <div id="empty-state" class="empty-state hide">
+          <div class="empty-icon">🍳</div>
+          <h3>No Recipes Matched</h3>
+          <p>
+            Try clearing your search filters or adjust your dietary parameter
+            selections.
+          </p>
+        </div>
+      </main>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

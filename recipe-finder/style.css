@@ -1,0 +1,268 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #090d16;
+  color: #f1f5f9;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  min-height: 100vh;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.app-wrapper {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  max-width: 1100px;
+  width: 100%;
+  min-height: 680px;
+  background-color: #0f172a;
+  border: 1px solid #1e293b;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* Sidebar Styling Blocks */
+.filter-sidebar {
+  background-color: #1e293b;
+  padding: 30px 25px;
+  border-right: 1px solid #334155;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.filter-sidebar h2 {
+  font-size: 22px;
+  color: #f59e0b;
+}
+
+.subtitle {
+  font-size: 13px;
+  color: #94a3b8;
+  margin-top: -20px;
+}
+
+.search-box input {
+  width: 100%;
+  background-color: #0f172a;
+  color: #f8fafc;
+  border: 1px solid #475569;
+  padding: 12px;
+  border-radius: 8px;
+  outline: none;
+  font-size: 14px;
+  transition: border-color 0.15s;
+}
+
+.search-box input:focus {
+  border-color: #f59e0b;
+}
+
+.filter-group h3 {
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #94a3b8;
+  margin-bottom: 12px;
+}
+
+.check-container {
+  display: block;
+  position: relative;
+  padding-left: 30px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #cbd5e1;
+  user-select: none;
+}
+
+.check-container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 18px;
+  width: 18px;
+  background-color: #0f172a;
+  border: 1px solid #475569;
+  border-radius: 4px;
+}
+
+.check-container:hover input ~ .checkmark {
+  border-color: #f59e0b;
+}
+
+.check-container input:checked ~ .checkmark {
+  background-color: #f59e0b;
+  border-color: #f59e0b;
+}
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+  left: 6px;
+  top: 2px;
+  width: 4px;
+  height: 9px;
+  border: solid #0f172a;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.check-container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+#meal-type-select {
+  width: 100%;
+  background-color: #0f172a;
+  color: #f8fafc;
+  border: 1px solid #475569;
+  padding: 10px;
+  border-radius: 6px;
+  outline: none;
+  cursor: pointer;
+}
+
+/* Content Viewport Panels Grid */
+.content-viewport {
+  padding: 35px;
+  display: flex;
+  flex-direction: column;
+  background-color: #0f172a;
+}
+
+.results-stats {
+  margin-bottom: 20px;
+  font-size: 14px;
+  color: #94a3b8;
+}
+
+#recipe-count {
+  font-weight: bold;
+  color: #f59e0b;
+}
+
+/* Target CSS Grid Component Framework */
+.recipe-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+.recipe-card {
+  background-color: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s;
+}
+
+.recipe-card:hover {
+  transform: translateY(-4px);
+  border-color: #475569;
+}
+
+.card-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.meal-badge {
+  font-size: 11px;
+  text-transform: uppercase;
+  font-weight: bold;
+  color: #f59e0b;
+  background-color: rgba(245, 158, 11, 0.1);
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.time-badge {
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.recipe-card h3 {
+  font-size: 17px;
+  color: #f8fafc;
+  font-weight: 600;
+}
+
+.ingredients-list {
+  font-size: 13px;
+  color: #94a3b8;
+  line-height: 1.4;
+}
+
+.tags-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tag {
+  font-size: 10px;
+  background-color: #334155;
+  color: #cbd5e1;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+/* Empty State Mechanics styling */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  margin: auto;
+}
+
+.empty-icon {
+  font-size: 50px;
+  margin-bottom: 15px;
+}
+
+.empty-state h3 {
+  margin-bottom: 5px;
+  color: #cbd5e1;
+}
+
+.empty-state p {
+  color: #64748b;
+  font-size: 14px;
+}
+
+.hide {
+  display: none !important;
+}
+
+@media (max-width: 768px) {
+  .app-wrapper {
+    grid-template-columns: 1fr;
+  }
+  .filter-sidebar {
+    border-right: none;
+    border-bottom: 1px solid #334155;
+  }
+}
