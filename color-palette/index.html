@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dynamic Color Palette Generator</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="app-container">
+      <header class="app-header">
+        <h1>Color Palette Generator</h1>
+        <p>
+          Press the <kbd>Spacebar</kbd> to randomize palettes, click to lock
+          colors, or click the HEX code to copy.
+        </p>
+      </header>
+
+      <main class="palette-canvas" id="palette-display-container"></main>
+
+      <footer class="app-footer">
+        <button id="generate-btn" class="action-btn">
+          Generate New Palette 🎨
+        </button>
+      </footer>
+    </div>
+
+    <div id="toast-notification" class="toast-hidden">
+      Hex Code Copied to Clipboard!
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
