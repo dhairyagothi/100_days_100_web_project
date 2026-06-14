@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simon Says Game</title>
+    <meta name="description" content="A classic Simon Says memory game to test your memory and reflexes.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <div class="header">
+            <h1 id="title">Simon Says</h1>
+            <div class="controls">
+                <label class="switch">
+                    <input type="checkbox" id="mode-toggle">
+                    <span class="slider round"></span>
+                </label>
+                <span id="mode-label">Normal Mode</span>
+            </div>
+        </div>
+        
+        <h2 id="level-title">Press Any Key to Start</h2>
+        <div class="score-container" style="display: none;">
+            <p>High Score: <span id="high-score">0</span></p>
+        </div>
+
+        <div class="game-board">
+            <div class="row">
+                <div type="button" id="green" class="btn green"></div>
+                <div type="button" id="red" class="btn red"></div>
+                <div type="button" id="purple" class="btn purple advanced-only hidden"></div>
+            </div>
+            <div class="row">
+                <div type="button" id="yellow" class="btn yellow"></div>
+                <div type="button" id="blue" class="btn blue"></div>
+                <div type="button" id="cyan" class="btn cyan advanced-only hidden"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>

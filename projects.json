@@ -2861,5 +2861,19 @@
     ],
     "difficulty": "advanced",
     "projectPath": "./public/mind-reader/mind-reader/dist/index.html"
+  },
+  {
+    "projectNo": 227,
+    "projectName": "Simon Says Game",
+    "projectType": "Game",
+    "projectDesc": "A highly aesthetic, advanced version of the classic Simon Says memory game. Features a modern glassmorphism UI, progressive difficulty, and a unique Advanced Mode to challenge your brain.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript",
+      "game"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/SimonSaysGame/index.html"
   }
 ]
