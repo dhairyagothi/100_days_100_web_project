@@ -45,10 +45,7 @@
         box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
       }
       .board {
-        width: 100% !important;
-        max-width: 480px;
         margin: 0 auto;
-        aspect-ratio: 1 / 1;
         border-radius: 12px;
       }
 
@@ -199,6 +196,13 @@
         <!-- Timer bar -->
         <div class="timer-bar" id="tbar" aria-hidden="true">
           <div class="timer-fill" id="tfill" style="width: 100%"></div>
+        </div>
+        <div
+          class="meta-row"
+          id="timer-label-row"
+          style="display: none; justify-content: center; margin-bottom: 7px"
+        >
+          <div class="meta-item">Time Left: <span id="timer-val">60</span>s</div>
         </div>
 
         <!-- Live metadata (compact) -->

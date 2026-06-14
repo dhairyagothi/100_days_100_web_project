@@ -5077,3 +5077,58 @@ input.read {
   outline: 2px solid #38bdf8;
   outline-offset: 2px;
 }
+zz/* ===== SUN FIX ===== */
+
+.menu.sun .menu__preview {
+  background: radial-gradient(
+    circle at 35% 35%,
+    #fff7a8,
+    #facc15 40%,
+    #f59e0b 75%,
+    #ea580c
+  );
+
+  box-shadow:
+    0 0 10px rgba(250, 204, 21, 0.9),
+    0 0 20px rgba(245, 158, 11, 0.7),
+    0 0 30px rgba(234, 88, 12, 0.5);
+}
+
+.sun.planet,
+.planet.sun {
+  background: radial-gradient(
+    circle at 35% 35%,
+    #fff7a8 0%,
+    #fde047 25%,
+    #facc15 50%,
+    #f59e0b 75%,
+    #ea580c 100%
+  ) !important;
+
+  border-radius: 50%;
+
+  box-shadow:
+    0 0 40px rgba(250, 204, 21, 0.9),
+    0 0 80px rgba(245, 158, 11, 0.8),
+    0 0 140px rgba(234, 88, 12, 0.6) !important;
+
+  animation: sunPulse 4s ease-in-out infinite;
+}
+
+@keyframes sunPulse {
+  0%,100% {
+    transform: scale(1);
+    box-shadow:
+      0 0 40px rgba(250,204,21,.9),
+      0 0 80px rgba(245,158,11,.8),
+      0 0 140px rgba(234,88,12,.6);
+  }
+
+  50% {
+    transform: scale(1.03);
+    box-shadow:
+      0 0 60px rgba(250,204,21,1),
+      0 0 110px rgba(245,158,11,.9),
+      0 0 180px rgba(234,88,12,.8);
+  }
+}

@@ -184,7 +184,7 @@
       "css"
     ],
     "difficulty": "beginner",
-    "projectPath": "./public/Custom Scroll Bar/index.html"
+   "projectPath": "./public/Custom-Scroll-Bar/index.html"
   },
   {
     "projectNo": 17,
@@ -2877,5 +2877,36 @@
     ],
     "difficulty": "advanced",
     "projectPath": "./public/Word_Jumble/index.html"
+  },
+  {
+    "projectNo": 228,
+    "projectName": "Beat Maker",
+    "projectType": "Tool",
+    "projectDesc": "Generate beats ",
+    "techStack": [
+      "html",
+      "css",
+      "javascript",
+      "music"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/BeatMaker/demo.html"
+  },
+  {
+  "projectNo": 229,
+  "projectName": "MEMO 2.0",
+  "projectType": "Game",
+  "projectDesc": "A premium memory card matching game featuring SOLO and DUO modes, multiple difficulty levels, score tracking, timer-based gameplay, smooth card animations, and a luxury casino-inspired UI.",
+  "techStack": [
+    "html",
+    "css",
+    "javascript",
+    "game",
+    "memory"
+  ],
+  "difficulty": "advanced",
+  "projectPath": "./public/MEMO 2.0/index.html"
   }
+
+
 ]
