@@ -1,0 +1,142 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: linear-gradient(135deg, #0f172a, #1e1b4b);
+  color: #f8fafc;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.notepad-container {
+  background-color: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 16px;
+  max-width: 750px;
+  width: 100%;
+  height: 550px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+}
+
+.notepad-header {
+  background-color: #0f172a;
+  padding: 16px 24px;
+  border-bottom: 1px solid #334155;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.brand-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.brand-row h1 {
+  font-size: 1.4rem;
+  color: #38bdf8;
+}
+
+.status-indicator {
+  font-size: 0.85rem;
+  color: #10b981;
+  background-color: rgba(16, 185, 129, 0.1);
+  padding: 4px 10px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.status-indicator.saving {
+  color: #f59e0b;
+  background-color: rgba(245, 158, 11, 0.1);
+}
+
+.formatting-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.tool-btn {
+  background-color: #1e293b;
+  border: 1px solid #475569;
+  color: #e2e8f0;
+  padding: 6px 12px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.tool-btn:hover {
+  background-color: #334155;
+  border-color: #38bdf8;
+  color: white;
+}
+
+.tool-btn:active {
+  transform: scale(0.95);
+}
+
+.divider {
+  width: 1px;
+  height: 20px;
+  background-color: #475569;
+  margin: 0 4px;
+}
+
+.editor-surface {
+  flex: 1;
+  padding: 24px;
+  background-color: #1e293b;
+  overflow-y: auto;
+}
+
+.editable-canvas {
+  width: 100%;
+  height: 100%;
+  outline: none;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: #e2e8f0;
+}
+
+/* Simulated dynamic placeholder mechanics */
+.editable-canvas:empty::before {
+  content: attr(placeholder);
+  color: #64748b;
+  cursor: text;
+}
+
+/* Custom internal lists spacing structure */
+.editable-canvas ul,
+.editable-canvas ol {
+  margin-left: 24px;
+  padding: 4px 0;
+}
+
+@media (max-width: 480px) {
+  .notepad-header {
+    padding: 12px;
+  }
+  .formatting-toolbar {
+    gap: 4px;
+  }
+  .tool-btn {
+    padding: 4px 8px;
+    font-size: 0.8rem;
+  }
+}

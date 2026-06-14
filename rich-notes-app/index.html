@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ScribePad - Rich Formatting Notebook</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="notepad-container">
+      <header class="notepad-header">
+        <div class="brand-row">
+          <h1>ScribePad 📝</h1>
+          <span id="save-indicator" class="status-indicator"
+            >All changes saved</span
+          >
+        </div>
+
+        <div class="formatting-toolbar">
+          <button
+            type="button"
+            class="tool-btn"
+            data-command="bold"
+            title="Bold Text"
+          >
+            <b>B</b>
+          </button>
+          <button
+            type="button"
+            class="tool-btn"
+            data-command="italic"
+            title="Italic Text"
+          >
+            <i>I</i>
+          </button>
+          <button
+            type="button"
+            class="tool-btn"
+            data-command="underline"
+            title="Underline Text"
+          >
+            <u>U</u>
+          </button>
+          <button
+            type="button"
+            class="tool-btn"
+            data-command="strikeThrough"
+            title="Strikethrough"
+          >
+            <s>S</s>
+          </button>
+          <div class="divider"></div>
+          <button
+            type="button"
+            class="tool-btn"
+            data-command="insertUnorderedList"
+            title="Bullet List"
+          >
+            • List
+          </button>
+          <button
+            type="button"
+            class="tool-btn"
+            data-command="clearFormatting"
+            title="Clear Styles"
+          >
+            Reset 📋
+          </button>
+        </div>
+      </header>
+
+      <main class="editor-surface">
+        <div
+          id="rich-text-engine"
+          class="editable-canvas"
+          contenteditable="true"
+          placeholder="Start typing your thoughts here..."
+        ></div>
+      </main>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
