@@ -1,294 +1,202 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CPU Scheduling Simulator | GSSoC '26</title>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CPU Scheduler Simulator</title>
+  <link rel="stylesheet" href="/public/CpuScheduler/style.css" />
+</head>
+<body>
 
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+<div class="app">
 
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
+  <!-- ═══════════════════════════════════════
+       SIDEBAR — Algorithm selector
+  ════════════════════════════════════════ -->
+  <nav class="sidebar">
+    <div class="sidebar-logo">
+      <h1>CPU Scheduler</h1>
+      <p>Scheduling Algorithm Simulator</p>
+    </div>
 
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="style.css" />
-  </head>
+    <div class="algo-list">
+      <div class="algo-label">Algorithms</div>
 
-  <body class="min-h-screen text-slate-100">
-<a href="/" class="back-button">← Home</a>
+      <button class="algo-btn active" data-algo="fcfs">
+        <span>FCFS</span>
+        <span class="algo-badge">Non-preemptive</span>
+      </button>
 
-    <!-- Header -->
-    <header class="py-10 border-b border-white/10">
-      <div class="text-center">
-        <h1 class="text-4xl md:text-5xl font-bold mb-3 leading-tight text-white">
-          CPU Scheduler Simulator
-        </h1>
+      <button class="algo-btn" data-algo="sjf">
+        <span>SJF</span>
+        <span class="algo-badge">Non-preemptive</span>
+      </button>
 
-        <p class="text-base md:text-lg text-slate-400 leading-relaxed">
-          Visualize and analyze eight different CPU scheduling algorithms with interactive simulations and real-time Gantt charts.
-        </p>
+      <button class="algo-btn" data-algo="srtf">
+        <span>SRTF</span>
+        <span class="algo-badge">Preemptive</span>
+      </button>
+
+      <button class="algo-btn" data-algo="rr">
+        <span>Round Robin</span>
+        <span class="algo-badge">Preemptive</span>
+      </button>
+
+      <button class="algo-btn" data-algo="priority_np">
+        <span>Priority NP</span>
+        <span class="algo-badge">Non-preemptive</span>
+      </button>
+
+      <button class="algo-btn" data-algo="priority_p">
+        <span>Priority P</span>
+        <span class="algo-badge">Preemptive</span>
+      </button>
+
+      <button class="algo-btn" data-algo="hrrn">
+        <span>HRRN</span>
+        <span class="algo-badge">Non-preemptive</span>
+      </button>
+
+      <button class="algo-btn" data-algo="multilevel">
+        <span>Multilevel Queue</span>
+        <span class="algo-badge">Mixed</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ═══════════════════════════════════════
+       MAIN — Content area
+  ════════════════════════════════════════ -->
+  <div class="main">
+
+    <!-- Top bar -->
+    <div class="topbar">
+      <div>
+        <h2 id="algoTitle">First Come First Serve</h2>
+        <p  id="algoSubtitle">Non-preemptive · Schedules in arrival order</p>
       </div>
-    </header>
+      <div class="topbar-actions">
+        <button class="btn-secondary" id="sampleBtn">Sample Data</button>
+        <button class="btn-primary"   id="runBtn">▶ Run</button>
+      </div>
+    </div>
 
-    <main class="py-12">
-      <!-- Algorithm Selection Section -->
-      <section class="card mb-8 fade-in">
-        <div class="flex flex-col items-center mb-8">
-          <h2 class="text-2xl font-bold text-white mb-2">
-            Select Scheduling Algorithm
-          </h2>
-          <p class="text-slate-400 text-sm">
-            Choose from 8 different scheduling algorithms
-          </p>
-        </div>
+    <!-- Content -->
+    <div class="content">
 
-        <div class="max-w-sm mx-auto mb-6">
-          <label
-            for="algorithm"
-            class="block text-sm font-semibold text-slate-300 mb-3"
-          >
-            Algorithm
-          </label>
-
-          <select
-            id="algorithm"
-            class="w-full p-3 rounded-lg bg-white/5 border border-slate-600/30 text-white text-base focus:outline-none focus:ring-2 focus:ring-blue-400/50 transition"
-          >
-            <option value="fcfs" class="text-gray-800">
-              FCFS - First Come First Serve
-            </option>
-            <option value="sjf" class="text-gray-800">
-              SJF - Shortest Job First
-            </option>
-            <option value="srtf" class="text-gray-800">
-              SRTF - Shortest Remaining Time First
-            </option>
-            <option value="rr" class="text-gray-800">Round Robin</option>
-            <option value="priority" class="text-gray-800">
-              Priority Scheduling (Non-Preemptive)
-            </option>
-            <option value="priority_preemptive" class="text-gray-800">
-              Priority Scheduling (Preemptive)
-            </option>
-            <option value="hrrn" class="text-gray-800">
-              HRRN - Highest Response Ratio Next
-            </option>
-            <option value="multilevel" class="text-gray-800">
-              Multilevel Queue Scheduling
-            </option>
-          </select>
-        </div>
-
-        <!-- Algorithm Info -->
-        <div
-          id="algorithmInfo"
-          class="bg-white/3 border border-slate-600/20 rounded-lg p-4 max-w-sm mx-auto"
-        >
-          <p
-            id="algorithmDescription"
-            class="text-sm text-slate-300 leading-relaxed"
-          >
-            Select an algorithm to view its description.
-          </p>
-        </div>
-      </section>
-
-      <!-- Process Configuration Section -->
-      <section class="card mb-8 fade-in">
-        <div class="flex flex-col items-center mb-8">
-          <h2 class="text-2xl font-bold text-white mb-2">
-            Configure Processes
-          </h2>
-          <p class="text-slate-400 text-sm">
-            Set the number of processes and algorithm parameters
-          </p>
-        </div>
-
-        <div class="max-w-sm mx-auto">
-          <!-- Number of Processes -->
-          <div class="mb-6">
-            <label
-              for="numProcesses"
-              class="block text-sm font-semibold text-slate-300 mb-2"
-            >
-              Number of Processes
-            </label>
-            <input
-              type="number"
-              id="numProcesses"
-              min="1"
-              max="20"
-              value="3"
-              class="w-full p-3 rounded-lg bg-white/5 border border-slate-600/30 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-400/50 transition"
-              placeholder="Enter number of processes"
-            />
-            <p class="text-xs text-slate-400 mt-2">Between 1 and 20 processes</p>
-          </div>
-
-          <!-- Time Quantum (Round Robin Only) -->
-          <div id="timeQuantumDiv" class="hidden mb-6">
-            <label
-              for="timeQuantum"
-              class="block text-sm font-semibold text-slate-300 mb-2"
-            >
-              Time Quantum
-            </label>
-            <input
-              type="number"
-              id="timeQuantum"
-              min="1"
-              value="2"
-              class="w-full p-3 rounded-lg bg-white/5 border border-slate-600/30 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-400/50 transition"
-              placeholder="Enter time quantum"
-            />
-            <p class="text-xs text-slate-400 mt-2">CPU time slice per process</p>
-          </div>
-
-          <!-- Load Sample Data Button -->
-          <button
-            id="sampleBtn"
-            class="btn-secondary text-white font-semibold py-3 px-6 rounded-lg text-sm w-full"
-          >
-            📝 Load Sample Data
-          </button>
-        </div>
-      </section>
-
-      <!-- Error Message -->
-      <section id="errorMessage" class="hidden mb-8 p-4 rounded-lg border border-red-500/30 bg-red-500/10">
-        <div class="flex items-start gap-3">
-          <div class="text-lg font-bold text-red-400 flex-shrink-0">!</div>
-          <div>
-            <h3 class="font-semibold text-red-300 text-sm">Validation Error</h3>
-            <p id="errorText" class="text-sm text-red-300/80 mt-1"></p>
-          </div>
-        </div>
-      </section>
-
-      <!-- Process Form Container -->
-      <div id="processFormContainer" class="mb-8">
-        <div class="flex flex-col items-center mb-6">
-          <h2 class="text-2xl font-bold text-white mb-2">
-            Process Details
-          </h2>
-          <p class="text-slate-400 text-sm">
-            Enter arrival time and burst time for each process
-          </p>
-        </div>
-        
-        <!-- Dynamic Process Form -->
-        <div id="processForm" class="space-y-4"></div>
+      <!-- Algorithm info banner -->
+      <div class="info-box" id="algoInfo">
+        FCFS executes processes in the order they arrive. Simple and fair,
+        but suffers from the convoy effect where short processes wait behind long ones.
       </div>
 
-      <!-- Action Buttons -->
-      <section class="text-center mb-10">
-        <div class="flex flex-col sm:flex-row gap-3 justify-center">
-          <button
-            id="runSimulation"
-            class="btn-primary text-white font-bold py-3 px-6 rounded-lg text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed w-full sm:w-auto"
-          >
-            <span id="buttonText">🚀 Run Simulation</span>
-            <span
-              id="loadingSpinner"
-              class="loading-spinner hidden inline-block ml-2"
-            ></span>
-          </button>
-        </div>
-      </section>
+      <!-- ── Process input section ── -->
+      <div class="section">
+        <div class="section-header">
+          <div class="section-title">Processes</div>
 
-      <!-- Results Section -->
-      <section id="results" class="hidden fade-in">
-        <!-- Metrics Dashboard -->
-        <div class="flex flex-col items-center mb-8">
-          <h2 class="text-2xl font-bold text-white mb-2">
-            Performance Metrics
-          </h2>
-          <p class="text-slate-400 text-sm mb-6">
-            Key scheduling performance indicators
-          </p>
-        </div>
-        
-        <div
-          id="metricsPanel"
-          class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8"
-        ></div>
+          <div style="display:flex;gap:8px;align-items:center">
+            <!-- Time Quantum (RR only) -->
+            <div class="quantum-row" id="rrParam" style="display:none">
+              <label for="quantumInput">Time Quantum</label>
+              <input type="number" id="quantumInput" class="pnumber"
+                     value="2" min="1" />
+            </div>
 
-        <!-- Results Table -->
-        <div class="card mb-8">
-          <div class="flex flex-col items-center mb-6">
-            <h2 class="text-2xl font-bold text-white mb-1">
-              Simulation Results
-            </h2>
-            <p class="text-slate-400 text-sm">
-              Detailed metrics for each process
-            </p>
+            <button class="btn-add" id="addProcessBtn">+ Add Process</button>
           </div>
-
-          <div id="outputTable" class="overflow-x-auto w-full"></div>
         </div>
 
-        <!-- Gantt Chart -->
-        <div class="card mb-8">
-          <div class="flex flex-col items-center mb-6">
-            <h2 class="text-2xl font-bold text-white mb-1">
-              Gantt Chart
-            </h2>
-            <p class="text-slate-400 text-sm">
-              Visual timeline of process execution
-            </p>
+        <!-- Column headers -->
+        <div class="process-grid" id="processGridHeader">
+          <div class="process-col-header"></div>
+          <div class="process-col-header">Arrival</div>
+          <div class="process-col-header">Burst</div>
+          <div class="process-col-header" id="col3Header">Priority</div>
+          <div></div>
+        </div>
+
+        <!-- Process rows injected by JS -->
+        <div id="processRows"></div>
+      </div>
+
+      <!-- ── Results section (hidden until simulation runs) ── -->
+      <div id="resultsSection" style="display:none">
+
+        <!-- Metrics cards -->
+        <div class="metrics-grid" id="metricsGrid"></div>
+
+        <!-- Gantt chart -->
+        <div class="section">
+          <div class="section-title">Gantt Chart</div>
+          <div class="gantt-wrap">
+            <svg class="gantt-svg" id="ganttSvg"></svg>
           </div>
-
-          <div id="ganttChart" class="overflow-x-auto mb-6 bg-white/2 p-4 rounded-lg border border-slate-600/20"></div>
-
-          <div
-            id="processLegend"
-            class="flex flex-wrap gap-4 justify-center border-t border-slate-600/20 pt-6"
-          ></div>
+          <div class="legend-wrap" id="ganttLegend"></div>
         </div>
 
-        <!-- Analysis Panel -->
-        <div class="card">
-          <div class="flex flex-col items-center mb-6">
-            <h2 class="text-2xl font-bold text-white mb-1">
-              Performance Analysis
-            </h2>
-            <p class="text-slate-400 text-sm">
-              Algorithm insights and recommendations
-            </p>
+        <!-- Process results table -->
+        <div class="section">
+          <div class="section-title">Process Results</div>
+          <div class="table-wrap" id="resultTable"></div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════
+           AI LEARNING ASSISTANT
+      ════════════════════════════════════ -->
+      <div class="ai-chat">
+        <div class="ai-header">
+          <div class="ai-dot"></div>
+          <div class="ai-header-text">AI Learning Assistant</div>
+          <div class="ai-header-sub">Predefined answers · Always available</div>
+        </div>
+
+        <!-- Chat messages -->
+        <div class="ai-messages" id="aiMessages">
+          <div class="ai-msg">
+            <div class="ai-avatar bot">AI</div>
+            <div class="ai-bubble">
+              Hi! I can explain CPU scheduling concepts. Try one of the quick
+              questions below, or type your own!
+            </div>
           </div>
-
-          <div id="analysisContent"></div>
         </div>
-      </section>
-      
-      <section id="comparisonResults" class="hidden fade-in mt-8">
-        <div class="card">
-          <div class="flex flex-col items-center mb-8">
-            <h2 class="text-2xl font-bold text-white mb-1">
-              Algorithm Comparison
-            </h2>
-            <p class="text-slate-400 text-sm">
-              Side-by-side comparison of all algorithms
-            </p>
-          </div>
-          
-          <div id="comparisonTable" class="overflow-x-auto mb-8"></div>
-          <div id="comparisonCharts" class="grid md:grid-cols-2 gap-6 mb-8"></div>
-          <div id="recommendationBox" class="bg-emerald-500/10 border border-emerald-500/20 rounded-lg p-4"></div>
+
+        <!-- Quick-reply chips -->
+        <div class="ai-chips" id="aiChips">
+          <button class="ai-chip" data-q="what is fcfs">What is FCFS?</button>
+          <button class="ai-chip" data-q="what is sjf">What is SJF?</button>
+          <button class="ai-chip" data-q="what is round robin">What is Round Robin?</button>
+          <button class="ai-chip" data-q="what is srtf">What is SRTF?</button>
+          <button class="ai-chip" data-q="what is priority scheduling">Priority Scheduling?</button>
+          <button class="ai-chip" data-q="what is hrrn">What is HRRN?</button>
+          <button class="ai-chip" data-q="what is starvation">What is Starvation?</button>
+          <button class="ai-chip" data-q="what is convoy effect">Convoy Effect?</button>
+          <button class="ai-chip" data-q="what is turnaround time">Turnaround Time?</button>
+          <button class="ai-chip" data-q="what is waiting time">Waiting Time?</button>
+          <button class="ai-chip" data-q="what is preemptive">Preemptive vs Non-preemptive?</button>
+          <button class="ai-chip" data-q="what is cpu burst">What is CPU Burst?</button>
+          <button class="ai-chip" data-q="which algorithm is best">Which algorithm is best?</button>
+          <button class="ai-chip" data-q="what is context switch">Context Switch?</button>
+          <button class="ai-chip" data-q="what is multilevel queue">Multilevel Queue?</button>
         </div>
-      </section>
-    </main>
 
-    <!-- Tooltip -->
-    <div id="ganttTooltip" class="gantt-tooltip"></div>
+        <!-- Text input -->
+        <div class="ai-input-row">
+          <input class="ai-input" id="aiInput"
+                 placeholder="Ask about CPU scheduling..." />
+          <button class="ai-send" id="aiSend">Send</button>
+        </div>
+      </div>
 
-    <!-- JavaScript -->
-    <script src="script.js"></script>
-  </body>
+    </div><!-- /content -->
+  </div><!-- /main -->
+</div><!-- /app -->
+
+<!-- Toast notification -->
+<div class="toast" id="toast"></div>
+
+<script src="/public/CpuScheduler/script.js"></script>
+</body>
 </html>

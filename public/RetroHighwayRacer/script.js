@@ -14,6 +14,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const crashScreen = document.getElementById('crash-screen');
     const finalScore = document.getElementById('final-score');
     const finalDistance = document.getElementById('final-distance');
+    const bestScoreCrash = document.getElementById('best-score-crash'); 
+    const bestScoreStart = document.getElementById('best-score-start');   
     
     // 3. Buttons
     const startBtn = document.getElementById('start-btn');
@@ -26,6 +28,81 @@ document.addEventListener('DOMContentLoaded', () => {
     const pauseMenuBtn = document.getElementById('pause-menu-btn'); 
     const grassLeft = document.getElementById('grass-left');
     const grassRight = document.getElementById('grass-right');
+
+    // --- AUDIO SYSTEM FIX ---
+    // Root cause: The audio system was referenced but not defined. This caused either unhandled runtime ReferenceErrors 
+    // or silence because no audio assets were actually loaded.
+    // Fix: We load the provided .wav files as HTML5 Audio elements, handle looping, 
+    // and provide safe playSound/stopSound wrappers. We also manage mute state.
+    let isMuted = false;
+    const muteBtn = document.getElementById('mute-btn');
+
+    const sounds = {
+        bgm: new Audio('./audio/bgm.wav'),
+        engine: new Audio('./audio/engine_loop.wav'),
+        whoosh: new Audio('./audio/whoosh.wav'),
+        uiClick: new Audio('./audio/ui_click.wav'),
+        crash: new Audio('./audio/crash.wav')
+    };
+
+    // Configure loop
+    sounds.bgm.loop = true;
+    sounds.engine.loop = false; // Play only once at the start
+
+    // Volumes
+    sounds.engine.volume = 1.0;
+    sounds.bgm.volume = 0.6; // Restored BGM volume since engine plays first
+
+    let enginePhase = false;
+
+    sounds.engine.addEventListener('ended', () => {
+        enginePhase = false;
+        if (gameActive && !isPaused && !isMuted) {
+            playSound(sounds.bgm);
+        }
+    });
+
+    const playSound = (audioObj) => {
+        if (!audioObj || isMuted) return;
+        // Reset current time for sound effects so they can be spammed
+        if (audioObj !== sounds.bgm && audioObj !== sounds.engine) {
+            try {
+                // Prevent InvalidStateError if audio metadata isn't fully loaded yet
+                if (audioObj.readyState >= 1) {
+                    audioObj.currentTime = 0;
+                }
+            } catch (e) {}
+        }
+        audioObj.play().catch(e => {
+            console.warn("Audio playback prevented by browser:", e);
+        });
+    };
+
+    const stopSound = (audioObj) => {
+        if (!audioObj) return;
+        audioObj.pause();
+        try {
+            if (audioObj.readyState >= 1) {
+                audioObj.currentTime = 0;
+            }
+        } catch (e) {}
+    };
+
+    muteBtn.addEventListener('click', () => {
+        isMuted = !isMuted;
+        muteBtn.textContent = isMuted ? '🔇' : '🔊';
+        if (isMuted) {
+            sounds.bgm.pause();
+            sounds.engine.pause();
+        } else if (gameActive && !isPaused) {
+            if (enginePhase) {
+                playSound(sounds.engine);
+            } else {
+                playSound(sounds.bgm);
+            }
+        }
+    });
+    // --- END AUDIO SYSTEM FIX ---
 
     // 4. Game State
     let isPaused = false;
@@ -48,11 +125,18 @@ document.addEventListener('DOMContentLoaded', () => {
     // Read difficulty buttons and set selectedDifficulty on click
     document.querySelectorAll('.difficulty-btn').forEach(btn => {
         btn.addEventListener('click', () => {
+            playSound(sounds.uiClick);
             document.querySelectorAll('.difficulty-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             selectedDifficulty = btn.dataset.difficulty;
         });
     });
+
+    // Load best score from localStorage and display on start screen
+    const loadBestScore = () => {
+        const best = localStorage.getItem('bestScore') || 0;
+        if (bestScoreStart) bestScoreStart.textContent = best;
+    };
 
     const initPositions = () => {
         const roadWidth = highway.clientWidth;
@@ -74,12 +158,15 @@ document.addEventListener('DOMContentLoaded', () => {
         
         scoreVal.textContent = "0"; 
         distanceVal.textContent = "0";
+        loadBestScore(); // Refresh best score on start screen each race
         
         // Show the game arena first
         startScreen.style.display = 'none';
         crashScreen.style.display = 'none';
         pauseScreen.style.display = 'none';
         pauseBtn.style.display = 'flex';
+        const muteBtnElement = document.getElementById('mute-btn');
+        if (muteBtnElement) muteBtnElement.style.display = 'flex';
         
         // --- THIS IS THE FIX ---
         // We reset the position here to guarantee it's centered every single time
@@ -89,9 +176,15 @@ document.addEventListener('DOMContentLoaded', () => {
         
         clearInterval(gameLoopInterval);
         clearInterval(enemySpawnInterval);
-        
+
+        // Start engine loop on race start. BGM starts after engine finishes.
+        enginePhase = true;
+        stopSound(sounds.bgm);
+        stopSound(sounds.engine);
+        playSound(sounds.engine);
+
         gameLoopInterval = setInterval(updateGame, 1000 / 60); 
-        enemySpawnInterval = setInterval(spawnEnemy, diff.spawnRate); // dynamic spawn rate
+        enemySpawnInterval = setInterval(spawnEnemy, diff.spawnRate); // ✅ dynamic spawn rate
     };
 
     const roadMargin = 25; 
@@ -100,7 +193,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if(gameActive && !isPaused) { 
             // Only move if we are past the margin
             playerLeft = Math.max(roadMargin, playerLeft - 25); 
-            player.style.left = `${playerLeft}px`; 
+            player.style.left = `${playerLeft}px`;
+            playSound(sounds.whoosh); // Steering whoosh
         }
     };
 
@@ -108,7 +202,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if(gameActive && !isPaused) { 
             // Only move if we are before the right margin
             playerLeft = Math.min(highway.clientWidth - 75, playerLeft + 25); 
-            player.style.left = `${playerLeft}px`; 
+            player.style.left = `${playerLeft}px`;
+            playSound(sounds.whoosh); // Steering whoosh
         }
     };
 
@@ -117,7 +212,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const enemy = document.createElement('div');
         enemy.className = 'enemy';
 
-        // FIX #1: Added 'bus' to the types array — it was defined in CSS but never spawned
+        // Added 'bus' to the types array — it was defined in CSS but never spawned
         const types = ['car', 'truck', 'bike', 'stone', 'bus'];
         const type = types[Math.floor(Math.random() * types.length)];
         enemy.classList.add(`type-${type}`);
@@ -125,13 +220,13 @@ document.addEventListener('DOMContentLoaded', () => {
         // Width of the car/enemy
         const myWidth = (type === 'stone') ? 35 : 50;
 
-        // FIX #2: Added correct height per type — bus and truck have taller sprites
+        // Added correct height per type — bus and truck have taller sprites
         const myHeight = (type === 'truck') ? 140
                        : (type === 'bus')   ? 150
                        : (type === 'stone') ? 35
                        : 100;
 
-        // FIX #3: Apply height dynamically so collision box matches sprite size
+        // Apply height dynamically so collision box matches sprite size
         enemy.style.height = `${myHeight}px`;
 
         const curbPadding = 20; 
@@ -200,21 +295,54 @@ document.addEventListener('DOMContentLoaded', () => {
         let rotation = (realtimeSpeed / 50) * 180; 
         speedHand.style.transform = `rotate(${rotation}deg)`;
     }
+
+    // Map game speed to BGM + engine playback rate (pitch shift)
+    if (!isMuted) {
+        const rate = 0.8 + (baseEnemySpeed / MAX_SPEED) * 0.6; // 0.8x → 1.4x
+        sounds.bgm.playbackRate    = rate;
+        sounds.engine.playbackRate = rate;
+    }
 }
 
     const gameOver = () => {
         gameActive = false;
         clearInterval(gameLoopInterval);
         clearInterval(enemySpawnInterval);
+
+        // Stop BGM + engine, play crash SFX
+        stopSound(sounds.bgm);
+        stopSound(sounds.engine);
+        playSound(sounds.crash);
         finalScore.textContent = score;
         finalDistance.textContent = Math.floor(distance);
+
+        // Save best score to localStorage if current score beats it
+        const prevBest = parseInt(localStorage.getItem('bestScore') || 0);
+        if (score > prevBest) localStorage.setItem('bestScore', score);
+        if (bestScoreCrash) bestScoreCrash.textContent = localStorage.getItem('bestScore');
+
         crashScreen.style.display = 'flex';
         pauseBtn.style.display = 'none';
+        const muteBtnElement2 = document.getElementById('mute-btn');
+        if (muteBtnElement2) muteBtnElement2.style.display = 'none'; 
     };
 
     const togglePause = () => {
         if (!gameActive) return;
         isPaused = !isPaused;
+        playSound(sounds.uiClick); // UI snap on pause
+        if (isPaused) {
+            sounds.bgm.pause();    // Pause BGM on pause
+            sounds.engine.pause(); // Pause engine on pause
+        } else {
+            if (!isMuted) { 
+                if (enginePhase) {
+                    sounds.engine.play().catch(() => {}); 
+                } else {
+                    sounds.bgm.play().catch(() => {}); 
+                }
+            }
+        }
         pauseScreen.style.display = isPaused ? 'flex' : 'none';
         pauseBtn.style.display = isPaused ? 'none' : 'flex';
     };
@@ -227,11 +355,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Listeners
-    startBtn.addEventListener('click', startRace);
-    restartBtn.addEventListener('click', startRace);
+    startBtn.addEventListener('click', () => { playSound(sounds.uiClick); startRace(); });
+    restartBtn.addEventListener('click', () => { playSound(sounds.uiClick); startRace(); }); 
     pauseBtn.addEventListener('click', togglePause);
     resumeBtn.addEventListener('click', togglePause);
-    pauseRestartBtn.addEventListener('click', () => { isPaused = false; startRace(); });
+    pauseRestartBtn.addEventListener('click', () => { isPaused = false; playSound(sounds.uiClick); startRace(); }); 
 
     pauseMenuBtn.addEventListener('click', () => {
         gameActive = false;           // 1. Stop the game logic
@@ -239,15 +367,20 @@ document.addEventListener('DOMContentLoaded', () => {
         clearInterval(gameLoopInterval);   // 3. KILL the game clock!
         clearInterval(enemySpawnInterval); // 4. KILL the enemy spawner!
         document.querySelectorAll('.enemy').forEach(el => el.remove()); // 5. Clean up board
+        stopSound(sounds.bgm);    // Stop BGM on menu return
+        stopSound(sounds.engine); // Stop engine on menu return
+        playSound(sounds.uiClick); // UI snap
         
         pauseScreen.style.display = 'none';
         crashScreen.style.display = 'none'; // Ensure the crash screen doesn't show
         startScreen.style.display = 'flex'; // Go back to start
+        loadBestScore(); // Refresh best score when returning to menu
     });
 
-    menuBtn.addEventListener('click', () => { crashScreen.style.display = 'none'; startScreen.style.display = 'flex'; });
+    menuBtn.addEventListener('click', () => { playSound(sounds.uiClick); crashScreen.style.display = 'none'; startScreen.style.display = 'flex'; loadBestScore(); });
     leftBtn.addEventListener('click', moveLeft);
     rightBtn.addEventListener('click', moveRight);
 
     initPositions();
+    loadBestScore(); // Show best score immediately on first load
 });

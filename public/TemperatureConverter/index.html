@@ -1,34 +1,126 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <title>Temperature Converter</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
 
-<div class="container">
-  <h1>Temperature Converter</h1>
-  
-  <div class="box">
-    <label>Celsius (°C)</label>
-    <input type="number" id="celsius" placeholder="Enter temperature in Celsius">
+  <!-- Theme Toggle -->
+  <button class="theme-toggle" id="themeToggle" title="Toggle theme">
+    <span class="theme-icon">🌙</span>
+  </button>
+
+  <div class="app-wrapper">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-label">UTILITY TOOL</div>
+      <h1 class="app-title">Temp<span class="accent">°</span>Convert</h1>
+      <p class="app-subtitle">Real-time temperature conversion across scales</p>
+    </header>
+
+    <!-- Main Grid -->
+    <main class="main-grid">
+
+      <!-- Converter Panel -->
+      <section class="panel converter-panel">
+        <div class="panel-tag">CONVERTER</div>
+
+        <!-- Inputs -->
+        <div class="inputs-grid">
+          <div class="input-card" data-unit="celsius">
+            <div class="input-card-header">
+              <span class="unit-symbol">°C</span>
+              <span class="unit-name">Celsius</span>
+            </div>
+            <input type="number" id="celsius" placeholder="—" autocomplete="off">
+            <div class="input-underline"></div>
+          </div>
+
+          <div class="input-card" data-unit="fahrenheit">
+            <div class="input-card-header">
+              <span class="unit-symbol">°F</span>
+              <span class="unit-name">Fahrenheit</span>
+            </div>
+            <input type="number" id="fahrenheit" placeholder="—" autocomplete="off">
+            <div class="input-underline"></div>
+          </div>
+
+          <div class="input-card" data-unit="kelvin">
+            <div class="input-card-header">
+              <span class="unit-symbol">K</span>
+              <span class="unit-name">Kelvin</span>
+            </div>
+            <input type="number" id="kelvin" placeholder="—" autocomplete="off">
+            <div class="input-underline"></div>
+          </div>
+        </div>
+
+        <!-- Presets -->
+        <div class="presets-section">
+          <div class="section-label">QUICK PRESETS</div>
+          <div class="presets-grid">
+            <button class="preset-btn" data-celsius="0">
+              <span class="preset-icon">❄️</span>
+              <span class="preset-name">Freezing</span>
+              <span class="preset-val">0°C</span>
+            </button>
+            <button class="preset-btn" data-celsius="25">
+              <span class="preset-icon">🌤</span>
+              <span class="preset-name">Room Temp</span>
+              <span class="preset-val">25°C</span>
+            </button>
+            <button class="preset-btn" data-celsius="37">
+              <span class="preset-icon">🌡️</span>
+              <span class="preset-name">Body Temp</span>
+              <span class="preset-val">37°C</span>
+            </button>
+            <button class="preset-btn" data-celsius="100">
+              <span class="preset-icon">♨️</span>
+              <span class="preset-name">Boiling</span>
+              <span class="preset-val">100°C</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- History Panel -->
+      <section class="panel history-panel">
+        <div class="history-header">
+          <div class="panel-tag">HISTORY</div>
+          <button class="clear-btn" id="clearHistory">CLEAR ALL</button>
+        </div>
+
+        <div class="history-list" id="historyList">
+          <div class="history-empty" id="historyEmpty">
+            <div class="empty-icon">📋</div>
+            <p>No conversions yet.<br>Start typing to record history.</p>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Visual Scale Bar -->
+    <div class="scale-bar-wrapper">
+      <div class="scale-bar-label">TEMPERATURE SCALE</div>
+      <div class="scale-bar">
+        <div class="scale-marker" style="left:0%"><span>−273°C</span></div>
+        <div class="scale-marker" style="left:25%"><span>0°C</span></div>
+        <div class="scale-marker" style="left:50%"><span>100°C</span></div>
+        <div class="scale-marker" style="left:75%"><span>500°C</span></div>
+        <div class="scale-marker" style="left:100%"><span>1000°C</span></div>
+        <div class="scale-fill" id="scaleFill"></div>
+        <div class="scale-thumb" id="scaleThumb"></div>
+      </div>
+    </div>
+
   </div>
 
-  <div class="box">
-    <label>Fahrenheit (°F)</label>
-    <input type="number" id="fahrenheit" placeholder="Enter temperature in Fahrenheit">
-  </div>
-
-  <div class="box">
-    <label>Kelvin (K)</label>
-    <input type="number" id="kelvin" placeholder="Enter temperature in Kelvin">
-  </div>
-</div>
-<script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
-</html>
 </html>
