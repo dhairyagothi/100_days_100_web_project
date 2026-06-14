@@ -3445,3 +3445,32 @@ body.custom-cursor-active .cursor-ring.is-visible {
 #randomProjectResult {
   width: 100%;
 }
+
+/* Surprise Me Highlight Effect */
+.project-card.highlighted {
+  animation: card-highlight 2s cubic-bezier(0.16, 1, 0.3, 1) both;
+  z-index: 10;
+}
+
+@keyframes card-highlight {
+  0% {
+    outline: 3px solid var(--accent);
+    outline-offset: -3px;
+    box-shadow: 0 0 30px rgba(59, 130, 246, 0.6), 0 20px 80px rgba(0, 0, 0, 0.4);
+    background: var(--bg-surface);
+    transform: translateY(-8px) scale(1.03);
+  }
+  50% {
+    outline: 3px solid var(--accent);
+    outline-offset: -3px;
+    box-shadow: 0 0 25px rgba(59, 130, 246, 0.4), 0 20px 80px rgba(0, 0, 0, 0.3);
+    background: var(--bg-surface);
+    transform: translateY(-6px) scale(1.01);
+  }
+  100% {
+    outline: none;
+    outline-offset: 0;
+    box-shadow: none;
+    transform: none;
+  }
+}

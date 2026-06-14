@@ -901,6 +901,7 @@ function renderGrid() {
       ? "project-card source-only visible"
       : "project-card visible";
 
+    card.dataset.day = day;
     card.innerHTML = html;
     card.setAttribute("tabindex", "0");
     card.setAttribute("role", "button");
@@ -1612,7 +1613,7 @@ function updateClearFiltersBtnVisibility() {
   }
 }
 
-function resetAllFilters() {
+function resetAllFilters(silent = false) {
   const chips = document.querySelectorAll(".chip[data-filter]");
   chips.forEach((c) => c.classList.remove("active"));
   const allChip =
@@ -1645,7 +1646,9 @@ function resetAllFilters() {
   renderGrid();
   syncProjectCounts();
 
-  showToast("Filters cleared!");
+  if (!silent) {
+    showToast("Filters cleared!");
+  }
 }
 
 function initClearAllFilters() {
@@ -2503,6 +2506,35 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   window.addEventListener("popstate", () => restoreStateFromURL());
 });
+function scrollToAndHighlightProject(project) {
+  if (!project) return;
+  const idx = PROJECTS.findIndex(p => p.day === project.day);
+  if (idx === -1) return;
+
+  resetAllFilters(true);
+
+  currentPage = Math.floor(idx / itemsPerPage) + 1;
+  renderGrid();
+
+  setTimeout(() => {
+    const card = document.querySelector(`#projectGrid [data-day="${project.day}"]`);
+    if (card) {
+      card.scrollIntoView({ behavior: "smooth", block: "center" });
+      card.classList.add("highlighted");
+      setTimeout(() => {
+        card.classList.remove("highlighted");
+      }, 2000);
+    }
+  }, 100);
+}
+
+function handleSurpriseMe() {
+  if (!PROJECTS || PROJECTS.length === 0) return;
+  const randomIndex = Math.floor(Math.random() * PROJECTS.length);
+  const randomProject = PROJECTS[randomIndex];
+  scrollToAndHighlightProject(randomProject);
+}
+
 document
   .getElementById(
     "randomProjectBtn"
@@ -2511,3 +2543,7 @@ document
     "click",
     renderRandomProject
   );
+
+document.getElementById("heroSurpriseBtn")?.addEventListener("click", handleSurpriseMe);
+document.getElementById("searchSurpriseBtn")?.addEventListener("click", handleSurpriseMe);
+
