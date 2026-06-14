@@ -16,6 +16,94 @@ const GENRES = {
 // https://picsum.photos/seed/{anySeed}/500/750  → stable unique image per seed
 const p = (seed) => `https://picsum.photos/seed/${seed}/500/750`;
 
+
+
+function getFavorites() {
+    return JSON.parse(localStorage.getItem("favorites")) || [];
+}
+
+function saveFavorites(data) {
+    localStorage.setItem(
+        "favorites",
+        JSON.stringify(data)
+    );
+}
+
+
+function toggleFavorite(movie){
+
+    let favorites = getFavorites();
+
+    const exists = favorites.find(
+        item => item.id === movie.id
+    );
+
+    if(exists){
+
+        favorites = favorites.filter(
+            item => item.id !== movie.id
+        );
+
+    }else{
+
+        favorites.push(movie);
+
+    }
+
+    saveFavorites(favorites);
+
+    renderFavorites();
+}
+
+document.querySelectorAll(".favorite-btn")
+.forEach(btn=>{
+
+    btn.addEventListener("click",()=>{
+
+        const id = btn.dataset.id;
+
+        const movie = movies.find(
+            m=>m.id==id
+        );
+
+        toggleFavorite(movie);
+
+    });
+
+});
+
+function renderFavorites(){
+
+    const container =
+        document.getElementById("favorites-container");
+
+    const favorites =
+        getFavorites();
+
+    container.innerHTML = "";
+
+    favorites.forEach(movie=>{
+
+        container.innerHTML += `
+
+        <div class="movie-card">
+
+            <img src="${movie.poster}">
+
+            <h3>${movie.title}</h3>
+
+            <button
+                onclick="toggleFavorite(${JSON.stringify(movie)})">
+                Remove
+            </button>
+
+        </div>
+
+        `;
+
+    });
+
+}
 // ─── Movie database ───────────────────────────────────────────────────────────
 const MOVIES = [
   // Horror + Comedy
@@ -218,3 +306,16 @@ document.addEventListener('DOMContentLoaded', () => {
   initTheme();
   findMovies(parseInt(genre1Select.value), parseInt(genre2Select.value));
 });
+
+window.onload = () => {
+
+    renderFavorites();
+
+};
+
+const favorites = getFavorites();
+
+const isFavorite =
+favorites.some(
+    item => item.id === movie.id
+);

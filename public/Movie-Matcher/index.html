@@ -10,6 +10,9 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body data-theme="dark">
+  <button class="favorite-btn" data-id="${movie.id}">
+    ♡ Favorite
+</button>
 
   <div class="noise"></div>
 
@@ -78,6 +81,18 @@
       <div id="modalContent"></div>
     </div>
   </div>
+
+  <button class="favorite-btn ${isFavorite ? "active":""}">
+    ${isFavorite ? "❤️ Saved":"♡ Favorite"}
+</button>
+
+  <section id="favorites-section">
+
+    <h2>Your Watchlist</h2>
+
+    <div id="favorites-container"></div>
+
+</section>
 
   <script src="script.js"></script>
 </body>
