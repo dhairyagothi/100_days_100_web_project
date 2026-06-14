@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QuickPoll - Real-Time Community Voting Card</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="poll-wrapper-card">
+      <header class="poll-header">
+        <span class="live-indicator">LIVE POLL ⚡</span>
+        <h2>What is your preferred programming environment for micro-apps?</h2>
+        <p id="total-votes-label">Total Votes Logged: <strong>0</strong></p>
+      </header>
+
+      <section id="poll-options-container" class="poll-options-container">
+        <button class="poll-option-row" data-option="javascript">
+          <div class="percentage-fill-track" style="width: 0%"></div>
+          <div class="option-content-wrapper">
+            <span class="option-label">💻 Vanilla JavaScript</span>
+            <span class="option-metrics">
+              <strong class="count-val">0 votes</strong>
+              <span class="percent-val">0%</span>
+            </span>
+          </div>
+        </button>
+
+        <button class="poll-option-row" data-option="python">
+          <div class="percentage-fill-track" style="width: 0%"></div>
+          <div class="option-content-wrapper">
+            <span class="option-label">🐍 Python Scripting</span>
+            <span class="option-metrics">
+              <strong class="count-val">0 votes</strong>
+              <span class="percent-val">0%</span>
+            </span>
+          </div>
+        </button>
+
+        <button class="poll-option-row" data-option="rust">
+          <div class="percentage-fill-track" style="width: 0%"></div>
+          <div class="option-content-wrapper">
+            <span class="option-label">🦀 Rust Systems</span>
+            <span class="option-metrics">
+              <strong class="count-val">0 votes</strong>
+              <span class="percent-val">0%</span>
+            </span>
+          </div>
+        </button>
+
+        <button class="poll-option-row" data-option="go">
+          <div class="percentage-fill-track" style="width: 0%"></div>
+          <div class="option-content-wrapper">
+            <span class="option-label">🐹 Go Channels</span>
+            <span class="option-metrics">
+              <strong class="count-val">0 votes</strong>
+              <span class="percent-val">0%</span>
+            </span>
+          </div>
+        </button>
+      </section>
+
+      <footer class="poll-footer">
+        <p id="status-message" class="status-message">
+          Select an option above to cast your vote anonymously!
+        </p>
+        <button
+          id="reset-poll-btn"
+          class="reset-poll-btn"
+          style="display: none"
+        >
+          Revote / Clear Data 🔄
+        </button>
+      </footer>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>

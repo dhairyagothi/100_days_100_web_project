@@ -1,0 +1,192 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: radial-gradient(circle at center, #0f172a, #020617);
+  color: #f1f5f9;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.poll-wrapper-card {
+  background-color: #1e293b;
+  border: 1px solid #334155;
+  padding: 32px;
+  border-radius: 16px;
+  max-width: 500px;
+  width: 100%;
+  box-shadow:
+    0 20px 25px -5px rgba(0, 0, 0, 0.3),
+    0 10px 10px -5px rgba(0, 0, 0, 0.2);
+}
+
+.poll-header {
+  margin-bottom: 24px;
+}
+
+.live-indicator {
+  background-color: #0284c7;
+  color: #e0f2fe;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 4px;
+  letter-spacing: 0.05em;
+  display: inline-block;
+  margin-bottom: 12px;
+}
+
+.poll-header h2 {
+  font-size: 1.35rem;
+  line-height: 1.4;
+  color: #f8fafc;
+  margin-bottom: 8px;
+}
+
+.poll-header p {
+  font-size: 0.9rem;
+  color: #94a3b8;
+}
+
+.poll-header strong {
+  color: #38bdf8;
+}
+
+.poll-options-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+/* Row wrapper container acting as button option targets */
+.poll-option-row {
+  position: relative;
+  width: 100%;
+  background-color: #0f172a;
+  border: 2px solid #334155;
+  color: inherit;
+  font-family: inherit;
+  text-align: left;
+  padding: 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  transition:
+    border-color 0.15s ease,
+    transform 0.1s ease;
+}
+
+.poll-option-row:hover:not(.has-voted) {
+  border-color: #38bdf8;
+  transform: translateY(-1px);
+}
+
+.poll-option-row:active:not(.has-voted) {
+  transform: translateY(0);
+}
+
+/* Behind-the-scenes horizontal ratio loader visual track */
+.percentage-fill-track {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  background: linear-gradient(
+    to right,
+    rgba(14, 165, 233, 0.15),
+    rgba(37, 99, 235, 0.25)
+  );
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1;
+}
+
+/* Ensure data labels explicitly display floating above background track layouts */
+.option-content-wrapper {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.option-metrics {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.85rem;
+}
+
+.count-val {
+  color: #64748b;
+  font-weight: 400;
+  display: none; /* Only show when submission state triggers */
+}
+
+.percent-val {
+  color: #38bdf8;
+  font-weight: 700;
+  display: none; /* Only show when submission state triggers */
+}
+
+/* Classes loaded via scripting upon picking choices */
+.poll-option-row.has-voted {
+  cursor: default;
+  border-color: #1e293b;
+}
+
+.poll-option-row.user-selection {
+  border-color: #38bdf8;
+  background-color: #13233c;
+}
+
+.poll-option-row.has-voted .count-val,
+.poll-option-row.has-voted .percent-val {
+  display: inline;
+}
+
+.poll-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  border-top: 1px solid #334155;
+  padding-top: 16px;
+}
+
+.status-message {
+  font-size: 0.85rem;
+  color: #64748b;
+  text-align: center;
+}
+
+.status-message.success-glow {
+  color: #10b981;
+  font-weight: 600;
+}
+
+.reset-poll-btn {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  font-size: 0.85rem;
+  cursor: pointer;
+  text-decoration: underline;
+  transition: color 0.1s ease;
+}
+
+.reset-poll-btn:hover {
+  color: #f1f5f9;
+}
