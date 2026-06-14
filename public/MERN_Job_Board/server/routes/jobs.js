@@ -3,14 +3,20 @@ const router  = express.Router();
 const Job     = require("../models/Job");
 const { protect, requireRole } = require("../middleware/auth");
 
+// Escape regex metacharacters so user search input is matched literally (prevents ReDoS and regex injection)
+const escapeRegex = (s) => String(s).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
 // GET /api/jobs  — All open jobs (public)
 router.get("/", async (req, res) => {
   try {
     const { search, type, location } = req.query;
     const filter = { isOpen: true };
-    if (search)   filter.$or = [{ title: new RegExp(search, "i") }, { description: new RegExp(search, "i") }, { techStack: new RegExp(search, "i") }];
+    if (search) {
+      const safe = escapeRegex(String(search).slice(0, 100));
+      filter.$or = [{ title: new RegExp(safe, "i") }, { description: new RegExp(safe, "i") }, { techStack: new RegExp(safe, "i") }];
+    }
     if (type)     filter.type = type;
-    if (location) filter.location = new RegExp(location, "i");
+    if (location) filter.location = new RegExp(escapeRegex(String(location).slice(0, 100)), "i");
     const jobs = await Job.find(filter)
       .populate("employer", "name company")
       .sort({ createdAt: -1 });
