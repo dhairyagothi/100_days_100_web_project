@@ -14,16 +14,21 @@
 <div id="appShell">
 <a href="/" class="project-back-button">← Back to Home</a>
     <header class="site-header" data-role="patient">
-                    <div class="header-actions">
-        <button id="themeToggle" class="theme-btn" aria-label="Toggle Theme">
-            🌙
-        </button>
-    </div>
+
+            <div class="auth-brand">
+            <img src="assets/logo.png" alt="MedConsult logo">
+            <div>
         <h1>🏥 Basic Remedies</h1>
         <p>
             Simple first-aid and self-care guidance while waiting for professional consultation
         </p>
-
+            </div>
+            </div>
+             <div class="header-actions">
+        <button id="themeToggle" class="theme-btn" aria-label="Toggle Theme">
+            🌙
+        </button>
+    </div>
     </header>
    
     <div class="auth-page-actions" style="margin: 30px auto 0; width: 90%; max-width: 1200px;">
@@ -192,9 +197,7 @@
 
 <div id="authOverlay" class="auth-overlay" aria-hidden="true">
     <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="authTitle">
-        <div class="auth-brand">
-            <img src="assets/logo.png" alt="MedConsult logo">
-            <div>
+
                 <h2 id="authTitle">MedConsult Access</h2>
                 <p id="authSubtitle">Sign in to continue</p>
             </div>
