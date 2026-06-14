@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mega Memory Match</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; background: #2c3e50; color: white; }
+        .stats { margin: 20px; font-size: 1.2rem; }
+        .grid { display: grid; grid-template-columns: repeat(6, 80px); gap: 10px; justify-content: center; }
+        .card { width: 80px; height: 80px; background: #34495e; display: flex; align-items: center; justify-content: center; font-size: 30px; cursor: pointer; border-radius: 8px; border: 2px solid #fff; transition: transform 0.2s; }
+        .card.flipped { background: #ecf0f1; }
+        .card.matched { background: #27ae60; cursor: default; }
+    </style>
+</head>
+<body>
+
+<h1>Mega Memory Match</h1>
+<div class="stats">Moves: <span id="moves">0</span> | Time: <span id="time">0</span>s</div>
+<div class="grid" id="grid"></div>
+
+<script>
+    const symbols = ['🍎', '🍎', '🍌', '🍌', '🍇', '🍇', '🍓', '🍓', '🍍', '🍍', '🍒', '🍒', '🥝', '🥝', '🍉', '🍉', '🍑', '🍑'];
+    let flippedCards = [], moves = 0, seconds = 0, timerInterval;
+
+    // Shuffle
+    symbols.sort(() => Math.random() - 0.5);
+
+    const grid = document.getElementById('grid');
+    symbols.forEach(symbol => {
+        const card = document.createElement('div');
+        card.classList.add('card');
+        card.dataset.symbol = symbol;
+        card.onclick = () => flipCard(card);
+        grid.appendChild(card);
+    });
+
+    function flipCard(card) {
+        if (!timerInterval) timerInterval = setInterval(() => document.getElementById('time').innerText = ++seconds, 1000);
+        
+        if (flippedCards.length < 2 && !card.classList.contains('flipped') && !card.classList.contains('matched')) {
+            card.classList.add('flipped');
+            card.innerText = card.dataset.symbol;
+            flippedCards.push(card);
+
+            if (flippedCards.length === 2) {
+                moves++;
+                document.getElementById('moves').innerText = moves;
+                checkMatch();
+            }
+        }
+    }
+
+    function checkMatch() {
+        const [c1, c2] = flippedCards;
+        if (c1.dataset.symbol === c2.dataset.symbol) {
+            c1.classList.add('matched');
+            c2.classList.add('matched');
+            flippedCards = [];
+        } else {
+            setTimeout(() => {
+                c1.classList.remove('flipped');
+                c1.innerText = '';
+                c2.classList.remove('flipped');
+                c2.innerText = '';
+                flippedCards = [];
+            }, 800);
+        }
+    }
+</script>
+</body>
+</html>

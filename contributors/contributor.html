@@ -33,6 +33,8 @@
 
   <body>
 
+    <div class="cursor-ring cursor-ring--outer" aria-hidden="true"></div>
+
     <div class="ambient ambient-left" aria-hidden="true"></div>
 <div class="ambient ambient-right" aria-hidden="true"></div>
 <div class="noise-layer" aria-hidden="true"></div>
@@ -99,9 +101,10 @@
           type="text"
           id="contributorSearch"
           placeholder="Search contributors..."
+          aria-label="Search contributors"
         />
 
-        <select id="sortContributors">
+        <select id="sortContributors" aria-label="Sort contributors">
           <option value="desc">Highest Commits</option>
           <option value="asc">Lowest Commits</option>
         </select>
@@ -144,44 +147,43 @@
         <p>
             This repository contains a growing collection of web projects from
             basic to intermediate using HTML, CSS, and JS.
-        </p>
-        <p>
-            <strong>&copy; <span data-current-year></span> 100 Days, 100 Projects</strong>
-            by Dhairya and Contributors.
-        </p>
-    </div>
-
-    <div>
-        <h3>Connect With Us</h3>
-        <div class="social-links">
-            <a href="https://www.instagram.com/dhairyaa__31/" target="_blank" rel="noopener noreferrer" class="social-btn">
-                <i class="fab fa-instagram"></i>
-            </a>
-            <a href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank" rel="noopener noreferrer" class="social-btn">
-                <i class="fab fa-github"></i>
-            </a>
-            <a href="https://www.linkedin.com/in/dhairya-gothi-65945b288/" target="_blank" rel="noopener noreferrer" class="social-btn">
-                <i class="fab fa-linkedin"></i>
-            </a>
-        </div>
-        <nav class="footer-nav">
-            <a href="../index.html" class="footer-link">Home</a>
-            <a href="contributor.html" class="footer-link">Contributors</a>
-            <a href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank" rel="noopener noreferrer" class="footer-link">GitHub Repo</a>
-        </nav>
-    </div>
-
-    <div>
-        <h3>Featured Project</h3>
-        <p>Generate free, stunning GitHub README profiles in minutes.</p>
-        <a href="https://www.github-readme.tech" target="_blank" rel="noopener noreferrer"
-           class="button featured-btn"
-           style="margin-top: 2rem; display: inline-flex; border-radius: 14px;">
-            <i class="fas fa-magic"></i> Try README Generator
-        </a>
-    </div>
+</p>
+<p>
+    <strong>&copy; <span data-current-year></span> 100 Days, 100 Projects</strong>
+    by Dhairya and Contributors.
+</p>
 </div>
 
+<div>
+    <h3>Connect With Us</h3>
+    <div class="social-links">
+        <a href="https://www.instagram.com/dhairyaa__31/" target="_blank" rel="noopener noreferrer" class="social-btn">
+            <i class="fab fa-instagram"></i>
+        </a>
+        <a href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank" rel="noopener noreferrer" class="social-btn">
+            <i class="fab fa-github"></i>
+        </a>
+        <a href="https://www.linkedin.com/in/dhairya-gothi-65945b288/" target="_blank" rel="noopener noreferrer" class="social-btn">
+            <i class="fab fa-linkedin"></i>
+        </a>
+    </div>
+
+    <nav class="footer-nav">
+        <a href="../index.html" class="footer-link">Home</a>
+        <a href="contributor.html" class="footer-link">Contributors</a>
+        <a href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank" rel="noopener noreferrer" class="footer-link">GitHub Repo</a>
+    </nav>
+</div>
+
+<div>
+    <h3>Featured Project</h3>
+    <p>Generate free, stunning GitHub README profiles in minutes.</p>
+    <a href="https://www.github-readme.tech" target="_blank" rel="noopener noreferrer"
+       class="button featured-btn"
+       style="margin-top: 2rem; display: inline-flex; border-radius: 14px;">
+        <i class="fas fa-magic"></i> Try README Generator
+    </a>
+</div>
         </div>
         <div>
           <h3>Connect With Us</h3>
@@ -226,14 +228,14 @@
 
     <div id="profileModal" class="modal-overlay">
       <div class="modal-content">
-        <button id="closeModal">&times;</button>
+        <button id="closeModal" aria-label="Close profile modal">&times;</button>
         <div id="modalBody">Loading...</div>
       </div>
     </div>
 
     <div id="certificateModal" class="modal-overlay">
       <div class="modal-content">
-        <button id="closeCertificate">&times;</button>
+        <button id="closeCertificate" aria-label="Close certificate modal">&times;</button>
         <div id="certificateBody">Loading Certificate...</div>
       </div>
     </div>
@@ -250,10 +252,13 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="../index.js"></script>
+    
 
     <!-- ── LOAD NAVBAR INJECTION SCRIPT LAST ── -->
     <script src="../navbar.js" defer></script>
     <script src="contributor.js"></script>
+  <script src="../index.js" defer></script>
   </body>
 </html>
+
+

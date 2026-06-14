@@ -138,9 +138,10 @@ async function openProfile(username) {
     const avatar = document.createElement("img");
     avatar.src = user.avatar_url;
     avatar.alt = user.name || username;
-    avatar.style.width = "120px";
-    avatar.style.height = "120px";
-    avatar.style.borderRadius = "50%;";
+    avatar.loading = 'lazy';
+    avatar.style.width = '120px';
+    avatar.style.height = '120px';
+    avatar.style.borderRadius = '50%';
 
     // Name Enforces Native Context Escaping Natively
     const name = document.createElement("h2");
@@ -227,46 +228,78 @@ async function openProfile(username) {
   try {
   const cached = loadCache("contributors-cache");
 
-  if (cached) {
-    allContributors = cached;
-    filteredContributors = cached.slice();
+async function fetchContributors() {
+    const contributorsContainer = document.getElementById("contributors");
+    const contributorCountSpan = document.getElementById("contributorCount");
+    const errorBox = document.getElementById("contributorsError");
+    const errorMessage = document.getElementById("contributorsErrorMessage");
+    const loading = document.getElementById("contributorsLoading");
 
-    contributorCountSpan.textContent = cached.length;
-    renderContributors(filteredContributors);
+    loading?.classList.remove("hidden");
+    errorBox?.classList.add("hidden");
+    contributorsContainer.innerHTML = "";
 
-    loading.classList.add("hidden");
-    return;
-  }
+    try {
+        const cached = loadCache("contributors-cache");
+        if (cached) {
+            allContributors = cached;
+            filteredContributors = [...cached];
 
-  const contributors = await githubFetch(
-    `${GITHUB_API_BASE}/repos/${window.REPO_OWNER}/${window.REPO_NAME}/contributors?per_page=100`
-  );
+            if (contributorCountSpan) {
+                contributorCountSpan.textContent = cached.length;
+            }
 
-  saveCache("contributors-cache", contributors);
+            renderContributors(filteredContributors);
+            loading?.classList.add("hidden");
+            return;
+        }
 
-  contributorCountSpan.textContent = contributors.length;
+        let page = 1;
+        allContributors = [];
 
-  const totalCommits = contributors.reduce(
-    (sum, c) => sum + c.contributions,
-    0
-  );
+        while (true) {
+            const data = await githubFetch(
+                `${GITHUB_API_BASE}/repos/${window.REPO_OWNER}/${window.REPO_NAME}/contributors?per_page=100&page=${page}`
+            );
 
-  const totalCommitsEl = document.getElementById("totalCommits");
-  if (totalCommitsEl) {
-    totalCommitsEl.textContent = totalCommits.toLocaleString();
-  }
+            if (!data.length) break;
 
-  allContributors = contributors;
-  filteredContributors = contributors.slice();
+            const validData = data.filter(c => c.login);
+            allContributors.push(...validData);
 
-  renderContributors(filteredContributors);
+            page++;
+        }
 
-} catch (error) {
-  errorBox.classList.remove("hidden");
-  errorMessage.textContent = error.message;
-  contributorsContainer.innerHTML = "";
-} finally {
-  loading.classList.add("hidden");
+        saveCache("contributors-cache", allContributors);
+
+        filteredContributors = [...allContributors];
+
+        if (contributorCountSpan) {
+            contributorCountSpan.textContent = allContributors.length;
+        }
+
+        const totalCommits = allContributors.reduce(
+            (sum, c) => sum + c.contributions,
+            0
+        );
+
+        const totalCommitsEl = document.getElementById("totalCommits");
+        if (totalCommitsEl) {
+            totalCommitsEl.textContent = totalCommits.toLocaleString();
+        }
+
+        renderContributors(filteredContributors);
+
+    } catch (error) {
+        console.error("Error fetching contributors:", error);
+
+        errorBox?.classList.remove("hidden");
+        if (errorMessage) {
+            errorMessage.textContent = error.message;
+        }
+    } finally {
+        loading?.classList.add("hidden");
+    }
 }
 
 function renderContributors(data) {
@@ -312,6 +345,7 @@ function renderContributors(data) {
     const avatar = document.createElement("img");
     avatar.src = contributor.avatar_url;
     avatar.alt = contributor.login;
+    avatar.loading = 'lazy';
     card.appendChild(avatar);
 
     const name = document.createElement("h3");
@@ -384,6 +418,7 @@ function renderStargazers(stargazers) {
     const img = document.createElement("img");
     img.src = stargazer.avatar_url;
     img.alt = stargazer.login;
+    img.loading = 'lazy';
 
     starItem.appendChild(img);
     stargazersContainer.appendChild(starItem);
@@ -450,9 +485,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   searchInput.addEventListener("input", (e) => {
     const value = e.target.value.toLowerCase();
-    filteredContributors = allContributors.filter((c) =>
-      c.login.toLowerCase().includes(value),
-    );
+    if (!value) {
+      filteredContributors = [...allContributors];
+    } else {
+      filteredContributors = allContributors.filter((c) =>
+        c.login && c.login.toLowerCase().includes(value)
+      );
+    }
     renderContributors(filteredContributors);
   });
 

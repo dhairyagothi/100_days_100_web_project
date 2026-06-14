@@ -10,7 +10,7 @@ const server = http.createServer(app);
 // Initialize Socket.io and allow connections from your frontend development server
 const io = new Server(server, {
   cors: {
-    origin: "*", // Adjust this in production to match your frontend URL
+    origin: process.env.NODE_ENV === 'production' ? process.env.FRONTEND_URL || 'https://yourdomain.com' : "*",
     methods: ["GET", "POST"]
   }
 });
