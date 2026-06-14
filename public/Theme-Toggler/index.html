@@ -216,7 +216,40 @@
       --preview-3: #1f0d14;
       --preview-4: #fde8e8;
     }
+    [data-theme="galaxy"]
+    {
+      --bg-primary: #050510;
+      --bg-secondary: #0a0a1f;
+      --bg-gradient-start: #050510;
+      --bg-gradient-end: #1a0b3d;
 
+      --text-primary: #f8fafc;
+      --text-secondary: #c4b5fd;
+      --text-muted: #a78bfa;
+
+      --accent: #8B5CF6;
+      --accent-light: #EC4899;
+      --accent-glow: rgba(139, 92, 246, 0.5);
+
+      --card-bg: rgba(17, 24, 39, 0.7);
+      --card-border: rgba(139, 92, 246, 0.25);
+      --card-shadow: rgba(0, 0, 0, 0.5);
+
+      --glass-bg: rgba(17, 24, 39, 0.4);
+      --glass-border: rgba(236, 72, 153, 0.15);
+
+      --surface: #1f1b3a;
+
+      --orb-1: rgba(139, 92, 246, 0.15);
+      --orb-2: rgba(59, 130, 246, 0.12);
+      --orb-3: rgba(236, 72, 153, 0.10);
+
+      --preview-1: #8B5CF6;
+      --preview-2: #3B82F6;
+      --preview-3: #EC4899;
+      --preview-4: #09090B;
+  }
+  
     /* ═══════════════════════════════════════════════
        BODY & BACKGROUND
        ═══════════════════════════════════════════════ */
@@ -278,7 +311,60 @@
       animation-duration: 30s;
       animation-delay: -15s;
     }
+[data-theme="galaxy"] .bg-orbs::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
 
+  background-image:
+    radial-gradient(white 1.5px, transparent 2px),
+    radial-gradient(#8B5CF6 1.5px, transparent 2px),
+    radial-gradient(#3B82F6 1.5px, transparent 2px);
+
+  background-size:
+    95px 95px,
+    145px 145px,
+    210px 210px;
+
+  background-position:
+    0 0,
+    40px 60px,
+    80px 30px;
+
+  opacity: 0.8;
+}
+[data-theme="galaxy"] .bg-orbs::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+
+  background:
+    radial-gradient(circle at 20% 30%,
+      rgba(139,92,246,.35),
+      transparent 300px),
+
+    radial-gradient(circle at 80% 25%,
+      rgba(59,130,246,.30),
+      transparent 350px),
+
+    radial-gradient(circle at 60% 75%,
+      rgba(236,72,153,.25),
+      transparent 280px),
+
+    radial-gradient(circle at 40% 60%,
+      rgba(99,102,241,.25),
+      transparent 320px),
+      
+    radial-gradient(circle at 30% 70%,
+      rgba(168,85,271,.20),
+      transparent 350px);
+  filter: blur(80px);
+  opacity: 1;
+}
     @keyframes orbFloat {
       0% { transform: translate(0, 0) scale(1) rotate(0deg); }
       50% { transform: translate(50px, -80px) scale(1.1) rotate(180deg); }
@@ -824,6 +910,31 @@
       background: linear-gradient(135deg, #f43f5e, #fb923c, #fde047);
       -webkit-background-clip: text; background-clip: text;
     }
+    /* Galaxy */
+    [data-theme="galaxy"] .active-card {
+        box-shadow:
+          0 0 25px rgba(139,92,246,0.3),
+          0 0 60px rgba(59,130,246,0.15);
+      }
+
+      [data-theme="galaxy"] .theme-card.is-active {
+        box-shadow:
+          0 0 0 2px #8B5CF6,
+          0 0 25px rgba(139,92,246,0.4);
+      }
+     [data-theme="galaxy"] .header h1,
+      [data-theme="galaxy"] .active-card__name {
+        background: linear-gradient(
+          135deg,
+          #8B5CF6,
+          #3B82F6,
+          #EC4899
+        );
+
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
 
     /* ═══════════════════════════════════════════════
        TRANSITION CLIP-PATH ANIMATION
@@ -920,7 +1031,7 @@
         <span class="dot"></span> Ultra Premium Edition
       </div>
       <h1>Theme Engine</h1>
-      <p>Experience ultra-premium aesthetics with glassmorphism, fluid animations, and 7 handcrafted vibrant themes.</p>
+      <p>Experience ultra-premium aesthetics with glassmorphism, fluid animations, and 8 handcrafted vibrant themes.</p>
     </header>
 
     <!-- Active Theme Display -->
@@ -947,7 +1058,7 @@
 
     <!-- Keyboard hint -->
     <div class="kbd-hint">
-      Shortcuts: <kbd>1</kbd> – <kbd>7</kbd> to select &nbsp;·&nbsp; <kbd>←</kbd> <kbd>→</kbd> to cycle
+      Shortcuts: <kbd>1</kbd> – <kbd>8</kbd> to select &nbsp;·&nbsp; <kbd>←</kbd> <kbd>→</kbd> to cycle
     </div>
 
     <!-- Demo Section -->
@@ -1023,7 +1134,8 @@
       { id: 'dracula', name: 'Dracula', icon: '🧛', desc: 'Vampiric purples and pinks', colors: ['#bd93f9', '#ff79c6', '#282a36', '#f8f8f2'] },
       { id: 'ocean', name: 'Ocean', icon: '🌊', desc: 'Deep-sea blues and teal serenity', colors: ['#64ffda', '#00bcd4', '#020c1b', '#e6f1ff'] },
       { id: 'forest', name: 'Forest', icon: '🌲', desc: 'Natural greens and earthy warmth', colors: ['#10b981', '#34d399', '#0f1c13', '#e2f0e6'] },
-      { id: 'sunset', name: 'Sunset', icon: '🌅', desc: 'Warm reds, oranges, and gold', colors: ['#f43f5e', '#fb923c', '#1f0d14', '#fde8e8'] }
+      { id: 'sunset', name: 'Sunset', icon: '🌅', desc: 'Warm reds, oranges, and gold', colors: ['#f43f5e', '#fb923c', '#1f0d14', '#fde8e8'] },
+      {id: "galaxy",name: "Galaxy",icon: "🪐",desc: "Purples, blues and cosmic vibes",colors: ["#8B5CF6", "#3B82F6", "#EC4899","#09090B"] }
     ];
 
     const root = document.documentElement;

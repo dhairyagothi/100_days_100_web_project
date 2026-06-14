@@ -5,6 +5,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Digital Clock</title>
     <link rel="stylesheet" href="digitalclock.css" />
+    <script>
+      /* ── Dark-mode bootstrap (issue #8331) ──────────────────────────────
+         The platform sets [data-theme="dark"] on <html> or <body>.
+         This script syncs that attribute with the .dark-mode class so our
+         CSS variables work regardless of which mechanism triggers the change.
+      ──────────────────────────────────────────────────────────────────── */
+      (function () {
+        function applyTheme() {
+          var dark =
+            document.documentElement.getAttribute("data-theme") === "dark" ||
+            document.body.getAttribute("data-theme") === "dark";
+          document.body.classList.toggle("dark-mode", dark);
+          var btn = document.getElementById("dark-mode-toggle");
+          if (btn) btn.textContent = dark ? "☀️" : "🌙";
+        }
+
+        // Apply immediately on parse (before first paint)
+        if (document.body) applyTheme();
+
+        // Re-apply once DOM is ready (catches late body attribute)
+        document.addEventListener("DOMContentLoaded", applyTheme);
+
+        // Watch for the platform changing the attribute at runtime
+        var observer = new MutationObserver(applyTheme);
+        observer.observe(document.documentElement, {
+          attributes: true,
+          attributeFilter: ["data-theme"],
+        });
+        // Also watch body in case the platform targets it
+        document.addEventListener("DOMContentLoaded", function () {
+          observer.observe(document.body, {
+            attributes: true,
+            attributeFilter: ["data-theme"],
+          });
+        });
+      })();
+    </script>
     <link rel="icon" href="../favv.png" type="image/x-icon" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />

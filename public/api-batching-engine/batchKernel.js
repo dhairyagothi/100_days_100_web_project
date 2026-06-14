@@ -72,6 +72,8 @@ export class RequestBatchingEngine {
         return this.#queue.length;
     }
 }
+}
+}
   #queue = [];
   #timerId = null;
   #delay;

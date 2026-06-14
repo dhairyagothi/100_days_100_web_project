@@ -1,13 +1,99 @@
-# Pageloader Demo
+# 🔄 Pageloader Demo
 
-A clean, minimal web app that demonstrates how a **page preloader** works — built with pure HTML, CSS, and vanilla JavaScript. No frameworks, no dependencies.
+> **See It Load Before It Loads** — A clean, minimal web app demonstrating how a page preloader works, built with pure HTML, CSS, and Vanilla JavaScript. No frameworks, no dependencies.
 
 ---
 
-## 📁 Project Structure
+## ✨ Overview
 
-```
+Pageloader Demo is a lightweight single-page application that showcases a smooth preloader experience with real load time measurement, hash-based routing, and an accessible contact form. Built as part of the **100 Days 100 Web Projects** challenge, it demonstrates core web concepts without relying on any external libraries or frameworks.
+
+---
+
+## 🚀 Features
+
+### 🔄 Preloader / Loading Screen
+- Full-screen loading overlay appears before page content is shown
+- Animated spinner and sliding progress bar
+- Automatically hides once all assets are loaded via `window load` event
+- Page content fades in smoothly after preloader disappears
+- Built with pure CSS animations — no JavaScript animation libraries needed
+
+### ⏱️ Real Load Time Measurement
+- Measures actual page load time using the browser's `performance.now()` API
+- Real load time displayed live on the Home section stats
+- Dynamic and accurate — not hardcoded
+
+### 🧭 Single Page Navigation (Hash Routing)
+- Navbar with three links — Home, About, and Contact
+- Clicking a link does not reload the page — only the active section switches
+- Routing handled via URL hash (`#home`, `#about`, `#contact`)
+- Active nav link highlighted automatically based on current hash
+- Uses `hashchange` and `DOMContentLoaded` events to manage routing
+
+### 📬 Contact Form with Validation
+- Form includes Name, Email, and Message fields
+- Validation check — all fields must be filled
+- Button changes to "Sending…" state for 1.2 seconds (simulates network request)
+- Success message appears on submission
+- All fields automatically cleared after sending
+- Success/error message auto-hides after 4 seconds
+
+### 📱 Responsive Design
+- Desktop optimized
+- Tablet friendly
+- Mobile responsive
+
+### ♿ Accessibility Support
+- Preloader uses `aria-hidden="true"` so screen readers skip it
+- Success message uses `aria-live="polite"` to announce form feedback
+- Supports `prefers-reduced-motion` — all animations disabled for users who prefer no motion
+
+---
+
+## 📸 Screenshots
+
+### Preloader Screen
+- Full-screen animated overlay with spinner
+- Sliding progress bar before content loads
+
+### Home Section
+- Live load time stat display
+- Clean hero layout with navigation
+
+### Contact Form
+- Validated form with success feedback
+- Responsive single-column layout on mobile
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+- HTML5
+- CSS3
+- JavaScript (ES6+)
+
+### UI & Styling
+- CSS Flexbox
+- CSS Grid
+- Custom Animations
+- Responsive Design Principles
+
+### Features
+- Hash-based SPA Routing
+- Preloader Logic
+- Contact Form Validation
+- Real Load Time Measurement via `performance.now()`
+- Accessibility (`aria-hidden`, `aria-live`, `prefers-reduced-motion`)
+
+---
+
+## 📂 Project Structure
+
+```bash
 pageloader/
+│
 ├── pageloader.html   → Main HTML structure
 ├── pageloader.css    → All styles and animations
 ├── pageloader.js     → Preloader logic, routing, form handling
@@ -16,95 +102,101 @@ pageloader/
 
 ---
 
-## ✨ Features
+## ⚡ Getting Started
 
-### 1. 🔄 Preloader / Loading Screen
+### Clone the Repository
 
-- A full-screen loading overlay appears **before** the page content is shown
-- Contains an animated **spinner** and a sliding **progress bar**
-- Automatically hides once the browser has finished loading all assets (`window load` event)
-- Page content fades in smoothly after the preloader disappears
-- Built with pure CSS animations — no JavaScript animation libraries needed
+```bash
+git clone https://github.com/your-username/pageloader-demo.git
+```
 
-### 2. ⏱️ Real Load Time Measurement
+### Navigate to Project Directory
 
-- The app measures the **actual page load time** using the browser's `performance.now()` API
-- The real load time (in milliseconds) is displayed live on the **Home** section stats
-- This makes the "99ms Load Time" stat dynamic and accurate — not hardcoded
+```bash
+cd pageloader
+```
 
-### 3. 🧭 Single Page Navigation (Hash Routing)
+### Run the Project
 
-- Navbar has three links — **Home**, **About**, and **Contact**
-- Clicking a link does **not reload the page** — only the active section switches
-- Routing is handled via URL hash (`#home`, `#about`, `#contact`)
-- The active nav link is highlighted automatically based on the current hash
-- Uses `hashchange` and `DOMContentLoaded` events to manage routing
+Simply open:
 
-### 4. 📬 Contact Form with Validation
+```bash
+pageloader.html
+```
 
-- Form includes **Name**, **Email**, and **Message** fields
-- Clicking **Send Message** triggers:
-  - ⚠️ Validation check — all fields must be filled
-  - ⏳ Button changes to "Sending…" state for 1.2 seconds (simulates network request)
-  - ✅ Success message appears on submission
-  - 🧹 All fields are automatically cleared after sending
-  - Success/error message auto-hides after 4 seconds
+or use VS Code Live Server:
 
-### 5. 🎨 Responsive Design
-
-- Layout adapts to all screen sizes — mobile, tablet, and desktop
-- Navbar stacks vertically on small screens
-- Feature grid and form rows collapse to single column on mobile
-- Fully usable on any device
-
-### 6. ♿ Accessibility Support
-
-- Preloader uses `aria-hidden="true"` so screen readers skip it
-- Success message uses `aria-live="polite"` to announce form feedback
-- Supports `prefers-reduced-motion` — all animations are disabled for users who prefer no motion
+```bash
+Right Click → Open with Live Server
+```
 
 ---
 
-## 🚀 How to Run
+## 🎯 Future Enhancements
 
-No installation or server required.
-
-**Option 1 — Direct open:**
-Double-click `pageloader.html` in your file explorer. It opens directly in your browser.
-
-**Option 2 — VS Code Live Server:**
-
-1. Open the `pageloader` folder in VS Code
-2. Right-click `pageloader.html` → **Open with Live Server**
-3. App runs at `http://127.0.0.1:5500/pageloader.html`
+- Multiple theme support
+- Custom preloader animation styles
+- Backend-connected contact form
+- Progress bar tied to real asset loading
+- Page transition animations between sections
+- Preloader percentage counter
 
 ---
 
-## 🛠️ Technologies Used
+## 🤝 Contributing
 
-| Technology                    | Purpose                                 |
-| ----------------------------- | --------------------------------------- |
-| HTML5                         | Page structure and semantics            |
-| CSS3                          | Styling, animations, responsive layout  |
-| Vanilla JavaScript            | Preloader logic, routing, form handling |
-| Google Fonts (Syne + DM Sans) | Typography                              |
-| CSS Custom Properties         | Design tokens / theming                 |
-| `performance.now()`           | Real load time measurement              |
+Contributions, issues, and feature requests are welcome!
+
+1. Fork the repository
+2. Create a new branch
+
+```bash
+git checkout -b feature-name
+```
+
+3. Commit your changes
+
+```bash
+git commit -m "Add new feature"
+```
+
+4. Push to GitHub
+
+```bash
+git push origin feature-name
+```
+
+5. Open a Pull Request
 
 ---
 
-## 🧠 Key JavaScript Concepts Covered
+## 🌟 Acknowledgements
 
-- `window.addEventListener("load", ...)` — fires after all assets are loaded
-- `performance.now()` — high-precision timer for measuring load time
-- `classList.add() / remove() / toggle()` — DOM class manipulation
-- `window.location.hash` — reading URL hash for routing
-- `hashchange` event — detecting navigation between sections
-- `setTimeout()` — simulating async behavior (form send delay)
-- `aria-live` — accessible live region for dynamic content
+Built as part of the **100 Days 100 Web Projects** challenge — focused on demonstrating core web fundamentals with clean, dependency-free code.
 
 ---
 
-## 👩‍💻 Author
+## 👩‍💻 Authors
 
-Built as part of the **100 Days 100 Web Projects** challenge.
+| Role | Name |
+|---|---|
+| 💻 App Development | **Sanyogita Singh** |
+| 📝 Documentation | **Sanyogita Singh** |
+
+---
+
+## 📜 License
+
+This project is licensed under the MIT License.
+
+---
+
+<div align="center">
+
+### 🔄 Pageloader Demo
+
+**See It Load Before It Loads**
+
+Built with ❤️ and lots of coffee ☕
+
+</div>

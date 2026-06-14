@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Memory Card Game - Memo 2.0</title>
+<meta name="author" content="Somsubhra Chatterjee"/>
+<meta name="robots" content="index, follow"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Outfit:wght@300;500;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+<div class="wrapper">
+
+<header class="site-header">
+  <a href="#" class="logo-slot" aria-label="MEMO 2.0 Home">
+    <img src="assets/logo.png" alt="Memo 2.0" style="height:32px;border-radius:100%;border:rgb(179,255,72) 1px solid;">
+    <div class="site-name">MEMO<br>2.0</div>
+  </a>
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="#">HOME</a> &rsaquo;
+    <a href="#">GAMES</a> &rsaquo; MEM
+  </nav>
+</header>
+
+<div class="title-block glass-panel">
+  <h1 class="game-title"><span class="t1">MEM</span><span class="t2">O</span><span class="t3">RY</span></h1>
+  <p class="game-sub">FLIP · MATCH · REMEMBER</p>
+</div>
+
+<!-- MODE ROW -->
+<div class="setup-row" role="group" aria-label="Game mode">
+  <button class="setup-btn active" data-mode="solo" aria-pressed="true"><i class="fa-solid fa-user"></i> SOLO</button>
+  <button class="setup-btn" data-mode="duo" aria-pressed="false"><i class="fa-solid fa-user-group"></i> DUO</button>
+</div>
+
+<!-- LEVEL ROW -->
+<div class="setup-row" role="group" aria-label="Difficulty">
+  <button class="setup-btn active" data-level="easy">EASY<br><span style="font-size:0.8rem;color:inherit;opacity:0.7">2×4</span></button>
+  <button class="setup-btn" data-level="mid">MID<br><span style="font-size:0.8rem;color:inherit;opacity:0.7">3×4</span></button>
+  <button class="setup-btn" data-level="hard">HARD<br><span style="font-size:0.8rem;color:inherit;opacity:0.7">4×4</span></button>
+</div>
+
+<!-- SCOREBOARD -->
+<div class="scoreboard" role="region" aria-label="Scoreboard">
+  <div class="player-card active-p1 glass-panel" id="card-p1">
+    <span class="p-icon">🂡</span>
+    <div class="p-label" id="name-p1">PLAYER 1</div>
+    <div class="p-score" id="score-p1">0</div>
+    <div class="p-penalty" id="penalty-p1"></div>
+  </div>
+  <div class="mid-col">
+    <span class="vs-text">VS</span>
+    <div class="timer-display" id="timer-display">0:00</div>
+    <div class="timer-label">TIME</div>
+  </div>
+  <div class="player-card glass-panel" id="card-p2">
+    <span class="p-icon">🂮</span>
+    <div class="p-label" id="name-p2">PLAYER 2</div>
+    <div class="p-score" id="score-p2">0</div>
+    <div class="p-penalty" id="penalty-p2"></div>
+  </div>
+</div>
+
+<!-- STATUS -->
+<div class="status-bar glass-panel" role="status" aria-live="polite">
+  <span id="status-text">PRESS A CARD TO START!</span>
+</div>
+
+<!-- BOARD -->
+<div class="board-wrap glass-panel">
+  <div id="board" class="grid-2x4" role="grid" aria-label="Memory card grid"></div>
+</div>
+
+<!-- ACTIONS -->
+<div class="action-row">
+  <button class="act-btn" id="btn-reset"><i class="fa-solid fa-rotate-left"></i> NEW GAME</button>
+  <button class="act-btn" id="btn-new"><i class="fa-solid fa-shuffle"></i> RESET ALL</button>
+</div>
+
+<!-- HOW TO PLAY -->
+<section class="htp-wrap glass-panel" aria-label="How to play Memory">
+  <div class="htp-header" id="htp-toggle" role="button" tabindex="0" aria-expanded="false">
+    <i class="fa-solid fa-gamepad htp-icon"></i>
+    <span class="htp-label">HOW TO PLAY</span>
+    <i class="fa-solid fa-chevron-down htp-chev" id="htp-chev"></i>
+  </div>
+  <div class="htp-body" id="htp-body">
+    <ul>
+      <li>Flip <strong>one card at a time</strong> — memorise what you see!</li>
+      <li>Flip a second card to try to find its <strong>matching pair</strong>.</li>
+      <li>Match found? <strong>+100 pts</strong> (EASY), <strong>+150 pts</strong> (MID), <strong>+200 pts</strong> (HARD).</li>
+      <li>Wrong match? <strong>-10 pts</strong> penalty and your turn is over in DUO mode.</li>
+      <li>Finishing faster earns a <strong>time bonus</strong> — speed matters!</li>
+      <li>In <strong>SOLO</strong> mode, chase the highest score. In <strong>DUO</strong>, take turns — most pairs wins!</li>
+      <li>Cards are <strong>Queen, King, Jack, Ace</strong> across all 4 suits (♠♥♦♣).</li>
+      <li>HARD mode has 8 pairs — test your memory to the limit!</li>
+    </ul>
+  </div>
+</section>
+
+<footer><p>&copy; 2025 MEMO 2.0 All Rights Reserved &middot;</p></footer>
+</div>
+
+<!-- RESULT OVERLAY -->
+<div class="overlay" id="overlay" role="dialog" aria-modal="true">
+  <div class="result-card">
+    <span class="res-emoji" id="res-emoji">🏆</span>
+    <div class="res-title" id="res-title">GAME OVER!</div>
+    <div class="res-sub" id="res-sub">Well played!</div>
+    <div class="res-scores" id="res-scores"></div>
+    <div class="res-btns">
+      <button class="res-btn primary" id="res-play">▶ PLAY AGAIN</button>
+      <button class="res-btn secondary" id="res-reset">RESET ALL</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="alert" aria-live="assertive"></div>
+
+<script src="script.js"></script>
+</body>
+</html>

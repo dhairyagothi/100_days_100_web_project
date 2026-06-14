@@ -3,54 +3,263 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Resume Previewer</title>
+  <title>Curriculum.io — Premium ATS Resume Builder</title>
   <link rel="stylesheet" href="style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;0,9..40,600;0,9..40,700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet">
 </head>
 <body>
+
+  <!-- Template Library Overlay Screen -->
+  <div id="template-modal" class="modal-overlay no-print">
+    <div class="modal-container">
+      <div class="modal-header">
+        <div class="modal-branding">
+          <span class="logo-mark" aria-hidden="true">◆</span>
+          <h2>Select an ATS-Compliant Blueprint</h2>
+        </div>
+        <p class="modal-subtitle">Choose a role-specific framework engineered to bypass algorithmic screening filters smoothly.</p>
+      </div>
+      
+      <div class="templates-grid">
+        <div class="card-template" data-preset="se">
+          <div class="card-icon">💻</div>
+          <h3>Software Engineering</h3>
+          <p>Optimized for full-stack, backend, mobile, and systems engineering architectures.</p>
+          <span class="card-tag">Technical</span>
+        </div>
+
+        <div class="card-template" data-preset="da">
+          <div class="card-icon">📊</div>
+          <h3>Data Analytics</h3>
+          <p>Tailored for quantitative analysts, data scientists, and business intelligence pros.</p>
+          <span class="card-tag">Analytics</span>
+        </div>
+
+        <div class="card-template" data-preset="pm">
+          <div class="card-icon">🎯</div>
+          <h3>Product Management</h3>
+          <p>Highlights roadmapping, cross-functional leadership, and product strategy execution.</p>
+          <span class="card-tag">Leadership</span>
+        </div>
+
+        <div class="card-template" data-preset="mkt">
+          <div class="card-icon">📈</div>
+          <h3>Growth Marketing</h3>
+          <p>Emphasizes performance metrics, brand scaling strategy, and conversion data pipelines.</p>
+          <span class="card-tag">Growth</span>
+        </div>
+
+        <div class="card-template" data-preset="cyber">
+          <div class="card-icon">🛡️</div>
+          <h3>Cybersecurity</h3>
+          <p>Tailored for threat hunting, incident response playbooks, and structural network hardening defenses.</p>
+          <span class="card-tag">Security</span>
+        </div>
+
+        <div class="card-template" data-preset="devops">
+          <div class="card-icon">♾️</div>
+          <h3>DevOps Engineering</h3>
+          <p>Built around deployment automation patterns, infrastructure as code, and cluster scaling solutions.</p>
+          <span class="card-tag">Operations</span>
+        </div>
+
+        <div class="card-template" data-preset="ux">
+          <div class="card-icon">🎨</div>
+          <h3>UX/UI Design</h3>
+          <p>Highlights comprehensive design systems integration, interaction blueprints, and prototype validation.</p>
+          <span class="card-tag">Design</span>
+        </div>
+
+        <div class="card-template" data-preset="hr">
+          <div class="card-icon">🤝</div>
+          <h3>HR Generalist</h3>
+          <p>Structured for organizational compliance auditing, retention programs, and pipeline scaling analytics.</p>
+          <span class="card-tag">Management</span>
+        </div>
+
+        <div class="card-template" data-preset="sdr">
+          <div class="card-icon">📞</div>
+          <h3>Sales Development</h3>
+          <p>Emphasizes outbound market discovery routines, qualification architectures, and CRM tracking.</p>
+          <span class="card-tag">Revenue</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <header class="toolbar no-print">
     <div class="toolbar-brand">
       <span class="logo-mark" aria-hidden="true">◆</span>
-      <h1>Resume Previewer</h1>
+      <h1>Curriculum<span class="brand-suffix">.io</span></h1>
+      <span class="badge">ATS COMPLIANT</span>
     </div>
+
     <div class="toolbar-actions">
-      <div class="template-group" role="group" aria-label="Resume templates">
-        <span class="toolbar-label">Templates</span>
-        <button type="button" class="btn btn-ghost" data-template="software-engineer">Software Engineer</button>
-        <button type="button" class="btn btn-ghost" data-template="data-analyst">Data Analyst</button>
-      </div>
-      <button type="button" id="btn-clear" class="btn btn-ghost">Clear</button>
-      <button type="button" id="btn-print" class="btn btn-primary">
-        <span aria-hidden="true">⎙</span> Export PDF
+      <button type="button" class="btn btn-ghost" id="btn-browse-templates">
+        🗂 Browse Blueprints
       </button>
+
+      <div class="action-group">
+        <button type="button" id="btn-theme-toggle" class="btn btn-ghost" aria-label="Toggle interface color scheme">
+          <span class="theme-icon-sun" aria-hidden="true">☀️</span>
+          <span class="theme-icon-moon" aria-hidden="true" style="display: none;">🌙</span>
+        </button>
+        <button type="button" id="btn-clear" class="btn btn-danger">Clear Draft</button>
+        <button type="button" id="btn-print" class="btn btn-primary">
+          <span aria-hidden="true">⎙</span> Export PDF
+        </button>
+      </div>
     </div>
   </header>
 
   <main class="workspace">
-    <section class="pane pane-editor no-print" aria-label="Markdown editor">
+    <!-- Left Sidebar: ATS Real-Time Analytics Panel -->
+    <aside class="sidebar no-print" aria-label="ATS Analytics Panel">
+      <div class="sidebar-header">
+        <h3>ATS Optimization</h3>
+      </div>
+      
+      <div class="score-card">
+        <div class="score-circle">
+          <span id="ats-score-value">0%</span>
+        </div>
+        <p class="score-label">ATS Parse Score</p>
+      </div>
+
+      <div class="analysis-section">
+        <h4>Critical Checklist</h4>
+        <ul class="checklist" id="ats-checklist"></ul>
+      </div>
+
+      <div class="sidebar-footer">
+        <p class="meta-info">Format: Standard Single-Column</p>
+      </div>
+    </aside>
+
+    <!-- Center Pane: Interactive Form / Markdown Workspace Container -->
+    <section class="pane pane-editor no-print" aria-labelledby="editor-heading">
       <div class="pane-header">
-        <h2>Markdown</h2>
+        <div class="mode-switcher" role="tablist">
+          <button type="button" class="tab-btn active" id="tab-form" role="tab" aria-selected="true">Guided Form</button>
+          <button type="button" class="tab-btn" id="tab-markdown" role="tab" aria-selected="false">Raw Markdown</button>
+        </div>
         <span id="save-status" class="save-status" aria-live="polite">Ready</span>
       </div>
-      <textarea
-        id="editor"
-        class="editor"
-        spellcheck="false"
-        placeholder="# Your Name&#10;**Role Title** | city@email.com | (555) 123-4567&#10;&#10;## Summary&#10;Brief professional summary here.&#10;&#10;## Experience&#10;- **Company** — Role (2022 – Present)&#10;  - Achievement with measurable impact&#10;&#10;## Skills&#10;- JavaScript, Python, SQL"
-      ></textarea>
+
+      <!-- Form Mode Wrapper Panels -->
+      <div id="form-container" class="workspace-mode-panel active">
+        <div class="form-scroll-wrapper">
+          
+          <div class="form-block">
+            <h3>1. Personal Information</h3>
+            <div class="form-field">
+              <label for="f-name">Full Name</label>
+              <input type="text" id="f-name" placeholder="John Doe">
+            </div>
+            <div class="form-field">
+              <label for="f-role">Target Professional Title</label>
+              <input type="text" id="f-role" placeholder="Full Stack Developer">
+            </div>
+            <div class="form-field">
+              <label for="f-email">Email Address</label>
+              <input type="email" id="f-email" placeholder="johndoe@example.com">
+            </div>
+            <div class="form-field">
+              <label for="f-phone">Phone Number</label>
+              <input type="text" id="f-phone" placeholder="+1 (555) 019-2834">
+            </div>
+            <div class="form-field">
+              <label for="f-location">Location (City, State/Country)</label>
+              <input type="text" id="f-location" placeholder="San Francisco, CA">
+            </div>
+            <div class="form-field">
+              <label for="f-linkedin">LinkedIn URL</label>
+              <input type="url" id="f-linkedin" placeholder="linkedin.com/in/username">
+            </div>
+            <div class="form-field">
+              <label for="f-github">GitHub URL</label>
+              <input type="url" id="f-github" placeholder="github.com/username">
+            </div>
+            <div class="form-field">
+              <label for="f-portfolio">Portfolio Website</label>
+              <input type="url" id="f-portfolio" placeholder="yourportfolio.dev">
+            </div>
+          </div>
+
+          <div class="form-block">
+            <h3>2. Professional Summary</h3>
+            <div class="form-field">
+              <label for="f-summary">Elevator Pitch</label>
+              <textarea id="f-summary" rows="3" placeholder="Performance-driven professional with experience executing core system strategies. Skilled in infrastructure patterns, scalability, and lifecycle workflows..."></textarea>
+            </div>
+          </div>
+
+          <div class="form-block">
+            <h3>3. Work History</h3>
+            <div class="form-field">
+              <label for="f-exp-1">Primary Role & Achievements (Markdown block standard)</label>
+              <textarea id="f-exp-1" rows="5" placeholder="- **Company Name** — Job Title (Month Year – Present)&#10;  - Spearheaded development workflows that optimized overall system data processing efficiency layouts.&#10;  - Automated infrastructure pipelines to increase deployment team velocity metrics by 25%."></textarea>
+            </div>
+            <div class="form-field">
+              <label for="f-exp-2">Previous Roles & Internships (Markdown block standard)</label>
+              <textarea id="f-exp-2" rows="5" placeholder="- **Prior Corporation** — Associate Specialist (Month Year – Month Year)&#10;  - Engineered component libraries to handle asynchronous network logic patterns across edge environments.&#10;- **Organization Alpha** — Project Intern (Month Year – Month Year)&#10;  - Maintained accessibility benchmarks according to standard WCAG protocols."></textarea>
+            </div>
+          </div>
+
+          <div class="form-block">
+            <h3>4. Core Technical Projects</h3>
+            <div class="form-field">
+              <label for="f-projects">Key Project Details (Include multi-modal layers and tech-stack grids)</label>
+              <textarea id="f-projects" rows="6" placeholder="- **Project Title** — Architecture / Technical Domain&#10;  - Engineered a high-availability automation application using multi-role verification logic schemes.&#10;  - Configured caching mechanisms to lower external connection latencies by over 30% dynamically.&#10;- **Platform Beta** — Infrastructure Service Layer&#10;  - Launched a cloud application layer supporting federated authentication profiles across client interfaces."></textarea>
+            </div>
+          </div>
+
+          <div class="form-block">
+            <h3>5. Professional Certifications & Credentials</h3>
+            <div class="form-field">
+              <label for="f-certifications">Certificates & Open Source Acknowledgments</label>
+              <textarea id="f-certifications" rows="2" placeholder="- **Licensing Body** — Certified Solutions Specialist Credential&#10;- **Hackathon Foundation** — First Place Distinction Award Winner"></textarea>
+            </div>
+          </div>
+
+          <div class="form-block">
+            <h3>6. Academic History</h3>
+            <div class="form-field">
+              <label for="f-edu">Education Records</label>
+              <textarea id="f-edu" rows="3" placeholder="- **University Institution** — Bachelor of Science in Computer Science (Year – Year)&#10;- **Preparatory Academy** — Secondary Education Diploma (Year – Year)"></textarea>
+            </div>
+          </div>
+
+          <div class="form-block">
+            <h3>7. Skills Grid Matrix</h3>
+            <div class="form-field">
+              <label for="f-skills">Technical Skills Inventory</label>
+              <textarea id="f-skills" rows="4" placeholder="- **Languages:** JavaScript, TypeScript, Python, SQL, HTML5, CSS3&#10;- **Frameworks:** React.js, Next.js, Node.js, Express.js, Tailwind CSS&#10;- **Databases & Layer Security:** MongoDB, MySQL, JSON Web Tokens, OAuth 2.0&#10;- **Tools & Operations:** Git, GitHub Actions, Postman, Vercel, Cloud Providers"></textarea>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Raw Markdown Editor Panel Wrapper -->
+      <div id="markdown-container" class="workspace-mode-panel">
+        <label for="editor" class="sr-only">Markdown Editor Input Source</label>
+        <textarea id="editor" class="editor" spellcheck="true"></textarea>
+      </div>
     </section>
 
-    <div class="pane-divider no-print" aria-hidden="true"></div>
+    <div class="pane-divider no-print" id="resize-divider" aria-hidden="true"></div>
 
-    <section class="pane pane-preview" aria-label="Resume preview">
+    <!-- Right Pane: Live Premium Preview Panel -->
+    <section class="pane pane-preview" aria-labelledby="preview-heading">
       <div class="pane-header no-print">
-        <h2>Preview</h2>
+        <h2 id="preview-heading">Live Preview (A4 Metric)</h2>
       </div>
-      <article id="resume" class="resume" aria-live="polite">
-        <p class="resume-placeholder">Start typing markdown to build your resume…</p>
-      </article>
+      <div class="resume-paper-wrapper">
+        <article id="resume" class="resume" aria-live="polite"></article>
+      </div>
     </section>
   </main>
 
