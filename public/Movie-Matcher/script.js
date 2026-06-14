@@ -14,10 +14,6 @@ const GENRES = {
 
 // Picsum Photos — completely open CDN, no key, no redirects, always works
 // https://picsum.photos/seed/{anySeed}/500/750  → stable unique image per seed
-const p = (seed) => `https://picsum.photos/seed/${seed}/500/750`;
-
-
-
 function getFavorites() {
     return JSON.parse(localStorage.getItem("favorites")) || [];
 }
@@ -28,7 +24,6 @@ function saveFavorites(data) {
         JSON.stringify(data)
     );
 }
-
 
 function toggleFavorite(movie){
 
@@ -104,6 +99,48 @@ function renderFavorites(){
     });
 
 }
+
+function renderFavorites(){
+
+    const container =
+        document.getElementById("favorites-container");
+
+    const favorites =
+        getFavorites();
+
+    container.innerHTML = "";
+
+    favorites.forEach(movie=>{
+
+        container.innerHTML += `
+
+        <div class="movie-card">
+
+            <img src="${movie.poster}">
+
+            <h3>${movie.title}</h3>
+
+            <button
+                onclick="toggleFavorite(${JSON.stringify(movie)})">
+                Remove
+            </button>
+
+        </div>
+
+        `;
+
+    });
+
+}
+
+
+window.onload = () => {
+
+    renderFavorites();
+
+};
+
+
 // ─── Movie database ───────────────────────────────────────────────────────────
 const MOVIES = [
   // Horror + Comedy
@@ -312,10 +349,3 @@ window.onload = () => {
     renderFavorites();
 
 };
-
-const favorites = getFavorites();
-
-const isFavorite =
-favorites.some(
-    item => item.id === movie.id
-);
