@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SynthStream - Virtual Piano Keyboard</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="piano-app">
+      <header class="piano-header">
+        <h1>SynthStream Piano</h1>
+        <p>
+          Click the keys or use your computer keyboard keys row (<kbd>A</kbd>
+          through <kbd>K</kbd>) to play live notes!
+        </p>
+        <div class="controls-panel">
+          <label for="wave-select">Wave Type:</label>
+          <select id="wave-select" class="styled-select">
+            <option value="sine">Sine (Smooth)</option>
+            <option value="triangle">Triangle (Flute-like)</option>
+            <option value="sawtooth">Sawtooth (Edgy Synth)</option>
+            <option value="square">Square (Retro Arcade)</option>
+          </select>
+        </div>
+      </header>
+
+      <main class="piano-keyboard" id="keyboard-container"></main>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
