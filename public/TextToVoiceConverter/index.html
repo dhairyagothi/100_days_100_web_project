@@ -3,102 +3,114 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Text & Voice Converter</title>
+    <title>Voice & Text Studio</title>
+    <!-- Google Fonts for premium typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css" />
 </head>
-
 <body>
 
-<a href="/" class="back-btn">← Back to Home</a>
+    <!-- Floating Theme Toggle -->
+    <button id="theme-toggle" class="theme-btn" aria-label="Toggle dark mode">🌙</button>
 
-<button id="theme-toggle" class="theme-btn">🌙</button>
-
-<div class="wrapper">
-
-    <!-- TEXT TO SPEECH -->
-    <div class="container">
-        <h1>🔊 Text to Voice Converter</h1>
-
-        <label>Select Language</label>
-        <select id="tts-language">
-            <option value="en-US">English</option>
-            <option value="hi-IN">Hindi</option>
-            <option value="es-ES">Spanish</option>
-        </select>
-<<<<<<< HEAD
-=======
-
-        <label>Select Voice</label>
-        <select id="voice-select"></select>
->>>>>>> 40a9d5d7 (fix: remove duplicate HTML structure and buttons in Text to Voice Con… (#6548))
-
-        <textarea id="text-input" placeholder="Enter text here..."></textarea>
-
-        <p id="char-count">Characters: 0</p>
-
-        <div class="btn-group">
-            <button id="convert-btn">Convert to Speech</button>
-<<<<<<< HEAD
-            <button id="stop-btn-text" class="stop-btn" disabled>
-                Stop
-            </button>
+    <!-- Top Navigation Bar / Back Button -->
+    <header class="app-header">
+        <a href="/" class="back-btn">← Back to Home</a>
+        <div class="app-title-container">
+            <h1 class="main-title">Voice & Text Studio</h1>
+            <p class="subtitle">Convert text to high-quality audio or transcribe your voice instantly</p>
         </div>
-=======
-            <button id="stop-btn-text" class="stop-btn" disabled>Stop</button>
-            <button id="clear-text">Clear</button>
-        </div>
+    </header>
 
-        <div id="speaking-status"></div>
->>>>>>> 40a9d5d7 (fix: remove duplicate HTML structure and buttons in Text to Voice Con… (#6548))
-    </div>
+    <main class="wrapper">
+        <!-- TEXT TO SPEECH CARD -->
+        <section class="container card tts-card">
+            <div class="card-header">
+                <h2>🔊 Text to Speech</h2>
+                <span class="status-badge" id="speaking-status">Ready</span>
+            </div>
+            
+            <div class="input-group">
+                <label for="tts-language">Select Language</label>
+                <div class="select-wrapper">
+                    <select id="tts-language"></select>
+                </div>
+            </div>
 
-    <!-- VOICE TO TEXT -->
-    <div class="container">
-        <h1>🎤 Voice to Text Converter</h1>
+            <div class="input-group">
+                <label for="voice-select">Select Voice</label>
+                <div class="select-wrapper">
+                    <select id="voice-select">
+                        <option value="">Detecting voices...</option>
+                    </select>
+                </div>
+            </div>
 
-        <label>Select Language</label>
-<<<<<<< HEAD
+            <div class="input-group relative">
+                <label for="text-input">Text Input</label>
+                <textarea id="text-input" placeholder="Type or paste your text here..."></textarea>
+                <div class="textarea-footer">
+                    <span id="char-count">Characters: 0</span>
+                </div>
+            </div>
 
-=======
->>>>>>> 40a9d5d7 (fix: remove duplicate HTML structure and buttons in Text to Voice Con… (#6548))
-        <select id="stt-language">
-            <option value="en-US">English</option>
-            <option value="hi-IN">Hindi</option>
-            <option value="es-ES">Spanish</option>
-        </select>
+            <div class="btn-group">
+                <button id="convert-btn" class="primary-btn">
+                    <span class="btn-icon">▶</span> Convert to Speech
+                </button>
+                <button id="stop-btn-text" class="stop-btn" disabled>
+                    <span class="btn-icon">■</span> Stop
+                </button>
+                <button id="clear-text" class="secondary-btn">
+                    Clear
+                </button>
+            </div>
+        </section>
 
-        <div class="btn-group">
-            <button id="start-btn">Speak</button>
-<<<<<<< HEAD
+        <!-- VOICE TO TEXT CARD -->
+        <section class="container card stt-card">
+            <div class="card-header">
+                <h2>🎤 Speech to Text</h2>
+                <span class="status-badge" id="listening-status">Ready</span>
+            </div>
+            
+            <div class="input-group">
+                <label for="stt-language">Select Language</label>
+                <div class="select-wrapper">
+                    <select id="stt-language"></select>
+                </div>
+            </div>
 
-            <button id="stop-btn-voice" class="stop-btn" disabled>
-                Stop
-            </button>
-        </div>
+            <div class="input-group">
+                <label for="output">Transcript Output</label>
+                <textarea id="output" placeholder="Your spoken words will appear here in real-time..." readonly></textarea>
+            </div>
 
-        <textarea
-            id="output"
-            placeholder="Your speech will appear here..."
-        ></textarea>
-=======
-            <button id="stop-btn-voice" class="stop-btn" disabled>Stop</button>
-        </div>
+            <div class="btn-group main-controls">
+                <button id="start-btn" class="record-btn">
+                    <span class="mic-dot"></span> Speak
+                </button>
+                <button id="stop-btn-voice" class="stop-btn" disabled>
+                    <span class="btn-icon">■</span> Stop
+                </button>
+            </div>
 
-        <div id="listening-status"></div>
+            <div class="btn-group action-controls">
+                <button id="copy-btn" class="action-btn">
+                    <span class="btn-icon">📋</span> Copy
+                </button>
+                <button id="download-btn" class="action-btn">
+                    <span class="btn-icon">📥</span> Download
+                </button>
+                <button id="clear-output" class="secondary-btn">
+                    Clear
+                </button>
+            </div>
+        </section>
+    </main>
 
-        <textarea id="output" placeholder="Your speech will appear here..."></textarea>
-
-        <div class="btn-group">
-            <button id="copy-btn">Copy</button>
-            <button id="download-btn">Download</button>
-            <button id="clear-output">Clear</button>
-        </div>
->>>>>>> 40a9d5d7 (fix: remove duplicate HTML structure and buttons in Text to Voice Con… (#6548))
-    </div>
-
-</div>
-
-<script src="script.js"></script>
-
+    <script src="script.js"></script>
 </body>
 </html>

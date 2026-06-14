@@ -1,70 +1,7 @@
-const difficultyData = {
-    easy: {
-        label: "Easy",
-        icon: "🟢",
-        color: "#4ade80",
-        sentences: [
-            "The cat sat on the mat.",
-            "I like to eat cake and pie.",
-            "Dogs are the best pets ever.",
-            "The sun is hot and bright today.",
-            "She went to the store to buy milk.",
-            "He runs fast in the morning.",
-            "Birds fly high in the blue sky.",
-            "The red ball is in the yard.",
-            "My dog likes to play fetch.",
-            "We went to the park today.",
-            "The baby smiled at the nurse.",
-            "Fish swim in the deep blue sea.",
-            "I love to read books at night.",
-            "The flower bloomed in the spring.",
-            "She baked a fresh loaf of bread."
-        ]
-    },
-    medium: {
-        label: "Medium",
-        icon: "🟡",
-        color: "#facc15",
-        sentences: [
-            "Every morning brings new opportunities to grow and learn.",
-            "The ocean waves crash gently against the sandy shore.",
-            "Music has the power to heal the human soul.",
-            "Patience and persistence are keys to achieving success.",
-            "Technology evolves faster than we can adapt to it.",
-            "Coffee and books are the perfect combination for peace.",
-            "The forest whispers secrets only the wind understands.",
-            "Time is the most precious resource we possess.",
-            "Dreams come true when we dare to chase them.",
-            "Writing is thinking with the fingers on the keyboard.",
-            "In the heart of the city, life moves at its own rhythm.",
-            "Kindness costs nothing but means everything to others.",
-            "The starry night sky reminds us how small we really are.",
-            "Every sunset brings the promise of a new and fresh dawn.",
-            "Traveling broadens the mind and enriches the human spirit."
-        ]
-    },
-    hard: {
-        label: "Hard",
-        icon: "🔴",
-        color: "#ef4444",
-        sentences: [
-            "The quantum entanglement phenomenon challenges our classical understanding of physics; particles separated by vast distances instantaneously affect one another.",
-            "In 1847, the mathematician George Boole published 'The Mathematical Analysis of Logic,' laying the groundwork for modern digital computing & binary systems.",
-            "Photosynthesis converts CO2 + H2O into glucose (C6H12O6) using sunlight; this process powers nearly all life on Earth at ~450-700nm wavelengths.",
-            "The Byzantine Empire's intricate bureaucratic system, complete with 18 distinct administrative tiers, functioned continuously for over 1,000 years (330–1453 AD).",
-            "Fibonacci's sequence (0, 1, 1, 2, 3, 5, 8, 13...) appears throughout nature: in pinecone spirals, nautilus shells, and galaxy arm formations alike.",
-            "Cryptographic algorithms like RSA-2048 rely on the computational difficulty of factoring large semi-prime numbers; breaking one key requires ~300 trillion years.",
-            "The philosopher Friedrich Nietzsche wrote: 'That which does not kill us makes us stronger' — yet resilience, paradoxically, often emerges from surviving near-collapse.",
-            "HTTP/3 uses QUIC protocol over UDP instead of TCP; this eliminates head-of-line blocking & reduces latency by 12–15% for high-packet-loss environments.",
-            "Dr. Jane Goodall's 60-year longitudinal study of chimpanzees (Pan troglodytes) in Tanzania revealed tool use, warfare, and complex social hierarchies in primates.",
-            "The legal doctrine of 'res ipsa loquitur' ('the thing speaks for itself') allows negligence inference without direct evidence, dating to Byrne v. Boadle (1863).",
-            "Machine learning models trained on >500GB datasets can exhibit emergent behavior — capabilities not explicitly programmed — once parameter counts exceed ~10^11.",
-            "In thermodynamics, entropy (S) always increases in isolated systems; Boltzmann's equation S = k·ln(Ω) links macroscopic disorder to microscopic particle states.",
-            "The Treaty of Westphalia (1648) established the modern concept of state sovereignty, ending the Thirty Years' War & reshaping European geopolitics permanently.",
-            "CRISPR-Cas9 gene editing targets specific DNA sequences via guide RNA; off-target edits occur at 0.1–2% frequency, raising significant bioethical considerations.",
-            "The Turing Test, proposed in 1950, posited that if a machine's responses are indistinguishable from a human's in a 5-minute conversation, it can 'think'."
-        ]
-    }
+const modeData = {
+    regular: { label: "Regular", icon: "📋" },
+    sudden: { label: "Sudden Death", icon: "💀" },
+    countdown: { label: "Countdown Mode", icon: "⏳" }
 };
 
 const textDisplay = document.getElementById('textDisplay');
@@ -77,98 +14,258 @@ const resultsDiv = document.getElementById('results');
 const statsDiv = document.getElementById('stats');
 const gameContent = document.getElementById('gameContent');
 const difficultyBadge = document.getElementById('difficultyBadge');
-const difficultySelector = document.getElementById('difficultySelector');
+const modeBadge = document.getElementById('modeBadge');
+const selectorsPanel = document.getElementById('selectorsPanel');
+const caret = document.getElementById('caret');
+const focusOverlay = document.getElementById('focusOverlay');
+const textWrapper = document.getElementById('textWrapper');
+const analyticsGraph = document.getElementById('analyticsGraph');
 
-let currentText = '';
+let sentencesRepository = {
+    easy: ["The cat sat on the mat.", "Dogs are the best pets ever.", "Birds fly high in the blue sky."],
+    medium: ["Every morning brings new opportunities to grow.", "The ocean waves crash gently against the shore."],
+    hard: ["The quantum entanglement phenomenon challenges physics.", "Entropy always increases in isolated systems."]
+};
+
+const difficultyMeta = {
+    easy: { label: "Easy", color: "#4ade80" },
+    medium: { label: "Medium", color: "#eab308" },
+    hard: { label: "Hard", color: "#ef4444" }
+};
+
+let testText = '';
 let testStarted = false;
 let testFinished = false;
 let startTime = null;
-let testText = '';
 let timerInterval = null;
 let selectedDifficulty = 'medium';
+let selectedMode = 'regular';
+let wpmHistory = [];
+let timelineSeconds = 0;
+let totalErrorsEncountered = 0;
+let countdownDuration = 30;
+
+async function loadSentences() {
+    try {
+        const response = await fetch('sentences.json');
+        if (response.ok) {
+            sentencesRepository = await response.json();
+        }
+    } catch (e) {
+        
+    }
+    updateBadges();
+}
 
 function selectDifficulty(level) {
     selectedDifficulty = level;
-    document.querySelectorAll('.diff-btn').forEach(btn => {
+    document.querySelectorAll('[data-diff]').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.diff === level);
     });
-    updateDifficultyBadge();
+    updateBadges();
 }
 
-function updateDifficultyBadge() {
-    const d = difficultyData[selectedDifficulty];
-    difficultyBadge.textContent = `${d.icon} ${d.label}`;
-    difficultyBadge.style.color = d.color;
-    difficultyBadge.style.borderColor = d.color + '55';
-    difficultyBadge.style.backgroundColor = d.color + '15';
+function selectMode(mode) {
+    selectedMode = mode;
+    document.querySelectorAll('[data-mode]').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.mode === mode);
+    });
+    updateBadges();
+}
+
+function updateBadges() {
+    const meta = difficultyMeta[selectedDifficulty];
+    difficultyBadge.textContent = meta ? meta.label : selectedDifficulty;
+    difficultyBadge.style.color = meta ? meta.color : "#eab308";
+    difficultyBadge.style.borderColor = meta ? meta.color + '55' : "#eab30855";
+    difficultyBadge.style.backgroundColor = meta ? meta.color + '15' : "#eab30815";
+
+    const m = modeData[selectedMode];
+    modeBadge.textContent = `${m.icon} ${m.label}`;
 }
 
 function getRandomSentence(difficulty) {
-    const pool = difficultyData[difficulty].sentences;
+    const pool = sentencesRepository[difficulty] || sentencesRepository['medium'];
     return pool[Math.floor(Math.random() * pool.length)];
+}
+
+function parseTextIntoWords(text) {
+    textDisplay.innerHTML = '';
+    const words = text.split(' ');
+    
+    words.forEach((word, wIdx) => {
+        const wordBox = document.createElement('div');
+        wordBox.className = 'word-box';
+        
+        for (let i = 0; i < word.length; i++) {
+            const span = document.createElement('span');
+            span.textContent = word[i];
+            span.className = 'untyped';
+            wordBox.appendChild(span);
+        }
+        
+        if (wIdx < words.length - 1) {
+            const spaceSpan = document.createElement('span');
+            spaceSpan.innerHTML = '&nbsp;';
+            spaceSpan.className = 'untyped';
+            wordBox.appendChild(spaceSpan);
+        }
+        
+        textDisplay.appendChild(wordBox);
+    });
+}
+
+function getCharElements() {
+    return Array.from(textDisplay.querySelectorAll('.word-box span'));
 }
 
 function initTest() {
     testText = getRandomSentence(selectedDifficulty);
-    currentText = '';
+    parseTextIntoWords(testText);
+    
     testStarted = true;
     testFinished = false;
     startTime = Date.now();
     userInput.value = '';
+    wpmHistory = [];
+    timelineSeconds = 0;
+    totalErrorsEncountered = 0;
 
     resultsDiv.style.display = 'none';
     gameContent.classList.remove('hidden');
     statsDiv.classList.remove('hidden');
-    difficultySelector.classList.add('hidden');
+    selectorsPanel.classList.add('hidden');
+    focusOverlay.classList.remove('active');
 
     userInput.disabled = false;
     userInput.focus();
+    
+    caret.classList.remove('blinking');
+    updateCaretPosition();
 
     if (timerInterval) clearInterval(timerInterval);
 
+    document.getElementById('timerLabel').textContent = selectedMode === 'countdown' ? 'Remaining' : 'Time';
+    document.getElementById('timerDisplay').textContent = selectedMode === 'countdown' ? '0:30' : '0:00';
+    document.getElementById('wpmDisplay').textContent = '0';
+    document.getElementById('accuracyDisplay').textContent = '100%';
+    document.getElementById('errorDisplay').textContent = '0';
+
     timerInterval = setInterval(() => {
         if (!testStarted || testFinished) return;
-        const seconds = Math.floor((Date.now() - startTime) / 1000);
-        const minutes = Math.floor(seconds / 60);
-        const secs = seconds % 60;
+        
+        const elapsed = Math.floor((Date.now() - startTime) / 1000);
+        timelineSeconds = elapsed;
+        
+        let displayTime = elapsed;
+        if (selectedMode === 'countdown') {
+            displayTime = countdownDuration - elapsed;
+            if (displayTime <= 0) {
+                displayTime = 0;
+                document.getElementById('timerDisplay').textContent = '0:00';
+                finishTest();
+                return;
+            }
+        }
+
+        const minutes = Math.floor(displayTime / 60);
+        const secs = displayTime % 60;
         document.getElementById('timerDisplay').textContent = `${minutes}:${secs.toString().padStart(2, '0')}`;
-    }, 100);
+        
+        const currentWpm = calculateLiveWpm();
+        wpmHistory.push({ second: timelineSeconds, wpm: currentWpm });
+        
+        updateLiveStatsDisplay(currentWpm);
+    }, 1000);
 
     updateDisplay();
 }
 
 function updateDisplay() {
-    const chars = testText.split('');
-    const inputChars = userInput.value.split('');
+    const spans = getCharElements();
+    const inputVal = userInput.value;
+    const inputChars = inputVal.split('');
+    let suddenDeathTriggered = false;
 
-    textDisplay.innerHTML = chars.map((char, index) => {
-        let className = 'untyped';
+    spans.forEach((span, index) => {
         if (index < inputChars.length) {
-            className = inputChars[index] === char ? 'correct' : 'wrong';
-        } else if (index === inputChars.length) {
-            className = 'current';
+            const expected = span.textContent === '\u00A0' ? ' ' : span.textContent;
+            if (inputChars[index] === expected) {
+                span.className = 'correct';
+            } else {
+                if (span.className !== 'wrong') {
+                    totalErrorsEncountered++;
+                }
+                span.className = 'wrong';
+                if (selectedMode === 'sudden') {
+                    suddenDeathTriggered = true;
+                }
+            }
+        } else {
+            span.className = 'untyped';
         }
-        const display = char === ' ' ? '&nbsp;' : char;
-        return `<span class="${className}">${display}</span>`;
-    }).join('');
+    });
 
-    updateStats();
+    updateCaretPosition();
+
+    if (suddenDeathTriggered) {
+        finishTest();
+        return;
+    }
+
+    const currentWpm = calculateLiveWpm();
+    updateLiveStatsDisplay(currentWpm);
+
+    if (inputVal.length >= testText.length && !testFinished) {
+        finishTest();
+    }
 }
 
-function updateStats() {
+function updateCaretPosition() {
+    const spans = getCharElements();
+    const index = userInput.value.length;
+    const wrapperRect = textWrapper.getBoundingClientRect();
+
+    if (index < spans.length) {
+        const targetSpan = spans[index];
+        const spanRect = targetSpan.getBoundingClientRect();
+        caret.style.left = `${spanRect.left - wrapperRect.left}px`;
+        caret.style.top = `${spanRect.top - wrapperRect.top}px`;
+        caret.style.height = `${spanRect.height}px`;
+    } else if (spans.length > 0) {
+        const lastSpan = spans[spans.length - 1];
+        const spanRect = lastSpan.getBoundingClientRect();
+        caret.style.left = `${spanRect.right - wrapperRect.left}px`;
+        caret.style.top = `${spanRect.top - wrapperRect.top}px`;
+        caret.style.height = `${spanRect.height}px`;
+    }
+}
+
+function calculateLiveWpm() {
     const inputLength = userInput.value.length;
-    const timeElapsed = (Date.now() - startTime) / 1000 / 60;
-    const wpm = Math.round((inputLength / 5) / (timeElapsed || 1 / 60));
+    const timeElapsedMinutes = (Date.now() - startTime) / 1000 / 60;
+    return Math.round((inputLength / 5) / (timeElapsedMinutes || 1 / 60));
+}
 
-    let correctChars = 0;
-    userInput.value.split('').forEach((char, index) => {
-        if (char === testText[index]) correctChars++;
+function updateLiveStatsDisplay(currentWpm) {
+    const spans = getCharElements();
+    const inputLength = userInput.value.length;
+    
+    let correctCount = 0;
+    let wrongCount = 0;
+    
+    spans.forEach((span, idx) => {
+        if (idx < inputLength) {
+            if (span.className === 'correct') correctCount++;
+            if (span.className === 'wrong') wrongCount++;
+        }
     });
-    const accuracy = inputLength > 0 ? Math.round((correctChars / inputLength) * 100) : 0;
 
-    document.getElementById('wpmDisplay').textContent = wpm;
+    const accuracy = inputLength > 0 ? Math.round((correctCount / inputLength) * 100) : 100;
+
+    document.getElementById('wpmDisplay').textContent = currentWpm;
     document.getElementById('accuracyDisplay').textContent = accuracy + '%';
-    document.getElementById('typedDisplay').textContent = inputLength;
+    document.getElementById('errorDisplay').textContent = wrongCount;
 }
 
 function finishTest() {
@@ -176,40 +273,139 @@ function finishTest() {
 
     testFinished = true;
     testStarted = false;
-
     clearInterval(timerInterval);
     timerInterval = null;
 
     userInput.disabled = true;
+    caret.classList.add('blinking');
+    focusOverlay.classList.remove('active');
 
-    const timeElapsed = (Date.now() - startTime) / 1000;
-
+    const timeElapsedSeconds = Math.max(1, Math.floor((Date.now() - startTime) / 1000));
+    const finalWpm = calculateLiveWpm();
+    
+    const spans = getCharElements();
     const inputLength = userInput.value.length;
-    const wpm = Math.round((inputLength / 5) / (timeElapsed / 60 || 1 / 60));
-
-    let correctChars = 0;
-    userInput.value.split('').forEach((char, index) => {
-        if (char === testText[index]) correctChars++;
+    let correctCount = 0;
+    spans.forEach((span, idx) => {
+        if (idx < inputLength && span.className === 'correct') correctCount++;
     });
+    const finalAccuracy = inputLength > 0 ? Math.round((correctCount / inputLength) * 100) : 0;
 
-    const accuracy = inputLength > 0
-        ? Math.round((correctChars / inputLength) * 100)
-        : 0;
-
-    const errors = inputLength - correctChars;
-
-    document.getElementById('finalWpm').textContent = wpm;
-    document.getElementById('finalAccuracy').textContent = accuracy + '%';
-    document.getElementById('finalTime').textContent = Math.round(timeElapsed) + 's';
-    document.getElementById('finalErrors').textContent = errors;
-
-    const d = difficultyData[selectedDifficulty];
-    document.getElementById('finalDifficulty').textContent = `${d.icon} ${d.label}`;
-    document.getElementById('finalDifficulty').style.color = d.color;
+    document.getElementById('finalWpm').textContent = finalWpm;
+    document.getElementById('finalAccuracy').textContent = finalAccuracy + '%';
+    document.getElementById('finalTime').textContent = timeElapsedSeconds + 's';
+    document.getElementById('finalErrors').textContent = totalErrorsEncountered;
 
     gameContent.classList.add('hidden');
     resultsDiv.style.display = 'block';
+
+    if (wpmHistory.length === 0) {
+        wpmHistory.push({ second: timeElapsedSeconds, wpm: finalWpm });
+    }
+
+    renderPerformanceGraph();
 }
+
+function renderPerformanceGraph() {
+    analyticsGraph.innerHTML = '';
+    const width = analyticsGraph.clientWidth || 600;
+    const height = analyticsGraph.clientHeight || 200;
+    const padding = 40;
+
+    const maxSec = Math.max(...wpmHistory.map(d => d.second), 1);
+    const maxWpm = Math.max(...wpmHistory.map(d => d.wpm), 40);
+
+    const mapX = (sec) => padding + (sec / maxSec) * (width - 2 * padding);
+    const mapY = (wpm) => height - padding - (wpm / maxWpm) * (height - 2 * padding);
+
+    const xAxis = document.createElementNS("http://www.w3.org/2000/svg", "line");
+    xAxis.setAttribute("x1", padding);
+    xAxis.setAttribute("y1", height - padding);
+    xAxis.setAttribute("x2", width - padding);
+    xAxis.setAttribute("y2", height - padding);
+    xAxis.setAttribute("class", "graph-axis");
+    analyticsGraph.appendChild(xAxis);
+
+    const yAxis = document.createElementNS("http://www.w3.org/2000/svg", "line");
+    yAxis.setAttribute("x1", padding);
+    yAxis.setAttribute("y1", padding);
+    yAxis.setAttribute("x2", padding);
+    yAxis.setAttribute("y2", height - padding);
+    yAxis.setAttribute("class", "graph-axis");
+    analyticsGraph.appendChild(yAxis);
+
+    const xLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    xLabel.setAttribute("x", width / 2);
+    xLabel.setAttribute("y", height - 8);
+    xLabel.setAttribute("text-anchor", "middle");
+    xLabel.setAttribute("class", "graph-text");
+    xLabel.textContent = "Time (seconds)";
+    analyticsGraph.appendChild(xLabel);
+
+    const yLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    yLabel.setAttribute("x", -height / 2);
+    yLabel.setAttribute("y", 14);
+    yLabel.setAttribute("transform", "rotate(-90)");
+    yLabel.setAttribute("text-anchor", "middle");
+    yLabel.setAttribute("class", "graph-text");
+    yLabel.textContent = "WPM";
+    analyticsGraph.appendChild(yLabel);
+
+    let pathPoints = "";
+    wpmHistory.forEach((pt, idx) => {
+        const x = mapX(pt.second);
+        const y = mapY(pt.wpm);
+        pathPoints += `${idx === 0 ? 'M' : 'L'} ${x} ${y} `;
+
+        const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        circle.setAttribute("cx", x);
+        circle.setAttribute("cy", y);
+        circle.setAttribute("r", "4");
+        circle.setAttribute("fill", "var(--accent)");
+        analyticsGraph.appendChild(circle);
+    });
+
+    if (pathPoints) {
+        const graphLine = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        graphLine.setAttribute("d", pathPoints.trim());
+        graphLine.setAttribute("class", "graph-line");
+        analyticsGraph.appendChild(graphLine);
+    }
+}
+
+userInput.addEventListener('input', () => {
+    if (!testStarted || testFinished) return;
+    updateDisplay();
+});
+
+window.addEventListener('resize', () => {
+    if (testStarted && !testFinished) {
+        updateCaretPosition();
+    }
+    if (resultsDiv.style.display === 'block') {
+        renderPerformanceGraph();
+    }
+});
+
+document.addEventListener('keydown', (e) => {
+    if (testStarted && !testFinished) {
+        if (document.activeElement !== userInput) {
+            userInput.focus();
+        }
+    }
+});
+
+userInput.addEventListener('blur', () => {
+    if (testStarted && !testFinished) {
+        focusOverlay.classList.add('active');
+    }
+});
+
+focusOverlay.addEventListener('click', () => {
+    focusOverlay.classList.remove('active');
+    userInput.focus();
+    updateCaretPosition();
+});
 
 startBtn.addEventListener('click', initTest);
 
@@ -222,39 +418,32 @@ resetBtn.addEventListener('click', () => {
     resultsDiv.style.display = 'none';
     gameContent.classList.remove('hidden');
     statsDiv.classList.add('hidden');
-    difficultySelector.classList.remove('hidden');
-    textDisplay.innerHTML = '<span class="untyped">Select a difficulty and click "Start Test"...</span>';
+    selectorsPanel.classList.remove('hidden');
+    focusOverlay.classList.remove('active');
+    caret.classList.add('blinking');
+    caret.style.left = '0px';
+    caret.style.top = '0px';
+    textDisplay.innerHTML = '<span class="untyped">Select configurations and click "Start Test"...</span>';
 });
 
 retryBtn.addEventListener('click', initTest);
-
-userInput.addEventListener('input', () => {
-    if (!testStarted || testFinished) return;
-    updateDisplay();
-});
-
-userInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' && testStarted && !testFinished) {
-        e.preventDefault();
-        finishTest();
-    }
-});
-
-userInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' && testStarted && !testFinished) {
-        e.preventDefault();
-
-        if (userInput.value.trim() === testText.trim()) {
-            finishTest();
-        }
-    }
-});
 
 themeToggle.addEventListener('click', () => {
     document.documentElement.classList.toggle('dark-mode');
     const isDark = document.documentElement.classList.contains('dark-mode');
     themeToggle.textContent = isDark ? '☀️' : '🌙';
     localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    setTimeout(() => {
+        if (resultsDiv.style.display === 'block') renderPerformanceGraph();
+    }, 50);
+});
+
+document.querySelectorAll('[data-diff]').forEach(btn => {
+    btn.addEventListener('click', () => selectDifficulty(btn.dataset.diff));
+});
+
+document.querySelectorAll('[data-mode]').forEach(btn => {
+    btn.addEventListener('click', () => selectMode(btn.dataset.mode));
 });
 
 const savedTheme = localStorage.getItem('theme');
@@ -263,9 +452,7 @@ if (savedTheme === 'dark') {
     themeToggle.textContent = '☀️';
 }
 
-document.querySelectorAll('.diff-btn').forEach(btn => {
-    btn.addEventListener('click', () => selectDifficulty(btn.dataset.diff));
-});
-
 selectDifficulty('medium');
-textDisplay.innerHTML = '<span class="untyped">Select a difficulty and click "Start Test"...</span>';
+selectMode('regular');
+loadSentences();
+textDisplay.innerHTML = '<span class="untyped">Select configurations and click "Start Test"...</span>';
