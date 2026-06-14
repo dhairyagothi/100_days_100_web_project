@@ -25,22 +25,30 @@ let accumulator  = 0;      // ms accumulated since last tick
 // ─── Page Visibility API — pause/resume on tab switch ─────────────────────
 document.addEventListener('visibilitychange', () => {
   if (document.hidden) {
-    // Tab went to background: pause the game silently
     if (running && !paused) {
-      paused = true;
-      paused_by_visibility = true; // remember we auto-paused
+      setPaused(true);
+      paused_by_visibility = true;
     }
   } else {
-    // Tab came back: resume only if WE auto-paused it
     if (paused_by_visibility) {
-      paused = false;
+      setPaused(false);
       paused_by_visibility = false;
-      lastTickTime = performance.now(); // reset tick time so no catch-up
-      accumulator  = 0;
     }
   }
 });
 let paused_by_visibility = false; // tracks auto-pause vs user-pause
+
+function setPaused(value) {
+  paused = value;
+  const overlay = document.getElementById('pauseOverlay');
+  if (overlay) {
+    value ? overlay.classList.remove('hidden') : overlay.classList.add('hidden');
+  }
+  if (!value) {
+    lastTickTime = performance.now();
+    accumulator  = 0;
+  }
+}
 // ──────────────────────────────────────────────────────────────────────────
 
 // ─── Web Audio sound engine ────────────────────────────────────────────────
@@ -114,7 +122,7 @@ function initGame() {
   level = 1;
   speed = 160;
   running = false;
-  paused = false;
+  setPaused(false);
 
   placeFood();
   updateHUD();
@@ -303,10 +311,8 @@ function startGame() {
 
   isGameOver = false;
   initGame();
-
   running = true;
-  paused = false;
-  lastTickTime = performance.now(); // 🔥 IMPORTANT FIX
+  lastTickTime = 0;
 
   document.removeEventListener('keydown', handleKeyDown);
   document.addEventListener('keydown', handleKeyDown);
@@ -380,35 +386,15 @@ function handleKeyDown(e) {
     }
   }
 
-  if (e.key === ' ' && running) {
-    paused = !paused;
-    if (!paused) {
-      lastTickTime = performance.now();
-      accumulator  = 0;
-    }
-  }
+  if ((e.key === 'p' || e.key === 'P') && running) {
+  e.preventDefault();
+  setPaused(!paused);
+ }
 }
 
 document.addEventListener('keydown', handleKeyDown);
 
-window.addEventListener('load', () => {
-  const startBtn = document.getElementById('startBtn');
-  const restartBtn = document.getElementById('restartBtn');
-
-  if (startBtn) {
-    startBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      startGame();
-    });
-  }
-
-  if (restartBtn) {
-    restartBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      startGame();
-    });
-  }
-});
+document.getElementById('startBtn').addEventListener('click', startGame);
 document.getElementById('restartBtn').addEventListener('click', startGame);
 
 // Idle animation on start screen
@@ -419,10 +405,8 @@ function animateIdle() {
   }
 }
 
-window.addEventListener('load', () => {
-  initGame();
-  requestAnimationFrame(gameEngine);
-});
+initGame();
+requestAnimationFrame(gameEngine);
 
 // ========== MOBILE TOUCH CONTROLS ==========
 (function () {

@@ -1,114 +1,116 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BMI Calculator</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <canvas id="bg"></canvas>
 
-<title>BMI Fitness Dashboard</title>
+    <div class="page">
+      <div class="bmi-grid">
 
-<link rel="stylesheet" href="style.css">
+        <!-- Left: Calculator -->
+        <div class="card">
+          <div class="gold-line"></div>
+          <div class="top-bar">
+            <p class="card-title">Body Mass Index</p>
+            <button class="theme-toggle" id="theme-toggle" title="Toggle dark mode">◐</button>
+          </div>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
-
-<body class="theme-purple">
-
-<div class="theme-switcher">
-    <button class="theme-btn purple"
-        onclick="changeTheme('theme-purple')"></button>
-
-    <button class="theme-btn blue"
-        onclick="changeTheme('theme-blue')"></button>
-
-    <button class="theme-btn green"
-        onclick="changeTheme('theme-green')"></button>
-
-    <button class="theme-btn orange"
-        onclick="changeTheme('theme-orange')"></button>
-</div>
-
-<div class="container">
-
-    <div class="calculator-card">
-
-        <h1>🏋️ BMI FITNESS DASHBOARD</h1>
-
-        <div class="input-group">
-            <label>Height (cm)</label>
-            <input type="number" id="height"
-                placeholder="Enter Height">
-        </div>
-
-        <div class="input-group">
-            <label>Weight (kg)</label>
-            <input type="number" id="weight"
-                placeholder="Enter Weight">
-        </div>
-
-        <button id="calculateBtn">
-            Calculate BMI
-        </button>
-
-        <div class="result-card">
-
-            <div class="gauge-container">
-                <div class="gauge">
-                    <div class="gauge-cover">
-                        <span id="bmiValue">0</span>
-                    </div>
-                </div>
+          <div class="field-row">
+            <div class="field">
+              <div class="field-label">Height unit</div>
+              <select id="height-unit">
+                <option value="cm">Centimetres</option>
+                <option value="feet">Feet / inches</option>
+              </select>
             </div>
+            <div class="field">
+              <div class="field-label" id="height-lbl">Height (cm)</div>
+              <input type="text" id="height" placeholder="e.g. 170" />
+            </div>
+          </div>
 
-            <h2 id="category">Category</h2>
+          <div class="field-row">
+            <div class="field">
+              <div class="field-label">Weight unit</div>
+              <select id="weight-unit">
+                <option value="kg">Kilograms</option>
+                <option value="lb">Pounds</option>
+              </select>
+            </div>
+            <div class="field">
+              <div class="field-label" id="weight-lbl">Weight (kg)</div>
+              <input type="number" id="weight" placeholder="e.g. 70" min="1" />
+            </div>
+          </div>
 
-            <p id="message">
-                Your health insights will appear here.
-            </p>
+          <button id="btn">Calculate BMI</button>
+          <div id="error-msg" class="error-msg hidden"></div>
 
+          <div class="result-row hidden" id="results">
+            <div class="metric-card">
+              <div class="metric-label">BMI score</div>
+              <div class="metric-value" id="bmi-val">—</div>
+              <span class="category-badge" id="cat-badge"></span>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">Healthy weight range</div>
+              <div class="metric-value range-val" id="healthy-range">—</div>
+              <div class="tip-text" id="tip-text"></div>
+            </div>
+          </div>
+
+          <div id="range-vis" class="range-vis hidden">
+            <div class="range-bar">
+              <div class="range-segments">
+                <div class="seg seg-blue"  style="flex: 2.1"></div>
+                <div class="seg seg-green" style="flex: 6.4"></div>
+                <div class="seg seg-amber" style="flex: 5"></div>
+                <div class="seg seg-red"   style="flex: 6.5"></div>
+              </div>
+              <div class="bmi-pointer" id="bmi-ptr" style="left: 0%"></div>
+            </div>
+            <div class="range-labels">
+              <span>10</span><span>18.5</span><span>25</span><span>30</span><span>40+</span>
+            </div>
+          </div>
         </div>
 
+        <!-- Right: Reference + Chart -->
+        <div class="card right-card">
+          <div class="gold-line"></div>
+          <div class="top-bar" style="margin-bottom: 0">
+            <p class="card-title">Reference chart</p>
+          </div>
+
+          <table class="bmi-table">
+            <thead>
+              <tr><th>BMI</th><th>Category</th><th></th></tr>
+            </thead>
+            <tbody>
+              <tr><td>&lt; 18.5</td><td>Underweight</td>  <td><span class="dot dot-blue"></span></td></tr>
+              <tr><td>18.5 – 24.9</td><td>Normal weight</td><td><span class="dot dot-green"></span></td></tr>
+              <tr><td>25.0 – 29.9</td><td>Overweight</td>   <td><span class="dot dot-amber"></span></td></tr>
+              <tr><td>30.0 – 34.9</td><td>Obese (Class I)</td><td><span class="dot dot-red1"></span></td></tr>
+              <tr><td>35.0 – 39.9</td><td>Obese (Class II)</td><td><span class="dot dot-red2"></span></td></tr>
+              <tr><td>≥ 40.0</td><td>Obese (Class III)</td><td><span class="dot dot-red3"></span></td></tr>
+            </tbody>
+          </table>
+
+          <div class="chart-wrap">
+            <canvas id="bmiChart"></canvas>
+          </div>
+          <p class="chart-hint">BMI history — calculate multiple times to track changes.</p>
+        </div>
+
+      </div>
     </div>
 
-    <div class="recommendation-card">
-
-        <div class="recommendation-box">
-            <h3>🔥 Daily Calories</h3>
-            <p id="calories">0 kcal/day</p>
-        </div>
-
-        <div class="recommendation-box">
-            <h3>💧 Water Intake</h3>
-            <p id="water">0 Litres/day</p>
-        </div>
-
-        <div class="recommendation-box">
-            <h3>🎯 Healthy Weight Range</h3>
-            <p id="healthyWeight">0 - 0 kg</p>
-        </div>
-
-        <div class="recommendation-box">
-            <h3>🥗 Diet Plan</h3>
-            <ul id="dietPlan"></ul>
-        </div>
-
-        <div class="recommendation-box">
-            <h3>🏋️ Workout Recommendation</h3>
-            <ul id="workoutPlan"></ul>
-        </div>
-
-    </div>
-
-</div>
-
-<div class="chart-section">
-
-    <h2>BMI Progress Tracker</h2>
-
-    <canvas id="bmiChart"></canvas>
-
-</div>
-
-<script src="script.js"></script>
-
-</body>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="script.js"></script>
+  </body>
 </html>
