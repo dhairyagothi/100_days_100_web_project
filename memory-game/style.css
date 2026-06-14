@@ -1,0 +1,142 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #070a13;
+  color: #f8fafc;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.game-container {
+  background-color: #0f172a;
+  border: 1px solid #1e293b;
+  border-radius: 20px;
+  padding: 30px;
+  max-width: 640px;
+  width: 100%;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.game-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 25px;
+  border-bottom: 1px solid #1e293b;
+  padding-bottom: 16px;
+}
+
+.game-header h1 {
+  font-size: 1.5rem;
+  color: #6366f1;
+}
+
+.stats-panel {
+  display: flex;
+  gap: 12px;
+}
+
+.stat-badge {
+  background-color: #1e293b;
+  border: 1px solid #334155;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #38bdf8;
+}
+
+.control-btn {
+  background-color: #6366f1;
+  color: white;
+  border: none;
+  padding: 8px 18px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.control-btn:hover {
+  background-color: #4f46e5;
+}
+
+/* Core 4x4 Grid Matrix Pattern for Game Mechanics Layout */
+.memory-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  perspective: 1000px; /* Essential feature to render standard 3D flip card dynamics */
+}
+
+/* 3D Transform Structural Component Definitions */
+.memory-card {
+  aspect-ratio: 1 / 1;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: pointer;
+}
+
+.memory-card.flipped {
+  transform: rotateY(180deg);
+}
+
+.card-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden; /* Hide the back side of the element during a rotation */
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2.2rem;
+  user-select: none;
+}
+
+.card-front {
+  background-color: #1e293b;
+  border: 2px solid #334155;
+  color: #6366f1;
+  box-shadow: inset 0 0 15px rgba(99, 102, 241, 0.1);
+}
+
+.card-front::before {
+  content: "?";
+  font-weight: bold;
+  opacity: 0.3;
+}
+
+.card-back {
+  background: radial-gradient(circle at center, #1e1b4b, #0f172a);
+  border: 2px solid #4f46e5;
+  transform: rotateY(180deg);
+}
+
+/* Unclickable states applied upon validation lock timeouts */
+.memory-card.matched {
+  transform: rotateY(180deg);
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+@media (max-width: 480px) {
+  .memory-grid {
+    gap: 8px;
+  }
+  .card-face {
+    font-size: 1.6rem;
+  }
+}
