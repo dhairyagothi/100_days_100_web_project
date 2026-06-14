@@ -1,569 +1,785 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" data-theme="dark">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="MoodMusic Settings – Customize your music recommendation experience.">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="MoodMusic Settings – Customize your music recommendation experience."
+    />
     <title>MoodMusic – Settings</title>
-    <link rel="stylesheet" href="/public/Mood_Based_Music_Recommender/settings.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
-<body>
-
+    <link
+      rel="stylesheet"
+      href="/public/Mood_Based_Music_Recommender/settings.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body>
     <!-- Floating background blobs -->
     <div class="bg-blobs" aria-hidden="true">
-        <div class="blob blob-1"></div>
-        <div class="blob blob-2"></div>
-        <div class="blob blob-3"></div>
+      <div class="blob blob-1"></div>
+      <div class="blob blob-2"></div>
+      <div class="blob blob-3"></div>
     </div>
 
     <div class="app-shell">
+      <!-- ===== LEFT SIDEBAR ===== -->
+      <aside class="settings-sidebar" id="settingsSidebar">
+        <div class="sidebar-brand">
+          <a href="./index.html" class="brand-link">
+            <i class="fa-brands fa-spotify"></i>
+            <span>MoodMusic</span>
+          </a>
+          <button
+            class="mobile-close-btn"
+            id="mobileCloseBtn"
+            aria-label="Close sidebar"
+          >
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
 
-        <!-- ===== LEFT SIDEBAR ===== -->
-        <aside class="settings-sidebar" id="settingsSidebar">
-            <div class="sidebar-brand">
-                <a href="./index.html" class="brand-link">
-                    <i class="fa-brands fa-spotify"></i>
-                    <span>MoodMusic</span>
-                </a>
-                <button class="mobile-close-btn" id="mobileCloseBtn" aria-label="Close sidebar">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
+        <!-- search inside settings -->
+        <div class="sidebar-search">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input
+            type="text"
+            id="settingsSearch"
+            placeholder="Search settings…"
+            autocomplete="off"
+          />
+        </div>
+
+        <nav class="settings-nav" id="settingsNav">
+          <a
+            href="#appearance"
+            class="snav-item active"
+            data-section="appearance"
+          >
+            <i class="fa-solid fa-palette"></i><span>Appearance</span>
+          </a>
+          <a href="#music-prefs" class="snav-item" data-section="music-prefs">
+            <i class="fa-solid fa-music"></i><span>Music Preferences</span>
+          </a>
+          <a href="#mood-prefs" class="snav-item" data-section="mood-prefs">
+            <i class="fa-solid fa-face-smile"></i><span>Mood Preferences</span>
+          </a>
+          <a
+            href="#favorites-data"
+            class="snav-item"
+            data-section="favorites-data"
+          >
+            <i class="fa-solid fa-heart"></i><span>Favorites & Data</span>
+          </a>
+          <a
+            href="#notifications"
+            class="snav-item"
+            data-section="notifications"
+          >
+            <i class="fa-solid fa-bell"></i><span>Notifications</span>
+          </a>
+          <a href="#privacy" class="snav-item" data-section="privacy">
+            <i class="fa-solid fa-shield-halved"></i><span>Privacy</span>
+          </a>
+        </nav>
+
+        <div class="sidebar-footer">
+          <a href="./index.html" class="back-home-btn">
+            <i class="fa-solid fa-arrow-left"></i> Back to App
+          </a>
+        </div>
+      </aside>
+
+      <!-- ===== MAIN CONTENT ===== -->
+      <div class="settings-main">
+        <!-- Top bar -->
+        <header class="settings-topbar">
+          <button
+            class="hamburger-btn"
+            id="hamburgerBtn"
+            aria-label="Open sidebar"
+          >
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <div class="topbar-title">
+            <h1>Settings</h1>
+            <span class="topbar-sub">Customize your MoodMusic experience</span>
+          </div>
+          <div class="topbar-actions">
+            <button class="btn btn-ghost" id="resetDefaultsBtn">
+              <i class="fa-solid fa-rotate-left"></i> Reset
+            </button>
+            <button class="btn btn-primary" id="saveSettingsBtn">
+              <i class="fa-solid fa-floppy-disk"></i> Save
+            </button>
+          </div>
+        </header>
+
+        <div class="settings-scroll" id="settingsScroll">
+          <!-- ── APPEARANCE ─────────────────────────────────────── -->
+          <section
+            class="settings-section"
+            id="appearance"
+            data-label="Appearance"
+          >
+            <div class="section-header">
+              <div class="section-icon-wrap">
+                <i class="fa-solid fa-palette"></i>
+              </div>
+              <div>
+                <h2>Appearance</h2>
+                <p>Personalise how MoodMusic looks and feels.</p>
+              </div>
             </div>
 
-            <!-- search inside settings -->
-            <div class="sidebar-search">
-                <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" id="settingsSearch" placeholder="Search settings…" autocomplete="off">
-            </div>
+            <div class="settings-card">
+              <!-- Theme mode -->
+              <div class="setting-group-label">Color Theme</div>
+              <div class="theme-picker">
+                <label class="theme-option" data-theme-val="dark">
+                  <input type="radio" name="theme" value="dark" />
+                  <div class="theme-preview dark-preview">
+                    <div class="tp-bar"></div>
+                    <div class="tp-card"></div>
+                  </div>
+                  <span>Dark</span>
+                </label>
+                <label class="theme-option" data-theme-val="light">
+                  <input type="radio" name="theme" value="light" />
+                  <div class="theme-preview light-preview">
+                    <div class="tp-bar"></div>
+                    <div class="tp-card"></div>
+                  </div>
+                  <span>Light</span>
+                </label>
+                <label class="theme-option" data-theme-val="system">
+                  <input type="radio" name="theme" value="system" />
+                  <div class="theme-preview system-preview">
+                    <div class="tp-bar"></div>
+                    <div class="tp-card"></div>
+                  </div>
+                  <span>System</span>
+                </label>
+              </div>
 
-            <nav class="settings-nav" id="settingsNav">
-                <a href="#appearance"      class="snav-item active" data-section="appearance">
-                    <i class="fa-solid fa-palette"></i><span>Appearance</span>
-                </a>
-                <a href="#music-prefs"     class="snav-item" data-section="music-prefs">
-                    <i class="fa-solid fa-music"></i><span>Music Preferences</span>
-                </a>
-                <a href="#mood-prefs"      class="snav-item" data-section="mood-prefs">
-                    <i class="fa-solid fa-face-smile"></i><span>Mood Preferences</span>
-                </a>
-                <a href="#favorites-data"  class="snav-item" data-section="favorites-data">
-                    <i class="fa-solid fa-heart"></i><span>Favorites & Data</span>
-                </a>
-                <a href="#notifications"   class="snav-item" data-section="notifications">
-                    <i class="fa-solid fa-bell"></i><span>Notifications</span>
-                </a>
-                <a href="#privacy"         class="snav-item" data-section="privacy">
-                    <i class="fa-solid fa-shield-halved"></i><span>Privacy</span>
-                </a>
-            </nav>
+              <div class="setting-divider"></div>
 
-            <div class="sidebar-footer">
-                <a href="./index.html" class="back-home-btn">
-                    <i class="fa-solid fa-arrow-left"></i> Back to App
-                </a>
-            </div>
-        </aside>
-
-        <!-- ===== MAIN CONTENT ===== -->
-        <div class="settings-main">
-
-            <!-- Top bar -->
-            <header class="settings-topbar">
-                <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open sidebar">
-                    <i class="fa-solid fa-bars"></i>
-                </button>
-                <div class="topbar-title">
-                    <h1>Settings</h1>
-                    <span class="topbar-sub">Customize your MoodMusic experience</span>
+              <!-- Accent color -->
+              <div class="setting-row">
+                <div class="setting-info">
+                  <span class="setting-name">Accent Color</span>
+                  <span class="setting-desc"
+                    >Primary highlight color used across the UI.</span
+                  >
                 </div>
-                <div class="topbar-actions">
-                    <button class="btn btn-ghost" id="resetDefaultsBtn">
-                        <i class="fa-solid fa-rotate-left"></i> Reset
-                    </button>
-                    <button class="btn btn-primary" id="saveSettingsBtn">
-                        <i class="fa-solid fa-floppy-disk"></i> Save
-                    </button>
+                <div class="color-swatches" id="colorSwatches">
+                  <button
+                    class="swatch active"
+                    data-color="#1db954"
+                    style="background: #1db954"
+                    title="Spotify Green"
+                  ></button>
+                  <button
+                    class="swatch"
+                    data-color="#3b82f6"
+                    style="background: #3b82f6"
+                    title="Blue"
+                  ></button>
+                  <button
+                    class="swatch"
+                    data-color="#a855f7"
+                    style="background: #a855f7"
+                    title="Purple"
+                  ></button>
+                  <button
+                    class="swatch"
+                    data-color="#f43f5e"
+                    style="background: #f43f5e"
+                    title="Rose"
+                  ></button>
+                  <button
+                    class="swatch"
+                    data-color="#f97316"
+                    style="background: #f97316"
+                    title="Orange"
+                  ></button>
+                  <button
+                    class="swatch"
+                    data-color="#eab308"
+                    style="background: #eab308"
+                    title="Yellow"
+                  ></button>
+                  <input
+                    type="color"
+                    id="customColorPicker"
+                    class="custom-color-input"
+                    value="#1db954"
+                    title="Custom color"
+                  />
                 </div>
-            </header>
+              </div>
 
-            <div class="settings-scroll" id="settingsScroll">
+              <div class="setting-divider"></div>
 
-                <!-- ── APPEARANCE ─────────────────────────────────────── -->
-                <section class="settings-section" id="appearance" data-label="Appearance">
-                    <div class="section-header">
-                        <div class="section-icon-wrap">
-                            <i class="fa-solid fa-palette"></i>
-                        </div>
-                        <div>
-                            <h2>Appearance</h2>
-                            <p>Personalise how MoodMusic looks and feels.</p>
-                        </div>
-                    </div>
+              <div class="setting-row">
+                <div class="setting-info">
+                  <span class="setting-name">Dynamic Mood Themes</span>
+                  <span class="setting-desc"
+                    >Automatically shift background gradient to match selected
+                    mood.</span
+                  >
+                </div>
+                <label class="toggle" id="toggleDynamicThemes">
+                  <input type="checkbox" id="dynamicThemes" checked />
+                  <span class="slider"></span>
+                </label>
+              </div>
 
-                    <div class="settings-card">
-                        <!-- Theme mode -->
-                        <div class="setting-group-label">Color Theme</div>
-                        <div class="theme-picker">
-                            <label class="theme-option" data-theme-val="dark">
-                                <input type="radio" name="theme" value="dark">
-                                <div class="theme-preview dark-preview">
-                                    <div class="tp-bar"></div>
-                                    <div class="tp-card"></div>
-                                </div>
-                                <span>Dark</span>
-                            </label>
-                            <label class="theme-option" data-theme-val="light">
-                                <input type="radio" name="theme" value="light">
-                                <div class="theme-preview light-preview">
-                                    <div class="tp-bar"></div>
-                                    <div class="tp-card"></div>
-                                </div>
-                                <span>Light</span>
-                            </label>
-                            <label class="theme-option" data-theme-val="system">
-                                <input type="radio" name="theme" value="system">
-                                <div class="theme-preview system-preview">
-                                    <div class="tp-bar"></div>
-                                    <div class="tp-card"></div>
-                                </div>
-                                <span>System</span>
-                            </label>
-                        </div>
+              <div class="setting-divider"></div>
 
-                        <div class="setting-divider"></div>
+              <div class="setting-row">
+                <div class="setting-info">
+                  <span class="setting-name">UI Animations</span>
+                  <span class="setting-desc"
+                    >Enable smooth transitions and micro-animations.</span
+                  >
+                </div>
+                <label class="toggle">
+                  <input type="checkbox" id="uiAnimations" checked />
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+          </section>
 
-                        <!-- Accent color -->
-                        <div class="setting-row">
-                            <div class="setting-info">
-                                <span class="setting-name">Accent Color</span>
-                                <span class="setting-desc">Primary highlight color used across the UI.</span>
-                            </div>
-                            <div class="color-swatches" id="colorSwatches">
-                                <button class="swatch active" data-color="#1db954" style="background:#1db954" title="Spotify Green"></button>
-                                <button class="swatch" data-color="#3b82f6" style="background:#3b82f6" title="Blue"></button>
-                                <button class="swatch" data-color="#a855f7" style="background:#a855f7" title="Purple"></button>
-                                <button class="swatch" data-color="#f43f5e" style="background:#f43f5e" title="Rose"></button>
-                                <button class="swatch" data-color="#f97316" style="background:#f97316" title="Orange"></button>
-                                <button class="swatch" data-color="#eab308" style="background:#eab308" title="Yellow"></button>
-                                <input type="color" id="customColorPicker" class="custom-color-input" value="#1db954" title="Custom color">
-                            </div>
-                        </div>
+          <!-- ── MUSIC PREFERENCES ───────────────────────────────── -->
+          <section
+            class="settings-section"
+            id="music-prefs"
+            data-label="Music Preferences"
+          >
+            <div class="section-header">
+              <div class="section-icon-wrap accent-music">
+                <i class="fa-solid fa-music"></i>
+              </div>
+              <div>
+                <h2>Music Preferences</h2>
+                <p>Shape the recommendations to your taste.</p>
+              </div>
+            </div>
 
-                        <div class="setting-divider"></div>
+            <div class="settings-card">
+              <div class="setting-row">
+                <div class="setting-info">
+                  <span class="setting-name">Preferred Genres</span>
+                  <span class="setting-desc"
+                    >Select genres you enjoy most.</span
+                  >
+                </div>
+              </div>
+              <div class="genre-chips" id="genreChips">
+                <button class="chip active" data-genre="pop">Pop</button>
+                <button class="chip active" data-genre="hiphop">Hip-Hop</button>
+                <button class="chip" data-genre="rock">Rock</button>
+                <button class="chip" data-genre="rnb">R&amp;B</button>
+                <button class="chip" data-genre="electronic">Electronic</button>
+                <button class="chip" data-genre="classical">Classical</button>
+                <button class="chip" data-genre="jazz">Jazz</button>
+                <button class="chip" data-genre="lofi">Lo-fi</button>
+                <button class="chip" data-genre="country">Country</button>
+                <button class="chip" data-genre="kpop">K-Pop</button>
+                <button class="chip" data-genre="metal">Metal</button>
+                <button class="chip" data-genre="latin">Latin</button>
+              </div>
 
-                        <div class="setting-row">
-                            <div class="setting-info">
-                                <span class="setting-name">Dynamic Mood Themes</span>
-                                <span class="setting-desc">Automatically shift background gradient to match selected mood.</span>
-                            </div>
-                            <label class="toggle" id="toggleDynamicThemes">
-                                <input type="checkbox" id="dynamicThemes" checked>
-                                <span class="slider"></span>
-                            </label>
-                        </div>
+              <div class="setting-divider"></div>
 
-                        <div class="setting-divider"></div>
+              <div class="setting-row">
+                <div class="setting-info">
+                  <span class="setting-name">Favourite Artists</span>
+                  <span class="setting-desc"
+                    >Artists will be prioritised in recommendations.</span
+                  >
+                </div>
+              </div>
+              <div class="tag-input-wrap">
+                <div class="tag-list" id="artistTagList"></div>
+                <input
+                  type="text"
+                  id="artistInput"
+                  class="tag-input"
+                  placeholder="Type artist name and press Enter…"
+                />
+              </div>
 
-                        <div class="setting-row">
-                            <div class="setting-info">
-                                <span class="setting-name">UI Animations</span>
-                                <span class="setting-desc">Enable smooth transitions and micro-animations.</span>
-                            </div>
-                            <label class="toggle">
-                                <input type="checkbox" id="uiAnimations" checked>
-                                <span class="slider"></span>
-                            </label>
-                        </div>
-                    </div>
-                </section>
+              <div class="setting-divider"></div>
 
-                <!-- ── MUSIC PREFERENCES ───────────────────────────────── -->
-                <section class="settings-section" id="music-prefs" data-label="Music Preferences">
-                    <div class="section-header">
-                        <div class="section-icon-wrap accent-music">
-                            <i class="fa-solid fa-music"></i>
-                        </div>
-                        <div>
-                            <h2>Music Preferences</h2>
-                            <p>Shape the recommendations to your taste.</p>
-                        </div>
-                    </div>
+              <div class="setting-row">
+                <div class="setting-info">
+                  <span class="setting-name">Default Recommendation Count</span>
+                  <span class="setting-desc"
+                    >Number of songs shown per mood selection.</span
+                  >
+                </div>
+                <div class="stepper">
+                  <button
+                    class="stepper-btn"
+                    id="recCountMinus"
+                    aria-label="Decrease"
+                  >
+                    <i class="fa-solid fa-minus"></i>
+                  </button>
+                  <span class="stepper-val" id="recCountVal">10</span>
+                  <button
+                    class="stepper-btn"
+                    id="recCountPlus"
+                    aria-label="Increase"
+                  >
+                    <i class="fa-solid fa-plus"></i>
+                  </button>
+                </div>
+              </div>
 
-                    <div class="settings-card">
-                        <div class="setting-row">
-                            <div class="setting-info">
-                                <span class="setting-name">Preferred Genres</span>
-                                <span class="setting-desc">Select genres you enjoy most.</span>
-                            </div>
-                        </div>
-                        <div class="genre-chips" id="genreChips">
-                            <button class="chip active" data-genre="pop">Pop</button>
-                            <button class="chip active" data-genre="hiphop">Hip-Hop</button>
-                            <button class="chip" data-genre="rock">Rock</button>
-                            <button class="chip" data-genre="rnb">R&amp;B</button>
-                            <button class="chip" data-genre="electronic">Electronic</button>
-                            <button class="chip" data-genre="classical">Classical</button>
-                            <button class="chip" data-genre="jazz">Jazz</button>
-                            <button class="chip" data-genre="lofi">Lo-fi</button>
-                            <button class="chip" data-genre="country">Country</button>
-                            <button class="chip" data-genre="kpop">K-Pop</button>
-                            <button class="chip" data-genre="metal">Metal</button>
-                            <button class="chip" data-genre="latin">Latin</button>
-                        </div>
+              <div class="setting-divider"></div>
 
-                        <div class="setting-divider"></div>
+              <div class="setting-row">
+                <div class="setting-info">
+                  <span class="setting-name">Autoplay Recommendations</span>
+                  <span class="setting-desc"
+                    >Automatically start playback when a mood is selected.</span
+                  >
+                </div>
+                <label class="toggle">
+                  <input type="checkbox" id="autoplay" />
+                  <span class="slider"></span>
+                </label>
+              </div>
 
-                        <div class="setting-row">
-                            <div class="setting-info">
-                                <span class="setting-name">Favourite Artists</span>
-                                <span class="setting-desc">Artists will be prioritised in recommendations.</span>
-                            </div>
-                        </div>
-                        <div class="tag-input-wrap">
-                            <div class="tag-list" id="artistTagList"></div>
-                            <input type="text" id="artistInput" class="tag-input" placeholder="Type artist name and press Enter…">
-                        </div>
+              <div class="setting-divider"></div>
 
-                        <div class="setting-divider"></div>
+              <div class="setting-row">
+                <div class="setting-info">
+                  <span class="setting-name">Explicit Content Filter</span>
+                  <span class="setting-desc"
+                    >Hide songs with explicit lyrics from recommendations.</span
+                  >
+                </div>
+                <label class="toggle">
+                  <input type="checkbox" id="explicitFilter" />
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+          </section>
 
-                        <div class="setting-row">
-                            <div class="setting-info">
-                                <span class="setting-name">Default Recommendation Count</span>
-                                <span class="setting-desc">Number of songs shown per mood selection.</span>
-                            </div>
-                            <div class="stepper">
-                                <button class="stepper-btn" id="recCountMinus" aria-label="Decrease">
-                                    <i class="fa-solid fa-minus"></i>
-                                </button>
-                                <span class="stepper-val" id="recCountVal">10</span>
-                                <button class="stepper-btn" id="recCountPlus" aria-label="Increase">
-                                    <i class="fa-solid fa-plus"></i>
-                                </button>
-                            </div>
-                        </div>
+          <!-- ── MOOD PREFERENCES ───────────────────────────────── -->
+          <section
+            class="settings-section"
+            id="mood-prefs"
+            data-label="Mood Preferences"
+          >
+            <div class="section-header">
+              <div class="section-icon-wrap accent-mood">
+                <i class="fa-solid fa-face-smile"></i>
+              </div>
+              <div>
+                <h2>Mood Preferences</h2>
+                <p>Fine-tune how your moods drive the experience.</p>
+              </div>
+            </div>
 
-                        <div class="setting-divider"></div>
+            <div class="settings-card">
+              <div class="setting-row">
+                <div class="setting-info">
+                  <span class="setting-name">Enable Mood History</span>
+                  <span class="setting-desc"
+                    >Record which moods you select over time.</span
+                  >
+                </div>
+                <label class="toggle">
+                  <input type="checkbox" id="enableMoodHistory" checked />
+                  <span class="slider"></span>
+                </label>
+              </div>
 
-                        <div class="setting-row">
-                            <div class="setting-info">
-                                <span class="setting-name">Autoplay Recommendations</span>
-                                <span class="setting-desc">Automatically start playback when a mood is selected.</span>
-                            </div>
-                            <label class="toggle">
-                                <input type="checkbox" id="autoplay">
-                                <span class="slider"></span>
-                            </label>
-                        </div>
+              <div class="setting-divider"></div>
 
-                        <div class="setting-divider"></div>
+              <div class="setting-row">
+                <div class="setting-info">
+                  <span class="setting-name">Mood History</span>
+                  <span class="setting-desc" id="moodHistoryCount"
+                    >Loading…</span
+                  >
+                </div>
+                <button class="btn btn-danger-ghost" id="clearMoodHistoryBtn">
+                  <i class="fa-solid fa-trash-can"></i> Clear
+                </button>
+              </div>
 
-                        <div class="setting-row">
-                            <div class="setting-info">
-                                <span class="setting-name">Explicit Content Filter</span>
-                                <span class="setting-desc">Hide songs with explicit lyrics from recommendations.</span>
-                            </div>
-                            <label class="toggle">
-                                <input type="checkbox" id="explicitFilter">
-                                <span class="slider"></span>
-                            </label>
-                        </div>
-                    </div>
-                </section>
+              <div class="setting-divider"></div>
 
-                <!-- ── MOOD PREFERENCES ───────────────────────────────── -->
-                <section class="settings-section" id="mood-prefs" data-label="Mood Preferences">
-                    <div class="section-header">
-                        <div class="section-icon-wrap accent-mood">
-                            <i class="fa-solid fa-face-smile"></i>
-                        </div>
-                        <div>
-                            <h2>Mood Preferences</h2>
-                            <p>Fine-tune how your moods drive the experience.</p>
-                        </div>
-                    </div>
+              <div class="setting-row">
+                <div class="setting-info">
+                  <span class="setting-name">Smart Recommendations</span>
+                  <span class="setting-desc"
+                    >Learn from your history to improve suggestions.</span
+                  >
+                </div>
+                <label class="toggle">
+                  <input type="checkbox" id="smartRec" checked />
+                  <span class="slider"></span>
+                </label>
+              </div>
 
-                    <div class="settings-card">
-                        <div class="setting-row">
-                            <div class="setting-info">
-                                <span class="setting-name">Enable Mood History</span>
-                                <span class="setting-desc">Record which moods you select over time.</span>
-                            </div>
-                            <label class="toggle">
-                                <input type="checkbox" id="enableMoodHistory" checked>
-                                <span class="slider"></span>
-                            </label>
-                        </div>
+              <div class="setting-divider"></div>
 
-                        <div class="setting-divider"></div>
+              <div class="setting-row">
+                <div class="setting-info">
+                  <span class="setting-name">Default Mood</span>
+                  <span class="setting-desc"
+                    >Mood pre-selected when you open the app.</span
+                  >
+                </div>
+                <select class="settings-select" id="defaultMood">
+                  <option value="">None</option>
+                  <option value="happy">😊 Happy</option>
+                  <option value="sad">😔 Sad</option>
+                  <option value="relaxed">😌 Relaxed</option>
+                  <option value="motivated">💪 Motivated</option>
+                  <option value="party">🎉 Party</option>
+                  <option value="study">📚 Study</option>
+                  <option value="romantic">❤️ Romantic</option>
+                  <option value="roadtrip">🚗 Road Trip</option>
+                  <option value="rainy">🌧️ Rainy Day</option>
+                  <option value="chill">😎 Chill</option>
+                </select>
+              </div>
+            </div>
+          </section>
 
-                        <div class="setting-row">
-                            <div class="setting-info">
-                                <span class="setting-name">Mood History</span>
-                                <span class="setting-desc" id="moodHistoryCount">Loading…</span>
-                            </div>
-                            <button class="btn btn-danger-ghost" id="clearMoodHistoryBtn">
-                                <i class="fa-solid fa-trash-can"></i> Clear
-                            </button>
-                        </div>
+          <!-- ── FAVORITES & DATA ───────────────────────────────── -->
+          <section
+            class="settings-section"
+            id="favorites-data"
+            data-label="Favorites & Data"
+          >
+            <div class="section-header">
+              <div class="section-icon-wrap accent-fav">
+                <i class="fa-solid fa-heart"></i>
+              </div>
+              <div>
+                <h2>Favorites &amp; Data</h2>
+                <p>Manage your saved songs and app data.</p>
+              </div>
+            </div>
 
-                        <div class="setting-divider"></div>
+            <div class="settings-card">
+              <!-- Stats row -->
+              <div class="data-stats-grid">
+                <div class="stat-card">
+                  <i class="fa-solid fa-heart"></i>
+                  <span class="stat-num" id="favCount">0</span>
+                  <span class="stat-label">Favourites</span>
+                </div>
+                <div class="stat-card">
+                  <i class="fa-solid fa-clock-rotate-left"></i>
+                  <span class="stat-num" id="histCount">0</span>
+                  <span class="stat-label">History Items</span>
+                </div>
+                <div class="stat-card">
+                  <i class="fa-solid fa-database"></i>
+                  <span class="stat-num" id="storageSize">0 KB</span>
+                  <span class="stat-label">Storage Used</span>
+                </div>
+              </div>
 
-                        <div class="setting-row">
-                            <div class="setting-info">
-                                <span class="setting-name">Smart Recommendations</span>
-                                <span class="setting-desc">Learn from your history to improve suggestions.</span>
-                            </div>
-                            <label class="toggle">
-                                <input type="checkbox" id="smartRec" checked>
-                                <span class="slider"></span>
-                            </label>
-                        </div>
+              <div class="setting-divider"></div>
 
-                        <div class="setting-divider"></div>
+              <div class="setting-row">
+                <div class="setting-info">
+                  <span class="setting-name">Export Favourites</span>
+                  <span class="setting-desc"
+                    >Download your favourite songs as a JSON file.</span
+                  >
+                </div>
+                <button class="btn btn-accent" id="exportFavBtn">
+                  <i class="fa-solid fa-file-export"></i> Export
+                </button>
+              </div>
 
-                        <div class="setting-row">
-                            <div class="setting-info">
-                                <span class="setting-name">Default Mood</span>
-                                <span class="setting-desc">Mood pre-selected when you open the app.</span>
-                            </div>
-                            <select class="settings-select" id="defaultMood">
-                                <option value="">None</option>
-                                <option value="happy">😊 Happy</option>
-                                <option value="sad">😔 Sad</option>
-                                <option value="relaxed">😌 Relaxed</option>
-                                <option value="motivated">💪 Motivated</option>
-                                <option value="party">🎉 Party</option>
-                                <option value="study">📚 Study</option>
-                                <option value="romantic">❤️ Romantic</option>
-                                <option value="roadtrip">🚗 Road Trip</option>
-                                <option value="rainy">🌧️ Rainy Day</option>
-                                <option value="chill">😎 Chill</option>
-                            </select>
-                        </div>
-                    </div>
-                </section>
+              <div class="setting-divider"></div>
 
-                <!-- ── FAVORITES & DATA ───────────────────────────────── -->
-                <section class="settings-section" id="favorites-data" data-label="Favorites & Data">
-                    <div class="section-header">
-                        <div class="section-icon-wrap accent-fav">
-                            <i class="fa-solid fa-heart"></i>
-                        </div>
-                        <div>
-                            <h2>Favorites &amp; Data</h2>
-                            <p>Manage your saved songs and app data.</p>
-                        </div>
-                    </div>
+              <div class="setting-row">
+                <div class="setting-info">
+                  <span class="setting-name">Import Favourites</span>
+                  <span class="setting-desc"
+                    >Restore favourites from a previously exported JSON
+                    file.</span
+                  >
+                </div>
+                <label class="btn btn-ghost import-label">
+                  <i class="fa-solid fa-file-import"></i> Import
+                  <input
+                    type="file"
+                    id="importFavInput"
+                    accept=".json"
+                    style="display: none"
+                  />
+                </label>
+              </div>
 
-                    <div class="settings-card">
-                        <!-- Stats row -->
-                        <div class="data-stats-grid">
-                            <div class="stat-card">
-                                <i class="fa-solid fa-heart"></i>
-                                <span class="stat-num" id="favCount">0</span>
-                                <span class="stat-label">Favourites</span>
-                            </div>
-                            <div class="stat-card">
-                                <i class="fa-solid fa-clock-rotate-left"></i>
-                                <span class="stat-num" id="histCount">0</span>
-                                <span class="stat-label">History Items</span>
-                            </div>
-                            <div class="stat-card">
-                                <i class="fa-solid fa-database"></i>
-                                <span class="stat-num" id="storageSize">0 KB</span>
-                                <span class="stat-label">Storage Used</span>
-                            </div>
-                        </div>
+              <div class="setting-divider"></div>
 
-                        <div class="setting-divider"></div>
+              <div class="setting-row">
+                <div class="setting-info">
+                  <span class="setting-name">Clear Favourites</span>
+                  <span class="setting-desc"
+                    >Remove all saved favourite songs.</span
+                  >
+                </div>
+                <button class="btn btn-danger-ghost" id="clearFavBtn">
+                  <i class="fa-solid fa-trash-can"></i> Clear
+                </button>
+              </div>
 
-                        <div class="setting-row">
-                            <div class="setting-info">
-                                <span class="setting-name">Export Favourites</span>
-                                <span class="setting-desc">Download your favourite songs as a JSON file.</span>
-                            </div>
-                            <button class="btn btn-accent" id="exportFavBtn">
-                                <i class="fa-solid fa-file-export"></i> Export
-                            </button>
-                        </div>
+              <div class="setting-divider"></div>
 
-                        <div class="setting-divider"></div>
+              <div class="setting-row">
+                <div class="setting-info">
+                  <span class="setting-name">Reset Recommendation Data</span>
+                  <span class="setting-desc"
+                    >Clear all recommendation history and learning data.</span
+                  >
+                </div>
+                <button class="btn btn-danger-ghost" id="resetRecDataBtn">
+                  <i class="fa-solid fa-rotate-right"></i> Reset
+                </button>
+              </div>
+            </div>
+          </section>
 
-                        <div class="setting-row">
-                            <div class="setting-info">
-                                <span class="setting-name">Import Favourites</span>
-                                <span class="setting-desc">Restore favourites from a previously exported JSON file.</span>
-                            </div>
-                            <label class="btn btn-ghost import-label">
-                                <i class="fa-solid fa-file-import"></i> Import
-                                <input type="file" id="importFavInput" accept=".json" style="display:none">
-                            </label>
-                        </div>
+          <!-- ── NOTIFICATIONS ──────────────────────────────────── -->
+          <section
+            class="settings-section"
+            id="notifications"
+            data-label="Notifications"
+          >
+            <div class="section-header">
+              <div class="section-icon-wrap accent-notif">
+                <i class="fa-solid fa-bell"></i>
+              </div>
+              <div>
+                <h2>Notifications</h2>
+                <p>Control how MoodMusic keeps you in the loop.</p>
+              </div>
+            </div>
 
-                        <div class="setting-divider"></div>
+            <div class="settings-card">
+              <div class="setting-row">
+                <div class="setting-info">
+                  <span class="setting-name">Daily Music Suggestion</span>
+                  <span class="setting-desc"
+                    >Receive a curated daily playlist suggestion.</span
+                  >
+                </div>
+                <label class="toggle">
+                  <input type="checkbox" id="dailySuggestion" />
+                  <span class="slider"></span>
+                </label>
+              </div>
 
-                        <div class="setting-row">
-                            <div class="setting-info">
-                                <span class="setting-name">Clear Favourites</span>
-                                <span class="setting-desc">Remove all saved favourite songs.</span>
-                            </div>
-                            <button class="btn btn-danger-ghost" id="clearFavBtn">
-                                <i class="fa-solid fa-trash-can"></i> Clear
-                            </button>
-                        </div>
+              <div class="setting-divider"></div>
 
-                        <div class="setting-divider"></div>
+              <div class="setting-row">
+                <div class="setting-info">
+                  <span class="setting-name">Mood Reminder</span>
+                  <span class="setting-desc"
+                    >Gentle reminders to check in with your mood.</span
+                  >
+                </div>
+                <label class="toggle">
+                  <input type="checkbox" id="moodReminder" />
+                  <span class="slider"></span>
+                </label>
+              </div>
 
-                        <div class="setting-row">
-                            <div class="setting-info">
-                                <span class="setting-name">Reset Recommendation Data</span>
-                                <span class="setting-desc">Clear all recommendation history and learning data.</span>
-                            </div>
-                            <button class="btn btn-danger-ghost" id="resetRecDataBtn">
-                                <i class="fa-solid fa-rotate-right"></i> Reset
-                            </button>
-                        </div>
-                    </div>
-                </section>
+              <div class="setting-divider"></div>
 
-                <!-- ── NOTIFICATIONS ──────────────────────────────────── -->
-                <section class="settings-section" id="notifications" data-label="Notifications">
-                    <div class="section-header">
-                        <div class="section-icon-wrap accent-notif">
-                            <i class="fa-solid fa-bell"></i>
-                        </div>
-                        <div>
-                            <h2>Notifications</h2>
-                            <p>Control how MoodMusic keeps you in the loop.</p>
-                        </div>
-                    </div>
+              <div class="setting-row">
+                <div class="setting-info">
+                  <span class="setting-name">New Playlist Alerts</span>
+                  <span class="setting-desc"
+                    >Get notified when new mood playlists are available.</span
+                  >
+                </div>
+                <label class="toggle">
+                  <input type="checkbox" id="playlistAlerts" checked />
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+          </section>
 
-                    <div class="settings-card">
-                        <div class="setting-row">
-                            <div class="setting-info">
-                                <span class="setting-name">Daily Music Suggestion</span>
-                                <span class="setting-desc">Receive a curated daily playlist suggestion.</span>
-                            </div>
-                            <label class="toggle">
-                                <input type="checkbox" id="dailySuggestion">
-                                <span class="slider"></span>
-                            </label>
-                        </div>
+          <!-- ── PRIVACY ─────────────────────────────────────────── -->
+          <section class="settings-section" id="privacy" data-label="Privacy">
+            <div class="section-header">
+              <div class="section-icon-wrap accent-priv">
+                <i class="fa-solid fa-shield-halved"></i>
+              </div>
+              <div>
+                <h2>Privacy & AI Settings</h2>
+                <p>
+                  Your data stays on your device. Configure AI mood detection.
+                </p>
+              </div>
+            </div>
 
-                        <div class="setting-divider"></div>
+            <div class="settings-card">
+              <!-- Privacy info banner -->
+              <div class="privacy-banner">
+                <i class="fa-solid fa-lock"></i>
+                <div>
+                  <strong>Local First Privacy</strong>
+                  <p>
+                    MoodMusic stores your settings, favourites, and history
+                    locally in your browser. For AI Mood Detection, images are
+                    sent to Gemini Vision for analysis using your personal API
+                    token.
+                  </p>
+                </div>
+              </div>
 
-                        <div class="setting-row">
-                            <div class="setting-info">
-                                <span class="setting-name">Mood Reminder</span>
-                                <span class="setting-desc">Gentle reminders to check in with your mood.</span>
-                            </div>
-                            <label class="toggle">
-                                <input type="checkbox" id="moodReminder">
-                                <span class="slider"></span>
-                            </label>
-                        </div>
+              <div class="setting-divider"></div>
 
-                        <div class="setting-divider"></div>
+              <!-- Gemini API Key -->
+              <div class="setting-row">
+                <div class="setting-info">
+                  <span class="setting-name"> Gemini API Key </span>
+                  <span class="setting-desc">
+                    Required for Gemini Vision mood detection. Your token is
+                    stored locally on this device only.
+                  </span>
+                </div>
+              </div>
 
-                        <div class="setting-row">
-                            <div class="setting-info">
-                                <span class="setting-name">New Playlist Alerts</span>
-                                <span class="setting-desc">Get notified when new mood playlists are available.</span>
-                            </div>
-                            <label class="toggle">
-                                <input type="checkbox" id="playlistAlerts" checked>
-                                <span class="slider"></span>
-                            </label>
-                        </div>
-                    </div>
-                </section>
+              <div style="padding: 0 20px 20px">
+                <input
+                  type="password"
+                  id="geminiApiKey"
+                  class="tag-input"
+                  placeholder="Paste Gemini API Key"
+                />
 
-                <!-- ── PRIVACY ─────────────────────────────────────────── -->
-                <section class="settings-section" id="privacy" data-label="Privacy">
-                    <div class="section-header">
-                        <div class="section-icon-wrap accent-priv">
-                            <i class="fa-solid fa-shield-halved"></i>
-                        </div>
-                        <div>
-                            <h2>Privacy</h2>
-                            <p>Your data stays on your device. Always.</p>
-                        </div>
-                    </div>
+                <div style="margin-top: 10px">
+                  <a
+                    href="https://aistudio.google.com/app/apikey"
+                    target="_blank"
+                    class="btn btn-accent"
+                  >
+                    <i class="fa-solid fa-key"></i>
+                    Get Token
+                  </a>
+                </div>
+              </div>
 
-                    <div class="settings-card">
-                        <!-- Privacy info banner -->
-                        <div class="privacy-banner">
-                            <i class="fa-solid fa-lock"></i>
-                            <div>
-                                <strong>100% Local Storage</strong>
-                                <p>MoodMusic never sends your data to any server. All preferences, history, and favourites are stored exclusively in your browser's localStorage.</p>
-                            </div>
-                        </div>
+              <div class="setting-divider"></div>
 
-                        <div class="setting-divider"></div>
+              <!-- Local Storage Status -->
+              <div class="setting-row">
+                <div class="setting-info">
+                  <span class="setting-name">Local Storage Status</span>
+                  <span class="setting-desc" id="localStorageStatus">
+                    Checking…
+                  </span>
+                </div>
+                <span class="status-badge" id="localStorageBadge">—</span>
+              </div>
 
-                        <div class="setting-row">
-                            <div class="setting-info">
-                                <span class="setting-name">Local Storage Status</span>
-                                <span class="setting-desc" id="localStorageStatus">Checking…</span>
-                            </div>
-                            <span class="status-badge" id="localStorageBadge">—</span>
-                        </div>
+              <div class="setting-divider"></div>
 
-                        <div class="setting-divider"></div>
+              <!-- Clear Cache -->
+              <div class="setting-row">
+                <div class="setting-info">
+                  <span class="setting-name">Clear Cached Data</span>
+                  <span class="setting-desc">
+                    Remove recommendation cache but keep your preferences.
+                  </span>
+                </div>
+                <button class="btn btn-ghost" id="clearCacheBtn">
+                  <i class="fa-solid fa-broom"></i>
+                  Clear Cache
+                </button>
+              </div>
 
-                        <div class="setting-row">
-                            <div class="setting-info">
-                                <span class="setting-name">Clear Cached Data</span>
-                                <span class="setting-desc">Remove recommendation cache but keep your preferences.</span>
-                            </div>
-                            <button class="btn btn-ghost" id="clearCacheBtn">
-                                <i class="fa-solid fa-broom"></i> Clear Cache
-                            </button>
-                        </div>
+              <div class="setting-divider"></div>
 
-                        <div class="setting-divider"></div>
+              <!-- Delete All -->
+              <div class="setting-row danger-row">
+                <div class="setting-info">
+                  <span class="setting-name danger-text">
+                    Delete All User Data
+                  </span>
+                  <span class="setting-desc">
+                    Permanently remove every piece of stored data. This cannot
+                    be undone.
+                  </span>
+                </div>
+                <button class="btn btn-danger" id="deleteAllDataBtn">
+                  <i class="fa-solid fa-skull-crossbones"></i>
+                  Delete All
+                </button>
+              </div>
+            </div>
+          </section>
 
-                        <div class="setting-row danger-row">
-                            <div class="setting-info">
-                                <span class="setting-name danger-text">Delete All User Data</span>
-                                <span class="setting-desc">Permanently remove every piece of stored data. This cannot be undone.</span>
-                            </div>
-                            <button class="btn btn-danger" id="deleteAllDataBtn">
-                                <i class="fa-solid fa-skull-crossbones"></i> Delete All
-                            </button>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- bottom spacer -->
-                <div style="height:60px"></div>
-
-            </div><!-- /settings-scroll -->
-        </div><!-- /settings-main -->
-    </div><!-- /app-shell -->
+          <!-- bottom spacer -->
+          <div style="height: 60px"></div>
+        </div>
+        <!-- /settings-scroll -->
+      </div>
+      <!-- /settings-main -->
+    </div>
+    <!-- /app-shell -->
 
     <!-- ===== CONFIRMATION MODAL ===== -->
-    <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-        <div class="modal-card">
-            <div class="modal-icon" id="modalIcon"><i class="fa-solid fa-triangle-exclamation"></i></div>
-            <h3 id="modalTitle">Are you sure?</h3>
-            <p id="modalBody">This action cannot be undone.</p>
-            <div class="modal-actions">
-                <button class="btn btn-ghost" id="modalCancelBtn">Cancel</button>
-                <button class="btn btn-danger" id="modalConfirmBtn">Confirm</button>
-            </div>
+    <div
+      class="modal-overlay"
+      id="modalOverlay"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modalTitle"
+    >
+      <div class="modal-card">
+        <div class="modal-icon" id="modalIcon">
+          <i class="fa-solid fa-triangle-exclamation"></i>
         </div>
+        <h3 id="modalTitle">Are you sure?</h3>
+        <p id="modalBody">This action cannot be undone.</p>
+        <div class="modal-actions">
+          <button class="btn btn-ghost" id="modalCancelBtn">Cancel</button>
+          <button class="btn btn-danger" id="modalConfirmBtn">Confirm</button>
+        </div>
+      </div>
     </div>
 
     <!-- ===== TOAST ===== -->
-    <div class="settings-toast" id="settingsToast" role="status" aria-live="polite">
-        <i class="fa-solid fa-circle-check" id="toastIcon"></i>
-        <span id="toastMsg">Settings saved!</span>
+    <div
+      class="settings-toast"
+      id="settingsToast"
+      role="status"
+      aria-live="polite"
+    >
+      <i class="fa-solid fa-circle-check" id="toastIcon"></i>
+      <span id="toastMsg">Settings saved!</span>
     </div>
 
     <script src="/public/Mood_Based_Music_Recommender/settings.js"></script>
-</body>
+  </body>
 </html>

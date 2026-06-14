@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Typer - Relaxing Typing Test</title>
-
+    <title>Typer - Advanced Typing Test</title>
     <link rel="stylesheet" href="style.css">
+<<<<<<< HEAD
 
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -356,9 +356,11 @@
             .diff-btn .diff-desc { text-align: left; }
         }
     </style>
+=======
+    <script src="script.js" defer></script>
+>>>>>>> upstream/main
 </head>
 <body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter,system-ui,sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
 
 <div class="container">
     <div class="header">
@@ -366,52 +368,53 @@
         <button class="theme-toggle" id="themeToggle">🌙</button>
     </div>
 
-    <!-- Difficulty Selector -->
-    <div class="difficulty-selector" id="difficultySelector">
-        <div class="difficulty-label">Choose Difficulty</div>
-        <div class="diff-buttons">
-            <button class="diff-btn" data-diff="easy">
-                <span class="diff-icon">🟢</span>
-                <span class="diff-name">Easy</span>
-                <span class="diff-desc">Short sentences & common words</span>
-            </button>
-            <button class="diff-btn" data-diff="medium">
-                <span class="diff-icon">🟡</span>
-                <span class="diff-name">Medium</span>
-                <span class="diff-desc">Moderate length & mixed vocabulary</span>
-            </button>
-            <button class="diff-btn" data-diff="hard">
-                <span class="diff-icon">🔴</span>
-                <span class="diff-name">Hard</span>
-                <span class="diff-desc">Complex text, numbers & special chars</span>
-            </button>
+    <div class="selectors-grid" id="selectorsPanel">
+        <div class="selector-panel">
+            <div class="panel-label">Difficulty</div>
+            <div class="options-flex">
+                <button class="opt-btn" data-diff="easy">Easy</button>
+                <button class="opt-btn" data-diff="medium">Medium</button>
+                <button class="opt-btn" data-diff="hard">Hard</button>
+            </div>
+        </div>
+        <div class="selector-panel">
+            <div class="panel-label">Game Mode</div>
+            <div class="options-flex">
+                <button class="opt-btn" data-mode="regular">Regular</button>
+                <button class="opt-btn" data-mode="sudden">Sudden Death</button>
+                <button class="opt-btn" data-mode="countdown">Countdown</button>
+            </div>
         </div>
     </div>
 
-    <div class="test-area">
+    <div class="test-area" id="testAreaContainer">
         <div id="gameContent">
             <div class="test-area-header">
-                <span class="difficulty-badge" id="difficultyBadge"></span>
+                <div class="badge-container">
+                    <span class="badge" id="difficultyBadge"></span>
+                    <span class="badge" id="modeBadge"></span>
+                </div>
             </div>
 
-            <div class="text-display" id="textDisplay"></div>
+            <div class="text-container-wrapper" id="textWrapper">
+                <div class="typing-caret blinking" id="caret"></div>
+                <div class="text-display" id="textDisplay"></div>
+            </div>
 
-            <input
-                type="text"
-                id="userInput"
-                placeholder="Click here and start typing..."
-                autocomplete="off"
-                spellcheck="false"
-            >
+            <input type="text" id="userInput" autocomplete="off" spellcheck="false">
+
+            <div class="input-focus-overlay" id="focusOverlay">
+                <button class="action-btn btn-start">Click to Focus & Type</button>
+            </div>
 
             <div class="controls">
-                <button class="btn-start" id="startBtn">Start Test</button>
-                <button class="btn-reset" id="resetBtn">Reset</button>
+                <button class="action-btn btn-start" id="startBtn">Start Test</button>
+                <button class="action-btn btn-reset" id="resetBtn">Reset</button>
             </div>
 
             <div class="stats hidden" id="stats">
                 <div class="stat-item">
-                    <div class="stat-label">Time</div>
+                    <div class="stat-label" id="timerLabel">Time</div>
                     <div class="stat-value" id="timerDisplay">0:00</div>
                 </div>
                 <div class="stat-item">
@@ -423,15 +426,14 @@
                     <div class="stat-value" id="accuracyDisplay">0%</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-label">Typed</div>
-                    <div class="stat-value" id="typedDisplay">0</div>
+                    <div class="stat-label">Errors</div>
+                    <div class="stat-value" id="errorDisplay">0</div>
                 </div>
             </div>
         </div>
 
         <div class="results" id="results">
             <h2>Test Complete! 🎉</h2>
-            <span class="results-difficulty" id="finalDifficulty"></span>
             <div class="results-grid">
                 <div class="result-item">
                     <div class="result-label">Words Per Minute</div>
@@ -442,21 +444,25 @@
                     <div class="result-value" id="finalAccuracy">0%</div>
                 </div>
                 <div class="result-item">
-                    <div class="result-label">Time</div>
+                    <div class="result-label">Time Spent</div>
                     <div class="result-value" id="finalTime">0s</div>
                 </div>
                 <div class="result-item">
-                    <div class="result-label">Errors</div>
+                    <div class="result-label">Total Errors</div>
                     <div class="result-value" id="finalErrors">0</div>
                 </div>
             </div>
+
+            <div class="graph-container">
+                <svg class="graph-svg" id="analyticsGraph"></svg>
+            </div>
+
             <div class="controls">
-                <button class="btn-start" id="retryBtn">Try Again</button>
+                <button class="action-btn btn-start" id="retryBtn">Try Again</button>
             </div>
         </div>
     </div>
 </div>
 
-<script src="script.js" defer></script>
 </body>
 </html>

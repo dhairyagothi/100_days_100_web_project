@@ -40,9 +40,9 @@ body{
 
     display:flex;
     justify-content:center;
-    align-items:center;
+    align-items:flex-start;
 
-    padding:30px;
+    padding:90px 30px 40px;
 
     overflow-x:hidden;
 
@@ -80,7 +80,7 @@ body::after{
     position:relative;
     z-index:2;
 
-    width:100%;
+    width:50%;
     max-width:1400px;
 
     display:grid;
@@ -111,7 +111,7 @@ body::after{
     padding:36px;
 
     position:relative;
-    overflow:hidden;
+    overflow:visible;
 
     display:flex;
     flex-direction:column;
@@ -159,7 +159,7 @@ body::after{
 }
 
 .container header{
-    font-size:clamp(3rem,5vw,5rem);
+    font-size:clamp(1.8rem,3vw,3.5rem);
     font-weight:800;
 
     line-height:1;
@@ -215,6 +215,14 @@ input[type="text"]{
     outline:none;
 
     transition:.25s ease;
+
+    position:relative;
+    z-index:10;
+}
+
+select option{
+    background: #0f172a;
+    color: white;
 }
 
 select:focus,
@@ -385,7 +393,8 @@ input[type="text"]:focus{
 }
 
 .analytics-panel{
-    width:100%;
+    width:40%;
+    margin: 2rem;
 
     display:flex;
     flex-direction:column;
@@ -760,4 +769,29 @@ input[type="text"]:focus{
         font-size:3rem;
     }
 
+}
+
+
+.selectors-row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+    position:relative;
+    z-index:10;
+}
+
+.project-back-button{
+    position:fixed;
+    left:18px;
+    top:18px;
+    padding:8px 16px;
+    border-radius:10px;
+    background:rgba(255,255,255,0.10);
+    border:1px solid rgba(255,255,255,0.15);
+    color:#e2e8f0;
+    text-decoration:none;
+    z-index:9999;
+    font-weight:700;
+    font-family:'Inter', system-ui, sans-serif;
+    backdrop-filter:blur(10px);
 }
