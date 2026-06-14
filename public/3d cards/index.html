@@ -43,6 +43,14 @@
     <nav class="controls glass-panel" aria-label="Gallery Controls">
       <button
         class="ctrl-btn"
+        id="prevBtn"
+        aria-label="Previous card"
+      >
+        <span class="btn-label">Previous Card</span>
+      </button>
+
+      <button
+        class="ctrl-btn"
         id="directionBtn"
         aria-label="Reverse gallery rotation"
       >
@@ -57,11 +65,24 @@
         <span class="btn-label">Pause Rotation</span>
       </button>
 
+      <button
+        class="ctrl-btn"
+        id="nextBtn"
+        aria-label="Next card"
+      >
+        <span class="btn-label">Next Card</span>
+      </button>
+
       <button class="ctrl-btn" id="themeBtn" aria-label="Switch theme">
         <span class="btn-label">Light Mode</span>
       </button>
+      <button class="ctrl-btn" id="voiceBtn" aria-label="Enable voice control">
+        <span class="btn-label">🎤 Voice Control</span>
+      </button>
     </nav>
-
+      <div id="voiceStatus" class="voice-status">
+        Voice Control Inactive
+      </div>
     <script src="script.js"></script>
   </body>
 </html>

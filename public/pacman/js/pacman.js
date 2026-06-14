@@ -303,8 +303,34 @@ function testGhostsPacman() {
   testGhostPacman("clyde");
 }
 function testGhostPacman(ghost) {
-  eval("var positionX = GHOST_" + ghost.toUpperCase() + "_POSITION_X");
-  eval("var positionY = GHOST_" + ghost.toUpperCase() + "_POSITION_Y");
+  var ghostKey = ghost.toUpperCase();
+  var positionX, positionY, state;
+
+  // Access ghost state via direct references instead of eval()
+  switch (ghostKey) {
+    case 'BLINKY':
+      positionX = GHOST_BLINKY_POSITION_X;
+      positionY = GHOST_BLINKY_POSITION_Y;
+      state = GHOST_BLINKY_STATE;
+      break;
+    case 'PINKY':
+      positionX = GHOST_PINKY_POSITION_X;
+      positionY = GHOST_PINKY_POSITION_Y;
+      state = GHOST_PINKY_STATE;
+      break;
+    case 'INKY':
+      positionX = GHOST_INKY_POSITION_X;
+      positionY = GHOST_INKY_POSITION_Y;
+      state = GHOST_INKY_STATE;
+      break;
+    case 'CLYDE':
+      positionX = GHOST_CLYDE_POSITION_X;
+      positionY = GHOST_CLYDE_POSITION_Y;
+      state = GHOST_CLYDE_STATE;
+      break;
+    default:
+      return;
+  }
 
   if (
     positionX <= PACMAN_POSITION_X + PACMAN_GHOST_GAP &&
@@ -312,7 +338,6 @@ function testGhostPacman(ghost) {
     positionY <= PACMAN_POSITION_Y + PACMAN_GHOST_GAP &&
     positionY >= PACMAN_POSITION_Y - PACMAN_GHOST_GAP
   ) {
-    eval("var state = GHOST_" + ghost.toUpperCase() + "_STATE");
     if (state === 0) {
       killPacman();
     } else if (state === 1) {

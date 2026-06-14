@@ -9,6 +9,7 @@
   padding-top: 5px;
   transition: width 0.3s ease, left 0.3s ease;
   overflow-x: hidden;
+  margin-right: 100px;
 }
 
 .sidebar-link {
@@ -38,13 +39,13 @@
   font-weight: 400;
   margin-top: 6px;
   text-align: center;
-  opacity: 1;
+  opacity: 0;
   max-width: none;
   white-space: nowrap;
 }
 
 .sidebar {
-  width: 120px;
+  width: 80px;
 }
 
 .sidebar-link div {
@@ -73,7 +74,7 @@ body.sidebar-expanded .sidebar-link {
   .sidebar {
     left: -240px;
     width: 240px;
-    height: calc(100vh - 55px);
+    height: calc(100vh - 50px);
   }
 
   body.sidebar-expanded .sidebar {

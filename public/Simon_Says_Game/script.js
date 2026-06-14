@@ -14,6 +14,11 @@ let sequenceInterval = null; // store Simon sequence interval
 const screens = document.querySelectorAll('.screen');
 const h2 = document.querySelector("h2");
 const highScoreText = document.getElementById("highscore");
+const modal = document.getElementById("game-modal");
+const modalTitle = document.getElementById("modal-title");
+const modalScore = document.getElementById("modal-score");
+const modalHighScore = document.getElementById("modal-highscore");
+const modalBtn = document.getElementById("modal-btn");
 const strictToggle = document.getElementById("strict-toggle");
 const themeToggle = document.getElementById("theme-toggle");
 const startBtn = document.getElementById("start-btn");
@@ -54,6 +59,18 @@ function startGame() {
 }
 
 function levelUp() {
+  if (level === 20) {
+    updateHighScore();
+    
+    showModal(
+      "🎉 Congratulations!",
+      level,
+      "Play Again"
+    );
+    
+    resetGame();
+    return;
+  }
   userSeq = [];
   level++;
   flashSpeed = Math.max(250, 600 - level * 30);
@@ -165,10 +182,14 @@ function stopGame() {
 }
 
 function gameOver() {
-  board.classList.add("shake");
-  board.addEventListener("animationend", () => board.classList.remove("shake"), { once: true });
-  h2.innerHTML = `💀 Game Over! Score: <b>${level}</b>`;
   updateHighScore();
+
+  showModal(
+    "💀 Game Over!",
+    level,
+    "Restart"
+  );
+
   resetGame();
 }
 
@@ -193,6 +214,20 @@ function btnPress() {
 
   checkAns(userSeq.length - 1);
 }
+
+function showModal(title, score, buttonText) {
+  modalTitle.innerText = title;
+  modalScore.innerText = `Final Score: ${score}`;
+  modalHighScore.innerText = `Highest Score: ${highScore}`;
+  modalBtn.innerText = buttonText;
+
+  modal.classList.remove("hidden");
+}
+
+modalBtn.addEventListener("click", () => {
+  modal.classList.add("hidden");
+  startGame();
+});
 
 function resetGame() {
   started = false;
