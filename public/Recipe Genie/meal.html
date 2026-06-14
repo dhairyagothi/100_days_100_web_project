@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recipe Genie — Recipe Details</title>
+  
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-[#fffaf5] text-stone-800 antialiased selection:bg-orange-100 selection:text-orange-800 min-h-screen flex flex-col">
+
+  <main class="blur-transition flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 md:pt-12 pb-20">
+    
+    <div class="flex items-center justify-between mb-10">
+      <button onclick="window.history.back()" class="flex items-center justify-center w-12 h-12 rounded-full bg-white border border-stone-200 text-stone-600 hover:text-orange-500 hover:border-orange-200 shadow-sm transition-all duration-200 active:scale-95 group cursor-pointer" aria-label="Go back">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5 transform group-hover:-translate-x-0.5 transition-transform">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+        </svg>
+      </button>
+
+      <a href="home.html" class="text-xs font-bold text-orange-500 uppercase tracking-wider bg-orange-50 border border-orange-100 px-4 py-2 rounded-xl shadow-sm no-underline hover:bg-orange-100 transition-colors">
+        Back To Dashboard 🏠
+      </a>
+    </div>
+
+    <div id="recipeContainer" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+      
+      <div class="lg:col-span-5 space-y-6 sticky top-24">
+        <div class="relative overflow-hidden rounded-[2.5rem] shadow-2xl border border-stone-200/40 aspect-square lg:aspect-[4/3] xl:aspect-square bg-stone-100">
+          <img id="mealImage" src="" alt="" class="w-full h-full object-cover">
+        </div>
+
+        <div class="flex flex-wrap gap-3">
+          <span id="mealCategoryTag" class="bg-orange-500 text-white font-semibold text-xs px-4 py-2 rounded-xl shadow-sm tracking-wide uppercase"></span>
+          <span id="mealAreaTag" class="bg-stone-800 text-stone-100 font-medium text-xs px-4 py-2 rounded-xl shadow-sm tracking-wide uppercase"></span>
+          <a id="mealYoutubeLink" href="" target="_blank" class="hidden inline-flex items-center space-x-1.5 bg-red-600 hover:bg-red-700 text-white font-medium text-xs px-4 py-2 rounded-xl shadow-sm tracking-wide uppercase no-underline transition-colors">
+            <span>Watch Video</span>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16" class="w-3.5 h-3.5">
+              <path d="M8.051 1.999h.089c.822.003 4.987.033 6.11.335a2.01 2.01 0 0 1 1.415 1.42c.101.38.172.883.22 1.402l.01.104.022.26.008.104c.065.914.073 1.77.074 1.957v.075c-.001.186-.01 1.042-.074 1.957l-.008.104-.022.26-.01.104c-.048.519-.119 1.023-.22 1.402a2.01 2.01 0 0 1-1.415 1.42c-1.16.312-5.569.334-6.18.335h-.142c-.309 0-1.587-.006-2.927-.052l-.17-.006-.087-.004-.171-.007-.171-.007c-1.11-.049-2.167-.128-2.654-.26a2.007 2.007 0 0 1-1.415-1.419c-.111-.417-.185-.986-.235-1.558L.09 9.82l-.008-.104A31.4 31.4 0 0 1 0 7.68v-.123c.002-.215.01-.958.064-1.778l.007-.103.003-.052.008-.104.022-.26.01-.104c.048-.519.119-1.023.22-1.402A2.007 2.007 0 0 1 1.415 2.33c.436-.117 1.226-.196 2.122-.25l.17-.011.171-.007.087-.004.17-.006c1.341-.046 2.62-.052 2.928-.052zM6.93 10.888l4.162-2.458a.11.11 0 0 0 0-.19L6.93 5.783a.11.11 0 0 0-.165.096v4.914a.11.11 0 0 0 .165.095z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="lg:col-span-7 space-y-10">
+        <div>
+          <h1 id="mealTitle" class="text-3xl md:text-5xl font-black text-stone-900 tracking-tight leading-tight mb-4"></h1>
+          <div class="h-1 w-16 bg-orange-500 rounded-full"></div>
+        </div>
+
+        <section class="bg-white rounded-3xl border border-stone-200/60 p-6 md:p-8 shadow-sm">
+          <h3 class="text-lg font-bold text-stone-900 tracking-tight mb-4 flex items-center space-x-2">
+            <span>📋 Required Ingredients</span>
+          </h3>
+          <ul id="ingredientsList" class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 list-none p-0 m-0">
+            </ul>
+        </section>
+
+        <section class="space-y-4">
+          <h3 class="text-xl font-bold text-stone-900 tracking-tight flex items-center space-x-2">
+            <span>🍳 Preparation Instructions</span>
+          </h3>
+          <div id="instructionsBody" class="text-stone-600 leading-relaxed text-sm md:text-base space-y-4 font-normal">
+            </div>
+        </section>
+      </div>
+
+    </div>
+
+    <div id="mealPageSkeleton" class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 animate-pulse">
+      <div class="lg:col-span-5 h-96 bg-white border border-stone-200/60 rounded-[2.5rem]"></div>
+      <div class="lg:col-span-7 space-y-6">
+        <div class="h-12 bg-white border border-stone-200/60 rounded-2xl w-3/4"></div>
+        <div class="h-4 bg-white border border-stone-200/60 rounded-xl w-1/4"></div>
+        <div class="h-48 bg-white border border-stone-200/60 rounded-[2rem] w-full"></div>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const recipeContainer = document.getElementById("recipeContainer");
+      const skeletonLoader = document.getElementById("mealPageSkeleton");
+
+      const mealImage = document.getElementById("mealImage");
+      const mealTitle = document.getElementById("mealTitle");
+      const categoryTag = document.getElementById("mealCategoryTag");
+      const areaTag = document.getElementById("mealAreaTag");
+      const youtubeLink = document.getElementById("mealYoutubeLink");
+      const ingredientsList = document.getElementById("ingredientsList");
+      const instructionsBody = document.getElementById("instructionsBody");
+
+      // Extract URL Param metrics parameter query target cleanly 
+      const urlParameters = new URLSearchParams(window.location.search);
+      const recipeId = urlParameters.get("id");
+
+      // Target execution API target url structure criteria safely
+      const targetApiEndpoint = (recipeId === "random" || !recipeId)
+        ? "https://www.themealdb.com/api/json/v1/1/random.php"
+        : `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${recipeId}`;
+
+      async function fetchAndRenderRecipePayload() {
+        try {
+          const response = await fetch(targetApiEndpoint);
+          const data = await response.json();
+          const meal = data.meals ? data.meals[0] : null;
+
+          if (!meal) {
+            renderErrorFallback("Recipe item target not verified inside the global system index.");
+            return;
+          }
+
+          populateRecipeInterface(meal);
+        } catch (error) {
+          console.error("Critical error processing target meal payload route:", error);
+          renderErrorFallback("Connection dropped while fetching instruction profiles.");
+        }
+      }
+
+      function populateRecipeInterface(meal) {
+        // Document head parameters meta titles optimization
+        document.title = `Recipe Genie — How to make ${meal.strMeal}`;
+
+        mealImage.src = meal.strMealThumb;
+        mealImage.alt = meal.strMeal;
+        mealTitle.textContent = meal.strMeal;
+        categoryTag.textContent = meal.strCategory || "General";
+        areaTag.textContent = meal.strArea || "Cuisine";
+
+        if (meal.strYoutube) {
+          youtubeLink.href = meal.strYoutube;
+          youtubeLink.classList.remove("hidden");
+        }
+
+        // Loop over and structural evaluate dynamic object arrays elements 1 to 20
+        let ingredientsMarkup = "";
+        for (let i = 1; i <= 20; i++) {
+          const ingredientName = meal[`strIngredient${i}`];
+          const measurementWeight = meal[`strMeasure${i}`];
+
+          if (ingredientName && ingredientName.trim() !== "") {
+            ingredientsMarkup += `
+              <li class="flex items-center space-x-3 p-3 bg-stone-50 rounded-xl border border-stone-100 transition-all hover:bg-orange-50/40 group">
+                <input type="checkbox" id="ing-${i}" class="w-4 h-4 rounded text-orange-500 accent-orange-500 border-stone-300 focus:ring-orange-500/20 cursor-pointer" />
+                <label for="ing-${i}" class="text-stone-700 text-sm font-medium cursor-pointer select-none group-has-[:checked]:text-stone-400 group-has-[:checked]:line-through transition-all">
+                  <span class="text-stone-900 font-bold">${measurementWeight ? measurementWeight.trim() + ' ' : ''}</span>${ingredientName.trim()}
+                </label>
+              </li>
+            `;
+          }
+        }
+        ingredientsList.innerHTML = ingredientsMarkup;
+
+        // Clean paragraph splits formatting system transformation handling for strings layout blocks
+        if (meal.strInstructions) {
+          const structuredParagraphs = meal.strInstructions
+            .split(/\r?\n/)
+            .filter(paragraph => paragraph.trim().length > 0)
+            .map(paragraph => `<p class="leading-relaxed mb-4">${paragraph.trim()}</p>`)
+            .join("");
+          instructionsBody.innerHTML = structuredParagraphs;
+        } else {
+          instructionsBody.innerHTML = `<p class="text-stone-400 italic">No text presentation instructions tracked for this meal package model layout.</p>`;
+        }
+
+        // Transition states values modifications execution triggers
+        skeletonLoader.classList.add("hidden");
+        recipeContainer.classList.remove("hidden");
+      }
+
+      function renderErrorFallback(message) {
+        skeletonLoader.classList.add("hidden");
+        recipeContainer.innerHTML = `
+          <div class="col-span-full text-center py-16 bg-white rounded-3xl border border-stone-200/60 p-8 shadow-sm max-w-md mx-auto">
+            <span class="text-4xl block mb-3">⚠️</span>
+            <h3 class="text-stone-700 font-bold text-lg mb-1">Execution Halted</h3>
+            <p class="text-stone-400 text-sm">${message}</p>
+            <a href="home.html" class="inline-block mt-6 bg-orange-500 hover:bg-orange-600 text-white font-semibold text-sm px-6 py-2.5 rounded-xl transition-colors no-underline">Return Home</a>
+          </div>
+        `;
+        recipeContainer.classList.remove("hidden");
+      }
+
+      fetchAndRenderRecipePayload();
+    });
+  </script>
+</body>
+</html>

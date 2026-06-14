@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Eco Habit Tracker</title>
+    <link rel="stylesheet" href="parallal.css">
     <style>
         :root {
             --bg-primary: #f0f7f4;
@@ -335,13 +336,23 @@
 
 
     <div class="container">
-        <header>
+    <header>
+        <div class="name">GO-GREEN</div>
+            <nav>
+                <ul>
+                    <li><a href="parallal.html">Home</a></li>
+                    <li><a href="about.html" class="active">About</a></li>
+                    <li><a href="service.html">Service</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+                <button id="themeToggle" class="theme-toggle">
+                    🌙
+                </button>
+            </nav>
+    </header>
+       
             <h1>Eco Habit Tracker</h1>
             <p>Small daily shifts build a sustainable future</p>
-            <div style="margin-top:8px;">
-                <button class="theme-toggle" aria-label="Toggle theme">🌙</button>
-            </div>
-        </header>
 
         <div class="dashboard-grid">
             
@@ -411,8 +422,7 @@
 
         </div>
     </div>
-
-    <script src="theme-toggle.js"></script>
+   
     <script>
         // Default Habit Dataset with impact weight configurations (persisted and editable)
         const defaultHabits = [
@@ -687,6 +697,45 @@
         }
 
         window.onload = initApp;
+
+        // ==========================
+// Theme Toggle
+// ==========================
+
+// Select all theme toggle buttons
+const themeToggles = document.querySelectorAll(".theme-toggle");
+
+// Function to update button icons
+function updateToggleButtons() {
+  const isDark = document.body.classList.contains("dark-theme");
+
+  themeToggles.forEach(btn => {
+    btn.textContent = isDark ? "☀️" : "🌙";
+  });
+}
+
+// Load saved theme
+if (localStorage.getItem("theme") === "dark") {
+  document.body.classList.add("dark-theme");
+}
+
+updateToggleButtons();
+
+// Add click event to every toggle button
+themeToggles.forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.body.classList.toggle("dark-theme");
+
+    const isDark = document.body.classList.contains("dark-theme");
+
+    localStorage.setItem(
+      "theme",
+      isDark ? "dark" : "light"
+    );
+
+    updateToggleButtons();
+  });
+});
     </script>
 </body>
 </html>

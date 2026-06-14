@@ -5,13 +5,44 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="animated-cursor.css">
 <link rel="icon" href="../favv.png" type="image/x-icon" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 
 <title>Animated Cursor</title>
 </head>
 <body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
 
+ 
+<!-- Navbar -->
 
+   <nav class="navbar">
+    <a href="/" class="project-back-button" style="height: 40px;text-align:center;margin:20px;border-radius:10px;width: 200px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
+        <!-- Logo -->
+        <div class="logo">
+           Animated Cursor
+        </div>
+        <!-- Navigation Links -->
+        <ul class="nav-links">
+            <li>
+                <a href="animated-cursor.html">Home</a>
+            </li>
+            <li>
+                <a href="cursors.html">Cursors</a>
+            </li>
+            <li>
+                <a href="#categories">Contact</a>
+            </li>
+    
+        </ul>
+        <!-- Right Side -->
+        <div class="nav-right">
+            <!-- Dark Mode Button -->
+            <button id="themeToggle" class="theme">
+                <span id="themeIcon">☀️</span>
+            </button>
+        </div>
+    </nav>
+  
 <div class="background"></div>
 
 <div class="galaxy-glow"></div>
@@ -64,9 +95,59 @@
                 <li class="select-option" role="option" data-value="firefly">Firefly</li>
             </ul>
         </div>
+      
     </div>
+
+     <button class="hero-btn">
+          <a href="cursors.html" style="text-decoration: none;color: white;">Explore Cursors &rarr;   <!-- → --> </a>
+        </button>
+
 </main>
 
+
+
 <script src="animated-cursor.js"></script>
+
+
+<footer class="site-footer">
+  <div class="footer-container">
+    <div class="footer-column">
+      <h3>About Project</h3>
+      <p>Animated Cursor is part of the 100 Web Projects series — exploring creative UI interactions and modern web animations.</p>
+    </div>
+
+    <div class="footer-column">
+      <h3>Quick Links</h3>
+      <ul>
+        <li><a href=".animated-cursor.html">Home</a></li>
+        <li><a href="#">Projects</a></li>
+        <li><a href="#">Docs</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-column">
+      <h3>Resources</h3>
+      <ul>
+        <li><a href="#">GitHub Repository</a></li>
+        <li><a href="#">Design Assets</a></li>
+        <li><a href="#">API References</a></li>
+        <li><a href="#">Community Forum</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-column">
+      <h3>Stay Connected</h3>
+      <div class="social-icons">
+        <a href="#"><i class="fab fa-github"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-linkedin"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+      </div>
+      <p>© 2026 100 Web Projects | Designed by Gayatri Ghogare</p>
+    </div>
+  </div>
+</footer>
+
 </body>
 </html>
