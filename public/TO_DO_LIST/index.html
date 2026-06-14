@@ -1,13 +1,107 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="refresh" content="0; url=todolist.html" />
-    <title>To-Do List</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Advanced AI To-Do List</title>
+    <meta
+      name="description"
+      content="A highly advanced, modern To-Do List with AI features and glassmorphic UI."
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
-    <script>
-      window.location.replace("todolist.html");
-    </script>
+    <div class="background-blobs">
+      <div class="blob blob-1"></div>
+      <div class="blob blob-2"></div>
+    </div>
+
+    <div class="app-container">
+      <header>
+        <h1><i class="fa-solid fa-list-check"></i> TaskMaster AI</h1>
+        <div class="ai-briefing" id="aiBriefing">
+          <p>
+            <i class="fa-solid fa-sparkles"></i> AI Briefing: Analyzing your
+            tasks...
+          </p>
+        </div>
+      </header>
+
+      <main>
+        <div class="input-section glass-panel">
+          <div class="input-group">
+            <input
+              type="text"
+              id="taskInput"
+              placeholder="What needs to be done?"
+            />
+            <input type="date" id="dateInput" />
+            <button
+              id="magicWandBtn"
+              title="AI Magic Breakdown"
+              class="icon-btn"
+            >
+              <i class="fa-solid fa-wand-magic-sparkles"></i>
+            </button>
+            <button id="addBtn" class="primary-btn">
+              <i class="fa-solid fa-plus"></i> Add
+            </button>
+          </div>
+        </div>
+
+        <div class="controls-section glass-panel">
+          <div class="filter-group">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="active">Active</button>
+            <button class="filter-btn" data-filter="completed">
+              Completed
+            </button>
+          </div>
+          <div class="sort-group">
+            <select id="sortSelect" class="glass-select">
+              <option value="recent">Recently Added</option>
+              <option value="earliest">Earliest Date</option>
+              <option value="latest">Latest Date</option>
+            </select>
+          </div>
+        </div>
+
+        <ul id="taskList" class="task-list">
+          <!-- Tasks will be injected here -->
+        </ul>
+      </main>
+    </div>
+
+    <!-- Floating AI Chatbot -->
+    <div class="chatbot-widget">
+      <button id="chatToggle" class="chat-toggle-btn">
+        <i class="fa-solid fa-robot"></i>
+      </button>
+      <div class="chat-window glass-panel" id="chatWindow">
+        <div class="chat-header">
+          <h3><i class="fa-solid fa-robot"></i> Assistant</h3>
+          <button id="chatClose"><i class="fa-solid fa-times"></i></button>
+        </div>
+        <div class="chat-body" id="chatBody">
+          <div class="message ai-message">
+            Hello! Ask me about your tasks. Try "urgent tasks" or "summary".
+          </div>
+        </div>
+        <div class="chat-footer">
+          <input type="text" id="chatInput" placeholder="Ask AI..." />
+          <button id="chatSend"><i class="fa-solid fa-paper-plane"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
   </body>
 </html>

@@ -2861,5 +2861,19 @@
     ],
     "difficulty": "advanced",
     "projectPath": "./public/mind-reader/mind-reader/dist/index.html"
+  },
+  {
+    "projectNo": 227,
+    "projectName": "Advanced AI To-Do List",
+    "projectType": "Tool",
+    "projectDesc": "A highly advanced, modern To-Do List web application with AI simulated features, glassmorphic UI, full date management, sorting, filtering, and data persistence.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript",
+      "todo"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/TO_DO_LIST/index.html"
   }
 ]
