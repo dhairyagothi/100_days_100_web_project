@@ -5,6 +5,8 @@ const ctrl = require("../controllers/foodController");
 //ejs
 router.get("/view", ctrl.renderFoods);
 
+router.get("/view/:id", ctrl.getFoodById);
+
 router.post("/", ctrl.createFood);
 router.get("/", ctrl.getFoods);
 router.put("/:id", ctrl.updateFood);
