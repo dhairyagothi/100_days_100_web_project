@@ -397,7 +397,6 @@ document.addEventListener('DOMContentLoaded', () => {
             historyList.appendChild(li);
         });
     }
-
     window.cancelConsultation = function(index) {
         if (confirm('Are you sure you want to cancel this consultation request?')) {
             consultationHistory.splice(index, 1);
@@ -408,10 +407,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     function saveHistory() {
-        localStorage.setItem(
-            'medConsultHistoryV2',
-            JSON.stringify(consultationHistory)
-        );
+        localStorage.setItem('medConsultHistoryV2', JSON.stringify(consultationHistory));
     }
 
     function showToast(message, type = 'success') {
@@ -419,10 +415,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const toast = document.createElement('div');
         toast.className = `toast ${type}`;
 
-        const icon =
-            type === 'success'
-                ? 'ph-check-circle'
-                : 'ph-warning-circle';
+        const icon = type === 'success' ? 'ph-check-circle' : 'ph-warning-circle';
 
         toast.innerHTML = `
             <i class="ph ${icon}"></i>
@@ -432,6 +425,7 @@ document.addEventListener('DOMContentLoaded', () => {
         toastContainer.appendChild(toast);
 
         setTimeout(() => {
+            toast.style.animation = 'slideOut 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards';
             toast.style.animation =
                 'slideOut 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards';
 
@@ -439,6 +433,142 @@ document.addEventListener('DOMContentLoaded', () => {
                 toast.remove();
             }, 300);
         }, 3000);
+    }
+
+    // Booking modal / appointment form bindings (kept from merged branch)
+    if (typeof bookBtns !== 'undefined' && bookBtns.forEach) {
+        bookBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const doctor = btn.getAttribute('data-doctor');
+                const specialty = btn.getAttribute('data-specialty');
+                openModal(doctor, specialty, btn);
+            });
+        });
+    }
+
+    if (typeof closeModalBtn !== 'undefined') closeModalBtn.addEventListener('click', closeModal);
+    if (typeof cancelModalBtn !== 'undefined') cancelModalBtn.addEventListener('click', closeModal);
+    if (typeof closeSuccessBtn !== 'undefined') closeSuccessBtn.addEventListener('click', closeModal);
+
+    if (typeof bookingModal !== 'undefined') {
+        bookingModal.addEventListener('click', (e) => {
+            if (e.target === bookingModal) closeModal();
+        });
+    }
+
+    window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && typeof bookingModal !== 'undefined' && !bookingModal.classList.contains('hidden')) {
+            closeModal();
+        }
+    });
+
+    const setupRealTimeClear = (input, errorSpan) => {
+        if (!input) return;
+        input.addEventListener('input', () => {
+            if (input.value.trim() !== '') {
+                input.classList.remove('invalid-input');
+                if (errorSpan) errorSpan.textContent = '';
+            }
+        });
+    };
+
+    // Defensive: only call setup if elements exist
+    try {
+        setupRealTimeClear(patientNameInput, nameError);
+        setupRealTimeClear(patientPhoneInput, phoneError);
+        setupRealTimeClear(appointmentDateInput, dateError);
+        setupRealTimeClear(appointmentTimeInput, timeError);
+    } catch (e) {
+        // ignore if booking modal elements are not present on this page
+    }
+
+    if (typeof bookingForm !== 'undefined' && bookingForm.addEventListener) {
+        bookingForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (typeof clearErrors === 'function') clearErrors();
+
+            const nameVal = (patientNameInput && patientNameInput.value) ? patientNameInput.value.trim() : '';
+            const phoneVal = (patientPhoneInput && patientPhoneInput.value) ? patientPhoneInput.value.trim() : '';
+            const dateVal = (appointmentDateInput && appointmentDateInput.value) ? appointmentDateInput.value : '';
+            const timeVal = (appointmentTimeInput && appointmentTimeInput.value) ? appointmentTimeInput.value : '';
+
+            let isValid = true;
+
+            if (nameVal === '') {
+                if (typeof nameError !== 'undefined') nameError.textContent = 'Patient name is required.';
+                if (patientNameInput) patientNameInput.classList.add('invalid-input');
+                isValid = false;
+            }
+
+            const phoneRegex = /^\d{10}$/;
+            if (!phoneRegex.test(phoneVal)) {
+                if (typeof phoneError !== 'undefined') phoneError.textContent = 'Please enter a valid 10-digit phone number.';
+                if (patientPhoneInput) patientPhoneInput.classList.add('invalid-input');
+                isValid = false;
+            }
+
+            if (!dateVal) {
+                if (typeof dateError !== 'undefined') dateError.textContent = 'Preferred date is required.';
+                if (appointmentDateInput) appointmentDateInput.classList.add('invalid-input');
+                isValid = false;
+            } else {
+                const parts = dateVal.split('-');
+                const selectedDate = new Date(parts[0], parts[1] - 1, parts[2]);
+                selectedDate.setHours(0,0,0,0);
+                const today = new Date();
+                today.setHours(0,0,0,0);
+                if (selectedDate < today) {
+                    if (typeof dateError !== 'undefined') dateError.textContent = 'Date cannot be in the past.';
+                    if (appointmentDateInput) appointmentDateInput.classList.add('invalid-input');
+                    isValid = false;
+                }
+            }
+
+            if (timeVal === '') {
+                if (typeof timeError !== 'undefined') timeError.textContent = 'Please select an available time slot.';
+                if (appointmentTimeInput) appointmentTimeInput.classList.add('invalid-input');
+                isValid = false;
+            }
+
+            if (!isValid) return;
+
+            const listItem = document.createElement('li');
+            listItem.innerHTML = `
+                <strong>${nameVal}</strong> scheduled appointment with 
+                <strong>${typeof currentDoctor !== 'undefined' ? currentDoctor : ''}</strong> (${typeof currentSpecialty !== 'undefined' ? currentSpecialty : ''}) on 
+                <strong>${dateVal}</strong> at <strong>${timeVal}</strong>
+            `;
+            historyList.prepend(listItem);
+
+            if (typeof modalSuccess !== 'undefined') {
+                const successText = modalSuccess.querySelector('.success-text');
+                if (successText) successText.innerHTML = `✅ <strong>Success!</strong> Appointment booked for <strong>${nameVal}</strong> on <strong>${dateVal}</strong> at <strong>${timeVal}</strong>.`;
+                if (bookingForm) bookingForm.classList.add('hidden');
+                modalSuccess.classList.remove('hidden');
+                if (typeof closeSuccessBtn !== 'undefined') closeSuccessBtn.focus();
+            }
+        });
+    }
+
+    const doctorSearch = document.getElementById('doctorSearch');
+    if (doctorSearch) {
+        doctorSearch.addEventListener('input', () => {
+            const value = doctorSearch.value.toLowerCase();
+            document.querySelectorAll('.doctor-card').forEach(card => {
+                const name = card.innerText.toLowerCase();
+                card.style.display = name.includes(value) ? 'block' : 'none';
+            });
+        });
+    }
+
+    const feedbackFormEl = document.getElementById('feedbackform');
+    if (feedbackFormEl) {
+        feedbackFormEl.addEventListener('submit', function (event) {
+            event.preventDefault();
+            const feedbackMessage = document.getElementById('feedbackMessage') ? document.getElementById('feedbackMessage').value : '';
+            showToast('Feedback submitted. Thank you!', 'success');
+            feedbackFormEl.reset();
+        });
     }
 
     // Doctor search functionality

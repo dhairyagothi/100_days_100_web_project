@@ -304,6 +304,11 @@ swapIcon.addEventListener('click', () => {
   loadHistoricalChart();
 });
 
+window.addEventListener("load", () => {
+  updateExchangeRate(true);
+});
+
+amtInput.addEventListener("input", () => {
 amtInput.addEventListener('input', () => {
   let val = amtInput.value;
   if (val === '') {

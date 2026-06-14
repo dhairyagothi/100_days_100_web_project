@@ -41,6 +41,11 @@ const FILTER_CATEGORY_MAP = {
   tool: "Tools",
   ui: "UI / Animation",
   api: "APIs",
+  // Additional category keys supported by the new dropdown
+  react: "React",
+  backend: "Backend",
+  apps: "Apps",
+  utilities: "Utilities",
 };
 
 /**
@@ -119,6 +124,20 @@ function loadProjects() {
         `${base}projects.json`,
         window.location.href,
       ).toString();
+      const response = await fetch(projectsUrl);
+      if (!response.ok) {
+        throw new Error(`Failed to load projects: ${response.statusText}`);
+      }
+      const data = await response.json();
+
+      PROJECTS = data.map((project) => [
+        `Day ${project.projectNo}`,
+        project.projectName,
+        project.projectPath,
+        project.techStack,
+        project.difficulty,
+        project.projectDesc,
+      ]);
       try {
         const response = await fetch(projectsUrl);
         if (!response.ok) {
@@ -235,6 +254,8 @@ function resolveProjectUrls(day, name, url, tags) {
 
 function getProjectDescription(project) {
   return (
+    project[5] || "Explore this project to discover interactive functionality."
+    (project && project[5]) ||
     (project && project.projectDesc) ||
     "Explore this project to discover interactive functionality."
   );
@@ -375,6 +396,12 @@ function buildProjectCardHTML({
                 <div class="card-actions-left">
                     ${primaryLink}
                 </div>
+                <button class="bookmark-btn ${isBookmarked ? "active" : ""}" data-id="${day}" onclick="event.stopPropagation()">
+                <button class="bookmark-btn ${isBookmarked ? "active" : ""}" data-id="${day}">
+                    <i class="${isBookmarked ? "fa-solid" : "fa-regular"} fa-bookmark"></i>
+                <button class="bookmark-btn ${isBookmarked ? "active" : ""}" data-id="${safeDay}" aria-label="${isBookmarked ? `Remove ${safeName} from bookmarks` : `Bookmark ${safeName}`}">
+                    <i class="${isBookmarked ? "fa-solid" : "fa-regular"} fa-bookmark" aria-hidden="true"></i>
+                </button>
                 <div class="card-actions-right" style="display: flex; gap: 8px; align-items: center;">
                     ${githubBtn}
                     <button class="bookmark-btn ${isBookmarked ? "active" : ""}" data-id="${safeDay}" aria-label="${isBookmarked ? `Remove ${safeName} from bookmarks` : `Bookmark ${safeName}`}">
@@ -458,6 +485,16 @@ function matchesTechStack(projectTags) {
   if (techStackFilters.length === 0) return true;
   if (!projectTags) return false;
 
+  // Convert to single lowercase string for efficient matching
+  const tagsLower = (
+    typeof projectTags === "string" ? projectTags : projectTags.join(" ")
+  ).toLowerCase();
+
+  // EFFICIENT: Check if ALL filters exist in tags (AND logic)
+  // Uses simple includes() - O(n*m) where n=filters, m=tag length
+  return techStackFilters.every((filter) => tagsLower.includes(filter));
+  // Normalize to a set of individual lowercase tokens for whole-word matching.
+  // Using a Set avoids repeated linear scans for each filter.
   const tagSet = new Set(
     (Array.isArray(projectTags)
       ? projectTags
@@ -551,6 +588,9 @@ function getAllTechnologies() {
    BOOKMARK + RECENT SYSTEM
 ============================================================ */
 
+let bookmarkedProjects =
+  JSON.parse(localStorage.getItem("bookmarkedProjects")) || [];
+let recentProjects = JSON.parse(localStorage.getItem("recentProjects")) || [];
 let bookmarkedProjects = [];
 let recentProjects = [];
 
@@ -725,6 +765,54 @@ let techStackFilter = "all";
 let difficultyFilter = "all";
 let currentFilteredProjects = [];
 
+function renderGrid() {
+  const grid = document.getElementById("projectGrid");
+  const noResults = document.getElementById("noResults");
+  if (!grid) return;
+
+  const filtered = PROJECTS.filter(
+    ([day, name, url, tags, difficulty = ""]) => {
+      // Normalize strings used for multiple checks
+      const tagStr = (
+        Array.isArray(tags) ? tags.join(" ") : tags || ""
+      ).toLowerCase();
+      const nameStr = (name || "").toLowerCase();
+
+      // Category filter: supports existing chips (using getCategoryFromTags)
+      // and the new dropdown values which match tag keywords (e.g. 'react', 'backend').
+      const category = getCategoryFromTags(tags, name);
+      const targetCategory = FILTER_CATEGORY_MAP[activeFilter] || "all";
+      let matchesFilter = false;
+      if (activeFilter === "all") {
+        matchesFilter = true;
+      } else if (targetCategory !== "all" && category === targetCategory) {
+        // Matches existing derived categories (Games, Tools, etc.)
+        matchesFilter = true;
+      } else {
+        // Fallback: match by tag or name keyword (supports React, Backend, Apps, Utilities)
+        matchesFilter =
+          tagStr.includes(activeFilter) || nameStr.includes(activeFilter);
+      }
+
+      // Search filter (preserve existing behavior)
+      const q = searchQuery.toLowerCase().trim();
+      const matchesSearch =
+        !q ||
+        q
+          .split(/\s+/)
+          .every(
+            (term) =>
+              nameStr.includes(term) ||
+              day.toLowerCase().includes(term) ||
+              tagStr.includes(term),
+          );
+
+      // Tech stack dropdown filter
+      let matchesTech = true;
+      if (techStackFilter && techStackFilter !== "all") {
+        matchesTech = tagStr.includes(techStackFilter.toLowerCase());
+      }
+
 function syncStateToURL() {
   const url = new URL(window.location);
 
@@ -884,6 +972,7 @@ function renderGrid() {
 
     const category = getCategoryFromTags(tags, name);
     const card = document.createElement("div");
+    const isBookmarked = bookmarkedProjects.some((item) => item[0] === day);
 
     const isBookmarked = bookmarkedDays.has(day);
 
@@ -897,6 +986,7 @@ function renderGrid() {
       showDescription: true,
     });
 
+    card.className = sourceOnly ? "project-card source-only" : "project-card";
     card.className = sourceOnly
       ? "project-card source-only visible"
       : "project-card visible";
@@ -1012,6 +1102,7 @@ function renderPagination(totalItems, totalPages) {
 
   const controlsDiv = document.createElement("div");
   controlsDiv.className = "pagination-controls";
+
 
   const firstBtn = document.createElement("button");
   firstBtn.className = "first-btn";
@@ -1165,6 +1256,8 @@ function toggleBookmark(project) {
 
   if (exists) {
     bookmarkedProjects = bookmarkedProjects.filter(
+      (item) => item[0] !== project[0],
+      (item) => normalizeProjectEntry(item).day !== project[0],
       (item) => normalizeProjectEntry(item).day !== project.day,
     );
     showToast("Bookmark removed");
@@ -1173,6 +1266,10 @@ function toggleBookmark(project) {
     showToast("Project bookmarked");
   }
 
+  localStorage.setItem(
+    "bookmarkedProjects",
+    JSON.stringify(bookmarkedProjects),
+  );
   updateBookmarkURL();
 
   try {
@@ -1256,6 +1353,7 @@ function trackRecentProject(project) {
     recentProjects.pop();
   }
 
+  localStorage.setItem("recentProjects", JSON.stringify(recentProjects));
   try {
     localStorage.setItem("recentProjects", JSON.stringify(recentProjects));
   } catch (error) {
@@ -1343,6 +1441,7 @@ function renderBookmarks() {
       showDescription: true,
     });
 
+    card.className = sourceOnly ? "project-card source-only" : "project-card";
     const card = document.createElement("div");
     card.className = sourceOnly
       ? "project-card source-only visible"
@@ -1388,6 +1487,8 @@ function renderRecentProjects() {
     const tags = projectObj.techStack || projectObj.tags || projectObj[3];
 
     const category = getCategoryFromTags(tags, name);
+    const card = document.createElement("div");
+    const isBookmarked = bookmarkedProjects.some((item) => item[0] === day);
     const isBookmarked = bookmarkedProjects.some(
       (item) => normalizeProjectEntry(item).day === day,
     );
@@ -1402,6 +1503,7 @@ function renderRecentProjects() {
       showDescription: true,
     });
 
+    card.className = sourceOnly ? "project-card source-only" : "project-card";
     const card = document.createElement("div");
     card.className = sourceOnly
       ? "project-card source-only visible"
@@ -1527,6 +1629,12 @@ if (copyBookmarksBtn) {
     }
     const textToCopy = bookmarkedProjects
       .map((p) => {
+        const projectName = p[1];
+        const { demoUrl } = resolveProjectUrls(p[0], p[1], p[2], p[3]);
+        const projectLink = demoUrl.startsWith("http")
+          ? demoUrl
+          : new URL(demoUrl, window.location.href).href;
+        return `${projectName} - ${projectLink}`;
         const { day, name, url, tags } = normalizeProjectEntry(p);
         const { demoUrl } = resolveProjectUrls(day, name, url, tags);
         const projectLink = demoUrl.startsWith("http")
@@ -1743,6 +1851,12 @@ function initTechStackSearch() {
 
   if (!input) return;
 
+  let debounceTimer;
+
+  input.addEventListener("input", (e) => {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => {
+  // Use the shared debounce utility instead of a manual inline timer
   input.addEventListener(
     "input",
     debounce((e) => {
@@ -1866,6 +1980,50 @@ if (searchInput && clearSearchBtn) {
    NAVBAR — dynamic based on login state
    ============================================================ */
 function updateNavbar() {
+  const container = document.getElementById("navButtons");
+  if (!container) return;
+
+  const username = window.username || null;
+  const isRoot = !window.location.pathname.includes("/contributors/");
+  const base = isRoot ? "" : "../";
+  const isLight = document.body.classList.contains("light-mode");
+  const themeButton = `
+        <button class="btn btn-ghost btn-sm" id="themeToggleNav" aria-label="Toggle theme">
+          <i class="fas ${isLight ? "fa-sun" : "fa-moon"}"></i> Theme
+        </button>
+        `;
+  const otherLink = isRoot
+    ? `<a class="btn btn-ghost btn-sm" href="${base}learning/learning.html"><i class="fas fa-graduation-cap"></i> Learn</a>
+       <a class="btn btn-ghost btn-sm" href="${base}contributors/contributor.html">Contributors</a>`
+    : `<a class="btn btn-ghost btn-sm" href="${base}index.html"><i class="fas fa-home"></i> Home</a>
+       <a class="btn btn-ghost btn-sm" href="${base}learning/learning.html"><i class="fas fa-graduation-cap"></i> Learn</a>`;
+
+  if (username) {
+    container.innerHTML = `
+            ${themeButton}
+            <span class="welcome-text">Hi, ${username}</span>
+            <button class="btn btn-ghost btn-sm" id="logoutBtn">Log out</button>
+            <a class="btn btn-ghost btn-sm" href="https://www.github-readme.tech" target="_blank">Generate README</a>
+            <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank">
+              <i class="fab fa-github"></i> GitHub
+            </a>
+            ${otherLink}
+        `;
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      window.username = null;
+      updateNavbar();
+    });
+  } else {
+    container.innerHTML = `
+            ${themeButton}
+            ${otherLink}
+            <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank">
+                <i class="fab fa-github"></i> GitHub
+            </a>
+            <a class="btn btn-ghost btn-sm" href="https://www.github-readme.tech" target="_blank">Generate README</a>
+            <a class="btn btn-primary btn-sm" href="${base}public/Login.html">Sign in</a>
+        `;
+  }
   // The navbar is now managed by navbar.js which creates the dropdowns properly.
   // This function is kept empty to prevent legacy calls from breaking.
 }
@@ -1873,6 +2031,42 @@ function updateNavbar() {
 /* ============================================================
    THEME TOGGLE
    ============================================================ */
+function initTheme() {
+  const saved = localStorage.getItem("theme") || "dark";
+  let transitionTimer = null;
+
+  const syncThemeIcons = () => {
+    const isLight = document.body.classList.contains("light-mode");
+    const iconClass = isLight ? "fas fa-sun" : "fas fa-moon";
+    document
+      .querySelectorAll("#themeToggle i, #themeToggleNav i")
+      .forEach((icon) => {
+        icon.className = iconClass;
+      });
+  };
+
+  if (saved === "light") {
+    document.body.classList.add("light-mode");
+  }
+  syncThemeIcons();
+
+  document.body.addEventListener("click", (e) => {
+    const target =
+      e.target.closest("#themeToggle") || e.target.closest("#themeToggleNav");
+    if (!target) return;
+
+    document.body.classList.toggle("light-mode");
+    const isLight = document.body.classList.contains("light-mode");
+    localStorage.setItem("theme", isLight ? "light" : "dark");
+    syncThemeIcons();
+
+    document.body.classList.add("theme-transitioning");
+    if (transitionTimer) clearTimeout(transitionTimer);
+    transitionTimer = setTimeout(() => {
+      document.body.classList.remove("theme-transitioning");
+    }, 400);
+  });
+}
 // Implemented by the shared ThemeManager in theme.js.
 
 /* ============================================================
@@ -1974,6 +2168,10 @@ syncProjectCounts();
     initScrollBtn();
   } catch (error) {
     console.error("Failed to load projects:", error);
+    const grid = document.getElementById("projectGrid");
+    if (grid) {
+      grid.innerHTML =
+        '<div class="error-message" style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--text-muted);">Failed to load projects. Please try refreshing the page.</div>';
 
     const grid = document.getElementById("projectGrid");
 
@@ -2026,6 +2224,11 @@ syncProjectCounts();
       menuToggle.setAttribute("aria-expanded", "false");
     };
 
+    menuToggle.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const isOpen = navButtons.classList.toggle("active");
+      menuToggle.classList.toggle("active", isOpen);
+      menuToggle.setAttribute("aria-expanded", String(isOpen));
     const openMenu = () => {
       menuToggle.classList.add("active");
       navButtons.classList.add("active");
@@ -2104,6 +2307,7 @@ initTheme();
 (function () {
   const outerCursor = document.querySelector(".cursor-ring--outer");
   const innerCursor = document.querySelector(".cursor-ring--inner");
+
   if (!outerCursor || !innerCursor) return;
 
   let isKeyboardNavigating = false;
@@ -2484,6 +2688,13 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelector('input[type="text"]') ||
     document.querySelector(".search-input");
   if (searchInput) {
+    searchInput.addEventListener("input", () => {
+      const { category } = getQueryParams();
+      updateURL(searchInput.value, category);
+      applyFilters(searchInput.value, category);
+    });
+  }
+    // Debounced so rapid typing doesn't trigger a renderGrid() on every keystroke
     searchInput.addEventListener(
       "input",
       debounce(() => {
