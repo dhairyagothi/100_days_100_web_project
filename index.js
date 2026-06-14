@@ -1332,26 +1332,32 @@ function renderBookmarks() {
     if (!day || !name) return;
 
     const category = getCategoryFromTags(tags, name);
+const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
+  day,
+  name,
+  url,
+  tags,
+  category,
+  isBookmarked: true,
+  showDescription: true,
+});
 
-    const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
-      day,
-      name,
-      url,
-      tags,
-      category,
-      isBookmarked: true,
-      showDescription: true,
-    });
+const card = document.createElement("div");
+card.className = sourceOnly
+  ? "project-card source-only visible"
+  : "project-card visible";
 
-    const card = document.createElement("div");
-    card.className = sourceOnly
-      ? "project-card source-only visible"
-      : "project-card visible";
-    card.innerHTML = html;
-    card.setAttribute("tabindex", "0");
-    card.setAttribute("role", "button");
+card.innerHTML = html;
 
-    attachProjectCardInteraction(card, demoUrl, project);
+// Accessibility improvements (keep from Main, ensure safe UX)
+card.setAttribute("tabindex", "0");
+card.setAttribute("role", "button");
+card.setAttribute("aria-label", `Open project ${name}`);
+
+// Optional safety: prevent empty handlers breaking interaction
+if (typeof attachProjectCardInteraction === "function") {
+  attachProjectCardInteraction(card, demoUrl, project);
+}
 
     bookmarkGrid.appendChild(card);
   });
@@ -1411,6 +1417,36 @@ function renderRecentProjects() {
     card.setAttribute("role", "button");
 
     attachProjectCardInteraction(card, demoUrl, projectObj);
+    attachProjectCardInteraction(card, demoUrl, [day, name, url, tags]);
+    const card = document.createElement('div');
+    card.className = 'project-card';
+    const tagsHTML = tags.split(' ').map((tag) => `<span class="tag">${tag}</span>`).join('');
+    const isBookmarked = bookmarkedProjects.some((item) => item[0] === day);
+    const sourceUrl = getSourceUrl(url);
+
+    card.innerHTML = `
+            <div class="card-meta">
+                <span class="card-day">${day}</span>
+                <span class="card-category">${category}</span>
+            </div>
+            <div class="card-name">${name}</div>
+            <div class="card-tags">${tagsHTML}</div>
+            <div class="card-footer">
+
+                <div class="card-actions-left">
+    <a href="${url}" target="_blank" class="card-link open-project" data-id="${day}" rel="noopener noreferrer">
+        Demo <i class="fas fa-arrow-right"></i>
+    </a>
+    <a href="${sourceUrl}" target="_blank" class="card-link view-code-link" rel="noopener noreferrer">
+        <i class="fab fa-github"></i> Code
+    </a>
+</div>
+
+                <button class="bookmark-btn ${isBookmarked ? 'active' : ''}" data-id="${day}">
+                    <i class="${isBookmarked ? 'fa-solid' : 'fa-regular'} fa-bookmark"></i>
+                </button>
+            </div>
+        `;
 
     recentGrid.appendChild(card);
   });
@@ -1773,7 +1809,6 @@ function initTechStackSearch() {
     }
   });
 }
-
 /* ============================================================
    SEARCH CONTROLS
    ============================================================ */
@@ -1868,6 +1903,49 @@ if (searchInput && clearSearchBtn) {
 function updateNavbar() {
   // The navbar is now managed by navbar.js which creates the dropdowns properly.
   // This function is kept empty to prevent legacy calls from breaking.
+  const container = document.getElementById('navButtons');
+  if (!container) return;
+
+    const username = window.username || null;
+    const isRoot   = !window.location.pathname.includes('/contributors/');
+    const base     = isRoot ? '' : '../';
+    const isLight  = document.body.classList.contains('light-mode');
+    const themeButton = `
+            <button class="btn btn-ghost btn-sm" id="themeToggleNav" aria-label="Toggle theme">
+                <i class="fas ${isLight ? 'fa-sun' : 'fa-moon'}"></i>
+            </button>
+        `;
+
+    if (username) {
+        container.innerHTML = `
+            ${themeButton}
+            <span class="welcome-text">Hi, ${username}</span>
+            <button class="btn btn-ghost btn-sm" id="logoutBtn">Log out</button>
+            <button class="btn btn-ghost btn-sm" id="generateReadmeBtn">Generate README</button>
+            <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank" rel="noopener noreferrer">
+                <i class="fab fa-github"></i> GitHub
+            </a>
+            <a class="btn btn-ghost btn-sm" href="${base}contributors/contributor.html">Contributors</a>
+        `;
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            window.username = null;
+            updateNavbar();
+        });
+        const gen = document.getElementById('generateReadmeBtn');
+        if (gen) gen.addEventListener('click', generateReadme);
+    } else {
+        container.innerHTML = `
+            ${themeButton}
+            <a class="btn btn-ghost btn-sm" href="${base}contributors/contributor.html">Contributors</a>
+            <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi" target="_blank" rel="noopener noreferrer">
+                <i class="fab fa-github"></i> GitHub
+            </a>
+            <button class="btn btn-ghost btn-sm" id="generateReadmeBtn">Generate README</button>
+            <a class="btn btn-primary btn-sm" href="${base}public/Login.html">Sign in</a>
+        `;
+    const gen2 = document.getElementById('generateReadmeBtn');
+    if (gen2) gen2.addEventListener('click', generateReadme);
+  }
 }
 
 /* ============================================================

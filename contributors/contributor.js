@@ -185,9 +185,48 @@ async function openProfile(username) {
     console.log(err);
   }
 }
+       popup.innerHTML = `
+    <img
+      src="${user.avatar_url}"
+      style="
+        width:120px;
+        height:120px;
+        border-radius:50%;
+      "
+    >
 
-let allContributors = [];
-let filteredContributors = [];
+    <h2>${user.name || username}</h2>
+
+    <p>${user.bio || "No bio available"}</p>
+
+    <p>Followers: ${user.followers}</p>
+
+    <p>Repositories: ${user.public_repos}</p>
+
+    <p>Location: ${user.location || "Unknown"}</p>
+
+    ${user.html_url ? `
+      <div class="popup-btn-container">
+        <a
+          href="${user.html_url}"
+          target="_blank"
+          class="github-btn"
+        >
+          View GitHub
+        </a>
+
+        <button
+          id="downloadCertificate"
+          class="certificate-btn"
+        >
+          Download Certificate
+        </button>
+      </div>
+    ` : ""}
+`;
+
+  try {
+  const cached = loadCache("contributors-cache");
 
 async function fetchContributors() {
     const contributorsContainer = document.getElementById("contributors");
@@ -205,7 +244,11 @@ async function fetchContributors() {
         if (cached) {
             allContributors = cached;
             filteredContributors = [...cached];
-            if (contributorCountSpan) contributorCountSpan.textContent = cached.length;
+
+            if (contributorCountSpan) {
+                contributorCountSpan.textContent = cached.length;
+            }
+
             renderContributors(filteredContributors);
             loading?.classList.add("hidden");
             return;
@@ -221,9 +264,9 @@ async function fetchContributors() {
 
             if (!data.length) break;
 
-            // filter out anonymous contributors without login
             const validData = data.filter(c => c.login);
             allContributors.push(...validData);
+
             page++;
         }
 
@@ -231,18 +274,29 @@ async function fetchContributors() {
 
         filteredContributors = [...allContributors];
 
-        if (contributorCountSpan) contributorCountSpan.textContent = allContributors.length;
+        if (contributorCountSpan) {
+            contributorCountSpan.textContent = allContributors.length;
+        }
 
-        const totalCommits = allContributors.reduce((sum, c) => sum + c.contributions, 0);
-        const totalCommitsEl = document.getElementById('totalCommits');
-        if (totalCommitsEl) totalCommitsEl.textContent = totalCommits.toLocaleString();
+        const totalCommits = allContributors.reduce(
+            (sum, c) => sum + c.contributions,
+            0
+        );
+
+        const totalCommitsEl = document.getElementById("totalCommits");
+        if (totalCommitsEl) {
+            totalCommitsEl.textContent = totalCommits.toLocaleString();
+        }
 
         renderContributors(filteredContributors);
 
     } catch (error) {
         console.error("Error fetching contributors:", error);
+
         errorBox?.classList.remove("hidden");
-        if (errorMessage) errorMessage.textContent = error.message;
+        if (errorMessage) {
+            errorMessage.textContent = error.message;
+        }
     } finally {
         loading?.classList.add("hidden");
     }
@@ -372,20 +426,30 @@ function renderStargazers(stargazers) {
 }
 
 async function fetchStargazers() {
-  const stargazersContainer = document.getElementById("stargazers");
-  const errorBox = document.getElementById("stargazersError");
-  const errorMessage = document.getElementById("stargazersErrorMessage");
-  const loading = document.getElementById("stargazersLoading");
+const $ = (id) => document.getElementById(id);
 
-  loading.classList.remove("hidden");
-  errorBox.classList.add("hidden");
-  stargazersContainer.innerHTML = "";
+const stargazersContainer = $("stargazers");
+const errorBox = $("stargazersError");
+const errorMessage = $("stargazersErrorMessage");
+const loading = $("stargazersLoading");
+  const stargazersContainer = document.getElementById('stargazers');
+  const errorBox = document.getElementById('stargazersError');
+  const errorMessage = document.getElementById('stargazersErrorMessage');
+  const loading = document.getElementById('stargazersLoading');
+
+ loading.classList.remove("hidden");
+errorBox.classList.add("hidden");
+stargazersContainer.replaceChildren();
+  loading.classList.remove('hidden');
+  errorBox.classList.add('hidden');
+  stargazersContainer.innerHTML = '';
 
   try {
     const cached = loadCache("stargazers-cache");
     if (cached) {
       renderStargazers(cached);
-      loading.classList.add("hidden");
+     
+      loading.classList.add('hidden');
       return;
     }
 
@@ -395,8 +459,10 @@ async function fetchStargazers() {
 
     saveCache("stargazers-cache", stargazers);
     renderStargazers(stargazers);
+
   } catch (error) {
-    errorBox.classList.remove("hidden");
+    errorBox.classList.remove('hidden');
+
     errorMessage.textContent = error.message;
   } finally {
     loading.classList.add("hidden");

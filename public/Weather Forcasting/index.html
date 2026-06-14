@@ -126,137 +126,210 @@
     </div>
   </nav>
 
-  <!-- Hero -->
-  <section class="hero-section container">
+<!-- Hero -->
+<section class="hero-section container">
 
-    <div class="hero-card">
+  <div class="hero-card">
 
-      <div class="weather-badge">
-        <i aria-hidden="true" class="fa-solid fa-location-dot"></i>
-        LIVE WEATHER
-      </div>
-
-      <h1 id="cityName">Search for a city</h1>
-
-      <p class="hero-subtitle">
-        Get live weather updates, humidity, wind speed, sunrise, sunset,
-        and beautiful 7-day forecast trends.
-      </p>
-
-      <div id="statusMessage" class="status-message">
-        Search for a city to begin
-      </div>
-
+    <div class="weather-badge">
+      <i aria-hidden="true" class="fa-solid fa-location-dot"></i>
+      LIVE WEATHER
     </div>
 
-  </section>
+    <h1 id="cityName">Search for a city</h1>
 
-  <!-- Weather Cards -->
-  <main class="container pb-5">
+    <p class="hero-subtitle">
+      Get live weather updates, humidity, wind speed, sunrise, sunset,
+      and beautiful 7-day forecast trends.
+    </p>
 
-    <div class="row g-4 weather-cards">
+    <div id="statusMessage" class="status-message">
+      Search for a city to begin
+    </div>
 
-      <!-- Temperature -->
-      <div class="col-lg-4 col-md-6">
-        <div class="premium-card">
+  </div>
+</section>
 
-          <div class="card-icon temp-icon">
-            <i aria-hidden="true" class="fa-solid fa-temperature-high"></i>
+   <section class="hero container weather-status-wrap">
+    <div class="weather-status" id="statusMessage" aria-live="polite"></div>
+    <div class="weather-city" aria-live="polite">
+        <p class="weather-city-label">Weather for</p>
+        <h1 id="pageTitle" class="weather-page-title">
+            <span id="cityName">Search for a city</span>
+        </h1>
+        <p class="weather-subtitle">
+            Search for a city to get the latest temperature, humidity, wind, and sunrise details.
+        </p>
+    </div>
+</section>
+
+</section>
+
+<!-- Weather Cards -->
+<main class="container pb-5">
+
+  <div class="row g-4 weather-cards">
+
+    <!-- Temperature -->
+    <div class="col-lg-4 col-md-6">
+      <div class="premium-card">
+
+        <div class="card-icon temp-icon">
+          <i aria-hidden="true" class="fa-solid fa-temperature-high"></i>
+        </div>
+
+        <h3>Temperature</h3>
+
+        <div class="main-value">
+          <span id="temp2">--</span>
+        </div>
+
+        <div class="weather-details">
+
+          <div class="detail-item">
+            <span>Current</span>
+            <strong id="temp">--</strong>
           </div>
 
-          <h3>Temperature</h3>
-
-          <div class="main-value">
-            <span id="temp2">--</span>
+          <div class="detail-item">
+            <span>Min Temp</span>
+            <strong id="min_temp">--</strong>
           </div>
 
-          <div class="weather-details">
-
-            <div class="detail-item">
-              <span>Current</span>
-              <strong id="temp">--</strong>
-            </div>
-
-            <div class="detail-item">
-              <span>Min Temp</span>
-              <strong id="min_temp">--</strong>
-            </div>
-
-            <div class="detail-item">
-              <span>Max Temp</span>
-              <strong id="max_temp">--</strong>
-            </div>
-
+          <div class="detail-item">
+            <span>Max Temp</span>
+            <strong id="max_temp">--</strong>
           </div>
 
         </div>
+
       </div>
+    </div>
 
-      <!-- Humidity -->
-      <div class="col-lg-4 col-md-6">
-        <div class="premium-card">
+    <!-- Humidity -->
+    <div class="col-lg-4 col-md-6">
+      <div class="premium-card">
 
-          <div class="card-icon humidity-icon">
-            <i aria-hidden="true" class="fa-solid fa-droplet"></i>
+        <div class="card-icon humidity-icon">
+          <i aria-hidden="true" class="fa-solid fa-droplet"></i>
+        </div>
+
+        <h3>Humidity</h3>
+
+        <div class="main-value">
+          <span id="humidity2">--</span>
+        </div>
+
+        <div class="weather-details">
+
+          <div class="detail-item">
+            <span>Humidity</span>
+            <strong id="humidity">--</strong>
           </div>
 
-          <h3>Humidity</h3>
-
-          <div class="main-value">
-            <span id="humidity2">--</span>
+          <div class="detail-item">
+            <span>Feels Like</span>
+            <strong id="feels_like">--</strong>
           </div>
 
-          <div class="weather-details">
-
-            <div class="detail-item">
-              <span>Humidity</span>
-              <strong id="humidity">--</strong>
-            </div>
-
-            <div class="detail-item">
-              <span>Feels Like</span>
-              <strong id="feels_like">--</strong>
-            </div>
-
-            <div class="detail-item">
-              <span>Wind Degree</span>
-              <strong id="wind_degrees">--</strong>
-            </div>
-
+          <div class="detail-item">
+            <span>Wind Degree</span>
+            <strong id="wind_degrees">--</strong>
           </div>
 
         </div>
+
       </div>
+    </div>
 
-      <!-- Wind -->
-      <div class="col-lg-4 col-md-12">
-        <div class="premium-card">
+    <!-- Wind -->
+    <div class="col-lg-4 col-md-12">
+      <div class="premium-card">
 
-          <div class="card-icon wind-icon">
-            <i aria-hidden="true" class="fa-solid fa-wind"></i>
+        <div class="card-icon wind-icon">
+          <i aria-hidden="true" class="fa-solid fa-wind"></i>
+        </div>
+
+        <h3>Wind & Sun</h3>
+
+        <div class="main-value">
+          <span id="wind_speed2">--</span>
+        </div>
+
+        <div class="weather-details">
+
+          <div class="detail-item">
+            <span>Wind Speed</span>
+            <strong id="wind_speed">--</strong>
           </div>
 
-          <h3>Wind & Sun</h3>
+        </div>
 
-          <div class="main-value">
-            <span id="wind_speed2">--</span>
-          </div>
+      </div>
+    </div>
 
-          <div class="weather-details">
+  </div>
 
-            <div class="detail-item">
-              <span>Wind Speed</span>
-              <strong id="wind_speed">--</strong>
-            </div>
+</main>
+    <div id="error-message" class="alert alert-danger d-none text-center my-4" role="alert">
+        City not found or API request failed. Please try again.
+    </div>
 
-            <div class="detail-item">
-              <span>Sunrise</span>
-              <strong id="sunrise">--</strong>
-            </div>
-
-            <div class="detail-item">
-              <span>Sunset</span>
-              <strong id="sunset">--</strong>
+            <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
+                <div class="col">
+                    <div class="card mb-4 rounded-3 shadow-sm border-dark">
+                        <div class="card-header py-3 text-bg-dark border-dark">
+                            <h4 class="my-0 fw-normal">Temperatures</h4>
+                        </div>
+                        <div class="card-body">
+                            <h1 class="card-title pricing-card-title"><span id="temp2"></span><small
+                                    class="text-body-secondary fw-light"><span>&#8451;</span></small></h1>
+                            <ul class="list-unstyled mt-3 mb-4">
+                                <li>Temperature is <span id="temp"></span></li>
+                                <li>Min Temperature is <span id="min_temp"></span></li>
+                                <li>Max Temperature is <span id="max_temp"></span></li>
+                               
+                            </ul>
+                            <button type="button" class="w-100 btn btn-lg btn-dark">Temperature Info</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card mb-4 rounded-3 shadow-sm border-dark">
+                        <div class="card-header py-3 text-bg-dark border-dark">
+                            <h4 class="my-0 fw-normal">Humidity Info</h4>
+                        </div>
+                        <div class="card-body">
+                            <h1 class="card-title pricing-card-title"><span id="humidity2"></span><small
+                                    class="text-body-secondary fw-light"> %</small></h1>
+                            <ul class="list-unstyled mt-3 mb-4">
+                                <li>Wind Degree is <span id="wind_degrees"></span></li>
+                                <li>Feels like <span id="feels_like"></span></li>
+                                <li>Humidity is <span id="humidity"></span></li>
+                            </ul>
+                            <button type="button" class="w-100 btn btn-lg btn-dark">Humidity Info</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card mb-4 rounded-3 shadow-sm border-dark">
+                        <div class="card-header py-3 text-bg-dark border-dark">
+                            <h4 class="my-0 fw-normal">Sun Info</h4>
+                        </div>
+                        <div class="card-body">
+                            <h1 class="card-title pricing-card-title"><span id="wind_speed2"></span><small
+                                    class="text-body-secondary fw-light"> km/hr</small></h1>
+                            <ul class="list-unstyled mt-3 mb-4">
+                               
+                                <li>Wind Speed is <span id="wind_speed"></span></li>
+                                <li>Sunrise Time is <span id="sunrise"></span></li>
+                                <li>Sunset Time is <span id="sunset"></span></li>
+                                
+                            </ul>
+                            <button type="button" class="w-100 btn btn-lg btn-dark">Wind Info</button>
+                        </div>
+                    </div>
+                </div>
             </div>
 
           </div>
@@ -289,216 +362,255 @@
           </div>
         </div>
 
-        <div class="col-md-6">
-          <div class="recommend-box">
-            <h5>
-              <i aria-hidden="true" class="fa-solid fa-car"></i>
-              Travel & Safety
-            </h5>
+<div class="col-md-6">
+  <div class="recommend-box">
+    <h5>
+      <i aria-hidden="true" class="fa-solid fa-car"></i>
+      Travel & Safety
+    </h5>
+  </div>
+</div>
 
-            <div id="travel-recommendation">
-              Loading...
+
+
+        <h2 class="display-6 text-center mb-4">Weather of other Common Places</h2>
+
+
+<div>
+  <h2>
+    <i aria-hidden="true" class="fa-solid fa-chart-line"></i>
+    7-Day Forecast Trends
+  </h2>
+
+  <p>Interactive weather analytics</p>
+</div>
+
+<div class="chart-tabs">
+
+  <button class="chart-tab active" data-metric="temperature">
+    Temperature
+  </button>
+
+  <button class="chart-tab" data-metric="humidity">
+    Humidity
+  </button>
+
+  <button class="chart-tab" data-metric="wind">
+    Wind
+  </button>
+
+</div>
+
+</div>
+
+<div class="chart-wrapper">
+  <canvas id="weatherChart"></canvas>
+</div>
+
+</section>
+
+<!-- Common Cities -->
+<section class="common-cities-section">
+
+  <div class="section-title mb-4">
+    <i aria-hidden="true" class="fa-solid fa-earth-asia"></i>
+    Weather of Common Cities
+  </div>
+            <!-- Weather Recommendations Section -->
+            <div class="card mb-4 rounded-3 shadow-sm" id="recommendations-card" style="display: none; background: rgba(255, 255, 255, 0.93); backdrop-filter: blur(10px); border: 1px solid rgba(0, 0, 0, 0.125);">
+                <div class="card-header py-3" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important; color: white !important; font-weight: 600; border-bottom: none;">
+                    <h4 class="my-0 fw-normal">💡 Smart Weather Recommendations</h4>
+                </div>
+                <div class="card-body text-start">
+                    <div class="row">
+                        <div class="col-md-6 mb-3 mb-md-0 border-end" style="border-right: 1px solid #dee2e6 !important;">
+                            <h5 style="color: #764ba2; font-weight: 600; margin-bottom: 12px;">👕 Clothing Suggestions</h5>
+                            <div id="clothing-recommendation" class="fs-6 p-3 rounded" style="background: rgba(248, 249, 250, 0.85); min-height: 80px; border-left: 4px solid #667eea; color: #212529; line-height: 1.5;">
+                                Loading suggestions...
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h5 style="color: #764ba2; font-weight: 600; margin-bottom: 12px;">🚗 Travel & Safety Precautions</h5>
+                            <div id="travel-recommendation" class="fs-6 p-3 rounded" style="background: rgba(248, 249, 250, 0.85); min-height: 80px; border-left: 4px solid #764ba2; color: #212529; line-height: 1.5;">
+                                Loading suggestions...
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
 
-      </div>
 
-    </section>
+            <h2 class="display-6 text-center mb-4" style="color: white;">Weather of other Common Places</h2>
 
-    <!-- 7 Day Forecast -->
-    <section id="charts-section" class="forecast-section">
 
-      <div class="forecast-header">
 
-        <div>
-          <h2>
-            <i aria-hidden="true" class="fa-solid fa-chart-line"></i>
-            7-Day Forecast Trends
-          </h2>
+            <div class="table-responsive">
+                <table class="table text-center table-dark">
+                    <thead>
+                        <tr>
+                            <th style="width: 34%;"></th>
+                            <th style="width: 22%;"> Cloud_pct</th>
+                            <th style="width: 22%;">Feels_like</th>
+                            <th style="width: 22%;">Humidity</th>
+                            <th style="width: 22%;">Max_temp</th>
+                            <th style="width: 22%;">Min_temp</th>
+                            <th style="width: 22%;">Sunrise</th>
+                            <th style="width: 22%;">Sunset</th>
+                            <th style="width: 22%;">Temp</th>
+                            <th style="width: 22%;">Wind_degrees</th>
+                            <th style="width: 22%;">Wind_speed</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row" class="text-start">Bengaluru</th>
+                             
+                            <td>40</td>
+                            <td>23</td>
+                            <td>23</td>
+                            <td>88</td>
+                            <td>23</td>
+                            <td>23</td>
+                            <td>5.14</td>
+                            <td>230</td>
+                            <td>1694651927</td>
+                            <td>1694695937</td>
+                             
+                        </tr>
+                        <tr>
+                            <th scope="row" class="text-start">Chennai</th>
+                            <td>75</td>
+                            <td>29</td>
+                            <td>35</td>
+                            <td>81</td>
+                            <td>27</td>
+                            <td>29</td>
+                            <td>4.12</td>
+                            <td>150</td>
+                            <td>1694651283</td>
+                            <td>1694695297</td>
+                            
+                        </tr>
+                    </tbody>
 
-          <p>Interactive weather analytics</p>
-        </div>
-
-        <div class="chart-tabs">
-
-          <button class="chart-tab active" data-metric="temperature">
-            Temperature
-          </button>
-
-          <button class="chart-tab" data-metric="humidity">
-            Humidity
-          </button>
-
-          <button class="chart-tab" data-metric="wind">
-            Wind
-          </button>
-
-        </div>
-
-      </div>
-
-      <div class="chart-wrapper">
-        <canvas id="weatherChart"></canvas>
-      </div>
-
-    </section>
-
-    <!-- Common Cities -->
-    <section class="common-cities-section">
-
-      <div class="section-title mb-4">
-        <i aria-hidden="true" class="fa-solid fa-earth-asia"></i>
-        Weather of Common Cities
-      </div>
-
-      <div class="table-responsive premium-table-wrap">
-
-        <table class="table premium-table align-middle">
-
-          <thead>
-            <tr>
-              <th>City</th>
-              <th>Temp</th>
-              <th>Feels Like</th>
-              <th>Humidity</th>
-              <th>Wind</th>
-              <th>Sunrise</th>
-              <th>Sunset</th>
-            </tr>
-          </thead>
-
-          <tbody>
-
-            <tr>
-              <th scope="row">Bengaluru</th>
-              <td>--</td>
-              <td>--</td>
-              <td>--</td>
-              <td>--</td>
-              <td>--</td>
-              <td>--</td>
-            </tr>
-
-            <tr>
-              <th scope="row">Chennai</th>
-              <td>--</td>
-              <td>--</td>
-              <td>--</td>
-              <td>--</td>
-              <td>--</td>
-              <td>--</td>
-            </tr>
-
-            <tr>
-              <th scope="row">Hyderabad</th>
-              <td>--</td>
-              <td>--</td>
-              <td>--</td>
-              <td>--</td>
-              <td>--</td>
-              <td>--</td>
-            </tr>
-
-            <tr>
-              <th scope="row">Pune</th>
-              <td>--</td>
-              <td>--</td>
-              <td>--</td>
-              <td>--</td>
-              <td>--</td>
-              <td>--</td>
-            </tr>
-
-            <tr>
-              <th scope="row">Delhi</th>
-              <td>--</td>
-              <td>--</td>
-              <td>--</td>
-              <td>--</td>
-              <td>--</td>
-              <td>--</td>
-            </tr>
-
-            <tr>
-              <th scope="row">Mumbai</th>
-              <td>--</td>
-              <td>--</td>
-              <td>--</td>
-              <td>--</td>
-              <td>--</td>
-              <td>--</td>
-            </tr>
-
-          </tbody>
-
-        </table>
-
-      </div>
-
-    </section>
+                    <tbody>
+                        <tr>
+                            <th scope="row" class="text-start">Hyderabad</th>
+                            <td> 75</td>
+                            <td> 25</td>
+                            <td> 26</td>
+                            <td> 83</td>
+                            <td> 24</td>
+                            <td> 25</td>
+                            <td> 2.06</td>
+                            <td> 280</td>
+                            <td> 1694651642</td>
+                            <td> 1694695804</td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="text-start">Pune</th>
+                            <td> 39</td>
+                            <td> 22</td>
+                            <td> 23</td>
+                            <td> 90</td>
+                            <td> 22</td>
+                            <td> 22</td>
+                            <td> 3.31</td>
+                            <td> 255</td>
+                            <td> 1694652730</td>
+                            <td> 1694696933</td>
+                        </tr>
+                         <tr>
+                            <th scope="row" class="text-start">Noida</th>
+<td> 100</td>
+                            <td> 32</td>
+                            <td> 37</td>
+                            <td> 58</td>
+                            <td> 32</td>
+                            <td> 32</td>
+                            <td> 2.14</td>
+                            <td> 133</td>
+                            <td> 1694651697</td>
+                            <td> 1694696298</td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="text-start">Delhi</th>
+                            <td> 40</td>
+                            <td> 32</td>
+                            <td> 39</td>
+                            <td> 70</td>
+                            <td> 32</td>
+                            <td> 32</td>
+                            <td> 2.57</td>
+                            <td> 140</td>
+                            <td> 1694651722</td>
+                            <td> 1694696327</td>
+                        </tr> 
+                    </tbody>
+                </table>
+            </div>
 
   </main>
 
-  <!-- Guide Modal -->
-  <div id="guideModal" class="guide-modal">
+<!-- Guide Modal -->
+<div id="guideModal" class="guide-modal">
 
-    <div class="guide-content">
+  <div class="guide-content">
 
-      <button class="close-guide">&times;</button>
+    <button class="close-guide">&times;</button>
 
-      <div class="guide-top">
+    <div class="guide-top">
 
-        <div class="guide-icon">
-          <i aria-hidden="true" class="fa-solid fa-cloud-sun-rain"></i>
-        </div>
-
-        <h2>Weather App Guide</h2>
-
-        <p>
-          Search any city worldwide and instantly view live weather,
-          7-day forecast trends, humidity, wind speed, sunrise, and sunset.
-        </p>
-
+      <div class="guide-icon">
+        <i aria-hidden="true" class="fa-solid fa-cloud-sun-rain"></i>
       </div>
 
-      <div class="guide-grid">
+      <h2>Weather App Guide</h2>
 
-        <div class="guide-box">
-          <h4>Features</h4>
+      <p>
+        Search any city worldwide and instantly view live weather,
+        7-day forecast trends, humidity, wind speed, sunrise, and sunset.
+      </p>
 
-          <ul>
-            <li>Live Weather Search</li>
-            <li>7-Day Forecast Charts</li>
-            <li>Light & Dark Mode</li>
-            <li>Temperature Unit Toggle</li>
-            <li>Smart Recommendations</li>
-          </ul>
-        </div>
+    </div>
 
-        <div class="guide-box">
-          <h4>How To Use</h4>
+    <div class="guide-grid">
 
-          <ul>
-            <li>Search your city</li>
-            <li>View weather details</li>
-            <li>Check forecast trends</li>
-            <li>Switch theme anytime</li>
-            <li>Compare common cities</li>
-          </ul>
-        </div>
+      <div class="guide-box">
+        <h4>Features</h4>
 
+        <ul>
+          <li>Live Weather Search</li>
+          <li>7-Day Forecast Charts</li>
+          <li>Light & Dark Mode</li>
+          <li>Temperature Unit Toggle</li>
+          <li>Smart Recommendations</li>
+        </ul>
+      </div>
+
+      <div class="guide-box">
+        <h4>How To Use</h4>
+
+        <ul>
+          <li>Search your city</li>
+          <li>View weather details</li>
+          <li>Check forecast trends</li>
+          <li>Switch theme anytime</li>
+          <li>Compare common cities</li>
+        </ul>
       </div>
 
     </div>
 
   </div>
 
-  <!-- Bootstrap -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</div>
 
-  <!-- Script -->
-  <script src="script.js"></script>
+<!-- Bootstrap -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
+<!-- Script -->
+<script src="script.js"></script>
+        <script src="script.js"></script>
 </body>
 </html>
