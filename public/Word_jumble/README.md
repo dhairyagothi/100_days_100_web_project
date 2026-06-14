@@ -60,7 +60,8 @@ WordJumble/
 ---
 
 ## 📸 Screenshots
---Screenshot here---
+<img width="923" height="756" alt="image" src="https://github.com/user-attachments/assets/230286e7-eb79-4005-86e5-e629b261067c" />
+
 
 ---
 
