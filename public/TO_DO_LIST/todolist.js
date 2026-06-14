@@ -137,14 +137,31 @@ function renderTasks() {
       card.style.setProperty("--i", idx);
 
       // Bug 2 fix: build the card entirely with safe DOM APIs — no innerHTML
-      const noteRow = document.createElement("div");
-      noteRow.className = "note-row";
+    const noteRow = document.createElement("div");
+    noteRow.className = "note-row";
 
-      // Editable textarea — textContent sets value safely
-      const textarea = document.createElement("textarea");
+    let textarea;
+    if (task.completed) {
+      textarea = document.createElement("div");
+      textarea.className = "note-text note-text-done";
+      textarea.textContent = task.text;
+    } else {
+      textarea = document.createElement("textarea");
       textarea.className = "note-text";
-      textarea.value = task.text; // safe assignment; no HTML parsing
+      textarea.value = task.text;
       textarea.addEventListener("change", () => updateTaskText(task.id, textarea.value));
+    }
+
+    // ✅ Done badge appears right below the text when completed
+    if (task.completed) {
+      const doneBadge = document.createElement("span");
+      doneBadge.className = "done-badge";
+      doneBadge.textContent = "✅ Done";
+      noteRow.appendChild(textarea);
+      noteRow.appendChild(doneBadge);
+    } else {
+      noteRow.appendChild(textarea);
+    }
 
       const noteActions = document.createElement("div");
       noteActions.className = "note-actions";
@@ -152,7 +169,7 @@ function renderTasks() {
       const badge = document.createElement("div");
       badge.className = "category-badge";
       if (task.completed) {
-        badge.textContent = `${task.category} | ✅ Done`;
+        badge.textContent = task.category;
         badge.style.opacity = "0.8";
       } else {
         badge.textContent = task.category;
@@ -175,7 +192,6 @@ function renderTasks() {
       btnGroup.appendChild(deleteBtn);
       noteActions.appendChild(badge);
       noteActions.appendChild(btnGroup);
-      noteRow.appendChild(textarea);
       noteRow.appendChild(noteActions);
       card.appendChild(noteRow);
 

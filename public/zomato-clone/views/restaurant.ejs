@@ -65,13 +65,7 @@
               <%= item.cuisines && item.cuisines.length ? item.cuisines.join(", ") : "Food" %>
             </p>
 
-        <!-- Location + Price -->
-            <div class="bottom-row">
-              <span class="location-text"><%= item.location || "Delhi" %></span>
-               <span class="price-text">₹<%= item.priceForTwo ? item.priceForTwo.toLocaleString() : 500 %> for t...</span>
-
-            </div>
-
+       
             <!-- Distance -->
             <div class="distance-row">
               <span class="distance-text"><%= item.distance || "1 km" %></span>
