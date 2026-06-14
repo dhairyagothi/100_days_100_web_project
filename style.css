@@ -3445,3 +3445,25 @@ body.custom-cursor-active .cursor-ring.is-visible {
 #randomProjectResult {
   width: 100%;
 }
+
+/* Card Preview Image Styles */
+.card-preview-image-container {
+  margin: 12px 0;
+  border-radius: var(--radius-md, 8px);
+  overflow: hidden;
+  aspect-ratio: 16/9;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.card-preview-image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s var(--ease, ease);
+}
+
+.project-card:hover .card-preview-image-container img {
+  transform: scale(1.05);
+}
+

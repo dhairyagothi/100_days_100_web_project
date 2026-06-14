@@ -85,6 +85,7 @@ function hydrateProjects(data) {
     techStack: project.techStack,
     difficulty: project.difficulty,
     projectDesc: project.projectDesc,
+    previewImage: project.previewImage,
   }));
   PROJECTS_BY_NAME = new Map(PROJECTS.map(p => [p.projectName, p]));
   PROJECTS_BY_DAY = new Map(PROJECTS.map(p => [p.day, p]));
@@ -309,6 +310,37 @@ function buildProjectCardHTML({
 
   const project = PROJECTS_BY_NAME.get(name) || PROJECTS_BY_DAY.get(day);
 
+  const isRoot = !window.location.pathname.includes("/contributors/");
+  const basePrefix = isRoot ? "" : "../";
+
+  let safePreviewUrl = "";
+  const resolvedPreview = (project && project.previewImage) || previewImage;
+  if (resolvedPreview) {
+    if (resolvedPreview.startsWith("./")) {
+      safePreviewUrl = basePrefix + resolvedPreview.substring(2);
+    } else {
+      safePreviewUrl = basePrefix + resolvedPreview;
+    }
+  } else if (url && (url.startsWith('./') || url.startsWith('public/'))) {
+    const parts = url.split('/');
+    const folder = parts[parts.length - 2];
+    if (folder) {
+      safePreviewUrl = `${basePrefix}public/previews/${folder}.png`;
+    }
+  }
+
+  const previewImageHTML = safePreviewUrl
+    ? `<div class="card-preview-image-container">
+         <img
+           src="${safePreviewUrl}"
+           alt="${safeName} preview"
+           loading="lazy"
+           decoding="async"
+           onerror="this.parentNode.style.display='none';"
+         >
+       </div>`
+    : "";
+
   const description = escapeHTML(getProjectDescription(project));
   const safeDay = escapeHTML(day);
   const safeName = escapeHTML(name);
@@ -351,16 +383,7 @@ function buildProjectCardHTML({
                 </span>
             </div>
 
-            <div class="card-preview-image-container" style="margin: 12px 0; border-radius: 8px; overflow: hidden; aspect-ratio: 16/9; background: #1a1a1a;">
-             <img
-    src="${url && url.startsWith('./') ? url.substring(0, url.lastIndexOf('/')) : ''}/preview.webp"
-    alt="${safeName} preview"
-    loading="lazy"
-    decoding="async"
-    onerror="this.parentNode.style.display='none';"
-    style="width: 100%; height: 100%; object-fit: cover;"
->
-            </div>
+            ${previewImageHTML}
 
             <h3 class="card-name">${safeName}</h3>
 

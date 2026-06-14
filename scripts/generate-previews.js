@@ -3,8 +3,8 @@ const fs = require('fs');
 const path = require('path');
 
 const PROJECTS_DIR = path.join(__dirname, '..', 'public');
-const SCREENSHOT_WIDTH = 1280;
-const SCREENSHOT_HEIGHT = 720;
+const SCREENSHOT_WIDTH = 800;
+const SCREENSHOT_HEIGHT = 500;
 
 // Get specific project from --project flag
 const args = process.argv.slice(2);
@@ -14,7 +14,8 @@ const specificProject = projectFlag !== -1 ? args[projectFlag + 1] : null;
 async function generatePreview(browser, projectName) {
   const projectDir = path.join(PROJECTS_DIR, projectName);
   let projectPath = path.join(projectDir, 'index.html');
-  const outputPath = path.join(projectDir, 'preview.png');
+  const PREVIEWS_DIR = path.join(PROJECTS_DIR, 'previews');
+  const outputPath = path.join(PREVIEWS_DIR, `${projectName}.png`);
 
   if (!fs.existsSync(projectPath)) {
     const allFiles = fs.readdirSync(projectDir);
@@ -44,11 +45,17 @@ async function generatePreview(browser, projectName) {
 async function main() {
   let projects = [];
 
+  const PREVIEWS_DIR = path.join(PROJECTS_DIR, 'previews');
+  if (!fs.existsSync(PREVIEWS_DIR)) {
+    fs.mkdirSync(PREVIEWS_DIR, { recursive: true });
+  }
+
   if (specificProject) {
     projects = [specificProject];
   } else {
     projects = fs.readdirSync(PROJECTS_DIR).filter((name) => {
       const fullPath = path.join(PROJECTS_DIR, name);
+      if (name === 'previews' || name === 'images' || name === 'node_modules') return false;
       return fs.statSync(fullPath).isDirectory();
     });
   }
