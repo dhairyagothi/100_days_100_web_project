@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Book Marker & Reading List</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="app-container">
+      <header class="form-wrapper">
+        <h2>Book Marker Dashboard</h2>
+        <p class="subtitle">
+          Track reading lists, document progress states, and log resources
+        </p>
+
+        <form id="book-form">
+          <div class="input-row">
+            <input
+              type="text"
+              id="book-title"
+              placeholder="Book or Article Title..."
+              required
+              autocomplete="off"
+            />
+            <input
+              type="text"
+              id="book-author"
+              placeholder="Author Name..."
+              required
+              autocomplete="off"
+            />
+          </div>
+          <div class="input-row custom-select-row">
+            <input
+              type="url"
+              id="book-link"
+              placeholder="Resource Link URL (Optional)..."
+              autocomplete="off"
+            />
+            <button type="submit" class="add-btn">Add to List</button>
+          </div>
+        </form>
+      </header>
+
+      <nav class="filter-controls">
+        <div class="tabs">
+          <button class="filter-tab active" data-filter="all">
+            All <span id="count-all">0</span>
+          </button>
+          <button class="filter-tab" data-filter="reading">
+            Reading <span id="count-reading">0</span>
+          </button>
+          <button class="filter-tab" data-filter="completed">
+            Completed <span id="count-completed">0</span>
+          </button>
+        </div>
+      </nav>
+
+      <main class="list-viewport">
+        <ul id="reading-list-element" class="reading-list"></ul>
+
+        <div id="empty-state" class="empty-state-box">
+          <div class="empty-icon">📚</div>
+          <h3>Your Reading List is Empty</h3>
+          <p>
+            Log a new piece of reading or source documentation above to manage
+            your targets.
+          </p>
+        </div>
+      </main>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

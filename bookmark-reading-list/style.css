@@ -1,0 +1,294 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #0a0e17;
+  color: #e2e8f0;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 25px;
+}
+
+.app-container {
+  max-width: 680px;
+  width: 100%;
+  background-color: #111827;
+  border: 1px solid #1f2937;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+}
+
+/* Form Area Structural Surface Deck styling */
+.form-wrapper {
+  background-color: #1f2937;
+  padding: 30px;
+  border-bottom: 1px solid #374151;
+}
+
+.form-wrapper h2 {
+  font-size: 22px;
+  color: #6366f1;
+  margin-bottom: 4px;
+}
+
+.subtitle {
+  font-size: 13px;
+  color: #9ca3af;
+  margin-bottom: 20px;
+}
+
+#book-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.input-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.custom-select-row {
+  grid-template-columns: 1fr auto;
+}
+
+#book-form input {
+  background-color: #111827;
+  color: #f9fafb;
+  border: 1px solid #4b5563;
+  padding: 12px 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+#book-form input:focus {
+  border-color: #6366f1;
+}
+
+.add-btn {
+  background-color: #6366f1;
+  color: #ffffff;
+  border: none;
+  padding: 0 24px;
+  font-size: 14px;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+.add-btn:hover {
+  background-color: #4f46e5;
+}
+
+/* Navigation Tab Bar Mechanics */
+.filter-controls {
+  background-color: #111827;
+  padding: 15px 30px 0 30px;
+}
+
+.tabs {
+  display: flex;
+  gap: 10px;
+  border-bottom: 1px solid #1f2937;
+}
+
+.filter-tab {
+  background: none;
+  border: none;
+  color: #9ca3af;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 10px 15px;
+  cursor: pointer;
+  position: relative;
+  outline: none;
+}
+
+.filter-tab span {
+  font-size: 11px;
+  background-color: #1f2937;
+  color: #9ca3af;
+  padding: 2px 6px;
+  border-radius: 10px;
+  margin-left: 4px;
+}
+
+.filter-tab.active {
+  color: #6366f1;
+}
+
+.filter-tab.active span {
+  background-color: rgba(99, 102, 241, 0.15);
+  color: #6366f1;
+}
+
+.filter-tab.active::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: #6366f1;
+}
+
+/* Active Book List Viewport Layout Engine */
+.list-viewport {
+  padding: 20px 30px 30px 30px;
+  min-height: 280px;
+  display: flex;
+  flex-direction: column;
+}
+
+.reading-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.book-card {
+  background-color: #1f2937;
+  border: 1px solid #374151;
+  border-radius: 10px;
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  transition:
+    transform 0.15s,
+    opacity 0.2s;
+}
+
+.book-info-block {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0; /* Prevents long string blowout overflow bugs */
+}
+
+.book-title-text {
+  font-size: 16px;
+  font-weight: 600;
+  color: #f9fafb;
+  text-decoration: none;
+}
+
+.book-title-text.has-url:hover {
+  color: #6366f1;
+  text-decoration: underline;
+}
+
+.book-author-text {
+  font-size: 13px;
+  color: #9ca3af;
+}
+
+/* Dynamic State Visual Cross-Outs */
+.book-card.completed .book-title-text {
+  text-decoration: line-through;
+  color: #64748b;
+}
+
+.book-card.completed {
+  opacity: 0.65;
+  background-color: #111827;
+  border-color: #1f2937;
+}
+
+/* Action Control Items Layout Box */
+.card-actions-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.status-btn {
+  background-color: #111827;
+  color: #9ca3af;
+  border: 1px solid #374151;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.book-card.completed .status-btn {
+  background-color: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+  border-color: rgba(16, 185, 129, 0.2);
+}
+
+.delete-btn {
+  background: none;
+  border: none;
+  color: #ef4444;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+  line-height: 1;
+}
+
+.delete-btn:hover {
+  background-color: rgba(239, 68, 68, 0.1);
+}
+
+/* Catch Empty State Panels */
+.empty-state-box {
+  text-align: center;
+  margin: auto;
+  padding: 40px 20px;
+}
+
+.empty-icon {
+  font-size: 44px;
+  margin-bottom: 12px;
+}
+
+.empty-state-box h3 {
+  font-size: 16px;
+  color: #cbd5e1;
+  margin-bottom: 4px;
+}
+
+.empty-state-box p {
+  color: #64748b;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.hide {
+  display: none !important;
+}
+
+@media (max-width: 540px) {
+  .input-row {
+    grid-template-columns: 1fr;
+  }
+  .custom-select-row {
+    grid-template-columns: 1fr;
+  }
+  .book-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .card-actions-row {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
