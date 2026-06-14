@@ -682,142 +682,32 @@
 
 <body>
 
-  <!-- TOP BANNER -->
+<!-- TOP BANNER -->
+<div class="top-banner" id="topBanner">
+  <span class="banner-tag">🎉 New</span>
+  Free delivery on your first 3 orders &nbsp;·&nbsp; Use code <strong>WELCOME50</strong> for 50% off
+  <button class="banner-close" onclick="document.getElementById('topBanner').style.display='none'">×</button>
+</div>
+ 
+<!-- nav -->
 
-  <div class="top-banner" id="topBanner">
-
-    <span class="banner-tag">
-      🎉 New
-    </span>
-
-    Free delivery on your first 3 orders ·
-    Use code <strong>WELCOME50</strong> for 50% off
-
-    <button
-      class="banner-close"
-      id="bannerCloseBtn"
-      aria-label="Close banner">
-
-      ×
-
-    </button>
-
-  </div>
-
-  <!-- NAVBAR -->
-
-  <nav>
-
-    <div class="nav-left">
-
-      <img
-        src="https://b.zmtcdn.com/web_assets/b40b97e677bc7b2ca77c58c61db266fe1603954218.png"
-        alt="Zomato Logo">
-
-    </div>
-
-    <div class="nav-links">
-
-      <a href="#" class="hide-mobile">
-        Get the App
-      </a>
-
-      <a href="#" class="hide-mobile">
-        Investor Relations
-      </a>
-
-      <a href="#" class="hide-mobile">
-        Add Restaurant
-      </a>
-
-      <button class="btn-login">
-        Log in
-      </button>
-
-      <button class="btn-signup">
-        Sign up
-      </button>
-
-      <button
-        class="dm-toggle"
-        id="dmToggle"
-        aria-label="Toggle dark mode">
-      </button>
-
-    </div>
-
-  </nav>
-
-  <!-- HERO -->
-
-  <main>
-
-    <section class="hero">
-
-      <div class="hero-bg"></div>
-
-      <div class="hero-content">
-
-        <h1>
-          Discover the best food & drinks in Delhi NCR
-        </h1>
-
-        <p>
-          Order food online, explore restaurants,
-          and experience the city's best dining moments.
-        </p>
-
-        <!-- SEARCH -->
-
-        <form
-          class="search-bar"
-          id="searchForm">
-
-          <div class="search-loc">
-
-            <span>📍</span>
-
-            <input
-              type="text"
-              id="locationInput"
-              placeholder="Enter location"
-              aria-label="Location">
-
-          </div>
-
-          <div class="search-query">
-
-            <span>🔍</span>
-
-            <input
-              type="text"
-              id="searchInput"
-              placeholder="Search for restaurant, cuisine or dish"
-              aria-label="Search restaurants">
-
-          </div>
-
-          <button
-            type="submit"
-            class="search-btn">
-
-            Search
-
-          </button>
-
-        </form>
-
-        <!-- TAGS -->
-
-        <div class="quick-tags">
-
-          <span class="qtag">🍕 Pizza</span>
-          <span class="qtag">🍔 Burger</span>
-          <span class="qtag">🍜 Chinese</span>
-          <span class="qtag">🍛 Biryani</span>
-          <span class="qtag">🥟 Momos</span>
-          <span class="qtag">🍰 Desserts</span>
-
+<div id="navbar"></div>
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-tag">🍽️ Food delivery & dining</div>
+      <h1>Discover the best<br>food & drinks in<br><em>Delhi NCR</em></h1>
+      <p class="hero-sub">Order online, explore restaurants, and enjoy<br>the city's best culinary experiences.</p>
+      <div class="search-bar">
+        <div class="search-loc">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <input id="locationInput" placeholder="Enter location" />
+        </div>
+        <div class="search-query">
+          <svg width="16" height="16" fill="none" stroke="#aaa" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input id="searchInput" placeholder="Search for restaurant, cuisine or a dish" />
         </div>
 
       </div>
@@ -966,139 +856,126 @@
 
         </ul>
 
-      </div>
-
+<!-- BRANDS -->
+<section class="brands-section">
+  <div class="brands-header">
+    <h2>eternal</h2>
+    <p>Powering India's Changing Lifestyles</p>
+  </div>
+  <div class="brand-cards">
+    <div class="brand-card zomato-card">
+      <img src="images/zomato.png" onerror="this.style.display='none'" alt="Zomato" />
+      <h3>zomato</h3>
+      <p>Get the app now to start ordering your favorite dishes!</p>
+      <a href="#">Check it out →</a>
     </div>
-
-    <div class="footer-bottom">
-
-      By continuing past this page, you agree to our
-      Terms of Service, Cookie Policy, Privacy Policy,
-      and Content Policies.
-
+    <div class="brand-card blinkit-card">
+      <img src="images/blinkit.png" onerror="this.style.display='none'" alt="Blinkit" />
+      <h3>blinkit</h3>
+      <p>Choose from 30,000+ products delivered to your doorstep.</p>
+      <a href="#">Check it out →</a>
     </div>
+    <div class="brand-card district-card">
+      <img src="images/district.png" onerror="this.style.display='none'" alt="District" />
+      <h3>district</h3>
+      <p>The best of events, movies, dining, and everything you love!</p>
+      <a href="#">Check it out →</a>
+    </div>
+    <div class="brand-card hyperpure-card">
+      <img src="images/hyperpure.png" onerror="this.style.display='none'" alt="Hyperpure" />
+      <h3>hyperpure</h3>
+      <p>Offering complete supply chain solution for your restaurant.</p>
+      <a href="#">Check it out →</a>
+    </div>
+  </div>
+</section>
 
-  </footer>
+<!-- APP SECTION -->
+<div class="app-section">
+  <div class="app-text">
+    <h2>Get the Zomato app</h2>
+    <p>We will send you a link, open it on your phone to download the app</p>
+    <div class="store-btns">
+      <img src="https://b.zmtcdn.com/data/webuikit/23e930757c3df49840c482a8638bf5c31556001144.png" alt="App Store" />
+      <img src="https://b.zmtcdn.com/data/webuikit/9f0c85a5e33adb783fa0aef667075f9e1556003622.png" alt="Google Play" />
+    </div>
+  </div>
+  <div class="app-phone">
+    <img src="https://b.zmtcdn.com/data/o2_assets/f773629053b24263e69f601925790f301680693809.png" alt="App" />
+  </div>
+</div>
 
-  <!-- JAVASCRIPT -->
+<div id="footer"></div>
 
-  <script>
 
-    const html =
-      document.documentElement;
+<!-- TOAST -->
+<div class="dm-toast" id="dmToast"></div>
 
-    // DARK MODE
+<script>
+  /* ── DARK MODE ── */
+  const html = document.documentElement;
+  const toast = document.getElementById('dmToast');
+  let toastTimer;
 
-    function toggleDark() {
+  // Restore saved preference
+  const saved = localStorage.getItem('zomato-theme');
+  if (saved) html.setAttribute('data-theme', saved);
 
-      const isDark =
-        html.getAttribute("data-theme") === "dark";
+  function toggleDark() {
+    const isDark = html.getAttribute('data-theme') === 'dark';
+    const next = isDark ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    localStorage.setItem('zomato-theme', next);
+    showToast(next === 'dark' ? '🌙 Dark mode on' : '☀️ Light mode on');
+  }
 
-      const nextTheme =
-        isDark ? "light" : "dark";
+  function showToast(msg) {
+    toast.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 2000);
+  }
 
-      html.setAttribute(
-        "data-theme",
-        nextTheme
-      );
-
-      localStorage.setItem(
-        "zomato-theme",
-        nextTheme
-      );
+  /* ── SEARCH ── */
+  function doSearch() {
+    const q = document.getElementById('searchInput').value.trim();
+    const loc = document.getElementById('locationInput').value.trim();
+    if (!q) { alert('Please enter something!'); return; }
+    alert('You searched for: ' + q + (loc ? ' in ' + loc : ''));
+  }
+  document.getElementById('searchInput').addEventListener('keydown', e => { if (e.key === 'Enter') doSearch(); });
+  document.getElementById('locationInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') {
+      const loc = document.getElementById('locationInput').value.trim();
+      if (!loc) { alert('Please enter a location!'); return; }
+      alert('Location selected: ' + loc);
     }
+  });
 
-    document
-      .getElementById("dmToggle")
-      .addEventListener(
-        "click",
-        toggleDark
-      );
-
-    // CLOSE BANNER
-
-    document
-      .getElementById("bannerCloseBtn")
-      .addEventListener(
-        "click",
-        () => {
-
-          document
-            .getElementById("topBanner")
-            .style
-            .display = "none";
-        }
-      );
-
-    // SEARCH
-
-    function doSearch() {
-
-      const query =
-        document
-          .getElementById("searchInput")
-          .value
-          .trim();
-
-      const location =
-        document
-          .getElementById("locationInput")
-          .value
-          .trim();
-
-      if (!query) {
-
-        alert(
-          "Please enter something to search."
-        );
-
-        return;
-      }
-
-      alert(
-        `You searched for "${query}"` +
-        (location ? ` in ${location}` : "")
-      );
-    }
-
-    document
-      .getElementById("searchForm")
-      .addEventListener(
-        "submit",
-        (e) => {
-
-          e.preventDefault();
-
-          doSearch();
-        }
-      );
-
-    // QUICK TAGS
-
-    document
-      .querySelectorAll(".qtag")
-      .forEach((tag) => {
-
-        tag.addEventListener(
-          "click",
-          () => {
-
-            document
-              .getElementById("searchInput")
-              .value =
-              tag.textContent
-                .replace(/[^\w\s]/gi, "")
-                .trim();
-
-            document
-              .getElementById("searchInput")
-              .focus();
-          }
-        );
-      });
-
-  </script>
-
+  /* ── QUICK TAGS ── */
+  document.querySelectorAll('.qtag').forEach(tag => {
+    tag.addEventListener('click', () => {
+      document.getElementById('searchInput').value = tag.textContent.slice(2).trim();
+      document.getElementById('searchInput').focus();
+    });
+  });
+</script>
 </body>
-
 </html>
+
+<script>
+async function loadComponent(id, file) {
+  const res = await fetch(file);
+  const data = await res.text();
+  document.getElementById(id).innerHTML = data;
+}
+
+// navbar load
+loadComponent("navbar", "components/navbar.html");
+
+
+// footer
+loadComponent("footer", "components/footer.html");
+
+</script>
+

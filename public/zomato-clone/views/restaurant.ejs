@@ -20,8 +20,9 @@
 
       <% foods.forEach(item => { %>
 
-        <div class="card">
-
+      <!-- ✅ CHANGE 1: YAHI MAIN CARD HAI (onclick yahin lagaya) -->
+        <div class="card" onclick="goToDetail('<%= item._id %>')">
+ 
           <!-- IMAGE SECTION -->
           <div class="card-image-wrap">
             <img
@@ -31,7 +32,8 @@
               loading="lazy"
             />
 
-           
+                       <!-- Promoted Badge -->
+            <span class="promoted-badge">Promoted</span>
 
             <!-- Offer Banner -->
             <% if (item.offer) { %>
@@ -53,11 +55,23 @@
             <!-- Name + Rating -->
             <div class="top-row">
               <h3 class="card-name"><%= item.name %></h3>
-          
+           <span class="rating-badge">
+                <%= item.deliveryRating ? item.deliveryRating.toFixed(1) : (item.diningRating ? item.diningRating.toFixed(1) : "4.0") %>★
+              </span>
             </div>
 
-           
-       
+              <!-- Cuisines -->
+            <p class="cuisine-text">
+              <%= item.cuisines && item.cuisines.length ? item.cuisines.join(", ") : "Food" %>
+            </p>
+
+        <!-- Location + Price -->
+            <div class="bottom-row">
+              <span class="location-text"><%= item.location || "Delhi" %></span>
+               <span class="price-text">₹<%= item.priceForTwo ? item.priceForTwo.toLocaleString() : 500 %> for t...</span>
+
+            </div>
+
             <!-- Distance -->
             <div class="distance-row">
               <span class="distance-text"><%= item.distance || "1 km" %></span>
@@ -68,7 +82,7 @@
 
       <% }) %>
 
-    <% }) %>
+    </div>
 
   </div>
 
@@ -86,6 +100,13 @@
       localStorage.setItem('zomato-theme', next);
     }
   </script>
+
+
+<script>
+function goToDetail(id) {
+  window.location.href = `/api/food/view/${id}`;
+}
+</script>
 
 </body>
 </html>
