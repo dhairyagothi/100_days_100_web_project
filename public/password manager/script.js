@@ -346,14 +346,6 @@ async function addEntry() {
   const password =
     document.getElementById("password").value;
 
-            <td>
-                ${escapeHTML(item.website)}
-            </td>
-
-            <td>
-                ${escapeHTML(item.username)}
-            </td>
-
   const errEl =
     document.getElementById("form-error");
 
@@ -380,8 +372,8 @@ async function addEntry() {
       site,
       username,
       encryptedPassword,
-      category,
-      favorite,
+      category: document.getElementById("category")?.value || "Other",
+      favorite: false,
       createdAt: new Date().toISOString(),
     };
 
@@ -490,11 +482,12 @@ async function copyPassword(id) {
   );
 
   if (btn) {
-    btn.textContent = "Copied!";
-
+    btn.innerHTML = "✅ Copied!";
+    btn.classList.add("copied");
     setTimeout(() => {
-      btn.textContent = "Copy";
-    }, 1500);
+      btn.innerHTML = "📋 Copy";
+      btn.classList.remove("copied");
+    }, 2000);
   }
 }
 
