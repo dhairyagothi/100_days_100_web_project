@@ -1,3 +1,5 @@
+
+const PASSWORD_HISTORY_KEY = "passwordHistory";
 const warningMsg = document.getElementById("warningMsg");
 const inputSlider = document.querySelector("[data-lengthSlider]");
 const lengthDisplay = document.querySelector("[data-lengthNumber]");
@@ -43,9 +45,23 @@ function init() {
     handleCheckBoxChange();
     calcStrength();
     updateSuggestions();
-    renderHistory();
+    loadPasswordHistory();
+    customWordInput.style.display =
+        useCustomWordCheck.checked ? "block" : "none";
+}
 
-    customWordInput.style.display = useCustomWordCheck.checked ? "block" : "none";
+function loadPasswordHistory() {
+    try {
+        const savedHistory = localStorage.getItem(PASSWORD_HISTORY_KEY);
+
+        if (savedHistory) {
+            passwordHistory = JSON.parse(savedHistory);
+        }
+    } catch (error) {
+        passwordHistory = [];
+    }
+
+    renderHistory();
 }
 
 function handleSlider() {
@@ -74,9 +90,12 @@ function generateRandomNumber() {
 
 function savePasswordHistory() {
     try {
-        localStorage.setItem(PASSWORD_HISTORY_KEY, JSON.stringify(passwordHistory));
+        localStorage.setItem(
+            PASSWORD_HISTORY_KEY,
+            JSON.stringify(passwordHistory)
+        );
     } catch (error) {
-        return;
+        console.error("Unable to save history");
     }
 }
 
@@ -306,12 +325,19 @@ function handleCheckBoxChange() {
 }
 
 function updateHistory(newPassword) {
+
+    // Prevent consecutive duplicates
+    if (passwordHistory[0] === newPassword) {
+        return;
+    }
+
     passwordHistory.unshift(newPassword);
 
-    if (passwordHistory.length > 3) {
+    if (passwordHistory.length > 5) {
         passwordHistory.pop();
     }
 
+    savePasswordHistory();
     renderHistory();
 }
 
@@ -335,6 +361,7 @@ function renderHistory() {
 
 clearHistoryBtn.addEventListener("click", () => {
     passwordHistory = [];
+    localStorage.removeItem(PASSWORD_HISTORY_KEY);
     renderHistory();
 });
 
