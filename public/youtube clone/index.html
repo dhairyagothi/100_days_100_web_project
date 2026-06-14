@@ -183,6 +183,24 @@
         padding-top: calc(55px + 56px + 16px) !important;
       }
 
+      /* On mobile: sidebar slides away, filter bar must start at left:0 */
+      @media (max-width: 750px) {
+        .filter-bar {
+          left: 0;
+          padding: 0 12px;
+          gap: 8px;
+        }
+
+        main {
+          padding-left: 0 !important;
+          overflow-x: hidden;
+        }
+
+        body {
+          overflow-x: hidden;
+        }
+      }
+
       /* Sidebar icon label visibility */
       html[data-theme="dark"] .sidebar-link div {
         font-size: 10px;
@@ -225,12 +243,13 @@
           </div>
         </div>
 
+        
+
         <button class="search-button">
 
           <img class="search-icon" src="icons/search.svg">
           <span class="tooltip">Search</span>
 
-          <img alt="" class="search-icon" src="icons/search.svg">
           <div class="tooltip">Search</div>
 
         </button>
@@ -239,8 +258,6 @@
 
           <img class="voice-search-icon" src="icons/voice-search-icon.svg">
           <span class="tooltip">Search with your voice</span>
-
-          <img alt="" class="voice-search-icon" src="icons/voice-search-icon.svg">
           <div class="tooltip">Search with your voice</div>
 
         </button>
@@ -284,23 +301,23 @@
     <button class="filter-bar-arrow" id="filterArrow">&#8250;</button>
 
     <nav class="sidebar">
-      <div class="sidebar-link is-active" data-section="home">
-  <img src="icons/home-icon.svg" alt="">
-  <div>Home</div>
-</div>
-<div class="sidebar-link" data-section="shorts">
-  <img src="icons/shorts.svg" alt="">
-  <div>Shorts</div>
-</div>
-<div class="sidebar-link" data-section="subscriptions">
-  <img src="icons/subscriptions.svg" alt="">
-  <div>Subscriptions</div>
-</div>
-<div class="sidebar-link" data-section="you">
-  <img src="icons/you-profile.svg" alt="">
-  <div>You</div>
-</div>
-
+      <div class="sidebar-link is-active">
+        <img src="icons/home-icon.svg" alt="">
+        <div>Home</div>
+      </div>
+      <div class="sidebar-link">
+        <img src="icons/shorts.svg" alt="">
+        <div>Shorts</div>
+      </div>
+      <div class="sidebar-link ">
+        <img src="icons/subscriptions.svg" alt="">
+        <div>Subscriptions</div>
+      </div>
+      <div class="sidebar-link">
+        <img src="icons/you-profile.svg" alt="">
+        <div>You</div>
+      </div>
+    </nav>
     <main>
       <section class="video-grid">
         <div class="video-preview">
@@ -311,10 +328,6 @@
           <div class="video-info-grid">
 
             <div class="channel-picture"><img class="profile-picture" src="channel-pictures/channel-1.jpeg"></div>
-
-            <div class="channel-picture">
-              <img alt="" class="profile-picture" src="channel-pictures/channel-1.jpeg">
-            </div>
 
             <div class="video-info">
               <p class="video-title">Talking Tech and AI with Google CEO Sundar Pichai!</p>
@@ -332,11 +345,6 @@
           <div class="video-info-grid">
 
             <div class="channel-picture"><img class="profile-picture" src="channel-pictures/channel-2.jpeg"></div>
-
-            <div class="channel-picture">
-              <img alt="" class="profile-picture" src="channel-pictures/channel-2.jpeg">
-            </div>
-
             <div class="video-info">
               <p class="video-title">Try Not To Laugh Challenge #9</p>
               <p class="video-author">Markiplier</p>
@@ -344,7 +352,6 @@
             </div>
           </div>
         </div>
-
         <div class="video-preview">
           <div class="thumbnail-row">
             <img alt="" class="thumbnail" src="thumbnails/thumbnail-3.webp">
@@ -353,10 +360,6 @@
           <div class="video-info-grid">
 
             <div class="channel-picture"><img class="profile-picture" src="channel-pictures/channel-3.jpeg"></div>
-
-            <div class="channel-picture">
-              <img alt="" class="profile-picture" src="channel-pictures/channel-3.jpeg">
-            </div>
 
             <div class="video-info">
               <p class="video-title">Crazy Tik Toks Taken Moments Before DISASTER</p>
@@ -375,10 +378,6 @@
 
             <div class="channel-picture"><img class="profile-picture" src="channel-pictures/channel-4.jpeg"></div>
 
-            <div class="channel-picture">
-              <img alt="" class="profile-picture" src="channel-pictures/channel-4.jpeg">
-            </div>
-
             <div class="video-info">
               <p class="video-title">The Simplest Math Problem No One Can Solve - Collatz Conjecture</p>
               <p class="video-author">Veritasium</p>
@@ -395,11 +394,6 @@
           <div class="video-info-grid">
 
             <div class="channel-picture"><img class="profile-picture" src="channel-pictures/channel-5.jpeg"></div>
-
-            <div class="channel-picture">
-              <img alt="" class="profile-picture" src="channel-pictures/channel-5.jpeg">
-            </div>
-
             <div class="video-info">
               <p class="video-title">Kadane's Algorithm to Maximum Sum Subarray Problem</p>
               <p class="video-author">CS Dojo</p>
@@ -416,9 +410,6 @@
           <div class="video-info-grid">
 
             <div class="channel-picture"><img class="profile-picture" src="channel-pictures/channel-6.jpeg"></div>
-            <div class="channel-picture">
-              <img alt="" class="profile-picture" src="channel-pictures/channel-6.jpeg">
-            </div>
 
             <div class="video-info">
               <p class="video-title">Anything You Can Fit In The Circle I'll Pay For</p>

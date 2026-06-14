@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recipe Genie — Dedicated Recipe Search</title>
+  
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-[#fffaf5] text-stone-800 antialiased selection:bg-orange-100 selection:text-orange-800 min-h-screen flex flex-col">
+
+  <main class="blur-transition flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 md:pt-12 pb-20">
+    
+    <div class="flex flex-col md:flex-row items-center justify-between gap-6 mb-12 border-b border-stone-200/60 pb-8">
+      <div class="flex items-center space-x-4 self-start md:self-center w-full md:w-auto">
+        
+        <a href="home.html" class="no-underline">
+          <button class="flex items-center justify-center w-12 h-12 rounded-full bg-white border border-stone-200 text-stone-600 hover:text-orange-500 hover:border-orange-200 shadow-sm transition-all duration-200 active:scale-95 group cursor-pointer" aria-label="Return to homepage">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5 transform group-hover:-translate-x-0.5 transition-transform">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+            </svg>
+          </button>
+        </a>
+
+        <div class="grow">
+          <p class="text-[10px] md:text-xs font-bold text-orange-500 uppercase tracking-wider mb-0.5">Advanced Query Directory</p>
+          <h1 class="text-2xl md:text-4xl font-black text-stone-900 tracking-tight">
+            Search Recipes 🔍
+          </h1>
+        </div>
+      </div>
+    </div>
+
+    <div class="w-full max-w-2xl mx-auto mb-12">
+      <div class="flex items-center gap-3.5 rounded-2xl border border-stone-200 bg-white px-4 py-3.5 shadow-md focus-within:border-orange-300 focus-within:ring-4 focus-within:ring-orange-500/10 transition-all duration-200">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-5 h-5 text-stone-400 shrink-0">
+          <path fill-rule="evenodd" d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z" clip-rule="evenodd" />
+        </svg>
+        <input 
+          type="text" 
+          id="advancedSearchInput"
+          class="grow bg-transparent text-stone-800 placeholder-stone-400 outline-none text-sm sm:text-base font-medium" 
+          placeholder="Type keywords like 'chicken', 'pasta', or 'dessert'..."
+          autocomplete="off"
+        />
+        <button id="clearAdvancedSearch" class="hidden text-stone-400 hover:text-stone-600 transition-colors p-0.5 cursor-pointer">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" class="w-4 h-4" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      <p id="searchStatusFeedback" class="text-xs text-stone-400 font-medium mt-3 px-1">Type at least 1 character to run live catalog lookup.</p>
+    </div>
+
+    <div id="searchResultsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 md:gap-10">
+      <div class="col-span-full text-center py-16 bg-white rounded-3xl border border-stone-200/60 p-8 shadow-sm">
+        <span class="text-4xl block mb-3">🥘</span>
+        <h3 class="text-stone-700 font-bold text-lg mb-1">Your Kitchen is Ready</h3>
+        <p class="text-stone-400 text-sm max-w-xs mx-auto">Enter global culinary terms into the search box above to render recipe profiles.</p>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const searchInput = document.getElementById("advancedSearchInput");
+      const clearSearchBtn = document.getElementById("clearAdvancedSearch");
+      const statusFeedback = document.getElementById("searchStatusFeedback");
+      const resultsGrid = document.getElementById("searchResultsGrid");
+
+      let lookupTimeout = null;
+
+      // Handle real-time user keystroke inputs with built-in bouncing
+      searchInput.addEventListener("input", (e) => {
+        const query = e.target.value;
+        
+        if (query.trim()) {
+          clearSearchBtn.classList.remove("hidden");
+        } else {
+          clearSearchBtn.classList.add("hidden");
+          resetSearchCanvasState();
+          return;
+        }
+
+        clearTimeout(lookupTimeout);
+        lookupTimeout = setTimeout(() => {
+          executeCatalogSearch(query.trim());
+        }, 300);
+      });
+
+      clearSearchBtn.addEventListener("click", () => {
+        searchInput.value = "";
+        clearSearchBtn.classList.add("hidden");
+        resetSearchCanvasState();
+        searchInput.focus();
+      });
+
+      async function executeCatalogSearch(queryValue) {
+        statusFeedback.textContent = "Querying databases...";
+        resultsGrid.innerHTML = `
+          <div class="animate-pulse bg-white border border-stone-200/60 rounded-[2rem] h-96 w-full"></div>
+          <div class="animate-pulse bg-white border border-stone-200/60 rounded-[2rem] h-96 w-full hidden sm:block"></div>
+          <div class="animate-pulse bg-white border border-stone-200/60 rounded-[2rem] h-96 w-full hidden lg:block"></div>
+        `;
+
+        try {
+          const response = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${queryValue}`);
+          const data = await response.json();
+          const meals = data.meals || [];
+
+          renderDiscoveredMeals(meals);
+        } catch (error) {
+          console.error("Advanced catalog querying failed execution:", error);
+          resultsGrid.innerHTML = `
+            <div class="col-span-full text-center py-12">
+              <p class="text-red-500 font-medium">Search system experienced an error. Please try again.</p>
+            </div>
+          `;
+        }
+      }
+
+      function renderDiscoveredMeals(mealsList) {
+        if (mealsList.length === 0) {
+          statusFeedback.textContent = "0 matches found.";
+          resultsGrid.innerHTML = `
+            <div class="col-span-full text-center py-16 bg-white rounded-3xl border border-stone-200/60 p-8 shadow-sm">
+              <span class="text-4xl block mb-3">🔍</span>
+              <h3 class="text-stone-700 font-bold text-lg mb-1">No Recipes Discovered</h3>
+              <p class="text-stone-400 text-sm max-w-xs mx-auto">We couldn't find matching recipes. Try variations like 'Beef', 'Apple', or 'Cake'.</p>
+            </div>
+          `;
+          return;
+        }
+
+        statusFeedback.textContent = `Discovered ${mealsList.length} culinary matches inside catalog.`;
+        
+        resultsGrid.innerHTML = mealsList.map(meal => `
+          <article class="group bg-white rounded-[2rem] overflow-hidden border border-stone-200/60 shadow-sm hover:shadow-[0_20px_40px_rgba(0,0,0,0.04)] hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between h-full">
+            <div class="relative overflow-hidden aspect-[4/3] bg-stone-100">
+              <img 
+                src="${meal.strMealThumb}" 
+                alt="${meal.strMeal}" 
+                class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500 ease-out"
+                loading="lazy"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-stone-950/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              ${meal.strArea ? `<span class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-xl text-[10px] font-bold uppercase tracking-wider text-stone-700 shadow-sm border border-stone-100">${meal.strArea}</span>` : ''}
+            </div>
+
+            <div class="p-6 flex flex-col flex-grow justify-between">
+              <div class="flex items-start space-x-2 mb-6">
+                <span class="p-1.5 bg-orange-50 rounded-lg text-orange-500 shrink-0 mt-0.5">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-4 h-4">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
+                  </svg>
+                </span>
+                <h2 class="text-lg font-bold text-stone-900 tracking-tight group-hover:text-orange-500 transition-colors duration-200 line-clamp-2">
+                  ${meal.strMeal}
+                </h2>
+              </div>
+
+              <div class="pt-4 border-t border-stone-100">
+                <a href="meal.html?id=${meal.idMeal}" class="no-underline">
+                  <button class="w-full bg-stone-50 hover:bg-orange-500 text-stone-700 hover:text-white font-semibold rounded-xl py-3 px-4 border-none shadow-sm transition-all duration-200 text-sm flex items-center justify-center space-x-2 group/btn cursor-pointer">
+                    <span>View Full Recipe</span>
+                    <span class="transform translate-x-0 group-hover/btn:translate-x-1 transition-transform duration-150">🍴</span>
+                  </button>
+                </a>
+              </div>
+            </div>
+          </article>
+        `).join("");
+      }
+
+      function resetSearchCanvasState() {
+        statusFeedback.textContent = "Type at least 1 character to run live catalog lookup.";
+        resultsGrid.innerHTML = `
+          <div class="col-span-full text-center py-16 bg-white rounded-3xl border border-stone-200/60 p-8 shadow-sm">
+            <span class="text-4xl block mb-3">🥘</span>
+            <h3 class="text-stone-700 font-bold text-lg mb-1">Your Kitchen is Ready</h3>
+            <p class="text-stone-400 text-sm max-w-xs mx-auto">Enter global culinary terms into the search box above to render recipe profiles.</p>
+          </div>
+        `;
+      }
+    });
+  </script>
+</body>
+</html>

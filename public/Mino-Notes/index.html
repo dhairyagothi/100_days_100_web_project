@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mino - Modern Note Taking Platform</title>
+  <meta name="description" content="A beautiful and clean notes taking dashboard with local persistence, folder organization, calendar, archive, and trash.">
+  
+  <!-- Modern Font from Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Full Dashboard Layout -->
+  <div class="dashboard-container">
+    
+    <!-- LEFT SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-top">
+        <!-- Logo -->
+        <div class="logo-area">
+          <div class="logo-icon">
+            <span class="logo-dot blue"></span>
+            <span class="logo-dot red"></span>
+          </div>
+          <span class="logo-text">MINO</span>
+        </div>
+        
+        <!-- Add New Button -->
+        <div class="add-new-dropdown-container">
+          <button class="add-new-btn" id="add-new-trigger">
+            <svg class="plus-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            Add new
+          </button>
+          
+          <!-- Dropdown Options -->
+          <div class="add-dropdown-menu" id="add-dropdown-menu">
+            <button class="dropdown-item-btn" id="new-folder-menu-item">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+              New Folder
+            </button>
+            <button class="dropdown-item-btn" id="new-note-menu-item">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+              New Note
+            </button>
+          </div>
+        </div>
+        
+        <!-- Quick Accent color indicators -->
+        <div class="color-indicators">
+          <span class="color-dot yellow" data-color="#fffbe5" title="Light Yellow theme"></span>
+          <span class="color-dot blue" data-color="#e1f0ff" title="Light Blue theme"></span>
+          <span class="color-dot red" data-color="#ffe5e5" title="Light Red theme"></span>
+        </div>
+        
+        <!-- Navigation Menu -->
+        <nav class="sidebar-nav">
+          <button class="nav-item active" id="nav-all-notes">
+            <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg>
+            All Notes
+          </button>
+          <button class="nav-item" id="nav-calendar">
+            <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+            Calendar
+          </button>
+          <button class="nav-item" id="nav-archive">
+            <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="21 8 21 21 3 21 3 8"></polyline><rect x="1" y="3" width="22" height="5"></rect><line x1="10" y1="12" x2="14" y2="12"></line></svg>
+            Archive
+          </button>
+          <button class="nav-item" id="nav-trash">
+            <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+            Trash
+          </button>
+        </nav>
+      </div>
+    </aside>
+    
+    <!-- MAIN WORKSPACE -->
+    <main class="main-workspace">
+      
+      <!-- TOP NAVIGATION BAR -->
+      <header class="top-bar">
+        <div class="top-bar-left">
+          <!-- Mobile menu toggle button -->
+          <button class="mobile-menu-toggle" id="mobile-toggle" aria-label="Toggle Sidebar">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+          </button>
+          <h2 class="workspace-title" id="workspace-title-display">MY NOTES</h2>
+        </div>
+        
+        <div class="top-bar-center">
+          <!-- Search box -->
+          <div class="search-box">
+            <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <input type="text" id="search-input" placeholder="Search notes or folders...">
+          </div>
+        </div>
+        
+        <div class="top-bar-right">
+          <button class="header-menu-btn" id="header-settings-btn" aria-label="Settings">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+          </button>
+        </div>
+      </header>
+      
+      <!-- CENTRAL CONTENT CONTAINER -->
+      <div class="workspace-scroll-container" id="workspace-scroll-container">
+        
+        <!-- SECTION 1: RECENT FOLDERS -->
+        <section class="workspace-section" id="folders-section">
+          <div class="section-header">
+            <h3 class="section-title">Recent Folders</h3>
+            
+            <div class="filter-tabs-container">
+              <div class="filter-tabs" id="folders-filter-tabs">
+                <button class="filter-tab" data-filter="all">All</button>
+                <button class="filter-tab active" data-filter="week">This Week</button>
+                <button class="filter-tab" data-filter="month">This Month</button>
+              </div>
+            </div>
+          </div>
+          
+          <div class="folders-grid" id="folders-grid">
+            <!-- Folders will be dynamically generated here -->
+          </div>
+        </section>
+        
+        <!-- SECTION 2: MY NOTES -->
+        <section class="workspace-section" id="notes-section">
+          <div class="section-header">
+            <h3 class="section-title" id="notes-title-heading">My Notes</h3>
+            
+            <div class="notes-header-controls">
+              <div class="filter-tabs-container">
+                <div class="filter-tabs" id="notes-filter-tabs">
+                  <button class="filter-tab active" data-filter="today">Todays</button>
+                  <button class="filter-tab" data-filter="week">This Week</button>
+                  <button class="filter-tab" data-filter="month">This Month</button>
+                </div>
+              </div>
+              
+              <!-- Month controller -->
+              <div class="month-selector" id="month-selector-widget">
+                <button class="month-nav-btn" id="prev-month-btn" aria-label="Previous Month">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                </button>
+                <span class="month-name-display" id="month-display">December 2021</span>
+                <button class="month-nav-btn" id="next-month-btn" aria-label="Next Month">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <div class="notes-grid" id="notes-grid">
+            <!-- Notes will be dynamically generated here -->
+          </div>
+        </section>
+
+        <!-- SECTION 3: CALENDAR VIEW (HIDDEN BY DEFAULT) -->
+        <section class="workspace-section hidden" id="calendar-section">
+          <div class="calendar-widget-container">
+            
+            <!-- Left sidebar checklist -->
+            <div class="calendar-left-sidebar">
+              <div class="calendar-bear">
+                <svg width="72" height="72" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <!-- Cute Bear Face Drawing outline -->
+                  <path d="M25 35C20 30 15 35 18 42C20 47 28 47 28 42" stroke="#1a1a1a" stroke-width="2" fill="#ffffff" stroke-linecap="round"/>
+                  <path d="M75 35C80 30 85 35 82 42C80 47 72 47 72 42" stroke="#1a1a1a" stroke-width="2" fill="#ffffff" stroke-linecap="round"/>
+                  <rect x="22" y="36" width="56" height="48" rx="24" stroke="#1a1a1a" stroke-width="2" fill="#ffffff"/>
+                  <circle cx="40" cy="56" r="3" fill="#1a1a1a"/>
+                  <circle cx="60" cy="56" r="3" fill="#1a1a1a"/>
+                  <circle cx="33" cy="62" r="3.5" fill="#fbc3cb" stroke="none"/>
+                  <circle cx="67" cy="62" r="3.5" fill="#fbc3cb" stroke="none"/>
+                  <path d="M47 63 C49 65, 51 65, 53 63" stroke="#1a1a1a" stroke-width="1.8" stroke-linecap="round"/>
+                  <path d="M49 61.5 L49 63" stroke="#1a1a1a" stroke-width="1.5"/>
+                  <path d="M46 60 Q50 57 54 60" fill="#1a1a1a" stroke="#1a1a1a" stroke-width="0.5"/>
+                </svg>
+              </div>
+              <h4 class="calendar-left-month" id="cal-left-month-name">JANUARY</h4>
+              
+              <div class="calendar-lined-paper">
+                <div class="lined-paper-header" id="cal-left-year-display">♥ 2026 ♥</div>
+                <ul class="lined-paper-list" id="calendar-checklist-ul">
+                  <!-- Checklist notes dynamically populated by JS -->
+                </ul>
+              </div>
+            </div>
+            
+            <!-- Right calendar grid pane -->
+            <div class="calendar-right-pane">
+              <div class="calendar-header-row">
+                <button class="month-nav-btn" id="cal-prev-month" aria-label="Previous Month">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                </button>
+                <h4 class="calendar-month-title" id="cal-month-title">December 2021</h4>
+                <button class="month-nav-btn" id="cal-next-month" aria-label="Next Month">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </button>
+              </div>
+              <div class="calendar-days-grid" id="calendar-days-grid">
+                <!-- Grid header: Days of the week (Monday start) -->
+                <div class="calendar-day-header">MON</div>
+                <div class="calendar-day-header">TUE</div>
+                <div class="calendar-day-header">WED</div>
+                <div class="calendar-day-header">THU</div>
+                <div class="calendar-day-header">FRI</div>
+                <div class="calendar-day-header">SAT</div>
+                <div class="calendar-day-header">SUN</div>
+                
+                <!-- Month days will be injected by JS -->
+              </div>
+            </div>
+            
+          </div>
+        </section>
+        
+      </div>
+    </main>
+    
+  </div>
+
+  <!-- ==========================================
+       MODALS SECTION
+       ========================================== -->
+  
+  <!-- 1. ADD FOLDER MODAL -->
+  <div class="modal-overlay" id="folder-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h4 class="modal-title">Create Folder</h4>
+        <button class="modal-close-btn" id="close-folder-modal" aria-label="Close modal">&times;</button>
+      </div>
+      <form id="folder-form">
+        <div class="form-group">
+          <label class="form-label" for="folder-name-input">Folder Name</label>
+          <input type="text" id="folder-name-input" class="form-input" placeholder="e.g. Work Notes, Grocery Lists" required maxlength="20">
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Folder Theme Color</label>
+          <div class="modal-color-selectors">
+            <label class="color-option-label" style="background-color: #e1f0ff;">
+              <input type="radio" name="folder-color" value="#e1f0ff" checked>
+              <span class="checked-mark"></span>
+            </label>
+            <label class="color-option-label" style="background-color: #ffe5e5;">
+              <input type="radio" name="folder-color" value="#ffe5e5">
+              <span class="checked-mark"></span>
+            </label>
+            <label class="color-option-label" style="background-color: #fffbe5;">
+              <input type="radio" name="folder-color" value="#fffbe5">
+              <span class="checked-mark"></span>
+            </label>
+            <label class="color-option-label" style="background-color: #f0ebff;">
+              <input type="radio" name="folder-color" value="#f0ebff">
+              <span class="checked-mark"></span>
+            </label>
+            <label class="color-option-label" style="background-color: #e6f7eb;">
+              <input type="radio" name="folder-color" value="#e6f7eb">
+              <span class="checked-mark"></span>
+            </label>
+          </div>
+        </div>
+        
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="cancel-folder-btn">Cancel</button>
+          <button type="submit" class="btn btn-primary">Create Folder</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 2. ADD / EDIT NOTE MODAL -->
+  <div class="modal-overlay" id="note-modal">
+    <div class="modal-card modal-card-large">
+      <div class="modal-header">
+        <h4 class="modal-title" id="note-modal-title">Create Note</h4>
+        <button class="modal-close-btn" id="close-note-modal" aria-label="Close modal">&times;</button>
+      </div>
+      <form id="note-form">
+        <!-- Hidden input to track index if editing -->
+        <input type="hidden" id="edit-note-id">
+        
+        <div class="form-row">
+          <div class="form-group flex-2">
+            <label class="form-label" for="note-title-input">Note Title</label>
+            <input type="text" id="note-title-input" class="form-input" placeholder="e.g. Mid test exam" required maxlength="50">
+          </div>
+          
+          <div class="form-group flex-1">
+            <label class="form-label" for="note-folder-select">Assign Folder</label>
+            <select id="note-folder-select" class="form-select" required>
+              <!-- Populated by JS -->
+            </select>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label" for="note-content-input">Note Content</label>
+          <textarea id="note-content-input" class="form-textarea" placeholder="Start writing your thoughts here..." required></textarea>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group flex-1">
+            <label class="form-label" for="note-time-input">Reminder Time (optional)</label>
+            <input type="time" id="note-time-input" class="form-input" value="10:30">
+          </div>
+          
+          <div class="form-group flex-1">
+            <label class="form-label" for="note-day-select">Reminder Day</label>
+            <select id="note-day-select" class="form-select">
+              <option value="Monday">Monday</option>
+              <option value="Tuesday">Tuesday</option>
+              <option value="Wednesday">Wednesday</option>
+              <option value="Thursday">Thursday</option>
+              <option value="Friday">Friday</option>
+              <option value="Saturday">Saturday</option>
+              <option value="Sunday">Sunday</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Note Color theme</label>
+          <div class="modal-color-selectors">
+            <label class="color-option-label" style="background-color: #fffbe5;">
+              <input type="radio" name="note-color" value="#fffbe5" checked>
+              <span class="checked-mark"></span>
+            </label>
+            <label class="color-option-label" style="background-color: #ffe5e5;">
+              <input type="radio" name="note-color" value="#ffe5e5">
+              <span class="checked-mark"></span>
+            </label>
+            <label class="color-option-label" style="background-color: #e1f0ff;">
+              <input type="radio" name="note-color" value="#e1f0ff">
+              <span class="checked-mark"></span>
+            </label>
+            <label class="color-option-label" style="background-color: #f0ebff;">
+              <input type="radio" name="note-color" value="#f0ebff">
+              <span class="checked-mark"></span>
+            </label>
+            <label class="color-option-label" style="background-color: #e6f7eb;">
+              <input type="radio" name="note-color" value="#e6f7eb">
+              <span class="checked-mark"></span>
+            </label>
+          </div>
+        </div>
+        
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="cancel-note-btn">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="save-note-btn">Save Note</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <!-- 4. NOTE DETAILS VIEW MODAL -->
+  <div class="modal-overlay" id="view-note-modal">
+    <div class="modal-card modal-card-large" id="view-card-color">
+      <div class="modal-header">
+        <h4 class="modal-title" id="view-note-title">Note Title</h4>
+        <div class="view-header-actions">
+          <button class="view-action-btn" id="view-edit-btn" title="Edit note">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+          </button>
+          <button class="view-action-btn" id="view-archive-btn" title="Archive note">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="21 8 21 21 3 21 3 8"></polyline><rect x="1" y="3" width="22" height="5"></rect><line x1="10" y1="12" x2="14" y2="12"></line></svg>
+          </button>
+          <button class="view-action-btn" id="view-delete-btn" title="Delete note">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+          </button>
+          <button class="modal-close-btn" id="close-view-note-modal" aria-label="Close modal">&times;</button>
+        </div>
+      </div>
+      <div class="view-note-body">
+        <div class="view-note-meta-row">
+          <span class="view-meta-tag" id="view-note-folder">Folder</span>
+          <span class="view-meta-date" id="view-note-date">December 12, 2021</span>
+          <span class="view-meta-reminder" id="view-note-reminder">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            <span id="view-reminder-text">10:30 PM, Monday</span>
+          </span>
+        </div>
+        <div class="view-note-content" id="view-note-content-text">
+          <!-- Text goes here -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
