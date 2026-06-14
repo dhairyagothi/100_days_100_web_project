@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Retro Memory Match Arcade</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="game-container">
+      <header class="game-header">
+        <h1>Memory Matrix Match</h1>
+        <div class="stats-panel">
+          <div class="stat-badge">Moves: <span id="move-counter">0</span></div>
+          <div class="stat-badge">
+            Matches: <span id="match-counter">0</span>/8
+          </div>
+        </div>
+        <button id="restart-btn" class="control-btn">Reset Board 🔄</button>
+      </header>
+
+      <main class="memory-grid" id="game-grid-matrix"></main>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
