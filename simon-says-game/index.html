@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simon Says - Memory Match Matrix</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="game-console-box">
+      <header class="console-header">
+        <h1>Simon Says Game</h1>
+        <p id="game-status-label">Press Start to begin the match sequence!</p>
+      </header>
+
+      <main class="simon-matrix-grid">
+        <button
+          type="button"
+          class="simon-pad red"
+          data-color="red"
+          disabled
+        ></button>
+        <button
+          type="button"
+          class="simon-pad blue"
+          data-color="blue"
+          disabled
+        ></button>
+        <button
+          type="button"
+          class="simon-pad yellow"
+          data-color="yellow"
+          disabled
+        ></button>
+        <button
+          type="button"
+          class="simon-pad green"
+          data-color="green"
+          disabled
+        ></button>
+      </main>
+
+      <footer class="console-footer">
+        <button id="master-start-btn" class="control-trigger-btn">
+          Start Game Play 🎮
+        </button>
+      </footer>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

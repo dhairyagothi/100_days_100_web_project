@@ -1,0 +1,112 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #0b0f19;
+  color: #f1f5f9;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.game-console-box {
+  background-color: #111827;
+  border: 2px solid #1f293d;
+  padding: 36px;
+  border-radius: 24px;
+  max-width: 440px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+}
+
+.console-header h1 {
+  font-size: 1.8rem;
+  color: #38bdf8;
+  margin-bottom: 8px;
+}
+
+#game-status-label {
+  font-size: 0.95rem;
+  color: #94a3b8;
+  min-height: 40px;
+  margin-bottom: 20px;
+}
+
+/* Perfect 2x2 Simon Quad Pad Grid Alignment Layout */
+.simon-matrix-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  max-width: 300px;
+  margin: 0 auto 24px auto;
+}
+
+.simon-pad {
+  aspect-ratio: 1;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  opacity: 0.4;
+  transition:
+    opacity 0.2s ease,
+    transform 0.1s ease,
+    filter 0.1s ease;
+}
+
+.simon-pad:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.simon-pad:disabled {
+  cursor: not-allowed;
+}
+
+/* Individual Dim Static Swatch Theme Profiles */
+.simon-pad.red {
+  background-color: #ef4444;
+  box-shadow: 0 0 0px #ef4444;
+}
+.simon-pad.blue {
+  background-color: #3b82f6;
+  box-shadow: 0 0 0px #3b82f6;
+}
+.simon-pad.yellow {
+  background-color: #eab308;
+  box-shadow: 0 0 0px #eab308;
+}
+.simon-pad.green {
+  background-color: #22c55e;
+  box-shadow: 0 0 0px #22c55e;
+}
+
+/* Dynamic Async Illumination Keyframe Modifiers */
+.simon-pad.pad-illuminated {
+  opacity: 1 !important;
+  filter: brightness(1.3);
+  box-shadow: 0 0 25px currentColor;
+}
+
+.control-trigger-btn {
+  width: 100%;
+  background: linear-gradient(to right, #3b82f6, #2563eb);
+  color: white;
+  border: none;
+  padding: 14px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
+  transition: filter 0.15s ease;
+}
+
+.control-trigger-btn:hover {
+  filter: brightness(1.1);
+}
