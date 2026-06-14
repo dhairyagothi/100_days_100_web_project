@@ -165,7 +165,8 @@
     </div>
     <div class="customise">
       <label>Color <input type="color" id="ballColor" value="#ff6b6b" /></label>
-      <label>Shape
+      <label
+        >Shape
         <select id="ballShape">
           <option value="circle">Circle</option>
           <option value="square">Square</option>
@@ -175,19 +176,11 @@
       </label>
     </div>
 
-    <script>
-      /* ── Planet configuration ───────────────────────────────────────
-         Each planet defines:
-           multiplier — scales BASE_GRAVITY (Earth = 1.00 baseline)
-           bounce     — coefficient applied to vy on floor/ceiling collision
-                        (1.0 = perfectly elastic, 0.0 = no bounce)
-      ────────────────────────────────────────────────────────────────── */
-      const PLANETS = {
-        moon:    { label: 'Moon',    multiplier: 0.16, bounce: 0.95 },
-        mars:    { label: 'Mars',    multiplier: 0.38, bounce: 0.85 },
-        earth:   { label: 'Earth',   multiplier: 1.00, bounce: 0.75 },
-        saturn:  { label: 'Saturn',  multiplier: 1.06, bounce: 0.70 },
-        jupiter: { label: 'Jupiter', multiplier: 2.53, bounce: 0.55 },
+      const clipPaths = {
+        circle: '',
+        square: '',
+        triangle: 'polygon(50% 0%, 0% 100%, 100% 100%)',
+        star: 'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)',
       };
 
       /* ── Gravity calculation ────────────────────────────────────────
@@ -216,19 +209,31 @@
       function update() {
         /* Apply gravity to vertical velocity */
         vy += gravity;
-        x  += vx;
-        y  += vy;
+        x += vx;
+        y += vy;
+        if (y + 40 > 400) {
+          y = 400 - 40;
+          vy *= -0.7;
+        }
+        if (y < 0) {
+          y = 0;
 
-        /* Bounce coefficient usage:
-           On floor/ceiling collision the vertical velocity is reversed
-           and scaled by currentPlanet.bounce (energy loss per bounce).
-           Wall bouncing uses a fixed 0.7 damping — horizontal drag is
-           independent of gravity and consistent across all planets. */
-        if (y + 40 > 400) { y = 400 - 40; vy *= -currentPlanet.bounce; }
-        if (y < 0)         { y = 0;        vy *= -currentPlanet.bounce; }
-        if (x + 40 > 400)  { x = 400 - 40; vx *= -0.7; }
-        if (x < 0)         { x = 0;        vx *= -0.7; }
+          // Bounce away from ceiling
+          vy = Math.abs(vy) * 0.7;
 
+          // Prevent repeated ceiling collisions when gravity is reversed
+          if (gravity < 0 && vy < 1.5) {
+            vy = 1.5;
+          }
+        }
+        if (x + 40 > 400) {
+          x = 400 - 40;
+          vx *= -0.7;
+        }
+        if (x < 0) {
+          x = 0;
+          vx *= -0.7;
+        }
         ball.style.left = x + 'px';
         ball.style.top  = y + 'px';
         if (bouncing) requestAnimationFrame(update);
