@@ -70,7 +70,13 @@ body {
 #navbar-container {
   z-index: 9999;
 }
-
+.nav-links .tooltip a:hover,
+.nav-links .tooltip a:focus-visible {
+  background: rgba(0, 0, 0, 0.04);
+  color: inherit;
+  outline: 2px solid rgba(212, 175, 55, 0.8);
+  outline-offset: 2px;
+}
 /* Header */
 .contributor-header {
   text-align: center;
