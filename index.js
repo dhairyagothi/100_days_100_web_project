@@ -119,6 +119,8 @@ function loadProjects() {
         `${base}projects.json`,
         window.location.href,
       ).toString();
+      
+console.log("Projects URL:", projectsUrl);
       try {
         const response = await fetch(projectsUrl);
         if (!response.ok) {
@@ -352,14 +354,15 @@ function buildProjectCardHTML({
             </div>
 
             <div class="card-preview-image-container" style="margin: 12px 0; border-radius: 8px; overflow: hidden; aspect-ratio: 16/9; background: #1a1a1a;">
-             <img
-    src="${url && url.startsWith('./') ? url.substring(0, url.lastIndexOf('/')) : ''}/preview.webp"
-    alt="${safeName} preview"
-    loading="lazy"
-    decoding="async"
-    onerror="this.parentNode.style.display='none';"
-    style="width: 100%; height: 100%; object-fit: cover;"
->
+           <img
+            src="./${url && url.startsWith('./')
+            ? url.split('/')[2]
+            : name.replace(/\s+/g, '_')}/preview.png"
+            alt="${safeName} preview"
+            loading="lazy"
+            decoding="async"
+            onerror="this.parentNode.style.display='none';"
+            style="width: 100%; height: 100%; object-fit: cover;">
             </div>
 
             <h3 class="card-name">${safeName}</h3>
@@ -850,7 +853,7 @@ function renderGrid() {
     });
   }
 
-  grid.innerHTML = "";
+  grid.replaceChildren();
 
   if (filtered.length === 0) {
     grid.style.display = "none";
@@ -1938,10 +1941,14 @@ function hasProjectGrid() {
 document.addEventListener("DOMContentLoaded", async () => {
   readStateFromURL();
 
-  initTheme();
-  updateNavbar();
-  initScrollBtn();
-  fetchRepoStats();
+      initTheme();
+      updateNavbar();
+      initScrollBtn();
+      window.addEventListener("load", () => {
+        setTimeout(() => {
+          fetchRepoStats();
+        }, 1000);
+      });
 
   initCurrentYear();
   initFilterChips();
