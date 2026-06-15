@@ -1,6 +1,3 @@
-Here’s an updated **README.md draft** for your **Mood_Based_Music_Recommender (Day 215)** project, based on the current tab content and the project folder structure you shared:
-
-```markdown
 # 🎵 Mood-Based Music Recommender  
 
 ## 🚀 Overview  
