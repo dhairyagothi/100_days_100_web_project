@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cyber Typing Battle</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+
+  <button class="back-btn" id="backBtn">
+    &larr;
+  </button>
+
+  <a
+    class="github-link"
+    href="https://github.com/dhairyagothi/Cyber_Typing_Battle_Game/tree/main/public/CYBER%20TYPE%20BATTLE"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Open Cyber Typing Battle repository"
+  >
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M12 .5C5.65.5.5 5.74.5 12.21c0 5.17 3.29 9.56 7.86 11.1.58.1.79-.26.79-.58v-2.02c-3.2.72-3.87-1.37-3.87-1.37-.52-1.36-1.27-1.72-1.27-1.72-1.04-.74.08-.73.08-.73 1.15.08 1.75 1.22 1.75 1.22 1.02 1.79 2.67 1.27 3.32.97.1-.76.4-1.27.73-1.56-2.56-.3-5.25-1.32-5.25-5.86 0-1.29.44-2.34 1.17-3.17-.12-.3-.5-1.5.11-3.13 0 0 .95-.31 3.12 1.21a10.8 10.8 0 0 1 5.67 0c2.17-1.52 3.12-1.21 3.12-1.21.61 1.63.23 2.83.11 3.13.73.83 1.17 1.88 1.17 3.17 0 4.56-2.69 5.56-5.26 5.85.41.36.78 1.07.78 2.16v3.2c0 .32.21.69.8.58A11.73 11.73 0 0 0 23.5 12.2C23.5 5.74 18.35.5 12 .5Z"/>
+    </svg>
+  </a>
+
+  <div class="start-screen" id="startScreen">
+    <h1>CYBER TYPING BATTLE</h1>
+    <div class="difficulty-box">
+      <button class="difficulty active" data-mode="easy">
+        Easy
+      </button>
+      <button class="difficulty" data-mode="medium">
+        Medium
+      </button>
+      <button class="difficulty" data-mode="hard">
+        Hard
+      </button>
+    </div>
+    <button class="start-btn" id="startBtn">
+      START GAME
+    </button>
+  </div>
+
+  <div class="ui" id="gameUi">
+    <div>
+      Target :
+      <span id="targetWord">None</span>
+    </div>
+    <div>
+      Score :
+      <span id="score">0</span>
+    </div>
+  </div>
+
+  <div class="gameover" id="gameOverScreen">
+    <h1>GAME OVER</h1>
+    <button id="restartBtn">
+      Restart
+    </button>
+  </div>
+
+  <canvas id="game"></canvas>
+
+  <script type="module" src="./script.js"></script>
+
+</body>
+
+</html>

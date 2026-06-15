@@ -1,0 +1,50 @@
+# Premium Analog Clock 🕒
+
+A sleek, modern, and highly accurate interactive analog clock built using web technologies. This component features a smooth fluid design, polished UI animations, and dark-mode friendly aesthetics, making it a perfect addition to any modern web dashboard.
+
+## ✨ Features
+
+* **Smooth Fluid Motion:** Realistic second-hand sweeping effect instead of rigid ticking.
+* **Responsive Layout:** Automatically scales beautifully across desktops, tablets, and mobile displays.
+* **Modern Aesthetic:** Features clean typography, subtle drop shadows, and a premium minimal user interface.
+* **Dynamic Time Sync:** Syncs perfectly with the user's local system time instantly upon loading.
+
+### 🎨 Theme System (Auto Mode)
+
+This project now supports an enhanced theme system with three modes:
+
+* ☀️ Light
+* 🌙 Dark
+* 🔄 Auto (sync with system)
+
+  🔄 Auto Mode Behavior
+
+   * Automatically matches your OS/browser theme using `prefers-color-scheme`
+   * Updates instantly when system theme changes (no page reload required)
+   * Saves preference in `localStorage` (`chronos-theme`)
+
+  ⌨️ Keyboard Shortcut
+
+   * Press **`T`** to cycle through:
+      Light → Dark → Auto
+
+  🧠 Smart Behavior
+
+   * In **Auto mode** → follows system theme in real-time
+   * In **Light/Dark mode** → respects manual user choice
+
+This brings the app in line with modern UX standards seen in tools like Slack, Discord, and Figma.
+
+## 🚀 Technologies Used
+
+* **HTML5:** Semantic structure for the clock face and hands.
+* **CSS3:** Advanced styling, centering utilities, transitions, and custom animations.
+* **JavaScript (ES6):** Real-time DOM manipulation and mathematical rotation tracking for the clock hands.
+
+## 🛠️ Installation & Usage
+
+To run this project locally, simply clone the repository and open the entry HTML file:
+
+1. Clone the repository:
+```bash
+   git clone [https://github.com/your-username/100_days_100_web_project.git](https://github.com/your-username/100_days_100_web_project.git)

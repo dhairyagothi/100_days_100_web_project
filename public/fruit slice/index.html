@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🍉 Fruit Ninja</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <a href="../../index.html" class="back-home">
+    ← Back to Home
+  </a>
+
+  <canvas id="bg-canvas"></canvas>
+  <canvas id="game-canvas"></canvas>
+
+  <!-- HUD -->
+  <div id="hud">
+    <div id="score-box">
+      <div id="score-label">SCORE</div>
+      <div id="score">0</div>
+    </div>
+    <div id="lives-box">
+      <span class="life-icon" id="life-1">❤️</span>
+      <span class="life-icon" id="life-2">❤️</span>
+      <span class="life-icon" id="life-3">❤️</span>
+    </div>
+    <div id="level-box">
+      <div id="level-label">LEVEL</div>
+      <div id="level">1</div>
+    </div>
+  </div>
+
+  <button id="pause-btn">⏸</button>
+
+  <!-- Combo display -->
+  <div id="combo-display"></div>
+
+  <!-- Level up flash -->
+  <div id="level-flash">
+    <div id="level-flash-text"></div>
+  </div>
+
+  <!-- Instructions -->
+  <div id="instructions">Move mouse fast to slice fruits • Avoid 💣 bombs</div>
+
+  <!-- Start Screen -->
+  <div class="overlay" id="start-screen">
+    <div class="fruits-deco">🍉🍊🍋🍇🍓</div>
+    <div class="overlay-title">FRUIT NINJA</div>
+    <div class="overlay-sub">Slice fruits • Dodge bombs • Beat the high score</div>
+    <button class="btn btn-primary" onclick="startGame()">▶ PLAY NOW</button>
+  </div>
+
+  <!-- Pause Screen -->
+  <div class="overlay" id="pause-overlay" style="display:none">
+    <div class="overlay-title">PAUSED</div>
+    <div class="overlay-sub">Take a breath, ninja...</div>
+    <button class="btn btn-primary" onclick="resumeGame()">▶ RESUME</button>
+    <button class="btn btn-secondary" onclick="restartGame()">↺ RESTART</button>
+  </div>
+
+  <!-- Game Over Screen -->
+  <div class="overlay" id="gameover-screen" style="display:none">
+    <div class="overlay-title">GAME OVER</div>
+    <div id="final-score">0</div>
+    <div id="high-score-label">HIGH SCORE: 0</div>
+    <button class="btn btn-primary" onclick="restartGame()">↺ PLAY AGAIN</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Journly | Private Digital Journal</title>
+
+  <!-- Google Fonts for premium typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Fira+Code:wght@400;500&display=swap"
+    rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Marked.js CDN for Markdown support -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body class="theme-cozy-night">
+
+  <!-- App Layout -->
+  <div id="app-container" class="app-container">
+
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <!-- App Brand -->
+      <div class="sidebar-header">
+        <div class="brand">
+          <i data-lucide="feather" class="brand-logo"></i>
+          <h1>Journly</h1>
+        </div>
+      </div>
+
+      <!-- Quick Action: Create New -->
+      <button id="btn-new-entry" class="btn-primary">
+        <i data-lucide="plus"></i>
+        <span>New Entry</span>
+      </button>
+
+      <!-- Search & Filters -->
+      <div class="filter-section">
+        <div class="search-box">
+          <i data-lucide="search" class="search-icon"></i>
+          <input type="text" id="search-input" placeholder="Search entries...">
+        </div>
+
+        <div class="mood-filter-container">
+          <span class="filter-label">Filter by mood:</span>
+        <div class="mood-filter-badges mood-filters">
+            <button class="mood-filter-badge active" data-mood="all">All</button>
+            <button class="mood-filter-badge" data-mood="happy" title="Happy">🌟</button>
+            <button class="mood-filter-badge" data-mood="calm" title="Calm">🍃</button>
+            <button class="mood-filter-badge" data-mood="tired" title="Tired">💤</button>
+            <button class="mood-filter-badge" data-mood="sad" title="Sad">🌧️</button>
+            <button class="mood-filter-badge" data-mood="angry" title="Angry">⚡</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Journal Entry List -->
+      <div class="entries-list-container">
+        <div id="entries-list" class="entries-list">
+          <!-- Dynamically populated entries -->
+        </div>
+      </div>
+
+      <!-- Mood Visualization Stats -->
+      <div class="mood-stats-panel">
+        <h3>Mood Insights</h3>
+        <div id="mood-stats-visualization">
+          <!-- Dynamic SVG Chart/Stats goes here -->
+        </div>
+      </div>
+
+      <!-- Sidebar Footer -->
+      <footer class="sidebar-footer">
+
+        <!-- Theme Switcher Drawer Trigger -->
+        <div class="theme-picker-container">
+          <span>Theme:</span>
+          <div class="theme-options">
+            <button class="theme-dot cozy-night active" data-theme="cozy-night" title="Cozy Night"></button>
+            <button class="theme-dot pastel-dream" data-theme="pastel-dream" title="Pastel Dream"></button>
+            <button class="theme-dot midnight-cyber" data-theme="midnight-cyber" title="Midnight Cyber"></button>
+            <button class="theme-dot vintage-library" data-theme="vintage-library" title="Vintage Library"></button>
+          </div>
+        </div>
+      </footer>
+    </aside>
+
+    <!-- Main Workspace -->
+    <main class="workspace">
+      <!-- Welcome Screen (When no entry is selected/created) -->
+      <div id="welcome-screen" class="welcome-screen">
+        <div class="welcome-card">
+          <i data-lucide="book-open" class="welcome-icon"></i>
+          <h2>Welcome to Journly</h2>
+          <p>Your safe, private space to write, reflect, and organize your feelings.</p>
+          <button id="btn-welcome-new" class="btn-primary">
+            <i data-lucide="edit-3"></i>
+            <span>Write your first entry</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Active Journal Sheet -->
+      <div id="journal-sheet" class="journal-sheet hidden">
+        <!-- Entry Header -->
+        <header class="sheet-header">
+          <div class="header-main">
+            <!-- Date/Time Display & Editing -->
+            <div class="datetime-indicator">
+              <i data-lucide="calendar" class="meta-icon"></i>
+              <span id="entry-datetime">June 5, 2026 9:00 PM</span>
+            </div>
+
+            <!-- Dynamic Entry Title -->
+            <input type="text" id="entry-title" class="entry-title-input" placeholder="Title your reflection...">
+          </div>
+
+          <!-- Entry Meta Action Area -->
+          <div class="header-actions">
+            <!-- Mood Chooser -->
+            <div class="mood-selector-wrapper">
+              <span class="meta-label">Mood:</span>
+              <div class="mood-selector">
+                <button class="mood-btn" data-mood="happy" title="Happy">
+                  <span class="mood-emoji">🌟</span>
+                  <span class="mood-text">Happy</span>
+                </button>
+                <button class="mood-btn" data-mood="calm" title="Calm">
+                  <span class="mood-emoji">🍃</span>
+                  <span class="mood-text">Calm</span>
+                </button>
+                <button class="mood-btn" data-mood="tired" title="Tired">
+                  <span class="mood-emoji">💤</span>
+                  <span class="mood-text">Tired</span>
+                </button>
+                <button class="mood-btn" data-mood="sad" title="Sad">
+                  <span class="mood-emoji">🌧️</span>
+                  <span class="mood-text">Sad</span>
+                </button>
+                <button class="mood-btn" data-mood="angry" title="Angry">
+                  <span class="mood-emoji">⚡</span>
+                  <span class="mood-text">Angry</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Delete and Save Buttons -->
+            <div class="entry-actions action-buttons">
+              <button id="btn-delete-entry" class="btn-danger-outline" title="Delete Entry">
+                <i data-lucide="trash-2"></i>
+              </button>
+              <button id="btn-save-entry" class="btn-success">
+                <i data-lucide="save"></i>
+                <span>Save</span>
+              </button>
+            </div>
+          </div>
+        </header>
+
+        <!-- Markdown Formatting Helpers Toolbar -->
+        <div class="editor-toolbar toolbar">
+          <div class="toolbar-group">
+            <button class="toolbar-btn" data-command="bold" title="Bold (**bold**)"><i data-lucide="bold"></i></button>
+            <button class="toolbar-btn" data-command="italic" title="Italic (*italic*)"><i
+                data-lucide="italic"></i></button>
+            <button class="toolbar-btn" data-command="heading" title="Heading (### Heading)"><i
+                data-lucide="heading"></i></button>
+          </div>
+          <div class="toolbar-separator"></div>
+          <div class="toolbar-group">
+            <button class="toolbar-btn" data-command="quote" title="Blockquote (> quote)"><i
+                data-lucide="quote"></i></button>
+            <button class="toolbar-btn" data-command="list-bullet" title="Bullet List (- item)"><i
+                data-lucide="list"></i></button>
+            <button class="toolbar-btn" data-command="list-check" title="Task List (- [ ] task)"><i
+                data-lucide="list-todo"></i></button>
+          </div>
+          <div class="toolbar-separator"></div>
+          <div class="toolbar-group">
+            <button class="toolbar-btn" data-command="code" title="Code Block (```code```)"><i
+                data-lucide="code"></i></button>
+            <button class="toolbar-btn" data-command="link" title="Link ([text](url))"><i
+                data-lucide="link"></i></button>
+          </div>
+
+          <!-- Mode Selector Tabs (Write vs Preview) -->
+          <div class="workspace-tabs">
+            <button id="tab-write" class="tab-btn active">
+              <i data-lucide="edit-2"></i>
+              <span>Write</span>
+            </button>
+            <button id="tab-preview" class="tab-btn">
+              <i data-lucide="eye"></i>
+              <span>Preview</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Diary Writing Space -->
+        <div class="diary-canvas-container">
+          <!-- Text Editor Pane -->
+          <div id="pane-editor" class="canvas-pane pane-editor">
+            <textarea id="diary-textarea"
+              placeholder="Start typing here... Markdown is supported! Use *italics*, **bold**, lists, quotes, and links."></textarea>
+
+            <div class="editor-status-bar">
+              <span id="word-char-count">0 words | 0 characters</span>
+              <span id="autosave-indicator" class="autosave-indicator">
+                <i data-lucide="check-check"></i> Draft ready
+              </span>
+            </div>
+          </div>
+
+          <!-- Markdown HTML Rendering Preview Pane (Contains Sticker Placement Layer) -->
+          <div id="pane-preview" class="canvas-pane pane-preview hidden">
+            <!-- Stickers Drawer Component -->
+            <div class="sticker-shelf-container">
+              <div class="sticker-shelf-header">
+                <span>Decorate your page:</span>
+                <button id="btn-toggle-stickers" class="icon-btn-text">
+                  <i data-lucide="palette"></i> Stickers Drawer
+                </button>
+              </div>
+              <div id="sticker-drawer" class="sticker-drawer hidden">
+                <button class="sticker-item" data-sticker="sparkle" title="Sparkle">✨</button>
+                <button class="sticker-item" data-sticker="heart" title="Heart">💖</button>
+                <button class="sticker-item" data-sticker="star" title="Star">🌟</button>
+                <button class="sticker-item" data-sticker="flower" title="Flower">🌸</button>
+                <button class="sticker-item" data-sticker="clover" title="Clover">🍀</button>
+                <button class="sticker-item" data-sticker="coffee" title="Coffee">☕</button>
+                <button class="sticker-item" data-sticker="cat" title="Cat">🐱</button>
+                <button class="sticker-item" data-sticker="moon" title="Moon">🌙</button>
+                <button class="sticker-item" data-sticker="book" title="Book">📚</button>
+                <button class="sticker-item" data-sticker="palette" title="Palette">🎨</button>
+                <button class="sticker-item" data-sticker="balloon" title="Balloon">🎈</button>
+                <button class="sticker-item" data-sticker="rainbow" title="Rainbow">🌈</button>
+              </div>
+            </div>
+
+            <!-- The content and absolute positioned sticker canvas -->
+            <div id="sticker-canvas" class="sticker-canvas">
+              <div id="markdown-rendered-content" class="markdown-body">
+                <!-- Parsed Markdown goes here -->
+              </div>
+              <!-- Dragged stickers will be appended here dynamically -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+
+
+  <script src="script.js"></script>
+</body>
+
+</html>
