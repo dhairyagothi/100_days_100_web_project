@@ -6,10 +6,10 @@ const rateLimit = require("express-rate-limit");
 
 
 app.set("views", path.join(__dirname, "../views")); // views folder path
-
-app.use(express.static(path.join(__dirname, "../public")));
-app.use(express.json());
 app.set("view engine", "ejs");
+app.use(express.static(path.join(__dirname, "../public")));
+
+app.use(express.json());
 
 // rate limiter
 const limiter = rateLimit({

@@ -1,73 +1,114 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <meta name="theme-color" content="#000000">
-  <title>SNAKE</title>
-  <link rel="stylesheet" href="./style.css">
+  <meta name="theme-color" content="#050a05">
+  <title>SNAKE GAME</title>
+  <link rel="stylesheet" href="./style.css?v=4" />
 </head>
-
 <body>
-  <!-- Cleaned up home button link styling -->
-  <a href="/" class="project-back-button"
-    style="position:fixed; left:18px; top:18px; padding:8px 12px; border-radius:8px; background:white; color:#000000; text-decoration:none; z-index:9999; font-weight:700; font-family:Inter, system-ui, sans-serif; box-shadow:0 8px 20px rgba(0, 0, 0, 0.3);">←
-    Back to Home</a>
-
+  <!-- Back Button -->
+  <a href="/" class="project-back-button">← Back to Home</a>
+  <!-- Theme Toggle -->
   <button id="themeToggle" class="theme-btn">🌙 Dark Mode</button>
-  <div class="overlay-title">SNAKE GAME</div>
-  <div class="overlay-sub">
-    PRESS START TO BEGIN YOUR JOURNEY<br>
-    EAT • GROW • SURVIVE
-  </div>
-  <main class="game-shell">
-    <div class="hud">
-    <div class="stat-box">
-      <span class="stat-label">Score</span>
-      <div class="stat-value" id="score">0</div>
-    </div>
-    <div class="stat-box">
-      <span class="stat-label">High Score</span>
-      <div class="stat-value" id="highscore">0</div>
-    </div>
-    <div class="stat-box">
-      <span class="stat-label">Level</span>
-      <div class="stat-value" id="level">1</div>
-    </div>
-  </div>
-
-  <div class="canvas-wrapper">
-    <canvas id="gameCanvas"></canvas>
-    <div id="scanline"></div>
-
-    <div class="overlay" id="startOverlay">
-      <div class="overlay-title">READY</div>
-      <div class="overlay-sub">GUIDE THE SNAKE<br>CONSUME. GROW. SURVIVE.</div>
-      <button class="btn primary" id="startBtn"><span>START GAME</span></button>
-      <div class="controls-hint">
-        <div class="key"><span class="key-symbol">W</span>UP</div>
-        <div class="key"><span class="key-symbol">A</span>LEFT</div>
-        <div class="key"><span class="key-symbol">S</span>DOWN</div>
-        <div class="key"><span class="key-symbol">D</span>RIGHT</div>
-        <div class="key"><span class="key-symbol">↑↓←→</span>ARROWS</div>
-        <div class="key"><span class="key-symbol">P</span>PAUSE</div>
+  
+  <!-- Main Game Container -->
+  <main class="game-container">
+    <section class="game-main">
+      <!-- HUD: Statistics -->
+      <div class="hud">
+        <div class="stat-box">
+          <span class="stat-label">Score</span>
+          <div class="stat-value" id="score">0</div>
+        </div>
+        <div class="stat-box">
+          <span class="stat-label">High Score</span>
+          <div class="stat-value" id="highscore">0</div>
+        </div>
+        <div class="stat-box">
+          <span class="stat-label">Level</span>
+          <div class="stat-value" id="level">1</div>
+        </div>
       </div>
-    </div>
 
-    <div class="overlay hidden" id="gameOverOverlay">
-      <div class="overlay-title">GAME OVER</div>
-      <div class="game-over-score" id="finalScore"></div>
-      <button class="btn primary" id="restartBtn"><span>PLAY AGAIN</span></button>
-    </div>
+      <!-- Canvas Wrapper -->
+      <div class="canvas-wrapper">
+        <canvas id="gameCanvas"></canvas>
+        <div id="scanline"></div>
 
-    <div class="overlay hidden" id="pauseOverlay">
-      <div class="overlay-title">PAUSED</div>
-      <div class="overlay-sub">PRESS <kbd>P</kbd> TO RESUME</div>
-    </div>
+        <!-- Start Overlay -->
+        <div class="overlay" id="startOverlay">
+          <div class="overlay-title">READY</div>
+          <div class="overlay-sub">GUIDE THE SNAKE<br>CONSUME. GROW. SURVIVE.</div>
+          <button class="btn primary" id="startBtn"><span>START GAME</span></button>
+          <div class="controls-hint">
+            <div class="key"><span class="key-symbol">W</span>UP</div>
+            <div class="key"><span class="key-symbol">A</span>LEFT</div>
+            <div class="key"><span class="key-symbol">S</span>DOWN</div>
+            <div class="key"><span class="key-symbol">D</span>RIGHT</div>
+            <div class="key"><span class="key-symbol">↑↓←→</span>ARROWS</div>
+            <div class="key"><span class="key-symbol">P</span>PAUSE</div>
+          </div>
+        </div>
+
+        <!-- Game Over Overlay -->
+        <div class="overlay hidden" id="gameOverOverlay">
+          <div class="overlay-title">GAME OVER</div>
+          <div class="game-over-score" id="finalScore"></div>
+          <button class="btn primary" id="restartBtn"><span>PLAY AGAIN</span></button>
+        </div>
+
+        <!-- Pause Overlay -->
+        <div class="overlay hidden" id="pauseOverlay">
+          <div class="overlay-title">PAUSED</div>
+          <div class="overlay-sub">PRESS <kbd>P</kbd> TO RESUME</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Side Panels -->
+    <aside class="side-panels">
+      <!-- Statistics Dashboard -->
+      <div class="panel">
+        <h3 class="panel-title">Statistics</h3>
+        <div class="stat-grid">
+          <div class="stat-item">
+            <span class="stat-item-label">Games Played</span>
+            <span class="stat-item-value" id="stat-games-played">0</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-item-label">Highest Score</span>
+            <span class="stat-item-value" id="stat-highest-score">0</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-item-label">Average Score</span>
+            <span class="stat-item-value" id="stat-average-score">0</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-item-label">Total Food</span>
+            <span class="stat-item-value" id="stat-total-food">0</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-item-label">Longest Survival</span>
+            <span class="stat-item-value" id="stat-longest-survival">0s</span>
+          </div>
+        </div>
+        <button class="btn btn-small" id="reset-stats">Reset Statistics</button>
+      </div>
+
+      <!-- Achievements Panel -->
+      <div class="panel">
+        <h3 class="panel-title">Achievements</h3>
+        <div class="achievements-list" id="achievements-list"></div>
+      </div>
+    </aside>
   </main>
 
-  <!-- ========== MOBILE TOUCH CONTROLS with Accessibility ========== -->
+  <!-- Achievement Notification -->
+  <div class="achievement-notification hidden" id="achievement-notification"></div>
+
+  <!-- Mobile Controls -->
   <div class="mobile-controls" id="mobileControls">
     <div class="dpad">
       <div class="dpad-row top-row">
@@ -81,13 +122,11 @@
     </div>
   </div>
 
-  <!-- ========== AUDIO ASSETS ========== -->
-  <!-- Added audio elements so your JavaScript code can find and play them -->
+  <!-- Audio Assets -->
   <audio id="eatSound" src="./assets/eat.mp3" preload="auto"></audio>
   <audio id="gameOverSound" src="./assets/gameover.mp3" preload="auto"></audio>
 
-  <!-- ONLY ONE script tag at the bottom -->
-  <script src="./script.js"></script>
+  <!-- Script -->
+  <script src="./script.js?v=4"></script>
 </body>
-
 </html>
