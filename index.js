@@ -875,7 +875,7 @@ function renderGrid() {
     });
   }
 
-  grid.innerHTML = "";
+  grid.replaceChildren();
 
   if (filtered.length === 0) {
     grid.style.display = "none";
@@ -1963,10 +1963,14 @@ function hasProjectGrid() {
 document.addEventListener("DOMContentLoaded", async () => {
   readStateFromURL();
 
-  initTheme();
-  updateNavbar();
-  initScrollBtn();
-  fetchRepoStats();
+      initTheme();
+      updateNavbar();
+      initScrollBtn();
+      window.addEventListener("load", () => {
+        setTimeout(() => {
+          fetchRepoStats();
+        }, 1000);
+      });
 
   initCurrentYear();
   initFilterChips();
