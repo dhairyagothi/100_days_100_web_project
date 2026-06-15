@@ -1,0 +1,1426 @@
+/*
+    STRICT CONTRIBUTION GUIDELINES
+    ==============================
+    * semantic HTML
+    * proper indentation
+    * meaningful class names
+    * clean modular JavaScript
+    * maintainable code quality
+    * responsive design
+    * optimized rendering
+    * smooth animations
+    * comments only where necessary
+*/
+
+:root {
+    /* Color Palette */
+    --color-bg-start: #fff7f5; /* Soft Peach */
+    --color-bg-end: #ffe8e0;   /* Warm Cream */
+    --color-ambient-glow: rgba(255, 210, 190, 0.5);
+
+    --coin-gold-lightest: #faf3d1;
+    --coin-gold-lighter: #f3e5ab;
+    --coin-gold-light: #e8d384;
+    --coin-gold-mid: #d7b95f;
+    --coin-gold-dark: #b99845;
+    --coin-gold-darker: #9a7b30;
+    --coin-shadow-light: rgba(154, 123, 48, 0.2);
+    --coin-shadow-dark: rgba(80, 60, 20, 0.4);
+    --coin-engraving-color: rgba(0, 0, 0, 0.04);
+
+    --coating-start: #8c5a44; /* Oxidized Copper */
+    --coating-end: #5b3a29;   /* Deep Rusted Bronze */
+
+    --reward-text-color: #8c5a44;
+    --heart-color: #d48a70;
+
+    --button-bg: #fff;
+    --button-text: #8c5a44;
+    --button-shadow: rgba(0, 0, 0, 0.1);
+
+    /* Dimensions */
+    --coin-size: clamp(280px, 80vmin, 400px);
+    --coin-border-width: calc(var(--coin-size) * 0.05);
+    --coin-inner-padding: calc(var(--coin-size) * 0.05);
+
+    /* Animation */
+    --pulse-duration: 2.5s;
+    --fade-duration: 0.5s;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: radial-gradient(circle at center, var(--color-bg-start), var(--color-bg-end));
+    perspective: 1000px;
+    padding: 1rem;
+}
+
+main.experience-container {
+    max-width: 100%;
+}
+
+
+.ambient-background {
+    position: absolute;
+    width: 150%;
+    height: 150%;
+    background: radial-gradient(ellipse at center, var(--color-ambient-glow) 0%, transparent 60%);
+    filter: blur(100px);
+    z-index: -1;
+}
+
+.experience-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    position: relative;
+}
+
+.coin-wrapper {
+    width: var(--coin-size);
+    height: var(--coin-size);
+    position: relative;
+    cursor: none; /* Hide default cursor */
+    -webkit-tap-highlight-color: transparent; /* Disable tap highlight on mobile */
+    transform-style: preserve-3d;
+    transition: transform 0.5s ease-out;
+}
+
+.coin-wrapper:hover {
+    transform: rotateY(5deg) rotateX(5deg) scale(1.05);
+}
+
+.coin-3d {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    position: absolute;
+    transform-style: preserve-3d;
+    box-shadow: 
+        0 2px 5px var(--coin-shadow-light),
+        0 10px 20px var(--coin-shadow-dark),
+        inset 0 0 15px rgba(255, 255, 255, 0.2);
+}
+
+.coin-rim {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: linear-gradient(145deg, var(--coin-gold-darker), var(--coin-gold-light));
+    transform: translateZ(-10px); /* Gives the coin thickness */
+    box-shadow: 0 0 20px var(--coin-shadow-dark);
+}
+
+.coin-face {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, var(--coin-gold-lightest), var(--coin-gold-mid));
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    transform: translateZ(0);
+}
+
+.coin-face::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0) 50%);
+    transform: rotate(0deg);
+    transition: transform 0.5s;
+}
+
+.coin-wrapper:hover .coin-face::before {
+    transform: rotate(20deg);
+}
+
+.coin-detail-ring, .coin-engraving {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.coin-detail-ring {
+    border: 1px solid var(--coin-engraving-color);
+    box-shadow: inset 0 0 5px var(--coin-engraving-color);
+}
+
+.ring-1 {
+    width: 90%;
+    height: 90%;
+    opacity: 0.8;
+}
+
+.ring-2 {
+    width: 80%;
+    height: 80%;
+    opacity: 0.6;
+}
+
+.ring-3 {
+    width: 50%;
+    height: 50%;
+    opacity: 0.4;
+}
+
+.coin-engraving {
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at center, transparent 50%, var(--coin-engraving-color) 50.5%, transparent 51%),
+        repeating-radial-gradient(
+            circle at center,
+            var(--coin-engraving-color),
+            var(--coin-engraving-color) 1px,
+            transparent 1px,
+            transparent 20px
+        );
+    opacity: 0.5;
+    transform: scale(0.95);
+}
+
+.dotted-border {
+    position: absolute;
+    width: calc(100% - var(--coin-inner-padding) * 2);
+    height: calc(100% - var(--coin-inner-padding) * 2);
+    border-radius: 50%;
+    border: 2px dashed var(--coin-gold-dark);
+    opacity: 0.5;
+}
+
+.coin-content {
+    text-align: center;
+    color: var(--reward-text-color);
+    opacity: 0; /* Initially hidden, controlled by JS */
+    transition: opacity 0.5s ease-in-out;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.reward-animation-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.heart-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1); /* Smooth upward movement */
+}
+
+.heart-icon {
+    font-size: calc(var(--coin-size) * 0.25);
+    line-height: 1;
+    color: var(--heart-color);
+    text-shadow: 
+        1px 1px 0 var(--coin-gold-lightest), 
+        -1px -1px 0 var(--coin-gold-darker),
+        0 0 20px rgba(255, 180, 150, 0.7); /* Warm glow */
+    opacity: 0;
+    transform: scale(0.9);
+    transition: opacity 1s cubic-bezier(0.19, 1, 0.22, 1), transform 1s cubic-bezier(0.19, 1, 0.22, 1);
+    animation: heart-glow 3s infinite ease-in-out;
+}
+
+.reward-text {
+    font-size: calc(var(--coin-size) * 0.08);
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    /* margin-top is removed to allow positioning relative to the heart */
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.8s cubic-bezier(0.19, 1, 0.22, 1) 0.2s, transform 0.8s cubic-bezier(0.19, 1, 0.22, 1) 0.2s; /* Delayed appearance */
+    position: absolute; /* Positioned relative to the container */
+    bottom: 30%; /* Adjust as needed */
+}
+
+/* States triggered by JavaScript */
+.coin-content.stage-1 .heart-icon {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.coin-content.stage-2 .heart-container {
+    transform: translate(-50%, -120%); /* Moves the heart up */
+}
+
+.coin-content.stage-2 .reward-text {
+    opacity: 1;
+    transform: translateY(0);
+}
+.brush-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(255, 255, 255, 0.7);
+    padding: 12px 18px;
+    border-radius: 40px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.brush-controls label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--button-text);
+}
+
+.brush-controls input[type="range"] {
+    width: 140px;
+    cursor: pointer;
+}
+
+#brush-size-value {
+    min-width: 24px;
+    text-align: center;
+    font-weight: 600;
+    color: var(--button-text);
+}
+
+.scratch-progress {
+    color: var(--button-text);
+    font-size: 14px;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.7);
+    padding: 10px 18px;
+    border-radius: 40px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+@keyframes heart-glow {
+    0%, 100% {
+        text-shadow: 
+            1px 1px 0 var(--coin-gold-lightest), 
+            -1px -1px 0 var(--coin-gold-darker),
+            0 0 20px rgba(255, 180, 150, 0.7);
+    }
+    50% {
+        text-shadow: 
+            1px 1px 0 var(--coin-gold-lightest), 
+            -1px -1px 0 var(--coin-gold-darker),
+            0 0 35px rgba(255, 200, 180, 1);
+    }
+}
+
+#scratch-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    z-index: 2;
+    transition: opacity var(--fade-duration) ease-out;
+}
+
+.scratch-instruction {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: calc(var(--coin-size) * 0.07);
+    font-weight: 300;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    pointer-events: none;
+    z-index: 3;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    animation: pulse-glow 2.5s infinite ease-in-out;
+    opacity: 1;
+    transition: opacity 1s ease-out;
+}
+
+.scratch-instruction.fade-out {
+    opacity: 0;
+    animation: none;
+}
+
+@keyframes pulse-glow {
+    0%, 100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.7;
+        text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.03);
+        opacity: 1;
+        text-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
+    }
+}
+
+.reset-button {
+    padding: 15px 30px;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--button-text);
+    background-color: var(--button-bg);
+    border: 2px solid var(--button-text);
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px var(--button-shadow);
+}
+
+.reset-button:hover {
+    background-color: var(--button-text);
+    color: var(--button-bg);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px var(--button-shadow);
+}
+
+.reset-button:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 15px var(--button-shadow);
+}
+
+.custom-cursor {
+    display: none; /* Hidden by default, shown via JS */
+    position: fixed;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    transition: transform 0.1s ease-out;
+    
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .experience-container {
+        gap: 25px;
+        /* Make container relative to position the card inside it */
+        position: relative; 
+        justify-content: center;
+        height: 100%;
+    }
+
+    .reset-button {
+        padding: 14px 28px;
+        font-size: 15px;
+    }
+
+
+.recommendation-card {
+    position: fixed;
+    bottom: 24px;   
+    right: 24px;    
+    background: rgba(15, 23, 42, 0.7);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 12px 20px;
+    border-radius: 30px;
+    z-index: 999;
+    animation: slideIn 0.5s ease;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+    /* Fade-out state for mobile/tablet */
+    .recommendation-card.fade-out {
+        opacity: 0;
+        transform: translateY(-15px);
+    }
+
+    .headphone-icon {
+        font-size: 20px;
+    }
+
+    .recommendation-card p {
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 480px) {
+    .experience-container {
+        gap: 20px;
+    }
+    .reset-button {
+        padding: 12px 24px;
+        font-size: 14px;
+    }
+}
+
+#restore-button:hover {
+  background-color: #e0e0e0;
+}
+
+.recommendation-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.recommendation-card.hidden {
+  opacity: 0;
+  transform: translate(-50%, -20px);
+  pointer-events: none;
+}
+
+.recommendation-content {
+  display: flex;
+  align-items: center;
+  animation: breathing 4s ease-in-out infinite;
+}
+
+.headphone-icon {
+  font-size: 22px;
+  margin-right: 12px;
+  animation: headphone-wiggle 3s ease-in-out infinite;
+}
+
+.recommendation-card p {
+    font-size: 1rem;
+    color: #000;
+    line-height: 1.5;
+}
+
+/* Mobile and Tablet specific styles for fade-out animation */
+@media (max-width: 768px) {
+    .recommendation-card {
+        opacity: 1;
+        transition: opacity 1.5s ease, transform 1.5s ease;
+    }
+
+    .recommendation-card.fade-out {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+}
+
+.hidden {
+    display: none;
+}
+
+@keyframes breathing {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.03);
+  }
+}
+
+@keyframes headphone-wiggle {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(5deg); }
+    75% { transform: rotate(-5deg); }
+}
+
+/* ==========================================================================
+   1. CORE VARIABLES & DEFAULT THEME (GOLD)
+   ========================================================================== */
+:root, [data-theme="gold"] {
+    --bg-primary: #0b0f19;
+    --bg-ambient: radial-gradient(circle at 50% 50%, #1e1b4b 0%, #020617 100%);
+    --panel-bg: rgba(30, 41, 59, 0.5);
+    --panel-border: rgba(255, 215, 0, 0.2);
+    --accent: #ffd700;
+    --accent-glow: rgba(255, 215, 0, 0.4);
+    --text-main: #f8fafc;
+    
+    /* Scratch Card Canvas Variables */
+    --coating-start: #ffd700;
+    --coating-end: #b8860b;
+    
+    /* 3D Coin Graphics */
+    --coin-base: linear-gradient(135deg, #ffe066 0%, #f59e0b 50%, #b45309 100%);
+    --coin-rim-color: #d97706;
+}
+
+/* ==========================================================================
+   2. THEME OVERRIDES
+   ========================================================================== */
+
+/* Silver Theme */
+[data-theme="silver"] {
+    --bg-ambient: radial-gradient(circle at 50% 50%, #334155 0%, #0f172a 100%);
+    --panel-border: rgba(226, 232, 240, 0.2);
+    --accent: #cbd5e1;
+    --accent-glow: rgba(203, 213, 225, 0.4);
+    --coating-start: #e2e8f0;
+    --coating-end: #64748b;
+    --coin-base: linear-gradient(135deg, #ffffff 0%, #94a3b8 50%, #475569 100%);
+    --coin-rim-color: #64748b;
+}
+
+/* Bronze Theme */
+[data-theme="bronze"] {
+    --bg-ambient: radial-gradient(circle at 50% 50%, #2c1a14 0%, #0c0705 100%);
+    --panel-border: rgba(205, 127, 50, 0.2);
+    --accent: #cd7f32;
+    --accent-glow: rgba(205, 127, 50, 0.4);
+    --coating-start: #b45309;
+    --coating-end: #451a03;
+    --coin-base: linear-gradient(135deg, #d97706 0%, #a16207 50%, #78350f 100%);
+    --coin-rim-color: #78350f;
+}
+
+/* Diamond Theme */
+[data-theme="diamond"] {
+    --bg-ambient: radial-gradient(circle at 50% 50%, #1e3a8a 0%, #030712 100%);
+    --panel-border: rgba(56, 189, 248, 0.3);
+    --accent: #38bdf8;
+    --accent-glow: rgba(56, 189, 248, 0.6);
+    --coating-start: #e0f2fe;
+    --coating-end: #0284c7;
+    --coin-base: linear-gradient(135deg, #ffffff 0%, #bae6fd 40%, #38bdf8 70%, #0369a1 100%);
+    --coin-rim-color: #0284c7;
+}
+
+/* Christmas Theme */
+[data-theme="christmas"] {
+    --bg-ambient: radial-gradient(circle at 50% 50%, #064e3b 0%, #022c22 100%);
+    --panel-border: rgba(239, 68, 68, 0.3);
+    --accent: #ef4444;
+    --accent-glow: rgba(239, 68, 68, 0.5);
+    --coating-start: #ef4444;
+    --coating-end: #991b1b;
+    --coin-base: linear-gradient(135deg, #fca5a5 0%, #dc2626 50%, #7f1d1d 100%);
+    --coin-rim-color: #b91c1c;
+}
+
+/* Halloween Theme */
+[data-theme="halloween"] {
+    --bg-ambient: radial-gradient(circle at 50% 50%, #4c1d95 0%, #090514 100%);
+    --panel-border: rgba(249, 115, 22, 0.3);
+    --accent: #f97316;
+    --accent-glow: rgba(249, 115, 22, 0.5);
+    --coating-start: #f97316;
+    --coating-end: #431407;
+    --coin-base: linear-gradient(135deg, #fdba74 0%, #ea580c 50%, #270738 100%);
+    --coin-rim-color: #c2410c;
+}
+
+/* New Year Theme */
+[data-theme="newyear"] {
+    --bg-ambient: radial-gradient(circle at 50% 50%, #311042 0%, #07020d 100%);
+    --panel-border: rgba(236, 72, 153, 0.3);
+    --accent: #ec4899;
+    --accent-glow: rgba(244, 63, 94, 0.6);
+    --coating-start: #f43f5e;
+    --coating-end: #4c0519;
+    --coin-base: linear-gradient(135deg, #fbcfe8 0%, #db2777 50%, #4d072b 100%);
+    --coin-rim-color: #9d174d;
+}
+
+/* ==========================================================================
+   3. GLOBAL STYLES & INTERFACE RESET
+   ========================================================================== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-main);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-y: auto;
+    position: relative;
+    padding: 20px 0;
+}
+
+.ambient-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--bg-ambient);
+    z-index: -1;
+    transition: background 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Custom Interactive Cursor */
+.custom-cursor {
+    position: fixed;
+    width: 6px;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.8);
+    border: 2px solid var(--accent);
+    border-radius: 50%;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    z-index: 10000;
+    display: none;
+    box-shadow: 0 0 10px var(--accent-glow);
+    transition: width 0.1s ease, height 0.1s ease, border-color 0.4s ease;
+}
+
+/* Headphone Alert Banner - Position Override Stack */
+.recommendation-card {
+    position: fixed !important;
+    top: auto !important;
+    bottom: 24px !important;
+    right: 24px !important;
+    background: rgba(15, 23, 42, 0.75);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 12px 20px;
+    border-radius: 30px;
+    z-index: 9999 !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    animation: slideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.recommendation-card.fade-out {
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.recommendation-card.hidden {
+    display: none;
+}
+
+.recommendation-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #fff;
+}
+
+/* ==========================================================================
+   4. STRUCTURE AND LAYOUT CONTROLS
+   ========================================================================== */
+.experience-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 440px;
+    padding: 20px;
+    z-index: 10;
+}
+
+/* The Top Left Visual Theme Banner Layout Block */
+.theme-control-panel {
+    width: 100%;
+    background: var(--panel-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--panel-border);
+    border-radius: 16px;
+    padding: 14px 20px;
+    margin-top: 80px;
+    margin-bottom: 24px;
+    margin-left: 50px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 16px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    position: relative; 
+    z-index: 10;
+    transition: border-color 0.4s ease, background-color 0.4s ease;
+}
+
+.control-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    white-space: nowrap;
+    transition: color 0.4s ease;
+}
+
+.select-wrapper {
+    position: relative;
+    flex-grow: 1;
+    max-width: 60%;
+}
+
+.theme-dropdown {
+    width: 100%;
+    padding: 10px 14px; 
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    color: #fff;
+    font-size: 0.9rem;
+    font-weight: 500;
+    outline: none;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.theme-dropdown:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px var(--accent-glow);
+}
+
+.theme-dropdown optgroup {
+    background: #0f172a;
+    color: #fff;
+}
+
+/* Bottom Controls Grid Configuration */
+.control-grid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.brush-controls, .volume-controls {
+    background: var(--panel-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--panel-border);
+    border-radius: 12px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    font-size: 0.85rem;
+    transition: background 0.4s ease, border-color 0.4s ease;
+}
+
+.brush-controls label, .volume-controls label {
+    font-weight: 500;
+    min-width: 75px;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.brush-controls input[type="range"], .volume-controls input[type="range"] {
+    flex-grow: 1;
+    appearance: none;
+    -webkit-appearance: none;
+    background: rgba(255, 255, 255, 0.1);
+    height: 6px;
+    border-radius: 3px;
+    outline: none;
+}
+
+.brush-controls input[type="range"]::-webkit-slider-thumb,
+.volume-controls input[type="range"]::-webkit-slider-thumb {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent-glow);
+    cursor: pointer;
+    transition: transform 0.1s ease, background 0.4s ease;
+}
+
+.brush-controls input[type="range"]::-webkit-slider-thumb:active,
+.volume-controls input[type="range"]::-webkit-slider-thumb:active {
+    transform: scale(1.2);
+}
+
+.brush-controls span, .volume-controls span {
+    min-width: 32px;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+}
+
+/* ==========================================================================
+   5. ASMR COIN MODEL & CANVAS SPECIFICS
+   ========================================================================== */
+.coin-wrapper {
+    position: relative;
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    cursor: none; 
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+    will-change: transform;
+}
+
+.coin-3d {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: var(--coin-base);
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background 0.5s ease;
+}
+
+.coin-rim {
+    position: absolute;
+    width: 98%;
+    height: 98%;
+    border-radius: 50%;
+    border: 6px double var(--coin-rim-color);
+    box-shadow: inset 0 0 15px rgba(0,0,0,0.3);
+    transition: border-color 0.5s ease;
+}
+
+.coin-face {
+    position: relative;
+    width: 90%;
+    height: 90%;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.coin-detail-ring {
+    position: absolute;
+    border: 1px dashed rgba(0, 0, 0, 0.15);
+    border-radius: 50%;
+}
+.ring-1 { width: 85%; height: 85%; }
+.ring-2 { width: 70%; height: 70%; }
+.ring-3 { width: 55%; height: 55%; }
+
+.dotted-border {
+    position: absolute;
+    width: 94%;
+    height: 94%;
+    border: 3px dotted rgba(255,255,255,0.2);
+    border-radius: 50%;
+}
+
+/* Inside Reveal Area Container */
+.coin-content {
+    text-align: center;
+    z-index: 2;
+    opacity: 0;
+    transform: scale(0.95);
+    transition: opacity 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.coin-content.revealed {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.reward-animation-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.heart-container {
+    font-size: 2.2rem;
+    color: var(--accent);
+    filter: drop-shadow(0 0 8px var(--accent-glow));
+    transition: color 0.4s ease;
+}
+
+.reward-text {
+    font-size: 1.15rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    color: #fff;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+}
+
+/* Interactive Canvas Positioning Matrix */
+#scratch-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    z-index: 5;
+    transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.scratch-instruction {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.5);
+    text-shadow: 0 1px 4px rgba(0,0,0,0.4);
+    z-index: 6;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+}
+
+.scratch-instruction.fade-out {
+    opacity: 0;
+}
+
+/* ==========================================================================
+   6. METRICS, PROGRESS UPDATES & CTA INTERACTION ELEMENTS
+   ========================================================================== */
+.scratch-progress {
+    margin-top: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: rgba(255,255,255,0.6);
+    letter-spacing: 0.05em;
+}
+
+#scratch-progress-value {
+    color: var(--accent);
+    font-weight: 700;
+    transition: color 0.4s ease;
+}
+
+.reset-button {
+    margin-top: 16px;
+    width: 100%;
+    padding: 14px;
+    border-radius: 12px;
+    background: #ffffff;
+    color: #0f172a;
+    font-size: 0.95rem;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s ease;
+}
+
+.reset-button:hover {
+    transform: translateY(-2px);
+    background: #f8fafc;
+}
+
+.reset-button:active {
+    transform: translateY(1px);
+}
+
+/* Motion Dynamics Profiles */
+@keyframes slideIn {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* Responsive Scaling Overrides for Tablets/Mobile Screenports */
+@media (max-width: 480px) {
+    .theme-control-panel {
+        margin-left: 0;
+        margin-top: 20px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    .select-wrapper {
+        max-width: 100%;
+    }
+    .coin-wrapper {
+        width: 240px;
+        height: 240px;
+    }
+    .reward-text {
+        font-size: 1rem;
+    }
+    .recommendation-card {
+        right: 12px !important;
+        bottom: 12px !important;
+        left: 12px !important;
+        text-align: center;
+        justify-content: center;
+    }
+}
+
+/* --- Core App Adjustments & Fixed Dashboard Toggle Button --- */
+.dashboard-toggle-button {
+    position: fixed;
+    right: 18px;
+    top: 18px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    background: #1e293b;
+    color: #e2e8f0;
+    border: 1px solid #334155;
+    font-size: 0.9rem;
+    font-weight: 600;
+    font-family: Inter, system-ui, sans-serif;
+    cursor: pointer;
+    z-index: 999;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.dashboard-toggle-button:hover {
+    background: #3b82f6;
+    color: #ffffff;
+    border-color: #3b82f6;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
+}
+
+/* --- Slide-out Dashboard Overlay & Panel Container --- */
+.dashboard-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 23, 42, 0.75);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 10000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.dashboard-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.dashboard-panel {
+    width: 100%;
+    max-width: 440px;
+    height: 100%;
+    background: #0f172a;
+    border-left: 1px solid #1e293b;
+    box-shadow: -8px 0 32px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    transform: translateX(100%);
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    padding: 24px;
+    box-sizing: border-box;
+    overflow-y: auto;
+}
+
+.dashboard-overlay.active .dashboard-panel {
+    transform: translateX(0);
+}
+
+/* --- Header Elements --- */
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dashboard-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #f8fafc;
+    font-family: Inter, system-ui, sans-serif;
+    letter-spacing: -0.025em;
+}
+
+.dashboard-close-button {
+    background: transparent;
+    border: none;
+    color: #94a3b8;
+    font-size: 2rem;
+    cursor: pointer;
+    line-height: 1;
+    padding: 4px;
+    transition: color 0.2s ease;
+}
+
+.dashboard-close-button:hover {
+    color: #f1f5f9;
+}
+
+.dashboard-divider {
+    border: 0;
+    height: 1px;
+    background: #1e293b;
+    margin: 20px 0;
+}
+
+/* --- Statistics Dashboard Grid Layout --- */
+.stats-section h3, 
+.achievements-section h3 {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #64748b;
+    margin: 0 0 14px 0;
+    font-family: Inter, system-ui, sans-serif;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 28px;
+}
+
+.stat-card {
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+/* Make the first stat card span full width for emphasis */
+.stats-grid .stat-card:first-child {
+    grid-column: span 2;
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+}
+
+.stat-value {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #3b82f6;
+    font-family: Inter, system-ui, sans-serif;
+}
+
+.stat-label {
+    font-size: 0.75rem;
+    color: #94a3b8;
+    font-weight: 500;
+}
+
+/* --- Achievements Badges List --- */
+.badges-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex-grow: 1;
+}
+
+.badge-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 14px;
+    background: #182235;
+    border: 1px solid #23334d;
+    border-radius: 14px;
+    transition: all 0.2s ease;
+}
+
+.badge-icon {
+    font-size: 2rem;
+    min-width: 48px;
+    height: 48px;
+    background: #1e293b;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.badge-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex-grow: 1;
+}
+
+.badge-info h4 {
+    margin: 0;
+    font-size: 0.95rem;
+    color: #f1f5f9;
+    font-weight: 600;
+}
+
+.badge-info p {
+    margin: 0;
+    font-size: 0.8rem;
+    color: #94a3b8;
+    line-height: 1.3;
+}
+
+.badge-progress {
+    font-size: 0.7rem;
+    color: #3b82f6;
+    font-weight: 700;
+    margin-top: 4px;
+    letter-spacing: 0.05em;
+}
+
+/* --- Locked vs Unlocked CSS Modifiers --- */
+.badge-card.locked {
+    filter: grayscale(100%);
+    opacity: 0.45;
+    background: #0f172a;
+    border-style: dashed;
+}
+
+.badge-card.unlocked {
+    border-color: rgba(59, 130, 246, 0.4);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.05);
+}
+
+.badge-card.unlocked .badge-icon {
+    background: radial-gradient(circle, #2563eb 0%, #1d4ed8 100%);
+    animation: unlockPulse 2s infinite alternate;
+}
+
+.badge-card.unlocked .badge-progress {
+    color: #10b981; /* Green milestone completed marker */
+}
+
+/* --- System Reset Button Footer --- */
+.dashboard-footer {
+    margin-top: 32px;
+    padding-top: 16px;
+    border-top: 1px solid #1e293b;
+}
+
+.clear-stats-button {
+    width: 100%;
+    background: transparent;
+    border: 1px solid #ef4444;
+    color: #ef4444;
+    padding: 10px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.clear-stats-button:hover {
+    background: #ef4444;
+    color: #ffffff;
+}
+
+/* --- Dynamic Live Live Achievement Pop Toast Container --- */
+.achievement-toast-container {
+    position: fixed;
+    bottom: 24px;
+    left: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 11000;
+    pointer-events: none;
+}
+
+.achievement-toast {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: #1e293b;
+    border: 2px solid #3b82f6;
+    padding: 14px 20px;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), 0 0 20px rgba(59, 130, 246, 0.2);
+    transform: translateY(40px);
+    opacity: 0;
+    animation: toastSlideIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    pointer-events: auto;
+    min-width: 280px;
+}
+
+.toast-icon {
+    font-size: 1.8rem;
+}
+
+.toast-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.toast-title {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #3b82f6;
+    font-weight: 800;
+}
+
+.toast-name {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.achievement-toast.fade-out {
+    animation: toastFadeOut 0.3s ease forwards;
+}
+
+/* --- Keyframe Animations System --- */
+@keyframes toastSlideIn {
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes toastFadeOut {
+    to {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+}
+
+@keyframes unlockPulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4);
+    }
+    100% {
+        box-shadow: 0 0 12px 4px rgba(59, 130, 246, 0.1);
+    }
+}

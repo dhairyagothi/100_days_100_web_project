@@ -1,97 +1,177 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset= "UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FILE-UPLOADER</title>
-<link rel="stylesheet" href="file_uploader.css">
-<link rel="icon" href="../../favv.png" type="image/x-icon" />
-<style>
-  *{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-body{
-    display : flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    width: auto;
-    background-color: black;
-}
-.myform{
-  height: auto;
-    background-color: white;
-    padding: 20px;
-    border-radius: 5px;
-    color: #000;
-    font-size: larger;
-    display: grid;
-    gap: 25px;
-    justify-items: center;
-    width: auto;
-}
-input{
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #000;
-    width: auto;
+<html lang="en" data-theme="dark">
 
-}
-.form-field{
-    font-size: larger;
-    font-weight: bold;
-    text-align: center;
-}
-input[type="submit"]{
-    background-color: #000;
-    color: #fff;
-    cursor: pointer;
-    width: auto;
-    padding: 10px;
-    font-size: medium;
-    height: 40px;
-    border-radius: 5px;
-}
-</style>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FileDrop — Upload Files</title>
+  <link rel="stylesheet" href="file_uploader.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Apply saved theme BEFORE paint to avoid flash -->
+  <script>
+    (function () {
+      var t = localStorage.getItem('fd-theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
 </head>
+
 <body>
-    <div class="container">
-    
-    <form
-      action = "/upload"
-      enctype = "multipart/form-data"
-      method = "post"
-      class = "myform"
-    >
-      <div class = "form-field">
-        <label>FirstName</label>
-        <input
-          type = "text"
-          id = "firstName"
-          name = "firstName"
-          placeholder = "Enter your firstname"
-        />
+  <a href="/" class="back-button" aria-label="Back to Home">← Back to Home</a>
+
+  <!-- Theme Toggle -->
+  <button
+    id="themeToggle"
+    class="theme-toggle"
+    aria-label="Toggle light/dark theme"
+    title="Toggle theme"
+  >
+    <span class="theme-icon" id="themeIcon" aria-hidden="true">🌙</span>
+  </button>
+
+  <div class="container">
+    <div class="main-content">
+
+      <!-- Upload Form Card -->
+      <div class="card myform-wrapper">
+        <form
+          action="http://localhost:3000/upload"
+          method="POST"
+          enctype="multipart/form-data"
+          class="myform"
+          id="uploadForm"
+          novalidate
+        >
+          <!-- Header -->
+          <div class="form-header">
+            <div class="logo">
+              <div class="logo-icon" aria-hidden="true">⬆</div>
+              <h1>File<span>Drop</span></h1>
+            </div>
+            <p>Securely upload images up to 2MB each</p>
+          </div>
+
+          <div class="divider" role="separator"></div>
+
+          <!-- First Name -->
+          <div class="form-field">
+            <label for="firstName">First Name</label>
+            <input
+              type="text"
+              id="firstName"
+              name="firstName"
+              placeholder="Enter your first name"
+              autocomplete="given-name"
+              required
+            />
+          </div>
+
+          <!-- Last Name -->
+          <div class="form-field">
+            <label for="lastName">Last Name</label>
+            <input
+              type="text"
+              id="lastName"
+              name="lastName"
+              placeholder="Enter your last name"
+              autocomplete="family-name"
+              required
+            />
+          </div>
+
+          <!-- File Drop Zone -->
+          <div class="form-field">
+            <label>Upload Files</label>
+            <div
+              class="file-drop-zone"
+              id="dropZone"
+              role="button"
+              tabindex="0"
+              aria-label="File upload area. Click or drag and drop image files here."
+            >
+              <span class="drop-icon" aria-hidden="true">📂</span>
+              <div class="drop-text">
+                <strong>Click to browse or drag &amp; drop</strong>
+                Supported: .jpg, .jpeg, .png, .webp &mdash; Max 2MB each
+              </div>
+              <input
+                type="file"
+                id="myFile"
+                name="myFile"
+                multiple
+                accept=".jpg,.jpeg,.png,.webp"
+                aria-label="Choose files to upload"
+                onchange="showPreview(this)"
+              />
+            </div>
+            <div id="file-preview" role="list" aria-label="Selected files"></div>
+          </div>
+
+          <div class="divider" role="separator"></div>
+
+          <!-- Submit -->
+          <div class="form-field">
+            <button type="submit" class="submit-btn" id="submitBtn">
+              <span class="btn-label">Upload Files</span>
+              <span class="btn-arrow" aria-hidden="true">→</span>
+            </button>
+          </div>
+        </form>
       </div>
-      <div class = "form-field">
-        <label>LastName</label>
-        <input
-          type = "text"
-          id = "lastName"
-          name = "lastName"
-          placeholder = "Enter your lastname"
-        />
+
+      <!-- Right Panel -->
+      <div class="right-panel">
+
+        <!-- Statistics -->
+        <div class="card stats-panel">
+          <h2 class="panel-title">
+            <span aria-hidden="true">📊</span> Upload Statistics
+          </h2>
+          <div class="stats-grid" role="list">
+            <div class="stat-card" role="listitem">
+              <div class="stat-value" id="statTotalFiles">0</div>
+              <div class="stat-label">Total Files</div>
+            </div>
+            <div class="stat-card" role="listitem">
+              <div class="stat-value" id="statTotalSize">0 B</div>
+              <div class="stat-label">Total Size</div>
+            </div>
+            <div class="stat-card" role="listitem">
+              <div class="stat-value" id="statLargestFile">0 B</div>
+              <div class="stat-label">Largest</div>
+            </div>
+            <div class="stat-card" role="listitem">
+              <div class="stat-value" id="statImageCount">0</div>
+              <div class="stat-label">Images</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Uploads -->
+        <div class="card history-panel">
+          <h2 class="panel-title">
+            <span aria-hidden="true">📜</span> Recent Uploads
+          </h2>
+          <div id="historyList" class="history-list" role="list" aria-label="Recent upload history">
+            <p class="empty-history">No uploads yet</p>
+          </div>
+        </div>
+
       </div>
-      <div class = "form-field">
-        <label>Upload file here</label>
-        <input type = "file" id = "myFile" name = "myFile" multiple = "true" />
-      </div>
-      <div class = "form-field">
-        <input type = "submit" />
-      </div>
-    </form>
+    </div>
   </div>
-     
+
+  <!-- Toast Notifications -->
+  <div
+    class="toast-container"
+    id="toastContainer"
+    role="region"
+    aria-live="polite"
+    aria-label="Notifications"
+  ></div>
+
+  <script src="index.js"></script>
 </body>
 </html>

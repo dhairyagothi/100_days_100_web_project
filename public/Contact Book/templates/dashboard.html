@@ -1,9 +1,53 @@
+<!DOCTYPE html>
 {% extends 'base.html' %}
 {% block content %}
 <div class="mt-10">
+    <h1 class="text-2xl font-bold mb-2">Dashboard</h1>
+
+<p class="text-gray-600 mb-4">
+    Total Contacts: {{ contact_count }}
+</p>
+    {% if duplicate_count and duplicate_count > 0 %}
+    <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6 rounded shadow flex justify-between items-center">
+        <div class="flex items-center space-x-3">
+            <svg class="h-6 w-6 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+            </svg>
+            <div>
+                <p class="font-semibold text-yellow-800">Potential Duplicates Detected</p>
+                <p class="text-sm text-yellow-700">We found {{ duplicate_count }} potential duplicate contacts in your list.</p>
+            </div>
+        </div>
+        <a href="{{ url_for('merge_suggestions') }}" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded text-sm font-semibold shadow">
+            Review & Merge
+        </a>
+    </div>
+    {% endif %}
+
     <h1 class="text-2xl font-bold mb-4">Dashboard</h1>
-    <input type="text" id="search" placeholder="Search contacts..." class="w-full p-2 mb-4 border border-gray-300 rounded">
-    <a href="{{ url_for('add_contact') }}" class="bg-blue-600 text-white px-4 py-2 rounded">Add Contact</a>
+
+<input type="text" id="search" placeholder="Search contacts..."
+       class="w-full p-2 mb-4 border border-gray-300 rounded">
+
+<form method="GET" action="{{ url_for('dashboard') }}" class="mb-4">
+    <select name="sort" onchange="this.form.submit()"
+        class="border border-gray-300 rounded p-2">
+    <option value="asc" {% if request.args.get('sort', 'asc') == 'asc' %}selected{% endif %}>
+        Sort A-Z
+    </option>
+    <option value="desc" {% if request.args.get('sort') == 'desc' %}selected{% endif %}>
+        Sort Z-A
+    </option>
+</select>
+        <option value="asc">Sort A-Z</option>
+        <option value="desc">Sort Z-A</option>
+    </select>
+</form>
+
+<a href="{{ url_for('add_contact') }}"
+   class="bg-blue-600 text-white px-4 py-2 rounded">
+   Add Contact
+</a>
     <ul id="contactList" class="mt-4 space-y-2">
         {% for contact in contacts %}
         <li class="bg-white p-4 rounded shadow flex justify-between items-center contact-item">
@@ -11,31 +55,52 @@
                 <p class="font-bold contact-name">{{ contact.name }}</p>
                 <p class="contact-email">{{ contact.email }}</p>
                 <p class="contact-phone">{{ contact.phone }}</p>
+                <p class="text-sm text-gray-500">
+    Added on: {{ contact.created_at.strftime('%d/%m/%Y') }}
+</p>
             </div>
             <div class="space-x-2">
                 <a href="{{ url_for('edit_contact', id=contact.id) }}" class="bg-yellow-400 text-white px-4 py-2 rounded">Edit</a>
-                <a href="{{ url_for('delete_contact', id=contact.id) }}" class="bg-red-600 text-white px-4 py-2 rounded">Delete</a>
+                <a href="{{ url_for('delete_contact', id=contact.id) }}"
+   onclick="return confirm('Are you sure you want to delete this contact?');"
+   class="bg-red-600 text-white px-4 py-2 rounded">
+   Delete
+</a>
             </div>
         </li>
         {% endfor %}
     </ul>
+
+<p id="noResultsMessage" class="hidden text-center text-gray-500 mt-4">
+    No contacts found.
+</p>
 </div>
 <script>
 document.getElementById('search').addEventListener('input', function() {
     let filter = this.value.toLowerCase();
     let contacts = document.querySelectorAll('.contact-item');
+    let visibleContacts = 0;
 
     contacts.forEach(function(contact) {
         let name = contact.querySelector('.contact-name').textContent.toLowerCase();
         let email = contact.querySelector('.contact-email').textContent.toLowerCase();
         let phone = contact.querySelector('.contact-phone').textContent.toLowerCase();
-        
+
         if (name.includes(filter) || email.includes(filter) || phone.includes(filter)) {
             contact.style.display = '';
+            visibleContacts++;
         } else {
             contact.style.display = 'none';
         }
     });
+
+    const noResults = document.getElementById('noResultsMessage');
+
+    if (visibleContacts === 0) {
+        noResults.classList.remove('hidden');
+    } else {
+        noResults.classList.add('hidden');
+    }
 });
 </script>
 {% endblock %}

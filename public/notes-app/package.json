@@ -1,0 +1,22 @@
+{
+  "name": "ai-notes-editor-backend",
+  "version": "1.0.0",
+  "description": "Backend API for AI-Assisted Smart Notes Editor",
+  "main": "api-server.js",
+  "scripts": {
+    "start": "node api-server.js",
+    "dev": "nodemon api-server.js"
+  },
+  "keywords": ["notes", "ai", "gemini", "editor"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "axios": "^1.6.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
+}

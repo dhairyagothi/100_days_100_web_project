@@ -1,206 +1,585 @@
-const playBoard = document.querySelector(".play-board");
-const scoreElement = document.querySelector(".score");
-const highScoreElement = document.querySelector(".high-score");
-const levelElement = document.querySelector(".level");
-const controls = document.querySelectorAll(".controls i");
-const newGameButton = document.querySelector(".new-game-button");
-const restartGameButton = document.querySelector(".restart-game-button");
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
 
-let gameOver = false;
-let foodX, foodY, bonusFoodX, bonusFoodY, powerUpX, powerUpY;
-let bonusFoodVisible = false, powerUpVisible = false;
-let snakeX = 5, snakeY = 5;
-let velocityX = 0, velocityY = 0;
-let snakeBody = [];
-let setIntervalId, powerUpTimerId;
-let score = 0;
-let level = 1;
-let gameSpeed = 300;
-let obstacles = [];
-let powerUpActive = false;
-let powerUpDuration = 5000; // Power-up lasts for 5 seconds
+const COLS = 30;
+const ROWS = 30;
+const CELL = 22;
+canvas.width = COLS * CELL;
+canvas.height = ROWS * CELL;
 
-// Getting high score from the local storage
-let highScore = localStorage.getItem("high-score") || 0;
-highScoreElement.innerText = `High Score: ${highScore}`;
+const eatSound = document.getElementById('eatSound');
+const gameOverSound = document.getElementById('gameOverSound');
 
-const updateFoodPosition = () => {
-  foodX = Math.floor(Math.random() * 30) + 1;
-  foodY = Math.floor(Math.random() * 30) + 1;
-}
+let snake, dir, nextDir, food, score, level, speed, running, paused;
+let highScore = 0;
+let isGameOver = false;
+let finalScore = 0;
+let gameStartTime = 0;
+let gameSurvivalTime = 0;
 
-const updateBonusFoodPosition = () => {
-  bonusFoodX = Math.floor(Math.random() * 30) + 1;
-  bonusFoodY = Math.floor(Math.random() * 30) + 1;
-  bonusFoodVisible = true;
-  setTimeout(() => {
-    bonusFoodVisible = false;
-  }, 5000);
-}
+// Statistics
+let stats = {
+  gamesPlayed: 0,
+  totalScore: 0,
+  highestScore: 0,
+  totalFood: 0,
+  longestSurvival: 0 // in seconds
+};
 
-const updatePowerUpPosition = () => {
-  powerUpX = Math.floor(Math.random() * 30) + 1;
-  powerUpY = Math.floor(Math.random() * 30) + 1;
-  powerUpVisible = true;
-  setTimeout(() => {
-    powerUpVisible = false;
-  }, 5000);
-}
+// Achievements
+const achievements = [
+  { id: 'beginner-snake', name: 'Beginner Snake', desc: 'Score 20 points', icon: '🐍', check: () => score >= 20 },
+  { id: 'growing-hunter', name: 'Growing Hunter', desc: 'Score 50 points', icon: '👑', check: () => score >= 50 },
+  { id: 'snake-master', name: 'Snake Master', desc: 'Score 100 points', icon: '🏆', check: () => score >= 100 },
+  { id: 'snake-legend', name: 'Snake Legend', desc: 'Score 200 points', icon: '🔥', check: () => score >= 200 }
+];
+let unlockedAchievements = new Set();
 
-const activatePowerUp = () => {
-  powerUpActive = true;
-  setTimeout(() => {
-    powerUpActive = false;
-  }, powerUpDuration);
-}
+// RAF state
+let rafId = null;
+let lastTickTime = 0;
 
-const updateObstacles = () => {
-  obstacles = [];
-  for (let i = 0; i < level; i++) {
-    let obstacleX = Math.floor(Math.random() * 30) + 1;
-    let obstacleY = Math.floor(Math.random() * 30) + 1;
-    obstacles.push([obstacleX, obstacleY]);
-  }
-}
-
-const handleGameOver = () => {
-  clearInterval(setIntervalId);
-  clearTimeout(powerUpTimerId);
-  alert("Game Over! Press OK to replay...");
-  location.reload();
-}
-
-const changeDirection = e => {
-  if (e.key === "ArrowUp" && velocityY != 1) {
-    velocityX = 0;
-    velocityY = -1;
-  } else if (e.key === "ArrowDown" && velocityY != -1) {
-    velocityX = 0;
-    velocityY = 1;
-  } else if (e.key === "ArrowLeft" && velocityX != 1) {
-    velocityX = -1;
-    velocityY = 0;
-  } else if (e.key === "ArrowRight" && velocityX != -1) {
-    velocityX = 1;
-    velocityY = 0;
-  }
-}
-
-controls.forEach(button => button.addEventListener("click", () => changeDirection({ key: button.dataset.key })));
-
-const initGame = () => {
-  if (gameOver) return handleGameOver();
-  let html = `<div class="food" style="grid-area: ${foodY} / ${foodX}"></div>`;
-  if (bonusFoodVisible) {
-    html += `<div class="bonus-food" style="grid-area: ${bonusFoodY} / ${bonusFoodX}"></div>`;
-  }
-  if (powerUpVisible) {
-    html += `<div class="power-up" style="grid-area: ${powerUpY} / ${powerUpX}"></div>`;
-  }
-
-  if (snakeX === foodX && snakeY === foodY) {
-    updateFoodPosition();
-    snakeBody.push([foodY, foodX]);
-    score++;
-    highScore = score >= highScore ? score : highScore;
-    localStorage.setItem("high-score", highScore);
-    scoreElement.innerText = `Score: ${score}`;
-    highScoreElement.innerText = `High Score: ${highScore}`;
-  }
-
-  if (snakeX === bonusFoodX && snakeY === bonusFoodY && bonusFoodVisible) {
-    score += 5;
-    highScore = score >= highScore ? score : highScore;
-    localStorage.setItem("high-score", highScore);
-    scoreElement.innerText = `Score: ${score}`;
-    highScoreElement.innerText = `High Score: ${highScore}`;
-    bonusFoodVisible = false;
-  }
-
-  if (snakeX === powerUpX && snakeY === powerUpY && powerUpVisible) {
-    activatePowerUp();
-    powerUpVisible = false;
-  }
-
-  snakeX += velocityX;
-  snakeY += velocityY;
-
-  for (let i = snakeBody.length - 1; i > 0; i--) {
-    snakeBody[i] = snakeBody[i - 1];
-  }
-  snakeBody[0] = [snakeX, snakeY];
-
-  if (snakeX <= 0 || snakeX > 30 || snakeY <= 0 || snakeY > 30) {
-    gameOver = true;
-  }
-
-  for (let i = 0; i < snakeBody.length; i++) {
-    html += `<div class="head" style="grid-area: ${snakeBody[i][1]} / ${snakeBody[i][0]}"></div>`;
-    if (i !== 0 && snakeBody[0][1] === snakeBody[i][1] && snakeBody[0][0] === snakeBody[i][0]) {
-      gameOver = true;
+// Page visibility
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) {
+    if (running && !paused) {
+      setPaused(true);
+      paused_by_visibility = true;
+    }
+  } else {
+    if (paused_by_visibility) {
+      setPaused(false);
+      paused_by_visibility = false;
     }
   }
+});
+let paused_by_visibility = false;
 
-  for (let i = 0; i < obstacles.length; i++) {
-    html += `<div class="obstacle" style="grid-area: ${obstacles[i][1]} / ${obstacles[i][0]}"></div>`;
-    if (snakeX === obstacles[i][0] && snakeY === obstacles[i][1]) {
-      gameOver = true;
-    }
+function setPaused(value) {
+  paused = value;
+  const overlay = document.getElementById('pauseOverlay');
+  if (overlay) {
+    value ? overlay.classList.remove('hidden') : overlay.classList.add('hidden');
   }
-
-  if (score !== 0 && score % 10 === 0 && score / 10 === level) {
-    level++;
-    levelElement.innerText = `Level: ${level}`;
-    gameSpeed -= 20;
-    updateObstacles();
-    clearInterval(setIntervalId);
-    setIntervalId = setInterval(initGame, gameSpeed);
+  if (!value) {
+    lastTickTime = performance.now();
   }
-
-  playBoard.innerHTML = html;
 }
 
-const startNewGame = () => {
-  gameOver = false;
+// Web Audio sound engine
+let audioCtx = null;
+
+function getAudioCtx() {
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  return audioCtx;
+}
+
+function playTone(freq, type = 'square', duration = 0.08, gainPeak = 0.18) {
+  try {
+    const ac = getAudioCtx();
+    const osc = ac.createOscillator();
+    const gain = ac.createGain();
+
+    osc.type = type;
+    osc.frequency.setValueAtTime(freq, ac.currentTime);
+
+    gain.gain.setValueAtTime(0, ac.currentTime);
+    gain.gain.linearRampToValueAtTime(gainPeak, ac.currentTime + 0.005);
+    gain.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + duration);
+
+    osc.connect(gain);
+    gain.connect(ac.destination);
+    osc.start(ac.currentTime);
+    osc.stop(ac.currentTime + duration + 0.01);
+  } catch (e) {}
+}
+
+function soundEat() {
+  playTone(440, 'square', 0.06, 0.15);
+  setTimeout(() => playTone(660, 'square', 0.08, 0.12), 40);
+}
+
+function soundLevelUp() {
+  [330, 440, 550, 660].forEach((f, i) =>
+    setTimeout(() => playTone(f, 'square', 0.12, 0.14), i * 60)
+  );
+}
+
+function soundDie() {
+  [220, 180, 140, 100].forEach((f, i) =>
+    setTimeout(() => playTone(f, 'sawtooth', 0.12, 0.20), i * 70)
+  );
+}
+
+// Initialize
+function loadGameData() {
+  try {
+    const savedStats = localStorage.getItem('snake-stats');
+    if (savedStats) {
+      stats = JSON.parse(savedStats);
+    }
+    const savedHighScore = localStorage.getItem('snake-highscore');
+    if (savedHighScore) {
+      highScore = parseInt(savedHighScore);
+    }
+    const savedAchievements = localStorage.getItem('snake-achievements');
+    if (savedAchievements) {
+      unlockedAchievements = new Set(JSON.parse(savedAchievements));
+    }
+  } catch (e) {
+    console.error('Error loading data from localStorage:', e);
+  }
+}
+
+function saveGameData() {
+  try {
+    localStorage.setItem('snake-stats', JSON.stringify(stats));
+    localStorage.setItem('snake-highscore', highScore.toString());
+    localStorage.setItem('snake-achievements', JSON.stringify([...unlockedAchievements]));
+  } catch (e) {
+    console.error('Error saving data to localStorage:', e);
+  }
+}
+
+function initGame() {
+  const startX = Math.floor(COLS / 2);
+  const startY = Math.floor(ROWS / 2);
+  snake = [
+    { x: startX, y: startY },
+    { x: startX - 1, y: startY },
+    { x: startX - 2, y: startY },
+  ];
+
+  dir = { x: 1, y: 0 };
+  nextDir = { x: 1, y: 0 };
   score = 0;
   level = 1;
-  gameSpeed = 300;
-  snakeBody = [];
-  velocityX = 0;
-  velocityY = 0;
-  snakeX = 5;
-  snakeY = 5;
+  speed = 160;
+  running = false;
+  isGameOver = false;
+  setPaused(false);
+
+  placeFood();
+  updateHUD();
+  updateStatsUI();
+  renderAchievements();
+}
+
+function placeFood() {
+  let pos;
+  do {
+    pos = {
+      x: Math.floor(Math.random() * COLS),
+      y: Math.floor(Math.random() * ROWS),
+    };
+  } while (snake.some(s => s.x === pos.x && s.y === pos.y));
+  food = pos;
+}
+
+function updateHUD(bumped) {
+  const scoreEl = document.getElementById('score');
+  const hsEl = document.getElementById('highscore');
+  const lvlEl = document.getElementById('level');
+
+  scoreEl.textContent = score;
+  hsEl.textContent = highScore;
+  lvlEl.textContent = level;
+
+  if (bumped) {
+    [scoreEl, hsEl, lvlEl].forEach(el => {
+      el.classList.remove('bump');
+      void el.offsetWidth;
+      el.classList.add('bump');
+      el.addEventListener('transitionend', () => el.classList.remove('bump'), { once: true });
+    });
+  }
+}
+
+function updateStatsUI() {
+  document.getElementById('stat-games-played').textContent = stats.gamesPlayed;
+  document.getElementById('stat-highest-score').textContent = stats.highestScore;
+  document.getElementById('stat-average-score').textContent = stats.gamesPlayed > 0 
+    ? Math.round(stats.totalScore / stats.gamesPlayed) 
+    : 0;
+  document.getElementById('stat-total-food').textContent = stats.totalFood;
+  document.getElementById('stat-longest-survival').textContent = stats.longestSurvival + 's';
+}
+
+function renderAchievements() {
+  const container = document.getElementById('achievements-list');
+  container.innerHTML = achievements.map(achievement => {
+    const isUnlocked = unlockedAchievements.has(achievement.id);
+    return `
+      <div class="achievement ${isUnlocked ? 'unlocked' : 'locked'}" data-id="${achievement.id}">
+        <div class="achievement-icon">${achievement.icon}</div>
+        <div class="achievement-info">
+          <div class="achievement-name">${achievement.name}</div>
+          <div class="achievement-desc">${achievement.desc}</div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function showAchievementNotification(achievement) {
+  const notification = document.getElementById('achievement-notification');
+  notification.innerHTML = `
+    <div class="notification-title">Achievement Unlocked!</div>
+    <div class="notification-achievement">${achievement.icon} ${achievement.name}</div>
+  `;
+  notification.classList.remove('hidden');
+  
+  setTimeout(() => {
+    notification.classList.add('hidden');
+  }, 4000);
+}
+
+function checkAchievements() {
+  achievements.forEach(achievement => {
+    if (!unlockedAchievements.has(achievement.id) && achievement.check()) {
+      unlockedAchievements.add(achievement.id);
+      saveGameData();
+      renderAchievements();
+      showAchievementNotification(achievement);
+    }
+  });
+}
+
+function draw() {
+  ctx.fillStyle = '#050a05';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  ctx.fillStyle = '#0d1f0d';
+  for (let r = 0; r < ROWS; r++) {
+    for (let c = 0; c < COLS; c++) {
+      ctx.fillRect(c * CELL + CELL / 2 - 1, r * CELL + CELL / 2 - 1, 2, 2);
+    }
+  }
+
+  const fx = food.x * CELL + CELL / 2;
+  const fy = food.y * CELL + CELL / 2;
+  const pulse = 0.6 + 0.4 * Math.abs(Math.sin(Date.now() / 300));
+
+  ctx.save();
+  ctx.shadowColor = '#ff0000';
+  ctx.shadowBlur = 15 * pulse;
+  ctx.fillStyle = `hsl(0, 100%, ${45 + 15 * pulse}%)`;
+  ctx.beginPath();
+  ctx.arc(fx, fy, (CELL / 2 - 3) * pulse * 0.9 + 1, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.restore();
+
+  snake.forEach((seg, i) => {
+    const isHead = i === 0;
+    const t = i / (snake.length - 1 || 1);
+
+    const g = Math.round(255 * (1 - t * 0.65));
+    const color = isHead ? '#39ff14' : `rgb(0, ${g}, 0)`;
+
+    const padding = isHead ? 1 : Math.min(3, 1 + t * 2);
+    const x = seg.x * CELL + padding;
+    const y = seg.y * CELL + padding;
+    const size = CELL - padding * 2;
+
+    ctx.save();
+    if (isHead) {
+      ctx.shadowColor = '#39ff14';
+      ctx.shadowBlur = 12;
+    }
+    ctx.fillStyle = color;
+    ctx.fillRect(x, y, size, size);
+    ctx.restore();
+
+    if (isHead) {
+      ctx.fillStyle = '#050a05';
+      const eyeSize = 3;
+      let e1, e2;
+      if (dir.x === 1) { e1 = [x + size - 5, y + 3]; e2 = [x + size - 5, y + size - 6]; }
+      else if (dir.x === -1) { e1 = [x + 2, y + 3]; e2 = [x + 2, y + size - 6]; }
+      else if (dir.y === -1) { e1 = [x + 3, y + 2]; e2 = [x + size - 6, y + 2]; }
+      else { e1 = [x + 3, y + size - 5]; e2 = [x + size - 6, y + size - 5]; }
+      ctx.fillRect(e1[0], e1[1], eyeSize, eyeSize);
+      ctx.fillRect(e2[0], e2[1], eyeSize, eyeSize);
+    }
+  });
+}
+
+function tick() {
+  dir = { ...nextDir };
+
+  const head = {
+    x: snake[0].x + dir.x,
+    y: snake[0].y + dir.y,
+  };
+
+  if (head.x < 0 || head.x >= COLS || head.y < 0 || head.y >= ROWS) {
+    endGame();
+    return;
+  }
+
+  if (snake.some(s => s.x === head.x && s.y === head.y)) {
+    endGame();
+    return;
+  }
+
+  snake.unshift(head);
+  if (head.x === food.x && head.y === food.y) {
+    score += level * 10;
+    if (score > highScore) highScore = score;
+    stats.totalFood++;
+
+    if (eatSound) {
+      eatSound.currentTime = 0;
+      eatSound.play().catch(err => console.log("Audio play blocked by browser config", err));
+    }
+
+    const foodsEaten = snake.length - 3;
+    const newLevel = Math.floor(foodsEaten / 5) + 1;
+    if (newLevel !== level) {
+      level = newLevel;
+      speed = Math.max(60, 150 - (level - 1) * 15);
+      soundLevelUp();
+    } else {
+      soundEat();
+    }
+
+    updateHUD(true);
+    checkAchievements();
+    placeFood();
+  } else {
+    snake.pop();
+    updateHUD(false);
+  }
+}
+
+function gameEngine(timestamp) {
+  if (!lastTickTime) lastTickTime = timestamp;
+
+  if (running && !paused) {
+    const elapsed = timestamp - lastTickTime;
+
+    if (elapsed > speed * 3) {
+      lastTickTime = timestamp;
+    } else if (elapsed >= speed) {
+      tick();
+      lastTickTime = timestamp;
+    }
+  } else {
+    lastTickTime = timestamp;
+  }
+
+  if (!isGameOver) {
+    draw();
+  }
+
+  requestAnimationFrame(gameEngine);
+}
+
+function startGame() {
+  document.getElementById('startOverlay').classList.add('hidden');
+  document.getElementById('gameOverOverlay').classList.add('hidden');
+
+  isGameOver = false;
+  initGame();
+  running = true;
+  gameStartTime = Date.now();
+  lastTickTime = performance.now();
+
+  document.removeEventListener('keydown', handleKeyDown);
+  document.addEventListener('keydown', handleKeyDown);
+}
+
+function endGame() {
+  finalScore = score;
+  running = false;
+  isGameOver = true;
+  
+  // Update stats
+  gameSurvivalTime = Math.floor((Date.now() - gameStartTime) / 1000);
+  stats.gamesPlayed++;
+  stats.totalScore += score;
+  if (score > stats.highestScore) {
+    stats.highestScore = score;
+  }
+  if (gameSurvivalTime > stats.longestSurvival) {
+    stats.longestSurvival = gameSurvivalTime;
+  }
+  
+  saveGameData();
+  updateStatsUI();
+
+  document.removeEventListener('keydown', handleKeyDown);
+
+  if (gameOverSound) {
+    gameOverSound.currentTime = 0;
+    gameOverSound.play().catch(err => console.log("Audio play blocked", err));
+  }
+
+  let flashes = 0;
+  const flashInterval = setInterval(() => {
+    flashes++;
+    if (flashes % 2 === 1) {
+      ctx.fillStyle = 'rgba(255, 0, 0, 0.4)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    } else {
+      draw();
+    }
+
+    if (flashes >= 6) {
+      clearInterval(flashInterval);
+      draw();
+      document.getElementById('finalScore').textContent = `SCORE: ${finalScore}  |  BEST: ${highScore}`;
+      document.getElementById('gameOverOverlay').classList.remove('hidden');
+    }
+  }, 120);
+}
+
+const KEY_MAP = {
+  ArrowUp: { x: 0, y: -1 },
+  ArrowDown: { x: 0, y: 1 },
+  ArrowLeft: { x: -1, y: 0 },
+  ArrowRight: { x: 1, y: 0 },
+  w: { x: 0, y: -1 },
+  s: { x: 0, y: 1 },
+  a: { x: -1, y: 0 },
+  d: { x: 1, y: 0 },
+  W: { x: 0, y: -1 },
+  S: { x: 0, y: 1 },
+  A: { x: -1, y: 0 },
+  D: { x: 1, y: 0 },
+};
+
+function handleKeyDown(e) {
+  if (isGameOver) return;
+
+  if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+    e.preventDefault();
+  }
+
+  const newDir = KEY_MAP[e.key];
+
+  if (newDir && !running) {
+    startGame();
+    if (newDir.x !== -dir.x || newDir.y !== -dir.y) {
+      nextDir = newDir;
+    }
+  } else if (newDir && running && !paused) {
+    if (newDir.x !== -dir.x || newDir.y !== -dir.y) {
+      nextDir = newDir;
+    }
+  }
+
+  if ((e.key === 'p' || e.key === 'P') && running) {
+    e.preventDefault();
+    setPaused(!paused);
+  }
+}
+
+document.addEventListener('keydown', handleKeyDown);
+
+document.getElementById('startBtn').addEventListener('click', startGame);
+document.getElementById('restartBtn').addEventListener('click', startGame);
+document.getElementById('reset-stats').addEventListener('click', () => {
+  stats = {
+    gamesPlayed: 0,
+    totalScore: 0,
+    highestScore: 0,
+    totalFood: 0,
+    longestSurvival: 0
+  };
   highScore = 0;
-  localStorage.setItem("high-score", highScore);
-  highScoreElement.innerText = `High Score: ${highScore}`;
-  scoreElement.innerText = `Score: ${score}`;
-  levelElement.innerText = `Level: ${level}`;
-  updateFoodPosition();
-  updateObstacles();
-  clearInterval(setIntervalId);
-  setIntervalId = setInterval(initGame, gameSpeed);
+  saveGameData();
+  updateStatsUI();
+  updateHUD();
+});
+
+// Mobile controls
+(function () {
+  const controls = document.getElementById('mobileControls');
+  if (!controls) return;
+
+  let lastTouch = 0;
+
+  const setDir = (direction) => {
+    if (typeof isGameOver !== 'undefined' && isGameOver) return;
+
+    const now = Date.now();
+    if (now - lastTouch < 80) return;
+    lastTouch = now;
+
+    const dirMap = {
+      up: { x: 0, y: -1 },
+      down: { x: 0, y: 1 },
+      left: { x: -1, y: 0 },
+      right: { x: 1, y: 0 }
+    };
+
+    const newDir = dirMap[direction];
+    if (!newDir) return;
+
+    if (typeof running !== 'undefined' && !running) {
+      if (typeof startGame === 'function') {
+        startGame();
+      }
+      if (typeof nextDir !== 'undefined' && typeof dir !== 'undefined') {
+        if (newDir.x !== -dir.x || newDir.y !== -dir.y) nextDir = newDir;
+      }
+      return;
+    }
+
+    if (typeof running !== 'undefined' && running &&
+        typeof paused  !== 'undefined' && !paused) {
+      if (typeof dir !== 'undefined' && typeof nextDir !== 'undefined') {
+        if (newDir.x !== -dir.x || newDir.y !== -dir.y) {
+          nextDir = newDir;
+          if ('vibrate' in navigator) navigator.vibrate(20);
+        }
+      }
+    }
+  };
+
+  document.querySelectorAll('.dpad-btn').forEach(btn => {
+    btn.addEventListener('click', e => { e.preventDefault(); setDir(btn.dataset.dir); });
+    btn.addEventListener('touchstart', e => { e.preventDefault(); e.stopPropagation(); setDir(btn.dataset.dir); });
+  });
+
+  const isMobile = () => window.innerWidth <= 768 || 'ontouchstart' in window;
+  const toggle = () => {
+    if (controls) {
+      controls.style.display = isMobile() ? 'flex' : 'none';
+    }
+  };
+
+  toggle();
+  window.addEventListener('resize', toggle);
+})();
+
+// Theme toggle
+const themeToggle = document.getElementById("themeToggle");
+let isLight = localStorage.getItem("theme") === "light";
+
+function applyTheme() {
+  if (isLight) {
+    document.body.classList.add("light");
+    themeToggle.textContent = "☀️ Light Mode";
+  } else {
+    document.body.classList.remove("light");
+    themeToggle.textContent = "🌙 Dark Mode";
+  }
 }
 
-const restartGame = () => {
-  gameOver = false;
-  score = 0;
-  snakeBody = [];
-  velocityX = 0;
-  velocityY = 0;
-  snakeX = 5;
-  snakeY = 5;
-  scoreElement.innerText = `Score: ${score}`;
-  levelElement.innerText = `Level: ${level}`;
-  updateFoodPosition();
-  updateObstacles();
-  clearInterval(setIntervalId);
-  setIntervalId = setInterval(initGame, gameSpeed);
-}
+applyTheme();
 
-newGameButton.addEventListener("click", startNewGame);
-restartGameButton.addEventListener("click", restartGame);
+themeToggle.addEventListener("click", () => {
+  isLight = !isLight;
+  localStorage.setItem("theme", isLight ? "light" : "dark");
+  applyTheme();
+});
 
-updateFoodPosition();
-updateObstacles();
-setIntervalId = setInterval(initGame, gameSpeed);
-document.addEventListener("keyup", changeDirection);
+// Load data and start
+loadGameData();
+initGame();
+requestAnimationFrame(gameEngine);
