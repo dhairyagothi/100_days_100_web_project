@@ -1,224 +1,497 @@
 <!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login • 100 Days 100 Web Projects</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login — 100 Days 100 Web Projects</title>
+      :root {
+        --primary: #6366f1;
+      }
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-  <link rel="stylesheet" href="style.css" />
-</head>
+      body {
+        font-family: "Inter", system-ui, sans-serif;
+        min-height: 100vh;
+        overflow-x: hidden;
+        background: linear-gradient(135deg, #0f172a 0%, #1e2937 100%);
+        color: #e2e8f0;
+        position: relative;
+      }
 
-<body>
-  <div class="ambient ambient-left" aria-hidden="true"></div>
-  <div class="ambient ambient-right" aria-hidden="true"></div>
-  <div class="noise-layer" aria-hidden="true"></div>
+      #bg-canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        opacity: 0.65;
+      }
 
-  <div class="bg-blur"></div>
+      .glass-card {
+        background: rgba(15, 23, 42, 0.88);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(148, 163, 184, 0.18);
+        border-radius: 24px;
+        box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.45);
+      }
 
-  <header>
-  <nav class="navbar" aria-label="Main navigation">
-    <span class="navbar-brand">100 Days 100 Web Projects</span>
-    <a href="../index.html" class="nav-home-link">
-      <i class="fa-solid fa-house" aria-hidden="true"></i>
-      Home
-    </a>
-  </nav>
-</header>
+      .hero-title {
+        font-size: clamp(2rem, 5.5vw, 3.2rem);
+        font-weight: 800;
+        line-height: 1.1;
+        background: linear-gradient(90deg, #a5b4fc, #c4d0ff, #818cf8);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
 
-  <section class="hero-section">
-    <h1 class="hero-title">100 Days 100 Web Projects</h1>
-    <p class="auth-title">
-      Dive in to explore a seamless access to 100+ exciting web experiments
-      crafted for learning and inspiration. Log in to continue building,
-      exploring, and creating amazing web experiences every day.
-    </p>
+      .hero-subtitle {
+        font-size: 1.1rem;
+        color: #94a3b8;
+        max-width: 420px;
+        margin: 0 auto;
+      }
 
-    <div class="auth-container">
-      <div class="auth-card">
-        <h2 class="auth-title-1">Login</h2>
+      .form-floating-custom {
+        position: relative;
+        margin-bottom: 1.5rem;
+      }
 
-        <!-- Status message area -->
-        <div id="statusMsg" style="
-            display:none;
-            padding: 10px 14px;
-            border-radius: 8px;
-            font-size: 13px;
-            margin-bottom: 16px;
-            text-align: center;
-          "></div>
+      .form-floating-custom input {
+        background: rgba(15, 23, 42, 0.75) !important;
+        border: 2px solid #334155;
+        border-radius: 14px;
+        padding: 1rem 1rem 0.5rem 3rem;
+        color: #e2e8f0;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+      }
 
-          <form id="loginForm" class="auth-form">
-            <div class="form-group">
-              <i aria-hidden="true" class="fa-solid fa-user"></i>
-              <input
-                type="text"
-                id="username"
-                placeholder="Username"
-                class="form-input"
-                autocomplete="username"
-                required
-              />
+      .form-floating-custom input:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+      }
+
+      .form-floating-custom label {
+        position: absolute;
+        left: 3rem;
+        top: 1.1rem;
+        color: #64748b;
+        transition: all 0.3s ease;
+        pointer-events: none;
+        font-size: 1rem;
+      }
+
+      .form-floating-custom input:focus + label,
+      .form-floating-custom input:not(:placeholder-shown) + label {
+        top: 0.4rem;
+        font-size: 0.78rem;
+        color: var(--primary);
+      }
+
+      .input-icon {
+        position: absolute;
+        left: 1.25rem;
+        top: 1.1rem;
+        color: #64748b;
+        z-index: 5;
+      }
+
+      .form-floating-custom input:focus ~ .input-icon {
+        color: var(--primary);
+      }
+
+      .password-toggle {
+        position: absolute;
+        right: 1.25rem;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: #64748b;
+        font-size: 1.1rem;
+      }
+
+      .btn-login {
+        background: linear-gradient(135deg, #6366f1, #4f46e5);
+        border: none;
+        padding: 14px;
+        font-weight: 600;
+        border-radius: 14px;
+        font-size: 1.05rem;
+        transition: all 0.3s ease;
+      }
+
+      .btn-login:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 20px 25px -5px rgb(99 102 241 / 0.35);
+      }
+
+      .social-btn {
+        font-weight: 500;
+        border: 2px solid #e2e8f0;
+        transition: all 0.3s ease;
+      }
+
+      .google-btn {
+        background: #fff;
+        color: #db4437;
+      }
+
+      .facebook-btn {
+        background: #fff;
+        color: #1877f2;
+      }
+
+      .divider-text {
+        color: #cbd5e1;
+        font-size: 0.95rem;
+        font-weight: 500;
+      }
+
+      .toast-container {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 9999;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="bg-canvas"></canvas>
+
+    <div class="container py-5">
+      <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-9">
+          <!-- Hero Section -->
+          <div class="text-center mb-5">
+            <h1 class="hero-title">100 Days 100 Web Projects</h1>
+            <p class="hero-subtitle mt-3">
+              Continue your creative journey. Log in to access 100+ hands-on web
+              experiments.
+            </p>
+          </div>
+
+          <!-- Login Card -->
+          <div class="glass-card p-5">
+            <h2 class="h3 text-center mb-4 fw-semibold">Welcome Back</h2>
+
+            <form id="loginForm" novalidate>
+              <!-- Username -->
+              <div class="form-floating-custom">
+                <i class="fa-solid fa-user input-icon"></i>
+                <input
+                  type="text"
+                  id="username"
+                  class="form-control"
+                  placeholder=" "
+                  required
+                />
+                <label for="username">Username</label>
+              </div>
+
+              <!-- Email (New Field) -->
+              <div class="form-floating-custom">
+                <i class="fa-solid fa-envelope input-icon"></i>
+                <input
+                  type="email"
+                  id="email"
+                  class="form-control"
+                  placeholder=" "
+                />
+                <label for="email">Email (Optional)</label>
+              </div>
+
+              <!-- Password -->
+              <div class="form-floating-custom">
+                <i class="fa-solid fa-lock input-icon"></i>
+                <input
+                  type="password"
+                  id="password"
+                  class="form-control"
+                  placeholder=" "
+                  required
+                />
+                <label for="password">Password</label>
+                <span class="password-toggle" id="togglePassword">
+                  <i class="fa-solid fa-eye"></i>
+                </span>
+              </div>
+
+              <div class="d-flex justify-content-end mb-3">
+                <a
+                  href="./ForgotPassword.html"
+                  class="text-decoration-none small"
+                  style="color: #a5b4fc"
+                >
+                  Forgot Password?
+                </a>
+              </div>
+
+              <button
+                type="submit"
+                id="submitBtn"
+                class="btn btn-login text-white w-100 d-flex align-items-center justify-content-center gap-2"
+              >
+                <span id="btnText">Login Now</span>
+                <span
+                  id="spinner"
+                  class="spinner-border spinner-border-sm d-none"
+                  role="status"
+                ></span>
+              </button>
+            </form>
+
+            <div class="d-flex align-items-center my-4">
+              <hr class="flex-grow-1 border-secondary" />
+              <span class="px-4 divider-text">OR CONTINUE WITH</span>
+              <hr class="flex-grow-1 border-secondary" />
             </div>
 
-            <div class="form-group">
-              <i aria-hidden="true" class="fa-solid fa-lock"></i>
-              <input
-                type="password"
-                id="password"
-                placeholder="Password"
-                class="form-input"
-                autocomplete="current-password"
-                required
-              />
-              <span class="toggle-password" onclick="togglePassword()" title="Show/hide password">👁</span>
+            <!-- Social Buttons in One Row -->
+            <div class="row g-3">
+              <div class="col-6">
+                <button
+                  id="googleBtn"
+                  class="social-btn google-btn btn w-100 d-flex align-items-center justify-content-center gap-2 py-3"
+                >
+                  <i class="fa-brands fa-google"></i>
+                  <span>Google</span>
+                </button>
+              </div>
+              <div class="col-6">
+                <button
+                  id="facebookBtn"
+                  class="social-btn facebook-btn btn w-100 d-flex align-items-center justify-content-center gap-2 py-3"
+                >
+                  <i class="fa-brands fa-facebook-f"></i>
+                  <span>Facebook</span>
+                </button>
+              </div>
             </div>
 
-            <button type="submit" class="button home-btn" id="loginBtn">
-              <i aria-hidden="true" class="fa-solid fa-right-to-bracket"></i>
-              Login
-            </button>
-          </form>
-
-          <button id="googleLogin" class="button home-btn">
-    <i aria-hidden="true" class="fa-brands fa-google"></i>
-    Continue with Google
-</button>
-
-<button id="facebookLogin" class="button home-btn">
-    <i class="fa-brands fa-facebook-f"></i>
-    Continue with Facebook
-</button>
-
-          <p class="already-signed-up">
-            <a href="./ForgotPassword.html" id="forgotPasswordLink">Forgot Password?</a>
-          </p>
-
-        <p class="already-signed-up">
-          Not signed up? <a href="./SignUp.html">Sign Up</a>
-        </p>
+            <p class="text-center mt-4 text-light opacity-75">
+              New here?
+              <a href="./SignUp.html" class="fw-medium" style="color: #a5b4fc"
+                >Create an account</a
+              >
+            </p>
+          </div>
+        </div>
       </div>
     </div>
-  </section>
 
-  <script>
-    // Toast System
-    function showToast(message, type = 'info') {
-      let container = document.querySelector('.toast-container');
-      if (!container) {
-        container = document.createElement('div');
-        container.className = 'toast-container';
-        container.style.cssText = 'position: fixed; top: 24px; left: 50%; transform: translateX(-50%); z-index: 999999; display: flex; flex-direction: column; gap: 12px; max-width: 380px; width: calc(100% - 48px); pointer-events: none;';
-        document.body.appendChild(container);
-      }
+    <div class="toast-container"></div>
 
-      const toast = document.createElement('div');
-      toast.className = `toast ${type}`;
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // Background Animation
+      function createBackground() {
+        const canvas = document.getElementById("bg-canvas");
+        const ctx = canvas.getContext("2d");
 
-        const iconMap = {
-          success: '<i aria-hidden="true" class="fa-solid fa-circle-check"></i>',
-          error: '<i aria-hidden="true" class="fa-solid fa-circle-exclamation"></i>',
-          warning: '<i aria-hidden="true" class="fa-solid fa-triangle-exclamation"></i>',
-          info: '<i aria-hidden="true" class="fa-solid fa-circle-info"></i>'
-        };
+        function resize() {
+          canvas.width = window.innerWidth;
+          canvas.height = window.innerHeight;
+        }
+        resize();
+        window.addEventListener("resize", resize);
 
-      toast.innerHTML = `
-          <div class="toast-icon">${iconMap[type] || iconMap.info}</div>
-          <div class="toast-message">${message}</div>
-          <button class="toast-close" aria-label="Close message">&times;</button>
-        `;
-
-      container.appendChild(toast);
-
-      // Close on button click
-      toast.querySelector('.toast-close').addEventListener('click', () => {
-        removeToast(toast);
-      });
-
-      // Auto remove
-      const autoRemoveTimeout = setTimeout(() => {
-        removeToast(toast);
-      }, 4000);
-
-      function removeToast(el) {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(-10px) scale(0.95)';
-        setTimeout(() => {
-          el.remove();
-          if (container.childNodes.length === 0) {
-            container.remove();
+        let particles = [];
+        class Particle {
+          constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.size = Math.random() * 3 + 1;
+            this.speedX = Math.random() * 0.5 - 0.25;
+            this.speedY = Math.random() * 0.5 - 0.25;
           }
-        }, 300);
-        clearTimeout(autoRemoveTimeout);
+          update() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+            if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+            if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+          }
+          draw() {
+            ctx.fillStyle = "rgba(165, 180, 252, 0.65)";
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+          }
+        }
+
+        function init() {
+          particles = [];
+          for (let i = 0; i < 85; i++) particles.push(new Particle());
+        }
+
+        function animate() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          particles.forEach((p) => {
+            p.update();
+            p.draw();
+          });
+          requestAnimationFrame(animate);
+        }
+
+        init();
+        animate();
       }
-    }
 
-    // Show password toggle
-    function togglePassword() {
-      const passwordInput = document.getElementById("password");
-      const toggleIcon = document.querySelector(".toggle-password");
-
-      if (passwordInput.type === "password") {
-        passwordInput.type = "text";
-        toggleIcon.classList.add("active");
-      } else {
-        passwordInput.type = "password";
-        toggleIcon.classList.remove("active");
+      // Toast
+      function showToast(message, type = "success") {
+        const container = document.querySelector(".toast-container");
+        const toast = document.createElement("div");
+        toast.className = `toast align-items-center text-white bg-${type === "success" ? "success" : type === "info" ? "info" : "danger"} border-0`;
+        toast.innerHTML = `
+                <div class="d-flex">
+                    <div class="toast-body">${message}</div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                </div>
+            `;
+        container.appendChild(toast);
+        new bootstrap.Toast(toast, { delay: 4000 }).show();
       }
-    }
 
-    // ── Login form submission ──
-    document
-      .getElementById("loginForm")
-      .addEventListener("submit", function (event) {
-        event.preventDefault();
-
-        const username = document.getElementById("username").value.trim();
-        const password = document.getElementById("password").value.trim();
-
-        // Basic empty-field guard
-        if (!username || !password) {
-          showToast("Please enter both username and password.", "error");
-          return;
+      // Password Toggle
+      function togglePasswordVisibility() {
+        const pass = document.getElementById("password");
+        const icon = document
+          .getElementById("togglePassword")
+          .querySelector("i");
+        if (pass.type === "password") {
+          pass.type = "text";
+          icon.classList.replace("fa-eye", "fa-eye-slash");
+        } else {
+          pass.type = "password";
+          icon.classList.replace("fa-eye-slash", "fa-eye");
         }
+      }
 
-        // Look up user stored by SignUp.html (keyed by username)
-        const storedRaw = localStorage.getItem(username);
-        // Check if user exists
-        if (!storedRaw) {
-          showToast("User does not exist.", "error");
-          return;
-        }
+      // Form Logic
+      function initForm() {
+        const form = document.getElementById("loginForm");
+        const submitBtn = document.getElementById("submitBtn");
+        const btnText = document.getElementById("btnText");
+        const spinner = document.getElementById("spinner");
 
-        let userData;
-        try {
-          userData = JSON.parse(storedRaw);
-        } catch (e) {
-          showToast("Account data is corrupted. Please sign up again.", "error");
-          return;
-        }
+        document
+          .getElementById("togglePassword")
+          .addEventListener("click", togglePasswordVisibility);
 
-        // Password check
-        if (password !== userData.password) {
-          showToast("Incorrect password.", "error");
-          return;
-        }
+        form.addEventListener("submit", (e) => {
+          e.preventDefault();
+
+          const username = document.getElementById("username").value.trim();
+          const password = document.getElementById("password").value.trim();
+
+          if (!username || !password) {
+            showToast("Please fill in all required fields", "danger");
+            return;
+          }
+
+          btnText.classList.add("d-none");
+          spinner.classList.remove("d-none");
+          submitBtn.disabled = true;
+
+          setTimeout(() => {
+            const stored = localStorage.getItem(username);
+            if (!stored) {
+              showToast("Account not found. Please sign up.", "danger");
+            } else {
+              try {
+                const userData = JSON.parse(stored);
+                if (password === userData.password) {
+                  showToast("Login successful! Welcome back 🎉", "success");
+                  localStorage.setItem("loggedInUser", username);
+                  localStorage.setItem(
+                    "loggedInUserData",
+                    JSON.stringify({
+                      username,
+                      name: userData.name || username,
+                      email: userData.email || "",
+                      loginTime: Date.now(),
+                    }),
+                  );
+                  setTimeout(
+                    () => (window.location.href = "../index.html"),
+                    1400,
+                  );
+                } else {
+                  showToast("Incorrect password", "danger");
+                }
+              } catch (err) {
+                showToast("Something went wrong", "danger");
+              }
+            }
+
+            btnText.classList.remove("d-none");
+            spinner.classList.add("d-none");
+            submitBtn.disabled = false;
+          }, 1500);
+        });
+
+        // Social Buttons
+        document
+          .getElementById("googleBtn")
+          .addEventListener("click", () =>
+            showToast("Google login coming soon!", "info"),
+          );
+        document
+          .getElementById("facebookBtn")
+          .addEventListener("click", () =>
+            showToast("Facebook login coming soon!", "info"),
+          );
+      }
 
         // Login successful
         showToast("Login successful!", "success");
 
-        // Persist the session
-        localStorage.setItem("loggedInUser", username);
+        const sessionHelper = window.AuthSession;
+        const sessionData = sessionHelper?.persistAuthSession
+          ? sessionHelper.persistAuthSession(
+              {
+                username,
+                name: userData.name || username,
+                email: userData.email || "",
+              },
+              "password",
+              "login"
+            )
+          : {
+              username,
+              name: userData.name || username,
+              email: userData.email || "",
+              authAction: "login",
+            };
+
+        localStorage.setItem("loggedInUser", sessionData.username || username);
         localStorage.setItem(
           "loggedInUserData",
           JSON.stringify({
-            username,
-            name: userData.name || username,
-            email: userData.email || "",
-            loginTime: Date.now(),
+            ...sessionData,
+            username: sessionData.username || username,
+            name: sessionData.name || userData.name || username,
+            email: sessionData.email || userData.email || "",
+            provider: sessionData.provider || "password",
+            authAction: sessionData.authAction || "login",
+            loginTime: sessionData.loginTime || Date.now(),
+            timezone: sessionData.timezone || "Asia/Kolkata",
           })
         );
 

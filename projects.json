@@ -5,7 +5,7 @@
     "projectType": "Tool",
     "projectDesc": "Manage daily tasks efficiently with an interactive checklist system. Add, track and organize activities using a simple productivity-focused interface.",
     "techStack": [
-      "javascript",
+      "javascript",  
       "todo"
     ],
     "difficulty": "beginner",
@@ -751,7 +751,7 @@
       "css"
     ],
     "difficulty": "beginner",
-    "projectPath": "./public/zomato-clone/index.html"
+    "projectPath": "./public/zomato-clone/public/index.html"
   },
   {
     "projectNo": 65,
@@ -1026,10 +1026,11 @@
     "projectNo": 87,
     "projectName": "Breakout game",
     "projectType": "Game",
-    "projectDesc": "Brick-breaking arcade game featuring collision and scoring systems.",
+    "projectDesc": "Premium brick-breaking arcade game with neon theme, game pause, retro synthesized sound effects, and synchronized controls.",
     "techStack": [
       "game",
-      "canvas"
+      "canvas",
+      "web-audio-api"
     ],
     "difficulty": "intermediate",
     "projectPath": "./public/Breakout-game/index.html"
@@ -1067,7 +1068,7 @@
       "javascript"
     ],
     "difficulty": "beginner",
-    "projectPath": "./public/QuizeApp Timer/index1.html"
+    "projectPath": "./public/QuizApp Timer/index.html"
   },
   {
     "projectNo": 91,
@@ -1673,7 +1674,7 @@
     "projectDesc": "Machine learning project predicting sales trends from input data.",
     "techStack": [
       "machine",
-      "learning",
+      "learning",  
       "python",
       "javascript"
     ],
@@ -2740,7 +2741,7 @@
       "vite"
     ],
     "difficulty": "advanced",
-    "projectPath": "./public/Gemini/dist/index.html"
+    "projectPath": "./public/Gemini/index.html"
   },
   {
     "projectNo": 218,
@@ -2839,7 +2840,7 @@
   },
   {
     "projectNo": 225,
-    "projectName": "Harryy Potter Spellbook",
+    "projectName": "Harry Potter Spellbook",
     "projectType": "API",
     "projectDesc": "A magical, interactive web application built with vanilla web technologies. This project fetches live data from the Harry Potter API and features an interactive Spell Caster that dynamically alters the UI using CSS animations and state changes based on the spells you cast.",
     "techStack": [
@@ -2862,7 +2863,7 @@
       "javascript"
     ],
     "difficulty": "advanced",
-    "projectPath": "./public/mind-reader/mind-reader/dist/index.html"
+    "projectPath": "./public/mind-reader/mind-reader/index.html"
   },
   {
     "projectNo": 227,
@@ -2876,12 +2877,12 @@
       "game"
     ],
     "difficulty": "advanced",
-    "projectPath": "./public/Word_Jumble/index.html"
+    "projectPath": "./public/Word_jumble/index.html"
   },
   {
     "projectNo": 228,
     "projectName": "Beat Maker",
-    "projectType": "Music",
+    "projectType": "Tool",
     "projectDesc": "Generate beats ",
     "techStack": [
       "html",
@@ -2891,6 +2892,33 @@
     ],
     "difficulty": "advanced",
     "projectPath": "./public/BeatMaker/demo.html"
+  },
+  {
+    "projectNo": 229,
+    "projectName": "Dad Jokes Generator",
+    "projectType": "Game",
+    "projectDesc": "Tap a Button and generate a Dad Joke",
+    "techStack": [
+      "html",
+      "css",
+      "javascript",
+      "api",
+      "api-javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/dad-joke/index.html"
+  },
+  {
+  "projectNo": 230,
+  "projectName": "UnitVerse - Interactive Unit Converter Web App",
+  "projectType": "Tool",
+  "projectDesc": "An interactive unit converter with real-time conversion, history tracking, favorites system, and a modern responsive UI.",
+  "techStack": [
+    "html", 
+    "css", 
+    "javascript"
+  ],
+  "difficulty": "intermediate",
+  "projectPath": "./public/UnitVerse/index.html"
   }
-
 ]
