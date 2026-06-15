@@ -6,6 +6,16 @@
   <meta name="description" content="Why the Flask Authentication App needs a Flask server and what Flask does." />
   <title>Flask Authentication App - Demo Info</title>
   <style>
+
+    :root {
+    --bg: #081224;
+    --card: #0f1d38;
+    --text: #ffffff;
+    --secondary: #b7c1d3;
+    --border: #24324d;
+    --button: #2563eb;
+}
+
     :root {
       color-scheme: dark;
       --bg: #0b1020;
@@ -32,6 +42,45 @@
       place-items: center;
       padding: 24px;
     }
+
+    [data-theme="light"] {
+    --bg: #f5f7fb;
+    --card: #ffffff;
+    --text: #111827;
+    --secondary: #4b5563;
+    --border: #d1d5db;
+    --button: #2563eb;
+}
+.card{
+    background: var(--card);
+    border:1px solid var(--border);
+}
+
+button{
+    background:var(--button);
+}
+
+body,
+.card,
+button,
+a {
+    transition:
+        background 0.3s ease,
+        color 0.3s ease,
+        border-color 0.3s ease;
+}
+
+.top-bar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+#theme-toggle{
+    padding:8px 12px;
+    border-radius:8px;
+    cursor:pointer;
+}
 
     .card {
       width: min(880px, 100%);
@@ -176,6 +225,9 @@
 <body>
 <a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
 
+<button id="theme-toggle" aria-label="Toggle Theme">
+    🌙
+</button>
   <main class="card">
     <span class="eyebrow">Demo info</span>
     <h1>Why this app does not open like a normal static page</h1>
@@ -256,6 +308,42 @@
         }, 2000);
       });
     }
+
+    const toggleBtn = document.getElementById("theme-toggle");
+
+const savedTheme = localStorage.getItem("theme");
+
+if (savedTheme) {
+    document.documentElement.setAttribute("data-theme", savedTheme);
+    toggleBtn.textContent =
+        savedTheme === "dark" ? "☀️" : "🌙";
+} else {
+    const prefersDark =
+        window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+    document.documentElement.setAttribute(
+        "data-theme",
+        prefersDark ? "dark" : "light"
+    );
+
+    toggleBtn.textContent =
+        prefersDark ? "☀️" : "🌙";
+}
+
+toggleBtn.addEventListener("click", () => {
+    const current =
+        document.documentElement.getAttribute("data-theme");
+
+    const next =
+        current === "dark" ? "light" : "dark";
+
+    document.documentElement.setAttribute("data-theme", next);
+
+    localStorage.setItem("theme", next);
+
+    toggleBtn.textContent =
+        next === "dark" ? "☀️" : "🌙";
+});
   </script>
 </body>
 </html>
