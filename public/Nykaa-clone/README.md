@@ -1,148 +1,106 @@
-💄 Nykaa Clone
+# 🛍️ Nykaa Fashion Clone
 
-A responsive frontend clone of the Nykaa Fashion platform built using HTML, CSS, and JavaScript. This project recreates the shopping experience of Nykaa Fashion with modern UI components, category navigation, product showcases, promotional banners, and responsive layouts.
-
----
-
-🌟 Project Overview
-
-The Nykaa Clone project is designed to simulate an online fashion and beauty shopping platform. Users can browse products, explore categories, view featured brands, and interact with a clean and intuitive user interface inspired by the original Nykaa website.
-
-This project demonstrates frontend development concepts including responsive design, dynamic content rendering, modular JavaScript, and user-friendly navigation.
+A pixel-faithful front-end clone of the [Nykaa Fashion](https://www.nykaa.com/fashion) website, built with pure HTML, CSS, and JavaScript as part of the **100 Days – 100 Web Projects** challenge.
 
 ---
 
-✨ Features
+## 📸 Preview
 
-Navigation & Header
-
-- Responsive navigation bar
-- Product search interface
-- Category-based menu system
-- Account, Wishlist, and Cart sections
-
-Product Experience
-
-- Product listing section
-- Featured brand showcase
-- Promotional banners
-- Trending collections
-- Hard-to-resist deals section
-
-User Interface
-
-- Modern responsive layout
-- Mobile-friendly design
-- Interactive sliders and banners
-- Clean typography using Google Fonts
-- Font Awesome icons integration
-
-Footer Section
-
-- Newsletter subscription form
-- Mobile app promotion
-- Customer support information
-- Quick navigation links
-- Popular product links
+[Preview](./img/preview.png)
 
 ---
 
-🛠 Technologies Used
+## ✨ Features
 
-Technology| Purpose
-HTML5| Structure
-CSS3| Styling & Layout
-JavaScript (ES6)| Functionality
-Font Awesome| Icons
-Google Fonts| Typography
+- **Sticky Header** with logo, navigation menu, search bar, account, wishlist, and cart icons
+- **Mega Dropdown Navigation** with image-rich sub-menus for "What's New" and "Sale" categories
+- **Category Circles Section** with smooth hover lift animations
+- **Auto-scrolling Image Slider** with Previous / Next button controls
+- **Full-width Banner Sections** with promotional GIFs and images
+- **Dynamic Product Grid** rendered via JavaScript from a data file
+- **Top Brands Section** dynamically populated
+- **Hard to Resist Deals Section** with deal banners
+- **Enhanced Footer** with three panels:
+  - 📧 Email subscription input
+  - 📱 App Store & Play Store download links
+  - 📞 Customer care number
+  - Navigation columns: Help, Inspire Me, Quick Links
+  - Popular links section
+- **Fully Responsive** — works on mobile, tablet, and desktop
 
 ---
 
-📂 Project Structure
+## 🛠️ Tech Stack
 
-Nykaa-clone/
-│
+| Technology | Usage |
+|------------|-------|
+| HTML5 | Page structure and semantic markup |
+| CSS3 | Styling, animations, responsive layout |
+| JavaScript (ES6+) | Dynamic content rendering, slider logic |
+| Font Awesome 6 | Icons throughout the UI |
+| Google Fonts (Poppins) | Typography |
+
+---
+
+## 📁 Project Structure
+
+```
+nykaa-clone/
 ├── img/
-├── index.html
-├── style.css
-├── footer.css
-├── script.js
-├── listOfProduct.js
-├── topbrands.js
-├── hardToBreastDeals.js
-├── preview.png
-└── README.md
+│   ├── app_store.png
+│   ├── play_store.png
+│   └── Nykaa_Logo.jpg
+├── index.html          # Main HTML structure
+├── style.css           # Core styles and responsive layout
+├── footer.css          # Footer-specific styles
+├── script.js           # Dynamic rendering + slider logic
+├── listofProduct.js    # Product data
+├── topbrands.js        # Top brands data
+└── hardtoResistDeals.js # Deals data
+```
 
 ---
 
-🚀 Getting Started
+## 🚀 Getting Started
 
-Clone Repository
+### 1. Clone the repository
+```bash
+git clone https://github.com/your-username/nykaa-clone.git
+```
 
-git clone <repository-url>
+### 2. Navigate to the project folder
+```bash
+cd nykaa-clone
+```
 
-Open Project
-
-cd Nykaa-clone
-
-Open "index.html" in your browser.
-
----
-
-📱 Responsive Design
-
-The project is optimized for:
-
-- Desktop Devices
-- Tablets
-- Mobile Phones
+### 3. Open in browser
+Simply open `index.html` in any modern browser — no build step or dependencies required.
 
 ---
 
-🎯 Learning Outcomes
+## 📱 Responsive Breakpoints
 
-This project helps developers understand:
-
-- Frontend project structuring
-- Responsive web design
-- E-commerce UI development
-- JavaScript DOM manipulation
-- Modular code organization
-- User experience design principles
+| Breakpoint | Layout Behavior |
+|------------|----------------|
+| `> 768px` | Full desktop layout with navigation |
+| `≤ 768px` | Stacked header, hidden nav, full-width search |
+| `≤ 480px` | Single column footer, scrollable category row, hidden account labels |
 
 ---
 
-🔮 Future Enhancements
+## 👩‍💻 Author
 
-- User Authentication
-- Shopping Cart Management
-- Product Filtering
-- Product Details Pages
-- Wishlist Functionality
-- Checkout Flow
-- Payment Gateway Integration
-- Backend API Support
+### App Development & Documentation
+
+**Sanyogita Singh**
 
 ---
 
-🤝 Contributing
+## 📄 License
 
-Contributions are welcome.
-
-1. Fork the repository.
-2. Create a new branch.
-3. Make your changes.
-4. Commit your work.
-5. Open a Pull Request.
+This project is built for **educational purposes only** as part of a front-end development learning challenge.
+All images and brand assets belong to [Nykaa Fashion](https://www.nykaa.com/fashion) and are used solely for UI practice.
 
 ---
 
-📄 License
-
-This project is developed for educational and learning purposes. All trademarks and brand references belong to their respective owners.
-
----
-
-📸 Preview
-
-Add screenshots or project preview images here to showcase the user interface and features of the application.
+<p align="center">Made with ❤️ by Sanyogita Singh</p>
