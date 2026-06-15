@@ -11,8 +11,14 @@ let clickable = true;
 let paused = false;
 let sequenceInterval = null; // store Simon sequence interval
 
+const screens = document.querySelectorAll('.screen');
 const h2 = document.querySelector("h2");
 const highScoreText = document.getElementById("highscore");
+const modal = document.getElementById("game-modal");
+const modalTitle = document.getElementById("modal-title");
+const modalScore = document.getElementById("modal-score");
+const modalHighScore = document.getElementById("modal-highscore");
+const modalBtn = document.getElementById("modal-btn");
 const strictToggle = document.getElementById("strict-toggle");
 const themeToggle = document.getElementById("theme-toggle");
 const startBtn = document.getElementById("start-btn");
@@ -20,6 +26,7 @@ const stopBtn = document.getElementById("stop-btn");
 const board = document.getElementById("board");
 const allBtns = document.querySelectorAll(".btn");
 const pauseBtn = document.getElementById("pause-btn");
+const playBtn =document.getElementById("play-btn");
 
 let sounds = {
   red: new Audio("https://s3.amazonaws.com/freecodecamp/simonSound1.mp3"),
@@ -39,6 +46,8 @@ function playSound(color) {
 
 let highScore = localStorage.getItem("highScore") || 0;
 highScoreText.innerText = `🏆 High Score: ${highScore}`;
+
+playBtn.addEventListener('click', () => screens[0].classList.add('up'));
 
 // ---------------- Flash functions ----------------
 function gameFlash(btn) {
@@ -66,6 +75,18 @@ function startGame() {
 }
 
 function levelUp() {
+  if (level === 20) {
+    updateHighScore();
+    
+    showModal(
+      "🎉 Congratulations!",
+      level,
+      "Play Again"
+    );
+    
+    resetGame();
+    return;
+  }
   userSeq = [];
   level++;
   flashSpeed = Math.max(250, 600 - level * 30);
@@ -192,6 +213,13 @@ setTimeout(() => {
   h2.innerHTML = `💀 Game Over! Score: <b>${level}</b>`;
  
   updateHighScore();
+
+  showModal(
+    "💀 Game Over!",
+    level,
+    "Restart"
+  );
+
   resetGame();
 }
 
@@ -219,6 +247,20 @@ function btnPress() {
 
   checkAns(userSeq.length - 1);
 }
+
+function showModal(title, score, buttonText) {
+  modalTitle.innerText = title;
+  modalScore.innerText = `Final Score: ${score}`;
+  modalHighScore.innerText = `Highest Score: ${highScore}`;
+  modalBtn.innerText = buttonText;
+
+  modal.classList.remove("hidden");
+}
+
+modalBtn.addEventListener("click", () => {
+  modal.classList.add("hidden");
+  startGame();
+});
 
 function resetGame() {
   started = false;

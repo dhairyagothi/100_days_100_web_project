@@ -11,6 +11,7 @@ const cancelModalBtn = document.getElementById("cancelModalBtn");
 const submitCardBtn = document.getElementById("submitCardBtn");
 const taskTitleInput = document.getElementById("taskTitle");
 const taskTagSelect = document.getElementById("taskTag");
+const themeToggleBtn = document.getElementById("themeToggleBtn");
 
 const counters = {
   todo: document.getElementById("todo-count"),
@@ -130,3 +131,21 @@ submitCardBtn.addEventListener("click", () => {
 });
 
 updateWorkspaceUI();
+
+// Theme Toggle Event Listener & System Preference Sync
+if (themeToggleBtn) {
+  themeToggleBtn.addEventListener("click", () => {
+    const currentTheme = document.documentElement.getAttribute("data-theme") || "dark";
+    const nextTheme = currentTheme === "dark" ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", nextTheme);
+    localStorage.setItem("theme", nextTheme);
+  });
+}
+
+// Automatically sync theme if system preference changes and no user override is saved
+window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) => {
+  if (!localStorage.getItem("theme")) {
+    const nextTheme = e.matches ? "dark" : "light";
+    document.documentElement.setAttribute("data-theme", nextTheme);
+  }
+});

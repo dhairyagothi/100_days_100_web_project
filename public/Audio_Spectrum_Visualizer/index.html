@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resonance - Advanced Audio Spectrum Analyzer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <canvas id="visualizer-canvas"></canvas>
+
+    <main class="dashboard">
+        <header class="panel-header">
+            <div class="branding">
+                <h1>🎙️ Resonance</h1>
+                <span class="badge">Web Audio API</span>
+            </div>
+            <p class="subtitle">Real-time spectrum analyzer & sound processing</p>
+        </header>
+
+        <section class="control-group">
+            <label class="group-label">Audio Source Input</label>
+            <div class="input-actions">
+                <button id="btn-mic" class="btn primary-btn">🎤 Use Live Microphone</button>
+                <div class="file-upload-wrapper">
+                    <button class="btn secondary-btn">🎵 Upload Audio File</button>
+                    <input type="file" id="audio-file" accept="audio/*">
+                </div>
+            </div>
+            <audio id="audio-player" controls style="display: none;"></audio>
+        </section>
+
+        <section class="control-group">
+            <label class="group-label">Visualizer Settings</label>
+            <div class="settings-grid">
+                <div class="setting-item">
+                    <label for="visual-type">Render Style</label>
+                    <select id="visual-type">
+                        <option value="frequency-bars">Frequency Waves (Bars)</option>
+                        <option value="circular-matrix">Circular Pulse (Radial)</option>
+                        <option value="oscilloscope">Oscilloscope (Waveform)</option>
+                    </select>
+                </div>
+                <div class="setting-item">
+                    <label for="fft-size">Resolution (FFT Size)</label>
+                    <select id="fft-size">
+                        <option value="128">128 (Low Latency)</option>
+                        <option value="256">256</option>
+                        <option value="512" selected>512 (Standard)</option>
+                        <option value="1024">1024 (High Res)</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <footer class="panel-footer">
+            <div class="status-indicator">
+                <span class="dot" id="status-dot"></span>
+                <span id="status-text">Engine Idle</span>
+            </div>
+        </footer>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
