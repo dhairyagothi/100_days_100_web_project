@@ -1,205 +1,352 @@
-async function convertImage() {
-  const fileInput = document.getElementById("fileInput");
-  const outputDiv = document.getElementById("output");
-  const convertBtn = document.querySelector("button");
-  const placeholder = document.getElementById("placeholder");
+const fileInput = document.getElementById("fileInput");
+const outputDiv = document.getElementById("output");
+const imagePreview = document.getElementById("imagePreview");
+const pdfCanvas = document.getElementById("pdfCanvas");
+const loader = document.getElementById("loader");
+const languageSelect = document.getElementById("languageSelect");
+const downloadBtn = document.getElementById("downloadBtn");
+const dropArea = document.getElementById("dropArea");
+const browseBtn = document.getElementById("browseBtn");
 
-  if (!fileInput.files || fileInput.files.length === 0) {
-    outputDiv.innerHTML = `
-      <p class="text-red-400 font-medium">
-        Please select an image file.
-      </p>
-    `;
+const progressContainer = document.getElementById("progressContainer");
+const progressBar = document.getElementById("progressBar");
+const progressText = document.getElementById("progressText");
+
+const copyBtn = document.getElementById("copyBtn");
+const clearBtn = document.getElementById("clearBtn");
+const fileName = document.getElementById("fileName");
+const previewPlaceholder = document.getElementById("previewPlaceholder");
+
+let extractedText = "";
+
+/* Browse */
+browseBtn.addEventListener("click", () => {
+  fileInput.click();
+});
+
+/* File Change */
+fileInput.addEventListener("change", () => {
+  if (fileInput.files[0]) {
+    fileName.innerText = `Selected: ${fileInput.files[0].name}`;
+  }
+});
+
+/* Drag & Drop */
+dropArea.addEventListener("dragover", (e) => {
+  e.preventDefault();
+  dropArea.classList.add("bg-white/10");
+});
+
+dropArea.addEventListener("dragleave", () => {
+  dropArea.classList.remove("bg-white/10");
+const fileInput = document.getElementById('fileInput');
+const outputDiv = document.getElementById('output');
+const imagePreview = document.getElementById('imagePreview');
+const pdfCanvas = document.getElementById('pdfCanvas');
+const loader = document.getElementById('loader');
+const languageSelect = document.getElementById('languageSelect');
+const downloadBtn = document.getElementById('downloadBtn');
+const dropArea = document.getElementById('dropArea');
+const browseBtn = document.getElementById('browseBtn');
+const ttsControls = document.getElementById('ttsControls');
+
+const playBtn = document.getElementById('playBtn');
+
+const pauseBtn = document.getElementById('pauseBtn');
+
+const resumeBtn = document.getElementById('resumeBtn');
+
+const stopBtn = document.getElementById('stopBtn');
+
+const voiceSelect = document.getElementById('voiceSelect');
+
+const rateControl = document.getElementById('rateControl');
+
+const pitchControl = document.getElementById('pitchControl');
+
+let extractedText = '';
+let speechUtterance = null;
+let voices = [];
+
+/*Browse Button*/
+browseBtn.addEventListener('click', () => {
+  fileInput.click();
+});
+
+/*Drag and Drop*/
+dropArea.addEventListener('dragover', (e) => {
+  e.preventDefault();
+  dropArea.classList.add('bg-white/20');
+});
+dropArea.addEventListener('dragleave', () => {
+  dropArea.classList.remove('bg-white/20');
+});
+
+dropArea.addEventListener('drop', (e) => {
+  e.preventDefault();
+
+  dropArea.classList.remove("bg-white/10");
+
+  dropArea.classList.remove('bg-white/20');
+  if (e.dataTransfer.files.length) {
+    fileInput.files = e.dataTransfer.files;
+    fileName.innerText = `Selected: ${e.dataTransfer.files[0].name}`;
+  }
+});
+
+/* Main OCR */
+async function convertFile() {
+  const file = fileInput.files[0];
+
+  if (!file) {
+    outputDiv.innerText = "Please upload a file first.";
     return;
   }
 
-  const file = fileInput.files[0];
+  loader.classList.remove("hidden");
+  progressContainer.classList.remove("hidden");
 
-  // Show Image Preview Immediately
-  showImagePreview(file);
-
-  // Loading State
-  outputDiv.innerHTML = `
-    <div class="flex flex-col items-center justify-center gap-4 py-10">
-      
-      <div class="w-12 h-12 border-4 border-cyan-400 border-t-transparent rounded-full animate-spin">
-      </div>
-
-      <p class="text-cyan-300 font-medium animate-pulse">
-        Extracting text from image...
-      </p>
-
-    </div>
-  `;
-
-  // Disable button while processing
-  convertBtn.disabled = true;
-  convertBtn.classList.add("opacity-50", "cursor-not-allowed");
+  extractedText = "";
+  outputDiv.innerText = "Starting OCR...";
 
   try {
-    const {
-      data: { text },
-    } = await Tesseract.recognize(file, "eng", {
-      logger: (m) => {
-        console.log(m);
 
-        // Optional Progress Display
-        if (m.status === "recognizing text") {
-          outputDiv.innerHTML = `
-            <div class="flex flex-col items-center justify-center gap-4 py-10">
-              
-              <div class="w-12 h-12 border-4 border-cyan-400 border-t-transparent rounded-full animate-spin">
-              </div>
+    if (file.type === "application/pdf") {
+      await processPDF(file);
+    outputDiv.innerText = 'Please upload an image or PDF file.';
+    return;
+  }
+  const language = languageSelect.value;
+  loader.classList.remove('hidden');
+  outputDiv.innerText = 'Processing...';
+  extractedText = '';
+  try {
+    if (file.type === 'application/pdf') {
+      await processPDF(file, language);
+    } else {
+      await processImage(file);
+    }
 
-              <p class="text-cyan-300 font-medium">
-                Recognizing Text...
-              </p>
+    downloadBtn.classList.remove("hidden");
 
-              <p class="text-sm text-gray-400">
-                ${Math.round(m.progress * 100)}%
-              </p>
-
-            </div>
-          `;
-        }
-      },
-    });
-
-    outputDiv.innerHTML = `
-      <div class="text-gray-200 whitespace-pre-wrap leading-relaxed">
-        ${text.trim() || "No text detected in the image."}
-      </div>
-    `;
+    downloadBtn.classList.remove('hidden');
   } catch (error) {
-    console.error("Error:", error);
-
-    outputDiv.innerHTML = `
-      <div class="text-center py-10">
-        
-        <div class="text-5xl mb-4">
-          ⚠️
-        </div>
-
-        <p class="text-red-400 font-medium">
-          Error processing image.
-        </p>
-
-        <p class="text-gray-400 text-sm mt-2">
-          Please try again with another image.
-        </p>
-
-      </div>
-    `;
+    console.error(error);
+    outputDiv.innerText = 'Error processing file.';
   } finally {
-    // Re-enable button
-    convertBtn.disabled = false;
-    convertBtn.classList.remove("opacity-50", "cursor-not-allowed");
+    loader.classList.add('hidden');
   }
 }
 
+/* Process Image */
+async function processImage(file) {
+
+  showImagePreview(file);
+
+  const language = languageSelect.value;
+
+  const {
+    data: { text },
+  } = await Tesseract.recognize(file, language, {
+
+    logger: (m) => {
+
+      if (m.status === "recognizing text") {
+
+        const progress = Math.round(m.progress * 100);
+
+        progressBar.style.width = `${progress}%`;
+        progressText.innerText = `${progress}%`;
+
+      if (m.status === 'recognizing text') {
+        outputDiv.innerText =
+          'OCR Progress: ' + Math.round(m.progress * 100) + '%';
+      }
+    },
+  });
+
+  extractedText = text;
+  outputDiv.innerText = text;
+  ttsControls.classList.remove('hidden');
+}
+
+/* Process PDF */
+async function processPDF(file) {
+
+  imagePreview.classList.add("hidden");
+  pdfCanvas.classList.remove("hidden");
+  previewPlaceholder.classList.add("hidden");
+
+/*Process PDF*/
+async function processPDF(file, language) {
+  imagePreview.classList.add('hidden');
+  pdfCanvas.classList.remove('hidden');
+  const fileReader = new FileReader();
+
+  fileReader.onload = async function () {
+
+    const typedArray = new Uint8Array(this.result);
+
+    const pdf = await pdfjsLib.getDocument(typedArray).promise;
+
+    let finalText = "";
+
+    let finalText = '';
+    for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+
+      outputDiv.innerText = `Processing Page ${pageNum}...`;
+
+      const page = await pdf.getPage(pageNum);
+
+      const viewport = page.getViewport({ scale: 2 });
+
+      const canvas = pdfCanvas;
+
+      const context = canvas.getContext("2d");
+
+      const context = canvas.getContext('2d');
+      canvas.height = viewport.height;
+      canvas.width = viewport.width;
+
+      await page.render({
+        canvasContext: context,
+        viewport: viewport,
+      }).promise;
+
+      const {
+        data: { text },
+      } = await Tesseract.recognize(canvas, languageSelect.value);
+
+      finalText += `\n\n--- Page ${pageNum} ---\n\n`;
+      finalText += text;
+    }
+
+    extractedText = finalText;
+    outputDiv.innerText = finalText;
+    ttsControls.classList.remove('hidden');
+  };
+
+  fileReader.readAsArrayBuffer(file);
+}
+
+/* Preview */
 function showImagePreview(file) {
-  const imagePreview = document.getElementById("imagePreview");
-  const placeholder = document.getElementById("placeholder");
+
+  previewPlaceholder.classList.add("hidden");
+
+  pdfCanvas.classList.add("hidden");
 
   imagePreview.src = URL.createObjectURL(file);
 
   imagePreview.classList.remove("hidden");
-
-  if (placeholder) {
-    placeholder.classList.add("hidden");
-  }
 }
 
-// Copy Extracted Text Button
-const copyBtn = document.querySelector("#copyBtn");
+/* Download */
+downloadBtn.addEventListener("click", () => {
 
-if (copyBtn) {
-  copyBtn.addEventListener("click", async () => {
-    const outputText = document.getElementById("output").innerText;
+  pdfCanvas.classList.add('hidden');
+  imagePreview.src = URL.createObjectURL(file);
+  imagePreview.classList.remove('hidden');
+}
 
-    if (
-      !outputText ||
-      outputText.includes("Select an image") ||
-      outputText.includes("Extracting text")
-    ) {
-      return;
-    }
+function loadVoices() {
+  voices = speechSynthesis.getVoices();
 
-    try {
-      await navigator.clipboard.writeText(outputText);
+  voiceSelect.innerHTML = '';
 
-      copyBtn.innerHTML = "✅ Copied";
+  voices.forEach((voice, index) => {
+    const option = document.createElement('option');
 
-      copyBtn.classList.add(
-        "bg-emerald-500/20",
-        "text-emerald-300"
-      );
+    option.value = index;
 
-      setTimeout(() => {
-        copyBtn.innerHTML = "Copy";
+    option.textContent = `${voice.name} (${voice.lang})`;
 
-        copyBtn.classList.remove(
-          "bg-emerald-500/20",
-          "text-emerald-300"
-        );
-      }, 2000);
-
-    } catch (error) {
-      console.error("Copy failed:", error);
-    }
+    voiceSelect.appendChild(option);
   });
 }
 
-// Drag & Drop Upload Support
-const uploadBox = document.querySelector("label");
+speechSynthesis.onvoiceschanged = loadVoices;
 
-if (uploadBox) {
+loadVoices();
 
-  ["dragenter", "dragover"].forEach((eventName) => {
-    uploadBox.addEventListener(eventName, (e) => {
-      e.preventDefault();
-      e.stopPropagation();
+playBtn.addEventListener('click', () => {
+  if (!extractedText.trim()) return;
 
-      uploadBox.classList.add(
-        "border-cyan-400",
-        "bg-cyan-500/10",
-        "scale-[1.02]"
-      );
-    });
+  speechSynthesis.cancel();
+
+  speechUtterance = new SpeechSynthesisUtterance(extractedText);
+
+  speechUtterance.rate = parseFloat(rateControl.value);
+
+  speechUtterance.pitch = parseFloat(pitchControl.value);
+
+  speechUtterance.voice = voices[voiceSelect.value];
+
+  speechSynthesis.speak(speechUtterance);
+});
+
+pauseBtn.addEventListener('click', () => speechSynthesis.pause());
+
+resumeBtn.addEventListener('click', () => speechSynthesis.resume());
+
+stopBtn.addEventListener('click', () => speechSynthesis.cancel());
+
+/*Download Text*/
+downloadBtn.addEventListener('click', () => {
+  if (!extractedText) return;
+
+  const blob = new Blob([extractedText], {
+    type: 'text/plain',
   });
 
-  ["dragleave", "drop"].forEach((eventName) => {
-    uploadBox.addEventListener(eventName, (e) => {
-      e.preventDefault();
-      e.stopPropagation();
+  const link = document.createElement("a");
 
-      uploadBox.classList.remove(
-        "border-cyan-400",
-        "bg-cyan-500/10",
-        "scale-[1.02]"
-      );
-    });
-  });
+  link.href = URL.createObjectURL(blob);
 
-  uploadBox.addEventListener("drop", (e) => {
-    const files = e.dataTransfer.files;
+  link.download = "extracted-text.txt";
 
-    if (files.length > 0) {
-      const fileInput = document.getElementById("fileInput");
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = 'extracted-text.txt';
+  document.body.appendChild(link);
 
-      fileInput.files = files;
+  link.click();
 
-      showImagePreview(files[0]);
-    }
-  });
-}
+  document.body.removeChild(link);
+});
 
-// Auto Preview on File Select
-document
-  .getElementById("fileInput")
-  .addEventListener("change", function () {
+/* Copy */
+copyBtn.addEventListener("click", async () => {
 
-    if (this.files && this.files[0]) {
-      showImagePreview(this.files[0]);
-    }
-  });
+  if (!extractedText) return;
+
+  await navigator.clipboard.writeText(extractedText);
+
+  copyBtn.innerText = "Copied!";
+
+  setTimeout(() => {
+    copyBtn.innerText = "Copy";
+  }, 2000);
+});
+
+/* Clear */
+clearBtn.addEventListener("click", () => {
+
+  extractedText = "";
+
+  outputDiv.innerText = "Upload a file to begin OCR...";
+
+  imagePreview.classList.add("hidden");
+
+  pdfCanvas.classList.add("hidden");
+
+  previewPlaceholder.classList.remove("hidden");
+
+  fileName.innerText = "";
+
+  progressBar.style.width = "0%";
+
+  progressText.innerText = "0%";
+
+  downloadBtn.classList.add("hidden");
+});

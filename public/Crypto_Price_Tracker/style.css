@@ -1,0 +1,8 @@
+:root {
+    --bg-dark: #0f172a;
+    --card-bg: rgba(255, 255, 255, 0.1);
+    --neon-green: #22c55e;
+}
+body { background: var(--bg-dark); color: white; font-family: sans-serif; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; padding: 1rem; }
+.card { background: var(--card-bg); backdrop-filter: blur(10px); padding: 1rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); }

@@ -1,195 +1,197 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en" data-theme="dark">
 <head>
-
-  <meta charset="UTF-8" />
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <title>Productivity Timer</title>
-
-  <link rel="stylesheet" href="style.css" />
-
-  <link rel="icon" href="../favv.png" type="image/x-icon" />
-
-  <!-- Google Font -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Focus Timer</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-  <link
-    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-    rel="stylesheet">
-
-  <!-- Confetti -->
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-  <!-- Back Button -->
-  <a
-    href="/"
-    class="project-back-button"
-    style="
-      position:fixed;
-      left:18px;
-      top:18px;
-      padding:8px 12px;
-      border-radius:8px;
-      background:white;
-      text-decoration:none;
-      z-index:9999;
-      font-weight:700;
-      font-family:Inter, system-ui, sans-serif;
-      box-shadow:0 8px 20px rgba(0, 0, 0);">
-    ">
-    ← Back to Home
-  </a>
+<!-- Ambient background -->
+<div class="bg-orbs">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+</div>
 
-  <!-- Background Animation -->
-  <div class="background-animation">
+<div class="app" id="app">
 
-    <span></span>
-    <span></span>
-    <span></span>
-    <span></span>
+  <!-- Header -->
+  <header class="header">
+    <div class="logo">⏱ FocusTimer</div>
+    <div class="header-actions">
+      <button class="icon-btn" id="statsBtn" title="Session Stats">📊</button>
+      <button class="icon-btn" id="fullscreenBtn" title="Fullscreen (F)">⛶</button>
+      <button class="icon-btn" id="themeBtn" title="Toggle Theme">☀️</button>
+      <button class="icon-btn" id="keyboardBtn" title="Keyboard Shortcuts">⌨️</button>
+    </div>
+  </header>
 
+  <!-- Mode Tabs -->
+  <div class="mode-tabs">
+    <button class="mode-tab active" data-mode="custom">Custom</button>
+    <button class="mode-tab" data-mode="pomodoro">🍅 Pomodoro</button>
+    <button class="mode-tab" data-mode="stopwatch">Stopwatch</button>
   </div>
 
-  <div class="container">
+  <!-- Preset Buttons -->
+  <div class="presets" id="presets">
+    <button class="preset-btn" data-seconds="60">1m</button>
+    <button class="preset-btn" data-seconds="300">5m</button>
+    <button class="preset-btn" data-seconds="600">10m</button>
+    <button class="preset-btn" data-seconds="900">15m</button>
+    <button class="preset-btn" data-seconds="1500">25m</button>
+    <button class="preset-btn" data-seconds="2700">45m</button>
+    <button class="preset-btn" data-seconds="3600">1h</button>
+  </div>
 
-    <!-- Top -->
-    <div class="top-bar">
-
-      <h1>⏳ Productivity Timer</h1>
-
-      <div class="top-actions">
-
-        <button id="themeToggle" class="theme-btn">
-          🌙
-        </button>
-
-      </div>
-
+  <!-- Custom Input -->
+  <div class="time-input-row" id="timeInputRow">
+    <div class="time-input-group">
+      <input type="number" id="inputHours" min="0" max="99" value="0" placeholder="00">
+      <label>HRS</label>
     </div>
+    <span class="time-sep">:</span>
+    <div class="time-input-group">
+      <input type="number" id="inputMinutes" min="0" max="59" value="5" placeholder="00">
+      <label>MIN</label>
+    </div>
+    <span class="time-sep">:</span>
+    <div class="time-input-group">
+      <input type="number" id="inputSeconds" min="0" max="59" value="0" placeholder="00">
+      <label>SEC</label>
+    </div>
+  </div>
 
-    <!-- Main Card -->
-    <div class="timer-card">
+  <!-- Main Timer Display -->
+  <div class="timer-wrap">
+    <!-- SVG Progress Ring -->
+    <svg class="progress-ring" viewBox="0 0 320 320" id="progressRing">
+      <defs>
+        <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#f97316"/>
+          <stop offset="100%" style="stop-color:#ec4899"/>
+        </linearGradient>
+      </defs>
+      <!-- Track -->
+      <circle class="ring-track" cx="160" cy="160" r="140"/>
+      <!-- Progress -->
+      <circle class="ring-progress" id="ringProgress" cx="160" cy="160" r="140"/>
+      <!-- Dot indicator -->
+      <circle class="ring-dot" id="ringDot" cx="160" cy="20" r="6"/>
+    </svg>
 
-      <!-- Pomodoro Buttons -->
-      <div class="pomodoro-buttons">
-
-        <button onclick="setPreset(1500)">
-          Focus
-        </button>
-
-        <button onclick="setPreset(300)">
-          Short Break
-        </button>
-
-        <button onclick="setPreset(900)">
-          Long Break
-        </button>
-
+    <div class="timer-inner">
+      <div class="mode-label" id="modeLabel">FOCUS</div>
+      <div class="timer-display" id="timerDisplay">05:00</div>
+      <div class="timer-sub">
+        <span id="percentLabel">0%</span>
+        <span class="sep">·</span>
+        <span id="sessionLabel">Session 1</span>
       </div>
+    </div>
+  </div>
 
-      <!-- Inputs -->
-      <div class="inputs">
+  <!-- Progress Bar -->
+  <div class="progress-bar-wrap">
+    <div class="progress-bar-track">
+      <div class="progress-bar-fill" id="progressBarFill"></div>
+    </div>
+    <div class="progress-ends">
+      <span>0%</span>
+      <span id="progressPct">0%</span>
+      <span>100%</span>
+    </div>
+  </div>
 
-        <div class="input-box">
+  <!-- Controls -->
+  <div class="controls">
+    <button class="ctrl-btn secondary" id="resetBtn" title="Reset (R)">↺</button>
+    <button class="ctrl-btn primary" id="startPauseBtn" title="Start/Pause (Space)">▶ Start</button>
+    <button class="ctrl-btn secondary" id="skipBtn" title="Skip (+15s)">+15s</button>
+  </div>
 
-          <label>Hours</label>
+  <!-- Pomodoro Info (hidden by default) -->
+  <div class="pomodoro-info hidden" id="pomodoroInfo">
+    <div class="pomo-stat">
+      <span class="pomo-val" id="pomoWork">25:00</span>
+      <span class="pomo-lbl">Work</span>
+    </div>
+    <div class="pomo-stat">
+      <span class="pomo-val" id="pomoBreak">5:00</span>
+      <span class="pomo-lbl">Break</span>
+    </div>
+    <div class="pomo-stat">
+      <span class="pomo-val" id="pomoCycles">4</span>
+      <span class="pomo-lbl">Cycles</span>
+    </div>
+    <div class="pomo-stat">
+      <span class="pomo-val" id="pomoCompleted">0</span>
+      <span class="pomo-lbl">Done</span>
+    </div>
+  </div>
 
-          <input type="number" id="inputHours" value="0">
+</div>
 
-        </div>
+<!-- STATS PANEL -->
+<div class="overlay hidden" id="statsOverlay">
+  <div class="panel">
+    <div class="panel-header">
+      <h2>📊 Session Stats</h2>
+      <button class="close-btn" onclick="closePanel('statsOverlay')">✕</button>
+    </div>
+    <div class="stats-grid" id="statsGrid"></div>
+    <div class="session-history">
+      <h3>Recent Sessions</h3>
+      <div id="sessionHistory"></div>
+    </div>
+    <div class="panel-footer">
+      <button class="action-btn" onclick="exportHistory()">⬇ Export CSV</button>
+      <button class="action-btn danger" onclick="clearHistory()">🗑 Clear History</button>
+    </div>
+  </div>
+</div>
 
-        <div class="input-box">
-
-          <label>Minutes</label>
-
-          <input type="number" id="inputMinutes" value="0">
-
-        </div>
-
-        <div class="input-box">
-
-          <label>Seconds</label>
-
-          <input type="number" id="inputSeconds" value="0">
-
-        </div>
-
-      </div>
-
-      <!-- Circular Timer -->
-      <div class="progress-ring">
-
-        <svg width="260" height="260">
-
-          <circle
-            class="bg-circle"
-            cx="130"
-            cy="130"
-            r="110">
-          </circle>
-
-          <circle
-            class="progress-circle"
-            cx="130"
-            cy="130"
-            r="110">
-          </circle>
-
-        </svg>
-
-        <div class="timer-display">
-
-          <h2 id="minutes">00</h2>
-
-          <span>:</span>
-
-          <h2 id="seconds">00</h2>
-
-        </div>
-
-      </div>
-
-      <!-- Controls -->
-      <div class="controls">
-
-        <button id="start" class="start-btn">
-          Start
-        </button>
-
-        <button id="pause" class="pause-btn">
-          Pause
-        </button>
-
-        <button id="reset" class="reset-btn">
-          Reset
-        </button>
-
-      </div>
-
-      
-
+<!-- KEYBOARD SHORTCUTS PANEL -->
+<div class="overlay hidden" id="keyboardOverlay">
+  <div class="panel" style="max-width:400px;">
+    <div class="panel-header">
+      <h2>⌨️ Shortcuts</h2>
+      <button class="close-btn" onclick="closePanel('keyboardOverlay')">✕</button>
+    </div>
+    <div class="shortcuts-list">
+      <div class="shortcut"><kbd>Space</kbd><span>Start / Pause</span></div>
+      <div class="shortcut"><kbd>R</kbd><span>Reset timer</span></div>
+      <div class="shortcut"><kbd>F</kbd><span>Fullscreen</span></div>
+      <div class="shortcut"><kbd>T</kbd><span>Toggle theme</span></div>
+      <div class="shortcut"><kbd>S</kbd><span>Skip +15s</span></div>
+      <div class="shortcut"><kbd>1–7</kbd><span>Load preset</span></div>
+      <div class="shortcut"><kbd>Esc</kbd><span>Close panels</span></div>
     </div>
 
   </div>
+</div>
 
-  <!-- Alarm -->
-  <audio id="alarmSound">
-    <source
-      src="https://www.soundjay.com/buttons/sounds/beep-07.mp3"
-      type="audio/mpeg">
-  </audio>
+<!-- COMPLETION OVERLAY -->
+<div class="completion-overlay hidden" id="completionOverlay">
+  <div class="completion-card">
+    <div class="completion-emoji" id="completionEmoji">🎉</div>
+    <h2 id="completionTitle">Time's Up!</h2>
+    <p id="completionMsg">Great focus session!</p>
+    <div class="completion-actions">
+      <button class="action-btn" onclick="restartTimer()">↺ Restart</button>
+      <button class="action-btn primary" onclick="closeCompletion()">Continue</button>
+    </div>
+  </div>
+</div>
 
-  <script src="script.js"></script>
+<!-- Toast -->
+<div class="toast hidden" id="toast"></div>
 
+<script src="script.js"></script>
 </body>
-
 </html>
