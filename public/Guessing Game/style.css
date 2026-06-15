@@ -1,152 +1,255 @@
+/* =========================
+   THEME VARIABLES
+========================= */
+
+:root {
+    --bg: #0f1020;
+    --card: rgba(255, 255, 255, 0.08);
+    --text: #ffffff;
+    --muted: #bdbdbd;
+    --accent1: #00ffc8;
+    --accent2: #3b82f6;
+    --danger: #ff4d4d;
+    --warn: #ffb84d;
+}
+
+body.light {
+    --bg: #f5f7ff;
+    --card: rgba(255, 255, 255, 0.75);
+    --text: #111;
+    --muted: #444;
+    --accent1: #2563eb;
+    --accent2: #7c3aed;
+    --danger: #e11d48;
+    --warn: #f59e0b;
+}
+
+/* =========================
+   BASE
+========================= */
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: "Segoe UI", sans-serif;
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px;
+    background: var(--bg);
+    color: var(--text);
+    overflow-x: hidden;
+    transition: all 0.4s ease;
 }
+
+/* =========================
+   BACKGROUND EFFECTS
+========================= */
+
+.background-glow {
+    position: fixed;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(0,255,200,0.25), transparent 60%);
+    top: -150px;
+    left: -150px;
+    filter: blur(90px);
+    animation: floatGlow 8s ease-in-out infinite alternate;
+}
+
+.background-glow::after {
+    content: "";
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(59,130,246,0.25), transparent 60%);
+    bottom: -200px;
+    right: -200px;
+    filter: blur(90px);
+}
+
+@keyframes floatGlow {
+    0% { transform: translateY(0px); }
+    100% { transform: translateY(40px); }
+}
+
+/* =========================
+   CONTAINER
+========================= */
 
 .container {
     width: 100%;
-    max-width: 600px;
+    max-width: 750px;
+    padding: 20px;
+    z-index: 2;
 }
+
+/* =========================
+   GLASS EFFECT
+========================= */
+
+.glass {
+    background: var(--card);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    transition: all 0.4s ease;
+}
+
+/* =========================
+   GAME CARD
+========================= */
 
 .game-card {
-    background: white;
-    border-radius: 20px;
     padding: 30px;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-    animation: slideIn 0.5s ease;
-}
-
-@keyframes slideIn {
-    from {
-        opacity: 0;
-        transform: translateY(-30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    text-align: center;
+    position: relative;
 }
 
 h1 {
-    text-align: center;
-    color: #333;
-    margin-bottom: 10px;
+    font-size: 2rem;
+    margin-bottom: 8px;
 }
 
 .subtitle {
-    text-align: center;
-    color: #666;
-    margin-bottom: 30px;
+    color: var(--muted);
+    margin-bottom: 25px;
 }
+
+/* =========================
+   THEME TOGGLE
+========================= */
+
+.theme-toggle {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    padding: 8px 12px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    background: var(--card);
+    color: var(--text);
+    transition: 0.3s;
+}
+
+.theme-toggle:hover {
+    transform: scale(1.05);
+}
+
+/* =========================
+   STATS
+========================= */
 
 .stats {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 15px;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
 
 .stat-box {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     padding: 15px;
-    border-radius: 10px;
-    text-align: center;
-    color: white;
+    transition: 0.3s;
+}
+
+.stat-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 20px rgba(0,255,200,0.2);
 }
 
 .stat-label {
-    display: block;
-    font-size: 0.9em;
-    opacity: 0.9;
-    margin-bottom: 5px;
+    font-size: 0.8rem;
+    color: var(--muted);
 }
 
 .stat-value {
-    display: block;
-    font-size: 1.8em;
+    font-size: 1.3rem;
     font-weight: bold;
+    margin-top: 5px;
 }
+
+/* =========================
+   GAME AREA
+========================= */
 
 .game-area {
     display: flex;
     gap: 10px;
     margin-bottom: 20px;
-    flex-wrap: wrap;
 }
 
 #guessInput {
     flex: 2;
-    padding: 15px;
-    font-size: 1.1em;
-    border: 2px solid #ddd;
-    border-radius: 10px;
+    padding: 12px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: transparent;
+    color: var(--text);
+    outline: none;
+    transition: 0.3s;
 }
 
 #guessInput:focus {
-    outline: none;
-    border-color: #667eea;
+    border-color: var(--accent1);
+    box-shadow: 0 0 12px rgba(0,255,200,0.3);
 }
 
+/* =========================
+   BUTTONS
+========================= */
+
 button {
-    padding: 15px 25px;
-    font-size: 1em;
+    flex: 1;
+    padding: 12px;
     border: none;
-    border-radius: 10px;
+    border-radius: 12px;
     cursor: pointer;
-    transition: all 0.3s;
     font-weight: bold;
+    transition: 0.3s;
 }
 
 #guessBtn {
-    background: #667eea;
-    color: white;
-    flex: 1;
-}
-
-#guessBtn:hover {
-    background: #5a67d8;
-    transform: translateY(-2px);
+    background: linear-gradient(135deg, var(--accent1), var(--accent2));
+    color: #000;
 }
 
 #resetBtn {
-    background: #48bb78;
-    color: white;
-    flex: 1;
+    background: linear-gradient(135deg, #ff6b6b, var(--danger));
+    color: #fff;
 }
 
-#resetBtn:hover {
-    background: #38a169;
-    transform: translateY(-2px);
+button:hover {
+    transform: scale(1.05);
 }
+
+/* =========================
+   MESSAGE AREA
+========================= */
 
 .message-area {
-    background: #f7fafc;
     padding: 15px;
-    border-radius: 10px;
     margin-bottom: 20px;
-    text-align: center;
+    font-weight: 500;
 }
 
-.history {
-    margin-top: 20px;
+/* =========================
+   HISTORY
+========================= */
+
+.history h3 {
+    margin-bottom: 10px;
 }
 
 .history-list {
     min-height: 60px;
     padding: 10px;
-    background: #f7fafc;
-    border-radius: 10px;
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
@@ -154,43 +257,101 @@ button {
 
 .history-item {
     padding: 5px 12px;
-    background: white;
+    background: rgba(255,255,255,0.1);
     border-radius: 20px;
-    font-size: 0.9em;
+    font-size: 0.85rem;
 }
 
+/* =========================
+   DIFFICULTY
+========================= */
+
 .difficulty {
+    margin-top: 20px;
     display: flex;
     gap: 10px;
-    margin-top: 20px;
     justify-content: center;
+    flex-wrap: wrap;
 }
 
 .difficulty-btn {
-    background: #e2e8f0;
-    color: #4a5568;
-    padding: 8px 15px;
-    font-size: 0.9em;
+    padding: 8px 12px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.1);
+    color: var(--muted);
+    cursor: pointer;
+    transition: 0.3s;
 }
 
 .difficulty-btn.active {
-    background: #667eea;
-    color: white;
+    background: linear-gradient(135deg, var(--accent1), var(--accent2));
+    color: #000;
 }
 
+.difficulty-btn:hover {
+    transform: translateY(-2px);
+}
+
+/* =========================
+   ANALYTICS
+========================= */
+
+.analytics {
+    margin-top: 25px;
+    padding: 20px;
+}
+
+.analytics h3 {
+    margin-bottom: 15px;
+}
+
+.analytics-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.analytics-card {
+    padding: 15px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 12px;
+    transition: 0.3s;
+}
+
+.analytics-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(0,255,200,0.2);
+}
+
+.analytics-card span {
+    font-size: 0.8rem;
+    color: var(--muted);
+    display: block;
+}
+
+.analytics-card strong {
+    font-size: 1.2rem;
+    margin-top: 5px;
+    display: block;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
 @media (max-width: 600px) {
-    .game-card {
-        padding: 20px;
-    }
-    
     .stats {
         grid-template-columns: 1fr;
     }
-    
+
+    .analytics-grid {
+        grid-template-columns: 1fr;
+    }
+
     .game-area {
         flex-direction: column;
     }
-    
+
     button {
         width: 100%;
     }

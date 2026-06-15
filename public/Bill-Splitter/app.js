@@ -642,3 +642,22 @@ $('it-qr').addEventListener('click', () => {
     .map(([n, d]) => `${n}: ${fmt(d.total)}`).join('\n');
   showQR(`SplitWise Pro - Items Split\n\nPer Person:\n${perPerson}`);
 });
+
+/* ============================================================
+   INPUT VALIDATION (Bug #8373)
+   The Total Bill / Tip % fields accepted typed negative values despite their
+   `min` attributes, feeding invalid numbers into the split calculations.
+   Clamp every number input: negatives become 0, and values above a field's
+   `max` (e.g. Tip % > 100) are capped.
+============================================================ */
+document.querySelectorAll('input[type="number"]').forEach(input => {
+  input.addEventListener('input', () => {
+    const val = parseFloat(input.value);
+    if (isNaN(val)) return;
+    if (val < 0) {
+      input.value = 0;
+    } else if (input.max !== '' && val > parseFloat(input.max)) {
+      input.value = input.max;
+    }
+  });
+});
