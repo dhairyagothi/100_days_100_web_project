@@ -6,264 +6,44 @@
 <title>WayFinder – Campus Map · Amity University</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-<style>
-  :root {
-    --primary: #2563EB;
-    --accent: #8B5CF6;
-    --accent2: #06B6D4;
-    --glass: rgba(10,20,50,0.72);
-    --glass-border: rgba(255,255,255,0.10);
-    --text: #F0F6FF;
-    --muted: rgba(240,246,255,0.5);
-    --map-bg: #0A1222;
-    --panel-w: 320px;
-  }
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Poppins', sans-serif; background: var(--map-bg); color: var(--text); overflow: hidden; height: 100vh; width: 100vw; }
-
-  /* ── NAV ── */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 200;
-    height: 58px; display: flex; align-items: center; padding: 0 24px; gap: 16px;
-    background: rgba(5,10,25,0.85); backdrop-filter: blur(28px);
-    border-bottom: 1px solid var(--glass-border);
-    box-shadow: 0 2px 30px rgba(0,0,0,0.5);
-  }
-  .nav-logo {
-    display: flex; align-items: center; gap: 10px;
-    font-size: 1.1rem; font-weight: 700; text-decoration: none; color: #fff;
-  }
-  .logo-icon {
-    width: 32px; height: 32px; border-radius: 9px;
-    background: linear-gradient(135deg, #2563EB, #8B5CF6);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 0.8rem; box-shadow: 0 0 16px rgba(37,99,235,0.5);
-  }
-  .dot { color: var(--accent2); }
-  .nav-links { display: flex; align-items: center; gap: 2px; }
-  .nav-links a {
-    padding: 7px 16px; border-radius: 8px;
-    color: var(--muted); text-decoration: none; font-size: 0.82rem; font-weight: 500;
-    transition: all 0.2s;
-  }
-  .nav-links a:hover, .nav-links a.active { color: #fff; background: rgba(255,255,255,0.07); }
-  .nav-links a.active { color: var(--accent2); }
-  .nav-sep { width: 1px; height: 24px; background: rgba(255,255,255,0.1); }
-  .nav-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
-
-  /* Route bar */
-  .route-pill {
-    display: flex; align-items: center; gap: 10px;
-    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.10);
-    border-radius: 10px; padding: 7px 16px; font-size: 0.78rem;
-    cursor: pointer; transition: all 0.2s;
-  }
-  .route-pill:hover { background: rgba(37,99,235,0.15); border-color: rgba(37,99,235,0.3); }
-  .route-pill i { color: var(--accent2); }
-  .nav-icon-btn {
-    width: 36px; height: 36px; border-radius: 9px;
-    background: rgba(255,255,255,0.06); border: 1px solid var(--glass-border);
-    color: var(--muted); font-size: 0.85rem; cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    transition: all 0.2s;
-  }
-  .nav-icon-btn:hover { background: rgba(255,255,255,0.1); color: #fff; }
-  .nav-icon-btn.active { background: rgba(37,99,235,0.2); border-color: rgba(37,99,235,0.4); color: var(--accent2); }
-
-  /* ── MAP CONTAINER ── */
-  .map-container {
-    position: fixed; inset: 0; padding-top: 58px;
-    background: var(--map-bg);
-    overflow: hidden;
-  }
-  .map-svg {
-    width: 100%; height: 100%;
-    transition: transform 0.4s cubic-bezier(0.25,0.46,0.45,0.94);
-    transform-origin: center center;
-  }
-
-  /* ── SIDE PANEL ── */
-  .side-panel {
-    position: fixed; top: 58px; right: 0; bottom: 0; width: var(--panel-w); z-index: 100;
-    background: var(--glass); backdrop-filter: blur(28px) saturate(200%);
-    border-left: 1px solid var(--glass-border);
-    display: flex; flex-direction: column;
-    box-shadow: -8px 0 40px rgba(0,0,0,0.5);
-    overflow: hidden;
-  }
-  .panel-header {
-    padding: 20px 20px 16px;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-  }
-  .panel-header h2 { font-size: 0.82rem; text-transform: uppercase; letter-spacing: 1.3px; color: var(--muted); margin-bottom: 14px; }
-  .search-mini {
-    display: flex; align-items: center; gap: 10px;
-    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 10px; padding: 9px 14px;
-  }
-  .search-mini i { color: var(--accent2); font-size: 0.82rem; flex-shrink: 0; }
-  .search-mini input {
-    flex: 1; background: none; border: none; outline: none;
-    color: #fff; font-family: 'Poppins', sans-serif; font-size: 0.8rem;
-  }
-  .search-mini input::placeholder { color: rgba(255,255,255,0.3); }
-
-  /* location card */
-  .loc-card {
-    margin: 16px 16px 0;
-    background: rgba(37,99,235,0.10); border: 1px solid rgba(37,99,235,0.25);
-    border-radius: 14px; padding: 16px; position: relative; overflow: hidden;
-  }
-  .loc-card::before {
-    content: ''; position: absolute; top: -30px; right: -30px;
-    width: 100px; height: 100px; border-radius: 50%;
-    background: radial-gradient(circle, rgba(37,99,235,0.3), transparent 70%);
-  }
-  .loc-card-top { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px; }
-  .loc-icon {
-    width: 44px; height: 44px; border-radius: 12px; flex-shrink: 0;
-    background: linear-gradient(135deg, #2563EB, #8B5CF6);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1rem; box-shadow: 0 4px 16px rgba(37,99,235,0.4);
-  }
-  .loc-info h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 3px; }
-  .loc-info p { font-size: 0.7rem; color: var(--muted); line-height: 1.5; }
-  .loc-badge {
-    display: inline-flex; align-items: center; gap: 4px;
-    font-size: 0.65rem; padding: 3px 10px; border-radius: 100px; margin-top: 4px;
-  }
-  .loc-badge.open { background: rgba(52,211,153,0.12); color: #34D399; border: 1px solid rgba(52,211,153,0.25); }
-  .loc-badge.busy { background: rgba(248,113,113,0.12); color: #F87171; border: 1px solid rgba(248,113,113,0.25); }
-  .loc-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 12px; }
-  .loc-stat { text-align: center; padding: 8px; border-radius: 9px; background: rgba(255,255,255,0.04); }
-  .loc-stat .val { font-size: 0.9rem; font-weight: 700; color: var(--accent2); display: block; }
-  .loc-stat .lbl { font-size: 0.62rem; color: var(--muted); }
-  .btn-navigate {
-    width: 100%; padding: 11px; border-radius: 10px;
-    background: linear-gradient(135deg, var(--primary), var(--accent));
-    color: #fff; border: none; cursor: pointer; font-family: 'Poppins', sans-serif;
-    font-size: 0.82rem; font-weight: 600;
-    box-shadow: 0 4px 20px rgba(37,99,235,0.35);
-    transition: all 0.25s; display: flex; align-items: center; justify-content: center; gap: 8px;
-  }
-  .btn-navigate:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(37,99,235,0.5); }
-
-  /* POI list */
-  .poi-list { flex: 1; overflow-y: auto; padding: 16px; }
-  .poi-section-title {
-    font-size: 0.68rem; text-transform: uppercase; letter-spacing: 1.3px;
-    color: var(--muted); margin-bottom: 10px; margin-top: 4px; font-weight: 600;
-  }
-  .poi-item {
-    display: flex; align-items: center; gap: 12px;
-    padding: 11px 12px; border-radius: 11px;
-    border: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.03);
-    cursor: pointer; margin-bottom: 7px; transition: all 0.2s;
-  }
-  .poi-item:hover { background: rgba(37,99,235,0.10); border-color: rgba(37,99,235,0.25); }
-  .poi-item.selected { background: rgba(37,99,235,0.15); border-color: rgba(37,99,235,0.4); }
-  .poi-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-  .poi-item h4 { font-size: 0.8rem; font-weight: 600; }
-  .poi-item span { font-size: 0.68rem; color: var(--muted); display: block; }
-  .poi-dist { margin-left: auto; font-size: 0.68rem; color: var(--accent2); font-weight: 600; white-space: nowrap; }
-
-  /* ── CONTROLS ── */
-  .map-controls {
-    position: fixed; left: 24px; bottom: 100px; z-index: 150;
-    display: flex; flex-direction: column; gap: 6px;
-  }
-  .ctrl-btn {
-    width: 42px; height: 42px; border-radius: 11px;
-    background: rgba(10,20,50,0.85); backdrop-filter: blur(16px);
-    border: 1px solid rgba(255,255,255,0.12); color: #fff;
-    font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; justify-content: center;
-    transition: all 0.2s; box-shadow: 0 4px 16px rgba(0,0,0,0.4);
-  }
-  .ctrl-btn:hover { background: rgba(37,99,235,0.25); border-color: rgba(37,99,235,0.4); transform: scale(1.05); }
-  .ctrl-sep { height: 1px; background: rgba(255,255,255,0.1); margin: 4px 0; }
-
-  /* ── BOTTOM BAR ── */
-  .bottom-bar {
-    position: fixed; bottom: 0; left: 0; right: var(--panel-w); z-index: 150;
-    padding: 14px 24px;
-    background: rgba(5,10,25,0.8); backdrop-filter: blur(20px);
-    border-top: 1px solid var(--glass-border);
-    display: flex; align-items: center; gap: 20px;
-  }
-  .layer-chips { display: flex; gap: 8px; flex-wrap: wrap; }
-  .layer-chip {
-    padding: 6px 14px; border-radius: 8px; font-size: 0.72rem; font-weight: 500;
-    cursor: pointer; transition: all 0.2s; border: 1px solid transparent;
-    display: flex; align-items: center; gap: 6px;
-  }
-  .layer-chip.on { background: rgba(37,99,235,0.2); border-color: rgba(37,99,235,0.4); color: #60A5FA; }
-  .layer-chip.off { background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.08); color: var(--muted); }
-  .layer-chip:hover { border-color: rgba(37,99,235,0.3); }
-  .coord-display {
-    margin-left: auto; font-family: 'Space Mono', monospace;
-    font-size: 0.65rem; color: var(--muted);
-    display: flex; gap: 12px;
-  }
-  .coord-val { color: rgba(96,165,250,0.8); }
-
-  .nav-links a i{
-    margin-right:5px;
-    font-size:0.75rem;
-  }
-
-  /* ── ANIMATIONS ── */
-  @keyframes pulse-ring { 0% { r: 14; opacity: 0.8; } 100% { r: 30; opacity: 0; } }
-  @keyframes dash-flow {
-    to { stroke-dashoffset: -40; }
-  }
-  @keyframes glow-pulse { 0%,100% { filter: drop-shadow(0 0 5px #3B82F6) drop-shadow(0 0 12px rgba(59,130,246,0.5)); } 50% { filter: drop-shadow(0 0 10px #3B82F6) drop-shadow(0 0 24px rgba(139,92,246,0.6)); } }
-  @keyframes rotate { to { transform: rotate(360deg); } }
-
-  .pin-pulse { animation: pulse-ring 2s cubic-bezier(0.4,0,0.6,1) infinite; }
-  .route-animated { animation: dash-flow 1.2s linear infinite; }
-  .route-glow { animation: glow-pulse 2s ease-in-out infinite; }
-
-  ::-webkit-scrollbar { width: 5px; }
-  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
-  ::-webkit-scrollbar-track { background: transparent; }
-</style>
+<link rel="stylesheet" href="./css/map.css">
 </head>
 <body>
 
 <!-- NAV -->
 <nav>
   <a class="nav-logo" href="homepage.html">
-    <div class="logo-icon"><i class="fas fa-location-crosshairs"></i></div>
+    <div class="logo-icon"><i aria-hidden="true" class="fas fa-location-crosshairs"></i></div>
     <span>Way<span class="dot">Finder</span></span>
   </a>
   <div class="nav-sep"></div>
   <div class="nav-links">
     <a href="index.html">
-      <i class="fas fa-house"></i>
+      <i aria-hidden="true" class="fas fa-house"></i>
       Home
     </a>
     <a href="map.html" class="active">
-      <i class="fas fa-map"></i>
+      <i aria-hidden="true" class="fas fa-map"></i>
       Map
     </a>
     <a href="#">
-      <i class="fas fa-compass"></i>
+      <i aria-hidden="true" class="fas fa-compass"></i>
       Explore
     </a>
     <a href="#">
-      <i class="fas fa-circle-question"></i>
+      <i aria-hidden="true" class="fas fa-circle-question"></i>
       Help
     </a>
   </div>
   <div class="nav-right">
     <div class="route-pill" onclick="window.location.href='navigation.html'">
-      <i class="fas fa-route"></i>
+      <i aria-hidden="true" class="fas fa-route"></i>
       <span>Library → Block A Room 101</span>
-      <i class="fas fa-chevron-right" style="font-size:0.65rem;color:var(--muted);"></i>
+      <i aria-hidden="true" class="fas fa-chevron-right" style="font-size:0.65rem;color:var(--muted);"></i>
     </div>
-    <button class="nav-icon-btn active" title="Satellite View"><i class="fas fa-satellite-dish"></i></button>
-    <button class="nav-icon-btn" id="themeBtn" title="Toggle Theme"><i class="fas fa-sun"></i></button>
-    <button class="nav-icon-btn" title="Share"><i class="fas fa-share-nodes"></i></button>
+    <button class="nav-icon-btn active" title="Satellite View"><i aria-hidden="true" class="fas fa-satellite-dish"></i></button>
+    <button class="nav-icon-btn" id="themeBtn" title="Toggle Theme"><i aria-hidden="true" class="fas fa-sun"></i></button>
+    <button class="nav-icon-btn" title="Share"><i aria-hidden="true" class="fas fa-share-nodes"></i></button>
   </div>
 </nav>
 
@@ -521,21 +301,21 @@
 
 <!-- MAP CONTROLS -->
 <div class="map-controls">
-  <button class="ctrl-btn" id="zoomIn" title="Zoom In"><i class="fas fa-plus"></i></button>
-  <button class="ctrl-btn" id="zoomOut" title="Zoom Out"><i class="fas fa-minus"></i></button>
+  <button class="ctrl-btn" id="zoomIn" title="Zoom In"><i aria-hidden="true" class="fas fa-plus"></i></button>
+  <button class="ctrl-btn" id="zoomOut" title="Zoom Out"><i aria-hidden="true" class="fas fa-minus"></i></button>
   <div class="ctrl-sep"></div>
-  <button class="ctrl-btn" title="Center on Me"><i class="fas fa-location-crosshairs"></i></button>
-  <button class="ctrl-btn" title="3D View"><i class="fas fa-cube"></i></button>
+  <button class="ctrl-btn" title="Center on Me"><i aria-hidden="true" class="fas fa-location-crosshairs"></i></button>
+  <button class="ctrl-btn" title="3D View"><i aria-hidden="true" class="fas fa-cube"></i></button>
   <div class="ctrl-sep"></div>
-  <button class="ctrl-btn" title="Measure"><i class="fas fa-ruler"></i></button>
+  <button class="ctrl-btn" title="Measure"><i aria-hidden="true" class="fas fa-ruler"></i></button>
 </div>
 
 <!-- SIDE PANEL -->
 <aside class="side-panel">
   <div class="panel-header">
-    <h2><i class="fas fa-map-pin" style="margin-right:6px;color:var(--accent2);"></i>Locations</h2>
+    <h2><i aria-hidden="true" class="fas fa-map-pin" style="margin-right:6px;color:var(--accent2);"></i>Locations</h2>
     <div class="search-mini">
-      <i class="fas fa-magnifying-glass"></i>
+      <i aria-hidden="true" class="fas fa-magnifying-glass"></i>
       <input type="text" placeholder="Search a building or lab..."/>
     </div>
   </div>
@@ -543,11 +323,11 @@
   <!-- Selected Location Card -->
   <div class="loc-card">
     <div class="loc-card-top">
-      <div class="loc-icon"><i class="fas fa-book-open"></i></div>
+      <div class="loc-icon"><i aria-hidden="true" class="fas fa-book-open"></i></div>
       <div class="loc-info">
         <h3>Central Library</h3>
         <p>Ground Floor · Building 7<br>Amity University Campus</p>
-        <span class="loc-badge busy"><i class="fas fa-circle" style="font-size:6px;"></i> Busy — 82% full</span>
+        <span class="loc-badge busy"><i aria-hidden="true" class="fas fa-circle" style="font-size:6px;"></i> Busy — 82% full</span>
       </div>
     </div>
     <div class="loc-stats">
@@ -556,13 +336,13 @@
       <div class="loc-stat"><span class="val">4 min</span><span class="lbl">Walk</span></div>
     </div>
     <button class="btn-navigate" onclick="window.location.href='navigation.html'">
-      <i class="fas fa-route"></i> Navigate Here
+      <i aria-hidden="true" class="fas fa-route"></i> Navigate Here
     </button>
   </div>
 
   <!-- POI List -->
   <div class="poi-list">
-    <p class="poi-section-title"><i class="fas fa-building" style="margin-right:5px;"></i>Academic Blocks</p>
+    <p class="poi-section-title"><i aria-hidden="true" class="fas fa-building" style="margin-right:5px;"></i>Academic Blocks</p>
 
     <div class="poi-item selected" onclick="selectPOI(this)">
       <div class="poi-dot" style="background:#3B82F6;box-shadow:0 0 6px #3B82F6;"></div>
@@ -600,7 +380,7 @@
       <span class="poi-dist" style="color:#F87171;">650m</span>
     </div>
 
-    <p class="poi-section-title" style="margin-top:12px;"><i class="fas fa-landmark" style="margin-right:5px;"></i>Facilities</p>
+    <p class="poi-section-title" style="margin-top:12px;"><i aria-hidden="true" class="fas fa-landmark" style="margin-right:5px;"></i>Facilities</p>
 
     <div class="poi-item" onclick="selectPOI(this)">
       <div class="poi-dot" style="background:#34D399;box-shadow:0 0 6px #34D399;"></div>
@@ -629,7 +409,7 @@
       <span class="poi-dist">200m</span>
     </div>
 
-    <p class="poi-section-title" style="margin-top:12px;"><i class="fas fa-bed" style="margin-right:5px;"></i>Hostels</p>
+    <p class="poi-section-title" style="margin-top:12px;"><i aria-hidden="true" class="fas fa-bed" style="margin-right:5px;"></i>Hostels</p>
 
     <div class="poi-item" onclick="selectPOI(this)">
       <div class="poi-dot" style="background:#A855F7;box-shadow:0 0 6px #A855F7;"></div>
@@ -648,12 +428,12 @@
 <!-- BOTTOM BAR -->
 <div class="bottom-bar">
   <div class="layer-chips">
-    <div class="layer-chip on" onclick="toggleChip(this)"><i class="fas fa-building"></i> Buildings</div>
-    <div class="layer-chip on" onclick="toggleChip(this)"><i class="fas fa-route"></i> Routes</div>
-    <div class="layer-chip on" onclick="toggleChip(this)"><i class="fas fa-map-pin"></i> Pins</div>
-    <div class="layer-chip off" onclick="toggleChip(this)"><i class="fas fa-tree"></i> Green Zones</div>
-    <div class="layer-chip off" onclick="toggleChip(this)"><i class="fas fa-parking"></i> Parking</div>
-    <div class="layer-chip off" onclick="toggleChip(this)"><i class="fas fa-wifi"></i> Wi-Fi Zones</div>
+    <div class="layer-chip on" onclick="toggleChip(this)"><i aria-hidden="true" class="fas fa-building"></i> Buildings</div>
+    <div class="layer-chip on" onclick="toggleChip(this)"><i aria-hidden="true" class="fas fa-route"></i> Routes</div>
+    <div class="layer-chip on" onclick="toggleChip(this)"><i aria-hidden="true" class="fas fa-map-pin"></i> Pins</div>
+    <div class="layer-chip off" onclick="toggleChip(this)"><i aria-hidden="true" class="fas fa-tree"></i> Green Zones</div>
+    <div class="layer-chip off" onclick="toggleChip(this)"><i aria-hidden="true" class="fas fa-parking"></i> Parking</div>
+    <div class="layer-chip off" onclick="toggleChip(this)"><i aria-hidden="true" class="fas fa-wifi"></i> Wi-Fi Zones</div>
   </div>
   <div class="coord-display">
     <span>Lat: <span class="coord-val">28.4744°N</span></span>
@@ -662,32 +442,6 @@
   </div>
 </div>
 
-<script>
-  let zoom = 1, zoomLevel = 14;
-  const svg = document.getElementById('mapSvg');
-  document.getElementById('zoomIn').onclick = () => {
-    zoom = Math.min(zoom + 0.15, 2.2);
-    zoomLevel++;
-    svg.style.transform = `scale(${zoom})`;
-    document.getElementById('zoomVal').textContent = zoomLevel;
-  };
-  document.getElementById('zoomOut').onclick = () => {
-    zoom = Math.max(zoom - 0.15, 0.6);
-    zoomLevel--;
-    svg.style.transform = `scale(${zoom})`;
-    document.getElementById('zoomVal').textContent = zoomLevel;
-  };
-  function toggleChip(el) {
-    el.classList.toggle('on'); el.classList.toggle('off');
-  }
-  function selectPOI(el) {
-    if(typeof el === 'string') return;
-    document.querySelectorAll('.poi-item').forEach(i => i.classList.remove('selected'));
-    el.classList.add('selected');
-  }
-  document.getElementById('themeBtn').onclick = function() {
-    document.body.style.filter = document.body.style.filter === 'invert(0.9) hue-rotate(180deg)' ? '' : 'invert(0.9) hue-rotate(180deg)';
-  };
-</script>
+<script src="script.js"></script>
 </body>
 </html>

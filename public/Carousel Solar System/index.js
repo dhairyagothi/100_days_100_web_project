@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   const slides = document.querySelectorAll(".slide");
   const miniPlanets = document.querySelectorAll(".mini-planet");
+  const planetItems = document.querySelectorAll(".planet-item");
   const prevBtn = document.getElementById("prev");
   const nextBtn = document.getElementById("next");
 
@@ -8,7 +9,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function showSlide(index) {
     slides.forEach(slide => slide.classList.remove("active"));
-    miniPlanets.forEach(planet => planet.classList.remove("active"));
+    planetItems.forEach((item, index) => {
+  item.addEventListener("click", () => {
+    showSlide(index);
+  });
+});
 
     if (index < 0) {
       currentIndex = slides.length - 1;
@@ -58,27 +63,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  let isScrolling = false;
-
-  window.addEventListener(
-    "wheel",
-    (e) => {
-      if (isScrolling) return;
-
-      isScrolling = true;
-
-      if (e.deltaY > 0) {
-        showSlide(currentIndex + 1);
-      } else {
-        showSlide(currentIndex - 1);
-      }
-
-      setTimeout(() => {
-        isScrolling = false;
-      }, 800);
-    },
-    { passive: true }
-  );
 
   let touchStartX = 0;
   let touchEndX = 0;

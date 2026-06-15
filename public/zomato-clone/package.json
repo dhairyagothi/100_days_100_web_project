@@ -1,0 +1,21 @@
+{
+  "name": "zomato-clone",
+  "version": "1.0.0",
+  "description": "A modern and responsive **Zomato Clone** web application built using **HTML, CSS, and JavaScript** that replicates the look and feel of the popular food delivery platform — complete with dark/light mode, login & signup pages, collections, popular localities, and partner app sections.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "ejs": "^6.0.1",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.5.2",
+    "mongoose": "^9.7.0"
+  }
+}
