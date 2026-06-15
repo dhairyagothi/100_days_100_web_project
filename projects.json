@@ -751,7 +751,7 @@
       "css"
     ],
     "difficulty": "beginner",
-    "projectPath": "./public/zomato-clone/index.html"
+    "projectPath": "./public/zomato-clone/public/index.html"
   },
   {
     "projectNo": 65,
@@ -1026,10 +1026,11 @@
     "projectNo": 87,
     "projectName": "Breakout game",
     "projectType": "Game",
-    "projectDesc": "Brick-breaking arcade game featuring collision and scoring systems.",
+    "projectDesc": "Premium brick-breaking arcade game with neon theme, game pause, retro synthesized sound effects, and synchronized controls.",
     "techStack": [
       "game",
-      "canvas"
+      "canvas",
+      "web-audio-api"
     ],
     "difficulty": "intermediate",
     "projectPath": "./public/Breakout-game/index.html"
@@ -1067,7 +1068,7 @@
       "javascript"
     ],
     "difficulty": "beginner",
-    "projectPath": "./public/QuizeApp Timer/index1.html"
+    "projectPath": "./public/QuizApp Timer/index.html"
   },
   {
     "projectNo": 91,
@@ -2740,7 +2741,7 @@
       "vite"
     ],
     "difficulty": "advanced",
-    "projectPath": "./public/Gemini/dist/index.html"
+    "projectPath": "./public/Gemini/index.html"
   },
   {
     "projectNo": 218,
@@ -2839,7 +2840,7 @@
   },
   {
     "projectNo": 225,
-    "projectName": "Harryy Potter Spellbook",
+    "projectName": "Harry Potter Spellbook",
     "projectType": "API",
     "projectDesc": "A magical, interactive web application built with vanilla web technologies. This project fetches live data from the Harry Potter API and features an interactive Spell Caster that dynamically alters the UI using CSS animations and state changes based on the spells you cast.",
     "techStack": [
@@ -2862,7 +2863,7 @@
       "javascript"
     ],
     "difficulty": "advanced",
-    "projectPath": "./public/mind-reader/mind-reader/dist/index.html"
+    "projectPath": "./public/mind-reader/mind-reader/index.html"
   },
   {
     "projectNo": 227,
@@ -2876,7 +2877,7 @@
       "game"
     ],
     "difficulty": "advanced",
-    "projectPath": "./public/Word_Jumble/index.html"
+    "projectPath": "./public/Word_jumble/index.html"
   },
   {
     "projectNo": 228,
@@ -2893,37 +2894,35 @@
     "projectPath": "./public/BeatMaker/demo.html"
   },
   {
-  "projectNo": 229,
-  "projectName": "MEMO 2.0",
-  "projectType": "Game",
-  "projectDesc": "A premium memory card matching game featuring SOLO and DUO modes, multiple difficulty levels, score tracking, timer-based gameplay, smooth card animations, and a luxury casino-inspired UI.",
-  "techStack": [
-    "html",
-    "css",
-    "javascript",
-    "game",
-    "memory"
-  ],
-  "difficulty": "advanced",
-  "projectPath": "./public/MEMO 2.0/index.html"
+    "projectNo": 229,
+    "projectName": "Dad Jokes Generator",
+    "projectType": "Game",
+    "projectDesc": "Tap a Button and generate a Dad Joke",
+    "techStack": [
+      "html",
+      "css",
+      "javascript",
+      "api",
+      "api-javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/dad-joke/index.html"
   },
-
   {
   "projectNo": 230,
-  "projectName": "Statistics Dashboard",
+  "projectName": "UnitVerse - Interactive Unit Converter Web App",
   "projectType": "Tool",
-  "projectDesc": "A comprehensive statistics dashboard with localStorage tracking.",
+  "projectDesc": "An interactive unit converter with real-time conversion, history tracking, favorites system, and a modern responsive UI.",
   "techStack": [
-    "html",
-    "css",
-    "javascript",
-    "localstorage"
+    "html", 
+    "css", 
+    "javascript"
   ],
-  "difficulty": "beginner",
-  "projectPath": "./public/StatisticsDashboard/index.html"
-},
-{
-    "projectNo": 231,
+  "difficulty": "intermediate",
+  "projectPath": "./public/UnitVerse/index.html"
+  },
+  {
+    "projectNo": 204,
     "projectName": "Neon Forge",
     "projectType": "Tool",
     "projectDesc": "An interactive CSS neon glow effects playground with live preview, presets, generated CSS, copy support, and PNG export.",
@@ -2934,7 +2933,5 @@
     ],
     "difficulty": "advanced",
     "projectPath": "./public/NeonForge/index.html"
-}  
-
-
+}
 ]
