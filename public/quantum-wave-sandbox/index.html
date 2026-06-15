@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum Wavefunction Collapse Visualizer</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="quantum-container">
+        <div class="telemetry-panel">
+            <h2>QUANTUM CORES</h2>
+            <hr class="divider">
+
+            <div class="metric-box">
+                <span class="label">COHERENCE STATE</span>
+                <div class="value" id="coherenceMetric">100.00%</div>
+            </div>
+
+            <div class="metric-box">
+                <span class="label">SYSTEM ENTROPY</span>
+                <div class="value warning" id="entropyMetric">0.024 Hz</div>
+            </div>
+
+            <div class="metric-box">
+                <span class="label">COLLAPSED NODES</span>
+                <div class="value accent" id="collapsedMetric">0</div>
+            </div>
+
+            <div class="metric-box">
+                <span class="label">LOOP LATENCY</span>
+                <div class="value safe" id="latencyMetric">0.85 ms</div>
+            </div>
+
+            <div class="instruction-pad">
+                <h3>MANUAL OVERRIDE</h3>
+                <p>Click anywhere on the vector grid matrix field to inject localized energy perturbations and force a
+                    state wavefunction collapse.</p>
+            </div>
+        </div>
+
+        <div class="viewport-area">
+            <div class="viewport-header">
+                <span class="status-dot blinking"></span>
+                <span class="title-text">GRID VISUALIZER // FIELD MATRIX_2D</span>
+            </div>
+            <canvas id="quantumCanvas"></canvas>
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+
+</html>

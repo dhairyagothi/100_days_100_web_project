@@ -80,14 +80,11 @@ body {
     overflow-x: hidden;
 }
 
-<<<<<<< HEAD
 /* ============================================================================
    Typography
    ============================================================================ */
 
 
-=======
->>>>>>> 24d1af3976cd40c01b0d06805fdf5d4818189bb3
 h1, h2, h3, h4, h5, h6 {
     font-family: 'Poppins', sans-serif;
     font-weight: 600;
@@ -727,7 +724,9 @@ a:hover { color: var(--primary-dark); text-decoration: underline; }
 
 .health-stats {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    /* grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-lg); */
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: var(--spacing-lg);
 }
 
@@ -794,7 +793,9 @@ a:hover { color: var(--primary-dark); text-decoration: underline; }
 
 .emergency-buttons {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    /* grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-lg); */
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: var(--spacing-lg);
 }
 
@@ -809,7 +810,9 @@ a:hover { color: var(--primary-dark); text-decoration: underline; }
 /* ============================================================================
    Quick Actions
    ============================================================================ */
-.quick-actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--spacing-lg); }
+.quick-actions { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: var(--spacing-lg);
+ }
 .quick-action-btn {
     display: flex; flex-direction: column; align-items: center; gap: var(--spacing-md); padding: var(--spacing-lg);
     background-color: var(--background); border: 1px solid var(--border); border-radius: var(--radius-md);
@@ -1128,3 +1131,258 @@ button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-
     color: #ff4d4d; /* High-visibility warning state color to close item */
 }
 
+/* ============================================================================
+   Sidebar & Utility Panel Standardized Style Overrides
+   ============================================================================ */
+
+/* Active Sidebar Navigation List */
+.sidebar-nav ul {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar-nav .nav-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding: 12px 14px;
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    color: var(--text-secondary);
+    border: 1px solid transparent;
+    background: transparent;
+    transition: all var(--transition-fast);
+    font-weight: 500;
+}
+
+.sidebar-nav .nav-item:hover {
+    background: var(--surface-hover);
+    color: var(--primary);
+    transform: translateX(4px);
+    border-color: var(--primary-light);
+    text-decoration: none;
+}
+
+.sidebar-nav .nav-item.active {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: #ffffff !important;
+    border-color: rgba(0, 0, 0, 0.08);
+}
+
+.sidebar-nav .nav-item.active:hover {
+    color: #ffffff !important;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+}
+
+.sidebar-nav .nav-item i {
+    font-size: 18px;
+}
+
+/* Sidebar Footer & Buttons */
+.sidebar-footer {
+    margin-top: auto;
+    padding: var(--spacing-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    border-top: 1px solid var(--border);
+}
+
+.sidebar-footer .theme-toggle-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-md);
+    padding: 12px var(--spacing-xl);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    background: var(--background-alt);
+    color: var(--text-primary);
+    font-weight: 500;
+    transition: all var(--transition-fast);
+}
+
+.sidebar-footer .theme-toggle-btn:hover {
+    background: var(--primary-light);
+    color: var(--primary-dark);
+    border-color: var(--primary);
+}
+
+.sidebar-footer #logoutBtn {
+    width: 100%;
+    padding: 12px var(--spacing-xl);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    border: 1px solid var(--danger);
+    background: transparent;
+    color: var(--danger);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    transition: all var(--transition-fast);
+}
+
+.sidebar-footer #logoutBtn:hover {
+    background: var(--danger-light);
+    color: var(--danger);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Right Column Cards & Widgets Standardisation */
+.dashboard-column.right-column .card {
+    padding: var(--spacing-xl) !important;
+    border-radius: var(--radius-lg) !important;
+    box-shadow: var(--shadow-sm) !important;
+    border: 1px solid var(--border) !important;
+    background-color: var(--surface) !important;
+    margin-bottom: var(--spacing-xl) !important;
+    transition: all var(--transition-normal) !important;
+}
+
+.dashboard-column.right-column .card:hover {
+    box-shadow: var(--shadow-md) !important;
+    border-color: var(--primary-light) !important;
+}
+
+.dashboard-column.right-column .card-header {
+    display: flex !important;
+    align-items: center !important;
+    gap: var(--spacing-md) !important;
+    margin-bottom: var(--spacing-lg) !important;
+    padding-bottom: var(--spacing-md) !important;
+    border-bottom: 1px solid var(--border-light) !important;
+}
+
+.dashboard-column.right-column .card-header h2 {
+    font-size: 1.25rem !important;
+    font-weight: 600 !important;
+    margin-bottom: 0 !important;
+    color: var(--text-primary) !important;
+}
+
+.dashboard-column.right-column .card-icon {
+    width: 40px !important;
+    height: 40px !important;
+    font-size: 1.25rem !important;
+    border-radius: var(--radius-md) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0 !important;
+}
+
+.dashboard-column.right-column .card-icon.info {
+    background-color: var(--info-light) !important;
+    color: var(--info) !important;
+}
+
+.dashboard-column.right-column .card-icon.success {
+    background-color: var(--success-light) !important;
+    color: var(--success) !important;
+}
+
+.dashboard-column.right-column .card-icon.danger {
+    background-color: var(--danger-light) !important;
+    color: var(--danger) !important;
+}
+
+.dashboard-column.right-column .card-icon.primary {
+    background-color: var(--accent) !important;
+    color: var(--primary) !important;
+}
+
+.dashboard-column.right-column .card-icon.warning {
+    background-color: var(--warning-light) !important;
+    color: var(--warning) !important;
+}
+
+/* Visually hide the duplicate/dangling sidebar copy */
+aside.sidebar:not(#sidebar) {
+    display: none !important;
+}
+
+
+.user-actions-bar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:1rem;
+    width:90%;
+    max-width:1200px;
+    margin:20px auto;
+}
+
+
+
+.user-badge{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:10px 16px;
+    background:linear-gradient(135deg,#f0f9ff,#e0f2fe);
+    border:1px solid #bae6fd;
+    border-radius:12px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.08);
+}
+
+.user-avatar{
+    width:42px;
+    height:42px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:50%;
+    background:#2563eb;
+    color:white;
+    font-size:20px;
+    font-weight:600;
+}
+
+.user-meta{
+    display:flex;
+    flex-direction:column;
+}
+
+#userBadgeName{
+    font-weight:600;
+    color:#1e293b;
+}
+
+#userBadgeRole{
+    font-size:0.85rem;
+    color:#64748b;
+}
+#logoutBtn{
+    padding:10px 18px;
+    border:none;
+    border-radius:10px;
+    background:#ef4444;
+    color:white;
+    font-weight:600;
+    cursor:pointer;
+    transition:all 0.3s ease;
+}
+
+#logoutBtn:hover{
+    background:#dc2626;
+    transform:translateY(-2px);
+}
+
+@media (max-width:768px){
+    .user-actions-bar{
+        flex-direction:column;
+        align-items:stretch;
+    }
+
+    #logoutBtn{
+        width:100%;
+    }
+}

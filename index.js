@@ -7,7 +7,7 @@ if (typeof REPO_OWNER === "undefined") {
 }
 window.REPO_OWNER = window.REPO_OWNER || "dhairyagothi";
 window.REPO_NAME = window.REPO_NAME || "100_days_100_web_project";
-
+  
 let currentPage = 1;
 //for the number of visible projects in one page.
 let itemsPerPage = 9;
@@ -78,6 +78,8 @@ let projectsPromise = null;
 function hydrateProjects(data) {
   PROJECTS = data.map((project) => ({
     day: `Day ${project.projectNo}`,
+    projectNo: project.projectNo,
+    projectType: project.projectType,
     projectName: project.projectName,
     projectPath: project.projectPath,
     techStack: project.techStack,
@@ -117,6 +119,8 @@ function loadProjects() {
         `${base}projects.json`,
         window.location.href,
       ).toString();
+      
+console.log("Projects URL:", projectsUrl);
       try {
         const response = await fetch(projectsUrl);
         if (!response.ok) {
@@ -227,13 +231,6 @@ function resolveProjectUrls(day, name, url, tags) {
       }
     } catch (error) { }
   }
-  if (day === "Day 222") {
-    return {
-      demoUrl: "https://html-css-animation-01.netlify.app/",
-      sourceUrl: "https://github.com/dhairyagothi/100_day_100_web_project/blob/Main/public/Html_css_animation/index.html",
-      sourceOnly: false
-    };
-  }
 
   return { demoUrl, sourceUrl, sourceOnly };
 }
@@ -339,10 +336,10 @@ function buildProjectCardHTML({
                         Demo <i class="fas fa-arrow-right" aria-hidden="true"></i>
                     </a>`;
 
-  const codeLink = sourceOnly
+  const githubBtn = sourceOnly
     ? ""
-    : `<a href="${safeSourceUrl}" target="_blank" class="card-link view-code-link" rel="noopener noreferrer" onclick="event.stopPropagation()" aria-label="View source code of ${safeName} on GitHub (opens in a new tab)">
-                        <i class="fab fa-github" aria-hidden="true"></i> Code
+    : `<a href="${safeSourceUrl}" target="_blank" class="github-btn" rel="noopener noreferrer" onclick="event.stopPropagation()" aria-label="View source code of ${safeName} on GitHub (opens in a new tab)">
+                        <i class="fab fa-github" aria-hidden="true"></i>
                     </a>`;
 
   return {
@@ -357,7 +354,14 @@ function buildProjectCardHTML({
             </div>
 
             <div class="card-preview-image-container" style="margin: 12px 0; border-radius: 8px; overflow: hidden; aspect-ratio: 16/9; background: #1a1a1a;">
-                <img src="./${url && url.startsWith('./') ? url.split('/')[2] : name.replace(/\s+/g, '_')}/preview.png" alt="${safeName} preview" onerror="this.parentNode.style.display='none';" style="width: 100%; height: 100%; object-fit: cover;">
+             <img
+    src="${url && url.startsWith('./') ? url.substring(0, url.lastIndexOf('/')) : ''}/preview.webp"
+    alt="${safeName} preview"
+    loading="lazy"
+    decoding="async"
+    onerror="this.parentNode.style.display='none';"
+    style="width: 100%; height: 100%; object-fit: cover;"
+>
             </div>
 
             <h3 class="card-name">${safeName}</h3>
@@ -372,9 +376,9 @@ function buildProjectCardHTML({
             <div class="card-footer">
                 <div class="card-actions-left">
                     ${primaryLink}
-                    ${codeLink}
                 </div>
                 <div class="card-actions-right" style="display: flex; gap: 8px; align-items: center;">
+                    ${githubBtn}
                     <button class="bookmark-btn ${isBookmarked ? "active" : ""}" data-id="${safeDay}" aria-label="${isBookmarked ? `Remove ${safeName} from bookmarks` : `Bookmark ${safeName}`}">
                         <i class="${isBookmarked ? "fa-solid" : "fa-regular"} fa-bookmark" aria-hidden="true"></i>
                     </button>
@@ -394,7 +398,10 @@ function attachProjectCardInteraction(card, demoUrl, projectData = null) {
     if (!demoUrl) return;
 
     if (projectData) {
-      trackRecentProject(projectData);
+      const project = resolveProjectRecord(projectData);
+      if (project) {
+        trackRecentProject(project);
+      }
     }
 
     window.open(sanitizeUrl(demoUrl), "_blank", "noopener");
@@ -409,6 +416,34 @@ function attachProjectCardInteraction(card, demoUrl, projectData = null) {
       }
       activateCard(e);
     }
+  };
+}
+
+function resolveProjectRecord(projectData) {
+  if (!projectData) return null;
+
+  if (projectData.projectNo != null && projectData.projectType != null) {
+    return projectData;
+  }
+
+  const day = projectData.day || projectData.projectName || projectData.name || projectData[0];
+  const name = projectData.projectName || projectData.name || projectData[1];
+
+  if (day) {
+    const project = PROJECTS_BY_DAY.get(day) || PROJECTS_BY_NAME.get(day);
+    if (project) return project;
+  }
+
+  if (name) {
+    const project = PROJECTS_BY_NAME.get(name);
+    if (project) return project;
+  }
+
+  return {
+    ...projectData,
+    projectName: name || projectData.projectName,
+    projectPath: projectData.projectPath || projectData.url || projectData[2],
+    techStack: projectData.techStack || projectData.tags || projectData[3] || [],
   };
 }
 
@@ -582,8 +617,15 @@ function cleanupExpiredRecentProjects() {
   }
 }
 
-// Clean up every 5 minutes
-setInterval(cleanupExpiredRecentProjects, 5 * 60 * 1000);
+// Clean up every 5 minutes — clear previous interval to prevent timer leaks
+var recentProjectsTimer = null;
+function startRecentProjectsCleanup() {
+  if (recentProjectsTimer !== null) {
+    clearInterval(recentProjectsTimer);
+  }
+  recentProjectsTimer = setInterval(cleanupExpiredRecentProjects, 5 * 60 * 1000);
+}
+startRecentProjectsCleanup();
 
 const CATEGORY_LABEL = {
   beginner: "Beginner",
@@ -683,6 +725,7 @@ let searchQuery = "";
 let sortOption = "default";
 let techStackFilter = "all";
 let difficultyFilter = "all";
+let currentFilteredProjects = [];
 
 function syncStateToURL() {
   const url = new URL(window.location);
@@ -769,6 +812,8 @@ function renderGrid() {
               .includes(term),
         );
 
+       
+
     // Tech stack dropdown filter
     let matchesTech = true;
     if (techStackFilter && techStackFilter !== "all") {
@@ -787,6 +832,7 @@ function renderGrid() {
 
     return matchesFilter && matchesSearch && matchesTech && matchesDifficulty;
   });
+  currentFilteredProjects = [...filtered];
 
   // Apply sorting
   if (sortOption === "az") {
@@ -871,7 +917,74 @@ function renderGrid() {
   syncStateToURL();
   syncProjectCounts();
 }
+console.log("===== RENDER GRID =====");
+console.log("PROJECTS:", PROJECTS.length);
+console.log("activeFilter:", activeFilter);
+console.log("searchQuery:", searchQuery);
+console.log("techStackFilter:", techStackFilter);
+console.log("difficultyFilter:", difficultyFilter);
+function renderRandomProject() {
+  const result =
+    document.getElementById(
+      "randomProjectResult"
+    );
 
+  if (!result) return;
+
+  const source =
+    currentFilteredProjects.length
+      ? currentFilteredProjects
+      : PROJECTS;
+
+  const randomProject =
+    source[
+      Math.floor(
+        Math.random() * source.length
+      )
+    ];
+
+  if (!randomProject) return;
+
+  const category =
+    getCategoryFromTags(
+      randomProject.techStack,
+      randomProject.projectName
+    );
+
+  const bookmarkedDays = new Set(
+    bookmarkedProjects.map(
+      (item) =>
+        normalizeProjectEntry(item).day
+    )
+  );
+
+  const { html, sourceOnly } =
+    buildProjectCardHTML({
+      day: randomProject.day,
+      name: randomProject.projectName,
+      url: randomProject.projectPath,
+      tags: randomProject.techStack,
+      category,
+      isBookmarked:
+        bookmarkedDays.has(
+          randomProject.day
+        ),
+      showDescription: true
+    });
+
+  result.innerHTML = "";
+
+  const card =
+    document.createElement("div");
+
+  card.className = sourceOnly
+    ? "project-card source-only visible"
+    : "project-card visible";
+
+  card.innerHTML = html;
+
+  result.appendChild(card);
+}
 function renderPagination(totalItems, totalPages) {
   const grid = document.getElementById("projectGrid");
   if (!grid) return;
@@ -1303,10 +1416,93 @@ function renderRecentProjects() {
 
     recentGrid.appendChild(card);
   });
+
+  renderRecommendationsForLatestRecentProject();
+}
+
+function renderRecommendationsForProject(project) {
+  const container = document.getElementById("recommendationsContainer");
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  const header = document.createElement("div");
+  header.className = "projects-intro";
+  header.innerHTML = `
+    <p class="section-label">Build Similar Projects</p>
+    <h2 class="section-title">${project ? `Projects like ${escapeHTML(
+      project.projectName || project.name || "this project",
+    )}` : "Related Projects"}</h2>
+  `;
+  container.appendChild(header);
+
+  if (!project) {
+    const placeholder = document.createElement("p");
+    placeholder.className = "empty-state";
+    placeholder.textContent =
+      "Click a project card to discover related builds based on technologies and project type.";
+    container.appendChild(placeholder);
+    return;
+  }
+
+  const recommendations = getRecommendations(project, PROJECTS);
+  if (!recommendations.length) {
+    const noRecommendations = document.createElement("p");
+    noRecommendations.className = "empty-state";
+    noRecommendations.textContent =
+      "No similar projects were found for this selection yet.";
+    container.appendChild(noRecommendations);
+    return;
+  }
+
+  const grid = document.createElement("div");
+  grid.className = "project-grid";
+
+  recommendations.forEach((recommendation) => {
+    const category = getCategoryFromTags(
+      recommendation.techStack,
+      recommendation.projectName,
+    );
+    const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
+      day: recommendation.day,
+      name: recommendation.projectName,
+      url: recommendation.projectPath,
+      tags: recommendation.techStack,
+      category,
+      isBookmarked: bookmarkedProjects.some(
+        (item) => normalizeProjectEntry(item).day === recommendation.day,
+      ),
+      showDescription: true,
+    });
+
+    const card = document.createElement("div");
+    card.className = sourceOnly
+      ? "project-card source-only visible"
+      : "project-card visible";
+    card.innerHTML = html;
+    card.setAttribute("tabindex", "0");
+    card.setAttribute("role", "button");
+    attachProjectCardInteraction(card, demoUrl, recommendation);
+    grid.appendChild(card);
+  });
+
+  container.appendChild(grid);
+}
+
+function renderRecommendationsForLatestRecentProject() {
+  const validRecent = getRecentProjectsWithinWindow();
+  if (validRecent.length === 0) {
+    renderRecommendationsForProject(null);
+    return;
+  }
+
+  const latestProject = resolveProjectRecord(validRecent[0]);
+  renderRecommendationsForProject(latestProject);
 }
 
 // Clean up after grid references are initialized.
 cleanupExpiredRecentProjects();
+renderRecommendationsForLatestRecentProject();
 
 /* ============================================================
    VIEW ALL TOGGLE
@@ -1756,27 +1952,26 @@ document.addEventListener("DOMContentLoaded", async () => {
   initTechStackSearch();
   initClearAllFilters();
 
-  initStreak();
-  updateGamifiedUI();
+  //updateGamifiedUI();
 
   try {
-    await loadProjects();
+  await loadProjects();
 
-    updateGamifiedUI();
+//updateGamifiedUI();
 
-    syncProjectCounts();
+restoreStateFromURL();
 
-    if (hasProjectGrid()) {
-      loadBookmarksFromURL();
+syncProjectCounts();
 
-      renderGrid();
-      renderBookmarks();
-      renderRecentProjects();
-    }
+if (hasProjectGrid()) {
+  loadBookmarksFromURL();
 
-    restoreStateFromURL();
+  renderGrid();
+  renderBookmarks();
+  renderRecentProjects();
+}
 
-    syncProjectCounts();
+syncProjectCounts();
     fetchRepoStats();
     initScrollBtn();
   } catch (error) {
@@ -2310,51 +2505,11 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   window.addEventListener("popstate", () => restoreStateFromURL());
 });
-
-/* ============================================================
-   GAMIFIED DEVELOPER TRACKER ENGINE
-============================================================ */
-
-const LEVEL_THRESHOLDS = [
-  { level: 1, name: "Script Kiddie", xp: 0 },
-  { level: 2, name: "CSS Whisperer", xp: 100 },
-  { level: 3, name: "Frontend Artisan", xp: 250 },
-  { level: 4, name: "DOM Dominator", xp: 500 },
-  { level: 5, name: "Production Ready", xp: 1000 },
-  { level: 6, name: "Full-Stack Magician", xp: 2000 },
-  { level: 7, name: "Software Architect", xp: 4000 }
-];
-
-function getProjectXP(difficulty) {
-  const d = (difficulty || "").toLowerCase().trim();
-  if (d === 'beginner' || d === 'easy') return 10;
-  if (d === 'advanced' || d === 'hard' || d === 'expert') return 50;
-  return 25;
-}
-
-function calculateLevel(xp) {
-  let current = LEVEL_THRESHOLDS[0];
-  for (let t of LEVEL_THRESHOLDS) {
-    if (xp >= t.xp) current = t;
-    else break;
-  }
-  return current;
-}
-
-function updateGamifiedUI() {
-  // Gamified UI elements live on tracker.html, not index.html — no-op here.
-  const elements = {
-    badge: document.getElementById("userLevelBadge"),
-    xpText: document.getElementById("userCurrentXP"),
-    bar: document.getElementById("userXPBarFill")
-  };
-
-  if (!elements.badge && !elements.xpText && !elements.bar) return;
-
-  const totalXP = 0;
-  const currentLevel = calculateLevel(totalXP);
-
-  if (elements.badge) elements.badge.textContent = `Level ${currentLevel.level}: ${currentLevel.name}`;
-  if (elements.xpText) elements.xpText.textContent = `${totalXP} Total XP`;
-  if (elements.bar) elements.bar.style.width = "0%";
-}
+document
+  .getElementById(
+    "randomProjectBtn"
+  )
+  ?.addEventListener(
+    "click",
+    renderRandomProject
+  );
