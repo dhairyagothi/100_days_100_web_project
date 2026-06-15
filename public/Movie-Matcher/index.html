@@ -78,7 +78,21 @@
       <div id="modalContent"></div>
     </div>
   </div>
+  <button class="favorite-btn" data-id="${movie.id}">
+    ♡ Favorite
+</button>
 
+<section id="favorites-section">
+
+    <h2>Your Watchlist</h2>
+
+    <div id="favorites-container"></div>
+
+</section>
+
+<button class="favorite-btn ${isFavorite ? "active":""}">
+    ${isFavorite ? "❤️ Saved":"♡ Favorite"}
+</button>
   <script src="script.js"></script>
 </body>
 </html>
