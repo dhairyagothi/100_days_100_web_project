@@ -552,6 +552,12 @@ function keyDown(e) {
     if (e.key === "Right" || e.key === "ArrowRight") paddle.dx = paddle.speed;
     else if (e.key === "Left" || e.key === "ArrowLeft") paddle.dx = -paddle.speed;
     else if (e.key === "p" || e.key === "P") togglePause();
+    else if (e.key === "Enter") {
+        const rulesContainer = document.getElementById("rules-container");
+        if (rulesContainer && rulesContainer.classList.contains("hidden") && !gameState.running) {
+            document.getElementById("play-nav-btn")?.click();
+        }
+    }
 }
 
 function keyUp(e) {
@@ -815,22 +821,40 @@ function showToast(message) {
 document.addEventListener("keydown", keyDown);
 document.addEventListener("keyup", keyUp);
 
+function syncPaddleSpeed(speedVal) {
+    paddle.speed = speedVal;
+    
+    const sensitivitySlider = document.getElementById("sensitivity");
+    const sensitivityValue = document.getElementById("sensitivity-value");
+    const rulesSensitivitySlider = document.getElementById("rules-sensitivity-input");
+    const rulesSensitivityValue = document.getElementById("rules-sensitivity-value");
+    
+    if (sensitivitySlider) {
+        sensitivitySlider.value = speedVal;
+    }
+    if (sensitivityValue) {
+        sensitivityValue.textContent = speedVal;
+    }
+    if (rulesSensitivitySlider) {
+        rulesSensitivitySlider.value = speedVal;
+    }
+    if (rulesSensitivityValue) {
+        rulesSensitivityValue.textContent = speedVal;
+    }
+    try {
+        localStorage.setItem("breakoutSensitivity", speedVal);
+    } catch (_) {}
+}
+
 document.querySelectorAll(".difficulty-btn").forEach(btn => {
     btn.addEventListener("click", () => {
         document.querySelectorAll(".difficulty-btn").forEach(b => b.classList.remove("active"));
         btn.classList.add("active");
         gameState.difficulty = btn.dataset.difficulty;
         
-        // Update sensitivity slider based on new difficulty default speed
+        // Update sensitivity sliders based on new difficulty default speed
         const settings = difficultySettings[gameState.difficulty];
-        const sensitivitySlider = document.getElementById("sensitivity");
-        const sensitivityValue = document.getElementById("sensitivity-value");
-        if (sensitivitySlider) {
-            paddle.speed = settings.paddleSpeed;
-            sensitivitySlider.value = paddle.speed;
-            if (sensitivityValue) sensitivityValue.textContent = paddle.speed;
-            localStorage.setItem("breakoutSensitivity", paddle.speed);
-        }
+        syncPaddleSpeed(settings.paddleSpeed);
     });
 });
 
@@ -847,27 +871,62 @@ window.addEventListener("load", () => {
     document.getElementById("sound-btn").textContent = soundEnabled ? "🔊 Sound" : "🔇 Muted";
     document.getElementById("rules-container").classList.remove("hidden");
     
-    // Initialize Paddle Speed Slider
-    const sensitivitySlider = document.getElementById("sensitivity");
-    const sensitivityValue = document.getElementById("sensitivity-value");
-    if (sensitivitySlider) {
-        const savedSensitivity = localStorage.getItem("breakoutSensitivity");
-        if (savedSensitivity) {
-            paddle.speed = parseInt(savedSensitivity);
-            sensitivitySlider.value = paddle.speed;
-        } else {
-            const settings = difficultySettings[gameState.difficulty];
-            paddle.speed = settings.paddleSpeed;
-            sensitivitySlider.value = paddle.speed;
-        }
-        if (sensitivityValue) sensitivityValue.textContent = paddle.speed;
+    // Initialize Paddle Speed Sliders
+    const savedSensitivity = localStorage.getItem("breakoutSensitivity");
+    if (savedSensitivity) {
+        syncPaddleSpeed(parseInt(savedSensitivity));
+    } else {
+        const settings = difficultySettings[gameState.difficulty];
+        syncPaddleSpeed(settings.paddleSpeed);
+    }
 
+    const sensitivitySlider = document.getElementById("sensitivity");
+    const rulesSensitivitySlider = document.getElementById("rules-sensitivity-input");
+
+    if (sensitivitySlider) {
         sensitivitySlider.addEventListener("input", (e) => {
-            paddle.speed = parseInt(e.target.value);
-            if (sensitivityValue) sensitivityValue.textContent = paddle.speed;
-            try {
-                localStorage.setItem("breakoutSensitivity", paddle.speed);
-            } catch (_) {}
+            syncPaddleSpeed(parseInt(e.target.value));
+        });
+    }
+
+    if (rulesSensitivitySlider) {
+        rulesSensitivitySlider.addEventListener("input", (e) => {
+            syncPaddleSpeed(parseInt(e.target.value));
+        });
+    }
+
+    // Toggle Settings Dropdown Menu
+    const settingsToggleBtn = document.getElementById("settings-toggle-btn");
+    const settingsMenu = document.getElementById("settings-menu");
+    if (settingsToggleBtn && settingsMenu) {
+        settingsToggleBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            settingsMenu.classList.toggle("hidden");
+        });
+
+        document.addEventListener("click", (e) => {
+            if (!settingsMenu.contains(e.target) && e.target !== settingsToggleBtn) {
+                settingsMenu.classList.add("hidden");
+            }
+        });
+    }
+
+    // Play Navigation Button Click (Opens Rules/Start popup)
+    const playNavBtn = document.getElementById("play-nav-btn");
+    if (playNavBtn) {
+        playNavBtn.addEventListener("click", () => {
+            // If the game is running and not paused, pause it first to stop background loop
+            if (gameState.running && !gameState.paused) {
+                togglePause();
+            }
+            
+            // Hide the other popups
+            document.getElementById("pause-container").classList.add("hidden");
+            document.getElementById("game-over-container").classList.add("hidden");
+            document.getElementById("settings-menu").classList.add("hidden");
+            
+            // Show the rules screen (popup window for start or play again)
+            document.getElementById("rules-container").classList.remove("hidden");
         });
     }
 });

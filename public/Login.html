@@ -459,10 +459,52 @@
           );
       }
 
-      window.onload = () => {
-        createBackground();
-        initForm();
-      };
-    </script>
-  </body>
+        // Login successful
+        showToast("Login successful!", "success");
+
+        const sessionHelper = window.AuthSession;
+        const sessionData = sessionHelper?.persistAuthSession
+          ? sessionHelper.persistAuthSession(
+              {
+                username,
+                name: userData.name || username,
+                email: userData.email || "",
+              },
+              "password",
+              "login"
+            )
+          : {
+              username,
+              name: userData.name || username,
+              email: userData.email || "",
+              authAction: "login",
+            };
+
+        localStorage.setItem("loggedInUser", sessionData.username || username);
+        localStorage.setItem(
+          "loggedInUserData",
+          JSON.stringify({
+            ...sessionData,
+            username: sessionData.username || username,
+            name: sessionData.name || userData.name || username,
+            email: sessionData.email || userData.email || "",
+            provider: sessionData.provider || "password",
+            authAction: sessionData.authAction || "login",
+            loginTime: sessionData.loginTime || Date.now(),
+            timezone: sessionData.timezone || "Asia/Kolkata",
+          })
+        );
+
+        // Disable the button to prevent double-submit
+        document.getElementById("loginBtn").disabled = true;
+
+               // Redirect after a short delay so the user sees the success message
+        setTimeout(function () {
+          window.location.href = "../index.html";
+        }, 1000);
+      });
+  </script>
+
+  <script type="module" src="./firebase-auth.js"></script>
+</body>
 </html>

@@ -482,56 +482,45 @@
       window.onload = function () {
         createBackground();
 
-        const passwordInput = document.getElementById("password");
-        passwordInput.addEventListener("input", () =>
-          checkPasswordStrength(passwordInput.value),
+        const sessionHelper = window.AuthSession;
+        const sessionData = sessionHelper?.persistAuthSession
+          ? sessionHelper.persistAuthSession(
+              {
+                username,
+                name,
+                email,
+              },
+              "password",
+              "signup"
+            )
+          : {
+              username,
+              name,
+              email,
+              authAction: "signup",
+            };
+
+        localStorage.setItem("loggedInUser", sessionData.username || username);
+        localStorage.setItem(
+          "loggedInUserData",
+          JSON.stringify({
+            ...sessionData,
+            username: sessionData.username || username,
+            name: sessionData.name || name,
+            email: sessionData.email || email,
+            provider: sessionData.provider || "password",
+            authAction: sessionData.authAction || "signup",
+            loginTime: sessionData.loginTime || Date.now(),
+            timezone: sessionData.timezone || "Asia/Kolkata",
+          })
         );
 
-        document
-          .getElementById("togglePassword")
-          .addEventListener("click", togglePasswordVisibility);
+          showToast("Signup successful!", "success");
 
-        document
-          .getElementById("signupForm")
-          .addEventListener("submit", function (e) {
-            e.preventDefault();
-            if (!validateForm()) {
-              showToast("Please fix the errors above", "danger");
-              return;
-            }
-
-            const btnText = document.getElementById("btnText");
-            const spinner = document.getElementById("spinner");
-            const submitBtn = document.getElementById("submitBtn");
-
-            btnText.classList.add("d-none");
-            spinner.classList.remove("d-none");
-            submitBtn.disabled = true;
-
-            setTimeout(() => {
-              const username = document.getElementById("username").value.trim();
-              if (localStorage.getItem(username)) {
-                showToast("Username already taken!", "danger");
-              } else {
-                localStorage.setItem(
-                  username,
-                  JSON.stringify({
-                    name: document.getElementById("name").value.trim(),
-                    email: document.getElementById("email").value.trim(),
-                    password: document.getElementById("password").value,
-                  }),
-                );
-                showToast("Account created successfully! 🎉", "success");
-                setTimeout(() => (window.location.href = "Login.html"), 1500);
-              }
-              btnText.classList.remove("d-none");
-              spinner.classList.add("d-none");
-              submitBtn.disabled = false;
-            }, 1600);
-          });
-
-        document.getElementById("googleBtn").addEventListener("click", () => {
-          showToast("Google Sign Up coming soon!", "info");
+          // Delay redirect slightly for premium toast visibility
+          setTimeout(() => {
+            window.location.href = "../index.html";
+          }, 1200);
         });
       };
     </script>
