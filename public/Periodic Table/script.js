@@ -706,7 +706,7 @@ el.symbol.toLowerCase();
 
 lanContainer.appendChild(lanLabel);
 lanContainer.appendChild(lanRow);
-document.querySelector(".main-container").appendChild(lanContainer);
+document.getElementById("pdfExportArea").appendChild(lanContainer);
 
 
 //--------------Add Actinides------------------
@@ -753,7 +753,9 @@ el.symbol.toLowerCase();
 
 actContainer.appendChild(actLabel);
 actContainer.appendChild(actRow);
-document.querySelector(".periodic-table-wrapper").appendChild(actContainer);
+document
+.getElementById("pdfExportArea")
+.appendChild(actContainer);
 
 
 // Filter categories from Dropdown List
@@ -807,57 +809,25 @@ document.getElementById(
 "searchInput"
 );
 
-searchInput.addEventListener(
-"input",
+searchInput.addEventListener("input", function () {
+    const query = this.value.trim().toLowerCase();
 
-function(){
+    document.querySelectorAll(".element").forEach(el => {
+        el.classList.remove("search-active", "matched", "unmatched");
 
-const query =
-this.value
-.trim()
-.toLowerCase();
+        if (query === "") return;
 
-document
-.querySelectorAll(".element")
+        const name = el.dataset.name || "";
+        const symbol = el.dataset.symbol || "";
 
-.forEach(el=>{
+        const match = name.startsWith(query) || symbol === query;
 
-// Remove previous search state
-el.classList.remove(
-"search-active"
-);
-
-// Empty search → no popup
-if(query===""){
-return;
-}
-
-const name =
-el.dataset.name || "";
-
-const symbol =
-el.dataset.symbol || "";
-
-const match =
-
-name.startsWith(query)
-
-||
-
-symbol === query;
-
-
-// If matched → show popup
-if(match){
-
-el.classList.add(
-"search-active"
-);
-
-}
-
-});
-
+        if (match) {
+            el.classList.add("matched");
+        } else {
+            el.classList.add("unmatched");
+        }
+    });
 });
 const trendDefinitions={
 
@@ -1424,3 +1394,240 @@ document
 trendFilter.value="none";
 
 });
+const exportBtn =
+document.getElementById(
+"exportPdfBtn"
+);
+
+exportBtn.addEventListener(
+"click",
+exportPeriodicTablePDF
+);
+
+async function exportPeriodicTablePDF(){
+
+    const area =
+    document.getElementById(
+    "pdfExportArea"
+    );
+
+    await document.fonts?.ready;
+    await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+
+    const areaRect =
+    area.getBoundingClientRect();
+
+    const captureWidth =
+    Math.ceil(
+    Math.max(area.scrollWidth, areaRect.width)
+    );
+
+    const captureHeight =
+    Math.ceil(
+    Math.max(area.scrollHeight, areaRect.height)
+    );
+
+    console.group("Periodic Table PDF export diagnostics");
+    console.log("DOM", {
+        pdfExportArea: {
+            rect: {
+                x: areaRect.x,
+                y: areaRect.y,
+                width: areaRect.width,
+                height: areaRect.height
+            },
+            scrollWidth: area.scrollWidth,
+            scrollHeight: area.scrollHeight,
+            elementCards: area.querySelectorAll(".element").length,
+            containsMainTable: area.contains(
+                document.querySelector(".table-container")
+            ),
+            containsLanthanoids:
+            area.contains(lanContainer),
+            containsActinides:
+            area.contains(actContainer)
+        },
+        mainContainer:
+        document.querySelector(".main-container").getBoundingClientRect(),
+        periodicTableWrapper:
+        document.querySelector(".periodic-table-wrapper").getBoundingClientRect(),
+        periodicTable:
+        document.querySelector(".table-container").getBoundingClientRect()
+    });
+
+    const canvas =
+    await html2canvas(area,{
+        scale:2,
+        useCORS:true,
+        backgroundColor:"#ffffff",
+        width:captureWidth,
+        height:captureHeight,
+        windowWidth:captureWidth,
+        windowHeight:captureHeight,
+        scrollX:0,
+        scrollY:0,
+        onclone:(clonedDocument)=>{
+            const clonedArea =
+            clonedDocument.getElementById("pdfExportArea");
+
+            const clonedMain =
+            clonedDocument.querySelector(".main-container");
+
+            if(clonedMain){
+                clonedMain.style.alignItems =
+                "flex-start";
+            }
+
+            if(clonedArea){
+                clonedArea.style.width =
+                `${captureWidth}px`;
+
+                clonedArea.style.height =
+                `${captureHeight}px`;
+
+                clonedArea.style.overflow =
+                "visible";
+
+                clonedArea
+                .querySelectorAll(".element")
+                .forEach(element=>{
+                    element.style.animation =
+                    "none";
+                });
+            }
+        }
+    });
+
+    console.log("Canvas", {
+        width: canvas.width,
+        height: canvas.height,
+        cssWidth: captureWidth,
+        cssHeight: captureHeight
+    });
+
+    const imgData =
+    canvas.toDataURL(
+    "image/png"
+    );
+
+    const { jsPDF } =
+    window.jspdf;
+
+    const pdf =
+    new jsPDF(
+    "landscape",
+    "mm",
+    "a4"
+    );
+    const propertyName =
+trendFilter.value === "none"
+?
+"Periodic Table"
+:
+trendDefinitions[
+trendFilter.value
+].title;
+
+pdf.setFontSize(18);
+
+pdf.text(
+`Periodic Table - ${propertyName}`,
+10,
+10
+);
+
+    const pdfWidth =
+    pdf.internal.pageSize.getWidth();
+
+    const pageHeight =
+pdf.internal.pageSize.getHeight();
+
+const margin =
+10;
+
+const titleHeight =
+12;
+
+const contentWidth =
+pdfWidth - (margin * 2);
+
+const contentTop =
+margin + titleHeight;
+
+const contentHeight =
+pageHeight - contentTop - margin;
+
+const imgHeight =
+(canvas.height * contentWidth)
+/ canvas.width;
+
+let heightLeft =
+imgHeight;
+
+let position =
+contentTop;
+
+console.log("PDF", {
+    pageWidth: pdfWidth,
+    pageHeight,
+    imageWidth: contentWidth,
+    imageHeight: imgHeight,
+    contentTop,
+    contentHeight,
+    pages: Math.ceil(imgHeight / contentHeight)
+});
+console.groupEnd();
+
+pdf.addImage(
+imgData,
+"PNG",
+margin,
+position,
+contentWidth,
+imgHeight
+);
+
+heightLeft -= contentHeight;
+
+while(heightLeft > 0){
+
+position =
+contentTop - (imgHeight - heightLeft);
+
+pdf.addPage();
+
+pdf.setFontSize(18);
+
+pdf.text(
+`Periodic Table - ${propertyName}`,
+margin,
+margin
+);
+
+pdf.addImage(
+imgData,
+"PNG",
+margin,
+position,
+contentWidth,
+imgHeight
+);
+
+heightLeft -= contentHeight;
+}
+
+  
+
+    const property =
+    trendFilter.value === "none"
+    ?
+    "PeriodicTable"
+    :
+    trendDefinitions[
+        trendFilter.value
+    ].title.replaceAll(" ","-");
+    pdf.save(
+    `${property}.pdf`
+    );
+
+}

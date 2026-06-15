@@ -32,12 +32,23 @@ const DOM = {
     legendP2Name: $('#legendP2Name'),
     newBattleBtn: $('#newBattleBtn'),
     copyCardBtn: $('#copyCardBtn'),
+    downloadCardBtn: $('#downloadCardBtn'),
+    shareCardBtn: $('#shareCardBtn'),
+    toast: $('#toast'),
     battleDate: $('#battleDate'),
     sharePlayer1: $('#sharePlayer1'),
     sharePlayer2: $('#sharePlayer2'),
     shareResult: $('#shareResult'),
     shareStats: $('#shareStats'),
 };
+
+const SHARE_ACTION_BUTTONS = [
+    DOM.copyCardBtn,
+    DOM.downloadCardBtn,
+    DOM.shareCardBtn,
+].filter(Boolean);
+
+let toastTimer;
 
 // ===== Particle Background =====
 function initParticles() {
@@ -127,16 +138,31 @@ async function fetchRepos(username) {
     let allRepos = [];
     let page = 1;
     const perPage = 100;
+
     while (true) {
-        const res = await fetch(`${API_BASE}/users/${username}/repos?per_page=${perPage}&page=${page}&sort=updated`);
-        if (!res.ok) break;
+        const res = await fetch(
+            `${API_BASE}/users/${username}/repos?per_page=${perPage}&page=${page}&sort=updated`
+        );
+
+        if (!res.ok) {
+            console.warn(
+                `Failed to fetch repositories for ${username} (HTTP ${res.status})`
+            );
+            break; // important: prevents app crash
+        }
+
         const repos = await res.json();
+
         if (repos.length === 0) break;
+
         allRepos = allRepos.concat(repos);
+
         if (repos.length < perPage) break;
+
         page++;
         if (page > 5) break; // Cap at 500 repos
     }
+
     return allRepos;
 }
 
@@ -263,6 +289,25 @@ function formatNum(n) {
     if (n >= 1000000) return (n / 1000000).toFixed(1) + 'M';
     if (n >= 1000) return (n / 1000).toFixed(1) + 'K';
     return n.toString();
+}
+
+function showToast(message) {
+    if (!DOM.toast) {
+        alert(message);
+        return;
+    }
+
+    DOM.toast.textContent = message;
+    DOM.toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => DOM.toast.classList.remove('show'), 2800);
+}
+
+function setShareButtonsDisabled(disabled) {
+    SHARE_ACTION_BUTTONS.forEach((btn) => {
+        btn.disabled = disabled;
+        btn.setAttribute('aria-busy', String(disabled));
+    });
 }
 
 // ===== Render Stat Bars =====
@@ -454,6 +499,54 @@ function renderShareCard(s1, s2, score1, score2) {
     `;
 }
 
+function waitForShareCardImages(card) {
+    const images = [...card.querySelectorAll('img')];
+    return Promise.all(
+        images.map((img) => {
+            if (img.complete && img.naturalWidth > 0) return Promise.resolve();
+            return new Promise((resolve) => {
+                img.addEventListener('load', resolve, { once: true });
+                img.addEventListener('error', resolve, { once: true });
+            });
+        })
+    );
+}
+
+function canvasToBlob(canvas) {
+    return new Promise((resolve, reject) => {
+        canvas.toBlob((blob) => {
+            blob ? resolve(blob) : reject(new Error('Failed to generate image'));
+        }, 'image/png');
+    });
+}
+
+async function createShareCardCanvas() {
+    const card = $('#shareCard');
+    if (!card || typeof html2canvas === 'undefined') {
+        throw new Error('Failed to generate image');
+    }
+
+    await waitForShareCardImages(card);
+
+    // Centralized capture keeps copy, download, and share output identical.
+    return html2canvas(card, {
+        backgroundColor: '#0f172a',
+        scale: Math.max(2, window.devicePixelRatio || 1),
+        useCORS: true,
+        allowTaint: false,
+        imageTimeout: 15000,
+        logging: false,
+    });
+}
+
+async function createShareCardBlob() {
+    const canvas = await createShareCardCanvas();
+    return canvasToBlob(canvas);
+}
+function isValidGitHubUsername(username) {
+    return /^[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,37}[a-zA-Z0-9])?$/.test(username);
+}
+
 // ===== Battle Flow =====
 async function startBattle() {
     const u1 = DOM.player1Input.value.trim();
@@ -465,89 +558,112 @@ async function startBattle() {
         DOM.errorMsg.textContent = 'Please enter both usernames';
         return;
     }
+
+    if (!isValidGitHubUsername(u1)) {
+        DOM.errorMsg.textContent = `Invalid GitHub username: ${u1}`;
+        return;
+    }
+
+    if (!isValidGitHubUsername(u2)) {
+        DOM.errorMsg.textContent = `Invalid GitHub username: ${u2}`;
+        return;
+    }
+
     if (u1.toLowerCase() === u2.toLowerCase()) {
         DOM.errorMsg.textContent = "Can't battle yourself! Enter different usernames.";
         return;
     }
 
-    // Show loading
-    DOM.inputSection.classList.add('hidden');
-    DOM.resultSection.classList.add('hidden');
-    DOM.loadingSection.classList.remove('hidden');
-    DOM.battleBtn.disabled = true;
+   // Show loading
+DOM.inputSection.classList.add('hidden');
+DOM.resultSection.classList.add('hidden');
+DOM.loadingSection.classList.remove('hidden');
+DOM.battleBtn.disabled = true;
 
-    try {
-        // Fetch data in parallel
-        const [user1, user2, repos1, repos2, events1, events2] = await Promise.all([
-            fetchUser(u1),
-            fetchUser(u2),
-            fetchRepos(u1),
-            fetchRepos(u2),
-            fetchEvents(u1),
-            fetchEvents(u2),
-        ]);
+try {
+    // Fetch data in parallel (SAFE VERSION)
+    const results = await Promise.allSettled([
+        fetchUser(u1),
+        fetchUser(u2),
+        fetchRepos(u1),
+        fetchRepos(u2),
+        fetchEvents(u1),
+        fetchEvents(u2),
+    ]);
 
-        const stats1 = calcStats(user1, repos1);
-        const stats2 = calcStats(user2, repos2);
-        const score1 = calcScore(stats1);
-        const score2 = calcScore(stats2);
+    const [user1, user2, repos1, repos2, events1, events2] =
+        results.map(r => r.status === "fulfilled" ? r.value : null);
 
-        // Small delay for dramatic effect
-        await new Promise((r) => setTimeout(r, 1800));
+    // 🚨 IMPORTANT FIX: prevent crash when API fails
+    if (!user1 || !user2) {
+        throw new Error("Failed to fetch GitHub users. Please check usernames.");
+    }
 
-        // Hide loading, show results
-        DOM.loadingSection.classList.add('hidden');
-        DOM.resultSection.classList.remove('hidden');
+    const safeRepos1 = repos1 || [];
+    const safeRepos2 = repos2 || [];
+    const safeEvents1 = events1 || [];
+    const safeEvents2 = events2 || [];
 
-        // Winner banner
-        const isP1Winner = score1 > score2;
-        const isTie = score1 === score2;
-        const winnerName = isTie ? "It's a Tie!" : isP1Winner ? stats1.name : stats2.name;
-        DOM.winnerText.textContent = isTie ? "🤝 It's a Tie!" : `${winnerName} Wins!`;
-        DOM.winnerScore.textContent = isTie
-            ? `Both scored ${score1} points`
-            : `${score1} vs ${score2} — won by ${Math.abs(score1 - score2)} points`;
+    const stats1 = calcStats(user1, safeRepos1);
+    const stats2 = calcStats(user2, safeRepos2);
 
-        if (!isTie) spawnConfetti();
+    const score1 = calcScore(stats1);
+    const score2 = calcScore(stats2);
 
-        // Profile cards
-        renderProfileCard(DOM.profileCard1, stats1, 'player-1-card', isP1Winner && !isTie);
-        renderProfileCard(DOM.profileCard2, stats2, 'player-2-card', !isP1Winner && !isTie);
+    await new Promise((r) => setTimeout(r, 1800));
 
-        // Stat bars
-        renderStatBars(stats1, stats2);
+    DOM.loadingSection.classList.add('hidden');
+    DOM.resultSection.classList.remove('hidden');
 
-        // Radar chart
-        DOM.legendP1Name.textContent = stats1.username;
-        DOM.legendP2Name.textContent = stats2.username;
-        drawRadarChart(stats1, stats2);
+    const isP1Winner = score1 > score2;
+    const isTie = score1 === score2;
+    const winnerName = isTie ? "It's a Tie!" : isP1Winner ? stats1.name : stats2.name;
 
-        // Contribution heatmaps
-        const contribData1 = generateContribData(events1);
-        const contribData2 = generateContribData(events2);
-        DOM.heatmapAvatar1.src = stats1.avatar;
-        DOM.heatmapAvatar1.alt = stats1.username;
-        DOM.heatmapName1.textContent = stats1.username;
-        DOM.heatmapAvatar2.src = stats2.avatar;
-        DOM.heatmapAvatar2.alt = stats2.username;
-        DOM.heatmapName2.textContent = stats2.username;
-        renderHeatmap(DOM.heatmap1, contribData1);
-        renderHeatmap(DOM.heatmap2, contribData2);
+    DOM.winnerText.textContent = isTie
+        ? "🤝 It's a Tie!"
+        : `${winnerName} Wins!`;
 
-        // Share card
-        renderShareCard(stats1, stats2, score1, score2);
+    DOM.winnerScore.textContent = isTie
+        ? `Both scored ${score1} points`
+        : `${score1} vs ${score2} — won by ${Math.abs(score1 - score2)} points`;
+
+    if (!isTie) spawnConfetti();
+
+    renderProfileCard(DOM.profileCard1, stats1, 'player-1-card', isP1Winner && !isTie);
+    renderProfileCard(DOM.profileCard2, stats2, 'player-2-card', !isP1Winner && !isTie);
+
+    renderStatBars(stats1, stats2);
+
+    DOM.legendP1Name.textContent = stats1.username;
+    DOM.legendP2Name.textContent = stats2.username;
+
+    drawRadarChart(stats1, stats2);
+
+    const contribData1 = generateContribData(safeEvents1);
+    const contribData2 = generateContribData(safeEvents2);
+
+    DOM.heatmapAvatar1.src = stats1.avatar;
+    DOM.heatmapAvatar2.src = stats2.avatar;
+
+    DOM.heatmapName1.textContent = stats1.username;
+    DOM.heatmapName2.textContent = stats2.username;
+
+    renderHeatmap(DOM.heatmap1, contribData1);
+    renderHeatmap(DOM.heatmap2, contribData2);
+
+    renderShareCard(stats1, stats2, score1, score2);
 
     } catch (err) {
         DOM.loadingSection.classList.add('hidden');
         DOM.inputSection.classList.remove('hidden');
-        DOM.errorMsg.textContent = err.message || 'Something went wrong. Check usernames and try again.';
+        DOM.errorMsg.textContent =
+            err.message || 'Something went wrong. Check usernames and try again.';
     } finally {
         DOM.battleBtn.disabled = false;
     }
 }
-
-// ===== Copy Card as Image =====
-async function copyCardAsImage() {
+// ===== Legacy Copy Card as Image =====
+async function legacyCopyCardAsImage() {
     const btn = DOM.copyCardBtn;
     try {
         // Use html2canvas if available, otherwise fallback to text copy
@@ -589,10 +705,90 @@ function resetBattle() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
+// ===== Share Card Actions =====
+async function copyCardAsImage() {
+    setShareButtonsDisabled(true);
+    try {
+        if (!navigator.clipboard?.write || typeof ClipboardItem === 'undefined') {
+            showToast('Image copy is not supported on this browser');
+            return;
+        }
+
+        const blob = await createShareCardBlob();
+        await navigator.clipboard.write([
+            new ClipboardItem({
+                'image/png': blob,
+            }),
+        ]);
+        showToast('Image copied successfully');
+    } catch (err) {
+        showToast(err.message || 'Failed to generate image');
+    } finally {
+        setShareButtonsDisabled(false);
+    }
+}
+
+async function downloadCardImage() {
+    setShareButtonsDisabled(true);
+    try {
+        const canvas = await createShareCardCanvas();
+        const image = canvas.toDataURL('image/png');
+        const link = document.createElement('a');
+
+        link.href = image;
+        link.download = 'battle-result.png';
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        showToast('Download started');
+    } catch (err) {
+        showToast(err.message || 'Failed to generate image');
+    } finally {
+        setShareButtonsDisabled(false);
+    }
+}
+
+async function shareCardImage() {
+    setShareButtonsDisabled(true);
+    try {
+        if (!navigator.share) {
+            showToast('Sharing not supported on this browser');
+            return;
+        }
+
+        const blob = await createShareCardBlob();
+        const file = new File([blob], 'battle-result.png', { type: 'image/png' });
+        const shareData = {
+            files: [file],
+            title: 'GitHub Profile Battle',
+            text: 'Check out this GitHub battle result!',
+        };
+
+        if (navigator.canShare && !navigator.canShare({ files: [file] })) {
+            showToast('Sharing not supported on this browser');
+            return;
+        }
+
+        await navigator.share(shareData);
+    } catch (err) {
+        if (err.name !== 'AbortError') {
+            showToast(
+                err.name === 'TypeError'
+                    ? 'Sharing not supported on this browser'
+                    : err.message || 'Failed to generate image'
+            );
+        }
+    } finally {
+        setShareButtonsDisabled(false);
+    }
+}
+
 // ===== Event Listeners =====
 DOM.battleBtn.addEventListener('click', startBattle);
 DOM.newBattleBtn.addEventListener('click', resetBattle);
 DOM.copyCardBtn.addEventListener('click', copyCardAsImage);
+DOM.downloadCardBtn.addEventListener('click', downloadCardImage);
+DOM.shareCardBtn.addEventListener('click', shareCardImage);
 
 // Enter key support
 [DOM.player1Input, DOM.player2Input].forEach((input) => {
