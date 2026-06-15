@@ -99,29 +99,44 @@
 const params = new URLSearchParams(window.location.search);
 const blogId = Number(params.get("id"));
 
-const blog = blogs.find(item => item.id === blogId);
+const localBlogs = JSON.parse(localStorage.getItem("blogs")) || [];
+const staticBlogs = typeof blogs !== "undefined" ? blogs : [];
+const allBlogs = [...localBlogs, ...staticBlogs];
+
+const blog = allBlogs.find(item => item.id === blogId);
 
 if(blog){
 
     document.title = blog.title;
 
-    document.getElementById("blogTitle").textContent =
-        blog.title;
+    document.getElementById("blogTitle").textContent = blog.title;
+    document.getElementById("blogAuthor").textContent = blog.author || "Admin";
+    document.getElementById("blogDate").textContent = `Posted on ${blog.date}`;
+    
+    // Set fallback image if missing
+    const imgUrl = blog.image || "https://images.unsplash.com/photo-1499750310107-5fef28a66643?q=80&w=1200";
+    document.getElementById("blogImage").src = imgUrl;
+    document.getElementById("blogImage").alt = blog.title;
 
-    document.getElementById("blogAuthor").textContent =
-        blog.author;
+    document.getElementById("blogContent").textContent = blog.content;
 
-    document.getElementById("blogDate").textContent =
-        `Posted on ${blog.date}`;
-
-    document.getElementById("blogImage").src =
-        blog.image;
-
-    document.getElementById("blogImage").alt =
-        blog.title;
-
-    document.getElementById("blogContent").textContent =
-        blog.content;
+    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    if (currentUser && currentUser.username === blog.author) {
+        const actionsDiv = document.createElement("div");
+        actionsDiv.className = "blog-actions";
+        actionsDiv.style.marginTop = "20px";
+        actionsDiv.style.display = "flex";
+        actionsDiv.style.gap = "10px";
+        actionsDiv.innerHTML = `
+            <button class="edit-btn" onclick="editBlog(${blog.id})" style="border: none; background: #3b82f6; color: white; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 600;">
+                ✏️ Edit Blog
+            </button>
+            <button class="delete-btn" onclick="deleteBlog(${blog.id})" style="border: none; background: #ef4444; color: white; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 600;">
+                🗑️ Delete Blog
+            </button>
+        `;
+        document.querySelector(".blog-page").appendChild(actionsDiv);
+    }
 
 }else{
 

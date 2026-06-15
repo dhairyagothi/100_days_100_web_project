@@ -93,6 +93,20 @@
         </div>
 
         <nav class="sidebar-nav">
+            <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:10px;">
+
+                <!-- DASHBOARD -->
+                <li>
+                    <a href="index.html" class="nav-item active"
+                        style="display:flex; align-items:center; gap:10px; padding:12px 14px;
+                        border-radius:12px; text-decoration:none;
+                        background:transparent;
+                        color:#333;
+                        border:1px solid rgba(0,0,0,0.08);
+                        transition:all 0.25s ease;"
+                        onmouseover="this.style.background='linear-gradient(135deg,#4f46e5,#3b82f6)'; this.style.color='#fff'; this.style.transform='translateX(4px)';"
+                        onmouseout="this.style.background='transparent'; this.style.color='#333'; this.style.transform='translateX(0px)';">
+                        <i class="ph ph-squares-four" style="font-size:18px;"></i>
             <ul>
 
                 <!-- DASHBOARD -->
@@ -105,6 +119,16 @@
 
                 <!-- HOME REMEDIES -->
                 <li>
+                    <a href="remedies.html"
+                        style="display:flex; align-items:center; gap:10px; padding:12px 14px;
+                        border-radius:12px; text-decoration:none;
+                        background:transparent;
+                        color:#333;
+                        border:1px solid rgba(0,0,0,0.08);
+                        transition:all 0.25s ease;"
+                        onmouseover="this.style.background='linear-gradient(135deg,#4f46e5,#3b82f6)'; this.style.color='#fff'; this.style.transform='translateX(4px)';"
+                        onmouseout="this.style.background='transparent'; this.style.color='#333'; this.style.transform='translateX(0px)';">
+                        <i class="ph ph-leaf" style="font-size:18px;"></i>
                     <a href="remedies.html" class="nav-item">
                         <i class="ph ph-leaf"></i>
                         <span>Home Remedies</span>
@@ -113,6 +137,16 @@
 
                 <!-- FEEDBACK -->
                 <li>
+                    <a href="feedback.html"
+                        style="display:flex; align-items:center; gap:10px; padding:12px 14px;
+                        border-radius:12px; text-decoration:none;
+                        background:transparent;
+                        color:#333;
+                        border:1px solid rgba(0,0,0,0.08);
+                        transition:all 0.25s ease;"
+                        onmouseover="this.style.background='linear-gradient(135deg,#4f46e5,#3b82f6)'; this.style.color='#fff'; this.style.transform='translateX(4px)';"
+                        onmouseout="this.style.background='transparent'; this.style.color='#333'; this.style.transform='translateX(0px)';">
+                        <i class="ph ph-chat-circle-text" style="font-size:18px;"></i>
                     <a href="feedback.html" class="nav-item">
                         <i class="ph ph-chat-circle-text"></i>
                         <span>Feedback</span>
@@ -121,6 +155,37 @@
 
             </ul>
         </nav>
+
+        <div class="sidebar-footer" style="margin-top:auto; padding:16px; display:flex; flex-direction:column; gap:12px;">
+
+            <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Theme"
+                style="display:flex !important; visibility:visible !important; opacity:1 !important;
+                align-items:center; gap:10px; padding:12px 14px; border:none; border-radius:12px; cursor:pointer;
+                background:linear-gradient(135deg,#2b2d42,#1f2233); color:#fff !important; font-weight:500;
+                box-shadow:0 6px 18px;">
+                <i class="ph ph-moon" style="font-size:18px; color:#fff;"></i>
+                <span style="color:#fff;">Dark Mode</span>
+            </button>
+
+            <button class="btn btn-outline" id="logoutBtn"
+                style="width:100%; padding:12px 14px; border-radius:12px; cursor:pointer;
+                border:1px solid #ff4d4f; background:transparent; color:#ff4d4f;
+                font-weight:600; display:flex; align-items:center; justify-content:center; gap:8px;
+                transition:all 0.2s ease; box-shadow:0 4px 14px rgba(255,77,79,0.15);">
+                <i class="ph ph-sign-out" style="font-size:18px;"></i>
+                Logout
+            </button>
+
+
+            <button class="btn btn-outline" id="logoutBtn"
+                style="width:100%; padding:12px 14px; border-radius:12px; cursor:pointer;
+                border:1px solid #ff4d4f; background:transparent; color:#ff4d4f;
+                font-weight:600; display:flex; align-items:center; justify-content:center; gap:8px;
+                transition:all 0.2s ease; box-shadow:0 4px 14px rgba(255,77,79,0.15);">
+                <i class="ph ph-sign-out" style="font-size:18px;"></i>
+                Logout
+            </button>
+
 
         <div class="sidebar-footer">
 
@@ -562,6 +627,18 @@
                         </div>
                     </section>
 
+                    <section class="card">
+                        <div class="card-header">
+                            <div class="card-icon primary"><i class="ph ph-lightning-bolt"></i></div>
+                            <h2>Quick Actions</h2>
+                        </div>
+                        <div class="quick-actions">
+                            <a href="feedback.html" class="quick-action-btn"><i class="ph ph-chat-circle-text"></i><span>Give Feedback</span></a>
+                            <button class="quick-action-btn"><i class="ph ph-download"></i><span>Download Records</span></button>
+                            <button class="quick-action-btn"><i class="ph ph-calendar"></i><span>Reschedule</span></button>
+                        </div>
+                    </section>
+
 
 
                 </div>
@@ -706,13 +783,11 @@
                 <div class="auth-field">
                     <label for="signupName">Full Name</label>
                     <input id="signupName" class="auth-input" type="text" autocomplete="name" placeholder="Your full name" required>
-
                 </div>
 
                 <div class="auth-field">
                     <label for="signupEmail">Email</label>
                     <input id="signupEmail" class="auth-input" type="email" autocomplete="email" placeholder="you@example.com" required>
-
                 </div>
 
                 <div class="auth-field">

@@ -39,7 +39,15 @@ BigSales-Prediction/
 
 ### 1. Backend Setup
 The backend runs on FastAPI and requires the pre-trained `model.pkl` and `scaler.pkl` files to serve predictions.
+#### Python Version Compatibility
+Some contributors may encounter dependency installation issues on newer Python versions while running:
 
+```bash
+   pip install -r requirements.txt
+```
+If installation fails, please verify that your Python version is compatible with the package versions specified in requirements.txt.
+
+During testing, dependency installation issues were encountered on Python 3.13, which prevented the backend dependencies from being installed successfully.
 1. Navigate to the backend directory:
 ```bash
    cd backend
