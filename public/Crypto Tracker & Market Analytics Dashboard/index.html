@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CryptoSphere Analytics Dashboard</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+<div class="bg-animation"></div>
+
+<div class="dashboard-container">
+
+    <!-- HEADER -->
+    <header>
+        <div class="logo">
+            <i class="fa-solid fa-cubes-stacked"></i>
+            <i aria-hidden="true" class="fa-solid fa-cubes-stacked"></i>
+            <h1>Crypto<span>Sphere</span></h1>
+        </div>
+
+        <div class="header-actions">
+            <button id="theme-toggle" class="btn">
+                <i class="fa-solid fa-moon"></i>
+            </button>
+
+            <button id="toggle-watchlist-btn" class="btn">
+                <i class="fa-solid fa-star"></i>
+                <i aria-hidden="true" class="fa-solid fa-moon"></i>
+            </button>
+
+            <button id="toggle-watchlist-btn" class="btn">
+                <i aria-hidden="true" class="fa-solid fa-star"></i>
+                Watchlist
+            </button>
+        </div>
+    </header>
+
+    <!-- MARKET STATS -->
+    <section class="stats-overview">
+
+        <div class="stat-card glass">
+            <h3>Market Leader</h3>
+            <p id="top-coin">Loading...</p>
+        </div>
+
+        <div class="stat-card glass">
+            <h3>Top Gainer</h3>
+            <p id="top-gainer" class="green">Loading...</p>
+        </div>
+
+        <div class="stat-card glass">
+            <h3>Watchlist</h3>
+            <p id="watchlist-count">0 Assets</p>
+        </div>
+
+        <div class="stat-card glass">
+            <h3>Total Assets</h3>
+            <p id="total-assets">100</p>
+        </div>
+
+    </section>
+
+    <!-- SEARCH -->
+    <section class="utilities-bar glass">
+
+        <div class="search-box">
+            <i class="fa-solid fa-search"></i>
+            <i aria-hidden="true" class="fa-solid fa-search"></i>
+
+            <input
+                type="text"
+                id="search-input"
+                placeholder="Search cryptocurrency..."
+            >
+        </div>
+
+        <div class="filter-options">
+
+            <select id="sort-select">
+
+                <option value="market_cap_desc">
+                    Market Cap ↓
+                </option>
+
+                <option value="price_desc">
+                    Price ↓
+                </option>
+
+                <option value="price_asc">
+                    Price ↑
+                </option>
+
+                <option value="change_desc">
+                    Top Gainers
+                </option>
+
+                <option value="change_asc">
+                    Top Losers
+                </option>
+
+            </select>
+
+        </div>
+
+    </section>
+
+    <!-- TABLE -->
+    <main class="glass table-container">
+
+        <table id="crypto-table">
+
+            <thead>
+
+                <tr>
+                    <th>Watch</th>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>24h</th>
+                    <th>Market Cap</th>
+                    <th>Volume</th>
+                    <th>Actions</th>
+                </tr>
+
+            </thead>
+
+            <tbody id="crypto-table-body"></tbody>
+
+        </table>
+
+        <div id="loading-spinner" class="spinner"></div>
+
+    </main>
+
+</div>
+
+<!-- DETAILS MODAL -->
+
+<div id="detail-modal" class="modal-overlay hidden">
+
+    <div class="modal-content glass">
+
+        <button id="close-modal-btn" class="close-btn">
+            &times;
+        </button>
+
+        <div class="modal-header">
+
+            <img id="modal-coin-img">
+            <img alt="" id="modal-coin-img">
+
+            <div>
+                <h2 id="modal-coin-name"></h2>
+                <span id="modal-coin-symbol"></span>
+            </div>
+
+        </div>
+
+        <div class="modal-grid">
+
+            <div class="modal-stat">
+                <span>Current Price</span>
+                <strong id="modal-price"></strong>
+            </div>
+
+            <div class="modal-stat">
+                <span>24h High / Low</span>
+                <strong id="modal-high-low"></strong>
+            </div>
+
+            <div class="modal-stat">
+                <span>ATH</span>
+                <strong id="modal-ath"></strong>
+            </div>
+
+            <div class="modal-stat">
+                <span>Supply</span>
+                <strong id="modal-supply"></strong>
+            </div>
+
+            <div class="modal-stat">
+                <span>Volume</span>
+                <strong id="modal-volume"></strong>
+            </div>
+
+            <div class="modal-stat">
+                <span>Market Cap</span>
+                <strong id="modal-marketcap"></strong>
+            </div>
+
+        </div>
+
+        <div class="chart-section">
+            <canvas id="coinChart"></canvas>
+        </div>
+
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixel Art Maker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <h1>Pixel Art Maker</h1>
+
+    <div class="controls">
+        <div class="control-group">
+            <label for="width-input">Width:</label>
+            <input type="number" id="width-input" value="16" min="1" max="64">
+        </div>
+        <div class="control-group">
+            <label for="height-input">Height:</label>
+            <input type="number" id="height-input" value="16" min="1" max="64">
+        </div>
+        <div class="control-group">
+            <button id="size-btn">Regenerate Grid</button>
+        </div>
+        <div class="control-group">
+            <label for="color-picker">Color:</label>
+            <input type="color" id="color-picker" value="#000000">
+        </div>
+        <div class="control-group">
+            <button id="rubber-btn" class="rubber-btn">Rubber</button>
+        </div>
+        <div class="control-group">
+            <button id="clear-btn" class="clear-btn">Clear Canvas</button>
+        </div>
+    </div>
+
+    <div class="canvas-container">
+        <div id="pixel-grid"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

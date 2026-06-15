@@ -1,0 +1,36 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #1a1a2e;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: 'Arial', sans-serif;
+}
+
+.clock {
+    background-color: #16213e;
+    padding: 40px 60px;
+    border-radius: 20px;
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
+    text-align: center;
+}
+
+h1 {
+    color: #00fff5;
+    font-size: 80px;
+    letter-spacing: 10px;
+}
+
+#date {
+    color: #00fff5;
+    font-size: 20px;
+    letter-spacing: 3px;
+    margin-top: 10px;
+    opacity: 0.8;
+}

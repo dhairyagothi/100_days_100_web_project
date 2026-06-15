@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
 
 
   <canvas id="canvas" aria-label="Physics simulation canvas"></canvas>
@@ -24,7 +24,7 @@
 
     <div class="sliders">
 
-      <div class="ctrl-item">
+      <div class="ctrl-item" data-tooltip="Downward acceleration applied to all balls per frame. Simulates planetary gravity.">
         <div class="ctrl-head">
           <label for="gravity">Gravity</label>
           <span class="val" id="gravity-val">0.20</span>
@@ -32,7 +32,7 @@
         <input type="range" id="gravity" min="0" max="2" step="0.05" value="0.2">
       </div>
 
-      <div class="ctrl-item">
+      <div class="ctrl-item" data-tooltip="Coefficient of restitution. Determines velocity retained after collisions.">
         <div class="ctrl-head">
           <label for="elasticity">Bounce</label>
           <span class="val" id="elasticity-val">0.75</span>
@@ -40,7 +40,7 @@
         <input type="range" id="elasticity" min="0.1" max="1" step="0.05" value="0.75">
       </div>
 
-      <div class="ctrl-item">
+      <div class="ctrl-item" data-tooltip="Initial spawn radius of balls. Scales the volume and mass cubically.">
         <div class="ctrl-head">
           <label for="ball-size">Size</label>
           <span class="val" id="ball-size-val">22</span>
@@ -48,7 +48,7 @@
         <input type="range" id="ball-size" min="8" max="50" step="1" value="22">
       </div>
 
-      <div class="ctrl-item">
+      <div class="ctrl-item" data-tooltip="Length of the visual motion trail showing past coordinates and velocity.">
         <div class="ctrl-head">
           <label for="trail">Trail</label>
           <span class="val" id="trail-val">16</span>
@@ -56,7 +56,7 @@
         <input type="range" id="trail" min="0" max="40" step="1" value="16">
       </div>
 
-      <div class="ctrl-item">
+      <div class="ctrl-item" data-tooltip="Mass density of the balls. Denser/larger balls hit harder and transfer more momentum.">
         <div class="ctrl-head">
           <label for="density">Density</label>
           <span class="val" id="density-val">1.0</span>
@@ -70,8 +70,47 @@
       <button id="add-btn">+ Ball</button>
       <button id="pause-btn" title="Space">⏸</button>
       <button id="clear-btn">Clear</button>
+      <button id="info-btn" title="Explain the Physics">Physics Info 💡</button>
     </div>
 
+  </div>
+
+  <div id="physics-modal" class="modal-overlay" aria-hidden="true">
+    <div class="modal-content glass">
+      <div class="modal-header">
+        <h2>Physics Engine Mechanics 💡</h2>
+        <button class="modal-close" id="modal-close-btn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <section class="modal-section">
+          <h3>1. Gravity (Acceleration)</h3>
+          <p>Gravity is modeled as a constant downward acceleration vector (<code>g</code>) applied to each ball's vertical velocity (<code>vy</code>) per time step:</p>
+          <pre><code>vy = vy + g</code></pre>
+        </section>
+        
+        <section class="modal-section">
+          <h3>2. Bounciness (Restitution)</h3>
+          <p>When a ball hits a boundary, it reflects its velocity vector. The coefficient of restitution (<code>e</code>) determines the percentage of kinetic energy retained. A bounce value of <code>0.75</code> means it keeps 75% of its speed, losing 25% to deformation and heat.</p>
+        </section>
+
+        <section class="modal-section">
+          <h3>3. Mass & Density (m &prop; d &middot; r<sup>3</sup>)</h3>
+          <p>Real-world mass scales with volume (3D sphere). In this engine, mass (<code>m</code>) is calculated using the ball's radius (<code>r</code>) and density (<code>d</code>):</p>
+          <div class="formula">m = d &middot; r<sup>3</sup></div>
+          <p>This cubic relation means doubling a ball's size increases its mass by <strong>8x</strong>! Denser balls possess significantly higher momentum, easily pushing lighter balls aside.</p>
+        </section>
+
+        <section class="modal-section">
+          <h3>4. Impulse-Based Collisions</h3>
+          <p>Collisions are resolved in two phases:
+            <ul style="margin-left: 1.25rem; margin-top: 0.35rem; display: flex; flex-direction: column; gap: 0.25rem;">
+              <li><strong>Positional Correction:</strong> Pushes overlapping balls apart slightly to prevent sinking or stickiness.</li>
+              <li><strong>Impulse Resolution:</strong> Applies equal and opposite forces (Newton's Third Law) along the collision normal to exchange momentum elastically.</li>
+            </ul>
+          </p>
+        </section>
+      </div>
+    </div>
   </div>
 
   <script src="script.js"></script>
