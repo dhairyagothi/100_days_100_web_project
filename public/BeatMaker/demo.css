@@ -58,6 +58,22 @@ body {
   gap: 30px;
   align-items: center;
   justify-content: center;
+  align-items: flex-start;
+  gap: 50px;
+
+  position: relative;
+}
+
+.audio-list .audio {
+  background: #1e293b !important;
+  color: white;
+  border-radius: 12px !important;
+  transition: 0.3s;
+}
+
+.audio-list .audio:hover {
+  transform: translateY(-4px);
+  background: #334155 !important;
 }
 
 .genre-presets h3,
