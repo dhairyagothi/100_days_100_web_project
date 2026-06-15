@@ -3,184 +3,178 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Expense Tracker</title>
+    <title>Expense Tracker - Premium Dashboard</title>
+    <!-- Google Fonts - Inter & Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <style>
-        /* Forces equal vertical alignment matching on the cards and their contents */
-        @media (min-width: 992px) {
-            .main-layout {
-                display: flex !important;
-                align-items: stretch !important; /* Forces uniform vertical card stretching */
-                gap: 24px; 
-            }
-            .content-card.form-section {
-                flex: 0 0 420px !important;     /* Increased from 350px for a bit more room */
-                max-width: 450px !important;    /* Increased from 380px */
-                margin: 0 !important;
-                height: auto !important;         /* Cancels out fit-content block from stylesheet */
-                display: flex !important;        
-                flex-direction: column !important;
-            }
-            .content-card.summary-section {
-                flex: 1 !important;             /* Let the summary panel stretch horizontally */
-                margin: 0 !important;
-                height: auto !important;
-                display: flex !important;
-                flex-direction: column !important;
-            }
-            
-            /* Structural alignment mechanics to flush card bottoms identically */
-            #transactionForm {
-                display: flex !important;
-                flex-direction: column !important;
-                flex-grow: 1 !important;         /* Stretches form internally to fill card bottom space */
-            }
-            /* Pushes the primary action button exactly to the matching bottom floor */
-            #transactionForm .btn-primary {
-                margin-top: auto !important;     /* Locks button flush against the baseline */
-            }
-        }
-    </style>
 </head>
 <body>
     <div class="app-container">
-        <header class="app-header">
-            <div class="logo-group">
-                <h1>Expense <span class="logo-accent">Tracker</span></h1>
-                <p class="logo-subtext">Your money, kept simple.</p>
-            </div>
-            
-            <div class="header-controls">
-                <nav class="nav-links-group">
-                    <a href="index.html" class="nav-link active">Transactions</a>
-                    <a href="dashboard.html" class="nav-link">Dashboard</a>
-                    <a href="history.html" class="nav-link">History Log</a>
-                </nav>
-                
-                <div class="utility-buttons">
-                    <button id="btnExport" class="btn-secondary" aria-label="Copy backup pack">Backup</button>
-                    <button id="btnReset" class="btn-danger" aria-label="Reset database data">Clear All</button>
+        <!-- Sidebar Navigation & Quick Actions -->
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="logo-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
                 </div>
+                <h2>SpendWise</h2>
             </div>
-        </header>
 
-        <div class="main-layout">
-            <main class="content-card form-section">
-                <h2>Add New Entry</h2>
-                <form id="transactionForm" novalidate>
-                    <div class="form-row">
-                        <div class="form-input-group">
-                            <label for="amount">Amount (₹) *</label>
-                            <input type="number" id="amount" placeholder="0.00" min="0.01" required>
-                            <span class="error-msg" id="amountError"></span>
-                        </div>
-                        <div class="form-input-group">
-                            <label for="date">Date *</label>
-                            <input type="date" id="date" required>
-                            <span class="error-msg" id="dateError"></span>
-                        </div>
+            <!-- Set/Update Income Card -->
+            <div class="income-panel glass-panel">
+                <h3>Set Monthly Income</h3>
+                <form id="income-form">
+                    <div class="input-group">
+                        <span class="currency-symbol">$</span>
+                        <input type="number" id="income-input" placeholder="Enter income amount" min="0" step="any" required>
                     </div>
-
-                    <div class="form-input-group">
-                        <label>Transaction Type *</label>
-                        <div class="radio-switcher">
-                            <input type="radio" id="type-expense" name="type" value="Expense" checked required>
-                            <label for="type-expense" class="switch-label">Expense (Spent)</label>
-                            
-                            <input type="radio" id="type-income" name="type" value="Income" required>
-                            <label for="type-income" class="switch-label">Income (Earned)</label>
-                        </div>
-                    </div>
-
-                    <div class="form-input-group" id="categoryGroup">
-                        <label for="category">Category *</label>
-                        <select id="category" required>
-                            <option value="">Select a category...</option>
-                            <option value="Food">Food & Dining</option>
-                            <option value="Travel">Travel & Fuel</option>
-                            <option value="Shopping">Shopping & Clothes</option>
-                            <option value="Bills">Bills & Rent</option>
-                            <option value="Others">Others</option>
-                        </select>
-                        <span class="error-msg" id="categoryError"></span>
-                    </div>
-
-                    <div class="form-input-group">
-                        <label for="description">Description *</label>
-                        <input type="text" id="description" placeholder="What was this for? e.g., Grocery" required>
-                        <span class="error-msg" id="descriptionError"></span>
-                    </div>
-
-                    <button type="submit" class="btn-primary">Add to My List</button>
+                    <button type="submit" class="btn btn-secondary">Update Income</button>
                 </form>
-            </main>
+            </div>
 
-            <section class="content-card summary-section">
-                <h2>Your Summary</h2>
-                <div class="dashboard-stats">
-                    <div class="stat-box balance-box">
-                        <span class="stat-title">Current Balance</span>
-                        <div id="accountBalance" class="stat-number color-neutral">₹0.00</div>
+            <!-- Add Expense Form Card -->
+            <div class="expense-form-panel glass-panel">
+                <h3>Add New Expense</h3>
+                <form id="expense-form">
+                    <div class="form-group">
+                        <label for="expense-name">Expense Name</label>
+                        <input type="text" id="expense-name" placeholder="What did you buy?" required>
                     </div>
-                    <div class="stat-box">
-                        <span class="stat-title">Total Earned</span>
-                        <div id="totalIncome" class="stat-number text-green">₹0.00</div>
+                    <div class="form-group">
+                        <label for="expense-amount">Amount</label>
+                        <div class="input-group">
+                            <span class="currency-symbol">$</span>
+                            <input type="number" id="expense-amount" placeholder="0.00" min="0.01" step="any" required>
+                        </div>
                     </div>
-                    <div class="stat-box">
-                        <span class="stat-title">Total Spent</span>
-                        <div id="totalExpense" class="stat-number text-red">₹0.00</div>
+                    <div class="form-group">
+                        <label for="expense-category">Category</label>
+                        <select id="expense-category" required>
+                            <option value="" disabled selected>Select category</option>
+                            <option value="Food">Food</option>
+                            <option value="Travel">Travel</option>
+                            <option value="Shopping">Shopping</option>
+                            <option value="Bills">Bills</option>
+                            <option value="Other">Other</option>
+                        </select>
                     </div>
-                    <div class="stat-box">
-                        <span class="stat-title">Average Entry</span>
-                        <div id="avgTransaction" class="stat-number">₹0.00</div>
+                    <button type="submit" class="btn btn-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                        Add Expense
+                    </button>
+                </form>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Header section -->
+            <header class="main-header">
+                <div>
+                    <h1>Expense Tracker</h1>
+                    <p class="subtitle">Gain complete control over your finances</p>
+                </div>
+                <div class="header-date" id="current-date">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                    <span id="date-text">Loading date...</span>
+                </div>
+            </header>
+
+            <!-- Dashboard Statistics -->
+            <section class="dashboard-grid">
+                <div class="stat-card glass-panel income">
+                    <div class="stat-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
                     </div>
-                    <div class="stat-box">
-                        <span class="stat-title">Savings Rate</span>
-                        <div id="savingsRate" class="stat-number text-blue">0.0%</div>
+                    <div class="stat-details">
+                        <span class="stat-label">Total Income</span>
+                        <h2 class="stat-value" id="total-income">$0.00</h2>
                     </div>
                 </div>
 
-                <div class="visual-chart-box">
-                    <div class="donut-visual">
-                        <svg viewBox="0 0 42 42" class="svg-circle" aria-hidden="true">
-                            <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="var(--chart-track)" stroke-width="4"></circle>
-                            <circle id="donutSegment" cx="21" cy="21" r="15.915" fill="transparent" stroke="#4F46E5" stroke-width="4" stroke-dasharray="0 100" stroke-dashoffset="25"></circle>
-                        </svg>
-                        <div class="donut-text">
-                            <span id="highestExpensePct">0%</span>
-                            <small id="highestExpenseName">Top Category</small>
-                        </div>
+                <div class="stat-card glass-panel expenses">
+                    <div class="stat-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
                     </div>
+                    <div class="stat-details">
+                        <span class="stat-label">Total Expenses</span>
+                        <h2 class="stat-value" id="total-expenses">$0.00</h2>
+                    </div>
+                </div>
 
-                    <div class="progress-bars-container" id="categoriesList">
-                        <div class="progress-bar-item" data-category="Food">
-                            <div class="progress-text"><span>Food & Dining</span><span id="cat-Food">₹0.00</span></div>
-                            <div class="progress-track"><div class="progress-fill" style="width: 0%; background-color: #38BDF8;"></div></div>
-                        </div>
-                        <div class="progress-bar-item" data-category="Travel">
-                            <div class="progress-text"><span>Travel & Fuel</span><span id="cat-Travel">₹0.00</span></div>
-                            <div class="progress-track"><div class="progress-fill" style="width: 0%; background-color: #FB923C;"></div></div>
-                        </div>
-                        <div class="progress-bar-item" data-category="Shopping">
-                            <div class="progress-text"><span>Shopping & Clothes</span><span id="cat-Shopping">₹0.00</span></div>
-                            <div class="progress-track"><div class="progress-fill" style="width: 0%; background-color: #F43F5E;"></div></div>
-                        </div>
-                        <div class="progress-bar-item" data-category="Bills">
-                            <div class="progress-text"><span>Bills & Rent</span><span id="cat-Bills">₹0.00</span></div>
-                            <div class="progress-track"><div class="progress-fill" style="width: 0%; background-color: #34D399;"></div></div>
-                        </div>
-                        <div class="progress-bar-item" data-category="Others">
-                            <div class="progress-text"><span>Others</span><span id="cat-Others">₹0.00</span></div>
-                            <div class="progress-track"><div class="progress-fill" style="width: 0%; background-color: #A78BFA;"></div></div>
-                        </div>
+                <div class="stat-card glass-panel balance">
+                    <div class="stat-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="12" y1="4" x2="12" y2="20"></line><line x1="2" y1="12" x2="22" y2="12"></line></svg>
+                    </div>
+                    <div class="stat-details">
+                        <span class="stat-label">Net Balance</span>
+                        <h2 class="stat-value" id="net-balance">$0.00</h2>
                     </div>
                 </div>
             </section>
-        </div>
+
+            <!-- Middle Section: Breakdown & Filters -->
+            <div class="tracker-layout">
+                <!-- Left: History & Filter -->
+                <section class="history-section glass-panel">
+                    <div class="section-header">
+                        <h3>Expense History</h3>
+                        <div class="filter-wrapper">
+                            <label for="category-filter" class="sr-only">Filter by Category</label>
+                            <div class="custom-select">
+                                <select id="category-filter">
+                                    <option value="All">All Categories</option>
+                                    <option value="Food">Food</option>
+                                    <option value="Travel">Travel</option>
+                                    <option value="Shopping">Shopping</option>
+                                    <option value="Bills">Bills</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Expense List -->
+                    <div class="expense-list-container">
+                        <div id="no-expenses" class="no-data-alert">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                            <p>No expenses found. Start by adding one in the sidebar!</p>
+                        </div>
+                        <ul id="expense-list" class="expense-list">
+                            <!-- Populated dynamically via JS -->
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Right: Visual Insights -->
+                <section class="insights-section glass-panel">
+                    <h3>Category Breakdown</h3>
+                    
+                    <div class="insights-container">
+                        <!-- Chart visualization -->
+                        <div class="chart-box">
+                            <svg class="donut-chart" viewBox="0 0 100 100">
+                                <circle class="donut-bg" cx="50" cy="50" r="40" fill="transparent" stroke-width="12"></circle>
+                                <circle class="donut-fill" id="chart-progress" cx="50" cy="50" r="40" fill="transparent" stroke-width="12" stroke-dasharray="251.2" stroke-dashoffset="251.2" transform="rotate(-90 50 50)"></circle>
+                            </svg>
+                            <div class="chart-text">
+                                <span class="chart-percentage" id="expense-ratio">0%</span>
+                                <span class="chart-label">of Income</span>
+                            </div>
+                        </div>
+
+                        <!-- Legend with breakdown percentages -->
+                        <div class="legend" id="category-breakdown-legend">
+                            <!-- Generated dynamically via JS -->
+                            <div class="legend-placeholder">No data to display. Add expenses to view category breakdown.</div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
     </div>
-
-    <button id="themeToggle" class="floating-theme-btn" aria-label="Toggle dark and light mode">🌓</button>
-
-    <script src="expense.js" defer></script>
+    
+    <script src="script.js"></script>
 </body>
 </html>

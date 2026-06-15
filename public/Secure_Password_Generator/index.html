@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Secure Password Generator</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="bg-shapes" aria-hidden="true">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+  </div>
+
+  <main class="container" role="main">
+    <header class="header">
+      <div class="logo" aria-hidden="true">
+        <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="6" y="16" width="24" height="16" rx="3" fill="url(#lockGrad)"/>
+          <path d="M11 16V11a7 7 0 1 1 14 0v5" stroke="url(#lockGrad)" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="18" cy="24" r="2.5" fill="white"/>
+          <defs>
+            <linearGradient id="lockGrad" x1="6" y1="6" x2="30" y2="36" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#a78bfa"/>
+              <stop offset="1" stop-color="#60a5fa"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+      <h1>Secure Password Generator</h1>
+      <p class="subtitle">Generate strong, unique passwords instantly</p>
+    </header>
+
+    <div class="card">
+
+      <!-- Password Display -->
+      <div class="password-section">
+        <label class="sr-only" for="password-output">Generated Password</label>
+        <div class="password-box">
+          <input
+            type="text"
+            id="password-output"
+            class="password-output"
+            readonly
+            aria-live="polite"
+            aria-label="Generated password"
+            placeholder="Your password will appear here..."
+          />
+          <div class="password-actions">
+            <button class="icon-btn" id="regenerate-btn" title="Regenerate password" aria-label="Regenerate password">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="23 4 23 10 17 10"/>
+                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+              </svg>
+            </button>
+            <button class="icon-btn copy-btn" id="copy-btn" title="Copy to clipboard" aria-label="Copy password to clipboard">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Strength Meter -->
+        <div class="strength-section" aria-live="polite" aria-label="Password strength">
+          <div class="strength-bars">
+            <div class="bar" id="bar-1"></div>
+            <div class="bar" id="bar-2"></div>
+            <div class="bar" id="bar-3"></div>
+            <div class="bar" id="bar-4"></div>
+          </div>
+          <span class="strength-label" id="strength-label">—</span>
+        </div>
+      </div>
+
+      <!-- Settings -->
+      <div class="settings">
+
+        <!-- Length -->
+        <div class="setting-group">
+          <div class="setting-row">
+            <label class="setting-label" for="length-slider">Password Length</label>
+            <span class="length-value" id="length-display" aria-live="polite">16</span>
+          </div>
+          <div class="slider-track">
+            <input
+              type="range"
+              id="length-slider"
+              class="slider"
+              min="4"
+              max="32"
+              value="16"
+              aria-valuemin="4"
+              aria-valuemax="32"
+              aria-valuenow="16"
+              aria-label="Password length"
+            />
+            <div class="slider-fill" id="slider-fill"></div>
+          </div>
+          <div class="slider-labels">
+            <span>4</span>
+            <span>32</span>
+          </div>
+        </div>
+
+        <!-- Character Types -->
+        <div class="setting-group">
+          <p class="setting-label">Character Types</p>
+          <div class="checkboxes">
+            <label class="checkbox-label" for="uppercase">
+              <input type="checkbox" id="uppercase" class="char-option" checked aria-label="Include uppercase letters" />
+              <span class="checkbox-custom"></span>
+              <span class="checkbox-text">
+                <span class="checkbox-title">Uppercase</span>
+                <span class="checkbox-example">A B C … Z</span>
+              </span>
+            </label>
+            <label class="checkbox-label" for="lowercase">
+              <input type="checkbox" id="lowercase" class="char-option" checked aria-label="Include lowercase letters" />
+              <span class="checkbox-custom"></span>
+              <span class="checkbox-text">
+                <span class="checkbox-title">Lowercase</span>
+                <span class="checkbox-example">a b c … z</span>
+              </span>
+            </label>
+            <label class="checkbox-label" for="numbers">
+              <input type="checkbox" id="numbers" class="char-option" checked aria-label="Include numbers" />
+              <span class="checkbox-custom"></span>
+              <span class="checkbox-text">
+                <span class="checkbox-title">Numbers</span>
+                <span class="checkbox-example">0 1 2 … 9</span>
+              </span>
+            </label>
+            <label class="checkbox-label" for="symbols">
+              <input type="checkbox" id="symbols" class="char-option" checked aria-label="Include symbols" />
+              <span class="checkbox-custom"></span>
+              <span class="checkbox-text">
+                <span class="checkbox-title">Symbols</span>
+                <span class="checkbox-example">! @ # $ % …</span>
+              </span>
+            </label>
+          </div>
+          <p class="validation-msg" id="validation-msg" role="alert" aria-live="assertive">
+            Please select at least one character type.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- Generate Button -->
+      <button class="generate-btn" id="generate-btn" aria-label="Generate new password">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+        </svg>
+        Generate Password
+      </button>
+
+    </div>
+  </main>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <polyline points="20 6 9 17 4 12"/>
+    </svg>
+    Copied to clipboard!
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

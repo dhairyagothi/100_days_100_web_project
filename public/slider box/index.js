@@ -230,6 +230,8 @@ let photos = [
 ];
 
 let index = 0;
+let autoplayInterval;
+let isLightboxOpen = false;
 // Preload all images for smooth transitions
 function preloadImages() {
   for (let i = 0; i < photos.length; i++) {
@@ -265,10 +267,11 @@ function buildDots() {
     if (i === index) dot.classList.add("active");
     // Click a dot to jump to that slide
     (function(i) {
-      dot.addEventListener("click", function() {
-        index = i;
-        showPhoto();
-      });
+     dot.addEventListener("click", function() {
+    index = i;
+    showPhoto();
+    if(!isLightboxOpen) startAutoplay();
+});
     })(i);
     dotsContainer.appendChild(dot);
   }
@@ -306,24 +309,91 @@ function showPhoto() {
 function nextPhoto() {
   index = (index + 1) % photos.length;
   showPhoto();
+  if(!isLightboxOpen) startAutoplay();
 }
 
 function prevPhoto() {
   index = (index - 1 + photos.length) % photos.length;
   showPhoto();
+  if(!isLightboxOpen) startAutoplay();
+}
+
+function startAutoplay() {
+  stopAutoplay(); // prevent duplicate timers
+  if(isLightboxOpen) return; // don't start slideshow background cycles when preview is active
+
+  autoplayInterval = setInterval(function () {
+    nextPhoto();
+  }, 4000); // changes slide every 4 sec
+}
+
+function stopAutoplay() {
+  clearInterval(autoplayInterval);
 }
 
 
 // Keyboard navigation support
 document.addEventListener("keydown", function(e) {
-  if (e.key === "ArrowRight") nextPhoto();
-  if (e.key === "ArrowLeft") prevPhoto();
+  if (e.key === "ArrowRight" && !isLightboxOpen) nextPhoto();
+  if (e.key === "ArrowLeft" && !isLightboxOpen) prevPhoto();
 });
 
+// ── LIGHTBOX MODAL EVENT MANAGERS ADDED HERE ──
+function initLightbox(){
+  const sliderPhoto = document.getElementById('photo');
+  const lightbox = document.getElementById('lightbox-modal');
+  const lightboxImg = document.getElementById('lightbox-img');
+  const closeBtn = document.querySelector('.close-btn');
+
+if(!sliderPhoto || !lightbox || !lightboxImg || !closeBtn) return;
+
+// Make core element visibly indicate interactivity
+sliderPhoto.style.cursor = 'pointer';
+
+sliderPhoto.addEventListener('click', function(){
+  isLightboxOpen = true;
+  stopAutoplay();
+  const currentSrc = sliderPhoto.getAttribute('src');
+  lightboxImg.setAttribute('src', currentSrc);
+  lightbox.classList.add('show');
+});
+
+closeBtn.addEventListener('click', closeLightbox);
+
+lightbox.addEventListener('click', function(e){
+  if(e.target === lightbox){
+    closeLightbox();
+  }
+});
+// Close via keyboard 'Escape' sequence
+window.addEventListener('keydown', function(e){
+  if(e.key === 'Escape' && lightbox.classList.contains('show')) {
+    closeLightbox();
+  }
+});
+function closeLightbox() {
+  isLightboxOpen = false;
+  lightbox.classList.remove('show');
+  // Clear out standard memory registers after CSS scaling animation closes
+  setTimeout(function(){
+    lightboxImg.setAttribute('src', '');
+  }, 300);
+  startAutoplay();
+}
+}
 // Init on page load
 window.onload = function() {
   preloadImages();
   buildDots();
+  let slideshow = document.getElementById("slideshow");
+
+slideshow.addEventListener("mouseenter", function(){
+  if(!isLightboxOpen) stopAutoplay();
+});
+
+slideshow.addEventListener("mouseleave", function(){
+  if(!isLightboxOpen) startAutoplay();
+});
 
   let img = document.getElementById("photo");
   let placeName = document.getElementById("place-name");
@@ -335,4 +405,7 @@ window.onload = function() {
   if (placeLocation) placeLocation.textContent = "📍 " + photos[index].location;
 
   updateCounter();
+  // Fire new dynamic listeners alongside initialization loops
+  initLightbox();
+  startAutoplay();
 };

@@ -8,6 +8,8 @@
 </head>
 
 <body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
+
 
 <div class="main-container">
 
@@ -20,54 +22,7 @@
         placeholder="Search element..."
         >
 
- <body>
-
-<div class="controls-panel">
-    <button id="theme-toggle">🌙 Dark Mode</button>
-    <div class="control-group">
-        <label for="category-select">Category:</label>
-        <select id="category-select">
-            <option value="all">All Elements</option>
-        </select>
-    </div>
-    <div class="control-group">
-        <label for="heatmap-select">Heatmap:</label>
-        <select id="heatmap-select">
-            <option value="none">None</option>
-            <option value="electronegativity">Electronegativity</option>
-        </select>
-    </div>
-    <div class="control-group slider-group">
-        <label for="temp-slider">Temperature: <span id="temp-display">298 K</span></label>
-        <input type="range" id="temp-slider" min="0" max="6000" value="298">
-    </div>
-</div>
-
-<div class="table-container">
-
-    <!-- existing periodic table elements stay here -->
-
-</div>
-
-<!-- Element Info Modal -->
-<div id="element-modal" class="modal">
-    <div class="modal-content">
-
-        <span class="close-btn">&times;</span>
-
-        <h2 id="modal-name"></h2>
-
-        <div class="modal-details">
-            <p><strong>Symbol:</strong> <span id="modal-symbol"></span></p>
-            <p><strong>Atomic Number:</strong> <span id="modal-number"></span></p>
-            <p><strong>Atomic Mass:</strong> <span id="modal-mass"></span></p>
-            <p><strong>Group:</strong> <span id="modal-group"></span></p>
-            <p><strong>Period:</strong> <span id="modal-period"></span></p>
-            <p><strong>Electronegativity:</strong> <span id="modal-electronegativity"></span></p>
-            <p><strong>Melting Point:</strong> <span id="modal-melting"></span></p>
-            <p><strong>Boiling Point:</strong> <span id="modal-boiling"></span></p>
-            <p><strong>Category:</strong><span id="modal-category" class="category-badge"></span></p>
-            <p><strong>Interesting Fact:</strong></p><p id="modal-fact" class="fact-text"></p>
+        <select id="categoryFilter">
 
             <option value="all">All</option>
             <option value="alkali">Alkali Metals</option>
@@ -107,9 +62,12 @@
             </option>
 
         </select>
+        <button id="exportPdfBtn">
+    Export PDF
+</button>
 
     </div>
-
+<div id="pdfExportArea">
 
     <!-- Legend -->
     <div class="legend"></div>
@@ -200,13 +158,16 @@ Select a trend property
 
 
     <!-- Periodic Table -->
-    <div class="table-container">
+    <div class="periodic-table-wrapper">
+        <div class="table-container">
 
-        <!-- JS adds elements here -->
+            <!-- JS adds elements here -->
 
+        </div>
     </div>
 
 
+</div>
 </div>
 
 
@@ -434,7 +395,9 @@ Trails
 
 
 
-<script src="script.js"></script>
+<script src="script.js?v=2024"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </body>
 </html>

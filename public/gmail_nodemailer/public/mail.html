@@ -1,64 +1,133 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset= "UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SEND-MAIL</title>
-<link rel="stylesheet" href="mail.css">
-<link rel="icon" href="../../favv.png" type="image/x-icon" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SEND-MAIL</title>
+    <link rel="stylesheet" href="mail.css" />
+    <link rel="icon" href="../../favv.png" type="image/x-icon" />
+  </head>
+  <body>
+    <a
+      href="/"
+      class="project-back-button"
+      style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'"
+      >← Back to Home</a
+    >
 
-</head>
-<body>
+    <div class="contact">
+      <h3>Subscribe to our emails</h3>
 
-<div class="contact">
-    <h3>Subscribe to our emails</h3>
-
-    <p class="form-subtitle">
+      <p class="form-subtitle">
         Stay updated with our latest news, updates, and exclusive content.
-    </p>
+      </p>
 
-    <form method="POST" action="/">
-
+      <form method="POST" action="/">
         <div class="contact01">
+          <label for="name">Full Name</label>
 
-            <label for="name">Full Name</label>
+          <input
+            class="email"
+            id="name"
+            name="name"
+            type="text"
+            placeholder="Enter your full name"
+            required
+            autocomplete="off"
+          />
 
-            <input
-                class="email"
-                id="name"
-                name="name"
-                type="text"
-                placeholder="Enter your full name"
-                required
-                autocomplete="off"
-            >
+          <label for="email">Email Address</label>
 
-            <label for="email">Email Address</label>
-
-            <input
-                class="email"
-                id="email"
-                name="emailid"
-                type="email"
-                placeholder="Enter your email address"
-                required
-                autocomplete="off"
-            >
-
+          <input
+            class="email"
+            id="email"
+            name="emailid"
+            type="email"
+            placeholder="Enter your email address"
+            required
+            autocomplete="off"
+          />
         </div>
 
         <div class="contact02">
-            <input
-                class="submit"
-                type="submit"
-                name="submit"
-                value="Subscribe Now"
-            >
+          <input
+            class="submit"
+            type="submit"
+            name="submit"
+            value="Subscribe Now"
+          />
         </div>
+      </form>
+    </div>
 
-    </form>
-</div>
+    <div
+      id="toast"
+      class="toast"
+      role="alert"
+      aria-live="polite"
+      aria-atomic="true"
+    >
+      <div class="toast-content">
+        <span class="toast-icon"></span>
+        <span id="toast-message"></span>
+      </div>
 
+      <div class="toast-progress"></div>
+    </div>
 
-</body>
+    <script>
+      const form = document.querySelector('form');
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const submitBtn = document.querySelector('.submit');
+        submitBtn.disabled = true;
+        submitBtn.value = 'Sending...';
+
+        const formData = new FormData(form);
+
+        try {
+          const response = await fetch('/', {
+            method: 'POST',
+            body: new URLSearchParams(formData),
+          });
+
+          const result = await response.text();
+
+          if (response.ok && result.includes('successfully')) {
+            showToast('Email sent successfully 🎉', 'success');
+            form.reset();
+          } else {
+            showToast('Failed to send email ❌', 'error');
+          }
+        } catch (error) {
+          showToast('Something went wrong ❌', 'error');
+        }
+
+        submitBtn.disabled = false;
+        submitBtn.value = 'Subscribe Now';
+      });
+
+      function showToast(message, type) {
+        const toast = document.getElementById('toast');
+        const toastMessage = document.getElementById('toast-message');
+        const toastIcon = document.querySelector('.toast-icon');
+
+        toastMessage.textContent = message;
+
+        if (type === 'success') {
+          toastIcon.innerHTML = '✓';
+        } else {
+          toastIcon.innerHTML = '✕';
+        }
+
+        toast.className = `toast ${type} show`;
+
+        setTimeout(() => {
+          toast.classList.remove('show');
+        }, 4000);
+      }
+    </script>
+  </body>
 </html>

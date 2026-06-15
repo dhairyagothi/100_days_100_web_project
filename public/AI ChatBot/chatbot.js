@@ -1,7 +1,7 @@
 /* ===========================
    CONFIG
 =========================== */
-const API_URL = "https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent";
+const API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent";
 const STORAGE_KEY_API     = 'gemini_api_key';
 const STORAGE_KEY_HISTORY = 'gemini_chat_history';
 const STORAGE_KEY_THEME   = 'gemini_theme';
@@ -18,10 +18,10 @@ let activeSessionId   = null;
 /* ===========================
    DOM REFS
 =========================== */
-const apiModal        = document.getElementById('api-modal');
-const apiKeyInput     = document.getElementById('api-key-input');
+const apiModal        = document.getElementById('settings-modal');
+const apiKeyInput     = document.getElementById('settings-api-input');
 const saveKeyBtn      = document.getElementById('save-key-btn');
-const toggleKeyBtn    = document.getElementById('toggle-key-visibility');
+const toggleKeyBtn    = document.getElementById('ob-toggle-key');
 const changeKeyBtn    = document.getElementById('change-key-btn');
 const messagesInner   = document.getElementById('messages-inner');
 const viewport        = document.getElementById('messages-viewport');
@@ -85,25 +85,30 @@ function saveApiKey() {
 toggleKeyBtn.addEventListener('click', () => {
   apiKeyInput.type = apiKeyInput.type === 'password' ? 'text' : 'password';
 });
-
-changeKeyBtn.addEventListener('click', () => {
-  apiModal.classList.remove('hidden');
-});
+if(changeKeyBtn){
+  changeKeyBtn.addEventListener('click', () => {
+    apiModal.classList.remove('hidden');
+  });
+}
 
 /* ===========================
    THEME
 =========================== */
-themeToggle.addEventListener('click', () => {
-  const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-  document.documentElement.setAttribute('data-theme', next);
-  localStorage.setItem(STORAGE_KEY_THEME, next);
-});
+if(themeToggle){
+  themeToggle.addEventListener('click', () => {
+    const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem(STORAGE_KEY_THEME, next);
+  });
+}
 
 /* ===========================
    SIDEBAR
 =========================== */
 sidebarToggle.addEventListener('click', () => sidebar.classList.toggle('open'));
-sidebarClose.addEventListener('click',  () => sidebar.classList.remove('open'));
+if(sidebarClose){
+  sidebarClose.addEventListener('click',  () => sidebar.classList.remove('open'));
+}
 
 /* ===========================
    SESSIONS
@@ -214,13 +219,15 @@ function renderHistoryList() {
 
 newChatBtn.addEventListener('click', startNewChat);
 
-clearHistoryBtn.addEventListener('click', () => {
-  if (confirm('Delete all chat history?')) {
-    sessions = [];
-    saveSessions();
-    startNewChat();
-  }
-});
+if(clearHistoryBtn){
+  clearHistoryBtn.addEventListener('click', () => {
+    if (confirm('Delete all chat history?')) {
+      sessions = [];
+      saveSessions();
+      startNewChat();
+    }
+  });
+}
 
 /* ===========================
    IMAGE ATTACHMENT
@@ -260,7 +267,7 @@ promptInput.addEventListener('input', () => {
 promptInput.addEventListener('keydown', e => {
   if (e.key === 'Enter' && !e.shiftKey) {
     e.preventDefault();
-    if (!sendBtn.disabled) handleSend();
+    processOutgoingMessage();
   }
 });
 
@@ -303,15 +310,27 @@ function handleSend() {
   promptInput.style.height = 'auto';
   clearImage();
   sendBtn.disabled = true;
-
-  getAIResponse();
+  clearAttachmentPreview();
+  
+  // Execute LLM parsing pipeline connection
+  fetchGeminiResponse(text, activeFileForAI);
 }
 
-async function getAIResponse() {
-  const typingRow = showTyping();
+// ----------------------------------------------------
+// GEMINI API INTEGRATION WITH MULTIMODAL CAPABILITY
+// ----------------------------------------------------
+async function fetchGeminiResponse(userPrompt, fileAttachment) {
+  const savedKey = localStorage.getItem('gemini_api_key');
+  if (!savedKey) {
+    appendMessageBubble("Missing API Key! Click 'Change API Key' in the sidebar to configure it.", "ai", "System Error", null);
+    return;
+  }
+
+  showTypingIndicator();
 
   try {
-    const response = await fetch(`${API_URL}?key=${geminiApiKey}`, {
+    console.log('Gemini request key:', savedKey);
+    const response = await fetch(`${API_URL}?key=${savedKey}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ contents: chatHistory })
@@ -363,21 +382,9 @@ function renderMessage(role, text, image, save) {
     row.innerHTML = `
       <div class="ai-sender">
         <div class="ai-dot">
-          <svg width="10" height="10" viewBox="0 0 24 24">
-            <path d="M12 2L2 7l10 5 10-5-10-5z" fill="white"/>
-          </svg>
+          <svg width="12" height="12" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/></svg>
         </div>
-        Gemini
-      </div>
-      <div class="bubble"></div>
-      <div class="msg-actions">
-        <button class="msg-action-btn copy-response-btn">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="9" y="9" width="13" height="13" rx="2"/>
-            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
-          </svg>
-          Copy
-        </button>
+        <span>${senderName}</span>
       </div>`;
 
     const bubble = row.querySelector('.bubble');
@@ -443,17 +450,12 @@ function showTyping() {
   const row = document.createElement('div');
   row.className = 'typing-row';
   row.innerHTML = `
-    <div class="ai-sender">
-      <div class="ai-dot">
-        <svg width="10" height="10" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z" fill="white"/></svg>
-      </div>
-      Gemini
-    </div>
     <div class="typing-bubble">
       <div class="typing-dot"></div>
       <div class="typing-dot"></div>
       <div class="typing-dot"></div>
-    </div>`;
+    </div>
+  `;
   messagesInner.appendChild(row);
   scrollToBottom();
   return row;

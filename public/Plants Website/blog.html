@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- font awesome file link  -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+
+    <!-- custom css file link  -->
+    <link rel="stylesheet" href="./style.css" />
+    <link rel="icon" href="./images/about.png" />
+
+    <!-- Primary Meta Tags -->
+    <meta
+      name="description"
+      content="Explore articles and resources on sustainability and tree plantation."
+    />
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Green Blog & Resources | TREE." />
+    <meta
+      property="og:description"
+      content="Join our mission to make the world greener."
+    />
+
+    <title>Green Blog & Resources | TREE.</title>
+  </head>
+
+  <body class="blog-page">
+    <a href="/" class="project-back-button"> Back To Home </a>
+
+    <header class="header">
+      <a href="index.html" class="logo"><i aria-hidden="true" class="fas fa-tree"></i>TREE.</a>
+
+      <!-- hamburger button -->
+      <button class="hamburger" id="hamburger-btn" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
+
+      <nav class="navbar">
+        <ul>
+          <li><a href="index.html#home">home</a></li>
+          <li><a href="index.html#about">about us</a></li>
+          <li><a href="index.html#servics">plant tree</a></li>
+          <li><a href="index.html#team">our team</a></li>
+          <li><a href="index.html#contact">contact us</a></li>
+          <li><a href="index.html#faq">FAQ</a></li>
+          <li><a href="blog.html">Green Blog & Resources</a></li>
+        </ul>
+      </nav>
+    </header>
+    <!-- mobile nav overlay -->
+    <div class="nav-overlay" id="nav-overlay"></div>
+
+    <main id="content">
+      <section class="blog-hero">
+        <div class="hero-content reveal">
+          <span class="hero-eyebrow">Green Blog & Resources</span>
+          <h1>Green Blog & Resources</h1>
+          <p>
+            Explore articles, guides, and resources on sustainability, tree
+            plantation, and environmental awareness.
+          </p>
+        </div>
+      </section>
+
+      <section class="blog-search" aria-label="Search articles">
+        <div class="search-bar" role="search">
+          <input
+            id="articleSearch"
+            type="search"
+            placeholder="Search articles..."
+            aria-label="Search articles"
+          />
+          <i class="fas fa-search" aria-hidden="true"></i>
+        </div>
+      </section>
+
+      <section class="blog-filters" aria-label="Article categories">
+        <div class="filters" role="group" aria-label="Filter by category">
+          <button
+            class="filter-pill active"
+            data-category="All"
+            aria-pressed="true"
+          >
+            All
+          </button>
+          <button
+            class="filter-pill"
+            data-category="Tree Care"
+            aria-pressed="false"
+          >
+            Tree Care
+          </button>
+          <button
+            class="filter-pill"
+            data-category="Climate Action"
+            aria-pressed="false"
+          >
+            Climate Action
+          </button>
+          <button
+            class="filter-pill"
+            data-category="Sustainability"
+            aria-pressed="false"
+          >
+            Sustainability
+          </button>
+          <button
+            class="filter-pill"
+            data-category="Urban Forestry"
+            aria-pressed="false"
+          >
+            Urban Forestry
+          </button>
+          <button
+            class="filter-pill"
+            data-category="Eco Health"
+            aria-pressed="false"
+          >
+            Eco Health
+          </button>
+        </div>
+      </section>
+
+      <section class="blog-featured" aria-label="Featured article">
+        <div id="featuredContainer"></div>
+      </section>
+
+      <section class="blog-articles" aria-label="Article list">
+        <p id="resultsCount" class="results-count" aria-live="polite"></p>
+        <div id="articlesGrid" class="articles-grid"></div>
+        <!-- Placeholder for when no articles match search/filter -->
+        <div
+          id="noResults"
+          class="no-results"
+          style="display: none; text-align: center; padding: 2rem"
+        >
+          <i aria-hidden="true"
+            class="fas fa-seedling"
+            style="font-size: 3rem; color: var(--green); margin-bottom: 1rem"
+          ></i>
+          <p>No articles found matching your criteria.</p>
+        </div>
+      </section>
+    </main>
+
+    <!-- Newsletter Section -->
+    <section
+      class="newsletter"
+      style="
+        background: var(--light-bg);
+        padding: 4rem 2rem;
+        text-align: center;
+      "
+    >
+      <h2
+        class="heading"
+        style="font-size: 2.5rem; color: var(--black); margin-bottom: 1rem"
+      >
+        Join the Green Movement
+      </h2>
+      <p
+        style="
+          font-size: 1.6rem;
+          color: var(--light-color);
+          margin-bottom: 2rem;
+        "
+      >
+        Get monthly tips on tree care and sustainability updates.
+      </p>
+      <form
+        action=""
+        style="max-width: 50rem; margin: 0 auto; display: flex; gap: 1rem"
+      >
+        <input
+          type="email"
+          placeholder="Enter your email"
+          required
+          style="
+            flex: 1;
+            padding: 1.2rem;
+            font-size: 1.6rem;
+            border: 0.1rem solid rgba(0, 0, 0, 0.1);
+          "
+        />
+        <button type="submit" class="btn">Subscribe</button>
+      </form>
+    </section>
+
+    <div
+      id="articleModal"
+      class="modal"
+      aria-hidden="true"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modalTitle"
+    >
+      <div class="modal-content" role="document">
+        <button
+          class="modal-close"
+          type="button"
+          aria-label="Close article details"
+        >
+          &times;
+        </button>
+        <img id="modalImage" src="" alt="" class="modal-image" />
+        <div class="modal-meta">
+          <span id="modalBadge" class="badge"></span>
+          <span id="modalRead" class="modal-read"></span>
+        </div>
+        <h3 id="modalTitle"></h3>
+        <ul id="modalBody" class="modal-points"></ul>
+      </div>
+    </div>
+
+    <section class="footer">
+      <h1>(c) 2026 TREE. | Created with care for a greener planet</h1>
+
+      <div class="icons">
+        <a href="#" class="fab fa-facebook-f" aria-label="Facebook"></a>
+        <a href="#" class="fab fa-twitter" aria-label="Twitter"></a>
+        <a href="#" class="fab fa-instagram" aria-label="Instagram"></a>
+        <a href="#" class="fab fa-linkedin-in" aria-label="LinkedIn"></a>
+      </div>
+    </section>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+      $(document).ready(function(){
+        var $hamburger = $('#hamburger-btn');
+        var $navbar    = $('.navbar');
+        var $overlay   = $('#nav-overlay');
+
+        function openMenu() {
+          $hamburger.addClass('open').attr('aria-expanded', 'true');
+          $navbar.addClass('nav-toggle');
+          $overlay.addClass('active');
+          $('body').css('overflow', 'hidden');
+        }
+        function closeMenu() {
+          $hamburger.removeClass('open').attr('aria-expanded', 'false');
+          $navbar.removeClass('nav-toggle');
+          $overlay.removeClass('active');
+          $('body').css('overflow', '');
+        }
+
+        $hamburger.on('click', function(){
+          $navbar.hasClass('nav-toggle') ? closeMenu() : openMenu();
+        });
+        $overlay.on('click', closeMenu);
+        $('.navbar ul li a').on('click', closeMenu);
+
+        $(window).on('load scroll', function(){
+          if($(window).scrollTop() > 30){
+            $('.header').css({'background':'#65b741','box-shadow':'0 .3rem .5rem rgba(0,0,0,.3)'});
+          } else {
+            $('.header').css({'background':'none','box-shadow':'none'});
+          }
+        });
+      });
+    </script>
+    <script src="./blog.js"></script>
+  </body>
+</html>

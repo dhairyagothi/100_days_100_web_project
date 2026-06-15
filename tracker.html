@@ -1,0 +1,580 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Track your 100-day coding journey — streaks, XP, levels, and completed projects." />
+    <title>Dev Tracker · 100 Days 100 Projects</title>
+    <link rel="icon" type="image/x-icon" href="fav.ico" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Orbitron:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+    <script src="theme.js"></script>
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <div class="ambient ambient-left" aria-hidden="true"></div>
+    <div class="ambient ambient-right" aria-hidden="true"></div>
+    <div class="noise-layer" aria-hidden="true"></div>
+    <div class="cursor-ring cursor-ring--outer" aria-hidden="true"></div>
+    <div class="cursor-ring cursor-ring--inner" aria-hidden="true"></div>
+
+    <div id="navbar-container"></div>
+
+    <!-- ── PAGE HEADER ── -->
+    <div class="tracker-page-header">
+      <div class="tracker-header-inner">
+        <a href="index.html" class="tracker-back-link">
+          <i class="fas fa-arrow-left"></i> Back to Projects
+        </a>
+        <div class="tracker-title-block">
+          <p class="section-label">Your Progress Dashboard</p>
+          <h1 class="tracker-page-title">Dev Journey Tracker</h1>
+          <p class="tracker-page-sub">Check off projects, earn XP, keep your streak alive.</p>
+        </div>
+      </div>
+    </div>
+
+    <main class="tracker-main">
+      <div class="tracker-inner">
+
+        <!-- ── TOP ROW: Profile + Streak + Summary ── -->
+        <div class="tracker-top-row">
+
+          <!-- Profile / Level Card -->
+          <div class="tracker-card profile-card">
+            <div class="profile-card-top">
+              <div class="profile-avatar-large" id="trackerAvatar">🧑‍💻</div>
+              <div class="profile-info">
+                <span class="profile-label">Developer Profile</span>
+                <div class="level-badge-large" id="trackerLevelBadge">Level 1 — Script Kiddie</div>
+                <div class="xp-label" id="trackerXPLabel">0 XP earned</div>
+              </div>
+            </div>
+            <div class="xp-section">
+              <div class="xp-bar-labels">
+                <span id="trackerCurrentXP">0 XP</span>
+                <span id="trackerNextLevelXP">Next: 100 XP</span>
+              </div>
+              <div class="xp-bar-track">
+                <div class="xp-bar-fill" id="trackerXPBar" style="width:0%"></div>
+              </div>
+              <p class="xp-bar-hint" id="trackerXPHint">Complete projects to earn XP and level up!</p>
+            </div>
+          </div>
+
+          <!-- Streak Card -->
+          <div class="tracker-card streak-card">
+            <div class="streak-header">
+              <span class="streak-flame" id="streakFlame">🔥</span>
+              <div>
+                <p class="streak-title">Current Streak</p>
+                <p class="streak-days" id="streakDays">0 days</p>
+              </div>
+            </div>
+            <div class="streak-grid" id="streakGrid" aria-label="Last 14 days activity"></div>
+            <p class="streak-hint" id="streakHint">Complete a project today to start your streak!</p>
+            <div class="streak-stats">
+              <div class="streak-stat">
+                <span class="streak-stat-val" id="longestStreak">0</span>
+                <span class="streak-stat-label">Longest streak</span>
+              </div>
+              <div class="streak-stat">
+                <span class="streak-stat-val" id="totalActiveDays">0</span>
+                <span class="streak-stat-label">Total active days</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Stats Summary Card -->
+          <div class="tracker-card stats-summary-card">
+            <p class="tracker-card-label">Progress Summary</p>
+            <div class="summary-stats-grid">
+              <div class="summary-stat">
+                <i class="fas fa-check-circle summary-icon completed-icon"></i>
+                <span class="summary-val" id="completedCount">0</span>
+                <span class="summary-label">Completed</span>
+              </div>
+              <div class="summary-stat">
+                <i class="fas fa-bookmark summary-icon bookmarked-icon"></i>
+                <span class="summary-val" id="bookmarkedCount">0</span>
+                <span class="summary-label">Bookmarked</span>
+              </div>
+              <div class="summary-stat">
+                <i class="fas fa-star summary-icon xp-icon"></i>
+                <span class="summary-val" id="totalXPCount">0</span>
+                <span class="summary-label">Total XP</span>
+              </div>
+              <div class="summary-stat">
+                <i class="fas fa-trophy summary-icon level-icon"></i>
+                <span class="summary-val" id="currentLevelNum">1</span>
+                <span class="summary-label">Level</span>
+              </div>
+            </div>
+            <div class="overall-progress-section">
+              <div class="overall-progress-labels">
+                <span>Journey Progress</span>
+                <span id="journeyPercent">0%</span>
+              </div>
+              <div class="overall-bar-track">
+                <div class="overall-bar-fill" id="journeyBar" style="width:0%"></div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /tracker-top-row -->
+
+        <!-- ── BADGES ROW ── -->
+        <div class="tracker-card badges-card">
+          <p class="tracker-card-label">Achievements</p>
+          <div class="badges-grid" id="badgesGrid"></div>
+        </div>
+
+        <!-- ── PROJECTS TABLE ── -->
+        <div class="tracker-card projects-table-section">
+          <div class="completed-header-row">
+            <p class="tracker-card-label">All Projects</p>
+            <div class="completed-actions">
+              <button id="clearCompletedBtn" class="btn btn-ghost btn-sm" title="Clear all completed projects">
+                <i class="fas fa-trash"></i> Reset Progress
+              </button>
+            </div>
+          </div>
+
+          <div class="table-toolbar">
+            <input type="text" id="tableSearch" class="table-search" placeholder="Search projects by name or day…" aria-label="Search projects" />
+            <select id="tableFilterDiff" class="table-filter-select" aria-label="Filter by difficulty">
+              <option value="all">All Difficulties</option>
+              <option value="beginner">Beginner</option>
+              <option value="intermediate">Intermediate</option>
+              <option value="advanced">Advanced</option>
+            </select>
+            <select id="tableFilterStatus" class="table-filter-select" aria-label="Filter by status">
+              <option value="all">All Status</option>
+              <option value="completed">Completed</option>
+              <option value="pending">Pending</option>
+            </select>
+            <span class="table-count" id="tableCount">— projects</span>
+          </div>
+
+          <div class="table-progress-bar-wrap">
+            <div class="table-progress-bar-fill" id="tableProgressBar" style="width:0%"></div>
+          </div>
+
+          <div class="select-all-row">
+            <input type="checkbox" id="selectAllVisible" class="proj-checkbox" aria-label="Select all visible projects" />
+            <label for="selectAllVisible">Select all visible</label>
+          </div>
+
+          <!-- Inline Prev/Next bar -->
+          <div id="paginationBarTop">
+            <span id="paginationInfoTop"></span>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <button id="prevBtnTop"><i class="fas fa-chevron-left" style="font-size:0.7rem;"></i> Prev</button>
+              <span id="paginationPageTop"></span>
+              <button id="nextBtnTop">Next <i class="fas fa-chevron-right" style="font-size:0.7rem;"></i></button>
+            </div>
+          </div>
+
+          <div class="projects-table-wrap">
+            <table class="projects-table" id="projectsTable" aria-label="Projects list">
+              <thead>
+                <tr>
+                  <th class="td-check" aria-label="Done"></th>
+                  <th data-sort="day">Day <i class="fas fa-sort sort-icon"></i></th>
+                  <th data-sort="name">Project <i class="fas fa-sort sort-icon"></i></th>
+                  <th data-sort="category" class="td-cat">Category <i class="fas fa-sort sort-icon"></i></th>
+                  <th data-sort="difficulty" class="td-diff">Difficulty <i class="fas fa-sort sort-icon"></i></th>
+                  <th data-sort="xp" class="td-xp">XP <i class="fas fa-sort sort-icon"></i></th>
+                  <th class="td-tech">Tech Stack</th>
+                </tr>
+              </thead>
+              <tbody id="projectsTableBody">
+                <tr><td colspan="7" class="table-loading">Loading projects</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="table-pagination" id="tablePagination"></div>
+        </div>
+
+      </div>
+    </main>
+
+    <!-- Level Up Modal -->
+    <div class="level-up-modal" id="levelUpModal" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="levelUpTitle">
+      <div class="level-up-modal-content">
+        <div class="level-up-star" aria-hidden="true">⭐</div>
+        <h2 id="levelUpTitle">LEVEL UP!</h2>
+        <p class="modal-level-text" id="modalLevelText">You reached Level 2</p>
+        <p class="modal-title-text" id="modalTitleText">CSS Whisperer</p>
+        <button class="level-up-close-btn" id="levelUpCloseBtn">Continue Coding →</button>
+      </div>
+    </div>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <footer class="footer" style="margin-top:4rem;">
+      <div class="footer-bottom" style="max-width:1200px; margin:0 auto; padding:1.25rem 2rem;">
+        <span>© <span data-current-year></span> 100 Days · 100 Web Projects</span>
+        <a href="index.html" style="color:var(--text-muted); font-size:0.8rem;">← Back to homepage</a>
+      </div>
+    </footer>
+
+    <script src="index.js?v=4" defer></script>
+    <script src="navbar.js" defer></script>
+
+    <script>
+    /* ============================================================
+       TRACKER PAGE LOGIC
+    ============================================================ */
+
+    const LEVEL_THRESHOLDS_LOCAL = [
+      { level: 1, name: "Script Kiddie",       xp: 0    },
+      { level: 2, name: "CSS Whisperer",        xp: 100  },
+      { level: 3, name: "Frontend Artisan",     xp: 250  },
+      { level: 4, name: "DOM Dominator",        xp: 500  },
+      { level: 5, name: "Production Ready",     xp: 1000 },
+      { level: 6, name: "Full-Stack Magician",  xp: 2000 },
+      { level: 7, name: "Software Architect",   xp: 4000 }
+    ];
+
+    const BADGES_CONFIG = [
+      { id: "first_blood",  icon: "🩸", title: "First Blood",      desc: "Complete your first project",         check: (c) => c >= 1   },
+      { id: "hat_trick",    icon: "🎩", title: "Hat Trick",        desc: "Complete 3 projects",                 check: (c) => c >= 3   },
+      { id: "ten_projects", icon: "🔟", title: "Perfect Ten",      desc: "Complete 10 projects",                check: (c) => c >= 10  },
+      { id: "twenty_five",  icon: "🥈", title: "Quarter Century",  desc: "Complete 25 projects",                check: (c) => c >= 25  },
+      { id: "fifty",        icon: "🥇", title: "Halfway Hero",     desc: "Complete 50 projects",                check: (c) => c >= 50  },
+      { id: "hundred",      icon: "🏆", title: "Century Coder",    desc: "Complete all 100 projects",           check: (c) => c >= 100 },
+      { id: "streak_3",     icon: "🔥", title: "On Fire",          desc: "Maintain a 3-day streak",             checkStreak: (s) => s >= 3  },
+      { id: "streak_7",     icon: "⚡", title: "Unstoppable",      desc: "Maintain a 7-day streak",             checkStreak: (s) => s >= 7  },
+      { id: "streak_30",    icon: "💎", title: "Diamond Hands",    desc: "Maintain a 30-day streak",            checkStreak: (s) => s >= 30 },
+      { id: "level_3",      icon: "🎖️", title: "Artisan",          desc: "Reach Level 3: Frontend Artisan",     checkLevel: (l) => l >= 3   },
+      { id: "level_5",      icon: "🚀", title: "Production Ready", desc: "Reach Level 5",                       checkLevel: (l) => l >= 5   },
+      { id: "level_7",      icon: "🌟", title: "Architect",        desc: "Reach max level: Software Architect", checkLevel: (l) => l >= 7   },
+    ];
+
+    function escapeHTML(v) {
+      return String(v).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;");
+    }
+
+    function getProjectXPLocal(difficulty) {
+      const d = (difficulty || "").toLowerCase().trim();
+      if (d === "beginner" || d === "easy") return 10;
+      if (d === "advanced" || d === "hard" || d === "expert") return 50;
+      return 25;
+    }
+
+    function calcTotalXP(completed) {
+      return completed.reduce((sum, p) => sum + getProjectXPLocal(p.difficulty || "intermediate"), 0);
+    }
+
+    function calcLevel(xp) {
+      let cur = LEVEL_THRESHOLDS_LOCAL[0];
+      for (const t of LEVEL_THRESHOLDS_LOCAL) { if (xp >= t.xp) cur = t; else break; }
+      return cur;
+    }
+
+    function getCategoryFromTags(tags, name) {
+      const tagStr = (Array.isArray(tags) ? tags.join(" ") : tags || "").toLowerCase();
+      const nameStr = (name || "").toLowerCase();
+      if (tagStr.includes("game")) return "Games";
+      if (tagStr.includes("clone")) return "Clones";
+      if (tagStr.includes("tool")) return "Tools";
+      if (tagStr.includes("ui")) return "UI / Animation";
+      if (tagStr.includes("api") || tagStr.includes("weather")) return "APIs";
+      if (nameStr.includes("clone")) return "Clones";
+      if (nameStr.includes("game") || nameStr.includes("puzzle") || nameStr.includes("quiz")) return "Games";
+      return "Tools";
+    }
+
+    function getStreakData() { try { return JSON.parse(localStorage.getItem("streakData") || "{}"); } catch { return {}; } }
+    function saveStreakData(data) { try { localStorage.setItem("streakData", JSON.stringify(data)); } catch {} }
+    function touchStreak() {
+      const data = getStreakData();
+      const today = new Date().toISOString().split("T")[0];
+      const activeDays = new Set(data.activeDays || []);
+      if (activeDays.has(today)) return;
+      activeDays.add(today);
+      let streak = 0, checkDate = new Date();
+      while (true) {
+        const key = checkDate.toISOString().split("T")[0];
+        if (activeDays.has(key)) { streak++; checkDate.setDate(checkDate.getDate() - 1); } else break;
+      }
+      saveStreakData({ activeDays: Array.from(activeDays), currentStreak: streak, longestStreak: Math.max(streak, data.longestStreak || 0), lastActive: today });
+    }
+    function getCurrentStreak() { return getStreakData().currentStreak || 0; }
+    function getLongestStreak() { return getStreakData().longestStreak || 0; }
+    function getTotalActiveDays() { return (getStreakData().activeDays || []).length; }
+    function getLast14Days() {
+      const activeDays = new Set((getStreakData().activeDays || []));
+      const result = [], today = new Date();
+      for (let i = 13; i >= 0; i--) {
+        const d = new Date(today); d.setDate(today.getDate() - i);
+        const key = d.toISOString().split("T")[0];
+        result.push({ date: key, active: activeDays.has(key) });
+      }
+      return result;
+    }
+
+    function getCompleted() { try { return JSON.parse(localStorage.getItem("completedProjects") || "[]"); } catch { return []; } }
+    function saveCompleted(arr) { try { localStorage.setItem("completedProjects", JSON.stringify(arr)); } catch {} }
+    function isProjectCompleted(day) { return getCompleted().some(p => p.day === day); }
+    function markCompleted(project) {
+      const arr = getCompleted();
+      if (arr.some(p => p.day === project.day)) return;
+      arr.push(project); saveCompleted(arr); touchStreak();
+    }
+    function unmarkCompleted(day) { saveCompleted(getCompleted().filter(p => p.day !== day)); }
+
+    function showTrackerToast(msg) {
+      const t = document.getElementById("toast");
+      if (!t) return;
+      t.textContent = msg; t.classList.add("show");
+      setTimeout(() => t.classList.remove("show"), 3000);
+    }
+
+    let prevLevel = 1;
+    function checkLevelUp(levelObj) {
+      if (levelObj.level > prevLevel) {
+        document.getElementById("modalLevelText").textContent = `You reached Level ${levelObj.level}`;
+        document.getElementById("modalTitleText").textContent = levelObj.name;
+        document.getElementById("levelUpModal").style.display = "flex";
+      }
+      prevLevel = levelObj.level;
+    }
+
+    function renderDashboard() {
+      const completed = getCompleted();
+      let bookmarked = [];
+      try { bookmarked = JSON.parse(localStorage.getItem("bookmarkedProjects") || "[]"); } catch {}
+      const totalXP = calcTotalXP(completed);
+      const levelObj = calcLevel(totalXP);
+      const streak = getCurrentStreak();
+      const avatarEmojis = ["🧑‍💻","👨‍💻","👩‍💻","🦾","🤖","⚡","🔥","💎"];
+      document.getElementById("trackerAvatar").textContent = avatarEmojis[Math.min(levelObj.level - 1, avatarEmojis.length - 1)];
+      document.getElementById("trackerLevelBadge").textContent = `Level ${levelObj.level} — ${levelObj.name}`;
+      document.getElementById("trackerXPLabel").textContent = `${totalXP.toLocaleString()} XP earned`;
+      const nextThreshold = LEVEL_THRESHOLDS_LOCAL[Math.min(levelObj.level, LEVEL_THRESHOLDS_LOCAL.length - 1)];
+      const xpInLevel = totalXP - levelObj.xp;
+      const xpNeeded = nextThreshold.xp - levelObj.xp;
+      const pct = levelObj.level === 7 ? 100 : Math.min(100, Math.round((xpInLevel / xpNeeded) * 100));
+      document.getElementById("trackerCurrentXP").textContent = `${totalXP} XP`;
+      document.getElementById("trackerNextLevelXP").textContent = levelObj.level === 7 ? "Max level!" : `Next: ${nextThreshold.xp} XP`;
+      document.getElementById("trackerXPBar").style.width = `${pct}%`;
+      document.getElementById("trackerXPHint").textContent = levelObj.level === 7 ? "🏆 You've reached the top! Maximum level achieved." : `${xpNeeded - xpInLevel} XP until Level ${levelObj.level + 1}: ${nextThreshold.name}`;
+      checkLevelUp(levelObj);
+      document.getElementById("streakFlame").textContent = streak >= 7 ? "🔥🔥" : streak >= 3 ? "🔥" : "💤";
+      document.getElementById("streakDays").textContent = `${streak} day${streak !== 1 ? "s" : ""}`;
+      document.getElementById("longestStreak").textContent = getLongestStreak();
+      document.getElementById("totalActiveDays").textContent = getTotalActiveDays();
+      document.getElementById("streakHint").textContent = streak > 0 ? `Keep it going! You've been active ${streak} day${streak !== 1 ? "s" : ""} in a row.` : "Complete a project today to start your streak!";
+      const grid = document.getElementById("streakGrid");
+      grid.innerHTML = "";
+      getLast14Days().forEach(({ date, active }) => {
+        const dot = document.createElement("div");
+        dot.className = "streak-dot" + (active ? " active" : "");
+        dot.title = date; dot.setAttribute("aria-label", `${date}: ${active ? "active" : "inactive"}`);
+        grid.appendChild(dot);
+      });
+      document.getElementById("completedCount").textContent = completed.length;
+      document.getElementById("bookmarkedCount").textContent = bookmarked.length;
+      document.getElementById("totalXPCount").textContent = totalXP.toLocaleString();
+      document.getElementById("currentLevelNum").textContent = levelObj.level;
+      const journeyPct = Math.round((completed.length / Math.max(allProjects.length, 100)) * 100);
+      document.getElementById("journeyPercent").textContent = `${journeyPct}%`;
+      document.getElementById("journeyBar").style.width = `${journeyPct}%`;
+      renderBadges(completed.length, streak, levelObj.level);
+    }
+
+    function renderBadges(completedCount, streak, level) {
+      const grid = document.getElementById("badgesGrid");
+      grid.innerHTML = "";
+      BADGES_CONFIG.forEach(b => {
+        const earned = (b.check && b.check(completedCount)) || (b.checkStreak && b.checkStreak(streak)) || (b.checkLevel && b.checkLevel(level));
+        const div = document.createElement("div");
+        div.className = "badge-item" + (earned ? " earned" : " locked");
+        div.title = b.desc;
+        div.innerHTML = `<span class="badge-icon" aria-hidden="true">${earned ? b.icon : "🔒"}</span><span class="badge-title">${escapeHTML(b.title)}</span><span class="badge-desc">${escapeHTML(b.desc)}</span>`;
+        grid.appendChild(div);
+      });
+    }
+
+    let allProjects = [], tableFiltered = [], tableSortKey = "day", tableSortDir = 1, tablePage = 1;
+    const TABLE_PAGE_SIZE = 10;
+    let tableSearchQuery = "", tableDiffFilter = "all", tableStatusFilter = "all";
+
+    function loadProjectsForTracker() {
+      if (typeof PROJECTS !== "undefined" && PROJECTS.length > 0) { allProjects = PROJECTS; initTable(); return; }
+      fetch("projects.json").then(r => r.text()).then(text => {
+        try {
+          const data = JSON.parse(text);
+          allProjects = data.map(p => ({ day: `Day ${p.projectNo}`, projectName: p.projectName, projectPath: p.projectPath, techStack: p.techStack, difficulty: p.difficulty, projectDesc: p.projectDesc }));
+        } catch {
+          const data = JSON.parse(text.replace(/}\s*{/g, "},{"));
+          allProjects = data.map(p => ({ day: `Day ${p.projectNo}`, projectName: p.projectName, projectPath: p.projectPath, techStack: p.techStack, difficulty: p.difficulty, projectDesc: p.projectDesc }));
+        }
+        initTable();
+      }).catch(() => {
+        document.getElementById("projectsTableBody").innerHTML = `<tr><td colspan="7" class="table-empty"><i class="fas fa-exclamation-triangle"></i>Failed to load projects. Please refresh.</td></tr>`;
+      });
+    }
+
+    function initTable() { applyTableFilters(); renderTable(); renderDashboard(); }
+
+    function applyTableFilters() {
+      const q = tableSearchQuery.toLowerCase();
+      tableFiltered = allProjects.filter(p => {
+        const name = (p.projectName || "").toLowerCase();
+        const day  = (p.day || "").toLowerCase();
+        const tags = (Array.isArray(p.techStack) ? p.techStack.join(" ") : p.techStack || "").toLowerCase();
+        const matchesSearch = !q || name.includes(q) || day.includes(q) || (p.projectDesc || "").toLowerCase().includes(q) || tags.includes(q);
+        const diff = (p.difficulty || "intermediate").toLowerCase();
+        const matchesDiff = tableDiffFilter === "all" || diff === tableDiffFilter;
+        const completed = isProjectCompleted(p.day);
+        const matchesStatus = tableStatusFilter === "all" || (tableStatusFilter === "completed" && completed) || (tableStatusFilter === "pending" && !completed);
+        return matchesSearch && matchesDiff && matchesStatus;
+      });
+      tableFiltered.sort((a, b) => {
+        let valA, valB;
+        if (tableSortKey === "day") { valA = parseInt((a.day||"").replace("Day ","")); valB = parseInt((b.day||"").replace("Day ","")); }
+        else if (tableSortKey === "name") { valA = (a.projectName||"").toLowerCase(); valB = (b.projectName||"").toLowerCase(); }
+        else if (tableSortKey === "category") { valA = getCategoryFromTags(a.techStack, a.projectName); valB = getCategoryFromTags(b.techStack, b.projectName); }
+        else if (tableSortKey === "difficulty") { const o={beginner:1,intermediate:2,advanced:3}; valA=o[(a.difficulty||"intermediate").toLowerCase()]||2; valB=o[(b.difficulty||"intermediate").toLowerCase()]||2; }
+        else if (tableSortKey === "xp") { valA = getProjectXPLocal(a.difficulty); valB = getProjectXPLocal(b.difficulty); }
+        else { valA = a[tableSortKey]||""; valB = b[tableSortKey]||""; }
+        return valA < valB ? -tableSortDir : valA > valB ? tableSortDir : 0;
+      });
+      document.getElementById("tableCount").textContent = `${tableFiltered.length} / ${allProjects.length} projects`;
+      const completedTotal = allProjects.filter(p => isProjectCompleted(p.day)).length;
+      document.getElementById("tableProgressBar").style.width = allProjects.length > 0 ? `${Math.round((completedTotal/allProjects.length)*100)}%` : "0%";
+    }
+
+    function renderTable() {
+      const tbody = document.getElementById("projectsTableBody");
+      const totalPages = Math.max(1, Math.ceil(tableFiltered.length / TABLE_PAGE_SIZE));
+      tablePage = Math.min(Math.max(tablePage, 1), totalPages);
+      const start = (tablePage - 1) * TABLE_PAGE_SIZE;
+      const pageItems = tableFiltered.slice(start, start + TABLE_PAGE_SIZE);
+      if (pageItems.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" class="table-empty"><i class="fas fa-search"></i>No projects match your filters.</td></tr>`;
+        renderPagination(0, 1); return;
+      }
+      const fragment = document.createDocumentFragment();
+      pageItems.forEach(project => {
+        const day = project.day, name = project.projectName || "";
+        const diff = (project.difficulty || "intermediate").toLowerCase();
+        const xp = getProjectXPLocal(diff);
+        const category = getCategoryFromTags(project.techStack, name);
+        const completed = isProjectCompleted(day);
+        const tagsArray = Array.isArray(project.techStack) ? project.techStack : String(project.techStack||"").split(/\s+/).filter(Boolean);
+        const tr = document.createElement("tr");
+        tr.className = completed ? "is-completed" : "";
+        tr.dataset.day = day;
+        tr.innerHTML = `
+          <td class="td-check"><input type="checkbox" class="proj-checkbox" data-day="${escapeHTML(day)}" ${completed?"checked":""} aria-label="Mark ${escapeHTML(name)} as ${completed?"incomplete":"complete"}" /></td>
+          <td class="td-day">${escapeHTML(day)}</td>
+          <td class="td-name"><a href="${escapeHTML(project.projectPath||"#")}" target="_blank" rel="noopener noreferrer">${escapeHTML(name)}</a></td>
+          <td class="td-cat"><span class="cat-tag">${escapeHTML(category)}</span></td>
+          <td class="td-diff"><span class="card-difficulty ${diff}">${diff.charAt(0).toUpperCase()+diff.slice(1)}</span></td>
+          <td class="td-xp">+${xp} XP</td>
+          <td class="td-tech"><div class="tech-chips">${tagsArray.slice(0,4).map(t=>`<span class="tech-chip">${escapeHTML(t)}</span>`).join("")}</div></td>
+        `;
+        fragment.appendChild(tr);
+      });
+      tbody.innerHTML = ""; tbody.appendChild(fragment);
+      document.querySelectorAll(".projects-table th[data-sort]").forEach(th => {
+        th.classList.toggle("sort-active", th.dataset.sort === tableSortKey);
+        const icon = th.querySelector(".sort-icon");
+        if (icon) icon.className = th.dataset.sort === tableSortKey ? `fas fa-sort-${tableSortDir===1?"up":"down"} sort-icon` : "fas fa-sort sort-icon";
+      });
+      const allVis = pageItems.every(p => isProjectCompleted(p.day));
+      const someVis = pageItems.some(p => isProjectCompleted(p.day));
+      const sa = document.getElementById("selectAllVisible");
+      sa.checked = allVis; sa.indeterminate = !allVis && someVis;
+      renderPagination(tableFiltered.length, totalPages);
+    }
+
+    function goPage(dir) {
+      const totalPages = Math.max(1, Math.ceil(tableFiltered.length / TABLE_PAGE_SIZE));
+      if (dir === "prev" && tablePage > 1) tablePage--;
+      else if (dir === "next" && tablePage < totalPages) tablePage++;
+      applyTableFilters(); renderTable();
+      document.querySelector(".projects-table-section")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+    window.goPage = goPage;
+
+    function renderPagination(total, totalPages) {
+      const infoEl = document.getElementById("paginationInfoTop");
+      const pageEl = document.getElementById("paginationPageTop");
+      const prevBtn = document.getElementById("prevBtnTop");
+      const nextBtn = document.getElementById("nextBtnTop");
+      if (!prevBtn || !nextBtn) return;
+      if (total === 0) { if(infoEl) infoEl.textContent="No results"; if(pageEl) pageEl.textContent=""; prevBtn.disabled=true; nextBtn.disabled=true; return; }
+      const s = (tablePage-1)*TABLE_PAGE_SIZE+1, e = Math.min(tablePage*TABLE_PAGE_SIZE, total);
+      if(infoEl) infoEl.textContent=`Showing ${s}–${e} of ${total}`;
+      if(pageEl) pageEl.textContent=totalPages>1?`Page ${tablePage} / ${totalPages}`:"";
+      prevBtn.disabled = tablePage===1;
+      nextBtn.disabled = tablePage>=totalPages;
+      prevBtn.style.opacity = tablePage===1?"0.3":"1";
+      nextBtn.style.opacity = tablePage>=totalPages?"0.3":"1";
+    }
+
+    document.getElementById("projectsTableBody").addEventListener("change", e => {
+      const cb = e.target.closest(".proj-checkbox"); if(!cb) return;
+      const day=cb.dataset.day, project=allProjects.find(p=>p.day===day); if(!project) return;
+      const xp=getProjectXPLocal(project.difficulty);
+      if(cb.checked){markCompleted(project);showTrackerToast(`✅ ${project.projectName} — +${xp} XP`);}
+      else{unmarkCompleted(day);showTrackerToast(`Removed ${project.projectName} — −${xp} XP`);}
+      const tr=cb.closest("tr"); if(tr) tr.className=cb.checked?"is-completed":"";
+      applyTableFilters(); renderTable(); renderDashboard();
+    });
+
+    document.getElementById("selectAllVisible").addEventListener("change", e => {
+      const pageItems = tableFiltered.slice((tablePage-1)*TABLE_PAGE_SIZE, tablePage*TABLE_PAGE_SIZE);
+      pageItems.forEach(p => { if(e.target.checked) markCompleted(p); else unmarkCompleted(p.day); });
+      showTrackerToast(e.target.checked?`✅ Marked ${pageItems.length} projects complete`:`Unmarked ${pageItems.length} projects`);
+      applyTableFilters(); renderTable(); renderDashboard();
+    });
+
+    document.querySelectorAll(".projects-table th[data-sort]").forEach(th => {
+      th.addEventListener("click", () => {
+        if(tableSortKey===th.dataset.sort) tableSortDir*=-1; else{tableSortKey=th.dataset.sort;tableSortDir=1;}
+        tablePage=1; applyTableFilters(); renderTable();
+      });
+    });
+
+    document.getElementById("tableSearch").addEventListener("input", e=>{tableSearchQuery=e.target.value.trim();tablePage=1;applyTableFilters();renderTable();});
+    document.getElementById("tableFilterDiff").addEventListener("change", e=>{tableDiffFilter=e.target.value;tablePage=1;applyTableFilters();renderTable();});
+    document.getElementById("tableFilterStatus").addEventListener("change", e=>{tableStatusFilter=e.target.value;tablePage=1;applyTableFilters();renderTable();});
+
+    document.getElementById("clearCompletedBtn").addEventListener("click", () => {
+      if(!confirm("Reset all progress? This will clear your completed projects, XP, and streaks.")) return;
+      localStorage.removeItem("completedProjects"); localStorage.removeItem("streakData");
+      prevLevel=1; showTrackerToast("Progress reset.");
+      applyTableFilters(); renderTable(); renderDashboard();
+    });
+
+    document.getElementById("levelUpCloseBtn").addEventListener("click", ()=>{ document.getElementById("levelUpModal").style.display="none"; });
+    document.getElementById("levelUpModal").addEventListener("click", e=>{ if(e.target===e.currentTarget) e.currentTarget.style.display="none"; });
+
+    function waitAndInit() {
+      if(typeof PROJECTS!=="undefined"&&PROJECTS.length>0){allProjects=PROJECTS;initTable();}
+      else setTimeout(()=>{ if(typeof PROJECTS!=="undefined"&&PROJECTS.length>0){allProjects=PROJECTS;initTable();}else loadProjectsForTracker(); },300);
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      document.querySelectorAll("[data-current-year]").forEach(el=>el.textContent=new Date().getFullYear());
+      document.getElementById("prevBtnTop")?.addEventListener("click", ()=>goPage("prev"));
+      document.getElementById("nextBtnTop")?.addEventListener("click", ()=>goPage("next"));
+      waitAndInit();
+    });
+
+    window.addEventListener("storage", ()=>{ applyTableFilters(); renderTable(); renderDashboard(); });
+    </script>
+  </body>
+</html>
