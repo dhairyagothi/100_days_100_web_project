@@ -38,6 +38,8 @@ const searchSuggestions = [
 
 let selectedSuggestionIndex = -1;
 let currentSuggestions = [];
+let searchTimeoutId = null;
+let recognitionInstance = null;
 
 if (document.querySelector(".container")) {
 
@@ -232,14 +234,20 @@ function handleSearch() {
     return;
   }
 
+  // Clear any existing search timeout
+  if (searchTimeoutId) {
+    clearTimeout(searchTimeoutId);
+  }
+
   // Show loading state
   showLoading();
   hideSuggestions();
 
   // Simulate processing then redirect to Google
-  setTimeout(() => {
+  searchTimeoutId = setTimeout(() => {
     hideLoading();
     performGoogleSearch(searchValue);
+    searchTimeoutId = null;
   }, 500);
 }
 
@@ -271,11 +279,11 @@ function handleVoiceSearch() {
     return;
   }
 
-  const recognition = new SpeechRecognition();
-  recognition.lang = 'en-US';
-  recognition.interimResults = false;
-  recognition.maxAlternatives = 1;
-  recognition.continuous = false;
+  recognitionInstance = new SpeechRecognition();
+  recognitionInstance.lang = 'en-US';
+  recognitionInstance.interimResults = false;
+  recognitionInstance.maxAlternatives = 1;
+  recognitionInstance.continuous = false;
 
   // Visual feedback
   mic.classList.add('listening');
@@ -283,7 +291,7 @@ function handleVoiceSearch() {
   input.placeholder = 'Listening...';
 
   try {
-    recognition.start();
+    recognitionInstance.start();
   } catch (error) {
     showResult(
       `<i class="fa-solid fa-triangle-exclamation"></i><br>Voice recognition is already active or unavailable.`,
@@ -293,7 +301,7 @@ function handleVoiceSearch() {
     return;
   }
 
-  recognition.onresult = function (event) {
+  recognitionInstance.onresult = function (event) {
     const transcript = event.results[0][0].transcript;
     const confidence = event.results[0][0].confidence;
 
@@ -313,7 +321,7 @@ function handleVoiceSearch() {
     resetVoiceUI();
   };
 
-  recognition.onerror = function (event) {
+  recognitionInstance.onerror = function (event) {
     let errorMessage = 'Could not recognize your voice. Please try again.';
 
     if (event.error === 'no-speech') {
@@ -335,7 +343,7 @@ function handleVoiceSearch() {
     resetVoiceUI();
   };
 
-  recognition.onend = function () {
+  recognitionInstance.onend = function () {
     resetVoiceUI();
   };
 }
@@ -344,9 +352,19 @@ function resetVoiceUI() {
   mic.classList.remove('listening');
   container.classList.remove('listening');
   input.placeholder = 'Type to search...';
+  recognitionInstance = null;
 }
 
 function clearSearch() {
+  if (searchTimeoutId) {
+    clearTimeout(searchTimeoutId);
+    searchTimeoutId = null;
+  }
+  if (recognitionInstance) {
+    recognitionInstance.abort();
+    recognitionInstance = null;
+  }
+  hideLoading();
   input.value = '';
   updateClearButton();
   updateShortcutBadge();
