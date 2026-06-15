@@ -232,13 +232,14 @@ tabFollowing.addEventListener('click', () => switchTab('following'));
 
 // --- Profile Handling ---
 function updateProfileUI() {
-    document.querySelectorAll('.profile-avatar-img').forEach(img => img.src = State.profile.avatar);
+    const safeAvatar = escapeHTML(State.profile.avatar);
+    document.querySelectorAll('.profile-avatar-img').forEach(img => img.src = safeAvatar);
     document.querySelectorAll('.profile-name-text').forEach(el => el.textContent = State.profile.name);
     document.querySelectorAll('.profile-handle-text').forEach(el => el.textContent = State.profile.handle);
     
     profileNameInput.value = State.profile.name;
     profileHandleInput.value = State.profile.handle;
-    modalAvatarPreview.src = State.profile.avatar;
+    modalAvatarPreview.src = safeAvatar;
 }
 
 openProfileModalBtn.addEventListener('click', (e) => {
