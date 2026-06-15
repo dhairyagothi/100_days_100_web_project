@@ -45,6 +45,15 @@ const resultsSection =
   document.getElementById(
     "resultsSection"
   );
+const insightsSection =
+  document.getElementById(
+    "insightsSection"
+  );
+
+const suggestionsSection =
+  document.getElementById(
+    "suggestionsSection"
+  );
 
 const copySuggestionsBtn =
   document.getElementById(
@@ -54,16 +63,22 @@ uploadBtn.addEventListener('click', () => {
   resumeInput.click();
 });
 
-resumeInput.addEventListener('change', () => {
+resumeInput.addEventListener('change', async () => {
+
   if (resumeInput.files.length > 0) {
+
     const file = resumeInput.files[0];
 
     fileName.textContent = file.name;
 
     updateStats(file);
 
-    extractResumeContent(file);
+    await extractResumeContent(file);
+
+    startAnalysis();
+
   }
+
 });
 
 ['dragenter', 'dragover'].forEach((eventName) => {
@@ -86,20 +101,24 @@ resumeInput.addEventListener('change', () => {
   });
 });
 
-dropZone.addEventListener('drop', (e) => {
+dropZone.addEventListener('drop', async (e) => {
+
   const files = e.dataTransfer.files;
 
   if (files.length > 0) {
+
     resumeInput.files = files;
 
-    updateStats(file);
-    extractResumeContent(file);
-    startAnalysis();
     fileName.textContent = files[0].name;
 
     updateStats(files[0]);
-    extractResumeContent(files[0]);
+
+    await extractResumeContent(files[0]);
+
+    startAnalysis();
+
   }
+
 });
 
 const progressCircle = document.getElementById('progressCircle');
@@ -211,16 +230,21 @@ function startAnalysis() {
 
   setTimeout(() => {
 
-    loadingSection.style.display =
-      "none";
+  loadingSection.style.display =
+    "none";
 
-    resultsSection.style.display =
-      "grid";
+  resultsSection.style.display =
+    "grid";
 
+  insightsSection.style.display =
+    "block";
 
-    generateAnalysis();
+  suggestionsSection.style.display =
+    "block";
 
-  }, 2500);
+  generateAnalysis();
+
+}, 2500);
 
 }
 
@@ -489,12 +513,6 @@ function updateContentStats(text) {
 
   statCharacters.textContent = characters.toLocaleString();
 }
-
-resultsSection.style.display =
-  "grid";
-
-generateAnalysis();
-
 
 const themeToggle = document.getElementById('themeToggle');
 
