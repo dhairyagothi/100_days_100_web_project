@@ -43,6 +43,22 @@ let gameBoard = Array(9).fill("");
 let currentPlayer = "X";
 let gameOver = false;
 let moveHistory = [];
+
+let scores = {
+    X: 0,
+    O: 0,
+    D: 0
+};
+
+const WIN_LINES = [
+    [0,1,2],
+    [3,4,5],
+    [6,7,8],
+    [0,3,6],
+    [1,4,7],
+    [2,5,8],
+    [0,4,8],
+    [2,4,6]
 let scores = { X: 0, O: 0, D: 0 };
 
 // Statistics data
@@ -177,8 +193,26 @@ const WIN_LINES = [
     [0,4,8],[2,4,6]
 ];
 
+// --- RENDER FUNCTION (CLEAN & OPTIMIZED) ---
 function renderBoard() {
     board.innerHTML = "";
+
+    gameBoard.forEach((value, index) => {
+        const cell = document.createElement("button");
+        cell.className = "cell";
+        
+        // Storing the cell index in data attribute for Event Delegation
+        cell.dataset.index = index;
+
+        if (value === "X") {
+            cell.classList.add("mark-x");
+        }
+
+        if (value === "O") {
+            cell.classList.add("mark-o");
+        }
+
+        cell.textContent = value;
     gameBoard.forEach((value, index) => {
         const cell = document.createElement("button");
         cell.className = "cell";
@@ -189,6 +223,22 @@ function renderBoard() {
         board.appendChild(cell);
     });
 }
+
+// --- GAME CORE LOGIC ---
+function handleMove(index) {
+    if (gameOver) return;
+    if (gameBoard[index] !== "") return;
+
+    gameBoard[index] = currentPlayer;
+
+    moveHistory.push({
+        player: currentPlayer,
+        cell: index + 1
+    });
+
+    updateHistory();
+
+    const winLine = getWinner();
 
 function handleMove(index) {
     if (gameOver) return;
@@ -205,6 +255,7 @@ function handleMove(index) {
         showWinner(currentPlayer);
         return;
     }
+
     if (gameBoard.every(cell => cell !== "")) {
         scores.D++;
         updateScores();
@@ -212,6 +263,11 @@ function handleMove(index) {
         showDraw();
         return;
     }
+
+    currentPlayer = currentPlayer === "X" ? "O" : "X";
+    updateStatus();
+    renderBoard();
+
     currentPlayer = currentPlayer === "X" ? "O" : "X";
     updateStatus();
     renderBoard();
@@ -224,10 +280,17 @@ function handleMove(index) {
 function cpuMove() {
     if (gameOver) return;
     const available = [];
+    gameBoard.forEach((cell, index) => {
+        if (cell === "") {
+            available.push(index);
+        }
+    });
+
     gameBoard.forEach((cell, index) => { if (cell === "") available.push(index); });
     if (!available.length) return;
     let move;
     const mode = modeSelect.value;
+
     if (mode === "cpu-easy") {
         move = available[Math.floor(Math.random() * available.length)];
     } else if (mode === "cpu-medium") {
@@ -238,6 +301,18 @@ function cpuMove() {
         }
     } else {
         move = getBestMoveMinimax();
+        if (move === undefined) {
+            move = getBestMove();
+        }
+    }
+
+    gameBoard[move] = "O";
+
+    moveHistory.push({
+        player: "O",
+        cell: move + 1
+    });
+
         if (move === undefined) move = getBestMove();
     }
     gameBoard[move] = "O";
@@ -266,6 +341,34 @@ function cpuMove() {
 
 function getBestMove() {
     for (const line of WIN_LINES) {
+        const [a, b, c] = line;
+        const cells = [gameBoard[a], gameBoard[b], gameBoard[c]];
+
+        if (cells.filter(v => v === "O").length === 2 && cells.includes("")) {
+            return line[cells.indexOf("")];
+        }
+    }
+
+    for (const line of WIN_LINES) {
+        const [a, b, c] = line;
+        const cells = [gameBoard[a], gameBoard[b], gameBoard[c]];
+
+        if (cells.filter(v => v === "X").length === 2 && cells.includes("")) {
+            return line[cells.indexOf("")];
+        }
+    }
+
+    if (gameBoard[4] === "") {
+        return 4;
+    }
+
+    const free = [];
+    gameBoard.forEach((cell, index) => {
+        if (cell === "") {
+            free.push(index);
+        }
+    });
+
         const [a,b,c] = line;
         const cells = [gameBoard[a], gameBoard[b], gameBoard[c]];
         if (cells.filter(v => v === "O").length === 2 && cells.includes("")) {
@@ -293,6 +396,11 @@ function getBestMoveMinimax() {
             gameBoard[i] = "O";
             let score = minimax(gameBoard, 0, false);
             gameBoard[i] = "";
+
+            if (score > bestScore) {
+                bestScore = score;
+                bestMove = i;
+            }
             if (score > bestScore) { bestScore = score; bestMove = i; }
         }
     }
@@ -338,12 +446,17 @@ function evaluateBoard(boardState) {
             return boardState[a];
         }
     }
+
+    if (boardState.every(cell => cell !== "")) {
+        return "draw";
+    }
     if (boardState.every(cell => cell !== "")) return "draw";
     return null;
 }
 
 function getWinner() {
     for (const line of WIN_LINES) {
+        const [a, b, c] = line;
         const [a,b,c] = line;
         if (gameBoard[a] && gameBoard[a] === gameBoard[b] && gameBoard[a] === gameBoard[c]) {
             return line;
@@ -354,6 +467,24 @@ function getWinner() {
 
 function highlightWin(line) {
     renderBoard();
+    line.forEach(index => {
+        if (board.children[index]) {
+            board.children[index].classList.add("win-cell");
+        }
+    });
+}
+
+function updateStatus() {
+    statusText.textContent = currentPlayer + "'s Turn";
+    turnChip.textContent = "Turn: " + currentPlayer;
+}
+
+function updateScores() {
+    scoreX.textContent = scores.X;
+    scoreO.textContent = scores.O;
+    scoreD.textContent = scores.D;
+}
+
     line.forEach(index => { board.children[index].classList.add("win-cell"); });
 }
 
@@ -418,6 +549,16 @@ function resetScores() {
 
 function undoMove() {
     if (!moveHistory.length) return;
+
+    const mode = modeSelect.value;
+
+    if (mode !== "pvp" && moveHistory.length >= 2) {
+        const cpuMove = moveHistory.pop();
+        gameBoard[cpuMove.cell - 1] = "";
+
+        const playerMove = moveHistory.pop();
+        gameBoard[playerMove.cell - 1] = "";
+
     const mode = modeSelect.value;
     if (mode !== "pvp" && moveHistory.length >= 2) {
         const cpuMv = moveHistory.pop();
@@ -443,6 +584,37 @@ function showHint() {
         board.children[move].classList.add("hint-cell");
     }
 }
+
+// --- EVENT DELEGATION FOR CELLS ---
+board.addEventListener("click", function(e) {
+    // Intercept target element ensuring it's a grid cell button
+    const targetCell = e.target.closest(".cell");
+    if (!targetCell) return;
+
+    // Pull targeted board index out of the dataset property
+    const index = parseInt(targetCell.dataset.index, 10);
+    handleMove(index);
+});
+
+// --- STANDARD CONTROL LISTENERS ---
+themeSelect.addEventListener("change", function() {
+    document.body.setAttribute("data-theme", this.value);
+});
+
+newRoundBtn.addEventListener("click", newRound);
+resetAllBtn.addEventListener("click", resetScores);
+undoBtn.addEventListener("click", undoMove);
+hintBtn.addEventListener("click", showHint);
+winnerNext.addEventListener("click", newRound);
+
+winnerClose.addEventListener("click", () => {
+    winnerModal.classList.remove("show");
+});
+
+// INITIAL APPLICATION TRIGGER
+updateStatus();
+updateScores();
+renderBoard();
 
 // Original themeSelect change listener — kept intact for compatibility
 themeSelect.addEventListener("change", function () {

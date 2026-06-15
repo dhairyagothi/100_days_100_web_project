@@ -5,6 +5,7 @@ let gameOver = false;
 let moleInterval = null;  // track mole interval to prevent duplicates
 let plantInterval = null; // track plant interval to prevent duplicates
 
+// Global tracking references for intervals to prevent memory leaks
 // Global interval tracking to prevent memory leak accumulation
 let moleIntervalId = null;
 let plantIntervalId = null;
@@ -15,6 +16,7 @@ window.onload = function () {
 
 function setGame() {
     const board = document.getElementById("board");
+    board.innerHTML = ""; // Ensure the container is empty before initializing
     board.replaceChildren(); // Safe initialization clear
 
     // --- SETUP GRID TEMPLATE ---
@@ -26,6 +28,7 @@ function setGame() {
 
     // --- CENTRALIZED EVENT DELEGATION ---
     board.addEventListener("click", function (e) {
+        // Intercept target element ensuring it's an active grid tile div
         // Intercept target element ensuring it's a grid tile inside the board
         const clickedTile = e.target.closest("#board > div");
         if (!clickedTile) return;
@@ -33,6 +36,7 @@ function setGame() {
         selectTile(clickedTile);
     });
 
+    // Start background loops
     // Initialize game background loops
     startIntervals();
     // Clear any existing intervals before starting new ones to prevent
@@ -49,6 +53,7 @@ function setGame() {
 }
 
 function startIntervals() {
+    // Clear any loose running loops first
     // Clear any loose running loops first to keep memory clean
     clearInterval(moleIntervalId);
     clearInterval(plantIntervalId);
@@ -114,6 +119,10 @@ function selectTile(tile) {
     // Hit a mole successfully!
     if (tile === currMoleTile) {
         score += 10;
+        document.getElementById("score").innerText = score.toString();
+
+        // Clear immediately so user cannot double-click spam the same mole
+        currMoleTile.innerHTML = "";
         document.getElementById("score").textContent = score.toString(); // Safe text rendering
 
         // Play the hit sound
@@ -127,6 +136,10 @@ function selectTile(tile) {
     }
     // Hit a plant — Game Over!
     else if (tile === currPlantTile) {
+        document.getElementById("score").innerText = "GAME OVER: " + score.toString();
+        gameOver = true;
+
+        // Clear active process background timers
         let hitSound = new Audio("./die.mp3");
         hitSound.volume  = 0.2;
         hitSound.play();
@@ -150,6 +163,7 @@ function selectTile(tile) {
         document.getElementById("restart-btn").style.display =
             "inline-block";
 
+        // UI state displays
         // UI state toggles
         document.getElementById("restart-btn").style.display = "inline-block";
         document.body.classList.add("game-over");
@@ -159,6 +173,15 @@ function selectTile(tile) {
 function restartGame() {
     score = 0;
     gameOver = false;
+    document.getElementById("score").innerText = score;
+
+    // Clean UI overlays
+    document.getElementById("restart-btn").style.display = "none";
+    document.body.classList.remove("game-over");
+
+    // Clear grid structures
+    if (currMoleTile) currMoleTile.innerHTML = "";
+    if (currPlantTile) currPlantTile.innerHTML = "";
     document.getElementById("score").textContent = score.toString();
 
     // Hide UI elements
@@ -172,6 +195,7 @@ function restartGame() {
     currMoleTile = null;
     currPlantTile = null;
 
+    // Reactivate clean, non-accumulated engine intervals
     // Reactivate game engine tracking loops safely
     startIntervals();
     // Restart intervals fresh — previous ones were cleared on game over

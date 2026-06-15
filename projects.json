@@ -372,6 +372,8 @@
       "game",
       "javascript"
     ],
+    "difficulty": "advanced",
+    "techStack": ["game", "javascript"],
     "difficulty": "intermediate",
     "projectPath": "./public/Missionaries&Cannibals/index.html"
   },
@@ -2325,6 +2327,7 @@
       "javascript",
       "ui"
     ],
+    "techStack": ["tool", "html", "css", "javascript", "ui"],
     "difficulty": "intermediate",
     "projectPath": "./public/ImageCompressor/index.html"
   },
@@ -2339,6 +2342,7 @@
       "css",
       "javascript"
     ],
+    "techStack": ["tool", "html", "css", "javascript"],
     "difficulty": "advanced",
     "projectPath": "./public/Streak-Visualizer/index.html"
   },
@@ -2410,6 +2414,7 @@
       "css",
       "javascript"
     ],
+    "techStack": ["html", "css", "javascript"],
     "difficulty": "intermediate",
     "projectPath": "./public/Escape_Room/index.html"
   },
@@ -2526,6 +2531,18 @@
   },
   {
     "projectNo": 202,
+    "projectName": "Bioinformatics Genomic Alignment Engine & Matrix Visualizer",
+    "projectType": "Tool",
+    "projectDesc": "An advanced tool using the Needleman-Wunsch dynamic programming algorithm to calculate optimal global sequence alignments and map mutations visually inside a color-coded matrix heat map loop.",
+    "techStack": [
+      "html",
+      "css",
+      "vanilla-javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/DNA_Aligner/index.html"
+  }
+]
     "projectName": "Traffic signal game",
     "projectType": "Game",
     "projectDesc": "A traffic game with red , green , yellow light.",
