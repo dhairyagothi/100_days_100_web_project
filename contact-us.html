@@ -800,7 +800,9 @@
           <button type="button" class="reason-chip" data-reason="Other">Other</button>
         </div>
 
-        <form id="contactForm" novalidate data-endpoint="">
+       
+        
+        <form id="contactForm" novalidate data-endpoint="https://formspree.io/f/xpwzgnjw">
           <!-- Hidden reason field populated by chip selection -->
           <input type="hidden" id="reasonField" value="General Question" />
 
@@ -1088,35 +1090,35 @@
       document.getElementById('reasonField').value = 'General Question';
     }
 
-    async function submitContactForm() {
-      const endpoint = form.dataset.endpoint?.trim();
+   async function submitContactForm() {
+  const endpoint = form.dataset.endpoint?.trim();
 
-      if (!endpoint) {
-        throw new Error('The contact form is not configured yet. Please reach out on GitHub or use the email link on this page.');
-      }
+  if (!endpoint) {
+    throw new Error('FormSpree endpoint not configured.');
+  }
 
-      const payload = {
-        name: document.getElementById('contactName').value.trim(),
-        email: document.getElementById('contactEmail').value.trim(),
-        subject: document.getElementById('contactSubject').value.trim(),
-        github: document.getElementById('contactGithub').value.trim(),
-        reason: document.getElementById('reasonField').value,
-        message: document.getElementById('contactMessage').value.trim()
-      };
+  const payload = {
+    name:    document.getElementById('contactName').value.trim(),
+    email:   document.getElementById('contactEmail').value.trim(),
+    subject: document.getElementById('contactSubject').value.trim(),
+    github:  document.getElementById('contactGithub').value.trim(),
+    reason:  document.getElementById('reasonField').value,
+    message: document.getElementById('contactMessage').value.trim()
+  };
 
-      const res = await fetch(endpoint, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify(payload)
-      });
+  const res = await fetch(endpoint, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    },
+    body: JSON.stringify(payload)
+  });
 
-      if (!res.ok) {
-        throw new Error(defaultErrorMessage);
-      }
-    }
+  if (!res.ok) {
+    throw new Error(defaultErrorMessage);
+  }
+}
 
     /* Clear error on input */
     ['contactName', 'contactEmail', 'contactSubject', 'contactMessage'].forEach(id => {

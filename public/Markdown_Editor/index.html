@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Markdown Editor & Analytics</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header class="toolbar">
+        <div class="logo-section">
+            <h1>📝 MarkCraft</h1>
+            <span class="tag">Advanced</span>
+        </div>
+
+        <div class="analytics-bar">
+            <div class="stat">Words: <span id="word-count">0</span></div>
+            <div class="stat">Chars: <span id="char-count">0</span></div>
+            <div class="stat">Read Time: <span id="read-time">0m</span></div>
+        </div>
+
+        <button id="theme-toggle" class="btn-toggle" aria-label="Toggle Theme">
+            <span class="theme-icon">🌙</span>
+            <span class="theme-text">Dark Mode</span>
+        </button>
+    </header>
+
+    <main class="workspace">
+        <section class="pane editor-pane">
+            <div class="pane-header">Markdown Input</div>
+            <textarea id="markdown-input"
+                placeholder="# Welcome to MarkCraft&#10;&#10;Start writing your markdown here...&#10;&#10;* Use asterisks for lists&#10;* **Bold text** or *italics*&#10;&#10;```javascript&#10;const greet = () => 'Hello World';&#10;```" spellcheck="false"></textarea>
+        </section>
+
+        <div class="resizer" id="dragbar" title="Drag to resize workspace"></div>
+
+        <section class="pane preview-pane">
+            <div class="pane-header">Live Preview</div>
+            <div id="preview-output" class="markdown-body">
+            </div>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

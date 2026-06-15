@@ -13,6 +13,8 @@
   <link rel="stylesheet" href="style.css"/>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+  <script src="https://unpkg.com/mammoth/mammoth.browser.min.js"></script>
   <style>
     .header-icon {
       width: 32px;
@@ -46,6 +48,24 @@
     h1, h2 {
       display: flex;
       align-items: center;
+    }
+    .home-btn {
+      display: inline-flex;
+      align-items: center;
+      text-decoration: none;
+      background: #1e293b;
+      color: #3b82f6;
+      border: 1px solid #3b82f6;
+      border-radius: 8px;
+      padding: 8px 16px;
+      transition: all 0.2s ease;
+      margin: 16px;
+      font-weight: 500;
+      font-size: 0.9rem;
+    }
+    .home-btn:hover {
+      background: #3b82f6;
+      color: #fff;
     }
   </style>
 </head>
@@ -124,18 +144,46 @@
             <span>Last Modified</span>
             <strong id="statModified">-</strong>
           </div>
-
           <div class="stat-item">
             <span>Reading Time</span>
             <strong id="statReadTime">-</strong>
           </div>
 
+          <div class="stat-item">
+            <span>Word Count</span>
+            <strong id="statWords">-</strong>
+          </div>
+
+          <div class="stat-item">
+            <span>Characters</span>
+            <strong id="statCharacters">-</strong>
+          </div>
         </div>
       </div>
 
     </section>
+    <section
 
-    <section class="dashboard-grid">
+      id="loadingSection"
+      class="loading-section"
+      style="display:none;"
+      
+    >
+      <div class="loading-card">
+
+        <div class="loader"></div>
+
+        <h2>Analyzing Resume...</h2>
+
+        <p>
+          Evaluating ATS compatibility,
+          skills, projects, and keywords.
+        </p>
+
+      </div>
+    </section>
+
+    <section class="dashboard-grid" id="resultsSection">
 
       <div class="score-card">
 
@@ -203,30 +251,58 @@
       <div class="insights-grid">
 
         <div class="insight-card">
-          <h3>Technical Skills</h3>
+          <h3>
+            Technical Skills
+            <span id="techScore">88%</span>
+          </h3>
+
           <div class="progress-bar">
-            <div class="progress-fill tech"></div>
+            <div
+              class="progress-fill tech"
+              id="techBar"
+            ></div>
           </div>
         </div>
 
         <div class="insight-card">
-          <h3>Projects</h3>
+          <h3>
+            Projects
+            <span id="projectsScore">82%</span>
+          </h3>
+
           <div class="progress-bar">
-            <div class="progress-fill projects"></div>
+            <div
+              class="progress-fill projects"
+              id="projectsBar"
+            ></div>
           </div>
         </div>
 
         <div class="insight-card">
-          <h3>Communication</h3>
+          <h3>
+            Communication
+            <span id="communicationScore">74%</span>
+          </h3>
+
           <div class="progress-bar">
-            <div class="progress-fill communication"></div>
+            <div
+              class="progress-fill communication"
+              id="communicationBar"
+            ></div>
           </div>
         </div>
 
         <div class="insight-card">
-          <h3>Experience</h3>
+          <h3>
+            Experience
+            <span id="experienceScore">68%</span>
+          </h3>
+
           <div class="progress-bar">
-            <div class="progress-fill experience"></div>
+            <div
+              class="progress-fill experience"
+              id="experienceBar"
+            ></div>
           </div>
         </div>
 
@@ -238,21 +314,28 @@
 
       <h2><svg class="suggestion-icon-svg" viewBox="0 0 24 24"><path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7zm2.85 11.1l-.85.6V16h-4v-2.3l-.85-.6C7.8 12.16 7 10.63 7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.63-.8 3.16-2.15 4.1z"/></svg> AI Suggestions</h2>
 
+      <button
+        id="copySuggestionsBtn"
+        class="copy-btn"
+      >
+        Copy Suggestions
+      </button>
+
       <div class="suggestions-grid">
 
-        <div class="suggestion-card">
+        <div class="suggestion-card suggestion-text">
           Add more quantified project achievements.
         </div>
 
-        <div class="suggestion-card">
+        <div class="suggestion-card suggestion-text">
           Include keywords like React, APIs, and Node.js.
         </div>
 
-        <div class="suggestion-card">
+        <div class="suggestion-card suggestion-text">
           Improve resume summary section.
         </div>
 
-        <div class="suggestion-card">
+        <div class="suggestion-card suggestion-text">
           Add GitHub and portfolio links.
         </div>
 

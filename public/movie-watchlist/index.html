@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Movie Watchlist</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Movie Watchlist</h1>
+
+      <div class="search-box">
+        <input
+          type="text"
+          id="search-input"
+          placeholder="Search movie title..."
+          autofocus
+        />
+        <button id="search-btn">Search</button>
+      </div>
+
+      <div id="movie-result" class="hidden"></div>
+
+      <hr />
+
+      <h2>My Watchlist</h2>
+      <div id="watchlist-container"></div>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
