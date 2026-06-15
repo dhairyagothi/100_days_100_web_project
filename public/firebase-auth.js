@@ -25,6 +25,51 @@ const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
 const facebookProvider = new FacebookAuthProvider();
 
+function getAuthContext() {
+  return /SignUp\.html$/i.test(window.location.pathname) ? "signup" : "login";
+}
+
+function getFallbackName(user) {
+  const explicitName = String(user?.name || user?.username || "").trim();
+  if (explicitName) return explicitName;
+
+  const displayName = String(user?.displayName || "").trim();
+  if (displayName) return displayName;
+
+  const email = String(user?.email || "").trim();
+  if (email) return email.split("@")[0] || email;
+
+  return "there";
+}
+
+function persistAuthSession(user, provider, authAction) {
+  const name = getFallbackName(user);
+  const session = {
+    uid: user?.uid || "",
+    username: user?.username || name,
+    name,
+    email: user?.email || "",
+    photo: user?.photoURL || "",
+    provider,
+    authAction,
+    loginTime: Date.now(),
+    timezone: "Asia/Kolkata",
+  };
+
+  if (session.username) {
+    localStorage.setItem("loggedInUser", session.username);
+  }
+
+  localStorage.setItem("loggedInUserData", JSON.stringify(session));
+  return session;
+}
+
+window.AuthSession = {
+  getAuthContext,
+  getFallbackName,
+  persistAuthSession,
+};
+
 
 // ================= GOOGLE LOGIN =================
 
@@ -41,16 +86,7 @@ document
 
       const user = result.user;
 
-      localStorage.setItem(
-        "loggedInUserData",
-        JSON.stringify({
-          uid: user.uid,
-          name: user.displayName,
-          email: user.email,
-          photo: user.photoURL,
-          provider: "google"
-        })
-      );
+      persistAuthSession(user, "google", getAuthContext());
 
       window.location.href = "../index.html";
 
@@ -76,16 +112,7 @@ document
 
       const user = result.user;
 
-      localStorage.setItem(
-        "loggedInUserData",
-        JSON.stringify({
-          uid: user.uid,
-          name: user.displayName,
-          email: user.email,
-          photo: user.photoURL,
-          provider: "facebook"
-        })
-      );
+      persistAuthSession(user, "facebook", getAuthContext());
 
       window.location.href = "../index.html";
 
