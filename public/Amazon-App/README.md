@@ -99,7 +99,7 @@ This project works smoothly across:
 ## 1️⃣ Clone the Repository
 
 ```bash
-git clonehttps://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Amazon-App.git
+git clone https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Amazon-App.git
 ```
 
 ## 2️⃣ Navigate to Project Folder
@@ -116,7 +116,7 @@ Open `index.html` in your browser.
 
 # 🌐 Demo & Repository
 
-🔗 Live Demo: [https://100-days-100-web-project.vercel.app/public/Amazon-App/index.html](https://100-days-100-web-project.vercel.app/public/Amazon-App/index.html)
+🔗 Live Demo: [https://dhairyagothi.github.io/100_days_100_web_project/public/Amazon-App/index.html](https://dhairyagothi.github.io/100_days_100_web_project/public/Amazon-App/index.html)
 
 🔗 GitHub Repository: [https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Amazon-App](https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Amazon-App)
 
