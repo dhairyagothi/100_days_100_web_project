@@ -1,0 +1,38 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #0f0f0f;
+    color: #00ffe5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.dashboard {
+    text-align: center;
+    border: 2px solid #00ffe5;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 0 20px #00ffe5;
+}
+
+.card {
+    margin: 10px 0;
+    font-size: 18px;
+}
+
+button {
+    margin-top: 15px;
+    padding: 10px;
+    border: none;
+    background: red;
+    color: white;
+    cursor: pointer;
+    border-radius: 8px;
+}
