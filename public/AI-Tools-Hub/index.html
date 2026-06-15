@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Tools Hub - Discover the Best AI Tools</title>
-    <link rel="stylesheet" href="/public/AI-Tools-Hub/style.css">
+    <link rel="stylesheet" href="/public/AI-Tools-Hub/style.css?v=6">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -21,7 +21,7 @@
         </nav>
         
         <div class="hero-content container">
-            <p class="hero-badge">🚀 Discover 1000+ Cutting-Edge AI Tools</p>
+            <p class="hero-badge">🚀 Discover 18+ Cutting-Edge AI Tools</p>
             <h2 class="hero-title">Unlock the Power of <span class="gradient-text">Artificial Intelligence</span></h2>
             <p class="hero-subtitle">Find the perfect AI tools for coding, design, writing, productivity, and more. Curated for creators, developers, and professionals.</p>
             <div class="hero-buttons">
@@ -101,29 +101,54 @@
         </div>
     </section>
 
-    <!-- My Favorites Section -->
-    <section id="favorites" class="tools favorites-section">
+    <!-- Smart Collections Section -->
+    <section id="collections" class="collections">
         <div class="container">
-            <h3 class="section-title">My <span class="gradient-text">Favorites</span></h3>
-            <p class="section-subtitle">Your bookmarked AI tools for quick access</p>
-            <div id="favorites-grid" class="tools-grid">
-                <div id="empty-favorites" class="empty-state">
-                    <div class="empty-state-icon">💖</div>
-                    <h4>No favorites yet</h4>
-                    <p>Click the heart icon on any tool to add it to your favorites!</p>
+            <h3 class="section-title">Smart <span class="gradient-text">Collections</span></h3>
+            <p class="section-subtitle">Curated tool collections for specific use cases</p>
+            <div class="collections-grid">
+                <div class="collection-card glass-card" data-collection="students">
+                    <div class="collection-icon">🎓</div>
+                    <h4>Best for Students</h4>
+                    <p>Tools to help with learning, research, and assignments</p>
+                    <button class="btn-primary">Explore</button>
+                </div>
+                <div class="collection-card glass-card" data-collection="developers">
+                    <div class="collection-icon">👨‍💻</div>
+                    <h4>Best for Developers</h4>
+                    <p>Essential tools for coding, debugging, and development</p>
+                    <button class="btn-primary">Explore</button>
+                </div>
+                <div class="collection-card glass-card" data-collection="designers">
+                    <div class="collection-icon">🎨</div>
+                    <h4>Best for Designers</h4>
+                    <p>Tools for UI/UX design, graphics, and visual creation</p>
+                    <button class="btn-primary">Explore</button>
+                </div>
+                <div class="collection-card glass-card" data-collection="free">
+                    <div class="collection-icon">🆓</div>
+                    <h4>Best Free Tools</h4>
+                    <p>Top free AI tools that don't cost a dime</p>
+                    <button class="btn-primary">Explore</button>
+                </div>
+                <div class="collection-card glass-card" data-collection="productivity">
+                    <div class="collection-icon">⚡</div>
+                    <h4>Best Productivity</h4>
+                    <p>Tools to boost your productivity and save time</p>
+                    <button class="btn-primary">Explore</button>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Featured AI Tools Section -->
+    <!-- AI Tools Grid -->
     <section id="tools" class="tools">
         <div class="container">
             <h3 class="section-title">Featured <span class="gradient-text">AI Tools</span></h3>
-            <p class="section-subtitle">Hand-picked selection of the best AI tools available today</p>
+            <p class="section-subtitle">Handpicked AI tools that will transform your workflow</p>
             <div class="tools-grid">
                 <!-- Coding & Development -->
-                <div class="tool-card glass-card" data-tool-id="github-copilot" data-tool-name="GitHub Copilot" data-tool-category="Coding & Development" data-tool-description="Your AI pair programmer. Get code suggestions in real-time as you write." data-tool-url="https://github.com/copilot">
+                <div class="tool-card glass-card" data-tool-id="github-copilot">
                     <button class="favorite-btn" aria-label="Add GitHub Copilot to favorites">
                         <span class="heart-icon">🤍</span>
                     </button>
@@ -132,7 +157,7 @@
                     <p class="tool-description">Your AI pair programmer. Get code suggestions in real-time as you write.</p>
                     <a href="https://github.com/copilot" target="_blank" rel="noopener noreferrer" class="btn-primary" aria-label="Visit GitHub Copilot website">Visit Website</a>
                 </div>
-                <div class="tool-card glass-card" data-tool-id="cursor" data-tool-name="Cursor" data-tool-category="Coding & Development" data-tool-description="AI-first code editor designed for pair-programming with AI." data-tool-url="https://cursor.so">
+                <div class="tool-card glass-card" data-tool-id="cursor">
                     <button class="favorite-btn" aria-label="Add Cursor to favorites">
                         <span class="heart-icon">🤍</span>
                     </button>
@@ -141,7 +166,7 @@
                     <p class="tool-description">AI-first code editor designed for pair-programming with AI.</p>
                     <a href="https://cursor.so" target="_blank" rel="noopener noreferrer" class="btn-primary" aria-label="Visit Cursor website">Visit Website</a>
                 </div>
-                <div class="tool-card glass-card" data-tool-id="codeium" data-tool-name="Codeium" data-tool-category="Coding & Development" data-tool-description="Free AI-powered code completion and chat for every IDE." data-tool-url="https://codeium.com">
+                <div class="tool-card glass-card" data-tool-id="codeium">
                     <button class="favorite-btn" aria-label="Add Codeium to favorites">
                         <span class="heart-icon">🤍</span>
                     </button>
@@ -152,7 +177,7 @@
                 </div>
                 
                 <!-- Design & Images -->
-                <div class="tool-card glass-card" data-tool-id="midjourney" data-tool-name="Midjourney" data-tool-category="Design & Images" data-tool-description="Create beautiful, unique images from text descriptions." data-tool-url="https://midjourney.com">
+                <div class="tool-card glass-card" data-tool-id="midjourney">
                     <button class="favorite-btn" aria-label="Add Midjourney to favorites">
                         <span class="heart-icon">🤍</span>
                     </button>
@@ -161,7 +186,7 @@
                     <p class="tool-description">Create beautiful, unique images from text descriptions.</p>
                     <a href="https://midjourney.com" target="_blank" rel="noopener noreferrer" class="btn-primary" aria-label="Visit Midjourney website">Visit Website</a>
                 </div>
-                <div class="tool-card glass-card" data-tool-id="dalle-3" data-tool-name="DALL·E 3" data-tool-category="Design & Images" data-tool-description="OpenAI's latest image generation model with stunning quality." data-tool-url="https://openai.com/dall-e-3">
+                <div class="tool-card glass-card" data-tool-id="dalle-3">
                     <button class="favorite-btn" aria-label="Add DALL·E 3 to favorites">
                         <span class="heart-icon">🤍</span>
                     </button>
@@ -170,7 +195,7 @@
                     <p class="tool-description">OpenAI's latest image generation model with stunning quality.</p>
                     <a href="https://openai.com/dall-e-3" target="_blank" rel="noopener noreferrer" class="btn-primary" aria-label="Visit DALL·E 3 website">Visit Website</a>
                 </div>
-                <div class="tool-card glass-card" data-tool-id="figma-ai" data-tool-name="Figma AI" data-tool-category="Design & Images" data-tool-description="AI-powered design assistant built directly into Figma." data-tool-url="https://figma.com">
+                <div class="tool-card glass-card" data-tool-id="figma-ai">
                     <button class="favorite-btn" aria-label="Add Figma AI to favorites">
                         <span class="heart-icon">🤍</span>
                     </button>
@@ -181,7 +206,7 @@
                 </div>
                 
                 <!-- Writing & Content -->
-                <div class="tool-card glass-card" data-tool-id="chatgpt" data-tool-name="ChatGPT" data-tool-category="Writing & Content" data-tool-description="Advanced language model for conversation and content creation." data-tool-url="https://chat.openai.com">
+                <div class="tool-card glass-card" data-tool-id="chatgpt">
                     <button class="favorite-btn" aria-label="Add ChatGPT to favorites">
                         <span class="heart-icon">🤍</span>
                     </button>
@@ -190,7 +215,7 @@
                     <p class="tool-description">Advanced language model for conversation and content creation.</p>
                     <a href="https://chat.openai.com" target="_blank" rel="noopener noreferrer" class="btn-primary" aria-label="Visit ChatGPT website">Visit Website</a>
                 </div>
-                <div class="tool-card glass-card" data-tool-id="claude" data-tool-name="Claude" data-tool-category="Writing & Content" data-tool-description="Anthropic's AI assistant for thoughtful, harmless, and helpful interactions." data-tool-url="https://anthropic.com">
+                <div class="tool-card glass-card" data-tool-id="claude">
                     <button class="favorite-btn" aria-label="Add Claude to favorites">
                         <span class="heart-icon">🤍</span>
                     </button>
@@ -199,7 +224,7 @@
                     <p class="tool-description">Anthropic's AI assistant for thoughtful, harmless, and helpful interactions.</p>
                     <a href="https://anthropic.com" target="_blank" rel="noopener noreferrer" class="btn-primary" aria-label="Visit Claude website">Visit Website</a>
                 </div>
-                <div class="tool-card glass-card" data-tool-id="jasper" data-tool-name="Jasper" data-tool-category="Writing & Content" data-tool-description="AI copywriter for marketing, blogs, and social media." data-tool-url="https://jasper.ai">
+                <div class="tool-card glass-card" data-tool-id="jasper">
                     <button class="favorite-btn" aria-label="Add Jasper to favorites">
                         <span class="heart-icon">🤍</span>
                     </button>
@@ -210,7 +235,7 @@
                 </div>
                 
                 <!-- Presentation & Slides -->
-                <div class="tool-card glass-card" data-tool-id="gamma" data-tool-name="Gamma" data-tool-category="Presentation & Slides" data-tool-description="Create beautiful presentations and documents with AI." data-tool-url="https://gamma.app">
+                <div class="tool-card glass-card" data-tool-id="gamma">
                     <button class="favorite-btn" aria-label="Add Gamma to favorites">
                         <span class="heart-icon">🤍</span>
                     </button>
@@ -219,7 +244,7 @@
                     <p class="tool-description">Create beautiful presentations and documents with AI.</p>
                     <a href="https://gamma.app" target="_blank" rel="noopener noreferrer" class="btn-primary" aria-label="Visit Gamma website">Visit Website</a>
                 </div>
-                <div class="tool-card glass-card" data-tool-id="tome" data-tool-name="Tome" data-tool-category="Presentation & Slides" data-tool-description="AI-powered storytelling platform for presentations." data-tool-url="https://tome.app">
+                <div class="tool-card glass-card" data-tool-id="tome">
                     <button class="favorite-btn" aria-label="Add Tome to favorites">
                         <span class="heart-icon">🤍</span>
                     </button>
@@ -228,7 +253,7 @@
                     <p class="tool-description">AI-powered storytelling platform for presentations.</p>
                     <a href="https://tome.app" target="_blank" rel="noopener noreferrer" class="btn-primary" aria-label="Visit Tome website">Visit Website</a>
                 </div>
-                <div class="tool-card glass-card" data-tool-id="beautiful-ai" data-tool-name="Beautiful.ai" data-tool-category="Presentation & Slides" data-tool-description="Smart presentation maker that designs your slides." data-tool-url="https://beautiful.ai">
+                <div class="tool-card glass-card" data-tool-id="beautiful-ai">
                     <button class="favorite-btn" aria-label="Add Beautiful.ai to favorites">
                         <span class="heart-icon">🤍</span>
                     </button>
@@ -239,16 +264,16 @@
                 </div>
                 
                 <!-- Productivity & Office -->
-                <div class="tool-card glass-card" data-tool-id="notion-ai" data-tool-name="Notion AI" data-tool-category="Productivity & Office" data-tool-description="AI assistant built into your Notion workspace." data-tool-url="https://notion.so">
+                <div class="tool-card glass-card" data-tool-id="notion-ai">
                     <button class="favorite-btn" aria-label="Add Notion AI to favorites">
                         <span class="heart-icon">🤍</span>
                     </button>
                     <span class="tool-badge">Productivity & Office</span>
                     <h4 class="tool-name">Notion AI</h4>
                     <p class="tool-description">AI assistant built into your Notion workspace.</p>
-                    <a href="https://notion.so" target="_blank" rel="noopener noreferrer" class="btn-primary" aria-label="Visit Notion AI website">Visit Website</a>
+                    <a href="https://notion.so" target="_blank" rel="noopener noreferrer" class="btn-primary" aria-label="Visit Notion website">Visit Website</a>
                 </div>
-                <div class="tool-card glass-card" data-tool-id="microsoft-copilot" data-tool-name="Microsoft Copilot" data-tool-category="Productivity & Office" data-tool-description="AI assistant for Microsoft 365 apps and Windows." data-tool-url="https://microsoft.com/copilot">
+                <div class="tool-card glass-card" data-tool-id="microsoft-copilot">
                     <button class="favorite-btn" aria-label="Add Microsoft Copilot to favorites">
                         <span class="heart-icon">🤍</span>
                     </button>
@@ -257,7 +282,7 @@
                     <p class="tool-description">AI assistant for Microsoft 365 apps and Windows.</p>
                     <a href="https://microsoft.com/copilot" target="_blank" rel="noopener noreferrer" class="btn-primary" aria-label="Visit Microsoft Copilot website">Visit Website</a>
                 </div>
-                <div class="tool-card glass-card" data-tool-id="google-gemini" data-tool-name="Google Gemini" data-tool-category="Productivity & Office" data-tool-description="Google's AI assistant for Workspace and beyond." data-tool-url="https://gemini.google.com">
+                <div class="tool-card glass-card" data-tool-id="google-gemini">
                     <button class="favorite-btn" aria-label="Add Google Gemini to favorites">
                         <span class="heart-icon">🤍</span>
                     </button>
@@ -268,7 +293,7 @@
                 </div>
                 
                 <!-- Video, Voice & Media -->
-                <div class="tool-card glass-card" data-tool-id="sora" data-tool-name="Sora" data-tool-category="Video, Voice & Media" data-tool-description="OpenAI's AI video generation model for creating videos." data-tool-url="https://openai.com/sora">
+                <div class="tool-card glass-card" data-tool-id="sora">
                     <button class="favorite-btn" aria-label="Add Sora to favorites">
                         <span class="heart-icon">🤍</span>
                     </button>
@@ -277,7 +302,7 @@
                     <p class="tool-description">OpenAI's AI video generation model for creating videos.</p>
                     <a href="https://openai.com/sora" target="_blank" rel="noopener noreferrer" class="btn-primary" aria-label="Visit Sora website">Visit Website</a>
                 </div>
-                <div class="tool-card glass-card" data-tool-id="elevenlabs" data-tool-name="ElevenLabs" data-tool-category="Video, Voice & Media" data-tool-description="AI voice generation and text-to-speech platform." data-tool-url="https://elevenlabs.io">
+                <div class="tool-card glass-card" data-tool-id="elevenlabs">
                     <button class="favorite-btn" aria-label="Add ElevenLabs to favorites">
                         <span class="heart-icon">🤍</span>
                     </button>
@@ -286,7 +311,7 @@
                     <p class="tool-description">AI voice generation and text-to-speech platform.</p>
                     <a href="https://elevenlabs.io" target="_blank" rel="noopener noreferrer" class="btn-primary" aria-label="Visit ElevenLabs website">Visit Website</a>
                 </div>
-                <div class="tool-card glass-card" data-tool-id="runway" data-tool-name="Runway" data-tool-category="Video, Voice & Media" data-tool-description="Professional AI video editing and generation tools." data-tool-url="https://runwayml.com">
+                <div class="tool-card glass-card" data-tool-id="runway">
                     <button class="favorite-btn" aria-label="Add Runway to favorites">
                         <span class="heart-icon">🤍</span>
                     </button>
@@ -295,7 +320,7 @@
                     <p class="tool-description">Professional AI video editing and generation tools.</p>
                     <a href="https://runwayml.com" target="_blank" rel="noopener noreferrer" class="btn-primary" aria-label="Visit Runway website">Visit Website</a>
                 </div>
-                <div class="tool-card glass-card" data-tool-id="heygen" data-tool-name="HeyGen" data-tool-category="Video, Voice & Media" data-tool-description="Create professional AI videos with talking avatars." data-tool-url="https://heygen.com">
+                <div class="tool-card glass-card" data-tool-id="heygen">
                     <button class="favorite-btn" aria-label="Add HeyGen to favorites">
                         <span class="heart-icon">🤍</span>
                     </button>
@@ -308,53 +333,104 @@
         </div>
     </section>
 
-    <!-- Why Use AI Section -->
-    <section class="why-ai">
+    <!-- Comparison Section -->
+    <section id="compare" class="compare">
         <div class="container">
-            <h3 class="section-title">Why Use <span class="gradient-text">AI Tools?</span></h3>
-            <p class="section-subtitle">Transform the way you work and create with artificial intelligence</p>
-            <div class="why-grid">
-                <div class="why-card glass-card">
-                    <div class="why-icon">⏱️</div>
-                    <h4>Save Time</h4>
-                    <p>Automate repetitive tasks and complete projects 10x faster.</p>
+            <h3 class="section-title">Compare <span class="gradient-text">AI Tools</span></h3>
+            <p class="section-subtitle">Compare features, pricing, and more between two AI tools</p>
+            <div class="compare-controls">
+                <div class="tool-selectors">
+                    <select id="tool-select-1" class="tool-select">
+                        <option value="">Select first tool...</option>
+                    </select>
+                    <select id="tool-select-2" class="tool-select">
+                        <option value="">Select second tool...</option>
+                    </select>
                 </div>
-                <div class="why-card glass-card">
-                    <div class="why-icon">💡</div>
-                    <h4>Boost Creativity</h4>
-                    <p>Get new ideas and inspiration from AI-powered suggestions.</p>
-                </div>
-                <div class="why-card glass-card">
-                    <div class="why-icon">📈</div>
-                    <h4>Increase Productivity</h4>
-                    <p>Accomplish more in less time with smart AI assistance.</p>
-                </div>
-                <div class="why-card glass-card">
-                    <div class="why-icon">🎯</div>
-                    <h4>Improve Quality</h4>
-                    <p>Deliver higher-quality work with AI's precision and consistency.</p>
+                <button id="compare-btn" class="btn-primary btn-large">Compare</button>
+            </div>
+            <div id="comparison-table" class="comparison-table hidden">
+            </div>
+        </div>
+    </section>
+
+    <!-- Favorites Section -->
+    <section id="favorites" class="tools">
+        <div class="container">
+            <h3 class="section-title">Your <span class="gradient-text">Favorites</span></h3>
+            <p class="section-subtitle">AI tools you've saved for later</p>
+            <div id="favorites-grid" class="tools-grid">
+                <div id="empty-favorites" class="empty-state">
+                    <div class="empty-state-icon">💖</div>
+                    <h4>No favorites yet</h4>
+                    <p>Click the heart icon on any tool to add it to your favorites!</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Future AI Trends Section -->
+    <!-- Recent Viewed Section -->
+    <section id="recent" class="tools">
+        <div class="container">
+            <h3 class="section-title">Recently <span class="gradient-text">Viewed</span></h3>
+            <p class="section-subtitle">Tools you've recently explored</p>
+            <div id="recent-grid" class="tools-grid">
+                <div id="empty-recent" class="empty-state">
+                    <div class="empty-state-icon">👀</div>
+                    <h4>No tools viewed yet</h4>
+                    <p>Start exploring tools to see them here!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Use AI Section -->
+    <section class="why-ai">
+        <div class="container">
+            <h3 class="section-title">Why Use <span class="gradient-text">AI Tools</span>?</h3>
+            <p class="section-subtitle">Discover the benefits of integrating AI into your workflow</p>
+            <div class="why-grid">
+                <div class="why-card glass-card">
+                    <div class="why-icon">🚀</div>
+                    <h4>10x Productivity</h4>
+                    <p>Automate repetitive tasks and complete projects in minutes.</p>
+                </div>
+                <div class="why-card glass-card">
+                    <div class="why-icon">💡</div>
+                    <h4>Creative Inspiration</h4>
+                    <p>Get fresh ideas and creative suggestions from AI assistants.</p>
+                </div>
+                <div class="why-card glass-card">
+                    <div class="why-icon">💰</div>
+                    <h4>Cost Effective</h4>
+                    <p>Save money by using AI instead of hiring expensive services.</p>
+                </div>
+                <div class="why-card glass-card">
+                    <div class="why-icon">⚡</div>
+                    <h4>Learn Faster</h4>
+                    <p>Accelerate your learning with personalized AI tutoring.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trends Section -->
     <section class="trends">
         <div class="container">
-            <h3 class="section-title">Future <span class="gradient-text">AI Trends</span></h3>
-            <p class="section-subtitle">What's coming next in the world of artificial intelligence</p>
+            <h3 class="section-title">Future <span class="gradient-text">Trends</span></h3>
+            <p class="section-subtitle">What's coming next in the world of AI</p>
             <div class="trends-grid">
                 <div class="trend-card glass-card">
                     <h4>Multimodal AI</h4>
-                    <p>AI that can understand and generate text, images, audio, and video seamlessly together.</p>
+                    <p>AI that can understand and generate text, images, audio, and video together.</p>
                 </div>
                 <div class="trend-card glass-card">
-                    <h4>Agentic Systems</h4>
-                    <p>Autonomous AI agents that can complete complex tasks without constant supervision.</p>
+                    <h4>AI Agents</h4>
+                    <p>Autonomous AI that can perform complex tasks without constant supervision.</p>
                 </div>
                 <div class="trend-card glass-card">
-                    <h4>Edge AI</h4>
-                    <p>Running AI models locally on your devices for faster, private, offline access.</p>
+                    <h4>Personalized AI</h4>
+                    <p>AI that adapts to your unique style, preferences, and work patterns.</p>
                 </div>
             </div>
         </div>
@@ -365,23 +441,31 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-brand">
-                    <h4 class="logo">
+                    <h3 class="logo">
                         <span class="logo-icon">🤖</span>
                         AI Tools Hub
-                    </h4>
-                    <p>Discover the best AI tools to enhance your workflow and creativity.</p>
+                    </h3>
+                    <p>Your trusted guide to discovering the best AI tools for every need.</p>
                 </div>
                 <div class="footer-links">
                     <h5>Quick Links</h5>
                     <ul>
-                        <li><a href="#categories" aria-label="Go to categories section">Categories</a></li>
-                        <li><a href="#tools" aria-label="Go to tools section">Tools</a></li>
-                        <li><a href="#tools" aria-label="Go to tools section">Why AI?</a></li>
+                        <li><a href="#tools">All Tools</a></li>
+                        <li><a href="#categories">Categories</a></li>
+                        <li><a href="#why-ai">Why AI</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h5>Categories</h5>
+                    <ul>
+                        <li><a href="#tools">Coding</a></li>
+                        <li><a href="#tools">Design</a></li>
+                        <li><a href="#tools">Writing</a></li>
                     </ul>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2026 AI Tools Hub. All rights reserved.</p>
+                <p>&copy; 2025 AI Tools Hub. All rights reserved.</p>
             </div>
         </div>
     </footer>
@@ -391,6 +475,6 @@
         <span id="toast-message"></span>
     </div>
 
-    <script src="/public/AI-Tools-Hub/script.js"></script>
+    <script src="/public/AI-Tools-Hub/script.js?v=5"></script>
 </body>
 </html>

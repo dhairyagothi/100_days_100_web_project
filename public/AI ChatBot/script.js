@@ -24,6 +24,17 @@ const GEMINI_PROXY_ENDPOINT = "/api/gemini";
 
 /* STATE */
 let apiKey = localStorage.getItem(STORAGE.API_KEY) || DEFAULT_GEMINI_API_KEY || "";
+
+// Migration: check for old storage key from unused chatbot.js
+if (!apiKey) {
+  const oldKey = localStorage.getItem('gemini_api_key');
+  if (oldKey) {
+    apiKey = oldKey;
+    localStorage.setItem(STORAGE.API_KEY, apiKey);
+    console.log('✓ Migrated API key from old storage key');
+  }
+}
+
 let hfKey = localStorage.getItem(STORAGE.HF_KEY) || "";
 let sessions = loadSessions();
 let activeSessionId = null;
@@ -139,8 +150,9 @@ window.addEventListener("resize", () => {
   updateSidebarToggleIcon();
 });
 
-let selectedImageBase64 = null;
-let conversationHistory = [];
+window.addEventListener("DOMContentLoaded", () => {
+  syncAllEyes();
+});
 
 /* ONBOARDING */
 let currentObStep = 1;
@@ -412,26 +424,48 @@ $("settings-modal").addEventListener("click", (e) => {
   if (e.target === $("settings-modal")) closeSettings();
 });
 
-function appendMessage(role, text) {
-  const msgDiv = document.createElement('div');
-  msgDiv.className = `${role}-message chat-message`;
+/* SEARCH */
+function openSearch() {
+  $("search-modal").classList.remove("hidden");
+  setTimeout(() => $("search-input").focus(), 50);
+}
 
-  if (role === 'ai') {
-    msgDiv.innerHTML = marked.parse(text);
-    msgDiv.querySelectorAll('pre').forEach(pre => {
-      const copyBtn = document.createElement('button');
-      copyBtn.className = 'copy-btn';
-      copyBtn.innerText = 'Copy';
-      copyBtn.onclick = () => {
-        const code = pre.querySelector('code');
-        navigator.clipboard.writeText(code ? code.innerText : pre.innerText);
-        copyBtn.innerText = 'Copied!';
-        setTimeout(() => copyBtn.innerText = 'Copy', 2000);
-      };
-      pre.appendChild(copyBtn);
+function closeSearch() {
+  $("search-modal").classList.add("hidden");
+  $("search-input").value = "";
+  $("search-results").innerHTML = "";
+}
+
+function doSearch(query) {
+  const results = $("search-results");
+  results.innerHTML = "";
+  if (!query.trim()) return;
+
+  const q = query.toLowerCase();
+  let found = 0;
+
+  sessions.forEach((session) => {
+    session.messages.forEach((msg, idx) => {
+      if (!msg.text) return;
+      if (msg.text.toLowerCase().includes(q)) {
+        found++;
+        const item = document.createElement("div");
+        item.className = "search-result-item";
+        const highlighted = msg.text.replace(
+          new RegExp(`(${escapeRegex(query)})`, "gi"),
+          "<mark>$1</mark>",
+        );
+        item.innerHTML = `
+          <div class="search-result-role">${msg.role === "ai" ? "Lumix" : "You"} · ${session.title}</div>
+          <div class="search-result-text">${highlighted.slice(0, 200)}</div>`;
+        item.addEventListener("click", () => {
+          closeSearch();
+          loadSession(session.id);
+        });
+        results.appendChild(item);
+      }
     });
-    results.appendChild(item);
-  }
+  });
 
   if (!found) {
     results.innerHTML = `<div class="search-empty">No messages found for "<strong>${escapeHtml(query)}</strong>"</div>`;
@@ -820,7 +854,7 @@ function stopListening() {
   if (recognition) {
     try {
       recognition.stop();
-    } catch (e) { }
+    } catch (e) {}
     recognition = null;
   }
   voiceBtn.classList.remove("active");
@@ -975,27 +1009,25 @@ async function handleImageGenerate() {
 
     const blob = await res.blob();
 
-    try {
-      const parts = [];
-      if (prompt) parts.push({ text: prompt });
-      if (imageBase64) parts.push({ inline_data: { mime_type: "image/jpeg", data: imageBase64 } });
+    // Convert blob to base64 so it persists after reload
+    const base64 = await new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result);
+      reader.readAsDataURL(blob);
+    });
 
-      conversationHistory.push({ role: "user", parts });
+    const imgUrl = base64;
 
-      const contents = conversationHistory;
+    removeTyping(typingRow);
 
-      const imgUrl = base64;
+    const aiMsgId = Date.now().toString() + "-ai";
+    const es = messagesInner.querySelector(".empty-state");
+    if (es) es.remove();
 
-      removeTyping(typingRow);
-
-      const aiMsgId = Date.now().toString() + "-ai";
-      const es = messagesInner.querySelector(".empty-state");
-      if (es) es.remove();
-
-      const row = document.createElement("div");
-      row.dataset.id = aiMsgId;
-      row.className = "message-row ai";
-      row.innerHTML = `
+    const row = document.createElement("div");
+    row.dataset.id = aiMsgId;
+    row.className = "message-row ai";
+    row.innerHTML = `
       <div class="ai-sender">
         <div class="logo-mark">
           <svg width="15" height="15" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" style="overflow:visible">
@@ -1013,180 +1045,244 @@ async function handleImageGenerate() {
         </button>
       </div>`;
 
-      const img = document.createElement("img");
-      img.src = imgUrl;
-      img.style.cssText =
-        "max-width:340px;width:100%;border-radius:14px;display:block;";
-      row.querySelector(".bubble").appendChild(img);
+    const img = document.createElement("img");
+    img.src = imgUrl;
+    img.style.cssText =
+      "max-width:340px;width:100%;border-radius:14px;display:block;";
+    row.querySelector(".bubble").appendChild(img);
 
-      row.querySelector(".download-img-btn").addEventListener("click", () => {
-        const a = document.createElement("a");
-        a.href = imgUrl;
-        a.download = `lumix-${Date.now()}.png`;
-        a.click();
-      });
+    row.querySelector(".download-img-btn").addEventListener("click", () => {
+      const a = document.createElement("a");
+      a.href = imgUrl;
+      a.download = `lumix-${Date.now()}.png`;
+      a.click();
+    });
 
-      messagesInner.appendChild(row);
-      scrollToBottom();
+    messagesInner.appendChild(row);
+    scrollToBottom();
 
-      session.messages.push({
-        id: aiMsgId,
-        role: "ai",
-        text: `[Generated image: ${text}]`,
-        image: base64,
-      });
+    session.messages.push({
+      id: aiMsgId,
+      role: "ai",
+      text: `[Generated image: ${text}]`,
+      image: base64,
+    });
+    saveSessions();
+
+    if (session.title === "New Chat") {
+      session.title = text.slice(0, 42) + (text.length > 42 ? "…" : "");
+      headerTitle.textContent = session.title;
       saveSessions();
-
-      if (session.title === "New Chat") {
-        session.title = text.slice(0, 42) + (text.length > 42 ? "…" : "");
-        headerTitle.textContent = session.title;
-        saveSessions();
-        renderHistoryList();
-      }
-    } catch (err) {
-      removeTyping(typingRow);
-      renderMessage("ai", `**Error:** ${err.message}`, null, true);
+      renderHistoryList();
     }
-  } catch(err){
-
+  } catch (err) {
+    removeTyping(typingRow);
+    renderMessage("ai", `**Error:** ${err.message}`, null, true);
   }
 }
 
 /* INPUT */
 function onInputChange() {
-    promptInput.style.height = "auto";
-    promptInput.style.height = Math.min(promptInput.scrollHeight, 160) + "px";
-    updateSendBtn();
-    const len = promptInput.value.length;
-    charCounter.textContent = len > 100 ? `${len}` : "";
-  }
-
-  function onInputKeydown(e) {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      if (!sendBtn.disabled) handleSend();
-    }
-  }
-
-  function updateSendBtn() {
-    sendBtn.disabled = !promptInput.value.trim() && !selectedImage;
-  }
-
-  /* SEND / RECEIVE */
-  function handleSend() {
-    const text = promptInput.value.trim();
-    const image = selectedImage;
-
-    if (!text && !image) return;
-
-    // Route to image generation if starts with /imagine
-    if (text.toLowerCase().startsWith("/imagine ")) {
-      promptInput.value = text.slice(9).trim(); // strip the command
-      handleImageGenerate();
-      return;
-    }
-
-    // 🧠 LAZY SESSION CREATION
-    let session = getCurrentSession();
-
-    if (!session) {
-      activeSessionId = Date.now().toString();
-
-      session = {
-        id: activeSessionId,
-        title: "New Chat",
-        messages: [],
-        pins: [],
-      };
-
-      sessions.unshift(session);
-      saveSessions();
-      renderHistoryList();
-      headerTitle.textContent = "New Chat";
-    }
-
-    const userMsgId = Date.now().toString();
-    renderMessage("user", text || "", image, true, userMsgId);
-
-    const parts = [];
-    if (text) parts.push({ text });
-    if (image)
-      parts.push({ inline_data: { mime_type: "image/jpeg", data: image } });
-    chatHistory.push({ role: "user", parts });
-
-    promptInput.value = "";
-    promptInput.style.height = "auto";
-    charCounter.textContent = "";
-    clearImage();
-    sendBtn.disabled = true;
-
-    getAIResponse();
-  }
-
-  async function getAIResponse() {
-    const typingRow = showTyping();
-    const model = localStorage.getItem(STORAGE.MODEL) || "gemini-2.5-flash";
-    const sysProm = localStorage.getItem(STORAGE.SYSTEM_PROMPT) || "";
-    const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
-
-    const body = { contents: chatHistory };
-    if (sysProm) body.systemInstruction = { parts: [{ text: sysProm }] };
-
-    try {
-      const useProxy = !apiKey;
-      const fetchOptions = useProxy
-        ? {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            model,
-            contents: chatHistory,
-            systemPrompt: sysProm,
-          }),
-        }
-        : {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(body),
-        };
-
-      if (data.candidates && data.candidates[0].content.parts[0].text) {
-        const aiText = data.candidates[0].content.parts[0].text;
-        conversationHistory.push({ role: "model", parts: [{ text: aiText }] });
-        appendMessage('ai', aiText);
-      } else {
-        throw new Error(`Response generation ended with reason: ${candidate.finishReason}`);
-      }
-
-  const aiText = data.candidates?.[0]?.content?.parts?.[0]?.text;
-  if (!aiText) throw new Error("Empty response from Gemini.");
-
-  const aiMsgId = Date.now().toString() + "-ai";
-  renderMessage("ai", aiText, null, true, aiMsgId);
-
-  chatHistory.push({ role: "model", parts: [{ text: aiText }] });
-
-  // Auto-speak
-  if (localStorage.getItem(STORAGE.AUTO_SPEAK) === "true")
-    speakText(aiText, null);
-
-  // Auto-title
-  const session = getCurrentSession();
-  if (session && session.title === "New Chat") {
-    const firstText =
-      chatHistory.find((m) => m.role === "user")?.parts?.[0]?.text || "";
-    if (firstText) {
-      session.title =
-        firstText.slice(0, 42) + (firstText.length > 42 ? "…" : "");
-      headerTitle.textContent = session.title;
-    }
-  }
-  saveSessions();
-  renderHistoryList();
-} catch (err) {
-  removeTyping(typingRow);
-  renderMessage("ai", `**Error:** ${err.message}`, null, true);
+  promptInput.style.height = "auto";
+  promptInput.style.height = Math.min(promptInput.scrollHeight, 160) + "px";
+  updateSendBtn();
+  const len = promptInput.value.length;
+  charCounter.textContent = len > 100 ? `${len}` : "";
 }
+
+function onInputKeydown(e) {
+  if (e.key === "Enter" && !e.shiftKey) {
+    e.preventDefault();
+    if (!sendBtn.disabled) handleSend();
+  }
+}
+
+function updateSendBtn() {
+  sendBtn.disabled = !promptInput.value.trim() && !selectedImage;
+}
+
+/* SEND / RECEIVE */
+function handleSend() {
+  const text = promptInput.value.trim();
+  const image = selectedImage;
+
+  if (!text && !image) return;
+
+  // Route to image generation if starts with /imagine
+  if (text.toLowerCase().startsWith("/imagine ")) {
+    promptInput.value = text.slice(9).trim(); // strip the command
+    handleImageGenerate();
+    return;
+  }
+
+  // 🧠 LAZY SESSION CREATION
+  let session = getCurrentSession();
+
+  if (!session) {
+    activeSessionId = Date.now().toString();
+
+    session = {
+      id: activeSessionId,
+      title: "New Chat",
+      messages: [],
+      pins: [],
+    };
+
+    sessions.unshift(session);
+    saveSessions();
+    renderHistoryList();
+    headerTitle.textContent = "New Chat";
+  }
+
+  const userMsgId = Date.now().toString();
+  renderMessage("user", text || "", image, true, userMsgId);
+
+  const parts = [];
+  if (text) parts.push({ text });
+  if (image)
+    parts.push({ inline_data: { mime_type: "image/jpeg", data: image } });
+  chatHistory.push({ role: "user", parts });
+
+  promptInput.value = "";
+  promptInput.style.height = "auto";
+  charCounter.textContent = "";
+  clearImage();
+  sendBtn.disabled = true;
+
+  getAIResponse();
+}
+
+async function getAIResponse() {
+  const typingRow = showTyping();
+  const model = localStorage.getItem(STORAGE.MODEL) || "gemini-2.5-flash";
+  const sysProm = localStorage.getItem(STORAGE.SYSTEM_PROMPT) || "";
+  const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
+
+  const body = { contents: chatHistory };
+  if (sysProm) body.systemInstruction = { parts: [{ text: sysProm }] };
+
+  try {
+    // Validate apiKey
+    console.log('📡 [Gemini] Starting request', { 
+      apiKey: apiKey ? `${apiKey.substring(0, 8)}...` : 'EMPTY',
+      apiKeyValid: apiKey && apiKey.length > 0,
+      model,
+      chatHistoryLength: chatHistory.length,
+      bodyKeys: Object.keys(body),
+      firstMessageRole: chatHistory[0]?.role,
+      firstMessagePartsCount: chatHistory[0]?.parts?.length
+    });
+    
+    if (!apiKey || apiKey.trim().length === 0) {
+      throw new Error("API key is missing. Please add your Gemini API key in Settings (gear icon).");
+    }
+
+    // Validate API key format
+    if (!apiKey.startsWith('AIza')) {
+      console.warn('⚠️ [Gemini] API key does not start with "AIza" - this may be incorrect format');
+    }
+
+    // Validate chatHistory format
+    if (!chatHistory || chatHistory.length === 0) {
+      throw new Error("No chat history to send.");
+    }
+
+    const useProxy = false; // Disable proxy - always use direct Google API
+    
+    // Official Google Gemini API auth: use API key as query parameter
+    const fetchOptions = {
+      method: "POST",
+      headers: { 
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    };
+
+    const requestUrl = `${API_URL}?key=${encodeURIComponent(apiKey)}`;
+    
+    console.log('📡 [Gemini] Request URL:', requestUrl.replace(apiKey, '[API_KEY_REDACTED]'));
+    console.log('📡 [Gemini] Auth method:', 'Query parameter (?key=...)');
+    console.log('📡 [Gemini] Request body:', JSON.stringify(body, null, 2));
+    
+    const res = await fetch(requestUrl, fetchOptions);
+
+    removeTyping(typingRow);
+
+    const responseText = await res.text();
+    console.log('📡 [Gemini] Response status:', res.status);
+    console.log('📡 [Gemini] Response body:', responseText);
+
+    if (!res.ok) {
+      let err;
+      try {
+        err = JSON.parse(responseText);
+      } catch {
+        err = { error: responseText };
+      }
+      
+      const message = err.error?.message || err.error || `HTTP ${res.status}`;
+      const code = err.error?.code;
+      
+      // Specific error guidance
+      let userMessage = message;
+      if (code === 401 || message.includes('authentication') || message.includes('UNAUTHENTICATED')) {
+        userMessage = `Authentication Failed: Your API key may be invalid or have OAuth-only restrictions. 
+        
+1. Verify your Gemini API key starts with "AIza"
+2. Check in Google Cloud Console that the API key has "Generative Language API" enabled
+3. Ensure it's not restricted to OAuth only (check the key's application restrictions)
+4. Try creating a new unrestricted API key`;
+      }
+      
+      console.error('❌ [Gemini] Error:', { status: res.status, code, error: err });
+      throw new Error(userMessage || "Unable to connect to Gemini. Check your API key and try again.");
+    }
+
+    const data = JSON.parse(responseText);
+
+    if (data.candidates && data.candidates[0]) {
+      const candidate = data.candidates[0];
+      if (candidate.finishReason && candidate.finishReason !== "STOP") {
+        if (candidate.finishReason === "SAFETY") {
+          throw new Error("Response was blocked by Gemini safety filters. Please try rephrasing your request.");
+        } else if (candidate.finishReason === "RECITATION") {
+          throw new Error("Response was blocked due to recitation/copyright constraints.");
+        } else {
+          throw new Error(`Response generation ended with reason: ${candidate.finishReason}`);
+        }
+      }
+    }
+
+    const aiText = data.candidates?.[0]?.content?.parts?.[0]?.text;
+    if (!aiText) throw new Error("Empty response from Gemini.");
+
+    const aiMsgId = Date.now().toString() + "-ai";
+    renderMessage("ai", aiText, null, true, aiMsgId);
+
+    chatHistory.push({ role: "model", parts: [{ text: aiText }] });
+
+    // Auto-speak
+    if (localStorage.getItem(STORAGE.AUTO_SPEAK) === "true")
+      speakText(aiText, null);
+
+    // Auto-title
+    const session = getCurrentSession();
+    if (session && session.title === "New Chat") {
+      const firstText =
+        chatHistory.find((m) => m.role === "user")?.parts?.[0]?.text || "";
+      if (firstText) {
+        session.title =
+          firstText.slice(0, 42) + (firstText.length > 42 ? "…" : "");
+        headerTitle.textContent = session.title;
+      }
+    }
+    saveSessions();
+    renderHistoryList();
+  } catch (err) {
+    removeTyping(typingRow);
+    console.error('❌ [Gemini] Final error caught:', err);
+    renderMessage("ai", `**Error:** ${err.message}`, null, true);
+  }
 }
 
 /* RENDER MESSAGE */
@@ -1257,10 +1353,39 @@ function renderMessage(
 
       const actionsEl = row.querySelector(".msg-actions");
 
-      promptInput.value = '';
-      imageInput.value = '';
-      selectedImageBase64 = null;
-      previewImg.style.display = 'none';
+      // Hide Copy and Read, irrelevant for images
+      row.querySelector(".copy-response-btn").style.display = "none";
+      row.querySelector(".speak-btn").style.display = "none";
+
+      // Add Download button
+      const dlBtn = document.createElement("button");
+      dlBtn.className = "msg-action-btn download-img-btn";
+      dlBtn.innerHTML = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Download`;
+      dlBtn.addEventListener("click", () => {
+        const a = document.createElement("a");
+        a.href = image;
+        a.download = `lumix-${Date.now()}.png`;
+        a.click();
+      });
+      actionsEl.prepend(dlBtn);
+    } else {
+      const htmlContent = window.marked ? marked.parse(text) : text;
+      bubble.innerHTML = sanitizeHtml(htmlContent);
+
+      // code block copy buttons (already present, keep as-is)
+      bubble.querySelectorAll("pre").forEach((pre) => {
+        const btn = document.createElement("button");
+        btn.className = "copy-btn";
+        btn.textContent = "Copy";
+        btn.addEventListener("click", () => {
+          const code = pre.querySelector("code");
+          navigator.clipboard.writeText(code ? code.innerText : pre.innerText);
+          btn.textContent = "Copied!";
+          setTimeout(() => (btn.textContent = "Copy"), 2000);
+        });
+        pre.style.position = "relative";
+        pre.appendChild(btn);
+      });
     }
 
     // Copy full response
@@ -1296,5 +1421,174 @@ function renderMessage(
       img.className = "msg-image";
       bubble.appendChild(img);
     }
+
+    if (text) {
+      const p = document.createElement("p");
+      p.textContent = text;
+      bubble.appendChild(p);
+    }
+
+    const actions = document.createElement("div");
+    actions.className = "msg-actions";
+
+    const copyBtn = document.createElement("button");
+    copyBtn.className = "msg-action-btn";
+    copyBtn.innerHTML = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy`;
+    copyBtn.addEventListener("click", () => {
+      navigator.clipboard.writeText(text);
+      copyBtn.textContent = "✓ Copied";
+      setTimeout(
+        () =>
+          (copyBtn.innerHTML = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy`),
+        2000,
+      );
+    });
+    actions.appendChild(copyBtn);
+
+    row.appendChild(bubble);
+    row.appendChild(actions);
+  }
+
+  messagesInner.appendChild(row);
+  scrollToBottom();
+
+  if (save && session) {
+    session.messages.push({
+      id: messageId,
+      role,
+      text,
+      image: image || null,
+    });
+    saveSessions();
   }
 }
+
+/* TYPING */
+function showTyping() {
+  const row = document.createElement("div");
+  row.className = "typing-row";
+  row.innerHTML = `
+    <div class="ai-sender">
+      <div class="logo-mark">
+            <svg
+                width="15"
+                height="15"
+                viewBox="0 0 48 48"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                style="overflow: visible"
+            >
+            <path
+                  d="M6 38 L6 10 L14 10 L24 30 L34 10 L42 10 L42 38 L35 38 L35 17 L26 36 L22 36 L13 17 L13 38 Z"
+                  fill="currentColor"
+            />
+                <circle cx="51" cy="3" r="6" fill="#7F77DD" />
+            </svg>
+        </div>
+        <span>Lumix</span>
+    </div>
+    <div class="typing-bubble">
+      <div class="typing-dot"></div>
+      <div class="typing-dot"></div>
+      <div class="typing-dot"></div>
+    </div>`;
+  messagesInner.appendChild(row);
+  scrollToBottom();
+  return row;
+}
+
+function removeTyping(row) {
+  if (row?.parentNode) row.remove();
+}
+
+/* HELPERS */
+function clearMessages() {
+  messagesInner.innerHTML = "";
+
+  const noSessions = sessions.length === 0;
+
+  messagesInner.innerHTML = noSessions
+    ? `
+    <div class="empty-state">
+      <div class="empty-gem">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+          <path d="M2 17l10 5 10-5"/>
+          <path d="M2 12l10 5 10-5"/>
+        </svg>
+      </div>
+      <h2>No chats yet</h2>
+      <p>Your conversation history has been cleared. Start fresh below.</p>
+      <button class="ob-next-btn" style="max-width:220px;margin-top:8px" onclick="startNewChat()">
+        New Chat
+      </button>
+    </div>`
+    : `
+    <div class="empty-state">
+      <div class="empty-gem">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+          <path d="M2 17l10 5 10-5"/>
+          <path d="M2 12l10 5 10-5"/>
+        </svg>
+      </div>
+      <h2>How can I help?</h2>
+      <p>Ask me anything — code, analysis, writing, math, images, and more.</p>
+      <div class="suggestions">
+        <button class="suggestion-chip" data-text="Explain quantum computing simply">⚛️ Explain quantum computing</button>
+        <button class="suggestion-chip" data-text="Write a Python function to parse JSON data">🐍 Python JSON parser</button>
+        <button class="suggestion-chip" data-text="What are clean code best practices?">✨ Clean code practices</button>
+        <button class="suggestion-chip" data-text="Brainstorm startup name ideas for a tech company">💡 Startup name ideas</button>
+      </div>
+    </div>`;
+
+  // Re-bind chips
+  messagesInner.querySelectorAll(".suggestion-chip").forEach((c) =>
+    c.addEventListener("click", () => {
+      promptInput.value = c.dataset.text;
+      onInputChange();
+      promptInput.focus();
+    }),
+  );
+}
+
+function scrollToBottom() {
+  viewport.scrollTo({ top: viewport.scrollHeight, behavior: "smooth" });
+}
+
+function sanitizeHtml(html) {
+  const temp = document.createElement("div");
+  temp.innerHTML = html;
+  
+  // Strip dangerous tags completely
+  const dangerousElements = temp.querySelectorAll("script, iframe, object, embed, link, meta, style");
+  dangerousElements.forEach(el => el.remove());
+  
+  // Sanitize all remaining elements
+  const allElements = temp.querySelectorAll("*");
+  allElements.forEach(el => {
+    const attributes = el.attributes;
+    for (let i = attributes.length - 1; i >= 0; i--) {
+      const attrName = attributes[i].name;
+      // Strip event handlers (onload, onerror, onclick, etc.) and javascript URI schemes
+      if (attrName.startsWith("on") || attributes[i].value.trim().toLowerCase().startsWith("javascript:")) {
+        el.removeAttribute(attrName);
+      }
+    }
+  });
+  return temp.innerHTML;
+}
+
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+function escapeRegex(str) {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+/* START */
+init();
