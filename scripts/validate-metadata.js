@@ -9,7 +9,23 @@ const rootDir = process.argv[3]
   : path.join(__dirname, '..');
 
 const VALID_DIFFICULTIES = new Set(['beginner', 'intermediate', 'advanced']);
-const REQUIRED_KEYS = ['projectNo', 'projectName', 'techStack', 'difficulty', 'projectPath'];
+const VALID_PROJECT_TYPES = new Set([
+  'Game',
+  'Tool',
+  'Clone',
+  'UI',
+  'Animation',
+  'API',
+  'Website',
+  'Backend',
+  'AI',
+  'E-Commerce',
+  'Productivity',
+  'Simulation',
+  'Authentication',
+  'Form'
+]);
+const REQUIRED_KEYS = ['projectNo', 'projectName', 'projectType', 'techStack', 'difficulty', 'projectPath'];
 const UNSAFE_PROTOCOL_RE = /^(?:javascript|data|vbscript):/i;
 const URL_SCHEME_RE = /^[a-z][a-z0-9+.-]*:/i;
 const EXPECTED_GITHUB_REPOSITORY = 'dhairyagothi/100_days_100_web_project';
@@ -186,6 +202,14 @@ try {
             addFieldError(errors, index, project, `techStack[${tokenIndex}]`, 'must be a non-empty string');
           }
         });
+      }
+    }
+
+    if (project.projectType !== undefined && project.projectType !== null && project.projectType !== '') {
+      if (typeof project.projectType !== 'string') {
+        addFieldError(errors, index, project, 'projectType', `must be a string, got "${typeof project.projectType}"`);
+      } else if (!VALID_PROJECT_TYPES.has(project.projectType)) {
+        addFieldError(errors, index, project, 'projectType', `must be one of: ${Array.from(VALID_PROJECT_TYPES).join(', ')}`);
       }
     }
 
