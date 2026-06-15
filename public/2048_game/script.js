@@ -464,6 +464,15 @@ function updateUI() {
   document.getElementById("bv").textContent = best.toLocaleString();
   document.getElementById("moves-val").textContent = moves;
   document.getElementById("btile-val").textContent = maxTile();
+  
+}
+function openStats() {
+  document.getElementById("st-best").textContent = stats.best;
+  document.getElementById("st-games").textContent = stats.games;
+  document.getElementById("st-wins").textContent = stats.wins;
+  document.getElementById("st-tile").textContent = stats.bestTile;
+
+  document.getElementById("stats-modal").classList.add("show");
 }
 
 /* ====================== OVERLAY ====================== */
@@ -758,6 +767,13 @@ try {
   });
 } catch (e) {}
 
+// How to Play Modal (keep your existing code at the bottom)
+document.getElementById("stbtn-panel").onclick = () => {
+  document.getElementById("settings-panel").classList.remove("open");
+  openStats();
+};
+document.getElementById("close-stats").onclick = () =>
+  document.getElementById("stats-modal").classList.remove("show");
 /* How-to Play Modal */
 const howtoModal = document.getElementById("howto-modal");
 const openHowto = () => (howtoModal.style.display = "flex");
