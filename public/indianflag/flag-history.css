@@ -1,0 +1,184 @@
+/* ── Flag History Timeline ────────────────────────── */
+
+#flag-history {
+  margin-bottom: 120px;
+}
+
+.history-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.history-header h2 {
+  font-family: 'Cinzel', serif;
+  font-size: 2.7rem;
+  margin-bottom: 14px;
+  background: linear-gradient(to right, #ff9933, white, #138808);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+  color: rgba(255,255,255,0.72);
+  max-width: 700px;
+  margin: auto;
+  line-height: 1.8;
+}
+
+/* TIMELINE */
+.timeline-track {
+  display: flex;
+  justify-content: center;
+  gap: 22px;
+  flex-wrap: wrap;
+  margin-bottom: 50px;
+}
+
+.timeline-dot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+
+.dot-circle {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  border: 2px solid #ff9933;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(255,255,255,0.08);
+  color: #ff9933;
+  font-weight: 700;
+  transition: 0.3s;
+}
+
+.timeline-dot.active .dot-circle {
+  background: #ff9933;
+  color: #111;
+}
+
+.dot-year {
+  margin-top: 10px;
+  color: rgba(255,255,255,0.7);
+}
+
+/* CARD */
+.flag-card {
+  max-width: 850px;
+  margin: auto;
+  padding: 36px;
+  border-radius: 30px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 24px 60px rgba(0,0,0,0.4);
+  display: none;
+}
+
+.flag-card.active {
+  display: block;
+  animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.flag-card h3 {
+  font-size: 2rem;
+  margin-bottom: 12px;
+  color: #ff9933;
+}
+
+.flag-year-badge {
+  display: inline-block;
+  padding: 7px 18px;
+  border-radius: 999px;
+  background: rgba(19,136,8,0.18);
+  color: #7ff3a3;
+  margin-bottom: 24px;
+}
+
+.flag-visual {
+  width: 100%;
+  max-width: 360px;
+  margin: 0 auto 24px;
+  display: block;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.flag-card p {
+  line-height: 1.9;
+  color: rgba(255,255,255,0.86);
+}
+
+.significance {
+  margin-top: 24px;
+  padding: 18px;
+  border-left: 4px solid #ff9933;
+  background: rgba(255,153,51,0.08);
+  border-radius: 12px;
+  color: #ffe2bc;
+}
+
+.timeline-nav {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 36px;
+}
+
+.timeline-nav button {
+  padding: 14px 30px;
+  border-radius: 16px;
+  border: none;
+  cursor: pointer;
+  font-weight: 700;
+  background: linear-gradient(135deg, #ff9933, #ff7f2a);
+  color: white;
+  transition: 0.3s;
+}
+
+.timeline-nav button:hover {
+  transform: translateY(-3px);
+}
+
+.timeline-nav button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+
+  .history-header h2 {
+    font-size: 2rem;
+  }
+
+  .flag-card {
+    padding: 24px;
+  }
+
+  .timeline-track {
+    gap: 14px;
+  }
+
+  .dot-circle {
+    width: 48px;
+    height: 48px;
+    font-size: 0.8rem;
+  }
+
+}

@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Country Explorer</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="app-wrapper">
+      <header>
+        <h1>Global Explorer</h1>
+        <button id="theme-toggle" class="toggle-btn">🌓 Toggle Theme</button>
+      </header>
+
+      <div class="filter-controls">
+        <input type="text" id="search-bar" placeholder="Search by name..." />
+        <select id="region-filter">
+          <option value="">All Regions</option>
+          <option value="africa">Africa</option>
+          <option value="americas">Americas</option>
+          <option value="asia">Asia</option>
+          <option value="europe">Europe</option>
+          <option value="oceania">Oceania</option>
+        </select>
+      </div>
+
+      <div id="loading-msg" class="status-text">
+        Fetching global database...
+      </div>
+      <main id="countries-grid" class="grid-layout"></main>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
