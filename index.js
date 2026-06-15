@@ -7,154 +7,154 @@ if (typeof REPO_OWNER === "undefined") {
 }
 window.REPO_OWNER = window.REPO_OWNER || "dhairyagothi";
 window.REPO_NAME = window.REPO_NAME || "100_days_100_web_project";
-
+  
 let currentPage = 1;
 //for the number of visible projects in one page.
 let itemsPerPage = 9;
 let projectData = [];
 let filteredProjectData = [];
-let currentCategory = 'all';
-let currentDifficulty = 'all';
 
-const PROJECT_DATA = [
-  ['Day 1', 'To-Do List', './public/TO_DO_LIST/todolist.html', 'javascript todo', 'beginner'],
-  ['Day 2', 'Digital Clock', './public/digital_clock/digitalclock.html', 'javascript', 'beginner'],
-  ['Day 3', 'Indian Flag', './public/indianflag/flag.html', 'css', 'beginner'],
-  ['Day 4', 'Dropdown Nav Bar', './public/dropdown_navbar/index.html', 'css', 'beginner'],
-  ['Day 5', 'Animated Cursor', './public/Animated-cursor/animated-cursor.html', 'ui javascript css', 'beginner'],
-  ['Day 6', 'Auto Background Image Slider', './public/Background-Image-sider/slider.html', 'javascript', 'beginner'],
-  ['Day 7', 'Typewriter', './public/typewriter/typewriter.html', 'html css javascript', 'advanced'],
-  ['Day 8', 'Parallel-X Website', './public/Parallel-x%20website/parallal.html', 'css', 'intermediate'],
-  ['Day 9', 'Captcha Generator', './public/captcha/captcha.html', 'javascript', 'intermediate'],
-  ['Day 10', 'QR Code Generator', './public/qr%20generator/qr.html', 'api javascript', 'intermediate'],
-  ['Day 11', 'Serve Website Using Express', './public/index.html', 'javascript', 'intermediate'],
-  ['Day 12', 'Nodemailer Contact Form', './public/gmail_nodemailer/public/mail.html', 'api javascript', 'intermediate'],
-  ['Day 13', 'Login Form Using MERN', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/loginusingmern', 'api javascript', 'intermediate'],
-  ['Day 14', 'File Uploader', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/file_uploader', 'javascript', 'intermediate'],
-  ['Day 15', 'Progress Bar', './public/progress_bar/progress_bar.html', 'ui css javascript', 'beginner'],
-  ['Day 16', 'Scroll Bar CSS', './public/Scroll Game Dark Run/index.html', 'css', 'beginner'],
-  ['Day 17', 'Slider Using Swiper API', './public/slider%20box/index.html', 'api javascript', 'intermediate'],
-  ['Day 18', 'Carousel Solar System', './public/carousal/index.html', 'css canvas', 'intermediate'],
-  ['Day 19', 'Planto', './public/plantwebsite/plant.html', 'css', 'beginner'],
-  ['Day 20', 'EveSparks', 'https://evesparks.onrender.com/', 'javascript', 'intermediate'],
-  ['Day 21', 'Video BG Slider Using React', './public/video-bg-slider/index.html', 'javascript', 'intermediate'],
-  ['Day 22', 'Page Loader', './public/pageloader/pageloader.html', 'ui css', 'beginner'],
-  ['Day 23', 'Jarvis Virtual Assistant', './public/Jarvis-AI-main/index.html', 'api javascript', 'intermediate'],
-  ['Day 24', 'Chat Bot', './public/AI%20ChatBot/chatbot.html', 'api javascript', 'intermediate'],
-  ['Day 25', 'Tic-Tac-Toe', './public/TicTacToe/index.html', 'game javascript', 'beginner'],
-  ['Day 26', 'Maze Game', './public/Maze-Game-main/index.html', 'game javascript', 'intermediate'],
-  ['Day 27', 'Memory Game', './public/MemoryGame/index.html', 'game javascript', 'beginner'],
-  ['Day 28', 'Wordle', './public/WORDLE/index.html', 'game javascript', 'intermediate'],
-  ['Day 29', 'Snake Game', './public/snake_game/index.html', 'game javascript', 'beginner'],
-  ['Day 30', 'Flappy-bird-game', './public/Flappy-bird-main/index.html', 'game canvas', 'intermediate'],
-  ['Day 31', 'Password Manager', './public/password%20manager/index.html', 'tool javascript', 'intermediate'],
-  ['Day 32', 'Missionaries & Cannibals', './public/Missionaries&Cannibals/index.html', 'game javascript', 'intermediate'],
-  ['Day 33', 'Weather Forecasting', './public/Weather%20Forcasting/index.html', 'weather api', 'intermediate'],
-  ['Day 34', 'Email Validator', './public/email%20validator/index.html', 'api javascript', 'beginner'],
-  ['Day 35', 'Vanilla-JavaScript-Calculator', './public/Vanilla-JavaScript-Calculator-master/index.html', 'tool javascript', 'beginner'],
-  ['Day 36', 'Medical App', './public/Medical_App/index.html', 'javascript', 'intermediate'],
-  ['Day 37', '2048 Game', './public/2048_game/index.html', 'game javascript', 'intermediate'],
-  ['Day 38', 'Github Profile Finder', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/github_profile_finder', 'api javascript', 'intermediate'],
-  ['Day 39', 'Notes App', './public/notes-app/index.html', 'todo javascript', 'beginner'],
-  ['Day 40', 'Analog Clock', './public/AnalogClock/index.html', 'javascript css', 'beginner'],
-  ['Day 41', 'Scroll Dark Game', './public/Scroll%20Game%20Dark%20Run/index.html', 'game canvas', 'intermediate'],
-  ['Day 42', 'Amazon App', './public/Amazon_Clone/index.html', 'clone javascript', 'intermediate'],
-  ['Day 43', 'Password Generator', './public/Password_Generator/index.html', 'tool javascript', 'beginner'],
-  ['Day 44', 'BMI Calculator', './public/BMI_Calculator/index.html', 'tool javascript', 'beginner'],
-  ['Day 45', 'Black Jack', './public/BlackJack/blackJ.html', 'game javascript', 'intermediate'],
-  ['Day 46', 'Palindrome Generator', './public/Palindrome_Generator/index.html', 'javascript', 'beginner'],
-  ['Day 47', 'Ping Pong Game', './public/ping/index.html', 'game canvas', 'intermediate'],
-  ['Day 48', 'TextToVoiceConverter', './public/TextToVoiceConverter/index.html', 'api javascript', 'intermediate'],
-  ['Day 49', 'Url Shortener', 'https://github.com/chandankoranga02/100_days_100_web_project/tree/Main/public/url_shortener', 'api javascript', 'intermediate'],
-  ['Day 50', 'Recipe Genie', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Recipe%20Genie', 'api javascript', 'intermediate'],
-  ['Day 51', 'Netflix Landing Page Clone', './public/Netflix_Cloning/Index.html', 'clone css', 'beginner'],
-  ['Day 52', 'ClimaCode', './public/ClimaCode%202.0/index.html', 'weather api', 'intermediate'],
-  ['Day 53', 'E-Commerce Website with Simple Cart Functionality', './public/e-commerce_cart/index.html', 'javascript', 'intermediate'],
-  ['Day 54', 'Budget Tracker', './public/Budget%20Tracker/index.html', 'todo javascript', 'intermediate'],
-  ['Day 55', 'Cricket Game', './public/cricket/index.html', 'game javascript', 'intermediate'],
-  ['Day 56', 'Pastebin using svelte', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/pastebin', 'javascript', 'intermediate'],
-  ['Day 57', 'Glowing Social Media Icons', './public/Social%20Media%20Glowing/index.html', 'ui css', 'beginner'],
-  ['Day 58', 'Music App', './public/Music%20App/index.html', 'api javascript', 'intermediate'],
-  ['Day 59', 'Blog Page', './public/Blog%20Page/index.html', 'css', 'beginner'],
-  ['Day 60', 'Marketing template website', './public/marketing_website/index.html', 'css', 'beginner'],
-  ['Day 61', 'Hologram Button', './public/Holo%20Button/index.html', 'ui css', 'beginner'],
-  ['Day 62', 'Solar System Explorer', './public/Solar%20System%20Explorer%20in%20CSS%20only%20haml/template.html', 'css', 'intermediate'],
-  ['Day 63', 'Image to Text App', './public/Image-To-Text-App/index.html', 'api javascript', 'intermediate'],
-  ['Day 64', 'Zomato-clone', './public/zomato-clone/zomato.html', 'clone css', 'beginner'],
-  ['Day 65', 'The Cube', './public/The%20Cube/index.html', 'ui canvas css', 'intermediate'],
-  ['Day 66', 'Flask Authentication App', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/flask_auth_app', 'api javascript', 'intermediate'],
-  ['Day 67', 'Blog-Website', './public/blog/main.html', 'css', 'beginner'],
-  ['Day 68', '3d Rotating Card', './public/3d%20cards/index.html', 'ui css', 'intermediate'],
-  ['Day 69', 'Spotify Clone Project', './public/spotify-clone%20-project/index.html', 'clone api javascript', 'intermediate'],
-  ['Day 70', 'Insect-Catch_Game', './public/Insect-Catch-Game/index.html', 'game canvas', 'intermediate'],
-  ['Day 71', 'Quotely Laughs', './public/Quotely-Laughs/index.html', 'api javascript', 'beginner'],
-  ['Day 72', 'Contact Book', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Contact%20Book', 'todo javascript', 'intermediate'],
-  ['Day 73', 'Candy_Crush_Game', './public/Candy_Crush_Game/index.html', 'game javascript', 'intermediate'],
-  ['Day 74', 'Stock Profit Calculator', './public/Stock-Profit-Calculator/index.html', 'tool javascript', 'beginner'],
-  ['Day 75', 'code-space-game project', './public/code-jump-space-game/index.html', 'game canvas', 'intermediate'],
-  ['Day 76', 'Animated Searchbar', './public/Animated%20Searchbar/index.html', 'ui css javascript', 'beginner'],
-  ['Day 77', 'Rock-Paper-Scissor-game project', './public/Stone-Paper-Scissor/index.html', 'game javascript', 'beginner'],
-  ['Day 78', 'NPM Package Search', './public/NPM%20Package%20Search/index.html', 'tool api javascript', 'intermediate'],
-  ['Day 79', 'Linkedin Homepage Clone', './public/Linkedin-Clone/index.html', 'clone css', 'intermediate'],
-  ['Day 80', 'Resume Studio', './public/ResumeStudio/index.html', 'tool javascript', 'intermediate'],
-  ['Day 81', 'Simon Says Game', './public/Simon_Says_Game/index.html', 'game javascript', 'intermediate'],
-  ['Day 82', 'Love Calculator Game', './public/Love-Calculator/index.html', 'game javascript', 'beginner'],
-  ['Day 83', 'Exchange Currency', './public/Exchange_Currency/index.html', 'tool api javascript', 'intermediate'],
-  ['Day 84', 'Lights Out Puzzle', './public/Lights_Out_Puzzle/index.html', 'game javascript', 'intermediate'],
-  ['Day 85', 'Image Search Engine', './public/Image Search Engine/index.html', 'api javascript', 'intermediate'],
-  ['Day 86', 'Profile Card', './public/3d profile Card/index.html', 'ui css', 'beginner'],
-  ['Day 87', 'Breakout game', './public/Breakout game/index.html', 'game canvas', 'intermediate'],
-  ['Day 88', 'Job dashboard', './public/Job dashboard/jobs.html', 'tool javascript', 'intermediate'],
-  ['Day 89', 'N-Queen', './public/N_Queen/index.html', 'game javascript', 'intermediate'],
-  ['Day 90', 'Quiz App Timer', './public/QuizeApp Timer/index1.html', 'javascript', 'beginner'],
-  ['Day 91', 'Voting Application Backend', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Voting_Application_Backend', 'api javascript', 'intermediate'],
-  ['Day 92', 'Slide puzzle Game', './public/Slide puzzle Game/index.html', 'game javascript', 'intermediate'],
-  ['Day 93', 'TextUtils', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Textutils', 'javascript', 'beginner'],
-  ['Day 94', 'Hangman Game', './public/HangmanGame/index.html', 'game javascript', 'intermediate'],
-  ['Day 95', 'TodoList in React TS Tailwind', './public/TodoList-React-TS-Tailwind/index.html', 'todo javascript', 'intermediate'],
-  ['Day 96', 'HCL Color Generator', './public/HCL Color Generator/index.html', 'ui css javascript', 'beginner'],
-  ['Day 97', 'Time Capsule', './public/Time-Capsule/index.html', 'javascript', 'intermediate'],
-  ['Day 98', 'Virtual Piano', './public/Virtual Piano/index.html', 'css javascript', 'intermediate'],
-  ['Day 99', 'NASA-APOD Extension', './public/NASA-APOD/popup.html', 'api javascript', 'intermediate'],
-  ['Day 100', 'Text Saver Extension', './public/Text_Saver_Ext/popup.html', 'todo javascript', 'intermediate'],
-  ['Day 101', 'Personal Finance Tracker', './public/FinanceTracker/index.html', 'todo javascript', 'intermediate'],
-  ['Day 102', 'Travel Booking Website', './public/Travel_booking_website/index.html', 'javascript', 'intermediate'],
-  ['Day 103', 'Drumkit Game', './public/Drumkit_Game/index.html', 'game javascript', 'beginner'],
-  ['Day 104', 'Debug-Website', './public/Debug-Website/index.html', 'css', 'beginner'],
-  ['Day 105', 'Periodic Table', './public/Periodic Table/index.html', 'css javascript', 'beginner'],
-  ['Day 106', 'Plants Website', './public/Plants Website/index.html', 'css', 'beginner'],
-['Day 107', 'DocNow', './public/DocNow/', 'api javascript', 'intermediate'],
-  ['Day 108', 'expense_Tracker', './public/expense_Tracker/index.html', 'todo javascript', 'intermediate'],
-  ['Day 109', 'Mood Tracker', './public/Mood Tracker/index.html', 'todo javascript', 'intermediate'],
-  ['Day 110', 'CRYPTOSHOW', './public/CRYPTOSHOW/index.html', 'api javascript', 'intermediate'],
-  ['Day 111', 'Whack-a-Mole Game', './public/Whack-a-Mole Game/index.html', 'game canvas', 'intermediate'],
-  ['Day 112', 'Nykaa Clone Website', './public/Nykaa-clone/index.html', 'clone css', 'intermediate'],
-  ['Day 113', 'CPU Scheduler', './public/CpuScheduler/index.html', 'tool javascript', 'intermediate'],
-  ['Day 114', 'EchoNotes', './public/EchoNotes/index.html', 'todo javascript', 'intermediate'],
-  ['Day 115', 'Event Registration System', 'https://event-registration-system-w10a.onrender.com/', 'api javascript', 'intermediate'],
-  ['Day 116', 'AI Image Classifier', './public/AI Image Classifier/index.html', 'api javascript', 'intermediate'],
-  ['Day 117', 'Habit Tracker Web App', './public/Habit-Tracker-Web-App/index.html', 'ui tool html css js', 'intermediate'],
-  ['Day 118', 'Particle Effect', './public/particle-effect/index.html', 'ui html css js canvas', 'intermediate'],
-  ['Day 119', 'Virtual Playground', './playground.html', 'ui game html css js', 'intermediate'],
-  ['Day 120', 'Typing Speed Test', './public/typing_test/index.html', 'html css js game', 'intermediate'],
-  ['Day 121', 'InterviewSimulator', './public/InterviewSimulator/index.html','tool','intermediate'],
-  ['Day 122', 'AstronomyDashboard', './public/AstronomyDashboard/astro.html','html css javascript api-javascript','Advanced'],
-  ['Day 123', 'Pomodoro Timer', './public/Pomodoro_Timer/index.html', 'productivity tool', 'intermediate'],
-  ['Day 124', 'Hurdle Highway 2D',   './public/Hurdle_Highway_2D/index.html', 'game', 'intermediate'],
-  ['Day 125', 'Snakeladder',   './public/Snakeladder/index.html', 'game', 'intermediate'],
-  ['Day 126', 'Temperature Converter', './public/TemperatureConverter/index.html', 'tool javascript', 'beginner'],
-  ['Day 127', 'Particle Wave Animation', './public/Particle Wave Animation/index.html', 'css javascript', 'intermediate'],
-  ['Day 128', 'Reaction Time Test', './public/reaction-time-tester/main.html', 'animation simulation html css js javascript', 'intermediate'],
-  ['Day 129', 'YouTube Clone', './public/youtube clone/index.html', 'Html CSS', 'beginner'],
-  ['Day 130', 'Dino Game', './public/DinoGame/DinoGame-main/index.html', 'game javascript', 'beginner'],
+/* ============================================================
+   TECHNOLOGY STACK FILTERING VARIABLES
+   ============================================================ */
+let techStackFilters = []; // Array of active tech filters
+let techSearchQuery = ""; // Current tech search input
 
-   
-];
+// Technology normalization map (handles common variations)
+// Maps user input → actual tags in dataset
+const TECH_ALIASES = {
+  js: "javascript",
+  react: "javascript",
+  node: "javascript",
+  vue: "javascript",
+  python: "api",
+  flask: "api",
+  game: "game",
+  games: "game",
+};
 
-// Alias for consistency
-const PROJECTS = PROJECT_DATA;
-console.log('PROJECTS defined:', PROJECTS.length, 'items');
+/* Maps data-filter values on chip buttons to display category names */
+const FILTER_CATEGORY_MAP = {
+  all: "all",
+  game: "Games",
+  clone: "Clones",
+  tool: "Tools",
+  ui: "UI / Animation",
+  api: "APIs",
+};
 
+/**
+ * Derive a display category from a project's tags and name.
+ * Uses the existing tag structure so no new data field is needed.
+ */
+function getCategoryFromTags(tags, name) {
+  const tagStr = (
+    Array.isArray(tags) ? tags.join(" ") : tags || ""
+  ).toLowerCase();
+  const nameStr = (name || "").toLowerCase();
+
+  if (tagStr.includes("game")) return "Games";
+  if (tagStr.includes("clone")) return "Clones";
+  if (tagStr.includes("tool")) return "Tools";
+  if (tagStr.includes("ui")) return "UI / Animation";
+  if (tagStr.includes("api") || tagStr.includes("weather")) return "APIs";
+
+  if (nameStr.includes("clone")) return "Clones";
+  if (
+    nameStr.includes("game") ||
+    nameStr.includes("puzzle") ||
+    nameStr.includes("quiz")
+  )
+    return "Games";
+
+  return "Tools";
+}
+
+let PROJECTS = [];
+let PROJECTS_BY_NAME = new Map();
+let PROJECTS_BY_DAY = new Map();
+let projectsPromise = null;
+
+function hydrateProjects(data) {
+  PROJECTS = data.map((project) => ({
+    day: `Day ${project.projectNo}`,
+    projectNo: project.projectNo,
+    projectType: project.projectType,
+    projectName: project.projectName,
+    projectPath: project.projectPath,
+    techStack: project.techStack,
+    difficulty: project.difficulty,
+    projectDesc: project.projectDesc,
+  }));
+  PROJECTS_BY_NAME = new Map(PROJECTS.map(p => [p.projectName, p]));
+  PROJECTS_BY_DAY = new Map(PROJECTS.map(p => [p.day, p]));
+}
+
+function getPreloadedProjectsData() {
+  return Array.isArray(window.PROJECTS_DATA) ? window.PROJECTS_DATA : null;
+}
+
+function parseProjectsData(payload) {
+  try {
+    return JSON.parse(payload);
+  } catch (error) {
+    // Fallback for common malformed object separators in projects.json
+    const repairedPayload = String(payload).replace(/}\s*{/g, "},{");
+    return JSON.parse(repairedPayload);
+  }
+}
+
+function loadProjects() {
+  if (!projectsPromise) {
+    projectsPromise = (async () => {
+      const preloadedData = getPreloadedProjectsData();
+      if (preloadedData) {
+        hydrateProjects(preloadedData);
+        return PROJECTS;
+      }
+
+      const isRoot = !window.location.pathname.includes("/contributors/");
+      const base = isRoot ? "" : "../";
+      const projectsUrl = new URL(
+        `${base}projects.json`,
+        window.location.href,
+      ).toString();
+      
+console.log("Projects URL:", projectsUrl);
+      try {
+        const response = await fetch(projectsUrl);
+        if (!response.ok) {
+          throw new Error(`Failed to load projects: ${response.statusText}`);
+        }
+        const payload = await response.text();
+        const data = parseProjectsData(payload);
+        hydrateProjects(data);
+        return PROJECTS;
+      } catch (error) {
+        const fallbackData = getPreloadedProjectsData();
+        if (fallbackData) {
+          hydrateProjects(fallbackData);
+          return PROJECTS;
+        }
+        throw error;
+      }
+    })();
+  }
+  return projectsPromise;
+}
+
+// Start fetching immediately
+loadProjects().catch((err) => {
+  console.error('Critical initialization error:', err);
+  const grid = document.getElementById('projectGrid');
+  if (grid) {
+    grid.innerHTML = `<div style="text-align:center; padding: 2rem; color: var(--text-color, #333);">
+            <h2><i class="fas fa-exclamation-triangle"></i> Failed to Load Projects</h2>
+            <p>Please check your connection or try again later.</p>
+            <p style="font-family: monospace; color: red;">${escapeHTML(err.message)}</p>
+        </div>`;
+  }
+});
 
 /* ============================================================
    PROJECT LINK RESOLUTION (demo vs source / source-only)
@@ -231,13 +231,6 @@ function resolveProjectUrls(day, name, url, tags) {
       }
     } catch (error) { }
   }
-  if (day === "Day 222") {
-    return {
-      demoUrl: "https://html-css-animation-01.netlify.app/",
-      sourceUrl: "https://github.com/dhairyagothi/100_day_100_web_project/blob/Main/public/Html_css_animation/index.html",
-      sourceOnly: false
-    };
-  }
 
   return { demoUrl, sourceUrl, sourceOnly };
 }
@@ -249,14 +242,6 @@ function getProjectDescription(project) {
   );
 }
 
-/**
- * Escape a plain string so it is safe to inject into HTML text content
- * or attribute values (when quoted with double quotes).
- *
- * SECURITY: This is the primary XSS defence for every piece of
- * contributor-supplied data that ends up inside innerHTML / template
- * literals.  Call it on EVERY untrusted value before inserting into HTML.
- */
 function escapeHTML(value) {
   return String(value)
     .replace(/&/g, "&amp;")
@@ -266,33 +251,11 @@ function escapeHTML(value) {
     .replace(/'/g, "&#39;");
 }
 
-/**
- * Sanitize a URL so it can be used safely in an href attribute.
- *
- * SECURITY: Blocks javascript:, data:, vbscript: and any other
- * non-http(s)/relative protocol that could execute code when a user
- * clicks a link.  Falls back to "#" so the link is inert rather than
- * omitted, which keeps the UI layout intact.
- *
- * Allowed schemes:
- * - https://    (absolute external links, GitHub, live demos)
- * - http://     (legacy / local dev)
- * - ./  ../     (relative paths to local demo index.html files)
- * - #           (in-page anchors)
- *
- * Everything else — including javascript:, data:, vbscript:,
- * blob: and protocol-relative // URLs — is replaced with "#".
- *
- * @param {string} url - Raw URL from project data or localStorage.
- * @returns {string} A URL that is safe to place in an href attribute.
- */
 function sanitizeUrl(url) {
   const raw = String(url || "").trim();
 
-  // Allow empty / anchor-only values
   if (!raw || raw === "#") return raw || "#";
 
-  // Allow relative paths used by project demos
   if (
     raw.startsWith("./") ||
     raw.startsWith("../") ||
@@ -309,12 +272,10 @@ function sanitizeUrl(url) {
     return raw;
   }
 
-  // Allow http/https links
   if (/^https?:\/\//i.test(raw)) {
     return raw;
   }
 
-  // Block unsafe schemes
   console.warn("[XSS] Blocked unsafe URL scheme:", raw);
   return "#";
 }
@@ -335,14 +296,8 @@ function buildProjectCardHTML({
     tags,
   );
 
-  // ── SECURITY: sanitize URLs before placing them in href attributes ──
-  // resolveProjectUrls may return a contributor-supplied string or a path
-  // derived from one.  sanitizeUrl() blocks javascript:, data:, vbscript:
-  // and any other executable protocol while leaving valid http(s) / relative
-  // paths untouched.
   const safeDemoUrl = sanitizeUrl(demoUrl);
   const safeSourceUrl = sanitizeUrl(sourceUrl);
-
 
   const tagsArray = Array.isArray(tags)
     ? tags.filter((t) => t !== SOURCE_ONLY_TAG)
@@ -350,16 +305,12 @@ function buildProjectCardHTML({
       .split(/\s+/)
       .filter((t) => t && t !== SOURCE_ONLY_TAG);
 
-  // SECURITY: escapeHTML on every tag token prevents <script> / event-handler
-  // injection via the techStack field in projects.json.
   const tagsHTML = tagsArray
     .map((t) => `<span class="tag">${escapeHTML(t)}</span>`)
     .join("");
 
   const project = PROJECTS_BY_NAME.get(name) || PROJECTS_BY_DAY.get(day);
 
-  // SECURITY: description, day, name and category are all escaped before
-  // being written into innerHTML.
   const description = escapeHTML(getProjectDescription(project));
   const safeDay = escapeHTML(day);
   const safeName = escapeHTML(name);
@@ -377,8 +328,6 @@ function buildProjectCardHTML({
     ? '<span class="source-only-badge" title="Requires local server setup">Source only</span>'
     : "";
 
-  // SECURITY: href values come from sanitizeUrl() — not raw contributor data.
-  // data-id uses escapeHTML so it cannot break out of the attribute.
   const primaryLink = sourceOnly
     ? `<a href="${safeSourceUrl}" target="_blank" class="card-link open-project" data-id="${safeDay}" rel="noopener noreferrer" onclick="event.stopPropagation()" aria-label="View source of ${safeName} (opens in a new tab)">
                         <i class="fab fa-github" aria-hidden="true"></i> Source
@@ -387,10 +336,10 @@ function buildProjectCardHTML({
                         Demo <i class="fas fa-arrow-right" aria-hidden="true"></i>
                     </a>`;
 
-  const codeLink = sourceOnly
+  const githubBtn = sourceOnly
     ? ""
-    : `<a href="${safeSourceUrl}" target="_blank" class="card-link view-code-link" rel="noopener noreferrer" onclick="event.stopPropagation()" aria-label="View source code of ${safeName} on GitHub (opens in a new tab)">
-                        <i class="fab fa-github" aria-hidden="true"></i> Code
+    : `<a href="${safeSourceUrl}" target="_blank" class="github-btn" rel="noopener noreferrer" onclick="event.stopPropagation()" aria-label="View source code of ${safeName} on GitHub (opens in a new tab)">
+                        <i class="fab fa-github" aria-hidden="true"></i>
                     </a>`;
 
   return {
@@ -405,7 +354,14 @@ function buildProjectCardHTML({
             </div>
 
             <div class="card-preview-image-container" style="margin: 12px 0; border-radius: 8px; overflow: hidden; aspect-ratio: 16/9; background: #1a1a1a;">
-                <img src="./${url && url.startsWith('./') ? url.split('/')[2] : name.replace(/\s+/g, '_')}/preview.png" alt="${safeName} preview" onerror="this.parentNode.style.display='none';" style="width: 100%; height: 100%; object-fit: cover;">
+             <img
+    src="${url && url.startsWith('./') ? url.substring(0, url.lastIndexOf('/')) : ''}/preview.webp"
+    alt="${safeName} preview"
+    loading="lazy"
+    decoding="async"
+    onerror="this.parentNode.style.display='none';"
+    style="width: 100%; height: 100%; object-fit: cover;"
+>
             </div>
 
             <h3 class="card-name">${safeName}</h3>
@@ -420,11 +376,13 @@ function buildProjectCardHTML({
             <div class="card-footer">
                 <div class="card-actions-left">
                     ${primaryLink}
-                    ${codeLink}
                 </div>
-                <button class="bookmark-btn ${isBookmarked ? "active" : ""}" data-id="${safeDay}" aria-label="${isBookmarked ? `Remove ${safeName} from bookmarks` : `Bookmark ${safeName}`}">
-                    <i class="${isBookmarked ? "fa-solid" : "fa-regular"} fa-bookmark" aria-hidden="true"></i>
-                </button>
+                <div class="card-actions-right" style="display: flex; gap: 8px; align-items: center;">
+                    ${githubBtn}
+                    <button class="bookmark-btn ${isBookmarked ? "active" : ""}" data-id="${safeDay}" aria-label="${isBookmarked ? `Remove ${safeName} from bookmarks` : `Bookmark ${safeName}`}">
+                        <i class="${isBookmarked ? "fa-solid" : "fa-regular"} fa-bookmark" aria-hidden="true"></i>
+                    </button>
+                </div>
             </div>
         `,
     demoUrl: safeDemoUrl,
@@ -439,14 +397,13 @@ function attachProjectCardInteraction(card, demoUrl, projectData = null) {
     if (e.target.closest("a, button")) return;
     if (!demoUrl) return;
 
-    // Track the project visit if projectData is provided
     if (projectData) {
-      trackRecentProject(projectData);
+      const project = resolveProjectRecord(projectData);
+      if (project) {
+        trackRecentProject(project);
+      }
     }
 
-    // SECURITY: sanitizeUrl() is called on the stored demoUrl before
-    // window.open() so a javascript: payload stored in localStorage cannot
-    // execute even after a page reload.
     window.open(sanitizeUrl(demoUrl), "_blank", "noopener");
   };
 
@@ -454,7 +411,6 @@ function attachProjectCardInteraction(card, demoUrl, projectData = null) {
 
   card.onkeydown = (e) => {
     if (e.key === "Enter" || e.key === " ") {
-      // Prevent page scrolling on spacebar when card is focused
       if (e.key === " ") {
         e.preventDefault();
       }
@@ -463,38 +419,47 @@ function attachProjectCardInteraction(card, demoUrl, projectData = null) {
   };
 }
 
+function resolveProjectRecord(projectData) {
+  if (!projectData) return null;
+
+  if (projectData.projectNo != null && projectData.projectType != null) {
+    return projectData;
+  }
+
+  const day = projectData.day || projectData.projectName || projectData.name || projectData[0];
+  const name = projectData.projectName || projectData.name || projectData[1];
+
+  if (day) {
+    const project = PROJECTS_BY_DAY.get(day) || PROJECTS_BY_NAME.get(day);
+    if (project) return project;
+  }
+
+  if (name) {
+    const project = PROJECTS_BY_NAME.get(name);
+    if (project) return project;
+  }
+
+  return {
+    ...projectData,
+    projectName: name || projectData.projectName,
+    projectPath: projectData.projectPath || projectData.url || projectData[2],
+    techStack: projectData.techStack || projectData.tags || projectData[3] || [],
+  };
+}
+
 /* ============================================================
    TECHNOLOGY STACK FILTERING FUNCTIONS
    ============================================================ */
 
-/**
- * Normalize technology name for consistent matching
- * SIMPLIFIED: Just lowercase, no complex aliases needed
- * @param {string} tech - Technology name to normalize
- * @returns {string} Normalized technology name
- */
 function normalizeTech(tech) {
   const lower = tech.toLowerCase().trim();
-  // Only handle common variations
   return TECH_ALIASES[lower] || lower;
 }
 
-/**
- * Check if project matches the active tech stack filters.
- * Each filter must match a complete tag token, not a substring of another tag.
- * Example: searching "java" must not return projects tagged "javascript".
- * @param {string|array} projectTags - Project tags (space-separated string or array)
- * @returns {boolean} True if project matches all active filters
- */
 function matchesTechStack(projectTags) {
-  // No filters = show all projects
   if (techStackFilters.length === 0) return true;
-
-  // Handle empty or missing tags
   if (!projectTags) return false;
 
-  // Normalize to a set of individual lowercase tokens for whole-word matching.
-  // Using a Set avoids repeated linear scans for each filter.
   const tagSet = new Set(
     (Array.isArray(projectTags)
       ? projectTags
@@ -504,24 +469,15 @@ function matchesTechStack(projectTags) {
       .filter(Boolean),
   );
 
-  // Every active filter must match an exact token in the tag set (AND logic).
-  // This prevents "java" from matching "javascript", "css" from matching "canvas", etc.
   return techStackFilters.every((filter) => tagSet.has(filter.toLowerCase()));
 }
 
-/**
- * Remove a specific technology filter
- * @param {string} tech - Technology to remove from filters
- */
 function removeTechFilter(tech) {
   techStackFilters = techStackFilters.filter((t) => t !== tech);
   updateTechFilterDisplay();
   renderGrid();
 }
 
-/**
- * Clear all technology filters
- */
 function clearAllTechFilters() {
   techStackFilters = [];
   techSearchQuery = "";
@@ -533,23 +489,6 @@ function clearAllTechFilters() {
   renderGrid();
 }
 
-/**
- * Update the visual display of active tech filters.
- *
- * SECURITY: Previously this function built filter-tag markup by splicing
- * the raw tech string directly into an onclick attribute:
- *
- * `onclick="removeTechFilter('${tech}')"`
- *
- * That allowed a crafted tag value such as
- * '); alert(1); ('
- * to break out of the string literal and execute arbitrary JS.
- *
- * The fix uses DOM methods exclusively — no innerHTML, no inline handlers.
- * Each tag element is built with createElement / textContent and a proper
- * addEventListener, so no contributor-supplied string ever lands in an
- * executable context.
- */
 function updateTechFilterDisplay() {
   const container = document.getElementById("activeTechFilters");
   const tagsContainer = document.getElementById("techFilterTags");
@@ -557,12 +496,10 @@ function updateTechFilterDisplay() {
 
   if (!container || !tagsContainer) return;
 
-  // Show/hide clear button in search input
   if (clearBtn) {
     clearBtn.style.display = techStackFilters.length > 0 ? "block" : "none";
   }
 
-  // Show/hide active filters container
   if (techStackFilters.length === 0) {
     container.style.display = "none";
     return;
@@ -570,15 +507,12 @@ function updateTechFilterDisplay() {
 
   container.style.display = "flex";
 
-  // SECURITY: Build each filter tag with DOM APIs, not innerHTML.
-  // This eliminates the inline-handler injection vector entirely.
-  tagsContainer.textContent = ""; // clear previous children safely
+  tagsContainer.textContent = "";
 
   techStackFilters.forEach((tech) => {
     const span = document.createElement("span");
     span.className = "tech-filter-tag";
 
-    // textContent sets the visible label without any HTML parsing.
     const label = document.createTextNode(tech);
     span.appendChild(label);
 
@@ -590,8 +524,6 @@ function updateTechFilterDisplay() {
     icon.setAttribute("aria-hidden", "true");
     btn.appendChild(icon);
 
-    // addEventListener keeps the handler in JS — the tech value never
-    // touches HTML or an eval context.
     btn.addEventListener("click", () => removeTechFilter(tech));
 
     span.appendChild(btn);
@@ -599,11 +531,6 @@ function updateTechFilterDisplay() {
   });
 }
 
-/**
- * Get all unique technologies from projects (optional utility)
- * EFFICIENT: Uses Set for O(1) lookups
- * @returns {array} Sorted array of unique technologies
- */
 function getAllTechnologies() {
   const techSet = new Set();
 
@@ -644,21 +571,15 @@ let showAllBookmarks = false;
 let showAllRecent = false;
 
 const INITIAL_VISIBLE_ITEMS = 3;
-const ONE_HOUR_MS = 60 * 60 * 1000; // 1 hour in milliseconds
+const ONE_HOUR_MS = 60 * 60 * 1000;
 
-/**
- * Migrates old recent projects format (array) to new format (object with timestamp)
- * If stored format doesn't have timestamps, it's likely the old format
- */
 function migrateRecentProjects() {
   if (recentProjects.length === 0) return;
 
-  // Check if already in new format (has timestamp)
   if (typeof recentProjects[0] === "object" && recentProjects[0].timestamp) {
-    return; // Already migrated
+    return;
   }
 
-  // Migrate old format [day, name, url, tags] to new format {day, name, url, tags, timestamp}
   recentProjects = recentProjects.map((project) => {
     if (Array.isArray(project)) {
       return {
@@ -666,7 +587,7 @@ function migrateRecentProjects() {
         name: project[1],
         url: project[2],
         tags: project[3],
-        timestamp: Date.now() - ONE_HOUR_MS / 2, // Set to 30 mins ago to preserve them initially
+        timestamp: Date.now() - ONE_HOUR_MS / 2,
       };
     }
     return project;
@@ -682,10 +603,6 @@ function migrateRecentProjects() {
 // Migrate on load
 migrateRecentProjects();
 
-/**
- * Cleans up recent projects older than 1 hour
- * Called periodically and on page load
- */
 function cleanupExpiredRecentProjects() {
   const initialLength = recentProjects.length;
   recentProjects = getRecentProjectsWithinWindow();
@@ -700,8 +617,15 @@ function cleanupExpiredRecentProjects() {
   }
 }
 
-// Clean up every 5 minutes
-setInterval(cleanupExpiredRecentProjects, 5 * 60 * 1000);
+// Clean up every 5 minutes — clear previous interval to prevent timer leaks
+var recentProjectsTimer = null;
+function startRecentProjectsCleanup() {
+  if (recentProjectsTimer !== null) {
+    clearInterval(recentProjectsTimer);
+  }
+  recentProjectsTimer = setInterval(cleanupExpiredRecentProjects, 5 * 60 * 1000);
+}
+startRecentProjectsCleanup();
 
 const CATEGORY_LABEL = {
   beginner: "Beginner",
@@ -726,7 +650,6 @@ async function fetchRepoStats() {
   };
 
   try {
-    // Optional loading state
     set("starCount", "Loading...");
     set("forkCount", "Loading...");
     set("issueCount", "Loading...");
@@ -750,11 +673,6 @@ async function fetchRepoStats() {
 
     set("starCount", repo.stargazers_count.toLocaleString());
     set("forkCount", repo.forks_count.toLocaleString());
-    // GitHub's open_issues_count includes pull requests. Subtracting the PR
-    // count gives a closer approximation of open issues. The search API can
-    // return a total_count higher than the number accounted for in
-    // open_issues_count due to index lag or repository forks, which would
-    // produce a negative result without the clamp.
     set(
       "issueCount",
       Math.max(0, repo.open_issues_count - prs.total_count).toLocaleString(),
@@ -762,11 +680,10 @@ async function fetchRepoStats() {
     set("prCount", prs.total_count.toLocaleString());
   } catch (e) {
     console.warn("GitHub stats unavailable:", e.message);
-
-    // Show fallback text instead of permanent dashes
     setFallback();
   }
 }
+
 function generateReadme() {
   try {
     const lines = [];
@@ -808,6 +725,7 @@ let searchQuery = "";
 let sortOption = "default";
 let techStackFilter = "all";
 let difficultyFilter = "all";
+let currentFilteredProjects = [];
 
 function syncStateToURL() {
   const url = new URL(window.location);
@@ -878,7 +796,7 @@ function renderGrid() {
     const matchesFilter =
       activeFilter === "all" || category === targetCategory;
 
-    // Search filter (matches name, description, day, and technology tags)
+    // Search filter
     const q = searchQuery.toLowerCase().trim();
     const matchesSearch =
       !q ||
@@ -893,6 +811,8 @@ function renderGrid() {
               .toLowerCase()
               .includes(term),
         );
+
+       
 
     // Tech stack dropdown filter
     let matchesTech = true;
@@ -912,6 +832,7 @@ function renderGrid() {
 
     return matchesFilter && matchesSearch && matchesTech && matchesDifficulty;
   });
+  currentFilteredProjects = [...filtered];
 
   // Apply sorting
   if (sortOption === "az") {
@@ -996,7 +917,74 @@ function renderGrid() {
   syncStateToURL();
   syncProjectCounts();
 }
+console.log("===== RENDER GRID =====");
+console.log("PROJECTS:", PROJECTS.length);
+console.log("activeFilter:", activeFilter);
+console.log("searchQuery:", searchQuery);
+console.log("techStackFilter:", techStackFilter);
+console.log("difficultyFilter:", difficultyFilter);
+function renderRandomProject() {
+  const result =
+    document.getElementById(
+      "randomProjectResult"
+    );
 
+  if (!result) return;
+
+  const source =
+    currentFilteredProjects.length
+      ? currentFilteredProjects
+      : PROJECTS;
+
+  const randomProject =
+    source[
+      Math.floor(
+        Math.random() * source.length
+      )
+    ];
+
+  if (!randomProject) return;
+
+  const category =
+    getCategoryFromTags(
+      randomProject.techStack,
+      randomProject.projectName
+    );
+
+  const bookmarkedDays = new Set(
+    bookmarkedProjects.map(
+      (item) =>
+        normalizeProjectEntry(item).day
+    )
+  );
+
+  const { html, sourceOnly } =
+    buildProjectCardHTML({
+      day: randomProject.day,
+      name: randomProject.projectName,
+      url: randomProject.projectPath,
+      tags: randomProject.techStack,
+      category,
+      isBookmarked:
+        bookmarkedDays.has(
+          randomProject.day
+        ),
+      showDescription: true
+    });
+
+  result.innerHTML = "";
+
+  const card =
+    document.createElement("div");
+
+  card.className = sourceOnly
+    ? "project-card source-only visible"
+    : "project-card visible";
+
+  card.innerHTML = html;
+
+  result.appendChild(card);
+}
 function renderPagination(totalItems, totalPages) {
   const grid = document.getElementById("projectGrid");
   if (!grid) return;
@@ -1010,7 +998,6 @@ function renderPagination(totalItems, totalPages) {
 
   container.innerHTML = "";
 
-  // If there is only 1 page of results, hide and detach the pagination block
   if (totalPages <= 1) {
     if (container.parentElement === grid) {
       grid.removeChild(container);
@@ -1018,7 +1005,6 @@ function renderPagination(totalItems, totalPages) {
     return;
   }
 
-  // Render showing info range (e.g. "Showing 1 to 9 of 100")
   const infoDiv = document.createElement("div");
   infoDiv.className = "pagination-info";
   const startItem = (currentPage - 1) * itemsPerPage + 1;
@@ -1055,7 +1041,6 @@ function renderPagination(totalItems, totalPages) {
     if (currentPage > 1) {
       currentPage--;
       renderGrid();
-      // Delay scrolling by 50ms to allow DOM layout to recalculate and stabilize after cards redraw
       setTimeout(() => {
         scrollToProjectSection();
       }, 50);
@@ -1063,12 +1048,10 @@ function renderPagination(totalItems, totalPages) {
   });
   controlsDiv.appendChild(prevBtn);
 
-  // Initialize bounds for numeric pagination window (displays maximum of 4 page buttons)
   let startPage = 1;
   let endPage = totalPages;
   const maxVisible = 4;
 
-  // Sliding window pagination logic centering the active page
   if (totalPages > maxVisible) {
     if (currentPage <= 2) {
       startPage = 1;
@@ -1091,7 +1074,6 @@ function renderPagination(totalItems, totalPages) {
       e.preventDefault();
       currentPage = i;
       renderGrid();
-      // Delay scrolling by 50ms to allow DOM layout to recalculate and stabilize after cards redraw
       setTimeout(() => {
         scrollToProjectSection();
       }, 50);
@@ -1109,13 +1091,13 @@ function renderPagination(totalItems, totalPages) {
     if (currentPage < totalPages) {
       currentPage++;
       renderGrid();
-      // Delay scrolling by 50ms to allow DOM layout to recalculate and stabilize after cards redraw
       setTimeout(() => {
         scrollToProjectSection();
       }, 50);
     }
   });
   controlsDiv.appendChild(nextBtn);
+
   const lastBtn = document.createElement("button");
   lastBtn.className = "last-btn";
   lastBtn.innerHTML = "Last ⏭";
@@ -1134,7 +1116,6 @@ function renderPagination(totalItems, totalPages) {
 
   container.appendChild(controlsDiv);
 
-  // Append container dynamically inside the projectGrid element to keep it attached
   grid.appendChild(container);
 }
 
@@ -1142,26 +1123,21 @@ function scrollToProjectSection() {
   const header = document.querySelector(".projects-header");
   if (!header) return;
 
-  // Only scroll if the projects section is fully below the viewport.
-  // If the user is already within or past the project grid, don't move them.
   if (header.getBoundingClientRect().top < window.innerHeight) return;
 
   const navbar = document.querySelector(".navbar");
-  // Subtract height of fixed navbar with a 50px buffer to prevent overlaying the search bar
   const offset = navbar ? navbar.offsetHeight - 50 : 30;
   const targetY =
     header.getBoundingClientRect().top + window.pageYOffset - offset;
   const startY = window.pageYOffset;
   const distance = targetY - startY;
 
-  // Custom snappy scroll duration (100ms matches the quick transitions in your CSS)
   const duration = 100;
   let startTime = null;
 
   function animation(currentTime) {
     if (startTime === null) startTime = currentTime;
     const timeElapsed = currentTime - startTime;
-    // Cap scroll position math exactly to distance to avoid landing slightly off target
     const run = easeInOutQuad(
       Math.min(timeElapsed, duration),
       startY,
@@ -1174,7 +1150,6 @@ function scrollToProjectSection() {
     }
   }
 
-  // Mathematical Quadratic Ease-In-Out formula for momentum-like deceleration
   function easeInOutQuad(t, b, c, d) {
     t /= d / 2;
     if (t < 1) return (c / 2) * t * t + b;
@@ -1259,12 +1234,7 @@ function getRecentProjectsWithinWindow() {
   });
 }
 
-/**
- * Tracks a recently viewed project with a timestamp
- * @param {array} project - Project data [day, name, url, tags]
- */
 function trackRecentProject(project) {
-  // Convert old format to new format if needed
   let projectObj;
   if (Array.isArray(project)) {
     projectObj = {
@@ -1281,13 +1251,9 @@ function trackRecentProject(project) {
     };
   }
 
-  // Remove duplicate if exists
   recentProjects = recentProjects.filter((item) => item.day !== projectObj.day);
-
-  // Add to front
   recentProjects.unshift(projectObj);
 
-  // Keep only the 20 most recent entries (not filtered by time yet)
   if (recentProjects.length > 20) {
     recentProjects.pop();
   }
@@ -1305,20 +1271,39 @@ function trackRecentProject(project) {
 const bookmarkGrid = document.getElementById("bookmarkGrid");
 
 function normalizeProjectEntry(project) {
+  if (!project) {
+    return {
+      day: "",
+      name: "",
+      url: "",
+      tags: [],
+    };
+  }
+
+  if (typeof project === "string") {
+    const dayStr = project.startsWith("Day ") ? project : `Day ${project}`;
+    return {
+      day: dayStr,
+      name: "",
+      url: "",
+      tags: [],
+    };
+  }
+
   if (Array.isArray(project)) {
     return {
-      day: project[0],
-      name: project[1],
-      url: project[2],
-      tags: project[3],
+      day: project[0] || "",
+      name: project[1] || "",
+      url: project[2] || "",
+      tags: project[3] || [],
     };
   }
 
   return {
-    day: project.day,
-    name: project.projectName || project.name,
-    url: project.projectPath || project.url,
-    tags: project.techStack || project.tags,
+    day: project.day || "",
+    name: project.projectName || project.name || "",
+    url: project.projectPath || project.url || "",
+    tags: project.techStack || project.tags || [],
   };
 }
 
@@ -1350,7 +1335,6 @@ function renderBookmarks() {
 
     const category = getCategoryFromTags(tags, name);
 
-    // Updated to use the secure HTML-string approach
     const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
       day,
       name,
@@ -1382,7 +1366,6 @@ function renderRecentProjects() {
 
   recentGrid.innerHTML = "";
 
-  // Filter projects within the 1-hour window
   const validRecent = getRecentProjectsWithinWindow();
 
   if (validRecent.length === 0) {
@@ -1401,7 +1384,6 @@ function renderRecentProjects() {
     : validRecent.slice(0, INITIAL_VISIBLE_ITEMS);
 
   visibleRecent.forEach((projectObj) => {
-    // Handle both old array format and new object format
     const day = projectObj.day || projectObj[0];
     const name = projectObj.projectName || projectObj.name || projectObj[1];
     const url = projectObj.projectPath || projectObj.url || projectObj[2];
@@ -1412,7 +1394,6 @@ function renderRecentProjects() {
       (item) => normalizeProjectEntry(item).day === day,
     );
 
-    // Updated to use the secure HTML-string approach
     const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
       day,
       name,
@@ -1435,10 +1416,93 @@ function renderRecentProjects() {
 
     recentGrid.appendChild(card);
   });
+
+  renderRecommendationsForLatestRecentProject();
+}
+
+function renderRecommendationsForProject(project) {
+  const container = document.getElementById("recommendationsContainer");
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  const header = document.createElement("div");
+  header.className = "projects-intro";
+  header.innerHTML = `
+    <p class="section-label">Build Similar Projects</p>
+    <h2 class="section-title">${project ? `Projects like ${escapeHTML(
+      project.projectName || project.name || "this project",
+    )}` : "Related Projects"}</h2>
+  `;
+  container.appendChild(header);
+
+  if (!project) {
+    const placeholder = document.createElement("p");
+    placeholder.className = "empty-state";
+    placeholder.textContent =
+      "Click a project card to discover related builds based on technologies and project type.";
+    container.appendChild(placeholder);
+    return;
+  }
+
+  const recommendations = getRecommendations(project, PROJECTS);
+  if (!recommendations.length) {
+    const noRecommendations = document.createElement("p");
+    noRecommendations.className = "empty-state";
+    noRecommendations.textContent =
+      "No similar projects were found for this selection yet.";
+    container.appendChild(noRecommendations);
+    return;
+  }
+
+  const grid = document.createElement("div");
+  grid.className = "project-grid";
+
+  recommendations.forEach((recommendation) => {
+    const category = getCategoryFromTags(
+      recommendation.techStack,
+      recommendation.projectName,
+    );
+    const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
+      day: recommendation.day,
+      name: recommendation.projectName,
+      url: recommendation.projectPath,
+      tags: recommendation.techStack,
+      category,
+      isBookmarked: bookmarkedProjects.some(
+        (item) => normalizeProjectEntry(item).day === recommendation.day,
+      ),
+      showDescription: true,
+    });
+
+    const card = document.createElement("div");
+    card.className = sourceOnly
+      ? "project-card source-only visible"
+      : "project-card visible";
+    card.innerHTML = html;
+    card.setAttribute("tabindex", "0");
+    card.setAttribute("role", "button");
+    attachProjectCardInteraction(card, demoUrl, recommendation);
+    grid.appendChild(card);
+  });
+
+  container.appendChild(grid);
+}
+
+function renderRecommendationsForLatestRecentProject() {
+  const validRecent = getRecentProjectsWithinWindow();
+  if (validRecent.length === 0) {
+    renderRecommendationsForProject(null);
+    return;
+  }
+
+  const latestProject = resolveProjectRecord(validRecent[0]);
+  renderRecommendationsForProject(latestProject);
 }
 
 // Clean up after grid references are initialized.
 cleanupExpiredRecentProjects();
+renderRecommendationsForLatestRecentProject();
 
 /* ============================================================
    VIEW ALL TOGGLE
@@ -1551,7 +1615,6 @@ function updateClearFiltersBtnVisibility() {
 }
 
 function resetAllFilters() {
-  // 1. Reset Category filter chips
   const chips = document.querySelectorAll(".chip[data-filter]");
   chips.forEach((c) => c.classList.remove("active"));
   const allChip =
@@ -1560,32 +1623,26 @@ function resetAllFilters() {
   if (allChip) allChip.classList.add("active");
   activeFilter = "all";
 
-  // 2. Clear Search input
   const input = document.getElementById("searchInput");
   if (input) input.value = "";
   searchQuery = "";
 
-  // 3. Reset Tech Stack dropdown select
   const techStack = document.getElementById("techStackFilter");
   if (techStack) techStack.value = "all";
   techStackFilter = "all";
 
-  // 4. Reset Difficulty dropdown select
   const difficultyElement = document.getElementById("difficultyFilter");
   if (difficultyElement) difficultyElement.value = "all";
   difficultyFilter = "all";
 
-  // 5. Reset Sorting to default
   const sortSelect = document.getElementById("sortProjects");
   if (sortSelect) sortSelect.value = "default";
   sortOption = "default";
 
-  // 6. Sync URL
   if (typeof updateURL === "function") {
     updateURL("", "all");
   }
 
-  // 7. Refresh grid and pagination
   currentPage = 1;
   renderGrid();
   syncProjectCounts();
@@ -1649,7 +1706,6 @@ function initSearch() {
     }, 180),
   );
 
-  // Tech stack dropdown filter listener
   const techStack = document.getElementById("techStackFilter");
   if (techStack) {
     techStack.addEventListener("change", () => {
@@ -1659,7 +1715,6 @@ function initSearch() {
     });
   }
 
-  // Difficulty dropdown filter listener
   const diffFilterElement = document.getElementById("difficultyFilter");
   if (diffFilterElement) {
     diffFilterElement.addEventListener("change", () => {
@@ -1690,7 +1745,6 @@ function initTechStackSearch() {
 
   if (!input) return;
 
-  // Use the shared debounce utility instead of a manual inline timer
   input.addEventListener(
     "input",
     debounce((e) => {
@@ -1766,7 +1820,6 @@ function updateCategoryCounts(projects = PROJECTS) {
 function syncProjectCounts() {
   let filtered = [...PROJECTS];
 
-  // Apply search filter (matches name, description, day, and tags)
   if (searchQuery) {
     const q = searchQuery.toLowerCase();
     filtered = filtered.filter(
@@ -1795,7 +1848,6 @@ function syncProjectCounts() {
   updateCategoryCounts(filtered);
 }
 
-// Clear button functionality
 if (searchInput && clearSearchBtn) {
   clearSearchBtn.addEventListener("click", () => {
     searchInput.value = "";
@@ -1811,8 +1863,6 @@ if (searchInput && clearSearchBtn) {
     }
   });
 }
-
-
 
 /* ============================================================
    NAVBAR — dynamic based on login state
@@ -1849,7 +1899,6 @@ function initScrollBtn() {
       ring.style.strokeDashoffset = circumference * (1 - progress);
     }
 
-    // Footer collision avoidance
     const footer = document.querySelector(".footer");
     if (footer) {
       const footerRect = footer.getBoundingClientRect();
@@ -1857,9 +1906,6 @@ function initScrollBtn() {
 
       if (footerRect.top < windowHeight) {
         const overlap = windowHeight - footerRect.top;
-        // Cap the upward movement to a maximum of 120px.
-        // This ensures it dodges the important bottom footer links but
-        // doesn't fly completely off the top of the screen when the footer is huge.
         const maxOverlap = Math.min(overlap, 120);
         btn.style.bottom = `calc(2rem + ${maxOverlap}px)`;
       } else {
@@ -1906,22 +1952,26 @@ document.addEventListener("DOMContentLoaded", async () => {
   initTechStackSearch();
   initClearAllFilters();
 
+  //updateGamifiedUI();
+
   try {
-    await loadProjects();
+  await loadProjects();
 
-    syncProjectCounts();
+//updateGamifiedUI();
 
-    if (hasProjectGrid()) {
-      loadBookmarksFromURL();
+restoreStateFromURL();
 
-      renderGrid();
-      renderBookmarks();
-      renderRecentProjects();
-    }
+syncProjectCounts();
 
-    restoreStateFromURL();
+if (hasProjectGrid()) {
+  loadBookmarksFromURL();
 
-    syncProjectCounts();
+  renderGrid();
+  renderBookmarks();
+  renderRecentProjects();
+}
+
+syncProjectCounts();
     fetchRepoStats();
     initScrollBtn();
   } catch (error) {
@@ -2026,7 +2076,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 })();
 
-// Re-render the grid when the browser window is resized to adapt pagination density instantly
 window.addEventListener(
   "resize",
   debounce(() => {
@@ -2052,6 +2101,7 @@ function initTheme() {
 
 // Initialize the theme engine
 initTheme();
+
 // Custom cursor with accessibility, interactivity & fail-safe upgrades
 (function () {
   const outerCursor = document.querySelector(".cursor-ring--outer");
@@ -2064,9 +2114,7 @@ initTheme();
     let cursorEnabled = true;
     try {
       cursorEnabled = localStorage.getItem("customCursorEnabled") !== "false";
-    } catch (_) {
-      // Default to true if localStorage is blocked in sandboxed iframe
-    }
+    } catch (_) {}
     const coarsePointer = window.matchMedia("(pointer: coarse)").matches;
     const prefersReducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
@@ -2079,13 +2127,11 @@ initTheme();
       document.body.classList.add("custom-cursor-active");
     } else {
       document.body.classList.remove("custom-cursor-active");
-      // Reset styles if cursor is deactivated
       outerCursor.classList.remove("is-visible");
       innerCursor.classList.remove("is-visible");
     }
   };
 
-  // Expose function to global scope so it can be called from navbar.js when settings toggles
   window.updateCustomCursorState = updateCursorActivationState;
 
   const target = { x: 0, y: 0 };
@@ -2139,7 +2185,6 @@ initTheme();
     }
   });
 
-  // Watch for system accessibility media query changes
   const reducedMotionQuery = window.matchMedia(
     "(prefers-reduced-motion: reduce)",
   );
@@ -2157,7 +2202,6 @@ initTheme();
     coarsePointerQuery.addListener(handleQueryChange);
   }
 
-  // Hover target animations (interactive micro-animations)
   const hoverTargets =
     'a, button, [role="button"], input, select, .chip, .project-card, .bookmark-btn';
 
@@ -2183,7 +2227,6 @@ initTheme();
     }
   });
 
-  // Initialize activation state
   updateCursorActivationState();
   requestAnimationFrame(update);
 })();
@@ -2425,7 +2468,6 @@ function applyFilters(search, category) {
   activeFilter = category || "all";
   currentPage = 1;
 
-  // Sync active chip selection with URL state
   const chips = document.querySelectorAll(".chip[data-filter]");
   chips.forEach((chip) => {
     if (chip.dataset.filter === activeFilter) {
@@ -2439,13 +2481,11 @@ function applyFilters(search, category) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-
   const searchInput =
     document.getElementById("search") ||
     document.querySelector('input[type="text"]') ||
     document.querySelector(".search-input");
   if (searchInput) {
-    // Debounced so rapid typing doesn't trigger a renderGrid() on every keystroke
     searchInput.addEventListener(
       "input",
       debounce(() => {
@@ -2465,3 +2505,11 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   window.addEventListener("popstate", () => restoreStateFromURL());
 });
+document
+  .getElementById(
+    "randomProjectBtn"
+  )
+  ?.addEventListener(
+    "click",
+    renderRandomProject
+  );
