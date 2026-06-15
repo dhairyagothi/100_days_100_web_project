@@ -1,0 +1,37 @@
+name: Generate Projects Registry
+
+on:
+  push:
+    branches:
+      - feature/pinspire-clone # Targets your exact working branch
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Generate dynamic registry
+        run: node scripts/generate-registry.js
+
+      - name: Commit and Push Compiled Changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          
+          git add public/projects.json
+          
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: automated updates to projects.json [skip ci]"
+            git push origin feature/pinspire-clone
+          else
+            echo "No changes found in projects registry."
+          fi
