@@ -492,11 +492,52 @@ a:focus-visible {
   }
 
   .hero-metric {
-    grid-template-columns: 1fr;
+   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   }
 
   .list-card li {
     flex-direction: column;
     align-items: flex-start;
   }
+}
+
+@media (max-width: 768px) {
+
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .info-card {
+        width: 100%;
+    }
+
+}
+.buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+}
+
+@media (max-width: 768px) {
+
+    .buttons {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .buttons button,
+    .buttons a {
+        width: 100%;
+    }
+
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+pre {
+    overflow-x: auto;
 }
