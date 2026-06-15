@@ -9,11 +9,23 @@
     --border: #1f2937;
 }
 
+body.light-theme {
+    --bg: #f0f4f8;
+    --card-bg: #ffffff;
+    --inner-bg: #f8fafc;
+    --accent-blue: #0284c7;
+    --accent-green: #16a34a;
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    --border: #e2e8f0;
+}
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: 'Segoe UI', system-ui, sans-serif;
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 }
 
 body {
@@ -155,8 +167,8 @@ input:focus, select:focus {
 }
 
 .matrix-item {
-    background-color: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(255, 255, 255, 0.04);
+    background-color: var(--inner-bg);
+    border: 1px solid var(--border);
     padding: 10px;
     border-radius: 6px;
     display: flex;
@@ -186,4 +198,51 @@ input:focus, select:focus {
     .matrix-grid {
         grid-template-columns: 1fr;
     }
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+.theme-btn {
+    background: transparent;
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    outline: none;
+}
+
+.theme-btn:hover {
+    background-color: rgba(125, 125, 125, 0.1);
+}
+
+.theme-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    box-shadow: inset 6px -6px 0 0 var(--accent-blue);
+}
+
+body.light-theme .theme-icon {
+    box-shadow: none;
+    background: #eab308; /* Warm golden sun color */
+    position: relative;
+    border-radius: 50%;
+    transform: scale(0.75);
+}
+
+body.light-theme .theme-icon::before {
+    content: "";
+    position: absolute;
+    top: -4px; bottom: -4px; left: -4px; right: -4px;
+    border: 2px dashed #eab308;
+    border-radius: 50%;
 }
