@@ -176,7 +176,6 @@ body.dark-mode {
     --text-limited: #fbbf24;
 }
 
-
 body.dark-mode .remedy-card,
 body.dark-mode .warning-panel,
 body.dark-mode .site-header {
@@ -195,3 +194,22 @@ body.dark-mode .site-header {
     background: linear-gradient(135deg, #0f172a, #1e293b) !important;
 }
 
+body.dark-mode .advanced-fields {
+    background-color: #1e293b !important;
+    border-color: #334155 !important;
+}
+
+body.dark-mode .advanced-fields .form-field label {
+    color: #e2e8f0 !important;
+}
+
+body.dark-mode .advanced-fields .file-upload {
+    background-color: #0f172a !important;
+    border-color: #475569 !important;
+}
+
+body.dark-mode .advanced-fields .file-upload-ui span,
+body.dark-mode .advanced-fields .file-upload-ui small {
+    color: #94a3b8 !important;
+}
+}

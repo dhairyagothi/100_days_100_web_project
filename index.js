@@ -111,7 +111,8 @@ function loadProjects() {
         `${base}projects.json`,
         window.location.href,
       ).toString();
-
+      
+console.log("Projects URL:", projectsUrl);
       try {
         const response = await fetch(projectsUrl);
         if (!response.ok) {
@@ -219,7 +220,7 @@ function resolveProjectUrls(day, name, url, tags) {
       if (demoUrl.startsWith("./")) {
         demoUrl = basePrefix + demoUrl.substring(2);
       }
-    } catch (error) {}
+    } catch (error) { }
   }
 
   return { demoUrl, sourceUrl, sourceOnly };
@@ -350,10 +351,10 @@ function buildProjectCardHTML({
                         Demo <i class="fas fa-arrow-right" aria-hidden="true"></i>
                     </a>`;
 
-  const codeLink = sourceOnly
+  const githubBtn = sourceOnly
     ? ""
-    : `<a href="${safeSourceUrl}" target="_blank" class="card-link view-code-link" rel="noopener noreferrer" onclick="event.stopPropagation()" aria-label="View source code of ${safeName} on GitHub (opens in a new tab)">
-                        <i class="fab fa-github" aria-hidden="true"></i> Code
+    : `<a href="${safeSourceUrl}" target="_blank" class="github-btn" rel="noopener noreferrer" onclick="event.stopPropagation()" aria-label="View source code of ${safeName} on GitHub (opens in a new tab)">
+                        <i class="fab fa-github" aria-hidden="true"></i>
                     </a>`;
 
   return {
@@ -406,14 +407,15 @@ function buildProjectCardHTML({
             </div>
 
             <div class="card-preview-image-container" style="margin: 12px 0; border-radius: 8px; overflow: hidden; aspect-ratio: 16/9; background: #1a1a1a;">
-             <img
-    src="${url && url.startsWith('./') ? url.substring(0, url.lastIndexOf('/')) : ''}/preview.webp"
-    alt="${safeName} preview"
-    loading="lazy"
-    decoding="async"
-    onerror="this.parentNode.style.display='none';"
-    style="width: 100%; height: 100%; object-fit: cover;"
->
+           <img
+            src="./${url && url.startsWith('./')
+            ? url.split('/')[2]
+            : name.replace(/\s+/g, '_')}/preview.png"
+            alt="${safeName} preview"
+            loading="lazy"
+            decoding="async"
+            onerror="this.parentNode.style.display='none';"
+            style="width: 100%; height: 100%; object-fit: cover;">
             </div>
 
             <h3 class="card-name">${safeName}</h3>
@@ -428,9 +430,9 @@ function buildProjectCardHTML({
             <div class="card-footer">
                 <div class="card-actions-left">
                     ${primaryLink}
-                    ${codeLink}
                 </div>
                 <div class="card-actions-right" style="display: flex; gap: 8px; align-items: center;">
+                    ${githubBtn}
                     <button class="bookmark-btn ${isBookmarked ? "active" : ""}" data-id="${safeDay}" aria-label="${isBookmarked ? `Remove ${safeName} from bookmarks` : `Bookmark ${safeName}`}">
                         <i class="${isBookmarked ? "fa-solid" : "fa-regular"} fa-bookmark" aria-hidden="true"></i>
                     </button>
@@ -911,7 +913,7 @@ function renderGrid() {
     });
   }
 
-  grid.innerHTML = "";
+  grid.replaceChildren();
 
   if (filtered.length === 0) {
     grid.style.display = "none";
@@ -1983,9 +1985,14 @@ function hasProjectGrid() {
 document.addEventListener("DOMContentLoaded", async () => {
   readStateFromURL();
 
-  initTheme();
-  updateNavbar();
-  initScrollBtn();
+      initTheme();
+      updateNavbar();
+      initScrollBtn();
+      window.addEventListener("load", () => {
+        setTimeout(() => {
+          fetchRepoStats();
+        }, 1000);
+      });
 
   initCurrentYear();
   initFilterChips();

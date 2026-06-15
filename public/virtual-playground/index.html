@@ -30,6 +30,7 @@
         height: 40px;
         border-radius: 50%;
         background: #ff6b6b;
+        background: #ff6b6b;
         position: absolute;
         cursor: pointer;
         transition: transform 0.1s;
@@ -50,6 +51,44 @@
       button:hover {
         background: #0056b3;
       }
+
+      /* Planet selector row */
+      .planet-selector {
+        margin-top: 16px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .planet-selector label {
+        font-size: 14px;
+        color: #333;
+        margin-right: 4px;
+        font-weight: bold;
+      }
+      /* Planet buttons share the base button style but have a
+         distinct inactive colour so active state is clearly visible */
+      .planet-btn {
+        padding: 8px 14px;
+        font-size: 13px;
+        margin: 0;
+        background: #6c757d;
+      }
+      .planet-btn:hover {
+        background: #495057;
+      }
+      /* Active planet is highlighted in a distinct accent colour */
+      .planet-btn.active {
+        background: #fd7e14;
+        outline: 2px solid #c96000;
+        outline-offset: 1px;
+      }
+      .planet-btn.active:hover {
+        background: #e06c0b;
+      }
+
+      /* Customise row (color + shape) */
       .customise {
         margin-top: 14px;
         display: flex;
@@ -72,18 +111,47 @@
         font-size: 14px;
         cursor: pointer;
       }
+
+      /* Responsive: stack controls on narrow screens */
+      @media (max-width: 440px) {
+        .play-area {
+          width: 100%;
+          height: 320px;
+        }
+        .planet-selector {
+          gap: 6px;
+        }
+        .planet-btn {
+          padding: 7px 10px;
+          font-size: 12px;
+        }
+      }
     </style>
   </head>
   <body>
     <h1>Virtual Playground</h1>
-    <p>Click the ball to make it jump! Try different gravity modes.</p>
+    <p>Click the ball to make it jump! Select a planet to change gravity.</p>
+
     <div class="play-area" id="playArea">
       <div class="ball" id="ball"></div>
     </div>
+
+    <!-- Action controls: Reset only (Toggle Gravity replaced by planet selector) -->
     <div class="controls">
-      <button onclick="toggleGravity()">Toggle Gravity</button
-      ><button onclick="resetBall()">Reset</button>
+      <button onclick="resetBall()">Reset</button>
     </div>
+
+    <!-- Planet Gravity Selector -->
+    <div class="planet-selector" id="planetSelector">
+      <label>Planet:</label>
+      <button class="planet-btn" data-planet="moon">🌕 Moon</button>
+      <button class="planet-btn" data-planet="mars">🔴 Mars</button>
+      <button class="planet-btn active" data-planet="earth">🌍 Earth</button>
+      <button class="planet-btn" data-planet="saturn">🪐 Saturn</button>
+      <button class="planet-btn" data-planet="jupiter">🟠 Jupiter</button>
+    </div>
+
+    <!-- Ball customisation: color picker + shape selector -->
     <div class="customise">
       <label>Color <input type="color" id="ballColor" value="#ff6b6b" /></label>
       <label>Shape
@@ -95,41 +163,51 @@
         </select>
       </label>
     </div>
-    <script>
-      const ball = document.getElementById('ball');
-      const area = document.getElementById('playArea');
-      const colorPicker = document.getElementById('ballColor');
-      const shapeSelect = document.getElementById('ballShape');
-      let x = 180,
-        y = 180,
-        vx = 0,
-        vy = 0;
-      let gravity = 0.5;
-      let bouncing = true;
+    <div class="customise">
+      <label>Color <input type="color" id="ballColor" value="#ff6b6b" /></label>
+      <label
+        >Shape
+        <select id="ballShape">
+          <option value="circle">Circle</option>
+          <option value="square">Square</option>
+          <option value="triangle">Triangle</option>
+          <option value="star">Star</option>
+        </select>
+      </label>
+    </div>
 
       const clipPaths = {
-        circle:   '',
-        square:   '',
+        circle: '',
+        square: '',
         triangle: 'polygon(50% 0%, 0% 100%, 100% 100%)',
-        star:     'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)'
+        star: 'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)',
       };
 
-      function applyShape(shape) {
-        ball.style.borderRadius = shape === 'circle' ? '50%' : '0';
-        ball.style.clipPath = clipPaths[shape];
-      }
+      /* ── Gravity calculation ────────────────────────────────────────
+         BASE_GRAVITY is the raw pixel-per-frame² acceleration for Earth.
+         Each planet's actual gravity = BASE_GRAVITY × planet.multiplier.
+         This matches the original Earth gravity value of 0.5 exactly.
+      ────────────────────────────────────────────────────────────────── */
+      const BASE_GRAVITY = 0.5;
 
-      colorPicker.addEventListener('input', () => {
-        ball.style.background = colorPicker.value;
-      });
+      /* Active physics state — starts on Earth */
+      let currentPlanet = PLANETS.earth;
+      let gravity = BASE_GRAVITY * currentPlanet.multiplier; // 0.5
 
-      shapeSelect.addEventListener('change', () => {
-        applyShape(shapeSelect.value);
-      });
+      const ball     = document.getElementById('ball');
+      const area     = document.getElementById('playArea');
+      const colorPicker = document.getElementById('ballColor');
+      const shapeSelect = document.getElementById('ballShape');
 
-      ball.style.background = colorPicker.value;
+      let x = 180, y = 180, vx = 0, vy = 0;
+      let bouncing = true;
 
+      /* ── Physics loop ───────────────────────────────────────────────
+         gravity is re-read from the live variable each frame, so
+         switching planets takes effect immediately with no restart.
+      ────────────────────────────────────────────────────────────────── */
       function update() {
+        /* Apply gravity to vertical velocity */
         vy += gravity;
         x += vx;
         y += vy;
@@ -139,7 +217,14 @@
         }
         if (y < 0) {
           y = 0;
-          vy *= -0.7;
+
+          // Bounce away from ceiling
+          vy = Math.abs(vy) * 0.7;
+
+          // Prevent repeated ceiling collisions when gravity is reversed
+          if (gravity < 0 && vy < 1.5) {
+            vy = 1.5;
+          }
         }
         if (x + 40 > 400) {
           x = 400 - 40;
@@ -150,22 +235,66 @@
           vx *= -0.7;
         }
         ball.style.left = x + 'px';
-        ball.style.top = y + 'px';
+        ball.style.top  = y + 'px';
         if (bouncing) requestAnimationFrame(update);
       }
+
+      /* Click the ball to launch it upward with a random horizontal kick */
       ball.addEventListener('click', () => {
         vy = -10;
         vx = (Math.random() - 0.5) * 10;
       });
-      function toggleGravity() {
-        gravity = gravity === 0.5 ? -0.3 : 0.5;
-      }
+
+      /* Reset restores position and velocity; planet/color/shape unchanged */
       function resetBall() {
-        x = 180;
-        y = 180;
-        vx = 0;
-        vy = 0;
+        x = 180; y = 180; vx = 0; vy = 0;
       }
+
+      /* ── Planet selector ────────────────────────────────────────────
+         Clicking a planet button updates gravity and bounce immediately.
+         Active button styling reflects the current selection.
+      ────────────────────────────────────────────────────────────────── */
+      document.querySelectorAll('.planet-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const key = btn.dataset.planet;
+          currentPlanet = PLANETS[key];
+
+          /* Recalculate live gravity from multiplier */
+          gravity = BASE_GRAVITY * currentPlanet.multiplier;
+
+          /* Update active highlight */
+          document.querySelectorAll('.planet-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+        });
+      });
+
+      /* ── Ball colour ────────────────────────────────────────────────
+         Color picker input fires on every drag — instant update.
+      ────────────────────────────────────────────────────────────────── */
+      colorPicker.addEventListener('input', () => {
+        ball.style.background = colorPicker.value;
+      });
+      ball.style.background = colorPicker.value;
+
+      /* ── Ball shape ─────────────────────────────────────────────────
+         CSS clip-path handles triangle and star; border-radius for
+         circle and square. No canvas needed.
+      ────────────────────────────────────────────────────────────────── */
+      const CLIP_PATHS = {
+        circle:   '',
+        square:   '',
+        triangle: 'polygon(50% 0%, 0% 100%, 100% 100%)',
+        star:     'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)',
+      };
+
+      function applyShape(shape) {
+        ball.style.borderRadius = shape === 'circle' ? '50%' : '0';
+        ball.style.clipPath     = CLIP_PATHS[shape];
+      }
+
+      shapeSelect.addEventListener('change', () => applyShape(shapeSelect.value));
+
+      /* Kick off the animation loop */
       update();
     </script>
   </body>

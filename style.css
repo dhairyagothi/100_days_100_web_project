@@ -1976,13 +1976,26 @@ input:focus {
   gap: 1rem;
 }
 
-.view-code-link {
+.github-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: transparent;
   color: var(--text-secondary);
+  cursor: pointer;
+  transition: var(--t);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
 }
 
-.view-code-link:hover {
-  color: var(--text-primary);
-  transform: translateY(-1px);
+.github-btn:hover {
+  background: var(--accent-dim);
+  border-color: var(--border-accent);
+  color: var(--accent);
+  transform: translateY(-2px);
 }
 
 .bookmark-btn {
