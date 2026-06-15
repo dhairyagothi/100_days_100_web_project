@@ -101,7 +101,6 @@ function removeHistoryItem(idx) {
   uploadData.stats.totalSizeBytes = Math.max(0, uploadData.stats.totalSizeBytes - removed.size);
   uploadData.stats.imageCount     = Math.max(0, uploadData.stats.imageCount - 1);
 
-  // Recalculate largest from remaining history
   uploadData.stats.largestFileBytes = uploadData.history.reduce(function (max, item) {
     return item.size > max ? item.size : max;
   }, 0);
@@ -217,7 +216,6 @@ function rebuildPreview() {
   }
 }
 
-// Remove selected file chip
 function removeFile(idx) {
   var removed = selectedFiles.splice(idx, 1)[0];
   rebuildPreview();
