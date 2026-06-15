@@ -1,0 +1,123 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap');
+.card {
+  width: 100%;
+  max-width: 450px; 
+  min-height: 400px;
+  padding: 40px 30px;
+  border-radius: 30px;
+  
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  text-align: center;
+  
+
+  background: rgba(255, 255, 255, 0.295);
+  backdrop-filter: blur(1px);
+  -webkit-backdrop-filter: blur(1px); 
+
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+.background {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; 
+  background-image: linear-gradient(135deg, rgb(200, 179, 255), rgb(169, 224, 248));
+  flex-direction: column;
+  
+}
+.btn{
+  flex: 1; 
+  max-width: 150px;
+  padding: 18px 24px;
+  font-size: 18px;
+  font-weight: 700;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  margin: 20px;
+  background-color: white;
+  color: #6a5acd;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  
+}
+.btn:hover{
+ background-color: #6a5acd;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1);
+}
+
+.btn:active{
+  transform: translateY(2px);
+}
+
+.question {
+  font-size: 28px;
+  font-weight: 800;
+  color: #2c2c2c;
+  margin-bottom: 30px;
+  line-height: 1.4;
+  font-family: "cinzel", serif;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.main-title{
+  font-family: "cinzel", serif;
+  font-size: 50px;
+  margin-bottom: 20px;
+}
+
+
+ 
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 6px solid rgba(255, 255, 255, 0.2); 
+  border-radius: 50%; 
+  border-top-color: #ffffff; 
+  margin: 30px auto; 
+  
+  animation: spin 1s ease-in-out infinite; 
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.gennie{
+ width: 10vw;
+ animation: floating 3s ease-in-out 1s infinite ;
+
+}
+
+@keyframes floating {
+  0%{
+    transform :translateY(0px);
+  }
+  50%{
+    transform :translateY(-20px);
+  }
+  100%{
+    transform :translateY(0px);
+  }
+  
+ }
+
+.title-box{
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  gap: 3vw;
+}
+
