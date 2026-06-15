@@ -80,6 +80,11 @@ body {
     overflow-x: hidden;
 }
 
+/* ============================================================================
+   Typography
+   ============================================================================ */
+
+
 h1, h2, h3, h4, h5, h6 {
     font-family: 'Poppins', sans-serif;
     font-weight: 600;
@@ -719,7 +724,9 @@ a:hover { color: var(--primary-dark); text-decoration: underline; }
 
 .health-stats {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    /* grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-lg); */
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: var(--spacing-lg);
 }
 
@@ -786,7 +793,9 @@ a:hover { color: var(--primary-dark); text-decoration: underline; }
 
 .emergency-buttons {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    /* grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-lg); */
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: var(--spacing-lg);
 }
 
@@ -801,7 +810,9 @@ a:hover { color: var(--primary-dark); text-decoration: underline; }
 /* ============================================================================
    Quick Actions
    ============================================================================ */
-.quick-actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--spacing-lg); }
+.quick-actions { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: var(--spacing-lg);
+ }
 .quick-action-btn {
     display: flex; flex-direction: column; align-items: center; gap: var(--spacing-md); padding: var(--spacing-lg);
     background-color: var(--background); border: 1px solid var(--border); border-radius: var(--radius-md);
