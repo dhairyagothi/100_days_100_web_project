@@ -3,7 +3,9 @@ const notesContainer = document.getElementById("notes-container");
 const documentsList  = document.querySelector(".documents-list");
 const pdfMessage     = document.getElementById("pdfMessage");
 const taskInput      = document.getElementById("task-input");
-const taskTypeSelect = document.getElementById("task-type");
+const taskInput2     = document.getElementById("task-input2");
+const taskTypeSelect = document.getElementById("task-type-select");
+const taskList       = document.getElementById("task-list");
 
 // ─── Theme State ───────────────────────────────────────────────────────────────
 // Maps theme id → gradient for body + card fallback colour for default cards
@@ -45,12 +47,17 @@ const TYPE_COLORS = {
 
 // ─── Add Task ──────────────────────────────────────────────────────────────────
 function Add() {
-  const text = taskInput.value.trim();
+  const activeInput =
+          document.getElementById("home-tab").style.display !== "none"
+              ? taskInput
+              : taskInput2;
+
+  const text = taskInput2.value.trim();
 
   if (text === "") {
-    taskInput.focus();
-    taskInput.style.borderColor = "rgba(255, 80, 80, 0.8)";
-    setTimeout(() => { taskInput.style.borderColor = ""; }, 1200);
+    taskInput2.focus();
+    taskInput2.style.borderColor = "rgba(255, 80, 80, 0.8)";
+    setTimeout(() => { taskInput2.style.borderColor = ""; }, 1200);
     return;
   }
 
@@ -152,16 +159,21 @@ function Add() {
   noteWrapper.appendChild(actions);
   note.insertBefore(noteWrapper, note.firstChild);
   notesContainer.appendChild(note);
-
+  document.getElementById("empty-state").style.display = "none";
+  taskList.appendChild(note);
   // Reset inputs
-  taskInput.value = "";
+  activeInput.value = "";
   taskTypeSelect.value = "";
-  taskInput.focus();
+  activeInput.focus();
 }
 
 // Allow pressing Enter in the input to add a task
 taskInput.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") Add();
+    if (e.key === "Enter") Add();
+});
+
+taskInput2.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") Add();
 });
 
 // ─── Theme Switching ───────────────────────────────────────────────────────────
@@ -178,6 +190,14 @@ function applyTheme(themeKey) {
   cards.forEach((card) => {
     card.style.backgroundColor = theme.card;
   });
+
+  localStorage.setItem("theme", themeKey);
+}
+
+const savedTheme = localStorage.getItem("theme");
+
+if (savedTheme) {
+    applyTheme(savedTheme);
 }
 
 function c1() { applyTheme("theme1"); }
