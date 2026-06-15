@@ -542,3 +542,22 @@ body {
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0ms !important; transition-duration: 0ms !important; }
 }
+
+.favorite-btn{
+    margin-top:10px;
+    padding:8px 14px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    background:#ff4d6d;
+    color:white;
+    transition:.3s;
+}
+
+.favorite-btn:hover{
+    transform:scale(1.05);
+}
+
+.favorite-btn.active{
+    background:#2ecc71;
+}
