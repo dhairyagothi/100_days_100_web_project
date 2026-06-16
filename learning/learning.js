@@ -435,6 +435,10 @@ updateRecommendedTopic();
 handleRouting();
     } catch (err) {
       console.error(err);
+      if (sidebarTree) {
+        sidebarTree.innerHTML =
+          '<div class="sidebar-loading" style="color: #ef4444;">Could not load the curriculum. Please refresh to try again.</div>';
+      }
     }
   }
 
@@ -938,6 +942,10 @@ list.appendChild(item);
       markTopicCompleted(`${topic.categoryId}-${topic.id}`);
     } catch (err) {
       console.error(err);
+      if (contentViewport) {
+        contentViewport.innerHTML =
+          '<div class="loading-article"><p style="color: #ef4444;">Could not load this topic. Please check your connection and try again.</p></div>';
+      }
     }
   }
 
