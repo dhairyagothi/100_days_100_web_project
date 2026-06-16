@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pinspire – Discover & Save Ideas</title>
+  <!-- Link to external CSS stylesheet -->
+  <link rel="stylesheet" href="pinspire.css" />
+</head>
+<body>
+
+  <nav>
+    <div class="nav-logo" title="Pinspire">
+      <svg viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 0 1 .083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.632-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg>
+    </div>
+    <div class="nav-links">
+      <button class="nav-link active" onclick="setTab(this)">Home</button>
+      <button class="nav-link" onclick="setTab(this)">Explore</button>
+      <button class="nav-link" onclick="setTab(this)">Create</button>
+    </div>
+    <div class="nav-search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" id="searchInput" placeholder="Search for ideas…" oninput="handleSearch(this.value)" />
+    </div>
+    <div class="nav-actions">
+      <button class="icon-btn" title="Notifications" onclick="showToast('No new notifications')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        <span class="notif-dot"></span>
+      </button>
+      <button class="icon-btn" title="Messages" onclick="showToast('Messages coming soon')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      </button>
+      <div class="avatar" onclick="showToast('Profile coming soon')">YO</div>
+    </div>
+  </nav>
+
+  <div class="pills-wrap" id="pillsWrap"></div>
+  <div class="grid-wrap" id="grid"></div>
+
+  <!-- MODAL -->
+  <div class="modal-backdrop" id="modalBackdrop" onclick="closeModalBackdrop(event)">
+    <div class="modal" id="modal">
+      <button class="modal-close" onclick="closeModal()">&#10005;</button>
+      <div class="modal-img-side"><img id="modalImg" src="" alt="" /></div>
+      <div class="modal-info-side">
+        <div class="modal-actions">
+          <button class="modal-save-btn" id="modalSaveBtn" onclick="toggleModalSave()">Save</button>
+          <button class="modal-share-btn" onclick="showToast('Link copied!')" title="Share">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          </button>
+        </div>
+        <a class="modal-source" id="modalSource" href="#" onclick="return false;">
+          <span class="modal-source-icon" id="modalSourceIcon"></span>
+          <div>
+            <div class="modal-source-text" id="modalSourceText">Visit source</div>
+            <div class="modal-source-url" id="modalSourceUrl"></div>
+          </div>
+        </a>
+        <div class="modal-title" id="modalTitle"></div>
+        <div class="modal-desc" id="modalDesc"></div>
+        <div class="modal-creator">
+          <div class="modal-creator-avatar" id="modalCreatorAvatar"></div>
+          <div>
+            <div class="modal-creator-name" id="modalCreatorName"></div>
+            <div class="modal-creator-follows" id="modalCreatorFollows"></div>
+          </div>
+          <button class="follow-btn" id="followBtn" onclick="toggleFollow()">Follow</button>
+        </div>
+        <div class="modal-comments-title" id="commentsTitle">Comments</div>
+        <div class="comments-list" id="commentsList"></div>
+        <div class="comment-input-wrap">
+          <div class="comment-avatar" style="background:#e9d7c1;color:#7a5230;">YO</div>
+          <input class="comment-input" id="commentInput" placeholder="Add a comment…" onkeydown="submitComment(event)" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <!-- Link to external JS script -->
+  <script src="pinspire.js"></script>
+</body>
+</html>
