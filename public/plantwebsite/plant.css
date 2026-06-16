@@ -134,26 +134,55 @@ body::before {
   animation: breathe 5s infinite ease-in-out;
 }
 
-.project-back-button {
-  width: 150px;
-  display: block;
-  margin-bottom: 15px;
-  padding: 8px 16px;
-  border-radius: 8px;
-  background: #1e293b;
-  border: 1px solid #3b82f6;
-  color: #3b82f6;
-  text-decoration: none;
-  z-index: 9999;
-  font-weight: 700;
-  font-family: Inter, system-ui, sans-serif;
-  box-shadow: 0 8px 20px rgba(12, 18, 40, 0.35);
-  transition: all 0.2s ease;
+..project-back-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 10px 18px;
+    min-height: 42px;
+
+    color: #4d8dff;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+
+    border: 1px solid rgba(77, 141, 255, 0.5);
+    border-radius: 12px;
+
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(8px);
+
+    white-space: nowrap;
+
+    transition: all 0.3s ease;
 }
 
 .project-back-button:hover {
-  background: #3b82f6;
-  color: #fff;
+    background: rgba(77, 141, 255, 0.12);
+    border-color: #4d8dff;
+    transform: translateY(-2px);
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 32px;
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.project-back-button {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.project-back-button:hover {
+    box-shadow: 0 4px 16px rgba(77, 141, 255, 0.2);
 }
 
 @keyframes breathe {
