@@ -609,3 +609,56 @@
     {color:white;
     background-color: blue;}
 }
+/* ==========================================================================
+   Dark Mode Global Overrides
+   ========================================================================== */
+
+/* 1. Body Background & Global Text Color Modification */
+body.dark-mode {
+    background-color: #0f172a !important; /* Deep dark blue/grey */
+    color: #f8fafc !important;            /* Off-white text */
+}
+
+/* 2. Dashboard Section Component Cards */
+body.dark-mode .card,
+body.dark-mode .time_set,
+body.dark-mode .p2,
+body.dark-mode .p3,
+body.dark-mode .container {
+    background-color: #1e293b !important; /* Lighter slate dark color */
+    color: #f8fafc !important;
+    border-color: #334155 !important;
+}
+
+/* 3. Task Manager Table Adjustments */
+body.dark-mode table {
+    background-color: #1e293b !important;
+    color: #f8fafc !important;
+}
+
+body.dark-mode th {
+    background-color: #334155 !important;
+    color: #3b82f6 !important; /* Highlighting headers with blue */
+}
+
+body.dark-mode td {
+    border-bottom: 1px solid #334155 !important;
+    color: #cbd5e1 !important;
+}
+
+/* 4. Input Fields Adjustment */
+body.dark-mode input[type="text"],
+body.dark-mode input[type="date"],
+body.dark-mode select {
+    background-color: #334155 !important;
+    color: #ffffff !important;
+    border: 1px solid #475569 !important;
+}
+
+/* 5. Calendar Dynamic Custom Changes */
+body.dark-mode .calendar-table td {
+    color: #cbd5e1 !important;
+}
+body.dark-mode .calendar-table td:empty {
+    background: transparent !important;
+}

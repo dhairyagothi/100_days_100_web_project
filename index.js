@@ -7,7 +7,7 @@ if (typeof REPO_OWNER === "undefined") {
 }
 window.REPO_OWNER = window.REPO_OWNER || "dhairyagothi";
 window.REPO_NAME = window.REPO_NAME || "100_days_100_web_project";
-
+  
 let currentPage = 1;
 //for the number of visible projects in one page.
 let itemsPerPage = 9;
@@ -71,17 +71,23 @@ function getCategoryFromTags(tags, name) {
 }
 
 let PROJECTS = [];
+let PROJECTS_BY_NAME = new Map();
+let PROJECTS_BY_DAY = new Map();
 let projectsPromise = null;
 
 function hydrateProjects(data) {
   PROJECTS = data.map((project) => ({
     day: `Day ${project.projectNo}`,
+    projectNo: project.projectNo,
+    projectType: project.projectType,
     projectName: project.projectName,
     projectPath: project.projectPath,
     techStack: project.techStack,
     difficulty: project.difficulty,
     projectDesc: project.projectDesc,
   }));
+  PROJECTS_BY_NAME = new Map(PROJECTS.map(p => [p.projectName, p]));
+  PROJECTS_BY_DAY = new Map(PROJECTS.map(p => [p.day, p]));
 }
 
 function getPreloadedProjectsData() {
@@ -113,6 +119,8 @@ function loadProjects() {
         `${base}projects.json`,
         window.location.href,
       ).toString();
+      
+console.log("Projects URL:", projectsUrl);
       try {
         const response = await fetch(projectsUrl);
         if (!response.ok) {
@@ -137,15 +145,15 @@ function loadProjects() {
 
 // Start fetching immediately
 loadProjects().catch((err) => {
-    console.error('Critical initialization error:', err);
-    const grid = document.getElementById('projectGrid');
-    if (grid) {
-        grid.innerHTML = `<div style="text-align:center; padding: 2rem; color: var(--text-color, #333);">
+  console.error('Critical initialization error:', err);
+  const grid = document.getElementById('projectGrid');
+  if (grid) {
+    grid.innerHTML = `<div style="text-align:center; padding: 2rem; color: var(--text-color, #333);">
             <h2><i class="fas fa-exclamation-triangle"></i> Failed to Load Projects</h2>
             <p>Please check your connection or try again later.</p>
-            <p style="font-family: monospace; color: red;">${err.message}</p>
+            <p style="font-family: monospace; color: red;">${escapeHTML(err.message)}</p>
         </div>`;
-    }
+  }
 });
 
 /* ============================================================
@@ -177,8 +185,8 @@ function isSourceOnlyProject(day, tags) {
   const tagList = Array.isArray(tags)
     ? tags
     : String(tags || "")
-        .split(/\s+/)
-        .filter(Boolean);
+      .split(/\s+/)
+      .filter(Boolean);
   return tagList.includes(SOURCE_ONLY_TAG);
 }
 
@@ -221,7 +229,7 @@ function resolveProjectUrls(day, name, url, tags) {
       if (demoUrl.startsWith("./")) {
         demoUrl = basePrefix + demoUrl.substring(2);
       }
-    } catch (error) {}
+    } catch (error) { }
   }
 
   return { demoUrl, sourceUrl, sourceOnly };
@@ -243,6 +251,35 @@ function escapeHTML(value) {
     .replace(/'/g, "&#39;");
 }
 
+function sanitizeUrl(url) {
+  const raw = String(url || "").trim();
+
+  if (!raw || raw === "#") return raw || "#";
+
+  if (
+    raw.startsWith("./") ||
+    raw.startsWith("../") ||
+    raw.startsWith("/")
+  ) {
+    return raw;
+  }
+  if (
+    !raw.includes(":") &&
+    (raw.includes(".html") ||
+      raw.startsWith("public/") ||
+      raw.startsWith("projects/"))
+  ) {
+    return raw;
+  }
+
+  if (/^https?:\/\//i.test(raw)) {
+    return raw;
+  }
+
+  console.warn("[XSS] Blocked unsafe URL scheme:", raw);
+  return "#";
+}
+
 function buildProjectCardHTML({
   day,
   name,
@@ -258,34 +295,51 @@ function buildProjectCardHTML({
     url,
     tags,
   );
+
+  const safeDemoUrl = sanitizeUrl(demoUrl);
+  const safeSourceUrl = sanitizeUrl(sourceUrl);
+
   const tagsArray = Array.isArray(tags)
     ? tags.filter((t) => t !== SOURCE_ONLY_TAG)
     : String(tags || "")
-        .split(/\s+/)
-        .filter((t) => t && t !== SOURCE_ONLY_TAG);
+      .split(/\s+/)
+      .filter((t) => t && t !== SOURCE_ONLY_TAG);
+
   const tagsHTML = tagsArray
     .map((t) => `<span class="tag">${escapeHTML(t)}</span>`)
     .join("");
-  const project = PROJECTS.find((p) => p.projectName === name);
+
+  const project = PROJECTS_BY_NAME.get(name) || PROJECTS_BY_DAY.get(day);
 
   const description = escapeHTML(getProjectDescription(project));
   const safeDay = escapeHTML(day);
   const safeName = escapeHTML(name);
   const safeCategory = escapeHTML(category);
+
+  const difficulty = project ? project.difficulty || "" : "";
+  const difficultyKey = (difficulty || "").toLowerCase();
+  const difficultyLabel = CATEGORY_LABEL[difficultyKey] || difficulty;
+  const safeDifficultyLabel = escapeHTML(difficultyLabel);
+  const difficultyBadge = difficulty
+    ? `<span class="card-difficulty ${difficultyKey}">${safeDifficultyLabel}</span>`
+    : "";
+
   const sourceOnlyBadge = sourceOnly
     ? '<span class="source-only-badge" title="Requires local server setup">Source only</span>'
     : "";
+
   const primaryLink = sourceOnly
-    ? `<a href="${sourceUrl}" target="_blank" class="card-link open-project" data-id="${safeDay}" rel="noopener noreferrer" onclick="event.stopPropagation()">
-                        <i class="fab fa-github"></i> Source
+    ? `<a href="${safeSourceUrl}" target="_blank" class="card-link open-project" data-id="${safeDay}" rel="noopener noreferrer" onclick="event.stopPropagation()" aria-label="View source of ${safeName} (opens in a new tab)">
+                        <i class="fab fa-github" aria-hidden="true"></i> Source
                     </a>`
-    : `<a href="${demoUrl}" target="_blank" class="card-link open-project" data-id="${safeDay}" rel="noopener noreferrer" onclick="event.stopPropagation()">
-                        Demo <i class="fas fa-arrow-right"></i>
+    : `<a href="${safeDemoUrl}" target="_blank" class="card-link open-project" data-id="${safeDay}" rel="noopener noreferrer" onclick="event.stopPropagation()" aria-label="View demo of ${safeName} (opens in a new tab)">
+                        Demo <i class="fas fa-arrow-right" aria-hidden="true"></i>
                     </a>`;
-  const codeLink = sourceOnly
+
+  const githubBtn = sourceOnly
     ? ""
-    : `<a href="${sourceUrl}" target="_blank" class="card-link view-code-link" rel="noopener noreferrer" onclick="event.stopPropagation()">
-                        <i class="fab fa-github"></i> Code
+    : `<a href="${safeSourceUrl}" target="_blank" class="github-btn" rel="noopener noreferrer" onclick="event.stopPropagation()" aria-label="View source code of ${safeName} on GitHub (opens in a new tab)">
+                        <i class="fab fa-github" aria-hidden="true"></i>
                     </a>`;
 
   return {
@@ -294,44 +348,103 @@ function buildProjectCardHTML({
                 <span class="card-day">${safeDay}</span>
                 <span class="card-category-wrap">
                   <span class="card-category">${safeCategory}</span>
+                  ${difficultyBadge}
                   ${sourceOnlyBadge}
                 </span>
             </div>
+
+            <div class="card-preview-image-container" style="margin: 12px 0; border-radius: 8px; overflow: hidden; aspect-ratio: 16/9; background: #1a1a1a;">
+           <img
+            src="./${url && url.startsWith('./')
+            ? url.split('/')[2]
+            : name.replace(/\s+/g, '_')}/preview.png"
+            alt="${safeName} preview"
+            loading="lazy"
+            decoding="async"
+            onerror="this.parentNode.style.display='none';"
+            style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+
             <h3 class="card-name">${safeName}</h3>
-            ${
-              showDescription
-                ? `<div class="card-description">
+
+            ${showDescription
+        ? `<div class="card-description">
     ${description}
 </div>`
-                : ""
-            }
+        : ""
+      }
             <div class="card-tags">${tagsHTML}</div>
             <div class="card-footer">
                 <div class="card-actions-left">
                     ${primaryLink}
-                    ${codeLink}
                 </div>
-                <button class="bookmark-btn ${isBookmarked ? "active" : ""}" data-id="${day}">
-                    <i class="${isBookmarked ? "fa-solid" : "fa-regular"} fa-bookmark"></i>
-                </button>
+                <div class="card-actions-right" style="display: flex; gap: 8px; align-items: center;">
+                    ${githubBtn}
+                    <button class="bookmark-btn ${isBookmarked ? "active" : ""}" data-id="${safeDay}" aria-label="${isBookmarked ? `Remove ${safeName} from bookmarks` : `Bookmark ${safeName}`}">
+                        <i class="${isBookmarked ? "fa-solid" : "fa-regular"} fa-bookmark" aria-hidden="true"></i>
+                    </button>
+                </div>
             </div>
         `,
-    demoUrl,
+    demoUrl: safeDemoUrl,
     sourceOnly,
   };
 }
 
 function attachProjectCardInteraction(card, demoUrl, projectData = null) {
   card.style.cursor = "pointer";
-  card.onclick = (e) => {
-    if (e.target.closest("a, button")) return;
 
-    // Track the project visit if projectData is provided
+  const activateCard = (e) => {
+    if (e.target.closest("a, button")) return;
+    if (!demoUrl) return;
+
     if (projectData) {
-      trackRecentProject(projectData);
+      const project = resolveProjectRecord(projectData);
+      if (project) {
+        trackRecentProject(project);
+      }
     }
 
-    window.open(demoUrl, "_blank", "noopener");
+    window.open(sanitizeUrl(demoUrl), "_blank", "noopener");
+  };
+
+  card.onclick = activateCard;
+
+  card.onkeydown = (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      if (e.key === " ") {
+        e.preventDefault();
+      }
+      activateCard(e);
+    }
+  };
+}
+
+function resolveProjectRecord(projectData) {
+  if (!projectData) return null;
+
+  if (projectData.projectNo != null && projectData.projectType != null) {
+    return projectData;
+  }
+
+  const day = projectData.day || projectData.projectName || projectData.name || projectData[0];
+  const name = projectData.projectName || projectData.name || projectData[1];
+
+  if (day) {
+    const project = PROJECTS_BY_DAY.get(day) || PROJECTS_BY_NAME.get(day);
+    if (project) return project;
+  }
+
+  if (name) {
+    const project = PROJECTS_BY_NAME.get(name);
+    if (project) return project;
+  }
+
+  return {
+    ...projectData,
+    projectName: name || projectData.projectName,
+    projectPath: projectData.projectPath || projectData.url || projectData[2],
+    techStack: projectData.techStack || projectData.tags || projectData[3] || [],
   };
 }
 
@@ -339,34 +452,15 @@ function attachProjectCardInteraction(card, demoUrl, projectData = null) {
    TECHNOLOGY STACK FILTERING FUNCTIONS
    ============================================================ */
 
-/**
- * Normalize technology name for consistent matching
- * SIMPLIFIED: Just lowercase, no complex aliases needed
- * @param {string} tech - Technology name to normalize
- * @returns {string} Normalized technology name
- */
 function normalizeTech(tech) {
   const lower = tech.toLowerCase().trim();
-  // Only handle common variations
   return TECH_ALIASES[lower] || lower;
 }
 
-/**
- * Check if project matches the active tech stack filters.
- * Each filter must match a complete tag token, not a substring of another tag.
- * Example: searching "java" must not return projects tagged "javascript".
- * @param {string|array} projectTags - Project tags (space-separated string or array)
- * @returns {boolean} True if project matches all active filters
- */
 function matchesTechStack(projectTags) {
-  // No filters = show all projects
   if (techStackFilters.length === 0) return true;
-
-  // Handle empty or missing tags
   if (!projectTags) return false;
 
-  // Normalize to a set of individual lowercase tokens for whole-word matching.
-  // Using a Set avoids repeated linear scans for each filter.
   const tagSet = new Set(
     (Array.isArray(projectTags)
       ? projectTags
@@ -376,24 +470,15 @@ function matchesTechStack(projectTags) {
       .filter(Boolean),
   );
 
-  // Every active filter must match an exact token in the tag set (AND logic).
-  // This prevents "java" from matching "javascript", "css" from matching "canvas", etc.
   return techStackFilters.every((filter) => tagSet.has(filter.toLowerCase()));
 }
 
-/**
- * Remove a specific technology filter
- * @param {string} tech - Technology to remove from filters
- */
 function removeTechFilter(tech) {
   techStackFilters = techStackFilters.filter((t) => t !== tech);
   updateTechFilterDisplay();
   renderGrid();
 }
 
-/**
- * Clear all technology filters
- */
 function clearAllTechFilters() {
   techStackFilters = [];
   techSearchQuery = "";
@@ -405,9 +490,6 @@ function clearAllTechFilters() {
   renderGrid();
 }
 
-/**
- * Update the visual display of active tech filters
- */
 function updateTechFilterDisplay() {
   const container = document.getElementById("activeTechFilters");
   const tagsContainer = document.getElementById("techFilterTags");
@@ -415,12 +497,10 @@ function updateTechFilterDisplay() {
 
   if (!container || !tagsContainer) return;
 
-  // Show/hide clear button in search input
   if (clearBtn) {
     clearBtn.style.display = techStackFilters.length > 0 ? "block" : "none";
   }
 
-  // Show/hide active filters container
   if (techStackFilters.length === 0) {
     container.style.display = "none";
     return;
@@ -428,26 +508,30 @@ function updateTechFilterDisplay() {
 
   container.style.display = "flex";
 
-  // Render filter tags with remove buttons
-  tagsContainer.innerHTML = techStackFilters
-    .map(
-      (tech) => `
-    <span class="tech-filter-tag">
-      ${tech}
-      <button onclick="removeTechFilter('${tech}')" aria-label="Remove ${tech} filter">
-        <i class="fas fa-times"></i>
-      </button>
-    </span>
-  `,
-    )
-    .join("");
+  tagsContainer.textContent = "";
+
+  techStackFilters.forEach((tech) => {
+    const span = document.createElement("span");
+    span.className = "tech-filter-tag";
+
+    const label = document.createTextNode(tech);
+    span.appendChild(label);
+
+    const btn = document.createElement("button");
+    btn.setAttribute("aria-label", `Remove ${tech} filter`);
+
+    const icon = document.createElement("i");
+    icon.className = "fas fa-times";
+    icon.setAttribute("aria-hidden", "true");
+    btn.appendChild(icon);
+
+    btn.addEventListener("click", () => removeTechFilter(tech));
+
+    span.appendChild(btn);
+    tagsContainer.appendChild(span);
+  });
 }
 
-/**
- * Get all unique technologies from projects (optional utility)
- * EFFICIENT: Uses Set for O(1) lookups
- * @returns {array} Sorted array of unique technologies
- */
 function getAllTechnologies() {
   const techSet = new Set();
 
@@ -488,21 +572,15 @@ let showAllBookmarks = false;
 let showAllRecent = false;
 
 const INITIAL_VISIBLE_ITEMS = 3;
-const ONE_HOUR_MS = 60 * 60 * 1000; // 1 hour in milliseconds
+const ONE_HOUR_MS = 60 * 60 * 1000;
 
-/**
- * Migrates old recent projects format (array) to new format (object with timestamp)
- * If stored format doesn't have timestamps, it's likely the old format
- */
 function migrateRecentProjects() {
   if (recentProjects.length === 0) return;
 
-  // Check if already in new format (has timestamp)
   if (typeof recentProjects[0] === "object" && recentProjects[0].timestamp) {
-    return; // Already migrated
+    return;
   }
 
-  // Migrate old format [day, name, url, tags] to new format {day, name, url, tags, timestamp}
   recentProjects = recentProjects.map((project) => {
     if (Array.isArray(project)) {
       return {
@@ -510,34 +588,45 @@ function migrateRecentProjects() {
         name: project[1],
         url: project[2],
         tags: project[3],
-        timestamp: Date.now() - ONE_HOUR_MS / 2, // Set to 30 mins ago to preserve them initially
+        timestamp: Date.now() - ONE_HOUR_MS / 2,
       };
     }
     return project;
   });
 
-  localStorage.setItem("recentProjects", JSON.stringify(recentProjects));
+  try {
+    localStorage.setItem("recentProjects", JSON.stringify(recentProjects));
+  } catch (error) {
+    console.warn("Could not save recent projects to localStorage:", error.message);
+  }
 }
 
 // Migrate on load
 migrateRecentProjects();
 
-/**
- * Cleans up recent projects older than 1 hour
- * Called periodically and on page load
- */
 function cleanupExpiredRecentProjects() {
   const initialLength = recentProjects.length;
   recentProjects = getRecentProjectsWithinWindow();
 
   if (recentProjects.length !== initialLength) {
-    localStorage.setItem("recentProjects", JSON.stringify(recentProjects));
+    try {
+      localStorage.setItem("recentProjects", JSON.stringify(recentProjects));
+    } catch (error) {
+      console.warn("Could not save recent projects to localStorage:", error.message);
+    }
     renderRecentProjects();
   }
 }
 
-// Clean up every 5 minutes
-setInterval(cleanupExpiredRecentProjects, 5 * 60 * 1000);
+// Clean up every 5 minutes — clear previous interval to prevent timer leaks
+var recentProjectsTimer = null;
+function startRecentProjectsCleanup() {
+  if (recentProjectsTimer !== null) {
+    clearInterval(recentProjectsTimer);
+  }
+  recentProjectsTimer = setInterval(cleanupExpiredRecentProjects, 5 * 60 * 1000);
+}
+startRecentProjectsCleanup();
 
 const CATEGORY_LABEL = {
   beginner: "Beginner",
@@ -562,7 +651,6 @@ async function fetchRepoStats() {
   };
 
   try {
-    // Optional loading state
     set("starCount", "Loading...");
     set("forkCount", "Loading...");
     set("issueCount", "Loading...");
@@ -586,11 +674,6 @@ async function fetchRepoStats() {
 
     set("starCount", repo.stargazers_count.toLocaleString());
     set("forkCount", repo.forks_count.toLocaleString());
-    // GitHub's open_issues_count includes pull requests. Subtracting the PR
-    // count gives a closer approximation of open issues. The search API can
-    // return a total_count higher than the number accounted for in
-    // open_issues_count due to index lag or repository forks, which would
-    // produce a negative result without the clamp.
     set(
       "issueCount",
       Math.max(0, repo.open_issues_count - prs.total_count).toLocaleString(),
@@ -598,11 +681,10 @@ async function fetchRepoStats() {
     set("prCount", prs.total_count.toLocaleString());
   } catch (e) {
     console.warn("GitHub stats unavailable:", e.message);
-
-    // Show fallback text instead of permanent dashes
     setFallback();
   }
 }
+
 function generateReadme() {
   try {
     const lines = [];
@@ -644,6 +726,7 @@ let searchQuery = "";
 let sortOption = "default";
 let techStackFilter = "all";
 let difficultyFilter = "all";
+let currentFilteredProjects = [];
 
 function syncStateToURL() {
   const url = new URL(window.location);
@@ -723,11 +806,14 @@ function renderGrid() {
         .every(
           (term) =>
             name.toLowerCase().includes(term) ||
+            (project.projectDesc || "").toLowerCase().includes(term) ||
             day.toLowerCase().includes(term) ||
             (Array.isArray(tags) ? tags.join(" ") : tags || "")
               .toLowerCase()
               .includes(term),
         );
+
+       
 
     // Tech stack dropdown filter
     let matchesTech = true;
@@ -747,6 +833,7 @@ function renderGrid() {
 
     return matchesFilter && matchesSearch && matchesTech && matchesDifficulty;
   });
+  currentFilteredProjects = [...filtered];
 
   // Apply sorting
   if (sortOption === "az") {
@@ -766,7 +853,7 @@ function renderGrid() {
     });
   }
 
-  grid.innerHTML = "";
+  grid.replaceChildren();
 
   if (filtered.length === 0) {
     grid.style.display = "none";
@@ -788,16 +875,21 @@ function renderGrid() {
   const pageItems = filtered.slice(startIndex, endIndex);
   const fragment = document.createDocumentFragment();
 
+  const bookmarkedDays = new Set(
+    bookmarkedProjects.map((item) => normalizeProjectEntry(item).day),
+  );
+
   pageItems.forEach((project) => {
     const day = project.day;
     const name = project.projectName;
     const url = project.projectPath;
     const tags = project.techStack;
+
     const category = getCategoryFromTags(tags, name);
     const card = document.createElement("div");
-    const isBookmarked = bookmarkedProjects.some(
-      (item) => normalizeProjectEntry(item).day === day,
-    );
+
+    const isBookmarked = bookmarkedDays.has(day);
+
     const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
       day,
       name,
@@ -811,17 +903,89 @@ function renderGrid() {
     card.className = sourceOnly
       ? "project-card source-only visible"
       : "project-card visible";
+
     card.innerHTML = html;
+    card.setAttribute("tabindex", "0");
+    card.setAttribute("role", "button");
     attachProjectCardInteraction(card, demoUrl, project);
 
     fragment.appendChild(card);
   });
+
   grid.appendChild(fragment);
   renderPagination(filtered.length, totalPages);
 
   syncStateToURL();
+  syncProjectCounts();
 }
+console.log("===== RENDER GRID =====");
+console.log("PROJECTS:", PROJECTS.length);
+console.log("activeFilter:", activeFilter);
+console.log("searchQuery:", searchQuery);
+console.log("techStackFilter:", techStackFilter);
+console.log("difficultyFilter:", difficultyFilter);
+function renderRandomProject() {
+  const result =
+    document.getElementById(
+      "randomProjectResult"
+    );
 
+  if (!result) return;
+
+  const source =
+    currentFilteredProjects.length
+      ? currentFilteredProjects
+      : PROJECTS;
+
+  const randomProject =
+    source[
+      Math.floor(
+        Math.random() * source.length
+      )
+    ];
+
+  if (!randomProject) return;
+
+  const category =
+    getCategoryFromTags(
+      randomProject.techStack,
+      randomProject.projectName
+    );
+
+  const bookmarkedDays = new Set(
+    bookmarkedProjects.map(
+      (item) =>
+        normalizeProjectEntry(item).day
+    )
+  );
+
+  const { html, sourceOnly } =
+    buildProjectCardHTML({
+      day: randomProject.day,
+      name: randomProject.projectName,
+      url: randomProject.projectPath,
+      tags: randomProject.techStack,
+      category,
+      isBookmarked:
+        bookmarkedDays.has(
+          randomProject.day
+        ),
+      showDescription: true
+    });
+
+  result.innerHTML = "";
+
+  const card =
+    document.createElement("div");
+
+  card.className = sourceOnly
+    ? "project-card source-only visible"
+    : "project-card visible";
+
+  card.innerHTML = html;
+
+  result.appendChild(card);
+}
 function renderPagination(totalItems, totalPages) {
   const grid = document.getElementById("projectGrid");
   if (!grid) return;
@@ -835,7 +999,6 @@ function renderPagination(totalItems, totalPages) {
 
   container.innerHTML = "";
 
-  // If there is only 1 page of results, hide and detach the pagination block
   if (totalPages <= 1) {
     if (container.parentElement === grid) {
       grid.removeChild(container);
@@ -843,7 +1006,6 @@ function renderPagination(totalItems, totalPages) {
     return;
   }
 
-  // Render showing info range (e.g. "Showing 1 to 9 of 100")
   const infoDiv = document.createElement("div");
   infoDiv.className = "pagination-info";
   const startItem = (currentPage - 1) * itemsPerPage + 1;
@@ -872,7 +1034,7 @@ function renderPagination(totalItems, totalPages) {
 
   const prevBtn = document.createElement("button");
   prevBtn.className = "prev-btn";
-  prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
+  prevBtn.innerHTML = '<i class="fas fa-chevron-left" aria-hidden="true"></i>';
   prevBtn.disabled = currentPage === 1;
   prevBtn.setAttribute("aria-label", "Previous Page");
   prevBtn.addEventListener("click", (e) => {
@@ -880,7 +1042,6 @@ function renderPagination(totalItems, totalPages) {
     if (currentPage > 1) {
       currentPage--;
       renderGrid();
-      // Delay scrolling by 50ms to allow DOM layout to recalculate and stabilize after cards redraw
       setTimeout(() => {
         scrollToProjectSection();
       }, 50);
@@ -888,12 +1049,10 @@ function renderPagination(totalItems, totalPages) {
   });
   controlsDiv.appendChild(prevBtn);
 
-  // Initialize bounds for numeric pagination window (displays maximum of 4 page buttons)
   let startPage = 1;
   let endPage = totalPages;
   const maxVisible = 4;
 
-  // Sliding window pagination logic centering the active page
   if (totalPages > maxVisible) {
     if (currentPage <= 2) {
       startPage = 1;
@@ -916,7 +1075,6 @@ function renderPagination(totalItems, totalPages) {
       e.preventDefault();
       currentPage = i;
       renderGrid();
-      // Delay scrolling by 50ms to allow DOM layout to recalculate and stabilize after cards redraw
       setTimeout(() => {
         scrollToProjectSection();
       }, 50);
@@ -926,7 +1084,7 @@ function renderPagination(totalItems, totalPages) {
 
   const nextBtn = document.createElement("button");
   nextBtn.className = "next-btn";
-  nextBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
+  nextBtn.innerHTML = '<i class="fas fa-chevron-right" aria-hidden="true"></i>';
   nextBtn.disabled = currentPage === totalPages;
   nextBtn.setAttribute("aria-label", "Next Page");
   nextBtn.addEventListener("click", (e) => {
@@ -934,13 +1092,13 @@ function renderPagination(totalItems, totalPages) {
     if (currentPage < totalPages) {
       currentPage++;
       renderGrid();
-      // Delay scrolling by 50ms to allow DOM layout to recalculate and stabilize after cards redraw
       setTimeout(() => {
         scrollToProjectSection();
       }, 50);
     }
   });
   controlsDiv.appendChild(nextBtn);
+
   const lastBtn = document.createElement("button");
   lastBtn.className = "last-btn";
   lastBtn.innerHTML = "Last ⏭";
@@ -959,7 +1117,6 @@ function renderPagination(totalItems, totalPages) {
 
   container.appendChild(controlsDiv);
 
-  // Append container dynamically inside the projectGrid element to keep it attached
   grid.appendChild(container);
 }
 
@@ -967,26 +1124,21 @@ function scrollToProjectSection() {
   const header = document.querySelector(".projects-header");
   if (!header) return;
 
-  // Only scroll if the projects section is fully below the viewport.
-  // If the user is already within or past the project grid, don't move them.
   if (header.getBoundingClientRect().top < window.innerHeight) return;
 
   const navbar = document.querySelector(".navbar");
-  // Subtract height of fixed navbar with a 50px buffer to prevent overlaying the search bar
   const offset = navbar ? navbar.offsetHeight - 50 : 30;
   const targetY =
     header.getBoundingClientRect().top + window.pageYOffset - offset;
   const startY = window.pageYOffset;
   const distance = targetY - startY;
 
-  // Custom snappy scroll duration (100ms matches the quick transitions in your CSS)
   const duration = 100;
   let startTime = null;
 
   function animation(currentTime) {
     if (startTime === null) startTime = currentTime;
     const timeElapsed = currentTime - startTime;
-    // Cap scroll position math exactly to distance to avoid landing slightly off target
     const run = easeInOutQuad(
       Math.min(timeElapsed, duration),
       startY,
@@ -999,7 +1151,6 @@ function scrollToProjectSection() {
     }
   }
 
-  // Mathematical Quadratic Ease-In-Out formula for momentum-like deceleration
   function easeInOutQuad(t, b, c, d) {
     t /= d / 2;
     if (t < 1) return (c / 2) * t * t + b;
@@ -1084,12 +1235,7 @@ function getRecentProjectsWithinWindow() {
   });
 }
 
-/**
- * Tracks a recently viewed project with a timestamp
- * @param {array} project - Project data [day, name, url, tags]
- */
 function trackRecentProject(project) {
-  // Convert old format to new format if needed
   let projectObj;
   if (Array.isArray(project)) {
     projectObj = {
@@ -1106,13 +1252,9 @@ function trackRecentProject(project) {
     };
   }
 
-  // Remove duplicate if exists
   recentProjects = recentProjects.filter((item) => item.day !== projectObj.day);
-
-  // Add to front
   recentProjects.unshift(projectObj);
 
-  // Keep only the 20 most recent entries (not filtered by time yet)
   if (recentProjects.length > 20) {
     recentProjects.pop();
   }
@@ -1130,20 +1272,39 @@ function trackRecentProject(project) {
 const bookmarkGrid = document.getElementById("bookmarkGrid");
 
 function normalizeProjectEntry(project) {
+  if (!project) {
+    return {
+      day: "",
+      name: "",
+      url: "",
+      tags: [],
+    };
+  }
+
+  if (typeof project === "string") {
+    const dayStr = project.startsWith("Day ") ? project : `Day ${project}`;
+    return {
+      day: dayStr,
+      name: "",
+      url: "",
+      tags: [],
+    };
+  }
+
   if (Array.isArray(project)) {
     return {
-      day: project[0],
-      name: project[1],
-      url: project[2],
-      tags: project[3],
+      day: project[0] || "",
+      name: project[1] || "",
+      url: project[2] || "",
+      tags: project[3] || [],
     };
   }
 
   return {
-    day: project.day,
-    name: project.projectName || project.name,
-    url: project.projectPath || project.url,
-    tags: project.techStack || project.tags,
+    day: project.day || "",
+    name: project.projectName || project.name || "",
+    url: project.projectPath || project.url || "",
+    tags: project.techStack || project.tags || [],
   };
 }
 
@@ -1174,7 +1335,7 @@ function renderBookmarks() {
     if (!day || !name) return;
 
     const category = getCategoryFromTags(tags, name);
-    const card = document.createElement("div");
+
     const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
       day,
       name,
@@ -1185,10 +1346,14 @@ function renderBookmarks() {
       showDescription: true,
     });
 
+    const card = document.createElement("div");
     card.className = sourceOnly
       ? "project-card source-only visible"
       : "project-card visible";
     card.innerHTML = html;
+    card.setAttribute("tabindex", "0");
+    card.setAttribute("role", "button");
+
     attachProjectCardInteraction(card, demoUrl, project);
 
     bookmarkGrid.appendChild(card);
@@ -1202,7 +1367,6 @@ function renderRecentProjects() {
 
   recentGrid.innerHTML = "";
 
-  // Filter projects within the 1-hour window
   const validRecent = getRecentProjectsWithinWindow();
 
   if (validRecent.length === 0) {
@@ -1221,17 +1385,16 @@ function renderRecentProjects() {
     : validRecent.slice(0, INITIAL_VISIBLE_ITEMS);
 
   visibleRecent.forEach((projectObj) => {
-    // Handle both old array format and new object format
     const day = projectObj.day || projectObj[0];
     const name = projectObj.projectName || projectObj.name || projectObj[1];
     const url = projectObj.projectPath || projectObj.url || projectObj[2];
     const tags = projectObj.techStack || projectObj.tags || projectObj[3];
 
     const category = getCategoryFromTags(tags, name);
-    const card = document.createElement("div");
     const isBookmarked = bookmarkedProjects.some(
       (item) => normalizeProjectEntry(item).day === day,
     );
+
     const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
       day,
       name,
@@ -1242,18 +1405,105 @@ function renderRecentProjects() {
       showDescription: true,
     });
 
+    const card = document.createElement("div");
     card.className = sourceOnly
       ? "project-card source-only visible"
       : "project-card visible";
     card.innerHTML = html;
+    card.setAttribute("tabindex", "0");
+    card.setAttribute("role", "button");
+
     attachProjectCardInteraction(card, demoUrl, projectObj);
 
     recentGrid.appendChild(card);
   });
+
+  renderRecommendationsForLatestRecentProject();
+}
+
+function renderRecommendationsForProject(project) {
+  const container = document.getElementById("recommendationsContainer");
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  const header = document.createElement("div");
+  header.className = "projects-intro";
+  header.innerHTML = `
+    <p class="section-label">Build Similar Projects</p>
+    <h2 class="section-title">${project ? `Projects like ${escapeHTML(
+      project.projectName || project.name || "this project",
+    )}` : "Related Projects"}</h2>
+  `;
+  container.appendChild(header);
+
+  if (!project) {
+    const placeholder = document.createElement("p");
+    placeholder.className = "empty-state";
+    placeholder.textContent =
+      "Click a project card to discover related builds based on technologies and project type.";
+    container.appendChild(placeholder);
+    return;
+  }
+
+  const recommendations = getRecommendations(project, PROJECTS);
+  if (!recommendations.length) {
+    const noRecommendations = document.createElement("p");
+    noRecommendations.className = "empty-state";
+    noRecommendations.textContent =
+      "No similar projects were found for this selection yet.";
+    container.appendChild(noRecommendations);
+    return;
+  }
+
+  const grid = document.createElement("div");
+  grid.className = "project-grid";
+
+  recommendations.forEach((recommendation) => {
+    const category = getCategoryFromTags(
+      recommendation.techStack,
+      recommendation.projectName,
+    );
+    const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
+      day: recommendation.day,
+      name: recommendation.projectName,
+      url: recommendation.projectPath,
+      tags: recommendation.techStack,
+      category,
+      isBookmarked: bookmarkedProjects.some(
+        (item) => normalizeProjectEntry(item).day === recommendation.day,
+      ),
+      showDescription: true,
+    });
+
+    const card = document.createElement("div");
+    card.className = sourceOnly
+      ? "project-card source-only visible"
+      : "project-card visible";
+    card.innerHTML = html;
+    card.setAttribute("tabindex", "0");
+    card.setAttribute("role", "button");
+    attachProjectCardInteraction(card, demoUrl, recommendation);
+    grid.appendChild(card);
+  });
+
+  container.appendChild(grid);
+}
+
+function renderRecommendationsForLatestRecentProject() {
+  const validRecent = getRecentProjectsWithinWindow();
+  if (validRecent.length === 0) {
+    renderRecommendationsForProject(null);
+    return;
+  }
+
+  const latestProject = resolveProjectRecord(validRecent[0]);
+  renderRecommendationsForProject(latestProject);
 }
 
 // Clean up after grid references are initialized.
 cleanupExpiredRecentProjects();
+renderRecommendationsForLatestRecentProject();
 
 /* ============================================================
    VIEW ALL TOGGLE
@@ -1265,9 +1515,10 @@ const copyBookmarksBtn = document.getElementById("copyBookmarksBtn");
 
 if (bookmarkToggleBtn) {
   bookmarkToggleBtn.addEventListener("click", () => {
-    showAllBookmarks = !showAllBookmarks;
-    bookmarkToggleBtn.textContent = showAllBookmarks ? "Show Less" : "View All";
-    renderBookmarks();
+    const projectsSection = document.getElementById("projects");
+    if (projectsSection) {
+      projectsSection.scrollIntoView({ behavior: "smooth" });
+    }
   });
 }
 
@@ -1299,9 +1550,10 @@ if (copyBookmarksBtn) {
 
 if (recentToggleBtn) {
   recentToggleBtn.addEventListener("click", () => {
-    showAllRecent = !showAllRecent;
-    recentToggleBtn.textContent = showAllRecent ? "Show Less" : "View All";
-    renderRecentProjects();
+    const projectsSection = document.getElementById("projects");
+    if (projectsSection) {
+      projectsSection.scrollIntoView({ behavior: "smooth" });
+    }
   });
 }
 
@@ -1364,7 +1616,6 @@ function updateClearFiltersBtnVisibility() {
 }
 
 function resetAllFilters() {
-  // 1. Reset Category filter chips
   const chips = document.querySelectorAll(".chip[data-filter]");
   chips.forEach((c) => c.classList.remove("active"));
   const allChip =
@@ -1373,32 +1624,26 @@ function resetAllFilters() {
   if (allChip) allChip.classList.add("active");
   activeFilter = "all";
 
-  // 2. Clear Search input
   const input = document.getElementById("searchInput");
   if (input) input.value = "";
   searchQuery = "";
 
-  // 3. Reset Tech Stack dropdown select
   const techStack = document.getElementById("techStackFilter");
   if (techStack) techStack.value = "all";
   techStackFilter = "all";
 
-  // 4. Reset Difficulty dropdown select
   const difficultyElement = document.getElementById("difficultyFilter");
   if (difficultyElement) difficultyElement.value = "all";
   difficultyFilter = "all";
 
-  // 5. Reset Sorting to default
   const sortSelect = document.getElementById("sortProjects");
   if (sortSelect) sortSelect.value = "default";
   sortOption = "default";
 
-  // 6. Sync URL
   if (typeof updateURL === "function") {
     updateURL("", "all");
   }
 
-  // 7. Refresh grid and pagination
   currentPage = 1;
   renderGrid();
   syncProjectCounts();
@@ -1462,7 +1707,6 @@ function initSearch() {
     }, 180),
   );
 
-  // Tech stack dropdown filter listener
   const techStack = document.getElementById("techStackFilter");
   if (techStack) {
     techStack.addEventListener("change", () => {
@@ -1472,7 +1716,6 @@ function initSearch() {
     });
   }
 
-  // Difficulty dropdown filter listener
   const diffFilterElement = document.getElementById("difficultyFilter");
   if (diffFilterElement) {
     diffFilterElement.addEventListener("change", () => {
@@ -1503,7 +1746,6 @@ function initTechStackSearch() {
 
   if (!input) return;
 
-  // Use the shared debounce utility instead of a manual inline timer
   input.addEventListener(
     "input",
     debounce((e) => {
@@ -1541,7 +1783,7 @@ function initTechStackSearch() {
 const searchInput = document.getElementById("searchInput");
 const clearSearchBtn = document.getElementById("clearSearch");
 
-function updateCategoryCounts() {
+function updateCategoryCounts(projects = PROJECTS) {
   const counts = {};
   for (const key of Object.keys(FILTER_CATEGORY_MAP)) {
     if (key !== "all") {
@@ -1549,7 +1791,7 @@ function updateCategoryCounts() {
     }
   }
 
-  PROJECTS.forEach((project) => {
+  projects.forEach((project) => {
     const name = project.projectName;
     const tags = project.techStack;
     const category = getCategoryFromTags(tags, name);
@@ -1579,12 +1821,14 @@ function updateCategoryCounts() {
 function syncProjectCounts() {
   let filtered = [...PROJECTS];
 
-  // Apply search filter
   if (searchQuery) {
+    const q = searchQuery.toLowerCase();
     filtered = filtered.filter(
       (project) =>
-        project.projectName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        project.day.toLowerCase().includes(searchQuery.toLowerCase()),
+        project.projectName.toLowerCase().includes(q) ||
+        (project.projectDesc || "").toLowerCase().includes(q) ||
+        project.day.toLowerCase().includes(q) ||
+        (Array.isArray(project.techStack) ? project.techStack.join(" ") : project.techStack || "").toLowerCase().includes(q),
     );
   }
 
@@ -1602,10 +1846,9 @@ function syncProjectCounts() {
     searchInput.placeholder = `Search ${PROJECTS.length.toLocaleString()} projects…`;
   }
 
-  updateCategoryCounts();
+  updateCategoryCounts(filtered);
 }
 
-// Clear button functionality
 if (searchInput && clearSearchBtn) {
   clearSearchBtn.addEventListener("click", () => {
     searchInput.value = "";
@@ -1621,9 +1864,6 @@ if (searchInput && clearSearchBtn) {
     }
   });
 }
-
-// Initialize
-syncProjectCounts();
 
 /* ============================================================
    NAVBAR — dynamic based on login state
@@ -1660,7 +1900,6 @@ function initScrollBtn() {
       ring.style.strokeDashoffset = circumference * (1 - progress);
     }
 
-    // Footer collision avoidance
     const footer = document.querySelector(".footer");
     if (footer) {
       const footerRect = footer.getBoundingClientRect();
@@ -1668,9 +1907,6 @@ function initScrollBtn() {
 
       if (footerRect.top < windowHeight) {
         const overlap = windowHeight - footerRect.top;
-        // Cap the upward movement to a maximum of 120px.
-        // This ensures it dodges the important bottom footer links but
-        // doesn't fly completely off the top of the screen when the footer is huge.
         const maxOverlap = Math.min(overlap, 120);
         btn.style.bottom = `calc(2rem + ${maxOverlap}px)`;
       } else {
@@ -1705,10 +1941,14 @@ function hasProjectGrid() {
 document.addEventListener("DOMContentLoaded", async () => {
   readStateFromURL();
 
-  initTheme();
-  updateNavbar();
-  initScrollBtn();
-  fetchRepoStats();
+      initTheme();
+      updateNavbar();
+      initScrollBtn();
+      window.addEventListener("load", () => {
+        setTimeout(() => {
+          fetchRepoStats();
+        }, 1000);
+      });
 
   initCurrentYear();
   initFilterChips();
@@ -1717,21 +1957,26 @@ document.addEventListener("DOMContentLoaded", async () => {
   initTechStackSearch();
   initClearAllFilters();
 
+  //updateGamifiedUI();
+
   try {
-    // Await the projects to be fetched
-    await loadProjects();
+  await loadProjects();
 
-    syncProjectCounts();
+//updateGamifiedUI();
 
-    if (hasProjectGrid()) {
-      loadBookmarksFromURL();
+restoreStateFromURL();
 
-      renderGrid();
-      renderBookmarks();
-      renderRecentProjects();
-    }
+syncProjectCounts();
 
-    syncProjectCounts();
+if (hasProjectGrid()) {
+  loadBookmarksFromURL();
+
+  renderGrid();
+  renderBookmarks();
+  renderRecentProjects();
+}
+
+syncProjectCounts();
     fetchRepoStats();
     initScrollBtn();
   } catch (error) {
@@ -1747,6 +1992,30 @@ document.addEventListener("DOMContentLoaded", async () => {
       `;
     }
   }
+
+  const searchInput =
+    document.getElementById("search") ||
+    document.querySelector('input[type="text"]') ||
+    document.querySelector(".search-input");
+  if (searchInput) {
+    searchInput.addEventListener(
+      "input",
+      debounce(() => {
+        const { category } = getQueryParams();
+        updateURL(searchInput.value, category);
+        applyFilters(searchInput.value, category);
+      }, 200),
+    );
+  }
+  const categoryFilter = document.getElementById("category");
+  if (categoryFilter) {
+    categoryFilter.addEventListener("change", () => {
+      const { search } = getQueryParams();
+      updateURL(search, categoryFilter.value);
+      applyFilters(search, categoryFilter.value);
+    });
+  }
+  window.addEventListener("popstate", () => restoreStateFromURL());
 });
 
 (() => {
@@ -1812,7 +2081,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 })();
 
-// Re-render the grid when the browser window is resized to adapt pagination density instantly
 window.addEventListener(
   "resize",
   debounce(() => {
@@ -1838,6 +2106,7 @@ function initTheme() {
 
 // Initialize the theme engine
 initTheme();
+
 // Custom cursor with accessibility, interactivity & fail-safe upgrades
 (function () {
   const outerCursor = document.querySelector(".cursor-ring--outer");
@@ -1850,9 +2119,7 @@ initTheme();
     let cursorEnabled = true;
     try {
       cursorEnabled = localStorage.getItem("customCursorEnabled") !== "false";
-    } catch (_) {
-      // Default to true if localStorage is blocked in sandboxed iframe
-    }
+    } catch (_) {}
     const coarsePointer = window.matchMedia("(pointer: coarse)").matches;
     const prefersReducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
@@ -1865,13 +2132,11 @@ initTheme();
       document.body.classList.add("custom-cursor-active");
     } else {
       document.body.classList.remove("custom-cursor-active");
-      // Reset styles if cursor is deactivated
       outerCursor.classList.remove("is-visible");
       innerCursor.classList.remove("is-visible");
     }
   };
 
-  // Expose function to global scope so it can be called from navbar.js when settings toggles
   window.updateCustomCursorState = updateCursorActivationState;
 
   const target = { x: 0, y: 0 };
@@ -1925,7 +2190,6 @@ initTheme();
     }
   });
 
-  // Watch for system accessibility media query changes
   const reducedMotionQuery = window.matchMedia(
     "(prefers-reduced-motion: reduce)",
   );
@@ -1943,7 +2207,6 @@ initTheme();
     coarsePointerQuery.addListener(handleQueryChange);
   }
 
-  // Hover target animations (interactive micro-animations)
   const hoverTargets =
     'a, button, [role="button"], input, select, .chip, .project-card, .bookmark-btn';
 
@@ -1969,7 +2232,6 @@ initTheme();
     }
   });
 
-  // Initialize activation state
   updateCursorActivationState();
   requestAnimationFrame(update);
 })();
@@ -2175,8 +2437,6 @@ initTheme();
 })();
 
 // =============================================
-// PERSISTENT FILTERS & SEARCH — Issue #3320
-// =============================================
 
 function getQueryParams() {
   const params = new URLSearchParams(window.location.search);
@@ -2213,7 +2473,6 @@ function applyFilters(search, category) {
   activeFilter = category || "all";
   currentPage = 1;
 
-  // Sync active chip selection with URL state
   const chips = document.querySelectorAll(".chip[data-filter]");
   chips.forEach((chip) => {
     if (chip.dataset.filter === activeFilter) {
@@ -2226,19 +2485,12 @@ function applyFilters(search, category) {
   renderGrid();
 }
 
-document.addEventListener("DOMContentLoaded", async () => {
-  try {
-    await loadProjects();
-    restoreStateFromURL();
-  } catch (error) {
-    console.error("Failed to restore state or load projects:", error);
-  }
+document.addEventListener("DOMContentLoaded", () => {
   const searchInput =
     document.getElementById("search") ||
     document.querySelector('input[type="text"]') ||
     document.querySelector(".search-input");
   if (searchInput) {
-    // Debounced so rapid typing doesn't trigger a renderGrid() on every keystroke
     searchInput.addEventListener(
       "input",
       debounce(() => {
@@ -2258,3 +2510,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
   window.addEventListener("popstate", () => restoreStateFromURL());
 });
+document
+  .getElementById(
+    "randomProjectBtn"
+  )
+  ?.addEventListener(
+    "click",
+    renderRandomProject
+  );
