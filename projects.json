@@ -1902,5 +1902,14 @@
     "techStack": ["ui","game","html","css","js"],
     "difficulty": "intermediate",
     "projectPath": "./public/Rock_Paper_Scissors/index.html"
+  },
+  {
+    "projectNo": 209,
+    "projectName": "Food Banner Landing Page",
+    "projectType": "Website",
+    "projectDesc": "A premium, responsive food banner landing page with interactive parallax effects, floating animations, and glassmorphism UI.",
+    "techStack": ["html", "css", "javascript", "parallax", "animation"],
+    "difficulty": "intermediate",
+    "projectPath": "./public/FoodBanner/index.html"
   }
 ]

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Food Banner</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div id="loading-screen">
+      <div class="loader">
+        <div class="loader-circle"></div>
+        <img src="./images/burger.png" alt="Loading..." class="loader-img" />
+      </div>
+    </div>
+    <main>
+      <div class="image_container">
+        <img src="./images/bg_image.png" alt="bg_image" />
+      </div>
+      <div class="content">
+        <div class="center-content">
+          <div class="parallax-item burger"><img src="./images/burger.png" /></div>
+          <div class="parallax-item tomato-1"><img src="./images/tomato.png" /></div>
+          <div class="parallax-item tomato-2"><img src="./images/tomato.png" /></div>
+          <div class="parallax-item pizza"><img src="./images/pizza.png" /></div>
+          <div class="parallax-item momo"><img src="./images/momo.png" /></div>
+          <div class="parallax-item leaf"><img src="./images/leaf.png" /></div>
+          <section class="text-content">
+            <h1>
+              Better food <br />
+              for more people
+            </h1>
+            <p>
+              For over a decade, we’ve enabled our customers to discover new
+              tastes, delivered right to their doorstep
+            </p>
+          </section>
+
+          <section class="info-section">
+            <div class="info-item">
+              <img
+                src="./images/house.png"
+                alt="Restaurant Icon"
+                class="info-icon"
+              />
+              <div class="info-text">
+                <span class="info-number">3,00,000</span>
+                <span class="info-label">Restaurants</span>
+              </div>
+            </div>
+            <div class="info-item">
+              <img
+                src="./images/location.png"
+                alt="Location icon"
+                class="info-icon"
+              />
+              <div class="info-text">
+                <span class="info-number">800+</span>
+                <span class="info-label">cities</span>
+              </div>
+            </div>
+            <div class="info-item">
+              <img
+                src="./images/banner.png"
+                alt="Orders icon"
+                class="info-icon"
+              />
+              <div class="info-text">
+                <span class="info-number">3 billion+</span>
+                <span class="info-label">orders delivered</span>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+    <script>
+      window.addEventListener("load", () => {
+        const loader = document.getElementById("loading-screen");
+        setTimeout(() => {
+          loader.style.opacity = "0";
+          loader.style.visibility = "hidden";
+        }, 1000); // Give it a second to feel the "premium" loading
+      });
+
+      document.addEventListener("mousemove", (e) => {
+        const moveX = (e.clientX - window.innerWidth / 2) * 0.01;
+        const moveY = (e.clientY - window.innerHeight / 2) * 0.01;
+
+        // Move the background image slightly
+        const bg = document.querySelector(".image_container img");
+        if (bg) {
+          bg.style.transform = `scale(1.1) translate(${moveX * -0.3}px, ${moveY * -0.3}px)`;
+        }
+
+        // Move food items at different speeds
+        const items = [
+          { selector: ".burger", speed: 1.5 },
+          { selector: ".tomato-1", speed: 2.5 },
+          { selector: ".tomato-2", speed: 1.2 },
+          { selector: ".pizza", speed: 2 },
+          { selector: ".momo", speed: 1.4 },
+          { selector: ".leaf", speed: 3.5 }
+        ];
+
+        items.forEach(item => {
+          const el = document.querySelector(item.selector);
+          if (el) {
+            el.style.transform = `translate(${moveX * item.speed}px, ${moveY * item.speed}px)`;
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
