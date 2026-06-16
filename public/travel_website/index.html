@@ -35,7 +35,73 @@
 
 .tip-card h2{
     margin-bottom:10px;
-}</style>
+}
+
+.footer{
+    background:#1b1b1b;
+    color:#fff;
+    padding:50px 20px 20px;
+    margin-top:60px;
+}
+
+.footer-container{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:30px;
+}
+
+.footer-section h3,
+.footer-section h2{
+    margin-bottom:15px;
+}
+
+.footer-section p{
+    line-height:1.6;
+}
+
+.footer-section ul{
+    list-style:none;
+    padding:0;
+}
+
+.footer-section ul li{
+    margin:10px 0;
+}
+
+.footer-section ul li a{
+    color:#ddd;
+    text-decoration:none;
+    transition:.3s;
+}
+
+.footer-section ul li a:hover{
+    color:#4da3ff;
+}
+
+.social-icons{
+    display:flex;
+    gap:15px;
+}
+
+.social-icons a{
+    color:white;
+    font-size:20px;
+    transition:.3s;
+}
+
+.social-icons a:hover{
+    color:#4da3ff;
+    transform:scale(1.15);
+}
+
+.footer-bottom{
+    text-align:center;
+    margin-top:35px;
+    padding-top:15px;
+    border-top:1px solid rgba(255,255,255,.2);
+    font-size:14px;
+}
+</style>
 </head>
 
       <body>
@@ -75,6 +141,54 @@
 
     </div>
 
+    <footer class="footer">
+
+    <div class="footer-container">
+
+        <div class="footer-section">
+            <h2 class="logo">🌍 Travel Explorer</h2>
+            <p>
+                Explore the world with confidence and discover your next adventure.
+            </p>
+        </div>
+
+        <div class="footer-section">
+            <h3>Quick Links</h3>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Destinations</a></li>
+                <li><a href="#">Travel Tips</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-section">
+            <h3>Follow Us</h3>
+
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+        </div>
+
+        <div class="footer-section">
+            <h3>Contact</h3>
+
+            <p>Email: info@travelexplorer.com</p>
+            <p>Phone: +91 98765 43210</p>
+            <p>Location: India</p>
+        </div>
+
+    </div>
+
+    <div class="footer-bottom">
+        © 2025 Travel Explorer. All Rights Reserved.
+    </div>
+
+</footer>
+
 </section>
         <div id="app"></div>
         <script type="module" src="./src/main.jsx"></script>
@@ -92,6 +206,9 @@ cards.forEach(card => {
         card.style.transform = "scale(1)";
     });
 });
+
+document.querySelector(".footer-bottom").innerHTML =
+    `© ${new Date().getFullYear()} Travel Explorer. All Rights Reserved.`;
       </script>
     </html>
     
