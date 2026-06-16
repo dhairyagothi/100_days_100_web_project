@@ -1,7 +1,20 @@
 const Food = require("../models/foodmodel");
 
+const ALLOWED_FIELDS = [
+  "name", "cuisines", "location", "address",
+  "priceForTwo", "diningRating", "deliveryRating", "distance", "images",
+];
+
+function pickAllowed(body) {
+  const data = {};
+  for (const field of ALLOWED_FIELDS) {
+    if (body[field] !== undefined) data[field] = body[field];
+  }
+  return data;
+}
+
 exports.createFood = async (req, res) => {
-  const data = await Food.create(req.body);
+  const data = await Food.create(pickAllowed(req.body));
   res.json(data);
 };
 
@@ -11,7 +24,10 @@ exports.getFoods = async (req, res) => {
 };
 
 exports.updateFood = async (req, res) => {
-  const data = await Food.findByIdAndUpdate(req.params.id, req.body);
+  const data = await Food.findByIdAndUpdate(req.params.id, pickAllowed(req.body), {
+    new: true,
+    runValidators: true,
+  });
   res.json(data);
 };
 
