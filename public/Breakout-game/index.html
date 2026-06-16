@@ -39,72 +39,59 @@
                 <div id="countdown" class="countdown hidden">3</div>
             </div>
 
-            <!-- Active Power-ups Display -->
-            <div id="powerups-display" class="powerups-display hidden">
-                <div id="powerup-icons" class="powerup-icons"></div>
-            </div>
-
-            <!-- Control Panel -->
-            <div class="control-panel">
-                <div class="controls-left">
-                    <button id="pause-btn" class="control-btn" title="Pause (P)">⏸ Pause</button>
-                </div>
-                <div class="controls-center">
-                    <label for="sensitivity">🎛️ Paddle Speed:</label>
-                    <input type="range" id="sensitivity" min="4" max="20" value="8" step="1" aria-label="Paddle Speed Slider">
-                    <span id="sensitivity-value" class="badge">8</span>
-                </div>
-                <div class="controls-right">
-                    <button id="sound-btn" class="control-btn" title="Toggle Sound">🔊 Sound</button>
-                    <button id="theme-btn" class="control-btn" title="Toggle Theme">🌙 Theme</button>
-                </div>
-            </div>
-
-            <!-- Rules Screen -->
+            <!-- Rules Screen (Global Viewport Overlay) -->
             <div id="rules-container" class="overlay-container">
                 <div class="overlay-content rules-content">
                     <button class="close-btn">&times;</button>
                     <h2>🎮 Game Rules</h2>
-                    <div class="rules-grid">
-                        <div class="rule-item">
-                            <span class="rule-icon">⌨️</span>
-                            <p><strong>Controls:</strong> Arrow keys or mouse to move paddle</p>
+                    <div class="rules-layout">
+                        <!-- Left Column: Rules Grid -->
+                        <div class="rules-left">
+                            <div class="rules-grid">
+                                <div class="rule-item">
+                                    <span class="rule-icon">⌨️</span>
+                                    <p><strong>Controls:</strong> Arrow keys or mouse to move paddle</p>
+                                </div>
+                                <div class="rule-item">
+                                    <span class="rule-icon">🧱</span>
+                                    <p><strong>Objective:</strong> Break all bricks to advance</p>
+                                </div>
+                                <div class="rule-item">
+                                    <span class="rule-icon">⭐</span>
+                                    <p><strong>Power-ups:</strong> Collect special items for bonuses</p>
+                                </div>
+                                <div class="rule-item">
+                                    <span class="rule-icon">❤️</span>
+                                    <p><strong>Lives:</strong> You have 3 lives per game</p>
+                                </div>
+                            </div>
                         </div>
-                        <div class="rule-item">
-                            <span class="rule-icon">🧱</span>
-                            <p><strong>Objective:</strong> Break all bricks to advance</p>
-                        </div>
-                        <div class="rule-item">
-                            <span class="rule-icon">⭐</span>
-                            <p><strong>Power-ups:</strong> Collect special items for bonuses</p>
-                        </div>
-                        <div class="rule-item">
-                            <span class="rule-icon">❤️</span>
-                            <p><strong>Lives:</strong> You have 3 lives per game</p>
-                        </div>
-                        <div class="rule-item">
-                            <span class="rule-icon">📱</span>
-                            <p><strong>Mobile:</strong> Touch and drag to move paddle</p>
-                        </div>
-                        <div class="rule-item">
-                            <span class="rule-icon">⏸</span>
-                            <p><strong>Pause:</strong> Press P or click pause button</p>
+                        <!-- Right Column: Settings / Difficulty & Start -->
+                        <div class="rules-right">
+                            <div class="difficulty-selector">
+                                <h3>Select Difficulty</h3>
+                                <div class="difficulty-buttons">
+                                    <button class="difficulty-btn active" data-difficulty="easy">Easy</button>
+                                    <button class="difficulty-btn" data-difficulty="medium">Medium</button>
+                                    <button class="difficulty-btn" data-difficulty="hard">Hard</button>
+                                    <button class="difficulty-btn" data-difficulty="extreme">Extreme</button>
+                                </div>
+                            </div>
+                            <!-- Rules Sensitivity Slider -->
+                            <div class="rules-sensitivity">
+                                <label for="rules-sensitivity-input">🎛️ Paddle Speed:</label>
+                                <div class="slider-container">
+                                    <input type="range" id="rules-sensitivity-input" min="4" max="20" value="8" step="1" aria-label="Rules Paddle Speed Slider">
+                                    <span id="rules-sensitivity-value" class="badge">8</span>
+                                </div>
+                            </div>
+                            <button id="start-btn" class="btn btn-primary">🚀 Start Game</button>
                         </div>
                     </div>
-                    <div class="difficulty-selector">
-                        <h3>Select Difficulty</h3>
-                        <div class="difficulty-buttons">
-                            <button class="difficulty-btn active" data-difficulty="easy">Easy</button>
-                            <button class="difficulty-btn" data-difficulty="medium">Medium</button>
-                            <button class="difficulty-btn" data-difficulty="hard">Hard</button>
-                            <button class="difficulty-btn" data-difficulty="extreme">Extreme</button>
-                        </div>
-                    </div>
-                    <button id="start-btn" class="btn btn-primary">🚀 Start Game</button>
                 </div>
             </div>
 
-            <!-- Game Over Screen -->
+            <!-- Game Over Screen (Global Viewport Overlay) -->
             <div id="game-over-container" class="overlay-container hidden">
                 <div class="overlay-content game-over-content">
                     <h2 id="game-over-title">Game Over</h2>
@@ -129,7 +116,7 @@
                 </div>
             </div>
 
-            <!-- Pause Menu -->
+            <!-- Pause Menu (Global Viewport Overlay) -->
             <div id="pause-container" class="overlay-container hidden">
                 <div class="overlay-content pause-content">
                     <h2>⏸ Paused</h2>
@@ -137,6 +124,39 @@
                         <button id="resume-btn" class="btn btn-primary">▶ Resume</button>
                         <button id="pause-restart-btn" class="btn btn-secondary">🔄 Restart</button>
                     </div>
+                </div>
+            </div>
+
+            <!-- Active Power-ups Display -->
+            <div id="powerups-display" class="powerups-display hidden">
+                <div id="powerup-icons" class="powerup-icons"></div>
+            </div>
+
+            <!-- Control Panel -->
+            <div class="control-panel">
+                <div class="controls-left">
+                    <button id="pause-btn" class="control-btn hidden" title="Pause (P)">⏸ Pause</button>
+                </div>
+                <div class="controls-center">
+                    <button id="play-nav-btn" class="control-btn" title="Play / Setup (Enter)">▶ Play</button>
+                </div>
+                <div class="controls-right">
+                    <button id="settings-toggle-btn" class="control-btn" title="Settings">⚙️ Settings</button>
+                </div>
+            </div>
+
+            <!-- Floating Settings Panel -->
+            <div id="settings-menu" class="settings-menu hidden glass">
+                <div class="settings-menu-item">
+                    <label for="sensitivity">🎛️ Paddle Speed:</label>
+                    <div class="slider-container">
+                        <input type="range" id="sensitivity" min="4" max="20" value="8" step="1" aria-label="Paddle Speed Slider">
+                        <span id="sensitivity-value" class="badge">8</span>
+                    </div>
+                </div>
+                <div class="settings-menu-item toggle-buttons">
+                    <button id="sound-btn" class="control-btn" title="Toggle Sound">🔊 Sound</button>
+                    <button id="theme-btn" class="control-btn" title="Toggle Theme">🌙 Theme</button>
                 </div>
             </div>
         </div>
