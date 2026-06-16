@@ -1,60 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Word Jumble</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/public/Word_jumble/style.css">
 </head>
+
 <body>
-    <!-- Animated colorful glowing background mesh circles -->
-    <div class="bg-glow bg-glow-1"></div>
-    <div class="bg-glow bg-glow-2"></div>
 
-    <div class="game-container glass-panel">
-        <h1>Word Jumble</h1>
-        
-        <div class="dashboard glass-panel-inset">
-            <div class="stat">Time: <span id="timer">30s</span></div>
-            <div class="stat">Lives: <span id="lives-count">❤️❤️❤️</span></div>
-            <div class="stat">Score: <span id="score-count">0</span></div>
+    <header class="navbar">
+        <div class="logo">WebProjects</div>
+
+        <nav class="nav-links">
+            <a href="/index.html">Home</a>
+            <a href="index.html">Game</a>
+            <a href="index.html">About</a>
+        </nav>
+
+        <div class="nav-actions">
+            <button id="themeToggle" class="theme-toggle">
+                🌙
+            </button>
+
         </div>
+    </header>
 
-        <div class="word-card glass-panel-inset">
-            <div class="scrambled-word" id="scrambled-word">-----</div>
-        </div>
-        
-        <p class="hint-text">Hint: <span id="hint-text">...</span></p>
 
-        <div class="input-section">
-            <input type="text" id="user-input" class="glass-input" placeholder="Type your guess here..." autocomplete="off" maxlength="15">
-            <button id="check-btn" class="btn btn-primary glossy-effect">Check Word</button>
-        </div>
+    <main>
+        <!-- Animated colorful glowing background mesh circles -->
+        <div class="bg-glow bg-glow-1"></div>
+        <div class="bg-glow bg-glow-2"></div>
 
-        <div id="message" class="message"></div>
+        <div class="game-container glass-panel">
+            <h1>Word Jumble</h1>
 
-        <div class="controls">
-            <button id="refresh-btn" class="btn btn-secondary glossy-effect">Skip (<span id="skips-left">3</span> left)</button>
-            <button id="reset-btn" class="btn btn-danger glossy-effect">Restart</button>
-        </div>
-    </div>
-
-    <!-- Custom Animated Game Over Overlay Modal Frame Container -->
-    <div id="game-over-modal" class="modal-overlay hidden">
-        <div class="modal-card glass-panel">
-            <div class="modal-icon" id="modal-icon">💀</div>
-            <h2 id="modal-title">Game Over</h2>
-            <p id="modal-appraisal">Better luck next time!</p>
-            
-            <div class="modal-stats glass-panel-inset">
-                <div>Final Score: <span id="modal-final-score">0</span></div>
-                <div>Your Best: <span id="modal-best-score">0</span></div>
+            <div class="dashboard glass-panel-inset">
+                <div class="stat">Time: <span id="timer">30s</span></div>
+                <div class="stat">Lives: <span id="lives-count">❤️❤️❤️</span></div>
+                <div class="stat">Score: <span id="score-count">0</span></div>
             </div>
 
-            <button id="modal-action-btn" class="btn btn-primary glossy-effect">Play Again</button>
-        </div>
-    </div>
+            <div class="word-card glass-panel-inset">
+                <div class="scrambled-word" id="scrambled-word">-----</div>
+            </div>
 
-    <script src="script.js"></script>
+            <p class="hint-text">Hint: <span id="hint-text">...</span></p>
+
+            <div class="input-section">
+                <input type="text" id="user-input" class="glass-input" placeholder="Type your guess here..."
+                    autocomplete="off" maxlength="15">
+                <button id="check-btn" class="btn btn-primary glossy-effect">Check Word</button>
+            </div>
+
+            <div id="message" class="message"></div>
+
+            <div class="controls">
+                <button id="refresh-btn" class="btn btn-secondary glossy-effect">Skip (<span id="skips-left">3</span>
+                    left)</button>
+                <button id="reset-btn" class="btn btn-danger glossy-effect">Restart</button>
+                 <button id="quitBtn" class="quit-btn">Quit Game</button>
+            </div>
+        </div>
+
+        <!-- Custom Animated Game Over Overlay Modal Frame Container -->
+        <div id="game-over-modal" class="modal-overlay hidden">
+            <div class="modal-card glass-panel">
+                <div class="modal-icon" id="modal-icon">💀</div>
+                <h2 id="modal-title">Game Over</h2>
+                <p id="modal-appraisal">Better luck next time!</p>
+
+                <div class="modal-stats glass-panel-inset">
+                    <div>Final Score: <span id="modal-final-score">0</span></div>
+                    <div>Your Best: <span id="modal-best-score">0</span></div>
+                </div>
+
+                <button id="modal-action-btn" class="btn btn-primary glossy-effect">Play Again</button>
+            </div>
+        </div>
+    </main>
+    <script src="/public/Word_jumble/script.js"></script>
+    <footer class="footer glass-panel">
+        <div class="footer-content">
+            <p>© 2026 Word Jumble — Built with HTML, CSS & JS</p>
+            <div class="social-links">
+                <a href="https://github.com" target="_blank" aria-label="GitHub">🐙</a>
+                <a href="https://twitter.com" target="_blank" aria-label="Twitter">🐦</a>
+                <a href="https://linkedin.com" target="_blank" aria-label="LinkedIn">💼</a>
+            </div>
+        </div>
+    </footer>
 </body>
+
 </html>

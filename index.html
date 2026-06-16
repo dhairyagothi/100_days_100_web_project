@@ -27,10 +27,17 @@
       property="og:url"
       content="https://100-days-100-web-project.vercel.app/"
     />
-    <meta
-      name="google-site-verification"
-      content="FZFMJENRD-9I74GAks_nhLVOOiqqnlsPU-JDtRCYXpc"
-    />
+   <meta
+  http-equiv="Content-Security-Policy"
+  content="
+  default-src 'self';
+  script-src 'self' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com;
+  style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com;
+  font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com;
+  img-src 'self' data: https:;
+"
+  />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="100 Days · 100 Web Projects" />
     <meta
@@ -47,10 +54,17 @@
       href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Orbitron:wght@500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
-    />
+   <link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+  integrity="..."
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+/>
+    <meta
+  http-equiv="Permissions-Policy"
+  content="camera=(), microphone=(), geolocation=()"
+/>
     <link rel="stylesheet" href="style.css" />
 
     <style>

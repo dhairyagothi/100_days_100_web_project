@@ -1,7 +1,7 @@
-/* ============================================
+/* 
    🎨 TO-DO LIST — REDESIGN
    Glassmorphism · Micro-animations · Modern UI
-   ============================================ */
+    */
 
 /* ---------- Reset ---------- */
 *,
@@ -154,6 +154,24 @@ header {
   top: 0;
   z-index: 100;
   padding: 16px 20px 0;
+.sidebar-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  color: rgba(240, 240, 245, 0.7);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.25s ease;
+}
+
+.sidebar-nav-item:hover,
+.sidebar-nav-item.active {
+  background: color-mix(in srgb, var(--primary-color, #7c63ff) 20%, transparent);
+  color: #ffffff;
+  border: 1px solid var(--primary-color, #7c63ff);
 }
 
 .navbar {
@@ -201,6 +219,23 @@ header {
   transition: background var(--transition), transform var(--transition);
   font-weight: 500;
   font-size: 15px;
+    border-top: 1px solid rgba(124, 99, 255, 0.1);
+}
+
+.sidebar-back-btn,
+.sidebar-pdf-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  background: rgba(239, 68, 68, 0.1);
+  color: #fca5a5;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
   display: inline-block;
 }
 
@@ -218,6 +253,13 @@ header {
   background: rgba(255, 255, 255, 0.18);
   font-weight: 700;
   box-shadow: 0 2px 12px rgba(255, 255, 255, 0.08);
+}
+
+.active-section {
+  display: block;
+}
+.inactive-section {
+  display: none;
 }
 
 .theme-label {
@@ -277,6 +319,48 @@ header {
 /* ---------- Main Layout ---------- */
 main {
   position: relative;
+.tasks-number {
+  font-size: 1.6rem;
+  font-weight: 850;
+  color: #ffffff;
+}
+.overdue-task{
+    border-left:4px solid #ef4444;
+}
+.overdue-badge {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: #ef4444;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.due-today-task {
+  border-left: 4px solid #f59e0b;
+}
+
+/* ---------- Hero Promotion Banner ---------- */
+.hero-banner {
+  background: linear-gradient(
+    135deg,
+    rgba(124, 99, 255, 0.2),
+    rgba(79, 141, 255, 0.1)
+  );
+  border: 1px solid rgba(124, 99, 255, 0.2);
+  border-radius: 20px;
+  padding: 24px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-content {
   z-index: 1;
   display: flex;
   flex-direction: column;
@@ -362,6 +446,7 @@ section {
 
 .progress-bar-fill {
   height: 100%;
+  background: var(--primary-color, #7c63ff);
   width: 0%;
   border-radius: 100px;
   background: linear-gradient(90deg, var(--accent), #4f8dff);
@@ -548,6 +633,10 @@ section {
   cursor: pointer;
   color: #fff;
   font-size: 15px;
+  /* /* background: linear-gradient(135deg, #7c63ff, #4f8dff); */
+  background: var(--primary-color, #7c63ff);
+  color: white; 
+  font-size: 0.85rem;
   font-weight: 700;
   font-family: var(--font-family);
   background: var(--accent-gradient);
@@ -653,9 +742,9 @@ section {
   transform: translateY(-1px);
 }
 
-/* ============================================================
+/* 
    INTERACTIVE DRAG AND DROP KANBAN WORKSPACE TRACKS
-   ============================================================ */
+   */
 .kanban-wrapper-board {
   display: flex;
   flex-direction: column;
@@ -790,22 +879,8 @@ section {
 
 /* ---------- Completed Animation ---------- */
 .completed {
-  text-decoration: line-through;
   opacity: 0.60;
   position: relative;
-}
-
-.completed::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 50%;
-  width: 100%;
-  height: 2px;
-  background: var(--success);
-  border-radius: 2px;
-  animation: strikeThrough 0.35s ease forwards;
-  transform-origin: left;
 }
 
 @keyframes strikeThrough {
@@ -1289,9 +1364,9 @@ section {
   --hero-tint: rgba(110, 10, 10, 0.76);
 }
 
-/* ============================================================
+/*
    MODAL OVERLAY — fullscreen dark backdrop
-   ============================================================ */
+  */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -1385,9 +1460,9 @@ section {
   box-shadow: 0 8px 24px rgba(239, 68, 68, 0.30);
 }
 
-/* ============================================================
+/*
    TOAST NOTIFICATION — slides down from top-center
-   ============================================================ */
+    */
 .toast-popup {
   position: fixed;
   top: 24px;
@@ -1429,4 +1504,114 @@ section {
 #pdfMessage,
 #toast {
   display: none !important;
-}
+}
+
+/* Completed card — subtle green tint on the card itself */
+.notes.completed {
+  border-left: 4px solid #14b8a6;
+  background: rgba(240, 253, 250, 0.97);
+}
+
+/* Completed task text — strikethrough + muted color */
+.notes.completed .note-text {
+  text-decoration: none;
+  color: #6b7280;
+  background: rgba(240, 253, 250, 0.60);
+}
+
+/* "Done ✅" badge — green pill when task is completed */
+.notes.completed .category-badge {
+  background: rgba(20, 184, 166, 0.15);
+  color: #0f766e;
+  border-color: rgba(20, 184, 166, 0.35);
+  font-weight: 800;
+}
+
+/* Undo button — amber/orange to signal "revert" action */
+.notes.completed .note-check {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  box-shadow: 0 4px 14px rgba(245, 158, 11, 0.30);
+}
+
+.notes.completed .note-check:hover {
+  box-shadow: 0 6px 18px rgba(245, 158, 11, 0.45);
+}
+
+.done-badge {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: 100px;
+  background: rgba(20, 184, 166, 0.15);
+  color: #0f766e;
+  border: 1px solid rgba(20, 184, 166, 0.35);
+  font-size: 12px;
+  font-weight: 700;
+  width: fit-content;
+}
+
+.note-text-done {
+  text-decoration: line-through;
+  color: #6b7280;
+  padding: 10px 14px;
+  min-height: 44px;
+  line-height: 1.6;
+  font-size: 16px;
+  font-weight: 600;
+}
+  color: rgba(240, 240, 245, 0.6);
+}
+
+.empty-desc {
+  font-size: 0.85rem;
+  color: rgba(240, 240, 245, 0.35);
+  text-align: center;
+  max-width: 300px;
+  line-height: 1.5;
+}
+
+/* ---------- Responsive Design Adaptations ---------- */
+@media (max-width: 1200px) {
+  .productivity-dashboard {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 900px) {
+  .sidebar {
+    width: 220px;
+  }
+  .main-content {
+    padding: 16px;
+  }
+  .hero-banner {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+  }
+  .hero-illustration {
+    display: none;
+  }
+  .input-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+/* --------------theme-------------------- */
+/* Theme 1 */
+.theme1 {
+  --primary-color: #f59e0b;
+}
+
+/* Theme 2 */
+.theme2 {
+  --primary-color: #3b82f6;
+}
+
+/* Theme 3 */
+.theme3 {
+  --primary-color: #10b981;
+}
+
+/* Theme 4 */
+.theme4 {
+  --primary-color: #6366f1;
+}

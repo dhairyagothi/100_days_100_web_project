@@ -63,6 +63,7 @@ document.addEventListener('DOMContentLoaded', function() {
             console.warn(`Element with id "${id}" not found!`);
         }
     }
+
     
     // Fix: Ensure filter buttons work
     document.querySelectorAll('.filter-btn').forEach(btn => {
@@ -78,6 +79,78 @@ document.addEventListener('DOMContentLoaded', function() {
                 renderTasks();
             }
         });
+
+  } else {
+    if (emptyState) emptyState.style.display = "none";
+
+    filteredTasks.forEach((task, idx) => {
+      // Bug 3 fix: use <li> instead of <div> so <ul> contains valid children
+      const card = document.createElement("li");
+      card.className = "notes" + (task.completed ? " completed" : "");
+      card.setAttribute("data-id", task.id);
+      card.style.setProperty("--i", idx);
+
+      // Bug 2 fix: build the card entirely with safe DOM APIs — no innerHTML
+    const noteRow = document.createElement("div");
+    noteRow.className = "note-row";
+
+    let textarea;
+    if (task.completed) {
+      textarea = document.createElement("div");
+      textarea.className = "note-text note-text-done";
+      textarea.textContent = task.text;
+    } else {
+      textarea = document.createElement("textarea");
+      textarea.className = "note-text";
+      textarea.value = task.text;
+      textarea.addEventListener("change", () => updateTaskText(task.id, textarea.value));
+    }
+
+    // ✅ Done badge appears right below the text when completed
+    if (task.completed) {
+      const doneBadge = document.createElement("span");
+      doneBadge.className = "done-badge";
+      doneBadge.textContent = "✅ Done";
+      noteRow.appendChild(textarea);
+      noteRow.appendChild(doneBadge);
+    } else {
+      noteRow.appendChild(textarea);
+    }
+
+      const noteActions = document.createElement("div");
+      noteActions.className = "note-actions";
+
+      const badge = document.createElement("div");
+      badge.className = "category-badge";
+      if (task.completed) {
+        badge.textContent = task.category;
+        badge.style.opacity = "0.8";
+      } else {
+        badge.textContent = task.category;
+      }
+
+      const btnGroup = document.createElement("div");
+
+      const checkBtn = document.createElement("button");
+      checkBtn.className = "note-check";
+      checkBtn.textContent = task.completed ? "↩" : "✔";
+      checkBtn.title = task.completed ? "Mark as Pending" : "Mark as Completed";
+      checkBtn.addEventListener("click", () => toggleTask(task.id));
+
+      const deleteBtn = document.createElement("button");
+      deleteBtn.className = "note-delete";
+      deleteBtn.textContent = "Delete";
+      deleteBtn.addEventListener("click", () => deleteTask(task.id));
+
+      btnGroup.appendChild(checkBtn);
+      btnGroup.appendChild(deleteBtn);
+      noteActions.appendChild(badge);
+      noteActions.appendChild(btnGroup);
+      noteRow.appendChild(noteActions);
+      card.appendChild(noteRow);
+
+      taskList.appendChild(card);
+
     });
     
     // Fix: Clear Done button

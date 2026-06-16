@@ -72,44 +72,6 @@ function generateRandomNumber() {
     return getRndInteger(0, 10).toString();
 }
 
-function savePasswordHistory() {
-    try {
-        localStorage.setItem(PASSWORD_HISTORY_KEY, JSON.stringify(passwordHistory));
-    } catch (error) {
-        return;
-    }
-}
-
-function renderPasswordHistory() {
-    historyList.innerHTML = "";
-    if (passwordHistory.length === 0) {
-        const emptyItem = document.createElement("li");
-        emptyItem.className = "history-empty";
-        emptyItem.textContent = "No recent passwords yet";
-        historyList.appendChild(emptyItem);
-        return;
-    }
-    passwordHistory.forEach((savedPassword) => {
-        const historyItem = document.createElement("li");
-        historyItem.className = "history-item";
-        historyItem.textContent = savedPassword;
-        historyList.appendChild(historyItem);
-    });
-}
-
-function addPasswordToHistory(newPassword) {
-    passwordHistory = [newPassword, ...passwordHistory];
-    if (passwordHistory.length > 5) passwordHistory = passwordHistory.slice(0, 5);
-    savePasswordHistory();
-    renderPasswordHistory();
-}
-
-function clearPasswordHistory() {
-    passwordHistory = [];
-    savePasswordHistory();
-    renderPasswordHistory();
-}
-
 // ---------------------------------------------------------------------------
 // Get the list of active character types selected by the user
 // ---------------------------------------------------------------------------
@@ -306,9 +268,18 @@ function handleCheckBoxChange() {
 }
 
 function updateHistory(newPassword) {
+    // Prevent consecutive duplicates
+    if (
+        passwordHistory.length > 0 &&
+        passwordHistory[0] === newPassword
+    ) {
+        return;
+    }
+
     passwordHistory.unshift(newPassword);
 
-    if (passwordHistory.length > 3) {
+    // Keep only last 5 passwords
+    if (passwordHistory.length > 5) {
         passwordHistory.pop();
     }
 
@@ -326,10 +297,28 @@ function renderHistory() {
     historyContainer.style.display = "flex";
 
     passwordHistory.forEach((pw) => {
-        const div = document.createElement("div");
-        div.classList.add("history-item");
-        div.innerText = pw;
-        historyList.appendChild(div);
+        const item = document.createElement("div");
+        item.classList.add("history-item");
+
+        const text = document.createElement("span");
+        text.textContent = pw;
+
+        const copyButton = document.createElement("button");
+        copyButton.classList.add("history-copy-btn");
+        copyButton.textContent = "Copy";
+
+        copyButton.addEventListener("click", async () => {
+            try {
+                await navigator.clipboard.writeText(pw);
+            } catch (err) {
+                console.error("Failed to copy password", err);
+            }
+        });
+
+        item.appendChild(text);
+        item.appendChild(copyButton);
+
+        historyList.appendChild(item);
     });
 }
 
