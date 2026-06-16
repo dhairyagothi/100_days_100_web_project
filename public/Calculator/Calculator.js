@@ -381,7 +381,22 @@ arr.forEach(button => {
             try {
                 const expression = string;
                 const normalized = normalizeExpression(expression);
-                const result = eval(normalized);
+                
+                // Strict regex to allow only safe mathematical characters and approved function names
+                const safeRegex = /^([0-9+\-*/.%^()\s]|sin|cos|tan|sqrt|ln|log|asin|acos|atan|exp|tenPower|abs|pi|e)*$/i;
+                if (!safeRegex.test(normalized)) {
+                    throw new Error('Unsafe characters in expression');
+                }
+
+                // Define the scope mapping so math.js uses the existing custom global functions
+                const scope = {
+                    sin, cos, tan, sqrt, ln, log,
+                    asin, acos, atan, exp, tenPower, abs,
+                    pi: Math.PI, e: Math.E
+                };
+
+                // Use Math.js evaluate with the custom scope
+                const result = math.evaluate(normalized, scope);
 
                 if (!isSavableResult(result)) {
                     throw new Error('Invalid calculation result');

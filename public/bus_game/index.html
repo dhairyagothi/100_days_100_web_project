@@ -6,6 +6,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>City Bus Rush</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    /* Quick styling for the instruction table to ensure it fits the UI */
+    .instructions-section { margin: 20px 0; text-align: center; color: #fff; }
+    .instructions-table { width: 100%; max-width: 300px; margin: 10px auto; border-collapse: collapse; background: rgba(0, 0, 0, 0.4); border-radius: 8px; font-size: 0.9rem; }
+    .instructions-table th, .instructions-table td { padding: 8px; border: 1px solid rgba(255, 255, 255, 0.2); }
+    .goal-text { font-size: 0.85rem; margin-top: 10px; color: #ffde00; }
+  </style>
 </head>
 
 <body>
@@ -13,37 +20,36 @@
   <div id="wrap">
     <canvas id="c"></canvas>
 
-    <!-- HUD -->
     <header id="hud">
       <div class="hud-card">
         <div class="hud-lbl">Earnings</div>
         <div class="hud-val yellow" id="h-earn">₹0</div>
       </div>
-
       <div class="hud-card">
         <div class="hud-lbl">Time Left</div>
         <div class="hud-val" id="h-time">90</div>
       </div>
-
       <div class="hud-card">
         <div class="hud-lbl">Delivered</div>
         <div class="hud-val green" id="h-del">0</div>
       </div>
-
       <div class="hud-card">
         <div class="hud-lbl">Crashes</div>
         <div class="hud-val red" id="h-crash">0</div>
       </div>
+      <div class="hud-card">
+        <div class="hud-lbl">Combo</div>
+        <div class="hud-val combo" id="h-combo">x1</div>
+      </div>
+      <div class="hud-card">
+        <div class="hud-lbl">Fuel</div>
+        <div class="hud-val fuel" id="h-fuel">100%</div>
+      </div>
     </header>
 
-    <!-- Weather -->
     <div id="weather-badge">☀️ CLEAR</div>
-
-    <!-- Next Stop -->
     <div id="next-stop">🚏 NEXT STOP: —</div>
 
-
-    <!-- Passenger Bar -->
     <div id="pass-bar">
       <span id="pass-label">ON BUS:</span>
       <span class="pass-icon" id="p0">👤</span>
@@ -53,88 +59,125 @@
       <span class="pass-icon" id="p4">👤</span>
     </div>
 
-    
-    <!-- Controls -->
+    <div id="powerup-badge" class="hidden">⚡ BOOST ACTIVE!</div>
+
     <div id="ctrl">
-      <button id="leftBtn" class="ctrl-btn">←</button>
-      <button id="rightBtn" class="ctrl-btn">→</button>
-      <button id="upBtn" class="ctrl-btn">↑</button>
-      <button id="downBtn" class="ctrl-btn">↓</button>
+      <button id="leftBtn" class="ctrl-btn" aria-label="Steer left">←</button>
+      <button id="rightBtn" class="ctrl-btn" aria-label="Steer right">→</button>
+      <button id="upBtn" class="ctrl-btn" aria-label="Accelerate">↑</button>
+      <button id="downBtn" class="ctrl-btn" aria-label="Brake">↓</button>
+      <button id="hornBtn" class="ctrl-btn horn" aria-label="Honk horn">📯</button>
     </div>
 
-    <!-- Effects -->
     <div id="flash"></div>
     <div id="popup">+₹50 PASSENGERS!</div>
+    <div id="combo-popup">COMBO x2!</div>
 
-    <!-- Start / End Overlay -->
     <main id="overlay" role="dialog" aria-modal="true">
       <h1>🚌 CITY BUS RUSH</h1>
 
-      <div class="tagline">
-        PICK UP · DELIVER · EARN
+      <div class="instructions-section">
+        <table class="instructions-table">
+          <thead>
+            <tr><th>Action</th><th>Control</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Steer</td><td>← / →</td></tr>
+            <tr><td>Accelerate</td><td>↑</td></tr>
+            <tr><td>Brake</td><td>↓</td></tr>
+            <tr><td>Honk</td><td>📯</td></tr>
+          </tbody>
+        </table>
+        <p class="goal-text"><strong>Goal:</strong> Pick up, deliver, and avoid crashes!</p>
+      </div>
+
+      <div class="difficulty-select" id="difficulty-select">
+        <button class="diff-btn active" data-diff="easy">😌 Easy</button>
+        <button class="diff-btn" data-diff="normal">🙂 Normal</button>
+        <button class="diff-btn" data-diff="hard">🔥 Hard</button>
       </div>
 
       <div class="ov-stats" id="ov-stats" style="display:none">
-        <div class="ov-s">
-          <div class="v" id="ov-earn">₹0</div>
-          <div class="l">EARNED</div>
-        </div>
-
-        <div class="ov-s">
-          <div class="v" id="ov-del">0</div>
-          <div class="l">DELIVERED</div>
-        </div>
-
-        <div class="ov-s">
-          <div class="v" id="ov-crash">0</div>
-          <div class="l">CRASHES</div>
-        </div>
-
-        <div class="ov-s">
-          <div class="v" id="ov-rating">⭐</div>
-          <div class="l">RATING</div>
-        </div>
+        <div class="ov-s"><div class="v" id="ov-earn">₹0</div><div class="l">EARNED</div></div>
+        <div class="ov-s"><div class="v" id="ov-del">0</div><div class="l">DELIVERED</div></div>
+        <div class="ov-s"><div class="v" id="ov-crash">0</div><div class="l">CRASHES</div></div>
+        <div class="ov-s"><div class="v" id="ov-rating">⭐</div><div class="l">RATING</div></div>
+        <div class="ov-s"><div class="v" id="ov-best">₹0</div><div class="l">BEST RUN</div></div>
       </div>
 
-      <button id="play-btn" type="button">
-        START DRIVING!
-      </button>
+      <button id="play-btn" type="button">START DRIVING!</button>
     </main>
-  
-    <<div id="mini-map">
-    <div id="mini-road"></div>
 
-    <div id="mini-bus">🚌</div>
+    <div id="mini-map">
+      <div id="mini-road"></div>
+      <div id="mini-bus">🚌</div>
+      <div id="mini-target">📍</div>
+      <div id="mini-arrow">➡️</div>
+      <div id="mini-label">NEXT STOP</div>
+    </div>
 
-    <div id="mini-target">📍</div>
-
-    <div id="mini-arrow">➡️</div>
-
-    <div id="mini-label">NEXT STOP</div>
-</div>
-
-<button id="pause-btn" onclick="pauseGame()">⏸ Pause</button>
-<button id="resume-btn" onclick="resumeGame()" style="display:none;">▶ Resume</button>
-<button id="restart-btn" onclick="restartGame()">🔄 Restart</button>
-
+    <div id="game-ctrl">
+      <button id="pause-btn" type="button">⏸ Pause</button>
+      <button id="resume-btn" type="button" class="hidden">▶ Resume</button>
+      <button id="restart-btn" type="button">🔄 Restart</button>
+      <button id="mute-btn" type="button">🔊</button>
+    </div>
   </div>
 
   <script src="script.js"></script>
-
   <script>
+    // Handle UI interaction after DOM is fully loaded
     window.addEventListener("DOMContentLoaded", () => {
-
       const btn = document.getElementById("play-btn");
+      const pauseBtn = document.getElementById("pause-btn");
+      const resumeBtn = document.getElementById("resume-btn");
+      const restartBtn = document.getElementById("restart-btn");
+      const muteBtn = document.getElementById("mute-btn");
+      const diffBtns = document.querySelectorAll(".diff-btn");
 
+      let selectedDifficulty = "easy";
+
+      // Handle difficulty selection
+      diffBtns.forEach(b => {
+        b.addEventListener("click", () => {
+          diffBtns.forEach(x => x.classList.remove("active"));
+          b.classList.add("active");
+          selectedDifficulty = b.dataset.diff;
+        });
+      });
+
+      // Bind button events to game logic functions
       if (btn && typeof startGame === "function") {
-        btn.addEventListener("click", startGame);
-      } else {
-        console.error("startGame() not found.");
+        btn.addEventListener("click", () => startGame(selectedDifficulty));
       }
 
+      if (pauseBtn && typeof pauseGame === "function") {
+        pauseBtn.addEventListener("click", () => {
+          pauseGame();
+          pauseBtn.classList.add("hidden");
+          resumeBtn.classList.remove("hidden");
+        });
+      }
+
+      if (resumeBtn && typeof resumeGame === "function") {
+        resumeBtn.addEventListener("click", () => {
+          resumeGame();
+          resumeBtn.classList.add("hidden");
+          pauseBtn.classList.remove("hidden");
+        });
+      }
+
+      if (restartBtn && typeof restartGame === "function") {
+        restartBtn.addEventListener("click", restartGame);
+      }
+
+      if (muteBtn && typeof toggleMute === "function") {
+        muteBtn.addEventListener("click", () => {
+          const muted = toggleMute();
+          muteBtn.textContent = muted ? "🔇" : "🔊";
+        });
+      }
     });
   </script>
-
 </body>
-
 </html>

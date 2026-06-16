@@ -29,6 +29,10 @@
   --font-display: "Plus Jakarta Sans", "Poppins", sans-serif;
   --font-mono: "JetBrains Mono", "Share Tech Mono", monospace;
 
+  /* Adaptive border colour — inverts in dark mode */
+  --border-subtle: rgba(0, 0, 0, 0.06);
+  --border-card:   rgba(0, 0, 0, 0.03);
+
   /* Theme accent — classic uses coral */
   --accent: #f97316;
   --accent-light: #fff7ed;
@@ -72,7 +76,7 @@ body.light-mode {
 
 body.light-mode .clock-card {
   background: rgba(255, 255, 255, 0.85);
-  border-color: rgba(0, 0, 0, 0.1);
+  border-color: var(--border-subtle);
 }
 
 body.light-mode .soft-text,
@@ -122,7 +126,7 @@ body {
   color: var(--text-secondary);
   letter-spacing: 0.3px;
   width: fit-content;
-  border: 1px solid rgba(0, 0, 0, 0.04);
+  border: 1px solid var(--border-subtle);
 }
 
 .status-dot {
@@ -154,7 +158,7 @@ body {
   box-shadow: var(--shadow-md);
   position: relative;
   overflow: hidden;
-  border: 1px solid rgba(0, 0, 0, 0.03);
+  border: 1px solid var(--border-card);
   transition: all 0.8s ease-in-out;
 }
 
@@ -296,7 +300,7 @@ body {
   background: var(--bg);
   padding: 8px 16px;
   border-radius: 100px;
-  border: 1px solid rgba(0, 0, 0, 0.04);
+  border: 1px solid var(--border-subtle);
 }
 
 .info-tag-dot {
@@ -334,7 +338,7 @@ body {
   border-radius: var(--radius-lg);
   padding: 22px 24px;
   box-shadow: var(--shadow-sm);
-  border: 1px solid rgba(0, 0, 0, 0.03);
+  border: 1px solid var(--border-card);
   transition: box-shadow 0.25s ease;
 }
 
@@ -382,7 +386,7 @@ body {
   gap: 10px;
   background: var(--bg);
   border-radius: var(--radius-md);
-  border: 1px solid rgba(0,0,0,0,05);
+  border: 1px solid var(--border-subtle);
   position: relative;
 }
 
@@ -528,7 +532,7 @@ body {
 .btn-outline {
   background: transparent;
   color: var(--text-secondary);
-  border: 1.5px solid rgba(0, 0, 0, 0.06);
+  border: 1.5px solid var(--border-subtle);
 }
 
 .btn-outline:hover {
@@ -551,11 +555,11 @@ body {
 .btn-ghost {
   background: var(--bg);
   color: var(--text-secondary);
-  border: 1px solid rgba(0, 0, 0, 0.04);
+  border: 1px solid var(--border-subtle);
 }
 
 .btn-ghost:hover {
-  border-color: rgba(0, 0, 0, 0.1);
+  border-color: var(--border-subtle);
   color: var(--text-primary);
 }
 
@@ -635,7 +639,7 @@ body {
   padding: 11px 16px;
   border-radius: var(--radius-md);
   background: var(--bg);
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  border: 1px solid var(--border-subtle);
   color: var(--text-primary);
   font-size: 13px;
   font-weight: 500;
@@ -671,7 +675,7 @@ body {
   left: 0;
   width: 100%;
   background: var(--bg-card);
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
   padding: 8px;
   z-index: 100;
@@ -694,7 +698,7 @@ body {
   padding: 9px 12px;
   border-radius: var(--radius-sm);
   background: var(--bg);
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  border: 1px solid var(--border-subtle);
   color: var(--text-primary);
   font-size: 12px;
   outline: none;
@@ -816,7 +820,7 @@ body {
 .form-field select {
   width: 100%;
   background: var(--bg);
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  border: 1px solid var(--border-subtle);
   color: var(--text-primary);
   border-radius: var(--radius-sm);
   padding: 10px 12px;
@@ -875,7 +879,7 @@ body {
   padding: 24px;
   color: var(--text-muted);
   font-size: 12px;
-  border: 1px dashed rgba(0, 0, 0, 0.06);
+  border: 1px dashed var(--border-subtle);
   border-radius: var(--radius-md);
 }
 
@@ -886,12 +890,12 @@ body {
   padding: 10px 14px;
   border-radius: var(--radius-md);
   background: var(--bg);
-  border: 1px solid rgba(0, 0, 0, 0.03);
+  border: 1px solid var(--border-card);
   transition: all 0.2s ease;
 }
 
 .alarm-item:hover {
-  border-color: rgba(0, 0, 0, 0.06);
+  border-color: var(--border-subtle);
 }
 
 .alarm-item-left {
@@ -932,7 +936,7 @@ body {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  border: 1px solid rgba(0, 0, 0, 0.04);
+  border: 1px solid var(--border-subtle);
 }
 
 .alarm-item-right {
@@ -1059,7 +1063,7 @@ input:checked + .toggle-slider:before {
   padding: 32px;
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-lg);
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--border-subtle);
   z-index: 2001;
   text-align: center;
 }
@@ -1101,7 +1105,7 @@ input:checked + .toggle-slider:before {
   padding: 12px 14px;
   border-radius: var(--radius-md);
   background: var(--bg);
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  border: 1px solid var(--border-subtle);
   color: var(--text-primary);
   font-size: 13px;
   outline: none;
@@ -1135,7 +1139,7 @@ input:checked + .toggle-slider:before {
 
 .country-option:hover {
   background: var(--bg);
-  border-color: rgba(0, 0, 0, 0.04);
+  border-color: var(--border-subtle);
 }
 
 .country-option-left {
@@ -1438,7 +1442,10 @@ input:checked + .toggle-slider:before {
   }
 }
 /* ── Dark Mode ── */
-.dark-mode {
+/* Triggered by JS (.dark-mode on body) OR by the platform ([data-theme="dark"] on :root/body) */
+.dark-mode,
+:root[data-theme="dark"],
+body[data-theme="dark"] {
   --bg: #0f172a;
   --bg-card: #1e293b;
   --text-primary: #f1f5f9;
@@ -1447,6 +1454,9 @@ input:checked + .toggle-slider:before {
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
   --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.2);
   --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.4), 0 4px 16px rgba(0, 0, 0, 0.2);
+  /* Borders must lighten in dark mode so they remain visible */
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-card:   rgba(255, 255, 255, 0.05);
 }
 
 /* Dark mode toggle button */
