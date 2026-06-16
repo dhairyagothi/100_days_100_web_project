@@ -2840,7 +2840,7 @@
   },
   {
     "projectNo": 225,
-    "projectName": "Harryy Potter Spellbook",
+    "projectName": "Harry Potter Spellbook",
     "projectType": "API",
     "projectDesc": "A magical, interactive web application built with vanilla web technologies. This project fetches live data from the Harry Potter API and features an interactive Spell Caster that dynamically alters the UI using CSS animations and state changes based on the spells you cast.",
     "techStack": [
@@ -2907,6 +2907,18 @@
     ],
     "difficulty": "intermediate",
     "projectPath": "./public/dad-joke/index.html"
+  },
+  {
+  "projectNo": 230,
+  "projectName": "UnitVerse - Interactive Unit Converter Web App",
+  "projectType": "Tool",
+  "projectDesc": "An interactive unit converter with real-time conversion, history tracking, favorites system, and a modern responsive UI.",
+  "techStack": [
+    "html", 
+    "css", 
+    "javascript"
+  ],
+  "difficulty": "intermediate",
+  "projectPath": "./public/UnitVerse/index.html"
   }
-
 ]

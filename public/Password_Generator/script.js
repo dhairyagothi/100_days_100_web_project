@@ -330,10 +330,28 @@ function renderHistory() {
     historyContainer.style.display = "flex";
 
     passwordHistory.forEach((pw) => {
-        const div = document.createElement("div");
-        div.classList.add("history-item");
-        div.innerText = pw;
-        historyList.appendChild(div);
+        const item = document.createElement("div");
+        item.classList.add("history-item");
+
+        const text = document.createElement("span");
+        text.textContent = pw;
+
+        const copyButton = document.createElement("button");
+        copyButton.classList.add("history-copy-btn");
+        copyButton.textContent = "Copy";
+
+        copyButton.addEventListener("click", async () => {
+            try {
+                await navigator.clipboard.writeText(pw);
+            } catch (err) {
+                console.error("Failed to copy password", err);
+            }
+        });
+
+        item.appendChild(text);
+        item.appendChild(copyButton);
+
+        historyList.appendChild(item);
     });
 }
 

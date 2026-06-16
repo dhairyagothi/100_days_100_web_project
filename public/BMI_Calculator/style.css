@@ -509,6 +509,19 @@ canvas{
   padding:18px;
 }
 
+#bg{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100vw !important;
+  height:100vh !important;
+  z-index:-2;
+  background:transparent !important;
+  border-radius:0 !important;
+  padding:0 !important;
+  pointer-events:none;
+}
+
 /* =========================================================
    GOAL SECTION
 ========================================================= */

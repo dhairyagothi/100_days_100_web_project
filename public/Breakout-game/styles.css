@@ -7,7 +7,7 @@
     --bg-primary: #0f172a;
     --bg-secondary: #1e293b;
     --bg-tertiary: #334155;
-    --canvas-bg: #f8fafc;
+    --canvas-bg: #0b1120;
     --text-primary: #f1f5f9;
     --text-secondary: #cbd5e1;
     --accent-1: #3b82f6;
@@ -16,13 +16,14 @@
     --accent-4: #f59e0b;
     --danger: #ef4444;
     --success: #10b981;
+    --non-canvas-height: 220px;
 }
 
 body[data-theme="light"] {
     --bg-primary: #f8fafc;
     --bg-secondary: #f1f5f9;
     --bg-tertiary: #e2e8f0;
-    --canvas-bg: #0f172a;
+    --canvas-bg: #ffffff;
     --text-primary: #1e293b;
     --text-secondary: #475569;
     --accent-1: #0575e6;
@@ -137,9 +138,9 @@ h1 {
 .canvas-wrapper {
     position: relative;
     width: 100%;
-    max-width: 900px;
-    max-height: calc(100dvh - 220px);
+    max-width: min(900px, calc((100dvh - var(--non-canvas-height)) * 1.5));
     aspect-ratio: 900 / 600;
+    max-height: calc(100dvh - var(--non-canvas-height));
     background: var(--canvas-bg);
     border: 4px solid var(--accent-2);
     border-radius: 24px;
@@ -147,6 +148,7 @@ h1 {
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
     animation: slideUp 0.7s ease-out;
     margin: 0 auto;
+    transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 canvas {
@@ -155,6 +157,7 @@ canvas {
     height: 100%;
     cursor: crosshair;
     background: var(--canvas-bg);
+    transition: background 0.3s ease;
 }
 
 #countdown {
@@ -813,9 +816,13 @@ canvas {
    RESPONSIVE DESIGN
    ============================================ */
 
-@media (max-width: 768px) {
+@media (max-width: 768px), (max-height: 700px) {
+    :root {
+        --non-canvas-height: 150px;
+    }
+
     .game-container {
-        gap: 1rem;
+        gap: 0.5rem;
     }
 
     h1 {
@@ -862,19 +869,23 @@ canvas {
     }
 
     .control-panel {
-        flex-direction: column;
+        flex-direction: row;
+        gap: 0.5rem;
+        justify-content: space-between;
+        width: 100%;
     }
 
     .controls-left,
     .controls-center,
     .controls-right {
-        width: 100%;
+        width: auto;
         justify-content: center;
     }
 
     .control-btn {
-        flex: 1;
-        min-width: 120px;
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+        min-width: auto;
     }
 
     .difficulty-buttons {
@@ -886,36 +897,41 @@ canvas {
     }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 480px), (max-height: 550px) {
+    :root {
+        --non-canvas-height: 125px;
+    }
+
     body {
-        padding: 0.5rem;
+        padding: 0.25rem;
     }
 
     .game-wrapper {
-        padding: 0.5rem;
+        padding: 0.25rem;
     }
 
     h1 {
-        font-size: 1.75rem;
+        font-size: 1.5rem;
     }
 
     .game-stats {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 0.5rem;
-        margin: 0.5rem 0;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0.25rem;
+        margin: 0.25rem 0;
     }
 
     .stat {
-        padding: 0.75rem;
-        font-size: 0.9rem;
+        padding: 0.35rem 0.2rem;
+        font-size: 0.8rem;
     }
 
     .stat-label {
-        font-size: 0.65rem;
+        font-size: 0.55rem;
+        letter-spacing: 0.5px;
     }
 
     .stat-value {
-        font-size: 1.25rem;
+        font-size: 1rem;
     }
 
     .canvas-wrapper {
@@ -962,8 +978,8 @@ canvas {
     }
 
     .control-btn {
-        padding: 0.6rem 1rem;
-        font-size: 0.9rem;
+        padding: 0.4rem 0.6rem;
+        font-size: 0.8rem;
     }
 
     .toast-container {
@@ -988,13 +1004,6 @@ canvas {
 
     .btn {
         width: 100%;
-    }
-}
-
-@media (max-width: 768px) {
-    /* Rules Grid Layout overrides */
-    .rules-grid {
-        grid-template-columns: 1fr;
     }
 }
 

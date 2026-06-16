@@ -853,7 +853,7 @@ function renderGrid() {
     });
   }
 
-  grid.innerHTML = "";
+  grid.replaceChildren();
 
   if (filtered.length === 0) {
     grid.style.display = "none";
