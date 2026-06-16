@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="blog.css">
+    <link rel="stylesheet" href="of.css">
 </head>
 <body class="transition-all duration-300">
 
@@ -18,7 +18,7 @@
             <i class="fa-solid fa-arrow-left"></i> Back to Blogs
         </a>
         <div class="logo">
-            GreenBlog
+            GreenBlog       
         </div>
     </div>
     <ul class="nav-links">
@@ -34,23 +34,25 @@
     </div>
 </nav>
 
-<div class="blog-page-container">
+<div class="blog-page-container main-layout">
     <div class="blog-page">
 
-    <img id="blogImage" class="blog-banner">
+        <img id="blogImage" class="blog-banner">
 
-    <h1 id="blogTitle"></h1>
+        <h1 id="blogTitle"></h1>
 
-    <div class="blog-author">
-        <h3 id="blogAuthor"></h3>
-        <p id="blogDate" class="blog-date"></p>
+        <div class="blog-author">
+            <h3 id="blogAuthor"></h3>
+            <p id="blogDate" class="blog-date"></p>
+        </div>
+
+        <div class="blog-content">
+            <p id="blogContent"></p>
+        </div>
+
     </div>
 
-    <div class="blog-content">
-        <p id="blogContent"></p>
-    </div>
-
-</div>
+    <aside class="sidebar" style="display: none;"></aside>
 </div>
 
 <footer class="footer">
@@ -93,6 +95,7 @@
 </footer>
 
 <script src="blogs.js"></script>
+<script src="sidebar.js"></script>
 <script src="script.js"></script>
 
 <script>
@@ -113,7 +116,6 @@ if(blog){
     document.getElementById("blogAuthor").textContent = blog.author || "Admin";
     document.getElementById("blogDate").textContent = `Posted on ${blog.date}`;
     
-    // Set fallback image if missing
     const imgUrl = blog.image || "https://images.unsplash.com/photo-1499750310107-5fef28a66643?q=80&w=1200";
     document.getElementById("blogImage").src = imgUrl;
     document.getElementById("blogImage").alt = blog.title;
