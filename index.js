@@ -1,3 +1,17 @@
+// Global event listener to hide broken preview images (CSP-compliant alternative to inline onerror)
+window.addEventListener(
+  "error",
+  (event) => {
+    if (event.target && event.target.tagName === "IMG") {
+      const container = event.target.closest(".card-preview-image-container");
+      if (container) {
+        container.style.display = "none";
+      }
+    }
+  },
+  true
+);
+
 /* ============================================================
    CONFIGURATION
    ============================================================ */
@@ -315,8 +329,13 @@ function buildProjectCardHTML({
   const isRoot = !window.location.pathname.includes("/contributors/");
   const basePrefix = isRoot ? "" : "../";
 
+  const description = escapeHTML(getProjectDescription(project));
+  const safeDay = escapeHTML(day);
+  const safeName = escapeHTML(name);
+  const safeCategory = escapeHTML(category);
+
   let safePreviewUrl = "";
-  const resolvedPreview = (project && project.previewImage) || previewImage;
+  const resolvedPreview = project && project.previewImage;
   if (resolvedPreview) {
     if (resolvedPreview.startsWith("./")) {
       safePreviewUrl = basePrefix + resolvedPreview.substring(2);
@@ -338,15 +357,9 @@ function buildProjectCardHTML({
            alt="${safeName} preview"
            loading="lazy"
            decoding="async"
-           onerror="this.parentNode.style.display='none';"
          >
        </div>`
     : "";
-
-  const description = escapeHTML(getProjectDescription(project));
-  const safeDay = escapeHTML(day);
-  const safeName = escapeHTML(name);
-  const safeCategory = escapeHTML(category);
 
   const difficulty = project ? project.difficulty || "" : "";
   const difficultyKey = (difficulty || "").toLowerCase();
