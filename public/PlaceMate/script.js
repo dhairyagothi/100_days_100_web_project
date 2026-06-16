@@ -307,6 +307,34 @@ updateBtn.addEventListener("click", () => {
       document.getElementById("resumeInput").value
     );
 
+  const suggestions =
+    document.getElementById(
+      "resumeSuggestions"
+    );
+
+  if(resume >= 85){
+
+    suggestions.innerHTML = `
+      ✓ Excellent Resume<br>
+      ✓ Keep updating projects
+    `;
+
+  }else if(resume >= 70){
+
+    suggestions.innerHTML = `
+      ✓ Add measurable achievements<br>
+      ✓ Improve project descriptions
+    `;
+
+  }else{
+
+    suggestions.innerHTML = `
+      ✓ Add Projects<br>
+      ✓ Improve Keywords<br>
+      ✓ Add Quantified Achievements
+    `;
+  }
+
   const communication =
     parseInt(
       document.getElementById("communicationInput").value
@@ -395,6 +423,53 @@ updateBtn.addEventListener("click", () => {
   development
   });
 
+  updateAIInsights(
+  communication,
+  development,
+  aptitude,
+  resume
+  );
+
+  const badges = [];
+
+  if(dsa >= 300){
+    badges.push("🏅 DSA Master");
+  }
+
+  if(aptitude >= 90){
+    badges.push("🏅 Aptitude Expert");
+  }
+
+  if(readinessScore >= 80){
+    badges.push("🏅 Placement Ready");
+  }
+
+  if(mock >= 20){
+    badges.push("🏅 Consistency Champion");
+  }
+
+  const badgeContainer =
+    document.getElementById(
+      "badgeContainer"
+    );
+
+  if(badges.length){
+
+    badgeContainer.innerHTML =
+      badges
+        .map(
+          badge =>
+            `<div class="badge-card">${badge}</div>`
+        )
+        .join("");
+
+  }else{
+
+    badgeContainer.innerHTML =
+      `<div class="badge-card">
+        No badges earned yet
+      </div>`;
+  }
 
   const companyGrid =
     document.getElementById("companyGrid");
@@ -439,6 +514,100 @@ updateBtn.addEventListener("click", () => {
   }
 
 });
+
+function updateAIInsights(
+  communication,
+  development,
+  aptitude,
+  resume
+){
+
+  const weakAreas =
+    document.getElementById(
+      "weakAreas"
+    );
+
+  const recommendedActions =
+    document.getElementById(
+      "recommendedActions"
+    );
+
+  weakAreas.innerHTML = "";
+  recommendedActions.innerHTML = "";
+
+  const weaknesses = [];
+  const actions = [];
+
+  if (communication < 75) {
+
+    weaknesses.push(
+      "Communication"
+    );
+
+    actions.push(
+      "Practice HR questions"
+    );
+  }
+
+  if (development < 75) {
+
+    weaknesses.push(
+      "Development"
+    );
+
+    actions.push(
+      "Build one full-stack project"
+    );
+  }
+
+  if (aptitude < 75) {
+
+    weaknesses.push(
+      "Aptitude"
+    );
+
+    actions.push(
+      "Solve aptitude quizzes daily"
+    );
+  }
+
+  if (resume < 75) {
+
+    weaknesses.push(
+      "Resume"
+    );
+
+    actions.push(
+      "Improve project descriptions"
+    );
+  }
+
+  if (
+    weaknesses.length === 0
+  ) {
+
+    weakAreas.innerHTML =
+      "<li>No major weak areas detected 🎉</li>";
+
+    recommendedActions.innerHTML =
+      "<li>Keep practicing consistently</li>";
+
+    return;
+  }
+
+  weaknesses.forEach(item => {
+
+    weakAreas.innerHTML +=
+      `<li>${item}</li>`;
+  });
+
+  actions.forEach(item => {
+
+    recommendedActions.innerHTML +=
+      `<li>${item}</li>`;
+  });
+}
+
 function saveUserData(data) {
 
   localStorage.setItem(
@@ -717,7 +886,43 @@ function loadUserData() {
   updateBtn.click();
 }
 window.addEventListener("load", () => {
+
   loadUserData();
+
+  const communication =
+    parseInt(
+      document.getElementById(
+        "communicationInput"
+      ).value
+    );
+
+  const development =
+    parseInt(
+      document.getElementById(
+        "developmentInput"
+      ).value
+    );
+
+  const aptitude =
+    parseInt(
+      document.getElementById(
+        "aptitudeInput"
+      ).value
+    );
+
+  const resume =
+    parseInt(
+      document.getElementById(
+        "resumeInput"
+      ).value
+    );
+
+  updateAIInsights(
+    communication,
+    development,
+    aptitude,
+    resume
+  );
 });
 
 /* =========================

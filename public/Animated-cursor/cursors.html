@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset= "UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="animated-cursor.css">
+<link rel="icon" href="../favv.png" type="image/x-icon" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+
+<title>Animated Cursor</title>
+</head>
+<body>
+
+ 
+<!-- Navbar -->
+
+   <nav class="navbar">
+   
+        <div class="logo" style="margin-left: 100px;">
+           Animated Cursor
+        </div>
+        <!-- Navigation Links -->
+        <ul class="nav-links">
+            <li>
+                <a href="animated-cursor.html">Home</a>
+            </li>
+            <li>
+                  <a href="cursors.html">Cursors</a>
+            </li>
+            <li>
+                <a href="#categories">Contact</a>
+            </li>
+    
+        </ul>
+        <!-- Right Side -->
+        <div class="nav-right">
+            <!-- Dark Mode Button -->
+            <button id="themeToggle" class="theme">
+                <span id="themeIcon">☀️</span>
+            </button>
+        </div>
+    </nav>
+  
+<div class="background"></div>
+
+<div class="galaxy-glow"></div>
+
+<canvas id="stars"></canvas>
+
+<div class="glass-overlay"></div>
+
+<div class="cursor"></div>
+
+<main class="content">
+
+    <section class="hero-section">
+        <h1>Animated Cursor Gallery</h1>
+
+        <p>
+            Explore unique animated cursor styles and instantly apply them to
+            experience different cursor effects.
+        </p>
+    </section>
+
+    <!-- Hidden Selects Required By Existing JS -->
+    <select id="cursor-design" hidden>
+        <option value="orb" selected>Glowing Orb</option>
+        <option value="ring">Neon Ring</option>
+        <option value="diamond">Crystal Diamond</option>
+        <option value="crosshair">Crosshair</option>
+    </select>
+
+    <select id="theme-design" hidden>
+        <option value="galaxy" selected>Galaxy</option>
+        <option value="aurora">Aurora</option>
+        <option value="neon">Neon</option>
+        <option value="firefly">Firefly</option>
+    </select>
+
+    <!-- Search (Optional Future Feature) -->
+    <div class="gallery-toolbar">
+
+    </div>
+
+    <!-- Dynamic Cursor Grid -->
+    <section id="cursorGrid" class="cursor-grid">
+
+        <!-- JS will generate cards here -->
+
+        <!-- Example Card Structure -->
+
+        <!--
+        <article class="cursor-card">
+
+            <div class="cursor-preview">
+
+                Dynamic Preview
+
+            </div>
+
+            <div class="cursor-details">
+
+                <h3>Glowing Orb</h3>
+
+                <p>
+                    Soft glowing particle cursor.
+                </p>
+
+                <button
+                    class="apply-btn magnetic-control"
+                    data-cursor="orb"
+                >
+                    Apply Cursor
+                </button>
+
+            </div>
+
+        </article>
+        -->
+
+        
+
+    </section>
+
+</main>
+
+
+<script src="cursors.js"></script>
+<script src="animated-cursor.js"></script>
+
+
+<footer class="site-footer">
+  <div class="footer-container">
+    <div class="footer-column">
+      <h3>About Project</h3>
+      <p>Animated Cursor is part of the 100 Web Projects series — exploring creative UI interactions and modern web animations.</p>
+    </div>
+
+    <div class="footer-column">
+      <h3>Quick Links</h3>
+      <ul>
+        <li><a href=".animated-cursor.html">Home</a></li>
+        <li><a href="#">Projects</a></li>
+        <li><a href="#">Docs</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-column">
+      <h3>Resources</h3>
+      <ul>
+        <li><a href="#">GitHub Repository</a></li>
+        <li><a href="#">Design Assets</a></li>
+        <li><a href="#">API References</a></li>
+        <li><a href="#">Community Forum</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-column">
+      <h3>Stay Connected</h3>
+      <div class="social-icons">
+        <a href="#"><i class="fab fa-github"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-linkedin"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+      </div>
+      <p>© 2026 100 Web Projects | Designed by Gayatri Ghogare</p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

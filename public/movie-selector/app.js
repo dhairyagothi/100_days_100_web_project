@@ -1,6 +1,11 @@
-// Access high-rated discover elements utilizing the public fallback tracking pipeline index mapping
-const MOVIE_DISCOVER_API =
-  "https://api.themoviedb.org/3/discover/movie?api_key=8f2467d3e6205844a4b1f4faaa387eb3&sort_by=vote_average.desc&vote_count.gte=500&include_adult=false";
+const TMDB_API_KEY =
+  window.TMDB_API_KEY ||
+  (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_TMDB_API_KEY) ||
+  '';
+
+const MOVIE_DISCOVER_API = TMDB_API_KEY
+  ? `https://api.themoviedb.org/3/discover/movie?api_key=${TMDB_API_KEY}&sort_by=vote_average.desc&vote_count.gte=500&include_adult=false`
+  : null;
 const IMAGE_RESOURCES_API = "https://image.tmdb.org/t/p/w400";
 
 const genreSelect = document.getElementById("genreSelect");

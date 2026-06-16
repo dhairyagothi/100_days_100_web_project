@@ -132,7 +132,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
     updateClock();
     tickWorldClocks();
+    
   });
+  // CSP Bypass for Add Alarm Button
+  const addAlarmBtn = document.getElementById("add-alarm-btn");
+  if (addAlarmBtn) {
+    addAlarmBtn.addEventListener("click", function(event) {
+      event.preventDefault();
+      addNewAlarm();
+    });
+  }
+  const clearAllBtn = document.getElementById("clear-all-btn");
+  if (clearAllBtn) {
+    clearAllBtn.addEventListener("click", function() {
+      clearAllAlarms();
+    });
+  }
+
+});
 
   updatePomodoroDisplay();
 
@@ -150,8 +167,6 @@ resetPomodoroBtn.addEventListener(
   "click",
   resetPomodoro
 );
-
-});
 
 // ================= POMODORO =================
 
@@ -274,6 +289,16 @@ function addNewAlarm() {
     return;
   }
 
+    timeInput.value = '';
+    labelInput.value = '';
+
+    saveAlarms();
+    renderAlarmsList();
+    updateAlarmSummary();
+
+    showToast('Alarm updated');
+    return;
+}
   const alarm = {
     id: Date.now(),
     time: timeInput.value,
@@ -318,7 +343,22 @@ function triggerAlarm(alarm) {
 
   alarmPopup.classList.remove('hidden');
 
-  addHistoryLog(`Alarm "${alarm.label}" rang at ${alarm.time}`);
+  // 1. Format the time based on the 12h/24h toggle
+let logTime = alarm.time;
+if (!is24HourFormat) {
+  let [hours, minutes] = alarm.time.split(':');
+  let parsedHours = parseInt(hours, 10);
+  let ampm = parsedHours >= 12 ? 'PM' : 'AM';
+  parsedHours = parsedHours % 12 || 12; // Converts '00' to '12'
+  let paddedHours = parsedHours.toString().padStart(2, '0');
+  logTime = `${paddedHours}:${minutes} ${ampm}`;
+}
+
+// 2. Clean up the label (Don't print "Alarm" twice)
+let labelDisplay = (alarm.label && alarm.label !== 'Alarm') ? ` "${alarm.label}"` : '';
+
+// 3. Save the perfect log
+addHistoryLog(`Alarm${labelDisplay} rang at ${logTime}`);
   renderHistoryLogs();
 
   startRinger();
@@ -520,43 +560,27 @@ function renderWorldClocks() {
     const weather = weatherCache[clock.name];
     const row = document.createElement('div');
     row.className = 'world-clock-row';
+    
     row.innerHTML = `
       <div class="world-clock-left">
-        <img src="${clock.flag}" alt="${clock.name}" class="flag-img" loading="lazy" />
-        <div>
-          <div class="world-city-name">
-            ${clock.name}
-            <span class="time-of-day-badge" data-offset="${clock.offset}"></span>
-          </div>
+        <img src="${clock.flag}" class="flag-img" />
+        <div class="city-info">
+          <div class="world-city-name">${clock.name}</div>
           <div class="world-offset-label">${clock.offset}</div>
         </div>
       </div>
+
       <div class="world-clock-right">
-  <div class="world-time-weather">
-    <span class="world-time-display ticking-world-time" data-offset="${clock.offset}">
-      00:00:00
-    </span>
+        <span class="world-time-display ticking-world-time" data-offset="${clock.offset}">00:00</span>
+        <span class="weather-emoji">${getWeatherEmoji(weather.condition || 'clear', new Date().getHours() >= 6 && new Date().getHours() < 18)}</span>
+        <span class="weather-temp">${weather.temperature}°C</span>
+      </div>
 
-    <div class="world-weather-inline">
-  <span class="weather-emoji">
-    ${getWeatherEmoji(
-      weather.condition || 'clear',
-      new Date().getHours() >= 6 && new Date().getHours() < 18
-    )}
-  </span>
+      <button class="remove-btn" onclick="removeWorldClock(${index})">&times;</button>
 
-  <span class="weather-temp">
-    ${weather.temperature}°C
-  </span>
-  </div>
-  </div>
-
-  <button class="remove-btn" onclick="removeWorldClock(${index})" title="Remove">
-    &times;
-  </button>
-</div>
+      <span class="time-of-day-badge" data-offset="${clock.offset}"></span>
     `;
-    container.appendChild(row);
+  container.appendChild(row);
   });
 }
 
@@ -658,6 +682,11 @@ function tickWorldClocks() {
 }
 
 // ================= HISTORY =================
+function addHistoryLog(message) {
+  historyLogs.unshift({text: message});
+  localStorage.setItem('historyLogs', JSON.stringify(historyLogs));
+}
+
 function renderHistoryLogs() {
   const container = document.getElementById('history-logs');
   if (!container) return;

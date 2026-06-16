@@ -38,8 +38,76 @@
   const isLearn = path.includes("/learning/");
   const isContributors = path.includes("/contributors/");
 
-  const username =
-    window.username || safeStorage.getItem("loggedInUser") || null;
+  function escapeHTML(value) {
+    return String(value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/\"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
+
+  function readSession() {
+    const rawSession = safeStorage.getItem("loggedInUserData");
+    if (rawSession) {
+      try {
+        const parsedSession = JSON.parse(rawSession);
+        if (parsedSession && typeof parsedSession === "object") {
+          return parsedSession;
+        }
+      } catch (_) {
+        // Ignore malformed session data and fall back below.
+      }
+    }
+
+    const fallbackUsername =
+      window.username || safeStorage.getItem("loggedInUser") || null;
+    if (fallbackUsername) {
+      return {
+        username: fallbackUsername,
+        name: fallbackUsername,
+        authAction: "login",
+      };
+    }
+
+    return null;
+  }
+
+  function getDisplayName(session) {
+    return String(
+      session?.name || session?.username || window.username || safeStorage.getItem("loggedInUser") || ""
+    ).trim();
+  }
+
+  function getIstGreeting() {
+    const hour = Number(
+      new Intl.DateTimeFormat("en-US", {
+        timeZone: "Asia/Kolkata",
+        hour: "numeric",
+        hour12: false,
+      }).format(new Date()),
+    );
+
+    if (hour >= 5 && hour < 12) return "Good morning";
+    if (hour >= 12 && hour < 17) return "Good afternoon";
+    if (hour >= 17 && hour < 21) return "Good evening";
+    return "Good night";
+  }
+
+  function getGreetingCopy(session) {
+    const displayName = getDisplayName(session) || "there";
+    const authAction = String(session?.authAction || "login").toLowerCase();
+
+    if (authAction === "signup") {
+      return `Hey ${displayName}, Welcome!`;
+    }
+
+    return `${getIstGreeting()}, ${displayName}. Welcome back!`;
+  }
+
+  const session = readSession();
+  const displayName = getDisplayName(session) || "there";
+  const greetingCopy = session ? getGreetingCopy(session) : "";
 
   window.ThemeManager?.init?.();
   const isLight = window.ThemeManager?.currentTheme?.() === "light";
@@ -66,19 +134,19 @@
   `;
   const homeBtn = `
   <a class="btn ${isHome ? "btn-primary active" : "btn-ghost"} btn-sm" href="${homeHref}">
-    <span class="mobile-nav-icon"><i class="fas fa-home"></i></span>
+    <span class="mobile-nav-icon"><i class="fas fa-home" aria-hidden="true"></i></span>
     Home
   </a>`;
 
   const learnBtn = `
   <a class="btn ${isLearn ? "btn-primary active" : "btn-ghost"} btn-sm" href="${learnHref}">
-    <span class="mobile-nav-icon"><i class="fas fa-graduation-cap"></i></span>
+    <span class="mobile-nav-icon"><i class="fas fa-graduation-cap" aria-hidden="true"></i></span>
     Learn
   </a>`;
 
   const contributorsBtn = `
   <a class="btn ${isContributors ? "btn-primary active" : "btn-ghost"} btn-sm" href="${contributorsHref}">
-    <span class="mobile-nav-icon"><i class="fas fa-users"></i></span>
+    <span class="mobile-nav-icon"><i class="fas fa-users" aria-hidden="true"></i></span>
     Contributors
   </a>`;
 
@@ -96,19 +164,20 @@
     safeStorage.getItem("customCursorEnabled") !== "false";
   const cursorBtn = `
     <button class="btn btn-ghost btn-sm" id="cursorToggleNav" aria-label="Toggle custom cursor (currently ${customCursorEnabled ? "Custom" : "Default"})">
-      <span class="mobile-nav-icon"><i class="fas ${customCursorEnabled ? "fa-circle-notch" : "fa-mouse-pointer"}"></i></span>
+      <span class="mobile-nav-icon"><i class="fas ${customCursorEnabled ? "fa-circle-notch" : "fa-mouse-pointer"}" aria-hidden="true"></i></span>
       Cursor: ${customCursorEnabled ? "Custom" : "Default"}
     </button>
   `;
 
   let navButtonsHTML = "";
-  if (username) {
+  if (session) {
     const userSection = `
+      <div class="welcome-text" id="navWelcomeCopy">${escapeHTML(greetingCopy)}</div>
       <div class="mobile-user-strip">
-        <div class="mobile-user-avatar">${username.slice(0, 2).toUpperCase()}</div>
+        <div class="mobile-user-avatar">${escapeHTML(displayName.slice(0, 2).toUpperCase())}</div>
         <div class="mobile-user-info">
-          <p class="mobile-user-name">Hi, ${username}</p>
-          <p class="mobile-user-role">Contributor</p>
+          <p class="mobile-user-name">${escapeHTML(greetingCopy)}</p>
+          <p class="mobile-user-role">${escapeHTML(session.authAction === "signup" ? "New session" : "Signed in")}</p>
         </div>
       </div>
       <button class="btn btn-ghost btn-sm" id="logoutBtn">Log out</button>
@@ -139,7 +208,7 @@
         <div class="mobile-menu-header">
           <span class="mobile-menu-title">MENU</span>
           <button class="mobile-menu-close" id="mobileMenuClose" type="button">
-            <i class="fas fa-times"></i>
+            <i class="fas fa-times" aria-hidden="true"></i>
           </button>
         </div>
         ${navButtonsHTML}
@@ -248,6 +317,14 @@
         dropdownMenu.classList.remove("show");
       }
     });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && dropdownMenu.classList.contains("show")) {
+        dropdownToggle.setAttribute("aria-expanded", "false");
+        dropdownMenu.classList.remove("show");
+        dropdownToggle.focus();
+      }
+    });
   }
 
   const logoutBtn = document.getElementById("logoutBtn");
@@ -255,6 +332,7 @@
     logoutBtn.addEventListener("click", () => {
       window.username = null;
       safeStorage.removeItem("loggedInUser");
+      safeStorage.removeItem("loggedInUserData");
       location.reload();
     });
   }
@@ -269,21 +347,23 @@
     const nextState = !currentlyEnabled;
     safeStorage.setItem("customCursorEnabled", String(nextState));
 
-    // Update all cursor toggle buttons on the page (both standard and mobile drawer might have it)
-    document.querySelectorAll("#cursorToggleNav").forEach((btn) => {
-      btn.innerHTML = `
-        <span class="mobile-nav-icon"><i class="fas ${nextState ? "fa-circle-notch" : "fa-mouse-pointer"}"></i></span>
-        Cursor: ${nextState ? "Custom" : "Default"}
-      `;
-      btn.setAttribute(
-        "aria-label",
-        `Toggle custom cursor (currently ${nextState ? "Custom" : "Default"})`,
-      );
-    });
-
-    // Call the custom cursor update function if it exists (on the landing page)
-    if (typeof window.updateCustomCursorState === "function") {
-      window.updateCustomCursorState();
+    // Call the cursor system to enable/disable
+    if (nextState && window.CursorSystem?.enable) {
+      window.CursorSystem.enable();
+    } else if (!nextState && window.CursorSystem?.disable) {
+      window.CursorSystem.disable();
+    } else {
+      // Fallback if cursor system not loaded yet
+      document.querySelectorAll("#cursorToggleNav").forEach((btn) => {
+        btn.innerHTML = `
+          <span class="mobile-nav-icon"><i class="fas ${nextState ? "fa-circle-notch" : "fa-mouse-pointer"}" aria-hidden="true"></i></span>
+          Cursor: ${nextState ? "Custom" : "Default"}
+        `;
+        btn.setAttribute(
+          "aria-label",
+          `Toggle custom cursor (currently ${nextState ? "Custom" : "Default"})`,
+        );
+      });
     }
   });
 })();

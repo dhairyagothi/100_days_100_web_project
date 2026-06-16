@@ -3,19 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Test your math skills across Easy, Medium, and Hard difficulty levels — from basic arithmetic to exponents, fractions, algebra, and more!">
     <title>Maths Quiz Game</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
 
     <div class="quiz-container">
         <div id="difficulty-screen">
             <h1>Maths Quiz Game</h1>
             <p>Select Difficulty:</p>
-            <button onclick="startGame('easy')">Easy</button>
-            <button onclick="startGame('medium')">Medium</button>
-            <button onclick="startGame('hard')">Hard</button>
+            <button class="btn-easy" onclick="startGame('easy')">Easy</button>
+            <span class="diff-desc">Addition & Subtraction</span>
+            <button class="btn-medium" onclick="startGame('medium')">Medium</button>
+            <span class="diff-desc">Multiply, Divide & Mixed Ops</span>
+            <button class="btn-hard" onclick="startGame('hard')">Hard</button>
+            <span class="diff-desc">Exponents, Roots, Fractions & more</span>
         </div>
        <div id="game-screen" style="display: none;">
     <h1>Maths Quiz Game</h1>
@@ -29,6 +33,7 @@
 
     <div id="timer">Time: 30s</div>
 
+    <div id="question-type"></div>
     <div id="question-box">
         Loading question...
     </div>

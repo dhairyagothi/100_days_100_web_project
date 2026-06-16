@@ -46,7 +46,7 @@ header h1 {
   background: #fff;
   border-radius: 10px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-  margin-top: 100px; /* Adjust for the header space */
+  margin-top: 100px;
 }
 
 .hangman-box img {
@@ -134,7 +134,7 @@ header h1 {
   transform: scale(0.95);
 }
 
-/* Modal Styling */
+/* Game Over / Victory Modal Styling */
 .game-modal {
   position: fixed;
   top: 0;
@@ -234,91 +234,63 @@ header h1 {
     font-size: 1rem;
   }
 }
+
 .top-controls {
   width: 100%;
   display: flex;
   justify-content: center;
-
   margin-top: 25px;
 }
 
 .rules-btn {
   background: white;
-
   border: none;
-
   padding: 12px 22px;
-
   border-radius: 12px;
-
   font-size: 16px;
-
   font-weight: 600;
-
   cursor: pointer;
-
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-
   transition: 0.3s;
 }
 
 .rules-btn:hover {
   background: #795615;
-
   color: white;
-
   transform: translateY(-2px);
 }
 
 .rules-modal {
   position: fixed;
-
   inset: 0;
-
   background: rgba(0, 0, 0, 0.6);
-
   display: flex;
-
   justify-content: center;
-
   align-items: center;
-
   opacity: 0;
-
   pointer-events: none;
-
   transition: 0.3s;
-
   z-index: 9999;
 }
 
 .rules-modal.show {
   opacity: 1;
-
   pointer-events: auto;
 }
 
 .rules-content {
   background: white;
-
   width: 420px;
-
   padding: 30px;
-
   border-radius: 16px;
-
   position: relative;
-
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-
   border-top: 8px solid #e29d1d;
 }
 
 .rules-content h2 {
   color: #333;
-
   margin-bottom: 20px;
-
   text-align: center;
 }
 
@@ -328,23 +300,16 @@ header h1 {
 
 .rules-content li {
   margin-bottom: 12px;
-
   color: #444;
-
   line-height: 1.5;
 }
 
 .close-rules {
   position: absolute;
-
   right: 18px;
-
   top: 12px;
-
   font-size: 30px;
-
   cursor: pointer;
-
   color: #777;
 }
 
@@ -387,4 +352,252 @@ header h1 {
 
 .hint-count b {
   color: #e29d1d;
+}
+
+/* ─── Smart Hint (Groq) Section ─────────────────────────────── */
+
+.smart-hint-section {
+  margin: 10px 0 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+/* The card that shows the typewriter clue */
+.smart-hint-card {
+  width: 100%;
+  background: linear-gradient(135deg, #fffbf0 0%, #fff8e1 100%);
+  border: 2px solid #e29d1d;
+  border-radius: 12px;
+  padding: 14px 18px;
+  min-height: 60px;
+  display: none; /* hidden until first hint is fetched */
+  flex-direction: column;
+  gap: 6px;
+  box-shadow: 0 3px 10px rgba(226, 157, 29, 0.2);
+  text-align: left;
+}
+
+.smart-hint-card.visible {
+  display: flex;
+}
+
+.smart-hint-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #795615;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.smart-hint-text {
+  font-size: 0.97rem;
+  color: #333;
+  line-height: 1.5;
+  min-height: 1.5em;
+}
+
+/* Typewriter cursor blink */
+.smart-hint-text::after {
+  content: '|';
+  display: inline-block;
+  animation: blink 0.75s step-end infinite;
+  color: #e29d1d;
+  margin-left: 1px;
+}
+
+.smart-hint-text.done::after {
+  display: none;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+/* Controls row: button + usage note */
+.smart-hint-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.smart-hint-btn {
+  background: #fff;
+  color: #795615;
+  border: 2px solid #e29d1d;
+  padding: 9px 20px;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.smart-hint-btn:hover:not(:disabled) {
+  background: #e29d1d;
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.smart-hint-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.smart-hint-uses {
+  font-size: 0.85rem;
+  color: #888;
+  font-weight: 500;
+}
+
+.smart-hint-uses.exhausted {
+  color: #e74c3c;
+  font-weight: 600;
+}
+
+/* ─── Groq API Key Modal ─────────────────────────────────────── */
+
+.groq-key-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.groq-key-modal.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.groq-key-content {
+  background: #fff;
+  border-radius: 16px;
+  padding: 36px 32px 28px;
+  width: 400px;
+  max-width: 92vw;
+  position: relative;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+  border-top: 8px solid #e29d1d;
+  text-align: center;
+}
+
+.groq-key-icon {
+  font-size: 2.4rem;
+  margin-bottom: 8px;
+}
+
+.groq-key-content h2 {
+  font-size: 1.35rem;
+  color: #222;
+  margin-bottom: 10px;
+}
+
+.groq-key-content p {
+  font-size: 0.88rem;
+  color: #666;
+  margin-bottom: 18px;
+  line-height: 1.5;
+}
+
+.groq-key-content code {
+  background: #f5f5f5;
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-size: 0.82rem;
+  color: #c0392b;
+}
+
+.groq-key-input {
+  width: 100%;
+  padding: 11px 14px;
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  margin-bottom: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+  font-family: 'Courier New', monospace;
+}
+
+.groq-key-input:focus {
+  border-color: #e29d1d;
+}
+
+.groq-key-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 14px;
+}
+
+.groq-save-btn {
+  background: #e29d1d;
+  color: #fff;
+  border: none;
+  padding: 11px 22px;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.groq-save-btn:hover {
+  background: #795615;
+}
+
+.groq-cancel-btn {
+  background: #f0f0f0;
+  color: #444;
+  border: none;
+  padding: 11px 18px;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.groq-cancel-btn:hover {
+  background: #ddd;
+}
+
+.groq-key-note {
+  font-size: 0.8rem;
+  color: #aaa;
+  margin-bottom: 0;
+}
+
+.groq-key-note a {
+  color: #e29d1d;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.groq-key-note a:hover {
+  text-decoration: underline;
+}
+
+.close-groq-modal {
+  position: absolute;
+  top: 10px;
+  right: 16px;
+  font-size: 28px;
+  cursor: pointer;
+  color: #bbb;
+  line-height: 1;
+}
+
+.close-groq-modal:hover {
+  color: #333;
 }
