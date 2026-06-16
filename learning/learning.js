@@ -1166,7 +1166,7 @@ list.appendChild(item);
         explanation: q.explanation || '',
         userAnswer: null,
         isCorrect: false,
-        wasTestedThisRun: false
+        wasTestedThisRun: true
       }));
     } else {
       persistentResultsLog.forEach(item => {
@@ -1248,8 +1248,9 @@ list.appendChild(item);
     function showResult() {
       document.getElementById('topicNavigation').style.display = 'flex';
       
-      const totalQuestions = persistentResultsLog.length;
-      const correctAnswersCount = persistentResultsLog.filter(r => r.isCorrect).length;
+      const runResults = persistentResultsLog.filter(r => r.wasTestedThisRun);
+      const totalQuestions = runResults.length;
+      const correctAnswersCount = runResults.filter(r => r.isCorrect).length;
       const wrongAnswersCount = totalQuestions - correctAnswersCount;
       const percentage = Math.round((correctAnswersCount / totalQuestions) * 100);
 
