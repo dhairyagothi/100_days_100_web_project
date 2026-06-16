@@ -10,15 +10,23 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   let bookmarks = [];
 
+  // Safely parse JSON from storage so corrupted data cannot crash the portal
+  const safeParse = (value, fallback) => {
+    if (!value) return fallback;
+    try {
+      return JSON.parse(value);
+    } catch {
+      return fallback;
+    }
+  };
+
   function loadBookmarks() {
   const saved =
     localStorage.getItem(
       BOOKMARKS_KEY
     );
 
-  bookmarks = saved
-    ? JSON.parse(saved)
-    : [];
+  bookmarks = safeParse(saved, []);
 }
 
 function saveBookmarks() {
@@ -219,8 +227,9 @@ function toggleBookmark(topic) {
 
   function loadProgress() {
     const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-      learningProgress = JSON.parse(saved);
+    const parsed = safeParse(saved, null);
+    if (parsed) {
+      learningProgress = parsed;
     }
   }
 
@@ -235,11 +244,7 @@ function toggleBookmark(topic) {
       .split('T')[0];
 
   let streak =
-    JSON.parse(
-      localStorage.getItem(
-        STREAK_KEY
-      )
-    ) || {
+    safeParse(localStorage.getItem(STREAK_KEY), null) || {
       current: 0,
       best: 0,
       lastVisit: null
