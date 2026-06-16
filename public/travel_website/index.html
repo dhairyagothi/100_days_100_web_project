@@ -5,11 +5,93 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Travel</title>
       </head>
+      <style> .travel-tips{
+    padding:50px;
+    text-align:center;
+}
+
+.travel-tips h1{
+    margin-bottom:30px;
+    font-size:2.5rem;
+}
+
+.tips-container{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:20px;
+}
+
+.tip-card{
+    background:white;
+    padding:20px;
+    border-radius:12px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.15);
+    transition:0.3s;
+}
+
+.tip-card:hover{
+    transform:translateY(-5px);
+}
+
+.tip-card h2{
+    margin-bottom:10px;
+}</style>
+</head>
+
       <body>
 <a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
 
+
+        <section class="travel-tips">
+
+    <h1>Travel Tips & Guides</h1>
+
+    <div class="tips-container">
+
+        <div class="tip-card">
+            <h2>🎒 Packing Guide</h2>
+            <p>Pack light, carry important documents, medicines, and a power bank.</p>
+        </div>
+
+        <div class="tip-card">
+            <h2>💰 Budget Travel</h2>
+            <p>Book flights early and use local transportation to save money.</p>
+        </div>
+
+        <div class="tip-card">
+            <h2>🛂 Visa Requirements</h2>
+            <p>Always verify visa policies before booking your tickets.</p>
+        </div>
+
+        <div class="tip-card">
+            <h2>🛡 Safety Tips</h2>
+            <p>Keep digital copies of important documents and emergency contacts.</p>
+        </div>
+
+        <div class="tip-card">
+            <h2>📱 Useful Travel Apps</h2>
+            <p>Offline maps and translation apps can make your journey easier.</p>
+        </div>
+
+    </div>
+
+</section>
         <div id="app"></div>
         <script type="module" src="./src/main.jsx"></script>
       </body>
+
+      <script>
+        const cards = document.querySelectorAll(".tip-card");
+
+cards.forEach(card => {
+    card.addEventListener("mouseenter", () => {
+        card.style.transform = "scale(1.03)";
+    });
+
+    card.addEventListener("mouseleave", () => {
+        card.style.transform = "scale(1)";
+    });
+});
+      </script>
     </html>
     
