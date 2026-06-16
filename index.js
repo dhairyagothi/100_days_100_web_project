@@ -959,7 +959,7 @@ function renderRandomProject() {
     )
   );
 
-  const { html, sourceOnly } =
+  const { html, demoUrl, sourceOnly } =
     buildProjectCardHTML({
       day: randomProject.day,
       name: randomProject.projectName,
@@ -983,6 +983,9 @@ function renderRandomProject() {
     : "project-card visible";
 
   card.innerHTML = html;
+  card.setAttribute("tabindex", "0");
+  card.setAttribute("role", "button");
+  attachProjectCardInteraction(card, demoUrl, randomProject);
 
   result.appendChild(card);
 }
