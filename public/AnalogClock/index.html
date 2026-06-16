@@ -1,280 +1,497 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Chronos+ · Premium Time Dashboard</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chronos+ · Premium Time Dashboard</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="index.css" />
-</head>
-<body>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="index.css" />
+  </head>
+  <body>
+    <div class="noise-overlay"></div>
 
-  <div class="noise-overlay"></div>
-
-  <!-- ── HEADER ── -->
-  <header class="site-header">
-    <div class="brand">
-      <div class="brand-mark">
-        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-          <circle cx="16" cy="16" r="14" stroke="currentColor" stroke-width="1.5"/>
-          <circle cx="16" cy="16" r="2" fill="currentColor"/>
-          <line x1="16" y1="4" x2="16" y2="9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-          <line x1="16" y1="23" x2="16" y2="28" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-          <line x1="4" y1="16" x2="9" y2="16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-          <line x1="23" y1="16" x2="28" y2="16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-          <line x1="16" y1="16" x2="22" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          <line x1="16" y1="16" x2="19" y2="20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-        </svg>
-      </div>
-      <div class="brand-text">
-        <h1>CHRONOS<span class="brand-plus">+</span></h1>
-        <p>Premium Time Observatory</p>
-      </div>
-    </div>
-
-    <nav class="header-nav">
-      <button id="focusModeBtn" class="nav-btn focus-btn" aria-label="Toggle Focus Mode">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-          <path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/>
-          <path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/>
-        </svg>
-        <span>Focus</span>
-      </button>
-      <button id="themeToggleBtn" class="nav-btn theme-btn" aria-label="Toggle theme">
-        <span class="theme-toggle-content">
-          <svg id="sunIcon" style="display:none" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-            <circle cx="12" cy="12" r="5"/>
-            <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
-            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-            <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
-            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+    <!-- ── HEADER ── -->
+    <header class="site-header">
+      <div class="brand">
+        <div class="brand-mark">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+            <circle
+              cx="16"
+              cy="16"
+              r="14"
+              stroke="currentColor"
+              stroke-width="1.5"
+            />
+            <circle cx="16" cy="16" r="2" fill="currentColor" />
+            <line
+              x1="16"
+              y1="4"
+              x2="16"
+              y2="9"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+            />
+            <line
+              x1="16"
+              y1="23"
+              x2="16"
+              y2="28"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+            />
+            <line
+              x1="4"
+              y1="16"
+              x2="9"
+              y2="16"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+            />
+            <line
+              x1="23"
+              y1="16"
+              x2="28"
+              y2="16"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+            />
+            <line
+              x1="16"
+              y1="16"
+              x2="22"
+              y2="12"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+            />
+            <line
+              x1="16"
+              y1="16"
+              x2="19"
+              y2="20"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+            />
           </svg>
-          <svg id="moonIcon" style="display:none" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-          </svg>
-          <span id="autoModeLabel" style="display:none" class="mode-label">AUTO</span>
-        </span>
-      </button>
-    </nav>
-  </header>
-
-  <!-- ── MAIN WORKSPACE ── -->
-  <main class="workspace">
-
-    <!-- LOCAL CLOCK + TIMER GRID -->
-    <div class="primary-grid">
-
-      <!-- LOCAL CLOCK -->
-      <section class="panel local-clock-panel" aria-label="Local Time">
-        <div class="panel-banner" style="background-image: url('taj_mahal.png');">
-          <div class="banner-overlay"></div>
-          <div class="banner-label">
-            <span class="location-tag" id="local-tz-label">Local Time</span>
-          </div>
         </div>
+        <div class="brand-text">
+          <h1>CHRONOS<span class="brand-plus">+</span></h1>
+          <p>Premium Time Observatory</p>
+        </div>
+      </div>
 
-        <div class="panel-body">
-          <div class="clock-identity">
-            <h2 class="clock-city" id="local-title">Your Location</h2>
-            <div class="clock-meta">
-              <span class="live-badge">● LIVE</span>
+      <nav class="header-nav">
+        <button
+          id="focusModeBtn"
+          class="nav-btn focus-btn"
+          aria-label="Toggle Focus Mode"
+        >
+          <svg
+            width="15"
+            height="15"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+          >
+            <path d="M8 3H5a2 2 0 0 0-2 2v3" />
+            <path d="M21 8V5a2 2 0 0 0-2-2h-3" />
+            <path d="M3 16v3a2 2 0 0 0 2 2h3" />
+            <path d="M16 21h3a2 2 0 0 0 2-2v-3" />
+          </svg>
+          <span>Focus</span>
+        </button>
+        <button
+          id="themeToggleBtn"
+          class="nav-btn theme-btn"
+          aria-label="Toggle theme"
+        >
+          <span class="theme-toggle-content">
+            <svg
+              id="sunIcon"
+              style="display: none"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+            >
+              <circle cx="12" cy="12" r="5" />
+              <line x1="12" y1="1" x2="12" y2="3" />
+              <line x1="12" y1="21" x2="12" y2="23" />
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+              <line x1="1" y1="12" x2="3" y2="12" />
+              <line x1="21" y1="12" x2="23" y2="12" />
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+            </svg>
+            <svg
+              id="moonIcon"
+              style="display: none"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+            >
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+            </svg>
+            <span id="autoModeLabel" style="display: none" class="mode-label"
+              >AUTO</span
+            >
+          </span>
+        </button>
+      </nav>
+    </header>
+
+    <!-- ── MAIN WORKSPACE ── -->
+    <main class="workspace">
+      <!-- LOCAL CLOCK + TIMER GRID -->
+      <div class="primary-grid">
+        <!-- LOCAL CLOCK -->
+        <section class="panel local-clock-panel" aria-label="Local Time">
+          <div
+            class="panel-banner"
+            style="background-image: url(&quot;taj_mahal.png&quot;)"
+          >
+            <div class="banner-overlay"></div>
+            <div class="banner-label">
+              <span class="location-tag" id="local-tz-label">Local Time</span>
             </div>
           </div>
 
-          <div class="clock-stage">
-            <div class="clock-bezel">
-              <div class="clock-face" id="local-face">
-                <div class="clock-glass-sheen"></div>
-                <div class="hand hour-hand" id="local-hour"></div>
-                <div class="hand minute-hand" id="local-minute"></div>
-                <div class="hand second-hand" id="local-second"></div>
-                <div class="center-jewel"></div>
+          <div class="panel-body">
+            <div class="clock-identity">
+              <h2 class="clock-city" id="local-title">Your Location</h2>
+              <div class="clock-meta">
+                <span class="live-badge">● LIVE</span>
               </div>
             </div>
+
+            <div class="clock-stage">
+              <div class="clock-bezel">
+                <div class="clock-face" id="local-face">
+                  <div class="clock-glass-sheen"></div>
+                  <div class="hand hour-hand" id="local-hour"></div>
+                  <div class="hand minute-hand" id="local-minute"></div>
+                  <div class="hand second-hand" id="local-second"></div>
+                  <div class="center-jewel"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="clock-readouts">
+              <div class="digital-time" id="local-digital">00:00:00</div>
+              <div class="digital-date" id="local-date">—</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- TIMER CONSOLE -->
+        <section class="panel timer-panel" aria-label="Countdown Timer">
+          <div class="panel-header">
+            <div class="panel-title-group">
+              <h2>Timer Console</h2>
+              <p>Precision countdown with skeuomorphic alerts</p>
+            </div>
+            <div class="panel-icon">
+              <svg
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <polyline points="12 6 12 12 16 14" />
+              </svg>
+            </div>
           </div>
 
-          <div class="clock-readouts">
-            <div class="digital-time" id="local-digital">00:00:00</div>
-            <div class="digital-date" id="local-date">—</div>
+          <div class="timer-inputs">
+            <div class="time-field">
+              <input
+                type="number"
+                id="hours"
+                class="time-input"
+                placeholder="00"
+                min="0"
+                max="23"
+              />
+              <label>HRS</label>
+            </div>
+            <div class="time-separator">:</div>
+            <div class="time-field">
+              <input
+                type="number"
+                id="minutes"
+                class="time-input"
+                placeholder="00"
+                min="0"
+                max="59"
+              />
+              <label>MIN</label>
+            </div>
+            <div class="time-separator">:</div>
+            <div class="time-field">
+              <input
+                type="number"
+                id="seconds"
+                class="time-input"
+                placeholder="00"
+                min="0"
+                max="59"
+              />
+              <label>SEC</label>
+            </div>
+          </div>
+
+          <div class="countdown-display">
+            <div class="countdown-track">
+              <svg class="countdown-arc" viewBox="0 0 200 200" id="timerArcSvg">
+                <circle
+                  class="arc-bg"
+                  cx="100"
+                  cy="100"
+                  r="85"
+                  fill="none"
+                  stroke-width="4"
+                />
+                <circle
+                  class="arc-fill"
+                  cx="100"
+                  cy="100"
+                  r="85"
+                  fill="none"
+                  stroke-width="4"
+                  stroke-dasharray="534"
+                  stroke-dashoffset="534"
+                  id="timerArc"
+                />
+              </svg>
+              <div id="countdownDisplay" class="countdown-digits">00:00:00</div>
+            </div>
+          </div>
+
+          <div class="timer-actions">
+            <button
+              class="action-btn primary-action"
+              onclick="startCountdown()"
+              aria-label="Start"
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <polygon points="5 3 19 12 5 21 5 3" />
+              </svg>
+              Start
+            </button>
+            <button
+              id="pausebtn"
+              class="action-btn secondary-action"
+              onclick="pauseCountdown()"
+              aria-label="Pause"
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+              >
+                <rect x="6" y="4" width="4" height="16" />
+                <rect x="14" y="4" width="4" height="16" />
+              </svg>
+              Pause
+            </button>
+            <button
+              class="action-btn ghost-action"
+              onclick="restartCountdown()"
+              aria-label="Reset"
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+              >
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+                <path d="M3 3v5h5" />
+              </svg>
+              Reset
+            </button>
+          </div>
+
+          <div id="timerUpMsg" class="timer-alert">
+            <div class="alert-pulse"></div>
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+              <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+            </svg>
+            <span>Time's Up — Alarm Active</span>
+          </div>
+        </section>
+      </div>
+
+      <!-- WORLD TIMEZONE MAP -->
+      <section class="panel map-panel" aria-label="World Timezone Map">
+        <div class="map-panel-header">
+          <div>
+            <h2>World Timezone Observatory</h2>
+            <p>Hover zones for offsets · Click markers to pin clocks</p>
+          </div>
+          <div class="map-legend">
+            <span class="legend-dot pinned"></span><span>Pinned</span>
+            <span class="legend-dot active"></span><span>Active</span>
+          </div>
+        </div>
+
+        <div class="map-container">
+          <div class="map-scroll">
+            <div id="timezone-map-wrapper"></div>
+          </div>
+
+          <div id="map-tooltip" class="map-tooltip" style="display: none">
+            <div class="tt-header">
+              <h4 id="tooltip-city">—</h4>
+              <span id="tooltip-offset" class="tt-badge">UTC+0</span>
+            </div>
+            <div id="tooltip-timezone" class="tt-tz">—</div>
+            <div class="tt-time-row">
+              <span id="tooltip-time" class="tt-time">00:00:00</span>
+              <span id="tooltip-date" class="tt-date">—</span>
+            </div>
+            <button id="tooltip-pin-btn" class="tt-pin-btn">
+              Pin to Dashboard
+            </button>
           </div>
         </div>
       </section>
 
-      <!-- TIMER CONSOLE -->
-      <section class="panel timer-panel" aria-label="Countdown Timer">
-        <div class="panel-header">
-          <div class="panel-title-group">
-            <h2>Timer Console</h2>
-            <p>Precision countdown with skeuomorphic alerts</p>
-          </div>
-          <div class="panel-icon">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+      <!-- WORLD CLOCKS -->
+      <section class="world-section" aria-label="World Clocks">
+        <div class="section-header">
+          <h2>World Clocks</h2>
+          <div class="clock-search-wrap">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              class="search-icon"
+            >
+              <circle cx="11" cy="11" r="8" />
+              <path d="m21 21-4.35-4.35" />
             </svg>
+            <input
+              type="text"
+              id="citySearchInput"
+              class="clock-search"
+              placeholder="Search city or timezone…"
+              aria-label="Search world clocks"
+            />
+            <div id="citySearchResults" class="search-results"></div>
           </div>
         </div>
 
-        <div class="timer-inputs">
-          <div class="time-field">
-            <input type="number" id="hours" class="time-input" placeholder="00" min="0" max="23" />
-            <label>HRS</label>
-          </div>
-          <div class="time-separator">:</div>
-          <div class="time-field">
-            <input type="number" id="minutes" class="time-input" placeholder="00" min="0" max="59" />
-            <label>MIN</label>
-          </div>
-          <div class="time-separator">:</div>
-          <div class="time-field">
-            <input type="number" id="seconds" class="time-input" placeholder="00" min="0" max="59" />
-            <label>SEC</label>
-          </div>
-        </div>
-
-        <div class="countdown-display">
-          <div class="countdown-track">
-            <svg class="countdown-arc" viewBox="0 0 200 200" id="timerArcSvg">
-              <circle class="arc-bg" cx="100" cy="100" r="85" fill="none" stroke-width="4"/>
-              <circle class="arc-fill" cx="100" cy="100" r="85" fill="none" stroke-width="4"
-                stroke-dasharray="534" stroke-dashoffset="534" id="timerArc"/>
-            </svg>
-            <div id="countdownDisplay" class="countdown-digits">00:00:00</div>
-          </div>
-        </div>
-
-        <div class="timer-actions">
-          <button class="action-btn primary-action" onclick="startCountdown()" aria-label="Start">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-            Start
-          </button>
-          <button id="pausebtn" class="action-btn secondary-action" onclick="pauseCountdown()" aria-label="Pause">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-              <rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>
-            </svg>
-            Pause
-          </button>
-          <button class="action-btn ghost-action" onclick="restartCountdown()" aria-label="Reset">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-              <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
-              <path d="M3 3v5h5"/>
-            </svg>
-            Reset
-          </button>
-        </div>
-
-        <div id="timerUpMsg" class="timer-alert">
-          <div class="alert-pulse"></div>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>
-          </svg>
-          <span>Time's Up — Alarm Active</span>
-        </div>
+        <div id="worldClocksGrid" class="clocks-grid"></div>
       </section>
-    </div>
+    </main>
 
-    <!-- WORLD TIMEZONE MAP -->
-    <section class="panel map-panel" aria-label="World Timezone Map">
-      <div class="map-panel-header">
-        <div>
-          <h2>World Timezone Observatory</h2>
-          <p>Hover zones for offsets · Click markers to pin clocks</p>
-        </div>
-        <div class="map-legend">
-          <span class="legend-dot pinned"></span><span>Pinned</span>
-          <span class="legend-dot active"></span><span>Active</span>
-        </div>
-      </div>
 
-      <div class="map-container">
-        <div class="map-scroll">
-          <div id="timezone-map-wrapper"></div>
-        </div>
-
-        <div id="map-tooltip" class="map-tooltip" style="display:none">
-          <div class="tt-header">
-            <h4 id="tooltip-city">—</h4>
-            <span id="tooltip-offset" class="tt-badge">UTC+0</span>
-          </div>
-          <div id="tooltip-timezone" class="tt-tz">—</div>
-          <div class="tt-time-row">
-            <span id="tooltip-time" class="tt-time">00:00:00</span>
-            <span id="tooltip-date" class="tt-date">—</span>
-          </div>
-          <button id="tooltip-pin-btn" class="tt-pin-btn">Pin to Dashboard</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- WORLD CLOCKS -->
-    <section class="world-section" aria-label="World Clocks">
-      <div class="section-header">
-        <h2>World Clocks</h2>
-        <div class="clock-search-wrap">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="search-icon">
-            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
-          </svg>
-          <input type="text" id="citySearchInput" class="clock-search" placeholder="Search city or timezone…" aria-label="Search world clocks" />
-          <div id="citySearchResults" class="search-results"></div>
-        </div>
-      </div>
-
-      <div id="worldClocksGrid" class="clocks-grid"></div>
-    </section>
-
-  </main>
-
-  <!-- AUDIO -->
-  <audio id="timerSound" src="timer.mp3" preload="auto"></audio>
+  <!-- EXIT FOCUS MODE BUTTON - ISSUE #8326 -->
+  <button id="exitFocusBtn" class="exit-focus-btn" style="display: none;">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+      <path d="M18 6L6 18M6 6l12 12" stroke-linecap="round"/>
+    </svg>
+    <span>Exit Focus Mode</span>
+  </button>
 
   <script src="theme-system.js"></script>
   <script src="index.js"></script>
 
   <script>
-    let focusModeActive = false;
-
-    function enableFocusMode() {
-      if (focusModeActive) return;
-
-      document.body.classList.add('focus-mode');
-
-      history.pushState(
-        { focusMode: true },
-        '',
-        '#focus'
-      );
-
-      focusModeActive = true;
-    }
-
-    function disableFocusMode() {
+    // Exit Focus Mode Functionality - Issue #8326
+    const exitFocusBtn = document.getElementById('exitFocusBtn');
+    
+    function exitFocusMode() {
       document.body.classList.remove('focus-mode');
-      focusModeActive = false;
-    }
-
-    window.addEventListener('keydown', (e) => {
-
-      if (
-        e.key.toLowerCase() === 'f' &&
-        !e.target.matches('input, textarea')
-      ) {
-
-        e.preventDefault();
-
-        if (!focusModeActive) {
-          enableFocusMode();
-        } else {
-          history.back();
-        }
+      if(exitFocusBtn) {
+        exitFocusBtn.style.display = 'none';
       }
-    });
-
-    window.addEventListener('popstate', () => {
-
-      if (focusModeActive) {
-        disableFocusMode();
+      console.log('Focus mode exited');
+    }
+    
+    if(exitFocusBtn) {
+      exitFocusBtn.addEventListener('click', exitFocusMode);
+    }
+    
+    // Show exit button when focus mode is activated
+    const focusModeBtn = document.getElementById('focusModeBtn');
+    if(focusModeBtn) {
+      focusModeBtn.addEventListener('click', function() {
+        setTimeout(() => {
+          if(document.body.classList.contains('focus-mode') && exitFocusBtn) {
+            exitFocusBtn.style.display = 'flex';
+          }
+        }, 100);
+      });
+    }
+    
+    // Keyboard shortcut: Press 'F' to toggle focus mode
+    window.addEventListener('keydown', (e) => {
+      if (e.key.toLowerCase() === 'f' && !e.target.matches('input, textarea')) {
+        e.preventDefault();
+        document.body.classList.toggle('focus-mode');
+        if(exitFocusBtn) {
+          if(document.body.classList.contains('focus-mode')) {
+            exitFocusBtn.style.display = 'flex';
+          } else {
+            exitFocusBtn.style.display = 'none';
+          }
+        }
       }
     });
   </script>
 </body>
+</html>
+    <!-- AUDIO -->
+    <audio id="timerSound" src="timer.mp3" preload="auto"></audio>
+
+    <script src="theme-system.js"></script>
+    <script src="index.js"></script>
+  </body>
 </html>

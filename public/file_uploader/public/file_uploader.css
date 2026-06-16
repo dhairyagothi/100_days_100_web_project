@@ -1,6 +1,5 @@
 /* ============================================================
    FILE UPLOADER — Complete Stylesheet
-   Theming via [data-theme="dark"|"light"] on <html>
    ============================================================ */
 
 /* ── Reset ── */
@@ -254,6 +253,23 @@ body::after {
   outline-offset: 4px;
 }
 
+[data-theme="light"] .back-button {
+  background: linear-gradient(135deg, rgba(240,250,245,0.97), rgba(220,240,232,0.95));
+  border-color: rgba(0,168,107,0.35);
+  color: #065f46;
+  box-shadow:
+    0 0 0 1px rgba(0,0,0,0.04),
+    0 10px 30px rgba(0,0,0,0.10),
+    0 0 22px rgba(0,168,107,0.12);
+}
+[data-theme="light"] .back-button:hover {
+  border-color: #00a86b;
+  color: #064e3b;
+  box-shadow:
+    0 0 30px rgba(0,168,107,0.20),
+    0 12px 40px rgba(0,0,0,0.12);
+}
+
 /* ── Theme Toggle ── */
 .theme-toggle {
   position: fixed;
@@ -390,12 +406,13 @@ input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; 
   display: none;
   flex-direction: column;
   gap: 7px;
-  max-height: 134px;
+  max-height: 160px;
   overflow-y: auto;
 }
 #file-preview::-webkit-scrollbar { width: 3px; }
 #file-preview::-webkit-scrollbar-thumb { background: var(--border-input); border-radius: 3px; }
 
+/* ── File chip ── */
 .file-chip {
   display: flex; align-items: center; gap: 10px;
   padding: 9px 13px;
@@ -414,6 +431,48 @@ input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; 
 .chip-icon { font-size: 1rem; flex-shrink: 0; }
 .chip-name { flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .chip-size { color: var(--text-muted); flex-shrink:0; font-size:0.72rem; }
+
+/* ── Chip Remove Button ── */
+.chip-remove {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 80, 80, 0.35);
+  background: rgba(255, 80, 80, 0.10);
+  color: #ff6b6b;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition);
+  position: relative;
+  z-index: 10;
+  padding: 0;
+  font-family: var(--font);
+}
+.chip-remove:hover {
+  background: rgba(255, 80, 80, 0.25);
+  border-color: #ff6b6b;
+  color: #ff4444;
+  transform: scale(1.15);
+}
+[data-theme="light"] .chip-remove {
+  border-color: rgba(220, 38, 38, 0.30);
+  background: rgba(220, 38, 38, 0.08);
+  color: #dc2626;
+}
+[data-theme="light"] .chip-remove:hover {
+  background: rgba(220, 38, 38, 0.18);
+  border-color: #dc2626;
+}
+.chip-remove:focus-visible {
+  outline: 2px solid rgba(255, 80, 80, 0.5);
+  outline-offset: 2px;
+}
 
 /* ── Submit button ── */
 .submit-btn {
@@ -506,7 +565,7 @@ input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; 
 /* ── Toasts ── */
 .toast-container {
   position: fixed;
-  top: 20px; right: 74px;
+  top: 72px; right: 18px;
   z-index: 9999;
   display: flex; flex-direction: column; gap: 10px;
   pointer-events: none;
@@ -516,11 +575,11 @@ input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; 
   border: 1px solid var(--border-toast);
   padding: 13px 18px;
   border-radius: 13px;
-  display: flex; align-items: center; gap: 11px;
+  display: flex; align-items: flex-start; gap: 11px;
   box-shadow: var(--shadow-toast);
   animation: toastIn 0.32s cubic-bezier(0.16,1,0.3,1) both;
   pointer-events: auto;
-  max-width: 280px;
+  max-width: 300px; width: 100%;
   transition: background var(--transition), border-color var(--transition);
 }
 @keyframes toastIn {
@@ -532,7 +591,7 @@ input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; 
   to { transform: translateX(110%); opacity:0; }
 }
 .toast-icon { font-size: 1.2rem; flex-shrink: 0; }
-.toast-message { color: var(--text-toast); font-size: 0.86rem; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; transition: color var(--transition); }
+.toast-message { color: var(--text-toast); font-size: 0.86rem; font-weight: 600; white-space: normal; word-break: break-word; line-height: 1.4; transition: color var(--transition); }
 
 /* ── Reduced motion ── */
 @media (prefers-reduced-motion: reduce) {
@@ -557,9 +616,46 @@ input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; 
   .back-button{
     top: 14px;
     left: 14px;
-
     padding: 10px 16px;
-
     font-size: .78rem;
   }
+}
+
+/* History Remove Button */
+.history-item {
+  position: relative;
+}
+.history-remove {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 80, 80, 0.35);
+  background: rgba(255, 80, 80, 0.10);
+  color: #ff6b6b;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.22s ease;
+  padding: 0;
+  margin-left: 8px;
+}
+.history-remove:hover {
+  background: rgba(255, 80, 80, 0.25);
+  border-color: #ff6b6b;
+  color: #ff4444;
+  transform: scale(1.15);
+}
+[data-theme="light"] .history-remove {
+  border-color: rgba(220, 38, 38, 0.30);
+  background: rgba(220, 38, 38, 0.08);
+  color: #dc2626;
+}
+[data-theme="light"] .history-remove:hover {
+  background: rgba(220, 38, 38, 0.18);
+  border-color: #dc2626;
 }

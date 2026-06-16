@@ -125,7 +125,7 @@
             cursor: pointer;
             text-transform: uppercase;
             font-size: 0.85rem;
-            transition: transform 0.1s transform, box-shadow 0.2s;
+            transition: transform 0.1s, box-shadow 0.2s;
         }
 
         .btn-primary:hover {
@@ -159,13 +159,41 @@
             color: var(--accent-neon) !important;
         }
         #algorithmSelect {
-    background:#05070b;
-    color:white;
-    border:1px solid var(--border-glow);
-    padding:8px 12px;
-    border-radius:4px;
-    margin-right:10px;
-}
+            background: #05070b;
+            color: white;
+            border: 1px solid var(--border-glow);
+            padding: 8px 12px;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+
+        .btn-generate {
+            background: linear-gradient(135deg, #a855f7, #ff007f);
+            border: none;
+            color: #fff;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            margin-left: 10px;
+            transition: transform 0.1s, box-shadow 0.2s;
+        }
+
+        .btn-generate:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 0 12px rgba(168, 85, 247, 0.4);
+        }
+
+        .btn-primary:disabled,
+        .btn-generate:disabled,
+        #algorithmSelect:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
 
         #terminal-log {
             background-color: #05070b;
@@ -197,21 +225,14 @@
             <fieldset class="control-fieldset">
                 <legend>Simulation Control Array</legend>
                 <select id="algorithmSelect">
-                    <option value="bubble">
-                    Bubble Sort
-                    </option>
-
-                    <option value="selection">
-                    Selection Sort
-                    </option>
-                    <option value="insertion">
-                        Insertion Sort
-                    </option>
-                    <option value="quick">
-                         Quick Sort
-                    </option>
+                    <option value="bubble">Bubble Sort</option>
+                    <option value="selection">Selection Sort</option>
+                    <option value="insertion">Insertion Sort</option>
+                    <option value="quick">Quick Sort</option>
+                    <option value="merge">Merge Sort</option>
                 </select>
-                <button id="trigger-sort-btn" class="btn-primary">Initialize Core Sorotation Sequence</button>
+                <button id="trigger-sort-btn" class="btn-primary">Initialize Core Sorting Sequence</button>
+                <button id="generate-dataset-btn" class="btn-generate">Generate New Dataset</button>
             </fieldset>
         </div>
 
