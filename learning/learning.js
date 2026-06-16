@@ -304,6 +304,25 @@ function renderStreak() {
     updateProgressUI();
   }
 
+  // Completion requires an explicit click, not just opening the topic
+  function renderCompleteButton(topicKey) {
+    const done = learningProgress.completedTopics.includes(topicKey);
+    const bar = document.createElement('div');
+    bar.style.cssText = 'display:flex; justify-content:center; margin:2.5rem 0 1rem;';
+    const btn = document.createElement('button');
+    btn.textContent = done ? '✓ Completed' : 'Mark as Complete';
+    btn.style.cssText = 'padding:0.7rem 1.5rem; border:none; border-radius:8px; font-weight:600; font-size:0.95rem; cursor:pointer; color:#fff; background:' + (done ? '#10b981' : '#3b82f6') + ';';
+    btn.disabled = done;
+    btn.addEventListener('click', () => {
+      markTopicCompleted(topicKey);
+      btn.textContent = '✓ Completed';
+      btn.style.background = '#10b981';
+      btn.disabled = true;
+    });
+    bar.appendChild(btn);
+    contentViewport.appendChild(bar);
+  }
+
   function updateProgressUI() {
     const total = allTopics.filter((t) => t.id !== 'quiz').length;
     const completed = learningProgress.completedTopics.length;
@@ -935,7 +954,7 @@ list.appendChild(item);
       window.scrollTo({ top: 0, behavior: 'instant' });
 
       updateNavigationFooter();
-      markTopicCompleted(`${topic.categoryId}-${topic.id}`);
+      renderCompleteButton(`${topic.categoryId}-${topic.id}`);
     } catch (err) {
       console.error(err);
     }
