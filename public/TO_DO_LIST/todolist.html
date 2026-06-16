@@ -1285,14 +1285,49 @@
           📥 Save as PDF
         </button>
 
-        <button type="button" id="cleardone" class="sidebar-pdf-btn">
-          🧹 Clear Workspace
-        </button>
+    <!-- Input Area -->
+    <form class="input-panel" id="task-form" novalidate>
+      <div class="input-group">
+        <label for="task-category" class="sr-only">Choose task category</label>
+        <select id="task-category" aria-label="Choose task category">
+          <option value="" disabled selected>📂 Category</option>
+          <option value="Work" data-color="#7c63ff">💼 Work</option>
+          <option value="Personal" data-color="#4f8dff">🧑 Personal</option>
+          <option value="Study" data-color="#ffb86b">📚 Study</option>
+          <option value="Health" data-color="#14b8a6">🍏 Health</option>
+          <option value="Others" data-color="#8e8e9c">📌 Others</option>
+        </select>
 
-        <button type="button" id="clearCompletedBtn" class="sidebar-pdf-btn"
-          style="background: rgba(16,185,129,0.10); color: #10b981; border-color: rgba(16,185,129,0.25);" hidden>
-          ✅ Clear Completed
-        </button>
+      <!-- Task List Container -->
+       <div class="task-wrapper">
+      <ul id="notes-container" aria-label="Task list"></ul>
+      </div>
+    </section>
+        <label for="task-priority" class="sr-only">Choose task priority</label>
+        <select id="task-priority" aria-label="Choose task priority">
+          <option value="" disabled selected>⭐ Priority</option>
+          <option value="High" data-color="#ef4444">🔥 High</option>
+          <option value="Medium" data-color="#f59e0b">⭐ Medium</option>
+          <option value="Low" data-color="#3b82f6">🟢 Low</option>
+        </select>
+
+        <label for="task" class="sr-only">Task description</label>
+        <input
+          type="text"
+          id="task"
+          placeholder="What do you need to do?"
+          autocomplete="off"
+        />
+        <button type="submit" id="submittask">➕ Add Task</button>
+        <!-- Tasks Total Card -->
+        <div class="dashboard-card tasks-card">
+          <div class="card-label">TASKS</div>
+          <div class="tasks-stats">
+            <span class="tasks-icon">📋</span>
+            <span class="tasks-number" id="totalTasks">0</span>
+          </div>
+          <div class="tasks-label">Total</div>
+        </div>
       </div>
     </aside>
 

@@ -117,87 +117,48 @@ function renderTasks() {
     return task.category === currentFilter; // Matches Category Strings
   });
 
-  // Clear container safely — no innerHTML (Bug 2 fix: XSS prevention)
-  taskList.replaceChildren();
-
-  // Toggle Visibility of Empty State Element
-  if (filteredTasks.length === 0) {
-    if (emptyState) {
-      taskList.appendChild(emptyState);
-      emptyState.style.display = "flex";
-    }
-  } else {
-    if (emptyState) emptyState.style.display = "none";
-
-    filteredTasks.forEach((task, idx) => {
-      // Bug 3 fix: use <li> instead of <div> so <ul> contains valid children
-      const card = document.createElement("li");
-      card.className = "notes" + (task.completed ? " completed" : "");
-      card.setAttribute("data-id", task.id);
-      card.style.setProperty("--i", idx);
-
-      // Bug 2 fix: build the card entirely with safe DOM APIs — no innerHTML
-    const noteRow = document.createElement("div");
-    noteRow.className = "note-row";
-
-    let textarea;
-    if (task.completed) {
-      textarea = document.createElement("div");
-      textarea.className = "note-text note-text-done";
-      textarea.textContent = task.text;
-    } else {
-      textarea = document.createElement("textarea");
-      textarea.className = "note-text";
-      textarea.value = task.text;
-      textarea.addEventListener("change", () => updateTaskText(task.id, textarea.value));
-    }
-
-    // ✅ Done badge appears right below the text when completed
-    if (task.completed) {
-      const doneBadge = document.createElement("span");
-      doneBadge.className = "done-badge";
-      doneBadge.textContent = "✅ Done";
-      noteRow.appendChild(textarea);
-      noteRow.appendChild(doneBadge);
-    } else {
-      noteRow.appendChild(textarea);
-    }
-
-      const noteActions = document.createElement("div");
-      noteActions.className = "note-actions";
-
-      const badge = document.createElement("div");
-      badge.className = "category-badge";
-      if (task.completed) {
-        badge.textContent = task.category;
-        badge.style.opacity = "0.8";
-      } else {
-        badge.textContent = task.category;
-      }
-
-      const btnGroup = document.createElement("div");
-
-      const checkBtn = document.createElement("button");
-      checkBtn.className = "note-check";
-      checkBtn.textContent = task.completed ? "↩" : "✔";
-      checkBtn.title = task.completed ? "Mark as Pending" : "Mark as Completed";
-      checkBtn.addEventListener("click", () => toggleTask(task.id));
-
-      const deleteBtn = document.createElement("button");
-      deleteBtn.className = "note-delete";
-      deleteBtn.textContent = "Delete";
-      deleteBtn.addEventListener("click", () => deleteTask(task.id));
-
-      btnGroup.appendChild(checkBtn);
-      btnGroup.appendChild(deleteBtn);
-      noteActions.appendChild(badge);
-      noteActions.appendChild(btnGroup);
-      noteRow.appendChild(noteActions);
-      card.appendChild(noteRow);
-
-      taskList.appendChild(card);
-    });
+  if (tasks.length === 0) {
+    emptyState.style.display = "flex";
+    return;
   }
+
+  emptyState.style.display = "none";
+
+  tasks.forEach((task, idx) => {
+    const card = document.createElement("li");
+
+    card.className =
+      "notes" + (task.completed ? " completed" : "");
+
+    card.innerHTML = `
+      <div class="note-row">
+        <textarea class="note-text"
+          onchange="updateTaskText(${task.id}, this.value)">
+          ${task.text}
+        </textarea>
+
+        <div class="note-actions">
+          <div class="category-badge">
+            ${task.category}
+          </div>
+
+          <div>
+            <button class="note-check"
+              onclick="toggleComplete(${task.id})">
+              ✓
+            </button>
+
+            <button class="note-delete"
+              onclick="deleteTask(${task.id})">
+              Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+
+    taskList.appendChild(card);
+  });
 
   updateMetrics();
 }
@@ -486,6 +447,29 @@ showHome();
 
 try {
   const saved = localStorage.getItem('todo-theme');
+  if (saved) applyTheme(saved);
+} catch (e) {}
+
+
+
+window.addTask = addTask;
+window.toggleTask = toggleTask;
+window.deleteTask = deleteTask;
+window.updateTaskText = updateTaskText;
+  const savedTasks = localStorage.getItem("todo-tasks");
+  if (savedTasks) {
+    tasks = JSON.parse(savedTasks);
+  }
+
+  // Save PDF Button
+  const savePdfBtn = document.getElementById('savepdf');
+  if (savePdfBtn) {
+    savePdfBtn.addEventListener('click', saveAsPDF);
+  }
+}
+
+renderTasks();
+document.addEventListener('DOMContentLoaded', init);
   applyTheme(saved || 'theme1'); // fallback to theme1 if nothing saved
 } catch (e) {
   applyTheme('theme1');

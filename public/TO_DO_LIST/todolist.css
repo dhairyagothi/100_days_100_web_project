@@ -14,16 +14,17 @@
 
 /* ---------- Custom Properties ---------- */
 :root {
-  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-family:
+          "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 
   --page-bg-start: #201b44;
   --page-bg-mid: #0f122a;
   --page-bg-end: #080a1e;
 
   /* Glass panel base — overridden per theme */
-  --glass-bg: rgba(18, 32, 58, 0.70);
-  --glass-border: rgba(255, 255, 255, 0.10);
-  --glass-shadow: 0 24px 60px rgba(5, 9, 25, 0.40);
+  --glass-bg: rgba(18, 32, 58, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-shadow: 0 24px 60px rgba(5, 9, 25, 0.4);
 
   /* Hero / input-panel tint — shifts with each theme */
   --hero-tint: rgba(28, 20, 70, 0.72);
@@ -44,7 +45,7 @@
   --danger: #ef4444;
   --warning: #f59e0b;
 
-  --transition: 0.30s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* ---------- Base ---------- */
@@ -57,7 +58,18 @@ body {
   font-family: var(--font-family);
   line-height: 1.6;
   color: var(--text-primary);
-  background: linear-gradient(135deg, var(--page-bg-start) 0%, var(--page-bg-mid) 45%, var(--page-bg-end) 100%);
+
+
+  background:
+    radial-gradient(circle at top left, rgba(139,92,246,0.35), transparent 25%),
+    radial-gradient(circle at bottom right, rgba(59,130,246,0.30), transparent 25%),
+    linear-gradient(135deg,
+      var(--page-bg-start) 0%,
+      var(--page-bg-mid) 45%,
+      var(--page-bg-end) 100%
+    );
+
+
   overflow-x: hidden;
   transition: background var(--transition);
 }
@@ -290,12 +302,22 @@ header {
   background: #4f8dff;
 }
 
-#colour3 {
-  background: #14b8a6;
+.streak-value {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  /* padding: 20px 16px 60px; */
+  padding:
+    40px
+    clamp(20px, 5vw, 80px);
 }
 
-#colour4 {
-  background: #d57b1b;
+section {
+  width: 100%;
+  margin-bottom:40px;
 }
 
 #colour5 {
@@ -614,7 +636,67 @@ section {
   transition: border-color var(--transition), box-shadow var(--transition);
 }
 
-.task-input::placeholder {
+
+.task-item{
+  list-style:none;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:12px;
+  margin-bottom:10px;
+  border-radius:10px;
+  color:white;
+}
+
+
+.tasks-wrapper{
+  width: 100%;
+
+  margin-top: 35px;
+
+  padding: 28px;
+
+  border-radius: 30px;
+
+  position: relative;
+
+  background: rgba(17, 25, 40, 0.42);
+
+  border: 1.5px solid rgba(255,255,255,0.14);
+
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+
+  box-shadow:
+    0 8px 32px rgba(31, 38, 135, 0.20),
+    inset 0 1px 0 rgba(255,255,255,0.08);
+
+  overflow: hidden;
+
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+}
+
+.tasks-wrapper::before{
+  content:"";
+
+  position:absolute;
+
+  inset:0;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,0.10),
+      transparent 40%
+    );
+
+  pointer-events:none;
+}
+
+
+#task::placeholder {
   color: #8e8e9c;
 }
 
@@ -774,40 +856,119 @@ section {
   max-width: 300px;
 }
 
+
 /* ---------- Notes Container (Task Cards) ---------- */
-#notes-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-  width: 100%;
-  justify-content: center;
-  padding: 0 0 20px;
-  list-style: none;
+#notes-container{
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+
+  width:100%;
+  padding:0;
+
+  list-style:none;
 }
 .card-action-btn:hover { transform: translateY(-1px); }
 
 /* ---------- Individual Task Card ---------- */
-.notes {
-  width: min(100%, 380px);
-  border-radius: var(--card-radius);
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  padding: 18px 20px 20px;
-  box-shadow: 0 12px 40px rgba(9, 15, 45, 0.12);
-  color: var(--text-dark);
-  overflow-wrap: break-word;
-  transition: transform var(--transition), box-shadow var(--transition);
-  animation: fadeInUp 0.4s ease forwards;
-  opacity: 0;
-  animation-delay: calc(var(--i, 0) * 0.05s);
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
+.notes{
+  width:100%;
+
+  padding:20px;
+
+  border-radius:24px;
+
+  background: rgba(255,255,255,0.06);
+
+  border:1px solid rgba(255,255,255,0.10);
+
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+
+  box-shadow:
+    0 8px 32px rgba(31,38,135,0.18);
+
+  transition: all 0.3s ease;
+
+  position:relative;
+
+  overflow:hidden;
 }
 
-.notes:hover {
+.notes::before{
+  content:"";
+
+  position:absolute;
+
+  inset:0;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,0.10),
+      transparent 45%
+    );
+
+  pointer-events:none;
+}
+
+.notes:hover{
   transform: translateY(-4px);
-  box-shadow: 0 20px 56px rgba(9, 15, 45, 0.20);
+
+  background: rgba(255,255,255,0.08);
+
+  box-shadow:
+    0 12px 30px rgba(59,130,246,0.22);
+}
+
+.note-text{
+  width:100%;
+
+  background: rgba(255,255,255,0.04);
+
+  color:white;
+
+  border:1px solid rgba(255,255,255,0.08);
+
+  border-radius:16px;
+
+  outline:none;
+
+  resize:none;
+
+  font-size:16px;
+
+  line-height:1.6;
+
+  font-weight:500;
+
+  min-height:40px;
+
+  padding:14px 16px;
+
+  transition:0.3s ease;
+}
+
+
+.note-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 12px;
+  flex-wrap: nowrap;
+}
+
+
+
+.note-check,
+.note-delete {
+  height: 38px;
+  padding: 0 16px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
 }
 
 @keyframes fadeInUp {
@@ -815,39 +976,27 @@ section {
     opacity: 0;
     transform: translateY(16px);
   }
-
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
-/* @keyframes fadeOut — used by deleteTask() exit animation */
-@keyframes fadeOut {
-  from {
-    opacity: 1;
-    transform: scale(1);
-  }
-
-  to {
-    opacity: 0;
-    transform: scale(0.95);
-  }
+.notes:active {
+  cursor: grabbing;
 }
 
 /* ---------- Category Badge ---------- */
 .category-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 4px 12px;
-  border-radius: 100px;
-  font-size: 12px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-  width: fit-content;
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  padding: 8px 14px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+  backdrop-filter: blur(10px);
+
 }
 
 /* ---------- Note Row ---------- */
@@ -858,23 +1007,26 @@ section {
   width: 100%;
 }
 
-.note-text {
-  font-size: 16px;
-  line-height: 1.6;
-  font-weight: 600;
-  color: #0d1631;
-  padding: 10px 14px;
-  border-radius: 14px;
-  background: rgba(245, 247, 250, 0.80);
-  border: 1px solid rgba(16, 24, 56, 0.06);
-  outline: none;
-  min-height: 44px;
-  transition: border-color var(--transition), box-shadow var(--transition);
+.note-actions div:last-child {
+  display: flex;
+  gap: 10px;
+  align-items: center;
 }
 
-.note-text:focus {
-  border-color: rgba(124, 99, 255, 0.45);
-  box-shadow: 0 0 0 3px rgba(124, 99, 255, 0.10);
+.note-text:focus{
+  background: rgba(255,255,255,0.07);
+
+  border-color: rgba(139,92,246,0.35);
+
+  box-shadow:
+    0 0 0 4px rgba(139,92,246,0.12);
+}
+
+/* ---------- Completed Animation ---------- */
+.completed {
+  text-decoration: line-through;
+  opacity: 0.60;
+  position: relative;
 }
 
 /* ---------- Completed Animation ---------- */
@@ -1177,10 +1329,109 @@ section {
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.30);
 }
 
-/* Show state — toggled by JS via classList.add("show") */
-.pdf-message.show {
-  display: block;
-  animation: slideInRight 0.4s ease;
+  #submittask {
+    width: 100%;
+  }
+
+
+.notes::before{
+  content:"";
+
+  position:absolute;
+
+  inset:0;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,0.08),
+      transparent 45%
+    );
+
+  pointer-events:none;
+}
+
+  .document-item {
+    width: 100%;
+  }
+
+  .hero {
+    padding: 28px 18px 24px;
+  }
+
+  .input-panel {
+    padding: 16px 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  header {
+    padding: 10px 10px 0;
+  }
+
+  .navbar {
+    flex-direction: column;
+    padding: 10px 12px;
+  }
+
+  .nav-left ul,
+  .nav-right ul {
+    justify-content: center;
+  }
+
+  .navbar a {
+    padding: 8px 14px;
+    font-size: 14px;
+  }
+
+  .theme-label {
+    display: none;
+  }
+
+  .theme-btn {
+    height: 34px;
+    width: 34px;
+  }
+
+  .heading {
+    font-size: 36px;
+  }
+
+  .hero-badge {
+    font-size: 11px;
+    padding: 4px 14px;
+  }
+
+  .note-actions {
+    flex-direction: column;
+  }
+
+  .note-type {
+    width: 100%;
+  }
+
+  .note-check,
+  .note-delete {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .document-item {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .doc-actions {
+    flex-direction: column;
+  }
+
+  .document-item button {
+    width: 100%;
+  }
+
+.achievement-card.unlocked .achievement-status {
+  background: rgba(20, 184, 166, 0.2);
+  color: #14b8a6;
 }
 
 @keyframes slideInRight {
