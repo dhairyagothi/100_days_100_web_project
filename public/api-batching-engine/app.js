@@ -36,6 +36,7 @@ triggerBtn.addEventListener('click', async () => {
     logTerminal.textContent += `\n[Transaction Complete] Combined payload resolved cleanly. Operational network sockets used: 1`;
 });
 });
+});
 const totalRequests = document.getElementById('totalRequests');
 const totalBatches = document.getElementById('totalBatches');
 const avgBatchSize = document.getElementById('avgBatchSize');
