@@ -1,3 +1,21 @@
+
+/* Exit Focus Mode Button - Issue #8326 */
+.exit-focus-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #ff4444, #cc0000);
+  color: white;
+  border: none;
+  border-radius: 40px;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600;
+
 /* ═══════════════════════════════════════════════════════════════
    CHRONOS+ · PREMIUM TIME OBSERVATORY
    Aesthetic: Luxury watchmaker × Space observatory
@@ -1411,22 +1429,21 @@ body.light-theme .map-tooltip {
   background: var(--deep);
   border: 1px solid var(--border-hi);
   color: var(--text-3);
+
   font-size: 14px;
-  line-height: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   cursor: pointer;
-  opacity: 0;
-  transform: scale(0.8);
-  transition: all 0.22s var(--spring);
-  z-index: 10;
+  box-shadow: 0 8px 20px rgba(204, 0, 0, 0.3);
+  transition: all 0.3s ease;
 }
 
-.world-clock-card:hover .remove-btn {
-  opacity: 1;
-  transform: scale(1);
+
+.exit-focus-btn:hover {
+  background: linear-gradient(135deg, #ff5555, #dd0000);
+  transform: scale(1.02);
 }
+
+.exit-focus-btn:active {
+  transform: scale(0.98);
 
 .remove-btn:hover {
   background: var(--danger);
@@ -1451,17 +1468,14 @@ body.light-theme .map-tooltip {
   100% {
     box-shadow: var(--shadow-sm);
   }
-}
 
-.card-highlight-active {
-  animation: cardPinFlash 1.6s var(--spring) !important;
 }
-
-/* ═══════════════════════════════════════════════════════════════
-   FOCUS MODE
-   ═══════════════════════════════════════════════════════════════ */
 
 body.focus-mode {
+
+  overflow: hidden;
+}
+
   overflow-y: auto;
   min-height: 100vh;
 }
@@ -1603,3 +1617,4 @@ body.focus-mode #focusModeBtn:hover {
     padding: 12px 12px 60px;
   }
 }
+

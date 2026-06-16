@@ -35,9 +35,25 @@
           <%= food.cuisines ? food.cuisines.join(", ") : "Multi-Cuisine" %>
         </p>
 
+        <p>Shop 61 & 62, 1st Floor, Eros Market Place, Shakti Khand 2, Indirapuram, Ghaziabad</p>
        
+  <!-- Address (fake detailed) -->
+        <p class="rest-address">
+          <%= food.address %>, <%= food.location %>
+        </p>
 
-     
+      <!-- Open now + Phone row -->
+        <div class="rest-meta-row">
+          <span class="open-badge">
+            🟢 Open now &nbsp;–&nbsp; 12noon – 2am (Today)
+            <span class="info-circle">ⓘ</span>
+          </span>
+          <span class="meta-sep">|</span>
+          <span class="phone-tag">
+            📞 <a href="tel:+919582224044">+91958222xxxx</a>
+          </span>
+        </div>
+      </div>
 
        
 
