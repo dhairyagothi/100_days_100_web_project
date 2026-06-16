@@ -22,9 +22,9 @@ document.addEventListener("DOMContentLoaded", () => {
     track.slider.addEventListener("input", (e) => {
       const vol = parseFloat(e.target.value);
       track.audio.volume = vol;
+      
       if (vol > 0 && track.audio.paused) {
         track.audio.play().catch(() => {});
-        document.documentElement.setAttribute("data-theme", track.theme);
       } else if (vol === 0) {
         track.audio.pause();
       }
