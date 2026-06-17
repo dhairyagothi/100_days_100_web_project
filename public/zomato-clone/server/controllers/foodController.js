@@ -39,8 +39,8 @@ exports.deleteFood = async (req, res) => {
 //ejs
 exports.renderFoods = async (req, res) => {
   try {
-    const foods = await Food.find(); // DB se data lao
-    res.render("restaurant", { foods }); // EJS ko data bhejo
+    const foods = await Food.find(); // DB
+    res.render("restaurant", { foods }); // EJS 
   } catch (err) {
     res.status(500).send("Error loading page");
   }
