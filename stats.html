@@ -25,7 +25,7 @@
   --accent3:#f59e0b;
 
   --text:#e2e8f0;
-  --muted:#64748b;
+  --muted:#828d9f;
 
   --font-head:'Orbitron',sans-serif;
   --font-body:'Exo 2',sans-serif;
@@ -46,6 +46,7 @@ body.light-theme {
   --bg: #eef2f7;
   --surface: #ffffff;
   --surface2: #f8fafc;
+  --muted: #5d6776;
 }
 
 .theme-btn {
@@ -113,7 +114,7 @@ body.light-theme {
 </head>
 <body>
 
-<nav class="navbar">
+<nav class="navbar" aria-label="Primary">
   <a class="navbar-brand" href="./index.html">
     <span>100 DAYS · 100 PROJECTS</span>
   </a>
@@ -128,7 +129,7 @@ body.light-theme {
   <div class="hero-eyebrow"><span class="live-dot"></span>Live Dashboard</div>
   <h1>Project Stats</h1>
   <p>Real-time breakdown of <strong id="heroCount">…</strong> web projects — categories, technologies and difficulty curve. Auto-refreshes every 10s.</p>
-  <div class="hero-status" id="heroStatus" data-state="loading">Loading stats…</div>
+  <div class="hero-status" id="heroStatus" role="status" data-state="loading">Loading stats…</div>
   <div class="filter-row" id="filterRow">
     <div class="pill active" data-filter="all">All Projects</div>
   </div>
