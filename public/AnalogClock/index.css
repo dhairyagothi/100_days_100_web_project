@@ -1,21 +1,4 @@
 
-/* Exit Focus Mode Button - Issue #8326 */
-.exit-focus-btn {
-  position: fixed;
-  bottom: 24px;
-  right: 24px;
-  z-index: 10000;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 12px 24px;
-  background: linear-gradient(135deg, #ff4444, #cc0000);
-  color: white;
-  border: none;
-  border-radius: 40px;
-  font-family: 'Outfit', sans-serif;
-  font-weight: 600;
-
 
 /* Exit Focus Mode Button - Issue #8326 */
 .exit-focus-btn {
@@ -33,7 +16,7 @@
   border-radius: 40px;
   font-family: 'Outfit', sans-serif;
   font-weight: 600;
-
+}
 /* ═══════════════════════════════════════════════════════════════
    CHRONOS+ · PREMIUM TIME OBSERVATORY
    Aesthetic: Luxury watchmaker × Space observatory
@@ -1632,8 +1615,13 @@ body.focus-mode #focusModeBtn:hover {
     width: 100%;
   }
 }
+.clocks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 18px;
+}
 
-@media (max-width: 600px) {
+@media (max-width: 1200px) {
   .clocks-grid {
     grid-template-columns: repeat(2, 1fr);
   }
