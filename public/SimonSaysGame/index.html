@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Simon Says - A premium memory game with glassmorphism UI, progressive difficulty, and advanced mode. Test your memory skills!">
+    <title>Simon Says Game</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Animated background orbs -->
+    <div class="bg-orb bg-orb--1"></div>
+    <div class="bg-orb bg-orb--2"></div>
+    <div class="bg-orb bg-orb--3"></div>
+    <div class="bg-orb bg-orb--4"></div>
+
+    <main class="game-container">
+        <!-- Header -->
+        <header class="game-header">
+            <h1 class="game-title">
+                <span class="title-icon">🧠</span>
+                Simon Says
+            </h1>
+            <p class="game-subtitle">Challenge your memory</p>
+        </header>
+
+        <!-- Stats Bar -->
+        <section class="stats-bar" aria-label="Game Statistics">
+            <div class="stat-card">
+                <span class="stat-label">Score</span>
+                <span class="stat-value" id="score-display">0</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">Level</span>
+                <span class="stat-value" id="level-display">0</span>
+            </div>
+            <div class="stat-card stat-card--accent">
+                <span class="stat-label">Best</span>
+                <span class="stat-value" id="highscore-display">0</span>
+            </div>
+        </section>
+
+        <!-- Game Board -->
+        <section class="game-board" aria-label="Simon Says Game Board">
+            <div class="simon-ring">
+                <div class="simon-center" id="simon-center">
+                    <span class="center-text" id="center-text">START</span>
+                </div>
+                <button class="simon-pad simon-pad--green" id="pad-green" data-color="green" aria-label="Green pad">
+                    <div class="pad-glow"></div>
+                </button>
+                <button class="simon-pad simon-pad--red" id="pad-red" data-color="red" aria-label="Red pad">
+                    <div class="pad-glow"></div>
+                </button>
+                <button class="simon-pad simon-pad--yellow" id="pad-yellow" data-color="yellow" aria-label="Yellow pad">
+                    <div class="pad-glow"></div>
+                </button>
+                <button class="simon-pad simon-pad--blue" id="pad-blue" data-color="blue" aria-label="Blue pad">
+                    <div class="pad-glow"></div>
+                </button>
+            </div>
+        </section>
+
+        <!-- Status Message -->
+        <div class="status-message" id="status-message">
+            Press Start or any key to begin!
+        </div>
+
+        <!-- Controls -->
+        <section class="controls" aria-label="Game Controls">
+            <button class="btn btn--primary" id="btn-start">
+                <span class="btn-icon">▶</span>
+                Start Game
+            </button>
+            <button class="btn btn--secondary" id="btn-mode">
+                <span class="btn-icon">⚡</span>
+                Classic Mode
+            </button>
+        </section>
+
+        <!-- Mode Info -->
+        <div class="mode-info" id="mode-info">
+            <div class="mode-badge mode-badge--classic" id="mode-badge">CLASSIC</div>
+            <p class="mode-desc" id="mode-desc">Repeat the pattern as it grows longer each round.</p>
+        </div>
+
+        <!-- Footer -->
+        <footer class="game-footer">
+            <p>Built with ❤️ for <strong>GSSoC '26</strong></p>
+        </footer>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
