@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BillFlow | Smart Invoice Generator</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Main Style Sheet -->
+    <link rel="stylesheet" href="style.css">
+    <!-- html2pdf.js Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body class="light-mode">
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <div class="brand-icon">
+                    <i class="fa-solid fa-file-invoice-dollar"></i>
+                </div>
+                <h2>BillFlow</h2>
+            </div>
+            
+            <nav class="sidebar-menu">
+                <a href="#" class="menu-item active" data-view="dashboard">
+                    <i class="fa-solid fa-chart-pie"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="menu-item" data-view="editor" id="btn-menu-editor">
+                    <i class="fa-solid fa-circle-plus"></i>
+                    <span>Create Invoice</span>
+                </a>
+                <a href="#" class="menu-item" data-view="history">
+                    <i class="fa-solid fa-history"></i>
+                    <span>Invoice History</span>
+                </a>
+                <a href="#" class="menu-item" data-view="settings">
+                    <i class="fa-solid fa-sliders"></i>
+                    <span>Default Settings</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button id="theme-toggle" class="theme-toggle-btn" title="Toggle Light/Dark Theme">
+                    <i class="fa-solid fa-moon"></i>
+                    <span>Dark Mode</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Panel -->
+        <main class="main-panel">
+            <!-- Top Bar Header -->
+            <header class="top-bar">
+                <div class="search-wrapper">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="global-search" placeholder="Search invoices by client or number...">
+                </div>
+                <div class="header-actions">
+                    <div class="currency-badge">
+                        <i class="fa-solid fa-coins"></i>
+                        <span id="active-currency-display">USD ($)</span>
+                    </div>
+                    <button class="btn btn-primary" id="btn-quick-create">
+                        <i class="fa-solid fa-plus"></i> New Invoice
+                    </button>
+                </div>
+            </header>
+
+            <!-- Notification Toast Container -->
+            <div id="toast-container" class="toast-container"></div>
+
+            <!-- Views Container -->
+            <div class="content-container">
+                
+                <!-- 1. DASHBOARD VIEW -->
+                <section id="view-dashboard" class="app-view active-view">
+                    <div class="view-header">
+                        <div>
+                            <h1>Welcome Back</h1>
+                            <p class="text-subtitle">Here's your business financial overview</p>
+                        </div>
+                    </div>
+
+                    <!-- Analytics Cards Grid -->
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon revenue">
+                                <i class="fa-solid fa-sack-dollar"></i>
+                            </div>
+                            <div class="stat-content">
+                                <span class="stat-label">Total Revenue</span>
+                                <h2 class="stat-value" id="stat-revenue">$0.00</h2>
+                                <span class="stat-meta text-success"><i class="fa-solid fa-check-circle"></i> Paid invoices</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon invoiced">
+                                <i class="fa-solid fa-file-invoice"></i>
+                            </div>
+                            <div class="stat-content">
+                                <span class="stat-label">Total Billed</span>
+                                <h2 class="stat-value" id="stat-billed">$0.00</h2>
+                                <span class="stat-meta text-muted" id="stat-count">0 Invoices generated</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon pending">
+                                <i class="fa-solid fa-clock"></i>
+                            </div>
+                            <div class="stat-content">
+                                <span class="stat-label">Pending Collection</span>
+                                <h2 class="stat-value" id="stat-pending">$0.00</h2>
+                                <span class="stat-meta text-warning" id="stat-pending-count">0 unpaid invoices</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon efficiency">
+                                <i class="fa-solid fa-percent"></i>
+                            </div>
+                            <div class="stat-content">
+                                <span class="stat-label">Collection Rate</span>
+                                <h2 class="stat-value" id="stat-rate">0%</h2>
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar" id="stat-rate-bar" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Main Dashboard Section -->
+                    <div class="dashboard-details">
+                        <!-- Left Panel: Recent Invoices -->
+                        <div class="details-card recent-invoices-panel">
+                            <div class="card-header">
+                                <h3>Recent Invoices</h3>
+                                <button class="btn btn-text" id="btn-see-all">View All <i class="fa-solid fa-arrow-right"></i></button>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="app-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Invoice #</th>
+                                            <th>Client</th>
+                                            <th>Issued Date</th>
+                                            <th>Due Date</th>
+                                            <th>Amount</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="recent-invoices-list">
+                                        <!-- Dynamic Content -->
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="empty-state" id="dashboard-empty-state">
+                                <div class="empty-icon">
+                                    <i class="fa-regular fa-folder-open"></i>
+                                </div>
+                                <h4>No invoices yet</h4>
+                                <p>Create your very first professional invoice now!</p>
+                                <button class="btn btn-primary" id="btn-empty-create">
+                                    <i class="fa-solid fa-plus"></i> Create Invoice
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+
+                <!-- 2. INVOICE EDITOR VIEW (Live Creator & Preview) -->
+                <section id="view-editor" class="app-view">
+                    <div class="view-header flex-header">
+                        <div>
+                            <h1 id="editor-title">Create Invoice</h1>
+                            <p class="text-subtitle">Fill in details and preview in real time</p>
+                        </div>
+                        <div class="editor-header-actions">
+                            <button class="btn btn-outline" id="btn-cancel-edit">
+                                <i class="fa-solid fa-xmark"></i> Cancel
+                            </button>
+                            <button class="btn btn-success" id="btn-save-invoice">
+                                <i class="fa-solid fa-floppy-disk"></i> Save Invoice
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="editor-grid">
+                        <!-- Left Side: Live Form Editor -->
+                        <div class="editor-form-panel">
+                            <!-- Template and Setup Options -->
+                            <div class="form-section">
+                                <h3><i class="fa-solid fa-palette"></i> Style & Options</h3>
+                                <div class="form-grid-3">
+                                    <div class="form-group">
+                                        <label for="editor-template">Template Design</label>
+                                        <select id="editor-template">
+                                            <option value="modern" selected>Modern Elegant</option>
+                                            <option value="corporate">Corporate Professional</option>
+                                            <option value="minimal">Minimal Clean</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editor-currency">Currency</label>
+                                        <select id="editor-currency">
+                                            <option value="USD" data-symbol="$">USD ($)</option>
+                                            <option value="EUR" data-symbol="€">EUR (€)</option>
+                                            <option value="GBP" data-symbol="£">GBP (£)</option>
+                                            <option value="INR" data-symbol="₹">INR (₹)</option>
+                                            <option value="CAD" data-symbol="C$">CAD (C$)</option>
+                                            <option value="AUD" data-symbol="A$">AUD (A$)</option>
+                                            <option value="JPY" data-symbol="¥">JPY (¥)</option>
+                                            <option value="CNY" data-symbol="¥">CNY (¥)</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editor-status">Invoice Status</label>
+                                        <select id="editor-status">
+                                            <option value="Draft">Draft</option>
+                                            <option value="Unpaid" selected>Unpaid</option>
+                                            <option value="Paid">Paid</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Invoice Details -->
+                            <div class="form-section">
+                                <h3><i class="fa-solid fa-circle-info"></i> Invoice Information</h3>
+                                <div class="form-grid-3">
+                                    <div class="form-group">
+                                        <label for="editor-number">Invoice Number</label>
+                                        <div class="input-with-action">
+                                            <input type="text" id="editor-number" placeholder="INV-0001">
+                                            <button type="button" id="btn-generate-number" title="Generate Number">
+                                                <i class="fa-solid fa-arrows-rotate"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editor-date-issue">Issue Date</label>
+                                        <input type="date" id="editor-date-issue">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editor-date-due">Due Date</label>
+                                        <input type="date" id="editor-date-due">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Company Details (Sender) -->
+                            <div class="form-section">
+                                <h3><i class="fa-solid fa-building"></i> From (Company Details)</h3>
+                                <div class="form-grid-2">
+                                    <div class="form-group">
+                                        <label for="editor-sender-logo">Company Logo (Image URL)</label>
+                                        <input type="text" id="editor-sender-logo" placeholder="https://example.com/logo.png (Optional)">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editor-sender-name">Company Name</label>
+                                        <input type="text" id="editor-sender-name" placeholder="Your Company Ltd.">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editor-sender-email">Email Address</label>
+                                        <input type="email" id="editor-sender-email" placeholder="billing@yourcompany.com">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editor-sender-phone">Phone Number</label>
+                                        <input type="text" id="editor-sender-phone" placeholder="+1 (555) 019-2834">
+                                    </div>
+                                </div>
+                                <div class="form-group margin-top-sm">
+                                    <label for="editor-sender-address">Address</label>
+                                    <textarea id="editor-sender-address" rows="2" placeholder="123 Business Rd, Suite 100&#10;New York, NY 10001"></textarea>
+                                </div>
+                            </div>
+
+                            <!-- Client Details (Receiver) -->
+                            <div class="form-section">
+                                <h3><i class="fa-solid fa-user-tie"></i> Bill To (Client Details)</h3>
+                                <div class="form-grid-2">
+                                    <div class="form-group">
+                                        <label for="editor-client-name">Client Name / Business</label>
+                                        <input type="text" id="editor-client-name" placeholder="Client Company or Contact Person">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editor-client-email">Client Email Address</label>
+                                        <input type="email" id="editor-client-email" placeholder="accounts@client.com">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editor-client-phone">Client Phone Number</label>
+                                        <input type="text" id="editor-client-phone" placeholder="+1 (555) 043-9821">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editor-client-address">Client Address</label>
+                                        <textarea id="editor-client-address" rows="2" placeholder="456 Client St, Floor 4&#10;San Francisco, CA 94103"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Invoice Items (Table) -->
+                            <div class="form-section">
+                                <div class="section-header-flex">
+                                    <h3><i class="fa-solid fa-list-check"></i> Line Items</h3>
+                                    <button type="button" class="btn btn-outline btn-sm" id="btn-add-item">
+                                        <i class="fa-solid fa-plus"></i> Add Item
+                                    </button>
+                                </div>
+                                <div class="line-items-edit-container">
+                                    <div class="line-items-edit-header">
+                                        <div class="col-desc">Item & Description</div>
+                                        <div class="col-qty">Qty</div>
+                                        <div class="col-rate">Unit Price</div>
+                                        <div class="col-total">Amount</div>
+                                        <div class="col-action"></div>
+                                    </div>
+                                    <div id="editor-items-list" class="line-items-rows">
+                                        <!-- Dynamic Input Rows -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Discounts and Taxes -->
+                            <div class="form-section">
+                                <h3><i class="fa-solid fa-calculator"></i> Taxes & Discounts</h3>
+                                <div class="form-grid-2">
+                                    <div class="form-group">
+                                        <label for="editor-tax-rate">Tax Rate (%)</label>
+                                        <input type="number" id="editor-tax-rate" value="0" min="0" max="100" step="0.01" placeholder="e.g. 15">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editor-discount-rate">Discount (%)</label>
+                                        <input type="number" id="editor-discount-rate" value="0" min="0" max="100" step="0.01" placeholder="e.g. 10">
+                                    </div>
+                                </div>
+                                <div class="form-group margin-top-sm">
+                                    <label for="editor-notes">Notes / Payment Terms (Optional)</label>
+                                    <textarea id="editor-notes" rows="2" placeholder="Thank you for your business! Payment is expected within due date. Bank: Bank name, Acc: 1234-5678-90"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Side: Live Page-Proof Invoice Preview -->
+                        <div class="editor-preview-panel">
+                            <div class="preview-toolbar">
+                                <div class="toolbar-title">
+                                    <i class="fa-regular fa-eye"></i> Live Invoice Preview
+                                </div>
+                                <div class="toolbar-actions">
+                                    <button class="btn btn-outline btn-sm" id="btn-print-invoice">
+                                        <i class="fa-solid fa-print"></i> Print
+                                    </button>
+                                    <button class="btn btn-primary btn-sm" id="btn-download-pdf">
+                                        <i class="fa-solid fa-file-pdf"></i> PDF
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Invoice Preview Outer Container (simulates standard letter/A4 sheet) -->
+                            <div class="preview-canvas-wrapper">
+                                <div id="invoice-preview-container" class="invoice-preview-paper template-modern">
+                                    <!-- Dynamic HTML output generated by templates.js / app.js -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+
+                <!-- 3. INVOICE HISTORY VIEW -->
+                <section id="view-history" class="app-view">
+                    <div class="view-header flex-header">
+                        <div>
+                            <h1>Invoice History</h1>
+                            <p class="text-subtitle">Manage, duplicate, edit, or export your saved invoices</p>
+                        </div>
+                    </div>
+
+                    <!-- Filter Options -->
+                    <div class="filters-card">
+                        <div class="filters-grid">
+                            <div class="form-group">
+                                <label for="filter-status">Filter by Status</label>
+                                <select id="filter-status">
+                                    <option value="All">All Invoices</option>
+                                    <option value="Paid">Paid Only</option>
+                                    <option value="Unpaid">Unpaid Only</option>
+                                    <option value="Draft">Drafts Only</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="filter-search">Search Keyword</label>
+                                <div class="search-input-wrapper">
+                                    <input type="text" id="filter-search" placeholder="Invoice #, Client, Company...">
+                                    <i class="fa-solid fa-magnifying-glass"></i>
+                                </div>
+                            </div>
+                            <div class="form-group flex-end-btn">
+                                <button class="btn btn-outline" id="btn-clear-filters">
+                                    Reset Filters
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- History Table Panel -->
+                    <div class="details-card history-table-panel">
+                        <div class="table-responsive">
+                            <table class="app-table">
+                                <thead>
+                                    <tr>
+                                        <th>Invoice #</th>
+                                        <th>Client</th>
+                                        <th>Issued Date</th>
+                                        <th>Due Date</th>
+                                        <th>Grand Total</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="history-invoices-list">
+                                    <!-- Dynamic list of saved invoices -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="empty-state" id="history-empty-state">
+                            <div class="empty-icon">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </div>
+                            <h4>No matching invoices found</h4>
+                            <p>Try refining your filters or search terms.</p>
+                        </div>
+                    </div>
+                </section>
+
+
+                <!-- 4. DEFAULT SETTINGS VIEW -->
+                <section id="view-settings" class="app-view">
+                    <div class="view-header">
+                        <div>
+                            <h1>Settings</h1>
+                            <p class="text-subtitle">Manage default configurations for auto-populating new invoices</p>
+                        </div>
+                    </div>
+
+                    <div class="settings-grid">
+                        <div class="settings-card">
+                            <h3><i class="fa-solid fa-building"></i> Default Sender Information</h3>
+                            <p class="text-subtitle margin-bottom-md">This information will automatically fill in the sender fields when creating a new invoice.</p>
+                            
+                            <form id="settings-form">
+                                <div class="form-grid-2">
+                                    <div class="form-group">
+                                        <label for="settings-sender-logo">Default Logo URL</label>
+                                        <input type="text" id="settings-sender-logo" placeholder="https://example.com/logo.png">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="settings-sender-name">Company Name</label>
+                                        <input type="text" id="settings-sender-name" placeholder="Your Business Name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="settings-sender-email">Email Address</label>
+                                        <input type="email" id="settings-sender-email" placeholder="billing@mybusiness.com">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="settings-sender-phone">Phone Number</label>
+                                        <input type="text" id="settings-sender-phone" placeholder="+1 (555) 012-3456">
+                                    </div>
+                                </div>
+                                <div class="form-group margin-top-sm">
+                                    <label for="settings-sender-address">Default Address</label>
+                                    <textarea id="settings-sender-address" rows="3" placeholder="123 Business Lane, City, Country"></textarea>
+                                </div>
+
+                                <h3 class="margin-top-lg"><i class="fa-solid fa-scale-balanced"></i> Financial & Invoicing Defaults</h3>
+                                <div class="form-grid-3">
+                                    <div class="form-group">
+                                        <label for="settings-currency">Default Currency</label>
+                                        <select id="settings-currency">
+                                            <option value="USD">USD ($)</option>
+                                            <option value="EUR">EUR (€)</option>
+                                            <option value="GBP">GBP (£)</option>
+                                            <option value="INR">INR (₹)</option>
+                                            <option value="CAD">CAD (C$)</option>
+                                            <option value="AUD">AUD (A$)</option>
+                                            <option value="JPY">JPY (¥)</option>
+                                            <option value="CNY">CNY (¥)</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="settings-tax-rate">Default Tax Rate (%)</label>
+                                        <input type="number" id="settings-tax-rate" value="0" min="0" max="100" step="0.01">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="settings-discount-rate">Default Discount (%)</label>
+                                        <input type="number" id="settings-discount-rate" value="0" min="0" max="100" step="0.01">
+                                    </div>
+                                </div>
+                                <div class="form-group margin-top-sm">
+                                    <label for="settings-notes">Default Payment Terms & Notes</label>
+                                    <textarea id="settings-notes" rows="3" placeholder="Thank you for your business! Bank details: ..."></textarea>
+                                </div>
+
+                                <div class="form-actions margin-top-lg">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fa-solid fa-circle-check"></i> Save Default Configurations
+                                    </button>
+                                    <button type="button" class="btn btn-outline" id="btn-reset-defaults">
+                                        Reset to Empty
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal View: View Invoice Full Details -->
+    <div id="invoice-modal" class="modal-backdrop">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3>Invoice Details</h3>
+                <button class="modal-close-btn" id="btn-close-modal">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="modal-actions-bar">
+                <div class="status-indicator">
+                    Status: <span id="modal-invoice-status-badge" class="badge">Paid</span>
+                </div>
+                <div class="modal-button-group">
+                    <button class="btn btn-outline btn-sm" id="btn-modal-print">
+                        <i class="fa-solid fa-print"></i> Print
+                    </button>
+                    <button class="btn btn-primary btn-sm" id="btn-modal-download">
+                        <i class="fa-solid fa-file-pdf"></i> Download PDF
+                    </button>
+                    <button class="btn btn-outline btn-sm" id="btn-modal-edit">
+                        <i class="fa-solid fa-pencil"></i> Edit
+                    </button>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="preview-canvas-wrapper">
+                    <div id="modal-invoice-paper" class="invoice-preview-paper">
+                        <!-- Loaded dynamically -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
