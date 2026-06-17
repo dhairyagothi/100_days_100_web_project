@@ -355,9 +355,7 @@ function buildProjectCardHTML({
 
             <div class="card-preview-image-container" style="margin: 12px 0; border-radius: 8px; overflow: hidden; aspect-ratio: 16/9; background: #1a1a1a;">
            <img
-            src="./${url && url.startsWith('./')
-            ? url.split('/')[2]
-            : name.replace(/\s+/g, '_')}/preview.png"
+            src="./public/${url && url.startsWith('./public/') ? encodeURIComponent(url.split('/')[2]) : name.replace(/\\s+/g, '_')}/preview.png"
             alt="${safeName} preview"
             loading="lazy"
             decoding="async"
