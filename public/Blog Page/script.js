@@ -3,9 +3,6 @@ if (typeof blogs !== 'undefined') {
     console.log("Blogs:", blogs);
 }
 
-// ============================================================
-// DYNAMIC INJECTION OF CREATE/EDIT MODAL FOR SUBPAGES
-// ============================================================
 if (!document.getElementById("createBlogModal") && (window.location.pathname.includes("ai.html") || window.location.pathname.includes("of.html"))) {
     const createBlogModalDiv = document.createElement("div");
     createBlogModalDiv.id = "createBlogModal";
@@ -26,9 +23,6 @@ if (!document.getElementById("createBlogModal") && (window.location.pathname.inc
     document.body.appendChild(createBlogModalDiv);
 }
 
-// ============================================================
-// GLOBAL XSS SANITIZATION UTILITY (Fixes Issue #4360)
-// ============================================================
 const sanitizeInput = (str) => {
     if (!str) return '';
     return str
@@ -65,18 +59,13 @@ if (themeToggle) {
     });
 }
 
-const commentsElement = document.querySelector("#comments");
-const commentTextarea = document.querySelector("#comment");
-const usernameInput = document.querySelector("#username");
+let commentsElement = null;
+let commentTextarea = null;
+let usernameInput = null;
 
 let liked = JSON.parse(localStorage.getItem("liked")) || false;
 let bookmarked = JSON.parse(localStorage.getItem("bookmarked")) || false;
 let comments = JSON.parse(localStorage.getItem("comments")) || [];
-
-const savedUsername = localStorage.getItem("username") || "";
-if (usernameInput && savedUsername) {
-    usernameInput.value = savedUsername;
-}
 
 const showToast = (message, type = "success") => {
     let toastContainer = document.getElementById("toastContainer");
@@ -372,12 +361,6 @@ const addComment = () => {
     showToast("Comment added!");
 };
 
-renderComments();
-
-// ======================
-// BLOG CARD RENDER LOGIC
-// ======================
-
 function createBlogCard(blog) {
     const currentUser = JSON.parse(localStorage.getItem("currentUser"));
     let actions = "";
@@ -425,10 +408,6 @@ function createBlogCard(blog) {
         </div>
     `;
 }
-
-// ======================
-// HOMEPAGE
-// ======================
 
 function renderHomepageBlogs() {
     const featuredContainer = document.getElementById("featuredBlog");
@@ -490,10 +469,6 @@ function renderHomepageBlogs() {
     blogGrid.innerHTML = latestBlogs.map(createBlogCard).join("");
 }
 
-// ======================
-// BLOGS PAGE (ALL BLOGS)
-// ======================
-
 function renderBlogs() {
     const allBlogsGrid = document.getElementById("allBlogsGrid");
     if (!allBlogsGrid) return;
@@ -504,10 +479,6 @@ function renderBlogs() {
 
     allBlogsGrid.innerHTML = allBlogs.map(createBlogCard).join("");
 }
-
-// ======================
-// CRUD OPERATIONS
-// ======================
 
 function deleteBlog(id) {
     const currentUser = JSON.parse(localStorage.getItem("currentUser"));
@@ -573,7 +544,6 @@ function editBlog(id) {
     createBlogModal.classList.add("active");
 }
 
-// Authentication Modals & Logic
 const signupModal = document.getElementById("signupModal");
 const loginModal = document.getElementById("loginModal");
 const createBlogModal = document.getElementById("createBlogModal");
@@ -614,7 +584,6 @@ document.querySelectorAll(".close-modal").forEach(btn => {
         if (loginModal) loginModal.classList.remove("active");
         if (createBlogModal) createBlogModal.classList.remove("active");
         
-        // Ensure dynamically injected modal can also close
         const injectedModal = document.getElementById("createBlogModal");
         if (injectedModal) injectedModal.classList.remove("active");
     });
@@ -796,10 +765,6 @@ function updateAuthUI() {
     renderBlogs();
 }
 
-// ======================
-// SEARCH & CATEGORY
-// ======================
-
 function searchBlogs() {
     const searchInput = document.getElementById("sidebarSearch");
     if (!searchInput) return;
@@ -889,8 +854,12 @@ function filterByCategory(categoryName) {
     }
 }
 
-// Event Listeners for Search and Filter
+// Initializing event triggers synchronously within DOM processing sequence
 document.addEventListener("DOMContentLoaded", () => {
+    commentsElement = document.querySelector("#comments");
+    commentTextarea = document.querySelector("#comment");
+    usernameInput = document.querySelector("#username");
+
     const searchInput = document.getElementById("sidebarSearch");
     if (searchInput) {
         searchInput.addEventListener("keypress", (e) => {
@@ -908,9 +877,12 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
+    const savedUsername = localStorage.getItem("username") || "";
+    if (usernameInput && savedUsername) {
+        usernameInput.value = savedUsername;
+    }
+
+    updateAuthUI();
+    renderComments();
     updateCategoryCounts();
 });
-
-// INITIALIZE UI
-updateAuthUI();
-updateCategoryCounts();

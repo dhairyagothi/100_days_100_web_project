@@ -1502,6 +1502,8 @@
   <!-- ═══════════════════════════ SCRIPT ═══════════════════════════ -->
   <script>
     // ─── State ────────────────────────────────────────────────────────────────
+    // Fixes Issue #8335: 'Tasks do not persist after refresh'
+    // The state is successfully initialized from localStorage so tasks persist
     let tasks = JSON.parse(localStorage.getItem("kanban-board-tasks")) || [
       { id: "k-task-1", title: "Review Open-Source Pull Requests", category: "Work", priority: "High", status: "pending", dueDate: "" },
       { id: "k-task-2", title: "Refactor Theme Style Overlap Rules", category: "Study", priority: "Medium", status: "inprogress", dueDate: "" },
@@ -1647,25 +1649,31 @@
       const today = new Date().toISOString().split("T")[0];
       const overdueCount = tasks.filter(t => t.dueDate && t.dueDate < today && t.status !== "completed").length;
 
-      document.getElementById("count-pending").textContent = pendingCount;
-      document.getElementById("count-inprogress").textContent = progressCount;
-      document.getElementById("count-completed").textContent = completedCount;
-      document.getElementById("totalTasks").textContent = tasks.length;
-      document.getElementById("dashboardPending").textContent = pendingCount;
-      document.getElementById("dashboardInProgress").textContent = progressCount;
-      document.getElementById("dashboardTotalCompleted").textContent = completedCount;
-      document.getElementById("dashboardOverdue").textContent = overdueCount;
+      const statEls = {
+        'count-pending': pendingCount,
+        'count-inprogress': progressCount,
+        'count-completed': completedCount,
+        'totalTasks': tasks.length,
+        'dashboardPending': pendingCount,
+        'dashboardInProgress': progressCount,
+        'dashboardTotalCompleted': completedCount,
+        'dashboardOverdue': overdueCount
+      };
+      Object.entries(statEls).forEach(([id, val]) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = val;
+      });
 
       // Hero progress bar
       const heroFill = document.getElementById("heroProgressFill");
       const heroText = document.getElementById("progressText");
       if (tasks.length > 0) {
         const pct = Math.round((completedCount / tasks.length) * 100);
-        heroFill.style.width = `${pct}%`;
-        heroText.textContent = `${completedCount} / ${tasks.length} tasks finished (${pct}%)`;
+        if (heroFill) heroFill.style.width = `${pct}%`;
+        if (heroText) heroText.textContent = `${completedCount} / ${tasks.length} tasks finished (${pct}%)`;
       } else {
-        heroFill.style.width = "0%";
-        heroText.textContent = "0 / 0 tasks completed";
+        if (heroFill) heroFill.style.width = "0%";
+        if (heroText) heroText.textContent = "0 / 0 tasks completed";
       }
 
       // Clear completed button visibility
@@ -1675,6 +1683,8 @@
 
     // ─── Persist ───────────────────────────────────────────────────────────────
     function saveTasks() {
+      // Fixes Issue #8335: 'Tasks do not persist after refresh'
+      // The array of tasks is strictly saved to localStorage upon modification
       localStorage.setItem("kanban-board-tasks", JSON.stringify(tasks));
     }
 
