@@ -135,6 +135,26 @@
 
     </section>
 
+    <section class="jd-section">
+
+  <div class="upload-card">
+
+    <h2>Paste Job Description</h2>
+
+    <textarea
+      id="jobDescription"
+      rows="8"
+      placeholder="Paste the job description here..."
+    ></textarea>
+
+    <button id="matchBtn">
+      Match Resume with JD
+    </button>
+
+  </div>
+
+</section>
+
     <section class="stats-section">
 
       <div class="stats-card">
@@ -325,6 +345,35 @@
       </button>
 
     </section>
+
+    <section
+  class="jd-results-section"
+  id="jdResults"
+  style="display:none;"
+>
+
+  <div class="stats-card">
+
+    <h2>Job Match Analysis</h2>
+
+    <h3>
+      Match Score:
+      <span id="matchScore">0%</span>
+    </h3>
+
+    <br>
+
+    <h3>Matched Skills ✅</h3>
+    <ul id="matchedSkills"></ul>
+
+    <br>
+
+    <h3>Missing Skills ❌</h3>
+    <ul id="missingSkills"></ul>
+
+  </div>
+
+</section>
 
   </div>
 

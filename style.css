@@ -928,6 +928,7 @@ body.light-mode .btn-stats:hover {
 
 .dropdown-menu {
   display: none;
+  z-index: 999999 !important;
   position: absolute;
   top: 100%;
   right: 0;
@@ -938,7 +939,6 @@ body.light-mode .btn-stats:hover {
   border-radius: var(--radius-md);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
   backdrop-filter: blur(12px);
-  z-index: 1000;
   overflow: hidden;
   animation: fadeInDown 0.2s ease-out;
 }
