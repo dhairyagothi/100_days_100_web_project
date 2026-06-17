@@ -3,6 +3,9 @@ console.log("Email Validator - Improved version");
 // ── DOM elements ──
 var submitBtn        = document.getElementById("submitBtn");
 var resultCont       = document.getElementById("resultCont");
+var validationTimestamp = document.getElementById("validationTimestamp");
+var copyReportBtn    = document.getElementById("copyReportBtn");
+var downloadTXTBtn=document.getElementById("downloadTxtBtn");
 var usernameInput    = document.getElementById("username");
 var suggestionBanner = document.getElementById("suggestionBanner");
 var suggestionText   = document.getElementById("suggestionText");
@@ -12,7 +15,7 @@ var formatErrorList  = document.getElementById("formatErrorList");
 var partBreakdown    = document.getElementById("partBreakdown");
 var partLocal        = document.getElementById("partLocal");
 var partDomain       = document.getElementById("partDomain");
-
+var reportText = "";
 // ── All known valid popular domains ──
 var KNOWN_DOMAINS = [
     "gmail.com","yahoo.com","yahoo.in","yahoo.co.in","hotmail.com",
@@ -107,6 +110,7 @@ function resetFeedback() {
     formatErrors.style.display     = "none";
     partBreakdown.style.display    = "none";
     resultCont.innerHTML           = "";
+    validationTimestamp.style.display = "none";
     usernameInput.classList.remove("input-valid", "input-invalid");
 }
 
@@ -271,6 +275,35 @@ function handleValidate() {
 
     resultCont.innerHTML = html;
 
+    // Validation Timestamp
+    var now = new Date();
+    var formatDate=now.toLocaleString("en-IN",{
+        day:"2-digit",
+        month:"short",
+        year: "numeric",
+        hour: "numeric",
+        minute: "2-digit"
+
+    });
+    validationTimestamp.textContent="🕒 Validated on: " + formatDate;
+    validationTimestamp.style.display = "block";
+
+    // Copy Report Button
+    reportText=`
+    Email: ${email}
+    Status: ${status}
+    Domain: ${domain}
+    Format Valid: Yes
+    Free Email: ${isFree ? "Yes" : "No"}
+    Disposable: ${isDisposable ? "Yes — temporary email" : "No"}
+    Domain Known: ${isKnown ? "Yes" : (isDomainTypo ? "Looks like a typo" : "Unknown (may be org domain)")} 
+    Reason: ${reason}
+    Validated on: ${formatDate}
+    `
+    copyReportBtn.style.display= "block";
+
+    //Export TXT Button
+    downloadTXTBtn.style.display="block";
     if (isDomainTypo || isDisposable) {
         usernameInput.classList.add("input-invalid");
     } else {
@@ -288,3 +321,24 @@ submitBtn.addEventListener("click", function(e) {
 usernameInput.addEventListener("keydown", function(e) {
     if (e.key === "Enter") handleValidate();
 });
+
+copyReportBtn.addEventListener("click",function(){
+   navigator.clipboard.writeText(reportText)
+   copyReportBtn.textContent = "✅ Copied!";
+   setTimeout(function(){
+    copyReportBtn.textContent = "📋 Copy Report";
+   },2000)
+})
+
+downloadTXTBtn.addEventListener("click",function(){
+    var blob=new Blob(
+        [reportText],
+        { type: "text/plain" }
+    );
+    var link=document.createElement("a");
+    link.href=URL.createObjectURL(blob);
+    link.download="email_validation_report.txt";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+})
