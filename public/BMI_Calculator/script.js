@@ -1,8 +1,144 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   ANIMATED BACKGROUND — Aurora blobs + particle network
+   ═══════════════════════════════════════════════════════════════════════════ */
+(function () {
+  const canvas = document.getElementById("bg");
+  const ctx = canvas.getContext("2d");
+
+  const PARTICLE_COUNT = 120;
+  const CONNECT_DISTANCE = 90;
+  const PARTICLE_COLORS = [
+    "rgba(79,110,247,", // indigo
+    "rgba(201,168,76,", // gold
+    "rgba(62,207,142,", // emerald
+    "rgba(139,92,246,", // purple
+  ];
+
+  let W,
+    H,
+    particles = [],
+    tick = 0;
+
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+
+  function makeParticle() {
+    return {
+      x: Math.random() * W,
+      y: Math.random() * H,
+      r: Math.random() * 2 + 0.5,
+      vx: (Math.random() - 0.5) * 0.35,
+      vy: (Math.random() - 0.5) * 0.35,
+      col: PARTICLE_COLORS[Math.floor(Math.random() * PARTICLE_COLORS.length)],
+      alpha: Math.random() * 0.45 + 0.05,
+    };
+  }
+
+  function init() {
+    resize();
+    particles = [];
+    for (let i = 0; i < PARTICLE_COUNT; i++) particles.push(makeParticle());
+  }
+
+  function drawAurora() {
+    ctx.clearRect(0, 0, W, H);
+
+    /* Blob 1 — indigo, top-left drift */
+    let g = ctx.createRadialGradient(
+      W * 0.25 + Math.sin(tick * 0.0007) * 80,
+      H * 0.3 + Math.cos(tick * 0.0009) * 60,
+      10,
+      W * 0.25,
+      H * 0.3,
+      W * 0.45,
+    );
+    g.addColorStop(0, "rgba(79,110,247,0.18)");
+    g.addColorStop(1, "transparent");
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, W, H);
+
+    /* Blob 2 — purple, top-right drift */
+    g = ctx.createRadialGradient(
+      W * 0.75 + Math.cos(tick * 0.0006) * 100,
+      H * 0.2 + Math.sin(tick * 0.0011) * 50,
+      10,
+      W * 0.75,
+      H * 0.2,
+      W * 0.4,
+    );
+    g.addColorStop(0, "rgba(139,92,246,0.14)");
+    g.addColorStop(1, "transparent");
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, W, H);
+
+    /* Blob 3 — gold, bottom-centre drift */
+    g = ctx.createRadialGradient(
+      W * 0.5 + Math.sin(tick * 0.0005) * 120,
+      H * 0.75 + Math.cos(tick * 0.0008) * 70,
+      10,
+      W * 0.5,
+      H * 0.75,
+      W * 0.35,
+    );
+    g.addColorStop(0, "rgba(201,168,76,0.10)");
+    g.addColorStop(1, "transparent");
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, W, H);
+  }
+
+  function drawParticles() {
+    /* Dots */
+    particles.forEach((p) => {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = p.col + p.alpha + ")";
+      ctx.fill();
+
+      /* Move */
+      p.x += p.vx;
+      p.y += p.vy;
+      if (p.x < 0 || p.x > W) p.vx *= -1;
+      if (p.y < 0 || p.y > H) p.vy *= -1;
+    });
+
+    /* Connection lines */
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < CONNECT_DISTANCE) {
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.strokeStyle =
+            "rgba(79,110,247," + 0.07 * (1 - dist / CONNECT_DISTANCE) + ")";
+          ctx.lineWidth = 0.5;
+          ctx.stroke();
+        }
+      }
+    }
+  }
+
+  function loop() {
+    tick++;
+    drawAurora();
+    drawParticles();
+    requestAnimationFrame(loop);
+  }
+
+  window.addEventListener("resize", init);
+  init();
+  loop();
+})();
+
 /* =========================================================
    BMI FITNESS DASHBOARD
 ========================================================= */
 
-"use strict";
+("use strict");
 
 /* =========================================================
    ELEMENTS
@@ -65,9 +201,9 @@ function pushToHistory(bmi, weight) {
    ACTIVE GOAL STATE
 ========================================================= */
 
-let activeGoal = null;      // "lose" | "maintain" | "gain"
+let activeGoal = null; // "lose" | "maintain" | "gain"
 let lastBMICategory = null; // stored after each calculation
-let lastCaloriesBase = 0;   // base calories from BMI category
+let lastCaloriesBase = 0; // base calories from BMI category
 
 /* =========================================================
    BMI CHART  (rebuilt from history on load)
@@ -135,17 +271,20 @@ function rebuildChart() {
   }
 
   // Pick up current theme primary color
-  const primary = getComputedStyle(document.body)
-    .getPropertyValue("--primary").trim() || "#6366f1";
+  const primary =
+    getComputedStyle(document.body).getPropertyValue("--primary").trim() ||
+    "#6366f1";
 
   bmiChart.data.datasets[0].borderColor = primary;
   bmiChart.data.datasets[0].pointBackgroundColor = primary;
   bmiChart.data.datasets[0].backgroundColor = primary
-    .replace(")", ", 0.15)").replace("rgb", "rgba");
+    .replace(")", ", 0.15)")
+    .replace("rgb", "rgba");
 
   bmiChart.data.labels = history.map((e) => {
     const d = new Date(e.date);
-    return `${d.getMonth() + 1}/${d.getDate()} ${d.getHours()}:${String(d.getMinutes()).padStart(2, "0")}`;
+    // Formats the date as "Jun 15", "Jun 16", etc.
+    return d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
   });
   bmiChart.data.datasets[0].data = history.map((e) => e.bmi);
   bmiChart.update();
@@ -163,13 +302,12 @@ resetBtn.addEventListener("click", resetAll);
 ========================================================= */
 
 function calculateBMI() {
-
   hideError();
 
   let height = parseFloat(document.getElementById("height").value);
   let weight = parseFloat(document.getElementById("weight").value);
 
-  const age    = parseFloat(document.getElementById("age").value);
+  const age = parseFloat(document.getElementById("age").value);
   const gender = document.getElementById("gender").value;
 
   const heightUnit = document.getElementById("heightUnit").value;
@@ -185,8 +323,14 @@ function calculateBMI() {
   if (heightUnit === "ft") height = height * 30.48;
   if (weightUnit === "lb") weight = weight * 0.453592;
 
-  if (height < 50 || height > 300) { showError("Height seems unrealistic."); return; }
-  if (weight < 10 || weight > 500) { showError("Weight seems unrealistic."); return; }
+  if (height < 50 || height > 300) {
+    showError("Height seems unrealistic.");
+    return;
+  }
+  if (weight < 10 || weight > 500) {
+    showError("Weight seems unrealistic.");
+    return;
+  }
 
   /* ── BMI ── */
   const bmi = (weight / Math.pow(height / 100, 2)).toFixed(1);
@@ -206,7 +350,7 @@ function calculateBMI() {
   /* ── Body fat estimation ── */
   if (age && age > 0) {
     const sexFactor = gender === "male" ? 1 : 0;
-    let bf = 1.20 * bmi + 0.23 * age - 10.8 * sexFactor - 5.4;
+    let bf = 1.2 * bmi + 0.23 * age - 10.8 * sexFactor - 5.4;
     bf = Math.max(2, Math.min(bf, 65));
     bodyFat.innerText = `${bf.toFixed(1)}%`;
   } else {
@@ -223,7 +367,8 @@ function calculateBMI() {
     lastBMICategory = "underweight";
     category.innerText = "Underweight";
     categoryBadge.innerText = "⚠️ Underweight";
-    message.innerText = "You should focus on gaining healthy weight with nutrient-rich foods.";
+    message.innerText =
+      "You should focus on gaining healthy weight with nutrient-rich foods.";
     lastCaloriesBase = 2650;
     setCategoryColor("#f39c12");
     activateRow("underweight-row");
@@ -231,7 +376,8 @@ function calculateBMI() {
     lastBMICategory = "normal";
     category.innerText = "Normal";
     categoryBadge.innerText = "✅ Healthy";
-    message.innerText = "Great! Maintain your healthy lifestyle and stay active.";
+    message.innerText =
+      "Great! Maintain your healthy lifestyle and stay active.";
     lastCaloriesBase = 2200;
     setCategoryColor("#2ecc71");
     activateRow("normal-row");
@@ -239,7 +385,8 @@ function calculateBMI() {
     lastBMICategory = "overweight";
     category.innerText = "Overweight";
     categoryBadge.innerText = "📈 Overweight";
-    message.innerText = "Focus on fat loss through exercise and a healthy diet.";
+    message.innerText =
+      "Focus on fat loss through exercise and a healthy diet.";
     lastCaloriesBase = 1850;
     setCategoryColor("#ff9800");
     activateRow("overweight-row");
@@ -247,7 +394,8 @@ function calculateBMI() {
     lastBMICategory = "obese";
     category.innerText = "Obese";
     categoryBadge.innerText = "🚨 Obese";
-    message.innerText = "Adopt healthier habits and consult a fitness expert if needed.";
+    message.innerText =
+      "Adopt healthier habits and consult a fitness expert if needed.";
     lastCaloriesBase = 1650;
     setCategoryColor("#ff4d4d");
     activateRow("obese-row");
@@ -335,7 +483,7 @@ function applyGoal(goal) {
 
   // Calorie display
   const adjusted = base + cfg.calorieOffset;
-  const low  = adjusted - 100;
+  const low = adjusted - 100;
   const high = adjusted + 100;
   calories.innerText = `${low} – ${high} kcal/day`;
 
@@ -361,20 +509,36 @@ function setDefaultRecommendations() {
 
   if (lastBMICategory === "underweight") {
     calories.innerText = "2500 – 2800 kcal/day";
-    addDiet(["Milk & Dairy","Eggs","Bananas","Nuts","Peanut Butter"]);
-    addWorkout(["Strength Training","Pushups","Squats","Resistance Training"]);
+    addDiet(["Milk & Dairy", "Eggs", "Bananas", "Nuts", "Peanut Butter"]);
+    addWorkout([
+      "Strength Training",
+      "Pushups",
+      "Squats",
+      "Resistance Training",
+    ]);
   } else if (lastBMICategory === "normal") {
     calories.innerText = "2000 – 2400 kcal/day";
-    addDiet(["Balanced Diet","Vegetables","Fruits","Protein","Whole Grains"]);
-    addWorkout(["Jogging","Cycling","Walking","Yoga"]);
+    addDiet([
+      "Balanced Diet",
+      "Vegetables",
+      "Fruits",
+      "Protein",
+      "Whole Grains",
+    ]);
+    addWorkout(["Jogging", "Cycling", "Walking", "Yoga"]);
   } else if (lastBMICategory === "overweight") {
     calories.innerText = "1700 – 2000 kcal/day";
-    addDiet(["Salads","High Protein Foods","Low Sugar","More Fibre"]);
-    addWorkout(["Running","HIIT","Cardio","Cycling"]);
+    addDiet(["Salads", "High Protein Foods", "Low Sugar", "More Fibre"]);
+    addWorkout(["Running", "HIIT", "Cardio", "Cycling"]);
   } else if (lastBMICategory === "obese") {
     calories.innerText = "1500 – 1800 kcal/day";
-    addDiet(["Protein Rich Foods","Vegetables","Low Carb Meals","More Water"]);
-    addWorkout(["Walking","Swimming","Cycling","Light Cardio"]);
+    addDiet([
+      "Protein Rich Foods",
+      "Vegetables",
+      "Low Carb Meals",
+      "More Water",
+    ]);
+    addWorkout(["Walking", "Swimming", "Cycling", "Light Cardio"]);
   }
 }
 
@@ -458,19 +622,19 @@ function clearActiveRows() {
 function resetAll() {
   document.getElementById("height").value = "";
   document.getElementById("weight").value = "";
-  document.getElementById("age").value   = "";
+  document.getElementById("age").value = "";
   document.getElementById("gender").value = "male";
 
-  bmiValue.innerText    = "0";
-  category.innerText    = "Your Category";
+  bmiValue.innerText = "0";
+  category.innerText = "Your Category";
   categoryBadge.innerText = "Healthy";
-  message.innerText     = "Your health insights will appear here.";
-  calories.innerText    = "0 kcal/day";
-  water.innerText       = "0 Litres/day";
+  message.innerText = "Your health insights will appear here.";
+  calories.innerText = "0 kcal/day";
+  water.innerText = "0 Litres/day";
   healthyWeight.innerText = "0 – 0 kg";
-  bodyFat.innerText     = "0%";
+  bodyFat.innerText = "0%";
 
-  dietPlan.innerHTML   = "";
+  dietPlan.innerHTML = "";
   workoutPlan.innerHTML = "";
 
   gauge.style.background = `conic-gradient(var(--primary) 0deg, rgba(255,255,255,0.1) 0deg)`;
@@ -530,3 +694,18 @@ window.addEventListener("DOMContentLoaded", () => {
 document.addEventListener("keydown", (e) => {
   if (e.key === "Enter") calculateBMI();
 });
+
+// Controls the custom + and - buttons for number inputs
+function stepInput(inputId, stepValue) {
+  const input = document.getElementById(inputId);
+  let currentValue = parseFloat(input.value) || 0;
+
+  let newValue = currentValue + stepValue;
+
+  // Prevent going below 0 for physical measurements
+  if (newValue < 0) {
+    newValue = 0;
+  }
+
+  input.value = newValue;
+}
