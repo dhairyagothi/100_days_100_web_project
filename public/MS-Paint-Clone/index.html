@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Paint Clone</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="app-wrapper">
+    <!-- Toolbar -->
+    <header class="toolbar">
+      <div class="toolbar-left">
+        <span class="app-title">Paint</span>
+      </div>
+
+      <div class="toolbar-center">
+        <!-- Tools -->
+        <div class="tool-group" id="tool-group">
+          <button class="tool-btn active" id="btn-brush" title="Brush (B)" data-tool="brush">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19c-1 0-2.5-.5-2.5-2s1.5-2 1.5-4-2-3-2-5a5 5 0 0 1 10 0c0 2-2 3-2 5s1.5 2 1.5 4-1.5 2-2.5 2z"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
+            <span>Brush</span>
+          </button>
+          <button class="tool-btn" id="btn-eraser" title="Eraser (E)" data-tool="eraser">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20H7L3 16l10-10 7 7-3.5 3.5"/><path d="M6.5 17.5l4-4"/></svg>
+            <span>Eraser</span>
+          </button>
+          <button class="tool-btn" id="btn-fill" title="Fill (F)" data-tool="fill">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 11l-8-8-8.5 8.5a5.5 5.5 0 0 0 7.78 7.78L19 11Z"/><path d="M20 16s0 3 2 3-2 3-2 3"/><line x1="2" y1="21" x2="22" y2="21" stroke-width="1.5"/></svg>
+            <span>Fill</span>
+          </button>
+          <button class="tool-btn" id="btn-line" title="Line (L)" data-tool="line">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="4" y1="20" x2="20" y2="4"/></svg>
+            <span>Line</span>
+          </button>
+          <button class="tool-btn" id="btn-rect" title="Rectangle (R)" data-tool="rect">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="1"/></svg>
+            <span>Rect</span>
+          </button>
+          <button class="tool-btn" id="btn-circle" title="Circle (C)" data-tool="circle">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/></svg>
+            <span>Circle</span>
+          </button>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Color & size -->
+        <div class="tool-group">
+          <label class="color-wrap" title="Brush color">
+            <input type="color" id="color-picker" value="#1a1a2e" />
+            <span>Color</span>
+          </label>
+
+          <div class="size-wrap">
+            <label for="brush-size">Size</label>
+            <input type="range" id="brush-size" min="1" max="60" value="6" />
+            <span id="size-label">6</span>
+          </div>
+
+          <label class="color-wrap" title="Canvas background">
+            <input type="color" id="bg-color" value="#ffffff" title="Canvas background (default: white)" />
+            <span>BG</span>
+          </label>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Palette -->
+        <div class="palette" id="palette"></div>
+      </div>
+
+      <div class="toolbar-right">
+        <button class="action-btn" id="btn-undo" title="Undo (Ctrl+Z)">↩ Undo</button>
+        <button class="action-btn danger" id="btn-clear" title="Clear Canvas">⬜ Clear</button>
+        <button class="action-btn success" id="btn-download" title="Download PNG">⬇ Save</button>
+      </div>
+    </header>
+
+    <!-- Canvas area -->
+    <main class="canvas-area">
+      <canvas id="paint-canvas"></canvas>
+      <div class="cursor-preview" id="cursor-preview"></div>
+    </main>
+
+    <!-- Status bar -->
+    <footer class="status-bar">
+      <span id="status-coords">x: 0, y: 0</span>
+      <span id="status-tool">Tool: Brush</span>
+      <span id="status-size">Size: 6px</span>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
