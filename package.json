@@ -12,10 +12,6 @@
     "lint": "eslint --no-config-lookup -c eslint.config.js .",
     "lint:all": "npx -y htmlhint '**/*.html' --ignore 'node_modules/**,**/node_modules/**'",
     "format": "prettier --config .prettierrc --write .",
-    "docker:build": "docker build -t 100days-web .",
-    "docker:run": "docker run --rm -p 8080:80 100days-web",
-    "docker:up": "docker compose up --build -d",
-    "docker:down": "docker compose down",
     "prepare": "husky"
   },
   "repository": {
