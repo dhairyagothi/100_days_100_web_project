@@ -61,13 +61,18 @@ function resolveLocalHtmlPath(project) {
   }
   
   // Case 2: projectPath is a GitHub link
-  if (projectPath.includes('github.com') && projectPath.includes('/tree/Main/')) {
-    const parts = projectPath.split('/tree/Main/');
-    if (parts[1]) {
-      const localSubpath = decodeURIComponent(parts[1]);
-      const fullPath = path.join(REPO_ROOT, localSubpath);
-      return findHtmlInDir(fullPath);
+  try {
+    const url = new URL(projectPath);
+    if ((url.hostname === 'github.com' || url.hostname === 'www.github.com') && url.pathname.includes('/tree/Main/')) {
+      const parts = projectPath.split('/tree/Main/');
+      if (parts[1]) {
+        const localSubpath = decodeURIComponent(parts[1]);
+        const fullPath = path.join(REPO_ROOT, localSubpath);
+        return findHtmlInDir(fullPath);
+      }
     }
+  } catch (e) {
+    // Not a valid absolute URL, ignore and fall through
   }
   
   // Case 3: External hosted link, infer folder from previewImage name
