@@ -1,120 +1,189 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Habit Tracker Pro</title>
+    <title>Habit Tracker Dashboard</title>
     <link rel="stylesheet" href="styles.css">
 </head>
-
-<body>
-
-    <div class="container">
-
-        <header>
-
-            <h1>🌱 Habit Tracker Pro</h1>
-
-            <div class="header-actions">
-
-                <input type="text" id="searchHabit" placeholder="Search habit...">
-
-                <button id="addHabitBtn">
-                    + Add Habit
+<body class="dark">
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px;">
+                <div class="logo" style="margin-bottom: 0;">
+                    Habit Tracker
+                </div>
+                <button id="themeToggleBtn" class="btn-icon" style="background: transparent; font-size: 20px;">☀️</button>
+            </div>
+            
+            <div class="menu-section">
+                <div class="menu-title">MENU</div>
+                <button class="nav-btn active" data-view="today">
+                    <span class="nav-icon">📅</span> Today
                 </button>
-
-                <button id="themeBtn">
-                    🌙
+                <button class="nav-btn" data-view="weekly">
+                    <span class="nav-icon">🗓️</span> Weekly view
                 </button>
-
+                <button class="nav-btn" data-view="analytics">
+                    <span class="nav-icon">📊</span> Analytics
+                </button>
+                <button class="nav-btn" data-view="all-habits">
+                    <span class="nav-icon">📋</span> Habits
+                </button>
+                <button id="addHabitSidebarBtn" class="nav-btn action-btn">
+                    <span class="nav-icon">+</span> Add habit
+                </button>
             </div>
 
-        </header>
+            <div class="streak-widget">
+                <div class="streak-title">Current streak</div>
+                <div class="streak-value">🔥 <span id="sidebarCurrentStreak">0 days</span></div>
+                <div class="streak-best">Best: <span id="sidebarBestStreak">0 days</span></div>
+            </div>
+        </aside>
 
-        <div class="stats">
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- TODAY VIEW -->
+            <div id="view-today" class="view-section active">
+                <header class="main-header">
+                    <h1 id="todayDateTitle">Today — Loading...</h1>
+                    <div class="week-nav">
+                        <button id="prevWeekBtn">&lt;</button>
+                        <span>This week</span>
+                        <button id="nextWeekBtn">&gt;</button>
+                    </div>
+                </header>
 
-            <div class="card">
-                <h3>Total Habits</h3>
-                <p id="totalHabits">0</p>
+                <div class="week-slider" id="weekSlider">
+                    <!-- JS will populate Mon-Sun blocks here -->
+                </div>
+
+                <div class="habits-header">
+                    <h2 id="habitCountText">Habits · 0 of 0 done</h2>
+                </div>
+
+                <div class="habits-list" id="habitList">
+                    <!-- Horizontal habit cards go here -->
+                </div>
+
+                <div class="bottom-stats">
+                    <div class="stat-box">
+                        <div class="stat-big" id="statCompletion">0%</div>
+                        <div class="stat-label">Completion rate this week</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-big" id="statActive">0</div>
+                        <div class="stat-label">Active habits tracked</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-big" id="statDayStreak">0</div>
+                        <div class="stat-label">Day streak — keep going!</div>
+                    </div>
+                </div>
             </div>
 
-            <div class="card">
-                <h3>Completed Today</h3>
-                <p id="completedToday">0</p>
+            <!-- WEEKLY VIEW -->
+            <div id="view-weekly" class="view-section" style="display: none;">
+                <header class="main-header">
+                    <h1>Weekly View</h1>
+                </header>
+                <div class="weekly-content">
+                    <div class="weekly-grid-container">
+                        <table class="weekly-table" id="weeklyTable">
+                            <!-- Populated by JS -->
+                        </table>
+                    </div>
+                </div>
             </div>
 
-            <div class="card">
-                <h3>Best Streak</h3>
-                <p id="bestStreak">0</p>
+            <!-- ANALYTICS VIEW -->
+            <div id="view-analytics" class="view-section" style="display: none;">
+                <header class="main-header">
+                    <h1>Analytics</h1>
+                </header>
+                <div class="analytics-content" id="analyticsContent">
+                    <div class="bottom-stats" style="margin-top: 0;">
+                        <div class="stat-box">
+                            <div class="stat-big" id="analyticsTotalHabits">0</div>
+                            <div class="stat-label">Total Habits Tracked</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-big" id="analyticsAllTimeCompletions">0</div>
+                            <div class="stat-label">All-time Completions</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-big" id="analyticsBestStreak">0</div>
+                            <div class="stat-label">Best Streak Ever</div>
+                        </div>
+                    </div>
+                </div>
             </div>
-
-        </div>
-
-        <div class="quote-box">
-            <p id="quote"></p>
-        </div>
-
-        <div id="habitList"></div>
-
+            <!-- ALL HABITS VIEW -->
+            <div id="view-all-habits" class="view-section" style="display: none;">
+                <header class="main-header">
+                    <h1>All Habits</h1>
+                </header>
+                <div class="habits-list" id="allHabitsList">
+                    <!-- JS will populate all habits here with Edit/Delete options -->
+                </div>
+            </div>
+        </main>
     </div>
 
+    <!-- Modals -->
     <div class="modal" id="habitModal">
-
         <div class="modal-content">
+            <h2 id="modalTitle">Add Habit</h2>
+            <input type="hidden" id="editHabitId">
+            <input type="text" id="habitName" placeholder="Habit Name (e.g., Morning run)">
+            
+            <div class="input-group">
+                <select id="habitCategory">
+                    <option value="Health">Health</option>
+                    <option value="Study">Study</option>
+                    <option value="Fitness">Fitness</option>
+                    <option value="Personal">Personal</option>
+                    <option value="Work">Work</option>
+                </select>
+            </div>
+            
+            <div class="input-group" style="margin-top: 10px;">
+                <select id="habitIcon">
+                    <option value="🏃">🏃 Run</option>
+                    <option value="📖">📖 Read</option>
+                    <option value="💧">💧 Water</option>
+                    <option value="🧘">🧘 Meditate</option>
+                    <option value="💪">💪 Workout</option>
+                    <option value="🥗">🥗 Diet</option>
+                    <option value="💻">💻 Code</option>
+                    <option value ="🧹">🧹 Cleaning</option>
+                    <option value = "💵">💵 Saving</option>
+                    <option value="⭐">⭐ Custom</option>
+                </select>
+            </div>
+            
+            <textarea id="habitNotes" placeholder="Notes or Target (e.g., 5 km)" style="margin-top:10px;"></textarea>
 
-            <h2>Add Habit</h2>
-
-            <input type="text" id="habitName" placeholder="Habit Name">
-
-            <select id="habitCategory">
-                <option>Health</option>
-                <option>Study</option>
-                <option>Fitness</option>
-                <option>Personal</option>
-                <option>Work</option>
-            </select>
-
-            <input type="color" id="habitColor" value="#22c55e">
-
-            <textarea id="habitNotes" placeholder="Notes..."></textarea>
-
-            <button id="saveHabitBtn">
-                Save Habit
-            </button>
-
+            <div class="modal-actions">
+                <button id="cancelHabitBtn" class="btn-secondary">Cancel</button>
+                <button id="saveHabitBtn" class="btn-primary">Save Habit</button>
+            </div>
         </div>
-
     </div>
+
     <div class="modal" id="deleteModal">
-
-    <div class="modal-content">
-
-        <h2>Delete Habit?</h2>
-
-        <p>
-            Are you sure you want to delete this habit?
-            This action cannot be undone.
-        </p>
-
-        <div class="modal-actions">
-
-            <button id="cancelDeleteBtn">
-                Cancel
-            </button>
-
-            <button id="confirmDeleteBtn">
-                Delete
-            </button>
-
+        <div class="modal-content">
+            <h2>Delete Habit?</h2>
+            <p>Are you sure you want to delete this habit? This action cannot be undone.</p>
+            <div class="modal-actions">
+                <button id="cancelDeleteBtn" class="btn-secondary">Cancel</button>
+                <button id="confirmDeleteBtn" class="btn-danger">Delete</button>
+            </div>
         </div>
-
-    </div>
-
     </div>
 
     <script src="script.js"></script>
-
 </body>
-
 </html>
