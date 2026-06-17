@@ -92,22 +92,10 @@ npm run dev
 # → http://localhost:3000
 ```
 
-**Option C — Docker (requires Docker):**
+**Option C: Useful npm scripts**
 ```bash
-# One-command setup — no Node.js needed
-docker compose up --build
-# → http://localhost:8080
-
-# Or use the Makefile
-make docker-up
-```
-
-**Option D — Make & Run Scripts (shortcut commands):**
-```bash
-make help               # Show all available commands
-make dev                # Start local dev server
-make lint               # Run HTML linter
-npm run validate:projects # Runs projects registry JSON validation checks
+npm run lint               # Lint the code
+npm run validate:projects  # Validate the projects registry (projects.json)
 ```
 
 ## 📁 Project Structure
@@ -125,10 +113,6 @@ npm run validate:projects # Runs projects registry JSON validation checks
 │   │   └── README.md     # Project documentation
 ├── contributors/          # Contributors showcase
 ├── .github/workflows/     # CI/CD pipelines
-├── Dockerfile             # Docker container configuration
-├── docker-compose.yml     # Docker Compose for local dev
-├── nginx.conf             # Nginx server configuration
-├── Makefile               # Developer command shortcuts
 ├── .gitignore            # Git ignore rules
 └── vercel.json           # Vercel deployment configuration
 ```
