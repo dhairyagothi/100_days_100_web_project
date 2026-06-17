@@ -5,8 +5,8 @@
 }
 
 body {
-  font-family: "Segoe UI", sans-serif;
-  background: #f0f2f5;
+ font-family: "Segoe UI", sans-serif;
+  background: #a98de3;
   padding: 20px;
 }
 
@@ -14,15 +14,30 @@ body {
   max-width: 1100px;
   margin: 0 auto;
   background: white;
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  padding: 20px;
+  border-radius: 16px;
+  padding: 25px;
+
+  border: 3px solid #8b5cf6;
+
+  box-shadow:
+    0 0 10px rgba(193, 171, 244, 0.4),
+    0 0 20px rgba(193, 171, 244, 0.3),
+    0 0 40px rgba(193, 171, 244, 0.2);
 }
 
 h1 {
+ 
   text-align: center;
-  color: #2c3e50;
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: #7c3aed;
   margin-bottom: 20px;
+
+.puzzle-icon {
+  color: #a855f7;
+  margin-right: 8px;
+  filter: drop-shadow(0 0 8px rgba(168, 85, 247, 0.5));
+}
 }
 
 .controls {
@@ -74,24 +89,21 @@ button:hover {
 .cell {
   width: 45px;
   height: 45px;
-  background: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  text-align: center;
   font-size: 20px;
   font-weight: bold;
-  border: 1px solid #ddd;
   text-transform: uppercase;
-  cursor: pointer;
+  border: 1px solid #ddd;
+  outline: none;
 }
 
 .cell.black {
-  background: #2c3e50;
+  background: #6545a4;
   cursor: default;
 }
 
 .cell.highlight {
-  background: #fffacd;
+  background: #cec1e8;
 }
 
 .clues {
@@ -118,4 +130,10 @@ ol {
 }
 .wrong {
   color: #e74c3c;
+}
+
+.cell::placeholder {
+  color: #7c3aed;
+  font-size: 10px;
+  font-weight: bold;
 }

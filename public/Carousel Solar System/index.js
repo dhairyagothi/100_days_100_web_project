@@ -5,6 +5,23 @@ document.addEventListener("DOMContentLoaded", () => {
   const prevBtn = document.getElementById("prev");
   const nextBtn = document.getElementById("next");
 
+  const hamburger = document.querySelector(".hamburger-icon");
+const menu = document.querySelector(".planet-mini-list");
+
+hamburger.addEventListener("click", (e) => {
+  e.stopPropagation();
+  menu.classList.toggle("active");
+});
+
+document.addEventListener("click", (e) => {
+  if (
+    !menu.contains(e.target) &&
+    !hamburger.contains(e.target)
+  ) {
+    menu.classList.remove("active");
+  }
+});
+
   let currentIndex = 0;
 
   function showSlide(index) {
@@ -47,11 +64,27 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  miniPlanets.forEach((planet, index) => {
-    planet.addEventListener("click", () => {
-      showSlide(index);
-    });
+  planetItems.forEach((item, index) => {
+  item.addEventListener("click", () => {
+    showSlide(index);
   });
+});
+
+function showSlide(index) {
+  slides.forEach(slide => slide.classList.remove("active"));
+  miniPlanets.forEach(planet => planet.classList.remove("active"));
+
+  if (index < 0) {
+    currentIndex = slides.length - 1;
+  } else if (index >= slides.length) {
+    currentIndex = 0;
+  } else {
+    currentIndex = index;
+  }
+
+  slides[currentIndex].classList.add("active");
+  miniPlanets[currentIndex].classList.add("active");
+}
 
   document.addEventListener("keydown", (e) => {
     if (e.key === "ArrowRight") {

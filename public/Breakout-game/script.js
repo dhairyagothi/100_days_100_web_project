@@ -289,8 +289,7 @@ function drawParticles() {
 }
 
 function draw() {
-    ctx.fillStyle = "#0f172a";
-    ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
     
     drawBricks();
     drawPowerups();
@@ -684,6 +683,7 @@ function startGame() {
     
     document.getElementById("rules-container").classList.add("hidden");
     document.getElementById("game-over-container").classList.add("hidden");
+    document.getElementById("play-nav-btn").classList.add("hidden");
     
     gameState.score = 0;
     gameState.lives = gameState.maxLives;
@@ -714,6 +714,7 @@ function showWin() {
     document.getElementById("final-score").textContent = gameState.score;
     document.getElementById("final-high-score").textContent = gameState.highScore;
     document.getElementById("pause-btn").classList.add("hidden");
+    document.getElementById("play-nav-btn").classList.remove("hidden");
     
     if (gameState.score > gameState.highScore) {
         gameState.highScore = gameState.score;
@@ -728,6 +729,7 @@ function showGameOver() {
     document.getElementById("game-over-title").textContent = "Game Over";
     document.getElementById("final-score").textContent = gameState.score;
     document.getElementById("pause-btn").classList.add("hidden");
+    document.getElementById("play-nav-btn").classList.remove("hidden");
     
     let newHighScore = false;
     if (gameState.score > gameState.highScore) {
@@ -781,11 +783,16 @@ function startCountdown() {
 // ============================================
 
 function toggleTheme() {
-    const html = document.documentElement;
-    const currentTheme = html.getAttribute("data-theme") || "dark";
+    const body = document.body;
+    const currentTheme = body.getAttribute("data-theme") || "dark";
     const newTheme = currentTheme === "dark" ? "light" : "dark";
-    html.setAttribute("data-theme", newTheme);
+    body.setAttribute("data-theme", newTheme);
     localStorage.setItem("theme", newTheme);
+    
+    const themeBtn = document.getElementById("theme-btn");
+    if (themeBtn) {
+        themeBtn.textContent = newTheme === "dark" ? "🌙 Theme" : "☀️ Theme";
+    }
 }
 
 function toggleSound() {
@@ -799,7 +806,11 @@ document.getElementById("sound-btn").addEventListener("click", toggleSound);
 
 // Load saved theme
 const savedTheme = localStorage.getItem("theme") || "dark";
-document.documentElement.setAttribute("data-theme", savedTheme);
+document.body.setAttribute("data-theme", savedTheme);
+const themeBtn = document.getElementById("theme-btn");
+if (themeBtn) {
+    themeBtn.textContent = savedTheme === "dark" ? "🌙 Theme" : "☀️ Theme";
+}
 
 // ============================================
 // TOAST NOTIFICATIONS
