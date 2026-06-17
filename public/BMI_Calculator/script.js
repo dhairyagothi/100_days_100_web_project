@@ -98,6 +98,34 @@
       if (p.y < 0 || p.y > H) p.vy *= -1;
     });
 
+    function calculateBMI() {
+    const height = parseFloat(document.getElementById("height").value);
+    const weight = parseFloat(document.getElementById("weight").value);
+
+    if (!height || !weight) {
+        document.getElementById("result").innerHTML =
+            "Please enter valid values";
+        return;
+    }
+
+    const bmi = weight / ((height / 100) * (height / 100));
+
+    let category = "";
+
+    if (bmi < 18.5) {
+        category = "Underweight";
+    } else if (bmi < 25) {
+        category = "Normal";
+    } else if (bmi < 30) {
+        category = "Overweight";
+    } else {
+        category = "Obese";
+    }
+
+    document.getElementById("result").innerHTML =
+        `BMI: ${bmi.toFixed(2)} (${category})`;
+}
+
     /* Connection lines */
     for (let i = 0; i < particles.length; i++) {
       for (let j = i + 1; j < particles.length; j++) {
