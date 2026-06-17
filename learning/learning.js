@@ -712,7 +712,7 @@ list.appendChild(item);
         breaks: true,
       });
 
-      let htmlContent = marked.parse(markdownText);
+      let htmlContent = DOMPurify.sanitize(marked.parse(markdownText));
 
       const parsedContainer = document.createElement('div');
       parsedContainer.className = 'rendered-markdown';

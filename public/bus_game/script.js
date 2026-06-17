@@ -46,11 +46,76 @@ function calcLayout() {
     LANE3_Y = ROAD_Y + ROAD_H * 0.80;   // oncoming traffic (bottom)
 }
 
+// ── Difficulty ───────────────────────────────────────────────────────────────
+const DIFFICULTY = {
+    easy:   { time: 120, trafficMult: 0.8, fuelDrain: 3.5, spawnExtra: 0, label: 'EASY' },
+    normal: { time: 90,  trafficMult: 1.0, fuelDrain: 5.5, spawnExtra: 1, label: 'NORMAL' },
+    hard:   { time: 70,  trafficMult: 1.35, fuelDrain: 8,   spawnExtra: 2, label: 'HARD' },
+};
+let difficulty = 'easy';
+let DIFF = DIFFICULTY[difficulty];
+
 // ── State ────────────────────────────────────────────────────────────────────
 let gameRunning = false, paused = false;
 let earnings = 0, delivered = 0, crashes = 0, timeLeft = 90;
 let worldX = 0;          // camera scroll
 let raf, lastTime = 0;
+
+// Combo
+let combo = 1, comboTimer = 0;
+const COMBO_WINDOW = 6;   // seconds to chain another delivery
+const COMBO_MAX = 5;
+
+// Fuel
+let fuelStations = [];
+
+// Power-ups
+let powerups = [];
+let powerupSpawnTimer = 0;
+let boostTimer = 0;        // seconds of active speed boost
+let fareBonusActive = false;
+
+// Best run (persisted locally on this device)
+let bestRun = 0;
+try { bestRun = parseInt(localStorage.getItem('cbr_best') || '0', 10) || 0; } catch (e) { bestRun = 0; }
+
+// Audio
+let muted = false;
+let audioCtx = null;
+function getAudio() {
+    if (!audioCtx) {
+        const AC = window.AudioContext || window.webkitAudioContext;
+        if (AC) audioCtx = new AC();
+    }
+    return audioCtx;
+}
+function playTone(freq, dur, type = 'sine', vol = 0.15) {
+    if (muted) return;
+    const a = getAudio();
+    if (!a) return;
+    const osc = a.createOscillator();
+    const gain = a.createGain();
+    osc.type = type;
+    osc.frequency.value = freq;
+    gain.gain.value = vol;
+    osc.connect(gain); gain.connect(a.destination);
+    osc.start();
+    gain.gain.exponentialRampToValueAtTime(0.0001, a.currentTime + dur);
+    osc.stop(a.currentTime + dur);
+}
+function sfxPickup() { playTone(880, 0.12, 'square', 0.12); }
+function sfxDeliver() { playTone(660, 0.1, 'triangle', 0.15); setTimeout(() => playTone(990, 0.15, 'triangle', 0.15), 90); }
+function sfxCrash() { playTone(120, 0.35, 'sawtooth', 0.22); }
+function sfxCombo(c) { playTone(900 + c * 120, 0.16, 'triangle', 0.16); }
+function sfxPowerup() { playTone(1400, 0.18, 'sine', 0.15); setTimeout(() => playTone(1800, 0.18, 'sine', 0.12), 100); }
+function sfxHorn() { playTone(300, 0.4, 'square', 0.2); playTone(252, 0.4, 'square', 0.15); }
+function sfxLowFuel() { playTone(440, 0.1, 'square', 0.1); }
+
+function toggleMute() {
+    muted = !muted;
+    return muted;
+}
+window.toggleMute = toggleMute;
 
 // Weather
 const WEATHERS = ['clear', 'rain', 'heavy_rain'];
@@ -66,6 +131,7 @@ function resetBus() {
         w: 90, h: 38,
         vx: 0, vy: 0,
         speed: 0,
+        baseMaxSpeed: 220,
         maxSpeed: 220,
         accel: 140, brake: 260, friction: 80,
         laneTarget: LANE2_Y,
@@ -73,6 +139,7 @@ function resetBus() {
         maxPass: 5,
         crashed: false, crashTimer: 0,
         destStop: null,
+        fuel: 100,
     };
 }
 
@@ -83,7 +150,7 @@ function spawnTraffic() {
     trafficCars.push({
         x: worldX + W + 60 + Math.random() * 300,
         lane: 'top',
-        speed: 60 + Math.random() * 50,
+        speed: (60 + Math.random() * 50) * DIFF.trafficMult,
         w: 55 + Math.random() * 25, h: 24,
         color: ['#e74c3c', '#3498db', '#f1c40f', '#9b59b6', '#1abc9c', '#e67e22'][Math.floor(Math.random() * 6)],
         type: Math.random() < 0.2 ? 'truck' : 'car'
@@ -92,7 +159,7 @@ function spawnTraffic() {
     trafficCars.push({
         x: worldX - 60 - Math.random() * 300,
         lane: 'bot',
-        speed: -(55 + Math.random() * 45),
+        speed: -(55 + Math.random() * 45) * DIFF.trafficMult,
         w: 55 + Math.random() * 20, h: 24,
         color: ['#c0392b', '#2980b9', '#d35400', '#8e44ad'][Math.floor(Math.random() * 4)],
         type: Math.random() < 0.15 ? 'truck' : 'car'
@@ -113,6 +180,17 @@ function genBusStops() {
             color: stopColors[i % stopColors.length],
             pickedUp: false,
             delivered: false,
+        });
+    }
+}
+
+// Fuel stations
+function genFuelStations() {
+    fuelStations = [];
+    for (let i = 0; i < 7; i++) {
+        fuelStations.push({
+            worldX: 900 + i * 1100 + Math.random() * 200,
+            id: i,
         });
     }
 }
@@ -175,6 +253,7 @@ const keys = {};
 window.addEventListener('keydown', e => {
     keys[e.key] = true;
     if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) e.preventDefault();
+    if (e.key === ' ' || e.key === 'h' || e.key === 'H') honk();
 });
 window.addEventListener('keyup', e => { keys[e.key] = false; });
 
@@ -207,21 +286,51 @@ setupTouchControl("rightBtn", "ArrowRight");
 setupTouchControl("upBtn", "ArrowUp");
 setupTouchControl("downBtn", "ArrowDown");
 
+// Horn button
+let hornFlash = 0;
+function honk() {
+    sfxHorn();
+    hornFlash = 0.25;
+    // Pedestrians at the upcoming stop "react" - small chance of bonus tip
+    if (bus.destStop) return;
+    const next = busStops.find(s => !s.pickedUp && s.worldX > worldX - 50);
+    if (next) {
+        const sx = next.worldX - worldX + W * 0.25;
+        if (Math.abs(sx - bus.x) < 220) {
+            next._honked = true;
+        }
+    }
+}
+(function setupHorn() {
+    const btn = document.getElementById('hornBtn');
+    if (!btn) return;
+    const fire = (e) => { e.preventDefault(); honk(); };
+    btn.addEventListener('mousedown', fire);
+    btn.addEventListener('touchstart', fire, { passive: false });
+})();
+
 
 // ── Init ──────────────────────────────────────────────────────────────────────
 function initGame() {
+    DIFF = DIFFICULTY[difficulty] || DIFFICULTY.easy;
     calcLayout();
     resetBus();
     trafficCars = [];
-    earnings = 0; delivered = 0; crashes = 0; timeLeft = 90;
+    earnings = 0; delivered = 0; crashes = 0; timeLeft = DIFF.time;
+    combo = 1; comboTimer = 0;
+    boostTimer = 0; fareBonusActive = false;
+    powerups = []; powerupSpawnTimer = 6 + Math.random() * 6;
     worldX = 0;
     weather = 'clear'; weatherTimer = 15 + Math.random() * 20;
-    genBusStops(); genSignals(); genBuildings(); genTrees();
+    genBusStops(); genSignals(); genBuildings(); genTrees(); genFuelStations();
     spawnTraffic(); spawnTraffic(); spawnTraffic();
+    for (let i = 0; i < DIFF.spawnExtra; i++) spawnTraffic();
     genRain();
+    document.getElementById('powerup-badge').classList.add('hidden');
     updateHUD();
     document.getElementById('next-stop').style.display = 'block';
     updateNextStop();
+    updateMiniMap();
 }
 
 // ── Loop ──────────────────────────────────────────────────────────────────────
@@ -240,6 +349,27 @@ function update(dt) {
     // Timer
     timeLeft -= dt;
     if (timeLeft <= 0) { timeLeft = 0; endGame(); return; }
+
+    // Combo timer countdown
+    if (comboTimer > 0) {
+        comboTimer -= dt;
+        if (comboTimer <= 0) { combo = 1; comboTimer = 0; updateHUD(); }
+    }
+
+    // Power-up boost timer
+    if (boostTimer > 0) {
+        boostTimer -= dt;
+        document.getElementById('powerup-badge').classList.remove('hidden');
+        if (boostTimer <= 0) {
+            boostTimer = 0;
+            if (!fareBonusActive) document.getElementById('powerup-badge').classList.add('hidden');
+        }
+    } else if (!fareBonusActive) {
+        document.getElementById('powerup-badge').classList.add('hidden');
+    }
+
+    // Horn flash decay
+    if (hornFlash > 0) hornFlash -= dt;
 
     // Weather cycle
     weatherTimer -= dt;
@@ -260,11 +390,20 @@ function update(dt) {
 
         // Speed in rain slightly reduced
         const rainPenalty = weather === 'heavy_rain' ? 0.7 : weather === 'rain' ? 0.85 : 1;
-        const topSpd = bus.maxSpeed * rainPenalty;
+
+        // Boost multiplier from power-up
+        const boostMult = boostTimer > 0 ? 1.45 : 1;
+
+        // Fuel penalty - low fuel cripples top speed
+        const fuelPenalty = bus.fuel <= 0 ? 0.32 : bus.fuel < 15 ? 0.7 : 1;
+
+        bus.maxSpeed = bus.baseMaxSpeed * rainPenalty * boostMult * fuelPenalty;
+        const topSpd = bus.maxSpeed;
 
         if (acc) bus.speed = Math.min(topSpd, bus.speed + bus.accel * dt);
         else if (brk) bus.speed = Math.max(0, bus.speed - bus.brake * dt);
         else bus.speed = Math.max(0, bus.speed - bus.friction * dt);
+        if (bus.speed > topSpd) bus.speed = Math.max(topSpd, bus.speed - bus.brake * dt);
 
         // Vertical lane movement
         if (lt) bus.laneTarget = Math.max(ROAD_Y + bus.h / 2 + 5, bus.laneTarget - 90 * dt);
@@ -273,6 +412,12 @@ function update(dt) {
 
         // Camera follows bus
         worldX += bus.speed * dt;
+
+        // Fuel drain - faster while moving, slower while idle
+        const moveFactor = bus.speed > 10 ? 1 : 0.25;
+        const prevFuel = bus.fuel;
+        bus.fuel = Math.max(0, bus.fuel - DIFF.fuelDrain * moveFactor * dt);
+        if (prevFuel > 15 && bus.fuel <= 15) sfxLowFuel();
     } else {
         bus.crashTimer -= dt;
         bus.speed = Math.max(0, bus.speed - 300 * dt);
@@ -292,23 +437,60 @@ function update(dt) {
         if (s.timer <= 0) { s.state = s.state === 'red' ? 'green' : 'red'; s.timer = s.max; }
     });
 
+    // Power-up spawning
+    powerupSpawnTimer -= dt;
+    if (powerupSpawnTimer <= 0) {
+        spawnPowerup();
+        powerupSpawnTimer = 9 + Math.random() * 8;
+    }
+
+    // Power-up pickup
+    if (!bus.crashed) {
+        for (let i = powerups.length - 1; i >= 0; i--) {
+            const p = powerups[i];
+            const px = p.worldX - worldX + W * 0.25;
+            const dist = Math.hypot(bus.x - px, bus.y - LANE2_Y);
+            if (dist < 38) {
+                activatePowerup(p.type);
+                powerups.splice(i, 1);
+            } else if (px < -100) {
+                powerups.splice(i, 1);
+            }
+        }
+    }
+
+    // Fuel station refuel
+    if (!bus.crashed) {
+        fuelStations.forEach(f => {
+            const fx = f.worldX - worldX + W * 0.25;
+            const dist = Math.abs(bus.x - fx);
+            if (dist < 70 && bus.speed < 35 && bus.fuel < 100) {
+                const before = bus.fuel;
+                bus.fuel = Math.min(100, bus.fuel + 35 * dt);
+                if (before < 100 && bus.fuel >= 100) showPopup('TANK FULL! ⛽', '#4FC3F7');
+            }
+        });
+    }
+
     // Bus stop pickup
     if (!bus.crashed) {
         busStops.forEach(stop => {
             if (stop.pickedUp) return;
-            // BUG 1 FIX: Skip pickup at active destination stop — drop off first
+            // Skip pickup at active destination stop — drop off first
             if (bus.destStop && bus.destStop.id === stop.id) return;
             const sx = stop.worldX - worldX + W * 0.25;
             const sy = ROAD_Y + ROAD_H + 2; // stop is below road
             const bx = bus.x, by = bus.y;
             const dist = Math.hypot(bx - sx, by - (ROAD_Y + ROAD_H * 0.48));
             if (dist < 80 && bus.speed < 30 && bus.passengers < bus.maxPass) {
-                const boarding = Math.min(stop.waiting, bus.maxPass - bus.passengers);
+                const bonus = stop._honked ? 1 : 0;
+                const boarding = Math.min(stop.waiting + bonus, bus.maxPass - bus.passengers);
                 if (boarding > 0) {
                     bus.passengers += boarding;
                     stop.pickedUp = true;
                     earnings += boarding * 20;
-                    showPopup(`+₹${boarding * 20} BOARDED!`, '#00E676');
+                    sfxPickup();
+                    showPopup(`+₹${boarding * 20} BOARDED!` + (bonus ? ' 📯' : ''), '#00E676');
                     updatePassIcons();
                     // assign destination stop
                     if (!bus.destStop) {
@@ -325,9 +507,32 @@ function update(dt) {
             const dx = bus.destStop.worldX - worldX + W * 0.25;
             const dist = Math.abs(bus.x - dx);
             if (dist < 80 && bus.speed < 30) {
-                earnings += bus.passengers * 50;
+                let amount = bus.passengers * 50;
+
+                if (fareBonusActive) {
+                    amount *= 2;
+                    fareBonusActive = false;
+                    sfxPowerup();
+                }
+
+                // Combo multiplier
+                if (comboTimer > 0) {
+                    combo = Math.min(COMBO_MAX, combo + 1);
+                } else {
+                    combo = 1;
+                }
+                comboTimer = COMBO_WINDOW;
+                amount *= combo;
+
+                earnings += amount;
                 delivered += bus.passengers;
-                showPopup(`+₹${bus.passengers * 50} DELIVERED! 🎉`, '#FFD600');
+                sfxDeliver();
+                showPopup(`+₹${amount} DELIVERED! 🎉`, '#FFD600');
+                if (combo >= 2) {
+                    sfxCombo(combo);
+                    showCombo(combo);
+                }
+
                 bus.destStop.delivered = true;
                 bus.passengers = 0;
                 bus.destStop = null;
@@ -349,6 +554,8 @@ function update(dt) {
                 bus.crashTimer = 1.5;
                 crashes++;
                 earnings = Math.max(0, earnings - 10);
+                combo = 1; comboTimer = 0;
+                sfxCrash();
                 flashScreen('rgba(255,50,0,0.45)');
                 updateHUD();
                 updateMiniMap();
@@ -356,7 +563,7 @@ function update(dt) {
         });
     }
 
-    // BUG 2 FIX: Red light penalty only once per crossing
+    // Red light penalty - only once per crossing
     if (!bus.crashed && bus.speed > 40) {
         signals.forEach(s => {
             if (s.state !== 'red') { s.penalized = false; return; }
@@ -382,6 +589,36 @@ function update(dt) {
     }
 
     updateHUD();
+    updateMiniMap();
+}
+
+// ── Power-ups ────────────────────────────────────────────────────────────────
+function spawnPowerup() {
+    const types = ['boost', 'fare', 'fuel'];
+    const type = types[Math.floor(Math.random() * types.length)];
+    powerups.push({
+        worldX: worldX + W + 150 + Math.random() * 250,
+        type,
+    });
+}
+
+function activatePowerup(type) {
+    sfxPowerup();
+    const badge = document.getElementById('powerup-badge');
+    badge.classList.remove('hidden');
+    if (type === 'boost') {
+        boostTimer = 6;
+        badge.textContent = '⚡ SPEED BOOST!';
+        showPopup('⚡ SPEED BOOST!', '#FFD600');
+    } else if (type === 'fare') {
+        fareBonusActive = true;
+        badge.textContent = '💰 2x FARE NEXT DROP!';
+        showPopup('💰 DOUBLE FARE READY!', '#FFD600');
+    } else if (type === 'fuel') {
+        bus.fuel = 100;
+        showPopup('⛽ FULL TANK!', '#4FC3F7');
+        if (boostTimer <= 0 && !fareBonusActive) badge.classList.add('hidden');
+    }
 }
 
 // ── Draw ──────────────────────────────────────────────────────────────────────
@@ -393,13 +630,27 @@ function draw() {
     drawRoad();
     drawTrees();
     drawSignals();
+    drawFuelStations();
     drawBusStops();
+    drawPowerups();
     drawNavigationArrow();
     drawTrafficCars();
     drawBus();
     drawGround();
     drawRain();
     if (weather !== 'clear') drawRainOverlay();
+    if (hornFlash > 0) drawHornFlash();
+}
+
+function drawHornFlash() {
+    ctx.save();
+    ctx.globalAlpha = Math.max(0, hornFlash) * 2;
+    ctx.strokeStyle = '#FFD600';
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.arc(bus.x, bus.y, bus.w * 0.7 + (0.25 - hornFlash) * 120, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.restore();
 }
 
 function drawNavigationArrow() {
@@ -644,6 +895,51 @@ function drawSignals() {
     });
 }
 
+function drawFuelStations() {
+    fuelStations.forEach(f => {
+        const sx = f.worldX - worldX + W * 0.25;
+        if (sx < -60 || sx > W + 60) return;
+        const sy = GROUND_Y;
+
+        ctx.fillStyle = '#2c3e50';
+        ctx.fillRect(sx - 16, sy + 6, 32, 26);
+        ctx.fillStyle = '#4FC3F7';
+        ctx.fillRect(sx - 16, sy + 6, 32, 5);
+
+        ctx.font = '22px serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('⛽', sx, sy + 2);
+
+        ctx.fillStyle = '#4FC3F7';
+        ctx.font = 'bold 9px Nunito';
+        ctx.fillText('FUEL', sx, sy + 24);
+    });
+}
+
+function drawPowerups() {
+    powerups.forEach(p => {
+        const sx = p.worldX - worldX + W * 0.25;
+        if (sx < -60 || sx > W + 60) return;
+        const bob = Math.sin(Date.now() * 0.006 + p.worldX) * 6;
+        const icon = p.type === 'boost' ? '⚡' : p.type === 'fare' ? '💰' : '⛽';
+        const glow = p.type === 'boost' ? '#FFD600' : p.type === 'fare' ? '#00E676' : '#4FC3F7';
+
+        ctx.save();
+        ctx.fillStyle = glow;
+        ctx.globalAlpha = 0.18;
+        ctx.beginPath();
+        ctx.arc(sx, LANE2_Y + bob, 22, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.globalAlpha = 1;
+        ctx.shadowColor = glow; ctx.shadowBlur = 14;
+        ctx.font = '26px serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(icon, sx, LANE2_Y + 8 + bob);
+        ctx.shadowBlur = 0;
+        ctx.restore();
+    });
+}
+
 function drawBusStops() {
     busStops.forEach(stop => {
         const sx = stop.worldX - worldX + W * 0.25;
@@ -668,14 +964,8 @@ function drawBusStops() {
 
         // Waiting passengers
         if (!stop.pickedUp) {
-
             ctx.font = '32px serif';
-
-            ctx.fillText(
-                '🧍',
-                sx,
-                sy - 15
-            );
+            ctx.fillText(stop._honked ? '🙌' : '🧍', sx, sy - 15);
         }
 
         // Destination marker
@@ -739,7 +1029,20 @@ function drawBus() {
         }
         ctx.restore();
     } else {
+        // Speed boost trail
+        if (boostTimer > 0) {
+            for (let t = 0; t < 3; t++) {
+                ctx.globalAlpha = 0.18 - t * 0.05;
+                ctx.fillStyle = '#FFD600';
+                ctx.beginPath();
+                ctx.roundRect(bx - bus.w / 2 - 10 - t * 10, by - bus.h / 2, bus.w, bus.h, 5);
+                ctx.fill();
+            }
+            ctx.globalAlpha = 1;
+        }
+
         drawBusShape(bx, by, false);
+
         // exhaust puffs
         if (bus.speed > 30) {
             for (let e = 0; e < 2; e++) {
@@ -776,7 +1079,7 @@ function drawBusShape(bx, by, crashed) {
     ctx.globalAlpha = 1;
 
     // Body
-    ctx.fillStyle = crashed ? '#cc4400' : '#FFD600';
+    ctx.fillStyle = crashed ? '#cc4400' : (boostTimer > 0 ? '#FFEE58' : '#FFD600');
     ctx.beginPath(); ctx.roundRect(x, y, w, h, 5); ctx.fill();
 
     // Bus stripe
@@ -896,12 +1199,27 @@ function drawRainOverlay() {
 
 // ── HUD helpers ───────────────────────────────────────────────────────────────
 function updateHUD() {
-    document.getElementById('h-earn').textContent = '₹' + earnings;
+    document.getElementById('h-earn').textContent = '₹' + Math.round(earnings);
+
     const ts = document.getElementById('h-time');
     ts.textContent = Math.ceil(timeLeft);
     ts.className = 'hud-val' + (timeLeft < 20 ? ' red' : timeLeft < 40 ? ' yellow' : '');
+
     document.getElementById('h-del').textContent = delivered;
     document.getElementById('h-crash').textContent = crashes;
+
+    // Combo
+    const comboEl = document.getElementById('h-combo');
+    comboEl.textContent = 'x' + combo;
+    comboEl.classList.add('pop');
+    setTimeout(() => comboEl.classList.remove('pop'), 150);
+
+    // Fuel
+    const fuelPct = Math.round(bus.fuel);
+    const fuelEl = document.getElementById('h-fuel');
+    fuelEl.textContent = fuelPct + '%';
+    const fuelCard = fuelEl.closest('.hud-card');
+    if (fuelCard) fuelCard.classList.toggle('low-fuel', fuelPct < 20);
 }
 
 function updatePassIcons() {
@@ -927,7 +1245,6 @@ function updateNextStop() {
             el.textContent = '✅ ALL STOPS DONE!';
         }
     }
-
 }
 
 let popupTimeout;
@@ -942,6 +1259,15 @@ function showPopup(text, color) {
     popupTimeout = setTimeout(() => el.style.opacity = '0', 1600);
 }
 
+let comboTimeout;
+function showCombo(c) {
+    const el = document.getElementById('combo-popup');
+    el.textContent = `COMBO x${c}!`;
+    el.classList.add('show');
+    clearTimeout(comboTimeout);
+    comboTimeout = setTimeout(() => el.classList.remove('show'), 1300);
+}
+
 function flashScreen(col) {
     const el = document.getElementById('flash');
     el.style.background = col; el.style.opacity = '1';
@@ -949,11 +1275,12 @@ function flashScreen(col) {
 }
 
 // ── Start / End ───────────────────────────────────────────────────────────────
-function startGame() {
-    document.getElementById('pause-btn').style.display = 'block';
-    document.getElementById('restart-btn').style.display = 'block';
-    document.getElementById('resume-btn').style.display = 'none';
-    document.getElementById('play-btn').style.display = 'block';
+function startGame(diff) {
+    if (diff && DIFFICULTY[diff]) difficulty = diff;
+
+    document.getElementById('pause-btn').classList.remove('hidden');
+    document.getElementById('restart-btn').classList.remove('hidden');
+    document.getElementById('resume-btn').classList.add('hidden');
     document.getElementById('overlay').style.display = 'none';
     gameRunning = true; paused = false;
     initGame();
@@ -961,23 +1288,34 @@ function startGame() {
     cancelAnimationFrame(raf);
     raf = requestAnimationFrame(loop);
 }
+window.startGame = startGame;
 
 function endGame() {
     gameRunning = false;
     cancelAnimationFrame(raf);
-    const rating = earnings > 800 ? '⭐⭐⭐' : earnings > 400 ? '⭐⭐' : '⭐';
-    document.getElementById('ov-earn').textContent = '₹' + earnings;
+
+    const score = Math.round(earnings);
+    if (score > bestRun) {
+        bestRun = score;
+        try { localStorage.setItem('cbr_best', String(bestRun)); } catch (e) {}
+    }
+
+    const rating = score > 800 ? '⭐⭐⭐' : score > 400 ? '⭐⭐' : '⭐';
+    document.getElementById('ov-earn').textContent = '₹' + score;
     document.getElementById('ov-del').textContent = delivered;
     document.getElementById('ov-crash').textContent = crashes;
     document.getElementById('ov-rating').textContent = rating;
+    document.getElementById('ov-best').textContent = '₹' + bestRun;
     document.getElementById('ov-stats').style.display = 'flex';
+    document.getElementById('difficulty-select').style.display = 'none';
     document.querySelector('#overlay h1').textContent = '⏱️ TIME UP!';
     document.getElementById('play-btn').textContent = 'DRIVE AGAIN!';
     document.getElementById('overlay').style.display = 'flex';
-    document.getElementById('pause-btn').style.display = 'none';
-    document.getElementById('resume-btn').style.display = 'none';
-    document.getElementById('restart-btn').style.display = 'none';
+    document.getElementById('pause-btn').classList.add('hidden');
+    document.getElementById('resume-btn').classList.add('hidden');
+    document.getElementById('restart-btn').classList.add('hidden');
     document.getElementById('next-stop').style.display = 'none';
+    document.getElementById('powerup-badge').classList.add('hidden');
 }
 
 // Idle preview draw
@@ -996,18 +1334,19 @@ function endGame() {
 })();
 
 function updateMiniMap() {
-
     const routeLength = 8000;
+    const busEl = document.getElementById('mini-bus');
+    const targetEl = document.getElementById('mini-target');
+    if (!busEl || !targetEl) return;
 
-    document.getElementById("busMarker").style.left =
-        Math.min(100, worldX / routeLength * 100) + "%";
+    busEl.style.left = Math.min(100, Math.max(0, worldX / routeLength * 100)) + '%';
 
-    let target = bus.destStop ||
-        busStops.find(s => !s.pickedUp);
-
+    let target = bus.destStop || busStops.find(s => !s.pickedUp);
     if (target) {
-        document.getElementById("targetMarker").style.left =
-            Math.min(100, target.worldX / routeLength * 100) + "%";
+        targetEl.style.left = Math.min(100, Math.max(0, target.worldX / routeLength * 100)) + '%';
+        targetEl.style.display = 'block';
+    } else {
+        targetEl.style.display = 'none';
     }
 }
 
@@ -1017,41 +1356,45 @@ function pauseGame() {
 
     paused = true;
 
-    document.getElementById('pause-btn').style.display = 'none';
-    document.getElementById('resume-btn').style.display = 'block';
+    document.getElementById('pause-btn').classList.add('hidden');
+    document.getElementById('resume-btn').classList.remove('hidden');
 
     document.getElementById('overlay').style.display = 'flex';
     document.querySelector('#overlay h1').textContent = '⏸ GAME PAUSED';
-    document.getElementById('play-btn').style.display = 'none';
+    document.getElementById('difficulty-select').style.display = 'none';
+    document.getElementById('ov-stats').style.display = 'none';
+    document.getElementById('play-btn').classList.add('hidden');
 }
+window.pauseGame = pauseGame;
 
 function resumeGame() {
     paused = false;
 
     document.getElementById('overlay').style.display = 'none';
 
-    document.getElementById('pause-btn').style.display = 'block';
-    document.getElementById('resume-btn').style.display = 'none';
+    document.getElementById('pause-btn').classList.remove('hidden');
+    document.getElementById('resume-btn').classList.add('hidden');
+    document.getElementById('play-btn').classList.remove('hidden');
 
     lastTime = performance.now();
 }
+window.resumeGame = resumeGame;
 
 function restartGame() {
-
     cancelAnimationFrame(raf);
 
     paused = false;
     gameRunning = true;
 
     document.getElementById('overlay').style.display = 'none';
+    document.getElementById('play-btn').classList.remove('hidden');
 
-    document.getElementById('pause-btn').style.display = 'block';
-    document.getElementById('resume-btn').style.display = 'none';
+    document.getElementById('pause-btn').classList.remove('hidden');
+    document.getElementById('resume-btn').classList.add('hidden');
 
     initGame();
 
     lastTime = performance.now();
     raf = requestAnimationFrame(loop);
 }
-// Make startGame available to HTML button
-window.startGame = startGame;
+window.restartGame = restartGame;
