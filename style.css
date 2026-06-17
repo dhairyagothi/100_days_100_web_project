@@ -3590,3 +3590,16 @@ body.custom-cursor-active .cursor-ring.is-visible {
   border-radius: 10px;
 }
 
+
+/* Tech-stack logos on project cards and filter chips */
+.tech-logo {
+  width: 0.95em;
+  height: 0.95em;
+  vertical-align: -0.15em;
+  margin-right: 4px;
+  flex-shrink: 0;
+}
+.tech-logo-wrap {
+  display: inline-flex;
+  align-items: center;
+}
