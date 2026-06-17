@@ -165,7 +165,7 @@ body.light-theme {
       <div class="card-title">Category Breakdown</div>
       <div class="card-badge" id="catBadge">0 categories</div>
     </div>
-    <div class="chart-wrap"><canvas id="catChart"></canvas></div>
+    <div class="chart-wrap"><canvas id="catChart" role="img" aria-label="Projects by category"></canvas></div>
   </div>
 
   <div class="card chart-card">
@@ -173,7 +173,7 @@ body.light-theme {
       <div class="card-title">Technology Stack</div>
       <div class="card-badge">by project count</div>
     </div>
-    <div class="chart-wrap"><canvas id="techChart"></canvas></div>
+    <div class="chart-wrap"><canvas id="techChart" role="img" aria-label="Top technologies by project count"></canvas></div>
   </div>
 
   <div class="card chart-card wide">
@@ -181,7 +181,7 @@ body.light-theme {
       <div class="card-title">Difficulty Progression</div>
       <div class="card-badge" id="diffBadge">Day 1 → N</div>
     </div>
-    <div class="chart-wrap"><canvas id="diffChart"></canvas></div>
+    <div class="chart-wrap"><canvas id="diffChart" role="img" aria-label="Cumulative projects by difficulty over time"></canvas></div>
   </div>
 </main>
 
@@ -286,6 +286,7 @@ function render(data){
   catChart.data.labels = catEntries.map(e=>e[0]);
   catChart.data.datasets[0].data = catEntries.map(e=>e[1]);
   catChart.update();
+  $('catChart').setAttribute('aria-label', 'Projects by category. ' + (catEntries.map(e => e[0] + ': ' + e[1]).join(', ') || 'No data') + '.');
   $('catBadge').textContent = `${catEntries.length} categories`;
 
   // Tech stack (top 10)
@@ -299,6 +300,7 @@ function render(data){
   techChart.data.datasets[0].data = techEntries.map(e=>e[1]);
   techChart.data.datasets[0].backgroundColor = techEntries.map((_,i)=>PALETTE[i%PALETTE.length]);
   techChart.update();
+  $('techChart').setAttribute('aria-label', 'Top technologies by project count. ' + (techEntries.map(e => e[0] + ': ' + e[1]).join(', ') || 'No data') + '.');
 
   // Difficulty progression — cumulative over projectNo
   const sorted = [...filtered].sort((a,b)=>(a.projectNo||0)-(b.projectNo||0));
@@ -317,6 +319,7 @@ function render(data){
   diffChart.data.datasets[1].data = iArr;
   diffChart.data.datasets[2].data = aArr;
   diffChart.update();
+  $('diffChart').setAttribute('aria-label', 'Cumulative projects by difficulty. Beginner ' + (bArr[bArr.length - 1] || 0) + ', Intermediate ' + (iArr[iArr.length - 1] || 0) + ', Advanced ' + (aArr[aArr.length - 1] || 0) + '.');
   $('diffBadge').textContent = `Day 1 → ${labels[labels.length-1] || 0}`;
 
   setStatus(`Showing ${total} of ${data.length} projects`, 'ready');

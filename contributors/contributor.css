@@ -83,7 +83,8 @@ body {
   margin-bottom: 5rem;
 }
 
-.contributor-header h1 {
+.contributor-header h1,
+.contributor-header h2 {
   font-family: 'Orbitron', sans-serif;
   font-size: clamp(2.5rem, 6vw, 4rem);
   font-weight: 900;
@@ -131,7 +132,7 @@ body {
   color: var(--accent-color);
 }
 
-.stat-item label {
+.stat-item span {
   font-size: 0.75rem;
   color: var(--text-secondary);
   text-transform: uppercase;
