@@ -2644,6 +2644,23 @@
       "javascript"
     ],
     "difficulty": "intermediate",
+    "projectPath": "./public/Rock_Paper_Scissors/index.html"
+  },
+
+    {
+      "projectNo": 228,
+      "projectName": "Blinkit-clone",
+      "projectType": "Clone",
+      "projectDesc": "A high-fidelity Blinkit quick-commerce clone with OTP login, cart drawer, coupon codes, live order tracking, delivery animation built with React and Vite.",
+      "techStack": [
+        "react",
+        "vite",
+        "css"
+      ],
+      "difficulty": "advanced",
+      "projectPath": "./public/blinkit-clone/index.html"
+    }
+  ]
     "projectDesc": "A responsive IP Address Tracker application that allows users to search IP addresses, view location details, ISP information, timezone data, and visualize the location on an interactive map using Leaflet.js and IPAPI."
   },
   {
