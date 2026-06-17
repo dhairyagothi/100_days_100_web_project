@@ -7,6 +7,7 @@
 <title>Project Stats — 100 Days 100 Web Projects</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script src="theme.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
   :root {
@@ -34,18 +35,54 @@
   --glow:0 32px 60px rgba(15,242,200,.18);
 }
 
-body.light-theme {
+body.light-mode, :root[data-theme="light"] {
     --bg-primary: #f8fafc;
     --bg-secondary: #ffffff;
     --text-primary: #111827;
     --text-secondary: #475569;
     --card-bg: #ffffff;
+    --bg: #eef2f7;
+    --surface: #ffffff;
+    --surface2: #f8fafc;
 }
 
-body.light-theme {
-  --bg: #eef2f7;
-  --surface: #ffffff;
-  --surface2: #f8fafc;
+:root[data-theme="sepia"] {
+    --bg-primary: #f4ecd8;
+    --bg-secondary: #eee8d5;
+    --text-primary: #433422;
+    --text-secondary: #5c4a37;
+    --card-bg: #fdf6e3;
+    --bg: #eee8d5;
+    --surface: #fdf6e3;
+    --surface2: #eee8d5;
+}
+
+:root[data-theme="cyberpunk"] {
+    --bg-primary: #0d0221;
+    --bg-secondary: #160631;
+    --text-primary: #fcee0a;
+    --text-secondary: #00ff9f;
+    --card-bg: #160631;
+    --bg: #0d0221;
+    --surface: #1e0942;
+    --surface2: #160631;
+    --accent: #ff003c;
+    --accent2: #fcee0a;
+    --accent3: #00ff9f;
+}
+
+:root[data-theme="nord"] {
+    --bg-primary: #2e3440;
+    --bg-secondary: #3b4252;
+    --text-primary: #eceff4;
+    --text-secondary: #d8dee9;
+    --card-bg: #3b4252;
+    --bg: #2e3440;
+    --surface: #3b4252;
+    --surface2: #434c5e;
+    --accent: #88c0d0;
+    --accent2: #81a1c1;
+    --accent3: #5e81ac;
 }
 
 .theme-btn {
@@ -368,32 +405,25 @@ setInterval(load, REFRESH_MS);
 <script>
 const toggleBtn = document.getElementById("themeToggle");
 
-function applyTheme(theme) {
-    document.body.classList.toggle(
-        "light-theme",
-        theme === "light"
-    );
-
-    toggleBtn.textContent =
-        theme === "light"
-            ? "🌙 Dark"
-            : "☀️ Light";
-
-    localStorage.setItem("stats-theme", theme);
+function updateButtonText(theme) {
+    if (theme === "light") {
+        toggleBtn.innerHTML = "🌙 Dark";
+    } else if (theme === "dark") {
+        toggleBtn.innerHTML = "☀️ Light";
+    } else {
+        const symbols = { sepia: "☕", cyberpunk: "⚡", nord: "❄" };
+        const sym = symbols[theme] || "🔄";
+        toggleBtn.innerHTML = sym + " " + theme.charAt(0).toUpperCase() + theme.slice(1);
+    }
 }
 
-const savedTheme =
-    localStorage.getItem("stats-theme") || "dark";
+// Initial state
+const initialTheme = document.documentElement.getAttribute("data-theme") || "dark";
+updateButtonText(initialTheme);
 
-applyTheme(savedTheme);
-
-toggleBtn.addEventListener("click", () => {
-    const current =
-        document.body.classList.contains("light-theme")
-            ? "light"
-            : "dark";
-
-    applyTheme(current === "light" ? "dark" : "light");
+// Listen to the custom event dispatched by theme.js
+window.addEventListener("themechange", (e) => {
+    updateButtonText(e.detail.theme);
 });
 </script>
 
