@@ -33,6 +33,14 @@
 <body>
 <div id="appShell">
 
+            <button
+    id="themeToggle"
+    class="theme-toggle"
+    aria-label="Toggle theme"
+>
+    🌙
+</button>
+
     <div class="feedbackmain">
 
         <div class="auth-page-actions">
@@ -171,6 +179,35 @@
     <script src="assets/js/roleManager.js"></script>
     <script src="js/toast.js"></script>
     <script src="js/feedback.js"></script>
+
+    <script>
+        // Theme Toggle Functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const themeToggle = document.getElementById('themeToggle');
+            const body = document.body;
+            
+            // Load saved theme preference
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            if (savedTheme === 'dark') {
+                body.classList.add('dark-mode');
+                themeToggle.textContent = '☀️';
+            }
+            
+            // Handle theme toggle click
+            themeToggle.addEventListener('click', function() {
+                body.classList.toggle('dark-mode');
+                
+                // Update button emoji
+                if (body.classList.contains('dark-mode')) {
+                    themeToggle.textContent = '☀️';
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    themeToggle.textContent = '🌙';
+                    localStorage.setItem('theme', 'light');
+                }
+            });
+        });
+    </script>
 
 </body>
 </html>
