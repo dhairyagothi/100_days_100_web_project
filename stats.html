@@ -3,9 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Real-time stats dashboard for 100 Days 100 Web Projects – category breakdown, project status, and contributor metrics.">
 <title>Project Stats — 100 Days 100 Web Projects</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script src="theme.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
   :root {
@@ -33,7 +35,7 @@
   --glow:0 32px 60px rgba(15,242,200,.18);
 }
 
-body.light-theme {
+body.light-mode {
     --bg-primary: #f8fafc;
     --bg-secondary: #ffffff;
     --text-primary: #111827;
@@ -41,7 +43,7 @@ body.light-theme {
     --card-bg: #ffffff;
 }
 
-body.light-theme {
+body.light-mode {
   --bg: #eef2f7;
   --surface: #ffffff;
   --surface2: #f8fafc;
@@ -365,35 +367,24 @@ load();
 setInterval(load, REFRESH_MS);
 </script>
 <script>
-const toggleBtn = document.getElementById("themeToggle");
+  // Sync the theme toggle button label/icon with the actual applied theme
+  const updateToggleBtn = (theme) => {
+    const toggleBtn = document.getElementById("themeToggle");
+    if (toggleBtn) {
+      toggleBtn.textContent = theme === "light" ? "🌙 Dark" : "☀️ Light";
+    }
+  };
 
-function applyTheme(theme) {
-    document.body.classList.toggle(
-        "light-theme",
-        theme === "light"
-    );
+  // Sync on theme updates
+  window.addEventListener("themechange", (e) => {
+    updateToggleBtn(e.detail.theme);
+  });
 
-    toggleBtn.textContent =
-        theme === "light"
-            ? "🌙 Dark"
-            : "☀️ Light";
-
-    localStorage.setItem("stats-theme", theme);
-}
-
-const savedTheme =
-    localStorage.getItem("stats-theme") || "dark";
-
-applyTheme(savedTheme);
-
-toggleBtn.addEventListener("click", () => {
-    const current =
-        document.body.classList.contains("light-theme")
-            ? "light"
-            : "dark";
-
-    applyTheme(current === "light" ? "dark" : "light");
-});
+  // Sync on initial page load
+  document.addEventListener("DOMContentLoaded", () => {
+    const currentTheme = window.ThemeManager?.currentTheme() || "dark";
+    updateToggleBtn(currentTheme);
+  });
 </script>
 
 </body>

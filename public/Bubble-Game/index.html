@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bubble Game</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <h1>Bubble Game</h1>
+    <div id="main">
+      <div id="panel">
+        <div id="ptop">
+          <div class="elem">
+            <h2>Hit</h2>
+            <div class="box"><span class="hit"></span></div>
+          </div>
+          <div class="elem">
+            <h2>Timer</h2>
+            <div class="box"><span class="time">60</span></div>
+          </div>
+          <div class="elem">
+            <h2>Score</h2>
+            <div class="box"><span class="score">0</span></div>
+          </div>
+          <div class="elem">
+            <h2>Level</h2>
+            <div class="box"><span id="level">1</span></div>
+          </div>
+          <div class="elem">
+            <h2>Completed</h2>
+            <div class="box"><span id="completed">0</span></div>
+          </div>
+        </div>
+
+        <!-- Controls -->
+        <div id="controls">
+          <button id="rules-btn">📜 Rules</button>
+          <button id="theme-toggle">🌙 Toggle Theme</button>
+          <button id="timer-btn">▶ Start</button>
+        </div>
+        
+        <div id="pbtm"></div>
+      </div>
+    </div>
+
+    <!-- Rules Modal -->
+    <div id="rules-modal" class="modal">
+      <div class="modal-content">
+        <h2>Game Rules</h2>
+        <ul>
+          <li>Match the bubble number with the <strong>Hit</strong> target.</li>
+          <li>Each correct hit adds +10 points.</li>
+          <li>Complete levels by finishing the timer.</li>
+          <li>Track progress with <strong>Level</strong> and <strong>Completed</strong>.</li>
+          <li>Use ▶ to start/pause/resume the timer.</li>
+          <li>Switch between 🌙 Dark and ☀️ Light themes.</li>
+        </ul>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

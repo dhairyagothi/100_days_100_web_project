@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Finance Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; padding: 20px; }
+        .dashboard { width: 400px; }
+        canvas { margin-top: 20px; }
+    </style>
+</head>
+<body>
+
+<div class="dashboard">
+    <h2>Budget Tracker</h2>
+    <input type="text" id="category" placeholder="Category (e.g., Food)">
+    <input type="number" id="amount" placeholder="Amount">
+    <button onclick="addEntry()">Add Entry</button>
+    <canvas id="myChart"></canvas>
+</div>
+
+<script>
+    let expenses = { Food: 0, Rent: 0, Fun: 0 };
+    const ctx = document.getElementById('myChart').getContext('2d');
+    
+    const chart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: Object.keys(expenses),
+            datasets: [{ data: Object.values(expenses), backgroundColor: ['#ff6384', '#36a2eb', '#ffce56'] }]
+        }
+    });
+
+    function addEntry() {
+        const cat = document.getElementById('category').value;
+        const amt = parseFloat(document.getElementById('amount').value);
+        
+        if (expenses.hasOwnProperty(cat)) {
+            expenses[cat] += amt;
+            chart.data.datasets[0].data = Object.values(expenses);
+            chart.update(); // This is the magic: updating the chart dynamically
+        } else {
+            alert("Please use: Food, Rent, or Fun");
+        }
+    }
+</script>
+</body>
