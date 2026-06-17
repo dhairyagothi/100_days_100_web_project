@@ -128,9 +128,12 @@
               <input type="date" id="task-date" class="input-select" aria-label="Due date" />
             </div>
 
-            <label for="task" class="sr-only">Task Description</label>
-            <input type="text" id="task" class="task-input" placeholder="What do you need to do?" autocomplete="off"
-              aria-label="Task description" />
+            <div class="task-input-wrapper">
+              <label for="task" class="sr-only">Task Description</label>
+              <input type="text" id="task" class="task-input" placeholder="What do you need to do?" autocomplete="off"
+                aria-label="Task description" maxlength="200" />
+              <div id="char-counter" class="char-counter">0 / 200</div>
+            </div>
 
             <button type="submit" class="add-task-btn" id="add-task-submit">➕ Add Task</button>
           </div>

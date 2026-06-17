@@ -1,35 +1,36 @@
 // ─── State ────────────────────────────────────────────────────────────────
 let tasks = JSON.parse(localStorage.getItem("kanban-board-tasks")) || [
-  { id: "k-task-1", title: "Review Open-Source Pull Requests",  category: "Work",     priority: "High",   status: "pending",    dueDate: "" },
-  { id: "k-task-2", title: "Refactor Theme Style Overlap Rules", category: "Study",    priority: "Medium", status: "inprogress", dueDate: "" },
-  { id: "k-task-3", title: "Verify Grid Layout Persistence",    category: "Personal", priority: "Low",    status: "completed",  dueDate: "" },
+  { id: "k-task-1", title: "Review Open-Source Pull Requests", category: "Work", priority: "High", status: "pending", dueDate: "" },
+  { id: "k-task-2", title: "Refactor Theme Style Overlap Rules", category: "Study", priority: "Medium", status: "inprogress", dueDate: "" },
+  { id: "k-task-3", title: "Verify Grid Layout Persistence", category: "Personal", priority: "Low", status: "completed", dueDate: "" },
 ];
 
 let savedDocs = JSON.parse(localStorage.getItem("kanban-saved-docs-meta")) || [];
 
 // ─── DOM refs ─────────────────────────────────────────────────────────────
-const taskForm       = document.getElementById("task-form");
-const taskInput      = document.getElementById("task");
+const taskForm = document.getElementById("task-form");
+const taskInput = document.getElementById("task");
 const categorySelect = document.getElementById("task-category");
 const prioritySelect = document.getElementById("task-priority");
-const dueDateInput   = document.getElementById("task-date");
-const searchInput    = document.getElementById("task-search");
-const noResultsMsg   = document.getElementById("no-results-msg");
+const dueDateInput = document.getElementById("task-date");
+const searchInput = document.getElementById("task-search");
+const noResultsMsg = document.getElementById("no-results-msg");
 const noResultsQuery = document.getElementById("no-results-query");
-const emptyState     = document.getElementById("emptyState");
+const emptyState = document.getElementById("emptyState");
+const charCounter = document.getElementById("char-counter");
 
 // Set minimum selectable date to today
 dueDateInput.min = new Date().toISOString().split("T")[0];
 
 // ─── Priority helpers ──────────────────────────────────────────────────────
 function getPriorityClass(priority) {
-  if (priority === "High")   return "priority-high";
+  if (priority === "High") return "priority-high";
   if (priority === "Medium") return "priority-medium";
   return "priority-low";
 }
 
 function getPriorityEmoji(priority) {
-  if (priority === "High")   return "🔴";
+  if (priority === "High") return "🔴";
   if (priority === "Medium") return "🟡";
   return "🟢";
 }
@@ -66,9 +67,9 @@ function renderKanban(filterQuery) {
     const laneDropTarget = document.getElementById(task.status);
     if (!laneDropTarget) return;
 
-    const isOverdue    = task.dueDate && task.dueDate < today && task.status !== "completed";
-    const isDueToday   = task.dueDate === today && task.status !== "completed";
-    const isCompleted  = task.status === "completed";
+    const isOverdue = task.dueDate && task.dueDate < today && task.status !== "completed";
+    const isDueToday = task.dueDate === today && task.status !== "completed";
+    const isCompleted = task.status === "completed";
     const isInProgress = task.status === "inprogress";
 
     const card = document.createElement("div");
@@ -78,7 +79,7 @@ function renderKanban(filterQuery) {
     card.setAttribute("role", "listitem");
 
     let cardClass = "kanban-task-card";
-    if (isCompleted)    cardClass += " task-completed";
+    if (isCompleted) cardClass += " task-completed";
     else if (isOverdue) cardClass += " overdue-task";
     else if (isDueToday) cardClass += " due-today-task";
     card.className = cardClass;
@@ -137,21 +138,21 @@ function renderKanban(filterQuery) {
 
 // ─── Dashboard counters ────────────────────────────────────────────────────
 function calculateSystemCounters() {
-  const pendingCount   = tasks.filter(t => t.status === "pending").length;
-  const progressCount  = tasks.filter(t => t.status === "inprogress").length;
+  const pendingCount = tasks.filter(t => t.status === "pending").length;
+  const progressCount = tasks.filter(t => t.status === "inprogress").length;
   const completedCount = tasks.filter(t => t.status === "completed").length;
-  const today          = new Date().toISOString().split("T")[0];
-  const overdueCount   = tasks.filter(t => t.dueDate && t.dueDate < today && t.status !== "completed").length;
+  const today = new Date().toISOString().split("T")[0];
+  const overdueCount = tasks.filter(t => t.dueDate && t.dueDate < today && t.status !== "completed").length;
 
   const statEls = {
-    "count-pending":          pendingCount,
-    "count-inprogress":       progressCount,
-    "count-completed":        completedCount,
-    "totalTasks":             tasks.length,
-    "dashboardPending":       pendingCount,
-    "dashboardInProgress":    progressCount,
+    "count-pending": pendingCount,
+    "count-inprogress": progressCount,
+    "count-completed": completedCount,
+    "totalTasks": tasks.length,
+    "dashboardPending": pendingCount,
+    "dashboardInProgress": progressCount,
     "dashboardTotalCompleted": completedCount,
-    "dashboardOverdue":       overdueCount,
+    "dashboardOverdue": overdueCount,
   };
 
   Object.entries(statEls).forEach(([id, val]) => {
@@ -181,6 +182,17 @@ function saveTasks() {
   localStorage.setItem("kanban-board-tasks", JSON.stringify(tasks));
 }
 
+// ─── Character Counter ─────────────────────────────────────────────────────
+taskInput.addEventListener("input", () => {
+  const currentLen = taskInput.value.length;
+  charCounter.textContent = `${currentLen} / 200`;
+  if (currentLen > 198) {
+    charCounter.classList.add("near-limit");
+  } else {
+    charCounter.classList.remove("near-limit");
+  }
+});
+
 // ─── Add task ──────────────────────────────────────────────────────────────
 taskForm.addEventListener("submit", e => {
   e.preventDefault();
@@ -188,12 +200,12 @@ taskForm.addEventListener("submit", e => {
   if (!title) return;
 
   tasks.push({
-    id:       "task_" + Date.now(),
+    id: "task_" + Date.now(),
     title,
     category: categorySelect.value || "Others",
     priority: prioritySelect.value || "Medium",
-    dueDate:  dueDateInput.value,
-    status:   "pending",
+    dueDate: dueDateInput.value,
+    status: "pending",
   });
 
   saveTasks();
@@ -201,6 +213,8 @@ taskForm.addEventListener("submit", e => {
   showToast("✅ Task added!", "success");
 
   taskInput.value = "";
+  charCounter.textContent = "0 / 200";
+  charCounter.classList.remove("near-limit");
   categorySelect.selectedIndex = 0;
   prioritySelect.selectedIndex = 0;
   dueDateInput.value = "";
@@ -265,9 +279,9 @@ function showToast(message, type) {
   if (!el) return;
   el.textContent = message;
   el.className = "toast-popup toast-show";
-  if (type === "success")    el.classList.add("toast-success");
+  if (type === "success") el.classList.add("toast-success");
   else if (type === "error") el.classList.add("toast-error");
-  else                       el.classList.add("toast-info");
+  else el.classList.add("toast-info");
   clearTimeout(_toastTimer);
   _toastTimer = setTimeout(() => {
     el.classList.remove("toast-show", "toast-success", "toast-error", "toast-info");
@@ -293,7 +307,7 @@ window.showDocuments = function () {
 // ─── Save as PDF ───────────────────────────────────────────────────────────
 function saveAsPDF() {
   if (tasks.length === 0) { showToast("❌ No tasks to export!", "info"); return; }
-  if (!window.jspdf)      { showToast("⏳ PDF library loading, try again!", "info"); return; }
+  if (!window.jspdf) { showToast("⏳ PDF library loading, try again!", "info"); return; }
 
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF();
@@ -305,9 +319,9 @@ function saveAsPDF() {
   doc.setFontSize(10);
   doc.text(`Generated on: ${new Date().toLocaleString()}`, 20, 32);
 
-  const completedCount  = tasks.filter(t => t.status === "completed").length;
+  const completedCount = tasks.filter(t => t.status === "completed").length;
   const inProgressCount = tasks.filter(t => t.status === "inprogress").length;
-  const pendingCount    = tasks.filter(t => t.status === "pending").length;
+  const pendingCount = tasks.filter(t => t.status === "pending").length;
   doc.text(`Total: ${tasks.length}  |  Completed: ${completedCount}  |  In Progress: ${inProgressCount}  |  Pending: ${pendingCount}`, 20, 38);
   doc.line(20, 42, 190, 42);
 
@@ -316,23 +330,23 @@ function saveAsPDF() {
   tasks.forEach((task, i) => {
     if (y > 270) { doc.addPage(); y = 20; }
     const rawStatus = task.status || "pending";
-    const status    = rawStatus === "inprogress" ? "IN PROGRESS" : rawStatus.toUpperCase();
+    const status = rawStatus === "inprogress" ? "IN PROGRESS" : rawStatus.toUpperCase();
     doc.text(`${i + 1}. [${status}] [${task.priority || "Medium"}] [${task.category || "General"}] - ${task.title}`, 20, y);
     y += 10;
   });
 
   const fileName = `TodoList_${Date.now()}.pdf`;
-  const pdfBlob  = doc.output("blob");
-  const fileURL  = URL.createObjectURL(pdfBlob);
+  const pdfBlob = doc.output("blob");
+  const fileURL = URL.createObjectURL(pdfBlob);
 
   const docEntry = {
-    id:        Date.now(),
-    name:      fileName,
-    url:       fileURL,
-    total:     tasks.length,
+    id: Date.now(),
+    name: fileName,
+    url: fileURL,
+    total: tasks.length,
     completed: completedCount,
-    time:      new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-    date:      new Date().toLocaleDateString(),
+    time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+    date: new Date().toLocaleDateString(),
   };
 
   savedDocs.unshift(docEntry);
@@ -345,7 +359,7 @@ function saveAsPDF() {
 // ─── Render saved documents ────────────────────────────────────────────────
 function renderSavedDocuments() {
   const docEmptyState = document.getElementById("emptyDocsState");
-  const docsList      = document.querySelector(".documents-list");
+  const docsList = document.querySelector(".documents-list");
   if (!docsList) return;
   docsList.innerHTML = "";
 
@@ -354,7 +368,7 @@ function renderSavedDocuments() {
   } else {
     if (docEmptyState) docEmptyState.style.display = "none";
     savedDocs.forEach(docEntry => {
-      const item   = document.createElement("li");
+      const item = document.createElement("li");
       item.className = "doc-item";
       const hasUrl = !!docEntry.url;
       item.innerHTML = `
@@ -409,7 +423,7 @@ document.getElementById("clearModal").addEventListener("click", e => {
     document.getElementById("clearModal").style.display = "none";
 });
 
-const clearCompletedBtn   = document.getElementById("clearCompletedBtn");
+const clearCompletedBtn = document.getElementById("clearCompletedBtn");
 const clearCompletedModal = document.getElementById("clearCompletedModal");
 
 clearCompletedBtn.addEventListener("click", () => {
