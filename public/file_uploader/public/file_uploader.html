@@ -9,7 +9,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
 
-  <!-- Apply saved theme BEFORE paint to avoid flash -->
   <script>
     (function () {
       var t = localStorage.getItem('fd-theme') || 'dark';
@@ -21,30 +20,16 @@
 <body>
   <a href="/" class="back-button" aria-label="Back to Home">← Back to Home</a>
 
-  <!-- Theme Toggle -->
-  <button
-    id="themeToggle"
-    class="theme-toggle"
-    aria-label="Toggle light/dark theme"
-    title="Toggle theme"
-  >
+  <button id="themeToggle" class="theme-toggle" aria-label="Toggle light/dark theme" title="Toggle theme">
     <span class="theme-icon" id="themeIcon" aria-hidden="true">🌙</span>
   </button>
 
   <div class="container">
     <div class="main-content">
 
-      <!-- Upload Form Card -->
       <div class="card myform-wrapper">
-        <form
-          action="http://localhost:3000/upload"
-          method="POST"
-          enctype="multipart/form-data"
-          class="myform"
-          id="uploadForm"
-          novalidate
-        >
-          <!-- Header -->
+        <form class="myform" id="uploadForm" novalidate>
+
           <div class="form-header">
             <div class="logo">
               <div class="logo-icon" aria-hidden="true">⬆</div>
@@ -55,35 +40,31 @@
 
           <div class="divider" role="separator"></div>
 
-          <!-- First Name -->
           <div class="form-field">
             <label for="firstName">First Name</label>
-            <input
-              type="text"
-              id="firstName"
-              name="firstName"
-              placeholder="Enter your first name"
-              autocomplete="given-name"
-              required
-            />
+            <input type="text" id="firstName" name="firstName" placeholder="Enter your first name" autocomplete="given-name" required />
           </div>
 
-          <!-- Last Name -->
           <div class="form-field">
             <label for="lastName">Last Name</label>
-            <input
-              type="text"
-              id="lastName"
-              name="lastName"
-              placeholder="Enter your last name"
-              autocomplete="family-name"
-              required
-            />
+            <input type="text" id="lastName" name="lastName" placeholder="Enter your last name" autocomplete="family-name" required />
           </div>
 
-          <!-- File Drop Zone -->
           <div class="form-field">
             <label>Upload Files</label>
+
+            <!-- File input lives HERE, outside the drop zone, hidden via CSS -->
+            <input
+              type="file"
+              id="myFile"
+              name="myFile"
+              multiple
+              accept=".jpg,.jpeg,.png,.webp"
+              aria-label="Choose files to upload"
+              style="display:none;"
+            />
+
+            <!-- Drop zone is now a plain div — no input inside it -->
             <div
               class="file-drop-zone"
               id="dropZone"
@@ -96,39 +77,28 @@
                 <strong>Click to browse or drag &amp; drop</strong>
                 Supported: .jpg, .jpeg, .png, .webp &mdash; Max 2MB each
               </div>
-              <input
-                type="file"
-                id="myFile"
-                name="myFile"
-                multiple
-                accept=".jpg,.jpeg,.png,.webp"
-                aria-label="Choose files to upload"
-                onchange="showPreview(this)"
-              />
             </div>
+
+            <!-- File chips rendered here by JS -->
             <div id="file-preview" role="list" aria-label="Selected files"></div>
           </div>
 
           <div class="divider" role="separator"></div>
 
-          <!-- Submit -->
           <div class="form-field">
             <button type="submit" class="submit-btn" id="submitBtn">
               <span class="btn-label">Upload Files</span>
               <span class="btn-arrow" aria-hidden="true">→</span>
             </button>
           </div>
+
         </form>
       </div>
 
-      <!-- Right Panel -->
       <div class="right-panel">
 
-        <!-- Statistics -->
         <div class="card stats-panel">
-          <h2 class="panel-title">
-            <span aria-hidden="true">📊</span> Upload Statistics
-          </h2>
+          <h2 class="panel-title"><span aria-hidden="true">📊</span> Upload Statistics</h2>
           <div class="stats-grid" role="list">
             <div class="stat-card" role="listitem">
               <div class="stat-value" id="statTotalFiles">0</div>
@@ -149,11 +119,8 @@
           </div>
         </div>
 
-        <!-- Recent Uploads -->
         <div class="card history-panel">
-          <h2 class="panel-title">
-            <span aria-hidden="true">📜</span> Recent Uploads
-          </h2>
+          <h2 class="panel-title"><span aria-hidden="true">📜</span> Recent Uploads</h2>
           <div id="historyList" class="history-list" role="list" aria-label="Recent upload history">
             <p class="empty-history">No uploads yet</p>
           </div>
@@ -163,15 +130,8 @@
     </div>
   </div>
 
-  <!-- Toast Notifications -->
-  <div
-    class="toast-container"
-    id="toastContainer"
-    role="region"
-    aria-live="polite"
-    aria-label="Notifications"
-  ></div>
+  <div class="toast-container" id="toastContainer" role="region" aria-live="polite" aria-label="Notifications"></div>
 
-  <script src="file_uploader.js"></script>
+  <script src="index.js"></script>
 </body>
 </html>

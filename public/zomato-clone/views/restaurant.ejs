@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Zomato Clone</title>
-  <link rel="stylesheet" href="/css/home.css">
+  <link rel="stylesheet" href="/css/index.css">
   <link rel="stylesheet" href="/css/resturant.css">
 </head>
 
@@ -19,9 +19,11 @@
     <div class="card-container">
 
       <% foods.forEach(item => { %>
-
-        <div class="card">
-
+<!-- 
+      card onclick for every card to navigate on detail page  -->
+        
+        <div class="card" onclick="goToDetail('<%= item._id %>')">
+ 
           <!-- IMAGE SECTION -->
           <div class="card-image-wrap">
             <img
@@ -31,7 +33,8 @@
               loading="lazy"
             />
 
-           
+                       <!-- Promoted Badge -->
+            <span class="promoted-badge">Promoted</span>
 
             <!-- Offer Banner -->
             <% if (item.offer) { %>
@@ -53,11 +56,22 @@
             <!-- Name + Rating -->
             <div class="top-row">
               <h3 class="card-name"><%= item.name %></h3>
-          
+           <span class="rating-badge">
+                <%= item.deliveryRating ? item.deliveryRating.toFixed(1) : (item.diningRating ? item.diningRating.toFixed(1) : "4.0") %>★
+              </span>
             </div>
 
-           
-       
+              <!-- Cuisines -->
+            <p class="cuisine-text">
+              <%= item.cuisines && item.cuisines.length ? item.cuisines.join(", ") : "Food" %>
+            </p>
+
+        <!-- Location + Price -->
+            <div class="bottom-row">
+              <span class="location-text"><%= item.location || "Delhi" %></span>
+              <span class="location-text"><%= item.priceForTwo || "Delhi" %></span>
+
+            </div>
             <!-- Distance -->
             <div class="distance-row">
               <span class="distance-text"><%= item.distance || "1 km" %></span>
@@ -68,24 +82,20 @@
 
       <% }) %>
 
-    <% }) %>
+    </div>
 
   </div>
 
   <%- include('partials/footer') %>
 
-  <script>
-    const html = document.documentElement;
-    const saved = localStorage.getItem('zomato-theme');
-    if (saved) html.setAttribute('data-theme', saved);
 
-    function toggleDark() {
-      const isDark = html.getAttribute('data-theme') === 'dark';
-      const next = isDark ? 'light' : 'dark';
-      html.setAttribute('data-theme', next);
-      localStorage.setItem('zomato-theme', next);
-    }
-  </script>
+
+
+<script>
+function goToDetail(id) {
+  window.location.href = `/api/food/view/${id}`;
+}
+</script>
 
 </body>
 </html>
