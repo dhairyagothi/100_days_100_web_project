@@ -2787,15 +2787,6 @@
     "projectPath": "./public/NeoTetris/index.html"
   },
   {
-    "projectNo": 220,
-    "projectName": "Spin-wheel-decision-maker",
-    "projectType": "Tool",
-    "projectDesc": "An interactive decision-making tool featuring a customizable spinning wheel.",
-    "techStack": ["html","css","js"],
-    "difficulty": "intermediate",
-    "projectPath": "./public/Spin-Wheel-Decision-Maker/index.html"
-      },
-  {
     "projectNo": 221,
     "projectName": "AI Tools Hub",
     "projectType": "AI",
@@ -2929,5 +2920,14 @@
   ],
   "difficulty": "intermediate",
   "projectPath": "./public/UnitVerse/index.html"
-  }
+  },
+    {
+    "projectNo": 231,
+    "projectName": "Spin-wheel-decision-maker",
+    "projectType": "Tool",
+    "projectDesc": "An interactive decision-making tool featuring a customizable spinning wheel.",
+    "techStack": ["html","css","js"],
+    "difficulty": "intermediate",
+    "projectPath": "./public/Spin-Wheel-Decision-Maker/index.html"
+      }
 ]
