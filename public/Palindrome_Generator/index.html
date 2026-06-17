@@ -1,66 +1,245 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modern Palindrome Checker | GSSoC '26</title>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <!-- Bootstrap CSS -->
+    <title>Advanced Palindrome Studio</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Confetti Library -->
+
+    <!-- Confetti -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <!-- Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
 
-    <!-- Centered Wrapper -->
-    <div class="main-container">
-        <div class="glass-card p-4 p-md-5">
-            <h1 class="text-center mb-2">Palindrome Generator</h1>
-            <p class="text-center text-light-50 mb-4">Click the button to see the magic ✨</p>
-            
-            <div class="input-section">
-                <label for="inputString" class="form-label text-white">Enter your text:</label>
-                <input type="text" class="form-control custom-input" id="inputString" placeholder="Type something..." autocomplete="off">
+<a href="/"
+   class="project-back-button">
+   ← Back to Home
+</a>
+
+<!-- Animated Background -->
+<div class="bg-blur blob1"></div>
+<div class="bg-blur blob2"></div>
+<div class="bg-blur blob3"></div>
+
+<div class="app-container">
+
+    <!-- ================= LEFT PANEL ================= -->
+    <div class="glass-card main-card">
+
+        <div class="top-bar">
+
+            <div>
+                <h1>🔄 Palindrome Studio</h1>
+                <p class="subtitle">
+                    Generate, analyze and visualize palindromes
+                </p>
             </div>
 
-            <div class="d-grid gap-2 mt-4">
-                <button id="checkBtn" class="btn btn-primary-custom">Generate Palindrome 🚀</button>
-                <button id="clearBtn" class="btn btn-link text-white-50 btn-sm text-decoration-none">Clear</button>
+            <div class="theme-controls">
+
+                <label class="small-label">
+                    Theme
+                </label>
+
+                <select id="themeSelector" class="theme-select">
+                    <option value="dark">🌙 Dark</option>
+                    <option value="light">☀️ Light</option>
+                    <option value="ocean">🌊 Ocean</option>
+                    <option value="sunset">🌅 Sunset</option>
+                    <option value="forest">🌲 Forest</option>
+                </select>
+
             </div>
 
-            <!-- Result Box -->
-            <div id="resultBox" class="result-container mt-4 text-center">
-                <div id="resultIcon" class="mb-2 fs-1">⌨️</div>
-                <div id="resultText">Waiting for you to click generate...</div>
-            </div>
-            <!-- Visualization Section -->
-<div class="visualizer-container mt-4">
-    <h4 class="text-white mb-3">Palindrome Visualization</h4>
-
-    <div id="processedText" class="processed-text mb-3"></div>
-
-    <div id="characterContainer" class="character-container"></div>
-
-    <div class="stats mt-3">
-        <p id="comparisonCount" class="text-white">
-            Comparisons: 0
-        </p>
-
-        <p class="text-info">
-            Time Complexity: O(n)
-        </p>
-    </div>
-
-    <button id="educationalToggle" class="btn btn-outline-light btn-sm mt-2">
-        Educational Mode: ON
-    </button>
-</div>
         </div>
+
+        <!-- Input Section -->
+
+        <div class="input-section">
+
+            <label for="inputString">
+                Enter Text
+            </label>
+
+            <input
+                type="text"
+                id="inputString"
+                class="custom-input"
+                placeholder="Type any word or phrase..."
+                autocomplete="off">
+
+        </div>
+
+        <!-- Buttons -->
+
+        <div class="button-group">
+
+            <button id="checkBtn" class="action-btn primary-btn">
+                <i class="bi bi-stars"></i>
+                Generate Palindrome
+            </button>
+
+            <button id="copyBtn" class="action-btn secondary-btn">
+                <i class="bi bi-clipboard"></i>
+                Copy Result
+            </button>
+
+            <button id="clearBtn" class="action-btn danger-btn">
+                <i class="bi bi-trash"></i>
+                Clear
+            </button>
+
+        </div>
+
+        <!-- Result -->
+
+        <div id="resultBox" class="result-container">
+
+            <div id="resultIcon" class="result-icon">
+                ⌨️
+            </div>
+
+            <div id="resultText">
+                Waiting for input...
+            </div>
+
+        </div>
+
+        <!-- Statistics -->
+
+        <div class="stats-grid">
+
+            <div class="stat-card">
+                <span class="stat-value" id="totalChecks">0</span>
+                <span class="stat-label">Checks</span>
+            </div>
+
+            <div class="stat-card">
+                <span class="stat-value" id="palindromeCount">0</span>
+                <span class="stat-label">Palindromes</span>
+            </div>
+
+            <div class="stat-card">
+                <span class="stat-value" id="generatedCount">0</span>
+                <span class="stat-label">Generated</span>
+            </div>
+
+        </div>
+
+        <!-- Visualization -->
+
+        <div class="visualizer-container">
+
+            <div class="section-header">
+
+                <h3>
+                    📊 Visualization
+                </h3>
+
+                <button
+                    id="educationalToggle"
+                    class="mini-btn">
+                    Educational Mode: ON
+                </button>
+
+            </div>
+
+            <div
+                id="processedText"
+                class="processed-text">
+            </div>
+
+            <div
+                id="characterContainer"
+                class="character-container">
+            </div>
+
+            <div class="algorithm-stats">
+
+                <p id="comparisonCount">
+                    Comparisons: 0
+                </p>
+
+                <p>
+                    Time Complexity: O(n)
+                </p>
+
+            </div>
+
+        </div>
+
     </div>
 
-    <script src="script.js"></script>
+    <!-- ================= RIGHT PANEL ================= -->
+
+    <div class="glass-card side-panel">
+
+        <div class="history-header">
+
+            <h2>
+                🕒 History
+            </h2>
+
+            <button id="clearHistoryBtn" class="mini-btn">
+                Clear
+            </button>
+
+        </div>
+
+        <div id="historyList" class="history-list">
+
+            <div class="history-placeholder">
+                No history available
+            </div>
+
+        </div>
+
+        <div class="info-card">
+
+            <h4>
+                📚 About
+            </h4>
+
+            <p>
+                This tool generates the shortest palindrome
+                by appending characters to the end of the
+                input string.
+            </p>
+
+        </div>
+
+        <div class="info-card">
+
+            <h4>
+                ⚡ Complexity
+            </h4>
+
+            <p>
+                Time Complexity: O(n²)
+            </p>
+
+            <p>
+                Space Complexity: O(n)
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+
 </body>
 </html>
