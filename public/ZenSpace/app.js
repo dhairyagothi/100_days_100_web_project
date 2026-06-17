@@ -22,9 +22,9 @@ document.addEventListener("DOMContentLoaded", () => {
     track.slider.addEventListener("input", (e) => {
       const vol = parseFloat(e.target.value);
       track.audio.volume = vol;
+      
       if (vol > 0 && track.audio.paused) {
         track.audio.play().catch(() => {});
-        document.documentElement.setAttribute("data-theme", track.theme);
       } else if (vol === 0) {
         track.audio.pause();
       }
@@ -49,6 +49,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const ring = document.querySelector(".ring-fg");
   const CIRC = 2 * Math.PI * 96; // r=96
 
+  // Deep Focus DOM Elements
+  const deepFocusCheck = document.getElementById("deep-focus-check");
+  const deepFocusContainer = document.getElementById("deep-focus-container");
+  const btnPause = document.getElementById("btn-pause");
+  const btnReset = document.getElementById("btn-reset");
+  const sessionPicker = document.querySelector(".session-picker");
+
   ring.style.strokeDasharray = `${CIRC} ${CIRC}`;
 
   function setProgress(pct) {
@@ -70,8 +77,28 @@ document.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => t.classList.remove("show"), 3500);
   }
 
+  // Helper to reset UI when timer stops
+  function resetDeepFocusUI() {
+    deepFocusContainer.style.display = "flex";
+    sessionPicker.style.pointerEvents = "auto";
+    sessionPicker.style.opacity = "1";
+    btnPause.style.display = "inline-block";
+    btnReset.textContent = "↺ Reset";
+  }
+
   document.getElementById("btn-start").addEventListener("click", () => {
     if (timerInterval) return;
+
+    // Apply Deep Focus rules before starting
+    deepFocusContainer.style.display = "none";
+    sessionPicker.style.pointerEvents = "none"; // Lock pills
+    sessionPicker.style.opacity = "0.5";
+
+    if (deepFocusCheck.checked) {
+      btnPause.style.display = "none";
+      btnReset.textContent = "☠ Give Up";
+    }
+
     timerInterval = setInterval(() => {
       if (timeLeft > 0) {
         timeLeft--;
@@ -80,6 +107,7 @@ document.addEventListener("DOMContentLoaded", () => {
         clearInterval(timerInterval);
         timerInterval = null;
         showToast();
+        resetDeepFocusUI(); 
       }
     }, 1000);
   });
@@ -90,15 +118,27 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   document.getElementById("btn-reset").addEventListener("click", () => {
+    // Deep Focus Quit Logic
+    if (deepFocusCheck.checked && btnReset.textContent === "☠ Give Up") {
+      const typed = prompt('Strict Deep Focus is active!\n\nTo break your focus, you must type the word "quit" exactly:');
+      if (typed !== "quit") {
+        return; // Exit function, keep timer running!
+      }
+    }
+
+    // Normal reset logic
     clearInterval(timerInterval);
     timerInterval = null;
     timeLeft = totalDuration;
     render();
+    resetDeepFocusUI();
   });
 
   // Session length pills
   document.querySelectorAll("button.pill").forEach((pill) => {
     pill.addEventListener("click", () => {
+      if (timerInterval && deepFocusCheck.checked) return; // Block clicks during deep focus
+
       document
         .querySelectorAll(".pill")
         .forEach((p) => p.classList.remove("active"));
@@ -107,7 +147,6 @@ document.addEventListener("DOMContentLoaded", () => {
       timerInterval = null;
       totalDuration = parseInt(pill.dataset.mins) * 60;
       timeLeft = totalDuration;
-      // update label
       countdownEl.nextElementSibling.textContent =
         pill.dataset.mins === "5"
           ? "BREAK"
@@ -115,30 +154,33 @@ document.addEventListener("DOMContentLoaded", () => {
             ? "LONG BREAK"
             : "FOCUS";
       render();
+      resetDeepFocusUI();
     });
   });
+
   const customInput = document.getElementById("custom-time");
 
-  // Listen for when the user types a number and presses Enter or clicks away
   customInput.addEventListener("change", (e) => {
+    if (timerInterval && deepFocusCheck.checked) {
+       e.target.value = ""; 
+       return; // Block custom time during deep focus
+    }
     const mins = parseInt(e.target.value);
 
     if (mins > 0) {
-      // Remove active class from all pills
       document
         .querySelectorAll(".pill")
         .forEach((p) => p.classList.remove("active"));
       customInput.classList.add("active");
 
-      // Reset and set the new timer
       clearInterval(timerInterval);
       timerInterval = null;
       totalDuration = mins * 60;
       timeLeft = totalDuration;
 
-      // Update the label on the UI
       countdownEl.nextElementSibling.textContent = "CUSTOM";
       render();
+      resetDeepFocusUI();
     }
   });
 

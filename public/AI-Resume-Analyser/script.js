@@ -16,6 +16,7 @@ const statSize = document.getElementById('statSize');
 const statModified = document.getElementById('statModified');
 
 const statReadTime = document.getElementById('statReadTime');
+
 const techBar = document.getElementById('techBar');
 
 const projectsBar = document.getElementById('projectsBar');
@@ -36,34 +37,49 @@ const statWords = document.getElementById('statWords');
 
 const statCharacters = document.getElementById('statCharacters');
 
-const loadingSection =
-  document.getElementById(
-    "loadingSection"
-  );
+const matchBtn = document.getElementById("matchBtn");
 
-const resultsSection =
-  document.getElementById(
-    "resultsSection"
-  );
+const jobDescription = document.getElementById("jobDescription");
 
-const copySuggestionsBtn =
-  document.getElementById(
-    "copySuggestionsBtn"
-  );
+const matchedSkills = document.getElementById("matchedSkills");
+
+const missingSkills = document.getElementById("missingSkills");
+
+const jdResults = document.getElementById("jdResults");
+
+const loadingSection = document.getElementById("loadingSection");
+
+const resultsSection = document.getElementById("resultsSection");
+
+const insightsSection = document.getElementById("insightsSection");
+
+const suggestionsSection = document.getElementById("suggestionsSection");
+
+const copySuggestionsBtn = document.getElementById("copySuggestionsBtn");
+
+const matchScore = document.getElementById("matchScore");
+
+
 uploadBtn.addEventListener('click', () => {
   resumeInput.click();
 });
 
-resumeInput.addEventListener('change', () => {
+resumeInput.addEventListener('change', async () => {
+
   if (resumeInput.files.length > 0) {
+
     const file = resumeInput.files[0];
 
     fileName.textContent = file.name;
 
     updateStats(file);
 
-    extractResumeContent(file);
+    await extractResumeContent(file);
+
+    startAnalysis();
+
   }
+
 });
 
 ['dragenter', 'dragover'].forEach((eventName) => {
@@ -86,20 +102,24 @@ resumeInput.addEventListener('change', () => {
   });
 });
 
-dropZone.addEventListener('drop', (e) => {
+dropZone.addEventListener('drop', async (e) => {
+
   const files = e.dataTransfer.files;
 
   if (files.length > 0) {
+
     resumeInput.files = files;
 
-    updateStats(file);
-    extractResumeContent(file);
-    startAnalysis();
     fileName.textContent = files[0].name;
 
     updateStats(files[0]);
-    extractResumeContent(files[0]);
+
+    await extractResumeContent(files[0]);
+
+    startAnalysis();
+
   }
+
 });
 
 const progressCircle = document.getElementById('progressCircle');
@@ -116,6 +136,20 @@ progressCircle.style.strokeDashoffset = circumference;
 
 let currentATSScore = 0;
 let resumeText = '';
+const atsKeywords = [
+    'javascript',
+    'react',
+    'node',
+    'api',
+    'python',
+    'sql',
+    'html',
+    'css',
+    'git',
+    'github',
+  ];
+
+  const skillKeywords = atsKeywords;
 
 function generateAnalysis(text = resumeText) {
   if (!text) return;
@@ -155,19 +189,6 @@ function calculateATSScore(text) {
   const hasProjects = /projects|project experience/i.test(text);
 
   const hasEducation = /education|qualification|degree/i.test(text);
-
-  const atsKeywords = [
-    'javascript',
-    'react',
-    'node',
-    'api',
-    'python',
-    'sql',
-    'html',
-    'css',
-    'git',
-    'github',
-  ];
 
   let keywordCount = 0;
 
@@ -217,6 +238,11 @@ function startAnalysis() {
     resultsSection.style.display =
       "grid";
 
+    insightsSection.style.display =
+      "block";
+
+    suggestionsSection.style.display =
+      "block";
 
     generateAnalysis();
 
@@ -412,19 +438,19 @@ async function extractResumeContent(file) {
 
       resumeText = text;
       updateContentStats(text);
-      generateAnalysis(text);
+
     } else if (extension === 'docx') {
       const text = await extractDOCXText(file);
 
       resumeText = text;
       updateContentStats(text);
-      generateAnalysis(text);
+
     } else if (extension === 'txt') {
       const text = await extractTXTText(file);
 
       resumeText = text;
       updateContentStats(text);
-      generateAnalysis(text);
+
     } else {
       statWords.textContent = 'Unsupported';
 
@@ -489,12 +515,62 @@ function updateContentStats(text) {
 
   statCharacters.textContent = characters.toLocaleString();
 }
+matchBtn.addEventListener("click", () => {
 
-resultsSection.style.display =
-  "grid";
+  const jdText = jobDescription.value.trim().toLowerCase();
+  if (!resumeText || !jdText) {
+    alert("Upload resume and enter job description");
+    return;
+  }
 
-generateAnalysis();
+  const resumeLower = resumeText.toLowerCase();
 
+  const matched = new Set();
+  const missing = new Set();
+
+  skillKeywords.forEach(skill => {
+
+    if (
+      jdText.includes(skill)
+    ) {
+
+      if (
+        resumeLower.includes(skill)
+      ) {
+
+        matched.add(skill);
+
+      } else {
+
+
+        missing.add(skill);
+
+      }
+
+    }
+
+  });
+
+  matchedSkills.innerHTML =
+    [...matched]
+      .map(skill => `<li>${skill}</li>`)
+      .join("");
+
+  missingSkills.innerHTML =
+    [...missing]
+      .map(skill => `<li>${skill}</li>`)
+      .join("");
+  const totalSkills = matched.size + missing.size;
+
+  const score =
+    totalSkills === 0
+      ? 0
+      : Math.round((matched.size / totalSkills) * 100);
+
+  matchScore.textContent = `${score}%`;
+  jdResults.style.display = "block";
+
+});
 
 const themeToggle = document.getElementById('themeToggle');
 
@@ -527,10 +603,10 @@ ATS Score: ${currentATSScore}%
 
 Resume Insights
 ---------------
-Technical Skills: 88%
-Projects: 82%
-Communication: 74%
-Experience: 68%
+Technical Skills: ${techScore.textContent}
+Projects: ${projectsScore.textContent}
+Communication: ${communicationScore.textContent}
+Experience: ${experienceScore.textContent}
 
 AI Suggestions
 --------------

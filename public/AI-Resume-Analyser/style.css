@@ -441,6 +441,7 @@ body.light-mode .home-btn {
   to{
     transform:rotate(360deg);
   }
+}
 .copy-btn{
   margin-bottom:20px;
   padding:10px 18px;
@@ -462,6 +463,49 @@ body.light-mode .home-btn {
   transform:translateY(-2px);
 }
 
+
 .copy-btn.copied{
   opacity:.85;
+}
+textarea{
+  width:100%;
+  margin-top:20px;
+  padding:15px;
+  border-radius:15px;
+  resize:none;
+  background:var(--card-bg);
+  color:var(--text);
+  border:1px solid var(--border);
+}
+
+#matchBtn{
+  margin-top:20px;
+  padding:14px 28px;
+  border:none;
+  border-radius:14px;
+  cursor:pointer;
+  background:linear-gradient(
+      135deg,
+      var(--blue),
+      var(--purple)
+  );
+  color:white;
+}
+#matchBtn:hover{
+  transform: translateY(-3px);
+}
+
+#jdResults{
+  display:none;
+  margin-top:25px;
+}
+
+#matchedSkills li{
+  color:#22c55e;
+  margin:8px 0;
+}
+
+#missingSkills li{
+  color:#ef4444;
+  margin:8px 0;
 }

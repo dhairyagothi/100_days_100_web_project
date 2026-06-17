@@ -5,6 +5,7 @@ const passwordDisplay = document.querySelector("[data-passwordDisplay]");
 const copyBtn = document.querySelector("[data-copy]");
 const copyMsg = document.querySelector("[data-copyMsg]");
 const hideTimerText = document.getElementById("hideTimer");
+const PASSWORD_HISTORY_KEY = "passwordHistory";
 
 const uppercaseCheck = document.querySelector("#uppercase");
 const lowercaseCheck = document.querySelector("#lowercase");
@@ -39,6 +40,7 @@ let passwordHistory = [];
 init();
 
 function init() {
+    loadPasswordHistory();
     handleSlider();
     handleCheckBoxChange();
     calcStrength();
@@ -46,6 +48,38 @@ function init() {
     renderHistory();
 
     customWordInput.style.display = useCustomWordCheck.checked ? "block" : "none";
+}
+
+function loadPasswordHistory() {
+    try {
+        const storedHistory =
+            localStorage.getItem(PASSWORD_HISTORY_KEY);
+
+        if (storedHistory) {
+            passwordHistory = JSON.parse(storedHistory);
+        }
+    } catch (error) {
+        console.error(
+            "Failed to load password history",
+            error
+        );
+
+        passwordHistory = [];
+    }
+}
+
+function savePasswordHistory() {
+    try {
+        localStorage.setItem(
+            PASSWORD_HISTORY_KEY,
+            JSON.stringify(passwordHistory)
+        );
+    } catch (error) {
+        console.error(
+            "Failed to save password history",
+            error
+        );
+    }
 }
 
 function handleSlider() {
@@ -268,7 +302,6 @@ function handleCheckBoxChange() {
 }
 
 function updateHistory(newPassword) {
-    // Prevent consecutive duplicates
     if (
         passwordHistory.length > 0 &&
         passwordHistory[0] === newPassword
@@ -278,11 +311,11 @@ function updateHistory(newPassword) {
 
     passwordHistory.unshift(newPassword);
 
-    // Keep only last 5 passwords
     if (passwordHistory.length > 5) {
         passwordHistory.pop();
     }
 
+    savePasswordHistory();
     renderHistory();
 }
 
@@ -324,6 +357,16 @@ function renderHistory() {
 
 clearHistoryBtn.addEventListener("click", () => {
     passwordHistory = [];
+
+    try {
+        localStorage.removeItem(PASSWORD_HISTORY_KEY);
+    } catch (error) {
+        console.error(
+            "Failed to clear password history",
+            error
+        );
+    }
+
     renderHistory();
 });
 

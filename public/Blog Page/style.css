@@ -174,7 +174,9 @@ body {
     justify-content: center;
     align-items: center;
     text-align: center;
-    background: linear-gradient(135deg, #047857 0%, #10b981 50%, #064e3b 100%);
+    background: 
+        linear-gradient(135deg, rgba(4,120,87,0.85) 0%, rgba(16,185,129,0.80) 50%, rgba(6,78,59,0.90) 100%),
+        url('https://images.unsplash.com/photo-1499750310107-5fef28a66643?q=80&w=1600&auto=format&fit=crop') center/cover no-repeat;
     position: relative;
     color: white;
     padding: 80px 20px;
@@ -1230,4 +1232,42 @@ body.dark-mode .footer a {
     .subscribe-btn, .newsletter-input {
         width: 100%;
     }
+}
+/* ===== MOBILE RESPONSIVE FIX - Issue #8521 ===== */
+
+@media (max-width: 768px) {
+  .featured-card {
+    grid-template-columns: 1fr;
+  }
+  .featured-image img {
+    height: 250px;
+  }
+  .featured-content {
+    padding: 20px;
+  }
+  .featured-content h1 {
+    font-size: 1.8rem;
+  }
+  .blog-grid {
+    grid-template-columns: 1fr;
+  }
+  .latest-section {
+    margin: 40px auto;
+    padding: 0 12px;
+  }
+  .featured-section {
+    padding: 0 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .featured-content h1 {
+    font-size: 1.4rem;
+  }
+  .featured-image img {
+    height: 180px;
+  }
+  .hero-content h1 {
+    font-size: 2rem;
+  }
 }
