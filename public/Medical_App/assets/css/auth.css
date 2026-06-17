@@ -46,15 +46,16 @@ body.auth-locked #appShell {
 .auth-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(15, 23, 42, 0.55);
+    background: rgba(15, 23, 42, 0.62);
     backdrop-filter: blur(8px);
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px;
+    padding: 16px;
+    overflow-y: auto;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
+    transition: opacity 0.25s ease, visibility 0.25s ease;
     z-index: 2000;
 }
 
@@ -64,22 +65,31 @@ body.auth-locked #appShell {
 }
 
 .auth-modal {
-    width: 100%;
-    max-width: 520px;
-    background: var(--auth-surface);
+    width: min(100%, 420px);
+    max-height: calc(100vh - 24px);
+    min-width: 0;
+    margin: auto;
+    background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
     color: var(--auth-text);
-    border-radius: 18px;
-    box-shadow: var(--auth-shadow);
-    padding: 28px;
+    border-radius: 22px;
+    box-shadow: 0 18px 45px rgba(15, 23, 42, 0.22);
+    padding: 24px;
+    box-sizing: border-box;
     animation: authDrop 0.35s ease;
-    border: 1px solid var(--auth-border);
+    border: 1px solid rgba(148, 163, 184, 0.25);
+    overflow-y: auto;
 }
 
 .auth-brand {
     display: flex;
-    gap: 16px;
+    flex-wrap: wrap;
+    gap: 14px;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 18px;
+    padding: 10px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, rgba(14, 165, 233, 0.10), rgba(20, 184, 166, 0.10));
+    border: 1px solid rgba(56, 189, 248, 0.18);
 }
 
 .auth-brand img {
@@ -90,17 +100,32 @@ body.auth-locked #appShell {
 }
 
 .auth-brand h2 {
-    font-size: 1.35rem;
-    margin-bottom: 4px;
+    font-size: 1.15rem;
+    margin-bottom: 2px;
+    line-height: 1.2;
 }
 
 .auth-brand p {
     color: var(--auth-muted);
-    font-size: 0.95rem;
+    font-size: 0.92rem;
+    line-height: 1.3;
+}
+
+.auth-brand > div {
+    min-width: 0;
+    flex: 1 1 180px;
 }
 
 .auth-panel {
     display: block;
+    width: 100%;
+}
+
+.auth-panel form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
 .auth-panel.is-hidden {
@@ -108,7 +133,14 @@ body.auth-locked #appShell {
 }
 
 .auth-field {
-    margin-bottom: 16px;
+    margin-bottom: 0;
+    width: 100%;
+}
+
+.auth-field label {
+    display: block;
+    font-size: 0.92rem;
+    margin-bottom: 6px;
 }
 
 .auth-field label {
@@ -120,13 +152,16 @@ body.auth-locked #appShell {
 .auth-input,
 .auth-select {
     width: 100%;
+    box-sizing: border-box;
+    min-width: 0;
     padding: 12px 14px;
     border: 1.5px solid var(--auth-border);
-    border-radius: 12px;
-    background: var(--auth-bg);
+    border-radius: 14px;
+    background: #ffffff;
     color: var(--auth-text);
     font-size: 0.95rem;
-    transition: border 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.04);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
 }
 
 .auth-input:focus,
@@ -156,13 +191,14 @@ body.auth-locked #appShell {
 .auth-submit {
     width: 100%;
     border: none;
-    background: var(--auth-primary);
+    background: linear-gradient(135deg, #0ea5e9, #14b8a6);
     color: white;
     padding: 12px 16px;
-    border-radius: 12px;
+    border-radius: 14px;
     font-weight: 700;
     cursor: pointer;
-    transition: transform 0.2s ease, background 0.2s ease;
+    box-shadow: 0 10px 18px rgba(14, 165, 233, 0.20);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
 
 .auth-submit:hover {
@@ -176,10 +212,21 @@ body.auth-locked #appShell {
 }
 
 .auth-footer {
-    margin-top: 16px;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2px;
     text-align: center;
     color: var(--auth-muted);
     font-size: 0.9rem;
+}
+
+.auth-footer span,
+.auth-footer button {
+    width: 100%;
+    text-align: center;
 }
 
 .auth-footer button {
@@ -191,10 +238,11 @@ body.auth-locked #appShell {
 }
 
 .auth-note {
-    font-size: 0.8rem;
+    font-size: 0.82rem;
     color: var(--auth-muted);
-    margin-top: 12px;
+    margin-top: 8px;
     line-height: 1.4;
+    text-align: center;
 }
 
 body.dark-mode .auth-modal,
@@ -337,7 +385,18 @@ body[data-theme="dark"] .auth-note {
     }
 
     .auth-modal {
-        padding: 22px;
+        width: 100%;
+        max-width: 100%;
+        padding: 18px;
+        border-radius: 18px;
+    }
+
+    .auth-brand {
+        align-items: flex-start;
+    }
+
+    .auth-footer {
+        gap: 4px;
     }
 }
 

@@ -36,8 +36,8 @@ const addDifficultySelector = () => {
 
     selector.querySelectorAll('.diff-btn').forEach(btn => {
         btn.addEventListener('click', () => {
-            selector.querySelectorAll('.diff-btn').forEach(b => b.style.opacity = '0.5');
-            btn.style.opacity = '1';
+            selector.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');;
             selectedDifficulty = btn.dataset.diff;
             generateCaptcha();
         });
@@ -46,7 +46,7 @@ const addDifficultySelector = () => {
     // Set initial selected
     const initialBtn = selector.querySelector('.diff-btn[data-diff="medium"]');
     if (initialBtn) {
-        initialBtn.style.opacity = '1';
+        initialBtn.classList.add('active');
     }
 };
 
