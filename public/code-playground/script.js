@@ -3,6 +3,7 @@ const cssCode = document.getElementById('cssCode');
 const jsCode = document.getElementById('jsCode');
 const runBtn = document.getElementById('runBtn');
 const previewFrame = document.getElementById('previewFrame');
+let currentBlobUrl = null;
 
 function run() {
   const code = `
@@ -17,12 +18,25 @@ function run() {
     </body>
     </html>
   `;
-  
+
+  // Release previously created Blob URL
+  if (currentBlobUrl) {
+    URL.revokeObjectURL(currentBlobUrl);
+  }
+
   const blob = new Blob([code], { type: 'text/html' });
-  previewFrame.src = URL.createObjectURL(blob);
-}
+
+  currentBlobUrl = URL.createObjectURL(blob);
+  previewFrame.src = currentBlobUrl;
+} 
 
 runBtn.addEventListener('click', run);
+
+window.addEventListener('beforeunload', () => {
+  if (currentBlobUrl) {
+    URL.revokeObjectURL(currentBlobUrl);
+  }
+});
 
 // Initial live run on page load
 window.addEventListener('DOMContentLoaded', run);

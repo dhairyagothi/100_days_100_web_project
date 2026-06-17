@@ -1,80 +1,52 @@
-# 🌱 Habit Tracker Pro
+# Habit Tracker
 
-A modern, responsive, and interactive habit-tracking web application that helps users build consistency, monitor daily progress, and maintain productive routines. Habit Tracker Pro provides an intuitive dashboard with streak tracking, completion statistics, motivational quotes, dark mode support, and local data persistence — all without requiring any backend or account creation.
-
-##
+A modern, responsive, and interactive habit-tracking dashboard designed to help you build consistency and monitor daily progress. Modeled after sleek, professional dashboards, Habit Tracker provides a clear, distraction-free environment to track your routines.
 
 ---
 
-## 📖 Overview
+## Overview
 
-Habit Tracker Pro is designed to make habit building simple and engaging. Users can create personalized habits, categorize them, track daily completion, maintain streaks, and stay motivated through progress insights and encouraging quotes.
+Habit Tracker is designed to make habit building simple and engaging. With an intuitive sidebar navigation, you can quickly switch between your daily tasks, your weekly overview, and your long-term analytics.
 
-The application stores all data locally in the browser, ensuring fast performance and complete privacy.
+All data is stored locally in your browser, ensuring fast performance and complete privacy.
 
 ---
 
-## ✨ Features
+## Features
 
-### 📝 Habit Management
+### Daily & Weekly Views
+* **Today's Focus:** A focused view of your habits for the selected day.
+* **Weekly Grid:** A bird's-eye view of your entire week to quickly spot trends and missed days.
+* **Date Slider:** Easily scroll back and forth through the week to log past habits.
 
-* Add new habits with custom names
-* Organize habits using categories
-* Attach personal notes to habits
-* Delete habits anytime
+### Comprehensive Habit Management
+* **Create:** Add new habits with custom names, categories, and emojis.
+* **Edit & Delete:** Update existing habits without losing your streak history, or permanently delete them via the "All Habits" view.
 
-### 🔍 Smart Search
+### Progress Analytics
+* **Sidebar Stats:** Always keep an eye on your current and best streaks.
+* **Dedicated Analytics Page:** View your all-time completions, total active habits, and your best streak ever across all your habits.
 
-* Instantly search habits by name
-* Real-time filtering as you type
+### Streak Tracking
+* **Intelligent Math:** The app automatically calculates your consecutive day streaks.
+* **Visual Motivation:** Fire icons indicate your current streak for each habit.
 
-### 📊 Progress Analytics
+### Light & Dark Mode
+* **Instant Toggle:** Switch between a sleek dark dashboard and a clean, bright white UI with a single click.
+* **Saved Preferences:** Your theme choice is remembered the next time you open the app.
 
-* View total habits count
-* Track habits completed today
-* Monitor highest streak achieved
-* Automatic statistics updates
-
-### 🔥 Streak Tracking
-
-* Build consistency with streak counters
-* Increase streaks when habits are completed
-* Visual streak indicators for motivation
-
-### 🎉 Completion Celebration
-
-* Confetti animation when completing a habit
-* Interactive and rewarding user experience
-
-### 💡 Motivation System
-
-* Random motivational quote displayed on each visit
-* Encourages daily consistency and progress
-
-### 🌙 Dark Mode
-
-* Toggle between light and dark themes
-* Theme preference saved automatically
-
-### 💾 Local Storage Support
-
-* Habits persist across browser sessions
-* No account or backend required
-* Fast and secure client-side storage
-
-### 📱 Fully Responsive Design
-
-* Optimized for desktop devices
-* Tablet-friendly layouts
-* Mobile-responsive interface
+### Local Storage
+* Habits and completions persist across browser sessions.
+* No account, backend, or login required.
+* 100% private client-side storage.
 
 ---
 
 ## 🛠️ Technologies Used
 
 * HTML5
-* CSS3
-* Vanilla JavaScript
+* CSS3 (Vanilla CSS with Flexbox & Grid)
+* Vanilla JavaScript (ES6+)
 * Local Storage API
 
 ---
@@ -82,11 +54,11 @@ The application stores all data locally in the browser, ensuring fast performanc
 ## 📂 Project Structure
 
 ```text
-Habit-Tracker-Pro/
+Habit-Tracker/
 │
-├── index.html      # Application structure
-├── styles.css      # Styling and responsiveness
-├── script.js       # Application logic
+├── index.html      # Application structure and views
+├── styles.css      # Dark/Light theme styles and layout
+├── script.js       # App logic, local storage, and rendering
 └── README.md
 ```
 
@@ -94,64 +66,11 @@ Habit-Tracker-Pro/
 
 ## 🎯 How It Works
 
-1. Click **Add Habit**.
-2. Enter the habit details:
-
-   * Habit name
-   * Category
-   * Color
-   * Notes
-3. Save the habit.
-4. Mark habits as completed throughout the day.
-5. Build streaks and track progress.
-6. Search habits instantly using the search bar.
-7. Switch between light and dark themes.
-8. Return anytime—your data remains saved locally.
+1. **Add a Habit:** Click **+ Add habit** in the sidebar. Choose a name, emoji, category, and target notes.
+2. **Track Daily:** On the **Today** view, click the circle toggle next to a habit to mark it as done for that day.
+3. **Review Your Week:** Switch to the **Weekly view** to see a grid of your checkmarks over the last 7 days.
+4. **Manage:** Click **All Habits** to edit your habit details or delete ones you no longer track.
+5. **Analyze:** Check the **Analytics** tab to see your grand totals and all-time best streaks.
 
 ---
 
-## 📸 Key Highlights
-
-* Beautiful glassmorphism-inspired UI
-* Dynamic statistics dashboard
-* Streak-based progress tracking
-* Motivational quote generator
-* Theme persistence
-* Confetti completion effects
-* Search functionality
-* Fully responsive design
-
----
-
-## 🔮 Future Enhancements
-
-* Habit editing functionality
-* Calendar-based habit history
-* Weekly and monthly analytics
-* Habit completion reminders
-* Export and import habit data
-* Achievement badges and rewards
-* Progress charts and visual reports
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome!
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Commit your work
-5. Push to your fork
-6. Open a Pull Request
-
----
-
-## 📜 License
-
-This project is open-source and available under the MIT License.
-
----
-
-### 🌟 Build Better Habits, One Day at a Time!
