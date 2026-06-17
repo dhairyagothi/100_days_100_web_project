@@ -1,39 +1,46 @@
-# Simon Says Game
+# 🧠 Simon Says Game
 
-## Description
-A highly aesthetic, advanced version of the classic Simon Says memory game. It features a modern glassmorphism UI, progressive difficulty, and a unique Advanced Mode to challenge your brain.
+A highly aesthetic, advanced version of the classic Simon Says memory game. Features a modern glassmorphism UI, progressive difficulty, and a unique **Advanced Mode** to challenge your brain.
 
-## Features
-- Classic 4-color memory game (Normal Mode).
-- 6 colors, increasingly faster sequence playback, and dynamic board rotations (Advanced Mode).
-- High Score Tracking saves your best score locally.
-- Web Audio API dynamically generates retro synth sounds for the game tones.
-- Modern UI with CSS glassmorphism, gradients, and micro-animations.
+## ✨ Features
 
-## Technologies Used
+- **Classic Mode** — Repeat the growing color pattern, one new color per round
+- **Advanced Mode** — Faster pace, occasional double-adds, and shorter display times
+- **Progressive Difficulty** — Sequence speed increases as you advance
+- **Audio Feedback** — Unique tones for each pad via the Web Audio API (no external files needed)
+- **Keyboard Support** — Play with Arrow Keys or WASD
+- **High Score Persistence** — Your best score is saved in localStorage
+- **Game Over Overlay** — Animated modal with score summary and "New Record" badge
+- **Premium UI** — Glassmorphism cards, animated background orbs, neon glow effects, and micro-animations
+- **Fully Responsive** — Works on desktop, tablet, and mobile screens
+
+## 🛠 Technologies Used
+
 - HTML5
-- CSS3
-- JavaScript ES6
+- CSS3 (Custom Properties, Animations, Glassmorphism, Flexbox)
+- JavaScript ES6+ (Web Audio API, LocalStorage, DOM Manipulation)
 
-## Installation/Setup
-1. Fork and clone the repository.
-2. Navigate to `public/SimonSaysGame/`.
-3. Open `index.html` in a web browser, or use a local dev server.
+## 🎮 How to Play
 
-## Usage
-1. Toggle the switch to choose between Normal and Advanced Mode.
-2. Press any key or tap the title to start the game.
-3. Watch the color sequence and repeat it by clicking the corresponding buttons.
-4. Try to beat your highest score!
+1. Open `index.html` in a web browser
+2. Press **Start** or any key to begin
+3. Watch the color pattern light up
+4. Click / tap the pads (or use keyboard) to repeat the pattern
+5. Each correct round adds a new color — see how far you can go!
 
-## Screenshots
-*(Add screenshots of the project here)*
+### Keyboard Controls
 
-## Contributing
-Contributions are always welcome! If you have a fix or a new feature, please fork the repository and open a pull request.
+| Key          | Pad    |
+|--------------|--------|
+| `W` / `↑`   | Green  |
+| `D` / `→`   | Red    |
+| `S` / `↓`   | Blue   |
+| `A` / `←`   | Yellow |
 
-## License
-MIT License
+## 📸 Screenshots
 
-## Author
-GSSoC '26 Contributor
+![Simon Says Game Preview](https://img.shields.io/badge/Preview-Play_it_in_your_browser-blue?style=for-the-badge)
+
+## 👤 Author
+
+**24CS059Aemi** — Built for [GSSoC '26](https://gssoc.girlscript.tech/)
