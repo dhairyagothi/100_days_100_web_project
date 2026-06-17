@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Social Events – EveSparks</title>
+  <meta name="description" content="EveSparks social events — weddings, birthday parties, concerts, anniversaries and more." />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .anchor-sec { scroll-margin-top: 120px; }
+    .gradient-tag { background: linear-gradient(135deg,#ff7b9c,#e8506b); color:#fff; border-radius:8px; padding:4px 14px; font-size:.78rem; font-weight:700; display:inline-block; margin-bottom:12px; }
+    .tab-btns { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:36px; }
+    .tab-btn { padding:10px 22px; border-radius:30px; font-size:.84rem; font-weight:600; border:2px solid var(--border); color:var(--text); background:var(--card); cursor:pointer; transition:all .25s; }
+    .tab-btn:hover,.tab-btn.active { background:var(--accent); border-color:var(--accent); color:#fff; }
+  </style>
+</head>
+<body class="light">
+<div id="nav-placeholder"></div>
+
+<!-- HERO -->
+<div class="page-hero">
+  <img src="image/b3.png" class="hero-bg" alt="Social Events" />
+  <div class="hero-content">
+    <span class="badge-tag">🎉 Social Events</span>
+    <h1>Celebrate Life's Special Moments</h1>
+    <p>From intimate gatherings to grand celebrations — we make every moment magical.</p>
+    <a href="#wedding" class="btn-primary">Explore Events <i class="bi bi-arrow-down"></i></a>
+  </div>
+</div>
+
+<!-- QUICK LINKS -->
+<div class="section" style="padding-top:32px;padding-bottom:0">
+  <div class="tab-btns">
+    <a href="#wedding" class="tab-btn active">💍 Weddings</a>
+    <a href="#birthday" class="tab-btn">🎂 Birthdays</a>
+    <a href="#concert" class="tab-btn">🎵 Concerts</a>
+    <a href="#anniversary" class="tab-btn">💑 Anniversary</a>
+    <a href="#baby-shower" class="tab-btn">👶 Baby Shower</a>
+    <a href="#other" class="tab-btn">✨ Other</a>
+  </div>
+</div>
+
+<!-- WEDDING -->
+<div class="section anchor-sec" id="wedding">
+  <span class="gradient-tag">💍 Wedding Events</span>
+  <h2 class="section-title reveal">Dream Wedding Packages</h2>
+  <p class="section-sub reveal">Turn your dream wedding into reality with our end-to-end planning services</p>
+  <div class="row g-4">
+    <div class="col-lg-7 reveal">
+      <img src="image/b3.png" alt="Wedding" style="width:100%;border-radius:var(--radius);height:360px;object-fit:cover" />
+    </div>
+    <div class="col-lg-5 reveal">
+      <h3 style="font-size:1.4rem;font-weight:800;margin-bottom:16px">What's Included</h3>
+      <ul style="list-style:none;padding:0">
+        <li class="d-flex gap-3 mb-3"><i class="bi bi-check2-circle" style="color:var(--accent);font-size:1.1rem;margin-top:2px"></i><span style="color:var(--muted);font-size:.9rem">Mandap &amp; Stage Decoration with fresh flowers</span></li>
+        <li class="d-flex gap-3 mb-3"><i class="bi bi-check2-circle" style="color:var(--accent);font-size:1.1rem;margin-top:2px"></i><span style="color:var(--muted);font-size:.9rem">Catering for up to 1000 guests — multiple cuisines</span></li>
+        <li class="d-flex gap-3 mb-3"><i class="bi bi-check2-circle" style="color:var(--accent);font-size:1.1rem;margin-top:2px"></i><span style="color:var(--muted);font-size:.9rem">Pre-wedding, wedding &amp; reception photography</span></li>
+        <li class="d-flex gap-3 mb-3"><i class="bi bi-check2-circle" style="color:var(--accent);font-size:1.1rem;margin-top:2px"></i><span style="color:var(--muted);font-size:.9rem">Cinematic wedding film with drone footage</span></li>
+        <li class="d-flex gap-3 mb-3"><i class="bi bi-check2-circle" style="color:var(--accent);font-size:1.1rem;margin-top:2px"></i><span style="color:var(--muted);font-size:.9rem">Bridal &amp; groom makeup &amp; mehndi artists</span></li>
+        <li class="d-flex gap-3 mb-3"><i class="bi bi-check2-circle" style="color:var(--accent);font-size:1.1rem;margin-top:2px"></i><span style="color:var(--muted);font-size:.9rem">Venue booking assistance across Bhopal</span></li>
+        <li class="d-flex gap-3 mb-3"><i class="bi bi-check2-circle" style="color:var(--accent);font-size:1.1rem;margin-top:2px"></i><span style="color:var(--muted);font-size:.9rem">Dedicated wedding planner for the full event</span></li>
+      </ul>
+      <a href="budget-planner.html" class="btn-primary mt-2">Get Quote <i class="bi bi-arrow-right"></i></a>
+    </div>
+  </div>
+</div>
+
+<!-- BIRTHDAY -->
+<div style="background:var(--card);border-top:1px solid var(--border)">
+<div class="section anchor-sec" id="birthday">
+  <span class="gradient-tag">🎂 Birthday Parties</span>
+  <h2 class="section-title reveal">Birthday Celebration Packages</h2>
+  <p class="section-sub reveal">Themed party setups for every age — from kids to adults</p>
+  <div class="card-grid">
+    <div class="eve-card reveal">
+      <img src="image/birthday.jpg" class="card-img" alt="Kids Birthday" />
+      <div class="card-body">
+        <h3 class="card-title">Kids Birthday Bash</h3>
+        <p class="card-desc">Cartoon themes, balloon decor, games, clowns &amp; cake</p>
+        <div class="card-footer-row"><span class="price-tag">₹15K–₹50K</span><a href="budget-planner.html" class="btn-sm">Plan</a></div>
+      </div>
+    </div>
+    <div class="eve-card reveal">
+      <div class="card-body" style="padding-top:30px">
+        <div style="font-size:2.5rem;margin-bottom:12px">🎊</div>
+        <h3 class="card-title">Adult Surprise Party</h3>
+        <p class="card-desc">DJ, photo booth, customised decor &amp; gourmet catering</p>
+        <div class="card-footer-row"><span class="price-tag">₹30K–₹1L</span><a href="budget-planner.html" class="btn-sm">Plan</a></div>
+      </div>
+    </div>
+    <div class="eve-card reveal">
+      <div class="card-body" style="padding-top:30px">
+        <div style="font-size:2.5rem;margin-bottom:12px">👑</div>
+        <h3 class="card-title">Luxury Birthday</h3>
+        <p class="card-desc">5-star venue, celebrity singer option, photoshoot &amp; premium catering</p>
+        <div class="card-footer-row"><span class="price-tag">₹1L+</span><a href="budget-planner.html" class="btn-sm">Plan</a></div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- CONCERT -->
+<div class="section anchor-sec" id="concert">
+  <span class="gradient-tag">🎵 Concerts</span>
+  <h2 class="section-title reveal">Concert &amp; Live Event Management</h2>
+  <p class="section-sub reveal">End-to-end live event production — sound, stage &amp; crowd</p>
+  <div class="row g-4">
+    <div class="col-md-6 reveal">
+      <img src="image/concert.jpg" alt="Concert" style="width:100%;border-radius:var(--radius);height:300px;object-fit:cover" />
+    </div>
+    <div class="col-md-6 reveal">
+      <div class="card-grid" style="grid-template-columns:1fr 1fr">
+        <div class="eve-card"><div class="card-body text-center"><div style="font-size:2rem">🔊</div><h3 class="card-title" style="font-size:.9rem">Sound System</h3></div></div>
+        <div class="eve-card"><div class="card-body text-center"><div style="font-size:2rem">🎪</div><h3 class="card-title" style="font-size:.9rem">Stage Setup</h3></div></div>
+        <div class="eve-card"><div class="card-body text-center"><div style="font-size:2rem">💡</div><h3 class="card-title" style="font-size:.9rem">Lighting &amp; VFX</h3></div></div>
+        <div class="eve-card"><div class="card-body text-center"><div style="font-size:2rem">🛡️</div><h3 class="card-title" style="font-size:.9rem">Security</h3></div></div>
+        <div class="eve-card"><div class="card-body text-center"><div style="font-size:2rem">🎟️</div><h3 class="card-title" style="font-size:.9rem">Ticketing</h3></div></div>
+        <div class="eve-card"><div class="card-body text-center"><div style="font-size:2rem">📹</div><h3 class="card-title" style="font-size:.9rem">Live Streaming</h3></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ANNIVERSARY & BABY SHOWER -->
+<div style="background:var(--card);border-top:1px solid var(--border)">
+<div class="section">
+  <div class="row g-5">
+    <div class="col-md-6 anchor-sec" id="anniversary">
+      <span class="gradient-tag">💑 Anniversary</span>
+      <h2 class="section-title reveal" style="font-size:1.6rem">Anniversary Celebrations</h2>
+      <p class="section-sub reveal">Romantic setups for milestone anniversaries</p>
+      <ul style="list-style:none;padding:0">
+        <li class="d-flex gap-3 mb-3 reveal"><i class="bi bi-heart-fill" style="color:var(--accent)"></i><span style="color:var(--muted);font-size:.9rem">Candle-lit dinner arrangements</span></li>
+        <li class="d-flex gap-3 mb-3 reveal"><i class="bi bi-heart-fill" style="color:var(--accent)"></i><span style="color:var(--muted);font-size:.9rem">Flower wall &amp; balloon ceiling decor</span></li>
+        <li class="d-flex gap-3 mb-3 reveal"><i class="bi bi-heart-fill" style="color:var(--accent)"></i><span style="color:var(--muted);font-size:.9rem">Photography &amp; surprise arrangements</span></li>
+      </ul>
+      <a href="budget-planner.html" class="btn-primary mt-2">Get Quote</a>
+    </div>
+    <div class="col-md-6 anchor-sec" id="baby-shower">
+      <span class="gradient-tag">👶 Baby Shower</span>
+      <h2 class="section-title reveal" style="font-size:1.6rem">Baby Shower Events</h2>
+      <p class="section-sub reveal">Tender &amp; beautiful celebrations for the new arrival</p>
+      <ul style="list-style:none;padding:0">
+        <li class="d-flex gap-3 mb-3 reveal"><i class="bi bi-stars" style="color:var(--accent)"></i><span style="color:var(--muted);font-size:.9rem">Pastel theme decorations &amp; floral setups</span></li>
+        <li class="d-flex gap-3 mb-3 reveal"><i class="bi bi-stars" style="color:var(--accent)"></i><span style="color:var(--muted);font-size:.9rem">Baby-safe balloon &amp; dessert arrangements</span></li>
+        <li class="d-flex gap-3 mb-3 reveal"><i class="bi bi-stars" style="color:var(--accent)"></i><span style="color:var(--muted);font-size:.9rem">Photography &amp; memory book creation</span></li>
+      </ul>
+      <a href="budget-planner.html" class="btn-primary mt-2">Get Quote</a>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- OTHER -->
+<div class="section anchor-sec" id="other">
+  <h2 class="section-title reveal">✨ Other Social Events</h2>
+  <p class="section-sub reveal">We handle every kind of social gathering with love and care</p>
+  <div class="card-grid">
+    <div class="eve-card reveal"><div class="card-body"><div style="font-size:2rem;margin-bottom:10px">🎓</div><h3 class="card-title">Farewell Parties</h3><p class="card-desc">Emotional &amp; fun farewell events for offices, colleges &amp; schools</p></div></div>
+    <div class="eve-card reveal"><div class="card-body"><div style="font-size:2rem;margin-bottom:10px">💍</div><h3 class="card-title">Engagement Ceremony</h3><p class="card-desc">Beautiful ring ceremony setup with decor &amp; catering</p></div></div>
+    <div class="eve-card reveal"><div class="card-body"><div style="font-size:2rem;margin-bottom:10px">🏠</div><h3 class="card-title">House Warming</h3><p class="card-desc">Traditional Griha Pravesh puja &amp; celebration arrangements</p></div></div>
+    <div class="eve-card reveal"><div class="card-body"><div style="font-size:2rem;margin-bottom:10px">🎊</div><h3 class="card-title">Reunion Parties</h3><p class="card-desc">Family or alumni reunion with a nostalgic &amp; warm atmosphere</p></div></div>
+  </div>
+</div>
+
+<div id="foot-placeholder"></div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="nav.js"></script><script src="main.js"></script>
+<script>injectNav('social');</script>
+</body>
+</html>

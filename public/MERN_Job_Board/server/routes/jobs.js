@@ -3,14 +3,20 @@ const router  = express.Router();
 const Job     = require("../models/Job");
 const { protect, requireRole } = require("../middleware/auth");
 
+// Escape regex metacharacters so user search input is matched literally (prevents ReDoS and regex injection)
+const escapeRegex = (s) => String(s).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
 // GET /api/jobs  — All open jobs (public)
 router.get("/", async (req, res) => {
   try {
     const { search, type, location } = req.query;
     const filter = { isOpen: true };
-    if (search)   filter.$or = [{ title: new RegExp(search, "i") }, { description: new RegExp(search, "i") }, { techStack: new RegExp(search, "i") }];
+    if (search) {
+      const safe = escapeRegex(String(search).slice(0, 100));
+      filter.$or = [{ title: new RegExp(safe, "i") }, { description: new RegExp(safe, "i") }, { techStack: new RegExp(safe, "i") }];
+    }
     if (type)     filter.type = type;
-    if (location) filter.location = new RegExp(location, "i");
+    if (location) filter.location = new RegExp(escapeRegex(String(location).slice(0, 100)), "i");
     const jobs = await Job.find(filter)
       .populate("employer", "name company")
       .sort({ createdAt: -1 });
@@ -65,7 +71,10 @@ router.put("/:id", protect, requireRole("employer"), async (req, res) => {
     if (!job) return res.status(404).json({ message: "Job not found" });
     if (job.employer.toString() !== req.user._id.toString())
       return res.status(403).json({ message: "Not your job listing" });
-    Object.assign(job, req.body);
+    const allowedFields = ["title", "location", "type", "salary", "description", "techStack", "isOpen"];
+    for (const field of allowedFields) {
+      if (req.body[field] !== undefined) job[field] = req.body[field];
+    }
     const updated = await job.save();
     res.json(updated);
   } catch (e) { res.status(500).json({ message: e.message }); }

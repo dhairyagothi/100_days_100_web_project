@@ -6,7 +6,7 @@
     <title>ZenSpace – Focus Dashboard</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="noise"></div>
@@ -32,6 +32,12 @@
                         <div class="timer-label">FOCUS</div>
                     </div>
                 </div>
+                <div class="deep-focus-toggle" id="deep-focus-container">
+                    <label>
+                        <input type="checkbox" id="deep-focus-check">
+                        Strict Deep Focus Mode
+                    </label>
+                </div>
                 <div class="timer-controls">
                     <button id="btn-start" class="btn btn-primary">▶ Start</button>
                     <button id="btn-pause" class="btn">⏸ Pause</button>
@@ -40,7 +46,7 @@
                 <div class="session-picker">
                     <button class="pill active" data-mins="25">Focus 25</button>
                     <button class="pill" data-mins="5">Break 5</button>
-                    <button class="pill" data-mins="15">Long 15</button>
+                    <input type="number" id="custom-time" class="pill custom-input" placeholder="Custom" min="1">
                 </div>
             </section>
 
@@ -53,7 +59,7 @@
                             <span class="track-name">Rain</span>
                             <input type="range" id="vol-rain" min="0" max="1" step="0.05" value="0">
                         </div>
-                        <audio id="audio-rain" src="https://assets.mixkit.co/active_storage/sfx/2433/2433-84.wav" loop></audio>
+                        <audio id="audio-rain" src="https://actions.google.com/sounds/v1/weather/rain_on_roof.ogg" loop></audio>
                     </div>
                     <div class="track-control">
                         <span class="track-icon">☕</span>
@@ -61,7 +67,7 @@
                             <span class="track-name">Café</span>
                             <input type="range" id="vol-cafe" min="0" max="1" step="0.05" value="0">
                         </div>
-                        <audio id="audio-cafe" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-84.wav" loop></audio>
+                        <audio id="audio-cafe" src="https://actions.google.com/sounds/v1/ambiences/coffee_shop.ogg" loop></audio>
                     </div>
                     <div class="track-control">
                         <span class="track-icon">🌊</span>
@@ -69,7 +75,7 @@
                             <span class="track-name">Ocean</span>
                             <input type="range" id="vol-ocean" min="0" max="1" step="0.05" value="0">
                         </div>
-                        <audio id="audio-ocean" src="https://assets.mixkit.co/active_storage/sfx/1246/1246-84.wav" loop></audio>
+                        <audio id="audio-ocean" src="https://actions.google.com/sounds/v1/water/waves_crashing_on_rock_beach.ogg" loop></audio>
                     </div>
                 </div>
             </section>
@@ -91,4 +97,4 @@
     <div class="toast" id="toast">🍅 Session complete! Time for a break.</div>
     <script src="app.js"></script>
 </body>
-</html>
+</html>>

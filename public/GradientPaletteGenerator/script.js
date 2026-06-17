@@ -34,13 +34,12 @@ const dom = {
   copyClipboard: document.getElementById("copy-clipboard"),
 };
 
-
 const modal = {
-  root: document.getElementById('confirm-modal'),
-  title: document.getElementById('modal-title'),
-  message: document.getElementById('modal-message'),
-  cancel: document.getElementById('modal-cancel'),
-  confirm: document.getElementById('modal-confirm'),
+  root: document.getElementById("confirm-modal"),
+  title: document.getElementById("modal-title"),
+  message: document.getElementById("modal-message"),
+  cancel: document.getElementById("modal-cancel"),
+  confirm: document.getElementById("modal-confirm"),
 };
 
 // ===== Utility Functions =====
@@ -312,24 +311,34 @@ const persistSaved = (gradients) => {
 /** Save the current gradient to favorites */
 const saveGradient = () => {
   const saved = loadSaved();
+  const css = buildGradientCSS();
+
+  const alreadyExists = saved.some(
+    (gradient) => gradient.css === css
+  );
+
+  if (alreadyExists) {
+    showToast('This gradient is already saved');
+    return;
+  }
+
   const gradient = {
     id: Date.now(),
     type: state.type,
     angle: state.angle,
     colors: [...state.colors],
-    css: buildGradientCSS(),
+    css,
   };
 
   saved.unshift(gradient);
 
-  // Limit to 20 saved gradients
   if (saved.length > 20) {
     saved.pop();
   }
 
   persistSaved(saved);
   renderSavedGrid();
-  showToast("Gradient saved! 💾");
+  showToast('Gradient saved! 💾');
 };
 
 /**
@@ -338,9 +347,15 @@ const saveGradient = () => {
  */
 const deleteSaved = (id) => {
   const saved = loadSaved().filter((g) => g.id !== id);
-  persistSaved(saved);
-  renderSavedGrid();
-  showToast("Gradient deleted");
+  showConfirmModal({
+    title: "Clear this gradient?",
+    message: `This will permanently delete this saved gradient.`,
+    onConfirm: () => {
+      persistSaved(saved);
+      renderSavedGrid();
+      showToast("Gradient deleted");
+    },
+  });
 };
 
 /** Clear all saved gradients */
@@ -348,18 +363,18 @@ const clearAllSaved = () => {
   const saved = loadSaved();
 
   if (saved.length === 0) {
-    showToast('Nothing to clear');
+    showToast("Nothing to clear");
     return;
   }
 
   showConfirmModal({
-    title: 'Clear all gradients?',
+    title: "Clear all gradients?",
     message: `This will permanently delete ${saved.length} saved gradients.`,
     onConfirm: () => {
       persistSaved([]);
       renderSavedGrid();
-      showToast('All gradients cleared');
-    }
+      showToast("All gradients cleared");
+    },
   });
 };
 
@@ -433,17 +448,17 @@ const renderSavedGrid = () => {
 };
 
 const showConfirmModal = ({ title, message, onConfirm }) => {
-  modal.title.textContent = title || 'Confirm Action';
-  modal.message.textContent = message || '';
+  modal.title.textContent = title || "Confirm Action";
+  modal.message.textContent = message || "";
 
-  modal.root.classList.remove('hidden');
+  modal.root.classList.remove("hidden");
 
   const closeModal = () => {
-    modal.root.classList.add('hidden');
-    modal.confirm.removeEventListener('click', handleConfirm);
-    modal.cancel.removeEventListener('click', closeModal);
-    modal.overlay.removeEventListener('click', closeModal);
-    document.removeEventListener('keydown', handleEsc);
+    modal.root.classList.add("hidden");
+    modal.confirm.removeEventListener("click", handleConfirm);
+    modal.cancel.removeEventListener("click", closeModal);
+    modal.overlay.removeEventListener("click", closeModal);
+    document.removeEventListener("keydown", handleEsc);
   };
 
   const handleConfirm = () => {
@@ -452,18 +467,17 @@ const showConfirmModal = ({ title, message, onConfirm }) => {
   };
 
   const handleEsc = (e) => {
-    if (e.code === 'Escape') closeModal();
+    if (e.code === "Escape") closeModal();
   };
 
   // IMPORTANT: cache overlay once (add this in DOM refs)
-  modal.overlay = modal.root.querySelector('.modal__overlay');
+  modal.overlay = modal.root.querySelector(".modal__overlay");
 
-  modal.confirm.addEventListener('click', handleConfirm);
-  modal.cancel.addEventListener('click', closeModal);
-  modal.overlay.addEventListener('click', closeModal);
-  document.addEventListener('keydown', handleEsc);
+  modal.confirm.addEventListener("click", handleConfirm);
+  modal.cancel.addEventListener("click", closeModal);
+  modal.overlay.addEventListener("click", closeModal);
+  document.addEventListener("keydown", handleEsc);
 };
-
 
 // ===== Event Listeners =====
 
