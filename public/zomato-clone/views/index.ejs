@@ -17,10 +17,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
 
-  <!-- ✅ ALL CSS FILES — no inline styles -->
-  <link rel="stylesheet" href="/css/index.css">
-  <link rel="stylesheet" href="/css/navbar.css">
-  <link rel="stylesheet" href="/css/footer.css">
+  <!--  ALL CSS FILES — no inline styles -->
+  <link rel="stylesheet" href="css/index.css">
+  <link rel="stylesheet" href="css/navbar.css">
+  <link rel="stylesheet" href="css/footer.css">
 </head>
 
 <body>
@@ -32,8 +32,8 @@
     <button class="banner-close" onclick="document.getElementById('topBanner').style.display='none'">×</button>
   </div>
 
-  <!-- NAVBAR (loaded from component) -->
-  <div id="navbar"></div>
+  <!-- NAVBAR (loaded from partials) -->
+   <%- include('partials/navbar') %>
 
   <!-- HERO -->
   <section class="hero">
@@ -152,77 +152,7 @@
     </div>
   </div>
 
-  <!-- FOOTER -->
-  <footer>
-    <div class="footer-grid">
-
-      <div class="footer-brand footer-col">
-        <div class="footer-logo">
-          <img src="https://b.zmtcdn.com/web_assets/b40b97e677bc7b2ca77c58c61db266fe1603954218.png" alt="Zomato" />
-        </div>
-        <p>Discover the best food & drinks in your city. Delivering joy, one meal at a time.</p>
-        <div class="socials">
-          <a href="https://www.linkedin.com/company/zomato/" target="_blank" rel="noopener">in</a>
-          <a href="https://www.instagram.com/zomato/" target="_blank" rel="noopener">ig</a>
-          <a href="https://twitter.com/zomato" target="_blank" rel="noopener">tw</a>
-          <a href="https://www.youtube.com/zomato" target="_blank" rel="noopener">yt</a>
-          <a href="https://www.facebook.com/Zomato" target="_blank" rel="noopener">fb</a>
-        </div>
-      </div>
-
-      <div class="footer-col">
-        <h4>About Zomato</h4>
-        <ul>
-          <li>Who We Are</li>
-          <li>Blog</li>
-          <li>Work With Us</li>
-          <li>Investor Relations</li>
-          <li>Report Fraud</li>
-          <li>Contact Us</li>
-        </ul>
-      </div>
-
-      <div class="footer-col">
-        <h4>Zomaverse</h4>
-        <ul>
-          <li>Zomato</li>
-          <li>Blinkit</li>
-          <li>Feeding India</li>
-          <li>Hyperpure</li>
-          <li>Zomaland</li>
-        </ul>
-      </div>
-
-      <div class="footer-col">
-        <h4>For Restaurants</h4>
-        <ul>
-          <li>Partner With Us</li>
-          <li>Apps For You</li>
-        </ul>
-        <h4 style="margin-top:20px">For Enterprises</h4>
-        <ul>
-          <li>Zomato For Enterprises</li>
-        </ul>
-      </div>
-
-      <div class="footer-col">
-        <h4>Learn More</h4>
-        <ul>
-          <li>Privacy</li>
-          <li>Security</li>
-          <li>Terms</li>
-          <li>Sitemap</li>
-        </ul>
-      </div>
-
-    </div>
-
-    <div class="footer-bottom">
-      By continuing past this page, you agree to our Terms of Service, Cookie Policy, Privacy Policy and Content Policies.
-      All trademarks are properties of their respective owners. 2008-2025 © Zomato™ Ltd. All rights reserved.
-    </div>
-  </footer>
-
+<%- include('partials/footer') %>
   <div class="dm-toast" id="dmToast"></div>
 
   <script>
@@ -275,7 +205,7 @@
         console.warn('Could not load:', file);
       }
     }
-    loadComponent('navbar', '/components/navbar.html');
+    loadComponent('navbar', './components/navbar.html');
   </script>
 
 </body>
