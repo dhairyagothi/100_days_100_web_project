@@ -1,12 +1,12 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
-const COLS = 30;
-const ROWS = 30;
-const CELL = 22;
+const COLS = 24;
+const ROWS = 24;
+const CELL = 20;
 canvas.width = COLS * CELL;
 canvas.height = ROWS * CELL;
-
+// Target audio tags loaded from HTML
 const eatSound = document.getElementById('eatSound');
 const gameOverSound = document.getElementById('gameOverSound');
 const snakeColorPicker = document.getElementById('snakeColorPicker');
@@ -19,32 +19,14 @@ let snakeColor = DEFAULT_SNAKE_COLOR;
 let highScore = 0;
 let isGameOver = false;
 let finalScore = 0;
-let gameStartTime = 0;
-let gameSurvivalTime = 0;
 
-// Statistics
-let stats = {
-  gamesPlayed: 0,
-  totalScore: 0,
-  highestScore: 0,
-  totalFood: 0,
-  longestSurvival: 0 // in seconds
-};
+// ─── RAF game loop state ───────────────────────────────────────────────────
+let rafId        = null;   // requestAnimationFrame handle (main loop)
+let lastTickTime = 0;      // timestamp of last logic tick
+let accumulator  = 0;      // ms accumulated since last tick
+// ──────────────────────────────────────────────────────────────────────────
 
-// Achievements
-const achievements = [
-  { id: 'beginner-snake', name: 'Beginner Snake', desc: 'Score 20 points', icon: '🐍', check: () => score >= 20 },
-  { id: 'growing-hunter', name: 'Growing Hunter', desc: 'Score 50 points', icon: '👑', check: () => score >= 50 },
-  { id: 'snake-master', name: 'Snake Master', desc: 'Score 100 points', icon: '🏆', check: () => score >= 100 },
-  { id: 'snake-legend', name: 'Snake Legend', desc: 'Score 200 points', icon: '🔥', check: () => score >= 200 }
-];
-let unlockedAchievements = new Set();
-
-// RAF state
-let rafId = null;
-let lastTickTime = 0;
-
-// Page visibility
+// ─── Page Visibility API — pause/resume on tab switch ─────────────────────
 document.addEventListener('visibilitychange', () => {
   if (document.hidden) {
     if (running && !paused) {
@@ -58,7 +40,7 @@ document.addEventListener('visibilitychange', () => {
     }
   }
 });
-let paused_by_visibility = false;
+let paused_by_visibility = false; // tracks auto-pause vs user-pause
 
 function setPaused(value) {
   paused = value;
@@ -68,23 +50,27 @@ function setPaused(value) {
   }
   if (!value) {
     lastTickTime = performance.now();
+    accumulator  = 0;
   }
 }
+// ──────────────────────────────────────────────────────────────────────────
 
-// Web Audio sound engine
+// ─── Web Audio sound engine ────────────────────────────────────────────────
 let audioCtx = null;
 
 function getAudioCtx() {
   if (!audioCtx) {
     audioCtx = new (window.AudioContext || window.webkitAudioContext)();
   }
+  // Some browsers suspend the context until a user gesture
   if (audioCtx.state === 'suspended') audioCtx.resume();
   return audioCtx;
 }
 
+
 function playTone(freq, type = 'square', duration = 0.08, gainPeak = 0.18) {
   try {
-    const ac = getAudioCtx();
+    const ac  = getAudioCtx();
     const osc = ac.createOscillator();
     const gain = ac.createGain();
 
@@ -99,21 +85,26 @@ function playTone(freq, type = 'square', duration = 0.08, gainPeak = 0.18) {
     gain.connect(ac.destination);
     osc.start(ac.currentTime);
     osc.stop(ac.currentTime + duration + 0.01);
-  } catch (e) {}
+  } catch (e) {
+
+  }
 }
 
 function soundEat() {
+  // Quick rising blip — classic 8-bit pick-up
   playTone(440, 'square', 0.06, 0.15);
   setTimeout(() => playTone(660, 'square', 0.08, 0.12), 40);
 }
 
 function soundLevelUp() {
+  // Ascending fanfare
   [330, 440, 550, 660].forEach((f, i) =>
     setTimeout(() => playTone(f, 'square', 0.12, 0.14), i * 60)
   );
 }
 
 function soundDie() {
+  // Descending crunch
   [220, 180, 140, 100].forEach((f, i) =>
     setTimeout(() => playTone(f, 'sawtooth', 0.12, 0.20), i * 70)
   );
@@ -167,19 +158,17 @@ function initGame() {
     { x: startX - 2, y: startY },
   ];
 
+
   dir = { x: 1, y: 0 };
   nextDir = { x: 1, y: 0 };
   score = 0;
   level = 1;
   speed = 160;
   running = false;
-  isGameOver = false;
   setPaused(false);
 
   placeFood();
   updateHUD();
-  updateStatsUI();
-  renderAchievements();
 }
 
 function placeFood() {
@@ -212,60 +201,12 @@ function updateHUD(bumped) {
   }
 }
 
-function updateStatsUI() {
-  document.getElementById('stat-games-played').textContent = stats.gamesPlayed;
-  document.getElementById('stat-highest-score').textContent = stats.highestScore;
-  document.getElementById('stat-average-score').textContent = stats.gamesPlayed > 0 
-    ? Math.round(stats.totalScore / stats.gamesPlayed) 
-    : 0;
-  document.getElementById('stat-total-food').textContent = stats.totalFood;
-  document.getElementById('stat-longest-survival').textContent = stats.longestSurvival + 's';
-}
-
-function renderAchievements() {
-  const container = document.getElementById('achievements-list');
-  container.innerHTML = achievements.map(achievement => {
-    const isUnlocked = unlockedAchievements.has(achievement.id);
-    return `
-      <div class="achievement ${isUnlocked ? 'unlocked' : 'locked'}" data-id="${achievement.id}">
-        <div class="achievement-icon">${achievement.icon}</div>
-        <div class="achievement-info">
-          <div class="achievement-name">${achievement.name}</div>
-          <div class="achievement-desc">${achievement.desc}</div>
-        </div>
-      </div>
-    `;
-  }).join('');
-}
-
-function showAchievementNotification(achievement) {
-  const notification = document.getElementById('achievement-notification');
-  notification.innerHTML = `
-    <div class="notification-title">Achievement Unlocked!</div>
-    <div class="notification-achievement">${achievement.icon} ${achievement.name}</div>
-  `;
-  notification.classList.remove('hidden');
-  
-  setTimeout(() => {
-    notification.classList.add('hidden');
-  }, 4000);
-}
-
-function checkAchievements() {
-  achievements.forEach(achievement => {
-    if (!unlockedAchievements.has(achievement.id) && achievement.check()) {
-      unlockedAchievements.add(achievement.id);
-      saveGameData();
-      renderAchievements();
-      showAchievementNotification(achievement);
-    }
-  });
-}
-
 function draw() {
+  // Background
   ctx.fillStyle = '#050a05';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+  // Grid dots
   ctx.fillStyle = '#0d1f0d';
   for (let r = 0; r < ROWS; r++) {
     for (let c = 0; c < COLS; c++) {
@@ -285,7 +226,7 @@ function draw() {
   ctx.arc(fx, fy, (CELL / 2 - 3) * pulse * 0.9 + 1, 0, Math.PI * 2);
   ctx.fill();
   ctx.restore();
-
+// Snake
   snake.forEach((seg, i) => {
     const isHead = i === 0;
     const t = i / (snake.length - 1 || 1);
@@ -321,6 +262,7 @@ function draw() {
   });
 }
 
+// ─── Logic tick (called by RAF loop when enough time has elapsed) ──────────
 function tick() {
   dir = { ...nextDir };
 
@@ -329,22 +271,25 @@ function tick() {
     y: snake[0].y + dir.y,
   };
 
+  // Wall collision
   if (head.x < 0 || head.x >= COLS || head.y < 0 || head.y >= ROWS) {
     endGame();
     return;
   }
 
+  // Self collision
   if (snake.some(s => s.x === head.x && s.y === head.y)) {
     endGame();
     return;
   }
 
   snake.unshift(head);
+  // Food eaten
   if (head.x === food.x && head.y === food.y) {
     score += level * 10;
     if (score > highScore) highScore = score;
-    stats.totalFood++;
 
+    // Play EAT Sound Effect smoothly
     if (eatSound) {
       eatSound.currentTime = 0;
       eatSound.play().catch(err => console.log("Audio play blocked by browser config", err));
@@ -361,7 +306,6 @@ function tick() {
     }
 
     updateHUD(true);
-    checkAchievements();
     placeFood();
   } else {
     snake.pop();
@@ -369,12 +313,15 @@ function tick() {
   }
 }
 
+// Single Game Loop Engine using high precision requestAnimationFrame (Fixes choppy lag)
 function gameEngine(timestamp) {
   if (!lastTickTime) lastTickTime = timestamp;
 
   if (running && !paused) {
     const elapsed = timestamp - lastTickTime;
 
+    // Guard: if the tab was hidden and visibility API didn't fire (edge case),
+    // a huge elapsed value would cause multiple rapid ticks. Cap it to one tick worth.
     if (elapsed > speed * 3) {
       lastTickTime = timestamp;
     } else if (elapsed >= speed) {
@@ -382,15 +329,23 @@ function gameEngine(timestamp) {
       lastTickTime = timestamp;
     }
   } else {
-    lastTickTime = timestamp;
+    lastTickTime = timestamp; // Keep synced while resting
   }
 
+  // Draw continuously for buttery smooth animations
   if (!isGameOver) {
     draw();
   }
 
   requestAnimationFrame(gameEngine);
 }
+
+function stopLoop() {
+  if (rafId) cancelAnimationFrame(rafId);
+  rafId = null;
+}
+
+// ──────────────────────────────────────────────────────────────────────────
 
 function startGame() {
   document.getElementById('startOverlay').classList.add('hidden');
@@ -399,34 +354,21 @@ function startGame() {
   isGameOver = false;
   initGame();
   running = true;
-  gameStartTime = Date.now();
-  lastTickTime = performance.now();
+  lastTickTime = 0;
 
   document.removeEventListener('keydown', handleKeyDown);
   document.addEventListener('keydown', handleKeyDown);
 }
 
+// ─── Game-over flash — uses RAF, not a competing setInterval ──────────────
 function endGame() {
   finalScore = score;
   running = false;
   isGameOver = true;
-  
-  // Update stats
-  gameSurvivalTime = Math.floor((Date.now() - gameStartTime) / 1000);
-  stats.gamesPlayed++;
-  stats.totalScore += score;
-  if (score > stats.highestScore) {
-    stats.highestScore = score;
-  }
-  if (gameSurvivalTime > stats.longestSurvival) {
-    stats.longestSurvival = gameSurvivalTime;
-  }
-  
-  saveGameData();
-  updateStatsUI();
 
   document.removeEventListener('keydown', handleKeyDown);
 
+  // Play GAME OVER sound asset
   if (gameOverSound) {
     gameOverSound.currentTime = 0;
     gameOverSound.play().catch(err => console.log("Audio play blocked", err));
@@ -448,7 +390,7 @@ function endGame() {
       document.getElementById('finalScore').textContent = `SCORE: ${finalScore}  |  BEST: ${highScore}`;
       document.getElementById('gameOverOverlay').classList.remove('hidden');
     }
-  }, 120);
+  }, 120); // Steady interval rate clears excessive flickering
 }
 
 const KEY_MAP = {
@@ -487,28 +429,15 @@ function handleKeyDown(e) {
   }
 
   if ((e.key === 'p' || e.key === 'P') && running) {
-    e.preventDefault();
-    setPaused(!paused);
-  }
+  e.preventDefault();
+  setPaused(!paused);
+ }
 }
 
 document.addEventListener('keydown', handleKeyDown);
 
 document.getElementById('startBtn').addEventListener('click', startGame);
 document.getElementById('restartBtn').addEventListener('click', startGame);
-document.getElementById('reset-stats').addEventListener('click', () => {
-  stats = {
-    gamesPlayed: 0,
-    totalScore: 0,
-    highestScore: 0,
-    totalFood: 0,
-    longestSurvival: 0
-  };
-  highScore = 0;
-  saveGameData();
-  updateStatsUI();
-  updateHUD();
-});
 
 // Idle animation on start screen
 function animateIdle() {
@@ -525,10 +454,13 @@ requestAnimationFrame(gameEngine);
 // ========== MOBILE TOUCH CONTROLS ==========
 // Mobile controls
 (function () {
+  const mobileCanvas = document.getElementById('gameCanvas');
   const controls = document.getElementById('mobileControls');
+
   if (!controls) return;
 
   let lastTouch = 0;
+  let startX = 0, startY = 0;
 
   const setDir = (direction) => {
     if (typeof isGameOver !== 'undefined' && isGameOver) return;
@@ -568,10 +500,36 @@ requestAnimationFrame(gameEngine);
     }
   };
 
+  // D-pad buttons
   document.querySelectorAll('.dpad-btn').forEach(btn => {
-    btn.addEventListener('click', e => { e.preventDefault(); setDir(btn.dataset.dir); });
+    btn.addEventListener('click',      e => { e.preventDefault(); setDir(btn.dataset.dir); });
     btn.addEventListener('touchstart', e => { e.preventDefault(); e.stopPropagation(); setDir(btn.dataset.dir); });
   });
+
+  // Swipe on canvas
+  if (mobileCanvas) {
+    mobileCanvas.addEventListener('touchstart', e => {
+      e.preventDefault();
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+    }, { passive: false });
+
+    mobileCanvas.addEventListener('touchend', (e) => {
+      e.preventDefault();
+      const dx = e.changedTouches[0].clientX - startX;
+      const dy = e.changedTouches[0].clientY - startY;
+
+      if (Math.abs(dx) < 30 && Math.abs(dy) < 30) return;
+
+      const swipe = Math.abs(dx) > Math.abs(dy)
+        ? (dx > 0 ? 'right' : 'left')
+        : (dy > 0 ? 'down' : 'up');
+
+      setDir(swipe);
+    });
+
+    mobileCanvas.addEventListener('contextmenu', (e) => e.preventDefault());
+  }
 
   const isMobile = () => window.innerWidth <= 768 || 'ontouchstart' in window;
   const toggle = () => {
@@ -582,10 +540,11 @@ requestAnimationFrame(gameEngine);
 
   toggle();
   window.addEventListener('resize', toggle);
+  console.log('✅ Mobile touch controls loaded');
 })();
 
-// Theme toggle
 const themeToggle = document.getElementById("themeToggle");
+
 let isLight = localStorage.getItem("theme") === "light";
 
 function applyTheme() {
@@ -605,8 +564,3 @@ themeToggle.addEventListener("click", () => {
   localStorage.setItem("theme", isLight ? "light" : "dark");
   applyTheme();
 });
-
-// Load data and start
-loadGameData();
-initGame();
-requestAnimationFrame(gameEngine);

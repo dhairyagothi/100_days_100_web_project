@@ -10,16 +10,21 @@ function requireAdminKey(req, res, next) {
   }
   next();
 }
+// Home
+router.get("/", (req, res) => {
+  res.render("index");
+  
+});
 
-//ejs
+// EJS pages
 router.get("/view", ctrl.renderFoods);
-
 router.get("/view/:id", ctrl.getFoodById);
 
-router.post("/", requireAdminKey, ctrl.createFood);
-router.get("/", ctrl.getFoods);
-router.put("/:id", requireAdminKey, ctrl.updateFood);
-router.delete("/:id", requireAdminKey, ctrl.deleteFood);
+// API routes
+router.get("/api/foods", ctrl.getFoods);
+router.post("/api/foods", requireAdminKey, ctrl.createFood);
+router.put("/api/foods/:id", requireAdminKey, ctrl.updateFood);
+router.delete("/api/foods/:id", requireAdminKey, ctrl.deleteFood);
 
 
 module.exports = router;
