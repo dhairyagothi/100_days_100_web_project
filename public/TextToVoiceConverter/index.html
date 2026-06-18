@@ -16,6 +16,32 @@
     <!-- Floating Theme Toggle -->
     <button id="theme-toggle" class="theme-btn" aria-label="Toggle dark mode">🌙</button>
 
+<button id="theme-toggle" class="theme-btn">🌙</button>
+
+<div class="wrapper">
+
+    <!-- TEXT TO SPEECH -->
+    <div class="container">
+        <h1>🔊 Text to Voice Converter</h1>
+
+        <label>Select Language</label>
+        <select id="tts-language">
+            <option value="en-US">English</option>
+            <option value="hi-IN">Hindi</option>
+            <option value="es-ES">Spanish</option>
+        </select>
+
+        <label>Select Voice</label>
+        <select id="voice-select"></select>
+
+        <textarea id="text-input" placeholder="Enter text here..."></textarea>
+
+        <p id="char-count">Characters: 0</p>
+
+        <div class="btn-group">
+            <button id="convert-btn">Convert to Speech</button>
+            <button id="stop-btn-text" class="stop-btn" disabled>Stop</button>
+            <button id="clear-text">Clear</button>
     <!-- Top Navigation Bar / Back Button -->
     <header class="app-header">
         <a href="/" class="back-btn">← Back to Home</a>
@@ -25,6 +51,8 @@
         </div>
     </header>
 
+        <div id="speaking-status"></div>
+    </div>
     <main class="wrapper">
         <!-- TEXT TO SPEECH CARD -->
         <section class="container card tts-card">
@@ -49,6 +77,32 @@
                 </div>
             </div>
 
+        <label>Select Language</label>
+        <select id="stt-language">
+            <option value="en-US">English</option>
+            <option value="hi-IN">Hindi</option>
+            <option value="es-ES">Spanish</option>
+        </select>
+
+        <div class="btn-group">
+            <button id="start-btn">Speak</button>
+            <button id="stop-btn-voice" class="stop-btn" disabled>Stop</button>
+        </div>
+
+        <div id="listening-status"></div>
+
+        <textarea id="output" placeholder="Your speech will appear here..."></textarea>
+
+        <div class="btn-group">
+            <button id="copy-btn">Copy</button>
+            <button id="download-btn">Download</button>
+            <button id="clear-output">Clear</button>
+        </div>
+    </div>
+
+</div>
+
+<script src="script.js"></script>
             <div class="input-group relative">
                 <label for="text-input">Text Input</label>
                 <textarea id="text-input" placeholder="Type or paste your text here..."></textarea>

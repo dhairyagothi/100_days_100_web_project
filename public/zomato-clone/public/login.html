@@ -62,6 +62,7 @@
         border: 1.5px solid var(--red);
         color: var(--red);
         background: var(--red-light);
+        font-weight: 700;
       }
       .z-dm-btn {
         background: var(--bg);
@@ -94,14 +95,20 @@
       .z-card {
         background: var(--bg-white);
         border-radius: var(--radius-lg);
-        padding: 4rem 3.8rem 3.4rem;
+        padding: 3rem;
         width: 100%;
-        max-width: 44rem;
+        max-width: 40rem;
         box-shadow: var(--shadow-lg);
         border: 1px solid var(--border);
         transition: background var(--transition);
+        transition: all .3s ease;
         animation: cardIn 0.45s cubic-bezier(0.4, 0, 0.2, 1) both;
       }
+
+      .z-card:hover{
+        transform: translateY(-2px);
+      }
+
       @keyframes cardIn {
         from {
           opacity: 0;
@@ -143,6 +150,7 @@
         justify-content: center;
         gap: 8px;
         padding: 1rem 1.4rem;
+        min-height: 52px;
         border: 1.5px solid var(--border);
         border-radius: var(--radius-sm);
         background: var(--bg-white);
@@ -205,6 +213,7 @@
         padding: 1.2rem 1.4rem;
         border: 1.5px solid var(--border-dark);
         border-radius: var(--radius-sm);
+        border-color: var(--red);
         font-size: 1.45rem;
         font-family: "Outfit", sans-serif;
         color: var(--text-primary);
@@ -232,6 +241,13 @@
         min-height: 16px;
         display: block;
         font-weight: 400;
+      }
+
+      .z-field input:focus-visible,
+      .z-submit:focus-visible,
+      .z-social-btn:focus-visible{
+        outline: 3px solid rgba(226,55,68,0.25);
+        outline-offset: 2px;
       }
 
       /* Password */
@@ -370,6 +386,21 @@
         .z-navbar-right a {
           font-size: 1.3rem;
           padding: 0.55rem 1rem;
+        }
+        .z-navbar{
+          padding: 0 1rem;  
+        }
+        .z-navbar-right{
+          gap: 5px;
+        }
+
+        .z-social-btn:focus-visible,
+        .z-submit:focus-visible,
+        .z-dm-btn:focus-visible,
+        .z-navbar-right a:focus-visible,
+        .pw-toggle:focus-visible {
+          outline: 3px solid #e23744;
+          outline-offset: 3px;
         }
       }
 
@@ -724,32 +755,20 @@ transform:none;
       <div class="z-navbar-right">
         <a href="login.html" class="active">Log in</a>
         <a href="signup.html">Sign up</a>
-        <button class="z-dm-btn" id="dmToggle">🌙</button>
+        <button class="z-dm-btn" id="dmToggle" aria-label="Toggle dark mode">🌙</button>
       </div>
     </nav>
 
     <main class="z-main">
-        <div class="z-card">
-            <h2>Log in</h2>
-            <p class="sub">or <a href="signup.html" style="color:#e23744;text-decoration:none;font-weight:600;">create an account</a></p>
-
-            <div class="z-social">
-                <button class="z-social-btn" onclick="alert('Google login coming soon!')">
-                    <i aria-hidden="true" class="fa fa-google"></i> Google
-                </button>
-                <button class="z-social-btn" onclick="alert('Facebook login coming soon!')">
-                    <i aria-hidden="true" class="fa fa-facebook"></i> Facebook
-                </button>
-            </div>
       <div class="z-card">
         <h2>Welcome back 👋</h2>
         <p class="sub">or <a href="signup.html">create a new account</a></p>
 
         <div class="z-social">
-          <button class="z-social-btn" onclick="socialLogin('Google')">
+          <button class="z-social-btn" onclick="socialLogin('Google')" aria-label="Continue with Google">
             <i class="fa fa-google"></i> Google
           </button>
-          <button class="z-social-btn" onclick="socialLogin('Facebook')">
+          <button class="z-social-btn" onclick="socialLogin('Facebook')" aria-label="Continue with Facebook">
             <i class="fa fa-facebook"></i> Facebook
           </button>
         </div>
