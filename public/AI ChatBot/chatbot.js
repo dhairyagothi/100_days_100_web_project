@@ -1,7 +1,7 @@
 /* ===========================
    CONFIG
 =========================== */
-const API_URL = "https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent";
+const API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent";
 const STORAGE_KEY_API     = 'gemini_api_key';
 const STORAGE_KEY_HISTORY = 'gemini_chat_history';
 const STORAGE_KEY_THEME   = 'gemini_theme';
@@ -18,10 +18,10 @@ let activeSessionId   = null;
 /* ===========================
    DOM REFS
 =========================== */
-const apiModal        = document.getElementById('api-modal');
-const apiKeyInput     = document.getElementById('api-key-input');
+const apiModal        = document.getElementById('settings-modal');
+const apiKeyInput     = document.getElementById('settings-api-input');
 const saveKeyBtn      = document.getElementById('save-key-btn');
-const toggleKeyBtn    = document.getElementById('toggle-key-visibility');
+const toggleKeyBtn    = document.getElementById('ob-toggle-key');
 const changeKeyBtn    = document.getElementById('change-key-btn');
 const messagesInner   = document.getElementById('messages-inner');
 const viewport        = document.getElementById('messages-viewport');
@@ -85,25 +85,30 @@ function saveApiKey() {
 toggleKeyBtn.addEventListener('click', () => {
   apiKeyInput.type = apiKeyInput.type === 'password' ? 'text' : 'password';
 });
-
-changeKeyBtn.addEventListener('click', () => {
-  apiModal.classList.remove('hidden');
-});
+if(changeKeyBtn){
+  changeKeyBtn.addEventListener('click', () => {
+    apiModal.classList.remove('hidden');
+  });
+}
 
 /* ===========================
    THEME
 =========================== */
-themeToggle.addEventListener('click', () => {
-  const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-  document.documentElement.setAttribute('data-theme', next);
-  localStorage.setItem(STORAGE_KEY_THEME, next);
-});
+if(themeToggle){
+  themeToggle.addEventListener('click', () => {
+    const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem(STORAGE_KEY_THEME, next);
+  });
+}
 
 /* ===========================
    SIDEBAR
 =========================== */
 sidebarToggle.addEventListener('click', () => sidebar.classList.toggle('open'));
-sidebarClose.addEventListener('click',  () => sidebar.classList.remove('open'));
+if(sidebarClose){
+  sidebarClose.addEventListener('click',  () => sidebar.classList.remove('open'));
+}
 
 /* ===========================
    SESSIONS
@@ -214,13 +219,15 @@ function renderHistoryList() {
 
 newChatBtn.addEventListener('click', startNewChat);
 
-clearHistoryBtn.addEventListener('click', () => {
-  if (confirm('Delete all chat history?')) {
-    sessions = [];
-    saveSessions();
-    startNewChat();
-  }
-});
+if(clearHistoryBtn){
+  clearHistoryBtn.addEventListener('click', () => {
+    if (confirm('Delete all chat history?')) {
+      sessions = [];
+      saveSessions();
+      startNewChat();
+    }
+  });
+}
 
 /* ===========================
    IMAGE ATTACHMENT
@@ -322,7 +329,8 @@ async function fetchGeminiResponse(userPrompt, fileAttachment) {
   showTypingIndicator();
 
   try {
-    const response = await fetch(`${API_URL}?key=${geminiApiKey}`, {
+    console.log('Gemini request key:', savedKey);
+    const response = await fetch(`${API_URL}?key=${savedKey}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ contents: chatHistory })

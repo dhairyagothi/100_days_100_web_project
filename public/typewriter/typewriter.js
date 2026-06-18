@@ -326,6 +326,9 @@ function flashKey(char) {
 
 /* ---------- Keyboard ---------- */
 document.addEventListener("keydown", (e) => {
+  // Do not intercept when the user is typing in the Add Text input field
+  if (document.activeElement === userInput) return;
+
   if (e.key === "ArrowLeft") {
     e.preventDefault();
     cursorPosition = Math.max(0, cursorPosition - 1);
@@ -353,9 +356,9 @@ document.addEventListener("keydown", (e) => {
     paperContent.slice(0, cursorPosition) +
     "\n" +
     paperContent.slice(cursorPosition);
-    
+
     cursorPosition++;
-    
+
     renderPaper();
     playReturn();
     flashKey("ENTER");
@@ -375,23 +378,13 @@ document.addEventListener("keydown", (e) => {
   if (e.key === " ") {
     e.preventDefault();
     addCharToPaper(" ");
+    flashKey("SPACE");
     return;
   }
   if (e.key === "Tab") {
     e.preventDefault();
     addCharToPaper("    "); // 4 spaces = one tab stop
     flashKey("TAB");
-    return;
-  }
-  // Arrow keys for cursor navigation
-  if (e.key === "ArrowLeft") {
-    e.preventDefault();
-    moveCursor(-1);
-    return;
-  }
-  if (e.key === "ArrowRight") {
-    e.preventDefault();
-    moveCursor(1);
     return;
   }
 
@@ -402,6 +395,8 @@ document.addEventListener("keydown", (e) => {
     const shouldBeUpper = capsLockEnabled !== e.shiftKey; // XOR
     const charToAdd = shouldBeUpper ? e.key.toUpperCase() : e.key.toLowerCase();
     addCharToPaper(charToAdd);
+    // Flash the matching on-screen key (keys store data-char in lowercase)
+    flashKey(e.key.toLowerCase());
   }
 });
 
@@ -434,7 +429,31 @@ function showPdfToast(msg, isSuccess = true) {
   }, 3000);
 }
 
-// Carriage Bar Reset Button
+// Carriage Bar Reset Button — custom UI modal (replaces native confirm())
+const clearModal        = document.getElementById("clearModal");
+const clearModalCancel  = document.getElementById("clearModalCancel");
+const clearModalConfirm = document.getElementById("clearModalConfirm");
+
+function openClearModal()  { clearModal.classList.add("is-open");    }
+function closeClearModal() { clearModal.classList.remove("is-open"); }
+
+function executeClearAll() {
+  pagesContainer.innerHTML = `
+    <div class="paper-sheet page active-page">
+      <span class="typewriterText" contenteditable="false"></span>
+    </div>
+  `;
+  currentPage = 0;
+  paperContent = "";
+  cursorPos = 0;
+  userInput.value = "";
+  pageCounter.innerText = "Page 1";
+  updateCopyButtonState();
+  updateCounters();
+  showPdfToast("All pages cleared!");
+  playHeavyKey();
+}
+
 const clearPaperBtn = document.getElementById("clearPaperBtn");
 if (clearPaperBtn) {
   clearPaperBtn.addEventListener("click", () => {
@@ -443,22 +462,20 @@ if (clearPaperBtn) {
       showPdfToast("Paper is already clean!");
       return;
     }
-    if (confirm("Are you sure you want to clear all typed paper pages?")) {
-      pagesContainer.innerHTML = `
-                <div class="paper-sheet page active-page">
-                    <span class="typewriterText" contenteditable="false"></span>
-                </div>
-            `;
-      currentPage = 0;
-      paperContent = "";
-      cursorPos = 0;
-      userInput.value = "";
-      pageCounter.innerText = "Page 1";
-      updateCopyButtonState();
-      updateCounters();
-      showPdfToast("All pages cleared!");
-      playHeavyKey();
-    }
+    openClearModal();
+  });
+}
+
+if (clearModalCancel)  clearModalCancel.addEventListener("click", closeClearModal);
+if (clearModalConfirm) clearModalConfirm.addEventListener("click", () => {
+  closeClearModal();
+  executeClearAll();
+});
+
+// Close modal when clicking the backdrop
+if (clearModal) {
+  clearModal.addEventListener("click", (e) => {
+    if (e.target === clearModal) closeClearModal();
   });
 }
 
@@ -799,9 +816,43 @@ function exportThemedPDF() {
   }, 400);
 }
 
-// Hook up both PDF download buttons
+// ── Export button → format picker modal ────────────────────────────────────
+const exportModal        = document.getElementById("exportModal");
+const exportModalCancel  = document.getElementById("exportModalCancel");
+const exportAsPdfBtn     = document.getElementById("exportAsPdfBtn");
+const exportAsTxtBtn     = document.getElementById("exportAsTxtBtn");
+
+function openExportModal()  { if (exportModal) exportModal.classList.add("is-open");    }
+function closeExportModal() { if (exportModal) exportModal.classList.remove("is-open"); }
+
+function exportAsTxt() {
+  const text = getAllTextFromAllPages();
+  if (!text.trim()) {
+    showPdfToast("Type some text first before exporting!", false);
+    return;
+  }
+  const titleEl = document.getElementById("pdfTitle");
+  const baseName = (titleEl && titleEl.value.trim())
+    ? titleEl.value.trim().toLowerCase().replace(/[^a-z0-9]+/g, "_")
+    : "manuscript";
+  const blob = new Blob([text], { type: "text/plain" });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement("a");
+  a.href     = url;
+  a.download = baseName + ".txt";
+  a.click();
+  URL.revokeObjectURL(url);
+  showPdfToast("Plain-text file downloaded!");
+}
+
 const exportPdfBtn = document.getElementById("exportPdfBtn");
-if (exportPdfBtn) exportPdfBtn.onclick = exportThemedPDF;
+if (exportPdfBtn) exportPdfBtn.onclick = openExportModal;
+if (exportModalCancel) exportModalCancel.addEventListener("click", closeExportModal);
+if (exportAsPdfBtn) exportAsPdfBtn.addEventListener("click", () => { closeExportModal(); exportThemedPDF(); });
+if (exportAsTxtBtn) exportAsTxtBtn.addEventListener("click", () => { closeExportModal(); exportAsTxt(); });
+if (exportModal) exportModal.addEventListener("click", (e) => { if (e.target === exportModal) closeExportModal(); });
+
+// ── Download PDF button → always downloads PDF directly ────────────────────
 downloadPDF.onclick = exportThemedPDF;
 
 /* ---------- Theme ---------- */
@@ -817,6 +868,17 @@ const savedTheme = localStorage.getItem("theme");
 if (savedTheme === "light") {
   document.body.classList.add("light-theme");
   themeToggle.textContent = "☀️";
+}
+
+/* ---------- Style Switcher — live paper font & appearance ---------- */
+const pdfThemeSelect = document.getElementById("pdfTheme");
+if (pdfThemeSelect) {
+  // Apply on change
+  pdfThemeSelect.addEventListener("change", () => {
+    pagesContainer.setAttribute("data-style", pdfThemeSelect.value);
+  });
+  // Apply initial value on load (default in HTML select is "vintage")
+  pagesContainer.setAttribute("data-style", pdfThemeSelect.value);
 }
 
 /* ---------- Word & Character Counters ---------- */

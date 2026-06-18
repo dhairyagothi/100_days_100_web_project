@@ -3,26 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recipezzz - Recipe Details</title>
+    <title>Recipezzz - Explore Recipes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <script src="script.js" defer></script>
 </head>
 <body>
-    <a href="main.html" class="project-back-button">← Back to Home</a>
 
-    <nav aria-label="Main Navigation">
-        <h2 class="logo">Recipezzz</h2>
-        <div class="navlink">
-            <a href="main.html">Home</a>
-            <a href="rec.html" class="active">Recipes</a>
+<a href="main.html" class="project-back-button">← Back </a>
+
+<nav>
+    <h2 class="logo">Recipezzz</h2>
+    <div class="navlink">
+        <a href="main.html">Home</a>
+        <a href="rec.html" class="active">Recipes</a>
+    </div>
+</nav>
+
+<div class="explore-container">
+
+    <div class="explore-header">
+        <h1>Explore Recipes</h1>
+        <p>Discover your next favorite meal</p>
+    </div>
+
+    <div class="search-section">
+        <input type="text" id="searchInput" placeholder="🔍 Search recipes...">
+        <select id="difficulty">
+            <option value="">All Recipes</option>
+        </select>
+        <div class="action-buttons">
+            <button id="start">View Selected Recipe</button>
+            <button id="randomRecipe">🎲 Random Recipe</button>
         </div>
-    </nav>
+    </div>
 
-    <main class="test">
-        <article id="text-display" aria-live="polite">
-            <h2>Loading Recipe...</h2>
-        </article>
-        <button id="restart" type="button">Restart</button>
-    </main>
+    <div id="recipeGrid" class="recipe-grid">
+        <div class="loading">Loading recipes...</div>
+    </div>
+
+</div>
+
 </body>
 </html>

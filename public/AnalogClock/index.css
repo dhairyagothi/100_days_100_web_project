@@ -1,1641 +1,749 @@
-/* =====================================================
-   CHRONOS+ — PREMIUM DASHBOARD CSS
-   Complete rewrite: rich colors, clean sizing, no dupes
-   ===================================================== */
-
-@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap");
-
-/* =====================================================
-   DESIGN TOKENS — LIGHT THEME
-   ===================================================== */
+/* ==========================
+   ROOT VARIABLES
+========================== */
 
 :root {
-  /* Background */
-  --bg-color:       #eef0f7;
-  --bg-gradient:    linear-gradient(145deg, #e8eaf6 0%, #ede9f8 40%, #e0f2fe 100%);
+  --bg: #0b0f17;
+  --bg-secondary: #111827;
+  --panel: rgba(18, 24, 38, 0.85);
 
-  /* Text */
-  --text-primary:   #0f172a;
-  --text-secondary: #64748b;
-  --text-muted:     #94a3b8;
+  --text: #f8fafc;
+  --text-muted: #94a3b8;
 
-  /* Cards */
-  --card-bg:        rgba(255, 255, 255, 0.78);
-  --card-border:    rgba(255, 255, 255, 0.70);
+  --gold: #d4af37;
+  --gold-light: #f4d06f;
 
-  /* Accents */
-  --accent:         #6366f1;          /* indigo */
-  --accent-2:       #8b5cf6;          /* violet */
-  --accent-3:       #06b6d4;          /* cyan */
-  --accent-hover:   #4f46e5;
-  --accent-glow:    rgba(99, 102, 241, 0.30);
-  --accent-grad:    linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  --border: rgba(255,255,255,0.08);
 
-  /* Semantic */
-  --green:          #10b981;
-  --red:            #ef4444;
-  --amber:          #f59e0b;
+  --success: #22c55e;
+  --danger: #ef4444;
 
-  /* Neumorphic shadows — light */
-  --shadow-out:
-    8px 8px 20px rgba(163, 177, 198, 0.40),
-    -6px -6px 16px rgba(255, 255, 255, 0.85);
-  --shadow-in:
-    inset 5px 5px 12px rgba(163, 177, 198, 0.35),
-    inset -5px -5px 12px rgba(255, 255, 255, 0.85);
-  --shadow-card:
-    0 4px 24px rgba(99, 102, 241, 0.08),
-    0 1px 4px rgba(0, 0, 0, 0.06);
-  --shadow-lift:
-    0 12px 40px rgba(99, 102, 241, 0.18),
-    0 4px 12px rgba(0, 0, 0, 0.08);
-
-  /* Clock face */
-  --clock-bg:         #ffffff;
-  --clock-ring:       linear-gradient(135deg, #ffffff, #dde3f0);
-  --clock-tick:       #cbd5e1;
-  --clock-tick-major: #334155;
-  --hour-hand:        #1e293b;
-  --minute-hand:      #475569;
-  --second-hand:      #ef4444;
-
-  /* Sizing */
-  --radius-xl:  32px;
-  --radius-lg:  24px;
-  --radius-md:  16px;
-  --radius-sm:  10px;
-
-  /* Motion */
-  --ease:  cubic-bezier(0.4, 0, 0.2, 1);
-  --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
-  --dur:   0.30s;
-  --transition: all var(--dur) var(--ease);
+  --radius: 24px;
+  --shadow:
+    0 10px 30px rgba(0,0,0,.35),
+    0 0 40px rgba(212,175,55,.08);
 }
 
-/* =====================================================
-   DARK THEME TOKENS
-   ===================================================== */
-
-body.dark-theme {
-  --bg-color:     #06091a;
-  --bg-gradient:  linear-gradient(145deg, #06091a 0%, #0d1030 50%, #080d24 100%);
-
-  --text-primary:   #f1f5f9;
-  --text-secondary: #94a3b8;
-  --text-muted:     #475569;
-
-  --card-bg:      rgba(13, 18, 45, 0.82);
-  --card-border:  rgba(99, 102, 241, 0.14);
-
-  --accent:       #818cf8;
-  --accent-2:     #a78bfa;
-  --accent-3:     #22d3ee;
-  --accent-hover: #6366f1;
-  --accent-glow:  rgba(129, 140, 248, 0.35);
-  --accent-grad:  linear-gradient(135deg, #818cf8 0%, #a78bfa 100%);
-
-  --shadow-out:
-    8px 8px 24px rgba(0, 0, 0, 0.55),
-    -6px -6px 18px rgba(30, 40, 80, 0.25);
-  --shadow-in:
-    inset 5px 5px 14px rgba(0, 0, 0, 0.55),
-    inset -5px -5px 14px rgba(20, 30, 65, 0.25);
-  --shadow-card:
-    0 4px 28px rgba(0, 0, 0, 0.45),
-    0 1px 6px rgba(0, 0, 0, 0.3);
-  --shadow-lift:
-    0 12px 48px rgba(129, 140, 248, 0.22),
-    0 4px 16px rgba(0, 0, 0, 0.4);
-
-  --clock-bg:         #0b1229;
-  --clock-ring:       linear-gradient(135deg, #1a2450, #060c1e);
-  --clock-tick:       #2d3f6b;
-  --clock-tick-major: #e2e8f0;
-  --hour-hand:        #f1f5f9;
-  --minute-hand:      #94a3b8;
-  --second-hand:      #22d3ee;
-}
-
-/* =====================================================
+/* ==========================
    RESET
-   ===================================================== */
+========================== */
 
-*, *::before, *::after {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
 }
 
-html, body {
-  width: 100%;
-  min-height: 100vh;
-  overflow-x: hidden;
+html{
+  scroll-behavior:smooth;
 }
 
-body {
-  background: var(--bg-gradient);
-  background-attachment: fixed;
-  color: var(--text-primary);
-  font-family: "Plus Jakarta Sans", sans-serif;
-  font-size: 16px;
-  transition: background var(--dur) var(--ease), color var(--dur) var(--ease);
+body{
+  font-family:'Outfit',sans-serif;
+  background:
+    radial-gradient(circle at top,#182338 0%,#0b0f17 60%);
+  color:var(--text);
+  min-height:100vh;
+  overflow-x:hidden;
 }
 
-/* =====================================================
-   AMBIENT BACKGROUND ORBS
-   ===================================================== */
+/* ==========================
+   NOISE
+========================== */
 
-body::before,
-body::after {
-  content: "";
-  position: fixed;
-  border-radius: 50%;
-  filter: blur(100px);
-  pointer-events: none;
-  z-index: -1;
+.noise-overlay{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  opacity:.04;
+  background-image:
+    radial-gradient(circle,#fff 1px,transparent 1px);
+  background-size:4px 4px;
 }
 
-body::before {
-  width: 600px;
-  height: 600px;
-  top: -200px;
-  left: -150px;
-  background: radial-gradient(circle, rgba(99,102,241,0.18) 0%, transparent 70%);
-  animation: floatOrb 20s infinite ease-in-out;
-}
-
-body::after {
-  width: 500px;
-  height: 500px;
-  bottom: -150px;
-  right: -120px;
-  background: radial-gradient(circle, rgba(6,182,212,0.15) 0%, transparent 70%);
-  animation: floatOrb 24s infinite ease-in-out reverse;
-}
-
-body.dark-theme::before {
-  background: radial-gradient(circle, rgba(129,140,248,0.22) 0%, transparent 70%);
-}
-
-body.dark-theme::after {
-  background: radial-gradient(circle, rgba(34,211,238,0.16) 0%, transparent 70%);
-}
-
-@keyframes floatOrb {
-  0%   { transform: translate(0, 0); }
-  50%  { transform: translate(40px, 30px); }
-  100% { transform: translate(0, 0); }
-}
-
-/* =====================================================
-   APP SHELL
-   ===================================================== */
-
-.app-container {
-  max-width: 1360px;
-  margin: 0 auto;
-  padding: 20px 28px 72px;
-  display: flex;
-  flex-direction: column;
-  gap: 28px;
-}
-
-/* =====================================================
+/* ==========================
    HEADER
-   ===================================================== */
+========================== */
 
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 18px 28px;
-  background: var(--card-bg);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--card-border);
-  box-shadow: var(--shadow-card);
-  position: sticky;
-  top: 16px;
-  z-index: 100;
+.site-header{
+  width:min(1400px,95%);
+  margin:auto;
+  padding:2rem 0;
+
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:2rem;
 }
 
-.brand-section h1 {
-  font-size: 1.9rem;
-  font-weight: 800;
-  letter-spacing: -0.04em;
-  background: var(--accent-grad);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+.brand{
+  display:flex;
+  align-items:center;
+  gap:1rem;
 }
 
-.brand-section p {
-  font-size: 0.78rem;
-  font-weight: 600;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.10em;
-  margin-top: 2px;
+.brand-mark{
+  width:65px;
+  height:65px;
+  border-radius:50%;
+
+  display:grid;
+  place-items:center;
+
+  color:var(--gold);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(212,175,55,.18),
+      rgba(255,255,255,.04)
+    );
+
+  border:1px solid rgba(212,175,55,.3);
 }
 
-.header-actions {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+.brand-text h1{
+  font-size:1.9rem;
+  letter-spacing:2px;
 }
 
-/* Theme toggle */
-.theme-toggle-btn {
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  box-shadow: var(--shadow-out);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--text-secondary);
-  transition: var(--transition);
-  flex-shrink: 0;
+.brand-plus{
+  color:var(--gold);
 }
 
-.theme-toggle-btn:hover {
-  transform: rotate(22deg) scale(1.12);
-  color: var(--accent);
-  box-shadow: var(--shadow-lift);
+.brand-text p{
+  color:var(--text-muted);
+  font-size:.85rem;
 }
 
-.theme-toggle-btn svg {
-  width: 18px;
-  height: 18px;
+.header-nav{
+  display:flex;
+  gap:1rem;
 }
 
-/* Focus mode button */
-.focus-btn {
-  padding: 9px 20px;
-  font-size: 0.85rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  border-radius: var(--radius-sm);
-  background: var(--accent-grad);
-  border: none;
-  color: #fff;
-  cursor: pointer;
-  transition: var(--transition);
-  box-shadow: 0 4px 14px var(--accent-glow);
+.nav-btn{
+  background:rgba(255,255,255,.05);
+  border:1px solid var(--border);
+
+  color:var(--text);
+
+  padding:.85rem 1.1rem;
+  border-radius:14px;
+
+  display:flex;
+  align-items:center;
+  gap:.6rem;
+
+  cursor:pointer;
+
+  transition:.3s;
 }
 
-.focus-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px var(--accent-glow);
-  filter: brightness(1.08);
+.nav-btn:hover{
+  transform:translateY(-3px);
+  border-color:var(--gold);
+  box-shadow:0 0 20px rgba(212,175,55,.15);
 }
 
-/* =====================================================
-   NEUMORPHIC CARD BASE
-   ===================================================== */
+/* ==========================
+   WORKSPACE
+========================== */
 
-.neumorphic-plate {
-  background: var(--card-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-radius: var(--radius-xl);
-  border: 1px solid var(--card-border);
-  box-shadow: var(--shadow-out);
-  position: relative;
-  overflow: hidden;
-  transition: transform var(--dur) var(--ease),
-              box-shadow var(--dur) var(--ease);
+.workspace{
+  width:min(1400px,95%);
+  margin:auto;
+  padding-bottom:4rem;
 }
 
-.neumorphic-plate:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-lift);
+/* ==========================
+   GRID
+========================== */
+
+.primary-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:2rem;
+  margin-bottom:2rem;
 }
 
-/* Colored top-edge accent stripe */
-.neumorphic-plate::before {
-  content: "";
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 3px;
-  background: var(--accent-grad);
-  opacity: 0.7;
-  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+.panel{
+  background:var(--panel);
+  backdrop-filter:blur(25px);
+
+  border:1px solid var(--border);
+
+  border-radius:var(--radius);
+
+  overflow:hidden;
+
+  box-shadow:var(--shadow);
 }
 
-/* =====================================================
-   MAIN DASHBOARD GRID
-   ===================================================== */
+/* ==========================
+   LOCAL CLOCK
+========================== */
 
-.main-dashboard {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
-  align-items: start;
+.panel-banner{
+  height:180px;
+  background-size:cover;
+  background-position:center;
+  position:relative;
 }
 
-/* =====================================================
-   MAIN LOCAL CLOCK CARD
-   ===================================================== */
-
-.main-clock-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0;
-  padding-bottom: 28px;
+.banner-overlay{
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(
+      to top,
+      rgba(0,0,0,.8),
+      transparent
+    );
 }
 
-.main-clock-section .clock-frame {
-  width: 300px;
-  height: 300px;
-  margin-top: 20px;
+.banner-label{
+  position:absolute;
+  left:20px;
+  bottom:20px;
 }
 
-/* =====================================================
-   CLOCK BANNER (monument image strip)
-   ===================================================== */
+.location-tag{
+  background:rgba(255,255,255,.1);
+  backdrop-filter:blur(10px);
 
-.clock-banner {
-  width: 100%;
-  height: 160px;
-  background-size: cover;
-  background-position: center;
-  position: relative;
-  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
-  overflow: hidden;
+  padding:.45rem .9rem;
+  border-radius:999px;
+
+  font-size:.8rem;
 }
 
-.clock-banner::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0.30) 0%,
-    rgba(0, 0, 0, 0.0) 60%,
-    var(--bg-color) 100%
-  );
+.panel-body{
+  padding:2rem;
 }
 
-/* When no image is supplied, show a colored gradient */
-.clock-banner:not([style*="url"]) {
-  background: var(--accent-grad);
+.clock-identity{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
 }
 
-/* =====================================================
-   CLOCK HEADER TEXT
-   ===================================================== */
-
-.clock-header {
-  padding: 16px 20px 4px;
-  text-align: center;
-  position: relative;
-  z-index: 2;
+.clock-city{
+  font-size:1.5rem;
 }
 
-.clock-label {
-  font-size: 1.2rem;
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  color: var(--text-primary);
-  margin: 0;
+.live-badge{
+  color:var(--success);
+  font-size:.85rem;
 }
 
-.clock-sublabel {
-  font-size: 0.72rem;
-  font-weight: 700;
-  color: var(--accent);
-  margin: 3px 0 0;
-  text-transform: uppercase;
-  letter-spacing: 0.10em;
+.clock-stage{
+  display:flex;
+  justify-content:center;
+  margin:2rem 0;
 }
 
-/* =====================================================
-   CLOCK FRAME (outer bezel)
-   ===================================================== */
+/* ==========================
+   ANALOG CLOCK
+========================== */
 
-.clock-frame {
-  width: 260px;
-  height: 260px;
-  border-radius: 50%;
-  background: var(--clock-ring);
-  padding: 14px;
-  box-shadow: var(--shadow-out),
-              0 0 0 1px var(--card-border);
-  margin: 16px auto;
-  position: relative;
-  flex-shrink: 0;
-  transition: box-shadow var(--dur) var(--ease);
+.clock-bezel{
+  width:280px;
+  height:280px;
+  border-radius:50%;
+
+  background:
+    radial-gradient(circle,#1c2435,#0f172a);
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  border:8px solid rgba(212,175,55,.15);
 }
 
-.clock-frame:hover {
-  box-shadow: var(--shadow-lift),
-              0 0 0 2px var(--accent);
+.clock-face{
+  width:240px;
+  height:240px;
+  border-radius:50%;
+  position:relative;
+
+  background:
+    radial-gradient(circle,#111827,#020617);
 }
 
-/* Clock face inner disc */
-.clock-face {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  background: var(--clock-bg);
-  box-shadow: var(--shadow-in);
-  position: relative;
-  overflow: hidden;
+.center-jewel{
+  position:absolute;
+  width:14px;
+  height:14px;
+  border-radius:50%;
+
+  background:var(--gold);
+
+  top:50%;
+  left:50%;
+
+  transform:translate(-50%,-50%);
 }
 
-/* Glass sheen */
-.clock-glass {
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  background: linear-gradient(
-    135deg,
-    rgba(255,255,255,0.18) 0%,
-    transparent 55%
-  );
-  z-index: 20;
-  pointer-events: none;
+.hand{
+  position:absolute;
+  left:50%;
+  bottom:50%;
+
+  transform-origin:bottom center;
+  border-radius:999px;
 }
 
-/* =====================================================
-   TICK MARKS
-   ===================================================== */
-
-.tick {
-  position: absolute;
-  width: 2px;
-  height: 100%;
-  left: calc(50% - 1px);
-  top: 0;
+.hour-hand{
+  width:6px;
+  height:60px;
+  background:white;
 }
 
-.tick::before {
-  content: "";
-  position: absolute;
-  top: 8px;
-  width: 2px;
-  height: 7px;
-  border-radius: 2px;
-  background: var(--clock-tick);
+.minute-hand{
+  width:4px;
+  height:85px;
+  background:#ddd;
 }
 
-.tick.major::before {
-  height: 14px;
-  width: 3px;
-  left: -0.5px;
-  background: var(--clock-tick-major);
+.second-hand{
+  width:2px;
+  height:95px;
+  background:var(--gold);
 }
 
-/* =====================================================
-   CLOCK HANDS
-   ===================================================== */
+/* ==========================
+   DIGITAL
+========================== */
 
-.hand {
-  position: absolute;
-  transform-origin: bottom center;
-  z-index: 12;
-  border-radius: 20px;
+.clock-readouts{
+  text-align:center;
 }
 
-.hand.hour {
-  width: 8px;
-  height: 26%;
-  left: calc(50% - 4px);
-  bottom: 50%;
-  background: var(--hour-hand);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+.digital-time{
+  font-family:'DM Mono',monospace;
+  font-size:2.3rem;
+  color:var(--gold);
 }
 
-.hand.minute {
-  width: 5px;
-  height: 37%;
-  left: calc(50% - 2.5px);
-  bottom: 50%;
-  background: var(--minute-hand);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.20);
+.digital-date{
+  margin-top:.5rem;
+  color:var(--text-muted);
 }
 
-.hand.second {
-  width: 2px;
-  height: 44%;
-  left: calc(50% - 1px);
-  bottom: 50%;
-  background: var(--second-hand);
-  border-radius: 2px;
-  z-index: 13;
-  box-shadow: 0 0 6px var(--second-hand);
+/* ==========================
+   TIMER PANEL
+========================== */
+
+.timer-panel{
+  padding:2rem;
 }
 
-/* Second hand tail counterweight */
-.hand.second::before {
-  content: "";
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  background: var(--second-hand);
-  border-radius: 50%;
-  left: calc(50% - 4px);
-  bottom: -4px;
-  box-shadow: 0 0 8px var(--second-hand);
+.panel-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
 }
 
-/* Center rivet pin */
-.center-pin {
-  width: 14px;
-  height: 14px;
-  background: radial-gradient(circle at 35% 35%, #ffffff, var(--accent));
-  border-radius: 50%;
-  position: absolute;
-  top: calc(50% - 7px);
-  left: calc(50% - 7px);
-  z-index: 16;
-  box-shadow: 0 0 6px var(--accent-glow);
+.panel-header h2{
+  margin-bottom:.35rem;
 }
 
-/* =====================================================
-   DIGITAL READOUT
-   ===================================================== */
-
-.digital-readout {
-  font-family: "JetBrains Mono", monospace;
-  font-size: 1.55rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  color: var(--accent);
-  background: var(--card-bg);
-  border-radius: var(--radius-md);
-  padding: 10px 24px;
-  margin-top: 12px;
-  box-shadow: var(--shadow-in);
-  text-align: center;
-  position: relative;
+.panel-header p{
+  color:var(--text-muted);
+  font-size:.9rem;
 }
 
-/* Glowing underline accent */
-.digital-readout::after {
-  content: "";
-  position: absolute;
-  bottom: 0; left: 20%; right: 20%;
-  height: 2px;
-  background: var(--accent-grad);
-  border-radius: 2px;
-  opacity: 0.6;
+.timer-inputs{
+  margin-top:2rem;
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:1rem;
 }
 
-.clock-date {
-  margin-top: 10px;
-  font-size: 0.82rem;
-  font-weight: 700;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  text-align: center;
+.time-input{
+  width:90px;
+  height:80px;
+
+  background:#111827;
+
+  border:1px solid var(--border);
+  border-radius:18px;
+
+  text-align:center;
+
+  color:white;
+  font-size:2rem;
+  font-family:'DM Mono',monospace;
 }
 
-/* =====================================================
-   TIMER SECTION
-   ===================================================== */
-
-.timer-section {
-  padding: 28px;
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
+.time-field{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:.5rem;
 }
 
-.timer-section h2 {
-  font-size: 1.25rem;
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  color: var(--text-primary);
-  margin: 0;
+.time-field label{
+  color:var(--text-muted);
+  font-size:.8rem;
 }
 
-.timer-section .subtitle {
-  font-size: 0.78rem;
-  font-weight: 500;
-  color: var(--text-muted);
-  margin-top: -10px;
+.time-separator{
+  font-size:2rem;
+  color:var(--gold);
 }
 
-/* Input row */
-.timer-inputs-wrapper {
-  display: flex;
-  gap: 10px;
+/* ==========================
+   COUNTDOWN
+========================== */
+
+.countdown-display{
+  display:flex;
+  justify-content:center;
+  margin:2rem 0;
 }
 
-.input-group {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  flex: 1;
+.countdown-track{
+  width:250px;
+  height:250px;
+  position:relative;
 }
 
-.input-group label {
-  font-size: 0.70rem;
-  font-weight: 800;
-  color: var(--accent);
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
+.countdown-arc{
+  width:100%;
+  height:100%;
+  transform:rotate(-90deg);
 }
 
-.timer-input {
-  width: 100%;
-  padding: 12px 8px;
-  font-family: "JetBrains Mono", monospace;
-  font-size: 1.15rem;
-  font-weight: 700;
-  text-align: center;
-  background: var(--card-bg);
-  border: 1.5px solid transparent;
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-in);
-  color: var(--text-primary);
-  outline: none;
-  transition: border-color var(--dur) var(--ease),
-              box-shadow var(--dur) var(--ease);
+.arc-bg{
+  stroke:rgba(255,255,255,.08);
 }
 
-.timer-input:focus {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent-glow), var(--shadow-in);
+.arc-fill{
+  stroke:var(--gold);
 }
 
-/* Countdown display */
-.timer-display-box {
-  padding: 20px;
-  border-radius: var(--radius-lg);
-  background: linear-gradient(135deg,
-    rgba(99,102,241,0.08) 0%,
-    rgba(139,92,246,0.08) 100%
-  );
-  border: 1.5px solid rgba(99,102,241,0.18);
-  box-shadow: var(--shadow-in);
-  text-align: center;
+.countdown-digits{
+  position:absolute;
+  inset:0;
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  font-size:2rem;
+  font-family:'DM Mono',monospace;
 }
 
-body.dark-theme .timer-display-box {
-  background: linear-gradient(135deg,
-    rgba(129,140,248,0.10) 0%,
-    rgba(167,139,250,0.10) 100%
-  );
-  border-color: rgba(129,140,248,0.22);
-}
-
-#countdownDisplay {
-  font-family: "JetBrains Mono", monospace;
-  font-size: 2.8rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  background: var(--accent-grad);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* Button row */
-.timer-controls {
-  display: flex;
-  gap: 10px;
-  width: 100%;
-}
-
-.timer-controls .btn {
-  flex: 1;
-}
-
-/* Timer-up alert */
-.timer-up-container {
-  display: none;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 16px;
-  background: rgba(239, 68, 68, 0.08);
-  border: 1.5px solid rgba(239, 68, 68, 0.28);
-  border-radius: var(--radius-md);
-  color: var(--red);
-  font-weight: 700;
-  font-size: 0.88rem;
-  animation: pulseAlert 1s infinite ease-in-out alternate;
-}
-
-@keyframes pulseAlert {
-  from { opacity: 0.65; }
-  to   { opacity: 1.00; }
-}
-
-/* =====================================================
+/* ==========================
    BUTTONS
-   ===================================================== */
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
-  padding: 11px 18px;
-  font-family: "Plus Jakarta Sans", sans-serif;
-  font-size: 0.875rem;
-  font-weight: 700;
-  border-radius: var(--radius-md) !important;
-  border: none;
-  cursor: pointer;
-  transition: transform var(--dur) var(--ease),
-              box-shadow var(--dur) var(--ease),
-              filter var(--dur) var(--ease);
-}
-
-.btn:hover {
-  transform: translateY(-2px);
-}
-
-.btn:active {
-  transform: translateY(0) scale(0.97);
-}
-
-.btn-primary {
-  background: var(--accent-grad);
-  color: #fff;
-  box-shadow: 0 4px 14px var(--accent-glow);
-}
-
-.btn-primary:hover {
-  box-shadow: 0 6px 20px var(--accent-glow);
-  filter: brightness(1.10);
-  color: #fff;
-}
-
-.btn-secondary {
-  background: var(--card-bg);
-  color: var(--text-primary);
-  border: 1px solid var(--card-border);
-  box-shadow: var(--shadow-out);
-}
-
-.btn-secondary:hover {
-  box-shadow: var(--shadow-lift);
-  color: var(--accent);
-}
-
-/* =====================================================
-   WORLD CLOCKS SECTION
-   ===================================================== */
-
-.world-clocks-section {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-}
-
-.world-clocks-section > h2 {
-  font-size: 1.45rem;
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  background: var(--accent-grad);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* World clock grid */
-.world-clocks-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
-  gap: 20px;
-}
-
-/* World clock card — clean vertical layout, name above clock */
-.world-clock-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0;
-  padding: 22px 20px 20px;
-  min-height: unset;
-  animation: cardInsert 0.4s var(--spring);
-}
-
-@keyframes cardInsert {
-  from { opacity: 0; transform: translateY(16px) scale(0.97); }
-  to   { opacity: 1; transform: translateY(0) scale(1); }
-}
-
-/* Name + sublabel sit fully above the clock */
-.world-clock-card .clock-header {
-  text-align: center;
-  padding: 0 0 12px;
-  width: 100%;
-}
-
-.world-clock-card .clock-label {
-  font-size: 1.05rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* Clock face is centred, sized to fill the card nicely */
-.world-clock-card .clock-frame {
-  width: 130px;
-  height: 130px;
-  padding: 10px;
-  flex-shrink: 0;
-  margin: 0 auto;
-}
-
-/* Digital time sits below the clock */
-.world-clock-card .digital-readout {
-  font-size: 1.05rem;
-  padding: 7px 18px;
-  margin-top: 12px;
-  border-radius: var(--radius-sm);
-  text-align: center;
-  width: 100%;
-}
-
-.world-clock-card .clock-date {
-  font-size: 0.72rem;
-  margin-top: 6px;
-  text-align: center;
-}
-
-/* Hide banners on world-clock cards */
-.world-clock-card .clock-banner {
-  display: none;
-}
+========================== */
 
-/* Remove button */
-.remove-clock-btn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  font-size: 14px;
-  line-height: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  cursor: pointer;
-  color: var(--text-muted);
-  z-index: 10;
-  box-shadow: var(--shadow-out);
-  transition: all 0.28s var(--spring);
+.timer-actions{
+  display:flex;
+  gap:1rem;
+  justify-content:center;
+  flex-wrap:wrap;
 }
 
-.remove-clock-btn:hover {
-  background: var(--red);
-  color: #fff;
-  border-color: var(--red);
-  box-shadow: 0 4px 12px rgba(239,68,68,0.35);
-  transform: scale(1.12) rotate(90deg);
-}
-
-.remove-clock-btn:active {
-  transform: scale(0.92);
-}
-
-/* Card pin flash */
-@keyframes cardHighlightPulse {
-  0%   { box-shadow: var(--shadow-out); transform: scale(1); }
-  35%  { box-shadow: 0 0 36px var(--accent-glow); transform: scale(1.04); }
-  100% { box-shadow: var(--shadow-out); transform: scale(1); }
-}
-
-.card-highlight-active {
-  animation: cardHighlightPulse 1.8s var(--spring) !important;
-  z-index: 20 !important;
-}
+.action-btn{
+  border:none;
+  cursor:pointer;
 
-/* =====================================================
-   TIMEZONE MAP SECTION
-   ===================================================== */
+  display:flex;
+  align-items:center;
+  gap:.6rem;
 
-.timezone-map-section {
-  width: 100%;
-  padding: 28px 32px 32px;
-}
+  padding:.95rem 1.3rem;
+  border-radius:14px;
 
-.map-header {
-  margin-bottom: 20px;
-}
+  font-weight:600;
 
-.map-header h2 {
-  font-size: 1.45rem;
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  background: var(--accent-grad);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin-bottom: 4px;
+  transition:.3s;
 }
 
-.map-header .subtitle {
-  font-size: 0.80rem;
-  color: var(--text-muted);
-  font-weight: 500;
+.action-btn:hover{
+  transform:translateY(-2px);
 }
 
-.map-container {
-  position: relative;
-  width: 100%;
-  background: linear-gradient(135deg,
-    rgba(99,102,241,0.04) 0%,
-    rgba(6,182,212,0.04) 100%
-  );
-  border-radius: var(--radius-lg);
-  border: 1.5px solid rgba(99,102,241,0.12);
-  padding: 14px;
-  overflow: visible;
-  box-shadow: var(--shadow-in);
+.primary-action{
+  background:var(--gold);
+  color:black;
 }
 
-body.dark-theme .map-container {
-  background: linear-gradient(135deg,
-    rgba(129,140,248,0.06) 0%,
-    rgba(34,211,238,0.05) 100%
-  );
-  border-color: rgba(129,140,248,0.16);
+.secondary-action{
+  background:#1e293b;
+  color:white;
 }
 
-.map-scroll-container {
-  width: 100%;
-  overflow-x: auto;
-  scrollbar-width: thin;
-  scrollbar-color: var(--accent) transparent;
+.ghost-action{
+  background:transparent;
+  border:1px solid var(--border);
+  color:white;
 }
 
-.map-scroll-container::-webkit-scrollbar { height: 5px; }
-.map-scroll-container::-webkit-scrollbar-thumb {
-  background: var(--accent);
-  border-radius: 10px;
-}
+/* ==========================
+   ALERT
+========================== */
 
-#timezone-map-wrapper {
-  position: relative;
-  width: 100%;
-  min-width: 784px;
-  margin: 0 auto;
-}
+.timer-alert{
+  display:none;
 
-#world-map {
-  width: 100%;
-  height: auto;
-  display: block;
-  border-radius: 12px;
-  background: radial-gradient(ellipse at center, #f0f4ff 0%, #e2e8f0 100%);
-  transition: background 0.4s var(--ease);
-}
+  margin-top:1.5rem;
+  padding:1rem;
 
-body.dark-theme #world-map {
-  background: radial-gradient(ellipse at center, #0c1230 0%, #030a1a 100%);
-}
+  border-radius:14px;
 
-#world-map path {
-  fill: #e8edf5;
-  stroke: #c7d2e0;
-  stroke-width: 0.5px;
-  transition: fill 0.3s var(--ease), stroke 0.3s var(--ease);
-}
+  background:rgba(239,68,68,.12);
+  border:1px solid rgba(239,68,68,.3);
 
-body.dark-theme #world-map path {
-  fill: #111c38;
-  stroke: #1e2f52;
-}
+  color:#ff9f9f;
 
-#world-map path:hover {
-  fill: rgba(99, 102, 241, 0.16) !important;
-  stroke: var(--accent) !important;
+  align-items:center;
+  gap:.8rem;
 }
 
-.map-grid-line {
-  stroke: rgba(99, 102, 241, 0.09);
-  stroke-width: 0.8px;
-  stroke-dasharray: 4 4;
-}
+/* ==========================
+   MAP PANEL
+========================== */
 
-body.dark-theme .map-grid-line {
-  stroke: rgba(129, 140, 248, 0.18);
+.map-panel{
+  margin-bottom:2rem;
+  padding:2rem;
 }
 
-.timezone-sector {
-  fill: transparent;
-  cursor: pointer;
-  transition: fill 0.25s var(--ease);
+.map-panel-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:1.5rem;
 }
 
-.timezone-sector:hover        { fill: rgba(99,102,241,0.07); }
-.timezone-sector.active-sector { fill: rgba(99,102,241,0.10); }
+.map-container{
+  height:500px;
 
-body.dark-theme .timezone-sector:hover         { fill: rgba(129,140,248,0.12); }
-body.dark-theme .timezone-sector.active-sector { fill: rgba(129,140,248,0.18); }
+  border-radius:20px;
 
-/* City markers */
-.city-marker { cursor: pointer; }
+  background:#09111f;
 
-.city-marker .pulse-ring {
-  fill: var(--accent);
-  opacity: 0;
-  animation: pulseMarker 2.2s infinite ease-out;
+  border:1px solid var(--border);
 }
 
-.city-marker .center-dot {
-  fill: var(--second-hand);
-  stroke: #fff;
-  stroke-width: 1.5px;
-  transition: fill 0.25s var(--ease);
+.map-scroll{
+  width:100%;
+  height:100%;
 }
 
-body.dark-theme .city-marker .center-dot { stroke: #06091a; }
-.city-marker:hover .center-dot { fill: var(--accent); }
-
-@keyframes pulseMarker {
-  0%   { r: 3px; opacity: 0.85; }
-  100% { r: 15px; opacity: 0; }
-}
+/* ==========================
+   WORLD CLOCKS
+========================== */
 
-/* Pinned markers */
-.city-marker.pinned-marker .center-dot { fill: var(--green) !important; }
-.city-marker.pinned-marker .pulse-ring { fill: var(--green) !important; }
-
-body.dark-theme .city-marker.pinned-marker .center-dot { fill: var(--accent-3) !important; }
-body.dark-theme .city-marker.pinned-marker .pulse-ring { fill: var(--accent-3) !important; }
-
-/* =====================================================
-   MAP TOOLTIP
-   ===================================================== */
-
-.map-tooltip {
-  position: absolute;
-  z-index: 100;
-  width: 248px;
-  padding: 16px;
-  border-radius: var(--radius-lg);
-  background: rgba(255,255,255,0.88);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255,255,255,0.65);
-  box-shadow: 0 12px 40px rgba(17,24,39,0.14), 0 2px 6px rgba(17,24,39,0.06);
-  color: var(--text-primary);
-  pointer-events: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  animation: tooltipIn 0.25s var(--spring);
+.section-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:1.5rem;
 }
 
-body.dark-theme .map-tooltip {
-  background: rgba(10,15,40,0.88);
-  border-color: rgba(129,140,248,0.18);
-  box-shadow: 0 16px 48px rgba(0,0,0,0.45);
+.clock-search-wrap{
+  position:relative;
 }
 
-@keyframes tooltipIn {
-  from { opacity: 0; transform: translateY(8px) scale(0.96); }
-  to   { opacity: 1; transform: translateY(0) scale(1); }
-}
+.clock-search{
+  width:320px;
+  padding:1rem 1rem 1rem 3rem;
 
-.tooltip-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 8px;
-}
+  background:#111827;
+  border:1px solid var(--border);
 
-.tooltip-header h4 {
-  font-size: 1rem;
-  font-weight: 800;
-  letter-spacing: -0.02em;
+  border-radius:14px;
+  color:white;
 }
 
-.tooltip-offset {
-  font-size: 0.70rem;
-  font-weight: 800;
-  background: var(--accent-grad);
-  color: #fff;
-  padding: 2px 9px;
-  border-radius: 20px;
-  white-space: nowrap;
-  flex-shrink: 0;
+.search-icon{
+  position:absolute;
+  left:14px;
+  top:50%;
+  transform:translateY(-50%);
 }
 
-.tooltip-tz-id {
-  font-size: 0.70rem;
-  color: var(--text-muted);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-}
+.clocks-grid{
+  display:grid;
+  grid-template-columns:
+    repeat(auto-fill,minmax(280px,1fr));
 
-.tooltip-time-row {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  padding-bottom: 10px;
-  margin-bottom: 2px;
-  border-bottom: 1px solid rgba(0,0,0,0.07);
+  gap:1.5rem;
 }
 
-body.dark-theme .tooltip-time-row {
-  border-bottom-color: rgba(255,255,255,0.07);
-}
+/* ==========================
+   EXIT FOCUS
+========================== */
 
-.tooltip-time {
-  font-family: "JetBrains Mono", monospace;
-  font-size: 1.45rem;
-  font-weight: 700;
-  background: var(--accent-grad);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
+.exit-focus-btn{
+  position:fixed;
 
-.tooltip-date {
-  font-size: 0.78rem;
-  color: var(--text-muted);
-  font-weight: 600;
-}
+  bottom:25px;
+  right:25px;
 
-.tooltip-btn {
-  height: 36px !important;
-  font-size: 0.82rem !important;
-  border-radius: var(--radius-sm) !important;
-}
+  border:none;
 
-.tooltip-btn.tooltip-remove-btn {
-  background: rgba(239,68,68,0.09) !important;
-  border: 1.5px solid rgba(239,68,68,0.22) !important;
-  color: var(--red) !important;
-  box-shadow: none !important;
-}
+  display:flex;
+  align-items:center;
+  gap:.7rem;
 
-.tooltip-btn.tooltip-remove-btn:hover {
-  background: var(--red) !important;
-  color: #fff !important;
-  box-shadow: 0 4px 12px rgba(239,68,68,0.30) !important;
-}
+  padding:1rem 1.3rem;
 
-/* =====================================================
-   LAP / ALARM LIST ITEMS
-   ===================================================== */
+  border-radius:14px;
 
-.lap-container {
-  max-height: 130px;
-  overflow: auto;
-}
+  background:var(--danger);
+  color:white;
 
-.list-group-item {
-  background: var(--card-bg) !important;
-  color: var(--text-primary) !important;
-  border: none !important;
-  margin-bottom: 8px;
-  border-radius: var(--radius-md) !important;
-  box-shadow: var(--shadow-in);
-  padding: 10px 14px;
-  font-size: 0.875rem;
-}
+  font-weight:600;
 
-/* =====================================================
-   FORM INPUTS (Bootstrap overrides)
-   ===================================================== */
-
-.form-control,
-.form-select {
-  background: var(--card-bg) !important;
-  border: 1.5px solid transparent !important;
-  color: var(--text-primary) !important;
-  border-radius: var(--radius-md) !important;
-  min-height: 48px;
-  box-shadow: var(--shadow-in) !important;
-  padding-left: 14px;
-  transition: border-color var(--dur) var(--ease) !important;
-}
+  cursor:pointer;
 
-.form-control:focus,
-.form-select:focus {
-  border-color: var(--accent) !important;
-  box-shadow: 0 0 0 3px var(--accent-glow), var(--shadow-in) !important;
-}
+  z-index:9999;
 
-/* =====================================================
-   SCROLLBAR
-   ===================================================== */
-
-::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb {
-  background: linear-gradient(var(--accent), var(--accent-2));
-  border-radius: 20px;
+  box-shadow:0 10px 25px rgba(239,68,68,.3);
 }
 
-/* =====================================================
-   FOCUS MODE
-   ===================================================== */
-
-body.focus-mode .world-clocks-section,
-body.focus-mode .alarm-section,
-body.focus-mode .stopwatch-section,
-body.focus-mode .timezone-map-section {
-  display: none;
-}
+/* ==========================
+   RESPONSIVE
+========================== */
 
-body.focus-mode .main-dashboard {
-  grid-template-columns: 1fr;
-  max-width: 520px;
-  margin: 0 auto;
-}
+@media (max-width:1000px){
 
-/* =====================================================
-   MODAL
-   ===================================================== */
-
-.modal-content {
-  border-radius: var(--radius-xl) !important;
-  border: 1px solid var(--card-border) !important;
-  background: var(--card-bg) !important;
-  backdrop-filter: blur(24px) !important;
-  box-shadow: 0 24px 80px rgba(0,0,0,0.25) !important;
-}
+  .primary-grid{
+    grid-template-columns:1fr;
+  }
 
-.large-clock {
-  width: 440px !important;
-  height: 440px !important;
-}
+  .site-header{
+    flex-direction:column;
+  }
 
-/* =====================================================
-   STOPWATCH & STOPWATCH DISPLAY
-   ===================================================== */
-
-.stopwatch-display h1,
-#stopwatchDisplay {
-  font-family: "JetBrains Mono", monospace;
-  font-size: 2rem;
-  font-weight: 700;
-  background: var(--accent-grad);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
+  .section-header{
+    flex-direction:column;
+    gap:1rem;
+  }
 
-/* =====================================================
-   RESPONSIVE BREAKPOINTS
-   ===================================================== */
-
-@media (max-width: 1100px) {
-  .main-clock-section .clock-frame {
-    width: 260px;
-    height: 260px;
+  .clock-search{
+    width:100%;
   }
 }
 
-@media (max-width: 900px) {
-  .main-dashboard {
-    grid-template-columns: 1fr;
+@media (max-width:600px){
+
+  .clock-bezel{
+    width:220px;
+    height:220px;
   }
-  .app-container {
-    padding: 16px 16px 56px;
-    gap: 20px;
+
+  .clock-face{
+    width:190px;
+    height:190px;
   }
-  .main-clock-section .clock-frame {
-    width: 240px;
-    height: 240px;
+
+  .digital-time{
+    font-size:1.7rem;
   }
-  .large-clock {
-    width: 340px !important;
-    height: 340px !important;
-  }
-}
 
-
-@media (max-width: 640px) {
-  header {
-    padding: 14px 18px;
-  }
-  .brand-section h1 { font-size: 1.5rem; }
-  .main-clock-section .clock-frame {
-    width: 210px;
-    height: 210px;
-  }
-  .world-clock-card .clock-frame {
-    width: 110px;
-    height: 110px;
-  }
-  #countdownDisplay { font-size: 2.1rem; }
-  .world-clocks-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-.tooltip-time-row {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    margin-top: 4px;
-    margin-bottom: 8px;
-    border-bottom: 1px solid rgba(0,0,0,0.06);
-    padding-bottom: 8px;
-}
-
-body.dark-theme .tooltip-time-row {
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-}
-
-.tooltip-time {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: var(--accent-color);
-}
-
-.tooltip-date {
-    font-size: 0.8rem;
-    color: var(--text-secondary);
-    font-weight: 600;
-}
-
-.tooltip-btn {
-    height: 38px !important;
-    font-size: 0.85rem !important;
-    border-radius: 10px !important;
-}
-
-/* Close/Unpin button for World Clock Cards */
-.world-clock-card {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 24px;
-    padding: 20px 24px;
-}
-
-.world-clock-card .clock-header {
-    text-align: left;
-    margin-bottom: 0;
-    margin-top: 0;
-}
-
-.world-clock-card .clock-frame {
-    flex-shrink: 0;
-}
-
-.world-clock-card .digital-readout,
-.world-clock-card .clock-date {
-    text-align: left;
-    align-self: flex-start;
-}
-
-.remove-clock-btn {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: var(--card-bg);
-    border: 1px solid var(--card-border);
-    cursor: pointer;
-    color: var(--text-secondary);
-    z-index: 10;
-    box-shadow: var(--shadow-btn);
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.remove-clock-btn:hover {
-    background-color: #ef4444;
-    color: #ffffff;
-    border-color: #ef4444;
-    box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3);
-    transform: scale(1.1) rotate(90deg);
-}
-
-.remove-clock-btn:active {
-    transform: scale(0.9);
-}
-
-/* Animations for card insertion and deletion */
-@keyframes cardInsert {
-    0% {
-        opacity: 0;
-        transform: translateY(20px) scale(0.95);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-}
-
-.world-clock-card {
-    animation: cardInsert 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-/* Pinned City Map Pinpoint Glowing state */
-.city-marker.pinned-marker .center-dot {
-    fill: #10b981 !important; /* Emerald green in light theme */
-}
-
-body.dark-theme .city-marker.pinned-marker .center-dot {
-    fill: #06b6d4 !important; /* Electric cyan in dark theme */
-}
-
-.city-marker.pinned-marker .pulse-ring {
-    fill: #10b981 !important;
-}
-
-body.dark-theme .city-marker.pinned-marker .pulse-ring {
-    fill: #06b6d4 !important;
-}
-
-/* Beautiful dynamic card pinning elastic highlight pulse */
-@keyframes cardHighlightPulse {
-    0% {
-        box-shadow: var(--shadow-outer);
-        border-color: var(--card-border);
-        transform: scale(1);
-    }
-    30% {
-        box-shadow: 0 0 35px var(--accent-glow);
-        border-color: var(--accent-color);
-        transform: scale(1.06);
-    }
-    100% {
-        box-shadow: var(--shadow-outer);
-        border-color: var(--card-border);
-        transform: scale(1);
-    }
-}
-
-.card-highlight-active {
-    animation: cardHighlightPulse 2s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
-    z-index: 20 !important;
-}
-
-/* Toggleable Tooltip Remove state styling */
-.tooltip-btn.tooltip-remove-btn {
-    background-color: rgba(239, 68, 68, 0.1) !important;
-    border: 1px solid rgba(239, 68, 68, 0.2) !important;
-    color: #ef4444 !important;
-    box-shadow: none !important;
-}
-
-.tooltip-btn.tooltip-remove-btn:hover {
-    background-color: #ef4444 !important;
-    color: #ffffff !important;
-    box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3) !important;
-    transform: translateY(-2px);
-}
-
-/* ============================================================
-  CHRONOS+ THEME TOGGLE BUTTON MATCHING FOCUS-MODE STYLE
-   ============================================================ */
-
-/* Match the Focus Mode button styling exactly */
-.theme-toggle-btn {
-  border-radius: 12px !important;
-  padding: 10px 20px !important;
-  font-weight: 600 !important;
-  font-size: 14px !important;
-  transition: var(--transition) !important;
-  background: var(--accent-color) !important;
-  border: none !important;
-  color: white !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 8px !important;
-  min-width: 140px !important;
-  height: 44px !important;
-  cursor: pointer;
-  position: relative;
-}
-
-.theme-toggle-btn:hover {
-  background: var(--accent-hover) !important;
-  transform: translateY(-2px) !important;
-  box-shadow: 0 8px 16px rgba(99, 102, 241, 0.3) !important;
-}
-
-.theme-toggle-btn:active {
-  transform: translateY(0) !important;
-}
-
-.theme-toggle-btn:focus-visible {
-  outline: 2px solid var(--accent-color);
-  outline-offset: 2px;
-}
-
-/* Theme Toggle Content Container */
-.theme-toggle-content {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  width: 100%;
-  height: 100%;
-}
-
-/* Theme Icon SVG */
-.theme-icon {
-  width: 18px;
-  height: 18px;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  animation: themeIconFadeIn 0.3s ease-out forwards;
-  flex-shrink: 0;
-}
-
-@keyframes themeIconFadeIn {
-  from {
-    opacity: 0;
-    transform: scale(0.7) rotate(-20deg);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) rotate(0deg);
+  .countdown-track{
+    width:200px;
+    height:200px;
   }
 }
 
-/* Auto Mode Label */
-.mode-label {
-  display: inline-block;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  white-space: nowrap;
-  animation: autoLabelPulse 2s ease-in-out infinite;
+/* ==========================
+   DEFAULT (DARK)
+========================== */
+
+:root{
+  --bg:#0b0f17;
+  --bg-secondary:#111827;
+  --panel:#141c2f;
+
+  --text:#ffffff;
+  --text-muted:#94a3b8;
+
+  --accent:#d4af37;
+  --border:rgba(255,255,255,.08);
+
+  --shadow:
+    0 10px 30px rgba(0,0,0,.35);
 }
 
-@keyframes autoLabelPulse {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.7;
-  }
+/* Explicit dark mode */
+body.dark-theme{
+  --bg:#0b0f17;
+  --bg-secondary:#111827;
+  --panel:#141c2f;
+
+  --text:#ffffff;
+  --text-muted:#94a3b8;
+
+  --accent:#d4af37;
+  --border:rgba(255,255,255,.08);
 }
 
-/* Dark Theme Adjustments */
-body.dark-theme .theme-toggle-btn {
-  background: var(--accent-color) !important;
+/* ==========================
+   LIGHT MODE
+========================== */
+
+body.light-theme{
+  --bg:#f5f7fb;
+  --bg-secondary:#ffffff;
+  --panel:#ffffff;
+
+  --text:#0f172a;
+  --text-muted:#64748b;
+
+  --accent:#b8860b;
+  --border:rgba(15,23,42,.08);
+
+  --shadow:
+    0 10px 25px rgba(15,23,42,.08);
 }
 
-body.dark-theme .theme-toggle-btn:hover {
-  background: var(--accent-hover) !important;
+body{
+  background:var(--bg);
+  color:var(--text);
 }
 
-/* Header Actions Container */
-.header-actions {
-  display: flex;
-  align-items: center;
-  gap: 12px !important;
+.panel{
+  background:var(--panel);
+  border:1px solid var(--border);
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .theme-toggle-btn {
-    padding: 8px 16px !important;
-    font-size: 12px !important;
-    min-width: 120px !important;
-    height: 40px !important;
-  }
-
-  .theme-icon {
-    width: 16px;
-    height: 16px;
-  }
-
-  .mode-label {
-    font-size: 11px;
-  }
+.digital-time{
+  color:var(--accent);
 }
 
-@media (max-width: 480px) {
-  .theme-toggle-btn {
-    padding: 8px 12px !important;
-    font-size: 11px !important;
-    min-width: 100px !important;
-    height: 38px !important;
-  }
-
-  .theme-icon {
-    width: 14px;
-    height: 14px;
-  }
-
-  .mode-label {
-    font-size: 10px;
-  }
+.brand-plus{
+  color:var(--accent);
 }
+.mode-label{
+  font-size:.72rem;
+  letter-spacing:2px;
+  font-weight:700;
+
+  padding:4px 8px;
+  border-radius:999px;
+
+  background:rgba(212,175,55,.15);
+  color:var(--accent);
+}
+body,
+.panel,
+.nav-btn,
+.action-btn,
+.time-input,
+.clock-search{
+  transition:
+    background-color .35s ease,
+    color .35s ease,
+    border-color .35s ease,
+    box-shadow .35s ease;
 }
