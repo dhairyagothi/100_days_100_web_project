@@ -1,0 +1,379 @@
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@800&display=swap");
+
+:root {
+  --clr-bg: #1f2632;
+  --clr-card: #313a48;
+  --clr-text-quote: #cee3e9;
+  --clr-accent-green: #52ffa8;
+  --clr-accent-blue: #1d9bf0;
+  --clr-label: #52ffa8;
+  --transition-speed: 0.25s;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family:
+    "Manrope",
+    system-ui,
+    -apple-system,
+    sans-serif;
+  background-color: var(--clr-bg);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1.5rem;
+  overflow-x: hidden;
+}
+
+/* App Layout Container */
+.app-container {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 2rem;
+  width: 100%;
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+/* Centered Layout Component Structure */
+.advice-card {
+  background-color: var(--clr-card);
+  width: 100%;
+  max-width: 500px;
+  border-radius: 1rem;
+  padding: 2.5rem 2.5rem 3.5rem 2.5rem;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+}
+
+.advice-header {
+  color: var(--clr-label);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+}
+
+.advice-quote {
+  color: var(--clr-text-quote);
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1.4;
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Graphic Presentation Lines divider styles */
+.divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin: 2rem 0 1rem 0;
+  opacity: 0.4;
+}
+
+.line {
+  flex: 1;
+  height: 1px;
+  background-color: var(--clr-text-quote);
+}
+
+.pause-icon {
+  color: var(--clr-text-quote);
+  font-size: 0.85rem;
+  letter-spacing: -1px;
+  font-weight: 700;
+}
+
+/* Control Elements Floating Layer Base */
+.action-bar {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, 50%);
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: max-content;
+  max-width: 90%;
+}
+
+.action-btn {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition:
+    background-color var(--transition-speed) ease,
+    box-shadow var(--transition-speed) ease,
+    transform var(--transition-speed) cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  text-decoration: none;
+}
+
+/* Control Trigger Color Adaptations */
+.dice-btn {
+  background-color: var(--clr-accent-green);
+  color: var(--clr-bg);
+}
+
+.dice-btn:hover {
+  box-shadow: 0 0 24px var(--clr-accent-green);
+  transform: scale(1.05);
+}
+
+.tweet-btn {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.tweet-btn:hover {
+  background-color: var(--clr-accent-blue);
+  border-color: var(--clr-accent-blue);
+  transform: scale(1.05);
+}
+
+.icon-svg {
+  width: 22px;
+  height: 22px;
+  fill: currentColor;
+}
+
+/* Loading status animation styles */
+.loading .advice-quote {
+  opacity: 0.5;
+}
+
+.loading .dice-icon {
+  animation: rotateDice 0.6s linear infinite;
+}
+
+@keyframes rotateDice {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Utility Button Hover Effects */
+.utility-btn {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.utility-btn:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: scale(1.05);
+}
+
+/* Toast Notification Styling */
+.toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: var(--clr-accent-green);
+  color: var(--clr-bg);
+  padding: 10px 16px;
+  border-radius: 8px;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+  pointer-events: none;
+  font-weight: 600;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(82, 255, 168, 0.3);
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Favorites Panel Component */
+.favorites-panel {
+  width: 320px;
+  max-height: 400px;
+  overflow-y: auto;
+  background-color: var(--clr-card);
+  color: white;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  display: none;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.favorites-panel h2 {
+  font-size: 1.2rem;
+  color: var(--clr-label);
+  margin-bottom: 1rem;
+  border-bottom: 2px solid rgba(82, 255, 168, 0.2);
+  padding-bottom: 0.5rem;
+}
+
+.favorites-panel ul {
+  list-style: none;
+}
+
+.favorites-panel li {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 0.9rem;
+  line-height: 1.4;
+  color: var(--clr-text-quote);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.favorites-panel li:last-child {
+  border-bottom: none;
+}
+
+.delete-fav-btn {
+  background: transparent;
+  border: none;
+  color: #ff6b6b;
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition:
+    background-color 0.2s,
+    color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.delete-fav-btn:hover {
+  background-color: rgba(255, 107, 107, 0.15);
+  color: #ff8787;
+}
+
+/* Show Panel Animation */
+.show-panel {
+  display: block;
+  animation: slideFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slideFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Custom Scrollbar for Panel */
+.favorites-panel::-webkit-scrollbar {
+  width: 6px;
+}
+
+.favorites-panel::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 3px;
+}
+
+.favorites-panel::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 3px;
+}
+
+.favorites-panel::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Responsive Media Queries */
+
+/* Tablet & Mobile Layout - Stack Containers Vertically */
+@media (max-width: 900px) {
+  .app-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 3.5rem; /* Space to prevent card's action bar from overlapping the panel */
+    padding-bottom: 2rem;
+  }
+
+  .favorites-panel {
+    width: 100%;
+    max-width: 500px;
+    max-height: 350px;
+  }
+}
+
+/* Small Mobile Breakpoints & Action Button Optimization */
+@media (max-width: 480px) {
+  body {
+    padding: 1rem;
+  }
+
+  .advice-card {
+    padding: 2rem 1.25rem 4.5rem 1.25rem; /* Increase bottom padding to prevent overlap with wrapped action bar */
+  }
+
+  .advice-quote {
+    font-size: 1.25rem;
+    min-height: 70px;
+  }
+
+  .divider {
+    margin: 1.5rem 0 1rem 0;
+  }
+
+  .action-bar {
+    gap: 0.5rem;
+    max-width: 100%;
+  }
+
+  .action-btn {
+    width: 48px;
+    height: 48px;
+  }
+
+  .icon-svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .toast {
+    top: 10px;
+    right: 50%;
+    transform: translateX(50%) translateY(-10px);
+    width: max-content;
+    max-width: 90%;
+    text-align: center;
+  }
+
+  .toast.show {
+    transform: translateX(50%) translateY(0);
+  }
+}

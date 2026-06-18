@@ -1,0 +1,155 @@
+/* NAVBAR */
+
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+
+  backdrop-filter: blur(20px);
+  background: rgba(255,255,255,0.75);
+
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+
+[data-theme="dark"] .navbar {
+  background: rgba(15,15,15,0.75);
+  border-color: rgba(255,255,255,0.08);
+}
+
+.nav-container {
+  max-width: 1250px;
+  margin: auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 16px 24px;
+}
+
+/* LOGO */
+
+.logo {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #e23744;
+  text-decoration: none;
+  letter-spacing: -1px;
+}
+
+/* CENTER LINKS */
+
+.nav-center {
+  display: flex;
+  gap: 32px;
+}
+
+.nav-center a {
+  text-decoration: none;
+  color: var(--text-color, #222);
+  font-weight: 600;
+  transition: 0.3s;
+  position: relative;
+}
+
+.nav-center a:hover {
+  color: #e23744;
+}
+
+.nav-center a::after {
+  content: "";
+
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+
+  width: 0;
+  height: 2px;
+
+  background: #e23744;
+
+  transition: .3s;
+}
+
+.nav-center a:hover::after {
+  width: 100%;
+}
+
+/* RIGHT */
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.theme-btn {
+  width: 42px;
+  height: 42px;
+
+  border-radius: 50%;
+  border: none;
+
+  cursor: pointer;
+  font-size: 1rem;
+
+  background: #f4f4f4;
+}
+
+[data-theme="dark"] .theme-btn {
+  background: #242424;
+  color: white;
+}
+
+.nav-btn {
+  border: none;
+  cursor: pointer;
+
+  font-size: .95rem;
+  font-weight: 600;
+
+  padding: 11px 18px;
+  border-radius: 999px;
+
+  transition: .3s;
+}
+
+.login-btn {
+  background: transparent;
+}
+
+.login-btn:hover {
+  background: rgba(226,55,68,0.08);
+}
+
+.signup-btn {
+  background: #e23744;
+  color: white;
+
+  box-shadow: 0 8px 25px rgba(226,55,68,0.25);
+}
+
+.signup-btn:hover {
+  transform: translateY(-2px);
+}
+
+/* MOBILE */
+
+@media (max-width: 768px) {
+
+  .nav-center {
+    display: none;
+  }
+
+  .nav-container {
+    padding: 14px 18px;
+  }
+
+  .logo {
+    font-size: 1.7rem;
+  }
+
+  .signup-btn {
+    display: none;
+  }
+}
