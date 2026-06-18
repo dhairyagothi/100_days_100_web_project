@@ -3005,5 +3005,18 @@
     ],
     "difficulty": "intermediate",
     "projectPath": "./public/FLAVOURLY/index.html"
+  },
+  {
+    "projectNo": 233,
+    "projectName": "Portfolio Studio",
+    "projectType": "Website",
+    "projectDesc": "A web-based tool that allows users to create and customize their own portfolio websites.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/Portfolio_Studio/index.html"
   }
 ]

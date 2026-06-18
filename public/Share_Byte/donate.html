@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AaharShare - Food Redistribution Portal</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="sidebar">
+        <a href="index.html">Home</a>
+        <a href="donate.html">Donors</a>
+        <a href="#">Clothes</a>
+        <a href="#">Food</a>
+        <a href="#">Renew</a>
+        <a href="#">Contact</a>
+    </div>
+
+    <header>
+        <div class="logo">❤ AaharShare</div>
+        <p>Connecting surplus food with those in need</p>
+    </header>
+
+    <main class="main-container">
+        <section class="card donor-section">
+            <h2>Donate Surplus Food</h2>
+            <form id="foodForm">
+                <div class="form-group">
+                    <label for="foodItem">Food Item(s)</label>
+                    <input type="text" id="foodItem" placeholder="e.g., Rice, Dal, Roti (for 50 people)" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="donorName">Your Name/Restaurant</label>
+                    <input type="text" id="donorName" placeholder="e.g., Taj Hotel / Sharma Weddings" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="expiryHours">Freshness Window (in hours)</label>
+                    <input type="number" id="expiryHours" min="1" max="24" placeholder="e.g., 4" required>
+                </div>
+
+                <button type="button" id="geoBtn" class="btn btn-secondary">📍 Get My Location</button>
+                <input type="hidden" id="locationCoords">
+                <span id="locationStatus"></span>
+
+                <button type="submit" class="btn btn-primary">List Food Now</button>
+            </form>
+        </section>
+
+        <section class="card dashboard-section">
+            <h2>Available Food Nearby</h2>
+            <div id="noFoodMessage" class="no-data">No active food donations right now.</div>
+            <div id="foodList" class="food-grid">
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
