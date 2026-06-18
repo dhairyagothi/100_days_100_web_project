@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
+const calculateReadingTime = () => {
     const readingTimeElement = document.getElementById("reading-time");
 
     if (!readingTimeElement) return;
@@ -20,4 +20,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const readingTime = Math.max(1, Math.ceil(wordCount / 200));
 
     readingTimeElement.textContent = `📖 ${readingTime} min read`;
-});
+};
+
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", () => setTimeout(calculateReadingTime, 50));
+} else {
+    setTimeout(calculateReadingTime, 50);
+}
