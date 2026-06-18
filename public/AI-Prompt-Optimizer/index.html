@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Prompt Optimizer</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+  <button id="themeToggle" class="theme-toggle">
+    🌙
+  </button>
+
+  <div class="container">
+
+    <header>
+      <h1>✨ AI Prompt Optimizer</h1>
+      <p>
+        Improve your prompts with smart suggestions, scoring,
+        optimization templates, and prompt history.
+      </p>
+    </header>
+
+    <section class="prompt-section">
+
+      <label for="category">Prompt Category</label>
+
+      <select id="category">
+        <option value="coding">💻 Coding</option>
+        <option value="writing">✍️ Writing</option>
+        <option value="resume">📄 Resume</option>
+        <option value="marketing">📢 Marketing</option>
+        <option value="study">📚 Study</option>
+      </select>
+
+      <label for="promptInput">Enter Prompt</label>
+
+      <textarea
+        id="promptInput"
+        placeholder="Example: Write a resume..."
+      ></textarea>
+
+      <div class="button-group">
+        <button id="analyzeBtn">
+          Analyze Prompt
+        </button>
+
+        <button id="clearBtn" class="secondary">
+          Clear
+        </button>
+      </div>
+
+    </section>
+
+    <section class="results-section">
+
+      <div class="score-card">
+
+        <h2>Prompt Score</h2>
+
+        <div class="score-circle">
+          <span id="scoreValue">0</span>
+        </div>
+
+        <p id="scoreLabel">
+          Awaiting Analysis
+        </p>
+
+      </div>
+
+      <div class="breakdown-card">
+
+        <h2>Score Breakdown</h2>
+
+        <div class="metric">
+          <span>Clarity</span>
+          <div class="bar">
+            <div id="clarityBar" class="fill"></div>
+          </div>
+        </div>
+
+        <div class="metric">
+          <span>Specificity</span>
+          <div class="bar">
+            <div id="specificityBar" class="fill"></div>
+          </div>
+        </div>
+
+        <div class="metric">
+          <span>Context</span>
+          <div class="bar">
+            <div id="contextBar" class="fill"></div>
+          </div>
+        </div>
+
+        <div class="metric">
+          <span>Structure</span>
+          <div class="bar">
+            <div id="structureBar" class="fill"></div>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <section class="suggestions-section">
+
+      <h2>💡 Suggestions</h2>
+
+      <ul id="suggestionsList">
+        <li>Analyze a prompt to receive suggestions.</li>
+      </ul>
+
+    </section>
+
+    <section class="optimized-section">
+
+      <div class="section-header">
+        <h2>🚀 Optimized Prompt</h2>
+
+        <button id="copyBtn" class="small-btn">
+          Copy
+        </button>
+      </div>
+
+      <textarea
+        id="optimizedPrompt"
+        readonly
+        placeholder="Optimized prompt will appear here..."
+      ></textarea>
+
+      <div class="action-buttons">
+
+        <button id="downloadBtn">
+          Download TXT
+        </button>
+
+      </div>
+
+    </section>
+
+    <section class="history-section">
+
+      <div class="section-header">
+
+        <h2>📜 Prompt History</h2>
+
+        <button id="clearHistoryBtn" class="small-btn danger">
+          Clear History
+        </button>
+
+      </div>
+
+      <div id="historyContainer">
+
+        <div class="history-placeholder">
+          No prompts analyzed yet.
+        </div>
+
+      </div>
+
+    </section>
+
+    <footer>
+      <p>
+        Built with HTML, CSS & JavaScript • AI Prompt Optimizer
+      </p>
+    </footer>
+
+  </div>
+
+  <script src="script.js"></script>
+
+</body>
+</html>

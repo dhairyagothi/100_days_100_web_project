@@ -232,11 +232,14 @@ function startAnalysis() {
 
   setTimeout(() => {
 
-    loadingSection.style.display =
-      "none";
+  loadingSection.style.display =
+    "none";
 
-    resultsSection.style.display =
-      "grid";
+  resultsSection.style.display =
+    "grid";
+
+  insightsSection.style.display =
+    "block";
 
     insightsSection.style.display =
       "block";
@@ -244,9 +247,9 @@ function startAnalysis() {
     suggestionsSection.style.display =
       "block";
 
-    generateAnalysis();
+  generateAnalysis();
 
-  }, 2500);
+}, 2500);
 
 }
 

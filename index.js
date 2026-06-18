@@ -280,6 +280,10 @@ function sanitizeUrl(url) {
   return "#";
 }
 
+const WEBP_PREVIEWS = new Set(["2048_game","3d cards","3d profile Card","AdvancedFormBuilder","age-calculator","AI Image Classifier","AI-Data-Analyst","AI-Resume-Analyser","Amazon-App","AnalogClock","Animated Searchbar","Animated-cursor","AppPrivacyPolicyGenerator","Background-Image-sider","Blog Page","BMI_Calculator","BordemBuster","Breakout-game","bubble game","Budget_Tracker","ButtonsUIPage","Candy_Crush_Game","canvas_multitrack_sequencer","captcha","Carousel Solar System","Casino_Memory_Match","Chess_Game","Chronosphere","ClimaCode 2.0","code-execution-visualizer","code-visualizer-playground","Data Structures Visualizer","day-10-color-picker","Developer portfolio","digital_clock","dropdown_navbar","Flappy-bird-main","FocusRoom","focustimer","fruit slice","game","Gemini","indianflag","TO_DO_LIST","typewriter"]);
+
+const NO_PREVIEWS = new Set(["advanced-analytics-canvas","advice-generator","AI ChatBot","AI-Semiconductor-Circuit-Builder","AI-Tools-Hub","ai-video-synthesizer","Air-Typing-Keyboard","AmazonClone","api-batching-engine","AstronomyDashboard","AttendancePro","attendencePridictor","audio-physics-nebula","Audio_Spectrum_Visualizer","BeatMaker","BigSales-Prediction","Bill-Splitter","BlackJack","blinkit-clone","blog","boardgame-companion","Book-Nook","Bubble-Game","bus_game","Calculator","Calendar UI for service appointments with time slots","checkers game","code-jump-space-game","code-playground","Color-Pelette","columnar-data-engine","connect 4 game","Connect-Four","Contact Book","core-performance-utils","counter-app","Country Quiz Game","country-explorer","CPU_Emulator","Cricket-Scorecard","crispr-alignment-sandbox","crossword_game","Crypto Tracker & Market Analytics Dashboard","crypto-tracker","Crypto_Price_Tracker","CSSShadowGenerator","CYBER TYPE BATTLE","cyber-deflection-sandbox","dad-joke","Daily-Water-Intake-Tracker","Debug-Website","Dental Care Services","Diabetes-Health-Risk","Dice-Roller","dictionary-app","digital-analog-clock-combo","Digital-Planner","DinoGame","dom-virtualization-pipeline","Dots_And_Boxes","Download_Time_Estimator","EcoLint","eisenhower-matrix-tool","escape room","Escape The Matrix","event-registration-system","EveSparks","Express Server","file_uploader","FinanceTracker","Financial-Dashboard","FlashcardApp","FlashFocus-An_Observation_Game","flask_auth_app","Flip Clock","Flipkart-clone","flora-tracker","Fluid_Simulator","FocusList","form-builder","github-finder","Glassmorphism-Generator","gmail_nodemailer","GPA","GradientPaletteGenerator","gravity-well","guided-breathing-visualizer","Habit_Tracker","hand-gesture-controller","hangman-react-ts","Harry-Potter","Heart-Risk-Prediction","hft-liquidity-sandbox","Html_css_animation","images","instagram-clone","Interactive-Budget-Tracker","interview-prep-hub","invisible maze runner game","InvoiceGenretor","Ip_Address_tracker","Job dashboard","job-tracker-system","Journal-Platform","Kanban_Board","Lights_Out_Puzzle","Live-Editor","loginusingmern","lru-cache-engine","magic-8ball","Markdown to HTML","markdown-editor","Markdown_Editor","MEMO 2.0","Memory Card Matching Game","MemoryCard","Mern Login Form","MERN_Job_Board","Micro_Habit_Tracker","mind-reader","mini-postman","minimalist-kanban-board","Mino-Notes","Movie-Matcher","Movie-Search-App","movie-selector","movie-watchlist","MS-Paint-Clone","multi-threaded-data-engine","NASA-APOD","Naukri_Campus_Clone","NeoTetris","neutral-evolution-simulator","NeuralNetworkPlayground","Number Guessing Game","NumberGuessGame","OpenWeatherForecastApp","pacman","pageloader","Parallel-x website","particle-wave-animation","Photo Studio","pinspire","pixel-art","PixelArtCanvasEditor","Plant","plantwebsite","pokedex-app","pomodoro-timer-dashboard","Pomodoro_With_Miu-Electronjs","Pomodoro__Timer","Productivity-Dashboard","progress_bar","qr generator","qr_generator","quantum-wave-sandbox","Quantum_CodeBreaker","QuizApp Timer","QuizAppTimer","quote-generator","reaction-time-tester","reactive-state-dashboard","reactive-state-engine","Reading-Progress-Indicator","recipe","Recipe Genie","recipe-finder","RECIPE_Genie","Resume Previewer","Rock_Paper_Scissors","Runway-Calculator","secure-hashing-engine","Secure_Password_Generator","SkillBridge","slider box","sliding game","SnapScribe","Solar System Explorer in CSS only haml","space-tracker","Spectrogram_Studio","SQLVisulizer","StatisticsDashboard","Steganography_Tool","story","Stydy-Sync","subscriptiontracker","swiggy","Swiper API Slider","TerminalPortfolio","text-to-readme","Textutils","Text_Saver_Ext","Theme-Toggler","the_cube","time_rewind","Tower-of-Hanoi-Visualizer","tower_stacker","traffic_signal","Travelapp - Copy","trie-search-engine","TypeMuse","UnitVerse","url_shortener","user_reviews","video-synthesis-engine","virtual-playground","Virtual-RainCafe","VirtualAudioSynth","WanderLust","waterTracker","Weather App with AQI","weather-app","Weekend-Activity-Generator","Well","Whack a mole","WORDLE","Word_jumble","zen-breathing-visualizer","ZenSpace","Zodiac","zomato-clone"]);
+
 function buildProjectCardHTML({
   day,
   name,
@@ -342,6 +346,41 @@ function buildProjectCardHTML({
                         <i class="fab fa-github" aria-hidden="true"></i>
                     </a>`;
 
+  let projectFolder = "";
+  const externalFolder = day && EXTERNAL_DEMO_SOURCE_FOLDERS[day];
+  if (externalFolder) {
+    projectFolder = externalFolder.replace(/^public\//, "");
+  } else if (url && (url.startsWith("./public/") || url.startsWith("public/"))) {
+    const parts = url.split("/");
+    projectFolder = url.startsWith("./") ? parts[2] : parts[1];
+  } else if (url && isGithubTreeUrl(url)) {
+    const path = parseGithubTreePath(url);
+    if (path) {
+      const parts = path.split("/");
+      projectFolder = parts[parts.length - 1];
+    }
+  } else {
+    projectFolder = name.replace(/\s+/g, "_");
+  }
+  const safeProjectFolder = encodeURIComponent(projectFolder);
+
+  const folderDecoded = decodeURIComponent(projectFolder);
+  let imageHTML = "";
+  if (NO_PREVIEWS.has(folderDecoded)) {
+    imageHTML = `<div class="preview-placeholder" style="width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; background: linear-gradient(135deg, #111827 0%, #0f172a 100%); border: 1px solid rgba(15, 242, 200, 0.15); border-radius: 8px; padding: 16px; text-align: center; box-sizing: border-box;">
+              <span style="font-size: 0.75rem; color: rgba(255, 255, 255, 0.5); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px;">${safeDay}</span>
+              <span style="font-size: 1.1rem; font-weight: 700; color: #ffffff;">${safeName}</span>
+            </div>`;
+  } else {
+    const ext = WEBP_PREVIEWS.has(folderDecoded) ? "webp" : "png";
+    imageHTML = `<img
+            src="./public/${safeProjectFolder}/preview.${ext}"
+            alt="${safeName} preview"
+            loading="lazy"
+            decoding="async"
+            style="width: 100%; height: 100%; object-fit: cover;">`;
+  }
+
   return {
     html: `
             <div class="card-meta">
@@ -354,13 +393,7 @@ function buildProjectCardHTML({
             </div>
 
             <div class="card-preview-image-container" style="margin: 12px 0; border-radius: 8px; overflow: hidden; aspect-ratio: 16/9; background: #1a1a1a;">
-           <img
-            src="./public/${url && url.startsWith('./public/') ? encodeURIComponent(url.split('/')[2]) : name.replace(/\\s+/g, '_')}/preview.png"
-            alt="${safeName} preview"
-            loading="lazy"
-            decoding="async"
-            onerror="this.parentNode.style.display='none';"
-            style="width: 100%; height: 100%; object-fit: cover;">
+              ${imageHTML}
             </div>
 
             <h3 class="card-name">${safeName}</h3>
@@ -771,6 +804,43 @@ function readStateFromURL() {
       currentPage = page;
     }
   }
+}
+
+function renderSkeletons() {
+  const grid = document.getElementById("projectGrid");
+  if (!grid) return;
+
+  grid.innerHTML = "";
+  grid.style.display = "grid";
+
+  const fragment = document.createDocumentFragment();
+  for (let i = 0; i < itemsPerPage; i++) {
+    const card = document.createElement("div");
+    card.className = "project-card skeleton";
+    card.innerHTML = `
+      <div class="card-meta skeleton-meta">
+        <div class="skeleton-line skeleton-day"></div>
+        <div class="skeleton-line skeleton-category"></div>
+      </div>
+      <div class="skeleton-image"></div>
+      <div class="skeleton-line skeleton-title"></div>
+      <div class="skeleton-description">
+        <div class="skeleton-line skeleton-desc-line"></div>
+        <div class="skeleton-line skeleton-desc-line short"></div>
+      </div>
+      <div class="skeleton-tags">
+        <div class="skeleton-line skeleton-tag"></div>
+        <div class="skeleton-line skeleton-tag"></div>
+        <div class="skeleton-line skeleton-tag"></div>
+      </div>
+      <div class="card-footer skeleton-footer">
+        <div class="skeleton-line skeleton-button"></div>
+        <div class="skeleton-line skeleton-bookmark"></div>
+      </div>
+    `;
+    fragment.appendChild(card);
+  }
+  grid.appendChild(fragment);
 }
 
 function renderGrid() {
@@ -1956,6 +2026,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   initClearAllFilters();
 
   //updateGamifiedUI();
+
+  if (hasProjectGrid()) {
+    renderSkeletons();
+  }
 
   try {
   await loadProjects();

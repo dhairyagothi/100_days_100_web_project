@@ -502,8 +502,401 @@ body {
 }
 
 /* ============================================
+   Featured Destinations Section
+   ============================================ */
+.featured-destinations {
+  padding: 100px 20px;
+  background: linear-gradient(to bottom, #ffffff 0%, #f5f7fa 100%);
+  position: relative;
+  z-index: 1;
+}
+
+.section-container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.section-title {
+  font-size: 3rem;
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: 10px;
+  color: #1e293b;
+}
+
+.section-title .gradient-text {
+  background: linear-gradient(90deg, #ff6b6b 0%, #ff1493 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.section-subtitle {
+  font-size: 1.15rem;
+  text-align: center;
+  color: #64748b;
+  margin-bottom: 50px;
+  font-weight: 400;
+}
+
+/* ============================================
+   Filter Bar
+   ============================================ */
+.filter-bar {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 60px;
+  flex-wrap: wrap;
+  animation: fadeIn 0.8s ease-out;
+}
+
+.filter-pill {
+  padding: 10px 24px;
+  border: 2px solid #e2e8f0;
+  background: rgba(255, 255, 255, 0.8);
+  color: #64748b;
+  border-radius: 50px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.filter-pill:hover {
+  border-color: #ff6b6b;
+  color: #ff6b6b;
+  transform: translateY(-2px);
+}
+
+.filter-pill.active {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ff1493 100%);
+  color: #ffffff;
+  border-color: transparent;
+  box-shadow: 0 10px 25px rgba(255, 107, 107, 0.3);
+}
+
+/* ============================================
+   Destination Cards Grid
+   ============================================ */
+.destinations-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  animation: fadeIn 0.8s ease-out 0.2s both;
+}
+
+.destination-card {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  cursor: pointer;
+  group: card;
+  height: 400px;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.card-image-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: linear-gradient(135deg, #e0e7ff 0%, #dbeafe 100%);
+}
+
+.card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+  display: block;
+  image-rendering: auto;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.card-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.4) 100%);
+  transition: background 0.4s ease;
+}
+
+.destination-card:hover .card-overlay {
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.6) 100%);
+}
+
+.destination-card:hover {
+  transform: translateY(-12px);
+  box-shadow: 0 20px 60px rgba(255, 107, 107, 0.25);
+}
+
+.destination-card:hover .card-image {
+  transform: scale(1.08);
+}
+
+/* ============================================
+   Card Info (Glassmorphism Overlay)
+   ============================================ */
+.card-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 24px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(16px);
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 20px 20px 20px 20px;
+  color: #ffffff;
+  transition: all 0.4s ease;
+}
+
+.destination-card:hover .card-info {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(20px);
+}
+
+.card-destination {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: #ffffff;
+}
+
+.card-tagline {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 12px;
+  font-weight: 400;
+}
+
+.card-price {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #ff6b6b;
+}
+
+/* ============================================
+   Rating Badge
+   ============================================ */
+.rating-badge {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  color: #ffffff;
+  padding: 8px 14px;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.rating-number {
+  font-weight: 700;
+  color: #ff6b6b;
+}
+
+/* ============================================
+   Wishlist Button
+   ============================================ */
+.wishlist-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
+  color: #ffffff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.wishlist-btn:hover {
+  background: rgba(255, 107, 107, 0.3);
+  border-color: rgba(255, 107, 107, 0.6);
+  transform: scale(1.1);
+}
+
+.wishlist-btn.active {
+  background: rgba(255, 107, 107, 0.5);
+  border-color: #ff6b6b;
+}
+
+.wishlist-btn svg {
+  width: 22px;
+  height: 22px;
+  stroke: currentColor;
+  fill: none;
+  transition: all 0.3s ease;
+}
+
+.wishlist-btn.active svg {
+  fill: #ff6b6b;
+  stroke: #ff6b6b;
+}
+
+/* Card hidden state for filtering */
+.destination-card.hidden {
+  display: none;
+}
+
+/* ============================================
    Responsive Design - Tablet (768px and below)
    ============================================ */
+@media (max-width: 768px) {
+  .featured-destinations {
+    padding: 80px 20px;
+  }
+
+  .section-title {
+    font-size: 2rem;
+  }
+
+  .section-subtitle {
+    font-size: 1rem;
+    margin-bottom: 40px;
+  }
+
+  .filter-bar {
+    gap: 10px;
+    margin-bottom: 40px;
+  }
+
+  .filter-pill {
+    padding: 8px 18px;
+    font-size: 0.85rem;
+  }
+
+  .destinations-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .destination-card {
+    height: 350px;
+  }
+
+  .card-info {
+    padding: 18px;
+  }
+
+  .card-destination {
+    font-size: 1.2rem;
+  }
+
+  .rating-badge {
+    font-size: 0.75rem;
+    padding: 6px 12px;
+  }
+
+  .wishlist-btn {
+    width: 40px;
+    height: 40px;
+  }
+
+  .wishlist-btn svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+/* ============================================
+   Responsive Design - Mobile (480px and below)
+   ============================================ */
+@media (max-width: 480px) {
+  .featured-destinations {
+    padding: 60px 16px;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+  }
+
+  .section-subtitle {
+    font-size: 0.9rem;
+    margin-bottom: 30px;
+  }
+
+  .filter-bar {
+    gap: 8px;
+    margin-bottom: 30px;
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding-bottom: 10px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .filter-pill {
+    padding: 8px 16px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .destinations-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .destination-card {
+    height: 280px;
+  }
+
+  .card-info {
+    padding: 16px;
+  }
+
+  .card-destination {
+    font-size: 1rem;
+  }
+
+  .card-tagline {
+    font-size: 0.8rem;
+  }
+
+  .card-price {
+    font-size: 0.95rem;
+  }
+
+  .rating-badge {
+    font-size: 0.7rem;
+    padding: 5px 10px;
+    top: 12px;
+    left: 12px;
+  }
+
+  .wishlist-btn {
+    width: 36px;
+    height: 36px;
+    top: 12px;
+    right: 12px;
+  }
+
+  .wishlist-btn svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+/* Responsive Design - Tablet (768px and below) 
 @media (max-width: 768px) {
   .hero {
     padding: 40px 20px 80px;
@@ -679,6 +1072,12 @@ body {
 .search-input:focus-visible,
 .search-submit:focus-visible,
 .cta-button:focus-visible {
+  outline: 2px solid #ff6b6b;
+  outline-offset: 2px;
+}
+
+.filter-pill:focus-visible,
+.wishlist-btn:focus-visible {
   outline: 2px solid #ff6b6b;
   outline-offset: 2px;
 }

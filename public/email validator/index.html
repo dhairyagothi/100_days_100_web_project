@@ -9,31 +9,23 @@
 </head>
 
 <body>
-
-  <!-- Back Button -->
   <a href="/" class="project-back-button"
     style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;"
     onmouseover="this.style.background='#3b82f6';this.style.color='#fff'"
     onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">
-    ← Back to Home
+    Back to Home
   </a>
 
-  <!-- Theme Toggle -->
-  <button id="themeToggle"
-    class="btn"
-    style="position:fixed;right:18px;top:18px;">
-    🌙 Dark
+  <button id="themeToggle" class="btn" style="position:fixed;right:18px;top:18px;">
+    Dark
   </button>
 
-  <div class="container">
-
+  <main class="container">
     <h1>Email Validator</h1>
-
     <p class="subtitle">
       Validate email addresses and check deliverability information.
     </p>
 
-    <!-- Input -->
     <div class="input-group">
       <input
         type="text"
@@ -44,20 +36,17 @@
       <button id="submitBtn" class="btn">Validate Email</button>
     </div>
 
-    <!-- Typo suggestion banner -->
     <div id="suggestionBanner" class="suggestion-banner" style="display:none" aria-live="polite">
-      <span class="suggestion-icon">💡</span>
+      <span class="suggestion-icon">Tip</span>
       <span id="suggestionText"></span>
       <button id="suggestionBtn" class="suggestion-apply-btn">Use this</button>
     </div>
 
-    <!-- Format error details -->
     <div id="formatErrors" class="format-error-box" style="display:none" aria-live="polite">
-      <p class="format-error-title">⚠️ Please fix the following:</p>
+      <p class="format-error-title">Please fix the following:</p>
       <ul id="formatErrorList"></ul>
     </div>
 
-    <!-- Part breakdown -->
     <div id="partBreakdown" class="part-breakdown" style="display:none">
       <span class="part-label">Local:</span>
       <span id="partLocal" class="part-badge"></span>
@@ -66,15 +55,13 @@
       <span id="partDomain" class="part-badge"></span>
     </div>
 
-    <!-- Results -->
     <div id="resultCont" class="result-container" aria-live="polite"></div>
-
-    <!-- Export Button -->
-    <button id="exportBtn" class="btn" style="margin-top:10px; display:none;">
-      Export Results (CSV)
-    </button>
-
-  </div>
+    <div id="validationTimestamp" class="timestamp-box" style="display:none"></div>
+    <div class="action-buttons">
+      <button id="copyReportBtn" class="btn" style="display:none;">Copy Report</button>
+      <button id="downloadTxtBtn" class="btn" style="display:none;">Export TXT</button>
+    </div>
+  </main>
 
   <script src="script.js"></script>
 </body>
