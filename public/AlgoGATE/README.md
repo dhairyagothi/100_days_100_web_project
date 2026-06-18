@@ -68,7 +68,12 @@ A structured, topic-wise, difficulty-gated learning journey dramatically improve
 [![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen?style=for-the-badge&logo=github)](https://YASHK-arch.github.io/AlgoGATE)
 [![Video Demo](https://img.shields.io/badge/Video-Demo-red?style=for-the-badge&logo=youtube)](https://youtu.be/4P8quFQMnJE)
 
-
+<p align="center">
+  <img src="screenshots/1776956743202.jpg" width="45%" />
+  <img src="screenshots/1776956743283.jpg" width="45%" />
+  <img src="screenshots/1776956743663.jpg" width="45%" />
+  <img src="screenshots/1776956743680.jpg" width="45%" />
+</p>
 
 ## Contributing
 Feel free to fork, study, and build on top of AlgoGATE. If you'd like to contribute, please fork the repository, make your changes, and submit a pull request. We welcome any improvements to the question sets, notes, or platform features.
