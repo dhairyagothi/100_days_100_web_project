@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Festival Calendar</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="main-wrapper">
+        
+        <div class="calendar-container">
+            <div id="month-image" class="month-image"></div>
+            
+            <div class="calendar-header">
+                <button id="prevMonth" class="nav-btn">&lt;</button>
+                <h2 id="monthYearText"></h2>
+                <button id="nextMonth" class="nav-btn">&gt;</button>
+            </div>
+
+            <div class="calendar-grid">
+                <div class="day-name">Sun</div>
+                <div class="day-name">Mon</div>
+                <div class="day-name">Tue</div>
+                <div class="day-name">Wed</div>
+                <div class="day-name">Thu</div>
+                <div class="day-name">Fri</div>
+                <div class="day-name">Sat</div>
+            </div>
+        </div>
+
+        <div id="noteArea" class="note-section">
+            <h3>Notes for <span id="selectedDateText">Select a day</span></h3>
+            
+            <select id="eventTag">
+                <option value="none">Normal Day</option>
+                <option value="festival">Festival / Holiday</option>
+                <option value="event">Personal Event</option>
+            </select>
+            <textarea id="noteInput" placeholder="Plan your festivals and events here..."></textarea>
+            <button id="saveNote">Save Note</button>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

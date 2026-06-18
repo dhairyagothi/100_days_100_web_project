@@ -2895,9 +2895,52 @@
   },
   {
     "projectNo": 229,
+    "projectName": "MEMO 2.0",
+    "projectType": "Game",
+    "projectDesc": "A premium memory card matching game featuring SOLO and DUO modes, multiple difficulty levels, score tracking, timer-based gameplay, smooth card animations, and a luxury casino-inspired UI.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript",
+      "game",
+      "memory"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/MEMO 2.0/index.html"
+  },
+  {
+    "projectNo": 230,
+    "projectName": "Statistics Dashboard",
+    "projectType": "Tool",
+    "projectDesc": "A comprehensive statistics dashboard with localStorage tracking.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript",
+      "localstorage"
+    ],
+    "difficulty": "beginner",
+    "projectPath": "./public/StatisticsDashboard/index.html"
+  },
+  {
+    "projectNo": 231,
+    "projectName": "MyCalendar",
+    "projectType": "Tool",
+    "projectDesc": "An interactive festival and event calendar with notes, themes, and persistent storage using localStorage.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript",
+      "calendar"
+    ],
+    "difficulty": "beginner",
+    "projectPath": "./public/MyCalendar/index.html"
+  },
+  {
+    "projectNo": 232,
     "projectName": "Dad Jokes Generator",
     "projectType": "Game",
-    "projectDesc": "Tap a Button and generate a Dad Joke",
+    "projectDesc": "Tap a button and generate a Dad Joke.",
     "techStack": [
       "html",
       "css",
@@ -2909,7 +2952,7 @@
     "projectPath": "./public/dad-joke/index.html"
   },
   {
-    "projectNo": 230,
+    "projectNo": 233,
     "projectName": "UnitVerse - Interactive Unit Converter Web App",
     "projectType": "Tool",
     "projectDesc": "An interactive unit converter with real-time conversion, history tracking, favorites system, and a modern responsive UI.",
@@ -2920,5 +2963,47 @@
     ],
     "difficulty": "intermediate",
     "projectPath": "./public/UnitVerse/index.html"
+  },
+  
+  {
+    "projectNo": 234,
+    "projectName": "AI-Prompt-Optimizer",
+    "projectType": "Tool",
+    "projectDesc": "Analyze, score, and optimize AI prompts with smart suggestions.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/AI-Prompt-Optimizer/index.html"
+  },
+  {
+    "projectNo": 235,
+    "projectName": "World Explorer",
+    "projectType": "Tool",
+    "projectDesc": "An interactive world explorer that allows users to discover countries across the globe. Users can search countries, filter by region, view detailed information including capital, population, languages, currencies, time zones, and save favorite countries. The application features a modern responsive UI, dark/light mode, country cards, detailed modals, and an engaging exploration experience.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/WorldExplorer/index.html"
+  },
+  {
+    "projectNo": 236,
+    "projectName": "FLAVOURLY",
+    "projectType": "API",
+    "projectDesc": "A modern recipe discovery web application built with React and Vite. Search for recipes by meal name or ingredient, explore recipe details, save favorites, and filter vegetarian meals.",
+    "techStack": [
+      "api",
+      "react",
+      "javascript",
+      "html",
+      "css"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/FLAVOURLY/index.html"
   }
 ]

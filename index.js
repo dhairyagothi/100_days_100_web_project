@@ -806,6 +806,43 @@ function readStateFromURL() {
   }
 }
 
+function renderSkeletons() {
+  const grid = document.getElementById("projectGrid");
+  if (!grid) return;
+
+  grid.innerHTML = "";
+  grid.style.display = "grid";
+
+  const fragment = document.createDocumentFragment();
+  for (let i = 0; i < itemsPerPage; i++) {
+    const card = document.createElement("div");
+    card.className = "project-card skeleton";
+    card.innerHTML = `
+      <div class="card-meta skeleton-meta">
+        <div class="skeleton-line skeleton-day"></div>
+        <div class="skeleton-line skeleton-category"></div>
+      </div>
+      <div class="skeleton-image"></div>
+      <div class="skeleton-line skeleton-title"></div>
+      <div class="skeleton-description">
+        <div class="skeleton-line skeleton-desc-line"></div>
+        <div class="skeleton-line skeleton-desc-line short"></div>
+      </div>
+      <div class="skeleton-tags">
+        <div class="skeleton-line skeleton-tag"></div>
+        <div class="skeleton-line skeleton-tag"></div>
+        <div class="skeleton-line skeleton-tag"></div>
+      </div>
+      <div class="card-footer skeleton-footer">
+        <div class="skeleton-line skeleton-button"></div>
+        <div class="skeleton-line skeleton-bookmark"></div>
+      </div>
+    `;
+    fragment.appendChild(card);
+  }
+  grid.appendChild(fragment);
+}
+
 function renderGrid() {
   const grid = document.getElementById("projectGrid");
   const noResults = document.getElementById("noResults");
@@ -1989,6 +2026,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   initClearAllFilters();
 
   //updateGamifiedUI();
+
+  if (hasProjectGrid()) {
+    renderSkeletons();
+  }
 
   try {
   await loadProjects();

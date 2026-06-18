@@ -146,7 +146,7 @@ body{
   flex-direction:column;
   gap:12px;
 
-  padding:18px;
+  padding:18px 22px 18px 18px;
 
   background:rgba(255,255,255,0.08);
   backdrop-filter:blur(15px);
@@ -159,6 +159,31 @@ body{
   transform:translateY(15px);
 
   transition:0.4s;
+
+  max-height:calc(100vh - 220px);
+  overflow-y:auto;
+  overflow-x:hidden;
+
+  scrollbar-width:thin;
+  scrollbar-color:rgba(255,255,255,0.2) rgba(255,255,255,0.02);
+}
+
+.planet-mini-list::-webkit-scrollbar{
+  width:6px;
+}
+
+.planet-mini-list::-webkit-scrollbar-track{
+  background:rgba(255,255,255,0.02);
+  border-radius:10px;
+}
+
+.planet-mini-list::-webkit-scrollbar-thumb{
+  background:rgba(255,255,255,0.2);
+  border-radius:10px;
+}
+
+.planet-mini-list::-webkit-scrollbar-thumb:hover{
+  background:rgba(255,255,255,0.4);
 }
 
 /* Desktop only */
@@ -592,6 +617,9 @@ span{
     flex-wrap:wrap;
     width:240px;
     justify-content:center;
+    max-height:none;
+    overflow-y:visible;
+    padding:18px;
   }
 }
 

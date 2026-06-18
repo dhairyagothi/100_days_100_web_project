@@ -86,6 +86,204 @@
       </div>
     </section>
 
+    <!-- Featured Destinations Section -->
+    <section class="featured-destinations">
+      <div class="section-container">
+        <h2 class="section-title">Featured <span class="gradient-text">Destinations</span></h2>
+        <p class="section-subtitle">Curated experiences handpicked for every kind of traveler</p>
+
+        <!-- Filter Bar -->
+        <div class="filter-bar">
+          <button class="filter-pill active" data-filter="all" aria-label="Show all destinations">
+            All
+          </button>
+          <button class="filter-pill" data-filter="beach" aria-label="Filter by beach destinations">
+            🏖️ Beach
+          </button>
+          <button class="filter-pill" data-filter="city" aria-label="Filter by city destinations">
+            🏙️ City
+          </button>
+          <button class="filter-pill" data-filter="romantic" aria-label="Filter by romantic destinations">
+            💕 Romantic
+          </button>
+          <button class="filter-pill" data-filter="mountain" aria-label="Filter by mountain destinations">
+            ⛰️ Mountain
+          </button>
+        </div>
+
+        <!-- Destination Cards Grid -->
+        <div class="destinations-grid">
+          <!-- Paris Card -->
+          <article class="destination-card" data-category="city romantic" data-destination="paris">
+            <div class="card-image-container">
+              <img 
+                src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=600&h=400&fit=crop" 
+                alt="Paris - The City of Lights" 
+                class="card-image"
+              />
+              <div class="card-overlay"></div>
+            </div>
+            
+            <button class="wishlist-btn" aria-label="Add Paris to wishlist" title="Add to wishlist">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+              </svg>
+            </button>
+
+            <div class="rating-badge">
+              ★★★★★ <span class="rating-number">4.9</span>
+            </div>
+
+            <div class="card-info">
+              <h3 class="card-destination">Paris, France</h3>
+              <p class="card-tagline">City of Lights & Romance</p>
+              <p class="card-price">From $899</p>
+            </div>
+          </article>
+
+          <!-- Bali Card -->
+          <article class="destination-card" data-category="beach romantic" data-destination="bali">
+            <div class="card-image-container">
+              <img 
+                src="./images/bali.jpg" 
+                alt="Bali - Tropical Paradise" 
+                class="card-image"
+              />
+              <div class="card-overlay"></div>
+            </div>
+            
+            <button class="wishlist-btn" aria-label="Add Bali to wishlist" title="Add to wishlist">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+              </svg>
+            </button>
+
+            <div class="rating-badge">
+              ★★★★★ <span class="rating-number">4.8</span>
+            </div>
+
+            <div class="card-info">
+              <h3 class="card-destination">Bali, Indonesia</h3>
+              <p class="card-tagline">Tropical Paradise & Beach Haven</p>
+              <p class="card-price">From $549</p>
+            </div>
+          </article>
+
+          <!-- Tokyo Card -->
+          <article class="destination-card" data-category="city" data-destination="tokyo">
+            <div class="card-image-container">
+              <img 
+                src="./images/tokyo.jpg" 
+                alt="Tokyo - Modern Metropolis" 
+                class="card-image"
+              />
+              <div class="card-overlay"></div>
+            </div>
+            
+            <button class="wishlist-btn" aria-label="Add Tokyo to wishlist" title="Add to wishlist">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+              </svg>
+            </button>
+
+            <div class="rating-badge">
+              ★★★★★ <span class="rating-number">4.7</span>
+            </div>
+
+            <div class="card-info">
+              <h3 class="card-destination">Tokyo, Japan</h3>
+              <p class="card-tagline">Where Tradition Meets Future</p>
+              <p class="card-price">From $799</p>
+            </div>
+          </article>
+
+          <!-- Santorini Card -->
+          <article class="destination-card" data-category="beach romantic" data-destination="santorini">
+            <div class="card-image-container">
+              <img 
+                src="https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?w=600&h=400&fit=crop" 
+                alt="Santorini - Island Romance" 
+                class="card-image"
+              />
+              <div class="card-overlay"></div>
+            </div>
+            
+            <button class="wishlist-btn" aria-label="Add Santorini to wishlist" title="Add to wishlist">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+              </svg>
+            </button>
+
+            <div class="rating-badge">
+              ★★★★★ <span class="rating-number">4.9</span>
+            </div>
+
+            <div class="card-info">
+              <h3 class="card-destination">Santorini, Greece</h3>
+              <p class="card-tagline">Sunset Views & White-Washed Beauty</p>
+              <p class="card-price">From $699</p>
+            </div>
+          </article>
+
+          <!-- Dubai Card -->
+          <article class="destination-card" data-category="city" data-destination="dubai">
+            <div class="card-image-container">
+              <img 
+                src="./images/dubai.jpg" 
+                alt="Dubai - Modern Desert City" 
+                class="card-image"
+              />
+              <div class="card-overlay"></div>
+            </div>
+            
+            <button class="wishlist-btn" aria-label="Add Dubai to wishlist" title="Add to wishlist">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+              </svg>
+            </button>
+
+            <div class="rating-badge">
+              ★★★★☆ <span class="rating-number">4.6</span>
+            </div>
+
+            <div class="card-info">
+              <h3 class="card-destination">Dubai, UAE</h3>
+              <p class="card-tagline">Luxury & Innovation in the Desert</p>
+              <p class="card-price">From $649</p>
+            </div>
+          </article>
+
+          <!-- New York Card -->
+          <article class="destination-card" data-category="city" data-destination="newyork">
+            <div class="card-image-container">
+              <img 
+                src="https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=600&h=400&fit=crop" 
+                alt="New York - The City That Never Sleeps" 
+                class="card-image"
+              />
+              <div class="card-overlay"></div>
+            </div>
+            
+            <button class="wishlist-btn" aria-label="Add New York to wishlist" title="Add to wishlist">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+              </svg>
+            </button>
+
+            <div class="rating-badge">
+              ★★★★★ <span class="rating-number">4.8</span>
+            </div>
+
+            <div class="card-info">
+              <h3 class="card-destination">New York, USA</h3>
+              <p class="card-tagline">The City That Never Sleeps</p>
+              <p class="card-price">From $749</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
     <!-- Main Content -->
     <main class="container">
       <section class="content-section">

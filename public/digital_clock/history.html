@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="digitalclock.css"/>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="digitalclock.html">Home</a>
+  <a href="alarms.html">Alarms</a>
+  <a href="history.html">History</a>
+</nav>
+
+<main class="clock-app">
+
+<section class="card">
+
+  <header class="card-header">
+    <h2>
+      Alarm History
+    </h2>
+  </header>
+
+  <div
+    class="history-header"
+    onclick="toggleHistoryLogs()">
+
+    <span>
+      History
+    </span>
+
+    <span id="history-chevron">
+      ▼
+    </span>
+
+  </div>
+
+  <div
+    id="history-logs"
+    class="history-logs">
+
+  </div>
+
+</section>
+
+</main>
+
+<footer class="site-footer">
+  Chronos+
+</footer>
+
+<script src="digitalclock.js"></script>
+
+</body>
+</html>
