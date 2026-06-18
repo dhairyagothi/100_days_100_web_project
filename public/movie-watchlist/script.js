@@ -3,6 +3,18 @@ const searchBtn = document.getElementById("search-btn");
 const movieResult = document.getElementById("movie-result");
 const watchlistContainer = document.getElementById("watchlist-container");
 
+if (
+  !searchInput ||
+  !searchBtn ||
+  !movieResult ||
+  !watchlistContainer
+) {
+  console.error(
+    "Required DOM elements are missing. Movie Watchlist initialization aborted."
+  );
+  throw new Error("Missing required DOM elements.");
+}
+
 let currentMovie = null;
 let watchlist = JSON.parse(localStorage.getItem("movies_list")) || [];
 
@@ -58,9 +70,22 @@ async function searchMovie() {
 }
 
 function addToWatchlist() {
-  if (!currentMovie || watchlist.some((m) => m.id === currentMovie.id)) return;
+  if (!currentMovie) return;
+
+  const alreadyExists = watchlist.some(
+    (m) => m.id === currentMovie.id
+  );
+
+  if (alreadyExists) {
+    alert(
+      `"${currentMovie.title}" is already in your watchlist.`
+    );
+    return;
+  }
+
   watchlist.push(currentMovie);
   saveAndRender();
+
   movieResult.classList.add("hidden");
   searchInput.value = "";
 }

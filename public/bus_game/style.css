@@ -9,16 +9,14 @@
     --yellow: #FFD600;
     --red: #FF3333;
     --green: #00E676;
+    --blue: #4FC3F7;
+    --purple: #B388FF;
     --accent: #FFD600;
     --ui: #1a1a2e;
     --rain-col: rgba(150, 200, 255, 0.35);
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
     background: #000;
@@ -38,411 +36,74 @@ body {
     overflow: hidden;
 }
 
-canvas {
-    display: block;
-    width: 100%;
-    height: 100%;
-}
+canvas { display: block; width: 100%; height: 100%; }
+
+#c { position: absolute; inset: 0; z-index: 1; }
+
+.hidden { display: none !important; }
 
 /* HUD */
 #hud {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    padding: 10px 16px;
-    z-index: 10;
-    pointer-events: none;
+    position: absolute; top: 0; left: 0; right: 0;
+    display: flex; justify-content: space-between; align-items: flex-start;
+    flex-wrap: wrap; gap: 6px; padding: 10px 16px; z-index: 10; pointer-events: none;
 }
 
 .hud-card {
     background: rgba(10, 10, 30, 0.82);
     border: 1.5px solid var(--yellow);
-    border-radius: 10px;
-    padding: 7px 14px;
-    backdrop-filter: blur(4px);
+    border-radius: 10px; padding: 7px 14px; backdrop-filter: blur(4px);
 }
 
-.hud-lbl {
-    font-size: 9px;
-    letter-spacing: 2px;
-    color: #aaa;
-    text-transform: uppercase;
-}
+.hud-lbl { font-size: 9px; letter-spacing: 2px; color: #aaa; text-transform: uppercase; }
 
-.hud-val {
-    font-family: 'Bangers', cursive;
-    font-size: 24px;
-    color: #fff;
-    letter-spacing: 1px;
-    line-height: 1;
-}
+.hud-val { font-family: 'Bangers', cursive; font-size: 24px; color: #fff; letter-spacing: 1px; line-height: 1; }
 
-.hud-val.green {
-    color: var(--green);
-}
+.hud-val.green { color: var(--green); }
+.hud-val.red { color: var(--red); }
+.hud-val.yellow { color: var(--yellow); }
+.hud-val.combo { color: var(--purple); transition: transform .15s; }
+.hud-val.fuel { color: var(--blue); }
 
-.hud-val.red {
-    color: var(--red);
+/* Instructions Table Style */
+.instructions-section { margin: 15px 0; text-align: center; color: #fff; }
+.instructions-table {
+    width: 100%; max-width: 280px; margin: 10px auto;
+    border-collapse: collapse; background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 8px;
 }
+.instructions-table th, .instructions-table td {
+    padding: 8px 12px; border: 1px solid rgba(255, 255, 255, 0.2); font-size: 14px;
+}
+.goal-text { font-size: 0.85rem; margin-top: 10px; color: var(--yellow); font-weight: bold; }
 
-.hud-val.yellow {
-    color: var(--yellow);
-}
+/* Weather & Bus status */
+#pass-bar { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); background: rgba(10, 10, 30, 0.85); border: 1.5px solid var(--yellow); border-radius: 12px; padding: 8px 18px; z-index: 10; display: flex; gap: 8px; align-items: center; }
+.pass-icon { font-size: 18px; filter: grayscale(1); transition: filter .3s; }
+.pass-icon.on { filter: none; }
+#pass-label { font-size: 11px; color: #aaa; letter-spacing: 1px; margin-right: 4px; }
+#weather-badge { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); background: rgba(10, 10, 30, 0.8); border: 1px solid rgba(150, 200, 255, 0.4); border-radius: 20px; padding: 4px 14px; font-size: 11px; color: #aef; letter-spacing: 1px; z-index: 10; }
+#next-stop { position: absolute; bottom: 68px; left: 50%; transform: translateX(-50%); background: rgba(10, 10, 30, 0.85); border: 1.5px solid var(--green); border-radius: 10px; padding: 6px 18px; font-size: 12px; color: var(--green); letter-spacing: 1px; z-index: 10; display: none; }
+#powerup-badge { position: absolute; top: 46px; left: 50%; transform: translateX(-50%); background: rgba(255, 214, 0, 0.18); border: 1.5px solid var(--yellow); border-radius: 20px; padding: 5px 16px; font-size: 12px; font-weight: 800; color: var(--yellow); letter-spacing: 1px; z-index: 10; animation: glow 0.8s infinite alternate; }
 
-/* Passenger bar */
-#pass-bar {
-    position: absolute;
-    bottom: 12px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(10, 10, 30, 0.85);
-    border: 1.5px solid var(--yellow);
-    border-radius: 12px;
-    padding: 8px 18px;
-    z-index: 10;
-    display: flex;
-    gap: 8px;
-    align-items: center;
-}
-
-.pass-icon {
-    font-size: 18px;
-    filter: grayscale(1);
-    transition: filter .3s;
-}
-
-.pass-icon.on {
-    filter: none;
-}
-
-#pass-label {
-    font-size: 11px;
-    color: #aaa;
-    letter-spacing: 1px;
-    margin-right: 4px;
-}
-
-/* Weather badge */
-#weather-badge {
-    position: absolute;
-    top: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(10, 10, 30, 0.8);
-    border: 1px solid rgba(150, 200, 255, 0.4);
-    border-radius: 20px;
-    padding: 4px 14px;
-    font-size: 11px;
-    color: #aef;
-    letter-spacing: 1px;
-    z-index: 10;
-}
-
-/* Next stop */
-#next-stop {
-    position: absolute;
-    bottom: 68px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(10, 10, 30, 0.85);
-    border: 1.5px solid var(--green);
-    border-radius: 10px;
-    padding: 6px 18px;
-    font-size: 12px;
-    color: var(--green);
-    letter-spacing: 1px;
-    z-index: 10;
-    display: none;
-}
-
-/* Controls hint */
-#ctrl {
-    position: absolute;
-    bottom: 12px;
-    right: 14px;
-    z-index: 10;
-    background: rgba(10, 10, 30, 0.75);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 8px;
-    padding: 7px 10px;
-    font-size: 10px;
-    color: #777;
-    line-height: 1.8;
-}
-
-.key {
-    display: inline-block;
-    background: #222;
-    border: 1px solid #444;
-    border-radius: 3px;
-    padding: 1px 5px;
-    color: #ccc;
-    font-size: 9px;
-}
+/* Controls */
+#ctrl { position: absolute; bottom: 20px; right: 20px; width: 140px; height: 100px; display: grid; grid-template-columns: 1fr 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 4px; z-index: 1000; }
+.ctrl-btn { width: 100%; height: 100%; border: none; border-radius: 10px; background: rgba(20, 20, 30, .85); color: #fff; font-size: 22px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: transform .1s; }
+.ctrl-btn:active { transform: scale(.92); }
+.ctrl-btn.horn { background: rgba(255, 214, 0, .85); color: #000; font-size: 18px; grid-row: span 2; }
 
 /* Overlay */
-#overlay {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background: rgba(5, 5, 20, 0.92);
-    z-index: 20;
-    backdrop-filter: blur(6px);
-}
+#overlay { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(5, 5, 20, 0.92); z-index: 100; backdrop-filter: blur(6px); }
+#overlay h1 { font-family: 'Bangers', cursive; font-size: 50px; color: var(--yellow); text-shadow: 0 0 20px var(--yellow); letter-spacing: 2px; margin-bottom: 5px; }
+.difficulty-select { display: flex; gap: 10px; margin-bottom: 20px; }
+.diff-btn { font-weight: 800; padding: 8px 16px; border: 1.5px solid rgba(255, 255, 255, 0.2); border-radius: 20px; background: rgba(255, 255, 255, 0.05); color: #ccc; cursor: pointer; }
+.diff-btn.active { background: var(--yellow); color: #000; border-color: var(--yellow); }
+#play-btn { font-family: 'Bangers', cursive; font-size: 22px; padding: 12px 40px; border: 2px solid var(--yellow); border-radius: 10px; background: transparent; color: var(--yellow); cursor: pointer; }
+#play-btn:hover { background: var(--yellow); color: #000; }
 
-#overlay h1 {
-    font-family: 'Bangers', cursive;
-    font-size: clamp(40px, 8vw, 80px);
-    color: var(--yellow);
-    text-shadow: 0 0 40px var(--yellow), 0 4px 0 #a00;
-    letter-spacing: 4px;
-    margin-bottom: 4px;
-}
-
-#overlay .tagline {
-    color: #aaa;
-    font-size: 14px;
-    letter-spacing: 3px;
-    margin-bottom: 30px;
-}
-
-.ov-stats {
-    display: flex;
-    gap: 14px;
-    margin-bottom: 26px;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-.ov-s {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 214, 0, 0.3);
-    border-radius: 8px;
-    padding: 10px 16px;
-    text-align: center;
-    min-width: 80px;
-}
-
-.ov-s .v {
-    font-family: 'Bangers', cursive;
-    font-size: 26px;
-    color: #fff;
-    letter-spacing: 1px;
-}
-
-.ov-s .l {
-    font-size: 10px;
-    color: #666;
-    letter-spacing: 1px;
-}
-
-#play-btn {
-    font-family: 'Bangers', cursive;
-    font-size: 22px;
-    letter-spacing: 4px;
-    padding: 14px 50px;
-    border: 2.5px solid var(--yellow);
-    border-radius: 10px;
-    background: transparent;
-    color: var(--yellow);
-    cursor: pointer;
-    transition: all .2s;
-    text-shadow: 0 0 10px var(--yellow);
-}
-
-#play-btn:hover {
-    background: var(--yellow);
-    color: #000;
-    box-shadow: 0 0 40px var(--yellow);
-}
-
-/* Flash */
-#flash {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    z-index: 15;
-    opacity: 0;
-    transition: opacity .15s;
-}
-
-/* Pickup popup */
-#popup {
-    position: absolute;
-    top: 18%;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(0, 230, 118, 0.18);
-    border: 1.5px solid var(--green);
-    border-radius: 10px;
-    padding: 8px 22px;
-    font-family: 'Bangers', cursive;
-    font-size: 22px;
-    color: var(--green);
-    letter-spacing: 2px;
-    z-index: 16;
-    opacity: 0;
-    transition: opacity .2s;
-    pointer-events: none;
-}
-#overlay{
-  z-index:100;
-  position:absolute;
-}
-
-#play-btn{
-  position:relative;
-  z-index:101;
-  cursor:pointer;
-}
-
-#c{
-  position:absolute;
-  inset:0;
-  z-index:1;
-}
-#ctrl{
-  position:absolute;
-  bottom:20px;
-  right:20px;
-
-  width:100px;
-  height:100px;
-
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  grid-template-rows:1fr 1fr;
-  gap:4px;
-
-  z-index:1000;
-}
-
-.ctrl-btn{
-  width:100%;
-  height:100%;
-
-  border:none;
-  border-radius:10px;
-
-  background:rgba(20,20,30,.85);
-  color:#fff;
-
-  font-size:24px;
-  font-weight:bold;
-
-  cursor:pointer;
-  user-select:none;
-  touch-action:none;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  transition:transform .1s ease;
-}
-
-.ctrl-btn:active{
-  transform:scale(.92);
-}
-
-#mini-map{
-    position:absolute;
-    bottom:110px;
-    left:50%;
-    transform:translateX(-50%);
-    width:min(500px,85vw);
-    height:60px;
-    z-index:50;
-}
-
-#mini-road{
-    position:absolute;
-    top:28px;
-    width:100%;
-    height:8px;
-    border-radius:20px;
-    background:#333;
-    border:2px solid #FFD600;
-}
-
-#mini-bus{
-    position:absolute;
-    top:0;
-    transform:translateX(-50%);
-    font-size:26px;
-}
-
-#mini-target{
-    position:absolute;
-    top:-5px;
-    transform:translateX(-50%);
-    font-size:30px;
-    animation:bounce 1s infinite;
-}
-
-#mini-arrow{
-    position:absolute;
-    top:32px;
-    font-size:20px;
-    color:#00ff66;
-}
-
-#mini-label{
-    position:absolute;
-    top:-20px;
-    width:100%;
-    text-align:center;
-    color:#fff;
-    font-weight:bold;
-    font-size:12px;
-}
-
-@keyframes bounce{
-    50%{
-        transform:translateX(-50%) translateY(-8px);
-    }
-}
-
-#pause-btn,
-#resume-btn{
-  position:absolute;
-  bottom:20px;
-  left:20px;
-  z-index:100;
-  padding:10px 16px;
-  border:none;
-  border-radius:10px;
-  background:#FFD600;
-  color:#000;
-  font-weight:bold;
-  cursor:pointer;
-}
-
-#resume-btn{
-  background:#00E676;
-}
-#restart-btn{
-  position:absolute;
-  bottom:70px;
-  left:20px;
-  z-index:100;
-  padding:10px 16px;
-  border:none;
-  border-radius:10px;
-  background:#ff6b35;
-  color:#fff;
-  font-weight:bold;
-  cursor:pointer;
-  box-shadow:0 4px 12px rgba(0,0,0,.3);
-}
-
-#restart-btn:hover{
-  transform:scale(1.05);
-}
+/* Game Actions (Pause/Restart) */
+#game-ctrl { position: absolute; bottom: 20px; left: 20px; z-index: 100; display: flex; flex-direction: column; gap: 8px; }
+#pause-btn, #restart-btn, #mute-btn { padding: 8px 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
+#pause-btn { background: var(--yellow); color: #000; }
+#restart-btn { background: #ff6b35; color: #fff; }
+#mute-btn { background: rgba(20, 20, 30, .85); color: #fff; }

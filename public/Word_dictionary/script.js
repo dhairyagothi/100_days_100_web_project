@@ -374,3 +374,31 @@ clearHistoryBtn.addEventListener('click', clearHistory);
 document.addEventListener('DOMContentLoaded', () => {
   renderHistory();
 });
+
+/*theme toggle*/
+const themeBtn = document.getElementById("theme");
+const icon = themeBtn.querySelector("i");
+
+// Load saved theme
+const savedTheme = localStorage.getItem("theme");
+
+if (savedTheme === "light") {
+    document.documentElement.classList.add("light-theme");
+    icon.classList.replace("fa-sun", "fa-moon");
+} else {
+    document.documentElement.classList.remove("light-theme");
+    icon.classList.replace("fa-moon", "fa-sun");
+}
+
+// Toggle theme
+themeBtn.addEventListener("click", () => {
+    document.documentElement.classList.toggle("light-theme");
+
+    if (document.documentElement.classList.contains("light-theme")) {
+        icon.classList.replace("fa-sun", "fa-moon");
+        localStorage.setItem("theme", "light");
+    } else {
+        icon.classList.replace("fa-moon", "fa-sun");
+        localStorage.setItem("theme", "dark");
+    }
+});
