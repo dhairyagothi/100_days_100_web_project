@@ -2909,16 +2909,44 @@
     "projectPath": "./public/dad-joke/index.html"
   },
   {
-    "projectNo": 230,
-    "projectName": "UnitVerse - Interactive Unit Converter Web App",
-    "projectType": "Tool",
-    "projectDesc": "An interactive unit converter with real-time conversion, history tracking, favorites system, and a modern responsive UI.",
+  "projectNo": 230,
+  "projectName": "UnitVerse - Interactive Unit Converter Web App",
+  "projectType": "Tool",
+  "projectDesc": "An interactive unit converter with real-time conversion, history tracking, favorites system, and a modern responsive UI.",
+  "techStack": [
+    "html", 
+    "css", 
+    "javascript"
+  ],
+  "difficulty": "intermediate",
+  "projectPath": "./public/UnitVerse/index.html"
+  },
+  {
+  "projectNo": 231,
+  "projectName": "World Explorer",
+  "projectType": "Tool",
+  "projectDesc": "An interactive world explorer that allows users to discover countries across the globe. Users can search countries, filter by region, view detailed information including capital, population, languages, currencies, time zones, and save favorite countries. The application features a modern responsive UI, dark/light mode, country cards, detailed modals, and an engaging exploration experience.",
+  "techStack": [
+    "html",
+    "css",
+    "javascript"
+  ],
+  "difficulty": "intermediate",
+  "projectPath": "./public/WorldExplorer/index.html"
+},
+  {
+    "projectNo": 232,
+    "projectName": "FLAVOURLY",
+    "projectType": "API",
+    "projectDesc": "A modern recipe discovery web application built with React and Vite. Search for recipes by meal name or ingredient, explore recipe details, save favorites, and filter vegetarian meals.",
     "techStack": [
+      "api",
+      "react",
+      "javascript",
       "html",
-      "css",
-      "javascript"
+      "css"
     ],
     "difficulty": "intermediate",
-    "projectPath": "./public/UnitVerse/index.html"
+    "projectPath": "./public/FLAVOURLY/index.html"
   }
 ]
