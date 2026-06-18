@@ -380,6 +380,157 @@ function filterCards(filter) {
 }
 
 // ============================================
+// Trip Planner Logic
+// ============================================
+
+const plannerSteps = document.querySelectorAll('.planner-step');
+const plannerStepNumber = document.getElementById('plannerStepNumber');
+const plannerProgressFill = document.getElementById('plannerProgressFill');
+const plannerBackBtn = document.getElementById('plannerBackBtn');
+const plannerNextBtn = document.getElementById('plannerNextBtn');
+const itineraryOutput = document.getElementById('itineraryOutput');
+const travelerDecrement = document.getElementById('travelerDecrement');
+const travelerIncrement = document.getElementById('travelerIncrement');
+const travelerCount = document.getElementById('travelerCount');
+const tripTypeChips = document.querySelectorAll('.trip-type-chip');
+
+let currentPlannerStep = 1;
+let selectedTripTypes = [];
+let travelers = 2;
+
+function updatePlannerStep() {
+  plannerSteps.forEach(step => {
+    const stepNumber = Number(step.dataset.step);
+    if (stepNumber === currentPlannerStep) {
+      step.classList.remove('hidden');
+    } else {
+      step.classList.add('hidden');
+    }
+  });
+
+  plannerStepNumber.textContent = currentPlannerStep;
+  plannerProgressFill.style.width = `${((currentPlannerStep - 1) / (plannerSteps.length - 1)) * 100}%`;
+
+  if (currentPlannerStep === 1) {
+    plannerBackBtn.disabled = true;
+    plannerBackBtn.classList.add('disabled');
+  } else {
+    plannerBackBtn.disabled = false;
+    plannerBackBtn.classList.remove('disabled');
+  }
+
+  if (currentPlannerStep === plannerSteps.length) {
+    plannerNextBtn.textContent = 'Generate Itinerary';
+    plannerNextBtn.setAttribute('aria-label', 'Generate itinerary');
+  } else {
+    plannerNextBtn.textContent = 'Next';
+    plannerNextBtn.setAttribute('aria-label', 'Next step');
+  }
+}
+
+function getSelectedTripTypes() {
+  return Array.from(tripTypeChips)
+    .filter(chip => chip.classList.contains('active'))
+    .map(chip => chip.dataset.type);
+}
+
+function generateMockItinerary() {
+  const destination = document.getElementById('plannerDestination').value;
+  const checkIn = document.getElementById('plannerCheckIn').value;
+  const checkOut = document.getElementById('plannerCheckOut').value;
+  const tripTypes = getSelectedTripTypes();
+  const typeLabel = tripTypes.length ? tripTypes.join(', ') : 'Balanced';
+  const totalDays = 4;
+
+  const mapping = {
+    Adventure: {
+      morning: 'Hiking trail with scenic views',
+      afternoon: 'Kayaking adventure on blue waters',
+      evening: 'Sunset rooftop bonfire'
+    },
+    Relaxation: {
+      morning: 'Spa morning and poolside lounge',
+      afternoon: 'Beachside cabana retreat',
+      evening: 'Sunset dinner with live music'
+    },
+    Culture: {
+      morning: 'Museum visit and guided city tour',
+      afternoon: 'Historic market and local crafts',
+      evening: 'Cultural performance experience'
+    },
+    Food: {
+      morning: 'Local breakfast tasting tour',
+      afternoon: 'Street food market crawl',
+      evening: 'Chef-led dining experience'
+    }
+  };
+
+  const activeType = tripTypes[0] || 'Adventure';
+  const itinerary = [];
+
+  for (let day = 1; day <= totalDays; day++) {
+    const activity = mapping[activeType] || mapping['Adventure'];
+    itinerary.push({
+      day,
+      morning: activity.morning,
+      afternoon: activity.afternoon,
+      evening: activity.evening
+    });
+  }
+
+  itineraryOutput.innerHTML = `
+    <div class="itinerary-summary">
+      <h3>Your ${typeLabel} itinerary for ${destination}</h3>
+      <p>${checkIn ? `From ${checkIn}` : ''}${checkIn && checkOut ? ' to ' : ''}${checkOut ? `${checkOut}` : ''}</p>
+    </div>
+    ${itinerary.map(day => `
+      <div class="itinerary-day">
+        <h4>Day ${day.day}</h4>
+        <p><strong>Morning:</strong> ${day.morning}</p>
+        <p><strong>Afternoon:</strong> ${day.afternoon}</p>
+        <p><strong>Evening:</strong> ${day.evening}</p>
+      </div>
+    `).join('')}
+  `;
+  itineraryOutput.classList.remove('hidden');
+}
+
+plannerBackBtn.addEventListener('click', () => {
+  if (currentPlannerStep > 1) {
+    currentPlannerStep -= 1;
+    updatePlannerStep();
+  }
+});
+
+plannerNextBtn.addEventListener('click', () => {
+  if (currentPlannerStep < plannerSteps.length) {
+    currentPlannerStep += 1;
+    updatePlannerStep();
+  } else {
+    generateMockItinerary();
+  }
+});
+
+travelerDecrement.addEventListener('click', () => {
+  if (travelers > 1) {
+    travelers -= 1;
+    travelerCount.textContent = travelers;
+  }
+});
+
+travelerIncrement.addEventListener('click', () => {
+  travelers += 1;
+  travelerCount.textContent = travelers;
+});
+
+tripTypeChips.forEach(chip => {
+  chip.addEventListener('click', () => {
+    const isActive = chip.classList.toggle('active');
+    chip.setAttribute('aria-pressed', String(isActive));
+  });
+});
+
+// ============================================
 // Initialize Featured Destinations
 // ============================================
 
@@ -387,6 +538,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initImageLoading();
   initWishlistButtons();
   initFilters();
+  updatePlannerStep();
 });
 
 
