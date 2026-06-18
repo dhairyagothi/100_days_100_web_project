@@ -335,9 +335,7 @@ window.onload = initGame;
 document.getElementById("quitBtn").addEventListener("click", () => {
   clearInterval(timer); 
   alert("Game Over! Thanks for playing.");
-  document.getElementById("jumble").textContent = "";
-  document.getElementById("hint").textContent = "";
-  document.getElementById("score").textContent = "Score: 0 (Record: 0)";
+  resetFullGame();
 });
 
 // ==========================

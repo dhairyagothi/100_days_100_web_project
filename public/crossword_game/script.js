@@ -257,10 +257,20 @@ function renderGrid() {
 
   for (let i = 0; i < currentPuzzle.size; i++) {
     for (let j = 0; j < currentPuzzle.size; j++) {
-      const cell = document.createElement("div");
+      const cell = document.createElement("input");
+cell.type = "text";
+cell.maxLength = 1;
       cell.classList.add("cell");
       cell.dataset.row = i;
       cell.dataset.col = j;
+
+      const wordStart = currentPuzzle.words.findIndex(
+  word => word.row === i && word.col === j
+);
+
+if (wordStart !== -1) {
+  cell.placeholder = wordStart + 1;
+}
 
       // Check if cell has a letter from any word
       const hasLetter = currentPuzzle.words.some((word) => {
@@ -285,10 +295,16 @@ function renderGrid() {
 
       if (!hasLetter) {
         cell.classList.add("black");
+        cell.disabled = true;
+  cell.readOnly = true;
+  cell.tabIndex = -1;
       } else {
-        cell.contentEditable = true;
-        cell.addEventListener("input", handleInput);
-        cell.addEventListener("focus", () => highlightWord(i, j));
+         cell.type = "text";
+  cell.maxLength = 1;
+
+  cell.addEventListener("input", handleInput);
+  cell.addEventListener("keydown", handleNavigation); // ADD HERE
+  cell.addEventListener("focus", () => highlightWord(i, j));
       }
 
       gridEl.appendChild(cell);
@@ -299,7 +315,50 @@ function renderGrid() {
 function handleInput(e) {
   const row = parseInt(e.target.dataset.row);
   const col = parseInt(e.target.dataset.col);
-  userAnswers[row][col] = e.target.textContent.trim().toUpperCase().slice(0, 1);
+
+  let value = e.target.textContent
+    .toUpperCase()
+    .replace(/[^A-Z]/g, "")
+    .charAt(0);
+
+  e.target.textContent = value;
+
+  userAnswers[row][col] = value;
+}
+
+function handleNavigation(e) {
+  const row = Number(e.target.dataset.row);
+  const col = Number(e.target.dataset.col);
+
+  let nextRow = row;
+  let nextCol = col;
+
+  switch (e.key) {
+    case "ArrowRight":
+      nextCol++;
+      break;
+    case "ArrowLeft":
+      nextCol--;
+      break;
+    case "ArrowDown":
+      nextRow++;
+      break;
+    case "ArrowUp":
+      nextRow--;
+      break;
+    default:
+      return;
+  }
+
+  e.preventDefault();
+
+  const nextCell = document.querySelector(
+    `.cell[data-row="${nextRow}"][data-col="${nextCol}"]:not(.black)`
+  );
+
+  if (nextCell) {
+    nextCell.focus();
+  }
 }
 
 function highlightWord(row, col) {
@@ -396,3 +455,11 @@ document.getElementById("check").addEventListener("click", checkAnswers);
 
 // Start the game
 initGame();
+
+document.addEventListener("click", (e) => {
+  if (!e.target.classList.contains("cell")) {
+    document
+      .querySelectorAll(".cell")
+      .forEach(cell => cell.classList.remove("highlight"));
+  }
+});

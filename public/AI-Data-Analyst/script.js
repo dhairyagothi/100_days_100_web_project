@@ -44,8 +44,7 @@ window
 // =========================
 
 function getChartThemeColors() {
-  const isDark =
-    document.documentElement.getAttribute("data-theme") === "dark";
+  const isDark = document.documentElement.getAttribute("data-theme") === "dark";
   return {
     grid: isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.06)",
     tick: isDark ? "#64748b" : "#94a3b8",
@@ -118,6 +117,7 @@ let headers = [];
 let distributionChart = null;
 let categoryChart = null;
 let heatmapChart = null;
+let isAskingQuestion = false;
 
 // =========================
 // CHART.JS GLOBAL DEFAULTS
@@ -126,9 +126,7 @@ let heatmapChart = null;
 const initialTheme = document.documentElement.getAttribute("data-theme");
 Chart.defaults.color = initialTheme === "dark" ? "#94a3b8" : "#64748b";
 Chart.defaults.borderColor =
-  initialTheme === "dark"
-    ? "rgba(255,255,255,0.07)"
-    : "rgba(0,0,0,0.06)";
+  initialTheme === "dark" ? "rgba(255,255,255,0.07)" : "rgba(0,0,0,0.06)";
 Chart.defaults.font.family = "'Plus Jakarta Sans', sans-serif";
 
 // =========================
@@ -1253,7 +1251,16 @@ Keep response concise.
 
 askDatasetBtn?.addEventListener("click", askDatasetQuestion);
 
+datasetQuestion?.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    askDatasetQuestion();
+  }
+});
+
 async function askDatasetQuestion() {
+  if (isAskingQuestion) return;
+
   const apiKey = groqApiInput.value.trim();
 
   if (!apiKey) {
@@ -1268,10 +1275,14 @@ async function askDatasetQuestion() {
     return;
   }
 
+  isAskingQuestion = true;
+  askDatasetBtn.disabled = true;
+
   datasetAnswer.innerHTML = `<p>🔍 Thinking...</p>`;
 
   const prompt = `
 You are a senior Data Scientist.
+
 Dataset Information:
 Rows: ${dataset.length}
 Columns: ${headers.join(", ")}
@@ -1281,7 +1292,9 @@ Selected Column: ${numericColumnSelect.value}
 Mean: ${document.getElementById("meanValue").textContent}
 Median: ${document.getElementById("medianValue").textContent}
 Standard Deviation: ${document.getElementById("stdValue").textContent}
+
 User Question: ${question}
+
 Answer clearly and concisely.
 `;
 
@@ -1302,12 +1315,20 @@ Answer clearly and concisely.
     );
 
     const data = await response.json();
-    const answer = data.choices?.[0]?.message?.content;
+
+    const answer =
+      data.choices?.[0]?.message?.content ||
+      "No response received from the AI.";
 
     datasetAnswer.innerHTML = `<p>${answer}</p>`;
+
+    datasetQuestion.value = "";
   } catch (error) {
     console.error(error);
     datasetAnswer.innerHTML = `<p>Failed to get response.</p>`;
+  } finally {
+    isAskingQuestion = false;
+    askDatasetBtn.disabled = false;
   }
 }
 

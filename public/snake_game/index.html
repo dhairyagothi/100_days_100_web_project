@@ -12,25 +12,30 @@
   <a href="/" class="project-back-button">← Back to Home</a>
   <!-- Theme Toggle -->
   <button id="themeToggle" class="theme-btn">🌙 Dark Mode</button>
-  
-  <!-- Main Game Container -->
-  <main class="game-container">
-    <section class="game-main">
-      <!-- HUD: Statistics -->
-      <div class="hud">
-        <div class="stat-box">
-          <span class="stat-label">Score</span>
-          <div class="stat-value" id="score">0</div>
-        </div>
-        <div class="stat-box">
-          <span class="stat-label">High Score</span>
-          <div class="stat-value" id="highscore">0</div>
-        </div>
-        <div class="stat-box">
-          <span class="stat-label">Level</span>
-          <div class="stat-value" id="level">1</div>
-        </div>
-      </div>
+  <div class="overlay-title">SNAKE GAME</div>
+  <div class="overlay-sub">
+    PRESS START TO BEGIN YOUR JOURNEY<br>
+    EAT • GROW • SURVIVE
+  </div>
+  <main class="game-shell">
+    <div class="hud">
+    <div class="stat-box">
+      <span class="stat-label">Score</span>
+      <div class="stat-value" id="score">0</div>
+    </div>
+    <div class="stat-box">
+      <span class="stat-label">High Score</span>
+      <div class="stat-value" id="highscore">0</div>
+    </div>
+    <div class="stat-box">
+      <span class="stat-label">Level</span>
+      <div class="stat-value" id="level">1</div>
+    </div>
+    <div class="stat-box color-box">
+      <label class="stat-label" for="snakeColorPicker">Snake Color</label>
+      <input type="color" id="snakeColorPicker" class="snake-color-picker" value="#39ff14" aria-label="Snake Color">
+    </div>
+  </div>
 
       <!-- Canvas Wrapper -->
       <div class="canvas-wrapper">
@@ -129,4 +134,5 @@
   <!-- Script -->
   <script src="./script.js?v=4"></script>
 </body>
+
 </html>
