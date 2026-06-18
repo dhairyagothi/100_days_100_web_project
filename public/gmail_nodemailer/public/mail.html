@@ -81,6 +81,28 @@
       const nameError = document.getElementById('nameError');
       const emailError = document.getElementById('emailError');
 
+      function isValidEmail(email) {
+        if (typeof email !== 'string') return false;
+        if (email.length === 0 || email.length > 254) return false;
+
+        const atIndex = email.indexOf('@');
+        if (atIndex <= 0 || atIndex !== email.lastIndexOf('@')) return false;
+
+        const localPart = email.slice(0, atIndex);
+        const domainPart = email.slice(atIndex + 1);
+
+        if (localPart.length === 0 || localPart.length > 64) return false;
+        if (domainPart.length === 0 || domainPart.length > 255) return false;
+
+        const simpleEmailPattern = /^[A-Za-z0-9._%+-]+$/;
+        const simpleDomainPattern = /^[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+
+        return (
+          simpleEmailPattern.test(localPart) &&
+          simpleDomainPattern.test(domainPart)
+        );
+      }
+
       function validateForm() {
         let valid = true;
 
@@ -91,8 +113,7 @@
           nameError.classList.remove('show');
         }
 
-        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailPattern.test(emailInput.value.trim())) {
+        if (!isValidEmail(emailInput.value.trim())) {
           emailError.classList.add('show');
           valid = false;
         } else {

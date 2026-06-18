@@ -14,15 +14,37 @@ const missingVars = REQUIRED_ENV_VARS.filter((key) => !process.env[key]);
 
 if (missingVars.length > 0) {
   console.error(
-    ` Missing required environment variable(s): ${missingVars.join(', ')}`
+    `Missing required environment variable(s): ${missingVars.join(', ')}`
   );
   console.error(
-    ' Create a .env file in the project root (see .env.example) and set these values.'
+    'Create a .env file in the project root (see .env.example) and set these values.'
   );
   console.error(
-    ' EMAIL_PASS must be a 16-character Gmail "App Password", NOT your normal Gmail password.'
+    'EMAIL_PASS must be a 16-character Gmail "App Password", NOT your normal Gmail password.'
   );
   process.exit(1);
+}
+
+function isValidEmail(email) {
+  if (typeof email !== 'string') return false;
+  if (email.length === 0 || email.length > 254) return false; // RFC 5321 max length
+
+  const atIndex = email.indexOf('@');
+  if (atIndex <= 0 || atIndex !== email.lastIndexOf('@')) return false;
+
+  const localPart = email.slice(0, atIndex);
+  const domainPart = email.slice(atIndex + 1);
+
+  if (localPart.length === 0 || localPart.length > 64) return false;
+  if (domainPart.length === 0 || domainPart.length > 255) return false;
+
+  // Simple, bounded, non-backtracking checks (no nested quantifiers)
+  const simpleEmailPattern = /^[A-Za-z0-9._%+-]+$/;
+  const simpleDomainPattern = /^[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+
+  return (
+    simpleEmailPattern.test(localPart) && simpleDomainPattern.test(domainPart)
+  );
 }
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -47,7 +69,7 @@ transporter.verify((error) => {
     console.error('Nodemailer transporter verification failed:');
     console.error(error.message);
     console.error(
-      'Double check EMAIL_USER / EMAIL_PASS in your .env file and that 2-Step Verification + App Password are enabled on the Gmail account.'
+      '👉 Double check EMAIL_USER / EMAIL_PASS in your .env file and that 2-Step Verification + App Password are enabled on the Gmail account.'
     );
   } else {
     console.log('Nodemailer is configured correctly and ready to send emails.');
@@ -69,8 +91,7 @@ app.post('/subscribe', async (req, res) => {
     });
   }
 
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(emailid)) {
+  if (!isValidEmail(emailid)) {
     return res.status(400).json({
       success: false,
       message: 'Please enter a valid email address.',
@@ -80,7 +101,7 @@ app.post('/subscribe', async (req, res) => {
   const mailOptions = {
     from: `"Newsletter" <${process.env.EMAIL_USER}>`,
     to: emailid,
-    subject: 'Welcome to Our Newsletter ',
+    subject: 'Welcome to Our Newsletter',
     html: `
   <!DOCTYPE html>
   <html>
