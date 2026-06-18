@@ -3197,8 +3197,22 @@
     "projectPath": "./public/UnitVerse/index.html",
     "previewImage": "./public/previews/UnitVerse.png"
   },
+  
   {
     "projectNo": 234,
+    "projectName": "AI-Prompt-Optimizer",
+    "projectType": "Tool",
+    "projectDesc": "Analyze, score, and optimize AI prompts with smart suggestions.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/AI-Prompt-Optimizer/index.html"
+  },
+  {
+    "projectNo": 235,
     "projectName": "World Explorer",
     "projectType": "Tool",
     "projectDesc": "An interactive world explorer that allows users to discover countries across the globe. Users can search countries, filter by region, view detailed information including capital, population, languages, currencies, time zones, and save favorite countries. The application features a modern responsive UI, dark/light mode, country cards, detailed modals, and an engaging exploration experience.",
@@ -3212,7 +3226,7 @@
     "previewImage": "./public/previews/WorldExplorer.png"
   },
   {
-    "projectNo": 235,
+    "projectNo": 236,
     "projectName": "FLAVOURLY",
     "projectType": "API",
     "projectDesc": "A modern recipe discovery web application built with React and Vite. Search for recipes by meal name or ingredient, explore recipe details, save favorites, and filter vegetarian meals.",
