@@ -1,0 +1,49 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper function to check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    // Helper function to check if the user is accessing their own data
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // Users collection
+    match /users/{userId} {
+      allow read, write: if isOwner(userId);
+    }
+    
+    // Progress collection
+    match /progress/{userId} {
+      allow read, write: if isOwner(userId);
+    }
+    
+    // Starred collection
+    match /starred/{userId} {
+      allow read, write: if isOwner(userId);
+    }
+
+    // Activity collection
+    match /activity/{userId} {
+      allow read, write: if isOwner(userId);
+    }
+    
+    // Discussions collection (and comments subcollection)
+    match /discussions/{questionId} {
+      // Allow anyone authenticated to read discussions
+      allow read: if isAuthenticated();
+      
+      match /comments/{commentId} {
+        allow read: if isAuthenticated();
+        // Allow creating comments if authenticated and the userId matches
+        allow create: if isAuthenticated() && request.resource.data.userId == request.auth.uid;
+        // Allow update/delete if the user owns the comment
+        allow update, delete: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      }
+    }
+  }
+}

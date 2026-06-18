@@ -2964,7 +2964,6 @@
     "difficulty": "intermediate",
     "projectPath": "./public/UnitVerse/index.html"
   },
-  
   {
     "projectNo": 234,
     "projectName": "AI-Prompt-Optimizer",
@@ -3005,5 +3004,23 @@
     ],
     "difficulty": "intermediate",
     "projectPath": "./public/FLAVOURLY/index.html"
+  },
+  {
+    "projectNo": 237,
+    "projectName": "AlgoGATE",
+    "projectType": "Website",
+    "projectDesc": "A structured, topic-wise competitive programming platform with guided question set",
+    "techStack": [
+      "react",
+      "firebase",
+      "javascript",
+      "tailwind",
+      "api",
+      "html",
+      "css",
+      "vite"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/AlgoGATE/index.html"
   }
 ]

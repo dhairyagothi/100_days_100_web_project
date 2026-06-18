@@ -1,0 +1,241 @@
+Topic,Problem Name,Rating,URL,Hint
+Bit-Manipulation,Special Permutation,800,https://codeforces.com/problemset/problem/1454/A,Reverse permutation and swap center if n is odd
+Bit-Manipulation,XORwice,800,https://codeforces.com/problemset/problem/1421/A,The optimal x is simply (a AND b)
+Bit-Manipulation,And Then There Were K,800,https://codeforces.com/problemset/problem/1527/A,Find the largest power of 2 less than or equal to n
+Bit-Manipulation,Fedor and New Game,900,https://codeforces.com/problemset/problem/467/B,Count set bits in (a XOR b) to find differences
+Bit-Manipulation,Mocha and Math,900,https://codeforces.com/problemset/problem/1559/A,Bitwise AND all elements in the array
+Bit-Manipulation,Little Girl and Maximum XOR,1000,https://codeforces.com/problemset/problem/276/D,Find the first bit where L and R differ
+Bit-Manipulation,Raising Bacteria,1000,https://codeforces.com/problemset/problem/579/A,Answer is the number of set bits in n
+Bit-Manipulation,XOR-distance,1300,https://codeforces.com/problemset/problem/1918/C,Greedy bit flipping to minimize absolute difference
+Bit-Manipulation,XOR Specia-LIS-t,1300,https://codeforces.com/problemset/problem/1604/B,Check if n is even or if any adjacent pair is non-increasing
+Bit-Manipulation,Petr and Combination Lock,1300,https://codeforces.com/problemset/problem/1097/B,Iterate through all 2^n combinations of +/-
+Bit-Manipulation,Powers of Two,1400,https://codeforces.com/problemset/problem/1095/C,Represent n as sum of k powers of 2 using a priority queue
+Bit-Manipulation,Preparing Olympiad,1400,https://codeforces.com/problemset/problem/550/B,Bitmask to try all subsets and check constraints
+Bit-Manipulation,A and B and Compilation Errors,1100,https://codeforces.com/problemset/problem/519/B,Use XOR sum to find the missing number
+Bit-Manipulation,Minimal XOR,1400,https://codeforces.com/problemset/problem/1922/C,Prefix sums of distances to nearest neighbor
+Bit-Manipulation,Product 1 Modulo n,1500,https://codeforces.com/problemset/problem/1514/C,Pick all coprime numbers; check if their product mod n is 1
+Bit-Manipulation,And It's Non-Zero,1500,https://codeforces.com/problemset/problem/1615/B,Find the bit position with the most set bits in range [L R]
+Bit-Manipulation,The Wu,1500,https://codeforces.com/problemset/problem/1032/C,Subset sum DP with bitmask optimization
+Bit-Manipulation,Fair Game,800,https://codeforces.com/problemset/problem/864/A,Count frequencies of distinct numbers
+Bit-Manipulation,Rock and Lever,1200,https://codeforces.com/problemset/problem/1420/B,Count numbers with the same highest set bit
+Bit-Manipulation,Strings and XOR,1500,https://codeforces.com/problemset/problem/1569/C,Combinatorics with exclusion of forbidden patterns
+Hashing,Anton and Letters,800,https://codeforces.com/problemset/problem/443/A,Use a set for unique character counts
+Hashing,Radio Station,1000,https://codeforces.com/problemset/problem/918/B,Map IP address to server name
+Hashing,Registration System,1000,https://codeforces.com/problemset/problem/4/C,Map string to frequency; append count if exists
+Hashing,Lecture,1000,https://codeforces.com/problemset/problem/499/B,Dictionary map to store word pairs
+Hashing,Pangram,800,https://codeforces.com/problemset/problem/520/A,Set size should be 26 after lowercasing
+Hashing,Tom Riddle's Diary,900,https://codeforces.com/problemset/problem/855/A,Set to track seen names
+Hashing,Good Phrases,1100,https://codeforces.com/problemset/problem/1061/A,Frequency map to check valid distribution
+Hashing,Winner,1500,https://codeforces.com/problemset/problem/2/A,Map for final scores then map for first to reach target
+Hashing,DZY Loves Hash,900,https://codeforces.com/problemset/problem/447/A,Direct addressing to detect first collision
+Hashing,Polycarp's Pockets,800,https://codeforces.com/problemset/problem/1003/A,Find the maximum frequency of any element
+Hashing,Unique Bid Auction,800,https://codeforces.com/problemset/problem/1454/B,Map frequency and find smallest with count 1
+Hashing,Maximum of Maximums,1200,https://codeforces.com/problemset/problem/1426/C,Binary search or frequency counting
+Hashing,Keep it Quiet,1300,https://codeforces.com/problemset/problem/1535/C,Hash states of alternating strings
+Hashing,Double Strings,1100,https://codeforces.com/problemset/problem/1703/D,Set for O(1) lookup of prefixes and suffixes
+Hashing,Same Differences,1200,https://codeforces.com/problemset/problem/1520/D,Map frequency of (a[i] - i)
+Hashing,Two Substrings,1500,https://codeforces.com/problemset/problem/550/A,Check for non-overlapping 'AB' and 'BA'
+Hashing,Berland Music,1000,https://codeforces.com/problemset/problem/1622/B,Sort by frequency and original rating
+Hashing,Good Subarrays,1500,https://codeforces.com/problemset/problem/1398/C,Map prefix sum minus index: (P[i] - i)
+Hashing,Password,1500,https://codeforces.com/problemset/problem/126/B,String hashing or Z-algorithm for prefix-suffix match
+Hashing,Delete from Left,900,https://codeforces.com/problemset/problem/1005/B,Find longest common suffix
+Binary Search,Poisoned Dagger,1200,https://codeforces.com/problemset/problem/1613/C,Binary search on damage value k
+Binary Search,Magic Powder - 1,1200,https://codeforces.com/problemset/problem/670/D1,Binary search on number of cookies possible
+Binary Search,Worms,1400,https://codeforces.com/problemset/problem/474/B,Binary search on prefix sums
+Binary Search,Interesting drink,1100,https://codeforces.com/problemset/problem/706/B,upper_bound to find affordable shops
+Binary Search,Hamburgers,1500,https://codeforces.com/problemset/problem/371/C,Binary search on total hamburgers
+Binary Search,Maximum Median,1400,https://codeforces.com/problemset/problem/1201/C,Binary search on the median value
+Binary Search,Sagheer and Nubian Market,1500,https://codeforces.com/problemset/problem/812/C,Binary search on k items
+Binary Search,Get together,1500,https://codeforces.com/problemset/problem/1030/C,Binary search on time T with interval intersection
+Binary Search,K-th Not Divisible by n,1200,https://codeforces.com/problemset/problem/1352/C,Math formula or binary search on value
+Binary Search,Vanya and Lanterns,1200,https://codeforces.com/problemset/problem/492/B,Binary search on radius d
+Binary Search,Multiplication Table,1400,https://codeforces.com/problemset/problem/448/D,Binary search for k-th value in N*M table
+Binary Search,Books,1200,https://codeforces.com/problemset/problem/279/B,Two pointers or binary search on prefix sums
+Binary Search,Letters,1000,https://codeforces.com/problemset/problem/978/C,Lower bound on prefix sums of dorm sizes
+Binary Search,Pipeline,1500,https://codeforces.com/problemset/problem/287/B,Binary search on the number of splitters
+Binary Search,Cellular Network,1500,https://codeforces.com/problemset/problem/702/C,Binary search radius or find nearest tower
+Binary Search,Array Division,1500,https://codeforces.com/problemset/problem/808/D,Binary search with prefix/suffix sets
+Binary Search,Balanced Team,1200,https://codeforces.com/problemset/problem/1133/C,Sort and binary search for max range
+Binary Search,Ehab and a Special Coloring Problem,1400,https://codeforces.com/problemset/problem/1174/C,Sieve-like approach with binary properties
+Binary Search,Ternary Search,1500,https://codeforces.com/problemset/problem/1900/C,Binary search on tree depths
+Binary Search,String Game,1500,https://codeforces.com/problemset/problem/778/A,Binary search on how many characters to delete
+Number Theory,Divisibility Problem,800,https://codeforces.com/problemset/problem/1328/A,Simple modulo calculation
+Number Theory,Maximum GCD,800,https://codeforces.com/problemset/problem/1370/A,Answer is n/2
+Number Theory,LCM Problem,800,https://codeforces.com/problemset/problem/1389/A,Output [L 2*L] if 2*L <= R
+Number Theory,Design Tutorial: Learn from Math,800,https://codeforces.com/problemset/problem/472/A,Split n into 9+(n-9) or 8+(n-8)
+Number Theory,T-primes,1300,https://codeforces.com/problemset/problem/230/B,Check if sqrt(n) is prime
+Number Theory,Noldbach Conjecture,1000,https://codeforces.com/problemset/problem/17/A,Sieve of Eratosthenes to check p1+p2+1
+Number Theory,Sherlock and his girlfriend,1200,https://codeforces.com/problemset/problem/776/B,Prime = 1 Composite = 2
+Number Theory,Fadi and LCM,1300,https://codeforces.com/problemset/problem/1285/C,Check divisors of X near sqrt(X) where gcd is 1
+Number Theory,Prime Matrix,1200,https://codeforces.com/problemset/problem/271/B,Sieve to find nearest prime for each cell
+Number Theory,Product 1 Modulo n,1500,https://codeforces.com/problemset/problem/1514/C,Pick all i such that gcd(i n) == 1
+Number Theory,Hexagons!,800,https://codeforces.com/problemset/problem/630/D,Sum of arithmetic progression 3n(n+1)+1
+Number Theory,Again Twenty Five!,800,https://codeforces.com/problemset/problem/630/A,Output 25 (constant for n >= 2)
+Number Theory,Buying Shovels,1300,https://codeforces.com/problemset/problem/1360/D,Find the largest divisor of n that is <= k
+Number Theory,Duff in Love,1200,https://codeforces.com/problemset/problem/588/B,Divide n by all square factors
+Number Theory,Orac and Models,1400,https://codeforces.com/problemset/problem/1350/B,DP where dp[j] = max(dp[i])+1 for i|j
+Number Theory,Common Divisors,1200,https://codeforces.com/problemset/problem/1203/C,Count divisors of the GCD of the array
+Number Theory,Jabeer and GCD,1400,https://codeforces.com/problemset/problem/1373/D,Maximize subarray sum using GCD properties
+Number Theory,Nezzar and Lucky Number,1100,https://codeforces.com/problemset/problem/1478/B,Check if n >= d*10 else brute force
+Number Theory,Divisible by Seven,1500,https://codeforces.com/problemset/problem/407/A,Coordinate geometry with Pythagoras
+Number Theory,GCD Compression,1200,https://codeforces.com/problemset/problem/1370/B,Separate odd and even numbers
+Trees,Party,900,https://codeforces.com/problemset/problem/115/A,Find the maximum depth of the forest
+Trees,Kefa and Park,1500,https://codeforces.com/problemset/problem/580/C,DFS while counting consecutive cat nodes
+Trees,Christmas Spruce,1100,https://codeforces.com/problemset/problem/913/B,Check if every non-leaf has >= 3 leaf children
+Trees,Queen,1300,https://codeforces.com/problemset/problem/1143/C,Delete node if it and all children respect none
+Trees,Circumference of a Tree,1500,https://codeforces.com/problemset/problem/1300/B,Find the tree diameter (max distance)
+Trees,Masha and a Beautiful Tree,1100,https://codeforces.com/problemset/problem/1741/D,Divide and conquer to sort the tree
+Trees,Journey,1500,https://codeforces.com/problemset/problem/839/C,DFS to calculate expected path length
+Trees,Tree with Maximum Cost,1400,https://codeforces.com/problemset/problem/1092/F,Rerooting DP to calculate sum of dist*a[i]
+Trees,Bear and Three Musketeers,1500,https://codeforces.com/problemset/problem/574/B,Find a cycle of length 3 with minimum degrees
+Trees,Linova and Kingdom,1500,https://codeforces.com/problemset/problem/1336/A,Greedy pick nodes based on depth - subtree_size
+Trees,Mahmoud and Ehab and the bipartiteness,1100,https://codeforces.com/problemset/problem/862/B,Count nodes in two sets of bipartite graph
+Trees,Timofey and a tree,1500,https://codeforces.com/problemset/problem/763/A,Check nodes incident to edges with different colors
+Trees,Fill the Tree,1400,https://codeforces.com/problemset/problem/1300/C,Greedy bitwise OR on tree paths
+Trees,Useful Decomposition,1300,https://codeforces.com/problemset/problem/981/C,Check if at most one node has degree > 2
+Trees,New Year Tree,1500,https://codeforces.com/problemset/problem/620/C,DFS with bitmask for color tracking
+Trees,Valid BFS?,1500,https://codeforces.com/problemset/problem/1037/D,Sort adjacency lists based on BFS input order
+Trees,Book Exchange,1200,https://codeforces.com/problemset/problem/1249/B2,Find cycle sizes in the permutation
+Trees,Metro,800,https://codeforces.com/problemset/problem/1055/A,Check connectivity in a simple directed graph
+Trees,News Distribution,1400,https://codeforces.com/problemset/problem/1167/C,DSU to find size of connected components
+Trees,Maximum White Subtree,1500,https://codeforces.com/problemset/problem/1324/F,Rerooting DP with +/- 1 for colors
+Matrix/Grids,Beautiful Matrix,800,https://codeforces.com/problemset/problem/263/A,Manhattan distance to (3 3)
+Matrix/Grids,Fox and Snake,800,https://codeforces.com/problemset/problem/510/A,Implementation of snake movement
+Matrix/Grids,Young Physicist,1000,https://codeforces.com/problemset/problem/69/A,Sum of coordinates in 3D grid
+Matrix/Grids,Gravity Flip,900,https://codeforces.com/problemset/problem/405/A,Sort the column heights
+Matrix/Grids,Labyrinth,1500,https://codeforces.com/problemset/problem/1063/B,0-1 BFS to minimize left/right moves
+Matrix/Grids,Inhabitant of the Deep Sea,1300,https://codeforces.com/problemset/problem/1955/C,Greedy from both ends of the row
+Matrix/Grids,Robots,1100,https://codeforces.com/problemset/problem/1680/A,Find intersection of two robot intervals
+Matrix/Grids,The Cake is a Lie,800,https://codeforces.com/problemset/problem/1519/B,Cost is always n*m - 1 regardless of path
+Matrix/Grids,Minimum Grid Path,1400,https://codeforces.com/problemset/problem/1499/C,Greedy prefix sums for horizontal/vertical steps
+Matrix/Grids,Array and Peaks,800,https://codeforces.com/problemset/problem/1513/A,Place peaks at odd indices
+Matrix/Grids,Two Buttons,1000,https://codeforces.com/problemset/problem/520/B,BFS or greedy from target to start
+Matrix/Grids,Maze,1500,https://codeforces.com/problemset/problem/377/A,DFS and keep the first (S - k) nodes
+Matrix/Grids,The Labyrinth,1500,https://codeforces.com/problemset/problem/616/C,Group empty cells into components with DSU
+Matrix/Grids,Magic Ship,1500,https://codeforces.com/problemset/problem/1117/C,Binary search on time to reach destination
+Matrix/Grids,Maximum Square,800,https://codeforces.com/problemset/problem/1243/A,Sort heights and find k where k-th height >= k
+Matrix/Grids,Rectangular Game,1200,https://codeforces.com/problemset/problem/177/C1,Find the largest clique in a social grid
+Matrix/Grids,Counting Kangaroos,1500,https://codeforces.com/problemset/problem/372/A,Sort and two pointers from middle
+Matrix/Grids,Woodcutters,1500,https://codeforces.com/problemset/problem/545/C,Greedy: fall left if possible else fall right
+Matrix/Grids,Vanya and Exams,1500,https://codeforces.com/problemset/problem/492/C,Greedy: pick exams with lowest cost to increase
+Matrix/Grids,Dijkstra?,1500,https://codeforces.com/problemset/problem/20/C,Standard Dijkstra with path reconstruction
+Games,Game with Sticks,900,https://codeforces.com/problemset/problem/451/A,Winner depends on parity of min(n m)
+Games,Mishka and Game,800,https://codeforces.com/problemset/problem/703/A,Count rounds won by each player
+Games,Sequential Nim,1100,https://codeforces.com/problemset/problem/1382/B,Winner depends on leading 1s parity
+Games,Stoned Game,1400,https://codeforces.com/problemset/problem/1396/B,HL wins if max_pile > sum/2 else parity
+Games,Palindrome Game (easy),1200,https://codeforces.com/problemset/problem/1527/B1,BOB wins unless zero count is odd and > 1
+Games,New Year and Constellation,1400,https://codeforces.com/problemset/problem/611/C,2D prefix sums for grid queries
+Games,Even-Odd Game,1200,https://codeforces.com/problemset/problem/1472/D,Greedy: always pick the largest available number
+Games,Number Game,1300,https://codeforces.com/problemset/problem/1370/C,Case analysis on prime factors and powers of 2
+Games,Array Game,1200,https://codeforces.com/problemset/problem/1907/C,Max frequency vs remaining sum
+Games,Permutation Game,1500,https://codeforces.com/problemset/problem/1968/D,Compare scores of staying vs moving
+Games,Card Game,800,https://codeforces.com/problemset/problem/1772/A,Simple comparison of max cards
+Games,Sasha and the Casino,1500,https://codeforces.com/problemset/problem/1929/C,Check if sasha can always bet to cover losses
+Games,Alice and the List of Presents,1200,https://codeforces.com/problemset/problem/1236/B,Modular exponentiation (2^m - 1)^n
+Games,Tax,1500,https://codeforces.com/problemset/problem/755/C,Find number of connected components in a forest
+Games,In-game Chat,800,https://codeforces.com/problemset/problem/1411/A,Count trailing brackets vs remaining length
+Games,Winner,1500,https://codeforces.com/problemset/problem/2/A,Hashing scores over time
+Games,Berland Poker,800,https://codeforces.com/problemset/problem/1359/A,Max jokers minus max jokers for others
+Games,A Game with Board,800,https://codeforces.com/problemset/problem/1841/A,Alice wins if n >= 5
+Games,Tenzing and Tsondu,800,https://codeforces.com/problemset/problem/1842/A,Compare the sum of abilities
+Games,Two-Gram,900,https://codeforces.com/problemset/problem/977/B,Find the most frequent pair of characters
+Strings,Petya and Strings,800,https://codeforces.com/problemset/problem/112/A,Case-insensitive lexicographical comparison [cite: 12]
+Strings,Word Capitalization,800,https://codeforces.com/problemset/problem/281/A,Check and modify only the first character
+Strings,Translation,800,https://codeforces.com/problemset/problem/41/A,Check if one string is the reverse of the other
+Strings,Dubstep,900,https://codeforces.com/problemset/problem/208/A,Remove WUB and handle extra spaces carefully [cite: 3]
+Strings,Helpful Maths,800,https://codeforces.com/problemset/problem/339/A,Sort numerical characters and join with plus signs [cite: 13]
+Strings,String Task,1000,https://codeforces.com/problemset/problem/118/A,Filter vowels and insert dots before consonants [cite: 13]
+Strings,cAPS lOCK,1000,https://codeforces.com/problemset/problem/131/A,Flip cases only if the word is all caps or only first is lower
+Strings,Football,900,https://codeforces.com/problemset/problem/96/A,Look for a substring of 7 identical characters [cite: 14]
+Strings,Pangram,800,https://codeforces.com/problemset/problem/520/A,Check if the set of characters has size 26
+Strings,Good Substrings,1500,https://codeforces.com/problemset/problem/271/D,Use a Trie or Rolling Hash to count unique valid substrings
+Strings,Reverse String,1500,https://codeforces.com/problemset/problem/1553/B,Simulate moving right then left to match target
+Strings,ABBB,1100,https://codeforces.com/problemset/problem/1428/B,Stack-like logic: AB and BB can both be deleted
+Strings,The Number of Imposters,1400,https://codeforces.com/problemset/problem/1594/D,String-based logic mixed with bipartite coloring
+Strings,Common Prefixes,1200,https://codeforces.com/problemset/problem/1385/C,Construct strings by changing one char at index a[i]
+Strings,Lucky String,1100,https://codeforces.com/problemset/problem/110/C,Pattern 'abcd' repeated n times
+Strings,String Typo,1300,https://codeforces.com/problemset/problem/285/C,Greedy removal of three-in-a-row or double-double pairs
+Strings,A-B Palindrome,1200,https://codeforces.com/problemset/problem/1512/C,Fill fixed chars then use remaining 0s and 1s greedily
+Strings,Boring Apartments,800,https://codeforces.com/problemset/problem/1433/A,Calculate digits based on length and digit value
+Strings,Short Substrings,800,https://codeforces.com/problemset/problem/1367/A,Take every second character after the first
+Strings,Longest Palindrome,1200,https://codeforces.com/problemset/problem/1304/B,Find pairs of reverse strings and one self-palindrome
+Stacks,Queue at the School,800,https://codeforces.com/problemset/problem/266/B,Simulate swaps (can be thought of as a simple stack/queue) [cite: 13]
+Stacks,Maximum of Maximums of Minimums,1400,https://codeforces.com/problemset/problem/870/C,Case analysis on k; k=2 uses prefix/suffix min
+Stacks,Min Stack (Custom),1200,https://codeforces.com/problemset/problem/1092/B,Sort and process in pairs
+Stacks,Minimal Height Tree,1500,https://codeforces.com/problemset/problem/1437/D,BFS queue to build tree levels
+Stacks,Alternating Subsequence,1200,https://codeforces.com/problemset/problem/1343/C,Keep max of current sign segment (stack logic)
+Stacks,Productive Meeting,1400,https://codeforces.com/problemset/problem/1579/E1,Priority queue (max-stack behavior) to pair talkative people
+Stacks,Balanced Tunnel,1400,https://codeforces.com/problemset/problem/1239/A,Queue/pointer logic to see who was overtaken
+Stacks,Longest Regular Bracket Sequence,1500,https://codeforces.com/problemset/problem/5/C,Use a stack to find matching pairs and their lengths
+Stacks,Graph and String,1500,https://codeforces.com/problemset/problem/623/A,Check consistency of 'b' characters in the middle
+Stacks,Array Cancellation,1000,https://codeforces.com/problemset/problem/1405/B,Maintain a 'balance' of positive numbers to negate negatives
+Stacks,Poisoned Dagger,1200,https://codeforces.com/problemset/problem/1613/C,Simulate damage with a time-stack
+Stacks,Expression,1000,https://codeforces.com/problemset/problem/479/A,Try all parenthesized combinations (stack-like evaluation)
+Stacks,Compote,800,https://codeforces.com/problemset/problem/746/A,Take min ratio of 1:2:4
+Stacks,Card Constructions,1100,https://codeforces.com/problemset/problem/1345/B,Greedily subtract largest possible pyramid
+Stacks,Broken Keyboard,1000,https://codeforces.com/problemset/problem/1251/A,Characters occurring in odd-length blocks are valid
+Stacks,Add to Neighbour,1400,https://codeforces.com/problemset/problem/1462/D,Simulate merging until all elements are equal
+Stacks,Playlist,1500,https://codeforces.com/problemset/problem/1140/C,Priority queue to keep the 'k' best lengths
+Stacks,Tea Party,1300,https://codeforces.com/problemset/problem/808/C,Fill half then greedily distribute the rest
+Stacks,Plug-in,1300,https://codeforces.com/problemset/problem/81/A,Standard stack to remove adjacent duplicate characters
+Stacks,Cleaning the Phone,1500,https://codeforces.com/problemset/problem/1475/D,Two pointers or greedy stack on points-per-cost
+Sortings,Gravity Flip,900,https://codeforces.com/problemset/problem/405/A,Standard ascending sort [cite: 22]
+Sortings,Dragons,1000,https://codeforces.com/problemset/problem/230/A,Sort by dragon strength and process greedily [cite: 27]
+Sortings,Twins,900,https://codeforces.com/problemset/problem/160/A,Sort descending and take until sum > half [cite: 14, 27]
+Sortings,Puzzles,1000,https://codeforces.com/problemset/problem/337/A,Sort and use sliding window of size n [cite: 20, 27]
+Sortings,Laptops,1100,https://codeforces.com/problemset/problem/456/A,Sort by price and check if quality is ever decreasing [cite: 27]
+Sortings,Vanya and Lanterns,1200,https://codeforces.com/problemset/problem/492/B,Sort positions to find maximum gap [cite: 28]
+Sortings,BerSU Ball,1200,https://codeforces.com/problemset/problem/489/B,Sort both arrays and use two pointers [cite: 29]
+Sortings,K-th Not Divisible by n,1200,https://codeforces.com/problemset/problem/1352/C,Sorting/Math to find the k-th gap [cite: 9]
+Sortings,Honest Coach,800,https://codeforces.com/problemset/problem/1360/B,Sort and find the minimum difference between neighbors [cite: 29]
+Sortings,Tanya and Candies,1200,https://codeforces.com/problemset/problem/1118/B,Precalculate even/odd sums [cite: 11]
+Sortings,Array Sharpening,1200,https://codeforces.com/problemset/problem/1291/A,Check if prefix and suffix can meet at an index
+Sortings,Unique Bid Auction,800,https://codeforces.com/problemset/problem/1454/B,Sort by value but keep track of original indices
+Sortings,Books,1200,https://codeforces.com/problemset/problem/279/B,Sort (already sorted) and use two pointers
+Sortings,Move Brackets,1000,https://codeforces.com/problemset/problem/1374/C,Sort logic: count nested pairs and move the rest
+Sortings,Boxes Packing,1200,https://codeforces.com/problemset/problem/903/C,Frequency of the most frequent item (after sorting)
+Sortings,Two Arrays,1000,https://codeforces.com/problemset/problem/1582/B,Sort and compare element-wise with +1 allowance
+Sortings,Stable Groups,1200,https://codeforces.com/problemset/problem/1539/C,Sort differences and greedily fill the largest gaps
+Sortings,Sasha and Magnetic Machines,1400,https://codeforces.com/problemset/problem/1113/B,Try dividing a large number and multiplying a small one
+Sortings,Potions (Hard Version),1500,https://codeforces.com/problemset/problem/1526/C2,Priority queue to "undo" the worst previous choices
+Sortings,T-primes,1300,https://codeforces.com/problemset/problem/230/B,Sort/Precompute squares of primes [cite: 17]
+Greedy,Team,800,https://codeforces.com/problemset/problem/231/A,Take the problem if >= 2 people know it [cite: 1]
+Greedy,Domino piling,800,https://codeforces.com/problemset/problem/50/A,Fill as much of the area as possible [cite: 1]
+Greedy,Vanya and Lanterns,1200,https://codeforces.com/problemset/problem/492/B,Check edges and then the largest internal gap [cite: 28]
+Greedy,Business Trip,1100,https://codeforces.com/problemset/problem/149/A,Always pick the month with the most growth [cite: 28]
+Greedy,Restoring Three Numbers,800,https://codeforces.com/problemset/problem/1154/A,Largest number is the sum; others are (Sum - x)
+Greedy,Gifts Fixer,800,https://codeforces.com/problemset/problem/1399/B,Reduce both to their respective minimums simultaneously
+Greedy,Construct the String,1000,https://codeforces.com/problemset/problem/1335/B,Repeat the first 'b' letters in a cycle
+Greedy,Sereja and Dima,800,https://codeforces.com/problemset/problem/381/A,Always take the larger of the two available ends
+Greedy,Two Teams Composing,1100,https://codeforces.com/problemset/problem/1335/C,Maximize min(distinct-1, frequency) or vice versa
+Greedy,Berland Poker,800,https://codeforces.com/problemset/problem/1359/A,Give one person max jokers, distribute rest evenly
+Greedy,K-th Not Divisible by n,1200,https://codeforces.com/problemset/problem/1352/C,Jump gaps of size n [cite: 9]
+Greedy,Taxi,1100,https://codeforces.com/problemset/problem/158/B,Pair 3s with 1s, and 2s with 2s first
+Greedy,Even Odds,900,https://codeforces.com/problemset/problem/318/A,Place all odds then all evens
+Greedy,Buying Shovels,1300,https://codeforces.com/problemset/problem/1360/D,Find the largest divisor ≤ k [cite: 18]
+Greedy,C+=,1000,https://codeforces.com/problemset/problem/1368/A,Always add the smaller to the larger [cite: 26]
+Greedy,Sum of Medians,1000,https://codeforces.com/problemset/problem/1440/B,Pick medians from the end with minimal spacing
+Greedy,Ayb and B,1300,https://codeforces.com/problemset/problem/1422/B,Make 4 symmetric cells equal to their median
+Greedy,Minimum Extraction,1100,https://codeforces.com/problemset/problem/1607/C,Sort and find the maximum adjacent difference
+Greedy,Product of Three Numbers,1200,https://codeforces.com/problemset/problem/1294/C,Take the two smallest possible distinct divisors
+Greedy,Poisoned Dagger,1200,https://codeforces.com/problemset/problem/1613/C,Greedily set k to hit the target total
+Prefix Sum,Worms,1100,https://codeforces.com/problemset/problem/474/B,Cumulative sums of pile sizes for quick lookup [cite: 29]
+Prefix Sum,Ilya and Queries,1100,https://codeforces.com/problemset/problem/313/B,Count matching adjacent characters up to index i
+Prefix Sum,Kuriyama Mirai's Stones,1200,https://codeforces.com/problemset/problem/433/B,Two prefix sum arrays: one original, one sorted
+Prefix Sum,Fence,1100,https://codeforces.com/problemset/problem/363/B,Sliding window of size k using prefix sums [cite: 10]
+Prefix Sum,Lecture Sleep,1200,https://codeforces.com/problemset/problem/961/B,Prefix sums of points missed while sleeping
+Prefix Sum,Good Subarrays,1500,https://codeforces.com/problemset/problem/1398/C,Count pairs where P[j] - P[i] = j - i
+Prefix Sum,Tanya and Candies,1200,https://codeforces.com/problemset/problem/1118/B,Even and odd indices prefix sums [cite: 11]
+Prefix Sum,Little Girl and Maximum Sum,1500,https://codeforces.com/problemset/problem/276/C,Difference array to find query frequency per index
+Prefix Sum,Greg and Array,1400,https://codeforces.com/problemset/problem/295/A,Difference array for operations, then for the array
+Prefix Sum,Maximum Subarray Sum,1100,https://codeforces.com/problemset/problem/1373/D,Kadane's or prefix sums on even/odd differences
+Prefix Sum,Karen and Coffee,1500,https://codeforces.com/problemset/problem/816/B,Difference array to count overlapping intervals
+Prefix Sum,Abruptly,1400,https://codeforces.com/problemset/problem/1550/C,Check all small subarrays using prefix properties
+Prefix Sum,Breed Counting,1300,https://codeforces.com/problemset/problem/USACO,Three prefix sum arrays for each type
+Prefix Sum,Stripe,1000,https://codeforces.com/problemset/problem/18/C,Number of ways to split array into two equal sums
+Prefix Sum,Sorted Adjacent Differences,1200,https://codeforces.com/problemset/problem/1339/B,Prefix logic mixed with sorting from center out
+Prefix Sum,Number of Ways,1500,https://codeforces.com/problemset/problem/466/C,Prefix sum = Total/3, then count occurrences
+Prefix Sum,Sereja and Suffixes,1000,https://codeforces.com/problemset/problem/368/B,Suffix array of unique element counts
+Prefix Sum,Equator,900,https://codeforces.com/problemset/problem/962/A,Find first i where P[i] >= Total/2
+Prefix Sum,Maximum GCD,1400,https://codeforces.com/problemset/problem/1458/A,gcd(a1+b, a2+b, ...) = gcd(a1+b, a2-a1, a3-a2, ...)
+Prefix Sum,The Cake Is a Lie,800,https://codeforces.com/problemset/problem/1519/B,Check if k = n*m - 1
