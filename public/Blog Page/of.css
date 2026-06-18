@@ -1,0 +1,300 @@
+/* ============================================================
+   ULTRA-PREMIUM VARIABLE DESIGN SYSTEM (STANDALONE PAGE)
+============================================================ */
+:root {
+    --bg-gradient: linear-gradient(135deg, #f4fbf7 0%, #f8fafc 100%);
+    --panel-bg: rgba(255, 255, 255, 0.85);
+    --panel-border: rgba(226, 232, 240, 0.8);
+    --primary: #059669;
+    --primary-glow: rgba(5, 150, 105, 0.15);
+    --primary-hover: #047857;
+    --text-main: #0f172a;
+    --text-muted: #475569;
+    --text-body: #1e293b;
+    --glass-blur: blur(16px);
+    --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    --shadow-md: 0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 16px -6px rgba(15, 23, 42, 0.04);
+    --shadow-lg: 0 20px 35px -5px rgba(15, 23, 42, 0.12), 0 12px 24px -8px rgba(15, 23, 42, 0.06);
+    --radius-card: 24px;
+    --radius-pill: 9999px;
+    
+    --bg-footer: #0f172a;
+    --text-footer: #94a3b8;
+    --border-footer: rgba(255, 255, 255, 0.08);
+}
+
+body.dark-mode {
+    --bg-gradient: linear-gradient(135deg, #0f172a 0%, #020617 100%);
+    --panel-bg: rgba(30, 41, 59, 0.7);
+    --panel-border: rgba(51, 65, 85, 0.5);
+    --primary: #10b981;
+    --primary-glow: rgba(16, 185, 129, 0.2);
+    --primary-hover: #34d399;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --text-body: #cbd5e1;
+    
+    --bg-footer: rgba(30, 41, 59, 0.7);
+    --text-footer: #cbd5e1;
+    --border-footer: rgba(255, 255, 255, 0.05);
+}
+
+/* ============================================================
+   BASE CORE RESET
+============================================================ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    transition: background 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), 
+                color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), 
+                border-color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+                box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+                transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+body {
+    background: var(--bg-gradient);
+    color: var(--text-body);
+    font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+    padding: 0;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+/* ============================================================
+   PAGE LAYOUT WRAPPERS
+============================================================ */
+.blog-page-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 60px max(5%, 20px);
+}
+
+.blog-page {
+    width: 100%;
+    max-width: 900px;
+    flex-shrink: 0;      
+    background: var(--panel-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--panel-border);
+    padding: 48px;
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-md);
+}
+
+.blog-page:hover {
+    box-shadow: var(--shadow-lg);
+}
+
+/* ============================================================
+   CINEMATIC HERO BANNER
+============================================================ */
+.blog-banner {
+    width: 100%;
+    height: 440px;
+    object-fit: cover;
+    border-radius: 18px;
+    margin-bottom: 36px;
+    box-shadow: var(--shadow-sm);
+}
+
+/* ============================================================
+   TYPOGRAPHY HIERARCHY
+============================================================ */
+.blog-page h1 {
+    font-size: clamp(28px, 5vw, 44px);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -1.5px;
+    color: var(--text-main);
+    margin-bottom: 16px;
+    word-break: break-word;
+}
+
+/* Meta Data Context (Author, Date, Actions) */
+.blog-author {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 40px;
+    padding-bottom: 24px;
+    border-b: 1px solid var(--panel-border);
+    border-bottom: 1px solid var(--panel-border);
+}
+
+.blog-author h3 {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.25px;
+    color: var(--text-main);
+}
+
+.blog-date {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-muted);
+}
+
+/* Content Container Prose */
+.blog-content {
+    width: 100%;
+}
+
+.blog-content p {
+    width: 100%;
+    font-size: clamp(16px, 2vw, 18px);
+    line-height: 1.85;
+    color: var(--text-body);
+    margin-bottom: 28px;
+    text-align: justify;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    letter-spacing: -0.1px;
+}
+
+/* ============================================================
+   MAGAZINE FOOTER MODULE
+============================================================ */
+.footer {
+    width: 100%;
+    background: var(--bg-footer);
+    color: #fff;
+    margin-top: 80px;
+    padding: 80px 0 30px;
+    border-top: 1px solid var(--border-footer);
+}
+
+.footer-container {
+    max-width: 1440px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 48px;
+    padding: 0 max(5%, 20px);
+}
+
+.footer-section h2,
+.footer-section h3 {
+    font-weight: 700;
+    margin-bottom: 20px;
+    letter-spacing: -0.5px;
+}
+
+.footer-section p,
+.footer-section li,
+.footer-section a {
+    color: var(--text-footer);
+    text-decoration: none;
+    line-height: 1.8;
+    font-size: 15px;
+}
+
+.footer-section ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.footer-section a:hover {
+    color: var(--primary);
+}
+
+.newsletter {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.newsletter input {
+    padding: 14px 18px;
+    border: 1px solid var(--panel-border);
+    border-radius: 12px;
+    background: rgba(248, 250, 252, 0.05);
+    color: white;
+    outline: none;
+    font-size: 14px;
+}
+
+body:not(.dark-mode) .newsletter input {
+    background: rgba(255, 255, 255, 0.9);
+    color: var(--text-main);
+}
+
+.newsletter input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px var(--primary-glow);
+}
+
+.newsletter button {
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    background: var(--primary);
+    color: white;
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px var(--primary-glow);
+}
+
+.newsletter button:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+}
+
+.footer-bottom {
+    text-align: center;
+    margin-top: 60px;
+    padding-top: 30px;
+    border-top: 1px solid var(--border-footer);
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+/* ============================================================
+   RESPONSIVE LAYOUT MATRIX
+============================================================ */
+@media (max-width: 768px) {
+    .blog-page-container {
+        padding: 30px 20px;
+    }
+
+    .blog-page {
+        padding: 28px;
+        border-radius: 20px;
+    }
+
+    .blog-banner {
+        height: 280px;
+        margin-bottom: 24px;
+    }
+
+    .blog-author {
+        margin-bottom: 28px;
+    }
+}
+
+@media (max-width: 480px) {
+    .blog-page-container {
+        padding: 20px 12px;
+    }
+
+    .blog-page {
+        padding: 20px 16px;
+        border-radius: 16px;
+    }
+
+    .blog-banner {
+        height: 200px;
+        border-radius: 12px;
+        margin-bottom: 20px;
+    }
+
+    .blog-author h3 {
+        font-size: 16px;
+    }
+}
