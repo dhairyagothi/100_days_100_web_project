@@ -354,6 +354,8 @@ async function openModal(id){
     .getElementById('modal-coin-img')
     .src = coin.image;
 
+    document.getElementById('modal-coin-img').alt = `${coin.name} (${coin.symbol.toUpperCase()}) logo`;
+
     document
     .getElementById('modal-coin-name')
     .textContent = coin.name;

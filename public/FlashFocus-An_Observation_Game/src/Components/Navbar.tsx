@@ -16,7 +16,7 @@ const Navbar = () => {
         >
           <img 
             src={Logo} 
-            alt="FlashFocus" 
+            alt="Navigate to home" 
             className="h-full w-auto object-contain" 
           />
         </div>

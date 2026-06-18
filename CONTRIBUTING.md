@@ -569,6 +569,16 @@ Before raising a Pull Request, please run the following commands:
 </div>
 ```
 
+### ♿ Checking for Missing Alt Text
+
+Run this before opening a PR that touches images:
+
+\`\`\`bash
+node tools/find-missing-alt.js
+\`\`\`
+
+It scans all HTML files under `public/` for `<img>` tags without an `alt` attribute and writes a JSON report to `missing-alt-report.json`. Exit code `0` means no violations; `1` means violations were found (useful in CI).
+
 ### CSS
 - Use meaningful class names
 - Follow BEM methodology when appropriate

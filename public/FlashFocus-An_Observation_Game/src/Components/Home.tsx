@@ -15,7 +15,7 @@ const Home = () => {
         <div className="mb-8">
           <img 
             src={Logo} 
-            alt="FlashFocus" 
+            alt="Start screen with play button and high scores" 
             className="w-64 h-24 object-contain drop-shadow-[0_4px_12px_rgba(168,85,247,0.3)]" 
           />
         </div>

@@ -33,7 +33,7 @@ export default function Home() {
           <div className="absolute inset-0 z-0">
             <img
               src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1920&h=1080&fit=crop"
-              alt="Conference Event"
+              alt="Shows upcoming events and registration form"
               className="w-full h-full object-cover opacity-40 mix-blend-overlay"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-purple-950/80 via-purple-900/40 to-transparent mix-blend-multiply" />
