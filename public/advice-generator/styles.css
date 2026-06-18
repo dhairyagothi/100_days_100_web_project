@@ -351,7 +351,7 @@ body {
 
   .action-bar {
     gap: 0.5rem;
-    max-width: 280px;
+    max-width: 100%;
   }
 
   .action-btn {

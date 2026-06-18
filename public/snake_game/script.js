@@ -9,8 +9,13 @@ canvas.height = ROWS * CELL;
 
 const eatSound = document.getElementById('eatSound');
 const gameOverSound = document.getElementById('gameOverSound');
+const snakeColorPicker = document.getElementById('snakeColorPicker');
+const SNAKE_COLOR_STORAGE_KEY = 'snakeColor';
+const DEFAULT_SNAKE_COLOR = '#39ff14';
 
 let snake, dir, nextDir, food, score, level, speed, running, paused;
+let snakeColor = DEFAULT_SNAKE_COLOR;
+
 let highScore = 0;
 let isGameOver = false;
 let finalScore = 0;
@@ -114,34 +119,43 @@ function soundDie() {
   );
 }
 
-// Initialize
-function loadGameData() {
-  try {
-    const savedStats = localStorage.getItem('snake-stats');
-    if (savedStats) {
-      stats = JSON.parse(savedStats);
-    }
-    const savedHighScore = localStorage.getItem('snake-highscore');
-    if (savedHighScore) {
-      highScore = parseInt(savedHighScore);
-    }
-    const savedAchievements = localStorage.getItem('snake-achievements');
-    if (savedAchievements) {
-      unlockedAchievements = new Set(JSON.parse(savedAchievements));
-    }
-  } catch (e) {
-    console.error('Error loading data from localStorage:', e);
-  }
+function isValidHexColor(color) {
+  return /^#[0-9a-f]{6}$/i.test(color);
 }
 
-function saveGameData() {
-  try {
-    localStorage.setItem('snake-stats', JSON.stringify(stats));
-    localStorage.setItem('snake-highscore', highScore.toString());
-    localStorage.setItem('snake-achievements', JSON.stringify([...unlockedAchievements]));
-  } catch (e) {
-    console.error('Error saving data to localStorage:', e);
-  }
+function hexToRgb(hex) {
+  const value = hex.slice(1);
+  return {
+    r: parseInt(value.slice(0, 2), 16),
+    g: parseInt(value.slice(2, 4), 16),
+    b: parseInt(value.slice(4, 6), 16),
+  };
+}
+
+function getSnakeSegmentColor(t) {
+  const rgb = hexToRgb(snakeColor);
+  const shade = 1 - t * 0.65;
+
+  return `rgb(${Math.round(rgb.r * shade)}, ${Math.round(rgb.g * shade)}, ${Math.round(rgb.b * shade)})`;
+}
+
+function setupSnakeColorPicker() {
+  if (!snakeColorPicker) return;
+
+  // Restore the saved color before the first draw so refreshes keep the same snake.
+  const savedColor = localStorage.getItem(SNAKE_COLOR_STORAGE_KEY);
+  snakeColor = isValidHexColor(savedColor) ? savedColor : DEFAULT_SNAKE_COLOR;
+  snakeColorPicker.value = snakeColor;
+
+  // Save and apply color changes immediately; the RAF loop repaints the running game.
+  snakeColorPicker.addEventListener('input', (event) => {
+    const newColor = event.target.value;
+    if (!isValidHexColor(newColor)) return;
+
+    snakeColor = newColor;
+    localStorage.setItem(SNAKE_COLOR_STORAGE_KEY, snakeColor);
+    draw();
+  });
 }
 
 function initGame() {
@@ -276,8 +290,7 @@ function draw() {
     const isHead = i === 0;
     const t = i / (snake.length - 1 || 1);
 
-    const g = Math.round(255 * (1 - t * 0.65));
-    const color = isHead ? '#39ff14' : `rgb(0, ${g}, 0)`;
+    const color = isHead ? snakeColor : getSnakeSegmentColor(t);
 
     const padding = isHead ? 1 : Math.min(3, 1 + t * 2);
     const x = seg.x * CELL + padding;
@@ -286,13 +299,14 @@ function draw() {
 
     ctx.save();
     if (isHead) {
-      ctx.shadowColor = '#39ff14';
+      ctx.shadowColor = snakeColor;
       ctx.shadowBlur = 12;
     }
     ctx.fillStyle = color;
     ctx.fillRect(x, y, size, size);
     ctx.restore();
 
+    // Keep the eye color tied to the board so custom snake colors remain readable.
     if (isHead) {
       ctx.fillStyle = '#050a05';
       const eyeSize = 3;
@@ -496,6 +510,19 @@ document.getElementById('reset-stats').addEventListener('click', () => {
   updateHUD();
 });
 
+// Idle animation on start screen
+function animateIdle() {
+  if (!running && !isGameOver) {
+    draw();
+    rafId = requestAnimationFrame(animateIdle);
+  }
+}
+
+setupSnakeColorPicker();
+initGame();
+requestAnimationFrame(gameEngine);
+
+// ========== MOBILE TOUCH CONTROLS ==========
 // Mobile controls
 (function () {
   const controls = document.getElementById('mobileControls');
