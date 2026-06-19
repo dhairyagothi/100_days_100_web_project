@@ -54,11 +54,11 @@
     <link rel="stylesheet" href="style.css" />
 
     <!-- PWA Support -->
-<link rel="manifest" href="/manifest.json">
-<meta name="theme-color" content="#6366f1">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="100WebProjects">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#6366f1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="100WebProjects">
 
     <style>
       .btn-stats {
@@ -162,6 +162,56 @@
       .cta-banner-btn:active {
         transform: translateY(0);
       }
+
+      /* ── Progress Tracker Section Styles ── */
+      #progress-tracker-section {
+        scroll-margin-top: 2rem;
+      }
+      .progress-tracker-wrapper {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 0 1rem;
+      }
+      .section-label-tracker {
+        font-family: 'Inter Tight', sans-serif;
+        font-size: 0.7rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: rgba(15, 242, 200, 0.6);
+        margin-bottom: 0.5rem;
+      }
+      .tracker-title-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        margin-bottom: 1.5rem;
+      }
+      .tracker-title-row h2 {
+        font-family: 'Inter Tight', sans-serif;
+        font-size: clamp(1.5rem, 3vw, 2.2rem);
+        font-weight: 800;
+        color: #ffffff;
+        margin: 0;
+      }
+      .tracker-reset-btn {
+        background: rgba(239, 68, 68, 0.12);
+        border: 1px solid rgba(239, 68, 68, 0.25);
+        color: #f87171;
+        padding: 0.4rem 1rem;
+        border-radius: 8px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s, border-color 0.2s;
+        font-family: inherit;
+      }
+      .tracker-reset-btn:hover {
+        background: rgba(239, 68, 68, 0.2);
+        border-color: rgba(239, 68, 68, 0.4);
+      }
     </style>
   </head>
 
@@ -225,6 +275,25 @@
           <span class="stat-item"> <strong id="prCount">—</strong> PRs </span>
           <span class="stat-divider">·</span>
           <span class="stat-item"> <strong>Open</strong> Source </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 🟢 PROGRESS TRACKER SECTION - ADDED FOR ISSUE #8861 🟢       -->
+    <!-- ============================================================ -->
+    <section class="projects-section" id="progress-tracker-section">
+      <div class="projects-inner">
+        <div class="progress-tracker-wrapper">
+          <p class="section-label-tracker">📊 Your Learning Journey</p>
+          <div class="tracker-title-row">
+            <h2>Progress Dashboard</h2>
+            <button class="tracker-reset-btn" id="resetProgressBtn" title="Reset all progress">
+              <i class="fas fa-trash" aria-hidden="true"></i> Reset Progress
+            </button>
+          </div>
+          <!-- Progress Tracker Container -->
+          <div id="progress-dashboard"></div>
         </div>
       </div>
     </section>
@@ -414,39 +483,37 @@
     </section>
 
     <section class="projects-section" id="randomProjectSection">
-  <div class="projects-inner">
+      <div class="projects-inner">
+        <div class="projects-intro">
+          <p class="section-label">Need Inspiration?</p>
+          <h2 class="section-title">
+            Can't decide what to build next?
+          </h2>
+          <p class="hero-extra">
+            Generate a random project from the current archive.
+          </p>
+        </div>
 
-    <div class="projects-intro">
-      <p class="section-label">Need Inspiration?</p>
-      <h2 class="section-title">
-        Can't decide what to build next?
-      </h2>
-      <p class="hero-extra">
-        Generate a random project from the current archive.
-      </p>
-    </div>
+        <div class="random-project-wrapper">
+          <button
+            id="randomProjectBtn"
+            class="btn btn-primary"
+          >
+            🎲 Generate Random Project
+          </button>
 
-    <div class="random-project-wrapper">
-      <button
-        id="randomProjectBtn"
-        class="btn btn-primary"
-      >
-        🎲 Generate Random Project
-      </button>
-
-      <div
-        id="randomProjectResult"
-        class="project-grid"
-      ></div>
-    </div>
-
-  </div>
-</section>
+          <div
+            id="randomProjectResult"
+            class="project-grid"
+          ></div>
+        </div>
+      </div>
+    </section>
 
     <footer class="footer homepage-footer">
       <div class="homepage-footer-shell">
         <div class="homepage-footer-brand">
-    <p class="homepage-footer-kicker">100 Days · 100 Web Projects</p>
+          <p class="homepage-footer-kicker">100 Days · 100 Web Projects</p>
           <h2>
             Open-source builds for daily practice and creative frontend
             exploration.
@@ -585,20 +652,24 @@
     <script src="index.js?v=4" defer></script>
     <script src="navbar.js" defer></script>
     <script src="cursor.js" defer></script>
+
     <!-- Service Worker Registration -->
-<script>
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js')
-      .then(registration => {
-        console.log('✅ Service Worker registered:', registration);
-        console.log('🔔 Scope:', registration.scope);
-      })
-      .catch(error => {
-        console.warn('❌ Service Worker registration failed:', error);
-      });
-  });
-}
-</script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js')
+            .then(registration => {
+              console.log('✅ Service Worker registered:', registration);
+              console.log('🔔 Scope:', registration.scope);
+            })
+            .catch(error => {
+              console.warn('❌ Service Worker registration failed:', error);
+            });
+        });
+      }
+    </script>
+
+    <!-- Progress Tracker - Issue #8861 -->
+    <script src="progress-tracker.js"></script>
   </body>
 </html>
