@@ -172,8 +172,11 @@ async function sendMessage() {
 
   chatMessages.scrollTop = chatMessages.scrollHeight;
 
+  const isLocalhost = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
+  const chatEndpoint = isLocalhost ? "http://localhost:5000/api/chat" : "/api/chat";
+
   try {
-    const response = await fetch("http://localhost:5000/api/chat", {
+    const response = await fetch(chatEndpoint, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -187,6 +190,20 @@ async function sendMessage() {
 
     const data = await response.json();
 
+    let reply = "";
+    if (data) {
+      if (data.choices && Array.isArray(data.choices) && data.choices.length > 0 &&
+          data.choices[0].message && typeof data.choices[0].message.content === "string") {
+        reply = data.choices[0].message.content;
+      } else if (typeof data.reply === "string") {
+        reply = data.reply;
+      }
+    }
+
+    if (!reply) {
+      throw new Error("Invalid or empty response format from API");
+    }
+
     loadingMessage.remove();
 
     // BOT RESPONSE
@@ -196,15 +213,15 @@ async function sendMessage() {
     botMessage.classList.add("bot-message");
 
     botMessage.innerHTML = `
-  ${formatResponse(data.choices[0].message.content)}
+  ${formatResponse(reply)}
   <div class="msg-timestamp">${getTime()}</div>
 `;
 
     chatMessages.appendChild(botMessage);
     localStorage.setItem(
-  "travel_chat",
-  chatMessages.innerHTML
-);
+      "travel_chat",
+      chatMessages.innerHTML
+    );
 
     // AUTO SCROLL
 

@@ -21,6 +21,7 @@ const initialFormState = {
   darkMode: true,
   layout: 'classic',
   uploadedImage: '',
+  portfolio: '',
 };
 
 const elements = {
@@ -47,6 +48,10 @@ const elements = {
   previewBio: document.querySelector('#previewBio'),
   previewImage: document.querySelector('#previewImage'),
   socialLinks: document.querySelector('#socialLinks'),
+  portfolio: document.querySelector('#portfolioInput'),
+  qrContainer: document.querySelector('#qrContainer'),
+  exportPortfolio:
+  document.querySelector('#exportPortfolioBtn'),
 };
 
 let state = loadState() || { ...defaults };
@@ -81,6 +86,8 @@ function hydrateForm() {
   elements.darkMode.checked = state.darkMode;
   const selectedLayout = document.querySelector(`input[name="layout"][value="${state.layout}"]`);
   (selectedLayout || document.querySelector('input[name="layout"][value="classic"]')).checked = true;
+  elements.portfolio.value =
+  state.portfolio || '';
 }
 
 function getDisplayValue(value, fallback) {
@@ -192,7 +199,6 @@ function updateThemeColor() {
   const darkCard = mixColors(theme, '#111522', 0.2);
   const rgb = hexToRgb(theme);
 
-  // Compute high contrast theme color for card text elements
   const contrastTheme = getContrastColor(theme, state.darkMode);
 
   document.documentElement.style.setProperty('--theme', theme);
@@ -275,6 +281,7 @@ function render() {
   updateThemeColor();
   updateSocialLinks();
   updateValidation();
+  updateQRCode(); 
   saveState();
 }
 
@@ -292,6 +299,7 @@ function syncStateFromInputs() {
     theme: elements.theme.value,
     darkMode: elements.darkMode.checked,
     layout: document.querySelector('input[name="layout"]:checked').value,
+    portfolio:elements.portfolio.value,
   };
 
   if (state.imageUrl.trim() && isValidUrl(state.imageUrl)) {
@@ -330,7 +338,6 @@ function compressAndLoadImage(file, callback) {
       const ctx = canvas.getContext('2d');
       ctx.drawImage(img, 0, 0, width, height);
       
-      // Compress to JPEG with 0.82 quality
       const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.82);
       callback(compressedDataUrl);
     });
@@ -355,46 +362,152 @@ function handleImageUpload(event) {
   });
 }
 
-async function downloadCard() {
-  if (typeof html2canvas !== 'function') {
-    elements.validation.textContent = 'Download is unavailable until the export library finishes loading.';
+// ===== DOWNLOAD FUNCTIONALITY - FIXED =====
+const downloadWrapper = document.querySelector('#downloadWrapper');
+const downloadDropdown = document.querySelector('#downloadDropdown');
+
+function toggleDropdown(open) {
+  const isOpen = open !== undefined ? open : !downloadDropdown.classList.contains('is-open');
+  downloadDropdown.classList.toggle('is-open', isOpen);
+  elements.download.setAttribute('aria-expanded', String(isOpen));
+}
+
+// Main download button - just opens the dropdown
+elements.download.addEventListener('click', (e) => {
+  e.stopPropagation();
+  e.preventDefault();
+  toggleDropdown(true);
+});
+
+// Close dropdown when clicking outside
+document.addEventListener('click', (e) => {
+  if (!downloadWrapper.contains(e.target)) {
+    toggleDropdown(false);
+  }
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') toggleDropdown(false);
+});
+
+// Format selection buttons - THIS IS WHERE DOWNLOAD HAPPENS
+const formatButtons = downloadDropdown.querySelectorAll('[data-format]');
+formatButtons.forEach((btn) => {
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    const fmt = btn.dataset.format;
+    
+    // Close dropdown first
+    toggleDropdown(false);
+    
+    // Add visual feedback
+    btn.style.opacity = '0.6';
+    
+    // Small delay for smooth UX, then download
+    setTimeout(() => {
+      downloadCard(fmt);
+      // Restore button opacity
+      setTimeout(() => { btn.style.opacity = '1'; }, 500);
+    }, 100);
+  });
+});
+
+async function downloadCard(format = 'png') {
+  if (!format) format = 'png';
+  elements.validation.textContent = '';
+
+  // Check if html2canvas is loaded
+  if (typeof html2canvas === 'undefined' || typeof html2canvas !== 'function') {
+    elements.validation.textContent = 'Export library not loaded yet — please wait and try again.';
+    console.error('html2canvas is not loaded');
     return;
   }
 
+  const originalHTML = elements.download.innerHTML;
   elements.download.disabled = true;
-  elements.download.textContent = 'Preparing...';
+  elements.download.innerHTML = 'Preparing…';
   document.body.classList.add('is-exporting');
   elements.card.classList.add('is-exporting');
 
+  let canvas;
   try {
     await waitForImages(elements.card);
     await nextFrame();
+    
+    const rawCanvas = await html2canvas(elements.card, {
+  backgroundColor: format === 'jpg' ? '#ffffff' : null,
+  scale: 2,
+  useCORS: true,
+  allowTaint: true,
+  scrollX: 0,
+  scrollY: 0,
+  logging: false,
+  onclone: (clonedDoc) => {
+    clonedDoc.body.classList.add('is-exporting');
+    const c = clonedDoc.querySelector('#profileCard');
+    if (c) c.classList.add('is-exporting');
+  },
+});
 
-    const canvas = await html2canvas(elements.card, {
-      backgroundColor: null,
-      scale: 2,
-      useCORS: true,
-      scrollX: 0,
-      scrollY: 0,
-      onclone: (clonedDocument) => {
-        clonedDocument.body.classList.add('is-exporting');
-        clonedDocument.querySelector('#profileCard')?.classList.add('is-exporting');
-      },
-    });
-    const link = document.createElement('a');
-    link.download = `${getDisplayValue(state.name, 'profile').toLowerCase().replace(/\s+/g, '-')}-card.png`;
-    link.href = canvas.toDataURL('image/png');
-    link.click();
-  } catch (error) {
-    elements.validation.textContent = 'Unable to export this image. Try an uploaded image or a CORS-enabled image URL.';
+canvas = roundCanvasCorners(rawCanvas, 72);
+
+    const slug = getDisplayValue(state.name, 'profile').toLowerCase().replace(/\s+/g, '-');
+
+    if (format === 'pdf') {
+      // PDF download
+      const jsPDFClass = window.jspdf?.jsPDF || window.jsPDF;
+      
+      if (!jsPDFClass) {
+        throw new Error('PDF library not loaded. Try PNG or JPG instead.');
+      }
+      
+      const imgData = canvas.toDataURL('image/png');
+      const toMm = (px) => Math.round(px * 0.264583 * 10) / 10;
+      const w = toMm(canvas.width);
+      const h = toMm(canvas.height);
+      
+      const doc = new jsPDFClass({
+        orientation: w > h ? 'landscape' : 'portrait',
+        unit: 'mm',
+        format: [w, h],
+        compress: true,
+      });
+      
+      doc.addImage(imgData, 'PNG', 0, 0, w, h, undefined, 'FAST');
+      doc.save(slug + '-card.pdf');
+      
+    } else {
+      // PNG or JPG download
+      const mimeType = format === 'jpg' ? 'image/jpeg' : 'image/png';
+      const dataUrl = canvas.toDataURL(mimeType, 0.92);
+      
+      const link = document.createElement('a');
+      link.download = slug + '-card.' + format;
+      link.href = dataUrl;
+      document.body.appendChild(link);
+      link.click();
+      
+      // Clean up
+      setTimeout(() => {
+        if (link.parentNode) {
+          link.parentNode.removeChild(link);
+        }
+      }, 200);
+    }
+    
+  } catch (err) {
+    console.error('Download error:', err);
+    elements.validation.textContent = 'Download failed: ' + (err.message || String(err));
   } finally {
     document.body.classList.remove('is-exporting');
     elements.card.classList.remove('is-exporting');
     elements.download.disabled = false;
-    elements.download.textContent = 'Download card';
+    elements.download.innerHTML = originalHTML;
   }
 }
 
+// ===== UTILITY FUNCTIONS =====
 function nextFrame() {
   return new Promise((resolve) => requestAnimationFrame(() => resolve()));
 }
@@ -412,6 +525,36 @@ function waitForImages(container) {
     );
 
   return Promise.all(pendingImages);
+}
+
+function roundCanvasCorners(sourceCanvas, radius = 36) {
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+
+  canvas.width = sourceCanvas.width;
+  canvas.height = sourceCanvas.height;
+
+  ctx.beginPath();
+  ctx.moveTo(radius, 0);
+  ctx.lineTo(canvas.width - radius, 0);
+  ctx.quadraticCurveTo(canvas.width, 0, canvas.width, radius);
+  ctx.lineTo(canvas.width, canvas.height - radius);
+  ctx.quadraticCurveTo(
+    canvas.width,
+    canvas.height,
+    canvas.width - radius,
+    canvas.height
+  );
+  ctx.lineTo(radius, canvas.height);
+  ctx.quadraticCurveTo(0, canvas.height, 0, canvas.height - radius);
+  ctx.lineTo(0, radius);
+  ctx.quadraticCurveTo(0, 0, radius, 0);
+  ctx.closePath();
+
+  ctx.clip();
+  ctx.drawImage(sourceCanvas, 0, 0);
+
+  return canvas;
 }
 
 function handleCardTilt(event) {
@@ -443,16 +586,220 @@ function resetBuilder() {
   render();
 }
 
+
+function updateQRCode() {
+
+  elements.qrContainer.innerHTML = '';
+
+  const url = elements.portfolio.value.trim();
+
+  if (!url) return;
+
+  if (!/^https?:\/\//i.test(url)) {
+    return;
+  }
+
+  new QRCode(elements.qrContainer, {
+    text: url,
+    width: 120,
+    height: 120,
+  });
+}
+function exportPortfolio() {
+
+const html = `
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>${state.name} Portfolio</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+font-family:Inter,sans-serif;
+background:#0f172a;
+color:white;
+padding:40px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+background:#111827;
+padding:40px;
+border-radius:20px;
+box-shadow:0 10px 30px rgba(0,0,0,.3);
+}
+
+.profile{
+text-align:center;
+}
+
+.profile img{
+width:180px;
+height:180px;
+object-fit:cover;
+border-radius:50%;
+border:5px solid ${state.theme};
+}
+
+h1{
+margin-top:20px;
+font-size:3rem;
+}
+
+h2{
+margin-top:10px;
+color:${state.theme};
+}
+
+.bio{
+margin-top:20px;
+line-height:1.8;
+font-size:1rem;
+}
+
+.links{
+margin-top:30px;
+display:flex;
+justify-content:center;
+gap:20px;
+flex-wrap:wrap;
+}
+
+.links a{
+padding:10px 16px;
+background:${state.theme};
+color:white;
+text-decoration:none;
+border-radius:10px;
+}
+
+.footer{
+margin-top:40px;
+text-align:center;
+opacity:.7;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="profile">
+
+<img src="${state.image}" alt="Profile">
+
+<h1>${state.name}</h1>
+
+<h2>${state.role}</h2>
+
+<p class="bio">
+${state.bio}
+</p>
+
+<div class="links">
+
+${state.github ? `<a href="${state.github}" target="_blank">GitHub</a>` : ''}
+
+${state.linkedin ? `<a href="${state.linkedin}" target="_blank">LinkedIn</a>` : ''}
+
+${state.twitter ? `<a href="${state.twitter}" target="_blank">Twitter</a>` : ''}
+
+${state.instagram ? `<a href="${state.instagram}" target="_blank">Instagram</a>` : ''}
+
+</div>
+
+${
+state.portfolio
+? `
+<div style="margin-top:40px;">
+<h3>Portfolio QR Code</h3>
+
+<img
+src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(state.portfolio)}"
+alt="QR Code"
+style="margin-top:15px;border-radius:12px;">
+</div>
+`
+: ''
+}
+
+</div>
+
+<div class="footer">
+Generated using 3D Profile Card Generator
+</div>
+
+</div>
+
+</body>
+
+</html>
+`;
+
+const blob = new Blob(
+[html],
+{type:'text/html'}
+);
+
+const url =
+URL.createObjectURL(blob);
+
+const a =
+document.createElement('a');
+
+a.href = url;
+
+a.download =
+`${(state.name || 'portfolio')
+.replace(/\s+/g,'-')
+.toLowerCase()}-portfolio.html`;
+
+document.body.appendChild(a);
+
+a.click();
+
+document.body.removeChild(a);
+
+URL.revokeObjectURL(url);
+}
+
+// Event listeners
 elements.form.addEventListener('input', syncStateFromInputs);
 elements.form.addEventListener('change', syncStateFromInputs);
 elements.imageFile.addEventListener('change', handleImageUpload);
-elements.download.addEventListener('click', downloadCard);
 elements.reset.addEventListener('click', resetBuilder);
+elements.exportPortfolio
+.addEventListener(
+'click',
+exportPortfolio
+);
 
+// Card tilt effect (only on devices with hover)
 if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
   elements.card.addEventListener('pointermove', handleCardTilt);
   elements.card.addEventListener('pointerleave', resetCardTilt);
 }
 
+// Initialize
 hydrateForm();
 render();
+updateQRCode()

@@ -5,6 +5,7 @@ const {
   getUsers,
   getUserById
 } = require("../controllers/apiController");
+const authMiddleware = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
@@ -27,7 +28,7 @@ router.get("/info", getServerInfo);
 | Users Routes
 |--------------------------------------------------------------------------
 */
-router.get("/users",     getUsers);
-router.get("/users/:id", getUserById);
+router.get("/users",     authMiddleware, getUsers);
+router.get("/users/:id", authMiddleware, getUserById);
 
 module.exports = router;

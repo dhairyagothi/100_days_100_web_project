@@ -180,7 +180,7 @@ a:hover {
     position: sticky;
     top: 1rem;
     margin: 0 auto;
-    width: calc(100% - 2rem);
+    width: calc(75% - 2rem);
     max-width: 1200px;
     display: flex;
     justify-content: space-between;
@@ -198,11 +198,13 @@ a:hover {
     font-weight: 700;
     color: var(--primary);
     cursor: pointer;
+    
 }
 
 .nav-brand i {
     font-size: 1.8rem;
     background: linear-gradient(135deg, var(--primary), var(--accent));
+    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
@@ -401,12 +403,13 @@ a:hover {
 /* Stats */
 .stats-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 1.5rem;
     margin-bottom: 4rem;
 }
 
 .stat-card {
+    min-width: 0;
     padding: 1.5rem;
     display: flex;
     align-items: center;
@@ -427,6 +430,7 @@ a:hover {
     align-items: center;
     justify-content: center;
     font-size: 2rem;
+    flex-shrink: 0;
 }
 
 .lost-icon { 
@@ -440,6 +444,14 @@ a:hover {
 .reunited-icon { 
     background: rgba(236, 72, 153, 0.1); 
     color: #ec4899; 
+}
+.never-found-icon { 
+    background: rgba(168, 85, 247, 0.1); 
+    color: #a855f7; 
+}
+
+.stat-info {
+    min-width: 0;
 }
 
 .stat-info h3 {
@@ -455,6 +467,14 @@ a:hover {
     font-weight: 700;
     color: var(--text-primary);
     line-height: 1;
+}
+
+@media (max-width: 640px) {
+    .stat-card {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
 }
 
 /* Listings & Grids */
@@ -544,6 +564,7 @@ a:hover {
     font-size: 1.25rem;
     margin-bottom: 0.75rem;
     display: -webkit-box;
+    line-clamp: 2;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
