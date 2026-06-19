@@ -463,3 +463,22 @@ body.dark-mode .modal-content .cross {
 body.dark-mode .modal-content .cross:hover {
     color: #ffffff;
 }
+.nav-icon-btn {
+    background: transparent;
+    border: none;
+    padding: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-icon-btn:focus-visible {
+    outline: 3px solid #3b82f6;
+    outline-offset: 3px;
+    border-radius: 6px;
+}
+
+.nav-icon-btn:hover {
+    opacity: 0.85;
+}

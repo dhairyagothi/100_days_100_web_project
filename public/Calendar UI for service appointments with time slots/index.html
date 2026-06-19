@@ -74,8 +74,11 @@
                 <div id="timeSlots" class="slots-grid"></div>
             </div>
 
-            
             <div class="booking-summary">
+                <div id="rescheduleNotice" class="reschedule-notice" style="display: none;">
+                    <span>🔄 Rescheduling Appointment #<span id="rescheduleIdVal"></span></span>
+                    <button id="cancelReschedule" class="cancel-reschedule-btn">Cancel Reschedule</button>
+                </div>
                 <h2>Appointment Summary</h2>
                 <div id="selectedService"></div>
                 <div id="selectedDate"></div>
@@ -83,7 +86,29 @@
                 <button id="confirmBooking" disabled>Confirm Appointment</button>
             </div>
         </div>
+
+        <!-- Booked Appointments Section -->
+        <div class="appointments-section" id="appointmentsSection">
+            <h2>Your Scheduled Appointments</h2>
+            <div class="appointments-list-container">
+                <div id="emptyAppointmentsState" class="empty-appointments">
+                    <div class="empty-icon">📅</div>
+                    <p class="empty-title">No appointments scheduled yet</p>
+                    <p class="empty-desc">Select a service, date, and time slot above to book your first appointment.</p>
+                </div>
+                <div id="appointmentsList" class="appointments-grid" style="display: none;"></div>
+            </div>
+        </div>
     </div>
+
+    <!-- Appointment Actions Modal -->
+    <div id="appointmentModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <button id="closeModal" class="close-modal-btn" aria-label="Close modal">&times;</button>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>

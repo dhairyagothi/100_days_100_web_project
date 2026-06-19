@@ -180,14 +180,36 @@ class LostAndFoundApp {
     updateStats() {
         const lostCount = this.items.filter(item => item.type === 'lost').length;
         const foundCount = this.items.filter(item => item.type === 'found').length;
-        
+
+        const hasReunionData = this.items.some(item =>
+            item.reunionStatus === 'reunited' ||
+            item.status === 'reunited' ||
+            item.reunited === true
+        );
+
+        const reunitedCount = hasReunionData
+            ? this.items.filter(item =>
+                item.type === 'lost' && (
+                    item.reunionStatus === 'reunited' ||
+                    item.status === 'reunited' ||
+                    item.reunited === true
+                )
+            ).length
+            : 0;
+
+        const neverFoundCount = hasReunionData
+            ? Math.max(lostCount - reunitedCount, 0)
+            : 0;
+
         const statLost = document.getElementById('stat-lost');
         const statFound = document.getElementById('stat-found');
         const statReunited = document.getElementById('stat-reunited');
-        
-        if(statLost) statLost.textContent = lostCount;
-        if(statFound) statFound.textContent = foundCount;
-        if(statReunited) statReunited.textContent = '0';
+        const statNeverFound = document.getElementById('stat-never-found');
+
+        if (statLost) statLost.textContent = lostCount;
+        if (statFound) statFound.textContent = foundCount;
+        if (statReunited) statReunited.textContent = reunitedCount;
+        if (statNeverFound) statNeverFound.textContent = neverFoundCount;
     }
 
     setupImageUpload(type) {

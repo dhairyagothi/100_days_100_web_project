@@ -1,61 +1,30 @@
+<nav class="navbar">
+  <div class="nav-container">
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="css/navbar.css">
-</head>
-<body>
-    
-    
-<nav>
-  <div class="nav-logo">
-    <img src="https://b.zmtcdn.com/web_assets/b40b97e677bc7b2ca77c58c61db266fe1603954218.png" alt="Zomato" />
-  </div>
-  <div class="nav-links">
-    <a href="#" class="hide-mobile">Get the app</a>
-    <a href="#" class="hide-mobile">Add restaurant</a>
-    <a href="#" class="hide-mobile">Investor Relations</a>
-    <button class="btn-login">Log in</button>
-    <button class="btn-signup">Sign up</button>
-    <a href="restaurant.html">View Restaurants</a>
-    <!-- DARK MODE TOGGLE -->
-    <button class="dm-toggle" id="dmToggle" onclick="toggleDark()" title="Toggle dark mode">
-      <span class="dm-icon sun">☀️</span>
-      <span class="dm-icon moon">🌙</span>
-    </button>
+    <a href="#" class="logo">
+      zomato
+    </a>
+
+    <div class="nav-center">
+      <a href="#">Home</a>
+      <a href="#">Dining</a>
+      <a href="#">Delivery</a>
+      <a href="#">Nightlife</a>
+    </div>
+
+    <div class="nav-right">
+      <button class="theme-btn" onclick="toggleDark()">
+        🌙
+      </button>
+
+      <button class="nav-btn login-btn">
+        Log in
+      </button>
+
+      <button class="nav-btn signup-btn">
+        Sign up
+      </button>
+    </div>
+
   </div>
 </nav>
-</body>
-</html>
-
-
-
-<script>
-  /* ── DARK MODE ── */
-  const html = document.documentElement;
-  const toast = document.getElementById('dmToast');
-  let toastTimer;
-
-  // Restore saved preference
-  const saved = localStorage.getItem('zomato-theme');
-  if (saved) html.setAttribute('data-theme', saved);
-
-  function toggleDark() {
-    const isDark = html.getAttribute('data-theme') === 'dark';
-    const next = isDark ? 'light' : 'dark';
-    html.setAttribute('data-theme', next);
-    localStorage.setItem('zomato-theme', next);
-    showToast(next === 'dark' ? '🌙 Dark mode on' : '☀️ Light mode on');
-  }
-
-   function showToast(msg) {
-    toast.textContent = msg;
-    toast.classList.add('show');
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => toast.classList.remove('show'), 2000);
-  }
-
-  </script>
