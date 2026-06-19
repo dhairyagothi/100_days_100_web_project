@@ -181,6 +181,11 @@ body.dark-mode .site-header {
 body.dark-mode .advanced-fields {
     background-color: #1e293b !important;
     border-color: #334155 !important;
+    color: #f8fafc !important;
+}
+
+body.dark-mode .advanced-toggle {
+    color: #f8fafc !important;
 }
 
 body.dark-mode .advanced-fields .form-field label {
