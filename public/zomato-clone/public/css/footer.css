@@ -5,13 +5,13 @@
     .footer-brand p { font-size: 13px; line-height: 1.7; margin: 14px 0 20px; opacity: 0.7; }
     .footer-brand img { height: 30px; filter: brightness(0) invert(1); }
     .socials { display: flex; gap: 10px; }
-    .socials a { width: 34px; height: 34px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; color: #fff; text-decoration: none; font-size: 13px; font-weight: 700; transition: background 0.2s; }
-    .socials a:hover { background: var(--red); }
+    .socials a { width: 34px; height: 34px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; color: #fff; text-decoration: none; font-size: 13px; font-weight: 700; transition: background 0.2s, transform 0.2s; }
+    .socials a:hover { background: var(--red); transform: translateY(-2px); }
     .footer-col h4 { color: #fff; font-size: 14px; font-weight: 700; margin-bottom: 14px; }
     .footer-col ul { list-style: none; }
-    .footer-col ul li { font-size: 13px; margin-bottom: 10px; cursor: pointer; opacity: 0.7; transition: opacity 0.2s; }
-    .footer-col ul li:hover { opacity: 1; }
-    .footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; display: flex; justify-content: space-between; font-size: 12px; opacity: 0.5; flex-wrap: wrap; gap: 8px; }
+    .footer-col ul li { font-size: 13px; margin-bottom: 10px; cursor: pointer; color: #b0b0b0; transition: color 0.2s; }
+    .footer-col ul li:hover { color: #fff; }
+    .footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; display: flex; justify-content: space-between; font-size: 12px; color: #b0b0b0; flex-wrap: wrap; gap: 8px; }
 
     /* DARK MODE NOTICE TOAST */
     .dm-toast {

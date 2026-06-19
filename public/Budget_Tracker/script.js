@@ -470,12 +470,14 @@ function updateInsights() {
 
     if (savingsRate >= 50) {
       status = `Excellent! Saving ${savingsRate}% 🎉`;
-
-      confetti({
+      if (typeof confetti === 'function') {
+        confetti({
         particleCount: 150,
         spread: 90,
         origin: { y: 0.6 },
       });
+      }
+      
     } else if (savingsRate >= 20) {
       status = `Good savings rate ${savingsRate}%`;
     } else {
@@ -622,11 +624,22 @@ buttons.forEach((button) => {
 /* =========================================================
    INIT
 ========================================================= */
+function safeLoadJSON(key, fallback) {
+  const raw = localStorage.getItem(key);
+  if (raw === null) return fallback;
 
+  try {
+    return JSON.parse(raw);
+  } catch (err) {
+    console.warn(`Corrupted localStorage["${key}"], resetting it.`, err);
+    localStorage.removeItem(key);
+    return fallback;
+  }
+}
 (function init() {
-  transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+  transactions = safeLoadJSON('transactions', []);
 
-  monthlyBudget = Number(localStorage.getItem('budget')) || 0;
+  monthlyBudget = safeLoadJSON('budget', 0);
 
   budgetInput.value = monthlyBudget || '';
 
