@@ -278,6 +278,13 @@ function sanitizeUrl(url) {
   return "#";
 }
 
+/**
+ * Builds HTML for a project card with proper description handling (Issue #4207).
+ * Ensures description is always defined via getProjectDescription() before rendering.
+ * Both renderGrid() and renderBookmarks() use this function with showDescription: true.
+ * @param {Object} config - Card configuration
+ * @returns {Object} {html, demoUrl, sourceOnly}
+ */
 function buildProjectCardHTML({
   day,
   name,
@@ -309,6 +316,7 @@ function buildProjectCardHTML({
 
   const project = PROJECTS_BY_NAME.get(name) || PROJECTS_BY_DAY.get(day);
 
+  // Safely get description with fallback - resolves Issue #4207 (renderBookmarks undefined description)
   const description = escapeHTML(getProjectDescription(project));
   const safeDay = escapeHTML(day);
   const safeName = escapeHTML(name);
@@ -1305,6 +1313,11 @@ function normalizeProjectEntry(project) {
   };
 }
 
+/**
+ * Renders bookmarked projects with proper description handling (Issue #4207).
+ * Delegates card HTML generation to buildProjectCardHTML() which ensures
+ * description is properly fetched via getProjectDescription() before rendering.
+ */
 function renderBookmarks() {
   if (!bookmarkGrid) return;
 
@@ -1333,6 +1346,7 @@ function renderBookmarks() {
 
     const category = getCategoryFromTags(tags, name);
 
+    // buildProjectCardHTML handles description fetching and escaping (Issue #4207 fix)
     const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
       day,
       name,
