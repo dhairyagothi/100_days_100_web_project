@@ -51,9 +51,24 @@ document.addEventListener("DOMContentLoaded", () => {
   updateStats();
 });
 
-/* =========================================================
-   THEME TOGGLE
-========================================================= */
+/* -------------------- */
+/* Security Helpers */
+/* -------------------- */
+
+function escapeHTML(str) {
+    if (!str) return "";
+    return str.replace(/[&<>'"]/g, tag => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        "'": '&#39;',
+        '"': '&quot;'
+    }[tag]));
+}
+
+/* -------------------- */
+/* Toast Notification */
+/* -------------------- */
 
 function initializeTheme() {
   const savedTheme = localStorage.getItem(THEME_KEY);
@@ -331,14 +346,6 @@ async function addEntry() {
   const password =
     document.getElementById("password").value;
 
-  const category =
-    document.getElementById("category")
-      ?.value || "Personal";
-
-  const favorite =
-    document.getElementById("favorite")
-      ?.checked || false;
-
   const errEl =
     document.getElementById("form-error");
 
@@ -365,8 +372,8 @@ async function addEntry() {
       site,
       username,
       encryptedPassword,
-      category,
-      favorite,
+      category: document.getElementById("category")?.value || "Other",
+      favorite: false,
       createdAt: new Date().toISOString(),
     };
 
@@ -475,11 +482,12 @@ async function copyPassword(id) {
   );
 
   if (btn) {
-    btn.textContent = "Copied!";
-
+    btn.innerHTML = "✅ Copied!";
+    btn.classList.add("copied");
     setTimeout(() => {
-      btn.textContent = "Copy";
-    }, 1500);
+      btn.innerHTML = "📋 Copy";
+      btn.classList.remove("copied");
+    }, 2000);
   }
 }
 

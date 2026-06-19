@@ -1,12 +1,18 @@
 let selectedImageAnswer = "";
+
+const resultMessage = document.getElementById("resultMessage");
+
+const captchaContainer = document.getElementById("captchaContainer");
+const textInput = document.getElementById("captchaInput");
+
+const refreshButton = document.querySelector(".refresh");
+const submitButton = document.querySelector(".submit");
+
+const dashboardAttempts = document.getElementById("stat-attempts");
+
+// Select DOM Elements
 const captchaTypeSelect = document.getElementById('captchaTypeSelect');
 let selectedType = "text";
-
-const captchaContainer = document.getElementById('captchaContainer');
-const textInput = document.getElementById('captchaInput');
-const refreshButton = document.querySelector('.refresh');
-const resultMessage = document.querySelector('.result');
-const submitButton = document.querySelector('.submit');
 const voiceField = document.getElementById('voiceField');
 const voiceSelect = document.getElementById('voiceSelect');
 const textCaptchaField = document.querySelector('.textcaptcha');
@@ -17,174 +23,7 @@ const maxAttempts = 3;
 let lockoutEndTime = 0;
 let selectedDifficulty = "medium";
 
-// Analytics Data
-const STORAGE_KEY = "captcha-analytics-v1";
-let analytics = {
-    totalAttempts: 0,
-    successful: 0,
-    failed: 0,
-    currentStreak: 0,
-    bestStreak: 0,
-    recentActivity: [], // Array of {timestamp, difficulty, result}
-    achievements: {
-        beginner: false, // 5
-        intermediate: false, // 20
-        expert: false //50
-    }
-};
-
-// DOM elements for analytics
-const statAttempts = document.getElementById('stat-attempts');
-const statSuccesses = document.getElementById('stat-successes');
-const statFailures = document.getElementById('stat-failures');
-const statStreak = document.getElementById('stat-streak');
-const statBestStreak = document.getElementById('stat-best-streak');
-const statRate = document.getElementById('stat-rate');
-const progressBar = document.getElementById('progress-bar');
-const insightsText = document.getElementById('insights-text');
-const activityList = document.getElementById('activity-list');
-const resetBtn = document.getElementById('reset-btn');
-const resetModal = document.getElementById('reset-modal');
-const cancelReset = document.getElementById('cancel-reset');
-const confirmReset = document.getElementById('confirm-reset');
-
-// --- Analytics Functions ---
-function loadAnalytics() {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) {
-        try {
-            analytics = JSON.parse(stored);
-        } catch (e) {
-            console.error("Error parsing analytics", e);
-        }
-    }
-    updateAnalyticsUI();
-}
-
-function saveAnalytics() {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(analytics));
-}
-
-function animateCounter(element, target, duration = 1000) {
-    const start = parseInt(element.textContent) || 0;
-    const startTime = performance.now();
-    
-    function update(currentTime) {
-        const elapsed = currentTime - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-        const current = Math.floor(progress * (target - start) + start);
-        element.textContent = current;
-        
-        if (progress < 1) {
-            requestAnimationFrame(update);
-        }
-    }
-    requestAnimationFrame(update);
-}
-
-function updateAnalyticsUI() {
-    animateCounter(statAttempts, analytics.totalAttempts);
-    animateCounter(statSuccesses, analytics.successful);
-    animateCounter(statFailures, analytics.failed);
-    animateCounter(statStreak, analytics.currentStreak);
-    animateCounter(statBestStreak, analytics.bestStreak);
-    
-    // Success rate
-    let rate = 0;
-    if (analytics.totalAttempts > 0) {
-        rate = Math.round((analytics.successful / analytics.totalAttempts) * 100);
-    }
-    statRate.textContent = rate + "%";
-    progressBar.style.width = rate + "%";
-    
-    // Achievements
-    checkAchievements();
-    
-    // Insights
-    updateInsights();
-    
-    // Recent Activity
-    renderRecentActivity();
-}
-
-function updateInsights() {
-    let text = "Start solving CAPTCHAs to get insights!";
-    if (analytics.totalAttempts > 0) {
-        const rate = analytics.successful / analytics.totalAttempts;
-        if (rate >= 0.9) {
-            text = "Excellent! Your success rate is above 90%";
-        } else if (rate >= 0.7) {
-            text = "Great job! Keep improving your accuracy";
-        } else {
-            text = "Keep practicing to improve your accuracy";
-        }
-        
-        if (analytics.currentStreak >= 5) {
-            text += ` You're on a ${analytics.currentStreak} CAPTCHA streak!`;
-        }
-    }
-    insightsText.textContent = text;
-}
-
-function renderRecentActivity() {
-    if (analytics.recentActivity.length === 0) {
-        activityList.innerHTML = '<div class="empty-state">No activity yet</div>';
-        return;
-    }
-    
-    activityList.innerHTML = analytics.recentActivity.map(activity => {
-        const date = new Date(activity.timestamp);
-        const timeStr = date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-        const icon = activity.result === 'success' 
-            ? '<i class="fas fa-check"></i>' 
-            : '<i class="fas fa-times"></i>';
-        
-        return `
-            <div class="activity-item ${activity.result}">
-                <div class="activity-icon">${icon}</div>
-                <div class="activity-content">
-                    <div class="activity-type">
-                        ${activity.result === 'success' ? 'Successful' : 'Failed'} (${activity.difficulty})
-                    </div>
-                    <div class="activity-time">${timeStr}</div>
-                </div>
-            </div>
-        `;
-    }).join('');
-}
-
-function checkAchievements() {
-    const badgeBeginner = document.getElementById('badge-beginner');
-    const badgeIntermediate = document.getElementById('badge-intermediate');
-    const badgeExpert = document.getElementById('badge-expert');
-    
-    if (analytics.successful >= 5 && !analytics.achievements.beginner) {
-        analytics.achievements.beginner = true;
-    }
-    
-    if (analytics.successful >= 20 && !analytics.achievements.intermediate) {
-        analytics.achievements.intermediate = true;
-    }
-    
-    if (analytics.successful >= 50 && !analytics.achievements.expert) {
-        analytics.achievements.expert = true;
-    }
-    
-    [
-        {el: badgeBeginner, unlocked: analytics.achievements.beginner},
-        {el: badgeIntermediate, unlocked: analytics.achievements.intermediate},
-        {el: badgeExpert, unlocked: analytics.achievements.expert}
-    ].forEach(({el, unlocked}) => {
-        if (unlocked) {
-            el.classList.add('unlocked');
-            el.querySelector('.achievement-status').innerHTML = '<i class="fas fa-check"></i>';
-            el.querySelector('.achievement-status').classList.remove('locked');
-            el.querySelector('.achievement-status').classList.add('unlocked');
-        }
-    });
-}
-
-// --- Difficulty Selector ---
+// Add difficulty selector UI dynamic attachment
 const addDifficultySelector = () => {
     const existing = document.getElementById('difficulty-selector');
     if (existing) return;
@@ -201,8 +40,8 @@ const addDifficultySelector = () => {
 
     selector.querySelectorAll('.diff-btn').forEach(btn => {
         btn.addEventListener('click', () => {
-            selector.querySelectorAll('.diff-btn').forEach(b => b.style.opacity = '0.5');
-            btn.style.opacity = '1';
+            selector.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');;
             selectedDifficulty = btn.dataset.diff;
             generateCaptcha();
         });
@@ -211,7 +50,7 @@ const addDifficultySelector = () => {
     // Set initial selected
     const initialBtn = selector.querySelector('.diff-btn[data-diff="medium"]');
     if (initialBtn) {
-        initialBtn.style.opacity = '1';
+        initialBtn.classList.add('active');
     }
 };
 
@@ -234,15 +73,15 @@ const generateTextCaptcha = () => {
 
 const generateImageCaptcha = () => {
     const images = [
-        { emoji: '<i class="fas fa-dog fa-2x" style="color:#8b5a2b;"></i>', name: 'dog' },
-        { emoji: '<i class="fas fa-cat fa-2x" style="color:#f59e0b;"></i>', name: 'cat' },
-        { emoji: '<i class="fas fa-dove fa-2x" style="color:#60a5fa;"></i>', name: 'bird' },
-        { emoji: '<i class="fas fa-spider fa-2x" style="color:#111827;"></i>', name: 'spider' },
-        { emoji: '<i class="fas fa-frog fa-2x" style="color:#10b981;"></i>', name: 'frog' },
-        { emoji: '<i class="fas fa-horse fa-2x" style="color:#b45309;"></i>', name: 'horse' },
-        { emoji: '<i class="fas fa-fish fa-2x" style="color:#06b6d4;"></i>', name: 'fish' },
-        { emoji: '<i class="fas fa-dragon fa-2x" style="color:#ef4444;"></i>', name: 'dragon' },
-        { emoji: '<i class="fas fa-locomotive fa-2x" style="color:#6b7280;"></i>', name: 'train' }
+        { emoji: '<i class="fas fa-dog fa-2x" style="color: #8b5a2b;"></i>', name: 'dog' },
+        { emoji: '<i class="fas fa-cat fa-2x" style="color: #f59e0b;"></i>', name: 'cat' },
+        { emoji: '<i class="fas fa-dove fa-2x" style="color: #60a5fa;"></i>', name: 'bird' },
+        { emoji: '<i class="fas fa-spider fa-2x" style="color: #111827;"></i>', name: 'spider' },
+        { emoji: '<i class="fas fa-frog fa-2x" style="color: #10b981;"></i>', name: 'frog' },
+        { emoji: '<i class="fas fa-horse fa-2x" style="color: #b45309;"></i>', name: 'horse' },
+        { emoji: '<i class="fas fa-fish fa-2x" style="color: #06b6d4;"></i>', name: 'fish' },
+        { emoji: '<i class="fas fa-dragon fa-2x" style="color: #ef4444;"></i>', name: 'dragon' },
+        { emoji: '<i class="fas fa-car fa-2x" style="color: #6b7280;"></i>', name: 'train' }
     ];
     const correctIndex = Math.floor(Math.random() * images.length);
     const shuffled = [...images].sort(() => 0.5 - Math.random()).slice(0, 6);
@@ -279,21 +118,38 @@ const generateMathCaptcha = () => {
 };
 
 const speakCaptcha = (text, repeat = 2, speed = 0.5) => {
-    return new Promise((resolve) => {
-        const utterance = new SpeechSynthesisUtterance();
-        utterance.text = Array(repeat).fill(text.split('').join(' ')).join('. . . ');
-        const selectedVoice = voiceSelect.value;
+  return new Promise((resolve, reject) => {
+    try {
+      const utterance = new SpeechSynthesisUtterance();
+
+      // Repeat characters with spacing
+      utterance.text = Array(repeat)
+        .fill(text.split('').join(' '))
+        .join('. . . ');
+
+      // Safely check if voiceSelect exists
+      if (typeof voiceSelect !== "undefined" && voiceSelect && voiceSelect.value) {
+        const voices = speechSynthesis.getVoices();
+        const selectedVoice = voices.find(v => v.name === voiceSelect.value);
         if (selectedVoice) {
-            const voice = speechSynthesis.getVoices().find(v => v.name === selectedVoice);
-            if (voice) utterance.voice = voice;
+          utterance.voice = selectedVoice;
         }
-        utterance.rate = speed;
-        utterance.onend = resolve;
-        speechSynthesis.speak(utterance);
-    });
+      }
+
+      utterance.rate = speed;
+      utterance.onend = resolve;
+      utterance.onerror = (err) => reject(err);
+
+      speechSynthesis.speak(utterance);
+    } catch (error) {
+      reject(error);
+    }
+  });
 };
 
+
 const populateVoiceList = () => {
+     if (!voiceSelect) return;
     const voices = speechSynthesis.getVoices();
     if (!voices.length) {
         voiceSelect.innerHTML = '<option value="">No voices available</option>';
@@ -375,12 +231,21 @@ const generateCaptcha = () => {
     resultMessage.className = 'result';
     selectedImageAnswer = '';
 
-    const type = selectedType;
+    // Normalize type string case to prevent logic matching bugs
+    const type = selectedType.toLowerCase();
 
     if (type === 'audio') {
         voiceField.classList.remove('hidden');
     } else {
         voiceField.classList.add('hidden');
+    }
+
+    // Toggle interaction layout configurations explicitly based on state modes
+    if (type === 'image') {
+        textInput.disabled = true;
+        textInput.placeholder = 'Click an image option above';
+    } else {
+        textInput.disabled = false;
     }
 
     switch (type) {
@@ -397,18 +262,24 @@ const generateCaptcha = () => {
             textCaptchaField.classList.add('hidden');
             const { images, correct } = generateImageCaptcha();
             currentCaptcha = correct.name;
-            textInput.disabled = true;
-            textInput.placeholder = `Select the ${correct.name}`;
             captchaContainer.innerHTML = `
-                <p>Select the ${correct.name}</p>
-                <div class="image-grid">
-                    ${images.map(img => `<button type="button" class="image-option">${img.emoji}</button>`).join('')}
+                <p style="margin-bottom: 10px; font-weight: 600;">Select the <strong>${correct.name}</strong></p>
+                <div class="image-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 15px;">
+                    ${images.map(img => `<button type="button" class="image-option" style="padding: 10px; border: 1px solid #ccc; border-radius: 8px; cursor: pointer; background: white;">${img.emoji}</button>`).join('')}
                 </div>
             `;
+            
             captchaContainer.querySelectorAll('.image-option').forEach(option => {
                 option.addEventListener('click', () => {
-                    captchaContainer.querySelectorAll('.image-option').forEach(img => img.classList.remove('selected'));
-                    option.classList.add('selected');
+                    captchaContainer.querySelectorAll(".image-option")
+                        .forEach(img => {
+                            img.style.borderColor = "#ccc";
+                            img.style.background = "white";
+                        });
+                    
+                    option.style.borderColor = "#2196F3";
+                    option.style.background = "#e3f2fd";
+                    
                     selectedImageAnswer = images.find(img => option.innerHTML.includes(img.emoji)).name;
                 });
             });
@@ -418,8 +289,8 @@ const generateCaptcha = () => {
             currentCaptcha = generateTextCaptcha();
             textInput.placeholder = 'Enter the spoken characters';
             captchaContainer.innerHTML = `
-                <p>Click play and enter the audio.</p>
-                <button id="playAudio">Play Audio</button>
+                <p style="margin-bottom: 10px;">Click play and enter the audio.</p>
+                <button id="playAudio" type="button" style="padding: 6px 12px; margin-bottom: 10px;">Play Audio</button>
             `;
             const playButton = document.getElementById('playAudio');
             playButton.addEventListener('click', async () => {
@@ -428,7 +299,7 @@ const generateCaptcha = () => {
                     await speakCaptcha(currentCaptcha);
                 } catch (error) {
                     console.error('Speech synthesis failed:', error);
-                    alert('Audio playback failed. Please try again.');
+                    alert('Audio playback failed.');
                 } finally {
                     playButton.disabled = false;
                 }
@@ -439,17 +310,11 @@ const generateCaptcha = () => {
             const { question, answer } = generateMathCaptcha();
             currentCaptcha = answer.toString();
             textInput.placeholder = 'Enter the numeric answer';
-            captchaContainer.innerHTML = `<span style="font-size:24px;">${question} = ?</span>`;
+            captchaContainer.innerHTML = `<span style="font-size: 24px; font-weight: bold;">${question} = ?</span>`;
             break;
         }
     }
 };
-
-textInput.addEventListener('input', () => {
-    if (selectedType === 'math') {
-        textInput.value = textInput.value.replace(/[^0-9-]/g, '');
-    }
-});
 
 const lockoutUser = () => {
     lockoutEndTime = Date.now() + 60 * 1000;
@@ -473,125 +338,139 @@ const updateLockoutUI = () => {
 };
 
 const verifyCaptcha = () => {
-    if (Date.now() < lockoutEndTime) return;
+  if (Date.now() < lockoutEndTime) {
+      return;
+  }
 
-    if (selectedType === 'image' && !selectedImageAnswer) {
-        resultMessage.textContent = 'Please select an image before submitting.';
-        resultMessage.classList.add('error');
-        resultMessage.classList.remove('success');
-        return;
-    }
-
-    const userInput = selectedType === 'image'
-        ? selectedImageAnswer.toLowerCase()
-        : textInput.value.trim().toLowerCase();
-
-    const isCorrect = userInput === currentCaptcha.toString().toLowerCase();
-    
-    // Update analytics
-    analytics.totalAttempts++;
-    
-    if (isCorrect) {
-        analytics.successful++;
-        analytics.currentStreak++;
-        if (analytics.currentStreak > analytics.bestStreak) {
-            analytics.bestStreak = analytics.currentStreak;
-        }
-        
-        resultMessage.textContent = 'Very Good! You passed the Test.';
-        resultMessage.classList.add('success');
-        resultMessage.classList.remove('error');
-        attempts = 0;
-        
-        setTimeout(() => {
-            textInput.value = '';
-            resultMessage.textContent = '';
-            resultMessage.className = 'result';
-            generateCaptcha();
-        }, 1500);
-    } else {
-        analytics.failed++;
-        analytics.currentStreak = 0;
-        
-        attempts++;
-        if (attempts >= maxAttempts) {
-            lockoutUser();
-        } else {
-            resultMessage.textContent = `Incorrect. Try again. (Attempt ${attempts}/${maxAttempts})`;
-            resultMessage.classList.add('error');
-            resultMessage.classList.remove('success');
-        }
-    }
-    
-    // Add to recent activity
-    analytics.recentActivity.unshift({
-        timestamp: Date.now(),
-        difficulty: selectedDifficulty,
-        result: isCorrect ? 'success' : 'fail'
-    });
-    
-    // Keep only last 5
-    if (analytics.recentActivity.length > 5) {
-        analytics.recentActivity = analytics.recentActivity.slice(0,5);
-    }
-    
-    saveAnalytics();
-    updateAnalyticsUI();
+  const userInput = 
+  selectedType.toLowerCase() === "image"
+  ? selectedImageAnswer.toLowerCase()
+  : textInput.value.trim().toLowerCase();
+  
+  const isCorrect = userInput === currentCaptcha.toString().toLowerCase();
+  
+  if (isCorrect) {
+      resultMessage.textContent = "Very Good! You passed the Test.";
+      resultMessage.classList.add('success');
+      resultMessage.classList.remove('error');
+      attempts = 0;
+      setTimeout(() => {
+          textInput.value = "";
+          resultMessage.textContent = "";
+          resultMessage.className = 'result';
+          generateCaptcha();
+      }, 1500);
+  } else {
+      attempts++;
+      if (attempts >= maxAttempts) {
+          lockoutUser();
+      } else {
+          resultMessage.textContent = `Sorry, your input is incorrect. Please try again. (Attempt ${attempts}/${maxAttempts})`;
+          resultMessage.classList.add('error');
+          resultMessage.classList.remove('success');
+      }
+  }
 };
 
-// --- Reset Button ---
-resetBtn.addEventListener('click', () => {
-    resetModal.classList.add('active');
-});
 
-cancelReset.addEventListener('click', () => {
-    resetModal.classList.remove('active');
-});
+// Initialize application processes on initial window load
+// ==========================
+// CAPTCHA PAGE INIT
+// ==========================
 
-confirmReset.addEventListener('click', () => {
-    analytics = {
-        totalAttempts: 0,
-        successful: 0,
-        failed: 0,
-        currentStreak: 0,
-        bestStreak: 0,
-        recentActivity: [],
-        achievements: {
-            beginner: false,
-            intermediate: false,
-            expert: false
-        }
-    };
-    saveAnalytics();
-    updateAnalyticsUI();
-    resetModal.classList.remove('active');
-});
+if (
+    captchaTypeSelect &&
+    captchaContainer &&
+    textInput
+) {
 
-// Close modal on outside click
-resetModal.addEventListener('click', (e) => {
-    if (e.target === resetModal) {
-        resetModal.classList.remove('active');
-    }
-});
+    addDifficultySelector();
 
-// --- Event Listeners ---
-if (captchaTypeSelect) {
-    captchaTypeSelect.addEventListener('change', (event) => {
-        selectedType = event.target.value;
-        textInput.value = '';
-        selectedImageAnswer = '';
+    selectedType =
+        captchaTypeSelect.value.toLowerCase();
+
+    generateCaptcha();
+
+    captchaTypeSelect.addEventListener("change", (e) => {
+        selectedType = e.target.value.toLowerCase();
+        selectedImageAnswer = "";
         generateCaptcha();
+    });
+
+    if (refreshButton) {
+        refreshButton.addEventListener("click", () => {
+            if (Date.now() >= lockoutEndTime) {
+                generateCaptcha();
+            }
+        });
+    }
+
+    if (submitButton) {
+        submitButton.addEventListener(
+            "click",
+            verifyCaptcha
+        );
+    }
+
+    textInput.addEventListener("input", () => {
+        if (selectedType === "math") {
+            textInput.value =
+                textInput.value.replace(/[^0-9-]/g, "");
+        }
     });
 }
 
-refreshButton.addEventListener('click', () => {
-    if (Date.now() >= lockoutEndTime) generateCaptcha();
+if (dashboardAttempts) {
+
+    const attempts =
+        localStorage.getItem("attempts") || 0;
+
+    const successes =
+        localStorage.getItem("success") || 0;
+
+    const failures =
+        localStorage.getItem("fail") || 0;
+
+    document.getElementById("stat-attempts").textContent =
+        attempts;
+
+    document.getElementById("stat-successes").textContent =
+        successes;
+
+    document.getElementById("stat-failures").textContent =
+        failures;
+}
+
+// ==========================
+// Theme Toggle (Global)
+// ==========================
+
+// Select all toggle buttons (use a common class)
+const themeToggles = document.querySelectorAll(".theme");
+const themeIcon = document.getElementById("themeIcon");
+
+// Default = DARK MODE
+let isLightMode = JSON.parse(localStorage.getItem("lightMode")) || false;
+
+// Apply theme on load
+function updateTheme() {
+  if (isLightMode) {
+    document.body.classList.add("light-theme");
+    themeIcon.textContent = "🌙"; // show moon when light mode active
+  } else {
+    document.body.classList.remove("light-theme");
+    themeIcon.textContent = "☀️"; // show sun when dark mode active
+  }
+}
+
+// Toggle theme on any button click
+themeToggles.forEach(btn => {
+  btn.addEventListener("click", () => {
+    isLightMode = !isLightMode;
+    localStorage.setItem("lightMode", JSON.stringify(isLightMode));
+    updateTheme();
+  });
 });
 
-submitButton.addEventListener('click', verifyCaptcha);
-
-// --- Initialize ---
-addDifficultySelector();
-if (captchaTypeSelect) selectedType = captchaTypeSelect.value;
-generateCaptcha();
-loadAnalytics();
+// Initialize on page load
+updateTheme();

@@ -1,0 +1,111 @@
+/* Base Styles (Nox / Dark Mode by default) */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #121212;
+    color: #e0e0e0;
+    transition: background-color 0.5s ease, color 0.5s ease, text-shadow 0.5s ease;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    max-width: 900px;
+    width: 100%;
+}
+
+h1, h2 {
+    text-align: center;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 10px;
+}
+
+/* Lumos State (Light Mode / Glow) */
+body.lumos-mode {
+    background-color: #fdf6e3;
+    color: #2c3e50;
+    text-shadow: 0 0 15px rgba(241, 196, 15, 0.6);
+}
+
+body.lumos-mode h1, body.lumos-mode h2 {
+    border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+}
+
+/* Reducto State (Shake Animation) */
+.reducto-shake {
+    animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+@keyframes shake {
+    10%, 90% { transform: translate3d(-2px, 0, 0); }
+    20%, 80% { transform: translate3d(4px, 0, 0); }
+    30%, 50%, 70% { transform: translate3d(-8px, 0, 0); }
+    40%, 60% { transform: translate3d(8px, 0, 0); }
+}
+
+.spell-caster, .filters {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.filters {
+    flex-direction: row;
+    justify-content: center;
+    gap: 15px;
+}
+
+input, select {
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: 1px solid #555;
+    background-color: #2a2a2a;
+    color: #fff;
+    outline: none;
+    width: 100%;
+    max-width: 400px;
+    transition: all 0.3s ease;
+}
+
+body.lumos-mode input, body.lumos-mode select {
+    background-color: #fff;
+    color: #333;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 10px rgba(241, 196, 15, 0.3);
+}
+
+.character-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    background: #1e1e1e;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid #333;
+    text-align: center;
+    transition: transform 0.2s ease, background 0.5s ease;
+}
+
+.card img {
+    width: 100px;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+body.lumos-mode .card {
+    background: #fff;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
