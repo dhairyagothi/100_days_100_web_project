@@ -1,416 +1,768 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Virtual Rain Cafe</title>
+    <meta
+      name="description"
+      content="Immerse yourself in a cozy cafe with ambient sound mixing, lo-fi music, a Pomodoro timer, scratchpad, and customizable rain animation."
+    />
+    <link rel="stylesheet" href="style.css" />
+    <!-- Google Font: Gaegu -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Gaegu:wght@300;400;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Virtual Rain Cafe</title>
-  <meta name="description"
-    content="Immerse yourself in a cozy cafe with ambient sound mixing, lo-fi music, a Pomodoro timer, scratchpad, and customizable rain animation.">
-  <link rel="stylesheet" href="style.css">
-  <!-- Google Font: Gaegu -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@300;400;700&display=swap" rel="stylesheet">
-</head>
+  <body class="theme-cozy">
+    <!-- Canvas for Animated Rain Particles -->
+    <canvas id="rainCanvas"></canvas>
 
-<body class="theme-cozy">
-  <!-- Canvas for Animated Rain Particles -->
-  <canvas id="rainCanvas"></canvas>
+    <!-- Dim overlay to control ambient light level -->
+    <div id="dimOverlay" class="dim-overlay"></div>
 
-  <!-- Dim overlay to control ambient light level -->
-  <div id="dimOverlay" class="dim-overlay"></div>
-
-  <!-- Main Grid Layout -->
-  <div class="app-container">
-    <!-- Header Area -->
-    <header class="app-header">
-      <div class="logo-area">
-        <span class="cafe-icon">☕</span>
-        <div>
-          <h1>Virtual Rain Cafe</h1>
-          <p class="subtitle italic-font">Your cozy digital sanctuary</p>
-        </div>
-      </div>
-
-      <div class="header-status">
-        <span class="status-indicator animate-pulse"></span>
-        <span id="weatherStatusText">Drizzling Softly</span>
-      </div>
-
-      <div class="header-controls">
-        <button id="btnDim" class="btn-icon" title="Toggle Cozy Dimmer" aria-label="Toggle Dimmer">
-          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"
-            stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
-          </svg>
-        </button>
-        <button id="btnMuteAll" class="btn-icon" title="Mute All Ambience" aria-label="Mute All">
-          <svg id="muteIcon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
-            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
-          </svg>
-        </button>
-        <button id="btnHideUI" class="btn-icon" title="Hide UI Panels" aria-label="Hide UI">
-          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"
-            stroke-linecap="round" stroke-linejoin="round">
-            <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
-            <circle cx="12" cy="12" r="3" />
-          </svg>
-        </button>
-        <button id="btnInfo" class="btn-icon" title="About & Help" aria-label="About">
-          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"
-            stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10" />
-            <line x1="12" y1="16" x2="12" y2="12" />
-            <line x1="12" y1="8" x2="12.01" y2="8" />
-          </svg>
-        </button>
-      </div>
-    </header>
-
-    <!-- Main Content Area -->
-    <main class="app-main">
-
-      <!-- LEFT SIDEBAR: Themes, Mixer, Rain Controller -->
-      <section class="sidebar-left flex-col gap-4">
-
-        <!-- Theme Selector Widget -->
-        <div class="glass-card panel-theme" id="themeCard">
-          <h2 class="card-title">Cafe Atmosphere</h2>
-          <div class="theme-grid">
-            <button class="theme-btn active" data-theme="cozy" style="--accent: #d4a373;">
-              <span class="theme-dot" style="background: linear-gradient(135deg, #2b1f1d, #d4a373);"></span>
-              <span class="theme-name">Cozy Coffeehouse</span>
-            </button>
-            <button class="theme-btn" data-theme="library" style="--accent: #cca43b;">
-              <span class="theme-dot" style="background: linear-gradient(135deg, #101820, #cca43b);"></span>
-              <span class="theme-name">Midnight Library</span>
-            </button>
-            <button class="theme-btn" data-theme="cyber" style="--accent: #ff007f;">
-              <span class="theme-dot" style="background: linear-gradient(135deg, #0d0221, #ff007f);"></span>
-              <span class="theme-name">Neon Rain Alley</span>
-            </button>
-            <button class="theme-btn" data-theme="forest" style="--accent: #52b788;">
-              <span class="theme-dot" style="background: linear-gradient(135deg, #132a13, #52b788);"></span>
-              <span class="theme-name">Forest Sanctuary</span>
-            </button>
-          </div>
-
-          <div class="rain-density-control">
-            <div class="slider-header">
-              <span>Rain Intensity</span>
-              <span id="rainIntensityLabel">Drizzle</span>
-            </div>
-            <input type="range" id="sliderRainIntensity" min="1" max="4" value="2" class="range-slider">
+    <!-- Main Grid Layout -->
+    <div class="app-container">
+      <!-- Header Area -->
+      <header class="app-header">
+        <div class="logo-area">
+          <span class="cafe-icon">☕</span>
+          <div>
+            <h1>Virtual Rain Cafe</h1>
+            <p class="subtitle italic-font">Your cozy digital sanctuary</p>
           </div>
         </div>
 
-        <!-- Ambient Mixer Widget -->
-        <div class="glass-card panel-mixer" id="mixerCard">
-          <h2 class="card-title">Ambient Soundboard</h2>
-          <div class="mixer-list">
-
-            <!-- Rain Ambient Slider -->
-            <div class="mixer-item" data-sound="rain">
-              <div class="mixer-info">
-                <span class="mixer-icon">🌧️</span>
-                <span class="mixer-label">Rainfall</span>
-              </div>
-              <div class="mixer-controls">
-                <input type="range" class="volume-slider" min="0" max="100" value="50">
-                <button class="btn-mixer-mute" aria-label="Mute Rain">
-                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
-                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
-                  </svg>
-                </button>
-              </div>
-            </div>
-
-            <!-- Thunder Ambient Slider -->
-            <div class="mixer-item" data-sound="thunder">
-              <div class="mixer-info">
-                <span class="mixer-icon">⚡</span>
-                <span class="mixer-label">Thunder</span>
-              </div>
-              <div class="mixer-controls">
-                <input type="range" class="volume-slider" min="0" max="100" value="0">
-                <button class="btn-mixer-mute muted" aria-label="Mute Thunder">
-                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
-                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
-                  </svg>
-                </button>
-              </div>
-            </div>
-
-            <!-- Cafe Ambience Slider -->
-            <div class="mixer-item" data-sound="cafe">
-              <div class="mixer-info">
-                <span class="mixer-icon">👥</span>
-                <span class="mixer-label">Cafe Chatter</span>
-              </div>
-              <div class="mixer-controls">
-                <input type="range" class="volume-slider" min="0" max="100" value="40">
-                <button class="btn-mixer-mute" aria-label="Mute Cafe">
-                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
-                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
-                  </svg>
-                </button>
-              </div>
-            </div>
-
-            <!-- Fireplace Slider -->
-            <div class="mixer-item" data-sound="fire">
-              <div class="mixer-info">
-                <span class="mixer-icon">🔥</span>
-                <span class="mixer-label">Fireplace</span>
-              </div>
-              <div class="mixer-controls">
-                <input type="range" class="volume-slider" min="0" max="100" value="20">
-                <button class="btn-mixer-mute" aria-label="Mute Fireplace">
-                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
-                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
-                  </svg>
-                </button>
-              </div>
-            </div>
-
-            <!-- Wind in Trees Slider -->
-            <div class="mixer-item" data-sound="wind">
-              <div class="mixer-info">
-                <span class="mixer-icon">🍃</span>
-                <span class="mixer-label">Autumn Wind</span>
-              </div>
-              <div class="mixer-controls">
-                <input type="range" class="volume-slider" min="0" max="100" value="0">
-                <button class="btn-mixer-mute muted" aria-label="Mute Wind">
-                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
-                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
-                  </svg>
-                </button>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </section>
-
-      <!-- CENTER: Music Player, Pomodoro, Visualizer -->
-      <section class="main-workspace flex-col gap-4">
-
-        <!-- Music Player Widget -->
-        <div class="glass-card panel-music" id="musicCard">
-          <div class="music-player-layout">
-            <!-- Vinyl Disk -->
-            <div class="vinyl-container">
-              <div class="vinyl-disc" id="vinylDisc">
-                <div class="vinyl-center"></div>
-              </div>
-            </div>
-
-            <!-- Player Controls and details -->
-            <div class="player-details">
-              <h2 class="card-title no-margin">Lo-Fi Radio</h2>
-
-              <div class="song-meta">
-                <p id="songTitle" class="song-title">Select a track</p>
-                <p id="songArtist" class="song-artist">Virtual Rain Cafe Playlist</p>
-              </div>
-
-              <!-- Seek Bar -->
-              <div class="progress-container">
-                <span id="currentTime" class="time-stamp">0:00</span>
-                <div class="progress-bar-bg" id="progressBarBg">
-                  <div class="progress-bar-fill" id="progressBarFill"></div>
-                </div>
-                <span id="totalTime" class="time-stamp">0:00</span>
-              </div>
-
-              <!-- Controls -->
-              <div class="player-controls">
-                <button id="btnPrev" class="btn-player" title="Previous Track" aria-label="Previous">
-                  <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
-                    <polygon points="19 20 9 12 19 4 19 20"></polygon>
-                    <line x1="5" y1="19" x2="5" y2="5" stroke="currentColor" stroke-width="2"></line>
-                  </svg>
-                </button>
-                <button id="btnPlayPause" class="btn-player btn-play" title="Play / Pause" aria-label="Play">
-                  <svg id="playPauseIcon" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                  </svg>
-                </button>
-                <button id="btnNext" class="btn-player" title="Next Track" aria-label="Next">
-                  <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
-                    <polygon points="5 4 15 12 5 20 5 4"></polygon>
-                    <line x1="19" y1="5" x2="19" y2="19" stroke="currentColor" stroke-width="2"></line>
-                  </svg>
-                </button>
-
-                <div class="player-volume-wrapper">
-                  <span class="volume-icon-small">🔊</span>
-                  <input type="range" id="musicVolumeSlider" min="0" max="100" value="50" class="music-volume-slider">
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Fake CSS Music Visualizer -->
-          <div class="music-visualizer" id="musicVisualizer">
-            <span class="bar"></span>
-            <span class="bar"></span>
-            <span class="bar"></span>
-            <span class="bar"></span>
-            <span class="bar"></span>
-            <span class="bar"></span>
-            <span class="bar"></span>
-            <span class="bar"></span>
-            <span class="bar"></span>
-            <span class="bar"></span>
-            <span class="bar"></span>
-            <span class="bar"></span>
-          </div>
+        <div class="header-status">
+          <span class="status-indicator animate-pulse"></span>
+          <span id="weatherStatusText">Drizzling Softly</span>
         </div>
 
-        <!-- Pomodoro Timer Widget -->
-        <div class="glass-card panel-timer" id="timerCard">
-          <h2 class="card-title text-center">Timer Coffee-Break</h2>
-
-          <div class="timer-display-wrapper">
-            <!-- Circular Progress Indicator -->
-            <svg class="progress-ring" width="180" height="180">
-              <circle class="progress-ring-circle-bg" stroke="rgba(255, 255, 255, 0.1)" stroke-width="8"
-                fill="transparent" r="80" cx="90" cy="90" />
-              <circle class="progress-ring-circle" stroke="var(--accent-color)" stroke-width="8" fill="transparent"
-                r="80" cx="90" cy="90" id="timerCircle" />
+        <div class="header-controls">
+          <button
+            id="btnDim"
+            class="btn-icon"
+            title="Toggle Cozy Dimmer"
+            aria-label="Toggle Dimmer"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              width="20"
+              height="20"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
             </svg>
-            <div class="time-text" id="timeText">25:00</div>
-          </div>
-
-          <div class="timer-presets">
-            <button class="preset-btn active" data-duration="1500" data-type="focus">Focus Session</button>
-            <button class="preset-btn" data-duration="300" data-type="short">Short Sip</button>
-            <button class="preset-btn" data-duration="900" data-type="long">Long Lounge</button>
-          </div>
-
-          <div class="timer-controls">
-            <button id="btnTimerStart" class="btn-primary flex-center gap-2">
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
-                <polygon points="5 3 19 12 5 21 5 3"></polygon>
-              </svg>
-              <span>Start</span>
-            </button>
-            <button id="btnTimerReset" class="btn-secondary">Reset</button>
-          </div>
+          </button>
+          <button
+            id="btnMuteAll"
+            class="btn-icon"
+            title="Mute All Ambience"
+            aria-label="Mute All"
+          >
+            <svg
+              id="muteIcon"
+              viewBox="0 0 24 24"
+              width="20"
+              height="20"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+              <path
+                d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"
+              ></path>
+            </svg>
+          </button>
+          <button
+            id="btnHideUI"
+            class="btn-icon"
+            title="Hide UI Panels"
+            aria-label="Hide UI"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              width="20"
+              height="20"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+              <circle cx="12" cy="12" r="3" />
+            </svg>
+          </button>
+          <button
+            id="btnRestoreUI"
+            class="btn-icon restore-ui-btn"
+            title="Restore UI"
+            aria-label="Restore UI"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              width="20"
+              height="20"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z" />
+              <circle cx="12" cy="12" r="3" />
+            </svg>
+          </button>
+          <button
+            id="btnInfo"
+            class="btn-icon"
+            title="About & Help"
+            aria-label="About"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              width="20"
+              height="20"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="10" />
+              <line x1="12" y1="16" x2="12" y2="12" />
+              <line x1="12" y1="8" x2="12.01" y2="8" />
+            </svg>
+          </button>
         </div>
-      </section>
+      </header>
 
-      <!-- RIGHT SIDEBAR: Notepad, Coffee checklist -->
-      <section class="sidebar-right flex-col gap-4">
-
-        <!-- Coffee Orders Checklist (To-Do) -->
-        <div class="glass-card panel-todo" id="todoCard">
-          <h2 class="card-title">Cafe Order Checklist</h2>
-
-          <form id="todoForm" class="todo-input-form">
-            <input type="text" id="todoInput" placeholder="Place new order..." required maxlength="40">
-            <button type="submit" class="btn-todo-add" title="Add Order" aria-label="Add Task">
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <line x1="12" y1="5" x2="12" y2="19" />
-                <line x1="5" y1="12" x2="19" y2="12" />
-              </svg>
-            </button>
-          </form>
-
-          <ul class="todo-list" id="todoList">
-            <!-- Items added dynamically -->
-          </ul>
-        </div>
-
-        <!-- Scratchpad Notepad -->
-        <div class="glass-card panel-notepad" id="notepadCard">
-          <div class="notepad-header">
-            <h2 class="card-title no-margin">Cozy Notepad</h2>
-            <label class="toggle-sounds flex-center gap-1 cursor-pointer" title="Typing clicks sound">
-              <input type="checkbox" id="chkTypingSounds" checked>
-              <span class="text-xs">Keyboard Sound</span>
-            </label>
-          </div>
-
-          <textarea id="notepadTextarea" class="notepad-textarea"
-            placeholder="Pour your thoughts here... notes will auto-save."></textarea>
-
-          <div class="notepad-footer">
-            <span id="charCount" class="text-xs">0 characters</span>
-            <div class="notepad-buttons">
-              <button id="btnDownloadNotes" class="btn-tiny" title="Download Notes">
-                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                  <polyline points="7 10 12 15 17 10" />
-                  <line x1="12" y1="15" x2="12" y2="3" />
-                </svg>
+      <!-- Main Content Area -->
+      <main class="app-main">
+        <!-- LEFT SIDEBAR: Themes, Mixer, Rain Controller -->
+        <section class="flex-col gap-4 sidebar-left">
+          <!-- Theme Selector Widget -->
+          <div class="glass-card panel-theme" id="themeCard">
+            <h2 class="card-title">Cafe Atmosphere</h2>
+            <div class="theme-grid">
+              <button
+                class="theme-btn active"
+                data-theme="cozy"
+                style="--accent: #d4a373"
+              >
+                <span
+                  class="theme-dot"
+                  style="background: linear-gradient(135deg, #2b1f1d, #d4a373)"
+                ></span>
+                <span class="theme-name">Cozy Coffeehouse</span>
               </button>
-              <button id="btnClearNotes" class="btn-tiny btn-danger" title="Clear Notes">
-                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
-                  <polyline points="3 6 5 6 21 6" />
-                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
-                  <line x1="10" y1="11" x2="10" y2="17" />
-                  <line x1="14" y1="11" x2="14" y2="17" />
-                </svg>
+              <button
+                class="theme-btn"
+                data-theme="library"
+                style="--accent: #cca43b"
+              >
+                <span
+                  class="theme-dot"
+                  style="background: linear-gradient(135deg, #101820, #cca43b)"
+                ></span>
+                <span class="theme-name">Midnight Library</span>
+              </button>
+              <button
+                class="theme-btn"
+                data-theme="cyber"
+                style="--accent: #ff007f"
+              >
+                <span
+                  class="theme-dot"
+                  style="background: linear-gradient(135deg, #0d0221, #ff007f)"
+                ></span>
+                <span class="theme-name">Neon Rain Alley</span>
+              </button>
+              <button
+                class="theme-btn"
+                data-theme="forest"
+                style="--accent: #52b788"
+              >
+                <span
+                  class="theme-dot"
+                  style="background: linear-gradient(135deg, #132a13, #52b788)"
+                ></span>
+                <span class="theme-name">Forest Sanctuary</span>
               </button>
             </div>
+
+            <div class="rain-density-control">
+              <div class="slider-header">
+                <span>Rain Intensity</span>
+                <span id="rainIntensityLabel">Drizzle</span>
+              </div>
+              <input
+                type="range"
+                id="sliderRainIntensity"
+                min="1"
+                max="4"
+                value="2"
+                class="range-slider"
+              />
+            </div>
           </div>
+
+          <!-- Ambient Mixer Widget -->
+          <div class="glass-card panel-mixer" id="mixerCard">
+            <h2 class="card-title">Ambient Soundboard</h2>
+            <div class="mixer-list">
+              <!-- Rain Ambient Slider -->
+              <div class="mixer-item" data-sound="rain">
+                <div class="mixer-info">
+                  <span class="mixer-icon">🌧️</span>
+                  <span class="mixer-label">Rainfall</span>
+                </div>
+                <div class="mixer-controls">
+                  <input
+                    type="range"
+                    class="volume-slider"
+                    min="0"
+                    max="100"
+                    value="50"
+                  />
+                  <button class="btn-mixer-mute" aria-label="Mute Rain">
+                    <svg
+                      viewBox="0 0 24 24"
+                      width="16"
+                      height="16"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <polygon
+                        points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"
+                      ></polygon>
+                      <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Thunder Ambient Slider -->
+              <div class="mixer-item" data-sound="thunder">
+                <div class="mixer-info">
+                  <span class="mixer-icon">⚡</span>
+                  <span class="mixer-label">Thunder</span>
+                </div>
+                <div class="mixer-controls">
+                  <input
+                    type="range"
+                    class="volume-slider"
+                    min="0"
+                    max="100"
+                    value="0"
+                  />
+                  <button
+                    class="btn-mixer-mute muted"
+                    aria-label="Mute Thunder"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      width="16"
+                      height="16"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <polygon
+                        points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"
+                      ></polygon>
+                      <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Cafe Ambience Slider -->
+              <div class="mixer-item" data-sound="cafe">
+                <div class="mixer-info">
+                  <span class="mixer-icon">👥</span>
+                  <span class="mixer-label">Cafe Chatter</span>
+                </div>
+                <div class="mixer-controls">
+                  <input
+                    type="range"
+                    class="volume-slider"
+                    min="0"
+                    max="100"
+                    value="40"
+                  />
+                  <button class="btn-mixer-mute" aria-label="Mute Cafe">
+                    <svg
+                      viewBox="0 0 24 24"
+                      width="16"
+                      height="16"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <polygon
+                        points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"
+                      ></polygon>
+                      <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Fireplace Slider -->
+              <div class="mixer-item" data-sound="fire">
+                <div class="mixer-info">
+                  <span class="mixer-icon">🔥</span>
+                  <span class="mixer-label">Fireplace</span>
+                </div>
+                <div class="mixer-controls">
+                  <input
+                    type="range"
+                    class="volume-slider"
+                    min="0"
+                    max="100"
+                    value="20"
+                  />
+                  <button class="btn-mixer-mute" aria-label="Mute Fireplace">
+                    <svg
+                      viewBox="0 0 24 24"
+                      width="16"
+                      height="16"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <polygon
+                        points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"
+                      ></polygon>
+                      <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Wind in Trees Slider -->
+              <div class="mixer-item" data-sound="wind">
+                <div class="mixer-info">
+                  <span class="mixer-icon">🍃</span>
+                  <span class="mixer-label">Autumn Wind</span>
+                </div>
+                <div class="mixer-controls">
+                  <input
+                    type="range"
+                    class="volume-slider"
+                    min="0"
+                    max="100"
+                    value="0"
+                  />
+                  <button class="btn-mixer-mute muted" aria-label="Mute Wind">
+                    <svg
+                      viewBox="0 0 24 24"
+                      width="16"
+                      height="16"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <polygon
+                        points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"
+                      ></polygon>
+                      <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- CENTER: Music Player, Pomodoro, Visualizer -->
+        <section class="flex-col gap-4 main-workspace">
+          <!-- Music Player Widget -->
+          <div class="glass-card panel-music" id="musicCard">
+            <div class="music-player-layout">
+              <!-- Vinyl Disk -->
+              <div class="vinyl-container">
+                <div class="vinyl-disc" id="vinylDisc">
+                  <div class="vinyl-center"></div>
+                </div>
+              </div>
+
+              <!-- Player Controls and details -->
+              <div class="player-details">
+                <h2 class="card-title no-margin">Lo-Fi Radio</h2>
+
+                <div class="song-meta">
+                  <p id="songTitle" class="song-title">Select a track</p>
+                  <p id="songArtist" class="song-artist">
+                    Virtual Rain Cafe Playlist
+                  </p>
+                </div>
+
+                <!-- Seek Bar -->
+                <div class="progress-container">
+                  <span id="currentTime" class="time-stamp">0:00</span>
+                  <div class="progress-bar-bg" id="progressBarBg">
+                    <div class="progress-bar-fill" id="progressBarFill"></div>
+                  </div>
+                  <span id="totalTime" class="time-stamp">0:00</span>
+                </div>
+
+                <!-- Controls -->
+                <div class="player-controls">
+                  <button
+                    id="btnPrev"
+                    class="btn-player"
+                    title="Previous Track"
+                    aria-label="Previous"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      width="20"
+                      height="20"
+                      fill="currentColor"
+                    >
+                      <polygon points="19 20 9 12 19 4 19 20"></polygon>
+                      <line
+                        x1="5"
+                        y1="19"
+                        x2="5"
+                        y2="5"
+                        stroke="currentColor"
+                        stroke-width="2"
+                      ></line>
+                    </svg>
+                  </button>
+                  <button
+                    id="btnPlayPause"
+                    class="btn-player btn-play"
+                    title="Play / Pause"
+                    aria-label="Play"
+                  >
+                    <svg
+                      id="playPauseIcon"
+                      viewBox="0 0 24 24"
+                      width="24"
+                      height="24"
+                      fill="currentColor"
+                    >
+                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                  </button>
+                  <button
+                    id="btnNext"
+                    class="btn-player"
+                    title="Next Track"
+                    aria-label="Next"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      width="20"
+                      height="20"
+                      fill="currentColor"
+                    >
+                      <polygon points="5 4 15 12 5 20 5 4"></polygon>
+                      <line
+                        x1="19"
+                        y1="5"
+                        x2="19"
+                        y2="19"
+                        stroke="currentColor"
+                        stroke-width="2"
+                      ></line>
+                    </svg>
+                  </button>
+
+                  <div class="player-volume-wrapper">
+                    <span class="volume-icon-small">🔊</span>
+                    <input
+                      type="range"
+                      id="musicVolumeSlider"
+                      min="0"
+                      max="100"
+                      value="50"
+                      class="music-volume-slider"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Fake CSS Music Visualizer -->
+            <div class="music-visualizer" id="musicVisualizer">
+              <span class="bar"></span>
+              <span class="bar"></span>
+              <span class="bar"></span>
+              <span class="bar"></span>
+              <span class="bar"></span>
+              <span class="bar"></span>
+              <span class="bar"></span>
+              <span class="bar"></span>
+              <span class="bar"></span>
+              <span class="bar"></span>
+              <span class="bar"></span>
+              <span class="bar"></span>
+            </div>
+          </div>
+
+          <!-- Pomodoro Timer Widget -->
+          <div class="glass-card panel-timer" id="timerCard">
+            <h2 class="text-center card-title">Timer Coffee-Break</h2>
+
+            <div class="timer-display-wrapper">
+              <!-- Circular Progress Indicator -->
+              <svg class="progress-ring" width="180" height="180">
+                <circle
+                  class="progress-ring-circle-bg"
+                  stroke="rgba(255, 255, 255, 0.1)"
+                  stroke-width="8"
+                  fill="transparent"
+                  r="80"
+                  cx="90"
+                  cy="90"
+                />
+                <circle
+                  class="progress-ring-circle"
+                  stroke="var(--accent-color)"
+                  stroke-width="8"
+                  fill="transparent"
+                  r="80"
+                  cx="90"
+                  cy="90"
+                  id="timerCircle"
+                />
+              </svg>
+              <div class="time-text" id="timeText">25:00</div>
+            </div>
+
+            <div class="timer-presets">
+              <button
+                class="preset-btn active"
+                data-duration="1500"
+                data-type="focus"
+              >
+                Focus Session
+              </button>
+              <button class="preset-btn" data-duration="300" data-type="short">
+                Short Sip
+              </button>
+              <button class="preset-btn" data-duration="900" data-type="long">
+                Long Lounge
+              </button>
+            </div>
+
+            <div class="timer-controls">
+              <button id="btnTimerStart" class="gap-2 btn-primary flex-center">
+                <svg
+                  viewBox="0 0 24 24"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                >
+                  <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                </svg>
+                <span>Start</span>
+              </button>
+              <button id="btnTimerReset" class="btn-secondary">Reset</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- RIGHT SIDEBAR: Notepad, Coffee checklist -->
+        <section class="flex-col gap-4 sidebar-right">
+          <!-- Coffee Orders Checklist (To-Do) -->
+          <div class="glass-card panel-todo" id="todoCard">
+            <h2 class="card-title">Cafe Order Checklist</h2>
+
+            <form id="todoForm" class="todo-input-form">
+              <input
+                type="text"
+                id="todoInput"
+                placeholder="Place new order..."
+                required
+                maxlength="40"
+              />
+              <button
+                type="submit"
+                class="btn-todo-add"
+                title="Add Order"
+                aria-label="Add Task"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  width="18"
+                  height="18"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <line x1="12" y1="5" x2="12" y2="19" />
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                </svg>
+              </button>
+            </form>
+
+            <ul class="todo-list" id="todoList">
+              <!-- Items added dynamically -->
+            </ul>
+          </div>
+
+          <!-- Scratchpad Notepad -->
+          <div class="glass-card panel-notepad" id="notepadCard">
+            <div class="notepad-header">
+              <h2 class="card-title no-margin">Cozy Notepad</h2>
+              <label
+                class="gap-1 cursor-pointer toggle-sounds flex-center"
+                title="Typing clicks sound"
+              >
+                <input type="checkbox" id="chkTypingSounds" checked />
+                <span class="text-xs">Keyboard Sound</span>
+              </label>
+            </div>
+
+            <textarea
+              id="notepadTextarea"
+              class="notepad-textarea"
+              placeholder="Pour your thoughts here... notes will auto-save."
+            ></textarea>
+
+            <div class="notepad-footer">
+              <span id="charCount" class="text-xs">0 characters</span>
+              <div class="notepad-buttons">
+                <button
+                  id="btnDownloadNotes"
+                  class="btn-tiny"
+                  title="Download Notes"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    width="14"
+                    height="14"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="7 10 12 15 17 10" />
+                    <line x1="12" y1="15" x2="12" y2="3" />
+                  </svg>
+                </button>
+                <button
+                  id="btnClearNotes"
+                  class="btn-tiny btn-danger"
+                  title="Clear Notes"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    width="14"
+                    height="14"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <polyline points="3 6 5 6 21 6" />
+                    <path
+                      d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+                    />
+                    <line x1="10" y1="11" x2="10" y2="17" />
+                    <line x1="14" y1="11" x2="14" y2="17" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <!-- App Footer -->
+      <footer class="text-center app-footer">
+        <p>Made with ♡ for focused minds.</p>
+      </footer>
+    </div>
+
+    <!-- HELP & INFO MODAL -->
+    <div id="infoModal" class="modal-overlay">
+      <div class="glass-card modal-card">
+        <div class="modal-header">
+          <h2 class="card-title no-margin italic-font">
+            ☕ Virtual Rain Cafe Guide
+          </h2>
+          <button
+            id="btnModalClose"
+            class="btn-icon modal-close-btn"
+            aria-label="Close modal"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              width="20"
+              height="20"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
         </div>
-      </section>
-
-    </main>
-
-    <!-- App Footer -->
-    <footer class="app-footer text-center">
-      <p>Made with ♡ for focused minds.</p>
-    </footer>
-  </div>
-
-  <!-- HELP & INFO MODAL -->
-  <div id="infoModal" class="modal-overlay">
-    <div class="glass-card modal-card">
-      <div class="modal-header">
-        <h2 class="card-title no-margin italic-font">☕ Virtual Rain Cafe Guide</h2>
-        <button id="btnModalClose" class="btn-icon modal-close-btn" aria-label="Close modal">
-          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-            <line x1="18" y1="6" x2="6" y2="18" />
-            <line x1="6" y1="6" x2="18" y2="18" />
-          </svg>
-        </button>
-      </div>
-      <div class="modal-body">
-        <p>Welcome to your cozy workspace! Here are some features you can enjoy:</p>
-        <ul>
-          <li><strong>Soundboard Mixer:</strong> Mix ambient rain, crackling fireplace, wind, and bustling cafe sounds
-            to create your ideal audio background.</li>
-          <li><strong>Lo-Fi Player:</strong> Play smooth chill beats with a spinning vinyl. Adjust the seek bar or skip
-            tracks at will.</li>
-          <li><strong>Canvas Rain:</strong> Watch realistic raindrop animations in the background, which change angle,
-            speed, and thickness based on your selected theme and rain intensity!</li>
-          <li><strong>Cozy Timer:</strong> Keep track of your Pomodoro work cycles. Focus for 25 mins, then take a short
-            "sip" break.</li>
-          <li><strong>Order Checklist & Notes:</strong> Add cafe order items as tasks. Notes auto-save in your browser,
-            and writing them with "Keyboard Sound" enabled generates mechanical keyboard typing clicks!</li>
-          <li><strong>Quick Toggles:</strong> Press the dimmer lightbulb in the header to dim the screen, or use the eye
-            icon to hide the dashboard UI entirely and just enjoy the raining environment.</li>
-        </ul>
-        <p class="modal-closing text-center italic-font">Grab a warm cup, relax, and find your flow...</p>
+        <div class="modal-body">
+          <p>
+            Welcome to your cozy workspace! Here are some features you can
+            enjoy:
+          </p>
+          <ul>
+            <li>
+              <strong>Soundboard Mixer:</strong> Mix ambient rain, crackling
+              fireplace, wind, and bustling cafe sounds to create your ideal
+              audio background.
+            </li>
+            <li>
+              <strong>Lo-Fi Player:</strong> Play smooth chill beats with a
+              spinning vinyl. Adjust the seek bar or skip tracks at will.
+            </li>
+            <li>
+              <strong>Canvas Rain:</strong> Watch realistic raindrop animations
+              in the background, which change angle, speed, and thickness based
+              on your selected theme and rain intensity!
+            </li>
+            <li>
+              <strong>Cozy Timer:</strong> Keep track of your Pomodoro work
+              cycles. Focus for 25 mins, then take a short "sip" break.
+            </li>
+            <li>
+              <strong>Order Checklist & Notes:</strong> Add cafe order items as
+              tasks. Notes auto-save in your browser, and writing them with
+              "Keyboard Sound" enabled generates mechanical keyboard typing
+              clicks!
+            </li>
+            <li>
+              <strong>Quick Toggles:</strong> Press the dimmer lightbulb in the
+              header to dim the screen, or use the eye icon to hide the
+              dashboard UI entirely and just enjoy the raining environment.
+            </li>
+          </ul>
+          <p class="text-center modal-closing italic-font">
+            Grab a warm cup, relax, and find your flow...
+          </p>
+        </div>
       </div>
     </div>
-  </div>
 
-  <script src="script.js"></script>
-</body>
-
+    <script src="script.js"></script>
+  </body>
 </html>

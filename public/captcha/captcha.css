@@ -39,6 +39,8 @@ body{
 
     display:flex;
     flex-direction:column;
+    justify-content:flex-start;
+    align-items:center;
     overflow-x: hidden;
     padding-top:90px;
     overflow-x:hidden;
@@ -928,6 +930,75 @@ input[type="text"]:focus{
     }
 }
 
+/* ── Difficulty Selector ───────────────────────────────── */
+#difficulty-selector{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    position:relative;
+    z-index:10;
+    margin-bottom:4px;
+}
+
+.diff-btn{
+    flex:1 1 auto;
+    min-width:80px;
+    min-height:44px;
+    padding:10px 20px;
+    border:1px solid rgba(255,255,255,0.12);
+    border-radius:14px;
+    background:rgba(255,255,255,0.06);
+    color:#e2e8f0;
+    font-weight:700;
+    font-size:0.95rem;
+    cursor:pointer;
+    transition:.25s ease;
+    opacity:0.55;
+    font-family:'Plus Jakarta Sans',sans-serif;
+}
+
+.diff-btn:hover{
+    opacity:0.85;
+    transform:translateY(-2px);
+    border-color:#60a5fa;
+}
+
+.diff-btn[style*="opacity: 1"],
+.diff-btn.active{
+    opacity:1;
+    background:linear-gradient(135deg,rgba(59,130,246,.25),rgba(139,92,246,.25));
+    border-color:#60a5fa;
+    box-shadow:0 0 0 2px rgba(59,130,246,.2);
+}
+
+/* ── Selectors Row ─────────────────────────────────────── */
+.selectors-row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+    position:relative;
+    z-index:10;
+}
+
+/* ── Back Button ───────────────────────────────────────── */
+.project-back-button{
+    position:fixed;
+    left:18px;
+    top:18px;
+    padding:8px 16px;
+    border-radius:10px;
+    background:rgba(255,255,255,0.10);
+    border:1px solid rgba(255,255,255,0.15);
+    color:#e2e8f0;
+    text-decoration:none;
+    z-index:9999;
+    font-weight:700;
+    font-family:'Inter', system-ui, sans-serif;
+    backdrop-filter:blur(10px);
+    white-space:nowrap;
+}
+
+/* ── Tablet: ≤ 1100px ──────────────────────────────────── */
 @media(max-width:1100px){
 
     .app-container{
@@ -936,46 +1007,232 @@ input[type="text"]:focus{
 
 }
 
-@media(max-width:640px){
+/* ── Mobile: ≤ 768px ───────────────────────────────────── */
+@media(max-width:768px){
 
     body{
-        padding:16px;
+        padding:70px 16px 32px;
+    }
+
+    .app-container{
+        grid-template-columns:1fr;
+        width:100%;
     }
 
     .container{
-        padding:24px;
+        padding:24px 20px;
+        border-radius:24px;
+    }
+
+    .analytics-panel{
+        width:100%;
+        margin:0;
+    }
+
+    .selectors-row{
+        grid-template-columns:1fr;
+    }
+
+    .metrics-grid{
+        grid-template-columns:1fr 1fr;
+    }
+
+    #difficulty-selector{
+        gap:8px;
+    }
+
+    .diff-btn{
+        min-height:44px;
+        font-size:0.9rem;
+        padding:10px 14px;
+    }
+
+    .actions{
+        grid-template-columns:56px 1fr;
+        gap:10px;
+    }
+
+    .refresh{
+        height:52px;
+        min-height:44px;
+    }
+
+    .submit{
+        min-height:52px;
+    }
+
+    .image-grid{
+        grid-template-columns:repeat(3,1fr);
+        gap:10px;
+    }
+
+    .dashboard-header h2{
+        font-size:1.5rem;
+    }
+
+}
+
+/* ── Small Mobile: ≤ 480px ─────────────────────────────── */
+@media(max-width:480px){
+
+    body{
+        padding:65px 12px 24px;
+    }
+
+    .container{
+        padding:20px 16px;
+        border-radius:20px;
+        gap:18px;
+    }
+
+    .container header{
+        font-size:clamp(1.4rem,6vw,2.2rem);
+        line-height:1.15;
+        white-space:normal;
+        overflow-wrap:break-word;
+    }
+
+    .eyebrow{
+        font-size:.7rem;
+        padding:8px 14px;
+    }
+
+    .intro{
+        font-size:0.95rem;
+        line-height:1.6;
+    }
+
+    .selectors-row{
+        grid-template-columns:1fr;
     }
 
     .metrics-grid{
         grid-template-columns:1fr;
     }
 
+    .metric-card{
+        min-height:auto;
+        padding:16px;
+    }
+
+    .metric-value{
+        font-size:1.6rem;
+    }
+
+    #difficulty-selector{
+        gap:8px;
+    }
+
+    .diff-btn{
+        min-height:44px;
+        min-width:70px;
+        font-size:0.88rem;
+        padding:10px 12px;
+    }
+
     .actions{
         grid-template-columns:1fr;
+        gap:10px;
     }
 
     .refresh{
-        height:56px;
+        height:50px;
+        width:100%;
+        min-height:44px;
+    }
+
+    .submit{
+        min-height:50px;
+    }
+
+    select,
+    input[type="text"]{
+        padding:14px 16px;
+        font-size:1rem;
     }
 
     .image-grid{
         grid-template-columns:repeat(2,1fr);
+        gap:10px;
+    }
+
+    #captchaContainer{
+        padding:20px 16px;
+        min-height:180px;
+    }
+
+    #captchaContainer span{
+        font-size:2rem;
+        letter-spacing:.18em;
+    }
+
+    .progress-section,
+    .best-streak-card,
+    .achievements-section,
+    .activity-section{
+        border-radius:18px;
+        padding:18px 16px;
+    }
+
+    .dashboard-header{
+        border-radius:18px;
+        padding:18px 16px;
+    }
+
+    .dashboard-header h2{
+        font-size:1.3rem;
+    }
+
+    .reset-btn{
+        min-height:48px;
+        padding:14px;
+    }
+
+    .project-back-button{
+        left:12px;
+        top:12px;
+        padding:6px 12px;
+        font-size:0.85rem;
+    }
+
+}
+
+/* ── Extra Small: ≤ 360px ──────────────────────────────── */
+@media(max-width:360px){
+
+    body{
+        padding:60px 10px 20px;
+    }
+
+    .container{
+        padding:18px 14px;
     }
 
     .container header{
-        font-size:3rem;
+        font-size:1.4rem;
     }
 
-}
+    .diff-btn{
+        flex:1 1 60px;
+        min-width:60px;
+        font-size:0.82rem;
+        padding:8px 10px;
+    }
 
+    .metric-icon{
+        width:44px;
+        height:44px;
+        font-size:1.2rem;
+    }
 
-.selectors-row{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:16px;
-    position:relative;
-    z-index:10;
-}
+    .metric-value{
+        font-size:1.4rem;
+    }
+
+    .eyebrow{
+        font-size:.65rem;
+        padding:7px 12px;
+    }
 
 .project-back-button{
     position:fixed;
@@ -992,9 +1249,6 @@ input[type="text"]:focus{
     font-family:'Inter', system-ui, sans-serif;
     backdrop-filter:blur(10px);
 }
-/* ==========================
-   FOOTER
-========================== */
 
 .footer {
   width: 100%;

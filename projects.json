@@ -3006,17 +3006,17 @@
     "difficulty": "intermediate",
     "projectPath": "./public/FLAVOURLY/index.html"
   },
-  {
-    "projectNo": 233,
-    "projectName": "Portfolio Studio",
-    "projectType": "Website",
-    "projectDesc": "A web-based tool that allows users to create and customize their own portfolio websites.",
-    "techStack": [
-      "html",
-      "css",
-      "javascript"
-    ],
-    "difficulty": "advanced",
-    "projectPath": "./public/Portfolio_Studio/index.html"
-  }
+    {
+      "projectNo": 237,
+      "projectName": "Whos's That Pokemon Game",
+      "projectType": "Game",
+      "projectDesc": "An interactive classic who's that pokemon game. It comes with classic fonts and a score tracker",
+      "techStack": [
+        "html",
+        "css",
+        "javascript"
+      ],
+      "difficulty": "advanced",
+      "projectPath": "./public/WhosThatPokemon/index.html"
+    }
 ]
