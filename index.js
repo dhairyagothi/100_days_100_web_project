@@ -418,6 +418,19 @@ function buildProjectCardHTML({
         : ""
       }
             <div class="card-tags">${tagsHTML}</div>
+            <div class="project-notes">
+              <textarea 
+                class="notes-input" 
+                data-project="${safeDay}"
+                placeholder="Write your learning notes, challenges, or observations..."
+              >${localStorage.getItem(`notes-${safeDay}`) || ""}</textarea>
+
+              <button 
+                class="save-note-btn" 
+                data-project="${safeDay}">
+                💾 Save Notes
+              </button>
+            </div>
             <div class="card-footer">
                 <div class="card-actions-left">
                     ${primaryLink}
@@ -439,7 +452,7 @@ function attachProjectCardInteraction(card, demoUrl, projectData = null) {
   card.style.cursor = "pointer";
 
   const activateCard = (e) => {
-    if (e.target.closest("a, button")) return;
+    if (e.target.closest("a, button, textarea")) return;
     if (!demoUrl) return;
 
     if (projectData) {
@@ -1656,6 +1669,34 @@ function showToast(message) {
     toast.classList.remove("show");
   }, 3000);
 }
+
+document.addEventListener("click", (e) => {
+  const saveBtn = e.target.closest(".save-note-btn");
+
+  if (!saveBtn) return;
+
+  e.stopPropagation();
+
+  const projectId = saveBtn.dataset.project;
+
+  const textarea = document.querySelector(
+    `.notes-input[data-project="${projectId}"]`
+  );
+
+  if (!textarea) return;
+
+  try {
+    localStorage.setItem(
+      `notes-${projectId}`,
+      textarea.value.trim()
+    );
+
+    showToast("Notes saved successfully!");
+  } catch (error) {
+    showToast("Unable to save notes.");
+    console.warn(error);
+  }
+});
 
 document.addEventListener("click", (e) => {
   const bookmarkBtn = e.target.closest(".bookmark-btn");
