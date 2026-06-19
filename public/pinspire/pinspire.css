@@ -616,6 +616,8 @@ nav {
 }
 
 .comment-avatar {
+  background:#e9d7c1;
+  color:#7a5230;
   width: 34px;
   height: 34px;
   border-radius: 50%;
