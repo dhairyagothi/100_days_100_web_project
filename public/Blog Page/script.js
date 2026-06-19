@@ -573,7 +573,11 @@ function editBlog(id) {
     createBlogModal.classList.add("active");
 }
 
-// Authentication Modals & Logic
+// ============================================================
+// ENHANCED AUTH MODALS - Navigation & Control
+// ============================================================
+
+// DOM References
 const signupModal = document.getElementById("signupModal");
 const loginModal = document.getElementById("loginModal");
 const createBlogModal = document.getElementById("createBlogModal");
@@ -582,22 +586,87 @@ const signupBtn = document.getElementById("signupBtn");
 const loginBtn = document.getElementById("loginBtn");
 const createBlogBtn = document.getElementById("createBlogBtn");
 
+// ===== NAVIGATION FUNCTIONS (Separate) =====
+// Navigate from Signup to Login with smooth transition
+function navigateToLogin() {
+    if (signupModal) {
+        signupModal.classList.remove('active');
+        setTimeout(() => {
+            if (loginModal) {
+                loginModal.classList.add('active');
+                if (signupForm) signupForm.reset();
+            }
+        }, 300);
+    }
+}
+
+// Navigate from Login to Signup with smooth transition
+function navigateToSignup() {
+    if (loginModal) {
+        loginModal.classList.remove('active');
+        setTimeout(() => {
+            if (signupModal) {
+                signupModal.classList.add('active');
+                if (loginForm) loginForm.reset();
+            }
+        }, 300);
+    }
+}
+
+// ===== OPEN FUNCTIONS =====
+function openSignupModalEnhanced() {
+    if (signupModal) {
+        signupModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        if (loginForm) loginForm.reset();
+    }
+}
+
+function openLoginModalEnhanced() {
+    if (loginModal) {
+        loginModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        if (signupForm) signupForm.reset();
+    }
+}
+
+function closeModalEnhanced(modal) {
+    if (modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+        if (modal === signupModal && signupForm) signupForm.reset();
+        if (modal === loginModal && loginForm) loginForm.reset();
+    }
+}
+
+function closeAllModalsEnhanced() {
+    closeModalEnhanced(signupModal);
+    closeModalEnhanced(loginModal);
+    if (createBlogModal) createBlogModal.classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+// ===== EVENT LISTENERS =====
+// Open buttons
 if (signupBtn && signupModal) {
-    signupBtn.addEventListener("click", () => {
-        signupModal.classList.add("active");
+    signupBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        openSignupModalEnhanced();
     });
 }
 
 if (loginBtn && loginModal) {
-    loginBtn.addEventListener("click", () => {
-        loginModal.classList.add("active");
+    loginBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        openLoginModalEnhanced();
     });
 }
 
 if (createBlogBtn && createBlogModal) {
     createBlogBtn.addEventListener("click", () => {
         localStorage.removeItem("editingBlogId");
-        document.getElementById("blogForm").reset();
+        const form = document.getElementById("blogForm");
+        if (form) form.reset();
         
         const modalTitle = createBlogModal.querySelector("h2");
         if (modalTitle) modalTitle.textContent = "Create Blog";
@@ -608,24 +677,25 @@ if (createBlogBtn && createBlogModal) {
     });
 }
 
+// Close buttons
 document.querySelectorAll(".close-modal").forEach(btn => {
-    btn.addEventListener("click", () => {
-        if (signupModal) signupModal.classList.remove("active");
-        if (loginModal) loginModal.classList.remove("active");
+    btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        if (signupModal) closeModalEnhanced(signupModal);
+        if (loginModal) closeModalEnhanced(loginModal);
         if (createBlogModal) createBlogModal.classList.remove("active");
-        
-        // Ensure dynamically injected modal can also close
         const injectedModal = document.getElementById("createBlogModal");
         if (injectedModal) injectedModal.classList.remove("active");
     });
 });
 
+// Click outside to close
 window.addEventListener("click", (e) => {
     if (signupModal && e.target === signupModal) {
-        signupModal.classList.remove("active");
+        closeModalEnhanced(signupModal);
     }
     if (loginModal && e.target === loginModal) {
-        loginModal.classList.remove("active");
+        closeModalEnhanced(loginModal);
     }
     const injectedModal = document.getElementById("createBlogModal");
     if (injectedModal && e.target === injectedModal) {
@@ -633,6 +703,83 @@ window.addEventListener("click", (e) => {
     }
 });
 
+// ===== ADD SWITCH LINKS IF MISSING =====
+document.addEventListener('DOMContentLoaded', function() {
+    // Add switch link to signup modal if not exists
+    const signupModalBox = document.querySelector('#signupModal .auth-box');
+    if (signupModalBox) {
+        const existingSwitch = signupModalBox.querySelector('.switch-form');
+        if (!existingSwitch) {
+            const switchDiv = document.createElement('div');
+            switchDiv.className = 'switch-form';
+            switchDiv.innerHTML = `Already have an account? <a id="switchToLogin" style="cursor: pointer; color: #16a34a; font-weight: 700; text-decoration: none;">Login</a>`;
+            signupModalBox.appendChild(switchDiv);
+        }
+    }
+    
+    // Add switch link to login modal if not exists
+    const loginModalBox = document.querySelector('#loginModal .auth-box');
+    if (loginModalBox) {
+        const existingSwitch = loginModalBox.querySelector('.switch-form');
+        if (!existingSwitch) {
+            const switchDiv = document.createElement('div');
+            switchDiv.className = 'switch-form';
+            switchDiv.innerHTML = `Don't have an account? <a id="switchToSignup" style="cursor: pointer; color: #16a34a; font-weight: 700; text-decoration: none;">Sign Up</a>`;
+            loginModalBox.appendChild(switchDiv);
+        }
+    }
+    
+    // Event listeners for switch links
+    const switchToLogin = document.getElementById('switchToLogin');
+    const switchToSignup = document.getElementById('switchToSignup');
+    
+    if (switchToLogin) {
+        switchToLogin.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            navigateToLogin();
+        });
+    }
+    
+    if (switchToSignup) {
+        switchToSignup.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            navigateToSignup();
+        });
+    }
+});
+
+// ===== KEYBOARD SHORTCUTS =====
+document.addEventListener('keydown', function(e) {
+    if (e.ctrlKey && e.shiftKey && (e.key === 'L' || e.key === 'l')) {
+        e.preventDefault();
+        closeAllModalsEnhanced();
+        openLoginModalEnhanced();
+    }
+    if (e.ctrlKey && e.shiftKey && (e.key === 'S' || e.key === 's')) {
+        e.preventDefault();
+        closeAllModalsEnhanced();
+        openSignupModalEnhanced();
+    }
+    if (e.key === 'Escape') {
+        closeAllModalsEnhanced();
+    }
+});
+
+// ===== EXPOSE GLOBALLY =====
+window.authNavigation = {
+    navigateToLogin: navigateToLogin,
+    navigateToSignup: navigateToSignup,
+    openSignup: openSignupModalEnhanced,
+    openLogin: openLoginModalEnhanced,
+    closeModal: closeModalEnhanced,
+    closeAll: closeAllModalsEnhanced
+};
+
+console.log('✅ Enhanced auth navigation initialized');
+
+// ===== SIGNUP FORM - Enhanced with navigation =====
 const signupForm = document.getElementById("signupForm");
 if (signupForm) {
     signupForm.addEventListener("submit", (e) => {
@@ -657,12 +804,13 @@ if (signupForm) {
         localStorage.setItem("users", JSON.stringify(users));
 
         showToast("Signup successful! Please log in.");
-        signupModal.classList.remove("active");
-        if (loginModal) loginModal.classList.add("active");
+        // Use enhanced navigation
+        navigateToLogin();
         signupForm.reset();
     });
 }
 
+// ===== LOGIN FORM - Enhanced with navigation =====
 const loginForm = document.getElementById("loginForm");
 if (loginForm) {
     loginForm.addEventListener("submit", (e) => {
@@ -680,7 +828,7 @@ if (loginForm) {
         localStorage.setItem("currentUser", JSON.stringify(user));
         showToast(`Welcome ${user.username}!`);
         updateAuthUI();
-        loginModal.classList.remove("active");
+        closeModalEnhanced(loginModal);
         loginForm.reset();
     });
 }
@@ -692,6 +840,53 @@ if (logoutBtn) {
         showToast("Logged out successfully");
     });
 }
+// ============================================================
+// PASSWORD TOGGLE - Add this after your auth modal code
+// ============================================================
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Enhanced password toggle with visual feedback
+    document.querySelectorAll('.toggle-password').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const targetId = this.getAttribute('data-target');
+            if (!targetId) return;
+            
+            const input = document.getElementById(targetId);
+            if (!input) return;
+            
+            const icon = this.querySelector('i');
+            if (input.type === 'password') {
+                input.type = 'text';
+                if (icon) {
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                }
+                // Visual feedback
+                this.style.color = '#16a34a';
+                this.style.transform = 'translateY(-50%) scale(1.05)';
+                this.style.transition = 'all 0.2s ease';
+            } else {
+                input.type = 'password';
+                if (icon) {
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                }
+                this.style.color = '';
+                this.style.transform = 'translateY(-50%) scale(1)';
+            }
+            
+            // Reset transform after animation
+            setTimeout(() => {
+                this.style.transform = 'translateY(-50%)';
+            }, 200);
+        });
+    });
+    
+    console.log('✅ Password toggle initialized');
+});
 
 const blogForm = document.getElementById("blogForm");
 if (blogForm) {
@@ -911,6 +1106,15 @@ document.addEventListener("DOMContentLoaded", () => {
     updateCategoryCounts();
 });
 
+// ===== CLOSE ALL MODALS FUNCTION =====
+function closeAllModals() {
+    if (signupModal) signupModal.classList.remove('active');
+    if (loginModal) loginModal.classList.remove('active');
+    if (createBlogModal) createBlogModal.classList.remove('active');
+    document.body.style.overflow = '';
+}
+
 // INITIALIZE UI
 updateAuthUI();
 updateCategoryCounts();
+

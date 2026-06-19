@@ -237,58 +237,72 @@
 
   </div>
 
-  <div id="signupModal" class="auth-modal">
-
+<!-- Signup Modal -->
+<div id="signupModal" class="auth-modal">
     <div class="auth-box">
-
-      <span class="close-modal">&times;</span>
-
-      <h2>Create Account</h2>
-
-      <form id="signupForm">
-
-        <input type="text" id="signupUsername" placeholder="Username" required>
-
-        <input type="email" id="signupEmail" placeholder="Email" required>
-
-        <input type="password" id="signupPassword" placeholder="Password" required>
-
-        <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
-
-        <button type="submit">
-          Sign Up
-        </button>
-
-      </form>
-
+        <span class="close-modal" id="closeSignupBtn">&times;</span>
+        <h2><i class="fas fa-leaf"></i> Create Account</h2>
+        <p class="subtitle">Join our community and start reading</p>
+        <form id="signupForm">
+            <div class="input-group">
+                <i class="fas fa-user input-icon"></i>
+                <input type="text" id="signupUsername" placeholder="Username" required />
+            </div>
+            <div class="input-group">
+                <i class="fas fa-envelope input-icon"></i>
+                <input type="email" id="signupEmail" placeholder="Email" required />
+            </div>
+            <div class="input-group">
+                <i class="fas fa-lock input-icon"></i>
+                <input type="password" id="signupPassword" placeholder="Password" required />
+                <button type="button" class="toggle-password" data-target="signupPassword">
+                    <i class="fas fa-eye"></i>
+                </button>
+            </div>
+            <div class="input-group">
+                <i class="fas fa-check-circle input-icon"></i>
+                <input type="password" id="confirmPassword" placeholder="Confirm Password" required />
+                <button type="button" class="toggle-password" data-target="confirmPassword">
+                    <i class="fas fa-eye"></i>
+                </button>
+            </div>
+            <button type="submit" class="auth-btn">
+                <i class="fas fa-user-plus"></i> Sign Up
+            </button>
+        </form>
+        <div class="switch-form">
+            Already have an account? <a id="switchToLogin">Login</a>
+        </div>
     </div>
+</div>
 
-  </div>
-
-
-  <div id="loginModal" class="auth-modal">
-
+<!-- Login Modal -->
+<div id="loginModal" class="auth-modal">
     <div class="auth-box">
-
-      <span class="close-modal">&times;</span>
-
-      <h2>Login</h2>
-
-      <form id="loginForm">
-
-        <input type="email" id="loginEmail" placeholder="Email" required>
-
-        <input type="password" id="loginPassword" placeholder="Password" required>
-
-        <button type="submit">
-          Login
-        </button>
-
-      </form>
-
+        <span class="close-modal" id="closeLoginBtn">&times;</span>
+        <h2><i class="fas fa-tree"></i> Welcome Back</h2>
+        <p class="subtitle">Login to continue reading</p>
+        <form id="loginForm">
+            <div class="input-group">
+                <i class="fas fa-envelope input-icon"></i>
+                <input type="email" id="loginEmail" placeholder="Email" required />
+            </div>
+            <div class="input-group">
+                <i class="fas fa-lock input-icon"></i>
+                <input type="password" id="loginPassword" placeholder="Password" required />
+                <button type="button" class="toggle-password" data-target="loginPassword">
+                    <i class="fas fa-eye"></i>
+                </button>
+            </div>
+            <button type="submit" class="auth-btn">
+                <i class="fas fa-sign-in-alt"></i> Login
+            </button>
+        </form>
+        <div class="switch-form">
+            Don't have an account? <a id="switchToSignup">Sign Up</a>
+        </div>
     </div>
-
-  </div>
+</div>
 
   <div id="createBlogModal" class="auth-modal">
 
