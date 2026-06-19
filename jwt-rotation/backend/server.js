@@ -4,7 +4,7 @@ const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const rateLimit = require("express-rate-limit");
-const { doubleCsrf } = require("csrf-csrf");
+const csrf = require("csurf");
 const connectDB = require("./config/db");
 const { connectRedis } = require("./config/redis");
 const authRoutes = require("./routes/authRoutes");
@@ -27,19 +27,6 @@ const authLimiter = rateLimit({
   },
 });
 
-// ── CSRF setup (before cookieParser so CodeQL sees full chain) ────────────────
-const { generateToken, doubleCsrfProtection } = doubleCsrf({
-  getSecret: () => process.env.CSRF_SECRET || "csrf-secret-change-in-prod",
-  cookieName: "x-csrf-token",
-  cookieOptions: {
-    sameSite: "strict",
-    secure: process.env.NODE_ENV === "production",
-    httpOnly: true,
-  },
-  size: 64,
-  ignoredMethods: ["GET", "HEAD", "OPTIONS"],
-});
-
 // ── Middleware ────────────────────────────────────────────────────────────────
 app.use(
   cors({
@@ -53,15 +40,17 @@ app.use(
 app.use(express.json({ limit: "10kb" }));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser(process.env.COOKIE_SECRET || "cookie-secret-change-in-prod"));
-app.use(doubleCsrfProtection); // ← must come immediately after cookieParser
 
-// ── Routes ────────────────────────────────────────────────────────────────────
+// ── CSRF Protection (csurf) ───────────────────────────────────────────────────
+const csrfProtection = csrf({ cookie: true });
+app.use(csrfProtection);
 
-// Expose CSRF token to frontend before any state-changing request
+// Expose CSRF token to frontend
 app.get("/csrf-token", (req, res) => {
-  res.json({ csrfToken: generateToken(req, res) });
+  res.json({ csrfToken: req.csrfToken() });
 });
 
+// ── Routes ────────────────────────────────────────────────────────────────────
 app.use("/api/auth", authLimiter, authRoutes);
 
 // Health check
@@ -76,6 +65,9 @@ app.use((req, res) => {
 
 // ── Global error handler ──────────────────────────────────────────────────────
 app.use((err, req, res, next) => {
+  if (err.code === "EBADCSRFTOKEN") {
+    return res.status(403).json({ success: false, message: "Invalid CSRF token." });
+  }
   console.error("Unhandled error:", err);
   res.status(500).json({
     success: false,
