@@ -15,22 +15,32 @@
     <!-- Clean, centered navbar -->
     <ul class='navbar' style="justify-content: center; position: relative;">
         <li style="position: absolute; right: 20px;">
-            <img class='info navele nav__icon' src="img/information.png" alt="Info">
-        </li>
+    <button
+        class="nav-icon-btn info"
+        aria-label="Open information"
+        title="Information">
+        <img class="navele nav__icon" src="img/information.png" alt="">
+    </button>
+</li>
         <li>
             <h1 class="heading navele" style="margin: 0;">Wordle</h1>
         </li>
         <li style="position: absolute; right: 75px; display: flex; gap: 15px; align-items: center;">
-            <img class='stats navele nav__icon' src="img/statistics.png" alt="Stats">
+            <button
+    class="nav-icon-btn stats"
+    aria-label="Open statistics"
+    title="Statistics">
+    <img class="navele nav__icon" src="img/statistics.png" alt="">
+</button>
             <span id="themeToggle" style="cursor: pointer; font-size: 24px;">🌙</span>
         </li>
     </ul>
     <hr style="border-color: rgba(200,200,200,0.2); margin-bottom: 20px;" />
 
-    <div class='message hidden' id='message'></div>
+    <div class='hidden message' id='message'></div>
     
     <!-- Popups -->
-    <div class='infoCard hidden popup' id="rules">
+    <div class='hidden infoCard popup' id="rules">
         <p class='crossOuter'><button class='cross' id='closeInfo'>&#9587</button></p>
         <p>Guess the <strong>WORDLE</strong> in six tries.</p>
         <p>Each guess must be a valid five-letter word. Hit the enter button to submit.</p>
@@ -39,7 +49,7 @@
         <p><strong>A new WORDLE will be available each day!</strong></p>
     </div>
 
-    <div class="infoCard hidden popup" id="stats">
+    <div class="hidden infoCard popup" id="stats">
         <p class='crossOuter'><button class='cross' id='closeStats'>&#9587</button></p>
         <p><strong>STATISTICS</strong></p>
         <p>0 &emsp;&emsp;0 &emsp;&emsp;0 &emsp;&emsp;0</p>
@@ -75,7 +85,7 @@
     </div>
 
     <!-- Game Over Modal Overlay -->
-    <div id="game-over-modal" class="modal-overlay hidden">
+    <div id="game-over-modal" class="hidden modal-overlay">
         <div class="modal-content">
             <button class="cross" id="closeGameOver">&#9587;</button>
             <div class="modal-body">

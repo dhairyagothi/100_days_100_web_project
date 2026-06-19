@@ -2,6 +2,33 @@
    ROOT VARIABLES
 ========================== */
 
+
+/* Exit Focus Mode Button - Issue #8326 */
+.exit-focus-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #ff4444, #cc0000);
+  color: white;
+  border: none;
+  border-radius: 40px;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600;
+}
+/* ═══════════════════════════════════════════════════════════════
+   CHRONOS+ · PREMIUM TIME OBSERVATORY
+   Aesthetic: Luxury watchmaker × Space observatory
+   Fonts: Cormorant Garamond (display) + DM Mono (digits) + Outfit (UI)
+   ═══════════════════════════════════════════════════════════════ */
+
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600;700;800&display=swap");
+
+/* ── DESIGN TOKENS ── */
 :root {
   --bg: #0b0f17;
   --bg-secondary: #111827;
@@ -720,7 +747,30 @@ body{
 .digital-time{
   color:var(--accent);
 }
+.clocks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 18px;
+}
 
+@media (max-width: 1200px) {
+  .clocks-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .brand-text h1 {
+    font-size: 1.1rem;
+  }
+  .clock-bezel {
+    width: 220px;
+    height: 220px;
+  }
+  .site-header {
+    top: 8px;
+    padding: 12px 16px;
+  }
+  .workspace {
+    padding: 12px 12px 60px;
+  }
 .brand-plus{
   color:var(--accent);
 }

@@ -1,7 +1,6 @@
 /* Virtual Rain Cafe - Core Application Logic */
 
 document.addEventListener('DOMContentLoaded', () => {
-
   // ==========================================
   // STATE MANAGEMENT & LOCAL STORAGE
   // ==========================================
@@ -29,10 +28,10 @@ document.addEventListener('DOMContentLoaded', () => {
     todos: JSON.parse(localStorage.getItem('vr-todos')) || [
       { id: 1, text: 'Order a hot caramel macchiato ☕', completed: false },
       { id: 2, text: 'Enable rain sound slider', completed: true },
-      { id: 3, text: 'Type a cozy journal entry below', completed: false }
+      { id: 3, text: 'Type a cozy journal entry below', completed: false },
     ],
     notepadContent: localStorage.getItem('vr-notepad') || '',
-    keyboardSoundsEnabled: localStorage.getItem('vr-kbd-sounds') !== 'false'
+    keyboardSoundsEnabled: localStorage.getItem('vr-kbd-sounds') !== 'false',
   };
 
   // Ambient Sounds Configuration
@@ -41,32 +40,32 @@ document.addEventListener('DOMContentLoaded', () => {
       url: 'https://raw.githubusercontent.com/karthiknvd/noctune/main/sounds/rain.mp3',
       volume: getStoredNumber('vr-vol-rain', 50),
       el: null,
-      muted: false
+      muted: false,
     },
     thunder: {
       url: 'https://raw.githubusercontent.com/karthiknvd/noctune/main/sounds/thunder.mp3',
       volume: getStoredNumber('vr-vol-thunder', 0),
       el: null,
-      muted: true
+      muted: true,
     },
     cafe: {
       url: 'https://actions.google.com/sounds/v1/ambiences/coffee_shop.ogg',
       volume: getStoredNumber('vr-vol-cafe', 40),
       el: null,
-      muted: false
+      muted: false,
     },
     fire: {
       url: 'https://raw.githubusercontent.com/karthiknvd/noctune/main/sounds/campfire.mp3',
       volume: getStoredNumber('vr-vol-fire', 20),
       el: null,
-      muted: false
+      muted: false,
     },
     wind: {
       url: 'https://raw.githubusercontent.com/karthiknvd/noctune/main/sounds/wind.mp3',
       volume: getStoredNumber('vr-vol-wind', 0),
       el: null,
-      muted: true
-    }
+      muted: true,
+    },
   };
 
   // Lo-Fi Music Playlist (CC0 Public Domain Tracks from btahir/open-lofi)
@@ -74,38 +73,38 @@ document.addEventListener('DOMContentLoaded', () => {
     {
       title: '2 AM Debug Loop',
       artist: 'btahir (Open Lo-Fi Collection)',
-      url: 'https://raw.githubusercontent.com/btahir/open-lofi/main/Focus%2C%20Rituals%20%26%20Daily%20Routines/2%20AM%20Debug%20Loop.mp3'
+      url: 'https://raw.githubusercontent.com/btahir/open-lofi/main/Focus%2C%20Rituals%20%26%20Daily%20Routines/2%20AM%20Debug%20Loop.mp3',
     },
     {
       title: 'Brushstrokes and Rain',
       artist: 'btahir (Open Lo-Fi Collection)',
-      url: 'https://raw.githubusercontent.com/btahir/open-lofi/main/Focus%2C%20Rituals%20%26%20Daily%20Routines/Brushstrokes%20and%20Rain.mp3'
+      url: 'https://raw.githubusercontent.com/btahir/open-lofi/main/Focus%2C%20Rituals%20%26%20Daily%20Routines/Brushstrokes%20and%20Rain.mp3',
     },
     {
       title: 'Almost Floating',
       artist: 'btahir (Open Lo-Fi Collection)',
-      url: 'https://raw.githubusercontent.com/btahir/open-lofi/main/Ambient%20Drift%20%26%20Dreamscapes/Almost%20Floating.mp3'
+      url: 'https://raw.githubusercontent.com/btahir/open-lofi/main/Ambient%20Drift%20%26%20Dreamscapes/Almost%20Floating.mp3',
     },
     {
       title: 'Aurora on Mute',
       artist: 'btahir (Open Lo-Fi Collection)',
-      url: 'https://raw.githubusercontent.com/btahir/open-lofi/main/Ambient%20Drift%20%26%20Dreamscapes/Aurora%20on%20Mute.mp3'
+      url: 'https://raw.githubusercontent.com/btahir/open-lofi/main/Ambient%20Drift%20%26%20Dreamscapes/Aurora%20on%20Mute.mp3',
     },
     {
       title: '3 AM Echoes',
       artist: 'btahir (Open Lo-Fi Collection)',
-      url: 'https://raw.githubusercontent.com/btahir/open-lofi/main/Late%20Night%2C%20Neon%20%26%20After%20Hours/3%20AM%20Echoes.mp3'
+      url: 'https://raw.githubusercontent.com/btahir/open-lofi/main/Late%20Night%2C%20Neon%20%26%20After%20Hours/3%20AM%20Echoes.mp3',
     },
     {
       title: 'Antenna After Midnight',
       artist: 'btahir (Open Lo-Fi Collection)',
-      url: 'https://raw.githubusercontent.com/btahir/open-lofi/main/Late%20Night%2C%20Neon%20%26%20After%20Hours/Antenna%20After%20Midnight.mp3'
+      url: 'https://raw.githubusercontent.com/btahir/open-lofi/main/Late%20Night%2C%20Neon%20%26%20After%20Hours/Antenna%20After%20Midnight.mp3',
     },
     {
       title: 'Block Party Slow Jam',
       artist: 'btahir (Open Lo-Fi Collection)',
-      url: 'https://raw.githubusercontent.com/btahir/open-lofi/main/Funk%2C%20Soul%20%26%20Retro%20Bounce/Block%20Party%20Slow%20Jam.mp3'
-    }
+      url: 'https://raw.githubusercontent.com/btahir/open-lofi/main/Funk%2C%20Soul%20%26%20Retro%20Bounce/Block%20Party%20Slow%20Jam.mp3',
+    },
   ];
 
   // ==========================================
@@ -123,6 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
     btnMuteAll: document.getElementById('btnMuteAll'),
     muteIcon: document.getElementById('muteIcon'),
     btnHideUI: document.getElementById('btnHideUI'),
+    btnRestoreUI: document.getElementById('btnRestoreUI'),
     btnInfo: document.getElementById('btnInfo'),
 
     // Theme card
@@ -169,7 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Modals
     infoModal: document.getElementById('infoModal'),
-    btnModalClose: document.getElementById('btnModalClose')
+    btnModalClose: document.getElementById('btnModalClose'),
   };
 
   // Music Player audio source
@@ -206,7 +206,7 @@ document.addEventListener('DOMContentLoaded', () => {
       speedMin: 8,
       speedMax: 14,
       lengthMin: 15,
-      lengthMax: 25
+      lengthMax: 25,
     },
     library: {
       color: 'rgba(204, 164, 59, 0.2)',
@@ -214,7 +214,7 @@ document.addEventListener('DOMContentLoaded', () => {
       speedMin: 6,
       speedMax: 11,
       lengthMin: 12,
-      lengthMax: 20
+      lengthMax: 20,
     },
     cyber: {
       color: 'rgba(0, 240, 255, 0.45)',
@@ -222,7 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
       speedMin: 14,
       speedMax: 22,
       lengthMin: 20,
-      lengthMax: 35
+      lengthMax: 35,
     },
     forest: {
       color: 'rgba(82, 183, 136, 0.3)',
@@ -230,8 +230,8 @@ document.addEventListener('DOMContentLoaded', () => {
       speedMin: 9,
       speedMax: 16,
       lengthMin: 18,
-      lengthMax: 28
-    }
+      lengthMax: 28,
+    },
   };
 
   function resizeCanvas() {
@@ -249,14 +249,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     reset() {
       const config = themeRainConfig[state.theme];
-      this.x = Math.random() * (width + Math.abs(config.wind) * 100) - (config.wind > 0 ? config.wind * 50 : 0);
+      this.x =
+        Math.random() * (width + Math.abs(config.wind) * 100) -
+        (config.wind > 0 ? config.wind * 50 : 0);
       this.y = -20;
-      this.speed = config.speedMin + Math.random() * (config.speedMax - config.speedMin);
-      this.length = config.lengthMin + Math.random() * (config.lengthMax - config.lengthMin);
+      this.speed =
+        config.speedMin + Math.random() * (config.speedMax - config.speedMin);
+      this.length =
+        config.lengthMin +
+        Math.random() * (config.lengthMax - config.lengthMin);
       this.width = 1 + Math.random() * 1.5;
 
       // Let intensity slightly scale the speed/length
-      const intensityScale = 0.8 + (state.rainIntensity * 0.15);
+      const intensityScale = 0.8 + state.rainIntensity * 0.15;
       this.speed *= intensityScale;
       this.length *= intensityScale;
 
@@ -270,7 +275,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Check collision with bottom of the screen
       if (this.y >= height - 10) {
-        if (Math.random() < 0.25) { // Spawn splash ripple
+        if (Math.random() < 0.25) {
+          // Spawn splash ripple
           splashes.push(new Splash(this.x, height - 5));
         }
         this.reset();
@@ -314,7 +320,15 @@ document.addEventListener('DOMContentLoaded', () => {
       const config = themeRainConfig[state.theme];
       ctx.beginPath();
       // Draw splash ripple oval
-      ctx.ellipse(this.x, this.y, this.radius * 2, this.radius * 0.6, 0, 0, Math.PI * 2);
+      ctx.ellipse(
+        this.x,
+        this.y,
+        this.radius * 2,
+        this.radius * 0.6,
+        0,
+        0,
+        Math.PI * 2
+      );
       ctx.strokeStyle = config.color.replace(/[\d\.]+\)$/, `${this.alpha})`);
       ctx.lineWidth = 1;
       ctx.stroke();
@@ -349,7 +363,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Update & Draw Splashes
     for (let i = splashes.length - 1; i >= 0; i--) {
       splashes[i].update();
-      if (splashes[i].alpha <= 0 || splashes[i].radius >= splashes[i].maxRadius) {
+      if (
+        splashes[i].alpha <= 0 ||
+        splashes[i].radius >= splashes[i].maxRadius
+      ) {
         splashes.splice(i, 1);
       } else {
         splashes[i].draw();
@@ -384,7 +401,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     for (const [key, sound] of Object.entries(ambientSounds)) {
       if (!sound.el) {
-        sound.el = createAudioElement(key, sound.url, sound.volume, sound.muted);
+        sound.el = createAudioElement(
+          key,
+          sound.url,
+          sound.volume,
+          sound.muted
+        );
       }
 
       // Attempt play on user activity
@@ -401,9 +423,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!audioElement) return;
     const playPromise = audioElement.play();
     if (playPromise !== undefined) {
-      playPromise.catch(error => {
+      playPromise.catch((error) => {
         // Autoplay policy prevented playback, wait for interaction
-        console.log("Playback delayed until user interaction.");
+        console.log('Playback delayed until user interaction.');
       });
     }
   }
@@ -417,7 +439,12 @@ document.addEventListener('DOMContentLoaded', () => {
       const thunderConfig = ambientSounds.thunder;
 
       // If thunder is active and has volume, schedule a crack
-      if (thunderConfig.el && thunderConfig.volume > 0 && !thunderConfig.muted && !state.isMutedAll) {
+      if (
+        thunderConfig.el &&
+        thunderConfig.volume > 0 &&
+        !thunderConfig.muted &&
+        !state.isMutedAll
+      ) {
         // Trigger a random rumble between 15 and 45 seconds
         const delay = 15000 + Math.random() * 30000;
 
@@ -462,7 +489,8 @@ document.addEventListener('DOMContentLoaded', () => {
           elements.dimOverlay.style.background = '#ffffff';
           setTimeout(() => {
             elements.dimOverlay.style.transition = 'opacity 0.8s ease';
-            elements.dimOverlay.style.opacity = initialOverlayOpacity.toString();
+            elements.dimOverlay.style.opacity =
+              initialOverlayOpacity.toString();
             elements.dimOverlay.style.background = '#000';
           }, 60);
         }, 120);
@@ -473,7 +501,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Set up mixer UI control elements
-  elements.mixerItems.forEach(item => {
+  elements.mixerItems.forEach((item) => {
     const soundKey = item.dataset.sound;
     const sound = ambientSounds[soundKey];
     const slider = item.querySelector('.volume-slider');
@@ -625,7 +653,7 @@ document.addEventListener('DOMContentLoaded', () => {
   elements.btnNext.addEventListener('click', () => {
     let nextIndex = state.currentTrackIndex + 1;
     if (nextIndex >= musicPlaylist.length) nextIndex = 0;
-    
+
     loadTrack(nextIndex);
     if (state.isPlayingMusic) {
       playAudioPromise(musicAudio);
@@ -638,7 +666,7 @@ document.addEventListener('DOMContentLoaded', () => {
   elements.btnPrev.addEventListener('click', () => {
     let prevIndex = state.currentTrackIndex - 1;
     if (prevIndex < 0) prevIndex = musicPlaylist.length - 1;
-    
+
     loadTrack(prevIndex);
     if (state.isPlayingMusic) {
       playAudioPromise(musicAudio);
@@ -659,8 +687,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!isNaN(musicAudio.duration)) {
       const progress = (musicAudio.currentTime / musicAudio.duration) * 100;
       elements.progressBarFill.style.width = `${progress}%`;
-      
-      elements.currentTimeStamp.textContent = formatTime(musicAudio.currentTime);
+
+      elements.currentTimeStamp.textContent = formatTime(
+        musicAudio.currentTime
+      );
       elements.totalTimeStamp.textContent = formatTime(musicAudio.duration);
     }
   });
@@ -684,7 +714,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const clickX = e.clientX - rect.left;
       const width = rect.width;
       const percentage = clickX / width;
-      
+
       musicAudio.currentTime = percentage * musicAudio.duration;
     }
   });
@@ -697,7 +727,7 @@ document.addEventListener('DOMContentLoaded', () => {
   elements.timerCircle.style.strokeDashoffset = 0;
 
   function updateTimerRing(percent) {
-    const offset = totalCircumference - (percent * totalCircumference);
+    const offset = totalCircumference - percent * totalCircumference;
     elements.timerCircle.style.strokeDashoffset = offset;
   }
 
@@ -705,7 +735,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const mins = Math.floor(state.timerRemaining / 60);
     const secs = state.timerRemaining % 60;
     elements.timeText.textContent = `${mins < 10 ? '0' : ''}${mins}:${secs < 10 ? '0' : ''}${secs}`;
-    
+
     const progress = state.timerRemaining / state.timerDuration;
     updateTimerRing(progress);
   }
@@ -713,27 +743,29 @@ document.addEventListener('DOMContentLoaded', () => {
   function startTimer() {
     initAudioContext();
     if (state.timerState === 'running') return;
-    
+
     state.timerState = 'running';
     elements.btnTimerStart.innerHTML = `<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg><span>Pause</span>`;
-    
+
     state.timerInterval = setInterval(() => {
       state.timerRemaining--;
       renderTimerDisplay();
-      
+
       if (state.timerRemaining <= 0) {
         clearInterval(state.timerInterval);
         state.timerState = 'stopped';
         elements.btnTimerStart.innerHTML = `<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg><span>Start</span>`;
-        
+
         // Timer Alarm Bell Synthesized via Web Audio!
         playAlarmBell();
-        
+
         // Auto reset to default duration
         state.timerRemaining = state.timerDuration;
         renderTimerDisplay();
-        
-        alert(`${state.timerType === 'focus' ? 'Focus session completed! Time for a warm beverage sip.' : 'Break completed! Ready to brew some productivity?'}`);
+
+        alert(
+          `${state.timerType === 'focus' ? 'Focus session completed! Time for a warm beverage sip.' : 'Break completed! Ready to brew some productivity?'}`
+        );
       }
     }, 1000);
   }
@@ -747,9 +779,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // Synthesize a beautiful double-chime alarm sound
   function playAlarmBell() {
     if (!audioCtx) initAudioContext();
-    
+
     const now = audioCtx.currentTime;
-    
+
     // First tone (E5 - 659.25 Hz)
     const osc1 = audioCtx.createOscillator();
     const gain1 = audioCtx.createGain();
@@ -760,7 +792,7 @@ document.addEventListener('DOMContentLoaded', () => {
     gain1.gain.exponentialRampToValueAtTime(0.0001, now + 1.2);
     osc1.connect(gain1);
     gain1.connect(audioCtx.destination);
-    
+
     // Second tone (G5 - 783.99 Hz) triggered slightly later
     const osc2 = audioCtx.createOscillator();
     const gain2 = audioCtx.createGain();
@@ -771,7 +803,7 @@ document.addEventListener('DOMContentLoaded', () => {
     gain2.gain.exponentialRampToValueAtTime(0.0001, now + 1.5);
     osc2.connect(gain2);
     gain2.connect(audioCtx.destination);
-    
+
     osc1.start(now);
     osc1.stop(now + 1.3);
     osc2.start(now + 0.25);
@@ -795,21 +827,21 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Preset Buttons Focus, Short break, Long break
-  elements.presetButtons.forEach(btn => {
+  elements.presetButtons.forEach((btn) => {
     btn.addEventListener('click', () => {
-      elements.presetButtons.forEach(b => b.classList.remove('active'));
+      elements.presetButtons.forEach((b) => b.classList.remove('active'));
       btn.classList.add('active');
-      
+
       const duration = parseInt(btn.dataset.duration);
       state.timerType = btn.dataset.type;
       state.timerDuration = duration;
       state.timerRemaining = duration;
-      
+
       // Reset running timers
       clearInterval(state.timerInterval);
       state.timerState = 'stopped';
       elements.btnTimerStart.innerHTML = `<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg><span>Start</span>`;
-      
+
       renderTimerDisplay();
     });
   });
@@ -822,12 +854,12 @@ document.addEventListener('DOMContentLoaded', () => {
   // ==========================================
   function renderTodos() {
     elements.todoList.innerHTML = '';
-    
-    state.todos.forEach(todo => {
+
+    state.todos.forEach((todo) => {
       const li = document.createElement('li');
       li.className = `todo-item ${todo.completed ? 'completed' : ''}`;
       li.dataset.id = todo.id;
-      
+
       li.innerHTML = `
         <div class="todo-item-content">
           <input type="checkbox" ${todo.completed ? 'checked' : ''}>
@@ -856,7 +888,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Delete button click
       li.querySelector('.btn-todo-del').addEventListener('click', () => {
-        state.todos = state.todos.filter(t => t.id !== todo.id);
+        state.todos = state.todos.filter((t) => t.id !== todo.id);
         li.style.animation = 'fadeIn 0.2s reverse forwards';
         setTimeout(() => {
           renderTodos();
@@ -873,8 +905,16 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function escapeHTML(str) {
-    return str.replace(/[&<>'"]/g, 
-      tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+    return str.replace(
+      /[&<>'"]/g,
+      (tag) =>
+        ({
+          '&': '&amp;',
+          '<': '&lt;',
+          '>': '&gt;',
+          "'": '&#39;',
+          '"': '&quot;',
+        })[tag] || tag
     );
   }
 
@@ -882,13 +922,13 @@ document.addEventListener('DOMContentLoaded', () => {
     e.preventDefault();
     const text = elements.todoInput.value.trim();
     if (!text) return;
-    
+
     state.todos.push({
       id: Date.now(),
       text: text,
-      completed: false
+      completed: false,
     });
-    
+
     elements.todoInput.value = '';
     renderTodos();
     saveTodos();
@@ -909,38 +949,38 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!state.keyboardSoundsEnabled) return;
     if (!audioCtx) initAudioContext();
     if (audioCtx.state === 'suspended') audioCtx.resume();
-    
+
     const now = audioCtx.currentTime;
-    
+
     // 1. Switch click (high frequency chirp)
     const oscClick = audioCtx.createOscillator();
     const gainClick = audioCtx.createGain();
-    
+
     // randomize key click frequency slightly for mechanical switch realism
     const clickFreq = 2200 + Math.random() * 800;
     oscClick.type = 'sine';
     oscClick.frequency.setValueAtTime(clickFreq, now);
-    
+
     gainClick.connect(audioCtx.destination);
     oscClick.connect(gainClick);
-    
+
     gainClick.gain.setValueAtTime(0.015, now);
     gainClick.gain.exponentialRampToValueAtTime(0.0001, now + 0.012);
-    
+
     // 2. Plastic bottoming out key sound (lower frequency thud)
     const oscThud = audioCtx.createOscillator();
     const gainThud = audioCtx.createGain();
-    
+
     const thudFreq = 120 + Math.random() * 45;
     oscThud.type = 'triangle';
     oscThud.frequency.setValueAtTime(thudFreq, now);
-    
+
     gainThud.connect(audioCtx.destination);
     oscThud.connect(gainThud);
-    
+
     gainThud.gain.setValueAtTime(0.06, now);
     gainThud.gain.exponentialRampToValueAtTime(0.0001, now + 0.035);
-    
+
     oscClick.start(now);
     oscClick.stop(now + 0.02);
     oscThud.start(now);
@@ -951,12 +991,12 @@ document.addEventListener('DOMContentLoaded', () => {
   elements.notepadTextarea.addEventListener('input', (e) => {
     // Play mechanical click
     playTypingClick();
-    
+
     // Update character count
     const content = elements.notepadTextarea.value;
     state.notepadContent = content;
     elements.charCount.textContent = `${content.length} characters`;
-    
+
     // Autosave
     localStorage.setItem('vr-notepad', content);
   });
@@ -971,16 +1011,16 @@ document.addEventListener('DOMContentLoaded', () => {
   elements.btnDownloadNotes.addEventListener('click', () => {
     const text = elements.notepadTextarea.value;
     if (!text.trim()) {
-      alert("Your notepad is empty. Write something before downloading!");
+      alert('Your notepad is empty. Write something before downloading!');
       return;
     }
-    
+
     const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
     const url = URL.createObjectURL(blob);
-    
+
     const a = document.createElement('a');
     a.href = url;
-    a.download = `Virtual-Rain-Cafe-Notes-${new Date().toISOString().slice(0,10)}.txt`;
+    a.download = `Virtual-Rain-Cafe-Notes-${new Date().toISOString().slice(0, 10)}.txt`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -989,7 +1029,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Clear notes button
   elements.btnClearNotes.addEventListener('click', () => {
-    if (confirm("Are you sure you want to clear your notes? This cannot be undone.")) {
+    if (
+      confirm(
+        'Are you sure you want to clear your notes? This cannot be undone.'
+      )
+    ) {
       elements.notepadTextarea.value = '';
       state.notepadContent = '';
       elements.charCount.textContent = '0 characters';
@@ -1002,14 +1046,19 @@ document.addEventListener('DOMContentLoaded', () => {
   // ==========================================
   function applyTheme(themeName) {
     // Remove old themes
-    elements.body.classList.remove('theme-cozy', 'theme-library', 'theme-cyber', 'theme-forest');
+    elements.body.classList.remove(
+      'theme-cozy',
+      'theme-library',
+      'theme-cyber',
+      'theme-forest'
+    );
     elements.body.classList.add(`theme-${themeName}`);
-    
+
     state.theme = themeName;
     localStorage.setItem('vr-theme', themeName);
-    
+
     // Update active class in button UI
-    elements.themeButtons.forEach(btn => {
+    elements.themeButtons.forEach((btn) => {
       if (btn.dataset.theme === themeName) {
         btn.classList.add('active');
         const accent = btn.style.getPropertyValue('--accent');
@@ -1021,19 +1070,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Match weather status text
     const statusLabels = {
-      cozy: "Drizzling Coffeehouse",
-      library: "Midnight Library Rain",
-      cyber: "Neon Street Downpour",
-      forest: "Misty Mountain Canopy"
+      cozy: 'Drizzling Coffeehouse',
+      library: 'Midnight Library Rain',
+      cyber: 'Neon Street Downpour',
+      forest: 'Misty Mountain Canopy',
     };
-    elements.weatherStatusText.textContent = statusLabels[themeName] || "Cozy Rain";
+    elements.weatherStatusText.textContent =
+      statusLabels[themeName] || 'Cozy Rain';
 
     // Set theme custom rain parameters
     syncRainDrops();
   }
 
   // Hook Theme selection buttons
-  elements.themeButtons.forEach(btn => {
+  elements.themeButtons.forEach((btn) => {
     btn.addEventListener('click', () => {
       initAmbientAudio();
       applyTheme(btn.dataset.theme);
@@ -1045,15 +1095,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Rain intensity slider
   elements.sliderRainIntensity.value = state.rainIntensity;
-  const intensityMap = ["Light Drizzle", "Steady Rainfall", "Heavy Downpour", "Thunderstorm"];
-  elements.rainIntensityLabel.textContent = intensityMap[state.rainIntensity - 1] || "Steady Rainfall";
+  const intensityMap = [
+    'Light Drizzle',
+    'Steady Rainfall',
+    'Heavy Downpour',
+    'Thunderstorm',
+  ];
+  elements.rainIntensityLabel.textContent =
+    intensityMap[state.rainIntensity - 1] || 'Steady Rainfall';
 
   elements.sliderRainIntensity.addEventListener('input', (e) => {
     const val = parseInt(e.target.value);
     state.rainIntensity = val;
     localStorage.setItem('vr-rain-intensity', val.toString());
-    elements.rainIntensityLabel.textContent = intensityMap[val - 1] || "Steady Rainfall";
-    
+    elements.rainIntensityLabel.textContent =
+      intensityMap[val - 1] || 'Steady Rainfall';
+
     // Reconfigure drops count
     syncRainDrops();
 
@@ -1085,12 +1142,30 @@ document.addEventListener('DOMContentLoaded', () => {
   // Hide UI Panel Dashboard
   elements.btnHideUI.addEventListener('click', () => {
     elements.appContainer.classList.add('ui-hidden');
+    elements.btnRestoreUI.classList.add('visible');
   });
 
+  elements.btnRestoreUI.addEventListener('click', () => {
+    elements.appContainer.classList.remove('ui-hidden');
+    elements.btnRestoreUI.classList.remove('visible');
+  });
+
+  document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' &&
+      elements.appContainer.classList.contains('ui-hidden')) {
+
+    elements.appContainer.classList.remove('ui-hidden');
+    elements.btnRestoreUI.classList.remove('visible');
+  }
+});
   // Double click anywhere on screen restores UI
   window.addEventListener('dblclick', (e) => {
     // Prevent double clicking textareas or inputs triggering this
-    if (e.target.tagName !== 'TEXTAREA' && e.target.tagName !== 'INPUT' && e.target.tagName !== 'BUTTON') {
+    if (
+      e.target.tagName !== 'TEXTAREA' &&
+      e.target.tagName !== 'INPUT' &&
+      e.target.tagName !== 'BUTTON'
+    ) {
       elements.appContainer.classList.remove('ui-hidden');
     }
   });
@@ -1114,8 +1189,11 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Prime audio contexts on any first click
-  window.addEventListener('click', () => {
-    initAudioContext();
-  }, { once: true });
-
+  window.addEventListener(
+    'click',
+    () => {
+      initAudioContext();
+    },
+    { once: true }
+  );
 });
