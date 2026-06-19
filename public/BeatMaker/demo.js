@@ -584,13 +584,25 @@ const stop = () => {
   playBtn.style.display = "block";
 }
 // Theme toggle
-  const themeBtn = document.getElementById("themeToggle");
+ const themeBtn = document.getElementById("themeToggle");
 
-    themeBtn.addEventListener("click", () => {
-      document.body.classList.toggle("light-theme");
+const savedTheme = localStorage.getItem("beatmaker-theme");
 
-      themeBtn.textContent =
-        document.body.classList.contains("light-theme")
-          ? "☀️"
-          : "🌙";
-    });
+if (savedTheme === "light") {
+  document.body.classList.add("light-theme");
+  themeBtn.textContent = "☀️";
+}
+
+themeBtn.addEventListener("click", () => {
+  document.body.classList.toggle("light-theme");
+
+  const isLight =
+    document.body.classList.contains("light-theme");
+
+  themeBtn.textContent = isLight ? "☀️" : "🌙";
+
+  localStorage.setItem(
+    "beatmaker-theme",
+    isLight ? "light" : "dark"
+  );
+});

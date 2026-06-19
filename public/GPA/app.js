@@ -5,6 +5,12 @@ const STORAGE_KEYS = {
   plans: 'cgpa-planner-saved-plans',
 };
 
+const feasibility = getFeasibility(
+    requiredSgpa,
+    currentCgpa,
+    targetCgpa
+);
+
 let currentPlan = null;
 let cgpaChart = null;
 let courseGrades = [];
@@ -39,6 +45,22 @@ function updateThemeIcon(theme) {
   $('.theme-icon').textContent = theme === 'dark' ? '🌙' : '☀️';
 }
 
+if (targetCgpa < currentCgpa) {
+    showError("Target CGPA cannot be less than current CGPA");
+    return false;
+}
+
+if (gapToClose === 0) {
+    badge.textContent =
+        "On Track — Maintain your current performance!";
+
+    badge.classList.remove(
+        "danger",
+        "warning"
+    );
+
+    badge.classList.add("success");
+}
 // ===== Validation =====
 function validateForm(data) {
   const errors = [];
@@ -160,17 +182,27 @@ function calculateRequiredSgpa(data, whatIfSgpas = {}) {
   };
 }
 
-function getFeasibility(requiredSgpa) {
-  if (requiredSgpa === null || requiredSgpa > 10) {
-    return { level: 'impossible', dot: '🔴', text: 'Nearly impossible — exceeds max SGPA of 10' };
-  }
-  if (requiredSgpa <= 8.0) {
-    return { level: 'easy', dot: '🟢', text: 'Easily achievable' };
-  }
-  if (requiredSgpa <= 9.5) {
-    return { level: 'challenging', dot: '🟡', text: 'Challenging — requires consistent high performance' };
-  }
-  return { level: 'impossible', dot: '🔴', text: 'Nearly impossible — very demanding target' };
+function getFeasibility(requiredSgpa, currentCgpa, targetCgpa) {
+
+    // Already on target
+    if (
+        currentCgpa === targetCgpa &&
+        currentCgpa === 10
+    ) {
+        return {
+            label: "On Track — Maintain your current performance!",
+            type: "success"
+        };
+    }
+
+    if (requiredSgpa > 9.5) {
+        return {
+            label: "Nearly impossible — very demanding target",
+            type: "danger"
+        };
+    }
+
+    // existing logic...
 }
 
 function formatNum(n, decimals = 2) {
