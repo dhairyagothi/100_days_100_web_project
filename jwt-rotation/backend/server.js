@@ -27,6 +27,19 @@ const authLimiter = rateLimit({
   },
 });
 
+// ── CSRF setup (before cookieParser so CodeQL sees full chain) ────────────────
+const { generateToken, doubleCsrfProtection } = doubleCsrf({
+  getSecret: () => process.env.CSRF_SECRET || "csrf-secret-change-in-prod",
+  cookieName: "x-csrf-token",
+  cookieOptions: {
+    sameSite: "strict",
+    secure: process.env.NODE_ENV === "production",
+    httpOnly: true,
+  },
+  size: 64,
+  ignoredMethods: ["GET", "HEAD", "OPTIONS"],
+});
+
 // ── Middleware ────────────────────────────────────────────────────────────────
 app.use(
   cors({
@@ -40,28 +53,15 @@ app.use(
 app.use(express.json({ limit: "10kb" }));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser(process.env.COOKIE_SECRET || "cookie-secret-change-in-prod"));
+app.use(doubleCsrfProtection); // ← must come immediately after cookieParser
 
-// ── CSRF Protection ───────────────────────────────────────────────────────────
-const { generateToken, doubleCsrfProtection } = doubleCsrf({
-  getSecret: () => process.env.CSRF_SECRET || "csrf-secret-change-in-prod",
-  cookieName: "x-csrf-token",
-  cookieOptions: {
-    sameSite: "strict",
-    secure: process.env.NODE_ENV === "production",
-    httpOnly: true,
-  },
-  size: 64,
-  ignoredMethods: ["GET", "HEAD", "OPTIONS"],
-});
+// ── Routes ────────────────────────────────────────────────────────────────────
 
-app.use(doubleCsrfProtection);
-
-// Endpoint for frontend to fetch CSRF token before making state-changing requests
+// Expose CSRF token to frontend before any state-changing request
 app.get("/csrf-token", (req, res) => {
   res.json({ csrfToken: generateToken(req, res) });
 });
 
-// ── Routes ────────────────────────────────────────────────────────────────────
 app.use("/api/auth", authLimiter, authRoutes);
 
 // Health check
