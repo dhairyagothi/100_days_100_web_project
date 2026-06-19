@@ -570,4 +570,396 @@ h1, h2, .hero-section h1 {
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+/* Appointments Section styling */
+.appointments-section {
+    margin-top: 40px;
+    background: var(--container-bg);
+    border-radius: 10px;
+    padding: 25px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid var(--border-color);
+}
+
+.appointments-section h2 {
+    margin-bottom: 20px;
+    color: var(--text-color);
+    font-size: 1.8rem;
+    position: relative;
+    padding-bottom: 8px;
+}
+
+.appointments-section h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background: var(--primary-color);
+    border-radius: 2px;
+}
+
+/* Empty state styling */
+.empty-appointments {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.empty-icon {
+    font-size: 3.5rem;
+    margin-bottom: 15px;
+    animation: bounce 2s infinite ease-in-out;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.empty-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: 5px;
+}
+
+.empty-desc {
+    font-size: 0.95rem;
+    color: var(--disabled-color);
+    max-width: 400px;
+}
+
+/* Grid & Card layout styling */
+.appointments-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    margin-top: 15px;
+}
+
+.appointment-card {
+    background: var(--header-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    transition: transform 0.3s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.appointment-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--primary-color);
+}
+
+.appointment-card.status-cancelled::before {
+    background: #e74c3c;
+}
+
+.appointment-card.status-completed::before {
+    background: var(--disabled-color);
+}
+
+.appointment-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+    border-color: var(--primary-color);
+}
+
+.card-header-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.card-service {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-color);
+    line-height: 1.3;
+}
+
+.badge {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    display: inline-block;
+}
+
+.badge.upcoming {
+    background: rgba(46, 204, 113, 0.15);
+    color: #2ecc71;
+}
+
+.badge.completed {
+    background: rgba(149, 165, 166, 0.15);
+    color: var(--disabled-color);
+}
+
+.badge.cancelled {
+    background: rgba(231, 76, 60, 0.15);
+    color: #e74c3c;
+}
+
+.card-details {
+    font-size: 0.9rem;
+    color: var(--text-color);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.card-detail-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.card-detail-icon {
+    font-size: 1.1rem;
+}
+
+.card-timestamp {
+    font-size: 0.75rem;
+    color: var(--disabled-color);
+    margin-top: 4px;
+    border-top: 1px dashed var(--border-color);
+    padding-top: 8px;
+}
+
+.card-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.btn-card {
+    flex: 1;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+.btn-card.btn-view {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+}
+
+.btn-card.btn-view:hover {
+    background: var(--hover-bg);
+}
+
+.btn-card.btn-reschedule {
+    background: var(--primary-color);
+    color: white;
+}
+
+.btn-card.btn-reschedule:hover {
+    background: var(--primary-hover);
+}
+
+.btn-card.btn-cancel {
+    background: transparent;
+    border: 1px solid #e74c3c;
+    color: #e74c3c;
+}
+
+.btn-card.btn-cancel:hover {
+    background: rgba(231, 76, 60, 0.1);
+}
+
+/* Reschedule Notice styling */
+.reschedule-notice {
+    background: rgba(241, 196, 15, 0.15);
+    border: 1px solid #f1c40f;
+    border-radius: 5px;
+    padding: 10px 15px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.95rem;
+    color: var(--text-color);
+    font-weight: 500;
+    animation: fadeIn 0.4s ease-out;
+}
+
+.cancel-reschedule-btn {
+    background: #e74c3c;
+    color: white;
+    border: none;
+    padding: 4px 10px;
+    border-radius: 3px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.2s;
+}
+
+.cancel-reschedule-btn:hover {
+    background: #c0392b;
+}
+
+/* Modal Overlay styling */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    z-index: 2100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.modal-content {
+    background: var(--container-bg);
+    border-radius: 10px;
+    padding: 30px;
+    width: 90%;
+    max-width: 450px;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    border: 1px solid var(--border-color);
+    animation: scaleUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.close-modal-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    line-height: 1;
+    color: var(--disabled-color);
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.close-modal-btn:hover {
+    color: var(--text-color);
+}
+
+.modal-detail-title {
+    font-size: 1.5rem;
+    color: var(--text-color);
+    margin-bottom: 20px;
+    font-family: 'Pacifico', cursive;
+}
+
+.modal-detail-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 25px;
+    text-align: left;
+}
+
+.modal-detail-item {
+    font-size: 1rem;
+    color: var(--text-color);
+}
+
+.modal-detail-item strong {
+    font-weight: 600;
+    color: var(--disabled-color);
+    margin-right: 8px;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    display: block;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 15px;
+}
+
+.modal-btn {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+.modal-btn.btn-confirm {
+    background: #e74c3c;
+    color: white;
+}
+
+.modal-btn.btn-confirm:hover {
+    background: #c0392b;
+}
+
+.modal-btn.btn-cancel {
+    background: var(--header-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+}
+
+.modal-btn.btn-cancel:hover {
+    background: var(--hover-bg);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes scaleUp {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+/* Fix warning dialog style to match premium UI */
+.alert-box {
+    animation: slideDown 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes slideDown {
+    from { transform: translate(-50%, -100px); opacity: 0; }
+    to { transform: translate(-50%, 0); opacity: 1; }
+}
+
+@media (max-width: 768px) {
+    .appointments-grid {
+        grid-template-columns: 1fr;
+    }
 } 

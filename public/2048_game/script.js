@@ -187,11 +187,10 @@ function addTile() {
 }
 
 function tilePos(r, c) {
-  const scale = window.innerWidth <= 560 ? 0.88 : 1;
-  const step = (TS + GAP) * scale;
+  const step = TS + GAP;
   return {
-    top: PAD * scale + r * step,
-    left: PAD * scale + c * step,
+    top: PAD + r * step,
+    left: PAD + c * step,
   };
 }
 
@@ -210,7 +209,9 @@ function applyGridDimensions() {
     PAD = isMobile ? 11 : 14;
   }
   const bd = document.getElementById("bd");
+  const wr = document.getElementById("wr");
   bd.style.setProperty("--N", N);
+  wr.style.setProperty("--tile-size", `${TS}px`);
   bd.style.gap = `${GAP}px`;
   bd.style.padding = `${PAD}px`;
 }
@@ -278,6 +279,8 @@ function doMove(dir) {
   if (score > best) {
     best = score;
     saveBest();
+    stats.best = Math.max(stats.best, best);
+    saveStats();
   }
 
   const newCell = addTile();
@@ -288,6 +291,10 @@ function doMove(dir) {
   saveGame();
 
   const mt = maxTile();
+  if (mt > stats.bestTile) {
+    stats.bestTile = mt;
+    saveStats();
+  }
   if (mt >= 2048 && !won) {
     won = true;
     stats.wins++;
@@ -345,6 +352,9 @@ function init(resume = false) {
   timeLeft = 60;
   document.getElementById("tbar").style.display =
     mode === "timed" ? "block" : "none";
+  document.getElementById("timer-label-row").style.display =
+    mode === "timed" ? "flex" : "none";
+  document.getElementById("timer-val").textContent = timeLeft;
   if (mode === "timed") startTimer();
 
   renderBoard();
@@ -373,6 +383,8 @@ function updateTimerBar() {
   const fill = document.getElementById("tfill");
   fill.style.width = (timeLeft / 60) * 100 + "%";
   fill.classList.toggle("danger", timeLeft <= 15);
+  const lbl = document.getElementById("timer-val");
+  if (lbl) lbl.textContent = Math.max(0, timeLeft);
 }
 
 /* ====================== RENDERING ====================== */
@@ -452,9 +464,15 @@ function updateUI() {
   document.getElementById("bv").textContent = best.toLocaleString();
   document.getElementById("moves-val").textContent = moves;
   document.getElementById("btile-val").textContent = maxTile();
-  document.getElementById("tiles-val").textContent = board
-    .flat()
-    .filter(Boolean).length;
+  
+}
+function openStats() {
+  document.getElementById("st-best").textContent = stats.best;
+  document.getElementById("st-games").textContent = stats.games;
+  document.getElementById("st-wins").textContent = stats.wins;
+  document.getElementById("st-tile").textContent = stats.bestTile;
+
+  document.getElementById("stats-modal").classList.add("show");
 }
 
 /* ====================== OVERLAY ====================== */
@@ -533,6 +551,83 @@ function stopConfetti() {
   /* ... */
 }
 
+/* ====================== STATS MODAL ====================== */
+function openStats() {
+  document.getElementById("st-best").textContent = stats.best.toLocaleString();
+  document.getElementById("st-games").textContent = stats.games;
+  document.getElementById("st-wins").textContent = stats.wins;
+  document.getElementById("st-tile").textContent = stats.bestTile;
+
+  const badgesEl = document.getElementById("ach-badges");
+  badgesEl.innerHTML = "";
+  ACHIEVEMENTS.forEach((ach) => {
+    const badge = document.createElement("span");
+    badge.className = `ach-badge${stats.earned.includes(ach.id) ? " earned" : ""}`;
+    badge.textContent = ach.label;
+    badgesEl.appendChild(badge);
+  });
+
+  drawScoreGraph();
+
+  document.getElementById("stats-modal").classList.add("open");
+}
+
+function closeStats() {
+  document.getElementById("stats-modal").classList.remove("open");
+}
+
+function drawScoreGraph() {
+  const canvas = document.getElementById("score-graph");
+  if (!canvas) return;
+  const ctx = canvas.getContext("2d");
+  const w = (canvas.width = canvas.clientWidth);
+  const h = (canvas.height = canvas.clientHeight || 80);
+  ctx.clearRect(0, 0, w, h);
+
+  const data = stats.scoreHistory;
+  if (!data.length) return;
+
+  const max = Math.max(...data, 1);
+  const stepX = w / Math.max(data.length - 1, 1);
+
+  ctx.beginPath();
+  ctx.strokeStyle = "#ffd54f";
+  ctx.lineWidth = 2;
+  data.forEach((val, i) => {
+    const x = i * stepX;
+    const y = h - (val / max) * (h - 8) - 4;
+    if (i === 0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
+  });
+  ctx.stroke();
+}
+
+/* ====================== HINT ====================== */
+function getHintDirection() {
+  const dirs = ["up", "down", "left", "right"];
+  const rotTurns = { left: 0, down: 1, right: 2, up: 3 };
+  let best = null,
+    bestScore = -1;
+
+  for (const dir of dirs) {
+    let tmp = rotateBoard(board, rotTurns[dir]);
+    let pts = 0,
+      moved = false;
+    for (let r = 0; r < N; r++) {
+      const before = [...tmp[r]];
+      const res = slideRow([...tmp[r]]);
+      if (res.row.some((v, i) => v !== before[i])) moved = true;
+      pts += res.pts;
+    }
+    if (!moved) continue;
+    if (pts > bestScore || best === null) {
+      bestScore = pts;
+      best = dir;
+    }
+  }
+  return best;
+}
+
 /* ====================== EVENT LISTENERS ====================== */
 document.getElementById("nb").addEventListener("click", () => {
   clearSavedGame();
@@ -546,6 +641,16 @@ document.getElementById("ub").addEventListener("click", () => {
   renderBoard();
   renderTiles();
   updateUI();
+});
+
+document.getElementById("hintbtn").addEventListener("click", () => {
+  const dir = getHintDirection();
+  const toast = document.getElementById("toast");
+  toast.textContent = dir
+    ? `Try: ${dir.toUpperCase()}`
+    : "No moves available";
+  toast.classList.add("show");
+  setTimeout(() => toast.classList.remove("show"), 1500);
 });
 
 document
@@ -587,10 +692,17 @@ document.querySelectorAll(".theme-btn").forEach((btn) => {
   });
 });
 
+document.getElementById("sdbtn-panel").addEventListener("click", (e) => {
+  soundOn = !soundOn;
+  e.currentTarget.textContent = soundOn ? "🔊 Sound On" : "🔇 Sound Off";
+});
+
 document.getElementById("stbtn-panel").addEventListener("click", () => {
   document.getElementById("settings-panel").classList.remove("open");
-  // openStats() can be added if you want full stats modal
+  openStats();
 });
+
+document.getElementById("close-stats").addEventListener("click", closeStats);
 
 /* Keyboard */
 document.addEventListener("keydown", (e) => {
@@ -656,3 +768,26 @@ try {
 } catch (e) {}
 
 // How to Play Modal (keep your existing code at the bottom)
+document.getElementById("stbtn-panel").onclick = () => {
+  document.getElementById("settings-panel").classList.remove("open");
+  openStats();
+};
+document.getElementById("close-stats").onclick = () =>
+  document.getElementById("stats-modal").classList.remove("show");
+/* How-to Play Modal */
+const howtoModal = document.getElementById("howto-modal");
+const openHowto = () => (howtoModal.style.display = "flex");
+const closeHowto = () => (howtoModal.style.display = "none");
+
+const howtoInlineBtn = document.getElementById("howto-inline-btn");
+if (howtoInlineBtn) howtoInlineBtn.addEventListener("click", openHowto);
+
+const howtoClose = document.getElementById("howto-close");
+if (howtoClose) howtoClose.addEventListener("click", closeHowto);
+
+const howtoClose2 = document.getElementById("howto-close2");
+if (howtoClose2) howtoClose2.addEventListener("click", closeHowto);
+
+howtoModal.addEventListener("click", (e) => {
+  if (e.target === howtoModal) closeHowto();
+});

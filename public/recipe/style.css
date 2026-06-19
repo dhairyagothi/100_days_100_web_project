@@ -393,7 +393,7 @@ select option {
 }
 
 #searchInput::placeholder {
-    color: #64748b;
+    color: #94a3b8; 
 }
 
 .recipe-grid {
@@ -414,6 +414,11 @@ select option {
     overflow: hidden;
     transition: .3s;
     cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        cursor: pointer;
+    max-width: 100%;
+    box-sizing: border-box;
+
 }
 
 .recipe-card:hover {
@@ -471,6 +476,9 @@ select option {
     font-family: 'Playfair Display', serif;
     font-size: 1.2rem;
     margin-bottom: 8px;
+    padding-left: 8px;
+    overflow: visible;
+    white-space: normal;
 }
 
 .recipe-info p {
@@ -481,6 +489,7 @@ select option {
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    margin: 1rem;
 }
 
 .recipe-info-meta {
@@ -493,7 +502,7 @@ select option {
 .recipe-tag {
     background: rgba(96,165,250,.12);
     color: #93c5fd;
-    padding: 4px 12px;
+    padding: 5px 14px;
     border-radius: 999px;
     font-size: 0.78rem;
     font-weight: 600;
@@ -520,6 +529,9 @@ select option {
     padding: 60px;
     grid-column: 1/-1;
 }
+.recipe-card-body h3 {
+    padding-left: 6px;
+}
 
 /* =========================
    RECIPE DETAILS PAGE
@@ -530,6 +542,7 @@ select option {
     max-width: 900px;
     margin: 40px auto;
     padding-bottom: 80px;
+    box-sizing: border-box;
 }
 
 .recipe-image {
