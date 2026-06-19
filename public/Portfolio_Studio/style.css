@@ -1,0 +1,152 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+body {
+    background-color: #05050a;
+    color: #f1f5f9;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.app-header {
+    background-color: #0c0c16;
+    padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #1e1e30;
+}
+
+.logo {
+    font-size: 1.3rem;
+    font-weight: 800;
+    background: linear-gradient(to right, #ff007f, #00f2fe);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.btn-download {
+    background: linear-gradient(135deg, #ff007f, #7928ca);
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    font-weight: 700;
+    border-radius: 20px;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(255, 0, 127, 0.4);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.btn-download:hover { 
+    transform: scale(1.03); 
+    box-shadow: 0 0 25px rgba(255, 0, 127, 0.7); 
+}
+
+.app-container {
+    display: flex;
+    flex: 1;
+    height: calc(100vh - 65px);
+}
+
+/* Sidebar Parameters Configuration Layout Container */
+.control-panel {
+    width: 390px;
+    background-color: #0c0c16;
+    border-right: 1px solid #1e1e30;
+    padding: 24px;
+    overflow-y: auto;
+}
+
+.control-panel h2 {
+    font-size: 0.8rem;
+    margin: 24px 0 12px 0;
+    color: #52527a;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
+.control-panel h2:first-of-type { margin-top: 0; }
+
+.project-management-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 24px;
+    border-bottom: 1px solid #1e1e30;
+    padding-bottom: 6px;
+}
+.project-management-header h2 { margin: 0; }
+
+.input-group { margin-bottom: 16px; }
+.input-group label { display: block; font-size: 0.8rem; margin-bottom: 6px; color: #94a3b8; }
+.input-group input, .input-group textarea, .input-group select {
+    width: 100%;
+    background-color: #05050a;
+    border: 1px solid #1e1e30;
+    color: #fff;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 0.88rem;
+}
+.input-group textarea { height: 75px; resize: none; }
+.input-group input:focus, .input-group textarea:focus { outline: none; border-color: #ff007f; }
+
+/* Dynamic Multi-Row Card Structural Elements */
+.dynamic-project-box {
+    background: #121225;
+    padding: 16px;
+    border-radius: 10px;
+    margin-bottom: 14px;
+    border: 1px solid #1e1e30;
+}
+.btn-delete {
+    background: #ef4444;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 4px;
+}
+.btn-small {
+    background: #00f2fe;
+    color: #05050a;
+    border: none;
+    padding: 6px 14px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+/* Sandboxed Iframe Rendering Canvas Section */
+.preview-canvas {
+    flex: 1;
+    background-color: #050508;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+}
+.preview-bar {
+    font-size: 0.75rem;
+    background-color: #0c0c16;
+    color: #626285;
+    padding: 10px 18px;
+    border-radius: 10px 10px 0 0;
+    font-weight: 700;
+    border: 1px solid #1e1e30;
+    border-bottom: none;
+    letter-spacing: 0.5px;
+}
+iframe {
+    flex: 1;
+    border: 1px solid #1e1e30;
+    background: #000;
+    border-radius: 0 0 10px 10px;
+}
