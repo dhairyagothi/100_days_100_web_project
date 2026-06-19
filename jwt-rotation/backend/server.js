@@ -4,6 +4,7 @@ const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const rateLimit = require("express-rate-limit");
+const { doubleCsrf } = require("csrf-csrf");
 const connectDB = require("./config/db");
 const { connectRedis } = require("./config/redis");
 const authRoutes = require("./routes/authRoutes");
@@ -15,10 +16,8 @@ connectDB();
 connectRedis();
 
 // ── Rate limiting ─────────────────────────────────────────────────────────────
-// Auth endpoints are a common brute-force target. Limit to 20 requests per
-// 15 minutes per IP address.
 const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
+  windowMs: 15 * 60 * 1000,
   max: 20,
   standardHeaders: true,
   legacyHeaders: false,
@@ -32,44 +31,40 @@ const authLimiter = rateLimit({
 app.use(
   cors({
     origin: process.env.CLIENT_ORIGIN || "http://localhost:3000",
-    credentials: true, // Required: allows cookies to be sent cross-origin
+    credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"], // Added X-Requested-With for custom header protection
+    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "x-csrf-token"],
   })
 );
 
-app.use(express.json({ limit: "10kb" })); // Body size limit to prevent large payload attacks
+app.use(express.json({ limit: "10kb" }));
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser()); // Required to parse httpOnly cookies
+app.use(cookieParser(process.env.COOKIE_SECRET || "cookie-secret-change-in-prod"));
 
-// ── Modern CSRF Mitigation Middleware ─────────────────────────────────────────
-// This interceptor satisfies CodeQL scans by blocking requests that originate 
-// from malicious external scripts exploiting session cookies.
-app.use((req, res, next) => {
-  // Safe methods do not require state-changing token protection
-  if (["GET", "HEAD", "OPTIONS"].includes(req.method)) {
-    return next();
-  }
+// ── CSRF Protection ───────────────────────────────────────────────────────────
+const { generateToken, doubleCsrfProtection } = doubleCsrf({
+  getSecret: () => process.env.CSRF_SECRET || "csrf-secret-change-in-prod",
+  cookieName: "x-csrf-token",
+  cookieOptions: {
+    sameSite: "strict",
+    secure: process.env.NODE_ENV === "production",
+    httpOnly: true,
+  },
+  size: 64,
+  ignoredMethods: ["GET", "HEAD", "OPTIONS"],
+});
 
-  // Expect custom header from the client frontend to ensure the request is legitimate
-  const customHeader = req.headers["x-requested-with"];
-  const origin = req.headers["origin"];
-  const host = req.headers["host"];
+app.use(doubleCsrfProtection);
 
-  // Verify that the request came directly from an authorized interface origin
-  if (!customHeader && origin && !origin.includes(host)) {
-    return res.status(403).json({
-      success: false,
-      message: "CSRF Validation Failed: Missing security context header."
-    });
-  }
-  next();
+// Endpoint for frontend to fetch CSRF token before making state-changing requests
+app.get("/csrf-token", (req, res) => {
+  res.json({ csrfToken: generateToken(req, res) });
 });
 
 // ── Routes ────────────────────────────────────────────────────────────────────
 app.use("/api/auth", authLimiter, authRoutes);
 
-// Health check (no rate limit needed)
+// Health check
 app.get("/health", (req, res) => {
   res.json({ status: "ok", timestamp: new Date().toISOString() });
 });
