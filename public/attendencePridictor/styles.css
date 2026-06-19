@@ -518,6 +518,18 @@ body {
   background: transparent;
   max-width: 420px;
   width: 90%;
+
+  /* Position modal in center of viewport */
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+
+  /* Prevent overflow on small screen sizes */
+  max-height: calc(100vh - 2rem);
+  overflow-y: auto;
 }
 
 .modal::backdrop {

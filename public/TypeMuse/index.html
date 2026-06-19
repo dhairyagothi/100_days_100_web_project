@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TypeMuse — Typography Showcase</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;700;900&family=Libre+Baskerville:wght@400;700&family=Montserrat:wght@400;600;800&family=Playfair+Display:wght@500;700;900&family=Poppins:wght@300;400;600;800&family=Space+Grotesk:wght@400;600;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-theme="light">
+  <div class="letters-bg" aria-hidden="true">
+    <span class="float-letter">A</span>
+    <span class="float-letter">g</span>
+    <span class="float-letter">&</span>
+    <span class="float-letter">Q</span>
+    <span class="float-letter">t</span>
+  </div>
+
+  <main class="wrap">
+    <nav class="nav">
+      <a class="logo" href="#">TypeMuse</a>
+      <div class="nav-links">
+        <a class="pill" href="#gallery">Gallery</a>
+        <a class="pill" href="#playground">Playground</a>
+        <a class="pill" href="#pairings">Pairings</a>
+        <button class="pill" id="themeBtn">🌙 Dark Mode</button>
+      </div>
+    </nav>
+
+    <section class="hero">
+      <div>
+        <div class="kicker">Editorial typography playground ✦</div>
+        <h1 class="animated-title" id="heroTitle">TypeMuse</h1>
+      </div>
+
+      <div class="hero-text">
+        <p class="subtitle">Explore font personalities, test live text styles, collect favorites, copy polished CSS, and experiment with expressive type animations in one modern portfolio-ready showcase.</p>
+        <article class="word-card">
+          <small>Word of the day</small>
+          <strong id="wordOfDay">Serif</strong>
+          <p id="wordDesc">A small finishing stroke that gives letters elegance, rhythm, and editorial charm.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="gallery">
+      <div class="section-head">
+        <h2>Font Gallery</h2>
+        <p>Hover the cards, favorite your picks, and use the generator to discover a new typographic mood.</p>
+      </div>
+      <button class="pill" id="randomBtn">🎲 Random Font Generator</button>
+      <div class="gallery" id="fontGallery" style="margin-top:18px;"></div>
+    </section>
+
+    <section id="favorites">
+      <div class="section-head">
+        <h2>Favorites</h2>
+        <p>Your saved fonts stay here using localStorage.</p>
+      </div>
+      <div class="panel">
+        <div id="favoritesList" class="favorites-list"></div>
+      </div>
+    </section>
+
+    <section id="playground">
+      <div class="section-head">
+        <h2>Live Playground</h2>
+        <p>Adjust size, weight, letter spacing, and font family. Then copy the CSS instantly.</p>
+      </div>
+
+      <div class="playground">
+        <div class="panel controls">
+          <label class="field">
+            Preview text
+            <input id="textInput" value="Typography is visual music." />
+          </label>
+
+          <label class="field">
+            Font family
+            <select id="fontSelect"></select>
+          </label>
+
+          <label class="field">
+            Font size <span id="sizeValue">72px</span>
+            <input id="sizeRange" type="range" min="28" max="140" value="72" />
+          </label>
+
+          <label class="field">
+            Font weight <span id="weightValue">700</span>
+            <input id="weightRange" type="range" min="300" max="900" step="100" value="700" />
+          </label>
+
+          <label class="field">
+            Letter spacing <span id="spacingValue">-2px</span>
+            <input id="spacingRange" type="range" min="-8" max="16" value="-2" />
+          </label>
+
+          <div class="copy-row">
+            <button class="pill" id="copyBtn">Copy CSS</button>
+            <button class="pill" id="resetBtn">Reset</button>
+          </div>
+        </div>
+
+        <div class="panel preview-box">
+          <div id="livePreview">Typography is visual music.</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="pairings">
+      <div class="section-head">
+        <h2>Font Pairings</h2>
+        <p>Ready-made combinations for brands, magazines, portfolios, and cozy creative websites.</p>
+      </div>
+
+      <div class="pairings">
+        <article class="pair">
+          <h3 style="font-family:'Playfair Display',serif;">Elegant Journal</h3>
+          <p style="font-family:Inter,sans-serif;">Playfair Display + Inter creates a luxurious editorial contrast for essays, portfolios, and refined landing pages.</p>
+        </article>
+        <article class="pair">
+          <h3 style="font-family:Syne,sans-serif;">Bold Studio</h3>
+          <p style="font-family:'Libre Baskerville',serif;">Syne + Libre Baskerville feels artistic, expressive, and perfect for creative agencies.</p>
+        </article>
+        <article class="pair">
+          <h3 style="font-family:Anton,sans-serif;">Poster Punch</h3>
+          <p style="font-family:Poppins,sans-serif;">Anton + Poppins gives instant poster energy while staying clean and readable.</p>
+        </article>
+        <article class="pair">
+          <h3 style="font-family:'DM Serif Display',serif;">Soft Bloom</h3>
+          <p style="font-family:Montserrat,sans-serif;">DM Serif Display + Montserrat balances romance, clarity, and modern polish.</p>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <h2>Text Animations</h2>
+        <p>Small motion details make typography feel alive without overwhelming the page.</p>
+      </div>
+
+      <div class="animations">
+        <div class="card anim-card">
+          <div class="wave" aria-label="Wave animation">
+            <span>H</span><span>E</span><span>L</span><span>L</span><span>O</span>
+          </div>
+        </div>
+        <div class="card anim-card">
+          <div class="typewriter">Typewriter</div>
+        </div>
+        <div class="card anim-card">
+          <div class="glitch">GLYPH</div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <h2>About Typography</h2>
+        <p>Typography is the art of giving words personality, structure, and emotional tone.</p>
+      </div>
+
+      <div class="about">
+        <div class="panel">
+          <p>Great typography balances contrast, hierarchy, spacing, and rhythm. A bold heading grabs attention, while a calm body font makes reading effortless. Pairing fonts is about creating harmony between different voices.</p>
+        </div>
+        <div class="panel">
+          <p>Use generous line-height, readable sizes, consistent spacing, and intentional contrast. Tiny details like letter spacing, weight, and animation timing can turn a simple layout into a memorable brand experience.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="toast" id="toast">Copied!</div>
+  <script src="script.js"></script>
+</body>
+</html>

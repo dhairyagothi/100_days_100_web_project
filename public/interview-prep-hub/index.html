@@ -1,1 +1,485 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Interview Prep Hub</title><style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',Tahoma,sans-serif;background:#f5f7fa;color:#333;padding:20px}.container{max-width:800px;margin:0 auto}h1{text-align:center;color:#2c3e50;margin-bottom:30px}.card{background:#fff;border-radius:10px;padding:20px;margin-bottom:20px;box-shadow:0 2px 10px rgba(0,0,0,0.08)}.card h3{color:#3498db;margin-bottom:10px}.card p{color:#555;line-height:1.6}.topics{display:flex;flex-wrap:wrap;gap:10px;margin-top:15px}.topic{background:#e8f4fd;color:#2980b9;padding:6px 14px;border-radius:20px;font-size:14px}.tips{background:#fffde7;border-left:4px solid #f39c12;padding:12px 16px;border-radius:0 8px 8px 0;margin-top:15px}.tips strong{color:#e67e22}footer{text-align:center;margin-top:40px;color:#999;font-size:14px}</style></head><body><div class="container"><h1>Interview Prep Hub</h1><div class="card"><h3>Technical Interviews</h3><p>Prepare for coding interviews with questions on data structures, algorithms, system design, and more.</p><div class="topics"><span class="topic">Arrays</span><span class="topic">Linked Lists</span><span class="topic">Trees</span><span class="topic">Dynamic Programming</span><span class="topic">System Design</span></div></div><div class="card"><h3>Behavioral Questions</h3><p>Common behavioral questions and frameworks like STAR method to structure your responses effectively.</p><div class="tips"><strong>Tip:</strong> Use the STAR method (Situation, Task, Action, Result) for behavioral answers.</div></div><div class="card"><h3>Resources</h3><p>Curated list of books, online courses, and practice platforms to boost your interview preparation.</p><div class="topics"><span class="topic">LeetCode</span><span class="topic">HackerRank</span><span class="topic">Cracking the Coding Interview</span><span class="topic">Pramp</span></div></div></div><footer>Interview Prep Hub - Practice makes perfect!</footer></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interview Prep Hub</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+        .card {
+            background: #fff;
+            border-radius: 10px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+        .card h3 {
+            color: #3498db;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .card p {
+            color: #555;
+            line-height: 1.6;
+        }
+        .topics {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .topic {
+            background: #e8f4fd;
+            color: #2980b9;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+        .topic:hover {
+            background: #d0eaf9;
+        }
+        .topic.completed {
+            background: #d4edda;
+            color: #155724;
+        }
+        .topic input[type="checkbox"] {
+            cursor: pointer;
+            width: 16px;
+            height: 16px;
+        }
+        .tips {
+            background: #fffde7;
+            border-left: 4px solid #f39c12;
+            padding: 12px 16px;
+            border-radius: 0 8px 8px 0;
+            margin-top: 15px;
+        }
+        .tips strong {
+            color: #e67e22;
+        }
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #999;
+            font-size: 14px;
+        }
+
+        /* Question of the Day */
+        .qotd-question {
+            font-size: 1.1rem;
+            color: #2c3e50;
+            margin: 16px 0;
+            line-height: 1.6;
+        }
+        .qotd-answer {
+            background: #f0fdf4;
+            border-left: 4px solid #22c55e;
+            padding: 16px;
+            border-radius: 0 8px 8px 0;
+            margin-top: 16px;
+            color: #166534;
+            line-height: 1.6;
+        }
+        .btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+        .btn:hover {
+            background: #2980b9;
+        }
+        .btn-secondary {
+            background: #6c757d;
+        }
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        /* Progress Tracker */
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            font-size: 15px;
+            color: #2c3e50;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 12px;
+            background: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3498db, #2ecc71);
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+
+        /* STAR Answer Builder */
+        .star-form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-top: 16px;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .form-group label {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        .form-group textarea {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 15px;
+            resize: vertical;
+            min-height: 80px;
+        }
+        .star-answer {
+            background: #f8f9fa;
+            padding: 16px;
+            border-radius: 8px;
+            margin-top: 16px;
+            line-height: 1.6;
+            color: #2c3e50;
+        }
+        .star-answer h4 {
+            color: #3498db;
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Interview Prep Hub</h1>
+
+        <!-- Question of the Day -->
+        <div class="card">
+            <h3>📅 Interview Question of the Day</h3>
+            <p id="qotd-question" class="qotd-question"></p>
+            <button id="show-answer-btn" class="btn">Show Answer</button>
+            <div id="qotd-answer" class="qotd-answer" style="display: none;"></div>
+        </div>
+
+        <!-- Progress Tracker -->
+        <div class="card">
+            <h3>📊 Progress Tracker</h3>
+            <div class="progress-header">
+                <span id="progress-text">0 / 5 topics completed</span>
+                <span id="progress-percent">0%</span>
+            </div>
+            <div class="progress-bar">
+                <div id="progress-fill" class="progress-fill" style="width: 0%;"></div>
+            </div>
+        </div>
+
+        <!-- Technical Interviews -->
+        <div class="card">
+            <h3>💻 Technical Interviews</h3>
+            <p>Prepare for coding interviews with questions on data structures, algorithms, system design, and more.</p>
+            <div class="topics" id="technical-topics">
+                <div class="topic" data-topic="Arrays">
+                    <input type="checkbox" id="topic-Arrays">
+                    <label for="topic-Arrays">Arrays</label>
+                </div>
+                <div class="topic" data-topic="Linked Lists">
+                    <input type="checkbox" id="topic-Linked Lists">
+                    <label for="topic-Linked Lists">Linked Lists</label>
+                </div>
+                <div class="topic" data-topic="Trees">
+                    <input type="checkbox" id="topic-Trees">
+                    <label for="topic-Trees">Trees</label>
+                </div>
+                <div class="topic" data-topic="Dynamic Programming">
+                    <input type="checkbox" id="topic-Dynamic Programming">
+                    <label for="topic-Dynamic Programming">Dynamic Programming</label>
+                </div>
+                <div class="topic" data-topic="System Design">
+                    <input type="checkbox" id="topic-System Design">
+                    <label for="topic-System Design">System Design</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Behavioral Questions -->
+        <div class="card">
+            <h3>🤝 Behavioral Questions</h3>
+            <p>Common behavioral questions and frameworks like STAR method to structure your responses effectively.</p>
+            <div class="tips">
+                <strong>Tip:</strong> Use the STAR method (Situation, Task, Action, Result) for behavioral answers.
+            </div>
+        </div>
+
+        <!-- STAR Answer Builder -->
+        <div class="card">
+            <h3>✨ STAR Answer Builder</h3>
+            <p>Build professional STAR-format answers for behavioral questions.</p>
+            <div class="star-form">
+                <div class="form-group">
+                    <label for="star-situation">Situation</label>
+                    <textarea id="star-situation" placeholder="Describe the situation you were in..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="star-task">Task</label>
+                    <textarea id="star-task" placeholder="What task or goal were you working towards?"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="star-action">Action</label>
+                    <textarea id="star-action" placeholder="What specific actions did you take?"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="star-result">Result</label>
+                    <textarea id="star-result" placeholder="What was the outcome of your actions?"></textarea>
+                </div>
+            </div>
+            <div id="star-answer-preview" class="star-answer" style="display: none;"></div>
+            <div style="display: flex; gap: 10px; margin-top: 16px;">
+                <button id="copy-answer-btn" class="btn" style="display: none;">Copy Answer</button>
+                <button id="clear-form-btn" class="btn btn-secondary">Clear Form</button>
+            </div>
+        </div>
+
+        <!-- Resources -->
+        <div class="card">
+            <h3>📚 Resources</h3>
+            <p>Curated list of books, online courses, and practice platforms to boost your interview preparation.</p>
+            <div class="topics">
+                <span class="topic">LeetCode</span>
+                <span class="topic">HackerRank</span>
+                <span class="topic">Cracking the Coding Interview</span>
+                <span class="topic">Pramp</span>
+            </div>
+        </div>
+
+        <footer>
+            <p>Interview Prep Hub &copy; 2025</p>
+        </footer>
+    </div>
+
+    <script>
+        // Interview Questions Data
+        const interviewQuestions = [
+            {
+                question: "What is the time complexity of binary search?",
+                answer: "The time complexity of binary search is O(log n). This is because we repeatedly divide the search interval in half. In the worst case, we make log₂(n) comparisons."
+            },
+            {
+                question: "Explain the difference between let, const, and var in JavaScript.",
+                answer: "var is function-scoped and hoisted, let and const are block-scoped. const cannot be reassigned, but its properties (if it's an object) can be modified."
+            },
+            {
+                question: "What is a hash table and how does it work?",
+                answer: "A hash table is a data structure that stores key-value pairs. It uses a hash function to compute an index into an array where the value is stored. This allows for average O(1) time complexity for insertions, deletions, and lookups."
+            },
+            {
+                question: "Describe the MVC architecture pattern.",
+                answer: "MVC stands for Model-View-Controller. The Model manages data and business logic, the View handles presentation, and the Controller acts as an interface between Model and View, processing user input."
+            },
+            {
+                question: "What is the difference between HTTP and HTTPS?",
+                answer: "HTTPS is HTTP with encryption via SSL/TLS. HTTPS ensures data integrity, authentication, and confidentiality between client and server."
+            },
+            {
+                question: "Explain how a linked list works and its advantages over arrays.",
+                answer: "A linked list is a linear data structure where each element is a node containing data and a reference to the next node. Advantages over arrays: dynamic size, efficient insertions/deletions at the beginning."
+            },
+            {
+                question: "What is a Promise in JavaScript?",
+                answer: "A Promise is an object representing the eventual completion or failure of an asynchronous operation. It has three states: pending, fulfilled, or rejected."
+            },
+            {
+                question: "What is the purpose of a database index?",
+                answer: "Database indexes improve the speed of data retrieval operations on a table at the cost of additional writes and storage. They work like a book index, allowing the database to find data without scanning every row."
+            },
+            {
+                question: "Explain the concept of Big O notation.",
+                answer: "Big O notation describes the upper bound of an algorithm's time or space complexity. It helps us compare the efficiency of different algorithms by showing how they scale with input size."
+            },
+            {
+                question: "What is the difference between process and thread?",
+                answer: "A process is an independent program in execution with its own memory space. A thread is a unit of execution within a process; multiple threads share the process's memory and resources."
+            },
+            {
+                question: "What is REST API?",
+                answer: "REST (Representational State Transfer) is an architectural style for designing networked applications. It uses HTTP methods (GET, POST, PUT, DELETE) to perform CRUD operations on resources identified by URIs."
+            },
+            {
+                question: "Explain the concept of dependency injection.",
+                answer: "Dependency injection is a design pattern where a class receives its dependencies from an external source rather than creating them itself. It promotes loose coupling and easier testing."
+            }
+        ];
+
+        // Question of the Day Logic
+        const QOTD_STORAGE_KEY = 'interview-qotd';
+        function getQuestionOfTheDay() {
+            const today = new Date().toDateString();
+            let stored = localStorage.getItem(QOTD_STORAGE_KEY);
+            if (stored) {
+                stored = JSON.parse(stored);
+                if (stored.date === today) {
+                    return stored.question;
+                }
+            }
+            const randomIndex = Math.floor(Math.random() * interviewQuestions.length);
+            const question = interviewQuestions[randomIndex];
+            localStorage.setItem(QOTD_STORAGE_KEY, JSON.stringify({ date: today, questionIndex: randomIndex, question: question }));
+            return question;
+        }
+        const qotdQuestionEl = document.getElementById('qotd-question');
+        const qotdAnswerEl = document.getElementById('qotd-answer');
+        const showAnswerBtn = document.getElementById('show-answer-btn');
+        const qotd = getQuestionOfTheDay();
+        qotdQuestionEl.textContent = qotd.question;
+        qotdAnswerEl.textContent = qotd.answer;
+        showAnswerBtn.addEventListener('click', () => {
+            if (qotdAnswerEl.style.display === 'none') {
+                qotdAnswerEl.style.display = 'block';
+                showAnswerBtn.textContent = 'Hide Answer';
+            } else {
+                qotdAnswerEl.style.display = 'none';
+                showAnswerBtn.textContent = 'Show Answer';
+            }
+        });
+
+        // Progress Tracker Logic
+        const PROGRESS_STORAGE_KEY = 'interview-topics-progress';
+        const topics = ['Arrays', 'Linked Lists', 'Trees', 'Dynamic Programming', 'System Design'];
+        function getProgress() {
+            const stored = localStorage.getItem(PROGRESS_STORAGE_KEY);
+            return stored ? JSON.parse(stored) : {};
+        }
+        function saveProgress(progress) {
+            localStorage.setItem(PROGRESS_STORAGE_KEY, JSON.stringify(progress));
+        }
+        function updateProgressUI() {
+            const progress = getProgress();
+            let completedCount = 0;
+            topics.forEach(topic => {
+                const topicEl = document.querySelector(`[data-topic="${topic}"]`);
+                const checkbox = document.getElementById(`topic-${topic}`);
+                if (progress[topic]) {
+                    completedCount++;
+                    topicEl.classList.add('completed');
+                    checkbox.checked = true;
+                } else {
+                    topicEl.classList.remove('completed');
+                    checkbox.checked = false;
+                }
+            });
+            const percentage = Math.round((completedCount / topics.length) * 100);
+            document.getElementById('progress-text').textContent = `${completedCount} / ${topics.length} topics completed`;
+            document.getElementById('progress-percent').textContent = `${percentage}%`;
+            document.getElementById('progress-fill').style.width = `${percentage}%`;
+        }
+        document.querySelectorAll('.topic input[type="checkbox"]').forEach(checkbox => {
+            checkbox.addEventListener('change', (e) => {
+                const topicName = e.target.closest('.topic').dataset.topic;
+                const progress = getProgress();
+                progress[topicName] = e.target.checked;
+                saveProgress(progress);
+                updateProgressUI();
+            });
+        });
+        updateProgressUI();
+
+        // STAR Answer Builder Logic
+        const situationEl = document.getElementById('star-situation');
+        const taskEl = document.getElementById('star-task');
+        const actionEl = document.getElementById('star-action');
+        const resultEl = document.getElementById('star-result');
+        const previewEl = document.getElementById('star-answer-preview');
+        const copyBtn = document.getElementById('copy-answer-btn');
+        const clearBtn = document.getElementById('clear-form-btn');
+        function updatePreview() {
+            const situation = situationEl.value.trim();
+            const task = taskEl.value.trim();
+            const action = actionEl.value.trim();
+            const result = resultEl.value.trim();
+            if (situation || task || action || result) {
+                previewEl.innerHTML = `
+                    <h4>Your STAR Answer:</h4>
+                    <p><strong>Situation:</strong> ${situation || '...'}</p>
+                    <p><strong>Task:</strong> ${task || '...'}</p>
+                    <p><strong>Action:</strong> ${action || '...'}</p>
+                    <p><strong>Result:</strong> ${result || '...'}</p>
+                `;
+                previewEl.style.display = 'block';
+                copyBtn.style.display = 'inline-flex';
+            } else {
+                previewEl.style.display = 'none';
+                copyBtn.style.display = 'none';
+            }
+        }
+        [situationEl, taskEl, actionEl, resultEl].forEach(el => {
+            el.addEventListener('input', updatePreview);
+        });
+        copyBtn.addEventListener('click', async () => {
+            const situation = situationEl.value.trim();
+            const task = taskEl.value.trim();
+            const action = actionEl.value.trim();
+            const result = resultEl.value.trim();
+            const answerText = `
+Situation: ${situation}
+Task: ${task}
+Action: ${action}
+Result: ${result}
+            `.trim();
+            try {
+                await navigator.clipboard.writeText(answerText);
+                copyBtn.textContent = 'Copied!';
+                setTimeout(() => copyBtn.textContent = 'Copy Answer', 2000);
+            } catch (err) {
+                console.error('Failed to copy: ', err);
+            }
+        });
+        clearBtn.addEventListener('click', () => {
+            situationEl.value = '';
+            taskEl.value = '';
+            actionEl.value = '';
+            resultEl.value = '';
+            updatePreview();
+        });
+    </script>
+</body>
+</html>

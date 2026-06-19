@@ -1,53 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AaharShare - Food Redistribution Portal</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AaharShare</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <header class="app-header">
-        <h1>Aahar<span>Share</span></h1>
-        <p>Connecting surplus food with those in need</p>
-    </header>
+<div class="sidebar">
+    <a href="index.html">Home</a>
+    <a href="donate.html">Donors</a>
+    <a href="#">Clothes</a>
+    <a href="#">Food</a>
+    <a href="#">Renew</a>
+    <a href="#">Contact</a>
+</div>
 
-    <main class="main-container">
-        <section class="card donor-section">
-            <h2>Donate Surplus Food</h2>
-            <form id="foodForm">
-                <div class="form-group">
-                    <label for="foodItem">Food Item(s)</label>
-                    <input type="text" id="foodItem" placeholder="e.g., Rice, Dal, Roti (for 50 people)" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="donorName">Your Name/Restaurant</label>
-                    <input type="text" id="donorName" placeholder="e.g., Taj Hotel / Sharma Weddings" required>
-                </div>
+<header>
+<div class="logo">❤ AaharShare</div>
+<nav>
+<a class="active">Home</a>
+<a href="donate.html">Donate</a>
+<a>Renew</a>
+<a>About Us</a>
+<button><a href="donate.html" >Start Donating </a> </button>
+</nav>
+</header>
 
-                <div class="form-group">
-                    <label for="expiryHours">Freshness Window (in hours)</label>
-                    <input type="number" id="expiryHours" min="1" max="24" placeholder="e.g., 4" required>
-                </div>
+<section class="hero">
+<div class="left">
+<h1>Share Food, Donate Essentials,<br>Renew Hope.</h1>
+<p>Give what you no longer need to those who need it most.</p>
+<div class="btns">
+<button class="orange"><a href="donate.html">Donate Food</a></button>
+<button class="green"><a href="donate.html">Donate Clothes & Essentials</a></button>
+</div>
+</div>
+</section>
 
-                <button type="button" id="geoBtn" class="btn btn-secondary">📍 Get My Location</button>
-                <input type="hidden" id="locationCoords">
-                <span id="locationStatus"></span>
+<section class="cards">
+<h2>Donate Items to Help Others</h2>
+<div class="grid">
+<div class="card"><div class="img"><img src="images/food.PNG" alt="Food"/></div><h3>Donate Food</h3><button><a href="donate.html" >Donate Now</a></button></div>
+<div class="card"><div class="img"><img src="images/Cloth.PNG"/></div><h3>Donate Clothes</h3><button><a href="donate.html" >Donate Now</a></button></div>
+<div class="card"><div class="img"><img src="images/shoes.PNG" alt=""/></div><h3>Donate Shoes</h3><button><a href="donate.html" >Donate Now</a></button></div>
+<div class="card"><div class="img"><img src="images/bags.PNG" alt=""/></div><h3>Donate Bags</h3><button><a href="donate.html" >Donate Now</a></button></div>
+<div class="card"><div class="img"><img src="images/blankets.PNG" alt=""/></div><h3>Donate Blankets</h3><button><a href="donate.html" >Donate Now</a></button></div>
+</div>
+</section>
 
-                <button type="submit" class="btn btn-primary">List Food Now</button>
-            </form>
-        </section>
+<section class="renew">
+<h2>Renew & Reuse</h2>
+<p>We clean, renew, and deliver your donations to those in need.</p>
+<button class="learn">Learn How We Renew</button>
+</section>
 
-        <section class="card dashboard-section">
-            <h2>Available Food Nearby</h2>
-            <div id="noFoodMessage" class="no-data">No active food donations right now.</div>
-            <div id="foodList" class="food-grid">
-                </div>
-        </section>
-    </main>
+<section class="stats">
+<div><h1>500+</h1><p>Meals Shared</p></div>
+<div><h1>200+</h1><p>Blankets Donated</p></div>
+<div><h1>100+</h1><p>Families Helped</p></div>
+</section>
 
-    <script src="script.js"></script>
+<footer>
+<div>Donate</div>
+<div>Volunteer</div>
+<div>FAQ</div>
+<div>Privacy Policy</div>
+</footer>
+  <script src="script.js"></script>
 </body>
 </html>

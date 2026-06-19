@@ -1,250 +1,558 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>FitTrack Pro • BMI Dashboard</title>
-<link href="https://fonts.googleapis.com" rel="preconnect"/>
-<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+  <style>
+    #bg{
+  position: fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  z-index:-1;
+}
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<link href="style.css" rel="stylesheet"/></head>
-<body class="theme-purple">
-<!-- ========================= -->
-<!-- THEME SWITCHER -->
-<!-- ========================= -->
-<div class="theme-switcher">
-<button class="theme-btn purple" onclick="changeTheme('theme-purple')" title="Purple Theme"></button>
-<button class="theme-btn blue" onclick="changeTheme('theme-blue')" title="Blue Theme"></button>
-<button class="theme-btn green" onclick="changeTheme('theme-green')" title="Green Theme"></button>
-<button class="theme-btn orange" onclick="changeTheme('theme-orange')" title="Orange Theme"></button>
-</div>
-<!-- ========================= -->
-<!-- MAIN CONTAINER -->
-<!-- ========================= -->
-<div class="container">
-<!-- ========================= -->
-<!-- LEFT SECTION -->
-<!-- ========================= -->
-<div class="calculator-card glass">
-<div class="card-header">
-<div>
-<h1>🏋️ BMI Fitness Dashboard</h1>
-<p>
-            Track your BMI, health insights, calories,
-            hydration, and fitness recommendations.
-          </p>
-</div>
-</div>
-<!-- ========================= -->
-<!-- INPUTS -->
-<!-- ========================= -->
-<div class="form-grid">
-<!-- HEIGHT -->
-<div class="input-group">
-<label for="height">Height</label>
-<div class="input-wrapper">
-<input id="height" placeholder="Enter height" type="number"/>
-<select id="heightUnit">
-<option value="cm">cm</option>
-<option value="ft">ft</option>
-</select>
-</div>
-</div>
-<!-- WEIGHT -->
-<div class="input-group">
-<label for="weight">Weight</label>
-<div class="input-wrapper">
-<input id="weight" placeholder="Enter weight" type="number"/>
-<select id="weightUnit">
-<option value="kg">kg</option>
-<option value="lb">lb</option>
-</select>
-</div>
-</div>
-<!-- AGE -->
-<div class="input-group">
-<label for="age">Age</label>
-<input id="age" placeholder="Enter age" type="number"/>
-</div>
-<!-- GENDER -->
-<div class="input-group">
-<label for="gender">Gender</label>
-<select id="gender">
-<option value="male">Male</option>
-<option value="female">Female</option>
-</select>
-</div>
-</div>
-<!-- ERROR -->
-<div class="error-box hidden" id="errorBox">
-        Please enter valid details.
-      </div>
-<!-- ACTION BUTTONS -->
-<div class="button-group">
-<button class="primary-btn" id="calculateBtn">
-          Calculate BMI
-        </button>
-<button class="secondary-btn" id="resetBtn">
-          Reset
-        </button>
-</div>
-<!-- GOAL TOGGLE -->
-<div class="goal-section">
-<p class="goal-label">🎯 What's your goal?</p>
-<div class="goal-buttons">
-<button class="goal-btn" data-goal="lose" onclick="selectGoal('lose')">
-            🔻 Lose Weight
-          </button>
-<button class="goal-btn" data-goal="maintain" onclick="selectGoal('maintain')">
-            ⚖️ Maintain
-          </button>
-<button class="goal-btn" data-goal="gain" onclick="selectGoal('gain')">
-            💪 Gain Muscle
-          </button>
-</div>
-</div>
-<!-- ========================= -->
-<!-- RESULT SECTION -->
-<!-- ========================= -->
-<div class="result-card glass hidden" id="resultsSection">
-<!-- BMI GAUGE -->
-<div class="gauge-section">
-<div class="gauge-container">
-<div class="gauge">
-<div class="gauge-cover">
-<span id="bmiValue">0</span>
-<small>BMI</small>
-</div>
-</div>
-</div>
-</div>
-<!-- CATEGORY -->
-<div class="result-details">
-<div class="category-badge" id="categoryBadge">
-            Healthy
+.container{
+  position:relative;
+  z-index:10;
+}
+
+body{
+  background:#080b18;
+}
+  </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Premium BMI Calculator</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+    <!-- Animated Background -->
+    <canvas id="bg"></canvas>
+
+    <div class="container">
+
+        <!-- Left Panel -->
+        <div class="calculator-card glass">
+
+            <div class="card-header">
+                <h1>BMI Calculator</h1>
+                <p>
+                    Calculate your Body Mass Index and discover your healthy
+                    weight range instantly.
+                </p>
+            </div>
+
+            <div class="form-grid">
+
+                <!-- Height -->
+                <div class="input-group">
+                    <label>Height Unit</label>
+
+                    <select id="height-unit">
+                        <option value="cm">Centimetres</option>
+                        <option value="feet">Feet / Inches</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label id="height-lbl">Height (cm)</label>
+
+                    <input
+                        type="text"
+                        id="height"
+                        placeholder="e.g. 170"
+                    >
+                </div>
+
+                <!-- Weight -->
+                <div class="input-group">
+                    <label>Weight Unit</label>
+
+                    <select id="weight-unit">
+                        <option value="kg">Kilograms</option>
+                        <option value="lb">Pounds</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label id="weight-lbl">Weight (kg)</label>
+
+                    <input
+                        type="number"
+                        id="weight"
+                        placeholder="e.g. 70"
+                    >
+                </div>
+
+            </div>
+
+            <div
+                id="error-msg"
+                class="error-box hidden"
+            ></div>
+
+            <div class="button-group">
+                <button id="btn" class="primary-btn">
+                    Calculate BMI
+                </button>
+            </div>
+
+            <!-- Result -->
+            <div
+                id="results"
+                class="result-card glass hidden"
+            >
+
+                <div class="gauge-section">
+
+                    <div class="gauge-container">
+
+                        <div class="gauge">
+
+                            <div class="gauge-cover">
+
+                                <span id="bmi-val">
+                                    --
+                                </span>
+
+                                <small>
+                                    BMI Score
+                                </small>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="result-details">
+
+                    <div
+                        id="cat-badge"
+                        class="category-badge"
+                    ></div>
+
+                    <h2 id="healthy-range">
+                        --
+                    </h2>
+
+                    <p id="tip-text">
+                        --
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- BMI Range -->
+            <div
+                id="range-vis"
+                class="range-section glass hidden"
+            >
+
+                <div
+                    style="
+                        height:20px;
+                        background:linear-gradient(
+                        to right,
+                        #4f6ef7,
+                        #3ecf8e,
+                        #e8a838,
+                        #e05c5c
+                        );
+                        border-radius:20px;
+                        position:relative;
+                    "
+                >
+
+                    <div
+                        id="bmi-ptr"
+                        style="
+                            width:16px;
+                            height:16px;
+                            border-radius:50%;
+                            background:white;
+                            position:absolute;
+                            top:2px;
+                            left:0%;
+                            transition:.4s;
+                        "
+                    ></div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Right Panel -->
+
+        <div class="recommendation-card">
+
+            <div class="recommendation-box glass">
+
+                <div class="box-header">
+                    <span>📊</span>
+                    <h3>BMI Categories</h3>
+                </div>
+
+                <ul>
+                    <li>Underweight: Below 18.5</li>
+                    <li>Normal: 18.5 - 24.9</li>
+                    <li>Overweight: 25 - 29.9</li>
+                    <li>Obese: 30+</li>
+                </ul>
+
+            </div>
+
+            <div class="chart-section glass">
+
+                <div class="section-header">
+                    <h2>BMI History</h2>
+                </div>
+
+                <div class="chart-wrapper">
+                    <canvas id="bmiChart"></canvas>
+                </div>
+
+            </div>
+
+        </div>
+
+=======
+<!doctype html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>FitTrack Pro • BMI Dashboard</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap"
+      rel="stylesheet"
+    />
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="style.css" rel="stylesheet" />
+  </head>
+  <body class="theme-purple">
+    <canvas id="bg"></canvas>
+    <!-- ========================= -->
+    <!-- THEME SWITCHER -->
+    <!-- ========================= -->
+    <div class="theme-switcher">
+      <button
+        class="theme-btn purple"
+        onclick="changeTheme('theme-purple')"
+        title="Purple Theme"
+      ></button>
+      <button
+        class="theme-btn blue"
+        onclick="changeTheme('theme-blue')"
+        title="Blue Theme"
+      ></button>
+      <button
+        class="theme-btn green"
+        onclick="changeTheme('theme-green')"
+        title="Green Theme"
+      ></button>
+      <button
+        class="theme-btn orange"
+        onclick="changeTheme('theme-orange')"
+        title="Orange Theme"
+      ></button>
+    </div>
+    <!-- ========================= -->
+    <!-- MAIN CONTAINER -->
+    <!-- ========================= -->
+    <div class="container">
+      <!-- ========================= -->
+      <!-- LEFT SECTION -->
+      <!-- ========================= -->
+      <div class="calculator-card glass">
+        <div class="card-header">
+          <div>
+            <h1>🏋️ BMI Fitness Dashboard</h1>
+            <p>
+              Track your BMI, health insights, calories, hydration, and fitness
+              recommendations.
+            </p>
           </div>
-<h2 id="category">
-            Your Category
-          </h2>
-<p id="message">
-            Your health insights will appear here.
-          </p>
-<p class="goal-tip hidden" id="goalTip"></p>
-</div>
-</div>
-</div>
-<!-- ========================= -->
-<!-- RIGHT SECTION -->
-<!-- ========================= -->
-<div class="recommendation-card">
-<!-- DAILY CALORIES -->
-<div class="recommendation-box glass">
-<div class="box-header">
-<span>🔥</span>
-<h3>Daily Calories</h3>
-</div>
-<p id="calories">0 kcal/day</p>
-</div>
-<!-- WATER -->
-<div class="recommendation-box glass">
-<div class="box-header">
-<span>💧</span>
-<h3>Water Intake</h3>
-</div>
-<p id="water">0 Litres/day</p>
-</div>
-<!-- HEALTHY WEIGHT -->
-<div class="recommendation-box glass">
-<div class="box-header">
-<span>🎯</span>
-<h3>Healthy Weight Range</h3>
-</div>
-<p id="healthyWeight">0 - 0 kg</p>
-</div>
-<!-- BODY FAT -->
-<div class="recommendation-box glass">
-<div class="box-header">
-<span>📊</span>
-<h3>Estimated Body Fat</h3>
-</div>
-<p id="bodyFat">0%</p>
-</div>
-<!-- DIET PLAN -->
-<div class="recommendation-box glass">
-<div class="box-header">
-<span>🥗</span>
-<h3>Diet Plan</h3>
-</div>
-<ul id="dietPlan"></ul>
-</div>
-<!-- WORKOUT -->
-<div class="recommendation-box glass">
-<div class="box-header">
-<span>🏋️</span>
-<h3>Workout Recommendation</h3>
-</div>
-<ul id="workoutPlan"></ul>
-</div>
-</div>
-</div>
-<!-- ========================= -->
-<!-- BMI RANGE -->
-<!-- ========================= -->
-<section class="range-section glass">
-<div class="section-header">
-<h2>📌 BMI Classification</h2>
-</div>
-<div class="bmi-table-wrapper">
-<table class="bmi-table">
-<thead>
-<tr>
-<th>Category</th>
-<th>BMI Range</th>
-</tr>
-</thead>
-<tbody>
-<tr id="underweight-row">
-<td>Underweight</td>
-<td>Below 18.5</td>
-</tr>
-<tr id="normal-row">
-<td>Normal</td>
-<td>18.5 - 24.9</td>
-</tr>
-<tr id="overweight-row">
-<td>Overweight</td>
-<td>25 - 29.9</td>
-</tr>
-<tr id="obese-row">
-<td>Obese</td>
-<td>30+</td>
-</tr>
-</tbody>
-</table>
-</div>
-</section>
-<!-- ========================= -->
-<!-- BMI CHART -->
-<!-- ========================= -->
-<section class="chart-section glass">
-<div class="section-header">
-<h2>📈 BMI Progress Tracker</h2>
-</div>
-<div class="chart-wrapper">
-<canvas id="bmiChart"></canvas>
-</div>
-</section>
-<!-- ========================= -->
-<!-- FOOTER -->
-<!-- ========================= -->
-<footer class="footer">
-<p>
-      Built with ❤️ for fitness tracking &amp; health awareness.
-    </p>
-</footer>
+        </div>
+        <!-- ========================= -->
+        <!-- INPUTS -->
+        <!-- ========================= -->
+        <div class="form-grid">
+          <div class="input-group">
+            <label for="height">Height</label>
+            <div class="input-wrapper">
+              <div class="custom-stepper">
+                <button
+                  type="button"
+                  class="step-btn"
+                  onclick="stepInput('height', -1)"
+                >
+                  −
+                </button>
+                <input id="height" placeholder="0" type="number" />
+                <button
+                  type="button"
+                  class="step-btn"
+                  onclick="stepInput('height', 1)"
+                >
+                  +
+                </button>
+              </div>
+              <select id="heightUnit">
+                <option value="cm">cm</option>
+                <option value="ft">ft</option>
+              </select>
+            </div>
+          </div>
 
-<script src="script.js"></script></body>
+          <div class="input-group">
+            <label for="weight">Weight</label>
+            <div class="input-wrapper">
+              <div class="custom-stepper">
+                <button
+                  type="button"
+                  class="step-btn"
+                  onclick="stepInput('weight', -1)"
+                >
+                  −
+                </button>
+                <input id="weight" placeholder="0" type="number" />
+                <button
+                  type="button"
+                  class="step-btn"
+                  onclick="stepInput('weight', 1)"
+                >
+                  +
+                </button>
+              </div>
+              <select id="weightUnit">
+                <option value="kg">kg</option>
+                <option value="lb">lb</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label for="age">Age</label>
+            <div class="custom-stepper">
+              <button
+                type="button"
+                class="step-btn"
+                onclick="stepInput('age', -1)"
+              >
+                −
+              </button>
+              <input id="age" placeholder="0" type="number" />
+              <button
+                type="button"
+                class="step-btn"
+                onclick="stepInput('age', 1)"
+              >
+                +
+              </button>
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label for="gender">Gender</label>
+            <select id="gender">
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+          </div>
+        </div>
+        <!-- ERROR -->
+        <div class="error-box hidden" id="errorBox">
+          Please enter valid details.
+        </div>
+        <!-- ACTION BUTTONS -->
+        <div class="button-group">
+          <button class="primary-btn" id="calculateBtn">Calculate BMI</button>
+          <button class="secondary-btn" id="resetBtn">Reset</button>
+        </div>
+        <!-- GOAL TOGGLE -->
+        <div class="goal-section">
+          <p class="goal-label">🎯 What's your goal?</p>
+          <div class="goal-buttons">
+            <button
+              class="goal-btn"
+              data-goal="lose"
+              onclick="selectGoal('lose')"
+            >
+              🔻 Lose Weight
+            </button>
+            <button
+              class="goal-btn"
+              data-goal="maintain"
+              onclick="selectGoal('maintain')"
+            >
+              ⚖️ Maintain
+            </button>
+            <button
+              class="goal-btn"
+              data-goal="gain"
+              onclick="selectGoal('gain')"
+            >
+              💪 Gain Muscle
+            </button>
+          </div>
+        </div>
+        <!-- ========================= -->
+        <!-- RESULT SECTION -->
+        <!-- ========================= -->
+        <div class="result-card glass hidden" id="resultsSection">
+          <!-- BMI GAUGE -->
+          <div class="gauge-section">
+            <div class="gauge-container">
+              <div class="gauge">
+                <div class="gauge-cover">
+                  <span id="bmiValue">0</span>
+                  <small>BMI</small>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- CATEGORY -->
+          <div class="result-details">
+            <div class="category-badge" id="categoryBadge">Healthy</div>
+            <h2 id="category">Your Category</h2>
+            <p id="message">Your health insights will appear here.</p>
+            <p class="goal-tip hidden" id="goalTip"></p>
+          </div>
+        </div>
+      </div>
+      <!-- ========================= -->
+      <!-- RIGHT SECTION -->
+      <!-- ========================= -->
+      <div class="recommendation-card">
+        <!-- DAILY CALORIES -->
+        <div class="recommendation-box glass">
+          <div class="box-header">
+            <span>🔥</span>
+            <h3>Daily Calories</h3>
+          </div>
+          <p id="calories">0 kcal/day</p>
+        </div>
+        <!-- WATER -->
+        <div class="recommendation-box glass">
+          <div class="box-header">
+            <span>💧</span>
+            <h3>Water Intake</h3>
+          </div>
+          <p id="water">0 Litres/day</p>
+        </div>
+        <!-- HEALTHY WEIGHT -->
+        <div class="recommendation-box glass">
+          <div class="box-header">
+            <span>🎯</span>
+            <h3>Healthy Weight Range</h3>
+          </div>
+          <p id="healthyWeight">0 - 0 kg</p>
+        </div>
+        <!-- BODY FAT -->
+        <div class="recommendation-box glass">
+          <div class="box-header">
+            <span>📊</span>
+            <h3>Estimated Body Fat</h3>
+          </div>
+          <p id="bodyFat">0%</p>
+        </div>
+        <!-- DIET PLAN -->
+        <div class="recommendation-box glass">
+          <div class="box-header">
+            <span>🥗</span>
+            <h3>Diet Plan</h3>
+          </div>
+          <ul id="dietPlan"></ul>
+        </div>
+        <!-- WORKOUT -->
+        <div class="recommendation-box glass">
+          <div class="box-header">
+            <span>🏋️</span>
+            <h3>Workout Recommendation</h3>
+          </div>
+          <ul id="workoutPlan"></ul>
+        </div>
+      </div>
+>>>>>>> upstream/main
+    </div>
+    <!-- ========================= -->
+    <!-- BMI RANGE -->
+    <!-- ========================= -->
+    <section class="range-section glass">
+      <div class="section-header">
+        <h2>📌 BMI Classification</h2>
+      </div>
+      <div class="bmi-table-wrapper">
+        <table class="bmi-table">
+          <thead>
+            <tr>
+              <th>Category</th>
+              <th>BMI Range</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr id="underweight-row">
+              <td>Underweight</td>
+              <td>Below 18.5</td>
+            </tr>
+            <tr id="normal-row">
+              <td>Normal</td>
+              <td>18.5 - 24.9</td>
+            </tr>
+            <tr id="overweight-row">
+              <td>Overweight</td>
+              <td>25 - 29.9</td>
+            </tr>
+            <tr id="obese-row">
+              <td>Obese</td>
+              <td>30+</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+    <!-- ========================= -->
+    <!-- BMI CHART -->
+    <!-- ========================= -->
+    <section class="chart-section glass">
+      <div class="section-header">
+        <h2>📈 BMI Progress Tracker</h2>
+      </div>
+      <div class="chart-wrapper">
+        <canvas id="bmiChart"></canvas>
+      </div>
+    </section>
+    <!-- ========================= -->
+    <!-- FOOTER -->
+    <!-- ========================= -->
+    <footer class="footer">
+      <p>Built with ❤️ for fitness tracking &amp; health awareness.</p>
+    </footer>
+
+<<<<<<< HEAD
+    <footer class="footer">
+        BMI Calculator • Built with HTML, CSS & JavaScript
+    </footer>
+
+=======
+>>>>>>> upstream/main
+    <script src="script.js"></script>
+
+</body>
 </html>

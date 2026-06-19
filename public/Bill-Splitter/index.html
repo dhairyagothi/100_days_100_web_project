@@ -22,6 +22,20 @@
         <span class="logo-text">SplitWise<em>Pro</em></span>
       </div>
       <div class="header-actions">
+        <!-- Currency Switcher -->
+        <div class="currency-picker" id="currencyPicker">
+          <button class="btn-currency" id="currencyToggle" title="Switch currency">
+            <span id="currencySymbolDisplay">₹</span>
+          </button>
+          <div class="currency-dropdown" id="currencyDropdown">
+            <button class="currency-opt active" data-symbol="₹" data-code="INR">₹ INR</button>
+            <button class="currency-opt" data-symbol="$" data-code="USD">$ USD</button>
+            <button class="currency-opt" data-symbol="€" data-code="EUR">€ EUR</button>
+            <button class="currency-opt" data-symbol="£" data-code="GBP">£ GBP</button>
+            <button class="currency-opt" data-symbol="¥" data-code="JPY">¥ JPY</button>
+            <button class="currency-opt" data-symbol="A$" data-code="AUD">A$ AUD</button>
+          </div>
+        </div>
         <button class="btn-icon" id="historyToggle" title="History">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
         </button>
@@ -38,20 +52,27 @@
 
     <!-- Tabs -->
     <div class="tab-bar">
-      <button class="tab active" data-tab="equal">⚖️ Equal Split</button>
-      <button class="tab" data-tab="unequal">🎯 Custom Split</button>
-      <button class="tab" data-tab="items">🧾 By Items</button>
+      <button class="tab active" data-tab="equal">⚖️ Equal</button>
+      <button class="tab" data-tab="unequal">🎯 Custom</button>
+      <button class="tab" data-tab="items">🧾 Items</button>
     </div>
 
     <!-- ===== EQUAL SPLIT TAB ===== -->
     <section class="tab-content active" id="tab-equal">
       <div class="card">
         <h2 class="card-title">Bill Details</h2>
+
+        <!-- Occasion Label -->
+        <div class="field">
+          <label>Occasion <span class="optional-tag">optional</span></label>
+          <input type="text" id="eq-occasion" placeholder="e.g. Team Lunch, Birthday Dinner…" />
+        </div>
+
         <div class="field-row">
           <div class="field">
             <label>Total Bill</label>
             <div class="input-prefix">
-              <span>₹</span>
+              <span class="currency-label">₹</span>
               <input type="number" id="eq-bill" min="0.01" step="0.01" placeholder="0.00" />
             </div>
           </div>
@@ -70,6 +91,24 @@
           <button class="tip-btn" data-tip="25">25%</button>
         </div>
 
+        <!-- Tax Field -->
+        <div class="field-row">
+          <div class="field">
+            <label>Tax % <span class="optional-tag">GST/VAT</span></label>
+            <input type="number" id="eq-tax" min="0" max="100" placeholder="0" value="0" />
+          </div>
+          <div class="field">
+            <label>Options</label>
+            <div class="toggle-row">
+              <label class="toggle-label">
+                <input type="checkbox" id="eq-roundup" class="toggle-input" />
+                <span class="toggle-track"></span>
+                <span class="toggle-text">Round up</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
         <div class="field">
           <label>Participants</label>
           <div class="participants-list" id="eq-participants">
@@ -83,7 +122,7 @@
       </div>
 
       <div class="results-card" id="eq-results" style="display:none">
-        <div class="results-summary">
+        <div class="results-summary" id="eq-summary-grid">
           <div class="summary-item">
             <span class="summary-label">Subtotal</span>
             <span class="summary-value" id="eq-subtotal">₹0</span>
@@ -91,6 +130,10 @@
           <div class="summary-item">
             <span class="summary-label">Tip</span>
             <span class="summary-value" id="eq-tip-amt">₹0</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Tax</span>
+            <span class="summary-value" id="eq-tax-amt">₹0</span>
           </div>
           <div class="summary-item total">
             <span class="summary-label">Grand Total</span>
@@ -100,11 +143,22 @@
         <div class="per-person-hero">
           <div class="per-label">Each Person Pays</div>
           <div class="per-amount" id="eq-per-person">₹0.00</div>
+          <div class="per-occasion" id="eq-occasion-display"></div>
         </div>
-        <div class="breakdown-list" id="eq-breakdown"></div>
+
+        <!-- Payment Status Tracker -->
+        <div class="payment-status-section">
+          <div class="payment-status-header">
+            <span class="section-title" style="margin:0">💳 Payment Status</span>
+            <span class="paid-count" id="eq-paid-count">0 / 0 paid</span>
+          </div>
+          <div class="breakdown-list" id="eq-breakdown"></div>
+        </div>
+
         <div class="result-actions">
-          <button class="btn-action" id="eq-pdf">📄 Export PDF</button>
-          <button class="btn-action" id="eq-qr">📲 QR Share</button>
+          <button class="btn-action" id="eq-pdf">📄 PDF</button>
+          <button class="btn-action" id="eq-qr">📲 QR</button>
+          <button class="btn-action" id="eq-copy">📋 Copy</button>
           <button class="btn-action" id="eq-save">💾 Save</button>
         </div>
       </div>
@@ -114,10 +168,16 @@
     <section class="tab-content" id="tab-unequal">
       <div class="card">
         <h2 class="card-title">Custom Split</h2>
+
+        <div class="field">
+          <label>Occasion <span class="optional-tag">optional</span></label>
+          <input type="text" id="uq-occasion" placeholder="e.g. Road Trip, House Party…" />
+        </div>
+
         <div class="field-row">
           <div class="field">
             <label>Total Bill</label>
-            <div class="input-prefix"><span>₹</span>
+            <div class="input-prefix"><span class="currency-label">₹</span>
               <input type="number" id="uq-bill" min="0.01" step="0.01" placeholder="0.00" />
             </div>
           </div>
@@ -136,17 +196,34 @@
           <button class="tip-btn" data-tip="25">25%</button>
         </div>
 
+        <div class="field-row">
+          <div class="field">
+            <label>Tax % <span class="optional-tag">GST/VAT</span></label>
+            <input type="number" id="uq-tax" min="0" max="100" placeholder="0" value="0" />
+          </div>
+          <div class="field">
+            <label>&nbsp;</label>
+            <div class="toggle-row">
+              <label class="toggle-label">
+                <input type="checkbox" id="uq-roundup" class="toggle-input" />
+                <span class="toggle-track"></span>
+                <span class="toggle-text">Round up</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
         <div class="field">
-          <label>Participants & Amounts</label>
+          <label>Participants & Custom Amounts</label>
           <div class="participants-list" id="uq-participants">
             <div class="participant-row">
               <input type="text" placeholder="Name" value="You" class="p-name" />
-              <div class="input-prefix sm"><span>₹</span><input type="number" placeholder="0.00" class="p-amount" min="0" step="0.01" /></div>
+              <div class="input-prefix sm"><span class="currency-label">₹</span><input type="number" placeholder="0.00" class="p-amount" min="0" step="0.01" /></div>
               <button class="remove-p">×</button>
             </div>
             <div class="participant-row">
               <input type="text" placeholder="Name" value="Friend" class="p-name" />
-              <div class="input-prefix sm"><span>₹</span><input type="number" placeholder="0.00" class="p-amount" min="0" step="0.01" /></div>
+              <div class="input-prefix sm"><span class="currency-label">₹</span><input type="number" placeholder="0.00" class="p-amount" min="0" step="0.01" /></div>
               <button class="remove-p">×</button>
             </div>
           </div>
@@ -156,15 +233,41 @@
         <div class="settle-info" id="uq-settle-info" style="display:none">
           <span id="uq-remain-label"></span>
         </div>
+
+        <!-- Live running total -->
+        <div class="running-total-bar" id="uq-running-bar">
+          <div class="running-fill" id="uq-running-fill" style="width:0%"></div>
+          <span class="running-label" id="uq-running-label">0% assigned</span>
+        </div>
+
         <button class="btn-primary" id="uq-calc">Calculate & Settle</button>
       </div>
 
       <div class="results-card" id="uq-results" style="display:none">
+        <div class="results-summary" id="uq-summary-grid">
+          <div class="summary-item">
+            <span class="summary-label">Subtotal</span>
+            <span class="summary-value" id="uq-subtotal">₹0</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Tip</span>
+            <span class="summary-value" id="uq-tip-display">₹0</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Tax</span>
+            <span class="summary-value" id="uq-tax-display">₹0</span>
+          </div>
+          <div class="summary-item total">
+            <span class="summary-label">Grand Total</span>
+            <span class="summary-value" id="uq-total-display">₹0</span>
+          </div>
+        </div>
         <h3 class="section-title">💸 Settlement — Who Owes Whom</h3>
         <div class="settlement-list" id="uq-settlement"></div>
         <div class="result-actions">
-          <button class="btn-action" id="uq-pdf">📄 Export PDF</button>
-          <button class="btn-action" id="uq-qr">📲 QR Share</button>
+          <button class="btn-action" id="uq-pdf">📄 PDF</button>
+          <button class="btn-action" id="uq-qr">📲 QR</button>
+          <button class="btn-action" id="uq-copy">📋 Copy</button>
           <button class="btn-action" id="uq-save">💾 Save</button>
         </div>
       </div>
@@ -176,6 +279,11 @@
         <h2 class="card-title">Split by Items</h2>
 
         <div class="field">
+          <label>Occasion <span class="optional-tag">optional</span></label>
+          <input type="text" id="it-occasion" placeholder="e.g. Groceries, Dinner…" />
+        </div>
+
+        <div class="field">
           <label>Participants</label>
           <div class="participants-list" id="it-participants">
             <div class="participant-tag"><input type="text" placeholder="Name" value="You" /><button class="remove-p">×</button></div>
@@ -184,9 +292,15 @@
           <button class="btn-add-p" id="it-add-p">+ Add Person</button>
         </div>
 
-        <div class="field">
-          <label>Tip %</label>
-          <input type="number" id="it-tip" min="0" max="100" placeholder="0" value="0" />
+        <div class="field-row">
+          <div class="field">
+            <label>Tip %</label>
+            <input type="number" id="it-tip" min="0" max="100" placeholder="0" value="0" />
+          </div>
+          <div class="field">
+            <label>Tax % <span class="optional-tag">GST/VAT</span></label>
+            <input type="number" id="it-tax" min="0" max="100" placeholder="0" value="0" />
+          </div>
         </div>
         <div class="tip-presets">
           <button class="tip-btn" data-tip="5">5%</button>
@@ -198,11 +312,17 @@
         </div>
 
         <div class="field">
-          <label>Items</label>
-          <div class="items-list" id="it-items">
-            <!-- items added dynamically -->
+          <div class="items-header-row">
+            <label style="margin:0">Items</label>
+            <button class="btn-bulk-paste" id="it-bulk-paste" title="Paste items list">📋 Bulk Add</button>
           </div>
+          <div class="items-list" id="it-items"></div>
           <button class="btn-add-p" id="it-add-item">+ Add Item</button>
+        </div>
+
+        <!-- Live subtotal for items -->
+        <div class="items-live-total" id="it-live-total">
+          Items total: <strong id="it-live-amount">₹0.00</strong>
         </div>
 
         <button class="btn-primary" id="it-calc">Calculate by Items</button>
@@ -213,14 +333,21 @@
         <div class="per-person-items" id="it-breakdown"></div>
         <div class="settlement-list" id="it-settlement"></div>
         <div class="result-actions">
-          <button class="btn-action" id="it-pdf">📄 Export PDF</button>
-          <button class="btn-action" id="it-qr">📲 QR Share</button>
+          <button class="btn-action" id="it-pdf">📄 PDF</button>
+          <button class="btn-action" id="it-qr">📲 QR</button>
+          <button class="btn-action" id="it-copy">📋 Copy</button>
           <button class="btn-action" id="it-save">💾 Save</button>
         </div>
       </div>
     </section>
 
   </main>
+
+  <!-- Sticky Calculate Bar (mobile) -->
+  <div class="sticky-calc-bar" id="stickyCalcBar" style="display:none">
+    <div class="sticky-total" id="stickyTotal">Total: ₹0.00</div>
+    <button class="sticky-calc-btn" id="stickyCalcBtn">Calculate →</button>
+  </div>
 
   <!-- History Drawer -->
   <div class="drawer-overlay" id="drawerOverlay"></div>
@@ -245,6 +372,22 @@
       <p class="qr-url" id="qr-url-text"></p>
     </div>
   </div>
+
+  <!-- Bulk Paste Modal -->
+  <div class="modal-overlay" id="bulkModalOverlay">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>📋 Bulk Add Items</h3>
+        <button class="btn-icon" id="closeBulk">×</button>
+      </div>
+      <p class="modal-sub">One item per line: <code>Item Name, Price</code></p>
+      <textarea id="bulkPasteArea" placeholder="Butter Chicken, 350&#10;Naan x3, 90&#10;Lassi, 120" rows="8"></textarea>
+      <button class="btn-primary" id="bulkAddBtn" style="margin-top:12px">Add Items</button>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
 
   <script src="app.js"></script>
 </body>
