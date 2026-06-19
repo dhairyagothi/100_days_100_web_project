@@ -116,6 +116,63 @@ button{
     transition:.3s ease;
 }
 
+/* Theme Toggle Button */
+.theme-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    font-size: 1.5rem;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+.theme-toggle:hover {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: scale(1.1);
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+}
+
+.theme-toggle:active {
+    transform: scale(0.95);
+}
+
+/* Dark mode styles */
+body.dark-mode {
+    background: linear-gradient(
+        rgba(30, 27, 60, 0.85),
+        rgba(30, 27, 60, 0.85)
+    ),
+    url("../assets/bg/medical-feedback.jpg");
+    background-size: cover;
+    background-position: center;
+}
+
+body.dark-mode .feedbackmain {
+    background: rgba(20, 20, 40, 0.3);
+    border-color: rgba(100, 100, 150, 0.3);
+}
+
+body.dark-mode textarea {
+    background: rgba(30, 30, 50, 0.8);
+    color: #e0e7ff;
+    border-color: rgba(100, 100, 150, 0.3);
+}
+
+body.dark-mode textarea::placeholder {
+    color: #a0afc0;
+}
+
 .submit-btn{
 
     margin-top:var(--spacing-xl);
