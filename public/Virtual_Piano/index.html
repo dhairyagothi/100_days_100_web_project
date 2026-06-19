@@ -32,55 +32,63 @@
     <label for="speed-slider">Playback Speed</label>
     <input type="range" id="speed-slider" min="0.25" max="2" step="0.25" value="1" disabled />
     <span id="speed-label">1×</span>
+
+    <label class="toggle-label" for="toggle-labels">
+        <input type="checkbox" id="toggle-labels" checked />
+        Show key labels
+    </label>
 </div>
+    <div id="now-playing" class="sr-only" role="status" aria-live="polite"></div>
     <div class="piano">
-        <div class="keys">
+        <div class="keys" role="group" aria-label="Virtual piano keyboard, playable with mouse or keyboard keys"></div>
 
   <div class="key-group">
-    <button class="key white" id="a">A</button>
-    <button class="key black" id="w">W</button>
+    <button class="key white" id="a" aria-label="White key, keyboard shortcut A" aria-pressed="false">A</button>
+    <button class="key black" id="w" aria-label="Black key, keyboard shortcut W" aria-pressed="false">W</button>
   </div>
 
   <div class="key-group">
-    <button class="key white" id="s">S</button>
-    <button class="key black" id="e">E</button>
+    <button class="key white" id="s" aria-label="White key, keyboard shortcut S" aria-pressed="false">S</button>
+    <button class="key black" id="e" aria-label="Black key, keyboard shortcut E" aria-pressed="false">E</button>
+  </div>
+
+
+  <div class="key-group no-black">
+    <button class="key white" id="d" aria-label="White key, keyboard shortcut D" aria-pressed="false">D</button>
+    
+  </div>
+
+  <div class="key-group">
+    <button class="key white" id="f" aria-label="White key, keyboard shortcut F" aria-pressed="false">F</button>
+    <button class="key black" id="t" aria-label="Black key, keyboard shortcut T" aria-pressed="false">T</button>
+  </div>
+
+  <div class="key-group">
+    <button class="key white" id="g" aria-label="White key, keyboard shortcut G" aria-pressed="false">G</button>
+    <button class="key black" id="y" aria-label="Black key, keyboard shortcut Y" aria-pressed="false">Y</button>
+  </div>
+
+  <div class="key-group">
+    <button class="key white" id="h" aria-label="White key, keyboard shortcut H" aria-pressed="false">H</button>
+    <button class="key black" id="u" aria-label="Black key, keyboard shortcut U" aria-pressed="false">U</button>
   </div>
 
   <div class="key-group no-black">
-    <button class="key white" id="d">D</button>
+    <button class="key white" id="j" aria-label="White key, keyboard shortcut J" aria-pressed="false">J</button>
   </div>
 
   <div class="key-group">
-    <button class="key white" id="f">F</button>
-    <button class="key black" id="t">T</button>
+    <button class="key white" id="k" aria-label="White key, keyboard shortcut K" aria-pressed="false">K</button>
+    <button class="key black" id="o" aria-label="Black key, keyboard shortcut O" aria-pressed="false">O</button>
   </div>
 
   <div class="key-group">
-    <button class="key white" id="g">G</button>
-    <button class="key black" id="y">Y</button>
-  </div>
-
-  <div class="key-group">
-    <button class="key white" id="h">H</button>
-    <button class="key black" id="u">U</button>
+    <button class="key white" id="l" aria-label="White key, keyboard shortcut L" aria-pressed="false">L</button>
+    <button class="key black" id="p" aria-label="Black key, keyboard shortcut P" aria-pressed="false">P</button>
   </div>
 
   <div class="key-group no-black">
-    <button class="key white" id="j">J</button>
-  </div>
-
-  <div class="key-group">
-    <button class="key white" id="k">K</button>
-    <button class="key black" id="o">O</button>
-  </div>
-
-  <div class="key-group">
-    <button class="key white" id="l">L</button>
-    <button class="key black" id="p">P</button>
-  </div>
-
-  <div class="key-group no-black">
-    <button class="key white" id=";">;</button>
+    <button class="key white" id=";" aria-label="White key, keyboard shortcut ;" aria-pressed="false">;</button>
   </div>
 
 </div>

@@ -76,6 +76,7 @@
   font-size: 16px;
 }
 
+
 .search-button {
   display: flex;
   justify-content: center;
@@ -306,4 +307,35 @@
 .suggestion-match {
   font-weight: 500;
   color: #0f0f0f;
+}
+
+@media (max-width: 750px) {
+  .middle-section {
+    margin-left: 8px;
+    margin-right: 8px;
+    max-width: none;
+  }
+
+  .create-button span {
+    display: none;
+  }
+
+  .create-button {
+    padding: 0 10px;
+    min-width: 36px;
+  }
+
+  .voice-search-button {
+    display: none;
+  }
+
+  .right-section {
+    gap: 8px;
+    margin-right: 10px;
+  }
+
+  .hamburger-menu {
+    margin-left: 8px;
+    margin-right: 12px;
+  }
 }

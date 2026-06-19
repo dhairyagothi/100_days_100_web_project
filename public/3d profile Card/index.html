@@ -93,7 +93,14 @@
               <input type="url" id="instagramInput" placeholder="https://instagram.com/username" />
             </label>
           </div>
-
+            <label class="field">
+              <span>Portfolio URL</span>
+              <input
+                type="url"
+                id="portfolioInput"
+                placeholder="https://yourportfolio.com"
+              />
+          </label>
           <div class="control-row">
             <label class="color-picker">
               <span>Theme</span>
@@ -101,21 +108,34 @@
             </label>
 
             <fieldset class="segmented-control" aria-label="Card layout">
-              <label>
-                <input type="radio" name="layout" value="classic" checked />
-                <span>Classic</span>
-              </label>
 
-              <label>
-                <input type="radio" name="layout" value="compact" />
-                <span>Compact</span>
-              </label>
+  <label>
+    <input type="radio" name="layout" value="classic" checked />
+    <span>Classic</span>
+  </label>
 
-              <label>
-                <input type="radio" name="layout" value="poster" />
-                <span>Poster</span>
-              </label>
-            </fieldset>
+  <label>
+    <input type="radio" name="layout" value="compact" />
+    <span>Compact</span>
+  </label>
+
+  <label>
+    <input type="radio" name="layout" value="poster" />
+    <span>Poster</span>
+  </label>
+
+  <label>
+    <input type="radio" name="layout" value="executive" />
+    <span>Executive</span>
+  </label>
+
+  <label>
+    <input type="radio" name="layout" value="minimal" />
+    <span>Minimal</span>
+  </label>
+
+</fieldset>
+                
 
             <label class="mode-toggle" id="modeToggle" title="Switch to light mode">
               <input type="checkbox" id="darkModeInput" checked />
@@ -127,6 +147,13 @@
           <p class="validation-message" id="validationMessage" aria-live="polite"></p>
 
           <div class="action-row">
+            <button
+                type="button"
+                class="secondary-btn"
+                id="exportPortfolioBtn"
+              >
+                Export Portfolio
+            </button>
             <button type="button" class="secondary-btn" id="resetButton">Reset</button>
 
             <div class="download-wrapper" id="downloadWrapper">
@@ -178,7 +205,8 @@
               teams and serve customers.
             </p>
 
-            <div class="profile" id="socialLinks">
+            <div class="profile-footer">
+              <div class="profile" id="socialLinks">
               <a href="#" data-platform="github" aria-label="GitHub profile">
                 <img src="logo/github-142-svgrepo-com.svg" alt="" class="logo monochrome" />
               </a>
@@ -195,6 +223,9 @@
                 <img src="logo/instagram-svgrepo-com.svg" alt="" class="logo" />
               </a>
             </div>
+            <div id="qrContainer" class="qr-container"></div>
+            </div>
+            
           </div>
         </article>
       </section>
@@ -207,7 +238,7 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     ></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="script.js"></script>
   </body>
 </html>
