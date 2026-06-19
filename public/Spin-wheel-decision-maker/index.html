@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spin-wheel-decision-maker</title>
+     <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+ <nav class="navbar">
+    <div class="logo-section">
+        <h1 class="logo-title">🎡 Spin the Wheel</h1>
+        <p class="logo-subtitle">Decision Maker</p>
+    </div>
+
+    <div class="navbar-center">
+        <p>Can't decide? Let the wheel choose for you! ✨</p>
+    </div>
+   
+       <div class="theme-switch">
+
+    <span class="mode-text">🌙 Dark Mode</span>
+
+    <label class="switch">
+        <input type="checkbox" id="themeToggle">
+        <span class="slider"></span>
+    </label>
+
+</div>
+
+  </nav>
+<!-- sidebar -->
+<div class="main-content">
+
+    <!-- LEFT SIDEBAR -->
+    <div class="sidebar">
+   <h2 class="sidebar-title">
+            ☰ Add Your Options
+        </h2>
+        <div class="input-group">
+            <input                type="text"   id="optionInput"
+                placeholder="Type an option..." >
+         <button id="addBtn">  + Add    </button>
+        </div>
+
+        <ul class="options-list">
+             <li>  <span class="dot red"></span>
+                Pizza
+                <button class="delete-btn">🗑️</button>
+            </li>
+            
+            <li>
+                <span class="dot orange"></span>
+                Burger
+                <button class="delete-btn">🗑️</button>
+            </li>
+
+            <li>
+                <span class="dot yellow"></span>
+                Pasta
+                <button class="delete-btn">🗑️</button>
+            </li>
+
+            <li>
+                <span class="dot green"></span>
+                Momos
+                <button class="delete-btn">🗑️</button>
+            </li>
+
+        </ul>
+<ul class="options-list" id="optionsList"></ul>
+        <button class="clear-btn">
+            🗑️ Clear All
+        </button>
+
+    </div>
+
+    <!-- CENTER WHEEL -->
+
+    <div class="wheel-container">
+
+        <div class="pointer">📍</div>
+
+        <div class="wheel">
+
+            <div class="option option1">Pizza</div>
+            <div class="option option2">Burger</div>
+            <div class="option option3">Pasta</div>
+            <div class="option option4">Momos</div>
+            <div class="option option5">Sandwich</div>
+            <div class="option option6">Ice Cream</div>
+            <div class="option option7">learn DSA</div>
+            <div class="option option8">Open Source</div>
+
+        </div>
+
+        <button id="spinBtn" class="spin-btn">
+            SPIN
+        </button>
+
+        <p class="spin-text">
+            Click the button to spin the wheel!
+        </p>
+
+    </div>
+ <!-- RIGHT RESULT SIDEBAR -->
+<!-- RIGHT RESULT SIDEBAR -->
+
+<div class="result-sidebar">
+ <h2 class="result-title">🏆 Result</h2>
+ <div class="result-card">
+    <div class="celebration">🥳</div>
+    <p class="winner-label">
+            Winner is
+        </p>
+    <h1 id="winnerText">
+            Spin the wheel!
+        </h1>
+
+        <div class="winner-emoji" id="winnerEmoji">
+            🎯
+        </div>
+
+    </div>
+
+    <button class="remove-result-btn">
+        🗑️ Remove Result
+    </button>
+
+    <!-- Spin History -->
+
+    <div class="history-section">
+
+        <h2 class="history-title">
+            📜 Spin History
+        </h2>
+
+        <ul id="historyList">
+
+            <li class="history-empty">
+                No spins yet
+            </li>
+
+        </ul>
+
+    </div>
+
+</div>
+</div>
+<div class="features-footer-bar">
+  <div class="feature-card">
+    <span class="feature-glyph">✏️</span>
+    <div class="feature-info">
+      <h4>Custom Options</h4>
+      <p>Add your own choices easily</p>
+    </div>
+  </div>
+  <div class="feature-card">
+    <span class="feature-glyph">🔀</span>
+    <div class="feature-info">
+      <h4>Random Picker</h4>
+      <p>100% random selection</p>
+    </div>
+  </div>
+  <div class="feature-card">
+    <span class="feature-glyph">🕒</span>
+    <div class="feature-info">
+      <h4>Spin History</h4>
+      <p>Track your recent spins</p>
+    </div>
+  </div>
+  <div class="feature-card">
+    <span class="feature-glyph">🤩</span>
+    <div class="feature-info">
+      <h4>Fun & Easy</h4>
+      <p>Make decisions fun and easy</p>
+    </div>
+  </div>
+  <div class="feature-card">
+    <span class="feature-glyph">📱</span>
+    <div class="feature-info">
+      <h4>Mobile Friendly</h4>
+      <p>Perfect experience on all devices</p>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+</body>
+</html>
