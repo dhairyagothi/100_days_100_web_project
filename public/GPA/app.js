@@ -5,6 +5,12 @@ const STORAGE_KEYS = {
   plans: 'cgpa-planner-saved-plans',
 };
 
+const feasibility = getFeasibility(
+    requiredSgpa,
+    currentCgpa,
+    targetCgpa
+);
+
 let currentPlan = null;
 let cgpaChart = null;
 let courseGrades = [];
@@ -39,6 +45,22 @@ function updateThemeIcon(theme) {
   $('.theme-icon').textContent = theme === 'dark' ? '🌙' : '☀️';
 }
 
+if (targetCgpa < currentCgpa) {
+    showError("Target CGPA cannot be less than current CGPA");
+    return false;
+}
+
+if (gapToClose === 0) {
+    badge.textContent =
+        "On Track — Maintain your current performance!";
+
+    badge.classList.remove(
+        "danger",
+        "warning"
+    );
+
+    badge.classList.add("success");
+}
 // ===== Validation =====
 function validateForm(data) {
   const errors = [];

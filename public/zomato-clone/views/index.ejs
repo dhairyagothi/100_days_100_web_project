@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zomato Clone</title>
+
+  <!-- Prevent dark mode flicker -->
+  <script>
+    (() => {
+      const saved = localStorage.getItem("zomato-theme");
+      if (saved) document.documentElement.setAttribute("data-theme", saved);
+    })();
+  </script>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+
+  <!--  ALL CSS FILES — no inline styles -->
+  <link rel="stylesheet" href="css/index.css">
+  <link rel="stylesheet" href="css/navbar.css">
+  <link rel="stylesheet" href="css/footer.css">
+</head>
+
+<body>
+
+  <!-- TOP BANNER -->
+  <div class="top-banner" id="topBanner">
+    <span class="banner-tag">🎉 New</span>
+    Free delivery on your first 3 orders &nbsp;·&nbsp; Use code <strong>WELCOME50</strong> for 50% off
+    <button class="banner-close" onclick="document.getElementById('topBanner').style.display='none'">×</button>
+  </div>
+
+  <!-- NAVBAR (loaded from partials) -->
+   <%- include('partials/navbar') %>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+
+    <div class="hero-inner">
+
+      <!-- Left -->
+      <div class="hero-left">
+        <div class="hero-tag">🍽️ Food delivery & dining</div>
+        <h1>Discover the best<br>food & drinks in<br><em>Delhi NCR</em></h1>
+        <p class="hero-sub">Order online, explore restaurants, and enjoy<br>the city's best culinary experiences.</p>
+
+        <div class="search-bar">
+          <div class="search-loc">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+              <circle cx="12" cy="10" r="3"/>
+            </svg>
+            <input id="locationInput" placeholder="Enter location" />
+          </div>
+          <div class="search-query">
+            <svg width="16" height="16" fill="none" stroke="#aaa" stroke-width="2" viewBox="0 0 24 24">
+              <circle cx="11" cy="11" r="8"/>
+              <path d="m21 21-4.35-4.35"/>
+            </svg>
+            <input id="searchInput" placeholder="Search for restaurant, cuisine or a dish" />
+          </div>
+          <button class="search-btn" onclick="doSearch()">Search</button>
+        </div>
+
+        <div class="quick-tags">
+          <span class="qtag">🍕 Pizza</span>
+          <span class="qtag">🍔 Burgers</span>
+          <span class="qtag">🍜 Biryani</span>
+          <span class="qtag">🍣 Sushi</span>
+          <span class="qtag">🥗 Healthy</span>
+          <span class="qtag">☕ Cafe</span>
+        </div>
+      </div>
+
+      <!-- Right: floating cards -->
+      <div class="hero-right">
+        <div class="hero-circle">
+          <img src="https://b.zmtcdn.com/data/o2_assets/f773629053b24263e69f601925790f301680693809.png" alt="food" />
+        </div>
+        <div class="float-card a">
+          <div class="dot g"></div>
+          <div>
+            <div>Order placed!</div>
+            <div class="fc-label">Just now</div>
+          </div>
+        </div>
+        <div class="float-card b">
+          <div class="dot o"></div>
+          <div>
+            <div>Out for delivery</div>
+            <div class="fc-label">5 min away</div>
+          </div>
+        </div>
+        <div class="float-card c">
+          <div class="dot r"></div>
+          <div>
+            <div>4.8 ★ Rating</div>
+            <div class="fc-label">Top restaurant</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- BRANDS SECTION -->
+  <section class="brands-section">
+    <div class="brands-header">
+      <h2>eternal</h2>
+      <p>Powering India's Changing Lifestyles</p>
+    </div>
+    <div class="brand-cards">
+      <div class="brand-card zomato-card">
+        <img src="https://b.zmtcdn.com/web_assets/b40b97e677bc7b2ca77c58c61db266fe1603954218.png" alt="Zomato" />
+        <h3>zomato</h3>
+        <p>Get the app now to start ordering your favorite dishes!</p>
+        <a href="#">Check it out →</a>
+      </div>
+      <div class="brand-card blinkit-card">
+        <h3>blinkit</h3>
+        <p>Choose from 30,000+ products delivered to your doorstep.</p>
+        <a href="#">Check it out →</a>
+      </div>
+      <div class="brand-card district-card">
+        <h3>district</h3>
+        <p>The best of events, movies, dining, and everything you love!</p>
+        <a href="#">Check it out →</a>
+      </div>
+      <div class="brand-card hyperpure-card">
+        <h3>hyperpure</h3>
+        <p>Offering complete supply chain solution for your restaurant.</p>
+        <a href="#">Check it out →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- APP DOWNLOAD -->
+  <div class="app-section">
+    <div class="app-text">
+      <h2>Get the Zomato app</h2>
+      <p>We will send you a link, open it on your phone to download the app</p>
+      <div class="store-btns">
+        <img src="https://b.zmtcdn.com/data/webuikit/23e930757c3df49840c482a8638bf5c31556001144.png" alt="App Store" />
+        <img src="https://b.zmtcdn.com/data/webuikit/9f0c85a5e33adb783fa0aef667075f9e1556003622.png" alt="Google Play" />
+      </div>
+    </div>
+    <div class="app-phone">
+      <img src="https://b.zmtcdn.com/data/o2_assets/f773629053b24263e69f601925790f301680693809.png" alt="App mockup" />
+    </div>
+  </div>
+
+<%- include('partials/footer') %>
+  <div class="dm-toast" id="dmToast"></div>
+
+  <script>
+    /* DARK MODE */
+    const html  = document.documentElement;
+    const toast = document.getElementById('dmToast');
+    let toastTimer;
+
+    function toggleDark() {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      const next   = isDark ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      localStorage.setItem('zomato-theme', next);
+      showToast(next === 'dark' ? '🌙 Dark mode on' : '☀️ Light mode on');
+    }
+
+    function showToast(msg) {
+      toast.textContent = msg;
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove('show'), 2000);
+    }
+
+    /* SEARCH */
+    function doSearch() {
+      const q   = document.getElementById('searchInput').value.trim();
+      const loc = document.getElementById('locationInput').value.trim();
+      if (!q) { alert('Please enter something to search!'); return; }
+      alert('Searching for: ' + q + (loc ? ' in ' + loc : ''));
+    }
+    document.getElementById('searchInput').addEventListener('keydown', e => {
+      if (e.key === 'Enter') doSearch();
+    });
+
+    /* QUICK TAGS */
+    document.querySelectorAll('.qtag').forEach(tag => {
+      tag.addEventListener('click', () => {
+        document.getElementById('searchInput').value = tag.textContent.slice(2).trim();
+        document.getElementById('searchInput').focus();
+      });
+    });
+
+    /* LOAD NAVBAR */
+    async function loadComponent(id, file) {
+      try {
+        const res  = await fetch(file);
+        const text = await res.text();
+        document.getElementById(id).innerHTML = text;
+      } catch(e) {
+        console.warn('Could not load:', file);
+      }
+    }
+    loadComponent('navbar', './components/navbar.html');
+  </script>
+
+</body>
+</html>

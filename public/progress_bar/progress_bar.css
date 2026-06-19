@@ -744,10 +744,17 @@ body {
 }
 
 /* ============================================ */
+
+/* 🟢 MOBILE RESPONSIVE FIXES - ISSUE #8328 🟢 */
+/* ============================================ */
+
+/* Tablet and below (768px and below) */
+
 /* 🟢 ADDITIONAL MOBILE RESPONSIVE FIXES - ISSUE #8328 🟢 */
 /* ============================================ */
 
 /* Tablet and below */
+
 @media screen and (max-width: 768px) {
   body {
     padding: 0.75rem;
