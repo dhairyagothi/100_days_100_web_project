@@ -997,6 +997,211 @@ body.light-theme label {
 }
 
 /* ==========================
+   TOAST NOTIFICATIONS
+   ========================== */
+#toast-container {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    z-index: 99999;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    pointer-events: none;
+}
+
+.toast {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-width: 300px;
+    max-width: 400px;
+    padding: 16px 20px;
+    border-radius: 18px;
+    background: rgba(15, 23, 42, 0.82);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.45),
+        0 0 0 1px rgba(255, 255, 255, 0.04) inset;
+    pointer-events: all;
+    cursor: default;
+    /* Slide in from right */
+    animation: toastSlideIn 0.38s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    will-change: transform, opacity;
+    overflow: hidden;
+    position: relative;
+}
+
+.toast.toast-exit {
+    animation: toastSlideOut 0.32s ease-in forwards;
+}
+
+.toast-icon {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+}
+
+.toast-success .toast-icon {
+    background: rgba(34, 197, 94, 0.18);
+    color: #4ade80;
+}
+
+.toast-error .toast-icon {
+    background: rgba(239, 68, 68, 0.18);
+    color: #fb7185;
+}
+
+.toast-warning .toast-icon {
+    background: rgba(245, 158, 11, 0.18);
+    color: #fbbf24;
+}
+
+.toast-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.toast-title {
+    font-weight: 700;
+    font-size: 0.95rem;
+    line-height: 1.3;
+}
+
+.toast-success .toast-title { color: #4ade80; }
+.toast-error   .toast-title { color: #fb7185; }
+.toast-warning .toast-title { color: #fbbf24; }
+
+.toast-message {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.65);
+    line-height: 1.5;
+}
+
+.toast-close {
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.35);
+    cursor: pointer;
+    font-size: 1rem;
+    line-height: 1;
+    padding: 4px;
+    border-radius: 6px;
+    transition: color 0.2s ease, background 0.2s ease;
+    align-self: flex-start;
+}
+
+.toast-close:hover {
+    color: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+/* Progress bar that auto-drains */
+.toast-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    border-radius: 0 0 18px 18px;
+    animation: toastProgress linear forwards;
+}
+
+.toast-success .toast-progress { background: #22c55e; }
+.toast-error   .toast-progress { background: #ef4444; }
+.toast-warning .toast-progress { background: #f59e0b; }
+
+@keyframes toastSlideIn {
+    from {
+        opacity: 0;
+        transform: translateX(60px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+    }
+}
+
+@keyframes toastSlideOut {
+    from {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+        max-height: 120px;
+        margin-bottom: 0;
+    }
+    to {
+        opacity: 0;
+        transform: translateX(60px) scale(0.92);
+        max-height: 0;
+        margin-bottom: -12px;
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+}
+
+@keyframes toastProgress {
+    from { width: 100%; }
+    to   { width: 0%; }
+}
+
+/* ── Light theme overrides for toast ─────────────────── */
+body.light-theme .toast {
+    background: rgba(255, 255, 255, 0.88);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.12),
+        0 0 0 1px rgba(255, 255, 255, 0.6) inset;
+}
+
+body.light-theme .toast-message {
+    color: rgba(30, 41, 59, 0.75);
+}
+
+body.light-theme .toast-close {
+    color: rgba(30, 41, 59, 0.4);
+}
+
+body.light-theme .toast-close:hover {
+    color: rgba(30, 41, 59, 0.8);
+    background: rgba(0, 0, 0, 0.06);
+}
+
+body.light-theme .toast-success .toast-icon {
+    background: rgba(34, 197, 94, 0.15);
+}
+
+body.light-theme .toast-error .toast-icon {
+    background: rgba(239, 68, 68, 0.15);
+}
+
+body.light-theme .toast-warning .toast-icon {
+    background: rgba(245, 158, 11, 0.15);
+}
+
+/* Mobile responsive toast */
+@media (max-width: 480px) {
+    #toast-container {
+        bottom: 16px;
+        right: 12px;
+        left: 12px;
+    }
+
+    .toast {
+        min-width: unset;
+        max-width: 100%;
+    }
+}
+
+/* ==========================
    MOBILE RESPONSIVE
    ========================== */
 @media (max-width: 768px) {

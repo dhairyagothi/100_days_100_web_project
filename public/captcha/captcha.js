@@ -1,6 +1,7 @@
 let selectedImageAnswer = "";
 
-const resultMessage = document.getElementById("resultMessage");
+// Removed: resultMessage is replaced by toast notifications
+// const resultMessage = document.getElementById("resultMessage");
 
 const captchaContainer = document.getElementById("captchaContainer");
 const textInput = document.getElementById("captchaInput");
@@ -227,8 +228,6 @@ const generateCaptcha = () => {
 
     textCaptchaField.classList.remove('hidden');
 
-    resultMessage.textContent = '';
-    resultMessage.className = 'result';
     selectedImageAnswer = '';
 
     // Normalize type string case to prevent logic matching bugs
@@ -316,6 +315,61 @@ const generateCaptcha = () => {
     }
 };
 
+// ==========================
+// TOAST NOTIFICATION SYSTEM
+// ==========================
+
+/**
+ * Shows a toast notification outside the form.
+ * @param {'success'|'error'|'warning'} type
+ * @param {string} title
+ * @param {string} message
+ * @param {number} duration  Auto-dismiss delay in ms (default 4000)
+ */
+function showToast(type, title, message, duration = 4000) {
+    const container = document.getElementById('toast-container');
+    if (!container) return;
+
+    const icons = {
+        success: '✓',
+        error:   '✕',
+        warning: '⚠'
+    };
+
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+    toast.setAttribute('role', 'alert');
+    toast.innerHTML = `
+        <div class="toast-icon">${icons[type] ?? '!'}</div>
+        <div class="toast-body">
+            <span class="toast-title">${title}</span>
+            <span class="toast-message">${message}</span>
+        </div>
+        <button class="toast-close" aria-label="Dismiss notification">&times;</button>
+        <div class="toast-progress" style="animation-duration: ${duration}ms;"></div>
+    `;
+
+    // Close on button click
+    toast.querySelector('.toast-close').addEventListener('click', () => dismissToast(toast));
+
+    container.appendChild(toast);
+
+    // Auto-dismiss
+    const timer = setTimeout(() => dismissToast(toast), duration);
+
+    // Cancel auto-dismiss if user hovers (pause experience)
+    toast.addEventListener('mouseenter', () => clearTimeout(timer));
+    toast.addEventListener('mouseleave', () =>
+        setTimeout(() => dismissToast(toast), 800)
+    );
+}
+
+function dismissToast(toast) {
+    if (!toast || toast.classList.contains('toast-exit')) return;
+    toast.classList.add('toast-exit');
+    toast.addEventListener('animationend', () => toast.remove(), { once: true });
+}
+
 const lockoutUser = () => {
     lockoutEndTime = Date.now() + 60 * 1000;
     updateLockoutUI();
@@ -326,12 +380,15 @@ const updateLockoutUI = () => {
     if (now < lockoutEndTime) {
         const remaining = Math.ceil((lockoutEndTime - now) / 1000);
         submitButton.disabled = true;
-        resultMessage.textContent = `Too many attempts. Wait ${remaining} seconds.`;
-        resultMessage.style.color = 'red';
+        showToast(
+            'warning',
+            'Too Many Attempts',
+            `Please wait ${remaining} second${remaining !== 1 ? 's' : ''} before trying again.`,
+            Math.min(remaining * 1000, 5000)
+        );
         setTimeout(updateLockoutUI, 1000);
     } else {
         submitButton.disabled = false;
-        resultMessage.textContent = '';
         attempts = 0;
         generateCaptcha();
     }
@@ -350,14 +407,15 @@ const verifyCaptcha = () => {
   const isCorrect = userInput === currentCaptcha.toString().toLowerCase();
   
   if (isCorrect) {
-      resultMessage.textContent = "Very Good! You passed the Test.";
-      resultMessage.classList.add('success');
-      resultMessage.classList.remove('error');
+      showToast(
+          'success',
+          'Captcha Passed!',
+          'Well done! You verified you are human. A new challenge is loading…',
+          3500
+      );
       attempts = 0;
       setTimeout(() => {
           textInput.value = "";
-          resultMessage.textContent = "";
-          resultMessage.className = 'result';
           generateCaptcha();
       }, 1500);
   } else {
@@ -365,9 +423,12 @@ const verifyCaptcha = () => {
       if (attempts >= maxAttempts) {
           lockoutUser();
       } else {
-          resultMessage.textContent = `Sorry, your input is incorrect. Please try again. (Attempt ${attempts}/${maxAttempts})`;
-          resultMessage.classList.add('error');
-          resultMessage.classList.remove('success');
+          showToast(
+              'error',
+              'Incorrect Answer',
+              `That's not right. Attempt ${attempts} of ${maxAttempts} — give it another go!`,
+              4000
+          );
       }
   }
 };
