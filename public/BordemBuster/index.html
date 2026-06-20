@@ -1,111 +1,570 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Boredom Buster — Find Your Next Adventure</title>
+    <meta
+      name="description"
+      content="Beat boredom instantly. Discover fun activities tailored to your group size, budget, and mood."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@800&family=DM+Sans:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Boredom Buster — Find Your Next Adventure</title>
-  <meta name="description" content="Beat boredom instantly. Discover fun activities tailored to your group size, budget, and mood." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
-</head>
+  <body>
+    <div class="bg-orb" aria-hidden="true"></div>
+    <div class="bg-orb" aria-hidden="true"></div>
+    <div class="bg-orb" aria-hidden="true"></div>
 
-<body>
-  <!-- Animated background orbs -->
-  <div class="bg-orb" aria-hidden="true"></div>
-  <div class="bg-orb" aria-hidden="true"></div>
-  <div class="bg-orb" aria-hidden="true"></div>
+    <a href="/" class="back-btn">← Back to Home</a>
 
-  <!-- Back to Home -->
-  <a href="/" class="back-btn">← Back to Home</a>
+    <button id="themeBtn" class="theme-btn" aria-label="Toggle theme">
+      🌙
+    </button>
 
-  <!-- Theme Toggle -->
-  <button id="themeBtn" class="theme-btn" aria-label="Toggle theme">🌙</button>
+    <div class="page-wrap">
+      <main class="card">
+        <header class="app-header">
+          <h1 class="app-title">✨ Boredom Buster</h1>
+          <p class="app-tagline">Beat the block. Find your next adventure.</p>
+        </header>
 
-  <div class="page-wrap">
-    <main class="card">
+        <section class="filters">
+          <div class="field">
+            <label for="category">Category</label>
+            <select id="category" class="glass-input">
+              <option value="">🎲 Surprise Me</option>
+              <option value="education">📚 Education</option>
+              <option value="recreational">🏃 Recreational</option>
+              <option value="social">🤝 Social</option>
+              <option value="diy">🔧 DIY</option>
+              <option value="charity">❤️ Charity</option>
+              <option value="cooking">🍳 Cooking</option>
+              <option value="relaxation">🧘 Relaxation</option>
+              <option value="music">🎵 Music</option>
+              <option value="busywork">📋 Busywork</option>
+            </select>
+          </div>
 
-      <!-- Header -->
-      <header class="app-header">
-        <h1 class="app-title">✨ Boredom Buster</h1>
-        <p class="app-tagline">Beat the block. Find your next adventure.</p>
-      </header>
+          <div class="field">
+            <label for="participants">Participants</label>
+            <input
+              type="number"
+              id="participants"
+              class="glass-input"
+              min="1"
+              max="20"
+              placeholder="e.g. 1 for solo"
+            />
+          </div>
 
-      <!-- Filters -->
-      <section class="filters">
-        <div class="field">
-          <label for="category">Category</label>
-          <select id="category" class="glass-input">
-            <option value="">🎲 Surprise Me</option>
-            <option value="education">📚 Education</option>
-            <option value="recreational">🏃 Recreational</option>
-            <option value="social">🤝 Social</option>
-            <option value="diy">🔧 DIY</option>
-            <option value="charity">❤️ Charity</option>
-            <option value="cooking">🍳 Cooking</option>
-            <option value="relaxation">🧘 Relaxation</option>
-            <option value="music">🎵 Music</option>
-            <option value="busywork">📋 Busywork</option>
-          </select>
+          <div class="field">
+            <label for="budget">Budget</label>
+            <select id="budget" class="glass-input">
+              <option value="">💰 Any Budget</option>
+              <option value="free">🆓 Completely Free</option>
+              <option value="cheap">💸 Spare Change</option>
+              <option value="expensive">🤑 Treat Yo' Self</option>
+            </select>
+          </div>
+
+          <button id="fetchBtn" class="primary-btn">Find Activity</button>
+        </section>
+
+        <div id="resultBox" class="result-box" hidden>
+          <p id="sourceBadge" class="source-badge"></p>
+          <h2 id="activityName" class="activity-name"></h2>
+          <div class="pills">
+            <span id="pillType" class="pill"></span>
+            <span id="pillPeeps" class="pill"></span>
+            <span id="pillCost" class="pill"></span>
+          </div>
+          <div class="result-actions">
+            <button id="favBtn" class="icon-btn" title="Favourite">🤍</button>
+            <button id="shareBtn" class="icon-btn" title="Copy">📋 Copy</button>
+            <button id="againBtn" class="icon-btn secondary" title="Shuffle">
+              🔀 Shuffle
+            </button>
+            <button id="completeBtn" class="icon-btn" title="Mark Completed">
+              ✅ Done
+            </button>
+          </div>
         </div>
 
-        <div class="field">
-          <label for="participants">Participants</label>
-          <input type="number" id="participants" class="glass-input" min="1" max="20" placeholder="e.g. 1 for solo" />
+        <div id="extraCard" class="extra-card" hidden>
+          <div class="tabs" role="tablist">
+            <button class="tab active" data-tab="history" role="tab">
+              🕓 History
+            </button>
+            <button class="tab" data-tab="favourites" role="tab">
+              🧡 Favourites
+            </button>
+          </div>
+          <!-- Search & Filters -->
+          <div class="search-filter-container">
+            <input
+              type="text"
+              id="activitySearch"
+              class="glass-input"
+              placeholder="Search activities..."
+            />
+
+            <div class="filter-row">
+              <select id="filterCategory" class="glass-input">
+                <option value="">All Categories</option>
+                <option value="education">Education</option>
+                <option value="recreational">Recreational</option>
+                <option value="social">Social</option>
+                <option value="diy">DIY</option>
+                <option value="charity">Charity</option>
+                <option value="cooking">Cooking</option>
+                <option value="relaxation">Relaxation</option>
+                <option value="music">Music</option>
+                <option value="busywork">Busywork</option>
+              </select>
+
+              <select id="filterCost" class="glass-input">
+                <option value="">All Costs</option>
+                <option value="free">Free</option>
+                <option value="cheap">Cheap</option>
+                <option value="expensive">Expensive</option>
+              </select>
+            </div>
+
+            <p id="resultsCount" class="results-count">Showing 0 activities</p>
+          </div>
+          <div id="tab-history" class="tab-panel active">
+            <ul id="historyList" class="item-list"></ul>
+          </div>
+          <div id="tab-favourites" class="tab-panel">
+            <ul id="favList" class="item-list"></ul>
+          </div>
         </div>
 
-        <div class="field">
-          <label for="budget">Budget</label>
-          <select id="budget" class="glass-input">
-            <option value="">💰 Any Budget</option>
-            <option value="free">🆓 Completely Free</option>
-            <option value="cheap">💸 Spare Change</option>
-            <option value="expensive">🤑 Treat Yo' Self</option>
-          </select>
+        <div id="progressCard" class="extra-card" hidden>
+          <h3>🏆 Progress</h3>
+          <div class="progress-stats">
+            <p>Completed Activities: <span id="completedCount">0</span></p>
+          </div>
+          <div class="badges">
+            <span class="badge locked" data-target="1"
+              >🌱 Beginner Explorer</span
+            >
+            <span class="badge locked" data-target="5"
+              >🚀 Activity Adventurer</span
+            >
+            <span class="badge locked" data-target="10"
+              >🏆 Master Explorer</span
+            >
+            <span class="badge locked" data-target="25"
+              >⭐ Activity Legend</span
+            >
+          </div>
         </div>
+      </main>
+    </div>
 
-        <button id="fetchBtn" class="primary-btn">Find Activity</button>
-      </section>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
-      <!-- Result Box -->
-      <div id="resultBox" class="result-box" hidden>
-        <p id="sourceBadge" class="source-badge"></p>
-        <h2 id="activityName" class="activity-name"></h2>
-        <div class="pills">
-          <span id="pillType"  class="pill"></span>
-          <span id="pillPeeps" class="pill"></span>
-          <span id="pillCost"  class="pill"></span>
-        </div>
-        <div class="result-actions">
-          <button id="favBtn"   class="icon-btn" title="Favourite">🤍</button>
-          <button id="shareBtn" class="icon-btn" title="Copy">📋 Copy</button>
-          <button id="againBtn" class="icon-btn secondary" title="Shuffle">🔀 Shuffle</button>
-        </div>
-      </div>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const fetchBtn = document.getElementById('fetchBtn');
+        const againBtn = document.getElementById('againBtn');
+        const resultBox = document.getElementById('resultBox');
+        const activityName = document.getElementById('activityName');
+        const activitySearch = document.getElementById('activitySearch');
+        const filterCategory = document.getElementById('filterCategory');
+        const filterCost = document.getElementById('filterCost');
+        const resultsCount = document.getElementById('resultsCount');
 
-      <!-- Tabbed History / Favourites -->
-      <div id="extraCard" class="extra-card" hidden>
-        <div class="tabs" role="tablist">
-          <button class="tab active" data-tab="history"    role="tab">🕓 History</button>
-          <button class="tab"        data-tab="favourites" role="tab">🧡 Favourites</button>
-        </div>
-        <div id="tab-history"    class="tab-panel active">
-          <ul id="historyList"   class="item-list"></ul>
-        </div>
-        <div id="tab-favourites" class="tab-panel">
-          <ul id="favList"       class="item-list"></ul>
-        </div>
-      </div>
+        // Show result box setup
+        if (resultBox) {
+          resultBox.removeAttribute('hidden');
+          resultBox.style.display = 'block';
+        }
+        if (activityName) {
+          activityName.textContent = 'Ready! Click the button below.';
+        }
 
-    </main>
-  </div>
+        // Clean local dataset matching your 3 filters
+        const localActivities = [
+          {
+            activity: 'Organize your digital photos into folders',
+            type: 'busywork',
+            participants: 1,
+            cost: 'free',
+          },
+          {
+            activity: 'Learn how to cook a signature local meal',
+            type: 'cooking',
+            participants: 1,
+            cost: 'cheap',
+          },
+          {
+            activity: 'Have a retro board game night with friends',
+            type: 'social',
+            participants: 4,
+            cost: 'cheap',
+          },
+          {
+            activity: 'Take a long walk around a nearby nature park',
+            type: 'recreational',
+            participants: 1,
+            cost: 'free',
+          },
+          {
+            activity: 'Stargaze from your backyard or window',
+            type: 'relaxation',
+            participants: 1,
+            cost: 'free',
+          },
+          {
+            activity: 'Start learning a new language online',
+            type: 'education',
+            participants: 1,
+            cost: 'free',
+          },
+          {
+            activity: 'Build a DIY structural project out of scraps',
+            type: 'diy',
+            participants: 1,
+            cost: 'cheap',
+          },
+        ];
 
-  <!-- Toast -->
-  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+        if (fetchBtn) {
+          fetchBtn.addEventListener('click', () => {
+            fetchBtn.textContent = 'Seeking...';
 
-  <script src="script.js"></script>
-</body>
+            setTimeout(() => {
+              // Grab current UI inputs
+              const targetCategory = document.getElementById('category').value;
+              const targetParticipants =
+                document.getElementById('participants').value;
+              const targetBudget = document.getElementById('budget').value;
 
+              // Filter based strictly on what's selected
+              const filteredActivities = localActivities.filter((act) => {
+                if (targetCategory && act.type !== targetCategory) return false;
+                if (
+                  targetParticipants &&
+                  act.participants !== parseInt(targetParticipants)
+                )
+                  return false;
+                if (targetBudget && act.cost !== targetBudget) return false;
+                return true;
+              });
+
+              // Render match or give a friendly alert
+              if (filteredActivities.length > 0) {
+                const randomIndex = Math.floor(
+                  Math.random() * filteredActivities.length
+                );
+                const choice = filteredActivities[randomIndex];
+
+                if (activityName) activityName.textContent = choice.activity;
+
+                const t = document.getElementById('pillType');
+                const p = document.getElementById('pillPeeps');
+                const c = document.getElementById('pillCost');
+
+                if (t) t.textContent = `Type: ${choice.type}`;
+                if (p) p.textContent = `Peeps: ${choice.participants}`;
+                if (c)
+                  c.textContent = `Cost: ${choice.cost.charAt(0).toUpperCase() + choice.cost.slice(1)}`;
+              } else {
+                if (activityName)
+                  activityName.textContent =
+                    'No activities found matching those filters! Try changing your values.';
+                document.getElementById('pillType').textContent = 'Type: None';
+                document.getElementById('pillPeeps').textContent = 'Peeps: -';
+                document.getElementById('pillCost').textContent = 'Cost: -';
+              }
+
+              fetchBtn.textContent = 'Find Activity';
+            }, 200);
+          });
+        }
+        // Centralized execution logic so both Find and Shuffle use the exact same functional filter
+        function performFiltering() {
+          const targetCategory = document.getElementById('category').value;
+          const targetParticipants =
+            document.getElementById('participants').value;
+          const targetBudget = document.getElementById('budget').value;
+
+          const filteredActivities = localActivities.filter((act) => {
+            if (targetCategory && act.type !== targetCategory) return false;
+            if (
+              targetParticipants &&
+              act.participants !== parseInt(targetParticipants)
+            )
+              return false;
+            if (targetBudget && act.cost !== targetBudget) return false;
+            return true;
+          });
+
+          if (filteredActivities.length > 0) {
+            const randomIndex = Math.floor(
+              Math.random() * filteredActivities.length
+            );
+            const choice = filteredActivities[randomIndex];
+
+            if (activityName) activityName.textContent = choice.activity;
+
+            const t = document.getElementById('pillType');
+            const p = document.getElementById('pillPeeps');
+            const c = document.getElementById('pillCost');
+
+            if (t) t.textContent = `Type: ${choice.type}`;
+            if (p) p.textContent = `Peeps: ${choice.participants}`;
+            if (c)
+              c.textContent = `Cost: ${choice.cost.charAt(0).toUpperCase() + choice.cost.slice(1)}`;
+          } else {
+            if (activityName)
+              activityName.textContent =
+                'No activities found matching those filters! Try changing your values.';
+            document.getElementById('pillType').textContent = 'Type: None';
+            document.getElementById('pillPeeps').textContent = 'Peeps: -';
+            document.getElementById('pillCost').textContent = 'Cost: -';
+          }
+        }
+
+        if (fetchBtn) {
+          fetchBtn.addEventListener('click', () => {
+            fetchBtn.textContent = 'Seeking...';
+            setTimeout(() => {
+              performFiltering();
+              fetchBtn.textContent = 'Find Activity';
+            }, 200);
+          });
+        }
+
+        // Connect your alternate secondary shuffle button to the exact same rendering logic
+        if (againBtn) {
+          againBtn.addEventListener('click', () => {
+            performFiltering();
+          });
+        }
+
+        // --- PROGRESS & MILESTONE TRACKING ENGINE ---
+
+        let currentActivityText = '';
+
+        const completeBtn = document.getElementById('completeBtn');
+        const progressCard = document.getElementById('progressCard');
+        const completedCountEl = document.getElementById('completedCount');
+        const badges = document.querySelectorAll('.badges .badge');
+        const toast = document.getElementById('toast');
+
+        if (progressCard) progressCard.removeAttribute('hidden');
+
+        // Mutation listener watcher targeting text mutations across both actions
+        function syncActiveActivity() {
+          setTimeout(() => {
+            const currentName =
+              document.getElementById('activityName').textContent;
+            const savedData = localStorage.getItem('user_progress');
+            const progress = savedData
+              ? JSON.parse(savedData)
+              : { completedActivities: [] };
+
+            if (
+              currentName &&
+              !currentName.startsWith('Ready!') &&
+              !currentName.startsWith('No activities')
+            ) {
+              currentActivityText = currentName;
+
+              if (completeBtn) {
+                if (
+                  progress.completedActivities.includes(currentActivityText)
+                ) {
+                  completeBtn.textContent = '🎉 Completed!';
+                  completeBtn.disabled = true;
+                } else {
+                  completeBtn.textContent = '✅ Done';
+                  completeBtn.disabled = false;
+                }
+              }
+            } else {
+              currentActivityText = '';
+            }
+          }, 250);
+        }
+
+        if (fetchBtn) fetchBtn.addEventListener('click', syncActiveActivity);
+        if (againBtn) againBtn.addEventListener('click', syncActiveActivity);
+
+        function initProgress() {
+          const savedData = localStorage.getItem('user_progress');
+          let progress = savedData
+            ? JSON.parse(savedData)
+            : { completedActivities: [] };
+
+          if (!progress.completedActivities) {
+            progress = { completedActivities: [] };
+          }
+          updateUI(progress.completedActivities);
+        }
+
+        if (completeBtn) {
+          completeBtn.addEventListener('click', () => {
+            if (!currentActivityText) {
+              showToast('❌ Generate an activity first!');
+              return;
+            }
+
+            const savedData = localStorage.getItem('user_progress');
+            let progress = savedData
+              ? JSON.parse(savedData)
+              : { completedActivities: [] };
+
+            if (progress.completedActivities.includes(currentActivityText)) {
+              showToast("🧠 You've already completed this activity!");
+              return;
+            }
+
+            progress.completedActivities.push(currentActivityText);
+            localStorage.setItem('user_progress', JSON.stringify(progress));
+
+            completeBtn.textContent = '🎉 Completed!';
+            completeBtn.disabled = true;
+
+            updateUI(progress.completedActivities, true);
+          });
+        }
+
+        function updateUI(completedList, triggerCelebration = false) {
+          const count = completedList.length;
+
+          if (completedCountEl) {
+            completedCountEl.textContent = count;
+          }
+
+          badges.forEach((badge) => {
+            const target = parseInt(badge.getAttribute('data-target'));
+
+            if (count >= target) {
+              if (badge.classList.contains('locked')) {
+                badge.classList.remove('locked');
+                badge.classList.add('unlocked');
+
+                if (triggerCelebration) {
+                  showToast(`🏆 Achievement Unlocked: ${badge.textContent}!`);
+                }
+              } else {
+                badge.classList.remove('locked');
+                badge.classList.add('unlocked');
+              }
+            }
+          });
+        }
+
+        function showToast(message) {
+          if (!toast) return;
+          toast.textContent = message;
+          toast.classList.add('show');
+
+          // Fixed timing structure window: 3000ms gives your notification time to look great
+          setTimeout(() => {
+            toast.classList.remove('show');
+          }, 3000);
+        }
+
+        // --- THEME TOGGLE ENGINE ---
+        const themeBtn = document.getElementById('themeBtn');
+
+        // Initialize theme setup from localStorage
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        if (themeBtn) {
+          themeBtn.textContent = savedTheme === 'dark' ? '🌙' : '☀️';
+        }
+
+        // Toggle action logic listener
+        if (themeBtn) {
+          themeBtn.addEventListener('click', () => {
+            const htmlElement = document.documentElement;
+            const currentTheme = htmlElement.getAttribute('data-theme');
+            let newTheme = 'dark';
+
+            if (currentTheme === 'dark') {
+              newTheme = 'light';
+              themeBtn.textContent = '☀️';
+              showToast('☀️ Switched to Light Mode!');
+            } else {
+              themeBtn.textContent = '🌙';
+              showToast('🌙 Switched to Dark Mode!');
+            }
+
+            htmlElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+          });
+        }
+
+        function filterActivities() {
+          const searchValue = activitySearch.value.toLowerCase();
+          const categoryValue = filterCategory.value;
+          const costValue = filterCost.value;
+
+          const activeTab = document.querySelector('.tab.active')?.dataset.tab;
+
+          const list =
+            activeTab === 'favourites'
+              ? document.getElementById('favList')
+              : document.getElementById('historyList');
+
+          const items = list.querySelectorAll('li');
+
+          let visibleCount = 0;
+
+          items.forEach((item) => {
+            const text = item.textContent.toLowerCase();
+
+            const matchesSearch = !searchValue || text.includes(searchValue);
+
+            const matchesCategory =
+              !categoryValue || text.includes(categoryValue);
+
+            const matchesCost = !costValue || text.includes(costValue);
+
+            if (matchesSearch && matchesCategory && matchesCost) {
+              item.style.display = '';
+              visibleCount++;
+            } else {
+              item.style.display = 'none';
+            }
+          });
+
+          if (resultsCount) {
+            resultsCount.textContent = `Showing ${visibleCount} activities`;
+          }
+        }
+        if (activitySearch) {
+          activitySearch.addEventListener('input', filterActivities);
+        }
+
+        if (filterCategory) {
+          filterCategory.addEventListener('change', filterActivities);
+        }
+
+        if (filterCost) {
+          filterCost.addEventListener('change', filterActivities);
+        }
+
+        document.querySelectorAll('.tab').forEach((tab) => {
+          tab.addEventListener('click', () => {
+            setTimeout(filterActivities, 100);
+          });
+        });
+        initProgress();
+      });
+    </script>
+  </body>
 </html>

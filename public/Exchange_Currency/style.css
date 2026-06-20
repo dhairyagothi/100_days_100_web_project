@@ -43,10 +43,20 @@ body {
 }
 
 .project-back-button {
-  transition: all 0.3s ease;
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: #1e293b;
+  color: #3b82f6;
+  border: 1px solid #3b82f6;
+  text-decoration: none;
+  font-weight: 700;
+  font-family: Inter, system-ui, sans-serif;
+  transition: all 0.2s ease;
 }
 
 .project-back-button:hover {
+  background: #3b82f6;
+  color: #fff;
   transform: translateY(-2px);
 }
 

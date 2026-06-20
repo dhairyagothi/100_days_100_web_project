@@ -1,4 +1,4 @@
-﻿const themeToggle = document.getElementById('theme-toggle');
+const themeToggle = document.getElementById('theme-toggle');
 const menuToggle = document.getElementById('menu-toggle');
 const mobileMenu = document.getElementById('mobile-menu');
 
@@ -101,6 +101,13 @@ function initCalculator() {
       return;
     }
 
+    const minBirthDate = new Date();
+    minBirthDate.setFullYear(minBirthDate.getFullYear() - 120);
+    if (birthDate < minBirthDate) {
+      alert('Date of birth cannot be more than 120 years in the past.');
+      return;
+    }
+
     const age = calculateAge(birthDate, new Date());
     const diffMs = new Date() - birthDate;
     const totalDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
@@ -125,9 +132,9 @@ function initCalculator() {
     document.getElementById('total-days').textContent = totalDays.toLocaleString();
     document.getElementById('weeks').textContent = age.weeks.toLocaleString();
     document.getElementById('total-hours').textContent = totalHours.toLocaleString();
-    document.getElementById('total-minutes').textContent = totalMinutes.toLocaleString();
-    document.getElementById('total-seconds').textContent = totalSeconds.toLocaleString();
-    document.getElementById('total-milliseconds').textContent = totalMilliseconds.toLocaleString();
+    document.getElementById('total-minutes').textContent = totalMinutes.toLocaleString('en-US');
+    document.getElementById('total-seconds').textContent = totalSeconds.toLocaleString('en-US');
+    document.getElementById('total-milliseconds').textContent = totalMilliseconds.toLocaleString('en-US');
     document.getElementById('fact-one').textContent = `You are older than ${percentOlder}% of people.`;
     document.getElementById('fact-two').textContent = `You have lived ${totalDays.toLocaleString()} days.`;
     document.getElementById('fact-three').textContent = `You spent approximately ${hoursSlept} years sleeping.`;
@@ -263,7 +270,13 @@ function initDifference() {
     document.getElementById('diff-total-seconds').textContent = totalSeconds.toLocaleString();
     document.getElementById('timeline-person1-date').textContent = dob1.value;
     document.getElementById('timeline-person2-date').textContent = dob2.value;
-    document.getElementById('relationship-message').textContent = date1 < date2 ? 'Person 1 is older than Person 2.' : 'Person 2 is older than Person 1.';
+    let relationMsg = "";
+    if (date1.getTime() === date2.getTime()) {
+      relationMsg = "Both persons are of the exact same age.";
+    } else {
+      relationMsg = date1 < date2 ? 'Person 1 is older than Person 2.' : 'Person 2 is older than Person 1.';
+    }
+    document.getElementById('relationship-message').textContent = relationMsg;
     document.getElementById('timeline-diff-text').textContent = `${diff.years} Years, ${diff.months} Months, ${diff.days} Days`;
     document.getElementById('difference-result').classList.add('active');
     window.scrollTo({ top: document.getElementById('difference-result').offsetTop - 20, behavior: 'smooth' });
@@ -309,16 +322,51 @@ function initBirthday() {
 
   shareBtn.addEventListener('click', async () => {
     const name = nameInput.value || 'Friend';
-    const message = messageInput.value || 'Wishing you a day filled with happiness!';
+    const message =
+      messageInput.value || 'Wishing you a day filled with happiness!';
+
     const shareText = `Happy Birthday ${name}! ${message}`;
-    if (navigator.share) {
-      navigator.share({ title: 'Birthday Card', text: shareText }).catch(() => {});
-    } else if (navigator.clipboard) {
-      navigator.clipboard.writeText(shareText).then(() => {
+
+    try {
+      // Preferred: Native share
+      if (navigator.share) {
+        await navigator.share({
+          title: 'Birthday Card',
+          text: shareText,
+        });
+
+        return;
+      }
+
+      // Fallback: Clipboard
+      if (navigator.clipboard) {
+        await navigator.clipboard.writeText(shareText);
+
         alert('Card message copied to clipboard.');
-      });
-    } else {
+        return;
+      }
+
       alert('Share is not supported on this browser.');
+    } catch (error) {
+      console.error('Share operation failed:', error);
+
+      // Attempt clipboard fallback if share failed
+      if (navigator.clipboard) {
+        try {
+          await navigator.clipboard.writeText(shareText);
+
+          alert(
+            'Sharing was unavailable. The message has been copied to your clipboard instead.'
+          );
+          return;
+        } catch (clipboardError) {
+          console.error('Clipboard write failed:', clipboardError);
+        }
+      }
+
+      alert(
+        'Unable to share or copy the message. Please try again later.'
+      );
     }
   });
 }
