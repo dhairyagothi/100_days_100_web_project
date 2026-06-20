@@ -32,17 +32,28 @@ body{
 }
 
 .container{
-  width:95%;
-  max-width:700px;
+ width: 95%;
+ max-width: 700px;
 }
 
 .top-bar{
   display:flex;
+  left: 0;
+  background-color: #06b6d4;
   justify-content:space-between;
   align-items:center;
   margin-bottom:20px;
 }
-
+a{
+  margin-left: 20px;
+  margin-right: 20px;
+  text-decoration: none;
+  color: #fff;
+}
+a:hover{
+  background-color: #4f46e5;
+  border-radius: 20px;
+}
 #theme-toggle{
   padding:10px 15px;
   border:none;
@@ -168,4 +179,74 @@ body{
 
 #prev-btn{
   background:#6b7280;
+}
+
+h1 {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 25px;
+  color: #0f172a;
+}
+
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 25px;
+  padding: 10px;
+}
+
+
+.card {
+  background: #99e2ef ;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 20px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+}
+
+
+.card h3 {
+  font-size: 1.3rem;
+  color: #0f172a;
+  margin-bottom: 10px;
+}
+
+.card p {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #334155;
+  margin: 6px 0;
+}
+
+.card strong {
+  color: #1e293b;
+}
+
+.card em {
+  color: #475569;
+}
+
+
+.audio-btn {
+  margin-top: 12px;
+  padding: 8px 14px;
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.3s ease;
+}
+
+.audio-btn:hover {
+  background: #1e40af;
 }

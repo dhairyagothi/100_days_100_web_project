@@ -29,13 +29,41 @@
   --font-ui: 'DM Sans', sans-serif;
   --transition: 0.18s cubic-bezier(0.4, 0, 0.2, 1);
 }
+[data-theme="light"] {
+  --bg-deep: #f5f7fb;
+  --bg-card: #ffffff;
+
+  --glass: rgba(0, 0, 0, 0.04);
+  --glass-hover: rgba(0, 0, 0, 0.08);
+  --glass-active: rgba(0, 0, 0, 0.12);
+
+  --border: rgba(0, 0, 0, 0.12);
+
+  --text-primary: #111827;
+  --text-muted: rgba(0, 0, 0, 0.6);
+}
 
 body {
   font-family: var(--font-ui);
-  background: radial-gradient(ellipse 80% 50% at 20% 10%, rgba(59,130,246,0.12), transparent 60%),
-              radial-gradient(ellipse 60% 40% at 80% 90%, rgba(6,182,212,0.10), transparent 55%),
-              radial-gradient(ellipse 50% 60% at 50% 50%, rgba(16,185,129,0.04), transparent 70%),
-              var(--bg-deep);
+  background:
+  radial-gradient(
+    ellipse 80% 50% at 20% 10%,
+    rgba(59, 130, 246, 0.12),
+    transparent 60%
+  ),
+  radial-gradient(
+    ellipse 60% 40% at 80% 90%,
+    rgba(6, 182, 212, 0.1),
+    transparent 55%
+  ),
+  radial-gradient(
+    ellipse 50% 60% at 50% 50%,
+    rgba(16, 185, 129, 0.04),
+    transparent 70%
+  ),
+  var(--bg-deep);
+
+transition: background 0.3s ease;
   min-height: 100vh;
   display: flex;
   justify-content: center;
@@ -593,4 +621,47 @@ body {
   .current-operand {
     font-size: 1.5rem;
   }
+}
+.theme-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+
+  width: 52px;
+  height: 52px;
+
+  border: 1px solid var(--border);
+  border-radius: 50%;
+
+  background: var(--bg-card);
+  color: var(--text-primary);
+
+  font-size: 1.2rem;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+
+  transition: var(--transition);
+
+  z-index: 999;
+}
+
+.theme-toggle:hover {
+  transform: translateY(-2px);
+}
+[data-theme="light"] .output {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+[data-theme="light"] .instructions kbd {
+  background: rgba(0, 0, 0, 0.05);
+  border-color: rgba(0, 0, 0, 0.12);
+}
+
+[data-theme="light"] .history-item:hover {
+  border-color: rgba(59, 130, 246, 0.4);
 }
