@@ -1386,3 +1386,37 @@ aside.sidebar:not(#sidebar) {
         width:100%;
     }
 }
+
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.sidebar-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.sidebar-footer {
+    margin-top: auto;
+    padding-top: 20px;
+}
+
+.logout-btn {
+    width: 100%;
+    margin-top: 10px;
+}
+
+@media (max-width: 768px) {
+
+    .sidebar {
+        width: 250px;
+    }
+
+    .sidebar-menu a {
+        font-size: 14px;
+    }
+
+}

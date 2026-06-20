@@ -29,6 +29,13 @@ if (themeToggleBtn) {
     themeToggleBtn.addEventListener('click', toggleTheme);
 }
 
+const themeToggle =
+document.getElementById("theme-toggle");
+
+themeToggle.addEventListener("click", () => {
+    document.body.classList.toggle("dark");
+});
+
 const savedTheme = localStorage.getItem('theme') ||
     (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
 
