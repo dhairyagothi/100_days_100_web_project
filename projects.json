@@ -3018,5 +3018,31 @@
       ],
       "difficulty": "advanced",
       "projectPath": "./public/WhosThatPokemon/index.html"
+    },
+    {
+      "projectNo": 238,
+      "projectName": "Red-Black Tree Visualizer",
+      "projectType": "Tool",
+      "projectDesc": "Interactive DSA tool to visualize the insertion, balancing, rotations, and recoloring of a Red-Black Tree in real-time.",
+      "techStack": [
+        "html",
+        "css",
+        "javascript"
+      ],
+      "difficulty": "advanced",
+      "projectPath": "./public/RedBlackTreeVisualizer/index.html"
+    },
+    {
+      "projectNo": 239,
+      "projectName": "LayerText",
+      "projectType": "Tool",
+      "projectDesc": "Tool for Frontend Developers",
+      "techStack": [
+        "html",
+        "css",
+        "javascript"
+      ],
+      "difficulty": "advanced",
+      "projectPath": "./public/css-animation/index.html"
     }
 ]

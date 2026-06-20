@@ -12,7 +12,7 @@
   --text-secondary: #94a3b8;
   --text-muted: #64748b;
 
-  --accent-color: #6C5DD3;
+  --accent-color: #6c5dd3;
   --accent-color-hover: #5a4cb3;
   --accent-success: #10b981;
   --accent-danger: #ef4444;
@@ -21,9 +21,12 @@
   --radius-lg: 24px;
   --radius-md: 16px;
   --radius-sm: 10px;
-  --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --shadow-sm:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-md:
+    0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-lg:
+    0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 
   --glass-blur: blur(24px);
   --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -244,7 +247,6 @@ body {
 }
 
 @keyframes logo-pop {
-
   0%,
   100% {
     transform: scale(1);
@@ -531,7 +533,9 @@ body {
 
 .palette-card.active-selected {
   border-color: var(--text-primary);
-  box-shadow: 0 0 0 2px var(--text-primary), var(--shadow-lg);
+  box-shadow:
+    0 0 0 2px var(--text-primary),
+    var(--shadow-lg);
 }
 
 .palette-card .color-block {
@@ -587,11 +591,10 @@ body {
   color: #f59e0b;
   /* Yellow Lock color */
   background: rgba(245, 158, 11, 0.1);
-  animation: padlock-shake 0.3s cubic-bezier(.36, .07, .19, .97) both;
+  animation: padlock-shake 0.3s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
 }
 
 @keyframes padlock-shake {
-
   10%,
   90% {
     transform: translate3d(-1px, 0, 0);
@@ -682,7 +685,11 @@ body {
 }
 
 .btn-generate:hover {
-  background: linear-gradient(135deg, var(--accent-color-hover) 0%, #9333ea 100%);
+  background: linear-gradient(
+    135deg,
+    var(--accent-color-hover) 0%,
+    #9333ea 100%
+  );
   box-shadow: 0 8px 30px rgba(108, 93, 211, 0.4);
 }
 
@@ -771,7 +778,6 @@ body {
 }
 
 @keyframes pulse-icon {
-
   0%,
   100% {
     transform: scale(1);
@@ -1066,7 +1072,9 @@ kbd {
   background: rgba(15, 23, 42, 0.95);
   border: 1px solid rgba(16, 185, 129, 0.3);
   /* green border for success copy */
-  box-shadow: var(--shadow-lg), 0 0 15px rgba(16, 185, 129, 0.1);
+  box-shadow:
+    var(--shadow-lg),
+    0 0 15px rgba(16, 185, 129, 0.1);
   color: var(--text-primary);
   padding: 14px 20px;
   border-radius: var(--radius-md);
@@ -1076,7 +1084,9 @@ kbd {
   font-size: 13px;
   font-weight: 600;
   pointer-events: auto;
-  animation: toast-in 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), toast-out 0.3s 2.5s forwards ease-in;
+  animation:
+    toast-in 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+    toast-out 0.3s 2.5s forwards ease-in;
 }
 
 .toast.toast-error {

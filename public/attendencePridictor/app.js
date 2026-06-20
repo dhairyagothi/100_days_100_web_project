@@ -274,13 +274,29 @@ function getHistory() {
 
 function addHistoryEntry(result) {
   const history = getHistory();
+
+  const lastEntry = history[history.length - 1];
+
+  if (
+    lastEntry &&
+    lastEntry.total === result.total &&
+    lastEntry.attended === result.attended &&
+    Math.abs(lastEntry.percent - result.currentPercent) < 0.01
+  ) {
+    return;
+  }
+
   history.push({
     date: new Date().toISOString(),
     percent: result.currentPercent,
     total: result.total,
     attended: result.attended,
   });
-  if (history.length > 30) history.shift();
+
+  if (history.length > 30) {
+    history.shift();
+  }
+
   localStorage.setItem(STORAGE_KEYS.history, JSON.stringify(history));
 }
 
@@ -570,7 +586,7 @@ function initTheme() {
 
 /* ===== Event Handlers ===== */
 
-function handleCalculate(e) {
+function handleCalculate(e, saveHistory = true) {
   if (e) e.preventDefault();
 
   const data = getFormData();
@@ -659,7 +675,9 @@ function init() {
     'futureMisses',
   ].forEach((id) => {
     document.getElementById(id).addEventListener('input', () => {
-      if (lastResult) handleCalculate();
+      if (lastResult) {
+        handleCalculate(null, false);
+      }
     });
   });
 
