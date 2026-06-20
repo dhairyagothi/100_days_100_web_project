@@ -7,26 +7,37 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <div class="container">
-      <h1>Movie Watchlist</h1>
+  <div class="container">
+    <h1>Movie Watchlist</h1>
+    <p class="subtitle">Search for a movie and build your personal watchlist.</p>
 
-      <div class="search-box">
-        <input
-          type="text"
-          id="search-input"
-          placeholder="Search movie title..."
-          autofocus
-        />
-        <button id="search-btn">Search</button>
-      </div>
-
-      <div id="movie-result" class="hidden"></div>
-
-      <hr />
-
-      <h2>My Watchlist</h2>
-      <div id="watchlist-container"></div>
+    <div class="search-box">
+      <input type="text" id="search-input" placeholder="Search movie title..." autofocus />
+      <button id="search-btn">Search</button>
     </div>
-    <script src="script.js"></script>
-  </body>
+
+    <div id="movie-result" class="hidden"></div>
+
+    <hr />
+
+    <div class="stats-bar" id="stats-bar"></div>
+
+    <div class="list-header">
+      <h2 style="margin:0;">My Watchlist</h2>
+      <span class="count-badge" id="count-badge">0</span>
+    </div>
+
+    <div class="filter-tabs">
+      <button class="filter-tab active" data-filter="all">All</button>
+      <button class="filter-tab" data-filter="towatch">To watch</button>
+      <button class="filter-tab" data-filter="watched">Watched</button>
+    </div>
+
+    <div class="watchlist-grid" id="watchlist-container"></div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="script.js"></script>
+</body>
 </html>

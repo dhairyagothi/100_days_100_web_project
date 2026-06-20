@@ -3,916 +3,1193 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Solar Explorer — an interactive educational guide to our solar system. Explore planets, moons, and fascinating space facts." />
     <link
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
     />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="style.css" />
-    <title>Document</title>
+    <title>Solar Explorer — Our Solar System</title>
   </head>
   <body>
+    <!-- Back navigation -->
     <a
       href="/"
       class="project-back-button"
-      style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'"
-      >← Back to Home</a
+      aria-label="Back to home"
     >
+      <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+      Back to Home
+    </a>
 
-    <h1 class="logo">
-      Solar explorer
-      <span>in only CSS</span>
-    </h1>
-    <input class="planet10" id="pluto" type="radio" name="planet" />
-    <label class="menu pluto" for="pluto">
-      <div class="preview"></div>
-      <div class="info">
-        <h2>
-          <div class="pip"></div>
-          Pluto
-        </h2>
-        <h3>39.5 AU</h3>
-      </div>
-    </label>
-    <input class="planet9" id="neptune" type="radio" name="planet" />
-    <label class="menu neptune" for="neptune">
-      <div class="preview"></div>
-      <div class="info">
-        <h2>
-          <div class="pip"></div>
-          Neptune
-        </h2>
-        <h3>30.06 AU</h3>
-      </div>
-    </label>
-    <input class="planet8" id="uranus" type="radio" name="planet" />
-    <label class="menu uranus" for="uranus">
-      <div class="preview"></div>
-      <div class="info">
-        <h2>
-          <div class="pip"></div>
-          Uranus
-        </h2>
-        <h3>19.18 AU</h3>
-      </div>
-    </label>
-    <input class="planet7" id="saturn" type="radio" name="planet" />
-    <label class="menu saturn" for="saturn">
-      <div class="preview"></div>
-      <div class="info">
-        <h2>
-          <div class="pip"></div>
-          Saturn
-        </h2>
-        <h3>9.539 AU</h3>
-      </div>
-    </label>
-    <input class="planet6" id="jupiter" type="radio" name="planet" />
-    <label class="jupiter menu" for="jupiter">
-      <div class="preview"></div>
-      <div class="info">
-        <h2>
-          <div class="pip"></div>
-          Jupiter
-        </h2>
-        <h3>5.203 AU</h3>
-      </div>
-    </label>
-    <input
-      class="planet5"
-      id="mars"
-      type="radio"
-      name="planet"
-      checked="checked"
-    />
-    <label class="mars menu" for="mars">
-      <div class="preview"></div>
-      <div class="info">
-        <h2>
-          <div class="pip"></div>
-          Mars
-        </h2>
-        <h3>1.524 AU</h3>
-      </div>
-    </label>
-    <input
-      class="planet4"
-      id="earth"
-      type="radio"
-      name="planet"
-      checked="checked"
-    />
-    <label class="earth menu" for="earth">
-      <div class="preview"></div>
-      <div class="info">
-        <h2>
-          <div class="pip"></div>
-          Earth
-        </h2>
-        <h3>1 AU</h3>
-      </div>
-    </label>
-    <input
-      class="planet3"
-      id="venus"
-      type="radio"
-      name="planet"
-      checked="checked"
-    />
-    <label class="menu venus" for="venus">
-      <div class="preview"></div>
-      <div class="info">
-        <h2>
-          <div class="pip"></div>
-          Venus
-        </h2>
-        <h3>0.723 AU</h3>
-      </div>
-    </label>
-    <input
-      class="planet2"
-      id="mercury"
-      type="radio"
-      name="planet"
-      checked="checked"
-    />
-    <label class="menu mercury" for="mercury">
-      <div class="preview"></div>
-      <div class="info">
-        <h2>
-          <div class="pip"></div>
-          Mercury
-        </h2>
-        <h3>0.39 AU</h3>
-      </div>
-    </label>
-    <input
-      class="planet1"
-      id="sun"
-      type="radio"
-      name="planet"
-      checked="checked"
-    />
-    <label class="menu sun" for="sun">
-      <div class="preview"></div>
-      <div class="info">
-        <h2>
-          <div class="pip"></div>
-          Sun
-        </h2>
-        <h3>0 AU</h3>
-      </div>
-    </label>
-    <div class="solar">
-      <div class="solar_systm">
-        <div class="sun planet">
-          <div class="sun planet_description">
-            <h2>Star</h2>
-            <h1>Sun</h1>
-            <p>
-              The Sun is the star at the center of the Solar System. It is a
-              nearly perfect sphere of hot plasma, central to the existence of
-              life on Earth.
-            </p>
-            <label for="readSun">
-              <a>
-                Read Mor
-                <span>e</span>
-              </a>
-            </label>
-          </div>
-          <div class="overlay"></div>
+    <!-- Animated star field background -->
+    <div class="star-field" aria-hidden="true">
+      <div class="stars stars--small"></div>
+      <div class="stars stars--medium"></div>
+      <div class="stars stars--large"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="site-header" role="banner">
+      <h1 class="logo">
+        <span class="logo__icon" aria-hidden="true">☀</span>
+        Solar Explorer
+        <span class="logo__tagline">Journey through our solar system</span>
+      </h1>
+
+      <!-- Speed control -->
+      <div class="speed-controls" role="group" aria-label="Animation speed controls">
+        <span class="speed-controls__label">Orbit Speed</span>
+        <div class="speed-controls__buttons">
+          <button class="speed-btn" data-speed="0.3" aria-label="Slow orbit speed">½×</button>
+          <button class="speed-btn speed-btn--active" data-speed="1" aria-label="Normal orbit speed">1×</button>
+          <button class="speed-btn" data-speed="3" aria-label="Fast orbit speed">3×</button>
         </div>
       </div>
-      <div class="solar_systm">
-        <div class="mercury planet">
-          <div class="mercury planet_description">
-            <h2>Planet</h2>
-            <h1>Mercury</h1>
-            <p>
-              The closest planet to the sun. It circles the sun faster than all
-              the other planets, which is why Romans named it after their
-              swift-footed messenger god.
-            </p>
-            <label for="readMercury">
-              <a>
-                Read Mor
-                <span>e</span>
-              </a>
-            </label>
-          </div>
-          <div class="overlay"></div>
+    </header>
+
+    <!-- Planet navigation inputs (CSS-only state management — preserved from original) -->
+    <input class="planet10" id="pluto" type="radio" name="planet" aria-label="Select Pluto" />
+    <input class="planet9" id="neptune" type="radio" name="planet" aria-label="Select Neptune" />
+    <input class="planet8" id="uranus" type="radio" name="planet" aria-label="Select Uranus" />
+    <input class="planet7" id="saturn" type="radio" name="planet" aria-label="Select Saturn" />
+    <input class="planet6" id="jupiter" type="radio" name="planet" aria-label="Select Jupiter" />
+    <input class="planet5" id="mars" type="radio" name="planet" aria-label="Select Mars" />
+    <input class="planet4" id="earth" type="radio" name="planet" checked="checked" aria-label="Select Earth" />
+    <input class="planet3" id="venus" type="radio" name="planet" aria-label="Select Venus" />
+    <input class="planet2" id="mercury" type="radio" name="planet" aria-label="Select Mercury" />
+    <input class="planet1" id="sun" type="radio" name="planet" aria-label="Select Sun" />
+
+    <!-- Main layout wrapper -->
+    <div class="app-layout">
+      <!-- Sidebar navigation -->
+      <nav class="planet-nav" role="navigation" aria-label="Planet navigation">
+        <p class="planet-nav__heading">Select a body</p>
+
+        <label class="menu sun" for="sun" role="button" tabindex="0">
+          <span class="menu__preview" aria-hidden="true"></span>
+          <span class="info">
+            <span class="info__name">
+              <span class="pip" aria-hidden="true"></span>
+              Sun
+            </span>
+            <span class="info__distance">0 AU · Star</span>
+          </span>
+          <span class="menu__arrow" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></span>
+        </label>
+
+        <label class="menu mercury" for="mercury" role="button" tabindex="0">
+          <span class="menu__preview" aria-hidden="true"></span>
+          <span class="info">
+            <span class="info__name">
+              <span class="pip" aria-hidden="true"></span>
+              Mercury
+            </span>
+            <span class="info__distance">0.39 AU · Planet</span>
+          </span>
+          <span class="menu__arrow" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></span>
+        </label>
+
+        <label class="menu venus" for="venus" role="button" tabindex="0">
+          <span class="menu__preview" aria-hidden="true"></span>
+          <span class="info">
+            <span class="info__name">
+              <span class="pip" aria-hidden="true"></span>
+              Venus
+            </span>
+            <span class="info__distance">0.723 AU · Planet</span>
+          </span>
+          <span class="menu__arrow" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></span>
+        </label>
+
+        <label class="menu earth" for="earth" role="button" tabindex="0">
+          <span class="menu__preview" aria-hidden="true"></span>
+          <span class="info">
+            <span class="info__name">
+              <span class="pip" aria-hidden="true"></span>
+              Earth
+            </span>
+            <span class="info__distance">1 AU · Planet</span>
+          </span>
+          <span class="menu__arrow" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></span>
+        </label>
+
+        <label class="menu mars" for="mars" role="button" tabindex="0">
+          <span class="menu__preview" aria-hidden="true"></span>
+          <span class="info">
+            <span class="info__name">
+              <span class="pip" aria-hidden="true"></span>
+              Mars
+            </span>
+            <span class="info__distance">1.524 AU · Planet</span>
+          </span>
+          <span class="menu__arrow" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></span>
+        </label>
+
+        <label class="menu jupiter" for="jupiter" role="button" tabindex="0">
+          <span class="menu__preview" aria-hidden="true"></span>
+          <span class="info">
+            <span class="info__name">
+              <span class="pip" aria-hidden="true"></span>
+              Jupiter
+            </span>
+            <span class="info__distance">5.203 AU · Planet</span>
+          </span>
+          <span class="menu__arrow" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></span>
+        </label>
+
+        <label class="menu saturn" for="saturn" role="button" tabindex="0">
+          <span class="menu__preview" aria-hidden="true"></span>
+          <span class="info">
+            <span class="info__name">
+              <span class="pip" aria-hidden="true"></span>
+              Saturn
+            </span>
+            <span class="info__distance">9.539 AU · Planet</span>
+          </span>
+          <span class="menu__arrow" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></span>
+        </label>
+
+        <label class="menu uranus" for="uranus" role="button" tabindex="0">
+          <span class="menu__preview" aria-hidden="true"></span>
+          <span class="info">
+            <span class="info__name">
+              <span class="pip" aria-hidden="true"></span>
+              Uranus
+            </span>
+            <span class="info__distance">19.18 AU · Planet</span>
+          </span>
+          <span class="menu__arrow" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></span>
+        </label>
+
+        <label class="menu neptune" for="neptune" role="button" tabindex="0">
+          <span class="menu__preview" aria-hidden="true"></span>
+          <span class="info">
+            <span class="info__name">
+              <span class="pip" aria-hidden="true"></span>
+              Neptune
+            </span>
+            <span class="info__distance">30.06 AU · Planet</span>
+          </span>
+          <span class="menu__arrow" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></span>
+        </label>
+
+        <label class="menu pluto" for="pluto" role="button" tabindex="0">
+          <span class="menu__preview" aria-hidden="true"></span>
+          <span class="info">
+            <span class="info__name">
+              <span class="pip" aria-hidden="true"></span>
+              Pluto
+            </span>
+            <span class="info__distance">39.5 AU · Dwarf Planet</span>
+          </span>
+          <span class="menu__arrow" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></span>
+        </label>
+      </nav>
+
+      <!-- Planet viewport -->
+      <main class="solar-viewport" role="main" aria-label="Planet visualization">
+        <div class="solar" aria-live="polite">
+
+          <!-- Sun -->
+          <article class="solar_systm" aria-label="Sun details">
+            <div class="sun planet" role="img" aria-label="Sun visualization">
+              <section class="sun planet_description">
+                <h2 class="planet_description__type">
+                  <i class="fa-solid fa-star" aria-hidden="true"></i>
+                  Star
+                </h2>
+                <h1 class="planet_description__name">Sun</h1>
+                <p class="planet_description__summary">
+                  The Sun is the star at the center of our Solar System — a nearly perfect
+                  sphere of hot plasma generating energy through nuclear fusion at its core.
+                </p>
+                <div class="planet_description__stats" aria-label="Quick facts">
+                  <div class="stat-chip">
+                    <span class="stat-chip__label">Diameter</span>
+                    <span class="stat-chip__value">1.39M km</span>
+                  </div>
+                  <div class="stat-chip">
+                    <span class="stat-chip__label">Surface Temp</span>
+                    <span class="stat-chip__value">5,500°C</span>
+                  </div>
+                  <div class="stat-chip">
+                    <span class="stat-chip__label">Age</span>
+                    <span class="stat-chip__value">4.6B years</span>
+                  </div>
+                </div>
+                <label for="readSun" class="planet_description__read-more" role="button" tabindex="0">
+                  <i class="fa-solid fa-book-open" aria-hidden="true"></i>
+                  Read Full Article
+                </label>
+              </section>
+              <div class="overlay" aria-hidden="true"></div>
+            </div>
+          </article>
+
+          <!-- Mercury -->
+          <article class="solar_systm" aria-label="Mercury details">
+            <div class="mercury planet" role="img" aria-label="Mercury visualization">
+              <section class="mercury planet_description">
+                <h2 class="planet_description__type">
+                  <i class="fa-solid fa-circle-dot" aria-hidden="true"></i>
+                  Planet
+                </h2>
+                <h1 class="planet_description__name">Mercury</h1>
+                <p class="planet_description__summary">
+                  The closest planet to the Sun, racing through its orbit so fast that the
+                  Romans named it after their swift-footed messenger god.
+                </p>
+                <div class="planet_description__stats" aria-label="Quick facts">
+                  <div class="stat-chip">
+                    <span class="stat-chip__label">Year Length</span>
+                    <span class="stat-chip__value">88 days</span>
+                  </div>
+                  <div class="stat-chip">
+                    <span class="stat-chip__label">Moons</span>
+                    <span class="stat-chip__value">0</span>
+                  </div>
+                  <div class="stat-chip">
+                    <span class="stat-chip__label">Gravity</span>
+                    <span class="stat-chip__value">3.7 m/s²</span>
+                  </div>
+                </div>
+                <label for="readMercury" class="planet_description__read-more" role="button" tabindex="0">
+                  <i class="fa-solid fa-book-open" aria-hidden="true"></i>
+                  Read Full Article
+                </label>
+              </section>
+              <div class="overlay" aria-hidden="true"></div>
+            </div>
+          </article>
+
+          <!-- Venus -->
+          <article class="solar_systm" aria-label="Venus details">
+            <div class="planet venus" role="img" aria-label="Venus visualization">
+              <section class="planet_description venus">
+                <h2 class="planet_description__type">
+                  <i class="fa-solid fa-circle-dot" aria-hidden="true"></i>
+                  Planet
+                </h2>
+                <h1 class="planet_description__name">Venus</h1>
+                <p class="planet_description__summary">
+                  Named for the Roman goddess of love and beauty, Venus shines the brightest
+                  of all planets — yet hides a hellish, crushing atmosphere beneath its clouds.
+                </p>
+                <div class="planet_description__stats" aria-label="Quick facts">
+                  <div class="stat-chip">
+                    <span class="stat-chip__label">Day Length</span>
+                    <span class="stat-chip__value">243 Earth days</span>
+                  </div>
+                  <div class="stat-chip">
+                    <span class="stat-chip__label">Moons</span>
+                    <span class="stat-chip__value">0</span>
+                  </div>
+                  <div class="stat-chip">
+                    <span class="stat-chip__label">Temp</span>
+                    <span class="stat-chip__value">465°C avg</span>
+                  </div>
+                </div>
+                <label for="readVenus" class="planet_description__read-more" role="button" tabindex="0">
+                  <i class="fa-solid fa-book-open" aria-hidden="true"></i>
+                  Read Full Article
+                </label>
+              </section>
+              <div class="overlay" aria-hidden="true"></div>
+            </div>
+          </article>
+
+          <!-- Earth -->
+          <article class="solar_systm" aria-label="Earth details">
+            <div class="earth planet" role="img" aria-label="Earth visualization">
+              <div class="moon moon" role="img" aria-label="Moon">
+                <span class="moon__label">Moon</span>
+                <span class="moon__name">Moon</span>
+              </div>
+              <div class="m trajectory" aria-hidden="true"></div>
+              <section class="earth planet_description">
+                <h2 class="planet_description__type">
+                  <i class="fa-solid fa-earth-americas" aria-hidden="true"></i>
+                  Planet
+                </h2>
+                <h1 class="planet_description__name">Earth</h1>
+                <p class="planet_description__summary">
+                  Our home. The only planet known to harbour life, with liquid oceans, a
+                  breathable atmosphere, and a magnetic field that shields us from solar wind.
+                </p>
+                <div class="planet_description__stats" aria-label="Quick facts">
+                  <div class="stat-chip">
+                    <span class="stat-chip__label">Year Length</span>
+                    <span class="stat-chip__value">365.25 days</span>
+                  </div>
+                  <div class="stat-chip">
+                    <span class="stat-chip__label">Moons</span>
+                    <span class="stat-chip__value">1</span>
+                  </div>
+                  <div class="stat-chip">
+                    <span class="stat-chip__label">Surface Water</span>
+                    <span class="stat-chip__value">71%</span>
+                  </div>
+                </div>
+                <label for="readEarth" class="planet_description__read-more" role="button" tabindex="0">
+                  <i class="fa-solid fa-book-open" aria-hidden="true"></i>
+                  Read Full Article
+                </label>
+              </section>
+              <div class="overlay" aria-hidden="true"></div>
+            </div>
+          </article>
+
+          <!-- Mars -->
+          <article class="solar_systm" aria-label="Mars details">
+            <div class="mars planet" role="img" aria-label="Mars visualization">
+              <div class="deimos moon" role="img" aria-label="Deimos moon">
+                <span class="moon__label">Moon</span>
+                <span class="moon__name">Deimos</span>
+              </div>
+              <div class="d trajectory" aria-hidden="true"></div>
+              <div class="moon phoebos" role="img" aria-label="Phobos moon">
+                <span class="moon__label">Moon</span>
+                <span class="moon__name">Phobos</span>
+              </div>
+              <div class="p trajectory" aria-hidden="true"></div>
+              <section class="mars planet_description">
+                <h2 class="planet_description__type">
+                  <i class="fa-solid fa-circle-dot" aria-hidden="true"></i>
+                  Planet
+                </h2>
+                <h1 class="planet_description__name">Mars</h1>
+                <p class="planet_description__summary">
+                  The Red Planet, named for the Roman god of war. Home to Olympus Mons —
+                  the tallest volcano in the solar system — and the target of humanity's
+                  greatest exploration missions.
+                </p>
+                <div class="planet_description__stats" aria-label="Quick facts">
+                  <div class="stat-chip">
+                    <span class="stat-chip__label">Year Length</span>
+                    <span class="stat-chip__value">687 days</span>
+                  </div>
+                  <div class="stat-chip">
+                    <span class="stat-chip__label">Moons</span>
+                    <span class="stat-chip__value">2</span>
+                  </div>
+                  <div class="stat-chip">
+                    <span class="stat-chip__label">Gravity</span>
+                    <span class="stat-chip__value">37% of Earth</span>
+                  </div>
+                </div>
+                <label for="readMars" class="planet_description__read-more" role="button" tabindex="0">
+                  <i class="fa-solid fa-book-open" aria-hidden="true"></i>
+                  Read Full Article
+                </label>
+              </section>
+              <div class="overlay" aria-hidden="true"></div>
+            </div>
+          </article>
+
+          <!-- Jupiter -->
+          <article class="solar_systm" aria-label="Jupiter details">
+            <div class="jupiter planet" role="img" aria-label="Jupiter visualization">
+              <div class="lo moon" role="img" aria-label="Io moon">
+                <span class="moon__label">Moon</span>
+                <span class="moon__name">Io</span>
+              </div>
+              <div class="europa moon" role="img" aria-label="Europa moon">
+                <span class="moon__label">Moon</span>
+                <span class="moon__name">Europa</span>
+              </div>
+              <div class="ganymede moon" role="img" aria-label="Ganymede moon">
+                <span class="moon__label">Moon</span>
+                <span class="moon__name">Ganymede</span>
+              </div>
+              <div class="lop trajectory" aria-hidden="true"></div>
+              <div class="eu trajectory" aria-hidden="true"></div>
+              <div class="ga trajectory" aria-hidden="true"></div>
+              <section class="jupiter planet_description">
+                <h2 class="planet_description__type">
+                  <i class="fa-solid fa-circle-dot" aria-hidden="true"></i>
+                  Planet
+                </h2>
+                <h1 class="planet_description__name">Jupiter</h1>
+                <p class="planet_description__summary">
+                  The king of planets — the largest body in our solar system after the Sun.
+                  Its Great Red Spot, a storm larger than Earth, has raged for centuries.
+                </p>
+                <div class="planet_description__stats" aria-label="Quick facts">
+                  <div class="stat-chip">
+                    <span class="stat-chip__label">Year Length</span>
+                    <span class="stat-chip__value">11.8 Earth years</span>
+                  </div>
+                  <div class="stat-chip">
+                    <span class="stat-chip__label">Moons</span>
+                    <span class="stat-chip__value">95</span>
+                  </div>
+                  <div class="stat-chip">
+                    <span class="stat-chip__label">Day Length</span>
+                    <span class="stat-chip__value">9.9 hours</span>
+                  </div>
+                </div>
+                <label for="readJupiter" class="planet_description__read-more" role="button" tabindex="0">
+                  <i class="fa-solid fa-book-open" aria-hidden="true"></i>
+                  Read Full Article
+                </label>
+              </section>
+              <div class="overlay" aria-hidden="true"></div>
+            </div>
+          </article>
+
+          <!-- Saturn -->
+          <article class="solar_systm" aria-label="Saturn details">
+            <div class="planet saturn" role="img" aria-label="Saturn visualization">
+              <div class="moon titan" role="img" aria-label="Titan moon">
+                <span class="moon__label">Moon</span>
+                <span class="moon__name">Titan</span>
+              </div>
+              <div class="dione moon" role="img" aria-label="Dione moon">
+                <span class="moon__label">Moon</span>
+                <span class="moon__name">Dione</span>
+              </div>
+              <div class="enceladus moon" role="img" aria-label="Enceladus moon">
+                <span class="moon__label">Moon</span>
+                <span class="moon__name">Enceladus</span>
+              </div>
+              <div class="ti trajectory" aria-hidden="true"></div>
+              <div class="di trajectory" aria-hidden="true"></div>
+              <div class="enc trajectory" aria-hidden="true"></div>
+              <section class="planet_description saturn">
+                <h2 class="planet_description__type">
+                  <i class="fa-solid fa-circle-dot" aria-hidden="true"></i>
+                  Planet
+                </h2>
+                <h1 class="planet_description__name">Saturn</h1>
+                <p class="planet_description__summary">
+                  The jewel of the solar system. Saturn's spectacular ring system —
+                  made of ice and rock — extends 282,000 km from the planet's surface.
+                </p>
+                <div class="planet_description__stats" aria-label="Quick facts">
+                  <div class="stat-chip">
+                    <span class="stat-chip__label">Year Length</span>
+                    <span class="stat-chip__value">29.4 Earth years</span>
+                  </div>
+                  <div class="stat-chip">
+                    <span class="stat-chip__label">Moons</span>
+                    <span class="stat-chip__value">146</span>
+                  </div>
+                  <div class="stat-chip">
+                    <span class="stat-chip__label">Ring Width</span>
+                    <span class="stat-chip__value">282,000 km</span>
+                  </div>
+                </div>
+                <label for="readSaturn" class="planet_description__read-more" role="button" tabindex="0">
+                  <i class="fa-solid fa-book-open" aria-hidden="true"></i>
+                  Read Full Article
+                </label>
+              </section>
+              <div class="overlay" aria-hidden="true"></div>
+            </div>
+          </article>
+
+          <!-- Uranus -->
+          <article class="solar_systm" aria-label="Uranus details">
+            <div class="planet uranus" role="img" aria-label="Uranus visualization">
+              <div class="miranda moon" role="img" aria-label="Miranda moon">
+                <span class="moon__label">Moon</span>
+                <span class="moon__name">Miranda</span>
+              </div>
+              <div class="ariel moon" role="img" aria-label="Ariel moon">
+                <span class="moon__label">Moon</span>
+                <span class="moon__name">Ariel</span>
+              </div>
+              <div class="moon umbriel" role="img" aria-label="Umbriel moon">
+                <span class="moon__label">Moon</span>
+                <span class="moon__name">Umbriel</span>
+              </div>
+              <div class="mir trajectory" aria-hidden="true"></div>
+              <div class="ari trajectory" aria-hidden="true"></div>
+              <div class="trajectory umb" aria-hidden="true"></div>
+              <section class="planet_description uranus">
+                <h2 class="planet_description__type">
+                  <i class="fa-solid fa-circle-dot" aria-hidden="true"></i>
+                  Planet
+                </h2>
+                <h1 class="planet_description__name">Uranus</h1>
+                <p class="planet_description__summary">
+                  An ice giant rolling on its side — Uranus has a dramatic 98° axial tilt,
+                  meaning it orbits the Sun essentially on its side with poles pointing at it.
+                </p>
+                <div class="planet_description__stats" aria-label="Quick facts">
+                  <div class="stat-chip">
+                    <span class="stat-chip__label">Year Length</span>
+                    <span class="stat-chip__value">84 Earth years</span>
+                  </div>
+                  <div class="stat-chip">
+                    <span class="stat-chip__label">Moons</span>
+                    <span class="stat-chip__value">28</span>
+                  </div>
+                  <div class="stat-chip">
+                    <span class="stat-chip__label">Axial Tilt</span>
+                    <span class="stat-chip__value">98°</span>
+                  </div>
+                </div>
+                <label for="readUranus" class="planet_description__read-more" role="button" tabindex="0">
+                  <i class="fa-solid fa-book-open" aria-hidden="true"></i>
+                  Read Full Article
+                </label>
+              </section>
+              <div class="overlay" aria-hidden="true"></div>
+            </div>
+          </article>
+
+          <!-- Neptune -->
+          <article class="solar_systm" aria-label="Neptune details">
+            <div class="neptune planet" role="img" aria-label="Neptune visualization">
+              <div class="moon triton" role="img" aria-label="Triton moon">
+                <span class="moon__label">Moon</span>
+                <span class="moon__name">Triton</span>
+              </div>
+              <div class="moon proteus" role="img" aria-label="Proteus moon">
+                <span class="moon__label">Moon</span>
+                <span class="moon__name">Proteus</span>
+              </div>
+              <div class="moon nereid" role="img" aria-label="Nereid moon">
+                <span class="moon__label">Moon</span>
+                <span class="moon__name">Nereid</span>
+              </div>
+              <div class="trajectory tri" aria-hidden="true"></div>
+              <div class="pro trajectory" aria-hidden="true"></div>
+              <div class="ner trajectory" aria-hidden="true"></div>
+              <section class="neptune planet_description">
+                <h2 class="planet_description__type">
+                  <i class="fa-solid fa-circle-dot" aria-hidden="true"></i>
+                  Planet
+                </h2>
+                <h1 class="planet_description__name">Neptune</h1>
+                <p class="planet_description__summary">
+                  The windiest planet in the solar system, with gusts reaching 2,100 km/h.
+                  Neptune was the first planet discovered through mathematical prediction
+                  rather than direct observation.
+                </p>
+                <div class="planet_description__stats" aria-label="Quick facts">
+                  <div class="stat-chip">
+                    <span class="stat-chip__label">Year Length</span>
+                    <span class="stat-chip__value">165 Earth years</span>
+                  </div>
+                  <div class="stat-chip">
+                    <span class="stat-chip__label">Moons</span>
+                    <span class="stat-chip__value">16</span>
+                  </div>
+                  <div class="stat-chip">
+                    <span class="stat-chip__label">Wind Speed</span>
+                    <span class="stat-chip__value">2,100 km/h</span>
+                  </div>
+                </div>
+                <label for="readNeptune" class="planet_description__read-more" role="button" tabindex="0">
+                  <i class="fa-solid fa-book-open" aria-hidden="true"></i>
+                  Read Full Article
+                </label>
+              </section>
+              <div class="overlay" aria-hidden="true"></div>
+            </div>
+          </article>
+
+          <!-- Pluto -->
+          <article class="solar_systm" aria-label="Pluto details">
+            <div class="planet pluto" role="img" aria-label="Pluto visualization">
+              <section class="planet_description pluto">
+                <h2 class="planet_description__type">
+                  <i class="fa-solid fa-circle" aria-hidden="true"></i>
+                  Dwarf Planet
+                </h2>
+                <h1 class="planet_description__name">Pluto</h1>
+                <p class="planet_description__summary">
+                  Once the ninth planet, now the largest known dwarf planet. A member of
+                  the Kuiper Belt — a shadowy zone of icy bodies beyond Neptune's orbit.
+                </p>
+                <div class="planet_description__stats" aria-label="Quick facts">
+                  <div class="stat-chip">
+                    <span class="stat-chip__label">Year Length</span>
+                    <span class="stat-chip__value">248 Earth years</span>
+                  </div>
+                  <div class="stat-chip">
+                    <span class="stat-chip__label">Moons</span>
+                    <span class="stat-chip__value">5</span>
+                  </div>
+                  <div class="stat-chip">
+                    <span class="stat-chip__label">Reclassified</span>
+                    <span class="stat-chip__value">2006</span>
+                  </div>
+                </div>
+                <label for="readPluto" class="planet_description__read-more" role="button" tabindex="0">
+                  <i class="fa-solid fa-book-open" aria-hidden="true"></i>
+                  Read Full Article
+                </label>
+              </section>
+              <div class="overlay" aria-hidden="true"></div>
+            </div>
+          </article>
+
+        </div><!-- /.solar -->
+      </main>
+    </div><!-- /.app-layout -->
+
+    <!-- ============================================================
+         DETAIL PANELS (CSS-only slide-in, preserved original logic)
+         ============================================================ -->
+
+    <!-- Sun panel -->
+    <input class="read" id="readSun" type="radio" name="sunRead" aria-label="Read more about the Sun" />
+    <label class="closeBig" for="closeSun" aria-label="Close Sun panel"></label>
+    <input class="read" id="closeSun" type="radio" name="sunRead" aria-label="Close Sun panel" />
+    <aside class="panel" role="complementary" aria-label="Sun detailed information">
+      <button class="panel__close" onclick="document.getElementById('closeSun').click()" aria-label="Close panel">
+        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+      </button>
+      <div class="panel__header panel__header--sun">
+        <span class="panel__type">Star</span>
+        <h1 class="panel__title">Sun</h1>
+        <p class="panel__subtitle">The heart of our solar system</p>
+      </div>
+      <div class="panel__body">
+        <p>The Sun is the star at the center of the Solar System — a nearly perfect sphere of hot plasma, with internal convective motion that generates a magnetic field via a dynamo process.</p>
+        <figure class="panel__figure">
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/b/b4/The_Sun_by_the_Atmospheric_Imaging_Assembly_of_NASA%27s_Solar_Dynamics_Observatory_-_20100819.jpg"
+            alt="The Sun photographed by NASA's Solar Dynamics Observatory showing its plasma surface"
+          />
+          <figcaption>NASA Solar Dynamics Observatory — 2010</figcaption>
+        </figure>
+        <div class="panel__fact-card">
+          <i class="fa-solid fa-lightbulb panel__fact-icon" aria-hidden="true"></i>
+          <p>The Sun accounts for <strong>99.86%</strong> of the total mass in the solar system — roughly 330,000 times the mass of Earth.</p>
         </div>
       </div>
-      <div class="solar_systm">
-        <div class="planet venus">
-          <div class="planet_description venus">
-            <h2>Planet</h2>
-            <h1>Venus</h1>
-            <p>
-              Named for the Roman goddess of love and beauty. In ancient times,
-              Venus was often thought to be two different stars, the evening
-              star and the morning star.
-            </p>
-            <label for="readVenus">
-              <a>
-                Read Mor
-                <span>e</span>
-              </a>
-            </label>
-          </div>
-          <div class="overlay"></div>
-        </div>
+    </aside>
+
+    <!-- Mercury panel -->
+    <input class="read" id="readMercury" type="radio" name="mercuryRead" aria-label="Read more about Mercury" />
+    <label class="closeBig" for="closeMercury" aria-label="Close Mercury panel"></label>
+    <input class="read" id="closeMercury" type="radio" name="mercuryRead" aria-label="Close Mercury panel" />
+    <aside class="panel" role="complementary" aria-label="Mercury detailed information">
+      <button class="panel__close" onclick="document.getElementById('closeMercury').click()" aria-label="Close panel">
+        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+      </button>
+      <div class="panel__header panel__header--mercury">
+        <span class="panel__type">Planet</span>
+        <h1 class="panel__title">Mercury</h1>
+        <p class="panel__subtitle">The swift-footed messenger</p>
       </div>
-      <div class="solar_systm">
-        <div class="earth planet">
-          <div class="moon moon">
-            <h3>Moon</h3>
-            <h2>Moon</h2>
-          </div>
-          <div class="m trajectory"></div>
-          <div class="earth planet_description">
-            <h2>Planet</h2>
-            <h1>Earth</h1>
-            <p>
-              Earth, our home. It is the only planet known to have an atmosphere
-              containing free oxygen, oceans of liquid water on its surface,
-              and, of course, life.
-            </p>
-            <label for="readEarth">
-              <a>
-                Read Mor
-                <span>e</span>
-              </a>
-            </label>
-          </div>
-          <div class="overlay"></div>
+      <div class="panel__body">
+        <p>Mercury is the closest planet to the Sun. It circles the Sun faster than all other planets, which is why Romans named it after their swift-footed messenger god.</p>
+        <p>The Sumerians knew of Mercury since at least 5,000 years ago. Heraclitus, around 500 B.C., correctly thought that both Mercury and Venus orbited the Sun, not Earth.</p>
+        <figure class="panel__figure">
+          <img
+            src="https://i2.wp.com/www.astronomytrek.com/wp-content/uploads/2012/11/mercury-1.jpg?fit=678%2C381&ssl=1"
+            alt="Close-up photograph of Mercury's heavily cratered grey surface"
+          />
+          <figcaption>Mercury's cratered surface</figcaption>
+        </figure>
+        <div class="panel__fact-card">
+          <i class="fa-solid fa-lightbulb panel__fact-icon" aria-hidden="true"></i>
+          <p>A year on Mercury is just <strong>88 Earth days</strong>, yet a solar day (noon to noon) lasts 176 Earth days — longer than its own year.</p>
         </div>
+        <h2>Smallest planet in the Solar System</h2>
+        <p>Mercury is just 4,879 km across its equator, compared to 12,742 km for Earth. Despite its small size, it is the second densest planet — largely due to its heavy metallic core.</p>
+        <h2>Mercury has wrinkles</h2>
+        <p>As its iron core cooled and contracted, the surface buckled into ridges called Lobate Scarps — up to a mile high and hundreds of miles long.</p>
       </div>
-      <div class="solar_systm">
-        <div class="mars planet">
-          <div class="deimos moon">
-            <h3>Moon</h3>
-            <h2>Deimos</h2>
-          </div>
-          <div class="d trajectory"></div>
-          <div class="moon phoebos">
-            <h3>Moon</h3>
-            <h2>Phoebos</h2>
-          </div>
-          <div class="p trajectory"></div>
-          <div class="mars planet_description">
-            <h2>Planet</h2>
-            <h1>Mars</h1>
-            <p>
-              Fourth planet from the Sun and the second smallest planet in the
-              solar systm. Named after the Roman god of war often described as
-              the “Red Planet”.
-            </p>
-            <label for="readMars">
-              <a>
-                Read Mor
-                <span>e</span>
-              </a>
-            </label>
-          </div>
-          <div class="overlay"></div>
+    </aside>
+
+    <!-- Venus panel -->
+    <input class="read" id="readVenus" type="radio" name="venusRead" aria-label="Read more about Venus" />
+    <label class="closeBig" for="closeVenus" aria-label="Close Venus panel"></label>
+    <input class="read" id="closeVenus" type="radio" name="venusRead" aria-label="Close Venus panel" />
+    <aside class="panel" role="complementary" aria-label="Venus detailed information">
+      <button class="panel__close" onclick="document.getElementById('closeVenus').click()" aria-label="Close panel">
+        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+      </button>
+      <div class="panel__header panel__header--venus">
+        <span class="panel__type">Planet</span>
+        <h1 class="panel__title">Venus</h1>
+        <p class="panel__subtitle">Brightest object in the night sky</p>
+      </div>
+      <div class="panel__body">
+        <p>Venus, the second planet from the Sun, is named for the Roman goddess of love and beauty. It may have been named for the most beautiful deity because it shone the brightest of the five planets known to ancient astronomers.</p>
+        <p>In ancient times, Venus was thought to be two different stars — the evening star and the morning star. Further space-age observations reveal a hellish, crushing environment where spacecraft don't survive long on the surface.</p>
+        <figure class="panel__figure">
+          <img
+            src="https://3c1703fe8d.site.internapcdn.net/newman/gfx/news/hires/2014/2-whatistheave.jpg"
+            alt="False-colour radar map of Venus's surface showing highland regions"
+          />
+          <figcaption>Venus surface radar map</figcaption>
+        </figure>
+        <div class="panel__fact-card">
+          <i class="fa-solid fa-lightbulb panel__fact-icon" aria-hidden="true"></i>
+          <p>A day on Venus lasts longer than its year. It takes <strong>243 Earth days</strong> to rotate once, but only 225 days to orbit the Sun.</p>
         </div>
+        <h2>Spins backwards</h2>
+        <p>Venus rotates in the opposite direction to most planets — a retrograde rotation — possibly caused by an ancient collision with a large asteroid.</p>
+        <h2>Crushing atmosphere</h2>
+        <p>Atmospheric pressure on Venus is 92 times greater than Earth's, equivalent to the pressure experienced 900 metres underwater.</p>
       </div>
-      <div class="solar_systm">
-        <div class="jupiter planet">
-          <div class="lo moon">
-            <h3>Moon</h3>
-            <h2>Io</h2>
-          </div>
-          <div class="europa moon">
-            <h3>Moon</h3>
-            <h2>Europa</h2>
-          </div>
-          <div class="ganymede moon">
-            <h3>Moon</h3>
-            <h2>Ganymede</h2>
-          </div>
-          <div class="lop trajectory"></div>
-          <div class="eu trajectory"></div>
-          <div class="ga trajectory"></div>
-          <div class="jupiter planet_description">
-            <h2>Planet</h2>
-            <h1>Jupiter</h1>
-            <p>
-              Jupiter is the largest planet in the solar systm. Fittingly, it
-              was named after the king of the gods in Roman mythology.
-            </p>
-            <label for="readJupiter">
-              <a>
-                Read Mor
-                <span>e</span>
-              </a>
-            </label>
-          </div>
-          <div class="overlay"></div>
+    </aside>
+
+    <!-- Earth panel -->
+    <input class="read" id="readEarth" type="radio" name="earthRead" aria-label="Read more about Earth" />
+    <label class="closeBig" for="closeEarth" aria-label="Close Earth panel"></label>
+    <input class="read" id="closeEarth" type="radio" name="earthRead" aria-label="Close Earth panel" />
+    <aside class="panel" role="complementary" aria-label="Earth detailed information">
+      <button class="panel__close" onclick="document.getElementById('closeEarth').click()" aria-label="Close panel">
+        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+      </button>
+      <div class="panel__header panel__header--earth">
+        <span class="panel__type">Planet</span>
+        <h1 class="panel__title">Earth</h1>
+        <p class="panel__subtitle">Our pale blue dot</p>
+      </div>
+      <div class="panel__body">
+        <p>Earth is the third planet from the Sun and the only known world to harbour life. It is the only planet with free oxygen in its atmosphere, liquid oceans on its surface, and a rich biosphere.</p>
+        <p>Earth is the fifth largest planet — smaller than the four gas giants, but larger than the other rocky planets.</p>
+        <figure class="panel__figure">
+          <img
+            src="https://images.pexels.com/photos/414171/pexels-photo-414171.jpeg?auto=compress&cs=tinysrgb&h=350"
+            alt="Earth's blue ocean and white clouds photographed from space"
+          />
+          <figcaption>Earth from orbit</figcaption>
+        </figure>
+        <div class="panel__fact-card">
+          <i class="fa-solid fa-lightbulb panel__fact-icon" aria-hidden="true"></i>
+          <p>Earth's rotation is gradually slowing by about <strong>17 milliseconds per century</strong>. In 140 million years, a day will be 25 hours long.</p>
         </div>
+        <h2>Powerful magnetic field</h2>
+        <p>Earth's nickel-iron core generates a magnetic field that deflects harmful solar wind and cosmic radiation, making complex life possible on the surface.</p>
+        <h2>The Moon</h2>
+        <p>Relative to the size of its parent planet, the Moon is the largest natural satellite in the solar system. Its gravitational pull stabilises Earth's axial tilt, helping maintain a stable climate over geological timescales.</p>
       </div>
-      <div class="solar_systm">
-        <div class="planet saturn">
-          <div class="moon titan">
-            <h3>Moon</h3>
-            <h2>Titan</h2>
-          </div>
-          <div class="dione moon">
-            <h3>Moon</h3>
-            <h2>Dione</h2>
-          </div>
-          <div class="enceladus moon">
-            <h3>Moon</h3>
-            <h2>Enceladus</h2>
-          </div>
-          <div class="ti trajectory"></div>
-          <div class="di trajectory"></div>
-          <div class="enc trajectory"></div>
-          <div class="planet_description saturn">
-            <h2>Planet</h2>
-            <h1>Saturn</h1>
-            <p>
-              Saturn is the sixth planet from the sun and the second largest
-              planet in the solar systm. Saturn was the Roman name for Cronus,
-              the lord of the Titans.
-            </p>
-            <label for="readSaturn">
-              <a>
-                Read Mor
-                <span>e</span>
-              </a>
-            </label>
-          </div>
-          <div class="overlay"></div>
+    </aside>
+
+    <!-- Mars panel -->
+    <input class="read" id="readMars" type="radio" name="marsRead" aria-label="Read more about Mars" />
+    <label class="closeBig" for="closeMars" aria-label="Close Mars panel"></label>
+    <input class="read" id="closeMars" type="radio" name="marsRead" aria-label="Close Mars panel" />
+    <aside class="panel" role="complementary" aria-label="Mars detailed information">
+      <button class="panel__close" onclick="document.getElementById('closeMars').click()" aria-label="Close panel">
+        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+      </button>
+      <div class="panel__header panel__header--mars">
+        <span class="panel__type">Planet</span>
+        <h1 class="panel__title">Mars</h1>
+        <p class="panel__subtitle">The Red Planet</p>
+      </div>
+      <div class="panel__body">
+        <p>Mars is the fourth planet from the Sun. The Romans named it after their god of war. The Egyptians called it "Her Desher" — the red one — while ancient Chinese astronomers dubbed it "the fire star."</p>
+        <figure class="panel__figure">
+          <img
+            src="https://1.bp.blogspot.com/-ou7Je3OVg6U/WYtxDqjNp_I/AAAAAAAACSQ/fsopS5VtFg4bmlv8hQNfiRYfJqTygCotQCLcBGAs/s2048/Martian%2Blandscape%2Bby%2BAmante%2BLombardi.jpg"
+            alt="Artistic rendering of the Martian landscape with rust-coloured rocky terrain"
+          />
+          <figcaption>Martian landscape</figcaption>
+        </figure>
+        <div class="panel__fact-card">
+          <i class="fa-solid fa-lightbulb panel__fact-icon" aria-hidden="true"></i>
+          <p>Olympus Mons is the tallest mountain in the solar system — <strong>21 km high</strong> and 600 km in diameter, nearly three times the height of Everest.</p>
         </div>
+        <h2>Similar landmass to Earth</h2>
+        <p>Despite only 15% of Earth's volume and 10% of its mass, Mars has roughly the same landmass — because two thirds of Earth's surface is covered in water. Martian gravity is 37% of Earth's.</p>
+        <h2>Planetary dust storms</h2>
+        <p>Mars experiences the largest dust storms in the solar system, capable of blanketing the entire planet for months at a time.</p>
       </div>
-      <div class="solar_systm">
-        <div class="planet uranus">
-          <div class="miranda moon">
-            <h3>Moon</h3>
-            <h2>Miranda</h2>
-          </div>
-          <div class="ariel moon">
-            <h3>Moon</h3>
-            <h2>Ariel</h2>
-          </div>
-          <div class="moon umbriel">
-            <h3>Moon</h3>
-            <h2>Umbriel</h2>
-          </div>
-          <div class="mir trajectory"></div>
-          <div class="ari trajectory"></div>
-          <div class="trajectory umb"></div>
-          <div class="planet_description uranus">
-            <h2>Planet</h2>
-            <h1>Uranus</h1>
-            <p>
-              The first planet to be discovered by scientists. The planet is
-              notable for its dramatic tilt, which causes its axis to point
-              nearly directly at the sun.
-            </p>
-            <label for="readUranus">
-              <a>
-                Read Mor
-                <span>e</span>
-              </a>
-            </label>
-          </div>
-          <div class="overlay"></div>
+    </aside>
+
+    <!-- Jupiter panel -->
+    <input class="read" id="readJupiter" type="radio" name="jupiterRead" aria-label="Read more about Jupiter" />
+    <label class="closeBig" for="closeJupiter" aria-label="Close Jupiter panel"></label>
+    <input class="read" id="closeJupiter" type="radio" name="jupiterRead" aria-label="Close Jupiter panel" />
+    <aside class="panel" role="complementary" aria-label="Jupiter detailed information">
+      <button class="panel__close" onclick="document.getElementById('closeJupiter').click()" aria-label="Close panel">
+        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+      </button>
+      <div class="panel__header panel__header--jupiter">
+        <span class="panel__type">Planet</span>
+        <h1 class="panel__title">Jupiter</h1>
+        <p class="panel__subtitle">King of the planets</p>
+      </div>
+      <div class="panel__body">
+        <p>Jupiter is the largest planet in the solar system. Named after the king of the Roman gods, it was also called Zeus by the ancient Greeks. In 1610, Galileo's discovery of four of its moons revolutionised our understanding of the universe.</p>
+        <p>Galileo's observation that celestial bodies orbit something other than Earth was crucial support for the Copernican heliocentric model.</p>
+        <figure class="panel__figure">
+          <img
+            src="http://hanaleikauaivacation.com/wp-content/uploads/parser/jupiter-landscape-1.jpg"
+            alt="Jupiter's swirling cloud bands and Great Red Spot visible in this close-up"
+          />
+          <figcaption>Jupiter's atmospheric bands</figcaption>
+        </figure>
+        <div class="panel__fact-card">
+          <i class="fa-solid fa-lightbulb panel__fact-icon" aria-hidden="true"></i>
+          <p>Jupiter has the <strong>shortest day</strong> of all planets — rotating once every 9 hours and 55 minutes, despite being 11 times Earth's diameter.</p>
         </div>
+        <h2>Fourth brightest object in the sky</h2>
+        <p>Only the Sun, Moon, and Venus are brighter. Jupiter is one of five planets visible to the naked eye from Earth.</p>
+        <h2>95 known moons</h2>
+        <p>Jupiter's Galilean moons — Io, Europa, Ganymede, and Callisto — are four of the most geologically fascinating worlds in the solar system, with Io being the most volcanically active body we know of.</p>
       </div>
-      <div class="solar_systm">
-        <div class="neptune planet">
-          <div class="moon triton">
-            <h3>Moon</h3>
-            <h2>Triton</h2>
-          </div>
-          <div class="moon proteus">
-            <h3>Moon</h3>
-            <h2>Proteus</h2>
-          </div>
-          <div class="moon nereid">
-            <h3>Moon</h3>
-            <h2>Nereid</h2>
-          </div>
-          <div class="trajectory tri"></div>
-          <div class="pro trajectory"></div>
-          <div class="ner trajectory"></div>
-          <div class="neptune planet_description">
-            <h2>Planet</h2>
-            <h1>Neptune</h1>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam,
-            </p>
-            <label for="readNeptune">
-              <a>
-                Read Mor
-                <span>e </span>
-              </a>
-            </label>
-          </div>
-          <div class="overlay"></div>
+    </aside>
+
+    <!-- Saturn panel -->
+    <input class="read" id="readSaturn" type="radio" name="saturnRead" aria-label="Read more about Saturn" />
+    <label class="closeBig" for="closeSaturn" aria-label="Close Saturn panel"></label>
+    <input class="read" id="closeSaturn" type="radio" name="saturnRead" aria-label="Close Saturn panel" />
+    <aside class="panel" role="complementary" aria-label="Saturn detailed information">
+      <button class="panel__close" onclick="document.getElementById('closeSaturn').click()" aria-label="Close panel">
+        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+      </button>
+      <div class="panel__header panel__header--saturn">
+        <span class="panel__type">Planet</span>
+        <h1 class="panel__title">Saturn</h1>
+        <p class="panel__subtitle">Lord of the rings</p>
+      </div>
+      <div class="panel__body">
+        <p>Saturn is the sixth planet from the Sun and the second largest. Saturn was the Roman name for Cronus, lord of the Titans. Saturn is even the root of the English word "Saturday."</p>
+        <p>The most distant planet visible to the naked eye, Saturn is most remarkable through a telescope — its ring system has no equal in the solar system.</p>
+        <figure class="panel__figure">
+          <img
+            src="http://ak0.picdn.net/shutterstock/videos/4049260/thumb/1.jpg"
+            alt="Saturn and its iconic ring system photographed against the black of space"
+          />
+          <figcaption>Saturn and its ring system</figcaption>
+        </figure>
+        <div class="panel__fact-card">
+          <i class="fa-solid fa-lightbulb panel__fact-icon" aria-hidden="true"></i>
+          <p>Saturn is the <strong>flattest planet</strong> — its polar diameter is only 90% of its equatorial diameter due to its low density and rapid rotation.</p>
         </div>
+        <h2>Less dense than water</h2>
+        <p>Saturn has the lowest density of any planet — about 0.69 g/cm³, compared to water at 1 g/cm³. If you could find an ocean large enough, Saturn would float.</p>
+        <h2>146 moons</h2>
+        <p>Saturn has more moons than any other planet. Titan, its largest, is the only moon in the solar system with a thick atmosphere and liquid lakes — of methane — on its surface.</p>
       </div>
-      <div class="solar_systm">
-        <div class="planet pluto">
-          <div class="planet_description pluto">
-            <h2>Dwarf planet</h2>
-            <h1>Pluto</h1>
-            <p>
-              Pluto, once considered the ninth and most distant planet from the
-              sun, is now the largest known dwarf planet in the solar systm.
-            </p>
-            <label for="readPluto">
-              <a>
-                Read Mor
-                <span>e </span>
-              </a>
-            </label>
-          </div>
-          <div class="overlay"></div>
+    </aside>
+
+    <!-- Uranus panel -->
+    <input class="read" id="readUranus" type="radio" name="uranusRead" aria-label="Read more about Uranus" />
+    <label class="closeBig" for="closeUranus" aria-label="Close Uranus panel"></label>
+    <input class="read" id="closeUranus" type="radio" name="uranusRead" aria-label="Close Uranus panel" />
+    <aside class="panel" role="complementary" aria-label="Uranus detailed information">
+      <button class="panel__close" onclick="document.getElementById('closeUranus').click()" aria-label="Close panel">
+        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+      </button>
+      <div class="panel__header panel__header--uranus">
+        <span class="panel__type">Planet</span>
+        <h1 class="panel__title">Uranus</h1>
+        <p class="panel__subtitle">The tilted ice giant</p>
+      </div>
+      <div class="panel__body">
+        <p>Uranus is the seventh planet and the first to be discovered by scientists. Although visible to the naked eye, it was long mistaken for a dim star because of its slow orbit.</p>
+        <p>British astronomer William Herschel discovered Uranus accidentally on March 13, 1781, while surveying the sky with his telescope. He first thought it was a comet.</p>
+        <figure class="panel__figure">
+          <img
+            src="http://www.cosmosup.com/wp-content/uploads/2016/02/Uranus-Facts-About-the-Planet-Uranus-700x325.jpg"
+            alt="Uranus shown as a pale blue sphere with its ring system visible edge-on"
+          />
+          <figcaption>Uranus and its faint ring system</figcaption>
+        </figure>
+        <div class="panel__fact-card">
+          <i class="fa-solid fa-lightbulb panel__fact-icon" aria-hidden="true"></i>
+          <p>Uranus has a dramatic <strong>98° axial tilt</strong> — it effectively rolls around the Sun on its side. During some orbital positions, one pole faces the Sun directly for 42 years.</p>
         </div>
+        <h2>An ice giant</h2>
+        <p>Unlike the gas giants Jupiter and Saturn, Uranus is mostly composed of icy materials — water, methane, and ammonia — above a rocky core. Methane in the atmosphere gives it its distinctive pale blue-green colour.</p>
+        <h2>Retrograde rotation</h2>
+        <p>Uranus rotates in the opposite direction to the Sun — one of only two planets to do so — completing one rotation every 17 hours 14 minutes.</p>
+      </div>
+    </aside>
+
+    <!-- Neptune panel -->
+    <input class="read" id="readNeptune" type="radio" name="neptuneRead" aria-label="Read more about Neptune" />
+    <label class="closeBig" for="closeNeptune" aria-label="Close Neptune panel"></label>
+    <input class="read" id="closeNeptune" type="radio" name="neptuneRead" aria-label="Close Neptune panel" />
+    <aside class="panel" role="complementary" aria-label="Neptune detailed information">
+      <button class="panel__close" onclick="document.getElementById('closeNeptune').click()" aria-label="Close panel">
+        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+      </button>
+      <div class="panel__header panel__header--neptune">
+        <span class="panel__type">Planet</span>
+        <h1 class="panel__title">Neptune</h1>
+        <p class="panel__subtitle">The windswept ice giant</p>
+      </div>
+      <div class="panel__body">
+        <p>Neptune is the eighth planet from the Sun and the first to be predicted mathematically before it was ever observed. Irregularities in Uranus's orbit led astronomers to deduce Neptune's existence, and it was finally spotted on September 23, 1846.</p>
+        <p>Only one mission has flown by Neptune — Voyager 2 in 1989 — leaving many mysteries about this distant, azure world.</p>
+        <figure class="panel__figure">
+          <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQy8Dd14tbXAzh1iz-EJl9tulRwH7Bb-SxX6sXpKFDbqb-NKwpE"
+            alt="Neptune as a deep blue sphere photographed by Voyager 2 in 1989"
+          />
+          <figcaption>Neptune photographed by Voyager 2 — 1989</figcaption>
+        </figure>
+        <div class="panel__fact-card">
+          <i class="fa-solid fa-lightbulb panel__fact-icon" aria-hidden="true"></i>
+          <p>Neptune has the <strong>fastest winds</strong> in the solar system — reaching up to 2,100 km/h, more than ten times the speed of Earth's most powerful hurricanes.</p>
+        </div>
+        <h2>Smallest ice giant</h2>
+        <p>Despite being smaller than Uranus, Neptune has greater mass. Below its hydrogen-helium atmosphere lies a mantle of water, ammonia, and methane ices above a rocky core.</p>
+        <h2>Blue from methane</h2>
+        <p>Methane in Neptune's upper atmosphere absorbs red light, reflecting blue — giving the planet its vivid, deep azure colour. Thin, high clouds drift above the blue haze.</p>
+      </div>
+    </aside>
+
+    <!-- Pluto panel -->
+    <input class="read" id="readPluto" type="radio" name="plutoRead" aria-label="Read more about Pluto" />
+    <label class="closeBig" for="closePluto" aria-label="Close Pluto panel"></label>
+    <input class="read" id="closePluto" type="radio" name="plutoRead" aria-label="Close Pluto panel" />
+    <aside class="panel" role="complementary" aria-label="Pluto detailed information">
+      <button class="panel__close" onclick="document.getElementById('closePluto').click()" aria-label="Close panel">
+        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+      </button>
+      <div class="panel__header panel__header--pluto">
+        <span class="panel__type">Dwarf Planet</span>
+        <h1 class="panel__title">Pluto</h1>
+        <p class="panel__subtitle">King of the Kuiper Belt</p>
+      </div>
+      <div class="panel__body">
+        <p>Pluto, once the ninth planet, is now the largest known dwarf planet in the solar system. It is also one of the largest known members of the Kuiper Belt — a vast region of icy bodies beyond Neptune.</p>
+        <p>In 2006, the IAU reclassified Pluto as a dwarf planet — a change that sparked debate in the scientific community and public alike. In 2017, a research group proposed expanding the planet count to roughly 100 based on a new "round objects in space" definition.</p>
+        <figure class="panel__figure">
+          <img
+            src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/217233/asd.jpeg"
+            alt="Pluto photographed by New Horizons showing its heart-shaped nitrogen ice plain"
+          />
+          <figcaption>Pluto's heart — Tombaugh Regio (New Horizons, 2015)</figcaption>
+        </figure>
+        <div class="panel__fact-card">
+          <i class="fa-solid fa-lightbulb panel__fact-icon" aria-hidden="true"></i>
+          <p>Pluto was discovered on <strong>February 18, 1930</strong> by the Lowell Observatory. In the 76 years before its reclassification, it completed less than a third of one orbit around the Sun.</p>
+        </div>
+        <h2>Named by an 11-year-old</h2>
+        <p>Venetia Burney, an eleven-year-old schoolgirl from Oxford, England, proposed the name Pluto — after the Greek god of the underworld — upon learning of the discovery.</p>
+        <h2>Five moons</h2>
+        <p>Pluto has five known moons: Charon (1978), Nix and Hydra (2005), Kerberos (2011), and Styx (2012). Charon is so large relative to Pluto that the two are sometimes considered a double dwarf planet system.</p>
       </div>
     </div>
-    <input class="read" id="readSun" type="radio" name="sunRead" />
-    <label class="closeBig" for="closeSun"></label>
-    <input class="read" id="closeSun" type="radio" name="sunRead" />
-    <div class="panel">
-      <h1>Sun</h1>
-      <p>
-        The Sun is the star at the center of the Solar System. It is a nearly
-        perfect sphere of hot plasma, with internal convective motion that
-        generates a magnetic field via a dynamo process.
-      </p>
-      <img alt=""
-        src="https://upload.wikimedia.org/wikipedia/commons/b/b4/The_Sun_by_the_Atmospheric_Imaging_Assembly_of_NASA%27s_Solar_Dynamics_Observatory_-_20100819.jpg"
-      />
-      <h2>The Sun accounts for 99.86% of the mass in the solar system.</h2>
-      <p>It has a mass of around 330,000 times that of Earth.</p>
-      <br />
-    </div>
-    <input class="read" id="readMercury" type="radio" name="mercuryRead" />
-    <label class="closeBig" for="closeMercury"></label>
-    <input class="read" id="closeMercury" type="radio" name="mercuryRead" />
-    <div class="panel">
-      <h1>Mercury</h1>
-      <p>
-        Mercury is the closest planet to the sun. As such, it circles the sun
-        faster than all the other planets, which is why Romans named it after
-        their swift-footed messenger god.
-      </p>
-      <p>
-        The Sumerians also knew of Mercury since at least 5,000 years ago. It
-        was often associated with Nabu, the god of writing. Mercury was also
-        given separate names for its appearance as both a morning star and as an
-        evening star. Greek astronomers knew, however, that the two names
-        referred to the same body, and Heraclitus, around 500 B.C., correctly
-        thought that both Mercury and Venus orbited the sun, not Earth.
-      </p>
-      <img alt=""
-        src="https://i2.wp.com/www.astronomytrek.com/wp-content/uploads/2012/11/mercury-1.jpg?fit=678%2C381&ssl=1"
-      />
-      <h2>A year on Mercury is just 88 days long.</h2>
-      <p>
-        One solar day (the time from noon to noon on the planet’s surface) on
-        Mercury lasts the equivalent of 176 Earth days while the sidereal day
-        (the time for 1 rotation in relation to a fixed point) lasts 59 Earth
-        days. Mercury is nearly tidally locked to the Sun and over time this has
-        slowed the rotation of the planet to almost match its orbit around the
-        Sun. Mercury also has the highest orbital eccentricity of all the
-        planets with its distance from the Sun ranging from 46 to 70 million km.
-      </p>
-      <h2>Mercury is the smallest planet in the Solar Systm.</h2>
-      <p>
-        One of five planets visible with the naked eye a, Mercury is just 4,879
-        Kilometres across its equator, compared with 12,742 Kilometres for the
-        Earth.
-      </p>
-      <h2>Mercury is the second densest planet.</h2>
-      <p>
-        Even though the planet is small, Mercury is very dense. Each cubic
-        centimetre has a density of 5.4 grams, with only the Earth having a
-        higher density. This is largely due to Mercury being composed mainly of
-        heavy metals and rock.
-      </p>
-      <h2>Mercury has wrinkles.</h2>
-      <p>
-        As the iron core of the planet cooled and contracted, the surface of the
-        planet became wrinkled. Scientist have named these wrinkles, Lobate
-        Scarps. These Scarps can be up to a mile high and hundreds of miles
-        long.
-      </p>
-      <br />
-    </div>
-    <input class="read" id="readVenus" type="radio" name="venusRead" />
-    <label class="closeBig" for="closeVenus"></label>
-    <input class="read" id="closeVenus" type="radio" name="venusRead" />
-    <div class="panel">
-      <h1>Venus</h1>
-      <p>
-        Venus, the second planet from the sun, is named for the Roman goddess of
-        love and beauty. The planet — the only planet named after a female — may
-        have been named for the most beautiful deity of her pantheon because it
-        shone the brightest of the five planets known to ancient astronomers.
-      </p>
-      <p>
-        In ancient times, Venus was often thought to be two different stars, the
-        evening star and the morning star — that is, the ones that first
-        appeared at sunset and sunrise. In Latin, they were respectively known
-        as Vesper and Lucifer. In Christian times, Lucifer, or "light-bringer,"
-        became known as the name of Satan before his fall. However, further
-        observations of Venus in the space age show a very hellish environment.
-        This makes Venus a very difficult planet to observe from up close,
-        because spacecraft do not survive long on its surface.
-      </p>
-      <img alt=""
-        src="https://3c1703fe8d.site.internapcdn.net/newman/gfx/news/hires/2014/2-whatistheave.jpg"
-      />
-      <h2>A day on Venus lasts longer than a year.</h2>
-      <p>
-        It takes 243 Earth days to rotate once on its axis (sidereal day). The
-        planet’s orbit around the Sun takes 225 Earth days, compared to the
-        Earth’s 365. A day on the surface of Venus (solar day) takes 117 Earth
-        days.
-      </p>
-      <h2>Venus rotates in the opposite direction to most other planets.</h2>
-      <p>
-        This means that Venus is rotating in the opposite direction to the Sun,
-        this is also know as a retrograde rotation. A possible reason might be a
-        collision in the past with an asteroid or other object that caused the
-        planet to alter its rotational path. It also differs from most other
-        planets in our solar systm by having no natural satellites.
-      </p>
-      <h2>Venus is the second brightest object in the night sky.</h2>
-      <p>
-        Only the Moon is brighter. With a magnitude of between -3.8 to -4.6
-        Venus is so bright it can be seen during daytime on a clear day.
-      </p>
-      <h2>
-        Atmospheric pressure on Venus is 92 times greater than the Earth’s.
-      </h2>
-      <p>
-        While its size and mass are similar to Earth, the small asteroids are
-        crushed when entering its atmosphere, meaning no small craters lie on
-        the surface of the planet. The pressure felt by a human on the surface
-        would be equivalent to that experienced deep beneath the sea on Earth.
-      </p>
-      <br />
-    </div>
-    <input class="read" id="readEarth" type="radio" name="earthRead" />
-    <label class="closeBig" for="closeEarth"></label>
-    <input class="read" id="closeEarth" type="radio" name="earthRead" />
-    <div class="panel">
-      <h1>Earth</h1>
-      <p>
-        Earth, our home, is the third planet from the sun. It is the only planet
-        known to have an atmosphere containing free oxygen, oceans of liquid
-        water on its surface, and, of course, life.
-      </p>
-      <p>
-        Earth is the fifth largest of the planets in the solar systm — smaller
-        than the four gas giants, Jupiter, Saturn, Uranusand Neptune, but larger
-        than the three other rocky planets,
-      </p>
-      <img alt=""
-        src="https://images.pexels.com/photos/414171/pexels-photo-414171.jpeg?auto=compress&cs=tinysrgb&h=350"
-      />
-      <h2>The Earth’s rotation is gradually slowing.</h2>
-      <p>
-        This deceleration is happening almost imperceptibly, at approximately 17
-        milliseconds per hundred years, although the rate at which it occurs is
-        not perfectly uniform. This has the effect of lengthening our days, but
-        it happens so slowly that it could be as much as 140 million years
-        before the length of a day will have increased to 25 hours.
-      </p>
-      <h2>The Earth was once believed to be the centre of the universe.</h2>
-      <p>
-        Due to the apparent movements of the Sun and planets in relation to
-        their viewpoint, ancient scientists insisted that the Earth remained
-        static, whilst other celestial bodies travelled in circular orbits
-        around it. Eventually, the view that the Sun was at the centre of the
-        universe was postulated by Copernicus, though this is also not the case.
-      </p>
-      <h2>Earth has a powerful magnetic field.</h2>
-      <p>
-        This phenomenon is caused by the nickel-iron core of the planet, coupled
-        with its rapid rotation. This field protects the Earth from the effects
-        of solar wind.
-      </p>
-      <h2>There is only one natural satellite of the planet Earth.</h2>
-      <p>
-        As a percentage of the size of the body it orbits, the Moon is the
-        largest satellite of any planet in our solar systm. In real terms,
-        however, it is only the fifth largest natural satellite.
-      </p>
-      <br />
-    </div>
-    <input class="read" id="readMars" type="radio" name="marsRead" />
-    <label class="closeBig" for="closeMars"></label>
-    <input class="read" id="closeMars" type="radio" name="marsRead" />
-    <div class="panel">
-      <h1>Mars</h1>
-      <p>
-        Mars is the fourth planet from the sun. Befitting the red planet's
-        bloody color, the Romans named it after their god of war. The Romans
-        copied the ancient Greeks, who also named the planet after their god of
-        war, Ares. Other civilizations also typically gave the planet names
-        based on its color — for example, the Egyptians named it "Her Desher,"
-        meaning "the red one," while ancient Chinese astronomers dubbed it "the
-        fire star."
-      </p>
-      <img alt=""
-        src="https://1.bp.blogspot.com/-ou7Je3OVg6U/WYtxDqjNp_I/AAAAAAAACSQ/fsopS5VtFg4bmlv8hQNfiRYfJqTygCotQCLcBGAs/s2048/Martian%2Blandscape%2Bby%2BAmante%2BLombardi.jpg"
-      />
-      <h2>Mars and Earth have approximately the same landmass.</h2>
-      <p>
-        Even though Mars has only 15% of the Earth’s volume and just over 10% of
-        the Earth’s mass, around two thirds of the Earth’s surface is covered in
-        water. Martian surface gravity is only 37% of the Earth’s (meaning you
-        could leap nearly three times higher on Mars).
-      </p>
-      <h2>Mars is home to the tallest mountain in the solar systm.</h2>
-      <p>
-        Olympus Mons, a shield volcano, is 21km high and 600km in diameter.
-        Despite having formed over billions of years, evidence from volcanic
-        lava flows is so recent many scientists believe it could still be
-        active.
-      </p>
-      <h2>Only 18 missions to Mars have been successful.</h2>
-      <p>
-        As of September 2014 there have been 40 missions to Mars, including
-        orbiters, landers and rovers but not counting flybys. The most recent
-        arrivals include the Mars Curiosity mission in 2012, the MAVEN mission,
-        which arrived on September 22, 2014, followed by the Indian Space
-        Research Organization’s MOM Mangalyaan orbiter, which arrived on
-        September 24, 2014. The next missions to arrive will be the European
-        Space Agency’s ExoMars mission, comprising an orbiter, lander, and a
-        rover, followed by NASA’s InSight robotic lander mission, slated for
-        launch in March 2016 and a planned arrival in September, 2016.
-      </p>
-      <h2>Mars has the largest dust storms in the solar systm.</h2>
-      <p>
-        They can last for months and cover the entire planet. The seasons are
-        extreme because its elliptical (oval-shaped) orbital path around the Sun
-        is more elongated than most other planets in the solar systm.
-      </p>
-      <br />
-    </div>
-    <input class="read" id="readJupiter" type="radio" name="jupiterRead" />
-    <label class="closeBig" for="closeJupiter"></label>
-    <input class="read" id="closeJupiter" type="radio" name="jupiterRead" />
-    <div class="panel">
-      <h1>Jupiter</h1>
-      <p>
-        Jupiter is the largest planet in the solar systm. Fittingly, it was
-        named after the king of the gods in Roman mythology. In a similar
-        manner, the ancient Greeks named the planet after Zeus, the king of the
-        Greek pantheon.
-      </p>
-      <p>
-        Jupiter helped revolutionize the way we saw the universe and ourselves
-        in 1610, when Galileo discovered Jupiter's four large moons — Io,
-        Europa, Ganymede and Callisto, now known as the Galilean moons. This was
-        the first time that celestial bodies were seen circling an object other
-        than Earth, major support of the Copernican view that Earth was not the
-        center of the universe.
-      </p>
-      <img alt=""
-        src="http://hanaleikauaivacation.com/wp-content/uploads/parser/jupiter-landscape-1.jpg"
-      />
-      <h2>Jupiter is the fourth brightest object in the solar systm.</h2>
-      <p>
-        Only the Sun, Moon and Venus are brighter. It is one of five planets
-        visible to the naked eye from Earth.
-      </p>
-      <h2>
-        The ancient Babylonians were the first to record their sightings of
-        Jupiter.
-      </h2>
-      <p>
-        This was around the 7th or 8th century BC. Jupiter is named after the
-        king of the Roman gods. To the Greeks, it represented Zeus, the god of
-        thunder. The Mesopotamians saw Jupiter as the god Marduk and patron of
-        the city of Babylon. Germanic tribes saw this planet as Donar, or Thor.
-      </p>
-      <h2>Jupiter has the shortest day of all the planets.</h2>
-      <p>
-        It turns on its axis once every 9 hours and 55 minutes. The rapid
-        rotation flattens the planet slightly, giving it an oblate shape.
-      </p>
-      <h2>Jupiter orbits the Sun once every 11.8 Earth years.</h2>
-      <p>
-        From our point of view on Earth, it appears to move slowly in the sky,
-        taking months to move from one constellation to another.
-      </p>
-      <br />
-    </div>
-    <input class="read" id="readSaturn" type="radio" name="saturnRead" />
-    <label class="closeBig" for="closeSaturn"></label>
-    <input class="read" id="closeSaturn" type="radio" name="saturnRead" />
-    <div class="panel">
-      <h1>Saturn</h1>
-      <p>
-        Saturn is the sixth planet from the sun and the second largest planet in
-        the solar systm. Saturn was the Roman name for Cronus, the lord of the
-        Titans in Greek mythology. Saturn is the root of the English word
-        "Saturday."
-      </p>
-      <p>
-        Saturn is the farthest planet from Earth visible to the naked human eye,
-        but it is through a telescope that the planet's most outstanding
-        features can be seen: Saturn's rings. Although the other gas giants in
-        the solar systm — Jupiter, Uranus and Neptune — also have rings, those
-        of Saturn are without a doubt the most extraordinary.
-      </p>
-      <img alt="" src="http://ak0.picdn.net/shutterstock/videos/4049260/thumb/1.jpg" />
-      <h2>Saturn can be seen with the naked eye.</h2>
-      <p>
-        It is the fifth brightest object in the solar systm and is also easily
-        studied through binoculars or a small telescope.
-      </p>
-      <h2>
-        Saturn was known to the ancients, including the Babylonians and Far
-        Eastern observers.
-      </h2>
-      <p>
-        It is named for the Roman god Saturnus, and was known to the Greeks as
-        Cronus.
-      </p>
-      <h2>Saturn is the flattest planet.</h2>
-      <p>
-        Its polar diameter is 90% of its equatorial diameter, this is due to its
-        low density and fast rotation. Saturn turns on its axis once every 10
-        hours and 34 minutes giving it the second-shortest day of any of the
-        solar systm’s planets.
-      </p>
-      <h2>Saturn orbits the Sun once every 29.4 Earth years.</h2>
-      <p>
-        Its slow movement against the backdrop of stars earned it the nickname
-        of “Lubadsagush” from the ancient Assyrians. The name means “oldest of
-        the old”.
-      </p>
-      <br />
-    </div>
-    <input class="read" id="readUranus" type="radio" name="uranusRead" />
-    <label class="closeBig" for="closeUranus"></label>
-    <input class="read" id="closeUranus" type="radio" name="uranusRead" />
-    <div class="panel">
-      <h1>Uranus</h1>
-      <p>
-        Uranus is the seventh planet from the sun and the first to be discovered
-        by scientists. Although Uranus is visible to the naked eye, it was long
-        mistaken as a star because of the planet's dimness and slow orbit. The
-        planet is also notable for its dramatic tilt, which causes its axis to
-        point nearly directly at the sun.
-      </p>
-      <p>
-        British astronomer William Herschel discovered Uranus accidentally on
-        March 13, 1781, with his telescope while surveying all stars down to
-        those about 10 times dimmer than can be seen by the naked eye. One
-        "star" seemed different, and within a year Uranus was shown to follow a
-        planetary orbit.
-      </p>
-      <img alt=""
-        src="http://www.cosmosup.com/wp-content/uploads/2016/02/Uranus-Facts-About-the-Planet-Uranus-700x325.jpg"
-      />
-      <h2>Uranus was officially discovered by Sir William Herschel in 1781.</h2>
-      <p>
-        It is too dim to have been seen by the ancients. At first Herschel
-        thought it was a comet, but several years later it was confirmed as a
-        planet. Herscal tried to have his discovery named “Georgian Sidus” after
-        King George III. The name Uranus was suggested by astronomer Johann
-        Bode. The name comes from the ancient Greek deity Ouranos.
-      </p>
-      <h2>Uranus turns on its axis once every 17 hours, 14 minutes.</h2>
-      <p>
-        The planet rotates in a retrograde direction, opposite to the way Earth
-        and most other planets turn.
-      </p>
-      <h2>Uranus makes one trip around the Sun every 84 Earth years.</h2>
-      <p>
-        During some parts of its orbit one or the other of its poles point
-        directly at the Sun and get about 42 years of direct sunlight. The rest
-        of the time they are in darkness.
-      </p>
-      <h2>Uranus is often referred to as an “ice giant” planet.</h2>
-      <p>
-        Like the other gas giants, it has a hydrogen upper layer, which has
-        helium mixed in. Below that is an icy “mantle, which surrounds a rock
-        and ice core. The upper atmosphere is made of water, ammonia and the
-        methane ice crystals that give the planet its pale blue colour.
-      </p>
-      <br />
-    </div>
-    <input class="read" id="readNeptune" type="radio" name="neptuneRead" />
-    <label class="closeBig" for="closeNeptune"></label>
-    <input class="read" id="closeNeptune" type="radio" name="neptuneRead" />
-    <div class="panel">
-      <h1>Neptune</h1>
-      <p>
-        Neptune is the eighth planet from the sun. It was the first planet to
-        get its existence predicted by mathematical calculations before it was
-        actually seen through a telescope on Sept. 23, 1846. Irregularities in
-        the orbit of Uranus led French astronomer Alexis Bouvard to suggest that
-        the gravitational pull from another celestial body might be responsible.
-        German astronomer Johann Galle then relied on subsequent calculations to
-        help spot Neptune via telescope. Previously, astronomer Galileo Galilei
-        sketched the planet, but he mistook it for a star due to its slow
-        motion. In accordance with all the other planets seen in the sky, this
-        new world was given a name from Greek and Roman mythology — Neptune, the
-        Roman god of the sea.
-      </p>
-      <p>
-        Only one mission has flown by Neptune – Voyager 2 in 1989 – meaning that
-        astronomers have done most studies using ground-based telescopes. Today,
-        there are still many mysteries about the cool, blue planet, such as why
-        its winds are so speedy and why its magnetic field is offset.
-      </p>
-      <img alt=""
-        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQy8Dd14tbXAzh1iz-EJl9tulRwH7Bb-SxX6sXpKFDbqb-NKwpE"
-      />
-      <h2>Neptune was not known to the ancients.</h2>
-      <p>
-        It is not visible to the naked eye and was first observed in 1846. Its
-        position was determined using mathematical predictions. It was named
-        after the Roman god of the sea.
-      </p>
-      <h2>Neptune spins on its axis very rapidly.</h2>
-      <p>
-        Its equatorial clouds take 18 hours to make one rotation. This is
-        because Neptune is not solid body.
-      </p>
-      <h2>Neptune is the smallest of the ice giants.</h2>
-      <p>
-        Despite being smaller than Uranus, Neptune has a greater mass. Below its
-        heavy atmosphere, Uranus is made of layers of hydrogen, helium, and
-        methane gases. They enclose a layer of water, ammonia and methane ice.
-        The inner core of the planet is made of rock.
-      </p>
-      <h2>
-        The atmosphere of Neptune is made of hydrogen and helium, with some
-        methane.
-      </h2>
-      <p>
-        The methane absorbs red light, which makes the planet appear a lovely
-        blue. High, thin clouds drift in the upper atmosphere.
-      </p>
-    </div>
-    <input class="read" id="readPluto" type="radio" name="plutoRead" />
-    <label class="closeBig" for="closePluto"></label>
-    <input class="read" id="closePluto" type="radio" name="plutoRead" />
-    <div class="panel">
-      <h1>Pluto</h1>
-      <p>
-        Pluto, once considered the ninth and most distant planet from the sun,
-        is now the largest known dwarf planet in the solar systm. It is also one
-        of the largest known members of the Kuiper Belt, a shadowy zone beyond
-        the orbit of Neptune thought to be populated by hundreds of thousands of
-        rocky, icy bodies each larger than 62 miles (100 kilometers) across,
-        along with 1 trillion or more comets.
-      </p>
-      <p>
-        In 2006, Pluto was reclassified as a dwarf planet, a change widely
-        thought of as a demotion. The question of Pluto's planet status has
-        attracted controversy and stirred debate in the scientific community,
-        and among the general public, since then. In 2017, a science group
-        (including members of the New Horizon mission) proposed a new definition
-        of planethood based on "round objects in space smaller than stars,"
-        which would make the number of planets in our solar systm expand from 8
-        to roughly 100.
-      </p>
-      <img alt="" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/217233/asd.jpeg" />
-      <h2>Pluto is named after the Greek god of the underworld.</h2>
-      <p>
-        This is a later name for the more well known Hades and was proposed by
-        Venetia Burney an eleven year old schoolgirl from Oxford, England.
-      </p>
-      <h2>Pluto was reclassified from a planet to a dwarf planet in 2006.</h2>
-      <p>
-        This is when the IAU formalised the definition of a planet as “A planet
-        is a celestial body that (a) is in orbit around the Sun, (b) has
-        sufficient mass for its self-gravity to overcome rigid body forces so
-        that it assumes a hydrostatic equilibrium (nearly round) shape, and (c)
-        has cleared the neighbourhood around its orbit.”
-      </p>
-      <h2>
-        Pluto was discovered on February 18th, 1930 by the Lowell Observatory.
-      </h2>
-      <p>
-        For the 76 years between Pluto being discovered and the time it was
-        reclassified as a dwarf planet it completed under a third of its orbit
-        around the Sun.
-      </p>
-      <h2>Pluto has five known moons.</h2>
-      <p>
-        The moons are Charon (discovered in 1978,), Hydra and Nix (both
-        discovered in 2005), Kerberos originally P4 (discovered 2011) and Styx
-        originally P5 (discovered 2012) official designations S/2011 (134340) 1
-        and S/2012 (134340) 1.
-      </p>
-    </div>
+  </div>
+  <input class='read' id='readSun' type='radio' name='sunRead'>
+  <label class='closeBig' for='closeSun'></label>
+  <input class='read' id='closeSun' type='radio' name='sunRead'>
+  <div class='panel'>
+    <h1>Sun</h1>
+    <p>The Sun is the star at the center of the Solar System. It is a nearly perfect sphere of hot plasma, with internal convective motion that generates a magnetic field via a dynamo process.</p>
+    <img src='https://upload.wikimedia.org/wikipedia/commons/b/b4/The_Sun_by_the_Atmospheric_Imaging_Assembly_of_NASA%27s_Solar_Dynamics_Observatory_-_20100819.jpg'>
+    <h2>The Sun accounts for 99.86% of the mass in the solar system.</h2>
+    <p>It has a mass of around 330,000 times that of Earth.</p>
+    <br>
+  </div>
+  <input class='read' id='readMercury' type='radio' name='mercuryRead'>
+  <label class='closeBig' for='closeMercury'></label>
+  <input class='read' id='closeMercury' type='radio' name='mercuryRead'>
+  <div class='panel'>
+    <h1>Mercury</h1>
+    <p>Mercury is the closest planet to the sun. As such, it circles the sun faster than all the other planets, which is why Romans named it after their swift-footed messenger god.</p>
+    <p>The Sumerians also knew of Mercury since at least 5,000 years ago. It was often associated with Nabu, the god of writing. Mercury was also given separate names for its appearance as both a morning star and as an evening star. Greek astronomers knew, however, that the two names referred to the same body, and Heraclitus, around 500 B.C., correctly thought that both Mercury and Venus orbited the sun, not Earth.</p>
+    <img src='https://i2.wp.com/www.astronomytrek.com/wp-content/uploads/2012/11/mercury-1.jpg?fit=678%2C381&ssl=1'>
+    <h2>A year on Mercury is just 88 days long.</h2>
+    <p>One solar day (the time from noon to noon on the planet’s surface) on Mercury lasts the equivalent of 176 Earth days while the sidereal day (the time for 1 rotation in relation to a fixed point) lasts 59 Earth days. Mercury is nearly tidally locked to the Sun and over time this has slowed the rotation of the planet to almost match its orbit around the Sun. Mercury also has the highest orbital eccentricity of all the planets with its distance from the Sun ranging from 46 to 70 million km.</p>
+    <h2>Mercury is the smallest planet in the Solar Systm.</h2>
+    <p>One of five planets visible with the naked eye a, Mercury is just 4,879 Kilometres across its equator, compared with 12,742 Kilometres for the Earth.</p>
+    <h2>Mercury is the second densest planet. </h2>
+    <p>Even though the planet is small, Mercury is very dense. Each cubic centimetre has a density of 5.4 grams, with only the Earth having a higher density. This is largely due to Mercury being composed mainly of heavy metals and rock.</p>
+    <h2>Mercury has wrinkles.</h2>
+    <p>As the iron core of the planet cooled and contracted, the surface of the planet became wrinkled. Scientist have named these wrinkles, Lobate Scarps. These Scarps can be up to a mile high and hundreds of miles long.</p>
+    <br>
+  </div>
+  <input class='read' id='readVenus' type='radio' name='venusRead'>
+  <label class='closeBig' for='closeVenus'></label>
+  <input class='read' id='closeVenus' type='radio' name='venusRead'>
+  <div class='panel'>
+    <h1>Venus</h1>
+    <p>Venus, the second planet from the sun, is named for the Roman goddess of love and beauty. The planet — the only planet named after a female — may have been named for the most beautiful deity of her pantheon because it shone the brightest of the five planets known to ancient astronomers.</p>
+    <p>In ancient times, Venus was often thought to be two different stars, the evening star and the morning star — that is, the ones that first appeared at sunset and sunrise. In Latin, they were respectively known as Vesper and Lucifer. In Christian times, Lucifer, or "light-bringer," became known as the name of Satan before his fall. However, further observations of Venus in the space age show a very hellish environment. This makes Venus a very difficult planet to observe from up close, because spacecraft do not survive long on its surface.</p>
+    <img src='https://3c1703fe8d.site.internapcdn.net/newman/gfx/news/hires/2014/2-whatistheave.jpg'>
+    <h2>A day on Venus lasts longer than a year. </h2>
+    <p>It takes 243 Earth days to rotate once on its axis (sidereal day). The planet’s orbit around the Sun takes 225 Earth days, compared to the Earth’s 365. A day on the surface of Venus (solar day) takes 117 Earth days.</p>
+    <h2>Venus rotates in the opposite direction to most other planets. </h2>
+    <p>This means that Venus is rotating in the opposite direction to the Sun, this is also know as a retrograde rotation. A possible reason might be a collision in the past with an asteroid or other object that caused the planet to alter its rotational path. It also differs from most other planets in our solar systm by having no natural satellites.</p>
+    <h2>Venus is the second brightest object in the night sky. </h2>
+    <p>Only the Moon is brighter. With a magnitude of between -3.8 to -4.6 Venus is so bright it can be seen during daytime on a clear day.</p>
+    <h2>Atmospheric pressure on Venus is 92 times greater than the Earth’s. </h2>
+    <p>While its size and mass are similar to Earth, the small asteroids are crushed when entering its atmosphere, meaning no small craters lie on the surface of the planet. The pressure felt by a human on the surface would be equivalent to that experienced deep beneath the sea on Earth.</p>
+    <br>
+  </div>
+  <input class='read' id='readEarth' type='radio' name='earthRead'>
+  <label class='closeBig' for='closeEarth'></label>
+  <input class='read' id='closeEarth' type='radio' name='earthRead'>
+  <div class='panel'>
+    <h1>Earth</h1>
+    <p>Earth, our home, is the third planet from the sun. It is the only planet known to have an atmosphere containing free oxygen, oceans of liquid water on its surface, and, of course, life.</p>
+    <p>Earth is the fifth largest of the planets in the solar systm — smaller than the four gas giants, Jupiter, Saturn, Uranusand Neptune, but larger than the three other rocky planets, </p>
+    <img src='https://images.pexels.com/photos/414171/pexels-photo-414171.jpeg?auto=compress&cs=tinysrgb&h=350'>
+    <h2>The Earth’s rotation is gradually slowing.</h2>
+    <p>This deceleration is happening almost imperceptibly, at approximately 17 milliseconds per hundred years, although the rate at which it occurs is not perfectly uniform. This has the effect of lengthening our days, but it happens so slowly that it could be as much as 140 million years before the length of a day will have increased to 25 hours.</p>
+    <h2>The Earth was once believed to be the centre of the universe.</h2>
+    <p>Due to the apparent movements of the Sun and planets in relation to their viewpoint, ancient scientists insisted that the Earth remained static, whilst other celestial bodies travelled in circular orbits around it. Eventually, the view that the Sun was at the centre of the universe was postulated by Copernicus, though this is also not the case.</p>
+    <h2>Earth has a powerful magnetic field.</h2>
+    <p>This phenomenon is caused by the nickel-iron core of the planet, coupled with its rapid rotation. This field protects the Earth from the effects of solar wind.</p>
+    <h2>There is only one natural satellite of the planet Earth.</h2>
+    <p>As a percentage of the size of the body it orbits, the Moon is the largest satellite of any planet in our solar systm. In real terms, however, it is only the fifth largest natural satellite.</p>
+    <br>
+  </div>
+  <input class='read' id='readMars' type='radio' name='marsRead'>
+  <label class='closeBig' for='closeMars'></label>
+  <input class='read' id='closeMars' type='radio' name='marsRead'>
+  <div class='panel'>
+    <h1>Mars</h1>
+    <p>Mars is the fourth planet from the sun. Befitting the red planet's bloody color, the Romans named it after their god of war. The Romans copied the ancient Greeks, who also named the planet after their god of war, Ares. Other civilizations also typically gave the planet names based on its color — for example, the Egyptians named it "Her Desher," meaning "the red one," while ancient Chinese astronomers dubbed it "the fire star."</p>
+    <img src='https://1.bp.blogspot.com/-ou7Je3OVg6U/WYtxDqjNp_I/AAAAAAAACSQ/fsopS5VtFg4bmlv8hQNfiRYfJqTygCotQCLcBGAs/s2048/Martian%2Blandscape%2Bby%2BAmante%2BLombardi.jpg'>
+    <h2>Mars and Earth have approximately the same landmass.</h2>
+    <p>Even though Mars has only 15% of the Earth’s volume and just over 10% of the Earth’s mass, around two thirds of the Earth’s surface is covered in water. Martian surface gravity is only 37% of the Earth’s (meaning you could leap nearly three times higher on Mars).</p>
+    <h2>Mars is home to the tallest mountain in the solar systm.</h2>
+    <p>Olympus Mons, a shield volcano, is 21km high and 600km in diameter. Despite having formed over billions of years, evidence from volcanic lava flows is so recent many scientists believe it could still be active.</p>
+    <h2>Only 18 missions to Mars have been successful.</h2>
+    <p>As of September 2014 there have been 40 missions to Mars, including orbiters, landers and rovers but not counting flybys. The most recent arrivals include the Mars Curiosity mission in 2012, the MAVEN mission, which arrived on September 22, 2014, followed by the Indian Space Research Organization’s MOM Mangalyaan orbiter, which arrived on September 24, 2014. The next missions to arrive will be the European Space Agency’s ExoMars mission, comprising an orbiter, lander, and a rover, followed by NASA’s InSight robotic lander mission, slated for launch in March 2016 and a planned arrival in September, 2016.</p>
+    <h2>Mars has the largest dust storms in the solar systm.</h2>
+    <p>They can last for months and cover the entire planet. The seasons are extreme because its elliptical (oval-shaped) orbital path around the Sun is more elongated than most other planets in the solar systm.</p>
+    <br>
+  </div>
+  <input class='read' id='readJupiter' type='radio' name='jupiterRead'>
+  <label class='closeBig' for='closeJupiter'></label>
+  <input class='read' id='closeJupiter' type='radio' name='jupiterRead'>
+  <div class='panel'>
+    <h1>Jupiter</h1>
+    <p>Jupiter is the largest planet in the solar systm. Fittingly, it was named after the king of the gods in Roman mythology. In a similar manner, the ancient Greeks named the planet after Zeus, the king of the Greek pantheon.</p>
+    <p>Jupiter helped revolutionize the way we saw the universe and ourselves in 1610, when Galileo discovered Jupiter's four large moons — Io, Europa, Ganymede and Callisto, now known as the Galilean moons. This was the first time that celestial bodies were seen circling an object other than Earth, major support of the Copernican view that Earth was not the center of the universe.</p>
+    <img src='https://upload.wikimedia.org/wikipedia/commons/2/2b/Jupiter_and_its_shrunken_Great_Red_Spot.jpg'>
+    <h2>Jupiter is the fourth brightest object in the solar systm.</h2>
+    <p>Only the Sun, Moon and Venus are brighter. It is one of five planets visible to the naked eye from Earth.</p>
+    <h2>The ancient Babylonians were the first to record their sightings of Jupiter.</h2>
+    <p>This was around the 7th or 8th century BC. Jupiter is named after the king of the Roman gods. To the Greeks, it represented Zeus, the god of thunder. The Mesopotamians saw Jupiter as the god Marduk and patron of the city of Babylon. Germanic tribes saw this planet as Donar, or Thor.</p>
+    <h2>Jupiter has the shortest day of all the planets.</h2>
+    <p>It turns on its axis once every 9 hours and 55 minutes. The rapid rotation flattens the planet slightly, giving it an oblate shape.</p>
+    <h2>Jupiter orbits the Sun once every 11.8 Earth years.</h2>
+    <p>From our point of view on Earth, it appears to move slowly in the sky, taking months to move from one constellation to another.</p>
+    <br>
+  </div>
+  <input class='read' id='readSaturn' type='radio' name='saturnRead'>
+  <label class='closeBig' for='closeSaturn'></label>
+  <input class='read' id='closeSaturn' type='radio' name='saturnRead'>
+  <div class='panel'>
+    <h1>Saturn</h1>
+    <p>Saturn is the sixth planet from the sun and the second largest planet in the solar systm. Saturn was the Roman name for Cronus, the lord of the Titans in Greek mythology. Saturn is the root of the English word "Saturday."</p>
+    <p>Saturn is the farthest planet from Earth visible to the naked human eye, but it is through a telescope that the planet's most outstanding features can be seen: Saturn's rings. Although the other gas giants in the solar systm — Jupiter, Uranus and Neptune — also have rings, those of Saturn are without a doubt the most extraordinary.</p>
+    <img src='https://upload.wikimedia.org/wikipedia/commons/4/4e/Saturn_from_Cassini_Orbiter_%282004-10-06%29.jpg'>
+    <h2>Saturn can be seen with the naked eye.</h2>
+    <p>It is the fifth brightest object in the solar systm and is also easily studied through binoculars or a small telescope.</p>
+    <h2>Saturn was known to the ancients, including the Babylonians and Far Eastern observers.</h2>
+    <p>It is named for the Roman god Saturnus, and was known to the Greeks as Cronus.</p>
+    <h2>Saturn is the flattest planet.</h2>
+    <p>Its polar diameter is 90% of its equatorial diameter, this is due to its low density and fast rotation. Saturn turns on its axis once every 10 hours and 34 minutes giving it the second-shortest day of any of the solar systm’s planets.</p>
+    <h2>Saturn orbits the Sun once every 29.4 Earth years.</h2>
+    <p>Its slow movement against the backdrop of stars earned it the nickname of “Lubadsagush” from the ancient Assyrians. The name means “oldest of the old”.</p>
+    <br>
+  </div>
+  <input class='read' id='readUranus' type='radio' name='uranusRead'>
+  <label class='closeBig' for='closeUranus'></label>
+  <input class='read' id='closeUranus' type='radio' name='uranusRead'>
+  <div class='panel'>
+    <h1>Uranus</h1>
+    <p>Uranus is the seventh planet from the sun and the first to be discovered by scientists. Although Uranus is visible to the naked eye, it was long mistaken as a star because of the planet's dimness and slow orbit. The planet is also notable for its dramatic tilt, which causes its axis to point nearly directly at the sun.</p>
+    <p>British astronomer William Herschel discovered Uranus accidentally on March 13, 1781, with his telescope while surveying all stars down to those about 10 times dimmer than can be seen by the naked eye. One "star" seemed different, and within a year Uranus was shown to follow a planetary orbit.</p>
+    <img src='https://upload.wikimedia.org/wikipedia/commons/3/3d/Uranus2.jpg'>
+    <h2>Uranus was officially discovered by Sir William Herschel in 1781.</h2>
+    <p>It is too dim to have been seen by the ancients. At first Herschel thought it was a comet, but several years later it was confirmed as a planet. Herscal tried to have his discovery named “Georgian Sidus” after King George III. The name Uranus was suggested by astronomer Johann Bode. The name comes from the ancient Greek deity Ouranos.</p>
+    <h2>Uranus turns on its axis once every 17 hours, 14 minutes.</h2>
+    <p>The planet rotates in a retrograde direction, opposite to the way Earth and most other planets turn.</p>
+    <h2>Uranus makes one trip around the Sun every 84 Earth years.</h2>
+    <p>During some parts of its orbit one or the other of its poles point directly at the Sun and get about 42 years of direct sunlight. The rest of the time they are in darkness.</p>
+    <h2>Uranus is often referred to as an “ice giant” planet.</h2>
+    <p>Like the other gas giants, it has a hydrogen upper layer, which has helium mixed in. Below that is an icy “mantle, which surrounds a rock and ice core. The upper atmosphere is made of water, ammonia and the methane ice crystals that give the planet its pale blue colour.</p>
+    <br>
+  </div>
+  <input class='read' id='readNeptune' type='radio' name='neptuneRead'>
+  <label class='closeBig' for='closeNeptune'></label>
+  <input class='read' id='closeNeptune' type='radio' name='neptuneRead'>
+  <div class='panel'>
+    <h1>Neptune</h1>
+    <p>Neptune is the eighth planet from the sun. It was the first planet to get its existence predicted by mathematical calculations before it was actually seen through a telescope on Sept. 23, 1846. Irregularities in the orbit of Uranus led French astronomer Alexis Bouvard to suggest that the gravitational pull from another celestial body might be responsible. German astronomer Johann Galle then relied on subsequent calculations to help spot Neptune via telescope. Previously, astronomer Galileo Galilei sketched the planet, but he mistook it for a star due to its slow motion. In accordance with all the other planets seen in the sky, this new world was given a name from Greek and Roman mythology — Neptune, the Roman god of the sea.</p>
+    <p>Only one mission has flown by Neptune – Voyager 2 in 1989 – meaning that astronomers have done most studies using ground-based telescopes. Today, there are still many mysteries about the cool, blue planet, such as why its winds are so speedy and why its magnetic field is offset.</p>
+    <img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQy8Dd14tbXAzh1iz-EJl9tulRwH7Bb-SxX6sXpKFDbqb-NKwpE'>
+    <h2>Neptune was not known to the ancients.</h2>
+    <p>It is not visible to the naked eye and was first observed in 1846. Its position was determined using mathematical predictions. It was named after the Roman god of the sea.</p>
+    <h2>Neptune spins on its axis very rapidly.</h2>
+    <p>Its equatorial clouds take 18 hours to make one rotation. This is because Neptune is not solid body.</p>
+    <h2>Neptune is the smallest of the ice giants.</h2>
+    <p>Despite being smaller than Uranus, Neptune has a greater mass. Below its heavy atmosphere, Uranus is made of layers of hydrogen, helium, and methane gases. They enclose a layer of water, ammonia and methane ice. The inner core of the planet is made of rock.</p>
+    <h2>The atmosphere of Neptune is made of hydrogen and helium, with some methane.</h2>
+    <p>The methane absorbs red light, which makes the planet appear a lovely blue. High, thin clouds drift in the upper atmosphere.</p>
+  </div>
+  <input class='read' id='readPluto' type='radio' name='plutoRead'>
+  <label class='closeBig' for='closePluto'></label>
+  <input class='read' id='closePluto' type='radio' name='plutoRead'>
+  <div class='panel'>
+    <h1>Pluto</h1>
+    <p>Pluto, once considered the ninth and most distant planet from the sun, is now the largest known dwarf planet in the solar systm. It is also one of the largest known members of the Kuiper Belt, a shadowy zone beyond the orbit of Neptune thought to be populated by hundreds of thousands of rocky, icy bodies each larger than 62 miles (100 kilometers) across, along with 1 trillion or more comets. </p>
+    <p>In 2006, Pluto was reclassified as a dwarf planet, a change widely thought of as a demotion. The question of Pluto's planet status has attracted controversy and stirred debate in the scientific community, and among the general public, since then. In 2017, a science group (including members of the New Horizon mission) proposed a new definition of planethood based on "round objects in space smaller than stars," which would make the number of planets in our solar systm expand from 8 to roughly 100.</p>
+    <img src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/217233/asd.jpeg'>
+    <h2>Pluto is named after the Greek god of the underworld.</h2>
+    <p>This is a later name for the more well known Hades and was proposed by Venetia Burney an eleven year old schoolgirl from Oxford, England.</p>
+    <h2>Pluto was reclassified from a planet to a dwarf planet in 2006.</h2>
+    <p>This is when the IAU formalised the definition of a planet as “A planet is a celestial body that (a) is in orbit around the Sun, (b) has sufficient mass for its self-gravity to overcome rigid body forces so that it assumes a hydrostatic equilibrium (nearly round) shape, and (c) has cleared the neighbourhood around its orbit.”</p>
+    <h2>Pluto was discovered on February 18th, 1930 by the Lowell Observatory.</h2>
+    <p>For the 76 years between Pluto being discovered and the time it was reclassified as a dwarf planet it completed under a third of its orbit around the Sun.</p>
+    <h2>Pluto has five known moons.</h2>
+    <p>The moons are Charon (discovered in 1978,), Hydra and Nix (both discovered in 2005), Kerberos originally P4 (discovered 2011) and Styx originally P5 (discovered 2012) official designations S/2011 (134340) 1 and  S/2012 (134340) 1.</p>
+  </div>
+</body>
+</html>
+    </aside>
+
+    <!-- JavaScript for speed controls and keyboard navigation -->
+    <script>
+      (() => {
+        'use strict';
+
+        // Speed control buttons
+        const speedButtons = document.querySelectorAll('.speed-btn');
+
+        const setSpeed = (speed) => {
+          document.documentElement.style.setProperty('--orbit-speed-multiplier', speed);
+          speedButtons.forEach((btn) => {
+            btn.classList.toggle('speed-btn--active', parseFloat(btn.dataset.speed) === speed);
+          });
+        };
+
+        speedButtons.forEach((btn) => {
+          btn.addEventListener('click', () => {
+            setSpeed(parseFloat(btn.dataset.speed));
+          });
+        });
+
+        // Keyboard navigation for menu labels
+        const menuLabels = document.querySelectorAll('.menu');
+        menuLabels.forEach((label) => {
+          label.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              label.click();
+            }
+          });
+        });
+
+        // Keyboard navigation for read-more labels
+        const readMoreLabels = document.querySelectorAll('.planet_description__read-more');
+        readMoreLabels.forEach((label) => {
+          label.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              label.click();
+            }
+          });
+        });
+      })();
+    </script>
   </body>
 </html>

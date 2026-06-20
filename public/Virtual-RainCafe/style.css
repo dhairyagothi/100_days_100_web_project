@@ -10,6 +10,7 @@
 }
 
 button,
+button,
 input,
 select,
 textarea {
@@ -37,8 +38,8 @@ textarea {
 
 /* Theme Setup and Colors */
 :root {
-  --font-sans: "Gaegu", sans-serif;
-  --font-serif: "Gaegu", sans-serif;
+  --font-sans: 'Gaegu', sans-serif;
+  --font-serif: 'Gaegu', sans-serif;
 
   --transition-speed: 0.4s;
   --transition-bounce: cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -49,7 +50,11 @@ body.theme-cozy {
   --bg-gradient: linear-gradient(135deg, #18110f 0%, #2b1d19 40%, #1c1311 100%);
   --accent-color: #d4a373;
   --accent-color-rgb: 212, 163, 115;
-  --bg-glow: radial-gradient(circle at 80% 20%, rgba(212, 163, 115, 0.15) 0%, transparent 60%);
+  --bg-glow: radial-gradient(
+    circle at 80% 20%,
+    rgba(212, 163, 115, 0.15) 0%,
+    transparent 60%
+  );
   --glass-bg: rgba(26, 20, 18, 0.45);
   --text-main: #f4eae1;
   --text-muted: #bfa899;
@@ -61,7 +66,11 @@ body.theme-library {
   --bg-gradient: linear-gradient(135deg, #090e14 0%, #121c27 40%, #080d13 100%);
   --accent-color: #cca43b;
   --accent-color-rgb: 204, 164, 59;
-  --bg-glow: radial-gradient(circle at 20% 80%, rgba(204, 164, 59, 0.12) 0%, transparent 50%);
+  --bg-glow: radial-gradient(
+    circle at 20% 80%,
+    rgba(204, 164, 59, 0.12) 0%,
+    transparent 50%
+  );
   --glass-bg: rgba(14, 20, 28, 0.5);
   --text-main: #f0e6d2;
   --text-muted: #a69c8a;
@@ -73,7 +82,12 @@ body.theme-cyber {
   --bg-gradient: linear-gradient(135deg, #050110 0%, #0d0421 50%, #04010a 100%);
   --accent-color: #ff007f;
   --accent-color-rgb: 255, 0, 127;
-  --bg-glow: radial-gradient(circle at 50% 50%, rgba(255, 0, 127, 0.15) 0%, rgba(0, 240, 255, 0.1) 70%, transparent 100%);
+  --bg-glow: radial-gradient(
+    circle at 50% 50%,
+    rgba(255, 0, 127, 0.15) 0%,
+    rgba(0, 240, 255, 0.1) 70%,
+    transparent 100%
+  );
   --glass-bg: rgba(12, 5, 25, 0.55);
   --text-main: #e0fbfc;
   --text-muted: #98c1d9;
@@ -85,7 +99,11 @@ body.theme-forest {
   --bg-gradient: linear-gradient(135deg, #08140b 0%, #132718 45%, #07120a 100%);
   --accent-color: #52b788;
   --accent-color-rgb: 82, 183, 136;
-  --bg-glow: radial-gradient(circle at 90% 80%, rgba(82, 183, 136, 0.15) 0%, transparent 60%);
+  --bg-glow: radial-gradient(
+    circle at 90% 80%,
+    rgba(82, 183, 136, 0.15) 0%,
+    transparent 60%
+  );
   --glass-bg: rgba(12, 22, 16, 0.5);
   --text-main: #e8f5e9;
   --text-muted: #a5d6a7;
@@ -152,13 +170,34 @@ body::after {
   height: 100vh;
   padding: 1.5rem;
   overflow-y: auto;
-  transition: opacity 0.5s ease, transform 0.5s var(--transition-bounce);
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s var(--transition-bounce);
 }
 
 .app-container.ui-hidden {
   opacity: 0;
   transform: scale(0.98);
   pointer-events: none;
+}
+
+.restore-ui-btn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+  display: none;
+  background: var(--accent-color);
+  color: #111;
+  box-shadow: 0 0 15px rgba(var(--accent-color-rgb), 0.5);
+}
+
+.restore-ui-btn:hover {
+  transform: scale(1.1);
+}
+
+.restore-ui-btn.visible {
+  display: flex;
 }
 
 /* Typography Utility Classes */
@@ -298,7 +337,10 @@ body::after {
   border-radius: 16px;
   padding: 1.25rem;
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.25);
-  transition: border var(--transition-speed) ease, background var(--transition-speed) ease, transform 0.2s ease;
+  transition:
+    border var(--transition-speed) ease,
+    background var(--transition-speed) ease,
+    transform 0.2s ease;
 }
 
 .glass-card:hover {
@@ -466,7 +508,9 @@ body::after {
   padding: 0.2rem;
   display: flex;
   align-items: center;
-  transition: color 0.2s ease, transform 0.2s ease;
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
 }
 
 .btn-mixer-mute:hover {
@@ -500,7 +544,17 @@ body::after {
   width: 90px;
   height: 90px;
   border-radius: 50%;
-  background: radial-gradient(circle, #333 10%, #111 12%, #111 25%, #222 28%, #111 32%, #111 60%, #1a1a1a 62%, #111 90%);
+  background: radial-gradient(
+    circle,
+    #333 10%,
+    #111 12%,
+    #111 25%,
+    #222 28%,
+    #111 32%,
+    #111 60%,
+    #1a1a1a 62%,
+    #111 90%
+  );
   border: 2px solid rgba(255, 255, 255, 0.05);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
   position: relative;
@@ -659,7 +713,9 @@ body::after {
   background: var(--accent-color);
   opacity: 0.35;
   border-radius: 2px 2px 0 0;
-  transition: height 0.2s ease, opacity 0.2s ease;
+  transition:
+    height 0.2s ease,
+    opacity 0.2s ease;
 }
 
 .vinyl-disc.playing ~ .music-visualizer .bar,
@@ -668,17 +724,39 @@ body::after {
   animation: bounceVisualizer 1.2s ease infinite alternate;
 }
 
-.music-visualizer .bar:nth-child(2) { animation-delay: 0.1s; }
-.music-visualizer .bar:nth-child(3) { animation-delay: 0.2s; }
-.music-visualizer .bar:nth-child(4) { animation-delay: 0.35s; }
-.music-visualizer .bar:nth-child(5) { animation-delay: 0.15s; }
-.music-visualizer .bar:nth-child(6) { animation-delay: 0.25s; }
-.music-visualizer .bar:nth-child(7) { animation-delay: 0.4s; }
-.music-visualizer .bar:nth-child(8) { animation-delay: 0.05s; }
-.music-visualizer .bar:nth-child(9) { animation-delay: 0.3s; }
-.music-visualizer .bar:nth-child(10) { animation-delay: 0.18s; }
-.music-visualizer .bar:nth-child(11) { animation-delay: 0.28s; }
-.music-visualizer .bar:nth-child(12) { animation-delay: 0.08s; }
+.music-visualizer .bar:nth-child(2) {
+  animation-delay: 0.1s;
+}
+.music-visualizer .bar:nth-child(3) {
+  animation-delay: 0.2s;
+}
+.music-visualizer .bar:nth-child(4) {
+  animation-delay: 0.35s;
+}
+.music-visualizer .bar:nth-child(5) {
+  animation-delay: 0.15s;
+}
+.music-visualizer .bar:nth-child(6) {
+  animation-delay: 0.25s;
+}
+.music-visualizer .bar:nth-child(7) {
+  animation-delay: 0.4s;
+}
+.music-visualizer .bar:nth-child(8) {
+  animation-delay: 0.05s;
+}
+.music-visualizer .bar:nth-child(9) {
+  animation-delay: 0.3s;
+}
+.music-visualizer .bar:nth-child(10) {
+  animation-delay: 0.18s;
+}
+.music-visualizer .bar:nth-child(11) {
+  animation-delay: 0.28s;
+}
+.music-visualizer .bar:nth-child(12) {
+  animation-delay: 0.08s;
+}
 
 /* Pomodoro Timer Widget */
 .panel-timer {
@@ -749,7 +827,8 @@ body::after {
   width: 100%;
 }
 
-.btn-primary, .btn-secondary {
+.btn-primary,
+.btn-secondary {
   flex: 1;
   padding: 0.6rem 1rem;
   border-radius: 10px;
@@ -1067,13 +1146,22 @@ body::after {
 
 /* Animations declarations */
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 0.4; }
-  50% { opacity: 1; }
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 
 .animate-pulse {
@@ -1081,18 +1169,34 @@ body::after {
 }
 
 @keyframes bounceVisualizer {
-  0% { height: 2px; }
-  100% { height: 20px; }
+  0% {
+    height: 2px;
+  }
+  100% {
+    height: 20px;
+  }
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(5px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes modalIn {
-  from { opacity: 0; transform: translateY(30px) scale(0.95); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 /* Responsive Rules */
@@ -1100,8 +1204,10 @@ body::after {
   .app-main {
     grid-template-columns: 1fr;
   }
-  
-  .sidebar-left, .sidebar-right, .main-workspace {
+
+  .sidebar-left,
+  .sidebar-right,
+  .main-workspace {
     width: 100%;
     max-width: 600px;
     margin: 0 auto;
@@ -1112,22 +1218,22 @@ body::after {
   .app-container {
     padding: 0.75rem;
   }
-  
+
   .logo-area h1 {
     font-size: 1.25rem;
   }
-  
+
   .music-player-layout {
     flex-direction: column;
     align-items: center;
     gap: 1rem;
     text-align: center;
   }
-  
+
   .player-volume-wrapper {
     margin: 0.5rem auto 0;
   }
-  
+
   .time-text {
     font-size: 1.8rem;
   }

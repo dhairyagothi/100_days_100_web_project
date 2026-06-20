@@ -27,10 +27,19 @@
       property="og:url"
       content="https://100-days-100-web-project.vercel.app/"
     />
-    <meta
-      name="google-site-verification"
-      content="FZFMJENRD-9I74GAks_nhLVOOiqqnlsPU-JDtRCYXpc"
-    />
+    <link rel="canonical" href="https://100-days-100-web-project.vercel.app/" />
+   <meta
+  http-equiv="Content-Security-Policy"
+  content="
+  default-src 'self';
+  script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://esm.sh;
+  style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com;
+  font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com;
+  img-src 'self' data: https:;
+  connect-src 'self' https: http: ws: wss:;
+"
+  />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="100 Days · 100 Web Projects" />
     <meta
@@ -47,10 +56,17 @@
       href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Orbitron:wght@500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
-    />
+   <link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+  integrity="..."
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+/>
+    <meta
+  http-equiv="Permissions-Policy"
+  content="camera=(), microphone=(), geolocation=()"
+/>
     <link rel="stylesheet" href="style.css" />
 
     <style>
@@ -246,6 +262,12 @@
 
     <section class="projects-section">
       <div class="projects-inner">
+        <div id="recommendationsContainer" class="recommendations-container"></div>
+      </div>
+    </section>
+
+    <section class="projects-section">
+      <div class="projects-inner">
         <div class="projects-intro">
           <p class="section-label">Saved Collection</p>
 
@@ -295,7 +317,7 @@
               id="filterAll"
               aria-label="Show all projects"
             >
-              All <span class="chip-count" id="allCount">Projects</span>
+              All <span class="chip-count" id="allCount" aria-live="polite">Projects</span>
             </button>
             <button
               class="chip"
@@ -393,23 +415,42 @@
 
         <div class="project-grid" id="projectGrid"></div>
 
-        <div class="no-results" id="noResults">
+        <div class="no-results" id="noResults" role="status" aria-live="assertive">
           <i class="fas fa-search" aria-hidden="true"></i>
           <p>No projects match your search.</p>
         </div>
       </div>
     </section>
 
-    <!-- ── CTA Banner (before footer) ── -->
-    <section class="cta-banner" aria-labelledby="ctaBannerTitle">
-      <div class="cta-banner-inner">
-        <h2 id="ctaBannerTitle">Ready to start your 100-day journey?</h2>
-        <p>Track your daily progress, earn XP, and level up your developer profile. Start tracking today.</p>
-        <a href="tracker.html" class="cta-banner-btn" aria-label="Open Daily Tracker">
-          Open Daily Tracker <span aria-hidden="true">🚀</span>
-        </a>
-      </div>
-    </section>
+    <section class="projects-section" id="randomProjectSection">
+  <div class="projects-inner">
+
+    <div class="projects-intro">
+      <p class="section-label">Need Inspiration?</p>
+      <h2 class="section-title">
+        Can't decide what to build next?
+      </h2>
+      <p class="hero-extra">
+        Generate a random project from the current archive.
+      </p>
+    </div>
+
+    <div class="random-project-wrapper">
+      <button
+        id="randomProjectBtn"
+        class="btn btn-primary"
+      >
+        🎲 Generate Random Project
+      </button>
+
+      <div
+        id="randomProjectResult"
+        class="project-grid"
+      ></div>
+    </div>
+
+  </div>
+</section>
 
     <footer class="footer homepage-footer">
       <div class="homepage-footer-shell">
@@ -550,6 +591,9 @@
     </button>
     <div class="toast" id="toast"></div>
     <script type="module" src="hero-terminal.js" defer></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0"></script>
+    
     <script src="index.js?v=4" defer></script>
     <script src="navbar.js" defer></script>
     <script src="cursor.js" defer></script>

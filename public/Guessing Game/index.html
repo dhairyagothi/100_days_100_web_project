@@ -6,49 +6,100 @@
     <title>Number Guessing Game | 100 Days 100 Projects</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
+
+    <!-- background glow -->
+    <div class="background-glow"></div>
+
     <div class="container">
-        <div class="game-card">
+
+        <div class="game-card glass">
+
+            <!-- Theme Toggle -->
+            <button id="themeToggle" class="theme-toggle">
+                🌙 Dark Mode
+            </button>
+
             <h1>🎯 Number Guessing Game</h1>
             <p class="subtitle">Guess the number between 1 and 100</p>
-            
+
+            <!-- STATS -->
             <div class="stats">
-                <div class="stat-box">
+
+                <div class="stat-box glass">
                     <span class="stat-label">Attempts</span>
                     <span class="stat-value" id="attempts">0/10</span>
                 </div>
-                <div class="stat-box">
+
+                <div class="stat-box glass">
                     <span class="stat-label">Best Score</span>
                     <span class="stat-value" id="bestScore">-</span>
                 </div>
-                <div class="stat-box">
+
+                <div class="stat-box glass">
                     <span class="stat-label">Hint</span>
                     <span class="stat-value" id="hint">🤔</span>
                 </div>
+
             </div>
 
+            <!-- GAME AREA -->
             <div class="game-area">
                 <input type="number" id="guessInput" placeholder="Enter your guess" min="1" max="100">
                 <button id="guessBtn">Guess!</button>
                 <button id="resetBtn">New Game</button>
             </div>
 
-            <div class="message-area">
+            <!-- MESSAGE -->
+            <div class="message-area glass">
                 <p id="message">💡 Start guessing!</p>
             </div>
 
+            <!-- HISTORY -->
             <div class="history">
                 <h3>📜 Guess History</h3>
-                <div id="historyList" class="history-list"></div>
+                <div id="historyList" class="history-list glass"></div>
             </div>
 
+            <!-- DIFFICULTY -->
             <div class="difficulty">
                 <button class="difficulty-btn" data-diff="easy">Easy (1-50)</button>
                 <button class="difficulty-btn active" data-diff="medium">Medium (1-100)</button>
                 <button class="difficulty-btn" data-diff="hard">Hard (1-200)</button>
             </div>
+
+            <!-- ANALYTICS -->
+            <div class="analytics glass">
+
+                <h3>📊 Player Analytics</h3>
+
+                <div class="analytics-grid">
+
+                    <div class="analytics-card">
+                        <span>🎮 Games Played</span>
+                        <strong id="gamesPlayed">0</strong>
+                    </div>
+
+                    <div class="analytics-card">
+                        <span>🏆 Games Won</span>
+                        <strong id="gamesWon">0</strong>
+                    </div>
+
+                    <div class="analytics-card">
+                        <span>📈 Win Rate</span>
+                        <strong id="winRate">0%</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
         </div>
+
     </div>
+
     <script src="script.js"></script>
+
 </body>
 </html>

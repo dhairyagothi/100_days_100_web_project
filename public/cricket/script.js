@@ -1,4 +1,4 @@
-let score; 
+let score;
 let scorestr = localStorage.getItem('SCORE');
 
 // --- FIXED LOGIC FOR INITIAL LOAD ---
@@ -7,7 +7,7 @@ if (scorestr) {
   score = JSON.parse(scorestr);
   // Re-attach the display function to the parsed object
   score.display_results = function () {
-    return `<br>Won: ${score.win/2}<br><span style="color:red"> Lost: ${score.lost/2}</span><br> Tie: ${score.tie/2} <br> <span style="color:purple;">Total Games: ${score.win/2 + score.lost/2 + score.tie/2}</span>`;
+    return `<br>Won: ${score.win}<br><span style="color:red"> Lost: ${score.lost}</span><br> Tie: ${score.tie} <br> <span style="color:purple;">Total Games: ${score.win + score.lost + score.tie}</span>`;
   };
 } else {
   resetscore();
@@ -21,7 +21,7 @@ function resetscore() {
     tie: 0,
   };
   score.display_results = function () {
-    return `<br>Won: ${score.win/2}<br><span style="color:red"> Lost: ${score.lost/2}</span><br> Tie: ${score.tie/2} <br> <span style="color:purple;">Total Games: ${score.win/2 + score.lost/2 + score.tie/2}</span>`;
+    return `<br>Won: ${score.win}<br><span style="color:red"> Lost: ${score.lost}</span><br> Tie: ${score.tie} <br> <span style="color:purple;">Total Games: ${score.win + score.lost + score.tie}</span>`;
   };
   // Save the reset score back to localStorage
   localStorage.setItem('SCORE', JSON.stringify(score));
@@ -30,7 +30,7 @@ function resetscore() {
 // --- NEW FUNCTION FOR THE RESET BUTTON ---
 function handleResetButton() {
   resetscore(); // Resets the data structures & localStorage
-  
+
   // Clear the UI elements immediately so old results disappear
   document.querySelector('#user-move').innerHTML = '';
   document.querySelector('#computer-move').innerHTML = '';
@@ -54,7 +54,7 @@ function choiceimage(choice) {
     return '<div style="display: flex; justify-content: center; align-items: center; height: 100px;"><img src="bat.jpeg" alt="Bat" class="game-image" style="width: 80px; height: 80px;"></div>';
   } else if (choice === 'Ball') {
     return '<div style="display: flex; justify-content: center; align-items: center; height: 100px;"><img src="ball.jpeg" alt="Ball" class="game-image" style="width: 80px; height: 80px;"></div>';
-  } else if (choice === 'stump') {  
+  } else if (choice === 'stump') {
     return '<div style="display: flex; justify-content: center; align-items: center; height: 100px;"><img src="wickets.jpeg" alt="Stump" class="game-image" style="width: 80px; height: 80px;"></div>';
   }
   return '';
@@ -103,8 +103,10 @@ function showresult(usermove, cmpchoice) {
   let result = getresult(usermove, cmpchoice);
   localStorage.setItem('SCORE', JSON.stringify(score));
 
-  document.querySelector('#user-move').innerHTML = `User chose: ${choiceimage(usermove)}`;
-  document.querySelector('#computer-move').innerHTML = `Computer chose: ${choiceimage(cmpchoice)}`;
+  document.querySelector('#user-move').innerHTML =
+    `User chose: ${choiceimage(usermove)}`;
+  document.querySelector('#computer-move').innerHTML =
+    `Computer chose: ${choiceimage(cmpchoice)}`;
   document.querySelector('#result').innerHTML = result;
   document.querySelector('#score').innerHTML = `${score.display_results()}`;
 }
