@@ -39,11 +39,196 @@ header div {
 
 .container {
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.board {
+    display: flex;
     justify-content: center;
     gap: 60px;
     flex-wrap: wrap;
-    max-width: 1200px;
-    margin: 0 auto;
+    width: 100%;
+}
+
+/* ✅ Setup screen: topic & difficulty selection */
+.setup-screen {
+    display: flex;
+    justify-content: center;
+    padding: 10px 0 30px;
+}
+
+.setup-card {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 40px;
+    border-radius: 18px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    max-width: 640px;
+    width: 100%;
+    color: #333;
+    text-align: center;
+}
+
+.setup-card h2 {
+    font-size: 1.8em;
+    color: #667eea;
+    margin-bottom: 8px;
+}
+
+.setup-subtitle {
+    color: #666;
+    margin-bottom: 25px;
+}
+
+.setup-label {
+    text-align: left;
+    color: #764ba2;
+    font-size: 1.05em;
+    margin: 20px 0 12px;
+}
+
+.topic-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 12px;
+}
+
+.topic-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 16px 10px;
+    border: 2px solid #e6e6f0;
+    border-radius: 12px;
+    background: #fafafe;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.2s ease;
+    margin: 0;
+    box-shadow: none;
+}
+
+.topic-card:hover {
+    border-color: #667eea;
+    transform: translateY(-2px);
+}
+
+.topic-card.selected {
+    border-color: #667eea;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.12), rgba(118, 75, 162, 0.12));
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.topic-icon {
+    font-size: 1.8em;
+}
+
+.topic-name {
+    font-size: 0.9em;
+    font-weight: bold;
+    color: #444;
+}
+
+.difficulty-group {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.difficulty-btn {
+    flex: 1;
+    min-width: 120px;
+    padding: 14px 18px;
+    border: 2px solid #e6e6f0;
+    border-radius: 10px;
+    background: #fafafe;
+    color: #444;
+    font-weight: bold;
+    font-size: 1em;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.2s ease;
+    margin: 0;
+    box-shadow: none;
+}
+
+.difficulty-btn:hover {
+    transform: translateY(-2px);
+}
+
+.difficulty-easy.selected {
+    border-color: #22c55e;
+    background: #f0fdf4;
+    color: #16a34a;
+}
+
+.difficulty-medium.selected {
+    border-color: #f59e0b;
+    background: #fffbeb;
+    color: #b45309;
+}
+
+.difficulty-hard.selected {
+    border-color: #ef4444;
+    background: #fef2f2;
+    color: #dc2626;
+}
+
+.btn-start {
+    margin-top: 30px;
+    margin-right: 0;
+    width: 100%;
+    font-size: 1.1em;
+}
+
+.btn-start:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* ✅ Game meta: active topic / difficulty badges */
+.game-meta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.badge {
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 0.95em;
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.badge-topic {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.badge-difficulty {
+    background: #667eea;
+}
+
+.btn-change-topic {
+    margin: 0;
+    padding: 8px 16px;
+    font-size: 0.9em;
+    background: rgba(255, 255, 255, 0.9);
+    color: #555;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.btn-change-topic:hover {
+    background: #fff;
 }
 
 .status-bar {
@@ -287,6 +472,39 @@ button:active {
     color: #bbb;
 }
 
+.dark-theme .setup-card {
+    background: rgba(30, 30, 50, 0.95);
+    color: #eee;
+}
+
+.dark-theme .setup-subtitle {
+    color: #aaa;
+}
+
+.dark-theme .topic-card,
+.dark-theme .difficulty-btn {
+    background: #20203a;
+    border-color: #3a3a5a;
+    color: #ddd;
+}
+
+.dark-theme .topic-name {
+    color: #ddd;
+}
+
+.dark-theme .topic-card.selected {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
+}
+
+.dark-theme .btn-change-topic {
+    background: rgba(255, 255, 255, 0.1);
+    color: #eee;
+}
+
+.dark-theme .btn-change-topic:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
 #themeToggle {
     padding: 10px 16px;
     border: none;
@@ -399,7 +617,7 @@ button:active {
 
 /* ✅ Responsive layout */
 @media (max-width: 968px) {
-    .container {
+    .board {
         flex-direction: column;
         align-items: center;
         gap: 30px;

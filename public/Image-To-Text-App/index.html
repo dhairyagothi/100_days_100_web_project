@@ -1,266 +1,339 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>Image to Text Converter</title>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OCR Studio - Extract, Listen & Download</title>
 
   <link rel="icon" href="../favv.png" type="image/x-icon" />
 
-  <!-- Tailwind -->
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Font -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-    rel="stylesheet">
-
-  <!-- OCR -->
+  <!-- Tesseract.js -->
   <script src="https://unpkg.com/tesseract.js@4.0.1/dist/tesseract.min.js"></script>
 
-  <!-- PDF -->
+  <!-- PDF.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-
-  <style>
-    body {
-      font-family: "Inter", sans-serif;
-    }
-
-    .glass {
-      background: rgba(15, 23, 42, 0.75);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-    }
-
-    .glow {
-        box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-    }
-
-    .blob {
-      position: absolute;
-      border-radius: 999px;
-      filter: blur(50px);
-      opacity: 0.5;
-      z-index: -1;
-      animation: float 18s ease-in-out infinite;
-    }
-
-    .blob1 {
-      width: 260px;
-      height: 260px;
-      background: #3b82f6;
-      top: -50px;
-      left: -80px;
-    }
-
-    .blob2 {
-      width: 300px;
-      height: 300px;
-      background: #10b981;
-      bottom: -80px;
-      right: -100px;
-      animation-delay: 2s;
-    }
-
-    @keyframes float {
-
-      0%,
-      100% {
-        transform: translateY(0px);
-      }
-
-      50% {
-        transform: translateY(-20px);
-      }
-    }
-
-    ::-webkit-scrollbar {
-      width: 8px;
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background: rgba(255, 255, 255, 0.3);
-      border-radius: 999px;
-    }
-    html,
-    body {
-    overflow-x: hidden;
-    scroll-behavior: smooth;
-    }
-    * {
-        -webkit-tap-highlight-color: transparent;
-    }
-
-    body {
-    will-change: scroll-position;
-    }
-  </style>
 </head>
 
-<body class="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-emerald-900 flex items-center justify-center p-5 relative overflow-x-hidden overflow-y-auto">
+<body class="min-h-screen p-4 bg-gradient-to-br from-slate-900 via-blue-900 to-emerald-900">
 
+  <!-- Background Blur -->
+  <div class="fixed inset-0 overflow-hidden pointer-events-none">
+    <div class="absolute rounded-full w-96 h-96 bg-blue-500/20 blur-3xl -top-10 -left-10"></div>
+    <div class="absolute bottom-0 right-0 rounded-full w-96 h-96 bg-emerald-500/20 blur-3xl"></div>
+  </div>
 
-  <!-- Main Container -->
-  <div class="glass glow w-full max-w-6xl rounded-3xl p-6 md:p-10 text-white shadow-2xl">
+  <div class="relative mx-auto max-w-7xl">
 
     <!-- Header -->
-    <div class="text-center mb-10">
+    <div class="mb-8 text-center">
 
-      <h1 class="text-5xl font-extrabold mb-4">
-        Image to Text Converter
+      <div
+        class="inline-flex items-center gap-2 px-4 py-2 mb-4 text-white border rounded-full bg-white/10 backdrop-blur-md border-white/20">
+
+        <i aria-hidden="true" class="text-yellow-300 fas fa-sparkles"></i>
+        <span class="text-sm">AI Powered OCR + Text To Speech</span>
+
+      </div>
+
+      <h1
+        class="text-5xl font-extrabold text-transparent md:text-6xl bg-gradient-to-r from-white via-cyan-200 to-emerald-300 bg-clip-text">
+
+        OCR Studio
+
       </h1>
 
-      <p class="text-slate-200 max-w-2xl mx-auto">
-        Extract text instantly from images and PDF documents using AI-powered OCR technology.
+      <p class="max-w-2xl mx-auto mt-4 text-lg text-gray-300">
+
+        Extract text from Images & PDFs, listen using Text-to-Speech,
+        copy results instantly, and download extracted content.
+
       </p>
 
     </div>
 
-    <!-- Upload Section -->
-    <div id="dropArea"
-      class="border-2 border-dashed border-white/30 rounded-3xl p-10 text-center hover:bg-white/10 transition duration-300 cursor-pointer">
+    <!-- Feature Cards -->
+    <div class="grid gap-4 mb-8 md:grid-cols-4">
 
-      <div class="text-6xl mb-4">
-        📄
+      <div class="p-5 text-center border bg-white/10 backdrop-blur-lg rounded-2xl border-white/20">
+        <i aria-hidden="true" class="mb-3 text-3xl fas fa-language text-cyan-300"></i>
+        <h3 class="font-bold text-white">Multi Language</h3>
+        <p class="mt-2 text-sm text-gray-300">6 OCR Languages</p>
       </div>
 
-      <h2 class="text-2xl font-bold mb-2">
-        Drag & Drop Files
-      </h2>
+      <div class="p-5 text-center border bg-white/10 backdrop-blur-lg rounded-2xl border-white/20">
+        <i aria-hidden="true" class="mb-3 text-3xl text-red-300 fas fa-file-pdf"></i>
+        <h3 class="font-bold text-white">PDF Support</h3>
+        <p class="mt-2 text-sm text-gray-300">Multi Page OCR</p>
+      </div>
 
-      <p class="text-slate-300 mb-6">
-        Supports JPG, PNG, WEBP & PDF
-      </p>
+      <div class="p-5 text-center border bg-white/10 backdrop-blur-lg rounded-2xl border-white/20">
+        <i aria-hidden="true" class="mb-3 text-3xl text-green-300 fas fa-volume-high"></i>
+        <h3 class="font-bold text-white">Text To Speech</h3>
+        <p class="mt-2 text-sm text-gray-300">Listen To OCR Results</p>
+      </div>
 
-      <input type="file" id="fileInput" accept="image/*,.pdf" class="hidden">
-
-      <button id="browseBtn"
-        class="bg-blue-500 hover:bg-blue-700 px-8 py-3 rounded-xl font-semibold transition duration-300 shadow-lg">
-        Browse File
-      </button>
-
-      <p id="fileName" class="mt-4 text-emerald-300 font-medium"></p>
+      <div class="p-5 text-center border bg-white/10 backdrop-blur-lg rounded-2xl border-white/20">
+        <i aria-hidden="true" class="mb-3 text-3xl text-yellow-300 fas fa-download"></i>
+        <h3 class="font-bold text-white">Export Results</h3>
+        <p class="mt-2 text-sm text-gray-300">Download Text Files</p>
+      </div>
 
     </div>
 
-    <!-- Controls -->
-    <div class="grid md:grid-cols-3 gap-4 mt-8">
+    <!-- Main Card -->
+    <div class="p-6 border shadow-2xl bg-white/10 backdrop-blur-xl border-white/20 rounded-3xl md:p-8">
 
-      <div class="md:col-span-2">
+      <!-- Upload Zone -->
+      <div id="dropArea"
+        class="border-2 border-dashed border-white/40 rounded-3xl p-10 text-center text-white transition-all duration-300 cursor-pointer hover:bg-white/10 hover:scale-[1.01]">
 
-        <label class="font-semibold block mb-2">
-          OCR Language
-        </label>
+        <div class="mb-4 text-6xl">
+          📤
+        </div>
 
-        <select id="languageSelect"
-          class="w-full p-4 rounded-xl bg-white/20 border border-white/20 outline-none text-white">
+        <h2 class="mb-2 text-2xl font-bold">
+          Drag & Drop Image or PDF
+        </h2>
 
-          <option value="eng" class="text-black">English</option>
-          <option value="hin" class="text-black">Hindi</option>
-          <option value="ben" class="text-black">Bengali</option>
-          <option value="spa" class="text-black">Spanish</option>
-          <option value="fra" class="text-black">French</option>
-          <option value="deu" class="text-black">German</option>
+        <p class="text-gray-300">
+          Upload screenshots, scanned documents, receipts, notes or PDFs
+        </p>
 
-        </select>
+        <input type="file" id="fileInput" accept="image/*,.pdf" class="hidden">
 
-      </div>
+        <button id="browseBtn"
+          class="px-8 py-3 mt-6 font-semibold transition-all bg-cyan-500 hover:bg-cyan-600 rounded-xl">
 
-      <div class="flex items-end">
+          <i aria-hidden="true" class="mr-2 fas fa-folder-open"></i>
+          Browse File
 
-        <button onclick="convertFile()"
-          class="w-full bg-emerald-500 hover:bg-emerald-700 py-4 rounded-xl font-bold transition duration-300 shadow-lg">
-          Extract Text
         </button>
 
       </div>
 
-    </div>
+      <!-- Controls -->
+      <div class="grid gap-6 mt-8 md:grid-cols-2">
 
-    <!-- Progress -->
-    <div class="mt-6 hidden" id="progressContainer">
+        <div>
 
-      <div class="flex justify-between mb-2">
-        <span>OCR Progress</span>
-        <span id="progressText">0%</span>
+          <label class="block mb-2 font-semibold text-white">
+
+            <i aria-hidden="true" class="mr-2 fas fa-globe"></i>
+            OCR Language
+
+          </label>
+
+          <select id="languageSelect" class="w-full p-4 outline-none rounded-xl bg-white/80">
+
+            <option value="eng">English</option>
+            <option value="hin">Hindi</option>
+            <option value="ben">Bengali</option>
+            <option value="spa">Spanish</option>
+            <option value="fra">French</option>
+            <option value="deu">German</option>
+
+          </select>
+
+        </div>
+
+        <div class="flex items-end">
+
+          <button onclick="convertFile()"
+            class="w-full py-4 font-bold text-white transition bg-emerald-500 hover:bg-emerald-600 rounded-xl">
+
+            <i aria-hidden="true" class="mr-2 fas fa-wand-magic-sparkles"></i>
+            Extract Text
+
+          </button>
+
+        </div>
+
       </div>
 
-      <div class="w-full bg-white/10 rounded-full h-3 overflow-hidden">
-        <div id="progressBar"
-          class="bg-emerald-400 h-full w-0 transition-all duration-300 rounded-full"></div>
+      <!-- File Info -->
+      <div id="fileInfo" class="hidden p-4 mt-6 text-white border rounded-2xl bg-white/10 border-white/20">
+
+        <h3 class="mb-3 font-bold">
+          <i aria-hidden="true" class="mr-2 fas fa-file"></i>
+          File Information
+        </h3>
+
+        <div id="fileDetails"></div>
+
       </div>
 
-    </div>
+      <!-- Loader -->
+      <div id="loader" class="hidden mt-8 text-center">
 
-    <!-- Loader -->
-    <div id="loader" class="hidden text-center mt-6 text-lg font-semibold text-emerald-300">
-      Processing your file...
-    </div>
+        <div class="w-12 h-12 mx-auto border-4 border-white rounded-full border-t-transparent animate-spin">
+        </div>
 
-    <!-- Output -->
-    <div class="grid lg:grid-cols-2 gap-6 mt-10">
+        <p class="mt-4 font-semibold text-white">
+          Extracting text...
+        </p>
 
-      <!-- Extracted Text -->
-      <div class="glass rounded-2xl p-5">
+      </div>
 
-        <div class="flex justify-between items-center mb-4">
+      <!-- Stats -->
+      <div id="statsSection" class="grid hidden gap-4 mt-8 md:grid-cols-3">
 
-          <h2 class="text-2xl font-bold">
-            Extracted Text
+        <div class="p-5 text-center border bg-white/10 rounded-2xl border-white/20">
+          <h3 class="text-lg font-bold text-white">Words</h3>
+          <p id="wordCount" class="mt-2 text-3xl font-bold text-cyan-300">0</p>
+        </div>
+
+        <div class="p-5 text-center border bg-white/10 rounded-2xl border-white/20">
+          <h3 class="text-lg font-bold text-white">Characters</h3>
+          <p id="charCount" class="mt-2 text-3xl font-bold text-yellow-300">0</p>
+        </div>
+
+        <div class="p-5 text-center border bg-white/10 rounded-2xl border-white/20">
+          <h3 class="text-lg font-bold text-white">Reading Time</h3>
+          <p id="readingTime" class="mt-2 text-3xl font-bold text-green-300">0m</p>
+        </div>
+
+      </div>
+
+      <!-- Output & Preview -->
+      <div class="grid gap-6 mt-8 lg:grid-cols-2">
+
+        <!-- OCR Output -->
+        <div>
+
+          <div class="flex items-center justify-between mb-3">
+
+            <h2 class="text-xl font-bold text-white">
+              📝 Extracted Text
+            </h2>
+
+            <button id="copyBtn" class="hidden px-4 py-2 text-white rounded-lg bg-cyan-500 hover:bg-cyan-600">
+
+              <i aria-hidden="true" class="fas fa-copy"></i>
+              Copy
+
+            </button>
+
+          </div>
+
+          <div id="output" class="bg-white/90 rounded-2xl p-5 h-[420px] overflow-auto shadow-xl whitespace-pre-wrap">
+
+            Upload a file to begin OCR...
+
+          </div>
+
+          <button id="downloadBtn"
+            class="hidden w-full py-3 mt-4 font-semibold text-white bg-blue-500 hover:bg-blue-600 rounded-xl">
+
+            <i aria-hidden="true" class="mr-2 fas fa-download"></i>
+            Download Text
+
+          </button>
+
+        </div>
+
+        <!-- Preview -->
+        <div>
+
+          <h2 class="mb-3 text-xl font-bold text-white">
+            👁️ File Preview
           </h2>
 
-          <div class="flex gap-2">
+          <div
+            class="bg-white/10 border border-white/20 rounded-2xl p-4 min-h-[420px] flex items-center justify-center">
 
-            <button id="copyBtn"
-              class="bg-blue-500 hover:bg-blue-700 px-4 py-2 rounded-lg text-sm font-medium">
-              Copy
-            </button>
+            <img id="imagePreview" src="#" alt="Preview" class="hidden max-h-[380px] rounded-xl object-contain">
 
-            <button id="clearBtn"
-              class="bg-red-500 hover:bg-red-700 px-4 py-2 rounded-lg text-sm font-medium">
-              Clear
-            </button>
+            <canvas id="pdfCanvas" class="hidden max-w-full bg-white rounded-xl">
+            </canvas>
+
+            <div id="previewPlaceholder" class="text-center text-gray-300">
+
+              <i aria-hidden="true" class="mb-3 text-5xl fas fa-image"></i>
+
+              <p>
+                Upload a file to see preview
+              </p>
+
+            </div>
 
           </div>
 
         </div>
 
-        <div id="output"
-          class="bg-black/20 rounded-xl p-4 h-96 overflow-auto whitespace-pre-wrap text-slate-100 border border-white/10">
-          Upload a file to begin OCR...
-        </div>
-
-        <button id="downloadBtn"
-          class="hidden mt-4 w-full bg-emerald-500 hover:bg-emerald-700 py-3 rounded-xl font-semibold">
-          Download Text
-        </button>
-
       </div>
 
-      <!-- Preview -->
-      <div class="glass rounded-2xl p-5">
+      <!-- TTS Panel -->
+      <div id="ttsControls" class="hidden p-6 mt-8 border bg-white/10 backdrop-blur-md border-white/20 rounded-3xl">
 
-        <h2 class="text-2xl font-bold mb-4">
-          File Preview
-        </h2>
+        <div class="flex items-center justify-between mb-5">
 
-        <div
-          class="bg-black/20 rounded-xl border border-white/10 min-h-[400px] flex items-center justify-center overflow-hidden">
+          <h2 class="text-xl font-bold text-white">
+            🔊 Text To Speech
+          </h2>
 
-          <img id="imagePreview"
-            class="hidden rounded-xl max-h-96 w-full object-contain p-4"
-            src="#"
-            alt="Preview">
+          <span id="speechStatus" class="font-medium text-green-300">
 
-          <canvas id="pdfCanvas"
-            class="hidden w-full rounded-xl">
-          </canvas>
+            Ready to Speak
 
-          <p id="previewPlaceholder" class="text-slate-300">
-            Preview will appear here
-          </p>
+          </span>
+
+        </div>
+
+        <select id="voiceSelect" class="w-full p-3 mb-4 rounded-xl bg-white/80">
+        </select>
+
+        <div class="grid gap-6 md:grid-cols-2">
+
+          <div>
+            <label class="block mb-2 text-white">
+              Speech Rate
+            </label>
+
+            <input id="rateControl" type="range" min="0.5" max="2" step="0.1" value="1" class="w-full">
+          </div>
+
+          <div>
+            <label class="block mb-2 text-white">
+              Pitch
+            </label>
+
+            <input id="pitchControl" type="range" min="0" max="2" step="0.1" value="1" class="w-full">
+          </div>
+
+        </div>
+
+        <div class="grid grid-cols-2 gap-3 mt-6 md:grid-cols-4">
+
+          <button id="playBtn" class="py-3 text-white bg-green-500 hover:bg-green-600 rounded-xl">
+
+            <i aria-hidden="true" class="fas fa-play"></i> Play
+
+          </button>
+
+          <button id="pauseBtn" class="py-3 text-white bg-yellow-500 hover:bg-yellow-600 rounded-xl">
+
+            <i aria-hidden="true" class="fas fa-pause"></i> Pause
+
+          </button>
+
+          <button id="resumeBtn" class="py-3 text-white bg-blue-500 hover:bg-blue-600 rounded-xl">
+
+            <i aria-hidden="true" class="fas fa-forward"></i> Resume
+
+          </button>
+
+          <button id="stopBtn" class="py-3 text-white bg-red-500 hover:bg-red-600 rounded-xl">
+
+            <i aria-hidden="true" class="fas fa-stop"></i> Stop
+
+          </button>
 
         </div>
 
@@ -273,386 +346,5 @@
   <script src="script.js"></script>
 
 </body>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OCR Studio - Extract, Listen & Download</title>
 
-    <link rel="icon" href="../favv.png" type="image/x-icon" />
-
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- Font Awesome -->
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-
-    <!-- Tesseract.js -->
-    <script src="https://unpkg.com/tesseract.js@4.0.1/dist/tesseract.min.js"></script>
-
-    <!-- PDF.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-</head>
-
-<body class="min-h-screen p-4 bg-gradient-to-br from-slate-900 via-blue-900 to-emerald-900">
-
-    <!-- Background Blur -->
-    <div class="fixed inset-0 overflow-hidden pointer-events-none">
-        <div class="absolute rounded-full w-96 h-96 bg-blue-500/20 blur-3xl -top-10 -left-10"></div>
-        <div class="absolute bottom-0 right-0 rounded-full w-96 h-96 bg-emerald-500/20 blur-3xl"></div>
-    </div>
-
-    <div class="relative mx-auto max-w-7xl">
-
-        <!-- Header -->
-        <div class="mb-8 text-center">
-
-            <div
-                class="inline-flex items-center gap-2 px-4 py-2 mb-4 text-white border rounded-full bg-white/10 backdrop-blur-md border-white/20">
-
-                <i aria-hidden="true" class="text-yellow-300 fas fa-sparkles"></i>
-                <span class="text-sm">AI Powered OCR + Text To Speech</span>
-
-            </div>
-
-            <h1
-                class="text-5xl font-extrabold text-transparent md:text-6xl bg-gradient-to-r from-white via-cyan-200 to-emerald-300 bg-clip-text">
-
-                OCR Studio
-
-            </h1>
-
-            <p class="max-w-2xl mx-auto mt-4 text-lg text-gray-300">
-
-                Extract text from Images & PDFs, listen using Text-to-Speech,
-                copy results instantly, and download extracted content.
-
-            </p>
-
-        </div>
-
-        <!-- Feature Cards -->
-        <div class="grid gap-4 mb-8 md:grid-cols-4">
-
-            <div class="p-5 text-center border bg-white/10 backdrop-blur-lg rounded-2xl border-white/20">
-                <i aria-hidden="true" class="mb-3 text-3xl fas fa-language text-cyan-300"></i>
-                <h3 class="font-bold text-white">Multi Language</h3>
-                <p class="mt-2 text-sm text-gray-300">6 OCR Languages</p>
-            </div>
-
-            <div class="p-5 text-center border bg-white/10 backdrop-blur-lg rounded-2xl border-white/20">
-                <i aria-hidden="true" class="mb-3 text-3xl text-red-300 fas fa-file-pdf"></i>
-                <h3 class="font-bold text-white">PDF Support</h3>
-                <p class="mt-2 text-sm text-gray-300">Multi Page OCR</p>
-            </div>
-
-            <div class="p-5 text-center border bg-white/10 backdrop-blur-lg rounded-2xl border-white/20">
-                <i aria-hidden="true" class="mb-3 text-3xl text-green-300 fas fa-volume-high"></i>
-                <h3 class="font-bold text-white">Text To Speech</h3>
-                <p class="mt-2 text-sm text-gray-300">Listen To OCR Results</p>
-            </div>
-
-            <div class="p-5 text-center border bg-white/10 backdrop-blur-lg rounded-2xl border-white/20">
-                <i aria-hidden="true" class="mb-3 text-3xl text-yellow-300 fas fa-download"></i>
-                <h3 class="font-bold text-white">Export Results</h3>
-                <p class="mt-2 text-sm text-gray-300">Download Text Files</p>
-            </div>
-
-        </div>
-
-        <!-- Main Card -->
-        <div
-            class="p-6 border shadow-2xl bg-white/10 backdrop-blur-xl border-white/20 rounded-3xl md:p-8">
-
-            <!-- Upload Zone -->
-            <div id="dropArea"
-                class="border-2 border-dashed border-white/40 rounded-3xl p-10 text-center text-white transition-all duration-300 cursor-pointer hover:bg-white/10 hover:scale-[1.01]">
-
-                <div class="mb-4 text-6xl">
-                    📤
-                </div>
-
-                <h2 class="mb-2 text-2xl font-bold">
-                    Drag & Drop Image or PDF
-                </h2>
-
-                <p class="text-gray-300">
-                    Upload screenshots, scanned documents, receipts, notes or PDFs
-                </p>
-
-                <input type="file"
-                    id="fileInput"
-                    accept="image/*,.pdf"
-                    class="hidden">
-
-                <button id="browseBtn"
-                    class="px-8 py-3 mt-6 font-semibold transition-all bg-cyan-500 hover:bg-cyan-600 rounded-xl">
-
-                    <i aria-hidden="true" class="mr-2 fas fa-folder-open"></i>
-                    Browse File
-
-                </button>
-
-            </div>
-
-            <!-- Controls -->
-            <div class="grid gap-6 mt-8 md:grid-cols-2">
-
-                <div>
-
-                    <label class="block mb-2 font-semibold text-white">
-
-                        <i aria-hidden="true" class="mr-2 fas fa-globe"></i>
-                        OCR Language
-
-                    </label>
-
-                    <select id="languageSelect"
-                        class="w-full p-4 outline-none rounded-xl bg-white/80">
-
-                        <option value="eng">English</option>
-                        <option value="hin">Hindi</option>
-                        <option value="ben">Bengali</option>
-                        <option value="spa">Spanish</option>
-                        <option value="fra">French</option>
-                        <option value="deu">German</option>
-
-                    </select>
-
-                </div>
-
-                <div class="flex items-end">
-
-                    <button onclick="convertFile()"
-                        class="w-full py-4 font-bold text-white transition bg-emerald-500 hover:bg-emerald-600 rounded-xl">
-
-                        <i aria-hidden="true" class="mr-2 fas fa-wand-magic-sparkles"></i>
-                        Extract Text
-
-                    </button>
-
-                </div>
-
-            </div>
-
-            <!-- File Info -->
-            <div id="fileInfo"
-                class="hidden p-4 mt-6 text-white border rounded-2xl bg-white/10 border-white/20">
-
-                <h3 class="mb-3 font-bold">
-                    <i aria-hidden="true" class="mr-2 fas fa-file"></i>
-                    File Information
-                </h3>
-
-                <div id="fileDetails"></div>
-
-            </div>
-
-            <!-- Loader -->
-            <div id="loader" class="hidden mt-8 text-center">
-
-                <div
-                    class="w-12 h-12 mx-auto border-4 border-white rounded-full border-t-transparent animate-spin">
-                </div>
-
-                <p class="mt-4 font-semibold text-white">
-                    Extracting text...
-                </p>
-
-            </div>
-
-            <!-- Stats -->
-            <div id="statsSection"
-                class="grid hidden gap-4 mt-8 md:grid-cols-3">
-
-                <div class="p-5 text-center border bg-white/10 rounded-2xl border-white/20">
-                    <h3 class="text-lg font-bold text-white">Words</h3>
-                    <p id="wordCount"
-                        class="mt-2 text-3xl font-bold text-cyan-300">0</p>
-                </div>
-
-                <div class="p-5 text-center border bg-white/10 rounded-2xl border-white/20">
-                    <h3 class="text-lg font-bold text-white">Characters</h3>
-                    <p id="charCount"
-                        class="mt-2 text-3xl font-bold text-yellow-300">0</p>
-                </div>
-
-                <div class="p-5 text-center border bg-white/10 rounded-2xl border-white/20">
-                    <h3 class="text-lg font-bold text-white">Reading Time</h3>
-                    <p id="readingTime"
-                        class="mt-2 text-3xl font-bold text-green-300">0m</p>
-                </div>
-
-            </div>
-
-            <!-- Output & Preview -->
-            <div class="grid gap-6 mt-8 lg:grid-cols-2">
-
-                <!-- OCR Output -->
-                <div>
-
-                    <div class="flex items-center justify-between mb-3">
-
-                        <h2 class="text-xl font-bold text-white">
-                            📝 Extracted Text
-                        </h2>
-
-                        <button id="copyBtn"
-                            class="hidden px-4 py-2 text-white rounded-lg bg-cyan-500 hover:bg-cyan-600">
-
-                            <i aria-hidden="true" class="fas fa-copy"></i>
-                            Copy
-
-                        </button>
-
-                    </div>
-
-                    <div id="output"
-                        class="bg-white/90 rounded-2xl p-5 h-[420px] overflow-auto shadow-xl whitespace-pre-wrap">
-
-                        Upload a file to begin OCR...
-
-                    </div>
-
-                    <button id="downloadBtn"
-                        class="hidden w-full py-3 mt-4 font-semibold text-white bg-blue-500 hover:bg-blue-600 rounded-xl">
-
-                        <i aria-hidden="true" class="mr-2 fas fa-download"></i>
-                        Download Text
-
-                    </button>
-
-                </div>
-
-                <!-- Preview -->
-                <div>
-
-                    <h2 class="mb-3 text-xl font-bold text-white">
-                        👁️ File Preview
-                    </h2>
-
-                    <div
-                        class="bg-white/10 border border-white/20 rounded-2xl p-4 min-h-[420px] flex items-center justify-center">
-
-                        <img id="imagePreview"
-                            src="#"
-                            alt="Preview"
-                            class="hidden max-h-[380px] rounded-xl object-contain">
-
-                        <canvas id="pdfCanvas"
-                            class="hidden max-w-full bg-white rounded-xl">
-                        </canvas>
-
-                        <div id="previewPlaceholder"
-                            class="text-center text-gray-300">
-
-                            <i aria-hidden="true" class="mb-3 text-5xl fas fa-image"></i>
-
-                            <p>
-                                Upload a file to see preview
-                            </p>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            <!-- TTS Panel -->
-            <div id="ttsControls"
-                class="hidden p-6 mt-8 border bg-white/10 backdrop-blur-md border-white/20 rounded-3xl">
-
-                <div class="flex items-center justify-between mb-5">
-
-                    <h2 class="text-xl font-bold text-white">
-                        🔊 Text To Speech
-                    </h2>
-
-                    <span id="speechStatus"
-                        class="font-medium text-green-300">
-
-                        Ready to Speak
-
-                    </span>
-
-                </div>
-
-                <select id="voiceSelect"
-                    class="w-full p-3 mb-4 rounded-xl bg-white/80">
-                </select>
-
-                <div class="grid gap-6 md:grid-cols-2">
-
-                    <div>
-                        <label class="block mb-2 text-white">
-                            Speech Rate
-                        </label>
-
-                        <input id="rateControl"
-                            type="range"
-                            min="0.5"
-                            max="2"
-                            step="0.1"
-                            value="1"
-                            class="w-full">
-                    </div>
-
-                    <div>
-                        <label class="block mb-2 text-white">
-                            Pitch
-                        </label>
-
-                        <input id="pitchControl"
-                            type="range"
-                            min="0"
-                            max="2"
-                            step="0.1"
-                            value="1"
-                            class="w-full">
-                    </div>
-
-                </div>
-
-                <div class="grid grid-cols-2 gap-3 mt-6 md:grid-cols-4">
-
-                    <button id="playBtn"
-                        class="py-3 text-white bg-green-500 hover:bg-green-600 rounded-xl">
-
-                        <i aria-hidden="true" class="fas fa-play"></i> Play
-
-                    </button>
-
-                    <button id="pauseBtn"
-                        class="py-3 text-white bg-yellow-500 hover:bg-yellow-600 rounded-xl">
-
-                        <i aria-hidden="true" class="fas fa-pause"></i> Pause
-
-                    </button>
-
-                    <button id="resumeBtn"
-                        class="py-3 text-white bg-blue-500 hover:bg-blue-600 rounded-xl">
-
-                        <i aria-hidden="true" class="fas fa-forward"></i> Resume
-
-                    </button>
-
-                    <button id="stopBtn"
-                        class="py-3 text-white bg-red-500 hover:bg-red-600 rounded-xl">
-
-                        <i aria-hidden="true" class="fas fa-stop"></i> Stop
-
-                    </button>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <script src="script.js"></script>
-
-</body>
 </html>

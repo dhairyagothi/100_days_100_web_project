@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="captcha.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+    <nav class="navbar">
+        <a href="/" class="project-back-button">← Back to Home</a>
+
+        <div class="logo">
+            📖 Captcha
+        </div>
+
+        <ul class="nav-links">
+
+            <li>
+                <a href="captcha.html">
+                    Home
+                </a>
+            </li>
+
+            <li>
+                <a href="generate.html">
+                    Generate Captcha
+                </a>
+            </li>
+
+            <li>
+                <a href="dashboard.html">
+                    Dashboard
+                </a>
+            </li>
+
+        </ul>
+        <button id="themeToggle" class="theme">
+            <span id="themeIcon">☀️</span>
+        </button>
+    </nav>
+    <!-- <div class="app-container"> -->
+    <div class="container">
+
+        <div class="hero">
+            <span class="eyebrow">Interactive Security Check</span>
+            <header>CAPTCHA Challenge</header>
+            <p class="intro">Choose a CAPTCHA mode, solve the challenge, and submit to verify you're human.</p>
+        </div>
+
+
+        <div class="selectors-row">
+            <div class="field">
+                <label for="captchaTypeSelect">Select CAPTCHA type</label>
+                <select id="captchaTypeSelect">
+                    <option value="text">Text</option>
+                    <option value="image">Image</option>
+                    <option value="audio">Audio</option>
+                    <option value="math">Math</option>
+                </select>
+            </div>
+
+            <div class="field voice-field hidden" id="voiceField">
+                <label for="voiceSelect">Select voice</label>
+                <select id="voiceSelect"></select>
+            </div>
+        </div>
+
+
+        <div id="captchaContainer" aria-live="polite"></div>
+
+        <div class="field textcaptcha">
+            <label for="captchaInput">Your answer</label>
+            <input id="captchaInput" type="text" placeholder="Enter CAPTCHA">
+        </div>
+
+        <div class="actions">
+            <button class="refresh" aria-label="Refresh CAPTCHA">↻</button>
+            <button class="submit" type="button">Submit CAPTCHA</button>
+        </div>
+
+        <p id="resultMessage" class="result" aria-live="assertive"></p>
+
+    </div>
+    </div>
+
+    </div>
+
+
+
+    <footer class="footer">
+
+        <section id="footer-container">
+
+            <!-- Brand -->
+            <div class="footer-section">
+                <h3>📖 Captcha</h3>
+                <p>
+                    Captcha is a modern, front-end verification demo with custom styling, JavaScript validation, and a
+                    comprehensive analytics dashboard!
+                </p>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+
+                <ul>
+                    <li><a href="captcha.html">Home</a></li>
+                    <li><a href="generate.html">Generate</a></li>
+                    <li><a href="dashboard.html">Dashboard</a></li>
+                </ul>
+            </div>
+
+            <!-- Social Links -->
+            <div class="footer-section">
+                <h4>Follow Us</h4>
+
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-github"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-discord"></i></a>
+                </div>
+            </div>
+
+            </div>
+
+            <div class="footer-bottom">
+                <p>
+                    © 2025 Captcha is a modern, front-end verification demo.
+                </p>
+            </div>
+        </section>
+    </footer>
+
+    <script src="captcha.js"></script>
+</body>
+
+</html>
