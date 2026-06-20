@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aurora Progress</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="progress_bar.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="icon" href="favicon_progress bar.png">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Syne:wght@600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
+
+    <div class="logo">
+       📊Progress Bar
+    </div>
+
+    <ul class="nav-links">
+
+      <li>
+        <a href="progress_bar.html">
+          Home
+        </a>
+      </li>
+      
+       <li>
+        <a href="#">
+         Progress Bar Collection
+        </a>
+      </li>
+
+      <li>
+        <a href="progressbar.html">
+         Pulse Progress Bar
+        </a>
+      </li>
+
+      <li>
+        <a href="#footer-container">
+          About
+        </a>
+      </li>
+
+    </ul>
+    <button id="themeToggle" class="theme">
+      <span id="themeIcon">☀️</span>
+    </button>
+  </nav>
+
+    <main class="progress-container">
+        <div class="cursor-glow" aria-hidden="true"></div>
+        <div class="cursor-trail" aria-hidden="true"></div>
+        <div class="ambient-orb orb--one" aria-hidden="true"></div>
+        <div class="ambient-orb orb--two" aria-hidden="true"></div>
+        <div class="ambient-grid" aria-hidden="true"></div>
+        <section class="progress-card">
+            <div class="card-sheen" aria-hidden="true"></div>
+            <header class="card-header">
+                <p class="eyebrow">Aurora Series</p>
+                <h1>Pulse Progress</h1>
+                <p class="subtitle">Drag, tap, or run the meter. Watch the glow evolve through each stage.</p>
+            </header>
+            <div class="progress-wrapper">
+                <div class="progress-ring" role="progressbar" aria-label="Progress" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-valuetext="0 percent" tabindex="0">
+                    <div class="progress-ring__inner">
+                        <span id="progress-value">0%</span>
+                        <span id="progress-label" class="progress-label">Warming up</span>
+                    </div>
+                    <div class="particle-field" aria-hidden="true"></div>
+                    <div class="orbit-sparks" aria-hidden="true">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+            </div>
+            <div class="milestone-row" id="milestones" aria-label="Milestones">
+                <div class="milestone" data-value="25">25%</div>
+                <div class="milestone" data-value="50">50%</div>
+                <div class="milestone" data-value="75">75%</div>
+                <div class="milestone" data-value="100">100%</div>
+            </div>
+            <div class="control-panel">
+                <div class="mode-toggle" role="radiogroup" aria-label="Animation mode">
+                    <button class="mode-button is-active" data-mode="linear" role="radio" aria-checked="true">Linear</button>
+                    <button class="mode-button" data-mode="ease" role="radio" aria-checked="false">Ease-out</button>
+                    <button class="mode-button" data-mode="spring" role="radio" aria-checked="false">Spring</button>
+                </div>
+                <label class="toggle">
+                    <span>Auto-loop on complete</span>
+                    <input id="autoLoopToggle" type="checkbox" />
+                    <span class="toggle-track" aria-hidden="true"></span>
+                </label>
+                <div class="preset-group" aria-label="Presets">
+                    <button class="preset-chip" data-value="25">25%</button>
+                    <button class="preset-chip" data-value="50">50%</button>
+                    <button class="preset-chip" data-value="75">75%</button>
+                    <button class="preset-chip" data-value="100">100%</button>
+                </div>
+            </div>
+            <div class="button-group">
+                <button id="stopBtn" class="action-button action-button--stop">
+                    Stop
+                </button>
+                <button id="btn" class="action-button action-button--start">
+                    Start Progress
+                </button>
+                <button id="resetBtn" class="action-button action-button--reset">
+                    Reset
+                </button>
+            </div>
+            <div class="ripple-layer" aria-hidden="true"></div>
+            <div class="status-row">
+                <div class="stat">
+                    <span class="stat-label">Last run</span>
+                    <span id="lastRun" class="stat-value">--</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Avg pace</span>
+                    <span id="avgPace" class="stat-value">--</span>
+                </div>
+            </div>
+            <div class="history">
+                <div class="history-header">
+                    <span>Progress history</span>
+                    <span id="historyCount" class="history-count">0 runs</span>
+                </div>
+                <svg id="historySparkline" viewBox="0 0 240 60" role="img" aria-label="Progress history sparkline"></svg>
+            </div>
+            <p class="hint">Tip: Drag the ring, use arrow keys to nudge, or tap a preset to jump.</p>
+            <div id="progress-live" class="sr-only" aria-live="polite"></div>
+        </section>
+    </main>
+     <footer class="footer">
+
+    <section id="footer-container">
+
+      <!-- Brand -->
+      <div class="footer-section">
+        <h3 >  📊Progress Bar </h3>
+        <p>
+        Progress Bar is a simple, responsive project designed to visually represent task completion or loading states.  
+        </p>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="footer-section">
+        <h4>Quick Links</h4>
+
+        <ul>
+          <li><a href="progress_bar.html">Home</a></li>
+          <li><a href="#">Pulse Progress Bar</a></li>
+          <li><a href="#footer-container">Contact</a></li>
+        </ul>
+      </div>
+
+      <!-- Social Links -->
+      <div class="footer-section">
+        <h4>Follow Us</h4>
+
+        <div class="social-links">
+          <a href="#"><i class="fab fa-github"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-linkedin"></i></a>
+          <a href="#"><i class="fab fa-discord"></i></a>
+        </div>
+      </div>
+
+      </div>
+
+      <div class="footer-bottom">
+        <p>
+          © 2025 Progress Bars. All Rights Reserved.
+        </p>
+      </div>
+    </section>
+  </footer>
+    <script src="progress_bar.js"></script>
+</body>
+
+</html>

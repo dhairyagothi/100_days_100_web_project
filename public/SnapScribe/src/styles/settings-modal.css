@@ -1,0 +1,197 @@
+.settings-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.settings-modal {
+  background: #fff;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 440px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  .settings-modal {
+    background: #1e1e2e;
+    color: #cdd6f4;
+  }
+}
+
+.settings-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+@media (prefers-color-scheme: dark) {
+  .settings-header {
+    border-bottom-color: rgba(255, 255, 255, 0.08);
+  }
+}
+
+.settings-header h2 {
+  font-size: 1.1rem;
+  font-weight: 600; 
+  margin: 0;
+}
+
+.settings-close {
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  cursor: pointer;
+  color: #888;
+  line-height: 1;
+  padding: 4px;
+  border-radius: 6px;
+  transition: background 0.15s;
+}
+
+.settings-close:hover {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.settings-body {
+  padding: 1rem 1.5rem; 
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.settings-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #333;
+}
+
+@media (prefers-color-scheme: dark) {
+  .settings-label {
+    color: #cdd6f4;
+  }
+}
+
+.settings-hint {
+  font-size: 0.8rem;
+  color: #666;
+  margin: 0;
+  line-height: 1.5; 
+}
+
+.settings-hint a {
+  color: inherit;
+  text-decoration: underline;
+}
+
+@media (prefers-color-scheme: dark) {
+  .settings-hint {
+    color: #a6adc8;
+  }
+}
+
+.settings-input {
+  width: 100%;
+  padding: 0.65rem 0.875rem;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-family: monospace;
+  outline: none;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+  background: #fafafa;
+}
+
+.settings-input:focus {
+  border-color: #6c63ff;
+  background: #fff;
+}
+
+@media (prefers-color-scheme: dark) {
+  .settings-input {
+    background: #181825;
+    border-color: #313244;
+    color: #cdd6f4;
+  }
+
+  .settings-input:focus {
+    border-color: #cba6f7;
+    background: #1e1e2e;
+  }
+}
+
+.settings-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.settings-save-btn {
+  flex: 1;
+  padding: 0.65rem 1rem;
+  background: #6c63ff;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    transform 0.1s;
+}
+
+.settings-save-btn:hover:not(:disabled) {
+  background: #5a52e0;
+}
+
+.settings-save-btn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.settings-save-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.settings-save-btn.saved {
+  background: #22c55e;
+}
+
+.settings-clear-btn {
+  padding: 0.65rem 1rem;
+  background: none;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 10px;
+  font-size: 0.875rem;
+  color: #e53e3e;
+  cursor: pointer;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+
+.settings-clear-btn:hover {
+  background: #fff5f5;
+}
+
+@media (prefers-color-scheme: dark) {
+  .settings-clear-btn {
+    border-color: #313244;
+    color: #f38ba8;
+  }
+
+  .settings-clear-btn:hover {
+    background: rgba(243, 139, 168, 0.1);
+  }
+}

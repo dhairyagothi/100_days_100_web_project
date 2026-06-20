@@ -1,345 +1,711 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   ANIMATED BACKGROUND — Aurora blobs + particle network
+   ═══════════════════════════════════════════════════════════════════════════ */
+(function () {
+  const canvas = document.getElementById("bg");
+  const ctx = canvas.getContext("2d");
 
-var hUnit = 'cm';
-var wUnit = 'kg';
-var history = [];
-
-
-function setHUnit(u) {
-  hUnit = u;
-  document.getElementById('hCm').classList.toggle('active', u === 'cm');
-  document.getElementById('hFt').classList.toggle('active', u === 'ft');
-  document.getElementById('heightCmRow').style.display = u === 'cm' ? '' : 'none';
-  document.getElementById('heightFtRow').style.display = u === 'ft' ? '' : 'none';
-}
-
-function setWUnit(u) {
-  wUnit = u;
-  document.getElementById('wKg').classList.toggle('active', u === 'kg');
-  document.getElementById('wLb').classList.toggle('active', u === 'lb');
-  document.getElementById('weightUnitLabel').textContent = u;
-}
-
-
-var gaugeCtx = document.getElementById('gaugeCanvas').getContext('2d');
-var gaugeW = 240, gaugeH = 140;
-document.getElementById('gaugeCanvas').width  = gaugeW * 2;
-document.getElementById('gaugeCanvas').height = gaugeH * 2;
-gaugeCtx.scale(2, 2);
-
-function drawGauge(bmiScore) {
-  var cx = gaugeW / 2, cy = gaugeH - 10;
-  var r = 100, inR = 72;
-
-  gaugeCtx.clearRect(0, 0, gaugeW, gaugeH);
-
-  var segs = [
-    { pct: 0,    end: .235, color: '#4a9eff' },
-    { pct: .235, end: .5,   color: '#22d47a' },
-    { pct: .5,   end: .735, color: '#f5a623' },
-    { pct: .735, end: 1,    color: '#f55353' },
+  const PARTICLE_COUNT = 120;
+  const CONNECT_DISTANCE = 90;
+  const PARTICLE_COLORS = [
+    "rgba(79,110,247,", // indigo
+    "rgba(201,168,76,", // gold
+    "rgba(62,207,142,", // emerald
+    "rgba(139,92,246,", // purple
   ];
 
-  segs.forEach(function(s) {
-    var sa = Math.PI + s.pct * Math.PI;
-    var ea = Math.PI + s.end * Math.PI;
+  let W,
+    H,
+    particles = [],
+    tick = 0;
 
-    // filled arc
-    gaugeCtx.beginPath();
-    gaugeCtx.arc(cx, cy, r,   sa, ea);
-    gaugeCtx.arc(cx, cy, inR, ea, sa, true);
-    gaugeCtx.fillStyle = s.color;
-    gaugeCtx.globalAlpha = .22;
-    gaugeCtx.fill();
-    gaugeCtx.globalAlpha = 1;
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
 
-    // stroked arc
-    gaugeCtx.beginPath();
-    gaugeCtx.arc(cx, cy, r,   sa, ea);
-    gaugeCtx.arc(cx, cy, inR, ea, sa, true);
-    gaugeCtx.strokeStyle = s.color;
-    gaugeCtx.lineWidth = 1;
-    gaugeCtx.stroke();
-  });
+  function makeParticle() {
+    return {
+      x: Math.random() * W,
+      y: Math.random() * H,
+      r: Math.random() * 2 + 0.5,
+      vx: (Math.random() - 0.5) * 0.35,
+      vy: (Math.random() - 0.5) * 0.35,
+      col: PARTICLE_COLORS[Math.floor(Math.random() * PARTICLE_COLORS.length)],
+      alpha: Math.random() * 0.45 + 0.05,
+    };
+  }
 
-  if (bmiScore !== null) {
-    var clamp = Math.min(Math.max(bmiScore, 10), 45);
-    var pct   = (clamp - 10) / (45 - 10);
-    var angle = Math.PI + pct * Math.PI;
-    var nx    = cx + Math.cos(angle) * (inR + 14);
-    var ny    = cy + Math.sin(angle) * (inR + 14);
+  function init() {
+    resize();
+    particles = [];
+    for (let i = 0; i < PARTICLE_COUNT; i++) particles.push(makeParticle());
+  }
 
-    // pivot dot
-    gaugeCtx.beginPath();
-    gaugeCtx.arc(cx, cy, 4, 0, Math.PI * 2);
-    gaugeCtx.fillStyle = 'rgba(255,255,255,.6)';
-    gaugeCtx.fill();
+  function drawAurora() {
+    ctx.clearRect(0, 0, W, H);
 
-    // needle line
-    gaugeCtx.beginPath();
-    gaugeCtx.moveTo(cx, cy);
-    gaugeCtx.lineTo(nx, ny);
-    gaugeCtx.strokeStyle = '#fff';
-    gaugeCtx.lineWidth   = 2;
-    gaugeCtx.lineCap     = 'round';
-    gaugeCtx.stroke();
+    /* Blob 1 — indigo, top-left drift */
+    let g = ctx.createRadialGradient(
+      W * 0.25 + Math.sin(tick * 0.0007) * 80,
+      H * 0.3 + Math.cos(tick * 0.0009) * 60,
+      10,
+      W * 0.25,
+      H * 0.3,
+      W * 0.45,
+    );
+    g.addColorStop(0, "rgba(79,110,247,0.18)");
+    g.addColorStop(1, "transparent");
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, W, H);
 
-    // needle tip
-    gaugeCtx.beginPath();
-    gaugeCtx.arc(nx, ny, 5, 0, Math.PI * 2);
-    gaugeCtx.fillStyle = getCatColor(bmiScore);
-    gaugeCtx.fill();
+    /* Blob 2 — purple, top-right drift */
+    g = ctx.createRadialGradient(
+      W * 0.75 + Math.cos(tick * 0.0006) * 100,
+      H * 0.2 + Math.sin(tick * 0.0011) * 50,
+      10,
+      W * 0.75,
+      H * 0.2,
+      W * 0.4,
+    );
+    g.addColorStop(0, "rgba(139,92,246,0.14)");
+    g.addColorStop(1, "transparent");
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, W, H);
+
+    /* Blob 3 — gold, bottom-centre drift */
+    g = ctx.createRadialGradient(
+      W * 0.5 + Math.sin(tick * 0.0005) * 120,
+      H * 0.75 + Math.cos(tick * 0.0008) * 70,
+      10,
+      W * 0.5,
+      H * 0.75,
+      W * 0.35,
+    );
+    g.addColorStop(0, "rgba(201,168,76,0.10)");
+    g.addColorStop(1, "transparent");
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, W, H);
+  }
+
+  function drawParticles() {
+    /* Dots */
+    particles.forEach((p) => {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = p.col + p.alpha + ")";
+      ctx.fill();
+
+      /* Move */
+      p.x += p.vx;
+      p.y += p.vy;
+      if (p.x < 0 || p.x > W) p.vx *= -1;
+      if (p.y < 0 || p.y > H) p.vy *= -1;
+    });
+
+    /* Connection lines */
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < CONNECT_DISTANCE) {
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.strokeStyle =
+            "rgba(79,110,247," + 0.07 * (1 - dist / CONNECT_DISTANCE) + ")";
+          ctx.lineWidth = 0.5;
+          ctx.stroke();
+        }
+      }
+    }
+  }
+
+  function loop() {
+    tick++;
+    drawAurora();
+    drawParticles();
+    requestAnimationFrame(loop);
+  }
+
+  window.addEventListener("resize", init);
+  init();
+  loop();
+})();
+
+/* =========================================================
+   BMI FITNESS DASHBOARD
+========================================================= */
+
+("use strict");
+
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
+const calculateBtn = document.getElementById("calculateBtn");
+const resetBtn = document.getElementById("resetBtn");
+
+const bmiValue = document.getElementById("bmiValue");
+const category = document.getElementById("category");
+const categoryBadge = document.getElementById("categoryBadge");
+const message = document.getElementById("message");
+
+const calories = document.getElementById("calories");
+const water = document.getElementById("water");
+const healthyWeight = document.getElementById("healthyWeight");
+const bodyFat = document.getElementById("bodyFat");
+
+const dietPlan = document.getElementById("dietPlan");
+const workoutPlan = document.getElementById("workoutPlan");
+
+const gauge = document.querySelector(".gauge");
+
+const resultsSection = document.getElementById("resultsSection");
+
+const errorBox = document.getElementById("errorBox");
+
+/* =========================================================
+   BMI HISTORY STORAGE  (fixed: stores full objects)
+========================================================= */
+
+const BMI_HISTORY_KEY = "bmi_history_v2";
+
+function loadHistory() {
+  try {
+    return JSON.parse(localStorage.getItem(BMI_HISTORY_KEY)) || [];
+  } catch {
+    return [];
   }
 }
 
-drawGauge(null);
-
-function getCatColor(bmi) {
-  if (bmi < 18.5) return '#4a9eff';
-  if (bmi < 25)   return '#22d47a';
-  if (bmi < 30)   return '#f5a623';
-  return '#f55353';
+function saveHistory(history) {
+  localStorage.setItem(BMI_HISTORY_KEY, JSON.stringify(history));
 }
 
-// HISTORY CHART
-var histCtx   = document.getElementById('historyChart').getContext('2d');
-var histChart = new Chart(histCtx, {
-  type: 'line',
+function pushToHistory(bmi, weight) {
+  const history = loadHistory();
+  history.push({
+    date: new Date().toISOString(),
+    bmi: parseFloat(bmi),
+    weight: parseFloat(weight.toFixed(1)),
+  });
+  // Keep last 20 entries
+  if (history.length > 20) history.shift();
+  saveHistory(history);
+  return history;
+}
+
+/* =========================================================
+   ACTIVE GOAL STATE
+========================================================= */
+
+let activeGoal = null; // "lose" | "maintain" | "gain"
+let lastBMICategory = null; // stored after each calculation
+let lastCaloriesBase = 0; // base calories from BMI category
+
+/* =========================================================
+   BMI CHART  (rebuilt from history on load)
+========================================================= */
+
+const ctx = document.getElementById("bmiChart");
+
+const bmiChart = new Chart(ctx, {
+  type: "line",
   data: {
     labels: [],
-    datasets: [{
-      label: 'BMI',
-      data: [],
-      borderColor: '#0fbfad',
-      backgroundColor: 'rgba(15,191,173,.08)',
-      borderWidth: 2,
-      pointBackgroundColor: '#0fbfad',
-      pointRadius: 5,
-      pointHoverRadius: 7,
-      tension: .4,
-      fill: true,
-    }]
+    datasets: [
+      {
+        label: "BMI Progress",
+        data: [],
+        borderWidth: 3,
+        tension: 0.4,
+        fill: true,
+        backgroundColor: "rgba(99,102,241,0.15)",
+        borderColor: "#6366f1",
+        pointBackgroundColor: "#6366f1",
+        pointRadius: 5,
+        pointHoverRadius: 7,
+      },
+    ],
   },
   options: {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
-      legend: { display: false },
+      legend: {
+        labels: {
+          color: "#111",
+          font: { size: 14, weight: "600" },
+        },
+      },
       tooltip: {
         callbacks: {
-          label: function(c) { return ' BMI: ' + c.parsed.y.toFixed(1); }
-        }
-      }
+          label: (ctx) => ` BMI: ${ctx.parsed.y}`,
+        },
+      },
     },
     scales: {
-      x: {
-        grid: { color: 'rgba(255,255,255,.05)' },
-        ticks: { color: '#7a92b5', font: { size: 11 } }
-      },
+      x: { ticks: { color: "#333" }, grid: { color: "rgba(0,0,0,0.08)" } },
       y: {
         beginAtZero: false,
-        min: 10,
-        max: 40,
-        grid: { color: 'rgba(255,255,255,.05)' },
-        ticks: { color: '#7a92b5', font: { size: 11 } }
-      }
-    }
-  }
+        ticks: { color: "#333" },
+        suggestedMin: 10,
+        suggestedMax: 40,
+        grid: { color: "rgba(0,0,0,0.08)" },
+      },
+    },
+    plugins_annotations: {},
+  },
 });
 
-// CALCULATE
-function calculate() {
-  var heightCm, weight;
+function rebuildChart() {
+  const history = loadHistory();
 
-  if (hUnit === 'cm') {
-    heightCm = parseFloat(document.getElementById('heightCm').value);
-    if (!heightCm || heightCm < 50 || heightCm > 300) {
-      alert('Please enter a valid height (50–300 cm).');
-      return;
-    }
-  } else {
-    var ft     = parseFloat(document.getElementById('heightFt').value) || 0;
-    var inches = parseFloat(document.getElementById('heightIn').value) || 0;
-    if (!ft && !inches) {
-      alert('Please enter your height in feet / inches.');
-      return;
-    }
-    heightCm = ft * 30.48 + inches * 2.54;
-  }
-
-  weight = parseFloat(document.getElementById('weightVal').value);
-  if (!weight || weight <= 0) {
-    alert('Please enter a valid weight.');
+  if (history.length === 0) {
+    bmiChart.data.labels = ["No data yet"];
+    bmiChart.data.datasets[0].data = [null];
+    bmiChart.update();
     return;
   }
-  if (wUnit === 'lb') weight *= 0.453592;
 
-  var hM   = heightCm / 100;
-  var bmi  = weight / (hM * hM);
-  var bmiR = parseFloat(bmi.toFixed(1));
+  // Pick up current theme primary color
+  const primary =
+    getComputedStyle(document.body).getPropertyValue("--primary").trim() ||
+    "#6366f1";
 
-  var cat      = getCategory(bmiR);
-  var catClass = cat.toLowerCase().replace(' ', '');
+  bmiChart.data.datasets[0].borderColor = primary;
+  bmiChart.data.datasets[0].pointBackgroundColor = primary;
+  bmiChart.data.datasets[0].backgroundColor = primary
+    .replace(")", ", 0.15)")
+    .replace("rgb", "rgba");
 
-  // Update gauge
-  drawGauge(bmiR);
-  document.getElementById('gaugeBmi').textContent = bmiR.toFixed(1);
-  var catEl = document.getElementById('gaugeCat');
-  catEl.textContent = cat;
-  catEl.className   = 'gauge-cat ' + catClass;
-
-  // Scale indicator
-  var clamp = Math.min(Math.max(bmiR, 10), 45);
-  var pct   = ((clamp - 10) / (45 - 10)) * 100;
-  var ind   = document.getElementById('scaleInd');
-  ind.style.opacity = '1';
-  ind.style.left    = pct + '%';
-
-  // Result message
-  document.getElementById('resultMsg').innerHTML =
-    '<span style="color:#fff;font-weight:500;">' + bmiR.toFixed(1) + ' kg/m²</span> — ' +
-    '<span style="color:' + getCatColor(bmiR) + '">' + cat + '</span><br>' +
-    '<span style="font-size:.77rem;">Height: ' + heightCm.toFixed(0) + 'cm · Weight: ' + weight.toFixed(1) + 'kg</span>';
-
-  // Hero stats
-  document.getElementById('dispBMI').textContent = bmiR.toFixed(1);
-  document.getElementById('dispCat').textContent = cat;
-
-  // Tips
-  renderTips(cat);
-
-  // History chart
-  var now   = new Date();
-  var label = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) + ' ' +
-              now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-  history.push({ label: label, bmi: bmiR });
-  histChart.data.labels.push(label);
-  histChart.data.datasets[0].data.push(bmiR);
-  histChart.data.datasets[0].pointBackgroundColor =
-    histChart.data.datasets[0].data.map(function(v) { return getCatColor(v); });
-  histChart.update();
+  bmiChart.data.labels = history.map((e) => {
+    const d = new Date(e.date);
+    // Formats the date as "Jun 15", "Jun 16", etc.
+    return d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+  });
+  bmiChart.data.datasets[0].data = history.map((e) => e.bmi);
+  bmiChart.update();
 }
 
-function getCategory(bmi) {
-  if (bmi < 18.5) return 'Underweight';
-  if (bmi < 25)   return 'Normal weight';
-  if (bmi < 30)   return 'Overweight';
-  return 'Obesity';
+/* =========================================================
+   EVENT LISTENERS
+========================================================= */
+
+calculateBtn.addEventListener("click", calculateBMI);
+resetBtn.addEventListener("click", resetAll);
+
+/* =========================================================
+   CALCULATE BMI
+========================================================= */
+
+function calculateBMI() {
+  hideError();
+
+  let height = parseFloat(document.getElementById("height").value);
+  let weight = parseFloat(document.getElementById("weight").value);
+
+  const age = parseFloat(document.getElementById("age").value);
+  const gender = document.getElementById("gender").value;
+
+  const heightUnit = document.getElementById("heightUnit").value;
+  const weightUnit = document.getElementById("weightUnit").value;
+
+  /* ── Validation ── */
+  if (!height || !weight || height <= 0 || weight <= 0) {
+    showError("Please enter valid height and weight.");
+    return;
+  }
+
+  /* ── Unit conversions ── */
+  if (heightUnit === "ft") height = height * 30.48;
+  if (weightUnit === "lb") weight = weight * 0.453592;
+
+  if (height < 50 || height > 300) {
+    showError("Height seems unrealistic.");
+    return;
+  }
+  if (weight < 10 || weight > 500) {
+    showError("Weight seems unrealistic.");
+    return;
+  }
+
+  /* ── BMI ── */
+  const bmi = (weight / Math.pow(height / 100, 2)).toFixed(1);
+
+  bmiValue.innerText = bmi;
+  updateGauge(bmi);
+  resultsSection.classList.remove("hidden");
+
+  /* ── Healthy weight range ── */
+  const minWeight = (18.5 * Math.pow(height / 100, 2)).toFixed(1);
+  const maxWeight = (24.9 * Math.pow(height / 100, 2)).toFixed(1);
+  healthyWeight.innerText = `${minWeight} – ${maxWeight} kg`;
+
+  /* ── Water intake ── */
+  water.innerText = `${(weight * 0.033).toFixed(1)} Litres/day`;
+
+  /* ── Body fat estimation ── */
+  if (age && age > 0) {
+    const sexFactor = gender === "male" ? 1 : 0;
+    let bf = 1.2 * bmi + 0.23 * age - 10.8 * sexFactor - 5.4;
+    bf = Math.max(2, Math.min(bf, 65));
+    bodyFat.innerText = `${bf.toFixed(1)}%`;
+  } else {
+    bodyFat.innerText = "N/A";
+  }
+
+  /* ── Reset lists & table ── */
+  dietPlan.innerHTML = "";
+  workoutPlan.innerHTML = "";
+  clearActiveRows();
+
+  /* ── Category logic ── */
+  if (bmi < 18.5) {
+    lastBMICategory = "underweight";
+    category.innerText = "Underweight";
+    categoryBadge.innerText = "⚠️ Underweight";
+    message.innerText =
+      "You should focus on gaining healthy weight with nutrient-rich foods.";
+    lastCaloriesBase = 2650;
+    setCategoryColor("#f39c12");
+    activateRow("underweight-row");
+  } else if (bmi < 25) {
+    lastBMICategory = "normal";
+    category.innerText = "Normal";
+    categoryBadge.innerText = "✅ Healthy";
+    message.innerText =
+      "Great! Maintain your healthy lifestyle and stay active.";
+    lastCaloriesBase = 2200;
+    setCategoryColor("#2ecc71");
+    activateRow("normal-row");
+  } else if (bmi < 30) {
+    lastBMICategory = "overweight";
+    category.innerText = "Overweight";
+    categoryBadge.innerText = "📈 Overweight";
+    message.innerText =
+      "Focus on fat loss through exercise and a healthy diet.";
+    lastCaloriesBase = 1850;
+    setCategoryColor("#ff9800");
+    activateRow("overweight-row");
+  } else {
+    lastBMICategory = "obese";
+    category.innerText = "Obese";
+    categoryBadge.innerText = "🚨 Obese";
+    message.innerText =
+      "Adopt healthier habits and consult a fitness expert if needed.";
+    lastCaloriesBase = 1650;
+    setCategoryColor("#ff4d4d");
+    activateRow("obese-row");
+  }
+
+  /* ── Apply active goal overlay (or defaults) ── */
+  applyGoal(activeGoal);
+
+  /* ── Save to history & update chart ── */
+  pushToHistory(bmi, weight);
+  rebuildChart();
 }
 
-// HEALTH TIPS DATA
-var tipsData = {
-  'Underweight': [
-    {
-      icon: '<path d="M3 2l2 2m-2 6h5.5M3 14l2-2m7-8.5a6 6 0 1 1 0 12 6 6 0 0 1 0-12z"/>',
-      color: 'rgba(74,158,255,.25)',
-      title: 'Eat more frequently',
-      text: 'Aim for 5–6 smaller meals a day packed with proteins, healthy fats, and complex carbs.'
-    },
-    {
-      icon: '<path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/>',
-      color: 'rgba(74,158,255,.2)',
-      title: 'Nutrient-dense smoothies',
-      text: 'Blend bananas, nut butters, oats, whole milk and protein powder for calorie-rich snacks.'
-    },
-    {
-      icon: '<path d="M22 12h-4l-3 9L9 3l-3 9H2"/>',
-      color: 'rgba(74,158,255,.2)',
-      title: 'Strength training',
-      text: 'Light resistance exercises help you build lean muscle mass and support healthy weight gain.'
-    },
-  ],
-  'Normal weight': [
-    {
-      icon: '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>',
-      color: 'rgba(34,212,122,.2)',
-      title: 'Great job — maintain it!',
-      text: 'Your BMI is in the healthy range. Keep up your balanced diet and regular physical activity.'
-    },
-    {
-      icon: '<path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/>',
-      color: 'rgba(34,212,122,.2)',
-      title: 'Stay active',
-      text: 'Aim for 150 min of moderate cardio per week and 2 sessions of strength training.'
-    },
-    {
-      icon: '<path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/>',
-      color: 'rgba(34,212,122,.15)',
-      title: 'Hydrate well',
-      text: 'Drink at least 8 glasses of water daily to maintain metabolism and energy levels.'
-    },
-  ],
-  'Overweight': [
-    {
-      icon: '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>',
-      color: 'rgba(245,166,35,.2)',
-      title: 'Balanced diet focus',
-      text: 'Reduce processed foods and sugars. Focus on vegetables, lean proteins, and whole grains.'
-    },
-    {
-      icon: '<path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>',
-      color: 'rgba(245,166,35,.2)',
-      title: 'Increase activity',
-      text: 'Add 30 minutes of brisk walking daily. Small habits compound over time into big results.'
-    },
-    {
-      icon: '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>',
-      color: 'rgba(245,166,35,.15)',
-      title: 'Be kind to yourself',
-      text: 'Progress not perfection. Even 5–10% weight loss improves health significantly.'
-    },
-  ],
-  'Obesity': [
-    {
-      icon: '<path d="M22 12h-4l-3 9L9 3l-3 9H2"/>',
-      color: 'rgba(245,83,83,.2)',
-      title: 'Consult a healthcare provider',
-      text: 'A doctor can help with a personalized plan. Medical support makes a big difference.'
-    },
-    {
-      icon: '<rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>',
-      color: 'rgba(245,83,83,.2)',
-      title: 'Small sustainable steps',
-      text: 'Set achievable daily goals. Start with 10-minute walks and build gradually.'
-    },
-    {
-      icon: '<path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/>',
-      color: 'rgba(245,83,83,.15)',
-      title: 'Nutrition first',
-      text: 'Reduce calorie-dense foods. Keep a food diary to identify patterns and trigger foods.'
-    },
-  ]
+/* =========================================================
+   GOAL SYSTEM
+========================================================= */
+
+const GOAL_CONFIGS = {
+  lose: {
+    label: "🔻 Lose Weight",
+    calorieOffset: -400,
+    diet: [
+      "High-protein lean meats (chicken, turkey)",
+      "Non-starchy vegetables (broccoli, spinach)",
+      "Low-sugar fruits (berries, apple)",
+      "High-fibre whole grains (oats, quinoa)",
+      "Avoid refined sugars & processed foods",
+    ],
+    workout: [
+      "HIIT — 3× / week (20–30 min)",
+      "Strength training — 3× / week",
+      "Daily 30-min brisk walk",
+      "Active rest: yoga or stretching",
+    ],
+    tip: "Aim for a 300–500 kcal daily deficit. Strength training preserves muscle while you lose fat.",
+  },
+  maintain: {
+    label: "⚖️ Maintain Weight",
+    calorieOffset: 0,
+    diet: [
+      "Balanced diet: 40% carbs, 30% protein, 30% fat",
+      "Colourful vegetables & seasonal fruits",
+      "Whole grains & legumes",
+      "Lean protein (fish, eggs, pulses)",
+      "Stay hydrated — 8+ glasses/day",
+    ],
+    workout: [
+      "Cardio — 3× / week (30–45 min)",
+      "Strength training — 2× / week",
+      "Yoga or mobility work — 1× / week",
+      "Stay active throughout the day",
+    ],
+    tip: "Consistency beats intensity. Focus on sustainable habits rather than strict rules.",
+  },
+  gain: {
+    label: "💪 Gain Muscle",
+    calorieOffset: +400,
+    diet: [
+      "Calorie-dense whole foods (oats, rice, sweet potato)",
+      "High-protein: eggs, chicken, legumes, Greek yogurt",
+      "Healthy fats: peanut butter, avocado, nuts",
+      "Milk or plant-based high-calorie shakes",
+      "Eat every 3–4 hours; don't skip meals",
+    ],
+    workout: [
+      "Heavy compound lifts — 4× / week (squat, deadlift, bench)",
+      "Progressive overload: add weight each week",
+      "Rest 48 hrs between same muscle groups",
+      "Limit cardio to 1–2× / week (light)",
+    ],
+    tip: "Muscle grows during rest, not just training. Prioritise 7–9 hours of sleep.",
+  },
 };
 
-function renderTips(cat) {
-  var tips = tipsData[cat] || tipsData['Normal weight'];
-  var html = '';
-  tips.forEach(function(t) {
-    html +=
-      '<div class="tip-item">' +
-        '<div class="tip-icon" style="background:' + t.color + ';">' +
-          '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round">' + t.icon + '</svg>' +
-        '</div>' +
-        '<div class="tip-text"><strong>' + t.title + '</strong>' + t.text + '</div>' +
-      '</div>';
+function applyGoal(goal) {
+  const base = lastCaloriesBase;
+
+  if (!goal || !base) {
+    // No goal selected — use BMI-category defaults
+    setDefaultRecommendations();
+    return;
+  }
+
+  const cfg = GOAL_CONFIGS[goal];
+
+  // Calorie display
+  const adjusted = base + cfg.calorieOffset;
+  const low = adjusted - 100;
+  const high = adjusted + 100;
+  calories.innerText = `${low} – ${high} kcal/day`;
+
+  // Diet plan
+  dietPlan.innerHTML = "";
+  addDiet(cfg.diet);
+
+  // Workout plan
+  workoutPlan.innerHTML = "";
+  addWorkout(cfg.workout);
+
+  // Goal tip
+  const tipEl = document.getElementById("goalTip");
+  if (tipEl) {
+    tipEl.innerText = cfg.tip;
+    tipEl.classList.remove("hidden");
+  }
+}
+
+function setDefaultRecommendations() {
+  const tipEl = document.getElementById("goalTip");
+  if (tipEl) tipEl.classList.add("hidden");
+
+  if (lastBMICategory === "underweight") {
+    calories.innerText = "2500 – 2800 kcal/day";
+    addDiet(["Milk & Dairy", "Eggs", "Bananas", "Nuts", "Peanut Butter"]);
+    addWorkout([
+      "Strength Training",
+      "Pushups",
+      "Squats",
+      "Resistance Training",
+    ]);
+  } else if (lastBMICategory === "normal") {
+    calories.innerText = "2000 – 2400 kcal/day";
+    addDiet([
+      "Balanced Diet",
+      "Vegetables",
+      "Fruits",
+      "Protein",
+      "Whole Grains",
+    ]);
+    addWorkout(["Jogging", "Cycling", "Walking", "Yoga"]);
+  } else if (lastBMICategory === "overweight") {
+    calories.innerText = "1700 – 2000 kcal/day";
+    addDiet(["Salads", "High Protein Foods", "Low Sugar", "More Fibre"]);
+    addWorkout(["Running", "HIIT", "Cardio", "Cycling"]);
+  } else if (lastBMICategory === "obese") {
+    calories.innerText = "1500 – 1800 kcal/day";
+    addDiet([
+      "Protein Rich Foods",
+      "Vegetables",
+      "Low Carb Meals",
+      "More Water",
+    ]);
+    addWorkout(["Walking", "Swimming", "Cycling", "Light Cardio"]);
+  }
+}
+
+function selectGoal(goal) {
+  activeGoal = goal;
+
+  // Update button states
+  document.querySelectorAll(".goal-btn").forEach((btn) => {
+    btn.classList.toggle("active", btn.dataset.goal === goal);
   });
-  document.getElementById('tipsList').innerHTML = html;
+
+  // If a BMI has already been calculated, re-apply
+  if (lastBMICategory) {
+    dietPlan.innerHTML = "";
+    workoutPlan.innerHTML = "";
+    applyGoal(activeGoal);
+  }
 }
 
-function clearHistory() {
-  history = [];
-  histChart.data.labels = [];
-  histChart.data.datasets[0].data = [];
-  histChart.update();
+/* =========================================================
+   UPDATE GAUGE
+========================================================= */
+
+function updateGauge(bmi) {
+  const degree = Math.min((bmi / 40) * 360, 360);
+  gauge.style.background = `conic-gradient(
+    var(--primary) 0deg,
+    var(--primary) ${degree}deg,
+    rgba(255,255,255,0.12) ${degree}deg
+  )`;
 }
 
+/* =========================================================
+   ADD DIET / WORKOUT ITEMS
+========================================================= */
 
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Enter') calculate();
+function addDiet(items) {
+  items.forEach((item) => {
+    const li = document.createElement("li");
+    li.innerText = item;
+    dietPlan.appendChild(li);
+  });
+}
+
+function addWorkout(items) {
+  items.forEach((item) => {
+    const li = document.createElement("li");
+    li.innerText = item;
+    workoutPlan.appendChild(li);
+  });
+}
+
+/* =========================================================
+   CATEGORY COLORS
+========================================================= */
+
+function setCategoryColor(color) {
+  categoryBadge.style.background = `${color}20`;
+  categoryBadge.style.color = color;
+}
+
+/* =========================================================
+   ACTIVE TABLE ROW
+========================================================= */
+
+function activateRow(id) {
+  const row = document.getElementById(id);
+  if (row) row.classList.add("active-row");
+}
+
+function clearActiveRows() {
+  document.querySelectorAll(".bmi-table tbody tr").forEach((row) => {
+    row.classList.remove("active-row");
+  });
+}
+
+/* =========================================================
+   RESET ALL
+========================================================= */
+
+function resetAll() {
+  document.getElementById("height").value = "";
+  document.getElementById("weight").value = "";
+  document.getElementById("age").value = "";
+  document.getElementById("gender").value = "male";
+
+  bmiValue.innerText = "0";
+  category.innerText = "Your Category";
+  categoryBadge.innerText = "Healthy";
+  message.innerText = "Your health insights will appear here.";
+  calories.innerText = "0 kcal/day";
+  water.innerText = "0 Litres/day";
+  healthyWeight.innerText = "0 – 0 kg";
+  bodyFat.innerText = "0%";
+
+  dietPlan.innerHTML = "";
+  workoutPlan.innerHTML = "";
+
+  gauge.style.background = `conic-gradient(var(--primary) 0deg, rgba(255,255,255,0.1) 0deg)`;
+
+  resultsSection.classList.add("hidden");
+  clearActiveRows();
+  hideError();
+
+  // Reset goal state
+  lastBMICategory = null;
+  lastCaloriesBase = 0;
+
+  const tipEl = document.getElementById("goalTip");
+  if (tipEl) tipEl.classList.add("hidden");
+}
+
+/* =========================================================
+   ERROR HANDLING
+========================================================= */
+
+function showError(msg) {
+  errorBox.innerText = msg;
+  errorBox.classList.remove("hidden");
+}
+
+function hideError() {
+  errorBox.classList.add("hidden");
+}
+
+/* =========================================================
+   CHANGE THEME
+========================================================= */
+
+function changeTheme(theme) {
+  document.body.className = theme;
+  localStorage.setItem("selectedTheme", theme);
+  // Small delay so CSS vars update first
+  setTimeout(rebuildChart, 50);
+}
+
+/* =========================================================
+   ON LOAD
+========================================================= */
+
+window.addEventListener("DOMContentLoaded", () => {
+  const savedTheme = localStorage.getItem("selectedTheme");
+  if (savedTheme) document.body.className = savedTheme;
+
+  // Populate chart from saved history
+  rebuildChart();
 });
 
+/* =========================================================
+   ENTER KEY SUPPORT
+========================================================= */
 
-document.querySelectorAll('input[type=number]').forEach(function(el) {
-  el.addEventListener('wheel', function(e) {
-    e.preventDefault();
-  }, { passive: false });
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") calculateBMI();
 });
+
+// Controls the custom + and - buttons for number inputs
+function stepInput(inputId, stepValue) {
+  const input = document.getElementById(inputId);
+  let currentValue = parseFloat(input.value) || 0;
+
+  let newValue = currentValue + stepValue;
+
+  // Prevent going below 0 for physical measurements
+  if (newValue < 0) {
+    newValue = 0;
+  }
+
+  input.value = newValue;
+}

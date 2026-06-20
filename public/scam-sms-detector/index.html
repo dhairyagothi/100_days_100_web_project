@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <title>ScamShield Lite</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <a href="../../index.html" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
+
+  <div class="container">
+
+    <h1>🛡️ ScamShield Lite</h1>
+    <p class="subtitle">Detect suspicious SMS messages instantly</p>
+
+    <textarea id="smsInput" placeholder="Paste your SMS here..." maxlength="500"></textarea>
+    
+    <div class="counter-container">
+      <span id="charCount">0</span> / 500 characters
+    </div>
+
+    <div class="templates-section">
+      <p class="templates-title">Try Quick Templates:</p>
+      <div class="templates-grid">
+        <button class="template-btn scam" onclick="useTemplate(1)">🚨 Fake Bank</button>
+        <button class="template-btn reward" onclick="useTemplate(2)">🎁 Fake Reward</button>
+        <button class="template-btn otp" onclick="useTemplate(3)">🔐 OTP Alert</button>
+        <button class="template-btn safe" onclick="useTemplate(4)">💬 Safe Chat</button>
+      </div>
+    </div>
+
+    <button class="analyze-btn" onclick="analyzeSMS()">Analyze Message</button>
+
+    <div class="output">
+
+      <div class="meter">
+        <div id="bar"></div>
+      </div>
+
+      <h2 id="result">Result will appear here</h2>
+      <p id="score"></p>
+      <div id="tags"></div>
+      <div class="result-disclaimer" role="note" aria-label="Analysis disclaimer">
+        <span class="disclaimer-icon">⚠️</span>
+        <p>
+            The scam analysis provided is based on automated checks and available data sources. While we strive for accuracy, results may occasionally
+            contain errors, outdated information, or false positives. Please verify
+            important findings through additional trusted sources before making
+            decisions.
+        </p>
+    </div>
+
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

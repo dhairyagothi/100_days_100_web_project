@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= food.name %> - Zomato Clone</title>
+  <link rel="stylesheet" href="/css/index.css">
+  <link rel="stylesheet" href="/css/restaurantDetail.css">
+</head>
+<body>
+
+  <%- include('partials/navbar') %>
+
+  <!-- ===== BREADCRUMB ===== -->
+  <div class="breadcrumb">
+    <span>Home</span> /
+    <span>India</span> /
+    <span>Delhi NCR</span> /
+    <span><%= food.location %></span> /
+    <span class="bc-active"><%= food.name %></span> /
+    <span class="bc-red">Order Online</span>
+  </div>
+
+  <div class="detail-wrapper">
+
+    <!-- ===== RESTAURANT HEADER ===== -->
+    <div class="rest-header">
+
+      <div class="rest-info">
+        <!-- Name -->
+        <h1 class="rest-name"><%= food.name %></h1>
+
+        <!-- Cuisines -->
+        <p class="rest-cuisine">
+          <%= food.cuisines ? food.cuisines.join(", ") : "Multi-Cuisine" %>
+        </p>
+
+        <p>Shop 61 & 62, 1st Floor, Eros Market Place, Shakti Khand 2, Indirapuram, Ghaziabad</p>
+       
+  <!-- Address (fake detailed) -->
+        <p class="rest-address">
+          <%= food.address %>, <%= food.location %>
+        </p>
+
+      <!-- Open now + Phone row -->
+        <div class="rest-meta-row">
+          <span class="open-badge">
+            🟢 Open now &nbsp;–&nbsp; 12noon – 2am (Today)
+            <span class="info-circle">ⓘ</span>
+          </span>
+          <span class="meta-sep">|</span>
+          <span class="phone-tag">
+            📞 <a href="tel:+919582224044">+91958222xxxx</a>
+          </span>
+        </div>
+      </div>
+
+       
+
+      <!-- Rating boxes -->
+      <div class="rest-ratings">
+        <div class="rating-box">
+          <div class="rating-top">
+            <span class="star-icon">⭐</span>
+            <span class="rating-num">
+              <%= food.diningRating ? food.diningRating.toFixed(1) : "—" %>
+            </span>
+          </div>
+          <span class="rating-label">Dining Ratings</span>
+        </div>
+
+        <div class="rating-box green">
+          <div class="rating-top">
+            <span class="star-icon green-star">⭐</span>
+            <span class="rating-num green-num">
+              <%= food.deliveryRating ? food.deliveryRating.toFixed(1) : "—" %>
+            </span>
+          </div>
+          <span class="rating-label">Delivery Ratings</span>
+        </div>
+      </div>
+
+    </div>
+    <!-- end rest-header -->
+
+
+
+    <!-- ===== GALLERY — 2 images only ===== -->
+    <div class="gallery-grid-2">
+
+      <!-- Image 1 — big left -->
+      <div class="gallery-main">
+        <% if (food.images && food.images[0]) { %>
+          <img
+            src="<%= food.images[0] %>"
+            alt="<%= food.name %>"
+            class="gallery-img-main"
+          />
+        <% } else { %>
+          <div class="gallery-placeholder"></div>
+        <% } %>
+        <span class="delivery-tag">Delivery only</span>
+      </div>
+
+      <!-- Image 2 — right side with View Gallery overlay -->
+      <div class="gallery-second">
+        <% if (food.images && food.images[1]) { %>
+          <img
+            src="<%= food.images[1] %>"
+            alt="<%= food.name %> 2"
+            class="gallery-img-second"
+          />
+        <% } else { %>
+          <div class="gallery-placeholder"></div>
+        <% } %>
+        <div class="view-gallery-overlay">View Gallery</div>
+      </div>
+
+    </div>
+    <!-- end gallery -->
+
+    <!-- ===== TAB NAV ===== -->
+    <div class="tab-nav">
+      <a href="#overview" class="tab-link">Overview</a>
+      <a href="#order"    class="tab-link active">Order Online</a>
+      <a href="#photos"   class="tab-link">Photos</a>
+      <a href="#menu"     class="tab-link">Menu</a>
+    </div>
+
+    
+
+      <!-- RIGHT content -->
+      <div class="menu-content">
+
+        <!-- Header -->
+        <div class="order-header">
+          <h2 class="order-title">Order Online</h2>
+          <div class="order-meta">
+            <span class="meta-tag">✅ Live track your order</span>
+            <span class="divider">|</span>
+            <span class="meta-tag">🕐 20 min</span>
+          </div>
+        </div>
+
+        <!-- Search -->
+        <div class="menu-search-wrap">
+          <span class="search-icon">🔍</span>
+          <input type="text" class="menu-search" placeholder="Search within menu" />
+          <span class="search-clear">✕</span>
+        </div>
+
+       
+
+        <!-- Menu item 1 -->
+        <div class="menu-item">
+          <div class="menu-item-info">
+            <div class="veg-icon veg">▲</div>
+            <h4 class="dish-name"><%= food.name %> Special (serves 1)</h4>
+            <p class="dish-desc">
+              Authentic <%= food.cuisines ? food.cuisines[0] : "" %> dish
+              stir-fried with fresh ingredients and aromatic spices ...
+              <span class="read-more">read more</span>
+            </p>
+            <p class="dish-price">
+              ₹<%= food.priceForTwo ? Math.round(food.priceForTwo / 2) : 299 %>
+            </p>
+          </div>
+          <div class="menu-item-right">
+            <% if (food.images && food.images[0]) { %>
+              <img src="<%= food.images[0] %>" alt="dish" class="menu-item-img" />
+            <% } %>
+            <button class="add-btn">ADD +</button>
+          </div>
+        </div>
+
+        <!-- Menu item 2 -->
+        <div class="menu-item">
+          <div class="menu-item-info">
+            <div class="veg-icon nonveg">▲</div>
+            <h4 class="dish-name"><%= food.name %> Combo (serves 2)</h4>
+            <p class="dish-desc">
+              Delicious combo with <%= food.cuisines ? food.cuisines.join(" & ") : "mixed" %>
+              flavours, served with rice and chutney ...
+              <span class="read-more">read more</span>
+            </p>
+            <p class="dish-price">
+              ₹<%= food.priceForTwo ? food.priceForTwo : 599 %>
+            </p>
+          </div>
+          <div class="menu-item-right">
+            <% if (food.images && food.images[1]) { %>
+              <img src="<%= food.images[1] %>" alt="dish" class="menu-item-img" />
+            <% } %>
+            <button class="add-btn">ADD +</button>
+          </div>
+        </div>
+
+        <!-- Info card — price for two -->
+        <div class="info-card">
+          <span class="info-icon">💰</span>
+          <div>
+            <p class="info-label">Price for Two</p>
+            <p class="info-value">
+              ₹<%= food.priceForTwo ? food.priceForTwo.toLocaleString() : "N/A" %>
+            </p>
+          </div>
+        </div>
+
+      </div>
+      <!-- end menu-content -->
+
+    </div>
+    <!-- end order-section -->
+
+  </div>
+  <!-- end detail-wrapper -->
+
+  <%- include('partials/footer') %>
+
+</body>
+</html>
