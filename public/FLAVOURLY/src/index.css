@@ -1,0 +1,47 @@
+:root {
+  --primary: #d9534f;
+  --secondary: #f0ad4e;
+  --background: #fff;
+  --surface: #000;
+  --text-main: #fff;
+  --text-muted: #999;
+  --border: #333;
+  --danger: #d9534f;
+  --success: #5cb85c;
+  
+  font-family: 'Amatic SC', system-ui, -apple-system, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: dark;
+  color: var(--text-main);
+  background-color: var(--surface);
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html, body {
+  height: 100%;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body, h1, h2, h3, h4, h5, h6 {
+  font-family: 'Amatic SC', sans-serif;
+}
+
+h1 {
+  font-size: 5rem;
+  letter-spacing: 2px;
+}
+
+p, button, input {
+  font-family: 'Amatic SC', sans-serif;
+}

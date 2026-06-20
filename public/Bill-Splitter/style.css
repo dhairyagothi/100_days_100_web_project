@@ -127,6 +127,80 @@ body {
 .header-actions {
   display: flex;
   gap: 8px;
+  align-items: center;
+}
+
+/* ================================
+   Currency Picker
+================================ */
+.currency-picker {
+  position: relative;
+}
+
+.btn-currency {
+  width: 38px; height: 38px;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  color: var(--text2);
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 15px;
+  transition: all var(--transition);
+}
+
+.btn-currency:hover {
+  background: var(--accent-light);
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.currency-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow);
+  padding: 6px;
+  display: none;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 116px;
+  z-index: 150;
+}
+
+.currency-dropdown.open {
+  display: flex;
+  animation: fadeUp 0.2s ease;
+}
+
+.currency-opt {
+  padding: 9px 12px;
+  border: none;
+  background: none;
+  border-radius: 8px;
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--text2);
+  cursor: pointer;
+  text-align: left;
+  transition: all var(--transition);
+}
+
+.currency-opt:hover {
+  background: var(--surface2);
+  color: var(--text);
+}
+
+.currency-opt.active {
+  background: var(--accent-light);
+  color: var(--accent);
+  font-weight: 700;
 }
 
 /* ================================
@@ -332,6 +406,22 @@ input::placeholder { color: var(--text3); }
 
 .input-prefix.sm input { padding: 8px 10px; font-size: 14px; }
 
+/* Optional / helper tag inside labels (e.g. "optional", "GST/VAT") */
+.optional-tag {
+  display: inline-block;
+  text-transform: none;
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  color: var(--text3);
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  padding: 2px 7px;
+  border-radius: 6px;
+  margin-left: 5px;
+  vertical-align: middle;
+}
+
 /* ================================
    Tip Presets
 ================================ */
@@ -360,6 +450,66 @@ input::placeholder { color: var(--text3); }
   border-color: var(--accent);
   background: var(--accent-light);
   color: var(--accent);
+}
+
+/* ================================
+   Toggle Switch (e.g. "Round up")
+================================ */
+.toggle-row {
+  height: 100%;
+}
+
+.toggle-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 100%;
+  padding: 12px 14px;
+  background: var(--bg2);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: border-color var(--transition), background var(--transition);
+}
+
+.toggle-label:hover { border-color: var(--accent); }
+
+.toggle-input { display: none; }
+
+.toggle-track {
+  position: relative;
+  width: 38px;
+  height: 21px;
+  flex-shrink: 0;
+  background: var(--border);
+  border-radius: 20px;
+  transition: background var(--transition);
+}
+
+.toggle-track::after {
+  content: '';
+  position: absolute;
+  top: 2px; left: 2px;
+  width: 17px; height: 17px;
+  background: var(--surface);
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+  transition: transform var(--transition);
+}
+
+.toggle-input:checked + .toggle-track {
+  background: var(--accent);
+}
+
+.toggle-input:checked + .toggle-track::after {
+  transform: translateX(17px);
+}
+
+.toggle-text {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--text2);
+  white-space: nowrap;
 }
 
 /* ================================
@@ -405,7 +555,7 @@ input::placeholder { color: var(--text3); }
   flex-shrink: 0;
 }
 
-.remove-p:hover { background: #fdecea; color: var(--accent); border-color: var(--accent); }
+.remove-p:hover { background: var(--accent-light); color: var(--accent); border-color: var(--accent); }
 
 .btn-add-p {
   background: none;
@@ -430,6 +580,35 @@ input::placeholder { color: var(--text3); }
 /* ================================
    Items List
 ================================ */
+.items-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.items-header-row label { margin-bottom: 0; }
+
+.btn-bulk-paste {
+  padding: 7px 13px;
+  border: 1.5px solid var(--border);
+  background: var(--surface2);
+  border-radius: 20px;
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text2);
+  cursor: pointer;
+  transition: all var(--transition);
+  white-space: nowrap;
+}
+
+.btn-bulk-paste:hover {
+  border-color: var(--blue);
+  background: var(--blue-light);
+  color: var(--blue);
+}
+
 .items-list {
   display: flex;
   flex-direction: column;
@@ -480,6 +659,26 @@ input::placeholder { color: var(--text3); }
   background: var(--blue-light);
   color: var(--blue);
   font-weight: 600;
+}
+
+/* Live running subtotal for the Items tab */
+.items-live-total {
+  text-align: right;
+  font-size: 13.5px;
+  color: var(--text2);
+  padding: 10px 14px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  margin-bottom: 18px;
+}
+
+.items-live-total strong {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  margin-left: 4px;
 }
 
 /* ================================
@@ -591,6 +790,40 @@ input::placeholder { color: var(--text3); }
   letter-spacing: -1px;
 }
 
+.per-occasion {
+  position: relative;
+  font-size: 13.5px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  opacity: 0.9;
+  margin-top: 10px;
+}
+
+/* ================================
+   Payment Status Section
+================================ */
+.payment-status-section {
+  margin-bottom: 20px;
+}
+
+.payment-status-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.paid-count {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--green);
+  background: var(--green-light);
+  padding: 4px 11px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
 /* ================================
    Breakdown List
 ================================ */
@@ -684,6 +917,40 @@ input::placeholder { color: var(--text3); }
   color: var(--yellow);
   font-weight: 500;
   margin-bottom: 14px;
+}
+
+/* ================================
+   Running Total Bar (Custom Split)
+================================ */
+.running-total-bar {
+  position: relative;
+  height: 34px;
+  background: var(--bg2);
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+  margin-bottom: 18px;
+}
+
+.running-fill {
+  position: absolute;
+  top: 0; left: 0; bottom: 0;
+  width: 0%;
+  background: linear-gradient(135deg, var(--blue) 0%, var(--accent) 100%);
+  transition: width 0.3s ease;
+}
+
+.running-label {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: 0.2px;
 }
 
 /* ================================
@@ -945,6 +1212,15 @@ input::placeholder { color: var(--text3); }
   margin-bottom: 20px;
 }
 
+.modal-sub code {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--accent);
+  background: var(--bg2);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
 #qrcode {
   display: flex;
   justify-content: center;
@@ -965,6 +1241,112 @@ input::placeholder { color: var(--text3); }
   padding: 8px;
   background: var(--bg2);
   border-radius: 6px;
+}
+
+/* ================================
+   Bulk Paste Modal
+================================ */
+#bulkModalOverlay .modal {
+  width: min(480px, 92vw);
+  text-align: left;
+}
+
+#bulkModalOverlay .modal-header { text-align: left; }
+
+textarea {
+  width: 100%;
+  padding: 12px 14px;
+  background: var(--bg2);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--text);
+  outline: none;
+  resize: vertical;
+  transition: border-color var(--transition), background var(--transition);
+}
+
+textarea:focus {
+  border-color: var(--accent);
+  background: var(--surface);
+}
+
+textarea::placeholder { color: var(--text3); }
+
+/* ================================
+   Toast
+================================ */
+.toast {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%) translateY(16px);
+  background: var(--text);
+  color: var(--bg);
+  padding: 12px 22px;
+  border-radius: 30px;
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  font-weight: 600;
+  box-shadow: var(--shadow);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  z-index: 400;
+  white-space: nowrap;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+  pointer-events: auto;
+}
+
+/* ================================
+   Sticky Calculate Bar (mobile)
+================================ */
+.sticky-calc-bar {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  box-shadow: 0 -4px 16px rgba(0,0,0,0.08);
+  z-index: 90;
+}
+
+.sticky-total {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.sticky-calc-btn {
+  padding: 10px 20px;
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition);
+  white-space: nowrap;
+}
+
+.sticky-calc-btn:hover { background: var(--accent2); }
+
+@media (min-width: 640px) {
+  .sticky-calc-bar { display: none !important; }
 }
 
 /* ================================
@@ -991,4 +1373,7 @@ input::placeholder { color: var(--text3); }
   .per-amount { font-size: 38px; }
   .participant-row { grid-template-columns: 1fr 1fr auto; }
   .field-row { grid-template-columns: 1fr; }
+  .currency-dropdown { right: -8px; }
+  .items-header-row { flex-wrap: wrap; gap: 8px; }
+  .toast { bottom: 92px; max-width: 90vw; white-space: normal; text-align: center; }
 }

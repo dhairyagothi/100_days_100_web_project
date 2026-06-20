@@ -117,6 +117,7 @@ body.dark-mode .warning-panel {
 body.dark-mode input::placeholder,
 body.dark-mode textarea::placeholder {
     color: #94a3b8 !important;
+ }
 }
 
 /* ===== NAVBAR ACTIONS ===== */
@@ -197,6 +198,11 @@ body.dark-mode .site-header {
 body.dark-mode .advanced-fields {
     background-color: #1e293b !important;
     border-color: #334155 !important;
+    color: #f8fafc !important;
+}
+
+body.dark-mode .advanced-toggle {
+    color: #f8fafc !important;
 }
 
 body.dark-mode .advanced-fields .form-field label {
@@ -213,3 +219,88 @@ body.dark-mode .advanced-fields .file-upload-ui small {
     color: #94a3b8 !important;
 }
 }
+/* Doctor card service badges */
+body.dark-mode .service-badge{
+    background-color: #334155 !important;
+    color: #f8fafc !important;
+    border: 1px solid #475569 !important;
+}
+
+body.dark-mode .doctor-name,
+body.dark-mode .doctor-specialty,
+body.dark-mode .doctor-info span{
+    color: #f8fafc !important;
+}
+
+body.dark-mode .doctor-info i{
+    color: #38bdf8 !important;
+}
+/* ===== Dashboard Cards ===== */
+body.dark-mode .card h2,
+body.dark-mode .card h3,
+body.dark-mode .card h4,
+body.dark-mode .card p,
+body.dark-mode .card span {
+    color: #f8fafc !important;
+}
+
+/* ===== Empty Status ===== */
+body.dark-mode .empty-status,
+body.dark-mode .empty-status p,
+body.dark-mode .empty-status i {
+    color: #cbd5e1 !important;
+}
+
+/* ===== Quick Actions ===== */
+body.dark-mode .quick-action-btn {
+    background: #334155 !important;
+    border: 1px solid #475569 !important;
+}
+
+body.dark-mode .quick-action-btn span,
+body.dark-mode .quick-action-btn i {
+    color: #f8fafc !important;
+}
+
+/* ===== Emergency Services ===== */
+body.dark-mode .emergency-btn {
+    background: #334155 !important;
+    border: 1px solid #475569 !important;
+}
+
+body.dark-mode .emergency-btn span {
+    color: #f8fafc !important;
+}
+
+/* ===== Health Monitoring ===== */
+body.dark-mode .health-item {
+    background: #334155 !important;
+    border: 1px solid #475569 !important;
+}
+
+body.dark-mode .health-label,
+body.dark-mode .health-value,
+body.dark-mode .health-status {
+    color: #f8fafc !important;
+}
+
+/* ===== Progress Stepper ===== */
+body.dark-mode .step-content h4,
+body.dark-mode .step-content p {
+    color: #f8fafc !important;
+}
+body.dark-mode .quick-action-btn{
+    background:#334155 !important;
+    border:1px solid #475569 !important;
+}
+
+body.dark-mode .quick-action-btn:hover{
+    background:#475569 !important;
+}
+
+body.dark-mode .quick-action-btn span,
+body.dark-mode .quick-action-btn i{
+    color:#f8fafc !important;
+}
+
+

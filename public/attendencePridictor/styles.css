@@ -26,7 +26,7 @@
   --info-bg: rgba(59, 130, 246, 0.1);
 }
 
-[data-theme="dark"] {
+[data-theme='dark'] {
   --bg: #0f172a;
   --bg-card: #1e293b;
   --text: #f1f5f9;
@@ -40,7 +40,9 @@
 }
 
 /* ===== Reset & Base ===== */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -56,7 +58,9 @@ body {
   color: var(--text);
   line-height: 1.6;
   min-height: 100vh;
-  transition: background var(--transition), color var(--transition);
+  transition:
+    background var(--transition),
+    color var(--transition);
 }
 
 /* ===== Header ===== */
@@ -106,15 +110,17 @@ body {
   align-items: center;
   justify-content: center;
   font-size: 1.25rem;
-  transition: transform var(--transition), background var(--transition);
+  transition:
+    transform var(--transition),
+    background var(--transition);
 }
 
 .theme-toggle:hover {
   transform: scale(1.05);
 }
 
-[data-theme="light"] .theme-toggle__icon--dark,
-[data-theme="dark"] .theme-toggle__icon--light {
+[data-theme='light'] .theme-toggle__icon--dark,
+[data-theme='dark'] .theme-toggle__icon--light {
   display: none;
 }
 
@@ -135,11 +141,17 @@ body {
   border-radius: var(--radius-lg);
   padding: 1.5rem;
   box-shadow: var(--shadow);
-  transition: background var(--transition), border-color var(--transition);
+  transition:
+    background var(--transition),
+    border-color var(--transition);
 }
 
 .card--hero {
-  background: linear-gradient(135deg, var(--bg-card) 0%, var(--primary-light) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--bg-card) 0%,
+    var(--primary-light) 100%
+  );
 }
 
 .card__header {
@@ -195,7 +207,9 @@ body {
   color: var(--text);
   font-family: var(--font);
   font-size: 0.95rem;
-  transition: border-color var(--transition), box-shadow var(--transition);
+  transition:
+    border-color var(--transition),
+    box-shadow var(--transition);
 }
 
 .form-group input:focus {
@@ -219,7 +233,9 @@ body {
   font-weight: 500;
   cursor: pointer;
   border: none;
-  transition: background var(--transition), transform var(--transition);
+  transition:
+    background var(--transition),
+    transform var(--transition);
 }
 
 .btn:active {
@@ -309,7 +325,9 @@ body {
   stroke-linecap: round;
   stroke-dasharray: 534;
   stroke-dashoffset: 534;
-  transition: stroke-dashoffset 0.8s ease, stroke 0.4s ease;
+  transition:
+    stroke-dashoffset 0.8s ease,
+    stroke 0.4s ease;
 }
 
 .meter__progress--warning {
@@ -412,11 +430,21 @@ body {
   color: var(--text-muted);
 }
 
-.stat-card--safe .stat-card__value { color: var(--safe); }
-.stat-card--warning .stat-card__value { color: var(--warning); }
-.stat-card--recovery .stat-card__value { color: var(--info); }
-.stat-card--prediction .stat-card__value { color: var(--primary); }
-.stat-card--target .stat-card__value { color: var(--safe); }
+.stat-card--safe .stat-card__value {
+  color: var(--safe);
+}
+.stat-card--warning .stat-card__value {
+  color: var(--warning);
+}
+.stat-card--recovery .stat-card__value {
+  color: var(--info);
+}
+.stat-card--prediction .stat-card__value {
+  color: var(--primary);
+}
+.stat-card--target .stat-card__value {
+  color: var(--safe);
+}
 
 .stat-card--danger-border {
   border-color: var(--danger);
@@ -446,7 +474,9 @@ body {
   border: 1px solid var(--border);
   border-radius: var(--radius);
   cursor: pointer;
-  transition: border-color var(--transition), background var(--transition);
+  transition:
+    border-color var(--transition),
+    background var(--transition);
 }
 
 .subject-item:hover {
@@ -518,6 +548,18 @@ body {
   background: transparent;
   max-width: 420px;
   width: 90%;
+
+  /* Position modal in center of viewport */
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+
+  /* Prevent overflow on small screen sizes */
+  max-height: calc(100vh - 2rem);
+  overflow-y: auto;
 }
 
 .modal::backdrop {

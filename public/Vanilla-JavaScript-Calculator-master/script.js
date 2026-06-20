@@ -763,3 +763,30 @@ if (clearHistoryBtn) {
 // Load history on page load
 loadHistoryFromStorage();
 // ========== END HISTORY FUNCTIONS ==========
+// ===== THEME TOGGLE =====
+
+const themeToggle = document.getElementById("theme-toggle");
+
+function applyTheme(theme) {
+  document.documentElement.setAttribute("data-theme", theme);
+
+  if (themeToggle) {
+    themeToggle.textContent = theme === "dark" ? "🌙" : "☀️";
+  }
+
+  localStorage.setItem("calculatorTheme", theme);
+}
+
+const savedTheme =
+  localStorage.getItem("calculatorTheme") || "dark";
+
+applyTheme(savedTheme);
+
+if (themeToggle) {
+  themeToggle.addEventListener("click", () => {
+    const current =
+      document.documentElement.getAttribute("data-theme") || "dark";
+
+    applyTheme(current === "dark" ? "light" : "dark");
+  });
+}
