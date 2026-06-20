@@ -375,6 +375,7 @@ function buildProjectCardHTML({
   } else {
     projectFolder = name.replace(/\s+/g, "_");
   }
+  // Security Fix: Using encodeURIComponent to prevent DOM XSS via unescaped projectName/projectPath in img src (Issue #8670)
   const safeProjectFolder = encodeURIComponent(projectFolder);
 
   const folderDecoded = decodeURIComponent(projectFolder);
