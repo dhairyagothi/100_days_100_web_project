@@ -44,13 +44,30 @@ function wmoInfo(code, isNight) {
 }
 
 function wmoTheme(code, isNight) {
-  if (isNight) return "night";
-  if (code === 0 || code === 1) return "sunny";
-  if (code >= 51 && code <= 82) return "rainy";
-  if (code >= 71 && code <= 86) return "snowy";
-  if (code >= 95) return "rainy";
-  if (code >= 2)  return "cloudy";
-  return "default";
+  const isSnow = (code >= 71 && code <= 77) || code === 85 || code === 86;
+  const isRain = (code >= 51 && code <= 65) || (code >= 80 && code <= 82);
+  const isStorm = code >= 95;
+  const isFog = code === 45 || code === 48;
+  const isCloudy = code === 2 || code === 3;
+  const isClear = code === 0 || code === 1;
+
+  if (isNight) {
+    if (isClear) return "night";
+    if (isSnow) return "snowy-night";
+    if (isRain) return "rainy-night";
+    if (isStorm) return "stormy-night";
+    if (isFog) return "foggy-night";
+    if (isCloudy) return "cloudy-night";
+    return "night";
+  } else {
+    if (isClear) return "sunny";
+    if (isSnow) return "snowy";
+    if (isRain) return "rainy";
+    if (isStorm) return "stormy";
+    if (isFog) return "foggy";
+    if (isCloudy) return "cloudy";
+    return "default";
+  }
 }
 
 const AQI_LEVELS = [
@@ -227,6 +244,20 @@ async function fetchByCoords(lat, lon, name, country, timezone) {
     // Theme + particles
     const theme = wmoTheme(c.weather_code, isNight);
     appBody.setAttribute("data-weather-theme", theme);
+    
+    let tempC = c.temperature_2m;
+    if (currentUnit === "imperial") {
+      tempC = (tempC - 32) * 5 / 9;
+    }
+    let tempRange = "warm";
+    if (tempC < 0) tempRange = "freezing";
+    else if (tempC < 10) tempRange = "cold";
+    else if (tempC < 20) tempRange = "mild";
+    else if (tempC <= 30) tempRange = "warm";
+    else if (tempC <= 38) tempRange = "hot";
+    else tempRange = "extreme-hot";
+    appBody.setAttribute("data-weather-temp-range", tempRange);
+    
     startParticles(theme);
 
     // Fav button state
@@ -377,12 +408,24 @@ function startParticles(theme) {
   cancelAnimationFrame(animFrame);
   particles = [];
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  if (theme === "rainy")  spawnRain();
-  else if (theme === "snowy")  spawnSnow();
-  else if (theme === "sunny")  spawnSparkles();
-  else if (theme === "night")  spawnStars();
-  else return;
-  animateParticles(theme);
+  
+  let pType = "none";
+  if (theme.startsWith("rainy") || theme.startsWith("stormy")) {
+    spawnRain();
+    pType = "rainy";
+  } else if (theme.startsWith("snowy")) {
+    spawnSnow();
+    pType = "snowy";
+  } else if (theme === "sunny") {
+    spawnSparkles();
+    pType = "sunny";
+  } else if (theme.endsWith("-night") || theme === "night") {
+    spawnStars();
+    pType = "night";
+  } else {
+    return;
+  }
+  animateParticles(pType);
 }
 
 function spawnRain() {
@@ -412,25 +455,25 @@ function spawnStars() {
   });
 }
 
-function animateParticles(theme) {
+function animateParticles(pType) {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   particles.forEach(p => {
-    if (theme === "rainy") {
+    if (pType === "rainy") {
       ctx.save(); ctx.strokeStyle = `rgba(147,197,253,${p.alpha})`; ctx.lineWidth = 1;
       ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p.x - 2, p.y + p.len);
       ctx.stroke(); ctx.restore();
       p.y += p.speed;
       if (p.y > canvas.height) { p.y = -p.len; p.x = Math.random() * canvas.width; }
-    } else if (theme === "snowy") {
+    } else if (pType === "snowy") {
       ctx.save(); ctx.fillStyle = `rgba(255,255,255,${p.alpha})`;
       ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fill(); ctx.restore();
       p.y += p.speed; p.x += p.drift;
       if (p.y > canvas.height) { p.y = -5; p.x = Math.random() * canvas.width; }
-    } else if (theme === "sunny") {
+    } else if (pType === "sunny") {
       p.life += p.speed; if (p.life > 1) p.life = 0;
       ctx.save(); ctx.fillStyle = `rgba(253,224,71,${Math.sin(p.life * Math.PI) * 0.5})`;
       ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fill(); ctx.restore();
-    } else if (theme === "night") {
+    } else if (pType === "night") {
       p.twinkle += p.speed; if (p.twinkle > 1) p.twinkle = 0;
       ctx.save(); ctx.fillStyle = `rgba(255,255,255,${0.3 + Math.sin(p.twinkle * Math.PI) * 0.5})`;
       ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fill(); ctx.restore();
