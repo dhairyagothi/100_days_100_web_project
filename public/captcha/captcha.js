@@ -337,6 +337,44 @@ const updateLockoutUI = () => {
     }
 };
 
+// --- Persistent Stats Helpers ---
+const getStats = () => ({
+    attempts:    parseInt(localStorage.getItem('captcha_attempts')  || '0', 10),
+    successes:   parseInt(localStorage.getItem('captcha_success')   || '0', 10),
+    failures:    parseInt(localStorage.getItem('captcha_fail')      || '0', 10),
+    streak:      parseInt(localStorage.getItem('captcha_streak')    || '0', 10),
+    bestStreak:  parseInt(localStorage.getItem('captcha_best')      || '0', 10),
+    activity:    JSON.parse(localStorage.getItem('captcha_activity') || '[]'),
+});
+
+const saveStats = (stats) => {
+    localStorage.setItem('captcha_attempts',  stats.attempts);
+    localStorage.setItem('captcha_success',   stats.successes);
+    localStorage.setItem('captcha_fail',      stats.failures);
+    localStorage.setItem('captcha_streak',    stats.streak);
+    localStorage.setItem('captcha_best',      stats.bestStreak);
+    localStorage.setItem('captcha_activity',  JSON.stringify(stats.activity.slice(-20))); // keep last 20
+};
+
+const recordAttempt = (isCorrect) => {
+    const stats = getStats();
+    stats.attempts++;
+    if (isCorrect) {
+        stats.successes++;
+        stats.streak++;
+        if (stats.streak > stats.bestStreak) stats.bestStreak = stats.streak;
+    } else {
+        stats.failures++;
+        stats.streak = 0;
+    }
+    stats.activity.push({
+        result: isCorrect ? 'success' : 'fail',
+        type: selectedType,
+        time: new Date().toISOString(),
+    });
+    saveStats(stats);
+};
+
 const verifyCaptcha = () => {
   if (Date.now() < lockoutEndTime) {
       return;
@@ -348,6 +386,9 @@ const verifyCaptcha = () => {
   : textInput.value.trim().toLowerCase();
   
   const isCorrect = userInput === currentCaptcha.toString().toLowerCase();
+
+  // Persist the outcome immediately
+  recordAttempt(isCorrect);
   
   if (isCorrect) {
       resultMessage.textContent = "Very Good! You passed the Test.";
@@ -421,24 +462,97 @@ if (
 }
 
 if (dashboardAttempts) {
+    const renderDashboard = () => {
+        const stats = getStats();
 
-    const attempts =
-        localStorage.getItem("attempts") || 0;
+        // --- Core stat cards ---
+        document.getElementById('stat-attempts').textContent   = stats.attempts;
+        document.getElementById('stat-successes').textContent  = stats.successes;
+        document.getElementById('stat-failures').textContent   = stats.failures;
+        document.getElementById('stat-streak').textContent     = stats.streak;
+        document.getElementById('stat-best-streak').textContent = stats.bestStreak;
 
-    const successes =
-        localStorage.getItem("success") || 0;
+        // --- Success Rate ---
+        const rate = stats.attempts > 0
+            ? Math.round((stats.successes / stats.attempts) * 100)
+            : 0;
+        document.getElementById('stat-rate').textContent = `${rate}%`;
+        document.getElementById('progress-bar').style.width = `${rate}%`;
 
-    const failures =
-        localStorage.getItem("fail") || 0;
+        // --- Achievement Badges ---
+        const unlockBadge = (id, condition) => {
+            const card = document.getElementById(id);
+            if (!card) return;
+            const statusEl = card.querySelector('.achievement-status');
+            if (condition) {
+                card.classList.add('unlocked');
+                if (statusEl) {
+                    statusEl.className = 'achievement-status unlocked';
+                    statusEl.innerHTML = '<i class="fas fa-check"></i>';
+                }
+            }
+        };
+        unlockBadge('badge-beginner',     stats.successes >= 5);
+        unlockBadge('badge-intermediate', stats.successes >= 20);
+        unlockBadge('badge-expert',       stats.successes >= 50);
 
-    document.getElementById("stat-attempts").textContent =
-        attempts;
+        // --- Performance Insights ---
+        const insightsEl = document.getElementById('insights-text');
+        if (insightsEl) {
+            if (stats.attempts === 0) {
+                insightsEl.textContent = 'Start solving CAPTCHAs to get insights!';
+            } else if (rate >= 90) {
+                insightsEl.textContent = `🔥 Outstanding! You're passing ${rate}% of challenges. You're a CAPTCHA master!`;
+            } else if (rate >= 70) {
+                insightsEl.textContent = `👍 Great job! ${rate}% success rate. Keep it up to unlock more badges!`;
+            } else if (rate >= 50) {
+                insightsEl.textContent = `💪 You're halfway there with a ${rate}% success rate. Practice makes perfect!`;
+            } else {
+                insightsEl.textContent = `📚 ${rate}% success rate so far. Try easier difficulty to build your confidence!`;
+            }
+        }
 
-    document.getElementById("stat-successes").textContent =
-        successes;
+        // --- Recent Activity List ---
+        const listEl = document.getElementById('activity-list');
+        if (listEl) {
+            if (stats.activity.length === 0) {
+                listEl.innerHTML = '<div class="empty-state">No activity yet</div>';
+            } else {
+                // Show most-recent first, up to 10 entries
+                listEl.innerHTML = [...stats.activity].reverse().slice(0, 10).map(entry => {
+                    const date = new Date(entry.time);
+                    const timeStr = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                    const dateStr = date.toLocaleDateString([], { month: 'short', day: 'numeric' });
+                    const icon   = entry.result === 'success'
+                        ? '<i class="fas fa-check-circle" style="color:#10b981"></i>'
+                        : '<i class="fas fa-times-circle" style="color:#ef4444"></i>';
+                    const typeName = (entry.type || 'text').charAt(0).toUpperCase() + (entry.type || 'text').slice(1);
+                    return `
+                        <div class="activity-item">
+                            <span class="activity-icon">${icon}</span>
+                            <span class="activity-type">${typeName} CAPTCHA</span>
+                            <span class="activity-result" style="color:${entry.result === 'success' ? '#10b981' : '#ef4444'};font-weight:600">
+                                ${entry.result === 'success' ? 'Passed' : 'Failed'}
+                            </span>
+                            <span class="activity-time">${dateStr}, ${timeStr}</span>
+                        </div>`;
+                }).join('');
+            }
+        }
+    };
 
-    document.getElementById("stat-failures").textContent =
-        failures;
+    renderDashboard();
+
+    // --- Reset Button ---
+    const resetBtn = document.getElementById('reset-btn');
+    if (resetBtn) {
+        resetBtn.addEventListener('click', () => {
+            if (!confirm('Reset all statistics? This cannot be undone.')) return;
+            ['captcha_attempts','captcha_success','captcha_fail',
+             'captcha_streak','captcha_best','captcha_activity'].forEach(k => localStorage.removeItem(k));
+            renderDashboard();
+        });
+    }
 }
 
 // ==========================
