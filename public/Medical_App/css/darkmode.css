@@ -198,6 +198,11 @@ body.dark-mode .site-header {
 body.dark-mode .advanced-fields {
     background-color: #1e293b !important;
     border-color: #334155 !important;
+    color: #f8fafc !important;
+}
+
+body.dark-mode .advanced-toggle {
+    color: #f8fafc !important;
 }
 
 body.dark-mode .advanced-fields .form-field label {
@@ -212,6 +217,7 @@ body.dark-mode .advanced-fields .file-upload {
 body.dark-mode .advanced-fields .file-upload-ui span,
 body.dark-mode .advanced-fields .file-upload-ui small {
     color: #94a3b8 !important;
+}
 }
 /* Doctor card service badges */
 body.dark-mode .service-badge{
