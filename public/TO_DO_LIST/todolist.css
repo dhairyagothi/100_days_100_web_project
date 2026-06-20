@@ -1629,6 +1629,82 @@ input[type="date"].input-select {
   transform: translateY(-1px);
 }
 
+/* ---------- Light Theme ---------- */
+.theme-light {
+  --page-bg-start: #ffffff;
+  --page-bg-mid: #f0f0f0;
+  --page-bg-end: #e0e0e0;
+  --accent: #2563eb;
+  --accent-soft: rgba(37, 99, 235, 0.18);
+  --accent-gradient: linear-gradient(135deg, #2563eb, #3b82f6);
+  --glass-bg: rgba(255, 255, 255, 0.72);
+  --glass-border: rgba(37, 99, 235, 0.2);
+  --hero-tint: rgba(200, 200, 200, 0.75);
+  --text-primary: #111827;
+  --text-muted: rgba(17, 24, 39, 0.65);
+  --card-bg: rgba(255, 255, 255, 0.95);
+  --card-border: rgba(12, 22, 48, 0.08);
+}
+
+/* ---------- Dark Theme ---------- */
+.theme-dark {
+  --page-bg-start: #121212;
+  --page-bg-mid: #1e1e1e;
+  --page-bg-end: #000000;
+  --accent: #facc15;
+  --accent-soft: rgba(250, 204, 21, 0.18);
+  --accent-gradient: linear-gradient(135deg, #facc15, #f59e0b);
+  --glass-bg: rgba(30, 30, 30, 0.72);
+  --glass-border: rgba(250, 204, 21, 0.2);
+  --hero-tint: rgba(50, 50, 50, 0.75);
+  --text-primary: #f7f8ff;
+  --text-muted: rgba(247, 249, 255, 0.65);
+  --card-bg: rgba(20, 20, 20, 0.95);
+  --card-border: rgba(255, 255, 255, 0.08);
+}
+
+#theme-toggle {
+  position: relative;
+  width: 60px;
+  height: 30px;
+  background: var(--glass-bg);
+  border-radius: 30px;
+  border: 2px solid var(--glass-border);
+  cursor: pointer;
+  transition: background var(--transition);
+}
+
+#theme-toggle::after {
+  content: "🌙";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 26px;
+  height: 26px;
+  background: var(--accent);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: left var(--transition), transform var(--transition);
+}
+
+body.theme-dark #theme-toggle::after {
+  content: "☀️";
+  left: 32px;
+  background: var(--accent-gradient);
+}
+
+
+
+/* ---------- Empty State ---------- */
+.empty-state {
+/* ---------- Calendar Container ---------- */
+.calendar-container {
+  background: rgba(18, 20, 40, 0.9);
+  border: 1px solid rgba(124, 99, 255, 0.15);
+  border-radius: 16px;
+  padding: 24px;
 .doc-btn.del,
 .doc-btn-del {
   background: rgba(239, 68, 68, 0.12);

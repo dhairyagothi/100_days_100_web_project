@@ -17,6 +17,96 @@
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 
+<!-- Header with Navigation -->
+<header>
+  <nav class="navbar-container" aria-label="Main Navigation">
+    <button id="theme-toggle">Light/Dark</button>
+    <body class="theme-light"></body>
+    <ul class="navbar">
+      <li class="nav-left">
+        <ul>
+          <li>
+            <a
+              href="#"
+              id="nav-home"
+              onclick="showHome(); return false;"
+              aria-current="page"
+            >🏠 Home</a>
+          </li>
+          <li>
+            <a
+              href="#"
+              id="nav-documents"
+              onclick="showDocuments(); return false;"
+            >📄 Documents</a>
+          </li>
+        </ul>
+      </li>
+      <li class="nav-right">
+        <span class="theme-label">Theme</span>
+        <ul>
+          <li>
+            <button id="colour1" class="theme-btn" data-theme="theme1" aria-label="Sunset Theme"></button>
+          </li>
+          <li>
+            <button id="colour2" class="theme-btn" data-theme="theme2" aria-label="Ocean Theme"></button>
+          </li>
+          <li>
+            <button id="colour3" class="theme-btn" data-theme="theme3" aria-label="Forest Theme"></button>
+          </li>
+          <li>
+            <button id="colour4" class="theme-btn" data-theme="theme4" aria-label="Midnight Theme"></button>
+          </li>
+          <li>
+            <button id="colour5" class="theme-btn" data-theme="theme5" aria-label="Aurora Theme"></button>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<!-- Main Content -->
+<main>
+  <!-- Home Section -->
+  <section id="home-tab" aria-label="Home tab">
+    <div class="hero">
+      <div class="hero-badge">🚀 Stay Productive</div>
+      <h1 class="heading home-heading">JUST DO IT.</h1>
+      <p class="hero-subtitle">Organise your day, conquer your goals.</p>
+      <!-- Progress bar -->
+      <div class="progress-wrapper" id="progressWrapper">
+        <div class="progress-bar-track">
+          <div class="progress-bar-fill" id="progressFill"></div>
+        </div>
+        <output class="progress-text" id="progressText">0 / 0 done</output>
+      </div>
+    <nav class="sidebar-nav">
+      <a href="#" id="nav-home" class="sidebar-nav-item active" onclick="showSection('home'); return false;">
+        <span class="nav-icon">🏠</span>
+        Home
+      </a>
+      <a href="#" id="nav-documents" class="sidebar-nav-item" onclick="showSection('documents'); return false;">
+        <span class="nav-icon">📄</span>
+        Documents
+      </a>
+      <a href="#" id="nav-dashboard" class="sidebar-nav-item" onclick="showSection('dashboard'); return false;">
+        <span class="nav-icon">📊</span>
+        Dashboard
+      </a>
+      <a href="#" id="nav-achievements" class="sidebar-nav-item" onclick="showSection('achievements'); return false;">
+        <span class="nav-icon">🏅</span>
+        Achievements
+      </a>
+      <a href="#" id="nav-calendar" class="sidebar-nav-item" onclick="showSection('calendar'); return false;">
+        <span class="nav-icon">📅</span>
+        Calendar
+      </a>
+      <a href="#" id="nav-statistics" class="sidebar-nav-item" onclick="showSection('statistics'); return false;">
+        <span class="nav-icon">📈</span>
+        Statistics
+      </a>
+    </nav>
 <body class="theme1">
   <!-- Floating decorative shapes -->
   <div class="floating-shapes" aria-hidden="true">
