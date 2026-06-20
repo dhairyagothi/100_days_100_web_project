@@ -11,6 +11,18 @@ const importBtn = document.getElementById('import-btn');
 const importInput = document.getElementById('import-input');
 const colorPicker = document.getElementById('color-picker');
 const customColorWrapper = document.getElementById('custom-color-wrapper');
+const randomColorBtn = document.getElementById('random-color-btn');
+
+const palette = [
+    '#ffffff',
+    '#ff4757',
+    '#ffa502',
+    '#eccc68',
+    '#2ed573',
+    '#70a1ff',
+    '#1e90ff',
+    '#9b59b6'
+];
 
 let rows = parseInt(rowsInput.value);
 let cols = parseInt(colsInput.value);
@@ -20,6 +32,18 @@ let drawMode = true; // can be false (erase) or hex color string (draw)
 let animInterval = null;
 let originalGridData = [];
 let currentColor = '#ffffff';
+let randomColorMode = false;
+
+function getRandomColor() {
+    return palette[Math.floor(Math.random() * palette.length)];
+}
+
+function setRandomColorMode(enabled) {
+    randomColorMode = enabled;
+    randomColorBtn.classList.toggle('active', enabled);
+    randomColorBtn.setAttribute('aria-pressed', String(enabled));
+    randomColorBtn.textContent = enabled ? 'Random Colors: On' : 'Random Colors: Off';
+}
 
 function initGrid() {
     matrixEl.innerHTML = '';
@@ -36,24 +60,41 @@ function initGrid() {
             led.addEventListener('mousedown', (e) => {
                 e.preventDefault();
                 isDrawing = true;
-                
+
                 if (currentColor === 'eraser') {
                     drawMode = false;
+                    toggleLed(r, c, drawMode, led);
+                    return;
+                }
+
+                if (randomColorMode) {
+                    toggleLed(r, c, getRandomColor(), led);
+                    return;
+                }
+
+                const cellValue = gridData[r][c];
+                if (cellValue && cellValue === currentColor) {
+                    drawMode = false;
                 } else {
-                    const cellValue = gridData[r][c];
-                    if (cellValue && cellValue === currentColor) {
-                        drawMode = false;
-                    } else {
-                        drawMode = currentColor;
-                    }
+                    drawMode = currentColor;
                 }
                 toggleLed(r, c, drawMode, led);
             });
 
             led.addEventListener('mouseenter', () => {
-                if (isDrawing) {
-                    toggleLed(r, c, drawMode, led);
+                if (!isDrawing) return;
+
+                if (currentColor === 'eraser') {
+                    toggleLed(r, c, false, led);
+                    return;
                 }
+
+                if (randomColorMode) {
+                    toggleLed(r, c, getRandomColor(), led);
+                    return;
+                }
+
+                toggleLed(r, c, drawMode, led);
             });
 
             matrixEl.appendChild(led);
@@ -152,6 +193,10 @@ colorPicker.addEventListener('change', (e) => {
     setActiveColor(color, customColorWrapper);
 });
 
+randomColorBtn.addEventListener('click', () => {
+    setRandomColorMode(!randomColorMode);
+});
+
 playBtn.addEventListener('click', () => {
     stopAnimation();
     const type = animType.value;
@@ -223,7 +268,7 @@ importInput.addEventListener('change', (e) => {
     reader.onload = function(event) {
         try {
             const data = JSON.parse(event.target.result);
-            
+
             if (!data.grid || typeof data.grid.rows !== 'number' || typeof data.grid.columns !== 'number' || !Array.isArray(data.pattern)) {
                 throw new Error("Invalid format: Must contain grid rows, columns, and pattern array.");
             }
@@ -245,7 +290,7 @@ importInput.addEventListener('change', (e) => {
             colsInput.value = cols;
 
             initGrid();
-            
+
             for (let r = 0; r < rows; r++) {
                 for (let c = 0; c < cols; c++) {
                     const cell = data.pattern[r][c];
@@ -269,4 +314,5 @@ importInput.addEventListener('change', (e) => {
     reader.readAsText(file);
 });
 
+setRandomColorMode(false);
 initGrid();
