@@ -1,8 +1,4 @@
- from flask import Flask, render_template, redirect, url_for, request, flash, session
-from flask_sqlalchemy import SQLAlchemy
-from werkzeug.security import generate_password_hash, check_password_hash
-from datetime import datetime
-  flask import Flask, render_template, redirect, url_for, request, flash, session
+from flask import Flask, render_template, redirect, url_for, request, flash, session
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
@@ -17,7 +13,7 @@ db = SQLAlchemy(app)
 
 
 class User(db.Model):
-    id = db.Colufrommn(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(150), unique=True, nullable=False)
     password = db.Column(db.String(150), nullable=False)
 
@@ -204,29 +200,16 @@ def dashboard():
         contacts = Contact.query.filter_by(user_id=user_id).order_by(
             Contact.name.asc()
         ).all()
-if sort_order == "desc":
-    contacts = Contact.query.filter_by(user_id=user_id).order_by(Contact.name.desc()).all()
-else:
-    contacts = Contact.query.filter_by(user_id=user_id).order_by(Contact.name.asc()).all()
 
     contact_count = len(contacts)
-
-    return render_template(
-        "dashboard.html",
-        contacts=contacts,
-        contact_count=contact_count
-    contacts = Contact.query.filter_by(user_id=user_id).order_by(Contact.name).all()
-
-    contact_count = len(contacts)
-
-    return render_template(
-        "dashboard.html",
-        contacts=contacts,
-        contact_count=contact_count
     duplicates = scan_all_duplicates(user_id)
     duplicate_count = len(duplicates)
+
     return render_template(
-        "dashboard.html", contacts=contacts, duplicate_count=duplicate_count
+        "dashboard.html",
+        contacts=contacts,
+        contact_count=contact_count,
+        duplicate_count=duplicate_count,
     )
 
 
@@ -263,7 +246,7 @@ def add_contact():
 def edit_contact(id):
     if "user_id" not in session:
         return redirect(url_for("login"))
-    contact = Contact.query.get_or_404(id)
+    contact = Contact.query.filter_by(id=id, user_id=session["user_id"]).first_or_404()
     if request.method == "POST":
         name = request.form.get("name")
         email = request.form.get("email")
@@ -334,7 +317,7 @@ def save_pending_contact():
 
     edit_id = pending.get("edit_id")
     if edit_id:
-        contact = Contact.query.get_or_404(edit_id)
+        contact = Contact.query.filter_by(id=edit_id, user_id=session["user_id"]).first_or_404()
         contact.name = pending["name"]
         contact.email = pending["email"]
         contact.phone = pending["phone"]
@@ -453,11 +436,11 @@ def merge_contacts():
     )
 
 
-@app.route("/delete_contact/<int:id>")
+@app.route("/delete_contact/<int:id>", methods=["POST"])
 def delete_contact(id):
     if "user_id" not in session:
         return redirect(url_for("login"))
-    contact = Contact.query.get_or_404(id)
+    contact = Contact.query.filter_by(id=id, user_id=session["user_id"]).first_or_404()
     db.session.delete(contact)
     db.session.commit()
     return redirect(url_for("dashboard"))

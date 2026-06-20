@@ -76,6 +76,20 @@ input[type="number"] {
     text-align: center;
 }
 
+.random-color-btn {
+    white-space: nowrap;
+    font-size: 0.9rem;
+    background: #1b1b1b;
+    border-color: #555555;
+}
+
+.random-color-btn.active {
+    background: #2f2f2f;
+    color: #ffffff;
+    border-color: #7c3aed;
+    box-shadow: 0 0 10px rgba(124, 58, 237, 0.3);
+}
+
 .matrix-wrapper {
     display: flex;
     justify-content: center;

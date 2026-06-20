@@ -1,14 +1,18 @@
 let selectedImageAnswer = "";
 
+const resultMessage = document.getElementById("resultMessage");
+
+const captchaContainer = document.getElementById("captchaContainer");
+const textInput = document.getElementById("captchaInput");
+
+const refreshButton = document.querySelector(".refresh");
+const submitButton = document.querySelector(".submit");
+
+const dashboardAttempts = document.getElementById("stat-attempts");
+
 // Select DOM Elements
 const captchaTypeSelect = document.getElementById('captchaTypeSelect');
 let selectedType = "text";
-
-const captchaContainer = document.getElementById('captchaContainer');
-const textInput = document.getElementById('captchaInput');
-const refreshButton = document.querySelector('.refresh');
-const resultMessage = document.querySelector('.result');
-const submitButton = document.querySelector('.submit');
 const voiceField = document.getElementById('voiceField');
 const voiceSelect = document.getElementById('voiceSelect');
 const textCaptchaField = document.querySelector('.textcaptcha');
@@ -36,8 +40,8 @@ const addDifficultySelector = () => {
 
     selector.querySelectorAll('.diff-btn').forEach(btn => {
         btn.addEventListener('click', () => {
-            selector.querySelectorAll('.diff-btn').forEach(b => b.style.opacity = '0.5');
-            btn.style.opacity = '1';
+            selector.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');;
             selectedDifficulty = btn.dataset.diff;
             generateCaptcha();
         });
@@ -46,7 +50,7 @@ const addDifficultySelector = () => {
     // Set initial selected
     const initialBtn = selector.querySelector('.diff-btn[data-diff="medium"]');
     if (initialBtn) {
-        initialBtn.style.opacity = '1';
+        initialBtn.classList.add('active');
     }
 };
 
@@ -114,21 +118,38 @@ const generateMathCaptcha = () => {
 };
 
 const speakCaptcha = (text, repeat = 2, speed = 0.5) => {
-    return new Promise((resolve) => {
-        const utterance = new SpeechSynthesisUtterance();
-        utterance.text = Array(repeat).fill(text.split('').join(' ')).join('. . . ');
-        const selectedVoice = voiceSelect.value;
+  return new Promise((resolve, reject) => {
+    try {
+      const utterance = new SpeechSynthesisUtterance();
+
+      // Repeat characters with spacing
+      utterance.text = Array(repeat)
+        .fill(text.split('').join(' '))
+        .join('. . . ');
+
+      // Safely check if voiceSelect exists
+      if (typeof voiceSelect !== "undefined" && voiceSelect && voiceSelect.value) {
+        const voices = speechSynthesis.getVoices();
+        const selectedVoice = voices.find(v => v.name === voiceSelect.value);
         if (selectedVoice) {
-            const voice = speechSynthesis.getVoices().find(v => v.name === selectedVoice);
-            if (voice) utterance.voice = voice;
+          utterance.voice = selectedVoice;
         }
-        utterance.rate = speed;
-        utterance.onend = resolve;
-        speechSynthesis.speak(utterance);
-    });
+      }
+
+      utterance.rate = speed;
+      utterance.onend = resolve;
+      utterance.onerror = (err) => reject(err);
+
+      speechSynthesis.speak(utterance);
+    } catch (error) {
+      reject(error);
+    }
+  });
 };
 
+
 const populateVoiceList = () => {
+     if (!voiceSelect) return;
     const voices = speechSynthesis.getVoices();
     if (!voices.length) {
         voiceSelect.innerHTML = '<option value="">No voices available</option>';
@@ -295,13 +316,6 @@ const generateCaptcha = () => {
     }
 };
 
-// Math captcha numeric regex input validation
-textInput.addEventListener("input", () => {
-    if (selectedType.toLowerCase() === "math") {
-        textInput.value = textInput.value.replace(/[^0-9-]/g, "");
-    }
-});
-
 const lockoutUser = () => {
     lockoutEndTime = Date.now() + 60 * 1000;
     updateLockoutUI();
@@ -358,25 +372,117 @@ const verifyCaptcha = () => {
   }
 };
 
-// Event Listener for the dropdown menu selection state updates
-if (captchaTypeSelect) {
-    captchaTypeSelect.addEventListener("change", (event) => {
-        selectedType = event.target.value.toLowerCase(); 
-        textInput.value = "";
+
+// Initialize application processes on initial window load
+// ==========================
+// CAPTCHA PAGE INIT
+// ==========================
+
+if (
+    captchaTypeSelect &&
+    captchaContainer &&
+    textInput
+) {
+
+    addDifficultySelector();
+
+    selectedType =
+        captchaTypeSelect.value.toLowerCase();
+
+    generateCaptcha();
+
+    captchaTypeSelect.addEventListener("change", (e) => {
+        selectedType = e.target.value.toLowerCase();
         selectedImageAnswer = "";
-        generateCaptcha(); 
+        generateCaptcha();
+    });
+
+    if (refreshButton) {
+        refreshButton.addEventListener("click", () => {
+            if (Date.now() >= lockoutEndTime) {
+                generateCaptcha();
+            }
+        });
+    }
+
+    if (submitButton) {
+        submitButton.addEventListener(
+            "click",
+            verifyCaptcha
+        );
+    }
+
+    textInput.addEventListener("input", () => {
+        if (selectedType === "math") {
+            textInput.value =
+                textInput.value.replace(/[^0-9-]/g, "");
+        }
     });
 }
 
-refreshButton.addEventListener('click', () => {
-    if (Date.now() >= lockoutEndTime) generateCaptcha();
-});
+if (dashboardAttempts) {
 
-submitButton.addEventListener('click', verifyCaptcha);
+    const attempts =
+        localStorage.getItem("attempts") || 0;
 
-// Initialize application processes on initial window load
-addDifficultySelector();
-if (captchaTypeSelect) {
-    selectedType = captchaTypeSelect.value.toLowerCase(); 
+    const successes =
+        localStorage.getItem("success") || 0;
+
+    const failures =
+        localStorage.getItem("fail") || 0;
+
+    document.getElementById("stat-attempts").textContent =
+        attempts;
+
+    document.getElementById("stat-successes").textContent =
+        successes;
+
+    document.getElementById("stat-failures").textContent =
+        failures;
 }
-generateCaptcha();
+
+// ==========================
+// THEME TOGGLE - COMPLETE FIX
+// ==========================
+
+// Wait for DOM to load
+document.addEventListener('DOMContentLoaded', function() {
+    // Get elements
+    const toggleBtn = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+    
+    // If button doesn't exist, exit
+    if (!toggleBtn) return;
+    
+    // Get stored preference (default: true = dark mode)
+    let isDarkMode = localStorage.getItem('darkMode');
+    if (isDarkMode === null) {
+        isDarkMode = true;
+    } else {
+        isDarkMode = isDarkMode === 'true';
+    }
+    
+    // Apply theme function
+    function applyTheme(darkMode) {
+        if (darkMode) {
+            // Dark mode - remove light theme class
+            document.body.classList.remove('light-theme');
+            if (themeIcon) themeIcon.textContent = '☀️';
+        } else {
+            // Light mode - add light theme class
+            document.body.classList.add('light-theme');
+            if (themeIcon) themeIcon.textContent = '🌙';
+        }
+    }
+    
+    // Apply initial theme
+    applyTheme(isDarkMode);
+    
+    // Toggle on click
+    toggleBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        isDarkMode = !isDarkMode;
+        localStorage.setItem('darkMode', String(isDarkMode));
+        applyTheme(isDarkMode);
+    });
+});
