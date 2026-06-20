@@ -442,35 +442,47 @@ if (dashboardAttempts) {
 }
 
 // ==========================
-// Theme Toggle (Global)
+// THEME TOGGLE - COMPLETE FIX
 // ==========================
 
-// Select all toggle buttons (use a common class)
-const themeToggles = document.querySelectorAll(".theme");
-const themeIcon = document.getElementById("themeIcon");
-
-// Default = DARK MODE
-let isLightMode = JSON.parse(localStorage.getItem("lightMode")) || false;
-
-// Apply theme on load
-function updateTheme() {
-  if (isLightMode) {
-    document.body.classList.add("light-theme");
-    themeIcon.textContent = "🌙"; // show moon when light mode active
-  } else {
-    document.body.classList.remove("light-theme");
-    themeIcon.textContent = "☀️"; // show sun when dark mode active
-  }
-}
-
-// Toggle theme on any button click
-themeToggles.forEach(btn => {
-  btn.addEventListener("click", () => {
-    isLightMode = !isLightMode;
-    localStorage.setItem("lightMode", JSON.stringify(isLightMode));
-    updateTheme();
-  });
+// Wait for DOM to load
+document.addEventListener('DOMContentLoaded', function() {
+    // Get elements
+    const toggleBtn = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+    
+    // If button doesn't exist, exit
+    if (!toggleBtn) return;
+    
+    // Get stored preference (default: true = dark mode)
+    let isDarkMode = localStorage.getItem('darkMode');
+    if (isDarkMode === null) {
+        isDarkMode = true;
+    } else {
+        isDarkMode = isDarkMode === 'true';
+    }
+    
+    // Apply theme function
+    function applyTheme(darkMode) {
+        if (darkMode) {
+            // Dark mode - remove light theme class
+            document.body.classList.remove('light-theme');
+            if (themeIcon) themeIcon.textContent = '☀️';
+        } else {
+            // Light mode - add light theme class
+            document.body.classList.add('light-theme');
+            if (themeIcon) themeIcon.textContent = '🌙';
+        }
+    }
+    
+    // Apply initial theme
+    applyTheme(isDarkMode);
+    
+    // Toggle on click
+    toggleBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        isDarkMode = !isDarkMode;
+        localStorage.setItem('darkMode', String(isDarkMode));
+        applyTheme(isDarkMode);
+    });
 });
-
-// Initialize on page load
-updateTheme();
