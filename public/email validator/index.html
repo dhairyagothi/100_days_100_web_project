@@ -5,6 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Email Validator</title>
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="style.css" />
 </head>
 
@@ -16,9 +17,39 @@
     Back to Home
   </a>
 
-  <button id="themeToggle" class="btn" style="position:fixed;right:18px;top:18px;">
+   <nav class="navbar">
+
+
+    <div class="logo">
+     📧Email Validator
+    </div>
+
+    <ul class="nav-links">
+
+      <li>
+        <a href="index.html">
+          Home
+        </a>
+      </li>
+
+      <li>
+        <a href="index.html">
+         Validate Email
+        </a>
+      </li>
+
+      <li>
+        <a href="#footer-container">
+          About
+        </a>
+      </li>
+
+    </ul>
+    <button id="themeToggle" class="btn" style="position:fixed;right:18px;top:18px;">
     Dark
   </button>
+
+  </nav>
 
   <main class="container">
     <h1>Email Validator</h1>
@@ -62,6 +93,53 @@
       <button id="downloadTxtBtn" class="btn" style="display:none;">Export TXT</button>
     </div>
   </main>
+
+
+
+    <footer class="footer">
+
+    <section id="footer-container">
+
+      <!-- Brand -->
+      <div class="footer-section">
+        <h3 >📧Email Validator </h3>
+        <p>
+        Email validation ensures that a user enters a properly formatted, real, and usable email address before submission.
+        </p>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="footer-section">
+        <h4>Quick Links</h4>
+
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="index.html">Validate</a></li>
+          <li><a href="#footer-container">Contact</a></li>
+        </ul>
+      </div>
+
+      <!-- Social Links -->
+      <div class="footer-section">
+        <h4>Follow Us</h4>
+
+        <div class="social-links">
+          <a href="#"><i class="fab fa-github"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-linkedin"></i></a>
+          <a href="#"><i class="fab fa-discord"></i></a>
+        </div>
+      </div>
+
+      </div>
+
+      <div class="footer-bottom">
+        <p>
+          © 2025 Finance Tracker — Take Control of Your Money. All Rights Reserved.
+        </p>
+      </div>
+    </section>
+  </footer>
 
   <script src="script.js"></script>
 </body>

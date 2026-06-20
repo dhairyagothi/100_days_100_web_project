@@ -1,11 +1,11 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Traffic Signal Simulation Game</title>
     <link rel="stylesheet" href="style.css" />
-    <link rel="icon" href="favicon_traffic.png">
+    <link rel="icon" href="favicon_traffic.png" />
   </head>
   <body>
     <div id="game-container">
@@ -22,7 +22,9 @@
         </div>
         <div class="hud-panel">
           <p class="hud-label">Collisions</p>
-          <p class="hud-value" id="collision-display" style="color: #ff4444">0</p>
+          <p class="hud-value" id="collision-display" style="color: #ff4444">
+            0
+          </p>
         </div>
         <div class="hud-panel">
           <p class="hud-label">Level</p>
@@ -35,18 +37,43 @@
       <aside id="signal-panel" aria-label="Traffic Signal">
         <p class="signal-label">SIGNAL</p>
         <div class="signal-box" role="img" aria-label="Traffic light">
-          <div class="signal-light active-red" id="red-light" aria-label="Red light"></div>
-          <div class="signal-light" id="yellow-light" aria-label="Yellow light"></div>
-          <div class="signal-light" id="green-light" aria-label="Green light"></div>
+          <div
+            class="signal-light active-red"
+            id="red-light"
+            aria-label="Red light"
+          ></div>
+          <div
+            class="signal-light"
+            id="yellow-light"
+            aria-label="Yellow light"
+          ></div>
+          <div
+            class="signal-light"
+            id="green-light"
+            aria-label="Green light"
+          ></div>
         </div>
         <div class="timer-bar-wrap">
           <div id="timer-bar" style="width: 100%; background: var(--red)"></div>
         </div>
-        <p style="text-align: center; margin-top: 5px; font-family: 'Orbitron', monospace; font-size: 11px; color: #fff;" id="timer-count">5s</p>
+        <p
+          style="
+            text-align: center;
+            margin-top: 5px;
+            font-family: 'Orbitron', monospace;
+            font-size: 11px;
+            color: #fff;
+          "
+          id="timer-count"
+        >
+          5s
+        </p>
       </aside>
 
       <nav id="controls" aria-label="Game controls">
-        <button class="ctrl-btn" onclick="toggleDayNight()">🌙 Day/Night</button>
+        <button class="ctrl-btn" onclick="toggleDayNight()">
+          🌙 Day/Night
+        </button>
         <button class="ctrl-btn" onclick="togglePause()">⏸ Pause</button>
       </nav>
 

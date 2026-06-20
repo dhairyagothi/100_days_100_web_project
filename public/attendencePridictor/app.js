@@ -119,7 +119,8 @@ function calculate(data) {
   const classesToTarget = calcClassesToTarget(attended, total, targetPercent);
   const futurePercent = predictFutureAttendance(attended, total, futureMisses);
   const status = getStatus(currentPercent, minPercent);
-  const shortage = currentPercent < minPercent ? (minPercent - currentPercent).toFixed(1) : 0;
+  const shortage =
+    currentPercent < minPercent ? (minPercent - currentPercent).toFixed(1) : 0;
 
   return {
     currentPercent,
@@ -143,8 +144,10 @@ function updateMeter(percent, status) {
   const offset = CIRCUMFERENCE - (percent / 100) * CIRCUMFERENCE;
   els.meterProgress.style.strokeDashoffset = offset;
   els.meterProgress.className = 'meter__progress';
-  if (status === 'warning') els.meterProgress.classList.add('meter__progress--warning');
-  if (status === 'danger') els.meterProgress.classList.add('meter__progress--danger');
+  if (status === 'warning')
+    els.meterProgress.classList.add('meter__progress--warning');
+  if (status === 'danger')
+    els.meterProgress.classList.add('meter__progress--danger');
 
   els.currentPercent.textContent = `${percent.toFixed(1)}%`;
   els.attendanceStatus.textContent = getStatusLabel(status);
@@ -158,9 +161,10 @@ function renderResults(result) {
   updateMeter(result.currentPercent, result.status);
 
   els.safeBunks.textContent = `${result.safeBunks} Classes`;
-  els.safeBunksHint.textContent = result.safeBunks > 0
-    ? `You can miss up to ${result.safeBunks} more class${result.safeBunks !== 1 ? 'es' : ''} and stay above ${result.minPercent}%`
-    : 'No safe bunks remaining — attend every class!';
+  els.safeBunksHint.textContent =
+    result.safeBunks > 0
+      ? `You can miss up to ${result.safeBunks} more class${result.safeBunks !== 1 ? 'es' : ''} and stay above ${result.minPercent}%`
+      : 'No safe bunks remaining — attend every class!';
 
   if (result.shortage > 0) {
     els.shortageCard.classList.add('stat-card--danger-border');
@@ -177,7 +181,8 @@ function renderResults(result) {
     els.recoveryHint.textContent = `Attend ${result.classesNeeded} more without missing any to reach ${result.minPercent}%`;
   } else {
     els.classesNeeded.textContent = '0 Classes';
-    els.recoveryHint.textContent = 'You meet the minimum attendance requirement';
+    els.recoveryHint.textContent =
+      'You meet the minimum attendance requirement';
   }
 
   if (result.futureMisses > 0) {
@@ -187,7 +192,8 @@ function renderResults(result) {
       `your attendance will drop to ${result.futurePercent.toFixed(1)}%` +
       (drop > 0 ? ` (−${drop.toFixed(1)}%)` : '');
   } else {
-    els.futurePrediction.textContent = 'Enter future misses above to see a prediction';
+    els.futurePrediction.textContent =
+      'Enter future misses above to see a prediction';
   }
 
   if (result.targetPercent && result.targetPercent > 0) {
@@ -239,7 +245,9 @@ function loadForm() {
     els.minAttendance.value = data.minPercent ?? 75;
     els.targetAttendance.value = data.targetPercent || '';
     els.futureMisses.value = data.futureMisses ?? 0;
-  } catch { /* ignore corrupt data */ }
+  } catch {
+    /* ignore corrupt data */
+  }
 }
 
 function getSubjects() {
@@ -264,13 +272,29 @@ function getHistory() {
 
 function addHistoryEntry(result) {
   const history = getHistory();
+
+  const lastEntry = history[history.length - 1];
+
+  if (
+    lastEntry &&
+    lastEntry.total === result.total &&
+    lastEntry.attended === result.attended &&
+    Math.abs(lastEntry.percent - result.currentPercent) < 0.01
+  ) {
+    return;
+  }
+
   history.push({
     date: new Date().toISOString(),
     percent: result.currentPercent,
     total: result.total,
     attended: result.attended,
   });
-  if (history.length > 30) history.shift();
+
+  if (history.length > 30) {
+    history.shift();
+  }
+
   localStorage.setItem(STORAGE_KEYS.history, JSON.stringify(history));
 }
 
@@ -311,10 +335,12 @@ function renderSubjects() {
       loadSubject(sub);
     });
 
-    item.querySelector('[data-action="delete"]').addEventListener('click', (e) => {
-      e.stopPropagation();
-      deleteSubject(index);
-    });
+    item
+      .querySelector('[data-action="delete"]')
+      .addEventListener('click', (e) => {
+        e.stopPropagation();
+        deleteSubject(index);
+      });
 
     els.subjectsList.appendChild(item);
   });
@@ -386,7 +412,11 @@ function renderOverviewChart(subjects, colors) {
   const data = subjects.map((s) => calcAttendance(s.attended, s.total));
   const bgColors = data.map((p, i) => {
     const status = getStatus(p, subjects[i].minPercent);
-    return status === 'safe' ? colors.safe : status === 'warning' ? colors.warning : colors.danger;
+    return status === 'safe'
+      ? colors.safe
+      : status === 'warning'
+        ? colors.warning
+        : colors.danger;
   });
 
   if (overviewChart) overviewChart.destroy();
@@ -395,13 +425,15 @@ function renderOverviewChart(subjects, colors) {
     type: 'bar',
     data: {
       labels,
-      datasets: [{
-        label: 'Attendance %',
-        data,
-        backgroundColor: bgColors,
-        borderRadius: 8,
-        borderSkipped: false,
-      }],
+      datasets: [
+        {
+          label: 'Attendance %',
+          data,
+          backgroundColor: bgColors,
+          borderRadius: 8,
+          borderSkipped: false,
+        },
+      ],
     },
     options: {
       responsive: true,
@@ -476,15 +508,17 @@ function renderTrendChart(subjects, history, colors) {
       type: 'line',
       data: {
         labels,
-        datasets: [{
-          label: 'Attendance %',
-          data,
-          borderColor: colors.primary,
-          backgroundColor: colors.primary + '33',
-          fill: true,
-          tension: 0.3,
-          pointRadius: 4,
-        }],
+        datasets: [
+          {
+            label: 'Attendance %',
+            data,
+            borderColor: colors.primary,
+            backgroundColor: colors.primary + '33',
+            fill: true,
+            tension: 0.3,
+            pointRadius: 4,
+          },
+        ],
       },
       options: chartLineOptions(colors, true),
     });
@@ -534,14 +568,21 @@ function initTheme() {
 
 /* ===== Event Handlers ===== */
 
-function handleCalculate(e) {
+function handleCalculate(e, saveHistory = true) {
   if (e) e.preventDefault();
+
   const data = getFormData();
+
   if (!validateForm(data)) return;
 
   const result = calculate(data);
+
   renderResults(result);
-  addHistoryEntry(result);
+
+  if (saveHistory) {
+    addHistoryEntry(result);
+  }
+
   saveForm();
   updateCharts();
 }
@@ -561,7 +602,9 @@ function handleSubjectSubmit(e) {
   const data = getFormData();
   const subjects = getSubjects();
 
-  const existing = subjects.findIndex((s) => s.name.toLowerCase() === name.toLowerCase());
+  const existing = subjects.findIndex(
+    (s) => s.name.toLowerCase() === name.toLowerCase()
+  );
   const entry = {
     name,
     total: data.total,
@@ -607,9 +650,17 @@ function init() {
   els.cancelSubject.addEventListener('click', () => els.subjectModal.close());
   els.clearSubjects.addEventListener('click', handleClearSubjects);
 
-  ['totalClasses', 'classesAttended', 'minAttendance', 'targetAttendance', 'futureMisses'].forEach((id) => {
+  [
+    'totalClasses',
+    'classesAttended',
+    'minAttendance',
+    'targetAttendance',
+    'futureMisses',
+  ].forEach((id) => {
     document.getElementById(id).addEventListener('input', () => {
-      if (lastResult) handleCalculate();
+      if (lastResult) {
+        handleCalculate(null, false);
+      }
     });
   });
 
