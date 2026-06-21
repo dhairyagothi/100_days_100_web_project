@@ -178,28 +178,24 @@ class LostAndFoundApp {
     }
 
     updateStats() {
+        // Total historical reports
         const lostCount = this.items.filter(item => item.type === 'lost').length;
         const foundCount = this.items.filter(item => item.type === 'found').length;
 
-        const hasReunionData = this.items.some(item =>
+        // Calculate all items successfully resolved (both lost items recovered & found items returned)
+        const reunitedCount = this.items.filter(item => 
             item.reunionStatus === 'reunited' ||
             item.status === 'reunited' ||
             item.reunited === true
-        );
+        ).length;
 
-        const reunitedCount = hasReunionData
-            ? this.items.filter(item =>
-                item.type === 'lost' && (
-                    item.reunionStatus === 'reunited' ||
-                    item.status === 'reunited' ||
-                    item.reunited === true
-                )
-            ).length
-            : 0;
-
-        const neverFoundCount = hasReunionData
-            ? Math.max(lostCount - reunitedCount, 0)
-            : 0;
+        // Never found: Lost items that have NOT been successfully reunited
+        const neverFoundCount = this.items.filter(item => 
+            item.type === 'lost' && 
+            item.reunionStatus !== 'reunited' &&
+            item.status !== 'reunited' &&
+            item.reunited !== true
+        ).length;
 
         const statLost = document.getElementById('stat-lost');
         const statFound = document.getElementById('stat-found');
@@ -315,7 +311,8 @@ class LostAndFoundApp {
             description: document.getElementById(`${type}-description`).value,
             contact: document.getElementById(`${type}-contact`).value,
             image: imageSrc || defaultImage,
-            reportedAt: new Date().toISOString()
+            reportedAt: new Date().toISOString(),
+            status: 'active'
         };
 
         this.items.unshift(newItem);
@@ -374,7 +371,8 @@ class LostAndFoundApp {
         if (!this.homeRecentGrid) return;
         
         this.homeRecentGrid.innerHTML = '';
-        const recentItems = this.items.slice(0, 3);
+        // Filter out reunited items so they do not clutter the active feed
+        const recentItems = this.items.filter(item => item.status !== 'reunited').slice(0, 3);
         
         recentItems.forEach(item => {
             this.homeRecentGrid.appendChild(this.createListingCard(item));
@@ -390,12 +388,14 @@ class LostAndFoundApp {
 
         let filteredItems = this.items.filter(item => {
             const matchesSearch = item.name.toLowerCase().includes(searchTerm) || 
-                                  item.description.toLowerCase().includes(searchTerm) ||
-                                  item.location.toLowerCase().includes(searchTerm);
+                                item.description.toLowerCase().includes(searchTerm) ||
+                                item.location.toLowerCase().includes(searchTerm);
             const matchesType = typeFilter === 'all' || item.type === typeFilter;
             const matchesCategory = categoryFilter === 'all' || item.category === categoryFilter;
+            // Ensure we only show active items
+            const isActive = item.status !== 'reunited';
             
-            return matchesSearch && matchesType && matchesCategory;
+            return matchesSearch && matchesType && matchesCategory && isActive;
         });
 
         this.browseGrid.innerHTML = '';
@@ -477,15 +477,52 @@ class LostAndFoundApp {
                     <p>${item.description}</p>
                 </div>
                 
-                <div class="details-actions">
+                <div class="details-actions" style="flex-direction: column; gap: 0.5rem;">
                     <a href="mailto:${item.contact.includes('@') ? item.contact : ''}" class="btn btn-primary btn-full">
                         <i class="ph ph-envelope-simple"></i> Contact Reporter
                     </a>
+                    ${item.status !== 'reunited' ? `
+                        <button class="btn btn-secondary btn-full" onclick="window.app.markAsReunited('${item.id}')">
+                            <i class="ph ph-handshake"></i> Mark as Reunited
+                        </button>
+                    ` : `
+                        <div class="btn btn-secondary btn-full" style="opacity: 0.7; cursor: default; border-color: var(--secondary); color: var(--secondary);">
+                            <i class="ph ph-check-circle"></i> Item Reunited
+                        </div>
+                    `}
                 </div>
             </div>
         `;
 
         this.switchView('details');
+    }
+
+    /**
+     * Marks an item as reunited and updates the global application state
+     * @param {string} id - The unique identifier of the item
+     */
+    markAsReunited(id) {
+        try {
+            const itemIndex = this.items.findIndex(item => item.id === id);
+            
+            if (itemIndex !== -1) {
+                // Update the status payload
+                this.items[itemIndex].status = 'reunited';
+                
+                // saveItems() automatically calls updateStats() internally,
+                // which will now trigger the new math added in the main branch
+                this.saveItems(); 
+                
+                // Navigate back to the browse view
+                this.switchView('browse');
+                this.showToast('Success', 'Item has been marked as reunited!');
+            } else {
+                console.warn(`Item with id ${id} not found in local storage.`);
+            }
+        } catch (error) {
+            console.error('Failed to mark item as reunited:', error);
+            this.showToast('Error', 'Failed to update item status. Please try again.');
+        }
     }
 
     showToast(title, message) {

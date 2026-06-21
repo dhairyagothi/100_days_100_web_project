@@ -901,3 +901,9 @@ input.error {
     font-size: 1.1rem;
   }
 }
+
+.feasibility-success {
+    background: rgba(34, 197, 94, 0.15);
+    border: 1px solid rgba(34, 197, 94, 0.4);
+    color: #22c55e;
+}
