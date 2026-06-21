@@ -22,6 +22,9 @@
 body {
     background: var(--bg-color);
     color: var(--text-color);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 main {
@@ -32,6 +35,8 @@ main {
     flex-direction: column;
     background: var(--bg-color);
     color: var(--text-color);
+    flex: 1;
+    padding: 20px;
 }
 /* Background glowing blur circles */
 .bg-glow {
@@ -351,10 +356,10 @@ h1 {
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--glass-border);
   padding: 12px 20px;
-  border-radius: 12px;
   position: sticky;
   top: 0;
   z-index: 1000;
+  width: 100%;
 }
 
 .logo {
@@ -428,29 +433,30 @@ h1 {
 }
 /* Footer Styling */
 .footer {
-  margin-top: 40px;
   padding: 20px;
   text-align: center;
   background: var(--glass-bg);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-top: 1px solid var(--glass-border);
-  border-radius: 12px;
   color: var(--text-main);
-  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
 }
 
 .footer-content {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
+  gap: 15px;
   flex-wrap: wrap;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .footer-content p {
   font-size: 14px;
   font-weight: 500;
-  margin: 5px 0;
+  margin: 0;
 }
 
 .social-links a {

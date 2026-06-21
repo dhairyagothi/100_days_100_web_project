@@ -2,130 +2,232 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-  <link rel="stylesheet" href="demo.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beat Maker Pro - Create Awesome Beats</title>
+    <link rel="stylesheet" href="demo.css">
 </head>
 
 <body>
+    <div class="app-container">
+        <header class="header">
+            <div class="header-content">
+                <h1 class="title">🎵 Beat Maker Pro</h1>
+                <p class="subtitle">Create professional beats with ease</p>
+                <button id="themeToggle" class="theme-toggle">
+            🌙
+        </button>
+            </div>
+        </header>
 
-  <!-- ================= NAVBAR ================= -->
-  <nav class="navbar">
-    <div class="logo">
-      🎵 Beat Maker
+        <main class="main-content">
+            <section class="control-panel glass-card">
+                <div class="genre-presets">
+                    <h3>Genre Presets</h3>
+                    <div class="preset-buttons">
+                        <button class="preset-btn" data-preset="edm">EDM</button>
+                        <button class="preset-btn" data-preset="hiphop">Hip-Hop</button>
+                        <button class="preset-btn" data-preset="lofi">Lo-Fi</button>
+                        <button class="preset-btn" data-preset="trap">Trap</button>
+                        <button class="preset-btn" data-preset="rock">Rock</button>
+                    </div>
+                </div>
+
+                <div class="bpm-control">
+                    <h3>BPM: <span id="bpm-value">120</span></h3>
+                    <input type="range" id="bpm-slider" min="60" max="180" value="120" class="bpm-slider">
+                </div>
+
+                <div class="main-controls">
+                    <button id="play-btn" class="control-btn play">▶️ Play</button>
+                    <button id="pause-btn" class="control-btn pause">⏸️ Pause</button>
+                    <button id="stop-btn" class="control-btn stop">⏹️ Stop</button>
+                    <button id="clear-btn" class="control-btn clear">🗑️ Clear</button>
+                    <button id="random-btn" class="control-btn random">🎲 Random</button>
+                </div>
+            </section>
+
+            <section class="beat-grid glass-card">
+                <div class="grid-container">
+                    <div class="instrument-row" data-instrument="kick">
+                        <div class="instrument-label">
+                            <span>🥁 Kick</span>
+                            <button class="preview-btn" data-instrument="kick">🔊</button>
+                        </div>
+                        <div class="pads">
+                            <div class="pad" data-instrument="kick" data-step="0"></div>
+                            <div class="pad" data-instrument="kick" data-step="1"></div>
+                            <div class="pad" data-instrument="kick" data-step="2"></div>
+                            <div class="pad" data-instrument="kick" data-step="3"></div>
+                            <div class="pad" data-instrument="kick" data-step="4"></div>
+                            <div class="pad" data-instrument="kick" data-step="5"></div>
+                            <div class="pad" data-instrument="kick" data-step="6"></div>
+                            <div class="pad" data-instrument="kick" data-step="7"></div>
+                        </div>
+                    </div>
+
+                    <div class="instrument-row" data-instrument="snare">
+                        <div class="instrument-label">
+                            <span>🪘 Snare</span>
+                            <button class="preview-btn" data-instrument="snare">🔊</button>
+                        </div>
+                        <div class="pads">
+                            <div class="pad" data-instrument="snare" data-step="0"></div>
+                            <div class="pad" data-instrument="snare" data-step="1"></div>
+                            <div class="pad" data-instrument="snare" data-step="2"></div>
+                            <div class="pad" data-instrument="snare" data-step="3"></div>
+                            <div class="pad" data-instrument="snare" data-step="4"></div>
+                            <div class="pad" data-instrument="snare" data-step="5"></div>
+                            <div class="pad" data-instrument="snare" data-step="6"></div>
+                            <div class="pad" data-instrument="snare" data-step="7"></div>
+                        </div>
+                    </div>
+
+                    <div class="instrument-row" data-instrument="hihat">
+                        <div class="instrument-label">
+                            <span>🎩 Hi-Hat</span>
+                            <button class="preview-btn" data-instrument="hihat">🔊</button>
+                        </div>
+                        <div class="pads">
+                            <div class="pad" data-instrument="hihat" data-step="0"></div>
+                            <div class="pad" data-instrument="hihat" data-step="1"></div>
+                            <div class="pad" data-instrument="hihat" data-step="2"></div>
+                            <div class="pad" data-instrument="hihat" data-step="3"></div>
+                            <div class="pad" data-instrument="hihat" data-step="4"></div>
+                            <div class="pad" data-instrument="hihat" data-step="5"></div>
+                            <div class="pad" data-instrument="hihat" data-step="6"></div>
+                            <div class="pad" data-instrument="hihat" data-step="7"></div>
+                        </div>
+                    </div>
+
+                    <div class="instrument-row" data-instrument="clap">
+                        <div class="instrument-label">
+                            <span>👏 Clap</span>
+                            <button class="preview-btn" data-instrument="clap">🔊</button>
+                        </div>
+                        <div class="pads">
+                            <div class="pad" data-instrument="clap" data-step="0"></div>
+                            <div class="pad" data-instrument="clap" data-step="1"></div>
+                            <div class="pad" data-instrument="clap" data-step="2"></div>
+                            <div class="pad" data-instrument="clap" data-step="3"></div>
+                            <div class="pad" data-instrument="clap" data-step="4"></div>
+                            <div class="pad" data-instrument="clap" data-step="5"></div>
+                            <div class="pad" data-instrument="clap" data-step="6"></div>
+                            <div class="pad" data-instrument="clap" data-step="7"></div>
+                        </div>
+                    </div>
+
+                    <div class="instrument-row" data-instrument="crash">
+                        <div class="instrument-label">
+                            <span>💥 Crash</span>
+                            <button class="preview-btn" data-instrument="crash">🔊</button>
+                        </div>
+                        <div class="pads">
+                            <div class="pad" data-instrument="crash" data-step="0"></div>
+                            <div class="pad" data-instrument="crash" data-step="1"></div>
+                            <div class="pad" data-instrument="crash" data-step="2"></div>
+                            <div class="pad" data-instrument="crash" data-step="3"></div>
+                            <div class="pad" data-instrument="crash" data-step="4"></div>
+                            <div class="pad" data-instrument="crash" data-step="5"></div>
+                            <div class="pad" data-instrument="crash" data-step="6"></div>
+                            <div class="pad" data-instrument="crash" data-step="7"></div>
+                        </div>
+                    </div>
+
+                    <div class="instrument-row" data-instrument="openhat">
+                        <div class="instrument-label">
+                            <span>🎶 Open Hat</span>
+                            <button class="preview-btn" data-instrument="openhat">🔊</button>
+                        </div>
+                        <div class="pads">
+                            <div class="pad" data-instrument="openhat" data-step="0"></div>
+                            <div class="pad" data-instrument="openhat" data-step="1"></div>
+                            <div class="pad" data-instrument="openhat" data-step="2"></div>
+                            <div class="pad" data-instrument="openhat" data-step="3"></div>
+                            <div class="pad" data-instrument="openhat" data-step="4"></div>
+                            <div class="pad" data-instrument="openhat" data-step="5"></div>
+                            <div class="pad" data-instrument="openhat" data-step="6"></div>
+                            <div class="pad" data-instrument="openhat" data-step="7"></div>
+                        </div>
+                    </div>
+
+                    <div class="instrument-row" data-instrument="percussion">
+                        <div class="instrument-label">
+                            <span>🎵 Percussion</span>
+                            <button class="preview-btn" data-instrument="percussion">🔊</button>
+                        </div>
+                        <div class="pads">
+                            <div class="pad" data-instrument="percussion" data-step="0"></div>
+                            <div class="pad" data-instrument="percussion" data-step="1"></div>
+                            <div class="pad" data-instrument="percussion" data-step="2"></div>
+                            <div class="pad" data-instrument="percussion" data-step="3"></div>
+                            <div class="pad" data-instrument="percussion" data-step="4"></div>
+                            <div class="pad" data-instrument="percussion" data-step="5"></div>
+                            <div class="pad" data-instrument="percussion" data-step="6"></div>
+                            <div class="pad" data-instrument="percussion" data-step="7"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="visualizer glass-card">
+                <h3>Live Visualizer</h3>
+                <div class="visualizer-bars">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+            </section>
+
+            <section class="bottom-panel">
+                <div class="save-load glass-card">
+                    <h3>Save & Load</h3>
+                    <div class="save-controls">
+                        <input type="text" id="save-name" placeholder="Beat name..." class="save-input">
+                        <button id="save-btn" class="control-btn save">💾 Save</button>
+                    </div>
+                    <div class="saved-beats" id="saved-beats"></div>
+                </div>
+
+                <div class="stats glass-card">
+                    <h3>Statistics</h3>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <span class="stat-value" id="beats-created">0</span>
+                            <span class="stat-label">Beats Created</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value" id="total-time">0s</span>
+                            <span class="stat-label">Total Play Time</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value" id="favorite-bpm">-</span>
+                            <span class="stat-label">Favorite BPM</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value" id="saved-count">0</span>
+                            <span class="stat-label">Saved Patterns</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
     </div>
 
-    <ul class="nav-links">
-      <li><a href="#home">Home</a></li>
-      <li><a href="#beatmaker">Beat Maker</a></li>
-      <li><a href="#footer">About</a></li>
-    </ul>
+    <audio id="kick-audio" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1147877/kick.wav"></audio>
+    <audio id="snare-audio" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1147877/snare.wav"></audio>
+    <audio id="hihat-audio" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1147877/boom.wav"></audio>
+    <audio id="clap-audio" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1147877/snare.wav"></audio>
+    <audio id="crash-audio" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1147877/kick.wav"></audio>
+    <audio id="openhat-audio" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1147877/boom.wav"></audio>
+    <audio id="percussion-audio" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1147877/snare.wav"></audio>
 
-    <button id="themeToggle" class="theme-toggle">
-      🌙
-    </button>
-  </nav>
-
-  <!-- ================= HEADER ================= -->
-  <header class="hero" id="home">
-    <h1>Beat Maker Studio</h1>
-    <p>
-      Create amazing drum patterns with Kick, Snare and Boom sounds.
-      Build your own rhythm and experiment with beats instantly.
-    </p>
-  </header>
-
-
-  <section id="beatmaker">
-    <div class="container">
-      <div class="audio-list">
-        <div class="audio snare-btn">
-          <p>Snare</p>
-          <audio id="sAudio">
-            <source src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1147877/snare.wav">
-            </source>
-          </audio>
-        </div>
-
-        <div class="audio kick-btn">
-          <p>Kick</p>
-          <audio id="kAudio">
-            <source src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1147877/kick.wav">
-            </source>
-          </audio>
-        </div>
-
-        <div class="audio boom-btn">
-          <p>Boom</p>
-          <audio id="bAudio">
-            <source src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1147877/boom.wav">
-            </source>
-          </audio>
-        </div>
-      </div>
-
-      <div class="audio-board">
-        <div class="title">
-          <h1>Beat Maker</h1>
-        </div>
-        <div class="play-btn">
-          <div id="play" class="btn play" onclick="play();"></div>
-          <div id="stop" class="btn stop" onClick="stop();"></div>
-        </div>
-        <div class="snareColumn column">
-          <div class="square snare snare1"></div>
-          <div class="square snare snare2"></div>
-          <div class="square snare snare3"></div>
-          <div class="square snare snare4"></div>
-          <div class="square snare snare5"></div>
-          <div class="square snare snare6"></div>
-          <div class="square snare snare7"></div>
-          <div class="square snare snare8"></div>
-        </div>
-        <div class="boomColumn column">
-          <div class="square boom boom1"></div>
-          <div class="square boom boom2"></div>
-          <div class="square boom boom3"></div>
-          <div class="square boom boom4"></div>
-          <div class="square boom boom5"></div>
-          <div class="square boom boom6"></div>
-          <div class="square boom boom7"></div>
-          <div class="square boom boom8"></div>
-        </div>
-        <div class="kickColumn column">
-          <div class="square kick kick1"></div>
-          <div class="square kick kick2"></div>
-          <div class="square kick kick3"></div>
-          <div class="square kick kick4"></div>
-          <div class="square kick kick5"></div>
-          <div class="square kick kick6"></div>
-          <div class="square kick kick7"></div>
-          <div class="square kick kick8"></div>
-        </div>
-      </div>
-    </div>
-  </section>
-  <footer class="footer" id="footer">
-    <div class="footer-content">
-      <h3>🎵 Beat Maker</h3>
-      <p>
-        An interactive music sequencer built using HTML, CSS and JavaScript.
-      </p>
-
-      <div class="footer-links">
-        <a href="#home">Home</a>
-        <a href="#beatmaker">Beat Maker</a>
-      </div>
-
-      <p class="copyright">
-        © 2026 Beat Maker. All Rights Reserved.
-      </p>
-    </div>
-  </footer>
+    <script src="demo.js"></script>
 </body>
-<script src="demo.js"></script>
-
 </html>

@@ -21,6 +21,16 @@
       <div id="board"></div>
     </div>
 
+    <!-- Notification Modal -->
+    <div id="notification-modal" class="modal" onclick="if(event.target === this) closeModal()">
+      <div class="modal-content">
+        <span class="close-button" onclick="closeModal()">&times;</span>
+        <h2 id="modal-title">Game Over</h2>
+        <p id="modal-message"></p>
+        <button onclick="closeModal()">OK</button>
+      </div>
+    </div>
+
     <script src="script.js"></script>
   </body>
 </html>
