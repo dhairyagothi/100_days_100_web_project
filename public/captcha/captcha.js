@@ -1,6 +1,7 @@
 let selectedImageAnswer = "";
 
-const resultMessage = document.getElementById("resultMessage");
+// Removed: resultMessage is replaced by toast notifications
+// const resultMessage = document.getElementById("resultMessage");
 
 const captchaContainer = document.getElementById("captchaContainer");
 const textInput = document.getElementById("captchaInput");
@@ -227,8 +228,6 @@ const generateCaptcha = () => {
 
     textCaptchaField.classList.remove('hidden');
 
-    resultMessage.textContent = '';
-    resultMessage.className = 'result';
     selectedImageAnswer = '';
 
     // Normalize type string case to prevent logic matching bugs
@@ -316,6 +315,61 @@ const generateCaptcha = () => {
     }
 };
 
+// ==========================
+// TOAST NOTIFICATION SYSTEM
+// ==========================
+
+/**
+ * Shows a toast notification outside the form.
+ * @param {'success'|'error'|'warning'} type
+ * @param {string} title
+ * @param {string} message
+ * @param {number} duration  Auto-dismiss delay in ms (default 4000)
+ */
+function showToast(type, title, message, duration = 4000) {
+    const container = document.getElementById('toast-container');
+    if (!container) return;
+
+    const icons = {
+        success: '✓',
+        error:   '✕',
+        warning: '⚠'
+    };
+
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+    toast.setAttribute('role', 'alert');
+    toast.innerHTML = `
+        <div class="toast-icon">${icons[type] ?? '!'}</div>
+        <div class="toast-body">
+            <span class="toast-title">${title}</span>
+            <span class="toast-message">${message}</span>
+        </div>
+        <button class="toast-close" aria-label="Dismiss notification">&times;</button>
+        <div class="toast-progress" style="animation-duration: ${duration}ms;"></div>
+    `;
+
+    // Close on button click
+    toast.querySelector('.toast-close').addEventListener('click', () => dismissToast(toast));
+
+    container.appendChild(toast);
+
+    // Auto-dismiss
+    const timer = setTimeout(() => dismissToast(toast), duration);
+
+    // Cancel auto-dismiss if user hovers (pause experience)
+    toast.addEventListener('mouseenter', () => clearTimeout(timer));
+    toast.addEventListener('mouseleave', () =>
+        setTimeout(() => dismissToast(toast), 800)
+    );
+}
+
+function dismissToast(toast) {
+    if (!toast || toast.classList.contains('toast-exit')) return;
+    toast.classList.add('toast-exit');
+    toast.addEventListener('animationend', () => toast.remove(), { once: true });
+}
+
 const lockoutUser = () => {
     lockoutEndTime = Date.now() + 60 * 1000;
     updateLockoutUI();
@@ -326,15 +380,56 @@ const updateLockoutUI = () => {
     if (now < lockoutEndTime) {
         const remaining = Math.ceil((lockoutEndTime - now) / 1000);
         submitButton.disabled = true;
-        resultMessage.textContent = `Too many attempts. Wait ${remaining} seconds.`;
-        resultMessage.style.color = 'red';
+        showToast(
+            'warning',
+            'Too Many Attempts',
+            `Please wait ${remaining} second${remaining !== 1 ? 's' : ''} before trying again.`,
+            Math.min(remaining * 1000, 5000)
+        );
         setTimeout(updateLockoutUI, 1000);
     } else {
         submitButton.disabled = false;
-        resultMessage.textContent = '';
         attempts = 0;
         generateCaptcha();
     }
+};
+
+// --- Persistent Stats Helpers ---
+const getStats = () => ({
+    attempts:    parseInt(localStorage.getItem('captcha_attempts')  || '0', 10),
+    successes:   parseInt(localStorage.getItem('captcha_success')   || '0', 10),
+    failures:    parseInt(localStorage.getItem('captcha_fail')      || '0', 10),
+    streak:      parseInt(localStorage.getItem('captcha_streak')    || '0', 10),
+    bestStreak:  parseInt(localStorage.getItem('captcha_best')      || '0', 10),
+    activity:    JSON.parse(localStorage.getItem('captcha_activity') || '[]'),
+});
+
+const saveStats = (stats) => {
+    localStorage.setItem('captcha_attempts',  stats.attempts);
+    localStorage.setItem('captcha_success',   stats.successes);
+    localStorage.setItem('captcha_fail',      stats.failures);
+    localStorage.setItem('captcha_streak',    stats.streak);
+    localStorage.setItem('captcha_best',      stats.bestStreak);
+    localStorage.setItem('captcha_activity',  JSON.stringify(stats.activity.slice(-20))); // keep last 20
+};
+
+const recordAttempt = (isCorrect) => {
+    const stats = getStats();
+    stats.attempts++;
+    if (isCorrect) {
+        stats.successes++;
+        stats.streak++;
+        if (stats.streak > stats.bestStreak) stats.bestStreak = stats.streak;
+    } else {
+        stats.failures++;
+        stats.streak = 0;
+    }
+    stats.activity.push({
+        result: isCorrect ? 'success' : 'fail',
+        type: selectedType,
+        time: new Date().toISOString(),
+    });
+    saveStats(stats);
 };
 
 const verifyCaptcha = () => {
@@ -348,16 +443,20 @@ const verifyCaptcha = () => {
   : textInput.value.trim().toLowerCase();
   
   const isCorrect = userInput === currentCaptcha.toString().toLowerCase();
+
+  // Persist the outcome immediately
+  recordAttempt(isCorrect);
   
   if (isCorrect) {
-      resultMessage.textContent = "Very Good! You passed the Test.";
-      resultMessage.classList.add('success');
-      resultMessage.classList.remove('error');
+      showToast(
+          'success',
+          'Captcha Passed!',
+          'Well done! You verified you are human. A new challenge is loading…',
+          3500
+      );
       attempts = 0;
       setTimeout(() => {
           textInput.value = "";
-          resultMessage.textContent = "";
-          resultMessage.className = 'result';
           generateCaptcha();
       }, 1500);
   } else {
@@ -365,9 +464,12 @@ const verifyCaptcha = () => {
       if (attempts >= maxAttempts) {
           lockoutUser();
       } else {
-          resultMessage.textContent = `Sorry, your input is incorrect. Please try again. (Attempt ${attempts}/${maxAttempts})`;
-          resultMessage.classList.add('error');
-          resultMessage.classList.remove('success');
+          showToast(
+              'error',
+              'Incorrect Answer',
+              `That's not right. Attempt ${attempts} of ${maxAttempts} — give it another go!`,
+              4000
+          );
       }
   }
 };
@@ -421,24 +523,97 @@ if (
 }
 
 if (dashboardAttempts) {
+    const renderDashboard = () => {
+        const stats = getStats();
 
-    const attempts =
-        localStorage.getItem("attempts") || 0;
+        // --- Core stat cards ---
+        document.getElementById('stat-attempts').textContent   = stats.attempts;
+        document.getElementById('stat-successes').textContent  = stats.successes;
+        document.getElementById('stat-failures').textContent   = stats.failures;
+        document.getElementById('stat-streak').textContent     = stats.streak;
+        document.getElementById('stat-best-streak').textContent = stats.bestStreak;
 
-    const successes =
-        localStorage.getItem("success") || 0;
+        // --- Success Rate ---
+        const rate = stats.attempts > 0
+            ? Math.round((stats.successes / stats.attempts) * 100)
+            : 0;
+        document.getElementById('stat-rate').textContent = `${rate}%`;
+        document.getElementById('progress-bar').style.width = `${rate}%`;
 
-    const failures =
-        localStorage.getItem("fail") || 0;
+        // --- Achievement Badges ---
+        const unlockBadge = (id, condition) => {
+            const card = document.getElementById(id);
+            if (!card) return;
+            const statusEl = card.querySelector('.achievement-status');
+            if (condition) {
+                card.classList.add('unlocked');
+                if (statusEl) {
+                    statusEl.className = 'achievement-status unlocked';
+                    statusEl.innerHTML = '<i class="fas fa-check"></i>';
+                }
+            }
+        };
+        unlockBadge('badge-beginner',     stats.successes >= 5);
+        unlockBadge('badge-intermediate', stats.successes >= 20);
+        unlockBadge('badge-expert',       stats.successes >= 50);
 
-    document.getElementById("stat-attempts").textContent =
-        attempts;
+        // --- Performance Insights ---
+        const insightsEl = document.getElementById('insights-text');
+        if (insightsEl) {
+            if (stats.attempts === 0) {
+                insightsEl.textContent = 'Start solving CAPTCHAs to get insights!';
+            } else if (rate >= 90) {
+                insightsEl.textContent = `🔥 Outstanding! You're passing ${rate}% of challenges. You're a CAPTCHA master!`;
+            } else if (rate >= 70) {
+                insightsEl.textContent = `👍 Great job! ${rate}% success rate. Keep it up to unlock more badges!`;
+            } else if (rate >= 50) {
+                insightsEl.textContent = `💪 You're halfway there with a ${rate}% success rate. Practice makes perfect!`;
+            } else {
+                insightsEl.textContent = `📚 ${rate}% success rate so far. Try easier difficulty to build your confidence!`;
+            }
+        }
 
-    document.getElementById("stat-successes").textContent =
-        successes;
+        // --- Recent Activity List ---
+        const listEl = document.getElementById('activity-list');
+        if (listEl) {
+            if (stats.activity.length === 0) {
+                listEl.innerHTML = '<div class="empty-state">No activity yet</div>';
+            } else {
+                // Show most-recent first, up to 10 entries
+                listEl.innerHTML = [...stats.activity].reverse().slice(0, 10).map(entry => {
+                    const date = new Date(entry.time);
+                    const timeStr = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                    const dateStr = date.toLocaleDateString([], { month: 'short', day: 'numeric' });
+                    const icon   = entry.result === 'success'
+                        ? '<i class="fas fa-check-circle" style="color:#10b981"></i>'
+                        : '<i class="fas fa-times-circle" style="color:#ef4444"></i>';
+                    const typeName = (entry.type || 'text').charAt(0).toUpperCase() + (entry.type || 'text').slice(1);
+                    return `
+                        <div class="activity-item">
+                            <span class="activity-icon">${icon}</span>
+                            <span class="activity-type">${typeName} CAPTCHA</span>
+                            <span class="activity-result" style="color:${entry.result === 'success' ? '#10b981' : '#ef4444'};font-weight:600">
+                                ${entry.result === 'success' ? 'Passed' : 'Failed'}
+                            </span>
+                            <span class="activity-time">${dateStr}, ${timeStr}</span>
+                        </div>`;
+                }).join('');
+            }
+        }
+    };
 
-    document.getElementById("stat-failures").textContent =
-        failures;
+    renderDashboard();
+
+    // --- Reset Button ---
+    const resetBtn = document.getElementById('reset-btn');
+    if (resetBtn) {
+        resetBtn.addEventListener('click', () => {
+            if (!confirm('Reset all statistics? This cannot be undone.')) return;
+            ['captcha_attempts','captcha_success','captcha_fail',
+             'captcha_streak','captcha_best','captcha_activity'].forEach(k => localStorage.removeItem(k));
+            renderDashboard();
+        });
+    }
 }
 
 // ==========================
