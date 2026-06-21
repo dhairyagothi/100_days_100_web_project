@@ -1,171 +1,248 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" data-theme="light">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Class Bunk Calculator & Attendance Predictor</title>
-  <link rel="stylesheet" href="styles.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
-  <script src="app.js" defer></script>
-</head>
-<body>
-  <header class="header">
-    <div class="header__brand">
-      <div class="header__logo" aria-hidden="true">📚</div>
-      <div>
-        <h1 class="header__title">Attendance Predictor</h1>
-        <p class="header__subtitle">Smart bunk calculator for students</p>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Class Bunk Calculator & Attendance Predictor</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"
+      defer
+    ></script>
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <header class="header">
+      <div class="header__brand">
+        <div class="header__logo" aria-hidden="true">📚</div>
+        <div>
+          <h1 class="header__title">Attendance Predictor</h1>
+          <p class="header__subtitle">Smart bunk calculator for students</p>
+        </div>
       </div>
-    </div>
-    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
-      <span class="theme-toggle__icon theme-toggle__icon--light">☀️</span>
-      <span class="theme-toggle__icon theme-toggle__icon--dark">🌙</span>
-    </button>
-  </header>
+      <button
+        class="theme-toggle"
+        id="themeToggle"
+        aria-label="Toggle dark mode"
+      >
+        <span class="theme-toggle__icon theme-toggle__icon--light">☀️</span>
+        <span class="theme-toggle__icon theme-toggle__icon--dark">🌙</span>
+      </button>
+    </header>
 
-  <main class="container">
-    <!-- Quick Calculator -->
-    <section class="card card--hero" aria-labelledby="calculator-heading">
-      <h2 id="calculator-heading" class="card__title">Quick Calculator</h2>
-      <form id="calculatorForm" class="form-grid">
+    <main class="container">
+      <!-- Quick Calculator -->
+      <section class="card card--hero" aria-labelledby="calculator-heading">
+        <h2 id="calculator-heading" class="card__title">Quick Calculator</h2>
+        <form id="calculatorForm" class="form-grid">
+          <div class="form-group">
+            <label for="totalClasses">Total Classes Conducted</label>
+            <input
+              type="number"
+              id="totalClasses"
+              min="0"
+              placeholder="e.g. 50"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="classesAttended">Classes Attended</label>
+            <input
+              type="number"
+              id="classesAttended"
+              min="0"
+              placeholder="e.g. 42"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="minAttendance">Minimum Required (%)</label>
+            <input
+              type="number"
+              id="minAttendance"
+              min="0"
+              max="100"
+              value="75"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="targetAttendance"
+              >Target Attendance (%)
+              <span class="optional">optional</span></label
+            >
+            <input
+              type="number"
+              id="targetAttendance"
+              min="0"
+              max="100"
+              placeholder="e.g. 80"
+            />
+          </div>
+          <div class="form-group form-group--full">
+            <label for="futureMisses"
+              >Future Classes to Miss (for prediction)</label
+            >
+            <input
+              type="number"
+              id="futureMisses"
+              min="0"
+              value="0"
+              placeholder="e.g. 5"
+            />
+          </div>
+          <div class="form-actions form-group--full">
+            <button type="submit" class="btn btn--primary">Calculate</button>
+            <button type="button" class="btn btn--secondary" id="saveAsSubject">
+              Save as Subject
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- Results Dashboard -->
+      <section class="dashboard" id="dashboard" hidden>
+        <div class="dashboard__meter card">
+          <h3 class="card__title">Current Attendance</h3>
+          <div class="meter" id="attendanceMeter">
+            <svg class="meter__svg" viewBox="0 0 200 200">
+              <circle class="meter__bg" cx="100" cy="100" r="85"></circle>
+              <circle
+                class="meter__progress"
+                id="meterProgress"
+                cx="100"
+                cy="100"
+                r="85"
+              ></circle>
+            </svg>
+            <div class="meter__value">
+              <span class="meter__percent" id="currentPercent">0%</span>
+              <span class="meter__status" id="attendanceStatus">—</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="dashboard__stats">
+          <div class="stat-card stat-card--safe">
+            <div class="stat-card__icon">✅</div>
+            <div class="stat-card__content">
+              <span class="stat-card__label">Safe Bunks Remaining</span>
+              <span class="stat-card__value" id="safeBunks">—</span>
+              <span class="stat-card__hint" id="safeBunksHint"></span>
+            </div>
+          </div>
+
+          <div class="stat-card stat-card--warning" id="shortageCard">
+            <div class="stat-card__icon">⚠️</div>
+            <div class="stat-card__content">
+              <span class="stat-card__label">Attendance Shortage</span>
+              <span class="stat-card__value" id="shortageValue">—</span>
+              <span class="stat-card__hint" id="shortageHint"></span>
+            </div>
+          </div>
+
+          <div class="stat-card stat-card--recovery">
+            <div class="stat-card__icon">📈</div>
+            <div class="stat-card__content">
+              <span class="stat-card__label"
+                >Classes Needed (No More Misses)</span
+              >
+              <span class="stat-card__value" id="classesNeeded">—</span>
+              <span class="stat-card__hint" id="recoveryHint"></span>
+            </div>
+          </div>
+
+          <div class="stat-card stat-card--prediction">
+            <div class="stat-card__icon">🔮</div>
+            <div class="stat-card__content">
+              <span class="stat-card__label">Future Prediction</span>
+              <span
+                class="stat-card__value stat-card__value--text"
+                id="futurePrediction"
+                >—</span
+              >
+            </div>
+          </div>
+
+          <div class="stat-card stat-card--target" id="targetCard" hidden>
+            <div class="stat-card__icon">🎯</div>
+            <div class="stat-card__content">
+              <span class="stat-card__label">To Reach Target</span>
+              <span class="stat-card__value" id="targetClasses">—</span>
+              <span class="stat-card__hint" id="targetHint"></span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Subject-wise Tracking -->
+      <section class="card" aria-labelledby="subjects-heading">
+        <div class="card__header">
+          <h2 id="subjects-heading" class="card__title">
+            Subject-wise Tracking
+          </h2>
+          <button class="btn btn--ghost btn--sm" id="clearSubjects" hidden>
+            Clear All
+          </button>
+        </div>
+        <div id="subjectsList" class="subjects-list">
+          <p class="empty-state" id="subjectsEmpty">
+            No subjects saved yet. Calculate attendance and click "Save as
+            Subject".
+          </p>
+        </div>
+      </section>
+
+      <!-- Charts -->
+      <section class="charts-grid" id="chartsSection" hidden>
+        <div class="card">
+          <h3 class="card__title">Attendance Overview</h3>
+          <div class="chart-container">
+            <canvas id="overviewChart"></canvas>
+          </div>
+        </div>
+        <div class="card">
+          <h3 class="card__title">Attendance Trend</h3>
+          <div class="chart-container">
+            <canvas id="trendChart"></canvas>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Save Subject Modal -->
+    <dialog class="modal" id="subjectModal" aria-labelledby="modalTitle">
+      <form method="dialog" class="modal__content" id="subjectForm">
+        <h3 class="modal__title" id="modalTitle">Save Subject</h3>
         <div class="form-group">
-          <label for="totalClasses">Total Classes Conducted</label>
-          <input type="number" id="totalClasses" min="0" placeholder="e.g. 50" required>
+          <label for="subjectName">Subject Name</label>
+          <input
+            type="text"
+            id="subjectName"
+            placeholder="e.g. Mathematics"
+            required
+          />
         </div>
-        <div class="form-group">
-          <label for="classesAttended">Classes Attended</label>
-          <input type="number" id="classesAttended" min="0" placeholder="e.g. 42" required>
-        </div>
-        <div class="form-group">
-          <label for="minAttendance">Minimum Required (%)</label>
-          <input type="number" id="minAttendance" min="0" max="100" value="75" required>
-        </div>
-        <div class="form-group">
-          <label for="targetAttendance">Target Attendance (%) <span class="optional">optional</span></label>
-          <input type="number" id="targetAttendance" min="0" max="100" placeholder="e.g. 80">
-        </div>
-        <div class="form-group form-group--full">
-          <label for="futureMisses">Future Classes to Miss (for prediction)</label>
-          <input type="number" id="futureMisses" min="0" value="0" placeholder="e.g. 5">
-        </div>
-        <div class="form-actions form-group--full">
-          <button type="submit" class="btn btn--primary">Calculate</button>
-          <button type="button" class="btn btn--secondary" id="saveAsSubject">Save as Subject</button>
+        <div class="modal__actions">
+          <button type="button" class="btn btn--secondary" id="cancelSubject">
+            Cancel
+          </button>
+          <button type="submit" class="btn btn--primary">Save</button>
         </div>
       </form>
-    </section>
+    </dialog>
 
-    <!-- Results Dashboard -->
-    <section class="dashboard" id="dashboard" hidden>
-      <div class="dashboard__meter card">
-        <h3 class="card__title">Current Attendance</h3>
-        <div class="meter" id="attendanceMeter">
-          <svg class="meter__svg" viewBox="0 0 200 200">
-            <circle class="meter__bg" cx="100" cy="100" r="85"></circle>
-            <circle class="meter__progress" id="meterProgress" cx="100" cy="100" r="85"></circle>
-          </svg>
-          <div class="meter__value">
-            <span class="meter__percent" id="currentPercent">0%</span>
-            <span class="meter__status" id="attendanceStatus">—</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="dashboard__stats">
-        <div class="stat-card stat-card--safe">
-          <div class="stat-card__icon">✅</div>
-          <div class="stat-card__content">
-            <span class="stat-card__label">Safe Bunks Remaining</span>
-            <span class="stat-card__value" id="safeBunks">—</span>
-            <span class="stat-card__hint" id="safeBunksHint"></span>
-          </div>
-        </div>
-
-        <div class="stat-card stat-card--warning" id="shortageCard">
-          <div class="stat-card__icon">⚠️</div>
-          <div class="stat-card__content">
-            <span class="stat-card__label">Attendance Shortage</span>
-            <span class="stat-card__value" id="shortageValue">—</span>
-            <span class="stat-card__hint" id="shortageHint"></span>
-          </div>
-        </div>
-
-        <div class="stat-card stat-card--recovery">
-          <div class="stat-card__icon">📈</div>
-          <div class="stat-card__content">
-            <span class="stat-card__label">Classes Needed (No More Misses)</span>
-            <span class="stat-card__value" id="classesNeeded">—</span>
-            <span class="stat-card__hint" id="recoveryHint"></span>
-          </div>
-        </div>
-
-        <div class="stat-card stat-card--prediction">
-          <div class="stat-card__icon">🔮</div>
-          <div class="stat-card__content">
-            <span class="stat-card__label">Future Prediction</span>
-            <span class="stat-card__value stat-card__value--text" id="futurePrediction">—</span>
-          </div>
-        </div>
-
-        <div class="stat-card stat-card--target" id="targetCard" hidden>
-          <div class="stat-card__icon">🎯</div>
-          <div class="stat-card__content">
-            <span class="stat-card__label">To Reach Target</span>
-            <span class="stat-card__value" id="targetClasses">—</span>
-            <span class="stat-card__hint" id="targetHint"></span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Subject-wise Tracking -->
-    <section class="card" aria-labelledby="subjects-heading">
-      <div class="card__header">
-        <h2 id="subjects-heading" class="card__title">Subject-wise Tracking</h2>
-        <button class="btn btn--ghost btn--sm" id="clearSubjects" hidden>Clear All</button>
-      </div>
-      <div id="subjectsList" class="subjects-list">
-        <p class="empty-state" id="subjectsEmpty">No subjects saved yet. Calculate attendance and click "Save as Subject".</p>
-      </div>
-    </section>
-
-    <!-- Charts -->
-    <section class="charts-grid" id="chartsSection" hidden>
-      <div class="card">
-        <h3 class="card__title">Attendance Overview</h3>
-        <div class="chart-container">
-          <canvas id="overviewChart"></canvas>
-        </div>
-      </div>
-      <div class="card">
-        <h3 class="card__title">Attendance Trend</h3>
-        <div class="chart-container">
-          <canvas id="trendChart"></canvas>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <!-- Save Subject Modal -->
-  <dialog class="modal" id="subjectModal" aria-labelledby="modalTitle">
-    <form method="dialog" class="modal__content" id="subjectForm">
-      <h3 class="modal__title" id="modalTitle">Save Subject</h3>
-      <div class="form-group">
-        <label for="subjectName">Subject Name</label>
-        <input type="text" id="subjectName" placeholder="e.g. Mathematics" required>
-      </div>
-      <div class="modal__actions">
-        <button type="button" class="btn btn--secondary" id="cancelSubject">Cancel</button>
-        <button type="submit" class="btn btn--primary">Save</button>
-      </div>
-    </form>
-  </dialog>
-
-  <footer class="footer">
-    <p>Class Bunk Calculator & Attendance Predictor — Plan smarter, attend better.</p>
-  </footer>
-</body>
+    <footer class="footer">
+      <p>
+        Class Bunk Calculator & Attendance Predictor — Plan smarter, attend
+        better.
+      </p>
+    </footer>
+  </body>
 </html>

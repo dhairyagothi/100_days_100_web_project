@@ -5,106 +5,81 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CAPTCHA Challenge</title>
     <link rel="stylesheet" href="captcha.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="icon" href="../favv.png" type="image/x-icon" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
-
     <nav class="navbar">
-            <a href="/" class="project-back-button">← Back to Home</a>
+        <a href="/" class="project-back-button">← Back to Home</a>
 
-    <div class="logo">
-     📖 Captcha
-    </div>
-
-    <ul class="nav-links">
-
-      <li>
-        <a href="captcha.html">
-          Home
+        <a href="captcha.html" class="logo">
+            📖 Captcha
         </a>
-      </li>
 
-      <li>
-        <a href="generate.html">
-         Generate Captcha
-        </a>
-      </li>
-
-      <li>
-        <a href="dashboard.html">
-         Dashboard
-        </a>
-      </li>
-
-    </ul>
-    <button id="themeToggle" class="theme">
-      <span id="themeIcon">☀️</span>
-    </button>
-  </nav>
-        <!-- <div class="app-container"> -->
-            <div class="container">
-
-                <div class="hero">
-                    <span class="eyebrow">Interactive Security Check</span>
-                    <header>CAPTCHA Challenge</header>
-                    <p class="intro">Choose a CAPTCHA mode, solve the challenge, and submit to verify you're human.</p>
-                </div>
-                 <div>
-                     <a href="generate.html" class="button">Generate Captcha</a>
-                </div>
-    </div>
-   
- <footer class="footer">
-
-    <section id="footer-container">
-
-      <!-- Brand -->
-      <div class="footer-section">
-        <h3 >📖  Captcha</h3>
-        <p>
-        Captcha is a modern, front-end verification demo with custom styling, JavaScript validation, and a comprehensive analytics dashboard!
-        </p>
-      </div>
-
-      <!-- Quick Links -->
-      <div class="footer-section">
-        <h4>Quick Links</h4>
-
-        <ul>
-          <li><a href="captcha.html">Home</a></li>
-          <li><a href="generate.html">Generate</a></li>
-          <li><a href="dashboard.html">Dashboard</a></li>
+        <ul class="nav-links">
+            <li>
+                <a href="captcha.html">Home</a>
+            </li>
+            <li>
+                <a href="generate.html">Generate Captcha</a>
+            </li>
+            <li>
+                <a href="dashboard.html">Dashboard</a>
+            </li>
         </ul>
-      </div>
 
-      <!-- Social Links -->
-      <div class="footer-section">
-        <h4>Follow Us</h4>
+        <button id="themeToggle" class="theme" aria-label="Toggle dark/light mode">
+            <span id="themeIcon" aria-hidden="true">☀️</span>
+        </button>
+    </nav>
 
-        <div class="social-links">
-          <a href="#"><i class="fab fa-github"></i></a>
-          <a href="#"><i class="fab fa-twitter"></i></a>
-          <a href="#"><i class="fab fa-linkedin"></i></a>
-          <a href="#"><i class="fab fa-discord"></i></a>
+    <main class="container">
+        <div class="hero">
+            <span class="eyebrow">Interactive Security Check</span>
+            <h1>CAPTCHA Challenge</h1>
+            <p class="intro">Choose a CAPTCHA mode, solve the challenge, and submit to verify you're human.</p>
+            <a href="generate.html" class="button">Generate Captcha</a>
         </div>
-      </div>
+    </main>
 
-      </div>
+    <footer class="footer">
+        <section id="footer-container">
+            <div class="footer-section">
+                <h3>📖 Captcha</h3>
+                <p>
+                    Captcha is a modern, front-end verification demo with custom styling, JavaScript validation, and a comprehensive analytics dashboard!
+                </p>
+            </div>
 
-      <div class="footer-bottom">
-        <p>
-          © 2025  Captcha is a modern, front-end verification demo.
-        </p>
-      </div>
-    </section>
-  </footer>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="captcha.html">Home</a></li>
+                    <li><a href="generate.html">Generate</a></li>
+                    <li><a href="dashboard.html">Dashboard</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Follow Us</h4>
+                <div class="social-links">
+                    <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" aria-label="Discord"><i class="fab fa-discord"></i></a>
+                </div>
+            </div>
+        </section>
+
+        <div class="footer-bottom">
+            <p>© 2025 Captcha is a modern, front-end verification demo.</p>
+        </div>
+    </footer>
 
     <script src="captcha.js"></script>
-</body> 
+</body>
 </html>
