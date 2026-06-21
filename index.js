@@ -601,16 +601,35 @@ function getAllTechnologies() {
 let bookmarkedProjects = [];
 let recentProjects = [];
 
-try {
-  bookmarkedProjects =
-    JSON.parse(localStorage.getItem("bookmarkedProjects")) || [];
-  recentProjects = JSON.parse(localStorage.getItem("recentProjects")) || [];
-} catch (error) {
-  console.warn(
-    "localStorage is not available or access is denied:",
-    error.message,
-  );
+function getStoredArray(key) {
+  try {
+    const data = localStorage.getItem(key);
+    if (data === null) return [];
+    const value = JSON.parse(data);
+    if (!Array.isArray(value)) {
+      throw new Error("Stored value is not an array");
+    }
+    return value;
+  } catch (error) {
+    try {
+      localStorage.removeItem(key);
+    } catch {
+      // ignore removal failures
+    }
+    return [];
+  }
 }
+
+function safeSetLocalStorage(key, value) {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch (error) {
+    console.warn(`Could not save ${key} due to localStorage restrictions`, error.message);
+  }
+}
+
+bookmarkedProjects = getStoredArray('bookmarkedProjects');
+recentProjects = getStoredArray('recentProjects');
 
 let showAllBookmarks = false;
 let showAllRecent = false;
@@ -621,28 +640,35 @@ const ONE_HOUR_MS = 60 * 60 * 1000;
 function migrateRecentProjects() {
   if (recentProjects.length === 0) return;
 
-  if (typeof recentProjects[0] === "object" && recentProjects[0].timestamp) {
-    return;
+  // Check if already in new format (has timestamp)
+  if (recentProjects[0] && typeof recentProjects[0] === "object" && recentProjects[0].timestamp) {
+    return; // Already migrated
   }
 
-  recentProjects = recentProjects.map((project) => {
-    if (Array.isArray(project)) {
-      return {
-        day: project[0],
-        name: project[1],
-        url: project[2],
-        tags: project[3],
-        timestamp: Date.now() - ONE_HOUR_MS / 2,
-      };
-    }
-    return project;
-  });
-
-  try {
-    localStorage.setItem("recentProjects", JSON.stringify(recentProjects));
-  } catch (error) {
-    console.warn("Could not save recent projects to localStorage:", error.message);
-  }
+  // Migrate old format [day, name, url, tags] to new format {day, name, url, tags, timestamp}
+  recentProjects = recentProjects
+    .map((project) => {
+      if (!project) return null;
+      if (Array.isArray(project)) {
+        return {
+          day: project[0] || "",
+          name: project[1] || "",
+          url: project[2] || "",
+          tags: project[3] || [],
+          timestamp: Date.now() - ONE_HOUR_MS / 2, // Set to 30 mins ago to preserve them initially
+        };
+      }
+      if (typeof project === "object" && !project.timestamp) {
+        return {
+          ...project,
+          timestamp: Date.now() - ONE_HOUR_MS / 2,
+        };
+      }
+      return project;
+    })
+    .filter(Boolean);
+  
+  safeSetLocalStorage('recentProjects', recentProjects);
 }
 
 // Migrate on load
@@ -653,12 +679,7 @@ function cleanupExpiredRecentProjects() {
   recentProjects = getRecentProjectsWithinWindow();
 
   if (recentProjects.length !== initialLength) {
-    try {
-      localStorage.setItem("recentProjects", JSON.stringify(recentProjects));
-    } catch (error) {
-      console.warn("Could not save recent projects to localStorage:", error.message);
-    }
-    renderRecentProjects();
+    safeSetLocalStorage('recentProjects', recentProjects);
   }
 }
 
@@ -677,7 +698,6 @@ const CATEGORY_LABEL = {
   intermediate: "Intermediate",
   advanced: "Advanced",
 };
-
 /* ============================================================
    GITHUB REPO STATS
    ============================================================ */
@@ -1264,16 +1284,8 @@ function toggleBookmark(project) {
     showToast("Project bookmarked");
   }
 
+  safeSetLocalStorage('bookmarkedProjects', bookmarkedProjects);
   updateBookmarkURL();
-
-  try {
-    localStorage.setItem(
-      "bookmarkedProjects",
-      JSON.stringify(bookmarkedProjects),
-    );
-  } catch (error) {
-    console.warn("Could not save bookmark due to localStorage restrictions");
-  }
   renderBookmarks();
   renderGrid();
   renderRecentProjects();
@@ -1306,10 +1318,7 @@ function loadBookmarksFromURL() {
     bookmarkIds.includes(project.day),
   );
 
-  localStorage.setItem(
-    "bookmarkedProjects",
-    JSON.stringify(bookmarkedProjects),
-  );
+  safeSetLocalStorage('bookmarkedProjects', bookmarkedProjects);
 }
 
 function getRecentProjectsWithinWindow() {
@@ -1324,13 +1333,15 @@ function getRecentProjectsWithinWindow() {
 }
 
 function trackRecentProject(project) {
+  if (!project) return;
+  // Convert old format to new format if needed
   let projectObj;
   if (Array.isArray(project)) {
     projectObj = {
-      day: project[0],
-      name: project[1],
-      url: project[2],
-      tags: project[3],
+      day: project[0] || "",
+      name: project[1] || "",
+      url: project[2] || "",
+      tags: project[3] || [],
       timestamp: Date.now(),
     };
   } else {
@@ -1340,20 +1351,17 @@ function trackRecentProject(project) {
     };
   }
 
-  recentProjects = recentProjects.filter((item) => item.day !== projectObj.day);
+  // Remove duplicate if exists
+  recentProjects = recentProjects.filter((item) => item && item.day !== projectObj.day);
+
+  // Add to front
   recentProjects.unshift(projectObj);
 
   if (recentProjects.length > 20) {
     recentProjects.pop();
   }
 
-  try {
-    localStorage.setItem("recentProjects", JSON.stringify(recentProjects));
-  } catch (error) {
-    console.warn(
-      "Could not save recent projects due to localStorage restrictions",
-    );
-  }
+  safeSetLocalStorage('recentProjects', recentProjects);
   renderRecentProjects();
 }
 
@@ -1361,12 +1369,7 @@ const bookmarkGrid = document.getElementById("bookmarkGrid");
 
 function normalizeProjectEntry(project) {
   if (!project) {
-    return {
-      day: "",
-      name: "",
-      url: "",
-      tags: [],
-    };
+    return { day: "", name: "", url: "", tags: [] };
   }
 
   if (typeof project === "string") {
@@ -1378,7 +1381,6 @@ function normalizeProjectEntry(project) {
       tags: [],
     };
   }
-
   if (Array.isArray(project)) {
     return {
       day: project[0] || "",

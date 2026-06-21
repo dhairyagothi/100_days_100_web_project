@@ -1340,6 +1340,22 @@ body.light-mode .vector-flowchart {
   font-weight: bold;
 }
 
+/* Custom clean-up styles to remove inline styles */
+.particle-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.footer-copyright {
+  margin-top: 1rem;
+}
+
+.footer-featured-btn {
+  margin-top: 1rem;
+  text-decoration: none;
+}
 
 /* ==========================================
    BOOKMARKS
@@ -1592,3 +1608,4 @@ body.light-mode .vector-flowchart {
     grid-template-columns: 1fr;
   }
 }
+
