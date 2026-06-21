@@ -31,7 +31,8 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "dotenv": "^17.4.2"
+    "dotenv": "^17.4.2",
+    "fuse.js": "^7.4.2"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

@@ -129,7 +129,7 @@ function loadProjects() {
       const isRoot = !window.location.pathname.includes("/contributors/");
       const base = isRoot ? "" : "../";
       const projectsUrl = new URL(
-        `${base}projects.json`,
+        `${base}projects.json?v=${Date.now()}`,
         window.location.href,
       ).toString();
       
