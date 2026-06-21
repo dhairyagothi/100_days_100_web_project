@@ -1762,6 +1762,14 @@ function initFilterChips() {
       chip.classList.add("active");
       activeFilter = chip.dataset.filter;
       currentPage = 1;
+
+      // Clear search query when changing categories to prevent "no projects found" confusion
+      const searchInput = document.getElementById("searchInput") || document.getElementById("search") || document.querySelector(".search-input");
+      if (searchInput && searchQuery) {
+        searchInput.value = "";
+        searchQuery = "";
+      }
+
       renderGrid();
     });
   });
