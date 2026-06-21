@@ -138,19 +138,27 @@ function getNeighbours(coord) {
     if (selfIndex !== -1) {
         neighbours.splice(selfIndex, 1);
     }
-    return neighbours;
-}
+    picked.forEach((index) => {
+      state.grid[index].mine = true;
+    });
+  }
 
-// Count surrounding bombs
-function getBombCount(coord) {
-    if (bomblist.includes(coord)) return '*';
-    
-    let neighbours = getNeighbours(coord);
-    let count = 0;
-    for (let n of neighbours) {
-        if (bomblist.includes(n)) {
-            count++;
-        }
+  function calculateNumbers() {
+    state.grid.forEach((cell) => {
+      if (cell.mine) return;
+      cell.adjacent = neighbors(cell).filter((item) => item.mine).length;
+    });
+  }
+
+  function neighbors(cell) {
+    const nearby = [];
+    for (let rowOffset = -1; rowOffset <= 1; rowOffset += 1) {
+      for (let colOffset = -1; colOffset <= 1; colOffset += 1) {
+        if (rowOffset === 0 && colOffset === 0) continue;
+        const row = cell.row + rowOffset;
+        const col = cell.col + colOffset;
+        if (isInside(row, col)) nearby.push(state.grid[indexOf(row, col)]);
+      }
     }
     return count;
 }
@@ -185,56 +193,239 @@ function handleCellClick(coord) {
             playSafeSound(); 
         }
     }
-}
 
-// Reveal all hidden bombs at game over
-function revealAllBombs() {
-    for (let bomb of bomblist) {
-        let cellElement = document.getElementById(bomb);
-        cellElement.classList.add('revealed', 'bomb');
-        cellElement.innerText = '*';
+    floodReveal(cell);
+    if (checkWin()) return;
+    renderBoard();
+    updateStatus();
+  }
+
+  // Breadth-first reveal opens connected empty cells and their numbered edge.
+  function floodReveal(startCell) {
+    const queue = [startCell];
+    const seen = new Set();
+
+    while (queue.length) {
+      const cell = queue.shift();
+      if (seen.has(cell.index) || cell.flagged || cell.revealed || cell.mine) continue;
+      seen.add(cell.index);
+      cell.revealed = true;
+      cell.justRevealed = true;
+      state.revealed += 1;
+
+      if (cell.adjacent === 0) {
+        neighbors(cell).forEach((neighbor) => {
+          if (!neighbor.revealed && !neighbor.mine) queue.push(neighbor);
+        });
+      }
     }
-}
+  }
 
-// Initialize board and reset game variables
-function initGame() {
-    bomblist = [];
-    attemptlist = [];
-    gameOver = false;
-    messageDiv.innerText = '';
-    restartBtn.style.display = 'none';
-    boardDiv.innerHTML = ''; 
+  function toggleFlag(index) {
+    const cell = state.grid[index];
+    if (!cell || state.gameOver || cell.revealed) return;
+    startTimer();
+    cell.flagged = !cell.flagged;
+    state.flags += cell.flagged ? 1 : -1;
+    renderBoard();
+    updateStatus();
+  }
 
-    generateBombs();
+  function loseGame() {
+    state.gameOver = true;
+    clearInterval(state.timerId);
+    setControlsDisabled(true);
+    state.grid.forEach((cell) => {
+      if (cell.mine) cell.revealed = true;
+    });
+    renderBoard();
+    updateStatus();
+    gameCard.classList.add("game-lost");
+    boardEl.classList.add("board-locked");
+    messageEl.textContent = "Mine triggered. Study the field before the next sweep.";
+    playTone(120, 0.12);
+    setTimeout(() => playTone(90, 0.12), 120);
 
-    // Create top row column headers
-    let cornerSpace = document.createElement('div');
-    boardDiv.appendChild(cornerSpace);
-    for (let c of columns) {
-        let label = document.createElement('div');
-        label.className = 'label';
-        label.innerText = c;
-        boardDiv.appendChild(label);
+    state.lossModalTimer = setTimeout(() => {
+      openModal("Game Over", "A mine was triggered. Reset the grid and make a cleaner sweep.", "lose", getLossStats());
+      state.lossModalTimer = null;
+    }, 2400);
+  }
+
+  function checkWin() {
+    const safeCells = state.rows * state.cols - state.mines;
+    if (state.revealed !== safeCells) return false;
+
+    state.gameOver = true;
+    clearInterval(state.timerId);
+    state.grid.forEach((cell) => {
+      if (cell.mine && !cell.flagged) {
+        cell.flagged = true;
+        state.flags += 1;
+      }
+    });
+    saveBestScore();
+    renderBoard();
+    updateStatus();
+    updateBestScore();
+    messageEl.textContent = "Board cleared. Nicely done.";
+    gameCard.classList.add("won");
+    openModal("You Win", `Board cleared in ${formatTimer(state.seconds)}. Best time saved for ${state.difficulty} mode.`, "win");
+    playTone(620, 0.1);
+    setTimeout(() => playTone(880, 0.12), 100);
+    return true;
+  }
+
+  function updateStatus() {
+    mineCountEl.textContent = formatMineCount(state.mines - state.flags);
+    timerEl.textContent = formatTimer(state.seconds);
+  }
+
+  function bestScoreKey() {
+    return `minesweeper-best-${state.difficulty}`;
+  }
+
+  function updateBestScore() {
+    const score = localStorage.getItem(bestScoreKey());
+    bestScoreEl.textContent = score ? formatTimer(Number(score)) : "--";
+  }
+
+  function saveBestScore() {
+    const key = bestScoreKey();
+    const currentBest = Number(localStorage.getItem(key));
+    if (!currentBest || state.seconds < currentBest) {
+      localStorage.setItem(key, String(state.seconds));
     }
+  }
 
-    // Create grid layout with buttons
-    for (let r = 1; r <= 5; r++) {
-        let rowLabel = document.createElement('div');
-        rowLabel.className = 'label';
-        rowLabel.innerText = r;
-        boardDiv.appendChild(rowLabel);
+  function playTone(frequency, duration) {
+    if (!state.soundEnabled) return;
+    if (!window.AudioContext && !window.webkitAudioContext) return;
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    const audio = new AudioContext();
+    const oscillator = audio.createOscillator();
+    const gain = audio.createGain();
+    oscillator.frequency.value = frequency;
+    oscillator.type = "sine";
+    gain.gain.setValueAtTime(0.04, audio.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, audio.currentTime + duration);
+    oscillator.connect(gain);
+    gain.connect(audio.destination);
+    oscillator.start();
+    oscillator.stop(audio.currentTime + duration);
+  }
 
-        for (let c = 0; c < 5; c++) {
-            let coord = `${columns[c]} ${r}`;
-            let btn = document.createElement('button');
-            btn.className = 'cell';
-            btn.id = coord;
-            btn.addEventListener('click', () => handleCellClick(coord));
-            boardDiv.appendChild(btn);
-        }
+  function getLossStats() {
+    const correctFlags = state.grid.filter((cell) => cell.mine && cell.flagged).length;
+    const safeCells = state.rows * state.cols - state.mines;
+    return [
+      ["Final time", formatTimer(state.seconds)],
+      ["Mines cleared", `${correctFlags}/${state.mines}`],
+      ["Safe tiles opened", `${state.revealed}/${safeCells}`],
+    ];
+  }
+
+  function openModal(title, message, type, stats = []) {
+    setControlsDisabled(false);
+    modalTitleEl.textContent = title;
+    modalMessageEl.innerHTML = buildModalMessage(message, stats);
+    modalIconEl.innerHTML = type === "win" ? icon.win : icon.mine;
+    modalEl.hidden = false;
+  }
+
+  function closeModal() {
+    modalEl.hidden = true;
+  }
+
+  function buildModalMessage(message, stats) {
+    const statMarkup = stats.map(([label, value]) => (
+      `<span class="modal-stat"><span>${label}</span><strong>${value}</strong></span>`
+    )).join("");
+    return `${message}${statMarkup ? `<span class="modal-stats">${statMarkup}</span>` : ""}`;
+  }
+
+  function setControlsDisabled(disabled) {
+    restartButton.disabled = disabled;
+    difficultyButtons.forEach((button) => {
+      button.disabled = disabled;
+    });
+  }
+
+  function restartWithAnimation() {
+    gameCard.classList.add("restarting");
+    setTimeout(() => gameCard.classList.remove("restarting"), 460);
+    newGame();
+  }
+
+  function updateChromeIcons() {
+    themeIconEl.innerHTML = document.body.classList.contains("light-mode") ? icon.sun : icon.moon;
+    soundIconEl.innerHTML = state.soundEnabled ? icon.soundOn : icon.soundOff;
+    document.querySelector(".restart-icon").innerHTML = icon.restart;
+    document.querySelector("[data-guide-flag]").innerHTML = icon.flag;
+    document.querySelector("[data-guide-mine]").innerHTML = icon.mine;
+    document.querySelector("[data-guide-explosion]").innerHTML = icon.mine;
+  }
+
+  boardEl.addEventListener("click", (event) => {
+    if (state.skipNextClick) {
+      state.skipNextClick = false;
+      return;
     }
-}
+    const cellEl = event.target.closest(".cell");
+    if (!cellEl) return;
+    revealCell(Number(cellEl.dataset.index));
+  });
 
-// Attach restart listener and start game
-restartBtn.addEventListener('click', initGame);
-initGame();
+  boardEl.addEventListener("contextmenu", (event) => {
+    const cellEl = event.target.closest(".cell");
+    if (!cellEl) return;
+    event.preventDefault();
+    toggleFlag(Number(cellEl.dataset.index));
+  });
+
+  boardEl.addEventListener("pointerdown", (event) => {
+    const cellEl = event.target.closest(".cell");
+    if (!cellEl || event.pointerType === "mouse") return;
+    state.longPressTimer = setTimeout(() => {
+      toggleFlag(Number(cellEl.dataset.index));
+      state.skipNextClick = true;
+      state.longPressTimer = null;
+    }, 480);
+  });
+
+  boardEl.addEventListener("pointerup", () => clearTimeout(state.longPressTimer));
+  boardEl.addEventListener("pointerleave", () => clearTimeout(state.longPressTimer));
+
+  difficultyButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      difficultyButtons.forEach((item) => item.classList.remove("active"));
+      button.classList.add("active");
+      newGame(button.dataset.difficulty);
+    });
+  });
+
+  restartButton.addEventListener("click", restartWithAnimation);
+  modalRestartButton.addEventListener("click", restartWithAnimation);
+  modalEl.addEventListener("click", (event) => {
+    if (event.target === modalEl) closeModal();
+  });
+
+  soundToggle.addEventListener("click", () => {
+    state.soundEnabled = !state.soundEnabled;
+    localStorage.setItem("minesweeper-sound", state.soundEnabled ? "on" : "off");
+    updateChromeIcons();
+  });
+
+  themeToggle.addEventListener("click", () => {
+    document.body.classList.toggle("light-mode");
+    localStorage.setItem("minesweeper-theme", document.body.classList.contains("light-mode") ? "light" : "dark");
+    updateChromeIcons();
+  });
+
+  if (localStorage.getItem("minesweeper-theme") === "light") {
+    document.body.classList.add("light-mode");
+  }
+
+  updateChromeIcons();
+  newGame();
+})();
