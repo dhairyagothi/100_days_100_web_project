@@ -2443,15 +2443,21 @@ const animationEngine = ( () => {
     '</div>',
   
   ].join( '\n' );
+
+  // Cache the compiled DOM fragment structure ONCE outside the loop execution space
+  const rangeTemplateContainer = document.createElement( 'div' );
+  rangeTemplateContainer.innerHTML = RangeHTML;
+
+  const cachedRange = rangeTemplateContainer.querySelector( '.range' );
+  const cachedRangeLabel = cachedRange.querySelector( '.range__label' );
+  const cachedRangeList = cachedRange.querySelector( '.range__list' );
   
   document.querySelectorAll( 'range' ).forEach( el => {
   
-    const temp = document.createElement( 'div' );
-    temp.innerHTML = RangeHTML;
-  
-    const range = temp.querySelector( '.range' );
-    const rangeLabel = range.querySelector( '.range__label' );
-    const rangeList = range.querySelector( '.range__list' );
+    // Instantly duplicate the pre-queried memory node structure (deep clone)
+    const range = cachedRange.cloneNode( true );
+    const rangeLabel = range.querySelector( '.range__label' ) || cachedRangeLabel;
+    const rangeList = range.querySelector( '.range__list' ) || cachedRangeList;
   
     range.setAttribute( 'name', el.getAttribute( 'name' ) );
     rangeLabel.innerHTML = el.getAttribute( 'title' );
@@ -3589,7 +3595,7 @@ const animationEngine = ( () => {
         convert: false,
       }, options || {} );
   
-      this.tagName = options.tagName;
+      this.tagName = options.tagName.toUpperCase(); // Normalize for nodeName checking
       this.className = options.className;
       this.icons = options.icons;
   
@@ -3602,7 +3608,20 @@ const animationEngine = ( () => {
       if ( options.observe ) {
   
         const MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
-        this.observer = new MutationObserver( mutations => { this.convertAllIcons(); } );
+        // Target ONLY newly added nodes rather than rescanning the whole document
+        this.observer = new MutationObserver( mutations => {
+          mutations.forEach( mutation => {
+            mutation.addedNodes.forEach( node => {
+              if ( node.nodeType === Node.ELEMENT_NODE ) {
+                if ( node.nodeName === this.tagName ) {
+                  this.convertIcon( node );
+                }
+                // Also check if the added element contains target icon children
+                node.querySelectorAll( options.tagName ).forEach( icon => this.convertIcon( icon ) );
+              }
+            } );
+          } );
+        } );
         this.observer.observe( document.documentElement, { childList: true, subtree: true } );
   
       }
@@ -3613,7 +3632,7 @@ const animationEngine = ( () => {
   
     convertAllIcons() {
   
-      document.querySelectorAll( this.tagName ).forEach( icon => { this.convertIcon( icon ); } );
+      document.querySelectorAll( this.tagName.toLowerCase() ).forEach( icon => { this.convertIcon( icon ); } );
   
     }
   
