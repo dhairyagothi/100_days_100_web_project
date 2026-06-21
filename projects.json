@@ -388,7 +388,7 @@
 
     "apiRequired": true,
     "apiName": "OpenWeatherMap",
-    "apiKeyNeeded": true,
+    "requiresApiKey": true,
     "externalDependencies": ["OpenWeatherMap"],
     "projectPath": "./public/Weather%20Forcasting/index.html"
     "projectPath": "./public/Weather Forcasting/index.html"
@@ -453,7 +453,7 @@
 
     "apiRequired": true,
     "apiName": "GitHub API",
-    "apiKeyNeeded": false,
+    "requiresApiKey": false,
     "externalDependencies": ["GitHub API"],
 
     "projectPath": "./public/github_profile_finder/index.html"
@@ -999,7 +999,7 @@
 
     "apiRequired": true,
     "apiName": "Exchange Rate API",
-    "apiKeyNeeded": true,
+    "requiresApiKey": true,
     "externalDependencies": ["Exchange Rate API"],
 
     "projectPath": "./public/Exchange_Currency/index.html"
@@ -1029,7 +1029,7 @@
 
     "apiRequired": true,
     "apiName": "Unsplash API",
-    "apiKeyNeeded": true,
+    "requiresApiKey": true,
     "externalDependencies": ["Unsplash API"],
 
     "projectPath": "./public/Image Search Engine/index.html"
@@ -1202,7 +1202,7 @@
 
     "apiRequired": true,
     "apiName": "NASA APOD API",
-    "apiKeyNeeded": true,
+    "requiresApiKey": true,
     "externalDependencies": ["NASA APOD API"],
 
     "projectPath": "./public/NASA-APOD/popup.html"
@@ -1337,7 +1337,7 @@
 
     "apiRequired": true,
     "apiName": "CoinGecko API",
-    "apiKeyNeeded": false,
+    "requiresApiKey": false,
     "externalDependencies": ["CoinGecko API"],
 
     "projectPath": "./public/CRYPTOSHOW/index.html"
@@ -2602,7 +2602,7 @@
 
     "apiRequired": true,
     "apiName": "OMDb API",
-    "apiKeyNeeded": true,
+    "requiresApiKey": true,
     "externalDependencies": ["OMDb API"],
 
     "projectPath": "./public/Movie-Search-App/index.html"

@@ -89,7 +89,7 @@ function hydrateProjects(data) {
     projectDesc: project.projectDesc,
     apiRequired: project.apiRequired ?? false,
     apiName: project.apiName ?? "",
-    apiKeyNeeded: project.apiKeyNeeded ?? false,
+    requiresApiKey: project.requiresApiKey ?? false,
     externalDependencies: project.externalDependencies ?? [],
   }));
 
@@ -311,7 +311,7 @@ function generateMetadataBadges(project) {
     );
   }
 
-  if (project.apiKeyNeeded) {
+  if (project.requiresApiKey) {
     badges.push(
       '<span class="meta-badge api-key">API Key Needed</span>'
     );
