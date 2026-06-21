@@ -9,16 +9,13 @@
 <body>
 
     <div class="main-wrapper">
-        
         <div class="calendar-container">
             <div id="month-image" class="month-image"></div>
-            
             <div class="calendar-header">
-                <button id="prevMonth" class="nav-btn">&lt;</button>
-                <h2 id="monthYearText"></h2>
-                <button id="nextMonth" class="nav-btn">&gt;</button>
+                <button type="button" id="prevMonth" class="nav-btn" aria-label="Previous Month">&lt;</button>
+                <p id="monthYearText" aria-live="polite"></p>
+                <button type="button" id="nextMonth" class="nav-btn" aria-label="Next Month">&gt;</button>
             </div>
-
             <div class="calendar-grid">
                 <div class="day-name">Sun</div>
                 <div class="day-name">Mon</div>
@@ -31,15 +28,14 @@
         </div>
 
         <div id="noteArea" class="note-section">
-            <h3>Notes for <span id="selectedDateText">Select a day</span></h3>
-            
-            <select id="eventTag">
+            <h3>Notes for <span id="selectedDateText" aria-live="polite">Select a day</span></h3>
+            <select id="eventTag" aria-label="Event Type">
                 <option value="none">Normal Day</option>
                 <option value="festival">Festival / Holiday</option>
                 <option value="event">Personal Event</option>
             </select>
-            <textarea id="noteInput" placeholder="Plan your festivals and events here..."></textarea>
-            <button id="saveNote">Save Note</button>
+            <textarea id="noteInput" placeholder="Plan your festivals and events here..." aria-label="Notes"></textarea>
+            <button type="button" id="saveNote" aria-label="Save Note">Save Note</button>
         </div>
 
     </div>
