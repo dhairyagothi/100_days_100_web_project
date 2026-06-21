@@ -385,6 +385,11 @@
       "api"
     ],
     "difficulty": "intermediate",
+
+    "apiRequired": true,
+    "apiName": "OpenWeatherMap",
+    "apiKeyNeeded": true,
+    "externalDependencies": ["OpenWeatherMap"],
     "projectPath": "./public/Weather%20Forcasting/index.html"
   },
   {
@@ -444,6 +449,12 @@
       "javascript"
     ],
     "difficulty": "intermediate",
+
+    "apiRequired": true,
+    "apiName": "GitHub API",
+    "apiKeyNeeded": false,
+    "externalDependencies": ["GitHub API"],
+
     "projectPath": "./public/github_profile_finder/index.html"
   },
   {
@@ -984,6 +995,12 @@
       "javascript"
     ],
     "difficulty": "intermediate",
+
+    "apiRequired": true,
+    "apiName": "Exchange Rate API",
+    "apiKeyNeeded": true,
+    "externalDependencies": ["Exchange Rate API"],
+
     "projectPath": "./public/Exchange_Currency/index.html"
   },
   {
@@ -1008,6 +1025,12 @@
       "javascript"
     ],
     "difficulty": "intermediate",
+
+    "apiRequired": true,
+    "apiName": "Unsplash API",
+    "apiKeyNeeded": true,
+    "externalDependencies": ["Unsplash API"],
+
     "projectPath": "./public/Image Search Engine/index.html"
   },
   {
@@ -1175,6 +1198,12 @@
       "javascript"
     ],
     "difficulty": "intermediate",
+
+    "apiRequired": true,
+    "apiName": "NASA APOD API",
+    "apiKeyNeeded": true,
+    "externalDependencies": ["NASA APOD API"],
+
     "projectPath": "./public/NASA-APOD/popup.html"
   },
   {
@@ -1304,6 +1333,12 @@
       "javascript"
     ],
     "difficulty": "intermediate",
+
+    "apiRequired": true,
+    "apiName": "CoinGecko API",
+    "apiKeyNeeded": false,
+    "externalDependencies": ["CoinGecko API"],
+
     "projectPath": "./public/CRYPTOSHOW/index.html"
   },
   {
@@ -2563,6 +2598,12 @@
       "api"
     ],
     "difficulty": "intermediate",
+
+    "apiRequired": true,
+    "apiName": "OMDb API",
+    "apiKeyNeeded": true,
+    "externalDependencies": ["OMDb API"],
+
     "projectPath": "./public/Movie-Search-App/index.html"
   },
   {

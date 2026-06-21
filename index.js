@@ -85,6 +85,10 @@ function hydrateProjects(data) {
     techStack: project.techStack,
     difficulty: project.difficulty,
     projectDesc: project.projectDesc,
+    apiRequired: project.apiRequired ?? false,
+    apiName: project.apiName ?? "",
+    apiKeyNeeded: project.apiKeyNeeded ?? false,
+    externalDependencies: project.externalDependencies ?? [],
   }));
   PROJECTS_BY_NAME = new Map(PROJECTS.map(p => [p.projectName, p]));
   PROJECTS_BY_DAY = new Map(PROJECTS.map(p => [p.day, p]));
@@ -280,6 +284,43 @@ function sanitizeUrl(url) {
   return "#";
 }
 
+function generateMetadataBadges(project) {
+  if (!project) {
+    return '<span class="meta-badge offline-project">Offline Project</span>';
+  }
+
+  const badges = [];
+
+  if (project.apiRequired) {
+    badges.push(
+      '<span class="meta-badge api-required">API Required</span>'
+    );
+  }
+
+  if (project.apiKeyNeeded) {
+    badges.push(
+      '<span class="meta-badge api-key">API Key Needed</span>'
+    );
+  }
+
+  if (
+    project.externalDependencies &&
+    project.externalDependencies.length > 0
+  ) {
+    badges.push(
+      '<span class="meta-badge external-service">External Service</span>'
+    );
+  }
+
+  if (!project.apiRequired) {
+    badges.push(
+      '<span class="meta-badge offline-project">Offline Project</span>'
+    );
+  }
+
+  return badges.join("");
+}
+
 function buildProjectCardHTML({
   day,
   name,
@@ -311,6 +352,7 @@ function buildProjectCardHTML({
 
   const project = PROJECTS_BY_NAME.get(name) || PROJECTS_BY_DAY.get(day);
 
+  const metadataBadges = generateMetadataBadges(project);
   const description = escapeHTML(getProjectDescription(project));
   const safeDay = escapeHTML(day);
   const safeName = escapeHTML(name);
@@ -374,6 +416,9 @@ function buildProjectCardHTML({
         : ""
       }
             <div class="card-tags">${tagsHTML}</div>
+            <div class="metadata-badges">
+                ${metadataBadges}
+            </div>
             <div class="card-footer">
                 <div class="card-actions-left">
                     ${primaryLink}
