@@ -2353,11 +2353,7 @@ function refreshFeaturePane(feature) {
   }
 }
 
-function bindEvents() {
-    document.getElementById("shuffleFact").addEventListener("click", shuffleFact);
-    document.getElementById("calculateDistance").addEventListener("click", calculateDistance);
-
-    const themeToggle = document.getElementById("themeToggle");
+const themeToggle = document.getElementById("themeToggle");
 const themeIcon = document.getElementById("themeIcon");
 
 const moonIcon = `
@@ -2378,25 +2374,20 @@ const sunIcon = `
 
 function updateThemeIcon(theme) {
     themeIcon.innerHTML = theme === "dark" ? sunIcon : moonIcon;
+    const nextLabel = theme === "dark" ? "Switch to light mode" : "Switch to dark mode";
+    themeToggle.setAttribute("title", nextLabel);
+    themeToggle.setAttribute("data-tooltip", nextLabel);
+    themeToggle.setAttribute("aria-label", nextLabel);
 }
 
-// Load saved theme
-const savedTheme = localStorage.getItem("theme") || "light";
-document.documentElement.setAttribute("data-theme", savedTheme);
-updateThemeIcon(savedTheme);
+function syncThemeToggleLabel() {
+    const isLight = document.body.classList.contains("light-theme");
+    updateThemeIcon(isLight ? "light" : "dark");
+}
 
-// Toggle theme
-themeToggle.addEventListener("click", () => {
-    const currentTheme =
-        document.documentElement.getAttribute("data-theme") || "light";
-
-    const nextTheme = currentTheme === "dark" ? "light" : "dark";
-
-    document.documentElement.setAttribute("data-theme", nextTheme);
-    localStorage.setItem("theme", nextTheme);
-
-    updateThemeIcon(nextTheme);
-});
+function bindEvents() {
+    document.getElementById("shuffleFact").addEventListener("click", shuffleFact);
+    document.getElementById("calculateDistance").addEventListener("click", calculateDistance);
 
     newsList.addEventListener('click', (event) => {
     const item = event.target.closest('.news-item');
@@ -2552,14 +2543,12 @@ function lsSet(key, value) {
 function loadThemePreference() {
   const saved = lsGet(LS_KEYS.theme);
   if (saved === 'light-theme' || saved === 'light-mode') applyLightTheme(true);
+  else syncThemeToggleLabel();
 }
 
 function applyLightTheme(on) {
   document.body.classList.toggle('light-theme', on);
-  const iconDark = document.getElementById('themeIconDark');
-  const iconLight = document.getElementById('themeIconLight');
-  if (iconDark) iconDark.hidden = on;
-  if (iconLight) iconLight.hidden = !on;
+  syncThemeToggleLabel();
 }
 
 function bindThemeToggle() {
@@ -2648,6 +2637,25 @@ function bindApodFavBtn() {
 
 // ── News / scientist star buttons ──────────────────────────────────
 
+// Single shared star glyph (SVG) so every favorite toggle in the app
+// renders identically and stays crisp at any pixel density.
+const STAR_ICON_SVG =
+  '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6.6 7.1.6-5.4 4.7 1.7 7-6.3-3.9-6.3 3.9 1.7-7-5.4-4.7 7.1-.6z"/></svg>';
+
+// Briefly adds a pop animation class to a star button, respecting
+// prefers-reduced-motion (the CSS keyframe itself is also disabled there).
+function triggerStarPop(el) {
+  el.classList.remove('star-pop');
+  // restart the animation even if triggered twice in a row
+  void el.offsetWidth;
+  el.classList.add('star-pop');
+  el.addEventListener(
+    'animationend',
+    () => el.classList.remove('star-pop'),
+    { once: true }
+  );
+}
+
 function addNewsStarButtons() {
   document.getElementById('newsList')?.addEventListener('click', (e) => {
     const star = e.target.closest('.item-star-btn[data-news-index]');
@@ -2665,12 +2673,17 @@ function addNewsStarButtons() {
         savedAt: new Date().toISOString(),
       });
       star.classList.add('saved');
-      star.textContent = '★';
+      star.setAttribute('aria-pressed', 'true');
+      star.setAttribute('title', 'Remove from favorites');
+      star.setAttribute('aria-label', 'Remove article from favorites');
+      triggerStarPop(star);
       showNotif('📰 Article bookmarked!');
     } else {
       favsState.news.splice(exists, 1);
       star.classList.remove('saved');
-      star.textContent = '☆';
+      star.setAttribute('aria-pressed', 'false');
+      star.setAttribute('title', 'Save to favorites');
+      star.setAttribute('aria-label', 'Bookmark article');
     }
     saveFavoritesToStorage();
     renderFavsList();
@@ -2695,7 +2708,7 @@ function patchRenderNews() {
                     <span class="news-title">${escapeHtml(item.title)}</span>
                     <span class="news-meta">${escapeHtml(item.meta)}</span>
                 </span>
-                <button class="item-star-btn ${isSaved ? 'saved' : ''}" data-news-index="${index}" type="button" title="Save to favorites" aria-label="Bookmark article">${isSaved ? '★' : '☆'}</button>
+                <button class="item-star-btn ${isSaved ? 'saved' : ''}" data-news-index="${index}" type="button" aria-pressed="${isSaved}" title="${isSaved ? 'Remove from favorites' : 'Save to favorites'}" aria-label="${isSaved ? 'Remove article from favorites' : 'Bookmark article'}">${STAR_ICON_SVG}</button>
             </div>`;
       })
       .join('');
@@ -2719,12 +2732,17 @@ function addScientistStarButtons() {
         savedAt: new Date().toISOString(),
       });
       star.classList.add('saved');
-      star.textContent = '★';
+      star.setAttribute('aria-pressed', 'true');
+      star.setAttribute('title', 'Remove from favorites');
+      star.setAttribute('aria-label', 'Remove scientist from favorites');
+      triggerStarPop(star);
       showNotif('🔭 Scientist profile saved!');
     } else {
       favsState.scientists.splice(exists, 1);
       star.classList.remove('saved');
-      star.textContent = '☆';
+      star.setAttribute('aria-pressed', 'false');
+      star.setAttribute('title', 'Save to favorites');
+      star.setAttribute('aria-label', 'Save scientist to favorites');
     }
     saveFavoritesToStorage();
     renderFavsList();
@@ -2750,7 +2768,7 @@ function patchRenderScientists() {
                     <span class="scientist-name">${item.name}</span>
                     <span class="scientist-field">${item.field}</span>
                 </span>
-                <button class="item-star-btn ${isSaved ? 'saved' : ''}" data-sci-name="${escapeHtml(item.name)}" type="button" title="Save to favorites">${isSaved ? '★' : '☆'}</button>
+                <button class="item-star-btn ${isSaved ? 'saved' : ''}" data-sci-name="${escapeHtml(item.name)}" type="button" aria-pressed="${isSaved}" title="${isSaved ? 'Remove from favorites' : 'Save to favorites'}" aria-label="${isSaved ? 'Remove scientist from favorites' : 'Save scientist to favorites'}">${STAR_ICON_SVG}</button>
             </div>`;
       })
       .join('');

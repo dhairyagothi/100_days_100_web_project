@@ -104,6 +104,28 @@
     --project-btn-border: #3b82f6;
     --project-btn-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
     --project-btn-shadow-inset: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    /* Header Control / Icon Button Tokens */
+    --header-controls-border: rgba(140, 120, 255, 0.22);
+    --header-controls-bg: rgba(10, 14, 38, 0.55);
+    --icon-btn-text: #c3b8ff;
+    --icon-btn-bg: rgba(255, 255, 255, 0.04);
+    --icon-btn-border: rgba(255, 255, 255, 0.08);
+    --icon-btn-hover-bg: rgba(154, 108, 255, 0.18);
+    --icon-btn-hover-text: #ffffff;
+    --icon-btn-active-bg: rgba(154, 108, 255, 0.3);
+    /* Star / Favorite Icon Tokens */
+    --star-idle: var(--muted);
+    --star-active: #ffd700;
+    --star-active-glow: rgba(255, 215, 0, 0.55);
+    /* Tooltip Tokens */
+    --tooltip-bg: #14163a;
+    --tooltip-text: #f3f4ff;
+    --tooltip-border: rgba(154, 108, 255, 0.4);
+    /* Danger / Destructive Action Tokens */
+    --danger-text: #ff8a8a;
+    --danger-bg: rgba(255, 90, 90, 0.1);
+    --danger-border: rgba(255, 90, 90, 0.3);
+    --danger-hover-bg: rgba(255, 90, 90, 0.18);
 }
 
 body.light-theme {
@@ -201,12 +223,34 @@ body.light-theme {
         rgba(0, 0, 0, 0.08) 60%,
         rgba(0, 0, 0, 0) 100%
     );
-    /* Back Button Project Tokens (Light) */
+    /* Back Button Project Tokens */
     --project-btn-bg: #ffffff;
     --project-btn-color: #2563eb;
     --project-btn-border: #cbd5e1;
     --project-btn-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
     --project-btn-shadow-inset: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    /* Header Control / Icon Button Tokens (Light) */
+    --header-controls-border: rgba(124, 77, 255, 0.16);
+    --header-controls-bg: rgba(255, 255, 255, 0.55);
+    --icon-btn-text: #5e35b1;
+    --icon-btn-bg: rgba(124, 77, 255, 0.05);
+    --icon-btn-border: rgba(124, 77, 255, 0.12);
+    --icon-btn-hover-bg: rgba(124, 77, 255, 0.14);
+    --icon-btn-hover-text: #3a1f8a;
+    --icon-btn-active-bg: rgba(124, 77, 255, 0.22);
+    /* Star / Favorite Icon Tokens (Light) */
+    --star-idle: var(--muted);
+    --star-active: #f5a623;
+    --star-active-glow: rgba(245, 166, 35, 0.45);
+    /* Tooltip Tokens (Light) */
+    --tooltip-bg: #1f2230;
+    --tooltip-text: #f3f4ff;
+    --tooltip-border: rgba(124, 77, 255, 0.3);
+    /* Danger / Destructive Action Tokens (Light) */
+    --danger-text: #d92d2d;
+    --danger-bg: rgba(217, 45, 45, 0.08);
+    --danger-border: rgba(217, 45, 45, 0.22);
+    --danger-hover-bg: rgba(217, 45, 45, 0.14);
 }
 * {
   box-sizing: border-box;
@@ -1283,6 +1327,17 @@ body.teal-mode {
     .status-pills {
         flex-wrap: wrap;
     }
+    .topbar-actions {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+    .search-wrap {
+        flex: 1;
+        min-width: 180px;
+    }
+    #globalSearch {
+        width: 100%;
+    }
     .apod-card {
         grid-template-columns: 1fr;
     }
@@ -1499,5 +1554,427 @@ body.light-theme {
     height: 36px;
     padding: 0 14px;
     font-size: 13px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   UI POLISH — Header Controls, Tooltips, Star Icons & Button System
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* --- Header control cluster (search + theme + stats) ----------------- */
+
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px;
+  border: 1px solid var(--header-controls-border);
+  border-radius: 999px;
+  background: var(--header-controls-bg);
+  backdrop-filter: blur(12px);
+  box-shadow: var(--panel-shadow-inset);
+}
+.search-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0 14px 0 38px;
+  border: 1px solid var(--header-controls-border);
+  border-radius: 999px;
+  background: var(--header-controls-bg);
+  backdrop-filter: blur(12px);
+  box-shadow: var(--panel-shadow-inset);
+  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+.search-wrap:has(#globalSearch:focus-visible) {
+  border-color: var(--accent-2);
+  box-shadow: var(--focus-shadow);
+}
+.search-icon {
+  position: absolute;
+  left: 14px;
+  color: var(--muted);
+  pointer-events: none;
+}
+#globalSearch {
+  width: 220px;
+  height: 38px;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  color: var(--text);
+  font-size: 13px;
+}
+#globalSearch::placeholder {
+  color: var(--soft);
+}
+#globalSearch:focus {
+  box-shadow: none;
+}
+
+/* --- Icon action buttons (Theme toggle, Stats) ------------------------ */
+
+.icon-action {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--icon-btn-border);
+  border-radius: 50%;
+  background: var(--icon-btn-bg);
+  color: var(--icon-btn-text);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+.icon-action svg {
+  transition: transform 0.2s ease-in-out;
+}
+.icon-action:hover {
+  background: var(--icon-btn-hover-bg);
+  color: var(--icon-btn-hover-text);
+  border-color: transparent;
+  transform: translateY(-1px) scale(1.05);
+}
+.icon-action:hover svg {
+  transform: rotate(-12deg);
+}
+.icon-action:active {
+  background: var(--icon-btn-active-bg);
+  transform: translateY(0) scale(0.97);
+}
+.icon-action:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-shadow);
+}
+
+/* --- Accessible custom tooltips --------------------------------------
+   Uses data-tooltip so the label is announced via aria-label/title for
+   assistive tech while the visible bubble is pure CSS (no extra JS). */
+
+[data-tooltip] {
+  position: relative;
+}
+[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  top: calc(100% + 9px);
+  left: 50%;
+  z-index: 40;
+  transform: translate(-50%, -4px);
+  padding: 6px 11px;
+  border: 1px solid var(--tooltip-border);
+  border-radius: 8px;
+  background: var(--tooltip-bg);
+  color: var(--tooltip-text);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  box-shadow: var(--shadow);
+  transition: opacity 0.16s ease-in-out, transform 0.16s ease-in-out;
+}
+[data-tooltip]:hover::after,
+[data-tooltip]:focus-visible::after {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-tooltip]::after {
+    transition: opacity 0.16s ease-in-out;
+  }
+}
+@media (max-width: 520px) {
+  [data-tooltip]::after {
+    display: none;
+  }
+}
+
+/* --- Favorite star icon buttons --------------------------------------
+   Stars are absolutely positioned top-right of their card and rendered
+   as inline SVG (sharp at any DPI) instead of text glyphs. Fill/stroke
+   swap on .saved, plus a quick pop animation on toggle. */
+
+.news-item,
+.scientist-item {
+  position: relative;
+}
+.news-item {
+  padding-right: 40px;
+}
+.item-star-btn {
+  position: absolute;
+  top: 10px;
+  right: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--star-idle);
+  cursor: pointer;
+  transition: background 0.2s ease-in-out, color 0.2s ease-in-out, transform 0.2s ease-in-out;
+}
+.item-star-btn svg {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  transition: fill 0.2s ease-in-out, stroke 0.2s ease-in-out, filter 0.2s ease-in-out;
+}
+.item-star-btn:hover {
+  background: var(--item-bg-hover);
+  color: var(--star-active);
+  transform: scale(1.08);
+}
+.item-star-btn:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-shadow);
+}
+.item-star-btn.saved {
+  color: var(--star-active);
+}
+.item-star-btn.saved svg {
+  fill: var(--star-active);
+  stroke: var(--star-active);
+  filter: drop-shadow(0 0 6px var(--star-active-glow));
+}
+.item-star-btn.star-pop {
+  animation: starPop 0.42s ease-in-out;
+}
+@keyframes starPop {
+  0% {
+    transform: scale(1);
+  }
+  35% {
+    transform: scale(1.35);
+  }
+  60% {
+    transform: scale(0.92);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .item-star-btn.star-pop {
+    animation: none;
+  }
+}
+
+/* --- Shared interactive states ----------------------------------------
+   One focus-visible treatment for every clickable control so keyboard
+   navigation is consistent across the whole dashboard. */
+
+.primary-action,
+.ghost-action,
+.outline-action,
+.feature-tab,
+.quiz-diff-btn,
+.quiz-option-btn,
+.favs-tab,
+.obs-action-btn,
+.mini-pill.export-pill,
+.shuffle-action {
+  transition: all 0.2s ease-in-out;
+}
+.primary-action:focus-visible,
+.ghost-action:focus-visible,
+.outline-action:focus-visible,
+.feature-tab:focus-visible,
+.quiz-diff-btn:focus-visible,
+.quiz-option-btn:focus-visible,
+.favs-tab:focus-visible,
+.obs-action-btn:focus-visible,
+.mini-pill.export-pill:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-shadow);
+}
+.primary-action:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.06);
+}
+.primary-action:active {
+  transform: translateY(0);
+  filter: brightness(0.96);
+}
+.ghost-action:hover,
+.outline-action:hover {
+  background: var(--icon-btn-hover-bg);
+  color: var(--icon-btn-hover-text);
+  border-color: var(--accent);
+}
+
+/* --- Quiz difficulty selector (matches Moon Phase tab styling) -------- */
+
+.quiz-diff-btns {
+  display: flex;
+  gap: 8px;
+  margin: 14px 0 18px;
+}
+.quiz-diff-btn {
+  flex: 1;
+  min-height: 34px;
+  padding: 0 10px;
+  color: var(--tab-text);
+  border: 1px solid var(--tab-border);
+  border-radius: 999px;
+  background: var(--tab-bg);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.quiz-diff-btn:hover {
+  transform: translateY(-1px);
+}
+.quiz-diff-btn.active {
+  color: var(--tab-active-text);
+  background: var(--tab-active-bg);
+  border-color: transparent;
+}
+
+/* --- Quiz answer options ------------------------------------------------ */
+
+.quiz-options {
+  display: grid;
+  gap: 10px;
+  margin: 14px 0;
+}
+.quiz-option-btn {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid var(--item-border);
+  border-radius: 12px;
+  background: var(--item-bg);
+  color: var(--text);
+  text-align: left;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.quiz-option-btn:hover:not(:disabled) {
+  background: var(--item-bg-hover);
+  border-color: var(--accent);
+  transform: translateX(3px);
+}
+.quiz-option-btn:disabled {
+  cursor: default;
+}
+.quiz-option-btn.correct {
+  border-color: var(--green);
+  background: var(--mini-pill-green-bg);
+  color: var(--mini-pill-green-text);
+  font-weight: 800;
+}
+.quiz-option-btn.wrong {
+  border-color: var(--danger-border);
+  background: var(--danger-bg);
+  color: var(--danger-text);
+  font-weight: 800;
+}
+
+/* --- Favorites tab switcher (same family as Quiz difficulty tabs) ----- */
+
+.favs-tabs {
+  display: flex;
+  gap: 8px;
+  margin: 14px 0;
+}
+.favs-tab {
+  flex: 1;
+  min-height: 32px;
+  padding: 0 12px;
+  color: var(--tab-text);
+  border: 1px solid var(--tab-border);
+  border-radius: 999px;
+  background: var(--tab-bg);
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.favs-tab:hover {
+  transform: translateY(-1px);
+}
+.favs-tab.active {
+  color: var(--tab-active-text);
+  background: var(--tab-active-bg);
+  border-color: transparent;
+}
+
+/* --- Observation log edit / delete actions ----------------------------- */
+
+.obs-item-actions {
+  display: flex;
+  gap: 6px;
+}
+.obs-action-btn {
+  min-height: 28px;
+  padding: 0 12px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.obs-action-btn.edit {
+  color: var(--action-btn-text);
+  border: 1px solid var(--action-btn-border);
+  background: var(--action-btn-bg);
+}
+.obs-action-btn.edit:hover {
+  background: var(--icon-btn-hover-bg);
+  border-color: var(--accent);
+}
+.obs-action-btn.delete {
+  color: var(--danger-text);
+  border: 1px solid var(--danger-border);
+  background: var(--danger-bg);
+}
+.obs-action-btn.delete:hover {
+  background: var(--danger-hover-bg);
+  border-color: var(--danger-text);
+}
+
+/* --- Export JSON pill hover -------------------------------------------- */
+
+.mini-pill.export-pill {
+  cursor: pointer;
+}
+.mini-pill.export-pill:hover {
+  border-color: var(--accent);
+  color: var(--text);
+  transform: translateY(-1px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .primary-action:hover,
+  .quiz-diff-btn:hover,
+  .favs-tab:hover,
+  .quiz-option-btn:hover:not(:disabled),
+  .mini-pill.export-pill:hover,
+  .icon-action:hover,
+  .item-star-btn:hover {
+    transform: none;
   }
 }
