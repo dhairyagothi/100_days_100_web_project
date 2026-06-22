@@ -121,3 +121,77 @@ mongosh
 show dbs
 use zomato
 show collections
+
+# Zomato Clone
+
+## 📖 Project Overview
+
+A full-stack Zomato-inspired food discovery web application that allows users to browse restaurants, explore menus, and view restaurant details through an intuitive and responsive interface.
+
+---
+
+## 🚀 Features
+
+- Restaurant listing page
+- Search functionality
+- Restaurant detail pages
+- Responsive UI
+- Dynamic routing
+- Backend integration
+- Modern design inspired by Zomato
+
+---
+
+## 🛠 Tech Stack
+
+### Frontend
+
+- HTML
+- CSS
+- JavaScript
+- EJS
+
+### Backend
+
+- Node.js
+- Express.js
+
+### Database
+
+- MongoDB (if used)
+
+---
+
+## 📂 Project Structure
+
+```text
+zomato-clone/
+│
+├── public/
+│   ├── css/
+│   ├── js/
+│   └── images/
+│
+├── views/
+│   ├── partials/
+│   └── pages/
+│
+├── routes/
+│
+├── server.js
+├── package.json
+└── README.md
+
+
+---
+
+# Step 4: Add Screenshots
+
+Create:
+
+```text
+zomato-clone/
+└── screenshots/
+    ├── home.png
+    ├── restaurant-list.png
+    └── details.png
