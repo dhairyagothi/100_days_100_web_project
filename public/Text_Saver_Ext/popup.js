@@ -1,6 +1,7 @@
 let allSavedTexts = [];
 
 // Function to display saved texts
+
 function displaySavedTexts(filter = "") {
   chrome.storage.local.get("savedTexts", (result) => {
     allSavedTexts = result.savedTexts || [];
@@ -33,6 +34,19 @@ function displaySavedTexts(filter = "") {
         tag.className = "tag-badge";
         tag.textContent = entry.tag;
         entryDiv.appendChild(tag);
+
+function displaySavedTexts() {
+    chrome.storage.local.get("savedTexts", (result) => {
+      const textList = result.savedTexts || [];
+      const textListDiv = document.getElementById("textList");
+      textListDiv.innerHTML = "";
+  
+      document.getElementById("itemCount").textContent = `${textList.length} item${textList.length !== 1 ? "s" : ""}`;
+
+      if (textList.length === 0) {
+        textListDiv.innerHTML = "<p>No saved texts found.</p>";
+        return;
+
       }
 
       const textPara = document.createElement("p");
@@ -94,6 +108,7 @@ function addNote(entry) {
     saveChanges();
     displaySavedTexts(document.getElementById("searchInput").value);
   }
+
 }
 
 function addTag(entry) {
@@ -102,6 +117,16 @@ function addTag(entry) {
     entry.tag = tag.trim();
     saveChanges();
     displaySavedTexts(document.getElementById("searchInput").value);
+
+  
+  // Function to clear saved texts
+  function clearSavedTexts() {
+    chrome.storage.local.remove("savedTexts", () => {
+      alert("All saved texts have been cleared.");
+      displaySavedTexts();
+    }
+    );
+
   }
 }
 
@@ -176,3 +201,12 @@ document.addEventListener("DOMContentLoaded", () => {
     displaySavedTexts(e.target.value);
   });
 });
+
+  
+  // Event listeners
+  document.getElementById("downloadButton").addEventListener("click", downloadSavedTexts);
+  document.getElementById("clearButton").addEventListener("click", clearSavedTexts);
+  
+  // Run when popup opens
+  displaySavedTexts();
+  

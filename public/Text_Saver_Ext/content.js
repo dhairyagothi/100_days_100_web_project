@@ -18,6 +18,7 @@ function sendSelection() {
     });
     showToast("Text Saved! ✨");
   }
+
 }
 
 // Listen for double-click
@@ -30,3 +31,13 @@ document.addEventListener("keydown", (event) => {
     sendSelection();
   }
 });
+
+
+  // Listen for Ctrl+C key combination to trigger text saving
+  document.addEventListener("keydown", (event) => {
+    if (event.ctrlKey &&event.key.toLowerCase() === "c") {
+      sendSelection();
+    }
+  });
+  
+

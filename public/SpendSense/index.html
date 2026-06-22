@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SpendSense – Smart Expense Tracker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="FAVICON.png">
+</head>
+<body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
+
+<div class="app">
+
+  <!-- Header -->
+  <header>
+    <div>
+      <div class="logo">Spend<span>Sense</span><em>.</em></div>
+      <div class="tagline">Smart Expense Tracker</div>
+    </div>
+    <div class="header-date">
+      <strong id="todayDate"></strong>
+      <span id="todayDay"></span>
+    </div>
+  </header>
+
+  <!-- Summary Cards -->
+  <div class="summary">
+    <div class="card income" style="animation-delay:.1s">
+      <div class="card-label">Total Income</div>
+      <div class="card-value" id="totalIncome">₹0</div>
+      <div class="card-icon">↑</div>
+    </div>
+    <div class="card expense" style="animation-delay:.2s">
+      <div class="card-label">Total Expenses</div>
+      <div class="card-value" id="totalExpense">₹0</div>
+      <div class="card-icon">↓</div>
+    </div>
+    <div class="card balance" style="animation-delay:.3s">
+      <div class="card-label">Net Balance</div>
+      <div class="card-value" id="netBalance">₹0</div>
+      <div class="card-icon">◈</div>
+    </div>
+  </div>
+
+  <!-- Main Grid -->
+  <div class="main-grid">
+
+    <!-- Left: Add + Transactions -->
+    <div style="display:flex;flex-direction:column;gap:1.5rem;">
+
+      <!-- Add Transaction -->
+      <div class="panel" style="animation-delay:.2s">
+        <div class="panel-title"><span>＋</span> Add Transaction</div>
+
+        <div class="form-group">
+          <label>Type</label>
+          <div class="type-toggle">
+            <button class="type-btn income-btn active" id="incomeBtn" onclick="setType('income')">▲ Income</button>
+            <button class="type-btn expense-btn" id="expenseBtn" onclick="setType('expense')">▼ Expense</button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="descInput">Description</label>
+          <input type="text" id="descInput" placeholder="e.g. Salary, Groceries…" maxlength="40"/>
+        </div>
+
+        <div class="row">
+          <div class="form-group">
+            <label for="amountInput">Amount (₹)</label>
+            <input type="number" id="amountInput" placeholder="0.00" min="0" step="0.01"/>
+          </div>
+          <div class="form-group">
+            <label for="catInput">Category</label>
+            <select id="catInput">
+              <option value="salary">💼 Salary</option>
+              <option value="food">🍔 Food</option>
+              <option value="transport">🚗 Transport</option>
+              <option value="shopping">🛍️ Shopping</option>
+              <option value="bills">💡 Bills</option>
+              <option value="health">❤️ Health</option>
+              <option value="other">📦 Other</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="dateInput">Date</label>
+          <input type="date" id="dateInput"/>
+        </div>
+
+        <button class="add-btn" onclick="addTransaction()">Add Transaction</button>
+      </div>
+
+      <!-- Transaction List -->
+      <div class="panel" style="animation-delay:.3s">
+        <div class="panel-title"><span>📋</span> Transactions</div>
+        <div class="filter-row">
+          <button class="filter-btn active" onclick="setFilter('all', this)">All</button>
+          <button class="filter-btn" onclick="setFilter('income', this)">Income</button>
+          <button class="filter-btn" onclick="setFilter('expense', this)">Expense</button>
+        </div>
+        <div class="tx-list" id="txList"></div>
+        <button class="clear-btn" onclick="clearAll()">🗑 Clear All Transactions</button>
+      </div>
+    </div>
+
+    <!-- Right: Charts -->
+    <div style="display:flex;flex-direction:column;gap:1.5rem;">
+
+      <!-- Bar Chart -->
+      <div class="panel" style="animation-delay:.35s">
+        <div class="panel-title"><span>📊</span> Monthly Overview</div>
+        <div class="chart-wrap">
+          <div class="chart-title">Last 6 Months — Income vs Expense</div>
+          <div class="chart-bars" id="barChart"></div>
+        </div>
+        <div style="display:flex;gap:1rem;font-size:.7rem;">
+          <span style="color:var(--accent3)">▬ Income</span>
+          <span style="color:var(--accent2)">▬ Expense</span>
+        </div>
+      </div>
+
+      <!-- Donut Chart -->
+      <div class="panel" style="animation-delay:.4s">
+        <div class="panel-title"><span>🍩</span> Expense Breakdown</div>
+        <div class="donut-row">
+          <svg class="donut-svg" width="120" height="120" viewBox="0 0 120 120" id="donutSvg">
+            <circle cx="60" cy="60" r="48" fill="none" stroke="var(--border)" stroke-width="18"/>
+          </svg>
+          <div class="donut-legend" id="donutLegend">
+            <div style="color:var(--muted);font-size:.75rem;">No expenses yet</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Stats -->
+      <div class="panel" style="animation-delay:.45s">
+        <div class="panel-title"><span>⚡</span> Quick Stats</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;">
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:.9rem;">
+            <div style="font-size:.6rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:.4rem;">Biggest Expense</div>
+            <div style="font-family:var(--font-head);font-weight:700;color:var(--accent2)" id="biggestExpense">₹0</div>
+          </div>
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:.9rem;">
+            <div style="font-size:.6rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:.4rem;">Avg Expense</div>
+            <div style="font-family:var(--font-head);font-weight:700;color:var(--accent4)" id="avgExpense">₹0</div>
+          </div>
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:.9rem;">
+            <div style="font-size:.6rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:.4rem;">Total Entries</div>
+            <div style="font-family:var(--font-head);font-weight:700;color:var(--accent)" id="totalEntries">0</div>
+          </div>
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:.9rem;">
+            <div style="font-size:.6rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:.4rem;">Savings Rate</div>
+            <div style="font-family:var(--font-head);font-weight:700;color:var(--accent3)" id="savingsRate">0%</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+<script src="script.js"></script>
+
+</body>
+</html>

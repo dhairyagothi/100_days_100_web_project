@@ -5,6 +5,7 @@ import { endpoints} from '../utils/api';
 export default function HPhero({ User_name, status }) {
 
   const [urlState, setURLstate] = useState("");
+  const [customName, setCustomName] = useState("");
   const [Password, setPassword] = useState("");
   const [shortURL, SetshortURL] = useState("");
   const [expiry, setExpiry] = useState("");
@@ -37,6 +38,7 @@ export default function HPhero({ User_name, status }) {
         credentials: "include", // TO use middlware , it is important to add 
         body: JSON.stringify({
           originalURL: urlState,
+          customName: customName,
           Password: Password,
           expiryDate: expiry
         }),
@@ -135,7 +137,18 @@ export default function HPhero({ User_name, status }) {
 
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+
+            <div>
+              <label className="text-sm text-zinc-400 mb-2 block">Custom Name</label>
+              <input
+                type="text"
+                placeholder="Optional alias"
+                value={customName}
+                onChange={(e) => setCustomName(e.target.value)}
+                className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-3 text-sm outline-none focus:border-blue-500"
+              />
+            </div>
 
             <div>
               <label className="text-sm text-zinc-400 mb-2 block">Password</label>

@@ -1,4 +1,5 @@
 {
+
   "manifest_version": 3,
   "name": "Text Saver Pro",
   "description": "Capture, organize, and highlight text snippets from the web with advanced research tools.",
@@ -23,6 +24,25 @@
       "css": [
         "content.css"
       ]
+
+    "manifest_version": 3,
+    "name": "Text Saver",
+    "description": "Select text and press Ctrl+C to save it.",
+    "version": "1.0",
+    "permissions": ["storage", "activeTab", "scripting"],
+    "background": {
+      "service_worker": "background.js"
+    },
+    "content_scripts": [
+      {
+        "matches": ["<all_urls>"],
+        "js": ["content.js"]
+      }
+    ],
+    "action": {
+      "default_popup": "popup.html",
+      "default_title": "Saved Texts"
+
     }
   ],
   "action": {

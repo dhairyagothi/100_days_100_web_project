@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Carrom Game</title>
+<link rel="icon" href="image.png">
+</head>
+<body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
+
+
+<h1>⚫ CARROM ⚫</h1>
+<div class="subtitle">Classic Board Game</div>
+
+<!-- MODE SELECT -->
+<div id="modeScreen">
+  <button class="mode-btn" onclick="startGame('pvp')">
+    👥 Player vs Player
+    <span>Two Players can play</span>
+  </button>
+  <button class="mode-btn" onclick="startGame('pvc')">
+    🤖 Player vs Computer
+    <span>Player play with Computer</span>
+  </button>
+</div>
+
+<!-- GAME -->
+<div id="gameScreen">
+  <div class="scoreboard">
+    <div class="player-card" id="card0">
+      <div class="pname" id="pname0">PLAYER 1</div>
+      <div class="pscore" id="pscore0">0</div>
+      <div class="pturn" id="pturn0"></div>
+    </div>
+    <div style="display:flex;align-items:center;padding:0 4px;color:#5a3a18;font-family:'Playfair Display',serif;font-size:1.2rem;">VS</div>
+    <div class="player-card" id="card1">
+      <div class="pname" id="pname1">PLAYER 2</div>
+      <div class="pscore" id="pscore1">0</div>
+      <div class="pturn" id="pturn1"></div>
+    </div>
+  </div>
+
+  <div class="status-bar" id="statusBar">—</div>
+  <div class="board-wrapper"><canvas id="gameCanvas"></canvas></div>
+
+  <!-- CONTROL PANEL -->
+  <div id="ctrlPanel">
+    <!-- Row 1: Striker position -->
+    <div class="ctrl-row">
+      <span class="ctrl-label">📍 Striker</span>
+      <button class="cbtn" id="btnL">◀◀</button>
+      <input type="range" id="posSlider" min="0" max="100" value="50"
+        style="background:linear-gradient(to right,#1b5e20,#66bb6a);">
+      <button class="cbtn" id="btnR">▶▶</button>
+    </div>
+    <!-- Row 2: Aim direction -->
+    <div class="ctrl-row">
+      <span class="ctrl-label">🎯 Aim</span>
+      <input type="range" id="aimSlider" min="-85" max="85" value="0"
+        style="background:linear-gradient(to right,#1a3a8a,#D4AF37,#8B1a1a);">
+      <span id="aimVal" style="color:var(--gold);font-size:.82rem;min-width:36px;text-align:right;">0°</span>
+    </div>
+    <!-- Row 3: Power + Shoot + Menu -->
+    <div class="ctrl-row">
+      <span class="ctrl-label">💪 Power</span>
+      <input type="range" id="powerSlider" min="8" max="32" value="17"
+        style="background:linear-gradient(to right,#2E7D32,#D4AF37,#c0392b);">
+      <span id="powerVal" style="color:var(--gold);font-size:.82rem;min-width:24px;text-align:right;">17</span>
+      <button class="cbtn shoot" id="shootBtn">🎱 Shoot</button>
+      <button class="cbtn" onclick="resetGame()">🔄</button>
+      <button class="cbtn" onclick="backToMenu()">🏠</button>
+    </div>
+    <!-- Legend -->
+    <div class="legend-row">
+      <div class="leg"><div class="dot" style="background:#222;border:1.5px solid #555;"></div>Black 10</div>
+      <div class="leg"><div class="dot" style="background:#eee;border:1.5px solid #aaa;"></div>White 20</div>
+      <div class="leg"><div class="dot" style="background:#e91e63;border:1.5px solid #c2185b;"></div>Pink 40</div>
+      <div class="win-target">🏆 120 wins!</div>
+    </div>
+  </div>
+</div>
+
+<!-- WIN -->
+<div id="winScreen">
+  <div class="win-box">
+    <h2 id="winTitle">🏆</h2>
+    <p id="winMsg"></p>
+    <button class="cbtn shoot" onclick="resetGame()" style="margin-right:10px;">🔄 Again</button>
+    <button class="cbtn" onclick="backToMenu()">🏠 Menu</button>
+  </div>
+</div>
+<script src="script.js"></script>
+</body>
+</html>
