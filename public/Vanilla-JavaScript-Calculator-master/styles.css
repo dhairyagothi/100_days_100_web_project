@@ -665,3 +665,74 @@ transition: background 0.3s ease;
 [data-theme="light"] .history-item:hover {
   border-color: rgba(59, 130, 246, 0.4);
 }
+/* ===== History Search ===== */
+
+.history-search-container {
+  margin-bottom: 4px;
+}
+
+.history-search {
+  width: 100%;
+  background: var(--glass);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: var(--text-primary);
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  outline: none;
+  transition: var(--transition);
+}
+
+.history-search::placeholder {
+  color: var(--text-muted);
+}
+
+.history-search:focus {
+  border-color: rgba(59,130,246,0.4);
+  box-shadow: 0 0 0 2px rgba(59,130,246,0.12);
+}
+
+.history-no-results {
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-align: center;
+  padding: 25px 15px;
+}
+/* ===== Favorites ===== */
+
+.history-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.history-item-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.favorite-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  color: var(--text-muted);
+  transition: var(--transition);
+  flex-shrink: 0;
+}
+
+.favorite-btn:hover {
+  transform: scale(1.15);
+}
+
+.favorite-btn.active {
+  color: #fbbf24;
+}
+
+.history-item.favorite {
+  border-color: rgba(251,191,36,0.35);
+  background: rgba(251,191,36,0.08);
+}

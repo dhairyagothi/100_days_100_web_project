@@ -929,7 +929,7 @@
     "projectNo": 79,
     "projectName": "Linkedin Homepage Clone",
     "projectType": "Clone",
-    "projectDesc": "Frontend recreation of LinkedIn’s homepage structure and styling.",
+    "projectDesc": "Frontend recreation of LinkedIn's homepage structure and styling.",
     "techStack": [
       "clone",
       "css"
@@ -1169,7 +1169,7 @@
     "projectNo": 99,
     "projectName": "NASA-APOD Extension",
     "projectType": "API",
-    "projectDesc": "Displays NASA’s Astronomy Picture of the Day automatically.",
+    "projectDesc": "Displays NASA's Astronomy Picture of the Day automatically.",
     "techStack": [
       "api",
       "javascript"
@@ -2964,7 +2964,6 @@
     "difficulty": "intermediate",
     "projectPath": "./public/UnitVerse/index.html"
   },
-  
   {
     "projectNo": 234,
     "projectName": "AI-Prompt-Optimizer",
@@ -3018,5 +3017,45 @@
       ],
       "difficulty": "advanced",
       "projectPath": "./public/WhosThatPokemon/index.html"
-    }
+    },
+    {
+      "projectNo": 238,
+      "projectName": "Red-Black Tree Visualizer",
+      "projectType": "Tool",
+      "projectDesc": "Interactive DSA tool to visualize the insertion, balancing, rotations, and recoloring of a Red-Black Tree in real-time.",
+      "techStack": [
+        "html",
+        "css",
+        "javascript"
+      ],
+      "difficulty": "advanced",
+      "projectPath": "./public/RedBlackTreeVisualizer/index.html"
+    },
+    {
+      "projectNo": 239,
+      "projectName": "LayerText",
+      "projectType": "Tool",
+      "projectDesc": "Tool for Frontend Developers",
+      "techStack": [
+        "html",
+        "css",
+        "javascript"
+      ],
+      "difficulty": "advanced",
+      "projectPath": "./public/css-animation/index.html"
+    },
+   {
+    "projectNo": 240,
+    "projectName": "PhishGuard AI Terminal",
+    "projectType": "Tool",
+    "projectDesc": "A cyber-themed URL analysis tool that detects potentially suspicious or phishing-like links using rule-based heuristic scoring. Features a hacker-style terminal UI with an animated Matrix background, a live scanning log, and AI-style threat explanations with a confidence score.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript",
+      "canvas"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/PhishGuard-AI-Terminal/index.html"
+   }
 ]

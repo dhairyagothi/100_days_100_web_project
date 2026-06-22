@@ -595,6 +595,7 @@ scientificCalculator.updateDegRadButtons();
 
 // ========== HISTORY FUNCTIONS (ADDED AT THE BOTTOM - NOTHING ELSE CHANGED) ==========
 let calculationHistory = [];
+let filteredHistory = [];
 
 function addToHistory(expression, result) {
   let displayResult =
@@ -604,29 +605,113 @@ function addToHistory(expression, result) {
         : parseFloat(result.toPrecision(12)).toString()
       : result.toString();
 
-  calculationHistory.unshift({ expression: expression, result: displayResult });
+calculationHistory.unshift({
+  expression: expression,
+  result: displayResult,
+  favorite: false
+});
 
-  if (calculationHistory.length > 20) calculationHistory.pop();
+  if (calculationHistory.length > 20) sortHistory(); calculationHistory.pop();
 
   localStorage.setItem('calculatorHistory', JSON.stringify(calculationHistory));
   renderHistory();
 }
-
-function renderHistory() {
+function sortHistory() {
+  calculationHistory.sort((a, b) => {
+    return Number(b.favorite) - Number(a.favorite);
+  });
+}
+function renderHistory(historyData = calculationHistory) {
   const historyList = document.getElementById('history-list');
   if (!historyList) return;
 
-  if (calculationHistory.length === 0) {
-    historyList.innerHTML =
-      '<div class="history-empty">No calculations yet<br>Click "=" to see history here</div>';
+  if (historyData.length === 0) {
+    const searchInput = document.getElementById('history-search');
+
+    if (searchInput && searchInput.value.trim() !== '') {
+      historyList.innerHTML =
+        '<div class="history-no-results">No matching calculations found</div>';
+    } else {
+      historyList.innerHTML =
+        '<div class="history-empty">No calculations yet<br>Click "=" to see history here</div>';
+    }
+
     return;
   }
 
   let html = '';
-  for (let i = 0; i < calculationHistory.length; i++) {
-    html += `<div class="history-item" data-index="${i}">${escapeHtml(calculationHistory[i].expression)} = ${escapeHtml(calculationHistory[i].result)}</div>`;
-  }
+
+ for (let i = 0; i < historyData.length; i++) {
+  const item = historyData[i];
+
+  html += `
+    <div
+      class="history-item ${item.favorite ? 'favorite' : ''}"
+      data-expression="${encodeURIComponent(item.expression)}"
+      data-result="${encodeURIComponent(item.result)}"
+    >
+
+      <div class="history-item-content">
+        ${escapeHtml(item.expression)} =
+        ${escapeHtml(item.result)}
+      </div>
+
+      <button
+        class="favorite-btn ${item.favorite ? 'active' : ''}"
+        data-expression="${encodeURIComponent(item.expression)}"
+      >
+        ${item.favorite ? '⭐' : '☆'}
+      </button>
+
+    </div>
+  `;
+}
+
   historyList.innerHTML = html;
+}
+function filterHistory(searchTerm) {
+  sortHistory();
+  const term = searchTerm.toLowerCase().trim();
+
+  if (!term) {
+    renderHistory(calculationHistory);
+    return;
+  }
+
+  filteredHistory = calculationHistory.filter((item) => {
+    return (
+      item.expression.toLowerCase().includes(term) ||
+      item.result.toString().toLowerCase().includes(term)
+    );
+  });
+
+  renderHistory(filteredHistory);
+}
+function toggleFavorite(expression) {
+  const decodedExpression = decodeURIComponent(expression);
+
+  const item = calculationHistory.find(
+    (entry) => entry.expression === decodedExpression
+  );
+
+  if (!item) return;
+
+  item.favorite = !item.favorite;
+
+  sortHistory();
+
+  localStorage.setItem(
+    'calculatorHistory',
+    JSON.stringify(calculationHistory)
+  );
+
+  const searchInput = document.getElementById('history-search');
+
+  if (searchInput && searchInput.value.trim()) {
+    filterHistory(searchInput.value);
+  } else {
+    renderHistory();
+  }
 }
 
 function escapeHtml(text) {
@@ -702,6 +787,7 @@ async function copyHistory() {
 
 function clearHistory() {
   calculationHistory = [];
+  filteredHistory = [];
   localStorage.removeItem('calculatorHistory');
   renderHistory();
 }
@@ -709,7 +795,17 @@ function clearHistory() {
 function loadHistoryFromStorage() {
   try {
     const saved = localStorage.getItem('calculatorHistory');
-    if (saved) calculationHistory = JSON.parse(saved);
+if (saved) {
+  calculationHistory = JSON.parse(saved);
+
+  calculationHistory.forEach((item) => {
+    if (item.favorite === undefined) {
+      item.favorite = false;
+    }
+  });
+
+  sortHistory();
+}
     renderHistory();
   } catch (e) {
     calculationHistory = [];
@@ -719,19 +815,38 @@ function loadHistoryFromStorage() {
 // Setup history click
 const historyListEl = document.getElementById('history-list');
 if (historyListEl) {
-  historyListEl.onclick = function (e) {
-    const item = e.target.closest('.history-item');
-    if (item) {
-      const idx = parseInt(item.dataset.index);
-      if (!isNaN(idx) && calculationHistory[idx]) {
-        const calc = activeCalculator();
-        if (calc.expression === 'Error') calc.clear();
-        calc.expression = calculationHistory[idx].result;
-        calc.currentOperand = calculationHistory[idx].result;
-        calc.updateDisplay();
-      }
+historyListEl.onclick = function (e) {
+
+  const favoriteBtn = e.target.closest('.favorite-btn');
+
+  if (favoriteBtn) {
+    e.stopPropagation();
+
+    toggleFavorite(
+      favoriteBtn.dataset.expression
+    );
+
+    return;
+  }
+
+  const item = e.target.closest('.history-item');
+
+  if (item) {
+
+    const result =
+      decodeURIComponent(item.dataset.result);
+
+    const calc = activeCalculator();
+
+    if (calc.expression === 'Error') {
+      calc.clear();
     }
-  };
+
+    calc.expression = result;
+    calc.currentOperand = result;
+    calc.updateDisplay();
+  }
+};
 }
 
 const exportTxtBtn = document.getElementById('export-txt');
@@ -762,6 +877,13 @@ if (clearHistoryBtn) {
 
 // Load history on page load
 loadHistoryFromStorage();
+const historySearchInput = document.getElementById('history-search');
+
+if (historySearchInput) {
+  historySearchInput.addEventListener('input', (e) => {
+    filterHistory(e.target.value);
+  });
+}
 // ========== END HISTORY FUNCTIONS ==========
 // ===== THEME TOGGLE =====
 
