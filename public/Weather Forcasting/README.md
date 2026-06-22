@@ -1,101 +1,184 @@
-# ⛅ Weather App
+<div align="center">
 
-A real-time weather web application that lets you search any city and instantly view live weather data — including temperature, humidity, wind speed, sunrise/sunset times, and more. Also displays live weather for 6 major Indian cities in a comparison table.
+# 🌦️ Weather Forecasting Dashboard
 
----
+### A Modern Real-Time Weather Forecasting Web Application
 
-## Features
-
-- 🔍 Search weather for any city in the world
-- 🌡️ Displays current temperature, min/max temperature, and feels-like temperature
-- 💧 Shows humidity percentage and wind degree
-- 🌬️ Live wind speed data
-- 🌅 Accurate sunrise and sunset times
-- 📊 Real-time weather table for 6 common Indian cities (Bangalore, Chennai, Hyderabad, Pune, Noida, Delhi)
-- ⌨️ Search via button click or Enter key
-- ⏳ Loading state while fetching data
-- ❌ Error handling for invalid city names
-- 📱 Fully responsive design using Bootstrap
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 
 ---
 
-## Technologies Used
+A responsive weather forecasting application that provides real-time weather information with an intuitive user interface.
 
-- HTML5
-- CSS3
-- Bootstrap 5.3
-- Vanilla JavaScript (async/await)
-- [Open-Meteo Forecast API](https://open-meteo.com/) — free, no API key required
-- [Open-Meteo Geocoding API](https://open-meteo.com/en/docs/geocoding-api) — converts city names to coordinates
+</div>
 
 ---
 
-## How It Works
+# 📖 Overview
 
-The app uses a **2-step API approach**:
+Weather Forecasting Dashboard is a modern web application that enables users to retrieve weather information for different locations. The application focuses on simplicity, responsiveness, and user experience.
 
-1. **Geocoding** — converts the city name to latitude & longitude using the Open-Meteo Geocoding API
-2. **Weather Fetch** — uses those coordinates to get live weather data from the Open-Meteo Forecast API
+It demonstrates the practical implementation of:
 
-No API key or sign-up is required. Works completely in the browser.
-
----
-
-## How to Run
-
-1. Download or clone the project folder
-2. Make sure all files are in the same folder:
-   ```
-   your-project/
-   ├── index.html
-   ├── script.js
-   ├── style.css
-   └── nice-beach-suning-weather-hd-wallapaper.jpg
-   ```
-3. Open `index.html` using **VS Code Live Server** (recommended) or directly in any browser
-4. Search for any city and view live weather instantly!
-
-> ✅ No API key needed. No backend needed. Works 100% in the browser.
+- API integration
+- DOM manipulation
+- Responsive web design
+- Dynamic data rendering
+- Modern JavaScript concepts
 
 ---
 
-## Screenshots
+# ✨ Features
 
-> _Add screenshots of your project here_
+✅ Real-time weather information
 
-![Weather App Screenshot](./Screenshots.png)
+✅ City-based weather search
+
+✅ Temperature display
+
+✅ Humidity information
+
+✅ Wind speed details
+
+✅ Responsive user interface
+
+✅ Mobile-friendly design
+
+✅ Fast loading performance
+
+✅ Clean and modern UI
 
 ---
 
-## Project Structure
+# 🛠️ Tech Stack
 
+| Technology | Purpose |
+|-----------|----------|
+| HTML5 | Page Structure |
+| CSS3 | Styling |
+| JavaScript | Application Logic |
+| Weather API | Weather Data |
+| JSON | Data Exchange |
+
+---
+
+# 📂 Project Structure
+
+```text
+Weather Forecasting/
+│
+├── index.html
+├── style.css
+├── script.js
+├── manifest.json
+├── favicon.png
+├── README.md
+└── assets/
 ```
-your-project/
-├── index.html       → Main HTML structure and UI layout
-├── script.js        → All JavaScript logic (API calls, DOM updates)
-├── style.css        → Custom styles
-└── nice-beach-suning-weather-hd-wallapaper.jpg  → Background image
+
+---
+
+# 🚀 Getting Started
+
+## Clone the Repository
+
+```bash
+git clone https://github.com/username/repository.git
 ```
 
+## Navigate to the Project
+
+```bash
+cd Weather\ Forecasting
+```
+
+## Run the Application
+
+Open:
+
+```text
+index.html
+```
+
+inside your preferred browser.
+
 ---
 
-## API Reference
+# ⚙️ Working Process
 
-| API | Purpose | Cost |
-|-----|---------|------|
-| [Open-Meteo Forecast API](https://api.open-meteo.com) | Live weather data | Free |
-| [Open-Meteo Geocoding API](https://geocoding-api.open-meteo.com) | City name → coordinates | Free |
-
----
-
-## Author
-
-**Raman Kumar**  
-GitHub: [@RamanKumar-Dev](https://github.com/RamanKumar-Dev)  
-Email: ramankumarnke12@gmail.com
+1. User enters a city name.
+2. Application sends a request to the weather API.
+3. Weather data is retrieved.
+4. Information is processed.
+5. Results are displayed dynamically.
 
 ---
 
-## License
+# 📱 Responsive Design
 
-This project is open source and free to use for personal and educational purposes.
+The application supports:
+
+- Desktop devices
+- Tablets
+- Mobile devices
+- Various screen resolutions
+
+---
+
+# 🔮 Future Enhancements
+
+- 7-day weather forecast
+- Dark mode
+- Geolocation support
+- Weather alerts
+- Multiple language support
+- Air quality index
+- Hourly forecast
+- Temperature unit conversion
+
+---
+
+# 📸 Screenshots
+
+```text
+screenshots/
+└── weather-dashboard.png
+```
+
+Add screenshots here to improve documentation.
+
+---
+
+# 🤝 Contributing
+
+Contributions are welcome.
+
+1. Fork the repository.
+2. Create your feature branch.
+3. Commit your changes.
+4. Push your branch.
+5. Open a Pull Request.
+
+---
+
+# 📄 License
+
+This project is distributed under the MIT License.
+
+---
+
+# 👨‍💻 Author
+
+Developed as part of **GSSOC'26** open-source contributions.
+
+---
+
+<div align="center">
+
+### ⭐ If you like this project, consider giving it a star.
+
+Made with ❤️ using HTML, CSS, and JavaScript.
+
+</div>
