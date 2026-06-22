@@ -48,6 +48,8 @@ let overviewChart = null;
 let trendChart = null;
 let lastResult = null;
 
+let lastHistorySnapshot = null;
+
 /* ===== Core Calculations ===== */
 
 function calcAttendance(attended, total) {
@@ -296,6 +298,22 @@ function addHistoryEntry(result) {
   }
 
   localStorage.setItem(STORAGE_KEYS.history, JSON.stringify(history));
+}
+
+function addHistoryEntryIfChanged(result) {
+  const history = getHistory();
+
+  const lastEntry = history[history.length - 1];
+
+  if (
+    lastEntry &&
+    lastEntry.total === result.total &&
+    lastEntry.attended === result.attended
+  ) {
+    return;
+  }
+
+  addHistoryEntry(result);
 }
 
 /* ===== Subject Management ===== */
@@ -579,11 +597,10 @@ function handleCalculate(e, saveHistory = true) {
 
   renderResults(result);
 
-  if (saveHistory) {
-    addHistoryEntry(result);
-  }
+  addHistoryEntryIfChanged(result);
 
   saveForm();
+
   updateCharts();
 }
 

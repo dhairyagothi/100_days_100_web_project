@@ -929,7 +929,7 @@
     "projectNo": 79,
     "projectName": "Linkedin Homepage Clone",
     "projectType": "Clone",
-    "projectDesc": "Frontend recreation of LinkedIn’s homepage structure and styling.",
+    "projectDesc": "Frontend recreation of LinkedIn's homepage structure and styling.",
     "techStack": [
       "clone",
       "css"
@@ -1169,7 +1169,7 @@
     "projectNo": 99,
     "projectName": "NASA-APOD Extension",
     "projectType": "API",
-    "projectDesc": "Displays NASA’s Astronomy Picture of the Day automatically.",
+    "projectDesc": "Displays NASA's Astronomy Picture of the Day automatically.",
     "techStack": [
       "api",
       "javascript"
@@ -2964,7 +2964,6 @@
     "difficulty": "intermediate",
     "projectPath": "./public/UnitVerse/index.html"
   },
-  
   {
     "projectNo": 234,
     "projectName": "AI-Prompt-Optimizer",
@@ -3045,8 +3044,22 @@
       "difficulty": "advanced",
       "projectPath": "./public/css-animation/index.html"
     },
+   {
+    "projectNo": 240,
+    "projectName": "PhishGuard AI Terminal",
+    "projectType": "Tool",
+    "projectDesc": "A cyber-themed URL analysis tool that detects potentially suspicious or phishing-like links using rule-based heuristic scoring. Features a hacker-style terminal UI with an animated Matrix background, a live scanning log, and AI-style threat explanations with a confidence score.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript",
+      "canvas"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/PhishGuard-AI-Terminal/index.html"
+   },
   {
-  "projectNo": 240,
+  "projectNo": 241,
   "projectName": "Image Steganography Tool",
   "projectType": "Tool",
   "projectDesc": "A web-based tool that hides and extracts secret messages inside images using steganography techniques.",
