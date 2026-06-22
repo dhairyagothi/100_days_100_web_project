@@ -1,39 +1,18 @@
 // js/storage.js
 
-export const getTransactions = () => {
+export function saveData(key, data){
 
-  return JSON.parse(
-    localStorage.getItem("transactions")
-  ) || [];
+    localStorage.setItem(
+        key,
+        JSON.stringify(data)
+    );
 
-};
+}
 
-export const saveTransactions = (
-  transactions
-) => {
+export function loadData(key){
 
-  localStorage.setItem(
-    "transactions",
-    JSON.stringify(transactions)
-  );
+    const data = localStorage.getItem(key);
 
-};
+    return data ? JSON.parse(data) : [];
 
-export const getGoals = () => {
-
-  return JSON.parse(
-    localStorage.getItem("goals")
-  ) || [];
-
-};
-
-export const saveGoals = (
-  goals
-) => {
-
-  localStorage.setItem(
-    "goals",
-    JSON.stringify(goals)
-  );
-
-};
+}

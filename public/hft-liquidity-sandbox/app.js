@@ -9,6 +9,13 @@ class HftOrderBookSandbox {
         this.asks = [];
 
         this.trades = [];
+        // Order Book Structural Parameters
+        this.midPrice = 100.00;
+        this.tickSize = 0.05;
+        this.bids = []; // Sorted descending [price, volume]
+        this.asks = []; // Sorted ascending [price, volume]
+
+        this.trades = []; // Historical trade execution flashes
         this.lastPrice = 100.00;
 
         this.init();
@@ -28,6 +35,7 @@ class HftOrderBookSandbox {
     }
 
     generateInitialLiquidity() {
+        // Build out depth block frames around mid price configurations
         for (let i = 1; i <= 30; i++) {
             const bidPrice = this.midPrice - (i * this.tickSize);
             const askPrice = this.midPrice + (i * this.tickSize);
@@ -53,6 +61,13 @@ class HftOrderBookSandbox {
                 const targetedAskIdx = Math.floor(Math.random() * 10);
                 this.asks[targetedAskIdx].volume += 150;
             } else {
+            // Map click vertical layout parameters to insert concentrated wall depth matrices
+            if (clickY < this.canvas.height / 2) {
+                // Click on top half -> Add heavy Sell Limit Order block
+                const targetedAskIdx = Math.floor(Math.random() * 10);
+                this.asks[targetedAskIdx].volume += 150;
+            } else {
+                // Click on bottom half -> Add concentrated Buy Support Block
                 const targetedBidIdx = Math.floor(Math.random() * 10);
                 this.bids[targetedBidIdx].volume += 150;
             }
@@ -71,6 +86,7 @@ class HftOrderBookSandbox {
         let remainingSize = Math.floor(Math.random() * 35) + 15;
 
         if (side === 'BUY' && this.asks.length > 0) {
+            // Aggressive Market Buy cross-spread execution matching
             while (remainingSize > 0 && this.asks.length > 0) {
                 let bestAsk = this.asks[0];
                 let matchedVolume = Math.min(remainingSize, bestAsk.volume);
@@ -83,6 +99,11 @@ class HftOrderBookSandbox {
                 if (bestAsk.volume <= 0) this.asks.shift();
             }
         } else if (side === 'SELL' && this.bids.length > 0) {
+
+                if (bestAsk.volume <= 0) this.asks.shift();
+            }
+        } else if (side === 'SELL' && this.bids.length > 0) {
+            // Aggressive Market Sell sweep matching
             while (remainingSize > 0 && this.bids.length > 0) {
                 let bestBid = this.bids[0];
                 let matchedVolume = Math.min(remainingSize, bestBid.volume);
@@ -92,6 +113,7 @@ class HftOrderBookSandbox {
                 this.lastPrice = bestBid.price;
 
                 this.trades.push({ price: bestBid.price, volume: matchedVolume, side: 'SELL', timer: 1.0 });
+
                 if (bestBid.volume <= 0) this.bids.shift();
             }
         }
@@ -102,12 +124,14 @@ class HftOrderBookSandbox {
     }
 
     startMarketMakerSimulator() {
+        // Continuous high-frequency random-walk order placement and cancellation loop
         setInterval(() => {
             if (this.bids.length === 0 || this.asks.length === 0) return;
 
             const spread = this.asks[0].price - this.bids[0].price;
             document.getElementById('spreadMetric').innerText = `$${spread.toFixed(2)}`;
 
+            // Automated liquidity adjustments to prevent starvation
             if (this.bids.length < 15 || this.asks.length < 15) {
                 this.bids = [];
                 this.asks = [];
@@ -115,6 +139,7 @@ class HftOrderBookSandbox {
                 return;
             }
 
+            // Fluctuating volume updates mimicking genuine market-maker activities
             const randomBid = this.bids[Math.floor(Math.random() * this.bids.length)];
             const randomAsk = this.asks[Math.floor(Math.random() * this.asks.length)];
 
@@ -134,6 +159,11 @@ class HftOrderBookSandbox {
         const cumulativeDepth = this.bids.reduce((acc, b) => acc + b.volume, 0) + this.asks.reduce((acc, a) => acc + a.volume, 0);
         document.getElementById('depthMetric').innerText = `${cumulativeDepth} Lots`;
 
+        // Calculate total depth on display metrics
+        const cumulativeDepth = this.bids.reduce((acc, b) => acc + b.volume, 0) + this.asks.reduce((acc, a) => acc + a.volume, 0);
+        document.getElementById('depthMetric').innerText = `${cumulativeDepth} Lots`;
+
+        // Calculate microseconds computation profiles
         const loopLatencyMicroseconds = (performance.now() - startPerformance) * 1000;
         document.getElementById('latencyMetric').innerText = `${loopLatencyMicroseconds.toFixed(2)} μs`;
 
@@ -152,6 +182,10 @@ class HftOrderBookSandbox {
             this.ctx.beginPath(); this.ctx.moveTo(0, y); this.ctx.lineTo(0, this.canvas.height); this.ctx.stroke();
         }
 
+            this.ctx.beginPath(); this.ctx.moveTo(0, y); this.ctx.lineTo(this.canvas.width, y); this.ctx.stroke();
+        }
+
+        // Draw structural vertical axis splitter (Separates price boundaries visually)
         this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
         this.ctx.beginPath();
         this.ctx.moveTo(this.canvas.width / 2, 0);
@@ -164,6 +198,7 @@ class HftOrderBookSandbox {
         const h = this.canvas.height;
         const midX = w / 2;
 
+        // --- RENDER BIDS SHADING (BUY LIQUIDITY - LEFT SIDE) ---
         this.ctx.fillStyle = 'rgba(57, 255, 20, 0.12)';
         this.ctx.strokeStyle = '#39ff14';
         this.ctx.lineWidth = 1.5;
@@ -186,6 +221,7 @@ class HftOrderBookSandbox {
         this.ctx.fill();
         this.ctx.stroke();
 
+        // --- RENDER ASKS SHADING (SELL LIQUIDITY - RIGHT SIDE) ---
         this.ctx.fillStyle = 'rgba(255, 0, 127, 0.12)';
         this.ctx.strokeStyle = '#ff007f';
         this.ctx.lineWidth = 1.5;
@@ -210,6 +246,7 @@ class HftOrderBookSandbox {
     }
 
     drawHistoricalTradeFlashes() {
+        // Iterate and decay trade flash markers to animate instant fills
         this.trades.forEach((trade, idx) => {
             trade.timer -= 0.02;
 
@@ -230,10 +267,12 @@ class HftOrderBookSandbox {
             this.ctx.restore();
         });
 
+        // Filter away expired execution logs smoothly
         this.trades = this.trades.filter(t => t.timer > 0);
     }
 }
 
+// Fire up terminal initialization as soon as DOM states are complete
 window.addEventListener('DOMContentLoaded', () => {
     new HftOrderBookSandbox('tradingCanvas');
 });

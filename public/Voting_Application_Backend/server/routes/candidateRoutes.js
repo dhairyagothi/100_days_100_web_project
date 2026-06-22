@@ -1,8 +1,18 @@
 const express = require('express');
 const router = express.Router();
+const rateLimit = require('express-rate-limit');
 const User = require('../models/user');
 const Candidate = require('./../models/candidate');
 const {jwtAuthMiddleware, generateToken} = require('./../jwt');
+
+// Rate limit all candidate routes to mitigate abuse (vote spam, scraping)
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+router.use(apiLimiter);
 
 const checkAdminRole = async(userID) => {
     try{
@@ -110,12 +120,17 @@ router.put('/:candidateID', jwtAuthMiddleware, async(req,res)=> {
         if(!await checkAdminRole(req.user.id))
             return res.status(403).json({message: 'user does not  has not admin role'});
         const candidateID = req.params.candidateID //extract id from the url parameter
-        const updatedCandidateData = req.body; //updated data from the candidate
+        // Only candidate metadata is editable here; voteCount and votes are managed by the voting flow
+        const { name, party, age } = req.body;
+        const updatedCandidateData = {};
+        if (name !== undefined) updatedCandidateData.name = name;
+        if (party !== undefined) updatedCandidateData.party = party;
+        if (age !== undefined) updatedCandidateData.age = age;
 
         const response = await Candidate.findByIdAndUpdate(candidateID, updatedCandidateData, {
             new: true, //return the updated document
-            runValidation: true //run mongoose validation
-        }) 
+            runValidators: true //run mongoose validation
+        })
 
         if(!response) {
             return res.status(404).json({error: 'Candidate not found'});
@@ -167,27 +182,37 @@ router.post('/vote/:candidateID', jwtAuthMiddleware, async(req, res) => {
             return res.status(404).json({message: 'Candidate not found'});
         }
 
-        const user = await User.findById(userId);
+        // Atomically claim this user's single vote; only one concurrent request can flip isVoted false to true
+        const user = await User.findOneAndUpdate(
+            { _id: userId, isVoted: false, role: { $ne: 'admin' } },
+            { $set: { isVoted: true } }
+        );
+
         if(!user) {
-            return res.status(404).json({message: 'user not found'});
+            const existing = await User.findById(userId);
+            if(!existing) {
+                return res.status(404).json({message: 'user not found'});
+            }
+            if(existing.role === 'admin') {
+                return res.status(403).json({message: 'admin is not allowed'});
+            }
+            return res.status(400).json({message: 'You have already voted'});
         }
 
-        if(user.isVoted) {
-            return res.status(400).json({message: 'You have already voted'})
+        //record the vote on the candidate atomically; roll back the claim if it fails
+        try {
+            const voteResult = await Candidate.updateOne(
+                { _id: candidateID },
+                { $inc: { voteCount: 1 }, $push: { votes: { user: userId } } }
+            );
+            if(voteResult.matchedCount === 0) {
+                await User.updateOne({ _id: userId }, { $set: { isVoted: false } });
+                return res.status(404).json({message: 'Candidate not found'});
+            }
+        } catch(err) {
+            await User.updateOne({ _id: userId }, { $set: { isVoted: false } });
+            throw err;
         }
-
-        if(user.role === 'admin') {
-            return res.status(403).json({message: 'admin is not allowed'})
-        }
-
-        //update the Candidate document to record the vote
-        candidate.votes.push({user: userId});
-        candidate.voteCount++;
-        await candidate.save();
-
-        //update the user document
-        user.isVoted = true
-        await user.save();
 
         res.status(200).json({message: 'Vote recorded successfully'})
     }catch(err) {
