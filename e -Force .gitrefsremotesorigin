@@ -1,0 +1,89 @@
+.insects-list {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+  list-style: none;
+  padding: 0;
+  flex-wrap: wrap;
+  max-width: 1200px;
+}  feature/lumix-chatbot[m
+  fix-calendar-overlap[m
+  fix-chart-issue-clean[m
+  fix-chart-issue-v2[m
+  fix-contributors-currentpage-error[m
+  fix-css-404[m
+  fix-css-404-clean[m
+  fix-initstreak-clean[m
+  fix-initstreak-error[m
+  fix-learning-projects-json[m
+  fix-preview-404-7613[m
+  fix-projects-json[m
+  fix-projects-json-path[m
+  fix-projects-json-v2[m
+  fix-signup-dollar-error[m
+  fix-signup-dollar-error-v6[m
+  fix-signup-js-error-v2[m
+  fix-unit-converter-ui[m
+  fix/3d-gallery-layout[m
+  fix/bmi-calculator-ui[m
+* [32mmain[m
+  signup-fix-clean[m
+  signup-fix-clean-v2[m
+  [31mremotes/origin/Main[m
+  [31mremotes/origin/add-flappybird-home-button[m
+  [31mremotes/origin/add-habit-tracker[m
+  [31mremotes/origin/add-image-compressor[m
+  [31mremotes/origin/add-sudoku-generator[m
+  [31mremotes/origin/animated-maze-preview[m
+  [31mremotes/origin/boardgame-companion-feature[m
+  [31mremotes/origin/clean-habit-tracker[m
+  [31mremotes/origin/docs-budget-tracker-readme[m
+  [31mremotes/origin/feature-back-to-top-button[m
+  [31mremotes/origin/feature-mood-music-recommender[m
+  [31mremotes/origin/feature/kanban-board[m
+  [31mremotes/origin/feature/lumix-chatbot[m
+  [31mremotes/origin/feature/musemeter[m
+  [31mremotes/origin/feature/tower-blocks-stacker[m
+  [31mremotes/origin/fix-calendar-overlap[m
+  [31mremotes/origin/fix-captcha-mobile-responsiveness[m
+  [31mremotes/origin/fix-chart-issue[m
+  [31mremotes/origin/fix-chart-issue-clean[m
+  [31mremotes/origin/fix-chart-issue-v2[m
+  [31mremotes/origin/fix-contributors-currentpage-error[m
+  [31mremotes/origin/fix-crossword-autofocus[m
+  [31mremotes/origin/fix-css-404[m
+  [31mremotes/origin/fix-css-404-clean[m
+  [31mremotes/origin/fix-eslint-ci-7010[m
+  [31mremotes/origin/fix-image-captcha-input[m
+  [31mremotes/origin/fix-initstreak-clean[m
+  [31mremotes/origin/fix-initstreak-error[m
+  [31mremotes/origin/fix-learning-projects-json[m
+  [31mremotes/origin/fix-navbar-overlap[m
+  [31mremotes/origin/fix-pagination[m
+  [31mremotes/origin/fix-preview-404-7613[m
+  [31mremotes/origin/fix-projects-json[m
+  [31mremotes/origin/fix-projects-json-path[m
+  [31mremotes/origin/fix-projects-json-v2[m
+  [31mremotes/origin/fix-search-query-xss[m
+  [31mremotes/origin/fix-signup-dollar-error[m
+  [31mremotes/origin/fix-signup-dollar-error-v6[m
+  [31mremotes/origin/fix-signup-js-error-v2[m
+  [31mremotes/origin/fix-todo-css-file[m
+  [31mremotes/origin/fix-ui-performance[m
+  [31mremotes/origin/fix-unit-converter-ui[m
+  [31mremotes/origin/fix-xss-landing-page[m
+  [31mremotes/origin/fix/3d-gallery-layout[m
+  [31mremotes/origin/fix/bmi-calculator-ui[m
+  [31mremotes/origin/khwahish-url-filter-fix[m
+  [31mremotes/origin/main[m
+  [31mremotes/origin/multi-theme-picker[m
+  [31mremotes/origin/signup-fix-clean[m
+  [31mremotes/origin/signup-fix-clean-v2[m
+  [31mremotes/upstream/Main[m
+  [31mremotes/upstream/copilot/assign-issues-to-creators[m
+  [31mremotes/upstream/copilot/check-workflow-duration-issue[m
+  [31mremotes/upstream/copilot/create-first-and-enhancement-issues[m
+  [31mremotes/upstream/copilot/fix-css-centering-issues[m
+  [31mremotes/upstream/copilot/fix-root-js-errors[m
+  [31mremotes/upstream/copilot/remove-100-days-100-we-folder[m

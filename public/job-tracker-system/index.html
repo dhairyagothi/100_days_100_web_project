@@ -2,6 +2,229 @@
 <html lang="en">
 
 <head>
+    <style>
+        /* Global Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f4f6f9;
+    color: #222;
+}
+
+/* Page Container */
+body {
+    padding: 20px;
+}
+
+/* Heading */
+h2 {
+    margin-bottom: 15px;
+    color: #1f2937;
+}
+
+/* Stats Section */
+div:first-of-type {
+    margin-bottom: 20px;
+    font-size: 16px;
+}
+
+/* Kanban Board */
+.kanban-board {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    width: 100%;
+    margin-top: 20px;
+}
+
+/* Columns */
+.kanban-column {
+    flex: 1 1 300px;
+    min-width: 280px;
+    max-width: 100%;
+    background: white;
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    padding: 15px;
+    min-height: 300px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.kanban-column h3 {
+    margin-bottom: 15px;
+    color: #111827;
+}
+
+/* Cards */
+.job-card {
+    background: #eff6ff;
+    border: 1px solid #3b82f6;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 10px;
+    cursor: grab;
+    transition: 0.2s;
+}
+
+.job-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.job-card h4 {
+    font-size: 15px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+/* Diagnostics */
+h4 {
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
+
+/* Log Container */
+#system-log {
+    width: 100%;
+    max-width: 100%;
+    background: #111827;
+    color: #00ff00;
+    padding: 15px;
+    border-radius: 8px;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-break: break-all;
+    overflow-wrap: anywhere;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .kanban-board {
+        flex-direction: column;
+    }
+
+    .kanban-column {
+        width: 100%;
+        min-width: 100%;
+    }
+
+    h2 {
+        font-size: 22px;
+    }
+}
+.stats-container {
+    display: flex;
+    gap: 20px;
+    margin: 25px 0;
+    flex-wrap: wrap;
+}
+
+.stat-card {
+    flex: 1;
+    min-width: 220px;
+    background: white;
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    transition: 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+}
+
+.stat-card h3 {
+    color: #6b7280;
+    margin-bottom: 10px;
+}
+
+.stat-card span {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2563eb;
+}
+.kanban-column {
+    background: white;
+    border-radius: 18px;
+    padding: 20px;
+    min-height: 350px;
+    border: none;
+    box-shadow: 0 12px 35px rgba(0,0,0,0.08);
+    transition: 0.3s ease;
+}
+
+.kanban-column:hover {
+    transform: translateY(-4px);
+}
+
+.kanban-column h3 {
+    color: #111827;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #e5e7eb;
+    padding-bottom: 10px;
+}
+.job-card {
+    background: linear-gradient(135deg,#eff6ff,#dbeafe);
+    border: none;
+    border-left: 5px solid #2563eb;
+    border-radius: 14px;
+    padding: 18px;
+    margin-bottom: 15px;
+    cursor: grab;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 18px rgba(37,99,235,0.15);
+}
+
+.job-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 35px rgba(37,99,235,0.25);
+}
+
+.job-card h4 {
+    font-size: 1.1rem;
+    color: #111827;
+}
+#system-log {
+    background: #0f172a;
+    color: #22c55e;
+    border-radius: 16px;
+    padding: 20px;
+    font-family: monospace;
+    box-shadow: 0 12px 25px rgba(0,0,0,0.25);
+    border: 1px solid #1e293b;
+}
+* {
+    transition: all 0.25s ease;
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.kanban-column,
+.stat-card,
+.job-card {
+    animation: fadeUp 0.5s ease;
+}
+    </style>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="UTF-8">
     <title>Advanced Kanban Pipeline Systems Engine</title>
@@ -10,10 +233,17 @@
 <body>
     <h2>Advanced Job Tracking & Analytical Workspace Engine</h2>
 
-    <div>
-        <strong>Total Active Leads: </strong><span id="stat-total">0</span> |
-        <strong>Interview Conversion Rate: </strong><span id="stat-rate">0%</span>
+  <div class="stats-container">
+    <div class="stat-card">
+        <h3>Total Active Leads</h3>
+        <span id="stat-total">0</span>
     </div>
+
+    <div class="stat-card">
+        <h3>Interview Conversion Rate</h3>
+        <span id="stat-rate">0%</span>
+    </div>
+</div>
 
     <div style="display: flex; gap: 20px; margin-top: 20px;">
         <div class="kanban-column" data-stage="Applied"
