@@ -9,6 +9,8 @@ const schema = JSON.parse(
   fs.readFileSync("./schema/projects.schema.json", "utf8")
 );
 
+const errors = [];
+
 if (!Array.isArray(data)) {
   console.error("projects.json must be an array");
   process.exit(1);
@@ -17,8 +19,7 @@ if (!Array.isArray(data)) {
 for (const project of data) {
   for (const field of schema.items.required) {
     if (!(field in project)) {
-      console.error(`Error in Day ${project.projectNo}: Missing required field "${field}"`);
-      process.exit(1);
+      errors.push(`Error in Day ${project.projectNo}: Missing required field "${field}"`);
     }
   }
 
@@ -40,10 +41,14 @@ for (const project of data) {
     const absoluteFilePath = path.join(__dirname, "../", filePathOnly);
 
     if (!fs.existsSync(absoluteFilePath)) {
-      console.error(`Error in Day ${project.projectNo} ("${project.projectName}"): The path "${project.projectPath}" (resolved as "${filePathOnly}") does not exist in the repository.`);
-      process.exit(1);
+      errors.push(`Error in Day ${project.projectNo} ("${project.projectName}"): The path "${project.projectPath}" (resolved as "${filePathOnly}") does not exist in the repository.`);
     }
   }
 }
 
-console.log("projects.json validation passed successfully ✅ (Checked required fields and local path existences)");
+if (errors.length > 0) {
+  errors.forEach(e => console.error(e));
+  process.exit(1);
+} else {
+  console.log("projects.json validation passed successfully ✅ (Checked required fields and local path existences)");
+}

@@ -135,25 +135,31 @@ body::before {
 }
 
 .project-back-button {
-  width: 150px;
-  display: block;
-  margin-bottom: 15px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px; 
   padding: 8px 16px;
-  border-radius: 8px;
-  background: #1e293b;
-  border: 1px solid #3b82f6;
-  color: #3b82f6;
+  background: rgba(255, 255, 255, 0.08); 
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  color: #ffffff;
   text-decoration: none;
-  z-index: 9999;
-  font-weight: 700;
-  font-family: Inter, system-ui, sans-serif;
-  box-shadow: 0 8px 20px rgba(12, 18, 40, 0.35);
-  transition: all 0.2s ease;
+  font-weight: 500;
+  font-size: 0.9rem;
+  letter-spacing: 0.02em;
+  backdrop-filter: blur(8px); 
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
 }
 
 .project-back-button:hover {
-  background: #3b82f6;
-  color: #fff;
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.24);
+  transform: translateY(-1px);
+}
+
+.project-back-button:active {
+  transform: translateY(0);
 }
 
 @keyframes breathe {

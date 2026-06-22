@@ -1,111 +1,142 @@
 <!doctype html>
 <html lang="en">
-  <head>
+
+
+
+<head>
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta charset="UTF-8" />
-    <title>AirCast - Your Daily Air & Weather Companion</title>
-    <link rel="icon" href="logo.png" />
+  <title>AirCast – Premium Weather & AQI Dashboard</title>
+  <meta name="description"
+    content="Real-time weather and air quality index (AQI) dashboard with dynamic themes, 3D glassmorphism design, and live pollutant breakdown." />
+  <link rel="icon" href="logo.png" />
 
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
-      rel="stylesheet"
-    />
 
-    <link
-      href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      rel="stylesheet"
-    />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
 
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <div class="app">
-      <header class="top-bar">
-        <div>
-          <h1 id="greeting">Good Evening</h1>
-        </div>
+      
+  <link rel="stylesheet" href="style.css" />
+</head>
 
-        <div class="search-bar">
-          <input type="text" id="cityInput" placeholder="Search city" />
-          <button onclick="getWeather()">
-            <span class="material-icons">search</span>
-          </button>
-        </div>
-      </header>
+<body>
+  <div class="app">
+    <div id="loader" class="loader-container">
+      <div class="spinner-ring"></div>
+    </div>
 
-      <h2 id="location">--</h2>
-      <p id="errorMessage" class="error-message"></p>
+    <header class="top-bar">
+      <div>
+        <h1 id="greeting">Good Evening</h1>
+      </div>
 
-      <div class="dashboard">
-        <!-- LEFT PANEL -->
-        <div class="left-panel">
-          <!-- WEATHER -->
-          <div class="card">
-            <h3>Weather</h3>
-            <p id="temperature">--</p>
-            <p id="condition">--</p>
+      <div class="search-bar">
+        <input type="text" id="cityInput" placeholder="Search city…" autocomplete="off" />
+        <button onclick="getWeather()" id="searchBtn" title="Search Weather" aria-label="Search">
+          <span class="material-icons">search</span>
+        </button>
+        <button onclick="toggleSettings()" id="settingsBtn" title="API Configuration" aria-label="Settings">
+          <span class="material-icons">settings</span>
+        </button>
+      </div>
+    </header>
 
-            <div class="weather-meta-horizontal">
-              <div class="meta-item">
-                <span class="meta-label">Humidity</span>
-                <span id="humidity">--%</span>
-              </div>
-              <div class="meta-item">
-                <span class="meta-label">Wind</span>
-                <span id="wind">-- km/h</span>
-              </div>
+    <h2 id="location">--</h2>
+    <p id="errorMessage" class="error-message"></p>
+
+    <div class="dashboard">
+      <div class="left-panel">
+
+        <div class="card">
+          <h3>Weather</h3>
+
+          <div class="weather-icon-wrapper">
+            <img id="weatherIcon" src="" alt="Weather icon" style="display:none;" />
+            <div>
+              <p id="temperature">--</p>
+              <p id="condition">--</p>
             </div>
           </div>
 
-          <!-- EXTRA WEATHER DETAILS -->
-          <div class="card extra-weather">
-            <h3>Additional Information</h3>
-            <p>Feels Like: <span id="feelsLike">--°C</span></p>
-            <p>Sunrise: <span id="sunrise">--:--</span></p>
-            <p>Sunset: <span id="sunset">--:--</span></p>
-
-            <h4>Next 5 Hours</h4>
-            <div id="hourlyForecast" class="hourly-forecast"></div>
+          <div class="weather-meta-horizontal">
+            <div class="meta-item">
+              <span class="meta-label">Humidity</span>
+              <span id="humidity">--%</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">Wind</span>
+              <span id="wind">-- km/h</span>
+            </div>
           </div>
         </div>
 
-        <!-- RIGHT PANEL -->
-        <div class="right-panel">
-          <!-- AQI -->
-          <div class="card aqi-card">
-            <h3>Air Quality Index (AQI)</h3>
+        <div class="card extra-weather">
+          <h3>Additional Information</h3>
+          <p>Feels Like <span id="feelsLike">--°C</span></p>
+          <p>Sunrise <span id="sunrise">--:--</span></p>
+          <p>Sunset <span id="sunset">--:--</span></p>
 
-            <div class="aqi-main">
-              <span id="aqiValue" class="aqi-number">--</span>
+          <h4>Next 5 Hours</h4>
+          <div id="hourlyForecast" class="hourly-forecast"></div>
+        </div>
+      </div>
+
+      <div class="right-panel">
+
+        <div class="card aqi-card">
+          <h3>Air Quality Index (AQI)</h3>
+
+          <div class="aqi-ring-wrapper">
+            <div class="aqi-ring" id="aqiRing">
+              <svg viewBox="0 0 90 90">
+                <circle class="track" cx="45" cy="45" r="40" />
+                <circle class="progress" id="aqiProgress" cx="45" cy="45" r="40" stroke="#60a5fa" />
+              </svg>
+              <div class="aqi-ring-label">
+                <span id="aqiValue" class="aqi-number">--</span>
+                <span class="aqi-ring-value-label">AQI</span>
+              </div>
+            </div>
+
+            <div class="aqi-meta">
               <span id="aqiStatus" class="aqi-status">--</span>
+              <p id="aqiTrend" class="aqi-trend">--</p>
+              <p id="aqiRecommendation" class="aqi-recommendation">--</p>
             </div>
-
-            <p id="aqiTrend" class="aqi-trend">--</p>
-            <p id="aqiRecommendation" class="aqi-recommendation">--</p>
           </div>
+        </div>
 
-          <!-- POLLUTANTS -->
-          <div class="card">
-            <h3>Pollutant Breakdown</h3>
-            <div class="pollutant">
-              <span>PM2.5</span><span id="pm25">--</span>
-            </div>
-            <div class="pollutant">
-              <span>PM10</span><span id="pm10">--</span>
-            </div>
-            <div class="pollutant">
-              <span>NO₂</span><span id="no2">--</span>
-            </div>
-            <div class="pollutant">
-              <span>SO₂</span><span id="so2">--</span>
-            </div>
-            <div class="pollutant"><span>O₃</span><span id="o3">--</span></div>
-            <div class="pollutant"><span>CO</span><span id="co">--</span></div>
-          </div>
+        <div class="card">
+          <h3>Pollutant Breakdown</h3>
+          <div class="pollutant"><span>PM2.5</span><span id="pm25">--</span></div>
+          <div class="pollutant"><span>PM10</span><span id="pm10">--</span></div>
+          <div class="pollutant"><span>NO₂</span><span id="no2">--</span></div>
+          <div class="pollutant"><span>SO₂</span><span id="so2">--</span></div>
+          <div class="pollutant"><span>O₃</span><span id="o3">--</span></div>
+          <div class="pollutant"><span>CO</span><span id="co">--</span></div>
         </div>
       </div>
     </div>
+  </div>
 
-    <script src="script.js"></script>
-  </body>
+  <div id="settingsModal" class="modal">
+    <div class="modal-content">
+      <span class="close-modal" onclick="toggleSettings()" aria-label="Close">&times;</span>
+      <h2>API Configuration</h2>
+      <p class="modal-description">Enter your OpenWeatherMap API Key. Get a free key at
+        <a href="https://openweathermap.org/" target="_blank" rel="noopener">openweathermap.org</a>.
+      </p>
+      <div class="api-input-group">
+        <input type="password" id="apiKeyInput" placeholder="Paste API Key here" autocomplete="off" />
+        <button onclick="saveApiKey()">Save</button>
+      </div>
+      <p id="settingsFeedback" class="feedback-message"></p>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
 </html>
+

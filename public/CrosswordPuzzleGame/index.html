@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="An interactive crossword puzzle game with 10 levels of increasing difficulty">
+    <meta name="description" content="An interactive crossword puzzle game with topic and difficulty selection">
     <title>Crossword Puzzle Game</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -19,7 +19,30 @@
         <button id="themeToggle" title="Toggle dark/light theme">🌙 Theme</button>
     </header>
 
-    <div class="container">
+    <!-- Topic & Difficulty Setup Screen -->
+    <div id="setupScreen" class="setup-screen">
+        <div class="setup-card">
+            <h2>Choose Your Challenge</h2>
+            <p class="setup-subtitle">Pick a topic and a difficulty to generate your puzzle set.</p>
+
+            <h3 class="setup-label">Topic</h3>
+            <div id="topicGrid" class="topic-grid" role="radiogroup" aria-label="Select a topic"></div>
+
+            <h3 class="setup-label">Difficulty</h3>
+            <div id="difficultyGroup" class="difficulty-group" role="radiogroup" aria-label="Select a difficulty"></div>
+
+            <button id="startBtn" class="btn-primary btn-start" disabled>▶ Start Puzzle</button>
+        </div>
+    </div>
+
+    <!-- Game Screen -->
+    <div id="gameScreen" class="container" hidden>
+
+        <div class="game-meta">
+            <span id="activeTopic" class="badge badge-topic"></span>
+            <span id="activeDifficulty" class="badge badge-difficulty"></span>
+            <button id="changeTopicBtn" class="btn-change-topic" title="Pick a different topic or difficulty">↺ Change Topic</button>
+        </div>
 
         <!-- Timer & Score -->
         <div class="status-bar">
@@ -29,36 +52,33 @@
             <button id="timerToggle" title="Play/Pause timer">▶️</button>
         </div>
 
-        <!-- Crossword Grid -->
-        <div id="grid" class="grid" aria-label="Crossword puzzle grid"></div>
+        <div class="board">
+            <!-- Crossword Grid -->
+            <div id="grid" class="grid" aria-label="Crossword puzzle grid"></div>
 
-        <!-- Clues Section -->
-        <aside class="clues">
-            <h2>Clues</h2>
+            <!-- Clues Section -->
+            <aside class="clues">
+                <h2>Clues</h2>
 
-            <section>
-                <h3>Across</h3>
-                <ul id="acrossClues">
-                    <li>1. Markup language for web pages</li>
-                    <li>2. Programming language of the web</li>
-                </ul>
-            </section>
+                <section>
+                    <h3>Across</h3>
+                    <ul id="acrossClues"></ul>
+                </section>
 
-            <section>
-                <h3>Down</h3>
-                <ul id="downClues">
-                    <li>3. Styles web pages</li>
-                </ul>
-            </section>
+                <section>
+                    <h3>Down</h3>
+                    <ul id="downClues"></ul>
+                </section>
 
-            <!-- Action Buttons -->
-            <div class="button-group">
-                <button id="checkBtn" class="btn-primary">✓ Check Answers</button>
-                <button id="resetBtn" class="btn-secondary">↻ Reset</button>
-            </div>
+                <!-- Action Buttons -->
+                <div class="button-group">
+                    <button id="checkBtn" class="btn-primary">✓ Check Answers</button>
+                    <button id="resetBtn" class="btn-secondary">↻ Reset</button>
+                </div>
 
-            <div id="result" role="status" aria-live="polite" aria-atomic="true"></div>
-        </aside>
+                <div id="result" role="status" aria-live="polite" aria-atomic="true"></div>
+            </aside>
+        </div>
 
     </div>
 

@@ -1,125 +1,292 @@
-// Target entry endpoint parameter mapping references
-const ADVICE_SLIP_API = 'https://api.adviceslip.com/advice';
+/* ── Advice Generator — Enhanced Script ── */
 
-const adviceId = document.getElementById('adviceId');
-const adviceQuote = document.getElementById('adviceQuote');
-const diceBtn = document.getElementById('diceBtn');
-const tweetBtn = document.getElementById('tweetBtn');
-const adviceCard = document.querySelector('.advice-card');
-const copyBtn = document.getElementById('copyBtn');
-const favoriteBtn = document.getElementById('favoriteBtn');
-const viewFavoritesBtn = document.getElementById('viewFavoritesBtn');
-const favoritesPanel = document.getElementById('favoritesPanel');
-const favoritesList = document.getElementById('favoritesList');
-const toast = document.getElementById('toast');
-let activeAdviceText = '';
+const API_URL = 'https://api.adviceslip.com/advice';
+const STORAGE_KEYS = { favorites: 'wisdom_favorites', theme: 'wisdom_theme' };
+const MAX_HISTORY = 5;
 
-function showToast(message) {
-  toast.textContent = message;
-  toast.classList.add('show');
+// Mood classification for advice snippets
+const MOODS = [
+  { keywords: ['love', 'friend', 'family', 'kind', 'care', 'together', 'share', 'heart'], emoji: '💛', label: 'Warmth' },
+  { keywords: ['try', 'work', 'hard', 'effort', 'success', 'goal', 'learn', 'grow', 'better'], emoji: '🔥', label: 'Drive' },
+  { keywords: ['peace', 'calm', 'breath', 'slow', 'patient', 'relax', 'still', 'moment'], emoji: '🌿', label: 'Calm' },
+  { keywords: ['courage', 'brave', 'fear', 'risk', 'bold', 'dare', 'face', 'strong'], emoji: '⚡', label: 'Courage' },
+  { keywords: ['happy', 'joy', 'laugh', 'smile', 'fun', 'enjoy', 'delight', 'play'], emoji: '🌟', label: 'Joy' },
+  { keywords: ['wise', 'know', 'truth', 'think', 'mind', 'understand', 'reason', 'learn'], emoji: '🔮', label: 'Wisdom' },
+];
 
-  setTimeout(() => {
-    toast.classList.remove('show');
-  }, 2000);
-}
+// State
+let currentAdvice = { id: null, text: '' };
+let favorites = [];
+let history = [];
+let isFavPanelOpen = false;
 
-function getFavorites() {
-  return JSON.parse(localStorage.getItem('favoriteAdvice')) || [];
-}
+// DOM refs
+const adviceIdEl   = document.getElementById('adviceId');
+const adviceTextEl = document.getElementById('adviceText');
+const moodBadgeEl  = document.getElementById('moodBadge');
+const moodEmojiEl  = document.getElementById('moodEmoji');
+const moodLabelEl  = document.getElementById('moodLabel');
+const adviceCard   = document.getElementById('adviceCard');
+const rollBtn      = document.getElementById('rollBtn');
+const rollIcon     = document.getElementById('rollIcon');
+const copyBtn      = document.getElementById('copyBtn');
+const favoriteBtn  = document.getElementById('favoriteBtn');
+const tweetBtn     = document.getElementById('tweetBtn');
+const heartIcon    = document.getElementById('heartIcon');
+const viewFavBtn   = document.getElementById('viewFavoritesBtn');
+const favPanel     = document.getElementById('favoritesPanel');
+const favList      = document.getElementById('favoritesList');
+const favEmpty     = document.getElementById('favEmpty');
+const favBtnLabel  = document.getElementById('favBtnLabel');
+const clearFavBtn  = document.getElementById('clearFavoritesBtn');
+const toastEl      = document.getElementById('toast');
+const themeBtn     = document.getElementById('themeToggleBtn');
+const historyStrip = document.getElementById('historyStrip');
 
-function saveFavorite(advice) {
-  const favorites = getFavorites();
-
-  if (favorites.includes(advice)) {
-    showToast('Advice already saved');
-    return;
+/* ── Theme ── */
+function initTheme() {
+  const saved = localStorage.getItem(STORAGE_KEYS.theme);
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  if (saved === 'dark' || (!saved && prefersDark)) {
+    document.documentElement.setAttribute('data-theme', 'dark');
   }
+}
+function toggleTheme() {
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  localStorage.setItem(STORAGE_KEYS.theme, isDark ? 'light' : 'dark');
+  themeBtn.title = isDark ? 'Switch to dark mode' : 'Switch to light mode';
+}
+themeBtn.addEventListener('click', toggleTheme);
 
-  favorites.push(advice);
-  localStorage.setItem('favoriteAdvice', JSON.stringify(favorites));
+/* ── Toast ── */
+let toastTimer;
+function showToast(msg) {
+  clearTimeout(toastTimer);
+  toastEl.textContent = msg;
+  toastEl.classList.add('show');
+  toastTimer = setTimeout(() => toastEl.classList.remove('show'), 2400);
+}
 
+/* ── Mood detection ── */
+function detectMood(text) {
+  const lower = text.toLowerCase();
+  for (const mood of MOODS) {
+    if (mood.keywords.some(kw => lower.includes(kw))) return mood;
+  }
+  return { emoji: '✨', label: 'Insight' };
+}
+
+/* ── Favorites ── */
+function loadFavorites() {
+  try {
+    favorites = JSON.parse(localStorage.getItem(STORAGE_KEYS.favorites)) || [];
+  } catch {
+    favorites = [];
+  }
+}
+function saveFavorites() {
+  localStorage.setItem(STORAGE_KEYS.favorites, JSON.stringify(favorites));
+}
+function isCurrentFavorited() {
+  return favorites.some(f => f.id === currentAdvice.id);
+}
+function updateFavoriteBtn() {
+  const saved = isCurrentFavorited();
+  heartIcon.setAttribute('fill', saved ? 'currentColor' : 'none');
+  favoriteBtn.classList.toggle('saved', saved);
+  favoriteBtn.querySelector('span').textContent = saved ? 'Saved' : 'Save';
+}
+function toggleFavorite() {
+  if (!currentAdvice.id) return;
+  if (isCurrentFavorited()) {
+    favorites = favorites.filter(f => f.id !== currentAdvice.id);
+    showToast('Removed from saved');
+  } else {
+    favorites.unshift({ id: currentAdvice.id, text: currentAdvice.text });
+    showToast('Saved ✦');
+  }
+  saveFavorites();
+  updateFavoriteBtn();
+  updateFavBtnLabel();
   renderFavorites();
-  showToast('Advice saved');
+}
+function updateFavBtnLabel() {
+  favBtnLabel.textContent = `Saved (${favorites.length})`;
+}
+function renderFavorites() {
+  favList.innerHTML = '';
+  favEmpty.style.display = favorites.length === 0 ? 'block' : 'none';
+  favorites.forEach(fav => {
+    const li = document.createElement('li');
+    li.className = 'fav-item';
+    li.innerHTML = `
+      <div style="flex:1">
+        <p class="fav-item-text">${escapeHtml(fav.text)}</p>
+        <p class="fav-item-id">#${fav.id}</p>
+      </div>
+      <button class="fav-remove" data-id="${fav.id}" title="Remove" aria-label="Remove this advice">✕</button>`;
+    li.querySelector('.fav-remove').addEventListener('click', e => {
+      e.stopPropagation();
+      favorites = favorites.filter(f => f.id !== fav.id);
+      saveFavorites();
+      updateFavBtnLabel();
+      renderFavorites();
+      if (currentAdvice.id === fav.id) updateFavoriteBtn();
+      showToast('Removed');
+    });
+    // Click item to reload that advice
+    li.querySelector('.fav-item-text').addEventListener('click', () => {
+      displayAdvice(fav.id, fav.text);
+      closeFavPanel();
+    });
+    favList.appendChild(li);
+  });
+}
+function clearFavorites() {
+  if (favorites.length === 0) return;
+  favorites = [];
+  saveFavorites();
+  updateFavBtnLabel();
+  renderFavorites();
+  updateFavoriteBtn();
+  showToast('All saved advice cleared');
 }
 
-function renderFavorites() {
-  const favorites = getFavorites();
+/* ── Favorites panel toggle ── */
+function openFavPanel() {
+  isFavPanelOpen = true;
+  favPanel.classList.add('open');
+  favPanel.setAttribute('aria-hidden', 'false');
+  viewFavBtn.setAttribute('aria-expanded', 'true');
+  renderFavorites();
+}
+function closeFavPanel() {
+  isFavPanelOpen = false;
+  favPanel.classList.remove('open');
+  favPanel.setAttribute('aria-hidden', 'true');
+  viewFavBtn.setAttribute('aria-expanded', 'false');
+}
+viewFavBtn.addEventListener('click', () => {
+  if (isFavPanelOpen) closeFavPanel(); else openFavPanel();
+});
+clearFavBtn.addEventListener('click', clearFavorites);
 
-  favoritesList.innerHTML = '';
-
-  if (!favorites.length) {
-    favoritesList.innerHTML = '<li>No saved advice yet.</li>';
-    return;
-  }
-
-  favorites.forEach((item) => {
-    const li = document.createElement('li');
-    li.textContent = item;
-    favoritesList.appendChild(li);
+/* ── History dots ── */
+function updateHistoryDots() {
+  historyStrip.innerHTML = '';
+  history.forEach((_, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'history-dot' + (i === history.length - 1 ? ' active' : '');
+    historyStrip.appendChild(dot);
   });
 }
 
-// Dynamic API fetch interface engine
-async function loadNewAdviceSlip() {
-  // Inject local state loading classes to toggle loading states
-  adviceCard.classList.add('loading');
-  diceBtn.disabled = true;
+/* ── Display advice ── */
+function displayAdvice(id, text) {
+  currentAdvice = { id, text };
+
+  adviceIdEl.textContent = `#${id}`;
+  adviceTextEl.textContent = text;
+
+  const mood = detectMood(text);
+  moodEmojiEl.textContent = mood.emoji;
+  moodLabelEl.textContent = mood.label;
+
+  const tweetText = encodeURIComponent(`"${text}" — Advice #${id}`);
+  tweetBtn.href = `https://twitter.com/intent/tweet?text=${tweetText}`;
+
+  // history
+  if (!history.includes(id)) {
+    history.push(id);
+    if (history.length > MAX_HISTORY) history.shift();
+    updateHistoryDots();
+  }
+
+  updateFavoriteBtn();
+}
+
+/* ── Fetch advice ── */
+async function fetchAdvice() {
+  adviceCard.classList.add('swap-out');
+  setTimeout(() => adviceCard.classList.remove('swap-out'), 200);
+
+  rollIcon.classList.add('roll-icon-spin');
+  rollBtn.disabled = true;
 
   try {
-    // Append unique timestamp filters to prevent browser cache retention loops
-    const response = await fetch(
-      `${ADVICE_SLIP_API}?ts=${new Date().getTime()}`
-    );
-    if (!response.ok) throw new Error('Connection request rejected.');
+    const resp = await fetch(`${API_URL}?t=${Date.now()}`);
+    if (!resp.ok) throw new Error('Network error');
+    const { slip } = await resp.json();
 
-    const payload = await response.json();
-    const slip = payload.slip;
-
-    // Render response metrics to interface layout components
-    adviceId.innerText = slip.id;
-    activeAdviceText = slip.advice;
-    document.querySelector('.advice-quote').innerText = `"${activeAdviceText}"`;
-
-    // Update the share link context properties
-    syncTwitterIntent(activeAdviceText);
-  } catch (error) {
-    document.querySelector('.advice-quote').innerText =
-      'An error occurred while loading advice. Please try again.';
+    // Small delay for swap-in animation to feel intentional
+    setTimeout(() => {
+      displayAdvice(slip.id, slip.advice);
+      adviceCard.classList.add('swap-in');
+      setTimeout(() => adviceCard.classList.remove('swap-in'), 400);
+    }, 180);
+  } catch {
+    setTimeout(() => {
+      adviceTextEl.textContent = 'Couldn\'t reach the wisdom well. Check your connection and try again.';
+      moodEmojiEl.textContent = '🌧';
+      moodLabelEl.textContent = 'Offline';
+      showToast('Connection error — try again');
+    }, 180);
   } finally {
-    // Disengage blocking layouts
-    adviceCard.classList.remove('loading');
-    diceBtn.disabled = false;
+    setTimeout(() => {
+      rollIcon.classList.remove('roll-icon-spin');
+      rollBtn.disabled = false;
+    }, 300);
   }
 }
 
-// Format sharing attributes to match Twitter/X intent APIs
-function syncTwitterIntent(text) {
-  const formattedShareText = encodeURIComponent(
-    `${text} — Generated via Advice Workspace Engine`
-  );
-  tweetBtn.href = `https://twitter.com/intent/tweet?text=${formattedShareText}`;
+/* ── Copy ── */
+async function copyAdvice() {
+  if (!currentAdvice.text) return;
+  try {
+    await navigator.clipboard.writeText(`"${currentAdvice.text}"`);
+    showToast('Copied to clipboard');
+  } catch {
+    // Fallback
+    const ta = document.createElement('textarea');
+    ta.value = `"${currentAdvice.text}"`;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    showToast('Copied to clipboard');
+  }
 }
 
-// Configure button event listener mappings
-diceBtn.addEventListener('click', loadNewAdviceSlip);
-
-copyBtn.addEventListener('click', async () => {
-  if (!activeAdviceText) return;
-
-  await navigator.clipboard.writeText(activeAdviceText);
-  showToast('Advice copied');
+/* ── Keyboard shortcut ── */
+document.addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+  if (e.key === 'n' || e.key === 'N' || e.key === ' ') {
+    e.preventDefault();
+    fetchAdvice();
+  }
+  if (e.key === 'c' || e.key === 'C') copyAdvice();
+  if (e.key === 's' || e.key === 'S') toggleFavorite();
+  if (e.key === 'Escape') closeFavPanel();
 });
 
-favoriteBtn.addEventListener('click', () => {
-  if (!activeAdviceText) return;
+/* ── Util ── */
+function escapeHtml(str) {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
 
-  saveFavorite(activeAdviceText);
-});
+/* ── Init ── */
+rollBtn.addEventListener('click', fetchAdvice);
+copyBtn.addEventListener('click', copyAdvice);
+favoriteBtn.addEventListener('click', toggleFavorite);
 
-viewFavoritesBtn.addEventListener('click', () => {
-  favoritesPanel.classList.toggle('show-panel');
-});
-
-// Load an initial piece of advice when the page opens
-renderFavorites();
-loadNewAdviceSlip();
+initTheme();
+loadFavorites();
+updateFavBtnLabel();
+fetchAdvice();

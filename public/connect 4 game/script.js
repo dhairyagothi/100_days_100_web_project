@@ -2,32 +2,33 @@ const ROWS = 6;
 const COLS = 7;
 
 let board = [];
-let currentPlayer = "red";
+let currentPlayer = 'red';
 let gameOver = false;
-let mode = "pvp"; // pvp or pve
+let mode = 'pvp'; // pvp or pve
 
-const boardDiv = document.getElementById("board");
-const statusDiv = document.getElementById("status");
+const boardDiv = document.getElementById('board');
+const statusDiv = document.getElementById('status');
 
-document.getElementById("pvpBtn").onclick = () => setMode("pvp");
-document.getElementById("pveBtn").onclick = () => setMode("pve");
+document.getElementById('pvpBtn').onclick = () => setMode('pvp');
+document.getElementById('pveBtn').onclick = () => setMode('pve');
 
 function setMode(m) {
   mode = m;
-  document.getElementById("pvpBtn").classList.toggle("active", m === "pvp");
-  document.getElementById("pveBtn").classList.toggle("active", m === "pve");
+  document.getElementById('pvpBtn').classList.toggle('active', m === 'pvp');
+  document.getElementById('pveBtn').classList.toggle('active', m === 'pve');
   resetGame();
 }
 
 // Create board
 function createBoard() {
   board = Array.from({ length: ROWS }, () => Array(COLS).fill(null));
-  boardDiv.innerHTML = "";
 
+  boardDiv.innerHTML = '';
+  boardDiv.classList.add('active');
   for (let r = 0; r < ROWS; r++) {
     for (let c = 0; c < COLS; c++) {
-      const cell = document.createElement("div");
-      cell.classList.add("cell");
+      const cell = document.createElement('div');
+      cell.classList.add('cell');
       cell.dataset.col = c;
       boardDiv.appendChild(cell);
     }
@@ -35,14 +36,14 @@ function createBoard() {
 }
 
 // Click handler
-boardDiv.addEventListener("click", (e) => {
-  if (!e.target.classList.contains("cell")) return;
+boardDiv.addEventListener('click', (e) => {
+  if (!e.target.classList.contains('cell')) return;
 
   if (gameOver) return;
 
   const col = Number(e.target.dataset.col);
 
-  if (mode === "pve" && currentPlayer === "yellow") return;
+  if (mode === 'pve' && currentPlayer === 'yellow') return;
 
   dropPiece(col, currentPlayer);
 });
@@ -57,19 +58,25 @@ function dropPiece(col, player) {
       if (checkWin(row, col)) {
         statusDiv.textContent = `${player.toUpperCase()} Wins 🎉`;
         gameOver = true;
+
+        boardDiv.classList.remove('active');
+
         return;
       }
 
       if (isDraw()) {
         statusDiv.textContent = "It's a Draw!";
         gameOver = true;
+
+        boardDiv.classList.remove('active');
+
         return;
       }
 
-      currentPlayer = currentPlayer === "red" ? "yellow" : "red";
+      currentPlayer = currentPlayer === 'red' ? 'yellow' : 'red';
       statusDiv.textContent = `${currentPlayer.toUpperCase()}'s Turn`;
 
-      if (mode === "pve" && currentPlayer === "yellow") {
+      if (mode === 'pve' && currentPlayer === 'yellow') {
         setTimeout(botMove, 400);
       }
 
@@ -86,10 +93,10 @@ function botMove() {
   for (let c = 0; c < COLS; c++) {
     let r = getAvailableRow(c);
     if (r !== -1) {
-      board[r][c] = "yellow";
+      board[r][c] = 'yellow';
       if (checkWin(r, c)) {
         board[r][c] = null;
-        dropPiece(c, "yellow");
+        dropPiece(c, 'yellow');
         return;
       }
       board[r][c] = null;
@@ -100,10 +107,10 @@ function botMove() {
   for (let c = 0; c < COLS; c++) {
     let r = getAvailableRow(c);
     if (r !== -1) {
-      board[r][c] = "red";
+      board[r][c] = 'red';
       if (checkWin(r, c)) {
         board[r][c] = null;
-        dropPiece(c, "yellow");
+        dropPiece(c, 'yellow');
         return;
       }
       board[r][c] = null;
@@ -116,7 +123,7 @@ function botMove() {
     col = Math.floor(Math.random() * COLS);
   } while (board[0][col] !== null);
 
-  dropPiece(col, "yellow");
+  dropPiece(col, 'yellow');
 }
 
 // helper
@@ -132,8 +139,8 @@ function renderPiece(row, col, player) {
   const index = row * COLS + col;
   const cell = boardDiv.children[index];
 
-  const piece = document.createElement("div");
-  piece.classList.add("piece", player);
+  const piece = document.createElement('div');
+  piece.classList.add('piece', player);
 
   cell.appendChild(piece);
 }
@@ -175,7 +182,7 @@ function isDraw() {
 
 // reset
 function resetGame() {
-  currentPlayer = "red";
+  currentPlayer = 'red';
   gameOver = false;
   statusDiv.textContent = "Red's Turn";
   createBoard();

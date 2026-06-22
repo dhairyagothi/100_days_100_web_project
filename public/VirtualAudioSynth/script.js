@@ -68,6 +68,8 @@ let masterGainNode = null;
 let analyserNode = null;
 let canvasContext = null;
 let drawVisual = null;
+let visualizerRunning = false;
+let visualizerRunning = false;
 
 /**
  * Shows a toast message
@@ -85,6 +87,11 @@ const showToast = (msg) => {
  * Initializes the Web Audio API context
  */
 const initAudio = () => {
+  if (state.audioEnabled) {
+    showToast('Synthesizer already active.');
+    return true;
+  }
+
   try {
     const AudioCtx = window.AudioContext || window.webkitAudioContext;
     if (!AudioCtx) {
@@ -105,6 +112,10 @@ const initAudio = () => {
     analyserNode.connect(audioContext.destination);
 
     state.audioEnabled = true;
+
+    dom.btnStart.disabled = true;
+    dom.btnStart.setAttribute('aria-disabled', 'true');
+
     dom.audioOverlay.classList.add('visualizer-overlay--hidden');
 
     // Start drawing loop
@@ -182,7 +193,10 @@ const stopNote = (noteName) => {
     const { osc, gainNode } = oscData;
     gainNode.gain.cancelScheduledValues(audioContext.currentTime);
     gainNode.gain.setValueAtTime(gainNode.gain.value, audioContext.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.0001, audioContext.currentTime + 0.08);
+    gainNode.gain.exponentialRampToValueAtTime(
+      0.0001,
+      audioContext.currentTime + 0.08
+    );
 
     setTimeout(() => {
       try {
@@ -207,6 +221,17 @@ const stopNote = (noteName) => {
 // ===== Visualizer Rendering =====
 
 const initVisualizer = () => {
+  if (visualizerRunning) {
+    return;
+  }
+
+  visualizerRunning = true;
+
+  if (drawVisual !== null) {
+    cancelAnimationFrame(drawVisual);
+    drawVisual = null;
+  }
+
   canvasContext = dom.canvas.getContext('2d');
   resizeCanvas();
 
@@ -234,7 +259,12 @@ const initVisualizer = () => {
       const b = Math.floor(254 + percent * 1);
 
       canvasContext.fillStyle = `rgb(${r},${g},${b})`;
-      canvasContext.fillRect(x, dom.canvas.height - barHeight, barWidth - 1, barHeight);
+      canvasContext.fillRect(
+        x,
+        dom.canvas.height - barHeight,
+        barWidth - 1,
+        barHeight
+      );
 
       x += barWidth;
     }
@@ -313,7 +343,10 @@ const initListeners = () => {
     dom.volumeValue.textContent = `${value}%`;
 
     if (masterGainNode) {
-      masterGainNode.gain.setValueAtTime(state.volume, audioContext.currentTime);
+      masterGainNode.gain.setValueAtTime(
+        state.volume,
+        audioContext.currentTime
+      );
     }
   });
 
