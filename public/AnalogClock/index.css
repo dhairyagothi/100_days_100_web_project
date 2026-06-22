@@ -719,6 +719,16 @@ body.dark-theme{
    LIGHT MODE
 ========================== */
 
+body.light-theme .ghost-action {
+  color: var(--text); /* Dynamically switches to dark slate text */
+  border-color: var(--border);
+}
+
+body.light-theme .secondary-action {
+  background: #e2e8f0; /* Subtle light grey background instead of dark blue */
+  color: var(--text);  /* Dark slate text */
+}
+
 body.light-theme{
   --bg:#f5f7fb;
   --bg-secondary:#ffffff;
@@ -796,4 +806,33 @@ body,
     color .35s ease,
     border-color .35s ease,
     box-shadow .35s ease;
+}
+}
+
+/*Toast Notification*/
+.custom-toast {
+  position: fixed;
+  bottom: 25px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px); 
+  background: #ef4444;
+  color: white;
+  padding: 1rem 1.3rem;
+  border-radius: 14px;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600;
+  font-size: 0.95rem;
+  box-shadow: 0 10px 25px rgba(239, 68, 68, 0.3);
+  z-index: 10005;
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.custom-toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
 }

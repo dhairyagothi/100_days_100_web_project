@@ -366,28 +366,56 @@ document.addEventListener("DOMContentLoaded", () => {
     updateTooltipBtn(id);
   }
 
-  function unpinClock(id) {
-    if (activePinnedClocks.length <= 1) {
-      alert("Keep at least one world clock pinned!");
-      return;
-    }
-    activePinnedClocks = activePinnedClocks.filter((c) => c !== id);
-    localStorage.setItem(
-      "chronos_pinned_clocks",
-      JSON.stringify(activePinnedClocks),
-    );
+  // Global tracker to prevent overlapping dismiss timers
+let toastTimeoutReference;
 
-    const card = document.querySelector(`.world-clock-card[data-id="${id}"]`);
-    if (card) {
-      card.style.opacity = "0";
-      card.style.transform = "scale(0.94) translateY(12px)";
-      card.style.transition = "all 0.35s ease";
-      setTimeout(renderGrid, 360);
-    } else {
-      renderGrid();
-    }
-    updateTooltipBtn(id);
+function showPremiumToast(message) {
+  let toast = document.querySelector('.custom-toast');
+  
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.className = 'custom-toast';
+    toast.innerHTML = `<span>⚠️</span><span class="toast-message"></span>`;
+    document.body.appendChild(toast);
   }
+  
+  toast.querySelector('.toast-message').textContent = message;
+  
+  clearTimeout(toastTimeoutReference);
+  
+  toast.classList.add('show');
+  
+  // smoothly slide down and hide after exactly 1.5 seconds
+  toastTimeoutReference = setTimeout(() => {
+    toast.classList.remove('show');
+  }, 1500);
+}
+
+
+function unpinClock(id) {
+  if (activePinnedClocks.length <= 1) {
+    // replacing the native alert() with the custom premium toast
+    showPremiumToast("Keep at least one world clock pinned!");
+    return;
+  }
+  
+  activePinnedClocks = activePinnedClocks.filter((c) => c !== id);
+  localStorage.setItem(
+    "chronos_pinned_clocks",
+    JSON.stringify(activePinnedClocks),
+  );
+
+  const card = document.querySelector(`.world-clock-card[data-id="${id}"]`);
+  if (card) {
+    card.style.opacity = "0";
+    card.style.transform = "scale(0.94) translateY(12px)";
+    card.style.transition = "all 0.35s ease";
+    setTimeout(renderGrid, 360);
+  } else {
+    renderGrid();
+  }
+  updateTooltipBtn(id);
+}
 
   // ─────────────────────────────────────────────
   // 7. SEARCH
