@@ -64,7 +64,7 @@ function StartGame() {
 
     startButton.disabled = true;   // prevent double-start
 
-    const gameOver = document.getElementById('GameOver');
+    const gameOver = document.getElementById('gameOver');
     if (gameOver) gameOver.style.display = 'none';
 
     MolePopUp();

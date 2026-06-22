@@ -22,6 +22,8 @@ TaskFlow is a modern and responsive To-Do List web application designed to help 
 
 =======
 - ➕ Add, edit, complete, and delete tasks
+- ⏱️ Set task due dates and visually track overdue tasks
+- ✍️ Task description character limit with live counter
 - 🎯 Filter tasks by status and category
 - 🌈 5 beautiful UI themes:
   - Sunset

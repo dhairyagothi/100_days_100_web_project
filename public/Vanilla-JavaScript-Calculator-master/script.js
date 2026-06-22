@@ -595,6 +595,7 @@ scientificCalculator.updateDegRadButtons();
 
 // ========== HISTORY FUNCTIONS (ADDED AT THE BOTTOM - NOTHING ELSE CHANGED) ==========
 let calculationHistory = [];
+let filteredHistory = [];
 
 function addToHistory(expression, result) {
   let displayResult =
@@ -612,21 +613,52 @@ function addToHistory(expression, result) {
   renderHistory();
 }
 
-function renderHistory() {
+function renderHistory(historyData = calculationHistory) {
   const historyList = document.getElementById('history-list');
   if (!historyList) return;
 
-  if (calculationHistory.length === 0) {
-    historyList.innerHTML =
-      '<div class="history-empty">No calculations yet<br>Click "=" to see history here</div>';
+  if (historyData.length === 0) {
+    const searchInput = document.getElementById('history-search');
+
+    if (searchInput && searchInput.value.trim() !== '') {
+      historyList.innerHTML =
+        '<div class="history-no-results">No matching calculations found</div>';
+    } else {
+      historyList.innerHTML =
+        '<div class="history-empty">No calculations yet<br>Click "=" to see history here</div>';
+    }
+
     return;
   }
 
   let html = '';
-  for (let i = 0; i < calculationHistory.length; i++) {
-    html += `<div class="history-item" data-index="${i}">${escapeHtml(calculationHistory[i].expression)} = ${escapeHtml(calculationHistory[i].result)}</div>`;
+
+  for (let i = 0; i < historyData.length; i++) {
+    html += `
+      <div class="history-item" data-expression="${encodeURIComponent(historyData[i].expression)}" data-result="${encodeURIComponent(historyData[i].result)}">
+        ${escapeHtml(historyData[i].expression)} = ${escapeHtml(historyData[i].result)}
+      </div>
+    `;
   }
+
   historyList.innerHTML = html;
+}
+function filterHistory(searchTerm) {
+  const term = searchTerm.toLowerCase().trim();
+
+  if (!term) {
+    renderHistory(calculationHistory);
+    return;
+  }
+
+  filteredHistory = calculationHistory.filter((item) => {
+    return (
+      item.expression.toLowerCase().includes(term) ||
+      item.result.toString().toLowerCase().includes(term)
+    );
+  });
+
+  renderHistory(filteredHistory);
 }
 
 function escapeHtml(text) {
@@ -722,14 +754,18 @@ if (historyListEl) {
   historyListEl.onclick = function (e) {
     const item = e.target.closest('.history-item');
     if (item) {
-      const idx = parseInt(item.dataset.index);
-      if (!isNaN(idx) && calculationHistory[idx]) {
-        const calc = activeCalculator();
-        if (calc.expression === 'Error') calc.clear();
-        calc.expression = calculationHistory[idx].result;
-        calc.currentOperand = calculationHistory[idx].result;
-        calc.updateDisplay();
-      }
+     
+     const result = decodeURIComponent(item.dataset.result);
+
+const calc = activeCalculator();
+
+if (calc.expression === 'Error') {
+  calc.clear();
+}
+
+calc.expression = result;
+calc.currentOperand = result;
+calc.updateDisplay();
     }
   };
 }
@@ -762,4 +798,38 @@ if (clearHistoryBtn) {
 
 // Load history on page load
 loadHistoryFromStorage();
+const historySearchInput = document.getElementById('history-search');
+
+if (historySearchInput) {
+  historySearchInput.addEventListener('input', (e) => {
+    filterHistory(e.target.value);
+  });
+}
 // ========== END HISTORY FUNCTIONS ==========
+// ===== THEME TOGGLE =====
+
+const themeToggle = document.getElementById("theme-toggle");
+
+function applyTheme(theme) {
+  document.documentElement.setAttribute("data-theme", theme);
+
+  if (themeToggle) {
+    themeToggle.textContent = theme === "dark" ? "🌙" : "☀️";
+  }
+
+  localStorage.setItem("calculatorTheme", theme);
+}
+
+const savedTheme =
+  localStorage.getItem("calculatorTheme") || "dark";
+
+applyTheme(savedTheme);
+
+if (themeToggle) {
+  themeToggle.addEventListener("click", () => {
+    const current =
+      document.documentElement.getAttribute("data-theme") || "dark";
+
+    applyTheme(current === "dark" ? "light" : "dark");
+  });
+}

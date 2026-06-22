@@ -14,6 +14,7 @@
     <script src="theme.js"></script>
 
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="tracker.css" />
   </head>
 
   <body>
@@ -139,6 +140,12 @@
           <div class="completed-header-row">
             <p class="tracker-card-label">All Projects</p>
             <div class="completed-actions">
+              <button id="exportProgressBtn" class="btn btn-ghost btn-sm" title="Export progress to JSON">
+                <i class="fas fa-download"></i> Export Progress
+              </button>
+              <button id="importProgressBtn" class="btn btn-ghost btn-sm" title="Import progress from JSON">
+                <i class="fas fa-upload"></i> Import Progress
+              </button>
               <button id="clearCompletedBtn" class="btn btn-ghost btn-sm" title="Clear all completed projects">
                 <i class="fas fa-trash"></i> Reset Progress
               </button>
@@ -551,6 +558,61 @@
     document.getElementById("tableSearch").addEventListener("input", e=>{tableSearchQuery=e.target.value.trim();tablePage=1;applyTableFilters();renderTable();});
     document.getElementById("tableFilterDiff").addEventListener("change", e=>{tableDiffFilter=e.target.value;tablePage=1;applyTableFilters();renderTable();});
     document.getElementById("tableFilterStatus").addEventListener("change", e=>{tableStatusFilter=e.target.value;tablePage=1;applyTableFilters();renderTable();});
+
+    function exportProgress() {
+      const data = {
+        completedProjects: JSON.parse(localStorage.getItem("completedProjects") || "[]"),
+        streakData: JSON.parse(localStorage.getItem("streakData") || "{}"),
+        bookmarkedProjects: JSON.parse(localStorage.getItem("bookmarkedProjects") || "[]"),
+        exportedAt: new Date().toISOString()
+      };
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "100days-progress.json";
+      a.click();
+      showTrackerToast("✅ Progress exported successfully!");
+    }
+
+    function importProgress() {
+      const input = document.createElement("input");
+      input.type = "file";
+      input.accept = ".json";
+      input.onchange = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (evt) => {
+          try {
+            const data = JSON.parse(evt.target.result);
+            if (!data || typeof data !== "object") {
+              throw new Error("Invalid format");
+            }
+            if (data.completedProjects && Array.isArray(data.completedProjects)) {
+              localStorage.setItem("completedProjects", JSON.stringify(data.completedProjects));
+            }
+            if (data.streakData && typeof data.streakData === "object") {
+              localStorage.setItem("streakData", JSON.stringify(data.streakData));
+            }
+            if (data.bookmarkedProjects && Array.isArray(data.bookmarkedProjects)) {
+              localStorage.setItem("bookmarkedProjects", JSON.stringify(data.bookmarkedProjects));
+            }
+            showTrackerToast("✅ Progress imported successfully!");
+            prevLevel = 1;
+            applyTableFilters();
+            renderTable();
+            renderDashboard();
+          } catch (err) {
+            showTrackerToast("❌ Failed to parse or import progress data.");
+          }
+        };
+        reader.readAsText(file);
+      };
+      input.click();
+    }
+
+    document.getElementById("exportProgressBtn").addEventListener("click", exportProgress);
+    document.getElementById("importProgressBtn").addEventListener("click", importProgress);
 
     document.getElementById("clearCompletedBtn").addEventListener("click", () => {
       if(!confirm("Reset all progress? This will clear your completed projects, XP, and streaks.")) return;

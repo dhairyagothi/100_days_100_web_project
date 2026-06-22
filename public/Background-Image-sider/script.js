@@ -1,4 +1,4 @@
-// ───── DESTINATION DATA ─────
+// ───── CONFIGURATION & DATA ─────
 const destinations = [
   { name: "Iceland", flag: "🇮🇸", region: "Europe", bg: "url('images/iceland.jpg')", desc: "Explore glaciers, geysers, and the ethereal Northern Lights across volcanic landscapes.", lat: 64.9631, lon: -19.0208 },
   { name: "Switzerland", flag: "🇨🇭", region: "Europe", bg: "url('images/Jennifer.avif')", desc: "Experience the serene beauty of the Swiss Alps and impossibly picturesque alpine villages.", lat: 46.8182, lon: 8.2275 },
@@ -16,99 +16,121 @@ const destinations = [
   { name: "Dubai", flag: "🇦🇪", region: "Middle East", bg: "url('images/dubai.png')", desc: "Experience futuristic skylines, luxury beyond imagination, and desert adventures at golden dusk.", lat: 25.2048, lon: 55.2708 }
 ];
 
-// ───── STATE ─────
+const AUTOPLAY_INTERVAL = 5000;
+const weatherCache = {};
+
+// ───── STATE ENGINE ─────
 let current = 0;
 let autoplaying = false;
 let progressTimer = null;
 let progressVal = 0;
 let isTransitioning = false;
-const AUTOPLAY_INTERVAL = 5000;
 
-// ───── PERSISTENT STATE (localStorage) ─────
-function loadState() {
-  try {
-    return {
-      wishlist: JSON.parse(localStorage.getItem('wl_wishlist') || '[]'),
-      ratings: JSON.parse(localStorage.getItem('wl_ratings') || '{}'),
-      reviews: JSON.parse(localStorage.getItem('wl_reviews') || '{}'),
-      tripPlan: JSON.parse(localStorage.getItem('wl_tripplan') || '[]'),
-    };
-  } catch { return { wishlist: [], ratings: {}, reviews: {}, tripPlan: [] }; }
-}
-function saveState(key, val) {
-  try { localStorage.setItem('wl_' + key, JSON.stringify(val)); } catch {}
-}
+const storageManager = {
+  load() {
+    try {
+      return {
+        wishlist: JSON.parse(localStorage.getItem('wl_wishlist') || '[]'),
+        ratings: JSON.parse(localStorage.getItem('wl_ratings') || '{}'),
+        reviews: JSON.parse(localStorage.getItem('wl_reviews') || '{}'),
+        tripPlan: JSON.parse(localStorage.getItem('wl_tripplan') || '[]'),
+      };
+    } catch {
+      return { wishlist: [], ratings: {}, reviews: {}, tripPlan: [] };
+    }
+  },
+  save(key, val) {
+    try {
+      localStorage.setItem('wl_' + key, JSON.stringify(val));
+    } catch {}
+  }
+};
 
-let { wishlist, ratings, reviews, tripPlan } = loadState();
+let { wishlist, ratings, reviews, tripPlan } = storageManager.load();
 
-// ───── DOM REFS ─────
-const bgEl        = document.getElementById('wl-bg');
-const bgNext      = document.getElementById('wl-bg-next');
-const titleEl     = document.getElementById('placeTitle');
-const descEl      = document.getElementById('placeDescription');
-const regionEl    = document.getElementById('placeRegion');
-const bookBtn     = document.getElementById('bookingButton');
-const dotsEl      = document.getElementById('destinationIndicators');
-const selector    = document.getElementById('placeSelector');
-const autoBtn     = document.getElementById('autoplayBtn');
-const autoIcon    = document.getElementById('autoplayIcon');
-const autoLabel   = document.getElementById('autoplayLabel');
-const counterEl   = document.getElementById('wlCounter');
-const progressBar = document.getElementById('progressBar');
-const prevBtn     = document.getElementById('prevBtn');
-const nextBtn     = document.getElementById('nextBtn');
-const homeLink    = document.getElementById('homeLink');
+// ───── DOM ELEMENT CACHE ─────
+const nodes = {
+  bgEl: document.getElementById('wl-bg'),
+  bgNext: document.getElementById('wl-bg-next'),
+  titleEl: document.getElementById('placeTitle'),
+  descEl: document.getElementById('placeDescription'),
+  regionEl: document.getElementById('placeRegion'),
+  bookBtn: document.getElementById('bookingButton'),
+  dotsEl: document.getElementById('destinationIndicators'),
+  selector: document.getElementById('placeSelector'),
+  autoBtn: document.getElementById('autoplayBtn'),
+  autoIcon: document.getElementById('autoplayIcon'),
+  autoLabel: document.getElementById('autoplayLabel'),
+  counterEl: document.getElementById('wlCounter'),
+  progressBar: document.getElementById('progressBar'),
+  prevBtn: document.getElementById('prevBtn'),
+  nextBtn: document.getElementById('nextBtn'),
+  homeLink: document.getElementById('homeLink'),
+  wishBtn: document.getElementById('wishlistBtn'),
+  weatherPanel: document.getElementById('weatherPanel'),
+  ratingPanel: document.getElementById('ratingPanel'),
+  tripPanel: document.getElementById('tripPanel'),
+  panelOverlay: document.getElementById('panelOverlay')
+};
 
-// Feature DOM refs
-const wishBtn       = document.getElementById('wishlistBtn');
-const weatherPanel  = document.getElementById('weatherPanel');
-const ratingPanel   = document.getElementById('ratingPanel');
-const tripPanel     = document.getElementById('tripPanel');
-const panelOverlay  = document.getElementById('panelOverlay');
-
-// ───── BUILD DROPDOWN + DOTS ─────
+// ───── CORE VIEW RENDERING ─────
 function buildUI() {
+  const fragmentDropdown = document.createDocumentFragment();
+  const fragmentDots = document.createDocumentFragment();
+
   destinations.forEach((d, i) => {
     const opt = document.createElement('option');
     opt.value = i;
     opt.textContent = ` ${d.flag} ${d.region} · ${d.name}`;
-    selector.appendChild(opt);
+    fragmentDropdown.appendChild(opt);
 
     const dot = document.createElement('button');
     dot.className = 'destination-dot';
     dot.setAttribute('role', 'tab');
     dot.setAttribute('aria-label', `Go to ${d.name}`);
     dot.setAttribute('tabindex', '0');
+    
     dot.addEventListener('click', () => { stopAutoplay(); goTo(i); });
     dot.addEventListener('keydown', e => {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); stopAutoplay(); goTo(i); }
+      if (e.key === 'Enter' || e.key === ' ') { 
+        e.preventDefault(); 
+        stopAutoplay(); 
+        goTo(i); 
+      }
     });
-    dotsEl.appendChild(dot);
+    fragmentDots.appendChild(dot);
   });
-  bgEl.style.backgroundImage = destinations[0].bg;
+
+  nodes.selector.appendChild(fragmentDropdown);
+  nodes.dotsEl.appendChild(fragmentDots);
+  nodes.bgEl.style.backgroundImage = destinations[0].bg;
 }
 
 function updateDots() {
-  dotsEl.querySelectorAll('.destination-dot').forEach((dot, i) => {
-    dot.classList.toggle('active', i === current);
-    dot.setAttribute('aria-selected', i === current);
-    dot.setAttribute('aria-current', i === current ? 'true' : 'false');
+  const dots = nodes.dotsEl.querySelectorAll('.destination-dot');
+  dots.forEach((dot, i) => {
+    const isActive = i === current;
+    dot.classList.toggle('active', isActive);
+    dot.setAttribute('aria-selected', isActive);
+    dot.setAttribute('aria-current', isActive ? 'true' : 'false');
   });
 }
 
 function crossfade(newIdx) {
   if (isTransitioning) return;
   isTransitioning = true;
-  bgNext.style.backgroundImage = destinations[newIdx].bg;
-  bgNext.style.transition = 'none';
-  bgNext.style.opacity = '0';
+  
+  nodes.bgNext.style.backgroundImage = destinations[newIdx].bg;
+  nodes.bgNext.style.transition = 'none';
+  nodes.bgNext.style.opacity = '0';
+  
   requestAnimationFrame(() => {
-    bgNext.style.transition = 'opacity 0.7s ease';
-    bgNext.style.opacity = '1';
+    nodes.bgNext.style.transition = 'opacity 0.7s ease';
+    nodes.bgNext.style.opacity = '1';
     setTimeout(() => {
-      bgEl.style.backgroundImage = destinations[newIdx].bg;
-      bgNext.style.transition = 'none';
-      bgNext.style.opacity = '0';
+      nodes.bgEl.style.backgroundImage = destinations[newIdx].bg;
+      nodes.bgNext.style.transition = 'none';
+      nodes.bgNext.style.opacity = '0';
       isTransitioning = false;
     }, 720);
   });
@@ -116,13 +138,14 @@ function crossfade(newIdx) {
 
 function updateContent(idx) {
   const d = destinations[idx];
-  titleEl.textContent = d.name;
-  descEl.textContent = d.desc;
-  regionEl.textContent = `${d.region} · Destination ${idx + 1} of ${destinations.length}`;
-  bookBtn.textContent = `Book a Trip to ${d.name}`;
-  bookBtn.classList.remove('booked');
-  selector.value = idx;
-  counterEl.textContent = `${idx + 1} / ${destinations.length}`;
+  nodes.titleEl.textContent = d.name;
+  nodes.descEl.textContent = d.desc;
+  nodes.regionEl.textContent = `${d.region} · Destination ${idx + 1} of ${destinations.length}`;
+  nodes.bookBtn.textContent = `Book a Trip to ${d.name}`;
+  nodes.bookBtn.classList.remove('booked');
+  nodes.selector.value = idx;
+  nodes.counterEl.textContent = `${idx + 1} / ${destinations.length}`;
+  
   updateDots();
   updateWishBtn();
   updateStarDisplay();
@@ -137,24 +160,26 @@ function goTo(idx) {
   updateContent(current);
   resetProgress();
 }
+
 function goNext() { goTo((current + 1) % destinations.length); }
 function goPrev() { goTo((current - 1 + destinations.length) % destinations.length); }
 
-// ───── PROGRESS BAR ─────
+// ───── ROTATION & AUTOPLAY ENGINE ─────
 function resetProgress() {
   progressVal = 0;
-  progressBar.style.width = '0%';
+  nodes.progressBar.style.width = '0%';
   clearInterval(progressTimer);
   progressTimer = null;
   if (autoplaying) startProgress();
 }
+
 function startProgress() {
   clearInterval(progressTimer);
   progressTimer = null;
   const step = 100 / (AUTOPLAY_INTERVAL / 100);
   progressTimer = setInterval(() => {
     progressVal = Math.min(progressVal + step, 100);
-    progressBar.style.width = progressVal + '%';
+    nodes.progressBar.style.width = progressVal + '%';
     if (progressVal >= 100) {
       clearInterval(progressTimer);
       progressTimer = null;
@@ -168,30 +193,31 @@ function startProgress() {
 
 function startAutoplay() {
   autoplaying = true;
-  autoBtn.classList.add('playing');
-  autoIcon.textContent = '⏸';
-  autoLabel.textContent = 'Pause';
+  nodes.autoBtn.classList.add('playing');
+  nodes.autoIcon.textContent = '⏸';
+  nodes.autoLabel.textContent = 'Pause';
   resetProgress();
 }
+
 function stopAutoplay() {
   autoplaying = false;
-  autoBtn.classList.remove('playing');
-  autoIcon.textContent = '▶';
-  autoLabel.textContent = 'Autoplay';
+  nodes.autoBtn.classList.remove('playing');
+  nodes.autoIcon.textContent = '▶';
+  nodes.autoLabel.textContent = 'Autoplay';
   clearInterval(progressTimer);
-  progressBar.style.width = '0%';
+  nodes.progressBar.style.width = '0%';
   progressVal = 0;
 }
 
-// ───── ❤️ WISHLIST ─────
+// ───── WISHLIST ─────
 function updateWishBtn() {
   const inList = wishlist.includes(current);
-  wishBtn.classList.toggle('active', inList);
-  wishBtn.setAttribute('aria-label', inList ? 'Remove from wishlist' : 'Add to wishlist');
-  wishBtn.title = inList ? 'Remove from Wishlist' : 'Add to Wishlist';
+  nodes.wishBtn.classList.toggle('active', inList);
+  nodes.wishBtn.setAttribute('aria-label', inList ? 'Remove from wishlist' : 'Add to wishlist');
+  nodes.wishBtn.title = inList ? 'Remove from Wishlist' : 'Add to Wishlist';
 }
 
-wishBtn.addEventListener('click', () => {
+nodes.wishBtn.addEventListener('click', () => {
   const idx = wishlist.indexOf(current);
   if (idx === -1) {
     wishlist.push(current);
@@ -200,17 +226,16 @@ wishBtn.addEventListener('click', () => {
     wishlist.splice(idx, 1);
     showToast(`💔 ${destinations[current].name} removed from Wishlist`);
   }
-  saveState('wishlist', wishlist);
+  storageManager.save('wishlist', wishlist);
   updateWishBtn();
 });
 
-// ───── ⭐ RATINGS & REVIEWS ─────
+// ───── INTERACTIVITY & REVIEWS ─────
 function updateStarDisplay() {
   const r = ratings[current] || 0;
   document.querySelectorAll('.star-input').forEach((s, i) => {
     s.classList.toggle('filled', i < r);
   });
-  const rev = reviews[current];
   const avgEl = document.getElementById('avgRating');
   if (avgEl) avgEl.textContent = r ? `${r}.0 / 5.0` : 'Not rated yet';
 }
@@ -224,52 +249,51 @@ function updateReviewPreview() {
   }
 }
 
-// ───── 🌤 WEATHER ─────
-const weatherCache = {};
+// ───── WEATHER UTILITIES & DATA FETCHING ─────
+const weatherTransmutation = {
+  getIcon(code) {
+    if (code === 0) return '☀️';
+    if (code <= 3) return '⛅';
+    if (code <= 49) return '🌫️';
+    if (code <= 69) return '🌧️';
+    if (code <= 79) return '❄️';
+    if (code <= 99) return '⛈️';
+    return '🌡️';
+  },
+  getLabel(code) {
+    if (code === 0) return 'Clear Sky';
+    if (code <= 3) return 'Partly Cloudy';
+    if (code <= 49) return 'Foggy';
+    if (code <= 69) return 'Rainy';
+    if (code <= 79) return 'Snowy';
+    if (code <= 99) return 'Thunderstorm';
+    return 'Unknown';
+  }
+};
 
 async function fetchWeather(idx) {
   if (weatherCache[idx]) return weatherCache[idx];
   const d = destinations[idx];
   try {
-    const url = `https://api.open-meteo.com/v1/forecast?latitude=${d.lat}&longitude=${d.lon}&current_weather=true&hourly=relative_humidity_2m,apparent_temperature&timezone=auto`;
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${d.lat}&longitude=${d.lon}&current=temperature_2m,wind_speed_10m,weather_code,relative_humidity_2m,apparent_temperature&timezone=auto`;
     const res = await fetch(url);
     const data = await res.json();
-    const cw = data.current_weather;
-    const humidity = data.hourly?.relative_humidity_2m?.[0] ?? '--';
-    const feelsLike = data.hourly?.apparent_temperature?.[0] ?? '--';
+    const cw = data.current;
+    
     const result = {
-      temp: Math.round(cw.temperature),
-      windspeed: Math.round(cw.windspeed),
-      weathercode: cw.weathercode,
-      humidity,
-      feelsLike: Math.round(feelsLike),
-      icon: getWeatherIcon(cw.weathercode),
-      label: getWeatherLabel(cw.weathercode),
+      temp: Math.round(cw.temperature_2m),
+      windspeed: Math.round(cw.wind_speed_10m),
+      weathercode: cw.weather_code,
+      humidity: cw.relative_humidity_2m ?? '--',
+      feelsLike: Math.round(cw.apparent_temperature ?? cw.temperature_2m),
+      icon: weatherTransmutation.getIcon(cw.weather_code),
+      label: weatherTransmutation.getLabel(cw.weather_code),
     };
     weatherCache[idx] = result;
     return result;
-  } catch (e) {
+  } catch {
     return null;
   }
-}
-
-function getWeatherIcon(code) {
-  if (code === 0) return '☀️';
-  if (code <= 3) return '⛅';
-  if (code <= 49) return '🌫️';
-  if (code <= 69) return '🌧️';
-  if (code <= 79) return '❄️';
-  if (code <= 99) return '⛈️';
-  return '🌡️';
-}
-function getWeatherLabel(code) {
-  if (code === 0) return 'Clear Sky';
-  if (code <= 3) return 'Partly Cloudy';
-  if (code <= 49) return 'Foggy';
-  if (code <= 69) return 'Rainy';
-  if (code <= 79) return 'Snowy';
-  if (code <= 99) return 'Thunderstorm';
-  return 'Unknown';
 }
 
 async function updateWeatherBadge() {
@@ -277,34 +301,37 @@ async function updateWeatherBadge() {
   if (!badge) return;
   badge.textContent = '🌡 Loading...';
   const w = await fetchWeather(current);
-  if (w) badge.textContent = `${w.icon} ${w.temp}°C`;
-  else badge.textContent = '🌐 N/A';
+  badge.textContent = w ? `${w.icon} ${w.temp}°C` : '🌐 N/A';
 }
 
-// ───── PANEL SYSTEM ─────
+// ───── OVERLAY & PANEL TRANSITIONS ─────
 function openPanel(panelId) {
   document.querySelectorAll('.feature-panel').forEach(p => p.classList.remove('open'));
   const panel = document.getElementById(panelId);
   if (panel) {
     panel.classList.add('open');
-    panelOverlay.classList.add('visible');
+    nodes.panelOverlay.classList.add('visible');
   }
 }
+
 function closeAllPanels() {
   document.querySelectorAll('.feature-panel').forEach(p => p.classList.remove('open'));
-  panelOverlay.classList.remove('visible');
+  nodes.panelOverlay.classList.remove('visible');
 }
-panelOverlay.addEventListener('click', closeAllPanels);
+
+nodes.panelOverlay.addEventListener('click', closeAllPanels);
 document.querySelectorAll('.panel-close').forEach(btn => btn.addEventListener('click', closeAllPanels));
 
-// ───── WEATHER PANEL ─────
+// ───── LIVE WEATHER DISPLAY ─────
 document.getElementById('openWeather').addEventListener('click', async () => {
   openPanel('weatherPanel');
   const d = destinations[current];
-  const panel = document.getElementById('weatherPanel');
+  const panel = nodes.weatherPanel;
   panel.querySelector('.panel-title').textContent = `🌤 Weather in ${d.name}`;
+  
   const body = panel.querySelector('.weather-body');
   body.innerHTML = `<div class="weather-loading">Fetching live weather…</div>`;
+  
   const w = await fetchWeather(current);
   if (w) {
     body.innerHTML = `
@@ -324,33 +351,37 @@ document.getElementById('openWeather').addEventListener('click', async () => {
   }
 });
 
-// ───── RATING PANEL ─────
+// ───── RATINGS ENGINE ─────
 document.getElementById('openRatings').addEventListener('click', () => {
   const d = destinations[current];
-  const panel = document.getElementById('ratingPanel');
+  const panel = nodes.ratingPanel;
   panel.querySelector('.panel-title').textContent = `⭐ Rate ${d.name}`;
+  
   const existingRating = ratings[current] || 0;
   const existingReview = reviews[current] || '';
+  
   panel.querySelector('.rating-stars-row').innerHTML = [1,2,3,4,5].map(n => `
     <button class="star-btn ${n <= existingRating ? 'lit' : ''}" data-val="${n}" aria-label="${n} star${n>1?'s':''}">★</button>
   `).join('');
+  
   panel.querySelector('#reviewText').value = existingReview;
   panel.querySelector('#ratingSubmitBtn').textContent = existingRating ? 'Update Review' : 'Submit Review';
   openPanel('ratingPanel');
 
-  // Star hover/click
   let hoverRating = existingRating;
-  panel.querySelectorAll('.star-btn').forEach(btn => {
+  const stars = panel.querySelectorAll('.star-btn');
+  
+  stars.forEach(btn => {
     btn.addEventListener('mouseenter', () => {
       const v = +btn.dataset.val;
-      panel.querySelectorAll('.star-btn').forEach((b, i) => b.classList.toggle('lit', i < v));
+      stars.forEach((b, i) => b.classList.toggle('lit', i < v));
     });
     btn.addEventListener('mouseleave', () => {
-      panel.querySelectorAll('.star-btn').forEach((b, i) => b.classList.toggle('lit', i < hoverRating));
+      stars.forEach((b, i) => b.classList.toggle('lit', i < hoverRating));
     });
     btn.addEventListener('click', () => {
       hoverRating = +btn.dataset.val;
-      panel.querySelectorAll('.star-btn').forEach((b, i) => b.classList.toggle('lit', i < hoverRating));
+      stars.forEach((b, i) => b.classList.toggle('lit', i < hoverRating));
     });
   });
 
@@ -358,10 +389,12 @@ document.getElementById('openRatings').addEventListener('click', () => {
     if (!hoverRating) { showToast('Please select a star rating!'); return; }
     ratings[current] = hoverRating;
     const txt = panel.querySelector('#reviewText').value.trim();
+    
     if (txt) reviews[current] = txt;
     else delete reviews[current];
-    saveState('ratings', ratings);
-    saveState('reviews', reviews);
+    
+    storageManager.save('ratings', ratings);
+    storageManager.save('reviews', reviews);
     updateStarDisplay();
     updateReviewPreview();
     closeAllPanels();
@@ -369,10 +402,11 @@ document.getElementById('openRatings').addEventListener('click', () => {
   };
 });
 
-// ───── WISHLIST PANEL ─────
+// ───── WISHLIST DASHBOARD ─────
 document.getElementById('openWishlist').addEventListener('click', () => {
   const panel = document.getElementById('wishlistPanel');
   const list = panel.querySelector('.wishlist-items');
+  
   list.innerHTML = wishlist.length === 0
     ? `<div class="empty-state">No favorites yet. Hit ❤️ on a destination!</div>`
     : wishlist.map(i => {
@@ -390,6 +424,7 @@ document.getElementById('openWishlist').addEventListener('click', () => {
           </div>
         </div>`;
       }).join('');
+      
   openPanel('wishlistPanel');
 
   list.querySelectorAll('.wi-go').forEach(btn => btn.addEventListener('click', () => {
@@ -398,10 +433,11 @@ document.getElementById('openWishlist').addEventListener('click', () => {
     stopAutoplay();
     goTo(idx);
   }));
+  
   list.querySelectorAll('.wi-remove').forEach(btn => btn.addEventListener('click', () => {
     const idx = wishlist.indexOf(+btn.dataset.idx);
     if (idx !== -1) wishlist.splice(idx, 1);
-    saveState('wishlist', wishlist);
+    storageManager.save('wishlist', wishlist);
     updateWishBtn();
     btn.closest('.wishlist-item').remove();
     if (!list.querySelector('.wishlist-item')) {
@@ -410,15 +446,17 @@ document.getElementById('openWishlist').addEventListener('click', () => {
   }));
 });
 
-// ───── TRIP PLANNER PANEL ─────
+// ───── TRIP ROUTE PLANNING ─────
 function renderTripPlan() {
-  const panel = document.getElementById('tripPanel');
+  const panel = nodes.tripPanel;
   const list = panel.querySelector('.trip-list');
+  
   if (tripPlan.length === 0) {
     list.innerHTML = `<div class="empty-state">Add destinations to plan your trip!</div>`;
     panel.querySelector('.trip-summary').textContent = '';
     return;
   }
+  
   list.innerHTML = tripPlan.map((item, i) => {
     const d = destinations[item.idx];
     return `<div class="trip-item" data-pos="${i}">
@@ -444,28 +482,30 @@ function renderTripPlan() {
     }
     return sum;
   }, 0);
+  
   panel.querySelector('.trip-summary').textContent = tripPlan.length
     ? `${tripPlan.length} destination${tripPlan.length > 1 ? 's' : ''}${totalDays ? ` · ${totalDays} day${totalDays !== 1 ? 's' : ''} total` : ''}`
     : '';
 
   list.querySelectorAll('.trip-remove').forEach(btn => btn.addEventListener('click', () => {
     tripPlan.splice(+btn.dataset.pos, 1);
-    saveState('tripplan', tripPlan);
+    storageManager.save('tripplan', tripPlan);
     renderTripPlan();
   }));
+  
   list.querySelectorAll('.trip-date-input, .trip-note-input').forEach(inp => {
     inp.addEventListener('change', () => {
-      const pos = +inp.dataset.pos, field = inp.dataset.field;
+      const pos = +inp.dataset.pos;
+      const field = inp.dataset.field;
       tripPlan[pos][field] = inp.value;
-      saveState('tripplan', tripPlan);
+      storageManager.save('tripplan', tripPlan);
       if (field === 'arrival' || field === 'departure') renderTripPlan();
     });
   });
 }
 
 document.getElementById('openTripPlanner').addEventListener('click', () => {
-  const panel = document.getElementById('tripPanel');
-  panel.querySelector('.panel-title').textContent = `📅 Trip Planner`;
+  nodes.tripPanel.querySelector('.panel-title').textContent = `📅 Trip Planner`;
   renderTripPlan();
   openPanel('tripPanel');
 });
@@ -475,19 +515,19 @@ document.getElementById('addToTrip').addEventListener('click', () => {
   const already = tripPlan.find(t => t.idx === current);
   if (already) { showToast(`${d.name} is already in your trip!`); return; }
   tripPlan.push({ idx: current, arrival: '', departure: '', note: '' });
-  saveState('tripplan', tripPlan);
+  storageManager.save('tripplan', tripPlan);
   showToast(`📅 ${d.name} added to Trip Planner!`);
 });
 
 document.getElementById('clearTrip')?.addEventListener('click', () => {
   if (confirm('Clear your entire trip plan?')) {
     tripPlan = [];
-    saveState('tripplan', tripPlan);
+    storageManager.save('tripplan', tripPlan);
     renderTripPlan();
   }
 });
 
-// ───── TOAST ─────
+// ───── NOTIFICATIONS SYSTEM ─────
 function showToast(msg) {
   let t = document.getElementById('wl-toast');
   if (!t) {
@@ -501,35 +541,42 @@ function showToast(msg) {
   t._timeout = setTimeout(() => t.classList.remove('show'), 2800);
 }
 
-// ───── CORE EVENTS ─────
-autoBtn.addEventListener('click', () => {
-  if (autoplaying) {
-    stopAutoplay();
-  } else {
-    startAutoplay();
-  }
+// ───── ROOT INTERACTION BINDINGS ─────
+nodes.autoBtn.addEventListener('click', () => {
+  if (autoplaying) stopAutoplay();
+  else startAutoplay();
 });
-nextBtn.addEventListener('click', () => { stopAutoplay(); goNext(); });
-prevBtn.addEventListener('click', () => { stopAutoplay(); goPrev(); });
-selector.addEventListener('change', () => { stopAutoplay(); goTo(parseInt(selector.value)); });
-bookBtn.addEventListener('click', () => {
+
+nodes.nextBtn.addEventListener('click', () => { stopAutoplay(); goNext(); });
+nodes.prevBtn.addEventListener('click', () => { stopAutoplay(); goPrev(); });
+nodes.selector.addEventListener('change', () => { stopAutoplay(); goTo(parseInt(nodes.selector.value)); });
+
+nodes.bookBtn.addEventListener('click', () => {
   const d = destinations[current];
-  bookBtn.textContent = `✓ Trip to ${d.name} Booked!`;
-  bookBtn.classList.add('booked');
+  nodes.bookBtn.textContent = `✓ Trip to ${d.name} Booked!`;
+  nodes.bookBtn.classList.add('booked');
 });
-if (homeLink) homeLink.addEventListener('click', e => { e.preventDefault(); stopAutoplay(); goTo(0); window.scrollTo({ top: 0, behavior: 'smooth' }); });
+
+if (nodes.homeLink) {
+  nodes.homeLink.addEventListener('click', e => { 
+    e.preventDefault(); 
+    stopAutoplay(); 
+    goTo(0); 
+    window.scrollTo({ top: 0, behavior: 'smooth' }); 
+  });
+}
+
 document.addEventListener('keydown', e => {
   if (e.key === 'ArrowRight') { stopAutoplay(); goNext(); }
   if (e.key === 'ArrowLeft')  { stopAutoplay(); goPrev(); }
   if (e.key === 'Escape') closeAllPanels();
 });
 
-// ───── INIT ─────
+// ───── SYSTEM START ─────
 window.addEventListener('DOMContentLoaded', () => {
   buildUI();
   updateContent(0);
 
-  // Card hover — pause progress without changing autoplaying state
   const card = document.querySelector('.wl-card');
   if (card) {
     card.addEventListener('mouseenter', () => {
@@ -539,4 +586,4 @@ window.addEventListener('DOMContentLoaded', () => {
       if (autoplaying) startProgress();
     });
   }
-});
+}); 

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        .board { display: flex; gap: 20px; padding: 20px; }
+        .column { background: #eee; width: 200px; min-height: 300px; padding: 10px; border-radius: 5px; }
+        .task { background: white; margin: 10px 0; padding: 10px; cursor: grab; }
+    </style>
+</head>
+<body>
+
+<div class="board">
+    <div class="column" ondrop="drop(event)" ondragover="allowDrop(event)">
+        <h3>To Do</h3>
+        <div class="task" draggable="true" ondragstart="drag(event)" id="task1">Task 1</div>
+    </div>
+    <div class="column" ondrop="drop(event)" ondragover="allowDrop(event)">
+        <h3>Done</h3>
+    </div>
+</div>
+
+<script>
+    function allowDrop(ev) { ev.preventDefault(); }
+    function drag(ev) { ev.dataTransfer.setData("text", ev.target.id); }
+    function drop(ev) {
+        ev.preventDefault();
+        const data = ev.dataTransfer.getData("text");
+        ev.currentTarget.appendChild(document.getElementById(data));
+    }
+</script>
+</body>

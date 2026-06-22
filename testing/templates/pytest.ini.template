@@ -1,0 +1,7 @@
+[pytest]
+minversion = 7.0
+addopts = --cov=src --cov-report=term-missing --cov-fail-under=70
+testpaths = tests
+python_files = test_*.py
+python_classes = Test*
+python_functions = test_*

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aurora Progress</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="progress_bar.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="icon" href="favicon_progress bar.png">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Syne:wght@600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
+
+    <div class="logo">
+       📊Progress Bar
+    </div>
+
+    <ul class="nav-links">
+
+      <li>
+        <a href="progress_bar.html">
+          Home
+        </a>
+      </li>
+       
+       <li>
+        <a href="progressbars.html">
+        Progress Bars Collection
+        </a>
+      </li>
+
+      <li>
+        <a href="progressbar.html">
+          Pulse Progress Bar
+        </a>
+      </li>
+
+
+      <li>
+        <a href="#footer-container">
+          About
+        </a>
+      </li>
+
+    </ul>
+    <button id="themeToggle" class="theme">
+      <span id="themeIcon">☀️</span>
+    </button>
+  </nav>
+
+
+  <div class="maincontent">
+
+
+    <section class="hero-section">
+        <h1>Animated Progressbars Gallery</h1>
+
+        <p>
+            Explore unique Progressbars styles .
+        </p>  
+    </section>
+
+    <!-- Dynamic progresbars Grid -->
+    <section id="progreGrid" class="progre-grid">
+
+        <!-- JS will generate cards here -->
+
+        <!-- Example Card Structure -->
+
+        <!--
+        <article class="progre-card">
+
+            <div class="progre-preview">
+
+                Dynamic Preview
+
+            </div>
+
+            <div class="progre-details">
+
+                <h3>Glowing Orb</h3>
+
+                <p>
+                    Soft glowing particle progresbar.
+                </p>
+
+                <button
+                    class="view code"
+                    data-progre="orb"
+                >
+                   view code
+                </button>
+
+            </div>
+
+        </article>
+        -->
+
+        
+
+    </section>
+
+
+    <div class="view-modal">
+
+    <div class="modal-content">
+
+        <button class="close-modal">
+            ✕
+        </button>
+
+        <h2>HTML</h2>
+        <pre><code id="htmlCode"></code></pre>
+
+        <h2>CSS</h2>
+        <pre><code id="cssCode"></code></pre>
+
+    </div>
+
+</div>
+
+  </div>
+
+     <footer class="footer">
+
+    <section id="footer-container">
+
+      <!-- Brand -->
+      <div class="footer-section">
+        <h3 >  📊Progress Bar </h3>
+        <p>
+        Progress Bar is a simple, responsive project designed to visually represent task completion or loading states.  
+        </p>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="footer-section">
+        <h4>Quick Links</h4>
+
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="#">Progress Bar</a></li>
+          <li><a href="#footer-container">Contact</a></li>
+        </ul>
+      </div>
+
+      <!-- Social Links -->
+      <div class="footer-section">
+        <h4>Follow Us</h4>
+
+        <div class="social-links">
+          <a href="#"><i class="fab fa-github"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-linkedin"></i></a>
+          <a href="#"><i class="fab fa-discord"></i></a>
+        </div>
+      </div>
+
+      </div>
+
+      <div class="footer-bottom">
+        <p>
+          © 2025 Progress Bars. All Rights Reserved.
+        </p>
+      </div>
+    </section>
+  </footer>
+     <script src = "collections.js"></script>
+    <script src="progress_bar.js"></script>
+</body>
+
+</html>

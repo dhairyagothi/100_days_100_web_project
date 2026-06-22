@@ -372,9 +372,346 @@
           padding: 0.55rem 1rem;
         }
       }
+
+      .auth-container{
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    min-height:100vh;
+
+}
+
+.auth-left{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:#fff;
+
+}
+
+.auth-right{
+
+    background:linear-gradient(
+        135deg,
+        #e23744,
+        #ff6b6b
+    );
+
+    color:white;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
+    padding:50px;
+
+    text-align:center;
+
+}
+
+.auth-card{
+
+    width:420px;
+
+    padding:40px;
+
+    border-radius:24px;
+
+    background:white;
+
+    box-shadow:
+
+    0 15px 40px rgba(0,0,0,.12);
+
+}
+
+.input-box{
+
+    position:relative;
+
+}
+
+.input-box input{
+
+    width:100%;
+    padding:18px 12px;
+
+}
+
+.input-box label{
+
+    position:absolute;
+
+    left:12px;
+    top:18px;
+
+    transition:.3s;
+
+    background:white;
+
+    padding:0 5px;
+
+}
+
+.input-box input:focus+label,
+
+.input-box input:not(:placeholder-shown)+label{
+
+    top:-8px;
+
+    font-size:12px;
+
+    color:#e23744;
+
+}
+
+input{
+
+    transition:.3s;
+
+    border:1px solid #ddd;
+
+}
+
+input:focus{
+
+    border-color:#e23744;
+
+    box-shadow:
+
+    0 0 10px rgba(226,55,68,.25);
+
+}
+button{
+
+    transition:.3s;
+
+}
+
+button:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:
+
+    0 10px 20px rgba(0,0,0,.2);
+
+}
+
+h1{
+
+    font-size:42px;
+
+    font-weight:700;
+
+}
+
+.auth-card h2{
+
+    font-size:32px;
+
+    margin-bottom:25px;
+
+}
+
+.strength-bar{
+
+    height:6px;
+
+    background:#ddd;
+
+    border-radius:10px;
+
+}
+
+#strength-fill{
+
+    height:100%;
+
+    width:0;
+
+    transition:.4s;
+
+    background:#e23744;
+
+}
+
+body.dark{
+
+    background:#111827;
+
+}
+
+body.dark .auth-card{
+
+    background:#1f2937;
+
+    color:white;
+
+}
+
+body.dark input{
+
+    background:#374151;
+
+    color:white;
+
+    border-color:#555;
+
+}
+
+
+body.dark .auth-card{
+
+    background:#1f2937;
+
+    color:white;
+
+}
+
+body.dark input{
+
+    background:#374151;
+
+    color:white;
+
+    border-color:#555;
+
+}
+
+body.dark .auth-right{
+
+    background:
+
+    linear-gradient(
+        135deg,
+        #b71c2b,
+        #7f1d1d
+    );
+
+}
+
+@media(max-width:768px){
+
+.auth-container{
+
+    grid-template-columns:1fr;
+
+}
+
+.auth-right{
+
+    display:none;
+
+}
+
+.auth-card{
+
+    width:90%;
+
+}
+
+}
+.auth-right{
+
+    min-height:250px;
+
+}
+
+.auth-card{
+
+    animation:fadeUp .6s ease;
+
+}
+
+@keyframes fadeUp{
+
+from{
+
+opacity:0;
+transform:translateY(40px);
+
+}
+
+to{
+
+opacity:1;
+transform:none;
+
+}
+
+}
+
+
     </style>
   </head>
   <body>
+
+    <body>
+
+
+<body>
+
+<div class="auth-container">
+
+    <div class="auth-left">
+
+        <div class="auth-card">
+
+            <!-- Existing Login Form -->
+
+        </div>
+
+    </div>
+
+    <div class="auth-right">
+
+        <h1>Discover Great Food Near You</h1>
+
+        <p>
+            Order from your favourite restaurants in minutes.
+        </p>
+
+        <img src="assets/food.svg">
+
+    </div>
+
+</div>
+
+</body>
+
+
+            <!-- Existing Login Form -->
+
+        </div>
+
+    </div>
+
+    <div class="auth-right">
+
+        <h1>Discover Great Food Near You</h1>
+
+        <p>
+            Order from your favourite restaurants in minutes.
+        </p>
+
+        <img src="assets/food.svg">
+
+    </div>
+
+</div>
+
+</body>
     <!-- Navbar -->
     <nav class="z-navbar">
       <a href="zomato.html">
@@ -440,6 +777,14 @@
                 placeholder="Enter your password"
                 autocomplete="current-password"
               />
+
+              <div class="strength-bar">
+
+    <div id="strength-fill"></div>
+
+</div>
+
+<p id="strength-text"></p>
               <button
                 type="button"
                 class="pw-toggle"
@@ -566,6 +911,30 @@
             }, 1000);
           }
         });
+
+        password.addEventListener("input", () => {
+
+    const len = password.value.length;
+
+    if(len<5){
+
+        fill.style.width="30%";
+
+    }
+
+    else if(len<8){
+
+        fill.style.width="60%";
+
+    }
+
+    else{
+
+        fill.style.width="100%";
+
+    }
+
+});
     </script>
   </body>
 </html>

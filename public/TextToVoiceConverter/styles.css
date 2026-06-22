@@ -1,3 +1,65 @@
+/* ==========================================================================
+   DESIGN SYSTEM & VARIABLES
+   ========================================================================== */
+:root {
+    /* Fonts */
+    --font-primary: 'Outfit', sans-serif;
+    --font-secondary: 'Plus Jakarta Sans', sans-serif;
+
+    /* Light Theme (Default) */
+    --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    --card-bg: rgba(255, 255, 255, 0.7);
+    --card-border: rgba(255, 255, 255, 0.45);
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    
+    /* Interactive */
+    --accent: #4f46e5;
+    --accent-hover: #4338ca;
+    --accent-glow: rgba(79, 70, 229, 0.15);
+    
+    --success: #10b981;
+    --success-hover: #059669;
+    --success-glow: rgba(16, 185, 129, 0.2);
+    
+    --danger: #ef4444;
+    --danger-hover: #dc2626;
+    --danger-glow: rgba(239, 68, 68, 0.2);
+    
+    --input-bg: rgba(255, 255, 255, 0.8);
+    --input-border: #cbd5e1;
+    --input-focus-border: #4f46e5;
+    
+    /* Layout & Styling */
+    --card-shadow: 0 12px 40px -8px rgba(31, 38, 135, 0.08);
+    --glass-blur: 16px;
+    --radius-lg: 20px;
+    --radius-md: 12px;
+    --transition-speed: 0.3s;
+}
+
+/* Dark Theme overrides */
+body.dark {
+    --bg-gradient: linear-gradient(135deg, #090d16 0%, #1e1b4b 100%);
+    --card-bg: rgba(15, 23, 42, 0.65);
+    --card-border: rgba(255, 255, 255, 0.06);
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    
+    --accent: #6366f1;
+    --accent-hover: #4f46e5;
+    --accent-glow: rgba(99, 102, 241, 0.25);
+    
+    --input-bg: rgba(15, 23, 42, 0.6);
+    --input-border: rgba(255, 255, 255, 0.1);
+    --input-focus-border: #6366f1;
+    
+    --card-shadow: 0 16px 48px -12px rgba(0, 0, 0, 0.5);
+}
+
+/* ==========================================================================
+   RESET & BASE STYLES
+   ========================================================================== */
 * {
     margin: 0;
     padding: 0;
@@ -5,109 +67,479 @@
 }
 
 body {
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    font-family: var(--font-primary);
+    background: var(--bg-gradient);
+    color: var(--text-main);
     min-height: 100vh;
-    padding: 30px;
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: background var(--transition-speed) ease, color var(--transition-speed) ease;
+    overflow-x: hidden;
+    background-attachment: fixed;
 }
 
+/* ==========================================================================
+   BACK TO HOME & THEME TOGGLE
+   ========================================================================== */
 .back-btn {
-    display: inline-block;
-    margin-bottom: 30px;
-    padding: 10px 18px;
-    background: white;
-    color: #1e3c72;
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 20px;
+    background: var(--card-bg);
+    color: var(--text-main);
     text-decoration: none;
-    border-radius: 10px;
-    font-weight: bold;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--card-border);
+    font-weight: 600;
+    font-family: var(--font-secondary);
+    box-shadow: var(--card-shadow);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    transition: transform 0.2s ease, background-color var(--transition-speed) ease;
 }
 
+.back-btn:hover {
+    transform: translateY(-2px);
+    background: var(--input-bg);
+}
+
+.theme-btn {
+    position: fixed;
+    top: 25px;
+    right: 25px;
+    z-index: 100;
+    border: 1px solid var(--card-border);
+    background: var(--card-bg);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--card-shadow);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color var(--transition-speed) ease;
+}
+
+.theme-btn:hover {
+    transform: scale(1.1) rotate(15deg);
+    background: var(--input-bg);
+}
+
+/* ==========================================================================
+   APP HEADER
+   ========================================================================== */
+.app-header {
+    width: 100%;
+    max-width: 1050px;
+    margin-bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.app-title-container {
+    width: 100%;
+}
+
+.main-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--accent) 0%, #a855f7 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    color: var(--text-muted);
+    font-family: var(--font-secondary);
+    font-size: 1.1rem;
+}
+
+/* ==========================================================================
+   LAYOUT WRAPPER
+   ========================================================================== */
 .wrapper {
     display: flex;
-    gap: 25px;
+    gap: 30px;
     justify-content: center;
     align-items: stretch;
-    flex-wrap: wrap;
+    width: 100%;
+    max-width: 1050px;
+    margin: 0 auto;
 }
 
-.container {
-    background: white;
-    width: 500px;
-    max-width: 100%;
-    padding: 30px;
-    border-radius: 16px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+/* ==========================================================================
+   GLASSMORPHIC CARD CONTAINERS
+   ========================================================================== */
+.card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    border-radius: var(--radius-lg);
+    box-shadow: var(--card-shadow);
+    padding: 35px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color var(--transition-speed) ease;
 }
 
-h1 {
-    text-align: center;
-    color: #1352c7;
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 45px -12px rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 25px;
 }
 
-label {
-    display: block;
-    margin-bottom: 10px;
-    font-weight: bold;
+.card h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
 }
 
-select,
+/* Status Badges */
+.status-badge {
+    font-family: var(--font-secondary);
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: 9999px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: rgba(100, 116, 139, 0.15);
+    color: var(--text-muted);
+    border: 1px solid rgba(100, 116, 139, 0.1);
+    transition: all 0.3s ease;
+}
+
+/* Dynamic status styles */
+.status-badge.active-speak {
+    background: var(--success-glow);
+    color: var(--success);
+    border-color: rgba(16, 185, 129, 0.2);
+    box-shadow: 0 0 12px var(--success-glow);
+}
+
+.status-badge.active-listen {
+    background: var(--danger-glow);
+    color: var(--danger);
+    border-color: rgba(239, 68, 68, 0.2);
+    box-shadow: 0 0 12px var(--danger-glow);
+    animation: pulse-glow 1.5s infinite alternate;
+}
+
+/* ==========================================================================
+   INPUTS & TEXTAREAS
+   ========================================================================== */
+.input-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.input-group label {
+    font-family: var(--font-secondary);
+    font-weight: 600;
+    font-size: 0.875rem;
+    margin-bottom: 8px;
+    color: var(--text-muted);
+}
+
+/* Styling custom selects */
+.select-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.select-wrapper::after {
+    content: "▼";
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+select {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 100%;
+    padding: 14px 40px 14px 16px;
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
+    border-radius: var(--radius-md);
+    color: var(--text-main);
+    font-family: var(--font-primary);
+    font-size: 1rem;
+    cursor: pointer;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+select:focus {
+    outline: none;
+    border-color: var(--input-focus-border);
+    box-shadow: 0 0 0 4px var(--accent-glow);
+}
+
 textarea {
     width: 100%;
-    padding: 12px;
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    font-size: 16px;
+    min-height: 200px;
+    padding: 16px;
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
+    border-radius: var(--radius-md);
+    color: var(--text-main);
+    font-family: var(--font-primary);
+    font-size: 1rem;
+    line-height: 1.6;
+    resize: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-textarea {
-    min-height: 180px;
-    resize: vertical;
+textarea:focus {
+    outline: none;
+    border-color: var(--input-focus-border);
+    box-shadow: 0 0 0 4px var(--accent-glow);
 }
 
+textarea[readonly] {
+    cursor: default;
+}
+
+.textarea-footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 6px;
+    font-family: var(--font-secondary);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+/* Scrollbar customization */
+textarea::-webkit-scrollbar {
+    width: 8px;
+}
+
+textarea::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+textarea::-webkit-scrollbar-thumb {
+    background: rgba(100, 116, 139, 0.3);
+    border-radius: 4px;
+}
+
+textarea::-webkit-scrollbar-thumb:hover {
+    background: rgba(100, 116, 139, 0.5);
+}
+
+/* ==========================================================================
+   BUTTONS
+   ========================================================================== */
 .btn-group {
     display: flex;
-    gap: 15px;
-    margin-bottom: 20px;
+    gap: 12px;
+    margin-top: auto;
 }
 
 button {
-    flex: 1;
-    padding: 12px;
+    font-family: var(--font-secondary);
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 14px 20px;
     border: none;
-    border-radius: 10px;
-    font-size: 16px;
+    border-radius: var(--radius-md);
     cursor: pointer;
-    transition: 0.3s;
-    color: white;
-    background: #2f8f9d;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: transform 0.15s ease, background-color 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
 }
 
-button:hover {
-    opacity: 0.9;
-}
-
-.stop-btn {
-    background: #e74c3c;
+button:active {
+    transform: scale(0.97);
 }
 
 button:disabled {
-    background: #bdbdbd;
+    opacity: 0.5;
     cursor: not-allowed;
+    pointer-events: none;
 }
 
-@media (max-width: 768px) {
-    .wrapper {
-        flex-direction: column;
-        align-items: center;
+/* Primary Button Styling */
+.primary-btn {
+    background: var(--accent);
+    color: white;
+    flex: 2;
+}
+
+.primary-btn:hover:not(:disabled) {
+    background: var(--accent-hover);
+    box-shadow: 0 4px 15px var(--accent-glow);
+}
+
+/* Secondary Button Styling */
+.secondary-btn {
+    background: rgba(100, 116, 139, 0.15);
+    color: var(--text-main);
+}
+
+.secondary-btn:hover:not(:disabled) {
+    background: rgba(100, 116, 139, 0.25);
+}
+
+/* Stop Button Styling */
+.stop-btn {
+    background: var(--danger);
+    color: white;
+    flex: 1;
+}
+
+.stop-btn:hover:not(:disabled) {
+    background: var(--danger-hover);
+    box-shadow: 0 4px 15px var(--danger-glow);
+}
+
+/* Record Button Styling */
+.record-btn {
+    background: var(--success);
+    color: white;
+    flex: 2;
+    position: relative;
+    overflow: hidden;
+}
+
+.record-btn:hover:not(:disabled) {
+    background: var(--success-hover);
+    box-shadow: 0 4px 15px var(--success-glow);
+}
+
+.record-btn.recording {
+    background: var(--danger);
+}
+
+.record-btn.recording:hover {
+    background: var(--danger-hover);
+}
+
+/* Small microphone pulse indicator inside button */
+.mic-dot {
+    width: 10px;
+    height: 10px;
+    background: white;
+    border-radius: 50%;
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+.record-btn.recording .mic-dot {
+    animation: dot-pulse 1s infinite alternate;
+}
+
+/* Action Control Buttons (Copy/Download) */
+.action-controls {
+    margin-top: 12px;
+}
+
+.action-btn {
+    background: var(--card-bg);
+    color: var(--text-main);
+    border: 1px solid var(--card-border);
+    flex: 1;
+}
+
+.action-btn:hover:not(:disabled) {
+    background: var(--input-bg);
+}
+
+.btn-icon {
+    font-size: 1rem;
+    line-height: 1;
+}
+
+/* ==========================================================================
+   ANIMATIONS
+   ========================================================================== */
+@keyframes pulse-glow {
+    0% {
+        box-shadow: 0 0 4px var(--danger-glow);
+    }
+    100% {
+        box-shadow: 0 0 16px var(--danger);
+    }
+}
+
+@keyframes dot-pulse {
+    0% {
+        transform: scale(0.8);
+        opacity: 0.5;
+    }
+    100% {
+        transform: scale(1.4);
+        opacity: 1;
+    }
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN (MEDIA QUERIES)
+   ========================================================================== */
+@media (max-width: 900px) {
+    body {
+        padding: 20px 15px;
     }
 
-    .container {
-        width: 100%;
+    .app-header {
+        align-items: center;
+        text-align: center;
+    }
+
+    .wrapper {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 20px;
+    }
+
+    .card {
+        padding: 25px;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-title {
+        font-size: 2rem;
     }
 
     .btn-group {
         flex-direction: column;
+    }
+
+    button {
+        width: 100%;
+        flex: none;
+    }
+    
+    .theme-btn {
+        top: 15px;
+        right: 15px;
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
     }
 }
