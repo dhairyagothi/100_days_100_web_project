@@ -2,6 +2,18 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    /* Remove after debugging */
+    outline: 1px solid red;
+}
+
+html,
+body,
+#root {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
 }
 
 body {
@@ -12,6 +24,7 @@ body {
     min-height: 100vh;
     font-family: 'Fira Code', monospace;
     padding: 20px;
+    overflow-x: hidden;
 }
 
 .terminal-container {
@@ -32,12 +45,14 @@ body {
     display: flex;
     align-items: center;
     border-bottom: 1px solid #111;
+    position: relative;
 }
 
 .window-controls {
     display: flex;
     gap: 8px;
     position: absolute;
+    left: 15px;
 }
 
 .control {
@@ -70,9 +85,12 @@ body {
     flex: 1;
     padding: 20px;
     overflow-y: auto;
+    overflow-x: hidden;
     font-size: 15px;
     line-height: 1.6;
     color: #e0e0e0;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .terminal-body::-webkit-scrollbar {
@@ -106,6 +124,7 @@ body {
     font-size: 15px;
     outline: none;
     caret-color: #e0e0e0;
+    min-width: 0;
 }
 
 .system-msg {
@@ -139,7 +158,6 @@ body {
 }
 
 @keyframes blink {
-
     0%,
     100% {
         opacity: 1;
