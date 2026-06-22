@@ -1,0 +1,6 @@
+node_modules
+.env
+uploads
+!public/AI_Resume_Analyzer/
+public/AI_Resume_Analyzer/client/node_modules/
+public/AI_Resume_Analyzer/server/node_modules/

@@ -1,93 +1,152 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Digital Clock</title>
-    <link rel="stylesheet" href="digitalclock.css" />
-    <link rel="icon" href="../favv.png" type="image/x-icon" />
-    <script src="digitalclock.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-  </head>
-  <body class="bg-black flex flex-col items-center justify-center h-screen">
-    <div class="text-center">
-      <div
-        id="display"
-        class="relative font-mono text-4xl md:text-5xl text-white border-4 border-green-500 rounded-lg p-4 mb-4"
-        style="transition: opacity 0.3s ease;"
-      ></div>
-      <div
-        id="clock"
-        class="relative font-mono text-4xl md:text-5xl text-green-500 border-4 border-green-500 rounded-lg p-4"
-        style="transition: opacity 0.3s ease;"
-      ></div>
-    </div>
-    <div class="mt-10 flex space-x-4">
-      <button
-        class="clock-face-btn px-4 py-2 hover:bg-green-700 hover:text-white border-2 border-green-500 text-green-500 rounded-lg"
-        onclick="setClockStyleAndFormat('classic', 'format1')"
-      >
-        Classic
-      </button>
-      <button
-        class="clock-face-btn px-4 py-2 hover:bg-blue-700 border-2 border-blue-500 text-blue-500 rounded-lg hover:text-white"
-        onclick="setClockStyleAndFormat('modern', 'format2')"
-      >
-        Modern
-      </button>
-      <button
-        class="clock-face-btn px-4 py-2 hover:bg-red-700 border-2 border-red-500 text-red-500 rounded-lg hover:text-white"
-        onclick="setClockStyleAndFormat('futuristic', 'format3')"
-      >
-        Futuristic
-      </button>
-    </div>
-    <div class="mt-10">
-      <select
-        id="timezone"
-        class="px-3 hover:bg-green-700 hover:text-white py-2 border-2 border-green-500 text-green-500 rounded-lg"
-        onchange="updateClock()"
-      >
-        <option value="local">Local Time</option>
-        <option value="UTC">UTC</option>
-        <option value="America/New_York">New York (USA)</option>
-        <option value="Europe/London">London (UK)</option>
-        <option value="Asia/Kolkata">Kolkata (India)</option>
-      </select>
-    </div>
-    <div id="alarm-container" class="mt-10 flex flex-col items-center">
-      <button
-        class="hover:text-white clock-face-btn px-4 py-2 hover:bg-yellow-700 border-2 border-yellow-500 text-yellow-500 rounded-lg"
-        onclick="toggleAlarmMode()"
-      >
-        Set Alarm
-      </button>
-      <input
-        type="time"
-        id="alarm-time"
-        class="hidden mt-4 px-4 py-2 border-2 border-yellow-500 text-yellow-500 rounded-lg"
-        style="transition: all 0.3s ease;"
-      />
-      <button
-        class="clock-face-btn hidden mt-4 px-4 py-2 hover:bg-yellow-700 border-2 border-yellow-500 text-yellow-500 rounded-lg"
-        onclick="setAlarm()"
-      >
-        Confirm Alarm
-      </button>
-    </div>
-    <div
-      id="alarm-popup"
-      class="hidden fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-black text-yellow-500 border-4 border-yellow-500 rounded-lg p-4"
-      style="will-change: transform, opacity;"
-    >
-      <p>Alarm is ringing!</p>
-      <button
-        class="mt-4 px-4 py-2 hover:bg-yellow-700 border-2 border-yellow-500 text-yellow-500 rounded-lg"
-        onclick="stopAlarm()"
-      >
-        Stop Alarm
-      </button>
-    </div>
-    <audio id="alarm-sound" src="alarm.mp3" class="hidden"></audio>
-  </body>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Chronos+ Home</title>
+
+<link rel="stylesheet" href="digitalclock.css">
+<link rel="icon" href="../favv.png" type="image/x-icon">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+    <a href="/">Back</a>
+    <a href="digitalclock.html">Home</a>
+    <a href="alarms.html">Alarms</a>
+    <a href="history.html">History</a>
+</nav>
+
+<main class="clock-app">
+
+    <!-- HERO CLOCK -->
+    <article class="clock-card">
+
+        <button
+            class="dark-mode-btn"
+            id="dark-mode-toggle"
+            onclick="toggleDarkMode()">
+            🌙
+        </button>
+
+        <span class="theme-badge" id="theme-label">
+            CLASSIC
+        </span>
+
+        <div class="date-block">
+            <p id="day-name"></p>
+            <time id="full-date"></time>
+        </div>
+
+        <section class="clock-time">
+            <span id="hours">00</span>
+            <span class="colon">:</span>
+            <span id="minutes">00</span>
+            <span class="colon">:</span>
+            <span id="seconds">00</span>
+            <span id="ampm"></span>
+        </section>
+
+        <button id="format-toggle">
+            24H
+        </button>
+
+        <footer class="bottom-info">
+
+            <div class="info-tag">
+                <span id="timezone-label">
+                    Local Time
+                </span>
+            </div>
+
+            <div class="info-tag">
+                <span id="alarm-status">
+                    None Active
+                </span>
+            </div>
+
+        </footer>
+
+    </article>
+
+    <!-- WORLD CLOCKS -->
+    <section class="card">
+
+        <header class="card-header">
+            <h2>World Clocks</h2>
+
+            <button
+                class="btn btn-sm btn-outline"
+                onclick="toggleWorldClockModal()">
+                + Add
+            </button>
+        </header>
+
+        <div
+            id="world-clocks-list"
+            class="world-clocks-grid">
+        </div>
+
+    </section>
+
+    <!-- POMODORO -->
+    <section
+        class="card"
+        aria-labelledby="pomodoro-heading">
+
+        <header class="card-header">
+            <h2 id="pomodoro-heading">
+                Pomodoro Timer
+            </h2>
+        </header>
+
+        <div class="pomodoro-display">
+            <span id="pomodoro-time">25:00</span>
+        </div>
+
+        <div class="pomodoro-controls">
+
+            <button
+                id="start-pomodoro"
+                class="btn btn-primary">
+                Start
+            </button>
+
+            <button
+                id="pause-pomodoro"
+                class="btn btn-outline">
+                Pause
+            </button>
+
+            <button
+                id="reset-pomodoro"
+                class="btn btn-danger">
+                Reset
+            </button>
+
+        </div>
+
+        <p id="pomodoro-status">
+            Focus Session
+        </p>
+
+    </section>
+
+</main>
+
+<footer class="site-footer">
+    Chronos+ © 2026
+</footer>
+
+<script src="digitalclock.js"></script>
+
+</body>
 </html>

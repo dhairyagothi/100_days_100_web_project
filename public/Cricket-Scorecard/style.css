@@ -1,0 +1,217 @@
+/* =========================
+  CSS VARIABLES
+========================= */
+
+:root {
+  --primary-color: #2563eb;
+  --secondary-color: #dbeafe;
+  --bg-color: #f5f7fb;
+  --card-bg: #ffffff;
+  --text-main: #1f2937;
+  --text-muted: #6b7280;
+  --live-color: #ef4444;
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 10px 20px rgba(0, 0, 0, 0.12);
+}
+
+/* =========================
+  DARK MODE VARIABLES
+========================= */
+
+body.dark {
+  --bg-color: #111827;
+  --card-bg: #1f2937;
+
+  --text-main: #f9fafb;
+  --text-muted: #d1d5db;
+
+  --secondary-color: #93c5fd;
+}
+
+/* =========================
+  GLOBAL RESET
+========================= */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* =========================
+  BODY
+========================= */
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: var(--bg-color);
+  color: var(--text-main);
+  line-height: 1.6;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
+/* =========================
+  HEADER
+========================= */
+
+.header {
+  background: var(--primary-color);
+  color: white;
+  text-align: center;
+  padding: 2rem 1rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.header p {
+  margin-top: 0.5rem;
+  color: var(--secondary-color);
+}
+
+/* =========================
+  THEME BUTTON
+========================= */
+
+.theme-btn {
+  margin-top: 1rem;
+  border: none;
+  outline: none;
+  padding: 0.75rem 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  background: white;
+  color: var(--primary-color);
+  font-weight: 600;
+  transition: all 0.25s ease;
+}
+
+.theme-btn:hover {
+  transform: translateY(-2px);
+}
+
+.theme-btn:active {
+  transform: scale(0.97);
+}
+
+/* =========================
+  MAIN CONTAINER
+========================= */
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+/* =========================
+  SECTIONS
+========================= */
+
+.section {
+  margin-bottom: 3rem;
+}
+
+.section__title {
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 3px solid var(--primary-color);
+  display: inline-block;
+  padding-bottom: 0.5rem;
+}
+
+/* =========================
+  MATCH GRID
+========================= */
+
+.matches-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+/* =========================
+  MATCH CARD
+========================= */
+
+.match-card {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 1.5rem;
+  border-top: 5px solid var(--primary-color);
+  box-shadow: var(--shadow-sm);
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    background-color 0.3s ease;
+}
+
+.match-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+}
+
+.live-card {
+  border-top-color: var(--live-color);
+}
+
+/* =========================
+  MATCH STATUS
+========================= */
+
+.match-status {
+  display: inline-block;
+  padding: 0.35rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+.status-live {
+  background: #fee2e2;
+  color: #dc2626;
+}
+.status-upcoming {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+/* =========================
+  MATCH DETAILS
+========================= */
+.match-teams {
+  margin-bottom: 0.75rem;
+  font-size: 1.2rem;
+}
+.match-score {
+  font-size: 1.1rem;
+  color: var(--primary-color);
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+.match-info {
+  color: var(--text-muted);
+  margin-bottom: 0.35rem;
+}
+/* =========================
+  LOADING
+========================= */
+.loading {
+  text-align: center;
+  font-style: italic;
+  color: var(--text-muted);
+  grid-column: 1 / -1;
+}
+/* =========================
+  MOBILE
+========================= */
+@media (max-width: 600px) {
+  .matches-grid {
+    grid-template-columns: 1fr;
+  }
+  .section__title {
+    font-size: 1.5rem;
+  }
+  .header h1 {
+    font-size: 1.8rem;
+  }
+}

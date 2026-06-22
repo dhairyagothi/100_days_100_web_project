@@ -4,27 +4,61 @@ const context = canvas.getContext("2d");
 const startBtn = document.querySelector(".start-btn");
 const pauseBtn = document.querySelector(".pause-btn");
 const restartBtn = document.querySelector(".restart-btn");
+const newBtn = document.querySelector(".new-btn");
+const themeButtons = document.querySelectorAll(".theme-btn");
+
+const userscore = document.querySelector("#user-score");
+const computerscore = document.querySelector("#computer-score");
+
+const result = document.querySelector(".result");
+const msg = document.querySelector("#msg");
+const msg1 = document.querySelector("#msg1");
 
 let gameRunning = false;
 let animationId;
+const easy = 5;
+const medium = 9;
+const hard = 13;
+const STORAGE_KEY = "ping-pong-theme";
+
+const themeConfig = {
+  classic: {
+    paddleColor: "#ffffff",
+    computerPaddleColor: "#ffffff",
+    ballColor: "#ffffff",
+    netColor: "#ffffff"
+  },
+  neon: {
+    paddleColor: "#00d9ff",
+    computerPaddleColor: "#00d9ff",
+    ballColor: "#ff3db9",
+    netColor: "#00d9ff"
+  },
+  retro: {
+    paddleColor: "#93ff4d",
+    computerPaddleColor: "#93ff4d",
+    ballColor: "#f5ff61",
+    netColor: "#d6ff8a"
+  }
+};
 
 // CREATE USER PADDLE
 const user = {
-  x: 0,
+  x: 10,
   y: canvas.height / 2 - 100 / 2,
   width: 10,
   height: 100,
-  color: "red",
+  color: themeConfig.classic.paddleColor,
   score: 0
 };
 
 // CREATE COMPUTER PADDLE
 const computer = {
-  x: canvas.width - 10,
+  x: canvas.width - 20,
   y: canvas.height / 2 - 100 / 2,
   width: 10,
   height: 100,
-  color: "black",
+  color: themeConfig.classic.computerPaddleColor,
   score: 0
 };
 
@@ -36,7 +70,7 @@ const ball = {
   speed: 5,
   velocityX: 5,
   velocityY: 5,
-  color: "white"
+  color: themeConfig.classic.ballColor
 };
 
 // CREATE THE NET
@@ -45,14 +79,45 @@ const net = {
   y: 0,
   width: 2,
   height: 10,
-  color: "white"
+  color: themeConfig.classic.netColor
 };
+
+function applyTheme(themeName) {
+  const selectedTheme = themeConfig[themeName] ? themeName : "classic";
+  document.body.dataset.theme = selectedTheme;
+
+  const settings = themeConfig[selectedTheme];
+  user.color = settings.paddleColor;
+  computer.color = settings.computerPaddleColor;
+  ball.color = settings.ballColor;
+  net.color = settings.netColor;
+
+  themeButtons.forEach((button) => {
+    const isActive = button.dataset.theme === selectedTheme;
+    button.classList.toggle("active", isActive);
+    button.setAttribute("aria-pressed", String(isActive));
+  });
+
+  localStorage.setItem(STORAGE_KEY, selectedTheme);
+}
 
 restartBtn.addEventListener("click", () => {
   document.location.reload();
 });
 
+newBtn.addEventListener("click", () => {
+  document.location.reload();
+});
+
+themeButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    applyTheme(button.dataset.theme);
+  });
+});
+
 window.addEventListener("load", () => {
+  const savedTheme = localStorage.getItem(STORAGE_KEY);
+  applyTheme(savedTheme || "classic");
   render();
 });
 
@@ -88,17 +153,30 @@ function drawText(text, x, y, color) {
   context.fillText(text, x, y);
 }
 
+// SET DIFFICULTY FUNCTION 
+function setDifficulty(level) {
+  if (level === "easy") {
+    ball.speed = easy;
+    ball.velocityX = easy;
+    ball.velocityY = easy;
+  } else if (level === "medium") {
+    ball.speed = medium;
+    ball.velocityX = medium;
+    ball.velocityY = medium;
+  } else if (level === "hard") {
+    ball.speed = hard;
+    ball.velocityX = hard;
+    ball.velocityY = hard;
+  }
+}
+
 // RENDER GAME FUNCTION
 function render() {
   // CLEAR THE CANVAS
-  drawRectangle(0, 0, canvas.width, canvas.height, "green");
+  drawRectangle(0, 0, canvas.width, canvas.height, getComputedStyle(document.body).getPropertyValue("--canvas-bg").trim());
 
   // DRAW THE NET
   drawNet();
-
-  // DRAW THE SCORE
-  drawText(user.score, canvas.width / 4, canvas.height / 5, "white");
-  drawText(computer.score, (3 * canvas.width) / 4, canvas.height / 5, "white");
 
   // DRAW THE USER AND COMPUTER PADDLES
   drawRectangle(user.x, user.y, user.width, user.height, user.color);
@@ -138,8 +216,9 @@ function collision(b, p) {
 function resetBall() {
   ball.x = canvas.width / 2;
   ball.y = canvas.height / 2;
-  ball.speed = 5;
-  ball.velocityX = -ball.velocityX;
+  ball.speed = 9;
+  ball.velocityX = 9;
+  ball.velocityY = 9;
 }
 
 // UPDATE FUNCTION
@@ -183,13 +262,14 @@ function update() {
   // UPDATE THE SCORE
   if (ball.x - ball.radius < 0) {
     // THE COMPUTER GAINS 1 POINT
-    computer.score++;
+    computerscore.innerText = computer.score += 1;
     resetBall();
   } else if (ball.x + ball.radius > canvas.width) {
     // THE USER GAINS 1 POINT
-    user.score++;
+    userscore.innerText = user.score += 1;
     resetBall();
   }
+  checkWinner();
 }
 
 // GAME INITIALIZATION FUNCTION
@@ -214,3 +294,37 @@ pauseBtn.addEventListener("click", () => {
   gameRunning = false;
   cancelAnimationFrame(animationId);
 });
+
+// CHECK THE WINNER 
+function checkWinner() {
+  if (computer.score >= 6 || user.score >= 6) {
+    if (computer.score >= 6 && user.score < 6) {
+      showWinner("computer");
+    } else if (computer.score < 6 && user.score >= 6) {
+      showWinner("user");
+    } else {
+      showdraw();
+    }
+    gameRunning = false;
+    cancelAnimationFrame(animationId);
+  }
+}
+
+//SHOW THE WINNER
+function showWinner(winner) {
+  result.classList.add("open");
+  if (winner === "user") {
+    msg1.innerText = "Congratulations !!!! ";
+    msg.innerText = "YOU ARE THE WINNER .\n🥳 🥳 🥳 🥳  ";
+  } else {
+    msg1.innerText = "YOU LOSE ";
+    msg.innerText = "COMPUTER IS THE WINNER .\n 😔😔😔😔";
+  }
+}
+
+// SHOW THERE IS A DRAW
+function showdraw() {
+  result.classList.add("open");
+  msg1.innerText = "The MATCH is a DRAW.";
+  msg.innerText = "🤝 🤝 🤝 🤝";
+}

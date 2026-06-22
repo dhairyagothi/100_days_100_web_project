@@ -1,0 +1,7 @@
+node_modules/
+.env
+uploads/
+
+# Allow public and its subfolders
+!public/
+!public/AI_Resume_Analyzer/
