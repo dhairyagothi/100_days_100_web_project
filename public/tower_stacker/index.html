@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tower Blocks Stacker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <div class="game-header">
+            <h1 class="game-title">TOWER <span class="highlight">STACKER</span></h1>
+            <p class="game-subtitle">Test Your Timing & Precision</p>
+        </div>
+
+        <div class="game-viewport">
+            <div class="hud-container">
+                <div class="score-container">
+                    <div class="score-label">SCORE</div>
+                    <div id="score">0</div>
+                </div>
+                <button id="pauseBtn" class="hud-btn" title="Pause Game">
+                    <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                </button>
+            </div>
+
+            <canvas id="gameCanvas" width="400" height="600"></canvas>
+
+            <div id="startOverlay" class="overlay">
+                <div class="overlay-content">
+                    <h1 class="neon-text">READY?</h1>
+                    <p>Stack blocks high to build the ultimate skyscraper tower.</p>
+                    <button id="startBtn" class="menu-btn primary">Start Game</button>
+                </div>
+            </div>
+
+            <div id="pauseOverlay" class="overlay hidden">
+                <div class="overlay-content">
+                    <h1>GAME PAUSED</h1>
+                    <p>Your current progress is saved.</p>
+                    <div class="btn-group">
+                        <button id="resumeBtn" class="menu-btn primary">Resume</button>
+                        <button id="resetBtn" class="menu-btn secondary">Restart</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="gameOverOverlay" class="overlay hidden">
+                <div class="overlay-content">
+                    <h1 class="dead-text">Game Over</h1>
+                    <p>Final Score: <span id="finalScore">0</span></p>
+                    <button id="restartBtn" class="menu-btn primary">Play Again</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="instructions">Click or Press SPACEBAR to drop the block</div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -2,6 +2,10 @@ const form = document.getElementById('rescheduleForm');
 
 let consultationHistory= JSON.parse(localStorage.getItem('consultations'))|| [];
 
+
+if(form){
+
+
 form.addEventListener('submit', (event) => {
         event.preventDefault();
         let patient = document.getElementById('patientName').value;
@@ -23,3 +27,4 @@ form.addEventListener('submit', (event) => {
         else if (found) alert("Appointment is rescheduled.");
         else alert("Appointment not found.");
     });
+}
