@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Interactive World Explorer</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- Google Fonts: Syne (display) + Inter (body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- ========== NAVIGATION ========== -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-inner">
+      <!-- Logo / Brand -->
+      <a class="nav-logo" href="#">
+        <span class="logo-globe">🌍</span>
+        <span class="logo-text">World<em>Explorer</em></span>
+      </a>
+
+      <!-- Nav Links -->
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#explore" class="nav-link">Explore</a></li>
+        <li><a href="#favorites-section" class="nav-link">Favourites</a></li>
+        <li>
+          <!-- Dark / Light mode toggle -->
+          <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+            <span class="theme-icon" id="themeIcon">☀️</span>
+          </button>
+        </li>
+      </ul>
+
+      <!-- Mobile hamburger -->
+      <button class="hamburger" id="hamburger" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ========== HERO ========== -->
+  <header class="hero" id="hero">
+    <!-- Animated SVG globe rings -->
+    <div class="hero-bg-rings" aria-hidden="true">
+      <div class="ring ring-1"></div>
+      <div class="ring ring-2"></div>
+      <div class="ring ring-3"></div>
+    </div>
+
+    <!-- Floating emoji dots -->
+    <div class="hero-dots" aria-hidden="true">
+      <span style="--x:10%;--y:20%;--d:3s">🌐</span>
+      <span style="--x:80%;--y:15%;--d:4s">✈️</span>
+      <span style="--x:60%;--y:70%;--d:2.5s">🗺️</span>
+      <span style="--x:25%;--y:75%;--d:5s">🧭</span>
+      <span style="--x:90%;--y:55%;--d:3.5s">🌏</span>
+    </div>
+
+    <div class="hero-content">
+      <p class="hero-eyebrow">195 Countries · 8 Billion Stories</p>
+      <h1 class="hero-headline">
+        Explore Every<br />
+        <span class="hero-highlight">Corner of Earth</span>
+      </h1>
+      <p class="hero-sub">Dive into flags, cultures, capitals, and curiosities — all in one place.</p>
+      <a href="#explore" class="hero-cta">Start Exploring ↓</a>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="scroll-hint" aria-hidden="true">
+      <span class="scroll-dot"></span>
+    </div>
+  </header>
+
+  <!-- ========== EXPLORE SECTION ========== -->
+  <main class="explore-section" id="explore">
+
+    <!-- Controls bar -->
+    <div class="controls-bar">
+      <!-- Search -->
+      <div class="search-wrap">
+        <span class="search-icon">🔍</span>
+        <input
+          type="text"
+          id="searchInput"
+          class="search-input"
+          placeholder="Search countries…"
+          autocomplete="off"
+          aria-label="Search countries"
+        />
+        <button class="search-clear" id="searchClear" aria-label="Clear search">✕</button>
+      </div>
+
+      <!-- Continent Filter -->
+      <div class="filter-wrap">
+        <select id="continentFilter" class="filter-select" aria-label="Filter by continent">
+          <option value="all">🌐 All Regions</option>
+          <option value="Asia">🌏 Asia</option>
+          <option value="Europe">🏰 Europe</option>
+          <option value="Africa">🌍 Africa</option>
+          <option value="Americas">🌎 Americas</option>
+          <option value="Oceania">🏝️ Oceania</option>
+          <option value="Antarctic">❄️ Antarctic</option>
+        </select>
+      </div>
+
+      <!-- Sort -->
+      <div class="sort-wrap">
+        <select id="sortSelect" class="filter-select" aria-label="Sort countries">
+          <option value="name-asc">A → Z</option>
+          <option value="name-desc">Z → A</option>
+          <option value="pop-desc">Most Populated</option>
+          <option value="pop-asc">Least Populated</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Stats bar -->
+    <div class="stats-bar">
+      <span id="countLabel" class="stats-label">Loading countries…</span>
+      <button class="fav-toggle-btn" id="showFavBtn">⭐ Show Favourites</button>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div class="spinner-wrap" id="spinnerWrap">
+      <div class="spinner"></div>
+      <p class="spinner-text">Fetching world data…</p>
+    </div>
+
+    <!-- No Results -->
+    <div class="no-results" id="noResults" hidden>
+      <p class="no-results-emoji">🗺️</p>
+      <h3>No countries found</h3>
+      <p>Try a different name or region filter.</p>
+    </div>
+
+    <!-- Country Cards Grid -->
+    <div class="cards-grid" id="cardsGrid"></div>
+
+    <!-- Favourites Section -->
+    <section class="favorites-section" id="favorites-section" hidden>
+      <h2 class="section-heading">⭐ Your Favourites</h2>
+      <div class="cards-grid" id="favGrid"></div>
+    </section>
+
+  </main>
+
+  <!-- ========== COUNTRY DETAIL MODAL ========== -->
+  <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalCountryName" hidden>
+    <div class="modal-card">
+
+      <!-- Close button -->
+      <button class="modal-close" id="modalClose" aria-label="Close">✕</button>
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <img class="modal-flag" id="modalFlag" src="" alt="" loading="lazy" />
+        <div class="modal-title-wrap">
+          <h2 class="modal-country-name" id="modalCountryName"></h2>
+          <p class="modal-region" id="modalRegion"></p>
+          <button class="modal-fav-btn" id="modalFavBtn" aria-label="Toggle favourite">☆ Add to Favourites</button>
+        </div>
+      </div>
+
+      <!-- Modal Body Grid -->
+      <div class="modal-body">
+
+        <div class="info-grid">
+          <div class="info-item">
+            <span class="info-icon">🏙️</span>
+            <div>
+              <p class="info-label">Capital</p>
+              <p class="info-value" id="modalCapital">—</p>
+            </div>
+          </div>
+          <div class="info-item">
+            <span class="info-icon">👥</span>
+            <div>
+              <p class="info-label">Population</p>
+              <p class="info-value" id="modalPopulation">—</p>
+            </div>
+          </div>
+          <div class="info-item">
+            <span class="info-icon">🗺️</span>
+            <div>
+              <p class="info-label">Subregion</p>
+              <p class="info-value" id="modalSubregion">—</p>
+            </div>
+          </div>
+          <div class="info-item">
+            <span class="info-icon">📐</span>
+            <div>
+              <p class="info-label">Area</p>
+              <p class="info-value" id="modalArea">—</p>
+            </div>
+          </div>
+          <div class="info-item">
+            <span class="info-icon">🗣️</span>
+            <div>
+              <p class="info-label">Languages</p>
+              <p class="info-value" id="modalLanguages">—</p>
+            </div>
+          </div>
+          <div class="info-item">
+            <span class="info-icon">💰</span>
+            <div>
+              <p class="info-label">Currency</p>
+              <p class="info-value" id="modalCurrency">—</p>
+            </div>
+          </div>
+          <div class="info-item">
+            <span class="info-icon">🕐</span>
+            <div>
+              <p class="info-label">Timezones</p>
+              <p class="info-value" id="modalTimezones">—</p>
+            </div>
+          </div>
+          <div class="info-item">
+            <span class="info-icon">🌐</span>
+            <div>
+              <p class="info-label">TLD</p>
+              <p class="info-value" id="modalTLD">—</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interesting Facts -->
+        <div class="facts-block">
+          <h3 class="facts-heading">✨ Interesting Facts</h3>
+          <ul class="facts-list" id="modalFacts"></ul>
+        </div>
+
+        <!-- Google Maps Link -->
+        <a class="maps-btn" id="modalMapsLink" href="#" target="_blank" rel="noopener noreferrer">
+          📍 View on Google Maps
+        </a>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
