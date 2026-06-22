@@ -35,8 +35,22 @@ class CrisprAlignmentSandbox {
   }
 
   resizeCanvas() {
-    this.canvas.width = this.canvas.parentElement.clientWidth;
-    this.canvas.height = this.canvas.parentElement.clientHeight - 40;
+    const parent = this.canvas.parentElement;
+    const computedStyle = window.getComputedStyle(parent);
+    const paddingTop = parseFloat(computedStyle.paddingTop) || 0;
+    const paddingBottom = parseFloat(computedStyle.paddingBottom) || 0;
+    const paddingLeft = parseFloat(computedStyle.paddingLeft) || 0;
+    const paddingRight = parseFloat(computedStyle.paddingRight) || 0;
+
+    const header = parent.querySelector('.viewport-header');
+    let headerHeight = 0;
+    if (header) {
+      const headerStyle = window.getComputedStyle(header);
+      headerHeight = header.offsetHeight + parseFloat(headerStyle.marginTop || 0) + parseFloat(headerStyle.marginBottom || 0);
+    }
+
+    this.canvas.width = parent.clientWidth - paddingLeft - paddingRight;
+    this.canvas.height = parent.clientHeight - paddingTop - paddingBottom - headerHeight;
   }
 
   generateTargetDNA() {
@@ -80,6 +94,16 @@ class CrisprAlignmentSandbox {
       const rect = this.canvas.getBoundingClientRect();
       this.gRnaX = e.clientX - rect.left;
     });
+
+    const handleTouch = (e) => {
+      if (e.touches && e.touches.length > 0) {
+        const rect = this.canvas.getBoundingClientRect();
+        this.gRnaX = e.touches[0].clientX - rect.left;
+        e.preventDefault();
+      }
+    };
+    this.canvas.addEventListener('touchstart', handleTouch, { passive: false });
+    this.canvas.addEventListener('touchmove', handleTouch, { passive: false });
   }
 
   calculateAlignmentHomology() {
