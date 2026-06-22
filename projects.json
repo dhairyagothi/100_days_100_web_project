@@ -2461,6 +2461,15 @@
     "techStack": ["game", "html", "css", "javascript", "jquery"],
     "difficulty": "advanced",
     "projectPath": "./public/pacman/index.html"
+},
+{
+  "projectNo": 199,
+  "projectName": "Hangman Game",
+  "projectType": "Game",
+  "projectDesc": "Classic word-guessing game with interactive visual feedback and score tracking.",
+  "techStack": ["game", "html", "css", "javascript"],
+  "difficulty": "intermediate",
+  "projectPath": "./public/HangmanGame/index.html"
 }
   
 ]
