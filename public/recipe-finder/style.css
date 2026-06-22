@@ -1,0 +1,195 @@
+body {
+  background-color: #0f172a;
+  color: #f8fafc;
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
+  margin: 0;
+  padding: 30px 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.app-container {
+  width: 100%;
+  max-width: 900px;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+h1 {
+  margin: 0 0 8px 0;
+  font-size: 2rem;
+  color: #f43f5e;
+}
+.subtitle {
+  margin: 0;
+  color: #94a3b8;
+  font-size: 1rem;
+}
+
+.search-box {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 35px;
+}
+
+input {
+  flex: 1;
+  padding: 14px;
+  border-radius: 8px;
+  border: 1px solid #334155;
+  background: #1e293b;
+  color: #fff;
+  font-size: 1rem;
+  outline: none;
+}
+input:focus {
+  border-color: #f43f5e;
+}
+
+button {
+  padding: 14px 24px;
+  border-radius: 8px;
+  border: none;
+  background: #f43f5e;
+  color: #fff;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+button:hover {
+  opacity: 0.9;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.status-text {
+  text-align: center;
+  font-style: italic;
+  color: #94a3b8;
+  margin-top: 20px;
+}
+
+.grid-layout {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 25px;
+}
+
+.recipe-card {
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s;
+}
+.recipe-card:hover {
+  transform: translateY(-4px);
+}
+
+.recipe-img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.recipe-info {
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.recipe-info h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  line-height: 1.4;
+}
+
+.view-btn {
+  width: 100%;
+  padding: 10px;
+  background: #334155;
+  color: #fff;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+.view-btn:hover {
+  background: #475569;
+}
+
+/* Modal Styles */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(15, 23, 42, 0.8);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.modal-content {
+  background: #1e293b;
+  border: 1px solid #334155;
+  padding: 30px;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+.close-btn {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 2rem;
+  color: #94a3b8;
+  cursor: pointer;
+}
+.close-btn:hover {
+  color: #fff;
+}
+
+.modal-content h2 {
+  margin: 0 0 15px 0;
+  color: #f43f5e;
+  padding-right: 20px;
+}
+.modal-content img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+.modal-content h3 {
+  margin: 15px 0 8px 0;
+  font-size: 1.1rem;
+}
+.modal-content p {
+  color: #cbd5e1;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  white-space: pre-line;
+}

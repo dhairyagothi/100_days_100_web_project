@@ -1,0 +1,451 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ColorPop — Premium Hex Code & Palette Generator</title>
+    <meta
+      name="description"
+      content="Generate beautiful color palettes, lock your favorites, check WCAG contrast compliance, and export to CSS, Tailwind, or JSON. ColorPop makes designing easy."
+    />
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <!-- Animated Mesh Background Elements -->
+    <div class="mesh-bg">
+      <div class="glow-orb orb-1" id="orb-1"></div>
+      <div class="glow-orb orb-2" id="orb-2"></div>
+      <div class="glow-orb orb-3" id="orb-3"></div>
+      <div class="glow-orb orb-4" id="orb-4"></div>
+    </div>
+
+    <div class="app-wrapper">
+      <!-- Header -->
+      <header class="app-header">
+        <div class="brand">
+          <div class="brand-logo">
+            <span class="dot d1"></span>
+            <span class="dot d2"></span>
+            <span class="dot d3"></span>
+          </div>
+          <h1>Color<span>Pop</span></h1>
+        </div>
+        <div class="header-actions">
+          <button
+            id="keyboard-hint-btn"
+            class="icon-btn"
+            title="Keyboard Shortcuts"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect>
+              <line x1="6" y1="8" x2="6" y2="8"></line>
+              <line x1="10" y1="8" x2="10" y2="8"></line>
+              <line x1="14" y1="8" x2="14" y2="8"></line>
+              <line x1="18" y1="8" x2="18" y2="8"></line>
+              <line x1="6" y1="12" x2="6" y2="12"></line>
+              <line x1="18" y1="12" x2="18" y2="12"></line>
+              <line x1="6" y1="16" x2="6" y2="16"></line>
+              <line x1="18" y1="16" x2="18" y2="16"></line>
+              <line x1="10" y1="16" x2="14" y2="16"></line>
+            </svg>
+          </button>
+          <button
+            id="sound-toggle-btn"
+            class="icon-btn"
+            title="Toggle Sound Chimes"
+          >
+            <svg
+              id="sound-on-icon"
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+              <path
+                d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"
+              ></path>
+            </svg>
+            <svg
+              id="sound-off-icon"
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="hidden"
+            >
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+              <line x1="23" y1="9" x2="17" y2="15"></line>
+              <line x1="17" y1="9" x2="23" y2="15"></line>
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- Main Layout Grid -->
+      <main class="app-main">
+        <!-- Core Palette & Preview Section -->
+        <section class="generator-container">
+          <!-- Large Preview Card -->
+          <div class="hero-preview" id="hero-preview-card">
+            <div class="hero-color-block" id="hero-color-display">
+              <!-- Dynamic Pick Color Picker overlay -->
+              <label
+                for="color-picker-input"
+                class="picker-overlay-label"
+                title="Custom color picker"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path
+                    d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 14.7255 3.09032 17.1962 4.85857 19C5.3541 19.5 5.25 20.5 4.5 21C3.5 21.6667 2 22 2 22C2 22 5.5 22 7.5 21.5C8 21.375 9 21.5 9.5 22C10.25 22.5 11.25 22 12 22Z"
+                  ></path>
+                  <circle cx="7.5" cy="10.5" r="1.5"></circle>
+                  <circle cx="11.5" cy="7.5" r="1.5"></circle>
+                  <circle cx="16.5" cy="9.5" r="1.5"></circle>
+                  <circle cx="15.5" cy="14.5" r="1.5"></circle>
+                </svg>
+                <input
+                  type="color"
+                  id="color-picker-input"
+                  class="hidden-picker"
+                />
+              </label>
+
+              <!-- Contrast Compliance Badge -->
+              <div class="contrast-badge" id="contrast-badge">
+                <span class="contrast-label">Contrast</span>
+                <span class="contrast-value" id="contrast-val">AAA Pass</span>
+              </div>
+
+              <!-- Active Hex Info -->
+              <div class="active-hex-info">
+                <span class="active-hex-value" id="active-hex-text"
+                  >#6C5DD3</span
+                >
+                <div class="color-specs">
+                  <span class="color-spec-pill" id="rgb-spec-text"
+                    >rgb(108, 93, 211)</span
+                  >
+                  <span class="color-spec-pill" id="hsl-spec-text"
+                    >hsl(248, 57%, 60%)</span
+                  >
+                </div>
+              </div>
+            </div>
+
+            <!-- Hero Actions -->
+            <div class="hero-actions">
+              <button id="copy-active-btn" class="btn btn-secondary">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path
+                    d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
+                  ></path>
+                </svg>
+                <span>Copy Hex</span>
+              </button>
+              <button id="save-active-btn" class="btn btn-primary">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path
+                    d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"
+                  ></path>
+                </svg>
+                <span>Save Favorite</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- 5-Color Palette Section -->
+          <div class="palette-wrapper">
+            <div class="palette-grid" id="palette-grid">
+              <!-- Dynamically populated 5 vertical blocks -->
+              <!-- Sample Structure of a block:
+            <div class="palette-card">
+              <div class="color-block" style="background-color: #..."></div>
+              <div class="card-controls">
+                <button class="lock-btn"><svg>...</svg></button>
+                <span class="hex-value">#...</span>
+                <button class="copy-btn"><svg>...</svg></button>
+              </div>
+            </div>
+            --></div>
+
+            <!-- Generator Control Buttons -->
+            <div class="generator-controls">
+              <div class="select-wrapper">
+                <select
+                  id="generation-mode"
+                  class="select-input"
+                  title="Palette Generation Style"
+                >
+                  <option value="nude" selected>Nude & Earthy</option>
+                  <option value="random">Random Vibes</option>
+                  <option value="pastel">Soft Pastel</option>
+                </select>
+                <div class="select-arrow"></div>
+              </div>
+              <button id="generate-btn" class="btn btn-large btn-generate">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path
+                    d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"
+                  ></path>
+                </svg>
+                <span>Generate Palette</span>
+                <span class="btn-shortcut">Space</span>
+              </button>
+              <button id="open-export-btn" class="btn btn-large btn-export">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path
+                    d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13"
+                  ></path>
+                </svg>
+                <span>Export</span>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Sidebar: Favorites Drawer -->
+        <aside class="favorites-sidebar">
+          <div class="sidebar-header">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+              ></path>
+            </svg>
+            <h2>Saved Colors</h2>
+            <span class="count-badge" id="favorites-count">0</span>
+          </div>
+
+          <!-- Scrollable Favorites list -->
+          <div class="favorites-container">
+            <div class="favorites-grid-list" id="favorites-grid-list">
+              <!-- Filled dynamically -->
+              <div class="empty-favorites-state" id="empty-favorites">
+                <div class="empty-icon">🎨</div>
+                <p>No favorites saved yet.</p>
+                <span class="subtitle"
+                  >Click "Save Favorite" or hover over palette colors to
+                  bookmark them.</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <button id="clear-all-favorites" class="hidden btn btn-text">
+            Clear All Saved
+          </button>
+        </aside>
+      </main>
+
+      <!-- Footer -->
+      <footer class="app-footer">
+        <p>ColorPop © 2026. Designed for creative developers & designers.</p>
+      </footer>
+    </div>
+
+    <!-- Dialog / Export Modal -->
+    <div class="hidden modal-overlay" id="export-modal">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3>Export Palette</h3>
+          <button id="close-modal-btn" class="icon-btn">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+        <div class="modal-tabs">
+          <button class="tab-btn active" data-tab="css">CSS Variables</button>
+          <button class="tab-btn" data-tab="tailwind">Tailwind CSS</button>
+          <button class="tab-btn" data-tab="json">JSON</button>
+        </div>
+        <div class="modal-body">
+          <div class="tab-content active" id="tab-css">
+            <pre><code id="export-css-code"></code></pre>
+          </div>
+          <div class="tab-content" id="tab-tailwind">
+            <pre><code id="export-tailwind-code"></code></pre>
+          </div>
+          <div class="tab-content" id="tab-json">
+            <pre><code id="export-json-code"></code></pre>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button id="copy-code-btn" class="btn btn-primary">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path
+                d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
+              ></path>
+            </svg>
+            <span>Copy to Clipboard</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Keyboard Shortcuts Modal -->
+    <div class="hidden modal-overlay" id="keyboard-modal">
+      <div class="modal-card modal-small">
+        <div class="modal-header">
+          <h3>Keyboard Shortcuts</h3>
+          <button id="close-keyboard-btn" class="icon-btn">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+        <div class="modal-body keyboard-shortcuts-list">
+          <div class="shortcut-row">
+            <kbd>Spacebar</kbd>
+            <span>Generate new color palette</span>
+          </div>
+          <div class="shortcut-row">
+            <kbd>1</kbd> - <kbd>5</kbd>
+            <span>Toggle Lock status of color slot 1 to 5</span>
+          </div>
+          <div class="shortcut-row">
+            <kbd>C</kbd>
+            <span>Copy active preview color to clipboard</span>
+          </div>
+          <div class="shortcut-row">
+            <kbd>S</kbd>
+            <span>Save active color to favorites</span>
+          </div>
+          <div class="shortcut-row">
+            <kbd>E</kbd>
+            <span>Open Palette Export dialog</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- Script File -->
+    <script src="app.js"></script>
+  </body>
+</html>

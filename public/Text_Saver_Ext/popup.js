@@ -1,6 +1,7 @@
 let allSavedTexts = [];
 
 // Function to display saved texts
+
 function displaySavedTexts(filter = "") {
   chrome.storage.local.get("savedTexts", (result) => {
     allSavedTexts = result.savedTexts || [];
@@ -30,6 +31,19 @@ function displaySavedTexts(filter = "") {
         tag.className = "tag-badge";
         tag.textContent = entry.tag;
         entryDiv.appendChild(tag);
+
+function displaySavedTexts() {
+    chrome.storage.local.get("savedTexts", (result) => {
+      const textList = result.savedTexts || [];
+      const textListDiv = document.getElementById("textList");
+      textListDiv.innerHTML = "";
+  
+      document.getElementById("itemCount").textContent = `${textList.length} item${textList.length !== 1 ? "s" : ""}`;
+
+      if (textList.length === 0) {
+        textListDiv.innerHTML = "<p>No saved texts found.</p>";
+        return;
+
       }
 
       const textPara = document.createElement("p");
@@ -109,6 +123,7 @@ function toggleNote(input, display, entry) {
     input.style.display = "block";
     input.focus();
   }
+
 }
 
 function addTag(entry) {
@@ -152,6 +167,16 @@ function clearSavedTexts() {
     chrome.storage.local.clear(() => {
       displaySavedTexts();
     });
+
+  
+  // Function to clear saved texts
+  function clearSavedTexts() {
+    chrome.storage.local.remove("savedTexts", () => {
+      alert("All saved texts have been cleared.");
+      displaySavedTexts();
+    }
+    );
+
   }
 }
 
@@ -176,6 +201,7 @@ function downloadSavedTexts() {
       fileContent += `--------------------------------\n\n`;
     });
 
+
     const blob = new Blob([fileContent], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -195,3 +221,13 @@ document.getElementById("searchInput").addEventListener("input", (e) => {
 
 // Run when popup opens
 document.addEventListener("DOMContentLoaded", () => displaySavedTexts());
+  }
+  
+  // Event listeners
+  document.getElementById("downloadButton").addEventListener("click", downloadSavedTexts);
+  document.getElementById("clearButton").addEventListener("click", clearSavedTexts);
+  
+  // Run when popup opens
+  displaySavedTexts();
+  
+

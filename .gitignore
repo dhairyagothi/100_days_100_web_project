@@ -25,6 +25,9 @@ out/
 .env.test.local
 .env.production.local
 .env.build
+package-lock.json
+# Local AI ChatBot default Gemini API key
+/public/AI ChatBot/default-config.js
 
 # IDE and editor files
 .vscode/
@@ -104,8 +107,7 @@ dist/
 
 # Gatsby files
 .cache/
- 
-public/
+
 # Storybook build outputs
 .out
 .storybook-out
@@ -173,3 +175,8 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Docker
+*.tar
+docker-compose.override.yml
+.vercel

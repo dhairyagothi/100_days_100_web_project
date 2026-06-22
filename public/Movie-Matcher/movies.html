@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+
+    <body data-theme="dark">
+
+        <nav class="navbar">
+
+            <div class="logo">
+                🎬 Midnight Matcher
+            </div>
+
+            <ul class="nav-links">
+
+                <li>
+                    <a href="index.html">
+                        Home
+                    </a>
+                </li>
+
+                <li>
+                    <a href="movies.html">
+                        Movies
+                    </a>
+                </li>
+
+                <li>
+                    <a href="watchlist.html">
+                        Watchlist
+                    </a>
+                </li>
+
+                <li>
+                    <a href="favorites.html">
+                        Favorites
+                    </a>
+                </li>
+
+            </ul>
+            <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">
+                <span class="toggle-icon">☀️</span>
+            </button>
+
+        </nav>
+
+        <div class="noise"></div>
+
+        <main class="matcher">
+
+            <header class="matcher__header">
+                <div class="header-eyebrow">🎬 Genre Crossover Engine</div>
+                <h1 class="matcher__title">The Midnight<br><em>Matcher</em></h1>
+                <p class="matcher__desc">Pick two clashing genres. Find the films that live in the gap.</p>
+            </header>
+
+            <section class="matcher__controls">
+                <div class="controls-inner">
+                    <div class="select-group">
+                        <label for="genre1">Primary genre</label>
+                        <div class="select-wrap">
+                            <select id="genre1" class="matcher__select">
+                                <option value="27">🩸 Horror</option>
+                                <option value="878">🚀 Sci-Fi</option>
+                                <option value="28">💥 Action</option>
+                                <option value="53">🔪 Thriller</option>
+                                <option value="14">🧙 Fantasy</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="plus-divider">✕</div>
+
+                    <div class="select-group">
+                        <label for="genre2">Secondary genre</label>
+                        <div class="select-wrap">
+                            <select id="genre2" class="matcher__select">
+                                <option value="35">😂 Comedy</option>
+                                <option value="10749">💘 Romance</option>
+                                <option value="18">🎭 Drama</option>
+                                <option value="16">✏️ Animation</option>
+                                <option value="80">🕵️ Crime</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button id="matchBtn" class="matcher__btn">
+                        <span class="btn-text">Find Matches</span>
+                        <span class="btn-arrow">→</span>
+                    </button>
+                </div>
+            </section>
+
+            <div id="resultsHeader" class="results-header hidden">
+                <span id="resultsCount"></span>
+            </div>
+
+            <section id="results" class="matcher__results" aria-live="polite"></section>
+
+        </main>
+
+        <!-- Trailer Modal -->
+        <div id="trailerModal" class="modal hidden" role="dialog" aria-modal="true" aria-label="Watch trailer">
+            <div class="modal__backdrop" id="modalBackdrop"></div>
+            <div class="modal__box">
+                <button class="modal__close" id="modalClose" aria-label="Close">✕</button>
+                <div id="modalContent"></div>
+            </div>
+        </div>
+        <footer class="footer">
+
+            <section id="footer-container">
+
+                <!-- Brand -->
+                <div class="footer-section">
+                    <h3 style="color: #fff;">🎬 Midnight Matcher</h3>
+                    <p>
+                        Discover hidden gems between genres and build your perfect movie collection.
+                    </p>
+                </div>
+
+                <!-- Quick Links -->
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="movies.html">Movies</a></li>
+                        <li><a href="watchlist.html">Watchlist</a></li>
+                        <li><a href="footer-container">Contact</a></li>
+                    </ul>
+                </div>
+
+                <!-- Social Links -->
+                <div class="footer-section">
+                    <h4>Follow Us</h4>
+
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-github"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-discord"></i></a>
+                    </div>
+                </div>
+
+                </div>
+
+                <div class="footer-bottom">
+                    <p>
+                        © 2025 Animation Collection. All Rights Reserved.
+                    </p>
+                </div>
+            </section>
+        </footer>
+        <script src="script.js"></script>
+    </body>
+
+</html>
