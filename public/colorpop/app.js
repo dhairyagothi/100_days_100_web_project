@@ -4,15 +4,16 @@ let state = {
     { hex: '#DEB887', locked: false },
     { hex: '#C59B76', locked: false },
     { hex: '#A07855', locked: false },
-    { hex: '#6B4C35', locked: false }
+    { hex: '#6B4C35', locked: false },
   ],
   activeIndex: 0, // Currently active color index in palette (0-4)
   favorites: [],
-  soundEnabled: true
+  soundEnabled: true,
 };
 
 // --- AUDIO FEEDBACK (Web Audio API) ---
 let audioCtx = null;
+let isSavingFavorite = false;
 
 function initAudio() {
   if (!audioCtx) {
@@ -53,11 +54,13 @@ function playSound(type) {
         osc2.type = 'sine';
         osc2.frequency.setValueAtTime(1046.5, audioCtx.currentTime); // C6
         gain2.gain.setValueAtTime(0.08, audioCtx.currentTime);
-        gain2.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
+        gain2.gain.exponentialRampToValueAtTime(
+          0.001,
+          audioCtx.currentTime + 0.15
+        );
         osc2.start();
         osc2.stop(audioCtx.currentTime + 0.15);
       }, 70);
-
     } else if (type === 'generate') {
       // Soft wave sweep
       const osc = audioCtx.createOscillator();
@@ -74,7 +77,6 @@ function playSound(type) {
 
       osc.start(now);
       osc.stop(now + 0.15);
-
     } else if (type === 'favorite') {
       // Sweet ascending major chord arpeggio
       const notes = [523.25, 659.25, 783.99]; // C5, E5, G5
@@ -94,7 +96,7 @@ function playSound(type) {
       });
     }
   } catch (e) {
-    console.warn("Audio Context block or unsupported:", e);
+    console.warn('Audio Context block or unsupported:', e);
   }
 }
 
@@ -115,38 +117,63 @@ function hslToHex(h, s, l) {
   s /= 100;
   l /= 100;
   let c = (1 - Math.abs(2 * l - 1)) * s;
-  let x = c * (1 - Math.abs((h / 60) % 2 - 1));
+  let x = c * (1 - Math.abs(((h / 60) % 2) - 1));
   let m = l - c / 2;
-  let r = 0, g = 0, b = 0;
+  let r = 0,
+    g = 0,
+    b = 0;
   if (0 <= h && h < 60) {
-    r = c; g = x; b = 0;
+    r = c;
+    g = x;
+    b = 0;
   } else if (60 <= h && h < 120) {
-    r = x; g = c; b = 0;
+    r = x;
+    g = c;
+    b = 0;
   } else if (120 <= h && h < 180) {
-    r = 0; g = c; b = x;
+    r = 0;
+    g = c;
+    b = x;
   } else if (180 <= h && h < 240) {
-    r = 0; g = x; b = c;
+    r = 0;
+    g = x;
+    b = c;
   } else if (240 <= h && h < 300) {
-    r = x; g = 0; b = c;
+    r = x;
+    g = 0;
+    b = c;
   } else if (300 <= h && h < 360) {
-    r = c; g = 0; b = x;
+    r = c;
+    g = 0;
+    b = x;
   }
-  let rHex = Math.round((r + m) * 255).toString(16).padStart(2, '0');
-  let gHex = Math.round((g + m) * 255).toString(16).padStart(2, '0');
-  let bHex = Math.round((b + m) * 255).toString(16).padStart(2, '0');
+  let rHex = Math.round((r + m) * 255)
+    .toString(16)
+    .padStart(2, '0');
+  let gHex = Math.round((g + m) * 255)
+    .toString(16)
+    .padStart(2, '0');
+  let bHex = Math.round((b + m) * 255)
+    .toString(16)
+    .padStart(2, '0');
   return `#${rHex}${gHex}${bHex}`.toUpperCase();
 }
 
 // Convert Hex to RGB array
 function hexToRgb(hex) {
   const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-  const fullHex = hex.replace(shorthandRegex, (m, r, g, b) => r + r + g + g + b + b);
+  const fullHex = hex.replace(
+    shorthandRegex,
+    (m, r, g, b) => r + r + g + g + b + b
+  );
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(fullHex);
-  return result ? [
-    parseInt(result[1], 16),
-    parseInt(result[2], 16),
-    parseInt(result[3], 16)
-  ] : [0, 0, 0];
+  return result
+    ? [
+        parseInt(result[1], 16),
+        parseInt(result[2], 16),
+        parseInt(result[3], 16),
+      ]
+    : [0, 0, 0];
 }
 
 // Convert RGB to HSL string
@@ -154,8 +181,11 @@ function rgbToHslStr(r, g, b) {
   r /= 255;
   g /= 255;
   b /= 255;
-  const max = Math.max(r, g, b), min = Math.min(r, g, b);
-  let h, s, l = (max + min) / 2;
+  const max = Math.max(r, g, b),
+    min = Math.min(r, g, b);
+  let h,
+    s,
+    l = (max + min) / 2;
 
   if (max === min) {
     h = s = 0; // achromatic
@@ -163,9 +193,15 @@ function rgbToHslStr(r, g, b) {
     const d = max - min;
     s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
     switch (max) {
-      case r: h = (g - b) / d + (g < b ? 6 : 0); break;
-      case g: h = (b - r) / d + 2; break;
-      case b: h = (r - g) / d + 4; break;
+      case r:
+        h = (g - b) / d + (g < b ? 6 : 0);
+        break;
+      case g:
+        h = (b - r) / d + 2;
+        break;
+      case b:
+        h = (r - g) / d + 4;
+        break;
     }
     h /= 6;
   }
@@ -175,7 +211,7 @@ function rgbToHslStr(r, g, b) {
 
 // WCAG Contrast Compliance Evaluator
 function getLuminance(r, g, b) {
-  const a = [r, g, b].map(v => {
+  const a = [r, g, b].map((v) => {
     v /= 255;
     return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
   });
@@ -195,7 +231,8 @@ function evaluateContrast(bgHex) {
   const contrastWithBlack = getContrastRatio(bgHex, '#000000');
 
   // Decide best text color
-  const textColor = contrastWithWhite >= contrastWithBlack ? '#FFFFFF' : '#000000';
+  const textColor =
+    contrastWithWhite >= contrastWithBlack ? '#FFFFFF' : '#000000';
   const bestRatio = Math.max(contrastWithWhite, contrastWithBlack);
 
   let label = 'Low Contrast';
@@ -216,7 +253,7 @@ function evaluateContrast(bgHex) {
     textColor,
     label,
     ratingClass,
-    ratio: bestRatio.toFixed(1)
+    ratio: bestRatio.toFixed(1),
   };
 }
 
@@ -226,10 +263,10 @@ function copyToClipboard(text) {
     return navigator.clipboard.writeText(text);
   } else {
     // Fallback
-    const textArea = document.createElement("textarea");
+    const textArea = document.createElement('textarea');
     textArea.value = text;
-    textArea.style.position = "fixed";
-    textArea.style.left = "-999999px";
+    textArea.style.position = 'fixed';
+    textArea.style.left = '-999999px';
     document.body.appendChild(textArea);
     textArea.focus();
     textArea.select();
@@ -296,9 +333,10 @@ function showToast(message, type = 'success') {
   const toast = document.createElement('div');
   toast.className = `toast ${type === 'error' ? 'toast-error' : ''}`;
 
-  const iconHtml = type === 'success'
-    ? `<span class="toast-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>`
-    : `<span class="toast-icon error"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></span>`;
+  const iconHtml =
+    type === 'success'
+      ? `<span class="toast-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>`
+      : `<span class="toast-icon error"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></span>`;
 
   toast.innerHTML = `${iconHtml}<span>${message}</span>`;
   toastContainer.appendChild(toast);
@@ -313,7 +351,7 @@ function showToast(message, type = 'success') {
 function generatePalette(playChime = true) {
   const mode = generationModeSelect ? generationModeSelect.value : 'random';
 
-  state.palette.forEach(color => {
+  state.palette.forEach((color) => {
     if (!color.locked) {
       if (mode === 'nude') {
         const h = Math.floor(Math.random() * (45 - 12 + 1)) + 12; // 12 to 45 (nude terracotta to sand skin beige)
@@ -346,23 +384,48 @@ function toggleLock(index, event) {
 
 // Save Favorites locally
 function saveFavoriteColor(hex) {
-  const normalizedHex = hex.toUpperCase();
-  if (state.favorites.includes(normalizedHex)) {
-    showToast(`${normalizedHex} is already in your favorites!`, 'error');
+  if (isSavingFavorite) {
     return;
   }
+
+  isSavingFavorite = true;
+
+  const normalizedHex = hex.toUpperCase();
+
+  const alreadyExists = state.favorites.some(
+    (color) => color.toUpperCase() === normalizedHex
+  );
+
+  if (alreadyExists) {
+    showToast(`${normalizedHex} is already in your favorites!`, 'error');
+
+    isSavingFavorite = false;
+    return;
+  }
+
   state.favorites.unshift(normalizedHex);
-  localStorage.setItem('colorpop_favorites', JSON.stringify(state.favorites));
+
+  localStorage.setItem(
+    'colorpop_favorites',
+    JSON.stringify(state.favorites)
+  );
+
   playSound('favorite');
+
   showToast(`Saved ${normalizedHex} to favorites!`);
+
   updateUI();
+
+  setTimeout(() => {
+    isSavingFavorite = false;
+  }, 300);
 }
 
 // Delete Favorite
 function deleteFavorite(hex, event) {
   if (event) event.stopPropagation();
   const normalizedHex = hex.toUpperCase();
-  state.favorites = state.favorites.filter(c => c !== normalizedHex);
+  state.favorites = state.favorites.filter((c) => c !== normalizedHex);
   localStorage.setItem('colorpop_favorites', JSON.stringify(state.favorites));
   showToast(`Removed ${normalizedHex}`);
   updateUI();
@@ -413,17 +476,17 @@ function toggleModal(modal, show) {
 
 // Tab controller inside Export Modal
 function switchTab(tabId) {
-  tabButtons.forEach(btn => {
+  tabButtons.forEach((btn) => {
     btn.classList.toggle('active', btn.dataset.tab === tabId);
   });
-  tabContents.forEach(content => {
+  tabContents.forEach((content) => {
     content.classList.toggle('active', content.id === `tab-${tabId}`);
   });
 }
 
 // Generate Exporter code content
 function generateExportCodes() {
-  const colors = state.palette.map(c => c.hex);
+  const colors = state.palette.map((c) => c.hex);
 
   // CSS Export Code
   let cssText = `:root {\n`;
@@ -533,7 +596,7 @@ function updateUI() {
     emptyFavoritesState.classList.add('hidden');
     clearAllFavoritesBtn.classList.remove('hidden');
 
-    state.favorites.forEach(favHex => {
+    state.favorites.forEach((favHex) => {
       const chip = document.createElement('div');
       chip.className = 'favorite-chip';
       chip.style.backgroundColor = favHex;
@@ -612,10 +675,10 @@ saveActiveBtn.addEventListener('click', () => {
 });
 
 clearAllFavoritesBtn.addEventListener('click', () => {
-  if (confirm("Are you sure you want to clear all saved colors?")) {
+  if (confirm('Are you sure you want to clear all saved colors?')) {
     state.favorites = [];
     localStorage.removeItem('colorpop_favorites');
-    showToast("Cleared all saved colors");
+    showToast('Cleared all saved colors');
     updateUI();
   }
 });
@@ -630,7 +693,7 @@ exportModal.addEventListener('click', (e) => {
   if (e.target === exportModal) toggleModal(exportModal, false);
 });
 
-tabButtons.forEach(btn => {
+tabButtons.forEach((btn) => {
   btn.addEventListener('click', () => switchTab(btn.dataset.tab));
 });
 
@@ -640,18 +703,23 @@ copyCodeBtn.addEventListener('click', () => {
   let codeText = '';
 
   if (activeTabId === 'css') codeText = exportCssCode.textContent;
-  else if (activeTabId === 'tailwind') codeText = exportTailwindCode.textContent;
+  else if (activeTabId === 'tailwind')
+    codeText = exportTailwindCode.textContent;
   else if (activeTabId === 'json') codeText = exportJsonCode.textContent;
 
   copyToClipboard(codeText).then(() => {
     playSound('copy');
-    showToast("Export template copied!");
+    showToast('Export template copied!');
   });
 });
 
 // Keyboard Shortcuts Modal Events
-keyboardHintBtn.addEventListener('click', () => toggleModal(keyboardModal, true));
-closeKeyboardBtn.addEventListener('click', () => toggleModal(keyboardModal, false));
+keyboardHintBtn.addEventListener('click', () =>
+  toggleModal(keyboardModal, true)
+);
+closeKeyboardBtn.addEventListener('click', () =>
+  toggleModal(keyboardModal, false)
+);
 keyboardModal.addEventListener('click', (e) => {
   if (e.target === keyboardModal) toggleModal(keyboardModal, false);
 });
@@ -659,7 +727,10 @@ keyboardModal.addEventListener('click', (e) => {
 // Keyboard Shortcut Bindings
 document.addEventListener('keydown', (e) => {
   // Prevent shortcut firing if user is inside forms or inputs (though colorpop has no standard text inputs)
-  if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
+  if (
+    document.activeElement.tagName === 'INPUT' ||
+    document.activeElement.tagName === 'TEXTAREA'
+  ) {
     return;
   }
 

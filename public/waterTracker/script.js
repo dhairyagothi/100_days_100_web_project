@@ -2,32 +2,58 @@
   const STORAGE_KEY = 'waterTracker';
 
   const elements = {
-    dailyGoal: document.getElementById('dailyGoal'),
-    saveGoalBtn: document.getElementById('saveGoalBtn'),
-    waterLevel: document.getElementById('waterLevel'),
-    consumedAmount: document.getElementById('consumedAmount'),
-    goalAmount: document.getElementById('goalAmount'),
-    progressPercent: document.getElementById('progressPercent'),
-    progressText: document.getElementById('progressText'),
-    statusMessage: document.getElementById('statusMessage'),
-    customAmount: document.getElementById('customAmount'),
-    customAddBtn: document.getElementById('customAddBtn'),
-    undoBtn: document.getElementById('undoBtn'),
-    resetBtn: document.getElementById('resetBtn'),
-    quickAddButtons: document.querySelectorAll('.btn-add'),
-  };
+  dailyGoal: document.getElementById("dailyGoal"),
+  saveGoalBtn: document.getElementById("saveGoalBtn"),
+  waterLevel: document.getElementById("waterLevel"),
+  consumedAmount: document.getElementById("consumedAmount"),
+  goalAmount: document.getElementById("goalAmount"),
+  progressPercent: document.getElementById("progressPercent"),
+  progressText: document.getElementById("progressText"),
+  statusMessage: document.getElementById("statusMessage"),
+  customAmount: document.getElementById("customAmount"),
+  customAddBtn: document.getElementById("customAddBtn"),
+  undoBtn: document.getElementById("undoBtn"),
+  resetBtn: document.getElementById("resetBtn"),
+  quickAddButtons: document.querySelectorAll(".btn-add"),
+};
+
+  const requiredElements = [
+  "dailyGoal",
+  "saveGoalBtn",
+  "waterLevel",
+  "consumedAmount",
+  "goalAmount",
+  "progressPercent",
+  "progressText",
+  "statusMessage",
+  "customAmount",
+  "customAddBtn",
+  "undoBtn",
+  "resetBtn",
+];
+
+const missingElements = requiredElements.filter(
+  (key) => !elements[key]
+);
+
+if (missingElements.length > 0) {
+  console.error(
+    `Water Tracker initialization failed. Missing elements: ${missingElements.join(", ")}`
+  );
+  return;
+}
 
   let state = loadState();
 
   function todayKey() {
-    const now = new Date();
+  const now = new Date();
 
-    const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, '0');
-    const day = String(now.getDate()).padStart(2, '0');
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const day = String(now.getDate()).padStart(2, "0");
 
-    return `${year}-${month}-${day}`;
-  }
+  return `${year}-${month}-${day}`;
+}
 
   function defaultState() {
     return {

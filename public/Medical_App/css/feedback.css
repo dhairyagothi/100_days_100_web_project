@@ -27,6 +27,25 @@ body{
     background-position:center;
 }
 
+#feedbackMessage{
+    width:100%;
+    min-height:160px;
+    padding:14px;
+    border-radius:12px;
+    border:1px solid #d1d5db;
+    resize:vertical;
+    font-size:1rem;
+}
+
+.feedback-card{
+    background:rgb(153, 157, 158);
+    max-width:700px;
+    margin:auto;
+    padding:30px;
+    border-radius:18px;
+    box-shadow:0 10px 25px rgba(159, 36, 36, 0.1);
+}
+
 .feedbackmain{
 
     width:100%;
@@ -175,47 +194,55 @@ body.dark-mode textarea::placeholder {
 
 .submit-btn{
 
-    margin-top:var(--spacing-xl);
 
-    background:var(--primary);
+        width:100%;
+    padding:14px 18px;
+    margin-top:16px;
+    border:none;
+    border-radius:10px;
+    font-size:1rem;
+    font-weight:600;
+    cursor:pointer;
 
+    background:#448ccf;
     color:white;
 
-    padding:var(--spacing-md);
+    transition:all 0.3s ease;
 
-    border-radius:var(--radius-md);
-
-    font-size:0.95rem;
-
-    font-weight:600;
 }
 
 .submit-btn:hover{
 
-    background:var(--primary-dark);
+    background:#5fa2e1;
     transform:translateY(-2px);
+
+ 
 
     box-shadow:var(--shadow-md);
 }
 
+.submit-btn:active{
+    transform:scale(0.98);
+}
+
 .back{
 
+    margin-top:16px;
     width:100%;
-
-    margin-top:var(--spacing-md);
+    padding:12px;
+    border-radius:10px;
+    border:2px solid #080b0d;
 
     background:transparent;
+    color:#010000;
 
-    color:white;
-
-    padding:var(--spacing-md);
-
-    border-radius:var(--radius-md);
-
-    border:1px solid rgba(255,255,255,0.3);
-
+    cursor:pointer;
     font-weight:600;
-    font-size:0.95rem;
+
+    transition:0.3s;
+    width:100%;
+    
+
 }
 
 .back:hover{
@@ -325,3 +352,11 @@ body.dark-mode textarea::placeholder {
         min-height:150px;
     }
 }
+
+@media (max-width:768px){
+    .feedback-card{
+        margin:20px;
+        padding:20px;
+    }
+}
+

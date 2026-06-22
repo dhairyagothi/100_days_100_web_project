@@ -784,13 +784,30 @@ body.dark-theme h2{
 }
 
 .footer-links a{
+    position: relative;
+    display: inline-block;
     color:#4b5563;
     text-decoration:none;
-    transition:.3s;
+    transition: color .3s ease;
+}
+
+.footer-links a::after{
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -4px;
+    width: 0;
+    height: 2px;
+    background-color: #059669;
+    transition: width .3s ease;
 }
 
 .footer-links a:hover{
     color:#059669;
+}
+
+.footer-links a:hover::after{
+    width: 100%;
 }
 
 body.dark-theme .contact-info{
@@ -842,7 +859,15 @@ body.dark-theme .footer{
 }
 
 body.dark-theme .footer-links a{
-    color:rgba(255,255,255,.7);
+    color: rgba(255,255,255,.7);
+}
+
+body.dark-theme .footer-links a:hover{
+    color: #34d399;
+}
+
+body.dark-theme .footer-links a::after{
+    background-color: #34d399;
 }
 /* Responsive */
 
