@@ -10,41 +10,23 @@ let activeCountdowns = [];
 // 1. ISS Tracking Loop Engine
 async function updateISSLocation() {
   try {
-    const response = await fetch("https://api.opennotify.org/iss-now.json");
+    const response = await fetch(
+      "https://api.wheretheiss.at/v1/satellites/25544"
+    );
+
     const data = await response.json();
-    if (data.message === "success" && data.iss_position) {
-      const { latitude, longitude } = data.iss_position;
-      issLatElement.textContent = parseFloat(latitude).toFixed(4);
-      issLngElement.textContent = parseFloat(longitude).toFixed(4);
-    }
+
+    issLatElement.textContent = data.latitude.toFixed(4);
+    issLngElement.textContent = data.longitude.toFixed(4);
+
   } catch (error) {
-    console.error("Failed to map live ISS coordinate telemetry:", error);
+    console.error("ISS Error:", error);
   }
 }
 
 async function fetchCrewMetadata() {
-  try {
-    const response = await fetch("https://api.opennotify.org/astros.json");
-    const data = await response.json();
-    if (data.message === "success") {
-      astronautList.innerHTML = ""; // Wipe placeholder
-      const issCrew = data.people.filter((p) => p.craft === "ISS");
-
-      if (issCrew.length === 0) {
-        astronautList.innerHTML =
-          "<li>No crew currently logged inside the station node.</li>";
-        return;
-      }
-
-      issCrew.forEach((member) => {
-        const li = document.createElement("li");
-        li.textContent = member.name;
-        astronautList.appendChild(li);
-      });
-    }
-  } catch (error) {
-    astronautList.innerHTML = "<li>Error loading astronaut manifests.</li>";
-  }
+  astronautList.innerHTML =
+    "<li>ISS Crew Data Currently Unavailable</li>";
 }
 
 // 2. International Space Flight Launch Feed Engine
