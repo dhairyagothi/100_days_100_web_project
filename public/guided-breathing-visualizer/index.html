@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Guided Zen Breathing Visualizer</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-workspace">
+      <header class="app-header">
+        <h1>Zen Breathing Visualizer</h1>
+        <p>Sync your breath with fluid geometric loops to alleviate stress</p>
+      </header>
+
+      <main class="visualizer-container">
+        <div class="breathing-node-wrapper">
+          <svg class="breathing-svg" viewBox="0 0 200 200">
+            <circle
+              class="pulse-ring ring-outer"
+              cx="100"
+              cy="100"
+              r="80"
+            ></circle>
+            <circle
+              class="pulse-ring ring-mid"
+              cx="100"
+              cy="100"
+              r="60"
+            ></circle>
+            <circle
+              class="pulse-ring ring-core"
+              cx="100"
+              cy="100"
+              r="40"
+            ></circle>
+          </svg>
+          <div class="status-overlay" id="breathingText">Ready</div>
+        </div>
+
+        <div class="cycle-counter">
+          Completed Cycles: <span id="cycleCount">0</span>
+        </div>
+      </main>
+
+      <footer class="controls-panel">
+        <div class="preset-selector">
+          <button class="preset-btn active" data-preset="box">
+            Box Breathing (4-4-4-4)
+          </button>
+          <button class="preset-btn" data-preset="relax">
+            Relaxing Breath (4-7-8)
+          </button>
+          <button class="preset-btn" data-preset="equal">
+            Equal Breathing (4-4)
+          </button>
+        </div>
+        <div class="action-row">
+          <button id="startStopBtn" class="action-btn-primary">
+            Begin Session
+          </button>
+        </div>
+      </footer>
+    </div>
+    <script src="app.js"></script>
+  </body>
+</html>

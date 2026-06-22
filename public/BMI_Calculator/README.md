@@ -1,99 +1,156 @@
-# Advanced Interactive BMI & Body Fat Calculator
+# 🏋️ FitTrack Pro — BMI Fitness Dashboard
 
-A modular, dependency-free clinical utility dashboard built using vanilla frontend architecture. The application calculates Body Mass Index (BMI), cross-references outcomes against standard health guidelines, computes real-time biometric estimates, and maintains a persistent localized performance history matrix.
+A modern, fully functional, and responsive **health analytics dashboard** built using **vanilla HTML, CSS, and JavaScript**.  
+It calculates **BMI (Body Mass Index)**, estimates **body fat percentage**, provides **personalized health insights**, and maintains a **persistent progress tracker** using localStorage.
 
 ---
 
 ## 🚀 Key Features
 
+- **📊 BMI Calculator (Fully Functional)**
+  - Real-time BMI calculation based on user input
+  - Accurate classification into health categories (Underweight, Normal, Overweight, Obese)
+  - Dynamic circular gauge with smooth animation
 
-- **Dual-Unit Computational Interface:** Supports seamless hot-swapping between Metric (`kg`/`cm`) and Imperial systems (`lbs`/`ft-in`), dynamically restructuring the form layout without layout shifting.
-- **Dynamic Context Highlighting:** Automates instant styling filters on the global Reference Table to isolate the user's current health tier immediately following execution.
-- **Biometric Estimation Engine:** Employs empirical modeling algorithms (the *Deurenberg Equation*) to calculate an estimated body fat percentage alongside a responsive SVG gauge display.
-- **Persistent LocalStorage Logging:** Records historical data points natively on the client device. Includes a dedicated asynchronous clear routine that resets both the tracking log and trend charts simultaneously.
-- **Asynchronous Trend Mapping:** Embedded Chart.js engine automatically captures transaction streams to draw continuous telemetry lines across operations.
-- **Adaptive Clinical Interface (Dark Mode):** Optimized contrast settings automatically handle custom state overrides based on device settings, with smooth transition animations.
+- **⚖️ Dual Unit Support**
+  - Metric system (kg / cm)
+  - Imperial system (lbs / ft)
+  - Seamless conversion between units
+
+- **🧠 Body Fat Estimation Engine**
+  - Uses Deurenberg formula
+  - Gender + age-based health estimation
+
+- **🎯 Goal-Oriented Dashboard**
+  - Three goal modes: **Lose Weight**, **Maintain Weight**, **Gain Muscle**
+  - Dynamically adjusts Daily Calories with a 300–500 kcal deficit or surplus
+  - Goal-specific Diet Plan and Workout Recommendations
+  - Contextual tip shown in results for the selected goal
+  - Goal persists across recalculations in the same session
+
+- **🥗 Personalized Health Insights**
+  - Diet recommendations tailored to BMI category and selected goal
+  - Workout suggestions for each health category
+  - Daily calorie guidance with goal-adjusted ranges
+
+- **💧 Hydration Tracker**
+  - Calculates recommended daily water intake based on body weight
+
+- **📈 Persistent BMI Progress Tracker**
+  - Stores full history objects `{ date, bmi, weight }` in localStorage
+  - Chart repopulates automatically on every page reload
+  - Keeps last 20 entries; oldest auto-removed
+  - Chart line color matches the active theme
+  - "No data yet" empty state shown before first calculation
+
+- **🌗 Multi-Theme Support**
+  - Purple, Blue, Green, Orange themes
+  - Persistent theme selection via localStorage
+  - Chart colors update live when theme is switched
+
+- **📱 Fully Responsive UI**
+  - Mobile, tablet, and desktop optimized layout
+  - Clean glass-morphism card-based dashboard design
 
 ---
 
 ## 📸 Screenshots
 
-### Light Mode Dashboard
-![alt text](image.png)
-### Dark Mode Analytics
-![alt text](image-1.png)
+### Different Theme Dashboards
+![Purple Theme](image.png)
+
+![Alternative Theme](image-1.png)
+
 ---
 
-## 🧮 Theoretical Background & Core Formulas
-
-The underlying engine relies on standard biophysical equations to calculate health index variables:
+## 🧮 Core Formulas Used
 
 ### 1. Body Mass Index (BMI)
-Calculates raw weight distribution ratios across height variables:
 
-- **Metric System Math:**
-  $$\text{BMI} = \frac{\text{Weight (kg)}}{\text{Height (m)}^2}$$
+- **Metric System:**
+```math
+BMI = Weight (kg) / Height (m)²
+```
 
-- **Imperial System Math:**
-  $$\text{BMI} = \frac{\text{Weight (lbs)}}{\text{Height (in)}^2} \times 703$$
+- **Imperial System:** lbs and ft are converted to kg and cm before calculation.
 
-### 2. Body Fat Percentage Estimation
-Estimates lean mass offsets using the **Deurenberg et al. Formula** derived from continuous BMI correlation arrays:
+### 2. Body Fat Percentage (Deurenberg Formula)
 
-$$\text{Body Fat \%} = (1.20 \times \text{BMI}) + (0.23 \times \text{Age}) - (10.8 \times \text{Gender Factor}) - 5.4$$
+```math
+Body Fat % = (1.20 × BMI) + (0.23 × Age) − (10.8 × Sex) − 5.4
+```
+- Sex factor: Male = 1, Female = 0
 
-> *Where **Gender Factor** resolves to `1` for biological males, and `0` for biological females.*
+### 3. Daily Water Intake
 
----
+```math
+Water (L/day) = Weight (kg) × 0.033
+```
 
-## 🛠️ Technical Architecture
+### 4. Healthy Weight Range
 
-The workspace is intentionally written without runtime frameworks, utilizing a modern, decoupled architecture:
+```math
+Min Weight = 18.5 × Height (m)²
+Max Weight = 24.9 × Height (m)²
+```
 
-*   **Structure (`index.html`):** Semantic HTML5 structures embedded with targeted ID anchors, built inside an optimized CSS Grid layout context.
-*   **Presentational Layer (`style.css`):** Employs the *Warm Clinical* theme token model using CSS custom properties. Implements hardware-accelerated transforms for focus-scaling, layout reflow boundaries, and micro-interactions.
-*   **Logic Pipeline (`script.js`):** Modular JavaScript written using an Immediately Invoked Function Expression (IIFE) for theme encapsulation, functional array mapping (`Array.prototype.find`, `.map`), and synchronized local cache management.
-*   **Visual Telemetry:** Bound to the Chart.js (v4.4.1) canvas execution engine via an unbundled script delivery network (CDN).
+### 5. Goal-Adjusted Daily Calories
 
----
+| Goal | Adjustment |
+|------|------------|
+| Lose Weight | Base calories − 400 kcal |
+| Maintain Weight | Base calories (no change) |
+| Gain Muscle | Base calories + 400 kcal |
 
-## 📂 Project Directory Structure
+Base calories are determined by BMI category:
 
-```text
-public/BMI_Calculator/
-├── index.html     # Structural markup with dual-unit form wrappers
-├── style.css      # Warm Clinical layout definitions and dark mode tokens
-├── script.js      # Biometric calculation pipelines and storage drivers
-└── README.md      # Project documentation framework
-
-````
----
-
-## 📦 Local Deployment & Verification
-To run this sub-project locally on your machine for feature verification:
-
-*   Clone the repository and navigate to the project directory:
-   ```bash
-   cd 100_days_100_web_project/public/BMI_Calculator/ 
-   ```
-*   Open index.html inside your browser of choice.
-
-*   Alternatively, deploy it using a development server like the Live Server extension in VS Code:
-
-*   Right-click index.html in the file explorer sidebar.
-
-*   Select Open with Live Server.
-
-*   Test operations across different unit profiles to ensure state tracking routines persist upon refresh.
-
+| BMI Category | Base Calories |
+|--------------|---------------|
+| Underweight | ~2,650 kcal/day |
+| Normal | ~2,200 kcal/day |
+| Overweight | ~1,850 kcal/day |
+| Obese | ~1,650 kcal/day |
 
 ---
 
-## 🤝 Contributors 
+## 📁 File Structure
 
-This sub-project has been upgraded and maintained through open-source contributions under GSSoC '26 (GirlScript Summer of Code 2026).
+```
+├── index.html       # Main HTML structure
+├── style.css        # All styling, themes, and responsive layout
+├── script.js        # BMI logic, goal system, chart, localStorage
+└── README.md        # Project documentation
+```
 
 ---
-<br>
 
-**Feature Upgrades:** Implemented custom state management (Reset button functionality), conditional height form interface toggles, active database row context highlighting, and persistent multi-session localStorage analytical tracking.
+## 🛠️ Technologies Used
+
+| Technology | Purpose |
+|------------|---------|
+| HTML5 | Structure and layout |
+| CSS3 | Styling, glass-morphism, themes, animations |
+| JavaScript (ES6+) | Logic, DOM manipulation, localStorage |
+| Chart.js (CDN) | BMI progress line chart |
+| Google Fonts (Inter) | Typography |
+
+---
+
+## ▶️ How to Use
+
+1. Download or clone the repository
+2. Open `index.html` in any modern browser
+3. Enter your **Height**, **Weight**, **Age**, and **Gender**
+4. Optionally select a **Goal** (Lose Weight / Maintain / Gain Muscle)
+5. Click **Calculate BMI**
+6. View your BMI, body fat, calorie target, diet plan, and workout recommendations
+7. Your result is saved — revisit the page to see your progress chart
+
+---
+
+## 📦 localStorage Keys
+
+| Key | Contents |
+|-----|----------|
+| `bmi_history_v2` | Array of `{ date, bmi, weight }` objects (max 20) |
+| `selectedTheme` | Active theme class name (`theme-purple`, etc.) |

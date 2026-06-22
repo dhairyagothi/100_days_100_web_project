@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CGPA Goal Planner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="bg-gradient"></div>
+  <div class="bg-orbs">
+    <span class="orb orb-1"></span>
+    <span class="orb orb-2"></span>
+    <span class="orb orb-3"></span>
+  </div>
+
+  <header class="header glass">
+    <div class="header-content">
+      <div class="logo">
+        <span class="logo-icon">🎓</span>
+        <div>
+          <h1>CGPA Goal Planner</h1>
+          <p class="tagline">Plan your path to academic success</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button type="button" id="themeToggle" class="btn-icon" aria-label="Toggle theme">
+          <span class="theme-icon">🌙</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="grid-main">
+      <!-- Input Section -->
+      <div class="card glass">
+        <h2 class="card-title">
+          <span class="card-icon">📊</span>
+          Your Current Status
+        </h2>
+        <form id="plannerForm" novalidate>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="currentCgpa">Current CGPA</label>
+              <input type="number" id="currentCgpa" name="currentCgpa" step="0.01" min="0" max="10" placeholder="e.g. 7.2" required>
+              <span class="hint">Scale: 0 – 10</span>
+            </div>
+            <div class="form-group">
+              <label for="completedSemesters">Completed Semesters</label>
+              <input type="number" id="completedSemesters" name="completedSemesters" min="1" max="20" placeholder="e.g. 4" required>
+            </div>
+            <div class="form-group">
+              <label for="creditsCompleted">Credits Completed <span class="optional">(optional)</span></label>
+              <input type="number" id="creditsCompleted" name="creditsCompleted" min="0" placeholder="e.g. 80">
+              <span class="hint">Uses weighted formula if provided</span>
+            </div>
+            <div class="form-group">
+              <label for="targetCgpa">Target CGPA</label>
+              <input type="number" id="targetCgpa" name="targetCgpa" step="0.01" min="0" max="10" placeholder="e.g. 8.5" required>
+            </div>
+            <div class="form-group">
+              <label for="remainingSemesters">Remaining Semesters</label>
+              <input type="number" id="remainingSemesters" name="remainingSemesters" min="1" max="20" placeholder="e.g. 4" required>
+            </div>
+            <div class="form-group">
+              <label for="creditsPerSemester">Credits per Semester <span class="optional">(optional)</span></label>
+              <input type="number" id="creditsPerSemester" name="creditsPerSemester" min="1" placeholder="e.g. 20">
+              <span class="hint">Default: equal weight per semester</span>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Calculate Plan</button>
+            <button type="button" id="savePlanBtn" class="btn btn-secondary">Save Plan</button>
+            <button type="reset" class="btn btn-ghost">Reset</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Output Section -->
+      <div class="card glass results-card" id="resultsCard">
+        <h2 class="card-title">
+          <span class="card-icon">🎯</span>
+          Your Goal Plan
+        </h2>
+        <div id="resultsPlaceholder" class="placeholder">
+          <span class="placeholder-icon">📈</span>
+          <p>Enter your details and click <strong>Calculate Plan</strong> to see your personalized roadmap.</p>
+        </div>
+        <div id="resultsContent" class="results-content hidden">
+          <div class="result-hero">
+            <p class="result-label">Required Average SGPA</p>
+            <p class="result-value" id="requiredSgpa">—</p>
+            <p class="result-subtext" id="resultMessage"></p>
+          </div>
+
+          <div class="feasibility-badge" id="feasibilityBadge">
+            <span class="feasibility-dot" id="feasibilityDot"></span>
+            <span id="feasibilityText"></span>
+          </div>
+
+          <div class="progress-section">
+            <div class="progress-header">
+              <span>Progress to Target</span>
+              <span id="progressPercent">0%</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-labels">
+              <span id="progressCurrent">Current: —</span>
+              <span id="progressTarget">Target: —</span>
+            </div>
+          </div>
+
+          <div class="stats-row">
+            <div class="stat-item glass-subtle">
+              <span class="stat-label">Total Semesters</span>
+              <span class="stat-value" id="totalSemesters">—</span>
+            </div>
+            <div class="stat-item glass-subtle">
+              <span class="stat-label">Gap to Close</span>
+              <span class="stat-value" id="gapValue">—</span>
+            </div>
+            <div class="stat-item glass-subtle">
+              <span class="stat-label">Projected CGPA</span>
+              <span class="stat-value" id="projectedCgpa">—</span>
+            </div>
+          </div>
+
+          <div class="chart-container">
+            <canvas id="cgpaChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SGPA Predictor & What-If -->
+    <section class="card glass" id="predictorSection">
+      <h2 class="card-title">
+        <span class="card-icon">📅</span>
+        Semester-wise SGPA Targets
+        <span class="badge">What-If Analysis</span>
+      </h2>
+      <p class="section-desc">Enter actual or planned SGPA for completed future semesters. Remaining targets update automatically.</p>
+      <div id="predictorPlaceholder" class="placeholder small">
+        <p>Calculate a plan first to see semester targets.</p>
+      </div>
+      <div id="predictorContent" class="hidden">
+        <div class="table-wrapper">
+          <table class="predictor-table" id="predictorTable">
+            <thead>
+              <tr>
+                <th>Semester</th>
+                <th>Status</th>
+                <th>SGPA</th>
+                <th>Required / Actual</th>
+              </tr>
+            </thead>
+            <tbody id="predictorBody"></tbody>
+          </table>
+        </div>
+        <div class="whatif-summary glass-subtle" id="whatifSummary"></div>
+      </div>
+    </section>
+
+    <!-- Saved Plans -->
+    <section class="card glass">
+      <h2 class="card-title">
+        <span class="card-icon">💾</span>
+        Saved Plans
+      </h2>
+      <div id="savedPlansList" class="saved-plans">
+        <p class="empty-state">No saved plans yet.</p>
+      </div>
+    </section>
+
+    <!-- Grade Converter -->
+    <section class="card glass">
+      <h2 class="card-title">
+        <span class="card-icon">🔢</span>
+        Grade to CGPA Converter
+      </h2>
+      <div class="converter-grid">
+        <div class="converter-input">
+          <label for="gradeInput">Enter Grade</label>
+          <select id="gradeInput">
+            <option value="">Select a grade</option>
+            <option value="10">O (Outstanding) — 10</option>
+            <option value="9">A+ (Excellent) — 9</option>
+            <option value="8">A (Very Good) — 8</option>
+            <option value="7">B+ (Good) — 7</option>
+            <option value="6">B (Above Average) — 6</option>
+            <option value="5">C (Average) — 5</option>
+            <option value="4">P (Pass) — 4</option>
+            <option value="0">F (Fail) — 0</option>
+          </select>
+        </div>
+        <div class="converter-result glass-subtle">
+          <span class="stat-label">Grade Point</span>
+          <span class="converter-value" id="gradePoint">—</span>
+        </div>
+      </div>
+      <div class="sgpa-calculator">
+        <h3>Quick SGPA Calculator</h3>
+        <p class="section-desc">Add course grades to compute semester SGPA (equal credits assumed).</p>
+        <div class="sgpa-input-row">
+          <select id="courseGrade" class="course-grade-select">
+            <option value="10">O — 10</option>
+            <option value="9">A+ — 9</option>
+            <option value="8">A — 8</option>
+            <option value="7">B+ — 7</option>
+            <option value="6">B — 6</option>
+            <option value="5">C — 5</option>
+            <option value="4">P — 4</option>
+            <option value="0">F — 0</option>
+          </select>
+          <button type="button" id="addGradeBtn" class="btn btn-secondary btn-sm">Add Course</button>
+          <button type="button" id="clearGradesBtn" class="btn btn-ghost btn-sm">Clear</button>
+        </div>
+        <ul id="gradeList" class="grade-list"></ul>
+        <div class="sgpa-result glass-subtle">
+          <span>Calculated SGPA:</span>
+          <strong id="calculatedSgpa">—</strong>
+        </div>
+      </div>
+    </section>
+
+    <!-- Formula Reference -->
+    <section class="card glass formula-card">
+      <h2 class="card-title">
+        <span class="card-icon">📐</span>
+        Formula Reference
+      </h2>
+      <div class="formula-box">
+        <p class="formula-title">Equal credits per semester:</p>
+        <code class="formula">Required Avg SGPA = ((Target CGPA × Total Semesters) − (Current CGPA × Completed Semesters)) ÷ Remaining Semesters</code>
+      </div>
+      <div class="formula-example">
+        <p><strong>Example:</strong> CGPA 7.2, 4 completed, target 8.5, 4 remaining (8 total)</p>
+        <code>= ((8.5 × 8) − (7.2 × 4)) ÷ 4 = (68 − 28.8) ÷ 4 = <strong>9.8</strong></code>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>CGPA Goal Planner — Built with HTML, CSS & JavaScript</p>
+  </footer>
+
+  <!-- Save Plan Modal -->
+  <dialog id="saveModal" class="modal glass">
+    <form method="dialog" id="saveModalForm">
+      <h3>Save Your Plan</h3>
+      <div class="form-group">
+        <label for="planName">Plan Name</label>
+        <input type="text" id="planName" placeholder="e.g. Reach 8.5 by Sem 8" required maxlength="50">
+      </div>
+      <div class="modal-actions">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-ghost" id="cancelSave">Cancel</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

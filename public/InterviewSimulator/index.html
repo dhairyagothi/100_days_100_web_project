@@ -1,100 +1,216 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Interview Simulator - Voice Assist</title>
-  <link rel="stylesheet" href="style.css">
-  <!-- Include FontAwesome for icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
-<body>
-  <!-- Ambient background blobs -->
-  <div class="blob blob-1"></div>
-  <div class="blob blob-2"></div>
-  <div class="blob blob-3"></div>
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Interview Simulator - AI Voice Assist</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
 
-  <div class="container glass-panel">
-    <div class="top-bar">
-      <h1><i class="fa-solid fa-user-tie"></i> Interview Simulator</h1>
-
-      <div class="stats">
-        <div class="card glass-card">
-          <div class="card-header">
-            <span><i class="fa-solid fa-clipboard-list"></i> Question</span>
-          </div>
-          <h2 id="question-count">1/5</h2>
-          <div class="progress-bar-container">
-            <div id="question-progress" class="progress-fill info"></div>
-          </div>
-        </div>
-
-        <div class="card glass-card">
-          <div class="card-header">
-            <span><i class="fa-solid fa-heart-pulse"></i> Stress Level</span>
-          </div>
-          <h2 id="stress-level">0%</h2>
-          <div class="progress-bar-container">
-            <div id="stress-progress" class="progress-fill success"></div>
-          </div>
-        </div>
-
-        <div class="card glass-card">
-          <div class="card-header">
-            <span><i class="fa-solid fa-stopwatch"></i> Timer</span>
-          </div>
-          <h2 id="timer">60s</h2>
-          <div class="progress-bar-container">
-            <div id="timer-progress" class="progress-fill warning"></div>
-          </div>
-        </div>
-      </div>
+  <body>
+    <div class="theme-toggle-container">
+      <button
+        id="theme-toggle"
+        class="theme-btn"
+        title="Toggle Display Theme"
+        aria-label="Toggle dark and light mode"
+      >
+        <i aria-hidden="true" class="fa-solid fa-sun"></i>
+      </button>
     </div>
 
-    <div class="interview-box glass-card">
-      <div class="interviewer">
-        <div class="avatar-container">
-          <div class="avatar">
-            <i class="fa-solid fa-robot"></i>
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+
+    <div class="container glass-panel">
+      <div class="top-bar">
+        <h1>
+          <i aria-hidden="true" class="fa-solid fa-user-tie"></i>
+          AI Interview Simulator
+        </h1>
+
+        <div class="stats">
+          <div class="card glass-card">
+            <div class="card-header">
+              <span>
+                <i aria-hidden="true" class="fa-solid fa-clipboard-list"></i>
+                Question Progress
+              </span>
+            </div>
+            <h2 id="question-count">0/0</h2>
+            <div class="progress-bar-container">
+              <div id="question-progress" class="progress-fill info"></div>
+            </div>
           </div>
-          <div class="pulse-ring"></div>
-        </div>
-        
-        <div class="dialogue">
-          <h3>AI Interviewer</h3>
-          <p id="question">Loading question...</p>
+
+          <div class="card glass-card">
+            <div class="card-header">
+              <span>
+                <i aria-hidden="true" class="fa-solid fa-heart-pulse"></i>
+                Stress Monitor
+              </span>
+            </div>
+            <h2 id="stress-level">0%</h2>
+            <div class="progress-bar-container">
+              <div id="stress-progress" class="progress-fill success"></div>
+            </div>
+          </div>
+
+          <div class="card glass-card">
+            <div class="card-header">
+              <span>
+                <i aria-hidden="true" class="fa-solid fa-stopwatch"></i>
+                Response Window
+              </span>
+            </div>
+            <h2 id="timer">60s</h2>
+            <div class="progress-bar-container">
+              <div id="timer-progress" class="progress-fill success"></div>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div class="answer-section">
-        <div class="voice-controls">
-          <button id="mic-btn" class="mic-btn" title="Toggle Voice Input">
-            <i class="fa-solid fa-microphone"></i>
+      <div class="role-selection glass-card">
+        <h3>Configure Your AI Interview</h3>
+        <div class="role-controls">
+          <select id="role-select" aria-label="Select Target Domain Role">
+            <option value="Frontend Developer">Frontend Developer</option>
+            <option value="Backend Developer">Backend Developer</option>
+            <option value="React Developer">React Developer</option>
+            <option value="Java Developer">Java Developer</option>
+            <option value="Python Developer">Python Developer</option>
+            <option value="AIML Engineer">AIML Engineer</option>
+            <option value="HR Interview">HR Interview</option>
+          </select>
+
+          <select
+            id="difficulty-select"
+            aria-label="Select Evaluation Challenge Tier"
+          >
+            <option value="Beginner">Beginner Tier</option>
+            <option value="Intermediate">Intermediate Tier</option>
+            <option value="Advanced">Advanced Challenge</option>
+          </select>
+
+          <select id="interview-type" aria-label="Select Focus Category">
+            <option value="Technical">Technical Execution</option>
+            <option value="HR">Human Resources Assessment</option>
+            <option value="Behavioral">Behavioral Performance Matrix</option>
+          </select>
+
+          <button id="start-ai-btn" class="btn primary-btn">
+            <i aria-hidden="true" class="fa-solid fa-wand-magic-sparkles"></i>
+            Initialize Simulator
           </button>
-          <span id="mic-status" class="mic-status">Click mic to speak</span>
-          <div id="recording-indicator" class="recording-indicator hidden">
-            <span class="dot"></span>
-            <span class="dot"></span>
-            <span class="dot"></span>
+        </div>
+      </div>
+
+      <div class="hidden interview-box glass-card">
+        <div class="interviewer">
+          <div class="avatar-container">
+            <div class="avatar">
+              <i aria-hidden="true" class="fa-solid fa-robot"></i>
+            </div>
+            <div class="pulse-ring"></div>
+          </div>
+
+          <div class="dialogue">
+            <h3>AI System Interface</h3>
+            <div id="chat-container" class="chat-container"></div>
           </div>
         </div>
-        <textarea 
-          id="answer"
-          placeholder="Type your answer here or click the microphone to speak..."
-        ></textarea>
-      </div>
 
-      <div class="buttons">
-        <button id="next-btn" class="btn primary-btn">
-          <span>Next Question</span> <i class="fa-solid fa-arrow-right"></i>
-        </button>
-        <button id="restart-btn" class="btn secondary-btn">
-          <i class="fa-solid fa-rotate-right"></i> <span>Restart</span>
-        </button>
+        <div class="answer-section">
+          <div class="voice-controls">
+            <button
+              id="mic-btn"
+              class="mic-btn"
+              title="Toggle Voice Transcription Pipeline"
+              aria-label="Toggle microphone speech recognition"
+            >
+              <i aria-hidden="true" class="fa-solid fa-microphone"></i>
+            </button>
+            <span id="mic-status" class="mic-status"
+              >Audio input system currently passive</span
+            >
+            <div id="recording-indicator" class="hidden recording-indicator">
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+            </div>
+          </div>
+
+          <textarea
+            id="answer"
+            placeholder="Formulate structured context analysis here or use speech tracking..."
+            aria-label="Text response container block"
+          ></textarea>
+
+          <div class="counter-container">
+            <div id="char-counter" class="char-counter">
+              0 characters | 0 words
+            </div>
+          </div>
+        </div>
+
+        <div class="buttons">
+          <button id="restart-btn" class="btn secondary-btn">
+            <i aria-hidden="true" class="fa-solid fa-rotate-right"></i>
+            <span>Terminate & Re-initialize</span>
+          </button>
+          <div class="action-group">
+            <button id="prev-btn" class="btn secondary-btn" disabled>
+              <i aria-hidden="true" class="fa-solid fa-arrow-left"></i>
+              <span>Previous Context</span>
+            </button>
+            <button id="next-btn" class="btn primary-btn">
+              <span>Transmit Evaluation Context</span>
+              <i aria-hidden="true" class="fa-solid fa-paper-plane"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <section class="history-section glass-card">
+        <div class="history-header">
+          <h3>
+            <i aria-hidden="true" class="fa-solid fa-clock-rotate-left"></i>
+            Interview History
+          </h3>
+
+          <button id="clear-history-btn" class="btn secondary-btn">
+            Clear History
+          </button>
+        </div>
+
+        <div id="history-stats"></div>
+
+        <div id="history-container"></div>
+      </section>
+    </div>
+
+    <div id="completion-modal" class="modal" aria-hidden="true" role="dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Evaluation Performance Analysis</h3>
+          <button
+            id="modal-close"
+            class="close-btn"
+            aria-label="Dismiss metrics view"
+          >
+            &times;
+          </button>
+        </div>
+        <div id="summary-content"></div>
       </div>
     </div>
-  </div>
 
-  <script src="app.js"></script>
-</body>
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+  </body>
 </html>
