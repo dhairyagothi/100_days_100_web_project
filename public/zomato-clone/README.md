@@ -121,3 +121,119 @@ mongosh
 show dbs
 use zomato
 show collections
+
+
+## 🚀 Installation Guide
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/dhairyagothi/100_days_100_web_project.git
+cd 100_days_100_web_project
+
+2. Install Dependencies
+npm install
+3. Configure Environment Variables
+
+Create a .env file in the root directory and add:
+
+MONGO_URI=your_mongodb_connection_string
+PORT=3000
+4. Start the Server
+node server/server.js
+
+The application will run on:
+
+http://localhost:3000
+
+---
+
+## MongoDB Database Setup
+
+```md
+## 🗄️ Database Setup
+
+The project uses MongoDB for storing restaurant and food-related data.
+
+### Option 1: Local MongoDB
+
+Install MongoDB locally and use:
+
+```env
+MONGO_URI=mongodb://127.0.0.1:27017/zomato
+
+Start MongoDB:
+
+mongod
+Option 2: MongoDB Atlas
+Create a MongoDB Atlas cluster.
+Create a database user.
+Whitelist your IP address.
+Copy the connection string.
+Paste it into your .env file:
+MONGO_URI=your_mongodb_atlas_connection_string
+
+---
+
+## Environment Configuration
+
+```md
+## ⚙️ Environment Variables
+
+Create a `.env` file in the project root:
+
+```env
+MONGO_URI=your_mongodb_connection_string
+PORT=3000
+Variable	Description
+MONGO_URI	MongoDB connection string
+PORT	Server port number
+
+---
+
+## Data Structure Information
+
+```md
+## 📊 Data Structure
+
+Restaurant documents contain the following fields:
+
+| Field | Description |
+|---------|------------|
+| name | Restaurant name |
+| cuisines | List of cuisines offered |
+| rating | Restaurant rating |
+| location | Restaurant address/location |
+| images | Restaurant image URLs |
+
+### Example Document
+
+```json
+{
+  "name": "Pizza Hub",
+  "cuisines": ["Italian", "Fast Food"],
+  "rating": 4.5,
+  "location": "Mumbai",
+  "images": [
+    "image1.jpg",
+    "image2.jpg"
+  ]
+}
+
+---
+
+## Additional Section (Recommended)
+
+```md
+## 📂 Project Structure
+
+```text
+├── public/
+├── server/
+│   └── server.js
+├── models/
+├── routes/
+├── .env
+├── package.json
+└── README.md
+
