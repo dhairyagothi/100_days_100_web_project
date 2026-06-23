@@ -53,7 +53,6 @@ body {
         radial-gradient(at 100% 0%, rgba(79, 70, 229, 0.08) 0px, transparent 50%),
         radial-gradient(at 0% 100%, rgba(16, 185, 129, 0.05) 0px, transparent 50%);
     background-attachment: fixed;
-    /* Optional: Subtle grain texture */
     background-blend-mode: overlay;
     color: var(--text-main);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -73,7 +72,7 @@ body {
     width: 600px;
     height: 600px;
     background: radial-gradient(circle, var(--brand-color) 0%, transparent 70%);
-    opacity: 0.06; /* Very subtle glow */
+    opacity: 0.06;
     border-radius: 50%;
     pointer-events: none;
     z-index: -1;
@@ -82,16 +81,44 @@ body {
 }
 
 [data-theme='dark'] #bg-aura {
-    opacity: 0.12; /* Slightly brighter in dark mode for contrast */
+    opacity: 0.12;
 }
 
 .app-container {
     width: 100%;
-    max-width: 1440px; /* Expanded from 1200px to sit beautifully on wider viewports */
+    max-width: 1440px;
     margin: 0 auto;
 }
 
+/* --- FIXED: Back to Home button — was hardcoded white background/box-shadow via inline style.
+   Now theme-aware via this class. Remove the inline style="" from the <a> tag in every HTML file
+   and just keep class="project-back-button". --- */
+.project-back-button {
+    position: fixed;
+    left: 18px;
+    top: 18px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    background: var(--card-bg);
+    color: var(--text-main);
+    text-decoration: none;
+    z-index: 9999;
+    font-weight: 700;
+    font-family: Inter, system-ui, sans-serif;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    border: 1px solid var(--border-color);
+    transition: background-color 0.2s, border-color 0.2s, transform 0.15s;
+}
+
+.project-back-button:hover {
+    background: var(--panel-bg);
+    transform: translateY(-1px);
+}
+
 /* Header Element Layout Framework */
+/* --- FIXED: background was hardcoded rgba(255,255,255,0.75), which stayed white/light even
+   in dark mode, making nav links and buttons clash. Now uses theme-aware --card-bg, with a
+   slightly different translucent shade for dark mode below. --- */
 .app-header {
     display: flex;
     flex-direction: row;
@@ -100,7 +127,7 @@ body {
     flex-wrap: wrap;
     gap: 16px;
 
-    background: rgba(255,255,255,0.75);
+    background: var(--card-bg);
     backdrop-filter: blur(14px);
 
     border: 1px solid var(--border-color);
@@ -109,6 +136,11 @@ body {
     margin-bottom: 24px;
 
     box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+[data-theme="dark"] .app-header {
+    background: rgba(21, 31, 50, 0.85);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.35);
 }
 
 .logo-group h1 { font-size: 1.4rem; font-weight: 700; color: var(--text-main); letter-spacing: -0.01em; }
@@ -148,7 +180,7 @@ body {
 }
 
 [data-theme="dark"] .nav-link:hover {
-    background-color: rgba(255, 255, 255, 0.02);
+    background-color: rgba(255, 255, 255, 0.05);
 }
 
 .nav-link.active {
@@ -156,6 +188,10 @@ body {
     color: var(--text-main);
     font-weight: 600;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="dark"] .nav-link.active {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .utility-buttons { display: flex; gap: 8px; }
@@ -201,51 +237,51 @@ body {
 @media (min-width: 992px) {
     .main-layout { 
         display: flex;
-        align-items: stretch; /* Forces equal vertical baseline alignment */
+        align-items: stretch;
         gap: 24px;
     } 
     
     .content-card.form-section {
-        flex: 0 0 420px;       /* Increased from 350px to make the card wider */
-        max-width: 450px;      /* Increased from 380px */
+        flex: 0 0 420px;
+        max-width: 450px;
         display: flex;
         flex-direction: column;
     }
 
     .content-card.summary-section {
-        flex: 1;               /* Lets summary section expand to fill empty row space */
+        flex: 1;
         display: flex;
         flex-direction: column;
     }
 
     .content-card {
-        height: auto !important; /* Neutralizes standard fit-content collapse property */
+        height: auto !important;
     }
 
     #transactionForm {
         display: flex;
         flex-direction: column;
-        flex-grow: 1;          /* Forces layout container fields to stretch evenly */
+        flex-grow: 1;
     }
 
     #transactionForm .btn-primary {
-    background: linear-gradient(
-        135deg,
-        #4F46E5,
-        #7C3AED
-    );
-    color: white;
-    border: none;
-    padding: 12px;
-    font-size: 0.9rem;
-    font-weight: 600;
-    width: 100%;
-    margin-top: 4px;
-    min-height: 44px;
+        background: linear-gradient(
+            135deg,
+            #4F46E5,
+            #7C3AED
+        );
+        color: white;
+        border: none;
+        padding: 12px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        width: 100%;
+        margin-top: 4px;
+        min-height: 44px;
 
-    box-shadow:
-        0 8px 20px rgba(79,70,229,0.25);
-}
+        box-shadow:
+            0 8px 20px rgba(79,70,229,0.25);
+    }
 
     .full-width-layout { width: 100%; }
 }
@@ -256,7 +292,7 @@ body {
     border-radius: 12px;
     padding: 24px;
     height: fit-content;
-    width: 100%; /* Ensures structural container stays maximized */
+    width: 100%;
 }
 
 h2 { font-size: 1.05rem; font-weight: 600; margin-bottom: 16px; color: var(--text-main); }
@@ -477,7 +513,6 @@ button { font-family: inherit; font-weight: 500; border-radius: 8px; cursor: poi
     .history-table tr { border-bottom: 1px solid var(--border-color); padding: 12px 14px; }
     .history-table tr:last-child { border-bottom: none; }
     
-    /* Cleaned up broken hover metrics on mobile viewport transformations */
     .history-table tbody tr:hover { background-color: transparent; }
     [data-theme="dark"] .history-table tbody tr:hover { background-color: transparent; }
     
