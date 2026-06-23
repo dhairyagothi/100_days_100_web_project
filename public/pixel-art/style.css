@@ -21,6 +21,20 @@ h1 {
   margin-bottom: 20px;
 }
 
+#download-btn{
+    background:#28a745;
+    color:white;
+    border:none;
+    padding:10px 16px;
+    border-radius:6px;
+    cursor:pointer;
+    font-weight:600;
+}
+
+#download-btn:hover{
+    background:#218838;
+}
+
 .controls {
   background-color: var(--panel-color);
   padding: 15px 25px;

@@ -10,11 +10,101 @@ let isDrawing = false;
 let isRubberMode = false;
 const CELL_SIZE = 25;
 
+const downloadBtn =
+document.getElementById("download-btn");
+
+downloadBtn.addEventListener(
+    "click",
+    downloadPixelArt
+);
+
+function downloadPixelArt() {
+
+    const width =
+        parseInt(widthInput.value) || 16;
+
+    const height =
+        parseInt(heightInput.value) || 16;
+
+    const cells =
+        document.querySelectorAll(".cell");
+
+    const canvas =
+        document.createElement("canvas");
+
+    canvas.width = width;
+    canvas.height = height;
+
+    const ctx =
+        canvas.getContext("2d");
+
+    cells.forEach((cell, index) => {
+
+        const row =
+            Math.floor(index / width);
+
+        const col =
+            index % width;
+
+        const color =
+            getComputedStyle(cell)
+            .backgroundColor;
+
+        ctx.fillStyle =
+            color === "rgba(0, 0, 0, 0)"
+                ? "#ffffff"
+                : color;
+
+        ctx.fillRect(
+            col,
+            row,
+            1,
+            1
+        );
+    });
+
+    const exportCanvas =
+        document.createElement("canvas");
+
+    const scale = 20;
+
+    exportCanvas.width =
+        width * scale;
+
+    exportCanvas.height =
+        height * scale;
+
+    const exportCtx =
+        exportCanvas.getContext("2d");
+
+    exportCtx.imageSmoothingEnabled =
+        false;
+
+    exportCtx.drawImage(
+        canvas,
+        0,
+        0,
+        exportCanvas.width,
+        exportCanvas.height
+    );
+
+    const link =
+        document.createElement("a");
+
+    link.download =
+        "pixel-art.png";
+
+    link.href =
+        exportCanvas.toDataURL("image/png");
+
+    link.click();
+}
+
 function makeGrid() {
   grid.innerHTML = "";
 
-  const width = parseInt(widthInput.value) || 16;
-  const height = parseInt(heightInput.value) || 16;
+  let width = parseInt(widthInput.value) || 16;
+  let height = parseInt(heightInput.value) || 16;
 
   console.log(width, height);
 
