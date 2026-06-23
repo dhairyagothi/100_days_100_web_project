@@ -12,7 +12,11 @@
 <div class="container">
     <div class="header">
         <h1>Attendance Dashboard</h1>
-        <div>
+        <div class="header-actions">
+            <button class="btn btn-export" onclick="exportCSV()">📥 Export CSV</button>
+            <button class="btn btn-import" onclick="document.getElementById('importInput').click()">📤 Import CSV</button>
+            <input type="file" id="importInput" accept=".csv" style="display:none" onchange="importCSV(event)">
+            <button class="btn btn-print" onclick="printReport()">🖨️ Print Report</button>
             <button class="btn btn-add" onclick="openModal()">+ New Subject</button>
         </div>
     </div>
