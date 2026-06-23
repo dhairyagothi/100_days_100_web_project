@@ -20,27 +20,43 @@ This is a Zomato Clone project built with a focus on modern web development prac
 ## 📁 Project Structure
 
 ```
-zomato-clone/
-│
-├── public/                # Frontend
-│   ├── index.html
-│   ├── login.html
-│   ├── signup.html
-│   ├── css/
-│   │   └── home.css
-│   ├── js/
-│   ├── images/
-│   └── assets/
-│
-├── server/                # Backend
-│   ├── config/
-│   ├── controllers/
-│   ├── models/
-│   ├── routes/
-│   └── server.js
-│
-├── package.json
-└── README.md
+```bash
+100_days_100_web_project/
+└── public/
+    └── zomato-clone/
+        ├── public/
+        │   ├── css/
+        │   │   ├── footer.css
+        │   │   ├── navbar.css
+        │   │   ├── restaurant.css
+        │   │   ├── restaurantDetail.css
+        │   │   └── index.css
+        │   ├── images/
+        │   ├── login.html
+        │   └── signup.html
+        │
+        ├── server/
+        │   ├── config/
+        │   ├── controllers/
+        │   ├── models/
+        │   ├── routes/
+        │   ├── seed/
+        │   ├── .env.example
+        │   └── server.js
+        │
+        ├── views/
+        │   ├── partials/
+        │   │   ├── footer.ejs
+        │   │   └── navbar.ejs
+        │   ├── index.ejs
+        │   ├── restaurant.ejs
+        │   └── restaurantDetail.ejs
+        │
+        ├── .gitignore
+        ├── package.json
+        ├── package-lock.json
+        ├── README.md
+        └── .env.example
 ```
 
 ---
