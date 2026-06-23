@@ -1,67 +1,103 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mini Calendar</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="image.png">
-</head>
-<body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="image.png" />
+  </head>
+  <body>
+    <a
+      href="/"
+      class="project-back-button"
+      style="
+        position: fixed;
+        left: 18px;
+        top: 18px;
+        padding: 8px 16px;
+        border-radius: 8px;
+        background: #1e293b;
+        color: #3b82f6;
+        border: 1px solid #3b82f6;
+        text-decoration: none;
+        z-index: 9999;
+        font-weight: 700;
+        font-family: Inter, system-ui, sans-serif;
+        transition: all 0.2s ease;
+      "
+      onmouseover="
+        this.style.background = '#3b82f6';
+        this.style.color = '#fff';
+      "
+      onmouseout="
+        this.style.background = '#1e293b';
+        this.style.color = '#3b82f6';
+      "
+      >← Back to Home</a
+    >
 
     <!-- Ambient background blobs -->
     <div class="blob blob1"></div>
     <div class="blob blob2"></div>
 
     <div class="calendar-card">
+      <!-- Greeting + theme toggle -->
+      <div class="top-row">
+        <span id="greeting" class="greeting"></span>
+        <button
+          id="themeToggle"
+          class="theme-toggle"
+          title="Toggle theme"
+          aria-label="Toggle light and dark theme"
+        >
+          🌙
+        </button>
+      </div>
 
-        <!-- Greeting + theme toggle -->
-        <div class="top-row">
-            <span id="greeting" class="greeting"></span>
-            <button id="themeToggle" class="theme-toggle" title="Toggle theme" aria-label="Toggle light and dark theme">🌙</button>
+      <div class="month-year">
+        <span id="month"></span>
+        <span id="year"></span>
+      </div>
+
+      <div class="day-name" id="day"></div>
+      <div class="date-number" id="date"></div>
+
+      <!-- Day progress bar -->
+      <div class="day-progress" title="How much of today has passed">
+        <div class="day-progress-fill" id="dayProgressFill"></div>
+      </div>
+      <div class="day-progress-label" id="dayProgressLabel"></div>
+
+      <!-- Clock (digital / analog) -->
+      <div class="clock-wrap">
+        <div id="clock" class="clock"></div>
+        <div id="analogClock" class="hidden analog-clock">
+          <div class="hand hour-hand" id="hourHand"></div>
+          <div class="hand minute-hand" id="minuteHand"></div>
+          <div class="hand second-hand" id="secondHand"></div>
+          <div class="center-dot"></div>
         </div>
+        <button id="clockToggle" class="clock-toggle">Show analog clock</button>
+      </div>
 
-        <div class="month-year">
-            <span id="month"></span>
-            <span id="year"></span>
+      <!-- Mini month calendar -->
+      <div class="mini-cal">
+        <div class="mini-cal-header">
+          <button id="prevMonth" class="nav-btn" aria-label="Previous month">
+            ‹
+          </button>
+          <span id="miniMonthYear" class="mini-month-year"></span>
+          <button id="nextMonth" class="nav-btn" aria-label="Next month">
+            ›
+          </button>
         </div>
-
-        <div class="day-name" id="day"></div>
-        <div class="date-number" id="date"></div>
-
-        <!-- Day progress bar -->
-        <div class="day-progress" title="How much of today has passed">
-            <div class="day-progress-fill" id="dayProgressFill"></div>
-        </div>
-        <div class="day-progress-label" id="dayProgressLabel"></div>
-
-        <!-- Clock (digital / analog) -->
-        <div class="clock-wrap">
-            <div id="clock" class="clock"></div>
-            <div id="analogClock" class="analog-clock hidden">
-                <div class="hand hour-hand" id="hourHand"></div>
-                <div class="hand minute-hand" id="minuteHand"></div>
-                <div class="hand second-hand" id="secondHand"></div>
-                <div class="center-dot"></div>
-            </div>
-            <button id="clockToggle" class="clock-toggle">Show analog clock</button>
-        </div>
-
-        <!-- Mini month calendar -->
-        <div class="mini-cal">
-            <div class="mini-cal-header">
-                <button id="prevMonth" class="nav-btn" aria-label="Previous month">‹</button>
-                <span id="miniMonthYear" class="mini-month-year"></span>
-                <button id="nextMonth" class="nav-btn" aria-label="Next month">›</button>
-            </div>
-            <div class="mini-cal-weekdays" id="miniCalWeekdays"></div>
-            <div class="mini-cal-grid" id="miniCalGrid"></div>
-            <button id="todayBtn" class="today-btn">Jump to today</button>
-        </div>
-
+        <div class="mini-cal-weekdays" id="miniCalWeekdays"></div>
+        <div class="mini-cal-grid" id="miniCalGrid"></div>
+        <button id="todayBtn" class="today-btn">Jump to today</button>
+      </div>
     </div>
 
     <script src="script.js"></script>
-</body>
+  </body>
 </html>

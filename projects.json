@@ -3060,15 +3060,29 @@
    },
    {
     "projectNo": 241,
-    "projectName": "MD Preview",
+    "projectName": "Pokemon Battle Simulator",
     "projectType": "Tool",
-    "projectDesc": "Markdown preview tool that renders and checks .md content in a clean live preview interface.",
-    "techStack": [	
+    "projectDesc": "A retro, GBA-style interactive Pokemon battle simulator built using HTML, CSS, and Vanilla JavaScript.",
+    "techStack": [
       "html",
       "css",
-      "javascript"	
+      "javascript",
+      "canvas"
     ],
     "difficulty": "advanced",
-    "projectPath": "./public/MD Preview/index.html"
+    "projectPath": "./public/Pokemon_Battle_Simulator/index.html"
+   },
+  {
+  "projectNo": 242,
+  "projectName": "MD Preview",
+  "projectType": "Tool",
+  "projectDesc": "Markdown preview tool that renders and checks .md content in a clean live preview interface.",
+  "techStack": [	
+    "html",
+    "css",
+    "javascript"	
+  ],
+  "difficulty": "advanced",
+  "projectPath": "./public/MD Preview/index.html"
   }
 ]

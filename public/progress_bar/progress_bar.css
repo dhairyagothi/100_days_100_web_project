@@ -1634,3 +1634,159 @@ body.light-theme .social-links a:hover {
     padding: 0.3rem 0.5rem;
   }
 }
+
+/* Container */
+.progress-container{
+    width:min(1300px,90%);
+    margin:auto;
+    padding:80px 0;
+}
+
+/* Hero */
+.hero-section{
+    text-align:center;
+    margin-bottom:60px;
+}
+
+.hero-section h1{
+    font-size:3rem;
+    margin-bottom:15px;
+    background:linear-gradient(90deg,#00f7ff,#8b5cf6);
+    background-clip: border-box;
+    -webkit-background-clip:text;
+    color:transparent;
+}
+
+.hero-section p{
+    color:#94a3b8;
+    font-size:1.1rem;
+}
+
+/* Grid */
+.progre-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    gap:30px;
+}
+
+/* Card */
+.progre-card{
+    background:#1e293b;
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:20px;
+    overflow:hidden;
+    transition:.4s;
+}
+
+.progre-card:hover{
+    transform:translateY(-8px);
+    border-color:#8b5cf6;
+}
+
+/* Preview */
+.progre-preview{
+    height:180px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    gap:20px;
+    background:#111827;
+}
+
+.progress-bar{
+    width:80%;
+    height:18px;
+    background:#334155;
+    border-radius:50px;
+    overflow:hidden;
+}
+
+.progress-fill{
+    height:100%;
+    border-radius:50px;
+    animation:load 1.5s ease;
+}
+
+@keyframes load{
+    from{
+        width:0;
+    }
+}
+
+.progress-value{
+    font-size:1.4rem;
+    font-weight:600;
+}
+
+/* Details */
+.progre-details{
+    padding:25px;
+}
+
+.progre-details h3{
+    margin-bottom:10px;
+    font-size:1.3rem;
+}
+
+.progre-details p{
+    color:#94a3b8;
+    line-height:1.6;
+    margin-bottom:20px;
+}
+
+/* Button */
+.view-code{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:12px;
+    background:linear-gradient(90deg,#8b5cf6,#00f7ff);
+    color:white;
+    font-size:1rem;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.view-code:hover{
+    transform:scale(1.03);
+}
+
+.view-modal{
+    position:fixed;
+    inset:0;
+
+    background:rgba(0,0,0,.8);
+
+    display:none;
+
+    justify-content:center;
+    align-items:center;
+}
+
+.view-modal.active{
+    display:flex;
+}
+
+.modal-content{
+    width:800px;
+    background:#111827;
+    color:white;
+    padding:30px;
+    border-radius:20px;
+}
+pre{
+    background:#111827;
+    padding:20px;
+    border-radius:15px;
+    overflow:auto;
+    white-space:pre-wrap;
+}
+
+code{
+    color:#57d8ff;
+    font-family:Consolas, monospace;
+}
+.maincontent{
+  margin : 100px;
+}

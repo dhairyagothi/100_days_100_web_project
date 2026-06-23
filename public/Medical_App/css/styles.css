@@ -1386,3 +1386,20 @@ aside.sidebar:not(#sidebar) {
         width:100%;
     }
 }
+
+
+/* .theme-toggle-btn {
+    background: #252b42;
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow:
+        0 4px 12px rgba(0,0,0,0.35),
+        0 0 10px rgba(59,130,246,0.25);
+}
+  */
+
+  .theme-toggle-btn {
+    background: #111827;
+    border: 1px solid #374151;
+    color: #f3f4f6;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.4);
+}

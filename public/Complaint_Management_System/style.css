@@ -424,6 +424,15 @@ body {
   box-shadow: var(--shadow-md);
 }
 
+.stat-card.unresolved-card {
+  border-color: rgba(239, 68, 68, 0.2);
+  background: linear-gradient(
+    90deg,
+    rgba(239, 68, 68, 0.06),
+    var(--surface-base)
+  );
+}
+
 .stat-icon {
   width: 48px;
   height: 48px;
@@ -443,6 +452,9 @@ body {
 }
 .bg-blue {
   background: #3b82f6;
+}
+.bg-rose {
+  background: #ef4444;
 }
 .bg-emerald {
   background: #10b981;
