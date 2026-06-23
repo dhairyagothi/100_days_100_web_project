@@ -342,7 +342,7 @@ The website features:
 </details>
 
 <details>
-<summary>⚙️ <strong>API & Backend</strong> (18 projects)</summary>
+<summary>⚙️ <strong>API & Backend</strong> (19 projects)</summary>
 
 | # | Project | Difficulty | Demo |
 |---|---------|------------|------|
@@ -364,6 +364,7 @@ The website features:
 | 122 | AstronomyDashboard | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/AstronomyDashboard/astro.html) |
 | 204 | Movie Search App | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Movie-Search-App/index.html) |
 | 225 | Harryy Potter Spellbook | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/Harry-Potter/index.html) |
+| 242 | Crypto Tracker & Market Analytics Dashboard | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/crypto-tracker-market-analytics-dashboard/index.html) |
 
 </details>
 
