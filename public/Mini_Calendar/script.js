@@ -1,15 +1,29 @@
 const months = [
-  "January", "February", "March", "April",
-  "May", "June", "July", "August",
-  "September", "October", "November", "December"
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
 ];
 
 const days = [
-  "Sunday", "Monday", "Tuesday", "Wednesday",
-  "Thursday", "Friday", "Saturday"
+  'Sunday',
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
 ];
 
-const weekdayShort = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
+const weekdayShort = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
 
 // -----------------------------
 // State for the mini month calendar
@@ -17,6 +31,7 @@ const weekdayShort = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 const todayRef = new Date();
 let viewYear = todayRef.getFullYear();
 let viewMonth = todayRef.getMonth();
+let lastRenderedDate = todayRef.toDateString();
 
 // -----------------------------
 // Main update loop: date, day, clock, progress bar
@@ -24,18 +39,27 @@ let viewMonth = todayRef.getMonth();
 function updateCalendar() {
   const now = new Date();
 
+  const currentDateString = now.toDateString();
+
+  if (currentDateString !== lastRenderedDate) {
+    lastRenderedDate = currentDateString;
+
+    const showingCurrentMonth =
+      viewYear === now.getFullYear() && viewMonth === now.getMonth();
+
+    if (showingCurrentMonth) {
+      renderMiniCalendar();
+    }
+  }
+
   // Set month, year, day and date
-  document.getElementById("month").textContent =
-    months[now.getMonth()];
+  document.getElementById('month').textContent = months[now.getMonth()];
 
-  document.getElementById("year").textContent =
-    now.getFullYear();
+  document.getElementById('year').textContent = now.getFullYear();
 
-  document.getElementById("day").textContent =
-    days[now.getDay()];
+  document.getElementById('day').textContent = days[now.getDay()];
 
-  document.getElementById("date").textContent =
-    now.getDate();
+  document.getElementById('date').textContent = now.getDate();
 
   // -----------------------------
   // Live Digital Clock
@@ -45,12 +69,11 @@ function updateCalendar() {
   let minutes = now.getMinutes();
   let seconds = now.getSeconds();
 
-  const hh = hours.toString().padStart(2, "0");
-  const mm = minutes.toString().padStart(2, "0");
-  const ss = seconds.toString().padStart(2, "0");
+  const hh = hours.toString().padStart(2, '0');
+  const mm = minutes.toString().padStart(2, '0');
+  const ss = seconds.toString().padStart(2, '0');
 
-  document.getElementById("clock").textContent =
-    `${hh}:${mm}:${ss}`;
+  document.getElementById('clock').textContent = `${hh}:${mm}:${ss}`;
 
   // -----------------------------
   // Analog clock hands
@@ -59,27 +82,26 @@ function updateCalendar() {
   const minuteDeg = ((minutes + seconds / 60) / 60) * 360;
   const hourDeg = (((hours % 12) + minutes / 60) / 12) * 360;
 
-  document.getElementById("secondHand").style.transform =
+  document.getElementById('secondHand').style.transform =
     `rotate(${secondDeg}deg)`;
-  document.getElementById("minuteHand").style.transform =
+  document.getElementById('minuteHand').style.transform =
     `rotate(${minuteDeg}deg)`;
-  document.getElementById("hourHand").style.transform =
-    `rotate(${hourDeg}deg)`;
+  document.getElementById('hourHand').style.transform = `rotate(${hourDeg}deg)`;
 
   // -----------------------------
   // Weekend Highlighting
   // -----------------------------
 
-  const dayElement = document.getElementById("day");
+  const dayElement = document.getElementById('day');
 
   // Remove previous classes
-  dayElement.classList.remove("weekend", "weekday");
+  dayElement.classList.remove('weekend', 'weekday');
 
   // Sunday = 0, Saturday = 6
   if (now.getDay() === 0 || now.getDay() === 6) {
-    dayElement.classList.add("weekend");
+    dayElement.classList.add('weekend');
   } else {
-    dayElement.classList.add("weekday");
+    dayElement.classList.add('weekday');
   }
 
   // -----------------------------
@@ -88,8 +110,8 @@ function updateCalendar() {
   const secondsIntoDay = hours * 3600 + minutes * 60 + seconds;
   const percent = (secondsIntoDay / 86400) * 100;
 
-  document.getElementById("dayProgressFill").style.width = `${percent}%`;
-  document.getElementById("dayProgressLabel").textContent =
+  document.getElementById('dayProgressFill').style.width = `${percent}%`;
+  document.getElementById('dayProgressLabel').textContent =
     `${percent.toFixed(1)}% of today gone`;
 
   // -----------------------------
@@ -97,26 +119,26 @@ function updateCalendar() {
   // -----------------------------
   let greeting;
   if (hours < 5) {
-    greeting = "Burning the midnight oil";
+    greeting = 'Burning the midnight oil';
   } else if (hours < 12) {
-    greeting = "Good morning";
+    greeting = 'Good morning';
   } else if (hours < 17) {
-    greeting = "Good afternoon";
+    greeting = 'Good afternoon';
   } else if (hours < 21) {
-    greeting = "Good evening";
+    greeting = 'Good evening';
   } else {
-    greeting = "Good night";
+    greeting = 'Good night';
   }
-  document.getElementById("greeting").textContent = greeting;
+  document.getElementById('greeting').textContent = greeting;
 }
 
 // -----------------------------
 // Mini month calendar
 // -----------------------------
 function renderMiniCalendar() {
-  const grid = document.getElementById("miniCalGrid");
-  const weekdaysRow = document.getElementById("miniCalWeekdays");
-  const label = document.getElementById("miniMonthYear");
+  const grid = document.getElementById('miniCalGrid');
+  const weekdaysRow = document.getElementById('miniCalWeekdays');
+  const label = document.getElementById('miniMonthYear');
 
   // Header label
   label.textContent = `${months[viewMonth]} ${viewYear}`;
@@ -124,22 +146,22 @@ function renderMiniCalendar() {
   // Weekday header (only render once)
   if (weekdaysRow.childElementCount === 0) {
     weekdayShort.forEach((d) => {
-      const span = document.createElement("span");
+      const span = document.createElement('span');
       span.textContent = d;
       weekdaysRow.appendChild(span);
     });
   }
 
   // Clear previous cells
-  grid.innerHTML = "";
+  grid.innerHTML = '';
 
   const firstDayIndex = new Date(viewYear, viewMonth, 1).getDay();
   const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
 
   // Leading empty cells
   for (let i = 0; i < firstDayIndex; i++) {
-    const cell = document.createElement("div");
-    cell.className = "cell empty";
+    const cell = document.createElement('div');
+    cell.className = 'cell empty';
     grid.appendChild(cell);
   }
 
@@ -149,19 +171,19 @@ function renderMiniCalendar() {
 
   // Day cells
   for (let d = 1; d <= daysInMonth; d++) {
-    const cell = document.createElement("div");
-    cell.className = "cell";
+    const cell = document.createElement('div');
+    cell.className = 'cell';
     cell.textContent = d;
 
     const cellDate = new Date(viewYear, viewMonth, d);
     const dayOfWeek = cellDate.getDay();
 
     if (dayOfWeek === 0 || dayOfWeek === 6) {
-      cell.classList.add("weekend");
+      cell.classList.add('weekend');
     }
 
     if (isCurrentMonth && d === now.getDate()) {
-      cell.classList.add("today");
+      cell.classList.add('today');
     }
 
     grid.appendChild(cell);
@@ -197,21 +219,21 @@ function goToCurrentMonth() {
 // Clock display toggle (digital / analog)
 // -----------------------------
 function setupClockToggle() {
-  const toggleBtn = document.getElementById("clockToggle");
-  const digital = document.getElementById("clock");
-  const analog = document.getElementById("analogClock");
+  const toggleBtn = document.getElementById('clockToggle');
+  const digital = document.getElementById('clock');
+  const analog = document.getElementById('analogClock');
 
-  toggleBtn.addEventListener("click", () => {
-    const showingAnalog = !analog.classList.contains("hidden");
+  toggleBtn.addEventListener('click', () => {
+    const showingAnalog = !analog.classList.contains('hidden');
 
     if (showingAnalog) {
-      analog.classList.add("hidden");
-      digital.classList.remove("hidden");
-      toggleBtn.textContent = "Show analog clock";
+      analog.classList.add('hidden');
+      digital.classList.remove('hidden');
+      toggleBtn.textContent = 'Show analog clock';
     } else {
-      analog.classList.remove("hidden");
-      digital.classList.add("hidden");
-      toggleBtn.textContent = "Show digital clock";
+      analog.classList.remove('hidden');
+      digital.classList.add('hidden');
+      toggleBtn.textContent = 'Show digital clock';
     }
   });
 }
@@ -220,25 +242,25 @@ function setupClockToggle() {
 // Theme toggle (dark / light), persisted in localStorage
 // -----------------------------
 function setupThemeToggle() {
-  const toggleBtn = document.getElementById("themeToggle");
-  const savedTheme = localStorage.getItem("calendarTheme");
+  const toggleBtn = document.getElementById('themeToggle');
+  const savedTheme = localStorage.getItem('calendarTheme');
 
-  if (savedTheme === "light") {
-    document.body.setAttribute("data-theme", "light");
-    toggleBtn.textContent = "☀️";
+  if (savedTheme === 'light') {
+    document.body.setAttribute('data-theme', 'light');
+    toggleBtn.textContent = '☀️';
   }
 
-  toggleBtn.addEventListener("click", () => {
-    const isLight = document.body.getAttribute("data-theme") === "light";
+  toggleBtn.addEventListener('click', () => {
+    const isLight = document.body.getAttribute('data-theme') === 'light';
 
     if (isLight) {
-      document.body.removeAttribute("data-theme");
-      toggleBtn.textContent = "🌙";
-      localStorage.setItem("calendarTheme", "dark");
+      document.body.removeAttribute('data-theme');
+      toggleBtn.textContent = '🌙';
+      localStorage.setItem('calendarTheme', 'dark');
     } else {
-      document.body.setAttribute("data-theme", "light");
-      toggleBtn.textContent = "☀️";
-      localStorage.setItem("calendarTheme", "light");
+      document.body.setAttribute('data-theme', 'light');
+      toggleBtn.textContent = '☀️';
+      localStorage.setItem('calendarTheme', 'light');
     }
   });
 }
@@ -252,9 +274,11 @@ function init() {
 
   renderMiniCalendar();
 
-  document.getElementById("prevMonth").addEventListener("click", goToPrevMonth);
-  document.getElementById("nextMonth").addEventListener("click", goToNextMonth);
-  document.getElementById("todayBtn").addEventListener("click", goToCurrentMonth);
+  document.getElementById('prevMonth').addEventListener('click', goToPrevMonth);
+  document.getElementById('nextMonth').addEventListener('click', goToNextMonth);
+  document
+    .getElementById('todayBtn')
+    .addEventListener('click', goToCurrentMonth);
 
   setupClockToggle();
   setupThemeToggle();

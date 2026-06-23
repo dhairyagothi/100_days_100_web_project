@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Zomato Clone</title>
+  <meta name="description" content="Restaurant platform inspired interface replicating browsing and discovery layouts." />
 
   <!-- Prevent dark mode flicker -->
   <script>
@@ -17,7 +18,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
 
-  <!-- ✅ ALL CSS FILES — no inline styles -->
+  <!-- CSS -->
   <link rel="stylesheet" href="css/index.css">
   <link rel="stylesheet" href="css/navbar.css">
   <link rel="stylesheet" href="css/footer.css">
@@ -32,8 +33,24 @@
     <button class="banner-close" onclick="document.getElementById('topBanner').style.display='none'">×</button>
   </div>
 
-  <!-- NAVBAR (loaded from component) -->
-  <div id="navbar"></div>
+  <!-- NAVBAR -->
+  <nav>
+    <div class="nav-left">
+      <img src="https://b.zmtcdn.com/web_assets/b40b97e677bc7b2ca77c58c61db266fe1603954218.png" alt="Zomato" />
+    </div>
+    <div class="nav-links">
+      <a href="#" class="hide-mobile">Get the app</a>
+      <a href="#" class="hide-mobile">Add restaurant</a>
+      <a href="#" class="hide-mobile">Investor Relations</a>
+      <button class="btn-login" onclick="window.location.href='login.html'">Log in</button>
+      <button class="btn-signup" onclick="window.location.href='signup.html'">Sign up</button>
+      <!-- DARK MODE TOGGLE -->
+      <button class="dm-toggle" id="dmToggle" onclick="toggleDark()" title="Toggle dark mode">
+        <span class="dm-icon sun">☀️</span>
+        <span class="dm-icon moon">🌙</span>
+      </button>
+    </div>
+  </nav>
 
   <!-- HERO -->
   <section class="hero">
@@ -43,8 +60,8 @@
 
       <!-- Left -->
       <div class="hero-left">
-        <div class="hero-tag">🍽️ Food delivery & dining</div>
-        <h1>Discover the best<br>food & drinks in<br><em>Delhi NCR</em></h1>
+        <div class="hero-tag">🍽️ Food delivery &amp; dining</div>
+        <h1>Discover the best<br>food &amp; drinks in<br><em>Delhi NCR</em></h1>
         <p class="hero-sub">Order online, explore restaurants, and enjoy<br>the city's best culinary experiences.</p>
 
         <div class="search-bar">
@@ -155,71 +172,41 @@
   <!-- FOOTER -->
   <footer>
     <div class="footer-grid">
-
       <div class="footer-brand footer-col">
-        <div class="footer-logo">
-          <img src="https://b.zmtcdn.com/web_assets/b40b97e677bc7b2ca77c58c61db266fe1603954218.png" alt="Zomato" />
-        </div>
-        <p>Discover the best food & drinks in your city. Delivering joy, one meal at a time.</p>
+        <img src="https://b.zmtcdn.com/web_assets/b40b97e677bc7b2ca77c58c61db266fe1603954218.png" alt="Zomato" />
+        <p>Discover the best food &amp; drinks in your city. Delivering joy, one meal at a time.</p>
         <div class="socials">
-          <a href="https://www.linkedin.com/company/zomato/" target="_blank" rel="noopener">in</a>
-          <a href="https://www.instagram.com/zomato/" target="_blank" rel="noopener">ig</a>
-          <a href="https://twitter.com/zomato" target="_blank" rel="noopener">tw</a>
-          <a href="https://www.youtube.com/zomato" target="_blank" rel="noopener">yt</a>
-          <a href="https://www.facebook.com/Zomato" target="_blank" rel="noopener">fb</a>
+          <a href="https://www.linkedin.com/company/zomato/" target="_blank">in</a>
+          <a href="https://www.instagram.com/zomato/" target="_blank">ig</a>
+          <a href="https://twitter.com/zomato" target="_blank">tw</a>
+          <a href="https://www.youtube.com/zomato" target="_blank">yt</a>
+          <a href="https://www.facebook.com/Zomato" target="_blank">fb</a>
         </div>
       </div>
-
       <div class="footer-col">
         <h4>About Zomato</h4>
-        <ul>
-          <li>Who We Are</li>
-          <li>Blog</li>
-          <li>Work With Us</li>
-          <li>Investor Relations</li>
-          <li>Report Fraud</li>
-          <li>Contact Us</li>
-        </ul>
+        <ul><li>Who we are</li><li>Blog</li><li>Work with us</li><li>Investor Relations</li><li>Report Fraud</li><li>Contact us</li></ul>
       </div>
-
       <div class="footer-col">
         <h4>Zomaverse</h4>
-        <ul>
-          <li>Zomato</li>
-          <li>Blinkit</li>
-          <li>Feeding India</li>
-          <li>Hyperpure</li>
-          <li>Zomaland</li>
-        </ul>
+        <ul><li>Zomato</li><li>Blinkit</li><li>Feeding India</li><li>Hyperpure</li><li>Zomaland</li></ul>
       </div>
-
       <div class="footer-col">
         <h4>For Restaurants</h4>
-        <ul>
-          <li>Partner With Us</li>
-          <li>Apps For You</li>
-        </ul>
+        <ul><li>Partner With Us</li><li>Apps for you</li></ul>
         <h4 style="margin-top:20px">For Enterprises</h4>
-        <ul>
-          <li>Zomato For Enterprises</li>
-        </ul>
+        <ul><li>Zomato For Enterprises</li></ul>
+        <h4 style="margin-top:20px">Learn More</h4>
+        <ul><li>Privacy</li><li>Security</li><li>Terms</li><li>Sitemap</li></ul>
       </div>
-
       <div class="footer-col">
-        <h4>Learn More</h4>
-        <ul>
-          <li>Privacy</li>
-          <li>Security</li>
-          <li>Terms</li>
-          <li>Sitemap</li>
-        </ul>
+        <h4>Download App</h4>
+        <img src="https://b.zmtcdn.com/data/webuikit/23e930757c3df49840c482a8638bf5c31556001144.png" style="height:36px;border-radius:6px;margin-bottom:10px;display:block" alt="App Store" />
+        <img src="https://b.zmtcdn.com/data/webuikit/9f0c85a5e33adb783fa0aef667075f9e1556003622.png" style="height:36px;border-radius:6px;display:block" alt="Google Play" />
       </div>
-
     </div>
-
     <div class="footer-bottom">
-      By continuing past this page, you agree to our Terms of Service, Cookie Policy, Privacy Policy and Content Policies.
-      All trademarks are properties of their respective owners. 2008-2025 © Zomato™ Ltd. All rights reserved.
+      <span>By continuing past this page, you agree to our Terms of Service, Cookie Policy, Privacy Policy and Content Policies. All trademarks are properties of their respective owners. 2008-2023 © Zomato™ Ltd. All rights reserved.</span>
     </div>
   </footer>
 
@@ -264,18 +251,6 @@
         document.getElementById('searchInput').focus();
       });
     });
-
-    /* LOAD NAVBAR */
-    async function loadComponent(id, file) {
-      try {
-        const res  = await fetch(file);
-        const text = await res.text();
-        document.getElementById(id).innerHTML = text;
-      } catch(e) {
-        console.warn('Could not load:', file);
-      }
-    }
-    loadComponent('navbar', './components/navbar.html');
   </script>
 
 </body>

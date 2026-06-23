@@ -85,6 +85,23 @@ h1 {
     background-color: #4b5563;
 }
 
+.clear-history-btn {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 8px;
+    background: #ef4444;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.clear-history-btn:hover {
+    opacity: 0.9;
+}
+
 .btn.save {
     width: 100%;
     background-color: #10b981;

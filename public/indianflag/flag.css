@@ -401,3 +401,22 @@ audio {
   }
 
 }
+.hero-section h1 {
+  animation: fadeUp 1s ease;
+}
+
+.hero-section p {
+  animation: fadeUp 1.3s ease;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

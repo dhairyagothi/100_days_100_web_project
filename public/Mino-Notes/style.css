@@ -5,18 +5,18 @@
   --bg-main: #f8fafc;
   --bg-sidebar: #ffffff;
   --bg-card: #ffffff;
-  
+
   --text-main: #1e293b;
   --text-muted: #64748b;
   --text-light: #94a3b8;
-  
+
   --color-primary: #2563eb;
   --color-primary-hover: #1d4ed8;
   --color-primary-light: #eff6ff;
-  
+
   --border-light: #f1f5f9;
   --border-medium: #e2e8f0;
-  
+
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.05);
   --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.08);
@@ -137,7 +137,9 @@ body {
   gap: 8px;
   cursor: pointer;
   box-shadow: 0 4px 10px rgba(30, 41, 59, 0.2);
-  transition: background-color var(--transition-fast), transform var(--transition-fast);
+  transition:
+    background-color var(--transition-fast),
+    transform var(--transition-fast);
 }
 
 .add-new-btn:hover {
@@ -171,8 +173,14 @@ body {
 }
 
 @keyframes scale-up {
-  0% { transform: scale(0.96); opacity: 0; }
-  100% { transform: scale(1); opacity: 1; }
+  0% {
+    transform: scale(0.96);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 .add-dropdown-menu.active {
@@ -225,9 +233,15 @@ body {
   transform: scale(1.3);
 }
 
-.color-dot.yellow { background-color: #fffbe5; }
-.color-dot.blue { background-color: #e1f0ff; }
-.color-dot.red { background-color: #ffe5e5; }
+.color-dot.yellow {
+  background-color: #fffbe5;
+}
+.color-dot.blue {
+  background-color: #e1f0ff;
+}
+.color-dot.red {
+  background-color: #ffe5e5;
+}
 
 /* Sidebar Navigation Items */
 .sidebar-nav {
@@ -250,7 +264,9 @@ body {
   align-items: center;
   gap: 12px;
   cursor: pointer;
-  transition: background-color var(--transition-fast), color var(--transition-fast);
+  transition:
+    background-color var(--transition-fast),
+    color var(--transition-fast);
 }
 
 .nav-item:hover {
@@ -271,7 +287,6 @@ body {
 .nav-item.active .nav-icon {
   stroke-width: 2.5px;
 }
-
 
 /* ==========================================================================
    Main Workspace Frame
@@ -329,7 +344,9 @@ body {
   align-items: center;
   padding: 0 16px;
   gap: 10px;
-  transition: width var(--transition-fast), background-color var(--transition-fast);
+  transition:
+    width var(--transition-fast),
+    background-color var(--transition-fast);
 }
 
 .search-box:focus-within {
@@ -362,7 +379,6 @@ body {
   display: flex;
   align-items: center;
 }
-
 
 .header-menu-btn {
   background: none;
@@ -480,9 +496,10 @@ body {
   gap: 12px;
   cursor: pointer;
   box-shadow: var(--shadow-sm);
-  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.15), 
-              box-shadow 0.25s ease, 
-              border-color 0.25s ease;
+  transition:
+    transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.15),
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
 }
 
 .folder-card:hover {
@@ -527,7 +544,7 @@ body {
 }
 
 .folder-options-btn:hover {
-  background-color: rgba(0,0,0,0.04);
+  background-color: rgba(0, 0, 0, 0.04);
 }
 
 .folder-meta {
@@ -551,7 +568,8 @@ body {
 }
 
 /* Dashed creation button templates */
-.folder-create-card, .note-create-card {
+.folder-create-card,
+.note-create-card {
   border: 1.5px dashed var(--border-medium);
   background: transparent;
   box-shadow: none;
@@ -564,7 +582,8 @@ body {
   gap: 8px;
 }
 
-.folder-create-card:hover, .note-create-card:hover {
+.folder-create-card:hover,
+.note-create-card:hover {
   background: #ffffff;
   border-color: var(--text-light);
   color: var(--text-main);
@@ -648,8 +667,9 @@ body {
   box-shadow: var(--shadow-sm);
   border: 1px solid rgba(0, 0, 0, 0.02);
   min-height: 220px;
-  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.15), 
-              box-shadow 0.25s ease;
+  transition:
+    transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.15),
+    box-shadow 0.25s ease;
 }
 
 .note-card:hover {
@@ -679,7 +699,9 @@ body {
   display: flex;
   align-items: center;
   opacity: 0.5;
-  transition: opacity var(--transition-fast), background-color var(--transition-fast);
+  transition:
+    opacity var(--transition-fast),
+    background-color var(--transition-fast);
 }
 
 .note-card:hover .note-edit-icon-btn {
@@ -687,7 +709,7 @@ body {
 }
 
 .note-edit-icon-btn:hover {
-  background-color: rgba(0,0,0,0.04);
+  background-color: rgba(0, 0, 0, 0.04);
 }
 
 .note-card-body {
@@ -787,7 +809,12 @@ body {
 
 .lined-paper-list {
   list-style: none;
-  background-image: repeating-linear-gradient(transparent, transparent 27px, #e2e8f0 27px, #e2e8f0 28px);
+  background-image: repeating-linear-gradient(
+    transparent,
+    transparent 27px,
+    #e2e8f0 27px,
+    #e2e8f0 28px
+  );
   line-height: 28px;
   padding: 0;
   margin: 0;
@@ -829,7 +856,7 @@ body {
 }
 
 .checkbox-circle.checked::after {
-  content: "✔";
+  content: '✔';
   font-size: 8px;
   font-weight: 800;
   color: #d65e75;
@@ -850,12 +877,12 @@ body {
   cursor: text;
 }
 
-.task-text[contenteditable="true"]:focus {
+.task-text[contenteditable='true']:focus {
   text-overflow: clip;
   border-bottom: 1px dashed rgba(51, 65, 85, 0.4);
 }
 
-.task-text[contenteditable="true"]:empty::before {
+.task-text[contenteditable='true']:empty::before {
   content: attr(placeholder);
   color: var(--text-light);
   opacity: 0.65;
@@ -873,7 +900,9 @@ body {
   font-size: 1.25rem;
   font-weight: 700;
   opacity: 0;
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -897,7 +926,6 @@ body {
 .lined-paper-item.empty-line {
   cursor: default;
 }
-
 
 .calendar-right-pane {
   flex: 1;
@@ -1043,8 +1071,14 @@ body {
 }
 
 @keyframes slide-in {
-  0% { transform: translateY(15px); opacity: 0; }
-  100% { transform: translateY(0); opacity: 1; }
+  0% {
+    transform: translateY(15px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 .modal-header {
@@ -1091,8 +1125,12 @@ body {
   width: 100%;
 }
 
-.flex-1 { flex: 1; }
-.flex-2 { flex: 2; }
+.flex-1 {
+  flex: 1;
+}
+.flex-2 {
+  flex: 2;
+}
 
 .form-label {
   font-size: 0.85rem;
@@ -1100,7 +1138,9 @@ body {
   color: var(--text-muted);
 }
 
-.form-input, .form-select, .form-textarea {
+.form-input,
+.form-select,
+.form-textarea {
   width: 100%;
   border: 1.5px solid var(--border-medium);
   border-radius: 10px;
@@ -1111,7 +1151,9 @@ body {
   color: var(--text-main);
 }
 
-.form-input:focus, .form-select:focus, .form-textarea:focus {
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
   border-color: var(--color-primary);
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
@@ -1194,12 +1236,27 @@ body {
 }
 
 /* Utility layout helpers */
-.text-center { text-align: center; }
-.margin-bottom-sm { margin-bottom: 8px; }
-.margin-bottom-md { margin-bottom: 16px; }
-.margin-bottom-lg { margin-bottom: 24px; }
-.text-muted { color: var(--text-muted); font-size: 0.88rem; line-height: 1.5; }
-.btn-block { width: 100%; height: 44px; }
+.text-center {
+  text-align: center;
+}
+.margin-bottom-sm {
+  margin-bottom: 8px;
+}
+.margin-bottom-md {
+  margin-bottom: 16px;
+}
+.margin-bottom-lg {
+  margin-bottom: 24px;
+}
+.text-muted {
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+.btn-block {
+  width: 100%;
+  height: 44px;
+}
 .plan-price-card {
   padding: 14px;
   background-color: var(--color-primary-light);
@@ -1208,9 +1265,20 @@ body {
   display: inline-block;
   width: 100%;
 }
-.price-val { font-size: 1.8rem; font-weight: 800; color: var(--color-primary); }
-.price-period { font-size: 0.9rem; color: var(--text-muted); font-weight: 500; }
-.small-disclaimer { font-size: 0.72rem; color: var(--text-light); }
+.price-val {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--color-primary);
+}
+.price-period {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+.small-disclaimer {
+  font-size: 0.72rem;
+  color: var(--text-light);
+}
 
 /* ==========================================================================
    Note details view modal styling
@@ -1232,7 +1300,9 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background-color var(--transition-fast), color var(--transition-fast);
+  transition:
+    background-color var(--transition-fast),
+    color var(--transition-fast);
 }
 
 .view-action-btn:hover {
@@ -1317,23 +1387,23 @@ body {
     transform: translateX(-100%);
     box-shadow: var(--shadow-lg);
   }
-  
+
   .sidebar.active {
     transform: translateX(0);
   }
-  
+
   .mobile-menu-toggle {
     display: flex;
   }
-  
+
   .workspace-scroll-container {
     padding: 20px;
   }
-  
+
   .folders-grid {
     grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
   }
-  
+
   .notes-grid {
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   }

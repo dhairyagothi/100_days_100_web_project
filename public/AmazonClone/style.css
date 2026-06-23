@@ -12,6 +12,26 @@
     align-items: center;
     justify-content: space-evenly;
 }
+.navigation {
+    padding: 5px 1px;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    font-weight: 400;
+}
+
+.navigation:hover {
+    border-color: white;
+}
+
+.sub-head {
+    cursor:pointer;
+}
+.sub-head:hover {
+    cursor:pointer;
+    text-decoration: underline;
+}
 .Navlogo{
     height:50px;
     width:100px;
@@ -22,9 +42,6 @@
     background-size: cover;
     height:50px;
     width: 100px;
-}
-.border{
-    border: 2px solid transparent;
 }
 .border:hover{
     border:2px solid white;
