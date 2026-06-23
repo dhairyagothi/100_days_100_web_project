@@ -363,6 +363,102 @@
         </section>
       </div>
 
+      <!-- ALARM SYSTEM - NEW SECTION -->
+<section class="panel alarm-panel" aria-label="Alarm System">
+  <div class="panel-header">
+    <div class="panel-title-group">
+      <h2>⏰ Alarm System</h2>
+      <p>Set alarms with full snooze control</p>
+    </div>
+    <div class="panel-icon">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="12" cy="13" r="8"/>
+        <path d="M12 9v4l2 2"/>
+        <path d="M5 3L2 6"/>
+        <path d="M22 6l-3-3"/>
+        <path d="M6.38 18.7L4 21"/>
+        <path d="M17.64 18.7L20 21"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="alarm-container">
+    <!-- Alarm Input Section -->
+    <div class="alarm-input-section">
+      <div class="alarm-time-inputs">
+        <div class="time-field">
+          <input type="number" id="alarmHour" class="time-input" placeholder="08" min="0" max="23" value="08"/>
+          <label>HRS</label>
+        </div>
+        <div class="time-separator">:</div>
+        <div class="time-field">
+          <input type="number" id="alarmMinute" class="time-input" placeholder="00" min="0" max="59" value="00"/>
+          <label>MIN</label>
+        </div>
+        <div class="time-separator">:</div>
+        <div class="time-field">
+          <input type="number" id="alarmSecond" class="time-input" placeholder="00" min="0" max="59" value="00"/>
+          <label>SEC</label>
+        </div>
+      </div>
+
+      <div class="alarm-controls">
+        <button class="action-btn primary-action" onclick="setAlarm()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+          </svg>
+          Set Alarm
+        </button>
+        <button class="action-btn secondary-action" onclick="snoozeAlarm()" id="snoozeBtn" style="display:none;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
+          </svg>
+          Snooze (5min)
+        </button>
+        <button class="action-btn ghost-action" onclick="cancelAlarm()" id="cancelAlarmBtn" style="display:none;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M18 6L6 18M6 6l12 12" stroke-linecap="round"/>
+          </svg>
+          Cancel Alarm
+        </button>
+      </div>
+    </div>
+
+    <!-- Active Alarms List -->
+    <div class="alarm-list">
+      <h3>Active Alarms</h3>
+      <div id="alarmListContainer" class="alarm-items">
+        <div class="alarm-empty-state">No active alarms. Set one above!</div>
+      </div>
+    </div>
+
+    <!-- Alarm Alert Overlay -->
+    <div id="alarmAlert" class="alarm-alert-overlay" style="display:none;">
+      <div class="alarm-alert-content">
+        <div class="alarm-alert-icon">🔔</div>
+        <h2 id="alarmAlertMessage">⏰ ALARM! Time's Up!</h2>
+        <p id="alarmAlertTime">08:00:00</p>
+        <div class="alarm-alert-actions">
+          <button class="action-btn primary-action" onclick="dismissAlarm()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M20 6L9 17l-5-5" stroke-linecap="round"/>
+            </svg>
+            Dismiss
+          </button>
+          <button class="action-btn secondary-action" onclick="snoozeAlarm()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+            Snooze (5min)
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
       <!-- WORLD TIMEZONE MAP -->
       <section class="panel map-panel" aria-label="World Timezone Map">
         <div class="map-panel-header">

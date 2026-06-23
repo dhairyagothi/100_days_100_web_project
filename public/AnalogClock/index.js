@@ -1130,3 +1130,423 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 });
+
+// ─────────────────────────────────────────────
+// 16. ALARM SYSTEM
+// ─────────────────────────────────────────────
+
+// Alarm state
+let alarms = [];
+let alarmInterval = null;
+let alarmTriggered = false;
+let alarmSound = null;
+
+// Load alarms from localStorage
+const savedAlarms = localStorage.getItem('chronos_alarms');
+if (savedAlarms) {
+  try {
+    alarms = JSON.parse(savedAlarms);
+  } catch (e) {
+    alarms = [];
+  }
+}
+
+// Initialize alarm sound
+function initAlarmSound() {
+  if (!alarmSound) {
+    alarmSound = document.getElementById('timerSound');
+    if (!alarmSound) {
+      // Create audio element if it doesn't exist
+      alarmSound = new Audio('timer.mp3');
+      alarmSound.preload = 'auto';
+      alarmSound.loop = true;
+    }
+  }
+}
+
+// Set new alarm
+window.setAlarm = function() {
+  const hourInput = document.getElementById('alarmHour');
+  const minuteInput = document.getElementById('alarmMinute');
+  const secondInput = document.getElementById('alarmSecond');
+
+  const hour = Math.max(0, Math.min(23, parseInt(hourInput?.value) || 0));
+  const minute = Math.max(0, Math.min(59, parseInt(minuteInput?.value) || 0));
+  const second = Math.max(0, Math.min(59, parseInt(secondInput?.value) || 0));
+
+  // Create alarm time
+  const now = new Date();
+  const alarmTime = new Date(now);
+  alarmTime.setHours(hour, minute, second, 0);
+
+  // If alarm time is in the past, set for tomorrow
+  if (alarmTime <= now) {
+    alarmTime.setDate(alarmTime.getDate() + 1);
+  }
+
+  const alarm = {
+    id: Date.now().toString(),
+    hour: hour,
+    minute: minute,
+    second: second,
+    targetTime: alarmTime.toISOString(),
+    active: true,
+    triggered: false,
+    snoozed: false,
+    snoozeCount: 0
+  };
+
+  alarms.push(alarm);
+  localStorage.setItem('chronos_alarms', JSON.stringify(alarms));
+
+  renderAlarmList();
+  startAlarmChecker();
+
+  // Clear inputs
+  hourInput.value = '';
+  minuteInput.value = '';
+  secondInput.value = '';
+
+  // Show feedback
+  showToast('⏰ Alarm set for ' + formatTime(hour, minute, second));
+};
+
+// Render alarm list
+function renderAlarmList() {
+  const container = document.getElementById('alarmListContainer');
+  if (!container) return;
+
+  if (alarms.length === 0) {
+    container.innerHTML = '<div class="alarm-empty-state">No active alarms. Set one above!</div>';
+    return;
+  }
+
+  container.innerHTML = alarms.map(alarm => {
+    const isActive = alarm.active && !alarm.triggered;
+    const status = isActive ? '⏳ Waiting' : 
+                   alarm.triggered ? '🔔 Triggered' : 
+                   '⏸️ Inactive';
+    const statusClass = alarm.triggered ? 'triggered' : 'active';
+
+    return `
+      <div class="alarm-item" data-id="${alarm.id}">
+        <div class="alarm-item-info">
+          <div class="alarm-item-time">${formatTime(alarm.hour, alarm.minute, alarm.second)}</div>
+          <div class="alarm-item-status ${statusClass}">
+            ${status} ${alarm.snoozed ? '⏰ Snoozed' : ''}
+            ${alarm.snoozeCount > 0 ? `(${alarm.snoozeCount}x snooze)` : ''}
+          </div>
+        </div>
+        <div class="alarm-item-actions">
+          <button onclick="deleteAlarm('${alarm.id}')" title="Delete Alarm">🗑️</button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// Format time helper
+function formatTime(hour, minute, second = 0) {
+  return [hour, minute, second]
+    .map(n => String(n).padStart(2, '0'))
+    .join(':');
+}
+
+// Delete alarm
+window.deleteAlarm = function(id) {
+  alarms = alarms.filter(a => a.id !== id);
+  localStorage.setItem('chronos_alarms', JSON.stringify(alarms));
+  renderAlarmList();
+  if (alarms.length === 0) {
+    stopAlarmChecker();
+  }
+};
+
+// Start alarm checker
+function startAlarmChecker() {
+  if (alarmInterval) return;
+  
+  alarmInterval = setInterval(checkAlarms, 1000);
+}
+
+// Stop alarm checker
+function stopAlarmChecker() {
+  if (alarmInterval) {
+    clearInterval(alarmInterval);
+    alarmInterval = null;
+  }
+}
+
+// Check alarms
+function checkAlarms() {
+  const now = new Date();
+  
+  alarms.forEach(alarm => {
+    // Skip if alarm is not active, already triggered, or snoozed
+    if (!alarm.active || alarm.triggered) return;
+    
+    const targetTime = new Date(alarm.targetTime);
+    
+    // Check if alarm time has passed
+    if (now >= targetTime) {
+      triggerAlarm(alarm.id);
+    }
+  });
+}
+
+// Trigger alarm
+function triggerAlarm(alarmId) {
+  const alarm = alarms.find(a => a.id === alarmId);
+  if (!alarm || alarm.triggered) return;
+
+  alarm.triggered = true;
+  alarm.active = false;
+  localStorage.setItem('chronos_alarms', JSON.stringify(alarms));
+
+  renderAlarmList();
+
+  // Show alarm alert
+  showAlarmAlert(alarm);
+}
+
+// Show alarm alert
+function showAlarmAlert(alarm) {
+  alarmTriggered = true;
+  
+  // Show alert overlay
+  const alertOverlay = document.getElementById('alarmAlert');
+  const alertMessage = document.getElementById('alarmAlertMessage');
+  const alertTime = document.getElementById('alarmAlertTime');
+  
+  if (alertMessage) {
+    alertMessage.textContent = `⏰ ALARM! ${formatTime(alarm.hour, alarm.minute, alarm.second)}`;
+  }
+  if (alertTime) {
+    alertTime.textContent = `Triggered at ${new Date().toLocaleTimeString()}`;
+  }
+  if (alertOverlay) {
+    alertOverlay.style.display = 'flex';
+  }
+
+  // Show snooze and cancel buttons
+  document.getElementById('snoozeBtn').style.display = 'flex';
+  document.getElementById('cancelAlarmBtn').style.display = 'flex';
+
+  // Play alarm sound
+  playAlarmSound();
+
+  // Trigger haptic feedback if available
+  if (navigator.vibrate) {
+    navigator.vibrate([500, 200, 500, 200, 1000]);
+  }
+
+  // Add alarm ID to overlay for reference
+  alertOverlay.dataset.alarmId = alarm.id;
+}
+
+// Play alarm sound
+function playAlarmSound() {
+  initAlarmSound();
+  if (alarmSound) {
+    alarmSound.currentTime = 0;
+    alarmSound.loop = true;
+    alarmSound.play().catch(err => console.log('Audio playback error:', err));
+  }
+}
+
+// Stop alarm sound
+function stopAlarmSound() {
+  if (alarmSound) {
+    alarmSound.pause();
+    alarmSound.currentTime = 0;
+    alarmSound.loop = false;
+  }
+}
+
+// Dismiss alarm
+window.dismissAlarm = function() {
+  const alertOverlay = document.getElementById('alarmAlert');
+  const alarmId = alertOverlay?.dataset.alarmId;
+  
+  if (alarmId) {
+    const alarm = alarms.find(a => a.id === alarmId);
+    if (alarm) {
+      alarm.active = false;
+      alarm.triggered = false;
+      localStorage.setItem('chronos_alarms', JSON.stringify(alarms));
+    }
+  }
+
+  alertOverlay.style.display = 'none';
+  document.getElementById('snoozeBtn').style.display = 'none';
+  document.getElementById('cancelAlarmBtn').style.display = 'none';
+  
+  stopAlarmSound();
+  alarmTriggered = false;
+  
+  renderAlarmList();
+  
+  // Show dismissal notification
+  showToast('🔕 Alarm dismissed');
+};
+
+// Snooze alarm
+window.snoozeAlarm = function() {
+  const alertOverlay = document.getElementById('alarmAlert');
+  const alarmId = alertOverlay?.dataset.alarmId;
+  
+  if (!alarmId) {
+    // If no alarm ID, try to find any triggered alarm
+    const triggeredAlarm = alarms.find(a => a.triggered);
+    if (triggeredAlarm) {
+      const id = triggeredAlarm.id;
+      performSnooze(id);
+    }
+  } else {
+    performSnooze(alarmId);
+  }
+};
+
+function performSnooze(alarmId) {
+  const alarm = alarms.find(a => a.id === alarmId);
+  if (!alarm) return;
+
+  // Set snooze for 5 minutes
+  const now = new Date();
+  const snoozeTime = new Date(now.getTime() + 5 * 60 * 1000);
+  
+  alarm.targetTime = snoozeTime.toISOString();
+  alarm.triggered = false;
+  alarm.active = true;
+  alarm.snoozed = true;
+  alarm.snoozeCount = (alarm.snoozeCount || 0) + 1;
+  
+  localStorage.setItem('chronos_alarms', JSON.stringify(alarms));
+
+  // Hide alert
+  document.getElementById('alarmAlert').style.display = 'none';
+  document.getElementById('snoozeBtn').style.display = 'none';
+  document.getElementById('cancelAlarmBtn').style.display = 'none';
+  
+  stopAlarmSound();
+  alarmTriggered = false;
+  
+  renderAlarmList();
+  
+  // Show snooze notification
+  showToast(`⏰ Snoozed for 5 minutes (${alarm.snoozeCount}x)`);
+
+  // Restart checker
+  startAlarmChecker();
+}
+
+// Cancel alarm (from button)
+window.cancelAlarm = function() {
+  const alertOverlay = document.getElementById('alarmAlert');
+  const alarmId = alertOverlay?.dataset.alarmId;
+  
+  if (alarmId) {
+    const alarm = alarms.find(a => a.id === alarmId);
+    if (alarm) {
+      // Remove the alarm completely
+      alarms = alarms.filter(a => a.id !== alarmId);
+      localStorage.setItem('chronos_alarms', JSON.stringify(alarms));
+    }
+  }
+
+  alertOverlay.style.display = 'none';
+  document.getElementById('snoozeBtn').style.display = 'none';
+  document.getElementById('cancelAlarmBtn').style.display = 'none';
+  
+  stopAlarmSound();
+  alarmTriggered = false;
+  
+  renderAlarmList();
+  
+  showToast('⏰ Alarm cancelled');
+  
+  if (alarms.length === 0) {
+    stopAlarmChecker();
+  }
+};
+
+// Toast notification
+function showToast(message) {
+  // Check if toast exists, create if not
+  let toast = document.getElementById('toastNotification');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'toastNotification';
+    toast.style.cssText = `
+      position: fixed;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--panel);
+      color: var(--text);
+      padding: 1rem 2rem;
+      border-radius: 14px;
+      border: 1px solid var(--gold);
+      font-family: 'Outfit', sans-serif;
+      z-index: 10002;
+      transition: all 0.3s ease;
+      opacity: 0;
+      transform: translateX(-50%) translateY(20px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      backdrop-filter: blur(20px);
+    `;
+    document.body.appendChild(toast);
+  }
+
+  toast.textContent = message;
+  toast.style.opacity = '1';
+  toast.style.transform = 'translateX(-50%) translateY(0)';
+
+  clearTimeout(toast._timeout);
+  toast._timeout = setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateX(-50%) translateY(20px)';
+  }, 3000);
+}
+
+// Initialize alarm system on load
+function initAlarmSystem() {
+  renderAlarmList();
+  
+  // Start checking if there are active alarms
+  const hasActiveAlarms = alarms.some(a => a.active);
+  if (hasActiveAlarms) {
+    startAlarmChecker();
+  }
+
+  // Set default alarm time to current time + 1 minute (for testing)
+  // Comment this out for production
+  const now = new Date();
+  const testTime = new Date(now.getTime() + 60000);
+  document.getElementById('alarmHour').value = String(testTime.getHours()).padStart(2, '0');
+  document.getElementById('alarmMinute').value = String(testTime.getMinutes()).padStart(2, '0');
+  document.getElementById('alarmSecond').value = String(testTime.getSeconds()).padStart(2, '0');
+
+  // Keyboard shortcut for snooze (S key)
+  document.addEventListener('keydown', (e) => {
+    if (e.key.toLowerCase() === 's' && alarmTriggered) {
+      e.preventDefault();
+      snoozeAlarm();
+    }
+    if (e.key === 'Escape' && alarmTriggered) {
+      e.preventDefault();
+      dismissAlarm();
+    }
+  });
+
+  // Cleanup on page unload
+  window.addEventListener('beforeunload', () => {
+    stopAlarmSound();
+    if (alarmInterval) {
+      clearInterval(alarmInterval);
+    }
+  });
+}
+
+// Call initialization
+initAlarmSystem();
