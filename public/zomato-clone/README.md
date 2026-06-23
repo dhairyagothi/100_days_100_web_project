@@ -98,6 +98,17 @@ http://localhost:3000
 | DELETE | /api/food/:id | Delete food      |
 
 ---
+## 🍽️ Restaurant Detail Page
+
+When a user clicks on a restaurant card, they are redirected to the detail page.
+
+* Displays restaurant name, ratings, address, and timings
+* Shows images and “View Gallery” option
+* Includes tabs: Overview, Order Online, Photos, and Menu
+* Menu and details are dynamically rendered using backend data
+
+This page allows users to explore restaurant details and view the menu easily.
+
 
 ## 📌 Notes
 
