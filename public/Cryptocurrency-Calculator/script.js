@@ -107,7 +107,13 @@ document.getElementById('calculate').addEventListener('click', async function ()
         if (isLoading) {
             calculateButton.disabled = true;
             calculateButton.textContent = 'Calculating...';
-            resultElement.innerHTML = '<span class="loading-spinner"></span> Fetching live rates...';
+            
+            resultElement.innerHTML = '';
+            const spinner = document.createElement('span');
+            spinner.className = 'loading-spinner';
+            resultElement.appendChild(spinner);
+            resultElement.appendChild(document.createTextNode(' Fetching live rates...'));
+            
             resultElement.className = 'loading-state';
         } else {
             calculateButton.disabled = false;
@@ -116,12 +122,40 @@ document.getElementById('calculate').addEventListener('click', async function ()
     }
 
     function showError(message) {
-        resultElement.innerHTML = `<div class="error-container"><span class="error-icon">⚠️</span> ${message}</div>`;
+        resultElement.innerHTML = '';
+        
+        const errorContainer = document.createElement('div');
+        errorContainer.className = 'error-container';
+
+        const iconSpan = document.createElement('span');
+        iconSpan.className = 'error-icon';
+        iconSpan.textContent = '⚠️';
+
+        const textNode = document.createTextNode(' ' + message);
+
+        errorContainer.appendChild(iconSpan);
+        errorContainer.appendChild(textNode);
+        
+        resultElement.appendChild(errorContainer);
         resultElement.className = 'error-message';
     }
 
     function showSuccess(message) {
-        resultElement.innerHTML = `<div class="success-container"><span class="success-icon">✅</span> ${message}</div>`;
+        resultElement.innerHTML = '';
+
+        const successContainer = document.createElement('div');
+        successContainer.className = 'success-container';
+
+        const iconSpan = document.createElement('span');
+        iconSpan.className = 'success-icon';
+        iconSpan.textContent = '✅';
+
+        const textNode = document.createTextNode(' ' + message);
+
+        successContainer.appendChild(iconSpan);
+        successContainer.appendChild(textNode);
+
+        resultElement.appendChild(successContainer);
         resultElement.className = 'success-message';
     }
 });
