@@ -1534,6 +1534,19 @@ function renderRecommendationsForProject(project) {
     return;
   }
 
+function getRecommendations(project, allProjects) {
+  if (!project || !allProjects) return [];
+  return allProjects
+    .filter(function (p) {
+      if (p.id === project.id) return false;
+      const shared = (p.techStack || []).filter(function (t) {
+        return (project.techStack || []).includes(t);
+      });
+      return shared.length > 0 || p.category === project.category;
+    })
+    .slice(0, 6);
+}
+
   const recommendations = getRecommendations(project, PROJECTS);
   if (!recommendations.length) {
     const noRecommendations = document.createElement("p");

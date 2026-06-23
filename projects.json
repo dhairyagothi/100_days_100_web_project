@@ -3057,5 +3057,19 @@
     ],
     "difficulty": "intermediate",
     "projectPath": "./public/PhishGuard-AI-Terminal/index.html"
-   }
+   },
+   {
+    "projectNo": 241,
+    "projectName": "Pokemon Battle Simulator",
+    "projectType": "Tool",
+    "projectDesc": "A retro, GBA-style interactive Pokemon battle simulator built using HTML, CSS, and Vanilla JavaScript.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript",
+      "canvas"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/Pokemon_Battle_Simulator/index.html"
+   } 
 ]
