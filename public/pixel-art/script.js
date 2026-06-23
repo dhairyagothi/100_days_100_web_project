@@ -5,6 +5,10 @@ const sizeBtn = document.getElementById("size-btn");
 const colorPicker = document.getElementById("color-picker");
 const rubberBtn = document.getElementById("rubber-btn");
 const clearBtn = document.getElementById("clear-btn");
+const toggleGridBtn =
+document.getElementById("toggle-grid-btn");
+
+let gridVisible = true;
 
 let isDrawing = false;
 let isRubberMode = false;
@@ -84,3 +88,18 @@ sizeBtn.addEventListener("click", makeGrid);
 clearBtn.addEventListener("click", clearGrid);
 
 makeGrid();
+
+toggleGridBtn.addEventListener("click", () => {
+
+    gridVisible = !gridVisible;
+
+    grid.classList.toggle(
+        "hide-grid",
+        !gridVisible
+    );
+
+    toggleGridBtn.textContent =
+        gridVisible
+            ? "Hide Grid Lines"
+            : "Show Grid Lines";
+});
