@@ -5,6 +5,10 @@ const sizeBtn = document.getElementById("size-btn");
 const colorPicker = document.getElementById("color-picker");
 const rubberBtn = document.getElementById("rubber-btn");
 const clearBtn = document.getElementById("clear-btn");
+let width = parseInt(widthInput.value) || 16;
+let height = parseInt(heightInput.value) || 16;
+const templateSelect = document.getElementById("template-select");
+const loadTemplateBtn = document.getElementById("load-template-btn");
 
 let isDrawing = false;
 let isRubberMode = false;
@@ -84,3 +88,76 @@ sizeBtn.addEventListener("click", makeGrid);
 clearBtn.addEventListener("click", clearGrid);
 
 makeGrid();
+
+const templates = {
+    flower: [
+        [0,0,1,1,0,0],
+        [0,1,2,2,1,0],
+        [1,2,2,2,2,1],
+        [0,1,2,2,1,0],
+        [0,0,3,3,0,0]
+    ],
+
+    heart: [
+        [1,1,0,0,1,1],
+        [1,1,1,1,1,1],
+        [1,1,1,1,1,1],
+        [0,1,1,1,1,0],
+        [0,0,1,1,0,0]
+    ]
+};
+
+function loadTemplate() {
+
+    const templateName = templateSelect.value;
+
+    if (!templateName) {
+        alert("Select a template");
+        return;
+    }
+
+    const template = templates[templateName];
+
+    grid.innerHTML = "";
+
+    const rows = template.length;
+    const cols = template[0].length;
+
+    grid.style.gridTemplateColumns =
+        `repeat(${cols}, ${CELL_SIZE}px)`;
+
+    grid.style.gridTemplateRows =
+        `repeat(${rows}, ${CELL_SIZE}px)`;
+
+    template.forEach(row => {
+        row.forEach(value => {
+
+            const cell = document.createElement("div");
+
+            cell.classList.add("cell");
+
+            if (value !== 0) {
+                cell.textContent = value;
+            }
+
+            /* DRAWING SUPPORT */
+
+            cell.addEventListener("mousedown", (e) => {
+                e.preventDefault();
+                isDrawing = true;
+                colorize(cell);
+            });
+
+            cell.addEventListener("mouseenter", () => {
+                if (isDrawing) {
+                    colorize(cell);
+                }
+            });
+
+            grid.appendChild(cell);
+
+        });
+    });
+}
+
+loadTemplateBtn.addEventListener("click", loadTemplate);

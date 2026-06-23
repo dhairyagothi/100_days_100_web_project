@@ -125,3 +125,20 @@ button.clear-btn:hover {
   border-top: 1px solid var(--grid-border);
   border-left: 1px solid var(--grid-border);
 }
+
+.color-by-number-panel{
+    margin:20px auto;
+    text-align:center;
+}
+
+#color-guide{
+    margin-top:10px;
+}
+
+.pixel-cell{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:12px;
+    font-weight:bold;
+}
