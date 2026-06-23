@@ -477,50 +477,6 @@ body{
 
 /* =========================
    ALARMS LIST
-========================= */
-
-.alarms-list{
-    display:flex;
-    flex-direction:column;
-    gap:14px;
-}
-
-.alarm-item{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-
-    background:rgba(255,255,255,.05);
-
-    border:1px solid rgba(255,255,255,.08);
-
-    border-radius:16px;
-
-    padding:18px;
-}
-
-.alarm-item-left{
-    display:flex;
-    flex-direction:column;
-    gap:6px;
-}
-
-.alarm-item-time{
-    font-family:'Orbitron',sans-serif;
-
-    font-size:1.4rem;
-
-    color: var(--text);
-}
-
-.alarm-item-ampm{
-    color:var(--primary);
-
-    margin-left:6px;
-
-    font-size:.85rem;
-}
-
 .alarm-item-label{
     color:var(--text-muted);
 
@@ -888,78 +844,6 @@ body{
 
 /* ==========================
    EMPTY HISTORY
-========================== */
-
-.history-logs .log-entry:only-child{
-    justify-content:center;
-
-    opacity:.75;
-}
-
-/* ==========================
-   THEME SYSTEM
-========================== */
-
-/* LIGHT */
-
-body{
-    --bg:#f4f7ff;
-
-    --card:#ffffff;
-
-    --card-light:
-        rgba(255,255,255,.85);
-
-    --text:#121212;
-
-    --text-muted:#6b7280;
-
-    --border:
-        rgba(0,0,0,.08);
-
-    --shadow:
-        0 10px 30px
-        rgba(0,0,0,.08);
-}
-
-
-/* DARK */
-
-body.dark-mode{
-
-    --bg:#0b1020;
-
-    --card:#121a2f;
-
-    --card-light:
-        rgba(255,255,255,.06);
-
-    --text:#ffffff;
-
-    --text-muted:#a9b0c7;
-
-    --border:
-        rgba(255,255,255,.08);
-
-    --shadow:
-        0 10px 30px
-        rgba(0,0,0,.35);
-}
-
-/* ==========================
-   RESPONSIVE
-========================== */
-
-@media (max-width:768px){
-
-    .history-header{
-        padding:14px 16px;
-    }
-
-    .log-entry{
-        padding:12px 14px;
-    }
-
     .log-entry span{
         font-size:.9rem;
     }

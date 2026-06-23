@@ -928,6 +928,7 @@ body.light-mode .btn-stats:hover {
 
 .dropdown-menu {
   display: none;
+  z-index: 999999 !important;
   position: absolute;
   top: 100%;
   right: 0;
@@ -938,7 +939,6 @@ body.light-mode .btn-stats:hover {
   border-radius: var(--radius-md);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
   backdrop-filter: blur(12px);
-  z-index: 1000;
   overflow: hidden;
   animation: fadeInDown 0.2s ease-out;
 }
@@ -3445,3 +3445,148 @@ body.custom-cursor-active .cursor-ring.is-visible {
 #randomProjectResult {
   width: 100%;
 }
+
+/* ============================================================
+   SKELETON SHIMMER LOADER SYSTEM
+   ============================================================ */
+
+.project-card.skeleton {
+  pointer-events: none;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+  box-shadow: none;
+}
+
+.project-card.skeleton::before,
+.project-card.skeleton::after {
+  display: none; /* Hide hover effect elements on skeleton cards */
+}
+
+.skeleton-line {
+  background: var(--border-hover);
+  border-radius: var(--radius-sm);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Shimmer Animation Effect */
+.skeleton-line::after,
+.skeleton-image::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.05) 20%,
+    rgba(255, 255, 255, 0.1) 60%,
+    transparent 100%
+  );
+  animation: skeleton-shimmer 1.6s infinite;
+}
+
+/* Support light mode with appropriate shimmer color */
+:root[data-theme="light"] .skeleton-line::after,
+:root[data-theme="light"] .skeleton-image::after {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0, 0, 0, 0.03) 20%,
+    rgba(0, 0, 0, 0.06) 60%,
+    transparent 100%
+  );
+}
+
+@keyframes skeleton-shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.skeleton-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 16px;
+}
+
+.skeleton-day {
+  width: 50px;
+  height: 12px;
+}
+
+.skeleton-category {
+  width: 70px;
+  height: 16px;
+  border-radius: 999px;
+}
+
+.skeleton-image {
+  margin: 12px 0;
+  border-radius: 8px;
+  aspect-ratio: 16/9;
+  background: var(--border-hover);
+  position: relative;
+  overflow: hidden;
+}
+
+.skeleton-title {
+  width: 75%;
+  height: 20px;
+  margin-bottom: 8px;
+  border-radius: var(--radius-sm);
+}
+
+.skeleton-description {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.skeleton-desc-line {
+  width: 100%;
+  height: 14px;
+}
+
+.skeleton-desc-line.short {
+  width: 60%;
+}
+
+.skeleton-tags {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.skeleton-tag {
+  width: 55px;
+  height: 18px;
+  border-radius: 4px;
+}
+
+.skeleton-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+}
+
+.skeleton-button {
+  width: 80px;
+  height: 24px;
+  border-radius: var(--radius-sm);
+}
+
+.skeleton-bookmark {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+}
+

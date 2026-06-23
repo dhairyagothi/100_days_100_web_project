@@ -21,14 +21,14 @@
 
 body.light {
   --bg: #f4f7fb;
-  --card: rgba(255,255,255,0.9);
-  --border: rgba(0,0,0,0.08);
+  --card: rgba(255, 255, 255, 0.9);
+  --border: rgba(0, 0, 0, 0.08);
   --text: #111827;
   --text-secondary: #6b7280;
 }
 
 body {
-  font-family: "Inter", sans-serif;
+  font-family: 'Inter', sans-serif;
   background: var(--bg);
   color: var(--text);
   min-height: 100vh;
@@ -86,7 +86,7 @@ body {
 
 .sidebar {
   width: 300px;
-  background: rgba(255,255,255,0.04);
+  background: rgba(255, 255, 255, 0.04);
   backdrop-filter: blur(18px);
   border-right: 1px solid var(--border);
   padding: 24px;
@@ -106,11 +106,7 @@ body {
 .logo {
   width: 60px;
   height: 60px;
-  background: linear-gradient(
-    135deg,
-    var(--primary),
-    #4f46e5
-  );
+  background: linear-gradient(135deg, var(--primary), #4f46e5);
   border-radius: 18px;
   display: grid;
   place-items: center;
@@ -162,11 +158,11 @@ body {
   border-radius: 12px;
   text-align: left;
   cursor: pointer;
-  transition: .3s;
+  transition: 0.3s;
 }
 
 .nav-links button:hover {
-  background: rgba(124,58,237,.15);
+  background: rgba(124, 58, 237, 0.15);
 }
 
 .nav-links i {
@@ -224,7 +220,7 @@ body {
 
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(4,1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 20px;
   margin-bottom: 30px;
 }
@@ -290,7 +286,7 @@ input,
 textarea,
 select {
   width: 100%;
-  background: rgba(255,255,255,.06);
+  background: rgba(255, 255, 255, 0.06);
   border: 1px solid var(--border);
   color: var(--text);
   border-radius: 12px;
@@ -310,11 +306,7 @@ button {
 .card button {
   width: 100%;
   margin-top: 15px;
-  background: linear-gradient(
-    135deg,
-    var(--primary),
-    var(--primary-light)
-  );
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
   border: none;
   color: white;
   padding: 14px;
@@ -339,9 +331,9 @@ button {
   border-radius: 18px;
   border: none;
   font-size: 1.7rem;
-  background: rgba(255,255,255,.08);
+  background: rgba(255, 255, 255, 0.08);
   cursor: pointer;
-  transition: .3s;
+  transition: 0.3s;
 }
 
 .mood-btn:hover {
@@ -354,7 +346,7 @@ button {
 
 .grid-2 {
   display: grid;
-  grid-template-columns: repeat(2,1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 15px;
 }
 
@@ -366,7 +358,7 @@ button {
   margin-top: 15px;
   padding: 15px;
   border-radius: 12px;
-  background: rgba(124,58,237,.1);
+  background: rgba(124, 58, 237, 0.1);
   border: 1px dashed var(--primary);
 }
 
@@ -414,11 +406,11 @@ button {
 .mobile-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,.5);
+  background: rgba(0, 0, 0, 0.5);
   z-index: 998;
   opacity: 0;
   visibility: hidden;
-  transition: .3s;
+  transition: 0.3s;
 }
 
 .mobile-overlay.show {
@@ -431,21 +423,19 @@ button {
 ========================= */
 
 @media (max-width: 1024px) {
-
   .stats-grid {
-    grid-template-columns: repeat(2,1fr);
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (max-width: 768px) {
-
   .sidebar {
     position: fixed;
     left: -100%;
     top: 0;
     width: 280px;
     z-index: 999;
-    transition: .35s;
+    transition: 0.35s;
   }
 
   .sidebar.show {
@@ -487,7 +477,6 @@ button {
 }
 
 @media (max-width: 480px) {
-
   .section-header h1 {
     font-size: 1.5rem;
   }
@@ -503,10 +492,6 @@ button {
 }
 
 .nav-links button.active {
-  background: linear-gradient(
-    135deg,
-    var(--primary),
-    var(--primary-light)
-  );
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
   color: white;
 }
