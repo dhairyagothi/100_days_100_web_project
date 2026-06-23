@@ -240,9 +240,9 @@ body{
 
 .btn-outline{
     background:transparent;
-    color:white;
+    color: var(--text);
 
-    border:1px solid rgba(255,255,255,.15);
+    border:1px solid var(--border);
 }
 
 .btn:hover{
@@ -435,7 +435,7 @@ body{
 
     background:rgba(255,255,255,.06);
 
-    color:white;
+    color: var(--text);
 
     font-size:.95rem;
 
@@ -468,7 +468,7 @@ body{
 .card h4{
     margin-bottom:16px;
 
-    color:white;
+    color: var(--text);
 
     font-size:1rem;
 
@@ -510,7 +510,7 @@ body{
 
     font-size:1.4rem;
 
-    color:white;
+    color: var(--text);
 }
 
 .alarm-item-ampm{
