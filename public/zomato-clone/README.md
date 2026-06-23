@@ -71,7 +71,9 @@ npm install
 npm install mongoose
 npm install express
 npm install cors
-npm install dotenv
+npm install dotenv 
+npm  install ejs 
+
 ```
 
 ### 3️⃣ Run the server
