@@ -1025,7 +1025,7 @@ function unpinClock(id) {
     timerRemaining = h * 3600 + m * 60 + s;
 
     if (timerRemaining <= 0) {
-      alert("Enter a timer duration.");
+      showPremiumToast("Enter a timer duration.");
       return;
     }
     timerTotal = timerRemaining;
@@ -1095,7 +1095,7 @@ function unpinClock(id) {
     </svg>
     <span>Exit Focus</span>`;
 
-  // Simple flag so keyboard shortcuts know the current state
+  // simple flag so keyboard shortcuts know the current state
   let focusModeActive = false;
 
   function enterFocusMode() {
@@ -1110,7 +1110,7 @@ function unpinClock(id) {
     if (focusBtn) focusBtn.innerHTML = ICON_FOCUS;
   }
 
-  // Header "Focus" button — toggles in and out
+  // header "Focus" button toggles in and out
   if (focusBtn) {
     focusBtn.addEventListener("click", () => {
       if (focusModeActive) {
@@ -1121,12 +1121,12 @@ function unpinClock(id) {
     });
   }
 
-  // Back arrow button — always exits
+  // back arrow button — always exits
   if (focusBackBtn) {
     focusBackBtn.addEventListener("click", exitFocusMode);
   }
 
-  // Keyboard shortcuts
+  // keyboard shortcuts
   document.addEventListener("keydown", (e) => {
     if (e.target.matches("input, textarea")) return;
 
@@ -1140,7 +1140,7 @@ function unpinClock(id) {
       }
     }
 
-    // Escape — exit focus mode if active
+    // escape — exit focus mode if active
     if (e.key === "Escape" && focusModeActive) {
       e.preventDefault();
       exitFocusMode();
