@@ -388,6 +388,29 @@ The website features:
 </details>
 
 
+## 📚 Progressive Learning Path
+
+### 🟢 Beginner
+- AnalogClock
+- Age Calculator
+- Typing Test
+- Unit Converter
+- Dice Roller
+
+### 🟡 Intermediate
+- Weather Forecasting
+- URL Shortener
+- Word Dictionary
+- Music App
+- Pokedex
+
+### 🔴 Advanced
+- AI ChatBot
+- AI Image Classifier
+- Amazon Clone
+- Voting Application Backend
+- YouTube Clone
+
 ## Getting Started
 
 > ⚠️ **Important Update:**  

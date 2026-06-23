@@ -368,3 +368,46 @@ body {
     --cell-size: 38px;
   }
 }
+.square--hint {
+    animation: pulseHint 1s infinite;
+}
+
+@keyframes pulseHint {
+    0% {
+        box-shadow: 0 0 0px gold;
+    }
+
+    50% {
+        box-shadow: 0 0 15px gold;
+    }
+
+    100% {
+        box-shadow: 0 0 0px gold;
+    }
+}
+
+.board-win {
+    animation: celebrate 1.5s ease;
+}
+
+@keyframes celebrate {
+    0% {
+        transform: scale(1);
+    }
+
+    25% {
+        transform: scale(1.05);
+    }
+
+    50% {
+        transform: scale(0.98);
+    }
+
+    75% {
+        transform: scale(1.03);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}

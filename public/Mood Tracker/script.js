@@ -1,8 +1,8 @@
-let entries = JSON.parse(localStorage.getItem("moodEntries")) || [];
+let entries = JSON.parse(localStorage.getItem('moodEntries')) || [];
 
 let state = {
-  filter: "day",
-  section: "mood",
+  filter: 'day',
+  section: 'mood',
 };
 
 let chart;
@@ -14,7 +14,7 @@ window.onload = () => {
 
   setInterval(updateTime, 1000);
 
-  switchSection("mood");
+  switchSection('mood');
   updateAll();
 
   setupMoodButtons();
@@ -26,100 +26,99 @@ window.onload = () => {
 function updateTime() {
   const now = new Date();
 
-  document.getElementById("currentDate").innerText =
-    now.toDateString();
+  document.getElementById('currentDate').innerText = now.toDateString();
 
-  document.getElementById("currentTime").innerText =
-    now.toLocaleTimeString();
+  document.getElementById('currentTime').innerText = now.toLocaleTimeString();
 }
 
 // ================= THEME =================
 function toggleTheme() {
   const body = document.body;
 
-  if (body.classList.contains("dark")) {
-    body.classList.remove("dark");
-    body.classList.add("light");
+  if (body.classList.contains('dark')) {
+    body.classList.remove('dark');
+    body.classList.add('light');
 
-    localStorage.setItem("theme", "light");
+    localStorage.setItem('theme', 'light');
   } else {
-    body.classList.remove("light");
-    body.classList.add("dark");
+    body.classList.remove('light');
+    body.classList.add('dark');
 
-    localStorage.setItem("theme", "dark");
+    localStorage.setItem('theme', 'dark');
   }
 }
 
 function loadTheme() {
-  const savedTheme = localStorage.getItem("theme") || "dark";
+  const savedTheme = localStorage.getItem('theme') || 'dark';
 
-  document.body.classList.remove("dark", "light");
+  document.body.classList.remove('dark', 'light');
   document.body.classList.add(savedTheme);
 }
 
 // ================= MOBILE SIDEBAR =================
 function toggleSidebar() {
-  const sidebar = document.getElementById("sidebar");
-  const overlay = document.getElementById("mobileOverlay");
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('mobileOverlay');
 
-  sidebar.classList.toggle("show");
-  overlay.classList.toggle("show");
+  sidebar.classList.toggle('show');
+  overlay.classList.toggle('show');
 }
 
 function setupMobileOverlay() {
-  const overlay = document.getElementById("mobileOverlay");
+  const overlay = document.getElementById('mobileOverlay');
 
-  overlay.addEventListener("click", () => {
-    document.getElementById("sidebar").classList.remove("show");
-    overlay.classList.remove("show");
+  overlay.addEventListener('click', () => {
+    document.getElementById('sidebar').classList.remove('show');
+    overlay.classList.remove('show');
   });
 }
 
 // ================= SECTION SWITCH =================
-function switchSection(id) {
+function switchSection(id, button = null) {
   state.section = id;
 
-  document.querySelectorAll(".section").forEach((section) => {
-    section.classList.remove("active");
+  document.querySelectorAll('.section').forEach((section) => {
+    section.classList.remove('active');
   });
 
-  document.getElementById(id).classList.add("active");
+  document.getElementById(id).classList.add('active');
 
-  // active nav button
-  document.querySelectorAll(".nav-links button").forEach((btn) => {
-    btn.classList.remove("active-btn");
+  // Update navigation highlight
+  document.querySelectorAll('.nav-links button').forEach((btn) => {
+    btn.classList.remove('active');
   });
 
-  event?.target?.closest("button")?.classList.add("active-btn");
+  if (button) {
+    button.classList.add('active');
+  } else {
+    const matchingButton = document.querySelector(
+      `.nav-links button[onclick*="${id}"]`
+    );
 
-  // close mobile sidebar
-  document.getElementById("sidebar").classList.remove("show");
-  document.getElementById("mobileOverlay").classList.remove("show");
+    matchingButton?.classList.add('active');
+  }
+
+  document.getElementById('sidebar').classList.remove('show');
+  document.getElementById('mobileOverlay').classList.remove('show');
 }
 
 // ================= ADD ENTRY =================
 function addEntry() {
-  const mood = document.getElementById("moodInput").value.trim();
+  const mood = document.getElementById('moodInput').value.trim();
 
-  const journal =
-    document.getElementById("journalText").value.trim();
+  const journal = document.getElementById('journalText').value.trim();
 
-  const highlight =
-    document.getElementById("highlight").value.trim();
+  const highlight = document.getElementById('highlight').value.trim();
 
   if (!mood && !journal) {
-    alert("Please enter your mood or journal.");
+    alert('Please enter your mood or journal.');
     return;
   }
 
   const entry = {
-    mood: mood || "Neutral",
-    energy: Number(
-      document.getElementById("energyLevel").value
-    ),
-    stress: Number(
-      document.getElementById("stressLevel").value
-    ),
+    mood: mood || 'Neutral',
+    energy: Number(document.getElementById('energyLevel').value),
+    stress: Number(document.getElementById('stressLevel').value),
     journal,
     highlight,
     ts: Date.now(),
@@ -127,36 +126,30 @@ function addEntry() {
 
   entries.push(entry);
 
-  localStorage.setItem(
-    "moodEntries",
-    JSON.stringify(entries)
-  );
+  localStorage.setItem('moodEntries', JSON.stringify(entries));
 
   clearInputs();
   updateAll();
 
-  document.getElementById(
-    "liveMoodPreview"
-  ).innerText = "✅ Mood entry saved successfully!";
+  document.getElementById('liveMoodPreview').innerText =
+    '✅ Mood entry saved successfully!';
 }
 
 // ================= CLEAR INPUTS =================
 function clearInputs() {
-  document.getElementById("moodInput").value = "";
+  document.getElementById('moodInput').value = '';
 
-  document.getElementById("journalText").value = "";
+  document.getElementById('journalText').value = '';
 
-  document.getElementById("highlight").value = "";
+  document.getElementById('highlight').value = '';
 
-  document.getElementById(
-    "liveMoodPreview"
-  ).innerText = "Mood preview appears here...";
+  document.getElementById('liveMoodPreview').innerText =
+    'Mood preview appears here...';
 }
 
 // ================= FILTER =================
 function applyFilter() {
-  state.filter =
-    document.getElementById("filterRange").value;
+  state.filter = document.getElementById('filterRange').value;
 
   updateAll();
 }
@@ -167,14 +160,11 @@ function getFilteredEntries() {
   return entries.filter((entry) => {
     const diff = now - entry.ts;
 
-    if (state.filter === "day")
-      return diff < 86400000;
+    if (state.filter === 'day') return diff < 86400000;
 
-    if (state.filter === "week")
-      return diff < 604800000;
+    if (state.filter === 'week') return diff < 604800000;
 
-    if (state.filter === "month")
-      return diff < 2592000000;
+    if (state.filter === 'month') return diff < 2592000000;
 
     return true;
   });
@@ -194,51 +184,34 @@ function updateAll() {
 // ================= STATS =================
 function updateStats(data) {
   if (data.length === 0) {
-    document.getElementById("avgEnergy").innerText =
-      "-";
+    document.getElementById('avgEnergy').innerText = '-';
 
-    document.getElementById("avgStress").innerText =
-      "-";
+    document.getElementById('avgStress').innerText = '-';
 
-    document.getElementById("avgMood").innerText =
-      "-";
+    document.getElementById('avgMood').innerText = '-';
 
-    document.getElementById("streakText").innerText =
-      "0";
+    document.getElementById('streakText').innerText = '0';
 
     return;
   }
 
-  const avgEnergy = avg(
-    data.map((d) => d.energy)
-  ).toFixed(1);
+  const avgEnergy = avg(data.map((d) => d.energy)).toFixed(1);
 
-  const avgStress = avg(
-    data.map((d) => d.stress)
-  ).toFixed(1);
+  const avgStress = avg(data.map((d) => d.stress)).toFixed(1);
 
-  const moodScore = (
-    avgEnergy * 2 -
-    avgStress
-  ).toFixed(1);
+  const moodScore = (avgEnergy * 2 - avgStress).toFixed(1);
 
-  document.getElementById("avgEnergy").innerText =
-    avgEnergy;
+  document.getElementById('avgEnergy').innerText = avgEnergy;
 
-  document.getElementById("avgStress").innerText =
-    avgStress;
+  document.getElementById('avgStress').innerText = avgStress;
 
-  document.getElementById("avgMood").innerText =
-    moodScore;
+  document.getElementById('avgMood').innerText = moodScore;
 
-  document.getElementById("streakText").innerText =
-    calculateStreak();
+  document.getElementById('streakText').innerText = calculateStreak();
 }
 
 function avg(arr) {
-  return (
-    arr.reduce((a, b) => a + b, 0) / arr.length
-  );
+  return arr.reduce((a, b) => a + b, 0) / arr.length;
 }
 
 // ================= STREAK =================
@@ -247,17 +220,10 @@ function calculateStreak() {
 
   let streak = 1;
 
-  const sorted = [...entries].sort(
-    (a, b) => a.ts - b.ts
-  );
+  const sorted = [...entries].sort((a, b) => a.ts - b.ts);
 
-  for (
-    let i = sorted.length - 1;
-    i > 0;
-    i--
-  ) {
-    const diff =
-      sorted[i].ts - sorted[i - 1].ts;
+  for (let i = sorted.length - 1; i > 0; i--) {
+    const diff = sorted[i].ts - sorted[i - 1].ts;
 
     if (diff <= 172800000) {
       streak++;
@@ -271,14 +237,12 @@ function calculateStreak() {
 
 // ================= JOURNAL =================
 function updateJournal(data) {
-  const list =
-    document.getElementById("entriesList");
+  const list = document.getElementById('entriesList');
 
-  list.innerHTML = "";
+  list.innerHTML = '';
 
   if (data.length === 0) {
-    list.innerHTML =
-      "<li>No entries found.</li>";
+    list.innerHTML = '<li>No entries found.</li>';
 
     return;
   }
@@ -287,12 +251,10 @@ function updateJournal(data) {
     .slice()
     .reverse()
     .forEach((entry) => {
-      const li = document.createElement("li");
+      const li = document.createElement('li');
 
       li.innerHTML = `
-        <strong>${new Date(
-          entry.ts
-        ).toLocaleString()}</strong>
+        <strong>${new Date(entry.ts).toLocaleString()}</strong>
         <br><br>
 
         <b>Mood:</b> ${entry.mood}
@@ -306,11 +268,11 @@ function updateJournal(data) {
 
         <b>Journal:</b>
         <br>
-        ${entry.journal || "No journal"}
+        ${entry.journal || 'No journal'}
 
         <br><br>
 
-        ✨ ${entry.highlight || "No highlight"}
+        ✨ ${entry.highlight || 'No highlight'}
       `;
 
       list.appendChild(li);
@@ -319,21 +281,13 @@ function updateJournal(data) {
 
 // ================= SEARCH JOURNAL =================
 function filterJournal() {
-  const query = document
-    .getElementById("searchJournal")
-    .value.toLowerCase();
+  const query = document.getElementById('searchJournal').value.toLowerCase();
 
   const filtered = getFilteredEntries().filter(
     (entry) =>
-      entry.mood
-        .toLowerCase()
-        .includes(query) ||
-      entry.journal
-        .toLowerCase()
-        .includes(query) ||
-      entry.highlight
-        .toLowerCase()
-        .includes(query)
+      entry.mood.toLowerCase().includes(query) ||
+      entry.journal.toLowerCase().includes(query) ||
+      entry.highlight.toLowerCase().includes(query)
   );
 
   updateJournal(filtered);
@@ -341,44 +295,34 @@ function filterJournal() {
 
 // ================= INSIGHTS =================
 function updateInsights(data) {
-  const box =
-    document.getElementById("insightBox");
+  const box = document.getElementById('insightBox');
 
   if (data.length < 2) {
-    box.innerText =
-      "Not enough data yet for insights.";
+    box.innerText = 'Not enough data yet for insights.';
 
     return;
   }
 
-  const avgEnergy = avg(
-    data.map((d) => d.energy)
-  );
+  const avgEnergy = avg(data.map((d) => d.energy));
 
-  const avgStress = avg(
-    data.map((d) => d.stress)
-  );
+  const avgStress = avg(data.map((d) => d.stress));
 
-  let message = "";
+  let message = '';
 
   if (avgStress >= 4) {
-    message +=
-      "⚠️ Your stress levels are high lately. Try relaxing.\n\n";
+    message += '⚠️ Your stress levels are high lately. Try relaxing.\n\n';
   }
 
   if (avgEnergy <= 2) {
-    message +=
-      "⚡ Your energy seems low. Sleep and hydration may help.\n\n";
+    message += '⚡ Your energy seems low. Sleep and hydration may help.\n\n';
   }
 
   if (avgEnergy >= 4 && avgStress <= 2) {
-    message +=
-      "🌟 Excellent emotional balance detected.\n\n";
+    message += '🌟 Excellent emotional balance detected.\n\n';
   }
 
-  if (message === "") {
-    message =
-      "😊 Your mood trends look stable and balanced.";
+  if (message === '') {
+    message = '😊 Your mood trends look stable and balanced.';
   }
 
   box.innerText = message;
@@ -386,49 +330,42 @@ function updateInsights(data) {
 
 // ================= CHART =================
 function updateChart(data) {
-  const canvas =
-    document.getElementById("chart");
+  const canvas = document.getElementById('chart');
 
   if (!canvas) return;
 
-  const ctx = canvas.getContext("2d");
+  const ctx = canvas.getContext('2d');
 
-  const labels = data.map((entry) =>
-    new Date(entry.ts).toLocaleDateString()
-  );
+  const labels = data.map((entry) => new Date(entry.ts).toLocaleDateString());
 
-  const energyData = data.map(
-    (entry) => entry.energy
-  );
+  const energyData = data.map((entry) => entry.energy);
 
-  const stressData = data.map(
-    (entry) => entry.stress
-  );
+  const stressData = data.map((entry) => entry.stress);
 
   if (chart) {
     chart.destroy();
   }
 
   chart = new Chart(ctx, {
-    type: "line",
+    type: 'line',
 
     data: {
       labels,
 
       datasets: [
         {
-          label: "Energy",
+          label: 'Energy',
           data: energyData,
-          borderColor: "#06b6d4",
-          backgroundColor: "transparent",
+          borderColor: '#06b6d4',
+          backgroundColor: 'transparent',
           tension: 0.4,
         },
 
         {
-          label: "Stress",
+          label: 'Stress',
           data: stressData,
-          borderColor: "#8b5cf6",
-          backgroundColor: "transparent",
+          borderColor: '#8b5cf6',
+          backgroundColor: 'transparent',
           tension: 0.4,
         },
       ],
@@ -440,10 +377,7 @@ function updateChart(data) {
       plugins: {
         legend: {
           labels: {
-            color:
-              getComputedStyle(
-                document.body
-              ).getPropertyValue("--text"),
+            color: getComputedStyle(document.body).getPropertyValue('--text'),
           },
         },
       },
@@ -451,19 +385,13 @@ function updateChart(data) {
       scales: {
         x: {
           ticks: {
-            color:
-              getComputedStyle(
-                document.body
-              ).getPropertyValue("--text"),
+            color: getComputedStyle(document.body).getPropertyValue('--text'),
           },
         },
 
         y: {
           ticks: {
-            color:
-              getComputedStyle(
-                document.body
-              ).getPropertyValue("--text"),
+            color: getComputedStyle(document.body).getPropertyValue('--text'),
           },
 
           beginAtZero: true,
@@ -476,31 +404,21 @@ function updateChart(data) {
 
 // ================= HEATMAP =================
 function updateHeatmap(data) {
-  const heatmap =
-    document.getElementById("heatmap");
+  const heatmap = document.getElementById('heatmap');
 
-  heatmap.innerHTML = "";
+  heatmap.innerHTML = '';
 
   if (data.length === 0) return;
 
   data.forEach((entry) => {
-    const cell =
-      document.createElement("div");
+    const cell = document.createElement('div');
 
-    cell.classList.add("heatmap-cell");
+    cell.classList.add('heatmap-cell');
 
-    const level =
-      Math.min(
-        5,
-        Math.max(
-          1,
-          Math.round(
-            (entry.energy +
-              (6 - entry.stress)) /
-              2
-          )
-        )
-      );
+    const level = Math.min(
+      5,
+      Math.max(1, Math.round((entry.energy + (6 - entry.stress)) / 2))
+    );
 
     cell.classList.add(`level-${level}`);
 
@@ -516,63 +434,44 @@ Stress: ${entry.stress}
 
 // ================= LIVE PREVIEW =================
 function setupLivePreview() {
-  const moodInput =
-    document.getElementById("moodInput");
+  const moodInput = document.getElementById('moodInput');
 
-  const preview =
-    document.getElementById(
-      "liveMoodPreview"
-    );
+  const preview = document.getElementById('liveMoodPreview');
 
-  moodInput.addEventListener(
-    "input",
-    (e) => {
-      const text =
-        e.target.value.toLowerCase();
+  moodInput.addEventListener('input', (e) => {
+    const text = e.target.value.toLowerCase();
 
-      if (
-        text.includes("happy") ||
-        text.includes("great") ||
-        text.includes("excited")
-      ) {
-        preview.innerText =
-          "😊 Positive mood detected!";
-      } else if (
-        text.includes("sad") ||
-        text.includes("angry") ||
-        text.includes("upset")
-      ) {
-        preview.innerText =
-          "⚠️ Negative emotional state detected.";
-      } else if (
-        text.includes("tired") ||
-        text.includes("exhausted")
-      ) {
-        preview.innerText =
-          "😴 You may need some rest.";
-      } else {
-        preview.innerText =
-          "🧠 Analyzing your emotional state...";
-      }
+    if (
+      text.includes('happy') ||
+      text.includes('great') ||
+      text.includes('excited')
+    ) {
+      preview.innerText = '😊 Positive mood detected!';
+    } else if (
+      text.includes('sad') ||
+      text.includes('angry') ||
+      text.includes('upset')
+    ) {
+      preview.innerText = '⚠️ Negative emotional state detected.';
+    } else if (text.includes('tired') || text.includes('exhausted')) {
+      preview.innerText = '😴 You may need some rest.';
+    } else {
+      preview.innerText = '🧠 Analyzing your emotional state...';
     }
-  );
+  });
 }
 
 // ================= MOOD BUTTONS =================
 function setupMoodButtons() {
-  const moodButtons =
-    document.querySelectorAll(".mood-btn");
+  const moodButtons = document.querySelectorAll('.mood-btn');
 
-  const moodInput =
-    document.getElementById("moodInput");
+  const moodInput = document.getElementById('moodInput');
 
   moodButtons.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      moodButtons.forEach((b) =>
-        b.classList.remove("selected")
-      );
+    btn.addEventListener('click', () => {
+      moodButtons.forEach((b) => b.classList.remove('selected'));
 
-      btn.classList.add("selected");
+      btn.classList.add('selected');
 
       moodInput.value = btn.innerText;
     });
@@ -582,24 +481,19 @@ function setupMoodButtons() {
 // ================= EXPORT DATA =================
 function exportData() {
   if (entries.length === 0) {
-    alert("No data available to export.");
+    alert('No data available to export.');
     return;
   }
 
-  const blob = new Blob(
-    [JSON.stringify(entries, null, 2)],
-    {
-      type: "application/json",
-    }
-  );
+  const blob = new Blob([JSON.stringify(entries, null, 2)], {
+    type: 'application/json',
+  });
 
-  const link =
-    document.createElement("a");
+  const link = document.createElement('a');
 
-  link.href =
-    URL.createObjectURL(blob);
+  link.href = URL.createObjectURL(blob);
 
-  link.download = "mood-data.json";
+  link.download = 'mood-data.json';
 
   document.body.appendChild(link);
 

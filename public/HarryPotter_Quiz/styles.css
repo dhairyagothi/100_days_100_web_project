@@ -1,0 +1,229 @@
+/* ====================== HARRY POTTER QUIZ - STYLES.CSS ====================== */
+
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Harry+Potter&display=swap");
+
+:root {
+  --hogwarts-gold: #d4af37;
+  --gryffindor-red: #740001;
+  --slytherin-green: #2a623d;
+  --ravenclaw-blue: #0e4d92;
+  --hufflepuff-yellow: #f2c300;
+}
+
+body {
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+  color: #f0f0f0;
+  min-height: 100vh;
+  font-family: "Playfair Display", serif;
+  overflow-x: hidden;
+}
+
+.header {
+  background: rgba(0, 0, 0, 0.85);
+  border-bottom: 5px solid var(--hogwarts-gold);
+  text-shadow: 0 0 10px var(--hogwarts-gold);
+}
+
+h1,
+h2,
+h3 {
+  font-family: "Harry Potter", sans-serif;
+  letter-spacing: 2px;
+}
+
+/* Screens */
+.screen {
+  background: rgba(20, 20, 30, 0.95);
+  border: 4px solid var(--hogwarts-gold);
+  border-radius: 20px;
+  padding: 40px 30px;
+  box-shadow: 0 0 40px rgba(212, 175, 55, 0.4);
+  min-height: 70vh;
+}
+
+/* Start Screen */
+.sorting-hat {
+  font-size: 6rem;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+.progress-card {
+  background: rgba(0, 0, 0, 0.6);
+  border: 2px solid var(--hogwarts-gold);
+  border-radius: 12px;
+  padding: 15px 25px;
+}
+
+/* Quiz Screen */
+.quiz-header {
+  background: rgba(0, 0, 0, 0.7);
+  padding: 12px 20px;
+  border-radius: 10px;
+  border: 2px solid var(--hogwarts-gold);
+}
+
+#question-text {
+  font-size: 1.4rem;
+  line-height: 1.4;
+  min-height: 80px;
+}
+
+.option {
+  background: rgba(255, 255, 255, 0.08);
+  border: 3px solid #555;
+  border-radius: 12px;
+  padding: 18px 20px;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  min-height: 70px;
+  display: flex;
+  align-items: center;
+}
+
+.option:hover {
+  background: rgba(212, 175, 55, 0.15);
+  border-color: var(--hogwarts-gold);
+  transform: translateX(15px);
+}
+
+.option.correct {
+  background: #2a623d !important;
+  border-color: #4ade80 !important;
+  color: white;
+  animation: correctAnim 0.6s;
+}
+
+.option.incorrect {
+  background: #740001 !important;
+  border-color: #f87171 !important;
+  color: white;
+}
+
+@keyframes correctAnim {
+  0% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Timer */
+.timer {
+  font-size: 1.3rem;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 12px 25px;
+  border-radius: 50px;
+  display: inline-block;
+  border: 2px solid var(--hogwarts-gold);
+}
+
+/* Progress Bar */
+.progress {
+  background: #333;
+  border: 2px solid var(--hogwarts-gold);
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  background: linear-gradient(90deg, var(--hogwarts-gold), #f2c300);
+  box-shadow: 0 0 15px var(--hogwarts-gold);
+}
+
+/* Result Screen */
+.stat-box {
+  background: rgba(0, 0, 0, 0.5);
+  border: 2px solid var(--hogwarts-gold);
+}
+
+/* Buttons */
+.btn {
+  font-family: "Harry Potter", sans-serif;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px var(--hogwarts-gold);
+}
+
+.btn-success {
+  background-color: #2a623d;
+  border-color: #4ade80;
+}
+.btn-warning {
+  background-color: #b38b00;
+  border-color: var(--hogwarts-gold);
+}
+.btn-danger {
+  background-color: #740001;
+  border-color: #f87171;
+}
+
+/* Modals */
+.modal-content {
+  background: #1a1a2e;
+  border: 3px solid var(--hogwarts-gold);
+  color: #f0f0f0;
+}
+
+/* Animations */
+.streak {
+  animation: flame 0.8s infinite alternate;
+}
+
+@keyframes flame {
+  from {
+    text-shadow: 0 0 8px #ff9900;
+  }
+  to {
+    text-shadow:
+      0 0 20px #ff5500,
+      0 0 30px #ff0000;
+  }
+}
+
+.card-collect {
+  animation: collectAnim 1.2s ease forwards;
+}
+
+@keyframes collectAnim {
+  0% {
+    transform: scale(0.3) rotate(-20deg);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1) rotate(0);
+    opacity: 1;
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .screen {
+    padding: 25px 15px;
+    min-height: 80vh;
+  }
+
+  #question-text {
+    font-size: 1.2rem;
+  }
+
+  .option {
+    padding: 15px;
+    font-size: 1rem;
+  }
+}

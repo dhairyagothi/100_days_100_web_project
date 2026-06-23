@@ -2,50 +2,43 @@
 <html lang="en">
 
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="UTF-8">
-    <title>Performance Optimization Demo</title>
-    <style>
-        body {
-            font-family: sans-serif;
-            background: #0f172a;
-            color: white;
-            padding: 2rem;
-        }
-
-        .list-container {
-            background: #1e293b;
-            padding: 1rem;
-            border-radius: 8px;
-            max-height: 200px;
-            overflow-y: auto;
-        }
-
-        .item {
-            padding: 0.5rem;
-            border-bottom: 1px solid #334155;
-            cursor: pointer;
-        }
-
-        .item:hover {
-            background: #38bdf8;
-            color: #0f172a;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Interactive sandbox demonstrating real-time search debouncing, efficient DOM element caching, and high-performance event delegation." />
+    <title>Performance Optimization Sandbox | Web Utility Playground</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <h1>Performance Optimization Sandbox</h1>
-    <input type="text" id="search-box" placeholder="Type fast to test debouncing..."
-        style="padding: 0.5rem; width: 300px;">
-    <p id="status-log">Status: Idle</p>
+    <main class="sandbox-card">
+        <header>
+            <h1>Performance Optimization Sandbox</h1>
+            <p class="subtitle">Real-time Debouncing & Event Delegation Demo</p>
+        </header>
 
-    <h3>Optimized List (Event Delegation)</h3>
-    <div id="parent-list" class="list-container">
-        <div class="item" data-id="1">Click Item 1</div>
-        <div class="item" data-id="2">Click Item 2</div>
-        <div class="item" data-id="3">Click Item 3</div>
-    </div>
+        <section class="input-group">
+            <input type="text" id="search-box" placeholder="Type fast to test debouncing...">
+        </section>
+
+        <section class="status-container">
+            <span class="status-indicator pulse"></span>
+            <span id="status-log">Status: Idle</span>
+        </section>
+
+        <section>
+            <h3>Optimized List (Event Delegation)</h3>
+            <div id="parent-list" class="list-container">
+                <div class="item" data-id="1">Click Item 1</div>
+                <div class="item" data-id="2">Click Item 2</div>
+                <div class="item" data-id="3">Click Item 3</div>
+            </div>
+        </section>
+    </main>
 
     <script type="module" src="demo.js"></script>
 </body>

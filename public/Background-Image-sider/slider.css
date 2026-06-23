@@ -1,11 +1,9 @@
-/* ───── RESET ───── */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* ───── VARIABLES ───── */
 :root {
   --gold: #C9A84C;
   --gold-light: #E8CC7F;
@@ -15,7 +13,6 @@
   --dot-inactive: rgba(255, 255, 255, 0.28);
 }
 
-/* ───── BODY ───── */
 body {
   font-family: 'DM Sans', 'Segoe UI', system-ui, sans-serif;
   min-height: 100vh;
@@ -27,7 +24,6 @@ body {
   position: relative;
 }
 
-/* ───── BACKGROUND LAYERS (crossfade) ───── */
 #wl-bg,
 #wl-bg-next {
   position: fixed;
@@ -58,16 +54,13 @@ body {
   z-index: 2;
 }
 
-
-/* ───── HEADER ───── */
 .wl-header {
-  position: sticky;
-  top: 0;
+  position: relative;
   z-index: 1000;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 28px;
+  padding: 16px 28px 16px 180px;
   background: rgba(8, 6, 18, 0.5);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
@@ -92,7 +85,6 @@ body {
   text-transform: uppercase;
 }
 
-/* ───── NAV ───── */
 .wl-nav {
   display: flex;
   gap: 24px;
@@ -130,7 +122,6 @@ body {
   width: 100%;
 }
 
-/* ───── HERO ───── */
 .wl-hero {
   position: relative;
   z-index: 5;
@@ -142,7 +133,6 @@ body {
   min-height: calc(100vh - 60px);
 }
 
-/* ───── GLASS CARD ───── */
 .wl-card {
   background: var(--glass);
   backdrop-filter: blur(24px);
@@ -162,14 +152,12 @@ body {
     opacity: 0;
     transform: translateY(20px);
   }
-
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
-/* ───── CARD CONTENT ───── */
 .wl-country-label {
   font-size: 0.68rem;
   letter-spacing: 0.22em;
@@ -201,7 +189,6 @@ body {
   min-height: 44px;
 }
 
-/* ───── CONTROLS ROW ───── */
 .wl-controls-row {
   display: flex;
   align-items: center;
@@ -242,9 +229,10 @@ body {
 }
 
 .project-back-button {
-  position: fixed;
+  position: absolute;
   left: 18px;
-  top: 18px;
+  top: 50%;
+  transform: translateY(-50%);
   padding: 8px 16px;
   border-radius: 8px;
   background: #1e293b;
@@ -264,19 +252,6 @@ body {
   box-shadow: 0 0 15px rgba(124, 99, 255, 0.5);
 }
 
-.wl-header {
-  position: relative;
-  padding-left: 180px;
-}
-
-.project-back-button {
-  position: absolute;
-  left: 18px;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-/* ───── SELECT ───── */
 .wl-select-wrap {
   position: relative;
   flex: 1;
@@ -321,7 +296,6 @@ body {
   font-size: 14px;
 }
 
-/* ───── DESTINATION INDICATORS ───── */
 .destination-indicators {
   display: flex;
   justify-content: center;
@@ -360,7 +334,6 @@ body {
   box-shadow: 0 0 8px rgba(201, 168, 76, 0.5);
 }
 
-/* ───── BOOK BUTTON ───── */
 .booking {
   display: block;
   width: 100%;
@@ -398,7 +371,6 @@ body {
   box-shadow: 0 6px 24px rgba(29, 107, 60, 0.35);
 }
 
-/* ───── AUTOPLAY ROW ───── */
 .wl-autoplay-row {
   display: flex;
   align-items: center;
@@ -445,7 +417,6 @@ body {
   letter-spacing: 0.1em;
 }
 
-/* ───── PROGRESS BAR ───── */
 .wl-progress {
   height: 2px;
   background: rgba(255, 255, 255, 0.1);
@@ -462,7 +433,6 @@ body {
   transition: width 0.1s linear;
 }
 
-/* ───── FOOTER ───── */
 footer {
   position: relative;
   z-index: 10;
@@ -507,76 +477,6 @@ footer p {
   letter-spacing: 0.05em;
 }
 
-/* ───── RESPONSIVE ───── */
-@media screen and (max-width: 768px) {
-  .wl-header {
-    padding: 12px 16px;
-  }
-
-  .wl-nav {
-    gap: 16px;
-  }
-
-  .wl-nav a {
-    font-size: 0.72rem;
-  }
-
-  .wl-logo span {
-    display: none;
-  }
-
-  .wl-card {
-    padding: 32px 20px;
-  }
-
-  .wl-place-title {
-    font-size: 2rem;
-  }
-
-  .wl-place-desc {
-    font-size: 0.88rem;
-    margin-bottom: 20px;
-  }
-
-  #placeSelector {
-    font-size: 0.84rem;
-  }
-
-  .footer-grid {
-    grid-template-columns: 1fr;
-    gap: 28px;
-  }
-
-  footer {
-    padding: 36px 20px 20px;
-  }
-}
-
-@media screen and (max-width: 480px) {
-  .wl-card {
-    padding: 24px 14px;
-    border-radius: 14px;
-  }
-
-  .wl-place-title {
-    font-size: 1.7rem;
-  }
-
-  .wl-nav {
-    gap: 12px;
-  }
-
-  .wl-controls-row {
-    gap: 7px;
-  }
-
-  .wl-nav-btn {
-    width: 34px;
-    height: 34px;
-    font-size: 14px;
-  }
-}
-/* ───── FEATURE TOOLBAR ───── */
 .wl-feature-bar {
   display: flex;
   justify-content: center;
@@ -601,13 +501,17 @@ footer p {
   transition: all 0.22s;
   white-space: nowrap;
 }
+
 .feature-btn:hover {
   border-color: var(--gold);
   color: var(--gold-light);
   background: rgba(201,168,76,0.1);
   transform: translateY(-1px);
 }
-.feature-btn .fb-icon { font-size: 0.9rem; }
+
+.feature-btn .fb-icon {
+  font-size: 0.9rem;
+}
 
 #wishlistBtn {
   border-radius: 50%;
@@ -620,13 +524,13 @@ footer p {
   font-size: 1.1rem;
   flex-shrink: 0;
 }
+
 #wishlistBtn.active {
   border-color: #e05a7a;
   background: rgba(224,90,122,0.15);
   color: #e05a7a;
 }
 
-/* ───── WEATHER BADGE ───── */
 .weather-badge {
   font-size: 0.72rem;
   color: rgba(255,255,255,0.5);
@@ -638,12 +542,12 @@ footer p {
   cursor: pointer;
   transition: all 0.2s;
 }
+
 .weather-badge:hover {
   border-color: var(--gold);
   color: var(--gold-light);
 }
 
-/* ───── STARS IN CARD ───── */
 .wl-stars-row {
   display: flex;
   align-items: center;
@@ -651,12 +555,17 @@ footer p {
   gap: 3px;
   margin-bottom: 8px;
 }
+
 .star-input {
   font-size: 1rem;
   color: rgba(255,255,255,0.2);
   transition: color 0.15s;
 }
-.star-input.filled { color: var(--gold); }
+
+.star-input.filled {
+  color: var(--gold);
+}
+
 .review-preview {
   font-size: 0.78rem;
   color: rgba(255,255,255,0.45);
@@ -665,7 +574,6 @@ footer p {
   display: none;
 }
 
-/* ───── PANEL OVERLAY ───── */
 #panelOverlay {
   position: fixed;
   inset: 0;
@@ -676,12 +584,12 @@ footer p {
   pointer-events: none;
   transition: opacity 0.3s;
 }
+
 #panelOverlay.visible {
   opacity: 1;
   pointer-events: all;
 }
 
-/* ───── FEATURE PANELS ───── */
 .feature-panel {
   position: fixed;
   top: 50%;
@@ -701,6 +609,7 @@ footer p {
   display: flex;
   flex-direction: column;
 }
+
 .feature-panel.open {
   opacity: 1;
   pointer-events: all;
@@ -715,12 +624,14 @@ footer p {
   border-bottom: 0.5px solid var(--glass-border);
   flex-shrink: 0;
 }
+
 .panel-title {
   font-family: 'Playfair Display', serif;
   font-size: 1.05rem;
   color: var(--gold-light);
   font-weight: 700;
 }
+
 .panel-close {
   background: none;
   border: none;
@@ -730,29 +641,65 @@ footer p {
   transition: color 0.2s;
   padding: 2px 6px;
 }
-.panel-close:hover { color: #fff; }
+
+.panel-close:hover {
+  color: #fff;
+}
 
 .panel-body {
   padding: 22px;
   overflow-y: auto;
   flex: 1;
 }
-.panel-body::-webkit-scrollbar { width: 4px; }
-.panel-body::-webkit-scrollbar-track { background: transparent; }
-.panel-body::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 2px; }
 
-/* ───── WEATHER PANEL ───── */
-.weather-body { text-align: center; }
-.weather-loading { color: rgba(255,255,255,0.5); padding: 30px 0; font-size: 0.9rem; }
-.weather-icon-big { font-size: 3.5rem; margin-bottom: 8px; }
-.weather-temp { font-family: 'Playfair Display', serif; font-size: 3rem; color: #fff; font-weight: 700; }
-.weather-label { color: rgba(255,255,255,0.55); font-size: 0.88rem; margin-bottom: 20px; }
+.panel-body::-webkit-scrollbar {
+  width: 4px;
+}
+
+.panel-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.panel-body::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.15);
+  border-radius: 2px;
+}
+
+.weather-body {
+  text-align: center;
+}
+
+.weather-loading {
+  color: rgba(255,255,255,0.5);
+  padding: 30px 0;
+  font-size: 0.9rem;
+}
+
+.weather-icon-big {
+  font-size: 3.5rem;
+  margin-bottom: 8px;
+}
+
+.weather-temp {
+  font-family: 'Playfair Display', serif;
+  font-size: 3rem;
+  color: #fff;
+  font-weight: 700;
+}
+
+.weather-label {
+  color: rgba(255,255,255,0.55);
+  font-size: 0.88rem;
+  margin-bottom: 20px;
+}
+
 .weather-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
   margin-top: 10px;
 }
+
 .weather-stat {
   background: rgba(255,255,255,0.05);
   border: 0.5px solid var(--glass-border);
@@ -762,17 +709,30 @@ footer p {
   flex-direction: column;
   gap: 4px;
 }
-.weather-stat span { font-size: 0.75rem; color: rgba(255,255,255,0.45); }
-.weather-stat strong { font-size: 1rem; color: #fff; }
-.weather-note { font-size: 0.68rem; color: rgba(255,255,255,0.25); margin-top: 16px; }
 
-/* ───── RATING PANEL ───── */
+.weather-stat span {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.45);
+}
+
+.weather-stat strong {
+  font-size: 1rem;
+  color: #fff;
+}
+
+.weather-note {
+  font-size: 0.68rem;
+  color: rgba(255,255,255,0.25);
+  margin-top: 16px;
+}
+
 .rating-stars-row {
   display: flex;
   justify-content: center;
   gap: 8px;
   margin-bottom: 18px;
 }
+
 .star-btn {
   background: none;
   border: none;
@@ -782,8 +742,14 @@ footer p {
   transition: all 0.15s;
   padding: 2px;
 }
-.star-btn.lit { color: var(--gold); }
-.star-btn:hover { transform: scale(1.15); }
+
+.star-btn.lit {
+  color: var(--gold);
+}
+
+.star-btn:hover {
+  transform: scale(1.15);
+}
 
 #reviewText {
   width: 100%;
@@ -800,8 +766,14 @@ footer p {
   margin-bottom: 14px;
   transition: border-color 0.2s;
 }
-#reviewText::placeholder { color: rgba(255,255,255,0.28); }
-#reviewText:focus { border-color: var(--gold); }
+
+#reviewText::placeholder {
+  color: rgba(255,255,255,0.28);
+}
+
+#reviewText:focus {
+  border-color: var(--gold);
+}
 
 #ratingSubmitBtn {
   width: 100%;
@@ -816,10 +788,18 @@ footer p {
   cursor: pointer;
   transition: all 0.2s;
 }
-#ratingSubmitBtn:hover { filter: brightness(1.1); transform: translateY(-1px); }
 
-/* ───── WISHLIST PANEL ───── */
-.wishlist-items { display: flex; flex-direction: column; gap: 10px; }
+#ratingSubmitBtn:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+}
+
+.wishlist-items {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
 .wishlist-item {
   display: flex;
   align-items: center;
@@ -830,12 +810,36 @@ footer p {
   border-radius: 12px;
   transition: border-color 0.2s;
 }
-.wishlist-item:hover { border-color: rgba(201,168,76,0.3); }
-.wi-flag { font-size: 1.5rem; }
-.wi-info { flex: 1; }
-.wi-name { font-size: 0.9rem; font-weight: 500; color: #fff; }
-.wi-region { font-size: 0.72rem; color: rgba(255,255,255,0.4); margin-top: 2px; }
-.wi-actions { display: flex; gap: 6px; }
+
+.wishlist-item:hover {
+  border-color: rgba(201,168,76,0.3);
+}
+
+.wi-flag {
+  font-size: 1.5rem;
+}
+
+.wi-info {
+  flex: 1;
+}
+
+.wi-name {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #fff;
+}
+
+.wi-region {
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.4);
+  margin-top: 2px;
+}
+
+.wi-actions {
+  display: flex;
+  gap: 6px;
+}
+
 .wi-go {
   padding: 5px 10px;
   background: rgba(201,168,76,0.15);
@@ -847,7 +851,11 @@ footer p {
   font-family: 'DM Sans', sans-serif;
   transition: all 0.2s;
 }
-.wi-go:hover { background: rgba(201,168,76,0.3); }
+
+.wi-go:hover {
+  background: rgba(201,168,76,0.3);
+}
+
 .wi-remove {
   padding: 5px 8px;
   background: rgba(255,255,255,0.06);
@@ -858,21 +866,26 @@ footer p {
   cursor: pointer;
   transition: all 0.2s;
 }
-.wi-remove:hover { color: #e05a7a; border-color: #e05a7a; }
 
-/* ───── TRIP PLANNER PANEL ───── */
+.wi-remove:hover {
+  color: #e05a7a;
+  border-color: #e05a7a;
+}
+
 .trip-panel-header-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 6px;
 }
+
 .trip-summary {
   font-size: 0.75rem;
   color: var(--gold);
   letter-spacing: 0.07em;
   margin-bottom: 14px;
 }
+
 .trip-add-btn {
   padding: 8px 16px;
   background: rgba(201,168,76,0.12);
@@ -886,7 +899,12 @@ footer p {
   margin-bottom: 14px;
   width: 100%;
 }
-.trip-add-btn:hover { background: rgba(201,168,76,0.22); transform: translateY(-1px); }
+
+.trip-add-btn:hover {
+  background: rgba(201,168,76,0.22);
+  transform: translateY(-1px);
+}
+
 .trip-clear-btn {
   padding: 6px 12px;
   background: rgba(255,255,255,0.04);
@@ -899,8 +917,18 @@ footer p {
   margin-bottom: 14px;
   transition: all 0.2s;
 }
-.trip-clear-btn:hover { color: #e05a7a; border-color: #e05a7a; }
-.trip-list { display: flex; flex-direction: column; gap: 10px; }
+
+.trip-clear-btn:hover {
+  color: #e05a7a;
+  border-color: #e05a7a;
+}
+
+.trip-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
 .trip-item {
   display: flex;
   align-items: flex-start;
@@ -910,6 +938,7 @@ footer p {
   border: 0.5px solid var(--glass-border);
   border-radius: 12px;
 }
+
 .trip-order {
   width: 22px;
   height: 22px;
@@ -924,10 +953,33 @@ footer p {
   flex-shrink: 0;
   margin-top: 2px;
 }
-.trip-flag { font-size: 1.2rem; flex-shrink: 0; margin-top: 1px; }
-.trip-info { flex: 1; display: flex; flex-direction: column; gap: 6px; }
-.trip-name { font-size: 0.88rem; font-weight: 500; color: #fff; }
-.trip-dates { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+
+.trip-flag {
+  font-size: 1.2rem;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.trip-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.trip-name {
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: #fff;
+}
+
+.trip-dates {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
 .trip-date-input {
   padding: 5px 8px;
   background: rgba(255,255,255,0.05);
@@ -940,9 +992,20 @@ footer p {
   transition: border-color 0.2s;
   width: 130px;
 }
-.trip-date-input:focus { border-color: var(--gold); }
-.trip-date-input::-webkit-calendar-picker-indicator { filter: invert(1) opacity(0.4); }
-.trip-dates span { color: rgba(255,255,255,0.3); font-size: 0.8rem; }
+
+.trip-date-input:focus {
+  border-color: var(--gold);
+}
+
+.trip-date-input::-webkit-calendar-picker-indicator {
+  filter: invert(1) opacity(0.4);
+}
+
+.trip-dates span {
+  color: rgba(255,255,255,0.3);
+  font-size: 0.8rem;
+}
+
 .trip-note-input {
   padding: 5px 8px;
   background: rgba(255,255,255,0.05);
@@ -955,8 +1018,15 @@ footer p {
   width: 100%;
   transition: border-color 0.2s;
 }
-.trip-note-input::placeholder { color: rgba(255,255,255,0.2); }
-.trip-note-input:focus { border-color: var(--gold); }
+
+.trip-note-input::placeholder {
+  color: rgba(255,255,255,0.2);
+}
+
+.trip-note-input:focus {
+  border-color: var(--gold);
+}
+
 .trip-remove {
   background: none;
   border: none;
@@ -968,9 +1038,11 @@ footer p {
   flex-shrink: 0;
   transition: color 0.2s;
 }
-.trip-remove:hover { color: #e05a7a; }
 
-/* ───── EMPTY STATE ───── */
+.trip-remove:hover {
+  color: #e05a7a;
+}
+
 .empty-state {
   text-align: center;
   color: rgba(255,255,255,0.3);
@@ -978,7 +1050,6 @@ footer p {
   padding: 30px 0;
 }
 
-/* ───── TOAST ───── */
 #wl-toast {
   position: fixed;
   bottom: 28px;
@@ -999,11 +1070,83 @@ footer p {
   backdrop-filter: blur(12px);
   box-shadow: 0 10px 40px rgba(0,0,0,0.5);
 }
-#wl-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-@media (max-width: 480px) {
-  .wl-feature-bar { gap: 5px; }
-  .feature-btn { font-size: 0.67rem; padding: 6px 10px; }
-  .weather-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
-  .trip-date-input { width: 110px; }
+#wl-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+@media screen and (max-width: 768px) {
+  .wl-header {
+    padding: 12px 16px 12px 16px;
+  }
+  .project-back-button {
+    position: static;
+    transform: none;
+    margin-bottom: 8px;
+  }
+  .wl-nav {
+    gap: 16px;
+  }
+  .wl-nav a {
+    font-size: 0.72rem;
+  }
+  .wl-logo span {
+    display: none;
+  }
+  .wl-card {
+    padding: 32px 20px;
+  }
+  .wl-place-title {
+    font-size: 2rem;
+  }
+  .wl-place-desc {
+    font-size: 0.88rem;
+    margin-bottom: 20px;
+  }
+  #placeSelector {
+    font-size: 0.84rem;
+  }
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+  footer {
+    padding: 36px 20px 20px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .wl-card {
+    padding: 24px 14px;
+    border-radius: 14px;
+  }
+  .wl-place-title {
+    font-size: 1.7rem;
+  }
+  .wl-nav {
+    gap: 12px;
+  }
+  .wl-controls-row {
+    gap: 7px;
+  }
+  .wl-nav-btn {
+    width: 34px;
+    height: 34px;
+    font-size: 14px;
+  }
+  .wl-feature-bar {
+    gap: 5px;
+  }
+  .feature-btn {
+    font-size: 0.67rem;
+    padding: 6px 10px;
+  }
+  .weather-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .trip-date-input {
+    width: 110px;
+  }
 }

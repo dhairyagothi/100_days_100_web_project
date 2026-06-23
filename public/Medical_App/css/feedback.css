@@ -27,6 +27,25 @@ body{
     background-position:center;
 }
 
+#feedbackMessage{
+    width:100%;
+    min-height:160px;
+    padding:14px;
+    border-radius:12px;
+    border:1px solid #d1d5db;
+    resize:vertical;
+    font-size:1rem;
+}
+
+.feedback-card{
+    background:rgb(153, 157, 158);
+    max-width:700px;
+    margin:auto;
+    padding:30px;
+    border-radius:18px;
+    box-shadow:0 10px 25px rgba(159, 36, 36, 0.1);
+}
+
 .feedbackmain{
 
     width:100%;
@@ -116,49 +135,114 @@ button{
     transition:.3s ease;
 }
 
+/* Theme Toggle Button */
+.theme-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    font-size: 1.5rem;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+.theme-toggle:hover {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: scale(1.1);
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+}
+
+.theme-toggle:active {
+    transform: scale(0.95);
+}
+
+/* Dark mode styles */
+body.dark-mode {
+    background: linear-gradient(
+        rgba(30, 27, 60, 0.85),
+        rgba(30, 27, 60, 0.85)
+    ),
+    url("../assets/bg/medical-feedback.jpg");
+    background-size: cover;
+    background-position: center;
+}
+
+body.dark-mode .feedbackmain {
+    background: rgba(20, 20, 40, 0.3);
+    border-color: rgba(100, 100, 150, 0.3);
+}
+
+body.dark-mode textarea {
+    background: rgba(30, 30, 50, 0.8);
+    color: #e0e7ff;
+    border-color: rgba(100, 100, 150, 0.3);
+}
+
+body.dark-mode textarea::placeholder {
+    color: #a0afc0;
+}
+
 .submit-btn{
 
-    margin-top:var(--spacing-xl);
 
-    background:var(--primary);
+        width:100%;
+    padding:14px 18px;
+    margin-top:16px;
+    border:none;
+    border-radius:10px;
+    font-size:1rem;
+    font-weight:600;
+    cursor:pointer;
 
+    background:#448ccf;
     color:white;
 
-    padding:var(--spacing-md);
+    transition:all 0.3s ease;
 
-    border-radius:var(--radius-md);
-
-    font-size:0.95rem;
-
-    font-weight:600;
 }
 
 .submit-btn:hover{
 
-    background:var(--primary-dark);
+    background:#5fa2e1;
     transform:translateY(-2px);
+
+ 
 
     box-shadow:var(--shadow-md);
 }
 
+.submit-btn:active{
+    transform:scale(0.98);
+}
+
 .back{
 
+    margin-top:16px;
     width:100%;
-
-    margin-top:var(--spacing-md);
+    padding:12px;
+    border-radius:10px;
+    border:2px solid #080b0d;
 
     background:transparent;
+    color:#010000;
 
-    color:white;
-
-    padding:var(--spacing-md);
-
-    border-radius:var(--radius-md);
-
-    border:1px solid rgba(255,255,255,0.3);
-
+    cursor:pointer;
     font-weight:600;
-    font-size:0.95rem;
+
+    transition:0.3s;
+    width:100%;
+    
+
 }
 
 .back:hover{
@@ -268,3 +352,11 @@ button{
         min-height:150px;
     }
 }
+
+@media (max-width:768px){
+    .feedback-card{
+        margin:20px;
+        padding:20px;
+    }
+}
+

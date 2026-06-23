@@ -14,6 +14,7 @@
     <script src="theme.js"></script>
 
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="tracker.css" />
   </head>
 
   <body>
@@ -139,6 +140,12 @@
           <div class="completed-header-row">
             <p class="tracker-card-label">All Projects</p>
             <div class="completed-actions">
+              <button id="exportProgressBtn" class="btn btn-ghost btn-sm" title="Export progress to JSON">
+                <i class="fas fa-download"></i> Export Progress
+              </button>
+              <button id="importProgressBtn" class="btn btn-ghost btn-sm" title="Import progress from JSON">
+                <i class="fas fa-upload"></i> Import Progress
+              </button>
               <button id="clearCompletedBtn" class="btn btn-ghost btn-sm" title="Clear all completed projects">
                 <i class="fas fa-trash"></i> Reset Progress
               </button>
@@ -292,30 +299,61 @@
       return "Tools";
     }
 
+    function getLocalDateString(date) {
+      const y = date.getFullYear();
+      const m = String(date.getMonth() + 1).padStart(2, '0');
+      const d = String(date.getDate()).padStart(2, '0');
+      return `${y}-${m}-${d}`;
+    }
+
     function getStreakData() { try { return JSON.parse(localStorage.getItem("streakData") || "{}"); } catch { return {}; } }
     function saveStreakData(data) { try { localStorage.setItem("streakData", JSON.stringify(data)); } catch {} }
+    
     function touchStreak() {
       const data = getStreakData();
-      const today = new Date().toISOString().split("T")[0];
+      const today = getLocalDateString(new Date());
       const activeDays = new Set(data.activeDays || []);
       if (activeDays.has(today)) return;
       activeDays.add(today);
       let streak = 0, checkDate = new Date();
       while (true) {
-        const key = checkDate.toISOString().split("T")[0];
+        const key = getLocalDateString(checkDate);
         if (activeDays.has(key)) { streak++; checkDate.setDate(checkDate.getDate() - 1); } else break;
       }
       saveStreakData({ activeDays: Array.from(activeDays), currentStreak: streak, longestStreak: Math.max(streak, data.longestStreak || 0), lastActive: today });
     }
-    function getCurrentStreak() { return getStreakData().currentStreak || 0; }
+
+    function getCurrentStreak() {
+      const data = getStreakData();
+      if (!data.activeDays || data.activeDays.length === 0) return 0;
+      
+      const today = new Date();
+      const yesterday = new Date(today);
+      yesterday.setDate(today.getDate() - 1);
+      
+      const todayStr = getLocalDateString(today);
+      const yesterdayStr = getLocalDateString(yesterday);
+      const lastActive = data.lastActive;
+      
+      if (lastActive !== todayStr && lastActive !== yesterdayStr) {
+        if (data.currentStreak !== 0) {
+          data.currentStreak = 0;
+          saveStreakData(data);
+        }
+        return 0;
+      }
+      return data.currentStreak || 0;
+    }
+
     function getLongestStreak() { return getStreakData().longestStreak || 0; }
     function getTotalActiveDays() { return (getStreakData().activeDays || []).length; }
+    
     function getLast14Days() {
       const activeDays = new Set((getStreakData().activeDays || []));
       const result = [], today = new Date();
       for (let i = 13; i >= 0; i--) {
         const d = new Date(today); d.setDate(today.getDate() - i);
-        const key = d.toISOString().split("T")[0];
+        const key = getLocalDateString(d);
         result.push({ date: key, active: activeDays.has(key) });
       }
       return result;
@@ -551,6 +589,61 @@
     document.getElementById("tableSearch").addEventListener("input", e=>{tableSearchQuery=e.target.value.trim();tablePage=1;applyTableFilters();renderTable();});
     document.getElementById("tableFilterDiff").addEventListener("change", e=>{tableDiffFilter=e.target.value;tablePage=1;applyTableFilters();renderTable();});
     document.getElementById("tableFilterStatus").addEventListener("change", e=>{tableStatusFilter=e.target.value;tablePage=1;applyTableFilters();renderTable();});
+
+    function exportProgress() {
+      const data = {
+        completedProjects: JSON.parse(localStorage.getItem("completedProjects") || "[]"),
+        streakData: JSON.parse(localStorage.getItem("streakData") || "{}"),
+        bookmarkedProjects: JSON.parse(localStorage.getItem("bookmarkedProjects") || "[]"),
+        exportedAt: new Date().toISOString()
+      };
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "100days-progress.json";
+      a.click();
+      showTrackerToast("✅ Progress exported successfully!");
+    }
+
+    function importProgress() {
+      const input = document.createElement("input");
+      input.type = "file";
+      input.accept = ".json";
+      input.onchange = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (evt) => {
+          try {
+            const data = JSON.parse(evt.target.result);
+            if (!data || typeof data !== "object") {
+              throw new Error("Invalid format");
+            }
+            if (data.completedProjects && Array.isArray(data.completedProjects)) {
+              localStorage.setItem("completedProjects", JSON.stringify(data.completedProjects));
+            }
+            if (data.streakData && typeof data.streakData === "object") {
+              localStorage.setItem("streakData", JSON.stringify(data.streakData));
+            }
+            if (data.bookmarkedProjects && Array.isArray(data.bookmarkedProjects)) {
+              localStorage.setItem("bookmarkedProjects", JSON.stringify(data.bookmarkedProjects));
+            }
+            showTrackerToast("✅ Progress imported successfully!");
+            prevLevel = 1;
+            applyTableFilters();
+            renderTable();
+            renderDashboard();
+          } catch (err) {
+            showTrackerToast("❌ Failed to parse or import progress data.");
+          }
+        };
+        reader.readAsText(file);
+      };
+      input.click();
+    }
+
+    document.getElementById("exportProgressBtn").addEventListener("click", exportProgress);
+    document.getElementById("importProgressBtn").addEventListener("click", importProgress);
 
     document.getElementById("clearCompletedBtn").addEventListener("click", () => {
       if(!confirm("Reset all progress? This will clear your completed projects, XP, and streaks.")) return;
