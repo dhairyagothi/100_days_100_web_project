@@ -13,6 +13,10 @@ Particle Wave Animation is a creative frontend project that renders a full‑scr
 - Responsive resizing to fit any browser window
 - Pure **HTML**, **CSS**, and **JavaScript (ES6)** implementation
 
+## 📸 Screenshot
+<img width="1908" height="894" alt="image" src="https://github.com/user-attachments/assets/4c96a141-20ec-4c50-9f86-4a401b398be7" />
+
+
 ## 🛠️ Technologies Used
 - HTML5  
 - CSS3  
@@ -55,7 +59,7 @@ particle-wave-animation/
 - Resize the browser window to see the canvas adapt automatically.  
 
 ## 📸 Demo
-![Particle Wave Animation Screenshot](https://github.com/user-attachments/assets/demo-placeholder.png)
+![Particle Wave Animation](https://100-days-100-web-project.vercel.app/public/particle-wave-animation/index.html)
 
 ## 🤝 Contributing
 Contributions are welcome!  
