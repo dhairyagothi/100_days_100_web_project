@@ -3,6 +3,12 @@ class HftOrderBookSandbox {
         this.canvas = document.getElementById(canvasId);
         this.ctx = this.canvas.getContext('2d');
 
+        this.midPrice = 100.00;
+        this.tickSize = 0.05;
+        this.bids = [];
+        this.asks = [];
+
+        this.trades = [];
         // Order Book Structural Parameters
         this.midPrice = 100.00;
         this.tickSize = 0.05;
@@ -51,6 +57,10 @@ class HftOrderBookSandbox {
             const rect = this.canvas.getBoundingClientRect();
             const clickY = e.clientY - rect.top;
 
+            if (clickY < this.canvas.height / 2) {
+                const targetedAskIdx = Math.floor(Math.random() * 10);
+                this.asks[targetedAskIdx].volume += 150;
+            } else {
             // Map click vertical layout parameters to insert concentrated wall depth matrices
             if (clickY < this.canvas.height / 2) {
                 // Click on top half -> Add heavy Sell Limit Order block
@@ -86,6 +96,9 @@ class HftOrderBookSandbox {
                 this.lastPrice = bestAsk.price;
 
                 this.trades.push({ price: bestAsk.price, volume: matchedVolume, side: 'BUY', timer: 1.0 });
+                if (bestAsk.volume <= 0) this.asks.shift();
+            }
+        } else if (side === 'SELL' && this.bids.length > 0) {
 
                 if (bestAsk.volume <= 0) this.asks.shift();
             }
@@ -143,6 +156,9 @@ class HftOrderBookSandbox {
         this.drawLiquidityDepthPolygons();
         this.drawHistoricalTradeFlashes();
 
+        const cumulativeDepth = this.bids.reduce((acc, b) => acc + b.volume, 0) + this.asks.reduce((acc, a) => acc + a.volume, 0);
+        document.getElementById('depthMetric').innerText = `${cumulativeDepth} Lots`;
+
         // Calculate total depth on display metrics
         const cumulativeDepth = this.bids.reduce((acc, b) => acc + b.volume, 0) + this.asks.reduce((acc, a) => acc + a.volume, 0);
         document.getElementById('depthMetric').innerText = `${cumulativeDepth} Lots`;
@@ -163,6 +179,9 @@ class HftOrderBookSandbox {
             this.ctx.beginPath(); this.ctx.moveTo(x, 0); this.ctx.lineTo(x, this.canvas.height); this.ctx.stroke();
         }
         for (let y = 0; y < this.canvas.height; y += spacing) {
+            this.ctx.beginPath(); this.ctx.moveTo(0, y); this.ctx.lineTo(0, this.canvas.height); this.ctx.stroke();
+        }
+
             this.ctx.beginPath(); this.ctx.moveTo(0, y); this.ctx.lineTo(this.canvas.width, y); this.ctx.stroke();
         }
 
