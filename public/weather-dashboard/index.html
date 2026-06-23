@@ -5,10 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="A premium, dark-themed weather dashboard providing live updates, hourly/7-day forecasts, air conditions, saved cities management, and an interactive dark map using Open-Meteo.">
   <title>Weather Dashboard</title>
-  
   <!-- Leaflet CSS for Map View -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
-  
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin>
   <!-- Main Stylesheet -->
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -16,9 +14,9 @@
 
   <div class="dashboard-wrapper">
     <!-- --- SIDEBAR --- -->
-    <aside class="sidebar">
+    <aside class="sidebar" aria-label="sidebar">
       <div class="logo-container" id="sidebar-logo">
-        <svg class="logo-icon" viewBox="0 0 24 24">
+        <svg class="logo-icon" viewbox="0 0 24 24">
           <!-- Wind cloud logo icon -->
           <path d="M19.36 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.64-4.96z" fill="#ffffff" opacity="0.3"/>
           <path d="M19.36 10.04C18.67 6.59 15.64 4 12 4c-1.48 0-2.85.43-4.01 1.17l1.51 1.51C10.37 6.25 11.16 6 12 6c2.76 0 5 2.24 5 5v1h1c1.66 0 3 1.34 3 3 0 1.66-1.34 3-3 3H9.83l1.5 1.5H19c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.64-4.96z" fill="#ffffff"/>
@@ -26,10 +24,10 @@
           <path d="M4 14c0-1.1.9-2 2-2 .23 0 .45.04.66.11l1.37-.95c-.63-.49-1.43-.76-2.28-.76-2.21 0-4 1.79-4 4s1.79 4 4 4c.64 0 1.25-.15 1.8-.42l-1.17-1.17C6.27 15.93 6.14 16 6 16c-1.1 0-2-.9-2-2z" fill="#ffffff"/>
         </svg>
       </div>
-      
-      <nav class="nav-menu">
+      <nav class="nav-menu" aria-label="Primary Navigation">
+        <ul class="nav-list">
         <li class="nav-item active" data-tab="weather" id="nav-weather">
-          <svg class="nav-item-icon" viewBox="0 0 24 24">
+          <svg class="nav-item-icon" viewbox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m12.728 12.728l.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z" />
           </svg>
           <span class="nav-item-text">Weather</span>
@@ -53,6 +51,7 @@
           </svg>
           <span class="nav-item-text">Settings</span>
         </li>
+        </ul>
       </nav>
     </aside>
 
@@ -63,8 +62,8 @@
         <svg class="search-icon" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
         </svg>
-        <input type="text" class="search-input" id="city-search" placeholder="Search for cities..." autocomplete="off">
-        <div class="suggestions-box hidden" id="search-suggestions"></div>
+        <input type="text" class="search-input" id="city-search" placeholder="Search for cities..." autocomplete="off" aria-label="Search for cities">
+        <div class="suggestions-box hidden" id="search-suggestions" aria-live="polite"></div>
       </div>
 
       <!-- --- VIEW: WEATHER (Default) --- -->
@@ -72,9 +71,9 @@
         <!-- Current Weather Summary -->
         <section class="current-weather-card">
           <div class="city-info">
-            <h1 class="city-name" id="weather-city-name">Loading...</h1>
+            <h1 class="city-name" id="weather-city-name" aria-live="polite">Loading...</h1>
             <span class="weather-desc" id="weather-chance-rain">Chance of rain: 0%</span>
-            <div class="current-temp" id="weather-temp">--</div>
+            <div class="current-temp" id="weather-temp" aria-live="polite">--</div>
           </div>
           <div class="hero-icon-container" id="weather-hero-icon">
             <!-- Dynamic SVG Icon here -->
@@ -166,12 +165,12 @@
             <h2 class="card-title" style="margin-bottom: 0;">Weather Map</h2>
           </div>
           <div class="map-card">
-            <div id="weather-map"></div>
+            <div id="weather-map" aria-label="Interactive Weather Map"></div>
             <!-- Overlay controls -->
             <div class="map-overlay-controls">
-              <button class="map-control-btn active" data-layer="temp">Temperature</button>
-              <button class="map-control-btn" data-layer="precipitation">Precipitation</button>
-              <button class="map-control-btn" data-layer="wind">Wind</button>
+              <button type="button" class="map-control-btn active" data-layer="temp" aria-label="temperature layer">Temperature</button>
+              <button type="button" class="map-control-btn" data-layer="precipitation" aria-label="precipitation layer">Precipitation</button>
+              <button type="button" class="map-control-btn" data-layer="wind" aria-label="wind layer">Wind</button>
             </div>
           </div>
         </div>
@@ -184,26 +183,24 @@
           <!-- Unit Settings -->
           <div class="settings-card">
             <h3 class="card-title" style="margin-bottom: 12px; color: var(--text-primary); font-size: 14px;">Units & Formatting</h3>
-            
             <div class="settings-row">
               <div class="settings-info">
                 <span class="settings-title">Temperature Unit</span>
                 <span class="settings-desc">Choose between Celsius and Fahrenheit</span>
               </div>
               <div class="toggle-group" id="temp-toggle-group">
-                <button class="toggle-btn active" data-unit="C">°C</button>
-                <button class="toggle-btn" data-unit="F">°F</button>
+                <button type="button" class="toggle-btn active" data-unit="C">°C</button>
+                <button type="button" class="toggle-btn" data-unit="F">°F</button>
               </div>
             </div>
-            
             <div class="settings-row">
               <div class="settings-info">
                 <span class="settings-title">Wind Speed Unit</span>
                 <span class="settings-desc">Choose wind metric measurements</span>
               </div>
               <div class="toggle-group" id="wind-toggle-group">
-                <button class="toggle-btn active" data-unit="kmh">km/h</button>
-                <button class="toggle-btn" data-unit="mph">mph</button>
+                <button type="button" class="toggle-btn active" data-unit="kmh">km/h</button>
+                <button type="button" class="toggle-btn" data-unit="mph">mph</button>
               </div>
             </div>
 
@@ -213,12 +210,11 @@
                 <span class="settings-desc">Choose your preferred visual style</span>
               </div>
               <div class="toggle-group" id="theme-toggle-group">
-                <button class="toggle-btn active" data-theme="dark">Dark</button>
-                <button class="toggle-btn" data-theme="light">Light</button>
+                <button type="button" class="toggle-btn active" data-theme="dark">Dark</button>
+                <button type="button" class="toggle-btn" data-theme="light">Light</button>
               </div>
             </div>
           </div>
-          
           <!-- Storage management -->
           <div class="settings-card">
             <h3 class="card-title" style="margin-bottom: 12px; color: var(--text-primary); font-size: 14px;">Saved Locations</h3>
@@ -230,7 +226,6 @@
               <button class="btn-danger" id="btn-clear-cities">Clear All</button>
             </div>
           </div>
-          
           <!-- Project Info -->
           <div class="settings-card" style="opacity: 0.85;">
             <h3 class="card-title" style="margin-bottom: 12px; color: var(--text-primary); font-size: 14px;">About App</h3>
@@ -244,7 +239,7 @@
     </main>
 
     <!-- --- RIGHT PANEL (7-Day Forecast) --- -->
-    <aside class="forecast-panel">
+    <aside class="forecast-panel" aria-label="forecast panel">
       <h2 class="card-title" style="margin-bottom: 8px;">7-Day Forecast</h2>
       <div class="forecast-list" id="forecast-7day-container">
         <!-- Dynamic forecast rows injected here -->
@@ -253,8 +248,7 @@
   </div>
 
   <!-- Leaflet JS Dependency -->
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-  
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin></script>
   <!-- Main Application Logic -->
   <script src="app.js"></script>
 </body>
