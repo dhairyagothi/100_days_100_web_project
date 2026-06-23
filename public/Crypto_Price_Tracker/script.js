@@ -15,7 +15,11 @@ async function fetchCrypto() {
         filterAndRenderCoins();
     } catch (error) {
         console.error("Error fetching crypto data:", error);
-        cryptoGrid.innerHTML = `<div class="error-message">Failed to load cryptocurrency data. Please try again later.</div>`;
+        cryptoGrid.innerHTML = '';
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'error-message';
+        errorDiv.textContent = 'Failed to load cryptocurrency data. Please try again later.';
+        cryptoGrid.appendChild(errorDiv);
     }
 }
 
@@ -23,7 +27,10 @@ function renderCoins(coins) {
     cryptoGrid.innerHTML = '';
     
     if (coins.length === 0) {
-        cryptoGrid.innerHTML = `<div class="no-results">No cryptocurrencies found matching "${searchInput.value}".</div>`;
+        const noResults = document.createElement('div');
+        noResults.className = 'no-results';
+        noResults.textContent = `No cryptocurrencies found matching "${searchInput.value}".`;
+        cryptoGrid.appendChild(noResults);
         return;
     }
     
@@ -36,31 +43,48 @@ function renderCoins(coins) {
         const changeSign = isPositive ? '▲' : '▼';
         const changeClass = isPositive ? 'positive' : 'negative';
         
+        // Define a 100% static HTML template outline without any interpolated variables for absolute security
         card.innerHTML = `
             <div class="card-header">
-                <img class="coin-icon" src="${coin.image}" alt="${coin.name}" loading="lazy">
+                <img class="coin-icon" src="" alt="" loading="lazy">
                 <div class="coin-info">
-                    <span class="coin-name">${coin.name}</span>
-                    <span class="coin-symbol">${coin.symbol.toUpperCase()}</span>
+                    <span class="coin-name"></span>
+                    <span class="coin-symbol"></span>
                 </div>
             </div>
             <div class="card-body">
-                <span class="coin-price">$${coin.current_price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
-                <span class="coin-change ${changeClass}">
-                    <span>${changeSign}</span>
-                    <span>${Math.abs(priceChange24h).toFixed(2)}%</span>
+                <span class="coin-price"></span>
+                <span class="coin-change">
+                    <span class="change-icon"></span>
+                    <span class="change-val"></span>
                 </span>
             </div>
         `;
+        
+        // Populate all data programmatically using textContent and attributes
+        const img = card.querySelector('.coin-icon');
+        img.src = coin.image || '';
+        img.alt = coin.name || '';
+        
+        card.querySelector('.coin-name').textContent = coin.name || '';
+        card.querySelector('.coin-symbol').textContent = (coin.symbol || '').toUpperCase();
+        card.querySelector('.coin-price').textContent = `$${(coin.current_price || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        
+        // Setup change badge styling and sign programmatically
+        const changeBadge = card.querySelector('.coin-change');
+        changeBadge.classList.add(changeClass);
+        card.querySelector('.change-icon').textContent = changeSign;
+        card.querySelector('.change-val').textContent = `${Math.abs(priceChange24h).toFixed(2)}%`;
+        
         cryptoGrid.appendChild(card);
     });
 }
 
 function filterAndRenderCoins() {
-    const searchTerm = searchInput.value.toLowerCase().trim();
+    const searchTerm = (searchInput.value || '').toLowerCase().trim();
     const filteredCoins = coinsData.filter(coin => 
-        coin.name.toLowerCase().includes(searchTerm) || 
-        coin.symbol.toLowerCase().includes(searchTerm)
+        (coin.name || '').toLowerCase().includes(searchTerm) || 
+        (coin.symbol || '').toLowerCase().includes(searchTerm)
     );
     renderCoins(filteredCoins);
 }
