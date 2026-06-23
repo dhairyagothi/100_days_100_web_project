@@ -1,58 +1,60 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>HFT Order Book Liquidity Sandbox</title>
-    <link rel="stylesheet" href="./styles.css">
-    <link rel="stylesheet" href="styles.css">
-</head>
+    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
 
-<body>
+  <body>
     <div class="terminal-container">
-        <div class="telemetry-panel">
-            <h2>HFT MARKET TERMINAL</h2>
-            <hr class="divider">
+      <div class="telemetry-panel">
+        <h2>HFT MARKET TERMINAL</h2>
+        <hr class="divider" />
 
-            <div class="metric-box">
-                <span class="label">LAST PRICE</span>
-                <div class="value warning" id="lastPriceMetric">$100.00</div>
-            </div>
-
-            <div class="metric-box">
-                <span class="label">BID-ASK SPREAD</span>
-                <div class="value safe" id="spreadMetric">$0.05</div>
-            </div>
-
-            <div class="metric-box">
-                <span class="label">TOTAL LIQUIDITY (DEPTH)</span>
-                <div class="value accent" id="depthMetric">0 Lots</div>
-            </div>
-
-            <div class="metric-box">
-                <span class="label">MATCHING LATENCY</span>
-                <div class="value safe" id="latencyMetric">0.00 μs</div>
-            </div>
-
-            <div class="instruction-pad">
-                <h3>MARKET CONTROLS</h3>
-                <p>Click on the upper half of the canvas viewport grid to inject a concentrated **Sell Limit Wall**.
-                    Click on the lower half to inject a heavy **Buy Support Block**. Press the <strong>Spacebar</strong>
-                    instantly to fire a random cross-spread Market Order execution sweep!</p>
-            </div>
+        <div class="metric-box">
+          <span class="label">LAST PRICE</span>
+          <div class="value warning" id="lastPriceMetric">$100.00</div>
         </div>
 
-        <div class="viewport-area">
-            <div class="viewport-header">
-                <span class="status-dot blinking"></span>
-                <span class="title-text">HFT_VIEW // DEPTH_POLYGON_RENDERER</span>
-            </div>
-            <canvas id="tradingCanvas"></canvas>
+        <div class="metric-box">
+          <span class="label">BID-ASK SPREAD</span>
+          <div class="value safe" id="spreadMetric">$0.05</div>
         </div>
+
+        <div class="metric-box">
+          <span class="label">TOTAL LIQUIDITY (DEPTH)</span>
+          <div class="value accent" id="depthMetric">0 Lots</div>
+        </div>
+
+        <div class="metric-box">
+          <span class="label">MATCHING LATENCY</span>
+          <div class="value safe" id="latencyMetric">0.00 μs</div>
+        </div>
+
+        <div class="instruction-pad">
+          <h3>MARKET CONTROLS</h3>
+          <p>
+            Click on the upper half of the canvas viewport grid to inject a
+            concentrated **Sell Limit Wall**. Click on the lower half to inject
+            a heavy **Buy Support Block**. Press the
+            <strong>Spacebar</strong> instantly to fire a random cross-spread
+            Market Order execution sweep!
+          </p>
+        </div>
+      </div>
+
+      <div class="viewport-area">
+        <div class="viewport-header">
+          <span class="status-dot blinking"></span>
+          <span class="title-text">HFT_VIEW // DEPTH_POLYGON_RENDERER</span>
+        </div>
+        <canvas id="tradingCanvas"></canvas>
+      </div>
     </div>
     <script src="./app.js"></script>
     <script src="app.js"></script>
-</body>
-
+  </body>
 </html>
