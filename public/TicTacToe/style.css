@@ -306,6 +306,55 @@ body{
     box-shadow: 0 0 20px rgba(64, 245, 210, 0.3); /* Subtle glow on hover */
     transform: translateY(-3px) scale(1.02);
 }
+
+/* Theme buttons */
+
+.theme-bar {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.theme-btn{
+    padding:8px 14px;
+
+    border-radius:10px;
+
+    border:none;
+
+    background:var(--panel2);
+
+    color:var(--txt);
+
+    transition:.3s;
+}
+
+.theme-btn.active{
+    background:var(--acc);
+
+    color:var(--bg);
+}
+
+body[data-theme="pastel"] .theme-btn{
+    background:#efe8ff;
+    color:#6b7280;
+}
+
+body[data-theme="pastel"] .theme-btn.active{
+    background:#d946ef;
+    color:white;
+}
+
+body[data-theme="mono"] .theme-btn{
+    background:#374151;
+    color:white;
+}
+
+body[data-theme="mono"] .theme-btn.active{
+    background:#e5e7eb;
+    color:black;
+}
+
 .scoreboard{
     display:grid;
     grid-template-columns:repeat(3,1fr);
