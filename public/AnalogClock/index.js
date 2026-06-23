@@ -1071,116 +1071,90 @@ function unpinClock(id) {
 
   renderTimer();
 
-  // ─────────────────────────────────────────────
-  // 14. FOCUS MODE STATE & ACTIONS
-  // ─────────────────────────────────────────────
-  let focusModeActive = false;
-  const focusBtn = document.getElementById("focusModeBtn");
+//FOCUS MODE
 
-  const focusIconHTML = `
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-      <path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/>
-      <path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/>
+  // Grab the two buttons
+  const focusBtn     = document.getElementById("focusModeBtn");   // header nav button
+  const focusBackBtn = document.getElementById("focusBackBtn");    // back arrow (top-left)
+
+  // SVG icons reused for the header button label swap
+  const ICON_FOCUS = `
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+         stroke="currentColor" stroke-width="2" stroke-linecap="round">
+      <path d="M8 3H5a2 2 0 0 0-2 2v3"/>
+      <path d="M21 8V5a2 2 0 0 0-2-2h-3"/>
+      <path d="M3 16v3a2 2 0 0 0 2 2h3"/>
+      <path d="M16 21h3a2 2 0 0 0 2-2v-3"/>
     </svg>
-  `;
+    <span>Focus</span>`;
 
-  const exitFocusIconHTML = `
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+  const ICON_EXIT = `
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+         stroke="currentColor" stroke-width="2" stroke-linecap="round">
       <path d="M4 14h6v6M20 10h-6V4M14 10l7-7M10 14l-7 7"/>
     </svg>
-  `;
+    <span>Exit Focus</span>`;
 
-  function enableFocusMode(pushHistory = true) {
-    if (focusModeActive) return;
-    document.body.classList.add("focus-mode");
+  // Simple flag so keyboard shortcuts know the current state
+  let focusModeActive = false;
+
+  function enterFocusMode() {
     focusModeActive = true;
-
-    if (focusBtn) {
-      focusBtn.innerHTML = `${exitFocusIconHTML}<span>Exit Focus</span>`;
-      focusBtn.setAttribute("aria-label", "Exit Focus Mode");
-    }
-
-    if (pushHistory && window.location.hash !== "#focus") {
-      history.pushState({ focusMode: true }, "", "#focus");
-    }
+    document.body.classList.add("focus-active-view");
+    if (focusBtn) focusBtn.innerHTML = ICON_EXIT;
   }
 
-  function disableFocusMode() {
-    if (!focusModeActive) return;
-    document.body.classList.remove("focus-mode");
+  function exitFocusMode() {
     focusModeActive = false;
-
-    if (focusBtn) {
-      focusBtn.innerHTML = `${focusIconHTML}<span>Focus</span>`;
-      focusBtn.setAttribute("aria-label", "Toggle Focus Mode");
-    }
+    document.body.classList.remove("focus-active-view");
+    if (focusBtn) focusBtn.innerHTML = ICON_FOCUS;
   }
 
-  function toggleFocusMode() {
-    if (!focusModeActive) {
-      enableFocusMode();
-    } else {
-      if (window.location.hash === "#focus") {
-        history.back();
-      } else {
-        disableFocusMode();
-      }
-    }
-  }
-
+  // Header "Focus" button — toggles in and out
   if (focusBtn) {
-    focusBtn.addEventListener("click", toggleFocusMode);
+    focusBtn.addEventListener("click", () => {
+      if (focusModeActive) {
+        exitFocusMode();
+      } else {
+        enterFocusMode();
+      }
+    });
   }
 
-  // Sync Focus Mode on history popstate
-  const handlePopState = () => {
-    if (window.location.hash !== "#focus" && focusModeActive) {
-      disableFocusMode();
-    } else if (window.location.hash === "#focus" && !focusModeActive) {
-      enableFocusMode(false);
-    }
-  };
-
-  window.addEventListener("popstate", handlePopState);
-
-  // Initialize Focus Mode if loaded with the #focus hash
-  if (window.location.hash === "#focus") {
-    enableFocusMode(false);
+  // Back arrow button — always exits
+  if (focusBackBtn) {
+    focusBackBtn.addEventListener("click", exitFocusMode);
   }
 
-  // ─────────────────────────────────────────────
-  // 15. KEYBOARD SHORTCUTS
-  // ─────────────────────────────────────────────
-  const handleKeyDown = (e) => {
+  // Keyboard shortcuts
+  document.addEventListener("keydown", (e) => {
     if (e.target.matches("input, textarea")) return;
 
+    // F — toggle focus mode
     if (e.key.toLowerCase() === "f") {
       e.preventDefault();
-      toggleFocusMode();
-    }
-    if (e.key === "Escape") {
       if (focusModeActive) {
-        e.preventDefault();
-        if (window.location.hash === "#focus") {
-          history.back();
-        } else {
-          disableFocusMode();
-        }
+        exitFocusMode();
+      } else {
+        enterFocusMode();
       }
     }
+
+    // Escape — exit focus mode if active
+    if (e.key === "Escape" && focusModeActive) {
+      e.preventDefault();
+      exitFocusMode();
+    }
+
+    // T — toggle theme
     if (e.key.toLowerCase() === "t") {
       document.getElementById("themeToggleBtn")?.click();
     }
-  };
+  });
 
-  document.addEventListener("keydown", handleKeyDown);
+  // If the page loaded with #focus in the URL hash, enter immediately
+  if (window.location.hash === "#focus") {
+    enterFocusMode();
+  }
 
-  // Expose clean-up utility for test environments or lifecycle management
-  window.cleanupChronosFocusMode = () => {
-    document.removeEventListener("keydown", handleKeyDown);
-    window.removeEventListener("popstate", handlePopState);
-    if (focusBtn) {
-      focusBtn.removeEventListener("click", toggleFocusMode);
-    }
-  };
-});
+});  // ← end of DOMContentLoaded — keep this closing bracket
