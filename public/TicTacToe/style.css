@@ -101,25 +101,28 @@ body{
     position:fixed;
     top:20px;
     left:20px;
-
-    background:#1e293b;
-    color:#3b82f6;
-
-    padding:8px 16px;
-
-    border-radius:8px;
-    border:1px solid #3b82f6;
-
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:10px 18px;
+    background:var(--panel2);
+    color:var(--acc);
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:14px;
     text-decoration:none;
-
+    font-family:var(--font-ui);
     font-weight:700;
-
-    z-index:999;
-    transition:all 0.2s ease;
+    backdrop-filter:blur(12px);
+    box-shadow: 0 6px 18px rgba(0,0,0,.2);
+    transition: all .3s ease;
+    z-index: 999;
 }
+
 .project-back-button:hover{
-    background:#3b82f6;
-    color:#fff;
+    background:var(--acc);
+    color:var(--bg);
+    transform: translateY(-2px);
+    box-shadow: 0 0 18px var(--acc);
 }
 
 .hero{
