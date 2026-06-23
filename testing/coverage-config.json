@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema",
+  "description": "Coverage configuration for automated project validation",
+  "defaultThreshold": {
+    "branches": 70,
+    "functions": 70,
+    "lines": 70,
+    "statements": 70
+  },
+  "perProjectOverrides": {
+    "comment": "Add project-specific overrides here if a project requires different thresholds",
+    "example-project-name": {
+      "branches": 60,
+      "functions": 60,
+      "lines": 60,
+      "statements": 60
+    }
+  },
+  "excludePatterns": [
+    "**/node_modules/**",
+    "**/dist/**",
+    "**/build/**",
+    "**/*.config.js"
+  ]
+}
