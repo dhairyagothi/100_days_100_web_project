@@ -533,35 +533,286 @@ body{
   gap:.8rem;
 }
 
+p styles · CSS
 /* ==========================
    MAP PANEL
 ========================== */
-
-.map-panel{
-  margin-bottom:2rem;
-  padding:2rem;
+ 
+.map-panel {
+  margin-bottom: 2rem;
 }
-
-.map-panel-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:1.5rem;
+ 
+.map-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem 1rem;
 }
-
-.map-container{
-  height:500px;
-
-  border-radius:20px;
-
-  background:#09111f;
-
-  border:1px solid var(--border);
+ 
+.map-panel-header h2 {
+  margin-bottom: 0.25rem;
 }
+ 
+.map-panel-header p {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+ 
+/* Container: fixed height, clips the SVG, anchors the tooltip */
+.map-container {
+  position: relative;
+  height: 500px;
+  overflow: hidden;
+  border-radius: 0 0 var(--radius) var(--radius);
+  background: transparent;
+  border-top: 1px solid var(--border);
+}
+ 
+/* Scroll wrapper stretches to fill the container */
+.map-scroll {
+  width: 100%;
+  height: 100%;
+}
+ 
+/* Injected SVG fills .map-scroll completely */
+#timezone-map-wrapper {
+  width: 100%;
+  height: 100%;
+}
+ 
+#timezone-map-wrapper svg,
+#world-map {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+ 
+/* ── CONTINENT FILLS ──────────────────────────────────────────
+   .land-path is added by JS to every path/polygon in the SVG.
+   CSS drives the colour; no filter: invert() required.
+   ─────────────────────────────────────────────────────────── */
+ 
+/* Dark (default) — charcoal-slate with slate-blue borders */
+body.dark-theme .land-path,
+body:not(.light-theme) .land-path {
+  fill: #1e2d42;
+  stroke: #2e4060;
+  stroke-width: 0.4px;
+}
+ 
+/* Light — soft parchment with clear country borders */
+body.light-theme .land-path {
+  fill: #c8d6e5;
+  stroke: #8fa5bb;
+  stroke-width: 0.5px;
+}
+ 
+/* ── TIMEZONE BANDS ── */
+.timezone-sector {
+  fill: transparent;
+  cursor: pointer;
+  transition: fill 0.2s ease;
+}
+ 
+.timezone-sector.active-sector {
+  fill: rgba(212, 175, 55, 0.08);
+}
+ 
+body.light-theme .timezone-sector.active-sector {
+  fill: rgba(184, 134, 11, 0.1);
+}
+ 
+/* ── GRID LINES ── */
+.map-grid-line {
+  stroke: rgba(255, 255, 255, 0.06);
+  stroke-width: 1;
+}
+ 
+body.light-theme .map-grid-line {
+  stroke: rgba(15, 23, 42, 0.1);
+}
+ 
+.equator-line,
+.meridian-line {
+  stroke: rgba(212, 175, 55, 0.18);
+  stroke-dasharray: 4 4;
+}
+ 
+body.light-theme .equator-line,
+body.light-theme .meridian-line {
+  stroke: rgba(184, 134, 11, 0.25);
+}
+ 
+/* ── CITY MARKERS ── */
+.city-marker {
+  cursor: pointer;
+}
+ 
+.city-marker .center-dot {
+  fill: var(--gold, #d4af37);
+  transition: r 0.2s ease;
+}
+ 
+.city-marker .pulse-ring {
+  fill: none;
+  stroke: var(--gold, #d4af37);
+  stroke-width: 1.5;
+  opacity: 0.4;
+}
+ 
+.city-marker.pinned-marker .center-dot {
+  fill: #22c55e;
+}
+ 
+.city-marker.pinned-marker .pulse-ring {
+  stroke: #22c55e;
+}
+ 
+body.light-theme .city-marker .center-dot {
+  fill: var(--accent, #b8860b);
+}
+ 
+body.light-theme .city-marker .pulse-ring {
+  stroke: var(--accent, #b8860b);
+}
+ 
+/* ── MAP TOOLTIP ── */
 
-.map-scroll{
-  width:100%;
-  height:100%;
+.map-tooltip {
+  position: absolute;
+  z-index: 200;
+  pointer-events: none;   /* ghost — doesn't block SVG mousemove */
+ 
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1rem 1.2rem;
+  min-width: 210px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  backdrop-filter: blur(12px);
+  transition: opacity 0.1s ease;
+}
+ 
+/* Only the interactive parts get pointer-events back */
+.map-tooltip .tt-pin-btn,
+.map-tooltip .tt-remove-btn {
+  pointer-events: all;
+  position: relative;
+  z-index: 201;
+  cursor: pointer;
+}
+ 
+/* When the cursor is inside the tooltip card, re-enable the whole card
+   so mouseenter/mouseleave fire correctly (JS uses these for cancelHide) */
+.map-tooltip:hover {
+  pointer-events: all;
+}
+ 
+.tt-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+ 
+.tt-header h4 {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+ 
+.tt-badge {
+  background: rgba(212, 175, 55, 0.15);
+  color: var(--gold, #d4af37);
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-family: "DM Mono", monospace;
+  white-space: nowrap;
+}
+ 
+body.light-theme .tt-badge {
+  background: rgba(184, 134, 11, 0.12);
+  color: var(--accent, #b8860b);
+}
+ 
+.tt-tz {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-family: "DM Mono", monospace;
+}
+ 
+.tt-time-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+ 
+.tt-time {
+  font-family: "DM Mono", monospace;
+  font-size: 1.1rem;
+  color: var(--gold, #d4af37);
+}
+ 
+body.light-theme .tt-time {
+  color: var(--accent, #b8860b);
+}
+ 
+.tt-date {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+ 
+.tt-pin-btn {
+  margin-top: 0.25rem;
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  border: none;
+  background: var(--gold, #d4af37);
+  color: #000;
+  font-family: "Outfit", sans-serif;
+  font-weight: 600;
+  font-size: 0.82rem;
+  cursor: pointer;
+  pointer-events: all;
+  transition: opacity 0.2s;
+}
+ 
+.tt-pin-btn:hover { opacity: 0.85; }
+ 
+.tt-remove-btn {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+ 
+/*MAP*/
+.map-legend {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+ 
+.legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+ 
+.legend-dot.pinned { background: #22c55e; }
+ 
+.legend-dot.active {
+  background: var(--gold, #d4af37);
+}
+ 
+body.light-theme .legend-dot.active {
+  background: var(--accent, #b8860b);
 }
 
 /* ==========================
@@ -573,6 +824,7 @@ body{
   justify-content:space-between;
   align-items:center;
   margin-bottom:1.5rem;
+  padding-top:0.25rem;
 }
 
 .clock-search-wrap{
