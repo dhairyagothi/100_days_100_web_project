@@ -613,8 +613,25 @@ async function fetchUser(username) {
       `https://api.github.com/users/${cleanName}/repos?per_page=100`
     );
 
+    if (!repoResponse.ok) {
+
+      const errorData =
+        await repoResponse.json().catch(() => ({}));
+
+      throw new Error(
+        errorData.message || "Failed to fetch repositories."
+      );
+    }
+
     const repos =
       await repoResponse.json();
+
+    if (!Array.isArray(repos)) {
+
+      throw new Error(
+        "Failed to fetch repositories."
+      );
+    }
 
     const sortedRepos = repos
       .sort(
@@ -692,8 +709,25 @@ async function fetchProfileData(username) {
     `https://api.github.com/users/${cleanName}/repos?per_page=50`
   );
 
+  if (!repoResponse.ok) {
+
+    const errorData =
+      await repoResponse.json().catch(() => ({}));
+
+    throw new Error(
+      errorData.message || "Failed to fetch repositories."
+    );
+  }
+
   const repos =
     await repoResponse.json();
+
+  if (!Array.isArray(repos)) {
+
+    throw new Error(
+      "Failed to fetch repositories."
+    );
+  }
 
   const sortedRepos = repos
     .sort(

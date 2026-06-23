@@ -8,83 +8,69 @@
 
 body {
   min-height: 100vh;
-  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-
   font-family: "Poppins", sans-serif;
-
   background: linear-gradient(
     135deg,
     #667eea 0%,
     #764ba2 50%,
     #6b73ff 100%
   );
-  
-  overflow-y:scroll;
-  padding: 20px;
+  overflow-y: auto;
+  padding: 120px 15px 20px 15px; /* Top padding navbar ke liye, sides par mobile safety spacing */
 }
 
+/* --- RESPONSIVE JOKE CONTAINER --- */
 .container {
-  width: 850px;
-  max-width: 100%;
- margin : 200px;
-  padding: 50px 40px;
-
+  width: 100%;
+  max-width: 700px; /* Desktop par zyada bada na ho */
+  margin: 40px auto;
+  padding: 50px 30px;
   text-align: center;
-
   background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
-
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 24px;
-
   box-shadow:
     0 20px 50px rgba(0, 0, 0, 0.2),
     0 10px 20px rgba(0, 0, 0, 0.15);
-
   animation: fadeIn 0.6s ease;
 }
 
 h3 {
   color: rgba(255, 255, 255, 0.8);
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   letter-spacing: 4px;
   text-transform: uppercase;
 }
 
 .joke {
-  margin: 50px auto;
-
-  font-size: 2rem;
-  line-height: 1.8;
+  margin: 40px auto;
+  font-size: clamp(1.3rem, 4.5vw, 1.8rem); /* Mobile par font apne aap chota ho jayega */
+  line-height: 1.6;
   font-weight: 500;
-
   color: white;
-
-  max-width: 650px;
-
+  max-width: 100%;
+  word-wrap: break-word; /* Bada text wrap ho jaye screen se bahar na jaye */
   transition: all 0.3s ease;
 }
 
 .btn {
   border: none;
   outline: none;
-
   background: white;
   color: #6c63ff;
-
   padding: 15px 35px;
   border-radius: 50px;
-
   font-size: 16px;
   font-weight: 600;
-
   cursor: pointer;
-
   transition: all 0.3s ease;
-
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
 }
 
@@ -97,97 +83,49 @@ h3 {
   transform: scale(0.96);
 }
 
-.btn:focus {
-  outline: none;
-}
-
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(25px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(25px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-@media (max-width: 768px) {
-  .container {
-    padding: 35px 25px;
-  }
-
-  .joke {
-    font-size: 1.4rem;
-    line-height: 1.7;
-  }
-
-  .btn {
-    width: 100%;
-  }
-}
+/* --- RESPONSIVE NAVBAR --- */
 .navbar {
   position: fixed;
-
   top: 0;
   left: 0;
   right: 0;
-
   width: 100%;
-
   z-index: 1000;
-
   display: flex;
   justify-content: space-between;
   align-items: center;
-
   padding: 1rem 4rem;
-
   box-sizing: border-box;
-
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-
   background: rgba(10, 10, 20, 0.85);
-
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
-.navbar ul{
-   margin-right: 40px;
-}
+
 .logo {
-  font-family: "Bebas Neue", sans-serif;
-  font-size: 2rem;
-  letter-spacing: 1px;
+  font-size: 1.4rem;
+  font-weight: 700;
   color: #ffffff;
-  cursor: pointer;
+  white-space: nowrap;
 }
 
 .nav-links {
   display: flex;
   align-items: center;
   gap: 2rem;
-
   list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.nav-links li {
-  position: relative;
 }
 
 .nav-links a {
   text-decoration: none;
-  size: 2rem;
-  height: 30px;
-  width: 30px;
   color: #d6d6d6;
-  font-family: "Inter", sans-serif;
   font-size: 0.95rem;
   font-weight: 500;
- 
   transition: all 0.3s ease;
 }
 
@@ -195,144 +133,73 @@ h3 {
   color: #ffffff;
 }
 
-/* Animated Underline */
-
-.nav-links a::after {
-  content: "";
-
-  position: absolute;
-  left: 0;
-  bottom: -6px;
-
-  width: 0%;
-  height: 2px;
-
-  background: #7c5cff;
-
-  transition: width 0.3s ease;
+#themeToggle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: transparent;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
 }
 
-.nav-links a:hover::after {
-  width: 100%;
-}
-
-/* Active Page */
-
-.nav-links a.active {
-  color: #ffffff;
-}
-
-.nav-links a.active::after {
-  width: 100%;
-}
-
-/* Mobile */
-
-@media (max-width: 768px) {
-
-  .navbar {
-    padding: 1rem 1.5rem;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .nav-links {
-    gap: 1rem;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  .logo {
-    font-size: 1.8rem;
-  }
-}
-
-/* ==========================
-   FOOTER
-========================== */
-
+/* --- GRID-BASED RESPONSIVE FOOTER --- */
 .footer {
   width: 100%;
-  margin-top: auto;
-  bottom: 0;
   background: rgba(6, 12, 35, 0.95);
   border-top: 1px solid rgba(255,255,255,0.08);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  margin-top: auto;
 }
 
-
-footer.modal-content{
-    background: rgba(6, 12, 35, 0.95);
-    border-top: 1px solid rgba(255,255,255,0.08);
-    color:white;
-}
 #footer-container {
   max-width: 1200px;
   margin: auto;
-   padding: 60px 30px;
-  display: flex;
-  justify-content: space-between;
-  gap: 50px;
-  flex-wrap: wrap;
-}
-
-.footer-section {
-  flex: 1;
-  min-width: 220px;
+  padding: 40px 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* Flex-wrap ki jagah grid use kiya responsive ke liye */
+  gap: 30px;
 }
 
 .footer-section h3,
 .footer-section h4 {
-  color: var(--text-color, #fff);
-  margin-bottom: 18px;
+  color: #fff;
+  margin-bottom: 15px;
 }
 
-.footer-section p {
-  color: var(--text-secondary, #bdbdbd);
-  line-height: 1.7;
-}
-
-.footer-section ul {
-  list-style: none;
-  padding: 0;
+.footer-section p, 
+.footer-section ul li a {
+  color: #bdbdbd;
+  line-height: 1.6;
+  text-decoration: none;
 }
 
 .footer-section ul li {
-  margin-bottom: 12px;
-}
-
-.footer-section ul li a {
-  text-decoration: none;
-  color: var(--text-secondary, #bdbdbd);
-  transition: 0.3s;
+  margin-bottom: 8px;
+  list-style: none;
 }
 
 .footer-section ul li a:hover {
   color: #667eea;
-  padding-left: 5px;
 }
 
 .social-links {
   display: flex;
-  gap: 15px;
+  gap: 12px;
 }
 
 .social-links a {
-  width: 42px;
-  height: 42px;
-
+  width: 38px;
+  height: 38px;
   display: flex;
   align-items: center;
   justify-content: center;
-
   border-radius: 50%;
-
   background: rgba(255,255,255,0.08);
-
   color: white;
-  text-decoration: none;
-
   transition: all 0.3s ease;
 }
 
@@ -343,152 +210,53 @@ footer.modal-content{
 
 .footer-bottom {
   text-align: center;
-
-  padding: 20px;
-
+  padding: 15px;
   border-top: 1px solid rgba(255,255,255,0.08);
-
-  color: var(--text-secondary, #bdbdbd);
+  color: #bdbdbd;
+  font-size: 0.85rem;
 }
 
-#themeToggle {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  border: 1px solid var(--border-color);
+/* ==================================
+   MEDIA QUERIES (FOR MOBILE DEVICES)
+===================================== */
+@media (max-width: 768px) {
+  body {
+    padding-top: 160px; /* Mobile par navbar stack hone ke liye extra space */
+  }
 
-  background: var(--card-bg);
-  color: var(--text-color);
+  .navbar {
+    padding: 1rem;
+    flex-direction: column; /* Links aur logo upar-neeche ho jayenge */
+    gap: 0.75rem;
+  }
 
-  cursor: pointer;
-  transition: all 0.3s ease;
+  .nav-links {
+    gap: 1.5rem;
+  }
+
+  .container {
+    padding: 35px 20px;
+    margin: 20px auto;
+  }
+
+  .btn {
+    width: 100%; /* Full width button on mobile for easy tapping */
+  }
 }
 
-#themeToggle:hover {
-  transform: rotate(180deg);
-  border-color: var(--accent);
-}
-
-#themeIcon {
-  font-size: 1.2rem;
-}
-
-.social-icons a:hover {
-  transform: translateY(-4px);
-  color: var(--accent);
-}
+/* ==================================
+   LIGHT THEME OVERRIDES
+===================================== */
 body.light-theme {
-  --bg-primary: linear-gradient(
-    135deg,
-    #fdfbfb 0%,
-    #ebedee 30%,
-    #a6b3ef 70%,
-    #667eea 100%
-  );
-
-  --card-bg: rgba(255, 255, 255, 0.75);
-
-  --text-primary: #1f2937;
-  --text-secondary: #4b5563;
-
-  --accent: #7c3aed;
-  --accent-hover: #6d28d9;
-
-  --border: rgba(0, 0, 0, 0.08);
-
-  --navbar-bg: rgba(255, 255, 255, 0.8);
-  --footer-bg: rgba(255, 255, 255, 0.8);
-}
-body.light-theme {
+  --bg-primary: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
   background: var(--bg-primary);
-  background-attachment: fixed;
-
-  color: var(--text-primary);
-}
-body.light-theme .navbar {
-  background: var(--navbar-bg);
-
-  backdrop-filter: blur(20px);
-
-  border-bottom: 1px solid var(--border);
-
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-}
-
-body.light-theme .logo,
-body.light-theme .nav-links a {
-  color: var(--text-primary);
-}
-
-body.light-theme .nav-links a:hover {
-  color: var(--accent);
-}
-body.light-theme .container {
-  background: rgba(255, 255, 255, 0.7);
   color: #1f2937;
-
-  border: 1px solid rgba(255, 255, 255, 0.5);
-
-  backdrop-filter: blur(20px);
-
-  box-shadow:
-    0 10px 30px rgba(0, 0, 0, 0.08),
-    0 0 20px rgba(124, 58, 237, 0.08);
 }
-
-body.light-theme .input {
-  color: var(--text-primary);
-}
-
-body.light-theme .input::placeholder {
-  color: var(--text-secondary);
-}
-body.light-theme h1 {
-  background: linear-gradient(
-    90deg,
-    #7c3aed,
-    #ec4899,
-    #06b6d4
-  );
-  background-clip: border-box;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-body.light-theme h3,
-body.light-theme .joke
-{
-  color: var(--text-secondary);
-}
-
-body.light-theme footer {
-  background: var(--footer-bg);
-
-  border-top: 1px solid var(--border);
-
-  backdrop-filter: blur(20px);
-}
-
-body.light-theme .footer-section h3,
-body.light-theme .footer-section h4 {
-  color: var(--text-primary);
-}
-
-body.light-theme .footer-section p,
-body.light-theme .footer-section a,
-body.light-theme .footer-bottom {
-  color: var(--text-secondary);
-}
-body.light-theme .social-links a {
-  background: linear-gradient(
-    135deg,
-    #a855f7,
-    #ec4899
-  );
-
-  color: white;
-}
-
-body.light-theme .social-links a:hover {
-  transform: translateY(-5px) scale(1.08);
-}
+body.light-theme .navbar { background: rgba(255, 255, 255, 0.85); border-bottom: 1px solid rgba(0, 0, 0, 0.08); }
+body.light-theme .logo, body.light-theme .nav-links a { color: #1f2937; }
+body.light-theme .container { background: rgba(255, 255, 255, 0.75); border: 1px solid rgba(0, 0, 0, 0.05); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); }
+body.light-theme .joke { color: #374151; }
+body.light-theme .btn { background: #6c63ff; color: white; }
+body.light-theme footer { background: #f3f4f6; border-top: 1px solid rgba(0, 0, 0, 0.08); }
+body.light-theme .footer-section h3, body.light-theme .footer-section h4, body.light-theme .footer-bottom { color: #1f2937; }
+body.light-theme .footer-section p, body.light-theme .footer-section a { color: #4b5563; }
