@@ -32,8 +32,12 @@
         </button>
       </div>
 
-      <div class="nav-right">
-        <a href="#">Airbnb your home</a>
+            <button id="theme-toggle" onclick="toggleTheme()">
+        🌙
+    </button>
+
+
+            <a href="#">Airbnb your home</a>
 
         <a href="signup.html">Sign up</a>
 
@@ -310,7 +314,39 @@
         <a href="#">Support</a>
       </div>
     </footer>
+<script>
+const savedTheme = localStorage.getItem("theme") || "light";
+document.documentElement.setAttribute("data-theme", savedTheme);
 
-    <script src="js\script.js"></script> 
-    </body>
+updateIcon();
+
+function toggleTheme() {
+    const current =
+        document.documentElement.getAttribute("data-theme");
+
+    const next =
+        current === "dark" ? "light" : "dark";
+
+    document.documentElement.setAttribute(
+        "data-theme",
+        next
+    );
+
+    localStorage.setItem("theme", next);
+
+    updateIcon();
+}
+
+function updateIcon() {
+    const btn =
+        document.getElementById("theme-toggle");
+
+    const theme =
+        document.documentElement.getAttribute("data-theme");
+
+    btn.textContent =
+        theme === "dark" ? "☀️" : "🌙";
+}
+</script>
+</body>
 </html>
