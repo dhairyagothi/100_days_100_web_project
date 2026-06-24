@@ -3590,3 +3590,49 @@ body.custom-cursor-active .cursor-ring.is-visible {
   border-radius: 10px;
 }
 
+
+.signin-overlay {
+  position: fixed;
+  top: 70px;
+  right: 24px;
+  z-index: 2000;
+  width: auto;
+}
+.signin-overlay.hidden { display: none; }
+
+.signin-modal {
+  background: var(--card-bg, #14141c);
+  border: 1px solid var(--border-color, #2a2a3a);
+  border-radius: 12px;
+  padding: 24px 28px;
+  width: min(320px, 90vw);
+  position: relative;
+  color: var(--text-color, #fff);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+}
+
+.signin-modal h2 { margin: 0 0 8px; font-size: 1.2rem; }
+.signin-modal p { color: var(--text-muted, #9b9bab); font-size: 0.85rem; margin-bottom: 14px; }
+
+#signinInput {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color, #333);
+  background: var(--input-bg, #1c1c28);
+  color: var(--text-color, #fff);
+  outline: none;
+  box-sizing: border-box;
+}
+#signinInput:focus { border-color: var(--accent-color, #3b82f6); }
+
+.signin-error { color: #f87171; font-size: 0.8rem; display: block; margin-top: 6px; }
+.signin-error.hidden { display: none; }
+
+.signin-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
+
+.signin-close {
+  position: absolute; top: 12px; right: 14px;
+  background: none; border: none; color: #999;
+  font-size: 1.4rem; cursor: pointer; line-height: 1;
+}

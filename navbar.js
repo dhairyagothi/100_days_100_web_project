@@ -367,22 +367,101 @@
     }
   });
 
-  // Sign In Click Logic
-  document.addEventListener("click", (event) => {
-    const signInBtn = event.target.closest("#navSignInCta");
-    if (!signInBtn) return;
-    event.preventDefault();
-    const name = prompt("Enter your name/nickname to personalize your experience:");
-    if (name && name.trim()) {
-      const trimmed = name.trim();
-      safeStorage.setItem("loggedInUser", trimmed);
-      safeStorage.setItem("loggedInUserData", JSON.stringify({
+function ensureSignInModal() {
+  if (document.getElementById("signin-overlay")) return;
+
+  const modal = document.createElement("div");
+  modal.id = "signin-overlay";
+  modal.className = "signin-overlay hidden";
+  modal.innerHTML = `
+    <div class="signin-modal" role="dialog" aria-modal="true" aria-labelledby="signinTitle">
+      <button class="signin-close" id="signinClose" aria-label="Close">&times;</button>
+      <h2 id="signinTitle">Welcome 👋</h2>
+      <p>Enter your name/nickname to personalize your experience:</p>
+      <input type="text" id="signinInput" maxlength="20" placeholder="e.g. CodeNinja" autocomplete="off" />
+      <span id="signinError" class="signin-error hidden">Please enter at least 2 characters.</span>
+      <div class="signin-actions">
+        <button id="signinCancel" class="btn btn-ghost btn-sm">Cancel</button>
+        <button id="signinContinue" class="btn btn-primary btn-sm">Continue</button>
+      </div>
+    </div>
+  `;
+
+  const navEl = document.getElementById("navbar") || document.body;
+  navEl.appendChild(modal);
+
+  const overlay = modal;
+  const input = modal.querySelector("#signinInput");
+  const error = modal.querySelector("#signinError");
+
+  const closeModal = () => {
+    overlay.classList.add("hidden");
+    document.removeEventListener("keydown", onKeydown);
+  };
+
+  function submit() {
+    const trimmed = input.value.trim();
+    if (trimmed.length < 2) {
+      error.classList.remove("hidden");
+      return;
+    }
+    safeStorage.setItem("loggedInUser", trimmed);
+    safeStorage.setItem(
+      "loggedInUserData",
+      JSON.stringify({
         username: trimmed,
         name: trimmed,
         authAction: "login",
-        loginTime: Date.now()
-      }));
-      location.reload();
+        loginTime: Date.now(),
+      }),
+    );
+    closeModal();
+    location.reload();
+  }
+
+  function onKeydown(e) {
+    if (e.key === "Escape") closeModal();
+    if (e.key === "Enter") submit();
+  }
+
+  modal.querySelector("#signinClose").addEventListener("click", closeModal);
+  modal.querySelector("#signinCancel").addEventListener("click", closeModal);
+  modal.querySelector("#signinContinue").addEventListener("click", submit);
+
+  modal._open = () => {
+    const btn = document.getElementById("navSignInCta");
+    if (btn) {
+      const rect = btn.getBoundingClientRect();
+      modal.style.top = `${rect.bottom + 8}px`;
+      modal.style.right = `${window.innerWidth - rect.right}px`;
     }
-  });
+    overlay.classList.remove("hidden");
+    error.classList.add("hidden");
+    input.value = "";
+    document.addEventListener("keydown", onKeydown);
+    requestAnimationFrame(() => {
+      input.focus({ preventScroll: true });
+    });
+  };
+}
+
+document.addEventListener("click", (event) => {
+  const signInBtn = event.target.closest("#navSignInCta");
+  if (signInBtn) {
+    event.preventDefault();
+    ensureSignInModal();
+    document.getElementById("signin-overlay")._open();
+    return;
+  }
+
+  const overlay = document.getElementById("signin-overlay");
+  if (
+    overlay &&
+    !overlay.classList.contains("hidden") &&
+    !overlay.contains(event.target) &&
+    event.target.id !== "navSignInCta"
+  ) {
+    overlay.classList.add("hidden");
+  }
+});
 })();
