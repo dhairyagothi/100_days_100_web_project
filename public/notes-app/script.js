@@ -32,7 +32,7 @@ const defaultNotes = [
 
     id: crypto.randomUUID(),
     title: "Welcome to Premium Notes",
-    content:
+    content:" ",
 
     tag: "Ideas",
     color: "teal",
@@ -810,10 +810,14 @@ function setTheme(theme) {
     theme === "light"
   );
 
-  elements.themeToggle.textContent =
-    theme === "light"
-      ? "Dark"
-      : "Light";
+
+  const icon = elements.themeToggle.querySelector("i");
+
+  if (theme === "light") {
+    icon.className = "ri-moon-line";
+  } else {
+    icon.className = "ri-sun-line";
+  }
 
   localStorage.setItem(
     THEME_KEY,
