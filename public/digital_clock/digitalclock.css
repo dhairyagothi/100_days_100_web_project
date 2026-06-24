@@ -34,21 +34,13 @@
 
 body{
     min-height:100vh;
+    font-family:'Poppins',sans-serif;
     background:
-      radial-gradient(
-        circle at top left,
-        color-mix(
-          in srgb,
-          var(--primary) 25%,
-          transparent
-        ),
-        transparent 35%
-      ),
-      var(--bg);
+        radial-gradient(circle at top left,#1f2a52 0%,transparent 35%),
+        radial-gradient(circle at bottom right,#32215f 0%,transparent 35%),
+        var(--bg);
+
     color:var(--text);
-    transition:
-      background .35s,
-      color .35s;
 }
 
 /* =========================
@@ -56,31 +48,40 @@ body{
 ========================= */
 
 .navbar{
-  width:100%;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  gap:20px;
-  padding:18px;
-  position:sticky;
-  top:0;
-  z-index:100;
-  backdrop-filter:blur(18px);
-  background:var(--card-light);
-  border-bottom: 1px solid var(--border);
+    width:100%;
+    display:flex;
+    justify-content:center;
+    gap:20px;
+
+    padding:18px;
+
+    position:sticky;
+    top:0;
+
+    backdrop-filter:blur(18px);
+
+    background:rgba(10,10,20,.65);
+
+    border-bottom:1px solid var(--border);
+
+    z-index:100;
 }
 
 .navbar a{
-  color:var(--text);
-  text-decoration:none;
-  padding:10px 18px;
-  border-radius:10px;
-  transition:.3s;
+    color:var(--text-muted);
+    text-decoration:none;
+
+    padding:10px 18px;
+
+    border-radius:10px;
+
+    transition:.3s;
 }
 
 .navbar a:hover{
-  color:var(--text);
-  background: rgba(108,99,255,.10);
+    color:white;
+
+    background:rgba(255,255,255,.08);
 }
 
 /* =========================
@@ -129,7 +130,7 @@ body{
 
     background:rgba(108,99,255,.15);
 
-    color: var(--text);
+    color:#bdb8ff;
 
     font-size:.8rem;
     letter-spacing:2px;
@@ -240,9 +241,9 @@ body{
 
 .btn-outline{
     background:transparent;
-    color: var(--text);
+    color:white;
 
-    border:1px solid var(--border);
+    border:1px solid rgba(255,255,255,.15);
 }
 
 .btn:hover{
@@ -270,7 +271,7 @@ body{
 
     border-radius:12px;
 
-    color:var(--text);
+    color:var(--text-muted);
 }
 
 /* =========================
@@ -435,7 +436,7 @@ body{
 
     background:rgba(255,255,255,.06);
 
-    color: var(--text);
+    color:white;
 
     font-size:.95rem;
 
@@ -468,7 +469,7 @@ body{
 .card h4{
     margin-bottom:16px;
 
-    color: var(--text);
+    color:white;
 
     font-size:1rem;
 
@@ -477,6 +478,50 @@ body{
 
 /* =========================
    ALARMS LIST
+========================= */
+
+.alarms-list{
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+}
+
+.alarm-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    background:rgba(255,255,255,.05);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    border-radius:16px;
+
+    padding:18px;
+}
+
+.alarm-item-left{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+}
+
+.alarm-item-time{
+    font-family:'Orbitron',sans-serif;
+
+    font-size:1.4rem;
+
+    color:white;
+}
+
+.alarm-item-ampm{
+    color:var(--primary);
+
+    margin-left:6px;
+
+    font-size:.85rem;
+}
+
 .alarm-item-label{
     color:var(--text-muted);
 
@@ -738,13 +783,12 @@ body{
         flex-direction:column;
     }
 }
+
 /* ==========================
    HISTORY PAGE
 ========================== */
-.card,span{
-  color: var(--text);
-  background-color: transparent;
-}
+
+/* FIXED: removed .card,span rule that was hardcoding colors and breaking dark mode */
 
 .history-header{
     display:flex;
@@ -788,6 +832,8 @@ body{
     overflow-y:auto;
 
     padding-right:6px;
+
+    background:rgba(255,255,255,.04);
 }
 
 /* custom scrollbar */
@@ -836,15 +882,96 @@ body{
 }
 
 .log-entry span{
-
     font-size:.95rem;
-
     line-height:1.5;
 }
 
 /* ==========================
    EMPTY HISTORY
+========================== */
+
+.history-logs .log-entry:only-child{
+    justify-content:center;
+    opacity:.75;
+}
+
+/* ==========================
+   RESPONSIVE
+========================== */
+
+@media (max-width:768px){
+
+    .history-header{
+        padding:14px 16px;
+    }
+
+    .log-entry{
+        padding:12px 14px;
+    }
+
     .log-entry span{
         font-size:.9rem;
     }
+}
+
+/* =========================
+   LIGHT MODE OVERRIDES
+========================= */
+
+body:not(.dark-mode) {
+    --bg: #f0f2ff;
+    --card: #ffffff;
+    --card-light: rgba(255, 255, 255, 0.85);
+
+    --text: #1a1a2e;
+    --text-muted: #5a6080;
+
+    --border: rgba(0, 0, 0, 0.08);
+
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.10);
+
+    background:
+        radial-gradient(circle at top left, #c9d0f5 0%, transparent 35%),
+        radial-gradient(circle at bottom right, #d8c9f5 0%, transparent 35%),
+        var(--bg);
+
+    color: var(--text);
+}
+
+body:not(.dark-mode) .navbar {
+    background: rgba(240, 242, 255, 0.75);
+}
+
+body:not(.dark-mode) .form-field input,
+body:not(.dark-mode) .form-field select {
+    background: rgba(0, 0, 0, 0.05);
+    color: var(--text);
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
+body:not(.dark-mode) .alarm-item {
+    background: rgba(0, 0, 0, 0.04);
+    border-color: rgba(0, 0, 0, 0.08);
+}
+
+body:not(.dark-mode) .history-header {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+body:not(.dark-mode) .log-entry {
+    background: rgba(0, 0, 0, 0.03);
+    border-color: rgba(0, 0, 0, 0.07);
+}
+
+body:not(.dark-mode) .info-tag {
+    background: rgba(0, 0, 0, 0.06);
+}
+
+body:not(.dark-mode) .world-clock-row {
+    background: rgba(0, 0, 0, 0.04);
+}
+
+body:not(.dark-mode) .btn-outline {
+    color: var(--text);
+    border-color: rgba(0, 0, 0, 0.2);
 }
