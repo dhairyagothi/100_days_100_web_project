@@ -16,7 +16,7 @@
 <body>
 
     <nav class="navbar">
-        <a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
+        <a href="/" class="project-back-button" id="back_id" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
 
     <div class="logo">
        📊Progress Bar
@@ -29,28 +29,23 @@
           Home
         </a>
       </li>
-       
        <li>
         <a href="progressbars.html">
         Progress Bars Collection
         </a>
       </li>
-
       <li>
         <a href="progressbar.html">
           Pulse Progress Bar
         </a>
       </li>
-
-
       <li>
         <a href="#footer-container">
           About
         </a>
       </li>
-
     </ul>
-    <button id="themeToggle" class="theme">
+    <button type="button" id="themeToggle" class="theme">
       <span id="themeIcon">☀️</span>
     </button>
   </nav>
@@ -114,7 +109,7 @@
       <div class="footer-section">
         <h3 >  📊Progress Bar </h3>
         <p>
-        Progress Bar is a simple, responsive project designed to visually represent task completion or loading states.  
+        Progress Bar is a simple, responsive project designed to visually represent task completion or loading states.
         </p>
       </div>
 
@@ -134,13 +129,11 @@
         <h4>Follow Us</h4>
 
         <div class="social-links">
-          <a href="#"><i class="fab fa-github"></i></a>
-          <a href="#"><i class="fab fa-twitter"></i></a>
-          <a href="#"><i class="fab fa-linkedin"></i></a>
-          <a href="#"><i class="fab fa-discord"></i></a>
+          <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+          <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+          <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+          <a href="#" aria-label="Discord"><i class="fab fa-discord"></i></a>
         </div>
-      </div>
-
       </div>
 
       <div class="footer-bottom">

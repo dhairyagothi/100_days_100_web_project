@@ -33,7 +33,30 @@
         <div class="control-group">
             <button id="clear-btn" class="clear-btn">Clear Canvas</button>
         </div>
+        <div class="control-group">
+            <button id="download-btn">Download PNG</button>
+        </div>
     </div>
+
+    <div class="color-by-number-panel">
+    <h3>Color By Number</h3>
+
+    <select id="template-select">
+        <option value="">Choose Template</option>
+        <option value="flower">Flower</option>
+        <option value="heart">Heart</option>
+    </select>
+
+    <button id="load-template-btn">
+        Load Template
+    </button>
+
+    <div id="color-guide">
+        <p><span style="color:red">■</span> 1 = Red</p>
+        <p><span style="color:pink">■</span> 2 = Pink</p>
+        <p><span style="color:green">■</span> 3 = Green</p>
+    </div>
+</div>
 
     <div class="canvas-container">
         <div id="pixel-grid"></div>

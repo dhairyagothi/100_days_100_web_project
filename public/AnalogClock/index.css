@@ -2,8 +2,167 @@
    ROOT VARIABLES
 ========================== */
 
+/*FOCUS MODE*/
 
-/* Exit Focus Mode Button - Issue #8326 */
+/*BACK BUTTON*/
+.focus-back-btn {
+  display: none;         
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 9999;
+
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+
+  color: #fff;
+
+  align-items: center;
+  justify-content: center;
+
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.focus-back-btn:hover {
+  background: rgba(255, 255, 255, 0.18);
+  transform: scale(1.08);
+}
+
+/*WHEN FOCUS MODE IS ACTIVE*/
+
+/* Reveal the back arrow */
+body.focus-active-view .focus-back-btn {
+  display: flex;
+}
+
+/* Deep purple immersive background — matches the reference design */
+body.focus-active-view {
+  background: radial-gradient(ellipse at 30% 40%, #4c2a85 0%, #1a0a3d 45%, #0d0720 100%) !important;
+}
+
+/* Hide every peripheral element */
+body.focus-active-view .noise-overlay,
+body.focus-active-view .site-header,
+body.focus-active-view .local-clock-panel,
+body.focus-active-view .map-panel,
+body.focus-active-view .world-section {
+  display: none !important;
+}
+
+/* The workspace wrapper — become a full-viewport flex stage */
+body.focus-active-view .workspace {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-height: 100vh;
+  padding: 0 !important;
+  margin: 0 !important;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+body.focus-active-view .primary-grid {
+  display: contents;   /* grid disappears timer-panel flows directly into workspace flex */
+}
+
+
+body.focus-active-view .timer-panel {
+  width: min(520px, 90vw);
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  border-radius: 0 !important;
+  padding: 2rem !important;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Panel header */
+body.focus-active-view .timer-panel .panel-header {
+  display: none;
+}
+
+body.focus-active-view .timer-inputs {
+  margin-top: 0;
+}
+
+body.focus-active-view .time-input {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.15);
+  color: #fff;
+}
+
+body.focus-active-view .countdown-track {
+  width: 300px;
+  height: 300px;
+}
+
+body.focus-active-view .countdown-digits {
+  font-size: 3rem;
+  color: #fff;
+  font-weight: 300;
+  letter-spacing: 2px;
+}
+
+body.focus-active-view .arc-bg {
+  stroke: rgba(255, 255, 255, 0.1);
+}
+
+body.focus-active-view .arc-fill {
+  stroke: #a78bfa; 
+}
+
+
+body.focus-active-view .primary-action {
+  background: rgba(167, 139, 250, 0.85);
+  color: #fff;
+}
+
+body.focus-active-view .secondary-action {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+body.focus-active-view .ghost-action {
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+body.focus-active-view .timer-alert {
+  width: 100%;
+}
+
+/* Light theme override — focus mode always stays dark */
+body.focus-active-view.light-theme {
+  background: radial-gradient(ellipse at 30% 40%, #4c2a85 0%, #1a0a3d 45%, #0d0720 100%) !important;
+}
+
+body.focus-active-view.light-theme .time-input {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+body.focus-active-view.light-theme .countdown-digits {
+  color: #fff;
+}
+
+body.focus-active-view.light-theme .ghost-action {
+  color: #fff;
+}
+
 .exit-focus-btn {
   position: fixed;
   bottom: 24px;
@@ -533,35 +692,276 @@ body{
   gap:.8rem;
 }
 
-/* ==========================
-   MAP PANEL
-========================== */
+/*Map Panel*/
+.map-panel {
+  margin-bottom: 2rem;
+}
+ 
+.map-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem 1rem;
+}
+ 
+.map-panel-header h2 {
+  margin-bottom: 0.25rem;
+}
+ 
+.map-panel-header p {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+ 
+/* Container: fixed height, clips the SVG, anchors the tooltip */
+.map-container {
+  position: relative;
+  height: 500px;
+  overflow: hidden;
+  border-radius: 0 0 var(--radius) var(--radius);
+  background: transparent;
+  border-top: 1px solid var(--border);
+}
+ 
+/* Scroll wrapper stretches to fill the container */
+.map-scroll {
+  width: 100%;
+  height: 100%;
+}
+ 
+/* Injected SVG fills .map-scroll completely */
+#timezone-map-wrapper {
+  width: 100%;
+  height: 100%;
+}
+ 
+#timezone-map-wrapper svg,
+#world-map {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+ 
+/*CONTINENT FILLS*/
+ 
+/* Dark (default) — charcoal-slate with slate-blue borders */
+body.dark-theme .land-path,
+body:not(.light-theme) .land-path {
+  fill: #1e2d42;
+  stroke: #2e4060;
+  stroke-width: 0.4px;
+}
+ 
+/* Light — soft parchment with clear country borders */
+body.light-theme .land-path {
+  fill: #c8d6e5;
+  stroke: #8fa5bb;
+  stroke-width: 0.5px;
+}
+ 
+/*TIMEZONE BANDS*/
+.timezone-sector {
+  fill: transparent;
+  cursor: pointer;
+  transition: fill 0.2s ease;
+}
+ 
+.timezone-sector.active-sector {
+  fill: rgba(212, 175, 55, 0.08);
+}
+ 
+body.light-theme .timezone-sector.active-sector {
+  fill: rgba(184, 134, 11, 0.1);
+}
+ 
+/*GRID LINES*/
+.map-grid-line {
+  stroke: rgba(255, 255, 255, 0.06);
+  stroke-width: 1;
+}
+ 
+body.light-theme .map-grid-line {
+  stroke: rgba(15, 23, 42, 0.1);
+}
+ 
+.equator-line,
+.meridian-line {
+  stroke: rgba(212, 175, 55, 0.18);
+  stroke-dasharray: 4 4;
+}
+ 
+body.light-theme .equator-line,
+body.light-theme .meridian-line {
+  stroke: rgba(184, 134, 11, 0.25);
+}
+ 
+/*CITY MARKERS*/
+.city-marker {
+  cursor: pointer;
+}
+ 
+.city-marker .center-dot {
+  fill: var(--gold, #d4af37);
+  transition: r 0.2s ease;
+}
+ 
+.city-marker .pulse-ring {
+  fill: none;
+  stroke: var(--gold, #d4af37);
+  stroke-width: 1.5;
+  opacity: 0.4;
+}
+ 
+.city-marker.pinned-marker .center-dot {
+  fill: #22c55e;
+}
+ 
+.city-marker.pinned-marker .pulse-ring {
+  stroke: #22c55e;
+}
+ 
+body.light-theme .city-marker .center-dot {
+  fill: var(--accent, #b8860b);
+}
+ 
+body.light-theme .city-marker .pulse-ring {
+  stroke: var(--accent, #b8860b);
+}
+ 
+/*MAP TOOLTIP*/
 
-.map-panel{
-  margin-bottom:2rem;
-  padding:2rem;
+.map-tooltip {
+  position: absolute;
+  z-index: 200;
+  pointer-events: none;   
+ 
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1rem 1.2rem;
+  min-width: 210px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  backdrop-filter: blur(12px);
+  transition: opacity 0.1s ease;
+}
+ 
+.map-tooltip .tt-pin-btn,
+.map-tooltip .tt-remove-btn {
+  pointer-events: all;
+  position: relative;
+  z-index: 201;
+  cursor: pointer;
 }
 
-.map-panel-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:1.5rem;
+.map-tooltip:hover {
+  pointer-events: all;
 }
-
-.map-container{
-  height:500px;
-
-  border-radius:20px;
-
-  background:#09111f;
-
-  border:1px solid var(--border);
+ 
+.tt-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
 }
-
-.map-scroll{
-  width:100%;
-  height:100%;
+ 
+.tt-header h4 {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+ 
+.tt-badge {
+  background: rgba(212, 175, 55, 0.15);
+  color: var(--gold, #d4af37);
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-family: "DM Mono", monospace;
+  white-space: nowrap;
+}
+ 
+body.light-theme .tt-badge {
+  background: rgba(184, 134, 11, 0.12);
+  color: var(--accent, #b8860b);
+}
+ 
+.tt-tz {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-family: "DM Mono", monospace;
+}
+ 
+.tt-time-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+ 
+.tt-time {
+  font-family: "DM Mono", monospace;
+  font-size: 1.1rem;
+  color: var(--gold, #d4af37);
+}
+ 
+body.light-theme .tt-time {
+  color: var(--accent, #b8860b);
+}
+ 
+.tt-date {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+ 
+.tt-pin-btn {
+  margin-top: 0.25rem;
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  border: none;
+  background: var(--gold, #d4af37);
+  color: #000;
+  font-family: "Outfit", sans-serif;
+  font-weight: 600;
+  font-size: 0.82rem;
+  cursor: pointer;
+  pointer-events: all;
+  transition: opacity 0.2s;
+}
+ 
+.tt-pin-btn:hover { opacity: 0.85; }
+ 
+.tt-remove-btn {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+ 
+/*MAP*/
+.map-legend {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+ 
+.legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+ 
+.legend-dot.pinned { background: #22c55e; }
+ 
+.legend-dot.active {
+  background: var(--gold, #d4af37);
+}
+ 
+body.light-theme .legend-dot.active {
+  background: var(--accent, #b8860b);
 }
 
 /* ==========================
@@ -573,6 +973,7 @@ body{
   justify-content:space-between;
   align-items:center;
   margin-bottom:1.5rem;
+  padding-top:0.25rem;
 }
 
 .clock-search-wrap{
@@ -603,38 +1004,6 @@ body{
     repeat(auto-fill,minmax(280px,1fr));
 
   gap:1.5rem;
-}
-
-/* ==========================
-   EXIT FOCUS
-========================== */
-
-.exit-focus-btn{
-  position:fixed;
-
-  bottom:25px;
-  right:25px;
-
-  border:none;
-
-  display:flex;
-  align-items:center;
-  gap:.7rem;
-
-  padding:1rem 1.3rem;
-
-  border-radius:14px;
-
-  background:var(--danger);
-  color:white;
-
-  font-weight:600;
-
-  cursor:pointer;
-
-  z-index:9999;
-
-  box-shadow:0 10px 25px rgba(239,68,68,.3);
 }
 
 /* ==========================
@@ -719,6 +1088,16 @@ body.dark-theme{
    LIGHT MODE
 ========================== */
 
+body.light-theme .ghost-action {
+  color: var(--text); /* Dynamically switches to dark slate text */
+  border-color: var(--border);
+}
+
+body.light-theme .secondary-action {
+  background: #e2e8f0; /* Subtle light grey background instead of dark blue */
+  color: var(--text);  /* Dark slate text */
+}
+
 body.light-theme{
   --bg:#f5f7fb;
   --bg-secondary:#ffffff;
@@ -796,4 +1175,33 @@ body,
     color .35s ease,
     border-color .35s ease,
     box-shadow .35s ease;
+}
+}
+
+/*Toast Notification*/
+.custom-toast {
+  position: fixed;
+  bottom: 25px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px); 
+  background: #ef4444;
+  color: white;
+  padding: 1rem 1.3rem;
+  border-radius: 14px;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600;
+  font-size: 0.95rem;
+  box-shadow: 0 10px 25px rgba(239, 68, 68, 0.3);
+  z-index: 10005;
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.custom-toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
 }

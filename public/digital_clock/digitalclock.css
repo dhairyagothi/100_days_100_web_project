@@ -34,13 +34,21 @@
 
 body{
     min-height:100vh;
-    font-family:'Poppins',sans-serif;
     background:
-        radial-gradient(circle at top left,#1f2a52 0%,transparent 35%),
-        radial-gradient(circle at bottom right,#32215f 0%,transparent 35%),
-        var(--bg);
-
+      radial-gradient(
+        circle at top left,
+        color-mix(
+          in srgb,
+          var(--primary) 25%,
+          transparent
+        ),
+        transparent 35%
+      ),
+      var(--bg);
     color:var(--text);
+    transition:
+      background .35s,
+      color .35s;
 }
 
 /* =========================
@@ -48,40 +56,31 @@ body{
 ========================= */
 
 .navbar{
-    width:100%;
-    display:flex;
-    justify-content:center;
-    gap:20px;
-
-    padding:18px;
-
-    position:sticky;
-    top:0;
-
-    backdrop-filter:blur(18px);
-
-    background:rgba(10,10,20,.65);
-
-    border-bottom:1px solid var(--border);
-
-    z-index:100;
+  width:100%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:20px;
+  padding:18px;
+  position:sticky;
+  top:0;
+  z-index:100;
+  backdrop-filter:blur(18px);
+  background:var(--card-light);
+  border-bottom: 1px solid var(--border);
 }
 
 .navbar a{
-    color:var(--text-muted);
-    text-decoration:none;
-
-    padding:10px 18px;
-
-    border-radius:10px;
-
-    transition:.3s;
+  color:var(--text);
+  text-decoration:none;
+  padding:10px 18px;
+  border-radius:10px;
+  transition:.3s;
 }
 
 .navbar a:hover{
-    color:white;
-
-    background:rgba(255,255,255,.08);
+  color:var(--text);
+  background: rgba(108,99,255,.10);
 }
 
 /* =========================
@@ -130,7 +129,7 @@ body{
 
     background:rgba(108,99,255,.15);
 
-    color:#bdb8ff;
+    color: var(--text);
 
     font-size:.8rem;
     letter-spacing:2px;
@@ -241,9 +240,9 @@ body{
 
 .btn-outline{
     background:transparent;
-    color:white;
+    color: var(--text);
 
-    border:1px solid rgba(255,255,255,.15);
+    border:1px solid var(--border);
 }
 
 .btn:hover{
@@ -271,7 +270,7 @@ body{
 
     border-radius:12px;
 
-    color:var(--text-muted);
+    color:var(--text);
 }
 
 /* =========================
@@ -436,7 +435,7 @@ body{
 
     background:rgba(255,255,255,.06);
 
-    color:white;
+    color: var(--text);
 
     font-size:.95rem;
 
@@ -469,7 +468,7 @@ body{
 .card h4{
     margin-bottom:16px;
 
-    color:white;
+    color: var(--text);
 
     font-size:1rem;
 
@@ -478,50 +477,6 @@ body{
 
 /* =========================
    ALARMS LIST
-========================= */
-
-.alarms-list{
-    display:flex;
-    flex-direction:column;
-    gap:14px;
-}
-
-.alarm-item{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-
-    background:rgba(255,255,255,.05);
-
-    border:1px solid rgba(255,255,255,.08);
-
-    border-radius:16px;
-
-    padding:18px;
-}
-
-.alarm-item-left{
-    display:flex;
-    flex-direction:column;
-    gap:6px;
-}
-
-.alarm-item-time{
-    font-family:'Orbitron',sans-serif;
-
-    font-size:1.4rem;
-
-    color:white;
-}
-
-.alarm-item-ampm{
-    color:var(--primary);
-
-    margin-left:6px;
-
-    font-size:.85rem;
-}
-
 .alarm-item-label{
     color:var(--text-muted);
 
@@ -787,8 +742,8 @@ body{
    HISTORY PAGE
 ========================== */
 .card,span{
-  color: #fff;
-  background-color: #0b1020;
+  color: var(--text);
+  background-color: transparent;
 }
 
 .history-header{
@@ -889,44 +844,6 @@ body{
 
 /* ==========================
    EMPTY HISTORY
-========================== */
-
-.history-logs .log-entry:only-child{
-    justify-content:center;
-
-    opacity:.75;
-}
-
-/* ==========================
-   DARK MODE
-========================== */
-
-.dark-mode .history-header{
-    background:rgba(255,255,255,.06);
-}
-
-.dark-mode .log-entry{
-    background:rgba(255,255,255,.04);
-}
-
- .history-logs{
-   background:rgba(255,255,255,.04);
-}
-
-/* ==========================
-   RESPONSIVE
-========================== */
-
-@media (max-width:768px){
-
-    .history-header{
-        padding:14px 16px;
-    }
-
-    .log-entry{
-        padding:12px 14px;
-    }
-
     .log-entry span{
         font-size:.9rem;
     }
