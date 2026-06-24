@@ -1,40 +1,27 @@
 body {
-    background: #f5f7fa;
-    font-family: Arial, sans-serif;
+    background: #f3f5f7;
+    transition: 0.3s;
+}
+
+.dark {
+    background: #121212;
+    color: white;
 }
 
 .card {
-    border: none;
     border-radius: 15px;
-}
-
-.stat-card {
-    background: white;
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 3px 10px rgba(0,0,0,.08);
 }
 
 .book-card {
-    background: white;
-    border-radius: 15px;
-    padding: 20px;
     margin-bottom: 20px;
-    box-shadow: 0 3px 10px rgba(0,0,0,.08);
 }
 
 .progress {
-    height: 10px;
+    height: 20px;
 }
 
-.actions button {
-    margin-right: 8px;
-}
-
-@media(max-width:768px) {
-
-    .actions button {
-        margin-bottom: 8px;
-    }
-
+.empty {
+    text-align: center;
+    font-size: 20px;
+    padding: 30px;
 }

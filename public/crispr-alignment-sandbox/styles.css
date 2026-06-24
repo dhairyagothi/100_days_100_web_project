@@ -21,6 +21,7 @@ body {
     background-color: var(--bg-dark);
     color: var(--text-primary);
     overflow: hidden;
+    overflow-x: hidden;
     height: 100vh;
     display: flex;
     justify-content: center;
@@ -156,9 +157,150 @@ body {
 }
 
 canvas {
+    display: block;
     flex-grow: 1;
     background: #040508;
     border: 1px solid rgba(57, 255, 20, 0.08);
     border-radius: 4px;
     cursor: ew-resize;
+}
+
+/* Responsive Media Queries */
+
+/* Tablet (768px - 1024px) */
+@media (max-width: 1024px) {
+    .lab-container {
+        grid-template-columns: 260px 1fr;
+    }
+    .telemetry-panel {
+        padding: 20px;
+        gap: 15px;
+    }
+    .metric-box {
+        padding: 12px;
+    }
+    .metric-box .value {
+        font-size: 1.25rem;
+    }
+}
+
+/* Mobile (< 768px) */
+@media (max-width: 768px) {
+    body {
+        overflow: hidden;
+    }
+
+    .lab-container {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        height: 100dvh;
+    }
+
+    .telemetry-panel {
+        border-right: none;
+        border-bottom: 2px solid rgba(57, 255, 20, 0.15);
+        padding: 16px;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        box-shadow: 0 5px 25px rgba(0, 0, 0, 0.5);
+        flex-shrink: 0;
+    }
+
+    .telemetry-panel h2 {
+        grid-column: span 2;
+        text-align: center;
+        font-size: 1.1rem;
+        letter-spacing: 1px;
+    }
+
+    .telemetry-panel .divider {
+        grid-column: span 2;
+    }
+
+    .metric-box {
+        padding: 10px;
+    }
+
+    .metric-box .label {
+        font-size: 0.7rem;
+        margin-bottom: 3px;
+    }
+
+    .metric-box .value {
+        font-size: 1.2rem;
+    }
+
+    .instruction-pad {
+        grid-column: span 2;
+        margin-top: 0;
+        padding-left: 10px;
+    }
+
+    .instruction-pad h3 {
+        font-size: 0.8rem;
+    }
+
+    .instruction-pad p {
+        font-size: 0.68rem;
+    }
+
+    .viewport-area {
+        flex-grow: 1;
+        flex-shrink: 1;
+        min-height: 0;
+        padding: 15px;
+    }
+
+    .viewport-header {
+        margin-bottom: 10px;
+        font-size: 0.75rem;
+    }
+}
+
+/* Small Mobile (< 480px) */
+@media (max-width: 480px) {
+    .telemetry-panel {
+        padding: 10px;
+        gap: 8px;
+    }
+
+    .telemetry-panel h2 {
+        font-size: 0.95rem;
+    }
+
+    .metric-box {
+        padding: 8px;
+    }
+
+    .metric-box .label {
+        font-size: 0.6rem;
+    }
+
+    .metric-box .value {
+        font-size: 1.05rem;
+    }
+
+    .instruction-pad {
+        padding-left: 8px;
+    }
+
+    .instruction-pad h3 {
+        font-size: 0.75rem;
+    }
+
+    .instruction-pad p {
+        font-size: 0.62rem;
+        line-height: 1.4;
+    }
+
+    .viewport-area {
+        padding: 10px;
+    }
+
+    .viewport-header {
+        font-size: 0.7rem;
+        margin-bottom: 8px;
+    }
 }

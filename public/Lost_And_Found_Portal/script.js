@@ -296,9 +296,55 @@ class LostAndFoundApp {
 
         const reader = new FileReader();
         reader.onload = (e) => {
-          previewImg.src = e.target.result;
-          previewContainer.classList.remove('hidden');
-          dropArea.classList.add('hidden');
+          try {
+            // Create an off-screen image object to process the upload
+            const img = new Image();
+            
+            img.onload = () => {
+              // Setup canvas and calculate new proportional dimensions
+              const canvas = document.createElement('canvas');
+              const MAX_WIDTH = 800; // Cap width to prevent massive payloads
+              let newWidth = img.width;
+              let newHeight = img.height;
+
+              // Only scale down if the image is wider than the maximum allowed
+              if (img.width > MAX_WIDTH) {
+                const scaleRatio = MAX_WIDTH / img.width;
+                newWidth = MAX_WIDTH;
+                newHeight = img.height * scaleRatio;
+              }
+
+              // Draw scaled image to the canvas
+              canvas.width = newWidth;
+              canvas.height = newHeight;
+              const ctx = canvas.getContext('2d');
+              ctx.drawImage(img, 0, 0, newWidth, newHeight);
+
+              // Export compressed image (JPEG format, 60% quality ratio)
+              const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.6);
+
+              // Update the UI with the tiny compressed image payload
+              previewImg.src = compressedDataUrl;
+              previewContainer.classList.remove('hidden');
+              dropArea.classList.add('hidden');
+            };
+
+            img.onerror = () => {
+              console.error('Failed to load image for compression.');
+              // Fallback to uncompressed original if loading fails
+              previewImg.src = e.target.result;
+              previewContainer.classList.remove('hidden');
+              dropArea.classList.add('hidden');
+            };
+
+            img.src = e.target.result;
+          } catch (error) {
+            console.error('Error during image canvas compression:', error);
+            // Graceful error handling: Fallback to raw Base64
+            previewImg.src = e.target.result;
+            previewContainer.classList.remove('hidden');
+            dropArea.classList.add('hidden');
+          }
         };
         reader.readAsDataURL(file);
       }
