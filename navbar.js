@@ -38,8 +38,76 @@
   const isLearn = path.includes("/learning/");
   const isContributors = path.includes("/contributors/");
 
-  const username =
-    window.username || safeStorage.getItem("loggedInUser") || null;
+  function escapeHTML(value) {
+    return String(value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/\"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
+
+  function readSession() {
+    const rawSession = safeStorage.getItem("loggedInUserData");
+    if (rawSession) {
+      try {
+        const parsedSession = JSON.parse(rawSession);
+        if (parsedSession && typeof parsedSession === "object") {
+          return parsedSession;
+        }
+      } catch (_) {
+        // Ignore malformed session data and fall back below.
+      }
+    }
+
+    const fallbackUsername =
+      window.username || safeStorage.getItem("loggedInUser") || null;
+    if (fallbackUsername) {
+      return {
+        username: fallbackUsername,
+        name: fallbackUsername,
+        authAction: "login",
+      };
+    }
+
+    return null;
+  }
+
+  function getDisplayName(session) {
+    return String(
+      session?.name || session?.username || window.username || safeStorage.getItem("loggedInUser") || ""
+    ).trim();
+  }
+
+  function getIstGreeting() {
+    const hour = Number(
+      new Intl.DateTimeFormat("en-US", {
+        timeZone: "Asia/Kolkata",
+        hour: "numeric",
+        hour12: false,
+      }).format(new Date()),
+    );
+
+    if (hour >= 5 && hour < 12) return "Good morning";
+    if (hour >= 12 && hour < 17) return "Good afternoon";
+    if (hour >= 17 && hour < 21) return "Good evening";
+    return "Good night";
+  }
+
+  function getGreetingCopy(session) {
+    const displayName = getDisplayName(session) || "there";
+    const authAction = String(session?.authAction || "login").toLowerCase();
+
+    if (authAction === "signup") {
+      return `Hey ${displayName}, Welcome!`;
+    }
+
+    return `${getIstGreeting()}, ${displayName}. Welcome back!`;
+  }
+
+  const session = readSession();
+  const displayName = getDisplayName(session) || "there";
+  const greetingCopy = session ? getGreetingCopy(session) : "";
 
   window.ThemeManager?.init?.();
   const isLight = window.ThemeManager?.currentTheme?.() === "light";
@@ -102,20 +170,21 @@
   `;
 
   let navButtonsHTML = "";
-  if (username) {
+  if (session) {
     const userSection = `
+      <div class="welcome-text" id="navWelcomeCopy">${escapeHTML(greetingCopy)}</div>
       <div class="mobile-user-strip">
-        <div class="mobile-user-avatar">${username.slice(0, 2).toUpperCase()}</div>
+        <div class="mobile-user-avatar">${escapeHTML(displayName.slice(0, 2).toUpperCase())}</div>
         <div class="mobile-user-info">
-          <p class="mobile-user-name">Hi, ${username}</p>
-          <p class="mobile-user-role">Contributor</p>
+          <p class="mobile-user-name">${escapeHTML(greetingCopy)}</p>
+          <p class="mobile-user-role">${escapeHTML(session.authAction === "signup" ? "New session" : "Signed in")}</p>
         </div>
       </div>
       <button class="btn btn-ghost btn-sm" id="logoutBtn">Log out</button>
     `;
     navButtonsHTML = `${themeBtn} ${cursorBtn} ${homeBtn} ${learnBtn} ${contributorsBtn} ${readmeBtn} ${githubBtn} ${userSection}`;
   } else {
-    const signinBtn = `<a class="btn btn-primary btn-sm" id="navSignInCta" href="${base}public/Login.html">Sign in</a>`;
+    const signinBtn = `<button class="btn btn-primary btn-sm" id="navSignInCta">Sign in</button>`;
     navButtonsHTML = `${themeBtn} ${cursorBtn} ${homeBtn} ${learnBtn} ${contributorsBtn} ${readmeBtn} ${githubBtn} ${signinBtn}`;
   }
 
@@ -263,6 +332,7 @@
     logoutBtn.addEventListener("click", () => {
       window.username = null;
       safeStorage.removeItem("loggedInUser");
+      safeStorage.removeItem("loggedInUserData");
       location.reload();
     });
   }
@@ -294,6 +364,25 @@
           `Toggle custom cursor (currently ${nextState ? "Custom" : "Default"})`,
         );
       });
+    }
+  });
+
+  // Sign In Click Logic
+  document.addEventListener("click", (event) => {
+    const signInBtn = event.target.closest("#navSignInCta");
+    if (!signInBtn) return;
+    event.preventDefault();
+    const name = prompt("Enter your name/nickname to personalize your experience:");
+    if (name && name.trim()) {
+      const trimmed = name.trim();
+      safeStorage.setItem("loggedInUser", trimmed);
+      safeStorage.setItem("loggedInUserData", JSON.stringify({
+        username: trimmed,
+        name: trimmed,
+        authAction: "login",
+        loginTime: Date.now()
+      }));
+      location.reload();
     }
   });
 })();

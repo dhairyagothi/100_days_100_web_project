@@ -1,44 +1,51 @@
-# IP Address Tracker
+# 🌍 IP Address Tracker
 
-A responsive web application that allows users to search for an IP address and view its location details on an interactive map.
+A modern, responsive web application that allows users to search for any IP address or domain and instantly view its location details on an interactive map — with a sleek dark glassmorphism UI.
 
-## Features
+---
 
-- Search IP addresses
-- View location information
-- Display ISP details
-- Show timezone
-- Interactive map using Leaflet.js
-- Fully responsive design
+## ✨ Features
 
-## Technologies Used
+- 🔍 Search any IP address or domain name
+- 📋 Copy any info card value to clipboard with one click
+- 📍 View detailed location information (city, region, country)
+- 🏢 Display ISP / organization details
+- 🕐 Show timezone with UTC offset
+- 🌐 Extra info: country code, postal code, coordinates, currency
+- 🗺️ Interactive dark-themed map using Leaflet.js
+- 📡 Smooth animated map transitions with custom marker
+- ⚠️ Inline error handling with input validation
+- 💀 Skeleton loading animation while fetching data
+- 📱 Fully responsive across mobile, tablet, and desktop
+
+---
+
+## 🛠️ Technologies Used
 
 - HTML5
-- CSS3
-- JavaScript
-- Leaflet.js
-- IPAPI
+- CSS3 (Glassmorphism, CSS Animations, CSS Grid)
+- JavaScript (ES6+)
+- [Leaflet.js](https://leafletjs.com/) — Interactive map
+- [IPAPI](https://ipapi.co/) — IP data API
+- [Font Awesome 6](https://fontawesome.com/) — Icons
+- [CARTO Dark Tiles](https://carto.com/basemaps/) — Dark map theme
 
-## How to Run
+---
+
+## 🚀 How to Run
 
 1. Clone the repository
-2. Open the project folder
-3. Open `index.html` in your browser
+   ```bash
+   git clone https://github.com/dhairyagothi/100_days_100_web_project.git
 
-## API Used
+2. Navigate to the project folder
+    ```bash
+    cd 100_days_100_web_project/public/Ip_Address_tracker
+3. Open index.html in your browser
 
-https://ipapi.co/
+"*No build tools or installations required. Works directly in the browser.*"
 
-## Preview
+👨‍💻 Author
 
-Displays:
+Niraj Jha
 
-- IP Address
-- Location
-- Timezone
-- ISP
-- Interactive Map
-
-## Author
-
-Niraj jha

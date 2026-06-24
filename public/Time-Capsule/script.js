@@ -61,17 +61,27 @@ document.addEventListener('DOMContentLoaded', () => {
   function checkCapsules() {
     const capsules = getCapsules();
     const now = Date.now();
+    let stateChanged = false;
+    let newlyRevealed = false;
 
-    const dueCapsules = capsules.filter((capsule) => now >= capsule.revealAt);
+    capsules.forEach((capsule) => {
+      if (now >= capsule.revealAt && !capsule.revealed) {
+        capsule.revealed = true;
+        stateChanged = true;
+        newlyRevealed = true;
+      }
+    });
 
-    const pendingCapsules = capsules.filter(
-      (capsule) => now < capsule.revealAt
-    );
+    if (stateChanged) {
+      saveCapsules(capsules);
+    }
 
-    if (dueCapsules.length > 0) {
+    const revealedCapsules = capsules.filter((capsule) => capsule.revealed);
+
+    if (revealedCapsules.length > 0) {
       revealedMessage.innerHTML = '';
 
-      dueCapsules.forEach((capsule, index) => {
+      revealedCapsules.forEach((capsule, index) => {
         const wrapper = document.createElement('div');
 
         const title = document.createElement('strong');
@@ -87,15 +97,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
         revealedMessage.appendChild(wrapper);
 
-        if (index < dueCapsules.length - 1) {
+        if (index < revealedCapsules.length - 1) {
           revealedMessage.appendChild(document.createElement('hr'));
         }
       });
 
-      messageReveal.classList.remove('hidden');
-      capsuleReveal.classList.add('hidden');
-
-      saveCapsules(pendingCapsules);
+      if (newlyRevealed || capsuleReveal.classList.contains('hidden')) {
+        messageReveal.classList.remove('hidden');
+        capsuleReveal.classList.add('hidden');
+      }
     }
   }
 
@@ -129,6 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const newCapsule = {
       message,
       revealAt,
+      revealed: false,
     };
 
     const capsules = getCapsules();
