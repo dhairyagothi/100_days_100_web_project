@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flood Fill Territory Game</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="game-shell">
+    <section class="hero-panel" aria-label="Flood Fill Territory Capture Strategy Game">
+      <div class="title-block">
+        <p class="eyebrow">Territory Capture</p>
+        <h1>Flood Fill Strategy</h1>
+      </div>
+
+      <div class="turn-card" id="turnCard">
+        <span class="turn-label">Current Turn</span>
+        <strong id="currentPlayer">Player 1</strong>
+      </div>
+    </section>
+
+    <section class="game-layout">
+      <aside class="stats-panel" aria-label="Game statistics">
+        <div class="score-card player-one">
+          <span>Player 1</span>
+          <strong id="playerOneScore">0</strong>
+        </div>
+
+        <div class="score-card player-two">
+          <span>Player 2</span>
+          <strong id="playerTwoScore">0</strong>
+        </div>
+
+        <div class="status-card">
+          <span>Claimed Cells</span>
+          <strong id="claimedCells">0 / 100</strong>
+        </div>
+
+        <p class="result-message" id="resultMessage" aria-live="polite">Choose an open cell to begin.</p>
+
+        <button class="restart-button" id="restartButton" type="button">Restart Game</button>
+      </aside>
+
+      <section class="board-card" aria-label="10 by 10 game board">
+        <div class="grid-board" id="gridBoard"></div>
+      </section>
+
+      <aside class="rules-panel" aria-label="Game rules">
+        <h2>Game Rules</h2>
+        <ul>
+          <li>Click any unclaimed cell.</li>
+          <li>Flood fill expands through open neighbors.</li>
+          <li>Opponent territory blocks expansion.</li>
+          <li>Most owned cells wins.</li>
+        </ul>
+      </aside>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

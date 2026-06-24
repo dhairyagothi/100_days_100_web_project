@@ -17,12 +17,159 @@ const hintBtn = document.getElementById("hintBtn");
 const undoBtn = document.getElementById("undoBtn");
 const historyList = document.getElementById("historyList");
 const themeToggleGroup = document.getElementById("themeToggleGroup");
+const victorySound = new Audio("/public/TicTacToe/victory.mp3");
+
+// Statistics elements
+const statTotal = document.getElementById("statTotal");
+const statXWins = document.getElementById("statXWins");
+const statOWins = document.getElementById("statOWins");
+const statDraws = document.getElementById("statDraws");
+const statXRate = document.getElementById("statXRate");
+const statORate = document.getElementById("statORate");
+const statCurrentStreak = document.getElementById("statCurrentStreak");
+const statBestStreak = document.getElementById("statBestStreak");
+const progressX = document.getElementById("progressX");
+const progressO = document.getElementById("progressO");
+const progressD = document.getElementById("progressD");
+const progressXVal = document.getElementById("progressXVal");
+const progressOVal = document.getElementById("progressOVal");
+const progressDVal = document.getElementById("progressDVal");
+const resetStatsBtn = document.getElementById("resetStatsBtn");
+const confirmModal = document.getElementById("confirmModal");
+const confirmYes = document.getElementById("confirmYes");
+const confirmNo = document.getElementById("confirmNo");
 
 let gameBoard = Array(9).fill("");
 let currentPlayer = "X";
 let gameOver = false;
 let moveHistory = [];
 let scores = { X: 0, O: 0, D: 0 };
+
+// Statistics data
+let stats = {
+    totalGames: 0,
+    xWins: 0,
+    oWins: 0,
+    draws: 0,
+    currentStreak: 0,
+    bestStreak: 0,
+    lastWinner: null
+};
+
+// LocalStorage keys
+const STORAGE_KEY_STATS = "neon-tic-tac-toe-stats";
+const STORAGE_KEY_SCORES = "neon-tic-tac-toe-scores";
+
+// Load saved data
+function loadSavedData() {
+    const savedStats = localStorage.getItem(STORAGE_KEY_STATS);
+    const savedScores = localStorage.getItem(STORAGE_KEY_SCORES);
+    
+    if (savedStats) {
+        stats = JSON.parse(savedStats);
+    }
+    if (savedScores) {
+        scores = JSON.parse(savedScores);
+    }
+    
+    updateScores();
+    updateStats();
+}
+
+// Save data to localStorage
+function saveStats() {
+    localStorage.setItem(STORAGE_KEY_STATS, JSON.stringify(stats));
+}
+
+function saveScores() {
+    localStorage.setItem(STORAGE_KEY_SCORES, JSON.stringify(scores));
+}
+
+// Update statistics display
+function updateStats() {
+    statTotal.textContent = stats.totalGames;
+    statXWins.textContent = stats.xWins;
+    statOWins.textContent = stats.oWins;
+    statDraws.textContent = stats.draws;
+    
+    const xRate = stats.totalGames > 0 ? Math.round((stats.xWins / stats.totalGames) * 100) : 0;
+    const oRate = stats.totalGames > 0 ? Math.round((stats.oWins / stats.totalGames) * 100) : 0;
+    const dRate = stats.totalGames > 0 ? Math.round((stats.draws / stats.totalGames) * 100) : 0;
+    
+    statXRate.textContent = `${xRate}%`;
+    statORate.textContent = `${oRate}%`;
+    statCurrentStreak.textContent = stats.currentStreak;
+    statBestStreak.textContent = stats.bestStreak;
+    
+    progressX.style.width = `${xRate}%`;
+    progressO.style.width = `${oRate}%`;
+    progressD.style.width = `${dRate}%`;
+    progressXVal.textContent = `${xRate}%`;
+    progressOVal.textContent = `${oRate}%`;
+    progressDVal.textContent = `${dRate}%`;
+}
+
+// Update stats after game ends
+function recordGameResult(winner) {
+    stats.totalGames++;
+    
+    if (winner === "X") {
+        stats.xWins++;
+        if (stats.lastWinner === "X") {
+            stats.currentStreak++;
+        } else {
+            stats.currentStreak = 1;
+        }
+        stats.lastWinner = "X";
+        if (stats.currentStreak > stats.bestStreak) {
+            stats.bestStreak = stats.currentStreak;
+        }
+    } else if (winner === "O") {
+        stats.oWins++;
+        if (stats.lastWinner === "O") {
+            stats.currentStreak++;
+        } else {
+            stats.currentStreak = 1;
+        }
+        stats.lastWinner = "O";
+        if (stats.currentStreak > stats.bestStreak) {
+            stats.bestStreak = stats.currentStreak;
+        }
+    } else {
+        stats.draws++;
+        stats.currentStreak = 0;
+        stats.lastWinner = null;
+    }
+    
+    saveStats();
+    updateStats();
+}
+
+// Reset statistics
+function resetStatistics() {
+    stats = {
+        totalGames: 0,
+        xWins: 0,
+        oWins: 0,
+        draws: 0,
+        currentStreak: 0,
+        bestStreak: 0,
+        lastWinner: null
+    };
+    saveStats();
+    updateStats();
+    confirmModal.classList.remove("show");
+}
+
+// Show confirmation modal
+function showConfirmModal() {
+    confirmModal.classList.add("show");
+}
+
+// Hide confirmation modal
+function hideConfirmModal() {
+    confirmModal.classList.remove("show");
+}
 
 const WIN_LINES = [
     [0,1,2],[3,4,5],[6,7,8],
@@ -219,6 +366,7 @@ function updateScores() {
     scoreX.textContent = scores.X;
     scoreO.textContent = scores.O;
     scoreD.textContent = scores.D;
+    saveScores();
 }
 
 function updateHistory() {
@@ -231,12 +379,17 @@ function updateHistory() {
 }
 
 function showWinner(player) {
+    recordGameResult(player);
     winnerTitle.textContent = "Player " + player + " Wins!";
     winnerSubtitle.textContent = "Ready for the next round?";
+    victorySound.currentTime = 0;
+    victorySound.play();
+    launchConfetti();
     winnerModal.classList.add("show");
 }
 
 function showDraw() {
+    recordGameResult(null);
     winnerTitle.textContent = "Draw!";
     winnerSubtitle.textContent = "Nobody wins this round.";
     winnerModal.classList.add("show");
@@ -250,11 +403,15 @@ function newRound() {
     updateHistory();
     updateStatus();
     winnerModal.classList.remove("show");
+    victorySound.pause();
+    victorySound.currentTime = 0;
     renderBoard();
 }
 
 function resetScores() {
     scores = { X: 0, O: 0, D: 0 };
+    victorySound.pause();
+    victorySound.currentTime = 0;
     updateScores();
     newRound();
 }
@@ -310,6 +467,60 @@ hintBtn.addEventListener("click", showHint);
 winnerNext.addEventListener("click", newRound);
 winnerClose.addEventListener("click", () => { winnerModal.classList.remove("show"); });
 
+// Statistics event listeners
+resetStatsBtn.addEventListener("click", showConfirmModal);
+confirmYes.addEventListener("click", resetStatistics);
+confirmNo.addEventListener("click", hideConfirmModal);
+
+// Close modal when clicking outside
+confirmModal.addEventListener("click", (e) => {
+    if (e.target === confirmModal) {
+        hideConfirmModal();
+    }
+});
+
 updateStatus();
 updateScores();
 renderBoard();
+loadSavedData();
+
+function launchConfetti() {
+    const canvas = document.getElementById("confetti");
+    const ctx = canvas.getContext("2d");
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const particles = [];
+
+    for (let i = 0; i < 100; i++) {
+        particles.push({
+            x: Math.random() * canvas.width,
+            y: -20,
+            size: Math.random() * 8 + 4,
+            speed: Math.random() * 4 + 2,
+            color: ["#40f5d2", "#ff7d7d", "#ffffff"][
+                Math.floor(Math.random() * 3)
+            ]
+        });
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        particles.forEach(p => {
+            p.y += p.speed;
+
+            ctx.fillStyle = p.color;
+            ctx.fillRect(p.x, p.y, p.size, p.size);
+        });
+
+        if (particles.some(p => p.y < canvas.height)) {
+            requestAnimationFrame(animate);
+        } else {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+    }
+
+    animate();
+}
