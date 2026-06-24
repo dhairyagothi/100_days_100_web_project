@@ -3,24 +3,24 @@
 const animationEngine = ( () => {
 
     let uniqueID = 0;
-  
-    class AnimationEngine {
-  
-      constructor() {
-  
-        this.ids = [];
-        this.animations = {};
-        this.update = this.update.bind( this );
-        this.raf = 0;
-        this.time = 0;
-  
-      }
-  
-      update() {
-  
-        const now = performance.now();
-        const delta = now - this.time;
-        this.time = now;
+      
+        class AnimationEngine {
+      
+          constructor() {
+      
+            this.ids = [];
+            this.animations = {};
+            this.update = this.update.bind( this );
+            this.raf = 0;
+            this.time = 0;
+      
+          }
+      
+          update() {
+      
+            const now = performance.now();
+            const delta = now - this.time;
+            this.time = now;
   
         let i = this.ids.length;
   
@@ -94,7 +94,7 @@ const animationEngine = ( () => {
       super( true );
   
       this.game = game;
-  
+        
       this.container = this.game.dom.game;
       this.scene = new THREE.Scene();
   
@@ -103,9 +103,14 @@ const animationEngine = ( () => {
       this.container.appendChild( this.renderer.domElement );
   
       this.camera = new THREE.PerspectiveCamera( 2, 1, 0.1, 10000 );
-  
+      
       this.stage = { width: 2, height: 3 };
       this.fov = 10;
+
+      this.timer = new Timer( this );
+      this.preferences = new Preferences( this );
+      this.scores = new Scores( this );
+      this.history = new MoveHistoryManager( this );  
   
       this.createLights();
   
@@ -123,36 +128,36 @@ const animationEngine = ( () => {
     }
   
     resize() {
-  
+
       this.width = this.container.offsetWidth;
       this.height = this.container.offsetHeight;
-  
+
       this.renderer.setSize( this.width, this.height );
-  
+
       this.camera.fov = this.fov;
       this.camera.aspect = this.width / this.height;
-  
+
       const aspect = this.stage.width / this.stage.height;
       const fovRad = this.fov * THREE.Math.DEG2RAD;
-  
+
       let distance = ( aspect < this.camera.aspect )
         ? ( this.stage.height / 2 ) / Math.tan( fovRad / 2 )
         : ( this.stage.width / this.camera.aspect ) / ( 2 * Math.tan( fovRad / 2 ) );
-  
+
       distance *= 0.5;
-  
+
       this.camera.position.set( distance, distance, distance);
       this.camera.lookAt( this.scene.position );
       this.camera.updateProjectionMatrix();
-  
+
       const docFontSize = ( aspect < this.camera.aspect )
         ? ( this.height / 100 ) * aspect
         : this.width / 100;
-  
+
       document.documentElement.style.fontSize = docFontSize + 'px';
-  
+
       if ( this.onResize ) this.onResize.forEach( cb => cb() );
-  
+
     }
   
     createLights() {
@@ -1222,48 +1227,48 @@ const animationEngine = ( () => {
   class Controls {
   
     constructor( game ) {
-  
+
       this.game = game;
-  
+
       this.flipConfig = 0;
-  
+
       this.flipEasings = [ Easing.Power.Out( 3 ), Easing.Sine.Out(), Easing.Back.Out( 1.5 ) ];
       this.flipSpeeds = [ 125, 200, 300 ];
-  
+
       this.raycaster = new THREE.Raycaster();
-  
+
       const helperMaterial = new THREE.MeshBasicMaterial( { depthWrite: false, transparent: true, opacity: 0, color: 0x0033ff } );
-  
+
       this.group = new THREE.Object3D();
       this.group.name = 'controls';
       this.game.cube.object.add( this.group );
-  
+
       this.helper = new THREE.Mesh(
         new THREE.PlaneBufferGeometry( 200, 200 ),
         helperMaterial.clone()
       );
-  
+
       this.helper.rotation.set( 0, Math.PI / 4, 0 );
       this.game.world.scene.add( this.helper );
-  
+
       this.edges = new THREE.Mesh(
         new THREE.BoxBufferGeometry( 1, 1, 1 ),
         helperMaterial.clone(),
       );
-  
+
       this.game.world.scene.add( this.edges );
-  
+
       this.onSolved = () => {};
       this.onMove = () => {};
-  
+
       this.momentum = [];
-  
+
       this.scramble = null;
       this.state = STILL;
       this.enabled = false;
-  
+
       this.initDraggable();
-  
+
     }
   
     enable() {
@@ -1451,38 +1456,42 @@ const animationEngine = ( () => {
     }
   
     rotateLayer( rotation, scramble, callback ) {
-  
+
       const config = scramble ? 0 : this.flipConfig;
-  
+
       const easing = this.flipEasings[ config ];
       const duration = this.flipSpeeds[ config ];
       const bounce = ( config == 2 ) ? this.bounceCube() : ( () => {} );
-  
+
       this.rotationTween = new Tween( {
         easing: easing,
         duration: duration,
         onUpdate: tween => {
-  
+
           let deltaAngle = tween.delta * rotation;
           this.group.rotateOnAxis( this.flipAxis, deltaAngle );
           bounce( tween.value, deltaAngle, rotation );
-  
+
         },
         onComplete: () => {
-  
+
           if ( ! scramble ) this.onMove();
-  
+
           const layer = this.flipLayer.slice( 0 );
-  
+
           this.game.cube.object.rotation.setFromVector3( this.snapRotation( this.game.cube.object.rotation.toVector3() ) );
           this.group.rotation.setFromVector3( this.snapRotation( this.group.rotation.toVector3() ) );
           this.deselectLayer( this.flipLayer );
-  
+
+          if ( ! scramble && this.game.history ) {
+            this.game.history.recordMove( this.flipAxis.clone(), layer, rotation );
+          }
+
           callback( layer );
-  
+
         },
       } );
-  
+
     }
   
     bounceCube() {
@@ -3791,308 +3800,332 @@ const animationEngine = ( () => {
     }
   
     initActions() {
-  
+
       let tappedTwice = false;
-  
+
       this.dom.game.addEventListener( 'click', event => {
-  
+
         if ( this.transition.activeTransitions > 0 ) return;
         if ( this.state === STATE.Playing ) return;
-  
+
         if ( this.state === STATE.Menu ) {
-  
+
           if ( ! tappedTwice ) {
-  
+
             tappedTwice = true;
             setTimeout( () => tappedTwice = false, 300 );
             return false;
-  
+
           }
-  
+
           this.game( SHOW );
-  
+
         } else if ( this.state === STATE.Complete ) {
-  
+
           this.complete( HIDE );
-  
+
         } else if ( this.state === STATE.Stats ) {
-  
+
           this.stats( HIDE );
-  
+
         } 
-  
+
       }, false );
-  
+
       this.controls.onMove = () => {
-  
+
         if ( this.newGame ) {
           
           this.timer.start( true );
           this.newGame = false;
-  
+
         }
-  
+
       };
-  
+
       this.dom.buttons.back.onclick = event => {
-  
+
         if ( this.transition.activeTransitions > 0 ) return;
-  
+
         if ( this.state === STATE.Playing ) {
-  
+
           this.game( HIDE );
-  
+
         } else if ( this.state === STATE.Prefs ) {
-  
+
           this.prefs( HIDE );
-  
+
         } else if ( this.state === STATE.Theme ) {
-  
+
           this.theme( HIDE );
-  
+
         }
-  
+
       };
-  
+
       this.dom.buttons.reset.onclick = event => {
-  
+
         if ( this.state === STATE.Theme ) {
-  
+
           this.themeEditor.resetTheme();
-  
+
         }
         
       };
-  
+
       this.dom.buttons.prefs.onclick = event => this.prefs( SHOW );
-  
+
       this.dom.buttons.theme.onclick = event => this.theme( SHOW );
-  
+
       this.dom.buttons.stats.onclick = event => this.stats( SHOW );
-  
+
+      if ( this.dom.buttons.undo ) {
+        this.dom.buttons.undo.onclick = event => {
+          event.stopPropagation();
+          if ( this.state === STATE.Playing && this.history ) this.history.undo();
+        };
+      }
+
+      if ( this.dom.buttons.redo ) {
+        this.dom.buttons.redo.onclick = event => {
+          event.stopPropagation();
+          if ( this.state === STATE.Playing && this.history ) this.history.redo();
+        };
+      }
+
       this.controls.onSolved = () => this.complete( SHOW );
-  
+
     }
   
     game( show ) {
-  
+
       if ( show ) {
-  
+
         if ( ! this.saved ) {
-  
+
           this.scrambler.scramble();
           this.controls.scrambleCube();
           this.newGame = true;
-  
+
+          if ( this.history ) {
+            this.history.undoStack = [];
+            this.history.redoStack = [];
+          }
+
         }
-  
+
         const duration = this.saved ? 0 :
           this.scrambler.converted.length * ( this.controls.flipSpeeds[0] + 10 );
-  
+
         this.state = STATE.Playing;
         this.saved = true;
-  
+
         this.transition.buttons( BUTTONS.None, BUTTONS.Menu );
-  
+
         this.transition.zoom( STATE.Playing, duration );
         this.transition.title( HIDE );
-  
+
         setTimeout( () => {
-  
+
           this.transition.timer( SHOW );
           this.transition.buttons( BUTTONS.Playing, BUTTONS.None );
-  
+
         }, this.transition.durations.zoom - 1000 );
-  
+
         setTimeout( () => {
-  
+
           this.controls.enable();
           if ( ! this.newGame ) this.timer.start( true );
-  
+
         }, this.transition.durations.zoom );
-  
+
       } else {
-  
+
         this.state = STATE.Menu;
-  
+
         this.transition.buttons( BUTTONS.Menu, BUTTONS.Playing );
-  
+
         this.transition.zoom( STATE.Menu, 0 );
-  
+
         this.controls.disable();
         if ( ! this.newGame ) this.timer.stop();
         this.transition.timer( HIDE );
-  
+
         setTimeout( () => this.transition.title( SHOW ), this.transition.durations.zoom - 1000 );
-  
+
         this.playing = false;
         this.controls.disable();
-  
+
       }
-  
+
     }
-  
+
     prefs( show ) {
-  
+
       if ( show ) {
-  
+
         if ( this.transition.activeTransitions > 0 ) return;
-  
+
         this.state = STATE.Prefs;
-  
+
         this.transition.buttons( BUTTONS.Prefs, BUTTONS.Menu );
-  
+
         this.transition.title( HIDE );
         this.transition.cube( HIDE );
-  
+
         setTimeout( () => this.transition.preferences( SHOW ), 1000 );
-  
+
       } else {
-  
+
         this.cube.resize();
-  
+
+        if ( this.history ) {
+          this.history.undoStack = [];
+          this.history.redoStack = [];
+        }
+
         this.state = STATE.Menu;
-  
+
         this.transition.buttons( BUTTONS.Menu, BUTTONS.Prefs );
-  
+
         this.transition.preferences( HIDE );
-  
+
         setTimeout( () => this.transition.cube( SHOW ), 500 );
         setTimeout( () => this.transition.title( SHOW ), 1200 );
-  
+
       }
-  
+
     }
-  
+
     theme( show ) {
-  
+
       this.themeEditor.colorPicker( show );
       
       if ( show ) {
-  
+
         if ( this.transition.activeTransitions > 0 ) return;
-  
+
         this.cube.loadFromData( States[ '3' ][ 'checkerboard' ] );
-  
+
         this.themeEditor.setHSL( null, false );
-  
+
         this.state = STATE.Theme;
-  
+
         this.transition.buttons( BUTTONS.Theme, BUTTONS.Prefs );
-  
+
         this.transition.preferences( HIDE );
-  
+
         setTimeout( () => this.transition.cube( SHOW, true ), 500 );
         setTimeout( () => this.transition.theming( SHOW ), 1000 );
-  
+
       } else {
-  
+
         this.state = STATE.Prefs;
-  
+
         this.transition.buttons( BUTTONS.Prefs, BUTTONS.Theme );
-  
+
         this.transition.cube( HIDE, true );
         this.transition.theming( HIDE );
-  
+
         setTimeout( () => this.transition.preferences( SHOW ), 1000 );
         setTimeout( () => {
-  
+
           const gameCubeData = JSON.parse( localStorage.getItem( 'theCube_savedState' ) );
-  
+
           if ( !gameCubeData ) {
-  
+
             this.cube.resize( true );
             return;
-  
+
           }
-  
+
           this.cube.loadFromData( gameCubeData );
-  
+
         }, 1500 );
-  
+
       }
-  
+
     }
-  
+
     stats( show ) {
-  
+
       if ( show ) {
-  
+
         if ( this.transition.activeTransitions > 0 ) return;
-  
+
         this.state = STATE.Stats;
-  
+
         this.transition.buttons( BUTTONS.Stats, BUTTONS.Menu );
-  
+
         this.transition.title( HIDE );
         this.transition.cube( HIDE );
-  
+
         setTimeout( () => this.transition.stats( SHOW ), 1000 );
-  
+
       } else {
-  
+
         this.state = STATE.Menu;
-  
+
         this.transition.buttons( BUTTONS.Menu, BUTTONS.None );
-  
+
         this.transition.stats( HIDE );
-  
+
         setTimeout( () => this.transition.cube( SHOW ), 500 );
         setTimeout( () => this.transition.title( SHOW ), 1200 );
-  
+
       }
-  
+
     }
-  
+
     complete( show ) {
-  
+
       if ( show ) {
-  
+
         this.transition.buttons( BUTTONS.Complete, BUTTONS.Playing );
-  
+
         this.state = STATE.Complete;
         this.saved = false;
-  
+
         this.controls.disable();
         this.timer.stop();
         this.storage.clearGame();
-  
+
         this.bestTime = this.scores.addScore( this.timer.deltaTime );
-  
+
         this.transition.zoom( STATE.Menu, 0 );
         this.transition.elevate( SHOW );
-  
+
         setTimeout( () => {
-  
+
           this.transition.complete( SHOW, this.bestTime );
           this.confetti.start();
-  
+
         }, 1000 );
-  
+
       } else {
-  
+
         this.state = STATE.Stats;
         this.saved = false;
-  
+
         this.transition.timer( HIDE );
         this.transition.complete( HIDE, this.bestTime );
         this.transition.cube( HIDE );
         this.timer.reset();
-  
+
         setTimeout( () => {
-  
+
           this.cube.reset();
           this.confetti.stop();
-  
+
           this.transition.stats( SHOW );
           this.transition.elevate( 0 );
-  
+
         }, 1000 );
-  
+
         return false;
-  
+
       }
-  
+
     }
   
   }

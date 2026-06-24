@@ -1159,6 +1159,9 @@ function renderPagination(totalItems, totalPages) {
     pageBtn.className = `page-num ${currentPage === i ? "active" : ""}`;
     pageBtn.textContent = i;
     pageBtn.setAttribute("aria-label", `Page ${i}`);
+    if (currentPage === i) {
+      pageBtn.setAttribute("aria-current", "page");
+    }
     pageBtn.addEventListener("click", (e) => {
       e.preventDefault();
       currentPage = i;
@@ -1730,15 +1733,15 @@ function resetAllFilters() {
   searchQuery = "";
 
   const techStack = document.getElementById("techStackFilter");
-  if (techStack) techStack.value = "all";
+  if (techStack) techStack.selectedIndex = 0;
   techStackFilter = "all";
 
   const difficultyElement = document.getElementById("difficultyFilter");
-  if (difficultyElement) difficultyElement.value = "all";
+  if (difficultyElement) difficultyElement.selectedIndex = 0;
   difficultyFilter = "all";
 
   const sortSelect = document.getElementById("sortProjects");
-  if (sortSelect) sortSelect.value = "default";
+  if (sortSelect) sortSelect.selectedIndex = 0;
   sortOption = "default";
 
   if (typeof updateURL === "function") {
