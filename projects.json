@@ -3086,5 +3086,20 @@
     ],
    "difficulty": "advanced",
     "projectPath": "./public/Pokemon_Battle_Simulator/index.html"
-   } 
+   },
+   {
+  "projectNo": 243,
+  "projectName": "Carbon Footprint Tracker",
+  "projectType": "Tool",
+  "projectDesc": "An interactive carbon footprint calculator that estimates daily CO₂ emissions based on travel, electricity consumption, and waste generation, with history tracking and dark mode support.",
+  "techStack": [
+    "html",
+    "css",
+    "javascript",
+    "calculator",
+    "environment"
+  ],
+  "difficulty": "advanced",
+  "projectPath": "./public/carbon-footprint-tracker/index.html"
+}
 ]

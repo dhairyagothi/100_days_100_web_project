@@ -2,6 +2,11 @@
 
 A beautiful, modern web application to track and calculate your daily carbon footprint!
 
+## Creator
+
+Created by **Maria S Patani**  
+GitHub: [@mariaspatani](https://github.com/mariaspatani)
+
 ## Features
 
 ### 🎨 Modern Design
