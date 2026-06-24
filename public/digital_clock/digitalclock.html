@@ -380,6 +380,38 @@
               </div>
             </div>
           </div>
+          <!-- Stopwatch -->
+<section class="card" aria-labelledby="stopwatch-heading">
+  <header class="card-header">
+    <h2 class="card-title" id="stopwatch-heading">
+      <span class="card-title-dot"></span>
+      Stopwatch
+    </h2>
+  </header>
+
+  <div class="stopwatch-display">
+    <span id="stopwatch-time">00:00:00.000</span>
+  </div>
+
+  <div class="stopwatch-controls">
+    <button id="start-stopwatch" class="btn btn-primary">
+      Start
+    </button>
+
+    <button id="lap-stopwatch" class="btn btn-outline">
+      Lap
+    </button>
+
+    <button id="reset-stopwatch" class="btn btn-danger">
+      Reset
+    </button>
+  </div>
+
+  <div id="laps-container" class="laps-container">
+    <p class="empty-state">No laps recorded.</p>
+  </div>
+
+</section>
 
           <!-- Toast Notification -->
           <div id="toast" class="toast" role="alert" aria-live="assertive">

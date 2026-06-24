@@ -126,6 +126,18 @@ formatToggleBtn.textContent = is24HourFormat ? "12H" : "24H";
     updateClock();
     tickWorldClocks();
   });
+document
+  .getElementById("start-stopwatch")
+  ?.addEventListener("click", startPauseStopwatch);
+
+document
+  .getElementById("lap-stopwatch")
+  ?.addEventListener("click", recordLap);
+
+document
+  .getElementById("reset-stopwatch")
+  ?.addEventListener("click", resetStopwatch);
+
 });
 
 // ================= ACCENT COLOR =================
@@ -805,4 +817,156 @@ function toggleHistoryLogs() {
         ? "rotate(0deg)"
         : "rotate(180deg)";
   }
+}
+/* ================= STOPWATCH ================= */
+
+let stopwatchRunning = false;
+let stopwatchStartTime = 0;
+let stopwatchElapsed = 0;
+let stopwatchAnimationFrame = null;
+let stopwatchLaps = [];
+
+function formatStopwatch(ms) {
+  const hours = Math.floor(ms / 3600000);
+  const minutes = Math.floor((ms % 3600000) / 60000);
+  const seconds = Math.floor((ms % 60000) / 1000);
+  const milliseconds = Math.floor(ms % 1000);
+
+  return (
+    String(hours).padStart(2, "0") +
+    ":" +
+    String(minutes).padStart(2, "0") +
+    ":" +
+    String(seconds).padStart(2, "0") +
+    "." +
+    String(milliseconds).padStart(3, "0")
+  );
+}
+
+function updateStopwatch() {
+  if (!stopwatchRunning) return;
+
+  stopwatchElapsed =
+    performance.now() - stopwatchStartTime;
+
+  const display =
+    document.getElementById("stopwatch-time");
+
+  if (display) {
+    display.textContent =
+      formatStopwatch(stopwatchElapsed);
+  }
+
+  stopwatchAnimationFrame =
+    requestAnimationFrame(updateStopwatch);
+}
+
+function startPauseStopwatch() {
+  const startBtn =
+    document.getElementById("start-stopwatch");
+
+  if (!stopwatchRunning) {
+    stopwatchRunning = true;
+
+    stopwatchStartTime =
+      performance.now() - stopwatchElapsed;
+
+    updateStopwatch();
+
+    if (startBtn) {
+      startBtn.textContent = "Pause";
+    }
+  } else {
+    stopwatchRunning = false;
+
+    cancelAnimationFrame(
+      stopwatchAnimationFrame
+    );
+
+    if (startBtn) {
+      startBtn.textContent = "Start";
+    }
+  }
+}
+
+function recordLap() {
+  if (!stopwatchRunning) return;
+
+  stopwatchLaps.push(stopwatchElapsed);
+
+  renderLaps();
+}
+
+function resetStopwatch() {
+  stopwatchRunning = false;
+
+  cancelAnimationFrame(
+    stopwatchAnimationFrame
+  );
+
+  stopwatchElapsed = 0;
+  stopwatchLaps = [];
+
+  const display =
+    document.getElementById("stopwatch-time");
+
+  if (display) {
+    display.textContent = "00:00:00.000";
+  }
+
+  const startBtn =
+    document.getElementById("start-stopwatch");
+
+  if (startBtn) {
+    startBtn.textContent = "Start";
+  }
+
+  renderLaps();
+}
+
+function renderLaps() {
+  const container =
+    document.getElementById("laps-container");
+
+  if (!container) return;
+
+  if (stopwatchLaps.length === 0) {
+    container.innerHTML =
+      '<p class="empty-state">No laps recorded.</p>';
+    return;
+  }
+
+  const fastest =
+    Math.min(...stopwatchLaps);
+
+  const slowest =
+    Math.max(...stopwatchLaps);
+
+  container.innerHTML = stopwatchLaps
+    .map((lap, index) => {
+      let badge = "";
+
+      if (
+        lap === fastest &&
+        stopwatchLaps.length > 1
+      ) {
+        badge = " ⭐ Fastest";
+      }
+
+      if (
+        lap === slowest &&
+        stopwatchLaps.length > 1
+      ) {
+        badge = " 🐢 Slowest";
+      }
+
+      return `
+        <div class="lap-item">
+          <span>Lap ${index + 1}${badge}</span>
+          <span>${formatStopwatch(lap)}</span>
+        </div>
+      `;
+    })
+    .reverse()
+    .join("");
 }
