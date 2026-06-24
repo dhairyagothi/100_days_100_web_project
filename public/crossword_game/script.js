@@ -1,68 +1,104 @@
 const puzzles = [
   // Puzzle 1: Animals
-  {
-    size: 12,
-    words: [
-      {
-        word: "ELEPHANT",
-        clue: "Largest land animal",
-        row: 0,
-        col: 2,
-        dir: "across",
-      },
-      { word: "GIRAFFE", clue: "Tallest animal", row: 2, col: 0, dir: "down" },
-      { word: "TIGER", clue: "Striped big cat", row: 1, col: 5, dir: "across" },
-      { word: "ZEBRA", clue: "Striped horse", row: 4, col: 3, dir: "across" },
-      {
-        word: "KANGAROO",
-        clue: "Australian jumper",
-        row: 6,
-        col: 1,
-        dir: "down",
-      },
-      { word: "PENGUIN", clue: "Flightless bird", row: 3, col: 8, dir: "down" },
-      {
-        word: "OCTOPUS",
-        clue: "8-armed sea creature",
-        row: 8,
-        col: 4,
-        dir: "across",
-      },
-      {
-        word: "DOLPHIN",
-        clue: "Intelligent sea mammal",
-        row: 5,
-        col: 7,
-        dir: "across",
-      },
-      { word: "LION", clue: "King of jungle", row: 7, col: 2, dir: "down" },
-      {
-        word: "MONKEY",
-        clue: "Tree swinging primate",
-        row: 9,
-        col: 6,
-        dir: "across",
-      },
-      { word: "PANDA", clue: "Bamboo eater", row: 2, col: 9, dir: "down" },
-      {
-        word: "KOALA",
-        clue: "Australian bear",
-        row: 10,
-        col: 1,
-        dir: "across",
-      },
-      { word: "CROCODILE", clue: "Large reptile", row: 4, col: 0, dir: "down" },
-      {
-        word: "FLAMINGO",
-        clue: "Pink long-legged bird",
-        row: 0,
-        col: 7,
-        dir: "across",
-      },
-      { word: "RHINO", clue: "Horned mammal", row: 11, col: 5, dir: "across" },
-    ],
-  },
+ {
+  size: 12,
+  words: [
+    {
+      word: "HORSE",
+      clue: "Animal used for riding",
+      row: 0,
+      col: 1,
+      dir: "down",
+    },
 
+    {
+      word: "HYENA",
+      clue: "Animal that attacks",
+      row: 0,
+      col: 1,
+      dir: "across",
+    },
+
+    {
+      word: "PENGUIN",
+      clue: "Flightless bird",
+      row: 4,
+      col: 0,
+      dir: "across",
+    },
+
+    {
+      word: "TIGER",
+      clue: "Striped big cat",
+      row: 2,
+      col: 3,
+      dir: "down",
+    },
+
+    {
+      word: "BEAR",
+      clue: "Large furry mammal",
+      row: 6,
+      col: 0,
+      dir: "across",
+    },
+
+    {
+      word: "SNAKE",
+      clue: "Legless reptile",
+      row: 3,
+      col: 6,
+      dir: "down",
+    },
+
+    {
+      word: "SHEEP",
+      clue: "Farm animal known for its wool",
+      row: 3,
+      col: 6,
+      dir: "across",
+    },
+
+    {
+      word: "DEER",
+      clue: "Animal with antlers",
+      row: 2,
+      col: 8,
+      dir: "down",
+    },
+
+    {
+      word: "PANDA",
+      clue: "Bamboo-loving bear",
+      row: 3,
+      col: 10,
+      dir: "down",
+    },
+
+    {
+      word: "GOAT",
+      clue: "Farm animal known for climbing",
+      row: 7,
+      col: 8,
+      dir: "across",
+    },
+
+    {
+      word: "OWL",
+      clue: "Bird known for its night vision",
+      row: 7,
+      col: 8,
+      dir: "down",
+    },
+{
+  word: "BABOON",
+  clue: "Laughing wild animal",
+  row: 6,
+  col: 0,
+  dir: "down",
+}
+  ]
+},
   // Puzzle 2: Technology
   {
     size: 12,
@@ -437,6 +473,47 @@ function checkAnswers() {
     status.innerHTML = `✅ ${correct}/${currentPuzzle.words.length} words correct`;
     status.className = "";
   }
+}
+
+function validatePuzzle(puzzle) {
+  const board = Array(puzzle.size)
+    .fill()
+    .map(() => Array(puzzle.size).fill(null));
+
+  const errors = [];
+
+  puzzle.words.forEach((wordObj) => {
+    const { word, row, col, dir } = wordObj;
+
+    for (let i = 0; i < word.length; i++) {
+      let r = row;
+      let c = col;
+
+      if (dir === "across") c += i;
+      else r += i;
+
+      // Out of bounds
+      if (r >= puzzle.size || c >= puzzle.size) {
+        errors.push(
+          `${word} goes outside grid at (${r}, ${c})`
+        );
+        return;
+      }
+
+      const letter = word[i];
+
+      // Intersection conflict
+      if (board[r][c] && board[r][c] !== letter) {
+        errors.push(
+          `${word} conflicts at (${r}, ${c}) : expected "${letter}" but found "${board[r][c]}"`
+        );
+      }
+
+      board[r][c] = letter;
+    }
+  });
+
+  return errors;
 }
 
 // Event Listeners
