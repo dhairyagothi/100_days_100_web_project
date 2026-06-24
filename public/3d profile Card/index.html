@@ -93,7 +93,53 @@
               <input type="url" id="instagramInput" placeholder="https://instagram.com/username" />
             </label>
           </div>
+            <label class="field">
+              <span>Portfolio URL</span>
+              <input
+                type="url"
+                id="portfolioInput"
+                placeholder="https://yourportfolio.com"
+              />
+          </label>
+          
+          
+          <!-- QR CODE CONTROLS -->
+          <div class="qr-controls">
+            <div class="form-grid">
+              <label class="field">
+                <span>QR Code For</span>
+                <select id="qrTargetSelect">
+                  <option value="portfolio">Portfolio</option>
+                  <option value="github">GitHub</option>
+                  <option value="linkedin">LinkedIn</option>
+                  <option value="twitter">Twitter</option>
+                  <option value="instagram">Instagram</option>
+                  <option value="all">Show All</option>
+                </select>
+              </label>
+              
+              <label class="field color-picker">
+                <span>QR Color</span>
+                <input type="color" id="qrColorInput" value="#2f80c9" />
+              </label>
+            </div>
 
+            <div class="form-grid">
+              <label class="field">
+                <span>QR Size (px)</span>
+                <input type="number" id="qrSizeInput" value="120" min="80" max="300" step="10" />
+              </label>
+              
+              <div class="field" style="justify-content: flex-end;">
+                <span>&nbsp;</span>
+                <button type="button" class="secondary-btn" id="downloadAllQrBtn" style="width:100%;">
+                  ⬇ Download All QR
+                </button>
+              </div>
+            </div>
+          </div>
+
+          
           <div class="control-row">
             <label class="color-picker">
               <span>Theme</span>
@@ -101,21 +147,34 @@
             </label>
 
             <fieldset class="segmented-control" aria-label="Card layout">
-              <label>
-                <input type="radio" name="layout" value="classic" checked />
-                <span>Classic</span>
-              </label>
 
-              <label>
-                <input type="radio" name="layout" value="compact" />
-                <span>Compact</span>
-              </label>
+  <label>
+    <input type="radio" name="layout" value="classic" checked />
+    <span>Classic</span>
+  </label>
 
-              <label>
-                <input type="radio" name="layout" value="poster" />
-                <span>Poster</span>
-              </label>
-            </fieldset>
+  <label>
+    <input type="radio" name="layout" value="compact" />
+    <span>Compact</span>
+  </label>
+
+  <label>
+    <input type="radio" name="layout" value="poster" />
+    <span>Poster</span>
+  </label>
+
+  <label>
+    <input type="radio" name="layout" value="executive" />
+    <span>Executive</span>
+  </label>
+
+  <label>
+    <input type="radio" name="layout" value="minimal" />
+    <span>Minimal</span>
+  </label>
+
+</fieldset>
+                
 
             <label class="mode-toggle" id="modeToggle" title="Switch to light mode">
               <input type="checkbox" id="darkModeInput" checked />
@@ -127,6 +186,13 @@
           <p class="validation-message" id="validationMessage" aria-live="polite"></p>
 
           <div class="action-row">
+            <button
+                type="button"
+                class="secondary-btn"
+                id="exportPortfolioBtn"
+              >
+                Export Portfolio
+            </button>
             <button type="button" class="secondary-btn" id="resetButton">Reset</button>
 
             <div class="download-wrapper" id="downloadWrapper">
@@ -178,7 +244,8 @@
               teams and serve customers.
             </p>
 
-            <div class="profile" id="socialLinks">
+            <div class="profile-footer">
+              <div class="profile" id="socialLinks">
               <a href="#" data-platform="github" aria-label="GitHub profile">
                 <img src="logo/github-142-svgrepo-com.svg" alt="" class="logo monochrome" />
               </a>
@@ -195,6 +262,9 @@
                 <img src="logo/instagram-svgrepo-com.svg" alt="" class="logo" />
               </a>
             </div>
+            <div id="qrContainer" class="qr-container"></div>
+            </div>
+            
           </div>
         </article>
       </section>
@@ -207,7 +277,7 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     ></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="script.js"></script>
   </body>
 </html>

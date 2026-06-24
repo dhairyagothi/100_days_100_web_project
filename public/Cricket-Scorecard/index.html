@@ -3,31 +3,38 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Live Cricket Scoreboard</title>
+  <title>🏏 Live Cricket Scoreboard</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <!-- Header -->
   <header class="header">
     <h1>🏏 Live Cricket Scoreboard</h1>
     <p>Track live scores and upcoming fixtures</p>
+    <!-- Theme Toggle Button -->
+    <button id="toggleTheme" class="theme-btn">
+      🌙 Dark Mode
+    </button>
   </header>
-
+  <!-- Main Content -->
   <main class="container">
+    <!-- Live Matches Section -->
     <section class="section">
       <h2 class="section__title">🔴 Live Matches</h2>
+
       <div id="live-matches" class="matches-grid">
         <p class="loading">Loading live scores...</p>
       </div>
     </section>
-
+    <!-- Upcoming Fixtures Section -->
     <section class="section">
       <h2 class="section__title">📅 Upcoming Fixtures</h2>
+
       <div id="upcoming-matches" class="matches-grid">
         <p class="loading">Loading upcoming fixtures...</p>
       </div>
     </section>
   </main>
-
   <script src="script.js"></script>
 </body>
 </html>

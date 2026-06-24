@@ -5,6 +5,7 @@ const STORAGE_KEYS = {
   plans: 'cgpa-planner-saved-plans',
 };
 
+
 let currentPlan = null;
 let cgpaChart = null;
 let courseGrades = [];
@@ -39,6 +40,7 @@ function updateThemeIcon(theme) {
   $('.theme-icon').textContent = theme === 'dark' ? '🌙' : '☀️';
 }
 
+
 // ===== Validation =====
 function validateForm(data) {
   const errors = [];
@@ -56,7 +58,7 @@ function validateForm(data) {
     errors.push({ field: 'remainingSemesters', msg: 'At least 1 remaining semester required' });
   }
   if (data.targetCgpa < data.currentCgpa) {
-    errors.push({ field: 'targetCgpa', msg: 'Target CGPA should be higher than current CGPA' });
+    errors.push({ field: 'targetCgpa', msg: 'Target CGPA should be higher than or equal to current CGPA' });
   }
   if (data.creditsCompleted !== null && data.creditsCompleted < 0) {
     errors.push({ field: 'creditsCompleted', msg: 'Credits cannot be negative' });
@@ -142,6 +144,7 @@ function calculateRequiredSgpa(data, whatIfSgpas = {}) {
     });
 
     remainingNeeded = targetPoints - currentPoints - whatIfPoints;
+    runningPoints = currentPoints;
     remainingUnits = semestersLeftAfterWhatIf;
   }
 
@@ -160,7 +163,12 @@ function calculateRequiredSgpa(data, whatIfSgpas = {}) {
   };
 }
 
-function getFeasibility(requiredSgpa) {
+function getFeasibility(requiredSgpa, currentCgpa = null, targetCgpa = null) {
+  // Edge-case check for users maintaining an active target performance (e.g., 10.00 -> 10.00)
+  if (currentCgpa !== null && targetCgpa !== null && currentCgpa === targetCgpa && requiredSgpa <= currentCgpa) {
+    return { level: 'easy', dot: '🟢', text: 'On Track — Maintain your current performance!' };
+  }
+
   if (requiredSgpa === null || requiredSgpa > 10) {
     return { level: 'impossible', dot: '🔴', text: 'Nearly impossible — exceeds max SGPA of 10' };
   }
@@ -182,7 +190,9 @@ function formatNum(n, decimals = 2) {
 function renderResults(plan) {
   const { data, calc } = plan;
   const { requiredSgpa } = calc;
-  const feasibility = getFeasibility(requiredSgpa);
+  
+  // FIXED: Added missing data variables so the target tracking check functions properly
+  const feasibility = getFeasibility(requiredSgpa, data.currentCgpa, data.targetCgpa);
 
   $('#resultsPlaceholder').classList.add('hidden');
   $('#resultsContent').classList.remove('hidden');
@@ -395,16 +405,20 @@ function updateWhatIfSummary(plan) {
   const entries = entered.map(([sem, sgpa]) => `Sem ${sem}: <strong>${formatNum(sgpa)}</strong>`).join(', ');
   const req = calc.impossible ? 'more than 10.0 (impossible)' : formatNum(calc.requiredSgpa);
 
-  $('#whatifSummary').innerHTML = `
-    <p>📌 <strong>What-If:</strong> With ${entries}, you now need an average SGPA of <strong>${req}</strong> across the remaining <strong>${calc.semestersLeftAfterWhatIf}</strong> semester(s).</p>
-  `;
+  $('#whatifSummary').innerHTML = `<p>📌 
+  <strong>What-If:</strong> With ${entries}, you now need an average SGPA of <strong>${req}</strong> 
+  across the remaining <strong>${calc.semestersLeftAfterWhatIf}</strong> semester(s).</p>`;
 }
 
 // ===== Main Calculate =====
 function calculatePlan() {
   const data = getFormData();
 
-  if ([data.currentCgpa, data.completedSemesters, data.targetCgpa, data.remainingSemesters].some((v) => v === null || isNaN(v))) {
+  if ([data.currentCgpa, 
+    data.completedSemesters, 
+    data.targetCgpa, 
+    data.remainingSemesters]
+    .some((v) => v === null || isNaN(v))) {
     alert('Please fill in all required fields.');
     return;
   }
@@ -449,8 +463,7 @@ function renderSavedPlans() {
 
   container.innerHTML = plans
     .map(
-      (plan, idx) => `
-    <div class="plan-item" data-idx="${idx}">
+      (plan, idx) => `<div class="plan-item" data-idx="${idx}">
       <div class="plan-info">
         <h4>${escapeHtml(plan.name)}</h4>
         <p>CGPA ${formatNum(plan.data.currentCgpa)} → ${formatNum(plan.data.targetCgpa)} · ${plan.data.remainingSemesters} sem remaining · Req: ${formatNum(plan.calc.requiredSgpa)}</p>
@@ -459,8 +472,7 @@ function renderSavedPlans() {
         <button type="button" class="load-btn" data-idx="${idx}">Load</button>
         <button type="button" class="delete-btn" data-idx="${idx}">Delete</button>
       </div>
-    </div>
-  `
+    </div>`
     )
     .join('');
 
@@ -499,6 +511,10 @@ function loadPlan(idx) {
 
   renderResults(currentPlan);
   renderPredictor(currentPlan);
+  $('#resultsCard').scrollIntoView({ 
+    block: 'start',
+    behavior: 'smooth'
+  });
 }
 
 function deletePlan(idx) {

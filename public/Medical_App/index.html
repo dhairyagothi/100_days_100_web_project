@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <script>
-        // Enforce trailing slash redirect if accessed without trailing slash or file name
+        
         if (window.location.pathname.endsWith('/Medical_App')) {
             window.location.replace(window.location.pathname + '/');
         }
@@ -20,6 +20,32 @@
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/darkmode.css">
     <link rel="stylesheet" href="css/toast.css">
+
+
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo-wrapper">
+                <div class="logo-icon"></div>
+                <div class="logo-text">
+                    <h1>MedConsult</h1>
+                    <p>Dashboard</p>
+                </div>
+            </div>
+            <button class="sidebar-toggle" id="danglingSidebarToggle" aria-label="Toggle Sidebar">
+                <i class="ph ph-list"></i>
+            </button>
+        </div>
+
+        <div class="sidebar-footer">
+            <button class="theme-toggle-btn" id="danglingThemeToggleBtn" aria-label="Toggle Theme"></button>
+        </div>
+    </aside>
+
+    <link rel="stylesheet" href="css/animations.css">
+
     <link rel="stylesheet" href="css/animation.css">
     <link rel="stylesheet" href="css/hero.css">
     <link rel="stylesheet" href="assets/css/auth.css">
@@ -42,37 +68,47 @@
                 <i class="ph ph-list"></i>
             </button>
         </div>
-
         <nav class="sidebar-nav">
-            <ul>
-                <li>
-                    <a href="index.html" class="nav-item active" data-page="dashboard">
-                        <i class="ph ph-squares-four"></i>
-                        <span>Dashboard</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="remedies.html" class="nav-item" data-page="remedies">
-                        <i class="ph ph-leaf"></i>
-                        <span>Home Remedies</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="feedback.html" class="nav-item" data-page="feedback">
-                        <i class="ph ph-chat-circle-text"></i>
-                        <span>Feedback</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
+    <ul>
 
-        <div class="sidebar-footer">
-            <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Theme">
-                <i class="ph ph-moon"></i>
-                <span>Dark Mode</span>
+        <li>
+            <a href="index.html" class="nav-item active">
+                <i class="ph ph-squares-four"></i>
+                <span>Dashboard</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="remedies.html" class="nav-item">
+                <i class="ph ph-leaf"></i>
+                <span>Home Remedies</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="feedback.html" class="nav-item">
+                <i class="ph ph-chat-circle-text"></i>
+                <span>Feedback</span>
+            </a>
+        </li>
+
+    </ul>
+</nav>
+
+        <div class="sidebar-footer" style="margin-top:auto; padding:16px; display:flex; flex-direction:column; gap:12px;">
+
+            <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Theme"
+                ></i>
+                <span style="color:#fff;">Dark Mode</span>
             </button>
-            <button class="btn btn-outline" id="logoutBtn" style="margin-top:12px;width:100%;">
-                <i class="ph ph-sign-out"></i> Logout
+
+            <button class="btn btn-outline" id="logoutBtn"
+                style="width:100%; padding:12px 14px; border-radius:12px; cursor:pointer;
+                border:1px solid #ff4d4f; background:transparent; color:#ff4d4f;
+                font-weight:600; display:flex; align-items:center; justify-content:center; gap:8px;
+                transition:all 0.2s ease; box-shadow:0 4px 14px rgba(255,77,79,0.15);">
+                <i class="ph ph-sign-out" style="font-size:18px;"></i>
+                Logout
             </button>
         </div>
     </aside>
@@ -119,14 +155,14 @@
         <div class="page-container">
 
             <!-- Hero Section -->
-            <section class="hero-section">
-                <div class="hero-content">
+            <section class="hero-section" style="min-height:100vh; display:flex; justify-content:center; align-items:center; text-align:center;">
+                <div class="hero-content" style="display:flex; flex-direction:column; align-items:center;">
                     <div class="hero-text">
                         <h1>🏥 Welcome to MedConsult</h1>
                         <p id="welcomeMessage">Connecting Local Doctors with Specialists</p>
                         <p>Connect with expert specialists for your healthcare needs</p>
                     </div>
-                    <div class="hero-stats">
+                    <div class="hero-stats" style="display:flex; gap:20px; justify-content:center; margin-top:20px;">
                         <div class="stat-item">
                             <div class="stat-number">500+</div>
                             <div class="stat-label">Specialists</div>
@@ -191,6 +227,7 @@
                     </div>
                 </div>
                 <div class="doctors-grid">
+
                     <div class="doctor-card">
                         <div class="doctor-card-header">
                             <div class="doctor-avatar">
@@ -268,12 +305,14 @@
                             </button>
                         </div>
                     </div>
+
                 </div>
             </section>
 
             <!-- Dashboard Grid -->
             <div class="dashboard-grid">
                 <div class="dashboard-column left-column">
+
                     <section class="card" data-role="patient">
                         <div class="card-header">
                             <div class="card-icon primary"><i class="ph ph-stethoscope"></i></div>
@@ -402,9 +441,44 @@
                         </div>
                         <p id="availabilityStatus" class="disclaimer">Currently: Offline</p>
                     </section>
+
+                    <section class="card">
+                        <div class="card-header">
+                            <div class="card-icon primary"><i class="ph ph-lightning-bolt"></i></div>
+                            <h2>Quick Actions</h2>
+                        </div>
+                        <div class="quick-actions">
+                            <a href="feedback.html" class="quick-action-btn"><i class="ph ph-chat-circle-text"></i><span>Give Feedback</span></a>
+                            <button class="quick-action-btn"><i class="ph ph-download"></i><span>Download Records</span></button>
+                            <button class="quick-action-btn"><i class="ph ph-calendar"></i><span>Reschedule</span></button>
+                        </div>
+                    </section>
+                    <section class="card emergency-card">
+
+                        <div class="card-header">
+
+                            <div class="card-icon danger"><i class="ph ph-warning"></i></div>
+
+                            <h2>Emergency Services</h2>
+
+                        </div>
+
+                        <div class="emergency-buttons">
+
+                            <button class="emergency-btn"><div class="emergency-icon">🚑</div><span>Ambulance</span></button>
+
+                            <button class="emergency-btn"><div class="emergency-icon">🏥</div><span>Nearby Hospital</span></button>
+
+                            <button class="emergency-btn"><div class="emergency-icon">🧑‍⚕️</div><span>Emergency Doctor</span></button>
+
+                        </div>
+
+                    </section>
+
                 </div>
 
                 <div class="dashboard-column right-column">
+
                     <section class="card" id="consultation-status">
                         <div class="card-header">
                             <div class="card-icon info"><i class="ph ph-activity"></i></div>
@@ -473,18 +547,6 @@
                         <div id="healthTip" class="health-tip-content"><p>Loading health tip...</p></div>
                     </section>
 
-                    <section class="card emergency-card">
-                        <div class="card-header">
-                            <div class="card-icon danger"><i class="ph ph-warning"></i></div>
-                            <h2>Emergency Services</h2>
-                        </div>
-                        <div class="emergency-buttons">
-                            <button class="emergency-btn"><div class="emergency-icon">🚑</div><span>Ambulance</span></button>
-                            <button class="emergency-btn"><div class="emergency-icon">🏥</div><span>Nearby Hospital</span></button>
-                            <button class="emergency-btn"><div class="emergency-icon">🧑‍⚕️</div><span>Emergency Doctor</span></button>
-                        </div>
-                    </section>
-
                     <section class="card">
                         <div class="card-header">
                             <div class="card-icon primary"><i class="ph ph-lightning-bolt"></i></div>
@@ -496,6 +558,9 @@
                             <button class="quick-action-btn"><i class="ph ph-calendar"></i><span>Reschedule</span></button>
                         </div>
                     </section>
+
+
+
                 </div>
             </div>
 
@@ -577,9 +642,7 @@
     </main>
 </div><!-- end #appShell -->
 
-<!-- =============================================
-     AUTH MODAL — full login + signup with eye toggle
-     ============================================= -->
+<!-- AUTH MODAL — full login + signup with eye toggle -->
 <div id="authOverlay" class="auth-overlay" aria-hidden="true">
     <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="authTitle">
         <div class="auth-brand">
@@ -596,6 +659,7 @@
                 <div class="auth-field">
                     <label for="loginEmail">Email</label>
                     <input id="loginEmail" class="auth-input" type="email" autocomplete="email" placeholder="you@example.com" required>
+                    
                 </div>
 
                 <div class="auth-field">
@@ -650,6 +714,7 @@
                     <label for="signupPassword">Password</label>
                     <div class="password-wrapper">
                         <input id="signupPassword" class="auth-input" type="password" autocomplete="new-password" placeholder="Min 8 characters" required>
+                        
                         <button type="button" class="password-toggle" aria-label="Toggle password visibility" onclick="togglePassword('signupPassword', this)">
                             <svg class="eye-icon eye-closed" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
@@ -659,6 +724,7 @@
                                 <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
                                 <circle cx="12" cy="12" r="3"/>
                             </svg>
+        
                         </button>
                     </div>
                 </div>
@@ -667,6 +733,7 @@
                     <label for="signupConfirm">Confirm Password</label>
                     <div class="password-wrapper">
                         <input id="signupConfirm" class="auth-input" type="password" autocomplete="new-password" placeholder="Repeat your password" required>
+                        
                         <button type="button" class="password-toggle" aria-label="Toggle confirm password visibility" onclick="togglePassword('signupConfirm', this)">
                             <svg class="eye-icon eye-closed" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
@@ -676,6 +743,7 @@
                                 <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
                                 <circle cx="12" cy="12" r="3"/>
                             </svg>
+            
                         </button>
                     </div>
                 </div>

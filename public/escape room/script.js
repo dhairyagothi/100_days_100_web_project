@@ -98,22 +98,27 @@ function formatTime(seconds) {
 function startTimer() {
   if (timerInterval) clearInterval(timerInterval);
   timerInterval = setInterval(() => {
-    player.timeLeft--;
-    document.getElementById("timer").textContent = formatTime(player.timeLeft);
+  player.timeLeft = Math.max(0, player.timeLeft - 1);
 
-    if (player.timeLeft <= 300) {
-      document.getElementById("timer").classList.add("text-danger", "blink");
-    }
-    if (player.timeLeft <= 0) {
-      clearInterval(timerInterval);
-      alert("TIME'S UP. THE VAULT COLLAPSES.");
-      location.reload();
-    }
-  }, 1000);
+  document.getElementById("timer").textContent =
+    formatTime(player.timeLeft);
+
+  if (player.timeLeft <= 300) {
+    document.getElementById("timer")
+      .classList.add("text-danger", "blink");
+  }
+
+  if (player.timeLeft === 0) {
+    clearInterval(timerInterval);
+
+    alert("TIME'S UP. THE VAULT COLLAPSES.");
+    location.reload();
+  }
+}, 1000);
 }
 
 function loadRoom() {
-  const levelPuzzles = puzzles[currentLevel] || generatePuzzles(currentLevel);
+  const levelPuzzles = getLevelPuzzles(currentLevel);
   const puzzle = levelPuzzles[(currentRoom - 1) % levelPuzzles.length];
 
   document.getElementById("room-title").textContent = puzzle.title;
@@ -146,6 +151,14 @@ function generatePuzzles(level) {
   }));
 }
 
+function getLevelPuzzles(level) {
+  if (!puzzles[level]) {
+    puzzles[level] = generatePuzzles(level);
+  }
+
+  return puzzles[level];
+}
+
 function submitAnswer() {
   const input = document
     .getElementById("terminal-input")
@@ -156,7 +169,7 @@ function submitAnswer() {
   document.getElementById("terminal-input").value = "";
 
   if (input === "hint") {
-    const levelPuzzles = puzzles[currentLevel] || generatePuzzles(currentLevel);
+    const levelPuzzles = getLevelPuzzles(currentLevel);
     const puzzle = levelPuzzles[(currentRoom - 1) % levelPuzzles.length];
     log(`HINT: ${puzzle.hint}`, "info");
     player.timeLeft = Math.max(60, player.timeLeft - 45);
@@ -180,7 +193,7 @@ function submitAnswer() {
   }
 
   // Check answer
-  const levelPuzzles = puzzles[currentLevel] || generatePuzzles(currentLevel);
+  const levelPuzzles = getLevelPuzzles(currentLevel);
   const puzzle = levelPuzzles[(currentRoom - 1) % levelPuzzles.length];
 
   let isCorrect = input === puzzle.answer.toLowerCase();
@@ -223,11 +236,22 @@ function submitAnswer() {
 function winGame() {
   clearInterval(timerInterval);
   const minutes = Math.floor((1800 - player.timeLeft) / 60);
-  document.getElementById("win-message").innerHTML = `
-        Congratulations, ${player.name}!<br>
-        You escaped the Shadow Vault in ${minutes} minutes.<br>
-        Your role as ${player.role} saved you.
-    `;
+  const winMessage = document.getElementById("win-message");
+  
+  winMessage.replaceChildren();
+  
+  winMessage.appendChild(
+    document.createTextNode(`Congratulations, ${player.name}!`));
+    
+  
+  winMessage.appendChild(document.createElement("br"));
+  winMessage.appendChild(
+    document.createTextNode(`You escaped the Shadow Vault in ${minutes} minutes.`));
+    
+  winMessage.appendChild(document.createElement("br"));
+  winMessage.appendChild(
+    document.createTextNode(`Your role as ${player.role} saved you.`));
+  
   new bootstrap.Modal(document.getElementById("winModal")).show();
 }
 
@@ -244,12 +268,24 @@ function startGame() {
   currentRoom = 1;
 
   // Profile display
-  document.getElementById("profile-info").innerHTML = `
-        <strong>${player.name}</strong><br>
-        Role: ${player.role}<br>
-        Ability: ${player.ability}<br>
-        Motive: ${player.reason}
-    `;
+  const profileInfo = document.getElementById("profile-info");
+  
+  profileInfo.replaceChildren();
+  
+  const nameEl = document.createElement("strong");
+  nameEl.textContent = player.name;
+  
+  profileInfo.appendChild(nameEl);
+  profileInfo.appendChild(document.createElement("br"));
+  
+  profileInfo.appendChild(
+  document.createTextNode(`Role: ${player.role}`));
+  
+  profileInfo.appendChild(document.createElement("br"));
+  profileInfo.appendChild(document.createTextNode(`Ability: ${player.ability}`));
+  
+  profileInfo.appendChild(document.createElement("br"));
+  profileInfo.appendChild(document.createTextNode(`Motive: ${player.reason}`));
 
   bootstrap.Modal.getInstance(document.getElementById("startModal")).hide();
 

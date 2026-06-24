@@ -1,13 +1,13 @@
 var rotateDiv = document.getElementById('rot');
 var rotateIcons = document.getElementById('rot-icons');
-var clickRotateDiv = document.getElementById('click-rot');
+var randomModeButton = document.getElementById('random-mode');
 var angle = 0;
 
-clickRotateDiv.onclick = function () {
-  angle += 60;
+function rotateWheel(steps) {
+  angle += 60 * steps;
   rotateDiv.style.transform = 'rotate(' + angle + 'deg)';
   rotateIcons.style.transform = 'rotate(' + angle + 'deg)';
-};
+}
 
 var step = 2;
 var color1 = 'rgba(0,0,0,0.5)';
@@ -92,41 +92,70 @@ function changeTemp(element, newTemp) {
 window.onload = function () {
   const sixths = Array.from(document.querySelectorAll('.sixths'));
   let index = 0;
+  let isChoosingRandom = false;
   let temp = document.querySelector('.temp');
+  let mountains = document.querySelector('#mountains');
 
-  document.querySelector('#rot-icons').addEventListener('click', () => {
-    sixths[index].classList.remove('active');
-    index = (index + 1) % sixths.length;
-    sixths[index].classList.add('active');
-    if (index == 0) {
-      changeTemp(temp, 34);
-      document.querySelector('#mountains').classList.remove("snow");
-      document.querySelector('#mountains').classList.remove("clouds");
-    } else if (index == 1) {
-      changeTemp(temp, 27);
-      document.querySelector('#mountains').classList.add("sunset");
-    } else if (index == 2) {
-      changeTemp(temp, 14);
-      document.querySelector('#mountains').classList.remove("sunset");
-      document.querySelector('#mountains').classList.add("moon");
-    } else if (index == 3) {
-      changeTemp(temp, 16);
-      document.querySelector('#mountains').classList.add("clouds");
-    } else if (index == 4) {
-      changeTemp(temp, 8);
-      document.querySelector('#mountains').classList.add("storm");
-    } else if (index == 5) {
-      changeTemp(temp, -4);
-      document.querySelector('#mountains').classList.remove("moon");
-      document.querySelector('#mountains').classList.remove("storm");
-      document.querySelector('#mountains').classList.add("snow");
-    }
+  const climateModes = [
+    { temp: 34, classes: [] },
+    { temp: 27, classes: ['sunset'] },
+    { temp: 14, classes: ['moon'] },
+    { temp: 16, classes: ['clouds'] },
+    { temp: 8, classes: ['storm'] },
+    { temp: -4, classes: ['snow'] }
+  ];
 
+  function triggerLoadingBar() {
     let loadingBar = document.querySelector('.loading-bar');
     loadingBar.classList.add('active');
 
     setTimeout(() => {
       loadingBar.classList.remove('active');
     }, 1200);
+  }
+
+  function setClimateMode(nextIndex) {
+    sixths[index].classList.remove('active');
+    index = nextIndex % sixths.length;
+    sixths[index].classList.add('active');
+
+    mountains.classList.remove('sunset', 'moon', 'clouds', 'storm', 'snow');
+    if (climateModes[index].classes.length) {
+      mountains.classList.add(...climateModes[index].classes);
+    }
+    changeTemp(temp, climateModes[index].temp);
+    triggerLoadingBar();
+  }
+
+  function chooseRandomMode() {
+    if (isChoosingRandom) {
+      return;
+    }
+
+    isChoosingRandom = true;
+    let nextIndex = Math.floor(Math.random() * sixths.length);
+
+    if (sixths.length > 1 && nextIndex === index) {
+      nextIndex = (nextIndex + 1) % sixths.length;
+    }
+
+    randomModeButton.classList.add('is-choosing');
+    rotateWheel(sixths.length + ((nextIndex - index + sixths.length) % sixths.length));
+
+    setTimeout(() => {
+      randomModeButton.classList.remove('is-choosing');
+      setClimateMode(nextIndex);
+      isChoosingRandom = false;
+    }, 500);
+  }
+
+  rotateIcons.addEventListener('click', () => {
+    rotateWheel(1);
+    setClimateMode((index + 1) % sixths.length);
+  });
+
+  randomModeButton.addEventListener('click', (event) => {
+    event.stopPropagation();
+    chooseRandomMode();
   });
 };

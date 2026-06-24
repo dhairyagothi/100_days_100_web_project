@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,15 +9,13 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
-
     <nav id="top">
         <div class="logo">
-            <img alt="" src="images/amazon_logo.png">
+            <img src="images/amazon_logo.png">
         </div>
 
         <div class="location">
-            <i aria-hidden="true" class="fa-solid fa-location-dot"></i>
+            <i class="fa-solid fa-location-dot"></i>
             <section class="text">
             <p style="font-size:12px;">Deliver to </p><p style="font-size:16px"></p> India</p>
             </section>
@@ -30,11 +29,11 @@
                 </Select>
                 <input type="text" placeholder="Search amazon.in">
                 <button type="submit">
-                    <i aria-hidden="true" class="fa-solid fa-magnifying-glass"></i>
+                    <i class="fa-solid fa-magnifying-glass"></i>
                 </button>
         </div>
         <div class="lang">
-        <img alt="" src="images/india.png">
+        <img src="images/india.png">
         <select>
             <option>EN</option>
         </select>
@@ -51,16 +50,16 @@
             </p>
             <p>& Orders</p>
         </div>
-        <div class="cart">
-            <i aria-hidden="true" class="fa-solid fa-cart-shopping carts"></i>
-            <p>cart</p>
+        <div class="cart" id="cart-btn" style="cursor: pointer;">
+               <i class="fa-solid fa-cart-shopping carts"></i>
+               <p>cart</p>
         </div>
     </nav>
 
     <!--down-->
     <div class="down">
         <div class="all add">
-            <i aria-hidden="true" class="fa-solid fa-bars"></i>
+            <i class="fa-solid fa-bars"></i>
             <p>All</p>
         </div>
         <div class="items">
@@ -77,14 +76,14 @@
             </ul>
         </div>
         <div class="banner">
-            <img alt="" src="images/banner.jpg">
+            <img src="images/banner.jpg">
         </div>
 
     </div><!--down-->
     <!--dropbox-->
     <div class="dropbox-slider" id="dropbox">
         <div class="profile">
-            <i aria-hidden="true" class="fa-regular fa-user"></i>
+            <i class="fa-regular fa-user"></i>
             <p>Nishant Rana</p>
         </div>
         <ul>
@@ -116,7 +115,7 @@
     <!--Main-->
     <div class="main">
         <div class="hero">
-        <img alt="" src="images/hero_image.jpg">
+        <img src="images/hero_image.jpg">
         </div>
         <div class="box">
             <p>You can go on amazon with this link directly | <a href="amazon.in">Amazon.in</a></p>
@@ -127,42 +126,42 @@
     <div class="products">
         <div class="prod1">
             <p>Fashion & Clothing</p>
-            <img alt="" src="images/box1_image.jpg">
+            <img src="images/box1_image.jpg">
             <a href="#">See More</a>
         </div>
         <div class="prod2">
             <p>Daily essentials</p>
-            <img alt="" src="images/box2_image.jpg">
+            <img src="images/box2_image.jpg">
             <a href="#">See More</a>
         </div>
         <div class="prod3">
             <p>Home essentials </p>
-            <img alt="" src="images/box3_image.jpg">
+            <img src="images/box3_image.jpg">
             <a href="#">See More</a>
         </div>
         <div class="prod4">
             <p>gadgets and mobiles</p>
-            <img alt="" src="images/box4_image.jpg">
+            <img src="images/box4_image.jpg">
             <a href="#">See More</a>
         </div>
         <div class="prod5">
             <p>Beauty and wellness</p>
-            <img alt="" src="images/box5_image.jpg">
+            <img src="images/box5_image.jpg">
             <a href="#">See More</a>
         </div>
         <div class="prod6">
             <p>Pet Care</p>
-            <img alt="" src="images/box6_image.jpg">
+            <img src="images/box6_image.jpg">
             <a href="#">See More</a>
         </div>
         <div class="prod7">
             <p>Kids & toys</p>
-            <img alt="" src="images/box7_image.jpg">
+            <img src="images/box7_image.jpg">
             <a href="#">See More</a>
         </div>
         <div class="prod8">
             <p>Fashion and women</p>
-            <img alt="" src="images/box8_image.jpg">
+            <img src="images/box8_image.jpg">
             <a href="#">See More</a>
         </div>
     </div>
@@ -170,6 +169,15 @@
     <!--Back to top-->
     <div class="bk">
         <h3><a href="#top">Back to top</a></h3>
+    </div>
+    <div id="cart-sidebar" class="cart-sidebar">
+        <div class="cart-sidebar-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ddd; padding-bottom: 10px;">
+            <h2 style="margin: 0; font-size: 20px;">Shopping Cart</h2>
+            <button id="close-cart-btn" style="background: none; border: none; font-size: 28px; cursor: pointer;">&times;</button>
+        </div>
+        <div id="cart-items-container" style="padding: 20px 0;">
+            <p id="empty-cart-msg">Your cart is currently empty.</p>
+        </div>
     </div>
     <script src="script.js" type="text/javascript"></script>
 </body>

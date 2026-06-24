@@ -1,0 +1,26 @@
+body {
+    margin: 0;
+    overflow: hidden;
+    background: #000;
+    overflow-y: scroll;
+}
+
+canvas {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin-top: 0; 
+}
+
+h1 {
+    position: absolute;
+    margin-top: 300px;
+    top: 20px;
+    left: 50%;
+    font-size: 50px;
+    transform: translateX(-50%);
+    color: white;
+    font-family: sans-serif;
+    z-index: 10;
+}

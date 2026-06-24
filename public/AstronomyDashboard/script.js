@@ -394,17 +394,10 @@ const phaseNames = [
   'Last Quarter',
   'Waning Crescent',
 ];
-
 const NASA_API_KEY =
-  window.NASA_API_KEY ||
-  (typeof import.meta !== 'undefined' &&
-    import.meta.env &&
-    import.meta.env.VITE_NASA_API_KEY) ||
-  'DEMO_KEY';
-const NASA_APOD_BASE = 'https://api.nasa.gov/planetary/apod';
-const OPENTDB_FACT_URL =
-  'https://opentdb.com/api.php?amount=1&category=29&type=multiple';
-const NASA_NEO_FEED_BASE = 'https://api.nasa.gov/neo/rest/v1/feed';
+  window.NASA_API_KEY || "DEMO_KEY";
+const NASA_APOD_BASE = "https://api.nasa.gov/planetary/apod";
+const NASA_NEO_FEED_BASE = "https://api.nasa.gov/neo/rest/v1/feed";
 const FALLBACK_APOD = {
   title: 'R3 PanSTARRS: An Orion Comet',
   explanation:
@@ -762,7 +755,7 @@ function renderApod(data, isFallback = false) {
     : 'Source: NASA APOD';
 }
 
-apodImg.addEventListener('error', () => {
+apodImg?.addEventListener('error', () => {
   clearSkeletons([apodImage]);
   if (!apodImg.src.includes('images.unsplash.com')) {
     apodImg.src = FALLBACK_APOD.url;
@@ -808,6 +801,10 @@ async function fetchNasaApodForDate(date) {
 }
 
 async function loadNasaApod() {
+  if (!apodTitle || !apodDescription || !apodImage || !apodImg || !apodDate || !apodLink || !apodSource) {
+    return;
+  }
+
   apodTitle.textContent = 'Loading NASA Picture of the Day…';
   apodDescription.textContent = "Fetching today's image from NASA.";
 
@@ -840,36 +837,6 @@ async function loadNasaApod() {
 }
 
 // --- Daily space facts -------------------------------------------------------
-
-function decodeHtmlEntities(value) {
-  const textarea = document.createElement('textarea');
-  textarea.innerHTML = value;
-  return textarea.value;
-}
-
-async function fetchOpenTdbSpaceFact() {
-  const response = await fetchWithTimeout(OPENTDB_FACT_URL);
-
-  if (!response.ok) {
-    throw new Error('Open Trivia DB request failed');
-  }
-
-  const data = await response.json();
-
-  if (data.response_code !== 0 || !data.results?.length) {
-    throw new Error('Open Trivia DB returned no results');
-  }
-
-  const item = data.results[0];
-  const answer = decodeHtmlEntities(item.correct_answer);
-  const question = decodeHtmlEntities(item.question);
-
-  return {
-    text: `${question} The answer is ${answer}.`,
-    source: 'Open Trivia DB — Science & Nature',
-    url: 'https://opentdb.com/',
-  };
-}
 
 async function fetchNasaNeoFact() {
   const today = getIstDateInputValue(new Date());
@@ -906,18 +873,7 @@ async function fetchNasaNeoFact() {
 }
 
 async function fetchOnlineSpaceFact() {
-  const providers = [fetchOpenTdbSpaceFact, fetchNasaNeoFact];
-  let lastError = null;
-
-  for (const provider of providers) {
-    try {
-      return await provider();
-    } catch (error) {
-      lastError = error;
-    }
-  }
-
-  throw lastError || new Error('No online space fact available');
+  return await fetchNasaNeoFact();
 }
 
 function loadStaticFact(excludeText) {
@@ -2398,23 +2354,51 @@ function refreshFeaturePane(feature) {
 }
 
 function bindEvents() {
-  document.getElementById('shuffleFact').addEventListener('click', shuffleFact);
-  document
-    .getElementById('calculateDistance')
-    .addEventListener('click', calculateDistance);
+    document.getElementById("shuffleFact").addEventListener("click", shuffleFact);
+    document.getElementById("calculateDistance").addEventListener("click", calculateDistance);
 
-  const themeToggle = document.getElementById('themeToggle');
-  if (themeToggle) {
-    themeToggle.addEventListener('click', () => {
-      const currentTheme = document.documentElement.getAttribute('data-theme');
-      const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    const themeToggle = document.getElementById("themeToggle");
+const themeIcon = document.getElementById("themeIcon");
 
-      document.documentElement.setAttribute('data-theme', nextTheme);
-      localStorage.setItem('theme', nextTheme);
-    });
-  }
+const moonIcon = `
+    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+`;
 
-  newsList.addEventListener('click', (event) => {
+const sunIcon = `
+    <circle cx="12" cy="12" r="5"></circle>
+    <line x1="12" y1="1" x2="12" y2="3"></line>
+    <line x1="12" y1="21" x2="12" y2="23"></line>
+    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+    <line x1="1" y1="12" x2="3" y2="12"></line>
+    <line x1="21" y1="12" x2="23" y2="12"></line>
+    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+`;
+
+function updateThemeIcon(theme) {
+    themeIcon.innerHTML = theme === "dark" ? sunIcon : moonIcon;
+}
+
+// Load saved theme
+const savedTheme = localStorage.getItem("theme") || "light";
+document.documentElement.setAttribute("data-theme", savedTheme);
+updateThemeIcon(savedTheme);
+
+// Toggle theme
+themeToggle.addEventListener("click", () => {
+    const currentTheme =
+        document.documentElement.getAttribute("data-theme") || "light";
+
+    const nextTheme = currentTheme === "dark" ? "light" : "dark";
+
+    document.documentElement.setAttribute("data-theme", nextTheme);
+    localStorage.setItem("theme", nextTheme);
+
+    updateThemeIcon(nextTheme);
+});
+
+    newsList.addEventListener('click', (event) => {
     const item = event.target.closest('.news-item');
 
     if (!item) {
@@ -2503,11 +2487,6 @@ function bindEvents() {
 }
 
 function initDashboard() {
-  const savedTheme = localStorage.getItem('theme');
-
-  if (savedTheme === 'dark') {
-    document.body.classList.add('dark-mode');
-  }
 
   bindEvents();
   setDefaultMoonDate();
@@ -2710,14 +2689,14 @@ function patchRenderNews() {
       .map((item, index) => {
         const isSaved = favsState.news.some((f) => f.title === item.title);
         return `
-            <button class="news-item" type="button" data-news-index="${index}">
+            <div class="news-item" type="button" data-news-index="${index}">
                 <span class="news-thumb" style="--image:url('${escapeHtml(item.image)}')"></span>
                 <span style="flex:1">
                     <span class="news-title">${escapeHtml(item.title)}</span>
                     <span class="news-meta">${escapeHtml(item.meta)}</span>
                 </span>
                 <button class="item-star-btn ${isSaved ? 'saved' : ''}" data-news-index="${index}" type="button" title="Save to favorites" aria-label="Bookmark article">${isSaved ? '★' : '☆'}</button>
-            </button>`;
+            </div>`;
       })
       .join('');
   };
@@ -2765,14 +2744,14 @@ function patchRenderScientists() {
       .map((item) => {
         const isSaved = favsState.scientists.some((f) => f.name === item.name);
         return `
-            <button class="scientist-item" type="button" data-scientist-name="${escapeHtml(item.name)}">
+            <div class="scientist-item" type="button" data-scientist-name="${escapeHtml(item.name)}">
                 <span class="scientist-avatar">${item.initials}</span>
                 <span style="flex:1">
                     <span class="scientist-name">${item.name}</span>
                     <span class="scientist-field">${item.field}</span>
                 </span>
                 <button class="item-star-btn ${isSaved ? 'saved' : ''}" data-sci-name="${escapeHtml(item.name)}" type="button" title="Save to favorites">${isSaved ? '★' : '☆'}</button>
-            </button>`;
+            </div>`;
       })
       .join('');
   };
@@ -3627,7 +3606,64 @@ function initFeatureAdditions() {
 
   // Notifications after 3 s to not clash with page load
   setTimeout(checkUpcomingEventNotifications, 3000);
+
 }
+
+
+// Safe theme initializer (no duplicate declarations)
+const themeToggleEl = document.getElementById("theme-toggle");
+const bodyEl = document.body;
+
+if (themeToggleEl) {
+    const saved = localStorage.getItem("theme");
+    if (saved === "light") {
+        bodyEl.classList.add("light-theme");
+    }
+
+    const updateIcon = () => {
+        if (bodyEl.classList.contains("light-theme")) {
+            themeToggleEl.textContent = "☀️";
+        } else {
+            themeToggleEl.textContent = "🌙";
+        }
+    };
+
+    themeToggleEl.addEventListener("click", () => {
+        const isLight = bodyEl.classList.toggle("light-theme");
+        localStorage.setItem("theme", isLight ? "light" : "dark");
+        updateIcon();
+    });
+
+    updateIcon();
+
+ocument.getElementByoggle
+toggle saved = localStorage.getItem("theme");
+    if (saved === "light") {
+        bodyEl.classList.add("light-theme");
+    }
+
+    const updateIcon = () => {
+        classLisht-theme")) {
+            themeToggleEl.textConten";
+        } else {
+            themeToggleEl.textContent = "🌙";t" : "dark")t);
+
+    updateIcon();
+
+avedTheme ===) {
+    body.classList.add("light-theme}
+
+
+themeToggle.addEventListener("click", () => {
+
+body.classList.toggle("light-theme"
+    if (body.classList.contains("light-theme")) {
+        localStorage.setItem("theme", "light");
+    } else {
+        localStorage.setItem("theme", "dark");
+    }
+
+});
 
 /*
 =======================================================================
