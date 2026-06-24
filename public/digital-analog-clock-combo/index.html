@@ -3,26 +3,308 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Digital & Analog Clock Combo</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Chronos • Digital & Analog Clock</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+        
+        .clock-font {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .analog-clock {
+            width: 320px;
+            height: 320px;
+            background: radial-gradient(circle at 50% 50%, #1f2937, #111827);
+            border: 16px solid #334155;
+            box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.5);
+        }
+
+        .hand {
+            position: absolute;
+            left: 50%;
+            transform-origin: bottom center;
+            border-radius: 9999px;
+            transition: transform 0.05s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .hour-hand {
+            width: 8px;
+            height: 90px;
+            background: #f3e8ff;
+            top: 50%;
+            margin-top: -90px;
+        }
+
+        .minute-hand {
+            width: 6px;
+            height: 120px;
+            background: #e0f2fe;
+            top: 50%;
+            margin-top: -120px;
+        }
+
+        .second-hand {
+            width: 3px;
+            height: 130px;
+            background: #f87171;
+            top: 50%;
+            margin-top: -130px;
+        }
+
+        .center-dot {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 18px;
+            height: 18px;
+            background: #64748b;
+            border-radius: 50%;
+            z-index: 10;
+            box-shadow: 0 0 0 4px #1e2937;
+        }
+    </style>
 </head>
-<body>
-
-    <div class="container">
-        <h1>Digital & Analog Clock</h1>
-
-        <div class="digital-clock" id="digitalClock">
-            00:00:00
+<body class="bg-zinc-950 text-white min-h-screen flex items-center justify-center">
+    <div class="max-w-5xl mx-auto p-8">
+        <div class="text-center mb-10">
+            <h1 class="text-5xl font-bold tracking-tighter clock-font mb-2">
+                CHRONOS
+            </h1>
+            <p class="text-slate-400 text-lg">Precise Time • Elegant Design</p>
         </div>
 
-        <div class="clock">
-            <div class="hand hour" id="hour"></div>
-            <div class="hand minute" id="minute"></div>
-            <div class="hand second" id="second"></div>
-            <div class="center-dot"></div>
+        <div class="grid md:grid-cols-2 gap-10 items-center">
+            
+            <!-- Advanced Digital Clock -->
+            <div class="space-y-8">
+                <div class="bg-zinc-900 rounded-3xl p-10 border border-slate-800">
+                    <div class="flex justify-between items-start mb-6">
+                        <div>
+                            <div id="date" class="text-slate-400 text-lg font-medium"></div>
+                            <div id="day" class="text-2xl font-semibold text-violet-400"></div>
+                        </div>
+                        <div onclick="toggleFormat()" 
+                             class="cursor-pointer bg-zinc-800 hover:bg-zinc-700 px-4 py-2 rounded-2xl text-sm font-medium flex items-center gap-2">
+                            <i class="fa-solid fa-clock"></i>
+                            <span id="format-text">24H</span>
+                        </div>
+                    </div>
+
+                    <!-- Main Digital Time -->
+                    <div id="digital-time" 
+                         class="clock-font text-[6.5rem] leading-none font-semibold tracking-tighter text-white mb-2">
+                    </div>
+                    
+                    <div class="flex items-center gap-8">
+                        <div id="ampm" class="text-4xl font-medium text-amber-400"></div>
+                        
+                        <div class="flex-1 h-px bg-gradient-to-r from-transparent via-slate-700 to-transparent"></div>
+                        
+                        <div id="seconds" class="text-5xl font-light text-slate-400 tabular-nums"></div>
+                    </div>
+                </div>
+
+                <!-- World Clocks -->
+                <div class="bg-zinc-900 rounded-3xl p-8 border border-slate-800">
+                    <h3 class="text-slate-400 text-sm font-medium mb-6 flex items-center gap-2">
+                        <i class="fa-solid fa-globe"></i> WORLD TIME
+                    </h3>
+                    <div id="world-clocks" class="space-y-4"></div>
+                </div>
+            </div>
+
+            <!-- Analog Clock -->
+            <div class="flex justify-center">
+                <div class="relative">
+                    <div id="analog-clock" class="analog-clock rounded-full relative flex items-center justify-center">
+                        <!-- Hour marks -->
+                        <div class="absolute w-full h-full">
+                            <!-- Generated by JS -->
+                        </div>
+                        
+                        <div class="hand hour-hand" id="hour-hand"></div>
+                        <div class="hand minute-hand" id="minute-hand"></div>
+                        <div class="hand second-hand" id="second-hand"></div>
+                        <div class="center-dot"></div>
+                    </div>
+                    
+                    <!-- Clock face labels -->
+                    <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                        <div class="text-slate-400 text-2xl font-light clock-font">12</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Extra Info -->
+        <div class="mt-12 text-center text-slate-500 text-sm flex items-center justify-center gap-8">
+            <div id="timezone" class="flex items-center gap-2"></div>
+            <div class="w-px h-4 bg-slate-700"></div>
+            <button onclick="toggleAlarmModal()" 
+                    class="hover:text-white flex items-center gap-2">
+                <i class="fa-solid fa-bell"></i>
+                <span>Set Alarm</span>
+            </button>
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <!-- Alarm Modal -->
+    <div id="alarm-modal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50">
+        <div class="bg-zinc-900 rounded-3xl p-8 w-full max-w-md">
+            <h3 class="text-2xl font-semibold mb-6">Set Alarm</h3>
+            <input type="time" id="alarm-time" class="w-full bg-zinc-800 text-4xl text-center rounded-2xl p-6 mb-6">
+            <div class="flex gap-4">
+                <button onclick="toggleAlarmModal()" 
+                        class="flex-1 py-4 rounded-2xl border border-slate-700 hover:bg-slate-800">
+                    Cancel
+                </button>
+                <button onclick="setAlarm()" 
+                        class="flex-1 py-4 rounded-2xl bg-violet-600 hover:bg-violet-500">
+                    Set Alarm
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let is24Hour = true;
+        let alarmTimeout = null;
+
+        const worldTimes = [
+            { city: "New York", offset: -4 },
+            { city: "London", offset: 1 },
+            { city: "Dubai", offset: 4 },
+            { city: "Tokyo", offset: 9 }
+        ];
+
+        function updateClock() {
+            const now = new Date();
+            
+            // Digital Clock
+            let hours = now.getHours();
+            let minutes = now.getMinutes();
+            let seconds = now.getSeconds();
+            
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            const displayHours = is24Hour ? hours : hours % 12 || 12;
+            
+            document.getElementById('digital-time').textContent = 
+                `${displayHours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+            
+            document.getElementById('seconds').textContent = 
+                seconds.toString().padStart(2, '0');
+            
+            document.getElementById('ampm').textContent = is24Hour ? '' : ampm;
+
+            // Date & Day
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('date').textContent = now.toLocaleDateString('en-US', options);
+            document.getElementById('day').textContent = now.toLocaleDateString('en-US', { weekday: 'long' });
+
+            // Analog Clock
+            const secondDeg = (seconds * 6);
+            const minuteDeg = (minutes * 6) + (seconds * 0.1);
+            const hourDeg = (hours % 12 * 30) + (minutes * 0.5);
+            
+            document.getElementById('second-hand').style.transform = `rotate(${secondDeg}deg)`;
+            document.getElementById('minute-hand').style.transform = `rotate(${minuteDeg}deg)`;
+            document.getElementById('hour-hand').style.transform = `rotate(${hourDeg}deg)`;
+        }
+
+        function updateWorldClocks() {
+            const container = document.getElementById('world-clocks');
+            container.innerHTML = '';
+            
+            worldTimes.forEach(tz => {
+                const now = new Date();
+                const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+                const localTime = new Date(utc + (tz.offset * 3600000));
+                
+                const timeStr = localTime.toLocaleTimeString('en-US', { 
+                    hour: '2-digit', 
+                    minute: '2-digit',
+                    hour12: false 
+                });
+                
+                const div = document.createElement('div');
+                div.className = "flex justify-between items-center bg-zinc-800 hover:bg-zinc-700 transition-colors rounded-2xl px-6 py-4";
+                div.innerHTML = `
+                    <div class="font-medium">${tz.city}</div>
+                    <div class="font-mono text-xl">${timeStr}</div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function toggleFormat() {
+            is24Hour = !is24Hour;
+            document.getElementById('format-text').textContent = is24Hour ? '24H' : '12H';
+        }
+
+        function toggleAlarmModal() {
+            document.getElementById('alarm-modal').classList.toggle('hidden');
+        }
+
+        function setAlarm() {
+            const time = document.getElementById('alarm-time').value;
+            if (!time) return;
+            
+            toggleAlarmModal();
+            alert(`✅ Alarm set for ${time}`);
+            
+            // Simple demo - in real app you would calculate time difference
+        }
+
+        // Create hour markers for analog clock
+        function createHourMarkers() {
+            const clock = document.getElementById('analog-clock');
+            for (let i = 1; i <= 12; i++) {
+                const marker = document.createElement('div');
+                marker.style.position = 'absolute';
+                marker.style.width = '4px';
+                marker.style.height = '18px';
+                marker.style.background = i % 3 === 0 ? '#e0f2fe' : '#475569';
+                marker.style.left = '50%';
+                marker.style.top = '12px';
+                marker.style.transformOrigin = 'center 140px';
+                marker.style.transform = `rotate(${i * 30}deg)`;
+                clock.appendChild(marker);
+            }
+        }
+
+        // Initialize everything
+        function init() {
+            createHourMarkers();
+            updateClock();
+            updateWorldClocks();
+            
+            // Update every second
+            setInterval(() => {
+                updateClock();
+            }, 1000);
+            
+            // Update world clocks every minute
+            setInterval(() => {
+                updateWorldClocks();
+            }, 60000);
+            
+            // Show current timezone
+            document.getElementById('timezone').innerHTML = `
+                <i class="fa-solid fa-location-dot"></i>
+                <span>Local Time • ${Intl.DateTimeFormat().resolvedOptions().timeZone}</span>
+            `;
+        }
+
+        window.onload = init;
+    </script>
 </body>
 </html>
