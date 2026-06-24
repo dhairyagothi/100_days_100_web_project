@@ -9,11 +9,11 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
 
-  <h1>Lights Out Puzzle <i class="fa-solid fa-lightbulb"></i></h1>
+  <h1>Lights Out Puzzle <i aria-hidden="true" class="fa-solid fa-lightbulb"></i></h1>
   <div id="hint-tracker">
-  <span id="hint-label"><i class="fa-solid fa-lightbulb"></i> Hints left:</span>
+  <span id="hint-label"><i aria-hidden="true" class="fa-solid fa-lightbulb"></i> Hints left:</span>
   <div id="hint-pips">
     <span class="pip" id="pip-0"></span>
     <span class="pip" id="pip-1"></span>
@@ -24,8 +24,8 @@
   <div id="game-board"></div>
   <div id="toast"></div>
  <div id="button-row">
-  <button id="reset-button"><i class="fa-solid fa-rotate-right"></i> Reset</button>
-  <button id="hint-button"><i class="fa-solid fa-lightbulb"></i> Get Hint</button>
+  <button id="reset-button"><i aria-hidden="true" class="fa-solid fa-rotate-right"></i> Reset</button>
+  <button id="hint-button"><i aria-hidden="true" class="fa-solid fa-lightbulb"></i> Get Hint</button>
   <button onclick="window.location.href='https://www.wikihow.com/Solve-Lights-Out-Game';">Help</button>
 </div>
 

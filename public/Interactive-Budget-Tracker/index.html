@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interactive Budget Tracker</title>
+
+<link rel="stylesheet" href="style.css">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <h1>💰 Interactive Budget Tracker</h1>
+        <button id="themeToggle">🌙</button>
+    </div>
+
+    <div class="summary">
+        <div class="card">
+            <h3>Total Budget</h3>
+            <p id="budgetValue">₹0</p>
+        </div>
+
+        <div class="card">
+            <h3>Total Spent</h3>
+            <p id="spentValue">₹0</p>
+        </div>
+
+        <div class="card">
+            <h3>Remaining</h3>
+            <p id="remainingValue">₹0</p>
+        </div>
+    </div>
+
+    <div class="budget-section">
+        <input type="number" id="budgetInput" placeholder="Enter Budget">
+        <button id="setBudgetBtn">Set Budget</button>
+    </div>
+
+    <div class="expense-form">
+        <input type="text" id="expenseName" placeholder="Expense Name">
+
+        <input type="number" id="expenseAmount" placeholder="Amount">
+
+        <select id="expenseCategory">
+            <option value="Food">Food</option>
+            <option value="Travel">Travel</option>
+            <option value="Shopping">Shopping</option>
+            <option value="Entertainment">Entertainment</option>
+            <option value="Other">Other</option>
+        </select>
+
+        <button id="addExpenseBtn">Add Expense</button>
+    </div>
+
+    <div class="progress-container">
+        <div id="progressBar"></div>
+    </div>
+
+    <h2>Expense List</h2>
+    <div id="expenseList"></div>
+
+    <h2>Category Analytics</h2>
+    <canvas id="expenseChart"></canvas>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>

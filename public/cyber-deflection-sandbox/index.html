@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Cyber-Attack Vector Deflection Matrix</title>
+    <style>
+        :root {
+            --bg-void: #050811;
+            --panel-glass: rgba(14, 22, 40, 0.85);
+            --neon-blue: #00d9ff;
+            --neon-crimson: #ff0055;
+            --neon-green: #00ff66;
+            --border-glow: #1a2942;
+            --text-main: #e2ecf5;
+            --text-dim: #6b7c96;
+        }
+
+        body {
+            background-color: var(--bg-void);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .studio-frame {
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        header h2 {
+            margin: 0 0 20px 0;
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-crimson));
+            -webkit-text-fill-color: transparent;
+        }
+
+        .console-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        @media (min-width: 900px) {
+            .console-grid {
+                grid-template-columns: 7fr 5fr;
+            }
+        }
+
+        .panel-card {
+            background: var(--panel-glass);
+            border: 1px solid var(--border-glow);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .panel-header {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .panel-header::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: var(--neon-crimson);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--neon-crimson);
+        }
+
+        canvas {
+            background-color: #010408;
+            border: 1px solid var(--border-glow);
+            border-radius: 8px;
+            width: 100%;
+            height: auto;
+            aspect-ratio: 16 / 9;
+            cursor: crosshair;
+        }
+
+        .btn-action {
+            background: linear-gradient(135deg, var(--neon-blue), var(--neon-crimson));
+            border: none;
+            color: #fff;
+            font-weight: bold;
+            padding: 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            transition: box-shadow 0.2s, transform 0.1s;
+        }
+
+        .btn-action:hover {
+            box-shadow: 0 0 20px rgba(0, 217, 255, 0.4);
+            transform: translateY(-1px);
+        }
+
+        .telemetry-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-glow);
+            font-size: 0.9rem;
+        }
+
+        .telemetry-row:last-child {
+            border-bottom: none;
+        }
+
+        .telemetry-val {
+            font-family: monospace;
+            font-weight: bold;
+            color: var(--neon-blue);
+        }
+
+        #alarm-light {
+            width: 10px;
+            height: 10px;
+            background-color: var(--neon-green);
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 10px var(--neon-green);
+            transition: background-color 0.2s, box-shadow 0.2s;
+        }
+
+        .alarm-triggered {
+            background-color: var(--neon-crimson) !important;
+            box-shadow: 0 0 15px var(--neon-crimson) !important;
+            animation: pulse-light 0.5s infinite alternate;
+        }
+
+        @keyframes pulse-light {
+            from {
+                opacity: 0.4;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        #log-stream {
+            background: #010408;
+            border: 1px solid var(--border-glow);
+            color: #8fa1b8;
+            font-family: monospace;
+            font-size: 0.8rem;
+            padding: 12px;
+            border-radius: 6px;
+            height: 120px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="studio-frame">
+        <header>
+            <h2>SecOps Tactical Vector Interceptor Console</h2>
+        </header>
+
+        <div class="console-grid">
+            <div class="panel-card">
+                <div class="panel-header">Tactical Grid Viewport (Click & Drag to Deploy Geometric Deflector Fields)
+                </div>
+                <canvas id="deflect-canvas" width="800" height="450"></canvas>
+            </div>
+
+            <div class="panel-card">
+                <div class="panel-header">Command Center Telemetry Matrix</div>
+
+                <button id="system-toggle" class="btn-action">Activate Defense Engine Grid</button>
+
+                <div class="panel-header" style="margin-top: 25px; margin-bottom: 8px;">Live Firewall Status</div>
+                <div class="telemetry-row">
+                    <span>Firewall Threat Level:</span>
+                    <span><span id="alarm-light"></span> <span id="alarm-txt"
+                            style="font-family: monospace; font-weight: bold; margin-left: 5px; color: var(--neon-green);">SECURE</span></span>
+                </div>
+                <div class="telemetry-row">
+                    <span>Core Integrity Multiplier:</span>
+                    <span id="tel-integrity" class="telemetry-val" style="color: var(--neon-green);">100%</span>
+                </div>
+                <div class="telemetry-row">
+                    <span>Intercepted Attack Vectors:</span>
+                    <span id="tel-score" class="telemetry-val" style="color: #ffaa00;">0 Packets</span>
+                </div>
+                <div class="telemetry-row">
+                    <span>Active Threat Inbound Pool:</span>
+                    <span id="tel-pool" class="telemetry-val">0 / 40</span>
+                </div>
+                <div class="telemetry-row">
+                    <span>Vector Computation Latency:</span>
+                    <span id="tel-latency" class="telemetry-val">0.0000 ms</span>
+                </div>
+
+                <pre id="log-stream">SecOps Subsystems Offline. Establish firewall authorization channels...</pre>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="app.js"></script>
+</body>
+
+</html>

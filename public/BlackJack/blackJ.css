@@ -73,22 +73,20 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   top: 1rem;
   left: 1rem;
   z-index: 100;
-  padding: 0.45rem 1rem;
-  background: rgba(0,0,0,0.55);
-  color: var(--text-primary);
-  border: 1px solid rgba(255,255,255,0.15);
-  border-radius: var(--radius-md);
+  padding: 8px 16px;
+  background: #1e293b;
+  color: #3b82f6;
+  border: 1px solid #3b82f6;
+  border-radius: 8px;
   font-size: 0.85rem;
   font-weight: 600;
   font-family: var(--font-ui);
   text-decoration: none;
-  transition: background var(--transition), border-color var(--transition);
-  backdrop-filter: blur(6px);
+  transition: all 0.2s ease;
 }
 .back-btn:hover {
-  background: rgba(0,0,0,0.75);
-  border-color: var(--gold);
-  color: var(--gold);
+  background: #3b82f6;
+  color: #fff;
 }
 
 /* ── Site Header ────────────────────────────────────────────── */
