@@ -1,108 +1,30 @@
-# 🔗 LinkedIn Clone
+# LinkedIn Clone
 
-<p align="center">
-  <img src="assets/banner.png" alt="LinkedIn Clone Banner" />
-</p>
+## 📌 Project Overview
 
-<p align="center">
-  <img src="https://img.shields.io/badge/React-18-blue" />
-  <img src="https://img.shields.io/badge/Node.js-Backend-green" />
-  <img src="https://img.shields.io/badge/MongoDB-Database-brightgreen" />
-  <img src="https://img.shields.io/badge/License-MIT-yellow" />
-</p>
-
-## 🌟 Introduction
-
-A production-ready LinkedIn Clone built to replicate core professional networking features such as profile management, content sharing, networking, authentication, and social engagement.
-
-The project focuses on scalability, clean architecture, responsive design, and real-world industry practices.
+LinkedIn Clone is a front-end web application inspired by LinkedIn. It replicates key UI components and user interactions of the professional networking platform, providing users with a modern and responsive interface.
 
 ---
 
-## 🎯 Problem Statement
+## ✨ Features
 
-Professionals need a platform where they can:
-
-- Build digital resumes
-- Expand professional networks
-- Share industry knowledge
-- Discover opportunities
-- Maintain an online presence
-
-This application provides a simplified LinkedIn-like experience.
-
----
-
-## ✨ Core Features
-
-### 👤 User Management
-
-- User Registration
-- Secure Login
-- JWT Authentication
-- Password Encryption
-- Session Management
-
-### 🧑‍💼 Profile System
-
-- Create Professional Profile
-- Edit Profile Information
-- Upload Profile Picture
-- Skills Management
-- Experience Tracking
-
-### 📝 Content Management
-
-- Create Posts
-- Edit Posts
-- Delete Posts
-- Like Posts
-- Comment System
-
-### 🤝 Networking
-
-- Send Connection Requests
-- Accept Requests
-- View Connections
-- Suggested Connections
-
-### 📱 Responsive Design
-
-- Desktop Optimized
-- Tablet Friendly
-- Mobile Responsive
+* Responsive design
+* Professional LinkedIn-inspired layout
+* Navigation bar
+* User profile section
+* News feed/posts section
+* Sidebar widgets
+* Interactive UI elements
+* Mobile-friendly interface
 
 ---
 
-## 🏗️ System Architecture
+## 🛠️ Technologies Used
 
-```text
-Frontend (React)
-       │
-       ▼
-REST API Layer
-       │
-       ▼
-Backend (Node.js + Express)
-       │
-       ▼
-MongoDB Database
-```
-
----
-
-## 🛠 Technology Stack
-
-| Layer | Technology |
-|---------|------------|
-| Frontend | React.js |
-| Styling | Tailwind CSS |
-| State Management | Redux / Context API |
-| Backend | Node.js |
-| Framework | Express.js |
-| Database | MongoDB |
-| Authentication | JWT |
-| Deployment | Vercel / Render |
+* HTML5
+* CSS3
+* JavaScript
+* Font Awesome (if used)
 
 ---
 
@@ -111,177 +33,70 @@ MongoDB Database
 ```text
 linkedin-clone/
 │
-├── frontend/
-│   ├── public/
-│   ├── src/
-│   │   ├── components/
-│   │   ├── pages/
-│   │   ├── hooks/
-│   │   ├── services/
-│   │   └── assets/
-│
-├── backend/
-│   ├── controllers/
-│   ├── middleware/
-│   ├── models/
-│   ├── routes/
-│   └── config/
-│
+├── index.html
+├── style.css
+├── script.js
+├── assets/
 └── README.md
 ```
 
 ---
 
-## ⚙️ Installation Guide
+## 🚀 Installation & Setup
 
-### Clone Repository
-
-```bash
-git clone <repository-url>
-cd linkedin-clone
-```
-
-### Install Frontend
+1. Clone the repository:
 
 ```bash
-cd frontend
-npm install
+git clone https://github.com/dhairyagothi/100_days_100_web_project.git
 ```
 
-### Install Backend
+2. Navigate to the project directory:
 
 ```bash
-cd backend
-npm install
+cd public/linkedin-clone
 ```
 
-### Run Application
-
-```bash
-npm run dev
-```
+3. Open `index.html` in your browser.
 
 ---
 
-## 🔐 Environment Variables
+## 🎮 Usage
 
-Create a `.env` file:
-
-```env
-PORT=5000
-
-MONGO_URI=your_database_url
-
-JWT_SECRET=your_secret_key
-
-CLIENT_URL=http://localhost:3000
-```
+* Launch the application.
+* Explore the LinkedIn-inspired interface.
+* Navigate through profile and feed sections.
+* Test responsiveness on different screen sizes.
 
 ---
 
-## 📡 API Overview
+## 📷 Preview
 
-### Authentication
-
-| Method | Endpoint |
-|----------|-----------|
-| POST | /api/auth/register |
-| POST | /api/auth/login |
-
-### Users
-
-| Method | Endpoint |
-|----------|-----------|
-| GET | /api/users |
-| GET | /api/profile |
-
-### Posts
-
-| Method | Endpoint |
-|----------|-----------|
-| POST | /api/posts |
-| GET | /api/posts |
-| DELETE | /api/posts/:id |
+Add project screenshots or preview images here.
 
 ---
 
-## 🚀 Performance Optimizations
+## 🤝 Contribution Guidelines
 
-- Lazy Loading
-- Code Splitting
-- Optimized API Calls
-- JWT Session Handling
-- Efficient Database Queries
-
----
-
-## 🔒 Security Features
-
-- Password Hashing
-- JWT Authentication
-- Protected Routes
-- Input Validation
-- API Error Handling
+1. Fork the repository.
+2. Create a feature branch.
+3. Make your changes.
+4. Commit your work.
+5. Push the branch.
+6. Open a Pull Request.
 
 ---
 
-## 📊 Future Roadmap
+## 🔮 Future Enhancements
 
-### Phase 1
-- Messaging System
-- Notifications
-
-### Phase 2
-- Job Portal
-- Resume Builder
-
-### Phase 3
-- AI Career Assistant
-- AI Profile Suggestions
-
-### Phase 4
-- Video Content Support
-- Live Events
+* Authentication system
+* Real-time messaging
+* Dynamic post creation
+* Backend integration
+* Database support
+* Dark mode
 
 ---
 
-## 🤝 Contributing
+## 📄 License
 
-1. Fork Repository
-2. Create Branch
-
-```bash
-git checkout -b feature/new-feature
-```
-
-3. Commit Changes
-
-```bash
-git commit -m "Added new feature"
-```
-
-4. Push Branch
-
-```bash
-git push origin feature/new-feature
-```
-
-5. Open Pull Request
-
----
-
-## 📜 License
-
-Distributed under the MIT License.
-
----
-
-## ⭐ Support
-
-If you found this project useful, please consider giving it a star.
-
----
-
-## 👩‍💻 Author
-
-Created and maintained by the Open Source Community.
+This project is part of the **100 Days 100 Web Projects** repository and is intended for learning and educational purposes.

@@ -21,6 +21,20 @@ h1 {
   margin-bottom: 20px;
 }
 
+#download-btn{
+    background:#28a745;
+    color:white;
+    border:none;
+    padding:10px 16px;
+    border-radius:6px;
+    cursor:pointer;
+    font-weight:600;
+}
+
+#download-btn:hover{
+    background:#218838;
+}
+
 .controls {
   background-color: var(--panel-color);
   padding: 15px 25px;
@@ -124,4 +138,21 @@ button.clear-btn:hover {
 #pixel-grid {
   border-top: 1px solid var(--grid-border);
   border-left: 1px solid var(--grid-border);
+}
+
+.color-by-number-panel{
+    margin:20px auto;
+    text-align:center;
+}
+
+#color-guide{
+    margin-top:10px;
+}
+
+.pixel-cell{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:12px;
+    font-weight:bold;
 }
