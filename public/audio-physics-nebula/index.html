@@ -4,57 +4,183 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Audio-Reactive Particle Physics Sandbox</title>
+    <meta name="description"
+        content="Audio Physics Nebula — An interactive audio-reactive particle physics simulation with real-time visualization, microphone input, and dynamic waveforms.">
+    <title>Audio Physics Nebula — Interactive Particle Simulation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
-    <div class="cyber-container">
-        <div class="viewport-box">
-            <div class="status-indicator">
-                <span class="pulse-dot"></span> LIVE TELEMETRY ARENA
-            </div>
-            <canvas id="nebulaCanvas"></canvas>
-        </div>
-
-        <div class="control-panel">
-            <h2>NEBULA CONTROL MATRIX</h2>
-            <div class="divider"></div>
-
-            <div class="control-group">
-                <label for="gravitySlider">GRAVITATIONAL COEFFICIENT (G)</label>
-                <div class="slider-wrapper">
-                    <input type="range" id="gravitySlider" min="0" max="2" step="0.05" value="0.5">
-                    <span id="gravityVal" class="telemetry-readout">0.50</span>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="logo-group">
+                    <span class="logo-icon">◈</span>
+                    <h1>Audio Physics Nebula</h1>
+                </div>
+                <div class="sim-state-badge" id="simStateBadge">
+                    <span class="state-dot"></span>
+                    <span class="state-text" id="simStateText">IDLE</span>
                 </div>
             </div>
+        </header>
 
-            <div class="control-group">
-                <label for="dragSlider">ATMOSPHERIC FRICTION (DRAG)</label>
-                <div class="slider-wrapper">
-                    <input type="range" id="dragSlider" min="0.95" max="1" step="0.005" value="0.99">
-                    <span id="dragVal" class="telemetry-readout">0.99</span>
+        <!-- Main Content Grid -->
+        <main class="main-grid">
+            <!-- Visualization Hero Panel -->
+            <section class="viz-panel" id="vizPanel">
+                <div class="panel-glass viz-glass">
+                    <div class="panel-top-bar">
+                        <span class="panel-label"><span class="pulse-dot"></span> LIVE TELEMETRY ARENA</span>
+                        <span class="fps-counter" id="fpsCounter">0 FPS</span>
+                    </div>
+                    <div class="canvas-wrapper" id="canvasWrapper">
+                        <canvas id="nebulaCanvas"></canvas>
+                    </div>
+                    <!-- Simulation Lifecycle Controls -->
+                    <div class="sim-controls">
+                        <button id="btnSimStart" class="btn-sim btn-start" title="Start Simulation">▶ Start</button>
+                        <button id="btnSimPause" class="btn-sim btn-pause" disabled
+                            title="Pause Simulation">⏸ Pause</button>
+                        <button id="btnSimResume" class="btn-sim btn-resume" disabled
+                            title="Resume Simulation">⏵ Resume</button>
+                        <button id="btnSimReset" class="btn-sim btn-reset"
+                            title="Reset Particle Field">↺ Reset</button>
+                    </div>
+                    <p class="canvas-hint">Click &amp; drag on the canvas to create gravitational singularities</p>
                 </div>
-            </div>
+            </section>
 
-            <div class="control-group">
-                <label for="synthType">SYNTH OSCILLATOR WAVEFORM</label>
-                <select id="synthType" class="cyber-select">
-                    <option value="sawtooth">SAWTOOTH (SYNTHWAVE)</option>
-                    <option value="square">SQUARE (8-BIT RETRO)</option>
-                    <option value="sine">SINE (PURE TONE)</option>
-                    <option value="triangle">TRIANGLE (SOFT CHIP)</option>
-                </select>
-            </div>
+            <!-- Controls Sidebar -->
+            <aside class="controls-sidebar">
+                <!-- Audio Source Panel -->
+                <div class="panel-glass">
+                    <h2 class="section-title">
+                        <span class="section-icon">🔊</span> Audio Source
+                    </h2>
+                    <div class="divider"></div>
 
-            <div class="system-logs">
-                <div class="log-line">>> GRID STATUS: SECURE</div>
-                <div class="log-line">>> AUDIO CONTEXT: WAITING USER INTERACTION</div>
-                <div class="log-line" id="particleCountLog">>> ACTIVE_ENTITIES: 0 / 300</div>
-            </div>
+                    <!-- Status Indicators -->
+                    <div class="status-grid">
+                        <div class="status-item" id="statusMicRow">
+                            <span class="led led-off" id="ledMic"></span>
+                            <span class="status-label" id="statusMicText">Mic: Disconnected</span>
+                        </div>
+                        <div class="status-item" id="statusFileRow">
+                            <span class="led led-off" id="ledFile"></span>
+                            <span class="status-label" id="statusFileText">File: None</span>
+                        </div>
+                        <div class="status-item" id="statusPlaybackRow">
+                            <span class="led led-off" id="ledPlayback"></span>
+                            <span class="status-label" id="statusPlaybackText">Playback: Stopped</span>
+                        </div>
+                    </div>
 
-            <p class="instruction-text">* CLICK INSIDE THE CANVAS TO INJECT KINETIC VECTOR ENTITIES</p>
-        </div>
+                    <!-- Microphone Toggle -->
+                    <button id="btnMicToggle" class="btn-audio btn-mic">
+                        <span class="btn-icon">🎤</span> Enable Microphone
+                    </button>
+
+                    <!-- File Upload -->
+                    <div class="file-upload-group">
+                        <label for="audioFileInput" class="btn-audio btn-file">
+                            <span class="btn-icon">📁</span> Load Audio File
+                        </label>
+                        <input type="file" id="audioFileInput" accept="audio/*" hidden>
+                        <span class="file-name" id="audioFileName">No file loaded</span>
+                    </div>
+
+                    <!-- Playback Controls -->
+                    <div class="playback-controls" id="playbackControls">
+                        <button id="btnAudioPlay" class="btn-playback btn-play-audio" disabled
+                            title="Play">▶</button>
+                        <button id="btnAudioPause" class="btn-playback btn-pause-audio" disabled
+                            title="Pause">⏸</button>
+                        <button id="btnAudioStop" class="btn-playback btn-stop-audio" disabled
+                            title="Stop">⏹</button>
+                    </div>
+                </div>
+
+                <!-- Physics Controls Panel -->
+                <div class="panel-glass">
+                    <h2 class="section-title">
+                        <span class="section-icon">⚛</span> Physics Controls
+                    </h2>
+                    <div class="divider"></div>
+
+                    <div class="control-group">
+                        <label for="gravitySlider">
+                            <span>Gravitational Coefficient (G)</span>
+                            <span class="readout" id="gravityVal">0.50</span>
+                        </label>
+                        <input type="range" id="gravitySlider" min="0" max="2" step="0.05" value="0.5">
+                    </div>
+
+                    <div class="control-group">
+                        <label for="dragSlider">
+                            <span>Atmospheric Friction (Drag)</span>
+                            <span class="readout" id="dragVal">0.990</span>
+                        </label>
+                        <input type="range" id="dragSlider" min="0.90" max="1" step="0.005" value="0.99">
+                    </div>
+
+                    <div class="control-group">
+                        <label for="particleSlider">
+                            <span>Particle Cloud Count</span>
+                            <span class="readout" id="particleVal">200</span>
+                        </label>
+                        <input type="range" id="particleSlider" min="50" max="500" step="10" value="200">
+                    </div>
+
+                    <div class="control-group">
+                        <label for="synthType">Synth Oscillator Waveform</label>
+                        <select id="synthType" class="cyber-select">
+                            <option value="sawtooth">Sawtooth (Synthwave)</option>
+                            <option value="square">Square (8-bit Retro)</option>
+                            <option value="sine">Sine (Pure Tone)</option>
+                            <option value="triangle">Triangle (Soft Chip)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Live Telemetry Panel -->
+                <div class="panel-glass">
+                    <h2 class="section-title">
+                        <span class="section-icon">📡</span> Live Telemetry
+                    </h2>
+                    <div class="divider"></div>
+
+                    <div class="telemetry-grid">
+                        <div class="tel-row">
+                            <span class="tel-label">Frequency Output</span>
+                            <span class="tel-value tel-freq" id="telFreq">0.00 Hz</span>
+                        </div>
+                        <div class="tel-row">
+                            <span class="tel-label">Kinetic Energy</span>
+                            <span class="tel-value tel-energy" id="telKinetic">0.00 ERG</span>
+                        </div>
+                        <div class="tel-row">
+                            <span class="tel-label">Frame Latency</span>
+                            <span class="tel-value tel-latency" id="telLatency">0.000 ms</span>
+                        </div>
+                        <div class="tel-row">
+                            <span class="tel-label">Particles Active</span>
+                            <span class="tel-value tel-particles" id="telParticles">0 / 300</span>
+                        </div>
+                        <div class="tel-row">
+                            <span class="tel-label">Simulation FPS</span>
+                            <span class="tel-value tel-fps" id="telFPS">0</span>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </main>
     </div>
 
     <script src="app.js"></script>

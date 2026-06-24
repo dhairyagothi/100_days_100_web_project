@@ -20,8 +20,9 @@ function loadRecipes() {
   fetch("text.json")
     .then((res) => res.json())
     .then((data) => {
-      allRecipes = Array.isArray(data) ? data : Object.values(data);
-
+      allRecipes = Array.isArray(data)
+      ? data
+      : data.recipes || [];
       // Populate difficulty/category filter
       if (difficultySelect) {
         const categories = [...new Set(allRecipes.flatMap(r => r.tags || []))];
@@ -56,7 +57,7 @@ function renderRecipes(recipes) {
   recipeGrid.innerHTML = recipes.map((recipe, index) => `
     <div class="recipe-card" onclick="showRecipe(${index})">
       ${recipe.img ? `<img src="${recipe.img}" alt="${recipe.name}" onerror="this.style.display='none'">` : ''}
-      <div class="recipe-card-body">
+      <div class="recipe-info">
         <h3>${recipe.name || recipe.title || "Recipe"}</h3>
         <p>${(recipe.instructions || recipe.description || "").slice(0, 80)}...</p>
         ${recipe.tags ? `<div class="tags">${recipe.tags.map(t => `<span class="tag">${t}</span>`).join("")}</div>` : ""}

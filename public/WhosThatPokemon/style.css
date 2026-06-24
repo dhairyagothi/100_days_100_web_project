@@ -1,0 +1,106 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+body {
+    font-family: 'Press Start 2P', cursive; 
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background-image: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
+}
+
+.game-container {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    text-align: center;
+    max-width: 450px;
+    width: 90%;
+}
+
+h1 {
+    font-size: 1.2rem;
+    color: #3b4cca; 
+    text-shadow: 2px 2px #ffcb05; 
+    line-height: 1.5;
+}
+
+.score-board {
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+    color: #333;
+}
+
+.pokemon-display {
+    width: 200px;
+    height: 200px;
+    margin: 0 auto 1.5rem;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 5px solid #3b4cca;
+    background-color: #f8f8f8;
+    position: relative;
+    overflow: hidden;
+}
+
+#pokemon-image {
+    width: 80%;
+    height: 80%;
+    object-fit: contain;
+    transition: filter 0.3s ease;
+}
+
+.hidden-pokemon {
+    filter: brightness(0) contrast(100%);
+    pointer-events: none;
+}
+
+.controls {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
+
+.controls input {
+    padding: 10px;
+    font-family: inherit;
+    font-size: 0.8rem;
+    width: 80%;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.controls button, #next-btn {
+    padding: 12px 20px;
+    font-family: inherit;
+    font-size: 0.8rem;
+    background-color: #ffcb05;
+    color: #3b4cca;
+    border: 2px solid #3b4cca;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.controls button:hover, #next-btn:hover {
+    background-color: #3b4cca;
+    color: #ffcb05;
+}
+
+#message {
+    margin-top: 1rem;
+    font-size: 0.8rem;
+    min-height: 1rem;
+    line-height: 1.5;
+}
+
+#next-btn {
+    margin-top: 10px;
+}

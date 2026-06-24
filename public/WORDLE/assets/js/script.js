@@ -27,6 +27,13 @@ const stats = document.querySelector(".stats");
 const closeResult = document.querySelector("#closeResult");
 const resetbutton=document.querySelector("#reset");
 const wordsTable = document.querySelector(".words");
+const gameOverModal = document.querySelector("#game-over-modal");
+const gameOverTitle = document.querySelector("#game-over-title");
+const gameOverDetails = document.querySelector("#game-over-details");
+const gameOverActions = document.querySelector("#game-over-actions");
+const closeGameOver = document.querySelector("#closeGameOver");
+const nextWordBtn = document.querySelector("#nextWordBtn");
+const persistentNextWordBtn = document.querySelector("#persistentNextWordBtn");
 
 // Generate grid dynamically
 const generateGrid = function () {
@@ -53,8 +60,10 @@ generateGrid();
 const changeControl = function (type) {
     if (row === 7) {
         playing = false;
-        message.textContent = secretWord;
-        message.classList.remove("hidden");
+        gameOverTitle.textContent = "Game Over";
+        gameOverDetails.innerHTML = `The secret word was: <strong>${secretWord}</strong>`;
+        gameOverModal.classList.remove("hidden");
+        gameOverActions.classList.remove("hidden");
     } else {
         const c = Number(currentBox.slice(2));
         if (type < 0) {
@@ -105,14 +114,16 @@ const checkWord = function (word) {
     
     setTimeout(() => {
         if (word === secretWord) {
-            message.innerHTML = `${appreciation[row - 1]}! <br><br><button id="nextWordBtn" class="button" style="margin:auto;">Next Word ➔</button>`;
-            message.classList.remove("hidden");
-            document.getElementById("nextWordBtn").addEventListener("click", () => location.reload());
+            gameOverTitle.textContent = `${appreciation[row - 1]}!`;
+            gameOverDetails.innerHTML = `You guessed the secret word <strong>${secretWord}</strong> in ${row} ${row === 1 ? 'try' : 'tries'}!`;
+            gameOverModal.classList.remove("hidden");
+            gameOverActions.classList.remove("hidden");
             updateStats(true);
         } else if (row === 6) {
-            message.innerHTML = `Word was: ${secretWord}<br><br><button id="nextWordBtn" class="button" style="margin:auto;">Next Word ➔</button>`;
-            message.classList.remove("hidden");
-            document.getElementById("nextWordBtn").addEventListener("click", () => location.reload());
+            gameOverTitle.textContent = "Game Over";
+            gameOverDetails.innerHTML = `The secret word was: <strong>${secretWord}</strong>`;
+            gameOverModal.classList.remove("hidden");
+            gameOverActions.classList.remove("hidden");
             updateStats(false);
         } else {
             row++;
@@ -317,3 +328,19 @@ themeToggle.addEventListener("click", () => {
         themeToggle.textContent = "🌙";
     }
 });
+
+// Close game over modal with close button
+closeGameOver.addEventListener("click", function () {
+    gameOverModal.classList.add("hidden");
+});
+
+// Click backdrop to close game over modal
+gameOverModal.addEventListener("click", function (event) {
+    if (event.target === gameOverModal) {
+        gameOverModal.classList.add("hidden");
+    }
+});
+
+// Next Word actions
+nextWordBtn.addEventListener("click", () => location.reload());
+persistentNextWordBtn.addEventListener("click", () => location.reload());

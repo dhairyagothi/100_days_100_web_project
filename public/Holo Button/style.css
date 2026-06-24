@@ -18,16 +18,23 @@ body {
   overflow-y: auto;
   background-color: #071014;
   color: var(--text);
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    sans-serif;
 }
 
-body[data-theme="violet"] {
+body[data-theme='violet'] {
   --accent: #b46cff;
   --accent-strong: #e3c3ff;
   --accent-soft: rgba(180, 108, 255, 0.2);
 }
 
-body[data-theme="amber"] {
+body[data-theme='amber'] {
   --accent: #ffcc4d;
   --accent-strong: #ffe7a3;
   --accent-soft: rgba(255, 204, 77, 0.2);
@@ -58,7 +65,11 @@ body[data-theme="amber"] {
   width: 100%;
   height: 100%;
   background:
-    radial-gradient(circle at center, rgba(255, 255, 255, 0.08), transparent 38%),
+    radial-gradient(
+      circle at center,
+      rgba(255, 255, 255, 0.08),
+      transparent 38%
+    ),
     url('circle.png') repeat,
     #071014;
   background-size: 200px 200px;
@@ -138,6 +149,11 @@ body[data-theme="amber"] {
   filter: drop-shadow(0 0 32px var(--accent-soft));
 }
 
+.holo-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
 .button-ring,
 .button-core {
   position: absolute;
@@ -148,13 +164,27 @@ body[data-theme="amber"] {
   inset: 0;
   border: 2px solid var(--accent);
   background:
-    radial-gradient(circle, transparent 46%, var(--accent-soft) 47%, transparent 68%),
-    conic-gradient(from 0deg, transparent, var(--accent), transparent 34%, var(--accent-strong), transparent);
+    radial-gradient(
+      circle,
+      transparent 46%,
+      var(--accent-soft) 47%,
+      transparent 68%
+    ),
+    conic-gradient(
+      from 0deg,
+      transparent,
+      var(--accent),
+      transparent 34%,
+      var(--accent-strong),
+      transparent
+    );
   box-shadow:
     0 0 38px var(--accent-soft),
     inset 0 0 28px var(--accent-soft);
   animation: spin 7s linear infinite;
-  transition: transform 220ms ease, box-shadow 220ms ease;
+  transition:
+    transform 220ms ease,
+    box-shadow 220ms ease;
 }
 
 .button-core {
@@ -164,7 +194,12 @@ body[data-theme="amber"] {
   align-content: center;
   gap: 4px;
   border: 1px solid rgba(255, 255, 255, 0.28);
-  background: radial-gradient(circle at 50% 24%, rgba(255, 255, 255, 0.34), var(--accent-soft) 42%, rgba(2, 8, 12, 0.92));
+  background: radial-gradient(
+    circle at 50% 24%,
+    rgba(255, 255, 255, 0.34),
+    var(--accent-soft) 42%,
+    rgba(2, 8, 12, 0.92)
+  );
   box-shadow: inset 0 0 28px rgba(255, 255, 255, 0.12);
 }
 
@@ -234,15 +269,15 @@ body[data-theme="amber"] {
   cursor: pointer;
 }
 
-.theme-option[data-theme="cyan"] {
+.theme-option[data-theme='cyan'] {
   background: #34f5ff;
 }
 
-.theme-option[data-theme="violet"] {
+.theme-option[data-theme='violet'] {
   background: #b46cff;
 }
 
-.theme-option[data-theme="amber"] {
+.theme-option[data-theme='amber'] {
   background: #ffcc4d;
 }
 
@@ -263,7 +298,10 @@ body[data-theme="amber"] {
   font-weight: 700;
   text-decoration: none;
   cursor: pointer;
-  transition: border-color 180ms ease, transform 180ms ease, background 180ms ease;
+  transition:
+    border-color 180ms ease,
+    transform 180ms ease,
+    background 180ms ease;
 }
 
 .utility-button:hover {
@@ -293,7 +331,9 @@ body[data-theme="amber"] {
   opacity: 0;
   pointer-events: none;
   translate: 0 16px;
-  transition: opacity 180ms ease, translate 180ms ease;
+  transition:
+    opacity 180ms ease,
+    translate 180ms ease;
 }
 
 .toast.is-visible {

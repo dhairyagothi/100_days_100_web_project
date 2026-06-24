@@ -1,404 +1,273 @@
-/* ============================================================
-   GLOBAL DARK GRAPHICS & CONTAINER CONFIGURATIONS
-   ============================================================ */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+/* =========================
+   RESET
+========================= */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
 }
 
-body {
-  font-family: "Plus Jakarta Sans", sans-serif;
-  background: radial-gradient(circle at 50% 50%, #0f172a 0%, #020617 100%);
-  color: #f8fafc;
-  min-height: 100vh;
-  overflow-x: hidden;
-  padding-top: 80px;
+body{
+    font-family:'Space Grotesk',sans-serif;
+    background:radial-gradient(circle at center,#03142f,#000814 80%);
+    color:white;
+    overflow:hidden;
+    height:100vh;
 }
 
-/* Static Back Navigation Button override */
-.project-back-button {
-  position: fixed;
-  left: 18px;
-  top: 18px;
-  padding: 8px 12px;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #fff;
-  text-decoration: none;
-  z-index: 99999;
-  font-weight: 700;
-  backdrop-filter: blur(8px);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  transition: all 0.2s ease;
+/* =========================
+   STARFIELD
+========================= */
+.starfield{
+    position:fixed;
+    inset:0;
+    z-index:-10;
+    background:
+    radial-gradient(white 1px,transparent 1px),
+    radial-gradient(white 1px,transparent 1px);
+    background-size:120px 120px,180px 180px;
+    background-position:0 0,60px 60px;
+    opacity:.4;
 }
 
-.project-back-button:hover {
-  background: rgba(255, 255, 255, 0.15);
-  transform: scale(1.03);
+/* =========================
+   HEADER
+========================= */
+.header{
+    height:80px;
+    padding:0 25px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    background:rgba(0,0,0,.35);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid rgba(255,255,255,.1);
 }
 
-/* Logo Header Branding styling nodes */
-.logo {
-  text-align: center;
-  text-transform: uppercase;
-  font-weight: 800;
-  font-size: 2.25rem;
-  letter-spacing: 0.05em;
-  background: linear-gradient(135deg, #38bdf8, #0ea5e9);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin-bottom: 2rem;
+.title h1{
+    font-size:2rem;
 }
 
-.logo span {
-  display: block;
-  font-size: 0.8rem;
-  letter-spacing: 0.3em;
-  color: #64748b;
-  margin-top: 0.25rem;
-  -webkit-text-fill-color: initial;
+.title h2{
+    color:#7bc9ff;
+    font-size:1rem;
 }
 
-/* ============================================================
-   SIDE NAVIGATION TAB MATRIX LABELS
-   ============================================================ */
-input[name="planet"] {
-  display: none;
+/* SEARCH */
+.search-box{
+    display:flex;
+    gap:10px;
 }
 
-.menu {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  max-width: 500px;
-  margin: 0.5rem auto;
-  padding: 0.75rem 1.25rem;
-  background: rgba(30, 41, 59, 0.4);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  backdrop-filter: blur(8px);
+.search-box input{
+    width:220px;
+    padding:12px;
+    border:none;
+    border-radius:30px;
+    background:rgba(255,255,255,.1);
+    color:white;
 }
 
-.menu:hover {
-  background: rgba(30, 41, 59, 0.7);
-  border-color: rgba(56, 189, 248, 0.3);
-  transform: translateX(4px);
+.search-box button{
+    width:50px;
+    border:none;
+    border-radius:50%;
+    cursor:pointer;
+    background:#1b8fff;
+    color:white;
 }
 
-.menu .preview {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: #475569;
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+/* =========================
+   MAIN APP
+========================= */
+.app{
+    display:flex;
+    height:calc(100vh - 160px);
 }
 
-/* Graphic Color Accents Mapping fields */
-.menu.sun .preview {
-  background: radial-gradient(circle, #facc15, #ea580c);
-  box-shadow: 0 0 14px #ea580c;
-}
-.menu.mercury .preview {
-  background: radial-gradient(circle, #94a3b8, #475569);
-}
-.menu.venus .preview {
-  background: radial-gradient(circle, #fdba74, #c2410c);
-}
-.menu.earth .preview {
-  background: radial-gradient(circle, #60a5fa, #1d4ed8);
-  box-shadow: 0 0 8px #1d4ed8;
-}
-.menu.mars .preview {
-  background: radial-gradient(circle, #f87171, #991b1b);
-}
-.menu.jupiter .preview {
-  background: radial-gradient(circle, #fbcfe8, #9d174d);
-}
-.menu.saturn .preview {
-  background: radial-gradient(circle, #fef08a, #a16207);
-}
-.menu.uranus .preview {
-  background: radial-gradient(circle, #a5f3fc, #0e7490);
-}
-.menu.neptune .preview {
-  background: radial-gradient(circle, #38bdf8, #1e3a8a);
-}
-.menu.pluto .preview {
-  background: radial-gradient(circle, #cbd5e1, #64748b);
+/* =========================
+   INFO PANEL
+========================= */
+.info-panel{
+    width:280px;
+    padding:25px;
+    background:rgba(0,0,0,.25);
+    backdrop-filter:blur(12px);
+    border-right:1px solid rgba(255,255,255,.08);
 }
 
-.menu .info h2 {
-  font-size: 0.95rem;
-  font-weight: 700;
-  color: #f1f5f9;
+.info-panel h2{
+    margin-bottom:20px;
 }
 
-.menu .info h3 {
-  font-size: 0.75rem;
-  font-weight: 500;
-  color: #64748b;
+.planet-info{
+    display:flex;
+    flex-direction:column;
+    gap:14px;
 }
 
-/* ============================================================
-   THE CAROUSEL TRACK SLIDER VIEWPORT
-   ============================================================ */
-.solar {
-  position: relative;
-  max-width: 600px;
-  margin: 3rem auto;
-  padding: 0 1rem;
+.planet-info p{
+    color:#ccc;
 }
 
-.solar_systm {
-  display: none;
-  animation: fadeIn 0.4s ease-out forwards;
+#moreInfoBtn{
+    padding:12px;
+    border:none;
+    border-radius:12px;
+    background:#1b8fff;
+    color:white;
+    cursor:pointer;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* =========================
+   VIEWPORT
+========================= */
+.viewport{
+    flex:1;
+    overflow:hidden;
+    position:relative;
+    perspective:2000px;
 }
 
-.planet_description {
-  background: rgba(15, 23, 42, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 24px;
-  padding: 2rem;
-  backdrop-filter: blur(16px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+/* CAMERA */
+.camera{
+    width:100%;
+    height:100%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    cursor:grab;
 }
 
-.planet_description h2 {
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  color: #38bdf8;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
+.camera:active{
+    cursor:grabbing;
 }
 
-.planet_description h1 {
-  font-size: 2.5rem;
-  font-weight: 800;
-  color: #ffffff;
-  margin-bottom: 1rem;
+/* =========================
+   UNIVERSE
+========================= */
+.universe{
+    position:relative;
+    width:4000px;
+    height:4000px;
+    transform-style:preserve-3d;
 }
 
-.planet_description p {
-  font-size: 0.95rem;
-  line-height: 1.6;
-  color: #94a3b8;
-  margin-bottom: 1.5rem;
+/* =========================
+   LABELS
+========================= */
+.label{
+    position:absolute;
+    top:-22px;
+    left:50%;
+    transform:translateX(-50%);
+    font-size:12px;
+    white-space:nowrap;
+    color:white;
 }
 
-/* Interactive Data Trigger Labels */
-.planet_description label {
-  display: inline-block;
-  padding: 0.65rem 1.5rem;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: #ffffff;
-  cursor: pointer;
-  transition: all 0.2s ease;
+/* =========================
+   FOOTER CONTROLS
+========================= */
+.controls{
+    height:80px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:0 20px;
+    background:rgba(0,0,0,.4);
+    border-top:1px solid rgba(255,255,255,.1);
 }
 
-.planet_description label:hover {
-  background: #ffffff;
-  color: #020617;
-  transform: translateY(-2px);
+.speed-controls{
+    display:flex;
+    align-items:center;
+    gap:10px;
 }
 
-/* ============================================================
-   SLIDEOUT DETAILED PANEL STYLES
-   ============================================================ */
-input.read {
-  display: none;
+.speed-btn{
+    padding:10px 18px;
+    border:none;
+    border-radius:12px;
+    cursor:pointer;
+    background:rgba(255,255,255,.1);
+    color:white;
 }
 
-.panel {
-  position: fixed;
-  top: 0;
-  right: -100%;
-  width: 100%;
-  max-width: 500px;
-  height: 100vh;
-  background: #0b1329;
-  border-left: 1px solid rgba(255, 255, 255, 0.1);
-  z-index: 10000;
-  padding: 3rem 2rem;
-  overflow-y: auto;
-  transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: -20px 0 40px rgba(0, 0, 0, 0.5);
+.speed-btn.active{
+    background:#1b8fff;
 }
 
-.panel h1 {
-  font-size: 2.25rem;
-  font-weight: 800;
-  color: #ffffff;
-  margin-bottom: 1rem;
+.zoom-controls{
+    display:flex;
+    align-items:center;
+    gap:12px;
 }
 
-.panel h2 {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: #38bdf8;
-  margin: 1.5rem 0 0.5rem;
+#zoomSlider{
+    width:200px;
 }
 
-.panel p {
-  font-size: 0.9rem;
-  line-height: 1.6;
-  color: #94a3b8;
-  margin-bottom: 1rem;
+.actions{
+    display:flex;
+    gap:10px;
 }
 
-.panel img {
-  width: 100%;
-  height: 220px;
-  object-fit: cover;
-  border-radius: 16px;
-  margin: 1.5rem 0;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+.actions button{
+    padding:10px 15px;
+    border:none;
+    border-radius:12px;
+    cursor:pointer;
+    background:rgba(255,255,255,.1);
+    color:white;
 }
 
-.close-panel-btn {
-  margin-top: 2rem;
-  display: block;
-  text-align: center;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 0.65rem;
-  border-radius: 12px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: #ffffff;
-  cursor: pointer;
-  transition: all 0.2s ease;
+/* =========================
+   MODAL
+========================= */
+.planet-modal{
+    position:fixed;
+    inset:0;
+    display:none;
+    justify-content:center;
+    align-items:center;
+    background:rgba(0,0,0,.7);
 }
 
-.close-panel-btn:hover {
-  background: #ef4444;
-  border-color: #ef4444;
+.modal-content{
+    width:500px;
+    background:#07111f;
+    padding:30px;
+    border-radius:20px;
 }
 
-.closeBig {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(2, 6, 17, 0.7);
-  z-index: 9999;
-  backdrop-filter: blur(4px);
+.close-modal{
+    float:right;
+    border:none;
+    background:none;
+    color:white;
+    font-size:30px;
+    cursor:pointer;
 }
 
-/* ============================================================
-   PURE CSS REACTION CONDITIONAL LOOPS
-   ============================================================ */
-#sun:checked ~ .solar .solar_systm:nth-child(1) {
-  display: block;
-}
-#mercury:checked ~ .solar .solar_systm:nth-child(2) {
-  display: block;
-}
-#venus:checked ~ .solar .solar_systm:nth-child(3) {
-  display: block;
-}
-#earth:checked ~ .solar .solar_systm:nth-child(4) {
-  display: block;
-}
-#mars:checked ~ .solar .solar_systm:nth-child(5) {
-  display: block;
-}
-#jupiter:checked ~ .solar .solar_systm:nth-child(6) {
-  display: block;
-}
-#saturn:checked ~ .solar .solar_systm:nth-child(7) {
-  display: block;
-}
-#uranus:checked ~ .solar .solar_systm:nth-child(8) {
-  display: block;
-}
-#neptune:checked ~ .solar .solar_systm:nth-child(9) {
-  display: block;
-}
-#pluto:checked ~ .solar .solar_systm:nth-child(10) {
-  display: block;
+/* =========================
+   ACCESSIBILITY
+========================= */
+.accessibility-controls{
+    position:fixed;
+    bottom:100px;
+    right:20px;
+    background:rgba(255,255,255,.1);
+    padding:12px 20px;
+    border-radius:15px;
 }
 
-#sun:checked ~ .menu.sun,
-#mercury:checked ~ .menu.mercury,
-#venus:checked ~ .menu.venus,
-#earth:checked ~ .menu.earth,
-#mars:checked ~ .menu.mars,
-#jupiter:checked ~ .menu.jupiter,
-#saturn:checked ~ .menu.saturn,
-#uranus:checked ~ .menu.uranus,
-#neptune:checked ~ .menu.neptune,
-#pluto:checked ~ .menu.pluto {
-  background: rgba(56, 189, 248, 0.15);
-  border-color: #38bdf8;
-  box-shadow: 0 0 15px rgba(56, 189, 248, 0.1);
+/* SCROLLBAR */
+::-webkit-scrollbar{
+    width:8px;
 }
 
-#readSun:checked ~ #closeSun,
-#readSun:checked ~ .panel:nth-of-type(1),
-#readMercury:checked ~ #closeMercury,
-#readMercury:checked ~ .panel:nth-of-type(2),
-#readVenus:checked ~ #closeVenus,
-#readVenus:checked ~ .panel:nth-of-type(3),
-#readEarth:checked ~ #closeEarth,
-#readEarth:checked ~ .panel:nth-of-type(4),
-#readMars:checked ~ #closeMars,
-#readMars:checked ~ .panel:nth-of-type(5),
-#readJupiter:checked ~ #closeJupiter,
-#readJupiter:checked ~ .panel:nth-of-type(6),
-#readSaturn:checked ~ #closeSaturn,
-#readSaturn:checked ~ .panel:nth-of-type(7),
-#readUranus:checked ~ #closeUranus,
-#readUranus:checked ~ .panel:nth-of-type(8),
-#readNeptune:checked ~ #closeNeptune,
-#readNeptune:checked ~ .panel:nth-of-type(9),
-#readPluto:checked ~ #closePluto,
-#readPluto:checked ~ .panel:nth-of-type(10) {
-  display: block !important;
-  right: 0 !important;
-}
-
-/* ============================================================
-   RESPONSIVE BREAKPOINT SYSTEM GRID LAYOUT
-   ============================================================ */
-@media (min-width: 1024px) {
-  body {
-    display: grid;
-    grid-template-columns: 320px 1fr;
-    gap: 2rem;
-    padding: 4rem;
-    max-width: 1400px;
-    margin: 0 auto;
-  }
-  .logo {
-    grid-column: 1 / -1;
-    text-align: left;
-  }
-  .menu {
-    margin: 0.5rem 0;
-    width: 100%;
-  }
-  .solar {
-    margin: 0;
-    max-width: 100%;
-    padding-top: 0.5rem;
-  }
+::-webkit-scrollbar-thumb{
+    background:#1b8fff;
+    border-radius:10px;
 }
