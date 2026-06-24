@@ -220,18 +220,37 @@ function renderRowWeather(row, data) {
     const current = data?.current || {};
     const daily = data?.daily || {};
 
-    const values = [
-        formatTemperature(current.temperature_2m),
-        formatTemperature(current.apparent_temperature),
-        `${Math.round(current.relative_humidity_2m || 0)}%`,
-        `${Math.round(current.wind_speed_10m || 0)} km/h`,
-        formatTime(daily.sunrise?.[0]),
-        formatTime(daily.sunset?.[0])
-    ];
+    const cells = row.querySelectorAll("td");
 
-    row.querySelectorAll("td").forEach((cell, index) => {
-        cell.textContent = values[index] || "—";
-    });
+    if (cells.length < 6) return;
+
+    // Temp
+    cells[0].textContent =
+        formatTemperature(current.temperature_2m);
+
+    // Feels Like
+    cells[1].textContent =
+        formatTemperature(current.apparent_temperature);
+
+    // Humidity
+    cells[2].textContent =
+        Number.isFinite(current.relative_humidity_2m)
+            ? `${Math.round(current.relative_humidity_2m)}%`
+            : "—";
+
+    // Wind
+    cells[3].textContent =
+        Number.isFinite(current.wind_speed_10m)
+            ? `${Math.round(current.wind_speed_10m)} km/h`
+            : "—";
+
+    // Sunrise
+    cells[4].textContent =
+        formatTime(daily.sunrise?.[0]);
+
+    // Sunset
+    cells[5].textContent =
+        formatTime(daily.sunset?.[0]);
 }
 
 async function updateComparisonTable() {

@@ -345,6 +345,7 @@ let score = 0;
 let timerInterval;
 let seconds = 0;
 let timerRunning = false;
+let gameState = "idle"; // "idle" | "running" | "paused" | "completed"
 
 // ---------------------------------------------------------------------------
 // DOM references
@@ -427,10 +428,7 @@ startBtn.addEventListener("click", () => {
     activePuzzles = topicData[selectedTopic][selectedDifficulty];
     currentPuzzleIndex = 0;
     score = 0;
-    seconds = 0;
     scoreEl.textContent = `⭐ Score: ${score}`;
-    updateTimerDisplay();
-    stopTimer();
 
     const topic = topicData[selectedTopic];
     const meta = difficultyMeta[selectedDifficulty];
@@ -441,11 +439,26 @@ startBtn.addEventListener("click", () => {
     setupScreen.hidden = true;
     gameScreen.hidden = false;
 
-    loadPuzzle(currentPuzzleIndex);
+    // Clear board and show loading feedback
+    grid.innerHTML = "";
+    acrossList.innerHTML = "";
+    downList.innerHTML = "";
+    result.textContent = "⏳ Puzzle loading...";
+
+    // Controls are disabled during loading
+    timerToggle.disabled = true;
+    document.getElementById("checkBtn").disabled = true;
+    document.getElementById("resetBtn").disabled = true;
+
+    // Simulated loading animation
+    setTimeout(() => {
+        loadPuzzle(currentPuzzleIndex);
+        setGameState("running");
+    }, 450);
 });
 
 changeTopicBtn.addEventListener("click", () => {
-    stopTimer();
+    setGameState("idle");
     gameScreen.hidden = true;
     setupScreen.hidden = false;
     selectedTopic = null;
@@ -483,9 +496,90 @@ function stopTimer() {
 }
 
 timerToggle.addEventListener("click", () => {
-    if (timerRunning) stopTimer();
-    else startTimer();
+    if (gameState === "running") {
+        setGameState("paused");
+    } else if (gameState === "paused") {
+        setGameState("running");
+    }
 });
+
+// ---------------------------------------------------------------------------
+// Game State Manager
+// ---------------------------------------------------------------------------
+function setGameState(state) {
+    gameState = state;
+
+    const checkBtn = document.getElementById("checkBtn");
+    const resetBtn = document.getElementById("resetBtn");
+    const boardEl = document.querySelector(".board");
+
+    if (state === "idle") {
+        stopTimer();
+        seconds = 0;
+        updateTimerDisplay();
+
+        timerToggle.disabled = true;
+        timerToggle.textContent = "▶️";
+        if (checkBtn) checkBtn.disabled = true;
+        if (resetBtn) resetBtn.disabled = true;
+
+        if (boardEl) boardEl.classList.remove("paused");
+
+        // Set idle placeholder content
+        grid.innerHTML = `<div class="placeholder-message" style="text-align: center; color: #888; font-style: italic; width: 100%; padding: 20px;">Select a topic to begin.</div>`;
+        acrossList.innerHTML = `<li style="list-style: none; color: #888; font-style: italic; margin-left: -20px;">Select a topic to begin.</li>`;
+        downList.innerHTML = `<li style="list-style: none; color: #888; font-style: italic; margin-left: -20px;">Select a topic to begin.</li>`;
+        result.innerHTML = `<span style="color: #888; font-style: italic;">Select a topic to begin.</span>`;
+
+        activeTopicEl.textContent = "";
+        activeDifficultyEl.textContent = "";
+        activeDifficultyEl.style.background = "";
+    } else if (state === "running") {
+        startTimer();
+        timerToggle.disabled = false;
+        if (checkBtn) checkBtn.disabled = false;
+        if (resetBtn) resetBtn.disabled = false;
+
+        if (boardEl) boardEl.classList.remove("paused");
+
+        // Enable board inputs
+        document.querySelectorAll(".word-row input").forEach(input => {
+            input.disabled = false;
+        });
+
+        if (activePuzzles.length > 0) {
+            const topic = topicData[selectedTopic];
+            const meta = difficultyMeta[selectedDifficulty];
+            result.textContent = `${topic.label} · ${meta.label} — Puzzle ${currentPuzzleIndex + 1} of ${activePuzzles.length}`;
+        }
+    } else if (state === "paused") {
+        stopTimer();
+        timerToggle.disabled = false;
+        if (checkBtn) checkBtn.disabled = true;
+        if (resetBtn) resetBtn.disabled = true;
+
+        if (boardEl) boardEl.classList.add("paused");
+
+        // Disable board inputs so player cannot edit/read clearly
+        document.querySelectorAll(".word-row input").forEach(input => {
+            input.disabled = true;
+        });
+
+        result.textContent = "⏸️ Game paused.";
+    } else if (state === "completed") {
+        stopTimer();
+        timerToggle.disabled = true;
+        if (checkBtn) checkBtn.disabled = true;
+        if (resetBtn) resetBtn.disabled = true;
+
+        if (boardEl) boardEl.classList.remove("paused");
+
+        // Disable board inputs since puzzle is solved
+        document.querySelectorAll(".word-row input").forEach(input => {
+            input.disabled = true;
+        });
+    }
+}
 
 // ---------------------------------------------------------------------------
 // Puzzle loading
@@ -547,6 +641,8 @@ function loadPuzzle(index) {
 // Check answers
 // ---------------------------------------------------------------------------
 document.getElementById("checkBtn").addEventListener("click", () => {
+    if (gameState !== "running") return;
+
     const rows = document.querySelectorAll(".word-row");
     let allCorrect = true;
 
@@ -569,11 +665,23 @@ document.getElementById("checkBtn").addEventListener("click", () => {
         if (currentPuzzleIndex < activePuzzles.length - 1) {
             result.textContent = "🎉 Correct! Loading next puzzle...";
             currentPuzzleIndex++;
-            loadPuzzle(currentPuzzleIndex);
+
+            // Clear inputs and block controls during load transition
+            grid.innerHTML = "";
+            acrossList.innerHTML = "";
+            downList.innerHTML = "";
+            timerToggle.disabled = true;
+            document.getElementById("checkBtn").disabled = true;
+            document.getElementById("resetBtn").disabled = true;
+
+            setTimeout(() => {
+                loadPuzzle(currentPuzzleIndex);
+                setGameState("running");
+            }, 800);
         } else {
             const topic = topicData[selectedTopic];
             result.innerHTML = `<div class="trophy">🏆</div><p>Congratulations! You solved every ${meta.label.toLowerCase()} ${topic.label.toLowerCase()} puzzle!</p>`;
-            stopTimer();
+            setGameState("completed");
         }
     } else {
         result.textContent = "❌ Some answers are incorrect. Try again.";
@@ -584,15 +692,17 @@ document.getElementById("checkBtn").addEventListener("click", () => {
 // Reset puzzle
 // ---------------------------------------------------------------------------
 document.getElementById("resetBtn").addEventListener("click", () => {
+    if (gameState !== "running" && gameState !== "paused") return;
+
     document.querySelectorAll("input").forEach(input => {
         input.value = "";
         input.classList.remove("correct", "incorrect");
     });
 
     loadPuzzle(currentPuzzleIndex);
-    stopTimer();
     seconds = 0;
     updateTimerDisplay();
+    setGameState("running");
 });
 
 // ---------------------------------------------------------------------------
@@ -606,4 +716,4 @@ themeToggle.addEventListener("click", () => {
 // Initialize
 // ---------------------------------------------------------------------------
 renderSetupScreen();
-updateTimerDisplay();
+setGameState("idle");

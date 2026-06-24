@@ -107,6 +107,12 @@ function startGame() {
         sq.dataset.col = String(c);
         sq.setAttribute('aria-label', `Row ${r + 1}, column ${c + 1}`);
         sq.addEventListener('click', () => handleClick(r, c));
+        sq.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            handleClick(r, c);
+            }
+          });
         boardEl.appendChild(sq);
       }
     }
@@ -146,7 +152,11 @@ function startGame() {
       renderBoard();
       return;
     }
-
+    // Prevent two queens in the same row
+    if (queens.some(([r]) => r === row)) {
+      showMsg("This row already has a queen.", "error");
+      return;
+    }
     // Attempt placement
     if (!isSafe(row, col)) {
       flashConflictingQueens(row, col);
@@ -159,10 +169,21 @@ function startGame() {
     moveCount++;
     renderBoard();
 
-    if (queens.length === boardSize) {
-      showMsg(`Solved! All ${boardSize} queens placed.`, 'success');
-      stopTimer();
-    } else {
+    if (queens.length === boardSize && isBoardValid()) {
+    showMsg(`Solved! All ${boardSize} queens placed.`, "success");
+    stopTimer();
+    boardEl.classList.add("board-win");
+
+    setTimeout(() => {
+    boardEl.classList.remove("board-win");
+    }, 1500);
+
+    gameActive = false;
+
+    hintButton.disabled = true;
+    solveButton.disabled = true;
+    toggleMarkButton.disabled = true;
+} else {
       showMsg('');
     }
   };

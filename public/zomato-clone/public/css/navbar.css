@@ -146,10 +146,21 @@
   }
 
   .logo {
-    font-size: 1.7rem;
+    font-size: 1.6rem;
   }
 
   .signup-btn {
     display: none;
   }
+}
+
+.nav-logo{
+  margin-left: 50px;
+  height: 60px;
+  width: 230px;
+
+}
+
+[data-theme="dark"] .nav-logo img {
+  filter: brightness(0) invert(1);
 }

@@ -288,4 +288,15 @@ textarea:focus {
     display: inline-block;
     margin-bottom: 20px;
   }
+
+  .analysis-box {
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 10px;
+  background: rgba(59, 130, 246, 0.08);
+  border: 1px solid rgba(59, 130, 246, 0.25);
+  color: #e2e8f0;
+  line-height: 1.6;
+  text-align: left;
+}
 }

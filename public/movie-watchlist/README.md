@@ -1,32 +1,110 @@
-# 🎬 Movie Watchlist
+# 🎬 Movie Watchlist App
 
-A simple and responsive Movie Watchlist web application that allows users to search for movies and maintain a personal watchlist.
+## 🚀 Overview
 
-## 📖 Overview
+The **Movie Watchlist App** is a modern, interactive web application that allows users to search for movies, view details, and build a personal watchlist.
 
-Movie Watchlist helps users keep track of movies they want to watch. Users can search for movie titles, view movie information, and add or remove movies from their personal watchlist.
+It uses the **OMDb API** to fetch real-time movie data and stores user selections locally using **browser Local Storage**, making it fully frontend-based and persistent.
 
-## ✨ Features
+---
 
-- Search movies by title
-- Display movie information
-- Add movies to a watchlist
-- Remove movies from the watchlist
-- Clean and responsive user interface
-- Local storage support for saving watchlist data (if implemented)
+# ✨ Features
 
-## 🛠️ Technologies Used
+## 🔍 Movie Search
 
-- HTML5
-- CSS3
-- JavaScript (Vanilla JS)
+* Search movies by title using OMDb API
+* Real-time movie data fetching
+* Displays:
 
+  * Title
+  * Year
+  * Genre
+  * Runtime
+  * IMDb Rating
+  * Poster image
+
+---
+
+## 📋 Watchlist Management
+
+* Add movies to personal watchlist
+* Prevent duplicate entries
+* Mark movies as:
+
+  * 🎬 To Watch
+  * ✅ Watched
+* Remove movies from list with smooth animation
+
+---
+
+## 📊 Statistics Dashboard
+
+* Total movies in watchlist
+* Number of watched movies
+* Average IMDb rating of saved movies
+
+---
+
+## 🎛️ Smart Filtering
+
+Filter your watchlist by:
+
+* All movies
+* 🎬 To Watch
+* ✅ Watched
+
+---
+
+## 💾 Data Persistence
+
+* Uses **Local Storage (`movies_list`)**
+* Data remains saved even after page reload
+* No login required
+
+---
+
+## 🔔 User Feedback System
+
+* Toast notifications for actions:
+
+  * Added to watchlist
+  * Removed movie
+  * Marked watched/unwatched
+  * Duplicate warning
+
+---
+
+# 🛠️ Tech Stack
+
+| Technology       | Purpose                 |
+| ---------------- | ----------------------- |
+| HTML5            | Structure               |
+| CSS3             | Styling and UI          |
+| JavaScript (ES6) | Logic and functionality |
+| OMDb API         | Movie data source       |
+| Local Storage    | Data persistence        |
+
+---
+
+# 📂 Project Structure
+
+```text id="movie_structure"
+movie-watchlist/
+│
+├── index.html      # Main UI layout
+├── style.css       # Styling and responsive design
+├── script.js       # Application logic + API integration
+├── image.png       # Favicon
+└── README.md
+```
+
+---
 ## 🚀 Installation
 
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/your-repository.git
+git clone https://github.com/100_days_100_project.git
 ```
 
 2. Navigate to the project folder:
@@ -37,47 +115,105 @@ cd movie-watchlist
 
 3. Open `index.html` in your browser or run using Live Server.
 
-## 📋 Usage
+---
 
-1. Enter a movie title in the search box.
-2. Click the **Search** button.
-3. View the movie details.
-4. Add movies to your watchlist.
-5. Manage your watchlist by removing movies when needed.
+# ⚙️ How It Works
 
-## 📁 Project Structure
+## 1️⃣ Search Movie
 
-```text
-movie-watchlist/
-│
-├── index.html
-├── style.css
-├── script.js
-└── README.md
+* User enters movie title
+* App fetches data from OMDb API
+* Displays movie card preview
+
+## 2️⃣ Add to Watchlist
+
+* Movie is stored in local storage
+* Prevents duplicates automatically
+
+## 3️⃣ Manage Watchlist
+
+* Mark as watched/unwatched
+* Remove movies
+* Filter by category
+
+## 4️⃣ Stats Update
+
+* Dashboard updates in real time based on watchlist data
+
+---
+
+# 🧠 Key Features Explained
+
+### 🎯 API Integration
+
+Uses:
+
+```
+https://www.omdbapi.com/?t=movie_name&apikey=YOUR_KEY
 ```
 
-## 🎨 User Interface
+### 💾 Local Storage
 
-The application provides:
+Stores data under:
 
-- Search bar for movie lookup
-- Movie result display section
-- Personal watchlist section
-- Responsive card-based layout
+```
+movies_list
+```
 
-## 🤝 Contribution Guidelines
+### ⚡ Dynamic UI
 
-1. Fork the repository
-2. Create a new branch
-3. Make your changes
-4. Commit your changes
-5. Push to your fork
-6. Open a Pull Request
+* DOM updates without page reload
+* Smooth animations for add/remove actions
 
-## 📄 License
+---
 
-This project is open source and available under the MIT License.
+# 📱 Responsive Design
 
-## 👨‍💻 Author
+Works seamlessly on:
 
-Developed as part of the **100 Days 100 Web Projects** collection.
+* 💻 Desktop
+* 🖥️ Laptop
+* 📱 Mobile
+* 📲 Tablets
+
+---
+
+# 🎯 Learning Outcomes
+
+This project demonstrates:
+
+* API integration in JavaScript
+* Asynchronous programming (fetch/async-await)
+* DOM manipulation
+* State management using arrays/objects
+* Local Storage handling
+* UI filtering systems
+* Event-driven architecture
+
+---
+
+# 🔮 Future Improvements
+
+* 🔐 User authentication system
+* ☁️ Cloud sync watchlist
+* 🎞️ Movie recommendations engine
+* ⭐ Rating & review system
+* 🎨 Dark mode UI
+* 📊 Advanced analytics dashboard
+* 📺 Trailer preview integration
+
+---
+
+# 📄 License
+
+This project is created for **learning and educational purposes**.
+
+Feel free to use, modify, and enhance it for personal or portfolio development.
+
+---
+
+## ⭐ Support
+
+If you like this project, consider giving it a ⭐ on GitHub.
+
+Happy Watching! 🎬🍿

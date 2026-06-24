@@ -366,28 +366,56 @@ document.addEventListener("DOMContentLoaded", () => {
     updateTooltipBtn(id);
   }
 
-  function unpinClock(id) {
-    if (activePinnedClocks.length <= 1) {
-      alert("Keep at least one world clock pinned!");
-      return;
-    }
-    activePinnedClocks = activePinnedClocks.filter((c) => c !== id);
-    localStorage.setItem(
-      "chronos_pinned_clocks",
-      JSON.stringify(activePinnedClocks),
-    );
+  // Global tracker to prevent overlapping dismiss timers
+let toastTimeoutReference;
 
-    const card = document.querySelector(`.world-clock-card[data-id="${id}"]`);
-    if (card) {
-      card.style.opacity = "0";
-      card.style.transform = "scale(0.94) translateY(12px)";
-      card.style.transition = "all 0.35s ease";
-      setTimeout(renderGrid, 360);
-    } else {
-      renderGrid();
-    }
-    updateTooltipBtn(id);
+function showPremiumToast(message) {
+  let toast = document.querySelector('.custom-toast');
+  
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.className = 'custom-toast';
+    toast.innerHTML = `<span>⚠️</span><span class="toast-message"></span>`;
+    document.body.appendChild(toast);
   }
+  
+  toast.querySelector('.toast-message').textContent = message;
+  
+  clearTimeout(toastTimeoutReference);
+  
+  toast.classList.add('show');
+  
+  // smoothly slide down and hide after exactly 1.5 seconds
+  toastTimeoutReference = setTimeout(() => {
+    toast.classList.remove('show');
+  }, 1500);
+}
+
+
+function unpinClock(id) {
+  if (activePinnedClocks.length <= 1) {
+    // replacing the native alert() with the custom premium toast
+    showPremiumToast("Keep at least one world clock pinned!");
+    return;
+  }
+  
+  activePinnedClocks = activePinnedClocks.filter((c) => c !== id);
+  localStorage.setItem(
+    "chronos_pinned_clocks",
+    JSON.stringify(activePinnedClocks),
+  );
+
+  const card = document.querySelector(`.world-clock-card[data-id="${id}"]`);
+  if (card) {
+    card.style.opacity = "0";
+    card.style.transform = "scale(0.94) translateY(12px)";
+    card.style.transition = "all 0.35s ease";
+    setTimeout(renderGrid, 360);
+  } else {
+    renderGrid();
+  }
+  updateTooltipBtn(id);
+}
 
   // ─────────────────────────────────────────────
   // 7. SEARCH
@@ -599,9 +627,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // First render
   renderGrid();
 
-  // ─────────────────────────────────────────────
-  // 12. MAP
-  // ─────────────────────────────────────────────
+  //MAP
   const mapWrapper = document.getElementById("timezone-map-wrapper");
   const mapContainer = document.querySelector(".map-container");
   const tooltip = document.getElementById("map-tooltip");
@@ -610,10 +636,26 @@ document.addEventListener("DOMContentLoaded", () => {
   const ttTz = document.getElementById("tooltip-timezone");
   const ttTime = document.getElementById("tooltip-time");
   const ttDate = document.getElementById("tooltip-date");
-  const ttPinBtn = document.getElementById("tooltip-pin-btn");
 
   let ttInterval = null;
   let hoveredCityId = null;
+  let hideTooltipTimer = null;
+
+  function cancelHide() {
+    clearTimeout(hideTooltipTimer);
+  }
+
+  function scheduleHide() {
+    hideTooltipTimer = setTimeout(() => {
+      tooltip.style.display = "none";
+      if (ttInterval) clearInterval(ttInterval);
+      hoveredCityId = null;
+    }, 200); 
+  }
+
+  // event bindings to keep the card alive when interacting with its buttons
+  tooltip.addEventListener("mouseenter", cancelHide);
+  tooltip.addEventListener("mouseleave", scheduleHide);
 
   function updateTooltipBtn(id) {
     if (!tooltip || tooltip.style.display === "none") return;
@@ -623,18 +665,38 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function setupTtBtn(cityId) {
-    if (!ttPinBtn) return;
-    ttPinBtn.style.display = "block";
-    const pinned = activePinnedClocks.includes(cityId);
-    if (pinned) {
-      ttPinBtn.className = "tt-pin-btn tt-remove-btn";
-      ttPinBtn.textContent = "Remove from Dashboard";
-      ttPinBtn.onclick = () => unpinClock(cityId);
+    // Dynamic lookup ensures the live button is always referenced in the current DOM
+    let activeBtn = document.getElementById("tooltip-pin-btn");
+    if (!activeBtn) return;
+
+    activeBtn.style.display = "block";
+    const isPinned = activePinnedClocks.includes(cityId);
+
+    if (isPinned) {
+      activeBtn.className = "tt-pin-btn tt-remove-btn";
+      activeBtn.textContent = "Remove from Dashboard";
     } else {
-      ttPinBtn.className = "tt-pin-btn";
-      ttPinBtn.textContent = "Pin to Dashboard";
-      ttPinBtn.onclick = () => pinClock(cityId);
+      activeBtn.className = "tt-pin-btn";
+      activeBtn.textContent = "Pin to Dashboard";
     }
+
+    const freshBtn = activeBtn.cloneNode(true);
+    activeBtn.parentNode.replaceChild(freshBtn, activeBtn);
+
+    // rebind listener directly to the newly mounted fresh button node
+    freshBtn.addEventListener("click", (e) => {
+      e.stopPropagation(); 
+      cancelHide(); 
+
+      if (activePinnedClocks.includes(cityId)) {
+        unpinClock(cityId);
+      } else {
+        pinClock(cityId);
+      }
+
+      // retrigger visual layout updates
+      setupTtBtn(cityId);
+    });
   }
 
   function tickTooltip(timeZone) {
@@ -687,33 +749,31 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  function renderFallbackMap() {
-    if (!mapWrapper) return;
-    mapWrapper.innerHTML = `
-      <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="784" height="458" viewBox="30.767 241.591 784.077 458.627" id="world-map">
-        <rect x="30.767" y="241.591" width="784.077" height="458.627" fill="transparent"/>
-        <g id="continents-fallback">
-          <path d="M120,300 C150,280 220,290 250,320 C270,340 260,370 250,390 C220,430 190,440 180,450 C170,460 160,490 140,490 C120,490 100,470 90,450 C80,430 90,390 100,360 Z"/>
-          <path d="M210,480 C230,480 250,510 270,540 C290,570 280,630 250,670 C240,690 230,700 220,700 C210,700 200,680 200,650 C200,610 190,570 190,540 C190,510 200,480 210,480 Z"/>
-          <path d="M280,260 C300,250 340,260 350,280 C360,300 340,330 310,340 C290,350 270,320 270,300 Z"/>
-          <path d="M380,320 C420,300 480,290 550,290 C620,290 710,320 740,360 C760,390 750,420 720,440 C690,460 670,440 650,460 C630,480 620,510 590,530 C560,550 540,580 520,600 C500,620 480,630 460,630 C440,630 430,600 430,570 C430,540 400,530 380,510 C360,490 350,450 360,420 C370,390 360,340 380,320 Z"/>
-          <path d="M660,580 C690,570 730,570 750,590 C770,610 760,650 730,660 C700,670 670,660 650,640 C630,620 640,590 660,580 Z"/>
-        </g>
-      </svg>`;
-    initMap();
+  function positionTooltipOverElement(element) {
+    const containerRect = mapContainer.getBoundingClientRect();
+    const elementRect = element.getBoundingClientRect();
+
+    //mathematically centers the tooltip right above the targeted asset dot
+    let leftPosition = elementRect.left - containerRect.left + (elementRect.width / 2) - 125; 
+    let topPosition = elementRect.top - containerRect.top - 155; 
+
+    
+    if (leftPosition < 10) leftPosition = 10;
+    if (leftPosition + 250 > containerRect.width) leftPosition = containerRect.width - 260;
+    if (topPosition < 10) topPosition = elementRect.bottom - containerRect.top + 15;
+
+    tooltip.style.left = `${leftPosition}px`;
+    tooltip.style.top = `${topPosition}px`;
   }
 
   function initMap() {
     const svg = document.getElementById("world-map");
     if (!svg) return;
 
-    const W = 784.077,
-      H = 458.627,
-      minX = 30.767,
-      minY = 241.591;
+    const W = 784.077, H = 458.627, minX = 30.767, minY = 241.591;
     const stripeW = W / 24;
 
-    // Grid lines
+    //build grid lines
     let gridG = svg.getElementById("map-grid-lines");
     if (!gridG) {
       gridG = document.createElementNS("http://www.w3.org/2000/svg", "g");
@@ -725,18 +785,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const mkLine = (cls, x1, y1, x2, y2) => {
       const l = document.createElementNS("http://www.w3.org/2000/svg", "line");
       l.setAttribute("class", `map-grid-line ${cls}`);
-      [
-        ["x1", x1],
-        ["y1", y1],
-        ["x2", x2],
-        ["y2", y2],
-      ].forEach(([a, v]) => l.setAttribute(a, v));
+      [["x1", x1], ["y1", y1], ["x2", x2], ["y2", y2]].forEach(([a, v]) => l.setAttribute(a, v));
       gridG.appendChild(l);
     };
     mkLine("equator-line", minX, 530.8, minX + W, 530.8);
     mkLine("meridian-line", 422.8, minY, 422.8, minY + H);
 
-    // Timezone bands
+    //build timezone sectors
     let bandsG = svg.getElementById("timezone-bands");
     if (!bandsG) {
       bandsG = document.createElementNS("http://www.w3.org/2000/svg", "g");
@@ -746,10 +801,7 @@ document.addEventListener("DOMContentLoaded", () => {
     bandsG.innerHTML = "";
 
     timezoneSectors.forEach((s, i) => {
-      const rect = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "rect",
-      );
+      const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
       rect.setAttribute("class", "timezone-sector");
       const lon = s.offset * 15;
       const xC = (lon + 180) * (W / 360) + minX;
@@ -761,11 +813,10 @@ document.addEventListener("DOMContentLoaded", () => {
       rect.setAttribute("data-offset", s.offset);
       rect.setAttribute("data-tz", s.id);
       rect.setAttribute("data-name", s.name);
-      rect.setAttribute("data-cities", s.cities);
       bandsG.appendChild(rect);
     });
 
-    // City markers
+    //build city markers
     let markG = svg.getElementById("city-markers");
     if (!markG) {
       markG = document.createElementNS("http://www.w3.org/2000/svg", "g");
@@ -782,30 +833,21 @@ document.addEventListener("DOMContentLoaded", () => {
       g.setAttribute("class", "city-marker");
       g.setAttribute("data-id", city.id);
 
-      const ring = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "circle",
-      );
+      const ring = document.createElementNS("http://www.w3.org/2000/svg", "circle");
       ring.setAttribute("class", "pulse-ring");
       ring.setAttribute("cx", x);
       ring.setAttribute("cy", y);
       ring.setAttribute("r", 6);
       g.appendChild(ring);
 
-      const dot = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "circle",
-      );
+      const dot = document.createElementNS("http://www.w3.org/2000/svg", "circle");
       dot.setAttribute("class", "center-dot");
       dot.setAttribute("cx", x);
       dot.setAttribute("cy", y);
       dot.setAttribute("r", 4);
       g.appendChild(dot);
 
-      const catcher = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "circle",
-      );
+      const catcher = document.createElementNS("http://www.w3.org/2000/svg", "circle");
       catcher.setAttribute("cx", x);
       catcher.setAttribute("cy", y);
       catcher.setAttribute("r", 14);
@@ -815,13 +857,15 @@ document.addEventListener("DOMContentLoaded", () => {
       markG.appendChild(g);
     });
 
-    // Events
     const sectors = svg.querySelectorAll(".timezone-sector");
     const markers = svg.querySelectorAll(".city-marker");
 
+    //sector events
     sectors.forEach((s) => {
-      s.addEventListener("mouseover", () => {
+      s.addEventListener("mouseenter", (e) => {
         if (hoveredCityId) return;
+        cancelHide();
+
         sectors.forEach((x) => x.classList.remove("active-sector"));
         s.classList.add("active-sector");
 
@@ -833,37 +877,43 @@ document.addEventListener("DOMContentLoaded", () => {
         ttTz.textContent = tz;
         tickTooltip(tz);
 
-        const match = Object.values(citiesConfig).find(
-          (c) => c.timeZone === tz,
-        );
+        const match = Object.values(citiesConfig).find((c) => c.timeZone === tz);
         if (match) {
           setupTtBtn(match.id);
-          ttPinBtn.style.display = "block";
-        } else ttPinBtn.style.display = "none";
+        } else {
+          const btn = document.getElementById("tooltip-pin-btn");
+          if (btn) btn.style.display = "none";
+        }
 
         tooltip.style.display = "flex";
+        // Contextually positions the card relative to the center mouse entryway point of the sector
+        const containerRect = mapContainer.getBoundingClientRect();
+        let lx = e.clientX - containerRect.left - 110;
+        let ly = e.clientY - containerRect.top - 140;
+        tooltip.style.left = `${Math.max(10, lx)}px`;
+        tooltip.style.top = `${Math.max(10, ly)}px`;
       });
 
       s.addEventListener("mouseleave", () => {
         if (hoveredCityId) return;
         s.classList.remove("active-sector");
-        tooltip.style.display = "none";
-        if (ttInterval) clearInterval(ttInterval);
+        scheduleHide();
       });
     });
 
+    // city marker events
     markers.forEach((m) => {
-      m.addEventListener("mouseover", () => {
+      m.addEventListener("mouseenter", () => {
+        cancelHide();
+
         const id = m.getAttribute("data-id");
         const city = citiesConfig[id];
         if (!city) return;
+
         hoveredCityId = id;
 
         sectors.forEach((s) => {
-          s.classList.toggle(
-            "active-sector",
-            s.getAttribute("data-tz") === city.timeZone,
-          );
+          s.classList.toggle("active-sector", s.getAttribute("data-tz") === city.timeZone);
         });
 
         ttCity.textContent = `${city.name}, ${city.country}`;
@@ -871,49 +921,53 @@ document.addEventListener("DOMContentLoaded", () => {
         ttTz.textContent = city.timeZone;
         tickTooltip(city.timeZone);
         setupTtBtn(id);
+
         tooltip.style.display = "flex";
+        // Locks the card statically over the dot structure
+        positionTooltipOverElement(m);
       });
 
       m.addEventListener("mouseleave", () => {
         hoveredCityId = null;
         sectors.forEach((s) => s.classList.remove("active-sector"));
-        tooltip.style.display = "none";
-        if (ttInterval) clearInterval(ttInterval);
-      });
-
-      m.addEventListener("dblclick", (e) => {
-        e.stopPropagation();
-        e.preventDefault();
-        const id = m.getAttribute("data-id");
-        activePinnedClocks.includes(id) ? unpinClock(id) : pinClock(id);
+        scheduleHide(); 
       });
     });
 
     syncMapMarkers();
-
-    // Tooltip follow mouse
-    svg.addEventListener("mousemove", (e) => {
-      if (tooltip.style.display === "none") return;
-      const rect = mapContainer.getBoundingClientRect();
-      let lx = e.clientX - rect.left + 18;
-      let ly = e.clientY - rect.top + 18;
-      if (lx + 250 > rect.width) lx = e.clientX - rect.left - 265;
-      if (ly + 160 > rect.height) ly = e.clientY - rect.top - 175;
-      tooltip.style.left = `${Math.max(8, lx)}px`;
-      tooltip.style.top = `${Math.max(8, ly)}px`;
-    });
   }
 
+  // asynchronous SVG loader framework
   fetch("world-map.svg")
     .then((r) => {
       if (!r.ok) throw new Error();
       return r.text();
     })
     .then((text) => {
-      mapWrapper.innerHTML = text;
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(text, "image/svg+xml");
+      const svg = doc.querySelector("svg");
+
+      if (!svg) throw new Error();
+
+      svg.removeAttribute("width");
+      svg.removeAttribute("height");
+      svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
+      svg.setAttribute("id", "world-map");
+
+      svg.querySelectorAll("path, polygon, polyline").forEach((el) => {
+        el.classList.add("land-path");
+        el.removeAttribute("fill");
+        el.removeAttribute("stroke");
+      });
+
+      mapWrapper.innerHTML = "";
+      mapWrapper.appendChild(svg);
       initMap();
     })
-    .catch(() => renderFallbackMap());
+    .catch(() => {
+      if (typeof renderFallbackMap === "function") renderFallbackMap();
+    });
 
   // ─────────────────────────────────────────────
   // 13. COUNTDOWN TIMER
@@ -971,7 +1025,7 @@ document.addEventListener("DOMContentLoaded", () => {
     timerRemaining = h * 3600 + m * 60 + s;
 
     if (timerRemaining <= 0) {
-      alert("Enter a timer duration.");
+      showPremiumToast("Enter a timer duration.");
       return;
     }
     timerTotal = timerRemaining;
@@ -1017,116 +1071,90 @@ document.addEventListener("DOMContentLoaded", () => {
 
   renderTimer();
 
-  // ─────────────────────────────────────────────
-  // 14. FOCUS MODE STATE & ACTIONS
-  // ─────────────────────────────────────────────
-  let focusModeActive = false;
-  const focusBtn = document.getElementById("focusModeBtn");
+//FOCUS MODE
 
-  const focusIconHTML = `
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-      <path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/>
-      <path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/>
+  // Grab the two buttons
+  const focusBtn     = document.getElementById("focusModeBtn");   // header nav button
+  const focusBackBtn = document.getElementById("focusBackBtn");    // back arrow (top-left)
+
+  // SVG icons reused for the header button label swap
+  const ICON_FOCUS = `
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+         stroke="currentColor" stroke-width="2" stroke-linecap="round">
+      <path d="M8 3H5a2 2 0 0 0-2 2v3"/>
+      <path d="M21 8V5a2 2 0 0 0-2-2h-3"/>
+      <path d="M3 16v3a2 2 0 0 0 2 2h3"/>
+      <path d="M16 21h3a2 2 0 0 0 2-2v-3"/>
     </svg>
-  `;
+    <span>Focus</span>`;
 
-  const exitFocusIconHTML = `
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+  const ICON_EXIT = `
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+         stroke="currentColor" stroke-width="2" stroke-linecap="round">
       <path d="M4 14h6v6M20 10h-6V4M14 10l7-7M10 14l-7 7"/>
     </svg>
-  `;
+    <span>Exit Focus</span>`;
 
-  function enableFocusMode(pushHistory = true) {
-    if (focusModeActive) return;
-    document.body.classList.add("focus-mode");
+  // simple flag so keyboard shortcuts know the current state
+  let focusModeActive = false;
+
+  function enterFocusMode() {
     focusModeActive = true;
-
-    if (focusBtn) {
-      focusBtn.innerHTML = `${exitFocusIconHTML}<span>Exit Focus</span>`;
-      focusBtn.setAttribute("aria-label", "Exit Focus Mode");
-    }
-
-    if (pushHistory && window.location.hash !== "#focus") {
-      history.pushState({ focusMode: true }, "", "#focus");
-    }
+    document.body.classList.add("focus-active-view");
+    if (focusBtn) focusBtn.innerHTML = ICON_EXIT;
   }
 
-  function disableFocusMode() {
-    if (!focusModeActive) return;
-    document.body.classList.remove("focus-mode");
+  function exitFocusMode() {
     focusModeActive = false;
-
-    if (focusBtn) {
-      focusBtn.innerHTML = `${focusIconHTML}<span>Focus</span>`;
-      focusBtn.setAttribute("aria-label", "Toggle Focus Mode");
-    }
+    document.body.classList.remove("focus-active-view");
+    if (focusBtn) focusBtn.innerHTML = ICON_FOCUS;
   }
 
-  function toggleFocusMode() {
-    if (!focusModeActive) {
-      enableFocusMode();
-    } else {
-      if (window.location.hash === "#focus") {
-        history.back();
-      } else {
-        disableFocusMode();
-      }
-    }
-  }
-
+  // header "Focus" button toggles in and out
   if (focusBtn) {
-    focusBtn.addEventListener("click", toggleFocusMode);
+    focusBtn.addEventListener("click", () => {
+      if (focusModeActive) {
+        exitFocusMode();
+      } else {
+        enterFocusMode();
+      }
+    });
   }
 
-  // Sync Focus Mode on history popstate
-  const handlePopState = () => {
-    if (window.location.hash !== "#focus" && focusModeActive) {
-      disableFocusMode();
-    } else if (window.location.hash === "#focus" && !focusModeActive) {
-      enableFocusMode(false);
-    }
-  };
-
-  window.addEventListener("popstate", handlePopState);
-
-  // Initialize Focus Mode if loaded with the #focus hash
-  if (window.location.hash === "#focus") {
-    enableFocusMode(false);
+  // back arrow button — always exits
+  if (focusBackBtn) {
+    focusBackBtn.addEventListener("click", exitFocusMode);
   }
 
-  // ─────────────────────────────────────────────
-  // 15. KEYBOARD SHORTCUTS
-  // ─────────────────────────────────────────────
-  const handleKeyDown = (e) => {
+  // keyboard shortcuts
+  document.addEventListener("keydown", (e) => {
     if (e.target.matches("input, textarea")) return;
 
+    // F — toggle focus mode
     if (e.key.toLowerCase() === "f") {
       e.preventDefault();
-      toggleFocusMode();
-    }
-    if (e.key === "Escape") {
       if (focusModeActive) {
-        e.preventDefault();
-        if (window.location.hash === "#focus") {
-          history.back();
-        } else {
-          disableFocusMode();
-        }
+        exitFocusMode();
+      } else {
+        enterFocusMode();
       }
     }
+
+    // escape — exit focus mode if active
+    if (e.key === "Escape" && focusModeActive) {
+      e.preventDefault();
+      exitFocusMode();
+    }
+
+    // T — toggle theme
     if (e.key.toLowerCase() === "t") {
       document.getElementById("themeToggleBtn")?.click();
     }
-  };
+  });
 
-  document.addEventListener("keydown", handleKeyDown);
+  // If the page loaded with #focus in the URL hash, enter immediately
+  if (window.location.hash === "#focus") {
+    enterFocusMode();
+  }
 
-  // Expose clean-up utility for test environments or lifecycle management
-  window.cleanupChronosFocusMode = () => {
-    document.removeEventListener("keydown", handleKeyDown);
-    window.removeEventListener("popstate", handlePopState);
-    if (focusBtn) {
-      focusBtn.removeEventListener("click", toggleFocusMode);
-    }
-  };
-});
+});  // ← end of DOMContentLoaded — keep this closing bracket
