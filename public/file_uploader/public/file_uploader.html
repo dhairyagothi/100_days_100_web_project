@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FileDrop — Upload Files</title>
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="file_uploader.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -20,9 +21,39 @@
 <body>
   <a href="/" class="back-button" aria-label="Back to Home">← Back to Home</a>
 
-  <button id="themeToggle" class="theme-toggle" aria-label="Toggle light/dark theme" title="Toggle theme">
+  
+  <nav class="navbar">
+
+    <div class="logonav">
+      File Uploader 📁
+    </div>
+
+   <ul class="nav-links">
+
+      <li>
+        <a href="file_uploader.html">
+          Home
+        </a>
+      </li>
+
+      <li>
+        <a href="file_uploader.html">
+       Upload file
+        </a>
+      </li>
+
+      <li>
+        <a href="#footer-container">
+          About
+        </a>
+      </li>
+
+    </ul>
+   <button id="themeToggle" class="theme-toggle" aria-label="Toggle light/dark theme" title="Toggle theme">
     <span class="theme-icon" id="themeIcon" aria-hidden="true">🌙</span>
   </button>
+  </nav>
+
 
   <div class="container">
     <div class="main-content">
@@ -131,7 +162,51 @@
   </div>
 
   <div class="toast-container" id="toastContainer" role="region" aria-live="polite" aria-label="Notifications"></div>
+   
+  <footer class="footer">
 
+    <section id="footer-container">
+
+      <!-- Brand -->
+      <div class="footer-section">
+        <h3 >File Uploader 📁</h3>
+        <p>
+       A simple and efficient file upload backend built with Node.js and Express.js. This project demonstrates how to handle file uploads .
+        </p>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="footer-section">
+        <h4>Quick Links</h4>
+
+        <ul>
+          <li><a href="file_uploader.html">Home</a></li>
+          <li><a href="file_uploader.html">Upload</a></li>
+          <li><a href="#footer-container">Contact</a></li>
+        </ul>
+      </div>
+
+      <!-- Social Links -->
+      <div class="footer-section">
+        <h4>Follow Us</h4>
+
+        <div class="social-links">
+          <a href="#"><i class="fab fa-github"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-linkedin"></i></a>
+          <a href="#"><i class="fab fa-discord"></i></a>
+        </div>
+      </div>
+
+      </div>
+
+      <div class="footer-bottom">
+        <p>
+          © 2025 File Uploader 📁. All Rights Reserved.
+        </p>
+      </div>
+    </section>
+  </footer>
   <script src="index.js"></script>
 </body>
 </html>

@@ -124,7 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Audio Toggle
     toggleAudioBtn.addEventListener('click', () => {
-        if (!localStream) return;
+        if (!localStream || !localStream.getAudioTracks()[0]) return;
         isAudioMuted = !isAudioMuted;
         localStream.getAudioTracks()[0].enabled = !isAudioMuted;
         
@@ -134,7 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Video Toggle
     toggleVideoBtn.addEventListener('click', () => {
-        if (!localStream) return;
+        if (!localStream || !localStream.getVideoTracks()[0]) return;
         isVideoHidden = !isVideoHidden;
         localStream.getVideoTracks()[0].enabled = !isVideoHidden;
         
@@ -187,10 +187,10 @@ document.addEventListener('DOMContentLoaded', () => {
         localVideo.style.transform = 'scaleX(-1)';
         
         if (currentCall) {
-            const videoTrack = localStream.getVideoTracks()[0];
-            const sender = currentCall.peerConnection.getSenders().find(s => s.track.kind === 'video');
+            const videoTrack = localStream ? localStream.getVideoTracks()[0] : null;
+            const sender = currentCall.peerConnection.getSenders().find(s => s.track && s.track.kind === 'video');
             if (sender) {
-                sender.replaceTrack(videoTrack);
+                sender.replaceTrack(videoTrack || null);
             }
         }
     }

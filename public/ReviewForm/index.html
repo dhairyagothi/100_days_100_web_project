@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ReviewVibe - Interactive Review Form</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container py-5">
+      <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="display-5 fw-bold text-center flex-grow-1">
+              <i class="bi bi-star-fill text-warning"></i> ReviewVibe
+            </h1>
+            <button id="themeToggle" class="btn btn-outline-secondary">
+              <i class="bi bi-moon-stars-fill"></i>
+            </button>
+          </div>
+
+          <div class="card shadow-lg">
+            <div class="card-header bg-primary text-white text-center py-3">
+              <h4 class="mb-0">Share Your Feedback</h4>
+            </div>
+
+            <div class="card-body p-4">
+              <form id="reviewForm">
+                <!-- Rating Type Toggle -->
+                <div class="mb-3 text-end">
+                  <button
+                    type="button"
+                    id="toggleRating"
+                    class="btn btn-sm btn-outline-secondary"
+                  >
+                    Switch to Stars
+                  </button>
+                </div>
+
+                <!-- Emoji / Star Rating -->
+                <div class="mb-4">
+                  <label class="form-label fw-bold"
+                    >How was your experience?</label
+                  >
+                  <div
+                    id="emojiRating"
+                    class="d-flex justify-content-between fs-1 mb-2"
+                  >
+                    <span class="emoji" data-rating="1" title="Very Poor"
+                      >😡</span
+                    >
+                    <span class="emoji" data-rating="2" title="Poor">🙁</span>
+                    <span class="emoji" data-rating="3" title="Neutral"
+                      >😐</span
+                    >
+                    <span class="emoji" data-rating="4" title="Good">🙂</span>
+                    <span class="emoji" data-rating="5" title="Excellent"
+                      >😍</span
+                    >
+                  </div>
+                  <div
+                    id="starRating"
+                    class="d-flex justify-content-between fs-1 mb-2 d-none"
+                  >
+                    <span class="star" data-rating="1">☆</span>
+                    <span class="star" data-rating="2">☆</span>
+                    <span class="star" data-rating="3">☆</span>
+                    <span class="star" data-rating="4">☆</span>
+                    <span class="star" data-rating="5">☆</span>
+                  </div>
+                  <input type="hidden" id="rating" name="rating" required />
+                  <p
+                    id="ratingLabel"
+                    class="text-center fw-bold text-muted"
+                  ></p>
+                </div>
+
+                <!-- Category -->
+                <div class="mb-3">
+                  <label for="category" class="form-label">Category</label>
+                  <select class="form-select" id="category" required>
+                    <option value="">Select Category...</option>
+                    <option value="Product">Product</option>
+                    <option value="Service">Service</option>
+                    <option value="UX/UI">UX/UI</option>
+                    <option value="Support">Customer Support</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+
+                <!-- Name -->
+                <div class="mb-3">
+                  <label for="name" class="form-label">Your Name</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="name"
+                    placeholder="Enter your name"
+                    required
+                  />
+                </div>
+
+                <!-- Comment -->
+                <div class="mb-3">
+                  <label for="comment" class="form-label">Your Review</label>
+                  <textarea
+                    class="form-control"
+                    id="comment"
+                    rows="4"
+                    placeholder="Tell us what you think..."
+                    maxlength="500"
+                    required
+                  ></textarea>
+                  <div class="text-end small text-muted mt-1">
+                    <span id="charCount">0</span>/500
+                  </div>
+                </div>
+
+                <!-- Image Upload -->
+                <div class="mb-4">
+                  <label class="form-label">Attach Photo (Optional)</label>
+                  <input
+                    type="file"
+                    id="reviewImage"
+                    accept="image/*"
+                    class="form-control"
+                  />
+                  <div id="imagePreview" class="mt-2 d-none">
+                    <img
+                      src=""
+                      alt="Preview"
+                      style="max-height: 180px; border-radius: 10px"
+                    />
+                  </div>
+                </div>
+
+                <!-- Progress -->
+                <div class="mb-4">
+                  <div class="d-flex justify-content-between small mb-1">
+                    <span>Form Progress</span>
+                    <span id="progressText">0%</span>
+                  </div>
+                  <div class="progress">
+                    <div
+                      id="progressBar"
+                      class="progress-bar progress-bar-striped progress-bar-animated"
+                      role="progressbar"
+                      style="width: 0%"
+                    ></div>
+                  </div>
+                </div>
+
+                <!-- Live Preview -->
+                <div class="mb-4">
+                  <label class="form-label fw-bold">Live Preview</label>
+                  <div
+                    id="livePreview"
+                    class="card border-primary bg-light p-3"
+                  >
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                      <span id="previewEmoji" class="fs-3">⭐</span>
+                      <strong id="previewName">Your Name</strong>
+                    </div>
+                    <p
+                      id="previewComment"
+                      class="text-muted fst-italic mb-1"
+                    ></p>
+                    <small id="previewCategory" class="text-primary"></small>
+                    <img
+                      id="previewImage"
+                      src=""
+                      class="img-fluid mt-2 rounded d-none"
+                      style="max-height: 160px"
+                    />
+                  </div>
+                </div>
+
+                <button
+                  type="submit"
+                  id="submitBtn"
+                  class="btn btn-success btn-lg w-100"
+                >
+                  Submit Review <i class="bi bi-send-fill"></i>
+                </button>
+              </form>
+            </div>
+          </div>
+
+          <!-- Reviews Section -->
+          <div class="mt-5">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5>Recent Reviews</h5>
+              <div class="d-flex gap-2">
+                <select id="sortReviews" class="form-select form-select-sm">
+                  <option value="newest">Newest First</option>
+                  <option value="highest">Highest Rated</option>
+                  <option value="lowest">Lowest Rated</option>
+                </select>
+                <button id="clearReviews" class="btn btn-outline-danger btn-sm">
+                  <i class="bi bi-trash"></i> Clear All
+                </button>
+              </div>
+            </div>
+            <div id="reviewsContainer" class="row g-3"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal fade" id="successModal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-body text-center py-5">
+            <div id="confettiContainer"></div>
+            <h2 id="successTitle" class="text-success mb-3">Thank You!</h2>
+            <p id="successMessage" class="lead"></p>
+            <button class="btn btn-primary" data-bs-dismiss="modal">
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

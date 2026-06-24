@@ -64,7 +64,9 @@
                     <button class="badge nav-items hide">Explore Premium</button>
                     <button class="badge nav-items dark-badge"><i aria-hidden="true" class="fa-regular fa-circle-down" style="margin-right: 3px;"></i>Install App</button>
                     <!-- Dynamic Login Button -->
+                     
                     <button class="badge login-btn" id="loginAuthBtn">Log in</button>
+                    <button class="badge signup-btn" id="signUpBtn">Sign Up</button>
                 </div>
             </div>
         
@@ -164,6 +166,28 @@
                     <input type="password" id="password" placeholder="Password" required>
                 </div>
                 <button type="submit" class="modal-submit-btn">Log In</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="signUpModel">
+        <div class="modal-box">
+            <i aria-hidden="true" class="fa-solid fa-xmark modal-close" id="closeSignUpModal"></i>
+            <h2>Sign Up for Spotify</h2>
+            <form id="signUpForm">
+                <div class="form-group">
+                    <label for="signUpUsername">Username</label>
+                    <input type="text" id="signUpUsername" placeholder="Username" required>
+                </div>
+                <div class="form-group">
+                    <label for="signUpEmail">Email</label>
+                    <input type="email" id="signUpEmail" placeholder="Email" required>
+                </div>
+                <div class="form-group">
+                    <label for="signUpPassword">Password</label>
+                    <input type="password" id="signUpPassword" placeholder="Password" required>
+                </div>
+                <button type="submit" class="modal-submit-btn">Sign Up</button>
             </form>
         </div>
     </div>
