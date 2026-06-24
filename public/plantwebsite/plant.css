@@ -5,6 +5,10 @@
   margin: 0;
   padding: 0;
 }
+html,body{
+  background-color: #1b221d;
+  overflow-x: hidden;
+}
 
 body {
   background-image: url("images/bg.png");
@@ -302,19 +306,25 @@ body::before {
 .newsletter h2 {
   font-size: 36px;
   margin-bottom: 20px;
+  
 }
 
 .newsletter form {
   display: flex;
   gap: 10px;
   margin-top: 20px;
+  justify-content: center;
 }
 
 .newsletter input[type="email"] {
-  flex: 1;
+  width:350px;
+  flex: none;
   padding: 10px;
   border: none;
   border-radius: 5px;
+}
+.newsletter {
+  text-align: center;
 }
 
 .newsletter button {
@@ -437,32 +447,87 @@ footer {
 
 @media (max-width: 768px) {
   .navbar {
-    flex-wrap: wrap;
-    padding: 20px;
+    display:grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items:center;
+    padding:20px;
+    gap:20px;
   }
+  .project-back-button{
+    justify-self:start;
+  }
+  .logo{
+    justify-self:center;
+  }
+  
 
   #mobile-menu-button {
-    display: block;
-    background: none;
-    border: none;
-    color: white;
-    font-size: 24px;
-    cursor: pointer;
+    display:block;
+    justify-self:end;
   }
-
-  .items {
-    width: 100%;
-    display: none;
+  .icons{
+     grid-column:1/4;
+     width:100%;
+     display:flex;
+     justify-content:center;
+     margin:0;
   }
-
+ .icons ul{
+    gap:15px;
+  }
+  .items{
+    grid-column:1/4;
+    width:100%;
+    display:none;
+  }
   .items.show {
     display: block;
   }
 
   .items ul {
-    flex-direction: column;
-    align-items: center;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:15px;
   }
+  .icons{
+    width:auto;
+    margin:10px auto 0;
+}
+.icons ul{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+.header-action{
+    width:32px;
+    height:32px;
+}
+
+.header-action svg{
+    width:18px;
+    height:18px;
+}
+.theme-switch-wrapper{
+  
+    display:flex;
+    align-items:center;
+}
+
+.theme-label{
+    position: relative;
+    top: 13px; 
+    
+}
+.theme-label::after{
+        width:22px;
+        height:22px;
+        top:4px;
+        left:4px;
+}
+#dark-mode-toggle:checked + .theme-label::after{
+    transform:translateX(30px);
+}
 
   .block1,
   .block2-p1,
@@ -1221,13 +1286,13 @@ body.dark-mode .featured-card p {
   }
 
   .header-action {
-    width: 36px;
-    height: 36px;
+    width: 28px;
+    height: 28px;
   }
 
   .header-action svg {
-    width: 19px;
-    height: 19px;
+    width: 16px;
+    height: 16px;
   }
 
   .categories-dropdown {
