@@ -828,3 +828,108 @@ function updateClock() {
           : "rotate(180deg)";
     }
   }
+
+  const display = document.getElementById("stopwatchDisplay");
+
+const startBtn = document.getElementById("startBtn");
+const pauseBtn = document.getElementById("pauseBtn");
+const resetBtn = document.getElementById("resetBtn");
+const lapBtn = document.getElementById("lapBtn");
+
+const lapList = document.getElementById("lapList");
+
+let startTime = 0;
+let elapsedTime = 0;
+let running = false;
+let animationFrame;
+
+let laps = [];
+
+function formatTime(ms) {
+    const hours = Math.floor(ms / 3600000);
+    const minutes = Math.floor((ms % 3600000) / 60000);
+    const seconds = Math.floor((ms % 60000) / 1000);
+    const milliseconds = Math.floor(ms % 1000);
+
+    return (
+        String(hours).padStart(2, "0") +
+        ":" +
+        String(minutes).padStart(2, "0") +
+        ":" +
+        String(seconds).padStart(2, "0") +
+        "." +
+        String(milliseconds).padStart(3, "0")
+    );
+}
+
+function updateStopwatch() {
+    if (!running) return;
+
+    elapsedTime = performance.now() - startTime;
+
+    display.textContent = formatTime(elapsedTime);
+
+    animationFrame = requestAnimationFrame(updateStopwatch);
+}
+
+startBtn.addEventListener("click", () => {
+    if (running) return;
+
+    running = true;
+
+    startTime = performance.now() - elapsedTime;
+
+    animationFrame = requestAnimationFrame(updateStopwatch);
+});
+
+pauseBtn.addEventListener("click", () => {
+    running = false;
+
+    cancelAnimationFrame(animationFrame);
+});
+resetBtn.addEventListener("click", () => {
+    running = false;
+
+    cancelAnimationFrame(animationFrame);
+
+    elapsedTime = 0;
+
+    display.textContent = "00:00:00.000";
+
+    laps = [];
+
+    lapList.innerHTML = "";
+});
+
+lapBtn.addEventListener("click", () => {
+    if (!running) return;
+
+    laps.push(elapsedTime);
+
+    renderLaps();
+});
+
+function renderLaps() {
+    lapList.innerHTML = "";
+
+    const fastest = Math.min(...laps);
+    const slowest = Math.max(...laps);
+
+    laps.forEach((lap, index) => {
+        const li = document.createElement("li");
+
+        li.textContent =
+            `Lap ${index + 1}: ${formatTime(lap)}`;
+
+        if (lap === fastest)
+            li.classList.add("fastest-lap");
+
+        if (lap === slowest)
+            li.classList.add("slowest-lap");
+
+        lapList.appendChild(li);
+    });
+}
+
+performance.now()
+requestAnimationFrame()

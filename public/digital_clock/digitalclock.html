@@ -98,41 +98,25 @@
     </section>
 
     <!-- POMODORO -->
-    <section
-        class="card"
-        aria-labelledby="pomodoro-heading">
+    <div class="tool-card stopwatch-card">
+  <h2>⏱ Stopwatch</h2>
 
-        <header class="card-header">
-            <h2 id="pomodoro-heading">
-                Pomodoro Timer
-            </h2>
-        </header>
+  <div id="stopwatchDisplay" class="stopwatch-display">
+    00:00:00.000
+  </div>
 
-        <div class="pomodoro-display">
-            <span id="pomodoro-time">25:00</span>
-        </div>
+  <div class="stopwatch-controls">
+    <button id="startBtn">Start</button>
+    <button id="pauseBtn">Pause</button>
+    <button id="lapBtn">Lap</button>
+    <button id="resetBtn">Reset</button>
+  </div>
 
-        <div class="pomodoro-controls">
-
-            <button
-                id="start-pomodoro"
-                class="btn btn-primary">
-                Start
-            </button>
-
-            <button
-                id="pause-pomodoro"
-                class="btn btn-outline">
-                Pause
-            </button>
-
-            <button
-                id="reset-pomodoro"
-                class="btn btn-danger">
-                Reset
-            </button>
-
-        </div>
+  <div class="lap-container">
+    <h3>Laps</h3>
+    <ul id="lapList"></ul>
+  </div>
+</div>
 
         <p id="pomodoro-status">
             Focus Session

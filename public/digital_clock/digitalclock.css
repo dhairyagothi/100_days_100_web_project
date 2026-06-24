@@ -931,3 +931,61 @@ body{
         font-size:.9rem;
     }
 }
+
+.stopwatch-card {
+    margin-top: 20px;
+}
+
+.stopwatch-display {
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    margin: 15px 0;
+}
+
+.stopwatch-controls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+
+.stopwatch-controls button {
+    padding: 10px 16px;
+    cursor: pointer;
+}
+
+.lap-container {
+    margin-top: 20px;
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+#lapList {
+    list-style: none;
+    padding: 0;
+}
+
+#lapList li {
+    padding: 8px;
+    margin: 4px 0;
+    border-radius: 6px;
+}
+
+.fastest-lap {
+    border-left: 4px solid #2ecc71;
+}
+
+.slowest-lap {
+    border-left: 4px solid #e74c3c;
+}
+
+@media (max-width: 768px) {
+    .stopwatch-controls {
+        flex-direction: column;
+    }
+
+    .stopwatch-display {
+        font-size: 1.5rem;
+    }
+}
