@@ -1,27 +1,27 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en" data-theme="aurora">
   <head>
     <!-- =====================================================
        META
     ====================================================== -->
 
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>QuantumQR • QR Generator & Scanner</title>
+    <title>QuantumQR • QR Generator &amp; Scanner</title>
     <!-- =====================================================
        GOOGLE FONTS
     ====================================================== -->
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
 
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
       rel="stylesheet"
-    />
+    >
 
     <!-- =====================================================
        FONT AWESOME
@@ -30,7 +30,7 @@
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-    />
+    >
 
     <!-- =====================================================
        LIBRARIES
@@ -52,11 +52,11 @@
        CSS
     ====================================================== -->
 
-    <link rel="stylesheet" href="qr.css" />
+    <link rel="stylesheet" href="qr.css">
     <!-- =====================================================
        Favicon
     ====================================================== -->
-    <link rel="icon" href="favicon.png>"
+    <link rel="icon" href="favicon.png>">
   </head>
 
   <body>
@@ -93,26 +93,26 @@
 
         <div class="brand-text">
           <h2>QuantumQR</h2>
-          <span>Generator & Scanner</span>
+          <span>Generator &amp; Scanner</span>
         </div>
       </div>
 
       <!-- THEME SWITCHER -->
 
       <div class="theme-bar">
-        <button class="theme-btn active" data-theme="aurora" title="Aurora">
+        <button type="button" class="theme-btn active" data-theme="aurora" title="Aurora" aria-label="Select Aurora theme">
           <span class="theme-dot aurora"></span>
         </button>
 
-        <button class="theme-btn" data-theme="neon" title="Neon">
+        <button type="button" class="theme-btn" data-theme="neon" title="Neon" aria-label="Select Neon theme">
           <span class="theme-dot neon"></span>
         </button>
 
-        <button class="theme-btn" data-theme="dark" title="Dark">
+        <button type="button" class="theme-btn" data-theme="dark" title="Dark" aria-label="Select Dark theme">
           <span class="theme-dot dark"></span>
         </button>
 
-        <button class="theme-btn" data-theme="candy" title="Candy">
+        <button type="button" class="theme-btn" data-theme="candy" title="Candy" aria-label="Select Candy theme">
           <span class="theme-dot candy"></span>
         </button>
       </div>
@@ -199,7 +199,7 @@
                   id="inputtext"
                   placeholder="Enter text or website URL..."
                   autocomplete="off"
-                />
+                >
               </div>
             </div>
 
@@ -216,7 +216,7 @@
                     type="text"
                     id="wifi-ssid"
                     placeholder="Network SSID"
-                  />
+                  >
                 </div>
               </div>
 
@@ -230,7 +230,8 @@
                     type="password"
                     id="wifi-password"
                     placeholder="WiFi Password"
-                  />
+                    autocomplete
+                  >
                 </div>
               </div>
 
@@ -261,7 +262,7 @@
                 <div class="input-wrapper">
                   <i aria-hidden="true" class="fas fa-user"></i>
 
-                  <input type="text" id="vcard-name" placeholder="John Doe" />
+                  <input type="text" id="vcard-name" placeholder="John Doe">
                 </div>
               </div>
 
@@ -275,7 +276,7 @@
                     type="tel"
                     id="vcard-phone"
                     placeholder="+91 9876543210"
-                  />
+                  >
                 </div>
               </div>
 
@@ -289,7 +290,7 @@
                     type="email"
                     id="vcard-email"
                     placeholder="hello@example.com"
-                  />
+                  >
                 </div>
               </div>
 
@@ -303,7 +304,7 @@
                     type="url"
                     id="vcard-website"
                     placeholder="https://yourwebsite.com"
-                  />
+                  >
                 </div>
               </div>
             </div>
@@ -332,7 +333,7 @@
               <label for="qr-color"> QR Color </label>
 
               <div class="color-picker-wrapper">
-                <input type="color" id="qr-color" value="#a78bfa" />
+                <input type="color" id="qr-color" value="#a78bfa">
 
                 <span class="color-value"> #A78BFA </span>
               </div>
@@ -387,7 +388,7 @@
                 <small> PNG, JPG, SVG </small>
               </label>
 
-              <input type="file" id="logo-upload" accept="image/*" hidden />
+              <input type="file" id="logo-upload" accept="image/*" hidden>
             </div>
 
             <!-- GENERATE -->
@@ -489,14 +490,17 @@
             <div class="mini-actions">
               <button id="copy-btn" type="button">
                 <i aria-hidden="true" class="fas fa-copy"></i>
+                <span class="sr-only">Copy</span>
               </button>
 
               <button id="share-btn" type="button">
                 <i aria-hidden="true" class="fas fa-share-alt"></i>
+                <span class="sr-only">Share</span>
               </button>
 
               <button id="reset-btn" type="button">
                 <i aria-hidden="true" class="fas fa-rotate-left"></i>
+                <span class="sr-only">Reset</span>
               </button>
             </div>
 
