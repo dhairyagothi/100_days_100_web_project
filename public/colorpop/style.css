@@ -919,6 +919,7 @@ body {
   border-radius: var(--radius-lg);
   width: 90%;
   max-width: 550px;
+  max-height: 90vh;
   box-shadow: var(--shadow-lg);
   transform: scale(0.9) translateY(20px);
   transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -981,6 +982,7 @@ body {
   padding: 24px;
   overflow-y: auto;
   max-height: 300px;
+  flex: 1;
 }
 
 .tab-content {
@@ -1029,6 +1031,7 @@ code {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 16px;
   font-size: 14px;
   border-bottom: 1px dashed rgba(255, 255, 255, 0.05);
   padding-bottom: 12px;
@@ -1037,6 +1040,22 @@ code {
 .shortcut-row:last-child {
   border-bottom: none;
   padding-bottom: 0;
+}
+
+.shortcut-keys {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.shortcut-desc {
+  color: var(--text-secondary);
+  text-align: right;
+  line-height: 1.4;
 }
 
 kbd {
@@ -1048,10 +1067,6 @@ kbd {
   font-size: 11px;
   font-weight: 700;
   box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
-}
-
-.shortcut-row span {
-  color: var(--text-secondary);
 }
 
 /* ==========================================================================
@@ -1292,5 +1307,33 @@ kbd {
 
   .empty-favorites-state {
     grid-column: span 2;
+  }
+}
+
+/* Keyboard Shortcuts Modal Mobile Responsiveness */
+@media (max-width: 480px) {
+  .modal-card {
+    width: 92%;
+    margin: 0 auto;
+  }
+
+  .modal-header {
+    padding: 16px 20px;
+  }
+
+  .modal-body {
+    padding: 16px 20px;
+  }
+
+  .shortcut-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding-bottom: 14px;
+  }
+
+  .shortcut-desc {
+    text-align: left;
+    font-size: 13px;
   }
 }

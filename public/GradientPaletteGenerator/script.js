@@ -6,40 +6,40 @@
 
 // ===== State =====
 const state = {
-  type: "linear",
+  type: 'linear',
   angle: 135,
-  colors: ["#6366f1", "#ec4899"],
+  colors: ['#6366f1', '#ec4899'],
   maxColors: 5,
 };
 
 // ===== DOM References =====
 const dom = {
-  previewBox: document.getElementById("preview-box"),
-  cssOutput: document.getElementById("css-output"),
-  angleSlider: document.getElementById("angle-slider"),
-  angleValue: document.getElementById("angle-value"),
-  colorStops: document.getElementById("color-stops"),
-  btnRandom: document.getElementById("btn-random"),
-  btnCopy: document.getElementById("btn-copy"),
-  btnSave: document.getElementById("btn-save"),
-  btnAddColor: document.getElementById("btn-add-color"),
-  btnClearAll: document.getElementById("btn-clear-all"),
-  savedGrid: document.getElementById("saved-grid"),
-  savedEmpty: document.getElementById("saved-empty"),
-  controlAngle: document.getElementById("control-angle"),
-  toast: document.getElementById("toast"),
-  toastText: document.getElementById("toast-text"),
-  toggleBtns: document.querySelectorAll(".toggle-btn"),
+  previewBox: document.getElementById('preview-box'),
+  cssOutput: document.getElementById('css-output'),
+  angleSlider: document.getElementById('angle-slider'),
+  angleValue: document.getElementById('angle-value'),
+  colorStops: document.getElementById('color-stops'),
+  btnRandom: document.getElementById('btn-random'),
+  btnCopy: document.getElementById('btn-copy'),
+  btnSave: document.getElementById('btn-save'),
+  btnAddColor: document.getElementById('btn-add-color'),
+  btnClearAll: document.getElementById('btn-clear-all'),
+  savedGrid: document.getElementById('saved-grid'),
+  savedEmpty: document.getElementById('saved-empty'),
+  controlAngle: document.getElementById('control-angle'),
+  toast: document.getElementById('toast'),
+  toastText: document.getElementById('toast-text'),
+  toggleBtns: document.querySelectorAll('.toggle-btn'),
   colorPicker: null,
-  copyClipboard: document.getElementById("copy-clipboard"),
+  copyClipboard: document.getElementById('copy-clipboard'),
 };
 
 const modal = {
-  root: document.getElementById("confirm-modal"),
-  title: document.getElementById("modal-title"),
-  message: document.getElementById("modal-message"),
-  cancel: document.getElementById("modal-cancel"),
-  confirm: document.getElementById("modal-confirm"),
+  root: document.getElementById('confirm-modal'),
+  title: document.getElementById('modal-title'),
+  message: document.getElementById('modal-message'),
+  cancel: document.getElementById('modal-cancel'),
+  confirm: document.getElementById('modal-confirm'),
 };
 
 // ===== Utility Functions =====
@@ -50,7 +50,7 @@ const modal = {
  */
 const randomColor = () => {
   const hex = Math.floor(Math.random() * 16777215).toString(16);
-  return `#${hex.padStart(6, "0")}`;
+  return `#${hex.padStart(6, '0')}`;
 };
 
 /**
@@ -67,14 +67,14 @@ const randomInt = (min, max) =>
  * @returns {string} CSS gradient value
  */
 const buildGradientCSS = () => {
-  const colorList = state.colors.join(", ");
+  const colorList = state.colors.join(', ');
 
   switch (state.type) {
-    case "linear":
+    case 'linear':
       return `linear-gradient(${state.angle}deg, ${colorList})`;
-    case "radial":
+    case 'radial':
       return `radial-gradient(circle, ${colorList})`;
-    case "conic":
+    case 'conic':
       return `conic-gradient(from ${state.angle}deg, ${colorList})`;
     default:
       return `linear-gradient(${state.angle}deg, ${colorList})`;
@@ -88,13 +88,13 @@ const buildGradientCSS = () => {
 const showToast = (message) => {
   try {
     dom.toastText.textContent = message;
-    dom.toast.classList.add("toast--visible");
+    dom.toast.classList.add('toast--visible');
 
     setTimeout(() => {
-      dom.toast.classList.remove("toast--visible");
+      dom.toast.classList.remove('toast--visible');
     }, 2500);
   } catch (err) {
-    console.error("Toast error:", err);
+    console.error('Toast error:', err);
   }
 };
 
@@ -107,34 +107,34 @@ const updatePreview = () => {
   dom.cssOutput.textContent = `background: ${gradient};`;
 
   // Show/hide angle control based on type
-  if (state.type === "radial") {
-    dom.controlAngle.style.display = "none";
+  if (state.type === 'radial') {
+    dom.controlAngle.style.display = 'none';
   } else {
-    dom.controlAngle.style.display = "block";
-    const label = state.type === "conic" ? "Start Angle" : "Angle";
-    dom.controlAngle.querySelector(".control-label").innerHTML =
+    dom.controlAngle.style.display = 'block';
+    const label = state.type === 'conic' ? 'Start Angle' : 'Angle';
+    dom.controlAngle.querySelector('.control-label').innerHTML =
       `${label}: <span class="control-value" id="angle-value">${state.angle}°</span>`;
   }
 };
 
 /** Render color stop inputs dynamically */
 const renderColorStops = () => {
-  dom.colorStops.innerHTML = "";
+  dom.colorStops.innerHTML = '';
 
   state.colors.forEach((color, index) => {
-    const stop = document.createElement("div");
-    stop.className = "color-stop";
+    const stop = document.createElement('div');
+    stop.className = 'color-stop';
     stop.dataset.index = index;
 
-    const input = document.createElement("input");
-    input.type = "color";
-    input.className = "color-input";
+    const input = document.createElement('input');
+    input.type = 'color';
+    input.className = 'color-input';
     input.id = `color-${index + 1}`;
     input.value = color;
-    input.setAttribute("aria-label", `Color ${index + 1}`);
+    input.setAttribute('aria-label', `Color ${index + 1}`);
 
-    const hex = document.createElement("span");
-    hex.className = "color-hex";
+    const hex = document.createElement('span');
+    hex.className = 'color-hex';
     hex.id = `hex-${index + 1}`;
     hex.textContent = color;
 
@@ -143,12 +143,12 @@ const renderColorStops = () => {
 
     // Add remove button if more than 2 colors
     if (state.colors.length > 2) {
-      const removeBtn = document.createElement("button");
-      removeBtn.className = "color-stop__remove";
-      removeBtn.type = "button";
-      removeBtn.textContent = "✕";
-      removeBtn.setAttribute("aria-label", `Remove color ${index + 1}`);
-      removeBtn.addEventListener("click", (e) => {
+      const removeBtn = document.createElement('button');
+      removeBtn.className = 'color-stop__remove';
+      removeBtn.type = 'button';
+      removeBtn.textContent = '✕';
+      removeBtn.setAttribute('aria-label', `Remove color ${index + 1}`);
+      removeBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         removeColor(index);
       });
@@ -156,7 +156,7 @@ const renderColorStops = () => {
     }
 
     // Color change listener
-    input.addEventListener("input", (e) => {
+    input.addEventListener('input', (e) => {
       state.colors[index] = e.target.value;
       hex.textContent = e.target.value;
       updatePreview();
@@ -167,7 +167,7 @@ const renderColorStops = () => {
 
   // Show/hide add button based on max colors
   dom.btnAddColor.style.display =
-    state.colors.length >= state.maxColors ? "none" : "inline-flex";
+    state.colors.length >= state.maxColors ? 'none' : 'inline-flex';
 };
 
 // ===== Color Management =====
@@ -189,12 +189,12 @@ const addColor = () => {
     renderColorStops();
     updatePreview();
 
-    showToast("Color added! 🎨");
+    showToast('Color added! 🎨');
 
-    dom.colorPicker.removeEventListener("input", handlePick);
+    dom.colorPicker.removeEventListener('input', handlePick);
   };
 
-  dom.colorPicker.addEventListener("input", handlePick);
+  dom.colorPicker.addEventListener('input', handlePick);
 };
 
 /**
@@ -203,7 +203,7 @@ const addColor = () => {
  */
 const removeColor = (index) => {
   if (state.colors.length <= 2) {
-    showToast("Minimum 2 colors required");
+    showToast('Minimum 2 colors required');
     return;
   }
   state.colors.splice(index, 1);
@@ -219,8 +219,8 @@ const setGradientType = (type) => {
 
   dom.toggleBtns.forEach((btn) => {
     const isActive = btn.dataset.type === type;
-    btn.classList.toggle("toggle-btn--active", isActive);
-    btn.setAttribute("aria-checked", isActive.toString());
+    btn.classList.toggle('toggle-btn--active', isActive);
+    btn.setAttribute('aria-checked', isActive.toString());
   });
 
   updatePreview();
@@ -233,7 +233,7 @@ const randomizeGradient = () => {
   const numColors = randomInt(2, 4);
   state.colors = Array.from({ length: numColors }, () => randomColor());
   state.angle = randomInt(0, 360);
-  state.type = ["linear", "radial", "conic"][randomInt(0, 2)];
+  state.type = ['linear', 'radial', 'conic'][randomInt(0, 2)];
 
   // Update angle slider
   dom.angleSlider.value = state.angle;
@@ -243,7 +243,7 @@ const randomizeGradient = () => {
 
   renderColorStops();
   updatePreview();
-  showToast("New gradient generated! 🎨");
+  showToast('New gradient generated! 🎨');
 };
 
 // ===== Copy to Clipboard =====
@@ -254,32 +254,32 @@ const copyCSS = async () => {
 
   try {
     await navigator.clipboard.writeText(css);
-    showToast("CSS copied to clipboard! 📋");
+    showToast('CSS copied to clipboard! 📋');
   } catch (err) {
     // Fallback for older browsers
     try {
-      const textarea = document.createElement("textarea");
+      const textarea = document.createElement('textarea');
       textarea.value = css;
-      textarea.style.position = "fixed";
-      textarea.style.opacity = "0";
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
       document.body.appendChild(textarea);
       textarea.select();
-      document.execCommand("copy");
+      document.execCommand('copy');
       document.body.removeChild(textarea);
-      showToast("CSS copied to clipboard! 📋");
+      showToast('CSS copied to clipboard! 📋');
     } catch (fallbackErr) {
-      showToast("Failed to copy. Please copy manually.");
-      console.error("Copy failed:", fallbackErr);
+      showToast('Failed to copy. Please copy manually.');
+      console.error('Copy failed:', fallbackErr);
     }
   }
 };
 
 //copy clipboard button listener
-dom.copyClipboard.addEventListener("click", copyCSS);
+dom.copyClipboard.addEventListener('click', copyCSS);
 
 // ===== LocalStorage: Save / Load / Delete =====
 
-const STORAGE_KEY = "gradient-palette-saved";
+const STORAGE_KEY = 'gradient-palette-saved';
 
 /**
  * Load saved gradients from localStorage
@@ -290,7 +290,7 @@ const loadSaved = () => {
     const data = localStorage.getItem(STORAGE_KEY);
     return data ? JSON.parse(data) : [];
   } catch (err) {
-    console.error("Error loading saved gradients:", err);
+    console.error('Error loading saved gradients:', err);
     return [];
   }
 };
@@ -303,8 +303,8 @@ const persistSaved = (gradients) => {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(gradients));
   } catch (err) {
-    console.error("Error saving gradients:", err);
-    showToast("Failed to save — storage may be full");
+    console.error('Error saving gradients:', err);
+    showToast('Failed to save — storage may be full');
   }
 };
 
@@ -313,9 +313,7 @@ const saveGradient = () => {
   const saved = loadSaved();
   const css = buildGradientCSS();
 
-  const alreadyExists = saved.some(
-    (gradient) => gradient.css === css
-  );
+  const alreadyExists = saved.some((gradient) => gradient.css === css);
 
   if (alreadyExists) {
     showToast('This gradient is already saved');
@@ -348,12 +346,12 @@ const saveGradient = () => {
 const deleteSaved = (id) => {
   const saved = loadSaved().filter((g) => g.id !== id);
   showConfirmModal({
-    title: "Clear this gradient?",
+    title: 'Clear this gradient?',
     message: `This will permanently delete this saved gradient.`,
     onConfirm: () => {
       persistSaved(saved);
       renderSavedGrid();
-      showToast("Gradient deleted");
+      showToast('Gradient deleted');
     },
   });
 };
@@ -363,17 +361,17 @@ const clearAllSaved = () => {
   const saved = loadSaved();
 
   if (saved.length === 0) {
-    showToast("Nothing to clear");
+    showToast('Nothing to clear');
     return;
   }
 
   showConfirmModal({
-    title: "Clear all gradients?",
+    title: 'Clear all gradients?',
     message: `This will permanently delete ${saved.length} saved gradients.`,
     onConfirm: () => {
       persistSaved([]);
       renderSavedGrid();
-      showToast("All gradients cleared");
+      showToast('All gradients cleared');
     },
   });
 };
@@ -391,10 +389,10 @@ const applySaved = (gradient) => {
   setGradientType(state.type);
   renderColorStops();
   updatePreview();
-  showToast("Gradient loaded! ✨");
+  showToast('Gradient loaded! ✨');
 
   // Scroll to top
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
 /** Render the saved gradients grid */
@@ -402,40 +400,40 @@ const renderSavedGrid = () => {
   const saved = loadSaved();
 
   if (saved.length === 0) {
-    dom.savedGrid.innerHTML = "";
-    dom.savedEmpty.style.display = "block";
+    dom.savedGrid.innerHTML = '';
+    dom.savedEmpty.style.display = 'block';
     dom.savedGrid.appendChild(dom.savedEmpty);
     return;
   }
 
-  dom.savedEmpty.style.display = "none";
-  dom.savedGrid.innerHTML = "";
+  dom.savedEmpty.style.display = 'none';
+  dom.savedGrid.innerHTML = '';
 
   saved.forEach((gradient) => {
-    const item = document.createElement("div");
-    item.className = "saved-item";
+    const item = document.createElement('div');
+    item.className = 'saved-item';
     item.style.background = gradient.css;
-    item.setAttribute("aria-label", "Saved gradient");
+    item.setAttribute('aria-label', 'Saved gradient');
 
-    const overlay = document.createElement("div");
-    overlay.className = "saved-item__overlay";
+    const overlay = document.createElement('div');
+    overlay.className = 'saved-item__overlay';
 
-    const applyBtn = document.createElement("button");
-    applyBtn.className = "saved-item__btn";
-    applyBtn.type = "button";
-    applyBtn.textContent = "✓";
-    applyBtn.setAttribute("aria-label", "Apply gradient");
-    applyBtn.addEventListener("click", (e) => {
+    const applyBtn = document.createElement('button');
+    applyBtn.className = 'saved-item__btn';
+    applyBtn.type = 'button';
+    applyBtn.textContent = '✓';
+    applyBtn.setAttribute('aria-label', 'Apply gradient');
+    applyBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       applySaved(gradient);
     });
 
-    const deleteBtn = document.createElement("button");
-    deleteBtn.className = "saved-item__btn";
-    deleteBtn.type = "button";
-    deleteBtn.textContent = "✕";
-    deleteBtn.setAttribute("aria-label", "Delete gradient");
-    deleteBtn.addEventListener("click", (e) => {
+    const deleteBtn = document.createElement('button');
+    deleteBtn.className = 'saved-item__btn';
+    deleteBtn.type = 'button';
+    deleteBtn.textContent = '✕';
+    deleteBtn.setAttribute('aria-label', 'Delete gradient');
+    deleteBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       deleteSaved(gradient.id);
     });
@@ -448,17 +446,17 @@ const renderSavedGrid = () => {
 };
 
 const showConfirmModal = ({ title, message, onConfirm }) => {
-  modal.title.textContent = title || "Confirm Action";
-  modal.message.textContent = message || "";
+  modal.title.textContent = title || 'Confirm Action';
+  modal.message.textContent = message || '';
 
-  modal.root.classList.remove("hidden");
+  modal.root.classList.remove('hidden');
 
   const closeModal = () => {
-    modal.root.classList.add("hidden");
-    modal.confirm.removeEventListener("click", handleConfirm);
-    modal.cancel.removeEventListener("click", closeModal);
-    modal.overlay.removeEventListener("click", closeModal);
-    document.removeEventListener("keydown", handleEsc);
+    modal.root.classList.add('hidden');
+    modal.confirm.removeEventListener('click', handleConfirm);
+    modal.cancel.removeEventListener('click', closeModal);
+    modal.overlay.removeEventListener('click', closeModal);
+    document.removeEventListener('keydown', handleEsc);
   };
 
   const handleConfirm = () => {
@@ -467,16 +465,16 @@ const showConfirmModal = ({ title, message, onConfirm }) => {
   };
 
   const handleEsc = (e) => {
-    if (e.code === "Escape") closeModal();
+    if (e.code === 'Escape') closeModal();
   };
 
   // IMPORTANT: cache overlay once (add this in DOM refs)
-  modal.overlay = modal.root.querySelector(".modal__overlay");
+  modal.overlay = modal.root.querySelector('.modal__overlay');
 
-  modal.confirm.addEventListener("click", handleConfirm);
-  modal.cancel.addEventListener("click", closeModal);
-  modal.overlay.addEventListener("click", closeModal);
-  document.addEventListener("keydown", handleEsc);
+  modal.confirm.addEventListener('click', handleConfirm);
+  modal.cancel.addEventListener('click', closeModal);
+  modal.overlay.addEventListener('click', closeModal);
+  document.addEventListener('keydown', handleEsc);
 };
 
 // ===== Event Listeners =====
@@ -484,40 +482,40 @@ const showConfirmModal = ({ title, message, onConfirm }) => {
 /** Initialize all event listeners */
 const initListeners = () => {
   // Angle slider
-  dom.angleSlider.addEventListener("input", (e) => {
+  dom.angleSlider.addEventListener('input', (e) => {
     state.angle = parseInt(e.target.value, 10);
     updatePreview();
   });
 
   // Type toggle buttons
   dom.toggleBtns.forEach((btn) => {
-    btn.addEventListener("click", () => {
+    btn.addEventListener('click', () => {
       setGradientType(btn.dataset.type);
     });
   });
 
   // Action buttons
-  dom.btnRandom.addEventListener("click", randomizeGradient);
-  dom.btnCopy.addEventListener("click", copyCSS);
-  dom.btnSave.addEventListener("click", saveGradient);
-  dom.btnAddColor.addEventListener("click", addColor);
-  dom.btnClearAll.addEventListener("click", clearAllSaved);
-  dom.colorPicker = document.createElement("input");
-  dom.colorPicker.type = "color";
-  dom.colorPicker.style.display = "none";
+  dom.btnRandom.addEventListener('click', randomizeGradient);
+  dom.btnCopy.addEventListener('click', copyCSS);
+  dom.btnSave.addEventListener('click', saveGradient);
+  dom.btnAddColor.addEventListener('click', addColor);
+  dom.btnClearAll.addEventListener('click', clearAllSaved);
+  dom.colorPicker = document.createElement('input');
+  dom.colorPicker.type = 'color';
+  dom.colorPicker.style.display = 'none';
   document.body.appendChild(dom.colorPicker);
 
   // Keyboard shortcut: Space for random
-  document.addEventListener("keydown", (e) => {
+  document.addEventListener('keydown', (e) => {
     // Don't trigger shortcuts when typing in inputs
-    if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
 
-    if (e.code === "Space") {
+    if (e.code === 'Space') {
       e.preventDefault();
       randomizeGradient();
-    } else if (e.code === "KeyC" && !e.ctrlKey && !e.metaKey) {
+    } else if (e.code === 'KeyC' && !e.ctrlKey && !e.metaKey) {
       copyCSS();
-    } else if (e.code === "KeyS" && !e.ctrlKey && !e.metaKey) {
+    } else if (e.code === 'KeyS' && !e.ctrlKey && !e.metaKey) {
       saveGradient();
     }
   });
@@ -532,9 +530,9 @@ const init = () => {
     renderSavedGrid();
     initListeners();
   } catch (err) {
-    console.error("Initialization error:", err);
+    console.error('Initialization error:', err);
   }
 };
 
 // Start the app when DOM is ready
-document.addEventListener("DOMContentLoaded", init);
+document.addEventListener('DOMContentLoaded', init);
