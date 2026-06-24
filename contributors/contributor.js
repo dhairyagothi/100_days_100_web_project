@@ -264,6 +264,7 @@ async function fetchContributors() {
             filteredContributors = [...cached];
             if (contributorCountSpan) contributorCountSpan.textContent = cached.length;
             renderContributors(filteredContributors);
+            if (typeof renderLeaderboard === "function") renderLeaderboard();
             loading?.classList.add("hidden");
             return;
         }
@@ -295,6 +296,7 @@ async function fetchContributors() {
         if (totalCommitsEl) totalCommitsEl.textContent = totalCommits.toLocaleString();
 
         renderContributors(filteredContributors);
+        if (typeof renderLeaderboard === "function") renderLeaderboard();
 
     } catch (error) {
         console.error("Error fetching contributors:", error);
@@ -463,6 +465,7 @@ async function fetchStargazers() {
 document.addEventListener("DOMContentLoaded", () => {
   fetchContributors();
   fetchStargazers();
+  fetchProjectsAndBuildLeaderboard();
 
   document
     .getElementById("retryContributors")
@@ -499,3 +502,142 @@ document.addEventListener("DOMContentLoaded", () => {
 
 window.removeTechFilter = () => {};
 window.clearAllTechFilters = () => {};
+
+let leaderboardExpanded = false;
+let sortedProjectContributors = [];
+
+async function fetchProjectsAndBuildLeaderboard() {
+  const leaderboardContainer = document.getElementById("leaderboardContainer");
+  const leaderboardLoading = document.getElementById("leaderboardLoading");
+  const toggleBtn = document.getElementById("toggleLeaderboardBtn");
+
+  if (!leaderboardContainer) return;
+
+  try {
+    const response = await fetch("../projects.json");
+    if (!response.ok) {
+      throw new Error(`Failed to load projects (${response.status})`);
+    }
+    const projects = await response.json();
+
+    const counts = {};
+    projects.forEach(project => {
+      const contr = project.contributor;
+      if (contr && contr !== "unknown") {
+        counts[contr] = (counts[contr] || 0) + 1;
+      }
+    });
+
+    sortedProjectContributors = Object.entries(counts)
+      .map(([login, count]) => ({ login, count }))
+      .sort((a, b) => b.count - a.count);
+
+    renderLeaderboard();
+
+    leaderboardLoading?.classList.add("hidden");
+    leaderboardContainer.classList.remove("hidden");
+
+    toggleBtn?.addEventListener("click", () => {
+      leaderboardExpanded = !leaderboardExpanded;
+      renderLeaderboard();
+      toggleBtn.textContent = leaderboardExpanded ? "Show Less Ranks" : "Show All Ranks";
+    });
+
+  } catch (error) {
+    console.error("Error building projects leaderboard:", error);
+    if (leaderboardLoading) {
+      leaderboardLoading.innerHTML = `<p class="api-error" style="color: var(--accent-color)">Failed to load project leaderboard: ${error.message}</p>`;
+    }
+  }
+}
+
+function renderLeaderboard() {
+  const podiumContainer = document.getElementById("leaderboardPodium");
+  const listContainer = document.getElementById("leaderboardList");
+
+  if (!podiumContainer || !listContainer) return;
+
+  podiumContainer.innerHTML = "";
+  listContainer.innerHTML = "";
+
+  const getAvatarUrl = (login) => {
+    const found = allContributors.find(c => c.login && c.login.toLowerCase() === login.toLowerCase());
+    if (found && found.avatar_url) {
+      return found.avatar_url;
+    }
+    return `https://github.com/${login}.png`;
+  };
+
+  const top3 = sortedProjectContributors.slice(0, 3);
+  
+  top3.forEach((c, idx) => {
+    const rank = idx + 1;
+    const card = document.createElement("div");
+    card.className = `podium-card rank-${rank}`;
+
+    const badgeSymbol = rank === 1 ? "👑" : (rank === 2 ? "🥈" : "🥉");
+    const isMaintainer = c.login.toLowerCase() === window.REPO_OWNER.toLowerCase();
+    const maintainerBadge = isMaintainer ? `<div class="maintainer-badge">Maintainer</div>` : "";
+    
+    card.innerHTML = `
+      <div class="podium-avatar-container">
+        <span class="podium-badge">${badgeSymbol}</span>
+        <img class="podium-avatar" src="${getAvatarUrl(c.login)}" alt="${c.login}" loading="lazy" />
+      </div>
+      <div class="podium-username">${c.login}</div>
+      ${maintainerBadge}
+      <div class="podium-project-count">${c.count}</div>
+      <div class="podium-label">Projects</div>
+    `;
+
+    card.style.cursor = "pointer";
+    card.addEventListener("click", () => {
+      openProfile(c.login);
+    });
+
+    podiumContainer.appendChild(card);
+  });
+
+  const limit = leaderboardExpanded ? sortedProjectContributors.length : 10;
+  const listData = sortedProjectContributors.slice(3, limit);
+
+  if (listData.length === 0) {
+    listContainer.style.display = "none";
+    const toggleBtn = document.getElementById("toggleLeaderboardBtn");
+    if (toggleBtn) toggleBtn.style.display = "none";
+  } else {
+    listContainer.style.display = "flex";
+    const fragment = document.createDocumentFragment();
+
+    listData.forEach((c, idx) => {
+      const rank = idx + 4;
+      const row = document.createElement("div");
+      row.className = "leaderboard-row";
+      row.style.cursor = "pointer";
+
+      const isMaintainer = c.login.toLowerCase() === window.REPO_OWNER.toLowerCase();
+      const maintainerBadge = isMaintainer ? `<span class="maintainer-badge-mini">Maintainer</span>` : "";
+
+      row.innerHTML = `
+        <div class="rank-num">#${rank}</div>
+        <img class="avatar-img" src="${getAvatarUrl(c.login)}" alt="${c.login}" loading="lazy" />
+        <div class="username-container">
+          <div class="username">${c.login}</div>
+          ${maintainerBadge}
+        </div>
+        <div class="count-col">
+          <span class="project-val">${c.count}</span>
+          <span class="label-val">Projects</span>
+        </div>
+      `;
+
+      row.addEventListener("click", () => {
+        openProfile(c.login);
+      });
+
+      fragment.appendChild(row);
+    });
+
+    listContainer.appendChild(fragment);
+  }
+}

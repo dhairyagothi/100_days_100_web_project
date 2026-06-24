@@ -25,7 +25,7 @@ const VALID_PROJECT_TYPES = new Set([
   'Authentication',
   'Form'
 ]);
-const REQUIRED_KEYS = ['projectNo', 'projectName', 'projectType', 'techStack', 'difficulty', 'projectPath'];
+const REQUIRED_KEYS = ['projectNo', 'projectName', 'projectType', 'techStack', 'difficulty', 'projectPath', 'contributor'];
 const UNSAFE_PROTOCOL_RE = /^(?:javascript|data|vbscript):/i;
 const URL_SCHEME_RE = /^[a-z][a-z0-9+.-]*:/i;
 const EXPECTED_GITHUB_REPOSITORY = 'dhairyagothi/100_days_100_web_project';

@@ -76,6 +76,24 @@
         </div>
       </div>
 
+      <!-- ── PROJECT CONTRIBUTORS LEADERBOARD ── -->
+      <div class="contributor-header" style="margin-top: 4rem; margin-bottom: 3rem">
+        <h1>Leaderboard</h1>
+        <p class="subtitle">Top developers who have contributed the most projects</p>
+      </div>
+
+      <div id="leaderboardLoading" class="loading-state">
+        Loading leaderboard...
+      </div>
+
+      <div id="leaderboardContainer" class="leaderboard-section hidden">
+        <div id="leaderboardPodium" class="podium-container"></div>
+        <div id="leaderboardList" class="leaderboard-list"></div>
+        <div class="leaderboard-show-all-container">
+          <button id="toggleLeaderboardBtn" class="show-all-btn">Show All Ranks</button>
+        </div>
+      </div>
+
       <div class="contributors-controls">
         <input
           type="text"
