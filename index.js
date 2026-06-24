@@ -12,7 +12,7 @@ let fuse;
 
 let currentPage = 1;
 //for the number of visible projects in one page.
-let itemsPerPage = 9;
+let itemsPerPage = 15;
 let projectData = [];
 let filteredProjectData = [];
 
@@ -856,7 +856,7 @@ function renderSkeletons() {
   grid.appendChild(fragment);
 }
 
-function renderGrid() {
+function renderGrid(append = false) {
   const grid = document.getElementById("projectGrid");
   const noResults = document.getElementById("noResults");
   if (!grid) return;
@@ -941,7 +941,9 @@ const filtered = searchResults.filter((project) => {
     });
   }
 
-  grid.replaceChildren();
+  if (!append) {
+    grid.replaceChildren();
+  }
 
   if (filtered.length === 0) {
     grid.style.display = "none";
@@ -1001,10 +1003,31 @@ const filtered = searchResults.filter((project) => {
   });
 
   grid.appendChild(fragment);
-  renderPagination(filtered.length, totalPages);
+  initScrollObserver(totalPages);
 
   syncStateToURL();
   syncProjectCounts();
+}
+
+let scrollObserver = null;
+function initScrollObserver(totalPages) {
+  const sentinel = document.getElementById("scroll-sentinel");
+  if (!sentinel) return;
+
+  if (scrollObserver) {
+    scrollObserver.disconnect();
+  }
+
+  scrollObserver = new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting) {
+      if (currentPage < totalPages) {
+        currentPage++;
+        renderGrid(true);
+      }
+    }
+  }, { rootMargin: "200px" });
+
+  scrollObserver.observe(sentinel);
 }
 console.log("===== RENDER GRID =====");
 console.log("PROJECTS:", PROJECTS.length);
