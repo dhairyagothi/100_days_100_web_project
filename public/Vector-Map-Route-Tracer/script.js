@@ -1,26 +1,26 @@
-console.log("Pathfinder OS Initialized");
+console.log('Pathfinder OS Initialized');
 
 /* ──────────────────────────────
    CITY GRAPH DATA
 ────────────────────────────── */
 
 const cities = {
-  DEL: { name: "Delhi", x: 380, y: 120 },
-  AMR: { name: "Amritsar", x: 180, y: 90 },
-  JAI: { name: "Jaipur", x: 260, y: 240 },
-  LKO: { name: "Lucknow", x: 520, y: 180 },
-  PAT: { name: "Patna", x: 700, y: 200 },
-  KOL: { name: "Kolkata", x: 780, y: 420 },
-  BHO: { name: "Bhopal", x: 380, y: 430 },
-  NGP: { name: "Nagpur", x: 520, y: 520 },
-  HYD: { name: "Hyderabad", x: 500, y: 720 },
-  MUM: { name: "Mumbai", x: 220, y: 620 },
-  PUN: { name: "Pune", x: 340, y: 760 },
-  BAN: { name: "Bengaluru", x: 430, y: 920 },
-  CHE: { name: "Chennai", x: 640, y: 960 },
-  VIZ: { name: "Vizag", x: 720, y: 660 },
-  AHM: { name: "Ahmedabad", x: 110, y: 520 },
-  SUR: { name: "Surat", x: 160, y: 700 }
+  DEL: { name: 'Delhi', x: 380, y: 120 },
+  AMR: { name: 'Amritsar', x: 180, y: 90 },
+  JAI: { name: 'Jaipur', x: 260, y: 240 },
+  LKO: { name: 'Lucknow', x: 520, y: 180 },
+  PAT: { name: 'Patna', x: 700, y: 200 },
+  KOL: { name: 'Kolkata', x: 780, y: 420 },
+  BHO: { name: 'Bhopal', x: 380, y: 430 },
+  NGP: { name: 'Nagpur', x: 520, y: 520 },
+  HYD: { name: 'Hyderabad', x: 500, y: 720 },
+  MUM: { name: 'Mumbai', x: 220, y: 620 },
+  PUN: { name: 'Pune', x: 340, y: 760 },
+  BAN: { name: 'Bengaluru', x: 430, y: 920 },
+  CHE: { name: 'Chennai', x: 640, y: 960 },
+  VIZ: { name: 'Vizag', x: 720, y: 660 },
+  AHM: { name: 'Ahmedabad', x: 110, y: 520 },
+  SUR: { name: 'Surat', x: 160, y: 700 },
 };
 
 const graph = {
@@ -39,7 +39,7 @@ const graph = {
   CHE: { BAN: 350, VIZ: 800 },
   VIZ: { HYD: 420, NGP: 620, CHE: 800, KOL: 680 },
   AHM: { JAI: 520, SUR: 330 },
-  SUR: { AHM: 330, MUM: 260 }
+  SUR: { AHM: 330, MUM: 260 },
 };
 
 /* ──────────────────────────────
@@ -48,38 +48,36 @@ const graph = {
 
 let source = null;
 let destination = null;
-let currentAlgorithm = "dijkstra";
+let currentAlgorithm = 'dijkstra';
 let currentPath = [];
 
 /* ──────────────────────────────
    DOM REFERENCES
 ────────────────────────────── */
 
-const cityList = document.getElementById("city-list");
-const nodesLayer = document.getElementById("nodes-layer");
-const edgesLayer = document.getElementById("edges-layer");
+const cityList = document.getElementById('city-list');
+const nodesLayer = document.getElementById('nodes-layer');
+const edgesLayer = document.getElementById('edges-layer');
 
-const distEl = document.getElementById("m-dist");
-const nodesEl = document.getElementById("m-nodes");
-const edgesEl = document.getElementById("m-edges");
-const timeEl = document.getElementById("m-time");
-const pathEl = document.getElementById("path-seq");
+const distEl = document.getElementById('m-dist');
+const nodesEl = document.getElementById('m-nodes');
+const edgesEl = document.getElementById('m-edges');
+const timeEl = document.getElementById('m-time');
+const pathEl = document.getElementById('path-seq');
 
-const statusEl = document.getElementById("algo-status");
+const statusEl = document.getElementById('algo-status');
 
 /* ──────────────────────────────
    CREATE CITY LIST
 ────────────────────────────── */
 
 function renderCityList() {
+  cityList.innerHTML = '';
 
-  cityList.innerHTML = "";
+  Object.keys(cities).forEach((code) => {
+    const div = document.createElement('div');
 
-  Object.keys(cities).forEach(code => {
-
-    const div = document.createElement("div");
-
-    div.className = "city-item";
+    div.className = 'city-item';
 
     div.dataset.code = code;
 
@@ -98,27 +96,23 @@ function renderCityList() {
 ────────────────────────────── */
 
 function drawEdges() {
+  edgesLayer.innerHTML = '';
 
-  edgesLayer.innerHTML = "";
-
-  Object.keys(graph).forEach(from => {
-
-    Object.keys(graph[from]).forEach(to => {
-
+  Object.keys(graph).forEach((from) => {
+    Object.keys(graph[from]).forEach((to) => {
       if (from < to) {
-
         const line = document.createElementNS(
-          "http://www.w3.org/2000/svg",
-          "line"
+          'http://www.w3.org/2000/svg',
+          'line'
         );
 
-        line.setAttribute("x1", cities[from].x);
-        line.setAttribute("y1", cities[from].y);
+        line.setAttribute('x1', cities[from].x);
+        line.setAttribute('y1', cities[from].y);
 
-        line.setAttribute("x2", cities[to].x);
-        line.setAttribute("y2", cities[to].y);
+        line.setAttribute('x2', cities[to].x);
+        line.setAttribute('y2', cities[to].y);
 
-        line.setAttribute("class", "edge");
+        line.setAttribute('class', 'edge');
 
         line.dataset.from = from;
         line.dataset.to = to;
@@ -131,16 +125,16 @@ function drawEdges() {
         const midY = (cities[from].y + cities[to].y) / 2;
 
         const text = document.createElementNS(
-          "http://www.w3.org/2000/svg",
-          "text"
+          'http://www.w3.org/2000/svg',
+          'text'
         );
 
-        text.setAttribute("x", midX);
-        text.setAttribute("y", midY);
+        text.setAttribute('x', midX);
+        text.setAttribute('y', midY);
 
-        text.setAttribute("fill", "#335");
+        text.setAttribute('fill', '#335');
 
-        text.setAttribute("font-size", "12");
+        text.setAttribute('font-size', '12');
 
         text.textContent = `${graph[from][to]}km`;
 
@@ -155,84 +149,79 @@ function drawEdges() {
 ────────────────────────────── */
 
 function drawNodes() {
+  nodesLayer.innerHTML = '';
 
-  nodesLayer.innerHTML = "";
+  Object.keys(cities).forEach((code) => {
+    const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
 
-  Object.keys(cities).forEach(code => {
-
-    const g = document.createElementNS(
-      "http://www.w3.org/2000/svg",
-      "g"
-    );
-
-    g.setAttribute("class", "node-group");
+    g.setAttribute('class', 'node-group');
 
     g.setAttribute(
-      "transform",
+      'transform',
       `translate(${cities[code].x}, ${cities[code].y})`
     );
 
     /* OUTER */
 
     const outer = document.createElementNS(
-      "http://www.w3.org/2000/svg",
-      "circle"
+      'http://www.w3.org/2000/svg',
+      'circle'
     );
 
-    outer.setAttribute("r", 26);
+    outer.setAttribute('r', 26);
 
-    outer.setAttribute("fill", "transparent");
+    outer.setAttribute('fill', 'transparent');
 
-    outer.setAttribute("stroke", "#00e5ff");
+    outer.setAttribute('stroke', '#00e5ff');
 
-    outer.setAttribute("stroke-width", "2");
+    outer.setAttribute('stroke-width', '2');
 
     /* INNER */
 
     const inner = document.createElementNS(
-      "http://www.w3.org/2000/svg",
-      "circle"
+      'http://www.w3.org/2000/svg',
+      'circle'
     );
 
-    inner.setAttribute("r", 14);
+    inner.setAttribute('r', 14);
 
-    inner.setAttribute("fill", "#07101d");
+    inner.setAttribute('fill', '#07101d');
 
-    inner.setAttribute("stroke", "#00e5ff");
+    inner.setAttribute('stroke', '#00e5ff');
 
-    inner.setAttribute("stroke-width", "2");
+    inner.setAttribute('stroke-width', '2');
 
     /* CODE */
 
     const label = document.createElementNS(
-      "http://www.w3.org/2000/svg",
-      "text"
+      'http://www.w3.org/2000/svg',
+      'text'
     );
 
-    label.setAttribute("text-anchor", "middle");
+    label.setAttribute('text-anchor', 'middle');
 
-    label.setAttribute("dy", "5");
+    label.setAttribute('dy', '5');
 
-    label.setAttribute("fill", "#00e5ff");
+    label.setAttribute('fill', '#00e5ff');
 
-    label.setAttribute("font-size", "12");
+    label.setAttribute('font-size', '12');
 
     label.textContent = code;
 
     /* CITY NAME */
 
     const cityName = document.createElementNS(
-      "http://www.w3.org/2000/svg",
-      "text"
+      'http://www.w3.org/2000/svg',
+      'text'
     );
 
-    cityName.setAttribute("text-anchor", "middle");
+    cityName.setAttribute('text-anchor', 'middle');
 
-    cityName.setAttribute("y", "45");
+    cityName.setAttribute('y', '45');
 
-    cityName.setAttribute("fill", "#88a");
+    cityName.setAttribute('fill', '#88a');
 
-    cityName.setAttribute("font-size", "14");
+    cityName.setAttribute('font-size', '14');
 
     cityName.textContent = cities[code].name;
 
@@ -250,23 +239,17 @@ function drawNodes() {
 ────────────────────────────── */
 
 function selectCity(code) {
-
   if (!source) {
-
     source = code;
 
     updateStatus(`SOURCE SELECTED: ${cities[code].name}`);
-
   } else if (!destination && code !== source) {
-
     destination = code;
 
     updateStatus(`DESTINATION SELECTED: ${cities[code].name}`);
 
     computeAndAnimate();
-
   } else {
-
     resetAll();
 
     source = code;
@@ -282,27 +265,17 @@ function selectCity(code) {
 ────────────────────────────── */
 
 function updateCityUI() {
+  document.querySelectorAll('.city-item').forEach((item) => {
+    item.classList.remove('source', 'dest', 'on-path');
 
-  document.querySelectorAll(".city-item")
-    .forEach(item => {
+    const code = item.dataset.code;
 
-      item.classList.remove(
-        "source",
-        "dest",
-        "on-path"
-      );
+    if (code === source) item.classList.add('source');
 
-      const code = item.dataset.code;
+    if (code === destination) item.classList.add('dest');
 
-      if (code === source)
-        item.classList.add("source");
-
-      if (code === destination)
-        item.classList.add("dest");
-
-      if (currentPath.includes(code))
-        item.classList.add("on-path");
-    });
+    if (currentPath.includes(code)) item.classList.add('on-path');
+  });
 }
 
 /* ──────────────────────────────
@@ -310,29 +283,23 @@ function updateCityUI() {
 ────────────────────────────── */
 
 function dijkstra(start, end) {
-
   const distances = {};
   const previous = {};
   const visited = new Set();
 
-  Object.keys(graph).forEach(node => {
+  Object.keys(graph).forEach((node) => {
     distances[node] = Infinity;
   });
 
   distances[start] = 0;
 
   while (visited.size < Object.keys(graph).length) {
-
     let current = null;
 
-    Object.keys(distances).forEach(node => {
-
+    Object.keys(distances).forEach((node) => {
       if (
         !visited.has(node) &&
-        (
-          current === null ||
-          distances[node] < distances[current]
-        )
+        (current === null || distances[node] < distances[current])
       ) {
         current = node;
       }
@@ -342,14 +309,10 @@ function dijkstra(start, end) {
 
     visited.add(current);
 
-    Object.keys(graph[current]).forEach(neighbor => {
-
-      const alt =
-        distances[current] +
-        graph[current][neighbor];
+    Object.keys(graph[current]).forEach((neighbor) => {
+      const alt = distances[current] + graph[current][neighbor];
 
       if (alt < distances[neighbor]) {
-
         distances[neighbor] = alt;
 
         previous[neighbor] = current;
@@ -362,7 +325,6 @@ function dijkstra(start, end) {
   let u = end;
 
   while (u) {
-
     path.unshift(u);
 
     u = previous[u];
@@ -371,7 +333,89 @@ function dijkstra(start, end) {
   return {
     path,
     distance: distances[end],
-    visited: visited.size
+    visited: visited.size,
+  };
+}
+
+/* ──────────────────────────────
+   A* SEARCH
+────────────────────────────── */
+
+function heuristic(node, target) {
+  const dx = cities[node].x - cities[target].x;
+  const dy = cities[node].y - cities[target].y;
+
+  return Math.sqrt(dx * dx + dy * dy);
+}
+
+function astar(start, end) {
+  const openSet = [start];
+
+  const cameFrom = {};
+
+  const gScore = {};
+  const fScore = {};
+
+  Object.keys(graph).forEach((node) => {
+    gScore[node] = Infinity;
+    fScore[node] = Infinity;
+  });
+
+  gScore[start] = 0;
+  fScore[start] = heuristic(start, end);
+
+  let visitedCount = 0;
+
+  while (openSet.length > 0) {
+    let current = openSet[0];
+
+    openSet.forEach((node) => {
+      if (fScore[node] < fScore[current]) {
+        current = node;
+      }
+    });
+
+    visitedCount++;
+
+    if (current === end) {
+      const path = [];
+      let temp = end;
+
+      while (temp) {
+        path.unshift(temp);
+        temp = cameFrom[temp];
+      }
+
+      return {
+        path,
+        distance: gScore[end],
+        visited: visitedCount,
+      };
+    }
+
+    openSet.splice(openSet.indexOf(current), 1);
+
+    Object.keys(graph[current]).forEach((neighbor) => {
+      const tentativeG = gScore[current] + graph[current][neighbor];
+
+      if (tentativeG < gScore[neighbor]) {
+        cameFrom[neighbor] = current;
+
+        gScore[neighbor] = tentativeG;
+
+        fScore[neighbor] = tentativeG + heuristic(neighbor, end);
+
+        if (!openSet.includes(neighbor)) {
+          openSet.push(neighbor);
+        }
+      }
+    });
+  }
+
+  return {
+    path: [],
+    distance: Infinity,
+    visited: visitedCount,
   };
 }
 
@@ -380,43 +424,42 @@ function dijkstra(start, end) {
 ────────────────────────────── */
 
 function computeAndAnimate() {
-
   const startTime = performance.now();
 
-  let result = dijkstra(source, destination);
+  let result;
+
+  if (currentAlgorithm === 'astar') {
+    result = astar(source, destination);
+  } else {
+    result = dijkstra(source, destination);
+  }
 
   currentPath = result.path;
 
-  document.getElementById("map-container")
-    .scrollIntoView({
-      behavior: "smooth",
-      block: "center"
-    });
+  document.getElementById('map-container').scrollIntoView({
+    behavior: 'smooth',
+    block: 'center',
+  });
 
   highlightPath();
 
   const endTime = performance.now();
 
-  distEl.textContent =
-    `${result.distance} km`;
+  distEl.textContent = `${result.distance} km`;
 
-  nodesEl.textContent =
-    result.visited;
+  nodesEl.textContent = result.visited;
 
-  edgesEl.textContent =
-    result.path.length - 1;
+  edgesEl.textContent = result.path.length - 1;
 
-  timeEl.textContent =
-    `${(endTime - startTime).toFixed(2)} ms`;
+  timeEl.textContent = `${(endTime - startTime).toFixed(2)} ms`;
 
   pathEl.textContent =
-    result.path
-      .map(code => cities[code].name)
-      .join(" → ");
+    `[${currentAlgorithm.toUpperCase()}] ` +
+    result.path.map((code) => cities[code].name).join(' → ');
 
   updateCityUI();
 
-  updateStatus("ROUTE GENERATED SUCCESSFULLY");
+  updateStatus(`${currentAlgorithm.toUpperCase()} ROUTE GENERATED`);
 }
 
 /* ──────────────────────────────
@@ -424,65 +467,52 @@ function computeAndAnimate() {
 ────────────────────────────── */
 
 function highlightPath() {
+  document.querySelectorAll('.edge').forEach((edge) => {
+    edge.classList.remove('on-path');
 
-  document.querySelectorAll(".edge")
-    .forEach(edge => {
+    const from = edge.dataset.from;
+    const to = edge.dataset.to;
 
-      edge.classList.remove("on-path");
+    for (let i = 0; i < currentPath.length - 1; i++) {
+      const a = currentPath[i];
+      const b = currentPath[i + 1];
 
-      const from = edge.dataset.from;
-      const to = edge.dataset.to;
-
-      for (let i = 0; i < currentPath.length - 1; i++) {
-
-        const a = currentPath[i];
-        const b = currentPath[i + 1];
-
-        if (
-          (a === from && b === to) ||
-          (a === to && b === from)
-        ) {
-
-          edge.classList.add("on-path");
-        }
+      if ((a === from && b === to) || (a === to && b === from)) {
+        edge.classList.add('on-path');
       }
-    });
+    }
+  });
 }
 
 /* ──────────────────────────────
    RESET
 ────────────────────────────── */
 
-function resetAll(){
+function resetAll() {
+  source = null;
+  destination = null;
 
-source = null;
-destination = null;
+  currentPath = [];
 
-currentPath = [];
+  document.querySelectorAll('.edge').forEach((edge) => {
+    edge.classList.remove('on-path');
+  });
 
-document.querySelectorAll(".edge")
-.forEach(edge=>{
-edge.classList.remove("on-path");
-});
+  distEl.textContent = '—';
+  nodesEl.textContent = '—';
+  edgesEl.textContent = '—';
+  timeEl.textContent = '—';
 
-distEl.textContent = "—";
-nodesEl.textContent = "—";
-edgesEl.textContent = "—";
-timeEl.textContent = "—";
+  pathEl.textContent = 'Select source and destination...';
 
-pathEl.textContent =
-"Select source and destination...";
+  updateCityUI();
 
-updateCityUI();
+  updateStatus('SYSTEM RESET SUCCESSFULLY');
 
-updateStatus("SYSTEM RESET SUCCESSFULLY");
-
-document.getElementById("map-container")
-.scrollTo({
-top:0,
-behavior:"smooth"
-});
-
+  document.getElementById('map-container').scrollTo({
+    top: 0,
+    behavior: 'smooth',
+  });
 }
 
 /* ──────────────────────────────
@@ -490,7 +520,6 @@ behavior:"smooth"
 ────────────────────────────── */
 
 function updateStatus(message) {
-
   statusEl.textContent = message;
 }
 
@@ -498,23 +527,19 @@ function updateStatus(message) {
    ALGORITHM BUTTONS
 ────────────────────────────── */
 
-document.querySelectorAll(".algo-btn")
-  .forEach(btn => {
+document.querySelectorAll('.algo-btn').forEach((btn) => {
+  btn.onclick = () => {
+    document
+      .querySelectorAll('.algo-btn')
+      .forEach((b) => b.classList.remove('active'));
 
-    btn.onclick = () => {
+    btn.classList.add('active');
 
-      document.querySelectorAll(".algo-btn")
-        .forEach(b => b.classList.remove("active"));
+    currentAlgorithm = btn.dataset.algo;
 
-      btn.classList.add("active");
-
-      currentAlgorithm = btn.dataset.algo;
-
-      updateStatus(
-        `${currentAlgorithm.toUpperCase()} MODE ACTIVATED`
-      );
-    };
-  });
+    updateStatus(`${currentAlgorithm.toUpperCase()} MODE ACTIVATED`);
+  };
+});
 
 /* ──────────────────────────────
    INITIALIZE
@@ -526,4 +551,4 @@ drawEdges();
 
 drawNodes();
 
-updateStatus("READY");
+updateStatus('READY');

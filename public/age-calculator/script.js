@@ -101,6 +101,13 @@ function initCalculator() {
       return;
     }
 
+    const minBirthDate = new Date();
+    minBirthDate.setFullYear(minBirthDate.getFullYear() - 120);
+    if (birthDate < minBirthDate) {
+      alert('Date of birth cannot be more than 120 years in the past.');
+      return;
+    }
+
     const age = calculateAge(birthDate, new Date());
     const diffMs = new Date() - birthDate;
     const totalDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
@@ -125,9 +132,9 @@ function initCalculator() {
     document.getElementById('total-days').textContent = totalDays.toLocaleString();
     document.getElementById('weeks').textContent = age.weeks.toLocaleString();
     document.getElementById('total-hours').textContent = totalHours.toLocaleString();
-    document.getElementById('total-minutes').textContent = totalMinutes.toLocaleString();
-    document.getElementById('total-seconds').textContent = totalSeconds.toLocaleString();
-    document.getElementById('total-milliseconds').textContent = totalMilliseconds.toLocaleString();
+    document.getElementById('total-minutes').textContent = totalMinutes.toLocaleString('en-US');
+    document.getElementById('total-seconds').textContent = totalSeconds.toLocaleString('en-US');
+    document.getElementById('total-milliseconds').textContent = totalMilliseconds.toLocaleString('en-US');
     document.getElementById('fact-one').textContent = `You are older than ${percentOlder}% of people.`;
     document.getElementById('fact-two').textContent = `You have lived ${totalDays.toLocaleString()} days.`;
     document.getElementById('fact-three').textContent = `You spent approximately ${hoursSlept} years sleeping.`;

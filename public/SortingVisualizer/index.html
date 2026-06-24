@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorting Algorithm Visualizer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app">
+        <header class="header">
+            <h1 class="header-title">Sorting Algorithm Visualizer</h1>
+            <p class="header-subtitle">Watch how different sorting algorithms compare, swap, and settle into order.</p>
+        </header>
+
+        <section class="controls" aria-label="Controls">
+            <div class="control-group">
+                <label for="algorithm-select" class="control-label">Algorithm</label>
+                <select id="algorithm-select" class="control-select">
+                    <option value="bubble">Bubble Sort</option>
+                    <option value="selection">Selection Sort</option>
+                    <option value="insertion">Insertion Sort</option>
+                    <option value="merge">Merge Sort</option>
+                    <option value="quick">Quick Sort</option>
+                    <option value="heap">Heap Sort</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label for="size-slider" class="control-label">Array Size: <span id="size-value">40</span></label>
+                <input type="range" id="size-slider" class="control-slider" min="10" max="120" value="40">
+            </div>
+
+            <div class="control-group">
+                <label for="speed-slider" class="control-label">Speed: <span id="speed-value">5</span></label>
+                <input type="range" id="speed-slider" class="control-slider" min="1" max="10" value="5">
+            </div>
+
+            <div class="control-group control-buttons">
+                <button id="new-array-btn" class="btn btn-secondary">New Array</button>
+                <button id="start-btn" class="btn btn-primary">Start</button>
+                <button id="reset-btn" class="btn btn-secondary">Reset</button>
+            </div>
+        </section>
+
+        <section class="legend" aria-label="Legend">
+            <span class="legend-item"><span class="legend-swatch swatch-default"></span>Unsorted</span>
+            <span class="legend-item"><span class="legend-swatch swatch-comparing"></span>Comparing</span>
+            <span class="legend-item"><span class="legend-swatch swatch-swapping"></span>Swapping</span>
+            <span class="legend-item"><span class="legend-swatch swatch-pivot"></span>Pivot</span>
+            <span class="legend-item"><span class="legend-swatch swatch-sorted"></span>Sorted</span>
+        </section>
+
+        <main class="visualizer" id="visualizer" aria-label="Sorting visualization"></main>
+
+        <section class="stats" aria-label="Statistics">
+            <div class="stat-card">
+                <span class="stat-label">Comparisons</span>
+                <span class="stat-value" id="comparisons-value">0</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">Swaps / Writes</span>
+                <span class="stat-value" id="swaps-value">0</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">Time Elapsed</span>
+                <span class="stat-value" id="time-value">0.0s</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">Status</span>
+                <span class="stat-value" id="status-value">Idle</span>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <p>Built with vanilla HTML, CSS &amp; JavaScript — no frameworks, no dependencies.</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

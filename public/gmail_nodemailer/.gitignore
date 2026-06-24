@@ -1,2 +1,18 @@
+# Environment variables (contains secrets - never commit this)
 .env
-node_modules
+
+# Dependencies
+node_modules/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor folders
+.vscode/
+.idea/
