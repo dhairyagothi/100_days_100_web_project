@@ -1524,3 +1524,26 @@ body.dark-mode .quiz-option:hover {
 .theme-switch-wrapper {
   margin-right: 8px;
 }
+.footer-info-section {
+  margin: 50px;
+  padding: 40px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+}
+
+.footer-info-section h2 {
+  color: #4caf50;
+  margin-bottom: 20px;
+  font-size: 32px;
+}
+
+.footer-info-section p {
+  line-height: 1.8;
+  font-size: 16px;
+  color: #f0f0f0;
+}
+
+body.dark-mode .footer-info-section {
+  background: rgba(0, 0, 0, 0.45);
+}
