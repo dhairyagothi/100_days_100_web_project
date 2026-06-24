@@ -792,3 +792,19 @@ top: 15px;
 font-size: 1.2rem;
 pointer-events: none;
 }
+
+#themeSelector {
+  min-width: 180px;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.3);
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+#themeSelector option {
+  background: white;
+  color: #333;
+  padding: 10px;
+}

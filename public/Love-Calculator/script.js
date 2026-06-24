@@ -293,3 +293,19 @@ function updateBackgroundEmojis(emojis) {
         heartsContainer.appendChild(span);
     }
 }
+
+themeSelector.addEventListener("change", function () {
+  const selectedTheme = this.value;
+
+  changeTheme(selectedTheme);
+
+  localStorage.setItem("selectedTheme", selectedTheme);
+});
+
+window.addEventListener("DOMContentLoaded", () => {
+  const savedTheme =
+    localStorage.getItem("selectedTheme") || "default";
+
+  themeSelector.value = savedTheme;
+  changeTheme(savedTheme);
+});
