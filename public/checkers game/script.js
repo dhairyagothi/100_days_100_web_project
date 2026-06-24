@@ -5,15 +5,18 @@ let selected = null;
 let currentPlayer = 'red';
 let gameMode = null; // "pvp" or "bot"
 let mustContinueJump = false;
+let gameOver = false;
 
 const boardDiv = document.getElementById('board');
 const statusDiv = document.getElementById('status');
 
 function startGame(mode) {
   gameMode = mode;
+  gameOver = false;
   initBoard();
   render();
   setStatus(`${currentPlayer.toUpperCase()}'s turn`);
+  closeModal();
 }
 
 function resetGame() {
@@ -21,9 +24,11 @@ function resetGame() {
   currentPlayer = 'red';
   gameMode = null;
   mustContinueJump = false;
+  gameOver = false;
   board = [];
   boardDiv.innerHTML = '';
   setStatus('Select a mode to start');
+  closeModal();
 }
 
 function initBoard() {
@@ -77,6 +82,7 @@ function setStatus(msg) {
 }
 
 function selectPiece(r, c) {
+  if (gameOver) return;
   if (!board[r][c]) return;
   if (board[r][c].color !== currentPlayer) return;
 
@@ -94,6 +100,7 @@ function selectPiece(r, c) {
 }
 
 function movePiece(r, c) {
+  if (gameOver) return;
   if (!selected) return;
 
   const piece = board[selected.r][selected.c];
@@ -130,7 +137,7 @@ function movePiece(r, c) {
   render();
   checkWinner();
 
-  if (gameMode === 'bot' && currentPlayer === 'black') {
+  if (!gameOver && gameMode === 'bot' && currentPlayer === 'black') {
     setTimeout(botMove, 500);
   }
 }
@@ -286,6 +293,61 @@ function checkWinner() {
     }
   }
 
-  if (red === 0) setStatus('BLACK WINS 🎉');
-  if (black === 0) setStatus('RED WINS 🎉');
+  if (red === 0) {
+    setStatus('BLACK WINS 🎉');
+    gameOver = true;
+    showNotification('Game Over', 'Black wins! Red has no pieces remaining.');
+    return;
+  }
+  if (black === 0) {
+    setStatus('RED WINS 🎉');
+    gameOver = true;
+    showNotification('Game Over', 'Red wins! Black has no pieces remaining.');
+    return;
+  }
+
+  // Check if current player has any legal moves available
+  if (!hasLegalMoves(currentPlayer)) {
+    const opponent = currentPlayer === 'red' ? 'black' : 'red';
+    setStatus(`${opponent.toUpperCase()} WINS 🎉`);
+    gameOver = true;
+    showNotification(
+      'Game Over',
+      `${currentPlayer.toUpperCase()} has no legal moves remaining. ${opponent.toUpperCase()} wins the game!`
+    );
+  }
+}
+
+function hasLegalMoves(player) {
+  for (let r = 0; r < boardSize; r++) {
+    for (let c = 0; c < boardSize; c++) {
+      if (board[r][c] && board[r][c].color === player) {
+        if (getValidMoves(r, c).length > 0) {
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+}
+
+/* ---------------- NOTIFICATION MODAL ---------------- */
+
+function showNotification(title, message) {
+  const modal = document.getElementById('notification-modal');
+  const modalTitle = document.getElementById('modal-title');
+  const modalMessage = document.getElementById('modal-message');
+
+  if (modal && modalTitle && modalMessage) {
+    modalTitle.innerText = title;
+    modalMessage.innerText = message;
+    modal.classList.add('show');
+  }
+}
+
+function closeModal() {
+  const modal = document.getElementById('notification-modal');
+  if (modal) {
+    modal.classList.remove('show');
+  }
 }

@@ -5,6 +5,7 @@ const passwordDisplay = document.querySelector("[data-passwordDisplay]");
 const copyBtn = document.querySelector("[data-copy]");
 const copyMsg = document.querySelector("[data-copyMsg]");
 const hideTimerText = document.getElementById("hideTimer");
+const PASSWORD_HISTORY_KEY = "passwordHistory";
 
 const uppercaseCheck = document.querySelector("#uppercase");
 const lowercaseCheck = document.querySelector("#lowercase");
@@ -39,6 +40,7 @@ let passwordHistory = [];
 init();
 
 function init() {
+    loadPasswordHistory();
     handleSlider();
     handleCheckBoxChange();
     calcStrength();
@@ -46,6 +48,38 @@ function init() {
     renderHistory();
 
     customWordInput.style.display = useCustomWordCheck.checked ? "block" : "none";
+}
+
+function loadPasswordHistory() {
+    try {
+        const storedHistory =
+            localStorage.getItem(PASSWORD_HISTORY_KEY);
+
+        if (storedHistory) {
+            passwordHistory = JSON.parse(storedHistory);
+        }
+    } catch (error) {
+        console.error(
+            "Failed to load password history",
+            error
+        );
+
+        passwordHistory = [];
+    }
+}
+
+function savePasswordHistory() {
+    try {
+        localStorage.setItem(
+            PASSWORD_HISTORY_KEY,
+            JSON.stringify(passwordHistory)
+        );
+    } catch (error) {
+        console.error(
+            "Failed to save password history",
+            error
+        );
+    }
 }
 
 function handleSlider() {
@@ -268,7 +302,6 @@ function handleCheckBoxChange() {
 }
 
 function updateHistory(newPassword) {
-    // Prevent consecutive duplicates
     if (
         passwordHistory.length > 0 &&
         passwordHistory[0] === newPassword
@@ -278,11 +311,11 @@ function updateHistory(newPassword) {
 
     passwordHistory.unshift(newPassword);
 
-    // Keep only last 5 passwords
     if (passwordHistory.length > 5) {
         passwordHistory.pop();
     }
 
+    savePasswordHistory();
     renderHistory();
 }
 
@@ -324,6 +357,16 @@ function renderHistory() {
 
 clearHistoryBtn.addEventListener("click", () => {
     passwordHistory = [];
+
+    try {
+        localStorage.removeItem(PASSWORD_HISTORY_KEY);
+    } catch (error) {
+        console.error(
+            "Failed to clear password history",
+            error
+        );
+    }
+
     renderHistory();
 });
 
@@ -414,3 +457,37 @@ generateBtn.addEventListener("click", () => {
     calcStrength();
     updateSuggestions();
 });
+
+// ==========================
+// Theme Toggle (Global)
+// ==========================
+
+// Select all toggle buttons (use a common class)
+const themeToggles = document.querySelectorAll(".theme");
+const themeIcon = document.getElementById("themeIcon");
+
+// Default = DARK MODE
+let isLightMode = JSON.parse(localStorage.getItem("lightMode")) || false;
+
+// Apply theme on load
+function updateTheme() {
+  if (isLightMode) {
+    document.body.classList.add("light-theme");
+    themeIcon.textContent = "🌙"; // show moon when light mode active
+  } else {
+    document.body.classList.remove("light-theme");
+    themeIcon.textContent = "☀️"; // show sun when dark mode active
+  }
+}
+
+// Toggle theme on any button click
+themeToggles.forEach(btn => {
+  btn.addEventListener("click", () => {
+    isLightMode = !isLightMode;
+    localStorage.setItem("lightMode", JSON.stringify(isLightMode));
+    updateTheme();
+  });
+});
+
+// Initialize on page load
+updateTheme();

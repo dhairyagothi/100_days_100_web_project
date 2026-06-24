@@ -186,7 +186,7 @@
         
         <script src="js/darkmode.js"></script>
 
-        <a href="/public/Medical_App/index.html" class="page-link">
+        <a href="index.html" class="page-link">
             ← Back to Consultation
         </a>
 
@@ -194,80 +194,6 @@
     </main>
 
 </div>
-
-<div id="authOverlay" class="auth-overlay" aria-hidden="true">
-    <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="authTitle">
-
-                <h2 id="authTitle">MedConsult Access</h2>
-                <p id="authSubtitle">Sign in to continue</p>
-            </div>
-        </div>
-
-        <section class="auth-panel" data-auth-panel="login">
-            <form id="loginForm">
-                <div class="auth-field">
-                    <label for="loginEmail">Email</label>
-                    <input id="loginEmail" class="auth-input" type="email" autocomplete="email" required>
-                </div>
-                <div class="auth-field">
-                    <label for="loginPassword">Password</label>
-                    <input id="loginPassword" class="auth-input" type="password" autocomplete="current-password" required>
-                </div>
-                <div class="auth-row">
-                    <label class="auth-remember">
-                        <input id="rememberMe" type="checkbox">
-                        Remember Me
-                    </label>
-                </div>
-                <p id="loginError" class="auth-error"></p>
-                <button type="submit" class="auth-submit">Login</button>
-                <div class="auth-footer">
-                    <span>Don't have an account?</span>
-                    <button type="button" data-auth-switch="signup">Sign Up</button>
-                </div>
-            </form>
-        </section>
-
-        <section class="auth-panel is-hidden" data-auth-panel="signup">
-            <form id="signupForm">
-                <div class="auth-field">
-                    <label for="signupName">Full Name</label>
-                    <input id="signupName" class="auth-input" type="text" autocomplete="name" required>
-                </div>
-                <div class="auth-field">
-                    <label for="signupEmail">Email</label>
-                    <input id="signupEmail" class="auth-input" type="email" autocomplete="email" required>
-                </div>
-                <div class="auth-field">
-                    <label for="signupPassword">Password</label>
-                    <input id="signupPassword" class="auth-input" type="password" autocomplete="new-password" required>
-                </div>
-                <div class="auth-field">
-                    <label for="signupConfirm">Confirm Password</label>
-                    <input id="signupConfirm" class="auth-input" type="password" autocomplete="new-password" required>
-                </div>
-                <div class="auth-field">
-                    <label for="signupRole">Role</label>
-                    <select id="signupRole" class="auth-select" required>
-                        <option value="">Select role</option>
-                        <option value="patient">Patient</option>
-                        <option value="doctor">Doctor</option>
-                    </select>
-                </div>
-                <p id="signupError" class="auth-error"></p>
-                <button type="submit" class="auth-submit">Create Account</button>
-                <div class="auth-footer">
-                    <span>Already have an account?</span>
-                    <button type="button" data-auth-switch="login">Login</button>
-                </div>
-                <p class="auth-note">
-                    Demo only: passwords are encoded for storage. Real apps require server-side hashing (e.g., bcrypt).
-                </p>
-            </form>
-        </section>
-    </div>
-</div>
-
 <div id="toast-container" class="toast-container"></div>
 
 <script src="assets/js/session.js"></script>

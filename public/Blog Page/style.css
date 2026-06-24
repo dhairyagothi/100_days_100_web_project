@@ -174,7 +174,9 @@ body {
     justify-content: center;
     align-items: center;
     text-align: center;
-    background: linear-gradient(135deg, #047857 0%, #10b981 50%, #064e3b 100%);
+    background: 
+        linear-gradient(135deg, rgba(4,120,87,0.85) 0%, rgba(16,185,129,0.80) 50%, rgba(6,78,59,0.90) 100%),
+        url('https://images.unsplash.com/photo-1499750310107-5fef28a66643?q=80&w=1600&auto=format&fit=crop') center/cover no-repeat;
     position: relative;
     color: white;
     padding: 80px 20px;
@@ -1114,12 +1116,556 @@ body.dark-mode .footer a {
     padding-top: 30px;
     text-align: center;
     color: #64748b;
+
+.close-modal {
+  position: absolute;
+  top: 15px;
+  right: 18px;
+  font-size: 1.8rem;
+  cursor: pointer;
+  color: #555;
+  transition: 0.3s;
+}
+
+.close-modal:hover {
+  color: #10b981;
+}
+
+
+/* ==========================
+   SWITCH LINK
+
+.switch-form {
+  text-align: center;
+  margin-top: 18px;
+  color: #6b7280;
+}
+
+.switch-form a {
+  color: #10b981;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+
+/* ====================================
+   ENHANCED AUTH MODALS 
+
+/* ===== MODAL OVERLAY ===== */
+.auth-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    animation: modalFadeIn 0.4s ease;
+}
+
+.auth-modal.active {
+    display: flex;
+}
+
+@keyframes modalFadeIn {
+    0% {
+        opacity: 0;
+        backdrop-filter: blur(0px);
+    }
+    100% {
+        opacity: 1;
+        backdrop-filter: blur(14px);
+    }
+}
+
+/* ===== MODAL BOX - MODERN CARD ===== */
+.auth-box {
+    width: 100%;
+    max-width: 440px;
+    background: linear-gradient(145deg, #ffffff, #f7faf7);
+    padding: 45px 38px 50px;
+    border-radius: 32px;
+    box-shadow: 
+        0 40px 80px rgba(0, 0, 0, 0.25),
+        0 15px 30px rgba(21, 128, 61, 0.08),
+        inset 0 2px 4px rgba(255, 255, 255, 0.8);
+    position: relative;
+    animation: modalPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    border: 1px solid rgba(21, 128, 61, 0.06);
+    transition: all 0.3s ease;
+}
+
+@keyframes modalPop {
+    0% {
+        opacity: 0;
+        transform: translateY(40px) scale(0.9);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* ===== CLOSE BUTTON ===== */
+.close-modal {
+    position: absolute;
+    top: 18px;
+    right: 22px;
+    font-size: 1.8rem;
+    line-height: 1;
+    cursor: pointer;
+    color: #94a3b8;
+    transition: all 0.3s ease;
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.02);
+}
+
+.close-modal:hover {
+    color: #16a34a;
+    background: rgba(22, 163, 74, 0.08);
+    transform: rotate(90deg) scale(1.1);
+}
+
+/* ===== HEADINGS ===== */
+.auth-box h2 {
+    text-align: center;
+    color: #0f172a;
+    font-size: 1.6rem;
+    font-weight: 800;
+    margin-bottom: 4px;
+    letter-spacing: -0.5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.auth-box h2 i {
+    color: #16a34a;
+    font-size: 2.1rem;
+}
+
+.auth-box .subtitle {
+    text-align: center;
+    color: #64748b;
+    margin-bottom: 32px;
+    font-size: 0.95rem;
+    font-weight: 400;
+}
+
+/* ===== FORM ===== */
+.auth-box form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* ===== INPUT GROUPS WITH ICONS - PROPER EYE POSITION ===== */
+.input-group {
+    position: relative;
+    width: 100%;
+}
+
+/* Icon on left */
+.input-group .input-icon {
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.input-group:focus-within .input-icon {
+    color: #16a34a;
+}
+
+/* ===== MODERN INPUTS - CARD-LIKE PLACEHOLDERS ===== */
+.auth-box input {
+    width: 100%;
+    padding: 16px 50px 16px 50px;
+    border: 2px solid #acbdc8;
+    border-radius: 16px;
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.3s ease;
+    background: #fafcfa;
+    color: #0f172a;
+    font-weight: 500;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+.auth-box input:hover {
+    border-color: #b8d5be;
+    background: #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.auth-box input:focus {
+    border-color: #16a34a;
+    background: #ffffff;
+    box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.1), 0 4px 16px rgba(22, 163, 74, 0.06);
+    transform: translateY(-1px);
+}
+
+/* MODERN PLACEHOLDER STYLING - CARD-LIKE */
+.auth-box input::placeholder {
+    color: #94a3b8;
+    font-weight: 400;
+    font-size: 0.95rem;
+    letter-spacing: 0.2px;
+    transition: all 0.3s ease;
+}
+
+.auth-box input:focus::placeholder {
+    color: #cbd5e1;
+    transform: translateX(4px);
+    opacity: 0.7;
+}
+
+/* ===== PASSWORD TOGGLE - EYE INSIDE INPUT PROPERLY ===== */
+.toggle-password {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    color: #94a3b8;
+    font-size: 1.15rem;
+    cursor: pointer;
+    padding: 8px 10px;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.toggle-password:hover {
+    color: #16a34a;
+    background: rgba(22, 163, 74, 0.08);
+    transform: translateY(-50%) scale(1.05);
+}
+
+.toggle-password:active {
+    transform: translateY(-50%) scale(0.92);
+}
+
+.toggle-password i {
+    font-size: 1.2rem;
+}
+
+/* ===== SUBMIT BUTTON - MODERN GRADIENT ===== */
+.auth-btn {
+    background: linear-gradient(135deg, #16a34a, #0d7a34);
+    color: white;
+    border: none;
+    padding: 17px;
+    border-radius: 16px;
+    cursor: pointer;
+    font-size: 1.05rem;
+    font-weight: 700;
+    transition: all 0.3s ease;
+    margin-top: 8px;
+    letter-spacing: 0.3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    box-shadow: 0 6px 24px rgba(22, 163, 74, 0.25);
+    position: relative;
+    overflow: hidden;
+}
+
+.auth-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+    transition: left 0.5s ease;
+}
+
+.auth-btn:hover::before {
+    left: 100%;
+}
+
+.auth-btn i {
+    font-size: 1.15rem;
+}
+
+.auth-btn:hover {
+    background: linear-gradient(135deg, #15803d, #0a6b2a);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 35px rgba(22, 163, 74, 0.35);
+}
+
+.auth-btn:active {
+    transform: translateY(0) scale(0.97);
+}
+
+/* ===== SWITCH LINK ===== */
+.switch-form {
+    text-align: center;
+    margin-top: 22px;
+    color: #64748b;
+    font-size: 0.95rem;
+}
+
+.switch-form a {
+    color: #16a34a;
+    text-decoration: none;
+    font-weight: 700;
+    transition: all 0.3s ease;
+    border-bottom: 2px solid transparent;
+    padding-bottom: 2px;
+    cursor: pointer;
+}
+
+.switch-form a:hover {
+    color: #0d7a34;
+    border-bottom-color: #16a34a;
+}
+
+/* ===== NAVBAR AUTH BUTTONS ===== */
+.auth-buttons {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.auth-buttons button {
+    border: none;
+    cursor: pointer;
+    padding: 10px 22px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+#signupBtn {
+    background: linear-gradient(135deg, #16a34a, #15803d);
+    color: white;
+    box-shadow: 0 4px 14px rgba(22, 163, 74, 0.2);
+}
+
+#signupBtn:hover {
+    background: linear-gradient(135deg, #15803d, #0d6e31);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(22, 163, 74, 0.3);
+}
+
+#loginBtn {
+    background: transparent;
+    border: 2px solid #16a34a;
+    color: #16a34a;
+}
+
+#loginBtn:hover {
+    background: #16a34a;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(22, 163, 74, 0.2);
+}
+
+/* ===== DARK MODE - IMPROVED CONTRAST & VISIBILITY ===== */
+body.dark-mode .auth-box {
+    background: linear-gradient(145deg, #1e293b, #162032);
+    border-color: rgba(22, 163, 74, 0.12);
+    box-shadow: 
+        0 40px 80px rgba(0, 0, 0, 0.4),
+        0 15px 30px rgba(0, 0, 0, 0.2),
+        inset 0 2px 4px rgba(255, 255, 255, 0.03);
+}
+
+body.dark-mode .auth-box h2 {
+    color: #f1f5f9;
+}
+
+body.dark-mode .auth-box h2 i {
+    color: #22c55e;
+}
+
+body.dark-mode .auth-box .subtitle {
+    color: #94a3b8;
+}
+
+body.dark-mode .auth-box input {
+    background: #283544;
+    border-color: #3d4a5c;
+    color: #f1f5f9;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+body.dark-mode .auth-box input:hover {
+    background: #2d3d4f;
+    border-color: #4e5d72;
+}
+
+body.dark-mode .auth-box input:focus {
+    border-color: #22c55e;
+    background: #2d3d4f;
+    box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.12), 0 4px 16px rgba(34, 197, 94, 0.06);
+}
+
+body.dark-mode .auth-box input::placeholder {
+    color: #7a8a9e;
+}
+
+body.dark-mode .auth-box input:focus::placeholder {
+    color: #5a6a7e;
+}
+
+body.dark-mode .input-group .input-icon {
+    color: #7a8a9e;
+}
+
+body.dark-mode .input-group:focus-within .input-icon {
+    color: #22c55e;
+}
+
+body.dark-mode .toggle-password {
+    color: #7a8a9e;
+}
+
+body.dark-mode .toggle-password:hover {
+    color: #22c55e;
+    background: rgba(34, 197, 94, 0.1);
+}
+
+body.dark-mode .close-modal {
+    color: #7a8a9e;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+body.dark-mode .close-modal:hover {
+    color: #22c55e;
+    background: rgba(34, 197, 94, 0.08);
+}
+
+body.dark-mode .switch-form {
+    color: #94a3b8;
+}
+
+body.dark-mode .switch-form a {
+    color: #22c55e;
+}
+
+body.dark-mode .switch-form a:hover {
+    color: #16a34a;
+    border-bottom-color: #22c55e;
+}
+
+body.dark-mode .auth-btn {
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+    box-shadow: 0 6px 24px rgba(34, 197, 94, 0.2);
+}
+
+body.dark-mode .auth-btn:hover {
+    background: linear-gradient(135deg, #16a34a, #0d8a33);
+    box-shadow: 0 10px 35px rgba(34, 197, 94, 0.3);
+}
+
+body.dark-mode #loginBtn {
+    border-color: #22c55e;
+    color: #22c55e;
+}
+
+body.dark-mode #loginBtn:hover {
+    background: #22c55e;
+    color: #1e293b;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 500px) {
+    .auth-box {
+        padding: 32px 24px 38px;
+        border-radius: 24px;
+    }
+
+    .auth-box h2 {
+        font-size: 1.7rem;
+    }
+
+    .auth-box h2 i {
+        font-size: 1.5rem;
+    }
+
+    .auth-box .subtitle {
+        font-size: 0.85rem;
+        margin-bottom: 24px;
+    }
+
+    .auth-buttons {
+        gap: 6px;
+    }
+
+    .auth-buttons button {
+        padding: 8px 14px;
+        font-size: 0.8rem;
+    }
+
+    .auth-box input {
+        padding: 14px 44px 14px 44px;
+        font-size: 0.9rem;
+        border-radius: 14px;
+    }
+
+    .input-group .input-icon {
+        left: 14px;
+        font-size: 0.95rem;
+    }
+
+    .toggle-password {
+        right: 12px;
+        padding: 6px 8px;
+    }
+
+    .toggle-password i {
+        font-size: 1rem;
+    }
+
+    .auth-btn {
+        padding: 15px;
+        font-size: 0.95rem;
+        border-radius: 14px;
+    }
+
+    .close-modal {
+        width: 36px;
+        height: 36px;
+        font-size: 1.5rem;
+        top: 14px;
+        right: 16px;
+    }
+
+    .switch-form {
+        font-size: 0.85rem;
+        margin-top: 18px;
     font-size: 14px;
 }
 
 /* ============================================================
    RESPONSIVE DESIGN GRID & FLUID BREAKPOINTS
-============================================================ */
 @media(max-width: 1140px) {
     .main-layout {
         flex-direction: column;

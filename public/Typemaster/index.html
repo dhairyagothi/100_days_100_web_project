@@ -1,170 +1,206 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TypeMaster Keyboard Analytics</title>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Rajdhani:wght@500;600;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-  <link rel="icon" href="favicon_typemaster.png">
-</head>
-<body>
- 
-  <!-- ═══════════════════════════════════════
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TypeMaster Keyboard Analytics</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Rajdhani:wght@500;600;700&family=Orbitron:wght@700;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="favicon_typemaster.png" />
+  </head>
+  <body>
+    <!-- ═══════════════════════════════════════
        HEADER
   ════════════════════════════════════════ -->
-  <header>
-    <div class="logo">
-      <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-        <polygon points="11,1 14,9 22,9 16,14 18,22 11,17 4,22 6,14 0,9 8,9" fill="var(--accent)" opacity=".15"/>
-        <path d="M11 2L5 10h4l-2 10 9-12h-5z" fill="var(--accent)"/>
-      </svg>
-      TYPEMASTER
-    </div>
-    <div class="header-controls">
-      <button class="btn-icon" id="btn-reset" title="Reset (Esc)">↺ Reset</button>
-      <button class="btn-icon" id="btn-new"   title="New text">⟳ New Text</button>
-    </div>
-  </header>
- 
-  <!-- ═══════════════════════════════════════
+    <header>
+      <div class="logo">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+          <polygon
+            points="11,1 14,9 22,9 16,14 18,22 11,17 4,22 6,14 0,9 8,9"
+            fill="var(--accent)"
+            opacity=".15"
+          />
+          <path d="M11 2L5 10h4l-2 10 9-12h-5z" fill="var(--accent)" />
+        </svg>
+        TYPEMASTER
+      </div>
+      <div class="header-controls">
+        <button class="btn-icon" id="btn-reset" title="Reset (Esc)">
+          ↺ Reset
+        </button>
+        <button class="btn-icon" id="btn-new" title="New text">
+          ⟳ New Text
+        </button>
+      </div>
+    </header>
+
+    <!-- ═══════════════════════════════════════
        MAIN CONTENT
   ════════════════════════════════════════ -->
-  <div class="container">
- 
-    <!-- ── Stats Bar ── -->
-    <div class="stats-bar">
-      <div class="stat-card" id="stat-wpm">
-        <div class="stat-label">WPM — Words Per Minute</div>
-        <div class="stat-value">
-          <span id="wpm-current">0</span>
-          <span class="max">/ <span id="wpm-max">0</span></span>
+    <div class="container">
+      <!-- ── Stats Bar ── -->
+      <div class="stats-bar">
+        <div class="stat-card" id="stat-wpm">
+          <div class="stat-label">WPM — Words Per Minute</div>
+          <div class="stat-value">
+            <span id="wpm-current">0</span>
+            <span class="max">/ <span id="wpm-max">0</span></span>
+          </div>
+          <div class="stat-sub">
+            Current: <span id="wpm-c2">0</span> &nbsp; Max:
+            <span id="wpm-m2">0</span>
+          </div>
         </div>
-        <div class="stat-sub">Current: <span id="wpm-c2">0</span> &nbsp; Max: <span id="wpm-m2">0</span></div>
-      </div>
- 
-      <div class="stat-card" id="stat-accuracy">
-        <div class="stat-label">Accuracy (%)</div>
-        <div class="stat-value">
-          <span id="accuracy-val">—</span>
-          <span style="font-size:1rem;color:var(--text-dim)">%</span>
-        </div>
-        <div class="stat-sub" id="accuracy-sub"><span class="badge good">perfect</span></div>
-      </div>
- 
-      <div class="stat-card" id="stat-errors">
-        <div class="stat-label">Error Rate</div>
-        <div class="stat-value">
-          <span id="error-rate">0.0</span>
-          <span style="font-size:1rem;color:var(--text-dim)">%</span>
-        </div>
-        <div class="stat-sub">heatmap tracked</div>
-      </div>
- 
-      <div class="stat-card" id="stat-timer">
-        <div class="stat-label">Timer</div>
-        <div class="stat-value timer-val"><span id="timer-display">00:00</span></div>
-        <div class="stat-sub"><span class="timer-status idle" id="timer-status">idle</span></div>
-      </div>
-    </div>
- 
-    <!-- ── Mode / Difficulty Bar ── -->
-    <div class="mode-bar">
-      <span class="mode-label">Mode:</span>
-      <button class="mode-btn sel" data-mode="words">Words</button>
-      <button class="mode-btn" data-mode="sentences">Sentences</button>
-      <button class="mode-btn" data-mode="code">Code</button>
-      <button class="mode-btn" data-mode="custom">Custom</button>
-      <div class="sep"></div>
-      <span class="mode-label">Difficulty:</span>
-      <button class="difficulty-btn sel-easy" data-diff="easy">Easy</button>
-      <button class="difficulty-btn" data-diff="medium">Medium</button>
-      <button class="difficulty-btn" data-diff="hard">Hard</button>
-    </div>
- 
-    <!-- ── Typing Prompt ── -->
-    <div class="prompt-wrap">
-      <div id="prompt-box" tabindex="0" autocomplete="off" autocorrect="off" spellcheck="false"></div>
-      <div class="progress-bar-wrap">
-        <div id="progress-bar"></div>
-      </div>
-      <div class="prompt-footer">
-        <span><span id="chars-done">0</span>/<span id="chars-total">0</span> characters</span>
-        <span id="word-progress">0 / 0 words</span>
-      </div>
-    </div>
- 
-    <!-- ── Live Heatmap Keyboard ── -->
-    <div class="keyboard-wrap">
-      <div class="kb-header">
-        <span class="kb-title">Live Heatmap Keyboard</span>
-        <div class="heat-legend">
-          <span class="heat-dot" style="background:rgba(251,191,36,.8)"></span> low
-          <span class="heat-dot" style="background:rgba(249,115,22,.85)"></span> med
-          <span class="heat-dot" style="background:rgba(239,68,68,.9)"></span> high
-        </div>
-      </div>
-      <div class="keyboard" id="keyboard"></div>
-    </div>
- 
-    <!-- ── Live Error Log ── -->
-    <div class="error-log-wrap">
-      <div class="log-header">
-        <span class="dot"></span> Live Error Log
-      </div>
-      <div id="error-log-list">
-        <span class="err-badge none">No errors yet — keep going!</span>
-      </div>
-    </div>
- 
-    <!-- ── Results Panel (hidden until finish) ── -->
-    <div id="results-panel">
-      <div class="result-title">⚡ SESSION COMPLETE</div>
-      <div class="result-sub" id="result-comment">Great typing! Here's your breakdown:</div>
-      <div class="result-grid">
-        <div class="result-cell">
-          <div class="r-label">Final WPM</div>
-          <div class="r-val" id="r-wpm">—</div>
-          <div class="r-unit">words/min</div>
-        </div>
-        <div class="result-cell">
-          <div class="r-label">Peak WPM</div>
-          <div class="r-val" id="r-peak">—</div>
-          <div class="r-unit">max burst</div>
-        </div>
-        <div class="result-cell">
-          <div class="r-label">Accuracy</div>
-          <div class="r-val" id="r-acc">—</div>
-          <div class="r-unit">%</div>
-        </div>
-        <div class="result-cell">
-          <div class="r-label">Total Errors</div>
-          <div class="r-val" id="r-errs">—</div>
-          <div class="r-unit">typos</div>
-        </div>
-        <div class="result-cell">
-          <div class="r-label">Time</div>
-          <div class="r-val" id="r-time">—</div>
-          <div class="r-unit">elapsed</div>
-        </div>
-      </div>
-      <div class="worst-keys">
-        <h4>Most Mistyped Keys</h4>
-        <div class="worst-keys-list" id="worst-keys-list"></div>
-      </div>
-      <div>
-        <button class="btn-restart" onclick="restart()">↺ Try Again</button>
-        <button class="btn-restart secondary" onclick="newText()">⟳ New Text</button>
-      </div>
-    </div>
- 
-  </div><!-- /container -->
- 
-  <script src="script.js"></script>
-</body>
-</html>
- 
 
-  <script src="app.js"></script>
-</body>
+        <div class="stat-card" id="stat-accuracy">
+          <div class="stat-label">Accuracy (%)</div>
+          <div class="stat-value">
+            <span id="accuracy-val">—</span>
+            <span style="font-size: 1rem; color: var(--text-dim)">%</span>
+          </div>
+          <div class="stat-sub" id="accuracy-sub">
+            <span class="badge good">perfect</span>
+          </div>
+        </div>
+
+        <div class="stat-card" id="stat-errors">
+          <div class="stat-label">Error Rate</div>
+          <div class="stat-value">
+            <span id="error-rate">0.0</span>
+            <span style="font-size: 1rem; color: var(--text-dim)">%</span>
+          </div>
+          <div class="stat-sub">heatmap tracked</div>
+        </div>
+
+        <div class="stat-card" id="stat-timer">
+          <div class="stat-label">Timer</div>
+          <div class="stat-value timer-val">
+            <span id="timer-display">00:00</span>
+          </div>
+          <div class="stat-sub">
+            <span class="timer-status idle" id="timer-status">idle</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Mode / Difficulty Bar ── -->
+      <div class="mode-bar">
+        <span class="mode-label">Mode:</span>
+        <button class="mode-btn sel" data-mode="words">Words</button>
+        <button class="mode-btn" data-mode="sentences">Sentences</button>
+        <button class="mode-btn" data-mode="code">Code</button>
+        <button class="mode-btn" data-mode="custom">Custom</button>
+        <div class="sep"></div>
+        <span class="mode-label">Difficulty:</span>
+        <button class="difficulty-btn sel-easy" data-diff="easy">Easy</button>
+        <button class="difficulty-btn" data-diff="medium">Medium</button>
+        <button class="difficulty-btn" data-diff="hard">Hard</button>
+      </div>
+
+      <!-- ── Typing Prompt ── -->
+      <div class="prompt-wrap">
+        <div
+          id="prompt-box"
+          tabindex="0"
+          autocomplete="off"
+          autocorrect="off"
+          spellcheck="false"
+        ></div>
+        <div class="progress-bar-wrap">
+          <div id="progress-bar"></div>
+        </div>
+        <div class="prompt-footer">
+          <span
+            ><span id="chars-done">0</span>/<span id="chars-total">0</span>
+            characters</span
+          >
+          <span id="word-progress">0 / 0 words</span>
+        </div>
+      </div>
+
+      <!-- ── Live Heatmap Keyboard ── -->
+      <div class="keyboard-wrap">
+        <div class="kb-header">
+          <span class="kb-title">Live Heatmap Keyboard</span>
+          <div class="heat-legend">
+            <span
+              class="heat-dot"
+              style="background: rgba(251, 191, 36, 0.8)"
+            ></span>
+            low
+            <span
+              class="heat-dot"
+              style="background: rgba(249, 115, 22, 0.85)"
+            ></span>
+            med
+            <span
+              class="heat-dot"
+              style="background: rgba(239, 68, 68, 0.9)"
+            ></span>
+            high
+          </div>
+        </div>
+        <div class="keyboard" id="keyboard"></div>
+      </div>
+
+      <!-- ── Live Error Log ── -->
+      <div class="error-log-wrap">
+        <div class="log-header"><span class="dot"></span> Live Error Log</div>
+        <div id="error-log-list">
+          <span class="err-badge none">No errors yet — keep going!</span>
+        </div>
+      </div>
+
+      <!-- ── Results Panel (hidden until finish) ── -->
+      <div id="results-panel">
+        <div class="result-title">⚡ SESSION COMPLETE</div>
+        <div class="result-sub" id="result-comment">
+          Great typing! Here's your breakdown:
+        </div>
+        <div class="result-grid">
+          <div class="result-cell">
+            <div class="r-label">Final WPM</div>
+            <div class="r-val" id="r-wpm">—</div>
+            <div class="r-unit">words/min</div>
+          </div>
+          <div class="result-cell">
+            <div class="r-label">Peak WPM</div>
+            <div class="r-val" id="r-peak">—</div>
+            <div class="r-unit">max burst</div>
+          </div>
+          <div class="result-cell">
+            <div class="r-label">Accuracy</div>
+            <div class="r-val" id="r-acc">—</div>
+            <div class="r-unit">%</div>
+          </div>
+          <div class="result-cell">
+            <div class="r-label">Total Errors</div>
+            <div class="r-val" id="r-errs">—</div>
+            <div class="r-unit">typos</div>
+          </div>
+          <div class="result-cell">
+            <div class="r-label">Time</div>
+            <div class="r-val" id="r-time">—</div>
+            <div class="r-unit">elapsed</div>
+          </div>
+        </div>
+        <div class="worst-keys">
+          <h4>Most Mistyped Keys</h4>
+          <div class="worst-keys-list" id="worst-keys-list"></div>
+        </div>
+        <div>
+          <button class="btn-restart" onclick="restart()">↺ Try Again</button>
+          <button class="btn-restart secondary" onclick="newText()">
+            ⟳ New Text
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- /container -->
+
+    <script src="app.js"></script>
+  </body>
 </html>
