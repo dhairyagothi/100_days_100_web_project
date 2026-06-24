@@ -709,3 +709,220 @@ function stepInput(inputId, stepValue) {
 
   input.value = newValue;
 }
+
+
+/* =========================================================
+   DYNAMIC THEME COLOR PICKER
+========================================================= */
+
+// Get the color picker element
+const colorPicker = document.getElementById('themeColorPicker');
+const hexDisplay = document.getElementById('colorHexDisplay');
+const DARKEN_AMOUNT = 30; // For secondary color
+
+/**
+ * Apply a custom theme color
+ * @param {string} hexColor - Hex color code (e.g., '#9b5cff')
+ */
+function applyCustomTheme(hexColor) {
+    // Validate hex color
+    if (!hexColor || !/^#[0-9A-F]{6}$/i.test(hexColor)) {
+        hexColor = '#9b5cff'; // Fallback to default purple
+    }
+    
+    // Remove 'theme-' class if any
+    document.body.className = '';
+    
+    // Set CSS custom properties dynamically
+    document.documentElement.style.setProperty('--primary', hexColor);
+    
+    // Generate secondary color (darker version)
+    const secondaryColor = darkenColor(hexColor, DARKEN_AMOUNT);
+    document.documentElement.style.setProperty('--secondary', secondaryColor);
+    
+    // Update background gradient with the primary color
+    const bgGradient = generateBackgroundGradient(hexColor);
+    document.body.style.background = bgGradient;
+    
+    // Update the gauge gradient
+    updateGaugeStyles(hexColor);
+    
+    // Update chart colors if chart exists
+    if (bmiChart) {
+        bmiChart.data.datasets[0].borderColor = hexColor;
+        bmiChart.data.datasets[0].pointBackgroundColor = hexColor;
+        bmiChart.data.datasets[0].backgroundColor = hexColor + '26'; // 15% opacity
+        bmiChart.update();
+    }
+    
+    // Save to localStorage
+    localStorage.setItem('customThemeColor', hexColor);
+    
+    // Update hex display
+    if (hexDisplay) {
+        hexDisplay.textContent = hexColor.toUpperCase();
+    }
+}
+
+/**
+ * Darken a hex color by a percentage
+ * @param {string} hex - Hex color code
+ * @param {number} amount - Amount to darken (0-255)
+ * @returns {string} Darkened hex color
+ */
+function darkenColor(hex, amount) {
+    // Remove # if present
+    hex = hex.replace('#', '');
+    
+    // Parse hex to RGB
+    let r = parseInt(hex.substring(0, 2), 16);
+    let g = parseInt(hex.substring(2, 4), 16);
+    let b = parseInt(hex.substring(4, 6), 16);
+    
+    // Darken
+    r = Math.max(0, r - amount);
+    g = Math.max(0, g - amount);
+    b = Math.max(0, b - amount);
+    
+    // Convert back to hex
+    return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+}
+
+/**
+ * Generate a beautiful gradient based on the primary color
+ * @param {string} hex - Hex color code
+ * @returns {string} CSS gradient
+ */
+function generateBackgroundGradient(hex) {
+    // Parse hex to RGB for gradient generation
+    const rgb = hexToRgb(hex);
+    
+    // Create a gradient with varying opacity of the primary color
+    return `linear-gradient(135deg, 
+        rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.25) 0%, 
+        rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.10) 50%,
+        rgba(${Math.floor(rgb.r/2)}, ${Math.floor(rgb.g/2)}, ${Math.floor(rgb.b/2)}, 0.30) 100%)`;
+}
+
+/**
+ * Convert hex to RGB object
+ * @param {string} hex - Hex color code
+ * @returns {object} RGB values
+ */
+function hexToRgb(hex) {
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16)
+    } : { r: 155, g: 92, b: 255 };
+}
+
+/**
+ * Update gauge styles dynamically
+ * @param {string} color - Hex color code
+ */
+function updateGaugeStyles(color) {
+    const gaugeElement = document.querySelector('.gauge');
+    if (gaugeElement) {
+        // Don't override the conic gradient if BMI is calculated
+        // Just update the primary color for future calculations
+        gaugeElement.style.setProperty('--gauge-color', color);
+    }
+}
+
+/**
+ * Color picker event handler
+ */
+if (colorPicker) {
+    colorPicker.addEventListener('input', function(e) {
+        const color = e.target.value;
+        applyCustomTheme(color);
+    });
+}
+
+/**
+ * Reset to default theme
+ */
+function resetToDefaultTheme() {
+    const defaultColor = '#9b5cff';
+    
+    // Reset body class to default
+    document.body.className = 'theme-purple';
+    
+    // Reset custom properties
+    document.documentElement.style.setProperty('--primary', '');
+    document.documentElement.style.setProperty('--secondary', '');
+    document.body.style.background = '';
+    
+    // Update color picker
+    if (colorPicker) {
+        colorPicker.value = defaultColor;
+    }
+    
+    if (hexDisplay) {
+        hexDisplay.textContent = defaultColor.toUpperCase();
+    }
+    
+    // Update chart
+    if (bmiChart) {
+        bmiChart.data.datasets[0].borderColor = '#9b5cff';
+        bmiChart.data.datasets[0].pointBackgroundColor = '#9b5cff';
+        bmiChart.data.datasets[0].backgroundColor = 'rgba(155, 92, 255, 0.15)';
+        bmiChart.update();
+    }
+    
+    // Remove custom theme from localStorage
+    localStorage.removeItem('customThemeColor');
+    
+    // Reload styles
+    location.reload(); // Simple refresh to reset everything
+}
+
+/**
+ * Initialize theme on load
+ */
+function initTheme() {
+    const savedColor = localStorage.getItem('customThemeColor');
+    
+    // Check if there's a saved custom color
+    if (savedColor && /^#[0-9A-F]{6}$/i.test(savedColor)) {
+        applyCustomTheme(savedColor);
+        if (colorPicker) {
+            colorPicker.value = savedColor;
+        }
+        if (hexDisplay) {
+            hexDisplay.textContent = savedColor.toUpperCase();
+        }
+    } else {
+        // Check for saved theme class
+        const savedTheme = localStorage.getItem('selectedTheme');
+        if (savedTheme) {
+            document.body.className = savedTheme;
+            // Update color picker to match
+            const colorMap = {
+                'theme-purple': '#9b5cff',
+                'theme-blue': '#4da3ff',
+                'theme-green': '#35d07f',
+                'theme-orange': '#ff9800'
+            };
+            const color = colorMap[savedTheme] || '#9b5cff';
+            if (colorPicker) {
+                colorPicker.value = color;
+            }
+            if (hexDisplay) {
+                hexDisplay.textContent = color.toUpperCase();
+            }
+        }
+    }
+}
+
+/**
+ * Preset color quick picker (Optional Enhancement)
+ */
+function applyPresetColor(color) {
+    if (colorPicker) {
+        colorPicker.value = color;
+    }
+    applyCustomTheme(color);
+}

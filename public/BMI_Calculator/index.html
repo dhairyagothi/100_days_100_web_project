@@ -18,30 +18,29 @@
   <body class="theme-purple">
     <canvas id="bg"></canvas>
     <!-- ========================= -->
-    <!-- THEME SWITCHER -->
-    <!-- ========================= -->
-    <div class="theme-switcher">
-      <button
-        class="theme-btn purple"
-        onclick="changeTheme('theme-purple')"
-        title="Purple Theme"
-      ></button>
-      <button
-        class="theme-btn blue"
-        onclick="changeTheme('theme-blue')"
-        title="Blue Theme"
-      ></button>
-      <button
-        class="theme-btn green"
-        onclick="changeTheme('theme-green')"
-        title="Green Theme"
-      ></button>
-      <button
-        class="theme-btn orange"
-        onclick="changeTheme('theme-orange')"
-        title="Orange Theme"
-      ></button>
+<!-- THEME SWITCHER - DYNAMIC -->
+<!-- ========================= -->
+<div class="theme-switcher">
+    <div class="theme-picker-wrapper">
+        <label for="themeColorPicker" class="theme-picker-label">
+            <span class="picker-icon">🎨</span>
+            <span>Pick Theme Color</span>
+        </label>
+        <div class="color-picker-container">
+            <input 
+                type="color" 
+                id="themeColorPicker" 
+                value="#9b5cff"
+                class="theme-color-picker"
+                title="Choose any theme color"
+            >
+            <div class="color-hex-display" id="colorHexDisplay">#9b5cff</div>
+        </div>
     </div>
+    <button class="theme-reset-btn" onclick="resetToDefaultTheme()" title="Reset to default">
+        ↺
+    </button>
+</div>
     <!-- ========================= -->
     <!-- MAIN CONTAINER -->
     <!-- ========================= -->

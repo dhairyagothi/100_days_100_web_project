@@ -777,3 +777,168 @@ html {
 ::-webkit-scrollbar-thumb:hover {
   background: #3182fc; /* Added a hover state using the Firefox blue! */
 }
+
+/* =========================================================
+   DYNAMIC THEME PICKER
+========================================================= */
+
+.theme-switcher {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 8px 16px 8px 20px;
+    border-radius: 50px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.theme-picker-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.theme-picker-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.picker-icon {
+    font-size: 1.1rem;
+}
+
+.color-picker-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.08);
+    padding: 4px 12px 4px 4px;
+    border-radius: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    transition: 0.3s ease;
+}
+
+.color-picker-container:hover {
+    background: rgba(255, 255, 255, 0.14);
+}
+
+.theme-color-picker {
+    width: 32px;
+    height: 32px;
+    padding: 2px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    cursor: pointer;
+    background: transparent;
+    transition: 0.3s ease;
+}
+
+.theme-color-picker::-webkit-color-swatch-wrapper {
+    padding: 0;
+}
+
+.theme-color-picker::-webkit-color-swatch {
+    border: none;
+    border-radius: 50%;
+}
+
+.theme-color-picker::-moz-color-swatch {
+    border: none;
+    border-radius: 50%;
+}
+
+.theme-color-picker:hover {
+    transform: scale(1.1);
+}
+
+.color-hex-display {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.75rem;
+    font-weight: 600;
+    font-family: 'Courier New', monospace;
+    min-width: 55px;
+    letter-spacing: 0.5px;
+}
+
+.theme-reset-btn {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: rgba(255, 255, 255, 0.7);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.theme-reset-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: rotate(45deg);
+}
+
+/* Quick Preset Colors - Optional Enhancement */
+.theme-presets {
+    display: flex;
+    gap: 6px;
+    padding-left: 8px;
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.preset-color {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.preset-color:hover {
+    transform: scale(1.2);
+    border-color: rgba(255, 255, 255, 0.6);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 600px) {
+    .theme-switcher {
+        top: 12px;
+        right: 12px;
+        padding: 6px 12px 6px 16px;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    
+    .theme-picker-label span:last-child {
+        display: none;
+    }
+    
+    .color-hex-display {
+        display: none;
+    }
+    
+    .theme-color-picker {
+        width: 28px;
+        height: 28px;
+    }
+    
+    .theme-reset-btn {
+        width: 28px;
+        height: 28px;
+        font-size: 0.9rem;
+    }
+}
+
