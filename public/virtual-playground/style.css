@@ -1,0 +1,121 @@
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background: #f0f0f0;
+        text-align: center;
+      }
+      h1 {
+        color: #333;
+      }
+      .play-area {
+        width: 400px;
+        height: 400px;
+        margin: 20px auto;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        position: relative;
+        overflow: hidden;
+      }
+      .ball {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #ff6b6b;
+        background: #ff6b6b;
+        position: absolute;
+        cursor: pointer;
+        transition: transform 0.1s;
+      }
+      .controls {
+        margin-top: 20px;
+      }
+      button {
+        padding: 10px 20px;
+        font-size: 16px;
+        margin: 0 5px;
+        border: none;
+        border-radius: 6px;
+        background: #007bff;
+        color: #fff;
+        cursor: pointer;
+      }
+      button:hover {
+        background: #0056b3;
+      }
+
+      /* Planet selector row */
+      .planet-selector {
+        margin-top: 16px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .planet-selector label {
+        font-size: 14px;
+        color: #333;
+        margin-right: 4px;
+        font-weight: bold;
+      }
+      /* Planet buttons share the base button style but have a
+         distinct inactive colour so active state is clearly visible */
+      .planet-btn {
+        padding: 8px 14px;
+        font-size: 13px;
+        margin: 0;
+        background: #6c757d;
+      }
+      .planet-btn:hover {
+        background: #495057;
+      }
+      /* Active planet is highlighted in a distinct accent colour */
+      .planet-btn.active {
+        background: #fd7e14;
+        outline: 2px solid #c96000;
+        outline-offset: 1px;
+      }
+      .planet-btn.active:hover {
+        background: #e06c0b;
+      }
+
+      /* Customise row (color + shape) */
+      .customise {
+        margin-top: 14px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+        font-size: 14px;
+        color: #333;
+      }
+      .customise label {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .customise select {
+        padding: 4px 8px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        font-size: 14px;
+        cursor: pointer;
+      }
+
+      /* Responsive: stack controls on narrow screens */
+      @media (max-width: 440px) {
+        .play-area {
+          width: 100%;
+          height: 320px;
+        }
+        .planet-selector {
+          gap: 6px;
+        }
+        .planet-btn {
+          padding: 7px 10px;
+          font-size: 12px;
+        }
+      }
