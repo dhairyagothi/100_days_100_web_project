@@ -56,7 +56,7 @@ email-validator/
 4. If valid, the form can be submitted successfully.
 
 ## 📷 Screenshots
-*Add screenshots here showing the email input field, validation messages, and UI layout.*
+<img width="1920" height="1020" alt="image" src="https://github.com/user-attachments/assets/149b39dd-880a-4c85-be52-ed3ca16a488f" />
 
 ## 🤝 Contributing
 Contributions are welcome! To contribute:
