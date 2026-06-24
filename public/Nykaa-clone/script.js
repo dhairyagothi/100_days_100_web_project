@@ -2,54 +2,60 @@ import listofProduct from "./listofProduct.js";
 import topbrands from "./topbrands.js";
 import hardtoResistDeals from "./hardtoResistDeals.js";
 
-const btnPreve = document.querySelector(".btn-container-prev");
+// ===== SLIDER =====
+const btnPrev = document.querySelector(".btn-container-prev");
 const btnNext = document.querySelector(".btn-container-next");
-const ImageContainerSlider = document.querySelector("#imageSlideContainer");
+const imageSlideContainer = document.querySelector("#imageSlideContainer");
 
-if (btnNext && btnPreve && ImageContainerSlider) {
+if (btnNext && imageSlideContainer) {
   btnNext.addEventListener("click", () => {
-    ImageContainerSlider.scrollLeft += 200;
-  });
-
-  btnPreve.addEventListener("click", () => {
-    ImageContainerSlider.scrollLeft -= 200;
+    imageSlideContainer.scrollLeft += 200;
   });
 }
 
-const listofProductEL = document.querySelector(".listofProduct");
-let listofProductHTML = "";
-if (listofProductEL && Array.isArray(listofProduct)) {
+if (btnPrev && imageSlideContainer) {
+  btnPrev.addEventListener("click", () => {
+    imageSlideContainer.scrollLeft -= 200;
+  });
+}
+
+// ===== PRODUCT LIST =====
+const listofProductEl = document.querySelector(".listofProduct");
+if (listofProductEl && listofProduct?.length) {
+  let html = "";
   for (let i = 0; i < listofProduct.length; i++) {
-    listofProductHTML += `
+    html += `
       <a href="#">
         <img src="${listofProduct[i].img}" alt="${listofProduct[i].dis}" />
         <p>${listofProduct[i].dis}</p>
       </a>`;
   }
-  listofProductEL.innerHTML = listofProductHTML;
+  listofProductEl.innerHTML = html;
 }
 
+// ===== TOP BRANDS =====
 const brandTopproductEl = document.querySelector(".brandTopproduct");
-let brandTopproductHTML = "";
-if (brandTopproductEl && Array.isArray(topbrands)) {
+if (brandTopproductEl && topbrands?.length) {
+  let html = "";
   for (let j = 0; j < topbrands.length; j++) {
-    brandTopproductHTML += `
+    html += `
       <a href="#">
         <img src="${topbrands[j].img}" alt="${topbrands[j].dis}" />
         <p>${topbrands[j].dis}</p>
       </a>`;
   }
-  brandTopproductEl.innerHTML = brandTopproductHTML;
+  brandTopproductEl.innerHTML = html;
 }
 
-const hardToResistDeals_image = document.querySelector(".hardToResistDeals_image");
-let hardToResistDeals_imageHTML = "";
-if (hardToResistDeals_image && Array.isArray(hardtoResistDeals)) {
+// ===== HARD TO RESIST DEALS =====
+const hardToResistDealsEl = document.querySelector(".hardToResistDeals_image");
+if (hardToResistDealsEl && hardtoResistDeals?.length) {
+  let html = "";
   for (let k = 0; k < hardtoResistDeals.length; k++) {
-    hardToResistDeals_imageHTML += `
+    html += `
       <a href="#">
         <img src="${hardtoResistDeals[k]}" alt="Deal promo banner" />
       </a>`;
   }
-  hardToResistDeals_image.innerHTML = hardToResistDeals_imageHTML;
+  hardToResistDealsEl.innerHTML = html;
 }

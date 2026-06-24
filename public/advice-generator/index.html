@@ -3,87 +3,103 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Random Advice Generator</title>
+    <title>Advice — Daily Wisdom</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <main class="advice-card">
-      <h1 class="advice-header">Advice #<span id="adviceId">000</span></h1>
+    <div class="bg-orb orb-1"></div>
+    <div class="bg-orb orb-2"></div>
 
-      <p class="advice-quote">"Loading inspiration..."</p>
-
-      <div class="divider">
-        <span class="line"></span>
-        <span class="pause-icon">||</span>
-        <span class="line"></span>
-      </div>
-
-      <footer class="action-bar">
-        <a
-          id="tweetBtn"
-          class="action-btn tweet-btn"
-          target="_blank"
-          rel="noopener noreferrer"
-          title="Share this on X"
-        >
-          <svg viewBox="0 0 24 24" class="icon-svg">
-            <path
-              d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"
-            />
-          </svg>
-        </a>
-
-        <button id="copyBtn" class="action-btn utility-btn" title="Copy Advice">
-          📋
-        </button>
-
-        <button
-          id="favoriteBtn"
-          class="action-btn utility-btn"
-          title="Save Favorite"
-        >
-          ❤️
-        </button>
-
-        <button
-          id="viewFavoritesBtn"
-          class="action-btn utility-btn"
-          title="View Favorites"
-        >
-          ⭐
-        </button>
-
-        <button
-          id="diceBtn"
-          class="action-btn dice-btn"
-          title="Roll for new advice"
-        >
-          <svg viewBox="0 0 24 24" class="icon-svg dice-icon">
-            <rect
-              x="3"
-              y="3"
-              width="18"
-              height="18"
-              rx="3"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-            />
-            <circle cx="8" cy="8" r="1.5" fill="currentColor" />
-            <circle cx="16" cy="16" r="1.5" fill="currentColor" />
-            <circle cx="8" cy="16" r="1.5" fill="currentColor" />
-            <circle cx="16" cy="8" r="1.5" fill="currentColor" />
-            <circle cx="12" cy="12" r="1.5" fill="currentColor" />
+    <div class="layout">
+      <header class="site-header">
+        <span class="site-logo">✦ wisdom</span>
+        <button id="themeToggleBtn" class="icon-btn" title="Toggle theme" aria-label="Toggle dark mode">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"/>
+            <line x1="12" y1="1" x2="12" y2="3"/>
+            <line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+            <line x1="1" y1="12" x2="3" y2="12"/>
+            <line x1="21" y1="12" x2="23" y2="12"/>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
           </svg>
         </button>
-      </footer>
-    </main>
-    <div id="toast" class="toast"></div>
+      </header>
 
-    <section class="favorites-panel" id="favoritesPanel">
-      <h2>Saved Advice</h2>
-      <ul id="favoritesList"></ul>
-    </section>
+      <main class="card-wrap">
+        <div class="advice-card" id="adviceCard">
+          <div class="card-top">
+            <span class="slip-label">Advice <span id="adviceId">#—</span></span>
+            <div class="mood-badge" id="moodBadge">
+              <span id="moodEmoji">✨</span>
+              <span id="moodLabel">Loading...</span>
+            </div>
+          </div>
+
+          <blockquote class="advice-text" id="adviceText">
+            Loading a fresh piece of wisdom for you…
+          </blockquote>
+
+          <div class="divider">
+            <svg viewBox="0 0 200 8" width="200" height="8">
+              <line x1="0" y1="4" x2="82" y2="4" stroke="currentColor" stroke-width="1" stroke-dasharray="4 3" opacity="0.3"/>
+              <circle cx="100" cy="4" r="3" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.5"/>
+              <line x1="118" y1="4" x2="200" y2="4" stroke="currentColor" stroke-width="1" stroke-dasharray="4 3" opacity="0.3"/>
+            </svg>
+          </div>
+
+          <div class="card-actions">
+            <button id="copyBtn" class="action-btn" title="Copy to clipboard" aria-label="Copy advice">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              <span>Copy</span>
+            </button>
+
+            <button id="favoriteBtn" class="action-btn" title="Save to favorites" aria-label="Save favorite">
+              <svg id="heartIcon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              <span>Save</span>
+            </button>
+
+            <a id="tweetBtn" class="action-btn tweet-btn" href="#" target="_blank" rel="noopener noreferrer" title="Share on X" aria-label="Share on X / Twitter">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+              <span>Share</span>
+            </a>
+
+            <button id="rollBtn" class="action-btn roll-btn" title="New advice" aria-label="Get new advice">
+              <svg id="rollIcon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/>
+                <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+              </svg>
+              <span>New</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="view-toggle-row">
+          <button id="viewFavoritesBtn" class="ghost-btn" aria-expanded="false">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <span id="favBtnLabel">Saved (0)</span>
+          </button>
+        </div>
+
+        <section class="favorites-panel" id="favoritesPanel" aria-hidden="true">
+          <div class="fav-header">
+            <h2>Saved advice</h2>
+            <button id="clearFavoritesBtn" class="ghost-btn danger-btn">Clear all</button>
+          </div>
+          <ul id="favoritesList" class="fav-list"></ul>
+          <p class="fav-empty" id="favEmpty">Nothing saved yet. Hit Save on any advice you want to keep.</p>
+        </section>
+      </main>
+
+      <div class="history-strip" id="historyStrip" aria-label="Recent history"></div>
+    </div>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
     <script src="script.js"></script>
   </body>
 </html>

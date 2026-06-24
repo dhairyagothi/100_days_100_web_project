@@ -33,8 +33,33 @@ document.addEventListener('DOMContentLoaded', () => {
     const sizeDisplay = document.getElementById('size-val');
     const carbonDisplay = document.getElementById('carbon-val');
     const issuesContainer = document.getElementById('issues-list');
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const themeIcon = document.getElementById('theme-icon');
 
-    function animateValue(start, end, duration, element, suffix = "", decimals = 2) {
+    const requiredElements = [
+    inputArea,
+    analyzeBtn,
+    scoreDisplay,
+    gaugeCircle,
+    sizeDisplay,
+    carbonDisplay,
+    issuesContainer,
+    themeToggleBtn, // Added safety check
+    themeIcon
+    ];
+    
+    if (requiredElements.some(el => !el)) {
+    console.error("❌ Required DOM elements are missing.");
+    return;
+}
+
+if (localStorage.getItem('theme') === 'light') {
+    document.body.classList.add('light-theme');
+    if (themeIcon) themeIcon.textContent = '☀️';
+}
+
+
+function animateValue(start, end, duration, element, suffix = "", decimals = 2) {
         let startTimestamp = null;
         const step = (timestamp) => {
             if (!startTimestamp) startTimestamp = timestamp;
@@ -80,26 +105,25 @@ document.addEventListener('DOMContentLoaded', () => {
         // Scaled to 10,000 views to ensure visibility
         const targetCarbon = (targetKb / (1024 * 1024)) * 0.2 * 1000 * 10000;
 
-        EcoRules.forEach(rule => {
-            const matches = code.match(rule.regex);
-            if (matches) {
-                const matchCount = matches.length;
-                targetScore -= (rule.deduction * matchCount);
-                
-                detectedIssues.push({
-                    title: rule.label,
-                    desc: rule.description,
-                    level: rule.severity,
-                    count: matchCount
-                });
-            }
-        });
+        for (const rule of EcoRules) {
+            const regex = new RegExp(rule.regex.source, rule.regex.flags);
+            const matches = code.match(regex);
+            if (!matches) continue;
+            const matchCount = matches.length;
+            targetScore -= rule.deduction * matchCount;
+            detectedIssues.push({
+                title: rule.label,
+                desc: rule.description,
+                level: rule.severity,
+                count: matchCount
+            });
+        }
 
         const finalScore = Math.max(0, targetScore);
 
-        const currentScore = parseFloat(scoreDisplay.textContent) || 0;
-        const currentKb = parseFloat(sizeDisplay.textContent) || 0;
-        const currentCarbon = parseFloat(carbonDisplay.textContent) || 0;
+        const currentScore = Number.parseFloat(scoreDisplay.textContent) || 0;
+        const currentKb = Number.parseFloat(sizeDisplay.textContent) || 0;
+        const currentCarbon = Number.parseFloat(carbonDisplay.textContent) || 0;
 
         animateValue(currentScore, finalScore, 1000, scoreDisplay, "", 0);
         animateValue(currentKb, targetKb, 1000, sizeDisplay, " KB", 2);
@@ -139,8 +163,21 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     }
-
-    analyzeBtn.addEventListener('click', runAnalysis);
+    // Theme Switch Engine
+    if (themeToggleBtn) {
+        themeToggleBtn.addEventListener('click', () => {
+            document.body.classList.toggle('light-theme');
+            
+            const isLight = document.body.classList.contains('light-theme');
+            if (themeIcon) themeIcon.textContent = isLight ? '☀️' : '🌙';
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+            
+            // Force re-render of the gauge color to instantly match the light/dark background
+            const currentScore = Number.parseFloat(scoreDisplay.textContent) || 0;
+            updateGaugeVisuals(currentScore);
+        });
+    }
+    if (analyzeBtn) {analyzeBtn.addEventListener('click', runAnalysis);}
     
     console.log("EcoLint Engine Ready!");
 });

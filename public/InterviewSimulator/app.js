@@ -639,23 +639,35 @@ function evaluateLocalConfidence() {
   const relevanceScore = averageRelevanceScore * 0.25;
   const composureScore = (100 - state.stressValue) * 0.15;
   const penaltyScore = lowEffortPercent * 30 + unansweredPercent * 35;
-  const confidenceScore = clampScore(
-    Math.round(
-      lengthScore + qualityScore + relevanceScore + composureScore - penaltyScore
-    )
-  );
+  const confidenceScore = clampScore(Math.round(lengthScore + qualityScore + relevanceScore + composureScore - penaltyScore));
+
+  const strengths = [];
+  const areasForImprovement = [];
+  
+  if (averageWordCount > 20) strengths.push("Detailed explanations");
+  if (meaningfulPercent > 0.5) strengths.push("Good effort in answering");
+  if (state.stressValue < 40) strengths.push("Maintained composure");
+  
+  if (lowEffortPercent > 0.3) areasForImprovement.push("Incomplete answers");
+  if (unansweredPercent > 0) areasForImprovement.push("Missed questions");
+  if (averageWordCount <= 20) areasForImprovement.push("Lack of technical depth");
+  if (strengths.length === 0) strengths.push("Completed the interview");
 
   return {
-    confidenceScore,
-    evaluationAssessment: buildLocalEvaluationSummary({
-      averageWordCount,
-      averageRelevanceScore,
-      lowEffortCount,
-      meaningfulCount,
-      totalQuestions,
-      unansweredCount,
+    scores: {
+      technicalKnowledge: clampScore(Math.round(lengthScore + averageRelevanceScore * 0.5)),
+      communication: clampScore(Math.round(qualityScore * 2 + averageWordCount)),
+      problemSolving: clampScore(Math.round(relevanceScore * 2 + meaningfulPercent * 50)),
+      confidence: confidenceScore,
+      stress: state.stressValue
+    },
+    overallFeedback: buildLocalEvaluationSummary({
+      averageWordCount, averageRelevanceScore, lowEffortCount, meaningfulCount, totalQuestions, unansweredCount
     }),
-    answerEvaluations,
+    strengths: strengths,
+    areasForImprovement: areasForImprovement.length > 0 ? areasForImprovement : ["Provide more examples"],
+    recommendedLearning: ["System Design Fundamentals", "Mock Interview Practice", "Core Technical Concepts"],
+    answerEvaluations: answerEvaluations
   };
 }
 
@@ -663,6 +675,11 @@ function evaluateLocalAnswerRelevance(question, answer, index) {
   if (!answer.trim()) {
     return {
       questionIndex: index,
+      rating: "Poor",
+      strengths: [],
+      missingConcepts: ["Core topic of the question"],
+      improvementSuggestions: ["Ensure you provide at least a basic answer rather than leaving it blank."],
+      sampleStrongAnswer: "A strong answer would directly address the question with technical depth and practical examples.",
       relevanceScore: 0,
       correctnessScore: 0,
       answeredQuestion: false,
@@ -674,6 +691,11 @@ function evaluateLocalAnswerRelevance(question, answer, index) {
   if (isLowEffortAnswer(answer)) {
     return {
       questionIndex: index,
+      rating: "Poor",
+      strengths: [],
+      missingConcepts: ["Technical specifics", "Clear explanation"],
+      improvementSuggestions: ["Avoid very short or low-effort answers. Elaborate on your points."],
+      sampleStrongAnswer: "A strong answer would directly address the question with technical depth and practical examples.",
       relevanceScore: 0,
       correctnessScore: 0,
       answeredQuestion: false,
@@ -685,24 +707,23 @@ function evaluateLocalAnswerRelevance(question, answer, index) {
   const questionKeywords = getSignificantTerms(question);
   const answerTerms = new Set(getSignificantTerms(answer));
   const matchedTerms = questionKeywords.filter((term) => answerTerms.has(term));
-  const overlapRatio =
-    questionKeywords.length > 0
-      ? matchedTerms.length / questionKeywords.length
-      : 0;
-  const relevanceScore = clampScore(
-    overlapRatio * 70 + Math.min(getWordCount(answer), 15) * 2
-  );
+  const overlapRatio = questionKeywords.length > 0 ? matchedTerms.length / questionKeywords.length : 0;
+  const relevanceScore = clampScore(overlapRatio * 70 + Math.min(getWordCount(answer), 15) * 2);
   const answeredQuestion = relevanceScore >= 35;
+  
+  let rating = "Fair";
+  if (relevanceScore > 70) rating = "Excellent";
+  else if (relevanceScore > 50) rating = "Good";
+  else if (!answeredQuestion) rating = "Poor";
 
-  // Without an AI evaluator this is a relevance proxy, not a factual verdict.
   return {
     questionIndex: index,
-    relevanceScore,
-    correctnessScore: relevanceScore,
-    answeredQuestion,
-    feedback: answeredQuestion
-      ? 'Local check found topic overlap with the question. Configure Groq for factual correctness scoring.'
-      : 'Local check found little overlap with the question, so the response may not directly answer it.',
+    rating: rating,
+    strengths: answeredQuestion ? ["Attempted the topic", "Used relevant keywords"] : [],
+    missingConcepts: answeredQuestion ? [] : ["Specifics requested in the prompt"],
+    improvementSuggestions: ["Include concrete examples from past projects", "Structure your answer using the STAR method"],
+    sampleStrongAnswer: "A strong answer would detail a specific scenario, the actions taken, and the measurable results achieved, relating closely to the technical stack.",
+    relevanceScore: relevanceScore
   };
 }
 
@@ -736,36 +757,27 @@ function clampScore(score) {
   return Math.max(0, Math.min(100, Math.round(numericScore)));
 }
 
-function normalizeAnswerEvaluations(remoteEvaluations, fallbackEvaluations) {
-  if (!Array.isArray(remoteEvaluations)) return fallbackEvaluations;
-
-  return fallbackEvaluations.map((fallbackEvaluation, index) => {
-    const remoteEvaluation =
-      remoteEvaluations.find(
-        (evaluation) => Number(evaluation.questionIndex) === index
-      ) || remoteEvaluations[index];
-
-    if (!remoteEvaluation) return fallbackEvaluation;
-
-    return {
-      questionIndex: index,
-      relevanceScore: clampScore(
-        remoteEvaluation.relevanceScore ?? fallbackEvaluation.relevanceScore
-      ),
-      correctnessScore: clampScore(
-        remoteEvaluation.correctnessScore ?? fallbackEvaluation.correctnessScore
-      ),
-      answeredQuestion:
-        typeof remoteEvaluation.answeredQuestion === 'boolean'
-          ? remoteEvaluation.answeredQuestion
-          : fallbackEvaluation.answeredQuestion,
-      feedback:
-        typeof remoteEvaluation.feedback === 'string' &&
-        remoteEvaluation.feedback.trim()
-          ? remoteEvaluation.feedback.trim()
-          : fallbackEvaluation.feedback,
-    };
-  });
+function mergeEvaluations(remote, local) {
+  if (!remote || !remote.scores) return local;
+  return {
+    scores: remote.scores || local.scores,
+    overallFeedback: remote.overallFeedback || local.overallFeedback,
+    strengths: remote.strengths || local.strengths,
+    areasForImprovement: remote.areasForImprovement || local.areasForImprovement,
+    recommendedLearning: remote.recommendedLearning || local.recommendedLearning,
+    answerEvaluations: (remote.answerEvaluations || local.answerEvaluations).map((remEval, idx) => {
+      const locEval = local.answerEvaluations.find(e => e.questionIndex === idx) || local.answerEvaluations[idx] || {};
+      if (!remEval) return locEval;
+      return {
+        questionIndex: idx,
+        rating: remEval.rating || locEval.rating || 'Fair',
+        strengths: remEval.strengths || locEval.strengths || [],
+        missingConcepts: remEval.missingConcepts || locEval.missingConcepts || [],
+        improvementSuggestions: remEval.improvementSuggestions || locEval.improvementSuggestions || [],
+        sampleStrongAnswer: remEval.sampleStrongAnswer || locEval.sampleStrongAnswer || ''
+      };
+    })
+  };
 }
 
 function formatAnswerEvaluation(evaluation) {
@@ -783,19 +795,15 @@ async function completeInterview() {
   stopRecording();
   state.isInterviewActive = false;
 
-  // Trigger modal immediately with a skeleton loading state
   if (UI.summaryContent) {
-   
     const loadingState = document.createElement('div');
     const loadingIcon = document.createElement('i');
     const loadingText = document.createElement('p');
 
     loadingState.style.cssText = 'text-align: center; padding: 40px 0;';
     loadingIcon.className = 'fa-solid fa-spinner fa-spin';
-    loadingIcon.style.cssText =
-      'font-size: 2.5rem; color: #7c63ff; margin-bottom: 16px;';
-    loadingText.textContent =
-      'Analyzing candidate performance metrics and structuring evaluation responses...';
+    loadingIcon.style.cssText = 'font-size: 2.5rem; color: #7c63ff; margin-bottom: 16px;';
+    loadingText.textContent = 'Analyzing candidate performance metrics and structuring detailed evaluation responses...';
 
     loadingState.append(loadingIcon, loadingText);
     clearElement(UI.summaryContent);
@@ -803,243 +811,252 @@ async function completeInterview() {
   }
   openModal();
 
-  // Prepare content diagnostics array for LLM processing
   const breakdownArray = state.questions.map((q, idx) => ({
     question: q,
     candidateAnswer: state.answers[idx] || '',
   }));
 
   const systemPrompt = `You are an elite, strict HR and technical evaluation engine. Analyze the given list of questions and candidate answers for a ${UI.roleSelect.value} position at a ${UI.difficultySelect.value} difficulty level.
-    Evaluate whether each answer literally addresses its paired question and whether the answer is technically or behaviorally correct for that question. Penalize generic, unrelated, empty, or low-effort responses even if they are fluent. You must compute an objective integer confidenceScore between 0 and 100 based on answer relevance, correctness, specificity, completeness, and measured stress. CRITICAL: If all or most answers are empty, unrelated, or minimal effort, confidenceScore MUST be exceptionally low (0 to 15%). Return output strictly as a JSON object matching this schema:
-    {"confidenceScore": number, "evaluationAssessment": "string", "answerEvaluations": [{"questionIndex": number, "relevanceScore": number, "correctnessScore": number, "answeredQuestion": boolean, "feedback": "string"}]}`;
+    Evaluate whether each answer literally addresses its paired question and whether the answer is technically or behaviorally correct for that question. Penalize generic, unrelated, empty, or low-effort responses. Return output strictly as a JSON object matching this schema:
+    {
+      "scores": {
+        "technicalKnowledge": number (0-100),
+        "communication": number (0-100),
+        "problemSolving": number (0-100),
+        "confidence": number (0-100),
+        "stress": number (0-100)
+      },
+      "overallFeedback": "string",
+      "strengths": ["string"],
+      "areasForImprovement": ["string"],
+      "recommendedLearning": ["string"],
+      "answerEvaluations": [
+        {
+          "questionIndex": number,
+          "rating": "Poor" | "Fair" | "Good" | "Excellent",
+          "strengths": ["string"],
+          "missingConcepts": ["string"],
+          "improvementSuggestions": ["string"],
+          "sampleStrongAnswer": "string"
+        }
+      ]
+    }`;
 
   const userPrompt = `System UI measured runtime stress value was: ${state.stressValue}%. Here is the exact performance breakdown: ${JSON.stringify(breakdownArray)}`;
 
-  const localEvaluation = evaluateLocalConfidence();
-  let confidenceScore = localEvaluation.confidenceScore;
-  let descriptiveMetrics = localEvaluation.evaluationAssessment;
-  let answerEvaluations = localEvaluation.answerEvaluations;
+  let finalEvaluation = evaluateLocalConfidence();
   const groqConfig = getGroqConfig();
 
   if (groqConfig) {
     try {
-    const response = await fetch(groqConfig.apiUrl, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${groqConfig.apiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: groqConfig.model,
-        messages: [
-          { role: 'system', content: systemPrompt },
-          { role: 'user', content: userPrompt },
-        ],
-        temperature: 0.3,
-        response_format: { type: 'json_object' },
-      }),
-    });
+      const response = await fetch(groqConfig.apiUrl, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${groqConfig.apiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: groqConfig.model,
+          messages: [
+            { role: 'system', content: systemPrompt },
+            { role: 'user', content: userPrompt },
+          ],
+          temperature: 0.3,
+          response_format: { type: 'json_object' },
+        }),
+      });
 
-    if (response.ok) {
-      const data = await response.json();
-      const parsedGrok = JSON.parse(data.choices[0].message.content);
-      confidenceScore = clampScore(parsedGrok.confidenceScore ?? confidenceScore);
-      descriptiveMetrics =
-        parsedGrok.evaluationAssessment ?? descriptiveMetrics;
-      answerEvaluations = normalizeAnswerEvaluations(
-        parsedGrok.answerEvaluations,
-        localEvaluation.answerEvaluations
-      );
-    }
+      if (response.ok) {
+        const data = await response.json();
+        const parsedGroq = JSON.parse(data.choices[0].message.content);
+        finalEvaluation = mergeEvaluations(parsedGroq, finalEvaluation);
+      }
     } catch (e) {
       console.error('Failed executing dynamic remote assessment analytics:', e);
     }
   } else {
-    // Local evaluation is intentionally used when Groq is not configured so
-    // confidence remains tied to answer quality, not only stress level.
-    console.info('Groq evaluation skipped: using local confidence analysis.');
+    console.info('Groq evaluation skipped: using local detailed confidence analysis.');
   }
 
-  confidenceScore = clampScore(confidenceScore);
-saveInterviewHistory({
+  saveInterviewHistory({
+    role: UI.roleSelect.value,
+    difficulty: UI.difficultySelect.value,
+    interviewType: 'Mock Interview',
+    questions: state.questions,
+    answers: state.answers,
+    evaluation: finalEvaluation,
+    completedAt: new Date().toLocaleString()
+  });
 
-  role: UI.roleSelect.value,
-
-  difficulty:
-      UI.difficultySelect.value,
-
-  interviewType:
-      UI.interviewType.value,
-
-  questions:
-      state.questions,
-
-  answers:
-      state.answers,
-
-  confidenceScore:
-      confidenceScore,
-
-  stressScore:
-      state.stressValue,
-
-  evaluationAssessment:
-      descriptiveMetrics,
-
-  answerEvaluations:
-      answerEvaluations,
-
-  completedAt:
-      new Date().toLocaleString()
-
-});
   if (UI.summaryContent) {
-    const metricGrid = document.createElement('div');
-    const analysisBox = document.createElement('div');
-    const analysisTitle = document.createElement('h4');
-    const analysisText = document.createElement('p');
-    const reviewList = document.createElement('div');
-    const reviewTitle = document.createElement('h4');
-
-    metricGrid.className = 'metric-grid';
-    metricGrid.append(
-      createMetricCard('Composure Baseline', `${100 - state.stressValue}%`),
-      createMetricCard('Confidence Metric', `${confidenceScore}%`)
+    clearElement(UI.summaryContent);
+    
+    // Overall Performance Summary
+    const scoreGrid = document.createElement('div');
+    scoreGrid.className = 'score-grid';
+    scoreGrid.append(
+      createMetricCard('Technical Knowledge', `${finalEvaluation.scores.technicalKnowledge}%`),
+      createMetricCard('Communication', `${finalEvaluation.scores.communication}%`),
+      createMetricCard('Problem Solving', `${finalEvaluation.scores.problemSolving}%`),
+      createMetricCard('Confidence', `${finalEvaluation.scores.confidence}%`),
+      createMetricCard('Stress Level', `${finalEvaluation.scores.stress}%`)
     );
 
-    analysisBox.className = 'analysis-box';
-    analysisTitle.textContent = 'Evaluation Assessment';
-    analysisText.textContent = descriptiveMetrics;
-    analysisBox.append(analysisTitle, analysisText);
+    // Feedback Section
+    const feedbackBox = document.createElement('div');
+    feedbackBox.className = 'feedback-section glass-card';
+    feedbackBox.innerHTML = `
+      <h4>Overall Feedback</h4>
+      <p>${finalEvaluation.overallFeedback}</p>
+      
+      <div class="feedback-lists">
+        <div class="strengths-list">
+          <h5><i class="fa-solid fa-arrow-trend-up"></i> Key Strengths</h5>
+          <ul>${finalEvaluation.strengths.map(s => `<li>${s}</li>`).join('')}</ul>
+        </div>
+        <div class="improvements-list">
+          <h5><i class="fa-solid fa-bullseye"></i> Areas for Improvement</h5>
+          <ul>${finalEvaluation.areasForImprovement.map(s => `<li>${s}</li>`).join('')}</ul>
+        </div>
+      </div>
+      
+      <div class="learning-list">
+        <h5><i class="fa-solid fa-book-open-reader"></i> Recommended Learning Topics</h5>
+        <div class="tags-container">
+          ${finalEvaluation.recommendedLearning.map(s => `<span class="learning-tag">${s}</span>`).join('')}
+        </div>
+      </div>
+    `;
 
+    // Question-wise Breakdown
+    const reviewList = document.createElement('div');
     reviewList.className = 'review-list';
-    reviewTitle.textContent = 'Responses Diagnostic Breakdown';
-    reviewList.appendChild(reviewTitle);
+    reviewList.innerHTML = `<h4>Detailed Question Breakdown</h4>`;
 
     state.questions.forEach((question, index) => {
-      const answer =
-        state.answers[index] || 'No input recorded inside the temporal limits.';
+      const answer = state.answers[index] || 'No input recorded inside the temporal limits.';
+      const answerEval = finalEvaluation.answerEvaluations.find(e => e.questionIndex === index) || {};
+      
       const reviewItem = document.createElement('div');
-      const questionText = document.createElement('p');
-      const answerText = document.createElement('p');
-      const evaluationText = document.createElement('p');
-      const answerEvaluation = answerEvaluations[index];
+      reviewItem.className = 'detailed-review-card glass-card';
+      
+      const ratingClass = answerEval.rating ? answerEval.rating.toLowerCase() : 'fair';
 
-      reviewItem.className = 'review-item';
-      questionText.className = 'review-q';
-      answerText.className = 'review-a';
-      evaluationText.className = 'review-a';
-      appendPrefixedText(questionText, `Q${index + 1}:`, question);
-      appendPrefixedText(answerText, 'Your Answer:', answer);
-      appendPrefixedText(
-        evaluationText,
-        'Answer Check:',
-        formatAnswerEvaluation(answerEvaluation)
-      );
-      reviewItem.append(questionText, answerText, evaluationText);
+      reviewItem.innerHTML = `
+        <div class="review-header">
+          <span class="q-number">Q${index + 1}</span>
+          <span class="rating-badge rating-${ratingClass}">${answerEval.rating || 'Fair'}</span>
+        </div>
+        <div class="review-q-text"><strong>Question:</strong> ${question}</div>
+        <div class="review-a-text"><strong>Your Answer:</strong> ${answer}</div>
+        
+        <div class="review-eval-details">
+          ${answerEval.strengths && answerEval.strengths.length ? `
+            <div class="detail-group positive">
+              <strong><i class="fa-solid fa-check"></i> Strengths:</strong>
+              <ul>${answerEval.strengths.map(s => `<li>${s}</li>`).join('')}</ul>
+            </div>
+          ` : ''}
+          
+          ${answerEval.missingConcepts && answerEval.missingConcepts.length ? `
+            <div class="detail-group negative">
+              <strong><i class="fa-solid fa-xmark"></i> Missing Concepts:</strong>
+              <ul>${answerEval.missingConcepts.map(s => `<li>${s}</li>`).join('')}</ul>
+            </div>
+          ` : ''}
+          
+          ${answerEval.improvementSuggestions && answerEval.improvementSuggestions.length ? `
+            <div class="detail-group info">
+              <strong><i class="fa-solid fa-lightbulb"></i> How to Improve:</strong>
+              <ul>${answerEval.improvementSuggestions.map(s => `<li>${s}</li>`).join('')}</ul>
+            </div>
+          ` : ''}
+          
+          ${answerEval.sampleStrongAnswer ? `
+            <div class="sample-answer">
+              <strong><i class="fa-solid fa-star"></i> Sample Strong Answer:</strong>
+              <p>${answerEval.sampleStrongAnswer}</p>
+            </div>
+          ` : ''}
+        </div>
+      `;
+      
       reviewList.appendChild(reviewItem);
     });
 
-    clearElement(UI.summaryContent);
-    UI.summaryContent.append(metricGrid, analysisBox, reviewList);
+    UI.summaryContent.append(scoreGrid, feedbackBox, reviewList);
   }
 }
 
 function saveInterviewHistory(session) {
-
-    const history =
-        JSON.parse(
-            localStorage.getItem(
-                "interview-history"
-            )
-        ) || [];
+    const history = JSON.parse(
+        localStorage.getItem("interview-history")
+    ) || [];
 
     history.unshift(session);
 
     localStorage.setItem(
         "interview-history",
-        JSON.stringify(
-            history.slice(0, 20)
-        )
+        JSON.stringify(history.slice(0, 20))
     );
 
     renderInterviewHistory();
 }
 
 function renderInterviewHistory() {
-
-    const history =
-        JSON.parse(
-            localStorage.getItem(
-                "interview-history"
-            )
-        ) || [];
-
+    const history = JSON.parse(localStorage.getItem("interview-history")) || [];
     if (!UI.historyContainer) return;
-
     UI.historyContainer.innerHTML = "";
 
     history.forEach((session) => {
+        const conf = session.confidenceScore ?? session.evaluation?.scores?.confidence ?? 0;
+        const str = session.stressScore ?? session.evaluation?.scores?.stress ?? 0;
 
-        const card =
-            document.createElement("div");
-
-        card.className =
-            "history-card";
+        const card = document.createElement("div");
+        card.className = "history-card";
 
         const title = document.createElement("h4");
-title.textContent = session.role;
+        title.textContent = session.role;
 
-const difficulty = document.createElement("p");
-difficulty.textContent = session.difficulty;
+        const difficulty = document.createElement("p");
+        difficulty.textContent = session.difficulty;
 
-const confidence = document.createElement("p");
-confidence.textContent =
-  `Confidence: ${session.confidenceScore}%`;
+        const confidence = document.createElement("p");
+        confidence.textContent = `Confidence: ${conf}%`;
 
-const stress = document.createElement("p");
-stress.textContent =
-  `Stress: ${session.stressScore}%`;
+        const stress = document.createElement("p");
+        stress.textContent = `Stress: ${str}%`;
 
-const date = document.createElement("small");
-date.textContent = session.completedAt;
+        const date = document.createElement("small");
+        date.textContent = session.completedAt;
 
-card.appendChild(title);
-card.appendChild(difficulty);
-card.appendChild(confidence);
-card.appendChild(stress);
-card.appendChild(date);
+        card.appendChild(title);
+        card.appendChild(difficulty);
+        card.appendChild(confidence);
+        card.appendChild(stress);
+        card.appendChild(date);
 
         UI.historyContainer.appendChild(card);
-
     });
 
     renderHistoryStats(history);
 }
 
 function renderHistoryStats(history) {
+    if (!history.length || !UI.historyStats) return;
 
-    if (
-        !history.length ||
-        !UI.historyStats
-    ) return;
-
-    const avgConfidence =
-        Math.round(
-            history.reduce(
-                (sum, item) =>
-                    sum +
-                    item.confidenceScore,
-                0
-            ) / history.length
-        );
+    const avgConfidence = Math.round(
+        history.reduce((sum, item) => {
+            const conf = item.confidenceScore ?? item.evaluation?.scores?.confidence ?? 0;
+            return sum + conf;
+        }, 0) / history.length
+    );
 
     UI.historyStats.innerHTML = `
         <div class="metric-card">
             <h4>Total Interviews</h4>
             <p>${history.length}</p>
         </div>
-
         <div class="metric-card">
             <h4>Average Confidence</h4>
             <p>${avgConfidence}%</p>

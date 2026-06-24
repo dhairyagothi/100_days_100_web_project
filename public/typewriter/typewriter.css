@@ -82,6 +82,7 @@ body::before {
   top: -120px;
   left: -120px;
 }
+
 body::after {
   bottom: -120px;
   right: -120px;
@@ -89,10 +90,12 @@ body::after {
 }
 
 @keyframes floatingGlow {
+
   0%,
   100% {
     transform: translateY(0);
   }
+
   50% {
     transform: translateY(28px);
   }
@@ -108,6 +111,7 @@ body::after {
   transition: transform 0.3s ease;
   user-select: none;
 }
+
 .theme-toggle:hover {
   transform: scale(1.15) rotate(20deg);
 }
@@ -155,6 +159,7 @@ body::after {
     transform: translateX(40px);
     opacity: 0;
   }
+
   to {
     transform: none;
     opacity: 1;
@@ -165,13 +170,11 @@ body::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: repeating-linear-gradient(
-    to bottom,
-    transparent,
-    transparent 31px,
-    var(--paper-line) 31px,
-    var(--paper-line) 32px
-  );
+  background: repeating-linear-gradient(to bottom,
+      transparent,
+      transparent 31px,
+      var(--paper-line) 31px,
+      var(--paper-line) 32px);
   pointer-events: none;
   border-radius: 8px 8px 0 0;
 }
@@ -197,10 +200,12 @@ body::after {
 }
 
 @keyframes blink-paper {
+
   0%,
   50% {
     opacity: 1;
   }
+
   51%,
   100% {
     opacity: 0;
@@ -209,12 +214,10 @@ body::after {
 
 .typewriter-body {
   width: 100%;
-  background: linear-gradient(
-    135deg,
-    var(--body-grad-a) 0%,
-    var(--body-grad-b) 50%,
-    var(--body-grad-c) 100%
-  );
+  background: linear-gradient(135deg,
+      var(--body-grad-a) 0%,
+      var(--body-grad-b) 50%,
+      var(--body-grad-c) 100%);
   padding: 44px 36px 40px;
   border-radius: 0 0 18px 18px;
   box-shadow:
@@ -245,12 +248,14 @@ body::after {
     background-color 0.25s,
     box-shadow 0.25s;
 }
+
 #userInput:focus {
   outline: none;
   border-color: rgba(59, 130, 246, 0.55);
   background-color: rgba(255, 255, 255, 0.12);
   box-shadow: 0 0 10px rgba(59, 130, 246, 0.22);
 }
+
 #userInput::placeholder {
   color: var(--input-placeholder);
 }
@@ -383,7 +388,7 @@ body::after {
   width: 52px;
 }
 
-.key.shift-key.pressed ~ .keyboard-row .key.dual-key .key-top,
+.key.shift-key.pressed~.keyboard-row .key.dual-key .key-top,
 .keyboard .key.dual-key.shift-hint .key-top {
   opacity: 1;
   color: #60a5fa;
@@ -400,41 +405,51 @@ body::after {
   body {
     padding: 10px;
   }
+
   .paper-sheet {
     padding: 18px;
     min-height: 140px;
     font-size: 1.1rem;
   }
+
   .typewriter-body {
     padding: 18px;
     gap: 14px;
   }
+
   .keyboard-row {
     gap: 7px;
   }
+
   .key {
     width: 38px;
     height: 38px;
     font-size: 8px;
   }
+
   .key.space {
     width: 230px;
   }
+
   .key.backspace,
   .key.enter-key {
     width: 58px;
   }
+
   .key.dual-key {
     width: 38px;
     height: 42px;
   }
+
   .key.sym-key.dual-key {
     width: 36px;
   }
+
   #row-numbers .key {
     width: 44px;
     height: 42px;
   }
+
   .theme-toggle {
     top: 10px;
     right: 12px;
@@ -448,34 +463,42 @@ body::after {
     min-height: 110px;
     font-size: 0.95rem;
   }
+
   .typewriter-body {
     padding: 12px;
     gap: 10px;
   }
+
   .keyboard-row {
     gap: 4px;
   }
+
   .key {
     width: 32px;
     height: 32px;
     font-size: 7px;
   }
+
   .key.space {
     width: 160px;
   }
+
   .key.backspace,
   .key.enter-key,
   .key.shift-key,
   .key.tab-key {
     width: 46px;
   }
+
   .key.dual-key {
     width: 32px;
     height: 38px;
   }
+
   .key.sym-key.dual-key {
     width: 30px;
   }
+
   #row-numbers .key {
     width: 36px;
     height: 38px;
@@ -546,6 +569,7 @@ body::after {
   0% {
     transform: scale(1.2);
   }
+
   100% {
     transform: scale(1);
   }
@@ -634,14 +658,12 @@ body::after {
 .carriage-bar {
   width: 100%;
   height: 64px;
-  background: linear-gradient(
-    to bottom,
-    #444 0%,
-    #999 15%,
-    #222 35%,
-    #444 70%,
-    #111 100%
-  );
+  background: linear-gradient(to bottom,
+      #444 0%,
+      #999 15%,
+      #222 35%,
+      #444 70%,
+      #111 100%);
   border-radius: 12px 12px 0 0;
   border: 2px solid #2d2d2d;
   border-bottom: none;
@@ -654,23 +676,22 @@ body::after {
   padding: 0 20px;
   position: relative;
   z-index: 3;
-  margin-bottom: -1px; /* Seamless overlap with paper sheet */
+  margin-bottom: -1px;
+  /* Seamless overlap with paper sheet */
 }
 
-.carriage-bar + #pagesContainer .paper-sheet {
+.carriage-bar+#pagesContainer .paper-sheet {
   border-radius: 0;
 }
 
 .carriage-knob {
   width: 22px;
   height: 36px;
-  background: repeating-linear-gradient(
-    90deg,
-    #222,
-    #222 2px,
-    #555 2px,
-    #555 4px
-  );
+  background: repeating-linear-gradient(90deg,
+      #222,
+      #222 2px,
+      #555 2px,
+      #555 4px);
   border: 2px solid #111;
   border-radius: 4px;
   box-shadow:
@@ -679,12 +700,15 @@ body::after {
   cursor: pointer;
   transition: transform 0.2s ease;
 }
+
 .carriage-knob:hover {
   transform: rotate(15deg);
 }
+
 .knob-left {
   margin-right: 10px;
 }
+
 .knob-right {
   margin-left: 10px;
 }
@@ -747,9 +771,11 @@ body::after {
   padding-bottom: 1px;
   transition: border-bottom-color 0.25s;
 }
+
 .control-group input:focus {
   border-bottom: 1px solid #3b82f6;
 }
+
 .control-group input::placeholder {
   color: rgba(255, 255, 255, 0.3);
 }
@@ -787,6 +813,7 @@ body::after {
   color: white;
   border: 1px solid #991b1b;
 }
+
 .btn-red:hover {
   background: linear-gradient(to bottom, #f87171 0%, #dc2626 100%);
   box-shadow: 0 0 10px rgba(239, 68, 68, 0.45);
@@ -797,6 +824,7 @@ body::after {
   color: #1e293b;
   border: 1px solid #475569;
 }
+
 .btn-silver:hover {
   background: linear-gradient(to bottom, #f1f5f9 0%, #cbd5e1 100%);
   box-shadow: 0 0 10px rgba(226, 232, 240, 0.4);
@@ -844,28 +872,402 @@ body::after {
     gap: 10px;
     border-radius: 12px 12px 0 0;
   }
+
   .carriage-knob {
     display: none;
   }
+
   .carriage-controls {
     flex-wrap: wrap;
     width: 100%;
     justify-content: center;
     gap: 8px;
   }
+
   .control-group {
     flex: 1 1 120px;
     justify-content: center;
   }
+
   .control-group input {
     width: 100%;
   }
+
   .button-group-carriage {
     width: 100%;
     justify-content: center;
   }
+
   .carriage-btn {
     flex: 1;
     justify-content: center;
   }
+}
+
+/* ==========================================================================
+   LIVE PAPER STYLE THEMES  (driven by data-style on #pagesContainer)
+   ========================================================================== */
+
+/* --- Vintage (default) --- */
+#pagesContainer[data-style="vintage"] .paper-sheet {
+  background:
+    linear-gradient(rgba(253, 248, 240, 0.97), rgba(250, 243, 228, 0.99)),
+    url("https://www.transparenttextures.com/patterns/paper-fibers.png");
+  background-size: cover;
+}
+
+#pagesContainer[data-style="vintage"] .typewriterText,
+#pagesContainer[data-style="vintage"] .paper-sheet span {
+  font-family: "Courier Prime", "Courier New", monospace;
+  color: #3e2e20;
+  font-size: clamp(1.2rem, 1.8vw, 1.9rem);
+  letter-spacing: 0.05em;
+}
+
+/* --- Editorial --- */
+#pagesContainer[data-style="editorial"] .paper-sheet {
+  background: linear-gradient(rgba(255, 255, 255, 0.99), rgba(252, 252, 252, 1));
+}
+
+#pagesContainer[data-style="editorial"] .typewriterText,
+#pagesContainer[data-style="editorial"] .paper-sheet span {
+  font-family: "Georgia", "Times New Roman", serif;
+  color: #1f1f1f;
+  font-size: clamp(1.15rem, 1.7vw, 1.8rem);
+  letter-spacing: 0.02em;
+  line-height: 34px;
+}
+
+/* --- Modern --- */
+#pagesContainer[data-style="modern"] .paper-sheet {
+  background: linear-gradient(rgba(250, 249, 246, 0.99), rgba(245, 244, 241, 1));
+}
+
+#pagesContainer[data-style="modern"] .typewriterText,
+#pagesContainer[data-style="modern"] .paper-sheet span {
+  font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+  color: #0f172a;
+  font-size: clamp(1.05rem, 1.6vw, 1.7rem);
+  letter-spacing: 0.01em;
+  line-height: 30px;
+}
+
+/* ==========================================================================
+   EXPORT FORMAT PICKER MODAL
+   ========================================================================== */
+
+.export-modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 99999;
+  align-items: center;
+  justify-content: center;
+  animation: modalFadeIn 0.2s ease;
+}
+
+.export-modal-overlay.is-open {
+  display: flex;
+}
+
+.export-modal-box {
+  background: linear-gradient(145deg,
+      var(--key-bg-a, #1a1a1a),
+      var(--key-bg-b, #111111));
+  border: 1px solid rgba(59, 130, 246, 0.25);
+  border-radius: 20px;
+  padding: 36px 32px 28px;
+  max-width: 400px;
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.6);
+  animation: modalSlideUp 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+  font-family: "Courier Prime", "Courier New", monospace;
+}
+
+body.light-theme .export-modal-box {
+  background: linear-gradient(145deg, #f0f4f8, #e2e8f0);
+  border-color: rgba(59, 130, 246, 0.3);
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.2);
+}
+
+.export-modal-icon {
+  font-size: 2.5rem;
+  line-height: 1;
+}
+
+.export-modal-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text-color, #f8fafc);
+  text-align: center;
+}
+
+.export-modal-desc {
+  font-size: 0.85rem;
+  color: rgba(248, 250, 252, 0.5);
+  text-align: center;
+  line-height: 1.6;
+  max-width: 300px;
+}
+
+body.light-theme .export-modal-desc {
+  color: rgba(15, 23, 42, 0.55);
+}
+
+.export-modal-options {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  margin-top: 4px;
+}
+
+.export-option-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 16px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-color, #f8fafc);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: "Courier Prime", "Courier New", monospace;
+}
+
+.export-option-btn i {
+  font-size: 1.8rem;
+  margin-bottom: 2px;
+}
+
+.export-option-btn:first-child i {
+  color: #ef4444;
+}
+
+.export-option-btn:last-child i {
+  color: #3b82f6;
+}
+
+.export-option-label {
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.export-option-desc {
+  font-size: 0.72rem;
+  opacity: 0.6;
+  text-align: center;
+  line-height: 1.3;
+}
+
+.export-option-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.22);
+  transform: translateY(-2px);
+}
+
+body.light-theme .export-option-btn {
+  background: rgba(0, 0, 0, 0.05);
+  border-color: rgba(0, 0, 0, 0.12);
+  color: #1e293b;
+}
+
+body.light-theme .export-option-btn:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.export-modal-cancel {
+  margin-top: 4px;
+  padding: 10px 28px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(248, 250, 252, 0.6);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: "Courier Prime", "Courier New", monospace;
+}
+
+.export-modal-cancel:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-color, #f8fafc);
+}
+
+body.light-theme .export-modal-cancel {
+  background: rgba(0, 0, 0, 0.05);
+  border-color: rgba(0, 0, 0, 0.12);
+  color: rgba(15, 23, 42, 0.6);
+}
+
+body.light-theme .export-modal-cancel:hover {
+  background: rgba(0, 0, 0, 0.1);
+  color: #1e293b;
+}
+
+/* ==========================================================================
+   CLEAR CONFIRMATION MODAL
+   ========================================================================== */
+
+.clear-modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 99999;
+  align-items: center;
+  justify-content: center;
+  animation: modalFadeIn 0.2s ease;
+}
+
+.clear-modal-overlay.is-open {
+  display: flex;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.clear-modal-box {
+  background: linear-gradient(145deg,
+      var(--key-bg-a, #1a1a1a),
+      var(--key-bg-b, #111111));
+  border: 1px solid rgba(59, 130, 246, 0.25);
+  border-radius: 20px;
+  padding: 40px 36px 32px;
+  max-width: 420px;
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  box-shadow:
+    0 32px 80px rgba(0, 0, 0, 0.6),
+    0 0 0 1px rgba(255, 255, 255, 0.04);
+  animation: modalSlideUp 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+  font-family: "Courier Prime", "Courier New", monospace;
+}
+
+/* Light theme override */
+body.light-theme .clear-modal-box {
+  background: linear-gradient(145deg, #f0f4f8, #e2e8f0);
+  border-color: rgba(59, 130, 246, 0.3);
+  box-shadow:
+    0 32px 80px rgba(0, 0, 0, 0.2),
+    0 0 0 1px rgba(0, 0, 0, 0.06);
+}
+
+@keyframes modalSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(28px) scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.clear-modal-icon {
+  font-size: 2.8rem;
+  line-height: 1;
+  filter: drop-shadow(0 4px 12px rgba(239, 68, 68, 0.4));
+}
+
+.clear-modal-title {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--text-color, #f8fafc);
+  text-align: center;
+  letter-spacing: 0.01em;
+}
+
+.clear-modal-desc {
+  font-size: 0.88rem;
+  color: rgba(248, 250, 252, 0.55);
+  text-align: center;
+  line-height: 1.6;
+  max-width: 320px;
+}
+
+body.light-theme .clear-modal-desc {
+  color: rgba(15, 23, 42, 0.55);
+}
+
+.clear-modal-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 6px;
+  width: 100%;
+}
+
+.clear-modal-btn {
+  flex: 1;
+  height: 44px;
+  border-radius: 12px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+  font-family: "Courier Prime", "Courier New", monospace;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+}
+
+.clear-modal-btn--cancel {
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--text-color, #f8fafc);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.clear-modal-btn--cancel:hover {
+  background: rgba(255, 255, 255, 0.13);
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+body.light-theme .clear-modal-btn--cancel {
+  background: rgba(0, 0, 0, 0.06);
+  color: #1e293b;
+  border-color: rgba(0, 0, 0, 0.14);
+}
+
+body.light-theme .clear-modal-btn--cancel:hover {
+  background: rgba(0, 0, 0, 0.11);
+}
+
+.clear-modal-btn--confirm {
+  background: linear-gradient(135deg, #ef4444, #b91c1c);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(239, 68, 68, 0.35);
+}
+
+.clear-modal-btn--confirm:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 22px rgba(239, 68, 68, 0.5);
+}
+
+.clear-modal-btn--confirm:active {
+  transform: translateY(1px);
 }

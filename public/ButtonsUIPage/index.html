@@ -6,7 +6,15 @@
     <title>Button UI Collection</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
+<div class="theme-switch-wrapper">
+    <input type="checkbox" id="themeToggle" class="theme-switch">
+    <label for="themeToggle" class="theme-slider">
+        <span class="icon sun">☀️</span>
+        <span class="icon moon">🌙</span>
+    </label>
+</div>
 <a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
 
     <div class="container">
@@ -143,5 +151,26 @@
             </div>
         </div>
     </div>
+
+<script>
+const toggleBtn = document.getElementById("themeToggle");
+
+if (localStorage.getItem("theme") === "dark") {
+    document.body.classList.add("dark-theme");
+    toggleBtn.checked = true;
+}
+
+toggleBtn.addEventListener("change", () => {
+    document.body.classList.toggle("dark-theme");
+
+    localStorage.setItem(
+        "theme",
+        document.body.classList.contains("dark-theme")
+            ? "dark"
+            : "light"
+    );
+
+});
+</script>
 </body>
 </html>

@@ -1,1697 +1,1207 @@
-/* =====================================================
-   CHRONOS+ — PREMIUM DASHBOARD CSS
-   Complete rewrite: rich colors, clean sizing, no dupes
-   ===================================================== */
+/* ==========================
+   ROOT VARIABLES
+========================== */
 
-@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap");
+/*FOCUS MODE*/
 
-/* =====================================================
-   DESIGN TOKENS — LIGHT THEME
-   ===================================================== */
-
-:root {
-  /* Background */
-  --bg-color:       #eef0f7;
-  --bg-gradient:    linear-gradient(145deg, #e8eaf6 0%, #ede9f8 40%, #e0f2fe 100%);
-
-  /* Text */
-  --text-primary:   #0f172a;
-  --text-secondary: #64748b;
-  --text-muted:     #94a3b8;
-
-  /* Cards */
-  --card-bg:        rgba(255, 255, 255, 0.78);
-  --card-border:    rgba(255, 255, 255, 0.70);
-
-  /* Accents */
-  --accent:         #6366f1;          /* indigo */
-  --accent-2:       #8b5cf6;          /* violet */
-  --accent-3:       #06b6d4;          /* cyan */
-  --accent-hover:   #4f46e5;
-  --accent-glow:    rgba(99, 102, 241, 0.30);
-  --accent-grad:    linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-
-  /* Semantic */
-  --green:          #10b981;
-  --red:            #ef4444;
-  --amber:          #f59e0b;
-
-  /* Neumorphic shadows — light */
-  --shadow-out:
-    8px 8px 20px rgba(163, 177, 198, 0.40),
-    -6px -6px 16px rgba(255, 255, 255, 0.85);
-  --shadow-in:
-    inset 5px 5px 12px rgba(163, 177, 198, 0.35),
-    inset -5px -5px 12px rgba(255, 255, 255, 0.85);
-  --shadow-card:
-    0 4px 24px rgba(99, 102, 241, 0.08),
-    0 1px 4px rgba(0, 0, 0, 0.06);
-  --shadow-lift:
-    0 12px 40px rgba(99, 102, 241, 0.18),
-    0 4px 12px rgba(0, 0, 0, 0.08);
-
-  /* Clock face */
-  --clock-bg:         #ffffff;
-  --clock-ring:       linear-gradient(135deg, #ffffff, #dde3f0);
-  --clock-tick:       #cbd5e1;
-  --clock-tick-major: #334155;
-  --hour-hand:        #1e293b;
-  --minute-hand:      #475569;
-  --second-hand:      #ef4444;
-
-  /* Sizing */
-  --radius-xl:  32px;
-  --radius-lg:  24px;
-  --radius-md:  16px;
-  --radius-sm:  10px;
-
-  /* Motion */
-  --ease:  cubic-bezier(0.4, 0, 0.2, 1);
-  --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
-  --dur:   0.30s;
-  --transition: all var(--dur) var(--ease);
-}
-
-/* =====================================================
-   DARK THEME TOKENS
-   ===================================================== */
-
-body.dark-theme {
-  --bg-color:     #06091a;
-  --bg-gradient:  linear-gradient(145deg, #06091a 0%, #0d1030 50%, #080d24 100%);
-
-  --text-primary:   #f1f5f9;
-  --text-secondary: #94a3b8;
-  --text-muted:     #475569;
-
-  --card-bg:      rgba(13, 18, 45, 0.82);
-  --card-border:  rgba(99, 102, 241, 0.14);
-
-  --accent:       #818cf8;
-  --accent-2:     #a78bfa;
-  --accent-3:     #22d3ee;
-  --accent-hover: #6366f1;
-  --accent-glow:  rgba(129, 140, 248, 0.35);
-  --accent-grad:  linear-gradient(135deg, #818cf8 0%, #a78bfa 100%);
-
-  --shadow-out:
-    8px 8px 24px rgba(0, 0, 0, 0.55),
-    -6px -6px 18px rgba(30, 40, 80, 0.25);
-  --shadow-in:
-    inset 5px 5px 14px rgba(0, 0, 0, 0.55),
-    inset -5px -5px 14px rgba(20, 30, 65, 0.25);
-  --shadow-card:
-    0 4px 28px rgba(0, 0, 0, 0.45),
-    0 1px 6px rgba(0, 0, 0, 0.3);
-  --shadow-lift:
-    0 12px 48px rgba(129, 140, 248, 0.22),
-    0 4px 16px rgba(0, 0, 0, 0.4);
-
-  --clock-bg:         #0b1229;
-  --clock-ring:       linear-gradient(135deg, #1a2450, #060c1e);
-  --clock-tick:       #2d3f6b;
-  --clock-tick-major: #e2e8f0;
-  --hour-hand:        #f1f5f9;
-  --minute-hand:      #94a3b8;
-  --second-hand:      #22d3ee;
-}
-
-/* =====================================================
-   RESET
-   ===================================================== */
-
-*, *::before, *::after {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html, body {
-  width: 100%;
-  min-height: 100vh;
-  overflow-x: hidden;
-}
-
-body {
-  background: var(--bg-gradient);
-  background-attachment: fixed;
-  color: var(--text-primary);
-  font-family: "Plus Jakarta Sans", sans-serif;
-  font-size: 16px;
-  transition: background var(--dur) var(--ease), color var(--dur) var(--ease);
-}
-
-/* =====================================================
-   AMBIENT BACKGROUND ORBS
-   ===================================================== */
-
-body::before,
-body::after {
-  content: "";
+/*BACK BUTTON*/
+.focus-back-btn {
+  display: none;         
   position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 9999;
+
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
-  filter: blur(100px);
-  pointer-events: none;
-  z-index: -1;
+  border: none;
+  cursor: pointer;
+
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+
+  color: #fff;
+
+  align-items: center;
+  justify-content: center;
+
+  transition: background 0.2s ease, transform 0.2s ease;
 }
 
-body::before {
-  width: 600px;
-  height: 600px;
-  top: -200px;
-  left: -150px;
-  background: radial-gradient(circle, rgba(99,102,241,0.18) 0%, transparent 70%);
-  animation: floatOrb 20s infinite ease-in-out;
+.focus-back-btn:hover {
+  background: rgba(255, 255, 255, 0.18);
+  transform: scale(1.08);
 }
 
-body::after {
-  width: 500px;
-  height: 500px;
-  bottom: -150px;
-  right: -120px;
-  background: radial-gradient(circle, rgba(6,182,212,0.15) 0%, transparent 70%);
-  animation: floatOrb 24s infinite ease-in-out reverse;
+/*WHEN FOCUS MODE IS ACTIVE*/
+
+/* Reveal the back arrow */
+body.focus-active-view .focus-back-btn {
+  display: flex;
 }
 
-body.dark-theme::before {
-  background: radial-gradient(circle, rgba(129,140,248,0.22) 0%, transparent 70%);
+/* Deep purple immersive background — matches the reference design */
+body.focus-active-view {
+  background: radial-gradient(ellipse at 30% 40%, #4c2a85 0%, #1a0a3d 45%, #0d0720 100%) !important;
 }
 
-body.dark-theme::after {
-  background: radial-gradient(circle, rgba(34,211,238,0.16) 0%, transparent 70%);
+/* Hide every peripheral element */
+body.focus-active-view .noise-overlay,
+body.focus-active-view .site-header,
+body.focus-active-view .local-clock-panel,
+body.focus-active-view .map-panel,
+body.focus-active-view .world-section {
+  display: none !important;
 }
 
-@keyframes floatOrb {
-  0%   { transform: translate(0, 0); }
-  50%  { transform: translate(40px, 30px); }
-  100% { transform: translate(0, 0); }
+/* The workspace wrapper — become a full-viewport flex stage */
+body.focus-active-view .workspace {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-height: 100vh;
+  padding: 0 !important;
+  margin: 0 !important;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* =====================================================
-   APP SHELL
-   ===================================================== */
+body.focus-active-view .primary-grid {
+  display: contents;   /* grid disappears timer-panel flows directly into workspace flex */
+}
 
-.app-container {
-  max-width: 1360px;
-  margin: 0 auto;
-  padding: 20px 28px 72px;
+
+body.focus-active-view .timer-panel {
+  width: min(520px, 90vw);
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  border-radius: 0 !important;
+  padding: 2rem !important;
+
   display: flex;
   flex-direction: column;
-  gap: 28px;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-/* =====================================================
-   HEADER
-   ===================================================== */
+/* Panel header */
+body.focus-active-view .timer-panel .panel-header {
+  display: none;
+}
 
-header {
+body.focus-active-view .timer-inputs {
+  margin-top: 0;
+}
+
+body.focus-active-view .time-input {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.15);
+  color: #fff;
+}
+
+body.focus-active-view .countdown-track {
+  width: 300px;
+  height: 300px;
+}
+
+body.focus-active-view .countdown-digits {
+  font-size: 3rem;
+  color: #fff;
+  font-weight: 300;
+  letter-spacing: 2px;
+}
+
+body.focus-active-view .arc-bg {
+  stroke: rgba(255, 255, 255, 0.1);
+}
+
+body.focus-active-view .arc-fill {
+  stroke: #a78bfa; 
+}
+
+
+body.focus-active-view .primary-action {
+  background: rgba(167, 139, 250, 0.85);
+  color: #fff;
+}
+
+body.focus-active-view .secondary-action {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+body.focus-active-view .ghost-action {
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+body.focus-active-view .timer-alert {
+  width: 100%;
+}
+
+/* Light theme override — focus mode always stays dark */
+body.focus-active-view.light-theme {
+  background: radial-gradient(ellipse at 30% 40%, #4c2a85 0%, #1a0a3d 45%, #0d0720 100%) !important;
+}
+
+body.focus-active-view.light-theme .time-input {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+body.focus-active-view.light-theme .countdown-digits {
+  color: #fff;
+}
+
+body.focus-active-view.light-theme .ghost-action {
+  color: #fff;
+}
+
+.exit-focus-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #ff4444, #cc0000);
+  color: white;
+  border: none;
+  border-radius: 40px;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600;
+}
+/* ═══════════════════════════════════════════════════════════════
+   CHRONOS+ · PREMIUM TIME OBSERVATORY
+   Aesthetic: Luxury watchmaker × Space observatory
+   Fonts: Cormorant Garamond (display) + DM Mono (digits) + Outfit (UI)
+   ═══════════════════════════════════════════════════════════════ */
+
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600;700;800&display=swap");
+
+/* ── DESIGN TOKENS ── */
+:root {
+  --bg: #0b0f17;
+  --bg-secondary: #111827;
+  --panel: rgba(18, 24, 38, 0.85);
+
+  --text: #f8fafc;
+  --text-muted: #94a3b8;
+
+  --gold: #d4af37;
+  --gold-light: #f4d06f;
+
+  --border: rgba(255,255,255,0.08);
+
+  --success: #22c55e;
+  --danger: #ef4444;
+
+  --radius: 24px;
+  --shadow:
+    0 10px 30px rgba(0,0,0,.35),
+    0 0 40px rgba(212,175,55,.08);
+}
+
+/* ==========================
+   RESET
+========================== */
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  font-family:'Outfit',sans-serif;
+  background:
+    radial-gradient(circle at top,#182338 0%,#0b0f17 60%);
+  color:var(--text);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* ==========================
+   NOISE
+========================== */
+
+.noise-overlay{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  opacity:.04;
+  background-image:
+    radial-gradient(circle,#fff 1px,transparent 1px);
+  background-size:4px 4px;
+}
+
+/* ==========================
+   HEADER
+========================== */
+
+.site-header{
+  width:min(1400px,95%);
+  margin:auto;
+  padding:2rem 0;
+
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:2rem;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:1rem;
+}
+
+.brand-mark{
+  width:65px;
+  height:65px;
+  border-radius:50%;
+
+  display:grid;
+  place-items:center;
+
+  color:var(--gold);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(212,175,55,.18),
+      rgba(255,255,255,.04)
+    );
+
+  border:1px solid rgba(212,175,55,.3);
+}
+
+.brand-text h1{
+  font-size:1.9rem;
+  letter-spacing:2px;
+}
+
+.brand-plus{
+  color:var(--gold);
+}
+
+.brand-text p{
+  color:var(--text-muted);
+  font-size:.85rem;
+}
+
+.header-nav{
+  display:flex;
+  gap:1rem;
+}
+
+.nav-btn{
+  background:rgba(255,255,255,.05);
+  border:1px solid var(--border);
+
+  color:var(--text);
+
+  padding:.85rem 1.1rem;
+  border-radius:14px;
+
+  display:flex;
+  align-items:center;
+  gap:.6rem;
+
+  cursor:pointer;
+
+  transition:.3s;
+}
+
+.nav-btn:hover{
+  transform:translateY(-3px);
+  border-color:var(--gold);
+  box-shadow:0 0 20px rgba(212,175,55,.15);
+}
+
+/* ==========================
+   WORKSPACE
+========================== */
+
+.workspace{
+  width:min(1400px,95%);
+  margin:auto;
+  padding-bottom:4rem;
+}
+
+/* ==========================
+   GRID
+========================== */
+
+.primary-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:2rem;
+  margin-bottom:2rem;
+}
+
+.panel{
+  background:var(--panel);
+  backdrop-filter:blur(25px);
+
+  border:1px solid var(--border);
+
+  border-radius:var(--radius);
+
+  overflow:hidden;
+
+  box-shadow:var(--shadow);
+}
+
+/* ==========================
+   LOCAL CLOCK
+========================== */
+
+.panel-banner{
+  height:180px;
+  background-size:cover;
+  background-position:center;
+  position:relative;
+}
+
+.banner-overlay{
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(
+      to top,
+      rgba(0,0,0,.8),
+      transparent
+    );
+}
+
+.banner-label{
+  position:absolute;
+  left:20px;
+  bottom:20px;
+}
+
+.location-tag{
+  background:rgba(255,255,255,.1);
+  backdrop-filter:blur(10px);
+
+  padding:.45rem .9rem;
+  border-radius:999px;
+
+  font-size:.8rem;
+}
+
+.panel-body{
+  padding:2rem;
+}
+
+.clock-identity{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.clock-city{
+  font-size:1.5rem;
+}
+
+.live-badge{
+  color:var(--success);
+  font-size:.85rem;
+}
+
+.clock-stage{
+  display:flex;
+  justify-content:center;
+  margin:2rem 0;
+}
+
+/* ==========================
+   ANALOG CLOCK
+========================== */
+
+.clock-bezel{
+  width:280px;
+  height:280px;
+  border-radius:50%;
+
+  background:
+    radial-gradient(circle,#1c2435,#0f172a);
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  border:8px solid rgba(212,175,55,.15);
+}
+
+.clock-face{
+  width:240px;
+  height:240px;
+  border-radius:50%;
+  position:relative;
+
+  background:
+    radial-gradient(circle,#111827,#020617);
+}
+
+.center-jewel{
+  position:absolute;
+  width:14px;
+  height:14px;
+  border-radius:50%;
+
+  background:var(--gold);
+
+  top:50%;
+  left:50%;
+
+  transform:translate(-50%,-50%);
+}
+
+.hand{
+  position:absolute;
+  left:50%;
+  bottom:50%;
+
+  transform-origin:bottom center;
+  border-radius:999px;
+}
+
+.hour-hand{
+  width:6px;
+  height:60px;
+  background:white;
+}
+
+.minute-hand{
+  width:4px;
+  height:85px;
+  background:#ddd;
+}
+
+.second-hand{
+  width:2px;
+  height:95px;
+  background:var(--gold);
+}
+
+/* ==========================
+   DIGITAL
+========================== */
+
+.clock-readouts{
+  text-align:center;
+}
+
+.digital-time{
+  font-family:'DM Mono',monospace;
+  font-size:2.3rem;
+  color:var(--gold);
+}
+
+.digital-date{
+  margin-top:.5rem;
+  color:var(--text-muted);
+}
+
+/* ==========================
+   TIMER PANEL
+========================== */
+
+.timer-panel{
+  padding:2rem;
+}
+
+.panel-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.panel-header h2{
+  margin-bottom:.35rem;
+}
+
+.panel-header p{
+  color:var(--text-muted);
+  font-size:.9rem;
+}
+
+.timer-inputs{
+  margin-top:2rem;
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:1rem;
+}
+
+.time-input{
+  width:90px;
+  height:80px;
+
+  background:#111827;
+
+  border:1px solid var(--border);
+  border-radius:18px;
+
+  text-align:center;
+
+  color:white;
+  font-size:2rem;
+  font-family:'DM Mono',monospace;
+}
+
+.time-field{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:.5rem;
+}
+
+.time-field label{
+  color:var(--text-muted);
+  font-size:.8rem;
+}
+
+.time-separator{
+  font-size:2rem;
+  color:var(--gold);
+}
+
+/* ==========================
+   COUNTDOWN
+========================== */
+
+.countdown-display{
+  display:flex;
+  justify-content:center;
+  margin:2rem 0;
+}
+
+.countdown-track{
+  width:250px;
+  height:250px;
+  position:relative;
+}
+
+.countdown-arc{
+  width:100%;
+  height:100%;
+  transform:rotate(-90deg);
+}
+
+.arc-bg{
+  stroke:rgba(255,255,255,.08);
+}
+
+.arc-fill{
+  stroke:var(--gold);
+}
+
+.countdown-digits{
+  position:absolute;
+  inset:0;
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  font-size:2rem;
+  font-family:'DM Mono',monospace;
+}
+
+/* ==========================
+   BUTTONS
+========================== */
+
+.timer-actions{
+  display:flex;
+  gap:1rem;
+  justify-content:center;
+  flex-wrap:wrap;
+}
+
+.action-btn{
+  border:none;
+  cursor:pointer;
+
+  display:flex;
+  align-items:center;
+  gap:.6rem;
+
+  padding:.95rem 1.3rem;
+  border-radius:14px;
+
+  font-weight:600;
+
+  transition:.3s;
+}
+
+.action-btn:hover{
+  transform:translateY(-2px);
+}
+
+.primary-action{
+  background:var(--gold);
+  color:black;
+}
+
+.secondary-action{
+  background:#1e293b;
+  color:white;
+}
+
+.ghost-action{
+  background:transparent;
+  border:1px solid var(--border);
+  color:white;
+}
+
+/* ==========================
+   ALERT
+========================== */
+
+.timer-alert{
+  display:none;
+
+  margin-top:1.5rem;
+  padding:1rem;
+
+  border-radius:14px;
+
+  background:rgba(239,68,68,.12);
+  border:1px solid rgba(239,68,68,.3);
+
+  color:#ff9f9f;
+
+  align-items:center;
+  gap:.8rem;
+}
+
+/*Map Panel*/
+.map-panel {
+  margin-bottom: 2rem;
+}
+ 
+.map-panel-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 18px 28px;
-  background: var(--card-bg);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--card-border);
-  box-shadow: var(--shadow-card);
-  position: sticky;
-  top: 16px;
-  z-index: 100;
+  padding: 1.5rem 2rem 1rem;
 }
-
-.brand-section h1 {
-  font-size: 1.9rem;
-  font-weight: 800;
-  letter-spacing: -0.04em;
-  background: var(--accent-grad);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+ 
+.map-panel-header h2 {
+  margin-bottom: 0.25rem;
 }
-
-.brand-section p {
-  font-size: 0.78rem;
-  font-weight: 600;
+ 
+.map-panel-header p {
   color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.10em;
-  margin-top: 2px;
-}
-
-.header-actions {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-/* Theme toggle */
-.theme-toggle-btn {
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  box-shadow: var(--shadow-out);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--text-secondary);
-  transition: var(--transition);
-  flex-shrink: 0;
-}
-
-.theme-toggle-btn:hover {
-  transform: rotate(22deg) scale(1.12);
-  color: var(--accent);
-  box-shadow: var(--shadow-lift);
-}
-
-.theme-toggle-btn svg {
-  width: 18px;
-  height: 18px;
-}
-
-/* Focus mode button */
-.focus-btn {
-  padding: 9px 20px;
   font-size: 0.85rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  border-radius: var(--radius-sm);
-  background: var(--accent-grad);
-  border: none;
-  color: #fff;
-  cursor: pointer;
-  transition: var(--transition);
-  box-shadow: 0 4px 14px var(--accent-glow);
 }
-
-.focus-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px var(--accent-glow);
-  filter: brightness(1.08);
-}
-
-/* =====================================================
-   NEUMORPHIC CARD BASE
-   ===================================================== */
-
-.neumorphic-plate {
-  background: var(--card-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-radius: var(--radius-xl);
-  border: 1px solid var(--card-border);
-  box-shadow: var(--shadow-out);
-  position: relative;
-  overflow: hidden;
-  transition: transform var(--dur) var(--ease),
-              box-shadow var(--dur) var(--ease);
-}
-
-.neumorphic-plate:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-lift);
-}
-
-/* Colored top-edge accent stripe */
-.neumorphic-plate::before {
-  content: "";
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 3px;
-  background: var(--accent-grad);
-  opacity: 0.7;
-  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
-}
-
-/* =====================================================
-   MAIN DASHBOARD GRID
-   ===================================================== */
-
-.main-dashboard {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
-  align-items: start;
-}
-
-/* =====================================================
-   MAIN LOCAL CLOCK CARD
-   ===================================================== */
-
-.main-clock-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0;
-  padding-bottom: 28px;
-}
-
-.main-clock-section .clock-frame {
-  width: 300px;
-  height: 300px;
-  margin-top: 20px;
-}
-
-/* =====================================================
-   CLOCK BANNER (monument image strip)
-   ===================================================== */
-
-.clock-banner {
-  width: 100%;
-  height: 160px;
-  background-size: cover;
-  background-position: center;
-  position: relative;
-  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
-  overflow: hidden;
-}
-
-.clock-banner::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0.30) 0%,
-    rgba(0, 0, 0, 0.0) 60%,
-    var(--bg-color) 100%
-  );
-}
-
-/* When no image is supplied, show a colored gradient */
-.clock-banner:not([style*="url"]) {
-  background: var(--accent-grad);
-}
-
-/* =====================================================
-   CLOCK HEADER TEXT
-   ===================================================== */
-
-.clock-header {
-  padding: 16px 20px 4px;
-  text-align: center;
-  position: relative;
-  z-index: 2;
-}
-
-.clock-label {
-  font-size: 1.2rem;
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  color: var(--text-primary);
-  margin: 0;
-}
-
-.clock-sublabel {
-  font-size: 0.72rem;
-  font-weight: 700;
-  color: var(--accent);
-  margin: 3px 0 0;
-  text-transform: uppercase;
-  letter-spacing: 0.10em;
-}
-
-/* =====================================================
-   CLOCK FRAME (outer bezel)
-   ===================================================== */
-
-.clock-frame {
-  width: 260px;
-  height: 260px;
-  border-radius: 50%;
-  background: var(--clock-ring);
-  padding: 14px;
-  box-shadow: var(--shadow-out),
-              0 0 0 1px var(--card-border);
-  margin: 16px auto;
-  position: relative;
-  flex-shrink: 0;
-  transition: box-shadow var(--dur) var(--ease);
-}
-
-.clock-frame:hover {
-  box-shadow: var(--shadow-lift),
-              0 0 0 2px var(--accent);
-}
-
-/* Clock face inner disc */
-.clock-face {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  background: var(--clock-bg);
-  box-shadow: var(--shadow-in);
-  position: relative;
-  overflow: hidden;
-}
-
-/* Glass sheen */
-.clock-glass {
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  background: linear-gradient(
-    135deg,
-    rgba(255,255,255,0.18) 0%,
-    transparent 55%
-  );
-  z-index: 20;
-  pointer-events: none;
-}
-
-/* =====================================================
-   TICK MARKS
-   ===================================================== */
-
-.tick {
-  position: absolute;
-  width: 2px;
-  height: 100%;
-  left: calc(50% - 1px);
-  top: 0;
-}
-
-.tick::before {
-  content: "";
-  position: absolute;
-  top: 8px;
-  width: 2px;
-  height: 7px;
-  border-radius: 2px;
-  background: var(--clock-tick);
-}
-
-.tick.major::before {
-  height: 14px;
-  width: 3px;
-  left: -0.5px;
-  background: var(--clock-tick-major);
-}
-
-/* =====================================================
-   CLOCK HANDS
-   ===================================================== */
-
-.hand {
-  position: absolute;
-  transform-origin: bottom center;
-  z-index: 12;
-  border-radius: 20px;
-}
-
-.hand.hour {
-  width: 8px;
-  height: 26%;
-  left: calc(50% - 4px);
-  bottom: 50%;
-  background: var(--hour-hand);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
-}
-
-.hand.minute {
-  width: 5px;
-  height: 37%;
-  left: calc(50% - 2.5px);
-  bottom: 50%;
-  background: var(--minute-hand);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.20);
-}
-
-.hand.second {
-  width: 2px;
-  height: 44%;
-  left: calc(50% - 1px);
-  bottom: 50%;
-  background: var(--second-hand);
-  border-radius: 2px;
-  z-index: 13;
-  box-shadow: 0 0 6px var(--second-hand);
-}
-
-/* Second hand tail counterweight */
-.hand.second::before {
-  content: "";
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  background: var(--second-hand);
-  border-radius: 50%;
-  left: calc(50% - 4px);
-  bottom: -4px;
-  box-shadow: 0 0 8px var(--second-hand);
-}
-
-/* Center rivet pin */
-.center-pin {
-  width: 14px;
-  height: 14px;
-  background: radial-gradient(circle at 35% 35%, #ffffff, var(--accent));
-  border-radius: 50%;
-  position: absolute;
-  top: calc(50% - 7px);
-  left: calc(50% - 7px);
-  z-index: 16;
-  box-shadow: 0 0 6px var(--accent-glow);
-}
-
-/* =====================================================
-   DIGITAL READOUT
-   ===================================================== */
-
-.digital-readout {
-  font-family: "JetBrains Mono", monospace;
-  font-size: 1.55rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  color: var(--accent);
-  background: var(--card-bg);
-  border-radius: var(--radius-md);
-  padding: 10px 24px;
-  margin-top: 12px;
-  box-shadow: var(--shadow-in);
-  text-align: center;
-  position: relative;
-}
-
-/* Glowing underline accent */
-.digital-readout::after {
-  content: "";
-  position: absolute;
-  bottom: 0; left: 20%; right: 20%;
-  height: 2px;
-  background: var(--accent-grad);
-  border-radius: 2px;
-  opacity: 0.6;
-}
-
-.clock-date {
-  margin-top: 10px;
-  font-size: 0.82rem;
-  font-weight: 700;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  text-align: center;
-}
-
-/* =====================================================
-   TIMER SECTION
-   ===================================================== */
-
-.timer-section {
-  padding: 28px;
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-}
-
-.timer-section h2 {
-  font-size: 1.25rem;
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  color: var(--text-primary);
-  margin: 0;
-}
-
-.timer-section .subtitle {
-  font-size: 0.78rem;
-  font-weight: 500;
-  color: var(--text-muted);
-  margin-top: -10px;
-}
-
-/* Input row */
-.timer-inputs-wrapper {
-  display: flex;
-  gap: 10px;
-}
-
-.input-group {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  flex: 1;
-}
-
-.input-group label {
-  font-size: 0.70rem;
-  font-weight: 800;
-  color: var(--accent);
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-}
-
-.timer-input {
-  width: 100%;
-  padding: 12px 8px;
-  font-family: "JetBrains Mono", monospace;
-  font-size: 1.15rem;
-  font-weight: 700;
-  text-align: center;
-  background: var(--card-bg);
-  border: 1.5px solid transparent;
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-in);
-  color: var(--text-primary);
-  outline: none;
-  transition: border-color var(--dur) var(--ease),
-              box-shadow var(--dur) var(--ease);
-}
-
-.timer-input:focus {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent-glow), var(--shadow-in);
-}
-
-/* Countdown display */
-.timer-display-box {
-  padding: 20px;
-  border-radius: var(--radius-lg);
-  background: linear-gradient(135deg,
-    rgba(99,102,241,0.08) 0%,
-    rgba(139,92,246,0.08) 100%
-  );
-  border: 1.5px solid rgba(99,102,241,0.18);
-  box-shadow: var(--shadow-in);
-  text-align: center;
-}
-
-body.dark-theme .timer-display-box {
-  background: linear-gradient(135deg,
-    rgba(129,140,248,0.10) 0%,
-    rgba(167,139,250,0.10) 100%
-  );
-  border-color: rgba(129,140,248,0.22);
-}
-
-#countdownDisplay {
-  font-family: "JetBrains Mono", monospace;
-  font-size: 2.8rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  background: var(--accent-grad);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* Button row */
-.timer-controls {
-  display: flex;
-  gap: 10px;
-  width: 100%;
-}
-
-.timer-controls .btn {
-  flex: 1;
-}
-
-/* Timer-up alert */
-.timer-up-container {
-  display: none;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 16px;
-  background: rgba(239, 68, 68, 0.08);
-  border: 1.5px solid rgba(239, 68, 68, 0.28);
-  border-radius: var(--radius-md);
-  color: var(--red);
-  font-weight: 700;
-  font-size: 0.88rem;
-  animation: pulseAlert 1s infinite ease-in-out alternate;
-}
-
-@keyframes pulseAlert {
-  from { opacity: 0.65; }
-  to   { opacity: 1.00; }
-}
-
-/* =====================================================
-   BUTTONS
-   ===================================================== */
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
-  padding: 11px 18px;
-  font-family: "Plus Jakarta Sans", sans-serif;
-  font-size: 0.875rem;
-  font-weight: 700;
-  border-radius: var(--radius-md) !important;
-  border: none;
-  cursor: pointer;
-  transition: transform var(--dur) var(--ease),
-              box-shadow var(--dur) var(--ease),
-              filter var(--dur) var(--ease);
-}
-
-.btn:hover {
-  transform: translateY(-2px);
-}
-
-.btn:active {
-  transform: translateY(0) scale(0.97);
-}
-
-.btn-primary {
-  background: var(--accent-grad);
-  color: #fff;
-  box-shadow: 0 4px 14px var(--accent-glow);
-}
-
-.btn-primary:hover {
-  box-shadow: 0 6px 20px var(--accent-glow);
-  filter: brightness(1.10);
-  color: #fff;
-}
-
-.btn-secondary {
-  background: var(--card-bg);
-  color: var(--text-primary);
-  border: 1px solid var(--card-border);
-  box-shadow: var(--shadow-out);
-}
-
-.btn-secondary:hover {
-  box-shadow: var(--shadow-lift);
-  color: var(--accent);
-}
-
-/* =====================================================
-   WORLD CLOCKS SECTION
-   ===================================================== */
-
-.world-clocks-section {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-}
-
-.world-clocks-section > h2 {
-  font-size: 1.45rem;
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  background: var(--accent-grad);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* World clock grid */
-.world-clocks-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
-  gap: 20px;
-}
-
-/* World clock card — clean vertical layout, name above clock */
-.world-clock-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0;
-  padding: 22px 20px 20px;
-  min-height: unset;
-  animation: cardInsert 0.4s var(--spring);
-}
-
-@keyframes cardInsert {
-  from { opacity: 0; transform: translateY(16px) scale(0.97); }
-  to   { opacity: 1; transform: translateY(0) scale(1); }
-}
-
-/* Name + sublabel sit fully above the clock */
-.world-clock-card .clock-header {
-  text-align: center;
-  padding: 0 0 12px;
-  width: 100%;
-}
-
-.world-clock-card .clock-label {
-  font-size: 1.05rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* Clock face is centred, sized to fill the card nicely */
-.world-clock-card .clock-frame {
-  width: 130px;
-  height: 130px;
-  padding: 10px;
-  flex-shrink: 0;
-  margin: 0 auto;
-}
-
-/* Digital time sits below the clock */
-.world-clock-card .digital-readout {
-  font-size: 1.05rem;
-  padding: 7px 18px;
-  margin-top: 12px;
-  border-radius: var(--radius-sm);
-  text-align: center;
-  width: 100%;
-}
-
-.world-clock-card .clock-date {
-  font-size: 0.72rem;
-  margin-top: 6px;
-  text-align: center;
-}
-
-/* Hide banners on world-clock cards */
-.world-clock-card .clock-banner {
-  display: none;
-}
-
-/* Remove button */
-.remove-clock-btn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  font-size: 14px;
-  line-height: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  cursor: pointer;
-  color: var(--text-muted);
-  z-index: 10;
-  box-shadow: var(--shadow-out);
-  transition: all 0.28s var(--spring);
-}
-
-.remove-clock-btn:hover {
-  background: var(--red);
-  color: #fff;
-  border-color: var(--red);
-  box-shadow: 0 4px 12px rgba(239,68,68,0.35);
-  transform: scale(1.12) rotate(90deg);
-}
-
-.remove-clock-btn:active {
-  transform: scale(0.92);
-}
-
-/* Card pin flash */
-@keyframes cardHighlightPulse {
-  0%   { box-shadow: var(--shadow-out); transform: scale(1); }
-  35%  { box-shadow: 0 0 36px var(--accent-glow); transform: scale(1.04); }
-  100% { box-shadow: var(--shadow-out); transform: scale(1); }
-}
-
-.card-highlight-active {
-  animation: cardHighlightPulse 1.8s var(--spring) !important;
-  z-index: 20 !important;
-}
-
-/* =====================================================
-   TIMEZONE MAP SECTION
-   ===================================================== */
-
-.timezone-map-section {
-  width: 100%;
-  padding: 28px 32px 32px;
-}
-
-.map-header {
-  margin-bottom: 20px;
-}
-
-.map-header h2 {
-  font-size: 1.45rem;
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  background: var(--accent-grad);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin-bottom: 4px;
-}
-
-.map-header .subtitle {
-  font-size: 0.80rem;
-  color: var(--text-muted);
-  font-weight: 500;
-}
-
+ 
+/* Container: fixed height, clips the SVG, anchors the tooltip */
 .map-container {
   position: relative;
+  height: 500px;
+  overflow: hidden;
+  border-radius: 0 0 var(--radius) var(--radius);
+  background: transparent;
+  border-top: 1px solid var(--border);
+}
+ 
+/* Scroll wrapper stretches to fill the container */
+.map-scroll {
   width: 100%;
-  background: linear-gradient(135deg,
-    rgba(99,102,241,0.04) 0%,
-    rgba(6,182,212,0.04) 100%
-  );
-  border-radius: var(--radius-lg);
-  border: 1.5px solid rgba(99,102,241,0.12);
-  padding: 14px;
-  overflow: visible;
-  box-shadow: var(--shadow-in);
+  height: 100%;
 }
-
-body.dark-theme .map-container {
-  background: linear-gradient(135deg,
-    rgba(129,140,248,0.06) 0%,
-    rgba(34,211,238,0.05) 100%
-  );
-  border-color: rgba(129,140,248,0.16);
-}
-
-.map-scroll-container {
-  width: 100%;
-  overflow-x: auto;
-  scrollbar-width: thin;
-  scrollbar-color: var(--accent) transparent;
-}
-
-.map-scroll-container::-webkit-scrollbar { height: 5px; }
-.map-scroll-container::-webkit-scrollbar-thumb {
-  background: var(--accent);
-  border-radius: 10px;
-}
-
+ 
+/* Injected SVG fills .map-scroll completely */
 #timezone-map-wrapper {
-  position: relative;
   width: 100%;
-  min-width: 784px;
-  margin: 0 auto;
+  height: 100%;
 }
-
+ 
+#timezone-map-wrapper svg,
 #world-map {
-  width: 100%;
-  height: auto;
   display: block;
-  border-radius: 12px;
-  background: radial-gradient(ellipse at center, #f0f4ff 0%, #e2e8f0 100%);
-  transition: background 0.4s var(--ease);
+  width: 100%;
+  height: 100%;
 }
-
-body.dark-theme #world-map {
-  background: radial-gradient(ellipse at center, #0c1230 0%, #030a1a 100%);
+ 
+/*CONTINENT FILLS*/
+ 
+/* Dark (default) — charcoal-slate with slate-blue borders */
+body.dark-theme .land-path,
+body:not(.light-theme) .land-path {
+  fill: #1e2d42;
+  stroke: #2e4060;
+  stroke-width: 0.4px;
 }
-
-#world-map path {
-  fill: #e8edf5;
-  stroke: #c7d2e0;
+ 
+/* Light — soft parchment with clear country borders */
+body.light-theme .land-path {
+  fill: #c8d6e5;
+  stroke: #8fa5bb;
   stroke-width: 0.5px;
-  transition: fill 0.3s var(--ease), stroke 0.3s var(--ease);
 }
-
-body.dark-theme #world-map path {
-  fill: #111c38;
-  stroke: #1e2f52;
-}
-
-#world-map path:hover {
-  fill: rgba(99, 102, 241, 0.16) !important;
-  stroke: var(--accent) !important;
-}
-
-.map-grid-line {
-  stroke: rgba(99, 102, 241, 0.09);
-  stroke-width: 0.8px;
-  stroke-dasharray: 4 4;
-}
-
-body.dark-theme .map-grid-line {
-  stroke: rgba(129, 140, 248, 0.18);
-}
-
+ 
+/*TIMEZONE BANDS*/
 .timezone-sector {
   fill: transparent;
   cursor: pointer;
-  transition: fill 0.25s var(--ease);
+  transition: fill 0.2s ease;
 }
-
-.timezone-sector:hover        { fill: rgba(99,102,241,0.07); }
-.timezone-sector.active-sector { fill: rgba(99,102,241,0.10); }
-
-body.dark-theme .timezone-sector:hover         { fill: rgba(129,140,248,0.12); }
-body.dark-theme .timezone-sector.active-sector { fill: rgba(129,140,248,0.18); }
-
-/* City markers */
-.city-marker { cursor: pointer; }
-
-.city-marker .pulse-ring {
-  fill: var(--accent);
-  opacity: 0;
-  animation: pulseMarker 2.2s infinite ease-out;
+ 
+.timezone-sector.active-sector {
+  fill: rgba(212, 175, 55, 0.08);
 }
-
+ 
+body.light-theme .timezone-sector.active-sector {
+  fill: rgba(184, 134, 11, 0.1);
+}
+ 
+/*GRID LINES*/
+.map-grid-line {
+  stroke: rgba(255, 255, 255, 0.06);
+  stroke-width: 1;
+}
+ 
+body.light-theme .map-grid-line {
+  stroke: rgba(15, 23, 42, 0.1);
+}
+ 
+.equator-line,
+.meridian-line {
+  stroke: rgba(212, 175, 55, 0.18);
+  stroke-dasharray: 4 4;
+}
+ 
+body.light-theme .equator-line,
+body.light-theme .meridian-line {
+  stroke: rgba(184, 134, 11, 0.25);
+}
+ 
+/*CITY MARKERS*/
+.city-marker {
+  cursor: pointer;
+}
+ 
 .city-marker .center-dot {
-  fill: var(--second-hand);
-  stroke: #fff;
-  stroke-width: 1.5px;
-  transition: fill 0.25s var(--ease);
+  fill: var(--gold, #d4af37);
+  transition: r 0.2s ease;
 }
-
-body.dark-theme .city-marker .center-dot { stroke: #06091a; }
-.city-marker:hover .center-dot { fill: var(--accent); }
-
-@keyframes pulseMarker {
-  0%   { r: 3px; opacity: 0.85; }
-  100% { r: 15px; opacity: 0; }
+ 
+.city-marker .pulse-ring {
+  fill: none;
+  stroke: var(--gold, #d4af37);
+  stroke-width: 1.5;
+  opacity: 0.4;
 }
-
-/* Pinned markers */
-.city-marker.pinned-marker .center-dot { fill: var(--green) !important; }
-.city-marker.pinned-marker .pulse-ring { fill: var(--green) !important; }
-
-body.dark-theme .city-marker.pinned-marker .center-dot { fill: var(--accent-3) !important; }
-body.dark-theme .city-marker.pinned-marker .pulse-ring { fill: var(--accent-3) !important; }
-
-/* =====================================================
-   MAP TOOLTIP
-   ===================================================== */
+ 
+.city-marker.pinned-marker .center-dot {
+  fill: #22c55e;
+}
+ 
+.city-marker.pinned-marker .pulse-ring {
+  stroke: #22c55e;
+}
+ 
+body.light-theme .city-marker .center-dot {
+  fill: var(--accent, #b8860b);
+}
+ 
+body.light-theme .city-marker .pulse-ring {
+  stroke: var(--accent, #b8860b);
+}
+ 
+/*MAP TOOLTIP*/
 
 .map-tooltip {
   position: absolute;
-  z-index: 100;
-  width: 248px;
-  padding: 16px;
-  border-radius: var(--radius-lg);
-  background: rgba(255,255,255,0.88);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255,255,255,0.65);
-  box-shadow: 0 12px 40px rgba(17,24,39,0.14), 0 2px 6px rgba(17,24,39,0.06);
-  color: var(--text-primary);
-  pointer-events: auto;
+  z-index: 200;
+  pointer-events: none;   
+ 
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1rem 1.2rem;
+  min-width: 210px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  animation: tooltipIn 0.25s var(--spring);
+  gap: 0.5rem;
+  backdrop-filter: blur(12px);
+  transition: opacity 0.1s ease;
+}
+ 
+.map-tooltip .tt-pin-btn,
+.map-tooltip .tt-remove-btn {
+  pointer-events: all;
+  position: relative;
+  z-index: 201;
+  cursor: pointer;
 }
 
-body.dark-theme .map-tooltip {
-  background: rgba(10,15,40,0.88);
-  border-color: rgba(129,140,248,0.18);
-  box-shadow: 0 16px 48px rgba(0,0,0,0.45);
+.map-tooltip:hover {
+  pointer-events: all;
 }
-
-@keyframes tooltipIn {
-  from { opacity: 0; transform: translateY(8px) scale(0.96); }
-  to   { opacity: 1; transform: translateY(0) scale(1); }
-}
-
-.tooltip-header {
+ 
+.tt-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 8px;
+  gap: 0.5rem;
 }
-
-.tooltip-header h4 {
-  font-size: 1rem;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-}
-
-.tooltip-offset {
-  font-size: 0.70rem;
-  font-weight: 800;
-  background: var(--accent-grad);
-  color: #fff;
-  padding: 2px 9px;
-  border-radius: 20px;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
-.tooltip-tz-id {
-  font-size: 0.70rem;
-  color: var(--text-muted);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-}
-
-.tooltip-time-row {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  padding-bottom: 10px;
-  margin-bottom: 2px;
-  border-bottom: 1px solid rgba(0,0,0,0.07);
-}
-
-body.dark-theme .tooltip-time-row {
-  border-bottom-color: rgba(255,255,255,0.07);
-}
-
-.tooltip-time {
-  font-family: "JetBrains Mono", monospace;
-  font-size: 1.45rem;
-  font-weight: 700;
-  background: var(--accent-grad);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.tooltip-date {
-  font-size: 0.78rem;
-  color: var(--text-muted);
+ 
+.tt-header h4 {
+  font-size: 0.95rem;
   font-weight: 600;
 }
-
-.tooltip-btn {
-  height: 36px !important;
-  font-size: 0.82rem !important;
-  border-radius: var(--radius-sm) !important;
+ 
+.tt-badge {
+  background: rgba(212, 175, 55, 0.15);
+  color: var(--gold, #d4af37);
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-family: "DM Mono", monospace;
+  white-space: nowrap;
+}
+ 
+body.light-theme .tt-badge {
+  background: rgba(184, 134, 11, 0.12);
+  color: var(--accent, #b8860b);
+}
+ 
+.tt-tz {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-family: "DM Mono", monospace;
+}
+ 
+.tt-time-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+ 
+.tt-time {
+  font-family: "DM Mono", monospace;
+  font-size: 1.1rem;
+  color: var(--gold, #d4af37);
+}
+ 
+body.light-theme .tt-time {
+  color: var(--accent, #b8860b);
+}
+ 
+.tt-date {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+ 
+.tt-pin-btn {
+  margin-top: 0.25rem;
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  border: none;
+  background: var(--gold, #d4af37);
+  color: #000;
+  font-family: "Outfit", sans-serif;
+  font-weight: 600;
+  font-size: 0.82rem;
+  cursor: pointer;
+  pointer-events: all;
+  transition: opacity 0.2s;
+}
+ 
+.tt-pin-btn:hover { opacity: 0.85; }
+ 
+.tt-remove-btn {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+ 
+/*MAP*/
+.map-legend {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+ 
+.legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+ 
+.legend-dot.pinned { background: #22c55e; }
+ 
+.legend-dot.active {
+  background: var(--gold, #d4af37);
+}
+ 
+body.light-theme .legend-dot.active {
+  background: var(--accent, #b8860b);
 }
 
-.tooltip-btn.tooltip-remove-btn {
-  background: rgba(239,68,68,0.09) !important;
-  border: 1.5px solid rgba(239,68,68,0.22) !important;
-  color: var(--red) !important;
-  box-shadow: none !important;
+/* ==========================
+   WORLD CLOCKS
+========================== */
+
+.section-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:1.5rem;
+  padding-top:0.25rem;
 }
 
-.tooltip-btn.tooltip-remove-btn:hover {
-  background: var(--red) !important;
-  color: #fff !important;
-  box-shadow: 0 4px 12px rgba(239,68,68,0.30) !important;
+.clock-search-wrap{
+  position:relative;
 }
 
-/* =====================================================
-   LAP / ALARM LIST ITEMS
-   ===================================================== */
+.clock-search{
+  width:320px;
+  padding:1rem 1rem 1rem 3rem;
 
-.lap-container {
-  max-height: 130px;
-  overflow: auto;
+  background:#111827;
+  border:1px solid var(--border);
+
+  border-radius:14px;
+  color:white;
 }
 
-.list-group-item {
-  background: var(--card-bg) !important;
-  color: var(--text-primary) !important;
-  border: none !important;
-  margin-bottom: 8px;
-  border-radius: var(--radius-md) !important;
-  box-shadow: var(--shadow-in);
-  padding: 10px 14px;
-  font-size: 0.875rem;
+.search-icon{
+  position:absolute;
+  left:14px;
+  top:50%;
+  transform:translateY(-50%);
 }
 
-/* =====================================================
-   FORM INPUTS (Bootstrap overrides)
-   ===================================================== */
+.clocks-grid{
+  display:grid;
+  grid-template-columns:
+    repeat(auto-fill,minmax(280px,1fr));
 
-.form-control,
-.form-select {
-  background: var(--card-bg) !important;
-  border: 1.5px solid transparent !important;
-  color: var(--text-primary) !important;
-  border-radius: var(--radius-md) !important;
-  min-height: 48px;
-  box-shadow: var(--shadow-in) !important;
-  padding-left: 14px;
-  transition: border-color var(--dur) var(--ease) !important;
+  gap:1.5rem;
 }
 
-.form-control:focus,
-.form-select:focus {
-  border-color: var(--accent) !important;
-  box-shadow: 0 0 0 3px var(--accent-glow), var(--shadow-in) !important;
-}
+/* ==========================
+   RESPONSIVE
+========================== */
 
-/* =====================================================
-   SCROLLBAR
-   ===================================================== */
+@media (max-width:1000px){
 
-::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb {
-  background: linear-gradient(var(--accent), var(--accent-2));
-  border-radius: 20px;
-}
+  .primary-grid{
+    grid-template-columns:1fr;
+  }
 
-/* =====================================================
-   FOCUS MODE
-   ===================================================== */
+  .site-header{
+    flex-direction:column;
+  }
 
-body.focus-mode .world-clocks-section,
-body.focus-mode .alarm-section,
-body.focus-mode .stopwatch-section,
-body.focus-mode .timezone-map-section {
-  display: none;
-}
+  .section-header{
+    flex-direction:column;
+    gap:1rem;
+  }
 
-body.focus-mode .main-dashboard {
-  grid-template-columns: 1fr;
-  max-width: 520px;
-  margin: 0 auto;
-}
-
-/* =====================================================
-   MODAL
-   ===================================================== */
-
-.modal-content {
-  border-radius: var(--radius-xl) !important;
-  border: 1px solid var(--card-border) !important;
-  background: var(--card-bg) !important;
-  backdrop-filter: blur(24px) !important;
-  box-shadow: 0 24px 80px rgba(0,0,0,0.25) !important;
-}
-
-.large-clock {
-  width: 440px !important;
-  height: 440px !important;
-}
-
-/* =====================================================
-   STOPWATCH & STOPWATCH DISPLAY
-   ===================================================== */
-
-.stopwatch-display h1,
-#stopwatchDisplay {
-  font-family: "JetBrains Mono", monospace;
-  font-size: 2rem;
-  font-weight: 700;
-  background: var(--accent-grad);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* =====================================================
-   RESPONSIVE BREAKPOINTS
-   ===================================================== */
-
-@media (max-width: 1100px) {
-  .main-clock-section .clock-frame {
-    width: 260px;
-    height: 260px;
+  .clock-search{
+    width:100%;
   }
 }
 
-@media (max-width: 900px) {
-  .main-dashboard {
-    grid-template-columns: 1fr;
+@media (max-width:600px){
+
+  .clock-bezel{
+    width:220px;
+    height:220px;
   }
-  .app-container {
-    padding: 16px 16px 56px;
-    gap: 20px;
+
+  .clock-face{
+    width:190px;
+    height:190px;
   }
-  .main-clock-section .clock-frame {
-    width: 240px;
-    height: 240px;
+
+  .digital-time{
+    font-size:1.7rem;
   }
-  .large-clock {
-    width: 340px !important;
-    height: 340px !important;
+
+  .countdown-track{
+    width:200px;
+    height:200px;
   }
 }
 
+/* ==========================
+   DEFAULT (DARK)
+========================== */
 
-@media (max-width: 640px) {
-  header {
-    padding: 14px 18px;
-  }
-  .brand-section h1 { font-size: 1.5rem; }
-  .main-clock-section .clock-frame {
-    width: 210px;
-    height: 210px;
-  }
-  .world-clock-card .clock-frame {
-    width: 110px;
-    height: 110px;
-  }
-  #countdownDisplay { font-size: 2.1rem; }
-  .world-clocks-grid {
+:root{
+  --bg:#0b0f17;
+  --bg-secondary:#111827;
+  --panel:#141c2f;
+
+  --text:#ffffff;
+  --text-muted:#94a3b8;
+
+  --accent:#d4af37;
+  --border:rgba(255,255,255,.08);
+
+  --shadow:
+    0 10px 30px rgba(0,0,0,.35);
+}
+
+/* Explicit dark mode */
+body.dark-theme{
+  --bg:#0b0f17;
+  --bg-secondary:#111827;
+  --panel:#141c2f;
+
+  --text:#ffffff;
+  --text-muted:#94a3b8;
+
+  --accent:#d4af37;
+  --border:rgba(255,255,255,.08);
+}
+
+/* ==========================
+   LIGHT MODE
+========================== */
+
+body.light-theme .ghost-action {
+  color: var(--text); /* Dynamically switches to dark slate text */
+  border-color: var(--border);
+}
+
+body.light-theme .secondary-action {
+  background: #e2e8f0; /* Subtle light grey background instead of dark blue */
+  color: var(--text);  /* Dark slate text */
+}
+
+body.light-theme{
+  --bg:#f5f7fb;
+  --bg-secondary:#ffffff;
+  --panel:#ffffff;
+
+  --text:#0f172a;
+  --text-muted:#64748b;
+
+  --accent:#b8860b;
+  --border:rgba(15,23,42,.08);
+
+  --shadow:
+    0 10px 25px rgba(15,23,42,.08);
+}
+
+body{
+  background:var(--bg);
+  color:var(--text);
+}
+
+.panel{
+  background:var(--panel);
+  border:1px solid var(--border);
+}
+
+.digital-time{
+  color:var(--accent);
+}
+.clocks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 18px;
+}
+
+@media (max-width: 1200px) {
+  .clocks-grid {
     grid-template-columns: repeat(2, 1fr);
   }
-.tooltip-time-row {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    margin-top: 4px;
-    margin-bottom: 8px;
-    border-bottom: 1px solid rgba(0,0,0,0.06);
-    padding-bottom: 8px;
+  .brand-text h1 {
+    font-size: 1.1rem;
+  }
+  .clock-bezel {
+    width: 220px;
+    height: 220px;
+  }
+  .site-header {
+    top: 8px;
+    padding: 12px 16px;
+  }
+  .workspace {
+    padding: 12px 12px 60px;
+  }
+.brand-plus{
+  color:var(--accent);
+}
+.mode-label{
+  font-size:.72rem;
+  letter-spacing:2px;
+  font-weight:700;
+
+  padding:4px 8px;
+  border-radius:999px;
+
+  background:rgba(212,175,55,.15);
+  color:var(--accent);
+}
+body,
+.panel,
+.nav-btn,
+.action-btn,
+.time-input,
+.clock-search{
+  transition:
+    background-color .35s ease,
+    color .35s ease,
+    border-color .35s ease,
+    box-shadow .35s ease;
+}
 }
 
-body.dark-theme .tooltip-time-row {
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-}
-
-.tooltip-time {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: var(--accent-color);
-}
-
-.tooltip-date {
-    font-size: 0.8rem;
-    color: var(--text-secondary);
-    font-weight: 600;
-}
-
-.tooltip-btn {
-    height: 38px !important;
-    font-size: 0.85rem !important;
-    border-radius: 10px !important;
-}
-
-/* Close/Unpin button for World Clock Cards */
-.world-clock-card {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 24px;
-    padding: 20px 24px;
-}
-
-.world-clock-card .clock-header {
-    text-align: left;
-    margin-bottom: 0;
-    margin-top: 0;
-}
-
-.world-clock-card .clock-frame {
-    flex-shrink: 0;
-}
-
-.world-clock-card .digital-readout,
-.world-clock-card .clock-date {
-    text-align: left;
-    align-self: flex-start;
-}
-
-.remove-clock-btn {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: var(--card-bg);
-    border: 1px solid var(--card-border);
-    cursor: pointer;
-    color: var(--text-secondary);
-    z-index: 10;
-    box-shadow: var(--shadow-btn);
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.remove-clock-btn:hover {
-    background-color: #ef4444;
-    color: #ffffff;
-    border-color: #ef4444;
-    box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3);
-    transform: scale(1.1) rotate(90deg);
-}
-
-.remove-clock-btn:active {
-    transform: scale(0.9);
-}
-
-/* Animations for card insertion and deletion */
-@keyframes cardInsert {
-    0% {
-        opacity: 0;
-        transform: translateY(20px) scale(0.95);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-}
-
-.world-clock-card {
-    animation: cardInsert 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-/* Pinned City Map Pinpoint Glowing state */
-.city-marker.pinned-marker .center-dot {
-    fill: #10b981 !important; /* Emerald green in light theme */
-}
-
-body.dark-theme .city-marker.pinned-marker .center-dot {
-    fill: #06b6d4 !important; /* Electric cyan in dark theme */
-}
-
-.city-marker.pinned-marker .pulse-ring {
-    fill: #10b981 !important;
-}
-
-body.dark-theme .city-marker.pinned-marker .pulse-ring {
-    fill: #06b6d4 !important;
-}
-
-/* Beautiful dynamic card pinning elastic highlight pulse */
-@keyframes cardHighlightPulse {
-    0% {
-        box-shadow: var(--shadow-outer);
-        border-color: var(--card-border);
-        transform: scale(1);
-    }
-    30% {
-        box-shadow: 0 0 35px var(--accent-glow);
-        border-color: var(--accent-color);
-        transform: scale(1.06);
-    }
-    100% {
-        box-shadow: var(--shadow-outer);
-        border-color: var(--card-border);
-        transform: scale(1);
-    }
-}
-
-.card-highlight-active {
-    animation: cardHighlightPulse 2s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
-    z-index: 20 !important;
-}
-
-/* Toggleable Tooltip Remove state styling */
-.tooltip-btn.tooltip-remove-btn {
-    background-color: rgba(239, 68, 68, 0.1) !important;
-    border: 1px solid rgba(239, 68, 68, 0.2) !important;
-    color: #ef4444 !important;
-    box-shadow: none !important;
-}
-
-.tooltip-btn.tooltip-remove-btn:hover {
-    background-color: #ef4444 !important;
-    color: #ffffff !important;
-    box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3) !important;
-    transform: translateY(-2px);
-}
-
-/* ============================================================
-  CHRONOS+ THEME TOGGLE BUTTON MATCHING FOCUS-MODE STYLE
-   ============================================================ */
-
-/* Match the Focus Mode button styling exactly */
-.theme-toggle-btn {
-  border-radius: 12px !important;
-  padding: 10px 20px !important;
-  font-weight: 600 !important;
-  font-size: 14px !important;
-  transition: var(--transition) !important;
-  background: var(--accent-color) !important;
-  border: none !important;
-  color: white !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 8px !important;
-  min-width: 140px !important;
-  height: 44px !important;
-  cursor: pointer;
-  position: relative;
-}
-
-.theme-toggle-btn:hover {
-  background: var(--accent-hover) !important;
-  transform: translateY(-2px) !important;
-  box-shadow: 0 8px 16px rgba(99, 102, 241, 0.3) !important;
-}
-
-.theme-toggle-btn:active {
-  transform: translateY(0) !important;
-}
-
-.theme-toggle-btn:focus-visible {
-  outline: 2px solid var(--accent-color);
-  outline-offset: 2px;
-}
-
-/* Theme Toggle Content Container */
-.theme-toggle-content {
+/*Toast Notification*/
+.custom-toast {
+  position: fixed;
+  bottom: 25px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px); 
+  background: #ef4444;
+  color: white;
+  padding: 1rem 1.3rem;
+  border-radius: 14px;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600;
+  font-size: 0.95rem;
+  box-shadow: 0 10px 25px rgba(239, 68, 68, 0.3);
+  z-index: 10005;
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 6px;
-  width: 100%;
-  height: 100%;
+  gap: 0.7rem;
 }
 
-/* Theme Icon SVG */
-.theme-icon {
-  width: 18px;
-  height: 18px;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  animation: themeIconFadeIn 0.3s ease-out forwards;
-  flex-shrink: 0;
-}
-
-@keyframes themeIconFadeIn {
-  from {
-    opacity: 0;
-    transform: scale(0.7) rotate(-20deg);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) rotate(0deg);
-  }
-}
-
-/* Auto Mode Label */
-.mode-label {
-  display: inline-block;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  white-space: nowrap;
-  animation: autoLabelPulse 2s ease-in-out infinite;
-}
-
-@keyframes autoLabelPulse {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.7;
-  }
-}
-
-/* Dark Theme Adjustments */
-body.dark-theme .theme-toggle-btn {
-  background: var(--accent-color) !important;
-}
-
-body.dark-theme .theme-toggle-btn:hover {
-  background: var(--accent-hover) !important;
-}
-
-/* Header Actions Container */
-.header-actions {
-  display: flex;
-  align-items: center;
-  gap: 12px !important;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .theme-toggle-btn {
-    padding: 8px 16px !important;
-    font-size: 12px !important;
-    min-width: 120px !important;
-    height: 40px !important;
-  }
-
-  .theme-icon {
-    width: 16px;
-    height: 16px;
-  }
-
-  .mode-label {
-    font-size: 11px;
-  }
-}
-
-@media (max-width: 480px) {
-  .theme-toggle-btn {
-    padding: 8px 12px !important;
-    font-size: 11px !important;
-    min-width: 100px !important;
-    height: 38px !important;
-  }
-
-  .theme-icon {
-    width: 14px;
-    height: 14px;
-  }
-
-  .mode-label {
-    font-size: 10px;
-  }
-}
-
-/* =====================================================
-  FOCUS MODE - PURE CSS IMMERSIVE LAYOUT
-   ===================================================== */
-
-/* 1. Lock the screen viewport and hide the default header/scrollbars */
-body.focus-mode {
-  overflow: hidden !important;
-  height: 100vh !important;
-  width: 100vw !important;
-}
-
-body.focus-mode header {
-  display: none !important;
-}
-
-/* 2. Hide all distracting lower sections */
-body.focus-mode .timezone-map-section,
-body.focus-mode .world-clocks-section,
-body.focus-mode .clock-banner,
-body.focus-mode .clock-header p {
-  display: none !important;
-}
-
-/* 3. Transform the 2-column grid into a perfectly centered vertical column */
-body.focus-mode .main-dashboard {
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 30px !important;
-  
-  /* Fill the entire screen so it behaves like a brand-new page */
-  min-height: 100vh !important;
-  max-width: 550px !important;
-  margin: 0 auto !important;
-  padding: 20px !important;
-}
-
-/* 4. Force individual cards to stack uniformly without stretching */
-body.focus-mode .main-clock-section,
-body.focus-mode .timer-section {
-  width: 100% !important;
-  margin: 0 !important;
-}
-
-/* 5. Reposition the Focus Mode button dynamically so it serves as the Exit button */
-body.focus-mode #focusModeBtn {
-  position: fixed !important;
-  top: 25px !important;
-  right: 25px !important;
-  z-index: 10000 !important;
-  
-  /* Optional visual styling to make it look like a sleek floating badge */
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15) !important;
-}
+.custom-toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
 }

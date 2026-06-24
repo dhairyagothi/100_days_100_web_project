@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/public/Planet_gesture_formation/styles.css" />
+  <link rel="stylesheet" href="./styles.css" />
   <!-- Load MediaPipe Hands and camera utils from CDN -->
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
@@ -18,11 +18,22 @@
 
     <nav id="navbar">
       <div class="nav-brand">AEVAI SYSTEMS <span class="nav-subtitle">/ Saturn Physics</span></div>
-      <div class="nav-menu">
-        <div id="gestureIndicator" class="nav-status">Status: <span id="gesture">—</span></div>
-        
-        <div class="nav-item">
-          <span>Camera & Tracking ▾</span>
+
+      <!-- Gesture status badge — always visible on desktop, shown in mobile panel too -->
+      <div id="gestureIndicator" class="nav-status">Status: <span id="gesture">—</span></div>
+
+      <!-- Hamburger button — visible only on mobile -->
+      <button id="mobileMenuBtn" class="mobile-menu-btn" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+
+      <!-- Nav menu — desktop row / mobile slide-down panel -->
+      <div class="nav-menu" id="navMenu">
+        <!-- Close button inside panel (mobile only) -->
+        <button class="mobile-panel-close" id="mobilePanelClose" aria-label="Close menu">✕</button>
+
+        <div class="nav-item" id="cameraNavItem">
+          <span>Camera &amp; Tracking ▾</span>
           <div class="dropdown">
             <div class="preview">
               <video id="video" width="160" height="120" autoplay muted playsinline></video>
@@ -37,7 +48,7 @@
           <span>Instructions ▾</span>
           <div id="instructionsDropdown" class="dropdown instructions-dropdown">
             <div class="panel-header">
-              <h3>Controls & Gestures</h3>
+              <h3>Controls &amp; Gestures</h3>
             </div>
             <ul class="gesture-list">
               <li>
@@ -68,8 +79,11 @@
         </div>
       </div>
     </nav>
+
+    <!-- Mobile overlay backdrop -->
+    <div id="mobileOverlay" class="mobile-overlay"></div>
   </div>
 
-  <script src="/public/Planet_gesture_formation/app.js" type="module"></script>
+  <script src="./app.js" type="module"></script>
 </body>
 </html>

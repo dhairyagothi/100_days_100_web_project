@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Destination Explorer</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="animated-bg">
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        
+        <!-- Travel Icons -->
+        <i class="fas fa-plane travel-icon"></i>
+        <i class="fas fa-map-marked-alt travel-icon"></i>
+        <i class="fas fa-mountain travel-icon"></i>
+        <i class="fas fa-umbrella-beach travel-icon"></i>
+        <i class="fas fa-hotel travel-icon"></i>
+        <i class="fas fa-camera travel-icon"></i>
+        
+        <!-- Particles -->
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <div class="header-main">
+                    <h1>🌍 Destination Explorer</h1>
+                    <div class="theme-toggle">
+                        <button id="themeToggle" aria-label="Toggle dark mode">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                    </div>
+                </div>
+                <p>Discover amazing destinations around the world</p>
+            </div>
+        </header>
+
+        <div class="filters-section">
+            <!-- Search Bar -->
+            <div class="search-container">
+                <div class="search-wrapper">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" id="searchInput" placeholder="Search destinations, countries, or activities...">
+                    <button id="clearSearch" class="clear-btn" aria-label="Clear search">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="search-tags" id="searchTags"></div>
+            </div>
+
+            <!-- Quick Stats -->
+            <div class="quick-stats">
+                <div class="stat-item">
+                    <i class="fas fa-globe-americas"></i>
+                    <span id="totalDestinations">100</span>
+                    <span class="stat-label">Destinations</span>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-map-marked-alt"></i>
+                    <span id="totalRegions">6</span>
+                    <span class="stat-label">Regions</span>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-tags"></i>
+                    <span id="totalCategories">20</span>
+                    <span class="stat-label">Categories</span>
+                </div>
+            </div>
+
+            <!-- Filters -->
+            <div class="filters">
+                <div class="filter-group">
+                    <div class="filter-header">
+                        <h3><i class="fas fa-globe"></i> Regions</h3>
+                        <button class="expand-btn" aria-label="Expand regions">
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                    </div>
+                    <div id="regionFilters" class="filter-buttons"></div>
+                </div>
+
+                <div class="filter-group">
+                    <div class="filter-header">
+                        <h3><i class="fas fa-tags"></i> Categories</h3>
+                        <button class="expand-btn" aria-label="Expand categories">
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                    </div>
+                    <div id="categoryFilters" class="filter-buttons"></div>
+                </div>
+
+                <div class="filter-actions">
+                    <button id="clearFilters" class="clear-all-btn">
+                        <i class="fas fa-times"></i> Clear all filters
+                    </button>
+                    <button id="saveFilters" class="save-filters-btn">
+                        <i class="fas fa-bookmark"></i> Save filters
+                    </button>
+                </div>
+            </div>
+
+            <div id="resultsCount" class="results-count"></div>
+        </div>
+
+        <!-- View Options -->
+        <div class="view-options">
+            <button class="view-btn active" data-view="grid">
+                <i class="fas fa-th"></i>
+            </button>
+            <button class="view-btn" data-view="list">
+                <i class="fas fa-list"></i>
+            </button>
+            <button class="view-btn" data-view="map">
+                <i class="fas fa-map"></i>
+            </button>
+        </div>
+
+        <!-- Destinations Grid -->
+        <div id="destinationsGrid" class="destinations-grid"></div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="empty-state hidden">
+            <div class="empty-state-content">
+                <span class="empty-icon">🔍</span>
+                <h3>No destinations found</h3>
+                <p>Try adjusting your filters or search terms</p>
+                <div class="empty-state-actions">
+                    <button id="clearFiltersEmpty" class="clear-all-btn">
+                        <i class="fas fa-times"></i> Clear all filters
+                    </button>
+                    <button id="suggestDestinations" class="suggest-btn">
+                        <i class="fas fa-lightbulb"></i> Get suggestions
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading State -->
+        <div id="loadingState" class="loading-state hidden">
+            <div class="loading-spinner"></div>
+            <p>Loading destinations...</p>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="script.js"></script>
+</body>
+</html> 

@@ -1,299 +1,545 @@
-/* =========================
-   RESET
-========================= */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Segoe UI", sans-serif;
+/* ==========================================================================
+   DESIGN SYSTEM & VARIABLES
+   ========================================================================== */
+:root {
+    /* Fonts */
+    --font-primary: 'Outfit', sans-serif;
+    --font-secondary: 'Plus Jakarta Sans', sans-serif;
+
+    /* Light Theme (Default) */
+    --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    --card-bg: rgba(255, 255, 255, 0.7);
+    --card-border: rgba(255, 255, 255, 0.45);
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    
+    /* Interactive */
+    --accent: #4f46e5;
+    --accent-hover: #4338ca;
+    --accent-glow: rgba(79, 70, 229, 0.15);
+    
+    --success: #10b981;
+    --success-hover: #059669;
+    --success-glow: rgba(16, 185, 129, 0.2);
+    
+    --danger: #ef4444;
+    --danger-hover: #dc2626;
+    --danger-glow: rgba(239, 68, 68, 0.2);
+    
+    --input-bg: rgba(255, 255, 255, 0.8);
+    --input-border: #cbd5e1;
+    --input-focus-border: #4f46e5;
+    
+    /* Layout & Styling */
+    --card-shadow: 0 12px 40px -8px rgba(31, 38, 135, 0.08);
+    --glass-blur: 16px;
+    --radius-lg: 20px;
+    --radius-md: 12px;
+    --transition-speed: 0.3s;
 }
 
-/* =========================
-   BACKGROUND (ENHANCED PREMIUM GLOW)
-========================= */
-body {
-  min-height: 100vh;
-  padding: 30px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-  overflow-x: hidden;
-  transition: 0.4s ease;
-
-  position: relative;
-}
-
-/* DARK MODE */
+/* Dark Theme overrides */
 body.dark {
-  background: linear-gradient(135deg, #0b0f19, #111827, #0f172a);
+    --bg-gradient: linear-gradient(135deg, #090d16 0%, #1e1b4b 100%);
+    --card-bg: rgba(15, 23, 42, 0.65);
+    --card-border: rgba(255, 255, 255, 0.06);
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    
+    --accent: #6366f1;
+    --accent-hover: #4f46e5;
+    --accent-glow: rgba(99, 102, 241, 0.25);
+    
+    --input-bg: rgba(15, 23, 42, 0.6);
+    --input-border: rgba(255, 255, 255, 0.1);
+    --input-focus-border: #6366f1;
+    
+    --card-shadow: 0 16px 48px -12px rgba(0, 0, 0, 0.5);
 }
 
-/* SOFT ANIMATED ORBS (IMPROVED) */
-body::before,
-body::after {
-  content: "";
-  position: absolute;
-  width: 500px;
-  height: 500px;
-  border-radius: 50%;
-  filter: blur(80px);
-  opacity: 0.35;
-  z-index: -1;
-  animation: floatGlow 10s ease-in-out infinite alternate;
+/* ==========================================================================
+   RESET & BASE STYLES
+   ========================================================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-body::before {
-  background: radial-gradient(circle, rgba(0,255,255,0.35), transparent 70%);
-  top: 5%;
-  left: 5%;
+body {
+    font-family: var(--font-primary);
+    background: var(--bg-gradient);
+    color: var(--text-main);
+    min-height: 100vh;
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: background var(--transition-speed) ease, color var(--transition-speed) ease;
+    overflow-x: hidden;
+    background-attachment: fixed;
 }
 
-body::after {
-  background: radial-gradient(circle, rgba(255,0,150,0.25), transparent 70%);
-  bottom: 5%;
-  right: 5%;
-  animation-delay: 2s;
-}
-
-@keyframes floatGlow {
-  0% { transform: translateY(0px) scale(1); }
-  100% { transform: translateY(20px) scale(1.05); }
-}
-
-/* =========================
-   BACK BUTTON (IMPROVED)
-========================= */
+/* ==========================================================================
+   BACK TO HOME & THEME TOGGLE
+   ========================================================================== */
 .back-btn {
-  align-self: flex-start;
-  margin-bottom: 20px;
-
-  padding: 10px 16px;
-  border-radius: 12px;
-
-  text-decoration: none;
-  color: #ffffff;
-
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(14px);
-
-  border: 1px solid rgba(255, 255, 255, 0.18);
-
-  transition: 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 20px;
+    background: var(--card-bg);
+    color: var(--text-main);
+    text-decoration: none;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--card-border);
+    font-weight: 600;
+    font-family: var(--font-secondary);
+    box-shadow: var(--card-shadow);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    transition: transform 0.2s ease, background-color var(--transition-speed) ease;
 }
 
 .back-btn:hover {
-  transform: translateY(-3px);
-  background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+    background: var(--input-bg);
 }
 
-/* =========================
-   THEME BUTTON (ENHANCED)
-========================= */
 .theme-btn {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
-
-  border: 1px solid rgba(255,255,255,0.2);
-  cursor: pointer;
-
-  font-size: 20px;
-
-  background: rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(14px);
-
-  color: white;
-
-  transition: 0.3s ease;
+    position: fixed;
+    top: 25px;
+    right: 25px;
+    z-index: 100;
+    border: 1px solid var(--card-border);
+    background: var(--card-bg);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--card-shadow);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color var(--transition-speed) ease;
 }
 
 .theme-btn:hover {
-  transform: scale(1.12) rotate(8deg);
+    transform: scale(1.1) rotate(15deg);
+    background: var(--input-bg);
 }
 
-/* =========================
-   MAIN WRAPPER
-========================= */
+/* ==========================================================================
+   APP HEADER
+   ========================================================================== */
+.app-header {
+    width: 100%;
+    max-width: 1050px;
+    margin-bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.app-title-container {
+    width: 100%;
+}
+
+.main-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--accent) 0%, #a855f7 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    color: var(--text-muted);
+    font-family: var(--font-secondary);
+    font-size: 1.1rem;
+}
+
+/* ==========================================================================
+   LAYOUT WRAPPER
+   ========================================================================== */
 .wrapper {
-  display: flex;
-  gap: 25px;
-  justify-content: center;
-  flex-wrap: wrap;
-
-  width: 100%;
-  max-width: 1200px;
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    align-items: stretch;
+    width: 100%;
+    max-width: 1050px;
+    margin: 0 auto;
 }
 
-/* =========================
-   GLASS CARDS (IMPROVED DEPTH)
-========================= */
-.container {
-  width: 420px;
-  max-width: 100%;
-
-  padding: 26px;
-  border-radius: 18px;
-
-  background: rgba(255, 255, 255, 0.07);
-  backdrop-filter: blur(22px);
-  -webkit-backdrop-filter: blur(22px);
-
-  border: 1px solid rgba(255, 255, 255, 0.14);
-
-  box-shadow:
-    0 10px 30px rgba(0, 0, 0, 0.35),
-    inset 0 1px 0 rgba(255,255,255,0.05);
-
-  transition: all 0.35s ease;
+/* ==========================================================================
+   GLASSMORPHIC CARD CONTAINERS
+   ========================================================================== */
+.card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    border-radius: var(--radius-lg);
+    box-shadow: var(--card-shadow);
+    padding: 35px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color var(--transition-speed) ease;
 }
 
-.container:hover {
-  transform: translateY(-8px);
-  box-shadow:
-    0 18px 50px rgba(0, 0, 0, 0.45),
-    inset 0 1px 0 rgba(255,255,255,0.08);
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 45px -12px rgba(0, 0, 0, 0.15);
 }
 
-/* =========================
-   HEADINGS
-========================= */
-h1 {
-  text-align: center;
-  margin-bottom: 18px;
-
-  font-size: 20px;
-  color: #ffffff;
-  letter-spacing: 0.5px;
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
 }
 
-/* =========================
-   LABELS
-========================= */
-label {
-  display: block;
-  margin: 12px 0 6px;
-
-  font-weight: 600;
-  color: #e5e7eb;
+.card h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
 }
 
-/* =========================
-   INPUTS (FIX + POLISH)
-========================= */
-select,
+/* Status Badges */
+.status-badge {
+    font-family: var(--font-secondary);
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: 9999px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: rgba(100, 116, 139, 0.15);
+    color: var(--text-muted);
+    border: 1px solid rgba(100, 116, 139, 0.1);
+    transition: all 0.3s ease;
+}
+
+/* Dynamic status styles */
+.status-badge.active-speak {
+    background: var(--success-glow);
+    color: var(--success);
+    border-color: rgba(16, 185, 129, 0.2);
+    box-shadow: 0 0 12px var(--success-glow);
+}
+
+.status-badge.active-listen {
+    background: var(--danger-glow);
+    color: var(--danger);
+    border-color: rgba(239, 68, 68, 0.2);
+    box-shadow: 0 0 12px var(--danger-glow);
+    animation: pulse-glow 1.5s infinite alternate;
+}
+
+/* ==========================================================================
+   INPUTS & TEXTAREAS
+   ========================================================================== */
+.input-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.input-group label {
+    font-family: var(--font-secondary);
+    font-weight: 600;
+    font-size: 0.875rem;
+    margin-bottom: 8px;
+    color: var(--text-muted);
+}
+
+/* Styling custom selects */
+.select-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.select-wrapper::after {
+    content: "▼";
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+select {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 100%;
+    padding: 14px 40px 14px 16px;
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
+    border-radius: var(--radius-md);
+    color: var(--text-main);
+    font-family: var(--font-primary);
+    font-size: 1rem;
+    cursor: pointer;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+select:focus {
+    outline: none;
+    border-color: var(--input-focus-border);
+    box-shadow: 0 0 0 4px var(--accent-glow);
+}
+
 textarea {
-  width: 100%;
-  padding: 12px;
-
-  border-radius: 12px;
-  border: 1px solid rgba(255,255,255,0.12);
-  outline: none;
-
-  background: rgba(255, 255, 255, 0.92);
-  color: #111;
-
-  font-size: 14px;
-
-  transition: 0.2s ease;
+    width: 100%;
+    min-height: 200px;
+    padding: 16px;
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
+    border-radius: var(--radius-md);
+    color: var(--text-main);
+    font-family: var(--font-primary);
+    font-size: 1rem;
+    line-height: 1.6;
+    resize: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* IMPORTANT UX FIX */
-select:focus,
 textarea:focus {
-  border: 1px solid #00c6ff;
-  box-shadow: 0 0 0 3px rgba(0,198,255,0.25);
+    outline: none;
+    border-color: var(--input-focus-border);
+    box-shadow: 0 0 0 4px var(--accent-glow);
 }
 
-/* dropdown fix */
-select option {
-  background: #111827;
-  color: #fff;
+textarea[readonly] {
+    cursor: default;
 }
 
-textarea {
-  min-height: 150px;
-  resize: none;
+.textarea-footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 6px;
+    font-family: var(--font-secondary);
+    font-size: 0.75rem;
+    color: var(--text-muted);
 }
 
-/* =========================
-   BUTTONS (MODERN FEEL)
-========================= */
+/* Scrollbar customization */
+textarea::-webkit-scrollbar {
+    width: 8px;
+}
+
+textarea::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+textarea::-webkit-scrollbar-thumb {
+    background: rgba(100, 116, 139, 0.3);
+    border-radius: 4px;
+}
+
+textarea::-webkit-scrollbar-thumb:hover {
+    background: rgba(100, 116, 139, 0.5);
+}
+
+/* ==========================================================================
+   BUTTONS
+   ========================================================================== */
 .btn-group {
-  display: flex;
-  gap: 10px;
-  margin-top: 15px;
-  flex-wrap: wrap;
+    display: flex;
+    gap: 12px;
+    margin-top: auto;
 }
 
 button {
-  flex: 1;
-  padding: 11px;
-
-  border: none;
-  border-radius: 12px;
-
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 600;
-
-  background: linear-gradient(135deg, #00c6ff, #0072ff);
-  color: white;
-
-  transition: 0.25s ease;
-
-  box-shadow: 0 8px 18px rgba(0, 114, 255, 0.25);
-}
-
-button:hover {
-  transform: translateY(-2px) scale(1.03);
-  filter: brightness(1.1);
-}
-
-/* STOP BUTTON */
-.stop-btn {
-  background: linear-gradient(135deg, #ff416c, #ff4b2b);
-}
-
-/* DISABLED */
-button:disabled {
-  background: #555;
-  cursor: not-allowed;
-  transform: none;
-  opacity: 0.6;
-}
-
-/* =========================
-   INFO TEXT
-========================= */
-#char-count,
-#speaking-status,
-#listening-status {
-  margin-top: 10px;
-  font-size: 13px;
-  color: #cbd5e1;
-  transition: 0.3s ease;
-}
-
-/* =========================
-   RESPONSIVE
-========================= */
-@media (max-width: 768px) {
-  .wrapper {
-    flex-direction: column;
+    font-family: var(--font-secondary);
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 14px 20px;
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    display: inline-flex;
     align-items: center;
-  }
+    justify-content: center;
+    gap: 8px;
+    transition: transform 0.15s ease, background-color 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
 
-  .container {
-    width: 100%;
-  }
+button:active {
+    transform: scale(0.97);
+}
 
-  .btn-group {
-    flex-direction: column;
-  }
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* Primary Button Styling */
+.primary-btn {
+    background: var(--accent);
+    color: white;
+    flex: 2;
+}
+
+.primary-btn:hover:not(:disabled) {
+    background: var(--accent-hover);
+    box-shadow: 0 4px 15px var(--accent-glow);
+}
+
+/* Secondary Button Styling */
+.secondary-btn {
+    background: rgba(100, 116, 139, 0.15);
+    color: var(--text-main);
+}
+
+.secondary-btn:hover:not(:disabled) {
+    background: rgba(100, 116, 139, 0.25);
+}
+
+/* Stop Button Styling */
+.stop-btn {
+    background: var(--danger);
+    color: white;
+    flex: 1;
+}
+
+.stop-btn:hover:not(:disabled) {
+    background: var(--danger-hover);
+    box-shadow: 0 4px 15px var(--danger-glow);
+}
+
+/* Record Button Styling */
+.record-btn {
+    background: var(--success);
+    color: white;
+    flex: 2;
+    position: relative;
+    overflow: hidden;
+}
+
+.record-btn:hover:not(:disabled) {
+    background: var(--success-hover);
+    box-shadow: 0 4px 15px var(--success-glow);
+}
+
+.record-btn.recording {
+    background: var(--danger);
+}
+
+.record-btn.recording:hover {
+    background: var(--danger-hover);
+}
+
+/* Small microphone pulse indicator inside button */
+.mic-dot {
+    width: 10px;
+    height: 10px;
+    background: white;
+    border-radius: 50%;
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+.record-btn.recording .mic-dot {
+    animation: dot-pulse 1s infinite alternate;
+}
+
+/* Action Control Buttons (Copy/Download) */
+.action-controls {
+    margin-top: 12px;
+}
+
+.action-btn {
+    background: var(--card-bg);
+    color: var(--text-main);
+    border: 1px solid var(--card-border);
+    flex: 1;
+}
+
+.action-btn:hover:not(:disabled) {
+    background: var(--input-bg);
+}
+
+.btn-icon {
+    font-size: 1rem;
+    line-height: 1;
+}
+
+/* ==========================================================================
+   ANIMATIONS
+   ========================================================================== */
+@keyframes pulse-glow {
+    0% {
+        box-shadow: 0 0 4px var(--danger-glow);
+    }
+    100% {
+        box-shadow: 0 0 16px var(--danger);
+    }
+}
+
+@keyframes dot-pulse {
+    0% {
+        transform: scale(0.8);
+        opacity: 0.5;
+    }
+    100% {
+        transform: scale(1.4);
+        opacity: 1;
+    }
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN (MEDIA QUERIES)
+   ========================================================================== */
+@media (max-width: 900px) {
+    body {
+        padding: 20px 15px;
+    }
+
+    .app-header {
+        align-items: center;
+        text-align: center;
+    }
+
+    .wrapper {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 20px;
+    }
+
+    .card {
+        padding: 25px;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-title {
+        font-size: 2rem;
+    }
+
+    .btn-group {
+        flex-direction: column;
+    }
+
+    button {
+        width: 100%;
+        flex: none;
+    }
+    
+    .theme-btn {
+        top: 15px;
+        right: 15px;
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+    }
 }

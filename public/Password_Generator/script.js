@@ -5,6 +5,7 @@ const passwordDisplay = document.querySelector("[data-passwordDisplay]");
 const copyBtn = document.querySelector("[data-copy]");
 const copyMsg = document.querySelector("[data-copyMsg]");
 const hideTimerText = document.getElementById("hideTimer");
+const PASSWORD_HISTORY_KEY = "passwordHistory";
 
 const uppercaseCheck = document.querySelector("#uppercase");
 const lowercaseCheck = document.querySelector("#lowercase");
@@ -34,11 +35,12 @@ let passwordLength = 10;
 let checkCount = 0;
 let hideTimeout;
 let countdownInterval;
-let passwordsHistory = [];
+let passwordHistory = [];
 
 init();
 
 function init() {
+    loadPasswordHistory();
     handleSlider();
     handleCheckBoxChange();
     calcStrength();
@@ -46,6 +48,38 @@ function init() {
     renderHistory();
 
     customWordInput.style.display = useCustomWordCheck.checked ? "block" : "none";
+}
+
+function loadPasswordHistory() {
+    try {
+        const storedHistory =
+            localStorage.getItem(PASSWORD_HISTORY_KEY);
+
+        if (storedHistory) {
+            passwordHistory = JSON.parse(storedHistory);
+        }
+    } catch (error) {
+        console.error(
+            "Failed to load password history",
+            error
+        );
+
+        passwordHistory = [];
+    }
+}
+
+function savePasswordHistory() {
+    try {
+        localStorage.setItem(
+            PASSWORD_HISTORY_KEY,
+            JSON.stringify(passwordHistory)
+        );
+    } catch (error) {
+        console.error(
+            "Failed to save password history",
+            error
+        );
+    }
 }
 
 function handleSlider() {
@@ -70,44 +104,6 @@ function getRndInteger(min, max) {
 
 function generateRandomNumber() {
     return getRndInteger(0, 10).toString();
-}
-
-function savePasswordHistory() {
-    try {
-        localStorage.setItem(PASSWORD_HISTORY_KEY, JSON.stringify(passwordHistory));
-    } catch (error) {
-        return;
-    }
-}
-
-function renderPasswordHistory() {
-    historyList.innerHTML = "";
-    if (passwordHistory.length === 0) {
-        const emptyItem = document.createElement("li");
-        emptyItem.className = "history-empty";
-        emptyItem.textContent = "No recent passwords yet";
-        historyList.appendChild(emptyItem);
-        return;
-    }
-    passwordHistory.forEach((savedPassword) => {
-        const historyItem = document.createElement("li");
-        historyItem.className = "history-item";
-        historyItem.textContent = savedPassword;
-        historyList.appendChild(historyItem);
-    });
-}
-
-function addPasswordToHistory(newPassword) {
-    passwordHistory = [newPassword, ...passwordHistory];
-    if (passwordHistory.length > 5) passwordHistory = passwordHistory.slice(0, 5);
-    savePasswordHistory();
-    renderPasswordHistory();
-}
-
-function clearPasswordHistory() {
-    passwordHistory = [];
-    savePasswordHistory();
-    renderPasswordHistory();
 }
 
 // ---------------------------------------------------------------------------
@@ -140,12 +136,13 @@ function generateUpperCase() {
     return String.fromCharCode(getRndInteger(65, 91));
 }
 
-  passwordOutput.value = password;
-
-  // Update strength indicator
-  const strength = getStrength(length, selectedTypes);
-  updateStrengthUI(strength);
+function generateSymbol() {
+    return symbols.charAt(getRndInteger(0, symbols.length));
 }
+
+
+
+
 
 function generateFromCustomWord(word) {
     const leetMap = {
@@ -248,8 +245,26 @@ function updateSuggestions() {
 
 async function copyContent() {
     try {
-        await navigator.clipboard.writeText(passwordDisplay.value);
-        copyMsg.innerText = "Copied!";
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            await navigator.clipboard.writeText(passwordDisplay.value);
+            copyMsg.innerText = "Copied!";
+        } else {
+            // Fallback for non-secure contexts (HTTP) or older/restricted browsers
+            const textarea = document.createElement("textarea");
+            textarea.value = passwordDisplay.value;
+            textarea.style.position = "fixed";
+            textarea.style.opacity = "0";
+            document.body.appendChild(textarea);
+            textarea.select();
+            textarea.setSelectionRange(0, 99999);
+            const success = document.execCommand("copy");
+            document.body.removeChild(textarea);
+            if (success) {
+                copyMsg.innerText = "Copied!";
+            } else {
+                throw new Error("Copy command failed");
+            }
+        }
     } catch (e) {
         copyMsg.innerText = "Failed";
     }
@@ -287,35 +302,71 @@ function handleCheckBoxChange() {
 }
 
 function updateHistory(newPassword) {
-    passwordsHistory.unshift(newPassword);
-
-    if (passwordsHistory.length > 3) {
-        passwordsHistory.pop();
+    if (
+        passwordHistory.length > 0 &&
+        passwordHistory[0] === newPassword
+    ) {
+        return;
     }
 
+    passwordHistory.unshift(newPassword);
+
+    if (passwordHistory.length > 5) {
+        passwordHistory.pop();
+    }
+
+    savePasswordHistory();
     renderHistory();
 }
 
 function renderHistory() {
     historyList.innerHTML = "";
 
-    if (passwordsHistory.length === 0) {
+    if (passwordHistory.length === 0) {
         historyContainer.style.display = "none";
         return;
     }
 
     historyContainer.style.display = "flex";
 
-    passwordsHistory.forEach((pw) => {
-        const div = document.createElement("div");
-        div.classList.add("history-item");
-        div.innerText = pw;
-        historyList.appendChild(div);
+    passwordHistory.forEach((pw) => {
+        const item = document.createElement("div");
+        item.classList.add("history-item");
+
+        const text = document.createElement("span");
+        text.textContent = pw;
+
+        const copyButton = document.createElement("button");
+        copyButton.classList.add("history-copy-btn");
+        copyButton.textContent = "Copy";
+
+        copyButton.addEventListener("click", async () => {
+            try {
+                await navigator.clipboard.writeText(pw);
+            } catch (err) {
+                console.error("Failed to copy password", err);
+            }
+        });
+
+        item.appendChild(text);
+        item.appendChild(copyButton);
+
+        historyList.appendChild(item);
     });
 }
 
 clearHistoryBtn.addEventListener("click", () => {
-    passwordsHistory = [];
+    passwordHistory = [];
+
+    try {
+        localStorage.removeItem(PASSWORD_HISTORY_KEY);
+    } catch (error) {
+        console.error(
+            "Failed to clear password history",
+            error
+        );
+    }
+
     renderHistory();
 });
 
@@ -406,3 +457,37 @@ generateBtn.addEventListener("click", () => {
     calcStrength();
     updateSuggestions();
 });
+
+// ==========================
+// Theme Toggle (Global)
+// ==========================
+
+// Select all toggle buttons (use a common class)
+const themeToggles = document.querySelectorAll(".theme");
+const themeIcon = document.getElementById("themeIcon");
+
+// Default = DARK MODE
+let isLightMode = JSON.parse(localStorage.getItem("lightMode")) || false;
+
+// Apply theme on load
+function updateTheme() {
+  if (isLightMode) {
+    document.body.classList.add("light-theme");
+    themeIcon.textContent = "🌙"; // show moon when light mode active
+  } else {
+    document.body.classList.remove("light-theme");
+    themeIcon.textContent = "☀️"; // show sun when dark mode active
+  }
+}
+
+// Toggle theme on any button click
+themeToggles.forEach(btn => {
+  btn.addEventListener("click", () => {
+    isLightMode = !isLightMode;
+    localStorage.setItem("lightMode", JSON.stringify(isLightMode));
+    updateTheme();
+  });
+});
+
+// Initialize on page load
+updateTheme();

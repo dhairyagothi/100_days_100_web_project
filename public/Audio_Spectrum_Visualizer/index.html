@@ -33,6 +33,31 @@
             <audio id="audio-player" controls style="display: none;"></audio>
         </section>
 
+        <section class="control-group" id="playback-controls-group" style="display: none;">
+            <label class="group-label">Playback Controls</label>
+            <div class="playback-actions">
+                <button id="btn-play" class="btn-control" aria-label="Play from start" disabled>
+                    <span class="icon">▶️</span> Play
+                </button>
+                <button id="btn-pause" class="btn-control" aria-label="Pause playback" disabled>
+                    <span class="icon">⏸️</span> Pause
+                </button>
+                <button id="btn-resume" class="btn-control" aria-label="Resume playback" disabled>
+                    <span class="icon">⏯️</span> Resume
+                </button>
+                <button id="btn-stop" class="btn-control" aria-label="Stop playback" disabled>
+                    <span class="icon">⏹️</span> Stop
+                </button>
+            </div>
+            <div class="progress-container">
+                <span id="time-current" class="time-label" aria-live="polite">0:00</span>
+                <div class="progress-bar-wrapper" role="slider" aria-label="Audio playback progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0">
+                    <div id="progress-bar" class="progress-bar"></div>
+                </div>
+                <span id="time-total" class="time-label">0:00</span>
+            </div>
+        </section>
+
         <section class="control-group">
             <label class="group-label">Visualizer Settings</label>
             <div class="settings-grid">

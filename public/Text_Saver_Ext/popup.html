@@ -1,10 +1,210 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Saved Texts</title>
+  <title>Text Saver Pro</title>
   <style>
+
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+      width: 380px;
+      min-height: 450px;
+      background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+      color: #fff;
+    }
+
+    .container {
+      padding: 16px;
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(12px);
+      min-height: 400px;
+      box-sizing: border-box;
+      border-radius: 0 0 12px 12px;
+    }
+
+    /* Back Button from Main Repo */
+    .project-back-button {
+      display: inline-block;
+      margin-bottom: 15px;
+      padding: 6px 12px;
+      border-radius: 6px;
+      background: rgba(59, 130, 246, 0.1);
+      color: #60a5fa;
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      text-decoration: none;
+      font-size: 0.75rem;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+
+    .project-back-button:hover {
+      background: #3b82f6;
+      color: #fff;
+    }
+
+    .header-flex {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    h2 {
+      font-weight: 600;
+      font-size: 1.2rem;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    #itemCount {
+      font-size: 0.7rem;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 2px 8px;
+      border-radius: 10px;
+      color: #94a3b8;
+    }
+
+    .search-container {
+      margin-bottom: 16px;
+    }
+
+    #searchInput {
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(0, 0, 0, 0.2);
+      color: white;
+      outline: none;
+      box-sizing: border-box;
+      font-size: 0.9rem;
+    }
+
+    #textList {
+      max-height: 350px;
+      overflow-y: auto;
+      margin-bottom: 16px;
+    }
+
+    .text-entry {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      position: relative;
+    }
+
+    .text-entry p {
+      margin: 0 0 8px 0;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      color: #e2e8f0;
+    }
+
+    .url {
+      font-size: 0.7rem;
+      color: #94a3b8;
+      text-decoration: none;
+      display: block;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-top: 8px;
+    }
+
+    .tag-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      background: #3b82f6;
+      margin-bottom: 8px;
+    }
+
+    .note-section {
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .note-text {
+      font-size: 0.75rem;
+      font-style: italic;
+      color: #94a3b8;
+      background: rgba(0, 0, 0, 0.1);
+      padding: 6px;
+      border-radius: 4px;
+    }
+
+    .footer-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    button.action-btn {
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.8rem;
+      transition: all 0.2s;
+    }
+
+    #downloadButton {
+      background: #10b981;
+      color: #fff;
+    }
+
+    #clearButton {
+      background: rgba(255, 255, 255, 0.05);
+      color: #f87171;
+    }
+
+    .delete-btn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: none;
+      border: none;
+      color: #f87171;
+      cursor: pointer;
+      font-size: 1.1rem;
+      opacity: 0.5;
+    }
+
+    .delete-btn:hover {
+      opacity: 1;
+    }
+
+    .utility-bar {
+      display: flex;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .utility-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: none;
+      color: #94a3b8;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 0.65rem;
+      cursor: pointer;
+    }
+
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: Arial, sans-serif; width: 320px; background: #f9f9f9; color: #222; }
 
@@ -36,7 +236,32 @@
     #clearButton { background: #fee2e2; color: #991b1b; }
   </style>
 </head>
+
 <body>
+
+  <div class="container">
+    <a href="/" class="project-back-button">← Back to Home</a>
+
+    <div class="header-flex">
+      <h2>🚀 Text Saver Pro</h2>
+      <span id="itemCount">0 items</span>
+    </div>
+
+    <div class="search-container">
+      <input type="text" id="searchInput" placeholder="Search snippets..." />
+    </div>
+
+    <div id="textList"></div>
+
+    <div class="footer-actions">
+      <button id="downloadButton" class="action-btn">Export TXT</button>
+      <button id="clearButton" class="action-btn">Clear All</button>
+    </div>
+  </div>
+  <script src="popup.js"></script>
+</body>
+
+
 <a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
 
   <div class="header">
@@ -54,4 +279,5 @@
 
   <script src="popup.js"></script>
 </body>
+
 </html>

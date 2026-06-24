@@ -1,10 +1,11 @@
 {
   "name": "nodemailer",
   "version": "1.0.0",
-  "description": "",
+  "description": "Gmail Nodemailer subscription form — sends a welcome email on subscribe.",
   "main": "app.js",
   "scripts": {
-    "test": "node --test app.test.js"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev" : "nodemon app.js"
   },
   "keywords": [],
   "author": "",
