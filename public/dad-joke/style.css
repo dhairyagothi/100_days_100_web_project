@@ -14,12 +14,7 @@ body {
 
   font-family: "Poppins", sans-serif;
 
-  background: linear-gradient(
-    135deg,
-    #667eea 0%,
-    #764ba2 50%,
-    #6b73ff 100%
-  );
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #6b73ff 100%);
 
   overflow: hidden;
   padding: 20px;
@@ -131,7 +126,7 @@ h3 {
 
 body.light-mode,
 body.light {
-  background: #f8f9fa; 
+  background: #f8f9fa;
 }
 
 body.light-mode .container,
@@ -148,7 +143,7 @@ body.light h3 {
 
 body.light-mode .joke,
 body.light .joke {
-  color: #2d3748; 
+  color: #2d3748;
 }
 
 body.light-mode .btn,
