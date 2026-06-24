@@ -128,3 +128,59 @@ h3 {
     width: 100%;
   }
 }
+
+body.light-mode,
+body.light {
+  background: #f8f9fa; 
+}
+
+body.light-mode .container,
+body.light .container {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
+}
+
+body.light-mode h3,
+body.light h3 {
+  color: #718096;
+}
+
+body.light-mode .joke,
+body.light .joke {
+  color: #2d3748; 
+}
+
+body.light-mode .btn,
+body.light .btn {
+  background: #6c63ff;
+  color: #ffffff;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* Scrollbar colors for Light Mode */
+body.light-mode ::-webkit-scrollbar-thumb,
+body.light ::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+body.light-mode ::-webkit-scrollbar-thumb:hover,
+body.light ::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.4);
+}
