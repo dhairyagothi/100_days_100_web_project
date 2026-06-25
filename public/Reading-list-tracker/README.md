@@ -1,152 +1,137 @@
-📚 Reading List Tracker
+# 📚 Reading List Tracker
 
-A modern and responsive web application that helps users organize, track, and manage their reading journey efficiently. Users can add books, monitor their reading progress, categorize books by genre, and visualize their reading statistics.
+A simple and responsive Reading List Tracker built using **HTML, CSS, JavaScript, and Bootstrap**. This project helps users organize their reading journey by managing books they want to read, are currently reading, and have completed.
 
----
+## 🚀 Features
 
-✨ Features
+* ➕ Add new books to your reading list
+* ✏️ Edit existing book details
+* 🗑️ Delete books from the list
+* 📖 Track reading status:
 
-📖 Book Management
-
-- Add new books to the reading list
-- Edit existing book details
-- Delete books from the list
-- Store author, genre, and progress information
-
-📊 Reading Progress
-
-- Track reading progress with progress bars
-- Update reading status:
-  - To Read
-  - Reading
-  - Completed
-
-🔍 Search & Filter
-
-- Search books instantly
-- Filter books by genre
-- Dynamic filtering system
-
-📈 Statistics Dashboard
-
-- Total books count
-- Currently reading books
-- Completed books count
-- Reading progress overview
-
-🌙 User Experience
-
-- Dark mode support
-- Responsive design
-- Clean and modern UI
-- Mobile-friendly layout
-
-💾 Data Persistence
-
-- LocalStorage support
-- Data remains saved after page refresh
+  * To Read
+  * Reading
+  * Completed
+* 📊 Monitor reading progress with progress bars
+* 🔍 Search books by title
+* 🏷️ Filter books by genre
+* 📈 View reading statistics and goal completion percentage
+* 💾 LocalStorage support for persistent data
+* 📱 Fully responsive design using Bootstrap
 
 ---
 
-🛠️ Tech Stack
+## 🛠️ Technologies Used
 
-Technology| Purpose
-HTML5| Structure
-CSS3| Styling
-JavaScript| Functionality
-Bootstrap 5| Responsive UI
-LocalStorage| Data persistence
+* HTML5
+* CSS3
+* JavaScript (ES6)
+* Bootstrap 5
+* LocalStorage API
 
 ---
 
-📂 Project Structure
+## 📂 Project Structure
 
-Reading-List-Tracker/
+```text
+Reading_List_Tracker/
 │
 ├── index.html
 ├── style.css
 ├── script.js
+├── preview.png
 └── README.md
+```
 
 ---
 
-🚀 Getting Started
+## ⚙️ Installation & Setup
 
-Clone the Repository
+1. Clone the repository:
 
-git clone <repository-url>
+```bash
+git clone https://github.com/dhairyagothi/100_days_100_web_project.git
+```
 
-Navigate to the Project
+2. Navigate to the project folder:
 
-cd Reading-List-Tracker
+```bash
+cd Reading_List_Tracker
+```
 
-Run the Project
+3. Open `index.html` in your browser.
 
-Simply open:
-
-index.html
-
-or use Live Server in VS Code.
-
----
-
-🎯 Future Enhancements
-
-- Book cover upload
-- Reading history
-- Reading goals
-- Favorite books section
-- Export data to CSV
-- Reading recommendations
-- User authentication
-- Cloud storage support
+No additional dependencies or setup are required.
 
 ---
 
-📱 Responsive Design
+## 🎯 How to Use
 
-The application is fully responsive and works on:
-
-- Desktop
-- Laptop
-- Tablet
-- Mobile devices
-
----
-
-🧠 Learning Outcomes
-
-This project demonstrates:
-
-- DOM Manipulation
-- Event Handling
-- CRUD Operations
-- LocalStorage API
-- Array Methods
-- Dynamic UI Rendering
-- Responsive Design
-- JavaScript ES6 Concepts
+1. Enter the book title, author, genre, status, and reading progress.
+2. Click the **Add Book** button.
+3. View all books in the reading list.
+4. Use the search bar to find books quickly.
+5. Filter books by status or genre.
+6. Update or delete books as needed.
+7. Reading statistics update automatically.
+8. All data is saved in your browser using LocalStorage.
 
 ---
 
-🤝 Contributing
+## 📊 Reading Statistics
 
-Contributions are welcome.
+The application automatically displays:
 
-1. Fork the repository.
-2. Create a new branch.
-3. Commit your changes.
-4. Push your branch.
-5. Open a Pull Request.
+* Total Books
+* Completed Books
+* Reading Goal Progress
 
----
-
-📄 License
-
-This project is open-source and available under the MIT License.
+These statistics help users stay motivated and track their reading habits.
 
 ---
 
-👩‍💻 Author
+## 📸 Preview
 
-Developed with ❤️ for open-source contributions and learning web development.
+Add a screenshot of the application and save it as:
+
+```text
+preview.png
+```
+
+Example:
+
+```markdown
+![Reading List Tracker Preview](preview.png)
+```
+
+---
+
+## 🔮 Future Enhancements
+
+* ⭐ Book rating system
+* 📅 Reading history tracking
+* 🔥 Reading streak tracker
+* 📚 Book cover image support
+* 🌙 Dark mode
+* 📤 Import/Export reading lists
+* 🤖 Personalized book recommendations
+
+---
+
+## 🤝 Contributing
+
+Contributions, issues, and feature requests are welcome.
+
+Feel free to fork the repository and submit a pull request.
+
+---
+
+## 📜 License
+
+This project is open source and available under the MIT License.
+
+---
+
+### Developed for 100 Days 100 Web Projects
+
+A productivity-focused web application designed to help readers organize, track, and achieve their reading goals.

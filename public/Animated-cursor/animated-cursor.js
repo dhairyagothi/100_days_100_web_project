@@ -37,11 +37,11 @@ const particles = [];
 const stars = [];
 const starCount = 260;
 
-document.body.dataset.cursor = cursorDesign.value;
-document.body.dataset.theme = themeDesign.value;
+if (cursorDesign) document.body.dataset.cursor = cursorDesign.value;
+if (themeDesign)  document.body.dataset.theme  = themeDesign.value;
 
 function getTheme() {
-    return themes[themeDesign.value] || themes.galaxy;
+    return themes[themeDesign ? themeDesign.value : "galaxy"] || themes.galaxy;
 }
 
 function getRandomColor(colors) {
@@ -252,14 +252,18 @@ document.addEventListener("pointerdown", (event) => {
     window.setTimeout(() => cursor.classList.remove("is-hovering"), 160);
 });
 
-cursorDesign.addEventListener("change", (event) => {
-    document.body.dataset.cursor = event.target.value;
-});
+if (cursorDesign) {
+    cursorDesign.addEventListener("change", (event) => {
+        document.body.dataset.cursor = event.target.value;
+    });
+}
 
-themeDesign.addEventListener("change", (event) => {
-    document.body.dataset.theme = event.target.value;
-    resizeCanvas();
-});
+if (themeDesign) {
+    themeDesign.addEventListener("change", (event) => {
+        document.body.dataset.theme = event.target.value;
+        resizeCanvas();
+    });
+}
 
 controls.forEach((control) => {
     control.addEventListener("pointerenter", () => {

@@ -1,67 +1,71 @@
-# 🎯 Number Guess Game
+# 📦 NPM Package Search
 
-A simple and interactive **Number Guessing Game** built using **HTML, CSS, and Vanilla JavaScript**. The game randomly generates a number between **1 and 100**, and the player has **10 attempts** to guess it correctly.
+A lightweight web application that allows users to search for packages available on the **npm Registry**. Built using **HTML, CSS, and Vanilla JavaScript**, the application fetches package information in real time using the official npm Search API.
 
-It also includes a **Dark/Light Mode** toggle with theme persistence using `localStorage`.
+Users can quickly discover packages, view descriptions, check the latest version, identify package authors, and open the package page directly on npm.
 
 ---
 
 ## ✨ Features
 
-* 🎲 Random number generation between **1 and 100**
-* 🔢 Maximum of **10 guessing attempts**
-* 📋 Displays all previous guesses
-* 📉 Tracks remaining guesses
-* ⬆️ Gives hints whether the guess is **too high** or **too low**
-* 🏆 Detects a correct guess and ends the game
-* 🔄 Restart the game without refreshing the page
-* 🌙 Light/Dark mode support
-* 💾 Theme preference saved using `localStorage`
-* 📱 Responsive and lightweight design
+* 🔍 Search npm packages by name or keyword
+* ⚡ Real-time data fetched from the npm Registry API
+* 📦 Displays up to **10 matching packages**
+* 📝 View package description
+* 🏷️ Shows the latest package version
+* 👤 Displays package author information
+* 🔗 Direct link to the package page on npm
+* ⌨️ Search using either the **Search** button or the **Enter** key
+* 📱 Responsive and clean user interface
+* 🚫 Handles empty searches and network errors gracefully
 
 ---
 
 ## 🖥️ Demo
 
-The player is prompted to guess a number between **1 and 100**.
+Simply enter a package name such as:
 
-After each guess, the game:
+```text
+react
+express
+vite
+tailwindcss
+axios
+```
 
-* Validates the input
-* Stores previous guesses
-* Displays the remaining attempts
-* Indicates whether the guess is too high or too low
-* Ends the game after a correct guess or after 10 attempts
+The application will retrieve matching packages from the npm Registry and display:
 
----
-
-## 🚀 How to Play
-
-1. Enter a number between **1 and 100**.
-2. Click **Submit Your Guess**.
-3. Read the hint:
-
-   * Number is too low
-   * Number is too high
-   * You Win 🎉
-4. Continue guessing until:
-
-   * You guess correctly, or
-   * You use all 10 attempts.
-5. Click **Start New Game** to play again.
+* Package Name
+* Description
+* Latest Version
+* Author
+* Link to the npm package page
 
 ---
 
-## 🌙 Dark Mode
+## 🚀 How It Works
 
-The project supports both **Light** and **Dark** themes.
+1. Enter a package name in the search field.
+2. Click **Search** or press **Enter**.
+3. The application sends a request to the npm Search API.
+4. Search results are displayed dynamically.
+5. Click **View on npm →** to open the package in a new tab.
 
-Features include:
+---
 
-* Theme toggle button
-* Automatic detection of the system's preferred color scheme
-* Theme preference stored using `localStorage`
-* Theme persists across browser sessions
+## 🌐 API Used
+
+The project uses the official npm Registry Search API:
+
+```text
+https://registry.npmjs.org/-/v1/search
+```
+
+Example request:
+
+```text
+https://registry.npmjs.org/-/v1/search?text=react&size=10
+```
 
 ---
 
@@ -69,58 +73,39 @@ Features include:
 
 * HTML5
 * CSS3
-* Vanilla JavaScript
-* DOM Manipulation
-* Local Storage API
+* Vanilla JavaScript (ES6+)
+* Fetch API
+* npm Registry Search API
+
+No external libraries or frameworks are required.
 
 ---
 
 ## 📂 Project Structure
 
 ```text
-Number-Guessing-Game/
+NPM-Package-Search/
 │
 ├── index.html
-├── style.css
-├── GuessNumber.js
-├── image.png
-├── preview.png
+├── styles.css
+├── script.js
+├── favicon.png.png
 └── README.md
 ```
 
 ---
 
-## ⚙️ Game Logic
+## ⚙️ Features Overview
 
-The application follows these steps:
-
-1. Generate a random number between **1 and 100**.
-2. Validate the player's input.
-3. Compare the guess with the target number.
-4. Display:
-
-   * Previous guesses
-   * Remaining attempts
-   * Hint messages
-5. End the game after:
-
-   * Correct guess
-   * 10 unsuccessful attempts
-6. Allow restarting without reloading the page.
-
----
-
-## 📸 Features Overview
-
-* ✅ Random Number Generation
-* ✅ Guess Validation
-* ✅ Hint System
-* ✅ Previous Guess Tracking
-* ✅ Remaining Attempt Counter
-* ✅ Win/Loss Detection
-* ✅ Restart Game Functionality
-* ✅ Dark/Light Theme Toggle
-* ✅ Persistent Theme Preference
+* ✅ Live npm package search
+* ✅ Dynamic DOM rendering
+* ✅ Fetch API integration
+* ✅ Keyboard support (Enter key)
+* ✅ Loading state
+* ✅ Error handling
+* ✅ Empty result handling
+* ✅ External package links
+* ✅ Responsive layout
 
 ---
 
@@ -129,30 +114,53 @@ The application follows these steps:
 1. Clone the repository
 
 ```bash
-git clone https://github.com/100_days_100_project.git
+git clone https://github.com/100_days_100_web_projects/npm-package-search.git
 ```
 
 2. Open the project folder.
-```
-cd Number-Guessing-Game
-```
 
 3. Launch `index.html` in your preferred web browser.
 
-No installation or dependencies are required.
+No installation, build tools, or dependencies are required.
+
+---
+
+## 📋 Search Results Include
+
+Each package card displays:
+
+* 📦 Package Name
+* 📝 Description
+* 🏷️ Latest Version
+* 👤 Author Name
+* 🔗 Link to the official npm package page
+
+---
+
+## ⚠️ Error Handling
+
+The application gracefully handles:
+
+* Empty search queries
+* No matching packages found
+* API request failures
+* Network connectivity issues
+* Multiple rapid searches using request tracking
 
 ---
 
 ## 💡 Future Improvements
 
-* Difficulty levels (Easy, Medium, Hard)
-* Score tracking
-* Best score leaderboard
-* Sound effects
-* Countdown timer
-* Animated win/loss effects
-* Mobile-friendly keyboard improvements
-* Confetti celebration on winning
+* Package download statistics
+* Weekly download count
+* GitHub repository links
+* Package keywords and tags
+* License information
+* Sorting and filtering options
+* Infinite scrolling
+* Package comparison feature
+* Dark mode support
+* Search history
 
 ---
 
@@ -172,12 +180,13 @@ This project is licensed under the MIT License.
 
 ## 👨‍💻 Author
 
-Developed as a beginner-friendly JavaScript project to practice:
+Developed as a JavaScript project to practice:
 
+* Fetch API
+* Async/Await
 * DOM Manipulation
+* API Integration
+* Dynamic UI Rendering
 * Event Handling
-* Conditional Logic
-* Random Number Generation
-* Local Storage
-* Theme Switching
-* Interactive User Interfaces
+* Error Handling
+* Responsive Web Development
