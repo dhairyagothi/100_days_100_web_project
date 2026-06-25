@@ -224,3 +224,35 @@ textarea {
     font-size: 0.85rem;
     color: var(--on-surface);
 }
+
+.controls-header {
+    position: relative;
+}
+
+#theme-toggle {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 42px;
+    height: 42px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.1rem;
+    background: #111827;
+    color: white;
+    transition: all 0.3s ease;
+}
+
+body.dark {
+    --surface: #111827;
+    --surface-variant: #1f2937;
+    --on-surface: #f9fafb;
+    --border: #374151;
+}
+
+body.dark #theme-toggle {
+    background: white;
+    color: black;
+}
+
