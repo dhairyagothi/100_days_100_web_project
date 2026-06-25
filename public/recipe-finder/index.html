@@ -1,61 +1,141 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Recipe Finder</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="image.png" />
 </head>
-
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Recipe Finder</title>
-    <link rel="stylesheet" href="style.css" />
-    <link rel="icon" href="image.png">
-  </head>
-  <body>
-    <div class="app-container">
-      <header>
-        <h1>Recipe Finder By Ingredient</h1>
-        <p class="subtitle">
-          Enter a primary ingredient to unlock matching culinary dishes
-        </p>
-      </header>
->>>>>>> upstream/Main
-
 <body>
-  <div class="app-container">
+  <div class="app-wrapper">
 
-    <header>
-      <h1>Recipe Finder By Ingredient</h1>
-      <p class="subtitle">
-        Enter a primary ingredient to unlock matching culinary dishes
-      </p>
+    <!-- Header -->
+    <header class="main-header">
+      <h1>🍽 Recipe Finder</h1>
+      <p>Search by ingredient, save favorites, and plan your week</p>
     </header>
 
-    <div class="search-box">
-      <input
-        type="text"
-        id="ingredient-input"
-        placeholder="e.g., chicken, beef, tomato..."
-        autofocus
-      >
-      <button id="search-btn">Find Recipes</button>
-    </div>
+    <!-- Tab Navigation -->
+    <nav class="tab-nav" role="tablist">
+      <button class="tab-btn active" data-tab="search" role="tab" aria-selected="true">🔍 Search</button>
+      <button class="tab-btn" data-tab="favorites" role="tab" aria-selected="false">❤️ Favorites <span class="fav-count-badge" id="favCountBadge">0</span></button>
+      <button class="tab-btn" data-tab="planner" role="tab" aria-selected="false">📅 Meal Planner</button>
+    </nav>
 
-    <div id="status-message" class="hidden"></div>
+    <!-- SEARCH TAB -->
+    <section class="tab-panel active" id="tab-search">
+      <div class="search-console">
+        <div class="tag-input-container" id="tagInputContainer">
+          <input type="text" id="ingredient-input"
+            placeholder="e.g. chicken, tomato, garlic..."
+            autocomplete="off" autofocus />
+        </div>
+        <button id="searchBtn">Search</button>
+      </div>
+      <div class="filter-controls-panel">
+        <select id="categoryFilter">
+          <option value="">All Categories</option>
+          <option value="Beef">Beef</option>
+          <option value="Chicken">Chicken</option>
+          <option value="Dessert">Dessert</option>
+          <option value="Lamb">Lamb</option>
+          <option value="Pasta">Pasta</option>
+          <option value="Seafood">Seafood</option>
+          <option value="Vegetarian">Vegetarian</option>
+          <option value="Vegan">Vegan</option>
+          <option value="Breakfast">Breakfast</option>
+          <option value="Side">Side</option>
+        </select>
+        <select id="areaFilter">
+          <option value="">All Cuisines</option>
+          <option value="American">American</option>
+          <option value="British">British</option>
+          <option value="Chinese">Chinese</option>
+          <option value="French">French</option>
+          <option value="Indian">Indian</option>
+          <option value="Italian">Italian</option>
+          <option value="Japanese">Japanese</option>
+          <option value="Mexican">Mexican</option>
+          <option value="Thai">Thai</option>
+          <option value="Turkish">Turkish</option>
+        </select>
+      </div>
+      <div id="statusBox" class="status-box hidden">
+        <div class="spinner-element" id="spinner"></div>
+        <p id="statusText"></p>
+      </div>
+      <div class="recipe-grid" id="recipesGrid"></div>
+    </section>
 
-    <main id="recipes-grid" class="grid-layout"></main>
+    <!-- FAVORITES TAB -->
+    <section class="tab-panel hidden" id="tab-favorites">
+      <div class="section-header">
+        <h2>❤️ Saved Favorites</h2>
+        <button class="danger-btn" id="clearFavoritesBtn">Clear All</button>
+      </div>
+      <div id="favoritesEmpty" class="status-box">
+        <svg viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"/></svg>
+        <h4>No favorites yet</h4>
+        <p>Search for recipes and click the ❤️ button to save them here.</p>
+      </div>
+      <div class="recipe-grid" id="favoritesGrid"></div>
+    </section>
+
+    <!-- MEAL PLANNER TAB -->
+    <section class="tab-panel hidden" id="tab-planner">
+      <div class="section-header">
+        <h2>📅 Weekly Meal Planner</h2>
+        <button class="danger-btn" id="clearPlannerBtn">Clear Week</button>
+      </div>
+      <p class="planner-hint">Open any recipe and click <strong>"+ Add to Planner"</strong> to assign it to a day.</p>
+
+      <div class="shopping-list-section" id="shoppingListSection">
+        <div class="section-header" style="margin-top:1.5rem;">
+          <h2>🛒 Shopping List</h2>
+          <div style="display:flex;gap:0.5rem;">
+            <button class="shopping-generate-btn" id="generateShoppingBtn">Generate from Plan</button>
+            <button class="danger-btn" id="clearShoppingBtn">Clear</button>
+          </div>
+        </div>
+        <div id="shoppingListBox"></div>
+      </div>
+      
+      <div class="planner-grid" id="plannerGrid"></div>
+    </section>
 
   </div>
 
-  <!-- Recipe Modal -->
-  <div id="recipe-modal" class="modal hidden">
-    <div class="modal-content">
-      <span id="close-modal" class="close-btn">&times;</span>
-      <div id="modal-body"></div>
+  <!-- RECIPE DETAIL MODAL -->
+  <div class="modal-overlay hidden" id="recipeModal" role="dialog" aria-modal="true">
+    <div class="modal-card">
+      <button class="close-modal-btn" id="closeModal" aria-label="Close">&times;</button>
+      <div class="modal-scroll-body" id="modalBody"></div>
+    </div>
+  </div>
+
+  <!-- ADD TO PLANNER MODAL -->
+  <div class="modal-overlay hidden" id="plannerModal" role="dialog" aria-modal="true">
+    <div class="modal-card planner-modal-card">
+      <button class="close-modal-btn" id="closePlannerModal" aria-label="Close">&times;</button>
+      <div class="planner-modal-body">
+        <h2>📅 Add to Meal Planner</h2>
+        <p id="plannerMealName" class="planner-meal-name"></p>
+        <div class="day-picker">
+          <p>Select a day:</p>
+          <div class="day-buttons" id="dayButtons"></div>
+        </div>
+        <div class="meal-slot-picker">
+          <p>Select meal slot:</p>
+          <div class="slot-buttons">
+            <button class="slot-btn active" data-slot="Breakfast">🌅 Breakfast</button>
+            <button class="slot-btn" data-slot="Lunch">☀️ Lunch</button>
+            <button class="slot-btn" data-slot="Dinner">🌙 Dinner</button>
+            <button class="slot-btn" data-slot="Snack">🍎 Snack</button>
+          </div>
+        </div>
+        <button class="confirm-planner-btn" id="confirmPlannerBtn">Add to Planner ✓</button>
+      </div>
     </div>
   </div>
 
