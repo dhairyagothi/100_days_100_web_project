@@ -1,36 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Placement Predictor</title>
-  <link rel="icon" type="image/png" href="/public/Placement-Predictor/logo.png">
+  <link rel="icon" type="image/png" href="logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/public/Placement-Predictor/style.css"/>
+  <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
 
   <!-- Premium Theme Switcher Toggle -->
   <div class="theme-switch-wrapper">
-    <label class="theme-switch" for="themeCheckbox">
-      <input type="checkbox" id="themeCheckbox" />
-      <div class="slider">
+    <label class="theme-switch">
+      <input type="checkbox" id="themeCheckbox" aria-label="Toggle light/dark theme">
+      <span class="slider">
         <span class="icon moon">🌙</span>
         <span class="icon sun">☀️</span>
-        <div class="ball"></div>
-      </div>
+        <span class="ball"></span>
+      </span>
     </label>
   </div>
 
   <div class="container">
     <!-- Perfectly Centered Hero Illustration -->
     <div class="hero-wrapper">
-      <img src="/public/Placement-Predictor/hero_illustration.png" alt="Placement Predictor Career Success" class="hero-image">
+      <img src="hero_illustration.png" alt="Placement Predictor Career Success" class="hero-image">
     </div>
 
     <h1 class="main-title">Placement Predictor</h1>
+    <p class="main-subtitle">
       Predict your placement chances and expected package based on your profile
     </p>
 
@@ -38,12 +39,12 @@
 
       <div class="input-group">
         <label>College Name</label>
-        <input type="text" id="college" />
+        <input type="text" id="college" aria-label="College Name">
       </div>
 
       <div class="input-group">
         <label>State</label>
-        <select id="state">
+        <select id="state" aria-label="State">
             <option value="">Select State</option>
 
             <option>Andhra Pradesh</option>
@@ -88,22 +89,22 @@
 
       <div class="input-group">
         <label>CGPA</label>
-        <input type="number" id="cgpa" min="0" max="10" step="0.1" />
+        <input type="number" id="cgpa" min="0" max="10" step="0.1" aria-label="CGPA">
       </div>
 
       <div class="input-group">
         <label>DSA Skill (Out of 10)</label>
-        <input type="number" id="dsa" min="0" max="10" />
+        <input type="number" id="dsa" min="0" max="10" aria-label="DSA Skill">
       </div>
 
       <div class="input-group">
         <label>Projects Completed</label>
-        <input type="number" id="projects" min="0" />
+        <input type="number" id="projects" min="0" aria-label="Projects Completed">
       </div>
 
       <div class="input-group">
         <label>Communication Skill</label>
-        <select id="communication">
+        <select id="communication" aria-label="Communication Skill">
           <option value="">Select</option>
           <option>Excellent</option>
           <option>Good</option>
@@ -114,7 +115,7 @@
 
       <div class="input-group">
         <label>Internship Experience</label>
-        <select id="internship">
+        <select id="internship" aria-label="Internship Experience">
           <option value="">Select</option>
           <option>Yes</option>
           <option>No</option>
@@ -123,7 +124,7 @@
 
       <div class="input-group">
         <label>Tech Stack</label>
-        <select id="stack">
+        <select id="stack" aria-label="Tech Stack">
           <option value="">Select Stack</option>
           <option>Web Development</option>
           <option>AI / ML</option>
@@ -135,7 +136,7 @@
 
     </div>
 
-    <button id="predictBtn">Predict Placement</button>
+    <button type="button" id="predictBtn" aria-label="Predict Placement">Predict Placement</button>
 
     <div class="result-box" id="resultBox">
 
@@ -163,27 +164,20 @@
         </div>
       </div>
     </div>
-    
       <h2>Your Prediction</h2>
 
       <div class="result-card">
         <span>Placement Probability</span>
         <h3 id="placementChance">0%</h3>
       </div>
-      
-
       <div class="result-card">
         <span>Expected Package</span>
         <h3 id="expectedPackage">₹0 LPA</h3>
       </div>
-
-
       <div class="result-card">
         <span>Profile Strength</span>
         <h3 id="profileBadge">-</h3>
       </div>
-      
-
       <div class="result-card">
         <span>Suggested Focus Area</span>
         <h3 id="suggestion">-</h3>
@@ -195,13 +189,13 @@
 
       <!-- Personalized Recommendations & Actionable Resource Suggestions -->
       <div class="recommendations-container" id="recommendationsContainer" style="display: none;">
-        <h3 class="recommendations-title">🎯 Areas for Improvement & Actionable Steps</h3>
+        <h3 class="recommendations-title">🎯 Areas for Improvement &amp; Actionable Steps</h3>
         <div class="recommendations-list" id="recommendationsList">
           <!-- Dynamic recommendation items will be programmatically injected here -->
         </div>
       </div>
 
-
+       <!-- Interactive Data Visualizations -->
       <div class="charts-container">
         <div class="chart-card">
           <canvas id="placementChart"></canvas>
@@ -215,6 +209,6 @@
 
   </div>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="/public/Placement-Predictor/script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>

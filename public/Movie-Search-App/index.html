@@ -57,12 +57,26 @@
             <option value="">All Years</option>
           </select>
 
+          <button id="suggestBtn" class="suggest-btn">🎲 Suggest Me a Random Movie</button>
           <button id="resetBtn" class="clear-btn">↻ Reset</button>
         </div>
       </div>
 
       <!-- Results info -->
       <div id="resultsInfo" class="results-info"></div>
+
+      <!-- Random suggestion -->
+      <section id="randomSuggestion" class="random-suggestion" hidden>
+        <div class="random-suggestion__poster-wrap">
+          <img id="suggestionPoster" src="" alt="" />
+        </div>
+        <div class="random-suggestion__content">
+          <span class="random-suggestion__eyebrow">✨ Suggested for you</span>
+          <h3 id="suggestionTitle">Movie Title</h3>
+          <p id="suggestionMeta">Year · Runtime</p>
+          <button id="suggestionDetailsBtn" class="suggestion-details-btn">View Details</button>
+        </div>
+      </section>
 
       <!-- Movies -->
       <div id="movies" class="movies-home"></div>

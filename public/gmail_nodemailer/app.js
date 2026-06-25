@@ -1,124 +1,107 @@
 require('dotenv').config();
 
 const express = require('express');
-const app = express();
-
 const bodyParser = require('body-parser');
 const path = require('path');
 const nodemailer = require('nodemailer');
 
+const app = express();
 const port = process.env.PORT || 5500;
-const REQUEST_BODY_LIMIT = process.env.REQUEST_BODY_LIMIT || '8kb';
-const requestBuckets = new Map();
 
-function readPositiveInteger(name, fallback) {
-  const parsed = Number.parseInt(process.env[name] || '', 10);
-  return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
+// ---- Sanity check: make sure required env vars exist before starting ----
+const REQUIRED_ENV_VARS = ['EMAIL_USER', 'EMAIL_PASS'];
+const missingVars = REQUIRED_ENV_VARS.filter((key) => !process.env[key]);
+
+if (missingVars.length > 0) {
+  console.error(
+    `Missing required environment variable(s): ${missingVars.join(', ')}`
+  );
+  console.error(
+    'Create a .env file in the project root (see .env.example) and set these values.'
+  );
+  console.error(
+    'EMAIL_PASS must be a 16-character Gmail "App Password", NOT your normal Gmail password.'
+  );
+  process.exit(1);
 }
 
-const MAX_NAME_LENGTH = readPositiveInteger('SUBSCRIBER_NAME_MAX_LENGTH', 100);
-const RATE_LIMIT_WINDOW_MS = readPositiveInteger('MAIL_RATE_LIMIT_WINDOW_MS', 60000);
-const RATE_LIMIT_MAX_REQUESTS = readPositiveInteger('MAIL_RATE_LIMIT_MAX_REQUESTS', 5);
+function isValidEmail(email) {
+  if (typeof email !== 'string') return false;
+  if (email.length === 0 || email.length > 254) return false; // RFC 5321 max length
 
-function rateLimitMailRequests(req, res, next) {
-  const now = Date.now();
-  const clientId = req.ip || req.socket.remoteAddress || 'unknown';
+  const atIndex = email.indexOf('@');
+  if (atIndex <= 0 || atIndex !== email.lastIndexOf('@')) return false;
 
-  for (const [bucketClientId, bucket] of requestBuckets) {
-    if (now > bucket.resetAt) {
-      requestBuckets.delete(bucketClientId);
-    }
-  }
+  const localPart = email.slice(0, atIndex);
+  const domainPart = email.slice(atIndex + 1);
 
-  const bucket = requestBuckets.get(clientId);
+  if (localPart.length === 0 || localPart.length > 64) return false;
+  if (domainPart.length === 0 || domainPart.length > 255) return false;
 
-  if (!bucket || now > bucket.resetAt) {
-    requestBuckets.set(clientId, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
-    return next();
-  }
+  // Simple, bounded, non-backtracking checks (no nested quantifiers)
+  const simpleEmailPattern = /^[A-Za-z0-9._%+-]+$/;
+  const simpleDomainPattern = /^[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
 
-  if (bucket.count >= RATE_LIMIT_MAX_REQUESTS) {
-    const retryAfterSeconds = Math.ceil((bucket.resetAt - now) / 1000);
-    res.set('Retry-After', String(retryAfterSeconds));
-    return res.status(429).send('Too many email requests. Please try again later.');
-  }
-
-  bucket.count += 1;
-  return next();
+  return (
+    simpleEmailPattern.test(localPart) && simpleDomainPattern.test(domainPart)
+  );
 }
 
-function validateSubscriber(body) {
-  const name = typeof body.name === 'string' ? body.name.trim() : '';
-  const email = typeof body.emailid === 'string' ? body.emailid.trim() : '';
-  const localPart = email.split('@')[0];
-  const emailPattern =
-    /^[A-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?(?:\.[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?)+$/i;
-
-  if (!name || name.length > MAX_NAME_LENGTH || /[\u0000-\u001F\u007F]/.test(name)) {
-    return { error: `Name must be between 1 and ${MAX_NAME_LENGTH} characters.` };
-  }
-
-  if (
-    !email ||
-    email.length > 254 ||
-    localPart.length > 64 ||
-    localPart.startsWith('.') ||
-    localPart.endsWith('.') ||
-    localPart.includes('..') ||
-    !emailPattern.test(email)
-  ) {
-    return { error: 'Enter one valid email address.' };
-  }
-
-  return { name, email };
-}
-
-function escapeHtml(value) {
-  const htmlEntities = {
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '"': '&quot;',
-    "'": '&#39;',
-  };
-
-  return value.replace(/[&<>"']/g, (character) => htmlEntities[character]);
-}
-
-app.use(bodyParser.urlencoded({ extended: false, limit: REQUEST_BODY_LIMIT }));
-app.use(express.json({ limit: REQUEST_BODY_LIMIT }));
-
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/', function (req, res) {
+// ---- Create the transporter once and reuse it (instead of per-request) ----
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true,
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  },
+});
+
+// Verify the transporter config on startup so issues are caught early
+transporter.verify((error) => {
+  if (error) {
+    console.error('Nodemailer transporter verification failed:');
+    console.error(error.message);
+    console.error(
+      '👉 Double check EMAIL_USER / EMAIL_PASS in your .env file and that 2-Step Verification + App Password are enabled on the Gmail account.'
+    );
+  } else {
+    console.log('Nodemailer is configured correctly and ready to send emails.');
+  }
+});
+
+app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'mail.html'));
 });
 
-app.post('/', rateLimitMailRequests, function (req, res) {
-  const subscriber = validateSubscriber(req.body || {});
+app.post('/subscribe', async (req, res) => {
+  const { name, emailid } = req.body;
 
-  if (subscriber.error) {
-    return res.status(400).send(subscriber.error);
+  // ---- Basic server-side validation ----
+  if (!name || !emailid) {
+    return res.status(400).json({
+      success: false,
+      message: 'Name and email are required.',
+    });
   }
 
-  const safeName = escapeHtml(subscriber.name);
-  const transporter = nodemailer.createTransport({
-    service: 'Gmail',
-    host: 'smtp.gmail.com',
-    port: 465,
-    secure: true,
-
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
-    },
-  });
+  if (!isValidEmail(emailid)) {
+    return res.status(400).json({
+      success: false,
+      message: 'Please enter a valid email address.',
+    });
+  }
 
   const mailOptions = {
-    from: process.env.EMAIL_USER,
-    to: subscriber.email,
-    subject: 'Welcome to Our Newsletter 🎉',
-
+    from: `"Newsletter" <${process.env.EMAIL_USER}>`,
+    to: emailid,
+    subject: 'Welcome to Our Newsletter',
     html: `
   <!DOCTYPE html>
   <html>
@@ -137,7 +120,7 @@ app.post('/', rateLimitMailRequests, function (req, res) {
               <td align="center"
                 style="background:linear-gradient(135deg,#00b6d1,#0077ff);padding:35px 20px;">
                 <h1 style="margin:0;color:#ffffff;font-size:28px;">
-                  Welcome 🎉
+                  Welcome 
                 </h1>
               </td>
             </tr>
@@ -145,7 +128,7 @@ app.post('/', rateLimitMailRequests, function (req, res) {
             <tr>
               <td style="padding:35px 30px;color:#333333;">
                 <h2 style="margin-top:0;">
-                  Hi ${safeName},
+                  Hi ${name},
                 </h2>
 
                 <p style="font-size:16px;line-height:1.7;">
@@ -187,42 +170,22 @@ app.post('/', rateLimitMailRequests, function (req, res) {
   `,
   };
 
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.error(error);
-      return res.status(500).send('Email failed');
-    }
-
+  try {
+    const info = await transporter.sendMail(mailOptions);
     console.log('Email sent:', info.response);
-
-    return res.send('Email sent successfully');
-  });
+    return res.status(200).json({
+      success: true,
+      message: 'Email sent successfully',
+    });
+  } catch (error) {
+    console.error('Email sending failed:', error.message);
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to send email. Please try again later.',
+    });
+  }
 });
 
-function handleRequestErrors(error, req, res, next) {
-  if (error.type === 'entity.too.large') {
-    return res.status(413).send('Request body is too large.');
-  }
-
-  if (error instanceof SyntaxError && 'body' in error) {
-    return res.status(400).send('Invalid JSON request body.');
-  }
-
-  return next(error);
-}
-
-app.use(handleRequestErrors);
-
-if (require.main === module) {
-  app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`);
-  });
-}
-
-module.exports = {
-  app,
-  escapeHtml,
-  handleRequestErrors,
-  rateLimitMailRequests,
-  validateSubscriber,
-};
+app.listen(port, () => {
+  console.log(`Server running at http://localhost:${port}`);
+});

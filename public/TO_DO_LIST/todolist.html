@@ -5,6 +5,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>To-Do List | 100 Days 100 Projects</title>
+  <meta name="description"
+    content="A feature-rich Kanban To-Do List with priority levels, task search, and visual completion tracking. Stay productive and conquer your goals." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
@@ -15,7 +17,7 @@
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 
-<body>
+<body class="theme1">
   <!-- Floating decorative shapes -->
   <div class="floating-shapes" aria-hidden="true">
     <div class="shape shape-1"></div>
@@ -24,261 +26,254 @@
     <div class="shape shape-4"></div>
   </div>
 
-  <!-- Header with Navigation -->
-  <header>
-    <nav aria-label="Main navigation">
-      <ul class="navbar">
-        <li class="nav-left">
-          <ul>
-            <li><a href="#" id="nav-home" aria-current="page">🏠 Home</a></li>
-            <li><a href="#" id="nav-documents">📄 Documents</a></li>
-          </ul>
-        </li>
-        <li class="nav-right">
-          <span class="theme-label">Theme</span>
-          <ul>
-            <li><button id="colour1" class="theme-btn" data-theme="theme1" aria-label="Theme 1"></button></li>
-            <li><button id="colour2" class="theme-btn" data-theme="theme2" aria-label="Theme 2"></button></li>
-            <li><button id="colour3" class="theme-btn" data-theme="theme3" aria-label="Theme 3"></button></li>
-            <li><button id="colour4" class="theme-btn" data-theme="theme4" aria-label="Theme 4"></button></li>
-            <li><button id="colour5" class="theme-btn" data-theme="theme5" aria-label="Theme 5"></button></li>
-          </ul>
-        </li>
-      </ul>
-    </nav>
-  </header>
+  <div class="app-container">
+    <!-- ═══════════════════════════ SIDEBAR ═══════════════════════════ -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <h2 class="sidebar-title">
+          <span class="sidebar-logo">📋</span>
+          TO-DO LIST
+        </h2>
+      </div>
 
-  <!-- Main Content -->
-  <main>
-    <!-- Home Section -->
-    <section id="home-tab" aria-label="Home tab">
-      <div class="hero">
-        <div class="hero-badge">🚀 Stay Productive</div>
-        <h1 class="heading home-heading">JUST DO IT.</h1>
-        <p class="hero-subtitle">Organise your day, conquer your goals.</p>
-        <!-- Progress bar -->
-        <div class="progress-wrapper" id="progressWrapper">
-          <div class="progress-bar-track">
-            <div class="progress-bar-fill" id="progressFill"></div>
-          </div>
-          <button type="button" id="savepdf" class="sidebar-back-btn"
-            style="background: rgba(124, 99, 255, 0.1); color: #c4b5ff">
-            📥 Save as PDF
-          </button>
+      <nav class="sidebar-nav" aria-label="Main Navigation">
+        <a href="#" id="nav-home" class="sidebar-nav-item active" onclick="showHome(); return false;">🏠 Home</a>
+        <a href="#" id="nav-documents" class="sidebar-nav-item" onclick="showDocuments(); return false;">📄
+          Documents</a>
+      </nav>
 
-          <button type="button" id="cleardone" class="sidebar-pdf-btn">
-            🗑️ Clear Workspace
-          </button>
-
-          <button type="button" id="clearCompletedBtn" class="sidebar-pdf-btn"
-            style="background: rgba(16, 185, 129, 0.1); color: #10b981;" hidden>
-            ✅ Clear Completed
-          </button>
-
-          <output class="progress-text" id="progressText">0 / 0 done</output>
+      <div class="sidebar-footer">
+        <div class="theme-label-txt">Workspace Skin</div>
+        <div class="theme-swatches">
+          <button id="colour1" class="theme-btn" data-theme="theme1" aria-label="Theme 1 – Purple"></button>
+          <button id="colour2" class="theme-btn" data-theme="theme2" aria-label="Theme 2 – Blue"></button>
+          <button id="colour3" class="theme-btn" data-theme="theme3" aria-label="Theme 3 – Teal"></button>
+          <button id="colour4" class="theme-btn" data-theme="theme4" aria-label="Theme 4 – Amber"></button>
+          <button id="colour5" class="theme-btn" data-theme="theme5" aria-label="Theme 5 – Red"></button>
         </div>
+
+        <button type="button" id="savepdf" class="sidebar-back-btn"
+          style="background: rgba(124,99,255,0.10); color: #c4b5ff; border: 1px solid rgba(124,99,255,0.25);">
+          📥 Save as PDF
+        </button>
+
+        <button type="button" id="cleardone" class="sidebar-pdf-btn">
+          🧹 Clear Workspace
+        </button>
+
+        <button type="button" id="clearCompletedBtn" class="sidebar-pdf-btn"
+          style="background: rgba(16,185,129,0.10); color: #10b981; border-color: rgba(16,185,129,0.25);" hidden>
+          ✅ Clear Completed
+        </button>
       </div>
+    </aside>
 
-      <!-- Task Input Form -->
-      <form id="task-form" class="input-actions" aria-label="Add a new task">
-        <input type="text" id="task" class="task-input" placeholder="What needs to be done?" autocomplete="off"
-          aria-label="Task description" />
-        <select id="task-category" class="task-select" aria-label="Task category">
-          <option value="">Category</option>
-          <option value="Work" data-color="#60a5fa">💼 Work</option>
-          <option value="Personal" data-color="#a78bfa">🧑 Personal</option>
-          <option value="Urgent" data-color="#f87171">⚡ Urgent</option>
-          <option value="Fitness" data-color="#34d399">💪 Fitness</option>
-          <option value="Study" data-color="#fbbf24">📚 Study</option>
-          <option value="Miscellaneous" data-color="#94a3b8">📌 Miscellaneous</option>
-        </select>
-        <button type="submit" class="add-btn" aria-label="Add task">+ Add Task</button>
-      </form>
+    <!-- ═══════════════════════════ MAIN ═══════════════════════════ -->
+    <main class="main-content">
 
-      <!-- Filter Bar -->
-      <div class="filter-bar" id="filter-bar" role="group" aria-label="Filter tasks">
-        <button class="filter-btn active" data-filter="all" id="filter-all">All</button>
-        <button class="filter-btn" data-filter="pending" id="filter-pending">⏳ Pending</button>
-        <button class="filter-btn" data-filter="done" id="filter-done">✅ Done</button>
-        <button class="filter-btn" data-filter="Work" id="filter-work">💼 Work</button>
-        <button class="filter-btn" data-filter="Personal" id="filter-personal">🧑 Personal</button>
-        <button class="filter-btn" data-filter="Urgent" id="filter-urgent">⚡ Urgent</button>
-        <button class="filter-btn" data-filter="Fitness" id="filter-fitness">💪 Fitness</button>
-        <button class="filter-btn" data-filter="Miscellaneous" id="filter-misc">📌 Misc</button>
-      </div>
+      <!-- HOME SECTION -->
+      <section id="home-tab" aria-label="Home tab" class="active-section">
 
-      <!-- Empty State -->
-      <div class="empty-state" id="emptyState" role="status" style="margin-top: 50px;">
-        <div class="empty-icon" aria-hidden="true">📋</div>
-        <p class="empty-title">No tasks yet</p>
-      </div>
-
-      <!-- Task List Container -->
-      <ul id="notes-container" aria-label="Task list"></ul>
-
-      <!-- Clear Workspace Confirmation Modal -->
-      <div id="clearModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle"
-        style="display:none;">
-        <div class="modal-box">
-          <div class="modal-icon">🧹</div>
-          <h2 class="modal-title" id="modalTitle">Clear Workspace?</h2>
-          <p class="modal-desc">This will permanently remove all tasks from your board. This action cannot be undone.
-          </p>
-          <div class="modal-actions">
-            <button id="modalCancelBtn" class="modal-btn modal-btn-cancel">Cancel</button>
-            <button id="modalConfirmBtn" class="modal-btn modal-btn-confirm">Yes, Clear All</button>
+        <!-- Hero Banner -->
+        <div class="hero-banner">
+          <div class="hero-content">
+            <div class="hero-badge">🚀 STAY PRODUCTIVE</div>
+            <h1 class="hero-title">JUST DO IT.</h1>
+            <p class="hero-subtitle">Organise your day, conquer your goals via drag-and-drop workspace lanes.</p>
+            <div class="hero-progress">
+              <div class="hero-progress-bar">
+                <div class="hero-progress-fill" id="heroProgressFill"></div>
+              </div>
+              <div class="hero-progress-text" id="progressText">0 / 0 tasks completed</div>
+            </div>
+          </div>
+          <div class="hero-illustration" aria-hidden="true">
+            <div class="illustration-clipboard">
+              <div class="clipboard-check"></div>
+              <div class="clipboard-check"></div>
+              <div class="clipboard-check"></div>
+            </div>
           </div>
         </div>
-      </div>
 
-      <!-- Clear Completed Confirmation Modal -->
-      <div id="clearCompletedModal" class="modal-overlay" role="dialog" aria-modal="true"
-        aria-labelledby="completedModalTitle" style="display:none;">
-        <div class="modal-box">
-          <div class="modal-icon">✅</div>
-          <h2 class="modal-title" id="completedModalTitle">Clear Completed Tasks?</h2>
-          <p class="modal-desc">This will permanently remove all tasks from the
-            <strong style="color: #10b981;">Completed column</strong> only. Your Pending and In Progress tasks will
-            remain untouched. This action cannot be undone.
-          </p>
-          <div class="modal-actions">
-            <button id="completedModalCancelBtn" class="modal-btn modal-btn-cancel">Cancel</button>
-            <button id="completedModalConfirmBtn" class="modal-btn modal-btn-confirm">Yes, Clear Completed</button>
+        <!-- Task Input Form -->
+        <form class="input-panel" id="task-form" novalidate aria-label="Add a new task">
+          <div class="input-row">
+            <div class="input-select-wrapper">
+              <label for="task-category" class="sr-only">Category</label>
+              <select id="task-category" class="input-select" aria-label="Category">
+                <option value="" disabled selected>📂 Category</option>
+                <option value="Work">💼 Work</option>
+                <option value="Personal">🧑 Personal</option>
+                <option value="Study">📚 Study</option>
+                <option value="Health">🍎 Health</option>
+                <option value="Fitness">💪 Fitness</option>
+                <option value="Urgent">⚡ Urgent</option>
+                <option value="Miscellaneous">📌 Miscellaneous</option>
+              </select>
+            </div>
+
+            <div class="input-select-wrapper">
+              <label for="task-priority" class="sr-only">Priority</label>
+              <select id="task-priority" class="input-select" aria-label="Priority">
+                <option value="" disabled selected>⭐ Priority</option>
+                <option value="High">🔴 High</option>
+                <option value="Medium">🟡 Medium</option>
+                <option value="Low">🟢 Low</option>
+              </select>
+            </div>
+
+            <div class="input-select-wrapper">
+              <span class="data-label">Due Date</span>
+              <input type="date" id="task-date" class="input-select" aria-label="Due date" />
+            </div>
+
+            <div class="task-input-wrapper">
+              <label for="task" class="sr-only">Task Description</label>
+              <input type="text" id="task" class="task-input" placeholder="What do you need to do?" autocomplete="off"
+                aria-label="Task description" maxlength="200" />
+              <div id="char-counter" class="char-counter">0 / 200</div>
+            </div>
+
+            <button type="submit" class="add-task-btn" id="add-task-submit">➕ Add Task</button>
+          </div>
+        </form>
+
+        <!-- Search Bar -->
+        <div class="search-wrapper" role="search" style="margin-top: 20px;">
+          <span class="search-icon" aria-hidden="true">🔍</span>
+          <input type="search" id="task-search" placeholder="Search tasks…" autocomplete="off"
+            aria-label="Search tasks" />
+        </div>
+
+        <!-- Dashboard Stats -->
+        <div class="productivity-dashboard" role="region" aria-label="Task statistics">
+          <div class="dashboard-card">
+            <div class="card-label">TOTAL</div>
+            <div class="tasks-stats"><span class="tasks-number" id="totalTasks">0</span></div>
+          </div>
+          <div class="dashboard-card">
+            <div class="card-label" style="color:#f59e0b;">PENDING</div>
+            <div class="tasks-stats"><span class="tasks-number" id="dashboardPending">0</span></div>
+          </div>
+          <div class="dashboard-card">
+            <div class="card-label" style="color:#38bdf8;">IN PROGRESS</div>
+            <div class="tasks-stats"><span class="tasks-number" id="dashboardInProgress">0</span></div>
+          </div>
+          <div class="dashboard-card">
+            <div class="card-label" style="color:#10b981;">COMPLETED</div>
+            <div class="tasks-stats"><span class="tasks-number" id="dashboardTotalCompleted">0</span></div>
+          </div>
+          <div class="dashboard-card">
+            <div class="card-label" style="color:#ef4444;">OVERDUE</div>
+            <div class="tasks-stats"><span class="tasks-number" id="dashboardOverdue">0</span></div>
           </div>
         </div>
-      </div>
-    </section>
 
-    <!-- Documents Section -->
-    <section id="documents-tab" aria-label="Documents tab" hidden>
-      <div class="documents-header">
-        <h2 class="heading">📂 Saved Documents</h2>
-      </div>
-      <div class="empty-state" id="emptyDocsState" role="status">
-        <div class="empty-icon" aria-hidden="true">📄</div>
-        <p class="empty-title">No saved documents</p>
-        <p class="empty-desc">Save your to-do list as a PDF to see it here.</p>
-      </div>
-      <ul class="documents-list" aria-label="Saved documents"></ul>
-    </section>
-  </main>
+        <!-- No search results -->
+        <div id="no-results-msg" role="status" aria-live="polite">
+          🔍 No tasks match "<span id="no-results-query"></span>"
+        </div>
 
-  <!-- Toast Notification (new top-center popup) -->
+        <!-- Kanban Board -->
+        <div class="kanban-wrapper-board" id="kanban-board" style="margin-top: 20px;">
+          <!-- Pending Column -->
+          <div class="kanban-column-track">
+            <div class="kanban-column-header">
+              <h2 class="kanban-column-title" style="color:#f59e0b;">
+                <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#f59e0b;"></span>
+                Pending
+              </h2>
+              <span id="count-pending" class="kanban-column-badge">0</span>
+            </div>
+            <div id="pending" class="kanban-column-drop-zone" role="list" aria-label="Pending tasks"></div>
+          </div>
+
+          <!-- In Progress Column -->
+          <div class="kanban-column-track">
+            <div class="kanban-column-header">
+              <h2 class="kanban-column-title" style="color:#38bdf8;">
+                <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#38bdf8;"></span>
+                In Progress
+              </h2>
+              <span id="count-inprogress" class="kanban-column-badge">0</span>
+            </div>
+            <div id="inprogress" class="kanban-column-drop-zone" role="list" aria-label="In progress tasks"></div>
+          </div>
+
+          <!-- Completed Column -->
+          <div class="kanban-column-track">
+            <div class="kanban-column-header">
+              <h2 class="kanban-column-title" style="color:#10b981;">
+                <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#10b981;"></span>
+                Completed
+              </h2>
+              <span id="count-completed" class="kanban-column-badge">0</span>
+            </div>
+            <div id="completed" class="kanban-column-drop-zone" role="list" aria-label="Completed tasks"></div>
+          </div>
+        </div>
+
+        <!-- Empty State (shown when no tasks at all) -->
+        <div class="empty-state" id="emptyState" role="status" style="display:none; margin-top:32px;">
+          <div class="empty-icon" aria-hidden="true">📋</div>
+          <p class="empty-title">No tasks yet</p>
+          <p class="empty-desc">Add your first task using the form above.</p>
+        </div>
+
+      </section>
+
+      <!-- DOCUMENTS SECTION -->
+      <section id="documents-tab" aria-label="Documents tab" class="inactive-section">
+        <div class="documents-header">
+          <h2 class="heading">📂 Saved Documents Archive</h2>
+        </div>
+        <div class="empty-state" id="emptyDocsState" role="status">
+          <div class="empty-icon" aria-hidden="true">📄</div>
+          <p class="empty-title">No saved files detected</p>
+          <p class="empty-desc">Save your interactive board checklist arrays as a PDF to store logs here.</p>
+        </div>
+        <ul class="documents-list" aria-label="Saved documents"></ul>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Toast Notification -->
   <div id="appToast" class="toast-popup" role="alert" aria-live="polite"></div>
 
-  <script src="todolist.js"></script>
+  <!-- Clear Workspace Modal -->
+  <div id="clearModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle"
+    style="display:none;">
+    <div class="modal-box">
+      <div class="modal-icon">🧹</div>
+      <h2 class="modal-title" id="modalTitle">Clear Workspace?</h2>
+      <p class="modal-desc">This will permanently remove all tasks from your board. This action cannot be undone.</p>
+      <div class="modal-actions">
+        <button id="modalCancelBtn" class="modal-btn modal-btn-cancel">Cancel</button>
+        <button id="modalConfirmBtn" class="modal-btn modal-btn-confirm">Yes, Clear All</button>
+      </div>
+    </div>
+  </div>
 
-  <script>
-    // ─── Modern Top-Center Toast ─────────────────────────────────
-    // Overrides the basic showToast() from todolist.js with a proper popup
-    let _toastTimer = null;
-    function showToast(message, type) {
-      const el = document.getElementById('appToast');
-      if (!el) return;
-      el.textContent = message;
-      el.className = 'toast-popup toast-show';
-      if (type === 'success') el.classList.add('toast-success');
-      else if (type === 'error') el.classList.add('toast-error');
-      else el.classList.add('toast-info');
-      clearTimeout(_toastTimer);
-      _toastTimer = setTimeout(() => {
-        el.classList.remove('toast-show', 'toast-success', 'toast-error', 'toast-info');
-      }, 3000);
-    }
+  <!-- Clear Completed Modal -->
+  <div id="clearCompletedModal" class="modal-overlay" role="dialog" aria-modal="true"
+    aria-labelledby="completedModalTitle" style="display:none;">
+    <div class="modal-box">
+      <div class="modal-icon">✅</div>
+      <h2 class="modal-title" id="completedModalTitle">Clear Completed Tasks?</h2>
+      <p class="modal-desc">This will permanently remove all tasks from the
+        <strong style="color:#10b981;">Completed column</strong> only. Your Pending and In Progress tasks will
+        remain untouched. This action cannot be undone.
+      </p>
+      <div class="modal-actions">
+        <button id="completedModalCancelBtn" class="modal-btn modal-btn-cancel">Cancel</button>
+        <button id="completedModalConfirmBtn" class="modal-btn modal-btn-confirm">Yes, Clear Completed</button>
+      </div>
+    </div>
+  </div>
 
-    // ─── Fix Button Visibility ─────────────────────────────────────────────
-    // todolist.js updateMetrics() hides #cleardone when done===0 (wrong behaviour).
-    // FIX: capture the original FIRST (before any override), then assign via window
-    // to avoid JS function-declaration hoisting which caused _origUpdateMetrics to
-    // point to our own new function instead of todolist.js's version.
-    const _origUpdateMetrics = window.updateMetrics; // captured BEFORE override
-    window.updateMetrics = function () {
-      if (_origUpdateMetrics) _origUpdateMetrics.call(this); // runs todolist.js version
-      const completedCount = tasks.filter(t => t.completed).length;
-      // Clear Workspace — always visible (todolist.js hides it incorrectly)
-      const cwBtn = document.getElementById('cleardone');
-      if (cwBtn) cwBtn.hidden = false;
-      // Clear Completed — only when there are completed tasks
-      const ccBtn = document.getElementById('clearCompletedBtn');
-      if (ccBtn) ccBtn.hidden = completedCount === 0;
-    };
-    // Run immediately to set correct initial state
-    window.updateMetrics();
-
-    // ─── Clear Completed Button Logic ──────────────────────────
-    const clearCompletedBtn = document.getElementById('clearCompletedBtn');
-    const clearCompletedModal = document.getElementById('clearCompletedModal');
-    const completedModalCancelBtn = document.getElementById('completedModalCancelBtn');
-    const completedModalConfirmBtn = document.getElementById('completedModalConfirmBtn');
-
-    if (clearCompletedBtn) {
-      clearCompletedBtn.addEventListener('click', () => {
-        const completedCount = tasks.filter(t => t.completed).length;
-        if (completedCount === 0) {
-          showToast('✨ No completed tasks to clear!', 'info');
-          return;
-        }
-        clearCompletedModal.style.display = 'flex';
-      });
-    }
-
-    if (completedModalCancelBtn) {
-      completedModalCancelBtn.addEventListener('click', () => {
-        clearCompletedModal.style.display = 'none';
-      });
-    }
-
-    if (completedModalConfirmBtn) {
-      completedModalConfirmBtn.addEventListener('click', () => {
-        tasks = tasks.filter(t => !t.completed);
-        saveTasks();
-        renderTasks();
-        clearCompletedModal.style.display = 'none';
-        showToast('✅ Completed tasks cleared!', 'success');
-      });
-    }
-
-    // Close completed modal on backdrop click
-    if (clearCompletedModal) {
-      clearCompletedModal.addEventListener('click', (e) => {
-        if (e.target === clearCompletedModal) clearCompletedModal.style.display = 'none';
-      });
-    }
-
-    // ─── Clear Workspace (All Tasks) Modal Logic ─────────────────
-    const modalCancelBtn = document.getElementById('modalCancelBtn');
-    const modalConfirmBtn = document.getElementById('modalConfirmBtn');
-    const clearModal = document.getElementById('clearModal');
-
-    // Intercept cleardone click (capture phase beats todolist.js bubble handler)
-    document.getElementById('cleardone').addEventListener('click', (e) => {
-      e.stopImmediatePropagation();
-      if (clearModal) clearModal.style.display = 'flex';
-    }, true);
-
-    if (modalCancelBtn) {
-      modalCancelBtn.addEventListener('click', () => {
-        clearModal.style.display = 'none';
-      });
-    }
-
-    if (modalConfirmBtn) {
-      modalConfirmBtn.addEventListener('click', () => {
-        tasks = [];
-        saveTasks();
-        renderTasks();
-        clearModal.style.display = 'none';
-        showToast('🧹 All tasks cleared!', 'success');
-      });
-    }
-
-    // Close workspace modal on backdrop click
-    if (clearModal) {
-      clearModal.addEventListener('click', (e) => {
-        if (e.target === clearModal) clearModal.style.display = 'none';
-      });
-    }
-  </script>
+  <script src="todolist.js" defer></script>
 </body>
 
 </html>

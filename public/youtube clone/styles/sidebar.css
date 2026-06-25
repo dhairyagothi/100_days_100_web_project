@@ -39,7 +39,7 @@
   font-weight: 400;
   margin-top: 6px;
   text-align: center;
-  opacity: 0;
+  opacity: 1;
   max-width: none;
   white-space: nowrap;
 }
@@ -63,11 +63,11 @@ body.sidebar-expanded .sidebar-link {
   height: 48px;
 }
 
-/* body.sidebar-expanded .sidebar-link div {
+ body.sidebar-expanded .sidebar-link div {
   opacity: 1;
   max-width: 150px;
   margin-left: 24px;
-} */
+} 
 
 /* Mobile responsive drawer styling */
 @media (max-width: 750px) {
