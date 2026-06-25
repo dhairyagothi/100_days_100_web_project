@@ -605,3 +605,27 @@ font-size:22px;
 max-height:180px;
 }
 }
+/* =========================
+VALIDATION ERROR OVERLAY UTILITY
+========================= */
+
+.validation-error-text {
+  color: #ff9e9e;
+  font-weight: 500;
+  display: inline-block;
+  animation: shakeAlert 0.4s ease-in-out;
+}
+
+@keyframes shakeAlert {
+  0%, 100% {
+    transform: translateX(0);
+  }
+
+  25% {
+    transform: translateX(-4px);
+  }
+
+  75% {
+    transform: translateX(4px);
+  }
+}

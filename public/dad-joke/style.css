@@ -13,14 +13,11 @@ body {
   justify-content: space-between;
   align-items: center;
   font-family: "Poppins", sans-serif;
-  background: linear-gradient(
-    135deg,
-    #667eea 0%,
-    #764ba2 50%,
-    #6b73ff 100%
-  );
-  overflow-y: auto;
-  padding: 120px 15px 20px 15px; /* Top padding navbar ke liye, sides par mobile safety spacing */
+
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #6b73ff 100%);
+
+  overflow: hidden;
+  padding: 20px;
 }
 
 /* --- RESPONSIVE JOKE CONTAINER --- */
@@ -244,19 +241,58 @@ h3 {
   }
 }
 
-/* ==================================
-   LIGHT THEME OVERRIDES
-===================================== */
-body.light-theme {
-  --bg-primary: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
-  background: var(--bg-primary);
-  color: #1f2937;
+body.light-mode,
+body.light {
+  background: #f8f9fa;
 }
-body.light-theme .navbar { background: rgba(255, 255, 255, 0.85); border-bottom: 1px solid rgba(0, 0, 0, 0.08); }
-body.light-theme .logo, body.light-theme .nav-links a { color: #1f2937; }
-body.light-theme .container { background: rgba(255, 255, 255, 0.75); border: 1px solid rgba(0, 0, 0, 0.05); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); }
-body.light-theme .joke { color: #374151; }
-body.light-theme .btn { background: #6c63ff; color: white; }
-body.light-theme footer { background: #f3f4f6; border-top: 1px solid rgba(0, 0, 0, 0.08); }
-body.light-theme .footer-section h3, body.light-theme .footer-section h4, body.light-theme .footer-bottom { color: #1f2937; }
-body.light-theme .footer-section p, body.light-theme .footer-section a { color: #4b5563; }
+
+body.light-mode .container,
+body.light .container {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
+}
+
+body.light-mode h3,
+body.light h3 {
+  color: #718096;
+}
+
+body.light-mode .joke,
+body.light .joke {
+  color: #2d3748;
+}
+
+body.light-mode .btn,
+body.light .btn {
+  background: #6c63ff;
+  color: #ffffff;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* Scrollbar colors for Light Mode */
+body.light-mode ::-webkit-scrollbar-thumb,
+body.light ::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+body.light-mode ::-webkit-scrollbar-thumb:hover,
+body.light ::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.4);
+}

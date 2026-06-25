@@ -37,20 +37,34 @@ runBtn.addEventListener('click', () => {
 
     logTerminal.textContent += `\n[Metrics Calculated] Reductions finished in ${totalDuration.toFixed(4)}ms!`;
 
-    // Append plain-text rows onto the screen layout window
-    const summaryRow1 = document.createElement('div');
-    summaryRow1.style.padding = '4px 0';
-    summaryRow1.textContent = `➔ Total Combined System Pipeline Value: $${totalPipelineValue.toLocaleString()}`;
-
-    const summaryRow2 = document.createElement('div');
-    summaryRow2.style.padding = '4px 0';
-    summaryRow2.textContent = `➔ Mathematical Average Interview Score: ${averageInterviewScore.toFixed(2)}%`;
-
-    const summaryRow3 = document.createElement('div');
-    summaryRow3.style.padding = '4px 0';
-    summaryRow3.textContent = `➔ Aggregation Vector Pipeline Latency: ${totalDuration.toFixed(4)}ms`;
-
-    metricsView.appendChild(summaryRow1);
-    metricsView.appendChild(summaryRow2);
-    metricsView.appendChild(summaryRow3);
+    // Render premium, responsive metric cards
+    metricsView.innerHTML = `
+        <div class="metric-card value-card animate-fade-in">
+            <div class="metric-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+            </div>
+            <div class="metric-content">
+                <span class="metric-label">Total System Pipeline Value</span>
+                <span class="metric-value">$${totalPipelineValue.toLocaleString()}</span>
+            </div>
+        </div>
+        <div class="metric-card score-card animate-fade-in" style="animation-delay: 0.1s;">
+            <div class="metric-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+            </div>
+            <div class="metric-content">
+                <span class="metric-label">Average Interview Score</span>
+                <span class="metric-value">${averageInterviewScore.toFixed(2)}%</span>
+            </div>
+        </div>
+        <div class="metric-card latency-card animate-fade-in" style="animation-delay: 0.2s;">
+            <div class="metric-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            </div>
+            <div class="metric-content">
+                <span class="metric-label">Vector Pipeline Latency</span>
+                <span class="metric-value">${totalDuration.toFixed(4)} <span class="unit">ms</span></span>
+            </div>
+        </div>
+    `;
 });

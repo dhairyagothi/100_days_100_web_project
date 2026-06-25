@@ -3060,16 +3060,31 @@
    },
    {
     "projectNo": 241,
-    "projectName": "Pokemon Battle Simulator",
+    "projectName": "Sorting Algorithm Visualizer",
     "projectType": "Tool",
-    "projectDesc": "A retro, GBA-style interactive Pokemon battle simulator built using HTML, CSS, and Vanilla JavaScript.",
+    "projectDesc": "Animates Bubble, Selection, Insertion, Merge, Quick, and Heap Sort on a live bar chart with adjustable speed and array size, plus real-time comparison and swap counters to build intuition for how each algorithm behaves.",
     "techStack": [
       "html",
       "css",
       "javascript",
-      "canvas"
+      "visualizer",
+      "algorithm"
     ],
-    "difficulty": "advanced",
+    "difficulty": "intermediate",
+    "projectPath": "./public/SortingVisualizer/index.html"
+  },
+  {   "projectNo": 242,
+     "projectName": "Pokemon Battle Simulator",
+    "projectType": "Tool",
+    "projectDesc": "A retro, GBA-style interactive Pokemon battle simulator built using HTML, CSS, and Vanilla JavaScript.",
+       "techStack": [
+      "html",
+      "css",
+      "javascript",
+      "visualizer",
+      "game"
+    ],
+   "difficulty": "advanced",
     "projectPath": "./public/Pokemon_Battle_Simulator/index.html"
    } 
 ]

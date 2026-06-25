@@ -822,21 +822,21 @@ transition: background 0.3s ease;
 
   left: calc(100% + 12px);
   top: 50%;
+
   transform: translateY(-50%) translateX(-10px);
 
   width: 220px;
 
-  background: rgba(22, 29, 46, 0.95);
+  background: var(--glass);
   backdrop-filter: blur(18px);
 
-  border: 1px solid rgba(59,130,246,0.25);
+  border: 1px solid var(--border);
+
   border-radius: 12px;
 
   padding: 14px;
 
-  box-shadow:
-    0 15px 40px rgba(0,0,0,0.45),
-    0 0 20px rgba(59,130,246,0.1);
+  box-shadow: var(--shadow-lg);
 
   opacity: 0;
   visibility: hidden;
@@ -863,7 +863,6 @@ transition: background 0.3s ease;
   margin-bottom: 8px;
   font-size: 0.85rem;
 }
-
 .inline-tooltip p {
   color: var(--text-primary);
   font-size: 0.78rem;
@@ -878,13 +877,50 @@ transition: background 0.3s ease;
 
   border-radius: 8px;
 
-  background: var(--glass);
+  background: rgba(59,130,246,0.08);
 
   border: 1px solid var(--border);
 
-  color: var(--accent-green);
+  color: var(--text-primary);
 
   font-family: var(--font-display);
 
   font-size: 0.72rem;
+}
+/* ===== Light Theme Tooltip Fix ===== */
+
+[data-theme='light'] .inline-tooltip {
+  background: rgba(255, 255, 255, 0.92);
+
+  border: 1px solid rgba(59,130,246,0.18);
+
+  box-shadow:
+    0 12px 30px rgba(15, 23, 42, 0.08),
+    0 4px 12px rgba(15, 23, 42, 0.04);
+}
+
+[data-theme='light'] .inline-tooltip code {
+  background: rgba(59,130,246,0.05);
+}
+
+[data-theme='light'] .inline-tooltip h4 {
+  color: #2563eb;
+}
+.inline-tooltip::before {
+  content: '';
+
+  position: absolute;
+
+  left: -6px;
+  top: 50%;
+
+  width: 12px;
+  height: 12px;
+
+  transform: translateY(-50%) rotate(45deg);
+
+  background: inherit;
+
+  border-left: inherit;
+  border-top: inherit;
 }

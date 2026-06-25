@@ -17,11 +17,7 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <a
-      href="/"
-      class="project-back-button"
-      >← Back to Home</a
-    >
+    <a href="/" class="project-back-button">← Back to Home</a>
     <header class="header" id="header">
       <div class="header__container">
         <div class="header__brand">
@@ -33,9 +29,17 @@
     </header>
 
     <main class="main" id="main-content">
-      <section class="preview-section" id="preview-section" aria-label="Gradient Preview">
+      <section
+        class="preview-section"
+        id="preview-section"
+        aria-label="Gradient Preview"
+      >
         <div class="preview-card">
-          <div class="preview-box" id="preview-box" aria-label="Live gradient preview"></div>
+          <div
+            class="preview-box"
+            id="preview-box"
+            aria-label="Live gradient preview"
+          ></div>
           <div class="preview-actions">
             <button
               class="btn btn--primary"
@@ -53,19 +57,32 @@
             >
               <span class="btn__icon">📋</span><span>Copy CSS</span>
             </button>
-            <button class="btn btn--accent" id="btn-save" type="button" aria-label="Save gradient">
+            <button
+              class="btn btn--accent"
+              id="btn-save"
+              type="button"
+              aria-label="Save gradient"
+            >
               <span class="btn__icon">💾</span><span>Save</span>
             </button>
           </div>
         </div>
       </section>
 
-      <section class="controls-section" id="controls-section" aria-label="Gradient Controls">
+      <section
+        class="controls-section"
+        id="controls-section"
+        aria-label="Gradient Controls"
+      >
         <div class="controls-card">
           <h2 class="controls-card__title">Customize Gradient</h2>
           <div class="control-group" id="control-type">
             <label class="control-label">Gradient Type</label>
-            <div class="toggle-group" role="radiogroup" aria-label="Gradient type">
+            <div
+              class="toggle-group"
+              role="radiogroup"
+              aria-label="Gradient type"
+            >
               <button
                 class="toggle-btn toggle-btn--active"
                 id="btn-linear"
@@ -122,13 +139,18 @@
                 <span class="color-hex" id="hex-2">#ec4899</span>
               </div>
             </div>
-            <button class="btn btn--small btn--outline" id="btn-add-color" type="button">
+            <button
+              class="btn btn--small btn--outline"
+              id="btn-add-color"
+              type="button"
+            >
               + Add Color
             </button>
           </div>
           <div class="control-group" id="control-angle">
             <label class="control-label" for="angle-slider"
-              >Angle: <span class="control-value" id="angle-value">135°</span></label
+              >Angle:
+              <span class="control-value" id="angle-value">135°</span></label
             >
             <input
               type="range"
@@ -144,36 +166,56 @@
             <label class="control-label">CSS Code</label>
             <div class="code-output">
               <code class="code-text" id="css-output"></code>
-              <span class="copy-clipboard" id="copy-clipboard">&#x1F4CB;</span>
+
+              <button
+                type="button"
+                class="copy-clipboard"
+                id="copy-clipboard"
+                aria-label="Copy CSS code"
+                title="Copy CSS code"
+              >
+                &#x1F4CB;
+              </button>
             </div>
           </div>
         </div>
       </section>
-      <div id="confirm-modal" class="modal hidden" role="dialog" aria-modal="true">
-  <div class="modal__overlay"></div>
+      <div
+        id="confirm-modal"
+        class="hidden modal"
+        role="dialog"
+        aria-modal="true"
+      >
+        <div class="modal__overlay"></div>
 
-  <div class="modal__content">
-    <h3 class="modal__title" id="modal-title">Confirm Action</h3>
-    <p class="modal__message" id="modal-message">
-      Are you sure?
-    </p>
+        <div class="modal__content">
+          <h3 class="modal__title" id="modal-title">Confirm Action</h3>
+          <p class="modal__message" id="modal-message">Are you sure?</p>
 
-    <div class="modal__actions">
-      <button id="modal-cancel" class="modal__btn modal__btn--cancel">
-        Cancel
-      </button>
-      <button id="modal-confirm" class="modal__btn modal__btn--danger">
-        Confirm
-      </button>
-    </div>
-  </div>
-</div>
+          <div class="modal__actions">
+            <button id="modal-cancel" class="modal__btn modal__btn--cancel">
+              Cancel
+            </button>
+            <button id="modal-confirm" class="modal__btn modal__btn--danger">
+              Confirm
+            </button>
+          </div>
+        </div>
+      </div>
 
-      <section class="saved-section" id="saved-section" aria-label="Saved Gradients">
+      <section
+        class="saved-section"
+        id="saved-section"
+        aria-label="Saved Gradients"
+      >
         <div class="saved-card">
           <div class="saved-card__header">
             <h2 class="saved-card__title">Saved Gradients</h2>
-            <button class="btn btn--small btn--danger" id="btn-clear-all" type="button">
+            <button
+              class="btn btn--small btn--danger"
+              id="btn-clear-all"
+              type="button"
+            >
               Clear All
             </button>
           </div>
@@ -191,7 +233,9 @@
     </div>
 
     <footer class="footer" id="footer">
-      <p class="footer__text">Made with &#10084; by <strong>Omer</strong> &bull; GSSoC 2026</p>
+      <p class="footer__text">
+        Made with &#10084; by <strong>Omer</strong> &bull; GSSoC 2026
+      </p>
     </footer>
 
     <script src="script.js"></script>
