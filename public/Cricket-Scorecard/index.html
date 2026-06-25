@@ -18,6 +18,15 @@
   </header>
   <!-- Main Content -->
   <main class="container">
+    <!-- Search Bar -->
+    <div class="search-container">
+      <input
+        type="text"
+        id="searchInput"
+        class="search-input"
+        placeholder="🔍 Search by team name..."
+    />
+  </div>
     <!-- Live Matches Section -->
     <section class="section">
       <h2 class="section__title">🔴 Live Matches</h2>
@@ -32,6 +41,14 @@
 
       <div id="upcoming-matches" class="matches-grid">
         <p class="loading">Loading upcoming fixtures...</p>
+      </div>
+    </section>
+    <!-- Recent Matches Section -->
+    <section class="section">
+      <h2 class="section__title">🏁 Recent Matches</h2>
+
+      <div id="recent-matches" class="matches-grid">
+        <p class="loading">Loading recent matches...</p>
       </div>
     </section>
   </main>
