@@ -1,5 +1,26 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
 
+/* ── Theme Configurations ── */
+:root {
+  --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 40%, #f093fb 100%);
+  --card-bg: rgba(255, 255, 255, 0.15);
+  --card-border: rgba(255, 255, 255, 0.28);
+  --input-bg: rgba(255, 255, 255, 0.18);
+  --input-focus-bg: rgba(255, 255, 255, 0.25);
+  --option-bg: #5a3e9e;
+  --star-color: rgba(255, 255, 255, 0.85);
+}
+
+[data-theme="dark"] {
+  --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #311042 100%);
+  --card-bg: rgba(15, 23, 42, 0.45);
+  --card-border: rgba(255, 255, 255, 0.12);
+  --input-bg: rgba(0, 0, 0, 0.25);
+  --input-focus-bg: rgba(0, 0, 0, 0.4);
+  --option-bg: #1e1b4b;
+  --star-color: #f59e0b; /* Golden glowing star */
+}
+
 *, *::before, *::after {
   margin: 0;
   padding: 0;
@@ -12,7 +33,35 @@ body {
   align-items: center;
   justify-content: center;
   font-family: 'DM Sans', sans-serif;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 40%, #f093fb 100%);
+  background: var(--bg-gradient);
+  transition: background 0.4s ease; /* Seamless fade between mode switches */
+}
+
+/* ── Star Button Styling ── */
+.theme-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  color: var(--star-color);
+  font-size: 20px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s, background 0.4s, color 0.3s, border-color 0.4s;
+  z-index: 1000;
+}
+
+.theme-toggle:hover {
+  transform: scale(1.1) rotate(15deg);
 }
 
 /* ── Outer wrapper ── */
@@ -56,17 +105,18 @@ body {
 .glass-card {
   width: 100%;
   max-width: 420px;
-  background: rgba(255, 255, 255, 0.15);
+  background: var(--card-bg);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.28);
+  border: 1px solid var(--card-border);
   border-radius: 24px;
   padding: 2rem;
   box-shadow:
     0 8px 32px rgba(0, 0, 0, 0.18),
-    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
   position: relative;
   z-index: 1;
+  transition: background 0.4s, border-color 0.4s;
 }
 
 /* ── Title ── */
@@ -146,8 +196,8 @@ body {
 .glass-input {
   flex: 1;
   padding: 12px 14px;
-  background: rgba(255, 255, 255, 0.18);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: var(--input-bg);
+  border: 1px solid var(--card-border);
   border-radius: 12px;
   color: #fff;
   font-family: 'DM Mono', monospace;
@@ -163,14 +213,14 @@ body {
 }
 
 .glass-input:focus {
-  background: rgba(255, 255, 255, 0.25);
-  border-color: rgba(255, 255, 255, 0.55);
+  background: var(--input-focus-bg);
+  border-color: rgba(255, 255, 255, 0.45);
 }
 
 .glass-input[readonly] {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.18);
-  color: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.8);
   cursor: default;
 }
 
@@ -204,8 +254,8 @@ body {
 .glass-select {
   width: 100%;
   padding: 12px 32px 12px 14px;
-  background: rgba(255, 255, 255, 0.18);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: var(--input-bg);
+  border: 1px solid var(--card-border);
   border-radius: 12px;
   color: #fff;
   font-family: 'DM Sans', sans-serif;
@@ -219,12 +269,12 @@ body {
 }
 
 .glass-select:focus {
-  background: rgba(255, 255, 255, 0.25);
-  border-color: rgba(255, 255, 255, 0.55);
+  background: var(--input-focus-bg);
+  border-color: rgba(255, 255, 255, 0.45);
 }
 
 .glass-select option {
-  background: #5a3e9e;
+  background: var(--option-bg);
   color: #fff;
 }
 
@@ -237,8 +287,8 @@ body {
 }
 
 .swap-btn {
-  background: rgba(255, 255, 255, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid var(--card-border);
   color: #fff;
   border-radius: 50%;
   width: 38px;
@@ -252,15 +302,15 @@ body {
 }
 
 .swap-btn:hover {
-  background: rgba(255, 255, 255, 0.32);
+  background: rgba(255, 255, 255, 0.28);
   transform: rotate(180deg);
 }
 
 /* ── Result banner ── */
 .result-banner {
   margin-top: 1.25rem;
-  background: rgba(0, 0, 0, 0.18);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(0, 0, 0, 0.15);
+  border: 1px solid var(--card-border);
   border-radius: 14px;
   padding: 14px 16px;
   color: #fff;
@@ -282,6 +332,14 @@ body {
 
 /* ── Responsive ── */
 @media (max-width: 480px) {
+  .theme-toggle {
+    top: 12px;
+    right: 12px;
+    width: 38px;
+    height: 38px;
+    font-size: 16px;
+  }
+
   .glass-card {
     padding: 1.5rem;
     border-radius: 20px;
