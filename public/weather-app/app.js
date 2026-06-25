@@ -1,9 +1,6 @@
-/* =====================================================
-   WeatherLens — Powered by Open-Meteo (no API key!)
-   Geocoding: open-meteo.com/en/docs/geocoding-api
-   Weather:   open-meteo.com/en/docs
-   AQI:       air-quality-api.open-meteo.com
-   ===================================================== */
+/* ==========================================================================
+   WeatherLens Engine — Highly Advanced & Production-Ready Script
+   ========================================================================== */
 
 const GEO_BASE  = "https://geocoding-api.open-meteo.com/v1/search";
 const WX_BASE   = "https://api.open-meteo.com/v1/forecast";
@@ -11,36 +8,40 @@ const AQI_BASE  = "https://air-quality-api.open-meteo.com/v1/air-quality";
 
 // WMO weather code → description + icon mapping
 const WMO = {
-  0:  { desc: "Clear sky",            icon: "01" },
-  1:  { desc: "Mainly clear",         icon: "02" },
-  2:  { desc: "Partly cloudy",        icon: "03" },
-  3:  { desc: "Overcast",             icon: "04" },
-  45: { desc: "Foggy",                icon: "50" },
-  48: { desc: "Icy fog",              icon: "50" },
-  51: { desc: "Light drizzle",        icon: "09" },
-  53: { desc: "Moderate drizzle",     icon: "09" },
-  55: { desc: "Dense drizzle",        icon: "09" },
-  61: { desc: "Slight rain",          icon: "10" },
-  63: { desc: "Moderate rain",        icon: "10" },
-  65: { desc: "Heavy rain",           icon: "10" },
-  71: { desc: "Slight snow",          icon: "13" },
-  73: { desc: "Moderate snow",        icon: "13" },
-  75: { desc: "Heavy snow",           icon: "13" },
-  77: { desc: "Snow grains",          icon: "13" },
-  80: { desc: "Slight showers",       icon: "09" },
-  81: { desc: "Moderate showers",     icon: "09" },
-  82: { desc: "Violent showers",      icon: "09" },
-  85: { desc: "Slight snow showers",  icon: "13" },
-  86: { desc: "Heavy snow showers",   icon: "13" },
-  95: { desc: "Thunderstorm",         icon: "11" },
-  96: { desc: "Thunderstorm w/ hail", icon: "11" },
-  99: { desc: "Thunderstorm w/ hail", icon: "11" },
+  0:  { desc: "Clear sky",             icon: "01" },
+  1:  { desc: "Mainly clear",          icon: "02" },
+  2:  { desc: "Partly cloudy",         icon: "03" },
+  3:  { desc: "Overcast",              icon: "04" },
+  45: { desc: "Foggy",                 icon: "50" },
+  48: { desc: "Icy fog",               icon: "50" },
+  51: { desc: "Light drizzle",         icon: "09" },
+  53: { desc: "Moderate drizzle",      icon: "09" },
+  55: { desc: "Dense drizzle",         icon: "09" },
+  61: { desc: "Slight rain",           icon: "10" },
+  63: { desc: "Moderate rain",         icon: "10" },
+  65: { desc: "Heavy rain",            icon: "10" },
+  71: { desc: "Slight snow",           icon: "13" },
+  73: { desc: "Moderate snow",         icon: "13" },
+  75: { desc: "Heavy snow",            icon: "13" },
+  77: { desc: "Snow grains",           icon: "13" },
+  80: { desc: "Slight showers",        icon: "09" },
+  81: { desc: "Moderate showers",      icon: "09" },
+  82: { desc: "Violent showers",       icon: "09" },
+  85: { desc: "Slight snow showers",   icon: "13" },
+  86: { desc: "Heavy snow showers",    icon: "13" },
+  95: { desc: "Thunderstorm",          icon: "11" },
+  96: { desc: "Thunderstorm w/ hail",  icon: "11" },
+  99: { desc: "Thunderstorm w/ hail",  icon: "11" },
 };
 
 function wmoInfo(code, isNight) {
   const w = WMO[code] || { desc: "Unknown", icon: "01" };
   const suffix = (isNight && ["01","02","03"].includes(w.icon)) ? "n" : "d";
-  return { desc: w.desc, iconUrl: `https://openweathermap.org/img/wn/${w.icon}${suffix}@2x.png`, isNight: suffix === "n" };
+  return { 
+    desc: w.desc, 
+    iconUrl: `https://openweathermap.org/img/wn/${w.icon}${suffix}@2x.png`, 
+    isNight: suffix === "n" 
+  };
 }
 
 function wmoTheme(code, isNight) {
@@ -54,12 +55,13 @@ function wmoTheme(code, isNight) {
 }
 
 const AQI_LEVELS = [
-  { label: "Good",      color: "#22c55e", bg: "rgba(34,197,94,0.15)" },
-  { label: "Fair",      color: "#84cc16", bg: "rgba(132,204,22,0.15)" },
-  { label: "Moderate",  color: "#eab308", bg: "rgba(234,179,8,0.15)" },
-  { label: "Poor",      color: "#f97316", bg: "rgba(249,115,22,0.15)" },
-  { label: "Very Poor", color: "#ef4444", bg: "rgba(239,68,68,0.15)" },
+  { label: "Good",      color: "#22c55e", class: "aqi-1" },
+  { label: "Fair",      color: "#84cc16", class: "aqi-2" },
+  { label: "Moderate",  color: "#eab308", class: "aqi-3" },
+  { label: "Poor",      color: "#f97316", class: "aqi-4" },
+  { label: "Very Poor", color: "#ef4444", class: "aqi-5" },
 ];
+
 function aqiLevel(usAqi) {
   if (usAqi <= 50)  return AQI_LEVELS[0];
   if (usAqi <= 100) return AQI_LEVELS[1];
@@ -68,22 +70,25 @@ function aqiLevel(usAqi) {
   return AQI_LEVELS[4];
 }
 
-// ── State ─────────────────────────────────────────────
-let currentUnit = "metric";
-let currentCity = "";
+/* ==========================================================================
+   State & Global Application Registry
+   ========================================================================== */
+let currentUnit    = "metric";
+let currentCity    = "";
 let favourites     = JSON.parse(localStorage.getItem("wl_favs")    || "[]");
 let recentSearches = JSON.parse(localStorage.getItem("wl_recent")  || "[]");
-let particles  = [];
+let particles      = [];
 let animFrame;
-let sunriseTs = 0, sunsetTs = 0, currentTz = 0;
+let sunriseTs = 0, sunsetTs = 0;
 
-// ── DOM ───────────────────────────────────────────────
+// DOM Registry Cache
 const $ = id => document.getElementById(id);
 const cityInput       = $("cityInput");
 const searchBtn       = $("searchBtn");
 const geoBtn          = $("geoBtn");
 const statusMessage   = $("statusMessage");
 const statusText      = $("statusText");
+const statusSpinner   = $("statusSpinner");
 const weatherDisplay  = $("weatherDisplay");
 const errorState      = $("errorState");
 const errorText       = $("errorText");
@@ -114,7 +119,9 @@ const ctx             = canvas.getContext("2d");
 const liveTime        = $("liveTime");
 const liveDate        = $("liveDate");
 
-// ── Live Clock ────────────────────────────────────────
+/* ==========================================================================
+   Clock Mechanics
+   ========================================================================== */
 function updateClock() {
   const now = new Date();
   liveTime.textContent = now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
@@ -123,7 +130,9 @@ function updateClock() {
 updateClock();
 setInterval(updateClock, 1000);
 
-// ── Unit toggle ───────────────────────────────────────
+/* ==========================================================================
+   Unit Management Systems
+   ========================================================================== */
 unitToggle.addEventListener("click", e => {
   const opt = e.target.closest(".unit-opt");
   if (!opt) return;
@@ -132,39 +141,48 @@ unitToggle.addEventListener("click", e => {
   currentUnit = newUnit;
   document.querySelectorAll(".unit-opt").forEach(el =>
     el.classList.toggle("active", el.dataset.unit === currentUnit));
-  if (currentCity) fetchByName(currentCity.split(",")[0].trim());
+  if (currentCity) {
+    fetchByName(currentCity.split(",")[0].trim());
+  }
 });
 
-// ── Fetch helpers ──────────────────────────────────────
+/* ==========================================================================
+   Core Networking Engine
+   ========================================================================== */
 async function fetchJSON(url) {
   const res = await fetch(url);
-  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  if (!res.ok) throw new Error(`Network tracking returned status HTTP ${res.status}`);
   return res.json();
 }
 
-// ── Main fetch: by city name ───────────────────────────
 async function fetchByName(query) {
-  showStatus("Searching for city…");
+  if (!validateInput(query)) return;
+  showStatus("Locating city coordinates…");
   try {
     const geo = await fetchJSON(`${GEO_BASE}?name=${encodeURIComponent(query)}&count=1&language=en&format=json`);
-    if (!geo.results || geo.results.length === 0) throw new Error("City not found. Check spelling and try again.");
+    if (!geo.results || geo.results.length === 0) {
+      throw new Error(`Could not find "${query}". Check spelling and try again.`);
+    }
     const place = geo.results[0];
     await fetchByCoords(place.latitude, place.longitude, place.name, place.country, place.timezone);
-    addRecentSearch(query);
+    addRecentSearch(place.name);
   } catch (err) {
     showError(err.message);
   }
 }
 
-// ── Main fetch: by coords ──────────────────────────────
 async function fetchByCoords(lat, lon, name, country, timezone) {
-  showStatus("Fetching weather data…");
+  showStatus("Syncing local microclimate data…");
   try {
-    // Resolve city name from coords if not provided
     if (!name) {
       const geo = await fetchJSON(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`);
-      name    = geo.address.city || geo.address.town || geo.address.village || geo.address.county || "Unknown";
-      country = geo.address.country_code?.toUpperCase() || "";
+      if(geo && geo.address) {
+        name    = geo.address.city || geo.address.town || geo.address.village || geo.address.county || "Detected Location";
+        country = geo.address.country_code?.toUpperCase() || "";
+      } else {
+        name = "Local Horizon";
+        country = "";
+      }
       timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     }
 
@@ -190,13 +208,13 @@ async function fetchByCoords(lat, lon, name, country, timezone) {
     const isNight = c.is_day === 0;
     const wmo = wmoInfo(c.weather_code, isNight);
 
-    // City display
-    currentCity = `${name}, ${country}`;
+    currentCity = `${name}${country ? `, ${country}` : ""}`;
     cityName.textContent = currentCity;
     weatherCondition.textContent = wmo.desc;
     tempDisplay.textContent = `${Math.round(c.temperature_2m)}${tempUnit}`;
     feelsLike.textContent = `${Math.round(c.apparent_temperature)}${tempUnit}`;
     weatherIcon.src = wmo.iconUrl;
+    weatherIcon.alt = wmo.desc;
     humidityValue.textContent = `${c.relative_humidity_2m}%`;
     windValue.textContent = `${c.wind_speed_10m} ${speedLabel}`;
     pressureValue.textContent = `${Math.round(c.surface_pressure)} hPa`;
@@ -204,7 +222,6 @@ async function fetchByCoords(lat, lon, name, country, timezone) {
     uvIndex.textContent = c.uv_index != null ? c.uv_index.toFixed(1) : "N/A";
     cloudinessValue.textContent = `${c.cloud_cover}%`;
 
-    // Sunrise / sunset (strings like "2024-06-01T05:43")
     const srStr = d.sunrise[0], ssStr = d.sunset[0];
     sunriseVal.textContent = srStr ? srStr.slice(11, 16) : "—";
     sunsetVal.textContent  = ssStr ? ssStr.slice(11, 16) : "—";
@@ -212,24 +229,20 @@ async function fetchByCoords(lat, lon, name, country, timezone) {
     sunsetTs  = ssStr ? new Date(ssStr).getTime() / 1000 : 0;
     animateSunArc();
 
-    // Local time in that timezone
     try {
-      localTime.textContent = "Local: " + new Date().toLocaleTimeString("en-US",
+      localTime.textContent = "Local Horizon: " + new Date().toLocaleTimeString("en-US",
         { timeZone: timezone, hour: "2-digit", minute: "2-digit" });
-    } catch { localTime.textContent = ""; }
+    } catch { 
+      localTime.textContent = ""; 
+    }
 
-    // Forecast (skip today = index 0)
     renderForecast(d, tempUnit);
-
-    // AQI
     renderAQI(aqi);
 
-    // Theme + particles
     const theme = wmoTheme(c.weather_code, isNight);
     appBody.setAttribute("data-weather-theme", theme);
     startParticles(theme);
 
-    // Fav button state
     favBtn.classList.toggle("active", favourites.includes(currentCity));
 
     weatherDisplay.classList.remove("hidden");
@@ -238,14 +251,45 @@ async function fetchByCoords(lat, lon, name, country, timezone) {
     renderFavourites();
 
   } catch (err) {
-    showError(err.message || "Failed to load weather. Try again.");
+    showError(err.message || "Failed sync cycle to gather remote matrix parameters.");
   }
 }
 
-// ── Render: 5-day forecast ────────────────────────────
+/* ==========================================================================
+   Automatic & Manual Location Detection Engine
+   ========================================================================== */
+function runAutomaticDetection() {
+  if (!navigator.geolocation) {
+    fetchByName("London"); // Safe default metric sandbox fallback
+    return;
+  }
+
+  showStatus("Detecting current coordinates automatically…");
+  geoBtn.classList.add("locating-active");
+
+  navigator.geolocation.getCurrentPosition(
+    position => {
+      geoBtn.classList.remove("locating-active");
+      fetchByCoords(position.coords.latitude, position.coords.longitude);
+    },
+    error => {
+      geoBtn.classList.remove("locating-active");
+      let systemReason = "Location tracking access declined.";
+      if (error.code === error.POSITION_UNAVAILABLE) systemReason = "Network location data structural failure.";
+      if (error.code === error.TIMEOUT) systemReason = "Location handshake tracking cycle timed out.";
+      
+      console.warn(`Geolocation sequence warning: ${systemReason}. Loading structural default (London).`);
+      fetchByName("London");
+    },
+    { enableHighAccuracy: true, timeout: 8000, maximumAge: 600000 }
+  );
+}
+
+/* ==========================================================================
+   UI Data Rendering Pipelines
+   ========================================================================== */
 function renderForecast(d, tempUnit) {
   forecastList.innerHTML = "";
-  // d.time is array of date strings; skip index 0 (today), show next 5
   const days = d.time.slice(1, 6);
   days.forEach((dateStr, i) => {
     const idx = i + 1;
@@ -268,17 +312,16 @@ function renderForecast(d, tempUnit) {
   });
 }
 
-// ── Render: AQI ───────────────────────────────────────
 function renderAQI(aqi) {
   const c = aqi.current;
   const usAqi = Math.round(c.us_aqi);
   const info  = aqiLevel(usAqi);
   aqiDisplay.innerHTML = `
-    <div class="aqi-badge" style="background:${info.bg}; color:${info.color};">
-      <span>AQI ${usAqi}</span><span>${info.label}</span>
+    <div class="aqi-badge ${info.class}">
+      <span>AQI ${usAqi}</span> — <span>${info.label}</span>
     </div>
     <div class="aqi-bar-wrap">
-      <div class="aqi-bar" style="width:${Math.min(usAqi / 3, 100)}%; background:${info.color};"></div>
+      <div class="aqi-bar" style="width:${Math.min(usAqi / 3, 100)}%;"></div>
     </div>
     <div class="aqi-components">
       <span class="aqi-comp">PM2.5: ${c.pm2_5?.toFixed(1) ?? "—"}</span>
@@ -289,10 +332,9 @@ function renderAQI(aqi) {
     </div>`;
 }
 
-// ── Render: Favourites ────────────────────────────────
 function renderFavourites() {
   if (favourites.length === 0) {
-    favList.innerHTML = `<p class="side-placeholder">No saved cities yet</p>`;
+    favList.innerHTML = `<p class="side-placeholder">No saved tracks inside memory profile.</p>`;
     return;
   }
   favList.innerHTML = "";
@@ -301,9 +343,9 @@ function renderFavourites() {
     item.className = "fav-item";
     item.innerHTML = `
       <span class="fav-item-name">${city}</span>
-      <button class="fav-remove" title="Remove">×</button>`;
-    item.querySelector(".fav-item-name").addEventListener("click", () =>
-      fetchByName(city.split(",")[0].trim()));
+      <button class="fav-remove" title="Wipe track profile">×</button>`;
+    
+    item.querySelector(".fav-item-name").addEventListener("click", () => fetchByName(city.split(",")[0].trim()));
     item.querySelector(".fav-remove").addEventListener("click", e => {
       e.stopPropagation();
       favourites = favourites.filter(f => f !== city);
@@ -315,7 +357,6 @@ function renderFavourites() {
   });
 }
 
-// ── Favourites toggle ──────────────────────────────────
 favBtn.addEventListener("click", () => {
   if (!currentCity) return;
   if (favourites.includes(currentCity)) {
@@ -330,15 +371,15 @@ favBtn.addEventListener("click", () => {
   renderFavourites();
 });
 
-// ── Recent searches ────────────────────────────────────
 function addRecentSearch(city) {
   const norm = city.trim().toLowerCase();
   recentSearches = recentSearches.filter(r => r.toLowerCase() !== norm);
   recentSearches.unshift(city.trim());
-  if (recentSearches.length > 6) recentSearches.pop();
+  if (recentSearches.length > 5) recentSearches.pop();
   localStorage.setItem("wl_recent", JSON.stringify(recentSearches));
   renderRecent();
 }
+
 function renderRecent() {
   if (recentSearches.length === 0) { recentSearchesDiv.classList.add("hidden"); return; }
   recentSearchesDiv.classList.remove("hidden");
@@ -352,20 +393,23 @@ function renderRecent() {
   });
 }
 
-// ── Sun arc animation ─────────────────────────────────
 function animateSunArc() {
   const now = Math.floor(Date.now() / 1000);
   const dayLen = sunsetTs - sunriseTs;
   const pct = dayLen > 0 ? Math.max(0, Math.min((now - sunriseTs) / dayLen, 1)) : 0;
   const path = document.getElementById("sunProgress");
   const dot  = document.getElementById("sunDot");
-  path.style.strokeDashoffset = 120 * (1 - pct);
-  const t = pct;
-  dot.setAttribute("cx", (1-t)*(1-t)*10 + 2*(1-t)*t*60 + t*t*110);
-  dot.setAttribute("cy", (1-t)*(1-t)*55 + 2*(1-t)*t*5  + t*t*55);
+  if(path && dot) {
+    path.style.strokeDashoffset = 120 * (1 - pct);
+    const t = pct;
+    dot.setAttribute("cx", (1-t)*(1-t)*10 + 2*(1-t)*t*60 + t*t*110);
+    dot.setAttribute("cy", (1-t)*(1-t)*55 + 2*(1-t)*t*5  + t*t*55);
+  }
 }
 
-// ── Particle system ───────────────────────────────────
+/* ==========================================================================
+   Fluid High-Fidelity Particle System Engine
+   ========================================================================== */
 function resizeCanvas() {
   canvas.width  = window.innerWidth;
   canvas.height = window.innerHeight;
@@ -377,10 +421,10 @@ function startParticles(theme) {
   cancelAnimationFrame(animFrame);
   particles = [];
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  if (theme === "rainy")  spawnRain();
-  else if (theme === "snowy")  spawnSnow();
-  else if (theme === "sunny")  spawnSparkles();
-  else if (theme === "night")  spawnStars();
+  if (theme === "rainy") spawnRain();
+  else if (theme === "snowy") spawnSnow();
+  else if (theme === "sunny") spawnSparkles();
+  else if (theme === "night") spawnStars();
   else return;
   animateParticles(theme);
 }
@@ -439,13 +483,24 @@ function animateParticles(theme) {
   animFrame = requestAnimationFrame(() => animateParticles(theme));
 }
 
-// ── Status helpers ────────────────────────────────────
+/* ==========================================================================
+   Defensive Intermediary States & Validation
+   ========================================================================== */
+function validateInput(str) {
+  if (!str) { showError("Please enter a target city name first."); return false; }
+  if (/[0-9]/.test(str)) { showError("Metric parameters cannot validate strings containing numbers."); return false; }
+  if (/[<>{}[\]\\]/.test(str)) { showError("Input contains unauthorized script parameters."); return false; }
+  return true;
+}
+
 function showStatus(msg) {
   statusText.textContent = msg;
   statusMessage.classList.remove("hidden");
+  statusSpinner.classList.remove("hidden");
   weatherDisplay.classList.add("hidden");
   errorState.classList.add("hidden");
 }
+
 function showError(msg) {
   errorText.textContent = msg;
   errorState.classList.remove("hidden");
@@ -453,30 +508,35 @@ function showError(msg) {
   weatherDisplay.classList.add("hidden");
 }
 
-// ── Events ────────────────────────────────────────────
+/* ==========================================================================
+   Event Binding Architectures
+   ========================================================================== */
 searchBtn.addEventListener("click", () => {
   const q = cityInput.value.trim();
-  if (!q) {
-    showError("Please enter a city name first.");
-    return;
-  }
-  if (/[0-9]/.test(q)) {
-    showError("City names should not contain numbers.");
-    return;
-  }
   fetchByName(q);
 });
-cityInput.addEventListener("keypress", e => { if (e.key === "Enter") searchBtn.click(); });
+
+cityInput.addEventListener("keypress", e => { 
+  if (e.key === "Enter") searchBtn.click(); 
+});
+
 geoBtn.addEventListener("click", () => {
-  if (!navigator.geolocation) { alert("Geolocation not supported."); return; }
-  showStatus("Getting your location…");
+  if (!navigator.geolocation) { 
+    showError("Geolocation tracking protocols not supported on this node."); 
+    return; 
+  }
+  showStatus("Syncing current location metadata…");
   navigator.geolocation.getCurrentPosition(
     pos => fetchByCoords(pos.coords.latitude, pos.coords.longitude),
-    ()  => showError("Location access denied. Enter a city manually.")
+    ()  => showError("Location permission denied. Enter city coordinate strings manually.")
   );
 });
 
-// ── Init ──────────────────────────────────────────────
-renderRecent();
-renderFavourites();
-fetchByName("London");
+/* ==========================================================================
+   Initialization Routine
+   ========================================================================== */
+document.addEventListener("DOMContentLoaded", () => {
+  renderRecent();
+  renderFavourites();
+  runAutomaticDetection();
+});

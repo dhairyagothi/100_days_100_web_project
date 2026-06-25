@@ -25,7 +25,7 @@
   --radius-xl: 20px;
   --transition-fast: 0.2s ease;
   --transition-normal: 0.3s ease;
-  --font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 /* ===== Reset & Base ===== */
@@ -158,7 +158,7 @@ body {
 }
 
 .preview-box::after {
-  content: "";
+  content: '';
   position: absolute;
   inset: 0;
   border-radius: inherit;
@@ -375,7 +375,7 @@ body {
   font-size: 0.8rem;
   font-weight: 500;
   color: var(--text-secondary);
-  font-family: "Courier New", monospace;
+  font-family: 'Courier New', monospace;
   min-width: 65px;
 }
 
@@ -457,10 +457,26 @@ body {
 .copy-clipboard {
   font-size: 1.2rem;
   cursor: pointer;
+  background: transparent;
+  border: none;
+  color: inherit;
+  padding: 4px;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+}
+
+.copy-clipboard:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.copy-clipboard:focus-visible {
+  outline: 2px solid var(--accent-purple);
+  outline-offset: 2px;
+  background: rgba(99, 102, 241, 0.15);
 }
 
 .code-text {
-  font-family: "Courier New", Consolas, monospace;
+  font-family: 'Courier New', Consolas, monospace;
   font-size: 0.8rem;
   color: var(--accent-cyan);
   word-break: break-all;
@@ -496,7 +512,7 @@ body {
 .modal__overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0,0,0,0.5);
+  background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(6px);
 }
 
@@ -507,13 +523,19 @@ body {
   padding: 1.5rem;
   border-radius: 12px;
   width: min(420px, 90%);
-  box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
   animation: pop 0.2s ease-out;
 }
 
 @keyframes pop {
-  from { transform: scale(0.95); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 .modal__title {
@@ -743,4 +765,26 @@ body {
   .saved-card {
     padding: 1rem;
   }
+}
+
+.project-back-button {
+  position: fixed;
+  left: 18px;
+  top: 18px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: #1e293b;
+  color: #3b82f6;
+  border: 1px solid #3b82f6;
+  text-decoration: none;
+  z-index: 9999;
+  font-weight: 700;
+  font-family: Inter, system-ui, sans-serif;
+  transition: all 0.2s ease;
+}
+
+.project-back-button:hover {
+  background: #3b82f6;
+  color: #1e293b;
+  border-color: #1e293b;
 }

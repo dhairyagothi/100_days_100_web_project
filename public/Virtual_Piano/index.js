@@ -39,6 +39,7 @@ function handleKey(note) {
 
   playNote(note);
   pressAnimation(note);
+  announceKey(note);
 
   if (isRecording) {
     recording.push({
@@ -170,13 +171,22 @@ function pressAnimation(key) {
   key = key.toLowerCase();
 
   var inputKey = key === ';' ? '\\;' : key;
+  var $keyEl = $('#' + inputKey);
 
-  $('#' + inputKey).addClass('pressed');
+  $keyEl.addClass('pressed').attr('aria-pressed', 'true');
 
   setTimeout(function () {
-    $('#' + inputKey).removeClass('pressed');
+    $keyEl.removeClass('pressed').attr('aria-pressed', 'false');
   }, 100);
 }
+
+function announceKey(key) {
+  $('#now-playing').text('Key ' + key.toUpperCase() + ' played');
+}
+
+$('#toggle-labels').on('change', function () {
+  $('.piano').toggleClass('hide-labels', !this.checked);
+});
 
 function stopPlayback() {
   playbackTimers.forEach(clearTimeout);
