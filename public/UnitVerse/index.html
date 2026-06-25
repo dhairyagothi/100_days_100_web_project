@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UnitVerse - Interactive Unit Converter</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="favicon.png">
+</head>
+<body>
+    <div class="wrapper">
+        <!-- Navigation Bar -->
+        <nav class="navbar">
+            <div class="navbar__container">
+                <h1 class="navbar__logo">🌐 UnitVerse</h1>
+                <p class="navbar__tagline">Convert with Ease, Anytime, Anywhere</p>
+            </div>
+        </nav>
+
+        <!-- Main Container -->
+        <main class="main-container">
+            <!-- Sidebar with Category Cards -->
+            <aside class="sidebar">
+                <div class="sidebar__header">
+                    <h2>Categories</h2>
+                </div>
+                <div class="category-grid">
+                    <button class="category-card active" data-category="length">
+                        <span class="category-card__icon">📏</span>
+                        <span class="category-card__name">Length</span>
+                    </button>
+                    <button class="category-card" data-category="weight">
+                        <span class="category-card__icon">⚖️</span>
+                        <span class="category-card__name">Weight</span>
+                    </button>
+                    <button class="category-card" data-category="temperature">
+                        <span class="category-card__icon">🌡️</span>
+                        <span class="category-card__name">Temperature</span>
+                    </button>
+                    <button class="category-card" data-category="time">
+                        <span class="category-card__icon">⏱️</span>
+                        <span class="category-card__name">Time</span>
+                    </button>
+                    <button class="category-card" data-category="speed">
+                        <span class="category-card__icon">⚡</span>
+                        <span class="category-card__name">Speed</span>
+                    </button>
+                </div>
+
+                <!-- Unique Conversions Counter -->
+                <div class="conversions-counter">
+                    <p class="conversions-counter__label">Total Unique Conversions</p>
+                    <p class="conversions-counter__value" id="unique-conversions-count">0</p>
+                </div>
+            </aside>
+
+            <!-- Content Section -->
+            <section class="content">
+                <!-- Converter Card -->
+                <div class="converter-card">
+                    <h2 class="converter-card__title" id="category-title">Length Converter</h2>
+
+                    <!-- Input Section -->
+                    <div class="converter-card__section">
+                        <label for="input-value" class="input-label">Enter Value</label>
+                        <input
+                            type="number"
+                            id="input-value"
+                            class="input-field"
+                            placeholder="Enter a number"
+                            step="0.01"
+                        >
+                        <span class="input-error" id="input-error"></span>
+                    </div>
+
+                    <!-- From Unit Section -->
+                    <div class="converter-card__section">
+                        <label for="from-unit" class="input-label">From</label>
+                        <select id="from-unit" class="select-field">
+                            <!-- Options populated by JavaScript -->
+                        </select>
+                    </div>
+
+                    <!-- Swap Button -->
+                    <button class="swap-btn" id="swap-btn" title="Swap units">
+                        🔄 Swap
+                    </button>
+
+                    <!-- To Unit Section -->
+                    <div class="converter-card__section">
+                        <label for="to-unit" class="input-label">To</label>
+                        <select id="to-unit" class="select-field">
+                            <!-- Options populated by JavaScript -->
+                        </select>
+                    </div>
+
+                    <!-- Result Section -->
+                    <div class="result-box">
+                        <p class="result-box__label">Result</p>
+                        <div class="result-box__display">
+                            <span class="result-box__value" id="result-value">0</span>
+                            <span class="result-box__unit" id="result-unit"></span>
+                        </div>
+                        <button class="copy-btn" id="copy-btn" title="Copy result">
+                            📋 Copy
+                        </button>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="action-buttons">
+                        <button class="favorite-btn" id="favorite-btn" title="Add to favorites">
+                            ⭐ Favorite
+                        </button>
+                        <button class="clear-btn" id="clear-btn" title="Clear all fields">
+                            🗑️ Clear
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Notification Toast -->
+                <div class="toast" id="toast">
+                    <span id="toast-message"></span>
+                </div>
+            </section>
+
+            <!-- Sidebar with History & Favorites -->
+            <aside class="sidebar sidebar--right">
+                <!-- Tab Navigation -->
+                <div class="sidebar__tabs">
+                    <button class="sidebar__tab active" data-tab="history">
+                        ⏰ History
+                    </button>
+                    <button class="sidebar__tab" data-tab="favorites">
+                        ⭐ Favorites
+                    </button>
+                </div>
+
+                <!-- History Tab -->
+                <div class="sidebar__tab-content active" id="history-tab">
+                    <div class="sidebar__header">
+                        <h2>Recent Conversions</h2>
+                        <button class="clear-history-btn" id="clear-history-btn" title="Clear history">
+                            🗑️
+                        </button>
+                    </div>
+                    <div class="history-container" id="history-container">
+                        <p class="history-empty">No conversions yet</p>
+                    </div>
+                </div>
+
+                <!-- Favorites Tab -->
+                <div class="sidebar__tab-content" id="favorites-tab">
+                    <div class="sidebar__header">
+                        <h2>Favorite Conversions</h2>
+                        <button class="clear-favorites-btn" id="clear-favorites-btn" title="Clear favorites">
+                            🗑️
+                        </button>
+                    </div>
+                    <div class="favorites-container" id="favorites-container">
+                        <p class="favorites-empty">No favorites yet</p>
+                    </div>
+                </div>
+            </aside>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p class="footer__text">Built with ❤️ | UnitVerse v1.0 | All Rights Reserved</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

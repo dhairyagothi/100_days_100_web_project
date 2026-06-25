@@ -1,135 +1,493 @@
-/**
- * Palindrome Check Logic
- * Triggered only on Button Click
- */
-
 document.addEventListener("DOMContentLoaded", () => {
-  const input = document.getElementById("inputString");
-  const checkBtn = document.getElementById("checkBtn");
-  const resultBox = document.getElementById("resultBox");
-  const resultText = document.getElementById("resultText");
-  const resultIcon = document.getElementById("resultIcon");
-  const clearBtn = document.getElementById("clearBtn");
-  const characterContainer = document.getElementById("characterContainer");
-  const processedText = document.getElementById("processedText");
-  const comparisonCount = document.getElementById("comparisonCount");
-  const educationalToggle = document.getElementById("educationalToggle");
 
-  let educationalMode = true;
-  educationalToggle.addEventListener("click", () => {
-    educationalMode = !educationalMode;
-    educationalToggle.innerText = educationalMode
-      ? "Educational Mode: ON"
-      : "Educational Mode: OFF";
-  });
+    // =========================
+    // DOM ELEMENTS
+    // =========================
 
-  // Action on Button Click
-  checkBtn.addEventListener("click", () => {
-    const val = input.value.trim();
+    const input = document.getElementById("inputString");
+    const checkBtn = document.getElementById("checkBtn");
+    const clearBtn = document.getElementById("clearBtn");
+    const copyBtn = document.getElementById("copyBtn");
 
-    if (!val) {
-      alert("Please enter some text first!");
-      return;
-    }
+    const resultBox = document.getElementById("resultBox");
+    const resultText = document.getElementById("resultText");
+    const resultIcon = document.getElementById("resultIcon");
 
-    // ✅ FIX: Detect if input is numeric or string
-    const isNumeric = !isNaN(val) && val !== "";
-    const inputType = isNumeric ? "Number" : "String";
+    const themeSelector = document.getElementById("themeSelector");
 
-    // ✅ FIX: Apply appropriate palindrome logic based on type
-    const generatePalindrome = (str) => {
-      if (!str) return "";
-      if (!isNaN(str) && str !== "") {
-        // Numeric palindrome logic
-        const num = str.replace(/^0+/, "") || "0";
-        const reversed = num.split("").reverse().join("");
-        return num === reversed ? num : num + reversed.slice(1);
-      }
-      // String palindrome logic
-      const reversed = str.split("").reverse().join("");
-      return str + reversed;
+    const processedText = document.getElementById("processedText");
+    const characterContainer = document.getElementById("characterContainer");
+    const comparisonCount = document.getElementById("comparisonCount");
+
+    const educationalToggle = document.getElementById("educationalToggle");
+
+    const historyList = document.getElementById("historyList");
+    const clearHistoryBtn = document.getElementById("clearHistoryBtn");
+
+    const totalChecksEl = document.getElementById("totalChecks");
+    const palindromeCountEl = document.getElementById("palindromeCount");
+    const generatedCountEl = document.getElementById("generatedCount");
+
+    // =========================
+    // STATE
+    // =========================
+
+    let educationalMode = true;
+    let lastResult = "";
+
+    let stats = {
+        totalChecks: parseInt(localStorage.getItem("totalChecks")) || 0,
+        palindromeCount: parseInt(localStorage.getItem("palindromeCount")) || 0,
+        generatedCount: parseInt(localStorage.getItem("generatedCount")) || 0
     };
 
-    const palindromeResult = generatePalindrome(val);
+    let history =
+        JSON.parse(localStorage.getItem("palindromeHistory")) || [];
 
-    const cleanedText = palindromeResult
-      .toLowerCase()
-      .replace(/[^a-z0-9]/g, "");
+    // =========================
+    // THEME
+    // =========================
 
-    processedText.innerHTML = `Processed String (Type: <strong>${inputType}</strong>): <strong>${cleanedText}</strong>`;
+    const savedTheme =
+        localStorage.getItem("palindromeTheme") || "dark";
 
-    characterContainer.innerHTML = "";
+    document.documentElement.setAttribute(
+        "data-theme",
+        savedTheme
+    );
 
-    let comparisons = 0;
+    themeSelector.value = savedTheme;
 
-    cleanedText.split("").forEach((char) => {
-      const charBox = document.createElement("div");
-      charBox.classList.add("char-box");
-      charBox.innerText = char;
-      characterContainer.appendChild(charBox);
+    themeSelector.addEventListener("change", () => {
+
+        document.documentElement.setAttribute(
+            "data-theme",
+            themeSelector.value
+        );
+
+        localStorage.setItem(
+            "palindromeTheme",
+            themeSelector.value
+        );
     });
 
-    const charBoxes = document.querySelectorAll(".char-box");
+    // =========================
+    // HELPERS
+    // =========================
 
-    let left = 0;
-    let right = cleanedText.length - 1;
+    function saveStats() {
 
-    const interval = setInterval(
-      () => {
-        if (left >= right) {
-          clearInterval(interval);
-          comparisonCount.innerText = `Comparisons: ${comparisons}`;
-          return;
+        localStorage.setItem(
+            "totalChecks",
+            stats.totalChecks
+        );
+
+        localStorage.setItem(
+            "palindromeCount",
+            stats.palindromeCount
+        );
+
+        localStorage.setItem(
+            "generatedCount",
+            stats.generatedCount
+        );
+    }
+
+    function updateStatsUI() {
+
+        totalChecksEl.textContent =
+            stats.totalChecks;
+
+        palindromeCountEl.textContent =
+            stats.palindromeCount;
+
+        generatedCountEl.textContent =
+            stats.generatedCount;
+    }
+
+    function saveHistory() {
+
+        localStorage.setItem(
+            "palindromeHistory",
+            JSON.stringify(history)
+        );
+    }
+
+    function addToHistory(inputValue, outputValue) {
+
+        history.unshift({
+            input: inputValue,
+            output: outputValue,
+            time: new Date().toLocaleTimeString()
+        });
+
+        if (history.length > 10) {
+            history.pop();
         }
 
-        comparisons++;
+        saveHistory();
+        renderHistory();
+    }
 
-        charBoxes[left].classList.add("active");
-        charBoxes[right].classList.add("active");
+    function renderHistory() {
 
-        setTimeout(
-          () => {
-            if (cleanedText[left] === cleanedText[right]) {
-              charBoxes[left].classList.add("match");
-              charBoxes[right].classList.add("match");
+        if (!history.length) {
+
+            historyList.innerHTML =
+                `<div class="history-placeholder">
+                    No history available
+                </div>`;
+
+            return;
+        }
+
+        historyList.innerHTML = "";
+
+        history.forEach(item => {
+
+            const div = document.createElement("div");
+
+            div.className = "history-item";
+
+            div.innerHTML = `
+                <strong>${item.input}</strong>
+                <small>${item.time}</small>
+                <p>${item.output}</p>
+            `;
+
+            historyList.appendChild(div);
+        });
+    }
+
+    function cleanString(str) {
+
+        return str
+            .toLowerCase()
+            .replace(/[^a-z0-9]/g, "");
+    }
+
+    function isPalindrome(str) {
+
+        const cleaned = cleanString(str);
+
+        return cleaned ===
+            cleaned.split("").reverse().join("");
+    }
+
+    function generateShortestPalindrome(str) {
+
+        const reverse = s =>
+            s.split("").reverse().join("");
+
+        const check = s =>
+            s === reverse(s);
+
+        for (let i = 0; i < str.length; i++) {
+
+            const suffix = str.slice(i);
+
+            if (check(suffix)) {
+
+                const prefix =
+                    str.slice(0, i);
+
+                return str + reverse(prefix);
+            }
+        }
+
+        return str;
+    }
+
+    // =========================
+    // VISUALIZATION
+    // =========================
+
+    async function visualize(text) {
+
+        characterContainer.innerHTML = "";
+
+        processedText.textContent =
+            `Processed: ${text}`;
+
+        let comparisons = 0;
+
+        const chars = text.split("");
+
+        chars.forEach(char => {
+
+            const box =
+                document.createElement("div");
+
+            box.className = "char-box";
+
+            box.textContent = char;
+
+            characterContainer.appendChild(box);
+        });
+
+        const boxes =
+            document.querySelectorAll(".char-box");
+
+        let left = 0;
+        let right = boxes.length - 1;
+
+        while (left <= right) {
+
+            comparisons++;
+
+            comparisonCount.textContent =
+                `Comparisons: ${comparisons}`;
+
+            boxes[left].classList.add("active");
+            boxes[right].classList.add("active");
+
+            await new Promise(resolve =>
+                setTimeout(resolve, 500)
+            );
+
+            if (
+                text[left] === text[right]
+            ) {
+
+                boxes[left].classList.add("match");
+                boxes[right].classList.add("match");
+
             } else {
-              charBoxes[left].classList.add("mismatch");
-              charBoxes[right].classList.add("mismatch");
+
+                boxes[left].classList.add("mismatch");
+                boxes[right].classList.add("mismatch");
             }
 
-            charBoxes[left].classList.remove("active");
-            charBoxes[right].classList.remove("active");
+            boxes[left].classList.remove("active");
+            boxes[right].classList.remove("active");
 
             left++;
             right--;
+        }
+    }
 
-            comparisonCount.innerText = `Comparisons: ${comparisons}`;
-          },
-          educationalMode ? 500 : 0,
+    // =========================
+    // RESULT UI
+    // =========================
+
+    function showResult(type, icon, text) {
+
+        resultBox.className =
+            "result-container";
+
+        resultBox.classList.add(
+            `result-${type}`
         );
-      },
-      educationalMode ? 800 : 0,
+
+        resultIcon.textContent = icon;
+        resultText.textContent = text;
+    }
+
+    // =========================
+    // EDUCATIONAL MODE
+    // =========================
+
+    educationalToggle.addEventListener(
+        "click",
+        () => {
+
+            educationalMode =
+                !educationalMode;
+
+            educationalToggle.textContent =
+                `Educational Mode: ${
+                    educationalMode
+                        ? "ON"
+                        : "OFF"
+                }`;
+        }
     );
 
-    // Update UI
-    resultBox.className = "result-container mt-4 text-center success-bg";
-    resultText.innerText = `Result: ${palindromeResult} (${inputType})`;
-    resultIcon.innerText = "🎯";
+    // =========================
+    // MAIN ACTION
+    // =========================
 
-    confetti({
-      particleCount: 150,
-      spread: 70,
-      origin: { y: 0.6 },
-    });
-  });
+    checkBtn.addEventListener(
+        "click",
+        async () => {
 
-  clearBtn.addEventListener("click", () => {
-    input.value = "";
-    resultBox.className = "result-container mt-4 text-center";
-    resultText.innerText = "Waiting for you to click generate...";
-    resultIcon.innerText = "⌨️";
-    characterContainer.innerHTML = "";
-    processedText.innerHTML = "";
-    comparisonCount.innerText = "Comparisons: 0";
-  });
+            const value =
+                input.value.trim();
+
+            if (!value) {
+
+                alert(
+                    "Please enter text first."
+                );
+
+                return;
+            }
+
+            stats.totalChecks++;
+
+            if (isPalindrome(value)) {
+
+                stats.palindromeCount++;
+
+                showResult(
+                    "success",
+                    "✅",
+                    `"${value}" is already a palindrome`
+                );
+
+                lastResult = value;
+
+                if (
+                    typeof confetti ===
+                    "function"
+                ) {
+
+                    confetti({
+                        particleCount: 120,
+                        spread: 90
+                    });
+                }
+
+                await visualize(
+                    cleanString(value)
+                );
+
+                addToHistory(
+                    value,
+                    value
+                );
+
+            } else {
+
+                stats.generatedCount++;
+
+                const generated =
+                    generateShortestPalindrome(
+                        value
+                    );
+
+                showResult(
+                    "info",
+                    "✨",
+                    generated
+                );
+
+                lastResult = generated;
+
+                await visualize(
+                    cleanString(generated)
+                );
+
+                addToHistory(
+                    value,
+                    generated
+                );
+            }
+
+            saveStats();
+            updateStatsUI();
+        }
+    );
+
+    // =========================
+    // COPY RESULT
+    // =========================
+
+    copyBtn.addEventListener(
+        "click",
+        async () => {
+
+            if (!lastResult) return;
+
+            try {
+
+                await navigator.clipboard
+                    .writeText(lastResult);
+
+                copyBtn.textContent =
+                    "Copied ✓";
+
+                setTimeout(() => {
+
+                    copyBtn.innerHTML =
+                        `<i class="bi bi-clipboard"></i>
+                        Copy Result`;
+
+                }, 1500);
+
+            } catch (err) {
+
+                console.error(err);
+            }
+        }
+    );
+
+    // =========================
+    // CLEAR
+    // =========================
+
+    clearBtn.addEventListener(
+        "click",
+        () => {
+
+            input.value = "";
+
+            lastResult = "";
+
+            processedText.textContent = "";
+
+            comparisonCount.textContent =
+                "Comparisons: 0";
+
+            characterContainer.innerHTML =
+                "";
+
+            resultBox.className =
+                "result-container";
+
+            resultIcon.textContent = "⌨️";
+
+            resultText.textContent =
+                "Waiting for input...";
+        }
+    );
+
+    // =========================
+    // CLEAR HISTORY
+    // =========================
+
+    clearHistoryBtn.addEventListener(
+        "click",
+        () => {
+
+            history = [];
+
+            localStorage.removeItem(
+                "palindromeHistory"
+            );
+
+            renderHistory();
+        }
+    );
+
+    // =========================
+    // ENTER KEY
+    // =========================
+
+    input.addEventListener(
+        "keydown",
+        e => {
+
+            if (e.key === "Enter") {
+                checkBtn.click();
+            }
+        }
+    );
+
+    // =========================
+    // INITIAL LOAD
+    // =========================
+
+    updateStatsUI();
+    renderHistory();
 });

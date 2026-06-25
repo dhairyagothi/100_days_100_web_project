@@ -8,17 +8,20 @@
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
 </head>
 <body>
-    <header>
+    <header id="header">
         <div class="name">GO-GREEN</div>
         <nav>
-                        <nav>
-                        <ul>
+            <ul>
                 <li><a href="parallal.html">Home</a></li>
                 <li><a href="about.html">About</a></li>
                 <li><a href="service.html">Service</a></li>
-                <li><a href="contact.html" class="active">Contact</a></li>
+                <li><a href="contact.html">Contact</a></li>
             </ul>
-            </nav>
+            <button id="themeToggle" class="theme-toggle">
+                🌙
+            </button>
+        </nav>
+        <a class="back-home" href="parallal.html" target="_blank">Back to Home</a>
     </header>
 
     <div class="page-hero" aria-label="Contact page banner">
@@ -28,8 +31,8 @@
         </div>
     </div>
 
-    <section class="content contact-page" aria-labelledby="contact-heading">
-        <div id="contact-heading">Contact Us</div>
+    <section class="content contact-page" aria-labelledby="contact-heading"><br>
+       <h2 class="intro-lead">Contact Us</h2>
         <p class="intro-lead">Whether you're an individual curious about going green, a school looking for workshops, or a business ready for a sustainability audit — reach out and we'll respond within one business day.</p>
 
         <div class="contact-layout">
@@ -151,7 +154,7 @@
         </div>
 
     </section>
-
+     <script src="parallal.js"></script>
     <footer class="footer" aria-label="Site footer">
         <p>© 2026 GO-GREEN. All rights reserved.</p>
         <div class="footer-links">

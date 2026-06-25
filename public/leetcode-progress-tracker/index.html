@@ -6,7 +6,7 @@
 
   <title>LeetCode Progress Tracker</title>
 
-  <link rel="stylesheet" href="/public/leetcode-progress-tracker/style.css"/>
+  <link rel="stylesheet" href="style.css"/>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -50,6 +50,40 @@
 
     </section>
 
+    <!-- LIVE SEARCH -->
+
+    <section class="username-section">
+      <div class="username-container">
+        <div class="input-wrapper">
+          <i class="ri-user-line"></i>
+          <input
+            type="text"
+            id="leetcodeUsername"
+            placeholder="Enter LeetCode username"
+            required
+          />
+        </div>
+        <button id="fetchStatsBtn">
+          <i class="ri-refresh-line"></i> Fetch Live Analytics
+        </button>
+      </div>
+      <div id="loadingIndicator" class="loading-indicator hidden">
+        <div class="spinner"></div>
+        <span>Fetching live LeetCode stats and skill analytics...</span>
+      </div>
+      <div id="errorMessage" class="error-message hidden"></div>
+    </section>
+
+    <!-- PROFILE DETAILS -->
+
+    <div id="userProfileCard" class="profile-card hidden">
+      <img id="userAvatar" src="" alt="Avatar" />
+      <div class="profile-info">
+        <h2 id="userRealName">User Real Name</h2>
+        <p id="userUsername">@username</p>
+      </div>
+    </div>
+
     <!-- STATS -->
 
     <section class="stats-grid">
@@ -79,13 +113,107 @@
         <p id="streakCount">0</p>
       </div>
 
+      <div class="stat-card ranking">
+        <h3>Global Ranking</h3>
+        <p id="rankingCount">N/A</p>
+      </div>
+
+      <div class="stat-card acceptance">
+        <h3>Acceptance Rate</h3>
+        <p id="acceptanceRate">N/A</p>
+      </div>
+
     </section>
 
-    <!-- ADD PROBLEM -->
+    <!-- SUBMISSION HEATMAP -->
+
+    <section class="heatmap-section hidden" id="heatmapSection">
+
+      <h2>Submission Heatmap</h2>
+
+      <div class="calendar-wrapper">
+
+        <div class="calendar-labels-y">
+          <span>Sun</span>
+          <span>Mon</span>
+          <span>Tue</span>
+          <span>Wed</span>
+          <span>Thu</span>
+          <span>Fri</span>
+          <span>Sat</span>
+        </div>
+
+        <div class="calendar-container">
+
+          <div class="calendar-months" id="calendarMonths">
+            <!-- Month labels will be drawn dynamically -->
+          </div>
+
+          <div class="calendar-grid" id="calendarGrid">
+            <!-- Grid columns will be drawn dynamically -->
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="calendar-legend">
+        <span>Less</span>
+        <div class="legend-cells">
+          <div class="calendar-day level-0"></div>
+          <div class="calendar-day level-1"></div>
+          <div class="calendar-day level-2"></div>
+          <div class="calendar-day level-3"></div>
+          <div class="calendar-day level-4"></div>
+        </div>
+        <span>More</span>
+      </div>
+
+    </section>
+
+    <!-- SMART INSIGHTS & RECOMMENDATIONS -->
+
+    <section class="insights-section hidden" id="insightsSection">
+
+      <h2>Smart Insights & Recommendations</h2>
+
+      <div class="insights-grid">
+
+        <div class="insight-card strong-card">
+          <h3>
+            <i class="ri-checkbox-circle-fill"></i> Strongest Topics
+          </h3>
+          <p id="strongAreas">Analyze stats to identify your strengths.</p>
+        </div>
+
+        <div class="insight-card weak-card">
+          <h3>
+            <i class="ri-error-warning-fill"></i> Focus Areas (Weakest)
+          </h3>
+          <p id="weakAreas">Analyze stats to identify topics needing practice.</p>
+        </div>
+
+      </div>
+
+      <div class="recommendations-container">
+
+        <h3>
+          <i class="ri-lightbulb-fill"></i> Suggested Problems for You
+        </h3>
+
+        <div id="recommendationsList" class="recommendations-list">
+          <!-- Suggested problems will load dynamically here -->
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ADD PROBLEM (MANUAL OVERRIDE) -->
 
     <section class="form-section">
 
-      <h2>Add Solved Problem</h2>
+      <h2>Manual Tracker Override</h2>
 
       <form id="problemForm">
 
@@ -126,7 +254,15 @@
 
       <div class="chart-card">
 
-        <h2>Weekly Progress</h2>
+        <h2>Topic Performance</h2>
+
+        <canvas id="topicChart"></canvas>
+
+      </div>
+
+      <div class="chart-card full-width">
+
+        <h2>Historical Progress Trends</h2>
 
         <canvas id="progressChart"></canvas>
 
@@ -152,7 +288,7 @@
 
   </div>
 
-  <script src="/public/leetcode-progress-tracker/script.js"></script>
+  <script src="script.js"></script>
 
 </body>
 </html>
