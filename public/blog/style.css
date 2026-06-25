@@ -1512,6 +1512,183 @@ footer {
 ::-webkit-scrollbar-thumb { background: var(--bg-tertiary); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--gold); }
 
+/* ═══════════════════════════════════════════════
+   Merged from styles.css — main.html specifics
+   ═══════════════════════════════════════════════ */
+
+/* Posts grid on main.html */
+.posts-grid { display: flex; flex-direction: column; gap: 1.5rem; }
+
+/* Load More button */
+#morePosts,
+.btn-load-more {
+  display: block;
+  margin: 1.5rem auto 0;
+  padding: 12px 32px;
+  background: var(--bg-tertiary);
+  color: var(--text-color);
+  border: 1px solid var(--glass-border);
+  border-radius: 100px;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+#morePosts:hover,
+.btn-load-more:hover { border-color: var(--gold); color: var(--gold); }
+
+/* Trending / bookmarked widget lists (main.html sidebar) */
+#trendingPosts,
+#bookmarkedPosts,
+#authors,
+#categories {
+  background: var(--bg-secondary);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+}
+#trendingPosts h3,
+#bookmarkedPosts h3,
+#authors h3,
+#categories h3 {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Contact / subscribe forms (main.html) */
+#contactForm input,
+#contactForm textarea,
+#subscribeForm input {
+  background: var(--bg-secondary);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  color: var(--text-color);
+  font-family: var(--font-body);
+}
+#contactForm input:focus,
+#contactForm textarea:focus,
+#subscribeForm input:focus {
+  outline: none;
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(212,168,83,0.12);
+}
+#contactForm button,
+#subscribeForm button {
+  background: var(--gold);
+  color: var(--paper);
+  border: none;
+  border-radius: var(--radius-md);
+  font-family: var(--font-body);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+#contactForm button:hover,
+#subscribeForm button:hover { background: var(--gold-light); }
+
+/* ═══════════════════════════════════════════════
+   Edit & Delete Post Actions
+   ═══════════════════════════════════════════════ */
+.post-manage-actions {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.5rem 1.75rem 1.25rem;
+  align-items: center;
+}
+
+.manage-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.28rem 0.85rem;
+  border-radius: 20px;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  background: transparent;
+  transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast), transform 0.15s ease;
+}
+.manage-btn i { font-size: 0.65rem; }
+.manage-btn:active { transform: scale(0.94); }
+
+.edit-btn {
+  color: var(--gold);
+  border: 1px solid rgba(212, 168, 83, 0.3);
+}
+.edit-btn:hover {
+  background: rgba(212, 168, 83, 0.1);
+  border-color: rgba(212, 168, 83, 0.6);
+  color: var(--gold-light);
+}
+
+.delete-btn {
+  color: rgba(220, 180, 160, 0.6);
+  border: 1px solid rgba(220, 180, 160, 0.15);
+}
+.delete-btn:hover {
+  background: rgba(232, 115, 106, 0.12);
+  border-color: rgba(232, 115, 106, 0.4);
+  color: var(--rose);
+}
+
+/* ═══════════════════════════════════════════════
+   Delete Confirmation Modal
+   ═══════════════════════════════════════════════ */
+.modal-confirm {
+  max-width: 420px;
+  text-align: center;
+  padding: 3rem 2.5rem 2.5rem;
+}
+.confirm-icon {
+  font-size: 2.8rem;
+  color: var(--warning-color);
+  margin-bottom: 1rem;
+}
+.modal-confirm h2 {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 0.75rem;
+}
+.modal-confirm p {
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+.confirm-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+.btn-danger {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  border-radius: var(--radius-md);
+  border: none;
+  background: var(--danger-color);
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+.btn-danger:hover {
+  background: #f08a83;
+  transform: translateY(-1px);
+}
+
 /* ── Responsive ── */
 @media (max-width: 1200px) {
   .content-wrapper { grid-template-columns: 1fr 320px; }

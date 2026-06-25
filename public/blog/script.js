@@ -241,6 +241,14 @@ function renderPosts() {
               Read More <i class="fas fa-arrow-right"></i>
             </button>
           </div>
+          <div class="post-manage-actions">
+            <button class="manage-btn edit-btn" data-post-id="${post.id}" title="Edit post">
+              <i class="fas fa-pencil-alt"></i> Edit
+            </button>
+            <button class="manage-btn delete-btn" data-post-id="${post.id}" title="Delete post">
+              <i class="fas fa-trash-alt"></i> Delete
+            </button>
+          </div>
         </div>
       </article>
     `;
@@ -616,6 +624,20 @@ function attachPostEventListeners() {
     });
   });
   
+  document.querySelectorAll('.edit-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openEditPostModal(btn.dataset.postId);
+    });
+  });
+
+  document.querySelectorAll('.delete-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openDeleteConfirm(btn.dataset.postId);
+    });
+  });
+
   document.querySelectorAll('.read-more-btn').forEach(btn => {
     btn.addEventListener('click', () => openPostDetail(btn.dataset.postId));
   });
@@ -650,6 +672,85 @@ function toggleMobileMenu() {
   navLinks.classList.toggle('show');
 }
 
+// ===== Edit Post =====
+function openEditPostModal(postId) {
+  const post = state.posts.find(p => p.id === postId);
+  if (!post) return;
+
+  document.getElementById('editPostId').value = post.id;
+  document.getElementById('editPostTitle').value = post.title;
+  document.getElementById('editPostAuthor').value = post.author;
+  document.getElementById('editPostCategory').value = post.category;
+  document.getElementById('editPostImage').value = post.image === './assets/10165944.jpg' ? '' : post.image;
+  document.getElementById('editPostContent').value = post.content;
+
+  document.getElementById('editPostModal').classList.add('show');
+}
+
+function closeEditPostModal() {
+  document.getElementById('editPostModal').classList.remove('show');
+}
+
+function saveEditPost(e) {
+  e.preventDefault();
+
+  const id = document.getElementById('editPostId').value;
+  const title = document.getElementById('editPostTitle').value.trim();
+  const author = document.getElementById('editPostAuthor').value.trim();
+  const category = document.getElementById('editPostCategory').value;
+  const image = document.getElementById('editPostImage').value.trim() || './assets/10165944.jpg';
+  const content = document.getElementById('editPostContent').value.trim();
+
+  if (!title || !author || !category || !content) {
+    showToast('Please fill in all required fields!', 'error');
+    return;
+  }
+
+  const idx = state.posts.findIndex(p => p.id === id);
+  if (idx === -1) return;
+
+  state.posts[idx] = { ...state.posts[idx], title, author, category, image, content };
+  saveToStorage(STORAGE_KEYS.POSTS, state.posts);
+
+  closeEditPostModal();
+  renderPosts();
+  renderTrendingPosts();
+  renderBookmarkedPosts();
+  showToast('Post updated successfully!', 'success');
+}
+
+// ===== Delete Post =====
+function openDeleteConfirm(postId) {
+  const post = state.posts.find(p => p.id === postId);
+  if (!post) return;
+
+  document.getElementById('deletePostTitle').textContent = `"${post.title}"`;
+  document.getElementById('confirmDeleteBtn').dataset.postId = postId;
+  document.getElementById('deleteConfirmModal').classList.add('show');
+}
+
+function closeDeleteConfirm() {
+  document.getElementById('deleteConfirmModal').classList.remove('show');
+}
+
+function deletePost(postId) {
+  state.posts = state.posts.filter(p => p.id !== postId);
+  delete state.likes[postId];
+  delete state.comments[postId];
+  delete state.bookmarks[postId];
+
+  saveToStorage(STORAGE_KEYS.POSTS, state.posts);
+  saveToStorage(STORAGE_KEYS.LIKES, state.likes);
+  saveToStorage(STORAGE_KEYS.COMMENTS, state.comments);
+  saveToStorage(STORAGE_KEYS.BOOKMARKS, state.bookmarks);
+
+  closeDeleteConfirm();
+  renderPosts();
+  renderTrendingPosts();
+  renderBookmarkedPosts();
+  showToast('Post deleted.', 'info');
+}
+
 // ===== Initialize App =====
 function initializeApp() {
   initializeTheme();
@@ -669,6 +770,19 @@ function initializeApp() {
   document.getElementById('backToTop').addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
   document.getElementById('mobileMenuBtn').addEventListener('click', toggleMobileMenu);
   
+  document.getElementById('editPostForm').addEventListener('submit', saveEditPost);
+  document.getElementById('confirmDeleteBtn').addEventListener('click', function () {
+    deletePost(this.dataset.postId);
+  });
+  document.getElementById('cancelDeleteBtn').addEventListener('click', closeDeleteConfirm);
+  document.getElementById('closeEditModal').addEventListener('click', closeEditPostModal);
+  document.getElementById('editPostModal').addEventListener('click', (e) => {
+    if (e.target === document.getElementById('editPostModal')) closeEditPostModal();
+  });
+  document.getElementById('deleteConfirmModal').addEventListener('click', (e) => {
+    if (e.target === document.getElementById('deleteConfirmModal')) closeDeleteConfirm();
+  });
+
   document.querySelectorAll('.modal .close').forEach(closeBtn => {
     closeBtn.addEventListener('click', () => {
       closeCreatePostModal();
@@ -689,6 +803,8 @@ function initializeApp() {
     if (e.key === 'Escape') {
       closeCreatePostModal();
       closePostDetail();
+      closeEditPostModal();
+      closeDeleteConfirm();
     }
   });
   

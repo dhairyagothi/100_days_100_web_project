@@ -228,6 +228,70 @@
 
     <button id="backToTop" title="Back to Top"><i aria-hidden="true" class="fas fa-arrow-up"></i></button>
 
+    <!-- Edit Post Modal -->
+    <div id="editPostModal" class="modal">
+        <div class="modal-content modal-large">
+            <span class="close" id="closeEditModal">&times;</span>
+            <h2><i aria-hidden="true" class="fas fa-pencil-alt"></i> Edit Post</h2>
+            <form id="editPostForm">
+                <input type="hidden" id="editPostId">
+                <div class="form-group">
+                    <label for="editPostTitle">Title</label>
+                    <input type="text" id="editPostTitle" placeholder="Enter post title" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="editPostAuthor">Author</label>
+                        <input type="text" id="editPostAuthor" placeholder="Enter author name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editPostCategory">Category</label>
+                        <select id="editPostCategory" required>
+                            <option value="">Select a category</option>
+                            <option value="JavaScript">JavaScript</option>
+                            <option value="CSS">CSS</option>
+                            <option value="HTML">HTML</option>
+                            <option value="React">React</option>
+                            <option value="Python">Python</option>
+                            <option value="Data Science">Data Science</option>
+                            <option value="Web Design">Web Design</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="editPostImage">Image URL (optional)</label>
+                    <input type="url" id="editPostImage" placeholder="https://example.com/image.jpg">
+                </div>
+                <div class="form-group">
+                    <label for="editPostContent">Content</label>
+                    <textarea id="editPostContent" placeholder="Write your post content here..." rows="8" required></textarea>
+                </div>
+                <button type="submit" class="btn-primary btn-large">
+                    <i aria-hidden="true" class="fas fa-save"></i> Save Changes
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteConfirmModal" class="modal">
+        <div class="modal-content modal-confirm">
+            <div class="confirm-icon">
+                <i aria-hidden="true" class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h2>Delete Post?</h2>
+            <p>Are you sure you want to delete <strong id="deletePostTitle"></strong>? This action cannot be undone.</p>
+            <div class="confirm-actions">
+                <button id="cancelDeleteBtn" class="btn-secondary">
+                    <i aria-hidden="true" class="fas fa-times"></i> Cancel
+                </button>
+                <button id="confirmDeleteBtn" class="btn-danger">
+                    <i aria-hidden="true" class="fas fa-trash-alt"></i> Yes, Delete
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
