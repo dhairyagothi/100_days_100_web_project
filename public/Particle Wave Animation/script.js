@@ -3,11 +3,11 @@ const ctx = canvas.getContext('2d');
 const fpsDisplay = document.getElementById('fpsDisplay');
 
 const themes = {
-  ocean:  ['#1D9E75', '#378ADD', '#534AB7', '#5DCAA5', '#85B7EB', '#1d6ea5'],
-  fire:   ['#D85A30', '#BA7517', '#EF9F27', '#E24B4A', '#F0997B', '#FAC775'],
+  ocean: ['#1D9E75', '#378ADD', '#534AB7', '#5DCAA5', '#85B7EB', '#1d6ea5'],
+  fire: ['#D85A30', '#BA7517', '#EF9F27', '#E24B4A', '#F0997B', '#FAC775'],
   aurora: ['#534AB7', '#1D9E75', '#D4537E', '#AFA9EC', '#5DCAA5', '#ED93B1'],
-  mono:   ['#888780', '#B4B2A9', '#5F5E5A', '#D3D1C7', '#444441', '#ffffff'],
-  candy:  ['#ff6eb4', '#ff9f43', '#54a0ff', '#5f27cd', '#00d2d3', '#ff6b6b'],
+  mono: ['#888780', '#B4B2A9', '#5F5E5A', '#D3D1C7', '#444441', '#ffffff'],
+  candy: ['#ff6eb4', '#ff9f43', '#54a0ff', '#5f27cd', '#00d2d3', '#ff6b6b'],
 };
 
 let currentTheme = 'ocean';
@@ -28,8 +28,27 @@ let fps = 0;
 
 function resize() {
   const rect = canvas.parentElement.getBoundingClientRect();
-  canvas.width = rect.width;
-  canvas.height = canvas.offsetHeight;
+  const oldWidth = canvas.width || rect.width;
+  const oldHeight = canvas.height || rect.height;
+
+  const dpr = window.devicePixelRatio || 1;
+
+  canvas.width = rect.width * dpr;
+  canvas.height = canvas.offsetHeight * dpr;
+
+  canvas.style.width = `${rect.width}px`;
+  canvas.style.height = `${canvas.offsetHeight}px`;
+
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.scale(dpr, dpr);
+
+  const scaleX = rect.width / oldWidth;
+  const scaleY = canvas.offsetHeight / oldHeight;
+
+  particles.forEach(p => {
+    p.x *= scaleX;
+    p.baseY *= scaleY;
+  });
 }
 
 class Particle {
@@ -38,9 +57,9 @@ class Particle {
   }
 
   reset(init) {
-    this.x = Math.random() * canvas.width;
-    this.baseY = Math.random() * canvas.height;
-    this.y = init ? this.baseY : canvas.height + 10;
+    this.x = Math.random() * canvas.clientWidth;
+    this.baseY = Math.random() * canvas.clientHeight;
+    this.y = init ? this.baseY : canvas.clientHeight + 10;
     this.vx = (Math.random() - 0.5) * 0.5;
     this.vy = (Math.random() - 0.5) * 0.3;
     this.phase = Math.random() * Math.PI * 2;
@@ -65,17 +84,24 @@ class Particle {
 
     const dx = this.x - mouseX;
     const dy = this.y - mouseY;
-    const mouseDist = Math.sqrt(dx * dx + dy * dy);
-    if (mouseDist < 100) {
+    const distSq = dx * dx + dy * dy;
+
+    if (distSq < 10000 && distSq > 0.0001) {
+      const mouseDist = Math.sqrt(distSq);
       const force = (100 - mouseDist) / 100;
       this.x += (dx / mouseDist) * force * 2;
       this.baseY += (dy / mouseDist) * force * 1.5;
     }
 
-    if (this.x < -20) this.x = canvas.width + 10;
-    if (this.x > canvas.width + 20) this.x = -10;
-    if (this.baseY < -40 || this.baseY > canvas.height + 40 || this.life > this.maxLife) {
-      this.baseY = Math.random() * canvas.height;
+    if (this.x < -20) this.x = canvas.clientWidth + 10;
+    if (this.x > canvas.clientWidth + 20) this.x = -10;
+
+    if (
+      this.baseY < -40 ||
+      this.baseY > canvas.clientHeight + 40 ||
+      this.life > this.maxLife
+    ) {
+      this.baseY = Math.random() * canvas.clientHeight;
       this.life = 0;
       this.color = themes[currentTheme][Math.floor(Math.random() * themes[currentTheme].length)];
     }
@@ -96,12 +122,17 @@ function initParticles(n) {
 
 function drawConnections() {
   if (connectRange === 0) return;
+
+  const rangeSq = connectRange * connectRange;
+
   for (let i = 0; i < particles.length; i++) {
     for (let j = i + 1; j < particles.length; j++) {
       const dx = particles[i].x - particles[j].x;
       const dy = particles[i].y - particles[j].y;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      if (dist < connectRange) {
+      const distSq = dx * dx + dy * dy;
+
+      if (distSq < rangeSq) {
+        const dist = Math.sqrt(distSq);
         ctx.globalAlpha = (1 - dist / connectRange) * 0.2;
         ctx.strokeStyle = particles[i].color;
         ctx.lineWidth = 0.6;
@@ -117,8 +148,11 @@ function drawConnections() {
 function updateFPS() {
   const now = performance.now();
   frameCount++;
-  if (now - lastTime >= 1000) {
-    fps = frameCount;
+
+  const elapsed = now - lastTime;
+
+  if (elapsed >= 1000) {
+    fps = Math.round((frameCount * 1000) / elapsed);
     frameCount = 0;
     lastTime = now;
     fpsDisplay.textContent = fps + ' FPS';
@@ -129,17 +163,22 @@ function loop() {
   if (isPaused) return;
 
   time++;
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
 
   while (particles.length < targetCount) particles.push(new Particle(false));
   while (particles.length > targetCount) particles.pop();
 
   drawConnections();
   ctx.globalAlpha = 1;
-  particles.forEach(p => { p.update(time); p.draw(); });
-  ctx.globalAlpha = 1;
 
+  particles.forEach(p => {
+    p.update(time);
+    p.draw();
+  });
+
+  ctx.globalAlpha = 1;
   updateFPS();
+
   animId = requestAnimationFrame(loop);
 }
 
@@ -147,9 +186,7 @@ resize();
 initParticles(targetCount);
 loop();
 
-window.addEventListener('resize', () => {
-  resize();
-});
+window.addEventListener('resize', resize);
 
 canvas.addEventListener('mousemove', e => {
   const rect = canvas.getBoundingClientRect();
@@ -162,12 +199,16 @@ canvas.addEventListener('mouseleave', () => {
   mouseY = -9999;
 });
 
-canvas.addEventListener('touchmove', e => {
-  e.preventDefault();
-  const rect = canvas.getBoundingClientRect();
-  mouseX = e.touches[0].clientX - rect.left;
-  mouseY = e.touches[0].clientY - rect.top;
-}, { passive: false });
+canvas.addEventListener(
+  'touchmove',
+  e => {
+    e.preventDefault();
+    const rect = canvas.getBoundingClientRect();
+    mouseX = e.touches[0].clientX - rect.left;
+    mouseY = e.touches[0].clientY - rect.top;
+  },
+  { passive: false }
+);
 
 canvas.addEventListener('touchend', () => {
   mouseX = -9999;
@@ -187,7 +228,7 @@ document.getElementById('countSlider').addEventListener('input', e => {
 document.getElementById('sizeSlider').addEventListener('input', e => {
   pSize = +e.target.value;
   document.getElementById('sizeVal').textContent = pSize;
-  particles.forEach(p => p.radius = pSize * (0.5 + Math.random() * 0.9));
+  particles.forEach(p => (p.radius = pSize * (0.5 + Math.random() * 0.9)));
 });
 
 document.getElementById('connectSlider').addEventListener('input', e => {
@@ -213,17 +254,27 @@ document.querySelectorAll('.theme-btn[data-theme]').forEach(btn => {
 document.getElementById('randomThemeBtn').addEventListener('click', () => {
   const themeKeys = Object.keys(themes);
   const picked = themeKeys[Math.floor(Math.random() * themeKeys.length)];
+
   document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
   document.querySelector(`.theme-btn[data-theme="${picked}"]`).classList.add('active');
+
   applyTheme(picked);
 });
 
 const pauseBtn = document.getElementById('pauseBtn');
+
 pauseBtn.addEventListener('click', () => {
   isPaused = !isPaused;
+
   pauseBtn.textContent = isPaused ? 'Resume' : 'Pause';
   pauseBtn.classList.toggle('paused', isPaused);
-  if (!isPaused) loop();
+
+  if (isPaused) {
+    cancelAnimationFrame(animId);
+  } else {
+    cancelAnimationFrame(animId);
+    animId = requestAnimationFrame(loop);
+  }
 });
 
 document.getElementById('resetBtn').addEventListener('click', () => {

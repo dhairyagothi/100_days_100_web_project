@@ -22,7 +22,7 @@
     <section class="hero">
       <div class="hero-content">
         <!-- Main Headline -->
-        <h1 class="hero-title">Discover Your Next<br/><span class="gradient-text">Adventure</span></h1>
+        <h1 class="hero-title">Discover Your Next Adventure<br/><span class="gradient-text">with Travel Companion</span></h1>
         <p class="hero-subtitle">Handpicked destinations, unforgettable experiences</p>
         
         <!-- Search Bar -->
@@ -280,6 +280,72 @@
               <p class="card-price">From $749</p>
             </div>
           </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Plan Your Trip Section -->
+    <section class="trip-planner-section">
+      <div class="section-container">
+        <h2 id="plannerTitle" class="section-title">Plan Your Perfect Trip</h2>
+        <p class="section-subtitle">Build your itinerary in seconds</p>
+
+        <div class="planner-card">
+          <div class="planner-progress">
+            <div class="planner-progress-label">Step <span id="plannerStepNumber">1</span> of 4</div>
+            <div class="planner-progress-track">
+              <div class="planner-progress-fill" id="plannerProgressFill"></div>
+            </div>
+          </div>
+
+          <form id="tripPlannerForm" class="planner-form" aria-labelledby="plannerTitle">
+            <div class="planner-step" data-step="1">
+              <label for="plannerDestination">Choose a destination</label>
+              <select id="plannerDestination" class="planner-select" aria-label="Destination selection">
+                <option value="Paris">Paris</option>
+                <option value="Bali">Bali</option>
+                <option value="Tokyo">Tokyo</option>
+                <option value="Santorini">Santorini</option>
+                <option value="Dubai">Dubai</option>
+                <option value="New York">New York</option>
+              </select>
+            </div>
+
+            <div class="planner-step hidden" data-step="2">
+              <div class="date-grid">
+                <label for="plannerCheckIn">Check-in</label>
+                <input type="date" id="plannerCheckIn" class="planner-date" aria-label="Check-in date" />
+                <label for="plannerCheckOut">Check-out</label>
+                <input type="date" id="plannerCheckOut" class="planner-date" aria-label="Check-out date" />
+              </div>
+            </div>
+
+            <div class="planner-step hidden" data-step="3">
+              <label>Travelers</label>
+              <div class="traveler-stepper">
+                <button type="button" class="stepper-btn" id="travelerDecrement" aria-label="Decrease travelers">-</button>
+                <span id="travelerCount" class="traveler-count" aria-live="polite">2</span>
+                <button type="button" class="stepper-btn" id="travelerIncrement" aria-label="Increase travelers">+</button>
+              </div>
+            </div>
+
+            <div class="planner-step hidden" data-step="4">
+              <p class="trip-type-label">Trip type</p>
+              <div class="trip-types-grid" role="group" aria-label="Select trip types">
+                <button type="button" class="trip-type-chip" data-type="Adventure" aria-pressed="false">Adventure</button>
+                <button type="button" class="trip-type-chip" data-type="Relaxation" aria-pressed="false">Relaxation</button>
+                <button type="button" class="trip-type-chip" data-type="Culture" aria-pressed="false">Culture</button>
+                <button type="button" class="trip-type-chip" data-type="Food" aria-pressed="false">Food</button>
+              </div>
+            </div>
+          </form>
+
+          <div class="planner-actions">
+            <button type="button" class="planner-btn secondary" id="plannerBackBtn" aria-label="Back to previous step">Back</button>
+            <button type="button" class="planner-btn primary" id="plannerNextBtn" aria-label="Next step">Next</button>
+          </div>
+
+          <div class="itinerary-output hidden" id="itineraryOutput" aria-live="polite"></div>
         </div>
       </div>
     </section>

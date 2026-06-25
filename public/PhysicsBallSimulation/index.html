@@ -7,10 +7,10 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
+<a href="/" class="project-back-button" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
 
 
-  <canvas id="canvas" aria-label="Physics simulation canvas"></canvas>
+  <canvas id="canvas"></canvas>
 
   <div class="controls glass" role="group" aria-label="Simulation controls">
 
@@ -67,19 +67,19 @@
     </div>
 
     <div class="ctrl-footer">
-      <button id="add-btn">+ Ball</button>
-      <button id="pause-btn" title="Space">⏸</button>
-      <button id="clear-btn">Clear</button>
-      <button id="info-btn" title="Explain the Physics">Physics Info 💡</button>
+      <button type="button" id="add-btn" aria-label="ball">+ Ball</button>
+      <button type="button" id="pause-btn" title="Space" aria-label="pause">⏸</button>
+      <button type="button" id="clear-btn" aria-label="clear">Clear</button>
+      <button type="button" id="info-btn" title="Explain the Physics" aria-label="physics info">Physics Info 💡</button>
     </div>
 
   </div>
 
-  <div id="physics-modal" class="modal-overlay" aria-hidden="true">
+  <div id="physics-modal" class="modal-overlay">
     <div class="modal-content glass">
       <div class="modal-header">
         <h2>Physics Engine Mechanics 💡</h2>
-        <button class="modal-close" id="modal-close-btn">&times;</button>
+        <button type="button" class="modal-close" id="modal-close-btn" aria-label="Close Physics Information Modal">&times;</button>
       </div>
       <div class="modal-body">
         <section class="modal-section">
@@ -87,14 +87,13 @@
           <p>Gravity is modeled as a constant downward acceleration vector (<code>g</code>) applied to each ball's vertical velocity (<code>vy</code>) per time step:</p>
           <pre><code>vy = vy + g</code></pre>
         </section>
-        
         <section class="modal-section">
           <h3>2. Bounciness (Restitution)</h3>
           <p>When a ball hits a boundary, it reflects its velocity vector. The coefficient of restitution (<code>e</code>) determines the percentage of kinetic energy retained. A bounce value of <code>0.75</code> means it keeps 75% of its speed, losing 25% to deformation and heat.</p>
         </section>
 
         <section class="modal-section">
-          <h3>3. Mass & Density (m &prop; d &middot; r<sup>3</sup>)</h3>
+          <h3>3. Mass &amp; Density (m &prop; d &middot; r<sup>3</sup>)</h3>
           <p>Real-world mass scales with volume (3D sphere). In this engine, mass (<code>m</code>) is calculated using the ball's radius (<code>r</code>) and density (<code>d</code>):</p>
           <div class="formula">m = d &middot; r<sup>3</sup></div>
           <p>This cubic relation means doubling a ball's size increases its mass by <strong>8x</strong>! Denser balls possess significantly higher momentum, easily pushing lighter balls aside.</p>
@@ -102,12 +101,11 @@
 
         <section class="modal-section">
           <h3>4. Impulse-Based Collisions</h3>
-          <p>Collisions are resolved in two phases:
-            <ul style="margin-left: 1.25rem; margin-top: 0.35rem; display: flex; flex-direction: column; gap: 0.25rem;">
+          <p>Collisions are resolved in two phases: </p>
+            <ul class="ul-list">
               <li><strong>Positional Correction:</strong> Pushes overlapping balls apart slightly to prevent sinking or stickiness.</li>
               <li><strong>Impulse Resolution:</strong> Applies equal and opposite forces (Newton's Third Law) along the collision normal to exchange momentum elastically.</li>
             </ul>
-          </p>
         </section>
       </div>
     </div>

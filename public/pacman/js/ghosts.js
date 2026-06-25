@@ -361,6 +361,8 @@ function moveGhost(ghost) {
 
       drawGhost(ghost);
 
+      testGhostPacman(ghost);
+
       if (
         GHOSTS[ghost].BODY_STATE === 3 &&
         GHOSTS[ghost].STATE !== -1
