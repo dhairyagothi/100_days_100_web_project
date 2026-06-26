@@ -349,3 +349,65 @@ footer {
     height: 48px;
   }
 }
+.library-section {
+    background: var(--card);
+    border-radius: 18px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+}
+
+.library-controls {
+    display: flex;
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.library-controls input {
+    flex: 1;
+    padding: 0.9rem;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text);
+}
+
+#savePromptBtn {
+    background: var(--primary);
+    color: white;
+    padding: 0.9rem 1.2rem;
+    border-radius: 10px;
+}
+
+.library-item {
+    background: var(--card-hover);
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.library-item h4 {
+    margin-bottom: 0.5rem;
+}
+
+.library-actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+.library-actions button {
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+}
+
+.load-btn {
+    background: var(--success);
+    color: white;
+}
+
+.delete-btn {
+    background: var(--danger);
+    color: white;
+}

@@ -1,6 +1,1456 @@
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background: radial-gradient(circle at top, #182338 0%, #0b0f17 60%);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+  transition: background-color .35s ease, color .35s ease;
+}
+
+/* ==========================
+   NOISE OVERLAY
+
+.noise-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: .04;
+  background-image: radial-gradient(circle, #fff 1px, transparent 1px);
+  background-size: 4px 4px;
+  z-index: 0;
+}
+
+/* ==========================
+   HEADER
+
+.site-header {
+  width: min(1400px, 95%);
+  margin: auto;
+  padding: 2rem 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  position: relative;
+  z-index: 10;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.brand-mark {
+  width: 65px;
+  height: 65px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: var(--gold);
+  background: linear-gradient(145deg, rgba(212,175,55,.18), rgba(255,255,255,.04));
+  border: 1px solid rgba(212,175,55,.3);
+}
+
+.brand-text h1 {
+  font-size: 1.9rem;
+  letter-spacing: 2px;
+}
+
+.brand-plus {
+  color: var(--gold);
+}
+
+.brand-text p {
+  color: var(--text-muted);
+  font-size: .85rem;
+}
+
+.header-nav {
+  display: flex;
+  gap: 1rem;
+}
+
+.nav-btn {
+  background: rgba(255,255,255,.05);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: .85rem 1.1rem;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  cursor: pointer;
+  transition: all .3s ease;
+}
+
+.nav-btn:hover {
+  transform: translateY(-3px);
+  border-color: var(--gold);
+  box-shadow: 0 0 20px rgba(212,175,55,.15);
+}
+
+.mode-label {
+  font-size: .72rem;
+  letter-spacing: 2px;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: rgba(212,175,55,.15);
+  color: var(--gold);
+}
+
+/* ==========================
+   WORKSPACE
+
+.workspace {
+  width: min(1400px, 95%);
+  margin: auto;
+  padding-bottom: 4rem;
+  position: relative;
+  z-index: 1;
+}
+
+/* ==========================
+   PANEL GRID
+
+.primary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.panel {
+  background: var(--panel);
+  backdrop-filter: blur(25px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: background-color .35s ease, border-color .35s ease, box-shadow .35s ease;
+}
+
+/* ==========================
+   LOCAL CLOCK
+
+.panel-banner {
+  height: 180px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.banner-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,.8), transparent);
+}
+
+.banner-label {
+  position: absolute;
+  left: 20px;
+  bottom: 20px;
+}
+
+.location-tag {
+  background: rgba(255,255,255,.1);
+  backdrop-filter: blur(10px);
+  padding: .45rem .9rem;
+  border-radius: 999px;
+  font-size: .8rem;
+}
+
+.panel-body {
+  padding: 2rem;
+}
+
+.clock-identity {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.clock-city {
+  font-size: 1.5rem;
+}
+
+.live-badge {
+  color: var(--success);
+  font-size: .85rem;
+}
+
+.clock-stage {
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+/* ==========================
+   ANALOG CLOCK
+
+.clock-bezel {
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #1c2435, #0f172a);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 8px solid rgba(212,175,55,.15);
+}
+
+.clock-face {
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  position: relative;
+  background: radial-gradient(circle, #111827, #020617);
+}
+
+.clock-glass-sheen {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.05), transparent 70%);
+  pointer-events: none;
+}
+
+.center-jewel {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--gold);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+}
+
+.hand {
+  position: absolute;
+  left: 50%;
+  bottom: 50%;
+  transform-origin: bottom center;
+  border-radius: 999px;
+  z-index: 5;
+}
+
+.hour-hand {
+  width: 6px;
+  height: 60px;
+  background: white;
+}
+
+.minute-hand {
+  width: 4px;
+  height: 85px;
+  background: #ddd;
+}
+
+.second-hand {
+  width: 2px;
+  height: 95px;
+  background: var(--gold);
+}
+
+.tick {
+  position: absolute;
+  left: 50%;
+  top: 8px;
+  width: 2px;
+  height: 10px;
+  background: rgba(255,255,255,.15);
+  transform-origin: bottom center;
+}
+
+.tick.major {
+  width: 3px;
+  height: 16px;
+  background: rgba(255,255,255,.3);
+}
+
+/* ==========================
+   DIGITAL READOUTS
+
+.clock-readouts {
+  text-align: center;
+}
+
+.digital-time {
+  font-family: 'DM Mono', monospace;
+  font-size: 2.3rem;
+  color: var(--gold);
+}
+
+.digital-date {
+  margin-top: .5rem;
+  color: var(--text-muted);
+}
+
+/* ==========================
+   TIMER PANEL
+
+.timer-panel {
+  padding: 2rem;
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.panel-title-group h2 {
+  margin-bottom: .35rem;
+}
+
+.panel-title-group p {
+  color: var(--text-muted);
+  font-size: .9rem;
+}
+
+.panel-icon {
+  color: var(--gold);
+  opacity: .6;
+}
+
+.timer-inputs {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.time-input {
+  width: 90px;
+  height: 80px;
+  background: #111827;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  text-align: center;
+  color: white;
+  font-size: 2rem;
+  font-family: 'DM Mono', monospace;
+  transition: all .35s ease;
+}
+
+.time-input:focus {
+  outline: none;
+  border-color: var(--gold);
+  box-shadow: 0 0 20px rgba(212,175,55,.1);
+}
+
+.time-field {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .5rem;
+}
+
+.time-field label {
+  color: var(--text-muted);
+  font-size: .8rem;
+  letter-spacing: 1px;
+}
+
+.time-separator {
+  font-size: 2rem;
+  color: var(--gold);
+}
+
+/* ==========================
+   COUNTDOWN DISPLAY
+
+.countdown-display {
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+.countdown-track {
+  width: 250px;
+  height: 250px;
+  position: relative;
+}
+
+.countdown-arc {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.arc-bg {
+  stroke: rgba(255,255,255,.08);
+}
+
+.arc-fill {
+  stroke: url(#goldGrad);
+  transition: stroke-dashoffset 0.3s ease;
+}
+
+.countdown-digits {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  font-family: 'DM Mono', monospace;
+  color: var(--gold);
+}
+
+/* ==========================
+   BUTTONS
+
+.timer-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.action-btn {
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  padding: .95rem 1.3rem;
+  border-radius: 14px;
+  font-weight: 600;
+  transition: all .3s ease;
+  font-family: 'Outfit', sans-serif;
+}
+
+.action-btn:hover {
+  transform: translateY(-2px);
+}
+
+.primary-action {
+  background: var(--gold);
+  color: black;
+}
+
+.primary-action:hover {
+  box-shadow: 0 0 30px rgba(212,175,55,.3);
+}
+
+.secondary-action {
+  background: #1e293b;
+  color: white;
+}
+
+.secondary-action:hover {
+  background: #2d3748;
+}
+
+.ghost-action {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: white;
+}
+
+.ghost-action:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+/* ==========================
+   TIMER ALERT
+
+.timer-alert {
+  display: none;
+  margin-top: 1.5rem;
+  padding: 1rem;
+  border-radius: 14px;
+  background: rgba(239,68,68,.12);
+  border: 1px solid rgba(239,68,68,.3);
+  color: #ff9f9f;
+  align-items: center;
+  gap: .8rem;
+  animation: pulseAlert 1s infinite;
+}
+
+@keyframes pulseAlert {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .6; }
+}
+
+/* ==========================
+   MAP PANEL
+
+.map-panel {
+  margin-bottom: 2rem;
+  padding: 2rem;
+}
+
+.map-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.map-panel-header h2 {
+  margin-bottom: .35rem;
+}
+
+.map-panel-header p {
+  color: var(--text-muted);
+  font-size: .9rem;
+}
+
+.map-legend {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: .8rem;
+  color: var(--text-muted);
+}
+
+.legend-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 4px;
+}
+
+.legend-dot.pinned {
+  background: var(--gold);
+}
+
+.legend-dot.active {
+  background: var(--success);
+}
+
+.map-container {
+  height: 500px;
+  border-radius: 20px;
+  background: #09111f;
+  border: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+
+.map-scroll {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}
+
+#timezone-map-wrapper {
+  width: 100%;
+  height: 100%;
+}
+
+#timezone-map-wrapper svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Map Tooltip */
+.map-tooltip {
+  position: absolute;
+  background: var(--panel);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--gold);
+  border-radius: 16px;
+  padding: 1rem 1.25rem;
+  min-width: 200px;
+  z-index: 100;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+  display: none;
+  flex-direction: column;
+  gap: 0.5rem;
+  pointer-events: none;
+}
+
+.map-tooltip .tt-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.map-tooltip .tt-header h4 {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.map-tooltip .tt-badge {
+  font-size: .7rem;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(212,175,55,.15);
+  color: var(--gold);
+}
+
+.map-tooltip .tt-tz {
+  font-size: .75rem;
+  color: var(--text-muted);
+}
+
+.map-tooltip .tt-time-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.25rem;
+}
+
+.map-tooltip .tt-time {
+  font-family: 'DM Mono', monospace;
+  font-size: 1.2rem;
+  color: var(--gold);
+}
+
+.map-tooltip .tt-date {
+  font-size: .75rem;
+  color: var(--text-muted);
+}
+
+.map-tooltip .tt-pin-btn {
+  margin-top: 0.5rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--gold);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--gold);
+  cursor: pointer;
+  font-size: .8rem;
+  font-weight: 500;
+  transition: all .2s;
+  pointer-events: auto;
+  font-family: 'Outfit', sans-serif;
+}
+
+.map-tooltip .tt-pin-btn:hover {
+  background: var(--gold);
+  color: black;
+}
+
+.map-tooltip .tt-remove-btn {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+.map-tooltip .tt-remove-btn:hover {
+  background: var(--danger);
+  color: white;
+}
+
+/* Map SVG Styles */
+.timezone-sector {
+  fill: rgba(255,255,255,0.02);
+  stroke: rgba(255,255,255,0.05);
+  stroke-width: 0.5;
+  transition: fill 0.3s ease;
+  cursor: pointer;
+}
+
+.timezone-sector:hover,
+.timezone-sector.active-sector {
+  fill: rgba(212,175,55,0.08);
+}
+
+.map-grid-line {
+  stroke: rgba(255,255,255,0.05);
+  stroke-width: 0.5;
+}
+
+.map-grid-line.equator-line {
+  stroke: rgba(212,175,55,0.1);
+  stroke-width: 1;
+}
+
+.map-grid-line.meridian-line {
+  stroke: rgba(255,255,255,0.05);
+  stroke-width: 0.5;
+}
+
+.city-marker {
+  cursor: pointer;
+}
+
+.city-marker .pulse-ring {
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 1.5;
+  opacity: 0.5;
+  animation: pulseRing 2s infinite;
+}
+
+.city-marker .center-dot {
+  fill: var(--gold);
+  transition: fill 0.3s ease;
+}
+
+.city-marker.pinned-marker .center-dot {
+  fill: var(--success);
+}
+
+.city-marker.pinned-marker .pulse-ring {
+  stroke: var(--success);
+}
+
+@keyframes pulseRing {
+  0% { r: 6; opacity: 0.5; }
+  50% { r: 12; opacity: 0.2; }
+  100% { r: 6; opacity: 0.5; }
+}
+
+/* ==========================
+   WORLD CLOCKS
+
+.world-section {
+  margin-top: 2rem;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.section-header h2 {
+  font-size: 1.5rem;
+}
+
+.clock-search-wrap {
+  position: relative;
+  flex: 1;
+  max-width: 400px;
+  min-width: 200px;
+}
+
+.clock-search {
+  width: 100%;
+  padding: 1rem 1rem 1rem 3rem;
+  background: #111827;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  color: white;
+  font-family: 'Outfit', sans-serif;
+  transition: all .35s ease;
+}
+
+.clock-search:focus {
+  outline: none;
+  border-color: var(--gold);
+  box-shadow: 0 0 20px rgba(212,175,55,.1);
+}
+
+.search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+}
+
+.search-results {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  background: var(--panel);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  max-height: 300px;
+  overflow-y: auto;
+  display: none;
+  z-index: 100;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+}
+
+.search-results.active {
+  display: block;
+}
+
+.search-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.2s;
+}
+
+.search-item:hover {
+  background: rgba(255,255,255,0.05);
+}
+
+.search-item-info h4 {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.search-item-info p {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.quick-pin-btn {
+  padding: 0.4rem 0.8rem;
+  border: 1px solid var(--gold);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--gold);
+  cursor: pointer;
+  font-size: 0.75rem;
+  font-weight: 500;
+  transition: all 0.2s;
+  font-family: 'Outfit', sans-serif;
+}
+
+.quick-pin-btn:hover:not(:disabled) {
+  background: var(--gold);
+  color: black;
+}
+
+.quick-pin-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.clocks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+/* World Clock Cards */
+.world-clock-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 1.5rem;
+  text-align: center;
+  position: relative;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.world-clock-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--gold);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.world-clock-card .remove-btn {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  line-height: 1;
+}
+
+.world-clock-card .remove-btn:hover {
+  color: var(--danger);
+  transform: scale(1.2);
+}
+
+.world-clock-card .card-city {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.2rem;
+}
+
+.world-clock-card .card-sub {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+}
+
+.world-clock-card .clock-bezel {
+  width: 180px;
+  height: 180px;
+  margin: 0 auto;
+  border-width: 5px;
+}
+
+.world-clock-card .clock-face {
+  width: 155px;
+  height: 155px;
+}
+
+.world-clock-card .digital-time {
+  font-size: 1.5rem;
+  margin-top: 1rem;
+}
+
+.world-clock-card .digital-date {
+  font-size: 0.8rem;
+}
+
+.world-clock-card .hour-hand {
+  height: 40px;
+  width: 4px;
+}
+
+.world-clock-card .minute-hand {
+  height: 55px;
+  width: 3px;
+}
+
+.world-clock-card .second-hand {
+  height: 62px;
+  width: 1.5px;
+}
+
+.world-clock-card .center-jewel {
+  width: 10px;
+  height: 10px;
+}
+
+.card-highlight-active {
+  animation: highlightPulse 0.8s ease;
+}
+
+@keyframes highlightPulse {
+  0%, 100% { border-color: var(--border); }
+  50% { border-color: var(--gold); box-shadow: 0 0 40px rgba(212,175,55,0.3); }
+}
+
+/* ==========================
+   EXIT FOCUS BUTTON
+
+.exit-focus-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #ff4444, #cc0000);
+  color: white;
+  border: none;
+  border-radius: 40px;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 10px 25px rgba(239,68,68,.3);
+  transition: all 0.3s ease;
+}
+
+.exit-focus-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 15px 35px rgba(239,68,68,.4);
+}
+
+/* ==========================
+   ALARM SYSTEM
+
+.alarm-panel {
+  margin-bottom: 2rem;
+  padding: 2rem;
+}
+
+.alarm-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.alarm-input-section {
+  background: rgba(255,255,255,0.03);
+  border-radius: 20px;
+  padding: 1.5rem;
+  border: 1px solid var(--border);
+}
+
+.alarm-time-inputs {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.alarm-controls {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.alarm-list {
+  margin-top: 0.5rem;
+}
+
+.alarm-list h3 {
+  font-size: 1rem;
+  color: var(--text-muted);
+  margin-bottom: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+
+.alarm-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.alarm-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background: rgba(255,255,255,0.04);
+  border-radius: 12px;
+  border-left: 3px solid var(--gold);
+  animation: slideInAlarm 0.3s ease;
+}
+
+@keyframes slideInAlarm {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.alarm-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.alarm-item-time {
+  font-family: 'DM Mono', monospace;
+  font-size: 1.1rem;
+  color: var(--gold);
+  font-weight: 500;
+}
+
+.alarm-item-status {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.alarm-item-status.active {
+  color: var(--success);
+}
+
+.alarm-item-status.triggered {
+  color: var(--danger);
+}
+
+.alarm-item-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.alarm-item-actions button {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: all 0.2s;
+  font-family: 'Outfit', sans-serif;
+}
+
+.alarm-item-actions button:hover {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+.alarm-empty-state {
+  color: var(--text-muted);
+  text-align: center;
+  padding: 2rem 0;
+  font-size: 0.9rem;
+}
+
+/* Alarm Alert Overlay */
+.alarm-alert-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(20px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10001;
+  animation: fadeInOverlay 0.5s ease;
+}
+
+@keyframes fadeInOverlay {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.alarm-alert-content {
+  background: var(--panel);
+  border: 2px solid var(--gold);
+  border-radius: 30px;
+  padding: 3rem;
+  max-width: 500px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+  animation: pulseGlow 2s infinite;
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 40px rgba(212,175,55,0.3);
+  }
+  50% {
+    box-shadow: 0 0 80px rgba(212,175,55,0.6);
+  }
+}
+
+.alarm-alert-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  animation: ringBell 0.5s infinite alternate;
+}
+
+@keyframes ringBell {
+  from {
+    transform: rotate(-15deg);
+  }
+  to {
+    transform: rotate(15deg);
+  }
+}
+
+.alarm-alert-content h2 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  color: var(--gold);
+}
+
+.alarm-alert-content p {
+  font-size: 1.2rem;
+  color: var(--text-muted);
+  margin-bottom: 2rem;
+}
+
+.alarm-alert-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* ==========================
+   THEME VARIABLES
+
+body.dark-theme {
+  --bg: #0b0f17;
+  --bg-secondary: #111827;
+  --panel: #141c2f;
+  --text: #ffffff;
+  --text-muted: #94a3b8;
+  --gold: #d4af37;
+  --border: rgba(255,255,255,.08);
+}
+
+body.light-theme {
+  --bg: #f5f7fb;
+  --bg-secondary: #ffffff;
+  --panel: #ffffff;
+  --text: #0f172a;
+  --text-muted: #64748b;
+  --gold: #b8860b;
+  --border: rgba(15,23,42,.08);
+  --shadow: 0 10px 25px rgba(15,23,42,.08);
+}
+
+body.light-theme .time-input,
+body.light-theme .clock-search {
+  background: #f1f5f9;
+  color: var(--text);
+}
+
+body.light-theme .clock-bezel {
+  background: radial-gradient(circle, #e2e8f0, #cbd5e1);
+}
+
+body.light-theme .clock-face {
+  background: radial-gradient(circle, #f8fafc, #e2e8f0);
+}
+
+body.light-theme .alarm-input-section {
+  background: rgba(0,0,0,0.03);
+}
+
+body.light-theme .alarm-item {
+  background: rgba(0,0,0,0.03);
+}
+
+body.light-theme .search-results {
+  background: white;
+}
+
+body.light-theme .search-item:hover {
+  background: rgba(0,0,0,0.05);
+}
+
+body.light-theme .map-container {
+  background: #f1f5f9;
+}
+
+body.light-theme .timezone-sector {
+  fill: rgba(0,0,0,0.02);
+  stroke: rgba(0,0,0,0.05);
+}
+
+body.light-theme .timezone-sector:hover,
+body.light-theme .timezone-sector.active-sector {
+  fill: rgba(184,134,11,0.08);
+}
+
+/* ==========================
+   RESPONSIVE
+
+@media (max-width: 1200px) {
+  .clocks-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .brand-text h1 {
+    font-size: 1.1rem;
+  }
+  
+  .clock-bezel {
+    width: 220px;
+    height: 220px;
+  }
+  
+  .clock-face {
+    width: 190px;
+    height: 190px;
+  }
+  
+  .workspace {
+    padding: 12px 12px 60px;
+  }
+}
+
+@media (max-width: 1000px) {
+  .primary-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .site-header {
+    flex-direction: column;
+    padding: 1rem 0;
+  }
+  
+  .section-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .clock-search-wrap {
+    max-width: 100%;
+  }
+  
+  .map-panel-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .map-container {
+    height: 400px;
+  }
+}
+
+@media (max-width: 768px) {
+  .panel-body {
+    padding: 1.5rem;
+  }
+  
+  .timer-panel,
+  .map-panel,
+  .alarm-panel {
+    padding: 1.5rem;
+  }
+  
+  .timer-inputs {
+    gap: 0.5rem;
+  }
+  
+  .time-input {
+    width: 70px;
+    height: 60px;
+    font-size: 1.5rem;
+  }
+  
+  .time-separator {
+    font-size: 1.5rem;
+  }
+  
+  .countdown-track {
+    width: 200px;
+    height: 200px;
+  }
+  
+  .countdown-digits {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .clocks-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .clock-bezel {
+    width: 200px;
+    height: 200px;
+  }
+  
+  .clock-face {
+    width: 175px;
+    height: 175px;
+  }
+  
+  .digital-time {
+    font-size: 1.7rem;
+  }
+  
+  .countdown-track {
+    width: 180px;
+    height: 180px;
+  }
+  
+  .countdown-digits {
+    font-size: 1.3rem;
+  }
+  
+  .alarm-time-inputs .time-input {
+    width: 60px;
+    height: 60px;
+    font-size: 1.5rem;
+  }
+  
+  .alarm-alert-content {
+    padding: 2rem;
+  }
+  
+  .alarm-alert-content h2 {
+    font-size: 1.5rem;
+  }
+  
+  .brand-mark {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .brand-text h1 {
+    font-size: 1.3rem;
+  }
+  
+  .header-nav {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .nav-btn {
+    padding: 0.6rem 0.9rem;
+    font-size: 0.85rem;
+  }
+  
+  .map-container {
+    height: 300px;
+  }
+  
+  .exit-focus-btn {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    bottom: 16px;
+    right: 16px;
+  }
+}
+
+@media (max-width: 400px) {
+  .clock-bezel {
+    width: 160px;
+    height: 160px;
+  }
+  
+  .clock-face {
+    width: 140px;
+    height: 140px;
+  }
+  
+  .hour-hand {
+    height: 35px;
+    width: 4px;
+  }
+  
+  .minute-hand {
+    height: 50px;
+    width: 3px;
+  }
+  
+  .second-hand {
+    height: 58px;
+    width: 1.5px;
+  }
+  
+  .time-input {
+    width: 55px;
+    height: 50px;
+    font-size: 1.2rem;
+  }
+  
+  .timer-actions,
+  .alarm-controls,
+  .alarm-alert-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .timer-actions .action-btn,
+  .alarm-controls .action-btn,
+  .alarm-alert-actions .action-btn {
+    width: 100%;
+    justify-content: center;
+  }
 /* ==========================
    ROOT VARIABLES
-========================== */
 
 /*FOCUS MODE*/
 
@@ -212,7 +1662,6 @@ body.focus-active-view.light-theme .ghost-action {
 
 /* ==========================
    RESET
-========================== */
 
 *{
   margin:0;
@@ -235,7 +1684,6 @@ body{
 
 /* ==========================
    NOISE
-========================== */
 
 .noise-overlay{
   position:fixed;
@@ -249,7 +1697,6 @@ body{
 
 /* ==========================
    HEADER
-========================== */
 
 .site-header{
   width:min(1400px,95%);
@@ -333,7 +1780,6 @@ body{
 
 /* ==========================
    WORKSPACE
-========================== */
 
 .workspace{
   width:min(1400px,95%);
@@ -343,7 +1789,6 @@ body{
 
 /* ==========================
    GRID
-========================== */
 
 .primary-grid{
   display:grid;
@@ -367,7 +1812,6 @@ body{
 
 /* ==========================
    LOCAL CLOCK
-========================== */
 
 .panel-banner{
   height:180px;
@@ -430,7 +1874,6 @@ body{
 
 /* ==========================
    ANALOG CLOCK
-========================== */
 
 .clock-bezel{
   width:280px;
@@ -500,7 +1943,6 @@ body{
 
 /* ==========================
    DIGITAL
-========================== */
 
 .clock-readouts{
   text-align:center;
@@ -519,7 +1961,6 @@ body{
 
 /* ==========================
    TIMER PANEL
-========================== */
 
 .timer-panel{
   padding:2rem;
@@ -584,7 +2025,6 @@ body{
 
 /* ==========================
    COUNTDOWN
-========================== */
 
 .countdown-display{
   display:flex;
@@ -626,7 +2066,6 @@ body{
 
 /* ==========================
    BUTTONS
-========================== */
 
 .timer-actions{
   display:flex;
@@ -673,7 +2112,6 @@ body{
 
 /* ==========================
    ALERT
-========================== */
 
 .timer-alert{
   display:none;
@@ -966,7 +2404,6 @@ body.light-theme .legend-dot.active {
 
 /* ==========================
    WORLD CLOCKS
-========================== */
 
 .section-header{
   display:flex;
@@ -1008,7 +2445,6 @@ body.light-theme .legend-dot.active {
 
 /* ==========================
    RESPONSIVE
-========================== */
 
 @media (max-width:1000px){
 
@@ -1054,7 +2490,6 @@ body.light-theme .legend-dot.active {
 
 /* ==========================
    DEFAULT (DARK)
-========================== */
 
 :root{
   --bg:#0b0f17;
@@ -1086,7 +2521,6 @@ body.dark-theme{
 
 /* ==========================
    LIGHT MODE
-========================== */
 
 body.light-theme .ghost-action {
   color: var(--text); /* Dynamically switches to dark slate text */
