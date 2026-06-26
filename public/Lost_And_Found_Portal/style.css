@@ -393,6 +393,20 @@ a:hover {
   transform: translateY(-2px);
 }
 
+/* Added for Delete Button */
+.btn-danger {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  border-color: rgba(239, 68, 68, 0.2);
+}
+
+.btn-danger:hover {
+  background: #ef4444;
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(239, 68, 68, 0.2);
+}
+
 .btn-text {
   background: transparent;
   color: var(--primary);
