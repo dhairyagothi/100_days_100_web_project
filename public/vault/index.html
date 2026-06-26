@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vault: Local Secure Notes</title>
+    <style>
+        body { font-family: sans-serif; display: flex; justify-content: center; padding: 50px; background: #f4f4f9; }
+        .container { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); width: 400px; }
+        textarea { width: 100%; height: 120px; margin-bottom: 10px; padding: 10px; box-sizing: border-box; }
+        input { width: 100%; margin-bottom: 10px; padding: 10px; box-sizing: border-box; }
+        button { width: 48%; padding: 10px; cursor: pointer; }
+        #vaultResult { margin-top: 20px; padding: 10px; background: #eee; word-break: break-all; font-size: 0.8em; min-height: 40px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Vault: Private Notes</h2>
+    <textarea id="vaultInput" placeholder="Enter secret note..."></textarea>
+    <input type="password" id="vaultPass" placeholder="Enter Password">
+    <button onclick="handleEncrypt()">Encrypt</button>
+    <button onclick="handleDecrypt()">Decrypt</button>
+    <div id="vaultResult"></div>
+</div>
+
+<script>
+    const cryptoEngine = {
+        async deriveKey(password, salt) {
+            const encoder = new TextEncoder();
+            const baseKey = await crypto.subtle.importKey("raw", encoder.encode(password), "PBKDF2", false, ["deriveKey"]);
+            return crypto.subtle.deriveKey(
+                { name: "PBKDF2", salt, iterations: 100000, hash: "SHA-256" },
+                baseKey, { name: "AES-GCM", length: 256 }, false, ["encrypt", "decrypt"]
+            );
+        },
+
+        async encrypt(text, password) {
+            const salt = crypto.getRandomValues(new Uint8Array(16));
+            const iv = crypto.getRandomValues(new Uint8Array(12));
+            const key = await this.deriveKey(password, salt);
+            const encrypted = await crypto.subtle.encrypt({ name: "AES-GCM", iv }, key, new TextEncoder().encode(text));
+            const combined = new Uint8Array([...salt, ...iv, ...new Uint8Array(encrypted)]);
+            return btoa(String.fromCharCode(...combined));
+        },
+
+        async decrypt(encryptedBase64, password) {
+            const data = new Uint8Array(atob(encryptedBase64).split('').map(c => c.charCodeAt(0)));
+            const salt = data.slice(0, 16);
+            const iv = data.slice(16, 28);
+            const ciphertext = data.slice(28);
+            const key = await this.deriveKey(password, salt);
+            const decrypted = await crypto.subtle.decrypt({ name: "AES-GCM", iv }, key, ciphertext);
+            return new TextDecoder().decode(decrypted);
+        }
+    };
+
+    let encryptedState = "";
+
+    async function handleEncrypt() {
+        const text = document.getElementById('vaultInput').value;
+        const pass = document.getElementById('vaultPass').value;
+        if (!text || !pass) return alert("Please provide text and password.");
+        encryptedState = await cryptoEngine.encrypt(text, pass);
+        document.getElementById('vaultResult').innerText = "Encrypted: " + encryptedState;
+        document.getElementById('vaultInput').value = "";
+    }
+
+    async function handleDecrypt() {
+        try {
+            const pass = document.getElementById('vaultPass').value;
+            const decrypted = await cryptoEngine.decrypt(encryptedState, pass);
+            document.getElementById('vaultInput').value = decrypted;
+            document.getElementById('vaultResult').innerText = "Decryption successful.";
+        } catch (e) {
+            alert("Decryption failed. Invalid password.");
+        }
+    }
+</script>
+</body>

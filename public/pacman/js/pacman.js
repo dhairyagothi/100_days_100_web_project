@@ -296,15 +296,10 @@ function killingPacman() {
   }
 }
 
-function testGhostsPacman() {
-  testGhostPacman("blinky");
-  testGhostPacman("pinky");
-  testGhostPacman("inky");
-  testGhostPacman("clyde");
-}
 function testGhostPacman(ghost) {
-  eval("var positionX = GHOST_" + ghost.toUpperCase() + "_POSITION_X");
-  eval("var positionY = GHOST_" + ghost.toUpperCase() + "_POSITION_Y");
+  const positionX = GHOSTS[ghost].POSITION_X;
+  const positionY = GHOSTS[ghost].POSITION_Y;
+  const state = GHOSTS[ghost].STATE;
 
   if (
     positionX <= PACMAN_POSITION_X + PACMAN_GHOST_GAP &&
@@ -312,7 +307,6 @@ function testGhostPacman(ghost) {
     positionY <= PACMAN_POSITION_Y + PACMAN_GHOST_GAP &&
     positionY >= PACMAN_POSITION_Y - PACMAN_GHOST_GAP
   ) {
-    eval("var state = GHOST_" + ghost.toUpperCase() + "_STATE");
     if (state === 0) {
       killPacman();
     } else if (state === 1) {

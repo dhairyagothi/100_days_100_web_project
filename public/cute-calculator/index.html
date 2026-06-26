@@ -18,7 +18,11 @@
   </div>
  
   <div class="history-panel" id="historyPanel">
-    <div class="history-empty" id="historyEmpty">No history yet ✨</div>
+    <div class="history-header">
+      <span>History</span>
+      <button class="clear-history-btn" id="clearHistoryBtn" type="button">🗑 Clear History</button>
+    </div>
+    <div class="history-empty" id="historyEmpty">No calculations yet</div>
   </div>
  
   <div class="buttons">
@@ -55,6 +59,23 @@
     <!-- Row 6 -->
     <button class="btn-num zero" onclick="appendValue('0')">0</button>
     <button class="btn-num" onclick="appendValue('.')">.</button>
+  </div>
+</div>
+
+<div class="confirm-overlay" id="clearHistoryOverlay" aria-hidden="true">
+  <div
+    class="confirm-dialog"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="clearHistoryTitle"
+    aria-describedby="clearHistoryMessage"
+  >
+    <h2 id="clearHistoryTitle">Clear History?</h2>
+    <p id="clearHistoryMessage">This will permanently remove all saved calculations.</p>
+    <div class="confirm-actions">
+      <button class="confirm-cancel" id="cancelClearHistory" type="button">Cancel</button>
+      <button class="confirm-clear" id="confirmClearHistory" type="button">Clear</button>
+    </div>
   </div>
 </div>
  

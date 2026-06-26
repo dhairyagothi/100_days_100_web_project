@@ -1,1241 +1,2641 @@
-/* =========================
-   ENHANCED CHRONOS+ CSS
-========================= */
 
-@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap");
-
-:root {
-  --bg-color: #f3f4f6;
-  --text-primary: #111827;
-  --text-secondary: #6b7280;
-
-  --card-bg: rgba(255, 255, 255, 0.72);
-  --glass-bg: rgba(255, 255, 255, 0.08);
-
-  --accent-color: #6366f1;
-  --accent-hover: #4f46e5;
-
-  --shadow-1:
-    12px 12px 24px rgba(166, 180, 200, 0.25),
-    -12px -12px 24px rgba(255, 255, 255, 0.9);
-
-  --shadow-2:
-    inset 6px 6px 12px rgba(166, 180, 200, 0.22),
-    inset -6px -6px 12px rgba(255, 255, 255, 0.9);
-
-  --shadow-dark: 0 10px 30px rgba(0, 0, 0, 0.12);
-
-  --clock-face: #f9fafb;
-  --clock-tick: #9ca3af;
-  --clock-tick-major: #111827;
-
-  --hour-hand: #111827;
-  --minute-hand: #374151;
-  --second-hand: #ef4444;
-
-  --radius-lg: 28px;
-  --radius-md: 20px;
-  --radius-sm: 14px;
-
-  --transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* =========================
-   DARK THEME
-========================= */
-
-body.dark-theme {
-  --bg-color: #080c14;
-
-  --text-primary: #f9fafb;
-  --text-secondary: #94a3b8;
-
-  --card-bg: rgba(15, 23, 42, 0.85);
-
-  --glass-bg: rgba(255, 255, 255, 0.05);
-
-  --shadow-1:
-    14px 14px 30px rgba(0, 0, 0, 0.55), -12px -12px 30px rgba(25, 35, 55, 0.28);
-
-  --shadow-2:
-    inset 6px 6px 12px rgba(0, 0, 0, 0.55),
-    inset -6px -6px 12px rgba(25, 35, 55, 0.28);
-
-  --clock-face: #0f172a;
-  --clock-tick: #475569;
-  --clock-tick-major: #f8fafc;
-
-  --hour-hand: #ffffff;
-  --minute-hand: #d1d5db;
-  --second-hand: #22d3ee;
-}
-
-/* =========================
-   RESET
-========================= */
-
-*,
-*::before,
-*::after {
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-html,
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  width: 100%;
+  font-family: 'Outfit', sans-serif;
+  background: radial-gradient(circle at top, #182338 0%, #0b0f17 60%);
+  color: var(--text);
   min-height: 100vh;
   overflow-x: hidden;
+  transition: background-color .35s ease, color .35s ease;
 }
 
-body {
-  background: var(--bg-color);
-  color: var(--text-primary);
-  font-family: "Plus Jakarta Sans", sans-serif;
-  transition: var(--transition);
-  position: relative;
-}
+/* ==========================
+   NOISE OVERLAY
 
-/* =========================
-   ANIMATED BACKGROUND
-========================= */
-
-.animated-bg {
+.noise-overlay {
   position: fixed;
   inset: 0;
-  overflow: hidden;
-  z-index: -2;
+  pointer-events: none;
+  opacity: .04;
+  background-image: radial-gradient(circle, #fff 1px, transparent 1px);
+  background-size: 4px 4px;
+  z-index: 0;
 }
 
-.gradient-orb {
-  position: absolute;
-  width: 450px;
-  height: 450px;
-  border-radius: 50%;
-  filter: blur(90px);
-  opacity: 0.25;
-  animation: floatOrb 18s infinite ease-in-out;
-}
+/* ==========================
+   HEADER
 
-.orb1 {
-  top: -120px;
-  left: -100px;
-  background: #6366f1;
-}
-
-.orb2 {
-  bottom: -120px;
-  right: -100px;
-  background: #06b6d4;
-}
-
-@keyframes floatOrb {
-  0% {
-    transform: translateY(0px) translateX(0px);
-  }
-
-  50% {
-    transform: translateY(40px) translateX(20px);
-  }
-
-  100% {
-    transform: translateY(0px) translateX(0px);
-  }
-}
-
-/* =========================
-   NAVBAR
-========================= */
-
-.glass-navbar {
-  backdrop-filter: blur(18px);
-  background: var(--glass-bg);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.brand-section h1 {
-  font-weight: 800;
-  font-size: 2rem;
-
-  background: linear-gradient(135deg, var(--text-primary), var(--accent-color));
-
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.brand-section p {
-  font-size: 0.9rem;
-  color: var(--text-secondary);
-}
-
-/* =========================
-   HERO BANNER
-========================= */
-
-.hero-banner {
-  position: relative;
-  overflow: hidden;
-
-  background: linear-gradient(
-    135deg,
-    rgba(99, 102, 241, 0.12),
-    rgba(6, 182, 212, 0.12)
-  );
-
-  backdrop-filter: blur(16px);
-
-  border: 1px solid rgba(255, 255, 255, 0.08);
-
-  box-shadow: var(--shadow-dark);
-}
-
-.hero-banner::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-
-  background: radial-gradient(
-    circle at top left,
-    rgba(255, 255, 255, 0.15),
-    transparent 45%
-  );
-}
-
-/* =========================
-   MAIN DASHBOARD
-========================= */
-
-.main-dashboard {
-  align-items: stretch;
-}
-
-/* =========================
-   MAIN CARDS
-========================= */
-
-.neumorphic-plate {
-  background: var(--card-bg);
-
-  backdrop-filter: blur(16px);
-
-  border-radius: var(--radius-lg);
-
-  box-shadow: var(--shadow-1);
-
-  border: 1px solid rgba(255, 255, 255, 0.08);
-
-  transition: var(--transition);
-
-  position: relative;
-
-  overflow: hidden;
-}
-
-.neumorphic-plate:hover {
-  transform: translateY(-4px);
-}
-
-/* =========================
-   LEFT LOCAL CLOCK
-========================= */
-
-.main-clock-section {
-  height: 100%;
-  min-height: 1180px;
-
+.site-header {
+  width: min(1400px, 95%);
+  margin: auto;
+  padding: 2rem 0;
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  position: relative;
+  z-index: 10;
 }
 
-.main-clock-section .clock-frame {
-  width: 340px;
-  height: 340px;
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
-/* =========================
-   RIGHT COLUMN
-========================= */
-
-.col-lg-5.d-flex.flex-column.gap-4 {
-  height: 1180px;
+.brand-mark {
+  width: 65px;
+  height: 65px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: var(--gold);
+  background: linear-gradient(145deg, rgba(212,175,55,.18), rgba(255,255,255,.04));
+  border: 1px solid rgba(212,175,55,.3);
 }
 
-.timer-section,
-.alarm-section,
-.stopwatch-section {
-  flex: 1;
+.brand-text h1 {
+  font-size: 1.9rem;
+  letter-spacing: 2px;
 }
 
-/* =========================
-   CLOCK BANNER
-========================= */
+.brand-plus {
+  color: var(--gold);
+}
 
-.clock-banner {
-  width: 100%;
+.brand-text p {
+  color: var(--text-muted);
+  font-size: .85rem;
+}
+
+.header-nav {
+  display: flex;
+  gap: 1rem;
+}
+
+.nav-btn {
+  background: rgba(255,255,255,.05);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: .85rem 1.1rem;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  cursor: pointer;
+  transition: all .3s ease;
+}
+
+.nav-btn:hover {
+  transform: translateY(-3px);
+  border-color: var(--gold);
+  box-shadow: 0 0 20px rgba(212,175,55,.15);
+}
+
+.mode-label {
+  font-size: .72rem;
+  letter-spacing: 2px;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: rgba(212,175,55,.15);
+  color: var(--gold);
+}
+
+/* ==========================
+   WORKSPACE
+
+.workspace {
+  width: min(1400px, 95%);
+  margin: auto;
+  padding-bottom: 4rem;
+  position: relative;
+  z-index: 1;
+}
+
+/* ==========================
+   PANEL GRID
+
+.primary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.panel {
+  background: var(--panel);
+  backdrop-filter: blur(25px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: background-color .35s ease, border-color .35s ease, box-shadow .35s ease;
+}
+
+/* ==========================
+   LOCAL CLOCK
+
+.panel-banner {
   height: 180px;
-
   background-size: cover;
   background-position: center;
-
   position: relative;
-}
-
-.clock-banner::after {
-  content: "";
-
-  position: absolute;
-  inset: 0;
-
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0.45),
-    rgba(0, 0, 0, 0.12)
-  );
 }
 
 .banner-overlay {
-  position: relative;
-  z-index: 2;
-}
-
-/* =========================
-   CLOCK FRAME
-========================= */
-
-.clock-wrapper {
-  width: 320px;
-  max-width: 100%;
-}
-
-.clock-frame {
-  width: 320px;
-  height: 320px;
-
-  border-radius: 50%;
-
-  background: linear-gradient(135deg, #ffffff, #dbe3ee);
-
-  padding: 18px;
-
-  box-shadow:
-    0 12px 30px rgba(0, 0, 0, 0.12),
-    var(--shadow-1);
-
-  margin: auto;
-
-  position: relative;
-}
-
-body.dark-theme .clock-frame {
-  background: linear-gradient(135deg, #1e293b, #020617);
-}
-
-.clock-face {
-  width: 100%;
-  height: 100%;
-
-  border-radius: 50%;
-
-  position: relative;
-
-  background: var(--clock-face);
-
-  box-shadow: var(--shadow-2);
-
-  overflow: hidden;
-}
-
-/* =========================
-   GLASS EFFECT
-========================= */
-
-.clock-glass {
   position: absolute;
   inset: 0;
-
-  border-radius: 50%;
-
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent);
-
-  z-index: 20;
+  background: linear-gradient(to top, rgba(0,0,0,.8), transparent);
 }
 
-/* =========================
-   TICKS
-========================= */
-
-.tick {
+.banner-label {
   position: absolute;
-  width: 2px;
-  height: 100%;
-  left: calc(50% - 1px);
-  top: 0;
+  left: 20px;
+  bottom: 20px;
 }
 
-.tick::before {
-  content: "";
-
-  position: absolute;
-  top: 10px;
-
-  width: 100%;
-  height: 8px;
-
-  border-radius: 4px;
-
-  background: var(--clock-tick);
+.location-tag {
+  background: rgba(255,255,255,.1);
+  backdrop-filter: blur(10px);
+  padding: .45rem .9rem;
+  border-radius: 999px;
+  font-size: .8rem;
 }
 
-.tick.major::before {
-  height: 16px;
-  width: 4px;
-  left: -1px;
-
-  background: var(--clock-tick-major);
-}
-
-/* =========================
-   HANDS
-========================= */
-
-.hand {
-  position: absolute;
-  transform-origin: bottom center;
-  z-index: 12;
-}
-
-.hand.hour {
-  width: 10px;
-  height: 24%;
-
-  left: calc(50% - 5px);
-  bottom: 50%;
-
-  border-radius: 20px;
-
-  background: var(--hour-hand);
-}
-
-.hand.minute {
-  width: 6px;
-  height: 36%;
-
-  left: calc(50% - 3px);
-  bottom: 50%;
-
-  border-radius: 20px;
-
-  background: var(--minute-hand);
-}
-
-.hand.second {
-  width: 2px;
-  height: 45%;
-
-  left: calc(50% - 1px);
-  bottom: 50%;
-
-  background: var(--second-hand);
-
-  z-index: 13;
-}
-
-.hand.second::before {
-  content: "";
-
-  position: absolute;
-
-  width: 10px;
-  height: 10px;
-
-  background: var(--second-hand);
-
-  border-radius: 50%;
-
-  left: calc(50% - 5px);
-
-  bottom: 6px;
-}
-
-/* =========================
-   CENTER PIN
-========================= */
-
-.center-pin {
-  width: 16px;
-  height: 16px;
-
-  background: radial-gradient(circle at top left, #fff, #9ca3af);
-
-  border-radius: 50%;
-
-  position: absolute;
-
-  top: calc(50% - 8px);
-  left: calc(50% - 8px);
-
-  z-index: 15;
-}
-
-/* =========================
-   DIGITAL DISPLAY
-========================= */
-
-.digital-readout {
-  font-family: "JetBrains Mono", monospace;
-
-  font-size: 1.6rem;
-  font-weight: 700;
-
-  color: var(--accent-color);
-
-  background: var(--card-bg);
-
-  border-radius: 16px;
-
-  padding: 12px 22px;
-
-  margin-top: 20px;
-
-  box-shadow: var(--shadow-2);
-
-  text-align: center;
-}
-
-.clock-date {
-  margin-top: 12px;
-
-  color: var(--text-secondary);
-
-  font-weight: 600;
-}
-
-/* =========================
-   TIMER
-========================= */
-
-.timer-section {
-  max-height: 360px;
-}
-
-#countdownDisplay {
-  font-size: 2rem;
-  font-family: "JetBrains Mono", monospace;
-  font-weight: 700;
-}
-
-.timer-display-box {
-  padding: 18px;
-
-  border-radius: 24px;
-
-  background: var(--card-bg);
-
-  box-shadow: var(--shadow-2);
-
-  text-align: center;
-}
-
-/* =========================
-   STOPWATCH
-========================= */
-
-.stopwatch-section {
-  max-height: 360px;
-}
-
-.stopwatch-display h1 {
-  font-size: 2rem;
-  line-height: 1.1;
-  font-family: "JetBrains Mono", monospace;
-  font-weight: 700;
-}
-
-.stopwatch-section .btn {
-  padding: 10px 14px;
-  font-size: 0.9rem;
-}
-
-/* =========================
-   INPUTS
-========================= */
-
-.form-control,
-.form-select {
-  background: var(--card-bg) !important;
-
-  border: none;
-
-  color: var(--text-primary) !important;
-
-  border-radius: 16px;
-
-  min-height: 52px;
-
-  box-shadow: var(--shadow-2);
-
-  padding-left: 16px;
-}
-
-#countdownDisplay {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    letter-spacing: 0.02em;
-    text-shadow: 0px 2px 4px rgba(0,0,0,0.02);
-}
-
-.timer-controls {
-    display: flex;
-    gap: 15px;
-    width: 100%;
-}
-
-/* =========================
-   BUTTONS
-========================= */
-
-.btn {
-  border-radius: 16px !important;
-
-  font-weight: 600;
-
-  transition: var(--transition);
-}
-
-.btn:hover {
-  transform: translateY(-2px);
-}
-
-.btn-primary {
-  background: var(--accent-color);
-  border: none;
-}
-
-.btn-primary:hover {
-  background: var(--accent-hover);
-}
-
-/* =========================
-   LAP LIST
-========================= */
-
-.lap-container {
-  max-height: 120px;
-  overflow: auto;
-}
-
-.list-group-item {
-  background: var(--card-bg) !important;
-
-  color: var(--text-primary) !important;
-
-  border: none !important;
-
-  margin-bottom: 10px;
-
-  border-radius: 14px !important;
-
-  box-shadow: var(--shadow-2);
-
-  padding: 10px 14px;
-  font-size: 0.9rem;
-}
-
-/* =========================
-   WORLD CLOCKS
-========================= */
-
-.world-clocks-section {
-  margin-top: 40px;
-}
-
-.world-clock-card {
-  min-height: 520px;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-
-  transition: var(--transition);
-}
-
-.world-clock-card:hover {
-  transform: translateY(-6px);
-}
-
-.world-clock-card .clock-frame {
-  width: 160px;
-  height: 160px;
-  padding: 12px;
-}
-
-.world-clock-card .digital-readout {
-  font-size: 1rem;
-  padding: 10px 16px;
-}
-
-.world-clock-card .clock-banner {
-  height: 130px;
-}
-
-/* =========================
-   MODALS
-========================= */
-
-.modal-content {
-  border-radius: 28px !important;
-
-  border: none !important;
-
-  backdrop-filter: blur(18px);
-}
-
-.modal-body {
+.panel-body {
   padding: 2rem;
 }
 
-/* =========================
-   LARGE FOCUS CLOCK
-========================= */
-
-.large-clock {
-  width: 500px !important;
-  height: 500px !important;
+.clock-identity {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-/* =========================
-   SCROLLBAR
-========================= */
-
-::-webkit-scrollbar {
-  width: 10px;
+.clock-city {
+  font-size: 1.5rem;
 }
 
-::-webkit-scrollbar-track {
+.live-badge {
+  color: var(--success);
+  font-size: .85rem;
+}
+
+.clock-stage {
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+/* ==========================
+   ANALOG CLOCK
+
+.clock-bezel {
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #1c2435, #0f172a);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 8px solid rgba(212,175,55,.15);
+}
+
+.clock-face {
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  position: relative;
+  background: radial-gradient(circle, #111827, #020617);
+}
+
+.clock-glass-sheen {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.05), transparent 70%);
+  pointer-events: none;
+}
+
+.center-jewel {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--gold);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+}
+
+.hand {
+  position: absolute;
+  left: 50%;
+  bottom: 50%;
+  transform-origin: bottom center;
+  border-radius: 999px;
+  z-index: 5;
+}
+
+.hour-hand {
+  width: 6px;
+  height: 60px;
+  background: white;
+}
+
+.minute-hand {
+  width: 4px;
+  height: 85px;
+  background: #ddd;
+}
+
+.second-hand {
+  width: 2px;
+  height: 95px;
+  background: var(--gold);
+}
+
+.tick {
+  position: absolute;
+  left: 50%;
+  top: 8px;
+  width: 2px;
+  height: 10px;
+  background: rgba(255,255,255,.15);
+  transform-origin: bottom center;
+}
+
+.tick.major {
+  width: 3px;
+  height: 16px;
+  background: rgba(255,255,255,.3);
+}
+
+/* ==========================
+   DIGITAL READOUTS
+
+.clock-readouts {
+  text-align: center;
+}
+
+.digital-time {
+  font-family: 'DM Mono', monospace;
+  font-size: 2.3rem;
+  color: var(--gold);
+}
+
+.digital-date {
+  margin-top: .5rem;
+  color: var(--text-muted);
+}
+
+/* ==========================
+   TIMER PANEL
+
+.timer-panel {
+  padding: 2rem;
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.panel-title-group h2 {
+  margin-bottom: .35rem;
+}
+
+.panel-title-group p {
+  color: var(--text-muted);
+  font-size: .9rem;
+}
+
+.panel-icon {
+  color: var(--gold);
+  opacity: .6;
+}
+
+.timer-inputs {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.time-input {
+  width: 90px;
+  height: 80px;
+  background: #111827;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  text-align: center;
+  color: white;
+  font-size: 2rem;
+  font-family: 'DM Mono', monospace;
+  transition: all .35s ease;
+}
+
+.time-input:focus {
+  outline: none;
+  border-color: var(--gold);
+  box-shadow: 0 0 20px rgba(212,175,55,.1);
+}
+
+.time-field {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .5rem;
+}
+
+.time-field label {
+  color: var(--text-muted);
+  font-size: .8rem;
+  letter-spacing: 1px;
+}
+
+.time-separator {
+  font-size: 2rem;
+  color: var(--gold);
+}
+
+/* ==========================
+   COUNTDOWN DISPLAY
+
+.countdown-display {
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+.countdown-track {
+  width: 250px;
+  height: 250px;
+  position: relative;
+}
+
+.countdown-arc {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.arc-bg {
+  stroke: rgba(255,255,255,.08);
+}
+
+.arc-fill {
+  stroke: url(#goldGrad);
+  transition: stroke-dashoffset 0.3s ease;
+}
+
+.countdown-digits {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  font-family: 'DM Mono', monospace;
+  color: var(--gold);
+}
+
+/* ==========================
+   BUTTONS
+
+.timer-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.action-btn {
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  padding: .95rem 1.3rem;
+  border-radius: 14px;
+  font-weight: 600;
+  transition: all .3s ease;
+  font-family: 'Outfit', sans-serif;
+}
+
+.action-btn:hover {
+  transform: translateY(-2px);
+}
+
+.primary-action {
+  background: var(--gold);
+  color: black;
+}
+
+.primary-action:hover {
+  box-shadow: 0 0 30px rgba(212,175,55,.3);
+}
+
+.secondary-action {
+  background: #1e293b;
+  color: white;
+}
+
+.secondary-action:hover {
+  background: #2d3748;
+}
+
+.ghost-action {
   background: transparent;
+  border: 1px solid var(--border);
+  color: white;
 }
 
-::-webkit-scrollbar-thumb {
-  background: rgba(99, 102, 241, 0.4);
-  border-radius: 20px;
+.ghost-action:hover {
+  border-color: var(--gold);
+  color: var(--gold);
 }
 
-/* =========================
-   FOCUS MODE
-========================= */
+/* ==========================
+   TIMER ALERT
 
-body.focus-mode .world-clocks-section,
-body.focus-mode .alarm-section,
-body.focus-mode .stopwatch-section {
+.timer-alert {
   display: none;
+  margin-top: 1.5rem;
+  padding: 1rem;
+  border-radius: 14px;
+  background: rgba(239,68,68,.12);
+  border: 1px solid rgba(239,68,68,.3);
+  color: #ff9f9f;
+  align-items: center;
+  gap: .8rem;
+  animation: pulseAlert 1s infinite;
 }
 
-/* =========================
-   FIX OVERLAP ISSUE
-========================= */
+@keyframes pulseAlert {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .6; }
+}
 
-.stopwatch-section,
-.world-clock-card,
-.timer-section,
-.alarm-section {
+/* ==========================
+   MAP PANEL
+
+.map-panel {
+  margin-bottom: 2rem;
+  padding: 2rem;
+}
+
+.map-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.map-panel-header h2 {
+  margin-bottom: .35rem;
+}
+
+.map-panel-header p {
+  color: var(--text-muted);
+  font-size: .9rem;
+}
+
+.map-legend {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: .8rem;
+  color: var(--text-muted);
+}
+
+.legend-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 4px;
+}
+
+.legend-dot.pinned {
+  background: var(--gold);
+}
+
+.legend-dot.active {
+  background: var(--success);
+}
+
+.map-container {
+  height: 500px;
+  border-radius: 20px;
+  background: #09111f;
+  border: 1px solid var(--border);
+  position: relative;
   overflow: hidden;
 }
 
-.row.g-4 > [class*="col-"] {
-  display: flex;
-}
-
-.row.g-4 > [class*="col-"] > div,
-.row.g-4 > [class*="col-"] > section {
+.map-scroll {
   width: 100%;
+  height: 100%;
+  overflow: auto;
 }
 
-/* =========================
+#timezone-map-wrapper {
+  width: 100%;
+  height: 100%;
+}
+
+#timezone-map-wrapper svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Map Tooltip */
+.map-tooltip {
+  position: absolute;
+  background: var(--panel);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--gold);
+  border-radius: 16px;
+  padding: 1rem 1.25rem;
+  min-width: 200px;
+  z-index: 100;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+  display: none;
+  flex-direction: column;
+  gap: 0.5rem;
+  pointer-events: none;
+}
+
+.map-tooltip .tt-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.map-tooltip .tt-header h4 {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.map-tooltip .tt-badge {
+  font-size: .7rem;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(212,175,55,.15);
+  color: var(--gold);
+}
+
+.map-tooltip .tt-tz {
+  font-size: .75rem;
+  color: var(--text-muted);
+}
+
+.map-tooltip .tt-time-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.25rem;
+}
+
+.map-tooltip .tt-time {
+  font-family: 'DM Mono', monospace;
+  font-size: 1.2rem;
+  color: var(--gold);
+}
+
+.map-tooltip .tt-date {
+  font-size: .75rem;
+  color: var(--text-muted);
+}
+
+.map-tooltip .tt-pin-btn {
+  margin-top: 0.5rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--gold);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--gold);
+  cursor: pointer;
+  font-size: .8rem;
+  font-weight: 500;
+  transition: all .2s;
+  pointer-events: auto;
+  font-family: 'Outfit', sans-serif;
+}
+
+.map-tooltip .tt-pin-btn:hover {
+  background: var(--gold);
+  color: black;
+}
+
+.map-tooltip .tt-remove-btn {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+.map-tooltip .tt-remove-btn:hover {
+  background: var(--danger);
+  color: white;
+}
+
+/* Map SVG Styles */
+.timezone-sector {
+  fill: rgba(255,255,255,0.02);
+  stroke: rgba(255,255,255,0.05);
+  stroke-width: 0.5;
+  transition: fill 0.3s ease;
+  cursor: pointer;
+}
+
+.timezone-sector:hover,
+.timezone-sector.active-sector {
+  fill: rgba(212,175,55,0.08);
+}
+
+.map-grid-line {
+  stroke: rgba(255,255,255,0.05);
+  stroke-width: 0.5;
+}
+
+.map-grid-line.equator-line {
+  stroke: rgba(212,175,55,0.1);
+  stroke-width: 1;
+}
+
+.map-grid-line.meridian-line {
+  stroke: rgba(255,255,255,0.05);
+  stroke-width: 0.5;
+}
+
+.city-marker {
+  cursor: pointer;
+}
+
+.city-marker .pulse-ring {
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 1.5;
+  opacity: 0.5;
+  animation: pulseRing 2s infinite;
+}
+
+.city-marker .center-dot {
+  fill: var(--gold);
+  transition: fill 0.3s ease;
+}
+
+.city-marker.pinned-marker .center-dot {
+  fill: var(--success);
+}
+
+.city-marker.pinned-marker .pulse-ring {
+  stroke: var(--success);
+}
+
+@keyframes pulseRing {
+  0% { r: 6; opacity: 0.5; }
+  50% { r: 12; opacity: 0.2; }
+  100% { r: 6; opacity: 0.5; }
+}
+
+/* ==========================
+   WORLD CLOCKS
+
+.world-section {
+  margin-top: 2rem;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.section-header h2 {
+  font-size: 1.5rem;
+}
+
+.clock-search-wrap {
+  position: relative;
+  flex: 1;
+  max-width: 400px;
+  min-width: 200px;
+}
+
+.clock-search {
+  width: 100%;
+  padding: 1rem 1rem 1rem 3rem;
+  background: #111827;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  color: white;
+  font-family: 'Outfit', sans-serif;
+  transition: all .35s ease;
+}
+
+.clock-search:focus {
+  outline: none;
+  border-color: var(--gold);
+  box-shadow: 0 0 20px rgba(212,175,55,.1);
+}
+
+.search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+}
+
+.search-results {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  background: var(--panel);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  max-height: 300px;
+  overflow-y: auto;
+  display: none;
+  z-index: 100;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+}
+
+.search-results.active {
+  display: block;
+}
+
+.search-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.2s;
+}
+
+.search-item:hover {
+  background: rgba(255,255,255,0.05);
+}
+
+.search-item-info h4 {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.search-item-info p {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.quick-pin-btn {
+  padding: 0.4rem 0.8rem;
+  border: 1px solid var(--gold);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--gold);
+  cursor: pointer;
+  font-size: 0.75rem;
+  font-weight: 500;
+  transition: all 0.2s;
+  font-family: 'Outfit', sans-serif;
+}
+
+.quick-pin-btn:hover:not(:disabled) {
+  background: var(--gold);
+  color: black;
+}
+
+.quick-pin-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.clocks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+/* World Clock Cards */
+.world-clock-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 1.5rem;
+  text-align: center;
+  position: relative;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.world-clock-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--gold);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.world-clock-card .remove-btn {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  line-height: 1;
+}
+
+.world-clock-card .remove-btn:hover {
+  color: var(--danger);
+  transform: scale(1.2);
+}
+
+.world-clock-card .card-city {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.2rem;
+}
+
+.world-clock-card .card-sub {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+}
+
+.world-clock-card .clock-bezel {
+  width: 180px;
+  height: 180px;
+  margin: 0 auto;
+  border-width: 5px;
+}
+
+.world-clock-card .clock-face {
+  width: 155px;
+  height: 155px;
+}
+
+.world-clock-card .digital-time {
+  font-size: 1.5rem;
+  margin-top: 1rem;
+}
+
+.world-clock-card .digital-date {
+  font-size: 0.8rem;
+}
+
+.world-clock-card .hour-hand {
+  height: 40px;
+  width: 4px;
+}
+
+.world-clock-card .minute-hand {
+  height: 55px;
+  width: 3px;
+}
+
+.world-clock-card .second-hand {
+  height: 62px;
+  width: 1.5px;
+}
+
+.world-clock-card .center-jewel {
+  width: 10px;
+  height: 10px;
+}
+
+.card-highlight-active {
+  animation: highlightPulse 0.8s ease;
+}
+
+@keyframes highlightPulse {
+  0%, 100% { border-color: var(--border); }
+  50% { border-color: var(--gold); box-shadow: 0 0 40px rgba(212,175,55,0.3); }
+}
+
+/* ==========================
+   EXIT FOCUS BUTTON
+
+.exit-focus-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #ff4444, #cc0000);
+  color: white;
+  border: none;
+  border-radius: 40px;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 10px 25px rgba(239,68,68,.3);
+  transition: all 0.3s ease;
+}
+
+.exit-focus-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 15px 35px rgba(239,68,68,.4);
+}
+
+/* ==========================
+   ALARM SYSTEM
+
+.alarm-panel {
+  margin-bottom: 2rem;
+  padding: 2rem;
+}
+
+.alarm-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.alarm-input-section {
+  background: rgba(255,255,255,0.03);
+  border-radius: 20px;
+  padding: 1.5rem;
+  border: 1px solid var(--border);
+}
+
+.alarm-time-inputs {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.alarm-controls {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.alarm-list {
+  margin-top: 0.5rem;
+}
+
+.alarm-list h3 {
+  font-size: 1rem;
+  color: var(--text-muted);
+  margin-bottom: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+
+.alarm-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.alarm-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background: rgba(255,255,255,0.04);
+  border-radius: 12px;
+  border-left: 3px solid var(--gold);
+  animation: slideInAlarm 0.3s ease;
+}
+
+@keyframes slideInAlarm {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.alarm-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.alarm-item-time {
+  font-family: 'DM Mono', monospace;
+  font-size: 1.1rem;
+  color: var(--gold);
+  font-weight: 500;
+}
+
+.alarm-item-status {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.alarm-item-status.active {
+  color: var(--success);
+}
+
+.alarm-item-status.triggered {
+  color: var(--danger);
+}
+
+.alarm-item-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.alarm-item-actions button {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: all 0.2s;
+  font-family: 'Outfit', sans-serif;
+}
+
+.alarm-item-actions button:hover {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+.alarm-empty-state {
+  color: var(--text-muted);
+  text-align: center;
+  padding: 2rem 0;
+  font-size: 0.9rem;
+}
+
+/* Alarm Alert Overlay */
+.alarm-alert-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(20px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10001;
+  animation: fadeInOverlay 0.5s ease;
+}
+
+@keyframes fadeInOverlay {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.alarm-alert-content {
+  background: var(--panel);
+  border: 2px solid var(--gold);
+  border-radius: 30px;
+  padding: 3rem;
+  max-width: 500px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+  animation: pulseGlow 2s infinite;
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 40px rgba(212,175,55,0.3);
+  }
+  50% {
+    box-shadow: 0 0 80px rgba(212,175,55,0.6);
+  }
+}
+
+.alarm-alert-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  animation: ringBell 0.5s infinite alternate;
+}
+
+@keyframes ringBell {
+  from {
+    transform: rotate(-15deg);
+  }
+  to {
+    transform: rotate(15deg);
+  }
+}
+
+.alarm-alert-content h2 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  color: var(--gold);
+}
+
+.alarm-alert-content p {
+  font-size: 1.2rem;
+  color: var(--text-muted);
+  margin-bottom: 2rem;
+}
+
+.alarm-alert-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* ==========================
+   THEME VARIABLES
+
+body.dark-theme {
+  --bg: #0b0f17;
+  --bg-secondary: #111827;
+  --panel: #141c2f;
+  --text: #ffffff;
+  --text-muted: #94a3b8;
+  --gold: #d4af37;
+  --border: rgba(255,255,255,.08);
+}
+
+body.light-theme {
+  --bg: #f5f7fb;
+  --bg-secondary: #ffffff;
+  --panel: #ffffff;
+  --text: #0f172a;
+  --text-muted: #64748b;
+  --gold: #b8860b;
+  --border: rgba(15,23,42,.08);
+  --shadow: 0 10px 25px rgba(15,23,42,.08);
+}
+
+body.light-theme .time-input,
+body.light-theme .clock-search {
+  background: #f1f5f9;
+  color: var(--text);
+}
+
+body.light-theme .clock-bezel {
+  background: radial-gradient(circle, #e2e8f0, #cbd5e1);
+}
+
+body.light-theme .clock-face {
+  background: radial-gradient(circle, #f8fafc, #e2e8f0);
+}
+
+body.light-theme .alarm-input-section {
+  background: rgba(0,0,0,0.03);
+}
+
+body.light-theme .alarm-item {
+  background: rgba(0,0,0,0.03);
+}
+
+body.light-theme .search-results {
+  background: white;
+}
+
+body.light-theme .search-item:hover {
+  background: rgba(0,0,0,0.05);
+}
+
+body.light-theme .map-container {
+  background: #f1f5f9;
+}
+
+body.light-theme .timezone-sector {
+  fill: rgba(0,0,0,0.02);
+  stroke: rgba(0,0,0,0.05);
+}
+
+body.light-theme .timezone-sector:hover,
+body.light-theme .timezone-sector.active-sector {
+  fill: rgba(184,134,11,0.08);
+}
+
+/* ==========================
    RESPONSIVE
-========================= */
 
 @media (max-width: 1200px) {
-  .main-clock-section {
-    min-height: auto;
+  .clocks-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
-
-  .col-lg-5.d-flex.flex-column.gap-4 {
-    height: auto;
+  
+  .brand-text h1 {
+    font-size: 1.1rem;
   }
-
-  .main-clock-section .clock-frame {
-    width: 300px;
-    height: 300px;
+  
+  .clock-bezel {
+    width: 220px;
+    height: 220px;
   }
-
-  .large-clock {
-    width: 420px !important;
-    height: 420px !important;
+  
+  .clock-face {
+    width: 190px;
+    height: 190px;
+  }
+  
+  .workspace {
+    padding: 12px 12px 60px;
   }
 }
 
-@media (max-width: 992px) {
-  .hero-banner {
-    padding: 3rem 1.5rem !important;
+@media (max-width: 1000px) {
+  .primary-grid {
+    grid-template-columns: 1fr;
   }
-
-  .main-clock-section .clock-frame {
-    width: 260px;
-    height: 260px;
+  
+  .site-header {
+    flex-direction: column;
+    padding: 1rem 0;
   }
-
-  .digital-readout {
-    font-size: 1.25rem;
+  
+  .section-header {
+    flex-direction: column;
+    align-items: stretch;
   }
-
-  .stopwatch-display h1,
-  #countdownDisplay {
-    font-size: 1.8rem;
+  
+  .clock-search-wrap {
+    max-width: 100%;
   }
-
-  .world-clock-card {
-    min-height: auto;
+  
+  .map-panel-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
   }
-
-  .timer-section,
-  .alarm-section,
-  .stopwatch-section {
-    max-height: none;
+  
+  .map-container {
+    height: 400px;
   }
 }
 
 @media (max-width: 768px) {
-  .brand-section h1 {
+  .panel-body {
+    padding: 1.5rem;
+  }
+  
+  .timer-panel,
+  .map-panel,
+  .alarm-panel {
+    padding: 1.5rem;
+  }
+  
+  .timer-inputs {
+    gap: 0.5rem;
+  }
+  
+  .time-input {
+    width: 70px;
+    height: 60px;
+    font-size: 1.5rem;
+  }
+  
+  .time-separator {
+    font-size: 1.5rem;
+  }
+  
+  .countdown-track {
+    width: 200px;
+    height: 200px;
+  }
+  
+  .countdown-digits {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .clocks-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .clock-bezel {
+    width: 200px;
+    height: 200px;
+  }
+  
+  .clock-face {
+    width: 175px;
+    height: 175px;
+  }
+  
+  .digital-time {
     font-size: 1.7rem;
   }
-
-  .main-clock-section .clock-frame {
-    width: 220px;
-    height: 220px;
+  
+  .countdown-track {
+    width: 180px;
+    height: 180px;
   }
+  
+  .countdown-digits {
+    font-size: 1.3rem;
+  }
+  
+  .alarm-time-inputs .time-input {
+    width: 60px;
+    height: 60px;
+    font-size: 1.5rem;
+  }
+  
+  .alarm-alert-content {
+    padding: 2rem;
+  }
+  
+  .alarm-alert-content h2 {
+    font-size: 1.5rem;
+  }
+  
+  .brand-mark {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .brand-text h1 {
+    font-size: 1.3rem;
+  }
+  
+  .header-nav {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .nav-btn {
+    padding: 0.6rem 0.9rem;
+    font-size: 0.85rem;
+  }
+  
+  .map-container {
+    height: 300px;
+  }
+  
+  .exit-focus-btn {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    bottom: 16px;
+    right: 16px;
+  }
+}
 
-  .world-clock-card .clock-frame {
+@media (max-width: 400px) {
+  .clock-bezel {
+    width: 160px;
+    height: 160px;
+  }
+  
+  .clock-face {
     width: 140px;
     height: 140px;
   }
-
-  .large-clock {
-    width: 300px !important;
-    height: 300px !important;
+  
+  .hour-hand {
+    height: 35px;
+    width: 4px;
   }
-
-  .hero-banner h1 {
-    font-size: 2rem;
+  
+  .minute-hand {
+    height: 50px;
+    width: 3px;
   }
-
-  .stopwatch-display h1,
-  #countdownDisplay {
-    font-size: 1.5rem;
+  
+  .second-hand {
+    height: 58px;
+    width: 1.5px;
   }
+  
+  .time-input {
+    width: 55px;
+    height: 50px;
+    font-size: 1.2rem;
+  }
+  
+  .timer-actions,
+  .alarm-controls,
+  .alarm-alert-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .timer-actions .action-btn,
+  .alarm-controls .action-btn,
+  .alarm-alert-actions .action-btn {
+    width: 100%;
+    justify-content: center;
+  }
+/* ==========================
+   ROOT VARIABLES
+
+/*FOCUS MODE*/
+
+/*BACK BUTTON*/
+.focus-back-btn {
+  display: none;         
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 9999;
+
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+
+  color: #fff;
+
+  align-items: center;
+  justify-content: center;
+
+  transition: background 0.2s ease, transform 0.2s ease;
 }
 
-.world-clock-card .digital-readout {
-    font-size: 1.15rem;
-    padding: 6px 14px;
-    border-radius: 8px;
+.focus-back-btn:hover {
+  background: rgba(255, 255, 255, 0.18);
+  transform: scale(1.08);
 }
-.header-actions {
+
+/*WHEN FOCUS MODE IS ACTIVE*/
+
+/* Reveal the back arrow */
+body.focus-active-view .focus-back-btn {
+  display: flex;
+}
+
+/* Deep purple immersive background — matches the reference design */
+body.focus-active-view {
+  background: radial-gradient(ellipse at 30% 40%, #4c2a85 0%, #1a0a3d 45%, #0d0720 100%) !important;
+}
+
+/* Hide every peripheral element */
+body.focus-active-view .noise-overlay,
+body.focus-active-view .site-header,
+body.focus-active-view .local-clock-panel,
+body.focus-active-view .map-panel,
+body.focus-active-view .world-section {
+  display: none !important;
+}
+
+/* The workspace wrapper — become a full-viewport flex stage */
+body.focus-active-view .workspace {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-height: 100vh;
+  padding: 0 !important;
+  margin: 0 !important;
+
   display: flex;
   align-items: center;
-  gap: 12px;
+  justify-content: center;
 }
 
-.focus-btn {
-  border-radius: 12px;
-  padding: 10px 16px;
+body.focus-active-view .primary-grid {
+  display: contents;   /* grid disappears timer-panel flows directly into workspace flex */
+}
+
+
+body.focus-active-view .timer-panel {
+  width: min(520px, 90vw);
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  border-radius: 0 !important;
+  padding: 2rem !important;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Panel header */
+body.focus-active-view .timer-panel .panel-header {
+  display: none;
+}
+
+body.focus-active-view .timer-inputs {
+  margin-top: 0;
+}
+
+body.focus-active-view .time-input {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.15);
+  color: #fff;
+}
+
+body.focus-active-view .countdown-track {
+  width: 300px;
+  height: 300px;
+}
+
+body.focus-active-view .countdown-digits {
+  font-size: 3rem;
+  color: #fff;
+  font-weight: 300;
+  letter-spacing: 2px;
+}
+
+body.focus-active-view .arc-bg {
+  stroke: rgba(255, 255, 255, 0.1);
+}
+
+body.focus-active-view .arc-fill {
+  stroke: #a78bfa; 
+}
+
+
+body.focus-active-view .primary-action {
+  background: rgba(167, 139, 250, 0.85);
+  color: #fff;
+}
+
+body.focus-active-view .secondary-action {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+body.focus-active-view .ghost-action {
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+body.focus-active-view .timer-alert {
+  width: 100%;
+}
+
+/* Light theme override — focus mode always stays dark */
+body.focus-active-view.light-theme {
+  background: radial-gradient(ellipse at 30% 40%, #4c2a85 0%, #1a0a3d 45%, #0d0720 100%) !important;
+}
+
+body.focus-active-view.light-theme .time-input {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+body.focus-active-view.light-theme .countdown-digits {
+  color: #fff;
+}
+
+body.focus-active-view.light-theme .ghost-action {
+  color: #fff;
+}
+
+.exit-focus-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #ff4444, #cc0000);
+  color: white;
+  border: none;
+  border-radius: 40px;
+  font-family: 'Outfit', sans-serif;
   font-weight: 600;
-  transition: var(--transition);
+}
+/* ═══════════════════════════════════════════════════════════════
+   CHRONOS+ · PREMIUM TIME OBSERVATORY
+   Aesthetic: Luxury watchmaker × Space observatory
+   Fonts: Cormorant Garamond (display) + DM Mono (digits) + Outfit (UI)
+   ═══════════════════════════════════════════════════════════════ */
+
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600;700;800&display=swap");
+
+/* ── DESIGN TOKENS ── */
+:root {
+  --bg: #0b0f17;
+  --bg-secondary: #111827;
+  --panel: rgba(18, 24, 38, 0.85);
+
+  --text: #f8fafc;
+  --text-muted: #94a3b8;
+
+  --gold: #d4af37;
+  --gold-light: #f4d06f;
+
+  --border: rgba(255,255,255,0.08);
+
+  --success: #22c55e;
+  --danger: #ef4444;
+
+  --radius: 24px;
+  --shadow:
+    0 10px 30px rgba(0,0,0,.35),
+    0 0 40px rgba(212,175,55,.08);
 }
 
-.focus-btn:hover {
-  transform: translateY(-2px);
+/* ==========================
+   RESET
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
 }
 
-/* ----------------------------------------------------
-   7. Interactive World Timezone Map
-   ---------------------------------------------------- */
-.timezone-map-section {
-    width: 100%;
-    padding: 30px;
-    margin-top: 10px;
+html{
+  scroll-behavior:smooth;
 }
 
-.map-header {
-    width: 100%;
-    margin-bottom: 20px;
-    text-align: left;
+body{
+  font-family:'Outfit',sans-serif;
+  background:
+    radial-gradient(circle at top,#182338 0%,#0b0f17 60%);
+  color:var(--text);
+  min-height:100vh;
+  overflow-x:hidden;
 }
 
-.map-header h2 {
-    font-size: 1.5rem;
-    font-weight: 800;
-    letter-spacing: -0.03em;
-    color: var(--text-primary);
-    margin-bottom: 6px;
+/* ==========================
+   NOISE
+
+.noise-overlay{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  opacity:.04;
+  background-image:
+    radial-gradient(circle,#fff 1px,transparent 1px);
+  background-size:4px 4px;
 }
 
-.map-header .subtitle {
-    font-size: 0.85rem;
-    color: var(--text-secondary);
-    font-weight: 500;
+/* ==========================
+   HEADER
+
+.site-header{
+  width:min(1400px,95%);
+  margin:auto;
+  padding:2rem 0;
+
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:2rem;
 }
 
+.brand{
+  display:flex;
+  align-items:center;
+  gap:1rem;
+}
+
+.brand-mark{
+  width:65px;
+  height:65px;
+  border-radius:50%;
+
+  display:grid;
+  place-items:center;
+
+  color:var(--gold);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(212,175,55,.18),
+      rgba(255,255,255,.04)
+    );
+
+  border:1px solid rgba(212,175,55,.3);
+}
+
+.brand-text h1{
+  font-size:1.9rem;
+  letter-spacing:2px;
+}
+
+.brand-plus{
+  color:var(--gold);
+}
+
+.brand-text p{
+  color:var(--text-muted);
+  font-size:.85rem;
+}
+
+.header-nav{
+  display:flex;
+  gap:1rem;
+}
+
+.nav-btn{
+  background:rgba(255,255,255,.05);
+  border:1px solid var(--border);
+
+  color:var(--text);
+
+  padding:.85rem 1.1rem;
+  border-radius:14px;
+
+  display:flex;
+  align-items:center;
+  gap:.6rem;
+
+  cursor:pointer;
+
+  transition:.3s;
+}
+
+.nav-btn:hover{
+  transform:translateY(-3px);
+  border-color:var(--gold);
+  box-shadow:0 0 20px rgba(212,175,55,.15);
+}
+
+/* ==========================
+   WORKSPACE
+
+.workspace{
+  width:min(1400px,95%);
+  margin:auto;
+  padding-bottom:4rem;
+}
+
+/* ==========================
+   GRID
+
+.primary-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:2rem;
+  margin-bottom:2rem;
+}
+
+.panel{
+  background:var(--panel);
+  backdrop-filter:blur(25px);
+
+  border:1px solid var(--border);
+
+  border-radius:var(--radius);
+
+  overflow:hidden;
+
+  box-shadow:var(--shadow);
+}
+
+/* ==========================
+   LOCAL CLOCK
+
+.panel-banner{
+  height:180px;
+  background-size:cover;
+  background-position:center;
+  position:relative;
+}
+
+.banner-overlay{
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(
+      to top,
+      rgba(0,0,0,.8),
+      transparent
+    );
+}
+
+.banner-label{
+  position:absolute;
+  left:20px;
+  bottom:20px;
+}
+
+.location-tag{
+  background:rgba(255,255,255,.1);
+  backdrop-filter:blur(10px);
+
+  padding:.45rem .9rem;
+  border-radius:999px;
+
+  font-size:.8rem;
+}
+
+.panel-body{
+  padding:2rem;
+}
+
+.clock-identity{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.clock-city{
+  font-size:1.5rem;
+}
+
+.live-badge{
+  color:var(--success);
+  font-size:.85rem;
+}
+
+.clock-stage{
+  display:flex;
+  justify-content:center;
+  margin:2rem 0;
+}
+
+/* ==========================
+   ANALOG CLOCK
+
+.clock-bezel{
+  width:280px;
+  height:280px;
+  border-radius:50%;
+
+  background:
+    radial-gradient(circle,#1c2435,#0f172a);
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  border:8px solid rgba(212,175,55,.15);
+}
+
+.clock-face{
+  width:240px;
+  height:240px;
+  border-radius:50%;
+  position:relative;
+
+  background:
+    radial-gradient(circle,#111827,#020617);
+}
+
+.center-jewel{
+  position:absolute;
+  width:14px;
+  height:14px;
+  border-radius:50%;
+
+  background:var(--gold);
+
+  top:50%;
+  left:50%;
+
+  transform:translate(-50%,-50%);
+}
+
+.hand{
+  position:absolute;
+  left:50%;
+  bottom:50%;
+
+  transform-origin:bottom center;
+  border-radius:999px;
+}
+
+.hour-hand{
+  width:6px;
+  height:60px;
+  background:white;
+}
+
+.minute-hand{
+  width:4px;
+  height:85px;
+  background:#ddd;
+}
+
+.second-hand{
+  width:2px;
+  height:95px;
+  background:var(--gold);
+}
+
+/* ==========================
+   DIGITAL
+
+.clock-readouts{
+  text-align:center;
+}
+
+.digital-time{
+  font-family:'DM Mono',monospace;
+  font-size:2.3rem;
+  color:var(--gold);
+}
+
+.digital-date{
+  margin-top:.5rem;
+  color:var(--text-muted);
+}
+
+/* ==========================
+   TIMER PANEL
+
+.timer-panel{
+  padding:2rem;
+}
+
+.panel-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.panel-header h2{
+  margin-bottom:.35rem;
+}
+
+.panel-header p{
+  color:var(--text-muted);
+  font-size:.9rem;
+}
+
+.timer-inputs{
+  margin-top:2rem;
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:1rem;
+}
+
+.time-input{
+  width:90px;
+  height:80px;
+
+  background:#111827;
+
+  border:1px solid var(--border);
+  border-radius:18px;
+
+  text-align:center;
+
+  color:white;
+  font-size:2rem;
+  font-family:'DM Mono',monospace;
+}
+
+.time-field{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:.5rem;
+}
+
+.time-field label{
+  color:var(--text-muted);
+  font-size:.8rem;
+}
+
+.time-separator{
+  font-size:2rem;
+  color:var(--gold);
+}
+
+/* ==========================
+   COUNTDOWN
+
+.countdown-display{
+  display:flex;
+  justify-content:center;
+  margin:2rem 0;
+}
+
+.countdown-track{
+  width:250px;
+  height:250px;
+  position:relative;
+}
+
+.countdown-arc{
+  width:100%;
+  height:100%;
+  transform:rotate(-90deg);
+}
+
+.arc-bg{
+  stroke:rgba(255,255,255,.08);
+}
+
+.arc-fill{
+  stroke:var(--gold);
+}
+
+.countdown-digits{
+  position:absolute;
+  inset:0;
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  font-size:2rem;
+  font-family:'DM Mono',monospace;
+}
+
+/* ==========================
+   BUTTONS
+
+.timer-actions{
+  display:flex;
+  gap:1rem;
+  justify-content:center;
+  flex-wrap:wrap;
+}
+
+.action-btn{
+  border:none;
+  cursor:pointer;
+
+  display:flex;
+  align-items:center;
+  gap:.6rem;
+
+  padding:.95rem 1.3rem;
+  border-radius:14px;
+
+  font-weight:600;
+
+  transition:.3s;
+}
+
+.action-btn:hover{
+  transform:translateY(-2px);
+}
+
+.primary-action{
+  background:var(--gold);
+  color:black;
+}
+
+.secondary-action{
+  background:#1e293b;
+  color:white;
+}
+
+.ghost-action{
+  background:transparent;
+  border:1px solid var(--border);
+  color:white;
+}
+
+/* ==========================
+   ALERT
+
+.timer-alert{
+  display:none;
+
+  margin-top:1.5rem;
+  padding:1rem;
+
+  border-radius:14px;
+
+  background:rgba(239,68,68,.12);
+  border:1px solid rgba(239,68,68,.3);
+
+  color:#ff9f9f;
+
+  align-items:center;
+  gap:.8rem;
+}
+
+/*Map Panel*/
+.map-panel {
+  margin-bottom: 2rem;
+}
+ 
+.map-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem 1rem;
+}
+ 
+.map-panel-header h2 {
+  margin-bottom: 0.25rem;
+}
+ 
+.map-panel-header p {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+ 
+/* Container: fixed height, clips the SVG, anchors the tooltip */
 .map-container {
-    position: relative;
-    width: 100%;
-    background-color: var(--clock-face-bg);
-    border-radius: 20px;
-    box-shadow: var(--shadow-inner);
-    border: 1px solid var(--card-border);
-    padding: 15px;
-    overflow: visible; /* Needed for floating tooltip */
+  position: relative;
+  height: 500px;
+  overflow: hidden;
+  border-radius: 0 0 var(--radius) var(--radius);
+  background: transparent;
+  border-top: 1px solid var(--border);
 }
-
-.map-scroll-container {
-    width: 100%;
-    overflow-x: auto;
-    scrollbar-width: thin;
-    scrollbar-color: var(--accent-color) transparent;
+ 
+/* Scroll wrapper stretches to fill the container */
+.map-scroll {
+  width: 100%;
+  height: 100%;
 }
-
-.map-scroll-container::-webkit-scrollbar {
-    height: 6px;
-}
-
-.map-scroll-container::-webkit-scrollbar-thumb {
-    background-color: var(--accent-color);
-    border-radius: 10px;
-}
-
+ 
+/* Injected SVG fills .map-scroll completely */
 #timezone-map-wrapper {
-    position: relative;
-    width: 100%;
-    min-width: 784px; /* Ensure map maintains base scale for math mapping */
-    margin: 0 auto;
+  width: 100%;
+  height: 100%;
 }
-
+ 
+#timezone-map-wrapper svg,
 #world-map {
-    width: 100%;
-    height: auto;
-    display: block;
-    background: radial-gradient(circle at center, #f8fafc 0%, #e2e8f0 100%);
-    border-radius: 16px;
-    transition: background 0.4s ease;
+  display: block;
+  width: 100%;
+  height: 100%;
 }
-
-body.dark-theme #world-map {
-    background: radial-gradient(circle at center, #0f172a 0%, #030712 100%);
+ 
+/*CONTINENT FILLS*/
+ 
+/* Dark (default) — charcoal-slate with slate-blue borders */
+body.dark-theme .land-path,
+body:not(.light-theme) .land-path {
+  fill: #1e2d42;
+  stroke: #2e4060;
+  stroke-width: 0.4px;
 }
-
-/* Map Country Outlines */
-#world-map path {
-    fill: #f1f5f9;
-    stroke: #cbd5e1;
-    stroke-width: 0.5px;
-    transition: fill 0.4s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+ 
+/* Light — soft parchment with clear country borders */
+body.light-theme .land-path {
+  fill: #c8d6e5;
+  stroke: #8fa5bb;
+  stroke-width: 0.5px;
 }
-
-body.dark-theme #world-map path {
-    fill: #0b0f19;
-    stroke: #1e293b;
-}
-
-#world-map path:hover {
-    fill: rgba(79, 70, 229, 0.12) !important;
-    stroke: var(--accent-color) !important;
-}
-
-body.dark-theme #world-map path:hover {
-    fill: rgba(99, 102, 241, 0.25) !important;
-    stroke: var(--accent-color) !important;
-}
-
-/* Aviation Grid Lines */
-.map-grid-line {
-    stroke: rgba(79, 70, 229, 0.08);
-    stroke-width: 0.8px;
-    stroke-dasharray: 4 4;
-}
-
-body.dark-theme .map-grid-line {
-    stroke: rgba(99, 102, 241, 0.16);
-}
-
-/* Timezone Bands */
+ 
+/*TIMEZONE BANDS*/
 .timezone-sector {
-    fill: transparent;
-    cursor: pointer;
-    transition: fill 0.3s ease;
+  fill: transparent;
+  cursor: pointer;
+  transition: fill 0.2s ease;
 }
-
-.timezone-sector:hover {
-    fill: rgba(79, 70, 229, 0.06); /* Indigo glow */
-}
-
-body.dark-theme .timezone-sector:hover {
-    fill: rgba(99, 102, 241, 0.12); /* Vibrant Indigo glow in dark */
-}
-
-/* Glowing active band border */
+ 
 .timezone-sector.active-sector {
-    fill: rgba(79, 70, 229, 0.08);
+  fill: rgba(212, 175, 55, 0.08);
 }
-
-body.dark-theme .timezone-sector.active-sector {
-    fill: rgba(99, 102, 241, 0.16);
+ 
+body.light-theme .timezone-sector.active-sector {
+  fill: rgba(184, 134, 11, 0.1);
 }
-
-/* Pulse City Markers */
+ 
+/*GRID LINES*/
+.map-grid-line {
+  stroke: rgba(255, 255, 255, 0.06);
+  stroke-width: 1;
+}
+ 
+body.light-theme .map-grid-line {
+  stroke: rgba(15, 23, 42, 0.1);
+}
+ 
+.equator-line,
+.meridian-line {
+  stroke: rgba(212, 175, 55, 0.18);
+  stroke-dasharray: 4 4;
+}
+ 
+body.light-theme .equator-line,
+body.light-theme .meridian-line {
+  stroke: rgba(184, 134, 11, 0.25);
+}
+ 
+/*CITY MARKERS*/
 .city-marker {
-    cursor: pointer;
+  cursor: pointer;
 }
-
-.city-marker .pulse-ring {
-    fill: var(--accent-color);
-    opacity: 0;
-    animation: pulseMarker 2s infinite ease-out;
-}
-
+ 
 .city-marker .center-dot {
-    fill: var(--hand-second);
-    stroke: #ffffff;
-    stroke-width: 1.5px;
-    transition: fill 0.3s ease, stroke 0.3s ease;
+  fill: var(--gold, #d4af37);
+  transition: r 0.2s ease;
 }
-
-body.dark-theme .city-marker .center-dot {
-    stroke: #0f172a;
+ 
+.city-marker .pulse-ring {
+  fill: none;
+  stroke: var(--gold, #d4af37);
+  stroke-width: 1.5;
+  opacity: 0.4;
 }
-
-.city-marker:hover .center-dot {
-    fill: var(--accent-color);
-}
-
-@keyframes pulseMarker {
-    0% {
-        r: 3px;
-        opacity: 0.8;
-    }
-    100% {
-        r: 16px;
-        opacity: 0;
-    }
-}
-
-/* Premium Floating Glassmorphic Tooltip */
-.map-tooltip {
-    position: absolute;
-    z-index: 100;
-    width: 250px;
-    padding: 16px;
-    border-radius: 16px;
-    background: rgba(255, 255, 255, 0.78);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    box-shadow: 0 10px 30px rgba(17, 24, 39, 0.15), 0 1px 3px rgba(17, 24, 39, 0.05);
-    color: #111827;
-    pointer-events: auto; /* Allow buttons clicks inside the tooltip */
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    animation: tooltipFadeIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-body.dark-theme .map-tooltip {
-    background: rgba(15, 23, 42, 0.78);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(0, 0, 0, 0.2);
-    color: #f9fafb;
-}
-
-@keyframes tooltipFadeIn {
-    0% {
-        opacity: 0;
-        transform: translateY(10px) scale(0.95);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-}
-
-.tooltip-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.tooltip-header h4 {
-    font-size: 1.05rem;
-    font-weight: 800;
-    letter-spacing: -0.02em;
-}
-
-.tooltip-offset {
-    font-size: 0.75rem;
-    font-weight: 700;
-    background-color: var(--accent-color);
-    color: #ffffff;
-    padding: 2px 8px;
-    border-radius: 20px;
-    box-shadow: 0 2px 6px var(--accent-glow);
-}
-
-.tooltip-tz-id {
-    font-size: 0.75rem;
-    color: var(--text-secondary);
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-}
-
-.tooltip-time-row {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    margin-top: 4px;
-    margin-bottom: 8px;
-    border-bottom: 1px solid rgba(0,0,0,0.06);
-    padding-bottom: 8px;
-}
-
-body.dark-theme .tooltip-time-row {
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-}
-
-.tooltip-time {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: var(--accent-color);
-}
-
-.tooltip-date {
-    font-size: 0.8rem;
-    color: var(--text-secondary);
-    font-weight: 600;
-}
-
-.tooltip-btn {
-    height: 38px !important;
-    font-size: 0.85rem !important;
-    border-radius: 10px !important;
-}
-
-/* Close/Unpin button for World Clock Cards */
-.world-clock-card {
-    position: relative; /* Guarantee target anchor */
-}
-
-.remove-clock-btn {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: var(--card-bg);
-    border: 1px solid var(--card-border);
-    cursor: pointer;
-    color: var(--text-secondary);
-    z-index: 10;
-    box-shadow: var(--shadow-btn);
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.remove-clock-btn:hover {
-    background-color: #ef4444;
-    color: #ffffff;
-    border-color: #ef4444;
-    box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3);
-    transform: scale(1.1) rotate(90deg);
-}
-
-.remove-clock-btn:active {
-    transform: scale(0.9);
-}
-
-/* Animations for card insertion and deletion */
-@keyframes cardInsert {
-    0% {
-        opacity: 0;
-        transform: translateY(20px) scale(0.95);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-}
-
-.world-clock-card {
-    animation: cardInsert 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-/* Pinned City Map Pinpoint Glowing state */
+ 
 .city-marker.pinned-marker .center-dot {
-    fill: #10b981 !important; /* Emerald green in light theme */
+  fill: #22c55e;
 }
-
-body.dark-theme .city-marker.pinned-marker .center-dot {
-    fill: #06b6d4 !important; /* Electric cyan in dark theme */
-}
-
+ 
 .city-marker.pinned-marker .pulse-ring {
-    fill: #10b981 !important;
+  stroke: #22c55e;
+}
+ 
+body.light-theme .city-marker .center-dot {
+  fill: var(--accent, #b8860b);
+}
+ 
+body.light-theme .city-marker .pulse-ring {
+  stroke: var(--accent, #b8860b);
+}
+ 
+/*MAP TOOLTIP*/
+
+.map-tooltip {
+  position: absolute;
+  z-index: 200;
+  pointer-events: none;   
+ 
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1rem 1.2rem;
+  min-width: 210px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  backdrop-filter: blur(12px);
+  transition: opacity 0.1s ease;
+}
+ 
+.map-tooltip .tt-pin-btn,
+.map-tooltip .tt-remove-btn {
+  pointer-events: all;
+  position: relative;
+  z-index: 201;
+  cursor: pointer;
 }
 
-body.dark-theme .city-marker.pinned-marker .pulse-ring {
-    fill: #06b6d4 !important;
+.map-tooltip:hover {
+  pointer-events: all;
+}
+ 
+.tt-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+ 
+.tt-header h4 {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+ 
+.tt-badge {
+  background: rgba(212, 175, 55, 0.15);
+  color: var(--gold, #d4af37);
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-family: "DM Mono", monospace;
+  white-space: nowrap;
+}
+ 
+body.light-theme .tt-badge {
+  background: rgba(184, 134, 11, 0.12);
+  color: var(--accent, #b8860b);
+}
+ 
+.tt-tz {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-family: "DM Mono", monospace;
+}
+ 
+.tt-time-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+ 
+.tt-time {
+  font-family: "DM Mono", monospace;
+  font-size: 1.1rem;
+  color: var(--gold, #d4af37);
+}
+ 
+body.light-theme .tt-time {
+  color: var(--accent, #b8860b);
+}
+ 
+.tt-date {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+ 
+.tt-pin-btn {
+  margin-top: 0.25rem;
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  border: none;
+  background: var(--gold, #d4af37);
+  color: #000;
+  font-family: "Outfit", sans-serif;
+  font-weight: 600;
+  font-size: 0.82rem;
+  cursor: pointer;
+  pointer-events: all;
+  transition: opacity 0.2s;
+}
+ 
+.tt-pin-btn:hover { opacity: 0.85; }
+ 
+.tt-remove-btn {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+ 
+/*MAP*/
+.map-legend {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+ 
+.legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+ 
+.legend-dot.pinned { background: #22c55e; }
+ 
+.legend-dot.active {
+  background: var(--gold, #d4af37);
+}
+ 
+body.light-theme .legend-dot.active {
+  background: var(--accent, #b8860b);
 }
 
-/* Beautiful dynamic card pinning elastic highlight pulse */
-@keyframes cardHighlightPulse {
-    0% {
-        box-shadow: var(--shadow-outer);
-        border-color: var(--card-border);
-        transform: scale(1);
-    }
-    30% {
-        box-shadow: 0 0 35px var(--accent-glow);
-        border-color: var(--accent-color);
-        transform: scale(1.06);
-    }
-    100% {
-        box-shadow: var(--shadow-outer);
-        border-color: var(--card-border);
-        transform: scale(1);
-    }
+/* ==========================
+   WORLD CLOCKS
+
+.section-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:1.5rem;
+  padding-top:0.25rem;
 }
 
-.card-highlight-active {
-    animation: cardHighlightPulse 2s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
-    z-index: 20 !important;
+.clock-search-wrap{
+  position:relative;
 }
 
-/* Toggleable Tooltip Remove state styling */
-.tooltip-btn.tooltip-remove-btn {
-    background-color: rgba(239, 68, 68, 0.1) !important;
-    border: 1px solid rgba(239, 68, 68, 0.2) !important;
-    color: #ef4444 !important;
-    box-shadow: none !important;
+.clock-search{
+  width:320px;
+  padding:1rem 1rem 1rem 3rem;
+
+  background:#111827;
+  border:1px solid var(--border);
+
+  border-radius:14px;
+  color:white;
 }
 
-.tooltip-btn.tooltip-remove-btn:hover {
-    background-color: #ef4444 !important;
-    color: #ffffff !important;
-    box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3) !important;
-    transform: translateY(-2px);
+.search-icon{
+  position:absolute;
+  left:14px;
+  top:50%;
+  transform:translateY(-50%);
+}
+
+.clocks-grid{
+  display:grid;
+  grid-template-columns:
+    repeat(auto-fill,minmax(280px,1fr));
+
+  gap:1.5rem;
+}
+
+/* ==========================
+   RESPONSIVE
+
+@media (max-width:1000px){
+
+  .primary-grid{
+    grid-template-columns:1fr;
+  }
+
+  .site-header{
+    flex-direction:column;
+  }
+
+  .section-header{
+    flex-direction:column;
+    gap:1rem;
+  }
+
+  .clock-search{
+    width:100%;
+  }
+}
+
+@media (max-width:600px){
+
+  .clock-bezel{
+    width:220px;
+    height:220px;
+  }
+
+  .clock-face{
+    width:190px;
+    height:190px;
+  }
+
+  .digital-time{
+    font-size:1.7rem;
+  }
+
+  .countdown-track{
+    width:200px;
+    height:200px;
+  }
+}
+
+/* ==========================
+   DEFAULT (DARK)
+
+:root{
+  --bg:#0b0f17;
+  --bg-secondary:#111827;
+  --panel:#141c2f;
+
+  --text:#ffffff;
+  --text-muted:#94a3b8;
+
+  --accent:#d4af37;
+  --border:rgba(255,255,255,.08);
+
+  --shadow:
+    0 10px 30px rgba(0,0,0,.35);
+}
+
+/* Explicit dark mode */
+body.dark-theme{
+  --bg:#0b0f17;
+  --bg-secondary:#111827;
+  --panel:#141c2f;
+
+  --text:#ffffff;
+  --text-muted:#94a3b8;
+
+  --accent:#d4af37;
+  --border:rgba(255,255,255,.08);
+}
+
+/* ==========================
+   LIGHT MODE
+
+body.light-theme .ghost-action {
+  color: var(--text); /* Dynamically switches to dark slate text */
+  border-color: var(--border);
+}
+
+body.light-theme .secondary-action {
+  background: #e2e8f0; /* Subtle light grey background instead of dark blue */
+  color: var(--text);  /* Dark slate text */
+}
+
+body.light-theme{
+  --bg:#f5f7fb;
+  --bg-secondary:#ffffff;
+  --panel:#ffffff;
+
+  --text:#0f172a;
+  --text-muted:#64748b;
+
+  --accent:#b8860b;
+  --border:rgba(15,23,42,.08);
+
+  --shadow:
+    0 10px 25px rgba(15,23,42,.08);
+}
+
+body{
+  background:var(--bg);
+  color:var(--text);
+}
+
+.panel{
+  background:var(--panel);
+  border:1px solid var(--border);
+}
+
+.digital-time{
+  color:var(--accent);
+}
+.clocks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 18px;
+}
+
+@media (max-width: 1200px) {
+  .clocks-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .brand-text h1 {
+    font-size: 1.1rem;
+  }
+  .clock-bezel {
+    width: 220px;
+    height: 220px;
+  }
+  .site-header {
+    top: 8px;
+    padding: 12px 16px;
+  }
+  .workspace {
+    padding: 12px 12px 60px;
+  }
+.brand-plus{
+  color:var(--accent);
+}
+.mode-label{
+  font-size:.72rem;
+  letter-spacing:2px;
+  font-weight:700;
+
+  padding:4px 8px;
+  border-radius:999px;
+
+  background:rgba(212,175,55,.15);
+  color:var(--accent);
+}
+body,
+.panel,
+.nav-btn,
+.action-btn,
+.time-input,
+.clock-search{
+  transition:
+    background-color .35s ease,
+    color .35s ease,
+    border-color .35s ease,
+    box-shadow .35s ease;
+}
+}
+
+/*Toast Notification*/
+.custom-toast {
+  position: fixed;
+  bottom: 25px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px); 
+  background: #ef4444;
+  color: white;
+  padding: 1rem 1.3rem;
+  border-radius: 14px;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600;
+  font-size: 0.95rem;
+  box-shadow: 0 10px 25px rgba(239, 68, 68, 0.3);
+  z-index: 10005;
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.custom-toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
 }
