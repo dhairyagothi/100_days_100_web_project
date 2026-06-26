@@ -41,6 +41,10 @@
         <div class="cycle-counter">
           Completed Cycles: <span id="cycleCount">0</span>
         </div>
+        <div class="countdown-container">
+          <div id="phaseName">Ready</div>
+          <div id="countdownTimer">0</div>
+        </div>
       </main>
 
       <footer class="controls-panel">
@@ -54,6 +58,62 @@
           <button class="preset-btn" data-preset="equal">
             Equal Breathing (4-4)
           </button>
+          <button class="preset-btn" data-preset="custom">
+            Custom Pattern
+          </button>
+        </div>
+        <div id="customPatternPanel" class="custom-pattern-panel hidden">
+          <h3>Custom Breathing Pattern</h3>
+
+          <div class="input-group">
+            <label for="inhaleDuration">Inhale (seconds)</label>
+            <input
+              type="number"
+              id="inhaleDuration"
+              min="1"
+              max="30"
+              value="4"
+            />
+          </div>
+
+          <div class="input-group">
+            <label for="holdDuration">Hold (seconds)</label>
+            <input
+              type="number"
+              id="holdDuration"
+              min="0"
+              max="30"
+              value="4"
+            />
+          </div>
+
+          <div class="input-group">
+            <label for="exhaleDuration">Exhale (seconds)</label>
+            <input
+              type="number"
+              id="exhaleDuration"
+              min="1"
+              max="30"
+              value="4"
+            />
+          </div>
+
+          <div class="input-group">
+            <label for="secondHoldDuration">Second Hold (seconds)</label>
+            <input
+              type="number"
+              id="secondHoldDuration"
+              min="0"
+              max="30"
+              value="4"
+            />
+          </div>
+
+          <button id="saveCustomPattern" class="action-btn-primary">
+            Save Pattern
+          </button>
+
+          <p id="validationMessage" class="validation-message"></p>
         </div>
         <div class="action-row">
           <button id="startStopBtn" class="action-btn-primary">

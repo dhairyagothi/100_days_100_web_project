@@ -61,6 +61,69 @@ const mockMatches = [
   }
 ];
 
+const recentMatches = [
+  {
+    id: 5,
+    name: "India vs England, 2nd ODI",
+    matchType: "ODI",
+    status: "India won by 45 runs",
+    venue: "Edgbaston, Birmingham",
+    date: "2026-06-03",
+    teams: ["India", "England"],
+    score: "IND 310/6 (50 ov) | ENG 265/10 (48.2 ov)",
+    isLive: false,
+    isCompleted: true
+  },
+  {
+    id: 6,
+    name: "Australia vs South Africa, 1st T20I",
+    matchType: "T20",
+    status: "Australia won by 6 wickets",
+    venue: "Melbourne Cricket Ground",
+    date: "2026-06-02",
+    teams: ["Australia", "South Africa"],
+    score: "SA 158/7 (20 ov) | AUS 159/4 (18.3 ov)",
+    isLive: false,
+    isCompleted: true
+  },
+  {
+    id: 7,
+    name: "Pakistan vs Sri Lanka, 3rd Test",
+    matchType: "Test",
+    status: "Match drawn",
+    venue: "National Stadium, Karachi",
+    date: "2026-05-30",
+    teams: ["Pakistan", "New Zealand"],
+    score: "PAK 450/8 & 210/5 | NZ 400/10 & 180/6",
+    isLive: false,
+    isCompleted: true
+  },
+  {
+    id: 8,
+    name: "West Indies vs Bangladesh, 2nd ODI",
+    matchType: "ODI",
+    status: "Bangladesh won by 3 wickets",
+    venue: "Sabina Park, Kingston",
+    date: "2026-05-28",
+    teams: ["West Indies", "Bangladesh"],
+    score: "WI 245/9 (50 ov) | BAN 246/7 (49.1 ov)",
+    isLive: false,
+    isCompleted: true
+  },
+  {
+    id: 9,
+    name: "Sri Lanka vs Afghanistan, 1st T20I",
+    matchType: "T20",
+    status: "Afghanistan won by 8 runs",
+    venue: "R.Premadasa Stadium, Colombo",
+    date: "2026-05-25",
+    teams: ["Sri Lanka", "Afghanistan"],
+    score: "AFG 182/5 (20 ov) | SL 174/8 (20 ov)",
+    isLive: false,
+    isCompleted: true
+  }
+];
+
 // =====================================
 // DOM ELEMENTS
 // =====================================
@@ -69,8 +132,12 @@ const liveMatchesContainer =
   document.getElementById("live-matches");
 const upcomingMatchesContainer =
   document.getElementById("upcoming-matches");
+const recentMatchesContainer =
+  document.getElementById("recent-matches");
 const themeBtn =
   document.getElementById("toggleTheme");
+const searchInput =
+  document.getElementById("searchInput");
 
 // =====================================
 // FETCH MATCHES
@@ -112,6 +179,7 @@ async function fetchMatches() {
 function renderMatches(matches) {
   liveMatchesContainer.innerHTML = "";
   upcomingMatchesContainer.innerHTML = "";
+  recentMatchesContainer.innerHTML = "";
   const liveMatches =
     matches.filter(match =>
       match.isLive || match.matchStarted
@@ -126,7 +194,7 @@ function renderMatches(matches) {
   } else {
     liveMatches.forEach(match => {
       liveMatchesContainer.appendChild(
-        createMatchCard(match, true)
+        createMatchCard(match, "live")
       );
     });
   }
@@ -136,7 +204,17 @@ function renderMatches(matches) {
   } else {
     upcomingMatches.forEach(match => {
       upcomingMatchesContainer.appendChild(
-        createMatchCard(match, false)
+        createMatchCard(match, "upcoming")
+      );
+    });
+  }
+if (!recentMatches.length) {
+    recentMatchesContainer.innerHTML =
+      "<p>No recent matches available.</p>";
+  } else {
+    recentMatches.forEach(match => {
+      recentMatchesContainer.appendChild(
+        createMatchCard(match, "recent")
       );
     });
   }
@@ -146,24 +224,29 @@ function renderMatches(matches) {
 // CREATE CARD
 // =====================================
 
-function createMatchCard(match, isLive) {
-
+function createMatchCard(match, type) {
   const card = document.createElement("div");
   card.className =
-    `match-card ${isLive ? "live-card" : ""}`;
+    `match-card ${type === "live" ? "live-card" : type === "recent" ? "recent-card" : ""}`;
+
+  const badgeClass =
+    type === "live" ? "status-live" :
+    type === "recent" ? "status-final" :
+    "status-upcoming";
+
+  const badgeText =
+    type === "live" ? "🔴 LIVE" :
+    type === "recent" ? "✅ FINAL" :
+    "📅 UPCOMING";
+
   card.innerHTML = `
-    <span class="match-status ${isLive ? "status-live" : "status-upcoming"
-    }">
-      ${isLive
-      ? "🔴 LIVE"
-      : "📅 UPCOMING"
-    }
-      • ${match.matchType || "Match"}
+    <span class="match-status ${badgeClass}">
+      ${badgeText} • ${match.matchType || "Match"}
     </span>
     <h3 class="match-teams">
       ${match.name}
     </h3>
-    ${isLive
+    ${type !== "upcoming"
       ? `<p class="match-score">${match.score}</p>`
       : ""
     }
@@ -229,6 +312,18 @@ function toggleTheme() {
 }
 
 // =====================================
+// SEARCH FILTER
+// =====================================
+
+function filterCards(query) {
+  const allCards = document.querySelectorAll(".match-card");
+  allCards.forEach(card => {
+    const teamName = card.querySelector(".match-teams").textContent.toLowerCase();
+    card.style.display = teamName.includes(query) ? "block" : "none";
+  });
+}
+
+// =====================================
 // INITIALIZATION
 // =====================================
 
@@ -241,5 +336,9 @@ document.addEventListener(
       "click",
       toggleTheme
     );
+    searchInput.addEventListener("input", () => {
+      const query = searchInput.value.toLowerCase();
+      filterCards(query);
+    });
   }
 );

@@ -751,7 +751,7 @@
       "css"
     ],
     "difficulty": "beginner",
-    "projectPath": "./public/zomato-clone/public/index.html"
+    "projectPath": "https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/zomato-clone"
   },
   {
     "projectNo": 65,
@@ -3044,22 +3044,36 @@
       "difficulty": "advanced",
       "projectPath": "./public/css-animation/index.html"
     },
+    {
+      "projectNo": 240,
+      "projectName": "Color Jump Game",
+      "projectType": "Game",
+      "projectDesc": "A minimalist, fast-paced jumping game with a modern CuboSapiens-inspired UI, responsive controls, and localStorage high score tracking.",
+      "techStack": [
+        "html",
+        "css",
+        "javascript",
+        "game"
+      ],
+      "difficulty": "intermediate",
+      "projectPath": "./public/ColorJumpGame/index.html"
+    },
+    {
+      "projectNo": 241,
+      "projectName": "PhishGuard AI Terminal",
+      "projectType": "Tool",
+      "projectDesc": "A cyber-themed URL analysis tool that detects potentially suspicious or phishing-like links using rule-based heuristic scoring. Features a hacker-style terminal UI with an animated Matrix background, a live scanning log, and AI-style threat explanations with a confidence score.",
+      "techStack": [
+        "html",
+        "css",
+        "javascript",
+        "canvas"
+      ],
+      "difficulty": "intermediate",
+      "projectPath": "./public/PhishGuard-AI-Terminal/index.html"
+    },
    {
-    "projectNo": 240,
-    "projectName": "PhishGuard AI Terminal",
-    "projectType": "Tool",
-    "projectDesc": "A cyber-themed URL analysis tool that detects potentially suspicious or phishing-like links using rule-based heuristic scoring. Features a hacker-style terminal UI with an animated Matrix background, a live scanning log, and AI-style threat explanations with a confidence score.",
-    "techStack": [
-      "html",
-      "css",
-      "javascript",
-      "canvas"
-    ],
-    "difficulty": "intermediate",
-    "projectPath": "./public/PhishGuard-AI-Terminal/index.html"
-   },
-   {
-    "projectNo": 241,
+    "projectNo": 242,
     "projectName": "Sorting Algorithm Visualizer",
     "projectType": "Tool",
     "projectDesc": "Animates Bubble, Selection, Insertion, Merge, Quick, and Heap Sort on a live bar chart with adjustable speed and array size, plus real-time comparison and swap counters to build intuition for how each algorithm behaves.",
@@ -3073,7 +3087,7 @@
     "difficulty": "intermediate",
     "projectPath": "./public/SortingVisualizer/index.html"
   },
-  {   "projectNo": 242,
+  {   "projectNo": 243,
      "projectName": "Pokemon Battle Simulator",
     "projectType": "Tool",
     "projectDesc": "A retro, GBA-style interactive Pokemon battle simulator built using HTML, CSS, and Vanilla JavaScript.",
