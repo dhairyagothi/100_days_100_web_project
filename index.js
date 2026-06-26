@@ -267,7 +267,11 @@ function sanitizeUrl(url) {
 
   if (!raw || raw === "#") return raw || "#";
 
-  if (raw.startsWith("./") || raw.startsWith("../") || raw.startsWith("/")) {
+  if (
+    raw.startsWith("./") ||
+    raw.startsWith("../") ||
+    (raw.startsWith("/") && !raw.startsWith("//"))
+  ) {
     return raw;
   }
   if (
