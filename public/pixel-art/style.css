@@ -47,6 +47,14 @@ h1 {
   margin-bottom: 20px;
 }
 
+.cell{
+    border: 1px solid #ccc;
+}
+
+.hide-grid .cell{
+    border: none;
+}
+
 .control-group {
   display: flex;
   align-items: center;

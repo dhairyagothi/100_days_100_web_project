@@ -24,6 +24,18 @@ const clearHistoryBtn = document.getElementById("clearHistoryBtn");
 
 const themeToggle = document.getElementById("themeToggle");
 
+const savePromptBtn =
+document.getElementById("savePromptBtn");
+
+const libraryContainer =
+document.getElementById("libraryContainer");
+
+const librarySearch =
+document.getElementById("librarySearch");
+
+const clearLibraryBtn =
+document.getElementById("clearLibraryBtn");
+
 /* ------------------------------
    Theme
 -------------------------------- */
@@ -190,6 +202,186 @@ function analyzePrompt() {
 
   saveHistory(prompt, totalScore);
 }
+
+/* ------------------------------
+   library
+-------------------------------- */
+
+savePromptBtn.addEventListener(
+"click",
+savePromptToLibrary
+);
+
+function savePromptToLibrary() {
+
+    const prompt =
+    promptInput.value.trim();
+
+    if(!prompt) {
+        alert("Enter a prompt first.");
+        return;
+    }
+
+    const library =
+    JSON.parse(
+        localStorage.getItem("promptLibrary")
+    ) || [];
+
+    library.unshift({
+        id: Date.now(),
+        category: category.value,
+        prompt: prompt,
+        date: new Date().toLocaleString()
+    });
+
+    localStorage.setItem(
+        "promptLibrary",
+        JSON.stringify(library)
+    );
+
+    renderLibrary();
+}
+function renderLibrary(search = "") {
+
+    let library =
+    JSON.parse(
+        localStorage.getItem("promptLibrary")
+    ) || [];
+
+    library =
+    library.filter(item =>
+        item.prompt
+        .toLowerCase()
+        .includes(search.toLowerCase())
+    );
+
+    if(!library.length) {
+
+        libraryContainer.innerHTML =
+        `
+        <div class="history-placeholder">
+            No saved prompts found.
+        </div>
+        `;
+
+        return;
+    }
+
+    libraryContainer.innerHTML = "";
+
+    library.forEach(item => {
+
+        const card =
+        document.createElement("div");
+
+        card.className =
+        "library-item";
+
+        card.innerHTML =
+        `
+        <h4>${item.category.toUpperCase()}</h4>
+
+        <p>${item.prompt}</p>
+
+        <div class="history-meta">
+            ${item.date}
+        </div>
+
+        <div class="library-actions">
+
+            <button
+                class="load-btn"
+                onclick="loadPrompt(${item.id})">
+                Load
+            </button>
+
+            <button
+                class="delete-btn"
+                onclick="deletePrompt(${item.id})">
+                Delete
+            </button>
+
+        </div>
+        `;
+
+        libraryContainer.appendChild(card);
+    });
+}
+
+librarySearch.addEventListener(
+"input",
+e => {
+    renderLibrary(e.target.value);
+});
+
+
+function loadPrompt(id) {
+
+    const library =
+    JSON.parse(
+        localStorage.getItem("promptLibrary")
+    ) || [];
+
+    const item =
+    library.find(
+        p => p.id === id
+    );
+
+    if(item) {
+
+        promptInput.value =
+        item.prompt;
+
+        category.value =
+        item.category;
+    }
+}
+
+window.loadPrompt =
+loadPrompt;
+
+
+function deletePrompt(id) {
+
+    let library =
+    JSON.parse(
+        localStorage.getItem("promptLibrary")
+    ) || [];
+
+    library =
+    library.filter(
+        p => p.id !== id
+    );
+
+    localStorage.setItem(
+        "promptLibrary",
+        JSON.stringify(library)
+    );
+
+    renderLibrary();
+}
+
+window.deletePrompt =
+deletePrompt;
+
+
+clearLibraryBtn.addEventListener(
+"click",
+() => {
+
+    if(
+        confirm(
+        "Clear entire prompt library?"
+        )
+    ) {
+
+        localStorage.removeItem(
+            "promptLibrary"
+        );
+
+        renderLibrary();
+    }
+});
 
 /* ------------------------------
    Scoring
@@ -596,3 +788,4 @@ clearHistoryBtn.addEventListener(
 -------------------------------- */
 
 renderHistory();
+renderLibrary();

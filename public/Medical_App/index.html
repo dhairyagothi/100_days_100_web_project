@@ -24,25 +24,7 @@
 
 </head>
 <body>
-    <!-- Sidebar Navigation -->
-    <aside class="sidebar">
-        <div class="sidebar-header">
-            <div class="logo-wrapper">
-                <div class="logo-icon"></div>
-                <div class="logo-text">
-                    <h1>MedConsult</h1>
-                    <p>Dashboard</p>
-                </div>
-            </div>
-            <button class="sidebar-toggle" id="danglingSidebarToggle" aria-label="Toggle Sidebar">
-                <i class="ph ph-list"></i>
-            </button>
-        </div>
 
-        <div class="sidebar-footer">
-            <button class="theme-toggle-btn" id="danglingThemeToggleBtn" aria-label="Toggle Theme"></button>
-        </div>
-    </aside>
 
     <link rel="stylesheet" href="css/animations.css">
 
@@ -97,6 +79,19 @@
 
         <div class="sidebar-footer" style="margin-top:auto; padding:16px; display:flex; flex-direction:column; gap:12px;">
 
+
+        <div class="sidebar-footer">
+
+            <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Theme">
+                <i class="ph ph-moon"></i>
+                <span>Dark Mode</span>
+            </button>
+
+            <button class="btn btn-outline" id="logoutBtn">
+                <i class="ph ph-sign-out"></i>
+                Logout
+            </button>
+
             <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Theme"
                 ></i>
                 <span style="color:#fff;">Dark Mode</span>
@@ -110,6 +105,7 @@
                 <i class="ph ph-sign-out" style="font-size:18px;"></i>
                 Logout
             </button>
+
         </div>
     </aside>
 

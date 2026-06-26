@@ -80,6 +80,41 @@
           <p class="completion-message" id="completionMessage" aria-live="polite"></p>
         </div>
 
+        <!-- Add this before the closing </div> of .controls-grid -->
+<section class="control-panel" aria-labelledby="reminder-heading">
+  <h3 id="reminder-heading">Hydration Reminders</h3>
+  <div class="reminder-controls">
+    <div class="reminder-toggle">
+      <label class="switch">
+        <input type="checkbox" id="reminderToggle">
+        <span class="slider"></span>
+      </label>
+      <span id="reminderStatus">Reminders off</span>
+    </div>
+    
+    <div class="reminder-interval" id="intervalControls" style="display: none;">
+      <label for="intervalSelect">Remind every:</label>
+      <select id="intervalSelect">
+        <option value="30">30 minutes</option>
+        <option value="45">45 minutes</option>
+        <option value="60" selected>1 hour</option>
+        <option value="90">1.5 hours</option>
+        <option value="120">2 hours</option>
+        <option value="180">3 hours</option>
+        <option value="240">4 hours</option>
+      </select>
+    </div>
+    
+    <div class="reminder-actions" id="reminderActions" style="display: none;">
+      <button type="button" id="snoozeBtn" class="secondary-btn">Snooze 15 min</button>
+      <button type="button" id="testReminderBtn" class="ghost-btn">Test</button>
+    </div>
+  </div>
+  <p class="hint-text" id="reminderHint">Get notified when it's time to hydrate.</p>
+  <div id="snoozeInfo" style="display: none;" class="snooze-info">
+    ⏰ Snoozed until: <span id="snoozeTime"></span>
+  </div>
+</section>
         <div class="controls-grid">
           <section class="control-panel" aria-labelledby="goal-form-heading">
             <h3 id="goal-form-heading">Set daily goal</h3>
