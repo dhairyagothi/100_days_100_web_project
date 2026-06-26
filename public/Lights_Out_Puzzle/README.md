@@ -65,6 +65,11 @@ This project adapts seamlessly across devices:
 
 ---
 
+## 💻 Screenshot
+<img width="1908" height="894" alt="image" src="https://github.com/user-attachments/assets/d909f208-8dcf-4a18-8cbb-b6c8ed944b7e" />
+
+---
+
 ## ▶️ How to Run Locally
 1. Clone the repository:
 ```bash
