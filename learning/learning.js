@@ -7,6 +7,13 @@ document.addEventListener('DOMContentLoaded', async () => {
   const STORAGE_KEY = 'learningProgress';
   const BOOKMARKS_KEY = 'learningBookmarks';
   const STREAK_KEY = 'learningStreak';
+  const QUIZ_KEY = 'learningQuizScores';
+  let quizScores = {};
+  try {
+    quizScores = JSON.parse(localStorage.getItem(QUIZ_KEY)) || {};
+  } catch {
+    quizScores = {};
+  }
 
   let bookmarks = [];
 
@@ -1143,6 +1150,26 @@ list.appendChild(item);
      ============================================================ */
   let persistentResultsLog = []; 
 
+  function saveQuizScore(categoryId, correct, total) {
+    if (!total) return { best: { correct: 0, total: 0, pct: 0 }, attempts: 0 };
+    const pct = Math.round((correct / total) * 100);
+    const entry = quizScores[categoryId] || { best: { correct: 0, total: total, pct: 0 }, attempts: [] };
+    entry.attempts.push({ correct: correct, total: total, pct: pct, date: Date.now() });
+    if (entry.attempts.length > 20) {
+      entry.attempts = entry.attempts.slice(-20);
+    }
+    if (pct > entry.best.pct || (pct === entry.best.pct && correct > entry.best.correct)) {
+      entry.best = { correct: correct, total: total, pct: pct };
+    }
+    quizScores[categoryId] = entry;
+    try {
+      localStorage.setItem(QUIZ_KEY, JSON.stringify(quizScores));
+    } catch (e) {
+      console.error(e);
+    }
+    return { best: entry.best, attempts: entry.attempts.length };
+  }
+
   function launchQuiz(categoryId, quizTitle, subQuestionsArray) {
     document.getElementById('topicNavigation').style.display = 'none';
     
@@ -1253,6 +1280,9 @@ list.appendChild(item);
       const wrongAnswersCount = totalQuestions - correctAnswersCount;
       const percentage = Math.round((correctAnswersCount / totalQuestions) * 100);
 
+      const fullCorrect = persistentResultsLog.filter(r => r.isCorrect).length;
+      const quizStats = saveQuizScore(categoryId, fullCorrect, persistentResultsLog.length);
+
       let badge = '';
       if (percentage === 100) badge = '🏆 Perfect Score';
       else if (percentage >= 80) badge = '⭐ Excellent';
@@ -1291,6 +1321,8 @@ list.appendChild(item);
             <p style="margin: 0.4rem 0; display: flex; justify-content: space-between; gap: 2rem;"><span>✅ Correct:</span> <strong style="color: #10b981;">${correctAnswersCount}</strong></p>
             <p style="margin: 0.4rem 0; display: flex; justify-content: space-between; gap: 2rem;"><span>❌ Wrong:</span> <strong style="color: #ef4444;">${wrongAnswersCount}</strong></p>
             <p style="margin: 0.4rem 0; display: flex; justify-content: space-between; gap: 2rem; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 0.4rem; margin-top: 0.4rem;"><span>📊 Score:</span> <strong style="color: #3b82f6;">${percentage}%</strong></p>
+            <p style="margin: 0.4rem 0; display: flex; justify-content: space-between; gap: 2rem;"><span>🏆 Best:</span> <strong style="color: #f59e0b;">${quizStats.best.correct}/${quizStats.best.total} (${quizStats.best.pct}%)</strong></p>
+            <p style="margin: 0.4rem 0; display: flex; justify-content: space-between; gap: 2rem;"><span>🔁 Attempts:</span> <strong style="color: rgba(255,255,255,0.75);">${quizStats.attempts}</strong></p>
           </div>
           
           <div class="quiz-result-actions" style="display: flex; flex-direction: row; flex-wrap: nowrap; gap: 10px; justify-content: center; align-items: center; width: 100%; max-width: 560px; margin: 0 auto; box-sizing: border-box;">

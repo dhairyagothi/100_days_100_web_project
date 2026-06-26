@@ -24,16 +24,23 @@
     }
     .dm-toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
-    @media (max-width: 768px) {
-      .hero-inner { grid-template-columns: 1fr; }
-      .hero-right { display: none; }
-      .footer-grid { grid-template-columns: 1fr 1fr; }
-      .app-section { flex-direction: column; text-align: center; padding: 36px 24px; margin: 0 4% 40px; }
-      .store-btns { justify-content: center; }
-      .app-phone { display: none; }
-      .nav-links .hide-mobile { display: none; }
-    }
+   @media (max-width: 1024px) {
+  .footer-grid { grid-template-columns: 1fr 1fr 1fr; } /* ← ADD THIS BREAKPOINT */
+}
 
+@media (max-width: 768px) {
+  .hero-inner { grid-template-columns: 1fr; }
+  .hero-right { display: none; }
+  .footer-grid { grid-template-columns: 1fr 1fr; } /* already have this */
+  .app-section { flex-direction: column; text-align: center; padding: 36px 24px; margin: 0 4% 40px; }
+  .store-btns { justify-content: center; }
+  .app-phone { display: none; }
+  .nav-links .hide-mobile { display: none; }
+}
+
+@media (max-width: 480px) {
+  .footer-grid { grid-template-columns: 1fr; } /* ← ADD THIS BREAKPOINT */
+}
     
     /* ── DARK MODE TOGGLE ── */
     .dm-toggle {
@@ -54,3 +61,24 @@
     .dm-icon.moon { right: 6px; opacity: 0; }
     [data-theme="dark"] .dm-icon.sun { opacity: 0; }
     [data-theme="dark"] .dm-icon.moon { opacity: 1; } 
+
+
+    /* FOOTER */
+footer { 
+  background: var(--footer-bg); 
+  color: var(--footer-text); 
+  padding: 50px 5% 28px; 
+  transition: background 0.3s, color 0.3s; 
+  overflow: hidden; /* ← ADD THIS */
+  width: 100%;
+  box-sizing: border-box; /* ← ADD THIS */
+}
+
+.footer-grid { 
+  display: grid; 
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr; 
+  gap: 40px; 
+  margin-bottom: 40px;
+  width: 100%; /* ← ADD THIS */
+  box-sizing: border-box; /* ← ADD THIS */
+}

@@ -1,0 +1,307 @@
+:root {
+  --blue: #16c7ff;
+  --blue-dark: #087db6;
+  --blue-soft: rgba(22, 199, 255, 0.78);
+  --red: #ff3f68;
+  --red-dark: #ad173b;
+  --red-soft: rgba(255, 63, 104, 0.78);
+  --ink: #f8fbff;
+  --muted: #b8c3d2;
+  --panel: rgba(16, 27, 45, 0.72);
+  --panel-light: rgba(255, 255, 255, 0.08);
+  --line: rgba(255, 255, 255, 0.15);
+  --cell: rgba(142, 158, 172, 0.35);
+  --shadow: 0 26px 70px rgba(0, 0, 0, 0.38);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 18% 20%, rgba(22, 199, 255, 0.2), transparent 30%),
+    radial-gradient(circle at 82% 78%, rgba(255, 63, 104, 0.18), transparent 32%),
+    linear-gradient(135deg, #0c1423 0%, #182438 52%, #101725 100%);
+}
+
+button {
+  font: inherit;
+}
+
+.game-shell {
+  width: min(1180px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 32px 0;
+}
+
+.hero-panel,
+.stats-panel,
+.board-card,
+.rules-panel {
+  border: 1px solid var(--line);
+  background: var(--panel);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(18px);
+}
+
+.hero-panel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 20px 24px;
+  border-radius: 24px;
+  margin-bottom: 22px;
+}
+
+.eyebrow,
+.turn-label,
+.score-card span,
+.status-card span {
+  margin: 0;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+
+h1 {
+  margin: 4px 0 0;
+  font-size: clamp(2rem, 5vw, 4rem);
+  line-height: 1;
+}
+
+.turn-card {
+  min-width: 210px;
+  padding: 16px 18px;
+  border: 1px solid rgba(22, 199, 255, 0.42);
+  border-radius: 18px;
+  background: rgba(22, 199, 255, 0.1);
+  text-align: center;
+  transition: border-color 220ms ease, background 220ms ease;
+}
+
+.turn-card.player-two-turn {
+  border-color: rgba(255, 63, 104, 0.5);
+  background: rgba(255, 63, 104, 0.12);
+}
+
+.turn-card strong {
+  display: block;
+  margin-top: 5px;
+  color: var(--blue);
+  font-size: 1.45rem;
+}
+
+.turn-card.player-two-turn strong {
+  color: var(--red);
+}
+
+.game-layout {
+  display: grid;
+  grid-template-columns: 240px minmax(320px, 1fr) 240px;
+  gap: 20px;
+  align-items: start;
+}
+
+.stats-panel,
+.rules-panel,
+.board-card {
+  border-radius: 22px;
+}
+
+.stats-panel,
+.rules-panel {
+  padding: 18px;
+}
+
+.score-card,
+.status-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--panel-light);
+  margin-bottom: 14px;
+}
+
+.score-card strong,
+.status-card strong {
+  font-size: 2rem;
+}
+
+.player-one {
+  box-shadow: inset 4px 0 0 var(--blue);
+}
+
+.player-two {
+  box-shadow: inset 4px 0 0 var(--red);
+}
+
+.status-card strong {
+  font-size: 1.1rem;
+}
+
+.result-message {
+  min-height: 54px;
+  margin: 16px 0;
+  color: #e8eef8;
+  line-height: 1.45;
+}
+
+.restart-button {
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 14px;
+  padding: 13px 16px;
+  color: var(--ink);
+  background: linear-gradient(135deg, rgba(22, 199, 255, 0.22), rgba(255, 63, 104, 0.2));
+  cursor: pointer;
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.restart-button:hover {
+  border-color: rgba(255, 255, 255, 0.46);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.25);
+  transform: translateY(-2px);
+}
+
+.board-card {
+  padding: clamp(14px, 2vw, 24px);
+}
+
+.grid-board {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: clamp(4px, 0.8vw, 8px);
+  width: min(72vh, 100%);
+  max-width: 640px;
+  margin: 0 auto;
+  aspect-ratio: 1;
+}
+
+.cell {
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 8px;
+  background: linear-gradient(145deg, var(--cell), rgba(255, 255, 255, 0.08));
+  box-shadow: inset 0 0 18px rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+  transition: transform 160ms ease, background 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+}
+
+.cell:hover:not(.owned):not(:disabled) {
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: scale(1.04);
+}
+
+.cell:disabled {
+  cursor: not-allowed;
+}
+
+.cell.player-1 {
+  border-color: rgba(22, 199, 255, 0.86);
+  background: linear-gradient(145deg, var(--blue-soft), var(--blue-dark));
+  box-shadow: 0 0 18px rgba(22, 199, 255, 0.42), inset 0 0 16px rgba(255, 255, 255, 0.18);
+}
+
+.cell.player-2 {
+  border-color: rgba(255, 63, 104, 0.88);
+  background: linear-gradient(145deg, var(--red-soft), var(--red-dark));
+  box-shadow: 0 0 18px rgba(255, 63, 104, 0.4), inset 0 0 16px rgba(255, 255, 255, 0.16);
+}
+
+.cell.just-claimed {
+  animation: claimPop 260ms ease both;
+}
+
+.rules-panel h2 {
+  margin: 0 0 12px;
+  font-size: 1.1rem;
+}
+
+.rules-panel ul {
+  margin: 0;
+  padding-left: 20px;
+  color: var(--muted);
+  line-height: 1.75;
+}
+
+@keyframes claimPop {
+  0% {
+    transform: scale(0.86);
+  }
+
+  70% {
+    transform: scale(1.06);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@media (max-width: 900px) {
+  .game-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .stats-panel {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .score-card,
+  .status-card,
+  .result-message {
+    margin: 0;
+  }
+
+  .result-message,
+  .restart-button {
+    grid-column: 1 / -1;
+  }
+
+  .rules-panel {
+    order: 3;
+  }
+}
+
+@media (max-width: 620px) {
+  .game-shell {
+    width: min(100% - 20px, 1180px);
+    padding: 18px 0;
+  }
+
+  .hero-panel {
+    align-items: stretch;
+    flex-direction: column;
+    padding: 18px;
+  }
+
+  .turn-card {
+    min-width: 0;
+  }
+
+  .stats-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .grid-board {
+    gap: 4px;
+  }
+
+  .cell {
+    border-radius: 6px;
+  }
+}

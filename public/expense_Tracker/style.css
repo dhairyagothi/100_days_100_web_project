@@ -59,7 +59,9 @@ body {
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
     background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
     background-attachment: fixed;
-    color: var(--text-primary);
+    background-blend-mode: overlay;
+    color: var(--text-main);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     min-height: 100vh;
     overflow-x: hidden;
     line-height: 1.5;
@@ -101,19 +103,151 @@ body {
     overflow-y: auto;
 }
 
-.brand {
+/* Floating Aura Decorator */
+#bg-aura {
+    position: fixed;
+    top: -150px;
+    right: -150px;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, var(--brand-color) 0%, transparent 70%);
+    opacity: 0.06;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: -1;
+    filter: blur(80px);
+    transition: opacity 0.3s ease;
+}
+
+[data-theme='dark'] #bg-aura {
+    opacity: 0.12;
+}
+
+.app-container {
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+}
+
+/* --- FIXED: Back to Home button — was hardcoded white background/box-shadow via inline style.
+   Now theme-aware via this class. Remove the inline style="" from the <a> tag in every HTML file
+   and just keep class="project-back-button". --- */
+.project-back-button {
+    position: fixed;
+    left: 18px;
+    top: 18px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    background: var(--card-bg);
+    color: var(--text-main);
+    text-decoration: none;
+    z-index: 9999;
+    font-weight: 700;
+    font-family: Inter, system-ui, sans-serif;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    border: 1px solid var(--border-color);
+    transition: background-color 0.2s, border-color 0.2s, transform 0.15s;
+}
+
+.project-back-button:hover {
+    background: var(--panel-bg);
+    transform: translateY(-1px);
+}
+
+/* Header Element Layout Framework */
+/* --- FIXED: background was hardcoded rgba(255,255,255,0.75), which stayed white/light even
+   in dark mode, making nav links and buttons clash. Now uses theme-aware --card-bg, with a
+   slightly different translucent shade for dark mode below. --- */
+.app-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+
+    background: var(--card-bg);
+    backdrop-filter: blur(14px);
+
+    border: 1px solid var(--border-color);
+    padding: 16px 24px;
+    border-radius: 16px;
+    margin-bottom: 24px;
+
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+[data-theme="dark"] .app-header {
+    background: rgba(21, 31, 50, 0.85);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+}
+
+.logo-group h1 { font-size: 1.4rem; font-weight: 700; color: var(--text-main); letter-spacing: -0.01em; }
+.logo-accent { color: var(--brand-color); }
+.logo-subtext { font-size: 0.8rem; color: var(--text-sub); }
+
+.header-controls {
     display: flex;
     align-items: center;
     gap: 12px;
     margin-bottom: 8px;
 }
 
-.logo-icon {
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    color: white;
-    width: 42px;
-    height: 42px;
-    border-radius: var(--radius-md);
+/* Integrated Navigation Pill Box Match Engine Layout */
+.nav-links-group {
+    display: flex;
+    background-color: var(--panel-bg);
+    border: 1px solid var(--border-color);
+    padding: 4px;
+    border-radius: 8px;
+    gap: 2px;
+}
+
+.nav-link {
+    color: var(--text-sub);
+    text-decoration: none;
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    border-radius: 6px;
+    transition: all 0.15s ease;
+}
+
+.nav-link:hover {
+    color: var(--text-main);
+    background-color: rgba(0, 0, 0, 0.02);
+}
+
+[data-theme="dark"] .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.nav-link.active {
+    background-color: var(--card-bg);
+    color: var(--text-main);
+    font-weight: 600;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="dark"] .nav-link.active {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.utility-buttons { display: flex; gap: 8px; }
+
+/* Global Fixed Floating Theme Switcher Button Node */
+.floating-theme-btn {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 999;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    font-size: 1.25rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -306,7 +440,94 @@ select option {
     gap: 24px;
 }
 
-.stat-card {
+@media (min-width: 992px) {
+    .main-layout { 
+        display: flex;
+        align-items: stretch;
+        gap: 24px;
+    } 
+    
+    .content-card.form-section {
+        flex: 0 0 420px;
+        max-width: 450px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .content-card.summary-section {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .content-card {
+        height: auto !important;
+    }
+
+    #transactionForm {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+    }
+
+    #transactionForm .btn-primary {
+        background: linear-gradient(
+            135deg,
+            #4F46E5,
+            #7C3AED
+        );
+        color: white;
+        border: none;
+        padding: 12px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        width: 100%;
+        margin-top: 4px;
+        min-height: 44px;
+
+        box-shadow:
+            0 8px 20px rgba(79,70,229,0.25);
+    }
+
+    .full-width-layout { width: 100%; }
+}
+
+.content-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 24px;
+    height: fit-content;
+    width: 100%;
+}
+
+h2 { font-size: 1.05rem; font-weight: 600; margin-bottom: 16px; color: var(--text-main); }
+
+/* User Input Forms Formatting Elements Setup */
+#transactionForm { display: flex; flex-direction: column; gap: 14px; }
+.form-row { display: flex; flex-direction: row; gap: 12px; }
+.form-row .form-input-group { flex: 1; min-width: 0; }
+.form-input-group { display: flex; flex-direction: column; gap: 4px; }
+.form-input-group label { font-size: 0.8rem; font-weight: 500; color: var(--text-main); }
+
+.form-input-group input, .form-input-group select {
+    padding: 10px 12px;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    border-radius: 8px;
+    font-size: 0.9rem;
+    outline: none;
+    min-height: 42px;
+    width: 100%;
+}
+.form-input-group input:focus, .form-input-group select:focus {
+    border-color: var(--brand-color);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+
+/* Interactive Switch Toggles Config layout */
+.radio-switcher {
     display: flex;
     align-items: center;
     gap: 20px;
@@ -746,123 +967,57 @@ select option {
     border: 0;
 }
 
-/* -------------------------------------------------------------
-   ANIMATIONS & KEYFRAMES
-   ------------------------------------------------------------- */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(8px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
+/* Keep hover background highlighting isolated properly within active rows */
+.history-table tbody tr { transition: background-color 0.1s ease; }
+.history-table tbody tr:hover { background-color: rgba(0, 0, 0, 0.015); }
+[data-theme="dark"] .history-table tbody tr:hover { background-color: rgba(255, 255, 255, 0.015); }
+
+.row-inc { color: var(--green-success); font-weight: 600; }
+.row-exp { color: var(--text-main); }
+.btn-delete-row { background: none; border: 1px solid var(--border-color); color: var(--text-sub); padding: 4px 8px; font-size: 0.75rem; border-radius: 4px; min-height: 28px; }
+.btn-delete-row:hover { border-color: var(--red-error); color: var(--red-error); background-color: rgba(239, 68, 68, 0.05); }
+
+.empty-state { padding: 32px; text-align: center; color: var(--text-sub); font-style: italic; font-size: 0.85rem; }
+
+/* 📱 High-Performance Mobile Layout Viewport Conversions */
+@media (max-width: 767px) {
+    .header-controls { width: 100%; justify-content: space-between; }
+    .nav-links-group { order: 1; width: 100%; justify-content: center; }
+    .utility-buttons { order: 2; width: 100%; margin-bottom: 6px; }
+    .utility-buttons button { flex: 1; }
+    
+    /* Mobile Table Transformations for History Page */
+    .table-scroller { overflow-x: auto; }
+    .history-table { table-layout: auto; }
+    .history-table thead, .history-table tbody, .history-table th, .history-table td, .history-table tr { display: block; }
+    .history-table thead { display: none; }
+    .history-table tr { border-bottom: 1px solid var(--border-color); padding: 12px 14px; }
+    .history-table tr:last-child { border-bottom: none; }
+    
+    .history-table tbody tr:hover { background-color: transparent; }
+    [data-theme="dark"] .history-table tbody tr:hover { background-color: transparent; }
+    
+    .history-table td { 
+        border-bottom: none; 
+        padding: 6px 0; 
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center; 
+        text-align: left;
+        white-space: normal; 
+        overflow: visible;
+        text-overflow: clip;
+        width: 100% !important;
+        min-width: 0 !important;
     }
 }
 
-.expense-item.deleting {
-    animation: fadeOut var(--transition-fast) forwards;
-}
-
-@keyframes fadeOut {
-    from {
-        opacity: 1;
-        transform: scale(1);
-    }
-    to {
-        opacity: 0;
-        transform: scale(0.95);
-        height: 0;
-        padding-top: 0;
-        padding-bottom: 0;
-        margin-top: 0;
-        margin-bottom: 0;
-        border-width: 0;
-    }
-}
-
-/* -------------------------------------------------------------
-   RESPONSIVENESS (MEDIA QUERIES)
-   ------------------------------------------------------------- */
-
-/* Tablet view styling */
-@media (max-width: 1024px) {
-    .app-container {
-        grid-template-columns: 1fr;
-    }
-    
-    .sidebar {
-        border-right: none;
-        border-bottom: 1px solid var(--panel-border);
-        flex-direction: row;
-        flex-wrap: wrap;
-        align-items: flex-start;
-        padding: 24px;
-    }
-    
-    .brand {
-        flex: 1 1 100%;
-        margin-bottom: 0;
-    }
-    
-    .income-panel,
-    .expense-form-panel {
-        flex: 1 1 calc(50% - 12px);
-        min-width: 280px;
-    }
-    
-    .main-content {
-        padding: 24px;
-    }
-    
-    .tracker-layout {
-        grid-template-columns: 1fr;
-    }
-}
-
-/* Mobile view styling */
-@media (max-width: 768px) {
-    .sidebar {
-        flex-direction: column;
-        align-items: stretch;
-    }
-    
-    .income-panel,
-    .expense-form-panel {
-        flex: 1 1 100%;
-    }
-    
-    .dashboard-grid {
-        grid-template-columns: 1fr;
-        gap: 16px;
-    }
-    
-    .main-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 12px;
-    }
-    
-    .header-date {
-        align-self: flex-start;
-    }
-    
-    .section-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 12px;
-    }
-    
-    .filter-wrapper {
-        width: 100%;
-    }
-    
-    .filter-wrapper select {
-        width: 100%;
-    }
-    
-    .insights-container {
-        flex-direction: column;
-        gap: 20px;
-    }
+@media (max-width: 480px) {
+    body { padding: 12px; }
+    .app-header { padding: 14px 12px; border-radius: 8px; margin-bottom: 16px; }
+    .content-card { padding: 16px 14px; border-radius: 8px; }
+    .logo-group { width: 100%; text-align: center; }
+    .dashboard-stats { gap: 10px; }
+    .stat-box { padding: 12px; }
+    .stat-box.balance-box { padding: 14px 16px; }
 }

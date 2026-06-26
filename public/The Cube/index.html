@@ -5,14 +5,12 @@
     <meta name="viewport" content="width=device-width,height=device-height,user-scalable=no,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/95/three.min.js"></script>
-    <script  defer src="main.js"></script>
+    <script defer src="main.js"></script>
     <link rel="icon" href="favicon.png">
     <title>Document</title>
 </head>
-<body>
+<body data-theme="Cube">
 <a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
-
-    <!-- PWA: https://bsehovac.github.io/the-cube/ -->
 
 <div class="ui">
 
@@ -35,7 +33,7 @@
         <span>Complete!</span>
       </div>
       <div class="text text--best-time">
-        <icon trophy></icon>
+        <icon name="trophy"></icon>
         <span>Best Time!</span>
       </div>
     </div>
@@ -80,19 +78,25 @@
   
     <div class="ui__buttons">
       <button class="btn btn--bl btn--stats">
-        <icon trophy></icon>
+        <icon name="trophy"></icon>
       </button>
-      <button class="btn btn--br btn--prefs">
-        <icon settings></icon>
+      <button class="btn btn--undo" id="btn-undo">
+        <icon name="undo"></icon>
+      </button>
+      <button class="btn btn--redo" id="btn-redo">
+        <icon name="redo"></icon>
       </button>
       <button class="btn btn--bl btn--back">
-        <icon back></icon>
+        <icon name="back"></icon>
+      </button>
+      <button class="btn btn--br btn--prefs">
+        <icon name="settings"></icon>
       </button>
       <button class="btn btn--br btn--theme">
-        <icon theme></icon>
+        <icon name="theme"></icon>
       </button>
-      <button class="btn btn--br btn--reset">
-        <icon reset></icon>
+      <button class="btn btn--reset" id="btn-reset">
+        <icon name="reset"></icon>
       </button>
     </div>
   

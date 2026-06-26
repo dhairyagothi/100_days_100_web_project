@@ -19,8 +19,14 @@ const movieDetails = document.getElementById("movieDetails");
 const closeModalBtn = document.getElementById("closeModal");
 const genreFilter = document.getElementById("genreFilter");
 const yearFilter = document.getElementById("yearFilter");
+const suggestBtn = document.getElementById("suggestBtn");
 const resetBtn = document.getElementById("resetBtn");
 const resultsInfo = document.getElementById("resultsInfo");
+const randomSuggestion = document.getElementById("randomSuggestion");
+const suggestionPoster = document.getElementById("suggestionPoster");
+const suggestionTitle = document.getElementById("suggestionTitle");
+const suggestionMeta = document.getElementById("suggestionMeta");
+const suggestionDetailsBtn = document.getElementById("suggestionDetailsBtn");
 const loadMoreWrapper = document.getElementById("loadMoreWrapper");
 const loadMoreBtn = document.getElementById("loadMoreBtn");
 const toast = document.getElementById("toast");
@@ -30,6 +36,7 @@ let currentPage = 1;
 let totalResults = 0;
 let allMovies = [];
 let isHomeMode = true;
+let suggestedMovieId = "";
 
 // ── Genre → curated IMDb IDs ─────────────────
 const GENRES = {
@@ -149,6 +156,11 @@ movieInput.addEventListener("keypress", (e) => {
   if (e.key === "Enter") triggerSearch();
 });
 
+suggestBtn.addEventListener("click", suggestRandomMovie);
+suggestionDetailsBtn.addEventListener("click", () => {
+  if (suggestedMovieId) getMovieDetails(suggestedMovieId);
+});
+
 genreFilter.addEventListener("change", () => {
   const val = genreFilter.value;
   if (val === "all") {
@@ -176,6 +188,8 @@ resetBtn.addEventListener("click", () => {
   yearFilter.value = "";
   isHomeMode = true;
   allMovies = [];
+  suggestedMovieId = "";
+  randomSuggestion.hidden = true;
   loadMoreWrapper.style.display = "none";
   loadHomePage();
   showToast("Filters reset successfully 🎬");
@@ -212,6 +226,82 @@ async function loadHomePage() {
     if (key === "all") continue;
     await renderGenreSection(genre.label, genre.ids);
   }
+}
+
+async function suggestRandomMovie() {
+  try {
+    let candidates = [];
+
+    if (movieInput.value.trim()) {
+      if (!allMovies.length) {
+        await doSearch(true);
+      }
+      candidates = allMovies;
+    } else if (genreFilter.value !== "all") {
+      const selectedGenre = GENRES[genreFilter.value];
+      if (!selectedGenre) return;
+
+      const results = await Promise.all(
+        selectedGenre.ids.map((id) =>
+          fetch(`${BASE_URL}?i=${id}&apikey=${API_KEY}`)
+            .then((r) => r.json())
+            .catch(() => null),
+        ),
+      );
+      candidates = results.filter(
+        (m) => m && m.Response !== "False" && hasPoster(m),
+      );
+    } else {
+      const allGenreEntries = Object.entries(GENRES).filter(
+        ([key]) => key !== "all",
+      );
+
+      const results = await Promise.all(
+        allGenreEntries.flatMap(([, genre]) =>
+          genre.ids.map((id) =>
+            fetch(`${BASE_URL}?i=${id}&apikey=${API_KEY}`)
+              .then((r) => r.json())
+              .catch(() => null),
+          ),
+        ),
+      );
+      candidates = results.filter(
+        (m) => m && m.Response !== "False" && hasPoster(m),
+      );
+    }
+
+    if (!candidates.length) {
+      showToast("No movies available to suggest right now.");
+      return;
+    }
+
+    const chosenMovie =
+      candidates[Math.floor(Math.random() * candidates.length)];
+    suggestedMovieId = chosenMovie.imdbID || "";
+    showRandomSuggestion(chosenMovie);
+    highlightSuggestedMovie(chosenMovie.imdbID);
+  } catch {
+    showToast("Could not generate a suggestion right now.");
+  }
+}
+
+function showRandomSuggestion(movie) {
+  if (!movie) return;
+
+  randomSuggestion.hidden = false;
+  suggestionPoster.src = hasPoster(movie)
+    ? movie.Poster
+    : "https://placehold.co/260x390/111520/7a8099?text=No+Image";
+  suggestionPoster.alt = movie.Title || "Movie poster";
+  suggestionTitle.textContent = movie.Title || "Movie Title";
+  suggestionMeta.textContent = `${movie.Year || ""}${movie.Runtime && movie.Runtime !== "N/A" ? ` · ${movie.Runtime}` : ""}`;
+  randomSuggestion.scrollIntoView({ behavior: "smooth", block: "nearest" });
+}
+
+function highlightSuggestedMovie(id) {
+  document.querySelectorAll(".movie-card").forEach((card) => {
+    card.classList.toggle("selected", card.dataset.imdbId === id);
+  });
 }
 
 // Single genre page
@@ -369,6 +459,7 @@ function buildCard(m, i = 0) {
 
   const card = document.createElement("div");
   card.className = "movie-card";
+  card.dataset.imdbId = m.imdbID || "";
   card.style.animationDelay = `${i * 0.04}s`;
 
   card.innerHTML = `
