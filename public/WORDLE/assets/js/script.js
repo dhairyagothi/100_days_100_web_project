@@ -375,7 +375,6 @@ if (gameOverModal) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 // 1. Modal "Next Word" button listener
-// Try selecting by ID first; fallback to selecting by class if ID is missing
 const modalNextBtn = document.querySelector("#nextWordBtn") || document.querySelector(".next-word-btn");
 
 if (modalNextBtn) {
@@ -386,27 +385,49 @@ if (modalNextBtn) {
     console.error("Debug Error: Could not find the Next Word button in your HTML using '#nextWordBtn' or '.next-word-btn'.");
 }
 
-// 2. Persistent "Skip Word" button listener
+// 2. Persistent "Skip Word" Toast Confirmation
+const skipToast      = document.querySelector("#skip-toast");
+const skipConfirmYes = document.querySelector("#skipConfirmYes");
+const skipConfirmNo  = document.querySelector("#skipConfirmNo");
+
+// Helper to show/hide the toast
+function showSkipToast() {
+    if (skipToast) skipToast.classList.remove("hidden");
+}
+
+function hideSkipToast() {
+    if (skipToast) skipToast.classList.add("hidden");
+}
+
 const persistentSkipBtn = document.querySelector("#persistentNextWordBtn") || document.querySelector(".skip-btn-wrapper button") || document.querySelector("#skip-btn-wrapper button");
 
 if (persistentSkipBtn) {
-    // Set the text content safely
     persistentSkipBtn.textContent = "SKIP WORD ➔";
-
     persistentSkipBtn.addEventListener("click", function () {
-        // Fallback: If game is over, just let it reload like a next word button
         if (!playing) {
+            // Game already over — just load the next word
             location.reload();
             return;
         }
-        
-        // Active gameplay skip prompt
-        var confirmSkip = confirm("Are you sure you want to give up on this word? This will count as a loss.");
-        if (!confirmSkip) return;
-
-        updateStats(false); // Record loss
-        location.reload();
+        // Show our custom toast instead of confirm()
+        showSkipToast();
     });
 } else {
     console.error("Debug Error: Could not find the persistent Skip Word button using '#persistentNextWordBtn'.");
+}
+
+// "Yes, give up" — record loss and reload
+if (skipConfirmYes) {
+    skipConfirmYes.addEventListener("click", function () {
+        hideSkipToast();
+        updateStats(false);
+        location.reload();
+    });
+}
+
+// "Cancel" — just close the toast
+if (skipConfirmNo) {
+    skipConfirmNo.addEventListener("click", function () {
+        hideSkipToast();
+    });
 }
