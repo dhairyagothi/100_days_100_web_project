@@ -22,6 +22,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let screenStream = null;
     let isAudioMuted = false;
     let isVideoHidden = false;
+    let statsInterval = null;
+    let previousBytes = 0;
+    let previousTimestamp = 0;
 
     // Initialize PeerJS
     // PeerJS uses a free public cloud server by default when no config is passed
@@ -65,9 +68,14 @@ document.addEventListener('DOMContentLoaded', () => {
     function handleCall(call) {
         currentCall = call;
         
-        call.on('stream', (remoteStream) => {
-            waitingMessage.style.display = 'none';
+        call.on("stream", (remoteStream) => {
+            waitingMessage.style.display = "none";
             remoteVideo.srcObject = remoteStream;
+
+            if (call.peerConnection) {
+                document.getElementById("network-quality").classList.remove("hidden");
+                startNetworkMonitor(call.peerConnection);
+            }
         });
 
         call.on('close', () => {
@@ -106,6 +114,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // End Call Handler
     function endCurrentCall() {
+        stopNetworkMonitor();
+        document.getElementById("network-quality").classList.add("hidden");
         if (currentCall) {
             currentCall.close();
             currentCall = null;
@@ -174,6 +184,111 @@ document.addEventListener('DOMContentLoaded', () => {
             stopScreenShare();
         }
     });
+
+    function startNetworkMonitor(pc) {
+        stopNetworkMonitor();
+
+        statsInterval = setInterval(async () => {
+            await updateNetworkStats(pc);
+        }, 1500);
+    }
+
+    function stopNetworkMonitor() {
+        clearInterval(statsInterval);
+        statsInterval = null;
+    }
+
+    async function updateNetworkStats(pc) {
+        const stats = await pc.getStats();
+
+        let bitrate = 0;
+        let rtt = 0;
+        let packetLoss = 0;
+        let jitter = 0;
+        let fps = 0;
+
+        stats.forEach(report => {
+            if (
+                report.type === "candidate-pair" &&
+                report.state === "succeeded"
+            ) {
+                rtt = (report.currentRoundTripTime || 0) * 1000;
+            }
+
+            if (
+                report.type === "inbound-rtp" &&
+                report.kind === "video"
+            ) {
+                fps = report.framesPerSecond || 0;
+                jitter = (report.jitter || 0) * 1000;
+
+                if (previousTimestamp) {
+                    bitrate =
+                        ((report.bytesReceived - previousBytes) * 8) /
+                        ((report.timestamp - previousTimestamp) / 1000);
+
+                    bitrate /= 1000;
+                }
+
+                previousBytes = report.bytesReceived;
+                previousTimestamp = report.timestamp;
+
+                const total =
+                    report.packetsReceived + report.packetsLost;
+
+                if (total > 0) {
+                    packetLoss =
+                        (report.packetsLost / total) * 100;
+                }
+            }
+        });
+
+        updateNetworkBadge({
+            bitrate,
+            rtt,
+            packetLoss,
+            jitter,
+            fps
+        });
+    }
+
+    function updateNetworkBadge(data) {
+        const [icon, text] = getQuality(
+            data.rtt,
+            data.packetLoss
+        );
+
+        document.getElementById("quality-icon").textContent = icon;
+        document.getElementById("quality-text").textContent = text;
+
+        document.getElementById("bitrate").textContent =
+            `${data.bitrate.toFixed(1)} kbps`;
+
+        document.getElementById("rtt").textContent =
+            `${data.rtt.toFixed(0)} ms`;
+
+        document.getElementById("packet-loss").textContent =
+            `${data.packetLoss.toFixed(1)} %`;
+
+        document.getElementById("jitter").textContent =
+            `${data.jitter.toFixed(1)} ms`;
+
+        document.getElementById("fps").textContent =
+        data.fps.toFixed(0);
+    }
+
+    function getQuality(rtt, loss) {
+        if (rtt < 100 && loss < 1)
+            return ["🟢", "Excellent"];
+
+        if (rtt < 200 && loss < 3)
+            return ["🟡", "Good"];
+
+        if (rtt < 400 && loss < 8)
+            return ["🟠", "Fair"];
+
+        return ["🔴", "Poor"];
+    }
 
     function stopScreenShare() {
         if (!screenStream) return;
