@@ -117,7 +117,8 @@
         <circle cx="11" cy="11" r="8"/>
         <line x1="21" y1="21" x2="16.65" y2="16.65"/>
       </svg>
-      <input type="text" id="search-input" placeholder="Search cards…" autocomplete="off" />
+      <input type="text" id="search-input" placeholder="Search cards… (⌘+K)" autocomplete="off" />
+      <div class="search-suggestions" id="search-suggestions"></div>
     </div>
 
     <button class="icon-btn" id="btn-theme" title="Toggle theme">
@@ -147,7 +148,66 @@
   </nav>
 
   <!-- ══ FILTER BAR ══ -->
-  <div class="filter-section" id="filter-bar"></div>
+  <div class="filter-section" id="filter-bar">
+    <button class="filter-toggle" id="toggle-advanced">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="22 3 2 3 10 13.46 10 21 14 18 14 13.46 22 3"/>
+      </svg>
+      Filters
+    </button>
+  </div>
+
+  <!-- ══ ADVANCED FILTER PANEL ══ -->
+  <div class="advanced-panel" id="advanced-panel" style="display:none">
+    <div class="advanced-content">
+      <div class="filter-group">
+        <h4>📅 Date Range</h4>
+        <div class="date-range">
+          <input type="date" id="date-from" />
+          <span>→</span>
+          <input type="date" id="date-to" />
+          <button class="clear-dates" id="clear-dates">×</button>
+        </div>
+        <div class="date-presets">
+          <button class="preset-btn" data-days="0">Today</button>
+          <button class="preset-btn" data-days="7">This Week</button>
+          <button class="preset-btn" data-days="30">This Month</button>
+          <button class="preset-btn" data-days="90">3 Months</button>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <h4>📊 Sort By</h4>
+        <select id="sort-select">
+          <option value="newest">Newest First</option>
+          <option value="oldest">Oldest First</option>
+          <option value="title-asc">Title (A-Z)</option>
+          <option value="title-desc">Title (Z-A)</option>
+          <option value="category">By Category</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <h4>🔗 Has URL</h4>
+        <label class="toggle-switch">
+          <input type="checkbox" id="filter-has-url" />
+          <span class="toggle-slider"></span>
+          Show only cards with links
+        </label>
+      </div>
+
+      <div class="filter-actions">
+        <button class="btn-apply" id="apply-filters">Apply Filters</button>
+        <button class="btn-reset" id="reset-filters">Reset All</button>
+        <button class="btn-save-preset" id="save-preset">💾 Save as Preset</button>
+      </div>
+
+      <div class="filter-presets" id="filter-presets">
+        <h4>📌 Saved Presets</h4>
+        <div class="preset-list" id="preset-list"></div>
+      </div>
+    </div>
+  </div>
 
   <!-- ══ STATS BAR ══ -->
   <div class="stats-bar">
@@ -225,12 +285,14 @@
        STATE
     ════════════════════════════════════════ */
     let cards         = JSON.parse(localStorage.getItem('docnow-cards') || '[]');
-    let activeFilter  = 'all';
+    let activeFilters = ['all'];
     let editingId     = null;
     let selectedCat   = 'note';
     let viewMode      = 'grid';
     let pendingDeleteId = null;
     let toastTimer;
+    let searchTerm    = '';
+    let currentSort   = 'newest';
 
     /* ════════════════════════════════════════
        STORAGE
@@ -307,7 +369,7 @@
     }
 
     /* ════════════════════════════════════════
-       FILTERS
+       FILTERS - Enhanced
     ════════════════════════════════════════ */
     function getCatCount(cat) {
       return cat === 'all' ? cards.length : cards.filter(c => c.category === cat).length;
@@ -315,17 +377,38 @@
 
     function renderFilters() {
       const bar = document.getElementById('filter-bar');
-      bar.innerHTML = '<span class="filter-label">Filter</span>';
+      // Clear existing filter buttons but keep the toggle button
+      const toggleBtn = bar.querySelector('.filter-toggle');
+      bar.innerHTML = '';
+      bar.appendChild(toggleBtn);
+
       const allCats = ['all', ...Object.keys(CATS)];
       allCats.forEach(cat => {
         const btn   = document.createElement('button');
-        btn.className = 'filter-btn' + (cat === activeFilter ? ' active' : '');
+        const isActive = activeFilters.includes(cat) || (cat === 'all' && activeFilters.includes('all'));
+        btn.className = 'filter-btn' + (isActive ? ' active' : '');
         const count = getCatCount(cat);
         const label = cat === 'all' ? 'All' : CATS[cat].label;
         const color = cat === 'all' ? 'var(--accent)' : CATS[cat].color;
+        btn.dataset.category = cat;
         btn.innerHTML = `<span class="dot" style="background:${color}"></span>${label}<span class="filter-count">${count}</span>`;
+        
         btn.addEventListener('click', () => {
-          activeFilter = cat;
+          if (cat === 'all') {
+            activeFilters = ['all'];
+          } else {
+            // Remove 'all' if present
+            activeFilters = activeFilters.filter(f => f !== 'all');
+            // Toggle category
+            const index = activeFilters.indexOf(cat);
+            if (index > -1) {
+              activeFilters.splice(index, 1);
+            } else {
+              activeFilters.push(cat);
+            }
+            // If no categories selected, default to 'all'
+            if (activeFilters.length === 0) activeFilters = ['all'];
+          }
           renderFilters();
           renderCards();
           updateStats();
@@ -335,19 +418,292 @@
     }
 
     /* ════════════════════════════════════════
+       DATE RANGE FILTERS
+    ════════════════════════════════════════ */
+    function getDateRange() {
+      const from = document.getElementById('date-from').value;
+      const to = document.getElementById('date-to').value;
+      return { from: from ? new Date(from).getTime() : null, to: to ? new Date(to).getTime() + 86400000 : null };
+    }
+
+    function filterByDate(card) {
+      const { from, to } = getDateRange();
+      if (from && card.createdAt < from) return false;
+      if (to && card.createdAt > to) return false;
+      return true;
+    }
+
+    document.querySelectorAll('.preset-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const days = parseInt(btn.dataset.days);
+        const now = new Date();
+        const from = new Date(now);
+        from.setDate(from.getDate() - days);
+        document.getElementById('date-from').value = from.toISOString().split('T')[0];
+        document.getElementById('date-to').value = now.toISOString().split('T')[0];
+        applyFilters();
+      });
+    });
+
+    document.getElementById('clear-dates').addEventListener('click', () => {
+      document.getElementById('date-from').value = '';
+      document.getElementById('date-to').value = '';
+      applyFilters();
+    });
+
+    /* ════════════════════════════════════════
+       SORTING
+    ════════════════════════════════════════ */
+    function sortCards(cardsArray) {
+      const sortBy = document.getElementById('sort-select').value;
+      currentSort = sortBy;
+      
+      switch(sortBy) {
+        case 'newest':
+          return [...cardsArray].sort((a, b) => b.createdAt - a.createdAt);
+        case 'oldest':
+          return [...cardsArray].sort((a, b) => a.createdAt - b.createdAt);
+        case 'title-asc':
+          return [...cardsArray].sort((a, b) => a.title.localeCompare(b.title));
+        case 'title-desc':
+          return [...cardsArray].sort((a, b) => b.title.localeCompare(a.title));
+        case 'category':
+          return [...cardsArray].sort((a, b) => a.category.localeCompare(b.category));
+        default:
+          return cardsArray;
+      }
+    }
+
+    /* ════════════════════════════════════════
+       SEARCH WITH HIGHLIGHTING
+    ════════════════════════════════════════ */
+    function highlightText(text, searchTerm) {
+      if (!searchTerm || searchTerm.length < 2) return text;
+      
+      // Escape special characters for regex
+      const escaped = searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const regex = new RegExp(`(${escaped})`, 'gi');
+      return text.replace(regex, '<mark class="search-highlight">$1</mark>');
+    }
+
+    function getSearchSuggestions(query) {
+      if (query.length < 2) return [];
+      
+      const suggestions = new Set();
+      const lowerQuery = query.toLowerCase();
+      
+      cards.forEach(card => {
+        if (card.title.toLowerCase().includes(lowerQuery)) {
+          suggestions.add(card.title);
+        }
+        if (card.content.toLowerCase().includes(lowerQuery)) {
+          const preview = card.content.slice(0, 50);
+          suggestions.add(`"${preview}..."`);
+        }
+        if (card.category.toLowerCase().includes(lowerQuery)) {
+          suggestions.add(`category:${card.category}`);
+        }
+      });
+      
+      // Add operators
+      if ('has:url'.includes(query)) suggestions.add('has:url');
+      if ('category:'.includes(query)) suggestions.add('category:');
+      
+      return Array.from(suggestions).slice(0, 5);
+    }
+
+    /* ════════════════════════════════════════
+       SEARCH SUGGESTIONS UI
+    ════════════════════════════════════════ */
+    const searchInput = document.getElementById('search-input');
+    const suggestionsEl = document.getElementById('search-suggestions');
+
+    searchInput.addEventListener('input', () => {
+      const query = searchInput.value;
+      const suggestions = getSearchSuggestions(query);
+      
+      if (suggestions.length > 0 && query.length > 0) {
+        suggestionsEl.innerHTML = suggestions.map(s => 
+          `<div class="suggestion-item" data-suggestion="${s}">${s}</div>`
+        ).join('');
+        suggestionsEl.style.display = 'block';
+      } else {
+        suggestionsEl.style.display = 'none';
+      }
+      
+      renderCards();
+      updateStats();
+    });
+
+    suggestionsEl.addEventListener('click', (e) => {
+      const item = e.target.closest('.suggestion-item');
+      if (item) {
+        searchInput.value = item.dataset.suggestion;
+        suggestionsEl.style.display = 'none';
+        renderCards();
+        updateStats();
+      }
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.nav-search')) {
+        suggestionsEl.style.display = 'none';
+      }
+    });
+
+    /* ════════════════════════════════════════
+       ADVANCED FILTER PANEL
+    ════════════════════════════════════════ */
+    document.getElementById('toggle-advanced').addEventListener('click', () => {
+      const panel = document.getElementById('advanced-panel');
+      panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+    });
+
+    function applyFilters() {
+      renderCards();
+      updateStats();
+      showToast('Filters applied');
+    }
+
+    document.getElementById('apply-filters').addEventListener('click', applyFilters);
+
+    document.getElementById('reset-filters').addEventListener('click', () => {
+      document.getElementById('date-from').value = '';
+      document.getElementById('date-to').value = '';
+      document.getElementById('sort-select').value = 'newest';
+      document.getElementById('filter-has-url').checked = false;
+      activeFilters = ['all'];
+      renderFilters();
+      applyFilters();
+      showToast('Filters reset');
+    });
+
+    /* ════════════════════════════════════════
+       FILTER PRESETS
+    ════════════════════════════════════════ */
+    function getFilterPresets() {
+      return JSON.parse(localStorage.getItem('docnow-filter-presets') || '[]');
+    }
+
+    function saveFilterPresets(presets) {
+      localStorage.setItem('docnow-filter-presets', JSON.stringify(presets));
+    }
+
+    document.getElementById('save-preset').addEventListener('click', () => {
+      const name = prompt('Enter a name for this filter preset:');
+      if (!name) return;
+      
+      const preset = {
+        name,
+        categories: activeFilters,
+        dateFrom: document.getElementById('date-from').value,
+        dateTo: document.getElementById('date-to').value,
+        sortBy: document.getElementById('sort-select').value,
+        hasUrl: document.getElementById('filter-has-url').checked
+      };
+      
+      const presets = getFilterPresets();
+      presets.push(preset);
+      saveFilterPresets(presets);
+      renderFilterPresets();
+      showToast('Preset saved: ' + name);
+    });
+
+    function renderFilterPresets() {
+      const container = document.getElementById('preset-list');
+      const presets = getFilterPresets();
+      
+      if (presets.length === 0) {
+        container.innerHTML = '<p class="no-presets">No saved presets</p>';
+        return;
+      }
+      
+      container.innerHTML = presets.map((preset, index) => `
+        <div class="preset-item">
+          <span>${preset.name}</span>
+          <div class="preset-actions">
+            <button class="preset-apply" data-index="${index}">Apply</button>
+            <button class="preset-delete" data-index="${index}">×</button>
+          </div>
+        </div>
+      `).join('');
+      
+      container.querySelectorAll('.preset-apply').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const index = parseInt(btn.dataset.index);
+          const presets = getFilterPresets();
+          const preset = presets[index];
+          applyFilterPreset(preset);
+        });
+      });
+      
+      container.querySelectorAll('.preset-delete').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const index = parseInt(btn.dataset.index);
+          const presets = getFilterPresets();
+          presets.splice(index, 1);
+          saveFilterPresets(presets);
+          renderFilterPresets();
+          showToast('Preset deleted');
+        });
+      });
+    }
+
+    function applyFilterPreset(preset) {
+      activeFilters = preset.categories;
+      document.getElementById('date-from').value = preset.dateFrom || '';
+      document.getElementById('date-to').value = preset.dateTo || '';
+      document.getElementById('sort-select').value = preset.sortBy || 'newest';
+      document.getElementById('filter-has-url').checked = preset.hasUrl || false;
+      renderFilters();
+      renderCards();
+      updateStats();
+      showToast('Applied preset: ' + preset.name);
+    }
+
+    /* ════════════════════════════════════════
        STATS
     ════════════════════════════════════════ */
     function updateStats() {
-      const q = document.getElementById('search-input').value.toLowerCase();
-      const filtered = cards.filter(c => {
-        const matchCat    = activeFilter === 'all' || c.category === activeFilter;
-        const matchSearch = c.title.toLowerCase().includes(q) || c.content.toLowerCase().includes(q);
-        return matchCat && matchSearch;
-      });
+      const filtered = getFilteredCards();
       const today = new Date(); today.setHours(0, 0, 0, 0);
+      
       document.getElementById('stat-total').textContent    = cards.length;
       document.getElementById('stat-filtered').textContent = filtered.length;
       document.getElementById('stat-today').textContent    = cards.filter(c => c.createdAt >= today.getTime()).length;
+    }
+
+    /* ════════════════════════════════════════
+       GET FILTERED CARDS
+    ════════════════════════════════════════ */
+    function getFilteredCards() {
+      const q = document.getElementById('search-input').value.toLowerCase();
+      const hasUrl = document.getElementById('filter-has-url').checked;
+      
+      let filtered = cards.filter(c => {
+        // Category filter
+        if (!activeFilters.includes('all') && !activeFilters.includes(c.category)) return false;
+        
+        // Search filter
+        if (q) {
+          const titleMatch = c.title.toLowerCase().includes(q);
+          const contentMatch = c.content.toLowerCase().includes(q);
+          if (!titleMatch && !contentMatch) return false;
+        }
+        
+        // Has URL filter
+        if (hasUrl && !c.url) return false;
+        
+        return true;
+      });
+      
+      // Date filter
+      filtered = filtered.filter(filterByDate);
+      
+      // Sort
+      filtered = sortCards(filtered);
+      
+      return filtered;
     }
 
     /* ════════════════════════════════════════
@@ -374,20 +730,16 @@
        RENDER CARDS
     ════════════════════════════════════════ */
     function renderCards() {
-      const q = document.getElementById('search-input').value.toLowerCase();
-      const filtered = cards.filter(c => {
-        const matchCat    = activeFilter === 'all' || c.category === activeFilter;
-        const matchSearch = c.title.toLowerCase().includes(q) || c.content.toLowerCase().includes(q);
-        return matchCat && matchSearch;
-      });
-
+      const filtered = getFilteredCards();
       const grid    = document.getElementById('card-grid');
       const emptyEl = document.getElementById('empty-message');
       grid.innerHTML = '';
 
       if (filtered.length === 0) {
         emptyEl.style.display = 'flex';
-        const isSearching = q || activeFilter !== 'all';
+        const isSearching = searchInput.value || activeFilters.length > 1 || 
+                           document.getElementById('date-from').value || 
+                           document.getElementById('filter-has-url').checked;
         document.getElementById('empty-title').textContent = isSearching ? 'No cards found' : 'No cards yet';
         document.getElementById('empty-desc').textContent  = isSearching
           ? "Try adjusting your search or filter to find what you're looking for."
@@ -399,11 +751,16 @@
 
       emptyEl.style.display = 'none';
 
+      const searchTerm = document.getElementById('search-input').value;
+
       filtered.forEach(card => {
         const cat      = CATS[card.category] || {};
         const color    = cat.color || 'var(--accent)';
         const icon     = cat.icon  || '📄';
         const catLabel = cat.label || card.category;
+
+        const highlightedTitle = highlightText(card.title, searchTerm);
+        const highlightedContent = highlightText(card.content, searchTerm);
 
         const linkHtml = card.url
           ? `<a class="card-link" href="${card.url}" target="_blank" rel="noopener noreferrer">
@@ -426,8 +783,8 @@
               ${icon} ${catLabel}
             </span>
           </div>
-          <h3>${escHtml(card.title)}</h3>
-          <p class="card-content">${escHtml(card.content)}</p>
+          <h3>${highlightedTitle}</h3>
+          <p class="card-content">${highlightedContent}</p>
           ${linkHtml}
           <div class="card-meta">
             <span class="card-date">
@@ -521,11 +878,6 @@
     document.getElementById('btn-cancel-x').addEventListener('click', closeModal);
     document.getElementById('btn-save').addEventListener('click', saveCard);
 
-    document.getElementById('search-input').addEventListener('input', () => {
-      renderCards();
-      renderFilters();
-    });
-
     document.getElementById('btn-theme').addEventListener('click', function () {
       document.body.classList.toggle('light');
       const isDark = !document.body.classList.contains('light');
@@ -566,9 +918,17 @@
         e.preventDefault();
         document.getElementById('search-input').focus();
       }
-      if (e.key === 'Escape') { closeModal(); closeConfirm(); }
+      if (e.key === 'Escape') { 
+        closeModal(); 
+        closeConfirm();
+        document.getElementById('advanced-panel').style.display = 'none';
+      }
       if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
         if (document.getElementById('modal-overlay').classList.contains('open')) saveCard();
+      }
+      if ((e.metaKey || e.ctrlKey) && e.key === 'f') {
+        e.preventDefault();
+        document.getElementById('search-input').focus();
       }
     });
 
@@ -583,6 +943,7 @@
 
     renderFilters();
     renderCards();
+    renderFilterPresets();
   </script>
 </body>
 </html>
