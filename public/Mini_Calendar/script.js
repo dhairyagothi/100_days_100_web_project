@@ -186,13 +186,6 @@ function goToNextMonth() {
   renderMiniCalendar();
 }
 
-function goToCurrentMonth() {
-  const now = new Date();
-  viewYear = now.getFullYear();
-  viewMonth = now.getMonth();
-  renderMiniCalendar();
-}
-
 // -----------------------------
 // Clock display toggle (digital / analog)
 // -----------------------------
@@ -243,6 +236,31 @@ function setupThemeToggle() {
   });
 }
 
+// ===== ADDED: Notes Persistence Setup =====
+function setupNotes() {
+  const notesArea = document.getElementById("notesArea");
+  const clearBtn = document.getElementById("clearNotesBtn");
+
+  // Load saved notes
+  const savedNotes = localStorage.getItem("calendarNotes");
+  if (savedNotes) {
+    notesArea.value = savedNotes;
+  }
+
+  // Save notes on input
+  notesArea.addEventListener("input", () => {
+    localStorage.setItem("calendarNotes", notesArea.value);
+  });
+
+  // Clear notes
+  clearBtn.addEventListener("click", () => {
+    if (confirm("Are you sure you want to clear your notes?")) {
+      notesArea.value = "";
+      localStorage.removeItem("calendarNotes");
+    }
+  });
+}
+
 // -----------------------------
 // Init
 // -----------------------------
@@ -258,6 +276,9 @@ function init() {
 
   setupClockToggle();
   setupThemeToggle();
+  
+  // ===== ADDED: Start Notes Setup =====
+  setupNotes();
 }
 
 init();
