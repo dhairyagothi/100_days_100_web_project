@@ -107,6 +107,15 @@
                 <h3 id="stat-progress">0</h3>
               </div>
             </div>
+            <div class="stat-card unresolved-card">
+              <div class="stat-icon bg-rose">
+                <i class="ph ph-warning-circle"></i>
+              </div>
+              <div class="stat-info">
+                <p>Unresolved</p>
+                <h3 id="stat-unresolved">0</h3>
+              </div>
+            </div>
             <div class="stat-card">
               <div class="stat-icon bg-emerald">
                 <i class="ph ph-check-circle"></i>
@@ -317,6 +326,10 @@
                   <option value="high">High</option>
                   <option value="medium">Medium</option>
                   <option value="low">Low</option>
+                </select>
+                <select id="filter-unresolved" class="filter-select">
+                  <option value="all">All Complaints</option>
+                  <option value="unresolved">Unresolved Only</option>
                 </select>
               </div>
             </div>

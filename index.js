@@ -1159,6 +1159,9 @@ function renderPagination(totalItems, totalPages) {
     pageBtn.className = `page-num ${currentPage === i ? "active" : ""}`;
     pageBtn.textContent = i;
     pageBtn.setAttribute("aria-label", `Page ${i}`);
+    if (currentPage === i) {
+      pageBtn.setAttribute("aria-current", "page");
+    }
     pageBtn.addEventListener("click", (e) => {
       e.preventDefault();
       currentPage = i;
@@ -1534,6 +1537,19 @@ function renderRecommendationsForProject(project) {
     return;
   }
 
+function getRecommendations(project, allProjects) {
+  if (!project || !allProjects) return [];
+  return allProjects
+    .filter(function (p) {
+      if (p.id === project.id) return false;
+      const shared = (p.techStack || []).filter(function (t) {
+        return (project.techStack || []).includes(t);
+      });
+      return shared.length > 0 || p.category === project.category;
+    })
+    .slice(0, 6);
+}
+
   const recommendations = getRecommendations(project, PROJECTS);
   if (!recommendations.length) {
     const noRecommendations = document.createElement("p");
@@ -1717,15 +1733,15 @@ function resetAllFilters() {
   searchQuery = "";
 
   const techStack = document.getElementById("techStackFilter");
-  if (techStack) techStack.value = "all";
+  if (techStack) techStack.selectedIndex = 0;
   techStackFilter = "all";
 
   const difficultyElement = document.getElementById("difficultyFilter");
-  if (difficultyElement) difficultyElement.value = "all";
+  if (difficultyElement) difficultyElement.selectedIndex = 0;
   difficultyFilter = "all";
 
   const sortSelect = document.getElementById("sortProjects");
-  if (sortSelect) sortSelect.value = "default";
+  if (sortSelect) sortSelect.selectedIndex = 0;
   sortOption = "default";
 
   if (typeof updateURL === "function") {

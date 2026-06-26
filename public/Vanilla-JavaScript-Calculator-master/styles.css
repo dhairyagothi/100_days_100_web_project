@@ -665,3 +665,262 @@ transition: background 0.3s ease;
 [data-theme="light"] .history-item:hover {
   border-color: rgba(59, 130, 246, 0.4);
 }
+/* ===== History Search ===== */
+
+.history-search-container {
+  margin-bottom: 4px;
+}
+
+.history-search {
+  width: 100%;
+  background: var(--glass);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: var(--text-primary);
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  outline: none;
+  transition: var(--transition);
+}
+
+.history-search::placeholder {
+  color: var(--text-muted);
+}
+
+.history-search:focus {
+  border-color: rgba(59,130,246,0.4);
+  box-shadow: 0 0 0 2px rgba(59,130,246,0.12);
+}
+
+.history-no-results {
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-align: center;
+  padding: 25px 15px;
+}
+/* ===== Favorites ===== */
+
+.history-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.history-item-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.favorite-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  color: var(--text-muted);
+  transition: var(--transition);
+  flex-shrink: 0;
+}
+
+.favorite-btn:hover {
+  transform: scale(1.15);
+}
+
+.favorite-btn.active {
+  color: #fbbf24;
+}
+
+.history-item.favorite {
+  border-color: rgba(251,191,36,0.35);
+  background: rgba(251,191,36,0.08);
+}
+/* ===== Function Tooltip ===== */
+
+.instructions {
+  position: relative;
+}
+
+.function-tooltip {
+  position: absolute;
+  left: calc(100% + 16px);
+  top: 50%;
+  transform: translateY(-50%);
+
+  width: 230px;
+
+  background: rgba(22, 29, 46, 0.92);
+  backdrop-filter: blur(18px);
+
+  border: 1px solid rgba(59,130,246,0.25);
+  border-radius: var(--radius-md);
+
+  padding: 16px;
+
+  box-shadow:
+    0 20px 50px rgba(0,0,0,0.45),
+    0 0 30px rgba(59,130,246,0.12);
+
+  z-index: 1000;
+
+  opacity: 0;
+  pointer-events: none;
+
+  transition: all 0.2s ease;
+}
+
+.function-tooltip.show {
+  opacity: 1;
+}
+
+.function-tooltip h4 {
+  font-family: var(--font-display);
+  color: var(--accent-blue);
+  font-size: 0.9rem;
+  margin-bottom: 8px;
+}
+
+.function-tooltip p {
+  color: var(--text-primary);
+  font-size: 0.8rem;
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
+
+.function-tooltip code {
+  display: block;
+
+  background: var(--glass);
+
+  border: 1px solid var(--border);
+
+  border-radius: 8px;
+
+  padding: 8px;
+
+  color: var(--accent-green);
+
+  font-family: var(--font-display);
+
+  font-size: 0.75rem;
+}
+
+@media (max-width: 900px) {
+  .function-tooltip {
+    left: 50%;
+    top: calc(100% + 16px);
+    transform: translateX(-50%);
+  }
+}
+.shortcut-item {
+  position: relative;
+}
+
+.inline-tooltip {
+  position: absolute;
+
+  left: calc(100% + 12px);
+  top: 50%;
+
+  transform: translateY(-50%) translateX(-10px);
+
+  width: 220px;
+
+  background: var(--glass);
+  backdrop-filter: blur(18px);
+
+  border: 1px solid var(--border);
+
+  border-radius: 12px;
+
+  padding: 14px;
+
+  box-shadow: var(--shadow-lg);
+
+  opacity: 0;
+  visibility: hidden;
+
+  pointer-events: none;
+
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease,
+    visibility 0.18s ease;
+
+  z-index: 1000;
+}
+
+.shortcut-item:hover .inline-tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(-50%) translateX(0);
+}
+
+.inline-tooltip h4 {
+  font-family: var(--font-display);
+  color: var(--accent-blue);
+  margin-bottom: 8px;
+  font-size: 0.85rem;
+}
+.inline-tooltip p {
+  color: var(--text-primary);
+  font-size: 0.78rem;
+  line-height: 1.45;
+  margin-bottom: 10px;
+}
+
+.inline-tooltip code {
+  display: block;
+
+  padding: 8px;
+
+  border-radius: 8px;
+
+  background: rgba(59,130,246,0.08);
+
+  border: 1px solid var(--border);
+
+  color: var(--text-primary);
+
+  font-family: var(--font-display);
+
+  font-size: 0.72rem;
+}
+/* ===== Light Theme Tooltip Fix ===== */
+
+[data-theme='light'] .inline-tooltip {
+  background: rgba(255, 255, 255, 0.92);
+
+  border: 1px solid rgba(59,130,246,0.18);
+
+  box-shadow:
+    0 12px 30px rgba(15, 23, 42, 0.08),
+    0 4px 12px rgba(15, 23, 42, 0.04);
+}
+
+[data-theme='light'] .inline-tooltip code {
+  background: rgba(59,130,246,0.05);
+}
+
+[data-theme='light'] .inline-tooltip h4 {
+  color: #2563eb;
+}
+.inline-tooltip::before {
+  content: '';
+
+  position: absolute;
+
+  left: -6px;
+  top: 50%;
+
+  width: 12px;
+  height: 12px;
+
+  transform: translateY(-50%) rotate(45deg);
+
+  background: inherit;
+
+  border-left: inherit;
+  border-top: inherit;
+}

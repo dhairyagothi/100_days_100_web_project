@@ -44,6 +44,7 @@ class ComplaintApp {
     this.statTotal = document.getElementById('stat-total');
     this.statPending = document.getElementById('stat-pending');
     this.statProgress = document.getElementById('stat-progress');
+    this.statUnresolved = document.getElementById('stat-unresolved');
     this.statResolved = document.getElementById('stat-resolved');
     this.recentTableBody = document.getElementById('recent-table-body');
 
@@ -59,6 +60,7 @@ class ComplaintApp {
     this.searchInput = document.getElementById('search-input');
     this.filterStatus = document.getElementById('filter-status');
     this.filterPriority = document.getElementById('filter-priority');
+    this.filterUnresolved = document.getElementById('filter-unresolved');
     this.listingsTableBody = document.getElementById('listings-table-body');
     this.listingsEmpty = document.getElementById('listings-empty');
     this.complaintsTable = document.getElementById('complaints-table');
@@ -121,6 +123,7 @@ class ComplaintApp {
     this.searchInput.addEventListener('input', () => this.renderListings());
     this.filterStatus.addEventListener('change', () => this.renderListings());
     this.filterPriority.addEventListener('change', () => this.renderListings());
+    this.filterUnresolved.addEventListener('change', () => this.renderListings());
 
     // Admin Search
     this.adminSearch.addEventListener('input', () => this.renderAdminList());
@@ -240,6 +243,21 @@ class ComplaintApp {
     return config[priority] || { text: 'Normal', class: 'badge-pending' };
   }
 
+  isUnresolved(item) {
+    if (!item || !['pending', 'in_progress'].includes(item.status)) {
+      return false;
+    }
+
+    const createdAt = new Date(item.createdAt);
+    if (Number.isNaN(createdAt.getTime())) {
+      return false;
+    }
+
+    const ageInDays =
+      (Date.now() - createdAt.getTime()) / (1000 * 60 * 60 * 24);
+    return ageInDays >= 1;
+  }
+
   // --- File Handling ---
   handleFileSelect(e) {
     const file = e.target.files[0];
@@ -330,11 +348,13 @@ class ComplaintApp {
     const progress = this.items.filter(
       (i) => i.status === 'in_progress'
     ).length;
+    const unresolved = this.items.filter((i) => this.isUnresolved(i)).length;
     const resolved = this.items.filter((i) => i.status === 'resolved').length;
 
     this.statTotal.textContent = total;
     this.statPending.textContent = pending;
     this.statProgress.textContent = progress;
+    this.statUnresolved.textContent = unresolved;
     this.statResolved.textContent = resolved;
   }
 
@@ -373,6 +393,7 @@ class ComplaintApp {
     const query = this.searchInput.value.toLowerCase();
     const statusFilter = this.filterStatus.value;
     const priorityFilter = this.filterPriority.value;
+    const unresolvedFilter = this.filterUnresolved.value;
 
     const filtered = this.items.filter((item) => {
       const matchesSearch =
@@ -382,7 +403,15 @@ class ComplaintApp {
         statusFilter === 'all' || item.status === statusFilter;
       const matchesPriority =
         priorityFilter === 'all' || item.priority === priorityFilter;
-      return matchesSearch && matchesStatus && matchesPriority;
+      const matchesUnresolved =
+        unresolvedFilter === 'all' ||
+        (unresolvedFilter === 'unresolved' && this.isUnresolved(item));
+      return (
+        matchesSearch &&
+        matchesStatus &&
+        matchesPriority &&
+        matchesUnresolved
+      );
     });
 
     this.listingsTableBody.innerHTML = '';
@@ -428,6 +457,7 @@ class ComplaintApp {
     this.searchInput.value = '';
     this.filterStatus.value = 'all';
     this.filterPriority.value = 'all';
+    this.filterUnresolved.value = 'all';
     this.renderListings();
   }
 

@@ -423,6 +423,8 @@ document.getElementById('themeToggleBtn').onclick = () => {
     document.body.classList.toggle('light');
     const isLight = document.body.classList.contains('light');
     localStorage.setItem('momentum_theme', isLight ? 'light' : 'dark');
+    if(localStorage.getItem('momentum_theme')=='light')document.getElementById('themeToggleBtn').innerText = '🌙';
+    else document.getElementById('themeToggleBtn').innerText = '☀️';
 };
 
 // Initial Render

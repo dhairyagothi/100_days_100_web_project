@@ -435,6 +435,11 @@ body{
     transition:.3s ease;
 }
 
+.theme-select option {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+}
+
 .theme-select:focus{
 
     border-color:var(--accent);

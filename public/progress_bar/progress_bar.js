@@ -558,6 +558,7 @@ function updateParallax(event) {
 }
 
 function resetParallax() {
+    if(card){
     card.style.setProperty(
         "--card-tilt-x",
         "0deg"
@@ -567,6 +568,8 @@ function resetParallax() {
         "--card-tilt-y",
         "0deg"
     );
+
+}
 
     progressRing.style.setProperty(
         "--ring-tilt-x",
