@@ -1,20 +1,75 @@
-// script.js - Chrome Dino Game (T-Rex Runner)
+// script.js - Chrome Dino Game with Power-ups System
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 const scoreElement = document.getElementById("score");
+const coinCountElement = document.getElementById("coinCount");
 const startScreen = document.getElementById("startScreen");
 const gameOverScreen = document.getElementById("gameOverScreen");
 const finalScoreEl = document.getElementById("finalScore");
+const finalCoinsEl = document.getElementById("finalCoins");
 const highScoreEl = document.getElementById("highScore");
+const powerupLegend = document.getElementById("powerupLegend");
 
 let gameRunning = false;
 let gameOver = false;
 let score = 0;
+let coinCount = 0;
 let highScore = localStorage.getItem("dinoHighScore") || 0;
 let frame = 0;
 let speed = 6;
 const GRAVITY = 0.6;
 const JUMP = -15;
+
+// Power-ups System
+const powerups = {
+  active: [],
+  types: {
+    shield: {
+      name: "Shield",
+      color: "#00BFFF",
+      duration: 5000, // 5 seconds
+      icon: "🛡️",
+      active: false,
+      timer: 0
+    },
+    magnet: {
+      name: "Magnet",
+      color: "#FFD700",
+      duration: 7000,
+      icon: "🧲",
+      active: false,
+      timer: 0
+    },
+    doubleJump: {
+      name: "Double Jump",
+      color: "#FF6B6B",
+      duration: 6000,
+      icon: "⬆️⬆️",
+      active: false,
+      timer: 0,
+      jumpsLeft: 0
+    },
+    slowMotion: {
+      name: "Slow Motion",
+      color: "#9B59B6",
+      duration: 4000,
+      icon: "🐢",
+      active: false,
+      timer: 0,
+      originalSpeed: 6
+    },
+    starPower: {
+      name: "Star Power",
+      color: "#FFD700",
+      duration: 3000,
+      icon: "⭐",
+      active: false,
+      timer: 0
+    }
+  },
+  spawnTimer: 0,
+  spawnInterval: 8000 // Spawn a power-up every 8 seconds
+};
 
 // Dino
 const dino = {
@@ -26,15 +81,20 @@ const dino = {
   isJumping: false,
   isDucking: false,
   legFrame: 0,
+  hasShield: false,
+  isInvincible: false
 };
 
 // Arrays
 let obstacles = [];
 let clouds = [];
+let coins = [];
+let powerupItems = [];
 let groundY = 250;
 
 // Game variables
 let lastObstacle = 0;
+let lastCoin = 0;
 
 // Keyboard
 const keys = {};
@@ -49,6 +109,29 @@ function initClouds() {
       size: 0.8 + Math.random() * 0.6,
     });
   }
+}
+
+// Spawn power-up
+function spawnPowerup() {
+  const now = Date.now();
+  if (now - powerups.spawnTimer < powerups.spawnInterval) return;
+  
+  // Only spawn if no active power-up items on screen
+  if (powerupItems.length >= 2) return;
+  
+  const types = ['shield', 'magnet', 'doubleJump', 'slowMotion', 'starPower'];
+  const type = types[Math.floor(Math.random() * types.length)];
+  
+  powerupItems.push({
+    x: canvas.width + 50,
+    y: groundY - 100 - Math.random() * 100,
+    width: 30,
+    height: 30,
+    type: type,
+    collected: false
+  });
+  
+  powerups.spawnTimer = now;
 }
 
 // Spawn obstacle
@@ -81,15 +164,133 @@ function spawnObstacle() {
   lastObstacle = now;
 }
 
+// Spawn coin
+function spawnCoin() {
+  const now = Date.now();
+  if (now - lastCoin < 1500 + Math.random() * 2000) return;
+  
+  coins.push({
+    x: canvas.width + 50,
+    y: groundY - 40 - Math.random() * 80,
+    width: 15,
+    height: 15,
+    collected: false,
+    bobOffset: Math.random() * Math.PI * 2
+  });
+  
+  lastCoin = now;
+}
+
+// Activate power-up
+function activatePowerup(type) {
+  const powerup = powerups.types[type];
+  
+  switch(type) {
+    case 'shield':
+      powerup.active = true;
+      powerup.timer = powerup.duration;
+      dino.hasShield = true;
+      break;
+      
+    case 'doubleJump':
+      powerup.active = true;
+      powerup.timer = powerup.duration;
+      powerup.jumpsLeft = 2;
+      break;
+      
+    case 'slowMotion':
+      powerup.active = true;
+      powerup.timer = powerup.duration;
+      powerup.originalSpeed = speed;
+      speed = speed * 0.5;
+      break;
+      
+    case 'starPower':
+      powerup.active = true;
+      powerup.timer = powerup.duration;
+      dino.isInvincible = true;
+      break;
+      
+    case 'magnet':
+      powerup.active = true;
+      powerup.timer = powerup.duration;
+      break;
+  }
+}
+
+// Update power-ups
+function updatePowerups() {
+  const now = Date.now();
+  
+  // Update active power-ups
+  for (let key in powerups.types) {
+    const powerup = powerups.types[key];
+    if (powerup.active) {
+      powerup.timer -= 16; // Decrease by frame time
+      
+      // Visual feedback: blink when almost expired
+      if (powerup.timer < 1000 && Math.floor(now / 200) % 2 === 0) {
+        // Blink effect
+      }
+      
+      if (powerup.timer <= 0) {
+        deactivatePowerup(key);
+      }
+    }
+  }
+}
+
+// Deactivate power-up
+function deactivatePowerup(type) {
+  const powerup = powerups.types[type];
+  powerup.active = false;
+  powerup.timer = 0;
+  
+  switch(type) {
+    case 'shield':
+      dino.hasShield = false;
+      break;
+    case 'slowMotion':
+      speed = powerup.originalSpeed;
+      break;
+    case 'starPower':
+      dino.isInvincible = false;
+      break;
+    case 'doubleJump':
+      powerup.jumpsLeft = 0;
+      break;
+  }
+}
+
 // Update game
 function update() {
   if (!gameRunning || gameOver) return;
 
   frame++;
   score += 0.2;
-  speed = Math.min(13, 6 + Math.floor(score / 300) * 0.4);
+  
+  // Apply slow motion effect on score
+  const speedMultiplier = powerups.types.slowMotion.active ? 0.5 : 1;
+  const effectiveSpeed = speed * speedMultiplier;
+
+  // Magnet effect - attract coins
+  if (powerups.types.magnet.active) {
+    const magnetRange = 150;
+    coins.forEach(coin => {
+      const dx = dino.x - coin.x;
+      const dy = (dino.y + dino.height/2) - (coin.y + coin.height/2);
+      const distance = Math.sqrt(dx*dx + dy*dy);
+      
+      if (distance < magnetRange && distance > 0) {
+        const pullStrength = 10;
+        coin.x += (dx / distance) * pullStrength;
+        coin.y += (dy / distance) * pullStrength;
+      }
+    });
+  }
 
   scoreElement.textContent = Math.floor(score).toString().padStart(5, "0");
+  coinCountElement.textContent = coinCount;
 
   // Dino physics
   if (dino.isJumping) {
@@ -100,31 +301,90 @@ function update() {
       dino.y = groundY - dino.height;
       dino.isJumping = false;
       dino.dy = 0;
+      
+      // Reset double jumps
+      if (powerups.types.doubleJump.active) {
+        powerups.types.doubleJump.jumpsLeft = 2;
+      }
     }
   }
 
-  // Spawn obstacles
+  // Spawn objects
   spawnObstacle();
+  spawnCoin();
+  spawnPowerup();
+  updatePowerups();
 
   // Update obstacles
   for (let i = obstacles.length - 1; i >= 0; i--) {
     let obs = obstacles[i];
-    obs.x -= speed;
+    obs.x -= effectiveSpeed;
 
-    // Score when passed
     if (!obs.passed && obs.x + obs.width < dino.x) {
       obs.passed = true;
     }
 
-    // Remove offscreen
     if (obs.x < -100) {
       obstacles.splice(i, 1);
     }
   }
 
+  // Update coins
+  for (let i = coins.length - 1; i >= 0; i--) {
+    let coin = coins[i];
+    coin.x -= effectiveSpeed;
+    coin.bobOffset += 0.05;
+    coin.y += Math.sin(coin.bobOffset) * 0.2;
+
+    // Check collection
+    if (!coin.collected) {
+      const dx = (dino.x + dino.width/2) - (coin.x + coin.width/2);
+      const dy = (dino.y + dino.height/2) - (coin.y + coin.height/2);
+      const distance = Math.sqrt(dx*dx + dy*dy);
+      
+      if (distance < 30) {
+        coin.collected = true;
+        coinCount++;
+        score += 5;
+        // Visual feedback - could add particle effect here
+      }
+    }
+
+    if (coin.x < -100) {
+      coins.splice(i, 1);
+    }
+  }
+
+  // Update power-up items
+  for (let i = powerupItems.length - 1; i >= 0; i--) {
+    let item = powerupItems[i];
+    item.x -= effectiveSpeed;
+    
+    // Bounce animation
+    item.y += Math.sin(frame * 0.05 + i) * 0.2;
+
+    // Check collection
+    if (!item.collected) {
+      const dx = (dino.x + dino.width/2) - (item.x + item.width/2);
+      const dy = (dino.y + dino.height/2) - (item.y + item.height/2);
+      const distance = Math.sqrt(dx*dx + dy*dy);
+      
+      if (distance < 40) {
+        item.collected = true;
+        activatePowerup(item.type);
+        score += 10; // Bonus points for collecting power-up
+        // Visual feedback
+      }
+    }
+
+    if (item.x < -100) {
+      powerupItems.splice(i, 1);
+    }
+  }
+
   // Update clouds
   clouds.forEach((cloud) => {
-    cloud.x -= speed * 0.3;
+    cloud.x -= effectiveSpeed * 0.3;
     if (cloud.x < -200) cloud.x = canvas.width + Math.random() * 400;
   });
 
@@ -157,6 +417,65 @@ function draw() {
     ctx.globalAlpha = 1;
   });
 
+  // Draw coins
+  coins.forEach((coin) => {
+    if (!coin.collected) {
+      ctx.fillStyle = "#FFD700";
+      ctx.beginPath();
+      ctx.arc(coin.x + coin.width/2, coin.y + coin.height/2, coin.width/2, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = "#DAA520";
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      
+      // Inner circle
+      ctx.fillStyle = "#FFA500";
+      ctx.beginPath();
+      ctx.arc(coin.x + coin.width/2, coin.y + coin.height/2, coin.width/4, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // Sparkle effect
+      ctx.fillStyle = "#FFF8DC";
+      ctx.globalAlpha = 0.5 + Math.sin(frame * 0.1 + coin.bobOffset) * 0.3;
+      ctx.beginPath();
+      ctx.arc(coin.x + coin.width/2 - 3, coin.y + coin.height/2 - 3, 2, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.globalAlpha = 1;
+    }
+  });
+
+  // Draw power-up items
+  powerupItems.forEach((item) => {
+    const powerup = powerups.types[item.type];
+    ctx.fillStyle = powerup.color;
+    ctx.globalAlpha = 0.8 + Math.sin(frame * 0.05) * 0.2;
+    
+    // Glow effect
+    const gradient = ctx.createRadialGradient(
+      item.x + item.width/2, item.y + item.height/2, 5,
+      item.x + item.width/2, item.y + item.height/2, 30
+    );
+    gradient.addColorStop(0, powerup.color + '80');
+    gradient.addColorStop(1, powerup.color + '00');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(item.x - 20, item.y - 20, item.width + 40, item.height + 40);
+    
+    // Power-up background
+    ctx.fillStyle = powerup.color;
+    ctx.globalAlpha = 0.9;
+    ctx.fillRect(item.x, item.y, item.width, item.height);
+    
+    // Icon
+    ctx.globalAlpha = 1;
+    ctx.fillStyle = "#fff";
+    ctx.font = "20px Arial";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(powerup.icon, item.x + item.width/2, item.y + item.height/2);
+    
+    ctx.globalAlpha = 1;
+  });
+
   // Draw ground
   ctx.fillStyle = "#535353";
   ctx.fillRect(0, groundY, canvas.width, canvas.height - groundY);
@@ -172,10 +491,33 @@ function draw() {
   }
 
   // Draw Dino
-  ctx.fillStyle = "#333";
   const dHeight = dino.isDucking ? 35 : dino.height;
   const dY = dino.isDucking ? groundY - dHeight : dino.y;
 
+  // Shield effect
+  if (dino.hasShield) {
+    ctx.strokeStyle = "#00BFFF";
+    ctx.lineWidth = 4;
+    ctx.globalAlpha = 0.6 + Math.sin(frame * 0.1) * 0.2;
+    ctx.beginPath();
+    ctx.arc(dino.x + dino.width/2, dY + dHeight/2, 35, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.globalAlpha = 1;
+  }
+
+  // Star Power effect
+  if (dino.isInvincible) {
+    ctx.globalAlpha = 0.3 + Math.sin(frame * 0.2) * 0.2;
+    ctx.fillStyle = "#FFD700";
+    ctx.beginPath();
+    ctx.arc(dino.x + dino.width/2, dY + dHeight/2, 40, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.globalAlpha = 1;
+  }
+
+  // Dino body
+  ctx.fillStyle = dino.isInvincible ? "#FFD700" : "#333";
+  
   // Body
   ctx.fillRect(dino.x + 10, dY + 10, 30, 25);
   // Head
@@ -200,14 +542,29 @@ function draw() {
   obstacles.forEach((obs) => {
     if (obs.type.includes("cactus")) {
       ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
-      // Spikes
       ctx.fillRect(obs.x + 8, obs.y - 12, 8, 15);
     } else if (obs.type === "bird") {
-      // Simple bird
       ctx.fillRect(obs.x, obs.y, obs.width, 20);
       ctx.fillRect(obs.x + 10, obs.y - 8, 25, 12);
     }
   });
+
+  // Draw active power-ups status
+  let yPos = 10;
+  for (let key in powerups.types) {
+    const powerup = powerups.types[key];
+    if (powerup.active) {
+      ctx.fillStyle = "rgba(0,0,0,0.7)";
+      ctx.fillRect(10, yPos, 150, 25);
+      ctx.fillStyle = powerup.color;
+      ctx.font = "14px Courier New";
+      ctx.textAlign = "left";
+      ctx.textBaseline = "middle";
+      const remaining = Math.ceil(powerup.timer / 1000);
+      ctx.fillText(`${powerup.icon} ${powerup.name}: ${remaining}s`, 15, yPos + 12);
+      yPos += 30;
+    }
+  }
 }
 
 // Collision
@@ -233,6 +590,27 @@ function checkCollisions() {
       dinoBox.y < obsBox.y + obsBox.height &&
       dinoBox.y + dinoBox.height > obsBox.y
     ) {
+      // Check if we have protection
+      if (dino.hasShield) {
+        // Shield protects from one hit
+        deactivatePowerup('shield');
+        // Remove the obstacle
+        const index = obstacles.indexOf(obs);
+        if (index > -1) {
+          obstacles.splice(index, 1);
+        }
+        continue;
+      }
+      
+      if (dino.isInvincible) {
+        // Invincible - just remove obstacle
+        const index = obstacles.indexOf(obs);
+        if (index > -1) {
+          obstacles.splice(index, 1);
+        }
+        continue;
+      }
+      
       endGame();
       return;
     }
@@ -247,6 +625,7 @@ function endGame() {
     localStorage.setItem("dinoHighScore", highScore);
   }
   finalScoreEl.textContent = Math.floor(score);
+  finalCoinsEl.textContent = coinCount;
   highScoreEl.textContent = highScore;
   gameOverScreen.style.display = "flex";
 }
@@ -260,9 +639,21 @@ function gameLoop() {
 
 // Controls
 function jump() {
-  if (!dino.isJumping && gameRunning) {
+  if (!gameRunning) return;
+  
+  const doubleJumpPowerup = powerups.types.doubleJump;
+  
+  if (!dino.isJumping) {
+    // First jump
     dino.isJumping = true;
     dino.dy = JUMP;
+    if (doubleJumpPowerup.active) {
+      doubleJumpPowerup.jumpsLeft = 1;
+    }
+  } else if (doubleJumpPowerup.active && doubleJumpPowerup.jumpsLeft > 0) {
+    // Double jump
+    dino.dy = JUMP * 0.8;
+    doubleJumpPowerup.jumpsLeft--;
   }
 }
 
@@ -271,12 +662,36 @@ function startGame() {
   gameRunning = true;
   gameOver = false;
   score = 0;
+  coinCount = 0;
   speed = 6;
   obstacles = [];
+  coins = [];
+  powerupItems = [];
   dino.y = groundY - dino.height;
   dino.isJumping = false;
   dino.isDucking = false;
+  dino.hasShield = false;
+  dino.isInvincible = false;
+  
+  // Reset power-ups
+  for (let key in powerups.types) {
+    const powerup = powerups.types[key];
+    powerup.active = false;
+    powerup.timer = 0;
+    if (key === 'doubleJump') {
+      powerup.jumpsLeft = 0;
+    }
+    if (key === 'slowMotion') {
+      powerup.originalSpeed = 6;
+    }
+  }
+  
+  // Update displays
+  coinCountElement.textContent = "0";
+  
+  // Hide start screen and legend
   startScreen.style.display = "none";
+  powerupLegend.style.display = "none";
   gameOverScreen.style.display = "none";
 }
 
@@ -331,7 +746,9 @@ function init() {
   initClouds();
   gameOverScreen.style.display = "none";
   startScreen.style.display = "flex";
-  highScoreEl.textContent = highScore; // Just for reference
+  powerupLegend.style.display = "block";
+  highScoreEl.textContent = highScore;
+  coinCountElement.textContent = "0";
   gameLoop();
 }
 
