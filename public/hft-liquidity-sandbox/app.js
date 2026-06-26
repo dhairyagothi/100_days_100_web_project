@@ -3,19 +3,12 @@ class HftOrderBookSandbox {
     this.canvas = document.getElementById(canvasId);
     this.ctx = this.canvas.getContext('2d');
 
+    // Order Book Structural Parameters
     this.midPrice = 100.0;
     this.tickSize = 0.05;
     this.bids = [];
     this.asks = [];
-
     this.trades = [];
-    // Order Book Structural Parameters
-    this.midPrice = 100.0;
-    this.tickSize = 0.05;
-    this.bids = []; // Sorted descending [price, volume]
-    this.asks = []; // Sorted ascending [price, volume]
-
-    this.trades = []; // Historical trade execution flashes
     this.lastPrice = 100.0;
 
     this.init();
@@ -106,8 +99,6 @@ class HftOrderBookSandbox {
         if (bestAsk.volume <= 0) this.asks.shift();
       }
     } else if (side === 'SELL' && this.bids.length > 0) {
-      if (bestAsk.volume <= 0) this.asks.shift();
-    } else if (side === 'SELL' && this.bids.length > 0) {
       // Aggressive Market Sell sweep matching
       while (remainingSize > 0 && this.bids.length > 0) {
         let bestBid = this.bids[0];
@@ -177,13 +168,7 @@ class HftOrderBookSandbox {
     const cumulativeDepth =
       this.bids.reduce((acc, b) => acc + b.volume, 0) +
       this.asks.reduce((acc, a) => acc + a.volume, 0);
-    document.getElementById('depthMetric').innerText =
-      `${cumulativeDepth} Lots`;
 
-    // Calculate total depth on display metrics
-    const cumulativeDepth =
-      this.bids.reduce((acc, b) => acc + b.volume, 0) +
-      this.asks.reduce((acc, a) => acc + a.volume, 0);
     document.getElementById('depthMetric').innerText =
       `${cumulativeDepth} Lots`;
 
@@ -207,24 +192,13 @@ class HftOrderBookSandbox {
       this.ctx.lineTo(x, this.canvas.height);
       this.ctx.stroke();
     }
+
     for (let y = 0; y < this.canvas.height; y += spacing) {
       this.ctx.beginPath();
       this.ctx.moveTo(0, y);
-      this.ctx.lineTo(0, this.canvas.height);
+      this.ctx.lineTo(this.canvas.width, y);
       this.ctx.stroke();
     }
-
-    this.ctx.beginPath();
-    this.ctx.moveTo(0, y);
-    this.ctx.lineTo(this.canvas.width, y);
-    this.ctx.stroke();
-
-    // Draw structural vertical axis splitter (Separates price boundaries visually)
-    this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
-    this.ctx.beginPath();
-    this.ctx.moveTo(this.canvas.width / 2, 0);
-    this.ctx.lineTo(this.canvas.width / 2, this.canvas.height);
-    this.ctx.stroke();
   }
 
   drawLiquidityDepthPolygons() {
