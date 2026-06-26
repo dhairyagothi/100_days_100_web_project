@@ -1,26 +1,20 @@
 let books = JSON.parse(localStorage.getItem("books")) || [];
 
-const goal = 20;
-
 function saveBooks() {
     localStorage.setItem("books", JSON.stringify(books));
 }
 
 function addBook() {
 
-    const title = document.getElementById("title").value.trim();
-    const author = document.getElementById("author").value.trim();
-    const genre = document.getElementById("genre").value.trim();
+    const title = document.getElementById("title").value;
+    const author = document.getElementById("author").value;
+    const genre = document.getElementById("genre").value;
     const status = document.getElementById("status").value;
     const progress = document.getElementById("progress").value;
 
-    if (!title || !author) {
-        alert("Please enter title and author.");
-        return;
-    }
+    if (!title || !author) return;
 
     books.push({
-        id: Date.now(),
         title,
         author,
         genre,
@@ -29,131 +23,147 @@ function addBook() {
     });
 
     saveBooks();
-    renderBooks();
-
-    document.getElementById("title").value = "";
-    document.getElementById("author").value = "";
-    document.getElementById("genre").value = "";
+    displayBooks();
 }
 
-function deleteBook(id) {
+function deleteBook(index) {
+    books.splice(index, 1);
+    saveBooks();
+    displayBooks();
+}
 
-    books = books.filter(book => book.id !== id);
+function editBook(index) {
+
+    document.getElementById("title").value =
+        books[index].title;
+
+    document.getElementById("author").value =
+        books[index].author;
+
+    document.getElementById("genre").value =
+        books[index].genre;
+
+    document.getElementById("status").value =
+        books[index].status;
+
+    document.getElementById("progress").value =
+        books[index].progress;
+
+    books.splice(index, 1);
 
     saveBooks();
-    renderBooks();
-}
-
-function editBook(id) {
-
-    const book = books.find(book => book.id === id);
-
-    const title = prompt("Edit Title", book.title);
-
-    if (!title) return;
-
-    book.title = title;
-
-    saveBooks();
-    renderBooks();
-}
-
-function renderBooks() {
-
-    const container = document.getElementById("bookList");
-
-    const search =
-        document.getElementById("search").value.toLowerCase();
-
-    const statusFilter =
-        document.getElementById("filterStatus").value;
-
-    const genreFilter =
-        document.getElementById("filterGenre").value.toLowerCase();
-
-    let filtered = books.filter(book => {
-
-        return (
-            book.title.toLowerCase().includes(search) &&
-            book.genre.toLowerCase().includes(genreFilter) &&
-            (statusFilter === "" || book.status === statusFilter)
-        );
-
-    });
-
-    container.innerHTML = "";
-
-    filtered.forEach(book => {
-
-        container.innerHTML += `
-        <div class="col-md-6">
-
-            <div class="book-card">
-
-                <h4>${book.title}</h4>
-
-                <p><strong>Author:</strong> ${book.author}</p>
-
-                <p><strong>Genre:</strong> ${book.genre}</p>
-
-                <p><strong>Status:</strong> ${book.status}</p>
-
-                <div class="progress mb-3">
-
-                    <div
-                        class="progress-bar"
-                        style="width:${book.progress}%">
-                    </div>
-
-                </div>
-
-                <div class="actions">
-
-                    <button
-                        class="btn btn-warning"
-                        onclick="editBook(${book.id})">
-                        Edit
-                    </button>
-
-                    <button
-                        class="btn btn-danger"
-                        onclick="deleteBook(${book.id})">
-                        Delete
-                    </button>
-
-                </div>
-
-            </div>
-
-        </div>
-        `;
-    });
-
-    updateStats();
+    displayBooks();
 }
 
 function updateStats() {
 
-    const total = books.length;
+    document.getElementById("total").innerText =
+        books.length;
 
-    const completed =
+    document.getElementById("reading").innerText =
+        books.filter(book => book.status === "Reading").length;
+
+    document.getElementById("completed").innerText =
         books.filter(book => book.status === "Completed").length;
+}
 
-    document.getElementById("totalBooks").textContent = total;
+function updateGenres() {
 
-    document.getElementById("completedBooks").textContent = completed;
+    const filter = document.getElementById("filter");
 
-    document.getElementById("goalProgress").textContent =
-        Math.round((completed / goal) * 100) + "%";
+    filter.innerHTML =
+        '<option value="all">All Genres</option>';
+
+    [...new Set(books.map(book => book.genre))]
+        .forEach(g => {
+            filter.innerHTML +=
+                `<option value="${g}">${g}</option>`;
+        });
+}
+
+function displayBooks() {
+
+    const list = document.getElementById("bookList");
+
+    const search =
+        document.getElementById("search").value.toLowerCase();
+
+    const genre =
+        document.getElementById("filter").value;
+
+    let filtered = books.filter(book =>
+        book.title.toLowerCase().includes(search)
+    );
+
+    if (genre !== "all") {
+        filtered = filtered.filter(
+            book => book.genre === genre
+        );
+    }
+
+    list.innerHTML = "";
+
+    if (filtered.length === 0) {
+        list.innerHTML =
+            `<div class="empty">
+                No books found.
+             </div>`;
+    }
+
+    filtered.forEach((book, index) => {
+
+        list.innerHTML += `
+        <div class="col-md-4">
+
+            <div class="card p-3 book-card">
+
+                <h4>${book.title}</h4>
+
+                <p><strong>Author:</strong>
+                ${book.author}</p>
+
+                <p><strong>Genre:</strong>
+                ${book.genre}</p>
+
+                <span class="badge bg-primary">
+                ${book.status}
+                </span>
+
+                <div class="progress mt-3">
+                    <div class="progress-bar"
+                        style="width:${book.progress}%">
+                        ${book.progress}%
+                    </div>
+                </div>
+
+                <button class="btn btn-warning mt-3"
+                    onclick="editBook(${index})">
+                    Edit
+                </button>
+
+                <button class="btn btn-danger mt-2"
+                    onclick="deleteBook(${index})">
+                    Delete
+                </button>
+
+            </div>
+
+        </div>`;
+    });
+
+    updateStats();
+    updateGenres();
 }
 
 document.getElementById("search")
-.addEventListener("input", renderBooks);
+.addEventListener("input", displayBooks);
 
-document.getElementById("filterStatus")
-.addEventListener("change", renderBooks);
+document.getElementById("filter")
+.addEventListener("change", displayBooks);
 
-document.getElementById("filterGenre")
-.addEventListener("input", renderBooks);
+document.getElementById("themeBtn")
+.addEventListener("click", () => {
+    document.body.classList.toggle("dark");
+});
 
-renderBooks();
+displayBooks();

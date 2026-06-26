@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="TypePulse - A premium Light-Themed typing speed tester and laptop keyboard hardware key tester.">
-  <title>TypePulse | Laptop Typing Speed &amp; Key Tester</title>
+  <title>TypePulse | Laptop Typing Speed & Key Tester</title>
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,26 +16,29 @@
 </head>
 <body class="theme-light">
   <div class="app-container">
+    
     <!-- Background subtle ambient lights (light mode) -->
     <div class="glow-bg">
       <div class="glow-spot glow-1"></div>
       <div class="glow-spot glow-2"></div>
     </div>
+
     <!-- MAIN HEADER -->
     <header class="main-header">
       <div class="logo-area">
         <div class="logo-pulse">
-          <i class="fa-solid fa-laptop-code" aria-hidden="true"></i>
+          <i class="fa-solid fa-laptop-code"></i>
         </div>
         <h1>Type<span>Pulse</span></h1>
       </div>
+      
       <!-- Mode Toggle Switcher -->
       <div class="mode-switcher-pill">
-        <button type="button" class="mode-btn active" id="mode-typing-btn">
-          <i class="fa-solid fa-keyboard" aria-hidden="true"></i> Typing Speed Test
+        <button class="mode-btn active" id="mode-typing-btn">
+          <i class="fa-solid fa-keyboard"></i> Typing Speed Test
         </button>
-        <button type="button" class="mode-btn" id="mode-tester-btn">
-          <i class="fa-solid fa-check-double" aria-hidden="true"></i> Laptop Key Tester
+        <button class="mode-btn" id="mode-tester-btn">
+          <i class="fa-solid fa-check-double"></i> Laptop Key Tester
         </button>
       </div>
 
@@ -43,10 +46,10 @@
       <div class="header-controls">
         <!-- Personal Best Widget -->
         <div class="personal-best-card" id="best-wpm-widget">
-          <i class="fa-solid fa-trophy trophy-icon" aria-hidden="true"></i>
+          <i class="fa-solid fa-trophy trophy-icon"></i>
           <div>
             <span class="pb-label">Best Speed</span>
-            <span class="pb-value"><span id="best-wpm-val" aria-live="polite">0</span> WPM</span>
+            <span class="pb-value"><span id="best-wpm-val">0</span> WPM</span>
           </div>
         </div>
       </div>
@@ -55,13 +58,14 @@
     <!-- TEST CONFIGURATION BAR (Only shown in Typing Mode) -->
     <section class="config-section" id="config-bar-section">
       <div class="config-bar glass-card">
+        
         <!-- Difficulty Selection -->
         <div class="config-group">
-          <span class="config-label"><i class="fa-solid fa-sliders" aria-hidden="true"></i> Difficulty</span>
+          <span class="config-label"><i class="fa-solid fa-sliders"></i> Difficulty</span>
           <div class="config-options" id="difficulty-options">
-            <button type="button" class="config-btn active" data-difficulty="easy">Easy</button>
-            <button type="button" class="config-btn" data-difficulty="medium">Medium</button>
-            <button type="button" class="config-btn" data-difficulty="hard">Hard</button>
+            <button class="config-btn active" data-difficulty="easy">Easy</button>
+            <button class="config-btn" data-difficulty="medium">Medium</button>
+            <button class="config-btn" data-difficulty="hard">Hard</button>
           </div>
         </div>
 
@@ -70,11 +74,11 @@
 
         <!-- Time Limit Selection -->
         <div class="config-group">
-          <span class="config-label"><i class="fa-regular fa-clock" aria-hidden="true"></i> Time</span>
+          <span class="config-label"><i class="fa-regular fa-clock"></i> Time</span>
           <div class="config-options" id="time-options">
-            <button type="button" class="config-btn active" data-time="30">30s</button>
-            <button type="button" class="config-btn" data-time="60">60s</button>
-            <button type="button" class="config-btn" data-time="120">120s</button>
+            <button class="config-btn active" data-time="30">30s</button>
+            <button class="config-btn" data-time="60">60s</button>
+            <button class="config-btn" data-time="120">120s</button>
           </div>
         </div>
 
@@ -83,11 +87,11 @@
 
         <!-- Audio Settings -->
         <div class="config-group">
-          <span class="config-label"><i class="fa-solid fa-volume-high" aria-hidden="true"></i> Sounds</span>
+          <span class="config-label"><i class="fa-solid fa-volume-high"></i> Sounds</span>
           <div class="config-options" id="sound-options">
-            <button type="button" class="config-btn active" data-sound="mechanical">Clicky</button>
-            <button type="button" class="config-btn" data-sound="synth">Synth</button>
-            <button type="button" class="config-btn" data-sound="off">Mute</button>
+            <button class="config-btn active" data-sound="mechanical">Clicky</button>
+            <button class="config-btn" data-sound="synth">Synth</button>
+            <button class="config-btn" data-sound="off">Mute</button>
           </div>
         </div>
 
@@ -98,39 +102,41 @@
     <section class="config-section d-none" id="tester-bar-section">
       <div class="config-bar glass-card tester-instructions-card">
         <div class="tester-instruction-content">
-          <i class="fa-solid fa-circle-info info-icon" aria-hidden="true"></i>
+          <i class="fa-solid fa-circle-info info-icon"></i>
           <span><strong>Laptop Keyboard Tester:</strong> Press any key on your keyboard to test. Working keys turn <span class="tested-highlight">green</span> and stay lit. Special keys like Shift, Control, Alt, CapsLock, and Arrows are fully supported.</span>
         </div>
-        <button type="button" class="action-btn primary-btn reset-tester-btn" id="reset-tester-btn">
-          <i class="fa-solid fa-trash-can" aria-hidden="true"></i> Clear Board
+        <button class="action-btn primary-btn reset-tester-btn" id="reset-tester-btn">
+          <i class="fa-solid fa-trash-can"></i> Clear Board
         </button>
       </div>
     </section>
 
     <!-- MAIN DISPLAY CARD SECTION -->
     <main class="main-card-section">
+      
       <!-- Typing Test UI Wrapper -->
       <div class="glass-card main-typing-card" id="typing-test-ui">
         <!-- Top Stats Row (Live metrics) -->
         <div class="live-stats-row">
           <div class="live-stat">
             <span class="live-stat-label">Timer</span>
-            <span class="live-stat-value timer-glow" id="live-timer" aria-live="polite">30s</span>
+            <span class="live-stat-value timer-glow" id="live-timer">30s</span>
           </div>
           <div class="live-stat">
             <span class="live-stat-label">WPM</span>
-            <span class="live-stat-value" id="live-wpm" aria-live="polite">0</span>
+            <span class="live-stat-value" id="live-wpm">0</span>
           </div>
           <div class="live-stat">
             <span class="live-stat-label">Accuracy</span>
-            <span class="live-stat-value" id="live-accuracy" aria-live="polite">100%</span>
+            <span class="live-stat-value" id="live-accuracy">100%</span>
           </div>
         </div>
 
         <!-- Typing Area Box -->
         <div class="typing-area-container" id="typing-container">
           <!-- Hidden Input to Capture Keystrokes (handles autofocus) -->
-          <textarea class="hidden-textarea" id="typing-input" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Start typing here..." aria-label="Typing test input"></textarea>
+          <textarea class="hidden-textarea" id="typing-input" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Start typing here..."></textarea>
+          
           <!-- Visual Overlay display -->
           <div class="text-display-box" id="text-display">
             <div class="loading-text">Loading typing test...</div>
@@ -139,8 +145,8 @@
 
         <!-- Interactive Restart trigger -->
         <div class="restart-prompt-row">
-          <button type="button" class="action-btn secondary-btn" id="restart-btn" title="Restart typing test (Esc)">
-            <i class="fa-solid fa-rotate-right" aria-hidden="true"></i> Restart
+          <button class="action-btn secondary-btn" id="restart-btn" title="Restart typing test (Esc)">
+            <i class="fa-solid fa-rotate-right"></i> Restart
           </button>
           <span class="shortcut-tip">Press <kbd>Esc</kbd> to restart typing.</span>
         </div>
@@ -161,6 +167,7 @@
     <section class="keyboard-section">
       <div class="glass-card keyboard-card">
         <div class="keyboard-container" id="virtual-keyboard">
+          
           <!-- Row 1: Esc + Numbers + Backspace -->
           <div class="keyboard-row">
             <div class="key key-esc" id="key-Escape">Esc</div>
@@ -178,6 +185,7 @@
             <div class="key" id="key-Equal">=</div>
             <div class="key key-backspace" id="key-Backspace">Backspace</div>
           </div>
+          
           <!-- Row 2: Tab + QWERTY + Brackets + Backslash -->
           <div class="keyboard-row">
             <div class="key key-tab" id="key-Tab">Tab</div>
@@ -195,6 +203,7 @@
             <div class="key" id="key-BracketRight">]</div>
             <div class="key key-backslash" id="key-Backslash">\</div>
           </div>
+          
           <!-- Row 3: Caps + ASDFGH + Semicolon/Quote + Enter -->
           <div class="keyboard-row">
             <div class="key key-caps" id="key-CapsLock">Caps Lock</div>
@@ -211,6 +220,7 @@
             <div class="key" id="key-Quote">'</div>
             <div class="key key-enter" id="key-Enter">Enter</div>
           </div>
+          
           <!-- Row 4: Shift L + ZXCVBNM + Operators + Shift R -->
           <div class="keyboard-row">
             <div class="key key-shift-l" id="key-ShiftLeft">Shift</div>
@@ -226,6 +236,7 @@
             <div class="key" id="key-Slash">/</div>
             <div class="key key-shift-r" id="key-ShiftRight">Shift</div>
           </div>
+          
           <!-- Row 5: Fn + Ctrl + Win + Alt + Space + Alt + Ctrl + Arrow Keys -->
           <div class="keyboard-row">
             <div class="key key-fn" id="key-Fn">Fn</div>
@@ -235,14 +246,15 @@
             <div class="key key-space" id="key-Space">Space</div>
             <div class="key key-alt" id="key-AltRight">Alt</div>
             <div class="key key-ctrl" id="key-ControlRight">Ctrl</div>
+            
             <!-- Laptop Arrow Cluster -->
             <div class="arrow-container">
-              <div class="key key-arrow" id="key-ArrowLeft"><i class="fa-solid fa-caret-left" aria-hidden="true"></i></div>
+              <div class="key key-arrow" id="key-ArrowLeft"><i class="fa-solid fa-caret-left"></i></div>
               <div class="arrow-vertical">
-                <div class="key key-arrow key-arrow-v" id="key-ArrowUp"><i class="fa-solid fa-caret-up" aria-hidden="true"></i></div>
-                <div class="key key-arrow key-arrow-v" id="key-ArrowDown"><i class="fa-solid fa-caret-down" aria-hidden="true"></i></div>
+                <div class="key key-arrow key-arrow-v" id="key-ArrowUp"><i class="fa-solid fa-caret-up"></i></div>
+                <div class="key key-arrow key-arrow-v" id="key-ArrowDown"><i class="fa-solid fa-caret-down"></i></div>
               </div>
-              <div class="key key-arrow" id="key-ArrowRight"><i class="fa-solid fa-caret-right" aria-hidden="true"></i></div>
+              <div class="key key-arrow" id="key-ArrowRight"><i class="fa-solid fa-caret-right"></i></div>
             </div>
           </div>
 
@@ -255,21 +267,21 @@
       <!-- High Scores / Leaderboard Card -->
       <div class="glass-card leaderboard-card">
         <div class="panel-header">
-          <h2><i class="fa-solid fa-ranking-star" aria-hidden="true"></i> Local Leaderboard</h2>
-          <button type="button" class="icon-btn text-danger" id="clear-scores-btn" title="Reset all scores and local data" aria-label="Reset all scores and local data">
-            <i class="fa-solid fa-trash-can" aria-hidden="true"></i>
+          <h2><i class="fa-solid fa-ranking-star"></i> Local Leaderboard</h2>
+          <button class="icon-btn text-danger" id="clear-scores-btn" title="Reset all scores and local data">
+            <i class="fa-solid fa-trash-can"></i>
           </button>
         </div>
         <div class="leaderboard-table-wrapper">
           <table class="leaderboard-table">
             <thead>
               <tr>
-                <th scope="col">Rank</th>
-                <th scope="col">Name</th>
-                <th scope="col">WPM</th>
-                <th scope="col">Accuracy</th>
-                <th scope="col">Difficulty</th>
-                <th scope="col">Time</th>
+                <th>Rank</th>
+                <th>Name</th>
+                <th>WPM</th>
+                <th>Accuracy</th>
+                <th>Difficulty</th>
+                <th>Time</th>
               </tr>
             </thead>
             <tbody id="leaderboard-tbody">
@@ -284,11 +296,12 @@
     </section>
 
     <!-- RESULTS MODAL -->
-    <div class="modal-overlay" id="result-modal" role="dialog" aria-modal="true" aria-labelledby="results-heading">
+    <div class="modal-overlay" id="result-modal">
       <div class="modal-content glass-card animate-zoom">
+        
         <div class="modal-header">
-          <h2 id="results-heading"><i class="fa-solid fa-square-poll-vertical" aria-hidden="true"></i> Performance Summary</h2>
-          <button type="button" class="close-modal-btn" id="close-modal-x" aria-label="Close modal">&times;</button>
+          <h2><i class="fa-solid fa-square-poll-vertical"></i> Performance Summary</h2>
+          <button class="close-modal-btn" id="close-modal-x">&times;</button>
         </div>
 
         <div class="results-grid">
@@ -296,7 +309,7 @@
           <div class="result-box glow-accent">
             <div class="result-num" id="result-wpm">0</div>
             <div class="result-lbl">Words Per Minute</div>
-            <div class="pb-badge" id="pb-badge"><i class="fa-solid fa-crown" aria-hidden="true"></i> New Personal Best!</div>
+            <div class="pb-badge" id="pb-badge"><i class="fa-solid fa-crown"></i> New Personal Best!</div>
           </div>
 
           <!-- Accuracy Indicator -->
@@ -323,20 +336,20 @@
           <h3>Record Your Achievement</h3>
           <p>Save your score to the local leaderboard!</p>
           <div class="input-group">
-            <input type="text" id="player-name-input" maxlength="15" placeholder="Enter your name" required autocomplete="off" aria-label="Player name">
-            <button type="button" class="action-btn primary-btn" id="save-score-btn">
-              <i class="fa-solid fa-floppy-disk" aria-hidden="true"></i> Save Run
+            <input type="text" id="player-name-input" maxlength="15" placeholder="Enter your name" required autocomplete="off">
+            <button class="action-btn primary-btn" id="save-score-btn">
+              <i class="fa-solid fa-floppy-disk"></i> Save Run
             </button>
           </div>
-          <span class="form-feedback" id="submit-feedback-msg" aria-live="polite"></span>
+          <span class="form-feedback" id="submit-feedback-msg"></span>
         </div>
 
         <!-- Modal Actions Footer -->
         <div class="modal-actions">
-          <button type="button" class="action-btn primary-btn" id="modal-retry-btn">
-            <i class="fa-solid fa-rotate-right" aria-hidden="true"></i> Try Again
+          <button class="action-btn primary-btn" id="modal-retry-btn">
+            <i class="fa-solid fa-rotate-right"></i> Try Again
           </button>
-          <button type="button" class="action-btn secondary-btn" id="modal-close-btn">
+          <button class="action-btn secondary-btn" id="modal-close-btn">
             Close View
           </button>
         </div>
@@ -346,7 +359,7 @@
 
     <!-- MAIN FOOTER -->
     <footer class="app-footer">
-      <p>TypePulse &copy; 2026. Made with <i class="fa-solid fa-heart pulse-heart" aria-hidden="true"></i> for laptop keyboard enthusiasts.</p>
+      <p>TypePulse &copy; 2026. Made with <i class="fa-solid fa-heart pulse-heart"></i> for laptop keyboard enthusiasts.</p>
     </footer>
 
   </div>

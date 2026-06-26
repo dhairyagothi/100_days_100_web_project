@@ -560,20 +560,50 @@ loadCategory(btn.dataset.cat);
 
 });
 
+// ── Dark Mode Logic Block ──
+const themeToggleBtn = document.getElementById('themeToggle');
+const toggleIcon = document.getElementById('toggleIcon');
+
+// Load stored settings or default to device configuration
+const savedTheme = localStorage.getItem('theme');
+const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+const initialTheme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
+
+document.documentElement.setAttribute('data-theme', initialTheme);
+updateStarIcon(initialTheme);
+
+themeToggleBtn.addEventListener('click', () => {
+  const currentTheme = document.documentElement.getAttribute('data-theme');
+  const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+  document.documentElement.setAttribute('data-theme', newTheme);
+  localStorage.setItem('theme', newTheme);
+  updateStarIcon(newTheme);
+});
+
+function updateStarIcon(theme) {
+  if (theme === 'dark') {
+    toggleIcon.classList.remove('ti-star');
+    toggleIcon.classList.add('ti-star-filled');
+  } else {
+    toggleIcon.classList.remove('ti-star-filled');
+    toggleIcon.classList.add('ti-star');
+  }
+}
 
 
+// Theme dropdown
 themeSelect.addEventListener(
-"change",
-()=>applyTheme(themeSelect.value)
+  "change",
+  () => applyTheme(themeSelect.value)
 );
 
 
-
+// Clear history button
 clearHistoryBtn.addEventListener(
-"click",
-clearHistory
+  "click",
+  clearHistory
 );
-
 
 
 // ======================================
@@ -587,3 +617,4 @@ renderHistory();
 loadCategory("length");
 
 convert(false);
+

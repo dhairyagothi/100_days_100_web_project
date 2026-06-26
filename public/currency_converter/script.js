@@ -344,3 +344,84 @@ function debounce(func, delay) {
 ========================= */
 
 renderHistory();
+
+/* =========================
+   CURRENCY SYMBOLS & INFO
+========================= */
+
+const currencySymbols = {
+  USD: '$',
+  INR: '₹',
+  EUR: '€',
+  GBP: '£',
+  JPY: '¥',
+  AUD: 'A$',
+  CAD: 'C$',
+  CHF: 'CHF',
+  CNY: '¥',
+  AED: 'د.إ',
+  SGD: 'S$',
+  PKR: '₨'
+};
+
+/* =========================
+   UPDATE CURRENCY SYMBOL
+========================= */
+
+function updateCurrencySymbol() {
+  const symbolSpan = document.getElementById('currencySymbol');
+  const selectedCurrency = fromCurrency.value;
+  
+  const symbol = currencySymbols[selectedCurrency] || selectedCurrency;
+  
+  // Animate the change
+  symbolSpan.style.transition = 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)';
+  symbolSpan.style.transform = 'scale(0.8)';
+  symbolSpan.style.opacity = '0';
+  
+  setTimeout(() => {
+    symbolSpan.textContent = symbol;
+    symbolSpan.style.transform = 'scale(1.2)';
+    symbolSpan.style.opacity = '1';
+    
+    setTimeout(() => {
+      symbolSpan.style.transform = 'scale(1)';
+    }, 150);
+  }, 150);
+}
+
+/* =========================
+   MODIFIED SWAP FUNCTION
+========================= */
+
+function swapCurrencies() {
+  const temp = fromCurrency.value;
+  fromCurrency.value = toCurrency.value;
+  toCurrency.value = temp;
+  
+  // Update symbol after swap
+  updateCurrencySymbol();
+  
+  swapBtn.style.transform = "rotate(180deg)";
+  setTimeout(() => {
+    swapBtn.style.transform = "rotate(0deg)";
+  }, 400);
+  
+  autoConvert();
+}
+
+/* =========================
+   MODIFIED EVENT LISTENERS
+========================= */
+
+// Add symbol update to existing listeners
+fromCurrency.addEventListener('change', () => {
+  updateCurrencySymbol();
+  autoConvert();
+});
+
+// Initial setup
+document.addEventListener('DOMContentLoaded', () => {
+  updateCurrencySymbol();
+  renderHistory();
+});

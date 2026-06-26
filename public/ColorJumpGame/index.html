@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Color Jump Game</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="game-container">
+        <header>
+            <h1>Color Jump</h1>
+            <div class="score-board">
+                <p>Score: <span id="score">0</span></p>
+                <p>High Score: <span id="highScore">0</span></p>
+            </div>
+        </header>
+
+        <main>
+            <div id="startScreen" class="overlay active">
+                <h2>Ready to Jump?</h2>
+                <p>Tap or press Spacebar to jump over the colored walls!</p>
+                <button id="startBtn">Start Game</button>
+            </div>
+
+            <div id="gameOverScreen" class="overlay">
+                <h2>Game Over!</h2>
+                <p>Your Score: <span id="finalScore">0</span></p>
+                <button id="restartBtn">Play Again</button>
+            </div>
+
+            <canvas id="gameCanvas"></canvas>
+        </main>
+        
+        <div class="controls-hint">Tap anywhere to jump</div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
