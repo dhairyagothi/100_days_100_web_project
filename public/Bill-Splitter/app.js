@@ -4,12 +4,18 @@
    never via innerHTML, preventing DOM-based XSS (CodeQL CWE-79).
 ================================ */
 
+<<<<<<< HEAD
+const $ = id => document.getElementById(id);
+let CURRENCY = '₹';
+
+=======
 const $ = (id) => document.getElementById(id);
 let CURRENCY = '₹';
 
 // Preserve payment tracker state between recalculations
 let eqPaidState = {};
 
+>>>>>>> upstream/main
 /* ============================================================
    SAFE DOM HELPER
    Creates an element, assigns optional className, and appends
@@ -18,11 +24,17 @@ let eqPaidState = {};
 function el(tag, className, ...children) {
   const e = document.createElement(tag);
   if (className) e.className = className;
+<<<<<<< HEAD
+  children.forEach(child => {
+    if (child === null || child === undefined) return;
+    e.appendChild(typeof child === 'string' ? document.createTextNode(child) : child);
+=======
   children.forEach((child) => {
     if (child === null || child === undefined) return;
     e.appendChild(
       typeof child === 'string' ? document.createTextNode(child) : child
     );
+>>>>>>> upstream/main
   });
   return e;
 }
@@ -49,6 +61,18 @@ currencyToggle.addEventListener('click', (e) => {
   currencyDropdown.classList.toggle('open');
 });
 
+<<<<<<< HEAD
+document.addEventListener('click', () => currencyDropdown.classList.remove('open'));
+currencyDropdown.addEventListener('click', e => e.stopPropagation());
+
+document.querySelectorAll('.currency-opt').forEach(btn => {
+  btn.addEventListener('click', () => {
+    CURRENCY = btn.dataset.symbol;
+    $('currencySymbolDisplay').textContent = CURRENCY;
+    document.querySelectorAll('.currency-opt').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.currency-label').forEach(e => e.textContent = CURRENCY);
+=======
 document.addEventListener('click', () =>
   currencyDropdown.classList.remove('open')
 );
@@ -65,6 +89,7 @@ document.querySelectorAll('.currency-opt').forEach((btn) => {
     document
       .querySelectorAll('.currency-label')
       .forEach((e) => (e.textContent = CURRENCY));
+>>>>>>> upstream/main
     currencyDropdown.classList.remove('open');
     localStorage.setItem('swp-currency', CURRENCY);
     showToast(`Currency set to ${btn.dataset.code}`);
@@ -76,10 +101,15 @@ const savedCurrency = localStorage.getItem('swp-currency');
 if (savedCurrency) {
   CURRENCY = savedCurrency;
   $('currencySymbolDisplay').textContent = CURRENCY;
+<<<<<<< HEAD
+  document.querySelectorAll('.currency-label').forEach(e => e.textContent = CURRENCY);
+  document.querySelectorAll('.currency-opt').forEach(b => {
+=======
   document
     .querySelectorAll('.currency-label')
     .forEach((e) => (e.textContent = CURRENCY));
   document.querySelectorAll('.currency-opt').forEach((b) => {
+>>>>>>> upstream/main
     b.classList.toggle('active', b.dataset.symbol === CURRENCY);
   });
 }
@@ -116,10 +146,17 @@ document.querySelectorAll('.tab').forEach((tab) => {
 /* ============================================================
    TIP PRESET BUTTONS (scoped per card)
 ============================================================ */
+<<<<<<< HEAD
+document.querySelectorAll('.tip-presets').forEach(group => {
+  const card = group.closest('.card');
+  const tipInput = card ? card.querySelector('[id$="-tip"]') : null;
+  group.querySelectorAll('.tip-btn').forEach(btn => {
+=======
 document.querySelectorAll('.tip-presets').forEach((group) => {
   const card = group.closest('.card');
   const tipInput = card ? card.querySelector('[id$="-tip"]') : null;
   group.querySelectorAll('.tip-btn').forEach((btn) => {
+>>>>>>> upstream/main
     btn.addEventListener('click', () => {
       group
         .querySelectorAll('.tip-btn')
@@ -131,12 +168,20 @@ document.querySelectorAll('.tip-presets').forEach((group) => {
   });
 });
 
+<<<<<<< HEAD
+document.querySelectorAll('[id$="-tip"], [id$="-tax"]').forEach(input => {
+=======
 document.querySelectorAll('[id$="-tip"], [id$="-tax"]').forEach((input) => {
+>>>>>>> upstream/main
   input.addEventListener('input', () => {
     const card = input.closest('.card');
     if (!card) return;
     if (input.id.endsWith('-tip')) {
+<<<<<<< HEAD
+      card.querySelectorAll('.tip-btn').forEach(btn => {
+=======
       card.querySelectorAll('.tip-btn').forEach((btn) => {
+>>>>>>> upstream/main
         btn.classList.toggle('active', btn.dataset.tip == input.value);
       });
     }
@@ -153,20 +198,38 @@ function updateStickyBar() {
   const stickyTotal = $('stickyTotal');
   const stickyBtn = $('stickyCalcBtn');
 
+<<<<<<< HEAD
+  if (window.innerWidth > 600) { bar.style.display = 'none'; return; }
+=======
   if (window.innerWidth > 600) {
     bar.style.display = 'none';
     return;
   }
+>>>>>>> upstream/main
   bar.style.display = 'flex';
 
   if (activeTab === 'equal') {
     const bill = parseFloat($('eq-bill').value) || 0;
+<<<<<<< HEAD
+    const tip = bill * (parseFloat($('eq-tip').value) || 0) / 100;
+    const tax = bill * (parseFloat($('eq-tax').value) || 0) / 100;
+=======
     const tip = (bill * (parseFloat($('eq-tip').value) || 0)) / 100;
     const tax = (bill * (parseFloat($('eq-tax').value) || 0)) / 100;
+>>>>>>> upstream/main
     stickyTotal.textContent = `Total: ${fmt(bill + tip + tax)}`;
     stickyBtn.onclick = () => $('eq-calc').click();
   } else if (activeTab === 'unequal') {
     const bill = parseFloat($('uq-bill').value) || 0;
+<<<<<<< HEAD
+    const tip = bill * (parseFloat($('uq-tip').value) || 0) / 100;
+    const tax = bill * (parseFloat($('uq-tax').value) || 0) / 100;
+    stickyTotal.textContent = `Total: ${fmt(bill + tip + tax)}`;
+    stickyBtn.onclick = () => $('uq-calc').click();
+  } else if (activeTab === 'items') {
+    const total = [...$('it-items').querySelectorAll('.item-price')]
+      .reduce((s, i) => s + (parseFloat(i.value) || 0), 0);
+=======
     const tip = (bill * (parseFloat($('uq-tip').value) || 0)) / 100;
     const tax = (bill * (parseFloat($('uq-tax').value) || 0)) / 100;
     stickyTotal.textContent = `Total: ${fmt(bill + tip + tax)}`;
@@ -176,15 +239,20 @@ function updateStickyBar() {
       (s, i) => s + (parseFloat(i.value) || 0),
       0
     );
+>>>>>>> upstream/main
     stickyTotal.textContent = `Items: ${fmt(total)}`;
     stickyBtn.onclick = () => $('it-calc').click();
   }
 }
 
 window.addEventListener('resize', updateStickyBar);
+<<<<<<< HEAD
+document.querySelectorAll('input').forEach(i => i.addEventListener('input', updateStickyBar));
+=======
 document
   .querySelectorAll('input')
   .forEach((i) => i.addEventListener('input', updateStickyBar));
+>>>>>>> upstream/main
 
 /* ============================================================
    PARTICIPANT HELPERS
@@ -198,16 +266,24 @@ function addParticipantTag(container, name = '') {
   const input = document.createElement('input');
   input.type = 'text';
   input.placeholder = 'Name';
+<<<<<<< HEAD
+  input.value = name;                     // .value is safe — not rendered as HTML
+=======
   input.value = name; // .value is safe — not rendered as HTML
+>>>>>>> upstream/main
 
   const removeBtn = document.createElement('button');
   removeBtn.className = 'remove-p';
   removeBtn.setAttribute('aria-label', 'Remove');
   removeBtn.textContent = '×';
+<<<<<<< HEAD
+  removeBtn.addEventListener('click', () => { div.remove(); refreshItemSharers(); });
+=======
   removeBtn.addEventListener('click', () => {
     div.remove();
     refreshItemSharers();
   });
+>>>>>>> upstream/main
 
   div.appendChild(input);
   div.appendChild(removeBtn);
@@ -223,7 +299,11 @@ function addParticipantRow(container, name = '') {
   nameInput.type = 'text';
   nameInput.placeholder = 'Name';
   nameInput.className = 'p-name';
+<<<<<<< HEAD
+  nameInput.value = name;                 // .value is safe
+=======
   nameInput.value = name; // .value is safe
+>>>>>>> upstream/main
 
   const prefixDiv = document.createElement('div');
   prefixDiv.className = 'input-prefix sm';
@@ -258,6 +338,18 @@ function addParticipantRow(container, name = '') {
 }
 
 function getParticipantNames(container, selector = 'input[type="text"]') {
+<<<<<<< HEAD
+  return [...container.querySelectorAll(selector)].map(i => i.value.trim() || 'Person');
+}
+
+/* Wire existing remove buttons in static HTML */
+document.querySelectorAll('.remove-p').forEach(btn => {
+  btn.addEventListener('click', () => btn.closest('.participant-tag, .participant-row')?.remove());
+});
+
+$('eq-add-p').addEventListener('click', () => addParticipantTag($('eq-participants')));
+$('uq-add-p').addEventListener('click', () => addParticipantRow($('uq-participants')));
+=======
   return [...container.querySelectorAll(selector)].map(
     (i) => i.value.trim() || 'Person'
   );
@@ -276,6 +368,7 @@ $('eq-add-p').addEventListener('click', () =>
 $('uq-add-p').addEventListener('click', () =>
   addParticipantRow($('uq-participants'))
 );
+>>>>>>> upstream/main
 $('it-add-p').addEventListener('click', () => {
   addParticipantTag($('it-participants'));
   refreshItemSharers();
@@ -290,7 +383,11 @@ function makeSettleRow(from, to, amount) {
 
   const fromSpan = document.createElement('span');
   fromSpan.className = 'settle-from';
+<<<<<<< HEAD
+  fromSpan.textContent = from;            // user name → textContent only
+=======
   fromSpan.textContent = from; // user name → textContent only
+>>>>>>> upstream/main
 
   const arrowSpan = document.createElement('span');
   arrowSpan.className = 'settle-arrow';
@@ -298,11 +395,19 @@ function makeSettleRow(from, to, amount) {
 
   const toSpan = document.createElement('span');
   toSpan.className = 'settle-to';
+<<<<<<< HEAD
+  toSpan.textContent = to;               // user name → textContent only
+
+  const amtSpan = document.createElement('span');
+  amtSpan.className = 'settle-amt';
+  amtSpan.textContent = fmt(amount);     // formatted number — safe, but using textContent anyway
+=======
   toSpan.textContent = to; // user name → textContent only
 
   const amtSpan = document.createElement('span');
   amtSpan.className = 'settle-amt';
   amtSpan.textContent = fmt(amount); // formatted number — safe, but using textContent anyway
+>>>>>>> upstream/main
 
   d.appendChild(fromSpan);
   d.appendChild(arrowSpan);
@@ -323,12 +428,20 @@ $('eq-calc').addEventListener('click', () => {
   const roundUp = $('eq-roundup').checked;
   const names = getParticipantNames($('eq-participants'));
   const occasion = $('eq-occasion').value.trim();
+<<<<<<< HEAD
+
+  if (!bill || !names.length) return showToast('Enter a bill amount and at least one person.', 'error');
+
+  const tip = bill * tipPct / 100;
+  const tax = bill * taxPct / 100;
+=======
 
   if (!bill || !names.length)
     return showToast('Enter a bill amount and at least one person.', 'error');
 
   const tip = (bill * tipPct) / 100;
   const tax = (bill * taxPct) / 100;
+>>>>>>> upstream/main
   const total = bill + tip + tax;
   let per = total / names.length;
   if (roundUp) per = Math.ceil(per);
@@ -345,6 +458,13 @@ $('eq-calc').addEventListener('click', () => {
 
   // Payment status breakdown — safe DOM construction only
   const bd = $('eq-breakdown');
+<<<<<<< HEAD
+  bd.innerHTML = '';                      // clearing container is safe (no user data)
+  const paidState = {};
+
+  names.forEach((name) => {
+    paidState[name] = false;
+=======
   bd.innerHTML = '';
 
   // Preserve existing payment states
@@ -359,13 +479,18 @@ $('eq-calc').addEventListener('click', () => {
 
   names.forEach((name) => {
     paidState[name] = eqPaidState[name] || false;
+>>>>>>> upstream/main
 
     const d = document.createElement('div');
     d.className = 'breakdown-item';
 
     const nameSpan = document.createElement('span');
     nameSpan.className = 'breakdown-name';
+<<<<<<< HEAD
+    nameSpan.textContent = name;          // user name → textContent only
+=======
     nameSpan.textContent = name; // user name → textContent only
+>>>>>>> upstream/main
 
     const rightDiv = document.createElement('div');
     rightDiv.className = 'breakdown-right';
@@ -380,6 +505,14 @@ $('eq-calc').addEventListener('click', () => {
     paidBtn.textContent = 'Mark paid';
     paidBtn.addEventListener('click', function () {
       paidState[name] = !paidState[name];
+<<<<<<< HEAD
+      this.classList.toggle('is-paid', paidState[name]);
+      this.textContent = paidState[name] ? '✓ Paid' : 'Mark paid';
+      d.classList.toggle('is-paid-row', paidState[name]);
+      updatePaidCount(paidState, names.length);
+    });
+
+=======
 
       // Persist state globally
       eqPaidState[name] = paidState[name];
@@ -398,6 +531,7 @@ $('eq-calc').addEventListener('click', () => {
       d.classList.add('is-paid-row');
     }
 
+>>>>>>> upstream/main
     rightDiv.appendChild(amtSpan);
     rightDiv.appendChild(paidBtn);
     d.appendChild(nameSpan);
@@ -409,6 +543,9 @@ $('eq-calc').addEventListener('click', () => {
   $('eq-results').style.display = 'block';
   $('eq-results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
+<<<<<<< HEAD
+  window._eqResult = { type: 'Equal Split', bill, tip, tax, total, per, names, tipPct, taxPct, roundUp, occasion };
+=======
   window._eqResult = {
     type: 'Equal Split',
     bill,
@@ -422,13 +559,18 @@ $('eq-calc').addEventListener('click', () => {
     roundUp,
     occasion,
   };
+>>>>>>> upstream/main
 });
 
 function updatePaidCount(paidState, total) {
   const paid = Object.values(paidState).filter(Boolean).length;
   $('eq-paid-count').textContent = `${paid} / ${total} paid`;
+<<<<<<< HEAD
+  $('eq-paid-count').className = `paid-count${paid === total ? ' all-paid' : ''}`;
+=======
   $('eq-paid-count').className =
     `paid-count${paid === total ? ' all-paid' : ''}`;
+>>>>>>> upstream/main
 }
 
 function animateValue(el, start, end, duration, isRounded = false) {
@@ -451,10 +593,16 @@ function updateUqRemain() {
   const bill = parseFloat($('uq-bill').value) || 0;
   const tipPct = parseFloat($('uq-tip').value) || 0;
   const taxPct = parseFloat($('uq-tax').value) || 0;
+<<<<<<< HEAD
+  const total = bill + bill * tipPct / 100 + bill * taxPct / 100;
+  const entered = [...$('uq-participants').querySelectorAll('.p-amount')]
+    .reduce((s, i) => s + (parseFloat(i.value) || 0), 0);
+=======
   const total = bill + (bill * tipPct) / 100 + (bill * taxPct) / 100;
   const entered = [
     ...$('uq-participants').querySelectorAll('.p-amount'),
   ].reduce((s, i) => s + (parseFloat(i.value) || 0), 0);
+>>>>>>> upstream/main
   const remain = total - entered;
   const info = $('uq-settle-info');
   const bar = $('uq-running-bar');
@@ -465,22 +613,34 @@ function updateUqRemain() {
     const pct = Math.min((entered / total) * 100, 100);
     bar.style.display = 'block';
     fill.style.width = pct + '%';
+<<<<<<< HEAD
+    fill.style.background = remain > 0.005 ? 'var(--yellow)' : remain < -0.005 ? 'var(--accent)' : 'var(--green)';
+=======
     fill.style.background =
       remain > 0.005
         ? 'var(--yellow)'
         : remain < -0.005
           ? 'var(--accent)'
           : 'var(--green)';
+>>>>>>> upstream/main
     label.textContent = pct.toFixed(0) + '% assigned';
 
     info.style.display = 'block';
     // All values here are numbers / formatted strings — safe, using textContent
+<<<<<<< HEAD
+    $('uq-remain-label').textContent = remain > 0.005
+      ? `⚠️ Unassigned: ${fmt(remain)} remaining`
+      : remain < -0.005
+      ? `⚠️ Over by ${fmt(Math.abs(remain))}`
+      : `✅ Fully assigned`;
+=======
     $('uq-remain-label').textContent =
       remain > 0.005
         ? `⚠️ Unassigned: ${fmt(remain)} remaining`
         : remain < -0.005
           ? `⚠️ Over by ${fmt(Math.abs(remain))}`
           : `✅ Fully assigned`;
+>>>>>>> upstream/main
   } else {
     info.style.display = 'none';
     bar.style.display = 'none';
@@ -498,7 +658,11 @@ $('uq-calc').addEventListener('click', () => {
   const tipPct = parseFloat($('uq-tip').value) || 0;
   const taxPct = parseFloat($('uq-tax').value) || 0;
   const roundUp = $('uq-roundup').checked;
+<<<<<<< HEAD
+  const total = bill + bill * tipPct / 100 + bill * taxPct / 100;
+=======
   const total = bill + (bill * tipPct) / 100 + (bill * taxPct) / 100;
+>>>>>>> upstream/main
   if (!bill) return showToast('Enter a bill amount.', 'error');
 
   const rows = [...$('uq-participants').querySelectorAll('.participant-row')];
@@ -516,6 +680,11 @@ $('uq-calc').addEventListener('click', () => {
       sumPaid > 0 ? (p.paid / sumPaid) * total : total / participants.length,
   }));
 
+<<<<<<< HEAD
+  if (roundUp) people.forEach(p => p.owes = Math.ceil(p.owes));
+
+  const settlements = settleDebts(people.map(p => ({ name: p.name, balance: p.paid - p.owes })));
+=======
   if (roundUp) people.forEach((p) => (p.owes = Math.ceil(p.owes)));
 
   const settlements = settleDebts(
@@ -527,9 +696,20 @@ $('uq-calc').addEventListener('click', () => {
   $('uq-tip-display').textContent = fmt((bill * tipPct) / 100);
   $('uq-tax-display').textContent = fmt((bill * taxPct) / 100);
   $('uq-total-display').textContent = fmt(total);
+>>>>>>> upstream/main
+
+  // Summary — all formatted numbers, safe
+  $('uq-subtotal').textContent = fmt(bill);
+  $('uq-tip-display').textContent = fmt(bill * tipPct / 100);
+  $('uq-tax-display').textContent = fmt(bill * taxPct / 100);
+  $('uq-total-display').textContent = fmt(total);
 
   const sl = $('uq-settlement');
+<<<<<<< HEAD
+  sl.innerHTML = '';                      // clearing container — safe
+=======
   sl.innerHTML = ''; // clearing container — safe
+>>>>>>> upstream/main
 
   if (settlements.length === 0) {
     const d = document.createElement('div');
@@ -539,14 +719,22 @@ $('uq-calc').addEventListener('click', () => {
     d.appendChild(sp);
     sl.appendChild(d);
   } else {
+<<<<<<< HEAD
+    settlements.forEach(s => sl.appendChild(makeSettleRow(s.from, s.to, s.amount)));
+=======
     settlements.forEach((s) =>
       sl.appendChild(makeSettleRow(s.from, s.to, s.amount))
     );
+>>>>>>> upstream/main
   }
 
   $('uq-results').style.display = 'block';
   $('uq-results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   window._uqResult = {
+<<<<<<< HEAD
+    type: 'Custom Split', bill, tipPct, taxPct, total, settlements, people,
+    occasion: $('uq-occasion').value.trim()
+=======
     type: 'Custom Split',
     bill,
     tipPct,
@@ -555,6 +743,7 @@ $('uq-calc').addEventListener('click', () => {
     settlements,
     people,
     occasion: $('uq-occasion').value.trim(),
+>>>>>>> upstream/main
   };
 });
 
@@ -593,10 +782,15 @@ function getItParticipants() {
 }
 
 function updateItemsLiveTotal() {
+<<<<<<< HEAD
+  const total = [...$('it-items').querySelectorAll('.item-price')]
+    .reduce((s, i) => s + (parseFloat(i.value) || 0), 0);
+=======
   const total = [...$('it-items').querySelectorAll('.item-price')].reduce(
     (s, i) => s + (parseFloat(i.value) || 0),
     0
   );
+>>>>>>> upstream/main
   $('it-live-amount').textContent = fmt(total);
   updateStickyBar();
 }
@@ -609,13 +803,21 @@ function makeSharerLabel(name, checked) {
   const cb = document.createElement('input');
   cb.type = 'checkbox';
   cb.checked = checked;
+<<<<<<< HEAD
+  cb.dataset.name = name;                 // stored in dataset, not rendered as HTML
+=======
   cb.dataset.name = name; // stored in dataset, not rendered as HTML
+>>>>>>> upstream/main
   cb.addEventListener('change', (e) => {
     lbl.classList.toggle('checked', e.target.checked);
   });
 
   lbl.appendChild(cb);
+<<<<<<< HEAD
+  lbl.appendChild(document.createTextNode(name));  // name → text node only
+=======
   lbl.appendChild(document.createTextNode(name)); // name → text node only
+>>>>>>> upstream/main
   return lbl;
 }
 
@@ -632,6 +834,35 @@ function addItem(name = '', price = '') {
   nameInput.type = 'text';
   nameInput.placeholder = 'Item name';
   nameInput.className = 'item-name';
+<<<<<<< HEAD
+  nameInput.value = name;                 // .value is safe
+
+  const prefixDiv = document.createElement('div');
+  prefixDiv.className = 'input-prefix sm';
+
+  const currSpan = document.createElement('span');
+  currSpan.className = 'currency-label';
+  currSpan.textContent = CURRENCY;
+
+  const priceInput = document.createElement('input');
+  priceInput.type = 'number';
+  priceInput.placeholder = '0.00';
+  priceInput.className = 'item-price';
+  priceInput.min = '0';
+  priceInput.step = '0.01';
+  if (price !== '') priceInput.value = price; // .value is safe
+  priceInput.addEventListener('input', updateItemsLiveTotal);
+
+  prefixDiv.appendChild(currSpan);
+  prefixDiv.appendChild(priceInput);
+
+  const removeBtn = document.createElement('button');
+  removeBtn.className = 'remove-p';
+  removeBtn.setAttribute('aria-label', 'Remove item');
+  removeBtn.textContent = '×';
+  removeBtn.addEventListener('click', () => { div.remove(); updateItemsLiveTotal(); });
+
+=======
   nameInput.value = name; // .value is safe
 
   const prefixDiv = document.createElement('div');
@@ -662,6 +893,7 @@ function addItem(name = '', price = '') {
     updateItemsLiveTotal();
   });
 
+>>>>>>> upstream/main
   header.appendChild(nameInput);
   header.appendChild(prefixDiv);
   header.appendChild(removeBtn);
@@ -669,7 +901,11 @@ function addItem(name = '', price = '') {
   // ── Sharers ──
   const sharersDiv = document.createElement('div');
   sharersDiv.className = 'item-sharers';
+<<<<<<< HEAD
+  names.forEach(n => sharersDiv.appendChild(makeSharerLabel(n, true)));
+=======
   names.forEach((n) => sharersDiv.appendChild(makeSharerLabel(n, true)));
+>>>>>>> upstream/main
 
   div.appendChild(header);
   div.appendChild(sharersDiv);
@@ -679,6 +915,19 @@ function addItem(name = '', price = '') {
 
 function refreshItemSharers() {
   const names = getItParticipants();
+<<<<<<< HEAD
+  $('it-items').querySelectorAll('.item-row').forEach(row => {
+    const existing = {};
+    row.querySelectorAll('.sharer-check').forEach(lbl => {
+      existing[lbl.querySelector('input').dataset.name] = lbl.classList.contains('checked');
+    });
+
+    const sharersDiv = row.querySelector('.item-sharers');
+    sharersDiv.innerHTML = '';            // clearing container — safe
+    names.forEach(n => {
+      const isChecked = existing[n] !== false;
+      sharersDiv.appendChild(makeSharerLabel(n, isChecked));
+=======
   $('it-items')
     .querySelectorAll('.item-row')
     .forEach((row) => {
@@ -694,6 +943,7 @@ function refreshItemSharers() {
         const isChecked = existing[n] !== false;
         sharersDiv.appendChild(makeSharerLabel(n, isChecked));
       });
+>>>>>>> upstream/main
     });
 }
 
@@ -709,6 +959,16 @@ $('it-calc').addEventListener('click', () => {
   const tipPct = parseFloat($('it-tip').value) || 0;
   const taxPct = parseFloat($('it-tax').value) || 0;
 
+<<<<<<< HEAD
+  const items = [...$('it-items').querySelectorAll('.item-row')].map(row => {
+    const itemName = row.querySelector('.item-name').value.trim() || 'Item';
+    const price = parseFloat(row.querySelector('.item-price').value) || 0;
+    const sharers = [...row.querySelectorAll('.sharer-check.checked input')].map(i => i.dataset.name);
+    return { name: itemName, price, sharers };
+  }).filter(i => i.price > 0);
+
+  if (!items.length) return showToast('Add at least one item with a price.', 'error');
+=======
   const items = [...$('it-items').querySelectorAll('.item-row')]
     .map((row) => {
       const itemName = row.querySelector('.item-name').value.trim() || 'Item';
@@ -722,6 +982,7 @@ $('it-calc').addEventListener('click', () => {
 
   if (!items.length)
     return showToast('Add at least one item with a price.', 'error');
+>>>>>>> upstream/main
 
   const totals = {};
   names.forEach((n) => (totals[n] = { items: [], subtotal: 0 }));
@@ -736,6 +997,15 @@ $('it-calc').addEventListener('click', () => {
     });
   });
 
+<<<<<<< HEAD
+  const grandSubtotal = Object.values(totals).reduce((s, p) => s + p.subtotal, 0);
+  const tipTotal = grandSubtotal * tipPct / 100;
+  const taxTotal = grandSubtotal * taxPct / 100;
+
+  Object.keys(totals).forEach(n => {
+    const tipShare = grandSubtotal > 0 ? (totals[n].subtotal / grandSubtotal) * tipTotal : 0;
+    const taxShare = grandSubtotal > 0 ? (totals[n].subtotal / grandSubtotal) * taxTotal : 0;
+=======
   const grandSubtotal = Object.values(totals).reduce(
     (s, p) => s + p.subtotal,
     0
@@ -748,6 +1018,7 @@ $('it-calc').addEventListener('click', () => {
       grandSubtotal > 0 ? (totals[n].subtotal / grandSubtotal) * tipTotal : 0;
     const taxShare =
       grandSubtotal > 0 ? (totals[n].subtotal / grandSubtotal) * taxTotal : 0;
+>>>>>>> upstream/main
     totals[n].total = totals[n].subtotal + tipShare + taxShare;
     totals[n].tipShare = tipShare;
     totals[n].taxShare = taxShare;
@@ -755,7 +1026,11 @@ $('it-calc').addEventListener('click', () => {
 
   // ── Per-person breakdown cards — fully safe DOM construction ──
   const bd = $('it-breakdown');
+<<<<<<< HEAD
+  bd.innerHTML = '';                      // clearing container — safe
+=======
   bd.innerHTML = ''; // clearing container — safe
+>>>>>>> upstream/main
 
   Object.entries(totals).forEach(([personName, data]) => {
     if (!data.items.length) return;
@@ -769,7 +1044,11 @@ $('it-calc').addEventListener('click', () => {
 
     const nameSpan = document.createElement('span');
     nameSpan.className = 'ppi-name';
+<<<<<<< HEAD
+    nameSpan.textContent = personName;    // user name → textContent only
+=======
     nameSpan.textContent = personName; // user name → textContent only
+>>>>>>> upstream/main
 
     const totalSpan = document.createElement('span');
     totalSpan.className = 'ppi-total';
@@ -782,11 +1061,19 @@ $('it-calc').addEventListener('click', () => {
     const itemsDiv = document.createElement('div');
     itemsDiv.className = 'ppi-items';
 
+<<<<<<< HEAD
+    data.items.forEach(i => {
+      const row = document.createElement('div');
+      row.className = 'ppi-item';
+      const iName = document.createElement('span');
+      iName.textContent = i.name;         // item name → textContent only
+=======
     data.items.forEach((i) => {
       const row = document.createElement('div');
       row.className = 'ppi-item';
       const iName = document.createElement('span');
       iName.textContent = i.name; // item name → textContent only
+>>>>>>> upstream/main
       const iAmt = document.createElement('span');
       iAmt.textContent = fmt(i.amount);
       row.appendChild(iName);
@@ -801,8 +1088,12 @@ $('it-calc').addEventListener('click', () => {
       lbl.textContent = `Tip (${tipPct}%)`;
       const amt = document.createElement('span');
       amt.textContent = fmt(data.tipShare);
+<<<<<<< HEAD
+      row.appendChild(lbl); row.appendChild(amt);
+=======
       row.appendChild(lbl);
       row.appendChild(amt);
+>>>>>>> upstream/main
       itemsDiv.appendChild(row);
     }
 
@@ -813,8 +1104,12 @@ $('it-calc').addEventListener('click', () => {
       lbl.textContent = `Tax (${taxPct}%)`;
       const amt = document.createElement('span');
       amt.textContent = fmt(data.taxShare);
+<<<<<<< HEAD
+      row.appendChild(lbl); row.appendChild(amt);
+=======
       row.appendChild(lbl);
       row.appendChild(amt);
+>>>>>>> upstream/main
       itemsDiv.appendChild(row);
     }
 
@@ -824,6 +1119,13 @@ $('it-calc').addEventListener('click', () => {
   });
 
   // Settlement
+<<<<<<< HEAD
+  const maxPayer = Object.entries(totals).reduce((a, b) => b[1].total > a[1].total ? b : a);
+  const settlements = [];
+  Object.entries(totals).forEach(([pName, data]) => {
+    if (pName !== maxPayer[0] && data.total > 0.005) {
+      settlements.push({ from: pName, to: maxPayer[0], amount: +data.total.toFixed(2) });
+=======
   const maxPayer = Object.entries(totals).reduce((a, b) =>
     b[1].total > a[1].total ? b : a
   );
@@ -835,11 +1137,16 @@ $('it-calc').addEventListener('click', () => {
         to: maxPayer[0],
         amount: +data.total.toFixed(2),
       });
+>>>>>>> upstream/main
     }
   });
 
   const sl = $('it-settlement');
+<<<<<<< HEAD
+  sl.innerHTML = '';                      // clearing container — safe
+=======
   sl.innerHTML = ''; // clearing container — safe
+>>>>>>> upstream/main
 
   // Settlement heading — static text, not user data
   const settleHeading = document.createElement('h3');
@@ -856,14 +1163,22 @@ $('it-calc').addEventListener('click', () => {
     d.appendChild(sp);
     sl.appendChild(d);
   } else {
+<<<<<<< HEAD
+    settlements.forEach(s => sl.appendChild(makeSettleRow(s.from, s.to, s.amount)));
+=======
     settlements.forEach((s) =>
       sl.appendChild(makeSettleRow(s.from, s.to, s.amount))
     );
+>>>>>>> upstream/main
   }
 
   $('it-results').style.display = 'block';
   $('it-results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   window._itResult = {
+<<<<<<< HEAD
+    type: 'Items Split', items, totals, settlements, tipPct, taxPct,
+    occasion: $('it-occasion').value.trim()
+=======
     type: 'Items Split',
     items,
     totals,
@@ -871,6 +1186,7 @@ $('it-calc').addEventListener('click', () => {
     tipPct,
     taxPct,
     occasion: $('it-occasion').value.trim(),
+>>>>>>> upstream/main
   };
 });
 
@@ -882,27 +1198,19 @@ $('it-bulk-paste').addEventListener('click', () => {
   $('bulkPasteArea').focus();
 });
 
-$('closeBulk').addEventListener('click', () =>
-  $('bulkModalOverlay').classList.remove('open')
-);
-$('bulkModalOverlay').addEventListener('click', (e) => {
-  if (e.target === $('bulkModalOverlay'))
-    $('bulkModalOverlay').classList.remove('open');
+$('closeBulk').addEventListener('click', () => $('bulkModalOverlay').classList.remove('open'));
+$('bulkModalOverlay').addEventListener('click', e => {
+  if (e.target === $('bulkModalOverlay')) $('bulkModalOverlay').classList.remove('open');
 });
 
 $('bulkAddBtn').addEventListener('click', () => {
-  const lines = $('bulkPasteArea')
-    .value.trim()
-    .split('\n')
-    .filter((l) => l.trim());
+  const lines = $('bulkPasteArea').value.trim().split('\n').filter(l => l.trim());
   let added = 0;
-  lines.forEach((line) => {
+  lines.forEach(line => {
     const parts = line.split(',');
     if (parts.length >= 2) {
       const itemName = parts[0].trim();
-      const price = parseFloat(
-        parts[parts.length - 1].trim().replace(/[^\d.]/g, '')
-      );
+      const price = parseFloat(parts[parts.length - 1].trim().replace(/[^\d.]/g, ''));
       if (itemName && !isNaN(price) && price > 0) {
         addItem(itemName, price);
         added++;
@@ -952,10 +1260,8 @@ $('eq-copy').addEventListener('click', () => {
     `Grand Total: ${fmt(r.total)}`,
     '',
     `Each person pays: ${fmt(r.per)}`,
-    `Participants: ${r.names.join(', ')}`,
-  ]
-    .filter(Boolean)
-    .join('\n');
+    `Participants: ${r.names.join(', ')}`
+  ].filter(Boolean).join('\n');
   copyText(lines);
 });
 
@@ -969,11 +1275,9 @@ $('uq-copy').addEventListener('click', () => {
     '',
     'Settlement:',
     ...(r.settlements.length
-      ? r.settlements.map((s) => `  ${s.from} → ${s.to}: ${fmt(s.amount)}`)
-      : ['  Everyone is square! ✅']),
-  ]
-    .filter(Boolean)
-    .join('\n');
+      ? r.settlements.map(s => `  ${s.from} → ${s.to}: ${fmt(s.amount)}`)
+      : ['  Everyone is square! ✅'])
+  ].filter(Boolean).join('\n');
   copyText(lines);
 });
 
@@ -982,8 +1286,7 @@ $('it-copy').addEventListener('click', () => {
   if (!r) return showToast('Calculate first!', 'error');
   const perPerson = Object.entries(r.totals)
     .filter(([, d]) => d.total > 0)
-    .map(([n, d]) => `  ${n}: ${fmt(d.total)}`)
-    .join('\n');
+    .map(([n, d]) => `  ${n}: ${fmt(d.total)}`).join('\n');
   const lines = [
     r.occasion ? `🎉 ${r.occasion}` : '',
     'SplitWise Pro — Items Split',
@@ -993,11 +1296,9 @@ $('it-copy').addEventListener('click', () => {
     '',
     'Settlement:',
     ...(r.settlements.length
-      ? r.settlements.map((s) => `  ${s.from} → ${s.to}: ${fmt(s.amount)}`)
-      : ['  Only one person! ✅']),
-  ]
-    .filter(Boolean)
-    .join('\n');
+      ? r.settlements.map(s => `  ${s.from} → ${s.to}: ${fmt(s.amount)}`)
+      : ['  Only one person! ✅'])
+  ].filter(Boolean).join('\n');
   copyText(lines);
 });
 
@@ -1030,7 +1331,7 @@ function renderHistory() {
   const list = $('historyList');
   const hist = getHistory();
 
-  list.innerHTML = ''; // clearing container — safe
+  list.innerHTML = '';                    // clearing container — safe
 
   if (!hist.length) {
     // Static structure — no user data involved
@@ -1056,7 +1357,7 @@ function renderHistory() {
     return;
   }
 
-  hist.forEach((h) => {
+  hist.forEach(h => {
     const item = document.createElement('div');
     item.className = 'history-item';
 
@@ -1066,11 +1367,11 @@ function renderHistory() {
 
     const typeSpan = document.createElement('span');
     typeSpan.className = 'history-type';
-    typeSpan.textContent = h.type || ''; // comes from our own code, but textContent anyway
+    typeSpan.textContent = h.type || '';  // comes from our own code, but textContent anyway
 
     const dateSpan = document.createElement('span');
     dateSpan.className = 'history-date';
-    dateSpan.textContent = h.date || ''; // formatted date string — textContent
+    dateSpan.textContent = h.date || '';  // formatted date string — textContent
 
     meta.appendChild(typeSpan);
     meta.appendChild(dateSpan);
@@ -1087,7 +1388,7 @@ function renderHistory() {
     // Sub row
     const subDiv = document.createElement('div');
     subDiv.className = 'history-sub';
-    subDiv.textContent = h.detail || ''; // our own formatted string — textContent
+    subDiv.textContent = h.detail || '';  // our own formatted string — textContent
 
     item.appendChild(meta);
     item.appendChild(titleDiv);
@@ -1124,10 +1425,9 @@ $('eq-save').addEventListener('click', () => {
   const r = window._eqResult;
   if (!r) return showToast('Calculate first!', 'error');
   saveHistory({
-    type: r.type,
-    occasion: r.occasion,
+    type: r.type, occasion: r.occasion,
     summary: `Total ${fmt(r.total)} ÷ ${r.names.length} people`,
-    detail: `Each pays ${fmt(r.per)}`,
+    detail: `Each pays ${fmt(r.per)}`
   });
   showToast('Saved to history! 💾');
 });
@@ -1136,10 +1436,9 @@ $('uq-save').addEventListener('click', () => {
   const r = window._uqResult;
   if (!r) return showToast('Calculate first!', 'error');
   saveHistory({
-    type: r.type,
-    occasion: r.occasion,
+    type: r.type, occasion: r.occasion,
     summary: `Total ${fmt(r.total)}`,
-    detail: `${r.settlements.length} settlement(s)`,
+    detail: `${r.settlements.length} settlement(s)`
   });
   showToast('Saved to history! 💾');
 });
@@ -1148,10 +1447,9 @@ $('it-save').addEventListener('click', () => {
   const r = window._itResult;
   if (!r) return showToast('Calculate first!', 'error');
   saveHistory({
-    type: r.type,
-    occasion: r.occasion,
+    type: r.type, occasion: r.occasion,
     summary: `${r.items.length} items`,
-    detail: `${r.settlements.length} settlement(s)`,
+    detail: `${r.settlements.length} settlement(s)`
   });
   showToast('Saved to history! 💾');
 });
@@ -1175,16 +1473,7 @@ function generatePDF(title, lines, occasion = '') {
   doc.text('SplitWise Pro', margin, 14);
   doc.setFontSize(10);
   doc.setFont('helvetica', 'normal');
-  doc.text(
-    new Date().toLocaleDateString('en-IN', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    }),
-    210 - margin,
-    14,
-    { align: 'right' }
-  );
+  doc.text(new Date().toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' }), 210 - margin, 14, { align: 'right' });
   if (occasion) {
     doc.setFontSize(11);
     doc.text(`Occasion: ${occasion}`, margin, 24);
@@ -1259,16 +1548,8 @@ $('uq-pdf').addEventListener('click', () => {
   const lines = [
     { type: 'header', text: 'Bill Summary' },
     { type: 'row', left: 'Subtotal', right: fmt(r.bill) },
-    {
-      type: 'row',
-      left: `Tip (${r.tipPct}%)`,
-      right: fmt((r.bill * r.tipPct) / 100),
-    },
-    {
-      type: 'row',
-      left: `Tax (${r.taxPct}%)`,
-      right: fmt((r.bill * r.taxPct) / 100),
-    },
+    { type: 'row', left: `Tip (${r.tipPct}%)`, right: fmt(r.bill * r.tipPct / 100) },
+    { type: 'row', left: `Tax (${r.taxPct}%)`, right: fmt(r.bill * r.taxPct / 100) },
     { type: 'row', left: 'Grand Total', right: fmt(r.total) },
     { type: 'divider' },
     { type: 'header', text: 'Settlement — Who Owes Whom' },
@@ -1315,12 +1596,11 @@ $('it-pdf').addEventListener('click', () => {
    QR SHARE
 ============================================================ */
 function showQR(summaryText) {
-  $('qrcode').innerHTML = ''; // clearing container — safe
+  $('qrcode').innerHTML = '';             // clearing container — safe
   const encoded = encodeURIComponent(summaryText);
   const url = `https://splitwise-pro.share/?data=${encoded.slice(0, 800)}`;
   // textContent — not rendered as HTML
-  $('qr-url-text').textContent =
-    summaryText.slice(0, 120) + (summaryText.length > 120 ? '…' : '');
+  $('qr-url-text').textContent = summaryText.slice(0, 120) + (summaryText.length > 120 ? '…' : '');
   try {
     new QRCode($('qrcode'), {
       text: url,
@@ -1355,29 +1635,23 @@ $('eq-qr').addEventListener('click', () => {
     r.occasion ? r.occasion : '',
     `Total: ${fmt(r.total)}`,
     `People: ${r.names.join(', ')}`,
-    `Each pays: ${fmt(r.per)}`,
-  ]
-    .filter(Boolean)
-    .join('\n');
+    `Each pays: ${fmt(r.per)}`
+  ].filter(Boolean).join('\n');
   showQR(text);
 });
 
 $('uq-qr').addEventListener('click', () => {
   const r = window._uqResult;
   if (!r) return showToast('Calculate first!', 'error');
-  const lines = r.settlements
-    .map((s) => `${s.from} → ${s.to}: ${fmt(s.amount)}`)
-    .join('\n');
+  const lines = r.settlements.map(s => `${s.from} → ${s.to}: ${fmt(s.amount)}`).join('\n');
   const text = [
     'SplitWise Pro - Custom Split',
     r.occasion ? r.occasion : '',
     `Total: ${fmt(r.total)}`,
     '',
     'Settlement:',
-    lines || 'All square!',
-  ]
-    .filter(Boolean)
-    .join('\n');
+    lines || 'All square!'
+  ].filter(Boolean).join('\n');
   showQR(text);
 });
 
@@ -1386,17 +1660,14 @@ $('it-qr').addEventListener('click', () => {
   if (!r) return showToast('Calculate first!', 'error');
   const perPerson = Object.entries(r.totals)
     .filter(([, d]) => d.total > 0)
-    .map(([n, d]) => `${n}: ${fmt(d.total)}`)
-    .join('\n');
+    .map(([n, d]) => `${n}: ${fmt(d.total)}`).join('\n');
   const text = [
     'SplitWise Pro - Items Split',
     r.occasion ? r.occasion : '',
     '',
     'Per Person:',
-    perPerson,
-  ]
-    .filter(Boolean)
-    .join('\n');
+    perPerson
+  ].filter(Boolean).join('\n');
   showQR(text);
 });
 
@@ -1408,15 +1679,14 @@ document.querySelectorAll('input[type="number"]').forEach((input) => {
     const val = parseFloat(input.value);
     if (isNaN(val)) return;
     if (val < 0) input.value = 0;
-    else if (input.max !== '' && val > parseFloat(input.max))
-      input.value = input.max;
+    else if (input.max !== '' && val > parseFloat(input.max)) input.value = input.max;
   });
 });
 
 /* ============================================================
    KEYBOARD SHORTCUTS
 ============================================================ */
-document.addEventListener('keydown', (e) => {
+document.addEventListener('keydown', e => {
   if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
     const activeTab = document.querySelector('.tab.active')?.dataset.tab;
     if (activeTab === 'equal') $('eq-calc').click();

@@ -150,7 +150,7 @@ if (dropZone && fileInput) {
   ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(function (evt) {
     dropZone.addEventListener(evt, function (e) { e.preventDefault(); e.stopPropagation(); });
   });
-  dropZone.addEventListener('dragover',  function () { dropZone.classList.add('dragover'); });
+  dropZone.addEventListener('dragover', function (e) { e.preventDefault(); e.stopPropagation(); dropZone.classList.add('dragover'); });
   dropZone.addEventListener('dragleave', function () { dropZone.classList.remove('dragover'); });
   dropZone.addEventListener('drop', function (e) {
     dropZone.classList.remove('dragover');
@@ -268,7 +268,7 @@ if (form) {
 
     var uploadedNames = selectedFiles.map(function (f) { return f.name; });
 
-    fetch('http://localhost:3000/upload', { method: 'POST', body: fd })
+    fetch('/upload', { method: 'POST', body: fd })
       .then(function (res) {
         return res.text().then(function (html) {
           document.open(); document.write(html); document.close();
@@ -288,3 +288,4 @@ if (form) {
 // Init
 renderStats();
 renderHistory();
+

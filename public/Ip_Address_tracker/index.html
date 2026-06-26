@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#4f46e5" />
+    <meta name="theme-color" content="#6366f1" />
 
     <title>IP Address Tracker</title>
 
@@ -14,51 +14,186 @@
       href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
       crossorigin=""
     />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
   </head>
 
   <body>
+    <!-- Animated background blobs -->
+    <div class="bg-blob blob-1"></div>
+    <div class="bg-blob blob-2"></div>
+    <div class="bg-blob blob-3"></div>
+
     <header>
-      <h1>IP Address Tracker</h1>
+      <div class="header-content">
+        <div class="logo">
+          <i class="fas fa-globe-americas"></i>
+          <h1>IP Address Tracker</h1>
+        </div>
+        <p class="subtitle">
+          Track any IP address or domain and discover its location worldwide
+        </p>
 
-      <div class="search-box">
-        <input
-          type="text"
-          id="searchInput"
-          placeholder="Search by IP Address..."
-          autocomplete="off"
-        />
+        <div class="search-box">
+          <div class="search-input-wrapper">
+            <i class="fas fa-search search-icon"></i>
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="Enter IP address or domain (e.g. 8.8.8.8)"
+              autocomplete="off"
+            />
+            <button id="clearBtn" class="clear-btn hidden" title="Clear">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <button id="searchBtn" title="Search">
+            <i class="fas fa-arrow-right"></i>
+            <span>Track</span>
+          </button>
+        </div>
 
-        <button id="searchBtn">Search</button>
+        <div id="errorMessage" class="error-message hidden">
+          <i class="fas fa-exclamation-circle"></i>
+          <span id="errorText">Invalid IP address or domain</span>
+        </div>
       </div>
     </header>
 
     <main>
-      <section class="info-card">
-        <div class="card">
-          <h3>IP ADDRESS</h3>
-          <p id="ip">Loading...</p>
+      <section class="info-card" id="infoCard">
+        <div class="card" data-aos="fade-up" style="--delay: 0">
+          <div class="card-icon">
+            <i class="fas fa-laptop-code"></i>
+          </div>
+          <div class="card-content">
+            <h3>IP ADDRESS</h3>
+            <p id="ip">
+              <span class="skeleton"></span>
+            </p>
+          </div>
+          <button class="copy-btn" data-copy="ip" title="Copy IP Address">
+            <i class="fas fa-copy"></i>
+          </button>
         </div>
 
-        <div class="card">
-          <h3>LOCATION</h3>
-          <p id="location">Loading...</p>
+        <div class="card" data-aos="fade-up" style="--delay: 1">
+          <div class="card-icon">
+            <i class="fas fa-map-marker-alt"></i>
+          </div>
+          <div class="card-content">
+            <h3>LOCATION</h3>
+            <p id="location">
+              <span class="skeleton"></span>
+            </p>
+          </div>
+          <button
+            class="copy-btn"
+            data-copy="location"
+            title="Copy Location"
+          >
+            <i class="fas fa-copy"></i>
+          </button>
         </div>
 
-        <div class="card">
-          <h3>TIMEZONE</h3>
-          <p id="timezone">Loading...</p>
+        <div class="card" data-aos="fade-up" style="--delay: 2">
+          <div class="card-icon">
+            <i class="fas fa-clock"></i>
+          </div>
+          <div class="card-content">
+            <h3>TIMEZONE</h3>
+            <p id="timezone">
+              <span class="skeleton"></span>
+            </p>
+          </div>
+          <button
+            class="copy-btn"
+            data-copy="timezone"
+            title="Copy Timezone"
+          >
+            <i class="fas fa-copy"></i>
+          </button>
         </div>
 
-        <div class="card">
-          <h3>ISP</h3>
-          <p id="isp">Loading...</p>
+        <div class="card" data-aos="fade-up" style="--delay: 3">
+          <div class="card-icon">
+            <i class="fas fa-wifi"></i>
+          </div>
+          <div class="card-content">
+            <h3>ISP</h3>
+            <p id="isp">
+              <span class="skeleton"></span>
+            </p>
+          </div>
+          <button class="copy-btn" data-copy="isp" title="Copy ISP">
+            <i class="fas fa-copy"></i>
+          </button>
         </div>
       </section>
 
-      <section>
+      <!-- Extra info row -->
+      <section class="extra-info" id="extraInfo">
+        <div class="extra-card">
+          <i class="fas fa-flag"></i>
+          <div>
+            <h4>Country Code</h4>
+            <p id="countryCode">--</p>
+          </div>
+        </div>
+        <div class="extra-card">
+          <i class="fas fa-mail-bulk"></i>
+          <div>
+            <h4>Postal Code</h4>
+            <p id="postalCode">--</p>
+          </div>
+        </div>
+        <div class="extra-card">
+          <i class="fas fa-compass"></i>
+          <div>
+            <h4>Coordinates</h4>
+            <p id="coordinates">--</p>
+          </div>
+        </div>
+        <div class="extra-card">
+          <i class="fas fa-money-bill-wave"></i>
+          <div>
+            <h4>Currency</h4>
+            <p id="currency">--</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="map-section">
+        <div class="map-header">
+          <h2><i class="fas fa-map"></i> Location on Map</h2>
+          <button id="locateMeBtn" class="locate-me-btn" title="Track my IP">
+            <i class="fas fa-crosshairs"></i>
+            <span>My IP</span>
+          </button>
+        </div>
         <div id="map" aria-label="Location Map"></div>
       </section>
     </main>
+
+    <footer>
+      <p>
+        Built with <i class="fas fa-heart"></i> using
+        <a href="https://ipapi.co" target="_blank" rel="noopener">ipapi.co</a>
+        &amp;
+        <a href="https://leafletjs.com" target="_blank" rel="noopener"
+          >Leaflet</a
+        >
+      </p>
+    </footer>
+
+    <!-- Toast notification -->
+    <div id="toast" class="toast hidden">
+      <i class="fas fa-check-circle"></i>
+      <span id="toastText">Copied!</span>
+    </div>
 
     <script
       src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"

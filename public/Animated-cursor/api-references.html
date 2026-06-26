@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>API References — Animated Cursor</title>
+<meta name="description" content="Full API reference for the Animated Cursor library — HTML attributes, CSS custom properties, JavaScript API, and event hooks.">
+<link rel="stylesheet" href="animated-cursor.css">
+<link rel="icon" href="../favv.png" type="image/x-icon" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * { font-family: 'Inter', Arial, sans-serif; }
+  code, pre { font-family: 'JetBrains Mono', monospace; }
+
+  /* ── Layout ── */
+  .api-layout {
+    position: relative;
+    z-index: 5;
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    width: min(95vw, 1200px);
+    margin: 100px auto 0;
+    gap: 0;
+    align-items: start;
+    padding-bottom: 100px;
+  }
+  @media (max-width: 820px) {
+    .api-layout { grid-template-columns: 1fr; }
+    .api-sidebar { display: none; }
+  }
+
+  /* ── Sidebar ── */
+  .api-sidebar {
+    position: sticky;
+    top: 90px;
+    padding: 24px 0 24px 8px;
+    border-right: 1px solid rgba(255,255,255,.1);
+    height: calc(100vh - 90px);
+    overflow-y: auto;
+  }
+  .sb-label {
+    font-size: .7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    color: rgba(248,251,255,.38);
+    padding: 0 14px;
+    margin: 18px 0 6px;
+  }
+  .sb-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 14px;
+    border-radius: 10px;
+    text-decoration: none;
+    color: rgba(248,251,255,.62);
+    font-size: .86rem;
+    font-weight: 500;
+    transition: all .2s ease;
+    margin: 2px 0;
+  }
+  .sb-link:hover, .sb-link.active {
+    background: rgba(var(--accent-rgb),.13);
+    color: var(--accent);
+  }
+  .sb-link i { width: 15px; font-size: .8rem; opacity: .7; }
+
+  /* ── Main ── */
+  .api-main {
+    padding: 44px 0 44px 52px;
+    display: flex;
+    flex-direction: column;
+    gap: 72px;
+  }
+  @media (max-width: 820px) { .api-main { padding: 40px 0; } }
+
+  /* ── Page hero ── */
+  .api-hero {
+    padding-bottom: 28px;
+    border-bottom: 1px solid rgba(255,255,255,.1);
+  }
+  .api-hero h1 {
+    font-size: clamp(1.9rem, 5vw, 3rem);
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .api-hero h1 .hero-icon {
+    width: 48px; height: 48px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, rgba(var(--accent-rgb),.3), rgba(var(--accent-two-rgb),.2));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem;
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+  .api-hero p {
+    color: rgba(248,251,255,.6);
+    font-size: .97rem;
+    line-height: 1.7;
+    max-width: 680px;
+  }
+  .version-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: .78rem;
+    font-weight: 700;
+    background: rgba(16,185,129,.16);
+    color: #6effd9;
+    border: 1px solid rgba(16,185,129,.35);
+    margin-top: 14px;
+  }
+
+  /* ── Section ── */
+  .api-section {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+  .api-section-title {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(255,255,255,.08);
+  }
+  .api-section-title .s-icon {
+    width: 40px; height: 40px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, rgba(var(--accent-rgb),.26), rgba(var(--accent-two-rgb),.16));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+  .api-section-title h2 {
+    font-size: 1.55rem;
+    font-weight: 800;
+    color: #fff;
+  }
+  .api-section p {
+    color: rgba(248,251,255,.66);
+    font-size: .95rem;
+    line-height: 1.75;
+  }
+
+  /* ── Subsection heading ── */
+  .sub-heading {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--accent-two);
+    margin-bottom: 2px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .sub-heading i { font-size: .85rem; opacity: .75; }
+
+  /* ── Alert ── */
+  .api-alert {
+    display: flex;
+    gap: 13px;
+    padding: 15px 18px;
+    border-radius: 13px;
+    font-size: .9rem;
+    line-height: 1.65;
+    align-items: flex-start;
+  }
+  .api-alert i { flex-shrink: 0; margin-top: 2px; }
+  .api-alert.info  { background: rgba(87,216,255,.09); border: 1px solid rgba(87,216,255,.26); color: #a8eeff; }
+  .api-alert.warn  { background: rgba(255,216,74,.09);  border: 1px solid rgba(255,216,74,.26);  color: #ffe8a0; }
+  .api-alert.tip   { background: rgba(125,255,202,.09); border: 1px solid rgba(125,255,202,.26); color: #a6ffe0; }
+
+  /* ── Code block ── */
+  .code-block {
+    border-radius: 16px;
+    background: rgba(0,0,0,.58);
+    border: 1px solid rgba(255,255,255,.1);
+    overflow: hidden;
+  }
+  .cb-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 11px 18px;
+    background: rgba(255,255,255,.04);
+    border-bottom: 1px solid rgba(255,255,255,.07);
+  }
+  .cb-dots { display: flex; gap: 6px; }
+  .cb-dots span { width: 10px; height: 10px; border-radius: 50%; }
+  .dot-r { background: #ff5f57; }
+  .dot-y { background: #febc2e; }
+  .dot-g { background: #28c840; }
+  .cb-lang {
+    font-size: .75rem;
+    color: rgba(248,251,255,.38);
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .copy-btn {
+    padding: 4px 12px;
+    border-radius: 6px;
+    border: 1px solid rgba(255,255,255,.16);
+    background: transparent;
+    color: rgba(248,251,255,.55);
+    font-size: .73rem;
+    font-family: inherit;
+    cursor: none;
+    transition: all .2s ease;
+  }
+  .copy-btn:hover { background: rgba(255,255,255,.07); color: #fff; }
+  .code-block pre {
+    padding: 22px 24px;
+    margin: 0;
+    overflow-x: auto;
+    font-size: .86rem;
+    line-height: 1.7;
+    color: #e2e8f0;
+  }
+  .kw  { color: #ff79c6; }
+  .fn  { color: #50fa7b; }
+  .str { color: #f1fa8c; }
+  .cm  { color: rgba(248,251,255,.36); font-style: italic; }
+  .nm  { color: #bd93f9; }
+  .at  { color: #8be9fd; }
+  .bool{ color: #ffb86c; }
+
+  /* ── Reference table ── */
+  .ref-table-wrap { overflow-x: auto; border-radius: 16px; border: 1px solid rgba(255,255,255,.1); }
+  .ref-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .87rem;
+  }
+  .ref-table thead tr { background: rgba(255,255,255,.05); }
+  .ref-table th {
+    padding: 13px 18px;
+    text-align: left;
+    font-size: .72rem;
+    font-weight: 700;
+    color: rgba(248,251,255,.42);
+    text-transform: uppercase;
+    letter-spacing: .07em;
+    white-space: nowrap;
+  }
+  .ref-table td {
+    padding: 14px 18px;
+    color: rgba(248,251,255,.75);
+    border-top: 1px solid rgba(255,255,255,.05);
+    vertical-align: top;
+    line-height: 1.6;
+  }
+  .ref-table tr:hover td { background: rgba(255,255,255,.025); }
+  .ref-table code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .82rem;
+    background: rgba(var(--accent-rgb),.13);
+    color: var(--accent);
+    padding: 2px 7px;
+    border-radius: 5px;
+    white-space: nowrap;
+  }
+  .type-pill {
+    display: inline-block;
+    padding: 2px 9px;
+    border-radius: 20px;
+    font-size: .7rem;
+    font-weight: 700;
+    font-family: 'JetBrains Mono', monospace;
+    white-space: nowrap;
+  }
+  .pill-str  { background: rgba(87,216,255,.13);  color: var(--accent-two);   border: 1px solid rgba(87,216,255,.25); }
+  .pill-bool { background: rgba(255,189,89,.13);   color: #ffbd59;             border: 1px solid rgba(255,189,89,.25); }
+  .pill-num  { background: rgba(189,147,249,.13);  color: #bd93f9;             border: 1px solid rgba(189,147,249,.25); }
+  .pill-fn   { background: rgba(80,250,123,.13);   color: #50fa7b;             border: 1px solid rgba(80,250,123,.25); }
+  .pill-obj  { background: rgba(255,122,217,.13);  color: var(--accent-three); border: 1px solid rgba(255,122,217,.25); }
+  .pill-void { background: rgba(255,255,255,.08);  color: rgba(248,251,255,.5);border: 1px solid rgba(255,255,255,.15); }
+  .pill-css  { background: rgba(255,216,74,.13);   color: var(--accent);       border: 1px solid rgba(255,216,74,.25); }
+  .default-badge {
+    display: inline-block;
+    padding: 1px 8px;
+    border-radius: 5px;
+    font-size: .7rem;
+    font-weight: 700;
+    background: rgba(255,255,255,.07);
+    color: rgba(248,251,255,.45);
+    margin-left: 4px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ── Method card ── */
+  .method-card {
+    border-radius: 16px;
+    border: 1px solid rgba(255,255,255,.1);
+    overflow: hidden;
+  }
+  .method-header {
+    padding: 16px 22px;
+    background: rgba(255,255,255,.05);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .method-verb {
+    padding: 4px 12px;
+    border-radius: 8px;
+    font-size: .72rem;
+    font-weight: 800;
+    font-family: 'JetBrains Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+  }
+  .verb-get  { background: rgba(80,250,123,.15); color: #50fa7b; border: 1px solid rgba(80,250,123,.3); }
+  .verb-set  { background: rgba(255,184,108,.15); color: #ffb86c; border: 1px solid rgba(255,184,108,.3); }
+  .verb-evt  { background: rgba(189,147,249,.15); color: #bd93f9; border: 1px solid rgba(189,147,249,.3); }
+  .method-sig {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .88rem;
+    color: #fff;
+    font-weight: 600;
+  }
+  .method-body {
+    padding: 18px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .method-body p { color: rgba(248,251,255,.65); font-size: .9rem; line-height: 1.7; }
+
+  /* ── Toast ── */
+  .toast {
+    position: fixed;
+    bottom: 28px; right: 28px;
+    padding: 13px 20px;
+    border-radius: 12px;
+    background: rgba(16,185,129,.2);
+    border: 1px solid rgba(16,185,129,.38);
+    color: #6effd9;
+    font-weight: 700;
+    font-size: .88rem;
+    display: flex; align-items: center; gap: 9px;
+    z-index: 9999;
+    opacity: 0;
+    transform: translateY(14px);
+    transition: all .28s ease;
+    pointer-events: none;
+  }
+  .toast.show { opacity: 1; transform: translateY(0); }
+
+  /* ── Light theme ── */
+  body.light-theme .api-sidebar { border-right-color: rgba(0,0,0,.08); }
+  body.light-theme .sb-label { color: #9099a8; }
+  body.light-theme .sb-link { color: #556; }
+  body.light-theme .sb-link:hover, body.light-theme .sb-link.active { background: #fff4d8; color: #d89b14; }
+  body.light-theme .api-hero h1 { color: #1e293b; }
+  body.light-theme .api-hero p { color: #6b7280; }
+  body.light-theme .api-section-title { border-color: rgba(0,0,0,.08); }
+  body.light-theme .api-section-title h2 { color: #1e293b; }
+  body.light-theme .api-section p { color: #4b5563; }
+  body.light-theme .api-hero { border-color: rgba(0,0,0,.08); }
+  body.light-theme .code-block { background: #1a2236; }
+  body.light-theme .ref-table-wrap { border-color: rgba(0,0,0,.09); }
+  body.light-theme .ref-table thead tr { background: #f4f6fa; }
+  body.light-theme .ref-table th { color: #9099a8; }
+  body.light-theme .ref-table td { color: #374151; }
+  body.light-theme .method-card { border-color: rgba(0,0,0,.09); }
+  body.light-theme .method-header { background: #f4f6fa; }
+  body.light-theme .method-sig { color: #1e293b; }
+  body.light-theme .method-body p { color: #6b7280; }
+</style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+  <a href="animated-cursor.html" class="project-back-button"
+     style="height:40px;text-align:center;margin:20px;border-radius:10px;width:200px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter,system-ui,sans-serif;transition:all 0.2s ease;display:flex;align-items:center;justify-content:center;"
+     onmouseover="this.style.background='#3b82f6';this.style.color='#fff'"
+     onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
+  <div class="logo">Animated Cursor</div>
+  <ul class="nav-links">
+    <li><a href="animated-cursor.html">Home</a></li>
+    <li><a href="cursors.html">Cursors</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <div class="nav-right">
+    <button id="themeToggle" class="theme"><span id="themeIcon">☀️</span></button>
+  </div>
+</nav>
+
+<div class="background"></div>
+<div class="galaxy-glow"></div>
+<canvas id="stars"></canvas>
+<div class="glass-overlay"></div>
+<div class="cursor"></div>
+
+<div class="api-layout">
+
+  <!-- ── Sidebar ── -->
+  <aside class="api-sidebar">
+    <div class="sb-label">Overview</div>
+    <a class="sb-link active" href="#intro"><i class="fas fa-book-open"></i> Introduction</a>
+
+    <div class="sb-label">HTML API</div>
+    <a class="sb-link" href="#html-attrs"><i class="fas fa-code"></i> Data Attributes</a>
+    <a class="sb-link" href="#css-classes"><i class="fas fa-tag"></i> CSS Classes</a>
+
+    <div class="sb-label">CSS API</div>
+    <a class="sb-link" href="#css-vars"><i class="fas fa-paint-brush"></i> Custom Properties</a>
+    <a class="sb-link" href="#css-themes"><i class="fas fa-palette"></i> Theme Variables</a>
+
+    <div class="sb-label">JavaScript API</div>
+    <a class="sb-link" href="#js-functions"><i class="fas fa-terminal"></i> Functions</a>
+    <a class="sb-link" href="#js-events"><i class="fas fa-bolt"></i> Events</a>
+    <a class="sb-link" href="#js-examples"><i class="fas fa-lightbulb"></i> Examples</a>
+
+    <div class="sb-label">More</div>
+    <a class="sb-link" href="docs.html"><i class="fas fa-book"></i> Full Docs</a>
+    <a class="sb-link" href="design-assets.html"><i class="fas fa-swatchbook"></i> Design Assets</a>
+    <a class="sb-link" href="community.html"><i class="fas fa-comments"></i> Community</a>
+  </aside>
+
+  <!-- ── Main content ── -->
+  <main class="api-main">
+
+    <!-- ── Introduction ── -->
+    <section class="api-section" id="intro">
+      <div class="api-hero">
+        <h1>
+          <span class="hero-icon"><i class="fas fa-code"></i></span>
+          API References
+        </h1>
+        <p>Complete reference for every HTML attribute, CSS custom property, and JavaScript function exposed by <strong style="color:#fff;">animated-cursor.js</strong> and <strong style="color:#fff;">animated-cursor.css</strong>.</p>
+        <div class="version-badge"><i class="fas fa-tag"></i> v1.1.0 — June 2026</div>
+      </div>
+
+      <div class="api-alert info">
+        <i class="fas fa-info-circle"></i>
+        <span>All examples below assume you have loaded <code style="background:rgba(87,216,255,.15);color:var(--accent-two);padding:2px 6px;border-radius:4px;">animated-cursor.css</code> and <code style="background:rgba(87,216,255,.15);color:var(--accent-two);padding:2px 6px;border-radius:4px;">animated-cursor.js</code> in your page. See the <a href="docs.html" style="color:var(--accent);text-decoration:none;">Docs</a> for setup instructions.</span>
+      </div>
+    </section>
+
+    <!-- ── HTML: Data Attributes ── -->
+    <section class="api-section" id="html-attrs">
+      <div class="api-section-title">
+        <div class="s-icon"><i class="fas fa-code"></i></div>
+        <h2>HTML Data Attributes</h2>
+      </div>
+      <p>Set these attributes directly on the <code style="background:rgba(255,216,74,.13);color:var(--accent);padding:2px 7px;border-radius:5px;">&lt;body&gt;</code> element to configure the cursor appearance and theme.</p>
+
+      <div class="ref-table-wrap">
+        <table class="ref-table">
+          <thead>
+            <tr>
+              <th>Attribute</th>
+              <th>Type</th>
+              <th>Default</th>
+              <th>Accepted Values</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>data-cursor</code></td>
+              <td><span class="type-pill pill-str">string</span></td>
+              <td><span class="default-badge">"orb"</span></td>
+              <td><code>orb</code> · <code>ring</code> · <code>diamond</code> · <code>crosshair</code></td>
+              <td>Selects the visual shape of the animated cursor.</td>
+            </tr>
+            <tr>
+              <td><code>data-theme</code></td>
+              <td><span class="type-pill pill-str">string</span></td>
+              <td><span class="default-badge">"galaxy"</span></td>
+              <td><code>galaxy</code> · <code>aurora</code> · <code>neon</code> · <code>firefly</code></td>
+              <td>Sets the overall colour palette for the cursor, particles, and background.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="sub-heading"><i class="fas fa-terminal"></i> Example</h3>
+      <div class="code-block">
+        <div class="cb-header">
+          <div class="cb-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          <span class="cb-lang">HTML</span>
+          <button class="copy-btn magnetic-control" data-copy="data-attr-ex">Copy</button>
+        </div>
+        <pre id="data-attr-ex"><span class="cm">&lt;!-- Neon Ring cursor + Neon colour theme --&gt;</span>
+<span class="kw">&lt;body</span> <span class="at">data-cursor</span>=<span class="str">"ring"</span> <span class="at">data-theme</span>=<span class="str">"neon"</span><span class="kw">&gt;</span>
+
+  <span class="cm">&lt;!-- Change at runtime via JavaScript --&gt;</span>
+  <span class="kw">&lt;script&gt;</span>
+    <span class="fn">document</span>.<span class="at">body</span>.<span class="fn">dataset</span>.<span class="at">cursor</span> = <span class="str">"diamond"</span>;
+    <span class="fn">document</span>.<span class="at">body</span>.<span class="fn">dataset</span>.<span class="at">theme</span>  = <span class="str">"aurora"</span>;
+  <span class="kw">&lt;/script&gt;</span>
+<span class="kw">&lt;/body&gt;</span></pre>
+      </div>
+    </section>
+
+    <!-- ── HTML: CSS Classes ── -->
+    <section class="api-section" id="css-classes">
+      <div class="api-section-title">
+        <div class="s-icon"><i class="fas fa-tag"></i></div>
+        <h2>CSS Classes</h2>
+      </div>
+      <p>Apply these classes to elements or the body to control cursor behaviour and theming.</p>
+
+      <div class="ref-table-wrap">
+        <table class="ref-table">
+          <thead>
+            <tr>
+              <th>Class</th>
+              <th>Applied To</th>
+              <th>Effect</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>magnetic-control</code></td>
+              <td>Any interactive element</td>
+              <td>Triggers the cursor's hover-expand state (<code>is-hovering</code>) when the pointer enters the element.</td>
+            </tr>
+            <tr>
+              <td><code>light-theme</code></td>
+              <td><code>&lt;body&gt;</code></td>
+              <td>Switches the entire page (navbar, footer, cursor, background) to the light colour mode.</td>
+            </tr>
+            <tr>
+              <td><code>cursor</code></td>
+              <td><code>&lt;div&gt;</code> (required)</td>
+              <td>Marks the element that the JS will move and animate as the custom cursor.</td>
+            </tr>
+            <tr>
+              <td><code>is-hovering</code></td>
+              <td><code>.cursor</code> (auto-added)</td>
+              <td>Applied automatically by the JS on hover/click. Enlarges the cursor and changes border colour.</td>
+            </tr>
+            <tr>
+              <td><code>background</code></td>
+              <td><code>&lt;div&gt;</code> (required)</td>
+              <td>The full-screen radial gradient backdrop that reacts to cursor position.</td>
+            </tr>
+            <tr>
+              <td><code>galaxy-glow</code></td>
+              <td><code>&lt;div&gt;</code> (required)</td>
+              <td>The large blurred glow blob that follows the cursor at low opacity.</td>
+            </tr>
+            <tr>
+              <td><code>glass-overlay</code></td>
+              <td><code>&lt;div&gt;</code> (required)</td>
+              <td>Fixed overlay with <code>backdrop-filter: blur</code> for the glassmorphism effect.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="api-alert tip">
+        <i class="fas fa-lightbulb"></i>
+        <span>Add <code style="background:rgba(125,255,202,.15);color:#6effd9;padding:2px 6px;border-radius:4px;">magnetic-control</code> to buttons, links, and cards to make the cursor respond visually when users hover over them — it dramatically improves UX.</span>
+      </div>
+    </section>
+
+    <!-- ── CSS: Custom Properties ── -->
+    <section class="api-section" id="css-vars">
+      <div class="api-section-title">
+        <div class="s-icon"><i class="fas fa-paint-brush"></i></div>
+        <h2>CSS Custom Properties</h2>
+      </div>
+      <p>Override any of these on <code style="background:rgba(255,216,74,.13);color:var(--accent);padding:2px 7px;border-radius:5px;">:root</code> or <code style="background:rgba(255,216,74,.13);color:var(--accent);padding:2px 7px;border-radius:5px;">body</code> in your own stylesheet to customise the design.</p>
+
+      <div class="ref-table-wrap">
+        <table class="ref-table">
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>Type</th>
+              <th>Default (Galaxy)</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>--accent</code></td>
+              <td><span class="type-pill pill-css">color</span></td>
+              <td><code>#ffd84a</code></td>
+              <td>Primary glow colour — cursor, buttons, selected options.</td>
+            </tr>
+            <tr>
+              <td><code>--accent-rgb</code></td>
+              <td><span class="type-pill pill-str">R, G, B</span></td>
+              <td><code>255, 216, 74</code></td>
+              <td>RGB channel values of <code>--accent</code>, used in <code>rgba()</code> helpers.</td>
+            </tr>
+            <tr>
+              <td><code>--accent-two</code></td>
+              <td><span class="type-pill pill-css">color</span></td>
+              <td><code>#57d8ff</code></td>
+              <td>Secondary highlight colour — borders, links, select focus.</td>
+            </tr>
+            <tr>
+              <td><code>--accent-two-rgb</code></td>
+              <td><span class="type-pill pill-str">R, G, B</span></td>
+              <td><code>87, 216, 255</code></td>
+              <td>RGB channel values of <code>--accent-two</code>.</td>
+            </tr>
+            <tr>
+              <td><code>--accent-three</code></td>
+              <td><span class="type-pill pill-css">color</span></td>
+              <td><code>#ff7ad9</code></td>
+              <td>Tertiary accent — sparkle particles, diamond cursor gradient.</td>
+            </tr>
+            <tr>
+              <td><code>--accent-three-rgb</code></td>
+              <td><span class="type-pill pill-str">R, G, B</span></td>
+              <td><code>255, 122, 217</code></td>
+              <td>RGB channel values of <code>--accent-three</code>.</td>
+            </tr>
+            <tr>
+              <td><code>--page-bg</code></td>
+              <td><span class="type-pill pill-css">color</span></td>
+              <td><code>#05070d</code></td>
+              <td>Base page background colour.</td>
+            </tr>
+            <tr>
+              <td><code>--text-color</code></td>
+              <td><span class="type-pill pill-css">color</span></td>
+              <td><code>#f8fbff</code></td>
+              <td>Default text colour for body copy.</td>
+            </tr>
+            <tr>
+              <td><code>--glow-rgb</code></td>
+              <td><span class="type-pill pill-str">R, G, B</span></td>
+              <td><code>138, 43, 226</code></td>
+              <td>Colour of the large <code>.galaxy-glow</code> blob behind the cursor.</td>
+            </tr>
+            <tr>
+              <td><code>--bg-one</code></td>
+              <td><span class="type-pill pill-css">color</span></td>
+              <td><code>#321252</code></td>
+              <td>First gradient stop of the background radial gradient (top-left).</td>
+            </tr>
+            <tr>
+              <td><code>--bg-two</code></td>
+              <td><span class="type-pill pill-css">color</span></td>
+              <td><code>#06364b</code></td>
+              <td>Second gradient stop of the background radial gradient (bottom-right).</td>
+            </tr>
+            <tr>
+              <td><code>--bg-mid</code></td>
+              <td><span class="type-pill pill-css">color</span></td>
+              <td><code>#10131f</code></td>
+              <td>Midpoint colour for the linear gradient behind the radial layers.</td>
+            </tr>
+            <tr>
+              <td><code>--cursor-x</code></td>
+              <td><span class="type-pill pill-str">percentage</span></td>
+              <td><code>50%</code></td>
+              <td><strong style="color:rgba(248,251,255,.85);">Read-only (set by JS).</strong> Current X position of the cursor as a viewport percentage. Used in the background radial gradient.</td>
+            </tr>
+            <tr>
+              <td><code>--cursor-y</code></td>
+              <td><span class="type-pill pill-str">percentage</span></td>
+              <td><code>50%</code></td>
+              <td><strong style="color:rgba(248,251,255,.85);">Read-only (set by JS).</strong> Current Y position of the cursor as a viewport percentage.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="sub-heading"><i class="fas fa-terminal"></i> Example — Custom Palette</h3>
+      <div class="code-block">
+        <div class="cb-header">
+          <div class="cb-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          <span class="cb-lang">CSS</span>
+          <button class="copy-btn magnetic-control" data-copy="css-var-ex">Copy</button>
+        </div>
+        <pre id="css-var-ex"><span class="cm">/* your-styles.css — must load AFTER animated-cursor.css */</span>
+<span class="kw">:root</span> {
+  <span class="at">--accent</span>:           <span class="str">#00e5ff</span>;  <span class="cm">/* electric cyan */</span>
+  <span class="at">--accent-rgb</span>:       <span class="nm">0, 229, 255</span>;
+  <span class="at">--accent-two</span>:       <span class="str">#ff6f00</span>;  <span class="cm">/* deep orange  */</span>
+  <span class="at">--accent-two-rgb</span>:   <span class="nm">255, 111, 0</span>;
+  <span class="at">--accent-three</span>:     <span class="str">#76ff03</span>;  <span class="cm">/* lime green   */</span>
+  <span class="at">--accent-three-rgb</span>: <span class="nm">118, 255, 3</span>;
+  <span class="at">--page-bg</span>:          <span class="str">#030a0f</span>;
+  <span class="at">--bg-one</span>:           <span class="str">#001a2c</span>;
+  <span class="at">--bg-two</span>:           <span class="str">#1a0010</span>;
+  <span class="at">--glow-rgb</span>:         <span class="nm">0, 229, 255</span>;
+}</pre>
+      </div>
+    </section>
+
+    <!-- ── CSS: Theme Variables ── -->
+    <section class="api-section" id="css-themes">
+      <div class="api-section-title">
+        <div class="s-icon"><i class="fas fa-palette"></i></div>
+        <h2>Theme Variables</h2>
+      </div>
+      <p>Each built-in theme is implemented as a <code style="background:rgba(255,216,74,.13);color:var(--accent);padding:2px 7px;border-radius:5px;">body[data-theme="…"]</code> selector block that overrides the root tokens. You can create your own themes the same way.</p>
+
+      <div class="ref-table-wrap">
+        <table class="ref-table">
+          <thead>
+            <tr><th>Theme</th><th>--accent</th><th>--accent-two</th><th>--accent-three</th><th>--page-bg</th><th>--glow-rgb</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>galaxy</code> <span class="default-badge">default</span></td>
+              <td><code>#ffd84a</code></td>
+              <td><code>#57d8ff</code></td>
+              <td><code>#ff7ad9</code></td>
+              <td><code>#05070d</code></td>
+              <td><code>138, 43, 226</code></td>
+            </tr>
+            <tr>
+              <td><code>aurora</code></td>
+              <td><code>#7dffca</code></td>
+              <td><code>#8ea7ff</code></td>
+              <td><code>#ff8ee6</code></td>
+              <td><code>#03130f</code></td>
+              <td><code>46, 255, 175</code></td>
+            </tr>
+            <tr>
+              <td><code>neon</code></td>
+              <td><code>#ff2bd6</code></td>
+              <td><code>#00f5ff</code></td>
+              <td><code>#b6ff00</code></td>
+              <td><code>#08030d</code></td>
+              <td><code>255, 43, 214</code></td>
+            </tr>
+            <tr>
+              <td><code>firefly</code></td>
+              <td><code>#dfff74</code></td>
+              <td><code>#4dff8a</code></td>
+              <td><code>#ffbd59</code></td>
+              <td><code>#050805</code></td>
+              <td><code>138, 255, 70</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="sub-heading"><i class="fas fa-terminal"></i> Adding a Custom Theme</h3>
+      <div class="code-block">
+        <div class="cb-header">
+          <div class="cb-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          <span class="cb-lang">CSS</span>
+          <button class="copy-btn magnetic-control" data-copy="custom-theme-ex">Copy</button>
+        </div>
+        <pre id="custom-theme-ex"><span class="cm">/* Define your own theme */</span>
+<span class="kw">body</span>[<span class="at">data-theme</span>=<span class="str">"lava"</span>] {
+  <span class="at">--page-bg</span>:          <span class="str">#0d0300</span>;
+  <span class="at">--accent</span>:           <span class="str">#ff4500</span>;
+  <span class="at">--accent-rgb</span>:       <span class="nm">255, 69, 0</span>;
+  <span class="at">--accent-two</span>:       <span class="str">#ff9100</span>;
+  <span class="at">--accent-two-rgb</span>:   <span class="nm">255, 145, 0</span>;
+  <span class="at">--accent-three</span>:     <span class="str">#ffeb3b</span>;
+  <span class="at">--accent-three-rgb</span>: <span class="nm">255, 235, 59</span>;
+  <span class="at">--glow-rgb</span>:         <span class="nm">255, 69, 0</span>;
+  <span class="at">--bg-one</span>:           <span class="str">#3d0000</span>;
+  <span class="at">--bg-two</span>:           <span class="str">#1a0800</span>;
+  <span class="at">--bg-mid</span>:           <span class="str">#0d0500</span>;
+}
+
+<span class="cm">/* Apply it */</span>
+<span class="fn">document</span>.<span class="at">body</span>.<span class="fn">dataset</span>.<span class="at">theme</span> = <span class="str">"lava"</span>;</pre>
+      </div>
+    </section>
+
+    <!-- ── JavaScript: Functions ── -->
+    <section class="api-section" id="js-functions">
+      <div class="api-section-title">
+        <div class="s-icon"><i class="fas fa-terminal"></i></div>
+        <h2>JavaScript Functions</h2>
+      </div>
+      <p>These internal functions are exposed on the <code style="background:rgba(255,216,74,.13);color:var(--accent);padding:2px 7px;border-radius:5px;">window</code> object and can be called from your own scripts.</p>
+
+      <div class="method-card">
+        <div class="method-header">
+          <span class="method-verb verb-fn">function</span>
+          <code class="method-sig">createClickBurst(x: number, y: number)</code>
+        </div>
+        <div class="method-body">
+          <p>Triggers a sparkle burst of 42 particles radiating outward from the coordinates <code>(x, y)</code> in viewport pixels. Called automatically on every <code>pointerdown</code> event.</p>
+          <div class="ref-table-wrap" style="margin-top:4px;">
+            <table class="ref-table">
+              <thead><tr><th>Param</th><th>Type</th><th>Description</th></tr></thead>
+              <tbody>
+                <tr><td><code>x</code></td><td><span class="type-pill pill-num">number</span></td><td>Viewport X coordinate (pixels from left).</td></tr>
+                <tr><td><code>y</code></td><td><span class="type-pill pill-num">number</span></td><td>Viewport Y coordinate (pixels from top).</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="method-card">
+        <div class="method-header">
+          <span class="method-verb verb-fn">function</span>
+          <code class="method-sig">resizeCanvas()</code>
+        </div>
+        <div class="method-body">
+          <p>Re-initialises the star canvas to match the current viewport dimensions and regenerates all star positions. Called automatically on <code>window.resize</code> and on theme change. You can call it manually after dynamically changing the viewport.</p>
+        </div>
+      </div>
+
+      <div class="method-card">
+        <div class="method-header">
+          <span class="method-verb verb-fn">function</span>
+          <code class="method-sig">getTheme() → object</code>
+        </div>
+        <div class="method-body">
+          <p>Returns the current theme's particle colour arrays. Useful if you are building a custom particle effect that should stay in sync with the active colour palette.</p>
+          <div class="code-block" style="margin-top:8px;">
+            <div class="cb-header">
+              <div class="cb-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+              <span class="cb-lang">JS — return shape</span>
+            </div>
+            <pre><span class="cm">// Returns an object like:</span>
+{
+  <span class="at">sparkle</span>: [<span class="str">"255, 216, 74"</span>, <span class="str">"87, 216, 255"</span>, <span class="str">"255, 122, 217"</span>],
+  <span class="at">stars</span>:   [<span class="str">"255, 255, 255"</span>, <span class="str">"255, 216, 74"</span>,  <span class="str">"87, 216, 255"</span>]
+}</pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── JavaScript: Events ── -->
+    <section class="api-section" id="js-events">
+      <div class="api-section-title">
+        <div class="s-icon"><i class="fas fa-bolt"></i></div>
+        <h2>Events &amp; Hooks</h2>
+      </div>
+      <p>The library listens to the following native DOM events. You can attach your own listeners to the same events to extend behaviour.</p>
+
+      <div class="ref-table-wrap">
+        <table class="ref-table">
+          <thead>
+            <tr><th>Event</th><th>Target</th><th>Library Action</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>pointermove</code></td>
+              <td><code>document</code></td>
+              <td>Updates <code>targetX / targetY</code>, shows cursor, triggers sparkle trail.</td>
+            </tr>
+            <tr>
+              <td><code>pointerleave</code></td>
+              <td><code>document</code></td>
+              <td>Hides cursor and glow, stops sparkle emission.</td>
+            </tr>
+            <tr>
+              <td><code>pointerdown</code></td>
+              <td><code>document</code></td>
+              <td>Calls <code>createClickBurst()</code> and briefly adds <code>is-hovering</code> to cursor.</td>
+            </tr>
+            <tr>
+              <td><code>pointerenter</code></td>
+              <td><code>.magnetic-control</code></td>
+              <td>Adds <code>is-hovering</code> to cursor element.</td>
+            </tr>
+            <tr>
+              <td><code>pointerleave</code></td>
+              <td><code>.magnetic-control</code></td>
+              <td>Removes <code>is-hovering</code> from cursor element.</td>
+            </tr>
+            <tr>
+              <td><code>change</code></td>
+              <td><code>#cursor-design</code></td>
+              <td>Updates <code>body.dataset.cursor</code> to the new value.</td>
+            </tr>
+            <tr>
+              <td><code>change</code></td>
+              <td><code>#theme-design</code></td>
+              <td>Updates <code>body.dataset.theme</code> and calls <code>resizeCanvas()</code> to recolour stars.</td>
+            </tr>
+            <tr>
+              <td><code>resize</code></td>
+              <td><code>window</code></td>
+              <td>Calls <code>resizeCanvas()</code> to adapt to the new viewport size.</td>
+            </tr>
+            <tr>
+              <td><code>click</code></td>
+              <td><code>.theme</code> button</td>
+              <td>Toggles <code>light-theme</code> class on <code>&lt;body&gt;</code> and persists to <code>localStorage</code>.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── JavaScript: Examples ── -->
+    <section class="api-section" id="js-examples">
+      <div class="api-section-title">
+        <div class="s-icon"><i class="fas fa-lightbulb"></i></div>
+        <h2>Code Examples</h2>
+      </div>
+
+      <h3 class="sub-heading"><i class="fas fa-mouse-pointer"></i> Switch cursor design at runtime</h3>
+      <div class="code-block">
+        <div class="cb-header">
+          <div class="cb-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          <span class="cb-lang">JavaScript</span>
+          <button class="copy-btn magnetic-control" data-copy="ex-runtime">Copy</button>
+        </div>
+        <pre id="ex-runtime"><span class="cm">// Switch to Diamond cursor + Aurora theme</span>
+<span class="fn">document</span>.<span class="at">body</span>.<span class="fn">dataset</span>.<span class="at">cursor</span> = <span class="str">"diamond"</span>;
+<span class="fn">document</span>.<span class="at">body</span>.<span class="fn">dataset</span>.<span class="at">theme</span>  = <span class="str">"aurora"</span>;
+
+<span class="cm">// Sync the hidden selects so the picker UI stays in sync</span>
+<span class="kw">const</span> cd = <span class="fn">document</span>.<span class="fn">getElementById</span>(<span class="str">"cursor-design"</span>);
+<span class="kw">const</span> td = <span class="fn">document</span>.<span class="fn">getElementById</span>(<span class="str">"theme-design"</span>);
+<span class="kw">if</span> (cd) cd.<span class="at">value</span> = <span class="str">"diamond"</span>;
+<span class="kw">if</span> (td) { td.<span class="at">value</span> = <span class="str">"aurora"</span>; <span class="fn">resizeCanvas</span>(); }</pre>
+      </div>
+
+      <h3 class="sub-heading"><i class="fas fa-expand"></i> Trigger a click burst programmatically</h3>
+      <div class="code-block">
+        <div class="cb-header">
+          <div class="cb-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          <span class="cb-lang">JavaScript</span>
+          <button class="copy-btn magnetic-control" data-copy="ex-burst">Copy</button>
+        </div>
+        <pre id="ex-burst"><span class="cm">// Fire a sparkle burst at the centre of any element</span>
+<span class="kw">function</span> <span class="fn">burstAt</span>(el) {
+  <span class="kw">const</span> r = el.<span class="fn">getBoundingClientRect</span>();
+  <span class="fn">createClickBurst</span>(
+    r.<span class="at">left</span> + r.<span class="at">width</span>  / <span class="nm">2</span>,
+    r.<span class="at">top</span>  + r.<span class="at">height</span> / <span class="nm">2</span>
+  );
+}
+
+<span class="fn">document</span>.<span class="fn">querySelector</span>(<span class="str">".my-button"</span>)
+        .<span class="fn">addEventListener</span>(<span class="str">"click"</span>, e =&gt; <span class="fn">burstAt</span>(e.<span class="at">currentTarget</span>));</pre>
+      </div>
+
+      <h3 class="sub-heading"><i class="fas fa-moon"></i> Toggle light mode from your own button</h3>
+      <div class="code-block">
+        <div class="cb-header">
+          <div class="cb-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          <span class="cb-lang">JavaScript</span>
+          <button class="copy-btn magnetic-control" data-copy="ex-theme">Copy</button>
+        </div>
+        <pre id="ex-theme"><span class="kw">const</span> myBtn = <span class="fn">document</span>.<span class="fn">getElementById</span>(<span class="str">"myThemeBtn"</span>);
+myBtn.<span class="fn">addEventListener</span>(<span class="str">"click"</span>, () =&gt; {
+  <span class="kw">const</span> isLight = <span class="fn">document</span>.<span class="at">body</span>.<span class="fn">classList</span>.<span class="fn">toggle</span>(<span class="str">"light-theme"</span>);
+  <span class="fn">localStorage</span>.<span class="fn">setItem</span>(<span class="str">"lightMode"</span>, <span class="fn">JSON</span>.<span class="fn">stringify</span>(isLight));
+});</pre>
+      </div>
+
+      <div class="api-alert warn">
+        <i class="fas fa-triangle-exclamation"></i>
+        <span>The light/dark preference is stored under the key <code style="background:rgba(255,216,74,.15);color:var(--accent);padding:2px 6px;border-radius:4px;">"lightMode"</code> in <code style="background:rgba(255,216,74,.15);color:var(--accent);padding:2px 6px;border-radius:4px;">localStorage</code>. Toggling via your own code should also update this key so the preference persists on page reload.</span>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"><i class="fas fa-check-circle"></i><span id="toastMsg">Copied!</span></div>
+
+<script src="animated-cursor.js"></script>
+<script>
+  // Sidebar scroll spy
+  const sects = document.querySelectorAll('.api-section');
+  const sbLinks = document.querySelectorAll('.sb-link[href^="#"]');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        sbLinks.forEach(l => l.classList.remove('active'));
+        const a = document.querySelector(`.sb-link[href="#${e.target.id}"]`);
+        if (a) a.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-35% 0px -55% 0px' });
+  sects.forEach(s => obs.observe(s));
+
+  // Copy buttons
+  document.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const el = document.getElementById(btn.dataset.copy);
+      if (!el) return;
+      navigator.clipboard.writeText(el.innerText).then(() => {
+        showToast('Copied to clipboard!');
+        btn.textContent = 'Copied!';
+        setTimeout(() => btn.textContent = 'Copy', 1800);
+      });
+    });
+  });
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    document.getElementById('toastMsg').textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2000);
+  }
+</script>
+
+<footer class="site-footer">
+  <div class="footer-container">
+    <div class="footer-column">
+      <h3>About Project</h3>
+      <p>Animated Cursor is part of the 100 Web Projects series — exploring creative UI interactions and modern web animations.</p>
+    </div>
+    <div class="footer-column">
+      <h3>Quick Links</h3>
+      <ul>
+        <li><a href="animated-cursor.html">Home</a></li>
+        <li><a href="projects.html">Projects</a></li>
+        <li><a href="docs.html">Docs</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-column">
+      <h3>Resources</h3>
+      <ul>
+        <li><a href="#">GitHub Repository</a></li>
+        <li><a href="design-assets.html">Design Assets</a></li>
+        <li><a href="api-references.html">API References</a></li>
+        <li><a href="community.html">Community Forum</a></li>
+      </ul>
+    </div>
+    <div class="footer-column">
+      <h3>Stay Connected</h3>
+      <div class="social-icons">
+        <a href="#"><i class="fab fa-github"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-linkedin"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+      </div>
+      <p>© 2026 100 Web Projects | Designed by Gayatri Ghogare</p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
