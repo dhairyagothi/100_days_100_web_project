@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -8,8 +8,35 @@
     <title>Catch The Insect</title>
   </head>
   <body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
- 
+    <a
+      href="/"
+      class="project-back-button"
+      style="
+        position: fixed;
+        left: 18px;
+        top: 18px;
+        padding: 8px 16px;
+        border-radius: 8px;
+        background: #1e293b;
+        color: #3b82f6;
+        border: 1px solid #3b82f6;
+        text-decoration: none;
+        z-index: 9999;
+        font-weight: 700;
+        font-family: Inter, system-ui, sans-serif;
+        transition: all 0.2s ease;
+      "
+      onmouseover="
+        this.style.background = '#3b82f6';
+        this.style.color = '#fff';
+      "
+      onmouseout="
+        this.style.background = '#1e293b';
+        this.style.color = '#3b82f6';
+      "
+      >← Back to Home</a
+    >
+
     <div class="screen">
       <h1>Catch The Insect</h1>
       <button class="btn" id="start-btn">Play Game</button>
@@ -21,65 +48,75 @@
         <li>
           <button class="choose-insect-btn">
             <p>Fly</p>
-            <img src="https://www.pngplay.com/wp-content/uploads/1/Fly-PNG-Images.png" alt="fly">
+            <img
+              src="https://www.pngplay.com/wp-content/uploads/1/Fly-PNG-Images.png"
+              alt="fly"
+            />
           </button>
         </li>
         <li>
           <button class="choose-insect-btn">
             <p>Mosquito</p>
             <img
-               src="https://www.pngplay.com/wp-content/uploads/8/Mosquito-PNG-Image.png"
-               alt="mosquito"
-               />
+              src="https://www.pngplay.com/wp-content/uploads/8/Mosquito-PNG-Image.png"
+              alt="mosquito"
+            />
           </button>
         </li>
         <li>
           <button class="choose-insect-btn">
             <p>Spider</p>
             <img
-               src="https://www.pngplay.com/wp-content/uploads/8/Spider-PNG-Image.png"
-               alt="spider"
-               />
+              src="https://www.pngplay.com/wp-content/uploads/8/Spider-PNG-Image.png"
+              alt="spider"
+            />
           </button>
         </li>
         <li>
           <button class="choose-insect-btn">
             <p>Roach</p>
             <img
-               src="https://www.pngplay.com/wp-content/uploads/12/Cockroach-PNG-Image.png"
-               alt="roach"
-               />
+              src="https://www.pngplay.com/wp-content/uploads/12/Cockroach-PNG-Image.png"
+              alt="roach"
+            />
           </button>
         </li>
       </ul>
     </div>
 
-  <div class="screen">
-    <h1>Select Game Duration</h1>
-    <div class="timer-options">
-      <button class="timer-btn" data-time="30">30 Seconds</button>
-      <button class="timer-btn" data-time="60">1 Minute</button>
-      <button class="timer-btn" data-time="120">2 Minutes</button>
-      <button class="timer-btn" data-time="300">5 Minutes</button>
+    <div class="screen">
+      <h1>Select Game Duration</h1>
+      <div class="timer-options">
+        <button class="timer-btn" data-time="30">30 Seconds</button>
+        <button class="timer-btn" data-time="60">1 Minute</button>
+        <button class="timer-btn" data-time="120">2 Minutes</button>
+        <button class="timer-btn" data-time="300">5 Minutes</button>
+      </div>
     </div>
-  </div>
 
     <div class="screen game-container" id="game-container">
       <!-- Audio Elements -->
-<audio id="background-music" src="./sounds/background.mp3" loop></audio>
-<audio id="catch-sound" src="./sounds/catch.wav"></audio>
-<audio id="button-click-sound" src="./sounds/button-click.ogg"></audio>
+      <audio id="background-music" src="./sounds/background.mp3" loop></audio>
+      <audio id="catch-sound" src="./sounds/catch.wav"></audio>
+      <audio id="button-click-sound" src="./sounds/button-click.ogg"></audio>
 
-<!-- Sound Controls -->
-<div class="sound-controls">
-    <button id="mute-btn">🔊</button>
-    <input type="range" id="volume-slider" min="0" max="1" step="0.1" value="0.5" />
-</div>
+      <!-- Sound Controls -->
+      <div class="sound-controls">
+        <button id="mute-btn">🔊</button>
+        <input
+          type="range"
+          id="volume-slider"
+          min="0"
+          max="1"
+          step="0.1"
+          value="0.5"
+        />
+      </div>
       <h3 id="time" class="time">Time: 00:00</h3>
       <h3 id="score" class="score">Score: 0</h3>
       <button id="end-btn" class="btn">End Game</button>
       <h5 id="message" class="message">
-        Are you annoyed yet? <br>
+        Are you annoyed yet? <br />
         You are playing an impossible game!!
       </h5>
       <div id="game-over" class="game-over-container">
@@ -98,7 +135,9 @@
         <h1>Game Over</h1>
         <p id="final-score"></p>
         <p id="final-time"></p>
-        <button onclick="location.reload()" class="btn" id="play-again">Play Again</button>
+        <button onclick="location.reload()" class="btn" id="play-again">
+          Play Again
+        </button>
       </div>
     </div>
 
