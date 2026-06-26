@@ -415,6 +415,10 @@ select option {
     transition: .3s;
     cursor: pointer;
     transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        cursor: pointer;
+    max-width: 100%;
+    box-sizing: border-box;
+
 }
 
 .recipe-card:hover {
@@ -538,6 +542,7 @@ select option {
     max-width: 900px;
     margin: 40px auto;
     padding-bottom: 80px;
+    box-sizing: border-box;
 }
 
 .recipe-image {

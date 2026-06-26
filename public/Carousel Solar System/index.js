@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const hamburger = document.querySelector(".hamburger-icon");
 const menu = document.querySelector(".planet-mini-list");
+const themeToggle = document.getElementById("theme-toggle");
 
 hamburger.addEventListener("click", (e) => {
   e.stopPropagation();
@@ -26,11 +27,7 @@ document.addEventListener("click", (e) => {
 
   function showSlide(index) {
     slides.forEach(slide => slide.classList.remove("active"));
-    planetItems.forEach((item, index) => {
-  item.addEventListener("click", () => {
-    showSlide(index);
-  });
-});
+    miniPlanets.forEach(planet => planet.classList.remove("active"));
 
     if (index < 0) {
       currentIndex = slides.length - 1;
@@ -117,6 +114,23 @@ function showSlide(index) {
       }
     }
   });
+const savedTheme = localStorage.getItem("theme");
 
+if(savedTheme === "light"){
+  document.body.classList.add("light-theme");
+  themeToggle.textContent = "☀️";
+}
+
+themeToggle.addEventListener("click", () => {
+  document.body.classList.toggle("light-theme");
+
+  if(document.body.classList.contains("light-theme")){
+    localStorage.setItem("theme", "light");
+    themeToggle.textContent = "☀️";
+  } else {
+    localStorage.setItem("theme", "dark");
+    themeToggle.textContent = "🌙";
+  }
+});
   showSlide(0);
 });

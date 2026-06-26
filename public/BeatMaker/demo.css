@@ -434,3 +434,96 @@ body {
     grid-template-columns: 1fr 1fr;
   }
 }
+.header-content {
+  position: relative;
+}
+
+.theme-toggle {
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  width: 50px;
+  height: 50px;
+
+  border: none;
+  border-radius: 50%;
+
+  cursor: pointer;
+  font-size: 1.3rem;
+
+  background: rgba(255,255,255,0.1);
+  color: white;
+
+  backdrop-filter: blur(10px);
+
+  transition: all 0.3s ease;
+}
+
+.theme-toggle:hover {
+  transform: scale(1.1);
+  background: rgba(255,255,255,0.2);
+}
+body.light-theme {
+  background: linear-gradient(
+    135deg,
+    #f5f7fa 0%,
+    #e4ecfb 50%,
+    #dfe9f3 100%
+  );
+
+  color: #222;
+}
+
+body.light-theme .glass-card {
+  background: rgba(255,255,255,0.75);
+  border: 1px solid rgba(0,0,0,0.08);
+  color: #222;
+}
+
+body.light-theme .subtitle,
+body.light-theme .stat-label {
+  color: #555;
+}
+
+body.light-theme .instrument-label,
+body.light-theme h3,
+body.light-theme .saved-beat,
+body.light-theme .save-input {
+  color: #222;
+}
+
+body.light-theme .save-input {
+  background: rgba(255,255,255,0.9);
+  border: 1px solid rgba(0,0,0,0.1);
+}
+
+body.light-theme .save-input::placeholder {
+  color: #777;
+}
+
+body.light-theme .pad {
+  background: rgba(0,0,0,0.08);
+}
+
+body.light-theme .pad:hover {
+  background: rgba(0,0,0,0.15);
+}
+
+body.light-theme .preview-btn {
+  background: rgba(0,0,0,0.08);
+  color: #222;
+}
+
+body.light-theme .preview-btn:hover {
+  background: rgba(0,0,0,0.15);
+}
+
+body.light-theme .saved-beat {
+  background: rgba(0,0,0,0.04);
+}
+
+body.light-theme .theme-toggle {
+  background: rgba(0,0,0,0.08);
+  color: #222;
+}

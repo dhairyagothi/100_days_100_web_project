@@ -1,16 +1,25 @@
+// Initialize toast element for copy feedback
 const toast = document.createElement('div');
 toast.className = 'copy-toast';
 document.body.appendChild(toast);
 
+let toastTimer;
 function showToast(msg) {
+  clearTimeout(toastTimer);
   toast.textContent = msg;
   toast.style.opacity = '1';
+  toast.style.transform = 'translateX(-55%) scale(1.05)';
 
   setTimeout(() => {
+    toast.style.transform = 'translateX(-50%) scale(1)';
+  }, 150);
+
+  toastTimer = setTimeout(() => {
     toast.style.opacity = '0';
   }, 1200);
 }
 
+// Select DOM elements
 const redSlider = document.getElementById('red');
 const greenSlider = document.getElementById('green');
 const blueSlider = document.getElementById('blue');
@@ -24,6 +33,7 @@ const favoritesContainer = document.getElementById('favoritesContainer');
 const copyHexBtn = document.getElementById('copyHex');
 const copyRgbBtn = document.getElementById('copyRgb');
 const copyHslBtn = document.getElementById('copyHsl');
+const bgModeSelect = document.getElementById('bgModeSelect');
 
 // Palette boxes
 const paletteBoxes = [
@@ -34,10 +44,12 @@ const paletteBoxes = [
   document.getElementById('color5'),
 ];
 
+// Utility: RGB to HEX
 function rgbToHex(r, g, b) {
   return '#' + [r, g, b].map((x) => x.toString(16).padStart(2, '0')).join('');
 }
 
+// Utility: HEX to RGB
 function hexToRgb(hex) {
   hex = hex.replace('#', '');
   if (!/^([A-Fa-f0-9]{6})$/.test(hex)) return null;
@@ -49,7 +61,7 @@ function hexToRgb(hex) {
   };
 }
 
-// Convert RGB → HSL (needed for palette generation)
+// Utility: RGB to HSL
 function rgbToHsl(r, g, b) {
   r /= 255;
   g /= 255;
@@ -90,8 +102,12 @@ function rgbToHsl(r, g, b) {
   };
 }
 
-// Convert HSL → RGB
+// Utility: HSL to RGB
 function hslToRgb(h, s, l) {
+  h /= 360;
+  s /= 100;
+  l /= 100;
+
   let r, g, b;
 
   if (s === 0) {
@@ -131,24 +147,80 @@ function generatePalette(r, g, b) {
   colors.push({ r, g, b });
 
   // complementary
-  let comp = hslToRgb((h + 0.5) % 1, s, l);
+  let comp = hslToRgb((h + 180) % 360, s, l);
   colors.push(comp);
 
   // analogous colors
-  let a1 = hslToRgb((h + 0.05) % 1, s, l);
-  let a2 = hslToRgb((h - 0.05 + 1) % 1, s, l);
+  let a1 = hslToRgb((h + 30) % 360, s, l);
+  let a2 = hslToRgb((h - 30 + 360) % 360, s, l);
 
   colors.push(a1);
   colors.push(a2);
 
   // lighter shade
-  let lighter = hslToRgb(h, s, Math.min(1, l + 0.2));
+  let lighter = hslToRgb(h, s, Math.min(100, l + 20));
   colors.push(lighter);
 
   return colors;
 }
 
-// Update UI
+// Synchronize body background and container accessibility details
+function updateBackgroundAndTheme(r, g, b, hex) {
+  const root = document.documentElement;
+  const hsl = rgbToHsl(r, g, b);
+  
+  // Calculate relative luminance for contrast/accessibility
+  const luminance = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
+  
+  // Generate theme variations
+  const darkL = Math.max(0, hsl.l - 15);
+  const themeColorDark = `hsl(${hsl.h}, ${hsl.s}%, ${darkL}%)`;
+  
+  const lightL = Math.min(100, hsl.l + 15);
+  const themeColorLight = `hsl(${hsl.h}, ${hsl.s}%, ${lightL}%)`;
+  
+  const compH = (hsl.h + 180) % 360;
+  const themeColorComp = `hsl(${compH}, ${hsl.s}%, ${hsl.l}%)`;
+  
+  // Set theme variables on root
+  root.style.setProperty('--theme-color', hex);
+  root.style.setProperty('--theme-color-dark', themeColorDark);
+  root.style.setProperty('--theme-color-light', themeColorLight);
+  root.style.setProperty('--theme-contrast-text', luminance > 0.6 ? '#1e293b' : '#ffffff');
+  
+  // Adjust container styling dynamically to maintain accessibility
+  if (luminance > 0.5) {
+    root.style.setProperty('--container-bg', 'rgba(255, 255, 255, 0.92)');
+    root.style.setProperty('--container-text', '#1e293b');
+    root.style.setProperty('--container-border', hex);
+    root.style.setProperty('--input-bg', '#ffffff');
+    root.style.setProperty('--input-text', '#1e293b');
+    root.style.setProperty('--shadow-color', 'rgba(0, 0, 0, 0.1)');
+  } else {
+    root.style.setProperty('--container-bg', 'rgba(15, 23, 42, 0.90)');
+    root.style.setProperty('--container-text', '#f8fafc');
+    root.style.setProperty('--container-border', themeColorLight);
+    root.style.setProperty('--input-bg', '#1e293b');
+    root.style.setProperty('--input-text', '#f8fafc');
+    root.style.setProperty('--shadow-color', `rgba(${r}, ${g}, ${b}, 0.35)`);
+  }
+  
+  // Update background variables based on selected mode
+  const bgMode = bgModeSelect ? bgModeSelect.value : 'gradient';
+  
+  if (bgMode === 'solid') {
+    root.style.setProperty('--gradient-color-1', hex);
+    root.style.setProperty('--gradient-color-2', hex);
+  } else if (bgMode === 'gradient') {
+    root.style.setProperty('--gradient-color-1', hex);
+    root.style.setProperty('--gradient-color-2', themeColorDark);
+  } else if (bgMode === 'complementary') {
+    root.style.setProperty('--gradient-color-1', hex);
+    root.style.setProperty('--gradient-color-2', themeColorComp);
+  }
+}
+
+// Update UI state from R, G, B slider values
 function updateFromSliders() {
   const r = parseInt(redSlider.value);
   const g = parseInt(greenSlider.value);
@@ -164,26 +236,30 @@ function updateFromSliders() {
 
   hexInput.value = hex;
 
-  // PALETTE UPDATE
+  // Background and theme updates
+  updateBackgroundAndTheme(r, g, b, hex);
+
+  // Generate palette
   const palette = generatePalette(r, g, b);
 
   paletteBoxes.forEach((box, i) => {
     const col = palette[i];
-    box.style.backgroundColor = `rgb(${col.r}, ${col.g}, ${col.b})`;
-  });
-
-  paletteBoxes.forEach((box, i) => {
-    const col = palette[i];
-    const hex = rgbToHex(col.r, col.g, col.b);
+    const boxHex = rgbToHex(col.r, col.g, col.b);
 
     box.style.backgroundColor = `rgb(${col.r}, ${col.g}, ${col.b})`;
 
-    // IMPORTANT: avoid stacking multiple listeners
-    box.onclick = () => copyToClipboard(hex);
+    // Click updates state + copies
+    box.onclick = () => {
+      redSlider.value = col.r;
+      greenSlider.value = col.g;
+      blueSlider.value = col.b;
+      updateFromSliders();
+      copyToClipboard(boxHex);
+    };
   });
 }
 
-// HEX input sync
+// Sync values from HEX input box
 function updateFromHex() {
   const rgb = hexToRgb(hexInput.value);
   if (!rgb) return;
@@ -195,20 +271,35 @@ function updateFromHex() {
   updateFromSliders();
 }
 
-// Events
+// Event Listeners for sliders
 redSlider.addEventListener('input', updateFromSliders);
 greenSlider.addEventListener('input', updateFromSliders);
 blueSlider.addEventListener('input', updateFromSliders);
+
+// Event Listener for HEX input (with 300ms debounce)
 let hexTimer;
 hexInput.addEventListener('input', () => {
   clearTimeout(hexTimer);
-
   hexTimer = setTimeout(() => {
     updateFromHex();
   }, 300);
 });
+
+// Event Listener for background mode selector
+if (bgModeSelect) {
+  bgModeSelect.addEventListener('change', () => {
+    const r = parseInt(redSlider.value);
+    const g = parseInt(greenSlider.value);
+    const b = parseInt(blueSlider.value);
+    const hex = rgbToHex(r, g, b);
+    updateBackgroundAndTheme(r, g, b, hex);
+  });
+}
+
+// Initialize on page load
 updateFromSliders();
 
+// Clipboard Copy Utility
 async function copyToClipboard(text) {
   try {
     await navigator.clipboard.writeText(text);
@@ -218,17 +309,14 @@ async function copyToClipboard(text) {
     textarea.value = text;
     document.body.appendChild(textarea);
     textarea.select();
-
     document.execCommand('copy');
-
     document.body.removeChild(textarea);
-
     showToast(`Copied: ${text}`);
   }
 }
 
+// Robust fallback storage manager for iframe/sandbox contexts
 const memoryStore = new Map();
-
 const StorageManager = {
   get(key) {
     try {
@@ -255,12 +343,10 @@ const StorageManager = {
   },
 };
 
-// Initialize favorites from storage
+// Favorites state management
 let favorites;
-
 try {
   favorites = JSON.parse(StorageManager.get('favorites') || '[]');
-
   if (!Array.isArray(favorites)) {
     favorites = [];
   }
@@ -268,6 +354,7 @@ try {
   favorites = [];
 }
 
+// Render list of favorite colors
 function renderFavorites() {
   favoritesContainer.innerHTML = '';
 
@@ -279,19 +366,26 @@ function renderFavorites() {
     box.className = 'favorite-box';
     box.style.backgroundColor = color;
 
-    // click to copy
-    box.onclick = () => copyToClipboard(color);
+    // Click loads color + copies
+    box.onclick = () => {
+      const rgb = hexToRgb(color);
+      if (rgb) {
+        redSlider.value = rgb.r;
+        greenSlider.value = rgb.g;
+        blueSlider.value = rgb.b;
+        updateFromSliders();
+      }
+      copyToClipboard(color);
+    };
 
-    // ❌ remove button
+    // Remove button
     const removeBtn = document.createElement('button');
     removeBtn.innerText = '✖';
     removeBtn.className = 'remove-fav';
-
     removeBtn.onclick = (e) => {
-      e.stopPropagation(); // prevent copy trigger
-
+      e.stopPropagation(); // prevent select trigger
       favorites.splice(index, 1);
-      localStorage.setItem('favorites', JSON.stringify(favorites));
+      StorageManager.set('favorites', JSON.stringify(favorites));
       renderFavorites();
       showToast('Removed from favorites');
     };
@@ -302,8 +396,10 @@ function renderFavorites() {
   });
 }
 
+// Initial favorites rendering
 renderFavorites();
 
+// Save Favorite button click action
 saveBtn.addEventListener('click', () => {
   const currentHex = hexValue.textContent.replace('HEX: ', '');
 
@@ -317,42 +413,7 @@ saveBtn.addEventListener('click', () => {
   }
 });
 
-function rgbToHsl(r, g, b) {
-  r /= 255;
-  g /= 255;
-  b /= 255;
-
-  let max = Math.max(r, g, b),
-    min = Math.min(r, g, b);
-
-  let h,
-    s,
-    l = (max + min) / 2;
-
-  if (max === min) {
-    h = s = 0;
-  } else {
-    let d = max - min;
-    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-
-    switch (max) {
-      case r:
-        h = (g - b) / d + (g < b ? 6 : 0);
-        break;
-      case g:
-        h = (b - r) / d + 2;
-        break;
-      case b:
-        h = (r - g) / d + 4;
-        break;
-    }
-
-    h /= 6;
-  }
-
-  return { h, s, l };
-}
-
+// Copy button handlers
 copyHexBtn.onclick = () => {
   copyToClipboard(hexValue.textContent.replace('HEX: ', ''));
 };
@@ -365,19 +426,9 @@ copyRgbBtn.onclick = () => {
 };
 
 copyHslBtn.onclick = () => {
-  const hsl = rgbToHsl(redSlider.value, greenSlider.value, blueSlider.value);
-
+  const r = parseInt(redSlider.value);
+  const g = parseInt(greenSlider.value);
+  const b = parseInt(blueSlider.value);
+  const hsl = rgbToHsl(r, g, b);
   copyToClipboard(`hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)`);
 };
-let toastTimer;
-
-function showToast(msg) {
-  clearTimeout(toastTimer);
-
-  toast.textContent = msg;
-  toast.style.opacity = '1';
-
-  toastTimer = setTimeout(() => {
-    toast.style.opacity = '0';
-  }, 1200);
-}

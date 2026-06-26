@@ -7,6 +7,23 @@
     --text-main: #e6edf3;
     --text-muted: #8b949e;
     --border-color: #30363d;
+    --row-bg: rgba(255, 255, 255, 0.02);
+    --card-bg: rgba(255, 255, 255, 0.03);
+    --btn-text: #000000;
+}
+
+body.light-theme {
+    --bg-dark: #f6f8fa;
+    --panel-bg: #ffffff;
+    --accent-green: #00c853;   
+    --accent-yellow: #f5b041;  
+    --accent-red: #d50000;
+    --text-main: #24292f;
+    --text-muted: #57606a;
+    --border-color: #d0d7de;
+    --row-bg: rgba(0, 0, 0, 0.02);
+    --card-bg: rgba(0, 0, 0, 0.03);
+    --btn-text: #ffffff;
 }
 
 * {
@@ -26,6 +43,23 @@ body {
 header {
     margin-bottom: 24px;
     text-align: center;
+}
+
+header .header-top {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto 12px auto;
+    padding: 0 10px;
+    justify-content: flex-start; 
+    gap: 20px;
+}
+
+header .theme-wrapper {
+    margin-right: 0; 
+    display: flex;
+    align-items: center;
 }
 
 header .logo {
@@ -87,6 +121,10 @@ textarea {
     line-height: 1.5;
 }
 
+body.light-theme textarea {
+    color: #0969da; /* Changes light blue code text to high-contrast dark blue */
+}
+
 textarea:focus {
     outline: none;
     border-color: var(--accent-green);
@@ -94,7 +132,7 @@ textarea:focus {
 
 button {
     background-color: var(--accent-green);
-    color: #000;
+    color: var(--btn-text);
     border: none;
     border-radius: 6px;
     padding: 12px;
@@ -114,7 +152,7 @@ button:active {
     align-items: center;
     gap: 30px;
     margin-bottom: 24px;
-    background: rgba(255,255,255,0.02);
+    background: var(--row-bg);
     padding: 15px;
     border-radius: 6px;
 }
@@ -188,7 +226,7 @@ button:active {
 }
 
 .issue-card {
-    background: rgba(255,255,255,0.03);
+    background: var(--card-bg);
     border-left: 4px solid var(--border-color);
     padding: 12px;
     margin-bottom: 10px;
@@ -218,4 +256,8 @@ button:active {
     padding: 2px 6px;
     border-radius: 10px;
     font-size: 11px;
+}
+
+body.light-theme .count-badge {
+    background: rgba(0, 0, 0, 0.06);
 }
