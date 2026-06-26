@@ -21,10 +21,32 @@ body{
 
 body{
   font-family:'Poppins',sans-serif;
-  background:#020412;
-  color:white;
+  background:var(--bg-primary);
+  color:var(--text-primary);
+}
+:root{
+  --bg-primary: #020412;
+  --bg-secondary: #050816;
+  --text-primary: #ffffff;
+  --text-secondary: #d5d8e6;
+  --card-bg: rgba(255,255,255,0.06);
+  --card-hover: rgba(255,255,255,0.1);
+  --glass-bg: rgba(255,255,255,0.08);
+  --border-color: rgba(255,255,255,0.1);
+  --accent: #8ca8ff;
 }
 
+body.light-theme{
+  --bg-primary: #f5f7ff;
+  --bg-secondary: #dfe8ff;
+  --text-primary: #0f172a;
+  --text-secondary: #334155;
+  --card-bg: rgba(255,255,255,0.8);
+  --card-hover: rgba(255,255,255,0.95);
+  --glass-bg: rgba(255,255,255,0.85);
+  --border-color: rgba(15,23,42,0.1);
+  --accent: #2563eb;
+}
 /* =========================
    MAIN CONTAINER
 ========================= */
@@ -35,9 +57,11 @@ body{
   overflow:hidden;
 
   background:
-    radial-gradient(circle at top,#13203b 0%,#050816 40%,#010104 100%);
+    radial-gradient(circle at top,
+    var(--bg-secondary) 0%,
+    var(--bg-primary) 40%,
+    var(--bg-primary) 100%);
 }
-
 /* animated stars */
 .slider-container::before{
   content:"";
@@ -317,7 +341,7 @@ span{
 }
 
 .slide-number{
-  color:#8ca8ff;
+  color:var(--accent);
   font-size:0.95rem;
   letter-spacing:2px;
 }
@@ -334,7 +358,7 @@ span{
 }
 
 .description{
-  color:#d5d8e6;
+  color:var(--text-secondary);
   line-height:1.9;
   font-size:1rem;
   max-width:500px;
@@ -426,10 +450,11 @@ span{
 .stat{
   padding:22px;
 
-  background:rgba(255,255,255,0.06);
+  
   backdrop-filter:blur(12px);
 
-  border:1px solid rgba(255,255,255,0.08);
+  background:var(--card-bg);
+  border:1px solid var(--border-color);
   border-radius:20px;
 
   transition:0.35s;
@@ -438,13 +463,13 @@ span{
 .stat:hover{
   transform:translateX(8px);
 
-  background:rgba(255,255,255,0.1);
+  background:var(--card-hover);
 }
 
 .label{
   display:block;
 
-  color:#8ca8ff;
+ color:var(--accent);
   margin-bottom:8px;
 
   font-size:0.85rem;
@@ -498,7 +523,7 @@ span{
 
 .scroll-indicator{
   letter-spacing:4px;
-  color:#9eb8ff;
+  color:var(--accent);
   font-size:0.9rem;
 
   animation:scrollBlink 1.8s infinite;
@@ -722,4 +747,39 @@ span{
   opacity:1;
   visibility:visible;
   transform:translateY(0);
+}
+.planet-mini-list{
+   background:var(--glass-bg);
+   border:1px solid var(--border-color);
+}
+.planet-item span{
+    color:var(--text-primary);
+}
+.nav-right{
+  display:flex;
+  align-items:center;
+  gap:20px;
+}
+
+.theme-toggle{
+  width:48px;
+  height:48px;
+  border:none;
+  border-radius:50%;
+  cursor:pointer;
+
+  font-size:1.2rem;
+
+  background:var(--glass-bg);
+  color:var(--text-primary);
+
+  backdrop-filter:blur(12px);
+
+  border:1px solid var(--border-color);
+
+  transition:0.3s;
+}
+
+.theme-toggle:hover{
+  transform:scale(1.1);
 }

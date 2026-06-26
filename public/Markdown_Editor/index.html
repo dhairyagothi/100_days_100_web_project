@@ -24,11 +24,45 @@
             <div class="stat">Read Time: <span id="read-time">0m</span></div>
         </div>
 
-        <button id="theme-toggle" class="btn-toggle" aria-label="Toggle Theme">
-            <span class="theme-icon">🌙</span>
-            <span class="theme-text">Dark Mode</span>
-        </button>
+        <div class="toolbar-actions">
+            <button id="theme-toggle" class="btn-toggle" aria-label="Toggle Theme">
+                <span class="theme-icon">🌙</span>
+                <span class="theme-text">Dark Mode</span>
+            </button>
+        </div>
     </header>
+
+    <!-- Formatting Toolbar -->
+    <div class="format-toolbar">
+        <div class="format-group">
+            <button class="fmt-btn" data-action="bold" title="Bold (Ctrl+B)"><strong>B</strong></button>
+            <button class="fmt-btn" data-action="italic" title="Italic (Ctrl+I)"><em>I</em></button>
+            <button class="fmt-btn" data-action="strikethrough" title="Strikethrough"><s>S</s></button>
+        </div>
+        <div class="fmt-divider"></div>
+        <div class="format-group">
+            <button class="fmt-btn" data-action="h1" title="Heading 1">H1</button>
+            <button class="fmt-btn" data-action="h2" title="Heading 2">H2</button>
+            <button class="fmt-btn" data-action="h3" title="Heading 3">H3</button>
+        </div>
+        <div class="fmt-divider"></div>
+        <div class="format-group">
+            <button class="fmt-btn" data-action="ul" title="Bullet List">• List</button>
+            <button class="fmt-btn" data-action="ol" title="Numbered List">1. List</button>
+            <button class="fmt-btn" data-action="quote" title="Blockquote">❝ Quote</button>
+        </div>
+        <div class="fmt-divider"></div>
+        <div class="format-group">
+            <button class="fmt-btn" data-action="code" title="Inline Code">&#96;Code&#96;</button>
+            <button class="fmt-btn" data-action="codeblock" title="Code Block">&#96;&#96;&#96; Block</button>
+            <button class="fmt-btn" data-action="link" title="Link">🔗 Link</button>
+        </div>
+        <div class="fmt-divider"></div>
+        <div class="format-group export-group">
+            <button class="fmt-btn btn-copy" id="copy-btn" title="Copy Markdown to Clipboard">📋 Copy</button>
+            <button class="fmt-btn btn-export" id="export-btn" title="Download as .md file">⬇ Export .md</button>
+        </div>
+    </div>
 
     <main class="workspace">
         <section class="pane editor-pane">
@@ -41,10 +75,12 @@
 
         <section class="pane preview-pane">
             <div class="pane-header">Live Preview</div>
-            <div id="preview-output" class="markdown-body">
-            </div>
+            <div id="preview-output" class="markdown-body"></div>
         </section>
     </main>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast" aria-live="polite"></div>
 
     <script src="app.js"></script>
 </body>

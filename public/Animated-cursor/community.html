@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Community Forum — Animated Cursor</title>
+<meta name="description" content="Join the Animated Cursor community — share cursor ideas, showcase your builds, ask questions, and vote on feature requests.">
+<link rel="stylesheet" href="animated-cursor.css">
+<link rel="icon" href="../favv.png" type="image/x-icon" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { font-family: 'Inter', Arial, sans-serif; }
+
+  .page-wrapper {
+    position: relative;
+    z-index: 5;
+    width: min(95vw, 1200px);
+    margin: 110px auto 0;
+    padding-bottom: 100px;
+    display: flex;
+    flex-direction: column;
+    gap: 56px;
+  }
+
+  /* ── Hero ── */
+  .page-hero { text-align: center; }
+  .page-hero h1 {
+    font-size: clamp(2.2rem, 7vw, 4.5rem);
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 16px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-two), var(--accent-three));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .page-hero p {
+    max-width: 520px;
+    margin: 0 auto 28px;
+    color: rgba(248,251,255,.68);
+    font-size: 1.05rem;
+    line-height: 1.7;
+  }
+  .hero-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+  /* ── Stats strip ── */
+  .stats-strip {
+    display: flex;
+    gap: 22px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .stat-chip {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 28px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, rgba(255,255,255,.09), rgba(255,255,255,.04));
+    border: 1px solid rgba(255,255,255,.12);
+    backdrop-filter: blur(20px);
+    transition: transform .25s ease, border-color .25s ease;
+    min-width: 160px;
+  }
+  .stat-chip:hover { transform: translateY(-4px); border-color: rgba(var(--accent-rgb),.4); }
+  .stat-icon { font-size: 1.5rem; color: var(--accent); }
+  .stat-text .num {
+    font-size: 1.6rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--accent), var(--accent-two));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    display: block;
+    line-height: 1;
+  }
+  .stat-text .lbl {
+    font-size: .75rem;
+    font-weight: 600;
+    color: rgba(248,251,255,.45);
+    text-transform: uppercase;
+    letter-spacing: .07em;
+    margin-top: 3px;
+    display: block;
+  }
+
+  /* ── Layout ── */
+  .forum-layout {
+    display: grid;
+    grid-template-columns: 1fr 310px;
+    gap: 32px;
+    align-items: start;
+  }
+  @media (max-width: 900px) { .forum-layout { grid-template-columns: 1fr; } }
+
+  /* ── Section title ── */
+  .section-hdr {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 22px;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .section-hdr h2 {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-hdr h2 i { color: var(--accent); font-size: 1rem; }
+
+  /* ── Filter tabs ── */
+  .tab-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+  .tab-btn {
+    padding: 8px 18px;
+    border-radius: 30px;
+    border: 1px solid rgba(255,255,255,.16);
+    background: rgba(255,255,255,.05);
+    color: rgba(248,251,255,.65);
+    font-family: inherit;
+    font-size: .83rem;
+    font-weight: 600;
+    cursor: none;
+    transition: all .2s ease;
+  }
+  .tab-btn.active,
+  .tab-btn:hover {
+    background: rgba(var(--accent-rgb),.18);
+    border-color: rgba(var(--accent-rgb),.5);
+    color: var(--accent);
+  }
+
+  /* ── Thread card ── */
+  .thread-card {
+    display: flex;
+    gap: 18px;
+    padding: 22px 24px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+    border: 1px solid rgba(255,255,255,.1);
+    backdrop-filter: blur(20px);
+    margin-bottom: 14px;
+    transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+    cursor: none;
+  }
+  .thread-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(var(--accent-rgb),.38);
+    box-shadow: 0 10px 36px rgba(0,0,0,.22);
+  }
+
+  /* vote column */
+  .vote-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    min-width: 44px;
+    flex-shrink: 0;
+  }
+  .vote-btn {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,.15);
+    background: rgba(255,255,255,.06);
+    color: rgba(248,251,255,.6);
+    font-size: .85rem;
+    cursor: none;
+    display: flex; align-items: center; justify-content: center;
+    transition: all .2s ease;
+  }
+  .vote-btn:hover { background: rgba(var(--accent-rgb),.2); border-color: rgba(var(--accent-rgb),.5); color: var(--accent); }
+  .vote-btn.voted { background: rgba(var(--accent-rgb),.25); border-color: var(--accent); color: var(--accent); }
+  .vote-count {
+    font-size: .9rem;
+    font-weight: 800;
+    color: rgba(248,251,255,.7);
+  }
+
+  /* content */
+  .thread-content { flex: 1; min-width: 0; }
+  .thread-tags { display: flex; gap: 7px; flex-wrap: wrap; margin-bottom: 8px; }
+  .t-tag {
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: .7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+  }
+  .t-tag.question { background: rgba(87,216,255,.14); color: var(--accent-two); border: 1px solid rgba(87,216,255,.28); }
+  .t-tag.showcase { background: rgba(var(--accent-rgb),.14); color: var(--accent); border: 1px solid rgba(var(--accent-rgb),.28); }
+  .t-tag.request  { background: rgba(255,122,217,.14); color: var(--accent-three); border: 1px solid rgba(255,122,217,.28); }
+  .t-tag.bug      { background: rgba(239,68,68,.14); color: #fca5a5; border: 1px solid rgba(239,68,68,.28); }
+  .t-tag.tip      { background: rgba(16,185,129,.14); color: #6effd9; border: 1px solid rgba(16,185,129,.28); }
+
+  .thread-content h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 6px;
+    line-height: 1.4;
+  }
+  .thread-content h3 a { color: inherit; text-decoration: none; transition: color .2s; }
+  .thread-content h3 a:hover { color: var(--accent-two); }
+  .thread-excerpt {
+    font-size: .87rem;
+    color: rgba(248,251,255,.55);
+    line-height: 1.6;
+    margin-bottom: 12px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .thread-meta {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    align-items: center;
+    font-size: .78rem;
+    color: rgba(248,251,255,.4);
+  }
+  .thread-meta .avatar {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .7rem;
+    font-weight: 800;
+    color: #fff;
+    flex-shrink: 0;
+  }
+  .thread-meta span { display: flex; align-items: center; gap: 5px; }
+  .thread-meta i { font-size: .72rem; }
+  .badge-solved {
+    margin-left: auto;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: .72rem;
+    font-weight: 700;
+    background: rgba(16,185,129,.18);
+    color: #6effd9;
+    border: 1px solid rgba(16,185,129,.35);
+  }
+
+  /* ── Sidebar ── */
+  .sidebar-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .side-card {
+    padding: 24px 26px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+    border: 1px solid rgba(255,255,255,.11);
+    backdrop-filter: blur(20px);
+  }
+  .side-card h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+  }
+  .side-card h3 i { color: var(--accent); font-size: .9rem; }
+
+  /* leaderboard */
+  .leader-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 9px 0;
+    border-bottom: 1px solid rgba(255,255,255,.05);
+  }
+  .leader-row:last-child { border: none; }
+  .rank {
+    font-size: .8rem;
+    font-weight: 800;
+    color: rgba(248,251,255,.35);
+    width: 22px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  .rank.gold   { color: #ffd84a; }
+  .rank.silver { color: #c0c0c0; }
+  .rank.bronze { color: #cd7f32; }
+  .leader-avatar {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    font-size: .8rem;
+    font-weight: 800;
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .leader-info { flex: 1; min-width: 0; }
+  .leader-info .name { font-size: .88rem; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .leader-info .role { font-size: .72rem; color: rgba(248,251,255,.4); }
+  .leader-pts { font-size: .8rem; font-weight: 800; color: var(--accent); white-space: nowrap; }
+
+  /* tags list */
+  .tags-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .cloud-tag {
+    padding: 5px 13px;
+    border-radius: 20px;
+    font-size: .77rem;
+    font-weight: 600;
+    background: rgba(255,255,255,.07);
+    border: 1px solid rgba(255,255,255,.13);
+    color: rgba(248,251,255,.65);
+    cursor: none;
+    transition: all .2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .cloud-tag:hover { background: rgba(var(--accent-rgb),.16); border-color: rgba(var(--accent-rgb),.4); color: var(--accent); }
+  .cloud-tag .ct { font-size: .68rem; font-weight: 700; background: rgba(var(--accent-two-rgb),.2); color: var(--accent-two); padding: 1px 6px; border-radius: 10px; }
+
+  /* btn variants */
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 9px;
+    padding: 12px 26px;
+    border: none; border-radius: 12px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-two));
+    color: #0a0c14; font-family: inherit;
+    font-size: .92rem; font-weight: 700;
+    text-decoration: none; cursor: none;
+    transition: transform .22s ease, box-shadow .22s ease;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 24px rgba(var(--accent-rgb),.4); }
+  .btn-outline {
+    display: inline-flex; align-items: center; gap: 9px;
+    padding: 12px 26px;
+    border: 1px solid rgba(255,255,255,.22); border-radius: 12px;
+    background: rgba(255,255,255,.06);
+    color: rgba(248,251,255,.82); font-family: inherit;
+    font-size: .92rem; font-weight: 600;
+    text-decoration: none; cursor: none;
+    transition: all .22s ease;
+  }
+  .btn-outline:hover { background: rgba(var(--accent-rgb),.16); border-color: rgba(var(--accent-rgb),.5); color: var(--accent); }
+
+  /* ── Pagination ── */
+  .pagination {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 8px;
+  }
+  .page-btn {
+    width: 38px; height: 38px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,.15);
+    background: rgba(255,255,255,.05);
+    color: rgba(248,251,255,.65);
+    font-family: inherit;
+    font-size: .88rem;
+    font-weight: 600;
+    cursor: none;
+    transition: all .2s ease;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .page-btn.active, .page-btn:hover { background: rgba(var(--accent-rgb),.22); border-color: var(--accent); color: var(--accent); }
+
+  /* ── Light theme ── */
+  body.light-theme .page-hero h1 { -webkit-text-fill-color: unset; color: #1e293b; background: none; }
+  body.light-theme .page-hero p  { color: #6b7280; }
+  body.light-theme .section-hdr h2 { color: #1e293b; }
+  body.light-theme .thread-card, body.light-theme .stat-chip,
+  body.light-theme .side-card { background: rgba(255,255,255,.9); border-color: rgba(0,0,0,.07); box-shadow: 0 4px 20px rgba(0,0,0,.05); }
+  body.light-theme .thread-content h3 { color: #1e293b; }
+  body.light-theme .thread-excerpt { color: #6b7280; }
+  body.light-theme .thread-meta { color: #9099a8; }
+  body.light-theme .side-card h3 { color: #1e293b; }
+  body.light-theme .leader-info .name { color: #1e293b; }
+  body.light-theme .cloud-tag { background: #f4f6fa; border-color: rgba(0,0,0,.08); color: #4b5563; }
+  body.light-theme .tab-btn { color: #556; background: #f4f6fa; border-color: rgba(0,0,0,.1); }
+  body.light-theme .vote-btn { color: #6b7280; background: #f4f6fa; border-color: rgba(0,0,0,.1); }
+  body.light-theme .vote-count { color: #374151; }
+</style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+  <a href="animated-cursor.html" class="project-back-button"
+     style="height:40px;text-align:center;margin:20px;border-radius:10px;width:200px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter,system-ui,sans-serif;transition:all 0.2s ease;display:flex;align-items:center;justify-content:center;"
+     onmouseover="this.style.background='#3b82f6';this.style.color='#fff'"
+     onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
+  <div class="logo">Animated Cursor</div>
+  <ul class="nav-links">
+    <li><a href="animated-cursor.html">Home</a></li>
+    <li><a href="cursors.html">Cursors</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <div class="nav-right">
+    <button id="themeToggle" class="theme"><span id="themeIcon">☀️</span></button>
+  </div>
+</nav>
+
+<div class="background"></div>
+<div class="galaxy-glow"></div>
+<canvas id="stars"></canvas>
+<div class="glass-overlay"></div>
+<div class="cursor"></div>
+
+<div class="page-wrapper">
+
+  <!-- Hero -->
+  <div class="page-hero">
+    <h1>Community Forum</h1>
+    <p>Ask questions, share cursor builds, vote on feature requests, and connect with other developers in the 100 Web Projects community.</p>
+    <div class="hero-actions">
+      <a href="#" class="btn-primary magnetic-control"><i class="fas fa-plus"></i> New Thread</a>
+      <a href="#" class="btn-outline magnetic-control"><i class="fab fa-github"></i> GitHub Discussions</a>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-strip">
+    <div class="stat-chip magnetic-control">
+      <div class="stat-icon"><i class="fas fa-comments"></i></div>
+      <div class="stat-text"><span class="num">1,248</span><span class="lbl">Threads</span></div>
+    </div>
+    <div class="stat-chip magnetic-control">
+      <div class="stat-icon"><i class="fas fa-users"></i></div>
+      <div class="stat-text"><span class="num">3,570</span><span class="lbl">Members</span></div>
+    </div>
+    <div class="stat-chip magnetic-control">
+      <div class="stat-icon"><i class="fas fa-reply"></i></div>
+      <div class="stat-text"><span class="num">8,902</span><span class="lbl">Replies</span></div>
+    </div>
+    <div class="stat-chip magnetic-control">
+      <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+      <div class="stat-text"><span class="num">94%</span><span class="lbl">Solved</span></div>
+    </div>
+  </div>
+
+  <!-- Main layout -->
+  <div class="forum-layout">
+
+    <!-- ── Thread list ── -->
+    <div>
+      <!-- Tabs -->
+      <div class="tab-row" id="tabRow">
+        <button class="tab-btn active magnetic-control" data-tab="latest">Latest</button>
+        <button class="tab-btn magnetic-control" data-tab="hot">🔥 Hot</button>
+        <button class="tab-btn magnetic-control" data-tab="unanswered">Unanswered</button>
+        <button class="tab-btn magnetic-control" data-tab="showcase">Showcase</button>
+      </div>
+
+      <!-- Threads -->
+      <div id="threadList">
+
+        <div class="thread-card magnetic-control" data-tab="latest hot">
+          <div class="vote-col">
+            <button class="vote-btn magnetic-control" onclick="vote(this)"><i class="fas fa-chevron-up"></i></button>
+            <span class="vote-count">42</span>
+            <button class="vote-btn magnetic-control" onclick="voteDown(this)"><i class="fas fa-chevron-down"></i></button>
+          </div>
+          <div class="thread-content">
+            <div class="thread-tags">
+              <span class="t-tag showcase">Showcase</span>
+              <span class="t-tag tip">Tip</span>
+            </div>
+            <h3><a href="#">I combined all 4 cursor designs into one dynamic switcher — here's how</a></h3>
+            <p class="thread-excerpt">Built a floating toolbar that lets visitors switch cursor designs on the fly without reloading. Storing the preference in localStorage so it persists across tabs…</p>
+            <div class="thread-meta">
+              <span><div class="avatar" style="background:linear-gradient(135deg,#ffd84a,#ff7ad9);">G</div> GayatriG</span>
+              <span><i class="fas fa-clock"></i> 2h ago</span>
+              <span><i class="fas fa-comment"></i> 17 replies</span>
+              <span><i class="fas fa-eye"></i> 412 views</span>
+              <span class="badge-solved"><i class="fas fa-star"></i> Featured</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="thread-card magnetic-control" data-tab="latest unanswered">
+          <div class="vote-col">
+            <button class="vote-btn magnetic-control" onclick="vote(this)"><i class="fas fa-chevron-up"></i></button>
+            <span class="vote-count">18</span>
+            <button class="vote-btn magnetic-control" onclick="voteDown(this)"><i class="fas fa-chevron-down"></i></button>
+          </div>
+          <div class="thread-content">
+            <div class="thread-tags"><span class="t-tag question">Question</span></div>
+            <h3><a href="#">Cursor flickers on Safari 17 — anyone else seeing this?</a></h3>
+            <p class="thread-excerpt">The custom cursor appears to flicker when hovering over the select dropdown on Safari 17.2. I've checked the CSS mix-blend-mode and pointer-events but can't isolate the cause…</p>
+            <div class="thread-meta">
+              <span><div class="avatar" style="background:linear-gradient(135deg,#57d8ff,#8ea7ff);">A</div> alex_builds</span>
+              <span><i class="fas fa-clock"></i> 5h ago</span>
+              <span><i class="fas fa-comment"></i> 3 replies</span>
+              <span><i class="fas fa-eye"></i> 98 views</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="thread-card magnetic-control" data-tab="latest hot">
+          <div class="vote-col">
+            <button class="vote-btn magnetic-control" onclick="vote(this)"><i class="fas fa-chevron-up"></i></button>
+            <span class="vote-count">35</span>
+            <button class="vote-btn magnetic-control" onclick="voteDown(this)"><i class="fas fa-chevron-down"></i></button>
+          </div>
+          <div class="thread-content">
+            <div class="thread-tags"><span class="t-tag request">Feature Request</span></div>
+            <h3><a href="#">Add a "magnetic" cursor mode — cursor snaps to nearby elements</a></h3>
+            <p class="thread-excerpt">It would be awesome if the cursor could snap/ease toward interactive elements within a 60px radius. Similar to what some portfolio sites do. Happy to open a PR if there's interest…</p>
+            <div class="thread-meta">
+              <span><div class="avatar" style="background:linear-gradient(135deg,#ff2bd6,#b6ff00);">M</div> marco_ui</span>
+              <span><i class="fas fa-clock"></i> 1d ago</span>
+              <span><i class="fas fa-comment"></i> 29 replies</span>
+              <span><i class="fas fa-eye"></i> 640 views</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="thread-card magnetic-control" data-tab="latest showcase">
+          <div class="vote-col">
+            <button class="vote-btn magnetic-control" onclick="vote(this)"><i class="fas fa-chevron-up"></i></button>
+            <span class="vote-count">27</span>
+            <button class="vote-btn magnetic-control" onclick="voteDown(this)"><i class="fas fa-chevron-down"></i></button>
+          </div>
+          <div class="thread-content">
+            <div class="thread-tags"><span class="t-tag showcase">Showcase</span></div>
+            <h3><a href="#">My portfolio using the Firefly theme — cursor looks incredible over dark hero sections</a></h3>
+            <p class="thread-excerpt">Deployed my portfolio using the Firefly theme and the chartreuse comet trail over a dark background is exactly the vibe I was after. Sharing the live link + source below…</p>
+            <div class="thread-meta">
+              <span><div class="avatar" style="background:linear-gradient(135deg,#dfff74,#4dff8a);">S</div> sona_dev</span>
+              <span><i class="fas fa-clock"></i> 2d ago</span>
+              <span><i class="fas fa-comment"></i> 11 replies</span>
+              <span><i class="fas fa-eye"></i> 318 views</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="thread-card magnetic-control" data-tab="latest unanswered">
+          <div class="vote-col">
+            <button class="vote-btn magnetic-control" onclick="vote(this)"><i class="fas fa-chevron-up"></i></button>
+            <span class="vote-count">9</span>
+            <button class="vote-btn magnetic-control" onclick="voteDown(this)"><i class="fas fa-chevron-down"></i></button>
+          </div>
+          <div class="thread-content">
+            <div class="thread-tags"><span class="t-tag question">Question</span></div>
+            <h3><a href="#">How do I disable the cursor on mobile but keep the star canvas?</a></h3>
+            <p class="thread-excerpt">On touch devices the custom cursor is hidden automatically but the star canvas background also disappears. Is there a flag to keep the canvas while hiding just the cursor element?</p>
+            <div class="thread-meta">
+              <span><div class="avatar" style="background:linear-gradient(135deg,#ffd84a,#57d8ff);">R</div> riya_frontend</span>
+              <span><i class="fas fa-clock"></i> 3d ago</span>
+              <span><i class="fas fa-comment"></i> 0 replies</span>
+              <span><i class="fas fa-eye"></i> 54 views</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="thread-card magnetic-control" data-tab="latest hot">
+          <div class="vote-col">
+            <button class="vote-btn magnetic-control" onclick="vote(this)"><i class="fas fa-chevron-up"></i></button>
+            <span class="vote-count">51</span>
+            <button class="vote-btn magnetic-control" onclick="voteDown(this)"><i class="fas fa-chevron-down"></i></button>
+          </div>
+          <div class="thread-content">
+            <div class="thread-tags"><span class="t-tag bug">Bug</span><span class="t-tag tip">Tip</span></div>
+            <h3><a href="#">Fix: cursor.js crashes when #cursor-design is missing — and the solution</a></h3>
+            <p class="thread-excerpt">If you use animated-cursor.js on a page that doesn't have the #cursor-design select, the script throws a TypeError and nothing works. Here's the minimal null-guard fix…</p>
+            <div class="thread-meta">
+              <span><div class="avatar" style="background:linear-gradient(135deg,#ff7ad9,#ffd84a);">K</div> kai_webdev</span>
+              <span><i class="fas fa-clock"></i> 4d ago</span>
+              <span><i class="fas fa-comment"></i> 22 replies</span>
+              <span><i class="fas fa-eye"></i> 791 views</span>
+              <span class="badge-solved"><i class="fas fa-check-circle"></i> Solved</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Pagination -->
+      <div class="pagination" style="margin-top:24px;">
+        <button class="page-btn active magnetic-control">1</button>
+        <button class="page-btn magnetic-control">2</button>
+        <button class="page-btn magnetic-control">3</button>
+        <button class="page-btn magnetic-control">…</button>
+        <button class="page-btn magnetic-control">12</button>
+        <button class="page-btn magnetic-control"><i class="fas fa-chevron-right"></i></button>
+      </div>
+    </div>
+
+    <!-- ── Sidebar ── -->
+    <aside class="sidebar-section">
+
+      <!-- New Thread CTA -->
+      <div class="side-card" style="text-align:center;padding:32px 26px;">
+        <i class="fas fa-pen-to-square" style="font-size:2rem;color:var(--accent);margin-bottom:14px;display:block;"></i>
+        <h3 style="justify-content:center;margin-bottom:10px;">Start a Discussion</h3>
+        <p style="font-size:.85rem;color:rgba(248,251,255,.55);margin-bottom:18px;">Have a question or something to share? Post a thread!</p>
+        <a href="#" class="btn-primary magnetic-control" style="justify-content:center;width:100%;"><i class="fas fa-plus"></i> New Thread</a>
+      </div>
+
+      <!-- Top Contributors -->
+      <div class="side-card">
+        <h3><i class="fas fa-trophy"></i> Top Contributors</h3>
+        <div class="leader-row">
+          <span class="rank gold">🥇</span>
+          <div class="leader-avatar" style="background:linear-gradient(135deg,#ffd84a,#ff7ad9);">G</div>
+          <div class="leader-info"><div class="name">GayatriG</div><div class="role">Creator</div></div>
+          <span class="leader-pts">4,820 pts</span>
+        </div>
+        <div class="leader-row">
+          <span class="rank silver">🥈</span>
+          <div class="leader-avatar" style="background:linear-gradient(135deg,#ff2bd6,#00f5ff);">M</div>
+          <div class="leader-info"><div class="name">marco_ui</div><div class="role">Member</div></div>
+          <span class="leader-pts">2,140 pts</span>
+        </div>
+        <div class="leader-row">
+          <span class="rank bronze">🥉</span>
+          <div class="leader-avatar" style="background:linear-gradient(135deg,#dfff74,#4dff8a);">S</div>
+          <div class="leader-info"><div class="name">sona_dev</div><div class="role">Member</div></div>
+          <span class="leader-pts">1,870 pts</span>
+        </div>
+        <div class="leader-row">
+          <span class="rank">4</span>
+          <div class="leader-avatar" style="background:linear-gradient(135deg,#57d8ff,#8ea7ff);">A</div>
+          <div class="leader-info"><div class="name">alex_builds</div><div class="role">Member</div></div>
+          <span class="leader-pts">1,230 pts</span>
+        </div>
+        <div class="leader-row">
+          <span class="rank">5</span>
+          <div class="leader-avatar" style="background:linear-gradient(135deg,#ff7ad9,#ffd84a);">K</div>
+          <div class="leader-info"><div class="name">kai_webdev</div><div class="role">Member</div></div>
+          <span class="leader-pts">998 pts</span>
+        </div>
+      </div>
+
+      <!-- Popular Tags -->
+      <div class="side-card">
+        <h3><i class="fas fa-tags"></i> Popular Tags</h3>
+        <div class="tags-cloud">
+          <span class="cloud-tag magnetic-control">question <span class="ct">312</span></span>
+          <span class="cloud-tag magnetic-control">showcase <span class="ct">194</span></span>
+          <span class="cloud-tag magnetic-control">bug <span class="ct">87</span></span>
+          <span class="cloud-tag magnetic-control">feature-request <span class="ct">143</span></span>
+          <span class="cloud-tag magnetic-control">safari <span class="ct">22</span></span>
+          <span class="cloud-tag magnetic-control">mobile <span class="ct">58</span></span>
+          <span class="cloud-tag magnetic-control">canvas <span class="ct">76</span></span>
+          <span class="cloud-tag magnetic-control">theming <span class="ct">99</span></span>
+          <span class="cloud-tag magnetic-control">performance <span class="ct">34</span></span>
+          <span class="cloud-tag magnetic-control">css-vars <span class="ct">61</span></span>
+        </div>
+      </div>
+
+      <!-- Useful Links -->
+      <div class="side-card">
+        <h3><i class="fas fa-link"></i> Useful Links</h3>
+        <ul style="list-style:none;padding:0;display:flex;flex-direction:column;gap:10px;">
+          <li><a href="docs.html" style="color:var(--accent-two);text-decoration:none;font-size:.88rem;font-weight:600;display:flex;align-items:center;gap:8px;transition:color .2s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--accent-two)'"><i class="fas fa-book"></i> Documentation</a></li>
+          <li><a href="design-assets.html" style="color:var(--accent-two);text-decoration:none;font-size:.88rem;font-weight:600;display:flex;align-items:center;gap:8px;transition:color .2s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--accent-two)'"><i class="fas fa-swatchbook"></i> Design Assets</a></li>
+          <li><a href="projects.html" style="color:var(--accent-two);text-decoration:none;font-size:.88rem;font-weight:600;display:flex;align-items:center;gap:8px;transition:color .2s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--accent-two)'"><i class="fas fa-th-large"></i> All Projects</a></li>
+          <li><a href="contact.html" style="color:var(--accent-two);text-decoration:none;font-size:.88rem;font-weight:600;display:flex;align-items:center;gap:8px;transition:color .2s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--accent-two)'"><i class="fas fa-envelope"></i> Contact</a></li>
+        </ul>
+      </div>
+
+    </aside>
+  </div>
+</div>
+
+<script src="animated-cursor.js"></script>
+<script>
+  // Tab filter
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const threads = document.querySelectorAll('.thread-card');
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      tabBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const tab = btn.dataset.tab;
+      threads.forEach(t => {
+        const tabs = t.dataset.tab || '';
+        t.style.display = (tab === 'latest' || tabs.includes(tab)) ? '' : 'none';
+      });
+    });
+  });
+
+  // Vote up
+  function vote(btn) {
+    const countEl = btn.parentElement.querySelector('.vote-count');
+    const wasVoted = btn.classList.toggle('voted');
+    countEl.textContent = parseInt(countEl.textContent) + (wasVoted ? 1 : -1);
+  }
+  // Vote down
+  function voteDown(btn) {
+    const countEl = btn.parentElement.querySelector('.vote-count');
+    const wasVoted = btn.classList.toggle('voted');
+    countEl.textContent = parseInt(countEl.textContent) + (wasVoted ? -1 : 1);
+  }
+</script>
+
+<footer class="site-footer">
+  <div class="footer-container">
+    <div class="footer-column">
+      <h3>About Project</h3>
+      <p>Animated Cursor is part of the 100 Web Projects series — exploring creative UI interactions and modern web animations.</p>
+    </div>
+    <div class="footer-column">
+      <h3>Quick Links</h3>
+      <ul>
+        <li><a href="animated-cursor.html">Home</a></li>
+        <li><a href="projects.html">Projects</a></li>
+        <li><a href="docs.html">Docs</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-column">
+      <h3>Resources</h3>
+      <ul>
+        <li><a href="#">GitHub Repository</a></li>
+        <li><a href="design-assets.html">Design Assets</a></li>
+        <li><a href="api-references.html">API References</a></li>
+        <li><a href="community.html">Community Forum</a></li>
+      </ul>
+    </div>
+    <div class="footer-column">
+      <h3>Stay Connected</h3>
+      <div class="social-icons">
+        <a href="#"><i class="fab fa-github"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-linkedin"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+      </div>
+      <p>© 2026 100 Web Projects | Designed by Gayatri Ghogare</p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

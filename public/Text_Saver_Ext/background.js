@@ -1,4 +1,4 @@
-// Create context menu on installation
+// Create context menu when extension is installed
 chrome.runtime.onInstalled.addListener(() => {
   chrome.contextMenus.create({
     id: "saveSelection",
@@ -7,7 +7,7 @@ chrome.runtime.onInstalled.addListener(() => {
   });
 });
 
-// Handle context menu clicks
+// Context menu click
 chrome.contextMenus.onClicked.addListener((info, tab) => {
   if (info.menuItemId === "saveSelection") {
     saveText({
@@ -18,26 +18,44 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
   }
 });
 
-// Listen for messages from content.js
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+// Messages from content script
+chrome.runtime.onMessage.addListener((message) => {
   if (message.type === "SAVE_SELECTION") {
-    const { text, url } = message;
-    saveText({ text, url, timestamp: Date.now() });
+    saveText({
+      text: message.text,
+      url: message.url,
+      timestamp: Date.now()
+    });
   }
 });
 
-// Save text and URL in Chrome storage
+// Save text
 function saveText(data) {
-  chrome.storage.local.get({ savedTexts: [] }, (result) => {
-    const savedTexts = result.savedTexts;
-    // Prevent duplicates within a short time frame
-    const isDuplicate = savedTexts.some(item => item.text === data.text && item.url === data.url);
-    if (!isDuplicate) {
-      savedTexts.unshift(data); // Add to beginning of list
-      chrome.storage.local.set({ savedTexts }, () => {
-        console.log("Text saved:", data);
-        // Optional: Send feedback to content script
-      });
+  chrome.storage.local.get(
+    {
+      savedTexts: []
+    },
+    (result) => {
+      const savedTexts = result.savedTexts;
+
+      const exists = savedTexts.some(
+        item =>
+          item.text === data.text &&
+          item.url === data.url
+      );
+
+      if (exists) return;
+
+      savedTexts.unshift(data);
+
+      chrome.storage.local.set(
+        {
+          savedTexts
+        },
+        () => {
+          console.log("Saved:", data);
+        }
+      );
     }
-  });
+  );
 }

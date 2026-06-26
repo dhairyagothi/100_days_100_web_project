@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Projects — Animated Cursor</title>
+<meta name="description" content="Browse all 100 Web Projects by Gayatri Ghogare — creative UI interactions, animations, and modern web experiments.">
+<link rel="stylesheet" href="animated-cursor.css">
+<link rel="icon" href="../favv.png" type="image/x-icon" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { font-family: 'Inter', Arial, sans-serif; }
+
+  .projects-wrapper {
+    position: relative;
+    z-index: 5;
+    width: min(95vw, 1200px);
+    margin: 110px auto 0;
+    padding-bottom: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 56px;
+  }
+
+  /* ── Hero ── */
+  .projects-hero {
+    text-align: center;
+  }
+  .projects-hero h1 {
+    font-size: clamp(2.2rem, 7vw, 4.5rem);
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 18px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-two), var(--accent-three));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .projects-hero p {
+    max-width: 520px;
+    margin: 0 auto 28px;
+    color: rgba(248,251,255,.68);
+    font-size: 1.05rem;
+    line-height: 1.7;
+  }
+
+  /* ── Counter strip ── */
+  .stats-strip {
+    display: flex;
+    gap: 28px;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+  }
+  .stat-chip {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 22px 36px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, rgba(255,255,255,.09), rgba(255,255,255,.04));
+    border: 1px solid rgba(255,255,255,.12);
+    backdrop-filter: blur(20px);
+    min-width: 140px;
+    transition: transform .25s ease, border-color .25s ease;
+  }
+  .stat-chip:hover {
+    transform: translateY(-4px);
+    border-color: rgba(var(--accent-rgb),.4);
+  }
+  .stat-chip .num {
+    font-size: 2.4rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--accent), var(--accent-two));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .stat-chip .lbl {
+    font-size: .82rem;
+    font-weight: 600;
+    color: rgba(248,251,255,.55);
+    text-transform: uppercase;
+    letter-spacing: .07em;
+    margin-top: 4px;
+  }
+
+  /* ── Filter bar ── */
+  .filter-bar {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .filter-btn {
+    padding: 10px 22px;
+    border-radius: 40px;
+    border: 1px solid rgba(255,255,255,.18);
+    background: rgba(255,255,255,.06);
+    color: rgba(248,251,255,.75);
+    font-family: inherit;
+    font-size: .88rem;
+    font-weight: 600;
+    cursor: none;
+    transition: all .22s ease;
+  }
+  .filter-btn:hover,
+  .filter-btn.active {
+    background: linear-gradient(135deg, rgba(var(--accent-rgb),.28), rgba(var(--accent-two-rgb),.18));
+    border-color: rgba(var(--accent-rgb),.5);
+    color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  /* ── Project grid ── */
+  .project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 28px;
+    width: 100%;
+  }
+
+  .project-card {
+    position: relative;
+    border-radius: 22px;
+    overflow: hidden;
+    background: linear-gradient(135deg, rgba(255,255,255,.09), rgba(255,255,255,.04));
+    border: 1px solid rgba(255,255,255,.12);
+    backdrop-filter: blur(20px);
+    transition: transform .3s ease, border-color .3s ease, box-shadow .3s ease;
+    cursor: none;
+  }
+  .project-card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(var(--accent-rgb),.42);
+    box-shadow: 0 20px 60px rgba(0,0,0,.3), 0 0 40px rgba(var(--accent-rgb),.12);
+  }
+
+  .card-thumb {
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .card-thumb::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, rgba(var(--accent-rgb),.15), transparent 70%);
+  }
+
+  .card-badge {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    padding: 5px 13px;
+    border-radius: 20px;
+    font-size: .72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    backdrop-filter: blur(10px);
+  }
+  .badge-live   { background: rgba(16,185,129,.22); color: #6effd9; border: 1px solid rgba(16,185,129,.4); }
+  .badge-wip    { background: rgba(var(--accent-rgb),.22); color: var(--accent); border: 1px solid rgba(var(--accent-rgb),.4); }
+  .badge-coming { background: rgba(255,255,255,.10); color: rgba(255,255,255,.6); border: 1px solid rgba(255,255,255,.18); }
+
+  .card-body {
+    padding: 22px 26px 26px;
+  }
+  .card-body h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+  .card-body p {
+    font-size: .88rem;
+    color: rgba(248,251,255,.62);
+    line-height: 1.6;
+    margin-bottom: 18px;
+  }
+  .card-tags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+  .tag {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: .74rem;
+    font-weight: 600;
+    background: rgba(var(--accent-two-rgb),.12);
+    color: var(--accent-two);
+    border: 1px solid rgba(var(--accent-two-rgb),.24);
+  }
+  .card-actions {
+    display: flex;
+    gap: 10px;
+  }
+  .btn-primary {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-two));
+    color: #0a0c14;
+    font-family: inherit;
+    font-size: .88rem;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: none;
+    transition: transform .22s ease, box-shadow .22s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 20px rgba(var(--accent-rgb),.38);
+  }
+  .btn-secondary {
+    padding: 10px 20px;
+    border: 1px solid rgba(255,255,255,.2);
+    border-radius: 10px;
+    background: transparent;
+    color: rgba(248,251,255,.8);
+    font-family: inherit;
+    font-size: .88rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: none;
+    transition: all .22s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .btn-secondary:hover {
+    background: rgba(255,255,255,.08);
+    border-color: rgba(var(--accent-rgb),.4);
+    color: var(--accent);
+  }
+  .btn-disabled {
+    opacity: .38;
+    pointer-events: none;
+  }
+
+  /* ── CTA strip ── */
+  .cta-strip {
+    text-align: center;
+    padding: 50px 40px;
+    width: 100%;
+    border-radius: 24px;
+    background: linear-gradient(135deg, rgba(var(--accent-rgb),.14), rgba(var(--accent-two-rgb),.08));
+    border: 1px solid rgba(var(--accent-rgb),.22);
+    backdrop-filter: blur(20px);
+  }
+  .cta-strip h2 {
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin-bottom: 12px;
+    color: #fff;
+  }
+  .cta-strip p {
+    color: rgba(248,251,255,.65);
+    margin-bottom: 26px;
+    font-size: 1rem;
+  }
+
+  /* ── Light theme ── */
+  body.light-theme .projects-hero h1 { -webkit-text-fill-color: unset; color: #404654; background: none; }
+  body.light-theme .projects-hero p { color: #6b7280; }
+  body.light-theme .stat-chip,
+  body.light-theme .project-card,
+  body.light-theme .cta-strip {
+    background: rgba(255,255,255,.88);
+    border-color: rgba(0,0,0,.07);
+    box-shadow: 0 8px 30px rgba(0,0,0,.06);
+  }
+  body.light-theme .stat-chip .lbl { color: #9099a8; }
+  body.light-theme .filter-btn { color: #556; border-color: rgba(0,0,0,.12); background: #f4f6fa; }
+  body.light-theme .filter-btn.active,
+  body.light-theme .filter-btn:hover { color: #d89b14; }
+  body.light-theme .card-body h3 { color: #1e293b; }
+  body.light-theme .card-body p { color: #6b7280; }
+  body.light-theme .cta-strip h2 { color: #303550; }
+  body.light-theme .cta-strip p { color: #6b7280; }
+  body.light-theme .btn-secondary { color: #404654; border-color: rgba(0,0,0,.13); }
+  body.light-theme .btn-secondary:hover { background: #fff4d8; border-color: #d89b14; color: #d89b14; }
+</style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+  <a href="animated-cursor.html" class="project-back-button"
+     style="height:40px;text-align:center;margin:20px;border-radius:10px;width:200px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter,system-ui,sans-serif;transition:all 0.2s ease;display:flex;align-items:center;justify-content:center;"
+     onmouseover="this.style.background='#3b82f6';this.style.color='#fff'"
+     onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
+  <div class="logo">Animated Cursor</div>
+  <ul class="nav-links">
+    <li><a href="animated-cursor.html">Home</a></li>
+    <li><a href="cursors.html">Cursors</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <div class="nav-right">
+    <button id="themeToggle" class="theme"><span id="themeIcon">☀️</span></button>
+  </div>
+</nav>
+
+<div class="background"></div>
+<div class="galaxy-glow"></div>
+<canvas id="stars"></canvas>
+<div class="glass-overlay"></div>
+<div class="cursor"></div>
+
+<div class="projects-wrapper">
+
+  <!-- Hero -->
+  <div class="projects-hero">
+    <h1>100 Web Projects</h1>
+    <p>A creative journey through 100 unique UI experiments — from animated cursors to immersive data visualisations and beyond.</p>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-strip">
+    <div class="stat-chip">
+      <span class="num">100</span>
+      <span class="lbl">Total Projects</span>
+    </div>
+    <div class="stat-chip">
+      <span class="num">12</span>
+      <span class="lbl">Live</span>
+    </div>
+    <div class="stat-chip">
+      <span class="num">5</span>
+      <span class="lbl">In Progress</span>
+    </div>
+    <div class="stat-chip">
+      <span class="num">83</span>
+      <span class="lbl">Coming Soon</span>
+    </div>
+  </div>
+
+  <!-- Filter -->
+  <div class="filter-bar" id="filterBar">
+    <button class="filter-btn active magnetic-control" data-filter="all">All</button>
+    <button class="filter-btn magnetic-control" data-filter="animation">Animation</button>
+    <button class="filter-btn magnetic-control" data-filter="ui">UI / UX</button>
+    <button class="filter-btn magnetic-control" data-filter="canvas">Canvas</button>
+    <button class="filter-btn magnetic-control" data-filter="tools">Tools</button>
+  </div>
+
+  <!-- Project grid -->
+  <div class="project-grid" id="projectGrid">
+
+    <!-- 1 — Current project -->
+    <div class="project-card" data-category="animation ui">
+      <div class="card-thumb" style="background:linear-gradient(135deg,#321252,#06364b);">
+        🖱️
+        <span class="card-badge badge-live">Live</span>
+      </div>
+      <div class="card-body">
+        <h3>Animated Cursor</h3>
+        <p>Custom animated cursor with comet trails, multiple designs, themes, and gallery.</p>
+        <div class="card-tags">
+          <span class="tag">Animation</span>
+          <span class="tag">UI / UX</span>
+          <span class="tag">Canvas</span>
+        </div>
+        <div class="card-actions">
+          <a href="animated-cursor.html" class="btn-primary magnetic-control"><i class="fas fa-play"></i> View Live</a>
+          <a href="#" class="btn-secondary magnetic-control"><i class="fab fa-github"></i> Code</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2 -->
+    <div class="project-card" data-category="canvas animation">
+      <div class="card-thumb" style="background:linear-gradient(135deg,#031b0f,#14333d);">
+        ✨
+        <span class="card-badge badge-live">Live</span>
+      </div>
+      <div class="card-body">
+        <h3>Particle Galaxy</h3>
+        <p>Interactive particle system forming a swirling galaxy with physics-based movement.</p>
+        <div class="card-tags">
+          <span class="tag">Canvas</span>
+          <span class="tag">Animation</span>
+        </div>
+        <div class="card-actions">
+          <a href="#" class="btn-primary magnetic-control"><i class="fas fa-play"></i> View Live</a>
+          <a href="#" class="btn-secondary magnetic-control"><i class="fab fa-github"></i> Code</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3 -->
+    <div class="project-card" data-category="ui tools">
+      <div class="card-thumb" style="background:linear-gradient(135deg,#0a0218,#1f003b);">
+        🎨
+        <span class="card-badge badge-live">Live</span>
+      </div>
+      <div class="card-body">
+        <h3>Glassmorphism UI Kit</h3>
+        <p>A collection of glass-effect UI components with dynamic blur and glow effects.</p>
+        <div class="card-tags">
+          <span class="tag">UI / UX</span>
+          <span class="tag">Tools</span>
+        </div>
+        <div class="card-actions">
+          <a href="#" class="btn-primary magnetic-control"><i class="fas fa-play"></i> View Live</a>
+          <a href="#" class="btn-secondary magnetic-control"><i class="fab fa-github"></i> Code</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4 -->
+    <div class="project-card" data-category="animation">
+      <div class="card-thumb" style="background:linear-gradient(135deg,#08030d,#31003f);">
+        🌈
+        <span class="card-badge badge-wip">In Progress</span>
+      </div>
+      <div class="card-body">
+        <h3>Aurora Text Effect</h3>
+        <p>Mesmerising aurora-inspired text animation using CSS custom properties and SVG.</p>
+        <div class="card-tags">
+          <span class="tag">Animation</span>
+          <span class="tag">CSS</span>
+        </div>
+        <div class="card-actions">
+          <a href="#" class="btn-primary btn-disabled magnetic-control"><i class="fas fa-hammer"></i> Coming Soon</a>
+          <a href="#" class="btn-secondary magnetic-control"><i class="fab fa-github"></i> Code</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5 -->
+    <div class="project-card" data-category="canvas tools">
+      <div class="card-thumb" style="background:linear-gradient(135deg,#050805,#1e3210);">
+        🔥
+        <span class="card-badge badge-wip">In Progress</span>
+      </div>
+      <div class="card-body">
+        <h3>Fluid Simulation</h3>
+        <p>Real-time fluid dynamics rendered on canvas with colour dye injection on click.</p>
+        <div class="card-tags">
+          <span class="tag">Canvas</span>
+          <span class="tag">WebGL</span>
+        </div>
+        <div class="card-actions">
+          <a href="#" class="btn-primary btn-disabled magnetic-control"><i class="fas fa-hammer"></i> Coming Soon</a>
+          <a href="#" class="btn-secondary magnetic-control"><i class="fab fa-github"></i> Code</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6–12 — Coming soon cards -->
+    <div class="project-card" data-category="ui">
+      <div class="card-thumb" style="background:linear-gradient(135deg,#0f172a,#1e293b);">
+        🃏
+        <span class="card-badge badge-coming">Coming Soon</span>
+      </div>
+      <div class="card-body">
+        <h3>3D Card Flip Gallery</h3>
+        <p>CSS 3D perspective cards with custom flip animations and hover states.</p>
+        <div class="card-tags"><span class="tag">UI / UX</span><span class="tag">CSS</span></div>
+        <div class="card-actions">
+          <a href="#" class="btn-primary btn-disabled magnetic-control"><i class="fas fa-lock"></i> Locked</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-card" data-category="animation canvas">
+      <div class="card-thumb" style="background:linear-gradient(135deg,#05070d,#06364b);">
+        🌊
+        <span class="card-badge badge-coming">Coming Soon</span>
+      </div>
+      <div class="card-body">
+        <h3>Wave Morphing</h3>
+        <p>Smooth sine-wave morphing with interactive amplitude and frequency controls.</p>
+        <div class="card-tags"><span class="tag">Animation</span><span class="tag">Canvas</span></div>
+        <div class="card-actions">
+          <a href="#" class="btn-primary btn-disabled magnetic-control"><i class="fas fa-lock"></i> Locked</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-card" data-category="tools ui">
+      <div class="card-thumb" style="background:linear-gradient(135deg,#08030d,#130a22);">
+        ⚙️
+        <span class="card-badge badge-coming">Coming Soon</span>
+      </div>
+      <div class="card-body">
+        <h3>CSS Variable Inspector</h3>
+        <p>Live-edit any page's CSS custom properties and see the changes in real time.</p>
+        <div class="card-tags"><span class="tag">Tools</span><span class="tag">UI / UX</span></div>
+        <div class="card-actions">
+          <a href="#" class="btn-primary btn-disabled magnetic-control"><i class="fas fa-lock"></i> Locked</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-strip">
+    <h2>Want to see more?</h2>
+    <p>Star the repo on GitHub to follow updates as new projects go live.</p>
+    <a href="#" class="btn-primary magnetic-control" style="display:inline-flex;gap:10px;">
+      <i class="fab fa-github"></i> Star on GitHub
+    </a>
+  </div>
+
+</div>
+
+<script src="animated-cursor.js"></script>
+<script>
+  // Filter logic
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const cards = document.querySelectorAll('.project-card');
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.dataset.filter;
+      cards.forEach(card => {
+        const cat = card.dataset.category || '';
+        const show = filter === 'all' || cat.includes(filter);
+        card.style.display = show ? '' : 'none';
+      });
+    });
+  });
+</script>
+
+<footer class="site-footer">
+  <div class="footer-container">
+    <div class="footer-column">
+      <h3>About Project</h3>
+      <p>Animated Cursor is part of the 100 Web Projects series — exploring creative UI interactions and modern web animations.</p>
+    </div>
+    <div class="footer-column">
+      <h3>Quick Links</h3>
+      <ul>
+        <li><a href="animated-cursor.html">Home</a></li>
+        <li><a href="projects.html">Projects</a></li>
+        <li><a href="docs.html">Docs</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-column">
+      <h3>Resources</h3>
+      <ul>
+        <li><a href="#">GitHub Repository</a></li>
+        <li><a href="design-assets.html">Design Assets</a></li>
+        <li><a href="api-references.html">API References</a></li>
+        <li><a href="community.html">Community Forum</a></li>
+      </ul>
+    </div>
+    <div class="footer-column">
+      <h3>Stay Connected</h3>
+      <div class="social-icons">
+        <a href="#"><i class="fab fa-github"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-linkedin"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+      </div>
+      <p>© 2026 100 Web Projects | Designed by Gayatri Ghogare</p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
