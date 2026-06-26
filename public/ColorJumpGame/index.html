@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Color Jump Game</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -16,6 +16,15 @@
                 <p>High Score: <span id="highScore">0</span></p>
             </div>
         </header>
+
+        <div class="difficulty-selector">
+            <label for="difficulty">Difficulty:</label>
+            <select id="difficulty">
+                <option value="easy">Easy</option>
+                <option value="medium" selected>Medium</option>
+                <option value="hard">Hard</option>
+            </select>
+        </div>
 
         <main>
             <div id="startScreen" class="overlay active">
@@ -33,9 +42,11 @@
             <canvas id="gameCanvas"></canvas>
         </main>
         
+
         <div class="controls-hint">Tap anywhere to jump</div>
     </div>
     
-    <script src="script.js"></script>
+
+    <script src="./script.js"></script>
 </body>
 </html>

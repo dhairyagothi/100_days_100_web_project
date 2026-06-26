@@ -8,6 +8,25 @@ const gameOverScreen = document.getElementById('gameOverScreen');
 const startBtn = document.getElementById('startBtn');
 const restartBtn = document.getElementById('restartBtn');
 const finalScoreEl = document.getElementById('finalScore');
+const difficultySelect = document.getElementById('difficulty');
+
+// Difficulty settings
+const difficultySettings = {
+    easy: {
+        speed: 3,
+        spawnRate: 120
+    },
+    medium: {
+        speed: 4,
+        spawnRate: 90
+    },
+    hard: {
+        speed: 6,
+        spawnRate: 60
+    }
+};
+
+let currentDifficulty = 'medium';
 
 // Resize canvas to match display size
 function resizeCanvas() {
@@ -88,7 +107,8 @@ class Obstacle {
         this.y = this.isTop ? 0 : canvas.height - this.height;
         
         this.color = colors[Math.floor(Math.random() * colors.length)];
-        this.speed = 4 + (score * 0.1); // Increases speed as score goes up
+        const settings = difficultySettings[currentDifficulty];
+        this.speed = settings.speed + (score * 0.1); // Increases speed as score goes up
         this.passed = false;
     }
     
@@ -133,6 +153,8 @@ function init() {
 
 function startGame() {
     if (isGameRunning) return;
+    currentDifficulty = difficultySelect.value;
+    difficultySelect.disabled = true;
     init();
     isGameRunning = true;
     animate();
@@ -141,6 +163,7 @@ function startGame() {
 function gameOver() {
     isGameRunning = false;
     cancelAnimationFrame(animationId);
+    difficultySelect.disabled = false;
     
     if (score > highScore) {
         highScore = score;
@@ -177,7 +200,8 @@ function animate() {
     player.update();
     
     // Handle Obstacles
-    if (frames % 90 === 0) { // Spawn rate
+    const settings = difficultySettings[currentDifficulty];
+    if (frames % settings.spawnRate === 0) { // Spawn rate
         obstacles.push(new Obstacle());
     }
     
