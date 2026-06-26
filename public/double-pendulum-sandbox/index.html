@@ -16,6 +16,7 @@
 
             <div class="control-box">
                 <button id="resetSimulationBtn">RESET PATH</button>
+                <button id="pauseBtn" style="margin-top: 8px;">PAUSE / RESUME</button>
             </div>
 
             <div class="slider-group">
@@ -43,6 +44,39 @@
                 <input type="range" id="m2Slider" min="5" max="50" step="1" value="15">
             </div>
 
+            <!-- ENERGY MONITORING PANEL -->
+            <div class="energy-panel">
+                <h3 style="font-size: 0.8rem; color: var(--neon-cyan); margin-bottom: 10px; letter-spacing: 1px;">
+                    ⚡ ENERGY MONITOR
+                </h3>
+                
+                <div class="energy-metric">
+                    <span class="energy-label">Kinetic Energy</span>
+                    <span class="energy-value" id="kineticEnergy">0.00</span>
+                </div>
+                
+                <div class="energy-metric">
+                    <span class="energy-label">Potential Energy</span>
+                    <span class="energy-value" id="potentialEnergy">0.00</span>
+                </div>
+                
+                <div class="energy-metric">
+                    <span class="energy-label">Total Energy</span>
+                    <span class="energy-value accent" id="totalEnergy">0.00</span>
+                </div>
+                
+                <div class="energy-metric">
+                    <span class="energy-label">Energy Error</span>
+                    <span class="energy-value" id="energyError" style="color: var(--neon-magenta);">0.00%</span>
+                </div>
+
+                <div style="margin-top: 8px; display: flex; gap: 8px;">
+                    <button id="resetEnergyBtn" style="flex: 1; padding: 4px; background: transparent; border: 1px solid rgba(255, 255, 255, 0.1); color: var(--text-dim); font-size: 0.65rem; cursor: pointer; border-radius: 3px;">
+                        RESET ENERGY REF
+                    </button>
+                </div>
+            </div>
+
             <div class="metric-box">
                 <span class="label">INTEGRATOR SOLVER</span>
                 <div class="value accent">Runge-Kutta (RK4)</div>
@@ -66,4 +100,4 @@
     <script src="./app.js"></script>
 </body>
 
-</html> 
+</html>

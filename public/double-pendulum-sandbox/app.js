@@ -15,6 +15,15 @@ class ChaoticDoublePendulum {
         this.trail = [];
         this.maxTrailSize = 250;
 
+        // Energy tracking
+        this.initialEnergy = null;
+        this.energyHistory = [];
+        this.maxEnergyHistory = 100;
+
+        // Simulation control
+        this.paused = false;
+        this.speed = 1.0;
+
         this.initCanvas();
         this.registerParametersControllers();
         this.animate();
@@ -23,6 +32,67 @@ class ChaoticDoublePendulum {
     initCanvas() {
         this.canvas.width = this.canvas.parentElement.clientWidth;
         this.canvas.height = this.canvas.parentElement.clientHeight - 40;
+    }
+
+    // Calculate energy of the system
+    calculateEnergy() {
+        const { t1, t2, w1, w2 } = this.st;
+        
+        // Kinetic Energy: KE = 0.5 * (m1*l1²*w1² + m2*(l1²*w1² + l2²*w2² + 2*l1*l2*w1*w2*cos(t1-t2)))
+        const KE = 0.5 * (
+            this.m1 * Math.pow(this.l1 * w1, 2) +
+            this.m2 * (Math.pow(this.l1 * w1, 2) + Math.pow(this.l2 * w2, 2) + 
+            2 * this.l1 * this.l2 * w1 * w2 * Math.cos(t1 - t2))
+        );
+        
+        // Potential Energy: PE = -g*(m1*l1*cos(t1) + m2*(l1*cos(t1) + l2*cos(t2)))
+        const PE = -this.g * (
+            this.m1 * this.l1 * Math.cos(t1) +
+            this.m2 * (this.l1 * Math.cos(t1) + this.l2 * Math.cos(t2))
+        );
+        
+        const total = KE + PE;
+        
+        return { KE, PE, total };
+    }
+
+    // Update energy display
+    updateEnergyDisplay() {
+        const energy = this.calculateEnergy();
+        
+        // Store initial energy if not set
+        if (this.initialEnergy === null) {
+            this.initialEnergy = energy.total;
+        }
+        
+        // Calculate energy error
+        const error = this.initialEnergy !== 0 ? 
+            ((energy.total - this.initialEnergy) / this.initialEnergy) * 100 : 0;
+        
+        // Update DOM elements
+        document.getElementById('kineticEnergy').textContent = energy.KE.toFixed(3);
+        document.getElementById('potentialEnergy').textContent = energy.PE.toFixed(3);
+        document.getElementById('totalEnergy').textContent = energy.total.toFixed(3);
+        
+        const errorElement = document.getElementById('energyError');
+        const absError = Math.abs(error);
+        errorElement.textContent = absError.toFixed(4) + '%';
+        
+        // Color code the error
+        if (absError < 0.01) {
+            errorElement.style.color = '#00ff88';
+        } else if (absError < 0.1) {
+            errorElement.style.color = '#ffaa00';
+        } else {
+            errorElement.style.color = '#ff007f';
+        }
+    }
+
+    // Reset energy reference
+    resetEnergyReference() {
+        const energy = this.calculateEnergy();
+        this.initialEnergy = energy.total;
+        this.energyHistory = [];
     }
 
     // Equations of Motion: Calculates angular accelerations (alpha1, alpha2)
@@ -80,9 +150,35 @@ class ChaoticDoublePendulum {
     registerParametersControllers() {
         window.addEventListener('resize', () => this.initCanvas());
 
+        // Reset simulation
         document.getElementById('resetSimulationBtn').addEventListener('click', () => {
             this.trail = [];
             this.st = { t1: Math.PI / 2 + (Math.random() * 0.1), t2: Math.PI / 2, w1: 0, w2: 0 };
+            this.initialEnergy = null;
+            this.energyHistory = [];
+        });
+
+        // Pause/Resume
+        document.getElementById('pauseBtn').addEventListener('click', () => {
+            this.paused = !this.paused;
+            document.getElementById('pauseBtn').textContent = this.paused ? 'RESUME' : 'PAUSE / RESUME';
+        });
+
+        // Keyboard shortcut for pause
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space') {
+                e.preventDefault();
+                this.paused = !this.paused;
+                document.getElementById('pauseBtn').textContent = this.paused ? 'RESUME' : 'PAUSE / RESUME';
+            }
+            if (e.key === 'r' || e.key === 'R') {
+                document.getElementById('resetSimulationBtn').click();
+            }
+        });
+
+        // Reset energy reference
+        document.getElementById('resetEnergyBtn').addEventListener('click', () => {
+            this.resetEnergyReference();
         });
 
         const setupSlider = (sliderId, valId, prop) => {
@@ -90,6 +186,8 @@ class ChaoticDoublePendulum {
             el.addEventListener('input', (e) => {
                 this[prop] = parseFloat(e.target.value);
                 document.getElementById(valId).innerText = e.target.value;
+                // Reset energy reference when parameters change
+                this.resetEnergyReference();
             });
         };
 
@@ -101,10 +199,16 @@ class ChaoticDoublePendulum {
     }
 
     animate() {
-        // Execute 2 calculation subdivisions per frame step to stabilize math at higher velocities
-        const dt = 0.2;
-        this.rungeKutta4Step(dt);
-        this.rungeKutta4Step(dt);
+        // Update physics if not paused
+        if (!this.paused) {
+            // Execute 2 calculation subdivisions per frame step to stabilize math at higher velocities
+            const dt = 0.2 * this.speed;
+            this.rungeKutta4Step(dt);
+            this.rungeKutta4Step(dt);
+
+            // Update energy display every frame
+            this.updateEnergyDisplay();
+        }
 
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.drawGridBackground();
@@ -120,11 +224,21 @@ class ChaoticDoublePendulum {
         const y2 = y1 + this.l2 * Math.cos(this.st.t2);
 
         // Store the second pendulum tip position inside the trail matrix
-        this.trail.push({ x: x2, y: y2 });
-        if (this.trail.length > this.maxTrailSize) this.trail.shift();
+        if (!this.paused) {
+            this.trail.push({ x: x2, y: y2 });
+            if (this.trail.length > this.maxTrailSize) this.trail.shift();
+        }
 
         this.renderChaoticFractalPath();
         this.renderPendulumStrands(originX, originY, x1, y1, x2, y2);
+
+        // Draw pause indicator
+        if (this.paused) {
+            this.ctx.fillStyle = 'rgba(255, 0, 127, 0.3)';
+            this.ctx.font = '24px Courier New';
+            this.ctx.textAlign = 'center';
+            this.ctx.fillText('⏸ PAUSED', this.canvas.width / 2, 50);
+        }
 
         requestAnimationFrame(() => this.animate());
     }
