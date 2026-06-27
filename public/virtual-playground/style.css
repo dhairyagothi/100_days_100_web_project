@@ -1,13 +1,18 @@
-      body {
+      /* Global page styling */
+body {
         font-family: Arial, sans-serif;
         margin: 0;
         padding: 20px;
         background: #f0f0f0;
         text-align: center;
       }
+      
+      /* Main heading */
       h1 {
         color: #333;
       }
+      
+      /* Play area container for the interactive ball */
       .play-area {
         width: 400px;
         height: 400px;
@@ -18,19 +23,24 @@
         position: relative;
         overflow: hidden;
       }
+      
+      /* Interactive ball element */
       .ball {
         width: 40px;
         height: 40px;
         border-radius: 50%;
         background: #ff6b6b;
-        background: #ff6b6b;
         position: absolute;
         cursor: pointer;
         transition: transform 0.1s;
       }
+      
+      /* Control buttons container */
       .controls {
         margin-top: 20px;
       }
+      
+      /* Base button styling */
       button {
         padding: 10px 20px;
         font-size: 16px;
@@ -41,6 +51,8 @@
         color: #fff;
         cursor: pointer;
       }
+      
+      /* Button hover state */
       button:hover {
         background: #0056b3;
       }
