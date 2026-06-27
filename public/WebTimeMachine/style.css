@@ -1,0 +1,183 @@
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    transition: background 0.4s ease, color 0.4s ease, box-shadow 0.4s ease;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 2rem;
+}
+
+.time-machine-controls {
+    width: 90%;
+    max-width: 600px;
+    text-align: center;
+    margin-bottom: 3rem;
+    padding: 1rem;
+    background: rgba(128, 128, 128, 0.2);
+    border-radius: 10px;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    font-family: monospace;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+input[type="range"] {
+    width: 100%;
+    cursor: pointer;
+}
+
+.content-container {
+    width: 90%;
+    max-width: 800px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+
+body[data-era="1990s"] {
+    background-color: #c0c0c0; 
+    color: #000000;
+    font-family: "Times New Roman", Times, serif;
+}
+
+body[data-era="1990s"] .card {
+    border: 3px outset #ffffff;
+    background-color: #e0e0e0;
+    padding: 1rem;
+}
+
+body[data-era="1990s"] .title {
+    text-align: center;
+    text-decoration: underline;
+}
+
+body[data-era="1990s"] .action-btn {
+    display: inline-block;
+    background-color: #c0c0c0;
+    color: #000000;
+    border: 3px outset #ffffff;
+    padding: 5px 15px;
+    text-decoration: none;
+    font-weight: bold;
+}
+body[data-era="1990s"] .action-btn:active {
+    border-style: inset;
+}
+
+
+body[data-era="2000s"] {
+    background-color: #e6f2ff;
+    color: #333333;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+body[data-era="2000s"] .card {
+    background: #ffffff;
+    border: 1px solid #99c2ff;
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+body[data-era="2000s"] .title {
+    color: #005ce6;
+    text-shadow: 1px 1px 2px #cccccc;
+}
+
+body[data-era="2000s"] .action-btn {
+    display: inline-block;
+    background: linear-gradient(to bottom, #66b3ff, #0073e6);
+    color: white;
+    padding: 10px 20px;
+    border: 1px solid #004080;
+    border-radius: 20px;
+    text-decoration: none;
+    font-weight: bold;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+}
+
+
+body[data-era="2010s"] {
+    background-color: #f4f7f6;
+    color: #2c3e50;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+body[data-era="2010s"] .card {
+    background: #ffffff;
+    padding: 2rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+
+}
+
+body[data-era="2010s"] .title {
+    font-weight: 300;
+    font-size: 2.5rem;
+    color: #34495e;
+}
+
+body[data-era="2010s"] .action-btn {
+    display: inline-block;
+    background-color: #e74c3c; 
+    color: white;
+    padding: 12px 24px;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 1px;
+    transition: background 0.3s;
+}
+body[data-era="2010s"] .action-btn:hover {
+    background-color: #c0392b;
+}
+
+body[data-era="2020s"] {
+    background-color: #0f172a; 
+    color: #f8fafc;
+    font-family: system-ui, -apple-system, sans-serif;
+}
+
+body[data-era="2020s"] .card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 2.5rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+body[data-era="2020s"] .title {
+    font-weight: 800;
+    background: linear-gradient(to right, #38bdf8, #818cf8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+body[data-era="2020s"] .action-btn {
+    display: inline-block;
+    background: #6366f1;
+    color: white;
+    padding: 12px 28px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+body[data-era="2020s"] .action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.4);
+}
