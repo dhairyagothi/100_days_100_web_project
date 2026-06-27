@@ -14,7 +14,7 @@ It serves as a fun nostalgia trip and a practical demonstration of how powerful 
   - **2010s:** Minimalist flat design, clean sans-serif typography, and solid colors.
   - **2020s:** Modern glassmorphism, dark mode themes, and smooth transitions.
 - **Fully Responsive:** Adapts beautifully to mobile and desktop screens.
-
+ 
 ## 🛠️ Tech Stack
 - **HTML5:** 
 - **CSS3:** 

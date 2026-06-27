@@ -17,5 +17,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const currentEra = getEra(selectedYear);
         body.setAttribute("data-era", currentEra);
-    });
+    }); 
 });
