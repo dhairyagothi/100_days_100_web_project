@@ -1,6 +1,8 @@
 # Color Jump Game
 
-A fast-paced, minimalist jumping game with a modern CuboSapiens-inspired UI, responsive controls, and high-score tracking.
+A fast-paced, minimalist jumping game with a modern UI, responsive controls, and high-score tracking.
+
+
 
 ## Features
 - **Responsive Design:** Playable on Desktop, Tablet, and Mobile.

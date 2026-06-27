@@ -1,22 +1,22 @@
 // ===== DOM ELEMENTS =====
-const ip = document.getElementById("ip");
-const locationText = document.getElementById("location");
-const timezone = document.getElementById("timezone");
-const isp = document.getElementById("isp");
-const searchBtn = document.getElementById("searchBtn");
-const searchInput = document.getElementById("searchInput");
-const clearBtn = document.getElementById("clearBtn");
-const errorMessage = document.getElementById("errorMessage");
-const errorText = document.getElementById("errorText");
-const locateMeBtn = document.getElementById("locateMeBtn");
-const toast = document.getElementById("toast");
-const toastText = document.getElementById("toastText");
+const ip = document.getElementById('ip');
+const locationText = document.getElementById('location');
+const timezone = document.getElementById('timezone');
+const isp = document.getElementById('isp');
+const searchBtn = document.getElementById('searchBtn');
+const searchInput = document.getElementById('searchInput');
+const clearBtn = document.getElementById('clearBtn');
+const errorMessage = document.getElementById('errorMessage');
+const errorText = document.getElementById('errorText');
+const locateMeBtn = document.getElementById('locateMeBtn');
+const toast = document.getElementById('toast');
+const toastText = document.getElementById('toastText');
 
 // Extra info elements
-const countryCode = document.getElementById("countryCode");
-const postalCode = document.getElementById("postalCode");
-const coordinates = document.getElementById("coordinates");
-const currency = document.getElementById("currency");
+const countryCode = document.getElementById('countryCode');
+const postalCode = document.getElementById('postalCode');
+const coordinates = document.getElementById('coordinates');
+const currency = document.getElementById('currency');
 
 let map;
 let marker;
@@ -24,7 +24,7 @@ let circle;
 
 // ===== CUSTOM MAP MARKER =====
 const customIcon = L.divIcon({
-  className: "custom-marker",
+  className: 'custom-marker',
   html: `
     <div style="
       width: 30px;
@@ -64,61 +64,63 @@ function showSkeletons() {
 
 // ===== HIDE ERROR =====
 function hideError() {
-  errorMessage.classList.add("hidden");
+  errorMessage.classList.add('hidden');
 }
 
 // ===== SHOW ERROR =====
 function showError(message) {
   errorText.textContent = message;
-  errorMessage.classList.remove("hidden");
+  errorMessage.classList.remove('hidden');
 }
 
 // ===== SHOW TOAST =====
 function showToast(message) {
   toastText.textContent = message;
-  toast.classList.remove("hidden");
+  toast.classList.remove('hidden');
 
   // Force reflow for animation restart
   void toast.offsetWidth;
-  toast.classList.add("show");
+  toast.classList.add('show');
 
   setTimeout(() => {
-    toast.classList.remove("show");
-    setTimeout(() => toast.classList.add("hidden"), 300);
+    toast.classList.remove('show');
+    setTimeout(() => toast.classList.add('hidden'), 300);
   }, 2000);
 }
 
 // ===== VALIDATE IP ADDRESS =====
 function isValidIP(str) {
-  // IPv4
+  // IPv4 validation
   const ipv4Regex =
-    /^(?:(?:25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(?:25[0-5]|2[0-4]\d|[01]?\d\d?)$/;
-  // Basic domain check
-  const domainRegex = /^[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?\.[a-zA-Z]{2,}$/;
+    /^(?:(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)\.){3}(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)$/;
 
-  return ipv4Regex.test(str) || domainRegex.test(str);
+  // Supports subdomains and multi-level domains
+  const domainRegex =
+    /^(?=.{1,253}$)(?!-)(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$/;
+
+  return ipv4Regex.test(str.trim()) || domainRegex.test(str.trim());
 }
 
 // ===== FETCH IP DATA =====
-async function fetchIPData(query = "") {
+async function fetchIPData(query = '') {
   hideError();
   showSkeletons();
 
   // Set button to loading state
-  searchBtn.classList.add("loading");
-  const btnIcon = searchBtn.querySelector("i");
+  searchBtn.classList.add('loading');
+  const btnIcon = searchBtn.querySelector('i');
   const originalIconClass = btnIcon.className;
-  btnIcon.className = "fas fa-spinner";
+  btnIcon.className = 'fas fa-spinner';
 
   try {
     let url;
 
-    if (query.trim() === "") {
-      url = "https://ipapi.co/json/";
+    if (query.trim() === '') {
+      url = 'https://ipapi.co/json/';
     } else {
       // Validate before fetching
       if (!isValidIP(query.trim())) {
-        showError("Please enter a valid IP address or domain");
+        showError('Please enter a valid IP address or domain');
         resetCardsFallback();
         return;
       }
@@ -134,84 +136,84 @@ async function fetchIPData(query = "") {
     const data = await response.json();
 
     if (data.error) {
-      showError(data.reason || "Unable to find information for this IP");
+      showError(data.reason || 'Unable to find information for this IP');
       resetCardsFallback();
       return;
     }
 
     updateUI(data);
   } catch (error) {
-    showError("Failed to fetch data. Please check your connection.");
+    showError('Failed to fetch data. Please check your connection.');
     resetCardsFallback();
     console.error(error);
   } finally {
     // Reset button loading state
-    searchBtn.classList.remove("loading");
+    searchBtn.classList.remove('loading');
     btnIcon.className = originalIconClass;
   }
 }
 
 // ===== RESET CARDS ON ERROR =====
 function resetCardsFallback() {
-  ip.textContent = "N/A";
-  locationText.textContent = "N/A";
-  timezone.textContent = "N/A";
-  isp.textContent = "N/A";
-  countryCode.textContent = "--";
-  postalCode.textContent = "--";
-  coordinates.textContent = "--";
-  currency.textContent = "--";
+  ip.textContent = 'N/A';
+  locationText.textContent = 'N/A';
+  timezone.textContent = 'N/A';
+  isp.textContent = 'N/A';
+  countryCode.textContent = '--';
+  postalCode.textContent = '--';
+  coordinates.textContent = '--';
+  currency.textContent = '--';
 }
 
 // ===== UPDATE UI =====
 function updateUI(data) {
   // Animate card content appearance
-  const cards = document.querySelectorAll(".card");
+  const cards = document.querySelectorAll('.card');
   cards.forEach((card) => {
-    card.style.animation = "none";
+    card.style.animation = 'none';
     void card.offsetWidth;
-    card.style.animation = "cardSlideUp 0.5s ease backwards";
+    card.style.animation = 'cardSlideUp 0.5s ease backwards';
   });
 
-  ip.textContent = data.ip || "N/A";
+  ip.textContent = data.ip || 'N/A';
 
   const locationParts = [data.city, data.region, data.country_name].filter(
     Boolean
   );
   locationText.textContent =
-    locationParts.length > 0 ? locationParts.join(", ") : "N/A";
+    locationParts.length > 0 ? locationParts.join(', ') : 'N/A';
 
   timezone.textContent = data.utc_offset
-    ? `UTC ${data.utc_offset} (${data.timezone || ""})`
-    : data.timezone || "N/A";
+    ? `UTC ${data.utc_offset} (${data.timezone || ''})`
+    : data.timezone || 'N/A';
 
-  isp.textContent = data.org || "N/A";
+  isp.textContent = data.org || 'N/A';
 
   // Extra info
-  countryCode.textContent = data.country_code || "--";
-  postalCode.textContent = data.postal || "--";
+  countryCode.textContent = data.country_code || '--';
+  postalCode.textContent = data.postal || '--';
   currency.textContent = data.currency_name
-    ? `${data.currency_name} (${data.currency || ""})`
-    : data.currency || "--";
+    ? `${data.currency_name} (${data.currency || ''})`
+    : data.currency || '--';
 
   const lat = data.latitude;
   const lon = data.longitude;
 
   coordinates.textContent =
-    lat && lon ? `${lat.toFixed(4)}, ${lon.toFixed(4)}` : "--";
+    lat && lon ? `${lat.toFixed(4)}, ${lon.toFixed(4)}` : '--';
 
   if (!lat || !lon) return;
 
   // Initialize or update map
   if (!map) {
-    map = L.map("map", {
+    map = L.map('map', {
       zoomControl: true,
       scrollWheelZoom: true,
     }).setView([lat, lon], 13);
 
     // Use a nicer tile layer
     L.tileLayer(
-      "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
+      'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
       {
         attribution:
           '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>',
@@ -223,8 +225,8 @@ function updateUI(data) {
 
     // Add accuracy circle
     circle = L.circle([lat, lon], {
-      color: "#6366f1",
-      fillColor: "#6366f1",
+      color: '#6366f1',
+      fillColor: '#6366f1',
       fillOpacity: 0.1,
       radius: 1500,
       weight: 1,
@@ -235,7 +237,7 @@ function updateUI(data) {
       .bindPopup(
         `<div style="text-align:center;font-family:system-ui;padding:4px;">
         <strong style="font-size:14px;">${data.ip}</strong><br/>
-        <span style="color:#666;font-size:12px;">${locationParts.join(", ")}</span>
+        <span style="color:#666;font-size:12px;">${locationParts.join(', ')}</span>
       </div>`
       )
       .openPopup();
@@ -252,7 +254,7 @@ function updateUI(data) {
       .bindPopup(
         `<div style="text-align:center;font-family:system-ui;padding:4px;">
         <strong style="font-size:14px;">${data.ip}</strong><br/>
-        <span style="color:#666;font-size:12px;">${locationParts.join(", ")}</span>
+        <span style="color:#666;font-size:12px;">${locationParts.join(', ')}</span>
       </div>`
       )
       .openPopup();
@@ -262,67 +264,67 @@ function updateUI(data) {
 // ===== EVENT LISTENERS =====
 
 // Search button click
-searchBtn.addEventListener("click", () => {
+searchBtn.addEventListener('click', () => {
   fetchIPData(searchInput.value);
 });
 
 // Enter key in search input
-searchInput.addEventListener("keypress", (e) => {
-  if (e.key === "Enter") {
+searchInput.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') {
     fetchIPData(searchInput.value);
   }
 });
 
 // Show/hide clear button based on input
-searchInput.addEventListener("input", () => {
+searchInput.addEventListener('input', () => {
   if (searchInput.value.length > 0) {
-    clearBtn.classList.remove("hidden");
+    clearBtn.classList.remove('hidden');
   } else {
-    clearBtn.classList.add("hidden");
+    clearBtn.classList.add('hidden');
   }
   hideError();
 });
 
 // Clear button
-clearBtn.addEventListener("click", () => {
-  searchInput.value = "";
-  clearBtn.classList.add("hidden");
+clearBtn.addEventListener('click', () => {
+  searchInput.value = '';
+  clearBtn.classList.add('hidden');
   searchInput.focus();
   hideError();
 });
 
 // Locate me button - reset to own IP
-locateMeBtn.addEventListener("click", () => {
-  searchInput.value = "";
-  clearBtn.classList.add("hidden");
+locateMeBtn.addEventListener('click', () => {
+  searchInput.value = '';
+  clearBtn.classList.add('hidden');
   hideError();
   fetchIPData();
 });
 
 // Copy buttons
-document.querySelectorAll(".copy-btn").forEach((btn) => {
-  btn.addEventListener("click", () => {
-    const targetId = btn.getAttribute("data-copy");
+document.querySelectorAll('.copy-btn').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    const targetId = btn.getAttribute('data-copy');
     const targetEl = document.getElementById(targetId);
     const text = targetEl.textContent;
 
-    if (text && text !== "N/A" && !targetEl.querySelector(".skeleton")) {
+    if (text && text !== 'N/A' && !targetEl.querySelector('.skeleton')) {
       navigator.clipboard
         .writeText(text)
         .then(() => {
-          btn.classList.add("copied");
-          const icon = btn.querySelector("i");
-          icon.className = "fas fa-check";
+          btn.classList.add('copied');
+          const icon = btn.querySelector('i');
+          icon.className = 'fas fa-check';
 
           showToast(`Copied: ${text}`);
 
           setTimeout(() => {
-            btn.classList.remove("copied");
-            icon.className = "fas fa-copy";
+            btn.classList.remove('copied');
+            icon.className = 'fas fa-copy';
           }, 1500);
         })
         .catch(() => {
-          showToast("Failed to copy");
+          showToast('Failed to copy');
         });
     }
   });

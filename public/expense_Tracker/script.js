@@ -2,188 +2,179 @@
    EXPENSE TRACKER - MAIN APPLICATION LOGIC
    ------------------------------------------------------------- */
 
+// Constants
+var STORAGE_KEY = 'budgetbuddy_data';
+var THEME_KEY = 'budgetbuddy_theme';
+
 // App State
-let expenses = [];
-let income = 0;
-let currentFilter = 'All';
+var expenses = [];
+var income = 0;
+var currentFilter = 'All';
 
 // DOM Elements
-const incomeForm = document.getElementById('income-form');
-const incomeInput = document.getElementById('income-input');
-const expenseForm = document.getElementById('expense-form');
-const expenseNameInput = document.getElementById('expense-name');
-const expenseAmountInput = document.getElementById('expense-amount');
-const expenseCategorySelect = document.getElementById('expense-category');
+var incomeForm = document.getElementById('income-form');
+var incomeInput = document.getElementById('income-input');
+var expenseForm = document.getElementById('expense-form');
+var expenseNameInput = document.getElementById('expense-name');
+var expenseAmountInput = document.getElementById('expense-amount');
+var expenseCategorySelect = document.getElementById('expense-category');
 
-const totalIncomeEl = document.getElementById('total-income');
-const totalExpensesEl = document.getElementById('total-expenses');
-const netBalanceEl = document.getElementById('net-balance');
-const netBalanceCard = document.querySelector('.stat-card.balance');
+var totalIncomeEl = document.getElementById('total-income');
+var totalExpensesEl = document.getElementById('total-expenses');
+var netBalanceEl = document.getElementById('net-balance');
+var netBalanceCard = document.querySelector('.stat-card.balance');
 
-const categoryFilterSelect = document.getElementById('category-filter');
-const expenseListEl = document.getElementById('expense-list');
-const noExpensesEl = document.getElementById('no-expenses');
+var categoryFilterSelect = document.getElementById('category-filter');
+var expenseListEl = document.getElementById('expense-list');
+var noExpensesEl = document.getElementById('no-expenses');
 
-const chartProgress = document.getElementById('chart-progress');
-const expenseRatioEl = document.getElementById('expense-ratio');
-const legendEl = document.getElementById('category-breakdown-legend');
-const dateTextEl = document.getElementById('date-text');
+var chartProgress = document.getElementById('chart-progress');
+var expenseRatioEl = document.getElementById('expense-ratio');
+var legendEl = document.getElementById('category-breakdown-legend');
+var dateTextEl = document.getElementById('date-text');
+var themeToggleBtn = document.getElementById('themeToggle');
 
 // Category Configurations
-const categories = {
+var categories = {
     Food: {
-        icon: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8zM6 1v3M10 1v3M14 1v3"/></svg>`,
+        icon: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8zM6 1v3M10 1v3M14 1v3"/></svg>',
         color: '#10b981',
         class: 'cat-food'
     },
     Travel: {
-        icon: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>`,
+        icon: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>',
         color: '#0ea5e9',
         class: 'cat-travel'
     },
     Shopping: {
-        icon: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4zM3 6h18M16 10a4 4 0 0 1-8 0"/></svg>`,
+        icon: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4zM3 6h18M16 10a4 4 0 0 1-8 0"/></svg>',
         color: '#8b5cf6',
         class: 'cat-shopping'
     },
     Bills: {
-        icon: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1-2-1zM16 8H8m8 4H8m5 4H8"/></svg>`,
+        icon: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1-2-1zM16 8H8m8 4H8m5 4H8"/></svg>',
         color: '#f59e0b',
         class: 'cat-bills'
     },
     Other: {
-        icon: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82zM7 7h.01"/></svg>`,
+        icon: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82zM7 7h.01"/></svg>',
         color: '#64748b',
         class: 'cat-other'
     }
 };
 
-// Initialize Application
-document.addEventListener('DOMContentLoaded', () => {
-    loadData();
-    displayCurrentDate();
-    setupEventListeners();
-    updateUI();
-});
+// ============================================================
+// DATA MANAGEMENT (DEFINED FIRST)
+// ============================================================
 
-// Load Data from LocalStorage
+function saveData() {
+    var data = {
+        expenses: expenses,
+        income: income
+    };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
+
 function loadData() {
-    const savedExpenses = localStorage.getItem('expenses');
-    const savedIncome = localStorage.getItem('income');
-
-    expenses = savedExpenses ? JSON.parse(savedExpenses) : [];
-    income = savedIncome ? parseFloat(savedIncome) : 0;
+    var savedData = localStorage.getItem(STORAGE_KEY);
+    
+    if (savedData) {
+        try {
+            var data = JSON.parse(savedData);
+            expenses = data.expenses || [];
+            income = data.income || 0;
+        } catch (e) {
+            console.error('Error loading data:', e);
+            expenses = [];
+            income = 0;
+        }
+    } else {
+        // Fallback: check for old storage keys
+        var oldExpenses = localStorage.getItem('expenses');
+        var oldIncome = localStorage.getItem('income');
+        
+        var needsMigration = false;
+        
+        if (oldExpenses) {
+            try {
+                expenses = JSON.parse(oldExpenses);
+                needsMigration = true;
+                localStorage.removeItem('expenses');
+            } catch (e) {
+                expenses = [];
+            }
+        }
+        
+        if (oldIncome) {
+            income = parseFloat(oldIncome) || 0;
+            needsMigration = true;
+            localStorage.removeItem('income');
+        }
+        
+        if (needsMigration) {
+            saveData();
+        }
+    }
     
     // Pre-fill income input if set
-    if (income > 0) {
+    if (income > 0 && incomeInput) {
         incomeInput.value = income;
     }
 }
 
-// Display Live/Current Date in header
+// ============================================================
+// THEME MANAGEMENT
+// ============================================================
+
+function updateThemeIcon() {
+    var currentTheme = document.documentElement.getAttribute('data-theme');
+    if (themeToggleBtn) {
+        themeToggleBtn.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
+        themeToggleBtn.setAttribute('aria-label', 
+            currentTheme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'
+        );
+    }
+}
+
+function initTheme() {
+    var savedTheme = localStorage.getItem(THEME_KEY);
+    
+    if (!savedTheme) {
+        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+        localStorage.setItem(THEME_KEY, prefersDark ? 'dark' : 'light');
+    } else {
+        document.documentElement.setAttribute('data-theme', savedTheme);
+    }
+    
+    updateThemeIcon();
+}
+
+function toggleTheme() {
+    var currentTheme = document.documentElement.getAttribute('data-theme');
+    var newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem(THEME_KEY, newTheme);
+    
+    updateThemeIcon();
+    
+    if (typeof compileAndBuildAnalyticsLayout === 'function') {
+        compileAndBuildAnalyticsLayout();
+    }
+}
+
+// ============================================================
+// UI HELPERS
+// ============================================================
+
 function displayCurrentDate() {
-    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    const today = new Date();
+    if (!dateTextEl) return;
+    var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    var today = new Date();
     dateTextEl.textContent = today.toLocaleDateString('en-US', options);
 }
 
-// Set up Event Listeners
-function setupEventListeners() {
-    // Add/Update Income
-    incomeForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const value = parseFloat(incomeInput.value);
-        if (!isNaN(value) && value >= 0) {
-            income = value;
-            localStorage.setItem('income', income.toString());
-            updateUI();
-            
-            // Trigger visual button feedback
-            const btn = incomeForm.querySelector('button');
-            const originalText = btn.textContent;
-            btn.textContent = 'Updated!';
-            btn.style.background = 'var(--success)';
-            btn.style.borderColor = 'var(--success)';
-            setTimeout(() => {
-                btn.textContent = originalText;
-                btn.style.background = '';
-                btn.style.borderColor = '';
-            }, 1500);
-        }
-    });
-
-    // Add Expense
-    expenseForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        addExpense();
-    });
-
-    // Category Filter
-    categoryFilterSelect.addEventListener('change', (e) => {
-        currentFilter = e.target.value;
-        filterExpenses();
-    });
-}
-
-// Add Expense logic
-function addExpense() {
-    const name = expenseNameInput.value.trim();
-    const amount = parseFloat(expenseAmountInput.value);
-    const category = expenseCategorySelect.value;
-
-    if (!name || isNaN(amount) || amount <= 0 || !category) {
-        alert('Please fill out all fields with valid data.');
-        return;
-    }
-
-    const newExpense = {
-        id: Date.now().toString(), // unique string ID
-        name: name,
-        amount: amount,
-        category: category,
-        date: Date.now() // timestamp
-    };
-
-    expenses.push(newExpense);
-    saveExpenses();
-    updateUI();
-
-    // Reset Form
-    expenseForm.reset();
-    expenseCategorySelect.selectedIndex = 0; // Reset category select dropdown
-}
-
-// Delete Expense logic
-function deleteExpense(id) {
-    const expenseItem = document.querySelector(`[data-id="${id}"]`);
-    if (expenseItem) {
-        // Add deleting class for smooth fadeout transition
-        expenseItem.classList.add('deleting');
-        
-        // Wait for the animation to end before actual DOM removal
-        expenseItem.addEventListener('animationend', () => {
-            expenses = expenses.filter(exp => exp.id !== id);
-            saveExpenses();
-            updateUI();
-        });
-    } else {
-        expenses = expenses.filter(exp => exp.id !== id);
-        saveExpenses();
-        updateUI();
-    }
-}
-
-// Save Expenses to LocalStorage
-function saveExpenses() {
-    localStorage.setItem('expenses', JSON.stringify(expenses));
-}
-
-// Filter Expenses
-function filterExpenses() {
-    renderExpenses();
-}
-
-// Format Currency Utility Helper
 function formatCurrency(amount) {
     return new Intl.NumberFormat('en-US', {
         style: 'currency',
@@ -191,9 +182,8 @@ function formatCurrency(amount) {
     }).format(amount);
 }
 
-// Format Date Utility Helper
 function formatDate(timestamp) {
-    const date = new Date(timestamp);
+    var date = new Date(timestamp);
     return date.toLocaleDateString('en-US', {
         month: 'short',
         day: 'numeric',
@@ -202,17 +192,82 @@ function formatDate(timestamp) {
     });
 }
 
-// Render dynamic list of expenses
+function escapeHTML(str) {
+    if (!str) return '';
+    var map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        "'": '&#39;',
+        '"': '&quot;'
+    };
+    return String(str).replace(/[&<>'"]/g, function(m) { return map[m]; });
+}
+
+// ============================================================
+// EXPENSE MANAGEMENT
+// ============================================================
+
+function addExpense() {
+    if (!expenseNameInput || !expenseAmountInput || !expenseCategorySelect) return;
+    
+    var name = expenseNameInput.value.trim();
+    var amount = parseFloat(expenseAmountInput.value);
+    var category = expenseCategorySelect.value;
+
+    if (!name || isNaN(amount) || amount <= 0 || !category) {
+        alert('Please fill out all fields with valid data.');
+        return;
+    }
+
+    var newExpense = {
+        id: Date.now().toString(),
+        name: name,
+        amount: amount,
+        category: category,
+        date: Date.now()
+    };
+
+    expenses.push(newExpense);
+    saveData();
+    updateUI();
+
+    expenseForm.reset();
+    expenseCategorySelect.selectedIndex = 0;
+}
+
+function deleteExpense(id) {
+    var expenseItem = document.querySelector('[data-id="' + id + '"]');
+    if (expenseItem) {
+        expenseItem.classList.add('deleting');
+        expenseItem.addEventListener('animationend', function() {
+            expenses = expenses.filter(function(exp) { return exp.id !== id; });
+            saveData();
+            updateUI();
+        }, { once: true });
+    } else {
+        expenses = expenses.filter(function(exp) { return exp.id !== id; });
+        saveData();
+        updateUI();
+    }
+}
+
+function filterExpenses() {
+    renderExpenses();
+}
+
 function renderExpenses() {
+    if (!expenseListEl || !noExpensesEl) return;
+    
     expenseListEl.innerHTML = '';
     
-    // Apply category filter
-    const filteredExpenses = currentFilter === 'All' 
+    var filteredExpenses = currentFilter === 'All' 
         ? expenses 
-        : expenses.filter(exp => exp.category === currentFilter);
+        : expenses.filter(function(exp) { return exp.category === currentFilter; });
 
-    // Sort by newest first
-    const sortedExpenses = [...filteredExpenses].sort((a, b) => b.date - a.date);
+    var sortedExpenses = filteredExpenses.slice().sort(function(a, b) { 
+        return b.date - a.date; 
+    });
 
     if (sortedExpenses.length === 0) {
         noExpensesEl.style.display = 'flex';
@@ -223,9 +278,9 @@ function renderExpenses() {
     noExpensesEl.style.display = 'none';
     expenseListEl.style.display = 'flex';
 
-    sortedExpenses.forEach(exp => {
-        const catConfig = categories[exp.category] || categories.Other;
-        const li = document.createElement('li');
+    sortedExpenses.forEach(function(exp) {
+        var catConfig = categories[exp.category] || categories.Other;
+        var li = document.createElement('li');
         li.className = 'expense-item';
         li.setAttribute('data-id', exp.id);
 
@@ -250,63 +305,17 @@ function renderExpenses() {
     });
 }
 
-// Update the Top Dashboard Cards and Visual Charts
-function updateSummary() {
-    // 1. Calculate Totals
-    const totalExpenses = expenses.reduce((sum, exp) => sum + exp.amount, 0);
-    const balance = income - totalExpenses;
+// ============================================================
+// SUMMARY & CHARTS
+// ============================================================
 
-    // 2. Set DOM content
-    totalIncomeEl.textContent = formatCurrency(income);
-    totalExpensesEl.textContent = formatCurrency(totalExpenses);
-    netBalanceEl.textContent = formatCurrency(balance);
-
-    // 3. Negative Balance visual styling toggle
-    if (balance < 0) {
-        netBalanceCard.classList.add('negative-balance');
-    } else {
-        netBalanceCard.classList.remove('negative-balance');
-    }
-
-    // 4. Update SVG Circle Donut Chart
-    let percentage = 0;
-    if (income > 0) {
-        percentage = Math.round((totalExpenses / income) * 100);
-    } else if (totalExpenses > 0) {
-        percentage = 100;
-    }
-
-    expenseRatioEl.textContent = `${percentage}%`;
-
-    // 251.2 is 2 * PI * r (r=40)
-    // Offset represents the dashoffset to hide/show the circle fill
-    let strokeDashOffset = 251.2;
-    if (percentage > 0) {
-        const clampedPercentage = Math.min(percentage, 100);
-        strokeDashOffset = 251.2 - (clampedPercentage / 100) * 251.2;
-    }
-    chartProgress.style.strokeDashoffset = strokeDashOffset;
-
-    // Donut chart color based on budget thresholds
-    if (percentage > 90) {
-        chartProgress.style.stroke = 'var(--danger)';
-    } else if (percentage > 70) {
-        chartProgress.style.stroke = 'var(--color-bills)';
-    } else {
-        chartProgress.style.stroke = 'var(--primary)';
-    }
-
-    // 5. Update Legend Breakdown listing
-    updateLegend(totalExpenses);
-}
-
-// Generate the visual category summary cards below the donut chart
 function updateLegend(totalExpenses) {
+    if (!legendEl) return;
+    
     legendEl.innerHTML = '';
     
-    // Group totals by category
-    const catTotals = { Food: 0, Travel: 0, Shopping: 0, Bills: 0, Other: 0 };
-    expenses.forEach(exp => {
+    var catTotals = { Food: 0, Travel: 0, Shopping: 0, Bills: 0, Other: 0 };
+    expenses.forEach(function(exp) {
         if (catTotals[exp.category] !== undefined) {
             catTotals[exp.category] += exp.amount;
         } else {
@@ -314,19 +323,21 @@ function updateLegend(totalExpenses) {
         }
     });
 
-    const activeCategories = Object.keys(catTotals).filter(cat => catTotals[cat] > 0);
+    var activeCategories = Object.keys(catTotals).filter(function(cat) { 
+        return catTotals[cat] > 0; 
+    });
 
     if (activeCategories.length === 0) {
-        legendEl.innerHTML = `<div class="legend-placeholder">No data to display. Add expenses to view category breakdown.</div>`;
+        legendEl.innerHTML = '<div class="legend-placeholder">No data to display. Add expenses to view category breakdown.</div>';
         return;
     }
 
-    activeCategories.forEach(cat => {
-        const total = catTotals[cat];
-        const percent = totalExpenses > 0 ? Math.round((total / totalExpenses) * 100) : 0;
-        const config = categories[cat] || categories.Other;
+    activeCategories.forEach(function(cat) {
+        var total = catTotals[cat];
+        var percent = totalExpenses > 0 ? Math.round((total / totalExpenses) * 100) : 0;
+        var config = categories[cat] || categories.Other;
 
-        const legendItem = document.createElement('div');
+        var legendItem = document.createElement('div');
         legendItem.className = 'legend-item';
         legendItem.innerHTML = `
             <div class="legend-left">
@@ -342,24 +353,124 @@ function updateLegend(totalExpenses) {
     });
 }
 
-// Master UI Update controller
+function updateSummary() {
+    var totalExpenses = expenses.reduce(function(sum, exp) { 
+        return sum + exp.amount; 
+    }, 0);
+    var balance = income - totalExpenses;
+
+    if (totalIncomeEl) totalIncomeEl.textContent = formatCurrency(income);
+    if (totalExpensesEl) totalExpensesEl.textContent = formatCurrency(totalExpenses);
+    if (netBalanceEl) netBalanceEl.textContent = formatCurrency(balance);
+
+    if (netBalanceCard) {
+        if (balance < 0) {
+            netBalanceCard.classList.add('negative-balance');
+        } else {
+            netBalanceCard.classList.remove('negative-balance');
+        }
+    }
+
+    var percentage = 0;
+    if (income > 0) {
+        percentage = Math.round((totalExpenses / income) * 100);
+    } else if (totalExpenses > 0) {
+        percentage = 100;
+    }
+
+    if (expenseRatioEl) expenseRatioEl.textContent = percentage + '%';
+
+    var strokeDashOffset = 251.2;
+    if (percentage > 0) {
+        var clampedPercentage = Math.min(percentage, 100);
+        strokeDashOffset = 251.2 - (clampedPercentage / 100) * 251.2;
+    }
+    
+    if (chartProgress) {
+        chartProgress.style.strokeDashoffset = strokeDashOffset;
+        
+        if (percentage > 90) {
+            chartProgress.style.stroke = 'var(--danger)';
+        } else if (percentage > 70) {
+            chartProgress.style.stroke = 'var(--color-bills)';
+        } else {
+            chartProgress.style.stroke = 'var(--primary)';
+        }
+    }
+
+    updateLegend(totalExpenses);
+}
+
 function updateUI() {
     updateSummary();
     renderExpenses();
 }
 
-// Helper to escape potential HTML inputs (XSS Defense)
-function escapeHTML(str) {
-    return str.replace(/[&<>'"]/g, 
-        tag => ({
-            '&': '&amp;',
-            '<': '&lt;',
-            '>': '&gt;',
-            "'": '&#39;',
-            '"': '&quot;'
-        }[tag] || tag)
-    );
+// ============================================================
+// EVENT LISTENERS
+// ============================================================
+
+function setupEventListeners() {
+    if (incomeForm) {
+        incomeForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            var value = parseFloat(incomeInput.value);
+            if (!isNaN(value) && value >= 0) {
+                income = value;
+                saveData();
+                updateUI();
+                
+                var btn = incomeForm.querySelector('button');
+                var originalText = btn.textContent;
+                btn.textContent = '✅ Updated!';
+                btn.style.background = 'var(--success)';
+                setTimeout(function() {
+                    btn.textContent = originalText;
+                    btn.style.background = '';
+                }, 1500);
+            }
+        });
+    }
+
+    if (expenseForm) {
+        expenseForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            addExpense();
+        });
+    }
+
+    if (categoryFilterSelect) {
+        categoryFilterSelect.addEventListener('change', function(e) {
+            currentFilter = e.target.value;
+            filterExpenses();
+        });
+    }
+
+    if (themeToggleBtn) {
+        themeToggleBtn.addEventListener('click', toggleTheme);
+    }
 }
 
-// Expose deleteExpense to the global window scope so dynamic elements can call it
+// ============================================================
+// EXPOSE FUNCTIONS TO GLOBAL SCOPE
+// ============================================================
+
 window.deleteExpense = deleteExpense;
+window.loadData = loadData;
+window.saveData = saveData;
+window.updateUI = updateUI;
+window.formatCurrency = formatCurrency;
+window.formatDate = formatDate;
+window.toggleTheme = toggleTheme;
+
+// ============================================================
+// INITIALIZATION
+// ============================================================
+
+document.addEventListener('DOMContentLoaded', function() {
+    initTheme();
+    loadData();
+    displayCurrentDate();
+    setupEventListeners();
+    updateUI();
+});

@@ -1,285 +1,193 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Advanced Kanban Board</title>
     <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-
+  </head>
+  <body>
     <!-- HEADER -->
     <header>
-        <div class="header-left">
-            <h1>🚀 Advanced Kanban Board</h1>
-            <p>Manage Projects Like a Pro</p>
-        </div>
+      <div class="header-left">
+        <h1>🚀 Advanced Kanban Board</h1>
+        <p>Manage Projects Like a Pro</p>
+      </div>
 
-        <div class="header-right">
-            <button id="themeToggle">🌙 Dark Mode</button>
-        </div>
+      <div class="header-right">
+        <button id="themeToggle">🌙 Dark Mode</button>
+      </div>
     </header>
 
     <!-- MAIN APP -->
     <div class="app-container">
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <h2>Boards</h2>
+          <button id="addBoardBtn">+</button>
+        </div>
 
-        <!-- SIDEBAR -->
-        <aside class="sidebar">
+        <div id="boardList" class="board-list">
+          <!-- Boards Render Here -->
+        </div>
+      </aside>
 
-            <div class="sidebar-header">
-                <h2>Boards</h2>
-                <button id="addBoardBtn">+</button>
-            </div>
+      <!-- CONTENT -->
+      <section class="content-area">
+        <!-- DASHBOARD -->
+        <section class="dashboard">
+          <div class="stat-card">
+            <h3>Total Tasks</h3>
+            <span id="totalTasks">0</span>
+          </div>
 
-            <div id="boardList" class="board-list">
-                <!-- Boards Render Here -->
-            </div>
+          <div class="stat-card">
+            <h3>Completed</h3>
+            <span id="completedTasks">0</span>
+          </div>
 
-        </aside>
+          <div class="stat-card">
+            <h3>In Progress</h3>
+            <span id="progressTasks">0</span>
+          </div>
 
-        <!-- CONTENT -->
-        <section class="content-area">
+          <div class="stat-card">
+            <h3>Pending</h3>
+            <span id="pendingTasks">0</span>
+          </div>
 
-            <!-- DASHBOARD -->
-            <section class="dashboard">
-
-                <div class="stat-card">
-                    <h3>Total Tasks</h3>
-                    <span id="totalTasks">0</span>
-                </div>
-
-                <div class="stat-card">
-                    <h3>Completed</h3>
-                    <span id="completedTasks">0</span>
-                </div>
-
-                <div class="stat-card">
-                    <h3>In Progress</h3>
-                    <span id="progressTasks">0</span>
-                </div>
-
-                <div class="stat-card">
-                    <h3>Pending</h3>
-                    <span id="pendingTasks">0</span>
-                </div>
-
-                <div class="stat-card">
-                    <h3>Completion</h3>
-                    <span id="completionRate">0%</span>
-                </div>
-
-            </section>
-
-            <!-- ACTIVE BOARD TITLE -->
-            <div class="current-board-container">
-
-                <div>
-                    <h2 id="currentBoardTitle">My Board</h2>
-                    <p>Organize tasks efficiently</p>
-                </div>
-
-                <button id="renameBoardBtn">
-                    ✏ Rename Board
-                </button>
-
-            </div>
-
-            <!-- KANBAN BOARD -->
-            <main class="board">
-
-                <!-- TODO -->
-                <div class="column">
-
-                    <div class="column-header">
-                        <h3>📋 To Do</h3>
-
-                        <button
-                            class="add-column-task"
-                            data-status="todo">
-                            +
-                        </button>
-                    </div>
-
-                    <div
-                        class="task-container"
-                        id="todo">
-                    </div>
-
-                </div>
-
-                <!-- IN PROGRESS -->
-                <div class="column">
-
-                    <div class="column-header">
-                        <h3>⚡ In Progress</h3>
-
-                        <button
-                            class="add-column-task"
-                            data-status="progress">
-                            +
-                        </button>
-                    </div>
-
-                    <div
-                        class="task-container"
-                        id="progress">
-                    </div>
-
-                </div>
-
-                <!-- REVIEW -->
-                <div class="column">
-
-                    <div class="column-header">
-                        <h3>🔍 Review</h3>
-
-                        <button
-                            class="add-column-task"
-                            data-status="review">
-                            +
-                        </button>
-                    </div>
-
-                    <div
-                        class="task-container"
-                        id="review">
-                    </div>
-
-                </div>
-
-                <!-- COMPLETED -->
-                <div class="column">
-
-                    <div class="column-header">
-                        <h3>✅ Completed</h3>
-
-                        <button
-                            class="add-column-task"
-                            data-status="completed">
-                            +
-                        </button>
-                    </div>
-
-                    <div
-                        class="task-container"
-                        id="completed">
-                    </div>
-
-                </div>
-
-            </main>
-
+          <div class="stat-card">
+            <h3>Completion</h3>
+            <span id="completionRate">0%</span>
+          </div>
         </section>
 
+        <!-- ACTIVE BOARD TITLE -->
+        <div class="current-board-container">
+          <div>
+            <h2 id="currentBoardTitle">My Board</h2>
+            <p>Organize tasks efficiently</p>
+          </div>
+
+          <button id="renameBoardBtn">✏ Rename Board</button>
+        </div>
+
+        <!-- KANBAN BOARD -->
+        <main class="board">
+          <!-- TODO -->
+          <div class="column">
+            <div class="column-header">
+              <h3>📋 To Do</h3>
+
+              <button class="add-column-task" data-status="todo">+</button>
+            </div>
+
+            <div class="task-container" id="todo"></div>
+          </div>
+
+          <!-- IN PROGRESS -->
+          <div class="column">
+            <div class="column-header">
+              <h3>⚡ In Progress</h3>
+
+              <button class="add-column-task" data-status="progress">+</button>
+            </div>
+
+            <div class="task-container" id="progress"></div>
+          </div>
+
+          <!-- REVIEW -->
+          <div class="column">
+            <div class="column-header">
+              <h3>🔍 Review</h3>
+
+              <button class="add-column-task" data-status="review">+</button>
+            </div>
+
+            <div class="task-container" id="review"></div>
+          </div>
+
+          <!-- COMPLETED -->
+          <div class="column">
+            <div class="column-header">
+              <h3>✅ Completed</h3>
+
+              <button class="add-column-task" data-status="completed">+</button>
+            </div>
+
+            <div class="task-container" id="completed"></div>
+          </div>
+        </main>
+      </section>
     </div>
 
     <!-- ADD TASK MODAL -->
     <div id="taskModal" class="modal">
-
-        <div class="modal-content">
-
-            <div class="modal-header">
-                <h2>Create Task</h2>
-                <span class="close-modal">&times;</span>
-            </div>
-
-            <div class="modal-body">
-
-                <input
-                    type="text"
-                    id="taskTitle"
-                    placeholder="Task Title"
-                />
-
-                <textarea
-                    id="taskDescription"
-                    placeholder="Task Description"
-                ></textarea>
-
-                <div class="subtask-section">
-
-                    <div class="subtask-header">
-                        <h4>Subtasks</h4>
-
-                        <button
-                            id="addSubtaskBtn"
-                            type="button">
-                            + Add
-                        </button>
-                    </div>
-
-                    <div id="subtaskContainer">
-                        <!-- Dynamic Subtasks -->
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div class="modal-footer">
-
-                <button id="saveTaskBtn">
-                    Save Task
-                </button>
-
-            </div>
-
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Create Task</h2>
+          <span class="close-modal">&times;</span>
         </div>
 
+        <div class="modal-body">
+          <input type="text" id="taskTitle" placeholder="Task Title" />
+
+          <textarea
+            id="taskDescription"
+            placeholder="Task Description"
+          ></textarea>
+
+          <div class="subtask-section">
+            <div class="subtask-header">
+              <h4>Subtasks</h4>
+
+              <button id="addSubtaskBtn" type="button">+ Add</button>
+            </div>
+
+            <div id="subtaskContainer">
+              <!-- Dynamic Subtasks -->
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button id="saveTaskBtn">Save Task</button>
+        </div>
+      </div>
     </div>
 
     <!-- TASK DETAILS MODAL -->
     <div id="taskDetailsModal" class="modal">
-
-        <div class="modal-content task-details">
-
-            <div class="modal-header">
-                <h2 id="detailTaskTitle"></h2>
-                <span class="close-details">&times;</span>
-            </div>
-
-            <div class="modal-body">
-
-                <p id="detailTaskDescription"></p>
-
-                <div class="progress-section">
-
-                    <div class="progress-info">
-                        <span>Progress</span>
-                        <span id="detailProgressPercent">
-                            0%
-                        </span>
-                    </div>
-
-                    <div class="progress-bar">
-                        <div
-                            id="detailProgressFill"
-                            class="progress-fill">
-                        </div>
-                    </div>
-
-                </div>
-
-                <div
-                    id="detailSubtaskList"
-                    class="detail-subtasks">
-                </div>
-
-                <div class="task-actions">
-
-                    <button id="deleteTaskBtn">
-                        Delete Task
-                    </button>
-
-                </div>
-
-            </div>
-
+      <div class="modal-content task-details">
+        <div class="modal-header">
+          <h2 id="detailTaskTitle"></h2>
+          <span class="close-details">&times;</span>
         </div>
 
+        <div class="modal-body">
+          <p id="detailTaskDescription"></p>
+
+          <div class="progress-section">
+            <div class="progress-info">
+              <span>Progress</span>
+              <span id="detailProgressPercent"> 0% </span>
+            </div>
+
+            <div class="progress-bar">
+              <div id="detailProgressFill" class="progress-fill"></div>
+            </div>
+          </div>
+
+          <div id="detailSubtaskList" class="detail-subtasks"></div>
+
+          <div class="task-actions">
+            <button id="deleteTaskBtn">Delete Task</button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <script src="script.js"></script>
-
-</body>
+  </body>
 </html>
