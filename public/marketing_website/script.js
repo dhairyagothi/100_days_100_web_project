@@ -106,5 +106,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
 });
 
-});
 
+const aboutBtn = document.querySelector(".about-btn");
+
+aboutBtn.addEventListener("click", function () {
+    document.querySelector("#about").scrollIntoView({
+        behavior: "smooth"
+    });
+});
