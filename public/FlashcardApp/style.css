@@ -6,12 +6,16 @@
   --bg:#f4f7fb;
   --card:#ffffff;
   --text:#222;
+  --nav-bg: #4f46e5;
+  --shadow: rgba(0,0,0,0.1);
 }
 
 .dark{
   --bg:#111827;
   --card:#1f2937;
-  --text:white;
+  --text:#f3f4f6;
+  --nav-bg: #1f2937;
+  --shadow: rgba(0,0,0,0.3);
 }
 
 *{
@@ -23,44 +27,88 @@
 body{
   background:var(--bg);
   color:var(--text);
-  font-family:Segoe UI,sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   min-height:100vh;
   display:flex;
   justify-content:center;
   align-items:center;
-  transition:.3s;
+  transition: background 0.3s, color 0.3s;
+  padding: 20px;
 }
 
 .container{
- width: 95%;
- max-width: 700px;
+  width: 95%;
+  max-width: 700px;
+  margin: 0 auto;
 }
 
+/* ========== NAVIGATION ========== */
 .top-bar{
   display:flex;
-  left: 0;
-  background-color: #06b6d4;
   justify-content:space-between;
   align-items:center;
-  margin-bottom:20px;
-}
-a{
-  margin-left: 20px;
-  margin-right: 20px;
-  text-decoration: none;
-  color: #fff;
-}
-a:hover{
-  background-color: #4f46e5;
-  border-radius: 20px;
-}
-#theme-toggle{
-  padding:10px 15px;
-  border:none;
-  border-radius:10px;
-  cursor:pointer;
+  background: var(--nav-bg);
+  padding: 12px 20px;
+  border-radius: 16px;
+  margin-bottom: 25px;
+  flex-wrap: wrap;
+  gap: 10px;
+  transition: background 0.3s;
+  box-shadow: 0 4px 12px var(--shadow);
 }
 
+.top-bar h1 {
+  color: white;
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin: 0;
+  flex: 1;
+  text-align: center;
+}
+
+.nav-links {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.nav-links a {
+  color: rgba(255,255,255,0.9);
+  text-decoration: none;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  transition: all 0.3s;
+  font-weight: 500;
+}
+
+.nav-links a:hover {
+  background: rgba(255,255,255,0.2);
+  transform: translateY(-1px);
+}
+
+.nav-links a.active {
+  background: rgba(255,255,255,0.25);
+}
+
+#theme-toggle {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  background: rgba(255,255,255,0.15);
+  color: white;
+  font-size: 1.1rem;
+  transition: all 0.3s;
+  min-width: 44px;
+}
+
+#theme-toggle:hover {
+  background: rgba(255,255,255,0.3);
+  transform: scale(1.05);
+}
+
+/* ========== STATS ========== */
 .stats{
   display:grid;
   grid-template-columns:repeat(3,1fr);
@@ -70,36 +118,60 @@ a:hover{
 
 .stat{
   background:var(--card);
-  padding:15px;
+  padding:15px 10px;
   border-radius:15px;
   text-align:center;
-  box-shadow:0 8px 20px rgba(0,0,0,.1);
+  box-shadow:0 8px 20px var(--shadow);
+  transition: background 0.3s, box-shadow 0.3s;
 }
 
+.stat h3 {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: 0.7;
+  margin-bottom: 5px;
+}
+
+.stat span {
+  font-size: 1.8rem;
+  font-weight: bold;
+  display: block;
+}
+
+/* ========== PROGRESS ========== */
 .progress-container{
   width:100%;
   height:12px;
   background:#ddd;
   border-radius:10px;
   overflow:hidden;
-  margin-bottom:10px;
+  margin-bottom:8px;
+}
+
+.dark .progress-container {
+  background: #374151;
 }
 
 #progress-bar{
   width:0%;
   height:100%;
   background:linear-gradient(90deg,#4f46e5,#06b6d4);
-  transition:.4s;
+  transition:width 0.4s ease;
 }
 
 .progress-text{
   text-align:center;
   margin-bottom:20px;
+  font-size: 0.95rem;
+  opacity: 0.8;
 }
 
+/* ========== FLASHCARD ========== */
 .flashcard-wrapper{
   perspective:1000px;
   height:350px;
+  margin-bottom: 20px;
 }
 
 .flashcard{
@@ -107,7 +179,7 @@ a:hover{
   height:100%;
   position:relative;
   transform-style:preserve-3d;
-  transition:.7s;
+  transition:transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   cursor:pointer;
 }
 
@@ -121,18 +193,30 @@ a:hover{
   height:100%;
   backface-visibility:hidden;
   border-radius:20px;
-  padding:30px;
+  padding:30px 20px;
   display:flex;
   flex-direction:column;
   justify-content:center;
   align-items:center;
   text-align:center;
-  box-shadow:0 15px 40px rgba(0,0,0,.15);
+  box-shadow:0 15px 40px var(--shadow);
+  transition: background 0.3s;
 }
 
 .card-front{
   background:linear-gradient(135deg,#4f46e5,#06b6d4);
   color:white;
+}
+
+.card-front h2 {
+  font-size: 2.2rem;
+  margin-bottom: 10px;
+  word-break: break-word;
+}
+
+.card-front small {
+  opacity: 0.8;
+  font-size: 0.9rem;
 }
 
 .card-back{
@@ -141,32 +225,72 @@ a:hover{
   transform:rotateY(180deg);
 }
 
+.card-back h3 {
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  opacity: 0.9;
+  margin-bottom: 10px;
+}
+
+#word-definition {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+
 #word-example{
-  margin:15px 0;
   font-style:italic;
+  opacity: 0.9;
+  font-size: 0.95rem;
+  margin-bottom: 15px;
+  padding: 0 10px;
 }
 
 #audio-btn{
-  padding:10px 18px;
+  padding:10px 20px;
   border:none;
   border-radius:10px;
   cursor:pointer;
+  background: rgba(255,255,255,0.2);
+  color: white;
+  font-size: 0.95rem;
+  transition: all 0.3s;
+  backdrop-filter: blur(5px);
 }
 
+#audio-btn:hover {
+  background: rgba(255,255,255,0.35);
+  transform: scale(1.05);
+}
+
+/* ========== CONTROLS ========== */
 .controls{
-  display:flex;
+  display:grid;
+  grid-template-columns: 1fr 1.5fr 1.5fr;
   gap:10px;
-  margin-top:20px;
+  margin-top:5px;
 }
 
 .controls button{
-  flex:1;
-  padding:14px;
+  padding:14px 10px;
   border:none;
   border-radius:12px;
   color:white;
   cursor:pointer;
   font-weight:bold;
+  font-size: 0.9rem;
+  transition: all 0.3s;
+  box-shadow: 0 4px 12px var(--shadow);
+}
+
+.controls button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px var(--shadow);
+}
+
+.controls button:active {
+  transform: translateY(0);
 }
 
 .success{
@@ -181,72 +305,307 @@ a:hover{
   background:#6b7280;
 }
 
-h1 {
+/* ========== CARDS GRID PAGE ========== */
+.page-title {
   text-align: center;
-  font-size: 2rem;
+  font-size: 1.8rem;
   margin-bottom: 25px;
-  color: #0f172a;
+  color: var(--text);
+  transition: color 0.3s;
 }
-
 
 .cards-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 25px;
-  padding: 10px;
+  gap: 20px;
+  padding: 5px;
 }
 
-
-.card {
-  background: #99e2ef ;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+.card-item {
+  background: var(--card);
+  border-radius: 16px;
+  box-shadow: 0 4px 16px var(--shadow);
   padding: 20px;
   transition: all 0.3s ease;
   position: relative;
-  overflow: hidden;
+  border-left: 4px solid var(--primary);
+  transition: background 0.3s, box-shadow 0.3s, transform 0.3s;
 }
 
-.card:hover {
+.card-item:hover {
   transform: translateY(-6px);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 8px 28px var(--shadow);
 }
 
-
-.card h3 {
+.card-item h3 {
   font-size: 1.3rem;
-  color: #0f172a;
+  color: var(--text);
   margin-bottom: 10px;
+  word-break: break-word;
 }
 
-.card p {
-  font-size: 0.95rem;
-  line-height: 1.5;
-  color: #334155;
+.card-item p {
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: var(--text);
+  opacity: 0.85;
   margin: 6px 0;
 }
 
-.card strong {
-  color: #1e293b;
+.card-item strong {
+  color: var(--text);
+  opacity: 0.7;
 }
 
-.card em {
-  color: #475569;
+.card-item em {
+  opacity: 0.7;
+  font-style: italic;
 }
 
-
-.audio-btn {
+.card-item .audio-btn {
   margin-top: 12px;
-  padding: 8px 14px;
-  background: #2563eb;
+  padding: 8px 16px;
+  background: var(--primary);
   color: #fff;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
-  font-size: 0.9rem;
-  transition: background 0.3s ease;
+  font-size: 0.85rem;
+  transition: all 0.3s;
 }
 
-.audio-btn:hover {
-  background: #1e40af;
+.card-item .audio-btn:hover {
+  background: var(--secondary);
+  transform: scale(1.05);
+}
+
+/* ========== EMPTY STATE ========== */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text);
+  opacity: 0.7;
+}
+
+.empty-state h2 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+/* ========== RESPONSIVE ========== */
+/* Tablets and small laptops */
+@media (max-width: 768px) {
+  .container {
+    width: 100%;
+    padding: 0 5px;
+  }
+
+  .top-bar {
+    padding: 10px 15px;
+    border-radius: 12px;
+  }
+
+  .top-bar h1 {
+    font-size: 1.1rem;
+  }
+
+  .nav-links a {
+    padding: 4px 10px;
+    font-size: 0.8rem;
+  }
+
+  #theme-toggle {
+    padding: 6px 10px;
+    font-size: 1rem;
+    min-width: 38px;
+  }
+
+  .flashcard-wrapper {
+    height: 300px;
+  }
+
+  .card-front h2 {
+    font-size: 1.8rem;
+  }
+
+  #word-definition {
+    font-size: 1rem;
+  }
+
+  .controls {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .controls button {
+    padding: 12px 8px;
+    font-size: 0.8rem;
+  }
+
+  .stats {
+    gap: 10px;
+  }
+
+  .stat span {
+    font-size: 1.5rem;
+  }
+
+  .cards-grid {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 15px;
+  }
+}
+
+/* Mobile phones */
+@media (max-width: 480px) {
+  body {
+    padding: 10px;
+  }
+
+  .top-bar {
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 10px 12px;
+    gap: 6px;
+  }
+
+  .top-bar h1 {
+    font-size: 0.95rem;
+    order: 2;
+    flex: 0 0 100%;
+    text-align: center;
+  }
+
+  .nav-links {
+    order: 1;
+    flex: 1;
+  }
+
+  #theme-toggle {
+    order: 3;
+    padding: 5px 8px;
+    font-size: 0.9rem;
+  }
+
+  .nav-links a {
+    font-size: 0.75rem;
+    padding: 4px 8px;
+  }
+
+  .stats {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+  }
+
+  .stat {
+    padding: 10px 5px;
+    border-radius: 10px;
+  }
+
+  .stat h3 {
+    font-size: 0.6rem;
+  }
+
+  .stat span {
+    font-size: 1.2rem;
+  }
+
+  .flashcard-wrapper {
+    height: 260px;
+  }
+
+  .card-face {
+    padding: 20px 15px;
+    border-radius: 16px;
+  }
+
+  .card-front h2 {
+    font-size: 1.5rem;
+  }
+
+  .card-front small {
+    font-size: 0.75rem;
+  }
+
+  #word-definition {
+    font-size: 0.9rem;
+  }
+
+  #word-example {
+    font-size: 0.8rem;
+  }
+
+  #audio-btn {
+    padding: 8px 14px;
+    font-size: 0.8rem;
+  }
+
+  .controls {
+    grid-template-columns: 1fr 1.2fr 1.2fr;
+    gap: 6px;
+  }
+
+  .controls button {
+    padding: 10px 6px;
+    font-size: 0.7rem;
+    border-radius: 10px;
+  }
+
+  .progress-text {
+    font-size: 0.8rem;
+    margin-bottom: 12px;
+  }
+
+  .page-title {
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+  }
+
+  .cards-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 0;
+  }
+
+  .card-item {
+    padding: 15px;
+  }
+
+  .card-item h3 {
+    font-size: 1.1rem;
+  }
+
+  .card-item p {
+    font-size: 0.85rem;
+  }
+}
+
+/* Very small phones */
+@media (max-width: 360px) {
+  .top-bar h1 {
+    font-size: 0.85rem;
+  }
+
+  .nav-links a {
+    font-size: 0.65rem;
+    padding: 3px 6px;
+  }
+
+  .flashcard-wrapper {
+    height: 230px;
+  }
+
+  .card-front h2 {
+    font-size: 1.2rem;
+  }
+
+  .controls {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .controls button {
+    padding: 10px;
+    font-size: 0.75rem;
+  }
 }
