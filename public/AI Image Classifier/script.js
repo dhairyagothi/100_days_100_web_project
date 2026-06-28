@@ -78,29 +78,50 @@ classifyBtn.addEventListener("click", async () => {
             await model.classify(preview);
         resultDiv.innerHTML = "";
         predictions.forEach((prediction, index) => {
-            const confidence =
-                (prediction.probability * 100)
-                    .toFixed(2);
-            resultDiv.innerHTML += `
-            <div
-            class="prediction"
-            style="animation-delay:${index * 0.08}s">
-                <div class="prediction-top">
-                    <div class="class-name">
-                        ${prediction.className}
-                    </div>
-                    <div class="confidence">
-                        ${confidence}%
-                    </div>
-                </div>
-                <div class="bar">
-                    <div
-                    class="fill"
-                    style="width:${confidence}%">
-                    </div>
-                </div>
-            </div>
-            `;
+            const confidence = (
+                prediction.probability * 100
+            ).toFixed(2);
+
+            const predictionCard =
+                document.createElement("div");
+            predictionCard.className = "prediction";
+            predictionCard.style.animationDelay =
+                `${index * 0.08}s`;
+
+            const predictionTop =
+                document.createElement("div");
+            predictionTop.className = "prediction-top";
+
+            const classNameDiv =
+                document.createElement("div");
+            classNameDiv.className = "class-name";
+            classNameDiv.textContent =
+                prediction.className;
+
+            const confidenceDiv =
+                document.createElement("div");
+            confidenceDiv.className = "confidence";
+            confidenceDiv.textContent =
+                `${confidence}%`;
+
+            predictionTop.appendChild(classNameDiv);
+            predictionTop.appendChild(confidenceDiv);
+
+            const bar =
+                document.createElement("div");
+            bar.className = "bar";
+
+            const fill =
+                document.createElement("div");
+            fill.className = "fill";
+            fill.style.width = `${confidence}%`;
+
+            bar.appendChild(fill);
+
+            predictionCard.appendChild(predictionTop);
+            predictionCard.appendChild(bar);
+
+            resultDiv.appendChild(predictionCard);
         });
     } catch (error) {
         resultDiv.innerHTML = `

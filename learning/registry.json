@@ -236,6 +236,63 @@
           "file": "topics/react/react-quiz.md"
         }
       ]
+    },
+    {
+      "id": "nodejs",
+      "title": "Node.js",
+      "icon": "fa-brands fa-node-js",
+      "topics": [
+        {
+          "id": "introduction",
+          "title": "Introduction to Node.js",
+          "file": "topics/nodejs/introduction.md"
+        },
+        {
+          "id": "installing",
+          "title": "Installing Node.js",
+          "file": "topics/nodejs/installing.md"
+        },
+        {
+          "id": "modules-npm",
+          "title": "Modules & npm",
+          "file": "topics/nodejs/modules-npm.md"
+        },
+        {
+          "id": "file-system",
+          "title": "File System Module",
+          "file": "topics/nodejs/file-system.md"
+        },
+        {
+          "id": "event-loop",
+          "title": "Event Loop Basics",
+          "file": "topics/nodejs/event-loop.md"
+        },
+        {
+          "id": "http-server",
+          "title": "Creating an HTTP Server",
+          "file": "topics/nodejs/http-server.md"
+        },
+        {
+          "id": "working-apis",
+          "title": "Working with APIs",
+          "file": "topics/nodejs/working-apis.md"
+        },
+        {
+          "id": "environment-variables",
+          "title": "Environment Variables",
+          "file": "topics/nodejs/environment-variables.md"
+        },
+        {
+          "id": "project-structure",
+          "title": "Node.js Project Structure",
+          "file": "topics/nodejs/project-structure.md"
+        },
+        {
+          "id": "quiz",
+          "title": "🏆 Node.js Quiz",
+          "file": "topics/nodejs/nodejs-quiz.md"
+        }
+      ]
     }
   ]
 }

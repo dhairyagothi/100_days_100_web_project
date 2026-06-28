@@ -4,6 +4,12 @@ const projects = JSON.parse(fs.readFileSync("projects.json", "utf8"));
 
 const README_PATH = "README.md";
 
+const roadmap = {
+  Beginner: "Start with HTML/CSS projects → Move to JavaScript basics",
+  Intermediate: "Build API projects → Learn DOM manipulation → React basics",
+  Advanced: "Build Full Stack applications → Authentication → Deployment",
+};
+
 function getDemoLink(projectPath) {
   if (!projectPath) return "#";
 
@@ -19,6 +25,19 @@ function getDemoLink(projectPath) {
   )}`;
 }
 
+const roadmapSection = [
+  "## 🗺️ Interactive Learning Roadmap",
+  "",
+  "| Level | Recommended Learning Path |",
+  "|-------|----------------------------|",
+];
+
+Object.entries(roadmap).forEach(([level, path]) => {
+  roadmapSection.push(`| ${level} | ${path} |`);
+});
+
+roadmapSection.push("");
+
 const projectTable = [
   "## 📚 All Projects (" + projects.length + " Total)",
   "",
@@ -29,16 +48,18 @@ const projectTable = [
   "",
   "</div>",
   "",
-  "| Day | Project Name | Difficulty | Demo |",
-  "|-----|--------------|------------|------|",
+  "| Day | Project Name | Difficulty | Recommended Next Step | Demo |",
+  "|-----|--------------|------------|-----------------------|------|",
 ];
 
 projects.forEach((project) => {
   const demoLink = getDemoLink(project.projectPath);
 
-  projectTable.push(
-    `| ${project.projectNo} | ${project.projectName} | ${project.difficulty} | [View Demo](${demoLink}) |`,
-  );
+  let recommendation = roadmap[project.difficulty] || "Explore more projects";
+
+projectTable.push(
+  `| ${project.projectNo} | ${project.projectName} | ${project.difficulty} | ${recommendation} | [View Demo](${demoLink}) |`,
+);
 });
 
 const readme = fs.readFileSync(README_PATH, "utf8");
@@ -56,6 +77,8 @@ if (startIndex === -1 || endIndex === -1) {
 
 const updatedReadme =
   readme.substring(0, startIndex) +
+  roadmapSection.join("\n") +
+  "\n\n" +
   projectTable.join("\n") +
   "\n\n" +
   readme.substring(endIndex);

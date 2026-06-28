@@ -1,77 +1,291 @@
+document.addEventListener("DOMContentLoaded", () => {
+  // -----------------------------
+  // ELEMENTS
+  // -----------------------------
+  const fetchBtn = document.getElementById("fetchBtn");
+  const againBtn = document.getElementById("againBtn");
+  const favBtn = document.getElementById("favBtn");
+  const shareBtn = document.getElementById("shareBtn");
+  const completeBtn = document.getElementById("completeBtn");
 
-document.addEventListener('DOMContentLoaded', () => {
-    // DOM Elements
-    const fetchBtn = document.getElementById('fetch-btn');
-    const resultContainer = document.getElementById('result-container');
-    const activityName = document.getElementById('activity-name');
-    const activityType = document.getElementById('activity-type');
-    const activityParticipants = document.getElementById('activity-participants');
-    const activityPrice = document.getElementById('activity-price');
-    const errorMessage = document.getElementById('error-message');
+  const resultBox = document.getElementById("resultBox");
+  const activityName = document.getElementById("activityName");
 
-    // Fetch Activity Logic
-    const fetchActivity = async () => {
-        const category = document.getElementById('category').value;
-        const participants = document.getElementById('participants').value;
-        const budget = document.getElementById('budget').value;
+  const pillType = document.getElementById("pillType");
+  const pillPeeps = document.getElementById("pillPeeps");
+  const pillCost = document.getElementById("pillCost");
 
-        // FIX: Use URL and URLSearchParams to construct the query string safely.
-        const apiUrl = new URL('https://bored.api.lewagon.com/api/activity');
+  const historyList = document.getElementById("historyList");
+  const favList = document.getElementById("favList");
 
-        if (category) apiUrl.searchParams.append('type', category);
-        if (participants) apiUrl.searchParams.append('participants', participants);
+  const completedCountEl = document.getElementById("completedCount");
+  const badges = document.querySelectorAll(".badge");
 
-        if (budget === 'free') {
-            apiUrl.searchParams.append('price', '0');
-        } else if (budget === 'cheap') {
-            apiUrl.searchParams.append('minprice', '0.1');
-            apiUrl.searchParams.append('maxprice', '0.4');
-        } else if (budget === 'expensive') {
-            apiUrl.searchParams.append('minprice', '0.5');
-            apiUrl.searchParams.append('maxprice', '1.0');
-        }
+  const toast = document.getElementById("toast");
+  const themeBtn = document.getElementById("themeBtn");
 
-        fetchBtn.textContent = 'Seeking...';
-        errorMessage.classList.add('hidden');
-        resultContainer.classList.remove('hidden');
+  const category = document.getElementById("category");
+  const participants = document.getElementById("participants");
+  const budget = document.getElementById("budget");
 
-        try {
-            // Fetch using the safely constructed URL
-            const response = await fetch(apiUrl.toString());
-            
-            if (!response.ok) throw new Error('Network response was not ok');
-            
-            const data = await response.json();
+  const searchInput = document.getElementById("activitySearch");
+  const filterCategory = document.getElementById("filterCategory");
+  const filterCost = document.getElementById("filterCost");
+  const resultsCount = document.getElementById("resultsCount");
 
-            if (data.error) {
-                activityName.textContent = "Hold up!";
-                errorMessage.textContent = "We couldn't find an exact match for that vibe. Try tweaking the filters.";
-                errorMessage.classList.remove('hidden');
-                document.querySelector('.pill-container').classList.add('hidden');
-            } else {
-                activityName.textContent = data.activity;
-                activityType.textContent = `Type: ${data.type}`;
-                activityParticipants.textContent = `Peeps: ${data.participants}`;
-                
-                let priceText = "Free";
-                if (data.price > 0 && data.price <= 0.4) priceText = "Cheap";
-                if (data.price > 0.4) priceText = "Pricey";
-                activityPrice.textContent = `Cost: ${priceText}`;
-                
-                document.querySelector('.pill-container').classList.remove('hidden');
-            }
+  const extraCard = document.getElementById("extraCard");
 
-        } catch (error) {
-            console.error('Failed to fetch activity:', error);
-            activityName.textContent = "Signal Lost";
-            errorMessage.textContent = "Could not connect to the network. Take a breather and try again.";
-            errorMessage.classList.remove('hidden');
-            document.querySelector('.pill-container').classList.add('hidden');
-        } finally {
-            fetchBtn.textContent = 'Find Activity';
-        }
-    };
+  // -----------------------------
+  // DATA
+  // -----------------------------
+  const activities = [
+    { activity: "Organize your digital photos", type: "busywork", participants: 1, cost: "free" },
+    { activity: "Cook a local dish", type: "cooking", participants: 1, cost: "cheap" },
+    { activity: "Board game night", type: "social", participants: 4, cost: "cheap" },
+    { activity: "Nature walk", type: "recreational", participants: 1, cost: "free" },
+    { activity: "Stargazing", type: "relaxation", participants: 1, cost: "free" },
+    { activity: "Learn a language", type: "education", participants: 1, cost: "free" },
+    { activity: "DIY project", type: "diy", participants: 1, cost: "cheap" }
+  ];
 
-    // Event Listener
-    fetchBtn.addEventListener('click', fetchActivity);
+  // -----------------------------
+  // STATE
+  // -----------------------------
+  let currentActivity = null;
+
+  let history = JSON.parse(localStorage.getItem("history")) || [];
+  let favourites = JSON.parse(localStorage.getItem("favourites")) || [];
+  let completed = JSON.parse(localStorage.getItem("completed")) || [];
+
+  // -----------------------------
+  // INIT UI
+  // -----------------------------
+  resultBox.hidden = false;
+  activityName.textContent = "Ready! Click 'Find Activity'";
+
+  updateHistory();
+  updateFavourites();
+  updateProgress();
+
+  // -----------------------------
+  // CORE GENERATOR
+  // -----------------------------
+  function generateActivity() {
+    const cat = category.value;
+    const ppl = participants.value;
+    const cost = budget.value;
+
+    const filtered = activities.filter(a => {
+      if (cat && a.type !== cat) return false;
+      if (ppl && a.participants !== parseInt(ppl)) return false;
+      if (cost && a.cost !== cost) return false;
+      return true;
+    });
+
+    const list = filtered.length ? filtered : activities;
+    const chosen = list[Math.floor(Math.random() * list.length)];
+
+    currentActivity = chosen;
+
+    activityName.textContent = chosen.activity;
+
+    pillType.textContent = `Type: ${chosen.type}`;
+    pillPeeps.textContent = `People: ${chosen.participants}`;
+    pillCost.textContent = `Cost: ${chosen.cost}`;
+
+    addToHistory(chosen);
+    showToast("✨ New activity generated!");
+  }
+
+  // -----------------------------
+  // HISTORY
+  // -----------------------------
+  function addToHistory(act) {
+    history.unshift(act);
+    history = history.slice(0, 20);
+    localStorage.setItem("history", JSON.stringify(history));
+    updateHistory();
+  }
+
+  function updateHistory() {
+    historyList.innerHTML = "";
+
+    if (history.length === 0) {
+      historyList.innerHTML = "<li>No history yet</li>";
+      return;
+    }
+
+    history.forEach((h, i) => {
+      const li = document.createElement("li");
+      li.innerHTML = `
+        <span>${h.activity}</span>
+        <small>${h.type}</small>
+      `;
+      historyList.appendChild(li);
+    });
+  }
+
+  // -----------------------------
+  // FAVORITES
+  // -----------------------------
+  function updateFavourites() {
+    favList.innerHTML = "";
+
+    if (favourites.length === 0) {
+      favList.innerHTML = "<li>No favourites yet</li>";
+      return;
+    }
+
+    favourites.forEach(f => {
+      const li = document.createElement("li");
+      li.innerHTML = `<span>${f.activity}</span>`;
+      favList.appendChild(li);
+    });
+  }
+
+  function toggleFavourite() {
+    if (!currentActivity) return;
+
+    const exists = favourites.find(f => f.activity === currentActivity.activity);
+
+    if (exists) {
+      favourites = favourites.filter(f => f.activity !== currentActivity.activity);
+      showToast("Removed from favourites");
+    } else {
+      favourites.push(currentActivity);
+      showToast("Added to favourites ❤️");
+    }
+
+    localStorage.setItem("favourites", JSON.stringify(favourites));
+    updateFavourites();
+  }
+
+  // -----------------------------
+  // COMPLETION SYSTEM
+  // -----------------------------
+  function markComplete() {
+    if (!currentActivity) return;
+
+    if (!completed.includes(currentActivity.activity)) {
+      completed.push(currentActivity.activity);
+      localStorage.setItem("completed", JSON.stringify(completed));
+      showToast("🎉 Marked completed!");
+    } else {
+      showToast("Already completed!");
+    }
+
+    updateProgress();
+  }
+
+  function updateProgress() {
+    completedCountEl.textContent = completed.length;
+
+    badges.forEach(b => {
+      const target = parseInt(b.dataset.target);
+
+      if (completed.length >= target) {
+        b.classList.add("unlocked");
+      }
+    });
+  }
+
+  // -----------------------------
+  // COPY
+  // -----------------------------
+  function copyActivity() {
+    if (!currentActivity) return;
+
+    navigator.clipboard.writeText(currentActivity.activity);
+    showToast("Copied to clipboard 📋");
+  }
+
+  // -----------------------------
+  // TOAST
+  // -----------------------------
+  function showToast(msg) {
+    toast.textContent = msg;
+    toast.classList.add("show");
+
+    setTimeout(() => {
+      toast.classList.remove("show");
+    }, 2500);
+  }
+
+  // -----------------------------
+  // EVENTS
+  // -----------------------------
+  fetchBtn.addEventListener("click", () => {
+    fetchBtn.textContent = "Finding...";
+    setTimeout(() => {
+      generateActivity();
+      fetchBtn.textContent = "Find Activity";
+    }, 300);
+  });
+
+  againBtn.addEventListener("click", generateActivity);
+  favBtn.addEventListener("click", toggleFavourite);
+  shareBtn.addEventListener("click", copyActivity);
+  completeBtn.addEventListener("click", markComplete);
+
+  // -----------------------------
+  // THEME
+  // -----------------------------
+  const savedTheme = localStorage.getItem("theme") || "dark";
+  document.documentElement.setAttribute("data-theme", savedTheme);
+
+  themeBtn.textContent = savedTheme === "dark" ? "🌙" : "☀️";
+
+  themeBtn.addEventListener("click", () => {
+    const current = document.documentElement.getAttribute("data-theme");
+    const next = current === "dark" ? "light" : "dark";
+
+    document.documentElement.setAttribute("data-theme", next);
+    localStorage.setItem("theme", next);
+
+    themeBtn.textContent = next === "dark" ? "🌙" : "☀️";
+
+    showToast(`Switched to ${next} mode`);
+  });
+
+  // -----------------------------
+  // FILTER SYSTEM (history/fav search)
+  // -----------------------------
+  function filterLists() {
+    const query = searchInput.value.toLowerCase();
+    const cat = filterCategory.value;
+    const cost = filterCost.value;
+
+    const activeList =
+      document.querySelector(".tab.active").dataset.tab === "favourites"
+        ? favList
+        : historyList;
+
+    const items = activeList.querySelectorAll("li");
+
+    let visible = 0;
+
+    items.forEach(item => {
+      const text = item.textContent.toLowerCase();
+
+      const match =
+        (!query || text.includes(query)) &&
+        (!cat || text.includes(cat)) &&
+        (!cost || text.includes(cost));
+
+      item.style.display = match ? "flex" : "none";
+      if (match) visible++;
+    });
+
+    resultsCount.textContent = `Showing ${visible} activities`;
+  }
+
+  searchInput.addEventListener("input", filterLists);
+  filterCategory.addEventListener("change", filterLists);
+  filterCost.addEventListener("change", filterLists);
+
+  document.querySelectorAll(".tab").forEach(tab => {
+    tab.addEventListener("click", () => {
+      setTimeout(filterLists, 100);
+    });
+  });
 });

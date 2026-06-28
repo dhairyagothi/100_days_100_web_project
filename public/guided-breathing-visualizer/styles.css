@@ -60,6 +60,44 @@ body {
   margin-top: 0.5rem;
 }
 
+.hidden {
+    display: none;
+}
+
+.custom-pattern-panel {
+    margin-top: 20px;
+    padding: 16px;
+    border-radius: 12px;
+    background: rgba(255,255,255,.08);
+}
+
+.input-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.input-group input {
+    width: 70px;
+    text-align: center;
+}
+
+.validation-message {
+    color: #ff6b6b;
+    margin-top: 10px;
+}
+
+.countdown-container {
+    margin-top: 16px;
+    text-align: center;
+}
+
+#countdownTimer {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
 /* Visualization Canvas Area */
 .visualizer-container {
   display: flex;

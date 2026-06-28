@@ -80,6 +80,25 @@ function animate() {
     requestAnimationFrame(animate);
 }
 
-window.onmousemove = (e) => { mouse.x = e.clientX; mouse.y = e.clientY; };
+window.addEventListener("mousemove", (e) => {
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+});
+
+window.addEventListener("touchmove", (e) => {
+    mouse.x = e.touches[0].clientX;
+    mouse.y = e.touches[0].clientY;
+}, { passive: true });
+
+window.addEventListener("touchstart", (e) => {
+    mouse.x = e.touches[0].clientX;
+    mouse.y = e.touches[0].clientY;
+}, { passive: true });
+
+window.addEventListener("touchend", () => {
+    mouse.x = -1000;
+    mouse.y = -1000;
+});
+
 init();
 animate();

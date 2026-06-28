@@ -1,0 +1,44 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": [
+      "projectNo",
+      "projectName",
+      "projectType",
+      "projectDesc",
+      "techStack",
+      "difficulty",
+      "projectPath"
+    ],
+    "properties": {
+      "projectNo": { "type": "number" },
+      "projectName": { "type": "string" },
+      "projectType": {
+        "type": "string",
+        "enum": [
+          "Game",
+          "Tool",
+          "Clone",
+          "UI",
+          "Animation",
+          "API",
+          "Website",
+          "Backend",
+          "AI",
+          "E-Commerce",
+          "Productivity",
+          "Simulation",
+          "Authentication",
+          "Form",
+          "Music"
+        ]
+      },
+      "projectDesc": { "type": "string" },
+      "techStack": { "type": "array", "items": { "type": "string" } },
+      "difficulty": { "type": "string", "enum": ["beginner", "intermediate", "advanced"] },
+      "projectPath": { "type": "string" }
+    }
+  }
+}
