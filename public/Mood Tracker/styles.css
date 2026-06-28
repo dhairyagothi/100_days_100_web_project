@@ -20,6 +20,7 @@ body.dark {
   display: flex;
   flex-direction: column;
   gap: 14px;
+  overflow-y: auto;
 
   background: rgba(15, 23, 42, 0.9);
   backdrop-filter: blur(18px);
