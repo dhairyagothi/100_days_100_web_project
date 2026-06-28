@@ -398,19 +398,25 @@
           </div>
         </div>
 
-        <div class="filter-toolbar">
-          <select id="techStackFilter" aria-label="Filter by tech stack">
-            <option value="all">Filter by Tech Stack (All)</option>
-            <option value="javascript">JavaScript</option>
-            <option value="css">CSS</option>
-            <option value="html">HTML</option>
-            <option value="react">React</option>
-            <option value="python">Python</option>
-            <option value="typescript">TypeScript</option>
-            <option value="tailwindcss">Tailwind CSS</option>
-          </select>
-          <button id="clearAllFiltersBtn" class="clear-filters-btn" aria-label="Clear all filters">
-            <i class="fas fa-filter-circle-xmark" aria-hidden="true"></i> Clear Filters
+        <div class="filter-toolbar" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+          <div style="display: flex; gap: 15px; align-items: center; flex-wrap: wrap;">
+            <select id="techStackFilter" aria-label="Filter by tech stack">
+              <option value="all">Filter by Tech Stack (All)</option>
+              <option value="javascript">JavaScript</option>
+              <option value="css">CSS</option>
+              <option value="html">HTML</option>
+              <option value="react">React</option>
+              <option value="python">Python</option>
+              <option value="typescript">TypeScript</option>
+              <option value="tailwindcss">Tailwind CSS</option>
+            </select>
+            <button id="clearAllFiltersBtn" class="clear-filters-btn" aria-label="Clear all filters">
+              <i class="fas fa-filter-circle-xmark" aria-hidden="true"></i> Clear Filters
+            </button>
+          </div>
+
+          <button id="toggleBookmarksOnlyBtn" class="btn-stats" aria-label="Show Bookmarked Only">
+            <i class="far fa-star" aria-hidden="true"></i> Show Bookmarked Only ⭐
           </button>
         </div>
 
