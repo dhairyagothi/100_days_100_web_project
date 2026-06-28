@@ -169,6 +169,72 @@ body {
   color: white;
 }
 
+/* Additional Pokémon Type Badge Colors */
+
+.type-normal {
+  background-color: #a8a77a;
+  color: #fff;
+}
+
+.type-fighting {
+  background-color: #c22e28;
+  color: #fff;
+}
+
+.type-flying {
+  background-color: #a98ff3;
+  color: #fff;
+}
+
+.type-ground {
+  background-color: #e2bf65;
+  color: #222;
+}
+
+.type-rock {
+  background-color: #b6a136;
+  color: #fff;
+}
+
+.type-bug {
+  background-color: #a6b91a;
+  color: #fff;
+}
+
+.type-ghost {
+  background-color: #735797;
+  color: #fff;
+}
+
+.type-steel {
+  background-color: #b7b7ce;
+  color: #222;
+}
+
+.type-psychic {
+  background-color: #f95587;
+  color: #fff;
+}
+
+.type-ice {
+  background-color: #96d9d6;
+  color: #222;
+}
+
+.type-dragon {
+  background-color: #6f35fc;
+  color: #fff;
+}
+
+.type-dark {
+  background-color: #705746;
+  color: #fff;
+}
+
+.type-fairy {
+  background-color: #d685ad;
+  color: #fff;
+}
 .error-msg {
   color: #ef4444;
   font-size: 1.2rem;
