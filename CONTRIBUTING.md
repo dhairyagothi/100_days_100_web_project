@@ -213,7 +213,7 @@ Your Name
 ```
 
 ### Step 3: Update Main Project List
-Add your project to the main website by editing `index.js`:
+Add your project to the main website by editing `projects.json`. Do not modify `index.js` directly.
 
 ```javascript
 // Find the data array and add your project
@@ -223,13 +223,13 @@ Add your project to the main website by editing `index.js`:
 
 ## ➕ Adding Your Project to the Project List
 
-Welcome! This section will walk you through how to correctly add your project to the main project list in `index.js`. Following this format carefully ensures your project shows up on the website, works with filters, and links correctly. Don't worry — it's simpler than it looks!
+Welcome! This section will walk you through how to correctly add your project to the main project list in `projects.json`. Following this format carefully ensures your project shows up on the website, works with filters, and links correctly. Don't worry — it's simpler than it looks!
 
 ---
 
 ### 📋 The Project Entry Format
 
-Each project is stored as a single line inside the `PROJECTS` array in `index.js`. Every entry follows this structure:
+Each project is stored as a single line inside the `PROJECTS` array in `projects.json`. Every entry follows this structure:
 
 ```javascript
 ["Day Number", "Project Name", "./public/FolderName/index.html", ["tag1", "tag2"], "Difficulty"]
@@ -390,7 +390,7 @@ Before submitting your pull request, preview your changes locally and verify tha
 
 ---
 
-> **Still unsure?** Look at any existing entry in `index.js` as a reference, or open an issue and the maintainers will be happy to help.
+> **Still unsure?** Look at any existing entry in `projects.json` as a reference, or open an issue and the maintainers will be happy to help.
 
 ### Step 4: Add .gitignore (If needed)
 For projects with dependencies:
