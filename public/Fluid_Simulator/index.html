@@ -27,6 +27,26 @@
             </section>
 
             <section class="control-group">
+                <label class="group-label">Color Controls</label>
+                <div class="color-controls">
+                    <div class="color-picker-wrapper">
+                        <label>Smoke Color</label>
+                        <input type="color" id="smoke-color" value="#38bdf8">
+                    </div>
+                    <div class="color-presets">
+                        <button class="color-preset" style="background:#38bdf8" data-color="#38bdf8"></button>
+                        <button class="color-preset" style="background:#f87171" data-color="#f87171"></button>
+                        <button class="color-preset" style="background:#34d399" data-color="#34d399"></button>
+                        <button class="color-preset" style="background:#fbbf24" data-color="#fbbf24"></button>
+                        <button class="color-preset" style="background:#a78bfa" data-color="#a78bfa"></button>
+                        <button class="color-preset" style="background:#fb923c" data-color="#fb923c"></button>
+                        <button class="color-preset" style="background:#f472b6" data-color="#f472b6"></button>
+                        <button class="color-preset" style="background:#ffffff" data-color="#ffffff"></button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="control-group">
                 <label class="group-label">Simulation Core Metrics</label>
 
                 <div class="slider-item">
@@ -38,6 +58,11 @@
                     <div class="slider-meta"><span>Damping (Fade)</span><span id="val-damping">0.995</span></div>
                     <input type="range" id="slide-damping" min="0.98" max="1.0" step="0.001" value="0.995">
                 </div>
+
+                <div class="slider-item">
+                    <div class="slider-meta"><span>Injection Strength</span><span id="val-strength">350</span></div>
+                    <input type="range" id="slide-strength" min="50" max="800" step="10" value="350">
+                </div>
             </section>
 
             <section class="control-group">
@@ -47,16 +72,21 @@
                     <select id="render-mode">
                         <option value="density">Smoke Density Fields</option>
                         <option value="velocity">Velocity Vectors (Thermal)</option>
+                        <option value="color">Color Intensity</option>
                     </select>
                 </div>
             </section>
 
-            <button id="btn-clear" class="btn danger-btn">🔄 Reset Vector Fields</button>
+            <div class="button-group">
+                <button id="btn-clear" class="btn danger-btn">🔄 Reset Vector Fields</button>
+                <button id="btn-rainbow" class="btn rainbow-btn">🌈 Rainbow Mode</button>
+            </div>
         </aside>
 
         <main class="canvas-viewport">
             <canvas id="fluid-canvas"></canvas>
             <div id="loading-indicator" class="engine-tag">SOLVER ACTIVE: 64x64 GRID</div>
+            <div id="fps-counter" class="engine-tag fps-tag">FPS: 60</div>
         </main>
     </div>
 

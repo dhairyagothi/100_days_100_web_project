@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Design Assets — Animated Cursor</title>
+<meta name="description" content="Download colour palettes, CSS tokens, typography specs, and icon sets from the Animated Cursor design system.">
+<link rel="stylesheet" href="animated-cursor.css">
+<link rel="icon" href="../favv.png" type="image/x-icon" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * { font-family: 'Inter', Arial, sans-serif; }
+  code, pre { font-family: 'JetBrains Mono', monospace; }
+
+  .page-wrapper {
+    position: relative;
+    z-index: 5;
+    width: min(95vw, 1200px);
+    margin: 110px auto 0;
+    padding-bottom: 100px;
+    display: flex;
+    flex-direction: column;
+    gap: 64px;
+    align-items: stretch;
+  }
+
+  /* ── Hero ── */
+  .page-hero { text-align: center; }
+  .page-hero h1 {
+    font-size: clamp(2.2rem, 7vw, 4.5rem);
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 16px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-two), var(--accent-three));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .page-hero p {
+    max-width: 520px;
+    margin: 0 auto;
+    color: rgba(248,251,255,.68);
+    font-size: 1.05rem;
+    line-height: 1.7;
+  }
+
+  /* ── Section title ── */
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+  .section-title .s-icon {
+    width: 42px; height: 42px;
+    border-radius: 13px;
+    background: linear-gradient(135deg, rgba(var(--accent-rgb),.28), rgba(var(--accent-two-rgb),.18));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem;
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+  .section-title h2 {
+    font-size: 1.7rem;
+    font-weight: 800;
+    color: #fff;
+  }
+
+  /* ── Glass panel ── */
+  .glass-panel {
+    background: linear-gradient(135deg, rgba(255,255,255,.09), rgba(255,255,255,.04));
+    border: 1px solid rgba(255,255,255,.12);
+    backdrop-filter: blur(22px);
+    border-radius: 24px;
+    padding: 36px 40px;
+  }
+
+  /* ── Colour palette ── */
+  .palette-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+  }
+  .swatch-card {
+    border-radius: 18px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,.1);
+    transition: transform .25s ease, box-shadow .25s ease;
+    cursor: none;
+  }
+  .swatch-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 16px 48px rgba(0,0,0,.3);
+  }
+  .swatch-color {
+    height: 100px;
+    display: flex;
+    align-items: flex-end;
+    padding: 10px 14px;
+  }
+  .swatch-hex {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .75rem;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 6px;
+    background: rgba(0,0,0,.35);
+    backdrop-filter: blur(6px);
+    color: #fff;
+    cursor: none;
+    transition: background .2s;
+  }
+  .swatch-hex:hover { background: rgba(0,0,0,.6); }
+  .swatch-info {
+    padding: 14px 16px;
+    background: rgba(0,0,0,.22);
+  }
+  .swatch-info h4 { font-size: .9rem; font-weight: 700; color: #fff; margin-bottom: 3px; }
+  .swatch-info p  { font-size: .78rem; color: rgba(255,255,255,.5); }
+
+  /* ── Token table ── */
+  .token-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .88rem;
+  }
+  .token-table th {
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 700;
+    color: rgba(248,251,255,.45);
+    font-size: .75rem;
+    text-transform: uppercase;
+    letter-spacing: .07em;
+    border-bottom: 1px solid rgba(255,255,255,.1);
+  }
+  .token-table td {
+    padding: 13px 16px;
+    color: rgba(248,251,255,.78);
+    border-bottom: 1px solid rgba(255,255,255,.06);
+    vertical-align: middle;
+  }
+  .token-table tr:hover td { background: rgba(255,255,255,.03); }
+  .token-table code {
+    font-family: 'JetBrains Mono', monospace;
+    background: rgba(var(--accent-rgb),.12);
+    color: var(--accent);
+    padding: 2px 8px;
+    border-radius: 5px;
+    font-size: .82rem;
+  }
+  .token-preview {
+    display: inline-block;
+    width: 20px; height: 20px;
+    border-radius: 5px;
+    vertical-align: middle;
+    margin-right: 8px;
+    border: 1px solid rgba(255,255,255,.15);
+  }
+
+  /* ── Typography showcase ── */
+  .type-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+  .type-row {
+    display: flex;
+    align-items: baseline;
+    gap: 28px;
+    padding: 20px 24px;
+    border-radius: 16px;
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.08);
+  }
+  .type-meta { min-width: 180px; flex-shrink: 0; }
+  .type-meta .tag {
+    font-size: .72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--accent-two);
+    display: block;
+    margin-bottom: 4px;
+  }
+  .type-meta code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .78rem;
+    color: rgba(255,255,255,.45);
+  }
+  .type-sample { color: #fff; flex: 1; }
+
+  /* ── Icon grid ── */
+  .icon-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 14px;
+  }
+  .icon-chip {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 18px 10px;
+    border-radius: 14px;
+    background: rgba(255,255,255,.05);
+    border: 1px solid rgba(255,255,255,.1);
+    transition: all .22s ease;
+    cursor: none;
+  }
+  .icon-chip:hover {
+    background: rgba(var(--accent-rgb),.14);
+    border-color: rgba(var(--accent-rgb),.38);
+    transform: translateY(-3px);
+  }
+  .icon-chip i { font-size: 1.4rem; color: var(--accent); }
+  .icon-chip span {
+    font-size: .72rem;
+    font-weight: 600;
+    color: rgba(255,255,255,.5);
+    text-align: center;
+  }
+
+  /* ── Download strip ── */
+  .download-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
+  }
+  .download-card {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 22px 26px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+    border: 1px solid rgba(255,255,255,.11);
+    backdrop-filter: blur(18px);
+    transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+    cursor: none;
+  }
+  .download-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(var(--accent-rgb),.4);
+    box-shadow: 0 12px 40px rgba(0,0,0,.25);
+  }
+  .dl-icon {
+    width: 50px; height: 50px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, rgba(var(--accent-rgb),.28), rgba(var(--accent-two-rgb),.18));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem;
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+  .dl-info h4 { font-size: .95rem; font-weight: 700; color: #fff; margin-bottom: 4px; }
+  .dl-info p  { font-size: .8rem; color: rgba(255,255,255,.5); margin-bottom: 10px; }
+  .dl-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 16px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-two));
+    color: #0a0c14;
+    font-family: inherit;
+    font-size: .8rem;
+    font-weight: 700;
+    border: none;
+    cursor: none;
+    text-decoration: none;
+    transition: transform .2s ease, box-shadow .2s ease;
+  }
+  .dl-btn:hover { transform: translateY(-1px); box-shadow: 0 0 16px rgba(var(--accent-rgb),.38); }
+
+  /* ── Copy toast ── */
+  .toast {
+    position: fixed;
+    bottom: 32px; right: 32px;
+    padding: 14px 22px;
+    border-radius: 14px;
+    background: rgba(16,185,129,.22);
+    border: 1px solid rgba(16,185,129,.4);
+    color: #6effd9;
+    font-weight: 700;
+    font-size: .9rem;
+    display: flex; align-items: center; gap: 10px;
+    z-index: 9999;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: all .3s ease;
+    pointer-events: none;
+  }
+  .toast.show { opacity: 1; transform: translateY(0); }
+
+  /* ── Light theme ── */
+  body.light-theme .page-hero h1 { -webkit-text-fill-color: unset; color: #1e293b; background: none; }
+  body.light-theme .page-hero p  { color: #6b7280; }
+  body.light-theme .section-title h2 { color: #1e293b; }
+  body.light-theme .glass-panel,
+  body.light-theme .download-card { background: rgba(255,255,255,.9); border-color: rgba(0,0,0,.07); box-shadow: 0 6px 24px rgba(0,0,0,.06); }
+  body.light-theme .swatch-info   { background: rgba(255,255,255,.8); }
+  body.light-theme .swatch-info h4 { color: #1e293b; }
+  body.light-theme .swatch-info p  { color: #6b7280; }
+  body.light-theme .type-row { background: #f4f6fa; border-color: rgba(0,0,0,.07); }
+  body.light-theme .type-sample { color: #1e293b; }
+  body.light-theme .type-meta code { color: #9099a8; }
+  body.light-theme .token-table th { color: #9099a8; }
+  body.light-theme .token-table td { color: #374151; }
+  body.light-theme .icon-chip { background: #f4f6fa; border-color: rgba(0,0,0,.08); }
+  body.light-theme .icon-chip span { color: #9099a8; }
+  body.light-theme .dl-info h4 { color: #1e293b; }
+  body.light-theme .dl-info p  { color: #6b7280; }
+</style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+  <a href="animated-cursor.html" class="project-back-button"
+     style="height:40px;text-align:center;margin:20px;border-radius:10px;width:200px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter,system-ui,sans-serif;transition:all 0.2s ease;display:flex;align-items:center;justify-content:center;"
+     onmouseover="this.style.background='#3b82f6';this.style.color='#fff'"
+     onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
+  <div class="logo">Animated Cursor</div>
+  <ul class="nav-links">
+    <li><a href="animated-cursor.html">Home</a></li>
+    <li><a href="cursors.html">Cursors</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <div class="nav-right">
+    <button id="themeToggle" class="theme"><span id="themeIcon">☀️</span></button>
+  </div>
+</nav>
+
+<div class="background"></div>
+<div class="galaxy-glow"></div>
+<canvas id="stars"></canvas>
+<div class="glass-overlay"></div>
+<div class="cursor"></div>
+
+<div class="page-wrapper">
+
+  <!-- Hero -->
+  <div class="page-hero">
+    <h1>Design Assets</h1>
+    <p>Colours, tokens, typography, and icon specs from the Animated Cursor design system — ready to copy or download.</p>
+  </div>
+
+  <!-- ── Colour Palettes ── -->
+  <section>
+    <div class="section-title">
+      <div class="s-icon"><i class="fas fa-palette"></i></div>
+      <h2>Colour Palettes</h2>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:32px;">
+
+      <!-- Galaxy -->
+      <div class="glass-panel">
+        <p style="font-size:.85rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.08em;margin-bottom:20px;">🌌 Galaxy (Default)</p>
+        <div class="palette-grid">
+          <div class="swatch-card">
+            <div class="swatch-color" style="background:#ffd84a;">
+              <span class="swatch-hex" onclick="copyText('#ffd84a', this)">#FFD84A</span>
+            </div>
+            <div class="swatch-info"><h4>Accent</h4><p>--accent</p></div>
+          </div>
+          <div class="swatch-card">
+            <div class="swatch-color" style="background:#57d8ff;">
+              <span class="swatch-hex" onclick="copyText('#57d8ff', this)">#57D8FF</span>
+            </div>
+            <div class="swatch-info"><h4>Accent Two</h4><p>--accent-two</p></div>
+          </div>
+          <div class="swatch-card">
+            <div class="swatch-color" style="background:#ff7ad9;">
+              <span class="swatch-hex" onclick="copyText('#ff7ad9', this)">#FF7AD9</span>
+            </div>
+            <div class="swatch-info"><h4>Accent Three</h4><p>--accent-three</p></div>
+          </div>
+          <div class="swatch-card">
+            <div class="swatch-color" style="background:#321252;">
+              <span class="swatch-hex" onclick="copyText('#321252', this)">#321252</span>
+            </div>
+            <div class="swatch-info"><h4>BG One</h4><p>--bg-one</p></div>
+          </div>
+          <div class="swatch-card">
+            <div class="swatch-color" style="background:#06364b;">
+              <span class="swatch-hex" onclick="copyText('#06364b', this)">#06364B</span>
+            </div>
+            <div class="swatch-info"><h4>BG Two</h4><p>--bg-two</p></div>
+          </div>
+          <div class="swatch-card">
+            <div class="swatch-color" style="background:#05070d;">
+              <span class="swatch-hex" onclick="copyText('#05070d', this)">#05070D</span>
+            </div>
+            <div class="swatch-info"><h4>Page BG</h4><p>--page-bg</p></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Aurora -->
+      <div class="glass-panel">
+        <p style="font-size:.85rem;font-weight:700;color:#7dffca;text-transform:uppercase;letter-spacing:.08em;margin-bottom:20px;">🌿 Aurora</p>
+        <div class="palette-grid">
+          <div class="swatch-card">
+            <div class="swatch-color" style="background:#7dffca;">
+              <span class="swatch-hex" onclick="copyText('#7dffca', this)">#7DFFCA</span>
+            </div>
+            <div class="swatch-info"><h4>Accent</h4><p>--accent</p></div>
+          </div>
+          <div class="swatch-card">
+            <div class="swatch-color" style="background:#8ea7ff;">
+              <span class="swatch-hex" onclick="copyText('#8ea7ff', this)">#8EA7FF</span>
+            </div>
+            <div class="swatch-info"><h4>Accent Two</h4><p>--accent-two</p></div>
+          </div>
+          <div class="swatch-card">
+            <div class="swatch-color" style="background:#ff8ee6;">
+              <span class="swatch-hex" onclick="copyText('#ff8ee6', this)">#FF8EE6</span>
+            </div>
+            <div class="swatch-info"><h4>Accent Three</h4><p>--accent-three</p></div>
+          </div>
+          <div class="swatch-card">
+            <div class="swatch-color" style="background:#073b2d;">
+              <span class="swatch-hex" onclick="copyText('#073b2d', this)">#073B2D</span>
+            </div>
+            <div class="swatch-info"><h4>BG One</h4><p>--bg-one</p></div>
+          </div>
+          <div class="swatch-card">
+            <div class="swatch-color" style="background:#202760;">
+              <span class="swatch-hex" onclick="copyText('#202760', this)">#202760</span>
+            </div>
+            <div class="swatch-info"><h4>BG Two</h4><p>--bg-two</p></div>
+          </div>
+          <div class="swatch-card">
+            <div class="swatch-color" style="background:#03130f;">
+              <span class="swatch-hex" onclick="copyText('#03130f', this)">#03130F</span>
+            </div>
+            <div class="swatch-info"><h4>Page BG</h4><p>--page-bg</p></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Neon -->
+      <div class="glass-panel">
+        <p style="font-size:.85rem;font-weight:700;color:#ff2bd6;text-transform:uppercase;letter-spacing:.08em;margin-bottom:20px;">🌸 Neon</p>
+        <div class="palette-grid">
+          <div class="swatch-card">
+            <div class="swatch-color" style="background:#ff2bd6;">
+              <span class="swatch-hex" onclick="copyText('#ff2bd6', this)">#FF2BD6</span>
+            </div>
+            <div class="swatch-info"><h4>Accent</h4><p>--accent</p></div>
+          </div>
+          <div class="swatch-card">
+            <div class="swatch-color" style="background:#00f5ff;">
+              <span class="swatch-hex" onclick="copyText('#00f5ff', this)">#00F5FF</span>
+            </div>
+            <div class="swatch-info"><h4>Accent Two</h4><p>--accent-two</p></div>
+          </div>
+          <div class="swatch-card">
+            <div class="swatch-color" style="background:#b6ff00;">
+              <span class="swatch-hex" onclick="copyText('#b6ff00', this)">#B6FF00</span>
+            </div>
+            <div class="swatch-info"><h4>Accent Three</h4><p>--accent-three</p></div>
+          </div>
+          <div class="swatch-card">
+            <div class="swatch-color" style="background:#31003f;">
+              <span class="swatch-hex" onclick="copyText('#31003f', this)">#31003F</span>
+            </div>
+            <div class="swatch-info"><h4>BG One</h4><p>--bg-one</p></div>
+          </div>
+          <div class="swatch-card">
+            <div class="swatch-color" style="background:#003b43;">
+              <span class="swatch-hex" onclick="copyText('#003b43', this)">#003B43</span>
+            </div>
+            <div class="swatch-info"><h4>BG Two</h4><p>--bg-two</p></div>
+          </div>
+          <div class="swatch-card">
+            <div class="swatch-color" style="background:#08030d;">
+              <span class="swatch-hex" onclick="copyText('#08030d', this)">#08030D</span>
+            </div>
+            <div class="swatch-info"><h4>Page BG</h4><p>--page-bg</p></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Firefly -->
+      <div class="glass-panel">
+        <p style="font-size:.85rem;font-weight:700;color:#dfff74;text-transform:uppercase;letter-spacing:.08em;margin-bottom:20px;">🦟 Firefly</p>
+        <div class="palette-grid">
+          <div class="swatch-card">
+            <div class="swatch-color" style="background:#dfff74;">
+              <span class="swatch-hex" onclick="copyText('#dfff74', this)">#DFFF74</span>
+            </div>
+            <div class="swatch-info"><h4>Accent</h4><p>--accent</p></div>
+          </div>
+          <div class="swatch-card">
+            <div class="swatch-color" style="background:#4dff8a;">
+              <span class="swatch-hex" onclick="copyText('#4dff8a', this)">#4DFF8A</span>
+            </div>
+            <div class="swatch-info"><h4>Accent Two</h4><p>--accent-two</p></div>
+          </div>
+          <div class="swatch-card">
+            <div class="swatch-color" style="background:#ffbd59;">
+              <span class="swatch-hex" onclick="copyText('#ffbd59', this)">#FFBD59</span>
+            </div>
+            <div class="swatch-info"><h4>Accent Three</h4><p>--accent-three</p></div>
+          </div>
+          <div class="swatch-card">
+            <div class="swatch-color" style="background:#1e3210;">
+              <span class="swatch-hex" onclick="copyText('#1e3210', this)">#1E3210</span>
+            </div>
+            <div class="swatch-info"><h4>BG One</h4><p>--bg-one</p></div>
+          </div>
+          <div class="swatch-card">
+            <div class="swatch-color" style="background:#273300;">
+              <span class="swatch-hex" onclick="copyText('#273300', this)">#273300</span>
+            </div>
+            <div class="swatch-info"><h4>BG Two</h4><p>--bg-two</p></div>
+          </div>
+          <div class="swatch-card">
+            <div class="swatch-color" style="background:#050805;">
+              <span class="swatch-hex" onclick="copyText('#050805', this)">#050805</span>
+            </div>
+            <div class="swatch-info"><h4>Page BG</h4><p>--page-bg</p></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── CSS Tokens ── -->
+  <section>
+    <div class="section-title">
+      <div class="s-icon"><i class="fas fa-code"></i></div>
+      <h2>CSS Design Tokens</h2>
+    </div>
+    <div class="glass-panel" style="overflow-x:auto;">
+      <table class="token-table">
+        <thead>
+          <tr><th>Token</th><th>Value (Galaxy)</th><th>Usage</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>--accent</code></td>
+            <td><span class="token-preview" style="background:#ffd84a;"></span>#FFD84A</td>
+            <td>Primary glow, buttons, highlights</td>
+          </tr>
+          <tr>
+            <td><code>--accent-two</code></td>
+            <td><span class="token-preview" style="background:#57d8ff;"></span>#57D8FF</td>
+            <td>Secondary highlights, borders</td>
+          </tr>
+          <tr>
+            <td><code>--accent-three</code></td>
+            <td><span class="token-preview" style="background:#ff7ad9;"></span>#FF7AD9</td>
+            <td>Tertiary accents, sparkle</td>
+          </tr>
+          <tr>
+            <td><code>--page-bg</code></td>
+            <td><span class="token-preview" style="background:#05070d;border:1px solid rgba(255,255,255,.2);"></span>#05070D</td>
+            <td>Page background</td>
+          </tr>
+          <tr>
+            <td><code>--text-color</code></td>
+            <td><span class="token-preview" style="background:#f8fbff;border:1px solid rgba(0,0,0,.2);"></span>#F8FBFF</td>
+            <td>Primary text</td>
+          </tr>
+          <tr>
+            <td><code>--glow-rgb</code></td>
+            <td>138, 43, 226</td>
+            <td>Galaxy centre glow blob</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ── Typography ── -->
+  <section>
+    <div class="section-title">
+      <div class="s-icon"><i class="fas fa-font"></i></div>
+      <h2>Typography</h2>
+    </div>
+    <div class="glass-panel">
+      <div class="type-grid">
+        <div class="type-row">
+          <div class="type-meta">
+            <span class="tag">Display / H1</span>
+            <code>clamp(2.5rem, 9vw, 5.5rem) · 800</code>
+          </div>
+          <div class="type-sample" style="font-size:clamp(1.4rem,4vw,2.6rem);font-weight:800;line-height:1;">Animated Cursor</div>
+        </div>
+        <div class="type-row">
+          <div class="type-meta">
+            <span class="tag">H2 Section</span>
+            <code>1.9rem · 800</code>
+          </div>
+          <div class="type-sample" style="font-size:1.6rem;font-weight:800;">Design Assets</div>
+        </div>
+        <div class="type-row">
+          <div class="type-meta">
+            <span class="tag">H3 Card Title</span>
+            <code>1.1rem · 700</code>
+          </div>
+          <div class="type-sample" style="font-size:1.1rem;font-weight:700;">Glowing Orb Cursor</div>
+        </div>
+        <div class="type-row">
+          <div class="type-meta">
+            <span class="tag">Body</span>
+            <code>1rem · 400 · lh 1.7</code>
+          </div>
+          <div class="type-sample" style="font-size:1rem;line-height:1.7;color:rgba(248,251,255,.7);">Move around and hover the actions to feel the glowing comet trail. A lightweight, zero-dependency cursor library.</div>
+        </div>
+        <div class="type-row">
+          <div class="type-meta">
+            <span class="tag">Label / Tag</span>
+            <code>.72rem · 700 · uppercase · .08em</code>
+          </div>
+          <div class="type-sample" style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--accent-two);">Animation · UI / UX · Canvas</div>
+        </div>
+        <div class="type-row">
+          <div class="type-meta">
+            <span class="tag">Mono / Code</span>
+            <code>JetBrains Mono · .88rem</code>
+          </div>
+          <div class="type-sample" style="font-family:'JetBrains Mono',monospace;font-size:.88rem;color:var(--accent);">data-cursor="orb"</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Icons ── -->
+  <section>
+    <div class="section-title">
+      <div class="s-icon"><i class="fas fa-icons"></i></div>
+      <h2>Icon Set</h2>
+    </div>
+    <p style="color:rgba(248,251,255,.55);margin-bottom:24px;font-size:.9rem;">Uses <strong style="color:var(--accent-two);">Font Awesome 6.5</strong> — click any icon to copy its class name.</p>
+    <div class="glass-panel">
+      <div class="icon-grid">
+        <div class="icon-chip magnetic-control" onclick="copyText('fa-mouse-pointer', this)"><i class="fas fa-mouse-pointer"></i><span>mouse-pointer</span></div>
+        <div class="icon-chip magnetic-control" onclick="copyText('fa-palette', this)"><i class="fas fa-palette"></i><span>palette</span></div>
+        <div class="icon-chip magnetic-control" onclick="copyText('fa-rocket', this)"><i class="fas fa-rocket"></i><span>rocket</span></div>
+        <div class="icon-chip magnetic-control" onclick="copyText('fa-code', this)"><i class="fas fa-code"></i><span>code</span></div>
+        <div class="icon-chip magnetic-control" onclick="copyText('fa-bolt', this)"><i class="fas fa-bolt"></i><span>bolt</span></div>
+        <div class="icon-chip magnetic-control" onclick="copyText('fa-star', this)"><i class="fas fa-star"></i><span>star</span></div>
+        <div class="icon-chip magnetic-control" onclick="copyText('fa-wand-magic-sparkles', this)"><i class="fas fa-wand-magic-sparkles"></i><span>wand-sparkles</span></div>
+        <div class="icon-chip magnetic-control" onclick="copyText('fa-eye', this)"><i class="fas fa-eye"></i><span>eye</span></div>
+        <div class="icon-chip magnetic-control" onclick="copyText('fa-download', this)"><i class="fas fa-download"></i><span>download</span></div>
+        <div class="icon-chip magnetic-control" onclick="copyText('fa-globe', this)"><i class="fas fa-globe"></i><span>globe</span></div>
+        <div class="icon-chip magnetic-control" onclick="copyText('fa-envelope', this)"><i class="fas fa-envelope"></i><span>envelope</span></div>
+        <div class="icon-chip magnetic-control" onclick="copyText('fa-paper-plane', this)"><i class="fas fa-paper-plane"></i><span>paper-plane</span></div>
+        <div class="icon-chip magnetic-control" onclick="copyText('fa-github', this)"><i class="fab fa-github"></i><span>github</span></div>
+        <div class="icon-chip magnetic-control" onclick="copyText('fa-twitter', this)"><i class="fab fa-twitter"></i><span>twitter</span></div>
+        <div class="icon-chip magnetic-control" onclick="copyText('fa-linkedin', this)"><i class="fab fa-linkedin"></i><span>linkedin</span></div>
+        <div class="icon-chip magnetic-control" onclick="copyText('fa-heart', this)"><i class="fas fa-heart"></i><span>heart</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Downloads ── -->
+  <section>
+    <div class="section-title">
+      <div class="s-icon"><i class="fas fa-file-arrow-down"></i></div>
+      <h2>Download Packs</h2>
+    </div>
+    <div class="download-grid">
+      <div class="download-card magnetic-control">
+        <div class="dl-icon"><i class="fas fa-swatchbook"></i></div>
+        <div class="dl-info">
+          <h4>Colour Palette</h4>
+          <p>All 4 themes as a .css variables file</p>
+          <a href="#" class="dl-btn" onclick="showToast('Palette CSS copied!');return false;"><i class="fas fa-copy"></i> Copy CSS</a>
+        </div>
+      </div>
+      <div class="download-card magnetic-control">
+        <div class="dl-icon"><i class="fas fa-font"></i></div>
+        <div class="dl-info">
+          <h4>Typography Tokens</h4>
+          <p>Font sizes, weights, and line-heights</p>
+          <a href="#" class="dl-btn" onclick="showToast('Typography CSS copied!');return false;"><i class="fas fa-copy"></i> Copy CSS</a>
+        </div>
+      </div>
+      <div class="download-card magnetic-control">
+        <div class="dl-icon"><i class="fas fa-file-code"></i></div>
+        <div class="dl-info">
+          <h4>Full CSS File</h4>
+          <p>Complete animated-cursor.css stylesheet</p>
+          <a href="animated-cursor.css" download class="dl-btn"><i class="fas fa-download"></i> Download</a>
+        </div>
+      </div>
+      <div class="download-card magnetic-control">
+        <div class="dl-icon"><i class="fas fa-file-code"></i></div>
+        <div class="dl-info">
+          <h4>JavaScript File</h4>
+          <p>Complete animated-cursor.js engine</p>
+          <a href="animated-cursor.js" download class="dl-btn"><i class="fas fa-download"></i> Download</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"><i class="fas fa-check-circle"></i><span id="toastMsg">Copied!</span></div>
+
+<script src="animated-cursor.js"></script>
+<script>
+  function copyText(text, el) {
+    navigator.clipboard.writeText(text).then(() => showToast(`Copied: ${text}`));
+  }
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    document.getElementById('toastMsg').textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2200);
+  }
+</script>
+
+<footer class="site-footer">
+  <div class="footer-container">
+    <div class="footer-column">
+      <h3>About Project</h3>
+      <p>Animated Cursor is part of the 100 Web Projects series — exploring creative UI interactions and modern web animations.</p>
+    </div>
+    <div class="footer-column">
+      <h3>Quick Links</h3>
+      <ul>
+        <li><a href="animated-cursor.html">Home</a></li>
+        <li><a href="projects.html">Projects</a></li>
+        <li><a href="docs.html">Docs</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-column">
+      <h3>Resources</h3>
+      <ul>
+        <li><a href="#">GitHub Repository</a></li>
+        <li><a href="design-assets.html">Design Assets</a></li>
+        <li><a href="api-references.html">API References</a></li>
+        <li><a href="community.html">Community Forum</a></li>
+      </ul>
+    </div>
+    <div class="footer-column">
+      <h3>Stay Connected</h3>
+      <div class="social-icons">
+        <a href="#"><i class="fab fa-github"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-linkedin"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+      </div>
+      <p>© 2026 100 Web Projects | Designed by Gayatri Ghogare</p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

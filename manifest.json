@@ -3,7 +3,12 @@
   "short_name": "100WebProjects",
   "description": "A curated archive of frontend experiments — UI systems, motion studies, creative coding, and interactive concepts built with HTML, CSS, and JavaScript.",
   "start_url": "/",
+
   "scope": "/",
+
+  "scope":"/",
+  "id":"/?source=pwa",
+
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#0a0a1a",
@@ -21,6 +26,7 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
+      "purpose":"any maskable"
     },
     {
       "src": "/fav.ico",

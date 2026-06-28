@@ -27,14 +27,21 @@ const ContextProvider = (props) => {
     setLoading(true);
     setShowResult(true);
     let response;
-    if (prompt !== undefined) {
-      response = await main(prompt);
-      setRecentPrompt(prompt);
-    } else {
-      setPrevPrompt((prev) => [...prev, input]);
-      setRecentPrompt(input);
-      response = await main(input);
-    }
+    try {
+  if (prompt !== undefined) {
+    response = await main(prompt);
+    setRecentPrompt(prompt);
+  } else {
+    setPrevPrompt((prev) => [...prev, input]);
+    setRecentPrompt(input);
+    response = await main(input);
+  }
+} catch (error) {
+  console.error(error);
+  setResultData("Something went wrong.");
+  setLoading(false);
+  return;
+}
     let responseArray = response.split("**");
     let newResponse = "";
     for (let i = 0; i < responseArray.length; i++) {
