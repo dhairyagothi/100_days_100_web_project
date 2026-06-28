@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Real-Time Analytics Dashboard</title>
+  <link rel="stylesheet" href="dashboard.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="dashboard-container">
+    <!-- Header -->
+    <header class="dashboard-header">
+      <h1>📊 Real-Time Activity Dashboard</h1>
+      <div class="live-indicator">
+        <span class="live-dot"></span>
+        <span>Live Updates</span>
+        <span id="lastUpdated"></span>
+      </div>
+    </header>
+
+    <!-- Stats Grid -->
+    <section class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon">⭐</div>
+        <div class="stat-info">
+          <span class="stat-value" id="stars">—</span>
+          <span class="stat-label">Stars</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">🍴</div>
+        <div class="stat-info">
+          <span class="stat-value" id="forks">—</span>
+          <span class="stat-label">Forks</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">🐛</div>
+        <div class="stat-info">
+          <span class="stat-value" id="issues">—</span>
+          <span class="stat-label">Open Issues</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">🔄</div>
+        <div class="stat-info">
+          <span class="stat-value" id="prs">—</span>
+          <span class="stat-label">Open PRs</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Charts Grid -->
+    <section class="charts-grid">
+      <div class="chart-card">
+        <h3>📈 Activity Trends</h3>
+        <canvas id="activityChart"></canvas>
+      </div>
+      <div class="chart-card">
+        <h3>📂 Category Distribution</h3>
+        <canvas id="categoryChart"></canvas>
+      </div>
+      <div class="chart-card">
+        <h3>🏷️ Tech Stack Popularity</h3>
+        <canvas id="techStackChart"></canvas>
+      </div>
+      <div class="chart-card">
+        <h3>📊 Difficulty vs Completion</h3>
+        <canvas id="difficultyChart"></canvas>
+      </div>
+    </section>
+
+    <!-- Top Projects -->
+    <section class="top-projects">
+      <h3>🔥 Top Projects</h3>
+      <div id="topProjectsList" class="projects-list"></div>
+    </section>
+  </div>
+
+  <script src="dashboard.js"></script>
+</body>
+</html>
