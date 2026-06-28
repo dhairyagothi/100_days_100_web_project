@@ -16,6 +16,13 @@ h1 {
     font-size: 14px;
 }
 
+#score-board {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #333;
+}
+
 #game-container {
     display: inline-block;
     background: rgb(255, 254, 254);

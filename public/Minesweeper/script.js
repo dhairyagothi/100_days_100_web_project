@@ -2,10 +2,14 @@ const columns = ['A', 'B', 'C', 'D', 'E'];
 let bomblist = [];
 let attemptlist = [];
 let gameOver = false;
+let currentScore = 0;
+let highScore = localStorage.getItem('minesweeperHighScore') || 0;
 
 const boardDiv = document.getElementById('board');
 const messageDiv = document.getElementById('message');
 const restartBtn = document.getElementById('restart-btn');
+const scoreSpan = document.getElementById('score');
+const highScoreSpan = document.getElementById('high-score');
 
 // Generate 4 unique random bomb coordinates
 function generateBombs() {
@@ -76,6 +80,14 @@ function handleCellClick(coord) {
         let count = getBombCount(coord);
         cellElement.innerText = count === 0 ? '' : count;
         
+        currentScore += 10;
+        scoreSpan.innerText = currentScore;
+        if (currentScore > highScore) {
+            highScore = currentScore;
+            localStorage.setItem('minesweeperHighScore', highScore);
+            highScoreSpan.innerText = highScore;
+        }
+        
         if (attemptlist.length === 21) {
             gameOver = true;
             messageDiv.innerText = 'YOU WIN!!!!';
@@ -100,6 +112,9 @@ function initGame() {
     bomblist = [];
     attemptlist = [];
     gameOver = false;
+    currentScore = 0;
+    scoreSpan.innerText = currentScore;
+    highScoreSpan.innerText = highScore;
     messageDiv.innerText = '';
     restartBtn.style.display = 'none';
     boardDiv.innerHTML = ''; 
