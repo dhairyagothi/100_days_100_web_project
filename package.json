@@ -55,4 +55,10 @@
     "projects.json": "npm run validate:projects",
     "*.html": "npx htmlhint"
   }
+  {
+  "scripts": {
+    "create-project": "node scripts/create-project.js",
+    "validate-projects": "node scripts/validate-project.js"
+  }
+}
 }
