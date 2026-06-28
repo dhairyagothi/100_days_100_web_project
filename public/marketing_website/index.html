@@ -12,7 +12,7 @@
 </head>
 
 <body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#f3f5f8;color:#5792f0;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#f3f5f8';this.style.color='#5792f0'">← Back to Home</a>
 
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg sticky-top" id="navbar">
@@ -280,7 +280,7 @@ and high-performing websites that drive real business growth.
         const savedTheme = localStorage.getItem('theme');
         if (savedTheme) {
             root.setAttribute('data-theme', savedTheme);
-            themeToggle.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+            themeToggle.textContent = savedTheme === 'dark' ? '🌙' : '☀️';
         }
 
         themeToggle.addEventListener('click', () => {
@@ -289,7 +289,7 @@ and high-performing websites that drive real business growth.
             
             root.setAttribute('data-theme', newTheme);
             localStorage.setItem('theme', newTheme);
-            themeToggle.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+            themeToggle.textContent = newTheme === 'dark' ? '🌙' : '☀️';
         });
 
         // Smooth Scroll Logic

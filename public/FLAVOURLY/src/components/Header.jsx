@@ -4,6 +4,7 @@ const Header = ({ favoritesCount, showFavorites, setShowFavorites }) => {
   return (
     <div className="top-navbar">
       <div className="nav-bar">
+        {/* Navigate to the home section */}
         <a 
           href="#home" 
           className={`nav-item ${!showFavorites ? 'active' : ''}`}
@@ -14,6 +15,7 @@ const Header = ({ favoritesCount, showFavorites, setShowFavorites }) => {
         >
           HOME
         </a>
+        {/* Navigate to favorites and show the item count */}
         <a 
           href="#favorites" 
           className={`nav-item ${showFavorites ? 'active' : ''}`}
