@@ -3590,3 +3590,121 @@ body.custom-cursor-active .cursor-ring.is-visible {
   border-radius: 10px;
 }
 
+/* ============================================================
+   LAYOUT SWITCHER & LIST VIEW OVERRIDES
+   ============================================================ */
+
+.layout-switcher {
+  display: flex;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 0.25rem;
+  gap: 0.25rem;
+}
+
+.layout-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--t);
+}
+
+.layout-btn:hover {
+  background: var(--bg-surface);
+  color: var(--text-primary);
+}
+
+.layout-btn.active {
+  background: var(--accent-dim);
+  color: var(--accent);
+}
+
+/* List View Overrides */
+.project-grid.view-mode-list {
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+.project-grid.view-mode-list .project-card {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  min-height: auto;
+  padding: 0.75rem 1.25rem;
+  gap: 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+}
+
+.project-grid.view-mode-list .card-preview-image-container {
+  display: none !important;
+}
+
+.project-grid.view-mode-list .card-description {
+  display: none !important;
+}
+
+.project-grid.view-mode-list .card-meta {
+  margin: 0;
+  min-width: 150px;
+  flex-shrink: 0;
+}
+
+.project-grid.view-mode-list .card-name {
+  margin: 0;
+  flex-grow: 1;
+  font-size: 1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.project-grid.view-mode-list .card-tags {
+  margin: 0;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.project-grid.view-mode-list .card-footer {
+  margin: 0;
+  flex-shrink: 0;
+  padding-top: 0;
+  border-top: none;
+  width: auto;
+}
+
+@media (max-width: 768px) {
+  .project-grid.view-mode-list .project-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  
+  .project-grid.view-mode-list .card-meta,
+  .project-grid.view-mode-list .card-name,
+  .project-grid.view-mode-list .card-tags,
+  .project-grid.view-mode-list .card-footer {
+    min-width: 100%;
+    width: 100%;
+  }
+  
+  .project-grid.view-mode-list .card-footer {
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+

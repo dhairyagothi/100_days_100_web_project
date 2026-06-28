@@ -398,20 +398,31 @@
           </div>
         </div>
 
-        <div class="filter-toolbar">
-          <select id="techStackFilter" aria-label="Filter by tech stack">
-            <option value="all">Filter by Tech Stack (All)</option>
-            <option value="javascript">JavaScript</option>
-            <option value="css">CSS</option>
-            <option value="html">HTML</option>
-            <option value="react">React</option>
-            <option value="python">Python</option>
-            <option value="typescript">TypeScript</option>
-            <option value="tailwindcss">Tailwind CSS</option>
-          </select>
-          <button id="clearAllFiltersBtn" class="clear-filters-btn" aria-label="Clear all filters">
-            <i class="fas fa-filter-circle-xmark" aria-hidden="true"></i> Clear Filters
-          </button>
+        <div class="filter-toolbar" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+          <div style="display: flex; gap: 15px; align-items: center; flex-wrap: wrap;">
+            <select id="techStackFilter" aria-label="Filter by tech stack">
+              <option value="all">Filter by Tech Stack (All)</option>
+              <option value="javascript">JavaScript</option>
+              <option value="css">CSS</option>
+              <option value="html">HTML</option>
+              <option value="react">React</option>
+              <option value="python">Python</option>
+              <option value="typescript">TypeScript</option>
+              <option value="tailwindcss">Tailwind CSS</option>
+            </select>
+            <button id="clearAllFiltersBtn" class="clear-filters-btn" aria-label="Clear all filters">
+              <i class="fas fa-filter-circle-xmark" aria-hidden="true"></i> Clear Filters
+            </button>
+          </div>
+          
+          <div class="layout-switcher" id="layoutSwitcher" aria-label="Layout View Toggle">
+            <button class="layout-btn active" data-layout="grid" aria-label="Grid View" title="Grid View">
+              <i class="fas fa-th-large" aria-hidden="true"></i>
+            </button>
+            <button class="layout-btn" data-layout="list" aria-label="List View" title="List View">
+              <i class="fas fa-list" aria-hidden="true"></i>
+            </button>
+          </div>
         </div>
 
         <div class="project-grid" id="projectGrid"></div>

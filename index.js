@@ -2626,3 +2626,63 @@ document
     "click",
     renderRandomProject
   );
+
+/* ============================================================
+   GRID/LIST LAYOUT SWITCHER
+   ============================================================ */
+function initLayoutSwitcher() {
+  const layoutSwitcher = document.getElementById('layoutSwitcher');
+  if (!layoutSwitcher) return;
+
+  const buttons = layoutSwitcher.querySelectorAll('.layout-btn');
+  // Dynamic query so we can just grab all grids in the document
+  
+  let currentLayout = 'grid';
+  try {
+    currentLayout = localStorage.getItem('preferredLayoutMode') || 'grid';
+  } catch (e) {
+    console.warn('Could not access localStorage for layout mode', e);
+  }
+
+  const applyLayout = (mode) => {
+    const grids = document.querySelectorAll('.project-grid');
+    grids.forEach(grid => {
+      if (mode === 'list') {
+        grid.classList.add('view-mode-list');
+      } else {
+        grid.classList.remove('view-mode-list');
+      }
+    });
+
+    buttons.forEach(btn => {
+      if (btn.dataset.layout === mode) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    });
+  };
+
+  // Initial apply
+  applyLayout(currentLayout);
+
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const mode = btn.dataset.layout;
+      applyLayout(mode);
+      try {
+        localStorage.setItem('preferredLayoutMode', mode);
+      } catch (e) {
+        console.warn('Could not save localStorage for layout mode', e);
+      }
+    });
+  });
+  
+  // Re-apply layout if new grids are somehow added or modified,
+  // observe mutations if necessary. But since we toggle class on .project-grid directly,
+  // and innerHTML is just overwritten during renderGrid(), it persists.
+  // However, for safety if elements get replaced, let's export applyLayout.
+  window.applyLayoutMode = () => applyLayout(currentLayout);
+}
+
+document.addEventListener('DOMContentLoaded', initLayoutSwitcher);
