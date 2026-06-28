@@ -175,7 +175,6 @@ pre code {
     background-color: rgba(51, 110, 123);
 }
 #send-btn:focus-visible,
-#prompt-input:focus-visible,
 .input-group-text:focus-visible,
 .copy-btn:focus-visible {
     outline: 3px solid #ffffff;

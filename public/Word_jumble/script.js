@@ -330,3 +330,38 @@ userInputEl.addEventListener("keyup", (e) => {
 });
 
 window.onload = initGame;
+
+// Quit Game
+document.getElementById("quitBtn").addEventListener("click", () => {
+  clearInterval(timer); 
+  alert("Game Over! Thanks for playing.");
+  resetFullGame();
+});
+
+// ==========================
+// Theme Toggle
+// ==========================
+
+const themeToggle = document.getElementById("themeToggle");
+
+const savedTheme = localStorage.getItem("theme") || "dark";
+
+if (savedTheme === "light") {
+  document.body.classList.add("light-theme");
+  themeToggle.textContent = "🌙";
+} else {
+  themeToggle.textContent = "☀️";
+}
+
+themeToggle.addEventListener("click", () => {
+  document.body.classList.toggle("light-theme");
+
+  const isLight = document.body.classList.contains("light-theme");
+
+  themeToggle.textContent = isLight ? "🌙" : "☀️";
+
+  localStorage.setItem(
+    "theme",
+    isLight ? "light" : "dark"
+  );
+});

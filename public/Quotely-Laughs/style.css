@@ -320,6 +320,7 @@
     }
 
     @media(max-width:768px) {
+      .content-grid { gap: 10px; }
       h1 {
         font-size: 2rem;
       }

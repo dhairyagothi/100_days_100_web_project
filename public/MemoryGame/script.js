@@ -46,7 +46,15 @@ document.querySelectorAll('.diff-btn').forEach(btn => {
   });
 });
 
-startBtn.addEventListener('click', startGame);
+// FIX 1: Updated event listener to handle both start and restart
+startBtn.addEventListener('click', () => {
+  if (gameActive) {
+    setupPreview();      // Restart completely if game is active
+  } else {
+    startGame();         // Skip preview / start game
+  }
+});
+
 hintBtn.addEventListener('click', useHint);
 
 document.getElementById('playAgainBtn').addEventListener('click', () => {
@@ -165,6 +173,7 @@ function setupPreview() {
   const cfg = DIFFICULTIES[difficulty];
   victorySound.pause();
   victorySound.currentTime = 0;
+  
   // Cancel any running preview countdown or game timer
   if (previewInterval) {
      clearInterval(previewInterval);
@@ -180,11 +189,7 @@ function setupPreview() {
   moves = 0;
   seconds = 0;
   hintUsed = false;
-const hintBtn = document.getElementById('hintBtn');
-hintBtn.disabled = false;
-hintBtn.textContent = 'Hint';
-
-  gameActive = false;
+  gameActive = false;  // FIX 2: Set gameActive to false for restart
   lockBoard = true;
 
   movesEl.textContent = '0';
@@ -227,6 +232,7 @@ hintBtn.textContent = 'Hint';
   });
   startPreviewCountdown();
 }
+
 /**
  * Initialise and start a fresh game
  */
