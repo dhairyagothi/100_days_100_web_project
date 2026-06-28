@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FocusSprint – Level Up Your Productivity</title>
+  <meta name="description"
+    content="FocusSprint is a gamified productivity platform. Track focus sessions, earn XP, unlock achievements, and grow your virtual garden." />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/notifications.css" />
+  <link rel="stylesheet" href="css/celebrations.css" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet" />
+</head>
+
+<body>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       FIXED BACKGROUND LAYER – cinematic landscape with atmosphere
+       ═══════════════════════════════════════════════════════════════ -->
+  <div class="bg-layer" id="bg-layer">
+    <img src="assets/bg-landscape.png" alt="" class="bg-image" />
+    <div class="bg-fog bg-fog-far" aria-hidden="true"></div>
+    <div class="bg-fog bg-fog-near" aria-hidden="true"></div>
+    <div class="bg-light-rays" aria-hidden="true"></div>
+    <div class="bg-overlay"></div>
+    <div class="bg-atmosphere"></div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       FLOATING PARTICLES – ambient dust/glow
+       ═══════════════════════════════════════════════════════════════ -->
+  <div class="particles" id="particles" aria-hidden="true"></div>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       HERO SECTION – 100vh, dominates first viewport
+       ═══════════════════════════════════════════════════════════════ -->
+  <section id="hero" class="hero" data-reveal>
+    <div class="hero-inner">
+      <!-- Rank badge -->
+      <div class="rank-badge">
+        <span class="rank-icon">⚔️</span>
+        <span class="rank-text">Beginner</span>
+      </div>
+
+      <!-- Title -->
+      <h1 class="hero-title">FOCUSSPRINT</h1>
+
+      <!-- Character profile cluster -->
+      <div class="hero-profile">
+        <!-- Level ring -->
+        <div class="level-ring">
+          <svg viewBox="0 0 140 140" class="level-ring-svg">
+            <circle cx="70" cy="70" r="62" class="ring-track" />
+            <circle cx="70" cy="70" r="62" class="ring-bg" />
+            <circle cx="70" cy="70" r="62" class="ring-fill" style="--ring-pct: 0;" />
+          </svg>
+          <div class="level-ring-text">
+            <span class="level-number">1</span>
+            <span class="level-word">LEVEL</span>
+          </div>
+        </div>
+
+        <!-- Stats column -->
+        <div class="hero-stats-col">
+          <div class="xp-big-number" aria-live="polite"><span data-count="0" class="counter">0</span> <span
+              class="xp-unit">XP</span>
+          </div>
+          <div class="xp-bar-hero">
+            <div class="xp-bar-fill anim-progress" data-progress="0"></div>
+          </div>
+          <div class="xp-to-next">100 XP to Level 2</div>
+
+          <!-- Character stats row -->
+          <div class="char-stats">
+            <div class="char-stat">
+              <span class="char-stat-icon">🔥</span>
+              <span class="char-stat-value">0 Days Streak</span>
+            </div>
+            <div class="char-stat">
+              <span class="char-stat-icon">🌿</span>
+              <span class="char-stat-value">Seed Stage</span>
+            </div>
+          </div>
+
+          <!-- Next rank -->
+          <div class="next-rank">
+            <span class="next-rank-label">NEXT RANK</span>
+            <span class="next-rank-name">Focus Rookie</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <button class="btn-primary btn-glow btn-magnetic" id="btn-start" aria-label="Start a focus session">
+        <span class="btn-text">Start Focus Session</span>
+        <span class="btn-shine"></span>
+      </button>
+
+      <!-- Scroll indicator -->
+      <div class="scroll-cue" aria-hidden="true">
+        <div class="scroll-line"></div>
+        <span>SCROLL</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       BENTO GRID – dense, content-rich, premium layout
+       ═══════════════════════════════════════════════════════════════ -->
+  <div class="bento-wrapper" role="main">
+    <div class="bento-grid">
+
+      <!-- ── XP PROGRESSION (large, spans 2 columns) ───────────── -->
+      <section class="bento-card bento-xp" data-reveal data-tilt>
+        <div class="card-header">
+          <span class="card-icon">✦</span>
+          <h2 class="card-title">XP Progression</h2>
+        </div>
+        <div class="xp-display">
+          <div class="xp-level-big">LEVEL <span class="accent">1</span></div>
+          <div class="xp-numbers">
+            <span class="xp-earned counter" data-count="0">0</span>
+            <span class="xp-slash">/</span>
+            <span class="xp-needed">100 XP</span>
+          </div>
+        </div>
+        <div class="xp-progress-track">
+          <div class="xp-progress-fill anim-progress" data-progress="0"></div>
+          <div class="xp-progress-glow" style="--progress-pct: 0%;"></div>
+        </div>
+        <div class="xp-milestones">
+          <span class="milestone current">Lv 1</span>
+          <span class="milestone future">Lv 2</span>
+          <span class="milestone future">Lv 3</span>
+          <span class="milestone future">Lv 4</span>
+          <span class="milestone future">Lv 5</span>
+        </div>
+      </section>
+
+      <!-- ── STREAK ─────────────────────────────────────────────── -->
+      <section class="bento-card bento-streak" data-reveal data-tilt>
+        <div class="card-header">
+          <span class="card-icon streak-icon-animated">🔥</span>
+          <h2 class="card-title">Streak</h2>
+        </div>
+        <div class="streak-big-number" aria-live="polite">
+          <span class="counter" data-count="0">0</span>
+          <span class="streak-unit">DAYS</span>
+        </div>
+        <div class="streak-bar">
+          <span class="day active">M</span>
+          <span class="day active">T</span>
+          <span class="day active">W</span>
+          <span class="day active">T</span>
+          <span class="day active">F</span>
+          <span class="day">S</span>
+          <span class="day">S</span>
+        </div>
+        <div class="streak-meta">
+          <span>Longest: <strong>0 days</strong></span>
+        </div>
+      </section>
+
+      <!-- ── SESSION + GARDEN BALANCED GRID ────────────────────── -->
+      <div class="focus-garden-layout">
+        <div class="focus-left-stack">
+          <!-- ── FOCUS SESSION ──────────────────────────────────── -->
+          <section class="bento-card bento-session" data-reveal data-tilt>
+            <div class="card-header">
+              <span class="card-icon">◉</span>
+              <h2 class="card-title">New Session</h2>
+            </div>
+            <input type="text" id="session-name" class="session-input" placeholder="Session name…"
+              aria-label="Session name" />
+            <div class="duration-pills" role="group" aria-label="Session duration">
+              <button class="pill" data-min="15" aria-pressed="false">15m</button>
+              <button class="pill selected" data-min="25" aria-pressed="true">25m</button>
+              <button class="pill" data-min="45" aria-pressed="false">45m</button>
+              <button class="pill" data-min="60" aria-pressed="false">60m</button>
+            </div>
+            <button id="btn-start-session" class="btn-primary btn-full" aria-label="Start focus session">Start
+              Session</button>
+          </section>
+
+          <!-- ── TODAY'S QUEST ──────────────────────────────────── -->
+          <section class="bento-card bento-quest" data-reveal data-tilt>
+            <div class="quest-glow"></div>
+            <div class="card-header">
+              <span class="card-icon">⚡</span>
+              <h2 class="card-title">Daily Quest</h2>
+              <span class="card-badge quest-badge">DAILY</span>
+            </div>
+            <div class="quest-body">
+              <p class="quest-objective">Complete a 25-Minute Focus Session</p>
+              <div class="quest-reward">
+                <span class="reward-label">REWARD</span>
+                <span class="reward-value">+50 XP</span>
+              </div>
+            </div>
+            <div class="quest-progress-track" aria-label="Daily quest progress">
+              <div class="quest-progress-fill anim-progress" data-progress="0"></div>
+            </div>
+            <span class="quest-status">0 / 1 Completed</span>
+          </section>
+
+          <!-- ── QUICK STATS ────────────────────────────────────── -->
+          <section class="bento-card bento-quick-stats" data-reveal data-tilt aria-label="Quick stats">
+            <div class="card-header">
+              <span class="card-icon">✧</span>
+              <h2 class="card-title">Quick Stats</h2>
+            </div>
+            <div class="quick-stats-grid">
+              <div class="quick-stat">
+                <span class="quick-stat-label">Level</span>
+                <span class="quick-stat-value quick-level">1</span>
+              </div>
+              <div class="quick-stat">
+                <span class="quick-stat-label">XP</span>
+                <span class="quick-stat-value quick-xp">0</span>
+              </div>
+              <div class="quick-stat">
+                <span class="quick-stat-label">Streak</span>
+                <span class="quick-stat-value quick-streak">0d</span>
+              </div>
+            </div>
+          </section>
+
+          <!-- ── SETTINGS ──────────────────────────────────────── -->
+          <section class="bento-card bento-settings" data-reveal data-tilt aria-label="Settings">
+            <div class="card-header">
+              <span class="card-icon">⚙</span>
+              <h2 class="card-title">Settings</h2>
+            </div>
+            <div class="settings-list">
+              <div class="setting-row" id="setting-sound">
+                <div class="setting-info">
+                  <span class="setting-label">Sound Effects</span>
+                  <span class="setting-desc">Play a chime when sessions complete</span>
+                </div>
+                <button class="setting-toggle" id="btn-toggle-sound" role="switch" aria-checked="true"
+                  aria-label="Toggle sound effects">
+                  <span class="toggle-track">
+                    <span class="toggle-thumb"></span>
+                  </span>
+                </button>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <!-- ── VIRTUAL GARDEN (unchanged showcase) ──────────────── -->
+        <section class="bento-card bento-garden" data-reveal data-tilt>
+          <div class="garden-sparkles" aria-hidden="true"></div>
+          <div class="card-header">
+            <span class="card-icon">❦</span>
+            <h2 class="card-title">Virtual Garden</h2>
+            <span class="card-badge">SIGNATURE</span>
+          </div>
+
+          <div class="growth-timeline" aria-label="Garden stage timeline"></div>
+
+          <div class="garden-stage-showcase">
+            <div class="garden-metrics-panel" aria-label="Garden progress summary">
+              <div class="garden-metric">
+                <span class="garden-stat-label">Current Stage</span>
+                <span class="garden-stat-value garden-current-stage">Seed</span>
+              </div>
+              <div class="garden-metric">
+                <span class="garden-stat-label">Sessions Left</span>
+                <span class="garden-stat-value accent-green garden-sessions-left">5</span>
+              </div>
+              <div class="garden-metric">
+                <span class="garden-stat-label">Growth Points</span>
+                <span class="garden-stat-value garden-growth-points">0</span>
+              </div>
+            </div>
+
+            <div class="garden-illustration" aria-live="polite"></div>
+
+            <div class="garden-description-panel">
+              <span class="garden-panel-kicker">Current Evolution</span>
+              <h3 class="garden-stage-title">Seed Stage</h3>
+              <p class="garden-stage-description">Every great forest begins with a single seed beneath the soil.</p>
+              <div class="garden-stage-message">
+                <span class="garden-message-mark" aria-hidden="true"></span>
+                <span class="garden-tip">Complete sessions to begin cultivation.</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="garden-progress-panel">
+            <div class="garden-progress-copy">
+              <span class="garden-stat-label">Garden Progress</span>
+              <span class="garden-progress-percent">0%</span>
+            </div>
+            <div class="garden-progress-track" aria-label="Progress to next garden stage">
+              <div class="garden-progress-fill anim-progress" data-progress="0"></div>
+              <div class="garden-progress-shimmer"></div>
+            </div>
+            <div class="garden-progress-copy align-right">
+              <span class="garden-stat-label">Next Stage</span>
+              <span class="garden-next-stage">Sprout</span>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- ── ACHIEVEMENTS ───────────────────────────────────────── -->
+      <section class="bento-card bento-achievements" data-reveal aria-label="Achievements">
+        <div class="card-header">
+          <span class="card-icon">🏆</span>
+          <h2 class="card-title">Achievements</h2>
+          <span class="card-count">3 / 8 Unlocked</span>
+        </div>
+        <div class="achievement-grid">
+          <div class="achievement unlocked" data-tooltip="Completed!">
+            <div class="ach-shine"></div>
+            <div class="ach-icon">⚡</div>
+            <div class="ach-name">First Focus</div>
+            <div class="ach-desc">Complete your first session</div>
+          </div>
+          <div class="achievement unlocked" data-tooltip="Completed!">
+            <div class="ach-shine"></div>
+            <div class="ach-icon">🔥</div>
+            <div class="ach-name">On Fire</div>
+            <div class="ach-desc">3-day streak</div>
+          </div>
+          <div class="achievement unlocked" data-tooltip="Completed!">
+            <div class="ach-shine"></div>
+            <div class="ach-icon">💎</div>
+            <div class="ach-name">500 Club</div>
+            <div class="ach-desc">Earn 500 XP</div>
+          </div>
+          <div class="achievement locked">
+            <div class="ach-lock-overlay">🔒</div>
+            <div class="ach-icon">🎯</div>
+            <div class="ach-name">Focus Master</div>
+            <div class="ach-desc">10 sessions in a week</div>
+          </div>
+          <div class="achievement locked">
+            <div class="ach-lock-overlay">🔒</div>
+            <div class="ach-icon">👑</div>
+            <div class="ach-name">Streak King</div>
+            <div class="ach-desc">30-day streak</div>
+          </div>
+          <div class="achievement locked">
+            <div class="ach-lock-overlay">🔒</div>
+            <div class="ach-icon">🌟</div>
+            <div class="ach-name">XP Legend</div>
+            <div class="ach-desc">Earn 5,000 XP</div>
+          </div>
+          <div class="achievement locked">
+            <div class="ach-lock-overlay">🔒</div>
+            <div class="ach-icon">🏔️</div>
+            <div class="ach-name">Summit</div>
+            <div class="ach-desc">Reach Level 10</div>
+          </div>
+          <div class="achievement locked">
+            <div class="ach-lock-overlay">🔒</div>
+            <div class="ach-icon">🌲</div>
+            <div class="ach-name">Forest Lord</div>
+            <div class="ach-desc">Fully grow your garden</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── ANALYTICS (storytelling) ───────────────────────────── -->
+      <section class="bento-card bento-analytics" data-reveal aria-label="Analytics">
+        <div class="card-header">
+          <span class="card-icon">📊</span>
+          <h2 class="card-title">Your Journey</h2>
+        </div>
+        <div class="analytics-row">
+          <div class="analytic">
+            <div class="analytic-desc">Lifetime Focus</div>
+            <div class="analytic-number counter" data-count="12">0</div>
+            <div class="analytic-label">Hours</div>
+          </div>
+          <div class="analytic">
+            <div class="analytic-desc">Sessions Completed</div>
+            <div class="analytic-number counter" data-count="23">0</div>
+            <div class="analytic-label">Total</div>
+          </div>
+          <div class="analytic">
+            <div class="analytic-desc">Avg Session</div>
+            <div class="analytic-number counter" data-count="0">0</div>
+            <div class="analytic-label">Min</div>
+          </div>
+          <div class="analytic">
+            <div class="analytic-desc">Productivity Score</div>
+            <div class="analytic-number counter" data-count="84">0</div>
+            <div class="analytic-label">%</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── RECENT SESSIONS (timeline) ─────────────────────────── -->
+      <section class="bento-card bento-recent" data-reveal>
+        <div class="card-header">
+          <span class="card-icon">⏱</span>
+          <h2 class="card-title">Recent Sessions</h2>
+        </div>
+        <div class="session-timeline">
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="tl-line"></div>
+            <div class="tl-body">
+              <div class="tl-name">Study Math</div>
+              <div class="tl-meta">25 min · <span class="tl-xp">+40 XP</span></div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="tl-line"></div>
+            <div class="tl-body">
+              <div class="tl-name">Read Documentation</div>
+              <div class="tl-meta">45 min · <span class="tl-xp">+65 XP</span></div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="tl-line"></div>
+            <div class="tl-body">
+              <div class="tl-name">Practice DSA</div>
+              <div class="tl-meta">60 min · <span class="tl-xp">+90 XP</span></div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="tl-body">
+              <div class="tl-name">Write Essay</div>
+              <div class="tl-meta">30 min · <span class="tl-xp">+45 XP</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div><!-- /.bento-grid -->
+  </div><!-- /.bento-wrapper -->
+
+  <!-- Footer spacer -->
+  <div style="height: 80px; position: relative; z-index: 2;"></div>
+
+  <script src="js/scroll.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/xp.js"></script>
+  <script src="js/garden.js"></script>
+  <script src="js/streaks.js"></script>
+  <script src="js/achievements.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/timer.js"></script>
+  <script src="js/notifications.js"></script>
+  <script src="js/celebrations.js"></script>
+  <script src="js/analytics.js"></script>
+  <script src="js/app.js"></script>
+</body>
+
+</html>

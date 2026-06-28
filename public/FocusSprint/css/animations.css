@@ -1,0 +1,110 @@
+/* ════════════════════════════════════════════════════════════════════
+   FocusSprint — Keyframe Animations (Polish Pass)
+   ════════════════════════════════════════════════════════════════════ */
+
+/* ── Hero entrance ───────────────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Button shine sweep ──────────────────────────────────────────── */
+@keyframes shine {
+  0%   { left: -75%; }
+  20%  { left: 125%; }
+  100% { left: 125%; }
+}
+
+/* ── Achievement shine on hover ──────────────────────────────────── */
+@keyframes achShine {
+  from { left: -100%; }
+  to   { left: 200%; }
+}
+
+/* ── Streak flame pulse ──────────────────────────────────────────── */
+@keyframes flamePulse {
+  0%, 100% { transform: scale(1) translateY(0); }
+  50%      { transform: scale(1.18) translateY(-3px); }
+}
+
+/* ── Scroll indicator ────────────────────────────────────────────── */
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.3; transform: scaleY(1); }
+  50%      { opacity: 1;   transform: scaleY(1.4); }
+}
+
+/* ── Floating particles ──────────────────────────────────────────── */
+@keyframes particleDrift {
+  0%   { transform: translate(0, 0)        scale(1);   opacity: 0; }
+  10%  { opacity: 0.42; }
+  90%  { opacity: 0.34; }
+  100% { transform: translate(var(--dx), var(--dy)) scale(0.3); opacity: 0; }
+}
+
+@keyframes fireflyDrift {
+  0%   { transform: translate(0, 0) scale(0.7); opacity: 0; }
+  18%  { opacity: 0.22; }
+  52%  { transform: translate(calc(var(--dx) * 0.45), calc(var(--dy) * 0.35)) scale(1.18); }
+  82%  { opacity: 0.18; }
+  100% { transform: translate(var(--dx), var(--dy)) scale(0.5); opacity: 0; }
+}
+
+@keyframes fogDrift {
+  0%   { transform: translate3d(-3%, 1%, 0) scale(1.04); }
+  100% { transform: translate3d(3%, -1%, 0) scale(1.08); }
+}
+
+@keyframes lightRayDrift {
+  0%   { transform: translate3d(-1.5%, -1%, 0) skewX(-1deg); }
+  100% { transform: translate3d(1.5%, 1%, 0) skewX(1deg); }
+}
+
+/* ── Garden glow (active stage) ──────────────────────────────────── */
+@keyframes gardenGlow {
+  0%, 100% { box-shadow: 0 0 20px rgba(200,148,58,0.25), 0 0 40px rgba(200,148,58,0.08); }
+  50%      { box-shadow: 0 0 30px rgba(200,148,58,0.45), 0 0 60px rgba(200,148,58,0.15); }
+}
+
+/* ── Garden stage pulse ring ─────────────────────────────────────── */
+@keyframes stagePulse {
+  0%   { opacity: 0.6; transform: scale(1); }
+  100% { opacity: 0;   transform: scale(1.6); }
+}
+
+/* ── Garden sparkle particles ────────────────────────────────────── */
+@keyframes sparkle {
+  0%   { opacity: 0; transform: translate(0, 0) scale(0.5); }
+  20%  { opacity: 1; }
+  80%  { opacity: 1; }
+  100% { opacity: 0; transform: translate(var(--sdx), var(--sdy)) scale(0); }
+}
+
+/* ── Garden progress shimmer ─────────────────────────────────────── */
+@keyframes shimmer {
+  0%   { transform: translateX(-100%); }
+  50%  { transform: translateX(100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* ── Achievement stagger-in ──────────────────────────────────────── */
+@keyframes staggerIn {
+  from { opacity: 0; transform: translateY(16px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ── Background atmospheric drift ────────────────────────────────── */
+@keyframes atmosphereDrift {
+  0%   { transform: translate(0, 0) scale(1); }
+  50%  { transform: translate(15px, -10px) scale(1.02); }
+  100% { transform: translate(-10px, 8px) scale(1); }
+}
+
+/* ── Quest glow pulse ────────────────────────────────────────────── */
+@keyframes questPulse {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50%      { opacity: 0.8; transform: scale(1.05); }
+}
