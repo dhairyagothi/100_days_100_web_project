@@ -1,120 +1,145 @@
-      const clipPaths = {
-        circle: '',
-        square: '',
-        triangle: 'polygon(50% 0%, 0% 100%, 100% 100%)',
-        star: 'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)',
-      };
+const PLANETS = {
+  moon: { multiplier: 0.16 },
+  mars: { multiplier: 0.38 },
+  earth: { multiplier: 1.0 },
+  saturn: { multiplier: 1.06 },
+  jupiter: { multiplier: 2.53 }
+};
 
-      /* ── Gravity calculation ────────────────────────────────────────
-         BASE_GRAVITY is the raw pixel-per-frame² acceleration for Earth.
-         Each planet's actual gravity = BASE_GRAVITY × planet.multiplier.
-         This matches the original Earth gravity value of 0.5 exactly.
-      ────────────────────────────────────────────────────────────────── */
-      const BASE_GRAVITY = 0.5;
+const BASE_GRAVITY = 0.5;
 
-      /* Active physics state — starts on Earth */
-      let currentPlanet = PLANETS.earth;
-      let gravity = BASE_GRAVITY * currentPlanet.multiplier; // 0.5
+let currentPlanet = PLANETS.earth;
+let gravity = BASE_GRAVITY * currentPlanet.multiplier;
 
-      const ball     = document.getElementById('ball');
-      const area     = document.getElementById('playArea');
-      const colorPicker = document.getElementById('ballColor');
-      const shapeSelect = document.getElementById('ballShape');
+const ball = document.getElementById("ball");
+const area = document.getElementById("playArea");
+const colorPicker = document.getElementById("ballColor");
+const shapeSelect = document.getElementById("ballShape");
 
-      let x = 180, y = 180, vx = 0, vy = 0;
-      let bouncing = true;
+let x = 180;
+let y = 180;
+let vx = 0;
+let vy = 0;
 
-      /* ── Physics loop ───────────────────────────────────────────────
-         gravity is re-read from the live variable each frame, so
-         switching planets takes effect immediately with no restart.
-      ────────────────────────────────────────────────────────────────── */
-      function update() {
-        /* Apply gravity to vertical velocity */
-        vy += gravity;
-        x += vx;
-        y += vy;
-        if (y + 40 > 400) {
-          y = 400 - 40;
-          vy *= -0.7;
-        }
-        if (y < 0) {
-          y = 0;
+const BALL_SIZE = 40;
 
-          // Bounce away from ceiling
-          vy = Math.abs(vy) * 0.7;
+function update() {
+  const areaWidth = area.clientWidth;
+  const areaHeight = area.clientHeight;
 
-          // Prevent repeated ceiling collisions when gravity is reversed
-          if (gravity < 0 && vy < 1.5) {
-            vy = 1.5;
-          }
-        }
-        if (x + 40 > 400) {
-          x = 400 - 40;
-          vx *= -0.7;
-        }
-        if (x < 0) {
-          x = 0;
-          vx *= -0.7;
-        }
-        ball.style.left = x + 'px';
-        ball.style.top  = y + 'px';
-        if (bouncing) requestAnimationFrame(update);
-      }
+  vy += gravity;
 
-      /* Click the ball to launch it upward with a random horizontal kick */
-      ball.addEventListener('click', () => {
-        vy = -10;
-        vx = (Math.random() - 0.5) * 10;
-      });
+  // Prevent insane speeds
+  vy = Math.max(-20, Math.min(vy, 20));
 
-      /* Reset restores position and velocity; planet/color/shape unchanged */
-      function resetBall() {
-        x = 180; y = 180; vx = 0; vy = 0;
-      }
+  x += vx;
+  y += vy;
 
-      /* ── Planet selector ────────────────────────────────────────────
-         Clicking a planet button updates gravity and bounce immediately.
-         Active button styling reflects the current selection.
-      ────────────────────────────────────────────────────────────────── */
-      document.querySelectorAll('.planet-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const key = btn.dataset.planet;
-          currentPlanet = PLANETS[key];
+  // Floor collision
+  if (y + BALL_SIZE >= areaHeight) {
+    y = areaHeight - BALL_SIZE;
 
-          /* Recalculate live gravity from multiplier */
-          gravity = BASE_GRAVITY * currentPlanet.multiplier;
+    if (Math.abs(vy) < 1) {
+      vy = 0;
+    } else {
+      vy *= -0.75;
+    }
+  }
 
-          /* Update active highlight */
-          document.querySelectorAll('.planet-btn').forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-        });
-      });
+  // Ceiling collision
+  if (y <= 0) {
+    y = 0;
+    vy = Math.abs(vy) * 0.75;
+  }
 
-      /* ── Ball colour ────────────────────────────────────────────────
-         Color picker input fires on every drag — instant update.
-      ────────────────────────────────────────────────────────────────── */
-      colorPicker.addEventListener('input', () => {
-        ball.style.background = colorPicker.value;
-      });
-      ball.style.background = colorPicker.value;
+  // Right wall
+  if (x + BALL_SIZE >= areaWidth) {
+    x = areaWidth - BALL_SIZE;
+    vx *= -0.75;
+  }
 
-      /* ── Ball shape ─────────────────────────────────────────────────
-         CSS clip-path handles triangle and star; border-radius for
-         circle and square. No canvas needed.
-      ────────────────────────────────────────────────────────────────── */
-      const CLIP_PATHS = {
-        circle:   '',
-        square:   '',
-        triangle: 'polygon(50% 0%, 0% 100%, 100% 100%)',
-        star:     'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)',
-      };
+  // Left wall
+  if (x <= 0) {
+    x = 0;
+    vx *= -0.75;
+  }
 
-      function applyShape(shape) {
-        ball.style.borderRadius = shape === 'circle' ? '50%' : '0';
-        ball.style.clipPath     = CLIP_PATHS[shape];
-      }
+  ball.style.left = `${x}px`;
+  ball.style.top = `${y}px`;
 
-      shapeSelect.addEventListener('change', () => applyShape(shapeSelect.value));
+  requestAnimationFrame(update);
+}
 
-      /* Kick off the animation loop */
-      update();
+// Ball jump
+ball.addEventListener("click", () => {
+  vy = -10;
+  vx = (Math.random() - 0.5) * 8;
+});
+
+// Reset button
+function resetBall() {
+  x = area.clientWidth / 2 - BALL_SIZE / 2;
+  y = area.clientHeight / 2 - BALL_SIZE / 2;
+  vx = 0;
+  vy = 0;
+}
+
+window.resetBall = resetBall;
+
+// Planet selector
+document.querySelectorAll(".planet-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const planetName = btn.dataset.planet;
+
+    if (!PLANETS[planetName]) return;
+
+    currentPlanet = PLANETS[planetName];
+    gravity = BASE_GRAVITY * currentPlanet.multiplier;
+
+    document.querySelectorAll(".planet-btn").forEach(button => {
+      button.classList.remove("active");
+    });
+
+    btn.classList.add("active");
+  });
+});
+
+// Color picker
+colorPicker.addEventListener("input", () => {
+  ball.style.backgroundColor = colorPicker.value;
+});
+
+// Shape changer
+function applyShape(shape) {
+  ball.style.clipPath = "";
+  ball.style.borderRadius = "0";
+
+  switch (shape) {
+    case "circle":
+      ball.style.borderRadius = "50%";
+      break;
+
+    case "square":
+      break;
+
+    case "triangle":
+      ball.style.clipPath =
+        "polygon(50% 0%, 0% 100%, 100% 100%)";
+      break;
+
+    case "star":
+      ball.style.clipPath =
+        "polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)";
+      break;
+  }
+}
+
+shapeSelect.addEventListener("change", () => {
+  applyShape(shapeSelect.value);
+});
+
+// Initial setup
+ball.style.backgroundColor = colorPicker.value;
+applyShape("circle");
+resetBall();
+update();
