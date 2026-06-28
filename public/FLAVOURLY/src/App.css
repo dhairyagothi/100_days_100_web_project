@@ -5,6 +5,7 @@
   padding: 48px 24px;
 }
 
+/* Global utility classes */
 /* W3 Styles Equivalent */
 .w3-black {
   background-color: #000 !important;
@@ -52,6 +53,7 @@
   text-align: center;
 }
 
+/* Main heading styling */
 h1.section-title {
   margin-bottom: 64px;
   text-align: center;
@@ -88,6 +90,7 @@ h1.section-title {
   object-position: center;
 }
 
+/* Navigation and hero banner */
 /* Top Navigation Bar */
 .top-navbar {
   position: fixed;
@@ -190,6 +193,7 @@ h1.section-title {
   padding: 8px 16px;
 }
 
+/* Search, filter, and grid layout */
 /* Controls */
 .controls-section {
   display: flex;
@@ -223,6 +227,7 @@ h1.section-title {
   accent-color: #d9534f;
 }
 
+/* Recipe card presentation */
 /* Recipe Grid (Menu items) */
 .recipe-grid {
   display: grid;
@@ -363,6 +368,7 @@ h1.section-title {
   transform: translateX(4px);
 }
 
+/* Modal dialog styling */
 /* Modal Overlay Styles */
 .modal-overlay {
   position: fixed;
@@ -546,6 +552,7 @@ h1.section-title {
   }
 }
 
+/* Autocomplete dropdown */
 /* Advanced Glassmorphic Autocomplete Styles */
 .search-wrapper {
   display: flex;
@@ -655,6 +662,7 @@ h1.section-title {
   }
 }
 
+/* Empty/error states and meme panel */
 /* State Containers */
 .state-container {
   font-size: 48px;
