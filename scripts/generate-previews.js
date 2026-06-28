@@ -12,12 +12,19 @@ const projectFlag = args.indexOf('--project');
 const specificProject = projectFlag !== -1 ? args[projectFlag + 1] : null;
 
 async function generatePreview(browser, projectName) {
-  const projectPath = path.join(PROJECTS_DIR, projectName, 'index.html');
-  const outputPath = path.join(PROJECTS_DIR, projectName, 'preview.png');
+  const projectDir = path.join(PROJECTS_DIR, projectName);
+  let projectPath = path.join(projectDir, 'index.html');
+  const outputPath = path.join(projectDir, 'preview.png');
 
   if (!fs.existsSync(projectPath)) {
-    console.log(`⚠️  Skipping ${projectName} — no index.html found`);
-    return;
+    const allFiles = fs.readdirSync(projectDir);
+    const htmlFile = allFiles.find(f => f.endsWith('.html'));
+    if (!htmlFile) {
+      console.log(`⚠️  Skipping ${projectName} — no HTML file found`);
+      return;
+    }
+    projectPath = path.join(projectDir, htmlFile);
+    console.log(`ℹ️  ${projectName} — using ${htmlFile} instead of index.html`);
   }
 
   const page = await browser.newPage();

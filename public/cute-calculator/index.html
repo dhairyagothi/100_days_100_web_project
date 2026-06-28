@@ -17,14 +17,18 @@
     <input type="text" id="display" placeholder="0" autocomplete="off" spellcheck="false">
   </div>
  
+  
   <div class="history-panel" id="historyPanel">
-    <div class="history-header">
-      <span>History</span>
-      <button class="clear-history-btn" id="clearHistoryBtn" type="button">🗑 Clear History</button>
+  <div class="history-header">
+    <span>History</span>
+    <div style="display: flex; gap: 6px; align-items: center;">
+      <button class="clear-history-btn" id="clearHistoryBtn" type="button">🗑 Clear</button>
+      <button class="close-history-btn" onclick="toggleHistory()" title="Close History">✕</button>
     </div>
-    <div class="history-empty" id="historyEmpty">No calculations yet</div>
   </div>
- 
+  <div class="history-empty" id="historyEmpty">No calculations yet</div>
+</div>
+
   <div class="buttons">
     <!-- Row 1 -->
     <button class="btn-action" onclick="clearDisplay()">C</button>

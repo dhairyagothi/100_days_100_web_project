@@ -1,170 +1,525 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Resume Studio</title>
 
-    <link rel="stylesheet" href="style.css"/>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>Resume Studio Pro</title>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <!-- MAIN CSS -->
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    />
+
+    <!-- GOOGLE FONTS -->
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    />
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    />
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    />
+
+    <!-- FONT AWESOME -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        integrity="sha512-d0WK8+YdT2PzYDs2fzGEylh4G6dkprdFM5lTyTX0bY4Z1cdq9VHtV6nRvWmvMRGsiE232zraFMvx6bMpiKFF9g=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"
+    />
+
+    <!-- HTML2CANVAS -->
+
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"
+        integrity="sha512-BNa5AEr0sYj7FpC18JNpDutLCRa14Q6gttxyPjdvVSdGInxjeRGna43EIBgzHuLlHotE5RX7V6czS4EzFqqpwQ=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"
+    ></script>
+
+    <!-- JSPDF -->
+
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"
+        integrity="sha512-qZvrbM4xXHzkwmo7aX6ixkmKuuNHYsYvwdivgLPgAvFp8ZUBKbjsggssp09uXBJgp7wa9u0edPFsKnz03Wx/juw=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"
+    ></script>
+
+    <!-- MAIN SCRIPT -->
+
+    <script
+        src="script.js"
+        defer
+    ></script>
+
 </head>
 
 <body>
 
-<div class="bg-glow"></div>
-<div class="animated-bg">
-    <span></span><span></span><span></span>
-    <span></span><span></span><span></span>
-</div>
+    <!-- BACKGROUND -->
 
-<div class="app">
+    <div class="bg-glow"></div>
 
-    <aside class="sidebar">
-        <div class="logo">
-            <div class="logo-box">RS</div>
-            <div>
-                <h2>Resume Studio</h2>
-                <p>ATS Resume Builder</p>
-            </div>
-        </div>
+    <div class="animated-bg">
 
-        <div class="ats-card glass">
-            <h3>ATS Score</h3>
-            <div class="score-circle">
-                <span id="atsScoreValue">82</span><span>%</span>
-            </div>
-            <p>Good Resume Structure</p>
-        </div>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
 
-        <button id="themeSwitcher" class="theme-btn">
-            🌙 Dark Mode
-        </button>
-    </aside>
+    </div>
 
-    <section class="editor">
-        <div class="form-card glass">
-            <div class="top-bar">
+    <!-- APP -->
+
+    <div class="app">
+
+        <!-- =========================================
+             SIDEBAR
+        ========================================== -->
+
+        <aside class="sidebar glass">
+
+            <!-- LOGO -->
+
+            <div class="logo">
+
+                <div class="logo-box">
+                    RS
+                </div>
+
                 <div>
-                    <h1>Build Your Resume</h1>
-                    <p>Create a professional ATS-ready resume</p>
+
+                    <h2>
+                        Resume Studio
+                    </h2>
+
+                    <p>
+                        ATS Resume Builder
+                    </p>
+
                 </div>
 
-                <div class="template-buttons">
-                    <button class="template active" data-template="modern">Modern</button>
-                    <button class="template" data-template="classic">Classic</button>
-                    <button class="template" data-template="minimal">Minimal</button>
-                </div>
             </div>
 
-            <form id="resumeForm">
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Full Name</label>
-                        <input type="text" id="name" placeholder="John Doe">
-                    </div>
-                    <div class="form-group">
-                        <label>Professional Title</label>
-                        <input type="text" id="title" placeholder="Frontend Developer">
-                    </div>
+            <!-- ATS SCORE -->
+
+            <div class="ats-card glass">
+
+                <h3>
+                    ATS Score
+                </h3>
+
+                <div class="score-circle">
+
+                    <span id="atsScoreValue">
+                        0
+                    </span>
+
+                    <span>%</span>
+
                 </div>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Email Address</label>
-                        <input type="email" id="email" placeholder="john@example.com">
-                    </div>
-                    <div class="form-group">
-                        <label>Phone Number</label>
-                        <input type="text" id="phone" placeholder="+91 9876543210">
-                    </div>
+                <p id="atsText">
+                    Start building your resume
+                </p>
+
+                <div class="progress-line">
+
+                    <div
+                        class="progress-fill"
+                        id="progressFill"
+                    ></div>
+
                 </div>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Location</label>
-                        <input type="text" id="location" placeholder="Mumbai, India">
-                    </div>
-                    <div class="form-group">
-                        <label>Education</label>
-                        <input type="text" id="education" placeholder="B.Tech in AI & DS">
-                    </div>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>LinkedIn (URL)</label>
-                        <input type="text" id="linkedin" placeholder="linkedin.com/in/johndoe">
-                    </div>
-                    <div class="form-group">
-                        <label>GitHub (URL)</label>
-                        <input type="text" id="github" placeholder="github.com/johndoe">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label>Professional Summary</label>
-                    <textarea id="summary" rows="3" placeholder="Write a short professional summary..."></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label>Skills (Comma separated)</label>
-                    <textarea id="skills" rows="2" placeholder="HTML, CSS, JavaScript, React..."></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label>Experience (Use dashes '-' for bullet points)</label>
-                    <textarea id="experience" rows="4" placeholder="- Frontend Developer Intern at XYZ Company&#10;- Built responsive web apps"></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label>Projects (Use dashes '-' for bullet points)</label>
-                    <textarea id="projects" rows="4" placeholder="- Resume Studio Web App&#10;- E-commerce Clone"></textarea>
-                </div>
-
-                <div class="buttons">
-                    <button type="button" id="fillDemoBtn" class="secondary-btn">
-                        Fill Demo Data
-                    </button>
-                    <button type="button" id="clearFormBtn" class="secondary-btn" style="background: rgba(255,50,50,0.1);">
-                        Clear Form
-                    </button>
-                </div>
-                
-                <div class="buttons">
-                    <button type="button" id="printBtn" class="primary-btn">
-                        Print / Save as PDF
-                    </button>
-                    <button type="button" id="downloadBtn" class="secondary-btn">
-                        Download Image PDF
-                    </button>
-                </div>
-
-            </form>
-        </div>
-    </section>
-
-    <section class="preview">
-        <div class="preview-header">
-            <h2>Live Resume Preview</h2>
-        </div>
-        
-        <div id="resumePreview" class="resume-sheet">
-            <div style="text-align: center; margin-top: 50px; color: #666;">
-                Start typing to generate your live preview...
             </div>
-        </div>
-    </section>
 
-</div>
+            <!-- QUICK ACTIONS -->
 
-<script src="script.js"></script>
+            <div class="quick-actions glass">
+
+                <h4>
+                    Quick Actions
+                </h4>
+
+                <button
+                    type="button"
+                    id="fillDemoBtn"
+                    class="action-btn blue"
+                >
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    Fill Demo Data
+                </button>
+
+                <button
+                    type="button"
+                    id="clearFormBtn"
+                    class="action-btn red"
+                >
+                    <i class="fa-solid fa-trash"></i>
+                    Clear Form
+                </button>
+
+                <button
+                    type="button"
+                    id="saveResumeBtn"
+                    class="action-btn blue"
+                >
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    Save Resume
+                </button>
+
+                <button
+                    type="button"
+                    id="loadResumeBtn"
+                    class="action-btn blue"
+                >
+                    <i class="fa-solid fa-folder-open"></i>
+                    Load Resume
+                </button>
+
+                <button
+                    type="button"
+                    id="printBtn"
+                    class="action-btn green"
+                >
+                    <i class="fa-solid fa-print"></i>
+                    Print / Save PDF
+                </button>
+
+                <button
+                    type="button"
+                    id="downloadBtn"
+                    class="action-btn purple"
+                >
+                    <i class="fa-solid fa-file-arrow-down"></i>
+                    Download PDF
+                </button>
+
+            </div>
+
+            <!-- THEME -->
+
+            <button
+                id="themeSwitcher"
+                class="theme-btn"
+            >
+                🌙 Dark Mode
+            </button>
+
+        </aside>
+
+        <!-- =========================================
+             EDITOR
+        ========================================== -->
+
+        <section class="editor">
+
+            <div class="form-card glass">
+
+                <!-- TOP BAR -->
+
+                <div class="top-bar">
+
+                    <div>
+
+                        <h1>
+                            Build Your Resume
+                        </h1>
+
+                        <p>
+                            Create a professional ATS-ready resume instantly
+                        </p>
+
+                    </div>
+
+                    <div class="template-buttons">
+
+                        <button
+                            class="template active"
+                            data-template="modern"
+                        >
+                            Modern
+                        </button>
+
+                        <button
+                            class="template"
+                            data-template="classic"
+                        >
+                            Classic
+                        </button>
+
+                        <button
+                            class="template"
+                            data-template="minimal"
+                        >
+                            Minimal
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <!-- FORM -->
+
+                <form id="resumeForm">
+
+                    <!-- ROW -->
+
+                    <div class="form-row">
+
+                        <div class="form-group">
+
+                            <label>
+                                Full Name
+                            </label>
+
+                            <input
+                                type="text"
+                                id="name"
+                                placeholder="John Doe"
+                            />
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label>
+                                Professional Title
+                            </label>
+
+                            <input
+                                type="text"
+                                id="title"
+                                placeholder="Frontend Developer"
+                            />
+
+                        </div>
+
+                    </div>
+
+                    <!-- ROW -->
+
+                    <div class="form-row">
+
+                        <div class="form-group">
+
+                            <label>
+                                Email Address
+                            </label>
+
+                            <input
+                                type="email"
+                                id="email"
+                                placeholder="john@example.com"
+                            />
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label>
+                                Phone Number
+                            </label>
+
+                            <input
+                                type="text"
+                                id="phone"
+                                placeholder="+91 9876543210"
+                            />
+
+                        </div>
+
+                    </div>
+
+                    <!-- ROW -->
+
+                    <div class="form-row">
+
+                        <div class="form-group">
+
+                            <label>
+                                Location
+                            </label>
+
+                            <input
+                                type="text"
+                                id="location"
+                                placeholder="Mumbai, India"
+                            />
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label>
+                                Education
+                            </label>
+
+                            <input
+                                type="text"
+                                id="education"
+                                placeholder="B.Tech in Computer Science"
+                            />
+
+                        </div>
+
+                    </div>
+
+                    <!-- ROW -->
+
+                    <div class="form-row">
+
+                        <div class="form-group">
+
+                            <label>
+                                LinkedIn URL
+                            </label>
+
+                            <input
+                                type="text"
+                                id="linkedin"
+                                placeholder="linkedin.com/in/johndoe"
+                            />
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label>
+                                GitHub URL
+                            </label>
+
+                            <input
+                                type="text"
+                                id="github"
+                                placeholder="github.com/johndoe"
+                            />
+
+                        </div>
+
+                    </div>
+
+                    <!-- SUMMARY -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Professional Summary
+                        </label>
+
+                        <textarea
+                            id="summary"
+                            rows="4"
+                            placeholder="Write a short professional summary..."
+                        ></textarea>
+
+                    </div>
+
+                    <!-- SKILLS -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Skills (comma separated)
+                        </label>
+
+                        <textarea
+                            id="skills"
+                            rows="3"
+                            placeholder="HTML, CSS, JavaScript, React.js..."
+                        ></textarea>
+
+                    </div>
+
+                    <!-- EXPERIENCE -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Experience (use - for bullet points)
+                        </label>
+
+                        <textarea
+                            id="experience"
+                            rows="5"
+                            placeholder="- Frontend Developer Intern at XYZ Company&#10;- Built responsive web apps"
+                        ></textarea>
+
+                    </div>
+
+                    <!-- PROJECTS -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Projects (use - for bullet points)
+                        </label>
+
+                        <textarea
+                            id="projects"
+                            rows="5"
+                            placeholder="- Resume Studio Web App&#10;- E-commerce Website"
+                        ></textarea>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </section>
+
+        <!-- =========================================
+             LIVE PREVIEW
+        ========================================== -->
+
+        <section class="preview">
+
+            <div class="preview-header">
+
+                <h2>
+                    Live Resume Preview
+                </h2>
+
+                <p>
+                    Your resume updates in real-time
+                </p>
+
+            </div>
+
+            <div
+                id="resumePreview"
+                class="resume-sheet modern-template"
+            >
+
+            </div>
+
+        </section>
+
+    </div>
 
 </body>
+
 </html>

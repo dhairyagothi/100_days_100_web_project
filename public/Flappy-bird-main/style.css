@@ -54,20 +54,19 @@ body {
   top: 16px;
   left: 16px;
   z-index: 1000;
-  padding: 10px 18px;
-  border-radius: 999px;
-  background: rgba(0, 0, 0, 0.6);
-  color: white;
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: #1e293b;
+  color: #3b82f6;
   text-decoration: none;
   font-weight: 600;
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255,255,255,0.15);
+  border: 1px solid #3b82f6;
   transition: all 0.2s ease;
 }
 
 .back-home:hover {
-  transform: translateY(-2px);
-  background: rgba(255,255,255,0.15);
+  background: #3b82f6;
+  color: #fff;
 }
 
 *, *::before, *::after { 
@@ -232,23 +231,21 @@ body {
   top: 16px;
   left: 16px;
   z-index: 1000;
-  padding: 10px 18px;
-  border-radius: 999px;
-  background: rgba(0, 0, 0, 0.8);
-  color: white;
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: #1e293b;
+  color: #3b82f6;
   text-decoration: none;
   font-weight: bold;
   font-family: 'Courier New', monospace;
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255,255,255,0.2);
+  border: 1px solid #3b82f6;
   transition: all 0.2s ease;
   font-size: 14px;
 }
 
 .back-home:hover {
-  transform: translateY(-2px);
-  background: rgba(255,255,255,0.2);
-  color: #FFD700;
+  background: #3b82f6;
+  color: #fff;
 }
 
 /* Milestone Popup Animation */

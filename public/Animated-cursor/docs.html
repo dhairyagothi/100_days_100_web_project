@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Docs — Animated Cursor</title>
+<meta name="description" content="Documentation and API references for the Animated Cursor project — part of the 100 Web Projects series.">
+<link rel="stylesheet" href="animated-cursor.css">
+<link rel="icon" href="../favv.png" type="image/x-icon" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * { font-family: 'Inter', Arial, sans-serif; }
+  code, pre { font-family: 'JetBrains Mono', monospace; }
+
+  /* ── Layout ── */
+  .docs-layout {
+    position: relative;
+    z-index: 5;
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    width: min(95vw, 1200px);
+    margin: 100px auto 0;
+    gap: 0;
+    align-items: start;
+    padding-bottom: 100px;
+  }
+  @media (max-width: 820px) {
+    .docs-layout { grid-template-columns: 1fr; }
+    .docs-sidebar { display: none; }
+  }
+
+  /* ── Sidebar ── */
+  .docs-sidebar {
+    position: sticky;
+    top: 90px;
+    padding: 28px 0 28px 8px;
+    border-right: 1px solid rgba(255,255,255,.1);
+    height: calc(100vh - 90px);
+    overflow-y: auto;
+  }
+  .sidebar-label {
+    font-size: .72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    color: rgba(248,251,255,.4);
+    padding: 0 16px;
+    margin: 18px 0 8px;
+  }
+  .sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 16px;
+    border-radius: 10px;
+    text-decoration: none;
+    color: rgba(248,251,255,.68);
+    font-size: .88rem;
+    font-weight: 500;
+    transition: all .2s ease;
+    margin: 2px 0;
+  }
+  .sidebar-link:hover,
+  .sidebar-link.active {
+    background: rgba(var(--accent-rgb),.14);
+    color: var(--accent);
+  }
+  .sidebar-link i { width: 16px; font-size: .82rem; opacity: .75; }
+
+  /* ── Main content ── */
+  .docs-main {
+    padding: 40px 0 40px 48px;
+    display: flex;
+    flex-direction: column;
+    gap: 64px;
+  }
+  @media (max-width: 820px) { .docs-main { padding: 40px 0; } }
+
+  /* ── Section ── */
+  .doc-section {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .doc-section h2 {
+    font-size: 1.9rem;
+    font-weight: 800;
+    color: #fff;
+    padding-bottom: 14px;
+    border-bottom: 1px solid rgba(255,255,255,.1);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .doc-section h2 .section-icon {
+    width: 40px; height: 40px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, rgba(var(--accent-rgb),.28), rgba(var(--accent-two-rgb),.18));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+    color: var(--accent);
+  }
+  .doc-section h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--accent-two);
+    margin-bottom: 4px;
+  }
+  .doc-section p {
+    color: rgba(248,251,255,.7);
+    line-height: 1.75;
+    font-size: .95rem;
+  }
+
+  /* ── Alert box ── */
+  .doc-alert {
+    padding: 16px 20px;
+    border-radius: 14px;
+    font-size: .9rem;
+    line-height: 1.6;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .doc-alert i { font-size: 1rem; flex-shrink: 0; margin-top: 2px; }
+  .doc-alert.info {
+    background: rgba(87,216,255,.1);
+    border: 1px solid rgba(87,216,255,.28);
+    color: #a8eeff;
+  }
+  .doc-alert.tip {
+    background: rgba(125,255,202,.1);
+    border: 1px solid rgba(125,255,202,.28);
+    color: #a6ffe0;
+  }
+
+  /* ── Code block ── */
+  .code-block {
+    position: relative;
+    border-radius: 16px;
+    background: rgba(0,0,0,.55);
+    border: 1px solid rgba(255,255,255,.1);
+    overflow: hidden;
+  }
+  .code-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 18px;
+    background: rgba(255,255,255,.05);
+    border-bottom: 1px solid rgba(255,255,255,.08);
+    font-size: .78rem;
+    color: rgba(248,251,255,.45);
+  }
+  .code-header .dots { display: flex; gap: 6px; }
+  .code-header .dots span {
+    width: 10px; height: 10px; border-radius: 50%;
+  }
+  .dot-red   { background: #ff5f57; }
+  .dot-yellow{ background: #febc2e; }
+  .dot-green { background: #28c840; }
+  .copy-btn {
+    padding: 4px 12px;
+    border-radius: 6px;
+    border: 1px solid rgba(255,255,255,.18);
+    background: transparent;
+    color: rgba(248,251,255,.6);
+    font-size: .75rem;
+    font-family: inherit;
+    cursor: none;
+    transition: all .2s ease;
+  }
+  .copy-btn:hover { background: rgba(255,255,255,.08); color: #fff; }
+  .code-block pre {
+    padding: 22px 24px;
+    margin: 0;
+    overflow-x: auto;
+    font-size: .88rem;
+    line-height: 1.65;
+    color: #e2e8f0;
+  }
+  .kw  { color: #ff79c6; }
+  .fn  { color: #50fa7b; }
+  .str { color: #f1fa8c; }
+  .cm  { color: rgba(248,251,255,.38); font-style: italic; }
+  .nm  { color: #bd93f9; }
+  .at  { color: #8be9fd; }
+
+  /* ── API table ── */
+  .api-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .88rem;
+  }
+  .api-table th {
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 700;
+    color: rgba(248,251,255,.5);
+    font-size: .78rem;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    border-bottom: 1px solid rgba(255,255,255,.1);
+  }
+  .api-table td {
+    padding: 14px 16px;
+    color: rgba(248,251,255,.78);
+    border-bottom: 1px solid rgba(255,255,255,.06);
+    vertical-align: top;
+    line-height: 1.55;
+  }
+  .api-table tr:hover td { background: rgba(255,255,255,.03); }
+  .api-table code {
+    background: rgba(var(--accent-two-rgb),.14);
+    color: var(--accent-two);
+    padding: 2px 8px;
+    border-radius: 5px;
+    font-size: .82rem;
+  }
+  .api-table .type-badge {
+    display: inline-block;
+    padding: 2px 9px;
+    border-radius: 20px;
+    font-size: .72rem;
+    font-weight: 700;
+    background: rgba(var(--accent-three-rgb),.14);
+    color: var(--accent-three);
+    border: 1px solid rgba(var(--accent-three-rgb),.28);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ── Card grid for options ── */
+  .option-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 18px;
+  }
+  .option-card {
+    padding: 20px 22px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+    border: 1px solid rgba(255,255,255,.11);
+    transition: transform .25s ease, border-color .25s ease;
+  }
+  .option-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(var(--accent-rgb),.4);
+  }
+  .option-card .oc-icon {
+    font-size: 1.6rem;
+    margin-bottom: 10px;
+  }
+  .option-card h4 {
+    font-size: .95rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 5px;
+  }
+  .option-card p {
+    font-size: .83rem;
+    color: rgba(248,251,255,.58);
+    line-height: 1.55;
+  }
+  .option-card code {
+    font-size: .78rem;
+    background: rgba(var(--accent-rgb),.14);
+    color: var(--accent);
+    padding: 1px 7px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-top: 6px;
+  }
+
+  /* ── Light theme ── */
+  body.light-theme .docs-sidebar { border-right-color: rgba(0,0,0,.08); }
+  body.light-theme .sidebar-label { color: #9099a8; }
+  body.light-theme .sidebar-link { color: #556; }
+  body.light-theme .sidebar-link:hover,
+  body.light-theme .sidebar-link.active { background: #fff4d8; color: #d89b14; }
+  body.light-theme .doc-section h2 { color: #1e293b; border-color: rgba(0,0,0,.08); }
+  body.light-theme .doc-section p { color: #4b5563; }
+  body.light-theme .code-block { background: #1e293b; border-color: rgba(0,0,0,.12); }
+  body.light-theme .api-table th { color: #6b7280; }
+  body.light-theme .api-table td { color: #374151; }
+  body.light-theme .option-card { background: rgba(255,255,255,.88); border-color: rgba(0,0,0,.07); box-shadow: 0 4px 18px rgba(0,0,0,.05); }
+  body.light-theme .option-card h4 { color: #1e293b; }
+  body.light-theme .option-card p { color: #6b7280; }
+</style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+  <a href="animated-cursor.html" class="project-back-button"
+     style="height:40px;text-align:center;margin:20px;border-radius:10px;width:200px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter,system-ui,sans-serif;transition:all 0.2s ease;display:flex;align-items:center;justify-content:center;"
+     onmouseover="this.style.background='#3b82f6';this.style.color='#fff'"
+     onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
+  <div class="logo">Animated Cursor</div>
+  <ul class="nav-links">
+    <li><a href="animated-cursor.html">Home</a></li>
+    <li><a href="cursors.html">Cursors</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <div class="nav-right">
+    <button id="themeToggle" class="theme"><span id="themeIcon">☀️</span></button>
+  </div>
+</nav>
+
+<div class="background"></div>
+<div class="galaxy-glow"></div>
+<canvas id="stars"></canvas>
+<div class="glass-overlay"></div>
+<div class="cursor"></div>
+
+<div class="docs-layout">
+
+  <!-- Sidebar -->
+  <aside class="docs-sidebar">
+    <div class="sidebar-label">Getting Started</div>
+    <a class="sidebar-link active" href="#overview"><i class="fas fa-rocket"></i> Overview</a>
+    <a class="sidebar-link" href="#installation"><i class="fas fa-download"></i> Installation</a>
+    <a class="sidebar-link" href="#quickstart"><i class="fas fa-bolt"></i> Quick Start</a>
+
+    <div class="sidebar-label">Configuration</div>
+    <a class="sidebar-link" href="#cursor-designs"><i class="fas fa-mouse-pointer"></i> Cursor Designs</a>
+    <a class="sidebar-link" href="#themes"><i class="fas fa-palette"></i> Themes</a>
+    <a class="sidebar-link" href="#api"><i class="fas fa-code"></i> API Reference</a>
+
+    <div class="sidebar-label">More</div>
+    <a class="sidebar-link" href="#browser-support"><i class="fas fa-globe"></i> Browser Support</a>
+    <a class="sidebar-link" href="#changelog"><i class="fas fa-history"></i> Changelog</a>
+    <a class="sidebar-link" href="contact.html"><i class="fas fa-life-ring"></i> Support</a>
+  </aside>
+
+  <!-- Main docs -->
+  <main class="docs-main">
+
+    <!-- ── Overview ── -->
+    <section class="doc-section" id="overview">
+      <h2><span class="section-icon"><i class="fas fa-rocket"></i></span> Overview</h2>
+      <p>
+        <strong style="color:#fff;">Animated Cursor</strong> is a lightweight, zero-dependency JavaScript library
+        that replaces the browser's default cursor with a fully customisable animated one. It is project <strong style="color:var(--accent);">#001</strong>
+        in the <em>100 Web Projects</em> series by Gayatri Ghogare.
+      </p>
+      <div class="doc-alert info">
+        <i class="fas fa-info-circle"></i>
+        <span>No build step required — just drop two files into your project and you're ready.</span>
+      </div>
+      <p>Features at a glance:</p>
+      <div class="option-grid">
+        <div class="option-card">
+          <div class="oc-icon">🖱️</div>
+          <h4>4 Cursor Designs</h4>
+          <p>Glowing Orb, Neon Ring, Crystal Diamond, Crosshair.</p>
+        </div>
+        <div class="option-card">
+          <div class="oc-icon">🎨</div>
+          <h4>4 Themes</h4>
+          <p>Galaxy, Aurora, Neon, Firefly — swap with one attribute.</p>
+        </div>
+        <div class="option-card">
+          <div class="oc-icon">☀️</div>
+          <h4>Light / Dark Mode</h4>
+          <p>Toggle with a single class; remembers your preference.</p>
+        </div>
+        <div class="option-card">
+          <div class="oc-icon">⚡</div>
+          <h4>Zero Dependencies</h4>
+          <p>Pure vanilla JS — no npm, no bundler needed.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Installation ── -->
+    <section class="doc-section" id="installation">
+      <h2><span class="section-icon"><i class="fas fa-download"></i></span> Installation</h2>
+      <h3>Option A — Direct Download</h3>
+      <p>Download <code>animated-cursor.css</code> and <code>animated-cursor.js</code> from the GitHub repository and place them in your project folder.</p>
+
+      <h3>Option B — CDN (coming soon)</h3>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="dots"><span class="dot-red"></span><span class="dot-yellow"></span><span class="dot-green"></span></div>
+          <span>HTML</span>
+          <button class="copy-btn magnetic-control" data-target="cdn">Copy</button>
+        </div>
+        <pre id="cdn"><span class="cm">&lt;!-- Stylesheet --&gt;</span>
+<span class="kw">&lt;link</span> <span class="at">rel</span>=<span class="str">"stylesheet"</span> <span class="at">href</span>=<span class="str">"https://cdn.example.com/animated-cursor@1.0/animated-cursor.css"</span><span class="kw">&gt;</span>
+
+<span class="cm">&lt;!-- Script (before &lt;/body&gt;) --&gt;</span>
+<span class="kw">&lt;script</span> <span class="at">src</span>=<span class="str">"https://cdn.example.com/animated-cursor@1.0/animated-cursor.js"</span><span class="kw">&gt;&lt;/script&gt;</span></pre>
+      </div>
+    </section>
+
+    <!-- ── Quick Start ── -->
+    <section class="doc-section" id="quickstart">
+      <h2><span class="section-icon"><i class="fas fa-bolt"></i></span> Quick Start</h2>
+      <p>Add the required elements to your HTML and load the scripts. The cursor initialises automatically.</p>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="dots"><span class="dot-red"></span><span class="dot-yellow"></span><span class="dot-green"></span></div>
+          <span>index.html — minimal setup</span>
+          <button class="copy-btn magnetic-control" data-target="quickstart-code">Copy</button>
+        </div>
+        <pre id="quickstart-code"><span class="kw">&lt;head&gt;</span>
+  <span class="kw">&lt;link</span> <span class="at">rel</span>=<span class="str">"stylesheet"</span> <span class="at">href</span>=<span class="str">"animated-cursor.css"</span><span class="kw">&gt;</span>
+<span class="kw">&lt;/head&gt;</span>
+<span class="kw">&lt;body</span> <span class="at">data-cursor</span>=<span class="str">"orb"</span> <span class="at">data-theme</span>=<span class="str">"galaxy"</span><span class="kw">&gt;</span>
+
+  <span class="cm">&lt;!-- Required elements --&gt;</span>
+  <span class="kw">&lt;div</span> <span class="at">class</span>=<span class="str">"background"</span><span class="kw">&gt;&lt;/div&gt;</span>
+  <span class="kw">&lt;div</span> <span class="at">class</span>=<span class="str">"galaxy-glow"</span><span class="kw">&gt;&lt;/div&gt;</span>
+  <span class="kw">&lt;canvas</span> <span class="at">id</span>=<span class="str">"stars"</span><span class="kw">&gt;&lt;/canvas&gt;</span>
+  <span class="kw">&lt;div</span> <span class="at">class</span>=<span class="str">"glass-overlay"</span><span class="kw">&gt;&lt;/div&gt;</span>
+  <span class="kw">&lt;div</span> <span class="at">class</span>=<span class="str">"cursor"</span><span class="kw">&gt;&lt;/div&gt;</span>
+
+  <span class="cm">&lt;!-- Your content here --&gt;</span>
+
+  <span class="kw">&lt;script</span> <span class="at">src</span>=<span class="str">"animated-cursor.js"</span><span class="kw">&gt;&lt;/script&gt;</span>
+<span class="kw">&lt;/body&gt;</span></pre>
+      </div>
+      <div class="doc-alert tip">
+        <i class="fas fa-lightbulb"></i>
+        <span>Add the class <code>magnetic-control</code> to any interactive element to trigger the hover-expand effect on the cursor.</span>
+      </div>
+    </section>
+
+    <!-- ── Cursor Designs ── -->
+    <section class="doc-section" id="cursor-designs">
+      <h2><span class="section-icon"><i class="fas fa-mouse-pointer"></i></span> Cursor Designs</h2>
+      <p>Set the <code>data-cursor</code> attribute on <code>&lt;body&gt;</code> to choose a design.</p>
+      <div class="option-grid">
+        <div class="option-card">
+          <div class="oc-icon">🔵</div>
+          <h4>Glowing Orb</h4>
+          <p>Soft glowing ball with sparkle halo.</p>
+          <code>data-cursor="orb"</code>
+        </div>
+        <div class="option-card">
+          <div class="oc-icon">⭕</div>
+          <h4>Neon Ring</h4>
+          <p>Hollow ring with neon border glow.</p>
+          <code>data-cursor="ring"</code>
+        </div>
+        <div class="option-card">
+          <div class="oc-icon">💎</div>
+          <h4>Crystal Diamond</h4>
+          <p>Rotated square gem with gradient fill.</p>
+          <code>data-cursor="diamond"</code>
+        </div>
+        <div class="option-card">
+          <div class="oc-icon">➕</div>
+          <h4>Crosshair</h4>
+          <p>Precision crosshair for gaming UIs.</p>
+          <code>data-cursor="crosshair"</code>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Themes ── -->
+    <section class="doc-section" id="themes">
+      <h2><span class="section-icon"><i class="fas fa-palette"></i></span> Themes</h2>
+      <p>Set the <code>data-theme</code> attribute on <code>&lt;body&gt;</code> to switch the colour palette.</p>
+      <div class="option-grid">
+        <div class="option-card">
+          <div class="oc-icon">🌌</div>
+          <h4>Galaxy</h4>
+          <p>Deep purple and cyan — the default cosmic theme.</p>
+          <code>data-theme="galaxy"</code>
+        </div>
+        <div class="option-card">
+          <div class="oc-icon">🌿</div>
+          <h4>Aurora</h4>
+          <p>Teal and emerald greens inspired by the Northern Lights.</p>
+          <code>data-theme="aurora"</code>
+        </div>
+        <div class="option-card">
+          <div class="oc-icon">🌸</div>
+          <h4>Neon</h4>
+          <p>Hot pink, electric cyan — cyberpunk vibes.</p>
+          <code>data-theme="neon"</code>
+        </div>
+        <div class="option-card">
+          <div class="oc-icon">🦟</div>
+          <h4>Firefly</h4>
+          <p>Warm chartreuse and lime greens on deep forest.</p>
+          <code>data-theme="firefly"</code>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── API Reference ── -->
+    <section class="doc-section" id="api">
+      <h2><span class="section-icon"><i class="fas fa-code"></i></span> API Reference</h2>
+      <h3>HTML Attributes</h3>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="dots"><span class="dot-red"></span><span class="dot-yellow"></span><span class="dot-green"></span></div>
+          <span>Attributes</span>
+        </div>
+        <div style="overflow-x:auto;">
+          <table class="api-table">
+            <thead>
+              <tr>
+                <th>Attribute</th>
+                <th>Element</th>
+                <th>Values</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>data-cursor</code></td>
+                <td><code>&lt;body&gt;</code></td>
+                <td><span class="type-badge">orb | ring | diamond | crosshair</span></td>
+                <td>Sets the cursor visual design.</td>
+              </tr>
+              <tr>
+                <td><code>data-theme</code></td>
+                <td><code>&lt;body&gt;</code></td>
+                <td><span class="type-badge">galaxy | aurora | neon | firefly</span></td>
+                <td>Sets the overall colour palette.</td>
+              </tr>
+              <tr>
+                <td><code>class="magnetic-control"</code></td>
+                <td>Any element</td>
+                <td><span class="type-badge">CSS class</span></td>
+                <td>Triggers the cursor hover-expand state.</td>
+              </tr>
+              <tr>
+                <td><code>class="light-theme"</code></td>
+                <td><code>&lt;body&gt;</code></td>
+                <td><span class="type-badge">CSS class</span></td>
+                <td>Switches to the light colour mode.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <h3>CSS Custom Properties</h3>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="dots"><span class="dot-red"></span><span class="dot-yellow"></span><span class="dot-green"></span></div>
+          <span>CSS Variables</span>
+          <button class="copy-btn magnetic-control" data-target="css-vars">Copy</button>
+        </div>
+        <pre id="css-vars"><span class="cm">/* Override in your own stylesheet */</span>
+<span class="kw">:root</span> {
+  <span class="at">--accent</span>:         <span class="str">#ffd84a</span>;   <span class="cm">/* primary glow colour */</span>
+  <span class="at">--accent-rgb</span>:     <span class="nm">255, 216, 74</span>;
+  <span class="at">--accent-two</span>:     <span class="str">#57d8ff</span>;   <span class="cm">/* secondary colour    */</span>
+  <span class="at">--accent-three</span>:   <span class="str">#ff7ad9</span>;   <span class="cm">/* tertiary colour     */</span>
+  <span class="at">--page-bg</span>:        <span class="str">#05070d</span>;   <span class="cm">/* page background     */</span>
+  <span class="at">--glow-rgb</span>:       <span class="nm">138, 43, 226</span>; <span class="cm">/* galaxy glow tint    */</span>
+}</pre>
+      </div>
+    </section>
+
+    <!-- ── Browser Support ── -->
+    <section class="doc-section" id="browser-support">
+      <h2><span class="section-icon"><i class="fas fa-globe"></i></span> Browser Support</h2>
+      <p>Animated Cursor uses modern CSS features. The following table shows support status:</p>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="dots"><span class="dot-red"></span><span class="dot-yellow"></span><span class="dot-green"></span></div>
+          <span>Compatibility</span>
+        </div>
+        <div style="overflow-x:auto;">
+          <table class="api-table">
+            <thead>
+              <tr><th>Browser</th><th>Minimum Version</th><th>Status</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Chrome / Edge</td><td>90+</td><td>✅ Fully supported</td></tr>
+              <tr><td>Firefox</td><td>88+</td><td>✅ Fully supported</td></tr>
+              <tr><td>Safari</td><td>14.1+</td><td>✅ Fully supported</td></tr>
+              <tr><td>Opera</td><td>76+</td><td>✅ Fully supported</td></tr>
+              <tr><td>IE 11</td><td>—</td><td>❌ Not supported</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="doc-alert info">
+        <i class="fas fa-info-circle"></i>
+        <span>On touch devices the custom cursor is automatically hidden and the native cursor is restored.</span>
+      </div>
+    </section>
+
+    <!-- ── Changelog ── -->
+    <section class="doc-section" id="changelog">
+      <h2><span class="section-icon"><i class="fas fa-history"></i></span> Changelog</h2>
+      <div class="option-grid" style="grid-template-columns:1fr;">
+
+        <div class="option-card" style="flex-direction:row;gap:20px;display:flex;align-items:flex-start;">
+          <div style="flex-shrink:0;padding:4px 14px;border-radius:20px;font-size:.78rem;font-weight:700;background:rgba(16,185,129,.18);color:#6effd9;border:1px solid rgba(16,185,129,.35);white-space:nowrap;">v1.1.0</div>
+          <div>
+            <h4 style="margin-bottom:6px;">June 2026</h4>
+            <p>Added Projects, Docs, and Contact pages. Fixed footer quick-link hrefs. Added light-theme support to new pages.</p>
+          </div>
+        </div>
+
+        <div class="option-card" style="flex-direction:row;gap:20px;display:flex;align-items:flex-start;">
+          <div style="flex-shrink:0;padding:4px 14px;border-radius:20px;font-size:.78rem;font-weight:700;background:rgba(var(--accent-rgb),.18);color:var(--accent);border:1px solid rgba(var(--accent-rgb),.35);white-space:nowrap;">v1.0.0</div>
+          <div>
+            <h4 style="margin-bottom:6px;">June 2026</h4>
+            <p>Initial release. Animated cursor with 4 designs, 4 themes, star canvas background, light/dark toggle, and cursor gallery page.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script src="animated-cursor.js"></script>
+<script>
+  // Sidebar active link on scroll
+  const sections = document.querySelectorAll('.doc-section');
+  const links = document.querySelectorAll('.sidebar-link');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        const active = document.querySelector(`.sidebar-link[href="#${entry.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-40% 0px -50% 0px' });
+  sections.forEach(s => observer.observe(s));
+
+  // Copy buttons
+  document.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.dataset.target;
+      const el = document.getElementById(id);
+      if (!el) return;
+      navigator.clipboard.writeText(el.innerText).then(() => {
+        btn.textContent = 'Copied!';
+        setTimeout(() => btn.textContent = 'Copy', 1800);
+      });
+    });
+  });
+</script>
+
+<footer class="site-footer">
+  <div class="footer-container">
+    <div class="footer-column">
+      <h3>About Project</h3>
+      <p>Animated Cursor is part of the 100 Web Projects series — exploring creative UI interactions and modern web animations.</p>
+    </div>
+    <div class="footer-column">
+      <h3>Quick Links</h3>
+      <ul>
+        <li><a href="animated-cursor.html">Home</a></li>
+        <li><a href="projects.html">Projects</a></li>
+        <li><a href="docs.html">Docs</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-column">
+      <h3>Resources</h3>
+      <ul>
+        <li><a href="#">GitHub Repository</a></li>
+        <li><a href="design-assets.html">Design Assets</a></li>
+        <li><a href="api-references.html">API References</a></li>
+        <li><a href="community.html">Community Forum</a></li>
+      </ul>
+    </div>
+    <div class="footer-column">
+      <h3>Stay Connected</h3>
+      <div class="social-icons">
+        <a href="#"><i class="fab fa-github"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-linkedin"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+      </div>
+      <p>© 2026 100 Web Projects | Designed by Gayatri Ghogare</p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
