@@ -149,7 +149,7 @@ h1 {
 
 .stats {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 15px;
     margin-bottom: 20px;
 }
@@ -341,7 +341,7 @@ button:hover {
 
 @media (max-width: 600px) {
     .stats {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
     }
 
     .analytics-grid {
