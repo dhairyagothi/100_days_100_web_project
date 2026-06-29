@@ -78,10 +78,15 @@ function renderHistory() {
             historyEl.classList.add('newest');
         }
         
-        historyEl.innerHTML = `
-            <span class="history-key">${item.key}</span>
-            <span>(${item.code})</span>
-        `;
+        const keySpan = document.createElement('span');
+        keySpan.className = 'history-key';
+        keySpan.textContent = item.key;
+        
+        const codeSpan = document.createElement('span');
+        codeSpan.textContent = `(${item.code})`;
+        
+        historyEl.appendChild(keySpan);
+        historyEl.appendChild(codeSpan);
         
         historyList.appendChild(historyEl);
     });
