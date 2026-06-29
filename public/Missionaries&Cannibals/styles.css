@@ -1,4 +1,5 @@
-/* ─── RESET ─────────────────────────────────────── */
+
+    /* ─── RESET ─────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 /* ─── THEME TOKENS ───────────────────────────────── */
@@ -374,9 +375,8 @@ h1 {
     align-items: center;
     padding: 10px 8px 8px;
     gap: 4px;
-    /* slide left↔right within the river column */
     transition: transform var(--transition-slow) cubic-bezier(0.68,-0.15,0.27,1.15);
-    transform: translateX(-30px);   /* left position */
+    transform: translateX(-30px);   
     position: relative;
 }
 
@@ -753,10 +753,11 @@ button:disabled {
 
 /* ─── RESPONSIVE ─────────────────────────────────── */
 @media (max-width: 760px) {
+
     body { padding-top: 16px; }
-
-    .back-home-btn { display: none; }
-
+    
+    back-home-btn { display: none; }
+    
     .top-bar {
         display: flex;
         flex-direction: column;
@@ -764,10 +765,10 @@ button:disabled {
         gap: 8px;
         margin-bottom: 8px;
     }
-
-    .top-bar::before {
-        content: "← Back to Home";
-        display: block;
+    
+    .back-home-mobile {
+        display: flex;
+        order: -1;
         padding: 7px 20px;
         border-radius: 30px;
         background: var(--btn-grad);
@@ -775,9 +776,8 @@ button:disabled {
         font-weight: 700;
         font-size: 0.8rem;
         font-family: 'Poppins', system-ui, sans-serif;
-        cursor: pointer;
+        text-decoration: none;
         box-shadow: var(--shadow-sm);
-        order: -1;
     }
 
     h1 {
@@ -858,6 +858,8 @@ button:disabled {
 }
 
 /* ─── BACK TO HOME ───────────────────────────────── */
+.back-home-mobile { display: none; } 
+
 .back-home-btn {
     position: fixed;
     left: 16px;
