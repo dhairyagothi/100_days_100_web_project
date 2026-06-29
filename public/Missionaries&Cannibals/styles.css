@@ -150,7 +150,6 @@ h1 {
     gap: 12px;
     padding: 0 4px;
     margin-bottom: 8px;
-    margin-left: 62%;
 }
 
 .difficulty-bar .difficulty-group {
@@ -333,7 +332,6 @@ h1 {
     z-index: 0;
 }
 
-/* Animated waves */
 .wave {
     position: absolute;
     left: 0; right: 0;
@@ -383,7 +381,7 @@ h1 {
 }
 
 .boat.boat-right {
-    transform: translateX(30px);    /* right position */
+    transform: translateX(30px);    
 }
 
 .boat-label {
@@ -455,7 +453,6 @@ h1 {
     80%       { transform: translateX(4px); }
 }
 
-/* Danger pulse on banks */
 .bank.danger {
     animation: dangerPulse 0.5s ease 2;
 }
@@ -571,7 +568,7 @@ button:disabled {
     transition: all var(--transition-med);
     font-size: 0.9rem;
 }
-/* hide hint box when it has no text */
+
 .hint-display-text:empty {
     padding: 0;
     margin: 0;
@@ -756,38 +753,108 @@ button:disabled {
 
 /* ─── RESPONSIVE ─────────────────────────────────── */
 @media (max-width: 760px) {
+    body { padding-top: 16px; }
+
+    .back-home-btn { display: none; }
+
+    .top-bar {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 8px;
+    }
+
+    .top-bar::before {
+        content: "← Back to Home";
+        display: block;
+        padding: 7px 20px;
+        border-radius: 30px;
+        background: var(--btn-grad);
+        color: #fff;
+        font-weight: 700;
+        font-size: 0.8rem;
+        font-family: 'Poppins', system-ui, sans-serif;
+        cursor: pointer;
+        box-shadow: var(--shadow-sm);
+        order: -1;
+    }
+
+    h1 {
+        font-size: 1.6rem;
+        letter-spacing: 1px;
+        order: 0;
+    }
+
+    .top-bar-left { display: none; } /* spacer not needed on mobile */
+
+    .top-bar-right {
+        order: 1;
+        gap: 8px;
+    }
+
+    .stats-bar {
+        flex-wrap: nowrap;
+        gap: 6px;
+        justify-content: center;
+        width: 100%;
+    }
+    .stat-chip {
+        padding: 5px 10px;
+        font-size: 0.78rem;
+        gap: 4px;
+        flex: 1;
+        justify-content: center;
+    }
+    .stat-icon { font-size: 0.85rem; }
+
+    .difficulty-bar {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        padding: 0;
+    }
+    .difficulty-bar .difficulty-group {
+        justify-content: center;
+    }
+    .diff-btn { padding: 4px 10px; font-size: 0.75rem; }
+
     .game-wrapper {
         grid-template-columns: 1fr;
         grid-template-rows: auto auto auto;
+        gap: 8px;
     }
-    .river-zone {
-        min-height: 140px;
-        order: 2;
-    }
-    #left-bank  { order: 1; }
-    #right-bank { order: 3; }
+    #left-bank  { order: 1; min-height: 160px; }
+    .river-zone { order: 2; min-height: 200px; }
+    #right-bank { order: 3; min-height: 120px; }
 
     .boat {
-        /* on mobile, boat slides top-to-bottom, so reuse left as top offset */
-        left: 20% !important;
-        top: auto;
+        transform: translateX(-24px);
+        width: 110px;
     }
-    .boat.boat-right { left: 60% !important; }
+    .boat.boat-right {
+        transform: translateX(24px);
+    }
 
+    .person {
+        width: 52px;
+        height: 52px;
+        font-size: 1.5rem;
+        border-radius: 12px;
+    }
+
+    .controls {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        width: 100%;
+        padding: 0 4px;
+    }
+    .controls button { width: 100%; font-size: 0.85rem; padding: 0.6rem 0.8rem; }
+
+    /* MODAL */
     .modal-grid { grid-template-columns: 1fr; }
-    .controls   { flex-direction: column; align-items: stretch; }
-    .controls button { width: 100%; }
-    .top-bar {
-        grid-template-columns: 1fr auto 1fr;
-    }
-    h1 { font-size: 1.4rem; letter-spacing: 1px; }
-    .difficulty-bar {
-        grid-template-columns: 1fr;
-    }
-    .difficulty-bar .difficulty-group {
-        grid-column: 1;
-        justify-self: center;
-    }
+    .modal-content { padding: 1.5rem; }
 }
 
 /* ─── BACK TO HOME ───────────────────────────────── */
@@ -818,7 +885,6 @@ button:disabled {
     filter: brightness(1.1);
 }
 
-/* hide guidance & message when empty */
 .guidance-text:empty,
 #message:empty {
     padding: 0;
