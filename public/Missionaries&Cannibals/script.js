@@ -244,7 +244,6 @@ document.addEventListener("DOMContentLoaded", () => {
         moveCountEl.textContent = state.moveCount;
 
         updateGuidance();
-        checkGame();
     };
 
     const makePerson = (type, bank) => {
@@ -411,6 +410,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         setMsg(`⛵ Boat arrived at the ${dest} bank.`, "success");
         updateUI();
+        checkGame();
     });
 
     /* ── UNDO ───────────────────────────────────────── */
