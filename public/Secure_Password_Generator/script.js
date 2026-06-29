@@ -46,8 +46,8 @@ const checkboxes = {
 // Uses crypto.getRandomValues when available, falls back to Math.random.
 // ---------------------------------------------------------------------------
 function secureRandom(max) {
-  if (!window.crypto || typeof window.crypto.getRandomValues !== "function") {
-    throw new Error("Web Crypto API unavailable");
+  if (!window.crypto || typeof window.crypto.getRandomValues !== 'function') {
+    throw new Error('Web Crypto API unavailable');
   }
 
   const arr = new Uint32Array(1);
@@ -122,56 +122,48 @@ function updateStrengthUI(strength) {
 // Core password generation
 // ---------------------------------------------------------------------------
 function generatePassword() {
- try {
+  try {
     const selectedTypes = getSelectedTypes();
 
     if (selectedTypes.length === 0) {
-        validationMsg.classList.add("visible");
-        passwordOutput.value = "";
-        updateStrengthUI(null);
-        return;
+      validationMsg.classList.add('visible');
+      passwordOutput.value = '';
+      updateStrengthUI(null);
+      return;
     }
 
-    validationMsg.classList.remove("visible");
+    validationMsg.classList.remove('visible');
 
     const length = parseInt(lengthSlider.value, 10);
 
-    const pool = selectedTypes
-        .map(type => CHAR_SETS[type])
-        .join("");
+    const pool = selectedTypes.map((type) => CHAR_SETS[type]).join('');
 
-    const guaranteed = selectedTypes.map(type => {
-        const set = CHAR_SETS[type];
-        return set[secureRandom(set.length)];
+    const guaranteed = selectedTypes.map((type) => {
+      const set = CHAR_SETS[type];
+      return set[secureRandom(set.length)];
     });
 
     const remaining = [];
 
     for (let i = guaranteed.length; i < length; i++) {
-        remaining.push(pool[secureRandom(pool.length)]);
+      remaining.push(pool[secureRandom(pool.length)]);
     }
 
-    const passwordChars = shuffleArray([
-        ...guaranteed,
-        ...remaining
-    ]);
+    const passwordChars = shuffleArray([...guaranteed, ...remaining]);
 
-    passwordOutput.value = passwordChars.join("");
+    passwordOutput.value = passwordChars.join('');
 
-    updateStrengthUI(
-        getStrength(length, selectedTypes)
-    );
-
-} catch (error) {
-    passwordOutput.value = "";
+    updateStrengthUI(getStrength(length, selectedTypes));
+  } catch (error) {
+    passwordOutput.value = '';
 
     validationMsg.textContent =
-        "Secure password generation is unavailable because this browser does not support the Web Crypto API.";
+      'Secure password generation is unavailable because this browser does not support the Web Crypto API.';
 
-    validationMsg.classList.add("visible");
+    validationMsg.classList.add('visible');
 
     updateStrengthUI(null);
-}
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -264,9 +256,8 @@ function onCheckboxChange() {
     generatePassword();
   } else if (getSelectedTypes().length > 0) {
     // Clear stale validation message when user re-selects a type
-    validationMsg.textContent =
-    "Please select at least one character type.";
-validationMsg.classList.remove("visible");
+    validationMsg.textContent = 'Please select at least one character type.';
+    validationMsg.classList.remove('visible');
   }
 }
 
