@@ -1,7 +1,6 @@
 import React, { useRef, useState } from 'react';
 // Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
-import reactDom from 'react-dom';
 
 
 // Import Swiper styles
@@ -45,10 +44,10 @@ export default function App() {
         <SwiperSlide><video src={v2} autoPlay muted loop></video><div className="head">Trecking</div></SwiperSlide>
         <SwiperSlide><video src={v3} autoPlay muted loop></video><div className="head">Adventure</div></SwiperSlide>
         <SwiperSlide><video src={v4} autoPlay muted loop></video><div className="head">Road Trip</div></SwiperSlide>
-        <SwiperSlide><video src={v5} autoPlay muted loop></video><div className="head">SIte Seeing</div></SwiperSlide>
+        <SwiperSlide><video src={v5} autoPlay muted loop></video><div className="head">Sightseeing</div></SwiperSlide>
       </div>
       </Swiper>
-      <body>
+      
       <header className="header">
       <div className="navbar">
         <div className="logo">
@@ -64,13 +63,17 @@ export default function App() {
         </div>
       </div>
     </header>
-      </body>
+      
 
-      <content>
-      <h1>Travel website</h1>
-      <br/>
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad itaque in ipsam rem tempore impedit qui quidem minus ut, officia nam pariatur sed? Dolorem architecto omnis totam quae? Eos, sapiente.
-      </content>
-    </>
+<main className="content">
+  <h1>Travel Website</h1>
+
+  <p>
+    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+    Ad itaque in ipsam rem tempore impedit qui quidem minus ut,
+    officia nam pariatur sed? Dolorem architecto omnis totam
+    quae? Eos, sapiente.
+  </p>
+</main>    </>
   );
 }
