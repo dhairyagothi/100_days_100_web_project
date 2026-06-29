@@ -3100,5 +3100,18 @@
     ],
    "difficulty": "advanced",
     "projectPath": "./public/Pokemon_Battle_Simulator/index.html"
-   } 
+   },
+  {   "projectNo": 244,
+     "projectName": "Web Time Machine",
+    "projectType": "Tool",
+    "projectDesc": "A tool to look at the styles of the past. See how design changes with time.",
+       "techStack": [
+      "html",
+      "css",
+      "javascript",
+      "visualizer"
+    ],
+   "difficulty": "intermediate",
+    "projectPath": "./public/WebTimeMachine/index.html"
+   }     
 ]
