@@ -1,0 +1,128 @@
+/* ════════════════════════════════════════════════════════════════════
+   FocusSprint — Celebration Modals & Overlays Styles
+   ════════════════════════════════════════════════════════════════════ */
+
+/* Fullscreen Dialog Overlay */
+.celebration-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(11, 14, 11, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.celebration-overlay.show {
+  opacity: 1;
+}
+
+/* Modal Dialog Card */
+.celebration-modal {
+  background: var(--clr-surface-card);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--r-2xl);
+  padding: var(--sp-32);
+  max-width: 420px;
+  width: calc(100% - 48px);
+  text-align: center;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 60px var(--clr-accent-glow);
+  transform: translateY(30px) scale(0.95);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.celebration-overlay.show .celebration-modal {
+  transform: translateY(0) scale(1);
+}
+
+/* Modal Close Button */
+.celebration-close-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none;
+  border: none;
+  color: var(--clr-text-dim);
+  font-size: 24px;
+  cursor: pointer;
+  line-height: 1;
+  padding: 4px;
+  transition: color var(--dur-fast);
+}
+
+.celebration-close-btn:hover {
+  color: var(--clr-text);
+}
+
+.celebration-close-btn:focus {
+  outline: 2px solid var(--clr-accent);
+  border-radius: var(--r-sm);
+}
+
+/* Modal Typography & Icons */
+.celebration-icon {
+  font-size: 4.5rem;
+  margin-bottom: 16px;
+  display: inline-block;
+  animation: modalBounce 1s ease-in-out infinite alternate;
+}
+
+.celebration-subtitle {
+  font-family: var(--ff-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--clr-accent);
+  margin-bottom: 8px;
+}
+
+.celebration-title {
+  font-size: var(--fs-3xl);
+  font-weight: var(--fw-black);
+  color: var(--clr-text);
+  margin-bottom: 12px;
+  line-height: 1.1;
+}
+
+.celebration-info {
+  font-size: var(--fs-sm);
+  color: var(--clr-text-muted);
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+
+/* Primary Action Button inside Modal */
+.celebration-action-btn {
+  width: 100%;
+  padding: 14px 24px;
+  background: linear-gradient(135deg, var(--clr-accent-dim), var(--clr-accent));
+  border: none;
+  border-radius: var(--r-xl);
+  color: var(--clr-canvas);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-base);
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow var(--dur-fast);
+}
+
+.celebration-action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-glow);
+}
+
+.celebration-action-btn:focus {
+  outline: 2px solid var(--clr-accent);
+  outline-offset: 2px;
+}
+
+/* Modal Bounce Keyframes */
+@keyframes modalBounce {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-12px); }
+}
