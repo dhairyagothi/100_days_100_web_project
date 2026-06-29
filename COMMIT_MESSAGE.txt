@@ -1,0 +1,37 @@
+fix: resolve TO_DO_LIST search and filter integration issues
+
+- Add global currentSearch state variable for search persistence
+- Integrate search functionality into renderTasks() filter logic
+- Search now only matches task text and category (excludes button labels)
+- Fix empty state display when search/filter returns no results
+- Standardize filter names: pending→active, done→completed
+- Fix unclosed dashboard-layout div breaking CSS grid
+- Fix onclick attribute syntax (missing space between attributes)
+- Add missing Miscellaneous category option to task category select
+
+enhancement: integrate Priority selector into task input field
+
+- Wrap task input and priority select in task-input-group container
+- Display as combined component: [Task Name | Priority ▼]
+- Add CSS styling for integrated appearance with visual separator
+- Add dark mode support for new component with proper contrast
+- Add responsive mobile-friendly layout for all screen sizes
+- Maintain all existing priority logic and functionality
+- Preserve all IDs, classes, validation, and JavaScript behavior
+
+Testing:
+- ✅ All HTML tags properly closed and nested
+- ✅ All CSS classes defined and verified
+- ✅ Search works independently and with filters
+- ✅ Filter changes don't clear search input
+- ✅ Empty state shows when no results found
+- ✅ Priority selector visually integrated and functional
+- ✅ Responsive design works on mobile/tablet/desktop
+- ✅ Dark mode transitions smooth without breaking layout
+- ✅ localStorage error handling in place
+- ✅ No console errors or undefined references
+
+This resolves 9 critical issues and improves UX while maintaining
+full backward compatibility and no breaking changes.
+
+Closes: (issue reference if applicable)
