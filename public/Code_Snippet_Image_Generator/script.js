@@ -69,11 +69,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Theme change
     themeSelect.addEventListener('change', (e) => {
-        const themeUrl = `https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/${e.target.value}`;
-        prismThemeLink.href = themeUrl;
+        const allowedThemes = ['prism-tomorrow.min.css', 'prism-okaidia.min.css', 'prism.min.css', 'prism-twilight.min.css'];
+        const selectedTheme = e.target.value;
+        
+        if (allowedThemes.includes(selectedTheme)) {
+            const themeUrl = `https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/${selectedTheme}`;
+            prismThemeLink.href = themeUrl;
+        }
         
         const macWindow = document.querySelector('.mac-window');
-        if(e.target.value.includes('okaidia') || e.target.value.includes('tomorrow') || e.target.value.includes('twilight')) {
+        if(selectedTheme.includes('okaidia') || selectedTheme.includes('tomorrow') || selectedTheme.includes('twilight')) {
             macWindow.style.background = 'rgba(15, 15, 15, 0.85)';
             codeInput.style.color = 'transparent';
         } else {
