@@ -1,11 +1,12 @@
-# 🍳 Recipe Genie
-## Enterprise Technical Architecture & System Documentation
+# 🔍 Lost & Found Portal
+
+## Technical Architecture & System Documentation
 
 ---
 
-# Executive Summary
+# Summary
 
-Recipe Genie is a modular client-side recipe discovery platform designed to provide scalable meal exploration, search processing, category management, and dynamic content rendering.
+The Lost & Found Portal is a serverless, client-side community platform designed to seamlessly log, browse, and reunite people with their lost belongings. It utilizes optimized local storage paradigms, HTML5 canvas image compression, and dynamic dashboard rendering to deliver a robust user experience without a backend database.
 
 ---
 
@@ -13,19 +14,19 @@ Recipe Genie is a modular client-side recipe discovery platform designed to prov
 
 ```text
 ┌─────────────────┐
-│   User Layer    │
+│    User Layer   │
 └────────┬────────┘
          │
 ┌────────▼────────┐
-│ Navigation Core │
+│ UI & Theme Core │
 └────────┬────────┘
          │
 ┌────────▼────────┐
-│ Search Engine   │
+│ Search & Filter │
 └────────┬────────┘
          │
 ┌────────▼────────┐
-│ Data Processor  │
+│  State Manager  │
 └────────┬────────┘
          │
 ┌────────▼────────┐
@@ -37,13 +38,13 @@ Recipe Genie is a modular client-side recipe discovery platform designed to prov
 
 # Application Modules
 
-| Module | Responsibility |
-|-------|---------------|
-| Home Engine | Landing interface |
-| Search Engine | Query processing |
-| Category Engine | Recipe classification |
-| Meal Renderer | Detail page generation |
-| UI Renderer | DOM updates |
+| Module          | Responsibility                                    |
+| --------------- | ------------------------------------------------- |
+| Home Engine     | Dynamic metric tracking & recent listings         |
+| Browse Engine   | Multi-tier search and category filtering          |
+| Report Engine   | Lost & Found form processing                      |
+| Detail Renderer | Individual item view and resolution handling      |
+| State Manager   | localStorage synchronization & canvas compression |
 
 ---
 
@@ -52,13 +53,10 @@ Recipe Genie is a modular client-side recipe discovery platform designed to prov
 ```text
 index.html
     │
-home.html
-    │
-search.html
-    │
-category.html
-    │
-meal.html
+    ├─ View: Home
+    ├─ View: Browse
+    ├─ View: Report Lost/Found
+    ├─ View: Item Details
     │
 script.js
     │
@@ -70,27 +68,27 @@ style.css
 # Rendering Pipeline
 
 ```text
-User Action
+User Action (Report / Claim)
      ↓
-Event Listener
+Event Listener Triggered
      ↓
-JavaScript Processing
+JavaScript Data Processing
      ↓
-DOM Manipulation
+LocalStorage Sync & Compression
      ↓
-UI Rendering
+DOM UI Rendering
 ```
 
 ---
 
 # State Management Layer
 
-Recipe Genie uses client-side state management through:
+The Lost & Found Portal uses purely client-side state management through:
 
-- DOM state
-- JavaScript variables
-- User interactions
-- Event-driven updates
+* localStorage persistence API
+* DOM state & Glassmorphic CSS variables
+* JavaScript Class encapsulation (LostAndFoundApp)
+* Event-driven view switching
 
 ---
 
@@ -98,12 +96,18 @@ Recipe Genie uses client-side state management through:
 
 ```json
 {
-  "meal": {
-    "id": "number",
-    "name": "string",
-    "category": "string",
-    "instructions": "string",
-    "ingredients": "array"
+  "item": {
+    "id": "1719253452000",
+    "type": "lost | found",
+    "name": "Black Leather Wallet",
+    "category": "wallet | electronics | keys...",
+    "date": "2026-06-24",
+    "location": "Central Park",
+    "description": "Distinguishing features...",
+    "contact": "user@example.com",
+    "image": "data:image/jpeg;base64,...",
+    "reportedAt": "2026-06-24T14:20:52.000Z",
+    "status": "active | reunited"
   }
 }
 ```
@@ -112,75 +116,75 @@ Recipe Genie uses client-side state management through:
 
 # Search Processing Engine
 
-1. User submits query.
-2. JavaScript validates input.
-3. Query processing begins.
-4. Matching recipes are rendered.
-5. User navigates to detail page.
+* User inputs query or selects category filter
+* JavaScript validates input against the active data array
+* Engine cross-references **Name, Description, and Location**
+* Active (`status !== 'reunited'`) matching items are filtered
+* DOM Grid dynamically renders results
 
 ---
 
-# Category Processing Pipeline
+# Item Resolution Pipeline
 
 ```text
-Category Selection
+Active Report View
         ↓
-Data Filtering
+User Clicks "Mark Reunited"
         ↓
-DOM Rendering
+Status Override ('reunited')
         ↓
-User Navigation
+Data Array Saved to State
+        ↓
+Dashboard Metrics Recalculated
 ```
 
 ---
 
-# Meal Detail Engine
+# Item Detail Engine
 
-Responsibilities:
+**Responsibilities:**
 
-- Ingredient rendering
-- Instruction rendering
-- Recipe metadata display
-- User navigation support
+* High-fidelity image rendering
+* Metadata display (Date, Location, Category)
+* Contact parsing & `mailto:` routing
+* Item resolution workflow tracking
 
 ---
 
 # Responsive Design Architecture
 
-| Device | Support |
-|-------|----------|
-| Desktop | ✅ |
-| Laptop | ✅ |
-| Tablet | ✅ |
-| Mobile | ✅ |
+| Device  | Support |
+| ------- | ------- |
+| Desktop | ✅       |
+| Laptop  | ✅       |
+| Tablet  | ✅       |
+| Mobile  | ✅       |
 
 ---
 
 # Performance Characteristics
 
-- Lightweight architecture
-- Minimal JavaScript overhead
-- Fast rendering
-- Responsive UI updates
+* Native Canvas Compression: Compresses 5MB+ image uploads by up to **90%** to prevent `QuotaExceededError` crashes
+* Lightweight vanilla architecture (Zero dependencies)
+* Minimal JavaScript overhead
+* Instantaneous DOM view switching
 
 ---
 
 # Scalability Opportunities
 
-- API integration
-- Backend support
-- User accounts
-- Recipe storage
-- Authentication
-- Cloud deployment
+* Backend database migration (Node.js / MongoDB)
+* User authentication & accounts
+* Geo-location Maps API integration
+* Automated email matching alerts
 
 ---
 
 # Security Considerations
 
-- Input validation
-- DOM safety
-- Client-side protection
+* Input regex validation (Email & Phone format enforcement)
+* Date-picker restriction limits (No future dates allowed)
+* Strict DOM element generation to prevent XSS
 
 ---
 
@@ -188,27 +192,26 @@ Responsibilities:
 
 ```bash
 git clone repository-url
-cd Recipe-Genie
+cd Lost_And_Found_Portal
 ```
 
-Run:
+**Run:**
 
 ```bash
-Open index.html
+# Recommended: Open via Live Server to allow 
+# proper window.location.host validation and localStorage execution.
 ```
+
+Open `index.html` via Live Server extension
 
 ---
 
 # Project Structure
 
 ```text
-Recipe Genie
+Lost_And_Found_Portal
 │
 ├── index.html
-├── home.html
-├── search.html
-├── category.html
-├── meal.html
 ├── script.js
 ├── style.css
 └── README.md
@@ -218,12 +221,10 @@ Recipe Genie
 
 # Future Roadmap
 
-- Dark mode
-- Favorites
-- Recipe sharing
-- User profiles
-- Nutrition analytics
-- AI recipe recommendation
+* Interactive maps for item locations
+* In-app messaging system
+* Community reputation scores
+* Social media share integration
 
 ---
 
@@ -251,14 +252,10 @@ Open-source educational project.
 
 # Maintainer Notes
 
-This documentation serves as both a user guide and an architectural reference for future contributors.
+This documentation serves as both a structural blueprint and a technical reference for managing the client-side state pipeline.
 
 ---
 
-<div align="center">
-
-### Built for 100 Days 100 Web Projects
+**Built for 100 Days 100 Web Projects**
 
 ⭐ Star the repository if you found it useful.
-
-</div>

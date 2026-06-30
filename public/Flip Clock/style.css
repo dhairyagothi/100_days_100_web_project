@@ -1,6 +1,9 @@
 :root {
   --bg: #dff7ea;
   --text: #5c9b7b;
+  --card-bg: #f8fffb;
+  --shadow: rgba(92, 155, 123, 0.15);
+  --divider: #d7e7dd;
 }
 
 * {
@@ -12,14 +15,11 @@
 
 body {
   height: 100vh;
-
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background:
-    radial-gradient(circle at top left, #ffffff80, transparent), var(--bg);
-
+  background: radial-gradient(circle at top left, #ffffff80, transparent), var(--bg);
   transition: background 0.4s ease;
 }
 
@@ -32,8 +32,8 @@ body {
   text-align: center;
   text-shadow: 0 2px 8px rgba(255, 255, 255, 0.5);
 }
-/* CLOCK */
 
+/* CLOCK */
 .clock-widget {
   width: 800px;
   max-width: 90%;
@@ -41,7 +41,8 @@ body {
   border-radius: 35px;
   background: rgba(255, 255, 255, 0.35);
   backdrop-filter: blur(25px);
-  box-shadow: 0 15px 40px rgba(92, 155, 123, 0.15);
+  box-shadow: 0 15px 40px var(--shadow);
+  transition: box-shadow 0.3s ease;
 }
 
 .time-row {
@@ -52,13 +53,14 @@ body {
 .flip-card {
   flex: 1;
   height: 230px;
-  background: #f8fffb;
+  background: var(--card-bg);
   border-radius: 25px;
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
   box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.04);
+  transition: background 0.3s ease;
 }
 
 .flip-card::before {
@@ -66,9 +68,10 @@ body {
   position: absolute;
   width: 100%;
   height: 2px;
-  background: #d7e7dd;
+  background: var(--divider);
   top: 50%;
   left: 0;
+  transition: background 0.3s ease;
 }
 
 .flip-card div {
@@ -76,7 +79,7 @@ body {
   font-weight: 700;
   color: var(--text);
   line-height: 1;
-  transition: 0.3s ease;
+  transition: color 0.3s ease;
 }
 
 .footer {
@@ -85,11 +88,10 @@ body {
   justify-content: space-between;
   color: var(--text);
   font-size: 1.4rem;
-  transition: 0.3s ease;
+  transition: color 0.3s ease;
 }
 
 /* COLOR SECTION */
-
 .color-section {
   margin-top: 25px;
   text-align: center;
@@ -108,6 +110,7 @@ body {
   display: flex;
   gap: 14px;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
 .color {
@@ -130,7 +133,6 @@ body {
 }
 
 /* Pastel Colors */
-
 .mint {
   background: #dff7ea;
 }
@@ -155,6 +157,86 @@ body {
   background: #fff4c9;
 }
 
+/* Custom Palette */
+.custom-palette {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+  padding: 12px 20px;
+  background: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(8px);
+  border-radius: 60px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.custom-palette label {
+  font-family: 'Gaegu', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: #555;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.custom-palette input[type="color"] {
+  width: 44px;
+  height: 44px;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  cursor: pointer;
+  background: none;
+  padding: 0;
+  transition: 0.2s;
+}
+
+.custom-palette input[type="color"]:hover {
+  transform: scale(1.05);
+}
+
+.custom-palette input[type="text"] {
+  width: 100px;
+  padding: 6px 12px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 40px;
+  background: rgba(255, 255, 255, 0.6);
+  font-family: 'Gaegu', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: #333;
+  text-align: center;
+  outline: none;
+  transition: 0.2s;
+}
+
+.custom-palette input[type="text"]:focus {
+  border-color: var(--text);
+  box-shadow: 0 0 0 3px rgba(92, 155, 123, 0.2);
+}
+
+.custom-palette .apply-btn {
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  padding: 6px 18px;
+  border-radius: 40px;
+  font-family: 'Gaegu', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #444;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.custom-palette .apply-btn:hover {
+  background: rgba(255, 255, 255, 0.8);
+  transform: scale(1.02);
+  color: #111;
+}
+
 @media (max-width: 768px) {
   .flip-card {
     height: 140px;
@@ -166,5 +248,32 @@ body {
 
   .footer {
     font-size: 1rem;
+  }
+
+  .custom-palette {
+    gap: 12px;
+    padding: 12px 16px;
+  }
+
+  .custom-palette input[type="text"] {
+    width: 80px;
+  }
+}
+
+@media (max-width: 480px) {
+  .flip-card {
+    height: 110px;
+  }
+
+  .flip-card div {
+    font-size: 3rem;
+  }
+
+  .clock-widget {
+    padding: 20px;
+  }
+
+  .time-row {
+    gap: 10px;
   }
 }
