@@ -1,55 +1,124 @@
-# Dino Dash
+# 🦖 Dino Game
 
-## Description
+A fun and fully playable Chrome T-Rex Runner clone built using HTML, CSS, and JavaScript. Jump over obstacles, survive as long as possible, and challenge yourself to achieve the highest score.
 
-Dino Dash is a browser-based endless runner inspired by dinosaur jump games. Players jump over obstacles, collect coins, complete missions, use powerups, and unlock visual skins.
+---
 
-## Features
+## 📖 About the Project
 
-* Spacebar, tap, and button controls for starting and jumping.
-* Score, best score, level, speed, combo, power status, and coin tracking.
-* Difficulty selection for easy, normal, and hard gameplay.
-* Dynamic obstacles, bird-style hazards, boss waves, and parallax scenery.
-* Powerups for shield, slow motion, and double-score effects.
-* Mission system with progress rewards.
-* Pause control, sound toggle, and browser-generated sound effects.
-* Skin shop with coin purchases stored in `localStorage`.
+Dino Game recreates the classic offline Chrome dinosaur game where players control a running dinosaur that must avoid incoming obstacles.
 
-## Technologies Used
+The game features smooth animations, collision detection, score tracking, and increasing difficulty as the game progresses.
 
-* HTML5
-* CSS3
-* JavaScript
-* Web Audio API
-* localStorage
+It is a beginner-friendly JavaScript project that demonstrates game loops, DOM manipulation, keyboard events, animations, and collision detection.
 
-## Folder Structure
+---
 
-```text
-DinoGame/
-`-- DinoGame-main/
-    |-- index.html
-    |-- styles.css
-    |-- script.js
-    |-- cactus.png
-    `-- dino.png
+## ✨ Features
+
+- Smooth running animation
+- Jump mechanics
+- Obstacle generation
+- Collision detection
+- Score tracking
+- Responsive gameplay
+- Lightweight implementation
+- Easy to understand codebase
+
+---
+
+## 🛠 Tech Stack
+
+- HTML5
+- CSS3
+- JavaScript (Vanilla JS)
+
+---
+
+## 📂 Project Structure
+
+```
+Dino_game/
+│
+├── index.html      # Main game page
+├── styles.css      # Game styling
+├── script.js       # Game logic
+└── README.md
 ```
 
-## How to Run
+---
 
-1. Clone the repository.
-2. Navigate to `public/DinoGame/DinoGame-main`.
-3. Open `index.html` in a browser.
+## 🎮 How to Play
 
-## Screenshots
+1. Open the game in your browser.
+2. Press **Spacebar** or **Arrow Up** to make the dinosaur jump.
+3. Avoid hitting incoming obstacles.
+4. Your score increases as long as you survive.
+5. If you collide with an obstacle, the game ends.
 
-> Screenshots can be added here.
+---
 
-## Future Enhancements
+## ⌨ Controls
 
-* Add mobile on-screen controls for jump and pause.
-* Add more missions, powerups, and unlockable skins.
+| Key | Action |
+|------|--------|
+| Space | Jump |
+| Arrow Up | Jump |
+| Refresh Page | Restart Game |
 
-## Author / Contributor
+---
 
-Developed as part of the GSSoC project collection.
+## 🚀 How to Run Locally
+
+### Clone the repository
+
+```bash
+git clone https://github.com/dhairyagothi/100_days_100_web_project.git
+```
+
+### Move to the project
+
+```bash
+cd 100_days_100_web_project/public/Dino_game
+```
+
+### Open the project
+
+Simply open:
+
+```
+index.html
+```
+
+in your browser.
+
+Or use the VS Code Live Server extension for the best experience.
+
+---
+
+## 💡 Future Improvements
+
+- Sound effects
+- High score storage
+- Mobile controls
+- Pause/Resume functionality
+- Difficulty selector
+- Power-ups
+
+---
+
+## 🤝 Contributing
+
+Contributions are always welcome.
+
+1. Fork the repository.
+2. Create a new branch.
+3. Commit your changes.
+4. Push the branch.
+5. Open a Pull Request.
+
+---
+
+## 📄 License
+
+This project is part of the **100 Days 100 Web Projects** repository and follows the repository's license.
