@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact — Animated Searchbar</title>
+    <meta name="description"
+        content="Get in touch with the Animated Cursor project — part of the 100 Web Projects series by Dhairya Gothi.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="../favv.png" type="image/x-icon" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Inter', Arial, sans-serif;
+        }
+
+        /* ── Page layout ── */
+        .contact-wrapper {
+            position: relative;
+            z-index: 5;
+            width: min(95vw, 1100px);
+            margin: 110px auto 0;
+            padding-bottom: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 60px;
+        }
+
+        /* ── Hero ── */
+        .contact-hero {
+            text-align: center;
+        }
+
+        .contact-hero h1 {
+            font-size: clamp(2.2rem, 7vw, 4.5rem);
+            font-weight: 800;
+            line-height: 1;
+            margin-bottom: 18px;
+        }
+
+        .contact-hero p {
+            max-width: 480px;
+            margin: 0 auto;
+            color: rgba(248, 251, 255, .68);
+            font-size: 1.05rem;
+            line-height: 1.7;
+        }
+
+        /* ── Grid: form + info ── */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 420px;
+            gap: 40px;
+            width: 100%;
+        }
+
+        @media (max-width: 820px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ── Glass card base ── */
+        .glass-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, .10), rgba(255, 255, 255, .04));
+            border: 1px solid rgba(255, 255, 255, .13);
+            backdrop-filter: blur(24px);
+            border-radius: 24px;
+            padding: 40px;
+        }
+
+        /* ── Form ── */
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        @media (max-width: 500px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label {
+            font-size: .85rem;
+            font-weight: 600;
+            color: rgba(248, 251, 255, .75);
+            letter-spacing: .04em;
+            text-transform: uppercase;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            background: rgba(255, 255, 255, .06);
+            border: 1px solid rgba(255, 255, 255, .18);
+            border-radius: 12px;
+            padding: 14px 16px;
+            color: #fff;
+            font-size: .95rem;
+            font-family: inherit;
+            outline: none;
+            transition: border-color .2s, box-shadow .2s, background .2s;
+            cursor: none;
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: rgba(255, 255, 255, .32);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: rgba(var(--accent-two-rgb), .7);
+            box-shadow: 0 0 0 3px rgba(var(--accent-two-rgb), .15), 0 0 24px rgba(var(--accent-rgb), .12);
+            background: rgba(255, 255, 255, .09);
+        }
+
+        .form-group select option {
+            background: #12162a;
+            color: #fff;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 140px;
+        }
+
+        .submit-btn {
+            align-self: flex-start;
+            padding: 15px 42px;
+            border: none;
+            border-radius: 14px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-two));
+            color: #ffa31a;
+            font-size: 1rem;
+            font-weight: 700;
+            font-family: inherit;
+            cursor:pointer;
+            transition: transform .25s ease, box-shadow .25s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 28px rgba(var(--accent-rgb), .45), 0 0 56px rgba(var(--accent-two-rgb), .22);
+        }
+
+        .submit-btn i {
+            font-size: .9rem;
+        }
+
+        /* ── Success banner ── */
+        .success-banner {
+            display: none;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 20px;
+            border-radius: 14px;
+            background: rgba(16, 185, 129, .18);
+            border: 1px solid rgba(16, 185, 129, .38);
+            color: #6effd9;
+            font-weight: 600;
+            animation: fadeIn .4s ease;
+        }
+
+        .success-banner.show {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        /* ── Info panel ── */
+        .info-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .info-card {
+            display: flex;
+            gap: 18px;
+            align-items: flex-start;
+            padding: 22px 26px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, .08), rgba(255, 255, 255, .03));
+            border: 1px solid rgba(255, 255, 255, .11);
+            border-radius: 18px;
+            backdrop-filter: blur(20px);
+            transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+        }
+
+        .info-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(var(--accent-rgb), .4);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, .25), 0 0 24px rgba(var(--accent-rgb), .1);
+        }
+
+        .info-icon {
+            flex-shrink: 0;
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, rgba(var(--accent-rgb), .28), rgba(var(--accent-two-rgb), .18));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: var(--accent);
+        }
+
+        .info-text h3 {
+            font-size: .95rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .info-text p {
+            font-size: .88rem;
+            color: rgba(248, 251, 255, .62);
+            line-height: 1.55;
+        }
+
+        .info-text a {
+            color: var(--accent-two);
+            text-decoration: none;
+            transition: color .2s;
+        }
+
+        .info-text a:hover {
+            color: var(--accent);
+        }
+
+        /* ── Social strip ── */
+        .social-strip {
+            padding: 28px 32px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, .08), rgba(255, 255, 255, .03));
+            border: 1px solid rgba(255, 255, 255, .11);
+            border-radius: 20px;
+            backdrop-filter: blur(20px);
+        }
+
+        .social-strip h3 {
+            font-size: .95rem;
+            font-weight: 700;
+            color: rgba(255, 255, 255, .65);
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding: 11px 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, .14);
+            background: rgba(255, 255, 255, .06);
+            color: rgba(248, 251, 255, .82);
+            text-decoration: none;
+            font-size: .88rem;
+            font-weight: 600;
+            transition: all .25s ease;
+        }
+
+        .social-link:hover {
+            background: rgba(var(--accent-rgb), .18);
+            border-color: rgba(var(--accent-rgb), .5);
+            color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        /* ── Light theme overrides ── */
+        body.light-theme .contact-hero h1 {
+            -webkit-text-fill-color: unset;
+            color: #404654;
+            background: none;
+        }
+
+        body.light-theme .contact-hero p {
+            color: #6b7280;
+        }
+
+        body.light-theme .glass-card,
+        body.light-theme .info-card,
+        body.light-theme .social-strip {
+            background: rgba(255, 255, 255, .88);
+            border-color: rgba(0, 0, 0, .07);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, .06);
+        }
+
+        body.light-theme .form-group label {
+            color: #556;
+        }
+
+        body.light-theme .form-group input,
+        body.light-theme .form-group select,
+        body.light-theme .form-group textarea {
+            background: #f7f9fc;
+            border-color: rgba(0, 0, 0, .1);
+            color: #1e293b;
+        }
+
+        body.light-theme .form-group input::placeholder,
+        body.light-theme .form-group textarea::placeholder {
+            color: #aab;
+        }
+
+        body.light-theme .info-text h3 {
+            color: #303550;
+        }
+
+        body.light-theme .info-text p {
+            color: #6b7280;
+        }
+
+        body.light-theme .social-strip h3 {
+            color: #8890a4;
+        }
+
+        body.light-theme .social-link {
+            color: #404654;
+            border-color: rgba(0, 0, 0, .1);
+            background: #f4f6fa;
+        }
+
+        body.light-theme .social-link:hover {
+            color: #d89b14;
+            background: #fff4d8;
+            border-color: #d89b14;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+
+        <div class="logo">
+            <i class="fa-solid fa-magnifying-glass magnifier" aria-label="Search" role="button"
+                tabindex="0"></i>Animated Searchbars
+        </div>
+
+        <ul class="nav-links">
+
+            <li>
+                <a href="index.html">
+                    Home
+                </a>
+            </li>
+
+            <li>
+                <a href="Searchbars.html">
+                    Animated Searchbars
+                </a>
+            </li>
+
+            <li>
+                <a href="contact.html">
+                    Contact
+                </a>
+            </li>
+
+        </ul>
+        <button id="themeToggle" class="theme">
+            <span id="themeIcon">☀️</span>
+        </button>
+    </nav>
+
+    <!-- ── Page content ── -->
+    <div class="contact-wrapper">
+
+        <!-- Hero -->
+        <div class="contact-hero">
+            <h1>Get in Touch</h1>
+            <p>Have a question, idea, or just want to say hi? Drop a message and I'll get back to you as soon as
+                possible.</p>
+        </div>
+
+        <!-- Grid -->
+        <div class="contact-grid">
+
+            <!-- Form card -->
+            <div class="glass-card">
+                <form class="contact-form" id="contactForm" novalidate>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">First Name</label>
+                            <input type="text" id="firstName" placeholder="Jane" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name</label>
+                            <input type="text" id="lastName" placeholder="Doe">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" placeholder="jane@example.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <select id="subject">
+                            <option value="">Select a topic…</option>
+                            <option value="feedback">Feedback / Suggestion</option>
+                            <option value="bug">Bug Report</option>
+                            <option value="collab">Collaboration</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" placeholder="Write your message here…" required></textarea>
+                    </div>
+
+                    <div class="success-banner" id="successBanner">
+                        <i class="fas fa-check-circle"></i>
+                        Message sent! I'll reply soon — thanks for reaching out.
+                    </div>
+
+                    <button type="submit" class="submit-btn magnetic-control" id="submitBtn">
+                        <i class="fas fa-paper-plane"></i> Send Message
+                    </button>
+
+                </form>
+            </div>
+
+            <!-- Info panel -->
+            <div class="info-panel">
+
+                <div class="info-card magnetic-control">
+                    <div class="info-icon"><i class="fas fa-envelope"></i></div>
+                    <div class="info-text">
+                        <h3>Email</h3>
+                        <p>For detailed inquiries, reach out directly.<br>
+                            <a href="mailto:hello@100webprojects.dev">hello@100webprojects.dev</a>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="info-card magnetic-control">
+                    <div class="info-icon"><i class="fas fa-code-branch"></i></div>
+                    <div class="info-text">
+                        <h3>Open Source</h3>
+                        <p>All 100 projects are open source. Explore, fork, and contribute on GitHub.</p>
+                    </div>
+                </div>
+
+                <div class="info-card magnetic-control">
+                    <div class="info-icon"><i class="fas fa-clock"></i></div>
+                    <div class="info-text">
+                        <h3>Response Time</h3>
+                        <p>I typically reply within 24–48 hours on weekdays.</p>
+                    </div>
+                </div>
+
+                <div class="social-strip">
+                    <h3>Connect on Social</h3>
+                    <div class="social-links">
+                        <a href="#" class="social-link magnetic-control"><i class="fab fa-github"></i> </a>
+                        <a href="#" class="social-link magnetic-control"><i class="fab fa-twitter"></i> </a>
+                        <a href="#" class="social-link magnetic-control"><i class="fab fa-linkedin"></i> </a>
+                        <a href="#" class="social-link magnetic-control"><i class="fab fa-instagram"></i> </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        document.getElementById('contactForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const name = document.getElementById('firstName').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const msg = document.getElementById('message').value.trim();
+            if (!name || !email || !msg) {
+                alert('Please fill in the required fields (name, email, message).');
+                return;
+            }
+            const btn = document.getElementById('submitBtn');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending…';
+            btn.disabled = true;
+            setTimeout(() => {
+                document.getElementById('successBanner').classList.add('show');
+                btn.innerHTML = '<i class="fas fa-check"></i> Sent!';
+                btn.style.background = '#10b981';
+                this.reset();
+            }, 1200);
+        });
+    </script>
+
+    <footer class="footer">
+
+        <section id="footer-container">
+
+            <!-- Brand -->
+            <div class="footer-section">
+                <h3><i class="fa-solid fa-magnifying-glass magnifier" aria-label="Search" role="button"
+                        tabindex="0"></i> Midnight Matcher</h3>
+                <p>
+                    Animated Searchbar is part of the 100 Web Projects series — exploring creative UI interactions and
+                    modern web animations.
+                </p>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="Searchbars.html">Searchbars</a></li>
+                    <li><a href="#footer-container">Contact</a></li>
+                </ul>
+            </div>
+
+            <!-- Social Links -->
+            <div class="footer-section">
+                <h4>Follow Us</h4>
+
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-github"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-discord"></i></a>
+                </div>
+            </div>
+
+            </div>
+
+            <div class="footer-bottom">
+                <p>
+                    © 2025 Animated Searchbar Collection. All Rights Reserved.
+                </p>
+            </div>
+        </section>
+    </footer>
+</body>
+
+</html>
