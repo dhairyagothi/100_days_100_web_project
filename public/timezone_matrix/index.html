@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TimeZone Matrix — Global Meeting Coordinator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="app-nav">
+        <a href="../../index.html" class="btn-home">◀ BACK TO HOME</a>
+        <div class="system-status">
+            <span class="status-pulse"></span> TIME COORDINATOR ENGINE ACTIVE
+        </div>
+    </header>
+
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <h1>TIMEZONE MATRIX</h1>
+            <p class="subtitle">Global Team Meeting Sync Coordinator</p>
+        </header>
+
+        <section class="control-panel">
+            <div class="selector-group">
+                <label for="city-selector">Pin Global Team City Location:</label>
+                <div class="input-row">
+                    <select id="city-selector">
+                        <option value="Asia/Kolkata">Mumbai / Bengaluru (IST - UTC+5:30)</option>
+                        <option value="America/New_York">New York (EST - UTC-5)</option>
+                        <option value="Europe/London">London (GMT/BST - UTC+0/+1)</option>
+                        <option value="Asia/Tokyo">Tokyo (JST - UTC+9)</option>
+                        <option value="America/Los_Angeles">Los Angeles (PST - UTC-8)</option>
+                        <option value="Europe/Berlin">Berlin (CET - UTC+1)</option>
+                    </select>
+                    <button id="add-city-btn" class="btn-primary">+ Add Location</button>
+                </div>
+            </div>
+
+            <div class="slider-group">
+                <div class="slider-header">
+                    <span>Adjust Base Coordination Hour (Local Time Target Point):</span>
+                    <span id="current-hour-label" class="time-badge">12:00 PM</span>
+                </div>
+                <input type="range" id="global-hour-slider" min="0" max="23" value="12" class="matrix-slider">
+            </div>
+        </section>
+
+        <main class="matrix-board">
+            <div class="matrix-legend">
+                <div class="legend-item"><span class="block overlap"></span> Overlapping Golden Sync Window (9 AM - 6 PM)</div>
+                <div class="legend-item"><span class="block offhours"></span> Outside Working Hours</div>
+            </div>
+
+            <div id="timezone-rows-container" class="rows-stack"></div>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
