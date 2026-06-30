@@ -3086,5 +3086,18 @@
     ],
    "difficulty": "advanced",
     "projectPath": "./public/Pokemon_Battle_Simulator/index.html"
-   } 
+   },
+  {
+  "projectNo": 243,
+  "projectName": "TimeZone Matrix",
+  "projectType": "Tool",
+  "projectDesc": "A global meeting coordinator built for distributed remote teams. Pins multiple cities across timezones and renders a unified horizontal timeline grid that dynamically highlights the optimal overlapping golden hours for scheduling synchronous team sessions.",
+  "techStack": [
+    "html",
+    "css",
+    "javascript"
+  ],
+  "difficulty": "intermediate",
+  "projectPath": "./public/timezone_matrix/index.html"
+} 
 ]
