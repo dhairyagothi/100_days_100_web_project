@@ -41,6 +41,9 @@ package-lock.json
 *.launch
 .settings/
 
+# Accessibility tooling output
+missing-alt-report.json
+
 # OS generated files
 .DS_Store
 .DS_Store?
