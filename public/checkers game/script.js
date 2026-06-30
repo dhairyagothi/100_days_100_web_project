@@ -5,6 +5,7 @@ let selected = null;
 let currentPlayer = 'red';
 let gameMode = null; // "pvp" or "bot"
 let mustContinueJump = false;
+let jumpPiece = null;
 let gameOver = false;
 
 const boardDiv = document.getElementById('board');
@@ -129,22 +130,25 @@ function movePiece(r, c) {
   if (move.capture && getValidCaptures(r, c).length > 0) {
     selected = { r, c };
     mustContinueJump = true;
-  } else {
+    jumpPiece = { r, c };
+  } 
+  else {
     mustContinueJump = false;
-    switchTurn();
+    jumpPiece = null;
   }
-
+  
   render();
   checkWinner();
-
-  if (!gameOver && gameMode === 'bot' && currentPlayer === 'black') {
-    setTimeout(botMove, 500);
-  }
+  
+  if (gameOver) {return;}
+  if (!mustContinueJump) {switchTurn();}
+  
+  if (!gameOver && gameMode === 'bot' && currentPlayer === 'black') {setTimeout(botMove, 500);}
 }
-
+  
 function switchTurn() {
-  currentPlayer = currentPlayer === 'red' ? 'black' : 'red';
-  setStatus(`${currentPlayer.toUpperCase()}'s turn`);
+    currentPlayer = currentPlayer === 'red' ? 'black' : 'red';
+    setStatus(`${currentPlayer.toUpperCase()}'s turn`);
 }
 
 function getValidMoves(r, c) {
@@ -189,8 +193,16 @@ function getValidMoves(r, c) {
   }
 
   if (mustContinueJump) {
+  if (
+    jumpPiece &&
+    jumpPiece.r === r &&
+    jumpPiece.c === c
+  ) {
     return getValidCaptures(r, c);
   }
+
+  return [];
+}
 
   const capturesAvailable = playerHasCapture(piece.color);
 
@@ -274,7 +286,18 @@ function botMove() {
     }
   }
 
-  if (!bestMove) return;
+  if (!bestMove) {
+  gameOver = true;
+
+  setStatus('RED WINS 🎉');
+
+  showNotification(
+    'Game Over',
+    'Black has no legal moves remaining. Red wins the game!'
+  );
+
+  return;
+}
 
   selected = bestMove.from;
   movePiece(bestMove.to.r, bestMove.to.c);

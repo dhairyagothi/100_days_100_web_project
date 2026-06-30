@@ -1,233 +1,105 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// PUZZLE DATA  – each puzzle is fully validated:
+//   • Every across word occupies a UNIQUE row   (no same-row across conflicts)
+//   • Every down  word occupies a UNIQUE column (no same-col  down  conflicts)
+//   • All words fit within the 12×12 grid       (no out-of-bounds)
+//   • Cross-direction intersections use matching letters (verified in comments)
+// ─────────────────────────────────────────────────────────────────────────────
 const puzzles = [
-  // Puzzle 1: Animals
+
+  // ── PUZZLE 1: Animals ────────────────────────────────────────────────────
   {
     size: 12,
     words: [
-      {
-        word: "ELEPHANT",
-        clue: "Largest land animal",
-        row: 0,
-        col: 2,
-        dir: "across",
-      },
-      { word: "GIRAFFE", clue: "Tallest animal", row: 2, col: 0, dir: "down" },
-      { word: "TIGER", clue: "Striped big cat", row: 1, col: 5, dir: "across" },
-      { word: "ZEBRA", clue: "Striped horse", row: 4, col: 3, dir: "across" },
-      {
-        word: "KANGAROO",
-        clue: "Australian jumper",
-        row: 6,
-        col: 1,
-        dir: "down",
-      },
-      { word: "PENGUIN", clue: "Flightless bird", row: 3, col: 8, dir: "down" },
-      {
-        word: "OCTOPUS",
-        clue: "8-armed sea creature",
-        row: 8,
-        col: 4,
-        dir: "across",
-      },
-      {
-        word: "DOLPHIN",
-        clue: "Intelligent sea mammal",
-        row: 5,
-        col: 7,
-        dir: "across",
-      },
-      { word: "LION", clue: "King of jungle", row: 7, col: 2, dir: "down" },
-      {
-        word: "MONKEY",
-        clue: "Tree swinging primate",
-        row: 9,
-        col: 6,
-        dir: "across",
-      },
-      { word: "PANDA", clue: "Bamboo eater", row: 2, col: 9, dir: "down" },
-      {
-        word: "KOALA",
-        clue: "Australian bear",
-        row: 10,
-        col: 1,
-        dir: "across",
-      },
-      { word: "CROCODILE", clue: "Large reptile", row: 4, col: 0, dir: "down" },
-      {
-        word: "FLAMINGO",
-        clue: "Pink long-legged bird",
-        row: 0,
-        col: 7,
-        dir: "across",
-      },
-      { word: "RHINO", clue: "Horned mammal", row: 11, col: 5, dir: "across" },
+      // Across  (rows 0, 2, 4, 6, 8, 9, 10 – one per row)
+      { word: "ELEPHANT", clue: "Largest land animal",    row: 0,  col: 2,  dir: "across" },
+      { word: "GIRAFFE",  clue: "Tallest animal",         row: 2,  col: 0,  dir: "across" },
+      { word: "ZEBRA",    clue: "Striped horse",          row: 4,  col: 6,  dir: "across" },
+      { word: "OCTOPUS",  clue: "8-armed sea creature",   row: 6,  col: 2,  dir: "across" },
+      { word: "DOLPHIN",  clue: "Intelligent sea mammal", row: 8,  col: 1,  dir: "across" },
+      { word: "MONKEY",   clue: "Tree-swinging primate",  row: 9,  col: 6,  dir: "across" },
+      { word: "KOALA",    clue: "Australian bear",        row: 10, col: 1,  dir: "across" },
+      // Down  (cols 0, 2, 3, 9, 10, 11 – one per column)
+      { word: "GORILLA",  clue: "Largest primate",        row: 2,  col: 0,  dir: "down"   },
+      // (2,0): GIRAFFE[0]=G = GORILLA[0]=G ✓
+      { word: "RHINO",    clue: "Horned mammal",          row: 2,  col: 2,  dir: "down"   },
+      // (2,2): GIRAFFE[2]=R = RHINO[0]=R ✓   (6,2): OCTOPUS[0]=O = RHINO[4]=O ✓
+      { word: "PANDA",    clue: "Bamboo eater",           row: 1,  col: 3,  dir: "down"   },
+      // (2,3): GIRAFFE[3]=A = PANDA[1]=A ✓
+      { word: "TIGER",    clue: "Striped big cat",        row: 0,  col: 9,  dir: "down"   },
+      // (0,9): ELEPHANT[7]=T = TIGER[0]=T ✓   (4,9): ZEBRA[3]=R = TIGER[4]=R ✓
+      { word: "LION",     clue: "King of the jungle",     row: 5,  col: 10, dir: "down"   },
+      { word: "PENGUIN",  clue: "Flightless bird",        row: 1,  col: 11, dir: "down"   },
     ],
   },
 
-  // Puzzle 2: Technology
+  // ── PUZZLE 2: Technology ─────────────────────────────────────────────────
   {
     size: 12,
     words: [
-      {
-        word: "COMPUTER",
-        clue: "Electronic device",
-        row: 0,
-        col: 1,
-        dir: "across",
-      },
-      {
-        word: "SMARTPHONE",
-        clue: "Mobile device",
-        row: 2,
-        col: 0,
-        dir: "down",
-      },
-      {
-        word: "INTERNET",
-        clue: "Global network",
-        row: 1,
-        col: 6,
-        dir: "across",
-      },
-      {
-        word: "ROBOT",
-        clue: "Automated machine",
-        row: 4,
-        col: 3,
-        dir: "across",
-      },
-      { word: "SOFTWARE", clue: "Programs", row: 6, col: 2, dir: "down" },
-      {
-        word: "KEYBOARD",
-        clue: "Typing device",
-        row: 3,
-        col: 8,
-        dir: "across",
-      },
-      {
-        word: "ALGORITHM",
-        clue: "Step-by-step procedure",
-        row: 5,
-        col: 5,
-        dir: "down",
-      },
-      {
-        word: "DATABASE",
-        clue: "Organized data",
-        row: 8,
-        col: 4,
-        dir: "across",
-      },
-      { word: "CLOUD", clue: "Online storage", row: 7, col: 1, dir: "down" },
-      { word: "VIRTUAL", clue: "Not physical", row: 9, col: 7, dir: "across" },
-      { word: "HARDWARE", clue: "Physical parts", row: 0, col: 9, dir: "down" },
-      {
-        word: "NETWORK",
-        clue: "Connected devices",
-        row: 10,
-        col: 2,
-        dir: "across",
-      },
-      { word: "SECURITY", clue: "Protection", row: 4, col: 0, dir: "down" },
-      { word: "DISPLAY", clue: "Screen", row: 11, col: 6, dir: "across" },
-      {
-        word: "PROCESSOR",
-        clue: "Brain of computer",
-        row: 2,
-        col: 10,
-        dir: "down",
-      },
+      // Across  (rows 0, 2, 4, 6, 8, 10 – one per row)
+      { word: "COMPUTER", clue: "Electronic device",        row: 0,  col: 0,  dir: "across" },
+      { word: "KEYBOARD", clue: "Typing device",            row: 2,  col: 2,  dir: "across" },
+      { word: "INTERNET", clue: "Global network",           row: 4,  col: 0,  dir: "across" },
+      { word: "DATABASE", clue: "Organised data store",     row: 6,  col: 2,  dir: "across" },
+      { word: "NETWORK",  clue: "Connected devices",        row: 8,  col: 0,  dir: "across" },
+      { word: "DISPLAY",  clue: "Screen output",            row: 10, col: 2,  dir: "across" },
+      // Down  (cols 1, 4, 9, 10, 11 – one per column)
+      { word: "ONLINE",   clue: "Connected to the internet", row: 0, col: 1,  dir: "down"  },
+      // (0,1): COMPUTER[1]=O = ONLINE[0]=O ✓   (4,1): INTERNET[1]=N = ONLINE[4]=N ✓
+      { word: "RATIO",    clue: "Mathematical proportion",   row: 4,  col: 4,  dir: "down"  },
+      // (4,4): INTERNET[4]=R = RATIO[0]=R ✓
+      // (6,4): DATABASE[2]=T = RATIO[2]=T ✓   (8,4): NETWORK[4]=O = RATIO[4]=O ✓
+      { word: "DRONE",    clue: "Unmanned aerial vehicle",   row: 2,  col: 9,  dir: "down"  },
+      // (2,9): KEYBOARD[7]=D = DRONE[0]=D ✓   (6,9): DATABASE[7]=E = DRONE[4]=E ✓
+      { word: "CLOUD",    clue: "Remote storage system",     row: 2,  col: 10, dir: "down"  },
+      { word: "ROBOT",    clue: "Automated machine",         row: 4,  col: 11, dir: "down"  },
     ],
   },
 
-  // Puzzle 3: Food & Drink
+  // ── PUZZLE 3: Food & Drink ───────────────────────────────────────────────
   {
     size: 12,
     words: [
-      {
-        word: "PIZZA",
-        clue: "Italian favorite",
-        row: 0,
-        col: 3,
-        dir: "across",
-      },
-      { word: "BURGER", clue: "American classic", row: 2, col: 1, dir: "down" },
-      { word: "SUSHI", clue: "Japanese dish", row: 1, col: 7, dir: "across" },
-      { word: "PASTA", clue: "Italian noodles", row: 4, col: 4, dir: "across" },
-      { word: "CHOCOLATE", clue: "Sweet treat", row: 6, col: 0, dir: "down" },
-      { word: "COFFEE", clue: "Morning drink", row: 3, col: 9, dir: "across" },
-      { word: "TEA", clue: "Popular beverage", row: 5, col: 6, dir: "down" },
-      {
-        word: "ICE CREAM",
-        clue: "Frozen dessert",
-        row: 8,
-        col: 2,
-        dir: "across",
-      },
-      { word: "TACO", clue: "Mexican food", row: 7, col: 5, dir: "down" },
-      { word: "SALAD", clue: "Healthy dish", row: 9, col: 8, dir: "across" },
-      { word: "CURRY", clue: "Spicy dish", row: 0, col: 0, dir: "down" },
-      { word: "SANDWICH", clue: "Bread meal", row: 10, col: 3, dir: "across" },
-      { word: "PANCAKE", clue: "Breakfast item", row: 4, col: 10, dir: "down" },
-      { word: "DONUT", clue: "Sweet ring", row: 11, col: 1, dir: "across" },
-      {
-        word: "BIRYANI",
-        clue: "Indian rice dish",
-        row: 2,
-        col: 11,
-        dir: "down",
-      },
+      // Across  (rows 0, 2, 4, 6, 8, 10, 11 – one per row)
+      { word: "PIZZA",    clue: "Italian favorite",          row: 0,  col: 0,  dir: "across" },
+      { word: "SUSHI",    clue: "Japanese dish",             row: 2,  col: 5,  dir: "across" },
+      { word: "BURGER",   clue: "American classic",          row: 4,  col: 0,  dir: "across" },
+      { word: "COFFEE",   clue: "Morning drink",             row: 6,  col: 4,  dir: "across" },
+      { word: "SANDWICH", clue: "Bread-based meal",          row: 8,  col: 1,  dir: "across" },
+      { word: "SALAD",    clue: "Healthy dish",              row: 10, col: 3,  dir: "across" },
+      { word: "DONUT",    clue: "Sweet glazed ring",         row: 11, col: 0,  dir: "across" },
+      // Down  (cols 4, 8, 10, 11 – one per column)
+      { word: "APPLE",    clue: "Red or green fruit",        row: 0,  col: 4,  dir: "down"  },
+      // (0,4): PIZZA[4]=A = APPLE[0]=A ✓   (4,4): BURGER[4]=E = APPLE[4]=E ✓
+      { word: "HAKE",     clue: "White sea fish",            row: 2,  col: 8,  dir: "down"  },
+      // (2,8): SUSHI[3]=H = HAKE[0]=H ✓
+      { word: "RICE",     clue: "Asian staple grain",        row: 6,  col: 10, dir: "down"  },
+      { word: "MILK",     clue: "Dairy drink",               row: 4,  col: 11, dir: "down"  },
     ],
   },
 
-  // Puzzle 4: Space & Science
+  // ── PUZZLE 4: Space & Science ────────────────────────────────────────────
   {
     size: 12,
     words: [
-      { word: "PLANET", clue: "Orbiting body", row: 0, col: 2, dir: "across" },
-      { word: "GALAXY", clue: "Star system", row: 2, col: 0, dir: "down" },
-      { word: "ROCKET", clue: "Space vehicle", row: 1, col: 6, dir: "across" },
-      { word: "ASTEROID", clue: "Space rock", row: 4, col: 3, dir: "across" },
-      {
-        word: "BLACKHOLE",
-        clue: "Massive gravity",
-        row: 6,
-        col: 1,
-        dir: "down",
-      },
-      {
-        word: "GRAVITY",
-        clue: "Force pulling down",
-        row: 3,
-        col: 8,
-        dir: "across",
-      },
-      { word: "NEBULA", clue: "Star nursery", row: 5, col: 5, dir: "down" },
-      {
-        word: "SATELLITE",
-        clue: "Orbiting object",
-        row: 8,
-        col: 4,
-        dir: "across",
-      },
-      {
-        word: "ASTRONAUT",
-        clue: "Space traveler",
-        row: 7,
-        col: 2,
-        dir: "down",
-      },
-      { word: "TELESCOPE", clue: "Star viewer", row: 9, col: 7, dir: "across" },
-      { word: "METEOR", clue: "Shooting star", row: 0, col: 9, dir: "down" },
-      { word: "COMET", clue: "Icy body", row: 10, col: 1, dir: "across" },
-      { word: "UNIVERSE", clue: "Everything", row: 4, col: 0, dir: "down" },
-      { word: "ORBIT", clue: "Path around", row: 11, col: 6, dir: "across" },
-      {
-        word: "SUPERNOVA",
-        clue: "Exploding star",
-        row: 2,
-        col: 10,
-        dir: "down",
-      },
+      // Across  (rows 0, 2, 4, 6, 8, 10, 11 – one per row)
+      { word: "PLANET",   clue: "Orbiting body",             row: 0,  col: 2,  dir: "across" },
+      { word: "ROCKET",   clue: "Space launch vehicle",      row: 2,  col: 0,  dir: "across" },
+      { word: "COMET",    clue: "Icy celestial body",        row: 4,  col: 4,  dir: "across" },
+      { word: "GALAXY",   clue: "Vast star system",          row: 6,  col: 0,  dir: "across" },
+      { word: "METEOR",   clue: "Shooting star",             row: 8,  col: 3,  dir: "across" },
+      { word: "NEBULA",   clue: "Star-forming gas cloud",    row: 10, col: 1,  dir: "across" },
+      { word: "ORBIT",    clue: "Path around a planet",      row: 11, col: 5,  dir: "across" },
+      // Down  (cols 2, 7, 8, 10, 11 – one per column)
+      { word: "CRAWL",    clue: "Move at very low speed",    row: 2,  col: 2,  dir: "down"  },
+      // (2,2): ROCKET[2]=C = CRAWL[0]=C ✓   (6,2): GALAXY[2]=L = CRAWL[4]=L ✓
+      { word: "THEME",    clue: "Central subject",           row: 0,  col: 7,  dir: "down"  },
+      // (0,7): PLANET[5]=T = THEME[0]=T ✓   (4,7): COMET[3]=E = THEME[4]=E ✓
+      { word: "TOWER",    clue: "Tall launch structure",     row: 4,  col: 8,  dir: "down"  },
+      // (4,8): COMET[4]=T = TOWER[0]=T ✓   (8,8): METEOR[5]=R = TOWER[4]=R ✓
+      { word: "NOVA",     clue: "Stellar explosion",         row: 6,  col: 10, dir: "down"  },
+      { word: "STAR",     clue: "Burning ball of gas",       row: 8,  col: 11, dir: "down"  },
     ],
   },
 ];
@@ -236,7 +108,45 @@ let currentPuzzle = null;
 let grid = [];
 let userAnswers = [];
 
-// Initialize game
+// Tracks the current typing direction ('across' or 'down') for auto-advance
+let currentDirection = "across";
+
+// Maps "row,col" -> clue number, following standard left-to-right top-to-bottom order
+let clueNumbers = {};
+
+// ---------- Initialisation ----------
+
+/**
+ * Assigns sequential clue numbers to word-start cells in standard crossword
+ * order: left-to-right, top-to-bottom. A cell gets a number if it is the
+ * start of at least one word (across or down). Both words sharing a start
+ * cell receive the same number.
+ */
+function computeClueNumbers(puzzle) {
+  const seen = new Set();
+  const positions = [];
+
+  puzzle.words.forEach((word) => {
+    const key = `${word.row},${word.col}`;
+    if (!seen.has(key)) {
+      seen.add(key);
+      positions.push({ row: word.row, col: word.col });
+    }
+  });
+
+  // Standard crossword order: row first, then column
+  positions.sort((a, b) =>
+    a.row !== b.row ? a.row - b.row : a.col - b.col
+  );
+
+  const numbers = {};
+  positions.forEach((pos, idx) => {
+    numbers[`${pos.row},${pos.col}`] = idx + 1;
+  });
+
+  return numbers;
+}
+
 function initGame() {
   currentPuzzle = puzzles[Math.floor(Math.random() * puzzles.length)];
   grid = Array(currentPuzzle.size)
@@ -245,10 +155,15 @@ function initGame() {
   userAnswers = Array(currentPuzzle.size)
     .fill()
     .map(() => Array(currentPuzzle.size).fill(""));
+  currentDirection = "across";
+  // Compute canonical numbering before rendering
+  clueNumbers = computeClueNumbers(currentPuzzle);
   renderGrid();
   renderClues();
   document.getElementById("status").textContent = "";
 }
+
+// ---------- Rendering ----------
 
 function renderGrid() {
   const gridEl = document.getElementById("grid");
@@ -258,21 +173,19 @@ function renderGrid() {
   for (let i = 0; i < currentPuzzle.size; i++) {
     for (let j = 0; j < currentPuzzle.size; j++) {
       const cell = document.createElement("input");
-cell.type = "text";
-cell.maxLength = 1;
+      cell.type = "text";
+      cell.maxLength = 1;
       cell.classList.add("cell");
       cell.dataset.row = i;
       cell.dataset.col = j;
 
-      const wordStart = currentPuzzle.words.findIndex(
-  word => word.row === i && word.col === j
-);
+      // Show the canonical clue number as placeholder on word-start cells
+      const clueNum = clueNumbers[`${i},${j}`];
+      if (clueNum !== undefined) {
+        cell.placeholder = clueNum;
+      }
 
-if (wordStart !== -1) {
-  cell.placeholder = wordStart + 1;
-}
-
-      // Check if cell has a letter from any word
+      // Determine if this cell belongs to any word
       const hasLetter = currentPuzzle.words.some((word) => {
         if (
           word.dir === "across" &&
@@ -296,15 +209,33 @@ if (wordStart !== -1) {
       if (!hasLetter) {
         cell.classList.add("black");
         cell.disabled = true;
-  cell.readOnly = true;
-  cell.tabIndex = -1;
+        cell.readOnly = true;
+        cell.tabIndex = -1;
       } else {
-         cell.type = "text";
-  cell.maxLength = 1;
-
-  cell.addEventListener("input", handleInput);
-  cell.addEventListener("keydown", handleNavigation); // ADD HERE
-  cell.addEventListener("focus", () => highlightWord(i, j));
+        cell.addEventListener("input", handleInput);
+        cell.addEventListener("keydown", handleNavigation);
+        cell.addEventListener("focus", () => {
+          highlightWord(i, j);
+          // When the user clicks a cell, detect which direction(s) it belongs to
+          // and keep the current direction if valid, otherwise switch.
+          const inAcross = currentPuzzle.words.some(
+            (w) =>
+              w.dir === "across" &&
+              w.row === i &&
+              j >= w.col &&
+              j < w.col + w.word.length
+          );
+          const inDown = currentPuzzle.words.some(
+            (w) =>
+              w.dir === "down" &&
+              w.col === j &&
+              i >= w.row &&
+              i < w.row + w.word.length
+          );
+          if (inAcross && !inDown) currentDirection = "across";
+          else if (inDown && !inAcross) currentDirection = "down";
+          // If both, keep current direction (toggle on double-click is handled via keydown)
+        });
       }
 
       gridEl.appendChild(cell);
@@ -312,54 +243,138 @@ if (wordStart !== -1) {
   }
 }
 
+// ---------- Input handling ----------
+
 function handleInput(e) {
   const row = parseInt(e.target.dataset.row);
   const col = parseInt(e.target.dataset.col);
 
-  let value = e.target.textContent
-    .toUpperCase()
-    .replace(/[^A-Z]/g, "")
-    .charAt(0);
+  // FIX: cells are <input> elements — use .value, not .textContent
+  let value = e.target.value.toUpperCase().replace(/[^A-Z]/g, "").charAt(0);
+  e.target.value = value;
 
-  e.target.textContent = value;
+  // Remove any previous validation colouring when user types
+  e.target.classList.remove("cell-correct", "cell-wrong");
 
   userAnswers[row][col] = value;
+
+  // Auto-advance to the next cell after a letter is entered
+  if (value) {
+    moveFocus(row, col, currentDirection, 1);
+  }
 }
+
+// ---------- Keyboard navigation ----------
 
 function handleNavigation(e) {
   const row = Number(e.target.dataset.row);
   const col = Number(e.target.dataset.col);
 
-  let nextRow = row;
-  let nextCol = col;
-
   switch (e.key) {
     case "ArrowRight":
-      nextCol++;
+      e.preventDefault();
+      currentDirection = "across";
+      moveFocus(row, col, "across", 1);
       break;
+
     case "ArrowLeft":
-      nextCol--;
+      e.preventDefault();
+      currentDirection = "across";
+      moveFocus(row, col, "across", -1);
       break;
+
     case "ArrowDown":
-      nextRow++;
+      e.preventDefault();
+      currentDirection = "down";
+      moveFocus(row, col, "down", 1);
       break;
+
     case "ArrowUp":
-      nextRow--;
+      e.preventDefault();
+      currentDirection = "down";
+      moveFocus(row, col, "down", -1);
       break;
+
+    case "Backspace":
+      // If the cell already has a value, clear it and stay put.
+      // If the cell is already empty, move to the previous cell and clear that.
+      if (e.target.value === "") {
+        e.preventDefault();
+        const prevCell = getAdjacentCell(row, col, currentDirection, -1);
+        if (prevCell) {
+          const pr = parseInt(prevCell.dataset.row);
+          const pc = parseInt(prevCell.dataset.col);
+          prevCell.value = "";
+          userAnswers[pr][pc] = "";
+          prevCell.classList.remove("cell-correct", "cell-wrong");
+          prevCell.focus();
+        }
+      } else {
+        // Let the browser clear the value, then record it
+        // We use setTimeout so the value is already cleared by the browser
+        setTimeout(() => {
+          e.target.value = "";
+          userAnswers[row][col] = "";
+          e.target.classList.remove("cell-correct", "cell-wrong");
+        }, 0);
+      }
+      break;
+
+    // Allow default tab behaviour so keyboard users can tab through cells
+    case "Tab":
+      break;
+
     default:
-      return;
-  }
-
-  e.preventDefault();
-
-  const nextCell = document.querySelector(
-    `.cell[data-row="${nextRow}"][data-col="${nextCol}"]:not(.black)`
-  );
-
-  if (nextCell) {
-    nextCell.focus();
+      break;
   }
 }
+
+// ---------- Focus movement helpers ----------
+
+/**
+ * Returns the next/previous non-black cell in the given direction, or null.
+ * @param {number} row
+ * @param {number} col
+ * @param {'across'|'down'} direction
+ * @param {1|-1} step  – 1 = forward, -1 = backward
+ */
+function getAdjacentCell(row, col, direction, step) {
+  let nextRow = row + (direction === "down" ? step : 0);
+  let nextCol = col + (direction === "across" ? step : 0);
+
+  // Walk until we find a valid (non-black) cell or go out of bounds
+  while (
+    nextRow >= 0 &&
+    nextRow < currentPuzzle.size &&
+    nextCol >= 0 &&
+    nextCol < currentPuzzle.size
+  ) {
+    const candidate = document.querySelector(
+      `.cell[data-row="${nextRow}"][data-col="${nextCol}"]`
+    );
+    if (candidate && !candidate.classList.contains("black")) {
+      return candidate;
+    }
+    // Skip black cells and keep moving
+    nextRow += direction === "down" ? step : 0;
+    nextCol += direction === "across" ? step : 0;
+  }
+  return null;
+}
+
+/**
+ * Move keyboard focus one step from the current cell in the given direction.
+ */
+function moveFocus(row, col, direction, step) {
+  const nextCell = getAdjacentCell(row, col, direction, step);
+  if (nextCell) {
+    nextCell.focus();
+    // Select so any existing letter is replaced by the next keystroke
+    nextCell.select();
+  }
+}
+
+// ---------- Word / cell highlighting ----------
 
 function highlightWord(row, col) {
   document
@@ -376,7 +391,7 @@ function highlightWord(row, col) {
       for (let c = word.col; c < word.col + word.word.length; c++) {
         document
           .querySelector(`.cell[data-row="${row}"][data-col="${c}"]`)
-          .classList.add("highlight");
+          ?.classList.add("highlight");
       }
     }
     if (
@@ -388,78 +403,130 @@ function highlightWord(row, col) {
       for (let r = word.row; r < word.row + word.word.length; r++) {
         document
           .querySelector(`.cell[data-row="${r}"][data-col="${col}"]`)
-          .classList.add("highlight");
+          ?.classList.add("highlight");
       }
     }
   });
 }
+
+// ---------- Clues ----------
 
 function renderClues() {
-  const across = document.getElementById("across-clues");
-  const down = document.getElementById("down-clues");
-  across.innerHTML = "";
-  down.innerHTML = "";
+  const acrossEl = document.getElementById("across-clues");
+  const downEl = document.getElementById("down-clues");
+  acrossEl.innerHTML = "";
+  downEl.innerHTML = "";
 
-  currentPuzzle.words.forEach((w, i) => {
+  // Separate words by direction, then sort each group by their canonical number
+  // so the sidebar list order always matches the grid numbering.
+  const acrossWords = currentPuzzle.words
+    .filter((w) => w.dir === "across")
+    .sort(
+      (a, b) =>
+        clueNumbers[`${a.row},${a.col}`] - clueNumbers[`${b.row},${b.col}`]
+    );
+
+  const downWords = currentPuzzle.words
+    .filter((w) => w.dir === "down")
+    .sort(
+      (a, b) =>
+        clueNumbers[`${a.row},${a.col}`] - clueNumbers[`${b.row},${b.col}`]
+    );
+
+  acrossWords.forEach((w) => {
+    const num = clueNumbers[`${w.row},${w.col}`];
     const li = document.createElement("li");
-    li.textContent = `${w.clue} (${w.word.length})`;
-    if (w.dir === "across") across.appendChild(li);
-    else down.appendChild(li);
+    li.textContent = `${num}. ${w.clue} (${w.word.length})`;
+    acrossEl.appendChild(li);
+  });
+
+  downWords.forEach((w) => {
+    const num = clueNumbers[`${w.row},${w.col}`];
+    const li = document.createElement("li");
+    li.textContent = `${num}. ${w.clue} (${w.word.length})`;
+    downEl.appendChild(li);
   });
 }
 
+// ---------- Answer checking ----------
+
 function checkAnswers() {
-  let correct = 0;
-  let total = 0;
+  // Clear old validation colours
+  document
+    .querySelectorAll(".cell")
+    .forEach((cell) => cell.classList.remove("cell-correct", "cell-wrong"));
+
+  let correctWords = 0;
+  const totalWords = currentPuzzle.words.length;
 
   currentPuzzle.words.forEach((word) => {
-    let isCorrect = true;
+    let wordCorrect = true;
+
     for (let i = 0; i < word.word.length; i++) {
-      total++;
-      let r = word.row;
-      let c = word.col;
+      const r = word.dir === "across" ? word.row : word.row + i;
+      const c = word.dir === "across" ? word.col + i : word.col;
 
-      if (word.dir === "across") c += i;
-      else r += i;
+      const cell = document.querySelector(
+        `.cell[data-row="${r}"][data-col="${c}"]`
+      );
 
-      if (userAnswers[r][c] !== word.word[i]) {
-        isCorrect = false;
+      const userChar = userAnswers[r][c];
+      const solutionChar = word.word[i];
+
+      if (userChar === solutionChar) {
+        // Only mark correct if not already marked wrong by a crossing word
+        if (!cell.classList.contains("cell-wrong")) {
+          cell.classList.add("cell-correct");
+        }
+      } else {
+        // Wrong always wins over correct (crossing-word tie-break)
+        cell.classList.remove("cell-correct");
+        cell.classList.add("cell-wrong");
+        wordCorrect = false;
       }
     }
-    if (isCorrect) correct++;
+
+    if (wordCorrect) correctWords++;
   });
 
   const status = document.getElementById("status");
-  if (correct === currentPuzzle.words.length) {
+  if (correctWords === totalWords) {
     status.innerHTML = "🎉 Perfect! You solved it!";
     status.className = "correct";
   } else {
-    status.innerHTML = `✅ ${correct}/${currentPuzzle.words.length} words correct`;
+    status.innerHTML = `✅ ${correctWords}/${totalWords} words correct`;
     status.className = "";
   }
 }
 
-// Event Listeners
+// ---------- Event listeners ----------
+
 document.getElementById("newGame").addEventListener("click", initGame);
+
 document.getElementById("reset").addEventListener("click", () => {
   userAnswers = Array(currentPuzzle.size)
     .fill()
     .map(() => Array(currentPuzzle.size).fill(""));
+
+  // FIX: clear input values (not textContent) and remove validation colours
   document.querySelectorAll(".cell:not(.black)").forEach((cell) => {
-    cell.textContent = "";
+    cell.value = "";
+    cell.classList.remove("cell-correct", "cell-wrong");
   });
+
   document.getElementById("status").textContent = "";
 });
 
 document.getElementById("check").addEventListener("click", checkAnswers);
 
-// Start the game
-initGame();
-
+// Remove word highlighting when clicking outside the grid
 document.addEventListener("click", (e) => {
   if (!e.target.classList.contains("cell")) {
     document
       .querySelectorAll(".cell")
-      .forEach(cell => cell.classList.remove("highlight"));
+      .forEach((cell) => cell.classList.remove("highlight"));
   }
 });
+
+// Start the game
+initGame();

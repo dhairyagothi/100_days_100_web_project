@@ -47,6 +47,8 @@ const Nodes = {
 
 const CACHE_DURATION = 300000;
 
+const activeCounterIntervals = [];
+
 /* =========================================================
    CACHE ENGINE
 ========================================================= */
@@ -210,6 +212,46 @@ function animateCounter(element, targetValue) {
       current.toLocaleString();
 
   }, 20);
+
+  activeCounterIntervals.push(interval);
+}
+
+function stopActiveCounters() {
+
+  activeCounterIntervals.forEach(
+    (interval) => clearInterval(interval)
+  );
+
+  activeCounterIntervals.length = 0;
+}
+
+function resetStatCounters() {
+
+  stopActiveCounters();
+
+  if (Nodes.repoCount)
+    Nodes.repoCount.textContent = "0";
+
+  if (Nodes.followers)
+    Nodes.followers.textContent = "0";
+
+  if (Nodes.following)
+    Nodes.following.textContent = "0";
+
+  if (Nodes.gists)
+    Nodes.gists.textContent = "0";
+}
+
+function resetProfileUI() {
+
+  resetStatCounters();
+
+  UI.profileCard?.classList.add("hidden");
+  UI.reposSection?.classList.add("hidden");
+  UI.analyticsPanel?.classList.add("hidden");
+
+  if (UI.reposList)
+    UI.reposList.innerHTML = "";
 }
 
 /* =========================================================
@@ -464,6 +506,8 @@ function renderProfile(user) {
   Nodes.profileLink.href =
     user.html_url;
 
+  stopActiveCounters();
+
   animateCounter(
     Nodes.repoCount,
     user.public_repos
@@ -613,8 +657,25 @@ async function fetchUser(username) {
       `https://api.github.com/users/${cleanName}/repos?per_page=100`
     );
 
+    if (!repoResponse.ok) {
+
+      const errorData =
+        await repoResponse.json().catch(() => ({}));
+
+      throw new Error(
+        errorData.message || "Failed to fetch repositories."
+      );
+    }
+
     const repos =
       await repoResponse.json();
+
+    if (!Array.isArray(repos)) {
+
+      throw new Error(
+        "Failed to fetch repositories."
+      );
+    }
 
     const sortedRepos = repos
       .sort(
@@ -639,6 +700,8 @@ async function fetchUser(username) {
     hideStatus();
 
   } catch (error) {
+
+    resetProfileUI();
 
     showStatus(
       error.message,
@@ -692,8 +755,25 @@ async function fetchProfileData(username) {
     `https://api.github.com/users/${cleanName}/repos?per_page=50`
   );
 
+  if (!repoResponse.ok) {
+
+    const errorData =
+      await repoResponse.json().catch(() => ({}));
+
+    throw new Error(
+      errorData.message || "Failed to fetch repositories."
+    );
+  }
+
   const repos =
     await repoResponse.json();
+
+  if (!Array.isArray(repos)) {
+
+    throw new Error(
+      "Failed to fetch repositories."
+    );
+  }
 
   const sortedRepos = repos
     .sort(

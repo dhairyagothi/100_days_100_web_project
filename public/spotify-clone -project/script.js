@@ -48,6 +48,14 @@ function togglePlay() {
 }
 
 if(playBtn) playBtn.addEventListener('click', togglePlay);
+if(playBtn) {
+    playBtn.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            togglePlay();
+        }
+    });
+}
 
 function startPlaybackTimer() {
     clearInterval(timerInterval);
@@ -88,7 +96,7 @@ function handleTrackEnded() {
 
 // 5. Grid Cards Event binding system
 document.querySelectorAll('.card').forEach(card => {
-    card.addEventListener('click', () => {
+    const selectTrackFromCard = () => {
         const selectedId = card.getAttribute('data-song');
         if (songs[selectedId]) {
             currentSongKey = selectedId;
@@ -105,6 +113,14 @@ document.querySelectorAll('.card').forEach(card => {
             
             isPlaying = false; 
             togglePlay();
+        }
+    };
+
+    card.addEventListener('click', selectTrackFromCard);
+    card.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            selectTrackFromCard();
         }
     });
 });

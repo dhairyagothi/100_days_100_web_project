@@ -5,6 +5,7 @@ let filtered       = [];          // current filtered/sorted list
 let favorites      = new Set();   // stored in localStorage
 let showFavsOnly   = false;       // favourites filter toggle
 let currentCountry = null;        // country open in modal
+let comparisonList = [];        // countries to compare (max 2)
 
 // ─── DOM References ─────────────────────────────────────────
 const cardsGrid      = document.getElementById('cardsGrid');
@@ -18,6 +19,10 @@ const searchClear    = document.getElementById('searchClear');
 const continentFilter= document.getElementById('continentFilter');
 const sortSelect     = document.getElementById('sortSelect');
 const showFavBtn     = document.getElementById('showFavBtn');
+const comparisonPanel= document.getElementById('comparisonPanel');
+const comparisonWrap = document.getElementById('comparisonWrap');
+const clearComparisonBtn = document.getElementById('clearComparisonBtn');
+const toast          = document.getElementById('toast');
 
 // Modal
 const modalOverlay   = document.getElementById('modalOverlay');
@@ -46,6 +51,7 @@ const navLinks       = document.getElementById('navLinks');
 // ─── Init ────────────────────────────────────────────────────
 (function init() {
   loadFavorites();
+  loadComparison();
   applyStoredTheme();
   fetchCountries();
   bindEvents();
@@ -100,13 +106,15 @@ function createCard(country, index = 0) {
   const region  = country.region || 'N/A';
   const pop     = formatNumber(country.population);
   const isFav   = favorites.has(country.cca2);
+  const isSelected = comparisonList.findIndex(c => c.cca2 === country.cca2) !== -1;
 
   const card    = document.createElement('div');
-  card.className = 'country-card';
+  card.className = `country-card ${isSelected ? 'selected' : ''}`;
   card.style.animationDelay = `${Math.min(index * 0.03, 0.6)}s`;
   card.setAttribute('role', 'button');
   card.setAttribute('tabindex', '0');
   card.setAttribute('aria-label', `View details for ${name}`);
+  card.setAttribute('data-cca2', country.cca2);
 
   card.innerHTML = `
     <div class="card-flag-wrap">
@@ -122,6 +130,7 @@ function createCard(country, index = 0) {
         <span class="card-meta-item"><span class="card-meta-label">Region</span>${region}</span>
         <span class="card-meta-item"><span class="card-meta-label">People</span>${pop}</span>
       </div>
+      <button class="compare-btn" aria-label="Compare ${name}">${isSelected ? '✅ Compared' : 'Compare'}</button>
     </div>
   `;
 
@@ -140,6 +149,13 @@ function createCard(country, index = 0) {
     badge.textContent  = isFavNow ? '⭐' : '☆';
     badge.classList.toggle('active', isFavNow);
     renderFavSection();
+  });
+
+  // Compare button click (stop propagation)
+  const compareBtn = card.querySelector('.compare-btn');
+  compareBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    toggleComparison(country);
   });
 
   return card;
@@ -288,6 +304,8 @@ function applyFilters() {
     : '';
 
   renderFavSection();
+  renderComparisonPanel();
+  updateSelectedCards();
 }
 
 // ─── Favourites ──────────────────────────────────────────────
@@ -421,6 +439,9 @@ function bindEvents() {
     });
   });
 
+  // Clear comparison button
+  clearComparisonBtn.addEventListener('click', clearComparison);
+
   // Navbar background changes on scroll
   window.addEventListener('scroll', () => {
     const navbar = document.getElementById('navbar');
@@ -440,4 +461,144 @@ function refreshCardBadge(cca2) {
     badge.textContent = isFav ? '⭐' : '☆';
     badge.classList.toggle('active', isFav);
   }
+}
+
+// ─── Comparison ───────────────────────────────────────────────
+
+function loadComparison() {
+  try {
+    const stored = JSON.parse(localStorage.getItem('wex_comparison') || '[]');
+    comparisonList = stored;
+  } catch { comparisonList = []; }
+}
+
+function saveComparison() {
+  localStorage.setItem('wex_comparison', JSON.stringify(comparisonList));
+}
+
+function toggleComparison(country) {
+  const index = comparisonList.findIndex(c => c.cca2 === country.cca2);
+  if (index !== -1) {
+    comparisonList.splice(index, 1);
+  } else if (comparisonList.length >= 2) {
+    showToast('You can compare only two countries at a time.');
+    return;
+  } else {
+    comparisonList.push(country);
+  }
+  saveComparison();
+  renderComparisonPanel();
+  updateSelectedCards();
+}
+
+function showToast(message) {
+  toast.textContent = message;
+  toast.classList.add('visible');
+  setTimeout(() => {
+    toast.classList.remove('visible');
+  }, 3000);
+}
+
+function renderComparisonPanel() {
+  if (comparisonList.length === 0) {
+    comparisonPanel.hidden = true;
+    return;
+  }
+  comparisonPanel.hidden = false;
+  comparisonWrap.innerHTML = comparisonList.map(country => {
+    const name = country.name?.common || 'Unknown';
+    const flag = country.flags?.svg || country.flags?.png || '';
+    const capital = (country.capital && country.capital[0]) || 'N/A';
+    const region = country.region || 'N/A';
+    const subregion = country.subregion || 'N/A';
+    const pop = formatNumber(country.population);
+    const area = country.area ? `${formatNumber(country.area)} km²` : 'N/A';
+    const langs = country.languages ? Object.values(country.languages).join(', ') : 'N/A';
+    const currencies = country.currencies ? Object.values(country.currencies).map(c => `${c.name} (${c.symbol || ''})`).join(', ') : 'N/A';
+    const timezones = (country.timezones || []).join(', ') || 'N/A';
+
+    return `
+      <div class="comparison-card">
+        <img src="${flag}" alt="Flag of ${name}" class="comparison-flag" loading="lazy">
+        <h3 class="comparison-name">${name}</h3>
+        <div class="comparison-info">
+          <div class="info-item">
+            <span class="info-icon">🏙️</span>
+            <div>
+              <p class="info-label">Capital</p>
+              <p class="info-value">${capital}</p>
+            </div>
+          </div>
+          <div class="info-item">
+            <span class="info-icon">👥</span>
+            <div>
+              <p class="info-label">Population</p>
+              <p class="info-value">${pop}</p>
+            </div>
+          </div>
+          <div class="info-item">
+            <span class="info-icon">🗺️</span>
+            <div>
+              <p class="info-label">Region</p>
+              <p class="info-value">${region}</p>
+            </div>
+          </div>
+          <div class="info-item">
+            <span class="info-icon">📍</span>
+            <div>
+              <p class="info-label">Subregion</p>
+              <p class="info-value">${subregion}</p>
+            </div>
+          </div>
+          <div class="info-item">
+            <span class="info-icon">📐</span>
+            <div>
+              <p class="info-label">Area</p>
+              <p class="info-value">${area}</p>
+            </div>
+          </div>
+          <div class="info-item">
+            <span class="info-icon">🗣️</span>
+            <div>
+              <p class="info-label">Languages</p>
+              <p class="info-value">${langs}</p>
+            </div>
+          </div>
+          <div class="info-item">
+            <span class="info-icon">💰</span>
+            <div>
+              <p class="info-label">Currency</p>
+              <p class="info-value">${currencies}</p>
+            </div>
+          </div>
+          <div class="info-item">
+            <span class="info-icon">🕐</span>
+            <div>
+              <p class="info-label">Timezones</p>
+              <p class="info-value">${timezones}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function updateSelectedCards() {
+  const selectedCca2 = comparisonList.map(c => c.cca2);
+  document.querySelectorAll('.country-card').forEach(card => {
+    const cca2 = card.getAttribute('data-cca2');
+    if (selectedCca2.includes(cca2)) {
+      card.classList.add('selected');
+    } else {
+      card.classList.remove('selected');
+    }
+  });
+}
+
+function clearComparison() {
+  comparisonList = [];
+  saveComparison();
+  renderComparisonPanel();
+  updateSelectedCards();
 }

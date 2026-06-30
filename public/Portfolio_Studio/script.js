@@ -31,6 +31,7 @@ function initializeApp() {
     themeSelect.addEventListener('change', updateLivePreview);
     addProjectBtn.addEventListener('click', addNewProjectRow);
 
+    initProjectFormDelegation();
     renderProjectForms();
     updateLivePreview();
 }
@@ -97,25 +98,26 @@ function renderProjectForms() {
         // Append to container
         projectsFormContainer.appendChild(box);
     });
+}
+function initProjectFormDelegation() {
+    projectsFormContainer.addEventListener('input', (e) => {
+        const input = e.target.closest('.proj-input');
+        if (!input) return;
 
-    // Mirror input text adjustments straight into preview states
-    document.querySelectorAll('.proj-input').forEach(input => {
-        input.addEventListener('input', (e) => {
-            const idx = e.target.dataset.idx;
-            const field = e.target.dataset.field;
-            projectDataList[idx][field] = e.target.value;
-            updateLivePreview();
-        });
+        const idx = input.dataset.idx;
+        const field = input.dataset.field;
+        projectDataList[idx][field] = input.value;
+        updateLivePreview();
     });
 
-    // Bind array cell splice deletion commands
-    document.querySelectorAll('.btn-delete').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            const idx = parseInt(e.target.dataset.idx);
-            projectDataList.splice(idx, 1);
-            renderProjectForms();
-            updateLivePreview();
-        });
+    projectsFormContainer.addEventListener('click', (e) => {
+        const btn = e.target.closest('.btn-delete');
+        if (!btn) return;
+
+        const idx = parseInt(btn.dataset.idx, 10);
+        projectDataList.splice(idx, 1);
+        renderProjectForms();
+        updateLivePreview();
     });
 }
 

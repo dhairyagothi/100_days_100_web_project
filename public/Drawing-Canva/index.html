@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Roboto:wght@300&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="stylesheet" href="style.css">
+    <title>Drawing App</title>
+</head>
+<body>
+    <!-- <main id="main-app"> -->
+        <div id="left">
+            <h1>
+                Welcome to Drawing App
+                <i class="fa fa-paint-brush"></i>
+
+            </h1>
+
+            <hr>
+
+            <!-- Choose Brush or Eraser -->
+            <div class="controller choose-pen">
+                <div class="i-container active" id="brush">
+                    <i class="fa fa-brush"></i>
+                </div>
+                <div class="i-container" id="eraser">
+                    <i class="fa fa-eraser"></i>
+                </div>
+            </div>
+
+            <div class="eraser"></div>
+
+            <!-- Change width of the brush -->
+
+            <div class="controller width-control">
+                <h3>
+                    <span class="width-text">
+                        Line Width :  
+                    </span>
+                    <span class="width-val"></span>
+                </h3> 
+                <div class="btns">
+                    <button class="inc-width btn"> 
+                        <i class="fa-solid fa-arrow-up"></i> 
+                    </button>
+                    <button class="dec-width btn">
+                        <i class="fa-solid fa-arrow-down"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Change Color of the Brush -->
+            <div class="controller color-control line-color-container">
+                <h3>Line Color : </h3>
+                <input type="color" name="color-picker" id="color-picker">
+            </div>
+
+            <!-- Change Background Color of the Canvas -->
+            <div class="controller color-control">
+                <h3>Background : </h3>
+                <input type="color" name="bg-color" id="bg-color">
+            </div>
+
+            <button class="btn clear">
+                Erase All
+                <i class="fas fa-eraser"></i>
+            </button>
+            <br>
+            <!-- Download Button -->
+            <button id="download" class="btn">
+                Download
+                <i class="fa-solid fa-arrow-down"></i>
+            </button>
+
+        </div>
+        <div id="right">
+            <canvas id="canvas"></canvas>
+        </div>
+        
+    <!-- </main> -->
+
+    <script src="index.js"></script>
+</body>
+</html>

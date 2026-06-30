@@ -55,7 +55,11 @@ h1 {
     border-radius: 8px;
     cursor: pointer;
     flex: 1;
-    transition: background 0.2s;
+    transition: background 0.2s, transform 0.1s;
+}
+
+.btn:active {
+    transform: scale(0.95);
 }
 
 #increment-btn {
@@ -139,4 +143,24 @@ h1 {
     border-radius: 4px;
     font-size: 0.9rem;
     border-left: 4px solid var(--primary);
+    animation: slideIn 0.3s ease-out;
+}
+
+#history-log li.empty-history {
+    border-left: 4px solid var(--secondary);
+    color: var(--secondary);
+    font-style: italic;
+    background: transparent;
+    animation: none;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
