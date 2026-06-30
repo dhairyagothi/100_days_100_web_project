@@ -71,6 +71,13 @@ function downloadPixelArt() {
   link.click();
 }
 
+function hasArtwork() {
+  const cells = document.querySelectorAll('.cell');
+
+  return [...cells].some(
+    (cell) => getComputedStyle(cell).backgroundColor !== 'rgba(0, 0, 0, 0)'
+  );
+}
 function makeGrid() {
   grid.innerHTML = '';
 
@@ -79,13 +86,13 @@ function makeGrid() {
 
   console.log(width, height);
 
-  if (width > 64 || width < 1) {
+  if (width > 64 || width < 0) {
     alert(`Please enter width between 1 and 64`);
     widthInput.value = 16;
     width = 16;
   }
 
-  if (height > 64 || height < 1) {
+  if (height > 64 || height < 0) {
     alert(`Please enter height between 1 and 64`);
     heightInput.value = 16;
     height = 16;
@@ -141,7 +148,19 @@ colorPicker.addEventListener('input', () => {
   rubberBtn.classList.remove('active');
 });
 
-sizeBtn.addEventListener('click', makeGrid);
+sizeBtn.addEventListener("click", () => {
+  if (hasArtwork()) {
+    const confirmed = confirm(
+      "Changing the grid size will clear your current artwork. Do you want to continue?"
+    );
+
+    if (!confirmed) {
+      return;
+    }
+  }
+
+  makeGrid();
+});
 clearBtn.addEventListener('click', clearGrid);
 
 makeGrid();

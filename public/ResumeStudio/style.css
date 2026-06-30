@@ -379,6 +379,21 @@ textarea{
 
     transition:0.3s;
 }
+#profilePhoto
+{
+    padding: 10px;
+    cursor: pointer;
+}
+#photoPreview
+{
+    width:80px;
+    height:80px;
+    margin-top:12px;
+    border-radius:50%;
+    object-fit:cover;
+    display:none;
+    border:3px solid #2563eb;
+}
 
 input::placeholder,
 textarea::placeholder{
@@ -948,4 +963,109 @@ body.light-mode .resume-section h3{
     color: #374151;
     border: 1px solid #e5e7eb;
     border-radius: 4px; /* Boxier chips for minimal look */
+}
+.header-row{
+    display: flex;
+    align-items: flex-start;
+    
+}
+.header-content{
+    flex :1;
+  text-align: center;
+}
+.resume-photo{
+     width:120px;
+    height:120px;
+
+    border-radius:50%;
+    object-fit:cover;
+    display:block;
+    margin:0 0 auto 20px;
+    border:4px solid #2563eb;
+    overflow: hidden;
+    margin-left: auto;
+}
+.resume-contact{
+    text-align:center;
+}
+#selectionSelect{
+    width:100%;
+    padding:16px 18px;
+    border-radius:14px;
+    background:#1b1f2d;
+    background:rgba(255,255,255,.04);
+    color:white;
+    font-size:15px;
+    outline:none;
+    margin-top:8px;
+}
+#selectionSelect option{
+    background:#1b1f2d;
+    color:#fff;
+}
+#addSectionBtn{
+
+    width:100%;
+    margin-top:12px;
+    padding:14px;
+    border:none;
+    border-radius:14px;
+    background:#2563eb;
+    color:white;
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.3s;
+}
+
+#addSectionBtn:hover{
+    background:#1d4ed8;
+}
+#dynamicSections{
+    margin-top:20px;
+}
+
+#dynamicSections .form-group{
+    margin-top:18px;
+}
+#dynamicSections .form-group label{
+    width:100%;
+    padding: 16px;
+    margin-top: 8px;
+    border-radius: 14px;
+    border:1px solid rgba(255,255,255,.1);
+    background:rgba(255,255,255,.04);
+    color:white;
+    resize:vertical;
+}
+#dynamicSections textarea{
+    width:100%;
+    min-height:120px;
+    padding:16px;
+    background:#1b1f2d;
+    color:#fff;
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:14px;
+    resize:vertical;
+    outline:none;
+    margin-top:10px;
+}
+
+#dynamicSections textarea::placeholder{
+    color:#9ca3af;
+}
+.section-order-container{
+    margin:25px 0;
+}
+.section-order-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:12px 16px;
+    margin-top:10px;
+    border-radius:10px;
+    background:rgba(255,255,255,.05);
+    border:1px solid rgba(255,255,255,.08);
+    cursor:move;
+    color:white;
 }
