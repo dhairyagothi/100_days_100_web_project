@@ -207,9 +207,14 @@
       <div class="nav-buttons mobile-drawer-layer" id="navButtons">
         <div class="mobile-menu-header">
           <span class="mobile-menu-title">MENU</span>
-          <button class="mobile-menu-close" id="mobileMenuClose" type="button">
-            <i class="fas fa-times" aria-hidden="true"></i>
-          </button>
+         <button
+  class="mobile-menu-close"
+  id="mobileMenuClose"
+  type="button"
+  aria-label="Close navigation menu"
+>
+  <i class="fas fa-times" aria-hidden="true"></i>
+</button>
         </div>
         ${navButtonsHTML}
       </div>

@@ -176,12 +176,16 @@
   </head>
 
   <body>
+    <a href="#main-content" class="skip-link">
+    Skip to main content
+  </a>
     <div class="ambient ambient-left" aria-hidden="true"></div>
     <div class="ambient ambient-right" aria-hidden="true"></div>
     <div class="noise-layer" aria-hidden="true"></div>
     
 
     <div id="navbar-container"></div>
+    <main id="main-content">
     <section class="hero" id="hero">
       <div class="hero-terminal" id="heroTerminal" aria-hidden="true"></div>
       <div class="hero-inner">
@@ -437,12 +441,16 @@
     </div>
 
     <div class="random-project-wrapper">
-      <button
-        id="randomProjectBtn"
-        class="btn btn-primary"
-      >
-        🎲 Generate Random Project
-      </button>
+     <button
+      id="randomProjectBtn"
+      class="btn btn-primary"
+      aria-describedby="randomProjectHelp"
+    >
+  🎲 Generate Random Project
+     </button>
+       <p id="randomProjectHelp" class="sr-only">
+       Generates a random project suggestion from the archive.
+      </p>
 
       <div
         id="randomProjectResult"
@@ -452,7 +460,7 @@
 
   </div>
 </section>
-
+</main>
     <footer class="footer homepage-footer">
       <div class="homepage-footer-shell">
         <div class="homepage-footer-brand">

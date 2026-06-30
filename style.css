@@ -1376,7 +1376,7 @@ body.light-mode .hero-terminal-text {
   background: var(--bg-elevated);
   color: var(--text-primary);
   cursor: pointer;
-  outline: none;
+  outline: 2px solid transparent;
   flex-shrink: 0;
 }
 
@@ -1438,7 +1438,7 @@ body.light-mode .hero-terminal-text {
   font-family: "Inter Tight", sans-serif;
   font-size: 0.875rem;
   padding: 0.625rem 2.5rem 0.625rem 2.5rem;
-  outline: none;
+  outline: 2px solid transparent;
   transition: var(--t);
 }
 
@@ -1452,14 +1452,22 @@ body.light-mode .hero-terminal-text {
 }
 button:focus,
 a:focus,
-input:focus {
+input:focus { 
+  button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+} 
   outline: 2px solid var(--accent);
   outline-offset: 3px;
   border-radius: 6px;
 }
 
 .project-card:focus {
-  outline: none;
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
 }
 
 .project-card:focus-visible {
@@ -3068,7 +3076,7 @@ body.light-mode .noise-layer {
   right: 30px;
   z-index: 99;
   border: none;
-  outline: none;
+  outline: 2px solid transparent;
   background-color: #24292e;
   color: white;
   cursor: pointer;
@@ -3588,5 +3596,39 @@ body.custom-cursor-active .cursor-ring.is-visible {
   width: 38px;
   height: 38px;
   border-radius: 10px;
+}
+
+/* Accessibility Skip Link */
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  z-index: 9999;
+  padding: 12px 16px;
+  background: #0ff2c8;
+  color: #000;
+  font-weight: 700;
+  text-decoration: none;
+  border-radius: 6px;
+}
+
+.skip-link:focus {
+  left: 20px;
+  top: 20px;
+}
+
+/* Screen Reader Only */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
