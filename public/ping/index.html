@@ -1,65 +1,127 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
- <meta charset="UTF-8">
- <meta http-equiv="X-UA-Compatible" content="IE=edge">
- <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
- <link rel="stylesheet" href="style.css">
- <script src="script.js" defer></script>
- <title>Ping Pong Game</title>
-</head>
-<body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+      integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer></script>
+    <title>Ping Pong Game</title>
+  </head>
+  <body>
+    <a
+      href="/"
+      class="project-back-button"
+      style="
+        position: fixed;
+        left: 18px;
+        top: 18px;
+        padding: 8px 16px;
+        border-radius: 8px;
+        background: #1e293b;
+        color: #3b82f6;
+        border: 1px solid #3b82f6;
+        text-decoration: none;
+        z-index: 9999;
+        font-weight: 700;
+        font-family: Inter, system-ui, sans-serif;
+        transition: all 0.2s ease;
+      "
+      onmouseover="
+        this.style.background = '#3b82f6';
+        this.style.color = '#fff';
+      "
+      onmouseout="
+        this.style.background = '#1e293b';
+        this.style.color = '#3b82f6';
+      "
+      >← Back to Home</a
+    >
 
- <div class="header">
-  <i aria-hidden="true" class="fa-solid fa-table-tennis-paddle-ball" style="color: rgb(250, 248, 244);"></i>
-  <h1> THE PING PONG CHALLENGE </h1>
-  <i aria-hidden="true" class="fa-solid fa-table-tennis-paddle-ball" style="color: rgb(250, 248, 244);"></i>
-</div>
+    <div class="header">
+      <i
+        aria-hidden="true"
+        class="fa-solid fa-table-tennis-paddle-ball"
+        style="color: rgb(250, 248, 244)"
+      ></i>
+      <h1>THE PING PONG CHALLENGE</h1>
+      <i
+        aria-hidden="true"
+        class="fa-solid fa-table-tennis-paddle-ball"
+        style="color: rgb(250, 248, 244)"
+      ></i>
+    </div>
 
-<div class="theme-panel">
-  <span class="theme-label">Theme</span>
-  <div class="theme-selector" role="radiogroup" aria-label="Select game theme">
-    <button class="theme-btn" type="button" data-theme="classic" aria-pressed="false">Classic</button>
-    <button class="theme-btn" type="button" data-theme="neon" aria-pressed="false">Neon</button>
-    <button class="theme-btn" type="button" data-theme="retro" aria-pressed="false">Retro Arcade</button>
-  </div>
-</div>
+    <div class="theme-panel">
+      <span class="theme-label">Theme</span>
+      <div
+        class="theme-selector"
+        role="radiogroup"
+        aria-label="Select game theme"
+      >
+        <button
+          class="theme-btn"
+          type="button"
+          data-theme="classic"
+          aria-pressed="false"
+        >
+          Classic
+        </button>
+        <button
+          class="theme-btn"
+          type="button"
+          data-theme="neon"
+          aria-pressed="false"
+        >
+          Neon
+        </button>
+        <button
+          class="theme-btn"
+          type="button"
+          data-theme="retro"
+          aria-pressed="false"
+        >
+          Retro Arcade
+        </button>
+      </div>
+    </div>
 
-<h2> SELECT DIFFICULTY </h2>
+    <h2>SELECT DIFFICULTY</h2>
     <div class="buttons">
-    <button class ="easy" onclick="setDifficulty('easy')">
-        Easy
-    </button>
-    <button class ="medium" onclick="setDifficulty('medium')">
-        Medium
-    </button>
-    <button class="hard" onclick="setDifficulty('hard')">
-        Hard
-    </button>
+      <button class="easy" onclick="setDifficulty('easy')">Easy</button>
+      <button class="medium" onclick="setDifficulty('medium')">Medium</button>
+      <button class="hard" onclick="setDifficulty('hard')">Hard</button>
     </div>
 
-    <div class ="score">
-        <h2>Score</h2>
-        <div id="user-score">0</div><div> - </div><div id="computer-score">0</div>
+    <div class="score">
+      <h2>Score</h2>
+      <div id="user-score">0</div>
+      <div>-</div>
+      <div id="computer-score">0</div>
     </div>
- <div class="pong-wrapper">
-  <canvas id="ping-pong" width="600px" height="400px"></canvas>
- </div>
- <div class ="result" id ="result"> 
-    <div class ="result-inner">
+    <div class="pong-wrapper">
+      <canvas id="ping-pong" width="600px" height="400px"></canvas>
+    </div>
+    <div class="result" id="result">
+      <div class="result-inner">
         <h2 id="msg1">winner</h2>
-        <p id="msg"> WINNER</p>
+        <p id="msg">WINNER</p>
         <div class="buttons">
-        <button class ="new-btn">NEW GAME</button>
+          <button class="new-btn">NEW GAME</button>
         </div>
-    </div>    
-</div>
- <div class="buttons">
-   <button class="start-btn">Start</button>
-   <button class="pause-btn">Pause</button>
-   <button class="restart-btn">Restart</button>
-  </div>
-</body>
+      </div>
+    </div>
+    <div class="buttons">
+      <button class="start-btn">Start</button>
+      <button class="pause-btn">Pause</button>
+      <button class="restart-btn">Restart</button>
+    </div>
+  </body>
 </html>

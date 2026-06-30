@@ -1,7 +1,27 @@
-  // ── State ──
+// ── State ──
   let transactions = JSON.parse(localStorage.getItem('spendsense_txs') || '[]');
   let currentType = 'income';
   let currentFilter = 'all';
+  // Theme Toggle
+const savedTheme = localStorage.getItem('spendsense_theme') || 'dark';
+
+if (savedTheme === 'light') {
+  document.body.classList.add('light-theme');
+}
+
+function toggleTheme() {
+  document.body.classList.toggle('light-theme');
+
+  const isLight = document.body.classList.contains('light-theme');
+
+  localStorage.setItem(
+    'spendsense_theme',
+    isLight ? 'light' : 'dark'
+  );
+
+  document.getElementById('themeToggle').textContent =
+    isLight ? '☀️' : '🌙';
+}
 
   const CAT_ICONS = {
     salary:'💼', food:'🍔', transport:'🚗',
@@ -18,6 +38,14 @@
     document.getElementById('todayDate').textContent = now.toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'});
     document.getElementById('todayDay').textContent = now.toLocaleDateString('en-IN',{weekday:'long'});
     document.getElementById('dateInput').value = now.toISOString().split('T')[0];
+    const toggleBtn = document.getElementById('themeToggle');
+
+toggleBtn.textContent =
+  document.body.classList.contains('light-theme')
+    ? '☀️'
+    : '🌙';
+
+toggleBtn.addEventListener('click', toggleTheme);
     render();
   }
 

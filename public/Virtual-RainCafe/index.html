@@ -1,6 +1,44 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <style>
+<style>
+body{
+  background:linear-gradient(-45deg,#0f172a,#1e3a8a,#7c3aed,#ec4899);
+  background-size:400% 400%;
+  animation:gradientBG 15s ease infinite;
+}
+
+@keyframes gradientBG{
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
+}
+
+.logo-area h1{
+  font-family:'Pacifico',cursive;
+  background:linear-gradient(90deg,#60a5fa,#a855f7,#ec4899);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+
+.glass-card{
+  background:rgba(255,255,255,.08);
+  backdrop-filter:blur(18px);
+  border:1px solid rgba(255,255,255,.15);
+  box-shadow:0 8px 32px rgba(0,0,0,.35);
+}
+
+.glass-card:hover{
+  transform:translateY(-4px);
+}
+
+.time-text{
+  text-shadow:0 0 10px #60a5fa,0 0 20px #a855f7;
+}
+</style>
+     
+      </style>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Virtual Rain Cafe</title>
@@ -9,6 +47,7 @@
       content="Immerse yourself in a cozy cafe with ambient sound mixing, lo-fi music, a Pomodoro timer, scratchpad, and customizable rain animation."
     />
     <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="image.png">
     <!-- Google Font: Gaegu -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -763,6 +802,11 @@
       </div>
     </div>
 
-    <script src="script.js"></script>
+    <script src="script.js">
+
+      const gravity = 0.5;
+
+
+    </script>
   </body>
 </html>

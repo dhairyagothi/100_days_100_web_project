@@ -1,133 +1,165 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AquaGlow Water Tracker</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <div class="app">
-    <header>
-      <div class="brand">
-        <small>Hydration Tracker</small>
-        <h1>AquaGlow</h1>
-        <p>Track your water intake one glowing drop at a time.</p>
-      </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AquaGlow Water Tracker</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="app">
+      <header>
+        <div class="brand">
+          <small>Hydration Tracker</small>
+          <h1>AquaGlow</h1>
+          <p>Track your water intake one glowing drop at a time.</p>
+        </div>
 
-      <div class="top-actions">
-        <button class="glass-btn" id="resetBtn">Reset Today</button>
-        <button class="glass-btn primary" id="completeBtn">Mark Goal Complete</button>
-      </div>
-    </header>
+        <div class="top-actions">
+          <button class="glass-btn" id="resetBtn">Reset Today</button>
+          <button class="glass-btn primary" id="completeBtn">
+            Mark Goal Complete
+          </button>
+        </div>
+      </header>
 
-    <section class="grid">
-      <div class="panel">
-        <div class="tracker">
-          <div class="drop-stage">
-            <div class="main-drop" id="mainDrop"></div>
-            <div class="drop-label" id="dropLabel">gentle glow</div>
-          </div>
-
-          <div class="tracker-info">
-            <h2>Today's Hydration</h2>
-            <p>Add each glass you drink and watch your glowing droplet collection grow.</p>
-
-            <div class="numbers">
-              <div class="number-card">
-                <strong id="currentMl">0</strong>
-                <span>ml today</span>
-              </div>
-              <div class="number-card">
-                <strong id="goalMl">2000</strong>
-                <span>ml goal</span>
-              </div>
-              <div class="number-card">
-                <strong id="remainingMl">2000</strong>
-                <span>ml left</span>
-              </div>
+      <section class="grid">
+        <div class="panel">
+          <div class="tracker">
+            <div class="drop-stage">
+              <div class="main-drop" id="mainDrop"></div>
+              <div class="drop-label" id="dropLabel">gentle glow</div>
             </div>
 
-            <div class="progress-wrap">
-              <div class="progress-bar" id="progressBar"></div>
-            </div>
+            <div class="tracker-info">
+              <h2>Today's Hydration</h2>
+              <p>
+                Add each glass you drink and watch your glowing droplet
+                collection grow.
+              </p>
 
-            <div class="quick-buttons">
-              <button data-amount="250">+250 ml</button>
-              <button data-amount="500">+500 ml</button>
-              <button data-amount="750">+750 ml</button>
-              <button data-amount="1000">+1 L</button>
-            </div>
+              <div class="numbers">
+                <div class="number-card">
+                  <strong id="currentMl">0</strong>
+                  <span>ml today</span>
+                </div>
+                <div class="number-card">
+                  <strong id="goalMl">2000</strong>
+                  <span>ml goal</span>
+                </div>
+                <div class="number-card">
+                  <strong id="remainingMl">2000</strong>
+                  <span>ml left</span>
+                </div>
+              </div>
 
-            <div class="custom-add">
-              <input id="customAmount" type="number" min="1" placeholder="Custom ml amount" />
-              <button class="glass-btn primary" id="customAddBtn">Add Water</button>
+              <div class="progress-wrap">
+                <div class="progress-bar" id="progressBar"></div>
+              </div>
+
+              <div class="quick-buttons">
+                <button data-amount="250">+250 ml</button>
+                <button data-amount="500">+500 ml</button>
+                <button data-amount="750">+750 ml</button>
+                <button data-amount="1000">+1 L</button>
+              </div>
+
+              <div class="custom-add">
+                <input
+                  id="customAmount"
+                  type="number"
+                  min="1"
+                  placeholder="Custom ml amount"
+                />
+                <button class="glass-btn primary" id="customAddBtn">
+                  Add Water
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div class="panel">
-        <div class="tank-panel">
-          <div class="tank">
-            <div class="water" id="water"></div>
-            <span class="bubble" style="left:20%; animation-delay:.2s"></span>
-            <span class="bubble" style="left:38%; animation-delay:1.1s"></span>
-            <span class="bubble" style="left:58%; animation-delay:.7s"></span>
-            <span class="bubble" style="left:75%; animation-delay:1.8s"></span>
-          </div>
+        <div class="panel">
+          <div class="tank-panel">
+            <div class="tank">
+              <div class="water" id="water"></div>
+              <span
+                class="bubble"
+                style="left: 20%; animation-delay: 0.2s"
+              ></span>
+              <span
+                class="bubble"
+                style="left: 38%; animation-delay: 1.1s"
+              ></span>
+              <span
+                class="bubble"
+                style="left: 58%; animation-delay: 0.7s"
+              ></span>
+              <span
+                class="bubble"
+                style="left: 75%; animation-delay: 1.8s"
+              ></span>
+            </div>
 
-          <div class="tank-info">
-            <h2>Glow Tank</h2>
-            <p>Your tank fills as you drink water. Reach your daily goal to unlock the brightest glow.</p>
+            <div class="tank-info">
+              <h2>Glow Tank</h2>
+              <p>
+                Your tank fills as you drink water. Reach your daily goal to
+                unlock the brightest glow.
+              </p>
 
-            <div class="goal-row">
-              <input id="goalInput" type="number" min="250" placeholder="Set goal in ml" />
-              <button class="glass-btn" id="setGoalBtn">Set Goal</button>
+              <div class="goal-row">
+                <input
+                  id="goalInput"
+                  type="number"
+                  min="250"
+                  placeholder="Set goal in ml"
+                />
+                <button class="glass-btn" id="setGoalBtn">Set Goal</button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <div class="section-title">
-      <div>
-        <h2>Glowing Drops</h2>
-        <p>One drop unlocks for each glass of water.</p>
+      <div class="section-title">
+        <div>
+          <h2>Glowing Drops</h2>
+          <p>One drop unlocks for each glass of water.</p>
+        </div>
       </div>
+
+      <section class="drops-grid" id="dropsGrid"></section>
+
+      <div class="section-title">
+        <div>
+          <h2>Hydration Achievements</h2>
+          <p>Small wins for consistent sipping.</p>
+        </div>
+      </div>
+
+      <section class="achievement-grid">
+        <div class="achievement" id="firstDrop">
+          <h3>First Drop</h3>
+          <p>Add your first water intake today.</p>
+        </div>
+        <div class="achievement" id="halfGoal">
+          <h3>Halfway Glow</h3>
+          <p>Reach 50% of your daily goal.</p>
+        </div>
+        <div class="achievement" id="goalDone">
+          <h3>Radiant Goal</h3>
+          <p>Complete your daily water goal.</p>
+        </div>
+        <div class="achievement" id="overGlow">
+          <h3>Overglow</h3>
+          <p>Drink beyond your daily goal.</p>
+        </div>
+      </section>
     </div>
 
-    <section class="drops-grid" id="dropsGrid"></section>
+    <div class="toast" id="toast">Water added</div>
 
-    <div class="section-title">
-      <div>
-        <h2>Hydration Achievements</h2>
-        <p>Small wins for consistent sipping.</p>
-      </div>
-    </div>
-
-    <section class="achievement-grid">
-      <div class="achievement" id="firstDrop">
-        <h3>First Drop</h3>
-        <p>Add your first water intake today.</p>
-      </div>
-      <div class="achievement" id="halfGoal">
-        <h3>Halfway Glow</h3>
-        <p>Reach 50% of your daily goal.</p>
-      </div>
-      <div class="achievement" id="goalDone">
-        <h3>Radiant Goal</h3>
-        <p>Complete your daily water goal.</p>
-      </div>
-      <div class="achievement" id="overGlow">
-        <h3>Overglow</h3>
-        <p>Drink beyond your daily goal.</p>
-      </div>
-    </section>
-  </div>
-
-  <div class="toast" id="toast">Water added</div>
-
-  <script src="script.js"></script>
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>
