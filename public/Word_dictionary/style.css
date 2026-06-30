@@ -7,14 +7,15 @@
   padding: 0;
 }
 
-:root {
+:root {--opp : white;
   --canvas: #090a0f;
   --panel-bg: rgba(255, 255, 255, 0.75);
   --panel-dark: rgba(15, 18, 28, 0.7);
   --text-primary: #0f141e;
-  --text-muted: #5c6475;
+  --text-muted: #a1a8b8;
   --text-soft: #8e97a4;
   --border-glass: rgba(226, 232, 240, 0.8);
+  --pagi: rgb(44, 44, 44);
 
   /* Precision Vibrant Accents */
   --prime: #4f46e5;
@@ -34,7 +35,29 @@
   --font-sans: 'Plus Jakarta Sans', system-ui, sans-serif;
   --font-serif: 'Playfair Display', Georgia, serif;
 }
+:root.light-theme {--opp : black;
+  --canvas: #f8fafc;
+  --panel-bg: rgba(255, 255, 255, 0.95);
+  --panel-dark: rgba(250, 246, 246, 0.9);
 
+  --text-primary: #111827;
+  --text-muted: #4b5563;
+  --text-soft: #6b7280;
+--pagi: rgb(220, 220, 220);
+  --border-glass: rgba(203, 213, 225, 0.8);
+
+  /* Keep brand colors or slightly soften them */
+  --prime: #4f46e5;
+  --prime-glow: rgba(79, 70, 229, 0.12);
+  --prime-gradient: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+
+  --mint: #0284c7;
+  --rose: #db2777;
+
+  /* Optional extras */
+  --shadow-soft: rgba(15, 23, 42, 0.08);
+  --glass-bg: rgba(255, 255, 255, 0.75);
+}
 body {
   font-family: var(--font-sans);
   background: var(--canvas);
@@ -111,7 +134,24 @@ body {
   color: #7c3aed;
   font-weight: 700;
 }
+#theme {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+    font-size: 24px;
+    z-index: 1000;
+    padding: 10px;
+    border-radius: 50%;
+    transition: 0.3s ease;
+}
 
+#theme:hover {
+    transform: scale(1.1);
+}
+#theme .fa-moon {
+    color: #312e81;
+}
 .app-container {
   position: relative;
   z-index: 10;
@@ -165,10 +205,11 @@ body {
   font-family: monospace;
   color: var(--text-soft);
 }
+.meta-right kbd{ border-color: var(--text-soft);} 
 .shortcut-pill {
   font-family: monospace;
   background: rgba(255, 255, 255, 0.06);
-  color: #ffffff;
+  color: var(--opp);
   padding: 2px 6px;
   border-radius: 4px;
   font-size: 11px;
@@ -190,7 +231,7 @@ body {
   font-weight: 800;
   letter-spacing: -0.02em;
   line-height: 1.15;
-  color: #ffffff;
+  color: rgb(104, 104, 135);
   margin-bottom: 12px;
 }
 .gradient-text {
@@ -228,7 +269,7 @@ body {
   left: 16px;
   width: 18px;
   height: 18px;
-  color: var(--text-soft);
+  color: var(--opp);
   pointer-events: none;
 }
 #input {
@@ -237,7 +278,7 @@ body {
   font-family: var(--font-sans);
   font-size: 15px;
   font-weight: 500;
-  color: #ffffff;
+  color: var(--opp);
   background: rgba(0, 0, 0, 0.2);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--radius-input);
@@ -431,7 +472,7 @@ body {
 .luxury-result-card {
   display: flex;
   flex-direction: column;
-  background: #ffffff;
+   background: var(--panel-dark);;
   border: 1px solid var(--border-glass);
   border-radius: var(--radius-card);
   box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.3);
@@ -473,7 +514,7 @@ body {
   font-size: 46px;
   font-weight: 600;
   letter-spacing: -0.01em;
-  color: var(--text-primary);
+  color: var(--text-soft);
   line-height: 1.1;
 }
 .lexical-phonetic-string {
@@ -539,7 +580,7 @@ body {
 .lexical-definition-text {
   font-size: 16px;
   line-height: 1.6;
-  color: #334155;
+  color: #718096;
   font-weight: 400;
 }
 .lexical-context-example {
@@ -611,7 +652,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #f8fafc;
+  background: var(--pagi);
   padding: 16px 36px;
   border-top: 1px solid #f1f5f9;
 }
@@ -727,7 +768,7 @@ body {
   cursor: pointer;
   font-size: 12px;
   font-weight: 600;
-  color: #fff;
+  color:  #9ca3af;
   background: rgba(219, 39, 119, 0.12);
   border: 1px solid rgba(219, 39, 119, 0.25);
   transition: all 0.25s ease;
@@ -753,7 +794,7 @@ body {
   background: rgba(79, 70, 229, 0.12);
   border: 1px solid rgba(79, 70, 229, 0.25);
 
-  color: #c7d2fe;
+  color: #848fb4;
   font-size: 13px;
   font-weight: 600;
 

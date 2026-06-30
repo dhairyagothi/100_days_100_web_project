@@ -1,108 +1,208 @@
+# 🎯 Carrom Game - Classic Board Game Simulation
 
-# 🎯 Carrom Game  
+## 🚀 Overview
 
-## 🚀 Overview  
+**Carrom Game** is a modern, interactive web-based recreation of the classic **Carrom board game**, developed using **HTML, CSS, and JavaScript**.
 
-Carrom Game is a fun and interactive web project built using **HTML, CSS, and JavaScript**.  
-It simulates the classic **Carrom board game** where two players compete by aiming, shooting, and scoring with realistic striker mechanics.  
+The game features realistic physics-based gameplay, smooth coin movement, collision detection, pocket animations, and an intelligent computer opponent. Players can enjoy either a **Player vs Player** experience or challenge the **Computer AI**.
 
-This project is designed as a **frontend-only application** for learning, practice, and portfolio showcase.  
-
----
-
-# ✨ Features  
-
-- ✅ Two-player mode (Player 1 vs Player 2)  
-- ✅ Striker controls: adjust **aim (°)** and **power** before shooting  
-- ✅ Scoring system:  
-  - ⚫ Black coins → 10 points  
-  - ⚪ White coins → 20 points  
-  - 🟣 Pink coin → 40 points  
-- ✅ Winning condition: first player to reach **120 points** wins  
-- ✅ Simple UI with clear controls for aim, power, and shooting  
+Designed as a frontend-only project, this game demonstrates advanced JavaScript concepts including **canvas rendering, game loops, physics simulation, animations, and user interaction handling**.
 
 ---
 
-# 🛠️ Technologies Used  
+# ✨ Features
 
-| Technology | Purpose |
-|------------|----------|
-| HTML5 | Structure and markup |
-| CSS3 | Styling, responsiveness |
-| JavaScript (ES6) | Game logic and interactivity |
+### 🎮 Game Modes
+
+* 👥 **Player vs Player (PvP)** mode
+* 🤖 **Player vs Computer (AI)** mode with automated aiming and shooting
 
 ---
 
-# 📂 Project Structure  
+### 🪙 Realistic Carrom Gameplay
+
+* Smooth striker movement and shooting mechanics
+* Adjustable striker position
+* Direction-based aiming system
+* Power control for shots
+* Realistic coin collision physics
+* Wall rebounds and friction effects
+* Coin pocket detection with sinking animations
+* Continuous animation using `requestAnimationFrame`
+
+---
+
+### 🏆 Scoring System
+
+| Coin          | Points    |
+| ------------- | --------- |
+| ⚫ Black Coin  | 10 Points |
+| ⚪ White Coin  | 20 Points |
+| 🩷 Pink Queen | 40 Points |
+
+* Players earn points for every coin pocketed.
+* A successful shot grants an additional turn.
+* The first player to reach **120 points** wins the game.
+
+---
+
+# 🎛️ Controls
+
+## Mouse / Touch Controls
+
+| Control           | Action                         |
+| ----------------- | ------------------------------ |
+| 📍 Striker Slider | Move the striker left or right |
+| 🎯 Aim Slider     | Change shooting direction      |
+| 💪 Power Slider   | Adjust shot strength           |
+| 🎱 Shoot Button   | Release the striker            |
+| 🔄 Reset Button   | Restart the current game       |
+| 🏠 Home Button    | Return to the main menu        |
+
+---
+
+## ⌨️ Keyboard Controls
+
+| Key            | Function            |
+| -------------- | ------------------- |
+| ⬅️ Left Arrow  | Move striker left   |
+| ➡️ Right Arrow | Move striker right  |
+| ⬆️ Up Arrow    | Adjust aim upward   |
+| ⬇️ Down Arrow  | Adjust aim downward |
+| Space / Enter  | Shoot the striker   |
+
+---
+
+# 🛠️ Technologies Used
+
+| Technology           | Purpose                                                        |
+| -------------------- | -------------------------------------------------------------- |
+| **HTML5**            | Game structure and interface                                   |
+| **CSS3**             | Styling, layout, animations, and responsiveness                |
+| **JavaScript (ES6)** | Canvas rendering, physics engine, game logic, AI, and controls |
+| **HTML Canvas API**  | Drawing the board, coins, striker, and effects                 |
+
+---
+
+# 📂 Project Structure
 
 ```text
-mini carrom/
+carrom-game/
 │
-├── index.html
+├── index.html       # Main game structure
+├── style.css        # User interface styling
+├── script.js        # Game engine, physics, AI, and controls
+├── image.png        # Website icon
+├── preview.png      # Project screenshot
 └── README.md
 ```
 
 ---
 
-# 🎮 Controls & Interactions  
+# ⚙️ Game Mechanics
 
-| Feature | Function |
-|----------|-----------|
-| Aim Control | Adjust striker angle |
-| Power Control | Set shooting strength |
-| Shoot Button | Launch striker |
-| Scoreboard | Tracks Player 1 & Player 2 points |
-| Winning Screen | Declares winner at 120 points |
+The game includes a custom physics system built from scratch:
 
----
-
-# 📱 Responsive Design  
-
-This project works smoothly across:  
-
-- 💻 Desktop  
-- 🖥️ Laptop  
-- 📱 Mobile  
-- 📲 Tablet  
+* 🔄 Friction-based movement slowing
+* 💥 Coin-to-coin collision detection
+* 🧱 Board boundary rebounds
+* 🕳️ Pocket attraction and sinking effects
+* 🎯 Dynamic aiming system
+* 🤖 Computer opponent decision making
 
 ---
 
-# ▶️ How to Run  
+# 📱 Responsive Design
 
-## 1️⃣ Clone the Repository  
+The game automatically adjusts its board size according to the screen dimensions and provides a smooth experience on:
+
+* 💻 Desktop Computers
+* 🖥️ Laptops
+* 📱 Mobile Phones
+* 📲 Tablets
+
+---
+
+# ▶️ How to Run the Project
+
+## 1️⃣ Clone the Repository
 
 ```bash
-git clone https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/mini%20carrom.git
+git clone https://github.com/dhairyagothi/100_days_100_web_project.git
 ```
 
-## 2️⃣ Navigate to Project Folder  
+---
+
+## 2️⃣ Navigate to the Project Folder
 
 ```bash
-cd "mini carrom"
+cd mini-carrom
 ```
 
-## 3️⃣ Open in Browser  
+---
 
-Open `index.html` in your browser.  
+## 3️⃣ Launch the Game
+
+Simply open the `index.html` file in any modern browser.
+
+Recommended browsers:
+
+* Google Chrome
+* Microsoft Edge
+* Mozilla Firefox
+* Safari
 
 ---
 
-# 🌐 Demo & Repository  
+# 📸 Screenshot
 
-🔗 Live Demo: [Carrom Game](https://100-days-100-web-project.vercel.app/public/mini%20carrom/index.html)  
+Add a screenshot of the game interface:
 
-🔗 GitHub Repository: [Carrom Game Repo](https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/mini%20carrom)  
-
----
-
-## 📸 Screenshots  
-
-<img src="preview.png" height="600px" width="1200px"/>  
+```html
+<img src="preview.png" alt="Carrom Game Preview" width="100%">
+```
 
 ---
 
-# 📄 License  
+# 💡 Learning Highlights
 
-This project is created for **educational, learning, and portfolio purposes**.  
+This project demonstrates practical knowledge of:
 
-You are free to modify and use this project for personal development and practice.  
+* Object-oriented JavaScript concepts
+* Game loop architecture
+* Canvas-based graphics programming
+* Mathematical calculations using vectors and angles
+* Collision handling algorithms
+* Animation timing
+* DOM manipulation and event handling
+* AI-based gameplay decisions
+
+---
+
+# 🔮 Future Improvements
+
+Possible features that can be added:
+
+* 🔊 Sound effects and background music
+* 🌐 Online multiplayer mode
+* 🏅 Leaderboards and high scores
+* 🎨 Multiple board themes
+* ⚙️ Difficulty levels for computer AI
+* 💾 Save and resume game functionality
+* 📊 Match statistics and history
+
+---
+
+# 📄 License
+
+This project is developed for **learning, educational, and portfolio purposes**.
+
+You are free to fork, modify, and improve the project for personal use.
+
+---
+
+## ⭐ Support
+
+If you like this project, consider giving it a **star ⭐ on GitHub** and sharing it with others.
+
+Happy Coding! 🚀

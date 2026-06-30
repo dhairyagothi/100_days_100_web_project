@@ -4,11 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Custom Color Picker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="../favv.png" type="image/x-icon" />
   <style>
     #saveColorBtn {
-      display: inline-flex !important;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 6px;
@@ -24,7 +27,7 @@
       transform: rotate(72deg) scale(1.2);
     }
     .copy-hint {
-      display: inline-flex !important;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 6px;
@@ -37,7 +40,7 @@
   </style>
 </head>
 <body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:'Outfit', system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
 
   <div class="container">
 
@@ -59,9 +62,18 @@
     </div>
 
     <div class="hex-container">
-  <label for="hexInput">HEX:</label>
-  <input type="text" id="hexInput" placeholder="#6C63FF">
-</div>
+      <label for="hexInput">HEX:</label>
+      <input type="text" id="hexInput" placeholder="#6C63FF">
+    </div>
+
+    <div class="bg-mode-container">
+      <label for="bgModeSelect">Background Style:</label>
+      <select id="bgModeSelect">
+        <option value="gradient">Dynamic Gradient (Recommended)</option>
+        <option value="complementary">Complementary Gradient</option>
+        <option value="solid">Solid Color</option>
+      </select>
+    </div>
 
     <!-- Single color box (FIXED duplicate issue) -->
     <div class="color-display" id="customColorDisplay"></div>
@@ -71,17 +83,16 @@
       <p id="rgbValue">RGB: rgb(0,0,0)</p>
     </div>
     
+    <div class="button-group">
+      <button id="copyHex">Copy HEX</button>
+      <button id="copyRgb">Copy RGB</button>
+      <button id="copyHsl">Copy HSL</button>
+    </div>
 
-    <button id="copyHex">Copy HEX</button>
-<button id="copyRgb">Copy RGB</button>
-<button id="copyHsl">Copy HSL</button>
+    <button id="saveColorBtn"><svg class="btn-star-svg" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg> Save This Color</button>
 
-
-
-<button id="saveColorBtn"><svg class="btn-star-svg" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg> Save This Color</button>
-
-<h3>Saved Favorites</h3>
-<div id="favoritesContainer"></div>
+    <h3>Saved Favorites</h3>
+    <div id="favoritesContainer"></div>
 
 <hr class="section-divider">
 

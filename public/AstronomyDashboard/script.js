@@ -397,7 +397,6 @@ const phaseNames = [
 const NASA_API_KEY =
   window.NASA_API_KEY || "DEMO_KEY";
 const NASA_APOD_BASE = "https://api.nasa.gov/planetary/apod";
-const OPENTDB_FACT_URL = "https://opentdb.com/api.php?amount=1&category=29&type=multiple";
 const NASA_NEO_FEED_BASE = "https://api.nasa.gov/neo/rest/v1/feed";
 const FALLBACK_APOD = {
   title: 'R3 PanSTARRS: An Orion Comet',
@@ -756,7 +755,7 @@ function renderApod(data, isFallback = false) {
     : 'Source: NASA APOD';
 }
 
-apodImg.addEventListener('error', () => {
+apodImg?.addEventListener('error', () => {
   clearSkeletons([apodImage]);
   if (!apodImg.src.includes('images.unsplash.com')) {
     apodImg.src = FALLBACK_APOD.url;
@@ -802,6 +801,10 @@ async function fetchNasaApodForDate(date) {
 }
 
 async function loadNasaApod() {
+  if (!apodTitle || !apodDescription || !apodImage || !apodImg || !apodDate || !apodLink || !apodSource) {
+    return;
+  }
+
   apodTitle.textContent = 'Loading NASA Picture of the Day…';
   apodDescription.textContent = "Fetching today's image from NASA.";
 
@@ -834,36 +837,6 @@ async function loadNasaApod() {
 }
 
 // --- Daily space facts -------------------------------------------------------
-
-function decodeHtmlEntities(value) {
-  const textarea = document.createElement('textarea');
-  textarea.innerHTML = value;
-  return textarea.value;
-}
-
-async function fetchOpenTdbSpaceFact() {
-  const response = await fetchWithTimeout(OPENTDB_FACT_URL);
-
-  if (!response.ok) {
-    throw new Error('Open Trivia DB request failed');
-  }
-
-  const data = await response.json();
-
-  if (data.response_code !== 0 || !data.results?.length) {
-    throw new Error('Open Trivia DB returned no results');
-  }
-
-  const item = data.results[0];
-  const answer = decodeHtmlEntities(item.correct_answer);
-  const question = decodeHtmlEntities(item.question);
-
-  return {
-    text: `${question} The answer is ${answer}.`,
-    source: 'Open Trivia DB — Science & Nature',
-    url: 'https://opentdb.com/',
-  };
-}
 
 async function fetchNasaNeoFact() {
   const today = getIstDateInputValue(new Date());
@@ -900,18 +873,7 @@ async function fetchNasaNeoFact() {
 }
 
 async function fetchOnlineSpaceFact() {
-  const providers = [fetchOpenTdbSpaceFact, fetchNasaNeoFact];
-  let lastError = null;
-
-  for (const provider of providers) {
-    try {
-      return await provider();
-    } catch (error) {
-      lastError = error;
-    }
-  }
-
-  throw lastError || new Error('No online space fact available');
+  return await fetchNasaNeoFact();
 }
 
 function loadStaticFact(excludeText) {
@@ -2436,11 +2398,7 @@ themeToggle.addEventListener("click", () => {
     updateThemeIcon(nextTheme);
 });
 
-    newsList.addEventListener("click", (event) => {
-        const item = event.target.closest(".news-item");
-
-
-  newsList.addEventListener('click', (event) => {
+    newsList.addEventListener('click', (event) => {
     const item = event.target.closest('.news-item');
 
     if (!item) {

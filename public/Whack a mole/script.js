@@ -96,6 +96,7 @@ function StartGame() {
     const gameOver = document.getElementById("GameOver");
     gameOver.style.display = "none";
 
+
     MolePopUp();
 
     startCountdown(50);

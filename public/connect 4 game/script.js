@@ -2,50 +2,132 @@ const ROWS = 6;
 const COLS = 7;
 
 let board = [];
-let currentPlayer = "red";
+let currentPlayer = 'red';
 let gameOver = false;
-let mode = "pvp"; // pvp or pve
+let mode = 'pvp'; // pvp or pve
+let lastHoveredCol = -1;
 
-const boardDiv = document.getElementById("board");
-const statusDiv = document.getElementById("status");
+const boardDiv = document.getElementById('board');
+const statusDiv = document.getElementById('status');
+const previewRowDiv = document.getElementById('preview-row');
+const previewDisc = document.getElementById('preview-disc');
 
-document.getElementById("pvpBtn").onclick = () => setMode("pvp");
-document.getElementById("pveBtn").onclick = () => setMode("pve");
+document.getElementById('pvpBtn').onclick = () => setMode('pvp');
+document.getElementById('pveBtn').onclick = () => setMode('pve');
+document.getElementById('restartBtn').onclick = () => resetGame();
 
 function setMode(m) {
   mode = m;
-  document.getElementById("pvpBtn").classList.toggle("active", m === "pvp");
-  document.getElementById("pveBtn").classList.toggle("active", m === "pve");
+  document.getElementById('pvpBtn').classList.toggle('active', m === 'pvp');
+  document.getElementById('pveBtn').classList.toggle('active', m === 'pve');
   resetGame();
 }
+
+// Create preview row slots
+function createPreviewRow() {
+  // Clear old slots but keep the preview-disc
+  previewRowDiv.innerHTML = '';
+  previewRowDiv.appendChild(previewDisc);
+
+  for (let c = 0; c < COLS; c++) {
+    const slot = document.createElement('div');
+    slot.classList.add('preview-slot');
+    slot.dataset.col = c;
+
+    slot.addEventListener('mouseenter', () => updateHover(c));
+    slot.addEventListener('click', () => {
+      if (gameOver) return;
+      if (mode === 'pve' && currentPlayer === 'yellow') return;
+      const col = Number(slot.dataset.col);
+      dropPiece(col, currentPlayer);
+    });
+
+    previewRowDiv.appendChild(slot);
+  }
+}
+
+// Update hover preview disc positioning and classes
+function updateHover(col) {
+  lastHoveredCol = col;
+  if (gameOver || (mode === 'pve' && currentPlayer === 'yellow')) {
+    hideHover();
+    return;
+  }
+
+  previewDisc.style.opacity = '1';
+  previewDisc.style.setProperty('--col', col);
+  previewDisc.className = currentPlayer; // 'red' or 'yellow'
+}
+
+function hideHover() {
+  previewDisc.style.opacity = '0';
+}
+
+// Attach mouseleave to hide hover
+boardDiv.addEventListener('mouseleave', () => {
+  lastHoveredCol = -1;
+  hideHover();
+});
+previewRowDiv.addEventListener('mouseleave', () => {
+  lastHoveredCol = -1;
+  hideHover();
+});
 
 // Create board
 function createBoard() {
   board = Array.from({ length: ROWS }, () => Array(COLS).fill(null));
-  boardDiv.innerHTML = "";
 
+  boardDiv.innerHTML = '';
+  boardDiv.classList.add('active');
   for (let r = 0; r < ROWS; r++) {
     for (let c = 0; c < COLS; c++) {
-      const cell = document.createElement("div");
-      cell.classList.add("cell");
+      const cell = document.createElement('div');
+      cell.classList.add('cell');
       cell.dataset.col = c;
+      cell.addEventListener('mouseenter', () => updateHover(c));
       boardDiv.appendChild(cell);
     }
   }
 }
 
-// Click handler
-boardDiv.addEventListener("click", (e) => {
-  if (!e.target.classList.contains("cell")) return;
-
+// Click handler for board cells
+boardDiv.addEventListener('click', (e) => {
+  if (!e.target.classList.contains('cell')) return;
   if (gameOver) return;
 
   const col = Number(e.target.dataset.col);
-
-  if (mode === "pve" && currentPlayer === "yellow") return;
+  if (mode === 'pve' && currentPlayer === 'yellow') return;
 
   dropPiece(col, currentPlayer);
 });
+
+// Get winning cells coordinates
+function getWinningCells(row, col) {
+  const player = board[row][col];
+  const directions = [
+    [[0, 1], [0, -1]],   // horizontal
+    [[1, 0], [-1, 0]],   // vertical
+    [[1, 1], [-1, -1]],  // main diagonal
+    [[1, -1], [-1, 1]]   // anti-diagonal
+  ];
+
+  for (const dir of directions) {
+    const cells = [[row, col]];
+    for (const [dr, dc] of dir) {
+      let r = row + dr;
+      let c = col + dc;
+      while (r >= 0 && r < ROWS && c >= 0 && c < COLS && board[r][c] === player) {
+        cells.push([r, c]);
+        r += dr;
+        c += dc;
+      }
+    }
+    if (cells.length >= 4) {
+      return cells.slice(0, 4);
+    }
+  }
+  return [];
+}
 
 // Drop piece
 function dropPiece(col, player) {
@@ -54,22 +136,45 @@ function dropPiece(col, player) {
       board[row][col] = player;
       renderPiece(row, col, player);
 
-      if (checkWin(row, col)) {
+      const winningCells = getWinningCells(row, col);
+      if (winningCells.length > 0) {
         statusDiv.textContent = `${player.toUpperCase()} Wins 🎉`;
+        statusDiv.className = player === 'red' ? 'winner-red' : 'winner-yellow';
         gameOver = true;
+        boardDiv.classList.remove('active');
+
+        // Highlight winning cells
+        winningCells.forEach(([r, c]) => {
+          const index = r * COLS + c;
+          boardDiv.children[index].classList.add('winner');
+        });
+
+        hideHover();
         return;
       }
 
       if (isDraw()) {
         statusDiv.textContent = "It's a Draw!";
+        statusDiv.className = 'draw';
         gameOver = true;
+        boardDiv.classList.remove('active');
+        hideHover();
         return;
       }
 
-      currentPlayer = currentPlayer === "red" ? "yellow" : "red";
+      currentPlayer = currentPlayer === 'red' ? 'yellow' : 'red';
       statusDiv.textContent = `${currentPlayer.toUpperCase()}'s Turn`;
+      statusDiv.className = `${currentPlayer}-turn`;
 
-      if (mode === "pve" && currentPlayer === "yellow") {
+      // Update hover preview for the next player
+      if (lastHoveredCol !== -1) {
+        updateHover(lastHoveredCol);
+      } else {
+        hideHover();
+      }
+
+      if (mode === 'pve' && currentPlayer === 'yellow') {
+        hideHover();
         setTimeout(botMove, 400);
       }
 
@@ -78,7 +183,7 @@ function dropPiece(col, player) {
   }
 }
 
-// Bot (simple smart logic: block or random)
+// Bot (simple smart logic: block or win or random)
 function botMove() {
   if (gameOver) return;
 
@@ -86,13 +191,13 @@ function botMove() {
   for (let c = 0; c < COLS; c++) {
     let r = getAvailableRow(c);
     if (r !== -1) {
-      board[r][c] = "yellow";
-      if (checkWin(r, c)) {
-        board[r][c] = null;
-        dropPiece(c, "yellow");
+      board[r][c] = 'yellow';
+      const winningCells = getWinningCells(r, c);
+      board[r][c] = null;
+      if (winningCells.length > 0) {
+        dropPiece(c, 'yellow');
         return;
       }
-      board[r][c] = null;
     }
   }
 
@@ -100,23 +205,35 @@ function botMove() {
   for (let c = 0; c < COLS; c++) {
     let r = getAvailableRow(c);
     if (r !== -1) {
-      board[r][c] = "red";
-      if (checkWin(r, c)) {
-        board[r][c] = null;
-        dropPiece(c, "yellow");
+      board[r][c] = 'red';
+      const winningCells = getWinningCells(r, c);
+      board[r][c] = null;
+      if (winningCells.length > 0) {
+        dropPiece(c, 'yellow');
         return;
       }
-      board[r][c] = null;
     }
   }
 
   // 3. random move
   let col;
+  let attempts = 0;
   do {
     col = Math.floor(Math.random() * COLS);
-  } while (board[0][col] !== null);
+    attempts++;
+  } while (board[0][col] !== null && attempts < 100);
 
-  dropPiece(col, "yellow");
+  // Fallback if full
+  if (board[0][col] !== null) {
+    for (let c = 0; c < COLS; c++) {
+      if (board[0][c] === null) {
+        col = c;
+        break;
+      }
+    }
+  }
+
+  dropPiece(col, 'yellow');
 }
 
 // helper
@@ -132,40 +249,10 @@ function renderPiece(row, col, player) {
   const index = row * COLS + col;
   const cell = boardDiv.children[index];
 
-  const piece = document.createElement("div");
-  piece.classList.add("piece", player);
+  const piece = document.createElement('div');
+  piece.classList.add('piece', player);
 
   cell.appendChild(piece);
-}
-
-// win check
-function checkWin(row, col) {
-  return (
-    count(row, col, 0, 1) + count(row, col, 0, -1) > 2 ||
-    count(row, col, 1, 0) > 2 ||
-    count(row, col, 1, 1) + count(row, col, -1, -1) > 2 ||
-    count(row, col, 1, -1) + count(row, col, -1, 1) > 2
-  );
-}
-
-function count(row, col, dr, dc) {
-  let r = row + dr;
-  let c = col + dc;
-  let total = 0;
-
-  while (
-    r >= 0 &&
-    r < ROWS &&
-    c >= 0 &&
-    c < COLS &&
-    board[r][c] === currentPlayer
-  ) {
-    total++;
-    r += dr;
-    c += dc;
-  }
-
-  return total;
 }
 
 // draw
@@ -175,11 +262,15 @@ function isDraw() {
 
 // reset
 function resetGame() {
-  currentPlayer = "red";
+  currentPlayer = 'red';
   gameOver = false;
-  statusDiv.textContent = "Red's Turn";
+  statusDiv.textContent = "RED's Turn";
+  statusDiv.className = 'red-turn';
+  lastHoveredCol = -1;
+  hideHover();
   createBoard();
+  createPreviewRow();
 }
 
 // init
-createBoard();
+resetGame();

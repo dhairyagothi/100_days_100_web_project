@@ -296,41 +296,10 @@ function killingPacman() {
   }
 }
 
-function testGhostsPacman() {
-  testGhostPacman("blinky");
-  testGhostPacman("pinky");
-  testGhostPacman("inky");
-  testGhostPacman("clyde");
-}
 function testGhostPacman(ghost) {
-  var ghostKey = ghost.toUpperCase();
-  var positionX, positionY, state;
-
-  // Access ghost state via direct references instead of eval()
-  switch (ghostKey) {
-    case 'BLINKY':
-      positionX = GHOST_BLINKY_POSITION_X;
-      positionY = GHOST_BLINKY_POSITION_Y;
-      state = GHOST_BLINKY_STATE;
-      break;
-    case 'PINKY':
-      positionX = GHOST_PINKY_POSITION_X;
-      positionY = GHOST_PINKY_POSITION_Y;
-      state = GHOST_PINKY_STATE;
-      break;
-    case 'INKY':
-      positionX = GHOST_INKY_POSITION_X;
-      positionY = GHOST_INKY_POSITION_Y;
-      state = GHOST_INKY_STATE;
-      break;
-    case 'CLYDE':
-      positionX = GHOST_CLYDE_POSITION_X;
-      positionY = GHOST_CLYDE_POSITION_Y;
-      state = GHOST_CLYDE_STATE;
-      break;
-    default:
-      return;
-  }
+  const positionX = GHOSTS[ghost].POSITION_X;
+  const positionY = GHOSTS[ghost].POSITION_Y;
+  const state = GHOSTS[ghost].STATE;
 
   if (
     positionX <= PACMAN_POSITION_X + PACMAN_GHOST_GAP &&
