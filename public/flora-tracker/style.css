@@ -227,6 +227,7 @@ main {
   padding: 0.3rem;
   border-radius: 14px;
   box-shadow: var(--card-shadow);
+  flex-wrap: wrap;
 }
 
 .filter-btn {
@@ -240,11 +241,29 @@ main {
   border-radius: 10px;
   color: var(--text-muted);
   transition: all 0.2s ease;
+  white-space: nowrap;
 }
 
 .filter-btn.active, .filter-btn:hover {
   background: var(--accent-green);
   color: #FFF;
+}
+
+.filter-btn[data-filter="archived"] {
+  position: relative;
+}
+
+.archive-count-badge {
+  display: inline-block;
+  background: var(--danger);
+  color: white;
+  border-radius: 50%;
+  padding: 1px 6px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  margin-left: 4px;
+  min-width: 18px;
+  text-align: center;
 }
 
 .btn-primary {
@@ -279,7 +298,7 @@ main {
 .shelf-container {
   display: flex;
   flex-direction: column;
-  gap: 3.5rem; /* Space for plants to stand between shelves */
+  gap: 3.5rem;
   position: relative;
   padding-top: 1rem;
 }
@@ -294,7 +313,7 @@ main {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 2.5rem 1.5rem;
-  padding-bottom: 15px; /* So plant pots stand right on the wood top */
+  padding-bottom: 15px;
   z-index: 2;
   position: relative;
 }
@@ -386,6 +405,34 @@ main {
 
 .plant-card.is-healthy .plant-svg {
   animation: windChimeSway 6s ease-in-out infinite alternate;
+}
+
+/* Archived Plant Styles */
+.plant-card.archived {
+  opacity: 0.6;
+  filter: grayscale(40%);
+  border-color: var(--danger);
+}
+
+.plant-card.archived:hover {
+  transform: translateY(-4px) scale(1.01);
+  opacity: 0.8;
+}
+
+.archive-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: var(--danger);
+  color: white;
+  padding: 0.25rem 0.6rem;
+  border-radius: 20px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  z-index: 3;
 }
 
 /* XP Badge & Care indicators */
@@ -534,6 +581,75 @@ main {
   fill: currentColor;
 }
 
+/* Archive Action Buttons */
+.btn-restore {
+  flex: 1;
+  background: var(--glass-bg);
+  border: 1.5px solid var(--gold);
+  color: var(--gold);
+  padding: 0.5rem;
+  border-radius: 10px;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  transition: all 0.2s ease;
+}
+
+.btn-restore:hover {
+  background: var(--gold);
+  color: #FFF;
+}
+
+.btn-delete-permanent {
+  background: var(--glass-bg);
+  border: 1.5px solid var(--danger);
+  color: var(--danger);
+  padding: 0.5rem;
+  border-radius: 10px;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  transition: all 0.2s ease;
+}
+
+.btn-delete-permanent:hover {
+  background: var(--danger);
+  color: #FFF;
+}
+
+.btn-archive {
+  flex: 1;
+  background: var(--glass-bg);
+  border: 1.5px solid var(--text-muted);
+  color: var(--text-muted);
+  padding: 0.5rem;
+  border-radius: 10px;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  transition: all 0.2s ease;
+}
+
+.btn-archive:hover {
+  background: var(--text-muted);
+  color: #FFF;
+}
+
 /* Modal Windows & Drawers */
 .modal-overlay {
   position: fixed;
@@ -607,6 +723,151 @@ main {
   padding: 1.5rem;
   max-height: 70vh;
   overflow-y: auto;
+}
+
+/* Confirmation Modal */
+.confirm-modal .modal-content {
+  max-width: 400px;
+}
+
+.confirm-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.confirm-actions .btn-primary {
+  flex: 1;
+  justify-content: center;
+}
+
+.confirm-actions .btn-secondary {
+  flex: 1;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  color: var(--text-main);
+  padding: 0.8rem 1.6rem;
+  border-radius: 14px;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.confirm-actions .btn-secondary:hover {
+  background: var(--text-muted);
+  color: #FFF;
+}
+
+.confirm-actions .btn-danger {
+  flex: 1;
+  background: var(--danger);
+  border: none;
+  color: #FFF;
+  padding: 0.8rem 1.6rem;
+  border-radius: 14px;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.confirm-actions .btn-danger:hover {
+  background: #C0392B;
+  transform: translateY(-2px);
+}
+
+/* Toast Notification */
+.toast {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  padding: 1.2rem 1.8rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  z-index: 200;
+  transform: translateY(100px);
+  opacity: 0;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  max-width: 400px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.toast.active {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.toast-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.toast-icon.success {
+  background: rgba(82, 183, 136, 0.2);
+  color: var(--accent-green);
+}
+
+.toast-icon.warning {
+  background: rgba(244, 162, 97, 0.2);
+  color: var(--gold);
+}
+
+.toast-icon.error {
+  background: rgba(224, 122, 95, 0.2);
+  color: var(--danger);
+}
+
+.toast-content {
+  flex: 1;
+}
+
+.toast-content h4 {
+  font-family: var(--font-title);
+  font-size: 0.95rem;
+  margin-bottom: 0.2rem;
+}
+
+.toast-content p {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.toast-close {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toast-close svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
 }
 
 /* Form Styles */

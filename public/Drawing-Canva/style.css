@@ -1,0 +1,192 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Roboto:wght@300&display=swap');
+
+*{
+    margin: 0%;
+    padding: 0%;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+body{
+    background-color: rgb(202, 200, 200);
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+}
+
+
+/* Styling the Left portion of the Application */
+
+/*Universal style of left*/
+#left{
+    background-color: #1e1e1e;
+    padding: 20px 10px;
+    color: white;
+    height: 100%;
+}
+
+
+/*general style for  a controller*/
+#left .controller{
+    border-bottom: 1px solid white;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding: 0 0 20px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+/* Style the Div to Choose the Pen or Eraser*/
+
+#left .choose-pen{
+    display: flex;
+    justify-content: start;
+    gap: 10px;
+}
+
+#left .choose-pen .i-container{
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid white;
+    border-radius: 50%;
+}
+
+#left .choose-pen .i-container:hover{
+    cursor: pointer;
+}
+
+#left .choose-pen .i-container.active{
+    background-color: white;
+    color: #101010;
+    border: 1px solid #101010;
+    width: 50px;
+    height: 50px;
+    font-size: 30px;
+    box-shadow: 3px 3px 10px black;
+}
+
+#left .choose-pen i{
+    font-size: 20px;
+}
+
+/* Style Eraser*/
+.eraser{
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid #101010;
+    background-color: white;
+}
+
+/* Style the buttons of the left*/
+
+#left .btn:hover, #left #download:hover{
+    cursor: pointer;
+    background-color: #1e1e1e;
+    color: white;
+    border: 1px solid white;
+}
+
+/*heading of left*/
+#left h1{
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+
+/*style of the width controller*/
+
+#left .width-control h3{
+    margin-right: 30px;
+}
+
+#left .width-control .btns button.inc-width, 
+#left .width-control .btns button.dec-width{
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    font-weight: bolder;
+    margin-left: 5px;
+}
+
+#left .width-control button.inc-width:hover, 
+#left .width-control button.dec-width:hover{
+    transform: scale(1.1);
+}
+
+/*style of the color controller*/
+.color-control{
+    display: flex;
+}
+
+.color-control input[type="color"]{
+    margin-left: 20px;
+}
+
+.color-control input[type="color"]:hover{
+    cursor: pointer;
+}
+
+/* style the download button and clear button*/ 
+#left #download, #left .clear{
+    width: 100%;
+    border: none;
+    padding: 10px 8px;
+    font-size: 1.2rem;
+    font-weight: bolder;
+    border-radius: 2px;
+    margin-bottom: 5px;
+}
+
+/* style the right portion of the main application */
+
+/* universal style of the left */
+#right{
+    /* background-color: #2e2e2e; */
+    background-color: crimson;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+/*give appropriate dimensions to the canvas in the right portion*/
+#right #canvas{
+    display: block;
+    width: 95%;
+    min-width: 95%;
+    height: 95%;
+    min-height: 95%;
+    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.521);
+}
+
+/*Media Query for Responsiveness*/
+@media (max-width: 900px){
+    body{
+        display: flex;
+        flex-direction: column-reverse;
+    }
+
+    #left{
+        height: 40%;
+    }
+
+    #right{
+        min-height: 60vh;
+    }
+
+    #right #canvas{
+        height: 58vh;
+        width: 97%;
+    }
+}
+
+@media (max-width: 725px){
+    header h1{
+        font-size: 2rem;
+    }
+}

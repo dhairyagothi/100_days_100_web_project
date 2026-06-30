@@ -545,7 +545,23 @@ a:hover { color: var(--primary-dark); text-decoration: underline; }
 .info-item i { color: var(--primary); font-size: 1rem; }
 
 .doctor-services { display: flex; gap: var(--spacing-sm); flex-wrap: wrap; }
-.service-badge { background-color: var(--accent); color: var(--primary); padding: 4px 12px; border-radius: var(--radius-sm); font-size: 0.8rem; font-weight: 500; }
+/* Light Mode */
+.service-badge {
+    padding: 4px 12px;
+    border-radius: var(--radius-sm);
+    font-size: 0.8rem;
+    font-weight: 500;
+    background: #f3f4f6;
+    color: #374151;
+}
+
+/* Dark Mode */
+body.dark-mode .service-badge,
+[data-theme="dark"] .service-badge {
+    background: #065f46;
+    color: #ffffff;
+    border: 1px solid #10b981;
+}
 
 .doctor-card-footer { padding: var(--spacing-lg); border-top: 1px solid var(--border); background-color: var(--background-alt); }
 

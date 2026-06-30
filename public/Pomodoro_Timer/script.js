@@ -17,7 +17,7 @@ let shortBreakTime = settings.shortDur * 60;
 let longBreakTime  = settings.longDur  * 60;
 let time = pomodoroTime, totalTime = pomodoroTime || 1;
 let timerInterval = null, isRunning = false;
-let sessionStartTime = null; // for drift correction
+let sessionStartTime = null;
 let sessionStartRemaining = null;
 let currentMode = 'pomodoro', pomosCompleted = 0, activeTaskId = null;
 
@@ -26,6 +26,109 @@ let tasks = loadTasks();
 function loadTasks() { try { return JSON.parse(localStorage.getItem('pomodoroTasks')) || []; } catch { return []; } }
 function saveTasks() { try { localStorage.setItem('pomodoroTasks', JSON.stringify(tasks)); } catch(e) { console.warn('Storage full:', e); } }
 function genId() { return Date.now().toString(36) + Math.random().toString(36).slice(2); }
+
+// ─── Session History ──────────────────────────────────────────────────────────
+function loadHistory() {
+    try { return JSON.parse(localStorage.getItem('pomodoroHistory')) || []; } catch { return []; }
+}
+function saveHistory(history) {
+    try { localStorage.setItem('pomodoroHistory', JSON.stringify(history)); } catch(e) { console.warn('Storage full:', e); }
+}
+function addHistoryEntry(type, taskName, durationMin, skipped) {
+    const history = loadHistory();
+    const entry = {
+        id:       genId(),
+        type,                          // 'pomodoro' | 'short' | 'long'
+        taskName: taskName || null,
+        duration: durationMin,
+        skipped:  !!skipped,
+        ts:       Date.now(),
+    };
+    history.unshift(entry); // newest first
+    if (history.length > 200) history.length = 200; // cap at 200 entries
+    saveHistory(history);
+    renderHistory();
+}
+function clearHistory() {
+    saveHistory([]);
+    renderHistory();
+}
+
+function renderHistory() {
+    const historyList = document.getElementById('historyList');
+    if (!historyList) return;
+    const history = loadHistory();
+    if (!history.length) {
+        historyList.innerHTML = '<div class="history-empty">No sessions recorded yet. Complete a pomodoro to see it here!</div>';
+        return;
+    }
+
+    // Group entries by date
+    const groups = {};
+    history.forEach(entry => {
+        const dateKey = new Date(entry.ts).toLocaleDateString(undefined, { weekday:'long', month:'short', day:'numeric' });
+        if (!groups[dateKey]) groups[dateKey] = [];
+        groups[dateKey].push(entry);
+    });
+
+    historyList.innerHTML = '';
+    Object.entries(groups).forEach(([dateLabel, entries]) => {
+        // Date group header
+        const groupEl = document.createElement('div');
+        groupEl.className = 'history-group';
+
+        const groupHeader = document.createElement('div');
+        groupHeader.className = 'history-group-header';
+        const pomoCount = entries.filter(e => e.type === 'pomodoro' && !e.skipped).length;
+        groupHeader.innerHTML = `<span class="history-date">${dateLabel}</span><span class="history-date-count">${pomoCount} 🍅</span>`;
+        groupEl.appendChild(groupHeader);
+
+        entries.forEach(entry => {
+            const item = document.createElement('div');
+            item.className = 'history-item' + (entry.skipped ? ' history-skipped' : '');
+            item.setAttribute('role', 'listitem');
+
+            const typeEmoji = entry.type === 'pomodoro' ? '🍅' : entry.type === 'short' ? '☕' : '🌿';
+            const typeLabel = entry.type === 'pomodoro' ? 'Focus' : entry.type === 'short' ? 'Short Break' : 'Long Break';
+            const time = new Date(entry.ts).toLocaleTimeString(undefined, { hour:'2-digit', minute:'2-digit' });
+            const skippedTag = entry.skipped ? '<span class="history-tag-skipped">skipped</span>' : '';
+            const taskTag = entry.taskName ? `<span class="history-task-name">${escHtml(entry.taskName)}</span>` : '';
+
+            item.innerHTML = `
+                <span class="history-item-emoji">${typeEmoji}</span>
+                <div class="history-item-info">
+                    <span class="history-item-type">${typeLabel}${skippedTag}${taskTag}</span>
+                    <span class="history-item-dur">${entry.duration} min</span>
+                </div>
+                <span class="history-item-time">${time}</span>`;
+            groupEl.appendChild(item);
+        });
+
+        historyList.appendChild(groupEl);
+    });
+}
+
+// ─── History drawer toggle ────────────────────────────────────────────────────
+const historyToggle  = document.getElementById('historyToggle');
+const historyDrawer  = document.getElementById('historyDrawer');
+const historyChevron = document.getElementById('historyChevron');
+const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+
+historyToggle.addEventListener('click', () => {
+    const isOpen = !historyDrawer.hidden;
+    historyDrawer.hidden = isOpen;
+    historyToggle.setAttribute('aria-expanded', String(!isOpen));
+    historyChevron.textContent = isOpen ? '▾' : '▴';
+    if (!isOpen) renderHistory(); // refresh when opening
+});
+
+clearHistoryBtn.addEventListener('click', () => {
+    if (!loadHistory().length) { showToast('No history to clear.'); return; }
+    if (confirm('Clear all session history?')) {
+        clearHistory();
+        showToast('🗑 Session history cleared.');
+    }
+});
 
 // ─── DOM refs ─────────────────────────────────────────────────────────────────
 const timerDisplay    = document.getElementById('timer');
@@ -46,11 +149,13 @@ const progressRing    = document.getElementById('progressRing');
 const toast           = document.getElementById('toast');
 const statsTotal      = document.getElementById('statsTotal');
 const statsToday      = document.getElementById('statsToday');
+const statsTodayMins  = document.getElementById('statsTodayMins');
 const statsStreak     = document.getElementById('statsStreak');
 const strictBadge     = document.getElementById('strictBadge');
 const nowPlaying      = document.getElementById('nowPlaying');
 const nowPlayingLabel = document.getElementById('nowPlayingLabel');
 const weeklyChart     = document.getElementById('weeklyChart');
+const bestDayLabel    = document.getElementById('bestDayLabel');
 const themeColorMeta  = document.getElementById('themeColorMeta');
 
 const settingsBtn     = document.getElementById('settingsBtn');
@@ -159,7 +264,6 @@ let currentTrackId = 'none';
 let musicVolume    = settings.musicVolume || 0.4;
 let masterGainNode = null;
 
-// Module-level timer refs so stopMusic() always clears them
 let _jazzTimerRef  = null;
 let _chirpTimerRef = null;
 
@@ -197,9 +301,8 @@ function startMusic(id) {
         masterGainNode = mg;
         musicNodes.push(mg);
 
-        // ── Lo-fi: 4-voice C-major triangle chord with slow tremolo ─────────────
         if (id === 'lofi') {
-            const freqs = [130.81, 164.81, 196.00, 246.94]; // C3 E3 G3 B3
+            const freqs = [130.81, 164.81, 196.00, 246.94];
             freqs.forEach((f, i) => {
                 const osc=ctx.createOscillator(), mod=ctx.createOscillator();
                 const mGain=ctx.createGain(), oGain=ctx.createGain();
@@ -212,8 +315,6 @@ function startMusic(id) {
                 musicNodes.push(osc,mod,mGain,oGain);
             });
         }
-
-        // ── Deep Focus: sub bass + 2 filtered sawtooths with slow LFO sweep ─────
         else if (id === 'deepfocus') {
             [{f:55,type:'sine',filterF:180,q:2.0,vol:0.38,lfoHz:0.04,lfoD:40},
              {f:82.4,type:'sawtooth',filterF:280,q:1.8,vol:0.14,lfoHz:0.06,lfoD:70},
@@ -231,8 +332,6 @@ function startMusic(id) {
                 musicNodes.push(osc,filter,gain,lfo,lGain);
             });
         }
-
-        // ── Rain: 5-layer bandpass noise with stereo panning + low hum ───────────
         else if (id === 'rainfocus') {
             [{fc:200,q:0.5,vol:0.18,pan:-0.4},{fc:500,q:0.6,vol:0.20,pan:0.3},
              {fc:900,q:0.5,vol:0.18,pan:-0.2},{fc:2000,q:0.4,vol:0.12,pan:0.5},
@@ -255,8 +354,6 @@ function startMusic(id) {
             hum.connect(hg); hg.connect(mg); hum.start();
             musicNodes.push(hum,hg);
         }
-
-        // ── Cafe Jazz: walking bass with glide + warm chord pad ──────────────────
         else if (id === 'cafejazz') {
             const bassNotes=[98.0,110.0,123.5,130.8,116.5,110.0,103.8,98.0];
             let noteIdx=0;
@@ -280,8 +377,6 @@ function startMusic(id) {
                 musicNodes.push(osc,mod,mGain,gain);
             });
         }
-
-        // ── White noise: stereo, gentle high-shelf cut ───────────────────────────
         else if (id === 'white') {
             const bl=ctx.sampleRate*2, b=ctx.createBuffer(2,bl,ctx.sampleRate);
             for(let c=0;c<2;c++){const d=b.getChannelData(c);for(let i=0;i<bl;i++)d[i]=Math.random()*2-1;}
@@ -291,8 +386,6 @@ function startMusic(id) {
             src.connect(shelf); shelf.connect(mg); src.start();
             musicNodes.push(src,shelf);
         }
-
-        // ── Brown noise: Brownian integration, warm low-shelf boost ─────────────
         else if (id === 'brown') {
             const bl=ctx.sampleRate*6, b=ctx.createBuffer(2,bl,ctx.sampleRate);
             for(let c=0;c<2;c++){const d=b.getChannelData(c);let last=0;
@@ -303,8 +396,6 @@ function startMusic(id) {
             src.connect(shelf); shelf.connect(mg); src.start();
             musicNodes.push(src,shelf);
         }
-
-        // ── Pink noise: Voss-McCartney, stereo ───────────────────────────────────
         else if (id === 'pink') {
             const bl=ctx.sampleRate*6, b=ctx.createBuffer(2,bl,ctx.sampleRate);
             for(let c=0;c<2;c++){const d=b.getChannelData(c);
@@ -320,8 +411,6 @@ function startMusic(id) {
             src.buffer=b; src.loop=true; src.connect(mg); src.start();
             musicNodes.push(src);
         }
-
-        // ── Binaural 40 Hz gamma: hard L/R split ─────────────────────────────────
         else if (id === 'binaural') {
             const merger=ctx.createChannelMerger(2); merger.connect(mg);
             [{f:200,ch:0},{f:240,ch:1}].forEach(({f,ch})=>{
@@ -332,8 +421,6 @@ function startMusic(id) {
             });
             musicNodes.push(merger);
         }
-
-        // ── Alpha binaural + rain + bird chirps ──────────────────────────────────
         else if (id === 'birdsong') {
             [{fc:600,q:0.6,vol:0.16,pan:-0.3},{fc:1800,q:0.4,vol:0.10,pan:0.3}].forEach(({fc,q,vol,pan})=>{
                 const bl=ctx.sampleRate*4, buf=ctx.createBuffer(1,bl,ctx.sampleRate);
@@ -463,7 +550,6 @@ function updateDisplay() {
 }
 function updateSessionDots(animate=false) {
     if (animate) {
-        // Flash clear animation before re-rendering
         document.querySelectorAll('.dot.filled').forEach(d => d.classList.add('clearing'));
         setTimeout(() => renderDots(), 300);
     } else {
@@ -488,46 +574,110 @@ function updateActiveTask() {
 function getLog() {
     try { return JSON.parse(localStorage.getItem('pomodoroLog') || '{}'); } catch { return {}; }
 }
+
+/**
+ * Calculates the current streak of consecutive days with at least one pomodoro.
+ * A streak includes today even if today's count is 0 (so the streak from yesterday
+ * is still visible at the start of a new day).
+ */
+function calcStreak(log) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    let streak = 0;
+    const d = new Date(today);
+
+    // If today has pomodoros, count forward from today; otherwise start from yesterday
+    const todayKey = d.toISOString().slice(0, 10);
+    if (!log[todayKey] || log[todayKey] === 0) {
+        d.setDate(d.getDate() - 1); // start checking from yesterday
+    }
+
+    while (true) {
+        const key = d.toISOString().slice(0, 10);
+        if (log[key] && log[key] > 0) {
+            streak++;
+            d.setDate(d.getDate() - 1);
+        } else {
+            break;
+        }
+    }
+    return streak;
+}
+
 function updateStats() {
     const log = getLog();
     const today = new Date().toISOString().slice(0,10);
     const total = Object.values(log).reduce((a,b) => a+b, 0);
+    const todayCount = log[today] || 0;
+
     statsTotal.textContent = total;
-    statsToday.textContent = log[today] || 0;
-    // Streak: count consecutive days ending today
-    let streak = 0, d = new Date();
-    while (true) {
-        const key = d.toISOString().slice(0,10);
-        if (log[key] && log[key] > 0) { streak++; d.setDate(d.getDate()-1); }
-        else break;
-    }
-    statsStreak.textContent = streak;
+    statsToday.textContent = todayCount;
+
+    // Focus minutes today: pomodoros * pomoDur
+    if (statsTodayMins) statsTodayMins.textContent = todayCount * settings.pomoDur;
+
+    // Streak
+    statsStreak.textContent = calcStreak(log);
+
     renderWeeklyChart(log);
 }
+
 function renderWeeklyChart(log) {
+    if (!weeklyChart) return;
     weeklyChart.innerHTML = '';
+
     const DAY = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
     const today = new Date();
     const todayKey = today.toISOString().slice(0,10);
+
+    // Build last 7 days
     const days = [];
     for (let i = 6; i >= 0; i--) {
-        const d = new Date(today); d.setDate(today.getDate() - i);
+        const d = new Date(today);
+        d.setDate(today.getDate() - i);
         days.push({ key: d.toISOString().slice(0,10), label: DAY[d.getDay()] });
     }
+
     const counts = days.map(({ key }) => log[key] || 0);
     const maxCount = Math.max(...counts, 1);
-    const maxBarH = 32; // px
+    const maxBarH = 36; // px
+
+    // Find best day label
+    const bestIdx = counts.indexOf(Math.max(...counts));
+    if (bestDayLabel) {
+        const best = Math.max(...counts);
+        bestDayLabel.textContent = best > 0
+            ? `🏆 Best: ${days[bestIdx].label} (${best} 🍅)`
+            : '';
+    }
+
     days.forEach(({ key, label }, i) => {
         const wrap = document.createElement('div');
         wrap.className = 'wk-bar-wrap';
+
         const bar = document.createElement('div');
-        bar.className = 'wk-bar' + (key === todayKey ? ' today' : '');
+        bar.className = 'wk-bar' + (key === todayKey ? ' today' : '') + (i === bestIdx && counts[i] > 0 ? ' best' : '');
         const h = Math.round((counts[i] / maxCount) * maxBarH);
         bar.style.height = `${Math.max(h, 3)}px`;
         bar.title = `${label}: ${counts[i]} 🍅`;
+
+        // Show count above bar if non-zero
+        if (counts[i] > 0) {
+            const countEl = document.createElement('div');
+            countEl.className = 'wk-count';
+            countEl.textContent = counts[i];
+            wrap.appendChild(countEl);
+        } else {
+            const spacer = document.createElement('div');
+            spacer.className = 'wk-count';
+            spacer.textContent = '';
+            wrap.appendChild(spacer);
+        }
+
         const lbl = document.createElement('div');
         lbl.className = 'wk-label' + (key === todayKey ? ' today' : '');
         lbl.textContent = key === todayKey ? 'Today' : label;
+
         wrap.appendChild(bar);
         wrap.appendChild(lbl);
         weeklyChart.appendChild(wrap);
@@ -596,12 +746,11 @@ function startTimer() {
     if (currentTrackId === 'none') scheduleTick();
     applyStrictMode(settings.strictMode);
     timerInterval = setInterval(() => {
-        // Drift-free: calculate actual elapsed seconds from wall clock
         const elapsed = Math.floor((Date.now() - sessionStartTime) / 1000);
         time = Math.max(0, sessionStartRemaining - elapsed);
         updateDisplay();
         if (time === 0) onSessionComplete();
-    }, 500); // poll every 500ms for responsiveness, time is wall-clock derived
+    }, 500);
 }
 function pauseTimer() {
     clearInterval(timerInterval); stopTick();
@@ -620,21 +769,37 @@ function skipSession() {
     pauseTimer();
     onSessionComplete(true);
 }
+
 function onSessionComplete(skipped=false) {
     pauseTimer(); playSessionEndSound();
+
+    // Calculate how many minutes were actually spent (rounded up to nearest minute, min 1)
+    const durationSec = totalTime - time;
+    const durationMin = Math.max(1, Math.round(durationSec / 60));
+
+    const activeTask = tasks.find(t => t.id === activeTaskId);
+    const taskName = activeTask ? activeTask.name : null;
+
     if (currentMode === 'pomodoro') {
         pomosCompleted++; logPomodoro();
-        // Only increment done on the active task if it's not completed
+
+        // Log to session history
+        addHistoryEntry('pomodoro', taskName, settings.pomoDur, skipped);
+
         const task = tasks.find(t => t.id === activeTaskId && !t.completed);
         if (task) { task.done = (task.done || 0) + 1; saveTasks(); renderTasks(); }
         const isLong = pomosCompleted % settings.longAfter === 0;
-        // Animate dot clear when a long-break cycle completes
         updateSessionDots(isLong);
         updateActiveTask();
         showToast(skipped ? '⏭ Skipped! Break time.' : `🍅 Pomodoro ${pomosCompleted} done! ${isLong ? 'Long break!' : 'Short break!'}`);
         sendNotification('Pomodoro Complete! 🍅', isLong ? 'Long break time!' : 'Short break time!');
         changeMode(isLong ? 'long' : 'short', settings.autoBreak);
     } else {
+        // Log break to session history
+        const breakType = currentMode === 'short' ? 'short' : 'long';
+        const breakDur  = currentMode === 'short' ? settings.shortDur : settings.longDur;
+        addHistoryEntry(breakType, null, breakDur, skipped);
+
         showToast(skipped ? '⏭ Break skipped. Focus time!' : "☕ Break over! Let's focus.");
         sendNotification('Break Over! ☕', 'Time to focus.');
         changeMode('pomodoro', settings.autoPomo);
@@ -689,7 +854,6 @@ function renderTasks() {
             <span class="task-title">${escHtml(task.name)}</span>
             <span class="task-pomodoros">${done}/${task.est} 🍅</span>
             <button class="task-options-item" data-action="delete" title="Delete" aria-label="Delete task">✕</button>`;
-        // Click to select (ignore drag handle and action buttons)
         item.addEventListener('click', e => {
             if (e.target.closest('[data-action]') || e.target.classList.contains('drag-handle')) return;
             activeTaskId = task.id; saveTasks(); renderTasks(); updateActiveTask();
@@ -704,7 +868,6 @@ function renderTasks() {
             if (activeTaskId === task.id) activeTaskId = null;
             saveTasks(); renderTasks(); updateActiveTask();
         });
-        // ── Drag & drop ──
         item.addEventListener('dragstart', e => {
             e.dataTransfer.effectAllowed = 'move';
             e.dataTransfer.setData('text/plain', idx);
@@ -785,7 +948,7 @@ saveSettingsBtn.addEventListener('click', () => {
     longBreakTime  = settings.longDur  * 60;
     isMuted = !settings.tickSound;
     updateMuteBtn(); applyStrictMode(settings.strictMode);
-    pauseTimer(); changeMode(currentMode); updateSessionDots();
+    pauseTimer(); changeMode(currentMode); updateSessionDots(); updateStats();
     settingsOverlay.classList.remove('show'); showToast('✅ Settings saved!');
 });
 
@@ -796,18 +959,15 @@ function buildShortcutHint() {
 }
 
 // ─── Init ─────────────────────────────────────────────────────────────────────
-// Restore music volume slider from saved settings
 musicVolSlider.value = settings.musicVolume || 0.4;
 musicVolume          = settings.musicVolume || 0.4;
 
 updateMuteBtn(); applyStrictMode(settings.strictMode);
 changeMode('pomodoro');
 updateSessionDots(); renderTasks(); updateActiveTask(); updateStats(); buildShortcutHint();
+renderHistory(); // initial render of history drawer
 
-// Restore last playing track after a short delay (AudioContext needs user gesture)
-// We flag it so the first click/keydown auto-resumes it
 const _savedTrack = settings.musicTrack;
 if (_savedTrack && _savedTrack !== 'none') {
-    // Show a subtle indicator that music was paused
     showToast(`▶ Resume ${[...FOCUS_TRACKS,...SCIENCE_TRACKS].find(t=>t.id===_savedTrack)?.emoji || ''} music? Click 🎧`, 5000);
 }

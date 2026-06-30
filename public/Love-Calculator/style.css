@@ -772,7 +772,7 @@ button:hover {
 .theme-switcher select {
     padding: 10px;
     border-radius: 10px;
-    background: rgba(255,255,255,0.2);
+    background: #ec4899;
     color: white;
     border: 1px solid rgba(255,255,255,0.3);
     cursor: pointer;

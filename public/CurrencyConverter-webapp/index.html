@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Currency Converter</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Font Awesome CDN to fix broken exchange rate arrow icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
     <!-- Your project content -->
@@ -12,31 +14,32 @@
         <h1>Currency Converter</h1>
         <form>
             <div class="amount">
-                <p>Enter Amount to be Converted : </p>
-                <input type="text" placeholder="Type Amount Here">
+                <p id="amount-label">Enter Amount to be Converted : </p>
+                <input type="text" id="amount-input" name="amount" placeholder="Type Amount Here" aria-labelledby="amount-label" aria-invalid="false" aria-describedby="amount-error">
+                <div class="error-text" id="amount-error" role="alert" aria-live="polite"></div>
             </div>
             <div class="dropdown">
                 <div class="from">
-                    <p>From</p>
+                    <p id="from-label">From</p>
                     <div class="select-container">
                         <img alt="" src="https://flagsapi.com/US/flat/64.png" />
-                        <select name="From"></select>
+                        <select name="From" id="from-currency" aria-labelledby="from-label"></select>
                     </div>
                 </div>
                 <i aria-hidden="true" class="fa-solid fa-arrow-right-arrow-left"></i>
                 <div class="to">
-                    <p>To</p>
+                    <p id="to-label">To</p>
                     <div class="select-container">
                         <img alt="" src="https://flagsapi.com/IN/flat/64.png" />
-                        <select name="To"></select>
+                        <select name="To" id="to-currency" aria-labelledby="to-label"></select>
                     </div>
                 </div>
             </div>
 
-            <div class="msg">
+            <div class="msg" aria-live="polite">
                 1USD = 80INR
             </div>
-            <button>Get Exchange Rate</button>
+            <button type="submit" id="convert-btn">Get Exchange Rate</button>
         </form>
     </div>
     <script src="codes.js"></script>
