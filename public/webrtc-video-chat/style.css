@@ -42,6 +42,38 @@ body {
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 }
 
+.network-quality {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: rgba(0, 0, 0, 0.75);
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 18px;
+    font-size: 14px;
+    cursor: pointer;
+    z-index: 100;
+}
+
+.network-tooltip {
+    display: none;
+    position: absolute;
+    top: 40px;
+    right: 0;
+    background: #222;
+    border-radius: 8px;
+    padding: 10px;
+    min-width: 180px;
+}
+
+.network-quality:hover .network-tooltip {
+    display: block;
+}
+
+.hidden {
+    display: none;
+}
+
 /* Control Panel */
 .control-panel {
     width: 350px;

@@ -890,3 +890,140 @@ ul { list-style: none; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border-subtle); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+/* ========== COMPARE BUTTON ========== */
+.compare-btn {
+  margin-top: 10px;
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--accent);
+  background: var(--accent-glow);
+  color: var(--accent);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s var(--ease-spring), box-shadow 0.2s;
+}
+.compare-btn:hover {
+  box-shadow: 0 4px 12px var(--accent-glow);
+  transform: translateY(-2px);
+}
+
+/* ========== SELECTED CARD ========== */
+.country-card.selected {
+  border-color: var(--accent);
+  box-shadow: 0 0 24px var(--accent-glow);
+}
+.country-card.selected .compare-btn {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* ========== COMPARISON PANEL ========== */
+.comparison-panel {
+  max-width: 1320px;
+  margin: 0 auto 80px;
+  padding: 0 24px;
+}
+.comparison-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.comparison-title {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.clear-comparison-btn {
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1.5px solid var(--border-subtle);
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s, background 0.2s, transform 0.2s var(--ease-spring);
+}
+.clear-comparison-btn:hover {
+  border-color: #f87171;
+  color: #f87171;
+  background: rgba(248, 113, 113, 0.1);
+  transform: translateY(-1px);
+}
+.comparison-wrap {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+.comparison-card {
+  background: var(--bg-card);
+  background-image: var(--gradient-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: var(--shadow-card);
+  transition: transform 0.3s var(--ease-spring);
+}
+.comparison-flag {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  margin-bottom: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+.comparison-name {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+}
+.comparison-info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ========== TOAST ========== */
+.toast {
+  position: fixed;
+  top: 80px;
+  right: 24px;
+  padding: 12px 24px;
+  border-radius: var(--radius-md);
+  background: #ef4444;
+  color: white;
+  font-family: var(--font-body);
+  font-weight: 500;
+  box-shadow: 0 8px 24px rgba(239, 68, 68, 0.4);
+  transform: translateX(120%);
+  transition: transform 0.3s var(--ease-spring);
+  z-index: 1100;
+}
+.toast.visible {
+  transform: translateX(0);
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 768px) {
+  .comparison-wrap {
+    grid-template-columns: 1fr;
+  }
+  .toast {
+    right: 12px;
+    left: 12px;
+    top: 100px;
+  }
+}

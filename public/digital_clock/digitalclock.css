@@ -783,13 +783,12 @@ body{
         flex-direction:column;
     }
 }
+
 /* ==========================
    HISTORY PAGE
 ========================== */
-.card,span{
-  color: #fff;
-  background-color: #0b1020;
-}
+
+/* FIXED: removed .card,span rule that was hardcoding colors and breaking dark mode */
 
 .history-header{
     display:flex;
@@ -833,6 +832,8 @@ body{
     overflow-y:auto;
 
     padding-right:6px;
+
+    background:rgba(255,255,255,.04);
 }
 
 /* custom scrollbar */
@@ -881,36 +882,61 @@ body{
 }
 
 .log-entry span{
-
     font-size:.95rem;
-
     line-height:1.5;
 }
+.stopwatch-display {
+  text-align: center;
+  margin-bottom: 20px;
+}
 
+#stopwatch-time {
+  font-family: var(--font-mono);
+  font-size: 2.5rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+}
+
+.stopwatch-controls {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.stopwatch-controls .btn {
+  flex: 1;
+}
+
+.laps-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.lap-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  background: var(--bg);
+}
+
+.fastest-lap {
+  border-left: 4px solid #22c55e;
+}
+
+.slowest-lap {
+  border-left: 4px solid #ef4444;
+}
 /* ==========================
    EMPTY HISTORY
 ========================== */
 
 .history-logs .log-entry:only-child{
     justify-content:center;
-
     opacity:.75;
-}
-
-/* ==========================
-   DARK MODE
-========================== */
-
-.dark-mode .history-header{
-    background:rgba(255,255,255,.06);
-}
-
-.dark-mode .log-entry{
-    background:rgba(255,255,255,.04);
-}
-
- .history-logs{
-   background:rgba(255,255,255,.04);
 }
 
 /* ==========================
@@ -930,4 +956,65 @@ body{
     .log-entry span{
         font-size:.9rem;
     }
+}
+
+/* =========================
+   LIGHT MODE OVERRIDES
+
+body:not(.dark-mode) {
+    --bg: #f0f2ff;
+    --card: #ffffff;
+    --card-light: rgba(255, 255, 255, 0.85);
+
+    --text: #1a1a2e;
+    --text-muted: #5a6080;
+
+    --border: rgba(0, 0, 0, 0.08);
+
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.10);
+
+    background:
+        radial-gradient(circle at top left, #c9d0f5 0%, transparent 35%),
+        radial-gradient(circle at bottom right, #d8c9f5 0%, transparent 35%),
+        var(--bg);
+
+    color: var(--text);
+}
+
+body:not(.dark-mode) .navbar {
+    background: rgba(240, 242, 255, 0.75);
+}
+
+body:not(.dark-mode) .form-field input,
+body:not(.dark-mode) .form-field select {
+    background: rgba(0, 0, 0, 0.05);
+    color: var(--text);
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
+body:not(.dark-mode) .alarm-item {
+    background: rgba(0, 0, 0, 0.04);
+    border-color: rgba(0, 0, 0, 0.08);
+}
+
+body:not(.dark-mode) .history-header {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+body:not(.dark-mode) .log-entry {
+    background: rgba(0, 0, 0, 0.03);
+    border-color: rgba(0, 0, 0, 0.07);
+}
+
+body:not(.dark-mode) .info-tag {
+    background: rgba(0, 0, 0, 0.06);
+}
+
+body:not(.dark-mode) .world-clock-row {
+    background: rgba(0, 0, 0, 0.04);
+}
+
+body:not(.dark-mode) .btn-outline {
+    color: var(--text);
+    border-color: rgba(0, 0, 0, 0.2);
 }

@@ -77,6 +77,16 @@
           <p id="stat-blooming">0</p>
         </div>
       </div>
+
+      <div class="stat-card archive-stat">
+        <div class="stat-icon" style="background: rgba(224,122,95,0.15); color: var(--danger);">
+          <svg viewBox="0 0 24 24"><path d="M20,6H4V4H20V6M21,8H3V20H21V8M11,10H13V15H11V10Z"/></svg>
+        </div>
+        <div class="stat-info">
+          <h3>Archived Plants</h3>
+          <p id="stat-archived">0</p>
+        </div>
+      </div>
     </section>
 
     <!-- Filters Section -->
@@ -85,6 +95,7 @@
         <button class="filter-btn active" data-filter="all" onclick="setFilter('all')">All Companion Plants</button>
         <button class="filter-btn" data-filter="thirsty" onclick="setFilter('thirsty')">Needs Watering</button>
         <button class="filter-btn" data-filter="blooming" onclick="setFilter('blooming')">Blooming</button>
+        <button class="filter-btn" data-filter="archived" onclick="setFilter('archived')">Archive 📦</button>
       </div>
     </section>
 
@@ -140,6 +151,25 @@
         <button class="btn-primary" style="width: 100%; margin-top: 1rem; justify-content: center;" onclick="saveNewPlant()">
           Welcome into Greenhouse
         </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirmation Modal -->
+  <div class="modal-overlay confirm-modal" id="confirm-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="confirm-title">Confirm Action</h2>
+        <button class="close-btn" onclick="closeConfirmModal()">
+          <svg viewBox="0 0 24 24"><path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p id="confirm-message" style="font-size: 1.05rem; line-height: 1.6;"></p>
+        <div class="confirm-actions">
+          <button class="btn-secondary" onclick="closeConfirmModal()">Cancel</button>
+          <button id="confirm-delete-btn" class="btn-primary" onclick="executeConfirmedAction()">Confirm</button>
+        </div>
       </div>
     </div>
   </div>
@@ -202,6 +232,18 @@
         </div>
       </div>
     </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast">
+    <div class="toast-icon success">✅</div>
+    <div class="toast-content">
+      <h4>Success!</h4>
+      <p>Action completed successfully</p>
+    </div>
+    <button class="toast-close" onclick="closeToast()">
+      <svg viewBox="0 0 24 24"><path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"/></svg>
+    </button>
   </div>
 
   <!-- Footer -->

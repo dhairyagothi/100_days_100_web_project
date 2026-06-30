@@ -76,7 +76,7 @@ const cursors = [
       transform:rotate(360deg);
     }
 }
-`
+`,category : "Smooth"
   },
 
   {
@@ -142,7 +142,7 @@ const cursors = [
     opacity:0.7;
   }
 }
-`
+`,category : "Bounce"
   },
   {
     id: "diamond",
@@ -226,7 +226,7 @@ const cursors = [
     opacity:0.8;
   }
 }
-`
+`,category : "Smooth"
   },
   {
     id: "crosshair",
@@ -325,7 +325,7 @@ const cursors = [
       0 0 40px rgba(255,216,74,0.6);
   }
 }
-`
+`,category : "Neon"
   },
   {
     id: "pulse",
@@ -397,7 +397,7 @@ const cursors = [
         opacity:.5;
     }
 }
-`
+`,category : "Bounce"
   },
   {
     id: "comet",
@@ -514,7 +514,7 @@ const cursors = [
             scale(1.3);
         }
       }
-    `
+    `,category : "Neon"
   },
   {
     id: "orbit",
@@ -608,7 +608,7 @@ const cursors = [
       transform:rotate(360deg) translateX(20px);
     }
 }
-`
+`,category : "Smooth"
   },
   {
     id: "spark",
@@ -676,7 +676,7 @@ const cursors = [
         0 0 25px #00f5ff;
     }
 }
-`
+`,category : "Neon"
   },
   {
     id: "fire",
@@ -754,7 +754,7 @@ const cursors = [
         scale(1.2);
     }
 }
-`
+`,category : "Classic"
   },
   {
     id: "rocket",
@@ -809,22 +809,22 @@ const cursors = [
 .cursor::after{
     display:none;
 }
-`
+`,category : "Bounce"
   },
- {
-  id: "triangle",
+  {
+    id: "triangle",
 
-  name: "Triangle Cursor",
+    name: "Triangle Cursor",
 
-  description: "Sharp glowing triangle cursor with rotation effect",
+    description: "Sharp glowing triangle cursor with rotation effect",
 
-  previewHTML: `
+    previewHTML: `
     <div class="preview-triangle">
       <div class="triangle-core"></div>
     </div>
   `,
 
-  previewCSS: `
+    previewCSS: `
     .preview-triangle{
       width:100%;
       height:100%;
@@ -864,7 +864,7 @@ const cursors = [
     }
   `,
 
-  cursorCSS: `
+    cursorCSS: `
     .cursor{
       width:0;
       height:0;
@@ -887,12 +887,12 @@ const cursors = [
     .cursor::after{
       display:none;
     }
-  `,
+  `,category : "Smooth",
 
-  apply() {
-    document.body.dataset.cursor = "triangle";
-  }
-},
+    apply() {
+      document.body.dataset.cursor = "triangle";
+    }
+  },
   {
     id: "radar",
 
@@ -986,7 +986,7 @@ const cursors = [
       transform:rotate(360deg);
     }
 }
-`
+`,category : "classic"
   },
   {
     id: "star",
@@ -1043,7 +1043,7 @@ const cursors = [
       transform:scale(1.4);
     }
 }
-`
+`,category : "Smooth"
   },
   {
     id: "magnet",
@@ -1103,7 +1103,7 @@ const cursors = [
       transform:translateX(3px);
     }
 }
-`
+`,category : "Bounce"
   },
   {
     id: "dna",
@@ -1175,7 +1175,7 @@ const cursors = [
         rotateY(360deg);
     }
 }
-`
+`,category : "Classic"
 
   }
 ];
@@ -1184,6 +1184,7 @@ const cursors = [
 const cursorStyleTag = document.createElement("style");
 cursorStyleTag.id = "active-cursor-style";
 document.head.appendChild(cursorStyleTag);
+
 
 function applyCursor(id) {
 
@@ -1219,47 +1220,73 @@ function applyCursor(id) {
 
 const grid = document.getElementById("cursorGrid");
 
-function renderCursors() {
+let visibleCount = 10;   // default visible
+const increment = 10;    // load more step
+let currentCategory = "all";
+let searchQuery = "";
 
-  grid.innerHTML = "";
+function getFilteredCursors() {
+  return cursors.filter(cursor => {
+  const matchesCategory = currentCategory === "all" ||
+  cursor.category.toLowerCase() === currentCategory.toLowerCase();
 
-  cursors.forEach(cursor => {
-
-    const card = document.createElement("div");
-
-    card.className = "cursor-card";
-
-    card.innerHTML = `
-
-<div class="cursor-content">
-    <h3>${cursor.name}</h3>
-    <p>${cursor.description}</p>
-</div>
-
-<div class="preview-box">
-    ${cursor.previewHTML}
-</div>
-
-<button
-    class="apply-btn"
-    data-cursor="${cursor.id}"
->
-    Apply Cursor
-</button>
-`;
-    card
-      .querySelector(".apply-btn")
-      .addEventListener("click", () => {
-        applyCursor(cursor.id);
-      });
-
-
-    grid.appendChild(card);
-
-    injectCSS(cursor.previewCSS);
+    const matchesSearch = cursor.name.toLowerCase().includes(searchQuery) ||
+                          cursor.description.toLowerCase().includes(searchQuery);
+    return matchesCategory && matchesSearch;
   });
 }
 
+function renderCursors() {
+  grid.innerHTML = "";
+
+  const filtered = getFilteredCursors();
+
+  filtered.slice(0, visibleCount).forEach(cursor => {
+    const card = document.createElement("div");
+    card.className = "cursor-card";
+
+    card.innerHTML = `
+      <div class="cursor-content">
+        <h3>${cursor.name}</h3>
+        <p>${cursor.description}</p>
+      </div>
+      <div class="preview-box">${cursor.previewHTML}</div>
+      <button class="apply-btn" data-cursor="${cursor.id}">Apply Cursor</button>
+    `;
+
+    card.querySelector(".apply-btn")
+        .addEventListener("click", () => applyCursor(cursor.id));
+
+    grid.appendChild(card);
+    injectCSS(cursor.previewCSS);
+  });
+
+  // Toggle Load More button
+  const loadMoreBtn = document.getElementById("loadMoreBtn");
+  loadMoreBtn.style.display = (visibleCount >= filtered.length) ? "none" : "block";
+}
+
+function loadMoreCursors() {
+  visibleCount += increment;
+  renderCursors();
+}
+
+// Event listeners
+document.getElementById("loadMoreBtn").addEventListener("click", loadMoreCursors);
+
+document.getElementById("categoryFilter").addEventListener("change", e => {
+  currentCategory = e.target.value;
+  visibleCount = 10; // reset
+  renderCursors();
+});
+
+document.getElementById("searchBox").addEventListener("input", e => {
+  searchQuery = e.target.value.toLowerCase();
+  visibleCount = 10; // reset
+  renderCursors();
+});
+
+// Initial render
 renderCursors();
 
 window.addEventListener("DOMContentLoaded", () => {
@@ -1283,3 +1310,4 @@ function injectCSS(css) {
 
   document.head.appendChild(style);
 }
+
