@@ -897,3 +897,531 @@ body {
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 6px; }
+
+
+/* ============================================================
+   STATISTICS DASHBOARD STYLES
+   ============================================================ */
+
+.stats-panel {
+  position: fixed;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+  width: 460px;
+  max-height: 90vh;
+  background: var(--surface);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  z-index: 1000;
+  overflow-y: auto;
+  box-shadow: var(--shadow);
+  animation: slideInRight 0.3s ease-out;
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateY(-50%) translateX(30px); }
+  to { opacity: 1; transform: translateY(-50%) translateX(0); }
+}
+
+.stats-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.stats-header-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.stats-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.stats-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ── Highlight Cards ── */
+.stats-highlight {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.highlight-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.2s ease;
+}
+
+.highlight-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+}
+
+.highlight-icon {
+  font-size: 1.8rem;
+}
+
+.highlight-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.highlight-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.highlight-value {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.score-bar {
+  width: 100%;
+  height: 4px;
+  background: var(--ring-track);
+  border-radius: 4px;
+  margin-top: 6px;
+  overflow: hidden;
+}
+
+.score-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  border-radius: 4px;
+  transition: width 0.5s ease;
+}
+
+/* ── Stats Grid ── */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.stat-card {
+  background: var(--surface);
+  border-radius: 10px;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid var(--border);
+  transition: all 0.2s ease;
+}
+
+.stat-card:hover {
+  background: var(--surface-hover);
+  transform: translateY(-2px);
+}
+
+.stat-icon {
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+
+.stat-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.stat-label {
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.stat-value {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* ── Compare Section ── */
+.compare-section {
+  background: var(--surface);
+  border-radius: 12px;
+  padding: 16px;
+  border: 1px solid var(--border);
+}
+
+.compare-section h3 {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0 0 12px 0;
+}
+
+.compare-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.compare-card {
+  text-align: center;
+  padding: 10px;
+  background: var(--surface);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+.compare-card.highlight-change {
+  border-color: var(--accent);
+  background: var(--accent-glow);
+}
+
+.compare-label {
+  display: block;
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.compare-value {
+  display: block;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-top: 4px;
+}
+
+.compare-value.positive {
+  color: var(--success);
+}
+
+.compare-value.negative {
+  color: var(--accent-2);
+}
+
+/* ── Chart Section ── */
+.chart-section {
+  background: var(--surface);
+  border-radius: 12px;
+  padding: 16px;
+  border: 1px solid var(--border);
+}
+
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.chart-header h3 {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0;
+}
+
+.chart-controls {
+  display: flex;
+  gap: 6px;
+}
+
+.chart-btn {
+  padding: 4px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 0.7rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.chart-btn:hover {
+  background: var(--surface-hover);
+  color: var(--text);
+}
+
+.chart-btn.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.chart-container {
+  width: 100%;
+  height: 200px;
+  position: relative;
+}
+
+#statsChart {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* ── Heat Map ── */
+.heatmap-section {
+  background: var(--surface);
+  border-radius: 12px;
+  padding: 16px;
+  border: 1px solid var(--border);
+}
+
+.heatmap-section h3 {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0 0 12px 0;
+}
+
+.heatmap-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.heatmap-cell {
+  aspect-ratio: 1;
+  border-radius: 4px;
+  background: var(--ring-track);
+  transition: all 0.2s ease;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.6rem;
+  color: var(--text-muted);
+  position: relative;
+}
+
+.heatmap-cell:hover {
+  transform: scale(1.1);
+  z-index: 1;
+}
+
+.heatmap-cell .tooltip {
+  display: none;
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg);
+  color: var(--text);
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.65rem;
+  white-space: nowrap;
+  border: 1px solid var(--border);
+  z-index: 10;
+}
+
+.heatmap-cell:hover .tooltip {
+  display: block;
+}
+
+.heatmap-cell.level-0 { background: var(--ring-track); }
+.heatmap-cell.level-1 { background: rgba(124, 92, 252, 0.2); }
+.heatmap-cell.level-2 { background: rgba(124, 92, 252, 0.4); }
+.heatmap-cell.level-3 { background: rgba(124, 92, 252, 0.6); }
+.heatmap-cell.level-4 { background: rgba(124, 92, 252, 0.8); }
+.heatmap-cell.level-5 { background: var(--accent); }
+
+.heatmap-label {
+  font-size: 0.55rem;
+  color: var(--text-muted);
+  text-align: center;
+  padding: 2px 0;
+}
+
+/* ── Productive Hours ── */
+.productive-hours {
+  background: var(--surface);
+  border-radius: 12px;
+  padding: 16px;
+  border: 1px solid var(--border);
+}
+
+.productive-hours h3 {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0 0 12px 0;
+}
+
+.hours-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
+}
+
+.hour-bar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.hour-bar-fill {
+  width: 100%;
+  background: var(--ring-track);
+  border-radius: 4px;
+  height: 40px;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.hour-bar-fill:hover {
+  transform: scaleY(1.05);
+}
+
+.hour-bar-fill .fill {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(180deg, var(--accent), var(--accent-2));
+  border-radius: 4px;
+  transition: height 0.5s ease;
+  min-height: 4px;
+}
+
+.hour-bar-label {
+  font-size: 0.55rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+/* ── Scrollbar ── */
+.stats-panel::-webkit-scrollbar {
+  width: 6px;
+}
+
+.stats-panel::-webkit-scrollbar-track {
+  background: var(--surface);
+  border-radius: 10px;
+}
+
+.stats-panel::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 10px;
+}
+
+.stats-panel::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .stats-panel {
+    right: 10px;
+    left: 10px;
+    width: auto;
+    top: 10px;
+    transform: none;
+    max-height: 85vh;
+    border-radius: 16px;
+    padding: 16px;
+  }
+  
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .stats-highlight {
+    grid-template-columns: 1fr;
+  }
+  
+  .compare-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .heatmap-grid {
+    grid-template-columns: repeat(7, 1fr);
+    gap: 3px;
+  }
+  
+  .hours-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  
+  .chart-container {
+    height: 150px;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-panel {
+    padding: 12px;
+    font-size: 0.9rem;
+  }
+  
+  .stat-card {
+    padding: 8px 10px;
+  }
+  
+  .stat-value {
+    font-size: 0.85rem;
+  }
+  
+  .highlight-value {
+    font-size: 0.95rem;
+  }
+}
+
+/* Light theme overrides */
+body.light .stats-panel {
+  background: rgba(255, 255, 255, 0.92);
+  border-color: rgba(124, 92, 252, 0.2);
+}
+
+body.light .stat-card,
+body.light .highlight-card,
+body.light .compare-card,
+body.light .chart-section,
+body.light .heatmap-section,
+body.light .productive-hours,
+body.light .compare-section {
+  background: rgba(255, 255, 255, 0.7);
+}
+
+body.light .heatmap-cell.level-0 { background: rgba(0, 0, 0, 0.05); }
+body.light .heatmap-cell.level-1 { background: rgba(107, 77, 230, 0.15); }
+body.light .heatmap-cell.level-2 { background: rgba(107, 77, 230, 0.3); }
+body.light .heatmap-cell.level-3 { background: rgba(107, 77, 230, 0.5); }
+body.light .heatmap-cell.level-4 { background: rgba(107, 77, 230, 0.7); }
+body.light .heatmap-cell.level-5 { background: var(--accent); }
+
+body.light .compare-card.highlight-change {
+  background: rgba(107, 77, 230, 0.1);
+}

@@ -33,12 +33,32 @@ const PIP_LAYOUTS = {
   ],
 };
 
+// ── Color Palette Configuration ──
+const COLOR_PALETTE = [
+  // Pastels
+  '#FFB3BA', '#FFDBB5', '#FFFFBA', '#BAFFC9', '#BAE1FF', '#E8BAFF',
+  '#FFB3E6', '#B5EAD7', '#C9E4FF', '#FFD1DC', '#FFE5B4', '#D4F0C0',
+  '#FFC8DD', '#BDE0FE', '#A2D2FF', '#CDB4DB', '#FFC6FF', '#CAFFBF',
+  '#9BF6FF', '#FDFFB6', '#FFD6A5', '#FFADAD', '#BDB2FF', '#A0C4FF',
+  
+  // Brighter colors
+  '#FF6B6B', '#FF9F43', '#FECA57', '#48DBFB', '#0ABDE3', '#A29BFE',
+  '#FD79A8', '#00B894', '#00CEC9', '#0984E3', '#6C5CE7', '#FDCB6E',
+  '#E17055', '#00B894', '#2D3436', '#636E72', '#B2BEC3', '#DFE6E9',
+  
+  // Classic colors
+  '#FF0000', '#FF6600', '#FFCC00', '#33CC33', '#0066FF', '#9900CC',
+  '#FF3399', '#00CC99', '#3399FF', '#FF9900', '#CC0066', '#00CCCC',
+  
+  // Darker shades
+  '#8B0000', '#CC5500', '#B8860B', '#006400', '#00008B', '#4B0082',
+  '#8B008B', '#006B6B', '#2F4F4F', '#800000', '#556B2F', '#8B4513'
+];
+
 function buildDiceSVG(value, color) {
   const isDark = document.documentElement.dataset.theme === "dark";
-  // Always show the chosen pastel color as the face — dark or light
   const face = value ? color || "#ffffff" : isDark ? "#2a2a2a" : "#f0f0f0";
   const stroke = isDark ? "#555" : "#bbbbbb";
-  // Pips: always dark so they show on the pastel background
   const pip = "#222222";
   const pips = value
     ? (PIP_LAYOUTS[value] || [])
@@ -69,7 +89,6 @@ const soundMulti = document.getElementById("soundMulti");
 
 function playDiceSound(count) {
   if (!state.soundEnabled) return;
-  // 1 die → single roll sound; 2-10 dice → multi-dice sound
   const audio = count === 1 ? soundSingle : soundMulti;
   audio.currentTime = 0;
   audio.play().catch(() => {});
@@ -105,17 +124,65 @@ document.getElementById("diceCount").addEventListener("change", (e) => {
   renderDice();
 });
 
-// ── Colour picker ──
-document.querySelectorAll(".color-option").forEach((opt) => {
-  opt.addEventListener("click", () => {
-    document
-      .querySelectorAll(".color-option")
-      .forEach((o) => o.classList.remove("selected"));
-    opt.classList.add("selected");
-    state.diceColor = opt.dataset.color;
-    renderDice();
+// ── Color Picker Setup ──
+function initializeColorPicker() {
+  const picker = document.getElementById('colorPicker');
+  const customPicker = document.getElementById('customColorPicker');
+  
+  // Clear existing options
+  picker.innerHTML = '';
+  
+  // Add palette colors
+  COLOR_PALETTE.forEach(color => {
+    const option = document.createElement('div');
+    option.className = 'color-option';
+    option.dataset.color = color;
+    option.style.background = color;
+    option.title = color;
+    
+    if (color === state.diceColor) {
+      option.classList.add('selected');
+    }
+    
+    option.addEventListener('click', () => {
+      selectColor(color);
+    });
+    
+    picker.appendChild(option);
   });
-});
+  
+  // Set custom picker to current color
+  customPicker.value = state.diceColor;
+  
+  // Handle custom color picker
+  customPicker.addEventListener('input', (e) => {
+    const color = e.target.value;
+    selectColor(color, true);
+  });
+}
+
+function selectColor(color, isCustom = false) {
+  // Update state
+  state.diceColor = color;
+  
+  // Update custom picker
+  document.getElementById('customColorPicker').value = color;
+  
+  // Update selection UI
+  if (!isCustom) {
+    document.querySelectorAll('.color-option').forEach(opt => {
+      opt.classList.toggle('selected', opt.dataset.color === color);
+    });
+  } else {
+    // Deselect all palette options when using custom picker
+    document.querySelectorAll('.color-option').forEach(opt => {
+      opt.classList.remove('selected');
+    });
+  }
+  
+  // Re-render dice
+  renderDice();
+}
 
 // ── Sound toggle ──
 document.getElementById("soundToggle").addEventListener("click", () => {
@@ -196,22 +263,19 @@ function rollDice() {
 }
 
 // ── Tally mark SVG builder ──────────────────────────────────────────────────
-// Renders count % 10 as classic tally marks (groups of 5 with diagonal cross).
-// Returns an SVG string sized to fit the marks.
 function buildTallySVG(count) {
   const n = count % 10;
   if (n === 0) return '<span class="dist-zero">—</span>';
 
   const lines = [];
   const y1 = 3,
-    y2 = 25; // top / bottom of each vertical stroke
-  const sp = 8; // spacing between strokes
+    y2 = 25;
+  const sp = 8;
   let x = 6;
 
   const fives = Math.floor(n / 5);
   const remainder = n % 5;
 
-  // Draw complete groups of 5
   for (let g = 0; g < fives; g++) {
     const gx = x;
     for (let i = 0; i < 4; i++) {
@@ -220,14 +284,12 @@ function buildTallySVG(count) {
       );
       x += sp;
     }
-    // diagonal cross-stroke
     lines.push(
       `<line x1="${gx - 3}" y1="${y2 + 3}" x2="${x + 1}" y2="${y1 - 3}" stroke-width="2" stroke-linecap="round"/>`
     );
-    x += 10; // gap after the group
+    x += 10;
   }
 
-  // Draw leftover individual marks
   for (let i = 0; i < remainder; i++) {
     lines.push(
       `<line x1="${x}" y1="${y1}" x2="${x}" y2="${y2}" stroke-width="2" stroke-linecap="round"/>`
@@ -267,5 +329,7 @@ function updateStats() {
   }
 }
 
+// ── Initialize ──
+initializeColorPicker();
 renderDice();
 updateStats();

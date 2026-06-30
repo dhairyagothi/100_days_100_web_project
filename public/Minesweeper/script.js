@@ -2,11 +2,16 @@ const columns = ['A', 'B', 'C', 'D', 'E'];
 let bomblist = [];
 let attemptlist = [];
 let gameOver = false;
-let firstClick = true;
+
+let currentScore = 0;
+let highScore = localStorage.getItem('minesweeperHighScore') || 0;
+
 
 const boardDiv = document.getElementById('board');
 const messageDiv = document.getElementById('message');
 const restartBtn = document.getElementById('restart-btn');
+const scoreSpan = document.getElementById('score');
+const highScoreSpan = document.getElementById('high-score');
 
 //web audio setup
 let audioCtx = null;
@@ -193,7 +198,27 @@ function handleCellClick(coord) {
       revealAllBombs();
       restartBtn.style.display = 'inline-block';
     } else {
-      playSafeSound();
+
+        attemptlist.push(coord);
+        let count = getBombCount(coord);
+        cellElement.innerText = count === 0 ? '' : count;
+        
+        currentScore += 10;
+        scoreSpan.innerText = currentScore;
+        if (currentScore > highScore) {
+            highScore = currentScore;
+            localStorage.setItem('minesweeperHighScore', highScore);
+            highScoreSpan.innerText = highScore;
+        }
+        
+        if (attemptlist.length === 21) {
+            gameOver = true;
+            messageDiv.innerText = 'YOU WIN!!!!';
+            messageDiv.style.color = '#28a745';
+            revealAllBombs();
+            restartBtn.style.display = 'inline-block';
+        }
+
     }
   }
 }
@@ -209,39 +234,45 @@ function revealAllBombs() {
 
 // Initialize board and reset game variables
 function initGame() {
-  bomblist = [];
-  attemptlist = [];
-  gameOver = false;
-  firstClick = true;
-  messageDiv.innerText = '';
-  restartBtn.style.display = 'none';
-  boardDiv.innerHTML = '';
 
+    bomblist = [];
+    attemptlist = [];
+    gameOver = false;
+    currentScore = 0;
+    scoreSpan.innerText = currentScore;
+    highScoreSpan.innerText = highScore;
+    messageDiv.innerText = '';
+    restartBtn.style.display = 'none';
+    boardDiv.innerHTML = ''; 
 
-  // Create top row column headers
-  let cornerSpace = document.createElement('div');
-  boardDiv.appendChild(cornerSpace);
-  for (let c of columns) {
-    let label = document.createElement('div');
-    label.className = 'label';
-    label.innerText = c;
-    boardDiv.appendChild(label);
-  }
+    generateBombs();
 
-  // Create grid layout with buttons
-  for (let r = 1; r <= 5; r++) {
-    let rowLabel = document.createElement('div');
-    rowLabel.className = 'label';
-    rowLabel.innerText = r;
-    boardDiv.appendChild(rowLabel);
+    // Create top row column headers
+    let cornerSpace = document.createElement('div');
+    boardDiv.appendChild(cornerSpace);
+    for (let c of columns) {
+        let label = document.createElement('div');
+        label.className = 'label';
+        label.innerText = c;
+        boardDiv.appendChild(label);
+    }
 
-    for (let c = 0; c < 5; c++) {
-      let coord = `${columns[c]} ${r}`;
-      let btn = document.createElement('button');
-      btn.className = 'cell';
-      btn.id = coord;
-      btn.addEventListener('click', () => handleCellClick(coord));
-      boardDiv.appendChild(btn);
+    // Create grid layout with buttons
+    for (let r = 1; r <= 5; r++) {
+        let rowLabel = document.createElement('div');
+        rowLabel.className = 'label';
+        rowLabel.innerText = r;
+        boardDiv.appendChild(rowLabel);
+
+        for (let c = 0; c < 5; c++) {
+            let coord = `${columns[c]} ${r}`;
+            let btn = document.createElement('button');
+            btn.className = 'cell';
+            btn.id = coord;
+            btn.addEventListener('click', () => handleCellClick(coord));
+            boardDiv.appendChild(btn);
+        }
+
     }
   }
 }

@@ -18,6 +18,9 @@ const undoBtn = document.getElementById("undoBtn");
 const historyList = document.getElementById("historyList");
 const themeToggleGroup = document.getElementById("themeToggleGroup");
 const victorySound = new Audio("/public/TicTacToe/victory.mp3");
+const xMoveSound = new Audio("/public/TicTacToe/click-x.mp3");
+const oMoveSound = new Audio("/public/TicTacToe/click-o.mp3");
+const drawSound = new Audio("/public/TicTacToe/draw.mp3");
 
 // Statistics elements
 const statTotal = document.getElementById("statTotal");
@@ -194,6 +197,13 @@ function handleMove(index) {
     if (gameOver) return;
     if (gameBoard[index] !== "") return;
     gameBoard[index] = currentPlayer;
+    if (currentPlayer === "X") {
+    xMoveSound.currentTime = 0;
+    xMoveSound.play();
+    } else {
+    oMoveSound.currentTime = 0;
+    oMoveSound.play();
+    }
     moveHistory.push({ player: currentPlayer, cell: index + 1 });
     updateHistory();
     const winLine = getWinner();
@@ -241,6 +251,8 @@ function cpuMove() {
         if (move === undefined) move = getBestMove();
     }
     gameBoard[move] = "O";
+    oMoveSound.currentTime = 0;
+    oMoveSound.play();
     moveHistory.push({ player: "O", cell: move + 1 });
     updateHistory();
     const winLine = getWinner();
@@ -392,6 +404,8 @@ function showDraw() {
     recordGameResult(null);
     winnerTitle.textContent = "Draw!";
     winnerSubtitle.textContent = "Nobody wins this round.";
+    drawSound.currentTime = 0;
+    drawSound.play()
     winnerModal.classList.add("show");
 }
 
@@ -405,6 +419,14 @@ function newRound() {
     winnerModal.classList.remove("show");
     victorySound.pause();
     victorySound.currentTime = 0;
+    xMoveSound.pause();
+    xMoveSound.currentTime = 0;
+
+    oMoveSound.pause();
+    oMoveSound.currentTime = 0;
+
+    drawSound.pause();
+    drawSound.currentTime = 0;
     renderBoard();
 }
 
@@ -412,6 +434,14 @@ function resetScores() {
     scores = { X: 0, O: 0, D: 0 };
     victorySound.pause();
     victorySound.currentTime = 0;
+    xMoveSound.pause();
+    xMoveSound.currentTime = 0;
+
+    oMoveSound.pause();
+    oMoveSound.currentTime = 0;
+
+    drawSound.pause();
+    drawSound.currentTime = 0;
     updateScores();
     newRound();
 }

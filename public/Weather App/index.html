@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkyCast | Modern Weather</title>
+    <meta name="description" content="Real-time weather forecasts and atmospheric conditions.">
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="light-theme">
+
+    <div class="app-container">
+        
+        <!-- ============================================== -->
+        <!-- SIDEBAR / SEARCH PANEL -->
+        <!-- ============================================== -->
+        <aside class="sidebar">
+            <div class="search-section">
+                <form id="searchForm" class="search-form">
+                    <input 
+                        type="text" 
+                        id="cityInput" 
+                        placeholder="Search for places..." 
+                        autocomplete="off"
+                        required
+                    >
+                    <button type="submit" class="search-btn" aria-label="Search">
+                        🔍
+                    </button>
+                </form>
+                <button id="locationBtn" class="icon-btn" aria-label="Use Current Location">
+                    📍
+                </button>
+            </div>
+
+            <div class="recent-locations">
+                <h3>Recent Searches</h3>
+                <ul id="recentList" class="location-list">
+                    <!-- Populated via JavaScript -->
+                    <li class="empty-state">No recent locations</li>
+                </ul>
+            </div>
+        </aside>
+
+        <!-- ============================================== -->
+        <!-- MAIN DASHBOARD -->
+        <!-- ============================================== -->
+        <main class="dashboard">
+            
+            <header class="dashboard-header">
+                <div class="header-controls">
+                    <div class="unit-toggle">
+                        <button id="celsiusBtn" class="active">°C</button>
+                        <button id="fahrenheitBtn">°F</button>
+                    </div>
+                    <button id="themeToggle" class="icon-btn" aria-label="Toggle Theme">
+                        🌓
+                    </button>
+                </div>
+            </header>
+
+            <!-- Loading Skeleton (Hidden by default) -->
+            <div id="loadingState" class="loader hidden">
+                <div class="spinner"></div>
+                <p>Fetching forecast...</p>
+            </div>
+
+            <!-- Weather Data Container -->
+            <div id="weatherContent" class="weather-content">
+                
+                <!-- Current Weather Overview -->
+                <section class="current-weather">
+                    <div class="weather-header">
+                        <h1 id="cityName">London, UK</h1>
+                        <p id="currentDate">Monday, 29 June 2026</p>
+                    </div>
+                    
+                    <div class="weather-main">
+                        <div class="temperature-display">
+                            <span id="currentTemp" class="temp-huge">22</span>
+                            <span class="temp-unit">°C</span>
+                        </div>
+                        <div class="weather-condition">
+                            <img id="currentIcon" src="assets/sun-cloud.svg" alt="Partly Cloudy" class="condition-icon">
+                            <h2 id="conditionText">Partly Cloudy</h2>
+                            <p>Feels like <span id="feelsLike">24°C</span></p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Detailed Highlights -->
+                <section class="highlights-grid">
+                    <h2>Today's Highlights</h2>
+                    <div class="grid-container">
+                        
+                        <div class="highlight-card">
+                            <h3>💧 Humidity</h3>
+                            <div class="card-value">
+                                <span id="humidityVal">64</span>%
+                            </div>
+                        </div>
+
+                        <div class="highlight-card">
+                            <h3>💨 Wind Status</h3>
+                            <div class="card-value">
+                                <span id="windVal">12</span> km/h
+                            </div>
+                            <p class="card-subtext" id="windDirection">NW</p>
+                        </div>
+
+                        <div class="highlight-card">
+                            <h3>👁️ Visibility</h3>
+                            <div class="card-value">
+                                <span id="visibilityVal">10</span> km
+                            </div>
+                        </div>
+
+                        <div class="highlight-card">
+                            <h3>☀️ UV Index</h3>
+                            <div class="card-value">
+                                <span id="uvVal">5</span>
+                            </div>
+                            <p class="card-subtext" id="uvStatus">Moderate</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 5-Day Forecast -->
+                <section class="forecast-section">
+                    <h2>5-Day Forecast</h2>
+                    <div class="forecast-grid" id="forecastGrid">
+                        <!-- Instantiated via JavaScript -->
+                        <div class="forecast-card">
+                            <p class="day">Tue</p>
+                            <img src="assets/sun.svg" alt="Sunny">
+                            <div class="forecast-temps">
+                                <span class="max">25°</span>
+                                <span class="min">15°</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+</body>
+</html>

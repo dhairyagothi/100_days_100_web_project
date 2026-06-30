@@ -5,271 +5,248 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Financial Insights Tracker</title>
-     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.css">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#6a11cb">
 </head>
 
 <body>
 
-      <nav class="navbar">
+    <nav class="navbar">
+        <div class="logo">💰 Finance Tracker</div>
+        <ul class="nav-links">
+            <li><a href="index.html" class="active">Home</a></li>
+            <li><a href="#transactions-section">Transactions</a></li>
+            <li><a href="#dashboard-section">Dashboard</a></li>
+            <li><a href="#footer-container">About</a></li>
+        </ul>
+        <div class="nav-actions">
+            <button id="theme-toggle" aria-label="Toggle theme">🌙</button>
+            <button id="export-btn" aria-label="Export data"><i class="fas fa-download"></i></button>
+            <button id="import-btn" aria-label="Import data"><i class="fas fa-upload"></i></button>
+        </div>
+    </nav>
 
-    <div class="logo">
-     💰Finance Tracker
-    </div>
-
-    <ul class="nav-links">
-
-      <li>
-        <a href="index.html">
-          Home
-        </a>
-      </li>
-
-      <li>
-        <a href="index.html">
-        Manage Finance
-        </a>
-      </li>
-
-      <li>
-        <a href="#footer-container">
-          About
-        </a>
-      </li>
-
-    </ul>
-    <button id="theme-toggle">🌙</button>
-  </nav>
-
-   
-<br><br>
     <div class="container">
-
-        <h1>AI Financial Insights Tracker</h1>
-
-        <p class="subtitle">
-            Intelligent spending analysis, smart budgeting, and analytics dashboard.
-        </p>
+        <header class="page-header">
+            <h1>AI Financial Insights Tracker</h1>
+            <p class="subtitle">Intelligent spending analysis, smart budgeting, and analytics dashboard</p>
+        </header>
 
         <!-- SUMMARY CARDS -->
-        <div class="cards">
-
+        <div class="cards" id="summary-cards">
             <div class="card">
                 <h3>Total Balance</h3>
-                <p id="balance">$0</p>
+                <p id="balance">$0.00</p>
             </div>
-
             <div class="card">
                 <h3>Total Income</h3>
-                <p id="income">$0</p>
+                <p id="income">$0.00</p>
             </div>
-
             <div class="card">
                 <h3>Total Expense</h3>
-                <p id="expense">$0</p>
+                <p id="expense">$0.00</p>
             </div>
-
             <div class="card">
                 <h3>Total Transactions</h3>
                 <p id="total-transactions">0</p>
             </div>
-
+            <div class="card">
+                <h3>Average Daily</h3>
+                <p id="avg-daily">$0.00</p>
+            </div>
         </div>
+
+        <!-- DASHBOARD CHARTS -->
+        <section id="dashboard-section" class="section">
+            <h2><i class="fas fa-chart-pie"></i> Financial Dashboard</h2>
+            <div class="chart-grid">
+                <div class="chart-container">
+                    <h4>Expense Breakdown</h4>
+                    <canvas id="expenseChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h4>Income vs Expense Trend</h4>
+                    <canvas id="trendChart"></canvas>
+                </div>
+            </div>
+        </section>
 
         <!-- TRANSACTION FORM -->
-        <div class="section">
-
-            <h2>Add Financial Transaction</h2>
-
+        <section id="transactions-section" class="section">
+            <h2><i class="fas fa-plus-circle"></i> Add Financial Transaction</h2>
             <form id="transaction-form">
-
-                <input
-                    type="text"
-                    id="description"
-                    placeholder="Transaction Description"
-                    required
-                >
-
-                <input
-                    type="number"
-                    id="amount"
-                    placeholder="Transaction Amount"
-                    required
-                >
-
+                <input type="text" id="description" placeholder="Transaction Description" required>
+                <input type="number" id="amount" placeholder="Transaction Amount" required min="0.01" step="0.01">
                 <select id="type">
-
-                    <option value="Income">
-                        Income
-                    </option>
-
-                    <option value="Expense">
-                        Expense
-                    </option>
-
+                    <option value="Income">Income</option>
+                    <option value="Expense">Expense</option>
                 </select>
-
                 <select id="category">
-
-                    <option value="Salary">
-                        Salary
-                    </option>
-
-                    <option value="Food">
-                        Food
-                    </option>
-
-                    <option value="Travel">
-                        Travel
-                    </option>
-
-                    <option value="Shopping">
-                        Shopping
-                    </option>
-
+                    <option value="Salary">Salary</option>
+                    <option value="Food">Food</option>
+                    <option value="Travel">Travel</option>
+                    <option value="Shopping">Shopping</option>
+                    <option value="Entertainment">Entertainment</option>
+                    <option value="Utilities">Utilities</option>
+                    <option value="Rent">Rent</option>
+                    <option value="Transportation">Transportation</option>
+                    <option value="Healthcare">Healthcare</option>
+                    <option value="Education">Education</option>
+                    <option value="Other">Other</option>
                 </select>
-
-                <button type="submit">
-                    Add Transaction
-                </button>
-
+                <input type="date" id="transaction-date">
+                <button type="submit"><i class="fas fa-plus"></i> Add Transaction</button>
             </form>
+        </section>
 
-        </div>
+        <!-- BUDGET TRACKER -->
+        <section class="section">
+            <h2><i class="fas fa-wallet"></i> Budget Tracker</h2>
+            <form id="budget-form">
+                <select id="budget-category">
+                    <option value="Food">Food</option>
+                    <option value="Travel">Travel</option>
+                    <option value="Shopping">Shopping</option>
+                    <option value="Entertainment">Entertainment</option>
+                    <option value="Utilities">Utilities</option>
+                    <option value="Rent">Rent</option>
+                    <option value="Transportation">Transportation</option>
+                    <option value="Healthcare">Healthcare</option>
+                    <option value="Education">Education</option>
+                    <option value="Other">Other</option>
+                </select>
+                <input type="number" id="budget-limit" placeholder="Monthly Limit" required min="0" step="0.01">
+                <button type="submit"><i class="fas fa-save"></i> Set Budget</button>
+            </form>
+            <div id="budget-list"></div>
+        </section>
 
         <!-- AI INSIGHTS -->
-        <div class="section">
-
-            <h2>AI Financial Insights</h2>
-
-            <div id="insights-box">
-                Add transactions to receive insights.
+        <section class="section">
+            <h2><i class="fas fa-brain"></i> AI Financial Insights</h2>
+            <div id="insights-box" class="insights-container">
+                <p>Add transactions to receive AI-powered insights.</p>
             </div>
+        </section>
 
-        </div>
-
-        <!-- TRANSACTIONS -->
-        <div class="section">
-
-            <h2>Recent Transactions</h2>
-
-            <table>
-
-                <thead>
-
-                    <tr>
-                        <th>Description</th>
-                        <th>Amount</th>
-                        <th>Type</th>
-                        <th>Category</th>
-                        <th>Date</th>
-                        <th>Action</th>
-                    </tr>
-
-                </thead>
-
-                <tbody id="transaction-list">
-
-                </tbody>
-
-            </table>
-
-        </div>
+        <!-- RECENT TRANSACTIONS -->
+        <section class="section">
+            <h2><i class="fas fa-list"></i> Recent Transactions</h2>
+            <div class="table-controls">
+                <input type="text" id="search-transactions" placeholder="🔍 Search transactions...">
+                <select id="filter-type">
+                    <option value="all">All Types</option>
+                    <option value="Income">Income</option>
+                    <option value="Expense">Expense</option>
+                </select>
+                <select id="filter-category">
+                    <option value="all">All Categories</option>
+                </select>
+                <button id="clear-filters"><i class="fas fa-times"></i> Clear</button>
+            </div>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th data-sort="description">Description <i class="fas fa-sort"></i></th>
+                            <th data-sort="amount">Amount <i class="fas fa-sort"></i></th>
+                            <th data-sort="type">Type <i class="fas fa-sort"></i></th>
+                            <th data-sort="category">Category <i class="fas fa-sort"></i></th>
+                            <th data-sort="date">Date <i class="fas fa-sort"></i></th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="transaction-list"></tbody>
+                </table>
+            </div>
+            <div class="table-footer">
+                <span id="transaction-count">Showing 0 transactions</span>
+                <button id="export-csv-btn"><i class="fas fa-file-csv"></i> Export CSV</button>
+            </div>
+        </section>
 
         <!-- SAVINGS GOALS -->
-        <div class="section">
-
-            <h2>Savings Goals</h2>
-
+        <section class="section">
+            <h2><i class="fas fa-bullseye"></i> Savings Goals</h2>
             <form id="goal-form">
-
-                <input
-                    type="text"
-                    id="goal-name"
-                    placeholder="Savings Goal Name"
-                    required
-                >
-
-                <input
-                    type="number"
-                    id="goal-amount"
-                    placeholder="Target Amount"
-                    required
-                >
-
-                <button type="submit">
-                    Add Savings Goal
-                </button>
-
+                <input type="text" id="goal-name" placeholder="Savings Goal Name" required>
+                <input type="number" id="goal-amount" placeholder="Target Amount" required min="0" step="0.01">
+                <button type="submit"><i class="fas fa-plus"></i> Add Savings Goal</button>
             </form>
-
-            <table>
-
-                <thead>
-
-                    <tr>
-                        <th>Goal</th>
-                        <th>Amount</th>
-                        <th>Action</th>
-                    </tr>
-
-                </thead>
-
-                <tbody id="goal-list">
-
-                </tbody>
-
-            </table>
-
-        </div>
-
+            <div id="goal-progress-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Goal</th>
+                            <th>Target</th>
+                            <th>Progress</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="goal-list"></tbody>
+                </table>
+            </div>
+        </section>
     </div>
+
+    <!-- NOTIFICATION TOAST -->
+    <div id="toast" class="toast hidden">
+        <span id="toast-message"></span>
+        <button id="toast-close">&times;</button>
+    </div>
+
+    <!-- FOOTER -->
     <footer class="footer">
-
-    <section id="footer-container">
-
-      <!-- Brand -->
-      <div class="footer-section">
-        <h3 >💰Finance Tracker </h3>
-        <p>
-         Keeping track of your finances shouldn't require complicated spreadsheets, expensive subscriptions, or sharing your personal data with third parties.
-        </p>
-      </div>
-
-      <!-- Quick Links -->
-      <div class="footer-section">
-        <h4>Quick Links</h4>
-
-        <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="index.html">Manage finance</a></li>
-          <li><a href="#footer-container">Contact</a></li>
-        </ul>
-      </div>
-
-      <!-- Social Links -->
-      <div class="footer-section">
-        <h4>Follow Us</h4>
-
-        <div class="social-links">
-          <a href="#"><i class="fab fa-github"></i></a>
-          <a href="#"><i class="fab fa-twitter"></i></a>
-          <a href="#"><i class="fab fa-linkedin"></i></a>
-          <a href="#"><i class="fab fa-discord"></i></a>
+        <section id="footer-container">
+            <div class="footer-section">
+                <h3>💰 Finance Tracker</h3>
+                <p>Keeping track of your finances shouldn't require complicated spreadsheets, expensive subscriptions, or sharing your personal data with third parties.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="#transactions-section">Transactions</a></li>
+                    <li><a href="#dashboard-section">Dashboard</a></li>
+                    <li><a href="#footer-container">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Follow Us</h4>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-github"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-discord"></i></a>
+                </div>
+            </div>
+        </section>
+        <div class="footer-bottom">
+            <p>© 2025 Finance Tracker — Take Control of Your Money. All Rights Reserved.</p>
         </div>
-      </div>
+    </footer>
 
-      </div>
-
-      <div class="footer-bottom">
-        <p>
-          © 2025 Finance Tracker — Take Control of Your Money. All Rights Reserved.
-        </p>
-      </div>
-    </section>
-  </footer>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <script type="module" src="js/app.js"></script>
 
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker
+                    .register('/sw.js')
+                    .then((registration) => {
+                        console.log('Service Worker registered successfully:', registration);
+                    })
+                    .catch((error) => {
+                        console.log('Service Worker registration failed:', error);
+                    });
+            });
+        }
+    </script>
 </body>
 
 </html>

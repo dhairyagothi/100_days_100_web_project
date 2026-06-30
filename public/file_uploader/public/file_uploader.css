@@ -883,3 +883,116 @@ footer.modal-content{
 
   color: var(--text-secondary, #bdbdbd);
 }
+
+/* ==========================
+   MULTIPLE FILE TYPE SUPPORT
+========================== */
+
+/* File Type Badge */
+.file-type-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+  margin-left: 8px;
+  transition: all 0.2s ease;
+}
+
+/* File Chip with Icon */
+.file-chip .chip-thumb {
+  transition: transform 0.2s ease;
+}
+
+.file-chip .chip-thumb:hover {
+  transform: scale(1.1);
+}
+
+.file-chip i {
+  width: 32px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+/* History Item with Icon */
+.history-item i {
+  transition: transform 0.2s ease;
+}
+
+.history-item:hover i {
+  transform: scale(1.1);
+}
+
+/* File Type Statistics */
+.stat-card .stat-value {
+  background: var(--stat-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Responsive adjustments for badges */
+@media (max-width: 768px) {
+  .file-type-badge {
+    font-size: 0.6rem;
+    padding: 1px 6px;
+    margin-left: 4px;
+  }
+  
+  .file-chip {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  
+  .file-chip .chip-name {
+    font-size: 0.75rem;
+  }
+}
+
+/* Tooltip for file types */
+.file-chip:hover .file-type-badge,
+.history-item:hover .file-type-badge {
+  transform: scale(1.05);
+}
+
+/* Animation for file type badges */
+.file-type-badge {
+  animation: badgeIn 0.3s ease both;
+}
+
+@keyframes badgeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Stats grid enhancement */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 11px;
+}
+
+.stat-card {
+  background: var(--bg-stat);
+  border: 1px solid var(--border-stat);
+  border-radius: 14px;
+  padding: 18px 12px 14px;
+  text-align: center;
+  transition: all var(--transition);
+  cursor: default;
+}
+
+.stat-card:hover {
+  border-color: var(--accent);
+  background: var(--accent-dim);
+  transform: translateY(-2px);
+}
