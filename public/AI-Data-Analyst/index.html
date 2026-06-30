@@ -160,6 +160,81 @@
             </div>
           </section>
 
+          <!-- SMART DATA CLEANING RECOMMENDATIONS -->
+          <section class="card cleaning-section" id="cleaningSection">
+            <div class="section-header">
+              <span class="section-icon cleaning-section-icon">
+                <i data-lucide="sparkle"></i>
+              </span>
+              <h2>Smart Data Cleaning</h2>
+              <span class="cleaning-badge-title">Rule-Based · Offline</span>
+            </div>
+
+            <!-- Health metric cards -->
+            <div class="cleaning-metrics" id="cleaningMetrics">
+              <div class="cleaning-metric-card">
+                <div class="cleaning-metric-icon health-icon">
+                  <i data-lucide="heart-pulse"></i>
+                </div>
+                <div class="cleaning-metric-body">
+                  <span class="cleaning-metric-label">Dataset Health</span>
+                  <strong id="cleaningHealthScore" class="cleaning-metric-value">--</strong>
+                </div>
+              </div>
+              <div class="cleaning-metric-card">
+                <div class="cleaning-metric-icon issues-icon">
+                  <i data-lucide="alert-triangle"></i>
+                </div>
+                <div class="cleaning-metric-body">
+                  <span class="cleaning-metric-label">Issues Found</span>
+                  <strong id="cleaningIssuesCount" class="cleaning-metric-value">--</strong>
+                </div>
+              </div>
+              <div class="cleaning-metric-card">
+                <div class="cleaning-metric-icon critical-icon">
+                  <i data-lucide="alert-circle"></i>
+                </div>
+                <div class="cleaning-metric-body">
+                  <span class="cleaning-metric-label">Critical Issues</span>
+                  <strong id="cleaningCriticalCount" class="cleaning-metric-value">--</strong>
+                </div>
+              </div>
+              <div class="cleaning-metric-card">
+                <div class="cleaning-metric-icon suggestions-icon">
+                  <i data-lucide="lightbulb"></i>
+                </div>
+                <div class="cleaning-metric-body">
+                  <span class="cleaning-metric-label">Suggestions</span>
+                  <strong id="cleaningSuggestionsCount" class="cleaning-metric-value">--</strong>
+                </div>
+              </div>
+            </div>
+
+            <!-- Recommendation cards container -->
+            <div id="cleaningRecommendations" class="cleaning-recommendations">
+              <!-- Empty state -->
+              <div class="cleaning-empty-state" id="cleaningEmptyState">
+                <div class="cleaning-empty-icon">
+                  <i data-lucide="database"></i>
+                </div>
+                <p class="cleaning-empty-title">No dataset loaded yet.</p>
+                <p class="cleaning-empty-desc">Upload a CSV dataset to receive intelligent data cleaning recommendations.</p>
+              </div>
+            </div>
+
+            <!-- Show more button (hidden by default) -->
+            <button class="cleaning-show-more" id="cleaningShowMore" style="display:none;">
+              <i data-lucide="chevron-down"></i>
+              Show More Recommendations
+            </button>
+
+            <!-- Dataset assessment -->
+            <div class="cleaning-assessment" id="cleaningAssessment" style="display:none;">
+              <i data-lucide="info"></i>
+              <span id="cleaningAssessmentText"></span>
+            </div>
+          </section>
+
           <!-- EXECUTIVE SUMMARY -->
           <section class="card executive-section">
             <div class="section-header executive-header">

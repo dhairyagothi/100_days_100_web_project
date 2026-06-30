@@ -7,30 +7,44 @@
 
     <title>Fast Job Search Engine</title>
 
+    <link rel="stylesheet" href="style.css">
+
+
 </head>
 
 <body>
-    <h2>Fast Job Search Engine</h2>
+
+    <main class="container">
+        <h2>Fast Job Search Engine</h2>
+        <p class="subtitle">Instantly search through 14,000+ job leads without freezing your browser.</p>
+
+    <pre id="thread-report">Loading background engines...</pre>
+
+    <p class="instructions">
+   <h2>Fast Job Search Engine</h2>
     <p style="color: #555; margin-top: -10px; margin-bottom: 20px;">Instantly search through 14,000+ job leads without freezing your browser.</p>
 
     <pre id="thread-report"
         style="background: #111; color: #00e5ff; padding: 12px; font-family: monospace; width: 450px; box-sizing: border-box; white-space: pre-wrap; word-wrap: break-word;">Loading background engines...</pre>
 
     <p style="color: #555; font-size: 14px; max-width: 450px; margin-bottom: 15px; line-height: 1.5;">
+
         <strong>How it works:</strong> This project uses JavaScript Web Workers to process massive datasets in a separate background thread. This allows you to instantly filter through 100,000+ records without locking up your browser's main UI!
         <br><br>
         <strong>Try it out:</strong> Start typing a company name or job title below to see it in action. Try searching for roles like <em>"AI/ML Engineer"</em>, <em>"Backend Engineer"</em>, or <em>"Data Scientist"</em>.
     </p>
 
-    <fieldset style="margin-bottom: 20px; padding: 10px; width: 450px;">
+
+    <fieldset>
         <legend>Search Database</legend>
-        <input type="text" id="thread-search" placeholder="e.g., AI/ML Engineer, Backend Engineer..."
-            style="width: 95%; padding: 6px; box-sizing: border-box;">
+        <input type="text" id="thread-search" placeholder="e.g., AI/ML Engineer, Backend Engineer...">
     </fieldset>
 
     <h4>Top 10 Search Results:</h4>
-    <div id="results-view" style="border: 2px dashed #444; padding: 10px; width: 454px; min-height: 180px;">
+    <div id="results-view">
+
     </div>
+    </main>
 
     <script type="module" src="app.js"></script>
 </body>

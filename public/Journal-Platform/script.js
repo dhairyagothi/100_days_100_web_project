@@ -1,6 +1,6 @@
 const STORAGE_KEYS = {
   ENTRIES: 'journly_entries_v1',
-  THEME: 'journly_theme_v1'
+  THEME: 'journly_theme_v1',
 };
 
 function safeGet(key, defaultVal) {
@@ -9,7 +9,7 @@ function safeGet(key, defaultVal) {
     if (!raw) return defaultVal;
     return JSON.parse(decodeURIComponent(atob(raw)));
   } catch (e) {
-    console.error("Local storage decode error", key, e);
+    console.error('Local storage decode error', key, e);
     return defaultVal;
   }
 }
@@ -18,8 +18,14 @@ function safeSet(key, val) {
   try {
     const encrypted = btoa(encodeURIComponent(JSON.stringify(val)));
     localStorage.setItem(key, encrypted);
+    return true;
   } catch (e) {
-    console.error("Local storage encode error", key, e);
+    console.error('Local storage encode error', key, e);
+
+    // Notify user that saving failed
+    showAutosaveFeedback('Storage is full. Entry could not be saved.', true);
+
+    return false;
   }
 }
 
@@ -63,7 +69,9 @@ const btnToggleStickers = document.getElementById('btn-toggle-stickers');
 const stickerDrawer = document.getElementById('sticker-drawer');
 const stickerItems = document.querySelectorAll('.sticker-item');
 const stickerCanvas = document.getElementById('sticker-canvas');
-const markdownRenderedContent = document.getElementById('markdown-rendered-content');
+const markdownRenderedContent = document.getElementById(
+  'markdown-rendered-content'
+);
 
 const themeDots = document.querySelectorAll('.theme-dot');
 
@@ -80,7 +88,7 @@ const STICKERS = {
   book: '📚',
   palette: '🎨',
   balloon: '🎈',
-  rainbow: '🌈'
+  rainbow: '🌈',
 };
 
 // --- Initialization ---
@@ -97,17 +105,17 @@ document.addEventListener('DOMContentLoaded', () => {
 // --- Theme Management ---
 function initializeTheme() {
   document.body.className = `theme-${currentTheme}`;
-  themeDots.forEach(dot => {
+  themeDots.forEach((dot) => {
     dot.classList.toggle('active', dot.dataset.theme === currentTheme);
   });
 
-  themeDots.forEach(dot => {
+  themeDots.forEach((dot) => {
     dot.addEventListener('click', () => {
       currentTheme = dot.dataset.theme;
       document.body.className = `theme-${currentTheme}`;
       localStorage.setItem(STORAGE_KEYS.THEME, currentTheme);
-      
-      themeDots.forEach(d => d.classList.remove('active'));
+
+      themeDots.forEach((d) => d.classList.remove('active'));
       dot.classList.add('active');
     });
   });
@@ -124,9 +132,9 @@ function setupSidebar() {
     renderEntriesList();
   });
 
-  moodFilterBadges.forEach(badge => {
+  moodFilterBadges.forEach((badge) => {
     badge.addEventListener('click', () => {
-      moodFilterBadges.forEach(b => b.classList.remove('active'));
+      moodFilterBadges.forEach((b) => b.classList.remove('active'));
       badge.classList.add('active');
       activeMoodFilter = badge.dataset.mood;
       renderEntriesList();
@@ -139,33 +147,40 @@ function renderEntriesList() {
   const query = searchInput.value.toLowerCase().trim();
 
   // Sort entries descending by date
-  const filtered = journalEntries.filter(entry => {
-    // Mood search match
-    const matchesMood = (activeMoodFilter === 'all' || entry.mood === activeMoodFilter);
-    // Word search query match
-    const matchesQuery = !query || 
-      entry.title.toLowerCase().includes(query) || 
-      entry.content.toLowerCase().includes(query);
-    
-    return matchesMood && matchesQuery;
-  }).sort((a, b) => new Date(b.datetime) - new Date(a.datetime));
+  const filtered = journalEntries
+    .filter((entry) => {
+      // Mood search match
+      const matchesMood =
+        activeMoodFilter === 'all' || entry.mood === activeMoodFilter;
+      // Word search query match
+      const matchesQuery =
+        !query ||
+        entry.title.toLowerCase().includes(query) ||
+        entry.content.toLowerCase().includes(query);
+
+      return matchesMood && matchesQuery;
+    })
+    .sort((a, b) => new Date(b.datetime) - new Date(a.datetime));
 
   if (filtered.length === 0) {
     entriesListEl.innerHTML = `<div class="no-entries-msg">No reflection entries found.</div>`;
     return;
   }
 
-  filtered.forEach(entry => {
+  filtered.forEach((entry) => {
     const card = document.createElement('div');
     card.className = `entry-card ${entry.id === currentEntryId ? 'active' : ''}`;
-    
-    const dateFormatted = new Date(entry.datetime).toLocaleDateString(undefined, {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric'
-    });
 
-    const excerpt = entry.content 
+    const dateFormatted = new Date(entry.datetime).toLocaleDateString(
+      undefined,
+      {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+      }
+    );
+
+    const excerpt = entry.content
       ? entry.content.replace(/[#*`~_\[\]()\-]/g, '').substring(0, 80)
       : 'No additional details written...';
 
@@ -195,7 +210,7 @@ function getMoodEmoji(mood) {
     calm: '🍃',
     tired: '💤',
     sad: '🌧️',
-    angry: '⚡'
+    angry: '⚡',
   };
   return map[mood] || '🍃';
 }
@@ -206,7 +221,7 @@ function getMoodColor(mood) {
     calm: '#2ec4b6',
     tired: '#909bb4',
     sad: '#4a90e2',
-    angry: '#ff4d4f'
+    angry: '#ff4d4f',
   };
   return map[mood] || '#2ec4b6';
 }
@@ -214,11 +229,11 @@ function getMoodColor(mood) {
 // --- Mood Analytics Visualization Panel ---
 function renderMoodAnalytics() {
   moodStatsEl.innerHTML = '';
-  
+
   const moodCounts = { happy: 0, calm: 0, tired: 0, sad: 0, angry: 0 };
   let totalCount = 0;
 
-  journalEntries.forEach(entry => {
+  journalEntries.forEach((entry) => {
     if (moodCounts[entry.mood] !== undefined) {
       moodCounts[entry.mood]++;
       totalCount++;
@@ -226,11 +241,11 @@ function renderMoodAnalytics() {
   });
 
   const moodsList = ['happy', 'calm', 'tired', 'sad', 'angry'];
-  
-  moodsList.forEach(mood => {
+
+  moodsList.forEach((mood) => {
     const count = moodCounts[mood];
     const percentage = totalCount > 0 ? (count / totalCount) * 100 : 0;
-    
+
     const row = document.createElement('div');
     row.className = 'stat-bar-row';
     row.innerHTML = `
@@ -246,19 +261,20 @@ function renderMoodAnalytics() {
 
 // --- Diary Content Operations (CRUD) ---
 function createNewEntry() {
-  const newId = 'entry_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+  const newId =
+    'entry_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
   const newEntry = {
     id: newId,
     title: '',
     content: '',
     datetime: new Date().toISOString(),
     mood: 'calm',
-    stickers: []
+    stickers: [],
   };
 
   journalEntries.push(newEntry);
   safeSet(STORAGE_KEYS.ENTRIES, journalEntries);
-  
+
   renderEntriesList();
   renderMoodAnalytics();
   selectEntry(newId);
@@ -266,7 +282,7 @@ function createNewEntry() {
 
 function selectEntry(id) {
   currentEntryId = id;
-  const entry = journalEntries.find(e => e.id === id);
+  const entry = journalEntries.find((e) => e.id === id);
   if (!entry) return;
 
   // Swap Screen view panels
@@ -285,7 +301,7 @@ function selectEntry(id) {
     day: 'numeric',
     year: 'numeric',
     hour: 'numeric',
-    minute: '2-digit'
+    minute: '2-digit',
   });
   entryDatetimeEl.textContent = datetimeFormatted;
 
@@ -295,16 +311,16 @@ function selectEntry(id) {
   // Sync tabs & state status
   switchTab('write');
   updateWordCount();
-  
+
   // Refresh Highlight CSS Class inside Sidebar List
-  document.querySelectorAll('.entry-card').forEach(card => {
+  document.querySelectorAll('.entry-card').forEach((card) => {
     card.classList.remove('active');
   });
   renderEntriesList();
 }
 
 function updateMoodSelectorUI(activeMood) {
-  moodSelectButtons.forEach(btn => {
+  moodSelectButtons.forEach((btn) => {
     const isMatched = btn.dataset.mood === activeMood;
     btn.classList.toggle('active', isMatched);
   });
@@ -312,15 +328,19 @@ function updateMoodSelectorUI(activeMood) {
 
 function deleteActiveEntry() {
   if (!currentEntryId) return;
-  
-  if (confirm('Are you sure you want to delete this diary entry permanently? This action cannot be undone.')) {
-    journalEntries = journalEntries.filter(e => e.id !== currentEntryId);
+
+  if (
+    confirm(
+      'Are you sure you want to delete this diary entry permanently? This action cannot be undone.'
+    )
+  ) {
+    journalEntries = journalEntries.filter((e) => e.id !== currentEntryId);
     safeSet(STORAGE_KEYS.ENTRIES, journalEntries);
-    
+
     currentEntryId = null;
     journalSheet.classList.add('hidden');
     welcomeScreen.classList.remove('hidden');
-    
+
     renderEntriesList();
     renderMoodAnalytics();
   }
@@ -329,7 +349,7 @@ function deleteActiveEntry() {
 function saveActiveEntry(isAutosave = false) {
   if (!currentEntryId) return;
 
-  const entryIndex = journalEntries.findIndex(e => e.id === currentEntryId);
+  const entryIndex = journalEntries.findIndex((e) => e.id === currentEntryId);
   if (entryIndex === -1) return;
 
   // Extract values
@@ -341,7 +361,11 @@ function saveActiveEntry(isAutosave = false) {
   journalEntries[entryIndex].mood = moodVal;
   journalEntries[entryIndex].stickers = stickersList; // Sync stickers
 
-  safeSet(STORAGE_KEYS.ENTRIES, journalEntries);
+  const saved = safeSet(STORAGE_KEYS.ENTRIES, journalEntries);
+
+  if (!saved) {
+    return;
+  }
 
   if (isAutosave) {
     showAutosaveFeedback('Draft saved');
@@ -355,15 +379,23 @@ function saveActiveEntry(isAutosave = false) {
 }
 
 // Autosave helper status triggers
-function showAutosaveFeedback(msg) {
-  autosaveIndicator.innerHTML = `<i data-lucide="check-check"></i> ${msg}`;
+function showAutosaveFeedback(msg, isError = false) {
+  const icon = isError ? 'alert-triangle' : 'check-check';
+
+  autosaveIndicator.innerHTML = `
+    <i data-lucide="${icon}"></i> ${msg}
+  `;
+
   lucide.createIcons();
+
   autosaveIndicator.classList.add('active');
-  
-  setTimeout(() => {
-    autosaveIndicator.innerHTML = `<i data-lucide="check-check"></i> Saved`;
-    lucide.createIcons();
-  }, 2000);
+
+  if (!isError) {
+    setTimeout(() => {
+      autosaveIndicator.innerHTML = `<i data-lucide="check-check"></i> Saved`;
+      lucide.createIcons();
+    }, 2000);
+  }
 }
 
 function triggerAutosaveDebouncer() {
@@ -390,16 +422,16 @@ function setupEditor() {
   });
 
   // Mood buttons selection action
-  moodSelectButtons.forEach(btn => {
+  moodSelectButtons.forEach((btn) => {
     btn.addEventListener('click', () => {
-      moodSelectButtons.forEach(b => b.classList.remove('active'));
+      moodSelectButtons.forEach((b) => b.classList.remove('active'));
       btn.classList.add('active');
       triggerAutosaveDebouncer();
     });
   });
 
   // Toolbar Actions
-  toolbarButtons.forEach(btn => {
+  toolbarButtons.forEach((btn) => {
     btn.addEventListener('click', (e) => {
       e.preventDefault();
       const command = btn.dataset.command;
@@ -424,7 +456,7 @@ function applyToolbarFormat(cmd) {
   const end = diaryTextarea.selectionEnd;
   const text = diaryTextarea.value;
   const selected = text.substring(start, end);
-  
+
   let formatted = '';
   let cursorShift = 0;
 
@@ -463,23 +495,24 @@ function applyToolbarFormat(cmd) {
       break;
   }
 
-  diaryTextarea.value = text.substring(0, start) + formatted + text.substring(end);
+  diaryTextarea.value =
+    text.substring(0, start) + formatted + text.substring(end);
   diaryTextarea.focus();
-  
+
   // Reposition selection bounds
   const newCursorPos = start + (selected ? formatted.length : cursorShift);
   diaryTextarea.setSelectionRange(newCursorPos, newCursorPos);
-  
+
   updateWordCount();
   triggerAutosaveDebouncer();
 }
 
 function switchTab(target) {
   activeTab = target;
-  
+
   tabWrite.classList.toggle('active', target === 'write');
   tabPreview.classList.toggle('active', target === 'preview');
-  
+
   paneEditor.classList.toggle('hidden', target !== 'write');
   panePreview.classList.toggle('hidden', target !== 'preview');
 
@@ -490,17 +523,16 @@ function switchTab(target) {
 
 function renderMarkdownPreview() {
   const mdText = diaryTextarea.value || '*Write something beautiful today...*';
-  
+
   // Render Markdown to HTML using Marked CDN
   markdownRenderedContent.innerHTML = marked.parse(mdText, {
     breaks: true,
-    gfm: true
+    gfm: true,
   });
 
   // Re-render placed stickers
   renderStickersCanvas();
 }
-
 
 // --- Sticker Canvas System ---
 let activeDragSticker = null;
@@ -516,7 +548,7 @@ function setupStickerSystem() {
   });
 
   // Click on items inside the drawer
-  stickerItems.forEach(item => {
+  stickerItems.forEach((item) => {
     item.addEventListener('click', () => {
       const type = item.dataset.sticker;
       addNewStickerToCanvas(type);
@@ -527,13 +559,14 @@ function setupStickerSystem() {
 function addNewStickerToCanvas(type) {
   if (!currentEntryId) return;
 
-  const newId = 'sticker_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5);
+  const newId =
+    'sticker_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5);
   // Default coordinate: Center (approx 50% left / 30% top down)
   const stickerObj = {
     id: newId,
     type: type,
     x: 50,
-    y: 30
+    y: 30,
   };
 
   stickersList.push(stickerObj);
@@ -542,14 +575,14 @@ function addNewStickerToCanvas(type) {
 }
 
 function deleteSticker(id) {
-  stickersList = stickersList.filter(s => s.id !== id);
+  stickersList = stickersList.filter((s) => s.id !== id);
   saveStickersForCurrentEntry();
   renderStickersCanvas();
 }
 
 function saveStickersForCurrentEntry() {
   if (!currentEntryId) return;
-  const idx = journalEntries.findIndex(e => e.id === currentEntryId);
+  const idx = journalEntries.findIndex((e) => e.id === currentEntryId);
   if (idx !== -1) {
     journalEntries[idx].stickers = stickersList;
     safeSet(STORAGE_KEYS.ENTRIES, journalEntries);
@@ -559,15 +592,15 @@ function saveStickersForCurrentEntry() {
 function renderStickersCanvas() {
   // Clear any existing stickers in canvas DOM
   const existingStickers = stickerCanvas.querySelectorAll('.placed-sticker');
-  existingStickers.forEach(el => el.remove());
+  existingStickers.forEach((el) => el.remove());
 
-  stickersList.forEach(sticker => {
+  stickersList.forEach((sticker) => {
     const stickerEl = document.createElement('div');
     stickerEl.className = 'placed-sticker';
     stickerEl.dataset.id = sticker.id;
     stickerEl.style.left = `${sticker.x}%`;
     stickerEl.style.top = `${sticker.y}%`;
-    
+
     const emoji = STICKERS[sticker.type] || '✨';
     stickerEl.innerHTML = `
       ${emoji}
@@ -576,12 +609,14 @@ function renderStickersCanvas() {
 
     // Hook events
     setupStickerDragging(stickerEl);
-    
+
     // Hook delete click handler
-    stickerEl.querySelector('.sticker-delete-btn').addEventListener('click', (e) => {
-      e.stopPropagation();
-      deleteSticker(sticker.id);
-    });
+    stickerEl
+      .querySelector('.sticker-delete-btn')
+      .addEventListener('click', (e) => {
+        e.stopPropagation();
+        deleteSticker(sticker.id);
+      });
 
     stickerCanvas.appendChild(stickerEl);
   });
@@ -606,7 +641,7 @@ function setupStickerDragging(stickerEl) {
     // Attach listeners to document scope
     document.addEventListener('mousemove', onPointerMove);
     document.addEventListener('mouseup', onPointerUp);
-    
+
     // Prevent scrolling while dragging
     document.addEventListener('touchmove', onPointerMove, { passive: false });
     document.addEventListener('touchend', onPointerUp);
@@ -650,7 +685,7 @@ function setupStickerDragging(stickerEl) {
     const finalTop = parseFloat(activeDragSticker.style.top);
 
     // Save final placement states
-    const stickerObj = stickersList.find(s => s.id === sId);
+    const stickerObj = stickersList.find((s) => s.id === sId);
     if (stickerObj) {
       stickerObj.x = finalLeft;
       stickerObj.y = finalTop;

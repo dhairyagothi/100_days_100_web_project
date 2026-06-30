@@ -59,6 +59,18 @@
                     <p>Waiting for someone to join...</p>
                 </div>
                 <video id="remote-video" autoplay playsinline></video>
+                <div id="network-quality" class="network-quality hidden">
+                    <span id="quality-icon">🟢</span>
+                    <span id="quality-text">Excellent</span>
+
+                    <div class="network-tooltip">
+                        <div>Bitrate: <span id="bitrate">--</span></div>
+                        <div>RTT: <span id="rtt">--</span></div>
+                        <div>Packet Loss: <span id="packet-loss">--</span></div>
+                        <div>Jitter: <span id="jitter">--</span></div>
+                        <div>FPS: <span id="fps">--</span></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

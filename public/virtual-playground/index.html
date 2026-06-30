@@ -8,19 +8,21 @@
     <link rel="icon" href="image.png">
   </head>
   <body>
+    <!-- Main title and instructions for the playground -->
     <h1>Virtual Playground</h1>
     <p>Click the ball to make it jump! Select a planet to change gravity.</p>
 
+    <!-- Game area where the ball is displayed and animated -->
     <div class="play-area" id="playArea">
       <div class="ball" id="ball"></div>
     </div>
 
-    <!-- Action controls: Reset only (Toggle Gravity replaced by planet selector) -->
+    <!-- Reset the simulation back to its initial state -->
     <div class="controls">
       <button onclick="resetBall()">Reset</button>
     </div>
 
-    <!-- Planet Gravity Selector -->
+    <!-- Planet presets that adjust the gravity setting -->
     <div class="planet-selector" id="planetSelector">
       <label>Planet:</label>
       <button class="planet-btn" data-planet="moon">🌕 Moon</button>
@@ -30,7 +32,7 @@
       <button class="planet-btn" data-planet="jupiter">🟠 Jupiter</button>
     </div>
 
-    <!-- Ball customisation: color picker + shape selector -->
+    <!-- Controls for changing the ball's appearance -->
     <div class="customise">
       <label>Color <input type="color" id="ballColor" value="#ff6b6b" /></label>
       <label>Shape
@@ -42,6 +44,7 @@
         </select>
       </label>
     </div>
+    <!-- Repeated appearance controls kept as part of the current markup -->
     <div class="customise">
       <label>Color <input type="color" id="ballColor" value="#ff6b6b" /></label>
       <label
