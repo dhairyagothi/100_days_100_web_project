@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Glass Calculator</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- BACKGROUND -->
+<div class="background">
+  <div class="circle"></div>
+  <div class="circle"></div>
+  <div class="circle"></div>
+</div>
+
+<!-- CARD -->
+<div class="card">
+
+  <div class="display">
+    <input type="text" id="display" disabled>
+  </div>
+
+  <div class="buttons">
+
+    <button onclick="clearAll()" class="op">AC</button>
+    <button onclick="append('/')">÷</button>
+    <button onclick="append('*')">×</button>
+    <button onclick="deleteLast()">⌫</button>
+
+    <button onclick="append('7')">7</button>
+    <button onclick="append('8')">8</button>
+    <button onclick="append('9')">9</button>
+    <button onclick="append('-')" class="op">−</button>
+
+    <button onclick="append('4')">4</button>
+    <button onclick="append('5')">5</button>
+    <button onclick="append('6')">6</button>
+    <button onclick="append('+')" class="op">+</button>
+
+    <button onclick="append('1')">1</button>
+    <button onclick="append('2')">2</button>
+    <button onclick="append('3')">3</button>
+    <button onclick="calculate()" class="eq">=</button>
+
+    <button class="zero" onclick="append('0')">0</button>
+    <button onclick="append('.')">.</button>
+
+  </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

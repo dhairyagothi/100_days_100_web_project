@@ -101,19 +101,28 @@ body{
     position:fixed;
     top:20px;
     left:20px;
-
-    background:var(--panel);
-    color:var(--txt);
-
-    padding:10px 14px;
-
-    border-radius:10px;
-
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:10px 18px;
+    background:var(--panel2);
+    color:var(--acc);
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:14px;
     text-decoration:none;
-
+    font-family:var(--font-ui);
     font-weight:700;
+    backdrop-filter:blur(12px);
+    box-shadow: 0 6px 18px rgba(0,0,0,.2);
+    transition: all .3s ease;
+    z-index: 999;
+}
 
-    z-index:999;
+.project-back-button:hover{
+    background:var(--acc);
+    color:var(--bg);
+    transform: translateY(-2px);
+    box-shadow: 0 0 18px var(--acc);
 }
 
 .hero{
@@ -300,6 +309,55 @@ body{
     box-shadow: 0 0 20px rgba(64, 245, 210, 0.3); /* Subtle glow on hover */
     transform: translateY(-3px) scale(1.02);
 }
+
+/* Theme buttons */
+
+.theme-bar {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.theme-btn{
+    padding:8px 14px;
+
+    border-radius:10px;
+
+    border:none;
+
+    background:var(--panel2);
+
+    color:var(--txt);
+
+    transition:.3s;
+}
+
+.theme-btn.active{
+    background:var(--acc);
+
+    color:var(--bg);
+}
+
+body[data-theme="pastel"] .theme-btn{
+    background:#efe8ff;
+    color:#6b7280;
+}
+
+body[data-theme="pastel"] .theme-btn.active{
+    background:#d946ef;
+    color:white;
+}
+
+body[data-theme="mono"] .theme-btn{
+    background:#374151;
+    color:white;
+}
+
+body[data-theme="mono"] .theme-btn.active{
+    background:#e5e7eb;
+    color:black;
+}
+
 .scoreboard{
     display:grid;
     grid-template-columns:repeat(3,1fr);
@@ -435,6 +493,155 @@ body{
     pointer-events:none;
 }
 
+/* --- Statistics Dashboard Styles --- */
+.stats-box {
+    background: var(--panel2);
+    border-radius: 16px;
+    padding: 14px;
+}
+
+.stats-container {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+@media (min-width: 600px) {
+    .stats-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+.stat-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 14px;
+    padding: 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(64, 245, 210, 0.2);
+}
+
+.stat-icon {
+    font-size: 2rem;
+}
+
+.stat-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-label {
+    font-size: 0.85rem;
+    color: var(--muted);
+    font-weight: 500;
+}
+
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--txt);
+}
+
+.progress-section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.progress-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.progress-label {
+    width: 120px;
+    font-weight: 600;
+    color: var(--muted);
+}
+
+.progress-bar-container {
+    flex: 1;
+    height: 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    border-radius: 999px;
+    transition: width 0.6s ease;
+}
+
+.x-progress {
+    background: linear-gradient(90deg, var(--acc2), #ff4b4b);
+}
+
+.o-progress {
+    background: linear-gradient(90deg, var(--acc), #00d2ff);
+}
+
+.d-progress {
+    background: linear-gradient(90deg, #a5b4fc, #6366f1);
+}
+
+.progress-value {
+    width: 50px;
+    text-align: right;
+    font-weight: 700;
+    color: var(--txt);
+}
+
+.stats-actions {
+    display: flex;
+    justify-content: center;
+}
+
+/* --- Confirmation Modal --- */
+.confirm-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.confirm-modal.show {
+    display: flex;
+}
+
+.confirm-card {
+    background: var(--panel);
+    padding: 30px;
+    border-radius: 22px;
+    min-width: 320px;
+    text-align: center;
+}
+
+.confirm-actions {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
 @media(max-width:600px){
 
     .board{
@@ -456,5 +663,9 @@ body{
 
     .scoreboard{
         grid-template-columns:1fr;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
     }
 }
