@@ -3,13 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="FocusForge — Pomodoro Focus Timer for peak productivity" />
+  <meta name="description" content="FocusForge — Pomodoro Focus Timer with Advanced Analytics" />
   <title>FocusForge — Pomodoro Focus Timer</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 <a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
-
 
   <!-- Ambient background blobs -->
   <div class="bg-blob blob-1" aria-hidden="true"></div>
@@ -21,20 +20,23 @@
     <!-- ── Header ── -->
     <header class="app-header">
       <div class="logo">
-        <span class="logo-icon" aria-hidden="true">&#9889;</span>
+        <span class="logo-icon" aria-hidden="true">⚡</span>
         <span class="logo-text">FocusForge</span>
       </div>
       <div class="header-actions">
+        <button class="icon-btn" id="statsToggle" aria-label="Toggle statistics dashboard" title="Statistics">
+          <span aria-hidden="true">📊</span>
+        </button>
         <div class="session-badge" title="Completed focus sessions" aria-label="Sessions completed">
-          <span aria-hidden="true">&#127919;</span>
+          <span aria-hidden="true">🎯</span>
           <span class="session-label">Sessions</span>
           <span class="session-count" id="sessionCount" aria-live="polite" aria-atomic="true">0</span>
         </div>
         <button class="icon-btn" id="themeToggle" aria-label="Toggle light/dark theme" title="Toggle theme">
-          <span id="themeIcon" aria-hidden="true">&#9728;&#65039;</span>
+          <span id="themeIcon" aria-hidden="true">☀️</span>
         </button>
         <button class="icon-btn" id="settingsToggle" aria-label="Open settings" title="Settings (Ctrl+,)">
-          <span aria-hidden="true">&#9881;&#65039;</span>
+          <span aria-hidden="true">⚙️</span>
         </button>
       </div>
     </header>
@@ -85,17 +87,17 @@
               role="button"
               aria-label="Timer display — click to edit"
             >25:00</span>
-            <span class="timer-edit-hint" aria-hidden="true">&#9998; click to edit</span>
+            <span class="timer-edit-hint" aria-hidden="true">✏️ click to edit</span>
           </div>
         </div>
 
         <!-- Quick time adjust -->
         <div class="time-adjust" role="group" aria-label="Adjust timer duration">
           <button class="adjust-btn" id="decreaseTime" aria-label="Decrease time by 5 minutes" title="−5 min">
-            <span aria-hidden="true">&#8722;</span>5 min
+            <span aria-hidden="true">−</span>5 min
           </button>
           <button class="adjust-btn" id="increaseTime" aria-label="Increase time by 5 minutes" title="+5 min">
-            <span aria-hidden="true">&#43;</span>5 min
+            <span aria-hidden="true">+</span>5 min
           </button>
         </div>
 
@@ -131,11 +133,148 @@
         <!-- Motivational quote -->
         <div class="quote-section" id="quoteSection" aria-live="polite">
           <p class="quote-text" id="quoteText">"The secret of getting ahead is getting started."</p>
-          <span class="quote-author" id="quoteAuthor">&#8212; Mark Twain</span>
+          <span class="quote-author" id="quoteAuthor">— Mark Twain</span>
         </div>
 
       </section>
     </main>
+
+    <!-- ── Statistics Dashboard ── -->
+    <aside
+      class="stats-panel glass"
+      id="statsPanel"
+      aria-label="Statistics dashboard"
+      hidden
+    >
+      <div class="stats-header">
+        <h2 class="stats-title">📊 Focus Forge Analytics</h2>
+        <div class="stats-header-actions">
+          <button class="icon-btn" id="exportStats" aria-label="Export statistics as CSV" title="Export CSV">
+            <span aria-hidden="true">📥</span>
+          </button>
+          <button class="icon-btn" id="statsClose" aria-label="Close statistics">✕</button>
+        </div>
+      </div>
+
+      <div class="stats-body">
+        <!-- Streak & Focus Score -->
+        <div class="stats-highlight">
+          <div class="highlight-card">
+            <span class="highlight-icon">🔥</span>
+            <div class="highlight-info">
+              <span class="highlight-label">Current Streak</span>
+              <span class="highlight-value" id="streakCount">0 days</span>
+            </div>
+          </div>
+          <div class="highlight-card">
+            <span class="highlight-icon">⭐</span>
+            <div class="highlight-info">
+              <span class="highlight-label">Focus Score</span>
+              <span class="highlight-value" id="focusScore">0/100</span>
+              <div class="score-bar">
+                <div class="score-fill" id="scoreFill" style="width: 0%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <span class="stat-icon">⏱️</span>
+            <div class="stat-info">
+              <span class="stat-label">Today's Focus</span>
+              <span class="stat-value" id="todayFocus">0 min</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <span class="stat-icon">📈</span>
+            <div class="stat-info">
+              <span class="stat-label">Total Focus</span>
+              <span class="stat-value" id="totalFocus">0 hrs</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <span class="stat-icon">🎯</span>
+            <div class="stat-info">
+              <span class="stat-label">Avg Session</span>
+              <span class="stat-value" id="avgSession">0 min</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <span class="stat-icon">🏆</span>
+            <div class="stat-info">
+              <span class="stat-label">Best Day</span>
+              <span class="stat-value" id="bestDay">0 min</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <span class="stat-icon">📅</span>
+            <div class="stat-info">
+              <span class="stat-label">This Week</span>
+              <span class="stat-value" id="weekFocus">0 hrs</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <span class="stat-icon">📊</span>
+            <div class="stat-info">
+              <span class="stat-label">Total Sessions</span>
+              <span class="stat-value" id="totalSessions">0</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Compare Mode -->
+        <div class="compare-section">
+          <h3>📊 Week Over Week Comparison</h3>
+          <div class="compare-grid">
+            <div class="compare-card">
+              <span class="compare-label">This Week</span>
+              <span class="compare-value" id="thisWeek">0 hrs</span>
+            </div>
+            <div class="compare-card">
+              <span class="compare-label">Last Week</span>
+              <span class="compare-value" id="lastWeek">0 hrs</span>
+            </div>
+            <div class="compare-card highlight-change">
+              <span class="compare-label">Change</span>
+              <span class="compare-value" id="weekChange">0%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Chart Section -->
+        <div class="chart-section">
+          <div class="chart-header">
+            <h3>Focus Activity</h3>
+            <div class="chart-controls">
+              <button class="chart-btn active" data-period="week">Week</button>
+              <button class="chart-btn" data-period="month">Month</button>
+              <button class="chart-btn" data-period="year">Year</button>
+            </div>
+          </div>
+          <div class="chart-container">
+            <canvas id="statsChart" width="600" height="250"></canvas>
+          </div>
+        </div>
+
+        <!-- Heat Map -->
+        <div class="heatmap-section">
+          <h3>🔥 Productivity Heat Map</h3>
+          <div class="heatmap-grid" id="heatmapGrid">
+            <!-- Generated by JS -->
+          </div>
+        </div>
+
+        <!-- Most Productive Hours -->
+        <div class="productive-hours">
+          <h3>⏰ Most Productive Hours</h3>
+          <div class="hours-grid" id="hoursGrid">
+            <!-- Generated by JS -->
+          </div>
+        </div>
+      </div>
+    </aside>
 
     <!-- ── Settings Panel ── -->
     <aside
@@ -145,26 +284,26 @@
       hidden
     >
       <div class="settings-header">
-        <h2 class="settings-title">Settings</h2>
-        <button class="icon-btn" id="settingsClose" aria-label="Close settings">&#10005;</button>
+        <h2 class="settings-title">⚙️ Settings</h2>
+        <button class="icon-btn" id="settingsClose" aria-label="Close settings">✕</button>
       </div>
       <div class="settings-body">
 
         <div class="setting-group">
           <label class="setting-label" for="focusDuration">Focus Duration (minutes)</label>
           <div class="setting-input-row">
-            <button class="stepper-btn" data-target="focusDuration" data-action="dec" aria-label="Decrease focus duration">&#8722;</button>
+            <button class="stepper-btn" data-target="focusDuration" data-action="dec" aria-label="Decrease focus duration">−</button>
             <input class="setting-input" type="number" id="focusDuration" min="1" max="99" value="25" />
-            <button class="stepper-btn" data-target="focusDuration" data-action="inc" aria-label="Increase focus duration">&#43;</button>
+            <button class="stepper-btn" data-target="focusDuration" data-action="inc" aria-label="Increase focus duration">+</button>
           </div>
         </div>
 
         <div class="setting-group">
           <label class="setting-label" for="breakDuration">Break Duration (minutes)</label>
           <div class="setting-input-row">
-            <button class="stepper-btn" data-target="breakDuration" data-action="dec" aria-label="Decrease break duration">&#8722;</button>
+            <button class="stepper-btn" data-target="breakDuration" data-action="dec" aria-label="Decrease break duration">−</button>
             <input class="setting-input" type="number" id="breakDuration" min="1" max="99" value="5" />
-            <button class="stepper-btn" data-target="breakDuration" data-action="inc" aria-label="Increase break duration">&#43;</button>
+            <button class="stepper-btn" data-target="breakDuration" data-action="inc" aria-label="Increase break duration">+</button>
           </div>
         </div>
 
@@ -193,7 +332,7 @@
         </div>
 
         <button class="apply-btn" id="applySettings">Apply Settings</button>
-        <button class="reset-sessions-btn" id="resetSessions">Reset Session Count</button>
+        <button class="reset-sessions-btn" id="resetSessions">Reset All Data</button>
 
       </div>
     </aside>
@@ -211,7 +350,7 @@
     aria-describedby="popupMessage"
   >
     <div class="popup glass">
-      <div class="popup-icon" id="popupIcon" aria-hidden="true">&#127881;</div>
+      <div class="popup-icon" id="popupIcon" aria-hidden="true">🎉</div>
       <h3 class="popup-title" id="popupTitle">Session Complete!</h3>
       <p class="popup-message" id="popupMessage">Amazing work! Time for a break.</p>
       <blockquote class="popup-quote" id="popupQuote"></blockquote>
