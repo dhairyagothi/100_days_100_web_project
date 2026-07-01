@@ -320,16 +320,13 @@ body{
 
 .theme-btn{
     padding:8px 14px;
-
     border-radius:10px;
-
     border:none;
-
     background:var(--panel2);
-
     color:var(--txt);
-
     transition:.3s;
+    cursor:pointer;
+    font-weight:600;
 }
 
 .theme-btn.active{
