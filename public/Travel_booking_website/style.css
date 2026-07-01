@@ -1002,3 +1002,57 @@ nav {
   padding: 0 1rem 1rem;
 }
 
+#themeToggle {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid var(--border-color);
+
+  background: var(--card-bg);
+  color: var(--text-color);
+
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#themeToggle:hover {
+  transform: rotate(180deg);
+  border-color: var(--accent);
+}
+
+#themeIcon {
+  font-size: 1.2rem;
+}
+body.dark-theme {
+  --bg-primary: #0a0909;
+}
+body.dark-theme
+{
+  background: var(--bg-primary);
+  background-attachment: fixed;
+
+  color: #fff;
+}
+body.dark-theme h2,
+body.dark-theme p
+{
+  color: #fff;
+}
+
+body.dark-theme .service_card,
+body.dark-theme .offer_card,
+body.dark-theme .client{
+    background-color: #222;
+    color: #fff;
+}
+body.dark-theme .client_card{
+   background-color: #0a0909;
+}
+
+body.dark-theme #faq{
+    background-color: #0a0909;
+    color: #fff;
+}
+.hidden {
+  display: none;
+}
