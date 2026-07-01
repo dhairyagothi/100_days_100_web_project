@@ -1816,3 +1816,64 @@ body {
     flex-wrap: wrap;
   }
 }
+/* ==========================================================================
+   Favorite Toggle Enhancements
+   ========================================================================== */
+
+/* Favorite indicator badge styles */
+.favorite-indicator-badge {
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+  user-select: none;
+  z-index: 10;
+}
+
+.favorite-indicator-badge:hover {
+  transform: scale(1.15);
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* Favorite pulse animation */
+@keyframes favoritePulse {
+  0% { 
+    transform: scale(1); 
+  }
+  30% { 
+    transform: scale(1.4); 
+  }
+  60% { 
+    transform: scale(0.9); 
+  }
+  100% { 
+    transform: scale(1); 
+  }
+}
+
+.favorite-indicator-badge.pulse {
+  animation: favoritePulse 0.4s ease;
+}
+
+/* Favorite badge active state */
+.favorite-indicator-badge[data-favorite="true"] {
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 2px 8px rgba(232, 112, 161, 0.3);
+}
+
+/* Theme-specific hover effects */
+.theme-cozy-library .favorite-indicator-badge:hover {
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 4px 12px rgba(176, 92, 68, 0.2);
+}
+
+.theme-midnight-study .favorite-indicator-badge:hover {
+  background: rgba(30, 40, 60, 0.95);
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+}
+
+.theme-berry-much .favorite-indicator-badge:hover {
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 4px 12px rgba(232, 112, 161, 0.25);
+}
+
+

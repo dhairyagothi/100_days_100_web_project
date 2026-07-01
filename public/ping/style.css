@@ -25,7 +25,7 @@
   --theme-btn-shadow: 0 0 0 transparent;
 }
 
-body[data-theme="classic"] {
+body[data-theme='classic'] {
   --bg-color: #05001a;
   --text-color: #ecf0f1;
   --header-bg: #05001a;
@@ -52,7 +52,7 @@ body[data-theme="classic"] {
   --theme-btn-shadow: 0 0 10px rgba(59, 130, 246, 0.4);
 }
 
-body[data-theme="neon"] {
+body[data-theme='neon'] {
   --bg-color: #010611;
   --text-color: #e6fbff;
   --header-bg: #020b1f;
@@ -79,7 +79,7 @@ body[data-theme="neon"] {
   --theme-btn-shadow: 0 0 10px rgba(0, 217, 255, 0.45);
 }
 
-body[data-theme="retro"] {
+body[data-theme='retro'] {
   --bg-color: #140220;
   --text-color: #f7f3c7;
   --header-bg: #1d0f38;
@@ -120,7 +120,9 @@ body {
   color: var(--text-color);
   text-align: center;
   padding: 20px;
-  transition: background 0.3s ease, color 0.3s ease;
+  transition:
+    background 0.3s ease,
+    color 0.3s ease;
 }
 
 .header {
@@ -196,7 +198,11 @@ h2 {
   letter-spacing: 0.08em;
   text-transform: uppercase;
   cursor: pointer;
-  transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease;
   box-shadow: var(--theme-btn-shadow);
 }
 
@@ -245,7 +251,9 @@ h2 {
   font-size: 28px;
   font-weight: bold;
   cursor: pointer;
-  transition: transform 0.3s ease, background-color 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    background-color 0.3s ease;
 }
 
 .easy {
@@ -436,4 +444,3 @@ h2 {
     min-width: 100%;
   }
 }
-  

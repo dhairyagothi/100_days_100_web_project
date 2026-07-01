@@ -1,0 +1,441 @@
+/* =========================================================
+   CSS VARIABLES & THEMING
+   ========================================================= */
+:root {
+    /* Light Theme (Default) */
+    --bg-body: #f3f4f6;
+    --bg-panel: #ffffff;
+    --text-main: #111827;
+    --text-muted: #6b7280;
+    --accent-color: #3b82f6;
+    --accent-hover: #2563eb;
+    --border-color: #e5e7eb;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+    --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
+    --radius-lg: 24px;
+    --radius-md: 16px;
+    --radius-sm: 8px;
+    --transition: all 0.3s ease;
+}
+
+body.dark-theme {
+    /* Dark Theme */
+    --bg-body: #0f172a;
+    --bg-panel: #1e293b;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --accent-color: #3b82f6;
+    --border-color: #334155;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.5);
+    --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.4);
+}
+
+/* =========================================================
+   RESET & TYPOGRAPHY
+   ========================================================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-body);
+    color: var(--text-main);
+    transition: background-color 0.3s ease, color 0.3s ease;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+ul {
+    list-style: none;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    background: none;
+    font-family: inherit;
+    transition: var(--transition);
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* =========================================================
+   LAYOUT
+   ========================================================= */
+.app-container {
+    display: flex;
+    height: 100vh;
+    max-width: 1440px;
+    margin: 0 auto;
+}
+
+/* =========================================================
+   SIDEBAR & SEARCH
+   ========================================================= */
+.sidebar {
+    width: 350px;
+    background-color: var(--bg-panel);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    box-shadow: var(--shadow-md);
+    z-index: 10;
+}
+
+.search-section {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.search-form {
+    display: flex;
+    flex: 1;
+    position: relative;
+}
+
+.search-form input {
+    width: 100%;
+    padding: 0.75rem 2.5rem 0.75rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    background-color: var(--bg-body);
+    color: var(--text-main);
+    font-size: 1rem;
+    outline: none;
+    transition: var(--transition);
+}
+
+.search-form input:focus {
+    border-color: var(--accent-color);
+}
+
+.search-btn {
+    position: absolute;
+    right: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.2rem;
+    opacity: 0.6;
+}
+
+.search-btn:hover {
+    opacity: 1;
+}
+
+.icon-btn {
+    background-color: var(--bg-body);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    border-radius: 50%;
+}
+
+.icon-btn:hover {
+    background-color: var(--border-color);
+}
+
+.recent-locations h3 {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.location-list li {
+    padding: 1rem;
+    border-radius: var(--radius-sm);
+    margin-bottom: 0.5rem;
+    cursor: pointer;
+    transition: var(--transition);
+    color: var(--text-main);
+    font-weight: 500;
+}
+
+.location-list li:hover {
+    background-color: var(--bg-body);
+}
+
+.location-list .empty-state {
+    color: var(--text-muted);
+    font-weight: 400;
+    cursor: default;
+}
+
+.location-list .empty-state:hover {
+    background-color: transparent;
+}
+
+/* =========================================================
+   MAIN DASHBOARD
+   ========================================================= */
+.dashboard {
+    flex: 1;
+    padding: 2rem 4rem;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}
+
+.dashboard-header {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.header-controls {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.unit-toggle {
+    display: flex;
+    background-color: var(--bg-panel);
+    border-radius: 50px;
+    padding: 0.25rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.unit-toggle button {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+.unit-toggle button.active {
+    background-color: var(--text-main);
+    color: var(--bg-panel);
+}
+
+/* =========================================================
+   CURRENT WEATHER
+   ========================================================= */
+.current-weather {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.weather-header h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+}
+
+.weather-header p {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    margin-top: 0.25rem;
+}
+
+.weather-main {
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+}
+
+.temperature-display {
+    display: flex;
+    align-items: flex-start;
+}
+
+.temp-huge {
+    font-size: 7rem;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.05em;
+}
+
+.temp-unit {
+    font-size: 2rem;
+    font-weight: 500;
+    margin-top: 0.5rem;
+}
+
+.weather-condition {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.condition-icon {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+}
+
+.weather-condition h2 {
+    font-size: 1.8rem;
+    margin-top: 0.5rem;
+}
+
+.weather-condition p {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+}
+
+/* =========================================================
+   HIGHLIGHTS GRID
+   ========================================================= */
+.highlights-grid h2, .forecast-section h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+}
+
+.highlight-card {
+    background-color: var(--bg-panel);
+    padding: 1.5rem;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.highlight-card h3 {
+    color: var(--text-muted);
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.card-value {
+    font-size: 2.5rem;
+    font-weight: 600;
+}
+
+.card-subtext {
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* =========================================================
+   FORECAST SECTION
+   ========================================================= */
+.forecast-grid {
+    display: flex;
+    gap: 1.5rem;
+    overflow-x: auto;
+    padding-bottom: 1rem;
+    scrollbar-width: thin;
+}
+
+.forecast-grid::-webkit-scrollbar {
+    height: 6px;
+}
+
+.forecast-grid::-webkit-scrollbar-thumb {
+    background-color: var(--border-color);
+    border-radius: 10px;
+}
+
+.forecast-card {
+    background-color: var(--bg-panel);
+    padding: 1.5rem;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    min-width: 130px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    flex: 1;
+}
+
+.forecast-card .day {
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.forecast-card img {
+    width: 60px;
+    height: 60px;
+}
+
+.forecast-temps {
+    display: flex;
+    gap: 0.75rem;
+    font-size: 1.1rem;
+}
+
+.forecast-temps .max {
+    font-weight: 700;
+}
+
+.forecast-temps .min {
+    color: var(--text-muted);
+}
+
+/* =========================================================
+   LOADER
+   ========================================================= */
+.loader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    min-height: 400px;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid var(--border-color);
+    border-top: 4px solid var(--accent-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 1rem;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* =========================================================
+   RESPONSIVE DESIGN
+   ========================================================= */
+@media (max-width: 900px) {
+    .app-container {
+        flex-direction: column;
+        height: auto;
+    }
+    
+    .sidebar {
+        width: 100%;
+        padding: 1.5rem;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+    
+    .dashboard {
+        padding: 1.5rem;
+    }
+    
+    .weather-main {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+}
