@@ -1,42 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="An interactive crossword puzzle game with topic and difficulty selection">
     <title>Crossword Puzzle Game</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-    <h1>🧩 Crossword Puzzle Game</h1>
+    <header>
+        <div>
+            <h1>🧩 Crossword Puzzle Game</h1>
+        </div>
+        <!-- Dark/Light Theme Toggle -->
+        <button id="themeToggle" title="Toggle dark/light theme">🌙 Theme</button>
+    </header>
 
-    <div class="container">
+    <!-- Topic & Difficulty Setup Screen -->
+    <div id="setupScreen" class="setup-screen">
+        <div class="setup-card">
+            <h2>Choose Your Challenge</h2>
+            <p class="setup-subtitle">Pick a topic and a difficulty to generate your puzzle set.</p>
 
-        <div id="grid" class="grid"></div>
+            <h3 class="setup-label">Topic</h3>
+            <div id="topicGrid" class="topic-grid" role="radiogroup" aria-label="Select a topic"></div>
 
-        <div class="clues">
-            <h2>Clues</h2>
+            <h3 class="setup-label">Difficulty</h3>
+            <div id="difficultyGroup" class="difficulty-group" role="radiogroup" aria-label="Select a difficulty"></div>
 
-            <h3>Across</h3>
-            <ul>
-                <li>1. Markup language for web pages</li>
-                <li>2. Programming language of the web</li>
-            </ul>
+            <button id="startBtn" class="btn-primary btn-start" disabled>▶ Start Puzzle</button>
+        </div>
+    </div>
 
-            <h3>Down</h3>
-            <ul>
-                <li>3. Styles web pages</li>
-            </ul>
+    <!-- Game Screen -->
+    <div id="gameScreen" class="container" hidden>
 
-            <button id="checkBtn">Check Answers</button>
-            <button id="resetBtn">Reset</button>
+        <div class="game-meta">
+            <span id="activeTopic" class="badge badge-topic"></span>
+            <span id="activeDifficulty" class="badge badge-difficulty"></span>
+            <button id="changeTopicBtn" class="btn-change-topic" title="Pick a different topic or difficulty">↺ Change Topic</button>
+        </div>
 
-            <p id="result"></p>
+        <!-- Timer & Score -->
+        <div class="status-bar">
+            <span id="timer" title="Current puzzle time">⏱ Time: 00:00</span>
+            <span id="score" title="Your current score">⭐ Score: 0</span>
+            <!-- Play/Pause Button -->
+            <button id="timerToggle" title="Play/Pause timer" disabled>▶️</button>
+        </div>
+
+        <div class="board">
+            <!-- Crossword Grid -->
+            <div id="grid" class="grid" aria-label="Crossword puzzle grid"></div>
+
+            <!-- Clues Section -->
+            <aside class="clues">
+                <h2>Clues</h2>
+
+                <section>
+                    <h3>Across</h3>
+                    <ul id="acrossClues"></ul>
+                </section>
+
+                <section>
+                    <h3>Down</h3>
+                    <ul id="downClues"></ul>
+                </section>
+
+                <!-- Action Buttons -->
+                <div class="button-group">
+                    <button id="checkBtn" class="btn-primary" disabled>✓ Check Answers</button>
+                    <button id="resetBtn" class="btn-secondary" disabled>↻ Reset</button>
+                </div>
+
+                <div id="result" role="status" aria-live="polite" aria-atomic="true"></div>
+            </aside>
         </div>
 
     </div>
 
     <script src="script.js"></script>
-
 </body>
+
 </html>

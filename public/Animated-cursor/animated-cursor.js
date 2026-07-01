@@ -1,7 +1,7 @@
 const cursor = document.querySelector(".cursor");
 const glow = document.querySelector(".galaxy-glow");
 const canvas = document.querySelector("#stars");
-const ctx = canvas.getContext("2d");
+const ctx = canvas ? canvas.getContext("2d") : null;
 const cursorDesign = document.querySelector("#cursor-design");
 const themeDesign = document.querySelector("#theme-design");
 const controls = document.querySelectorAll(".magnetic-control");
@@ -37,11 +37,11 @@ const particles = [];
 const stars = [];
 const starCount = 260;
 
-document.body.dataset.cursor = cursorDesign.value;
-document.body.dataset.theme = themeDesign.value;
+if (cursorDesign) document.body.dataset.cursor = cursorDesign.value;
+if (themeDesign)  document.body.dataset.theme  = themeDesign.value;
 
 function getTheme() {
-    return themes[themeDesign.value] || themes.galaxy;
+    return themes[themeDesign ? themeDesign.value : "galaxy"] || themes.galaxy;
 }
 
 function getRandomColor(colors) {
@@ -209,10 +209,14 @@ function animate() {
     cursorX += (targetX - cursorX) * 0.16;
     cursorY += (targetY - cursorY) * 0.16;
 
-    cursor.style.left = cursorX + "px";
-    cursor.style.top = cursorY + "px";
-    glow.style.left = cursorX + "px";
-    glow.style.top = cursorY + "px";
+    if (cursor) {
+        cursor.style.left = cursorX + "px";
+        cursor.style.top = cursorY + "px";
+    }
+    if (glow) {
+        glow.style.left = cursorX + "px";
+        glow.style.top = cursorY + "px";
+    }
 
     document.documentElement.style.setProperty("--cursor-x", `${(cursorX / width) * 100}%`);
     document.documentElement.style.setProperty("--cursor-y", `${(cursorY / height) * 100}%`);
@@ -226,9 +230,11 @@ function animate() {
         }
     }
 
-    ctx.clearRect(0, 0, width, height);
-    drawStars();
-    drawParticles();
+    if (ctx) {
+        ctx.clearRect(0, 0, width, height);
+        drawStars();
+        drawParticles();
+    }
     requestAnimationFrame(animate);
 }
 
@@ -236,40 +242,48 @@ document.addEventListener("pointermove", (event) => {
     targetX = event.clientX;
     targetY = event.clientY;
     isPointerActive = true;
-    cursor.style.opacity = "1";
-    glow.style.opacity = "1";
+    if (cursor) { cursor.style.opacity = "1"; }
+    if (glow)   { glow.style.opacity   = "1"; }
 });
 
 document.addEventListener("pointerleave", () => {
     isPointerActive = false;
-    cursor.style.opacity = "0";
-    glow.style.opacity = "0";
+    if (cursor) { cursor.style.opacity = "0"; }
+    if (glow)   { glow.style.opacity   = "0"; }
 });
 
 document.addEventListener("pointerdown", (event) => {
     createClickBurst(event.clientX, event.clientY);
-    cursor.classList.add("is-hovering");
-    window.setTimeout(() => cursor.classList.remove("is-hovering"), 160);
-});
-
-cursorDesign.addEventListener("change", (event) => {
-    document.body.dataset.cursor = event.target.value;
-});
-
-themeDesign.addEventListener("change", (event) => {
-    document.body.dataset.theme = event.target.value;
-    resizeCanvas();
-});
-
-controls.forEach((control) => {
-    control.addEventListener("pointerenter", () => {
+    if (cursor) {
         cursor.classList.add("is-hovering");
-    });
-
-    control.addEventListener("pointerleave", () => {
-        cursor.classList.remove("is-hovering");
-    });
+        window.setTimeout(() => cursor.classList.remove("is-hovering"), 160);
+    }
 });
+
+if (cursorDesign) {
+    cursorDesign.addEventListener("change", (event) => {
+        document.body.dataset.cursor = event.target.value;
+    });
+}
+
+if (themeDesign) {
+    themeDesign.addEventListener("change", (event) => {
+        document.body.dataset.theme = event.target.value;
+        if (canvas) resizeCanvas();
+    });
+}
+
+if (cursor) {
+    controls.forEach((control) => {
+        control.addEventListener("pointerenter", () => {
+            cursor.classList.add("is-hovering");
+        });
+
+        control.addEventListener("pointerleave", () => {
+            cursor.classList.remove("is-hovering");
+        });
+    });
+}
 
 customSelects.forEach((customSelect) => {
     const nativeSelect = document.querySelector(`#${customSelect.dataset.select}`);
@@ -306,8 +320,89 @@ document.addEventListener("keydown", (event) => {
     }
 });
 
-window.addEventListener("resize", resizeCanvas);
+window.addEventListener("resize", () => { if (canvas) resizeCanvas(); });
 
-resizeCanvas();
-animate();
+if (canvas && ctx) {
+    resizeCanvas();
+    animate();
+}
 
+// ==========================
+// Theme Toggle (Global)
+// ==========================
+
+// Select all toggle buttons (use a common class)
+const themeToggles = document.querySelectorAll(".theme");
+const themeIcon = document.getElementById("themeIcon");
+
+// Default = DARK MODE
+let isLightMode = JSON.parse(localStorage.getItem("lightMode")) || false;
+
+// Apply theme on load
+function updateTheme() {
+  if (isLightMode) {
+    document.body.classList.add("light-theme");
+    themeIcon.textContent = "🌙"; // show moon when light mode active
+  } else {
+    document.body.classList.remove("light-theme");
+    themeIcon.textContent = "☀️"; // show sun when dark mode active
+  }
+}
+
+// Toggle theme on any button click
+themeToggles.forEach(btn => {
+  btn.addEventListener("click", () => {
+    isLightMode = !isLightMode;
+    localStorage.setItem("lightMode", JSON.stringify(isLightMode));
+    updateTheme();
+  });
+});
+
+// Initialize on page load
+updateTheme();
+
+// =========================
+// MOBILE SIDEBAR
+// =========================
+
+(function initMobileSidebar() {
+    const hamburger   = document.querySelector(".hamburger-btn");
+    const sidebar     = document.querySelector(".mobile-sidebar");
+    const overlay     = document.querySelector(".sidebar-overlay");
+    const closeBtn    = document.querySelector(".sidebar-close-btn");
+
+    if (!hamburger || !sidebar || !overlay) return;
+
+    function openSidebar() {
+        sidebar.classList.add("is-open");
+        hamburger.classList.add("is-open");
+        overlay.classList.add("is-visible");
+        document.body.style.overflow = "hidden";
+        hamburger.setAttribute("aria-expanded", "true");
+    }
+
+    function closeSidebar() {
+        sidebar.classList.remove("is-open");
+        hamburger.classList.remove("is-open");
+        overlay.classList.remove("is-visible");
+        document.body.style.overflow = "";
+        hamburger.setAttribute("aria-expanded", "false");
+    }
+
+    hamburger.addEventListener("click", () => {
+        sidebar.classList.contains("is-open") ? closeSidebar() : openSidebar();
+    });
+
+    if (closeBtn) closeBtn.addEventListener("click", closeSidebar);
+    overlay.addEventListener("click", closeSidebar);
+
+    // Close on Escape key
+    document.addEventListener("keydown", e => {
+        if (e.key === "Escape" && sidebar.classList.contains("is-open")) closeSidebar();
+    });
+
+    // Close sidebar when a nav link is clicked (SPA-friendly)
+    sidebar.querySelectorAll("a").forEach(link => {
+        link.addEventListener("click", closeSidebar);
+    });
+})();

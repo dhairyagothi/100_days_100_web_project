@@ -1,35 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 
-
-
-<head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Animated Search Bar</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
-    integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href="style.css" />
-  <link rel="icon" href="../favv.png" type="image/x-icon" />
-</head>
-
-<body>
-  <form class="container" role="search" action="#" method="get" onsubmit="event.preventDefault();">
-
-    <i class="fa-solid fa-magnifying-glass magnifier" aria-hidden="true"></i>
-
-    <input type="text" class="input" placeholder="Search..." aria-label="Search site content" />
-
-    <i class="fa-solid fa-microphone mic-icon" aria-hidden="true"></i>
-
-  </form>
-
-  <script src="app.js"></script>
-</body>
-
-=======
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -38,32 +9,105 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-  <h1>Animated Search Bar</h1>
-  <p class="subtitle">Search anything or use voice input</p>
+  <nav class="navbar">
 
-  <div class="search-wrapper">
-    <div class="container">
-      <i class="fa-solid fa-magnifying-glass magnifier" aria-label="Search" role="button" tabindex="0"></i>
-      <input 
-        type="text" 
-        class="input" 
-        placeholder="Type to search..." 
-        aria-label="Search input"
-        autocomplete="off"
-      />
-      <kbd class="shortcut-badge">Ctrl K</kbd>
-      <i class="fa-solid fa-xmark clear-icon" aria-label="Clear search" role="button" tabindex="0"></i>
-      <i class="fa-solid fa-microphone mic-icon" aria-label="Voice search" role="button" tabindex="0"></i>
-      <div class="loading-spinner"></div>
+    <div class="logo">
+     <i class="fa-solid fa-magnifying-glass magnifier" aria-label="Search" role="button" tabindex="0"></i>Animated Searchbars
     </div>
 
-    <div class="suggestions-box" id="suggestions"></div>
-  </div>
+    <ul class="nav-links">
 
-  <div id="result" class="result-box"></div>
+      <li>
+        <a href="index.html">
+          Home
+        </a>
+      </li>
 
+      <li>
+        <a href="Searchbars.html">
+          Animated Searchbars
+        </a>
+      </li>
+
+      <li>
+        <a href="contact.html">
+         Contact
+        </a>
+      </li>
+
+    </ul>
+    <button id="themeToggle" class="theme">
+      <span id="themeIcon">☀️</span>
+    </button>
+  </nav>
+
+  <main>
+    <h1>Animated Search Bar</h1>
+    <p class="subtitle">Search anything or use voice input</p>
+    <div class="search-wrapper">
+      <div class="container">
+        <i class="fa-solid fa-magnifying-glass magnifier" aria-label="Search" role="button" tabindex="0"></i>
+        <input type="text" class="input" placeholder="Type to search..." aria-label="Search input" autocomplete="off" />
+        <kbd class="shortcut-badge">Ctrl K</kbd>
+        <i class="fa-solid fa-xmark clear-icon" aria-label="Clear search" role="button" tabindex="0"></i>
+        <i class="fa-solid fa-microphone mic-icon" aria-label="Voice search" role="button" tabindex="0"></i>
+        <div class="loading-spinner"></div>
+      </div>
+      <div class="suggestions-box" id="suggestions"></div>
+    </div>
+     <button class="hero-btn">
+          <a href="Searchbars.html" style="text-decoration: none;color: white;">Explore Searchbars &rarr;   <!-- → --> </a>
+        </button>
+    <div id="result" class="result-box"></div>
+  </main>
+  <footer class="footer">
+
+    <section id="footer-container">
+
+      <!-- Brand -->
+      <div class="footer-section">
+        <h3 ><i class="fa-solid fa-magnifying-glass magnifier" aria-label="Search" role="button" tabindex="0"></i> Midnight Matcher</h3>
+        <p>
+         Animated Searchbar is part of the 100 Web Projects series — exploring creative UI interactions and modern web animations.
+        </p>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="footer-section">
+        <h4>Quick Links</h4>
+
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="Searchbars.html">Searchbars</a></li>
+          <li><a href="#footer-container">Contact</a></li>
+        </ul>
+      </div>
+
+      <!-- Social Links -->
+      <div class="footer-section">
+        <h4>Follow Us</h4>
+
+        <div class="social-links">
+          <a href="#"><i class="fab fa-github"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-linkedin"></i></a>
+          <a href="#"><i class="fab fa-discord"></i></a>
+        </div>
+      </div>
+
+      </div>
+
+      <div class="footer-bottom">
+        <p>
+          © 2025 Animated Searchbar Collection. All Rights Reserved.
+        </p>
+      </div>
+    </section>
+  </footer>
   <script src="app.js"></script>
 </body>
+
 </html>

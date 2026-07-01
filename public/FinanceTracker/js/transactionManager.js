@@ -1,74 +1,35 @@
 // js/transactionManager.js
+import { saveData, loadData } from './storage.js';
 
-import {
-  saveTransactions,
-} from "./storage.js";
+let transactions = loadData('transactions');
 
-import {
-  showNotification,
-} from "./notificationManager.js";
+export function addTransaction(transaction) {
+    if (!transaction.id) {
+        transaction.id = Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    }
+    transactions.push(transaction);
+    saveData('transactions', transactions);
+    return transaction;
+}
 
-export const renderTransactions = (
-  transactions
-) => {
+export function getTransactions() {
+    return transactions;
+}
 
-  const tbody =
-    document.getElementById(
-      "tbody"
-    );
+export function deleteTransaction(index) {
+    if (index >= 0 && index < transactions.length) {
+        transactions.splice(index, 1);
+        saveData('transactions', transactions);
+        return true;
+    }
+    return false;
+}
 
-  tbody.innerHTML = "";
+export function clearAllTransactions() {
+    transactions = [];
+    saveData('transactions', transactions);
+}
 
-  transactions
-    .slice()
-    .reverse()
-    .forEach((transaction) => {
-
-      const row =
-        document.createElement("tr");
-
-      row.innerHTML = `
-        <td>${transaction.description}</td>
-        <td>$${transaction.amount}</td>
-        <td>${transaction.type}</td>
-        <td>${transaction.category}</td>
-        <td>${transaction.date}</td>
-      `;
-
-      tbody.appendChild(row);
-    });
-};
-
-export const addTransaction = (
-  transactions,
-  transaction
-) => {
-
-  transactions.push(transaction);
-
-  saveTransactions(
-    transactions
-  );
-
-  showNotification(
-    "Transaction Added Successfully"
-  );
-
-  return transactions;
-};
-
-export const filterTransactions = (
-  transactions,
-  keyword
-) => {
-
-  return transactions.filter(
-    (transaction) =>
-
-      transaction.description
-        .toLowerCase()
-        .includes(
-          keyword.toLowerCase()
-        )
-  );
-};
+export function getTransactionById(id) {
+    return transactions.find(t => t.id === id);
+}

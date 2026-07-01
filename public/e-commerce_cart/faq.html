@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FAQ — AeroStride</title>
+    <meta name="description" content="Frequently Asked Questions about AeroStride orders, shipping, returns, sizing, and more." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&family=Space+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="pages.css" />
+  </head>
+  <body>
+    <!-- NAVBAR -->
+    <header class="header">
+      <nav class="navbar">
+        <a href="index.html" class="logo">
+          <svg viewBox="0 0 220 36" height="30" class="logo-svg">
+            <defs>
+              <linearGradient id="lg" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#ff4500" />
+                <stop offset="100%" stop-color="#ff8c00" />
+              </linearGradient>
+            </defs>
+            <path d="M4 26 Q14 4 34 2 Q20 12 10 24 Z" fill="url(#lg)" />
+            <path d="M2 30 Q14 8 38 4 Q22 14 12 30 Z" fill="url(#lg)" opacity="0.45" />
+            <text x="44" y="27" fill="currentColor" font-family="'Bebas Neue',sans-serif" font-size="24" letter-spacing="6">AEROSTRIDE</text>
+          </svg>
+        </a>
+        <a href="index.html" class="back-btn">← Back to Shop</a>
+      </nav>
+    </header>
+
+    <main class="page-main">
+      <!-- Hero -->
+      <section class="page-hero">
+        <div class="page-hero-inner">
+          <span class="page-label">Help Center</span>
+          <h1 class="page-title">Frequently Asked Questions</h1>
+          <p class="page-sub">Everything you need to know. Can't find your answer? Email us at <a href="mailto:info@aerostride.com" style="color:var(--accent);">info@aerostride.com</a></p>
+        </div>
+        <div class="page-hero-accent"></div>
+      </section>
+
+      <!-- FAQ Category Tabs -->
+      <section class="container">
+        <div class="tab-group" id="faq-tabs">
+          <button class="tab-btn active" data-tab="orders">Orders</button>
+          <button class="tab-btn" data-tab="shipping">Shipping</button>
+          <button class="tab-btn" data-tab="returns">Returns</button>
+          <button class="tab-btn" data-tab="sizing">Sizing</button>
+          <button class="tab-btn" data-tab="product">Product</button>
+        </div>
+
+        <!-- Orders -->
+        <div class="tab-panel active" id="tab-orders">
+          <div class="faq-list">
+            <div class="faq-item">
+              <button class="faq-q" aria-expanded="false">How do I place an order?</button>
+              <div class="faq-a">
+                <p>Browse our collection, select your size, and click "Add to Cart". Once you're ready, open your cart and click "Checkout". Fill in your shipping and payment details, then confirm your order. You'll receive a confirmation email immediately.</p>
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q" aria-expanded="false">Can I modify or cancel my order?</button>
+              <div class="faq-a">
+                <p>Orders can be modified or cancelled within 1 hour of placement. After that, your order enters processing and changes are no longer possible. Contact us immediately at <a href="mailto:info@aerostride.com" class="inline-link">info@aerostride.com</a> if you need to make a change.</p>
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q" aria-expanded="false">What payment methods do you accept?</button>
+              <div class="faq-a">
+                <p>We accept all major credit and debit cards (Visa, Mastercard, RuPay), UPI, Net Banking, and popular wallets. All payments are processed through a 256-bit SSL encrypted gateway for your security.</p>
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q" aria-expanded="false">Will I receive an order confirmation?</button>
+              <div class="faq-a">
+                <p>Yes! A confirmation email with your order number and details is sent immediately after checkout. If you don't see it within 5 minutes, check your spam folder or contact us.</p>
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q" aria-expanded="false">Is it safe to shop on AeroStride?</button>
+              <div class="faq-a">
+                <p>Absolutely. All transactions on AeroStride are protected by industry-standard SSL encryption. We never store your full card details on our servers.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Shipping -->
+        <div class="tab-panel" id="tab-shipping">
+          <div class="faq-list">
+            <div class="faq-item">
+              <button class="faq-q" aria-expanded="false">How long does shipping take?</button>
+              <div class="faq-a">
+                <p>Standard shipping takes 3–7 business days. Express shipping (1–2 business days) is available at checkout for an additional fee. Orders placed before 2 PM IST are usually dispatched the same day.</p>
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q" aria-expanded="false">Do you offer free shipping?</button>
+              <div class="faq-a">
+                <p>Yes! Orders above Rs.2,499 qualify for free standard shipping across India. International shipping rates vary by destination and are calculated at checkout.</p>
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q" aria-expanded="false">Do you ship internationally?</button>
+              <div class="faq-a">
+                <p>Yes, we ship to over 30 countries. International delivery typically takes 7–14 business days. Duties and taxes may apply and are the responsibility of the customer.</p>
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q" aria-expanded="false">How do I track my order?</button>
+              <div class="faq-a">
+                <p>Once your order is dispatched, you'll receive an email with a tracking number. Visit our <a href="track-order.html" class="inline-link">Track Order</a> page and enter your order number and email to see real-time updates.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Returns -->
+        <div class="tab-panel" id="tab-returns">
+          <div class="faq-list">
+            <div class="faq-item">
+              <button class="faq-q" aria-expanded="false">What is your return policy?</button>
+              <div class="faq-a">
+                <p>We offer hassle-free 30-day returns on all unworn, unaltered items in their original condition. Visit our <a href="returns.html" class="inline-link">Returns page</a> for full details.</p>
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q" aria-expanded="false">How long does a refund take?</button>
+              <div class="faq-a">
+                <p>Refunds are processed within 3–5 business days after we receive and inspect the returned item. The amount will be credited to your original payment method.</p>
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q" aria-expanded="false">Can I exchange for a different size?</button>
+              <div class="faq-a">
+                <p>Yes! Exchanges are free and easy. Email us with your order number and the size you'd like. We'll ship out the replacement as soon as we confirm the return is on its way.</p>
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q" aria-expanded="false">What if my item is defective?</button>
+              <div class="faq-a">
+                <p>We're sorry to hear that! Defective items can be returned or exchanged at any time, regardless of the 30-day window. Please send us a photo of the defect along with your order number.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sizing -->
+        <div class="tab-panel" id="tab-sizing">
+          <div class="faq-list">
+            <div class="faq-item">
+              <button class="faq-q" aria-expanded="false">How do AeroStride shoes fit?</button>
+              <div class="faq-a">
+                <p>Our shoes generally fit true to size. If you're between sizes, we recommend sizing up by half a size. Check our <a href="size-guide.html" class="inline-link">Size Guide</a> for detailed measurements.</p>
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q" aria-expanded="false">How do I measure my foot size?</button>
+              <div class="faq-a">
+                <p>Stand on a piece of paper and trace around your foot. Measure from your heel to the tip of your longest toe. Compare this measurement to our size chart. For best results, measure both feet and use the larger measurement.</p>
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q" aria-expanded="false">Do you have wide-width options?</button>
+              <div class="faq-a">
+                <p>Currently, our standard collection comes in regular width. We're actively working on wide-fit options and plan to launch them later this year. Sign up to our newsletter to be the first to know!</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product -->
+        <div class="tab-panel" id="tab-product">
+          <div class="faq-list">
+            <div class="faq-item">
+              <button class="faq-q" aria-expanded="false">What materials are used in AeroStride shoes?</button>
+              <div class="faq-a">
+                <p>We use premium knit uppers, responsive foam midsoles, and durable rubber outsoles. All materials are sourced ethically and undergo rigorous quality testing before reaching you.</p>
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q" aria-expanded="false">How do I clean my AeroStride shoes?</button>
+              <div class="faq-a">
+                <p>Spot-clean with a damp cloth and mild soap. Allow to air dry naturally — never put them in a dryer or expose them to direct sunlight for extended periods. Avoid submerging in water.</p>
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q" aria-expanded="false">Are AeroStride shoes suitable for running?</button>
+              <div class="faq-a">
+                <p>Yes! Most of our models are engineered for athletic performance. Check individual product descriptions for specific use cases — from daily running to trail activities.</p>
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q" aria-expanded="false">Do you restock sold-out items?</button>
+              <div class="faq-a">
+                <p>Popular items are usually restocked within 2–4 weeks. Add sold-out items to your Wishlist to be notified the moment they come back in stock.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contact Banner -->
+      <section class="container cta-section">
+        <div class="cta-box">
+          <h2>Didn't find your answer?</h2>
+          <p>Our team is available Mon–Sat, 9am–6pm IST. We typically reply within a few hours.</p>
+          <div class="cta-actions">
+            <a href="mailto:info@aerostride.com" class="btn-primary">Contact Us</a>
+            <a href="tel:+1234567890" class="btn-ghost">+123 456 7890</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="page-footer">
+      <div class="page-footer-inner">
+        <span>© 2024 AeroStride. All rights reserved.</span>
+        <div class="footer-links">
+          <a href="size-guide.html">Size Guide</a>
+          <a href="returns.html">Returns</a>
+          <a href="faq.html">FAQ</a>
+          <a href="track-order.html">Track Order</a>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Tab switching
+      const tabs = document.querySelectorAll('.tab-btn');
+      const panels = document.querySelectorAll('.tab-panel');
+      tabs.forEach(btn => {
+        btn.addEventListener('click', () => {
+          tabs.forEach(b => b.classList.remove('active'));
+          panels.forEach(p => p.classList.remove('active'));
+          btn.classList.add('active');
+          document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+        });
+      });
+
+      // Accordion
+      document.querySelectorAll('.faq-q').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const item = btn.closest('.faq-item');
+          const isOpen = btn.getAttribute('aria-expanded') === 'true';
+          // Close all
+          document.querySelectorAll('.faq-item').forEach(i => {
+            i.querySelector('.faq-q').setAttribute('aria-expanded', 'false');
+            i.classList.remove('open');
+          });
+          // Open clicked if it was closed
+          if (!isOpen) {
+            btn.setAttribute('aria-expanded', 'true');
+            item.classList.add('open');
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
