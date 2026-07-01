@@ -1,191 +1,172 @@
 # 🍅 Pomodoro Timer
 
-A modern and interactive **Pomodoro Timer** built using **HTML, CSS, and JavaScript**.
+A feature-rich, browser-based **Pomodoro Timer** built with vanilla **HTML, CSS, and JavaScript** — zero dependencies.
 
-This project is designed to help users improve productivity, maintain focus, and manage work sessions effectively using the famous **Pomodoro Technique**.
+This project helps users improve productivity using the **Pomodoro Technique**, enhanced with a focus music player, task management, weekly streaks, strict mode, and full accessibility support.
 
 ---
 
-# 📌 What is the Pomodoro Technique?
+## 📌 What is the Pomodoro Technique?
 
 The **Pomodoro Technique** is a productivity method created by **Francesco Cirillo** in the late 1980s.
-
-The idea behind the technique is simple:
 
 - Work with complete focus for a short period
 - Take a small break
 - Repeat the cycle
 
-This helps:
-- improve concentration
-- reduce procrastination
-- prevent burnout
-- maintain mental freshness
-
-Each focused work session is called a **Pomodoro**.
-
----
-
-# ⏳ Standard Pomodoro Cycle
-
-| Session Type | Duration |
-|--------------|----------|
+| Session Type | Default Duration |
+|--------------|------------------|
 | Focus Session | 25 Minutes |
 | Short Break | 5 Minutes |
-| Repeat Cycle | 4 Times |
-| Long Break | 15–30 Minutes |
+| Long Break | 15 Minutes |
+| Cycles before Long Break | 4 |
+
+> All durations are fully customisable via Settings.
 
 ---
 
-# 🧠 Why Does It Work?
+## 🚀 Features
 
-Research shows that the human brain performs better when work is divided into focused intervals instead of long uninterrupted sessions.
+### ⏱️ Timer
+- `Date.now()`-anchored countdown — immune to `setInterval` drift over long sessions
+- `visibilitychange` listener recalculates elapsed time when you switch tabs and return
+- Animated circular progress ring
+- Auto-cycle: automatic work → short break → long break cycling
+- Skip session button
+- `meta theme-color` updates with mode colour (native mobile toolbar tint)
 
-The Pomodoro Technique helps users:
-- stay mentally fresh
-- avoid distractions
-- reduce fatigue
-- improve time management
-- build discipline and consistency
+### 🎵 Focus Music Player
+- 9 fully synthesized tracks via the **Web Audio API** — no external files, no network requests
 
-It is widely used by:
-- students
-- developers
-- writers
-- designers
-- remote workers
-- exam aspirants
+| Category | Tracks |
+|----------|--------|
+| **Ambient** | Brown Noise, Pink Noise, White Noise, Lo-Fi, Deep Focus, Rain |
+| **Binaural** | 40Hz Focus, Birdsong, Cafe Jazz |
+
+- Volume control + mute toggle
+- Last track & volume persisted to localStorage and auto-resumed on reload
+- Auto-mutes tick sound when music is playing
+- Headphone reminder toast for binaural tracks
+
+### 📝 Task Management
+- Add, complete, and delete tasks
+- **Drag-to-reorder** tasks with HTML5 drag API and visual drop indicator
+- Completed task guard: pomodoro not counted against already-completed tasks
+- Confirm dialog before clearing completed tasks
+- All tasks persisted to localStorage
+
+### 📊 Stats & Streaks
+- Weekly streak counter with a pure-CSS 7-day bar chart
+- Session dot animations (scale + opacity transition on clear)
+- Pomodoro count tracked per day
+
+### ⚙️ Settings
+- Custom durations for work, short break, and long break
+- **Strict Mode** — blocks tab/mode switching mid-session
+- Auto-start next session toggle
+- All settings persisted to localStorage
+
+### ⌨️ Keyboard Shortcuts
+
+| Key | Action |
+|-----|--------|
+| `Space` | Start / Pause timer |
+| `R` | Reset timer |
+| `S` | Skip session |
+| `M` | Mute / Unmute tick sound |
+
+### ♿ Accessibility
+- ARIA labels on all icon buttons (mute, music, settings, reset, skip)
+- Visible focus rings for full keyboard navigation
+- `prefers-reduced-motion` support
+- Semantic HTML throughout
 
 ---
 
-# 🚀 Features
+## 🐛 Bug Fixes (16 total)
 
-## ⏱️ Timer Features
-- 25-minute Work Mode
-- 5-minute Break Mode
-- Start / Pause / Reset controls
-- Automatic switching between Work & Break sessions
-- Real-time countdown timer
-- Circular animated progress indicator
-
----
-
-## 📝 Productivity Features
-- Add current task input
-- Live task tracker with checkbox
-- Automatic task reset after completion
-- Focus Mode for distraction-free working
-- Motivational productivity quotes during work sessions
-
----
-
-## 🎨 UI Features
-- Modern and clean productivity-focused UI
-- Responsive design for mobile devices
-- Smooth hover animations
-- Dark / Light theme toggle
-- Relaxing productivity-focused color palette
+| # | Bug | Fix |
+|---|-----|-----|
+| 1 | `setInterval` drift over long sessions | Anchored countdown to `Date.now()` |
+| 2 | Tab switch loses elapsed time | `visibilitychange` recalculates on restore |
+| 3 | `resetTimer()` throws NaN after settings change mid-session | NaN guard added |
+| 4 | Progress ring divides by zero on first load | Fallback to `1` |
+| 5 | `updateStats()` called on every tick second | Moved to `logPomodoro()` only |
+| 6 | `tickTimeouts` not cleared on second `stopTick()` call | Guard added |
+| 7 | `skipSession()` bypasses strict mode guard when timer not running | Guard tightened |
+| 8 | `changeMode()` calls `pauseTimer()` redundantly before `startTimer()` | Removed redundant call |
+| 9 | Settings save accepts NaN for numeric inputs | NaN guard on all numeric inputs |
+| 10 | Space shortcut fires when modal inputs are focused | `tagName` guard widened to INPUT / TEXTAREA / role=dialog |
+| 11 | AudioContext leaks on track change | `close()` old ctx before creating new one |
+| 12 | iOS / Safari audio muted on synthesis start | `audioCtx.resume()` called before every synthesis |
+| 13 | Jazz bass timer stored on `musicNodes` — missed on `stopMusic()` | Moved to module-level ref |
+| 14 | Chirp timer same issue | Moved to module-level ref |
+| 15 | `modeColors` throws on unknown mode key | Fallback guard added |
+| 16 | localStorage `setItem` crashes silently on quota exceeded | All `setItem` calls wrapped in try/catch |
 
 ---
 
-## 🔊 Audio Features
-- Background ticking sound while timer runs
-- Automatic sound pause/reset
-
----
-
-# 🛠️ Technologies Used
+## 🛠️ Technologies Used
 
 - HTML5
 - CSS3
 - JavaScript (Vanilla JS)
+- Web Audio API
 
 ---
 
-# 📂 Project Structure
+## 📂 Project Structure
 
 ```text
 Pomodoro_Timer/
-│
-├── index.html
-└── README.md
+├── index.html       # Markup & layout
+├── style.css        # Styles & animations
+├── script.js        # Timer, audio, tasks & stats logic
+└── README.md        # This file
 ```
 
 ---
 
-# ⚙️ How It Works
+## ⚙️ How It Works
 
-1. Enter your current task
-2. Start the timer
-3. Focus during the 25-minute work session
-4. Mark task as complete
-5. Take a 5-minute break
-6. The timer automatically switches between Work and Break sessions
-7. Repeat the cycle
-
-The application automatically switches between:
-- Work Mode
-- Break Mode
-
-During break sessions:
-- motivational quotes disappear
-- task tracker is hidden
-- distractions are minimized
+1. Enter your current task in the task panel
+2. Press **Start** or hit `Space` to begin the focus session
+3. Work until the timer ends — it rings and auto-advances to a break
+4. Mark your task complete after the session
+5. Repeat — after 4 pomodoros a long break is triggered automatically
 
 ---
 
-# 🌙 Focus Mode
+## 🏃 Run Locally
 
-Focus Mode creates a distraction-free environment by hiding:
-- title
-- theme toggle
-- task input
-- motivational quotes
+No build tools needed:
 
-This allows users to fully concentrate on their work session.
+```bash
+# Open directly in browser
+open public/Pomodoro_Timer/index.html
 
----
-
-# 📱 Responsive Design
-
-The project is fully responsive and adapts to:
-- desktops
-- tablets
-- mobile devices
+# Or serve locally
+npx serve public/Pomodoro_Timer
+```
 
 ---
 
-# 💡 Learning Objectives
+## 💡 Learning Objectives
 
-This project helps beginners understand:
-- DOM Manipulation
-- JavaScript Timers
-- Event Handling
-- CSS Styling
-- Responsive Design
-- SVG Progress Animations
-- Theme Switching
-- UI/UX Design Basics
-
----
-
-# 🔮 Future Improvements
-
-Possible future enhancements:
-- Custom timer durations
-- Productivity statistics
-- Local storage support
-- Background music options
-- Notification support
-- Task history tracking
+This project demonstrates:
+- DOM Manipulation & Event Handling
+- Web Audio API (oscillators, noise synthesis, binaural beats)
+- `Date.now()`-based accurate timers
+- HTML5 Drag & Drop API
+- localStorage persistence with quota error handling
+- CSS animations & SVG progress rings
+- Responsive design & accessibility (ARIA, keyboard nav)
 
 ---
 
-# 🤝 Contribution
+## 🤝 Contribution
 
 Contributions, feature suggestions, and improvements are welcome.
-
-To contribute:
 
 1. Fork the repository
 2. Create a new branch
@@ -195,12 +176,12 @@ To contribute:
 
 ---
 
-# 📜 License
+## 📜 License
 
 This project is open-source and available under the MIT License.
 
 ---
 
-# ⭐ Acknowledgement
+## ⭐ Acknowledgement
 
 Inspired by the Pomodoro productivity technique developed by **Francesco Cirillo**.

@@ -1,287 +1,422 @@
-body {
-  font-family: Arial, sans-serif;
-  background-color: #f3f3f3;
-  text-align: center;
+* {
   margin: 0;
   padding: 0;
-  overflow-x: hidden;
-  overflow-y: auto;
-}
-
-.background-video {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  z-index: -1;
-}
-
-.background-video video {
-  min-width: 100%;
-  min-height: 100%;
-  width: auto;
-  height: auto;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  filter: blur(2px) brightness(0.7);
-}
-
-.background-video::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.35);
-}
-
-/* ================= MAIN LAYOUT ================= */
-
-.wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100dvh; 
-  padding: 40px;
-  gap: 60px;
   box-sizing: border-box;
 }
 
-/* Flex assembly ties pole and flag side-by-side */
+:root {
+  --saffron: #ff9933;
+  --green: #138808;
+  --navy: #000080;
+  --dark: #07111f;
+  --card: rgba(255,255,255,0.08);
+  --border: rgba(255,255,255,0.12);
+  --text: #f5f7fb;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background:
+    radial-gradient(circle at top left, rgba(255,153,51,0.18), transparent 40%),
+    radial-gradient(circle at bottom right, rgba(19,136,8,0.15), transparent 40%),
+    linear-gradient(135deg, #07111f, #0b1728);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* BACKGROUND */
+.background-overlay {
+  position: fixed;
+  inset: 0;
+  background:
+    linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.45));
+  z-index: -2;
+}
+
+.bg-wheel {
+  position: fixed;
+  width: 700px;
+  opacity: 0.04;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: rotateWheel 80s linear infinite;
+  z-index: -1;
+}
+
+@keyframes rotateWheel {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+/* BACK BUTTON */
+.project-back-button {
+  position: fixed;
+  top: 18px;
+  left: 18px;
+  padding: 12px 20px;
+  border-radius: 14px;
+  text-decoration: none;
+  color: white;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.14);
+  backdrop-filter: blur(14px);
+  z-index: 999;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.project-back-button:hover {
+  transform: translateY(-3px);
+  background: rgba(255,255,255,0.15);
+}
+
+/* HERO */
+.hero-section {
+  text-align: center;
+  padding: 110px 20px 70px;
+}
+
+.hero-badge {
+  display: inline-block;
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  margin-bottom: 24px;
+  font-size: 0.92rem;
+}
+
+.hero-section h1 {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(2.8rem, 8vw, 5rem);
+  margin-bottom: 16px;
+  background: linear-gradient(to right, var(--saffron), white, var(--green));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-section p {
+  max-width: 700px;
+  margin: auto;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: rgba(255,255,255,0.82);
+}
+
+/* MAIN */
+.main-page {
+  width: min(1250px, 92%);
+  margin: auto;
+}
+
+/* TOP SECTION */
+.top-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 70px;
+  flex-wrap: wrap;
+  margin-bottom: 70px;
+}
+
+/* FLAG */
 .flag-assembly {
   position: relative;
-  width: 480px;  
-  height: 480px; 
-  display: block
+  width: 340px;
+  height: 310px;
 }
-
-/* ================= FLAG POLE ================= */
 
 .bar {
-  height: 100%;
   width: 12px;
-  background: #222;
-  border-left: 2px solid rgb(167, 167, 167);
-  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.4);
-  border-radius: 10px 10px 0px 0px;
+  height: 100%;
+  background: linear-gradient(to bottom, #444, #111);
+  border-radius: 10px;
   position: relative;
-  z-index: 2;
-  margin-top: 0;
 }
 
-/* Anchoring the steps cleanly to the bottom using absolute positions */
 .bar div {
-  background-color: #222;
-  height: 20px;
   position: absolute;
-  border: 1px solid white;
+  height: 18px;
+  background: #222;
 }
 
-.bar .bar-1 { width: 60px; left: -24px; bottom: 40px; }
-.bar .bar-2 { width: 100px; left: -44px; bottom: 20px; }
-.bar .bar-3 { width: 140px; left: -64px; bottom: 0px; }
+.bar-1 {
+  width: 55px;
+  left: -22px;
+  bottom: 36px;
+}
 
-/* ================= FLAG ================= */
+.bar-2 {
+  width: 90px;
+  left: -40px;
+  bottom: 18px;
+}
+
+.bar-3 {
+  width: 125px;
+  left: -58px;
+  bottom: 0;
+}
 
 .flag {
-  height: 300px;
-  width: 450px;
+  width: 220px;
+  height: 145px;
   position: absolute;
-  top: 0;
+  top: 10px;
   left: 12px;
-  box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.3);
-  transform-origin: left center;
-  animation: wave 2.5s infinite ease-in-out;
-  z-index: 1;
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow:
+    0 18px 50px rgba(0,0,0,0.4),
+    0 0 40px rgba(255,153,51,0.18);
+  animation: wave 2s infinite ease-in-out;
 }
 
 @keyframes wave {
-  0% { transform: skewY(0deg) translateX(0px); }
-  25% { transform: skewY(1.5deg) translateX(1px); }
-  50% { transform: skewY(0deg) translateX(0px); }
-  75% { transform: skewY(-1.5deg) translateX(-1px); }
-  100% { transform: skewY(0deg) translateX(0px); }
+  0% { transform: skewY(0deg); }
+  50% { transform: skewY(1.5deg); }
+  100% { transform: skewY(0deg); }
 }
 
-.flag::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    to right,
-    rgba(255, 255, 255, 0.15),
-    rgba(0, 0, 0, 0.08)
-  );
+.top {
+  height: 33.33%;
+  background: var(--saffron);
 }
-
-.top { height: 33.33%; background-color: #FF671F; }
-.bottom { height: 33.33%; background-color: #046A38; }
 
 .middle {
   height: 33.33%;
-  background-color: #fff;
+  background: white;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .middle img {
-  height: 80%;
-  width: auto;
-  animation: rotate 12s linear infinite;
+  width: 55px;
 }
 
-@keyframes rotate {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+.bottom {
+  height: 33.33%;
+  background: var(--green);
 }
 
-/* ================= QUOTE ================= */
-
+/* QUOTE */
 .quote-container {
-  padding: 30px;
-  background-color: rgba(255, 255, 255, 0.95);
-  border-radius: 16px;
-  text-align: center;
-  width: 400px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-  backdrop-filter: blur(5px);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 15px;
+  width: 430px;
+  padding: 28px;
+  border-radius: 28px;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.1);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.35);
 }
 
-/* Rounded frame container for patriot portraits */
+.quote-top {
+  display: flex;
+  gap: 22px;
+  align-items: center;
+}
+
 .image-wrapper {
-  width: 140px;
-  height: 140px;
+  width: 110px;
+  height: 110px;
   border-radius: 50%;
   overflow: hidden;
-  border: 3px solid #FF671F;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  background: #eee;
+  border: 4px solid var(--saffron);
+  flex-shrink: 0;
 }
 
-#patriot-image {
+.image-wrapper img {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Prevents squishing images */
+  object-fit: cover;
+}
+
+.quote-content {
+  flex: 1;
+}
+
+.quote-mark {
+  font-size: 3rem;
+  color: var(--saffron);
+  margin-bottom: -10px;
 }
 
 .quote {
-  font-size: 1.3em;
-  font-weight: bold;
-  color: #222;
-  font-style: italic;
-  line-height: 1.4;
-  min-height: 70px; /* Keeps card height stable when text changes */
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  line-height: 1.7;
+  font-size: 1.08rem;
 }
 
 .author {
-  font-size: 1.1em;
-  color: #046A38;
-  font-weight: 600;
+  margin-top: 12px;
+  color: var(--green);
+  font-weight: 700;
 }
 
 .quote-nav {
   display: flex;
-  justify-content: space-between;
-  width: 100%;
-  margin-top: 10px;
+  gap: 14px;
+  margin-top: 26px;
 }
 
 .quote-nav button {
-  background-color: #FF671F;
-  color: #fff;
+  flex: 1;
+  padding: 12px;
+  border-radius: 14px;
   border: none;
-  padding: 8px 16px;
-  border-radius: 6px;
   cursor: pointer;
-  font-weight: bold;
-  transition: background 0.2s;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--saffron), #ff7f2a);
+  color: white;
+  transition: 0.3s;
 }
 
 .quote-nav button:hover {
-  background-color: #e05310;
+  transform: translateY(-2px);
 }
 
-/* ================= MUSIC ================= */
-
-.music-controls {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background: rgba(255, 255, 255, 0.2);
-  padding: 8px;
-  border-radius: 30px;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  z-index: 10;
+/* MUSIC */
+.music-section {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 90px;
 }
 
-/* ================= RESPONSIVE MOBILE VIEW ================= */
+.music-card {
+  width: 500px;
+  text-align: center;
+  padding: 28px;
+  border-radius: 24px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  backdrop-filter: blur(15px);
+}
 
-@media screen and (max-width: 768px) {
-  .wrapper {
-    flex-direction: column;
-    justify-content: flex-start;
-    gap: 35px;
-    padding: 30px 15px;
-  }
+.music-card h3 {
+  margin-bottom: 18px;
+  font-size: 1.4rem;
+}
 
-  /* Structural flagpole mobile overrides */
-  .bar {
-    height: 45vh;
-    width: 8px;
-    margin-top: -40px;
-  }
+audio {
+  width: 100%;
+}
 
-  .bar .bar-1 { width: 40px; left: -16px; bottom: 24px; height: 12px; }
-  .bar .bar-2 { width: 64px; left: -28px; bottom: 12px; height: 12px; }
-  .bar .bar-3 { width: 88px; left: -40px; bottom: 0px; height: 12px; }
+/* KNOW MORE */
+.know-more-section {
+  margin-bottom: 100px;
+}
 
-  /* Perfectly balances the 3:2 flag size aspect ratio on small screens */
-  .flag {
-    width: 210px;
-    height: 140px;
-    position: absolute;
-    top: 0;
-    left: 8px;
-    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+.section-heading {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.section-heading h2 {
+  font-family: 'Cinzel', serif;
+  font-size: 2.3rem;
+  margin-bottom: 12px;
+}
+
+.section-heading p {
+  color: rgba(255,255,255,0.7);
+}
+
+.info-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 26px;
+}
+
+.info-card {
+  padding: 30px;
+  border-radius: 24px;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.1);
+  transition: 0.35s;
+}
+
+.info-card:hover {
+  transform: translateY(-8px);
+}
+
+.info-card h3 {
+  margin-bottom: 14px;
+  font-size: 1.4rem;
+}
+
+.info-card p {
+  line-height: 1.8;
+}
+
+.saffron {
+  border-top: 5px solid var(--saffron);
+}
+
+.white {
+  border-top: 5px solid white;
+}
+
+.green {
+  border-top: 5px solid var(--green);
+}
+
+.chakra {
+  border-top: 5px solid var(--navy);
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+
+  .hero-section {
+    padding-top: 130px;
   }
 
   .quote-container {
     width: 100%;
-    max-width: 320px;
-    padding: 20px;
-    box-sizing: border-box;
   }
 
-  .image-wrapper {
-    width: 110px;
-    height: 110px;
+  .quote-top {
+    flex-direction: column;
+    text-align: center;
   }
 
-  .quote {
-    font-size: 1.1em;
-    min-height: 60px;
+  .flag-assembly {
+    transform: scale(0.9);
   }
 
-  .music-controls {
-    position: static;
-    margin: 10px auto;
-    width: fit-content;
+  .quote-nav {
+    flex-direction: column;
+  }
+
+}
+.hero-section h1 {
+  animation: fadeUp 1s ease;
+}
+
+.hero-section p {
+  animation: fadeUp 1.3s ease;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
