@@ -1,138 +1,165 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const form = document.getElementById('capsuleForm');
-    const messageInput = document.getElementById('message');
-    const hrsEl = document.getElementById('hrs');
-    const minsEl = document.getElementById('mins');
-    const secsEl = document.getElementById('secs');
-    const preview = document.getElementById('preview');
-    const errEl = document.getElementById('err');
-    const capsuleReveal = document.getElementById('capsuleReveal');
-    const messageReveal = document.getElementById('messageReveal');
-    const revealTime = document.getElementById('revealTime');
-    const revealedMessage = document.getElementById('revealedMessage');
+  const form = document.getElementById('capsuleForm');
+  const messageInput = document.getElementById('message');
+  const hrsEl = document.getElementById('hrs');
+  const minsEl = document.getElementById('mins');
+  const secsEl = document.getElementById('secs');
+  const preview = document.getElementById('preview');
+  const errEl = document.getElementById('err');
+  const capsuleReveal = document.getElementById('capsuleReveal');
+  const messageReveal = document.getElementById('messageReveal');
+  const revealTime = document.getElementById('revealTime');
+  const revealedMessage = document.getElementById('revealedMessage');
 
-    // Safely get capsules from localStorage
-    function getCapsules() {
-        try {
-            return JSON.parse(localStorage.getItem('capsules')) || [];
-        } catch (error) {
-            console.error('Error reading capsules from localStorage:', error);
-            return [];
-        }
+  // Safely get capsules from localStorage
+  function getCapsules() {
+    try {
+      return JSON.parse(localStorage.getItem('capsules')) || [];
+    } catch (error) {
+      console.error('Error reading capsules from localStorage:', error);
+      return [];
     }
+  }
 
-    // Safely save capsules
-    function saveCapsules(capsules) {
-        localStorage.setItem('capsules', JSON.stringify(capsules));
-    }
+  // Safely save capsules
+  function saveCapsules(capsules) {
+    localStorage.setItem('capsules', JSON.stringify(capsules));
+  }
 
-    function totalMs() {
-        const h = Math.max(0, parseInt(hrsEl.value) || 0);
-        const m = Math.min(Math.max(0, parseInt(minsEl.value) || 0), 59);
-        const s = Math.min(Math.max(0, parseInt(secsEl.value) || 0), 59);
+  function totalMs() {
+    const h = Math.max(0, parseInt(hrsEl.value) || 0);
+    const m = Math.min(Math.max(0, parseInt(minsEl.value) || 0), 59);
+    const s = Math.min(Math.max(0, parseInt(secsEl.value) || 0), 59);
 
-        return (h * 3600 + m * 60 + s) * 1000;
-    }
+    return (h * 3600 + m * 60 + s) * 1000;
+  }
 
-    function humanDuration(ms) {
-        const totalSecs = Math.floor(ms / 1000);
+  function humanDuration(ms) {
+    const totalSecs = Math.floor(ms / 1000);
 
-        const h = Math.floor(totalSecs / 3600);
-        const m = Math.floor((totalSecs % 3600) / 60);
-        const s = totalSecs % 60;
+    const h = Math.floor(totalSecs / 3600);
+    const m = Math.floor((totalSecs % 3600) / 60);
+    const s = totalSecs % 60;
 
-        const parts = [];
+    const parts = [];
 
-        if (h) parts.push(`${h} ${h === 1 ? 'hour' : 'hours'}`);
-        if (m) parts.push(`${m} ${m === 1 ? 'minute' : 'minutes'}`);
-        if (s) parts.push(`${s} ${s === 1 ? 'second' : 'seconds'}`);
+    if (h) parts.push(`${h} ${h === 1 ? 'hour' : 'hours'}`);
+    if (m) parts.push(`${m} ${m === 1 ? 'minute' : 'minutes'}`);
+    if (s) parts.push(`${s} ${s === 1 ? 'second' : 'seconds'}`);
 
-        return parts.length
-            ? `Reveals in ${parts.join(', ')}`
-            : 'Enter a duration above';
-    }
+    return parts.length
+      ? `Reveals in ${parts.join(', ')}`
+      : 'Enter a duration above';
+  }
 
-    [hrsEl, minsEl, secsEl].forEach(el => {
-        el.addEventListener('input', () => {
-            preview.textContent = humanDuration(totalMs());
-        });
+  [hrsEl, minsEl, secsEl].forEach((el) => {
+    el.addEventListener('input', () => {
+      preview.textContent = humanDuration(totalMs());
+    });
+  });
+
+  function checkCapsules() {
+    const capsules = getCapsules();
+    const now = Date.now();
+    let stateChanged = false;
+    let newlyRevealed = false;
+
+    capsules.forEach((capsule) => {
+      if (now >= capsule.revealAt && !capsule.revealed) {
+        capsule.revealed = true;
+        stateChanged = true;
+        newlyRevealed = true;
+      }
     });
 
-    function checkCapsules() {
-        const capsules = getCapsules();
-        const now = Date.now();
-
-        const dueCapsules = capsules.filter(
-            capsule => now >= capsule.revealAt
-        );
-
-        const pendingCapsules = capsules.filter(
-            capsule => now < capsule.revealAt
-        );
-
-        if (dueCapsules.length > 0) {
-            const capsule = dueCapsules[0];
-
-            revealedMessage.textContent = capsule.message;
-
-            messageReveal.classList.remove('hidden');
-            capsuleReveal.classList.add('hidden');
-
-            saveCapsules(pendingCapsules);
-        }
+    if (stateChanged) {
+      saveCapsules(capsules);
     }
 
-    // Run immediately on page load
-    checkCapsules();
+    const revealedCapsules = capsules.filter((capsule) => capsule.revealed);
 
-    // Then check every second
-    setInterval(checkCapsules, 1000);
+    if (revealedCapsules.length > 0) {
+      revealedMessage.innerHTML = '';
 
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
+      revealedCapsules.forEach((capsule, index) => {
+        const wrapper = document.createElement('div');
 
-        errEl.textContent = '';
+        const title = document.createElement('strong');
+        title.textContent = `Message ${index + 1}:`;
 
-        const message = messageInput.value.trim();
+        const lineBreak = document.createElement('br');
 
-        if (!message) {
-            errEl.textContent = 'Please write a message first.';
-            return;
+        const messageText = document.createTextNode(capsule.message);
+
+        wrapper.appendChild(title);
+        wrapper.appendChild(lineBreak);
+        wrapper.appendChild(messageText);
+
+        revealedMessage.appendChild(wrapper);
+
+        if (index < revealedCapsules.length - 1) {
+          revealedMessage.appendChild(document.createElement('hr'));
         }
+      });
 
-        const timer = totalMs();
+      if (newlyRevealed || capsuleReveal.classList.contains('hidden')) {
+        messageReveal.classList.remove('hidden');
+        capsuleReveal.classList.add('hidden');
+      }
+    }
+  }
 
-        if (timer < 5000) {
-            errEl.textContent = 'Set at least 5 seconds.';
-            return;
-        }
+  // Run immediately on page load
+  checkCapsules();
 
-        const revealAt = Date.now() + timer;
+  // Then check every second
+  setInterval(checkCapsules, 1000);
 
-        const newCapsule = {
-            message,
-            revealAt
-        };
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
 
-        const capsules = getCapsules();
-        capsules.push(newCapsule);
+    errEl.textContent = '';
 
-        saveCapsules(capsules);
+    const message = messageInput.value.trim();
 
-        // Hide previous revealed message if visible
-        messageReveal.classList.add('hidden');
-        capsuleReveal.classList.remove('hidden');
+    if (!message) {
+      errEl.textContent = 'Please write a message first.';
+      return;
+    }
 
-        revealTime.textContent =
-            `Your message will be revealed at: ${new Date(revealAt).toLocaleTimeString()}`;
+    const timer = totalMs();
 
-        // Reset form
-        messageInput.value = '';
+    if (timer < 5000) {
+      errEl.textContent = 'Set at least 5 seconds.';
+      return;
+    }
 
-        hrsEl.value = '0';
-        minsEl.value = '0';
-        secsEl.value = '30';
+    const revealAt = Date.now() + timer;
 
-        preview.textContent = 'Reveals in 30 seconds';
-    });
+    const newCapsule = {
+      message,
+      revealAt,
+      revealed: false,
+    };
+
+    const capsules = getCapsules();
+    capsules.push(newCapsule);
+
+    saveCapsules(capsules);
+
+    // Hide previous revealed message if visible
+    messageReveal.classList.add('hidden');
+    capsuleReveal.classList.remove('hidden');
+
+    revealTime.textContent = `Your message will be revealed at: ${new Date(revealAt).toLocaleTimeString()}`;
+
+    // Reset form
+    messageInput.value = '';
+
+    hrsEl.value = '0';
+    minsEl.value = '0';
+    secsEl.value = '30';
+
+    preview.textContent = 'Reveals in 30 seconds';
+  });
 });

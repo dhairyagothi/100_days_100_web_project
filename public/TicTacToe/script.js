@@ -3,31 +3,48 @@
 // =====================================
 
 const board = document.getElementById("board");
-
 const statusText = document.getElementById("statusText");
 const turnChip = document.getElementById("turnChip");
-
 const scoreX = document.getElementById("scoreX");
 const scoreO = document.getElementById("scoreO");
 const scoreD = document.getElementById("scoreD");
-
 const newRoundBtn = document.getElementById("newRoundBtn");
 const resetAllBtn = document.getElementById("resetAllBtn");
-
 const winnerModal = document.getElementById("winnerModal");
 const winnerTitle = document.getElementById("winnerTitle");
 const winnerSubtitle = document.getElementById("winnerSubtitle");
-
 const winnerNext = document.getElementById("winnerNext");
 const winnerClose = document.getElementById("winnerClose");
-
 const modeSelect = document.getElementById("modeSelect");
 const themeSelect = document.getElementById("themeSelect");
-
 const hintBtn = document.getElementById("hintBtn");
 const undoBtn = document.getElementById("undoBtn");
-
 const historyList = document.getElementById("historyList");
+const themeToggleGroup = document.getElementById("themeToggleGroup");
+const victorySound = new Audio("/public/TicTacToe/victory.mp3");
+const xMoveSound = new Audio("/public/TicTacToe/click-x.mp3");
+const oMoveSound = new Audio("/public/TicTacToe/click-o.mp3");
+const drawSound = new Audio("/public/TicTacToe/draw.mp3");
+
+// Statistics elements
+const statTotal = document.getElementById("statTotal");
+const statXWins = document.getElementById("statXWins");
+const statOWins = document.getElementById("statOWins");
+const statDraws = document.getElementById("statDraws");
+const statXRate = document.getElementById("statXRate");
+const statORate = document.getElementById("statORate");
+const statCurrentStreak = document.getElementById("statCurrentStreak");
+const statBestStreak = document.getElementById("statBestStreak");
+const progressX = document.getElementById("progressX");
+const progressO = document.getElementById("progressO");
+const progressD = document.getElementById("progressD");
+const progressXVal = document.getElementById("progressXVal");
+const progressOVal = document.getElementById("progressOVal");
+const progressDVal = document.getElementById("progressDVal");
+const resetStatsBtn = document.getElementById("resetStatsBtn");
+const confirmModal = document.getElementById("confirmModal");
+const confirmYes = document.getElementById("confirmYes");
+const confirmNo = document.getElementById("confirmNo");
 
 // =====================================
 // GAME VARIABLES
@@ -38,7 +55,6 @@ let gameBoard = Array(9).fill("");
 let currentPlayer = "X";
 
 let gameOver = false;
-
 let moveHistory = [];
 
 let scores = {
@@ -604,7 +620,6 @@ function handleMove(index) {
         gameOver = true;
 
         scores.D++;
-
         updateScores();
 
         statistics.totalGames++;
@@ -710,9 +725,7 @@ function findBestMove() {
     let move;
 
     for (let i = 0; i < 9; i++) {
-
         if (gameBoard[i] === "") {
-
             gameBoard[i] = "O";
 
             let score = minimax(gameBoard, false);
@@ -750,9 +763,7 @@ function minimax(boardState, isMax) {
         let best = -Infinity;
 
         for (let i = 0; i < 9; i++) {
-
             if (boardState[i] === "") {
-
                 boardState[i] = "O";
 
                 best = Math.max(best, minimax(boardState, false));
@@ -788,9 +799,7 @@ function minimax(boardState, isMax) {
 }
 
 function evaluateBoard(boardState) {
-
     for (const line of WIN_LINES) {
-
         const [a, b, c] = line;
 
         if (
@@ -928,6 +937,10 @@ function saveStatistics() {
         JSON.stringify(statistics)
     );
 
+    drawSound.pause();
+    drawSound.currentTime = 0;
+    updateScores();
+    newRound();
 }
 
 function loadStatistics() {
