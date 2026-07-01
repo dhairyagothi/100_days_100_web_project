@@ -698,3 +698,39 @@ button:active {
         font-size: 80px;
     }
 }
+
+/* Helper to force hide elements with [hidden] attribute */
+[hidden] {
+    display: none !important;
+}
+
+/* Button disabled styles */
+button:disabled {
+    opacity: 0.5 !important;
+    cursor: not-allowed !important;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* Input disabled styles */
+.word-row input:disabled {
+    background-color: #f3f4f6;
+    color: #9ca3af;
+    cursor: not-allowed;
+    border-color: #d1d5db;
+}
+
+.dark-theme .word-row input:disabled {
+    background-color: #1f1f2e;
+    color: #4b5563;
+    border-color: #2a2a44;
+}
+
+/* Paused state styles */
+.board.paused .grid,
+.board.paused .clues section {
+    pointer-events: none;
+    opacity: 0.35;
+    filter: blur(4px);
+    transition: all 0.3s ease;
+}

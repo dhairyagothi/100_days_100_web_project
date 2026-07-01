@@ -271,13 +271,9 @@ const generateCaptcha = () => {
             captchaContainer.querySelectorAll('.image-option').forEach(option => {
                 option.addEventListener('click', () => {
                     captchaContainer.querySelectorAll(".image-option")
-                        .forEach(img => {
-                            img.style.borderColor = "#ccc";
-                            img.style.background = "white";
-                        });
+                        .forEach(img => img.classList.remove('selected'));
                     
-                    option.style.borderColor = "#2196F3";
-                    option.style.background = "#e3f2fd";
+                    option.classList.add('selected');
                     
                     selectedImageAnswer = images.find(img => option.innerHTML.includes(img.emoji)).name;
                 });

@@ -1,6 +1,6 @@
 /* ===== CSS Variables & Themes ===== */
 :root {
-  --font: "Inter", system-ui, -apple-system, sans-serif;
+  --font: 'Inter', system-ui, -apple-system, sans-serif;
   --radius: 16px;
   --radius-sm: 10px;
   --transition: 0.25s ease;
@@ -31,7 +31,7 @@
   --orb-opacity: 0.4;
 }
 
-[data-theme="light"] {
+[data-theme='light'] {
   --glass-bg: rgba(255, 255, 255, 0.65);
   --glass-border: rgba(255, 255, 255, 0.8);
   --glass-shadow: 0 8px 32px rgba(99, 102, 241, 0.12);
@@ -903,7 +903,7 @@ input.error {
 }
 
 .feasibility-success {
-    background: rgba(34, 197, 94, 0.15);
-    border: 1px solid rgba(34, 197, 94, 0.4);
-    color: #22c55e;
+  background: rgba(34, 197, 94, 0.15);
+  border: 1px solid rgba(34, 197, 94, 0.4);
+  color: #22c55e;
 }

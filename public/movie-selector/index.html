@@ -5,35 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>"What to Watch" Random Movie Selector</title>
     <link rel="stylesheet" href="styles.css" />
-    <link rel="icon" href="image.png">
+    <link rel="icon" href="image.png" />
   </head>
   <body>
     <div class="app-container">
       <header class="app-header">
         <h1>"What to Watch"</h1>
-        <p>
-          Can't decide on a film? Pick your favorite genre and let us choose a
-          highly-rated movie for you!
-        </p>
+        <p>Can't decide on a film? Pick your favorite genre(s) and let us choose a highly-rated movie for you!</p>
       </header>
 
       <section class="control-panel">
-        <div class="select-wrapper">
-          <select id="genreSelect">
-            <option value="" disabled selected>Choose a genre...</option>
-            <option value="28">Action</option>
-            <option value="12">Adventure</option>
-            <option value="16">Animation</option>
-            <option value="35">Comedy</option>
-            <option value="80">Crime</option>
-            <option value="99">Documentary</option>
-            <option value="18">Drama</option>
-            <option value="14">Fantasy</option>
-            <option value="27">Horror</option>
-            <option value="9648">Mystery</option>
-            <option value="878">Sci-Fi</option>
-            <option value="53">Thriller</option>
-          </select>
+        <div class="genre-dropdown-wrapper" id="genreDropdownWrapper">
+          <button class="genre-trigger" id="genreTrigger">
+            <span id="genreTriggerLabel">Choose genre(s)…</span>
+            <span class="chevron">▼</span>
+          </button>
+          <div class="genre-menu hidden" id="genreMenu">
+            <label class="genre-option"><input type="checkbox" value="28" /><span>Action</span></label>
+            <label class="genre-option"><input type="checkbox" value="12" /><span>Adventure</span></label>
+            <label class="genre-option"><input type="checkbox" value="16" /><span>Animation</span></label>
+            <label class="genre-option"><input type="checkbox" value="35" /><span>Comedy</span></label>
+            <label class="genre-option"><input type="checkbox" value="80" /><span>Crime</span></label>
+            <label class="genre-option"><input type="checkbox" value="99" /><span>Documentary</span></label>
+            <label class="genre-option"><input type="checkbox" value="18" /><span>Drama</span></label>
+            <label class="genre-option"><input type="checkbox" value="14" /><span>Fantasy</span></label>
+            <label class="genre-option"><input type="checkbox" value="27" /><span>Horror</span></label>
+            <label class="genre-option"><input type="checkbox" value="9648" /><span>Mystery</span></label>
+            <label class="genre-option"><input type="checkbox" value="878" /><span>Sci-Fi</span></label>
+            <label class="genre-option"><input type="checkbox" value="53" /><span>Thriller</span></label>
+          </div>
         </div>
         <button id="findMovieBtn">Find Movie</button>
       </section>
@@ -41,38 +41,44 @@
       <main class="display-deck">
         <div id="loadingState" class="spinner-box hidden">
           <div class="spinner"></div>
-          <p>Scanning the cinematic vaults...</p>
+          <p>Scanning the cinematic vaults…</p>
         </div>
 
         <div id="welcomeState" class="placeholder-card">
           <div class="placeholder-icon">🎬</div>
           <h3>Your Next Movie Awaits</h3>
-          <p>
-            Select a genre above and click the selector button to pull a
-            top-tier random recommendation card.
-          </p>
+          <p>Select one or more genres above and click Find Movie to get a top-rated recommendation.</p>
         </div>
 
         <article id="movieCard" class="movie-card hidden">
           <div class="poster-frame">
-            <img id="moviePoster" src="" alt="Movie Poster Graphic" />
+            <img id="moviePoster" src="" alt="Movie Poster" />
           </div>
           <div class="movie-details">
             <div class="meta-row">
               <span id="movieRating" class="rating-badge">0.0</span>
-              <span id="movieReleaseDate" class="release-tag"
-                >Release Year</span
-              >
+              <span id="movieReleaseDate" class="release-tag">Release Year</span>
             </div>
             <h2 id="movieTitle">Movie Title</h2>
-            <p id="movieOverview" class="synopsis-text">
-              Movie short summary overview will render here inside this
-              paragraph component layer.
-            </p>
+            <p id="movieOverview" class="synopsis-text">Overview will appear here.</p>
+            <div class="action-row">
+              <button class="action-btn trailer-btn" id="trailerBtn">▶ Trailer</button>
+              <button class="action-btn reroll-btn" id="rerollBtn">⟳ Reroll</button>
+              <button class="action-btn save-btn" id="saveBtn">♡ Save</button>
+            </div>
           </div>
         </article>
       </main>
+
+      <section class="watchlist-section hidden" id="watchlistSection">
+        <div class="watchlist-header">
+          <h3>Watchlist <span class="watchlist-count" id="watchlistCount">0</span></h3>
+          <button class="clear-btn" id="clearWatchlistBtn">Clear all</button>
+        </div>
+        <div class="watchlist-grid" id="watchlistGrid"></div>
+      </section>
     </div>
+
     <script src="app.js"></script>
   </body>
 </html>
