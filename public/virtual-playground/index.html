@@ -1,63 +1,53 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-    <title>Virtual Playground</title>
-    <link rel="Stylesheet" href="style.css">
-    <link rel="icon" href="image.png">
-  </head>
-  <body>
-    <!-- Main title and instructions for the playground -->
-    <h1>Virtual Playground</h1>
-    <p>Click the ball to make it jump! Select a planet to change gravity.</p>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Virtual Playground</title>
 
-    <!-- Game area where the ball is displayed and animated -->
-    <div class="play-area" id="playArea">
-      <div class="ball" id="ball"></div>
-    </div>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-    <!-- Reset the simulation back to its initial state -->
-    <div class="controls">
-      <button onclick="resetBall()">Reset</button>
-    </div>
+  <h1>Virtual Playground</h1>
+  <p>Click the ball to make it jump! Select a planet to change gravity.</p>
 
-    <!-- Planet presets that adjust the gravity setting -->
-    <div class="planet-selector" id="planetSelector">
-      <label>Planet:</label>
-      <button class="planet-btn" data-planet="moon">🌕 Moon</button>
-      <button class="planet-btn" data-planet="mars">🔴 Mars</button>
-      <button class="planet-btn active" data-planet="earth">🌍 Earth</button>
-      <button class="planet-btn" data-planet="saturn">🪐 Saturn</button>
-      <button class="planet-btn" data-planet="jupiter">🟠 Jupiter</button>
-    </div>
+  <div class="play-area" id="playArea">
+    <div class="ball" id="ball"></div>
+  </div>
 
-    <!-- Controls for changing the ball's appearance -->
-    <div class="customise">
-      <label>Color <input type="color" id="ballColor" value="#ff6b6b" /></label>
-      <label>Shape
-        <select id="ballShape">
-          <option value="circle">Circle</option>
-          <option value="square">Square</option>
-          <option value="triangle">Triangle</option>
-          <option value="star">Star</option>
-        </select>
-      </label>
-    </div>
-    <!-- Repeated appearance controls kept as part of the current markup -->
-    <div class="customise">
-      <label>Color <input type="color" id="ballColor" value="#ff6b6b" /></label>
-      <label
-        >Shape
-        <select id="ballShape">
-          <option value="circle">Circle</option>
-          <option value="square">Square</option>
-          <option value="triangle">Triangle</option>
-          <option value="star">Star</option>
-        </select>
-      </label>
-    </div>
+  <div class="controls">
+    <button onclick="resetBall()">Reset</button>
+  </div>
 
-    <script src="script.js"></script>
-  </body>
+  <div class="planet-selector">
+    <label>Planet:</label>
+
+    <button class="planet-btn" data-planet="moon">🌕 Moon</button>
+    <button class="planet-btn" data-planet="mars">🔴 Mars</button>
+    <button class="planet-btn active" data-planet="earth">🌍 Earth</button>
+    <button class="planet-btn" data-planet="saturn">🪐 Saturn</button>
+    <button class="planet-btn" data-planet="jupiter">🟠 Jupiter</button>
+  </div>
+
+  <div class="customise">
+    <label>
+      Color
+      <input type="color" id="ballColor" value="#ff6b6b">
+    </label>
+
+    <label>
+      Shape
+      <select id="ballShape">
+        <option value="circle">Circle</option>
+        <option value="square">Square</option>
+        <option value="triangle">Triangle</option>
+        <option value="star">Star</option>
+      </select>
+    </label>
+  </div>
+
+  <script src="script.js"></script>
+
+</body>
 </html>

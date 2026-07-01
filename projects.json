@@ -3100,5 +3100,18 @@
     ],
    "difficulty": "advanced",
     "projectPath": "./public/Pokemon_Battle_Simulator/index.html"
+   }  ,
+  {   "projectNo": 244,
+     "projectName": "Drawing Canva",
+    "projectType": "Tool",
+    "projectDesc": "A canvas for drawing built using HTML, CSS, and Vanilla JavaScript.",
+       "techStack": [
+      "html",
+      "css",
+      "javascript",
+      "visualizer"
+    ],
+   "difficulty": "advanced",
+    "projectPath": "./public/Drawing-Canva/index.html"
    } 
 ]
