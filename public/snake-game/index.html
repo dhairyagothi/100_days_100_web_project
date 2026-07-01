@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Snake Engine</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="game-wrapper">
+
+    <!-- TOP BAR -->
+    <div class="topbar">
+        <div class="brand">🐍 Snake Engine</div>
+
+        <div class="actions">
+            <button id="themeBtn">🌙 Theme</button>
+        </div>
+    </div>
+
+    <!-- HUD -->
+    <div class="hud">
+        <div>Score: <span id="score">0</span></div>
+        <div>High: <span id="high">0</span></div>
+        <div>Level: <span id="level">1</span></div>
+    </div>
+
+    <!-- GAME -->
+    <canvas id="game" width="500" height="500"></canvas>
+
+    <!-- CONTROLS -->
+    <div class="controls">
+        <button id="startBtn">Start</button>
+        <button id="pauseBtn">Pause</button>
+        <button id="restartBtn">Restart</button>
+    </div>
+
+    <!-- MENU -->
+    <div id="menu" class="menu show">
+        <h2>🐍 Snake Engine</h2>
+        <p>Use Arrow Keys / WASD</p>
+        <button id="playBtn">Play Game</button>
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

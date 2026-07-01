@@ -17,7 +17,7 @@
 <!-- HEADER (minimal) -->
 <header class="topbar">
   <div class="logo">🔒 Password Generator Pro</div>
-  <button id="themeToggle">☀️</button>
+  <button type="button" id="themeToggle">☀️</button>
 </header>
 
 <!-- MAIN CARD -->
@@ -30,13 +30,13 @@
 
     <!-- OUTPUT -->
     <div class="output">
-      <input readonly data-passwordDisplay placeholder="Click generate..." />
-      <button data-copy>📋</button>
+      <input type="text" readonly data-passworddisplay placeholder="Click generate...">
+      <button type="button" data-copy>📋</button>
     </div>
 
     <!-- STRENGTH -->
     <div class="strength">
-      <span data-strengthText>Weak</span>
+      <span data-strengthtext>Weak</span>
       <div class="bar">
         <div class="indicator" data-indicator></div>
       </div>
@@ -47,10 +47,10 @@
 
       <div class="row">
         <label>Password Length</label>
-        <span data-lengthNumber>10</span>
+        <span data-lengthnumber>10</span>
       </div>
 
-      <input type="range" min="6" max="32" value="10" data-lengthSlider>
+      <input type="range" min="6" max="32" value="10" data-lengthslider>
 
       <div class="checks">
         <label><input type="checkbox" id="uppercase"> Uppercase</label>
@@ -64,12 +64,12 @@
         Use Custom Word
       </label>
 
-      <input type="text" id="customWordInput" placeholder="Enter word..." />
+      <input type="text" id="customWordInput" placeholder="Enter word...">
 
     </div>
 
     <!-- BUTTON -->
-    <button class="generateButton">
+    <button type="button" class="generateButton">
       Generate Password
     </button>
 
