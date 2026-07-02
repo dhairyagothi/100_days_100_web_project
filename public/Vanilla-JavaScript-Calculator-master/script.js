@@ -884,6 +884,109 @@ if (historySearchInput) {
     filterHistory(e.target.value);
   });
 }
+const functionInfo = {
+  sin: {
+    title: 'sin',
+    description: 'Returns the sine of an angle.',
+    example: 'sin(30°) = 0.5',
+  },
+
+  cos: {
+    title: 'cos',
+    description: 'Returns the cosine of an angle.',
+    example: 'cos(60°) = 0.5',
+  },
+
+  tan: {
+    title: 'tan',
+    description: 'Returns the tangent of an angle.',
+    example: 'tan(45°) = 1',
+  },
+
+  ln: {
+    title: 'ln',
+    description: 'Returns the natural logarithm (base e).',
+    example: 'ln(e) = 1',
+  },
+
+  log: {
+    title: 'log',
+    description: 'Returns the common logarithm (base 10).',
+    example: 'log(100) = 2',
+  },
+
+  pi: {
+    title: 'π',
+    description: 'Mathematical constant pi.',
+    example: 'π ≈ 3.14159',
+  },
+
+  sqrt: {
+    title: '√',
+    description: 'Calculates the square root of a number.',
+    example: '√25 = 5',
+  },
+
+  e: {
+    title: 'e',
+    description: 'Euler’s number used in exponential growth.',
+    example: 'e ≈ 2.71828',
+  },
+
+  exp: {
+    title: 'EXP',
+    description: 'Raises e to the specified power.',
+    example: 'EXP(2) = e²',
+  },
+
+  percent: {
+    title: '%',
+    description: 'Converts a value into a percentage.',
+    example: '50% = 0.5',
+  },
+
+  deg: {
+    title: 'DEG',
+    description: 'Switches angle calculations to degrees.',
+    example: 'sin(90°) = 1',
+  },
+
+  rad: {
+    title: 'RAD',
+    description: 'Switches angle calculations to radians.',
+    example: 'sin(π/2) = 1',
+  },
+
+  factorial: {
+    title: 'x!',
+    description: 'Calculates the factorial of an integer.',
+    example: '5! = 120',
+  },
+
+  pow: {
+    title: 'x^y',
+    description: 'Raises a number to a power.',
+    example: '2^3 = 8',
+  },
+
+  delete: {
+    title: 'DEL',
+    description: 'Deletes the last entered character.',
+    example: '123 → DEL → 12',
+  },
+
+  clear: {
+    title: 'AC',
+    description: 'Clears the entire calculator.',
+    example: 'Resets current expression',
+  },
+
+  equals: {
+    title: '=',
+    description: 'Evaluates the current expression.',
+    example: '2 + 2 = 4',
+  },
+};
 // ========== END HISTORY FUNCTIONS ==========
 // ===== THEME TOGGLE =====
 
@@ -912,3 +1015,16 @@ if (themeToggle) {
     applyTheme(current === "dark" ? "light" : "dark");
   });
 }
+
+document.querySelectorAll('.shortcut-item').forEach((item) => {
+  const key = item.dataset.tooltip;
+  const tooltip = item.querySelector('.inline-tooltip');
+
+  if (!tooltip || !functionInfo[key]) return;
+
+  tooltip.innerHTML = `
+    <h4>${functionInfo[key].title}</h4>
+    <p>${functionInfo[key].description}</p>
+    <code>${functionInfo[key].example}</code>
+  `;
+});

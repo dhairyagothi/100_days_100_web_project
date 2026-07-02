@@ -1,6 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="SpringFlow drag and drop task management board">
+    <title>SpringFlow</title>
     <style>
         .board { display: flex; gap: 20px; padding: 20px; }
         .column { background: #eee; width: 200px; min-height: 300px; padding: 10px; border-radius: 5px; }
@@ -8,16 +12,17 @@
     </style>
 </head>
 <body>
-
+<main>
 <div class="board">
-    <div class="column" ondrop="drop(event)" ondragover="allowDrop(event)">
+    <div class="column">
         <h3>To Do</h3>
-        <div class="task" draggable="true" ondragstart="drag(event)" id="task1">Task 1</div>
+        <div class="task" draggable="true" id="task1">Task 1</div>
     </div>
-    <div class="column" ondrop="drop(event)" ondragover="allowDrop(event)">
+    <div class="column">
         <h3>Done</h3>
     </div>
 </div>
+</main>
 
 <script>
     function allowDrop(ev) { ev.preventDefault(); }
@@ -27,5 +32,15 @@
         const data = ev.dataTransfer.getData("text");
         ev.currentTarget.appendChild(document.getElementById(data));
     }
+
+    document.querySelectorAll(".column").forEach(column => {
+        column.addEventListener("dragover", allowDrop);
+        column.addEventListener("drop", drop);
+    });
+
+    document.querySelectorAll(".task").forEach(task => {
+        task.addEventListener("dragstart", drag);
+    });
 </script>
 </body>
+</html>

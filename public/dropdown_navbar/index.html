@@ -1,910 +1,575 @@
 <!doctype html>
 <html lang="en" class="scroll-smooth">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Modern Hub | Premium E-Commerce Dashboard</title>
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              brand: {
-                50: "#f0f9ff",
-                100: "#e0f2fe",
-                200: "#bae6fd",
-                300: "#7dd3fc",
-                400: "#38bdf8",
-                500: "#0ea5e9",
-                600: "#0284c7",
-                700: "#0369a1",
-                800: "#075985",
-                900: "#0c4a6e",
-                950: "#082f49",
-              },
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Modern Hub | Premium E-Commerce Dashboard</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: "#f0f9ff",
+              100: "#e0f2fe",
+              200: "#bae6fd",
+              300: "#7dd3fc",
+              400: "#38bdf8",
+              500: "#0ea5e9",
+              600: "#0284c7",
+              700: "#0369a1",
+              800: "#075985",
+              900: "#0c4a6e",
+              950: "#082f49",
             },
-            animation: {
-              float: "float 6s ease-in-out infinite",
-              "pulse-slow": "pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite",
-            },
-            keyframes: {
-              float: {
-                "0%, 100%": { transform: "translateY(0)" },
-                "50%": { transform: "translateY(-20px)" },
-              },
+          },
+          animation: {
+            float: "float 6s ease-in-out infinite",
+            "pulse-slow": "pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+          },
+          keyframes: {
+            float: {
+              "0%, 100%": { transform: "translateY(0)" },
+              "50%": { transform: "translateY(-20px)" },
             },
           },
         },
-      };
-    </script>
+      },
+    };
+  </script>
 
-    <style>
-      @import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap");
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap");
 
-      body {
-        font-family: "Plus Jakarta Sans", sans-serif;
-      }
-      .glass {
-        background: rgba(15, 23, 42, 0.8);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-      }
-      .glass-light {
-        background: rgba(255, 255, 255, 0.03);
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
-        border: 1px solid rgba(255, 255, 255, 0.05);
-      }
-      .hero-gradient {
-        background: radial-gradient(
-          circle at 50% 50%,
+    body {
+      font-family: "Plus Jakarta Sans", sans-serif;
+    }
+
+    .glass {
+      background: rgba(15, 23, 42, 0.8);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .glass-light {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .hero-gradient {
+      background: radial-gradient(circle at 50% 50%,
           rgba(14, 165, 233, 0.15) 0%,
-          rgba(15, 23, 42, 0) 70%
-        );
-      }
-      .nav-link-active {
-        color: #38bdf8;
-      }
-      .nav-link-active::after {
-        content: "";
-        position: absolute;
-        bottom: -2px;
-        left: 0;
-        width: 100%;
-        height: 2px;
-        background: #38bdf8;
-        border-radius: 2px;
-      }
-      @keyframes slideInUp {
-        from {
-          opacity: 0;
-          transform: translateY(20px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-      .animate-in {
-        animation: slideInUp 0.5s ease-out forwards;
+          rgba(15, 23, 42, 0) 70%);
+    }
+
+    .nav-link-active {
+      color: #38bdf8;
+    }
+
+    .nav-link-active::after {
+      content: "";
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: #38bdf8;
+      border-radius: 2px;
+    }
+
+    @keyframes slideInUp {
+      from {
         opacity: 0;
+        transform: translateY(20px);
       }
-      ::-webkit-scrollbar {
-        width: 8px;
-      }
-      ::-webkit-scrollbar-track {
-        background: #0f172a;
-      }
-      ::-webkit-scrollbar-thumb {
-        background: #334155;
-        border-radius: 4px;
-      }
-      ::-webkit-scrollbar-thumb:hover {
-        background: #475569;
-      }
-    </style>
-  </head>
 
-  <body
-    class="bg-slate-950 text-slate-200 selection:bg-brand-500/30 selection:text-brand-200 min-h-screen"
-  >
-    <a
-      href="/"
-      class="fixed left-6 top-6 z-[100] flex items-center gap-2 rounded-lg bg-[#1e293b] px-4 py-2 text-sm font-semibold text-[#3b82f6] transition-all hover:bg-[#3b82f6] hover:text-white border border-[#3b82f6]"
-    >
-    
-        <path d="m15 18-6-6 6-6" />
-      </svg>
-      Back to Home
-    </a>
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
 
-    <nav
-      id="navbar"
-      class="fixed top-0 z-50 w-full glass border-b border-white/5 transition-all duration-300"
-    >
-      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
-        <div class="flex h-20 items-center justify-between">
-          <div class="flex flex-shrink-0 items-center gap-5">
-            <div
-              class="h-10 w-10 rounded-xl bg-brand-500 flex items-center justify-center shadow-lg shadow-brand-500/20"
-            >
-              <svg
-                class="h-6 w-6 text-white"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M13 10V3L4 14h7v7l9-11h-7z"
-                />
-              </svg>
-            </div>
-            <span class="text-xl font-bold tracking-tight text-white"
-              >ModernHub</span
-            >
+    .animate-in {
+      animation: slideInUp 0.5s ease-out forwards;
+      opacity: 0;
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #0f172a;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #475569;
+    }
+  </style>
+</head>
+
+<body class="bg-slate-950 text-slate-200 selection:bg-brand-500/30 selection:text-brand-200 min-h-screen">
+  <a href="/"
+    class="fixed left-6 top-6 z-[100] flex items-center gap-2 rounded-lg bg-[#1e293b] px-4 py-2 text-sm font-semibold text-[#3b82f6] transition-all hover:bg-[#3b82f6] hover:text-white border border-[#3b82f6]">
+
+    <path d="m15 18-6-6 6-6" />
+    </svg>
+    Back to Home
+  </a>
+
+  <nav id="navbar" class="fixed top-0 z-50 w-full glass border-b border-white/5 transition-all duration-300">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
+      <div class="flex h-20 items-center justify-between">
+        <div class="flex flex-shrink-0 items-center gap-5">
+          <div class="h-10 w-10 rounded-xl bg-brand-500 flex items-center justify-center shadow-lg shadow-brand-500/20">
+            <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
           </div>
+          <span class="text-xl font-bold tracking-tight text-white">ModernHub</span>
+        </div>
 
-          <div class="hidden md:block">
-            <div class="flex items-center space-x-1">
-              <a
-                href="#home"
-                class="nav-link relative px-4 py-2 text-sm font-medium text-slate-300 transition-colors hover:text-white"
-                >Home</a
-              >
+        <div class="hidden md:block">
+          <div class="flex items-center space-x-1">
+            <a href="#home"
+              class="nav-link relative px-4 py-2 text-sm font-medium text-slate-300 transition-colors hover:text-white">Home</a>
 
-              <div class="relative px-2">
-                <button
-                  id="grocery"
-                  class="flex items-center gap-1 rounded-lg px-4 py-2 text-sm font-medium text-slate-300 transition-all hover:bg-white/5 hover:text-white"
-                >
-                  Grocery
-                  <svg
-                    class="h-4 w-4"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M19 9l-7 7-7-7"
-                    />
-                  </svg>
-                </button>
-                <div
-                  id="grocery-dd"
-                  class="hidden invisible absolute left-0 top-full pt-2 opacity-0 transition-all z-50"
-                >
-                  <div
-                    class="w-56 overflow-hidden rounded-xl glass border border-white/10 p-2 shadow-2xl"
-                  >
-                    <a
-                      href="#grocery"
-                      class="block rounded-lg px-4 py-2.5 text-sm transition-all hover:bg-white/5 hover:text-brand-400"
-                      >Fresh Produce</a
-                    >
-                    <a
-                      href="#grocery-daily-eggs"
-                      class="block rounded-lg px-4 py-2.5 text-sm transition-all hover:bg-white/5 hover:text-brand-400"
-                      >Dairy & Eggs</a
-                    >
-                    <a
-                      href="#grocery-beverages"
-                      class="block rounded-lg px-4 py-2.5 text-sm transition-all hover:bg-white/5 hover:text-brand-400"
-                      >Beverages</a
-                    >
-                  </div>
-                </div>
-              </div>
-
-              <div class="relative px-2">
-                <button
-                  id="mobile"
-                  class="flex items-center gap-1 rounded-lg px-4 py-2 text-sm font-medium text-slate-300 transition-all hover:bg-white/5 hover:text-white"
-                >
-                  Mobiles
-                  <svg
-                    class="h-4 w-4"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M19 9l-7 7-7-7"
-                    />
-                  </svg>
-                </button>
-                <div
-                  id="mobile-dd"
-                  class="hidden invisible absolute left-0 top-full pt-2 opacity-0 transition-all z-50"
-                >
-                  <div
-                    class="w-56 overflow-hidden rounded-xl glass border border-white/10 p-2 shadow-2xl"
-                  >
-                    <a
-                      href="#mobile"
-                      class="block rounded-lg px-4 py-2.5 text-sm transition-all hover:bg-white/5 hover:text-brand-400"
-                      >Smartphones</a
-                    >
-                    <a
-                      href="#mobile-accessories"
-                      class="block rounded-lg px-4 py-2.5 text-sm transition-all hover:bg-white/5 hover:text-brand-400"
-                      >Accessories</a
-                    >
-                    <a
-                      href="#mobile-tablets"
-                      class="block rounded-lg px-4 py-2.5 text-sm transition-all hover:bg-white/5 hover:text-brand-400"
-                      >Tablets</a
-                    >
-                  </div>
-                </div>
-              </div>
-
-              <div class="relative px-2">
-                <button
-                  id="appliances"
-                  class="flex items-center gap-1 rounded-lg px-4 py-2 text-sm font-medium text-slate-300 transition-all hover:bg-white/5 hover:text-white"
-                >
-                  Appliances
-                  <svg
-                    class="h-4 w-4"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M19 9l-7 7-7-7"
-                    />
-                  </svg>
-                </button>
-                <div
-                  id="appliances-dd"
-                  class="hidden invisible absolute left-0 top-full pt-2 opacity-0 transition-all z-50"
-                >
-                  <div
-                    class="w-56 overflow-hidden rounded-xl glass border border-white/10 p-2 shadow-2xl"
-                  >
-                    <a
-                      href="#appliances-kitchen"
-                      class="block rounded-lg px-4 py-2.5 text-sm transition-all hover:bg-white/5 hover:text-brand-400"
-                      >Kitchen Tech</a
-                    >
-                    <a
-                      href="#appliances-home"
-                      class="block rounded-lg px-4 py-2.5 text-sm transition-all hover:bg-white/5 hover:text-brand-400"
-                      >Home Comfort</a
-                    >
-                  </div>
-                </div>
-              </div>
-
-              <div class="relative px-2">
-                <button
-                  id="vehicle"
-                  class="flex items-center gap-1 rounded-lg px-4 py-2 text-sm font-medium text-slate-300 transition-all hover:bg-white/5 hover:text-white"
-                >
-                  Vehicle
-                  <svg
-                    class="h-4 w-4"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M19 9l-7 7-7-7"
-                    />
-                  </svg>
-                </button>
-                <div
-                  id="vehicle-dd"
-                  class="hidden invisible absolute left-0 top-full pt-2 opacity-0 transition-all z-50"
-                >
-                  <div
-                    class="w-56 overflow-hidden rounded-xl glass border border-white/10 p-2 shadow-2xl"
-                  >
-                    <a
-                      href="#vehicle-ev"
-                      class="block rounded-lg px-4 py-2.5 text-sm transition-all hover:bg-white/5 hover:text-brand-400"
-                      >Luxury EVs</a
-                    >
-                    <a
-                      href="#vehicle-scooter"
-                      class="block rounded-lg px-4 py-2.5 text-sm transition-all hover:bg-white/5 hover:text-brand-400"
-                      >Urban Scooters</a
-                    >
-                    <a
-                      href="#vehicle-bike"
-                      class="block rounded-lg px-4 py-2.5 text-sm transition-all hover:bg-white/5 hover:text-brand-400"
-                      >Smart Bikes</a
-                    >
-                  </div>
-                </div>
-              </div>
-
-              <div class="relative px-2">
-                <button
-                  id="travel"
-                  class="flex items-center gap-1 rounded-lg px-4 py-2 text-sm font-medium text-slate-300 transition-all hover:bg-white/5 hover:text-white"
-                >
-                  Travel
-                  <svg
-                    class="h-4 w-4"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M19 9l-7 7-7-7"
-                    />
-                  </svg>
-                </button>
-                <div
-                  id="travel-dd"
-                  class="hidden invisible absolute left-0 top-full pt-2 opacity-0 transition-all z-50"
-                >
-                  <div
-                    class="w-56 overflow-hidden rounded-xl glass border border-white/10 p-2 shadow-2xl"
-                  >
-                    <a
-                      href="#travel-beach"
-                      class="block rounded-lg px-4 py-2.5 text-sm transition-all hover:bg-white/5 hover:text-brand-400"
-                      >Beach Escapes</a
-                    >
-                    <a
-                      href="#travel-mountain"
-                      class="block rounded-lg px-4 py-2.5 text-sm transition-all hover:bg-white/5 hover:text-brand-400"
-                      >Mountain Retreats</a
-                    >
-                  </div>
-                </div>
-              </div>
-
-              <div class="relative px-2">
-                <button
-                  id="fashion"
-                  class="flex items-center gap-1 rounded-lg px-4 py-2 text-sm font-medium text-slate-300 transition-all hover:bg-white/5 hover:text-white"
-                >
-                  Fashion
-                  <svg
-                    class="h-4 w-4"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M19 9l-7 7-7-7"
-                    />
-                  </svg>
-                </button>
-                <div
-                  id="fashion-dd"
-                  class="hidden invisible absolute left-0 top-full pt-2 opacity-0 transition-all z-50"
-                >
-                  <div
-                    class="w-56 overflow-hidden rounded-xl glass border border-white/10 p-2 shadow-2xl"
-                  >
-                    <a
-                      href="#fashion-men"
-                      class="block rounded-lg px-4 py-2.5 text-sm transition-all hover:bg-white/5 hover:text-brand-400"
-                      >Men's Apparel</a
-                    >
-                    <a
-                      href="#fashion-women"
-                      class="block rounded-lg px-4 py-2.5 text-sm transition-all hover:bg-white/5 hover:text-brand-400"
-                      >Women's Apparel</a
-                    >
-                    <a
-                      href="#fashion-kids"
-                      class="block rounded-lg px-4 py-2.5 text-sm transition-all hover:bg-white/5 hover:text-brand-400"
-                      >Kids' Wear</a
-                    >
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="flex items-center gap-4">
-            <button
-              id="notification-btn"
-              class="relative rounded-full p-2 text-slate-400 transition-all hover:bg-white/5 hover:text-white"
-            >
-              <svg
-                class="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
-                />
-              </svg>
-              <span
-                class="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-brand-500 text-[10px] font-bold text-white"
-                >3</span
-              >
-            </button>
-            <div class="h-8 w-px bg-white/10 hidden sm:block"></div>
-
-            <div class="relative">
-              <button
-                id="user-btn"
-                class="flex items-center gap-2 rounded-full bg-white/5 p-1 px-3 transition-all hover:bg-white/10 border border-white/10 group"
-              >
-                <div
-                  class="h-8 w-8 rounded-full bg-brand-500 flex items-center justify-center text-sm font-bold text-white"
-                >
-                  V
-                </div>
-                <span class="text-sm font-medium hidden sm:inline">Vansh</span>
+            <div class="relative px-2">
+              <button id="grocery"
+                class="flex items-center gap-1 rounded-lg px-4 py-2 text-sm font-medium text-slate-300 transition-all hover:bg-white/5 hover:text-white">
+                Grocery
+                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
               </button>
-              <div
-                id="user-menu"
-                class="hidden invisible absolute right-0 top-full mt-2 w-52 rounded-xl shadow-2xl py-2 bg-gray-800 ring-1 ring-gray-700 z-50"
-              >
-                <a
-                  href="#"
-                  class="block px-4 py-3 text-sm text-gray-200 hover:bg-gray-700 hover:text-cyan-400"
-                  >Your Profile</a
-                >
-                <a
-                  href="#"
-                  class="block px-4 py-3 text-sm text-gray-200 hover:bg-gray-700 hover:text-cyan-400"
-                  >Settings</a
-                >
-                <div class="my-1 h-px bg-white/5"></div>
-                <a
-                  href="#"
-                  id="sign-out-btn"
-                  class="block px-4 py-3 text-sm text-red-400 font-semibold hover:bg-gray-700"
-                  >Sign out</a
-                >
+              <div id="grocery-dd" class="hidden invisible absolute left-0 top-full pt-2 opacity-0 transition-all z-50">
+                <div class="w-56 overflow-hidden rounded-xl glass border border-white/10 p-2 shadow-2xl">
+                  <a href="grocery.html#fresh-produce" class="block rounded-lg px-4 py-2.5 text-sm transition-all hover:bg-white/5 hover:text-brand-400">Fresh Produce</a>
+                  <a href="grocery.html#dairy-eggs" class="block rounded-lg px-4 py-2.5 text-sm transition-all hover:bg-white/5 hover:text-brand-400">Dairy & Eggs</a>
+                  <a href="grocery.html#beverages" class="block rounded-lg px-4 py-2.5 text-sm transition-all hover:bg-white/5 hover:text-brand-400">Beverages</a>
+                </div>
               </div>
             </div>
 
-            <button
-              id="inline-login-btn"
-              class="hidden bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:from-cyan-400 hover:to-blue-400 transition-all duration-200 shadow-md"
-            >
-              Log In
-            </button>
-          </div>
-
-          <div class="flex md:hidden">
-            <button
-              id="mobile-menu-toggle"
-              class="rounded-lg p-2 text-slate-400 hover:bg-white/5 hover:text-white"
-            >
-              <svg
-                id="menu-icon"
-                class="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M4 6h16M4 12h16m-7 6h7"
-                />
-              </svg>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div
-        id="mobile-menu-content"
-        class="hidden border-t border-white/5 bg-slate-950/95 backdrop-blur-xl md:hidden"
-      >
-        <div class="space-y-1 px-4 py-6">
-          <a
-            href="#home"
-            class="block rounded-lg px-4 py-3 text-base font-medium text-slate-300 hover:bg-white/5 hover:text-brand-400"
-            >Home</a
-          >
-
-          <div>
-            <button
-              id="mobile-grocery-btn"
-              class="w-full text-left rounded-lg px-4 py-3 text-base font-medium text-slate-300 hover:bg-white/5 flex justify-between items-center"
-            >
-              <span>Grocery</span>
-              <svg
-                class="h-4 w-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
-            </button>
-            <div
-              id="mobile-grocery-dd"
-              class="hidden pl-6 space-y-1 bg-slate-900/50 rounded-lg py-2"
-            >
-              <a
-                href="#grocery"
-                class="block py-2 text-sm text-slate-400 hover:text-white"
-                >Fresh Produce</a
-              >
-              <a
-                href="#grocery-daily-eggs"
-                class="block py-2 text-sm text-slate-400 hover:text-white"
-                >Dairy & Eggs</a
-              >
-              <a
-                href="#grocery-beverages"
-                class="block py-2 text-sm text-slate-400 hover:text-white"
-                >Beverages</a
-              >
-            </div>
-          </div>
-
-          <div>
-            <button
-              id="mobile-mobile-btn"
-              class="w-full text-left rounded-lg px-4 py-3 text-base font-medium text-slate-300 hover:bg-white/5 flex justify-between items-center"
-            >
-              <span>Mobiles</span>
-              <svg
-                class="h-4 w-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
-            </button>
-            <div
-              id="mobile-mobile-dd"
-              class="hidden pl-6 space-y-1 bg-slate-900/50 rounded-lg py-2"
-            >
-              <a
-                href="#mobile"
-                class="block py-2 text-sm text-slate-400 hover:text-white"
-                >Smartphones</a
-              >
-              <a
-                href="#mobile-accessories"
-                class="block py-2 text-sm text-slate-400 hover:text-white"
-                >Accessories</a
-              >
-              <a
-                href="#mobile-tablets"
-                class="block py-2 text-sm text-slate-400 hover:text-white"
-                >Tablets</a
-              >
-            </div>
-          </div>
-
-          <div>
-            <button
-              id="mobile-appliances-btn"
-              class="w-full text-left rounded-lg px-4 py-3 text-base font-medium text-slate-300 hover:bg-white/5 flex justify-between items-center"
-            >
-              <span>Appliances</span>
-              <svg
-                class="h-4 w-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
-            </button>
-            <div
-              id="mobile-appliances-dd"
-              class="hidden pl-6 space-y-1 bg-slate-900/50 rounded-lg py-2"
-            >
-              <a
-                href="#appliances-kitchen"
-                class="block py-2 text-sm text-slate-400 hover:text-white"
-                >Kitchen Tech</a
-              >
-              <a
-                href="#appliances-home"
-                class="block py-2 text-sm text-slate-400 hover:text-white"
-                >Home Comfort</a
-              >
-            </div>
-          </div>
-        </div>
-      </div>
-    </nav>
-
-    <main class="relative pt-20">
-      <section id="home" class="relative overflow-hidden py-24 lg:py-32">
-        <div
-          class="hero-gradient pointer-events-none absolute inset-0 -z-10"
-        ></div>
-        <div
-          class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center lg:text-left"
-        >
-          <div class="grid items-center gap-12 lg:grid-cols-2">
-            <div class="space-y-8">
-              <div
-                class="inline-flex items-center gap-2 rounded-full bg-brand-500/10 px-4 py-1.5 text-sm font-semibold text-brand-400 ring-1 ring-brand-500/20"
-              >
-                <span
-                  class="flex h-2 w-2 rounded-full bg-brand-400 animate-pulse"
-                ></span>
-                Special Summer Offer - Up to 40% Off
+            <div class="relative px-2">
+              <button id="mobile"
+                class="flex items-center gap-1 rounded-lg px-4 py-2 text-sm font-medium text-slate-300 transition-all hover:bg-white/5 hover:text-white">
+                Mobiles
+                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              <div id="mobile-dd" class="hidden invisible absolute left-0 top-full pt-2 opacity-0 transition-all z-50">
+                <div class="w-56 overflow-hidden rounded-xl glass border border-white/10 p-2 shadow-2xl">
+                  <a href="mobiles.html#smartphones" class="block rounded-lg px-4 py-2.5 text-sm transition-all hover:bg-white/5 hover:text-brand-400">Smartphones</a>
+                  <a href="mobiles.html#accessories" class="block rounded-lg px-4 py-2.5 text-sm transition-all hover:bg-white/5 hover:text-brand-400">Accessories</a>
+                  <a href="mobiles.html#tablets" class="block rounded-lg px-4 py-2.5 text-sm transition-all hover:bg-white/5 hover:text-brand-400">Tablets</a>
+                </div>
               </div>
-              <h1
-                class="text-5xl font-extrabold tracking-tight text-white sm:text-7xl"
-              >
-                Experience the
-                <span
-                  class="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-emerald-400"
-                  >Next Gen</span
-                >
-                of Shopping
-              </h1>
-              <p
-                class="max-w-xl text-lg leading-relaxed text-slate-400 mx-auto lg:mx-0"
-              >
-                Discover a curated collection of premium products across
-                fashion, electronics, and daily essentials.
-              </p>
+            </div>
+
+            <div class="relative px-2">
+              <button id="appliances"
+                class="flex items-center gap-1 rounded-lg px-4 py-2 text-sm font-medium text-slate-300 transition-all hover:bg-white/5 hover:text-white">
+                Appliances
+                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              <div id="appliances-dd" class="hidden invisible absolute left-0 top-full pt-2 opacity-0 transition-all z-50">
+                <div class="w-56 overflow-hidden rounded-xl glass border border-white/10 p-2 shadow-2xl">
+                  <a href="appliances.html#kitchen" class="block rounded-lg px-4 py-2.5 text-sm transition-all hover:bg-white/5 hover:text-brand-400">Kitchen Tech</a>
+                  <a href="appliances.html#home-comfort" class="block rounded-lg px-4 py-2.5 text-sm transition-all hover:bg-white/5 hover:text-brand-400">Home Comfort</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="relative px-2">
+              <button id="vehicle"
+                class="flex items-center gap-1 rounded-lg px-4 py-2 text-sm font-medium text-slate-300 transition-all hover:bg-white/5 hover:text-white">
+                Vehicle
+                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              <div id="vehicle-dd" class="hidden invisible absolute left-0 top-full pt-2 opacity-0 transition-all z-50">
+                <div class="w-56 overflow-hidden rounded-xl glass border border-white/10 p-2 shadow-2xl">
+                  <a href="vehicle.html#luxury-evs" class="block rounded-lg px-4 py-2.5 text-sm transition-all hover:bg-white/5 hover:text-brand-400">Luxury EVs</a>
+                  <a href="vehicle.html#scooters" class="block rounded-lg px-4 py-2.5 text-sm transition-all hover:bg-white/5 hover:text-brand-400">Urban Scooters</a>
+                  <a href="vehicle.html#bikes" class="block rounded-lg px-4 py-2.5 text-sm transition-all hover:bg-white/5 hover:text-brand-400">Smart Bikes</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="relative px-2">
+              <button id="travel"
+                class="flex items-center gap-1 rounded-lg px-4 py-2 text-sm font-medium text-slate-300 transition-all hover:bg-white/5 hover:text-white">
+                Travel
+                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              <div id="travel-dd" class="hidden invisible absolute left-0 top-full pt-2 opacity-0 transition-all z-50">
+                <div class="w-56 overflow-hidden rounded-xl glass border border-white/10 p-2 shadow-2xl">
+                  <a href="travel.html#beach" class="block rounded-lg px-4 py-2.5 text-sm transition-all hover:bg-white/5 hover:text-brand-400">Beach Escapes</a>
+                  <a href="travel.html#mountain" class="block rounded-lg px-4 py-2.5 text-sm transition-all hover:bg-white/5 hover:text-brand-400">Mountain Retreats</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="relative px-2">
+              <button id="fashion"
+                class="flex items-center gap-1 rounded-lg px-4 py-2 text-sm font-medium text-slate-300 transition-all hover:bg-white/5 hover:text-white">
+                Fashion
+                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              <div id="fashion-dd" class="hidden invisible absolute left-0 top-full pt-2 opacity-0 transition-all z-50">
+                <div class="w-56 overflow-hidden rounded-xl glass border border-white/10 p-2 shadow-2xl">
+                  <a href="fashion.html#mens" class="block rounded-lg px-4 py-2.5 text-sm transition-all hover:bg-white/5 hover:text-brand-400">Men's Apparel</a>
+                  <a href="fashion.html#womens" class="block rounded-lg px-4 py-2.5 text-sm transition-all hover:bg-white/5 hover:text-brand-400">Women's Apparel</a>
+                  <a href="fashion.html#kids" class="block rounded-lg px-4 py-2.5 text-sm transition-all hover:bg-white/5 hover:text-brand-400">Kids' Wear</a>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </section>
 
-      <div
-        class="flex flex-col justify-center items-center text-center min-h-[40vh] px-4"
-      >
-        <div
-          id="welcome-text"
-          class="text-gray-200 text-xl md:text-2xl font-semibold tracking-wide max-w-4xl leading-relaxed bg-slate-900/50 p-8 rounded-2xl border border-slate-800/80 shadow-xl backdrop-blur-sm"
-        >
-          Dropdown Menus Available Under Grocery, Mobile, Appliances, Vehicle,
-          Travel, Fashion & Profile Tabs
+        <div class="flex items-center gap-4">
+          <button id="notification-btn"
+            class="relative rounded-full p-2 text-slate-400 transition-all hover:bg-white/5 hover:text-white">
+            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+            </svg>
+            <span
+              class="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-brand-500 text-[10px] font-bold text-white">3</span>
+          </button>
+          <div class="h-8 w-px bg-white/10 hidden sm:block"></div>
+
+          <div class="relative">
+            <button id="user-btn"
+              class="flex items-center gap-2 rounded-full bg-white/5 p-1 px-3 transition-all hover:bg-white/10 border border-white/10 group">
+              <div
+                class="h-8 w-8 rounded-full bg-brand-500 flex items-center justify-center text-sm font-bold text-white">
+                V
+              </div>
+              <span class="text-sm font-medium hidden sm:inline">Vansh</span>
+            </button>
+            <div id="user-menu"
+              class="hidden invisible absolute right-0 top-full mt-2 w-52 rounded-xl shadow-2xl py-2 bg-gray-800 ring-1 ring-gray-700 z-50">
+              <a href="#" class="block px-4 py-3 text-sm text-gray-200 hover:bg-gray-700 hover:text-cyan-400">Your
+                Profile</a>
+              <a href="#"
+                class="block px-4 py-3 text-sm text-gray-200 hover:bg-gray-700 hover:text-cyan-400">Settings</a>
+              <div class="my-1 h-px bg-white/5"></div>
+              <a href="#" id="sign-out-btn"
+                class="block px-4 py-3 text-sm text-red-400 font-semibold hover:bg-gray-700">Sign out</a>
+            </div>
+          </div>
+
+          <button id="inline-login-btn"
+            class="hidden bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:from-cyan-400 hover:to-blue-400 transition-all duration-200 shadow-md">
+            Log In
+          </button>
+        </div>
+
+        <div class="flex md:hidden">
+          <button id="mobile-menu-toggle" class="rounded-lg p-2 text-slate-400 hover:bg-white/5 hover:text-white">
+            <svg id="menu-icon" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+            </svg>
+          </button>
         </div>
       </div>
+    </div>
 
-      <section id="grocery" class="py-12 max-w-7xl mx-auto px-4">
-        <div
-          id="grocery-product-grid"
-          class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
-        ></div>
-      </section>
-      <section id="mobile" class="py-12 max-w-7xl mx-auto px-4">
-        <div
-          id="mobile-product-grid"
-          class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
-        ></div>
-      </section>
-      <section id="appliances" class="py-12 max-w-7xl mx-auto px-4">
-        <div
-          id="appliances-product-grid"
-          class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
-        ></div>
-      </section>
-    </main>
+    <div id="mobile-menu-content" class="hidden border-t border-white/5 bg-slate-950/95 backdrop-blur-xl md:hidden">
+      <div class="space-y-1 px-4 py-6">
+        <a href="index.html"
+          class="block rounded-lg px-4 py-3 text-base font-medium text-slate-300 hover:bg-white/5 hover:text-brand-400">Home</a>
 
-    <footer
-      class="bg-slate-950 border-t border-white/5 pt-12 pb-12 text-center text-slate-500 text-xs"
-    >
-      <p>© 2026 ModernHub Inc. All rights reserved.</p>
-      <p class="mt-2">
-        Crafted with ❤️ by <b class="text-cyan-400">Vansh Kashyap</b>
-      </p>
-    </footer>
+        <div>
+          <button id="mobile-grocery-btn"
+            class="w-full text-left rounded-lg px-4 py-3 text-base font-medium text-slate-300 hover:bg-white/5 flex justify-between items-center">
+            <span>Grocery</span>
+            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          <div id="mobile-grocery-dd" class="hidden pl-6 space-y-1 bg-slate-900/50 rounded-lg py-2">
+            <a href="grocery.html#fresh-produce" class="block py-2 text-sm text-slate-400 hover:text-white">Fresh Produce</a>
+            <a href="grocery.html#dairy-eggs" class="block py-2 text-sm text-slate-400 hover:text-white">Dairy & Eggs</a>
+            <a href="grocery.html#beverages" class="block py-2 text-sm text-slate-400 hover:text-white">Beverages</a>
+          </div>
+        </div>
 
-    <script>
-      // Mock Data Definition Setup
-      const categoryProducts = {
-        grocery: [
-  {
-    name: "Organic Strawberries",
-    price: "$4.99",
-    rating: 5,
-    desc: "Fresh, juicy farm-picked organic strawberries.",
-    img: "https://images.unsplash.com/photo-1464965911861-746a04b4bca6?auto=format&fit=crop&w=600&q=80",
-  },
-  {
-    name: "Fresh Avocados",
-    price: "$3.99",
-    rating: 4,
-    desc: "Ripe and ready-to-eat premium avocados.",
-    img: "https://images.unsplash.com/photo-1519162808019-7de1683fa2ad?auto=format&fit=crop&w=600&q=80",
-  },
-  {
-    name: "Organic Milk",
-    price: "$2.99",
-    rating: 5,
-    desc: "Farm fresh organic whole milk.",
-    img: "https://images.unsplash.com/photo-1563636619-e9143da7973b?auto=format&fit=crop&w=600&q=80",
-  },
-],
-mobile: [
-  {
-    name: "Quantum Pro 5G",
-    price: "$999.00",
-    rating: 5,
-    desc: "Revolutionary processing and display arrays.",
-    img: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=600&q=80",
-  },
-  {
-    name: "UltraTab X12",
-    price: "$649.00",
-    rating: 4,
-    desc: "High performance tablet for work and play.",
-    img: "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&w=600&q=80",
-  },
-  {
-    name: "ProBuds Wireless",
-    price: "$199.00",
-    rating: 5,
-    desc: "Premium noise cancelling wireless earbuds.",
-    img: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&w=600&q=80",
-  },
-],
-appliances: [
-  {
-    name: "Smart Air Fryer",
-    price: "$129.00",
-    rating: 4,
-    desc: "WiFi-connected multi-mode kitchen cooker.",
-    img: "https://images.unsplash.com/photo-1621972750749-0fbb1abb7736?auto=format&fit=crop&w=600&q=80",
-  },
-  {
-    name: "Robot Vacuum Pro",
-    price: "$299.00",
-    rating: 5,
-    desc: "Smart mapping robot vacuum with auto-empty base.",
-    img: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=600&q=80",
-  },
-  {
-    name: "Smart Coffee Maker",
-    price: "$89.00",
-    rating: 4,
-    desc: "Programmable coffee maker with app control.",
-    img: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=600&q=80",
-  },
-],
-       
-      };
+        <div>
+          <button id="mobile-mobile-btn"
+            class="w-full text-left rounded-lg px-4 py-3 text-base font-medium text-slate-300 hover:bg-white/5 flex justify-between items-center">
+            <span>Mobiles</span>
+            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          <div id="mobile-mobile-dd" class="hidden pl-6 space-y-1 bg-slate-900/50 rounded-lg py-2">
+            <a href="mobiles.html#smartphones" class="block py-2 text-sm text-slate-400 hover:text-white">Smartphones</a>
+            <a href="mobiles.html#accessories" class="block py-2 text-sm text-slate-400 hover:text-white">Accessories</a>
+            <a href="mobiles.html#tablets" class="block py-2 text-sm text-slate-400 hover:text-white">Tablets</a>
+          </div>
+        </div>
 
-      const dropdowns = [
-        { button: "grocery", menu: "grocery-dd" },
-        { button: "mobile", menu: "mobile-dd" },
-        { button: "appliances", menu: "appliances-dd" },
-        { button: "vehicle", menu: "vehicle-dd" },
-        { button: "travel", menu: "travel-dd" },
-        { button: "fashion", menu: "fashion-dd" },
-        { button: "user-btn", menu: "user-menu" },
-      ];
+        <div>
+          <button id="mobile-appliances-btn"
+            class="w-full text-left rounded-lg px-4 py-3 text-base font-medium text-slate-300 hover:bg-white/5 flex justify-between items-center">
+            <span>Appliances</span>
+            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          <div id="mobile-appliances-dd" class="hidden pl-6 space-y-1 bg-slate-900/50 rounded-lg py-2">
+            <a href="appliances.html#kitchen" class="block py-2 text-sm text-slate-400 hover:text-white">Kitchen Tech</a>
+            <a href="appliances.html#home-comfort" class="block py-2 text-sm text-slate-400 hover:text-white">Home Comfort</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
 
-      function closeAllDropdowns() {
-        dropdowns.forEach(({ menu, button }) => {
-          const dropdown = document.getElementById(menu);
-          const btn = document.getElementById(button);
-          if (dropdown) {
-            dropdown.classList.add(
+  <main class="relative pt-20">
+    <section id="home" class="relative overflow-hidden py-24 lg:py-32">
+      <div class="hero-gradient pointer-events-none absolute inset-0 -z-10"></div>
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center lg:text-left">
+        <div class="grid items-center gap-12 lg:grid-cols-2">
+          <div class="space-y-8">
+            <div
+              class="inline-flex items-center gap-2 rounded-full bg-brand-500/10 px-4 py-1.5 text-sm font-semibold text-brand-400 ring-1 ring-brand-500/20">
+              <span class="flex h-2 w-2 rounded-full bg-brand-400 animate-pulse"></span>
+              Special Summer Offer - Up to 40% Off
+            </div>
+            <h1 class="text-5xl font-extrabold tracking-tight text-white sm:text-7xl">
+              Experience the
+              <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-emerald-400">Next Gen</span>
+              of Shopping
+            </h1>
+            <p class="max-w-xl text-lg leading-relaxed text-slate-400 mx-auto lg:mx-0">
+              Discover a curated collection of premium products across
+              fashion, electronics, and daily essentials.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="flex flex-col justify-center items-center text-center min-h-[40vh] px-4">
+      <div id="welcome-text"
+        class="text-gray-200 text-xl md:text-2xl font-semibold tracking-wide max-w-4xl leading-relaxed bg-slate-900/50 p-8 rounded-2xl border border-slate-800/80 shadow-xl backdrop-blur-sm">
+        Dropdown Menus Available Under Grocery, Mobile, Appliances, Vehicle,
+        Travel, Fashion & Profile Tabs
+      </div>
+    </div>
+
+    <section id="grocery" class="py-12 max-w-7xl mx-auto px-4">
+      <div id="grocery-product-grid" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"></div>
+    </section>
+    <section id="mobile" class="py-12 max-w-7xl mx-auto px-4">
+      <div id="mobile-product-grid" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"></div>
+    </section>
+    <section id="appliances" class="py-12 max-w-7xl mx-auto px-4">
+      <div id="appliances-product-grid" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"></div>
+    </section>
+  </main>
+
+  <footer class="bg-slate-950 border-t border-white/5 pt-12 pb-12 text-center text-slate-500 text-xs">
+    <p>© 2026 ModernHub Inc. All rights reserved.</p>
+    <p class="mt-2">
+      Crafted with ❤️ by <b class="text-cyan-400">Jaymin Panchal</b>
+    </p>
+  </footer>
+
+  <script>
+    // Mock Data Definition Setup
+    const categoryProducts = {
+      grocery: [
+        {
+          name: "Organic Strawberries",
+          price: "$4.99",
+          rating: 5,
+          desc: "Fresh, juicy farm-picked organic strawberries.",
+          img: "https://images.unsplash.com/photo-1464965911861-746a04b4bca6?auto=format&fit=crop&w=600&q=80",
+        },
+        {
+          name: "Fresh Avocados",
+          price: "$3.99",
+          rating: 4,
+          desc: "Ripe and ready-to-eat premium avocados.",
+          img: "https://images.unsplash.com/photo-1519162808019-7de1683fa2ad?auto=format&fit=crop&w=600&q=80",
+        },
+        {
+          name: "Organic Milk",
+          price: "$2.99",
+          rating: 5,
+          desc: "Farm fresh organic whole milk.",
+          img: "https://images.unsplash.com/photo-1563636619-e9143da7973b?auto=format&fit=crop&w=600&q=80",
+        },
+      ],
+      mobile: [
+        {
+          name: "Quantum Pro 5G",
+          price: "$999.00",
+          rating: 5,
+          desc: "Revolutionary processing and display arrays.",
+          img: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=600&q=80",
+        },
+        {
+          name: "UltraTab X12",
+          price: "$649.00",
+          rating: 4,
+          desc: "High performance tablet for work and play.",
+          img: "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&w=600&q=80",
+        },
+        {
+          name: "ProBuds Wireless",
+          price: "$199.00",
+          rating: 5,
+          desc: "Premium noise cancelling wireless earbuds.",
+          img: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&w=600&q=80",
+        },
+      ],
+      appliances: [
+        {
+          name: "Smart Air Fryer",
+          price: "$129.00",
+          rating: 4,
+          desc: "WiFi-connected multi-mode kitchen cooker.",
+          img: "https://images.unsplash.com/photo-1621972750749-0fbb1abb7736?auto=format&fit=crop&w=600&q=80",
+        },
+        {
+          name: "Robot Vacuum Pro",
+          price: "$299.00",
+          rating: 5,
+          desc: "Smart mapping robot vacuum with auto-empty base.",
+          img: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=600&q=80",
+        },
+        {
+          name: "Smart Coffee Maker",
+          price: "$89.00",
+          rating: 4,
+          desc: "Programmable coffee maker with app control.",
+          img: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=600&q=80",
+        },
+      ],
+
+    };
+
+    const dropdowns = [
+      { button: "grocery", menu: "grocery-dd" },
+      { button: "mobile", menu: "mobile-dd" },
+      { button: "appliances", menu: "appliances-dd" },
+      { button: "vehicle", menu: "vehicle-dd" },
+      { button: "travel", menu: "travel-dd" },
+      { button: "fashion", menu: "fashion-dd" },
+      { button: "user-btn", menu: "user-menu" },
+    ];
+
+    function closeAllDropdowns() {
+      dropdowns.forEach(({ menu, button }) => {
+        const dropdown = document.getElementById(menu);
+        const btn = document.getElementById(button);
+        if (dropdown) {
+          dropdown.classList.add(
+            "hidden",
+            "invisible",
+            "opacity-0",
+            "scale-95",
+            "pointer-events-none",
+          );
+        }
+        if (btn) btn.classList.remove("bg-white/5", "text-white");
+      });
+    }
+
+    dropdowns.forEach(({ button, menu }) => {
+      const btn = document.getElementById(button);
+      const dropdown = document.getElementById(menu);
+
+      if (btn && dropdown) {
+        btn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          const isHidden = dropdown.classList.contains("hidden");
+          closeAllDropdowns();
+
+          if (isHidden) {
+            dropdown.classList.remove(
               "hidden",
               "invisible",
               "opacity-0",
               "scale-95",
               "pointer-events-none",
             );
+            btn.classList.add("bg-white/5", "text-white");
           }
-          if (btn) btn.classList.remove("bg-white/5", "text-white");
         });
       }
+    });
 
-      dropdowns.forEach(({ button, menu }) => {
-        const btn = document.getElementById(button);
-        const dropdown = document.getElementById(menu);
+    document.addEventListener("click", () => closeAllDropdowns());
 
-        if (btn && dropdown) {
-          btn.addEventListener("click", function (e) {
-            e.stopPropagation();
-            const isHidden = dropdown.classList.contains("hidden");
-            closeAllDropdowns();
+    // Mobile Menu Actions
+    const mobileBtn = document.getElementById("mobile-menu-toggle");
+    const mobileMenu = document.getElementById("mobile-menu-content");
 
-            if (isHidden) {
-              dropdown.classList.remove(
-                "hidden",
-                "invisible",
-                "opacity-0",
-                "scale-95",
-                "pointer-events-none",
-              );
-              btn.classList.add("bg-white/5", "text-white");
-            }
-          });
-        }
+    if (mobileBtn && mobileMenu) {
+      mobileBtn.addEventListener("click", () => {
+        mobileMenu.classList.toggle("hidden");
       });
+    }
 
-      document.addEventListener("click", () => closeAllDropdowns());
+    // Mobile Dropdown Expand/Collapse Logic
+    const mobileSubmenus = [
+      { btn: "mobile-grocery-btn", dd: "mobile-grocery-dd" },
+      { btn: "mobile-mobile-btn", dd: "mobile-mobile-dd" },
+      { btn: "mobile-appliances-btn", dd: "mobile-appliances-dd" },
+    ];
 
-      // Mobile Menu Actions
-      const mobileBtn = document.getElementById("mobile-menu-toggle");
-      const mobileMenu = document.getElementById("mobile-menu-content");
-
-      if (mobileBtn && mobileMenu) {
-        mobileBtn.addEventListener("click", () => {
-          mobileMenu.classList.toggle("hidden");
+    mobileSubmenus.forEach(({ btn, dd }) => {
+      const targetBtn = document.getElementById(btn);
+      const targetMenu = document.getElementById(dd);
+      if (targetBtn && targetMenu) {
+        targetBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          targetMenu.classList.toggle("hidden");
         });
       }
+    });
 
-      // Mobile Dropdown Expand/Collapse Logic
-      const mobileSubmenus = [
-        { btn: "mobile-grocery-btn", dd: "mobile-grocery-dd" },
-        { btn: "mobile-mobile-btn", dd: "mobile-mobile-dd" },
-        { btn: "mobile-appliances-btn", dd: "mobile-appliances-dd" },
-      ];
+    // Product Card Injection Engine
+    function renderProducts(categoryId, parentId) {
+      const grid = document.getElementById(`${parentId}-product-grid`);
+      if (!grid) return;
 
-      mobileSubmenus.forEach(({ btn, dd }) => {
-        const targetBtn = document.getElementById(btn);
-        const targetMenu = document.getElementById(dd);
-        if (targetBtn && targetMenu) {
-          targetBtn.addEventListener("click", (e) => {
-            e.stopPropagation();
-            targetMenu.classList.toggle("hidden");
-          });
-        }
-      });
+      const products =
+        categoryProducts[categoryId] || categoryProducts[parentId];
+      if (!products) return;
 
-      // Product Card Injection Engine
-      function renderProducts(categoryId, parentId) {
-        const grid = document.getElementById(`${parentId}-product-grid`);
-        if (!grid) return;
-
-        const products =
-          categoryProducts[categoryId] || categoryProducts[parentId];
-        if (!products) return;
-
-        grid.innerHTML = "";
-        products.forEach((p) => {
-          const card = document.createElement("div");
-          card.className =
-            "group relative flex flex-col rounded-3xl bg-white/5 border border-white/10 p-6 glass animate-in";
-          card.innerHTML = `
+      grid.innerHTML = "";
+      products.forEach((p) => {
+        const card = document.createElement("div");
+        card.className =
+          "group relative flex flex-col rounded-3xl bg-white/5 border border-white/10 p-6 glass animate-in";
+        card.innerHTML = `
             <div class="aspect-[4/3] w-full overflow-hidden relative rounded-2xl bg-slate-900/50 mb-4">
               <img src="${p.img}" alt="${p.name}" class="h-full w-full object-cover">
             </div>
@@ -915,15 +580,16 @@ appliances: [
               <button class="rounded-xl px-5 py-2.5 text-xs font-bold text-white bg-brand-500 hover:bg-brand-400 transition-all">Add to Cart</button>
             </div>
           `;
-          grid.appendChild(card);
-        });
-      }
-
-      document.addEventListener("DOMContentLoaded", () => {
-        ["grocery", "mobile", "appliances"].forEach((id) =>
-          renderProducts(id, id),
-        );
+        grid.appendChild(card);
       });
-    </script>
-  </body>
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      ["grocery", "mobile", "appliances"].forEach((id) =>
+        renderProducts(id, id),
+      );
+    });
+  </script>
+</body>
+
 </html>

@@ -15,6 +15,7 @@ mobileMenu.innerHTML = `
   <ul>
     <li><a href="#Home">Home</a></li>
     <li><a href="#Features">Features</a></li>
+    <li><a href="#ai-planner">AI Planner</a></li>
     <li><a href="#Prising">Pricing</a></li>
     <li><a href="#Blogs">Blogs</a></li>
     <li><a href="#Contact">Contact</a></li>
@@ -292,11 +293,12 @@ if (newsletterForm && emailInput) {
 // ── 6. ACTIVE NAV LINK on scroll ──────────────────────────────────────────
 
 const sections = [
-  { id: 'Home',     el: document.querySelector('.content') },
-  { id: 'Features', el: document.querySelector('.foot') },
-  { id: 'Prising',  el: document.querySelector('.review-section') },
-  { id: 'Blogs',    el: document.querySelector('.news') },
-  { id: 'Contact',  el: document.querySelector('footer') },
+  { id: 'Home',       el: document.querySelector('.content') },
+  { id: 'Features',   el: document.querySelector('.foot') },
+  { id: 'ai-planner', el: document.querySelector('.ai-planner-section') },
+  { id: 'Prising',    el: document.querySelector('.review-section') },
+  { id: 'Blogs',      el: document.querySelector('.news') },
+  { id: 'Contact',    el: document.querySelector('footer') },
 ];
 
 // Give sections their ids if missing
@@ -319,16 +321,19 @@ window.addEventListener('scroll', () => {
 });
 
 
-// ── 7. "START NOW" BUTTON — scroll to newsletter ──────────────────────────
+// ── 7. "START NOW" BUTTON — scroll to AI Planner ──────────────────────────
 
 const startBtn = document.querySelector('#p4');
 if (startBtn) {
   startBtn.addEventListener('click', (e) => {
     e.preventDefault();
-    const newsSection = document.querySelector('.news');
-    if (newsSection) {
-      newsSection.scrollIntoView({ behavior: 'smooth' });
-      setTimeout(() => emailInput && emailInput.focus(), 700);
+    const plannerSection = document.querySelector('.ai-planner-section');
+    if (plannerSection) {
+      plannerSection.scrollIntoView({ behavior: 'smooth' });
+      setTimeout(() => {
+        const examNameField = document.getElementById('examName');
+        examNameField && examNameField.focus();
+      }, 700);
     }
   });
 }
@@ -455,6 +460,198 @@ document.querySelectorAll('.subcontent .icon').forEach(ic => {
     ic.addEventListener('click', () => window.open(socialLinks[key], '_blank'));
   }
 });
+
+
+// ── 12. AI STUDY PLANNER  (Groq · Llama 3.1 8B Instant) — Issue #9526 ────
+
+const STORAGE_KEY   = 'studysync_groq_api_key';
+const GROQ_MODEL    = 'llama-3.1-8b-instant'; // NOTE: Groq is deprecating this
+                                                // model on 2026-08-16. Switch to
+                                                // 'openai/gpt-oss-20b' before then.
+const GROQ_ENDPOINT = 'https://api.groq.com/openai/v1/chat/completions';
+
+// Elements (only present on pages that include the AI Planner section)
+const apiKeyBox     = document.getElementById('apiKeyBox');
+const apiKeyInput   = document.getElementById('groqApiKeyInput');
+const saveApiKeyBtn = document.getElementById('saveApiKeyBtn');
+const apiKeySaved   = document.getElementById('apiKeySaved');
+const changeKeyBtn  = document.getElementById('changeKeyBtn');
+
+const examNameEl   = document.getElementById('examName');
+const examDateEl   = document.getElementById('examDate');
+const dailyHoursEl = document.getElementById('dailyHours');
+const subjectsEl   = document.getElementById('subjects');
+const weakTopicsEl = document.getElementById('weakTopics');
+const diffBtns     = document.querySelectorAll('.diff-btn');
+
+const generateBtn  = document.getElementById('generateBtn');
+const clearPlanBtn = document.getElementById('clearPlanBtn');
+
+const outputPlaceholder = document.getElementById('outputPlaceholder');
+const outputLoading     = document.getElementById('outputLoading');
+const outputContent     = document.getElementById('outputContent');
+const planText           = document.getElementById('planText');
+const copyPlanBtn        = document.getElementById('copyPlanBtn');
+
+if (generateBtn) {
+
+  let selectedDifficulty = 'Beginner';
+
+  /* ---- API key persistence (localStorage only — no backend, no .env) ---- */
+  function loadApiKey() {
+    return localStorage.getItem(STORAGE_KEY) || '';
+  }
+
+  function showKeySavedState(saved) {
+    apiKeyBox.style.display   = saved ? 'none' : 'block';
+    apiKeySaved.style.display = saved ? 'flex' : 'none';
+  }
+
+  function initApiKeyUI() {
+    showKeySavedState(!!loadApiKey());
+  }
+
+  saveApiKeyBtn.addEventListener('click', () => {
+    const key = apiKeyInput.value.trim();
+    if (!key) {
+      alert('Please paste a valid Groq API key (starts with "gsk_").');
+      return;
+    }
+    localStorage.setItem(STORAGE_KEY, key);
+    apiKeyInput.value = '';
+    showKeySavedState(true);
+  });
+
+  changeKeyBtn.addEventListener('click', () => {
+    apiKeyInput.value = loadApiKey();
+    showKeySavedState(false);
+    apiKeyInput.focus();
+  });
+
+  initApiKeyUI();
+
+  /* ---- Difficulty tab selection ---- */
+  diffBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      diffBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      selectedDifficulty = btn.dataset.diff;
+    });
+  });
+
+  /* ---- Output state helper ---- */
+  function setOutputState(state) {
+    // state: 'placeholder' | 'loading' | 'content'
+    outputPlaceholder.style.display = state === 'placeholder' ? 'flex' : 'none';
+    outputLoading.style.display     = state === 'loading'     ? 'flex' : 'none';
+    outputContent.style.display     = state === 'content'     ? 'flex' : 'none';
+  }
+
+  /* ---- Wrap "Day N" markers for the CSS .day-marker badge style ---- */
+  function formatPlan(rawText) {
+    return rawText.replace(/(^|\n)\s*(Day\s*\d+[:.\-]?)/gi, (m, lead, label) => {
+      return `${lead}<span class="day-marker">${label.trim()}</span> `;
+    });
+  }
+
+  /* ---- Build the prompt sent to Groq ---- */
+  function buildPrompt() {
+    const exam     = examNameEl.value.trim() || 'an upcoming exam';
+    const dateVal  = examDateEl.value ? new Date(examDateEl.value).toDateString() : 'not specified';
+    const hours    = dailyHoursEl.value;
+    const subjects = subjectsEl.value.trim() || 'Not specified';
+    const weak     = weakTopicsEl.value.trim() || 'None mentioned';
+
+    return `You are an expert academic study planner. Create a personalized, day-wise study roadmap.
+
+Exam/Goal: ${exam}
+Exam Date: ${dateVal}
+Available Study Time: ${hours} hour(s) per day
+Subjects/Topics: ${subjects}
+Difficulty Level: ${selectedDifficulty}
+Weak Topics (need extra focus): ${weak}
+
+Instructions:
+- Break the plan into "Day 1", "Day 2", etc., up to the exam date (or up to 14 days if no date is given).
+- For each day, list specific topics to study with approximate time allocation.
+- Prioritize the weak topics with dedicated revision slots.
+- Add 1-2 short revision/mock-test days near the end.
+- Keep the tone encouraging and concise. Plain text, clear day-by-day structure, no markdown tables.`;
+  }
+
+  /* ---- Call Groq API and render the plan ---- */
+  async function generatePlan() {
+    const apiKey = loadApiKey();
+
+    if (!apiKey) {
+      alert('Please save your Groq API key first.');
+      apiKeyBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+    if (!subjectsEl.value.trim()) {
+      alert('Please enter at least one subject/topic to study.');
+      subjectsEl.focus();
+      return;
+    }
+
+    setOutputState('loading');
+    generateBtn.disabled = true;
+
+    try {
+      const response = await fetch(GROQ_ENDPOINT, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${apiKey}`
+        },
+        body: JSON.stringify({
+          model: GROQ_MODEL,
+          messages: [{ role: 'user', content: buildPrompt() }],
+          temperature: 0.6,
+          max_tokens: 1500
+        })
+      });
+
+      if (!response.ok) {
+        const errData = await response.json().catch(() => ({}));
+        throw new Error(errData?.error?.message || `Request failed with status ${response.status}`);
+      }
+
+      const data = await response.json();
+      const text = data?.choices?.[0]?.message?.content?.trim();
+
+      if (!text) throw new Error('Empty response from Groq API.');
+
+      planText.innerHTML = formatPlan(text);
+      setOutputState('content');
+      clearPlanBtn.style.display = 'flex';
+
+    } catch (err) {
+      console.error('Groq API error:', err);
+      setOutputState('placeholder');
+      alert(`Could not generate your plan: ${err.message}`);
+    } finally {
+      generateBtn.disabled = false;
+    }
+  }
+
+  generateBtn.addEventListener('click', generatePlan);
+
+  clearPlanBtn.addEventListener('click', () => {
+    planText.innerHTML = '';
+    setOutputState('placeholder');
+    clearPlanBtn.style.display = 'none';
+  });
+
+  copyPlanBtn.addEventListener('click', () => {
+    navigator.clipboard.writeText(planText.innerText).then(() => {
+      const original = copyPlanBtn.innerHTML;
+      copyPlanBtn.innerHTML = '<i class="fa fa-check"></i> Copied!';
+      setTimeout(() => { copyPlanBtn.innerHTML = original; }, 1800);
+    });
+  });
+
+}
 
 
 console.log('%cStudySync JS loaded ✅', 'color:#2563EB;font-weight:bold;font-size:14px;');

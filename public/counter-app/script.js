@@ -1,5 +1,4 @@
 let count = 0;
-let animationTimeout;
 let animationTimeout = null;
 
 const counterValue = document.getElementById('counter-value');
@@ -23,7 +22,6 @@ if (
 }
 
 // Update UI
-let animationTimeout = null;
 
 function updateDisplay() {
   counterValue.textContent = count;
@@ -55,10 +53,6 @@ incrementBtn.addEventListener('click', () => {
 
 // Decrement
 decrementBtn.addEventListener('click', () => {
-    if (count > 0) {
-        count--;
-        updateDisplay();
-    }
   count--;
   updateDisplay();
 });
@@ -97,7 +91,8 @@ saveBtn.addEventListener('click', () => {
 
 // Clear History
 clearHistoryBtn.addEventListener('click', () => {
-    if (historyLog.children.length === 0) {
+    const hasEntries = historyLog.querySelector('li:not(.empty-history)') !== null;
+    if (!hasEntries) {
         alert('History is already empty!');
         return;
     }

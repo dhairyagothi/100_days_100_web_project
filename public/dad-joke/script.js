@@ -2,53 +2,48 @@ const jokeEl = document.getElementById("joke");
 const jokeBtn = document.getElementById("jokeBtn");
 
 const generateJoke = async () => {
-  const config = {
-    headers: { Accept: "application/json" },
-  };
-  const res = await fetch("https://icanhazdadjoke.com/", config);
-  const data = await res.json();
-  jokeEl.innerHTML = data.joke;
-
-  // Fetching with .then()
-  //   fetch("https://icanhazdadjoke.com/", config)
-  //     .then((res) => res.json())
-  //     .then((data) => (jokeEl.innerHTML = data.joke));
+    try {
+        const config = {
+            headers: { Accept: "application/json" },
+        };
+        const res = await fetch("https://icanhazdadjoke.com/", config);
+        const data = await res.json();
+        jokeEl.innerHTML = data.joke;
+    } catch (error) {
+        jokeEl.innerHTML = "Oops! Couldn't fetch a joke 😅";
+        console.error("Joke fetch error:", error);
+    }
 };
 
+// Load initial joke
 generateJoke();
 
-jokeBtn.addEventListener("click", () => generateJoke());
+jokeBtn.addEventListener("click", generateJoke);
 
 // ==========================
-// Theme Toggle (Global)
+// Theme Toggle
 // ==========================
-
-// Select all toggle buttons (use a common class)
-const themeToggles = document.querySelectorAll(".theme");
+const themeToggle = document.getElementById("themeToggle");
 const themeIcon = document.getElementById("themeIcon");
 
-// Default = DARK MODE
+// Default: dark mode (false = dark)
 let isLightMode = JSON.parse(localStorage.getItem("lightMode")) || false;
 
-// Apply theme on load
 function updateTheme() {
-  if (isLightMode) {
-    document.body.classList.add("light-theme");
-    themeIcon.textContent = "🌙"; // show moon when light mode active
-  } else {
-    document.body.classList.remove("light-theme");
-    themeIcon.textContent = "☀️"; // show sun when dark mode active
-  }
+    if (isLightMode) {
+        document.body.classList.add("light-mode");
+        themeIcon.textContent = "🌙"; // moon for light mode
+    } else {
+        document.body.classList.remove("light-mode");
+        themeIcon.textContent = "☀️"; // sun for dark mode
+    }
 }
 
-// Toggle theme on any button click
-themeToggles.forEach(btn => {
-  btn.addEventListener("click", () => {
+themeToggle.addEventListener("click", () => {
     isLightMode = !isLightMode;
     localStorage.setItem("lightMode", JSON.stringify(isLightMode));
     updateTheme();
-  });
 });
 
-// Initialize on page load
+// Initialize theme on page load
 updateTheme();

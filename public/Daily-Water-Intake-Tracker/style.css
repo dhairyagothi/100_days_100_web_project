@@ -350,3 +350,158 @@ input[type='number']:focus {
     align-items: flex-start;
   }
 }
+
+/* Reminder System Styles */
+.reminder-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.reminder-toggle {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 48px;
+  height: 26px;
+  flex-shrink: 0;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 26px;
+  transition: 0.3s ease;
+}
+
+.slider:before {
+  content: "";
+  position: absolute;
+  height: 18px;
+  width: 18px;
+  left: 4px;
+  bottom: 4px;
+  background: white;
+  border-radius: 50%;
+  transition: 0.3s ease;
+}
+
+.switch input:checked + .slider {
+  background: linear-gradient(135deg, #3b82f6, #60a5fa);
+}
+
+.switch input:checked + .slider:before {
+  transform: translateX(22px);
+}
+
+#reminderStatus {
+  font-weight: 500;
+  color: #b8c7e0;
+}
+
+.reminder-interval {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.reminder-interval label {
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: #b8c7e0;
+}
+
+#intervalSelect {
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  color: #eef2ff;
+  font-size: 0.9rem;
+  cursor: pointer;
+  outline: none;
+  min-width: 120px;
+}
+
+#intervalSelect:focus {
+  border-color: rgba(59, 130, 246, 0.48);
+}
+
+#intervalSelect option {
+  background: #0b1226;
+  color: #eef2ff;
+}
+
+.reminder-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.reminder-actions button {
+  flex: 1;
+  min-width: 80px;
+  font-size: 0.85rem;
+  padding: 0.6rem 1rem;
+}
+
+.reminder-actions .ghost-btn {
+  min-width: 60px;
+}
+
+.snooze-info {
+  margin-top: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: rgba(59, 130, 246, 0.1);
+  border-radius: 12px;
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  color: #a5d8ff;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+/* Notification permission request styling */
+.notification-prompt {
+  background: rgba(255, 193, 7, 0.1);
+  border: 1px solid rgba(255, 193, 7, 0.2);
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  display: none;
+}
+
+.notification-prompt.show {
+  display: block;
+}
+
+.notification-prompt button {
+  background: #fbbf24;
+  color: #0b1226;
+  border: none;
+  padding: 0.4rem 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-left: 0.5rem;
+}
+
+.notification-prompt button:hover {
+  background: #f59e0b;
+}

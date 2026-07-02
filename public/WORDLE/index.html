@@ -62,10 +62,15 @@
         <table class="words" style="border-spacing: 5px;"></table> 
     </div>
 
-    <!-- Persistent Next Word action button (visible after game ends and modal is closed) -->
-    <div id="game-over-actions" class="hidden" style="display: flex; justify-content: center; margin-bottom: 20px;">
-        <button id="persistentNextWordBtn" class="button next-word-btn" style="width: auto; padding: 12px 30px;">Next Word ➔</button>
-    </div>
+<!-- This div is ONLY for the modal's "Next Word" button (shown after game ends) -->
+<div id="game-over-actions" class="hidden" style="display: flex; justify-content: center; margin-bottom: 20px;">
+    <!-- nextWordBtn lives inside the modal, not here — this div can be removed if unused -->
+</div>
+
+<!-- Standalone skip button — visible during active gameplay -->
+<div id="skip-btn-wrapper" style="display: flex; justify-content: center; margin-bottom: 20px;">
+    <button id="persistentNextWordBtn" class="button next-word-btn" style="width: auto; padding: 12px 30px;">SKIP WORD ➔</button>
+</div>
 
     <!-- Flexbox Virtual Keyboard -->
     <div id="keyboard-container">
@@ -96,7 +101,19 @@
         </div>
     </div>
 
+<!-- Custom Skip Confirmation Toast -->
+<div id="skip-toast" class="hidden skip-toast">
+    <p id="skip-toast-msg">Give up on this word? This will count as a loss.</p>
+    <div class="skip-toast-buttons">
+        <button id="skipConfirmYes" class="button next-word-btn" style="flex: 1; height: auto; padding: 8px 16px; font-size: 0.9rem;">Yes, give up</button>
+        <button id="skipConfirmNo" class="button" style="flex: 1; height: auto; padding: 8px 16px; font-size: 0.9rem;">Cancel</button>
+    </div>
+</div>
+
     <script type='text/javascript' src='./assets/js/words.js'></script>
     <script type='text/javascript' src='./assets/js/script.js'></script>
+
+
+
 </body>
 </html>
