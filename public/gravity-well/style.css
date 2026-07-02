@@ -39,6 +39,7 @@ canvas {
   border-radius: 12px;
   text-align: center;
   color: #f8fafc;
+  min-width: 200px;
 }
 
 .divider {
@@ -47,19 +48,50 @@ canvas {
   background: #38bdf8;
   margin: 10px auto;
 }
+
 .hud-panel h1 {
   margin: 0;
   font-size: 1.2rem;
   letter-spacing: 0.2rem;
   color: #38bdf8;
 }
+
 .hud-panel p {
   margin: 5px 0;
   font-size: 0.65rem;
   letter-spacing: 0.1rem;
   text-transform: uppercase;
 }
+
 .instruction {
   font-size: 0.6rem;
   opacity: 0.5;
+  display: block;
+  margin-top: 5px;
+}
+
+/* Key hint styles */
+.key-hint {
+  color: #38bdf8;
+  font-weight: bold;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .hud-panel {
+    padding: 15px 20px;
+    min-width: 150px;
+  }
+  
+  .hud-panel h1 {
+    font-size: 1rem;
+  }
+  
+  .hud-panel p {
+    font-size: 0.55rem;
+  }
+  
+  .instruction {
+    font-size: 0.5rem;
+  }
 }

@@ -69,9 +69,7 @@ function initStudy(){
     if(currentIndex>0){ currentIndex--; renderCard(); }
   });
 
-  document.getElementById("theme-toggle").addEventListener("click",()=>{
-    document.body.classList.toggle("dark");
-  });
+
 
   document.getElementById("audio-btn").addEventListener("click",(e)=>{
     e.stopPropagation();
@@ -150,9 +148,6 @@ async function init(){
   }
 }
 
-init();
-
-
 const themeBtn = document.getElementById("theme-toggle");
 if (themeBtn) {
   themeBtn.addEventListener("click", () => {
@@ -170,3 +165,9 @@ if (themeBtn) {
     document.body.classList.add("dark");
   }
 }
+
+
+init();
+
+
+
