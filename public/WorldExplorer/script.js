@@ -282,7 +282,9 @@ function applyFilters() {
     const name = (c.name?.common || '').toLowerCase();
     const matchSearch   = !query || name.includes(query);
     const matchContinent = continent === 'all' || c.region === continent;
-    return matchSearch && matchContinent;
+const matchFavourite = !showFavsOnly || favorites.has(c.cca2);
+
+return matchSearch && matchContinent && matchFavourite;
   });
 
   // Sort
@@ -395,10 +397,10 @@ function bindEvents() {
 
   // Show favourites toggle
   showFavBtn.addEventListener('click', () => {
-    showFavBtn.classList.toggle('active');
-    const el = document.getElementById('favorites-section');
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  });
+    showFavsOnly = !showFavsOnly;
+    showFavBtn.classList.toggle('active', showFavsOnly);
+    applyFilters();
+});
 
   // Modal close button
   modalClose.addEventListener('click', closeModal);
