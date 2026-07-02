@@ -1,24 +1,18 @@
-<<<<<<< HEAD
-# 🧩 Pokédex
+# 📖 Pokédex
 
-A modern and responsive Pokédex web application built with HTML, CSS, and JavaScript. It allows users to search for Pokémon by name or ID and displays detailed information fetched from the PokéAPI.
+A simple and interactive Pokédex web application built using HTML, CSS, and JavaScript. It fetches real-time Pokémon data from the free PokéAPI and displays detailed information including Pokémon stats, types, sprites, and abilities.
 
 ---
 
-## ✨ Features
+## 🚀 Features
 
-- 🔍 Search Pokémon by name or Pokédex ID
-- 🖼️ Displays official Pokémon artwork
-- 📋 Shows Pokémon information:
-  - Name
-  - Pokédex ID
-  - Height
-  - Weight
-  - Types
-  - Abilities
-- ⚡ Fast API-based search
-- 📱 Fully responsive design
-- ❌ Handles invalid searches gracefully
+- 🔍 Search Pokémon by name
+- 🖼️ Display official Pokémon sprite
+- 📊 View base stats
+- 🏷️ Show Pokémon types
+- ⚡ Fetch live data from PokéAPI
+- 📱 Responsive user interface
+- 🎨 Clean and modern design
 
 ---
 
@@ -32,124 +26,62 @@ A modern and responsive Pokédex web application built with HTML, CSS, and JavaS
 
 ---
 
-## 📂 Project Structure
-
-```
-=======
-# 🎮 Pokédex
-
-> A modern, responsive Pokédex web application powered by the
-> **PokéAPI**.
-
-------------------------------------------------------------------------
-
-# Table of Contents
-
-1.  Introduction
-2.  Features
-3.  Technologies
-4.  Project Structure
-5.  Installation
-6.  Usage
-7.  Search Functionality
-8.  Pokémon Information
-9.  API Integration
-10. Responsive Design
-11. Accessibility
-12. JavaScript Concepts
-13. Code Flow
-14. Future Improvements
-15. Contributing
-16. License
-17. Author
-18. Acknowledgements
-19. FAQ
-20. Changelog
-
-------------------------------------------------------------------------
-
-# 1. Introduction
-
-The Pokédex is an interactive web application built using HTML, CSS, and
-JavaScript.
-
-Users can search Pokémon by **name** or **Pokédex ID** and instantly
-retrieve official artwork, descriptions, elemental types, and base
-statistics.
-
-The project consumes data directly from the public PokéAPI.
-
-------------------------------------------------------------------------
-
-# 2. Features
-
--   Search by Pokémon name
--   Search by Pokédex ID
--   Official artwork
--   English description
--   Dynamic type badges
--   Base stats
--   Responsive layout
--   Error handling
--   Fast loading
--   Default Pikachu on startup
--   Simple UI
--   Modern design
-
-------------------------------------------------------------------------
-
-# 3. Technologies
-
--   HTML5
--   CSS3
--   JavaScript (ES6)
--   Fetch API
--   PokéAPI
-
-------------------------------------------------------------------------
-
-# 4. Folder Structure
-
-``` text
->>>>>>> upstream/Main
-Pokedex/
-├── index.html
-├── style.css
-├── script.js
-<<<<<<< HEAD
-├── README.md
-└── favicon.png
-```
-
----
-
-## 🚀 Getting Started
-
-1. Clone the repository.
-2. Navigate to:
-
-```
-public/Pokedex
-```
-
-3. Open `index.html` in your browser.
-4. Search using a Pokémon name (e.g. Pikachu) or Pokédex ID (e.g. 25).
-
----
-
 ## 🌐 API Used
 
 **PokéAPI**
 
 https://pokeapi.co/
 
-No API key is required.
+- Free and open-source
+- No API key required
+- Provides Pokémon information including:
+  - Name
+  - Types
+  - Stats
+  - Abilities
+  - Official artwork
 
 ---
 
-## 📸 Preview
+## ▶️ Getting Started
 
-Search Pokémon by name or ID to instantly view its official artwork, types, abilities, height, weight, and Pokédex information.
+Clone the repository:
+
+```bash
+git clone https://github.com/dhairyagothi/100_days_100_web_project.git
+```
+
+Open the project:
+
+```text
+public/Pokedex/index.html
+```
+
+Or run using VS Code Live Server.
+
+---
+
+## 📂 Project Structure
+
+```
+Pokedex/
+│── index.html
+│── style.css
+│── script.js
+│── favicon.png
+└── README.md
+```
+
+---
+
+## 💡 Future Improvements
+
+- Search suggestions
+- Filter by Pokémon type
+- Evolution chain support
+- Dark mode
+- Favorite Pokémon
+- Pagination
 
 ---
 
@@ -157,201 +89,20 @@ Search Pokémon by name or ID to instantly view its official artwork, types, abi
 
 Contributions are welcome.
 
-1. Fork the repository.
-2. Create a new branch.
-3. Commit your changes.
-4. Open a Pull Request.
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Open a Pull Request
 
 ---
 
 ## 📄 License
 
-This project is licensed under the MIT License.
+This project is part of the **100 Days 100 Web Projects** collection.
 
 ---
 
-### 👨‍💻 Author
+## ⭐ Acknowledgements
 
-Made with ❤️ by the contributors of the **100 Days 100 Web Projects** repository.
-=======
-├── image.png
-└── README.md
-```
-
-------------------------------------------------------------------------
-
-# 5. Installation
-
-``` bash
-git clone https://github.com/100_days_100_project.git
-cd Pokedex
-```
-
-Open **index.html**.
-
-------------------------------------------------------------------------
-
-# 6. Usage
-
-1.  Open the application.
-2.  Enter a Pokémon name or ID.
-3.  Press Search or Enter.
-4.  Explore the results.
-
-------------------------------------------------------------------------
-
-# 7. Search Functionality
-
-The application accepts:
-
--   Pikachu
--   Charizard
--   Bulbasaur
--   1
--   25
--   150
-
-Invalid names display a friendly error.
-
-------------------------------------------------------------------------
-
-# 8. Pokémon Information
-
-Each search displays:
-
--   Name
--   National Dex Number
--   Artwork
--   Description
--   Types
--   Base Stats
-
-------------------------------------------------------------------------
-
-# 9. API Integration
-
-Endpoints used:
-
-    https://pokeapi.co/api/v2/pokemon/{name_or_id}
-
-    https://pokeapi.co/api/v2/pokemon-species/{name_or_id}
-
-Data is fetched asynchronously.
-
-------------------------------------------------------------------------
-
-# 10. Responsive Design
-
-Optimized for:
-
--   Desktop
--   Laptop
--   Tablet
--   Mobile
-
-------------------------------------------------------------------------
-
-# 11. Accessibility
-
--   Keyboard search
--   Semantic HTML
--   Descriptive alt text
--   Readable typography
-
-------------------------------------------------------------------------
-
-# 12. JavaScript Concepts
-
--   Async/Await
--   Fetch API
--   Promises
--   DOM Manipulation
--   Event Listeners
--   Array Mapping
--   Error Handling
-
-------------------------------------------------------------------------
-
-# 13. Code Flow
-
-1.  User enters query.
-2.  Fetch request sent.
-3.  JSON parsed.
-4.  UI rendered.
-5.  Errors handled.
-
-------------------------------------------------------------------------
-
-# 14. Future Improvements
-
--   Favorites
--   Evolution chain
--   Abilities
--   Moves
--   Dark mode
--   Compare Pokémon
--   Infinite search history
--   Voice search
--   Random Pokémon
--   Shiny toggle
-
-------------------------------------------------------------------------
-
-# 15. Contributing
-
-1.  Fork
-2.  Create branch
-3.  Commit
-4.  Push
-5.  Open Pull Request
-
-------------------------------------------------------------------------
-
-# 16. License
-
-MIT License.
-
-------------------------------------------------------------------------
-
-# 17. Author
-
-**@madhavcodes25**
-
-------------------------------------------------------------------------
-
-# 18. Acknowledgements
-
--   PokéAPI
--   Pokémon
--   Open-source community
-
-------------------------------------------------------------------------
-
-# 19. FAQ
-
-**Q:** Can I search by ID?
-
-Yes.
-
-**Q:** Does it require installation?
-
-No.
-
-**Q:** Is it responsive?
-
-Yes.
-
-------------------------------------------------------------------------
-
-# 20. Changelog
-
-## v1.0.0
-
--   Initial release
--   Search
--   Stats
--   Descriptions
--   Responsive UI
-
-------------------------------------------------------------------------
->>>>>>> upstream/Main
+- PokéAPI — https://pokeapi.co/
+- Pokémon assets belong to Nintendo, Game Freak, and The Pokémon Company.
