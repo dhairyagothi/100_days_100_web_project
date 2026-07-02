@@ -90,6 +90,61 @@ public/Jarvis-AI-main/
 ```
 ---
 
+## 🔐 Google Sign-In Setup
+
+JARVIS supports **"Continue with Google"** on the login/signup screen.
+Out of the box the button is wired up — you only need to supply your own **Google OAuth 2.0 Client ID** to make it live.
+
+### Step-by-step
+
+1. **Go to Google Cloud Console**
+   [https://console.cloud.google.com](https://console.cloud.google.com)
+
+2. **Create (or select) a project**, then navigate to:
+   `APIs & Services` → `Credentials` → `+ CREATE CREDENTIALS` → `OAuth 2.0 Client ID`
+
+3. **Set Application type** to **Web application**.
+
+4. **Add Authorized JavaScript origins** — the origin you'll serve the project from:
+   | Environment | Origin to add |
+   |---|---|
+   | Local file (double-click) | `http://localhost` |
+   | Live Server / VS Code | `http://127.0.0.1:5500` |
+   | GitHub Pages | `https://your-username.github.io` |
+
+5. Click **Create** and copy the generated **Client ID**
+   (looks like `1234567890-abcdef.apps.googleusercontent.com`)
+
+6. **Open `app.js`** and find the single line near the bottom of the file:
+
+   ```js
+   // ── Line to edit ───────────────────────────────────────────────────
+   const GOOGLE_CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com";
+   ```
+
+   Replace the placeholder with your copied Client ID:
+
+   ```js
+   const GOOGLE_CLIENT_ID = "1234567890-abcdef.apps.googleusercontent.com";
+   ```
+
+   > That's it — **no other file needs to be changed.**
+
+7. Reload `index.html` and click **Continue with Google**.
+   JARVIS will greet you by the name from your Google account. 🎉
+
+### How it works (briefly)
+
+- Google opens a secure popup → you approve → Google returns an **access token**
+- JARVIS uses that token to call `googleapis.com/oauth2/v3/userinfo` and reads your **name**
+- The name is stored in **`sessionStorage`** (temporary — cleared when the tab closes)
+- Jarvis speaks: *"Hello [Your Name]. I am Jarvis, your virtual assistant."*
+
+> ⚠️ **No backend required.** Everything runs in the browser.
+> The Google access token is never stored on disk.
+
+---
+
 ## Contributing
 
 Contributions are welcome! If you'd like to improve this project:

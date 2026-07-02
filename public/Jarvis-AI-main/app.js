@@ -10,6 +10,9 @@ const logoutBtn = document.getElementById("logoutBtn");
 
 let recognition;
 
+// Holds the initialized Google OAuth2 token client
+let googleTokenClient = null;
+
 // =========================
 // SPEAK FUNCTION
 // =========================
@@ -48,39 +51,50 @@ function wishMe() {
 
 window.addEventListener("load", () => {
 
-    const loggedIn =
-        localStorage.getItem("loggedIn") === "true";
+    // Check regular login (localStorage) OR Google session (sessionStorage)
+    const loggedIn = localStorage.getItem("loggedIn") === "true";
+    const googleSession = JSON.parse(sessionStorage.getItem("jarvisGoogleUser") || "null");
+    const isAuthenticated = loggedIn || googleSession !== null;
 
-    const authContainer =
-        document.getElementById("authContainer");
-
-    const mainApp =
-        document.getElementById("mainApp");
+    const authContainer = document.getElementById("authContainer");
+    const mainApp = document.getElementById("mainApp");
 
     if (authContainer && mainApp) {
 
-        if (loggedIn) {
+        if (isAuthenticated) {
 
             authContainer.style.display = "none";
             mainApp.style.display = "flex";
 
-            const user =
-                JSON.parse(localStorage.getItem("user"));
+            // Resolve the display name — prefer Google session name
+            const googleUser = googleSession;
+            const localUser = JSON.parse(localStorage.getItem("user") || "null");
+            const displayName = googleUser?.name || localUser?.username || null;
 
-            if (user?.username) {
-                speak(`Welcome back ${user.username}`);
+            // Speak time-of-day greeting then welcome by name
+            setTimeout(() => { wishMe(); }, 500);
+
+            if (displayName) {
+                setTimeout(() => {
+                    speak(`Welcome back ${displayName}`);
+                }, 1800);
             }
 
         } else {
 
             authContainer.style.display = "flex";
             mainApp.style.display = "none";
+
+            // Default to signup tab highlighted
+            document.getElementById("toggleSignup")?.classList.add("active-tab");
+
+            // No voice on auth screen
         }
     }
 
-    setTimeout(() => {
-        wishMe();
-    }, 1000);
+    // Pre-initialise the Google OAuth2 token client so it is ready
+    // the moment the user clicks "Continue with Google"
+    initGoogleAuth();
 });
 
 // =========================
@@ -348,6 +362,9 @@ function logout() {
 
     localStorage.removeItem("loggedIn");
 
+    // Clear the temporary Google session too
+    sessionStorage.removeItem("jarvisGoogleUser");
+
     speak("Logged out successfully");
 
     location.reload();
@@ -406,6 +423,10 @@ function showSignup() {
 
     document.getElementById("forgotBox").style.display =
         "none";
+
+    // Highlight active tab
+    document.getElementById("toggleSignup")?.classList.add("active-tab");
+    document.getElementById("toggleLogin")?.classList.remove("active-tab");
 }
 
 function showLogin() {
@@ -418,6 +439,10 @@ function showLogin() {
 
     document.getElementById("forgotBox").style.display =
         "none";
+
+    // Highlight active tab
+    document.getElementById("toggleLogin")?.classList.add("active-tab");
+    document.getElementById("toggleSignup")?.classList.remove("active-tab");
 }
 
 function showForgot() {
@@ -430,6 +455,97 @@ function showForgot() {
 
     document.getElementById("forgotBox").style.display =
         "block";
+}
+
+// =========================
+// GOOGLE AUTH
+// =========================
+
+// ── Step 1: Initialise the token client once (called on page load) ──────────
+// Replace the placeholder below with your real OAuth 2.0 Client ID from
+// https://console.cloud.google.com/  →  APIs & Services  →  Credentials
+const GOOGLE_CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com";
+
+function initGoogleAuth() {
+
+    // Detect a placeholder / unconfigured Client ID via pattern:
+    // A real ID looks like  "digits-alphanumeric.apps.googleusercontent.com"
+    const isPlaceholder = !GOOGLE_CLIENT_ID ||
+        GOOGLE_CLIENT_ID === "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com" ||
+        !/^\d+-.+\.apps\.googleusercontent\.com$/.test(GOOGLE_CLIENT_ID);
+
+    if (typeof google === "undefined" || !google.accounts || isPlaceholder) {
+        // GIS not loaded or Client ID not configured — skip silently
+        return;
+    }
+
+    googleTokenClient = google.accounts.oauth2.initTokenClient({
+        client_id: GOOGLE_CLIENT_ID,
+        scope: "https://www.googleapis.com/auth/userinfo.profile "
+            + "https://www.googleapis.com/auth/userinfo.email",
+        callback: handleGoogleToken
+    });
+}
+
+// ── Step 2: Token callback — runs after Google popup is approved ─────────────
+function handleGoogleToken(tokenResponse) {
+
+    if (!tokenResponse.access_token) return;
+
+    // Fetch the user's name & email from Google's userinfo endpoint
+    fetch(
+        "https://www.googleapis.com/oauth2/v3/userinfo",
+        { headers: { Authorization: `Bearer ${tokenResponse.access_token}` } }
+    )
+        .then(res => res.json())
+        .then(profile => {
+
+            // ── Store only what we need, temporarily in sessionStorage ──
+            // sessionStorage lives for the current browser tab session only.
+            // It is automatically cleared when the tab is closed — no
+            // persistent personal data is written to localStorage.
+            const tempUser = {
+                name: profile.name,
+                email: profile.email,
+                picture: profile.picture,
+                provider: "google"
+            };
+            sessionStorage.setItem("jarvisGoogleUser", JSON.stringify(tempUser));
+
+            // ── Transition to main app without a page reload ─────────────
+            document.getElementById("authContainer").style.display = "none";
+            document.getElementById("mainApp").style.display = "flex";
+
+            // ── Jarvis speaks the name fetched from the Google token ──────
+            setTimeout(() => { wishMe(); }, 400);
+            setTimeout(() => {
+                speak(`Hello ${profile.name}. I am Jarvis, your virtual assistant.`);
+            }, 1600);
+        })
+        .catch(() => {
+            alert("Google sign-in failed. Please try again.");
+        });
+}
+
+// ── Step 3: Button click handler ─────────────────────────────────────────────
+function googleAuth() {
+
+    if (googleTokenClient) {
+        // Real GIS flow — opens the Google account picker popup
+        googleTokenClient.requestAccessToken();
+
+    } else {
+        // Client ID not configured — show a clear message instead of
+        // silently faking a login
+        const statusEl = document.getElementById("status");
+        if (statusEl) {
+            statusEl.textContent =
+                "⚠️ Google Client ID not configured. See app.js → GOOGLE_CLIENT_ID.";
+            statusEl.style.color = "#f87171";
+        } else {
+            alert("Google sign-in requires a valid Client ID.\nSee GOOGLE_CLIENT_ID in app.js.");
+        }
+    }
 }
 
 // =========================
