@@ -61,7 +61,24 @@ class ThreatVector {
 class SecOpsSandbox {
     constructor(canvasId) {
         this.canvas = document.getElementById(canvasId);
+
+        // Validate canvas element exists before proceeding
+        if (!this.canvas) {
+            const errorMsg = `[SecOpsSandbox] FATAL: Canvas element "#${canvasId}" not found in the DOM.`;
+            console.error(errorMsg);
+            this.logTerminal(`>> CRITICAL FAILURE: Tactical viewport canvas not found. Check element ID "${canvasId}".`, 'alert');
+            throw new Error(errorMsg);
+        }
+
         this.ctx = this.canvas.getContext('2d');
+
+        // Validate rendering context was created successfully
+        if (!this.ctx) {
+            const errorMsg = `[SecOpsSandbox] FATAL: Unable to acquire 2D rendering context from canvas "#${canvasId}".`;
+            console.error(errorMsg);
+            this.logTerminal('>> CRITICAL FAILURE: 2D rendering context unavailable. Browser may not support Canvas API.', 'alert');
+            throw new Error(errorMsg);
+        }
 
         this.config = {
             maxThreats: 150,
@@ -139,11 +156,12 @@ class SecOpsSandbox {
     }
 
     logTerminal(message, type = "info") {
-        const logsContainer = document.getElementById('terminalLogs');
-        const row = document.createElement('div');
-        row.className = `log-row ${type}`;
-        row.innerText = message;
-        logsContainer.appendChild(row);
+        const logsContainer = document.getElementById('log-stream');
+        if (!logsContainer) {
+            console.warn('[SecOpsSandbox] Log stream element "#log-stream" not found.');
+            return;
+        }
+        logsContainer.innerText += '\n' + message;
         logsContainer.scrollTop = logsContainer.scrollHeight;
     }
 
@@ -214,7 +232,8 @@ class SecOpsSandbox {
                 if (dist < hp.radius) {
                     t.active = false;
                     this.gameState.mitigated++;
-                    document.getElementById('mitigatedMetric').innerText = this.gameState.mitigated;
+                    const scoreEl = document.getElementById('tel-score');
+                    if (scoreEl) scoreEl.innerText = `${this.gameState.mitigated} Packets`;
                     this.logTerminal(`>> MITIGATED: THREAT ISOLATED IN HONEYPOT_0${idx + 1}.`, "success");
                 }
             });
@@ -223,13 +242,40 @@ class SecOpsSandbox {
             if (t.position.y > this.canvas.height) {
                 t.active = false;
                 this.gameState.integrity = Math.max(0, this.gameState.integrity - 5);
-                const integrityText = document.getElementById('integrityMetric');
-                integrityText.innerText = `${this.gameState.integrity}%`;
+                const integrityEl = document.getElementById('tel-integrity');
+                if (integrityEl) {
+                    integrityEl.innerText = `${this.gameState.integrity}%`;
+                    if (this.gameState.integrity <= 35) {
+                        integrityEl.style.color = 'var(--neon-crimson)';
+                    }
+                }
 
-                if (this.gameState.integrity <= 35) integrityText.className = "value alert";
+                // Update alarm indicators on breach
+                const alarmLight = document.getElementById('alarm-light');
+                const alarmTxt = document.getElementById('alarm-txt');
+                if (this.gameState.integrity <= 35) {
+                    if (alarmLight) alarmLight.classList.add('alarm-triggered');
+                    if (alarmTxt) {
+                        alarmTxt.innerText = 'CRITICAL';
+                        alarmTxt.style.color = 'var(--neon-crimson)';
+                    }
+                } else if (this.gameState.integrity <= 70) {
+                    if (alarmTxt) {
+                        alarmTxt.innerText = 'ELEVATED';
+                        alarmTxt.style.color = '#ffaa00';
+                    }
+                }
+
                 this.logTerminal(">> SECURITY BREACH DETECTED: SYSTEM INTEGRITY PENETRATED.", "alert");
             }
         });
+
+        // Update active threat pool counter
+        const poolEl = document.getElementById('tel-pool');
+        if (poolEl) {
+            const activeCount = this.threatPool.filter(t => t.active).length;
+            poolEl.innerText = `${activeCount} / ${this.config.maxThreats}`;
+        }
     }
 
     render() {
@@ -322,7 +368,8 @@ class SecOpsSandbox {
 
         let endTime = performance.now();
         let frameTime = endTime - startTime;
-        document.getElementById('latencyCounter').innerText = `RENDER_LATENCY: ${frameTime.toFixed(2)}ms`;
+        const latencyEl = document.getElementById('tel-latency');
+        if (latencyEl) latencyEl.innerText = `${frameTime.toFixed(4)} ms`;
 
         requestAnimationFrame((t) => this.loop(t));
     }
@@ -332,14 +379,37 @@ class SecOpsSandbox {
 // 5. DOM INITIALIZATION INVOCATION
 // ============================================================================
 window.addEventListener('DOMContentLoaded', () => {
-    const sandbox = new SecOpsSandbox('defenseCanvas');
-    sandbox.loop(0);
+    let sandbox = null;
 
-    const speedSlider = document.getElementById('threatSpeedSlider');
-    const speedVal = document.getElementById('speedVal');
-    speedSlider.addEventListener('input', (e) => {
-        let v = parseFloat(e.target.value);
-        sandbox.config.speedScale = v;
-        speedVal.innerText = `${v.toFixed(1)}x`;
-    });
+    // Validate canvas exists before constructing the sandbox
+    const canvasEl = document.getElementById('deflect-canvas');
+    if (!canvasEl) {
+        console.error('[Init] Canvas element "#deflect-canvas" not found. Simulation cannot start.');
+        const logStream = document.getElementById('log-stream');
+        if (logStream) logStream.innerText += '\n>> FATAL: Tactical viewport element missing from DOM. Simulation aborted.';
+        return;
+    }
+
+    try {
+        sandbox = new SecOpsSandbox('deflect-canvas');
+    } catch (err) {
+        console.error('[Init] Failed to initialize SecOpsSandbox:', err.message);
+        return;
+    }
+
+    // Wire the activation button to start the simulation on click
+    const toggleBtn = document.getElementById('system-toggle');
+    if (toggleBtn) {
+        toggleBtn.addEventListener('click', () => {
+            if (toggleBtn.dataset.active === 'true') return; // Prevent double-start
+            toggleBtn.dataset.active = 'true';
+            toggleBtn.innerText = 'Defense Engine Active';
+            toggleBtn.style.opacity = '0.7';
+            toggleBtn.style.cursor = 'default';
+
+            sandbox.logTerminal('>> DEFENSE ENGINE GRID ACTIVATED. ALL SUBSYSTEMS ONLINE.', 'info');
+            sandbox.logTerminal('>> THREAT VECTOR ANALYSIS COMMENCING... MONITORING INBOUND ATTACK SURFACE.', 'info');
+            sandbox.loop(0);
+        });
+    }
 });

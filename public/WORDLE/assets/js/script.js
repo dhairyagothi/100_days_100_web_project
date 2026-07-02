@@ -56,6 +56,7 @@ const generateGrid = function () {
 };
 generateGrid();
 
+
 // Function to change control based on input
 const changeControl = function (type) {
     if (row === 7) {
@@ -112,25 +113,27 @@ const checkWord = function (word) {
     // Wait until the very last box has finished animating before deciding if they won or lost
     const totalAnimationTime = (secretWord.length * 300) + 250;
     
-    setTimeout(() => {
-        if (word === secretWord) {
-            gameOverTitle.textContent = `${appreciation[row - 1]}!`;
-            gameOverDetails.innerHTML = `You guessed the secret word <strong>${secretWord}</strong> in ${row} ${row === 1 ? 'try' : 'tries'}!`;
-            gameOverModal.classList.remove("hidden");
-            gameOverActions.classList.remove("hidden");
-            updateStats(true);
-        } else if (row === 6) {
-            gameOverTitle.textContent = "Game Over";
-            gameOverDetails.innerHTML = `The secret word was: <strong>${secretWord}</strong>`;
-            gameOverModal.classList.remove("hidden");
-            gameOverActions.classList.remove("hidden");
-            updateStats(false);
-        } else {
-            row++;
-            currentBox = `b${row}1`;
-            playing = true; // Unlock the board for the next guess
-        }
-    }, totalAnimationTime);
+setTimeout(function () {
+    if (word === secretWord) {
+        gameOverTitle.textContent = appreciation[row - 1] + "!";
+        gameOverDetails.innerHTML = "You guessed <strong>" + secretWord + "</strong> in " + row + (row === 1 ? " try!" : " tries!");
+        gameOverModal.classList.remove("hidden");
+        persistentNextWordBtn.classList.add("hidden"); // ← hide skip btn
+        updateStats(true);
+
+    } else if (row === 6) {
+        gameOverTitle.textContent = "Game Over";
+        gameOverDetails.innerHTML = "The secret word was: <strong>" + secretWord + "</strong>";
+        gameOverModal.classList.remove("hidden");
+        persistentNextWordBtn.classList.add("hidden"); // ← hide skip btn
+        updateStats(false);
+
+    } else {
+        row++;
+        currentBox = "b" + row + "1";
+        playing = true;
+    }
+}, totalAnimationTime);
 };
 
 // Event listener for the enter button
@@ -253,7 +256,7 @@ closeStats.addEventListener("click", function () {
 
 // Event listener for showing the stats popup
 stats.addEventListener("click", function () {
-    document.querySelector("#stats").classList.remove("hidden");
+    showStatsPopup();
 });
 
 // Event listener for closing the result popup
@@ -275,8 +278,8 @@ if (resetbutton) {
 }
 
 // adds a stats 
+// Updates the local storage numbers when a game officially concludes
 function updateStats(won) {
-    // Get existing stats or create new ones
     let stats = JSON.parse(localStorage.getItem('wordleStats')) || { played: 0, wins: 0, currentStreak: 0, maxStreak: 0 };
     
     stats.played++;
@@ -285,27 +288,46 @@ function updateStats(won) {
         stats.currentStreak++;
         if (stats.currentStreak > stats.maxStreak) stats.maxStreak = stats.currentStreak;
     } else {
-        stats.currentStreak = 0; // Reset streak on loss
+        stats.currentStreak = 0;
     }
     localStorage.setItem('wordleStats', JSON.stringify(stats));
-    
-    // Update the Stats popup HTML
-    let winPct = Math.round((stats.wins / stats.played) * 100);
+    renderStatsUI(stats);
+}
+
+// Handles ONLY updating the view box safely
+function showStatsPopup() {
+    let stats = JSON.parse(localStorage.getItem('wordleStats')) || { played: 0, wins: 0, currentStreak: 0, maxStreak: 0 };
+    renderStatsUI(stats);
+    document.querySelector("#stats").classList.remove("hidden");
+}
+
+// Safely sets the inner HTML structural layout
+// Safely sets the inner HTML structural layout
+function renderStatsUI(stats) {
+    let winPct = stats.played > 0 ? Math.round((stats.wins / stats.played) * 100) : 0;
     const statsHTML = `
         <p class='crossOuter'><button class='cross' id='closeStats'>&#9587</button></p>
         <p><strong>STATISTICS</strong></p>
         <p>${stats.played} &emsp;&emsp;&emsp;${winPct}% &emsp;&emsp;&emsp;${stats.currentStreak} &emsp;&emsp;&emsp;${stats.maxStreak}</p>
         <p class='mini'>Played - Win% - Current Streak - Max Streak</p>
     `;
-    document.querySelector("#stats").innerHTML = statsHTML;
-    
-    // Reattach the close button listener since we replaced the HTML
-    document.querySelector('#closeStats').addEventListener('click', () => document.querySelector("#stats").classList.add("hidden"));
+    const statsContainer = document.querySelector("#stats");
+    if (statsContainer) {
+        statsContainer.innerHTML = statsHTML;
+        
+        // FIX: Wrapped in a null check so it never crashes the script
+        const closeBtn = document.querySelector('#closeStats');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => statsContainer.classList.add("hidden"));
+        }
+    }
 }
 
-document.querySelector(".stats.nav__icon").addEventListener("click", function() {
-    updateStats(false);
-});
+if (stats) {
+    stats.addEventListener("click", function() {
+        showStatsPopup();
+    });
+}
 
 // theme toggle
 
@@ -317,30 +339,95 @@ if (localStorage.getItem("darkMode") === "true") {
     themeToggle.textContent = "☀️";
 }
 
-// Toggle on click
-themeToggle.addEventListener("click", () => {
-    document.body.classList.toggle("dark-mode");
-    if (document.body.classList.contains("dark-mode")) {
-        localStorage.setItem("darkMode", "true");
-        themeToggle.textContent = "☀️";
-    } else {
-        localStorage.setItem("darkMode", "false");
-        themeToggle.textContent = "🌙";
-    }
-});
+// Toggle on click (Safely guarded)
+if (themeToggle) {
+    themeToggle.addEventListener("click", () => {
+        document.body.classList.toggle("dark-mode");
+        if (document.body.classList.contains("dark-mode")) {
+            localStorage.setItem("darkMode", "true");
+            themeToggle.textContent = "☀️";
+        } else {
+            localStorage.setItem("darkMode", "false");
+            themeToggle.textContent = "🌙";
+        }
+    });
+}
 
 // Close game over modal with close button
-closeGameOver.addEventListener("click", function () {
-    gameOverModal.classList.add("hidden");
-});
+// Close game over modal with close button (Only runs if the element exists)
+if (closeGameOver) {
+    closeGameOver.addEventListener("click", function () {
+        if (gameOverModal) gameOverModal.classList.add("hidden");
+    });
+}
 
-// Click backdrop to close game over modal
-gameOverModal.addEventListener("click", function (event) {
-    if (event.target === gameOverModal) {
-        gameOverModal.classList.add("hidden");
-    }
-});
+// Click backdrop to close game over modal (Only runs if the modal exists)
+if (gameOverModal) {
+    gameOverModal.addEventListener("click", function (event) {
+        if (event.target === gameOverModal) {
+            gameOverModal.classList.add("hidden");
+        }
+    });
+}
 
-// Next Word actions
-nextWordBtn.addEventListener("click", () => location.reload());
-persistentNextWordBtn.addEventListener("click", () => location.reload());
+// ─────────────────────────────────────────────────────────────────────────────
+// NEXT WORD / SKIP ACTIONS (REPAIR FIX)
+// ─────────────────────────────────────────────────────────────────────────────
+
+// 1. Modal "Next Word" button listener
+const modalNextBtn = document.querySelector("#nextWordBtn") || document.querySelector(".next-word-btn");
+
+if (modalNextBtn) {
+    modalNextBtn.addEventListener("click", function () {
+        location.reload();
+    });
+} else {
+    console.error("Debug Error: Could not find the Next Word button in your HTML using '#nextWordBtn' or '.next-word-btn'.");
+}
+
+// 2. Persistent "Skip Word" Toast Confirmation
+const skipToast      = document.querySelector("#skip-toast");
+const skipConfirmYes = document.querySelector("#skipConfirmYes");
+const skipConfirmNo  = document.querySelector("#skipConfirmNo");
+
+// Helper to show/hide the toast
+function showSkipToast() {
+    if (skipToast) skipToast.classList.remove("hidden");
+}
+
+function hideSkipToast() {
+    if (skipToast) skipToast.classList.add("hidden");
+}
+
+const persistentSkipBtn = document.querySelector("#persistentNextWordBtn") || document.querySelector(".skip-btn-wrapper button") || document.querySelector("#skip-btn-wrapper button");
+
+if (persistentSkipBtn) {
+    persistentSkipBtn.textContent = "SKIP WORD ➔";
+    persistentSkipBtn.addEventListener("click", function () {
+        if (!playing) {
+            // Game already over — just load the next word
+            location.reload();
+            return;
+        }
+        // Show our custom toast instead of confirm()
+        showSkipToast();
+    });
+} else {
+    console.error("Debug Error: Could not find the persistent Skip Word button using '#persistentNextWordBtn'.");
+}
+
+// "Yes, give up" — record loss and reload
+if (skipConfirmYes) {
+    skipConfirmYes.addEventListener("click", function () {
+        hideSkipToast();
+        updateStats(false);
+        location.reload();
+    });
+}
+
+// "Cancel" — just close the toast
+if (skipConfirmNo) {
+    skipConfirmNo.addEventListener("click", function () {
+        hideSkipToast();
+    });
+}

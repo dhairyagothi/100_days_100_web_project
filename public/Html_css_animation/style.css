@@ -2544,17 +2544,15 @@ body.dark-theme .preview-btn {
 body.dark-theme .preview-btn:hover {
   transform: translateY(-2px);
 }
+
 .theme-toggle {
   position: fixed;
-  top: 20px;
+  top: 15px;
   right: 20px;
-
-  width: 50px;
-  height: 50px;
-
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   border: none;
-
   cursor: pointer;
   font-size: 1.3rem;
   z-index: 1000;
@@ -2596,16 +2594,12 @@ body.dark-theme .animation-grid {
   display: flex;
   align-items: center;
   justify-content: space-between;
-
   padding: 16px 50px;
   box-sizing: border-box;
-
   z-index: 1000;
-
   background: rgba(6, 12, 35, 0.95);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
 }
@@ -2822,4 +2816,105 @@ footer.modal-content{
   border-top: 1px solid rgba(255,255,255,0.08);
 
   color: var(--text-secondary, #bdbdbd);
+}
+
+/* Modal Overlay */
+.preview-modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
+  z-index: 1000;
+}
+
+/* Modal Card */
+.preview-modal .modal-content {
+  position: relative;
+  width: min(700px, 90%);
+  padding: 2rem;
+  border-radius: 20px;
+  background: #ffffff;
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.25);
+  text-align: center;
+}
+
+/* Heading */
+.preview-modal h2 {
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+  color: #222;
+}
+
+/* Animation Showcase Box */
+.animation-demo-area {
+  min-height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border: 2px dashed #d8d8d8;
+  border-radius: 16px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #f8f9ff,
+      #eef1ff
+    );
+
+  padding: 2rem;
+  overflow: hidden;
+}
+
+/* Close Button */
+.preview-modal .close-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+
+  width: 40px;
+  height: 40px;
+
+  border: none;
+  border-radius: 50%;
+
+  background: #f3f3f3;
+  cursor: pointer;
+
+  font-size: 1.1rem;
+  transition: 0.3s ease;
+}
+
+.preview-modal .close-btn:hover {
+  transform: rotate(90deg);
+  background: #e5e5e5;
+}
+
+body.dark-theme .preview-modal .modal-content {
+  background: #1b1b1b;
+  color: #fff;
+}
+
+body.dark-theme .preview-modal h2 {
+  color: #fff;
+}
+
+body.dark-theme .animation-demo-area {
+  background:
+    linear-gradient(
+      135deg,
+      #232323,
+      #2f2f2f
+    );
+
+  border-color: #444;
+}
+
+body.dark-theme .close-btn {
+  background: #2d2d2d;
+  color: white;
 }

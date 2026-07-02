@@ -49,7 +49,7 @@
             <span id="timer" title="Current puzzle time">⏱ Time: 00:00</span>
             <span id="score" title="Your current score">⭐ Score: 0</span>
             <!-- Play/Pause Button -->
-            <button id="timerToggle" title="Play/Pause timer">▶️</button>
+            <button id="timerToggle" title="Play/Pause timer" disabled>▶️</button>
         </div>
 
         <div class="board">
@@ -72,8 +72,8 @@
 
                 <!-- Action Buttons -->
                 <div class="button-group">
-                    <button id="checkBtn" class="btn-primary">✓ Check Answers</button>
-                    <button id="resetBtn" class="btn-secondary">↻ Reset</button>
+                    <button id="checkBtn" class="btn-primary" disabled>✓ Check Answers</button>
+                    <button id="resetBtn" class="btn-secondary" disabled>↻ Reset</button>
                 </div>
 
                 <div id="result" role="status" aria-live="polite" aria-atomic="true"></div>

@@ -1,25 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta charset="UTF-8">
-<title>Diabetes Risk Predictor</title>
-<link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Diabetes Risk Predictor</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-<div class="container">
-<h1>Diabetes Risk Predictor</h1>
+    <div class="container">
+        <h1>
+            <span class="icon-wrapper">
+                <i class="fas fa-heartbeat"></i>
+            </span>
+            <span>Diabetes Risk Predictor</span>
+        </h1>
 
-<input id="glucose" placeholder="Glucose">
-<input id="bmi" placeholder="BMI">
-<input id="age" placeholder="Age">
-<input id="insulin" placeholder="Insulin">
+        <div class="input-group">
+            <label for="glucose"><i class="fas fa-flask"></i> Glucose Level</label>
+            <div class="input-icon">
+                <i class="fas fa-droplet"></i>
+                <input type="number" id="glucose" placeholder="e.g., 120 mg/dL" step="any" />
+            </div>
+        </div>
 
-<button onclick="predict()">Predict</button>
+        <div class="input-group">
+            <label for="bmi"><i class="fas fa-weight"></i> BMI</label>
+            <div class="input-icon">
+                <i class="fas fa-weight-scale"></i>
+                <input type="number" id="bmi" placeholder="e.g., 25.5" step="any" />
+            </div>
+        </div>
 
-<div id="result"></div>
-</div>
+        <div class="input-group">
+            <label for="age"><i class="fas fa-calendar"></i> Age</label>
+            <div class="input-icon">
+                <i class="fas fa-user"></i>
+                <input type="number" id="age" placeholder="e.g., 45" step="any" />
+            </div>
+        </div>
 
-<script src="script.js"></script>
+        <div class="input-group">
+            <label for="insulin"><i class="fas fa-syringe"></i> Insulin Level</label>
+            <div class="input-icon">
+                <i class="fas fa-vial"></i>
+                <input type="number" id="insulin" placeholder="e.g., 80 µU/mL" step="any" />
+            </div>
+        </div>
+
+        <button class="btn-predict" onclick="predict()">
+            <span class="btn-text"><i class="fas fa-stethoscope"></i> Predict Risk</span>
+            <span class="spinner"><i class="fas fa-circle-notch"></i></span>
+        </button>
+
+        <div id="result"></div>
+    </div>
+
+    <!-- Custom JavaScript -->
+    <script src="script.js"></script>
 </body>
 </html>

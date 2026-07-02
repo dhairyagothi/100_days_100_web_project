@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
 * {
   box-sizing: border-box;
 }
@@ -10,7 +10,7 @@ body {
     linear-gradient(135deg, #03131d, #071d2b, #021018);
   background-color: #021018;
   color: white;
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
   height: 100vh;
   overflow: hidden;
   margin: 0;
@@ -18,7 +18,7 @@ body {
   position: relative;
 }
 body::before {
-  content: "";
+  content: '';
 
   position: absolute;
 
@@ -347,7 +347,7 @@ h1 {
   color: #516dff;
   border: none;
   padding: 10px 15px;
-  font-family: "Press Start 2P", sans-serif;
+  font-family: 'Press Start 2P', sans-serif;
   font-size: 10px;
   cursor: pointer;
   transition: 0.2s ease;
@@ -406,10 +406,10 @@ h1 {
   width: 220px;
   height: 120px;
 
-  border: 3px solid rgba(255,255,255,0.3);
+  border: 3px solid rgba(255, 255, 255, 0.3);
   border-radius: 20px;
 
-  background: rgba(255,255,255,0.05);
+  background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(8px);
 
   color: white;
@@ -420,7 +420,7 @@ h1 {
   cursor: pointer;
   transition: all 0.35s ease;
 
-  box-shadow: 0 0 20px rgba(0,229,255,0.4);
+  box-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
 }
 
 .timer-btn:nth-child(1) {
@@ -446,7 +446,7 @@ h1 {
 .timer-btn:hover {
   transform: scale(1.08);
   box-shadow:
-    0 0 20px rgba(255,255,255,0.5),
+    0 0 20px rgba(255, 255, 255, 0.5),
     0 0 40px currentColor;
 }
 
@@ -456,7 +456,6 @@ h1 {
 
 /* Mobile view adjustments */
 @media (max-width: 768px) {
-
   h1 {
     font-size: 1.5rem;
     padding: 0 15px;
