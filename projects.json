@@ -3113,9 +3113,22 @@
     ],
    "difficulty": "advanced",
     "projectPath": "./public/Drawing-Canva/index.html"
-   },
+   } ,
+  {   "projectNo": 245,
+     "projectName": "Flashcard Quiz",
+    "projectType": "Tool",
+    "projectDesc": "A flashcard quiz app built using HTML, CSS, and Vanilla JavaScript.",
+       "techStack": [
+      "html",
+      "css",
+      "javascript",
+      "visualizer"
+    ],
+   "difficulty": "advanced",
+    "projectPath": "./public/Flashcard-Quiz-App/index.html"
+   } ,
   {
-  "projectNo": 245,
+  "projectNo": 246,
   "projectName": "MD Preview",
   "projectType": "Tool",
   "projectDesc": "Markdown preview tool that renders and checks .md content in a clean live preview interface.",
