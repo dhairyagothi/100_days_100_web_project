@@ -102,6 +102,10 @@
         <li><a href="#client">CLIENT</a></li>
         <li><button class="btn" id="signUpBtn">Sign Up</button></li>
       </ul>
+      <!-- Dark Theme Toggle -->
+        <button id="themeToggle" class="theme">
+          <span id="themeIcon">☀️</span>
+        </button>
     </nav>
     <div class="section_container header_container" id="home">
       <h1>No Matter Where You Are Going, We Take You There</h1>
@@ -187,7 +191,7 @@
           </div>
         </div>
       </div>
-      <div class="service_card">
+      <div class="service_card hidden">
         <div class="service_card__img_wrap">
           <img src="hotel1.jpg" alt="Hotel Booking">
         </div>
@@ -202,7 +206,7 @@
           </div>
         </div>
       </div>
-      <div class="service_card">
+      <div class="service_card hidden">
         <div class="service_card__img_wrap">
           <img src="service2.jpg" alt="Tour Packages">
         </div>
@@ -217,7 +221,7 @@
           </div>
         </div>
       </div>
-      <div class="service_card">
+      <div class="service_card hidden">
         <div class="service_card__img_wrap">
           <img src="service3.jpg" alt="Travel Insurance">
         </div>
@@ -232,7 +236,9 @@
           </div>
         </div>
       </div>
-    `</div>
+    </div>
+   <button id="toggleServicesBtn" class="btn" style="margin: 20px 500px;">Load More Services</button>
+
   </section>
   <section class="section_container offer_container" id="offer">
     <div class="offer_header">

@@ -37,11 +37,11 @@ const bgModeSelect = document.getElementById('bgModeSelect');
 
 // Palette boxes
 const paletteBoxes = [
-  document.getElementById('color1'),
-  document.getElementById('color2'),
-  document.getElementById('color3'),
-  document.getElementById('color4'),
-  document.getElementById('color5'),
+    document.getElementById("color1"),
+    document.getElementById("color2"),
+    document.getElementById("color3"),
+    document.getElementById("color4"),
+    document.getElementById("color5")
 ];
 
 // Utility: RGB to HEX
@@ -51,14 +51,15 @@ function rgbToHex(r, g, b) {
 
 // Utility: HEX to RGB
 function hexToRgb(hex) {
-  hex = hex.replace('#', '');
-  if (!/^([A-Fa-f0-9]{6})$/.test(hex)) return null;
+    hex = hex.replace('#', '');
+    if (!/^([A-Fa-f0-9]{6})$/.test(hex))
+        return null;
 
-  return {
-    r: parseInt(hex.substring(0, 2), 16),
-    g: parseInt(hex.substring(2, 4), 16),
-    b: parseInt(hex.substring(4, 6), 16),
-  };
+    return {
+        r: parseInt(hex.substring(0, 2), 16),
+        g: parseInt(hex.substring(2, 4), 16),
+        b: parseInt(hex.substring(4, 6), 16)
+    };
 }
 
 // Utility: RGB to HSL
@@ -92,34 +93,41 @@ function rgbToHsl(r, g, b) {
         break;
     }
 
-    h /= 6;
-  }
-
-  return {
-    h: Math.round(h * 360),
-    s: Math.round(s * 100),
-    l: Math.round(l * 100),
-  };
+    return {
+        h: Math.round(h * 360),
+        s: Math.round(s * 100),
+        l: Math.round(l * 100)
+    };
 }
 
 // Utility: HSL to RGB
 function hslToRgb(h, s, l) {
-  h /= 360;
-  s /= 100;
-  l /= 100;
+    let r, g, b;
 
-  let r, g, b;
+    if (s === 0) {
+        r = g = b = l;
+    } else {
+        const hue2rgb = (p, q, t) => {
+            if (t < 0) t += 1;
+            if (t > 1) t -= 1;
+            if (t < 1 / 6) return p + (q - p) * 6 * t;
+            if (t < 1 / 2) return q;
+            if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+            return p;
+        };
 
-  if (s === 0) {
-    r = g = b = l;
-  } else {
-    const hue2rgb = (p, q, t) => {
-      if (t < 0) t += 1;
-      if (t > 1) t -= 1;
-      if (t < 1 / 6) return p + (q - p) * 6 * t;
-      if (t < 1 / 2) return q;
-      if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
-      return p;
+        let q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+        let p = 2 * l - q;
+
+        r = hue2rgb(p, q, h + 1 / 3);
+        g = hue2rgb(p, q, h);
+        b = hue2rgb(p, q, h - 1 / 3);
+    }
+
+    return {
+        r: Math.round(r * 255),
+        g: Math.round(g * 255),
+        b: Math.round(b * 255)
     };
 
     let q = l < 0.5 ? l * (1 + s) : l + s - l * s;
@@ -242,21 +250,15 @@ function updateFromSliders() {
   // Generate palette
   const palette = generatePalette(r, g, b);
 
-  paletteBoxes.forEach((box, i) => {
-    const col = palette[i];
-    const boxHex = rgbToHex(col.r, col.g, col.b);
+    paletteBoxes.forEach((box, i) => {
+        const col = palette[i];
+        const hex = rgbToHex(col.r, col.g, col.b);
 
-    box.style.backgroundColor = `rgb(${col.r}, ${col.g}, ${col.b})`;
+        box.style.backgroundColor = `rgb(${col.r}, ${col.g}, ${col.b})`;
 
-    // Click updates state + copies
-    box.onclick = () => {
-      redSlider.value = col.r;
-      greenSlider.value = col.g;
-      blueSlider.value = col.b;
-      updateFromSliders();
-      copyToClipboard(boxHex);
-    };
-  });
+        // IMPORTANT: avoid stacking multiple listeners
+        box.onclick = () => copyToClipboard(hex);
+    });
 }
 
 // Sync values from HEX input box
@@ -278,11 +280,12 @@ blueSlider.addEventListener('input', updateFromSliders);
 
 // Event Listener for HEX input (with 300ms debounce)
 let hexTimer;
-hexInput.addEventListener('input', () => {
-  clearTimeout(hexTimer);
-  hexTimer = setTimeout(() => {
-    updateFromHex();
-  }, 300);
+hexInput.addEventListener("input", () => {
+    clearTimeout(hexTimer);
+
+    hexTimer = setTimeout(() => {
+        updateFromHex();
+    }, 300);
 });
 
 // Event Listener for background mode selector
@@ -301,30 +304,57 @@ updateFromSliders();
 
 // Clipboard Copy Utility
 async function copyToClipboard(text) {
-  try {
-    await navigator.clipboard.writeText(text);
-    showToast(`Copied: ${text}`);
-  } catch {
-    const textarea = document.createElement('textarea');
-    textarea.value = text;
-    document.body.appendChild(textarea);
-    textarea.select();
-    document.execCommand('copy');
-    document.body.removeChild(textarea);
-    showToast(`Copied: ${text}`);
-  }
+    try {
+        await navigator.clipboard.writeText(text);
+        showToast(`Copied: ${text}`);
+    } catch {
+        const textarea = document.createElement("textarea");
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+
+        document.execCommand("copy");
+
+        document.body.removeChild(textarea);
+
+        showToast(`Copied: ${text}`);
+    }
 }
 
-// Robust fallback storage manager for iframe/sandbox contexts
 const memoryStore = new Map();
+
 const StorageManager = {
-  get(key) {
-    try {
-      return localStorage.getItem(key);
-    } catch {
-      return memoryStore.get(key) || null;
+    get(key) {
+        try {
+            return localStorage.getItem(key);
+        } catch {
+            return memoryStore.get(key) || null;
+        }
+    },
+
+    set(key, value) {
+        try {
+            localStorage.setItem(key, value);
+        } catch {
+            memoryStore.set(key, value);
+        }
+    },
+
+    remove(key) {
+        try {
+            localStorage.removeItem(key);
+        } catch {
+            memoryStore.delete(key);
+        }
     }
-  },
+};
+
+function renderFavorites() {
+    favoritesContainer.innerHTML = "";
+
+    favorites.forEach((color, index) => {
+        const wrapper = document.createElement("div");
+        wrapper.className = "favorite-item";
 
   set(key, value) {
     try {
@@ -399,21 +429,48 @@ function renderFavorites() {
 // Initial favorites rendering
 renderFavorites();
 
-// Save Favorite button click action
-saveBtn.addEventListener('click', () => {
-  const currentHex = hexValue.textContent.replace('HEX: ', '');
+saveBtn.addEventListener("click", () => {
+    const currentHex = hexValue.textContent.replace("HEX: ", "");
 
-  if (!favorites.includes(currentHex)) {
-    favorites.push(currentHex);
-    StorageManager.set('favorites', JSON.stringify(favorites));
-    renderFavorites();
-    showToast('Color saved ⭐');
-  } else {
-    showToast('Already in favorites');
-  }
+    if (!favorites.includes(currentHex)) {
+        favorites.push(currentHex);
+        StorageManager.set(
+            "favorites",
+            JSON.stringify(favorites)
+        );
+        renderFavorites();
+        showToast("Color saved ⭐");
+    } else {
+        showToast("Already in favorites");
+    }
 });
 
-// Copy button handlers
+function rgbToHsl(r, g, b) {
+    r /= 255; g /= 255; b /= 255;
+
+    let max = Math.max(r, g, b),
+        min = Math.min(r, g, b);
+
+    let h, s, l = (max + min) / 2;
+
+    if (max === min) {
+        h = s = 0;
+    } else {
+        let d = max - min;
+        s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+
+        switch (max) {
+            case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+            case g: h = (b - r) / d + 2; break;
+            case b: h = (r - g) / d + 4; break;
+        }
+
+        h /= 6;
+    }
+
+    return { h, s, l };
+}
+
 copyHexBtn.onclick = () => {
   copyToClipboard(hexValue.textContent.replace('HEX: ', ''));
 };
@@ -426,9 +483,23 @@ copyRgbBtn.onclick = () => {
 };
 
 copyHslBtn.onclick = () => {
-  const r = parseInt(redSlider.value);
-  const g = parseInt(greenSlider.value);
-  const b = parseInt(blueSlider.value);
-  const hsl = rgbToHsl(r, g, b);
-  copyToClipboard(`hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)`);
+    const hsl = rgbToHsl(
+        redSlider.value,
+        greenSlider.value,
+        blueSlider.value
+    );
+
+    copyToClipboard(`hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)`);
 };
+let toastTimer;
+
+function showToast(msg) {
+    clearTimeout(toastTimer);
+
+    toast.textContent = msg;
+    toast.style.opacity = "1";
+
+    toastTimer = setTimeout(() => {
+        toast.style.opacity = "0";
+    }, 1200);
+}

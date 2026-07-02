@@ -15,6 +15,11 @@
         background: #f5f7fa;
         color: #333;
         padding: 20px;
+        transition: background 0.3s ease, color 0.3s ease;
+      }
+      body.dark-mode {
+        background: #1a1a2e;
+        color: #e0e0e0;
       }
       .container {
         max-width: 900px;
@@ -24,13 +29,54 @@
         text-align: center;
         color: #2c3e50;
         margin-bottom: 30px;
+        transition: color 0.3s ease;
       }
+      body.dark-mode h1 {
+        color: #e0e0e0;
+      }
+      
+      /* Header with theme toggle */
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+      }
+      .header h1 {
+        margin-bottom: 0;
+      }
+      .theme-toggle {
+        background: none;
+        border: none;
+        font-size: 2rem;
+        cursor: pointer;
+        padding: 8px;
+        border-radius: 50%;
+        transition: background 0.2s ease;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .theme-toggle:hover {
+        background: rgba(0, 0, 0, 0.1);
+      }
+      body.dark-mode .theme-toggle:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
+      
       .card {
         background: #fff;
         border-radius: 10px;
         padding: 24px;
         margin-bottom: 20px;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        transition: background 0.3s ease, box-shadow 0.3s ease;
+      }
+      body.dark-mode .card {
+        background: #2d2d44;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
       }
       .card h3 {
         color: #3498db;
@@ -38,11 +84,20 @@
         display: flex;
         align-items: center;
         gap: 8px;
+        transition: color 0.3s ease;
+      }
+      body.dark-mode .card h3 {
+        color: #5dade2;
       }
       .card p {
         color: #555;
         line-height: 1.6;
+        transition: color 0.3s ease;
       }
+      body.dark-mode .card p {
+        color: #b0b0b0;
+      }
+      
       .topics {
         display: flex;
         flex-wrap: wrap;
@@ -62,33 +117,58 @@
         transition: all 0.2s ease;
         user-select: none;
       }
+      body.dark-mode .topic {
+        background: #3d3d5c;
+        color: #5dade2;
+      }
       .topic:hover {
         background: #d0eaf9;
+      }
+      body.dark-mode .topic:hover {
+        background: #4d4d6c;
       }
       .topic.completed {
         background: #d4edda;
         color: #155724;
+      }
+      body.dark-mode .topic.completed {
+        background: #1e3d2e;
+        color: #7ddf9a;
       }
       .topic input[type='checkbox'] {
         cursor: pointer;
         width: 16px;
         height: 16px;
       }
+      
       .tips {
         background: #fffde7;
         border-left: 4px solid #f39c12;
         padding: 12px 16px;
         border-radius: 0 8px 8px 0;
         margin-top: 15px;
+        transition: background 0.3s ease;
+      }
+      body.dark-mode .tips {
+        background: #3d3d2e;
+        border-left-color: #f1c40f;
       }
       .tips strong {
         color: #e67e22;
       }
+      body.dark-mode .tips strong {
+        color: #f1c40f;
+      }
+      
       footer {
         text-align: center;
         margin-top: 40px;
         color: #999;
         font-size: 14px;
+        transition: color 0.3s ease;
+      }
+      body.dark-mode footer {
+        color: #666;
       }
 
       /* Question of the Day */
@@ -97,6 +177,10 @@
         color: #2c3e50;
         margin: 16px 0;
         line-height: 1.6;
+        transition: color 0.3s ease;
+      }
+      body.dark-mode .qotd-question {
+        color: #e0e0e0;
       }
       .qotd-answer {
         background: #f0fdf4;
@@ -106,7 +190,13 @@
         margin-top: 16px;
         color: #166534;
         line-height: 1.6;
+        transition: background 0.3s ease, color 0.3s ease;
       }
+      body.dark-mode .qotd-answer {
+        background: #1a3d2a;
+        color: #7ddf9a;
+      }
+      
       .btn {
         background: #3498db;
         color: white;
@@ -120,12 +210,43 @@
       }
       .btn:hover {
         background: #2980b9;
+        transform: translateY(-1px);
       }
       .btn-secondary {
         background: #6c757d;
       }
       .btn-secondary:hover {
         background: #5a6268;
+      }
+      .btn-success {
+        background: #28a745;
+      }
+      .btn-success:hover {
+        background: #218838;
+      }
+      .btn-danger {
+        background: #dc3545;
+      }
+      .btn-danger:hover {
+        background: #c82333;
+      }
+      body.dark-mode .btn {
+        background: #5dade2;
+      }
+      body.dark-mode .btn:hover {
+        background: #3498db;
+      }
+      body.dark-mode .btn-secondary {
+        background: #5a6268;
+      }
+      body.dark-mode .btn-secondary:hover {
+        background: #4a5258;
+      }
+      body.dark-mode .btn-success {
+        background: #28a745;
+      }
+      body.dark-mode .btn-success:hover {
+        background: #218838;
       }
 
       /* Progress Tracker */
@@ -136,6 +257,10 @@
         margin-bottom: 12px;
         font-size: 15px;
         color: #2c3e50;
+        transition: color 0.3s ease;
+      }
+      body.dark-mode .progress-header {
+        color: #e0e0e0;
       }
       .progress-bar {
         width: 100%;
@@ -143,6 +268,10 @@
         background: #e9ecef;
         border-radius: 10px;
         overflow: hidden;
+        transition: background 0.3s ease;
+      }
+      body.dark-mode .progress-bar {
+        background: #3d3d5c;
       }
       .progress-fill {
         height: 100%;
@@ -166,6 +295,10 @@
       .form-group label {
         font-weight: 600;
         color: #2c3e50;
+        transition: color 0.3s ease;
+      }
+      body.dark-mode .form-group label {
+        color: #e0e0e0;
       }
       .form-group textarea {
         padding: 10px;
@@ -175,6 +308,14 @@
         font-size: 15px;
         resize: vertical;
         min-height: 80px;
+        background: #fff;
+        color: #333;
+        transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+      }
+      body.dark-mode .form-group textarea {
+        background: #3d3d5c;
+        color: #e0e0e0;
+        border-color: #4d4d6c;
       }
       .star-answer {
         background: #f8f9fa;
@@ -183,16 +324,203 @@
         margin-top: 16px;
         line-height: 1.6;
         color: #2c3e50;
+        transition: background 0.3s ease, color 0.3s ease;
+      }
+      body.dark-mode .star-answer {
+        background: #3d3d5c;
+        color: #e0e0e0;
       }
       .star-answer h4 {
         color: #3498db;
         margin-bottom: 8px;
+        transition: color 0.3s ease;
+      }
+      body.dark-mode .star-answer h4 {
+        color: #5dade2;
+      }
+
+      /* Bookmark Section */
+      .bookmark-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding: 12px;
+        background: #f8f9fa;
+        border-radius: 6px;
+        margin-bottom: 10px;
+        transition: background 0.3s ease;
+      }
+      body.dark-mode .bookmark-item {
+        background: #3d3d5c;
+      }
+      .bookmark-item .question-text {
+        flex: 1;
+        margin-right: 10px;
+        line-height: 1.4;
+      }
+      .bookmark-item .bookmark-actions {
+        display: flex;
+        gap: 8px;
+        flex-shrink: 0;
+      }
+      .bookmark-item .bookmark-actions button {
+        padding: 4px 10px;
+        font-size: 12px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+      .bookmark-empty {
+        text-align: center;
+        color: #999;
+        padding: 20px 0;
+        font-style: italic;
+        transition: color 0.3s ease;
+      }
+      body.dark-mode .bookmark-empty {
+        color: #666;
+      }
+
+      /* Question cards with bookmark button */
+      .question-card {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding: 16px;
+        background: #f8f9fa;
+        border-radius: 8px;
+        margin-bottom: 12px;
+        border-left: 4px solid #3498db;
+        transition: background 0.3s ease, border-color 0.3s ease;
+      }
+      body.dark-mode .question-card {
+        background: #3d3d5c;
+        border-left-color: #5dade2;
+      }
+      .question-card .q-content {
+        flex: 1;
+        margin-right: 12px;
+      }
+      .question-card .q-content .q-text {
+        font-weight: 500;
+        margin-bottom: 6px;
+        line-height: 1.4;
+      }
+      .question-card .q-content .q-answer {
+        color: #666;
+        font-size: 0.95rem;
+        line-height: 1.5;
+        margin-top: 4px;
+      }
+      body.dark-mode .question-card .q-content .q-answer {
+        color: #b0b0b0;
+      }
+      .bookmark-btn {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        padding: 4px 8px;
+        border-radius: 4px;
+        transition: all 0.2s ease;
+        flex-shrink: 0;
+      }
+      .bookmark-btn:hover {
+        transform: scale(1.1);
+      }
+      .bookmark-btn.bookmarked {
+        color: #f39c12;
+      }
+      .bookmark-btn:not(.bookmarked) {
+        color: #ccc;
+      }
+      body.dark-mode .bookmark-btn:not(.bookmarked) {
+        color: #666;
+      }
+
+      .question-list {
+        max-height: 400px;
+        overflow-y: auto;
+      }
+      .question-list::-webkit-scrollbar {
+        width: 8px;
+      }
+      .question-list::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+      }
+      .question-list::-webkit-scrollbar-thumb {
+        background: #3498db;
+        border-radius: 10px;
+      }
+      body.dark-mode .question-list::-webkit-scrollbar-track {
+        background: #3d3d5c;
+      }
+      body.dark-mode .question-list::-webkit-scrollbar-thumb {
+        background: #5dade2;
+      }
+
+      /* Tab Navigation */
+      .tab-nav {
+        display: flex;
+        gap: 4px;
+        margin-bottom: 16px;
+        background: #f0f2f5;
+        border-radius: 8px;
+        padding: 4px;
+        transition: background 0.3s ease;
+      }
+      body.dark-mode .tab-nav {
+        background: #3d3d5c;
+      }
+      .tab-btn {
+        flex: 1;
+        padding: 10px;
+        border: none;
+        background: transparent;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 600;
+        color: #666;
+        transition: all 0.2s ease;
+      }
+      body.dark-mode .tab-btn {
+        color: #b0b0b0;
+      }
+      .tab-btn.active {
+        background: #fff;
+        color: #3498db;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+      body.dark-mode .tab-btn.active {
+        background: #2d2d44;
+        color: #5dade2;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      }
+      .tab-btn:hover:not(.active) {
+        background: rgba(0, 0, 0, 0.05);
+      }
+      body.dark-mode .tab-btn:hover:not(.active) {
+        background: rgba(255, 255, 255, 0.05);
+      }
+      .tab-content {
+        display: none;
+      }
+      .tab-content.active {
+        display: block;
       }
     </style>
   </head>
   <body>
     <div class="container">
-      <h1>Interview Prep Hub</h1>
+      <!-- Header with Theme Toggle -->
+      <div class="header">
+        <h1>📚 Interview Prep Hub</h1>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+          🌙
+        </button>
+      </div>
 
       <!-- Question of the Day -->
       <div class="card">
@@ -214,33 +542,56 @@
         </div>
       </div>
 
-      <!-- Technical Interviews -->
+      <!-- Technical Interviews with Bookmarks -->
       <div class="card">
         <h3>💻 Technical Interviews</h3>
         <p>
           Prepare for coding interviews with questions on data structures,
           algorithms, system design, and more.
         </p>
-        <div class="topics" id="technical-topics">
-          <div class="topic" data-topic="Arrays">
-            <input type="checkbox" id="topic-Arrays" />
-            <label for="topic-Arrays">Arrays</label>
+        
+        <!-- Tab Navigation -->
+        <div class="tab-nav">
+          <button class="tab-btn active" data-tab="topics">Topics</button>
+          <button class="tab-btn" data-tab="questions">All Questions</button>
+          <button class="tab-btn" data-tab="bookmarks">⭐ Bookmarks</button>
+        </div>
+
+        <!-- Topics Tab -->
+        <div class="tab-content active" id="tab-topics">
+          <div class="topics" id="technical-topics">
+            <div class="topic" data-topic="Arrays">
+              <input type="checkbox" id="topic-Arrays" />
+              <label for="topic-Arrays">Arrays</label>
+            </div>
+            <div class="topic" data-topic="Linked Lists">
+              <input type="checkbox" id="topic-Linked Lists" />
+              <label for="topic-Linked Lists">Linked Lists</label>
+            </div>
+            <div class="topic" data-topic="Trees">
+              <input type="checkbox" id="topic-Trees" />
+              <label for="topic-Trees">Trees</label>
+            </div>
+            <div class="topic" data-topic="Dynamic Programming">
+              <input type="checkbox" id="topic-Dynamic Programming" />
+              <label for="topic-Dynamic Programming">Dynamic Programming</label>
+            </div>
+            <div class="topic" data-topic="System Design">
+              <input type="checkbox" id="topic-System Design" />
+              <label for="topic-System Design">System Design</label>
+            </div>
           </div>
-          <div class="topic" data-topic="Linked Lists">
-            <input type="checkbox" id="topic-Linked Lists" />
-            <label for="topic-Linked Lists">Linked Lists</label>
-          </div>
-          <div class="topic" data-topic="Trees">
-            <input type="checkbox" id="topic-Trees" />
-            <label for="topic-Trees">Trees</label>
-          </div>
-          <div class="topic" data-topic="Dynamic Programming">
-            <input type="checkbox" id="topic-Dynamic Programming" />
-            <label for="topic-Dynamic Programming">Dynamic Programming</label>
-          </div>
-          <div class="topic" data-topic="System Design">
-            <input type="checkbox" id="topic-System Design" />
-            <label for="topic-System Design">System Design</label>
+        </div>
+
+        <!-- All Questions Tab -->
+        <div class="tab-content" id="tab-questions">
+          <div class="question-list" id="question-list"></div>
+        </div>
+
+        <!-- Bookmarks Tab -->
+        <div class="tab-content" id="tab-bookmarks">
+          <div id="bookmarks-container">
+            <div class="bookmark-empty">No bookmarked questions yet. ⭐</div>
           </div>
         </div>
       </div>
@@ -297,7 +648,7 @@
           class="star-answer"
           style="display: none"
         ></div>
-        <div style="display: flex; gap: 10px; margin-top: 16px">
+        <div style="display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap;">
           <button id="copy-answer-btn" class="btn" style="display: none">
             Copy Answer
           </button>
@@ -331,70 +682,109 @@
       // Interview Questions Data
       const interviewQuestions = [
         {
+          id: 1,
           question: 'What is the time complexity of binary search?',
           answer:
             'The time complexity of binary search is O(log n). This is because we repeatedly divide the search interval in half. In the worst case, we make log₂(n) comparisons.',
         },
         {
+          id: 2,
           question:
             'Explain the difference between let, const, and var in JavaScript.',
           answer:
             "var is function-scoped and hoisted, let and const are block-scoped. const cannot be reassigned, but its properties (if it's an object) can be modified.",
         },
         {
+          id: 3,
           question: 'What is a hash table and how does it work?',
           answer:
             'A hash table is a data structure that stores key-value pairs. It uses a hash function to compute an index into an array where the value is stored. This allows for average O(1) time complexity for insertions, deletions, and lookups.',
         },
         {
+          id: 4,
           question: 'Describe the MVC architecture pattern.',
           answer:
             'MVC stands for Model-View-Controller. The Model manages data and business logic, the View handles presentation, and the Controller acts as an interface between Model and View, processing user input.',
         },
         {
+          id: 5,
           question: 'What is the difference between HTTP and HTTPS?',
           answer:
             'HTTPS is HTTP with encryption via SSL/TLS. HTTPS ensures data integrity, authentication, and confidentiality between client and server.',
         },
         {
+          id: 6,
           question:
             'Explain how a linked list works and its advantages over arrays.',
           answer:
             'A linked list is a linear data structure where each element is a node containing data and a reference to the next node. Advantages over arrays: dynamic size, efficient insertions/deletions at the beginning.',
         },
         {
+          id: 7,
           question: 'What is a Promise in JavaScript?',
           answer:
             'A Promise is an object representing the eventual completion or failure of an asynchronous operation. It has three states: pending, fulfilled, or rejected.',
         },
         {
+          id: 8,
           question: 'What is the purpose of a database index?',
           answer:
             'Database indexes improve the speed of data retrieval operations on a table at the cost of additional writes and storage. They work like a book index, allowing the database to find data without scanning every row.',
         },
         {
+          id: 9,
           question: 'Explain the concept of Big O notation.',
           answer:
             "Big O notation describes the upper bound of an algorithm's time or space complexity. It helps us compare the efficiency of different algorithms by showing how they scale with input size.",
         },
         {
+          id: 10,
           question: 'What is the difference between process and thread?',
           answer:
             "A process is an independent program in execution with its own memory space. A thread is a unit of execution within a process; multiple threads share the process's memory and resources.",
         },
         {
+          id: 11,
           question: 'What is REST API?',
           answer:
             'REST (Representational State Transfer) is an architectural style for designing networked applications. It uses HTTP methods (GET, POST, PUT, DELETE) to perform CRUD operations on resources identified by URIs.',
         },
         {
+          id: 12,
           question: 'Explain the concept of dependency injection.',
           answer:
             'Dependency injection is a design pattern where a class receives its dependencies from an external source rather than creating them itself. It promotes loose coupling and easier testing.',
         },
       ];
 
-      // Question of the Day Logic
+      // ============ THEME TOGGLE ============
+      const THEME_STORAGE_KEY = 'interview-theme';
+      const themeToggle = document.getElementById('theme-toggle');
+      
+      function getTheme() {
+        return localStorage.getItem(THEME_STORAGE_KEY) || 'light';
+      }
+      
+      function setTheme(theme) {
+        if (theme === 'dark') {
+          document.body.classList.add('dark-mode');
+          themeToggle.textContent = '☀️';
+        } else {
+          document.body.classList.remove('dark-mode');
+          themeToggle.textContent = '🌙';
+        }
+        localStorage.setItem(THEME_STORAGE_KEY, theme);
+      }
+      
+      // Initialize theme
+      setTheme(getTheme());
+      
+      themeToggle.addEventListener('click', () => {
+        const current = getTheme();
+        setTheme(current === 'light' ? 'dark' : 'light');
+      });
+
+      // ============ QUESTION OF THE DAY ============
       const QOTD_STORAGE_KEY = 'interview-qotd';
       function getQuestionOfTheDay() {
         const today = new Date().toDateString();
@@ -435,7 +825,7 @@
         }
       });
 
-      // Progress Tracker Logic
+      // ============ PROGRESS TRACKER ============
       const PROGRESS_STORAGE_KEY = 'interview-topics-progress';
       const topics = [
         'Arrays',
@@ -457,13 +847,15 @@
         topics.forEach((topic) => {
           const topicEl = document.querySelector(`[data-topic="${topic}"]`);
           const checkbox = document.getElementById(`topic-${topic}`);
-          if (progress[topic]) {
-            completedCount++;
-            topicEl.classList.add('completed');
-            checkbox.checked = true;
-          } else {
-            topicEl.classList.remove('completed');
-            checkbox.checked = false;
+          if (topicEl && checkbox) {
+            if (progress[topic]) {
+              completedCount++;
+              topicEl.classList.add('completed');
+              checkbox.checked = true;
+            } else {
+              topicEl.classList.remove('completed');
+              checkbox.checked = false;
+            }
           }
         });
         const percentage = Math.round((completedCount / topics.length) * 100);
@@ -473,31 +865,155 @@
           `${percentage}%`;
         document.getElementById('progress-fill').style.width = `${percentage}%`;
       }
+      
       const technicalTopicsContainer =
         document.getElementById('technical-topics');
-
       technicalTopicsContainer
         .querySelectorAll('.topic input[type="checkbox"]')
         .forEach((checkbox) => {
           checkbox.addEventListener('change', (e) => {
             const topicElement = e.target.closest('.topic');
-
             if (!topicElement) return;
-
             const topicName = topicElement.dataset.topic;
-
             if (!topics.includes(topicName)) return;
-
             const progress = getProgress();
             progress[topicName] = e.target.checked;
-
             saveProgress(progress);
             updateProgressUI();
           });
         });
       updateProgressUI();
 
-      // STAR Answer Builder Logic
+      // ============ BOOKMARKS ============
+      const BOOKMARKS_STORAGE_KEY = 'interview-bookmarks';
+      
+      function getBookmarks() {
+        const stored = localStorage.getItem(BOOKMARKS_STORAGE_KEY);
+        return stored ? JSON.parse(stored) : [];
+      }
+      
+      function saveBookmarks(bookmarks) {
+        localStorage.setItem(BOOKMARKS_STORAGE_KEY, JSON.stringify(bookmarks));
+      }
+      
+      function toggleBookmark(questionId) {
+        let bookmarks = getBookmarks();
+        const index = bookmarks.indexOf(questionId);
+        if (index > -1) {
+          bookmarks.splice(index, 1);
+        } else {
+          bookmarks.push(questionId);
+        }
+        saveBookmarks(bookmarks);
+        renderQuestions();
+        renderBookmarks();
+        updateBookmarkButtons();
+        return bookmarks;
+      }
+      
+      function isBookmarked(questionId) {
+        const bookmarks = getBookmarks();
+        return bookmarks.includes(questionId);
+      }
+
+      // ============ RENDER QUESTIONS ============
+      function renderQuestions() {
+        const container = document.getElementById('question-list');
+        container.innerHTML = '';
+        
+        interviewQuestions.forEach(q => {
+          const bookmarked = isBookmarked(q.id);
+          const card = document.createElement('div');
+          card.className = 'question-card';
+          card.innerHTML = `
+            <div class="q-content">
+              <div class="q-text">${q.question}</div>
+              <div class="q-answer"><strong>Answer:</strong> ${q.answer}</div>
+            </div>
+            <button class="bookmark-btn ${bookmarked ? 'bookmarked' : ''}" 
+                    data-id="${q.id}" 
+                    aria-label="${bookmarked ? 'Remove bookmark' : 'Add bookmark'}">
+              ${bookmarked ? '⭐' : '☆'}
+            </button>
+          `;
+          container.appendChild(card);
+        });
+        
+        // Add event listeners to bookmark buttons
+        container.querySelectorAll('.bookmark-btn').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            const id = parseInt(e.target.dataset.id);
+            toggleBookmark(id);
+          });
+        });
+      }
+
+      // ============ RENDER BOOKMARKS ============
+      function renderBookmarks() {
+        const container = document.getElementById('bookmarks-container');
+        const bookmarks = getBookmarks();
+        
+        if (bookmarks.length === 0) {
+          container.innerHTML = '<div class="bookmark-empty">No bookmarked questions yet. ⭐</div>';
+          return;
+        }
+        
+        container.innerHTML = '';
+        bookmarks.forEach(id => {
+          const q = interviewQuestions.find(q => q.id === id);
+          if (!q) return;
+          
+          const item = document.createElement('div');
+          item.className = 'bookmark-item';
+          item.innerHTML = `
+            <div class="question-text">
+              <strong>${q.question}</strong>
+              <div style="font-size: 0.9rem; color: #666; margin-top: 4px;">
+                ${q.answer}
+              </div>
+            </div>
+            <div class="bookmark-actions">
+              <button class="btn btn-danger" data-id="${q.id}" style="padding: 4px 10px; font-size: 12px;">Remove</button>
+            </div>
+          `;
+          container.appendChild(item);
+        });
+        
+        // Add event listeners to remove buttons
+        container.querySelectorAll('.btn-danger').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            const id = parseInt(e.target.dataset.id);
+            toggleBookmark(id);
+          });
+        });
+      }
+
+      // ============ UPDATE BOOKMARK BUTTONS ============
+      function updateBookmarkButtons() {
+        document.querySelectorAll('.bookmark-btn').forEach(btn => {
+          const id = parseInt(btn.dataset.id);
+          const bookmarked = isBookmarked(id);
+          btn.textContent = bookmarked ? '⭐' : '☆';
+          btn.classList.toggle('bookmarked', bookmarked);
+          btn.setAttribute('aria-label', bookmarked ? 'Remove bookmark' : 'Add bookmark');
+        });
+      }
+
+      // ============ TAB NAVIGATION ============
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          // Remove active class from all tabs
+          document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+          document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+          
+          // Add active class to clicked tab
+          btn.classList.add('active');
+          const tabId = btn.dataset.tab;
+          document.getElementById(`tab-${tabId}`).classList.add('active');
+        });
+      });
+
+      // ============ STAR ANSWER BUILDER ============
       const situationEl = document.getElementById('star-situation');
       const taskEl = document.getElementById('star-task');
       const actionEl = document.getElementById('star-action');
@@ -505,6 +1021,7 @@
       const previewEl = document.getElementById('star-answer-preview');
       const copyBtn = document.getElementById('copy-answer-btn');
       const clearBtn = document.getElementById('clear-form-btn');
+      
       function updatePreview() {
         const situation = situationEl.value.trim();
         const task = taskEl.value.trim();
@@ -525,20 +1042,22 @@
           copyBtn.style.display = 'none';
         }
       }
+      
       [situationEl, taskEl, actionEl, resultEl].forEach((el) => {
         el.addEventListener('input', updatePreview);
       });
+      
       copyBtn.addEventListener('click', async () => {
         const situation = situationEl.value.trim();
         const task = taskEl.value.trim();
         const action = actionEl.value.trim();
         const result = resultEl.value.trim();
         const answerText = `
-Situation: ${situation}
-Task: ${task}
-Action: ${action}
-Result: ${result}
-            `.trim();
+        Situation: ${situation}
+        Task: ${task}
+        Action: ${action}
+        Result: ${result}
+        `.trim();
         try {
           await navigator.clipboard.writeText(answerText);
           copyBtn.textContent = 'Copied!';
@@ -547,6 +1066,7 @@ Result: ${result}
           console.error('Failed to copy: ', err);
         }
       });
+      
       clearBtn.addEventListener('click', () => {
         situationEl.value = '';
         taskEl.value = '';
@@ -554,6 +1074,10 @@ Result: ${result}
         resultEl.value = '';
         updatePreview();
       });
+
+      // ============ INITIALIZE ============
+      renderQuestions();
+      renderBookmarks();
     </script>
   </body>
 </html>
