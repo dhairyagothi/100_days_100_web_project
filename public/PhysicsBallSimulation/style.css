@@ -410,6 +410,30 @@ input[type="range"]::-moz-range-thumb {
   color: var(--accent);
 }
 
+.project-back-button{
+  position:fixed;
+  left:18px;
+  top:18px;
+  padding:8px 16px;
+  border-radius:8px;
+  background:#1e293b;
+  color:#3b82f6;
+  border:1px solid #3b82f6;
+  text-decoration:none;
+  z-index:9999;
+  font-weight:700;
+  font-family:Inter, system-ui, sans-serif;
+  transition:all 0.2s ease;
+}
+
+.ul-list{
+  margin-left: 1.25rem; 
+  margin-top: 0.35rem; 
+  display: flex; 
+  flex-direction: column; 
+  gap: 0.25rem;
+}
+
 @media (max-width: 768px) {
   .ctrl-item[data-tooltip]::before,
   .ctrl-item[data-tooltip]::after {

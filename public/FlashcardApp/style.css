@@ -37,30 +37,36 @@ body{
 }
 
 .top-bar{
+
   display:flex;
   left: 0;
-  background-color: #06b6d4;
+  background-color:  #99e2ef ;
+  border-radius: 20px;
   justify-content:space-between;
   align-items:center;
+  margin-top: 14px;
   margin-bottom:20px;
 }
-a{
+a{font-size: 18px;
+  font-weight: 600;
   margin-left: 20px;
   margin-right: 20px;
   text-decoration: none;
-  color: #fff;
+  color: #363636;
 }
 a:hover{
-  background-color: #4f46e5;
-  border-radius: 20px;
+  transform: scale(1.2, 1.2);
+  font-weight: 500;
+  color: #377c88;
 }
 #theme-toggle{
-  padding:10px 15px;
+  padding:10px 15px ;
+  margin-right: 15px;
   border:none;
   border-radius:10px;
   cursor:pointer;
 }
-
+#theme-toggle:hover{  transform: scale(1.2, 1.2);}
 .stats{
   display:grid;
   grid-template-columns:repeat(3,1fr);
@@ -185,7 +191,7 @@ h1 {
   text-align: center;
   font-size: 2rem;
   margin-bottom: 25px;
-  color: #0f172a;
+  color:  #377c88;
 }
 
 

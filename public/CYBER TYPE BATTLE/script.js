@@ -190,16 +190,20 @@ function drawEnemies() {
     ctx.fill();
 
     ctx.font = "bold 22px Arial";
-    ctx.textAlign = "center";
+    ctx.textAlign = "left";
 
     const typed = enemy.word.substring(0, enemy.typed.length);
     const left = enemy.word.substring(enemy.typed.length);
 
+    const totalWidth = ctx.measureText(enemy.word).width;
+    const startX = enemy.x - totalWidth / 2;
+    const typedWidth = ctx.measureText(typed).width;
+
     ctx.fillStyle = "#00ff99";
-    ctx.fillText(typed, enemy.x - 10, enemy.y - 35);
+    ctx.fillText(typed, startX, enemy.y - 35);
 
     ctx.fillStyle = "white";
-    ctx.fillText(left, enemy.x + 15, enemy.y - 35);
+    ctx.fillText(left, startX + typedWidth, enemy.y - 35);
 
     if (Date.now() - enemy.hitTime > 100) {
       enemy.hit = false;

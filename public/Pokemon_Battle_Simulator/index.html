@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokemon Battle Simulator</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="game-boy">
+        <div class="screen">
+            <div class="pokemon-container opponent-container">
+                <div class="status-box">
+                    <h3 id="opp-name">Loading...</h3>
+                    <div class="hp-bar-bg">
+                        <div class="hp-bar" id="opp-hp-bar"></div>
+                    </div>
+                </div>
+                <img id="opp-sprite" src="" alt="Opponent">
+            </div>
+
+            <div class="pokemon-container player-container">
+                <img id="player-sprite" src="" alt="Player">
+                <div class="status-box">
+                    <h3 id="player-name">Loading...</h3>
+                    <div class="hp-bar-bg">
+                        <div class="hp-bar" id="player-hp-bar"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dialogue-box">
+                <p id="battle-text">Searching for wild Pokémon...</p>
+                <div class="actions">
+                    <button id="attack-btn" disabled>ATTACK</button>
+                    <button id="restart-btn" class="hidden">RESTART</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

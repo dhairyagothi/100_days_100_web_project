@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Wishlist - Flipkart</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="nav.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- ─── NAVBAR ─── -->
+  <nav class="navbar">
+    <div class="nav-left">
+      <a href="index.html" class="logo-section">
+        <img src="logo.png" alt="Flipkart logo" />
+        <div>
+          <h2>Flipkart</h2>
+          <span>Explore <em>Plus</em> ✦</span>
+        </div>
+      </a>
+
+      <div class="menu">
+        <div class="menu-item">
+          <i aria-hidden="true" class="fa-solid fa-bolt"></i>
+          Minutes
+        </div>
+        <div class="menu-item">
+          <i aria-hidden="true" class="fa-solid fa-plane"></i>
+          Travel
+        </div>
+        <div class="menu-item">
+          <i aria-hidden="true" class="fa-solid fa-basket-shopping"></i>
+          Grocery
+        </div>
+      </div>
+    </div>
+
+    <!-- SEARCH -->
+    <div class="search-box">
+      <i aria-hidden="true" class="fa-solid fa-magnifying-glass search-icon"></i>
+      <input type="text" placeholder="Search for Products, Brands and More" aria-label="Search products" />
+    </div>
+
+    <div class="nav-right">
+      <a href="signup.html" class="right-item login">
+        <i aria-hidden="true" class="fa-regular fa-user"></i>
+        <span>Login</span>
+      </a>
+
+      <!-- Wishlist with Badge -->
+      <a href="wishlist.html" class="right-item wishlist-wrapper" style="position: relative;">
+        <i aria-hidden="true" class="fa-regular fa-heart"></i>
+        <span>Wishlist</span>
+        <span class="wishlist-badge" id="wishlistBadge" style="display: none;">0</span>
+      </a>
+
+      <div class="right-item">
+        <i aria-hidden="true" class="fa-solid fa-cart-shopping"></i>
+        <span>Cart</span>
+      </div>
+
+      <div class="right-item">
+        <i aria-hidden="true" class="fa-solid fa-store"></i>
+        <span>Become a Seller</span>
+      </div>
+
+      <div class="right-item">
+        <i aria-hidden="true" class="fa-solid fa-ellipsis-vertical"></i>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ─── WISHLIST PAGE ─── -->
+  <section class="wishlist-page">
+    <div class="wishlist-header">
+      <div>
+        <h1>My Wishlist</h1>
+        <span class="wishlist-count">0 items</span>
+      </div>
+      <a href="index.html" class="view-all-btn" aria-label="Continue Shopping">&#10095;</a>
+    </div>
+
+    <div class="wishlist-grid">
+      <!-- Wishlist items will be rendered here by JavaScript -->
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ─── -->
+  <footer class="main-footer">
+    <div class="footer-links-container">
+      <div class="footer-column">
+        <h3>About</h3>
+        <ul>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Flipkart Stories</a></li>
+          <li><a href="#">Press</a></li>
+          <li><a href="#">Corporate Information</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h3>Group Companies</h3>
+        <ul>
+          <li><a href="#">Myntra</a></li>
+          <li><a href="#">Cleartrip</a></li>
+          <li><a href="#">Shopsy</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h3>Help</h3>
+        <ul>
+          <li><a href="#">Payments</a></li>
+          <li><a href="#">Shipping</a></li>
+          <li><a href="#">Cancellation &amp; Returns</a></li>
+          <li><a href="#">FAQ</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h3>Consumer Policy</h3>
+        <ul>
+          <li><a href="#">Cancellation &amp; Returns</a></li>
+          <li><a href="#">Terms Of Use</a></li>
+          <li><a href="#">Security</a></li>
+          <li><a href="#">Privacy</a></li>
+          <li><a href="#">Sitemap</a></li>
+          <li><a href="#">Grievance Redressal</a></li>
+          <li><a href="#">EPR Compliance</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-divider"></div>
+
+      <div class="footer-column address-column">
+        <h3>Mail Us:</h3>
+        <p>
+          Flipkart Internet Private Limited,<br />
+          Buildings Alyssa, Begonia &amp;<br />
+          Clove Embassy Tech Village,<br />
+          Outer Ring Road, Devarabeesanahalli Village,<br />
+          Bengaluru, 560103,<br />
+          Karnataka, India
+        </p>
+        <div class="social-links">
+          <h3>Social:</h3>
+          <div class="social-icons">
+            <a href="#" aria-label="Facebook"><i aria-hidden="true" class="fab fa-facebook-f"></i></a>
+            <a href="#" aria-label="Twitter"><i aria-hidden="true" class="fab fa-twitter"></i></a>
+            <a href="#" aria-label="YouTube"><i aria-hidden="true" class="fab fa-youtube"></i></a>
+            <a href="#" aria-label="Instagram"><i aria-hidden="true" class="fab fa-instagram"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-column address-column">
+        <h3>Registered Office Address:</h3>
+        <p>
+          Flipkart Internet Private Limited,<br />
+          Buildings Alyssa, Begonia &amp;<br />
+          Clove Embassy Tech Village,<br />
+          Outer Ring Road, Devarabeesanahalli Village,<br />
+          Bengaluru, 560103,<br />
+          Karnataka, India<br />
+          CIN : U51109KA2012PTC066107<br />
+          Telephone: <a href="tel:044-45614700">044-45614700</a>
+        </p>
+      </div>
+    </div>
+
+    <div class="footer-bottom-bar">
+      <div class="bottom-bar-links">
+        <a href="#"><i aria-hidden="true" class="fas fa-store"></i> Become a Seller</a>
+        <a href="#"><i aria-hidden="true" class="fas fa-ad"></i> Advertise</a>
+        <a href="#"><i aria-hidden="true" class="fas fa-gift"></i> Gift Cards</a>
+        <a href="#"><i aria-hidden="true" class="fas fa-question-circle"></i> Help Center</a>
+      </div>
+      <div class="copyright">&copy; 2007-2026 Flipkart.com</div>
+      <div class="payment-methods">
+        <span class="payment-label">Payment Methods Secure</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

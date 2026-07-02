@@ -88,14 +88,14 @@ function compilePortfolioHTML() {
     <div class="blob b1"></div>
     <div class="blob b2"></div>
 
-    <nav class="navbar">
-        <div class="brand">${name}</div>
-        <div class="nav-menu">
-            <span class="nav-link active" onclick="navigate('home')">Home</span>
-            <span class="nav-link" onclick="navigate('work')">Work</span>
-            <span class="nav-link" onclick="navigate('contact')">Contact</span>
-        </div>
-    </nav>
+   <nav class="navbar">
+    <div class="brand">${name}</div>
+    <div class="nav-menu">
+        <span class="nav-link active" onclick="navigate('home', this)">Home</span>
+        <span class="nav-link" onclick="navigate('work', this)">Work</span>
+        <span class="nav-link" onclick="navigate('contact', this)">Contact</span>
+    </div>
+</nav>
 
     <section id="view-home" class="page-view active">
         <h1>Hey, I'm <br><span class="gradient-txt">${name}</span></h1>
@@ -115,12 +115,25 @@ function compilePortfolioHTML() {
     </section>
 
     <script>
-        function navigate(id) {
-            document.querySelectorAll('.page-view').forEach(v => v.classList.remove('active'));
-            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-            document.getElementById('view-' + id).classList.add('active');
-            event.target.classList.add('active');
-        }
+       function navigate(id, element) {
+    document.querySelectorAll('.page-view').forEach(view => {
+        view.classList.remove('active');
+    });
+
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.classList.remove('active');
+    });
+
+    const targetView = document.getElementById('view-' + id);
+
+    if (targetView) {
+        targetView.classList.add('active');
+    }
+
+    if (element) {
+        element.classList.add('active');
+    }
+}
 
         const phrases = ${jsonPhrases};
         let pIdx = 0, cIdx = 0, del = false;

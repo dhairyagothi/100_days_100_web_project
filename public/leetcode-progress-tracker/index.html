@@ -1,294 +1,241 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>LeetCode Progress Tracker</title>
+    <title>LeetCode Progress Tracker</title>
 
-  <link rel="stylesheet" href="style.css"/>
+    <link rel="stylesheet" href="style.css" />
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <link
-    href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
-    rel="stylesheet"
-  />
-</head>
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+  </head>
 
-<body>
+  <body>
+    <!-- THEME TOGGLE -->
 
-  <!-- THEME TOGGLE -->
+    <button id="themeToggle" class="theme-toggle">
+      <i class="ri-moon-line"></i>
+    </button>
 
-  <button id="themeToggle" class="theme-toggle">
-    <i class="ri-moon-line"></i>
-  </button>
+    <div class="container">
+      <!-- HERO -->
 
-  <div class="container">
+      <section class="hero">
+        <div class="hero-content">
+          <span class="badge"> DSA Analytics Dashboard </span>
 
-    <!-- HERO -->
+          <h1>LeetCode Progress Tracker</h1>
 
-    <section class="hero">
+          <p>
+            Track your coding journey, monitor streaks, analyze problem
+            difficulty and stay consistent with interview preparation.
+          </p>
+        </div>
+      </section>
 
-      <div class="hero-content">
+      <!-- LIVE SEARCH -->
 
-        <span class="badge">
-          DSA Analytics Dashboard
-        </span>
+      <section class="username-section">
+        <div class="username-container">
+          <div class="input-wrapper">
+            <i class="ri-user-line"></i>
+            <input
+              type="text"
+              id="leetcodeUsername"
+              placeholder="Enter LeetCode username"
+              required
+            />
+          </div>
+          <button id="fetchStatsBtn">
+            <i class="ri-refresh-line"></i> Fetch Live Analytics
+          </button>
+        </div>
+        <div id="loadingIndicator" class="loading-indicator hidden">
+          <div class="spinner"></div>
+          <span>Fetching live LeetCode stats and skill analytics...</span>
+        </div>
+        <div id="errorMessage" class="error-message hidden"></div>
+      </section>
 
-        <h1>
-          LeetCode Progress Tracker
-        </h1>
+      <!-- PROFILE DETAILS -->
 
-        <p>
-          Track your coding journey, monitor streaks,
-          analyze problem difficulty and stay consistent
-          with interview preparation.
-        </p>
-
+      <div id="userProfileCard" class="profile-card hidden">
+        <img id="userAvatar" src="" alt="Avatar" />
+        <div class="profile-info">
+          <h2 id="userRealName">User Real Name</h2>
+          <p id="userUsername">@username</p>
+        </div>
       </div>
 
-    </section>
+      <!-- STATS -->
 
-    <!-- LIVE SEARCH -->
+      <section class="stats-grid">
+        <div class="stat-card">
+          <h3>Total Solved</h3>
+          <p id="totalSolved">0</p>
+        </div>
 
-    <section class="username-section">
-      <div class="username-container">
-        <div class="input-wrapper">
-          <i class="ri-user-line"></i>
+        <div class="stat-card easy">
+          <h3>Easy</h3>
+          <p id="easySolved">0</p>
+        </div>
+
+        <div class="stat-card medium">
+          <h3>Medium</h3>
+          <p id="mediumSolved">0</p>
+        </div>
+
+        <div class="stat-card hard">
+          <h3>Hard</h3>
+          <p id="hardSolved">0</p>
+        </div>
+
+        <div class="stat-card streak">
+          <h3>Current Streak</h3>
+          <p id="streakCount">0</p>
+        </div>
+
+        <div class="stat-card ranking">
+          <h3>Global Ranking</h3>
+          <p id="rankingCount">N/A</p>
+        </div>
+
+        <div class="stat-card acceptance">
+          <h3>Acceptance Rate</h3>
+          <p id="acceptanceRate">N/A</p>
+        </div>
+      </section>
+
+      <!-- SUBMISSION HEATMAP -->
+
+      <section class="heatmap-section hidden" id="heatmapSection">
+        <h2>Submission Heatmap</h2>
+
+        <div class="calendar-wrapper">
+          <div class="calendar-labels-y">
+            <span>Sun</span>
+            <span>Mon</span>
+            <span>Tue</span>
+            <span>Wed</span>
+            <span>Thu</span>
+            <span>Fri</span>
+            <span>Sat</span>
+          </div>
+
+          <div class="calendar-container">
+            <div class="calendar-months" id="calendarMonths">
+              <!-- Month labels will be drawn dynamically -->
+            </div>
+
+            <div class="calendar-grid" id="calendarGrid">
+              <!-- Grid columns will be drawn dynamically -->
+            </div>
+          </div>
+        </div>
+
+        <div class="calendar-legend">
+          <span>Less</span>
+          <div class="legend-cells">
+            <div class="calendar-day level-0"></div>
+            <div class="calendar-day level-1"></div>
+            <div class="calendar-day level-2"></div>
+            <div class="calendar-day level-3"></div>
+            <div class="calendar-day level-4"></div>
+          </div>
+          <span>More</span>
+        </div>
+      </section>
+
+      <!-- SMART INSIGHTS & RECOMMENDATIONS -->
+
+      <section class="insights-section hidden" id="insightsSection">
+        <h2>Smart Insights & Recommendations</h2>
+
+        <div class="insights-grid">
+          <div class="insight-card strong-card">
+            <h3><i class="ri-checkbox-circle-fill"></i> Strongest Topics</h3>
+            <p id="strongAreas">Analyze stats to identify your strengths.</p>
+          </div>
+
+          <div class="insight-card weak-card">
+            <h3><i class="ri-error-warning-fill"></i> Focus Areas (Weakest)</h3>
+            <p id="weakAreas">
+              Analyze stats to identify topics needing practice.
+            </p>
+          </div>
+        </div>
+
+        <div class="recommendations-container">
+          <h3><i class="ri-lightbulb-fill"></i> Suggested Problems for You</h3>
+
+          <div id="recommendationsList" class="recommendations-list">
+            <!-- Suggested problems will load dynamically here -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ADD PROBLEM (MANUAL OVERRIDE) -->
+
+      <section class="form-section">
+        <h2>Manual Tracker Override</h2>
+
+        <form id="problemForm">
           <input
             type="text"
-            id="leetcodeUsername"
-            placeholder="Enter LeetCode username"
+            id="problemName"
+            placeholder="Enter problem name"
             required
           />
+
+          <select id="difficulty">
+            <option value="Easy">Easy</option>
+            <option value="Medium">Medium</option>
+            <option value="Hard">Hard</option>
+          </select>
+
+          <button type="submit">Add Problem</button>
+        </form>
+      </section>
+
+      <!-- CHARTS -->
+
+      <section class="charts-grid">
+        <div class="chart-card">
+          <h2>Difficulty Breakdown</h2>
+
+          <canvas id="difficultyChart"></canvas>
         </div>
-        <button id="fetchStatsBtn">
-          <i class="ri-refresh-line"></i> Fetch Live Analytics
-        </button>
-      </div>
-      <div id="loadingIndicator" class="loading-indicator hidden">
-        <div class="spinner"></div>
-        <span>Fetching live LeetCode stats and skill analytics...</span>
-      </div>
-      <div id="errorMessage" class="error-message hidden"></div>
-    </section>
 
-    <!-- PROFILE DETAILS -->
+        <div class="chart-card">
+          <h2>Topic Performance</h2>
 
-    <div id="userProfileCard" class="profile-card hidden">
-      <img id="userAvatar" src="" alt="Avatar" />
-      <div class="profile-info">
-        <h2 id="userRealName">User Real Name</h2>
-        <p id="userUsername">@username</p>
-      </div>
+          <canvas id="topicChart"></canvas>
+        </div>
+
+        <div class="chart-card full-width">
+          <h2>Historical Progress Trends</h2>
+
+          <canvas id="progressChart"></canvas>
+        </div>
+      </section>
+
+      <!-- RECENT -->
+
+      <section class="recent-section">
+        <div class="recent-header">
+          <h2>Recent Problems</h2>
+        </div>
+
+        <div id="problemList" class="problem-list"></div>
+      </section>
     </div>
 
-    <!-- STATS -->
-
-    <section class="stats-grid">
-
-      <div class="stat-card">
-        <h3>Total Solved</h3>
-        <p id="totalSolved">0</p>
-      </div>
-
-      <div class="stat-card easy">
-        <h3>Easy</h3>
-        <p id="easySolved">0</p>
-      </div>
-
-      <div class="stat-card medium">
-        <h3>Medium</h3>
-        <p id="mediumSolved">0</p>
-      </div>
-
-      <div class="stat-card hard">
-        <h3>Hard</h3>
-        <p id="hardSolved">0</p>
-      </div>
-
-      <div class="stat-card streak">
-        <h3>Current Streak</h3>
-        <p id="streakCount">0</p>
-      </div>
-
-      <div class="stat-card ranking">
-        <h3>Global Ranking</h3>
-        <p id="rankingCount">N/A</p>
-      </div>
-
-      <div class="stat-card acceptance">
-        <h3>Acceptance Rate</h3>
-        <p id="acceptanceRate">N/A</p>
-      </div>
-
-    </section>
-
-    <!-- SUBMISSION HEATMAP -->
-
-    <section class="heatmap-section hidden" id="heatmapSection">
-
-      <h2>Submission Heatmap</h2>
-
-      <div class="calendar-wrapper">
-
-        <div class="calendar-labels-y">
-          <span>Sun</span>
-          <span>Mon</span>
-          <span>Tue</span>
-          <span>Wed</span>
-          <span>Thu</span>
-          <span>Fri</span>
-          <span>Sat</span>
-        </div>
-
-        <div class="calendar-container">
-
-          <div class="calendar-months" id="calendarMonths">
-            <!-- Month labels will be drawn dynamically -->
-          </div>
-
-          <div class="calendar-grid" id="calendarGrid">
-            <!-- Grid columns will be drawn dynamically -->
-          </div>
-
-        </div>
-
-      </div>
-
-      <div class="calendar-legend">
-        <span>Less</span>
-        <div class="legend-cells">
-          <div class="calendar-day level-0"></div>
-          <div class="calendar-day level-1"></div>
-          <div class="calendar-day level-2"></div>
-          <div class="calendar-day level-3"></div>
-          <div class="calendar-day level-4"></div>
-        </div>
-        <span>More</span>
-      </div>
-
-    </section>
-
-    <!-- SMART INSIGHTS & RECOMMENDATIONS -->
-
-    <section class="insights-section hidden" id="insightsSection">
-
-      <h2>Smart Insights & Recommendations</h2>
-
-      <div class="insights-grid">
-
-        <div class="insight-card strong-card">
-          <h3>
-            <i class="ri-checkbox-circle-fill"></i> Strongest Topics
-          </h3>
-          <p id="strongAreas">Analyze stats to identify your strengths.</p>
-        </div>
-
-        <div class="insight-card weak-card">
-          <h3>
-            <i class="ri-error-warning-fill"></i> Focus Areas (Weakest)
-          </h3>
-          <p id="weakAreas">Analyze stats to identify topics needing practice.</p>
-        </div>
-
-      </div>
-
-      <div class="recommendations-container">
-
-        <h3>
-          <i class="ri-lightbulb-fill"></i> Suggested Problems for You
-        </h3>
-
-        <div id="recommendationsList" class="recommendations-list">
-          <!-- Suggested problems will load dynamically here -->
-        </div>
-
-      </div>
-
-    </section>
-
-    <!-- ADD PROBLEM (MANUAL OVERRIDE) -->
-
-    <section class="form-section">
-
-      <h2>Manual Tracker Override</h2>
-
-      <form id="problemForm">
-
-        <input
-          type="text"
-          id="problemName"
-          placeholder="Enter problem name"
-          required
-        />
-
-        <select id="difficulty">
-
-          <option value="Easy">Easy</option>
-          <option value="Medium">Medium</option>
-          <option value="Hard">Hard</option>
-
-        </select>
-
-        <button type="submit">
-          Add Problem
-        </button>
-
-      </form>
-
-    </section>
-
-    <!-- CHARTS -->
-
-    <section class="charts-grid">
-
-      <div class="chart-card">
-
-        <h2>Difficulty Breakdown</h2>
-
-        <canvas id="difficultyChart"></canvas>
-
-      </div>
-
-      <div class="chart-card">
-
-        <h2>Topic Performance</h2>
-
-        <canvas id="topicChart"></canvas>
-
-      </div>
-
-      <div class="chart-card full-width">
-
-        <h2>Historical Progress Trends</h2>
-
-        <canvas id="progressChart"></canvas>
-
-      </div>
-
-    </section>
-
-    <!-- RECENT -->
-
-    <section class="recent-section">
-
-      <div class="recent-header">
-
-        <h2>Recent Problems</h2>
-
-      </div>
-
-      <div id="problemList" class="problem-list">
-
-      </div>
-
-    </section>
-
-  </div>
-
-  <script src="script.js"></script>
-
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>
