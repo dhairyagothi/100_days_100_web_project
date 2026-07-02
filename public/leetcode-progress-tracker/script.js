@@ -292,7 +292,10 @@ fetchStatsBtn.addEventListener('click', async () => {
     if (!profileRes.ok) throw new Error('Could not find LeetCode profile.');
     const profileData = await profileRes.json();
 
-    if (profileData.errors || profileData.message === 'User not found') {
+    if (
+      !profileData || profileData.errors || profileData.message === "User not found" || !profileData.username) {
+      throw new Error("User not found. Please enter a valid LeetCode username.");
+    } {
       throw new Error('LeetCode profile not found. Verify the username.');
     }
 
@@ -342,9 +345,14 @@ fetchStatsBtn.addEventListener('click', async () => {
     renderSubmissionCalendar(calendarData);
 
     hideError();
-  } catch (error) {
-    showError(error.message || 'An error occurred while fetching data.');
-  } finally {
+  }
+  catch (error) {
+    showError(
+      error.message ||
+      "Unable to fetch data. Please try again later."
+    );
+  }
+  finally {
     hideLoading();
   }
 });
@@ -353,6 +361,7 @@ function showLoading() {
   loadingIndicator.classList.remove('hidden');
   errorMessage.classList.add('hidden');
   fetchStatsBtn.disabled = true;
+  hideError();
 }
 
 function hideLoading() {
@@ -362,11 +371,22 @@ function hideLoading() {
 
 function showError(msg) {
   errorMessage.textContent = msg;
-  errorMessage.classList.remove('hidden');
+  errorMessage.classList.remove("hidden");
+
+  userProfileCard.classList.add("hidden");
+  insightsSection.classList.add("hidden");
+
+  totalSolved.textContent = "0";
+  easySolved.textContent = "0";
+  mediumSolved.textContent = "0";
+  hardSolved.textContent = "0";
+  rankingCount.textContent = "N/A";
+  acceptanceRate.textContent = "N/A";
 }
 
 function hideError() {
-  errorMessage.classList.add('hidden');
+  errorMessage.classList.add("hidden");
+  errorMessage.textContent = "";
 }
 
 function displayUserProfile(data) {
