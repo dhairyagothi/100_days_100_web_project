@@ -46,6 +46,7 @@ body {
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(72, 21, 21, 0.1);
     width: 500px;
+    max-width: 95vw;
 
     /* Primary: use the local file */
     cursor: var(--hammer-cursor);
@@ -132,4 +133,47 @@ button:hover {
 button:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+}
+
+/* ===== Difficulty Selector ===== */
+
+.game-info {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.difficulty-container {
+    margin: 15px 0;
+    color: #f5d5d5;
+    font-size: 18px;
+}
+
+.difficulty-container label {
+    margin-right: 8px;
+    font-weight: bold;
+}
+
+#difficulty {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    background: #fff;
+    color: #5c3030;
+    outline: none;
+    cursor: pointer;
+}
+
+#difficulty:focus {
+    box-shadow: 0 0 5px rgba(255, 221, 87, 0.8);
+}
+
+#currentDifficulty {
+    color: #ffdd57;
+    font-weight: bold;
+    text-transform: capitalize;
 }

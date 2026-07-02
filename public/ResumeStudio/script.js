@@ -11,6 +11,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("resumeForm");
 
     const nameInput = document.getElementById("name");
+    const profilePhotoInput = document.getElementById("profilePhoto");
+    const photoPreview = document.getElementById("photoPreview");
     const titleInput = document.getElementById("title");
     const emailInput = document.getElementById("email");
     const phoneInput = document.getElementById("phone");
@@ -23,7 +25,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const skillsInput = document.getElementById("skills");
     const experienceInput = document.getElementById("experience");
     const projectsInput = document.getElementById("projects");
-
+    const sectionSelect = document.getElementById("selectionSelect");
+    const addSectionBtn = document.getElementById("addSectionBtn");
+    let sectionOrder = [
+    "summary",
+    "skills",
+    "experience",
+    "projects",
+    "education"
+];
+    const dynamicSections = document.getElementById("dynamicSections");
     const resumePreview = document.getElementById("resumePreview");
 
     const atsScoreValue = document.getElementById("atsScoreValue");
@@ -41,7 +52,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // ===============================
 
     let currentTemplate = "modern";
-
+    let profileImage = "";
+    let additionalSections = [];
     // ===============================
     // SECURITY HELPER
     // ===============================
@@ -211,14 +223,56 @@ document.addEventListener("DOMContentLoaded", () => {
         // ===============================
         // RESUME HTML
         // ===============================
-
+    const sections = {
+        summary: `
+            <div class="resume-section">
+                <h3>Summary</h3>
+                <p>${summary}</p>
+            </div>
+        `,
+        skills: `
+            <div class="resume-section">
+                <h3>Skills</h3>
+                ${createSkills(skillsInput.value)}
+            </div>
+        `,
+        experience: `
+            <div class="resume-section">
+                <h3>Experience</h3>
+                ${createBulletList(experienceInput.value)}
+            </div>
+        `,
+        projects: `
+            <div class="resume-section">
+                <h3>Projects</h3>
+                ${createBulletList(projectsInput.value)}
+            </div>
+        `,
+        education: `
+            <div class="resume-section">
+                <h3>Education</h3>
+                <p>${education}</p>
+            </div>
+        `
+    };
         resumePreview.innerHTML = `
         
             <div class="resume-header">
+                                <div class="header-row">
 
-                <h1>${name}</h1>
+                            <div class="header-content">
 
-                <h2>${title}</h2>
+                                <h1>${name}</h1>
+
+                                <h2>${title}</h2>
+
+                            </div>
+                ${profileImage  ? `<img src="${profileImage}" class="resume-photo">`
+                : ""
+                }
+                
+            </div>
+
 
                 <div class="resume-contact">
 
@@ -242,49 +296,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
             </div>
 
-            <div class="resume-section">
+            ${sectionOrder.map(section => sections[section]).join("")}
+       ${additionalSections
+.map((section) => `
+    <div class="resume-section">
+        <h3>${section.title}</h3>
+        <p>${section.content || "Not provided"}</p>
+    </div>
+`)
+.join("")}
+    `;
 
-                <h3>Professional Summary</h3>
-
-                <p>${summary}</p>
-
-            </div>
-
-            <div class="resume-section">
-
-                <h3>Skills</h3>
-
-                ${createSkills(skillsInput.value)}
-
-            </div>
-
-            <div class="resume-section">
-
-                <h3>Experience</h3>
-
-                ${createBulletList(experienceInput.value)}
-
-            </div>
-
-            <div class="resume-section">
-
-                <h3>Projects</h3>
-
-                ${createBulletList(projectsInput.value)}
-
-            </div>
-
-            <div class="resume-section">
-
-                <h3>Education</h3>
-
-                <p>${education}</p>
-
-            </div>
-
-        `;
-
-        updateATSScore();
+    updateATSScore();
     }
 
     // ===============================
@@ -461,7 +484,138 @@ document.addEventListener("DOMContentLoaded", () => {
             alert("Failed to generate PDF.");
         }
     });
+    profilePhotoInput.addEventListener("change", (e) => {
+        const target=e.target.files[0];
+        if(!target) return;
+        const reader=new FileReader();
+        reader.onload=function(){
+            profileImage=reader.result;
+            photoPreview.src=profileImage;
+            photoPreview.style.display="block";
+            updatePreview();
+        }
 
+        reader.readAsDataURL(target);
+    })
+    addSectionBtn.addEventListener("click",()=>{
+        const title=sectionSelect.value;
+        if(!title) return;
+        if(additionalSections.find(section=>section.title===title)){
+            alert("Section already added.");
+            return;
+        }
+        additionalSections.push({ title, content: " " });
+
+       renderAdditionalSections();
+       updatePreview()
+    })
+    function renderAdditionalSections() {
+
+    dynamicSections.innerHTML = "";
+
+    additionalSections.forEach((section, index) => {
+
+        const div = document.createElement("div");
+
+        div.className = "form-group";
+
+        div.innerHTML = `
+            <label>${section.title}</label>
+
+            <textarea
+                rows="4"
+                placeholder="Enter ${section.title}"
+            ></textarea>
+        `;
+
+        const textarea = div.querySelector("textarea");
+
+        textarea.addEventListener("input", (e) => {
+
+            additionalSections[index].content = e.target.value;
+
+            updatePreview();
+
+        });
+
+        dynamicSections.appendChild(div);
+
+    });
+
+}
+function renderSectionOrder(){
+
+    const container = document.getElementById("sectionOrderList");
+
+    container.innerHTML = "";
+
+    sectionOrder.forEach((section,index)=>{
+
+        const item=document.createElement("div");
+
+        item.className="section-order-item";
+
+        item.draggable=true;
+
+        item.dataset.index=index;
+
+        item.textContent=section.charAt(0).toUpperCase()+section.slice(1);
+
+        container.appendChild(item);
+
+    });
+
+}
+renderSectionOrder();
+updatePreview();
+let dragIndex = null;
+
+document.addEventListener("dragstart", (e) => {
+
+    if (!e.target.classList.contains("section-order-item")) return;
+
+    dragIndex = Number(e.target.dataset.index);
+
+    e.target.classList.add("dragging");
+
+});
+
+document.addEventListener("dragover", (e) => {
+    e.preventDefault();
+});
+
+document.addEventListener("drop", (e) => {
+
+    const target = e.target.closest(".section-order-item");
+
+    if (!target || dragIndex === null) return;
+
+    const dropIndex = Number(target.dataset.index);
+
+    if (dragIndex === dropIndex) return;
+
+    const draggedItem = sectionOrder.splice(dragIndex, 1)[0];
+
+    sectionOrder.splice(dropIndex, 0, draggedItem);
+
+    dragIndex = null;
+
+    renderSectionOrder();
+
+    updatePreview();
+
+});
+
+document.addEventListener("dragend", (e) => {
+
+    if (e.target.classList.contains("section-order-item")) {
+
+        e.target.classList.remove("dragging");
+    }
+
+    dragIndex = null;
+
+});
     // ===============================
     // INITIAL PREVIEW
     // ===============================
