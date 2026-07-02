@@ -15,6 +15,7 @@ if (savedTheme === 'light') document.body.classList.add('light');
 let selectedDate = new Date();
 let currentView = 'today'; // today, weekly, analytics, all-habits
 let deleteHabitId = null;
+let selectedHabitForHeatmap = null;
 
 // --- 2. DATE HELPERS ---
 function getISODate(dateObj) {
@@ -68,6 +69,15 @@ function calculateStreak(completedDates) {
     return streak;
 }
 
+// Get all unique categories
+function getAllCategories() {
+    const categories = new Set();
+    habits.forEach(h => {
+        if (h.category) categories.add(h.category);
+    });
+    return ['all', ...Array.from(categories)];
+}
+
 // --- 3. RENDER LOGIC ---
 function renderApp() {
     renderSidebarStats();
@@ -80,7 +90,10 @@ function renderApp() {
         renderWeeklyView();
     } else if (currentView === 'analytics') {
         renderAnalyticsView();
+        renderCategoryStats();
+        renderHeatmap();
     } else if (currentView === 'all-habits') {
+        populateCategoryFilter();
         renderAllHabitsView();
     }
 }
@@ -91,16 +104,13 @@ function renderSidebarStats() {
 
     habits.forEach(h => {
         const streak = calculateStreak(h.completedDates);
-        totalCurrentStreak += streak; // Simple aggregate or max. Let's do max for the user.
+        totalCurrentStreak += streak;
         if (streak > bestAllTimeStreak) bestAllTimeStreak = streak;
     });
 
     const maxCurrent = habits.length ? Math.max(...habits.map(h => calculateStreak(h.completedDates))) : 0;
     
-    // As per mockup, "Current streak" is likely the max streak of any habit.
     document.getElementById('sidebarCurrentStreak').textContent = `${maxCurrent} days`;
-    
-    // For best streak, we just keep it simple
     document.getElementById('sidebarBestStreak').textContent = `${maxCurrent} days`;
 }
 
@@ -127,9 +137,8 @@ function renderWeekSlider() {
             renderApp();
         };
 
-        // Calculate dots
         let dotsHtml = '';
-        const dotsCount = Math.min(habits.length, 3); // show up to 3 dots
+        const dotsCount = Math.min(habits.length, 3);
         for (let i = 0; i < dotsCount; i++) {
             const h = habits[i];
             const isDone = h && h.completedDates && h.completedDates.includes(dateStr);
@@ -161,7 +170,6 @@ function renderHabitList() {
         const card = document.createElement("div");
         card.className = `habit-card ${isDone ? 'completed' : ''}`;
         
-        // Use custom icon if set, otherwise fallback
         const icon = habit.icon || '⭐';
 
         card.innerHTML = `
@@ -183,7 +191,6 @@ function renderHabitList() {
 
     document.getElementById("habitCountText").textContent = `Habits · ${doneCount} of ${habits.length} done`;
 
-    // Attach toggle events
     document.querySelectorAll('.habit-toggle').forEach(btn => {
         btn.onclick = (e) => {
             const id = Number(e.target.dataset.id);
@@ -254,7 +261,7 @@ function renderAnalyticsView() {
 
     habits.forEach(h => {
         if(h.completedDates) allTimeCompletions += h.completedDates.length;
-        const streak = calculateStreak(h.completedDates); // Note: proper best streak needs historical calc, this is simplified
+        const streak = calculateStreak(h.completedDates);
         if (streak > bestEverStreak) bestEverStreak = streak;
     });
 
@@ -263,16 +270,286 @@ function renderAnalyticsView() {
     document.getElementById("analyticsBestStreak").textContent = bestEverStreak;
 }
 
+// --- CATEGORY STATISTICS ---
+function renderCategoryStats() {
+    const grid = document.getElementById("categoryStatsGrid");
+    grid.innerHTML = "";
+
+    const categoryMap = {};
+    habits.forEach(h => {
+        const cat = h.category || 'Uncategorized';
+        if (!categoryMap[cat]) {
+            categoryMap[cat] = { total: 0, completed: 0 };
+        }
+        categoryMap[cat].total++;
+        if (h.completedDates && h.completedDates.length > 0) {
+            categoryMap[cat].completed++;
+        }
+    });
+
+    Object.keys(categoryMap).forEach(cat => {
+        const data = categoryMap[cat];
+        const completionRate = data.total > 0 ? Math.round((data.completed / data.total) * 100) : 0;
+        
+        const card = document.createElement("div");
+        card.className = "category-stat-card";
+        card.innerHTML = `
+            <div class="category-name">${cat}</div>
+            <div class="category-count">${data.completed}/${data.total}</div>
+            <div class="category-progress">${completionRate}% completion rate</div>
+            <div class="category-bar">
+                <div class="category-bar-fill" style="width: ${completionRate}%"></div>
+            </div>
+        `;
+        grid.appendChild(card);
+    });
+}
+
+// --- HEATMAP VISUALIZATION ---
+function renderHeatmap() {
+    const analyticsContent = document.getElementById("analyticsContent");
+    
+    // Remove existing heatmap containers properly
+    const existingSelectors = analyticsContent.querySelectorAll('.heatmap-selector-container');
+    existingSelectors.forEach(el => el.remove());
+    
+    const existingHeatmaps = analyticsContent.querySelectorAll('.heatmap-container');
+    existingHeatmaps.forEach(el => el.remove());
+
+    if (habits.length === 0) return;
+
+    // Create habit selector for heatmap
+    const selectorContainer = document.createElement('div');
+    selectorContainer.className = 'heatmap-selector-container';
+    selectorContainer.style.marginTop = '30px';
+    selectorContainer.innerHTML = `
+        <h2 style="color: #ccc; margin-bottom: 15px;">Streak Visualization</h2>
+        <select id="heatmapHabitSelect" class="filter-select" style="margin-bottom: 15px;">
+            ${habits.map(h => `<option value="${h.id}">${h.icon || '⭐'} ${h.name}</option>`).join('')}
+        </select>
+    `;
+    analyticsContent.appendChild(selectorContainer);
+
+    // Create heatmap container
+    const heatmapContainer = document.createElement('div');
+    heatmapContainer.className = 'heatmap-container';
+    heatmapContainer.id = 'heatmapContainer';
+    analyticsContent.appendChild(heatmapContainer);
+
+    // Show heatmap for selected habit
+    const habitSelect = document.getElementById('heatmapHabitSelect');
+    if (habitSelect) {
+        // Remove old event listener by cloning
+        const newSelect = habitSelect.cloneNode(true);
+        habitSelect.parentNode.replaceChild(newSelect, habitSelect);
+        
+        newSelect.onchange = () => {
+            renderHeatmapForHabit(Number(newSelect.value));
+        };
+        // Render initial heatmap
+        if (habits.length > 0) {
+            renderHeatmapForHabit(Number(newSelect.value));
+        }
+    }
+}
+
+function renderHeatmapForHabit(habitId) {
+    const container = document.getElementById('heatmapContainer');
+    if (!container) return;
+
+    const habit = habits.find(h => h.id === habitId);
+    if (!habit) return;
+
+    // Get last 365 days
+    const today = new Date();
+    const oneYearAgo = new Date(today);
+    oneYearAgo.setDate(oneYearAgo.getDate() - 364);
+
+    const dates = [];
+    const currentDate = new Date(oneYearAgo);
+    while (currentDate <= today) {
+        dates.push(new Date(currentDate));
+        currentDate.setDate(currentDate.getDate() + 1);
+    }
+
+    // Calculate completion levels
+    const completedSet = new Set(habit.completedDates || []);
+    const maxCompletions = Math.max(...dates.map(d => {
+        const dateStr = getISODate(d);
+        return completedSet.has(dateStr) ? 1 : 0;
+    }), 1);
+
+    // Build heatmap grid
+    let gridHtml = '<div class="heatmap-grid">';
+    dates.forEach(d => {
+        const dateStr = getISODate(d);
+        const isCompleted = completedSet.has(dateStr);
+        const level = isCompleted ? Math.min(4, Math.floor((1 / maxCompletions) * 4)) : 0;
+        const title = `${d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}: ${isCompleted ? '✅ Completed' : '❌ Not completed'}`;
+        gridHtml += `<div class="heatmap-cell level-${level}" title="${title}"></div>`;
+    });
+    gridHtml += '</div>';
+
+    // Add legend
+    const legendHtml = `
+        <div class="heatmap-legend">
+            <span>Less</span>
+            <div class="legend-color level-0"></div>
+            <div class="legend-color level-1"></div>
+            <div class="legend-color level-2"></div>
+            <div class="legend-color level-3"></div>
+            <div class="legend-color level-4"></div>
+            <span>More</span>
+        </div>
+    `;
+
+    // Add progress bar for this habit
+    const totalDays = dates.length;
+    const completedDays = completedSet.size;
+    const completionRate = Math.round((completedDays / totalDays) * 100);
+    const currentStreak = calculateStreak(habit.completedDates);
+
+    container.innerHTML = `
+        <h3 style="margin-bottom: 15px;">${habit.icon} ${habit.name} - Last 365 Days</h3>
+        <div class="progress-container">
+            <div class="progress-label">
+                <span>Overall Completion</span>
+                <span>${completedDays}/${totalDays} days (${completionRate}%)</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-bar-fill" style="width: ${completionRate}%"></div>
+            </div>
+        </div>
+        <div class="progress-container">
+            <div class="progress-label">
+                <span>Current Streak</span>
+                <span>🔥 ${currentStreak} days</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-bar-fill" style="width: ${Math.min(currentStreak / 30 * 100, 100)}%; background: linear-gradient(90deg, #f59e0b, #ef4444);"></div>
+            </div>
+        </div>
+        ${gridHtml}
+        ${legendHtml}
+    `;
+}
+
+// --- ALL HABITS VIEW WITH FILTERS ---
+function populateCategoryFilter() {
+    const filter = document.getElementById("categoryFilter");
+    const currentValue = filter.value;
+    filter.innerHTML = '';
+    
+    const categories = getAllCategories();
+    categories.forEach(cat => {
+        const option = document.createElement('option');
+        option.value = cat;
+        option.textContent = cat === 'all' ? 'All Categories' : cat;
+        filter.appendChild(option);
+    });
+    
+    if (currentValue) filter.value = currentValue;
+}
+
+function renderAllHabitsView() {
+    const list = document.getElementById("allHabitsList");
+    list.innerHTML = "";
+
+    const categoryFilter = document.getElementById("categoryFilter").value;
+    let filteredHabits = habits;
+    
+    if (categoryFilter !== 'all') {
+        filteredHabits = habits.filter(h => h.category === categoryFilter);
+    }
+
+    if (filteredHabits.length === 0) {
+        list.innerHTML = `<p style="color: #888; text-align: center; padding: 40px;">No habits found${categoryFilter !== 'all' ? ' in this category' : ''}. Click "+ Add habit" to start!</p>`;
+        return;
+    }
+
+    filteredHabits.forEach(habit => {
+        const card = document.createElement("div");
+        card.className = `habit-card`;
+        
+        const currentStreak = calculateStreak(habit.completedDates);
+        
+        card.innerHTML = `
+            <div class="habit-icon" style="background-color: ${habit.color}40; color: ${habit.color}">
+                ${habit.icon || '⭐'}
+            </div>
+            <div class="habit-details">
+                <div class="habit-title">${habit.name}</div>
+                <div class="habit-subtitle">${habit.category} · 🔥 ${currentStreak} day streak</div>
+            </div>
+            <div class="habit-card-actions">
+                <button class="btn-icon view-streak-btn" data-id="${habit.id}">📊</button>
+                <button class="btn-icon edit-btn" data-id="${habit.id}">✏️</button>
+                <button class="btn-icon delete-btn" data-id="${habit.id}">🗑️</button>
+            </div>
+        `;
+        list.appendChild(card);
+    });
+
+    // View streak button - switch to analytics and show heatmap for this habit
+    document.querySelectorAll('#view-all-habits .view-streak-btn').forEach(btn => {
+        btn.onclick = (e) => {
+            const id = Number(e.currentTarget.dataset.id);
+            // Switch to analytics view
+            document.querySelectorAll('.menu-section .nav-btn').forEach(b => b.classList.remove('active'));
+            const analyticsBtn = document.querySelector('[data-view="analytics"]');
+            if (analyticsBtn) analyticsBtn.classList.add('active');
+            
+            document.querySelectorAll('.view-section').forEach(v => v.style.display = 'none');
+            currentView = 'analytics';
+            document.getElementById('view-analytics').style.display = 'block';
+            
+            // Store selected habit ID for heatmap
+            selectedHabitForHeatmap = id;
+            renderApp();
+            
+            // Wait for render to complete then select the habit
+            setTimeout(() => {
+                const select = document.getElementById('heatmapHabitSelect');
+                if (select) {
+                    select.value = id;
+                    select.onchange();
+                }
+            }, 100);
+        };
+    });
+
+    document.querySelectorAll('#view-all-habits .edit-btn').forEach(btn => {
+        btn.onclick = (e) => {
+            const id = Number(e.currentTarget.dataset.id);
+            const habit = habits.find(h => h.id === id);
+            
+            document.getElementById("modalTitle").textContent = "Edit Habit";
+            document.getElementById("editHabitId").value = habit.id;
+            document.getElementById("habitName").value = habit.name;
+            document.getElementById("habitCategory").value = habit.category;
+            document.getElementById("habitIcon").value = habit.icon || '⭐';
+            document.getElementById("habitNotes").value = habit.notes || '';
+            
+            habitModal.style.display = "flex";
+        };
+    });
+
+    document.querySelectorAll('#view-all-habits .delete-btn').forEach(btn => {
+        btn.onclick = (e) => {
+            deleteHabitId = Number(e.currentTarget.dataset.id);
+            document.getElementById("deleteModal").style.display = "flex";
+        };
+    });
+}
+
 // --- 4. NAVIGATION LOGIC ---
 document.querySelectorAll('.menu-section .nav-btn').forEach(btn => {
     btn.onclick = (e) => {
-        if (e.currentTarget.id === 'addHabitSidebarBtn') return; // Handled separately
+        if (e.currentTarget.id === 'addHabitSidebarBtn') return;
         
-        // Remove active class
         document.querySelectorAll('.menu-section .nav-btn').forEach(b => b.classList.remove('active'));
         e.currentTarget.classList.add('active');
 
-        // Hide all views
         document.querySelectorAll('.view-section').forEach(v => v.style.display = 'none');
         
         currentView = e.currentTarget.dataset.view;
@@ -302,7 +579,18 @@ document.getElementById("addHabitSidebarBtn").onclick = () => {
     document.getElementById("habitNotes").value = "";
     document.getElementById("habitCategory").value = "Health";
     document.getElementById("habitIcon").value = "🏃";
+    document.getElementById("customCategoryContainer").style.display = "none";
     habitModal.style.display = "flex";
+};
+
+// Show custom category input when "Custom" is selected
+document.getElementById("habitCategory").onchange = function() {
+    const container = document.getElementById("customCategoryContainer");
+    if (this.value === "Custom") {
+        container.style.display = "block";
+    } else {
+        container.style.display = "none";
+    }
 };
 
 document.getElementById("cancelHabitBtn").onclick = () => {
@@ -314,9 +602,21 @@ document.getElementById("saveHabitBtn").onclick = () => {
     if (!name) return;
 
     const editId = document.getElementById("editHabitId").value;
+    let category = document.getElementById("habitCategory").value;
+    
+    // If custom category, use the custom input
+    if (category === "Custom") {
+        const customName = document.getElementById("customCategoryName").value.trim();
+        if (!customName) {
+            alert("Please enter a custom category name");
+            return;
+        }
+        category = customName;
+    }
+    
     const data = {
         name,
-        category: document.getElementById("habitCategory").value,
+        category: category,
         color: "#10b981",
         icon: document.getElementById("habitIcon").value,
         notes: document.getElementById("habitNotes").value
@@ -341,60 +641,12 @@ document.getElementById("saveHabitBtn").onclick = () => {
     renderApp();
 };
 
-// --- 6. ALL HABITS LOGIC ---
-function renderAllHabitsView() {
-    const list = document.getElementById("allHabitsList");
-    list.innerHTML = "";
+// --- 6. FILTER EVENT ---
+document.getElementById("categoryFilter").onchange = () => {
+    renderAllHabitsView();
+};
 
-    if (habits.length === 0) {
-        list.innerHTML = `<p style="color: #888; text-align: center; padding: 40px;">No habits created yet. Click "+ Add habit" to start!</p>`;
-        return;
-    }
-
-    habits.forEach(habit => {
-        const card = document.createElement("div");
-        card.className = `habit-card`;
-        
-        card.innerHTML = `
-            <div class="habit-icon" style="background-color: ${habit.color}40; color: ${habit.color}">
-                ${habit.icon || '⭐'}
-            </div>
-            <div class="habit-details">
-                <div class="habit-title">${habit.name}</div>
-                <div class="habit-subtitle">${habit.category}</div>
-            </div>
-            <div class="habit-card-actions">
-                <button class="btn-icon edit-btn" data-id="${habit.id}">✏️</button>
-                <button class="btn-icon delete-btn" data-id="${habit.id}">🗑️</button>
-            </div>
-        `;
-        list.appendChild(card);
-    });
-
-    document.querySelectorAll('#view-all-habits .edit-btn').forEach(btn => {
-        btn.onclick = (e) => {
-            const id = Number(e.currentTarget.dataset.id);
-            const habit = habits.find(h => h.id === id);
-            
-            document.getElementById("modalTitle").textContent = "Edit Habit";
-            document.getElementById("editHabitId").value = habit.id;
-            document.getElementById("habitName").value = habit.name;
-            document.getElementById("habitCategory").value = habit.category;
-            document.getElementById("habitIcon").value = habit.icon || '⭐';
-            document.getElementById("habitNotes").value = habit.notes || '';
-            
-            habitModal.style.display = "flex";
-        };
-    });
-
-    document.querySelectorAll('#view-all-habits .delete-btn').forEach(btn => {
-        btn.onclick = (e) => {
-            deleteHabitId = Number(e.currentTarget.dataset.id);
-            document.getElementById("deleteModal").style.display = "flex";
-        };
-    });
-}
-
+// --- 7. DELETE MODAL ---
 document.getElementById("confirmDeleteBtn").onclick = () => {
     if (deleteHabitId !== null) {
         habits = habits.filter(h => h.id !== deleteHabitId);
