@@ -1650,3 +1650,171 @@ tbody td {
     justify-content: center;
   }
 }
+
+/* ── Charts section ──────────────────────────────────── */
+.charts-section {
+  background: var(--card-bg, #fff);
+  border-radius: 20px;
+  padding: 28px;
+  margin: 24px 0;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.07);
+}
+
+.charts-grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 24px;
+  align-items: start;
+  margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+  .charts-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.chart-card {
+  background: var(--input-bg, #f8fafc);
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.chart-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted, #64748b);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  align-self: flex-start;
+}
+
+/* Donut canvas */
+#donutChart {
+  border-radius: 50%;
+}
+
+/* Bar chart — let it fill its card */
+#barChart {
+  width: 100%;
+  height: auto;
+  max-width: 480px;
+}
+
+/* ── Donut legend ─────────────────────────────────────── */
+.donut-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  color: var(--text-color, #1e293b);
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.legend-amount {
+  margin-left: auto;
+  font-weight: 600;
+  color: var(--text-muted, #64748b);
+}
+
+/* ── Recurring toggle row in form ─────────────────────── */
+.recurring-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--input-bg, #f1f5f9);
+  border-radius: 12px;
+  padding: 10px 14px;
+  gap: 12px;
+}
+
+.recurring-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--text-color, #1e293b);
+  cursor: pointer;
+}
+
+.recurring-label i {
+  color: #6366f1;
+}
+
+/* ── Recurring badge in transaction list ──────────────── */
+.recurring-badge {
+  font-size: 0.8rem;
+  margin-left: 5px;
+  vertical-align: middle;
+  opacity: 0.85;
+}
+
+/* ── CSV Export button ────────────────────────────────── */
+.export-csv-btn {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: #fff;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.15s;
+  white-space: nowrap;
+}
+
+.export-csv-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.export-csv-btn i {
+  font-size: 0.9rem;
+}
+
+/* ── Dark-mode overrides ──────────────────────────────── */
+.dark .charts-section {
+  background: #1e293b;
+}
+
+.dark .chart-card {
+  background: #0f172a;
+}
+
+.dark .legend-item {
+  color: #e2e8f0;
+}
+
+.dark .legend-amount {
+  color: #94a3b8;
+}
+
+.dark .recurring-row {
+  background: #1e293b;
+}
+
+.dark .recurring-label {
+  color: #e2e8f0;
+}

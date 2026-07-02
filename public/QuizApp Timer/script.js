@@ -309,6 +309,7 @@ let questions = [];
 let startTime = 0;
 let correctAnswers = 0;
 let wrongAnswers = 0;
+let userAnswersHistory = [];  // Store answers for review dashboard
 
 // Statistics and Storage
 const STORAGE_KEY_STATS = 'quizMasterStats';
@@ -460,6 +461,14 @@ function checkAnswer(choiceIndex) {
       buttons[choiceIndex].classList.add('wrong');
       buttons[correct].classList.add('correct');
   }
+  // Store answer for review dashboard
+userAnswersHistory.push({
+    questionText: questions[currentQuestion].question,
+    options: [...questions[currentQuestion].choices],
+    userAnswer: choiceIndex,
+    correctAnswer: questions[currentQuestion].correct,
+    isCorrect: (choiceIndex === correct)
+});
   
   // Show explanation
   const explanationDiv = document.createElement('div');
@@ -669,6 +678,12 @@ restartBtn.addEventListener('click', startQuiz);
 homeBtn.addEventListener('click', goHome);
 exitBtn.addEventListener('click', exitQuiz);
 
+// Review button event listener
+const reviewBtn = document.getElementById('review-btn');
+if (reviewBtn) {
+    reviewBtn.addEventListener('click', showReviewDashboard);
+}
+
 // Add keyboard navigation
 document.addEventListener('keydown', (e) => {
   if (quizScreen.classList.contains('hidden')) return;
@@ -681,5 +696,114 @@ document.addEventListener('keydown', (e) => {
       if (index < buttons.length) {
           checkAnswer(index);
       }
+  }
+});
+
+// ============================================
+// REVIEW DASHBOARD FUNCTIONS
+// ============================================
+
+function showReviewDashboard() {
+    const percentage = ((score / (questions.length * 10)) * 100).toFixed(1);
+    
+    let reviewHTML = `
+        <div class="review-dashboard">
+            <div class="review-header">
+                <h2>📋 Detailed Answer Review</h2>
+                <button class="close-review-btn" onclick="closeReviewDashboard()">← Back to Results</button>
+            </div>
+    `;
+    
+    userAnswersHistory.forEach((item, index) => {
+        const isCorrect = item.isCorrect;
+        const cardClass = isCorrect ? 'correct' : 'incorrect';
+        
+        if (isCorrect) {
+            reviewHTML += `
+                <div class="review-card ${cardClass}">
+                    <div class="question-header">
+                        <strong>Q${index + 1}:</strong> ${escapeHtml(item.questionText)}
+                    </div>
+                    <div class="answer-details">
+                        <div class="correct-feedback">
+                            ✅ Correct! You chose: ${escapeHtml(item.options[item.userAnswer])}
+                        </div>
+                    </div>
+                </div>
+            `;
+        } else {
+            reviewHTML += `
+                <div class="review-card ${cardClass}">
+                    <div class="question-header">
+                        <strong>Q${index + 1}:</strong> ${escapeHtml(item.questionText)}
+                    </div>
+                    <div class="answer-details">
+                        <div class="user-answer">
+                            ❌ Your answer: ${escapeHtml(item.options[item.userAnswer])}
+                        </div>
+                        <div class="correct-answer">
+                            ✅ Correct answer: ${escapeHtml(item.options[item.correctAnswer])}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+    });
+    
+    reviewHTML += `</div>`;
+    
+    const modal = document.createElement('div');
+    modal.id = 'review-modal';
+    modal.className = 'review-modal';
+    modal.innerHTML = reviewHTML;
+    document.body.appendChild(modal);
+    
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            closeReviewDashboard();
+        }
+    });
+}
+
+function closeReviewDashboard() {
+    const modal = document.getElementById('review-modal');
+    if (modal) {
+        modal.remove();
+    }
+}
+
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+//==========================
+// THEME SYSTEM (NEW - SAFE)
+// ==========================
+
+const themes = ["theme-default", "theme-ocean", "theme-sunset", "theme-forest"];
+
+function setTheme(themeName) {
+  document.body.classList.remove(...themes);
+  document.body.classList.add(themeName);
+
+  // store theme
+  localStorage.setItem("quizTheme", themeName);
+}
+
+// load saved theme
+function loadTheme() {
+  const saved = localStorage.getItem("quizTheme") || "theme-default";
+  setTheme(saved);
+}
+
+// optional keyboard theme switch (safe, non-breaking)
+document.addEventListener("keydown", (e) => {
+  if (e.ctrlKey && e.key === "t") {
+    let current = localStorage.getItem("quizTheme") || "theme-default";
+    let idx = themes.indexOf(current);
+    let next = themes[(idx + 1) % themes.length];
+    setTheme(next);
   }
 });

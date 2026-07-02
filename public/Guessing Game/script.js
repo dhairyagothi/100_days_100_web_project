@@ -15,6 +15,14 @@ class GuessingGame {
         this.difficulty = 'medium';
         this.range = { min: 1, max: 100 };
 
+        // Timer variables
+        this.startTime = null;
+        this.timerInterval = null;
+        this.currentTime = 0;
+
+        // Sound system
+        this.audioCtx = null;
+
         this.initializeElements();
         this.setupEventListeners();
 
@@ -34,6 +42,7 @@ class GuessingGame {
         this.bestScoreEl = document.getElementById('bestScore');
         this.hintEl = document.getElementById('hint');
         this.historyListEl = document.getElementById('historyList');
+        this.timerEl = document.getElementById('timer');
 
         this.difficultyBtns = document.querySelectorAll('.difficulty-btn');
 
@@ -61,6 +70,138 @@ class GuessingGame {
         this.themeToggle?.addEventListener('click', () => this.toggleTheme());
     }
 
+    // ================= SOUND SYSTEM =================
+    initAudio() {
+        if (!this.audioCtx) {
+            this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+    }
+
+    playSound(type) {
+        try {
+            this.initAudio();
+            
+            const oscillator = this.audioCtx.createOscillator();
+            const gainNode = this.audioCtx.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(this.audioCtx.destination);
+            
+            gainNode.gain.value = 0.15;
+
+            switch(type) {
+                case 'correct':
+                    oscillator.frequency.setValueAtTime(523, this.audioCtx.currentTime);
+                    oscillator.frequency.setValueAtTime(659, this.audioCtx.currentTime + 0.1);
+                    oscillator.frequency.setValueAtTime(784, this.audioCtx.currentTime + 0.2);
+                    gainNode.gain.exponentialRampToValueAtTime(0.001, this.audioCtx.currentTime + 0.4);
+                    oscillator.start(this.audioCtx.currentTime);
+                    oscillator.stop(this.audioCtx.currentTime + 0.4);
+                    break;
+                    
+                case 'wrong':
+                    oscillator.frequency.setValueAtTime(400, this.audioCtx.currentTime);
+                    oscillator.frequency.setValueAtTime(300, this.audioCtx.currentTime + 0.1);
+                    oscillator.frequency.setValueAtTime(200, this.audioCtx.currentTime + 0.2);
+                    gainNode.gain.exponentialRampToValueAtTime(0.001, this.audioCtx.currentTime + 0.3);
+                    oscillator.start(this.audioCtx.currentTime);
+                    oscillator.stop(this.audioCtx.currentTime + 0.3);
+                    break;
+                    
+                case 'win':
+                    const notes = [523, 659, 784, 1047];
+                    notes.forEach((freq, i) => {
+                        const osc = this.audioCtx.createOscillator();
+                        const gain = this.audioCtx.createGain();
+                        osc.connect(gain);
+                        gain.connect(this.audioCtx.destination);
+                        osc.frequency.setValueAtTime(freq, this.audioCtx.currentTime + i * 0.1);
+                        gain.gain.setValueAtTime(0.15, this.audioCtx.currentTime + i * 0.1);
+                        gain.gain.exponentialRampToValueAtTime(0.001, this.audioCtx.currentTime + i * 0.1 + 0.2);
+                        osc.start(this.audioCtx.currentTime + i * 0.1);
+                        osc.stop(this.audioCtx.currentTime + i * 0.1 + 0.2);
+                    });
+                    break;
+                    
+                case 'gameover':
+                    oscillator.frequency.setValueAtTime(500, this.audioCtx.currentTime);
+                    oscillator.frequency.setValueAtTime(400, this.audioCtx.currentTime + 0.2);
+                    oscillator.frequency.setValueAtTime(300, this.audioCtx.currentTime + 0.4);
+                    oscillator.frequency.setValueAtTime(200, this.audioCtx.currentTime + 0.6);
+                    gainNode.gain.exponentialRampToValueAtTime(0.001, this.audioCtx.currentTime + 0.8);
+                    oscillator.start(this.audioCtx.currentTime);
+                    oscillator.stop(this.audioCtx.currentTime + 0.8);
+                    break;
+
+                case 'hint':
+                    oscillator.frequency.setValueAtTime(600, this.audioCtx.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.001, this.audioCtx.currentTime + 0.1);
+                    oscillator.start(this.audioCtx.currentTime);
+                    oscillator.stop(this.audioCtx.currentTime + 0.1);
+                    break;
+                    
+                default:
+                    oscillator.frequency.setValueAtTime(800, this.audioCtx.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.001, this.audioCtx.currentTime + 0.05);
+                    oscillator.start(this.audioCtx.currentTime);
+                    oscillator.stop(this.audioCtx.currentTime + 0.05);
+            }
+        } catch (error) {
+            console.log('Audio not supported or blocked');
+        }
+    }
+
+    // ================= TIMER SYSTEM =================
+    startTimer() {
+        // Reset and start fresh
+        this.startTime = Date.now();
+        this.currentTime = 0;
+        
+        // Clear any existing interval
+        if (this.timerInterval) {
+            clearInterval(this.timerInterval);
+            this.timerInterval = null;
+        }
+        
+        // Update timer immediately
+        this.timerEl.textContent = '0s';
+        
+        // Start new interval
+        this.timerInterval = setInterval(() => {
+            if (this.startTime) {
+                const elapsed = Math.floor((Date.now() - this.startTime) / 1000);
+                this.currentTime = elapsed;
+                this.timerEl.textContent = this.formatTime(elapsed);
+            }
+        }, 200);
+    }
+
+    stopTimer() {
+        if (this.timerInterval) {
+            clearInterval(this.timerInterval);
+            this.timerInterval = null;
+        }
+    }
+
+    resetTimer() {
+        this.stopTimer();
+        this.startTime = null;
+        this.currentTime = 0;
+        if (this.timerEl) {
+            this.timerEl.textContent = '0s';
+        }
+    }
+
+    formatTime(seconds) {
+        if (seconds < 60) {
+            return `${seconds}s`;
+        } else {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${mins}m ${secs}s`;
+        }
+    }
+
     // ================= CONFETTI =================
     launchConfetti() {
         const canvas = document.createElement('canvas');
@@ -78,9 +219,9 @@ class GuessingGame {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
-        const colors = ['#00ff9d', '#4da3ff', '#ffcc00', '#ff4d4d', '#ffffff'];
+        const colors = ['#00ff9d', '#4da3ff', '#ffcc00', '#ff4d4d', '#ffffff', '#ff6b6b', '#ffd93d', '#6bcb77'];
 
-        const pieces = Array.from({ length: 120 }).map(() => ({
+        const pieces = Array.from({ length: 150 }).map(() => ({
             x: Math.random() * canvas.width,
             y: Math.random() * canvas.height - canvas.height,
             r: Math.random() * 6 + 2,
@@ -116,10 +257,11 @@ class GuessingGame {
 
         draw();
 
-        // auto cleanup fallback
         setTimeout(() => {
-            canvas.remove();
-        }, 4000);
+            if (canvas.parentNode) {
+                document.body.removeChild(canvas);
+            }
+        }, 5000);
     }
 
     // ================= THEME =================
@@ -183,6 +325,13 @@ class GuessingGame {
         );
 
         this.updateHint('🤔');
+        
+        // Reset and start timer
+        this.resetTimer();
+        this.startTimer();
+        
+        // Play hint sound
+        this.playSound('hint');
     }
 
     makeGuess() {
@@ -190,11 +339,19 @@ class GuessingGame {
 
         if (isNaN(guess)) {
             this.showMessage('Enter valid number', 'error');
+            this.playSound('wrong');
+            return;
+        }
+
+        if (guess < this.range.min || guess > this.range.max) {
+            this.showMessage(`Enter between ${this.range.min}-${this.range.max}`, 'error');
+            this.playSound('wrong');
             return;
         }
 
         if (this.guessHistory.includes(guess)) {
             this.showMessage('Already guessed', 'warning');
+            this.playSound('wrong');
             return;
         }
 
@@ -213,18 +370,22 @@ class GuessingGame {
         }
 
         this.guessInput.value = '';
+        this.guessInput.focus();
     }
 
     // ================= WIN =================
     handleWin() {
-        this.showMessage(`🎉 You Won in ${this.attempts} attempts!`, 'success');
+        this.stopTimer();
+        
+        const timeTaken = this.currentTime;
+        this.showMessage(`🎉 You Won in ${this.attempts} attempts and ${this.formatTime(timeTaken)}!`, 'success');
 
         this.guessInput.disabled = true;
         this.guessBtn.disabled = true;
 
         this.updateHint('🏆 Correct!');
 
-        // 🎉 CONFETTI TRIGGER
+        this.playSound('win');
         this.launchConfetti();
 
         if (!this.bestScore || this.attempts < this.bestScore) {
@@ -241,12 +402,17 @@ class GuessingGame {
     }
 
     handleLoss() {
+        this.stopTimer();
+        
+        const timeTaken = this.currentTime;
         this.showMessage(`💀 Game Over! Number was ${this.secretNumber}`, 'error');
 
         this.guessInput.disabled = true;
         this.guessBtn.disabled = true;
 
         this.updateHint(`Answer: ${this.secretNumber}`);
+
+        this.playSound('gameover');
 
         this.gamesPlayed++;
         this.saveAnalytics();
@@ -258,11 +424,14 @@ class GuessingGame {
 
         let msg = guess < this.secretNumber ? "📈 Too low" : "📉 Too high";
 
-        if (diff < 10) msg += " 🔥 Hot";
+        if (diff < 5) msg += " 🔥🔥🔥 Super Hot!";
+        else if (diff < 10) msg += " 🔥 Hot";
         else if (diff < 20) msg += " 🌡️ Warm";
-        else msg += " ❄️ Cold";
+        else if (diff < 40) msg += " ❄️ Cold";
+        else msg += " 🥶 Freezing";
 
         this.showMessage(msg, 'info');
+        this.playSound('hint');
     }
 
     // ================= UI =================
@@ -276,7 +445,7 @@ class GuessingGame {
             info: '#4da3ff'
         };
 
-        this.messageEl.style.color = colors[type];
+        this.messageEl.style.color = colors[type] || '#ffffff';
     }
 
     updateHint(h) {

@@ -35,9 +35,25 @@
           <%= food.cuisines ? food.cuisines.join(", ") : "Multi-Cuisine" %>
         </p>
 
+        <p>Shop 61 & 62, 1st Floor, Eros Market Place, Shakti Khand 2, Indirapuram, Ghaziabad</p>
        
+  <!-- Address (fake detailed) -->
+        <p class="rest-address">
+          <%= food.address %>, <%= food.location %>
+        </p>
 
-     
+      <!-- Open now + Phone row -->
+        <div class="rest-meta-row">
+          <span class="open-badge">
+            🟢 Open now &nbsp;–&nbsp; 12noon – 2am (Today)
+            <span class="info-circle">ⓘ</span>
+          </span>
+          <span class="meta-sep">|</span>
+          <span class="phone-tag">
+            📞 <a href="tel:+919582224044">+91958222xxxx</a>
+          </span>
+        </div>
+      </div>
 
        
 
@@ -66,6 +82,12 @@
 
     </div>
     <!-- end rest-header -->
+
+       <!-- ===== ACTION BUTTONS ===== -->
+    <div class="action-row">
+      <button class="action-btn">🧭 Direction</button>
+      <button class="action-btn">🔗 Share</button>
+    </div>
 
 
 
@@ -111,6 +133,34 @@
       <a href="#menu"     class="tab-link">Menu</a>
     </div>
 
+  <!-- order sec -->
+   <!-- ===== ORDER SECTION ===== -->
+    <div class="order-section" id="order">
+
+      <!-- LEFT sidebar -->
+      <aside class="menu-sidebar">
+        <ul class="category-list">
+          <li class="category-item active">
+            Noodles (350 Ml | Serves 1) <span class="cat-count">(4)</span>
+          </li>
+          <li class="category-item">
+            Chinese Platter <span class="cat-count">(2)</span>
+          </li>
+          <li class="category-item">
+            Chinese Bowls <span class="cat-count">(6)</span>
+          </li>
+          <li class="category-item">
+            Chinese Combos <span class="cat-count">(3)</span>
+          </li>
+          <li class="category-item">
+            Momos <span class="cat-count">(11)</span>
+          </li>
+          <li class="category-item">
+            Snacks <span class="cat-count">(5)</span>
+          </li>
+        </ul>
+      </aside>
+
     
 
       <!-- RIGHT content -->
@@ -134,6 +184,10 @@
         </div>
 
        
+        <!-- Category heading -->
+        <h3 class="menu-category-title">
+          <%= food.cuisines ? food.cuisines[0] : "Special" %> (Serves 1)
+        </h3>
 
         <!-- Menu item 1 -->
         <div class="menu-item">
