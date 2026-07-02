@@ -3113,9 +3113,22 @@
     ],
    "difficulty": "advanced",
     "projectPath": "./public/Drawing-Canva/index.html"
+   } ,
+  {   "projectNo": 245,
+     "projectName": "Flashcard Quiz",
+    "projectType": "Tool",
+    "projectDesc": "A flashcard quiz app built using HTML, CSS, and Vanilla JavaScript.",
+       "techStack": [
+      "html",
+      "css",
+      "javascript",
+      "visualizer"
+    ],
+   "difficulty": "advanced",
+    "projectPath": "./public/Flashcard-Quiz-App/index.html"
    },
-    {
-  "projectNo": 245,
+      {
+  "projectNo": 247,
   "projectName": "TimeZone Matrix",
   "projectType": "Tool",
   "projectDesc": "A global meeting coordinator built for distributed remote teams. Pins multiple cities across timezones and renders a unified horizontal timeline grid that dynamically highlights the optimal overlapping golden hours for scheduling synchronous team sessions.",

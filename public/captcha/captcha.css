@@ -790,22 +790,21 @@ input[type="text"]:focus {
     font-size: 0.95rem;
     cursor: pointer;
     transition: .25s ease;
-    opacity: 0.55;
+    opacity: 0.7;
     font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
 .diff-btn:hover {
-    opacity: 0.85;
+    opacity: 1;
     transform: translateY(-2px);
     border-color: #60a5fa;
 }
 
-.diff-btn[style*="opacity: 1"],
 .diff-btn.active {
     opacity: 1;
-    background: linear-gradient(135deg, rgba(59, 130, 246, .25), rgba(139, 92, 246, .25));
+    background: linear-gradient(135deg, rgba(59, 130, 246, .35), rgba(139, 92, 246, .35));
     border-color: #60a5fa;
-    box-shadow: 0 0 0 2px rgba(59, 130, 246, .2);
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, .3);
 }
 
 .selectors-row {
