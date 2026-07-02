@@ -38,30 +38,6 @@
   </head>
 
   <body data-mobile-view="list">
-    <a
-      href="/"
-      class="project-back-button"
-      style="
-        position: fixed;
-        left: 18px;
-        top: 18px;
-        padding: 8px 12px;
-        border-radius: 8px;
-        background: linear-gradient(
-          90deg,
-          rgba(124, 99, 255, 0.14),
-          rgba(79, 141, 255, 0.1)
-        );
-        color: #fff;
-        text-decoration: none;
-        z-index: 9999;
-        font-weight: 700;
-        font-family: Inter, system-ui, sans-serif;
-        box-shadow: 0 8px 20px rgba(12, 18, 40, 0.35);
-      "
-      >← Back to Home</a
-    >
-
     <div class="app-container" id="appContainer">
       <!-- ==========================================
        SIDEBAR PANE (Left Column)
@@ -277,6 +253,12 @@
           </svg>
         </button>
 
+        <div class="editor-header-actions">
+          <a href="/" class="project-back-button">
+            ← Back to Home
+          </a>
+        </div>
+
         <!-- Welcome Screen (Visible when no note is open) -->
         <div class="welcome-screen" id="welcomeScreen">
           <div class="welcome-illustration">
@@ -424,6 +406,9 @@
                   oninput="markUnsaved()"
                 />
               </div>
+              <a href="/" class="project-back-button">
+                ← Back to Home
+              </a>
             </div>
 
             <div class="editor-topbar-right">

@@ -281,6 +281,386 @@
   body.light-theme .social-strip h3 { color: #8890a4; }
   body.light-theme .social-link { color: #404654; border-color: rgba(0,0,0,.1); background: #f4f6fa; }
   body.light-theme .social-link:hover { color: #d89b14; background: #fff4d8; border-color: #d89b14; }
+
+
+  <style>
+/* ===========================
+   RESPONSIVE NAVBAR FIX
+=========================== */
+
+.navbar{
+    width:100%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px 30px;
+    background:#111827;
+    border:1px solid rgba(255,255,255,.08);
+    position:sticky;
+    top:0;
+    z-index:1000;
+    box-sizing:border-box;
+    gap:20px;
+    flex-wrap:wrap;
+}
+
+.project-back-button{
+    display:flex !important;
+    align-items:center;
+    justify-content:center;
+    width:auto !important;
+    min-width:140px;
+    padding:10px 18px;
+    margin:0 !important;
+    white-space:nowrap;
+    flex-shrink:0;
+}
+
+.logo{
+    font-size:2rem;
+    font-weight:700;
+    color:#fff;
+    flex:1;
+}
+
+.nav-links{
+    display:flex;
+    align-items:center;
+    gap:30px;
+    list-style:none;
+    margin:0;
+    padding:0;
+}
+
+.nav-links li{
+    list-style:none;
+}
+
+.nav-links a{
+    color:white;
+    text-decoration:none;
+    font-weight:600;
+    transition:.3s;
+}
+
+.nav-links a:hover{
+    color:#4f9dff;
+}
+
+.nav-right{
+    display:flex;
+    align-items:center;
+}
+
+/* ===========================
+   TABLET
+=========================== */
+
+@media (max-width:900px){
+
+.navbar{
+    padding:15px 20px;
+}
+
+.logo{
+    width:100%;
+    text-align:center;
+    order:1;
+}
+
+.project-back-button{
+    order:2;
+}
+
+.nav-links{
+    width:100%;
+    justify-content:center;
+    order:3;
+    margin-top:15px;
+}
+
+.nav-right{
+    order:4;
+}
+
+}
+
+/* ===========================
+   MOBILE
+=========================== */
+
+@media (max-width:600px){
+
+.navbar{
+    flex-direction:column;
+    gap:15px;
+    padding:20px;
+}
+
+.project-back-button{
+    width:100% !important;
+}
+
+.logo{
+    text-align:center;
+}
+
+.nav-links{
+    flex-direction:column;
+    width:100%;
+    gap:15px;
+}
+
+.nav-links li{
+    width:100%;
+    text-align:center;
+}
+
+.nav-right{
+    width:100%;
+    justify-content:center;
+}
+
+}
+/* ================= NAVBAR ================= */
+
+.navbar{
+    width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:18px 50px;
+    background:#111827;
+    border-bottom:1px solid rgba(255,255,255,.08);
+    position:sticky;
+    top:0;
+    z-index:999;
+    box-sizing:border-box;
+}
+
+/* Logo */
+
+.logo{
+    font-size:2rem;
+    font-weight:800;
+    color:#fff;
+    white-space:nowrap;
+}
+
+/* Navigation */
+
+.nav-links{
+    display:flex;
+    align-items:center;
+    gap:40px;
+    list-style:none;
+    margin:0;
+    padding:0;
+}
+
+.nav-links li{
+    list-style:none;
+}
+
+.nav-links a{
+    color:#fff;
+    text-decoration:none;
+    font-size:17px;
+    font-weight:600;
+    transition:.3s;
+}
+
+.nav-links a:hover{
+    color:#4f8cff;
+}
+
+/* Right Side */
+
+.nav-right{
+    display:flex;
+    align-items:center;
+    gap:18px;
+}
+
+/* Back Button */
+
+.project-back-button{
+    padding:12px 22px;
+    border-radius:12px;
+    border:2px solid #3b82f6;
+    background:transparent;
+    color:#3b82f6;
+    text-decoration:none;
+    font-weight:700;
+    transition:.3s;
+}
+
+.project-back-button:hover{
+    background:#3b82f6;
+    color:#fff;
+}
+
+/* Theme Button */
+
+.theme{
+    width:44px;
+    height:44px;
+    border-radius:50%;
+    border:none;
+    cursor:pointer;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:900px){
+
+.navbar{
+    flex-direction:column;
+    gap:20px;
+    padding:20px;
+}
+
+.logo{
+    font-size:2rem;
+}
+
+.nav-links{
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:25px;
+}
+
+.nav-right{
+    width:100%;
+    justify-content:center;
+}
+
+}
+
+@media(max-width:600px){
+
+.logo{
+    font-size:1.7rem;
+}
+
+.nav-links{
+    flex-direction:column;
+    gap:15px;
+}
+
+.project-back-button{
+    width:100%;
+    text-align:center;
+}
+
+}
+/* NAVBAR */
+
+.navbar{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:75px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    padding:0 60px;
+
+    background:rgba(15,23,42,.85);
+    backdrop-filter:blur(12px);
+
+    border-bottom:1px solid rgba(255,255,255,.08);
+
+    z-index:9999;
+
+    box-sizing:border-box;
+}
+
+.logo{
+    font-size:2rem;
+    font-weight:800;
+    color:#fff;
+}
+
+.nav-links{
+    display:flex;
+    gap:35px;
+    list-style:none;
+    margin:0;
+    padding:0;
+}
+
+.nav-links a{
+    color:white;
+    text-decoration:none;
+    font-size:18px;
+    font-weight:600;
+    transition:.3s;
+}
+
+.nav-links a:hover,
+.nav-links .active{
+    color:#facc15;
+}
+
+.project-back-button{
+
+    padding:12px 24px;
+
+    border-radius:12px;
+
+    border:2px solid #3b82f6;
+
+    color:#3b82f6;
+
+    text-decoration:none;
+
+    font-weight:700;
+
+    transition:.3s;
+}
+
+.project-back-button:hover{
+
+    background:#3b82f6;
+
+    color:white;
+}
+
+body{
+
+    padding-top:90px;
+}
+
+/* Mobile */
+
+@media(max-width:768px){
+
+.navbar{
+
+flex-direction:column;
+
+height:auto;
+
+padding:20px;
+
+gap:20px;
+
+}
+
+.nav-links{
+
+flex-wrap:wrap;
+
+justify-content:center;
+
+}
+
+}
+</style>
 </style>
 </head>
 <body>
@@ -288,7 +668,7 @@
 <!-- Navbar -->
 <nav class="navbar">
   <a href="animated-cursor.html" class="project-back-button"
-     style="height:40px;text-align:center;margin:20px;border-radius:10px;width:200px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter,system-ui,sans-serif;transition:all 0.2s ease;display:flex;align-items:center;justify-content:center;"
+     style="height:40px;text-align:center;margin:20px;border-radius:10px;width:200px;background:#1e293b;color:#3b82f6;border:1px solid #1a212d;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter,system-ui,sans-serif;transition:all 0.2s ease;display:flex;align-items:center;justify-content:center;"
      onmouseover="this.style.background='#3b82f6';this.style.color='#fff'"
      onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
   <div class="logo">Animated Cursor</div>
@@ -299,8 +679,40 @@
   </ul>
   <div class="nav-right">
     <button id="themeToggle" class="theme"><span id="themeIcon">☀️</span></button>
+    <!-- Hamburger (mobile only) -->
+    <button class="hamburger-btn" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobileSidebar">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+    </button>
   </div>
 </nav>
+
+<!-- Mobile Sidebar Overlay -->
+<div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
+
+<!-- Mobile Sidebar -->
+<aside class="mobile-sidebar" id="mobileSidebar" role="dialog" aria-label="Navigation menu">
+    <div class="sidebar-header">
+        <span class="sidebar-logo">✦ Animated Cursor</span>
+        <button class="sidebar-close-btn" aria-label="Close navigation menu">✕</button>
+    </div>
+    <ul class="sidebar-nav">
+        <li><a href="animated-cursor.html"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="cursors.html"><i class="fas fa-mouse-pointer"></i> Cursors</a></li>
+        <li><a href="contact.html" class="active"><i class="fas fa-envelope"></i> Contact</a></li>
+    </ul>
+    <div class="sidebar-divider"></div>
+    <ul class="sidebar-nav">
+        <li><a href="docs.html"><i class="fas fa-book"></i> Docs</a></li>
+        <li><a href="projects.html"><i class="fas fa-th-large"></i> Projects</a></li>
+        <li><a href="design-assets.html"><i class="fas fa-palette"></i> Design Assets</a></li>
+        <li><a href="api-references.html"><i class="fas fa-code"></i> API References</a></li>
+        <li><a href="community.html"><i class="fas fa-users"></i> Community</a></li>
+    </ul>
+    <div class="sidebar-divider"></div>
+    <a href="animated-cursor.html" class="sidebar-back-btn"><i class="fas fa-arrow-left"></i> Back to Home</a>
+</aside>
 
 <div class="background"></div>
 <div class="galaxy-glow"></div>
