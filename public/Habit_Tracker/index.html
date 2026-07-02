@@ -118,12 +118,26 @@
                             <div class="stat-label">Best Streak Ever</div>
                         </div>
                     </div>
+                    
+                    <!-- Category Summary Statistics -->
+                    <div class="category-stats-section">
+                        <h2 style="margin: 30px 0 20px 0; color: #ccc;">Category Summary</h2>
+                        <div class="category-stats-grid" id="categoryStatsGrid">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
                 </div>
             </div>
+            
             <!-- ALL HABITS VIEW -->
             <div id="view-all-habits" class="view-section" style="display: none;">
                 <header class="main-header">
                     <h1>All Habits</h1>
+                    <div class="filter-controls">
+                        <select id="categoryFilter" class="filter-select">
+                            <option value="all">All Categories</option>
+                        </select>
+                    </div>
                 </header>
                 <div class="habits-list" id="allHabitsList">
                     <!-- JS will populate all habits here with Edit/Delete options -->
@@ -146,7 +160,12 @@
                     <option value="Fitness">Fitness</option>
                     <option value="Personal">Personal</option>
                     <option value="Work">Work</option>
+                    <option value="Custom">Custom</option>
                 </select>
+            </div>
+            
+            <div id="customCategoryContainer" style="display: none;">
+                <input type="text" id="customCategoryName" placeholder="Enter custom category name">
             </div>
             
             <div class="input-group" style="margin-top: 10px;">
@@ -158,8 +177,8 @@
                     <option value="💪">💪 Workout</option>
                     <option value="🥗">🥗 Diet</option>
                     <option value="💻">💻 Code</option>
-                    <option value ="🧹">🧹 Cleaning</option>
-                    <option value = "💵">💵 Saving</option>
+                    <option value="🧹">🧹 Cleaning</option>
+                    <option value="💵">💵 Saving</option>
                     <option value="⭐">⭐ Custom</option>
                 </select>
             </div>

@@ -76,45 +76,72 @@ async function searchRecipes() {
   const category = categoryFilter.value;
   const area = areaFilter.value;
 
-  // Require at least one filter
   if (!query && !category && !area) {
-    showStatus('Please enter an ingredient or select a filter.');
+    showStatus("Please enter an ingredient or select a filter.");
     return;
   }
 
-  recipesGrid.innerHTML = '';
-  showStatus('Searching for recipes...', true);
+  recipesGrid.innerHTML = "";
+  showStatus("Searching for recipes...", true);
 
   try {
-    let meals = null;
+    let meals = [];
 
+    // Base API request
     if (query) {
-      // Search by ingredient
       const res = await fetch(`${API}/filter.php?i=${encodeURIComponent(query)}`);
-      const data = await res.json();
-      meals = data.meals || [];
+      meals = (await res.json()).meals || [];
     } else if (category) {
       const res = await fetch(`${API}/filter.php?c=${encodeURIComponent(category)}`);
-      const data = await res.json();
-      meals = data.meals || [];
-    } else if (area) {
+      meals = (await res.json()).meals || [];
+    } else {
       const res = await fetch(`${API}/filter.php?a=${encodeURIComponent(area)}`);
-      const data = await res.json();
-      meals = data.meals || [];
+      meals = (await res.json()).meals || [];
     }
 
-    // Apply additional filters client-side if multiple set
-    // (API only supports one filter at a time, so we fetch details selectively)
-    if (!meals || meals.length === 0) {
-      showStatus('No recipes found. Try a different ingredient or filter.');
+    if (!meals.length) {
+      showStatus("No recipes found.");
+      return;
+    }
+
+    // If more than one filter is active, fetch details and filter locally
+    if (
+      (query && (category || area)) ||
+      (category && area)
+    ) {
+
+      const detailedMeals = await Promise.all(
+        meals.map(async meal => {
+          const res = await fetch(`${API}/lookup.php?i=${meal.idMeal}`);
+          const data = await res.json();
+          return data.meals ? data.meals[0] : null;
+        })
+      );
+
+      meals = detailedMeals.filter(meal => {
+        if (!meal) return false;
+
+        if (category && meal.strCategory !== category)
+          return false;
+
+        if (area && meal.strArea !== area)
+          return false;
+
+        return true;
+      });
+    }
+
+    if (!meals.length) {
+      showStatus("No recipes match all selected filters.");
       return;
     }
 
     hideStatus();
     renderRecipeCards(meals, recipesGrid, true);
+
   } catch (err) {
-    showStatus('Failed to fetch recipes. Check your connection.');
     console.error(err);
+    showStatus("Failed to fetch recipes. Check your connection.");
   }
 }
 
