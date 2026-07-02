@@ -32,111 +32,137 @@ playAgainBtn.addEventListener('click', resetGame);
 // --- Functions ---
 
 function startGame() {
-    const rounds = parseInt(roundsInput.value, 10);
-    
-    if (isNaN(rounds) || rounds <= 0) {
-        alert("Invalid Input: Number of rounds must be greater than zero.");
-        return;
-    }
+  const rounds = parseInt(roundsInput.value, 10);
 
-    // Reset game state for a new game
-    totalRounds = rounds;
-    userScore = 0;
-    computerScore = 0;
-    roundsPlayed = 0;
+  if (isNaN(rounds) || rounds <= 0) {
+    alert('Invalid Input: Number of rounds must be greater than zero.');
+    return;
+  }
 
-    // Transition screens
-    setupScreen.classList.add('hidden');
-    gameScreen.classList.remove('hidden');
-    updateScoreboard();
+  // Reset game state for a new game
+  totalRounds = rounds;
+  userScore = 0;
+  computerScore = 0;
+  roundsPlayed = 0;
+
+  userChoiceLabel.textContent = "";
+correctAnswerLabel.textContent = "";
+resultLabel.textContent = "";
+resultLabel.style.color = "";
+
+playAgainBtn.classList.add("hidden");
+
+rockBtn.disabled = false;
+paperBtn.disabled = false;
+scissorsBtn.disabled = false;
+
+  // Transition screens
+  setupScreen.classList.add('hidden');
+  gameScreen.classList.remove('hidden');
+  updateScoreboard();
 }
 
 function playRound(userChoice) {
-    if (roundsPlayed >= totalRounds) {
-        return; // Game is over
-    }
+  if (roundsPlayed >= totalRounds) {
+    return; // Game is over
+  }
 
-    const randomIndex = Math.floor(Math.random() * options.length);
-    const computerChoice = options[randomIndex];
-    roundsPlayed++;
+  const randomIndex = Math.floor(Math.random() * options.length);
+  const computerChoice = options[randomIndex];
+  roundsPlayed++;
 
-    // Determine the winner
-    let resultText = "";
-    let resultColor = "";
+  // Determine the winner
+  let resultText = '';
+  let resultColor = '';
 
-    if (userChoice === computerChoice) {
-        resultText = "IT'S A DRAW!";
-        resultColor = "#f1c40f";
-    } else if (
-        (userChoice === "ROCK" && computerChoice === "SCISSORS") ||
-        (userChoice === "PAPER" && computerChoice === "ROCK") ||
-        (userChoice === "SCISSORS" && computerChoice === "PAPER")
-    ) {
-        resultText = "YOU WON THIS ROUND!";
-        userScore++;
-        resultColor = "#2ecc71";
-    } else {
-        resultText = "YOU LOST THIS ROUND!";
-        computerScore++;
-        resultColor = "#e74c3c";
-    }
+  if (userChoice === computerChoice) {
+    resultText = "IT'S A DRAW!";
+    resultColor = '#f1c40f';
+  } else if (
+    (userChoice === 'ROCK' && computerChoice === 'SCISSORS') ||
+    (userChoice === 'PAPER' && computerChoice === 'ROCK') ||
+    (userChoice === 'SCISSORS' && computerChoice === 'PAPER')
+  ) {
+    resultText = 'YOU WON THIS ROUND!';
+    userScore++;
+    resultColor = '#2ecc71';
+  } else {
+    resultText = 'YOU LOST THIS ROUND!';
+    computerScore++;
+    resultColor = '#e74c3c';
+  }
 
-    // Update labels
-    userChoiceLabel.textContent = `Your choice: ${userChoice}`;
-    correctAnswerLabel.textContent = `Computer's choice: ${computerChoice}`;
-    resultLabel.textContent = resultText;
-    resultLabel.style.color = resultColor;
-    
-    updateScoreboard();
+  // Update labels
+  userChoiceLabel.textContent = `Your choice: ${userChoice}`;
+  correctAnswerLabel.textContent = `Computer's choice: ${computerChoice}`;
+  resultLabel.textContent = resultText;
+  resultLabel.style.color = resultColor;
 
-    // Check for game over
-    if (roundsPlayed === totalRounds) {
-        endGame();
-    }
+  updateScoreboard();
+
+  // Check for game over
+  if (roundsPlayed === totalRounds) {
+    endGame();
+  }
 }
 
 function updateScoreboard() {
-    scoreLabel.textContent = `Score: You ${userScore} - ${computerScore} Computer`;
-    roundLabel.textContent = `Round: ${roundsPlayed} / ${totalRounds}`;
+  scoreLabel.textContent = `Score: You ${userScore} - ${computerScore} Computer`;
+  roundLabel.textContent = `Round: ${roundsPlayed} / ${totalRounds}`;
+}
+
+function resetGameUI() {
+  // Reset game state
+  userScore = 0;
+  computerScore = 0;
+  roundsPlayed = 0;
+  totalRounds = 0;
+
+  // Reset labels
+  scoreLabel.textContent = 'Score: You 0 - 0 Computer';
+  roundLabel.textContent = 'Round: 0 / 0';
+  userChoiceLabel.textContent = '';
+  correctAnswerLabel.textContent = '';
+  resultLabel.textContent = '';
+  resultLabel.style.color = '';
+
+  // Hide play again button
+  playAgainBtn.classList.add('hidden');
+
+  // Re-enable buttons
+  rockBtn.disabled = false;
+  paperBtn.disabled = false;
+  scissorsBtn.disabled = false;
 }
 
 function endGame() {
-    let finalMessage = "";
-    if (userScore > computerScore) {
-        finalMessage = "Congratulations! You won the game!";
-    } else if (computerScore > userScore) {
-        finalMessage = "Game Over. The computer won.";
-    } else {
-        finalMessage = "The game ended in a draw!";
-    }
+  let finalMessage = '';
+  if (userScore > computerScore) {
+    finalMessage = 'Congratulations! You won the game!';
+  } else if (computerScore > userScore) {
+    finalMessage = 'Game Over. The computer won.';
+  } else {
+    finalMessage = 'The game ended in a draw!';
+  }
 
-    // Standard web alert replaces tkinter messagebox
-    setTimeout(() => {
-        alert(finalMessage);
-    }, 10);
+  // Standard web alert replaces tkinter messagebox
+  setTimeout(() => {
+    alert(finalMessage);
+  }, 10);
 
-    // Show play again button
-    playAgainBtn.classList.remove('hidden');
+  // Show play again button
+  playAgainBtn.classList.remove('hidden');
 
-    // Disable game buttons
-    rockBtn.disabled = true;
-    paperBtn.disabled = true;
-    scissorsBtn.disabled = true;
+  // Disable game buttons
+  rockBtn.disabled = true;
+  paperBtn.disabled = true;
+  scissorsBtn.disabled = true;
 }
 
 function resetGame() {
-    // Reset labels
-    userChoiceLabel.textContent = "";
-    correctAnswerLabel.textContent = "";
-    resultLabel.textContent = "";
+    resetGameUI();
 
-    // Hide play again button and re-enable choice buttons
-    playAgainBtn.classList.add('hidden');
-    rockBtn.disabled = false;
-    paperBtn.disabled = false;
-    scissorsBtn.disabled = false;
-
-    // Switch back to setup screen
-    gameScreen.classList.add('hidden');
-    setupScreen.classList.remove('hidden');
+    // Return to setup screen
+    gameScreen.classList.add("hidden");
+    setupScreen.classList.remove("hidden");
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="classic">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -40,6 +40,61 @@
         <li><strong>Face cards</strong> (K, Q, J) are worth 10.</li>
       </ul>
     </div>
+
+    <!-- ── Theme Switcher (below dividing line) ──────────────────── -->
+    <div class="theme-switcher" id="themeSwitcher">
+      <div class="theme-btn-wrap">
+        <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Change theme" title="Change Theme">
+          <i class="ti ti-palette" aria-hidden="true"></i>
+          <span>Theme</span>
+        </button>
+        <div class="theme-panel" id="themePanel" hidden>
+          <p class="theme-panel-title">Choose Theme</p>
+          <div class="theme-grid">
+            <button class="theme-swatch" data-theme="classic" title="Classic Green Felt">
+              <span class="swatch-preview swatch-classic"></span>
+              <span class="swatch-name">Classic</span>
+            </button>
+            <button class="theme-swatch" data-theme="dark" title="Dark Mode">
+              <span class="swatch-preview swatch-dark"></span>
+              <span class="swatch-name">Dark</span>
+            </button>
+            <button class="theme-swatch" data-theme="neon" title="Neon">
+              <span class="swatch-preview swatch-neon"></span>
+              <span class="swatch-name">Neon</span>
+            </button>
+            <button class="theme-swatch" data-theme="velvet" title="Red Velvet">
+              <span class="swatch-preview swatch-velvet"></span>
+              <span class="swatch-name">Velvet</span>
+            </button>
+            <button class="theme-swatch" data-theme="blue" title="Blue Casino">
+              <span class="swatch-preview swatch-blue"></span>
+              <span class="swatch-name">Blue</span>
+            </button>
+            <button class="theme-swatch" data-theme="midnight" title="Midnight">
+              <span class="swatch-preview swatch-midnight"></span>
+              <span class="swatch-name">Midnight</span>
+            </button>
+            <button class="theme-swatch" data-theme="pastel" title="Pastel">
+              <span class="swatch-preview swatch-pastel"></span>
+              <span class="swatch-name">Pastel</span>
+            </button>
+            <button class="theme-swatch" data-theme="hc" title="High Contrast">
+              <span class="swatch-preview swatch-hc"></span>
+              <span class="swatch-name">Hi-Contrast</span>
+            </button>
+            <button class="theme-swatch" data-theme="gold" title="Gold Luxury">
+              <span class="swatch-preview swatch-gold"></span>
+              <span class="swatch-name">Gold</span>
+            </button>
+            <button class="theme-swatch" data-theme="retro" title="Retro">
+              <span class="swatch-preview swatch-retro"></span>
+              <span class="swatch-name">Retro</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </header>
 
   <!-- ── Game Board ──────────────────────────────────────────── -->
@@ -78,6 +133,26 @@
         <button class="chip chip--25"  data-val="25"  aria-label="Add $25 to bet">$25</button>
         <button class="chip chip--50"  data-val="50"  aria-label="Add $50 to bet">$50</button>
         <button class="chip chip--100" data-val="100" aria-label="Add $100 to bet">$100</button>
+
+        <!-- Custom chip -->
+        <div class="chip-custom-wrap" id="customChipWrap">
+          <button class="chip chip--custom" id="customChipBtn" aria-label="Add custom amount to bet" title="Custom amount">
+            <i class="ti ti-pencil-plus" aria-hidden="true"></i>
+          </button>
+          <div class="custom-chip-popup" id="customChipPopup" hidden>
+            <label class="custom-chip-label" for="customChipInput">Custom $</label>
+            <input
+              class="custom-chip-input"
+              id="customChipInput"
+              type="number"
+              min="1"
+              max="50000"
+              placeholder="Amount"
+              aria-label="Custom bet amount"
+            />
+            <button class="custom-chip-add" id="customChipAdd" aria-label="Add custom amount">Add</button>
+          </div>
+        </div>
       </div>
 
       <!-- Bet Stats Row -->
@@ -162,6 +237,20 @@
       <div class="score-actions">
         <button class="btn-play-again" id="play-again">Play Again</button>
         <button class="btn-reset" id="reset-score">Reset Score</button>
+        <button class="btn-history-toggle" id="historyToggleBtn" aria-expanded="false">
+          <i class="ti ti-history" aria-hidden="true"></i> History
+        </button>
+      </div>
+
+      <!-- ── Round History Log ───────────────────────────────── -->
+      <div class="history-panel" id="historyPanel" hidden>
+        <div class="history-header">
+          <span class="history-title"><i class="ti ti-history" aria-hidden="true"></i> Round History</span>
+          <button class="history-clear-btn" id="historyClearBtn" aria-label="Clear history">Clear</button>
+        </div>
+        <div class="history-list" id="historyList" role="log" aria-label="Round history">
+          <p class="history-empty" id="historyEmpty">No rounds played yet.</p>
+        </div>
       </div>
     </div>
 

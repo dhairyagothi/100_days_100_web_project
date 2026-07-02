@@ -15,6 +15,28 @@ body {
     padding: 2rem 1rem;
 }
 
+.project-back-button {
+    position: fixed;
+    left: 18px;
+    top: 18px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    background: #1e293b;
+    color: #3b82f6;
+    border: 1px solid #3b82f6;
+    text-decoration: none;
+    z-index: 9999;
+    font-weight: 700;
+    font-family: Inter, system-ui, sans-serif;
+    transition: all 0.2s ease;
+}
+
+.project-back-button:hover,
+.project-back-button:focus-visible {
+    background: #3b82f6;
+    color: #fff;
+}
+
 h1 {
     text-align: center;
     margin: 40px 0 20px 0; /* Clears up the massive vertical margins */
