@@ -1,333 +1,224 @@
-const authContainer =
-  document.getElementById("authContainer");
+const authContainer = document.getElementById('authContainer');
 
-const mainApp =
-  document.getElementById("mainApp");
+const mainApp = document.getElementById('mainApp');
 
-const authBtn =
-  document.getElementById("authBtn");
+const authBtn = document.getElementById('authBtn');
 
-const authTitle =
-  document.getElementById("authTitle");
+const authTitle = document.getElementById('authTitle');
 
-const toggleAuth =
-  document.getElementById("toggleAuth");
+const toggleAuth = document.getElementById('toggleAuth');
 
-const usernameInput =
-  document.getElementById("username");
+const usernameInput = document.getElementById('username');
 
-const passwordInput =
-  document.getElementById("password");
+const passwordInput = document.getElementById('password');
 
-const logoutBtn =
-  document.getElementById("logoutBtn");
+const logoutBtn = document.getElementById('logoutBtn');
 
-const downloadReportBtn =
-  document.getElementById("downloadReportBtn");
+const downloadReportBtn = document.getElementById('downloadReportBtn');
 
-const communication =
-  document.getElementById(
-    "communicationInput"
-  ).value;
+const communication = document.getElementById('communicationInput').value;
 
-const development =
-  document.getElementById(
-    "developmentInput"
-  ).value;
-
+const development = document.getElementById('developmentInput').value;
 
 let isLogin = true;
 
-const progressCircle =
-  document.getElementById("progressCircle");
+const progressCircle = document.getElementById('progressCircle');
 
-const meterScore =
-  document.getElementById("meterScore");
+const meterScore = document.getElementById('meterScore');
 
 const radius = 85;
 
-const circumference =
-  2 * Math.PI * radius;
+const circumference = 2 * Math.PI * radius;
 
-progressCircle.style.strokeDasharray =
-  circumference;
+progressCircle.style.strokeDasharray = circumference;
 
-progressCircle.style.strokeDashoffset =
-  circumference;
+progressCircle.style.strokeDashoffset = circumference;
 
 let readinessScore = 82;
 
-const offset =
-  circumference -
-  (readinessScore / 100) * circumference;
+const offset = circumference - (readinessScore / 100) * circumference;
 
 setTimeout(() => {
-
-  progressCircle.style.strokeDashoffset =
-    offset;
-
+  progressCircle.style.strokeDashoffset = offset;
 }, 300);
 
-meterScore.textContent =
-  `${readinessScore}%`;
+meterScore.textContent = `${readinessScore}%`;
 
 if (readinessScore >= 80) {
-
-  progressCircle.style.stroke =
-    "#22c55e";
-
+  progressCircle.style.stroke = '#22c55e';
 } else if (readinessScore >= 60) {
-
-  progressCircle.style.stroke =
-    "#eab308";
-
+  progressCircle.style.stroke = '#eab308';
 } else {
-
-  progressCircle.style.stroke =
-    "#ef4444";
+  progressCircle.style.stroke = '#ef4444';
 }
 
-const ctx =
-  document.getElementById("skillsChart");
+const ctx = document.getElementById('skillsChart');
 
 const skillsChart = new Chart(ctx, {
-
-  type: "radar",
+  type: 'radar',
 
   data: {
+    labels: ['DSA', 'Development', 'Aptitude', 'Communication', 'Core CS'],
 
-    labels: [
-      "DSA",
-      "Development",
-      "Aptitude",
-      "Communication",
-      "Core CS"
+    datasets: [
+      {
+        label: 'Skill Strength',
+
+        data: [85, 78, 80, 72, 75],
+
+        fill: true,
+
+        borderWidth: 3,
+
+        pointRadius: 5,
+      },
     ],
-
-    datasets: [{
-
-      label: "Skill Strength",
-
-      data: [85, 78, 80, 72, 75],
-
-      fill: true,
-
-      borderWidth: 3,
-
-      pointRadius: 5
-
-    }]
   },
 
   options: {
-
     responsive: true,
 
     plugins: {
-
       legend: {
-
         labels: {
-          color: "#f8fafc"
-        }
-      }
+          color: '#f8fafc',
+        },
+      },
     },
 
     scales: {
-
       r: {
-
         suggestedMin: 0,
 
         suggestedMax: 100,
 
         ticks: {
+          color: '#cbd5e1',
 
-          color: "#cbd5e1",
-
-          backdropColor: "transparent"
+          backdropColor: 'transparent',
         },
 
         pointLabels: {
-
-          color: "#f8fafc",
+          color: '#f8fafc',
 
           font: {
-            size: 14
-          }
+            size: 14,
+          },
         },
 
         grid: {
-          color: "rgba(255,255,255,0.1)"
+          color: 'rgba(255,255,255,0.1)',
         },
 
         angleLines: {
-          color: "rgba(255,255,255,0.1)"
-        }
-      }
-    }
-  }
+          color: 'rgba(255,255,255,0.1)',
+        },
+      },
+    },
+  },
 });
 
 const questions = [
-
   {
-    question:
-      "Tell me about yourself.",
+    question: 'Tell me about yourself.',
 
     answer:
-      "Give a concise introduction including education, technical skills, projects, and career goals."
+      'Give a concise introduction including education, technical skills, projects, and career goals.',
   },
 
   {
-    question:
-      "What are your strengths?",
+    question: 'What are your strengths?',
 
     answer:
-      "Mention strengths supported with examples such as problem-solving, teamwork, communication, or leadership."
+      'Mention strengths supported with examples such as problem-solving, teamwork, communication, or leadership.',
   },
 
   {
-    question:
-      "Explain a challenging project you worked on.",
+    question: 'Explain a challenging project you worked on.',
 
     answer:
-      "Describe the problem, your role, technologies used, challenges faced, and final outcome."
+      'Describe the problem, your role, technologies used, challenges faced, and final outcome.',
   },
 
   {
-    question:
-      "Why should we hire you?",
+    question: 'Why should we hire you?',
 
     answer:
-      "Highlight your skills, adaptability, passion for learning, and alignment with the company role."
-  }
-
+      'Highlight your skills, adaptability, passion for learning, and alignment with the company role.',
+  },
 ];
 
 let currentQuestion = 0;
 
-const questionText =
-  document.getElementById("question");
+const questionText = document.getElementById('question');
 
-const answerText =
-  document.getElementById("answer");
+const answerText = document.getElementById('answer');
 
-const showAnswerBtn =
-  document.getElementById("showAnswerBtn");
+const showAnswerBtn = document.getElementById('showAnswerBtn');
 
-showAnswerBtn.addEventListener("click", () => {
+showAnswerBtn.addEventListener('click', () => {
+  if (answerText.classList.contains('hidden')) {
+    answerText.classList.remove('hidden');
 
-  if (
-    answerText.classList.contains("hidden")
-  ) {
-
-    answerText.classList.remove("hidden");
-
-    showAnswerBtn.textContent =
-      "Next Question";
-
+    showAnswerBtn.textContent = 'Next Question';
   } else {
-
     currentQuestion++;
 
-    if (
-      currentQuestion >= questions.length
-    ) {
-
+    if (currentQuestion >= questions.length) {
       currentQuestion = 0;
     }
 
-    questionText.textContent =
-      questions[currentQuestion].question;
+    questionText.textContent = questions[currentQuestion].question;
 
-    answerText.textContent =
-      questions[currentQuestion].answer;
+    answerText.textContent = questions[currentQuestion].answer;
 
-    answerText.classList.add("hidden");
+    answerText.classList.add('hidden');
 
-    showAnswerBtn.textContent =
-      "Show Answer";
+    showAnswerBtn.textContent = 'Show Answer';
   }
 });
 
-const goalCheckboxes =
-  document.querySelectorAll(
-    ".goal-card input"
-  );
+const goalCheckboxes = document.querySelectorAll('.goal-card input');
 
 goalCheckboxes.forEach((checkbox) => {
+  checkbox.addEventListener('change', () => {
+    const goalText = checkbox.nextElementSibling;
 
-  checkbox.addEventListener(
-    "change",
-    () => {
+    if (checkbox.checked) {
+      goalText.style.textDecoration = 'line-through';
 
-      const goalText =
-        checkbox.nextElementSibling;
+      goalText.style.opacity = '0.6';
+    } else {
+      goalText.style.textDecoration = 'none';
 
-      if (checkbox.checked) {
-
-        goalText.style.textDecoration =
-          "line-through";
-
-        goalText.style.opacity = "0.6";
-
-      } else {
-
-        goalText.style.textDecoration =
-          "none";
-
-        goalText.style.opacity = "1";
-      }
+      goalText.style.opacity = '1';
     }
-  );
+  });
 });
-const updateBtn =
-  document.getElementById("updateBtn");
+const updateBtn = document.getElementById('updateBtn');
 
-updateBtn.addEventListener("click", () => {
+updateBtn.addEventListener('click', () => {
+  const dsa = parseInt(document.getElementById('dsaInput').value);
 
-  const dsa =
-    parseInt(
-      document.getElementById("dsaInput").value
-    );
+  const mock = parseInt(document.getElementById('mockInput').value);
 
-  const mock =
-    parseInt(
-      document.getElementById("mockInput").value
-    );
+  const aptitude = parseInt(document.getElementById('aptitudeInput').value);
 
-  const aptitude =
-    parseInt(
-      document.getElementById("aptitudeInput").value
-    );
+  const resume = parseInt(document.getElementById('resumeInput').value);
 
-  const resume =
-    parseInt(
-      document.getElementById("resumeInput").value
-    );
+  const suggestions = document.getElementById('resumeSuggestions');
 
-  const suggestions =
-    document.getElementById(
-      "resumeSuggestions"
-    );
-
-  if(resume >= 85){
-
+  if (resume >= 85) {
     suggestions.innerHTML = `
       ✓ Excellent Resume<br>
       ✓ Keep updating projects
     `;
-
-  }else if(resume >= 70){
-
+  } else if (resume >= 70) {
     suggestions.innerHTML = `
       ✓ Add measurable achievements<br>
       ✓ Improve project descriptions
     `;
-
-  }else{
-
+  } else {
     suggestions.innerHTML = `
       ✓ Add Projects<br>
       ✓ Improve Keywords<br>
@@ -335,73 +226,46 @@ updateBtn.addEventListener("click", () => {
     `;
   }
 
-  const communication =
-    parseInt(
-      document.getElementById("communicationInput").value
-    );
-
-  const development =
-    parseInt(
-      document.getElementById("developmentInput").value
-    );
-
-  document.getElementById("dsaSolved")
-    .textContent = dsa;
-
-  document.getElementById("mockSolved")
-    .textContent = mock;
-
-  document.getElementById("aptitudeScore")
-    .textContent = `${aptitude}%`;
-
-  document.getElementById("resumeScore")
-    .textContent = `${resume}%`;
-
-  readinessScore = Math.round(
-    (
-      aptitude +
-      resume +
-      communication +
-      development
-    ) / 4
+  const communication = parseInt(
+    document.getElementById('communicationInput').value
   );
 
-  const offset =
-    circumference -
-    (readinessScore / 100) * circumference;
+  const development = parseInt(
+    document.getElementById('developmentInput').value
+  );
 
-  progressCircle.style.strokeDashoffset =
-    offset;
+  document.getElementById('dsaSolved').textContent = dsa;
 
-  meterScore.textContent =
-    `${readinessScore}%`;
+  document.getElementById('mockSolved').textContent = mock;
 
-  const statusText =
-    document.getElementById("statusText");
+  document.getElementById('aptitudeScore').textContent = `${aptitude}%`;
+
+  document.getElementById('resumeScore').textContent = `${resume}%`;
+
+  readinessScore = Math.round(
+    (aptitude + resume + communication + development) / 4
+  );
+
+  const offset = circumference - (readinessScore / 100) * circumference;
+
+  progressCircle.style.strokeDashoffset = offset;
+
+  meterScore.textContent = `${readinessScore}%`;
+
+  const statusText = document.getElementById('statusText');
 
   if (readinessScore >= 80) {
+    progressCircle.style.stroke = '#22c55e';
 
-    progressCircle.style.stroke =
-      "#22c55e";
-
-    statusText.textContent =
-      "Placement Ready";
-
+    statusText.textContent = 'Placement Ready';
   } else if (readinessScore >= 60) {
+    progressCircle.style.stroke = '#eab308';
 
-    progressCircle.style.stroke =
-      "#eab308";
-
-    statusText.textContent =
-      "Almost Ready";
-
+    statusText.textContent = 'Almost Ready';
   } else {
+    progressCircle.style.stroke = '#ef4444';
 
-    progressCircle.style.stroke =
-      "#ef4444";
-
-    statusText.textContent =
-      "Need Improvement";
+    statusText.textContent = 'Need Improvement';
   }
 
   skillsChart.data.datasets[0].data = [
@@ -409,73 +273,55 @@ updateBtn.addEventListener("click", () => {
     development,
     aptitude,
     communication,
-    resume
+    resume,
   ];
 
   skillsChart.update();
 
   saveUserData({
-  dsa,
-  mock,
-  aptitude,
-  resume,
-  communication,
-  development
+    dsa,
+    mock,
+    aptitude,
+    resume,
+    communication,
+    development,
   });
 
-  updateAIInsights(
-  communication,
-  development,
-  aptitude,
-  resume
-  );
+  updateAIInsights(communication, development, aptitude, resume);
 
   const badges = [];
 
-  if(dsa >= 300){
-    badges.push("🏅 DSA Master");
+  if (dsa >= 300) {
+    badges.push('🏅 DSA Master');
   }
 
-  if(aptitude >= 90){
-    badges.push("🏅 Aptitude Expert");
+  if (aptitude >= 90) {
+    badges.push('🏅 Aptitude Expert');
   }
 
-  if(readinessScore >= 80){
-    badges.push("🏅 Placement Ready");
+  if (readinessScore >= 80) {
+    badges.push('🏅 Placement Ready');
   }
 
-  if(mock >= 20){
-    badges.push("🏅 Consistency Champion");
+  if (mock >= 20) {
+    badges.push('🏅 Consistency Champion');
   }
 
-  const badgeContainer =
-    document.getElementById(
-      "badgeContainer"
-    );
+  const badgeContainer = document.getElementById('badgeContainer');
 
-  if(badges.length){
-
-    badgeContainer.innerHTML =
-      badges
-        .map(
-          badge =>
-            `<div class="badge-card">${badge}</div>`
-        )
-        .join("");
-
-  }else{
-
-    badgeContainer.innerHTML =
-      `<div class="badge-card">
+  if (badges.length) {
+    badgeContainer.innerHTML = badges
+      .map((badge) => `<div class="badge-card">${badge}</div>`)
+      .join('');
+  } else {
+    badgeContainer.innerHTML = `<div class="badge-card">
         No badges earned yet
       </div>`;
   }
 
-  const companyGrid =
-    document.getElementById("companyGrid");
+  const companyGrid = document.getElementById('companyGrid');
 
   if (readinessScore >= 80) {
-
     companyGrid.innerHTML = `
       <div class="company-card">
         <h3>Google</h3>
@@ -492,9 +338,7 @@ updateBtn.addEventListener("click", () => {
         <p>Focus: Development + Projects</p>
       </div>
     `;
-
   } else {
-
     companyGrid.innerHTML = `
       <div class="company-card">
         <h3>TCS</h3>
@@ -512,587 +356,314 @@ updateBtn.addEventListener("click", () => {
       </div>
     `;
   }
-
 });
 
-function updateAIInsights(
-  communication,
-  development,
-  aptitude,
-  resume
-){
+function updateAIInsights(communication, development, aptitude, resume) {
+  const weakAreas = document.getElementById('weakAreas');
 
-  const weakAreas =
-    document.getElementById(
-      "weakAreas"
-    );
+  const recommendedActions = document.getElementById('recommendedActions');
 
-  const recommendedActions =
-    document.getElementById(
-      "recommendedActions"
-    );
-
-  weakAreas.innerHTML = "";
-  recommendedActions.innerHTML = "";
+  weakAreas.innerHTML = '';
+  recommendedActions.innerHTML = '';
 
   const weaknesses = [];
   const actions = [];
 
   if (communication < 75) {
+    weaknesses.push('Communication');
 
-    weaknesses.push(
-      "Communication"
-    );
-
-    actions.push(
-      "Practice HR questions"
-    );
+    actions.push('Practice HR questions');
   }
 
   if (development < 75) {
+    weaknesses.push('Development');
 
-    weaknesses.push(
-      "Development"
-    );
-
-    actions.push(
-      "Build one full-stack project"
-    );
+    actions.push('Build one full-stack project');
   }
 
   if (aptitude < 75) {
+    weaknesses.push('Aptitude');
 
-    weaknesses.push(
-      "Aptitude"
-    );
-
-    actions.push(
-      "Solve aptitude quizzes daily"
-    );
+    actions.push('Solve aptitude quizzes daily');
   }
 
   if (resume < 75) {
+    weaknesses.push('Resume');
 
-    weaknesses.push(
-      "Resume"
-    );
-
-    actions.push(
-      "Improve project descriptions"
-    );
+    actions.push('Improve project descriptions');
   }
 
-  if (
-    weaknesses.length === 0
-  ) {
+  if (weaknesses.length === 0) {
+    weakAreas.innerHTML = '<li>No major weak areas detected 🎉</li>';
 
-    weakAreas.innerHTML =
-      "<li>No major weak areas detected 🎉</li>";
-
-    recommendedActions.innerHTML =
-      "<li>Keep practicing consistently</li>";
+    recommendedActions.innerHTML = '<li>Keep practicing consistently</li>';
 
     return;
   }
 
-  weaknesses.forEach(item => {
-
-    weakAreas.innerHTML +=
-      `<li>${item}</li>`;
+  weaknesses.forEach((item) => {
+    weakAreas.innerHTML += `<li>${item}</li>`;
   });
 
-  actions.forEach(item => {
-
-    recommendedActions.innerHTML +=
-      `<li>${item}</li>`;
+  actions.forEach((item) => {
+    recommendedActions.innerHTML += `<li>${item}</li>`;
   });
 }
 
 function saveUserData(data) {
-
-  localStorage.setItem(
-    "placemateUserData",
-    JSON.stringify(data)
-  );
+  localStorage.setItem('placemateUserData', JSON.stringify(data));
 }
 function generatePDFReport() {
-
   const { jsPDF } = window.jspdf;
 
   const doc = new jsPDF();
-  const fileDate =
-  new Date()
-    .toISOString()
-    .split("T")[0];
+  const fileDate = new Date().toISOString().split('T')[0];
 
-  const username =
-    localStorage.getItem(
-      "placemateUser"
-    ) || "Guest";
+  const username = localStorage.getItem('placemateUser') || 'Guest';
 
-  const today =
-    new Date().toLocaleDateString();
+  const today = new Date().toLocaleDateString();
 
-  const dsa =
-    document.getElementById(
-      "dsaSolved"
-    ).textContent;
+  const dsa = document.getElementById('dsaSolved').textContent;
 
-  const mock =
-    document.getElementById(
-      "mockSolved"
-    ).textContent;
+  const mock = document.getElementById('mockSolved').textContent;
 
-  const aptitude =
-    document.getElementById(
-      "aptitudeScore"
-    ).textContent;
+  const aptitude = document.getElementById('aptitudeScore').textContent;
 
-  const resume =
-    document.getElementById(
-      "resumeScore"
-    ).textContent;
+  const resume = document.getElementById('resumeScore').textContent;
 
-  const readiness =
-    document.getElementById(
-      "meterScore"
-    ).textContent;
+  const readiness = document.getElementById('meterScore').textContent;
 
-  const status =
-    document.getElementById(
-      "statusText"
-    ).textContent;
+  const status = document.getElementById('statusText').textContent;
 
   doc.setFontSize(20);
 
-  doc.text(
-    "PlaceMate Progress Report",
-    20,
-    10
-  );
+  doc.text('PlaceMate Progress Report', 20, 10);
 
   doc.setFontSize(12);
 
-  doc.text(
-    `User: ${username}`,
-    20,
-    30
-  );
+  doc.text(`User: ${username}`, 20, 30);
 
-  doc.text(
-    `Date: ${today}`,
-    20,
-    40
-  );
+  doc.text(`Date: ${today}`, 20, 40);
 
-  doc.text(
-    `DSA Solved: ${dsa}`,
-    20,
-    60
-  );
+  doc.text(`DSA Solved: ${dsa}`, 20, 60);
 
-  doc.text(
-    `Mock Interviews: ${mock}`,
-    20,
-    70
-  );
+  doc.text(`Mock Interviews: ${mock}`, 20, 70);
 
-  doc.text(
-    `Aptitude Score: ${aptitude}`,
-    20,
-    80
-  );
+  doc.text(`Aptitude Score: ${aptitude}`, 20, 80);
 
-  doc.text(
-    `Resume Score: ${resume}`,
-    20,
-    90
-  );
+  doc.text(`Resume Score: ${resume}`, 20, 90);
 
-  doc.text(
-    `Communication Skill: ${communication}%`,
-    20,
-    100
-  );
+  doc.text(`Communication Skill: ${communication}%`, 20, 100);
 
-  doc.text(
-    `Development Skill: ${development}%`,
-    20,
-    110
-  );
+  doc.text(`Development Skill: ${development}%`, 20, 110);
 
-  doc.text(
-    `Interview Readiness: ${readiness}`,
-    20,
-    120
-  );
+  doc.text(`Interview Readiness: ${readiness}`, 20, 120);
 
-  doc.text(
-    `Status: ${status}`,
-    20,
-    130
-  );
+  doc.text(`Status: ${status}`, 20, 130);
   let y = 150;
 
-  doc.text(
-  "Daily Goals:",
-  20,
-  y
-  );
+  doc.text('Daily Goals:', 20, y);
 
-y += 10;
+  y += 10;
 
-document
-  .querySelectorAll(".goal-card")
-  .forEach(goal => {
+  document.querySelectorAll('.goal-card').forEach((goal) => {
+    const checked = goal.querySelector('input').checked;
 
-    const checked =
-      goal.querySelector(
-        "input"
-      ).checked;
+    const text = goal.querySelector('span').textContent;
 
-    const text =
-      goal.querySelector(
-        "span"
-      ).textContent;
-
-    doc.text(
-      `${checked ? "[Done]" : "[Pending]"} ${text}`,
-      25,
-      y
-    );
+    doc.text(`${checked ? '[Done]' : '[Pending]'} ${text}`, 25, y);
 
     y += 10;
   });
-y += 10;
+  y += 10;
 
-doc.text(
-  "Recommended Companies:",
-  20,
-  y
-);
+  doc.text('Recommended Companies:', 20, y);
 
-y += 10;
+  y += 10;
 
-document
-  .querySelectorAll(
-    ".company-card h3"
-  )
-  .forEach(company => {
-
-    doc.text(
-      company.textContent,
-      25,
-      y
-    );
+  document.querySelectorAll('.company-card h3').forEach((company) => {
+    doc.text(company.textContent, 25, y);
 
     y += 10;
   });
 
   const strengths = [];
 
-  if (
-    parseInt(aptitude) >= 80
-  ){
-    strengths.push("Aptitude");
+  if (parseInt(aptitude) >= 80) {
+    strengths.push('Aptitude');
   }
 
-  if (
-    parseInt(resume) >= 80
-  ){
-    strengths.push("Resume");
+  if (parseInt(resume) >= 80) {
+    strengths.push('Resume');
   }
 
   y += 10;
 
-  doc.text(
-  "Strength Areas:",
-  20,
-  y
-  );
+  doc.text('Strength Areas:', 20, y);
 
   y += 10;
 
   doc.text(
-  strengths.length
-    ? strengths.join(", ")
-    : "Keep improving all skills",
-  25,
-  y
+    strengths.length ? strengths.join(', ') : 'Keep improving all skills',
+    25,
+    y
   );
 
-  doc.text(
-  `Generated at: ${new Date().toLocaleString()}`,
-  20,
-  280
-  );
+  doc.text(`Generated at: ${new Date().toLocaleString()}`, 20, 280);
 
+  doc.text('Generated by PlaceMate Dashboard', 20, 290);
 
-  
-  doc.text(
-  "Generated by PlaceMate Dashboard",
-  20,
-  290
-  );
-
-  doc.save(
-  `placemate-report-${fileDate}.pdf`
-  );
-
+  doc.save(`placemate-report-${fileDate}.pdf`);
 
   doc.setFontSize(10);
-
-
 }
 
 if (downloadReportBtn) {
-
-  downloadReportBtn.addEventListener(
-    "click",
-    generatePDFReport
-  );
-
+  downloadReportBtn.addEventListener('click', generatePDFReport);
 }
 
 function loadUserData() {
-
-  const savedData =
-    localStorage.getItem(
-      "placemateUserData"
-    );
+  const savedData = localStorage.getItem('placemateUserData');
 
   if (!savedData) return;
 
   const data = JSON.parse(savedData);
 
-  document.getElementById("dsaInput").value =
-    data.dsa;
+  document.getElementById('dsaInput').value = data.dsa;
 
-  document.getElementById("mockInput").value =
-    data.mock;
+  document.getElementById('mockInput').value = data.mock;
 
-  document.getElementById("aptitudeInput").value =
-    data.aptitude;
+  document.getElementById('aptitudeInput').value = data.aptitude;
 
-  document.getElementById("resumeInput").value =
-    data.resume;
+  document.getElementById('resumeInput').value = data.resume;
 
-  document.getElementById("communicationInput").value =
-    data.communication;
+  document.getElementById('communicationInput').value = data.communication;
 
-  document.getElementById("developmentInput").value =
-    data.development;
+  document.getElementById('developmentInput').value = data.development;
 
   updateBtn.click();
 }
-window.addEventListener("load", () => {
-
+window.addEventListener('load', () => {
   loadUserData();
 
-  const communication =
-    parseInt(
-      document.getElementById(
-        "communicationInput"
-      ).value
-    );
-
-  const development =
-    parseInt(
-      document.getElementById(
-        "developmentInput"
-      ).value
-    );
-
-  const aptitude =
-    parseInt(
-      document.getElementById(
-        "aptitudeInput"
-      ).value
-    );
-
-  const resume =
-    parseInt(
-      document.getElementById(
-        "resumeInput"
-      ).value
-    );
-
-  updateAIInsights(
-    communication,
-    development,
-    aptitude,
-    resume
+  const communication = parseInt(
+    document.getElementById('communicationInput').value
   );
+
+  const development = parseInt(
+    document.getElementById('developmentInput').value
+  );
+
+  const aptitude = parseInt(document.getElementById('aptitudeInput').value);
+
+  const resume = parseInt(document.getElementById('resumeInput').value);
+
+  updateAIInsights(communication, development, aptitude, resume);
 });
 
 /* =========================
    THEME TOGGLE
 ========================= */
 
-const themeToggle =
-  document.getElementById("themeToggle");
+const themeToggle = document.getElementById('themeToggle');
 
-const savedTheme =
-  localStorage.getItem("placemateTheme");
+const savedTheme = localStorage.getItem('placemateTheme');
 
-if (savedTheme === "light") {
+if (savedTheme === 'light') {
+  document.body.classList.add('light-mode');
 
-  document.body.classList.add("light-mode");
-
-  themeToggle.textContent = "🌙";
-
+  themeToggle.textContent = '🌙';
 } else {
-
-  themeToggle.textContent = "☀️";
+  themeToggle.textContent = '☀️';
 }
 
-themeToggle.addEventListener("click", () => {
+themeToggle.addEventListener('click', () => {
+  document.body.classList.toggle('light-mode');
 
-  document.body.classList.toggle("light-mode");
+  if (document.body.classList.contains('light-mode')) {
+    localStorage.setItem('placemateTheme', 'light');
 
-  if (
-    document.body.classList.contains("light-mode")
-  ) {
-
-    localStorage.setItem(
-      "placemateTheme",
-      "light"
-    );
-
-    themeToggle.textContent = "🌙";
-
+    themeToggle.textContent = '🌙';
   } else {
+    localStorage.setItem('placemateTheme', 'dark');
 
-    localStorage.setItem(
-      "placemateTheme",
-      "dark"
-    );
-
-    themeToggle.textContent = "☀️";
+    themeToggle.textContent = '☀️';
   }
 });
-function showApp(){
+function showApp() {
+  authContainer.style.display = 'none';
 
-  authContainer.style.display =
-    "none";
-
-  mainApp.style.display =
-    "block";
+  mainApp.style.display = 'block';
 }
 
-function showAuth(){
+function showAuth() {
+  authContainer.style.display = 'flex';
 
-  authContainer.style.display =
-    "flex";
-
-  mainApp.style.display =
-    "none";
+  mainApp.style.display = 'none';
 }
-const currentUser =
-  localStorage.getItem(
-    "placemateUser"
-  );
+const currentUser = localStorage.getItem('placemateUser');
 
-if(currentUser){
-
+if (currentUser) {
   showApp();
-
-}else{
-
+} else {
   showAuth();
 }
-toggleAuth.addEventListener(
-  "click",
-  () => {
+toggleAuth.addEventListener('click', () => {
+  isLogin = !isLogin;
 
-    isLogin = !isLogin;
+  authTitle.textContent = isLogin ? 'Login' : 'Sign Up';
 
-    authTitle.textContent =
-      isLogin
-        ? "Login"
-        : "Sign Up";
+  toggleAuth.innerHTML = isLogin
+    ? `Don't have an account? <span>Sign Up</span>`
+    : `Already have an account? <span>Login</span>`;
+});
+authBtn.addEventListener('click', () => {
+  const username = usernameInput.value.trim();
 
-    toggleAuth.innerHTML =
-      isLogin
-      ? `Don't have an account? <span>Sign Up</span>`
-      : `Already have an account? <span>Login</span>`;
+  const password = passwordInput.value.trim();
+
+  if (!username || !password) {
+    alert('Please fill all fields');
+    return;
   }
-);
-authBtn.addEventListener(
-  "click",
-  () => {
 
-    const username =
-      usernameInput.value.trim();
+  const users = JSON.parse(localStorage.getItem('placemateUsers')) || [];
 
-    const password =
-      passwordInput.value.trim();
+  if (isLogin) {
+    const foundUser = users.find(
+      (user) => user.username === username && user.password === password
+    );
 
-    if(
-      !username ||
-      !password
-    ){
-      alert(
-        "Please fill all fields"
-      );
+    if (!foundUser) {
+      alert('Invalid Credentials');
+
+      return;
+    }
+  } else {
+    const usernameExists = users.some(
+      (user) => user.username.toLowerCase() === username.toLowerCase()
+    );
+
+    if (usernameExists) {
+      alert('Username already exists. Please choose a different username.');
       return;
     }
 
-    const users =
-      JSON.parse(
-        localStorage.getItem(
-          "placemateUsers"
-        )
-      ) || [];
+    users.push({
+      username,
+      password,
+    });
 
-    if(isLogin){
-
-      const foundUser =
-        users.find(
-          user =>
-            user.username === username &&
-            user.password === password
-        );
-
-      if(!foundUser){
-
-        alert(
-          "Invalid Credentials"
-        );
-
-        return;
-      }
-
-    }else{
-
-      users.push({
-        username,
-        password
-      });
-
-      localStorage.setItem(
-        "placemateUsers",
-        JSON.stringify(users)
-      );
-    }
-
-    localStorage.setItem(
-      "placemateUser",
-      username
-    );
-
-    showApp();
+    localStorage.setItem('placemateUsers', JSON.stringify(users));
   }
-);
 
-logoutBtn.addEventListener(
-  "click",
-  () => {
+  localStorage.setItem('placemateUser', username);
 
-    localStorage.removeItem(
-      "placemateUser"
-    );
+  showApp();
+});
 
-    showAuth();
-  }
-);
+logoutBtn.addEventListener('click', () => {
+  localStorage.removeItem('placemateUser');
+
+  showAuth();
+});

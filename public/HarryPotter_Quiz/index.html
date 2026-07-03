@@ -54,6 +54,7 @@
         <div class="row justify-content-center g-4">
           <div class="col-md-4">
             <button
+              type="button"
               onclick="startQuiz('easy')"
               class="btn btn-success btn-lg w-100 py-4 fs-5"
             >
@@ -62,6 +63,7 @@
           </div>
           <div class="col-md-4">
             <button
+              type="button"
               onclick="startQuiz('medium')"
               class="btn btn-warning btn-lg w-100 py-4 fs-5"
             >
@@ -70,6 +72,7 @@
           </div>
           <div class="col-md-4">
             <button
+              type="button"
               onclick="startQuiz('hard')"
               class="btn btn-danger btn-lg w-100 py-4 fs-5"
             >
@@ -80,12 +83,17 @@
 
         <div class="mt-4 text-center">
           <button
+            type="button"
             onclick="showLeaderboard()"
             class="btn btn-outline-light me-3"
           >
             <i class="fas fa-trophy"></i> Leaderboard
           </button>
-          <button onclick="showProgressModal()" class="btn btn-outline-warning">
+          <button
+            type="button"
+            onclick="showProgressModal()"
+            class="btn btn-outline-warning"
+          >
             <i class="fas fa-chart-line"></i> My Progress
           </button>
         </div>
@@ -118,7 +126,7 @@
         </div>
 
         <div class="question-area mb-4">
-          <h4 id="question-text" class="mb-4"></h4>
+          <p id="question-text" class="mb-4"></p>
         </div>
 
         <div id="options-container" class="row g-3"></div>
@@ -151,10 +159,18 @@
           </div>
         </div>
 
-        <button onclick="restartQuiz()" class="btn btn-lg btn-primary me-3">
+        <button
+          type="button"
+          onclick="restartQuiz()"
+          class="btn btn-lg btn-primary me-3"
+        >
           Play Again
         </button>
-        <button onclick="goHome()" class="btn btn-lg btn-outline-light">
+        <button
+          type="button"
+          onclick="goHome()"
+          class="btn btn-lg btn-outline-light"
+        >
           Back to Menu
         </button>
       </div>
@@ -170,6 +186,7 @@
               type="button"
               class="btn-close btn-close-white"
               data-bs-dismiss="modal"
+              aria-label="close modal"
             ></button>
           </div>
           <div class="modal-body" id="leaderboard-body">

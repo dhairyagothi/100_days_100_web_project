@@ -30,7 +30,12 @@ html {
 }
 
 body {
-  font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+  font-family:
+    'Inter',
+    'Segoe UI',
+    system-ui,
+    -apple-system,
+    sans-serif;
   background: var(--bg);
   color: var(--text);
   min-height: 100vh;
@@ -183,12 +188,16 @@ header {
   margin: 0 auto;
   border-radius: var(--radius);
   overflow: hidden;
-  box-shadow: var(--shadow), 0 0 0 1px var(--border);
+  box-shadow:
+    var(--shadow),
+    0 0 0 1px var(--border);
   transition: box-shadow var(--transition);
 }
 
 .search-box:focus-within {
-  box-shadow: var(--shadow), 0 0 0 2px var(--primary),
+  box-shadow:
+    var(--shadow),
+    0 0 0 2px var(--primary),
     0 0 30px var(--primary-glow);
 }
 
@@ -354,7 +363,7 @@ main {
 }
 
 .card::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 0;
   left: 0;
@@ -708,11 +717,15 @@ footer a:hover {
 
   .search-input-wrapper {
     border-radius: var(--radius);
-    box-shadow: var(--shadow), 0 0 0 1px var(--border);
+    box-shadow:
+      var(--shadow),
+      0 0 0 1px var(--border);
   }
 
   .search-box:focus-within .search-input-wrapper {
-    box-shadow: var(--shadow), 0 0 0 2px var(--primary),
+    box-shadow:
+      var(--shadow),
+      0 0 0 2px var(--primary),
       0 0 30px var(--primary-glow);
   }
 
