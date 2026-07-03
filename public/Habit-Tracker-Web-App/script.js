@@ -31,12 +31,6 @@ const DEFAULT_SCHEDULE = [0, 1, 2, 3, 4, 5, 6];
 let habits = loadHabits();
 let pendingDeleteIndex = null;
 
-const savedTheme = localStorage.getItem("theme");
-
-if (savedTheme === "dark") {
-    document.body.classList.add("dark");
-}
-
 setupGoalField();
 setupValidationUI();
 migrateHabits();
@@ -133,11 +127,11 @@ function calculateCurrentStreak(habit) {
 
   const dates = new Set(habit.completionDates);
   let streak = 0;
-  let currentDateMs = getDateMs(getTodayString());
+  let offset = 0;
 
-  while (dates.has(new Date(currentDateMs).toISOString().split('T')[0])) {
+  while (dates.has(getDateStringFromOffset(-offset))) {
     streak += 1;
-    currentDateMs -= 86400000;
+    offset += 1;
   }
 
   return streak;
