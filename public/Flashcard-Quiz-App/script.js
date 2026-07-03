@@ -2,77 +2,92 @@ let flashcards = JSON.parse(localStorage.getItem("flashcards")) || [
 
 {
     question:"What is HTML?",
-    answer:"HyperText Markup Language"
+    answer:"HyperText Markup Language",
+    hint:"Starts with 'H' and has 3 words."
 },
 
 {
     question:"Which HTML tag is used to create a hyperlink?",
-    answer:"<a>"
+    answer:"<a>",
+    hint:"Starts with '<a' and contains 3 characters."
 },
 
 {
     question:"Which HTML tag is used to insert an image?",
-    answer:"<img>"
+    answer:"<img>",
+    hint:"Starts with '<i' and contains 5 characters."
 },
 
 {
     question:"Which HTML element is used to create a form?",
-    answer:"<form>"
+    answer:"<form>",
+    hint:"Starts with '<f' and contains 6 characters."
 },
 
 {
     question:"Which HTML tag is used for the largest heading?",
-    answer:"<h1>"
+    answer:"<h1>",
+    hint:"Starts with '<h' and contains 4 characters."
 },
 
 {
     question:"What is CSS?",
-    answer:"Cascading Style Sheets"
+    answer:"Cascading Style Sheets",
+    hint:"Starts with 'C' and has 3 words."
 },
 
 {
     question:"Which CSS property changes the text color?",
-    answer:"color"
+    answer:"color",
+    hint:"Starts with 'c' and has 5 characters."
 },
 
 {
     question:"Which CSS property changes the background color?",
-    answer:"background-color"
+    answer:"background-color",
+    hint:"Starts with 'b' and has a hyphen."
 },
 
 {
     question:"Which CSS property is used to make corners rounded?",
-    answer:"border-radius"
+    answer:"border-radius",
+    hint:"Starts with 'b' and has a hyphen."
 },
 
 {
     question:"Which CSS property is used to align items horizontally in Flexbox?",
-    answer:"justify-content"
+    answer:"justify-content",
+    hint:"Starts with 'j' and has a hyphen."
 },
 
 {
     question:"Which keyword is used to declare a variable in JavaScript?",
-    answer:"let"
+    answer:"let",
+    hint:"Starts with 'l' and has 3 characters."
 },
 
 {
     question:"Which function displays a popup message?",
-    answer:"alert()"
+    answer:"alert()",
+    hint:"Starts with 'a' and ends with '()'."
 },
 
 {
     question:"Which method is used to select an element by its ID?",
-    answer:"document.getElementById()"
+    answer:"document.getElementById()",
+    hint:"Starts with 'document.' and contains 'get'."
 },
 
 {
     question:"Which event occurs when a button is clicked?",
-    answer:"click"
+    answer:"click",
+    hint:"Starts with 'c' and has 5 characters."
 },
 
 {
     question:"Which object is used to store data in the browser permanently?",
-    answer:"localStorage"
+    answer:"localStorage",
+    hint:"Starts with 'l' and has 'Storage'."
 }
 
 ];
@@ -88,20 +103,24 @@ let startTime = 0;
 let timedCorrect = 0;
 let timedWrong = 0;
 let timedAttempted = 0;
+let isAnswered = false;
 
 const question=document.getElementById("question");
 const answer=document.getElementById("answer");
 const userAnswer=document.getElementById("userAnswer");
 const result=document.getElementById("result");
+const hintText = document.getElementById("hintText");
 
 const showBtn=document.getElementById("showBtn");
 const checkBtn=document.getElementById("checkBtn");
+const hintBtn=document.getElementById("hintBtn");
 
 const prevBtn=document.getElementById("prevBtn");
 const nextBtn=document.getElementById("nextBtn");
 
 const questionInput=document.getElementById("questionInput");
 const answerInput=document.getElementById("answerInput");
+const hintInput=document.getElementById("hintInput");
 
 const addBtn=document.getElementById("addBtn");
 const editBtn=document.getElementById("editBtn");
@@ -123,35 +142,48 @@ const finalScoreEl = document.getElementById("final-score");
 const finalCorrectEl = document.getElementById("final-correct");
 const finalWrongEl = document.getElementById("final-wrong");
 const finalAccuracyEl = document.getElementById("final-accuracy");
-const finalTimeEl = document.getElementById("final-time");
-const bestScoreItem = document.getElementById("best-score-item");
-const newBestScoreEl = document.getElementById("new-best-score");
+const finalBestScoreEl = document.getElementById("final-best-score");
 const playAgainBtn = document.getElementById("play-again-btn");
 const closeModalBtn = document.getElementById("close-modal-btn");
 
 function saveCards(){
-
-localStorage.setItem("flashcards",JSON.stringify(flashcards));
-
+    localStorage.setItem("flashcards",JSON.stringify(flashcards));
 }
 
-function displayCard(){
-
-question.innerText=flashcards[currentIndex].question;
-
-answer.innerText="Correct Answer: "+flashcards[currentIndex].answer;
-
-answer.classList.add("hidden");
-
-userAnswer.value="";
-
-result.innerHTML="";
-
-showBtn.innerText="Show Answer";
-
+// Generate a hint from the answer
+function generateHint(answerText) {
+    const trimmedAnswer = answerText.trim();
+    const firstPart = trimmedAnswer.substring(0, Math.min(2, trimmedAnswer.length));
+    const length = trimmedAnswer.length;
+    return `Starts with "${firstPart}" and contains ${length} character${length !== 1 ? 's' : ''}.`;
 }
 
-displayCard();
+// Get hint for current card
+function getHint() {
+    const card = flashcards[currentIndex];
+    if (card.hint && card.hint.trim() !== "") {
+        return card.hint;
+    } else {
+        return generateHint(card.answer);
+    }
+}
+
+// Update card display logic
+function updateCardDisplay() {
+    isAnswered = false;
+    const card = flashcards[currentIndex];
+    question.innerText = card.question;
+    answer.innerText = "Correct Answer: " + card.answer;
+    answer.classList.add("hidden");
+    hintText.classList.add("hidden");
+    userAnswer.value = "";
+    result.innerHTML = "";
+    showBtn.classList.add("hidden");
+    checkBtn.disabled = false;
+    hintBtn.disabled = false;
+    userAnswer.disabled = false;
+}
+updateCardDisplay();
 
 // Load best timed score
 function loadBestTimedScore() {
@@ -183,7 +215,7 @@ function startTimedChallenge() {
     closeResultsModal();
     
     updateTimedStats();
-    displayCard();
+    updateCardDisplay();
     
     // Start timer
     timedInterval = setInterval(() => {
@@ -216,33 +248,29 @@ function updateTimedStats() {
 function endTimedChallenge() {
     isTimedMode = false;
     clearInterval(timedInterval);
+    disableQuizButtons();
     
     // Calculate final score and stats
     const finalScore = timedCorrect;
-    const timePlayed = Math.round((Date.now() - startTime) / 1000);
     const accuracy = timedAttempted > 0 
         ? Math.round((timedCorrect / timedAttempted) * 100) 
         : 0;
+    const bestScore = localStorage.getItem("bestTimedScore") || 0;
     
     finalScoreEl.textContent = finalScore;
     finalCorrectEl.textContent = timedCorrect;
     finalWrongEl.textContent = timedWrong;
     finalAccuracyEl.textContent = accuracy + "%";
-    finalTimeEl.textContent = timePlayed + "s";
-    
-    // Check for new best score
-    const savedBest = parseInt(localStorage.getItem("bestTimedScore") || 0);
-    if (finalScore > savedBest) {
-        localStorage.setItem("bestTimedScore", finalScore);
-        bestTimedScoreEl.textContent = finalScore;
-        newBestScoreEl.textContent = finalScore;
-        bestScoreItem.hidden = false;
-    } else {
-        bestScoreItem.hidden = true;
-    }
+    finalBestScoreEl.textContent = bestScore;
     
     showResultsModal();
     disableEditing(false); // Re-enable editing
+}
+
+function disableQuizButtons() {
+    checkBtn.disabled = true;
+    hintBtn.disabled = true;
+    userAnswer.disabled = true;
 }
 
 function showResultsModal() {
@@ -257,17 +285,19 @@ function closeResultsModal() {
         // Reset UI to normal mode
         timedSetup.hidden = false;
         timedStats.hidden = true;
-        displayCard(); // Show normal mode card
+        updateCardDisplay();
     }, 300);
 }
 
 function disableEditing(isDisabled) {
     questionInput.disabled = isDisabled;
     answerInput.disabled = isDisabled;
+    hintInput.disabled = isDisabled;
     addBtn.disabled = isDisabled;
     editBtn.disabled = isDisabled;
     deleteBtn.disabled = isDisabled;
     prevBtn.disabled = isDisabled;
+    nextBtn.disabled = isDisabled;
 }
 
 // Event listeners for timed challenge
@@ -281,182 +311,137 @@ resultsModal.addEventListener("click", (e) => {
 });
 
 showBtn.onclick=function(){
+    if(answer.classList.contains("hidden")){
+        answer.classList.remove("hidden");
+        showBtn.innerText="Hide Answer";
+    }else{
+        answer.classList.add("hidden");
+        showBtn.innerText="Show Answer";
+    }
+};
 
-if(answer.classList.contains("hidden")){
-
-answer.classList.remove("hidden");
-
-showBtn.innerText="Hide Answer";
-
-}else{
-
-answer.classList.add("hidden");
-
-showBtn.innerText="Show Answer";
-
-}
-
+hintBtn.onclick = function() {
+    hintText.innerText = "💡 " + getHint();
+    hintText.classList.remove("hidden");
 };
 
 checkBtn.onclick=function(){
+    if (isAnswered) return;
+    let user=userAnswer.value.trim().toLowerCase();
+    let correct=flashcards[currentIndex].answer.trim().toLowerCase();
+    if(user==""){
+        alert("Please type your answer.");
+        return;
+    }
+    let isCorrect = (user === correct);
+    isAnswered = true;
+    checkBtn.disabled = true;
+    hintBtn.disabled = true;
 
-let user=userAnswer.value.trim().toLowerCase();
-
-let correct=flashcards[currentIndex].answer.trim().toLowerCase();
-
-if(user==""){
-
-alert("Please type your answer.");
-
-return;
-
-}
-
-let isCorrect = (user === correct);
-
-if(isCorrect){
-
-result.innerHTML="✅ Correct!";
-
-result.style.color="green";
-
-}else{
-
-result.innerHTML="❌ Incorrect!";
-
-result.style.color="red";
-
-}
-
-// If in timed mode, increment stats and move to next card
-if(isTimedMode){
     if(isCorrect){
-        timedCorrect++;
-    }else{
-        timedWrong++;
-    }
-    timedAttempted++;
-    updateTimedStats();
-    // Move to next card immediately
-    currentIndex++;
-    if(currentIndex >= flashcards.length){
-        currentIndex = 0; // Loop the deck
-    }
-    displayCard();
-}
+        result.innerHTML="✅ Correct!";
+        result.style.color="green";
+        showBtn.classList.add("hidden");
 
+        if(isTimedMode){
+            timedCorrect++;
+            timedAttempted++;
+            updateTimedStats();
+        }
+        // Auto next card after 1 second
+        setTimeout(() => {
+            if(isTimedMode){
+                currentIndex++;
+                if(currentIndex >= flashcards.length){
+                    currentIndex = 0;
+                }
+            } else {
+                currentIndex++;
+                if(currentIndex >= flashcards.length){
+                    currentIndex = 0;
+                }
+            }
+            updateCardDisplay();
+        }, 1000);
+    }else{
+        result.innerHTML="❌ Incorrect! Try again or reveal the answer.";
+        result.style.color="red";
+        showBtn.classList.remove("hidden");
+        
+        if(isTimedMode){
+            timedWrong++;
+            timedAttempted++;
+            updateTimedStats();
+        }
+    }
 };
 
 nextBtn.onclick=function(){
-
-currentIndex++;
-
-if(currentIndex>=flashcards.length){
-
-currentIndex=0;
-
-}
-
-displayCard();
-
+    if(isTimedMode) return;
+    currentIndex++;
+    if(currentIndex>=flashcards.length){
+        currentIndex=0;
+    }
+    updateCardDisplay();
 };
 
 prevBtn.onclick=function(){
-
-currentIndex--;
-
-if(currentIndex<0){
-
-currentIndex=flashcards.length-1;
-
-}
-
-displayCard();
-
+    if(isTimedMode) return;
+    currentIndex--;
+    if(currentIndex<0){
+        currentIndex=flashcards.length-1;
+    }
+    updateCardDisplay();
 };
 
 addBtn.onclick=function(){
-
-let q=questionInput.value.trim();
-
-let a=answerInput.value.trim();
-
-if(q==""||a==""){
-
-alert("Please enter question and answer.");
-
-return;
-
-}
-
-flashcards.push({
-
-question:q,
-
-answer:a
-
-});
-
-saveCards();
-
-questionInput.value="";
-
-answerInput.value="";
-
-currentIndex=flashcards.length-1;
-
-displayCard();
-
+    let q=questionInput.value.trim();
+    let a=answerInput.value.trim();
+    let h=hintInput.value.trim();
+    if(q==""||a==""){
+        alert("Please enter question and answer.");
+        return;
+    }
+    flashcards.push({
+        question:q,
+        answer:a,
+        hint:h
+    });
+    saveCards();
+    questionInput.value="";
+    answerInput.value="";
+    hintInput.value="";
+    currentIndex=flashcards.length-1;
+    updateCardDisplay();
 };
 
 editBtn.onclick=function(){
-
-let q=questionInput.value.trim();
-
-let a=answerInput.value.trim();
-
-if(q==""||a==""){
-
-alert("Please enter updated question and answer.");
-
-return;
-
-}
-
-flashcards[currentIndex].question=q;
-
-flashcards[currentIndex].answer=a;
-
-saveCards();
-
-displayCard();
-
-questionInput.value="";
-
-answerInput.value="";
-
+    let q=questionInput.value.trim();
+    let a=answerInput.value.trim();
+    let h=hintInput.value.trim();
+    if(q==""||a==""){
+        alert("Please enter updated question and answer.");
+        return;
+    }
+    flashcards[currentIndex].question=q;
+    flashcards[currentIndex].answer=a;
+    flashcards[currentIndex].hint=h;
+    saveCards();
+    updateCardDisplay();
+    questionInput.value="";
+    answerInput.value="";
+    hintInput.value="";
 };
 
 deleteBtn.onclick=function(){
-
-if(flashcards.length==1){
-
-alert("At least one flashcard is required.");
-
-return;
-
-}
-
-flashcards.splice(currentIndex,1);
-
-if(currentIndex>=flashcards.length){
-
-currentIndex=flashcards.length-1;
-
-}
-
-saveCards();
-
-displayCard();
-
+    if(flashcards.length==1){
+        alert("At least one flashcard is required.");
+        return;
+    }
+    flashcards.splice(currentIndex,1);
+    if(currentIndex>=flashcards.length){
+        currentIndex=flashcards.length-1;
+    }
+    saveCards();
+    updateCardDisplay();
 };

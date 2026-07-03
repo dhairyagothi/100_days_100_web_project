@@ -65,11 +65,12 @@
 
         <div class="quiz-buttons">
             <button id="checkBtn">Check Answer</button>
-            <button id="showBtn">Show Answer</button>
+            <button id="hintBtn">Hint</button>
+            <button id="showBtn" class="hidden">Show Answer</button>
         </div>
 
+        <p id="hintText" class="hidden"></p>
         <p id="result"></p>
-
         <p id="answer" class="hidden"></p>
 
     </div>
@@ -87,6 +88,11 @@
         type="text"
         id="questionInput"
         placeholder="Enter Question">
+
+    <input
+        type="text"
+        id="hintInput"
+        placeholder="Enter Hint (Optional)">
 
     <textarea
         id="answerInput"
@@ -122,12 +128,8 @@
                 <span id="final-accuracy">0%</span>
             </div>
             <div class="result-item">
-                <h3>Total Time</h3>
-                <span id="final-time">0s</span>
-            </div>
-            <div class="result-item" id="best-score-item" hidden>
-                <h3>🏆 New Best!</h3>
-                <span id="new-best-score"></span>
+                <h3>Best Score</h3>
+                <span id="final-best-score">0</span>
             </div>
         </div>
         <div class="modal-controls">

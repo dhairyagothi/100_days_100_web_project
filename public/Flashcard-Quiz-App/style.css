@@ -177,6 +177,15 @@ textarea{
     color:#7f0909;
 }
 
+#hintText {
+    margin-top: 10px;
+    font-size: 16px;
+    color: #333;
+    background: #f0f0f0;
+    padding: 8px 12px;
+    border-radius: 6px;
+}
+
 .hidden{
     display:none;
 }
