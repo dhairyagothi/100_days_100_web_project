@@ -1,95 +1,169 @@
 # 🎲 Dice Roller
 
-An interactive dice roller web application built with **HTML**, **CSS**, and **JavaScript** — no frameworks, no dependencies.
+<p align="center">
+  <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white">
+  <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white">
+  <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black">
+  <img src="https://img.shields.io/badge/Open%20Source-GSSoC-green?style=for-the-badge">
+  <img src="https://img.shields.io/badge/License-MIT-blue?style=for-the-badge">
+</p>
 
 ---
 
-## 📸 Preview
+# 📖 Overview
 
-> Roll one die or up to ten at once, track your stats, and watch the tally marks fill up in real time.
-
----
-
-## ✨ Features
-
-- 🎲 **Roll 1–10 dice** at once with a single click
-- 🎨 **5 pastel color themes** for the dice face
-- 🌙 **Dark / Light mode** toggle (fixed to the top-right of the page)
-- 🔊 **Real dice sound effects** — different sounds for 1 die vs. multiple dice
-- 📊 **Live statistics** — total rolls, average, min, and max
-- 🖊️ **Tally mark distribution** — classic tally scoring (resets every 10 rolls per face)
-- ⚡ **Smooth animations** — rolling spin effect on every throw
-- 📱 **Fully responsive** — works on mobile and desktop
+Dice Roller is a simple and interactive web application that simulates rolling a real dice. It generates a random number every time the user clicks the **Roll Dice** button, making it useful for board games, classroom activities, decision-making, and learning JavaScript random number generation.
 
 ---
 
-## 🛠️ Tech Stack
+# ✨ Features
 
-| Technology | Usage |
-|------------|-------|
-| HTML5 | Structure and layout |
-| CSS3 | Styling, animations, dark/light theming via CSS variables |
-| JavaScript (Vanilla) | Game logic, DOM manipulation, Web Audio API |
-| SVG | Dice faces with pip layouts, tally mark rendering |
+- 🎲 Random dice roll generation
+- ⚡ Instant result display
+- 🎨 Attractive and responsive user interface
+- 📱 Mobile-friendly design
+- 💻 Lightweight and fast
+- 🔄 Unlimited dice rolls
+- 🌐 Works in all modern browsers
 
 ---
 
-## 📁 File Structure
+# 🛠️ Tech Stack
+
+| Technology | Purpose |
+|------------|---------|
+| HTML5 | Structure |
+| CSS3 | Styling |
+| JavaScript | Random number generation and interactivity |
+
+---
+
+# 📂 Folder Structure
 
 ```
-Dice-Roller/
-├── main.html          # Main application (self-contained)
-├── style.css          # Styles (embedded in main.html)
-├── script.js          # Logic (embedded in main.html)
-├── dice-single.mp3    # Sound effect for 1 die roll
-├── dice-multi.mp3     # Sound effect for 2–10 dice roll
-└── README.md          # This file
+Dice_Roller/
+│── index.html
+│── style.css
+│── script.js
+│── favicon.png
+└── README.md
 ```
 
 ---
 
-## 🚀 How to Run
+# 🚀 Getting Started
 
-1. Clone or download this repository
-2. Make sure `dice-single.mp3` and `dice-multi.mp3` are in the same folder as `main.html`
-3. Open `main.html` in any modern browser
-4. No build step, no installs — just open and play!
+### Clone the repository
 
----
+```bash
+git clone https://github.com/dhairyagothi/100_days_100_web_project.git
+```
 
-## 🎮 How to Use
+### Navigate to the project
 
-| Action | What it does |
-|--------|-------------|
-| Set **Number of Dice** | Choose 1–10 dice to roll |
-| Pick a **Dice Color** | 5 pastel options (pink, peach, yellow, green, blue) |
-| Click **Roll Dice** | Rolls all dice with animation + sound |
-| Click **🔊** | Toggles sound on/off |
-| Click **Reset Stats** | Clears all statistics and tally marks |
-| Click **🌙 / ☀️** | Toggles dark/light mode |
+```bash
+cd public/Dice_Roller
+```
 
----
+### Run the project
 
-## 📚 Concepts Covered
+Simply open
 
-- Random number generation (`Math.random`)
-- DOM manipulation (dynamic SVG rendering)
-- CSS custom properties (variables) for theming
-- CSS keyframe animations
-- Event handling
-- State management (vanilla JS object)
-- SVG drawing (dice pips, tally marks)
-- Web Audio API (fallback sound synthesis)
-- Responsive layout with CSS Grid and Flexbox
+```
+index.html
+```
+
+in your browser.
 
 ---
 
-## 🔧 Difficulty
+# 🎮 How to Use
 
-**Intermediate**
+1. Open the Dice Roller application.
+2. Click the **Roll Dice** button.
+3. A random dice value will be generated.
+4. Roll as many times as you like.
 
 ---
 
-## 🙌 Part of
+# 📸 Screenshot
 
-[100 Days 100 Web Projects](https://github.com/dhairyagothi/100_days_100_web_project) — GSSoC 2026
+> Add a project screenshot here.
+
+```
+assets/screenshot.png
+```
+
+---
+
+# 🌟 Use Cases
+
+- Board games
+- Classroom activities
+- Probability demonstrations
+- Random decision making
+- JavaScript practice
+
+---
+
+# 📈 Future Improvements
+
+- 🎲 Multiple dice support
+- 🎨 Dice rolling animation
+- 🔊 Sound effects
+- 🌙 Dark mode
+- 📊 Roll history
+- 🎯 Custom number of dice
+- 🏆 Statistics dashboard
+- 🎮 Multiplayer support
+
+---
+
+# 🤝 Contributing
+
+Contributions are welcome!
+
+1. Fork the repository
+2. Create a new branch
+
+```bash
+git checkout -b feature-name
+```
+
+3. Commit your changes
+
+```bash
+git commit -m "Add feature"
+```
+
+4. Push your branch
+
+```bash
+git push origin feature-name
+```
+
+5. Open a Pull Request
+
+---
+
+# 📜 License
+
+This project is licensed under the MIT License.
+
+---
+
+# 🙌 Acknowledgements
+
+- HTML5
+- CSS3
+- JavaScript
+- GitHub
+- GSSoC
+
+---
+
+# ⭐ Support
+
+If you found this project useful, please consider giving it a ⭐ on GitHub.
+
+Happy Coding! 🚀
