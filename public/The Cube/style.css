@@ -2,7 +2,7 @@
   font-family: "BungeeFont";
   font-weight: normal;
   font-style: normal;
-  src: url("data:font/truetype;charset=utf-8;base64,d09GMgABAAAAACZQABIAAAAAbvQAACXoAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP0ZGVE0cGh4byGIcgW4GYACDGghQCYRlEQgK7wjfAAuBRgABNgIkA4MIBCAFjGMHgw8MgjEb5WQV7NgLbgekMv6v8igENg5QCMa7I6pI6dn/H4+TI6pRucF/LYhNhovYtD4Krf6ybd4KjulSyDi2HjZEfrfyKtpdSpVGjIdn5NaN1SqtTduTgy2PuDLWjMCudfVcZNajE5NFViltnAyHDz5aQY/9KIf/iFKqiMiiy08NsWuNHaGxT3Kteqdfj2SUbAVpQ6QQooGSPMtAr3zE4COgr+M/Jp5/2u9/a8+dM9+c7JVIKJ5JGs0Sv0L9DSmN5KGYlEYlauL9wG/zn5W+IdY1EYl7dRyxAcHqOezADJa6+fdsjIo/de33u7JquDUr3ZpF9eZsy6Vv3n5Ii9EzmqragVH4fHPlZDGbveSSWYJscsdzRCkA6SrTVyPOqPr/Z1K0IGxVdd+bIh+ss5TyEAfykDerbO2vckwXma0Bn+NTRGUWtcrFcmqzqMFDTVWjEHrYb3gKFhFENBhGXzEslLDWl+NC+g9Ut6YZE8IiUOrBXKWTfCLj54mMxydSfp5IeVw+D5fD9XCG5vz30lywhwG8wKUpYPoubR/BR1YbOzNhpsSEfEJNflLibw248HD8cGyhEiolERKENjHEXjQienWD9uYSCvJ/y6bdpdsmDIqHREjeKbpC+eHf3J8ttL7gULha5qZRa0p3URE2QkfJvEiL0X+jRsbI/J+pZvv/LEDO8iJwDgq5OnVXlIpV5Vj5uZz9Oxjszu4ikhICcQxQBC+AgAKouBBgHQCHHIuSVEiQLkbeOaTaXe78VDpVLnPntjR8L9PZXtMr8zOEQr14vCtq2jnjxxJKoAjbWjaJxUBvNlKwlEsT/e9uZL73e/qz/g5HakVSCRIkHVNs638Wx0MvPaORQ4mtZqlXxY/8gwEQAB986zy6ALz74bRJAPiYq9oHAhgAqQAOISZEBeAABBD0WsedGJ5chHTbFHAjmwqA/7v903jc8b5FhvizM1NBcjJoc8vmc0Pa3c+SAToEdBLNK0XblKzqF9ci8YMgiXQAYkDgouIornaSG64d+zuuHAsbikQDE73ZeG77x4w1EMgzBsKRGJRil8/9s/HTqOUaiI3oBnvhKg3OiVQkif1txihAKdcZCpvAOIftLI9wzqBmQRcqp3Gk2Tkz6UcwgagZ3wAoB1tzIFCXwzgCVVxlhWGExap+Hvcn6Y3WyOARkeyCX0SNKR3RzNIpdO4MDGGYv8o4HK0RJa1jUkKZuEkqMjwc3cjjvadoOgA9AkpACQNnzZFlYqOMtqY5HjCKx8s7GD99IsiXAoH04HT3QcrHYvs+qMIx7EBwayBzijQKhmCS2VeV65VesIj40dE4FI5fdFb+GicK0JWRVbprkpwY62tAMTglcgzyNt9a50VMPAK5Esyx3kRf8poh6QutZw0v580DPUeaJqXvV4mWe1g/JTTj2YdePTWK9SLVu5XtXOkas4r2wO84ovmHCrBpzGxceGzRugNHKfO365A80kSZDkdxUAUDcVYlujjJkuoxsCl8mLuy0VzE3omhvBNLjI39alVq5XWkCtxT0AAB08VUk5GAAAA") format("woff2");
+  src: url("data:font/truetype;charset=utf-8;base64,...") format("woff2");
 }
 
 *, *:before, *:after {
@@ -529,4 +529,20 @@ body[data-theme="Rain"] .btn:hover {
   background-color: #38bdf8;
   color: #0f172a;
   box-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
+}
+
+body {
+    font-family: "BungeeFont", sans-serif;
+}
+src: url("data:font/woff2;base64,...") format("woff2");
+
+@font-face {
+    font-family: "BungeeFont";
+    src: url("./fonts/Bungee-Regular.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+}
+
+body {
+    font-family: "Bungee", sans-serif;
 }
