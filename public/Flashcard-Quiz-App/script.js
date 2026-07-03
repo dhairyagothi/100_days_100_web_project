@@ -79,6 +79,16 @@ let flashcards = JSON.parse(localStorage.getItem("flashcards")) || [
 
 let currentIndex = 0;
 
+// Timed Challenge Variables
+let isTimedMode = false;
+let timedInterval = null;
+let timeLeft = 60;
+let totalTime = 60;
+let startTime = 0;
+let timedCorrect = 0;
+let timedWrong = 0;
+let timedAttempted = 0;
+
 const question=document.getElementById("question");
 const answer=document.getElementById("answer");
 const userAnswer=document.getElementById("userAnswer");
@@ -96,6 +106,28 @@ const answerInput=document.getElementById("answerInput");
 const addBtn=document.getElementById("addBtn");
 const editBtn=document.getElementById("editBtn");
 const deleteBtn=document.getElementById("deleteBtn");
+
+// Timed Challenge Elements
+const timedSetup = document.getElementById("timed-setup");
+const timedStats = document.getElementById("timed-stats");
+const startTimedBtn = document.getElementById("start-timed-btn");
+const timerOptions = document.getElementById("timer-options");
+const countdownEl = document.getElementById("countdown");
+const timedCorrectEl = document.getElementById("timed-correct");
+const timedWrongEl = document.getElementById("timed-wrong");
+const timedAttemptedEl = document.getElementById("timed-attempted");
+const timedAccuracyEl = document.getElementById("timed-accuracy");
+const bestTimedScoreEl = document.getElementById("best-timed-score");
+const resultsModal = document.getElementById("results-modal");
+const finalScoreEl = document.getElementById("final-score");
+const finalCorrectEl = document.getElementById("final-correct");
+const finalWrongEl = document.getElementById("final-wrong");
+const finalAccuracyEl = document.getElementById("final-accuracy");
+const finalTimeEl = document.getElementById("final-time");
+const bestScoreItem = document.getElementById("best-score-item");
+const newBestScoreEl = document.getElementById("new-best-score");
+const playAgainBtn = document.getElementById("play-again-btn");
+const closeModalBtn = document.getElementById("close-modal-btn");
 
 function saveCards(){
 
@@ -120,6 +152,133 @@ showBtn.innerText="Show Answer";
 }
 
 displayCard();
+
+// Load best timed score
+function loadBestTimedScore() {
+    const best = localStorage.getItem("bestTimedScore");
+    if (best) {
+        bestTimedScoreEl.textContent = best;
+    }
+}
+loadBestTimedScore();
+
+// Timed Challenge Functions
+function startTimedChallenge() {
+    isTimedMode = true;
+    timedCorrect = 0;
+    timedWrong = 0;
+    timedAttempted = 0;
+    shuffle(flashcards); // Shuffle the deck for timed challenge
+    currentIndex = 0;
+    
+    totalTime = parseInt(timerOptions.value);
+    timeLeft = totalTime;
+    startTime = Date.now();
+    
+    // Toggle UI elements
+    timedSetup.hidden = true;
+    timedStats.hidden = false;
+    // Disable editing during timed mode
+    disableEditing(true);
+    closeResultsModal();
+    
+    updateTimedStats();
+    displayCard();
+    
+    // Start timer
+    timedInterval = setInterval(() => {
+        timeLeft--;
+        countdownEl.textContent = timeLeft;
+        if (timeLeft <= 0) {
+            endTimedChallenge();
+        }
+    }, 1000);
+}
+
+function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
+
+function updateTimedStats() {
+    timedCorrectEl.textContent = timedCorrect;
+    timedWrongEl.textContent = timedWrong;
+    timedAttemptedEl.textContent = timedAttempted;
+    
+    const accuracy = timedAttempted > 0 
+        ? Math.round((timedCorrect / timedAttempted) * 100) 
+        : 0;
+    timedAccuracyEl.textContent = accuracy + "%";
+}
+
+function endTimedChallenge() {
+    isTimedMode = false;
+    clearInterval(timedInterval);
+    
+    // Calculate final score and stats
+    const finalScore = timedCorrect;
+    const timePlayed = Math.round((Date.now() - startTime) / 1000);
+    const accuracy = timedAttempted > 0 
+        ? Math.round((timedCorrect / timedAttempted) * 100) 
+        : 0;
+    
+    finalScoreEl.textContent = finalScore;
+    finalCorrectEl.textContent = timedCorrect;
+    finalWrongEl.textContent = timedWrong;
+    finalAccuracyEl.textContent = accuracy + "%";
+    finalTimeEl.textContent = timePlayed + "s";
+    
+    // Check for new best score
+    const savedBest = parseInt(localStorage.getItem("bestTimedScore") || 0);
+    if (finalScore > savedBest) {
+        localStorage.setItem("bestTimedScore", finalScore);
+        bestTimedScoreEl.textContent = finalScore;
+        newBestScoreEl.textContent = finalScore;
+        bestScoreItem.hidden = false;
+    } else {
+        bestScoreItem.hidden = true;
+    }
+    
+    showResultsModal();
+    disableEditing(false); // Re-enable editing
+}
+
+function showResultsModal() {
+    resultsModal.classList.add("active");
+    resultsModal.hidden = false;
+}
+
+function closeResultsModal() {
+    resultsModal.classList.remove("active");
+    setTimeout(() => {
+        resultsModal.hidden = true;
+        // Reset UI to normal mode
+        timedSetup.hidden = false;
+        timedStats.hidden = true;
+        displayCard(); // Show normal mode card
+    }, 300);
+}
+
+function disableEditing(isDisabled) {
+    questionInput.disabled = isDisabled;
+    answerInput.disabled = isDisabled;
+    addBtn.disabled = isDisabled;
+    editBtn.disabled = isDisabled;
+    deleteBtn.disabled = isDisabled;
+    prevBtn.disabled = isDisabled;
+}
+
+// Event listeners for timed challenge
+startTimedBtn.addEventListener("click", startTimedChallenge);
+playAgainBtn.addEventListener("click", startTimedChallenge);
+closeModalBtn.addEventListener("click", closeResultsModal);
+resultsModal.addEventListener("click", (e) => {
+    if (e.target === resultsModal) {
+        closeResultsModal();
+    }
+});
 
 showBtn.onclick=function(){
 
@@ -153,7 +312,9 @@ return;
 
 }
 
-if(user===correct){
+let isCorrect = (user === correct);
+
+if(isCorrect){
 
 result.innerHTML="✅ Correct!";
 
@@ -165,6 +326,23 @@ result.innerHTML="❌ Incorrect!";
 
 result.style.color="red";
 
+}
+
+// If in timed mode, increment stats and move to next card
+if(isTimedMode){
+    if(isCorrect){
+        timedCorrect++;
+    }else{
+        timedWrong++;
+    }
+    timedAttempted++;
+    updateTimedStats();
+    // Move to next card immediately
+    currentIndex++;
+    if(currentIndex >= flashcards.length){
+        currentIndex = 0; // Loop the deck
+    }
+    displayCard();
 }
 
 };
