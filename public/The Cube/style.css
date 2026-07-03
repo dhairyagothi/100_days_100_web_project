@@ -4,7 +4,14 @@
   font-style: normal;
   src: url("data:font/truetype;charset=utf-8;base64,...") format("woff2");
 }
+@import url('https://fonts.googleapis.com/css2?family=Bungee&display=swap');
 
+body {
+    font-family: "BungeeFont", sans-serif;
+}
+body {
+    font-family: "Bungee", sans-serif;
+}
 *, *:before, *:after {
   -webkit-user-select: none;
   -moz-user-select: none;
