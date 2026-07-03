@@ -1,589 +1,1004 @@
-const boxes = Array.from(document.querySelectorAll(".box"));
-const resetRoundBtn = document.querySelector("#resetRound");
-const resetAllBtn = document.querySelector("#resetAll");
-const statusText = document.querySelector("#statusText");
-const turnChip = document.querySelector("#turnChip");
-const scoreOEl = document.querySelector("#scoreO");
-const scoreXEl = document.querySelector("#scoreX");
-const scoreDEl = document.querySelector("#scoreD");
-const modeSelect = document.querySelector("#modeSelect");
-const themeSelect = document.querySelector("#themeSelect");
-const hintBtn = document.querySelector("#hintBtn");
-const undoBtn = document.querySelector("#undoBtn");
-const soundToggle = document.querySelector("#soundToggle");
-const turnTimer = document.querySelector("#turnTimer");
-const historyList = document.querySelector("#historyList");
-const boardEl = document.querySelector("#board");
-const winLine = document.querySelector("#winLine");
-const confettiCanvas = document.querySelector("#confetti");
-const winnerModal = document.querySelector("#winnerModal");
-const winnerTitle = document.querySelector("#winnerTitle");
-const winnerSubtitle = document.querySelector("#winnerSubtitle");
-const winnerBadge = document.querySelector("#winnerBadge");
-const winnerNextBtn = document.querySelector("#winnerNext");
-const winnerCloseBtn = document.querySelector("#winnerClose");
-const startModal = document.querySelector("#startModal");
-const startGameBtn = document.querySelector("#startGameBtn");
+// =====================================
+// DOM REFERENCES
+// =====================================
 
-let turnO = true;
-let boardLocked = false;
-let scores = { O: 0, X: 0, D: 0 };
-let boardState = Array(9).fill("");
+const board = document.getElementById("board");
+const statusText = document.getElementById("statusText");
+const turnChip = document.getElementById("turnChip");
+const scoreX = document.getElementById("scoreX");
+const scoreO = document.getElementById("scoreO");
+const scoreD = document.getElementById("scoreD");
+const newRoundBtn = document.getElementById("newRoundBtn");
+const resetAllBtn = document.getElementById("resetAllBtn");
+const winnerModal = document.getElementById("winnerModal");
+const winnerTitle = document.getElementById("winnerTitle");
+const winnerSubtitle = document.getElementById("winnerSubtitle");
+const winnerNext = document.getElementById("winnerNext");
+const winnerClose = document.getElementById("winnerClose");
+const modeSelect = document.getElementById("modeSelect");
+const themeSelect = document.getElementById("themeSelect");
+const hintBtn = document.getElementById("hintBtn");
+const undoBtn = document.getElementById("undoBtn");
+const historyList = document.getElementById("historyList");
+const themeToggleGroup = document.getElementById("themeToggleGroup");
+const victorySound = new Audio("/public/TicTacToe/victory.mp3");
+const xMoveSound = new Audio("/public/TicTacToe/click-x.mp3");
+const oMoveSound = new Audio("/public/TicTacToe/click-o.mp3");
+const drawSound = new Audio("/public/TicTacToe/draw.mp3");
+
+// Statistics elements
+const statTotal = document.getElementById("statTotal");
+const statXWins = document.getElementById("statXWins");
+const statOWins = document.getElementById("statOWins");
+const statDraws = document.getElementById("statDraws");
+const statXRate = document.getElementById("statXRate");
+const statORate = document.getElementById("statORate");
+const statCurrentStreak = document.getElementById("statCurrentStreak");
+const statBestStreak = document.getElementById("statBestStreak");
+const progressX = document.getElementById("progressX");
+const progressO = document.getElementById("progressO");
+const progressD = document.getElementById("progressD");
+const progressXVal = document.getElementById("progressXVal");
+const progressOVal = document.getElementById("progressOVal");
+const progressDVal = document.getElementById("progressDVal");
+const resetStatsBtn = document.getElementById("resetStatsBtn");
+const confirmModal = document.getElementById("confirmModal");
+const confirmYes = document.getElementById("confirmYes");
+const confirmNo = document.getElementById("confirmNo");
+
+// =====================================
+// GAME VARIABLES
+// =====================================
+
+let gameBoard = Array(9).fill("");
+
+let currentPlayer = "X";
+
+let gameOver = false;
 let moveHistory = [];
-let mode = "pvp";
-let soundEnabled = true;
-let currentResult = null;
-let confettiAnimId = null;
-let audioCtx;
-let gameStarted = false;
-const setTarget = 3;
-let turnTimerId = null;
-let turnStart = null;
 
-// All winning triplets on the 3x3 grid.
-const winPatterns = [
+let scores = {
+    X: 0,
+    O: 0,
+    D: 0
+};
+
+// =====================================
+// STATISTICS
+// =====================================
+
+const STORAGE_KEY = "ticTacToeStatistics";
+
+let statistics = {
+
+    totalGames: 0,
+
+    xWins: 0,
+
+    oWins: 0,
+
+    draws: 0,
+
+    currentStreak: 0,
+
+    bestStreak: 0,
+
+    lastWinner: null
+
+};
+
+function loadStatistics() {
+
+    const saved = localStorage.getItem(STORAGE_KEY);
+
+    if (saved) {
+
+        statistics = JSON.parse(saved);
+
+    }
+
+}
+
+function saveStatistics() {
+
+    localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(statistics)
+    );
+
+}
+
+function createStatisticsDashboard() {
+
+    if (document.getElementById("statisticsPanel")) return;
+
+    const panel = document.createElement("section");
+
+    panel.className = "statistics-panel";
+
+    panel.id = "statisticsPanel";
+
+    panel.innerHTML = `
+
+<h2>📊 Statistics Dashboard</h2>
+
+<div class="stats-grid">
+
+<div class="stat-card">
+
+<span>Total Games</span>
+
+<strong id="statTotal">0</strong>
+
+</div>
+
+<div class="stat-card">
+
+<span>X Wins</span>
+
+<strong id="statX">0</strong>
+
+</div>
+
+<div class="stat-card">
+
+<span>O Wins</span>
+
+<strong id="statO">0</strong>
+
+</div>
+
+<div class="stat-card">
+
+<span>Draws</span>
+
+<strong id="statDraw">0</strong>
+
+</div>
+
+<div class="stat-card">
+
+<span>Current Streak</span>
+
+<strong id="statCurrent">0</strong>
+
+</div>
+
+<div class="stat-card">
+
+<span>Best Streak</span>
+
+<strong id="statBest">0</strong>
+
+</div>
+
+</div>
+
+<div class="progress-section">
+
+<div class="progress-item">
+
+<div class="progress-label">
+
+<span>Player X Win Rate</span>
+
+<span id="xRate">0%</span>
+
+</div>
+
+<div class="progress-bar">
+
+<div
+id="xProgress"
+class="progress-fill progress-x">
+
+</div>
+
+</div>
+
+</div>
+
+<div class="progress-item">
+
+<div class="progress-label">
+
+<span>Player O Win Rate</span>
+
+<span id="oRate">0%</span>
+
+</div>
+
+<div class="progress-bar">
+
+<div
+id="oProgress"
+class="progress-fill progress-o">
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<button
+class="btn-ghost"
+id="resetStatistics">
+
+Reset Statistics
+
+</button>
+
+`;
+
+    document.querySelector(".panel").appendChild(panel);
+
+}
+
+function updateStatisticsUI() {
+
+    document.getElementById("statTotal").textContent = statistics.totalGames;
+
+    document.getElementById("statX").textContent = statistics.xWins;
+
+    document.getElementById("statO").textContent = statistics.oWins;
+
+    document.getElementById("statDraw").textContent = statistics.draws;
+
+    document.getElementById("statCurrent").textContent = statistics.currentStreak;
+
+    document.getElementById("statBest").textContent = statistics.bestStreak;
+
+    const totalWins =
+        statistics.xWins +
+        statistics.oWins;
+
+    let xRate = 0;
+
+    let oRate = 0;
+
+    if (totalWins > 0) {
+
+        xRate = Math.round((statistics.xWins / totalWins) * 100);
+
+        oRate = Math.round((statistics.oWins / totalWins) * 100);
+
+    }
+
+    document.getElementById("xRate").textContent = xRate + "%";
+
+    document.getElementById("oRate").textContent = oRate + "%";
+
+    document.getElementById("xProgress").style.width = xRate + "%";
+
+    document.getElementById("oProgress").style.width = oRate + "%";
+
+}
+
+function resetStatistics() {
+
+    if (!confirm("Reset all statistics?")) return;
+
+    statistics = {
+
+        totalGames: 0,
+
+        xWins: 0,
+
+        oWins: 0,
+
+        draws: 0,
+
+        currentStreak: 0,
+
+        bestStreak: 0,
+
+        lastWinner: null
+
+    };
+
+    saveStatistics();
+
+    updateStatisticsUI();
+
+}
+
+loadStatistics();
+
+createStatisticsDashboard();
+
+updateStatisticsUI();
+// =====================================
+// WIN COMBINATIONS
+// =====================================
+
+const WIN_LINES = [
+
     [0, 1, 2],
     [3, 4, 5],
     [6, 7, 8],
+
     [0, 3, 6],
     [1, 4, 7],
     [2, 5, 8],
+
     [0, 4, 8],
     [2, 4, 6]
+
 ];
 
-const updateStatus = (message) => {
-    statusText.textContent = message;
-    const turnLabel = turnO ? "O" : "X";
-    const cpuLabel = mode === "pvp" ? "" : turnO ? " (You)" : " (CPU)";
-    turnChip.textContent = `Turn: ${turnLabel}${cpuLabel}`;
-};
+// =====================================
+// BOARD RENDER
+// =====================================
 
-const startTurnTimer = () => {
-    turnStart = Date.now();
-    if (turnTimerId) {
-        clearInterval(turnTimerId);
-    }
-    turnTimerId = setInterval(() => {
-        if (!turnStart) {
-            return;
+function renderBoard() {
+
+    board.innerHTML = "";
+
+    gameBoard.forEach((value, index) => {
+
+        const cell = document.createElement("button");
+
+        cell.className = "cell";
+
+        if (value === "X") {
+
+            cell.classList.add("mark-x");
+
         }
-        const seconds = Math.floor((Date.now() - turnStart) / 1000);
-        if (turnTimer) {
-            turnTimer.textContent = `Time: ${seconds}s`;
+
+        if (value === "O") {
+
+            cell.classList.add("mark-o");
+
         }
-    }, 500);
-};
 
-const stopTurnTimer = () => {
-    if (turnTimerId) {
-        clearInterval(turnTimerId);
-        turnTimerId = null;
-    }
-    turnStart = null;
-    if (turnTimer) {
-        turnTimer.textContent = "Time: 0s";
-    }
-};
+        cell.textContent = value;
 
-const updateScores = () => {
-    scoreOEl.textContent = scores.O;
-    scoreXEl.textContent = scores.X;
-    scoreDEl.textContent = scores.D;
-};
+        cell.addEventListener("click", () => {
 
-const setWinner = (winner, pattern) => {
-    boardLocked = true;
-    currentResult = { winner, pattern };
-    if (pattern.length) {
-        pattern.forEach((index) => boxes[index].classList.add("win"));
-        showWinLine(pattern);
-    }
-    statusText.textContent = winner === "D" ? "Round draw" : `${winner} wins the round`;
-    if (winner !== "D") {
-        scores[winner] += 1;
-        launchConfetti();
-        playTone(620, 0.15);
-    } else {
-        scores.D += 1;
-        playTone(260, 0.12);
-    }
-    updateScores();
-    if (winner !== "D") {
-        const isSetWin = scores[winner] >= setTarget;
-        showWinnerModal(winner, isSetWin);
-    }
-    if (winner !== "D" && scores[winner] >= setTarget) {
-        statusText.textContent = `${winner} wins the set. Reset scores to play again.`;
-    }
-    stopTurnTimer();
-};
+            handleMove(index);
 
-const checkWinner = () => {
-    for (const pattern of winPatterns) {
-        const [a, b, c] = pattern;
-        const pos1 = boardState[a];
-        const pos2 = boardState[b];
-        const pos3 = boardState[c];
-        if (pos1 && pos1 === pos2 && pos2 === pos3) {
-            setWinner(pos1, pattern);
-            return true;
-        }
-    }
+        });
 
-    if (boardState.every((cell) => cell)) {
-        setWinner("D", []);
-        return true;
-    }
-    return false;
-};
+        board.appendChild(cell);
 
-// Handle a player click on a board cell.
-const handleTurn = (box) => {
-    if (!gameStarted || boardLocked || box.textContent) {
-        return;
-    }
-    if (mode !== "pvp" && !turnO) {
-        return;
-    }
-    const index = Number(box.dataset.index);
-    placeMark(index, turnO ? "O" : "X");
-};
-
-// Place a mark and advance game flow (win check, CPU turn).
-const placeMark = (index, mark, isAuto = false) => {
-    const box = boxes[index];
-    if (!box || boardState[index]) {
-        return;
-    }
-    boardState[index] = mark;
-    box.textContent = mark;
-    box.classList.add(mark === "O" ? "mark-o" : "mark-x");
-    box.disabled = true;
-    clearHints();
-    moveHistory.push({ index, mark });
-    updateHistory();
-    if (!isAuto) {
-        playTone(mark === "O" ? 420 : 320, 0.08);
-    }
-    if (!checkWinner()) {
-        turnO = !turnO;
-        updateStatus("Make your move");
-        startTurnTimer();
-        triggerCpuMove();
-    }
-};
-
-const resetRound = () => {
-    if (scores.O >= setTarget || scores.X >= setTarget) {
-        updateStatus("Set is over. Reset scores to play again.");
-        return;
-    }
-    hideWinnerModal();
-    boardLocked = false;
-    currentResult = null;
-    boardState = Array(9).fill("");
-    moveHistory = [];
-    turnO = true;
-    boxes.forEach((box) => {
-        box.textContent = "";
-        box.disabled = false;
-        box.classList.remove("win", "mark-o", "mark-x", "hint");
     });
-    hideWinLine();
-    updateHistory();
-    updateStatus("New round started");
-    if (gameStarted) {
-        startTurnTimer();
-    }
-    if (mode !== "pvp" && !turnO) {
-        triggerCpuMove();
-    }
-};
 
-const resetAll = () => {
-    scores = { O: 0, X: 0, D: 0 };
-    updateScores();
-    turnO = true;
-    resetRound();
-    updateStatus("Scores reset. Ready to play");
-};
+}
 
-const setModalState = (modal, isOpen) => {
-    if (!modal) {
-        return;
-    }
-    modal.classList.toggle("show", isOpen);
-    modal.setAttribute("aria-hidden", String(!isOpen));
-};
+// =====================================
+// STATUS
+// =====================================
 
-const showWinnerModal = (winner, isSetWin) => {
-    const winnerLabel = `Player ${winner}`;
-    winnerBadge.textContent = "Winner";
-    winnerTitle.textContent = isSetWin ? `${winnerLabel} wins the set!` : `${winnerLabel} wins the round!`;
-    winnerSubtitle.textContent = isSetWin
-        ? "Champion vibes. Reset scores to play a new set."
-        : "Great moves. Ready for the next round?";
-    setModalState(winnerModal, true);
-};
+function updateStatus() {
 
-const hideWinnerModal = () => {
-    setModalState(winnerModal, false);
-};
+    statusText.textContent = currentPlayer + "'s Turn";
 
-const showStartModal = () => {
-    gameStarted = false;
-    setModalState(startModal, true);
-    boardLocked = true;
-    stopTurnTimer();
-};
+    turnChip.textContent = "Turn: " + currentPlayer;
 
-const hideStartModal = () => {
-    setModalState(startModal, false);
-};
+}
 
-const updateHistory = () => {
+// =====================================
+// SCOREBOARD
+// =====================================
+
+function updateScores() {
+
+    scoreX.textContent = scores.X;
+
+    scoreO.textContent = scores.O;
+
+    scoreD.textContent = scores.D;
+
+}
+
+// =====================================
+// HISTORY
+// =====================================
+
+function updateHistory() {
+
     historyList.innerHTML = "";
-    const recent = moveHistory.slice(-10);
-    recent.forEach((move, index) => {
-        const item = document.createElement("li");
-        const moveNumber = moveHistory.length - recent.length + index + 1;
-        item.textContent = `#${moveNumber} ${move.mark} to cell ${move.index + 1}`;
-        historyList.appendChild(item);
+
+    moveHistory.slice(-10).forEach(move => {
+
+        const li = document.createElement("li");
+
+        li.textContent = `${move.player} → Cell ${move.cell}`;
+
+        historyList.appendChild(li);
+
     });
-};
 
-const clearHints = () => {
-    boxes.forEach((box) => box.classList.remove("hint"));
-};
+}
 
-const syncTurnFromBoard = () => {
-    const countO = boardState.filter((cell) => cell === "O").length;
-    const countX = boardState.filter((cell) => cell === "X").length;
-    turnO = countO === countX;
-};
+// =====================================
+// WINNER CHECK
+// =====================================
 
-const undoMove = () => {
-    if (!moveHistory.length) {
-        return;
-    }
+function getWinner() {
 
-    if (currentResult) {
-        if (currentResult.winner && currentResult.winner !== "D") {
-            scores[currentResult.winner] = Math.max(0, scores[currentResult.winner] - 1);
+    for (const line of WIN_LINES) {
+
+        const [a, b, c] = line;
+
+        if (
+
+            gameBoard[a] &&
+
+            gameBoard[a] === gameBoard[b] &&
+
+            gameBoard[a] === gameBoard[c]
+
+        ) {
+
+            return line;
+
         }
-        if (currentResult.winner === "D") {
-            scores.D = Math.max(0, scores.D - 1);
-        }
-        currentResult = null;
-        updateScores();
+
     }
 
-    const steps = mode === "pvp" ? 1 : 2;
-    for (let i = 0; i < steps; i += 1) {
-        const last = moveHistory.pop();
-        if (!last) {
-            break;
-        }
-        const box = boxes[last.index];
-        boardState[last.index] = "";
-        box.textContent = "";
-        box.disabled = false;
-        box.classList.remove("win", "mark-o", "mark-x");
-    }
-
-    boardLocked = false;
-    boxes.forEach((box) => box.classList.remove("win"));
-    hideWinLine();
-    clearHints();
-    syncTurnFromBoard();
-    updateHistory();
-    updateStatus("Undo applied");
-    triggerCpuMove();
-};
-
-// Run the CPU move with a short delay for pacing.
-const triggerCpuMove = () => {
-    if (mode === "pvp" || boardLocked || turnO) {
-        return;
-    }
-    const available = getAvailableMoves(boardState);
-    if (!available.length) {
-        return;
-    }
-    updateStatus("CPU is thinking...");
-    boardLocked = true;
-    boardEl.classList.add("thinking");
-    setTimeout(() => {
-        let bestMove = null;
-        if (mode === "cpu-easy") {
-            bestMove = randomMove(available);
-        } else if (mode === "cpu-medium") {
-            bestMove = Math.random() < 0.6 ? bestMoveFor(boardState, "X") : randomMove(available);
-        } else {
-            bestMove = bestMoveFor(boardState, "X");
-        }
-        boardLocked = false;
-        boardEl.classList.remove("thinking");
-        placeMark(bestMove, "X", true);
-    }, 450);
-};
-
-const getAvailableMoves = (state) => state
-    .map((cell, index) => (cell ? null : index))
-    .filter((value) => value !== null);
-
-const randomMove = (moves) => moves[Math.floor(Math.random() * moves.length)];
-
-const bestMoveFor = (state, player) => {
-    let bestScore = -Infinity;
-    let move = null;
-    const opponent = player === "O" ? "X" : "O";
-    getAvailableMoves(state).forEach((index) => {
-        const next = [...state];
-        next[index] = player;
-        const score = minimax(next, false, player, opponent, 0);
-        if (score > bestScore) {
-            bestScore = score;
-            move = index;
-        }
-    });
-    if (move === null) {
-        const available = getAvailableMoves(state);
-        return available.length ? randomMove(available) : null;
-    }
-    return move;
-};
-
-// Minimax scoring for the hard CPU decision.
-const minimax = (state, isMax, player, opponent, depth) => {
-    const winner = evaluateWinner(state);
-    if (winner === player) {
-        return 10 - depth;
-    }
-    if (winner === opponent) {
-        return depth - 10;
-    }
-    if (state.every((cell) => cell)) {
-        return 0;
-    }
-
-    const moves = getAvailableMoves(state);
-    if (isMax) {
-        let best = -Infinity;
-        moves.forEach((index) => {
-            const next = [...state];
-            next[index] = player;
-            best = Math.max(best, minimax(next, false, player, opponent, depth + 1));
-        });
-        return best;
-    }
-    let best = Infinity;
-    moves.forEach((index) => {
-        const next = [...state];
-        next[index] = opponent;
-        best = Math.min(best, minimax(next, true, player, opponent, depth + 1));
-    });
-    return best;
-};
-
-const evaluateWinner = (state) => {
-    for (const pattern of winPatterns) {
-        const [a, b, c] = pattern;
-        if (state[a] && state[a] === state[b] && state[a] === state[c]) {
-            return state[a];
-        }
-    }
     return null;
-};
 
-const handleHint = () => {
-    if (boardLocked) {
-        return;
-    }
-    if (mode !== "pvp" && !turnO) {
-        updateStatus("CPU is thinking...");
-        return;
-    }
-    clearHints();
-    const player = turnO ? "O" : "X";
-    const index = bestMoveFor(boardState, player);
-    if (index !== null && boxes[index]) {
-        boxes[index].classList.add("hint");
-    }
-};
+}
 
-const setTheme = (value) => {
-    document.body.dataset.theme = value;
-};
+// =====================================
+// HIGHLIGHT WIN
+// =====================================
 
-const handleKeyShortcuts = (event) => {
-    const tag = event.target.tagName;
-    if (tag === "INPUT" || tag === "SELECT" || tag === "TEXTAREA" || tag === "BUTTON") {
-        return;
-    }
-    if (event.key >= "1" && event.key <= "9") {
-        const index = Number(event.key) - 1;
-        if (boxes[index]) {
-            handleTurn(boxes[index]);
-        }
-        return;
-    }
-    if (event.key === "r" || event.key === "R") {
-        resetRound();
-    }
-    if (event.key === "u" || event.key === "U") {
-        undoMove();
-    }
-    if (event.key === "h" || event.key === "H") {
-        handleHint();
-    }
-    if (event.key === "s" || event.key === "S") {
-        toggleSound();
-    }
-};
+function highlightWin(line) {
 
-const toggleSound = () => {
-    soundEnabled = !soundEnabled;
-    soundToggle.textContent = `Sound: ${soundEnabled ? "On" : "Off"}`;
-    soundToggle.setAttribute("aria-pressed", String(soundEnabled));
-};
+    renderBoard();
 
-// Simple Web Audio beep for click feedback.
-const playTone = (freq, duration) => {
-    if (!soundEnabled) {
-        return;
-    }
-    if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    }
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-    osc.frequency.value = freq;
-    osc.type = "sine";
-    gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
-    osc.connect(gain);
-    gain.connect(audioCtx.destination);
-    osc.start();
-    osc.stop(audioCtx.currentTime + duration);
-};
+    line.forEach(index => {
 
-const showWinLine = (pattern) => {
-    const [start, , end] = pattern;
-    const startBox = boxes[start];
-    const endBox = boxes[end];
-    if (!startBox || !endBox) {
-        return;
-    }
-    const boardRect = boardEl.getBoundingClientRect();
-    const startRect = startBox.getBoundingClientRect();
-    const endRect = endBox.getBoundingClientRect();
-    const x1 = startRect.left + startRect.width / 2 - boardRect.left;
-    const y1 = startRect.top + startRect.height / 2 - boardRect.top;
-    const x2 = endRect.left + endRect.width / 2 - boardRect.left;
-    const y2 = endRect.top + endRect.height / 2 - boardRect.top;
-    const length = Math.hypot(x2 - x1, y2 - y1);
-    const angle = Math.atan2(y2 - y1, x2 - x1) * (180 / Math.PI);
-    winLine.style.left = `${x1}px`;
-    winLine.style.top = `${y1}px`;
-    winLine.style.width = `${length}px`;
-    winLine.style.transform = `rotate(${angle}deg)`;
-    winLine.classList.add("show");
-};
+        board.children[index]
 
-const hideWinLine = () => {
-    winLine.classList.remove("show");
-    winLine.style.width = "0px";
-};
+            .classList.add("win-cell");
 
-const resizeConfetti = () => {
-    confettiCanvas.width = window.innerWidth;
-    confettiCanvas.height = window.innerHeight;
-};
+    });
 
-const launchConfetti = () => {
-    if (!confettiCanvas) {
-        return;
-    }
-    resizeConfetti();
-    const ctx = confettiCanvas.getContext("2d");
-    const pieces = Array.from({ length: 80 }, () => ({
-        x: Math.random() * confettiCanvas.width,
-        y: -20 - Math.random() * 200,
-        w: 6 + Math.random() * 6,
-        h: 10 + Math.random() * 10,
-        vx: -1 + Math.random() * 2,
-        vy: 2 + Math.random() * 3,
-        color: Math.random() > 0.5 ? "#40f5d2" : "#ff7d7d"
-    }));
-    const start = performance.now();
-    const draw = (now) => {
-        ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
-        pieces.forEach((p) => {
-            p.x += p.vx;
-            p.y += p.vy;
-            ctx.fillStyle = p.color;
-            ctx.fillRect(p.x, p.y, p.w, p.h);
-        });
-        if (now - start < 1200) {
-            confettiAnimId = requestAnimationFrame(draw);
-        } else {
-            ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
-            cancelAnimationFrame(confettiAnimId);
-        }
+}
+
+// =====================================
+// MODALS
+// =====================================
+
+function showWinner(player) {
+
+    winnerTitle.textContent = `Player ${player} Wins!`;
+
+    winnerSubtitle.textContent = "Ready for the next round?";
+
+    winnerModal.classList.add("show");
+
+}
+
+function showDraw() {
+
+    winnerTitle.textContent = "Draw!";
+
+    winnerSubtitle.textContent = "Nobody wins this round.";
+
+    winnerModal.classList.add("show");
+
+}
+
+// =====================================
+// NEW ROUND
+// =====================================
+
+function newRound() {
+
+    gameBoard = Array(9).fill("");
+
+    currentPlayer = "X";
+
+    gameOver = false;
+
+    moveHistory = [];
+
+    updateHistory();
+
+    updateStatus();
+
+    winnerModal.classList.remove("show");
+
+    renderBoard();
+
+}
+
+// =====================================
+// RESET SCORES
+// =====================================
+
+function resetScores() {
+
+    scores = {
+
+        X: 0,
+
+        O: 0,
+
+        D: 0
+
     };
-    cancelAnimationFrame(confettiAnimId);
-    confettiAnimId = requestAnimationFrame(draw);
-};
 
-boxes.forEach((box) => {
-    box.addEventListener("click", () => handleTurn(box));
+    updateScores();
+
+    newRound();
+
+}
+// =====================================
+// HANDLE PLAYER MOVE
+// =====================================
+
+function handleMove(index) {
+
+    if (gameOver) return;
+
+    if (gameBoard[index] !== "") return;
+
+    gameBoard[index] = currentPlayer;
+
+    moveHistory.push({
+
+        player: currentPlayer,
+
+        cell: index + 1
+
+    });
+
+    renderBoard();
+
+    updateHistory();
+
+    const winnerLine = getWinner();
+
+    if (winnerLine) {
+
+        gameOver = true;
+
+        highlightWin(winnerLine);
+
+        scores[currentPlayer]++;
+
+        updateScores();
+
+        // ---------- Statistics ----------
+
+        statistics.totalGames++;
+
+        if (currentPlayer === "X") {
+
+            statistics.xWins++;
+
+        } else {
+
+            statistics.oWins++;
+
+        }
+
+        if (statistics.lastWinner === currentPlayer) {
+
+            statistics.currentStreak++;
+
+        } else {
+
+            statistics.currentStreak = 1;
+
+        }
+
+        statistics.lastWinner = currentPlayer;
+
+        if (statistics.currentStreak > statistics.bestStreak) {
+
+            statistics.bestStreak = statistics.currentStreak;
+
+        }
+
+        saveStatistics();
+
+        updateStatisticsUI();
+
+        setTimeout(() => {
+
+            showWinner(currentPlayer);
+
+        }, 400);
+
+        return;
+
+    }
+
+    // ---------- DRAW ----------
+
+    if (!gameBoard.includes("")) {
+
+        gameOver = true;
+
+        scores.D++;
+        updateScores();
+
+        statistics.totalGames++;
+
+        statistics.draws++;
+
+        statistics.currentStreak = 0;
+
+        statistics.lastWinner = null;
+
+        saveStatistics();
+
+        updateStatisticsUI();
+
+        setTimeout(() => {
+
+            showDraw();
+
+        }, 400);
+
+        return;
+
+    }
+
+    // ---------- NEXT TURN ----------
+
+    currentPlayer = currentPlayer === "X" ? "O" : "X";
+
+    updateStatus();
+
+    // ---------- CPU ----------
+
+    if (
+
+        modeSelect.value !== "pvp" &&
+
+        currentPlayer === "O"
+
+    ) {
+
+        setTimeout(cpuMove, 450);
+
+    }
+
+}
+// =====================================
+// CPU MOVE
+// =====================================
+
+function cpuMove() {
+
+    if (gameOver) return;
+
+    const empty = [];
+
+    gameBoard.forEach((cell, index) => {
+
+        if (cell === "") {
+
+            empty.push(index);
+
+        }
+
+    });
+
+    if (empty.length === 0) return;
+
+    let move;
+
+    switch (modeSelect.value) {
+
+        case "cpu-hard":
+
+            move = findBestMove();
+            break;
+
+        case "cpu-medium":
+
+            move = Math.random() < 0.7
+                ? findBestMove()
+                : empty[Math.floor(Math.random() * empty.length)];
+
+            break;
+
+        default:
+
+            move = empty[Math.floor(Math.random() * empty.length)];
+
+    }
+
+    handleMove(move);
+
+}
+
+// =====================================
+// MINIMAX
+// =====================================
+
+function findBestMove() {
+
+    let bestScore = -Infinity;
+
+    let move;
+
+    for (let i = 0; i < 9; i++) {
+        if (gameBoard[i] === "") {
+            gameBoard[i] = "O";
+
+            let score = minimax(gameBoard, false);
+
+            gameBoard[i] = "";
+
+            if (score > bestScore) {
+
+                bestScore = score;
+
+                move = i;
+
+            }
+
+        }
+
+    }
+
+    return move;
+
+}
+
+function minimax(boardState, isMax) {
+
+    const result = evaluateBoard(boardState);
+
+    if (result !== null) {
+
+        return result;
+
+    }
+
+    if (isMax) {
+
+        let best = -Infinity;
+
+        for (let i = 0; i < 9; i++) {
+            if (boardState[i] === "") {
+                boardState[i] = "O";
+
+                best = Math.max(best, minimax(boardState, false));
+
+                boardState[i] = "";
+
+            }
+
+        }
+
+        return best;
+
+    }
+
+    let best = Infinity;
+
+    for (let i = 0; i < 9; i++) {
+
+        if (boardState[i] === "") {
+
+            boardState[i] = "X";
+
+            best = Math.min(best, minimax(boardState, true));
+
+            boardState[i] = "";
+
+        }
+
+    }
+
+    return best;
+
+}
+
+function evaluateBoard(boardState) {
+    for (const line of WIN_LINES) {
+        const [a, b, c] = line;
+
+        if (
+
+            boardState[a] &&
+
+            boardState[a] === boardState[b] &&
+
+            boardState[b] === boardState[c]
+
+        ) {
+
+            return boardState[a] === "O"
+
+                ? 10
+
+                : -10;
+
+        }
+
+    }
+
+    if (!boardState.includes("")) {
+
+        return 0;
+
+    }
+
+    return null;
+
+}
+
+// =====================================
+// HINT
+// =====================================
+
+hintBtn.addEventListener("click", () => {
+
+    const move = findBestMove();
+
+    if (move === undefined) return;
+
+    board.children[move].classList.add("hint-cell");
+
+    setTimeout(() => {
+
+        board.children[move].classList.remove("hint-cell");
+
+    }, 1500);
+
 });
 
-resetRoundBtn.addEventListener("click", resetRound);
-resetAllBtn.addEventListener("click", resetAll);
-hintBtn.addEventListener("click", handleHint);
-undoBtn.addEventListener("click", undoMove);
-soundToggle.addEventListener("click", toggleSound);
-winnerNextBtn.addEventListener("click", () => {
-    hideWinnerModal();
-    resetRound();
+// =====================================
+// UNDO
+// =====================================
+
+undoBtn.addEventListener("click", () => {
+
+    if (moveHistory.length === 0 || gameOver) return;
+
+    const last = moveHistory.pop();
+
+    gameBoard[last.cell - 1] = "";
+
+    currentPlayer = last.player;
+
+    renderBoard();
+
+    updateHistory();
+
+    updateStatus();
+
 });
-winnerCloseBtn.addEventListener("click", hideWinnerModal);
-winnerModal.addEventListener("click", (event) => {
-    if (event.target === winnerModal) {
-        hideWinnerModal();
+
+// =====================================
+// THEME
+// =====================================
+
+themeSelect.addEventListener("change", () => {
+
+    document.body.dataset.theme = themeSelect.value;
+
+});
+
+// =====================================
+// BUTTONS
+// =====================================
+
+newRoundBtn.addEventListener("click", newRound);
+
+winnerNext.addEventListener("click", newRound);
+
+winnerClose.addEventListener("click", () => {
+
+    winnerModal.classList.remove("show");
+
+});
+
+resetAllBtn.addEventListener("click", () => {
+
+    if (confirm("Reset scores and statistics?")) {
+
+        resetScores();
+
+        resetStatistics();
+
     }
+
 });
-startGameBtn.addEventListener("click", () => {
-    gameStarted = true;
-    hideStartModal();
-    resetRound();
-    updateStatus("Make your move");
-    startTurnTimer();
-});
-modeSelect.addEventListener("change", (event) => {
-    mode = event.target.value;
-    resetRound();
-    updateStatus("Mode updated. New round started");
-});
-themeSelect.addEventListener("change", (event) => {
-    setTheme(event.target.value);
-});
-document.addEventListener("keydown", handleKeyShortcuts);
-window.addEventListener("resize", () => {
-    if (winLine.classList.contains("show") && currentResult?.pattern?.length) {
-        showWinLine(currentResult.pattern);
-    }
-    resizeConfetti();
-});
+
+// =====================================
+// START GAME
+// =====================================
+
+loadStatistics();
+
+updateStatisticsUI();
 
 updateScores();
-updateStatus("Ready to play");
-setTheme("neon");
-resizeConfetti();
+
+updateStatus();
+
+renderBoard();
+
 updateHistory();
-if (!gameStarted) {
-    showStartModal();
+
+// =====================================
+// STATISTICS FUNCTIONS
+// =====================================
+
+function saveStatistics() {
+
+    localStorage.setItem(
+        "ticTacToeStatistics",
+        JSON.stringify(statistics)
+    );
+
+    drawSound.pause();
+    drawSound.currentTime = 0;
+    updateScores();
+    newRound();
+}
+
+function loadStatistics() {
+
+    const data = localStorage.getItem("ticTacToeStatistics");
+
+    if (data) {
+
+        statistics = JSON.parse(data);
+
+    }
+
+}
+
+function resetStatistics() {
+
+    statistics = {
+
+        totalGames: 0,
+        xWins: 0,
+        oWins: 0,
+        draws: 0,
+        currentStreak: 0,
+        bestStreak: 0,
+        lastWinner: null
+
+    };
+
+    saveStatistics();
+
+    updateStatisticsUI();
+
+}
+
+function updateStatisticsUI() {
+
+    statGames.textContent = statistics.totalGames;
+
+    statXWins.textContent = statistics.xWins;
+
+    statOWins.textContent = statistics.oWins;
+
+    statDraws.textContent = statistics.draws;
+
+    statCurrent.textContent = statistics.currentStreak;
+
+    statBest.textContent = statistics.bestStreak;
+
+    const total = statistics.totalGames || 1;
+
+    const xRate = Math.round((statistics.xWins / total) * 100);
+
+    const oRate = Math.round((statistics.oWins / total) * 100);
+
+    xRateText.textContent = `${xRate}%`;
+    oRateText.textContent = `${oRate}%`;
+
+    xRateBar.style.width = `${xRate}%`;
+    oRateBar.style.width = `${oRate}%`;
+
 }

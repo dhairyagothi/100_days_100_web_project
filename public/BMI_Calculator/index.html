@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -187,55 +187,26 @@
             <p class="card-title">Reference chart</p>
           </div>
 
-          <table class="bmi-table">
-            <thead>
-              <tr>
-                <th>BMI</th>
-                <th>Category</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>&lt; 18.5</td>
-                <td>Underweight</td>
-                <td><span class="dot dot-blue"></span></td>
-              </tr>
-              <tr>
-                <td>18.5 – 24.9</td>
-                <td>Normal weight</td>
-                <td><span class="dot dot-green"></span></td>
-              </tr>
-              <tr>
-                <td>25.0 – 29.9</td>
-                <td>Overweight</td>
-                <td><span class="dot dot-amber"></span></td>
-              </tr>
-              <tr>
-                <td>30.0 – 34.9</td>
-                <td>Obese (Class I)</td>
-                <td><span class="dot dot-red1"></span></td>
-              </tr>
-              <tr>
-                <td>35.0 – 39.9</td>
-                <td>Obese (Class II)</td>
-                <td><span class="dot dot-red2"></span></td>
-              </tr>
-              <tr>
-                <td>≥ 40.0</td>
-                <td>Obese (Class III)</td>
-                <td><span class="dot dot-red3"></span></td>
-              </tr>
-            </tbody>
-          </table>
+  <section class="hero">
+    <h4 class="hero-subtitle">WELCOME TO</h4>
+    <h1 class="hero-title">BMI CALCULATOR</h1>
+    <p class="hero-text">Know Your Health Status</p>
+    <button class="cta-btn">Start Now</button>
+  </section>
 
-          <div class="chart-wrap">
-            <canvas id="bmiChart"></canvas>
-          </div>
-          <p class="chart-hint">
-            BMI history — calculate multiple times to track changes.
-          </p>
-        </div>
+  <section class="features">
+    <h2>Check Your Body Mass Index</h2>
+    <p>Calculate your BMI easily & quickly!</p>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <i class="fas fa-heart"></i>
+        <h3>Track Your BMI</h3>
+        <p>Monitor your Body Mass Index for better health.</p>
+      </div>
+      <div class="feature-card">
+        <i class="fas fa-clipboard-list"></i>
+        <h3>Get Health Tips</h3>
+        <p>Receive useful advice for a healthier life.</p>
       </div>
  
       <!-- History Section -->
@@ -266,8 +237,11 @@
         </div>
       </div>
     </div>
+  </section>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-    <script src="script.js"></script>
-  </body>
+  <script src="script.js"></script>
+  <footer class="footer">
+    <p>© 2026 FitTrack Pro | Designed by Visionary Creators</p>
+  </footer>
+</body>
 </html>

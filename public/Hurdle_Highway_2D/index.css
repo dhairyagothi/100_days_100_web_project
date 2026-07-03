@@ -101,6 +101,7 @@ body {
   color: #ff7a00;
 }
 
+/* Scoreboard: expanded to fit 3 rows */
 .scoreboard {
   display: flex;
   flex-direction: column;
@@ -108,9 +109,9 @@ body {
   align-items: center;
   border: 2px solid black;
   border-radius: 8px;
-  height: 100px;
+  height: 120px;
   width: 200px;
-  gap: 20px;
+  gap: 14px;
   background-color: #111827;
   border-radius: 8px;
   border: 2px solid #00ffff;
@@ -137,6 +138,15 @@ body {
   font-size: 20px;
 }
 
+/* Best score in scoreboard — gold tint to stand out */
+#scorepara3 {
+  font-family: "BBH Bogle", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: #ffd700;
+  font-size: 18px;
+}
+
 #gameover {
   visibility: hidden;
   display: flex;
@@ -159,7 +169,6 @@ body {
   z-index: 10;
   border: 3px solid #00ffff;
   box-shadow: 0 0 20px rgba(0, 255, 255, 0.6);
-  /* gap: 0px; */
 }
 
 #scorepara {
@@ -168,6 +177,17 @@ body {
   right: 0px;
   color: #ff7a00;
   font-size: 28px;
+  font-family: "BBH Bogle", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* Best score on game over screen — gold, slightly smaller */
+#highscorepara {
+  position: relative;
+  top: 26px;
+  color: #ffd700;
+  font-size: 22px;
   font-family: "BBH Bogle", sans-serif;
   font-weight: 400;
   font-style: normal;
