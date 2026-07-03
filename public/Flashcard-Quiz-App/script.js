@@ -190,6 +190,8 @@ function loadBestTimedScore() {
     const best = localStorage.getItem("bestTimedScore");
     if (best) {
         bestTimedScoreEl.textContent = best;
+    } else {
+        bestTimedScoreEl.textContent = "0";
     }
 }
 loadBestTimedScore();
@@ -214,6 +216,8 @@ function startTimedChallenge() {
     disableEditing(true);
     closeResultsModal();
     
+    // Set initial stats display
+    countdownEl.textContent = timeLeft;
     updateTimedStats();
     updateCardDisplay();
     
@@ -255,7 +259,14 @@ function endTimedChallenge() {
     const accuracy = timedAttempted > 0 
         ? Math.round((timedCorrect / timedAttempted) * 100) 
         : 0;
-    const bestScore = localStorage.getItem("bestTimedScore") || 0;
+    
+    // Update best score
+    let bestScore = parseInt(localStorage.getItem("bestTimedScore") || 0);
+    if (finalScore > bestScore) {
+        bestScore = finalScore;
+        localStorage.setItem("bestTimedScore", bestScore);
+        bestTimedScoreEl.textContent = bestScore;
+    }
     
     finalScoreEl.textContent = finalScore;
     finalCorrectEl.textContent = timedCorrect;
