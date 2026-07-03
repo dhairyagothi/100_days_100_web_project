@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <title>AI Resume Analyzer</title>
 
-  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="style.css" />
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+  <script src="https://unpkg.com/mammoth/mammoth.browser.min.js"></script>
   <style>
     .header-icon {
       width: 32px;
@@ -22,6 +22,7 @@
       display: inline-block;
       vertical-align: middle;
     }
+
     .insight-icon {
       width: 24px;
       height: 24px;
@@ -30,6 +31,7 @@
       display: inline-block;
       vertical-align: middle;
     }
+
     .suggestion-icon-svg {
       width: 24px;
       height: 24px;
@@ -39,146 +41,341 @@
       vertical-align: middle;
       animation: pulseGlow 1.8s infinite alternate ease-in-out;
     }
+
     @keyframes pulseGlow {
-      0% { filter: drop-shadow(0 0 1px rgba(106, 255, 203, 0.4)); transform: scale(1); }
-      100% { filter: drop-shadow(0 0 5px rgba(106, 255, 203, 0.8)); transform: scale(1.05); }
+      0% {
+        filter: drop-shadow(0 0 1px rgba(106, 255, 203, 0.4));
+        transform: scale(1);
+      }
+
+      100% {
+        filter: drop-shadow(0 0 5px rgba(106, 255, 203, 0.8));
+        transform: scale(1.05);
+      }
     }
-    h1, h2 {
+
+    h1,
+    h2 {
       display: flex;
       align-items: center;
     }
+
+    .home-btn {
+      display: inline-flex;
+      align-items: center;
+      text-decoration: none;
+      background: #1e293b;
+      color: #3b82f6;
+      border: 1px solid #3b82f6;
+      border-radius: 8px;
+      padding: 8px 16px;
+      transition: all 0.2s ease;
+      margin: 16px;
+      font-weight: 500;
+      font-size: 0.9rem;
+    }
+
+    .home-btn:hover {
+      background: #3b82f6;
+      color: #fff;
+    }
+
+    /* Header and Navbar */
+
+    .nav1 {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 3rem;
+      background: #fff;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar h1 {
+      color: #fff;
+    }
+
+    .logo {
+      font-weight: 700;
+      font-size: 1.3rem;
+      color: #4b49ac;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #333;
+      font-weight: 500;
+    }
+
+    .contact-btn {
+      border: 2px solid #4b49ac;
+      padding: 0.4rem 1rem;
+      border-radius: 5px;
+      color: #4b49ac;
+    }
+
+    .hero {
+      background: linear-gradient(to right, #4b49ac 50%, rgba(75, 73, 172, 0.345) 70%),
+        url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVLhupJpnQcGrzIiisuZWm5LYnIoKomLFAY08flsFyeg&s=10") no-repeat right center;
+      background-size: cover;
+      color: #fff;
+      padding: 2rem 3rem;
+      text-align: center;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+
+    .home-btn {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
+
+    .header-icon {
+      width: 28px;
+      height: 28px;
+      fill: #fff;
+    }
+
+    .theme-toggle-wrapper button {
+      background: transparent;
+      border: none;
+      font-size: 1.4rem;
+      cursor: pointer;
+      color: #fff;
+    }
+
+    .hero-content h2 {
+      font-size: 2.2rem;
+      margin-bottom: 1rem;
+    }
+
+    .hero-content p {
+      font-size: 1.1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .cta-btn {
+      background: #fff;
+      color: #4b49ac;
+      border: none;
+      padding: 0.8rem 1.5rem;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .cta-btn:hover {
+      color: #fff;
+      transition: 1s ease-out;
+      background: #4242d5;
+    }
+
+    /* Footer */
+    .footer {
+      display: flex;
+      justify-content: space-around;
+      align-items: flex-start;
+      background: #4b49ac;
+      color: #ddd;
+      padding: 2rem 3rem;
+      flex-wrap: wrap;
+    }
+
+    .footer a {
+      color: #ddd;
+      text-decoration: none;
+      margin-right: 1rem;
+    }
+
+    .social-icons a {
+      font-size: 1.3rem;
+      margin-right: 0.5rem;
+    }
   </style>
 </head>
-<body>
-<a href="../../index.html" class="home-btn">
-    ← Back to Home
-</a>
-  <div class="container">
 
-    <header class="hero">
+<body>
+  <!-- Navbar -->
+  <nav class="nav1">
+    <div class="logo">AI Resume Analyzer</div>
+    <ul class="nav-links">
+      <li><a href="#">Home</a></li>
+      <li><a href="#">Features</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="#" class="contact-btn">Contact</a></li>
+    </ul>
+  </nav>
+  <header class="hero">
+    <nav class="navbar">
+      <a href="../../index.html" class="home-btn">← Back to Home</a>
+      <div class="nav-center">
+        <h1 class="logo">
+          <svg class="header-icon" viewBox="0 0 24 24">
+            <path
+              d="M12 2c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L4.35 19.4c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0l2.79-2.79C10.07 18.67 11.01 19 12 19c4.97 0 9-4.03 9-9s-4.03-9-9-9zm0 15c-3.86 0-7-3.14-7-7s3.14-7 7-7 7 3.14 7 7-3.14 7-7 7zm-3-8c-.83 0-1.5.67-1.5 1.5S8.17 12 9 12s1.5-.67 1.5-1.5S9.83 9 9 9zm6 0c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5S15.83 9 15 9z" />
+          </svg>
+          AI Resume Analyzer
+        </h1>
+      </div>
       <div class="theme-toggle-wrapper">
-        <button id="themeToggle" aria-label="Toggle Theme">
-          🌙
+        <button id="themeToggle" aria-label="Toggle Theme">🌙</button>
+      </div>
+    </nav>
+
+    <div class="hero-content">
+      <h2>Boost Your Resume with AI</h2>
+      <p>Analyze your resume and improve your ATS score with advanced AI technology.</p>
+      <button class="cta-btn">Upload Your Resume</button>
+    </div>
+  </header>
+
+
+  <section class="upload-section">
+
+    <div class="upload-card">
+
+      <h2>Upload Resume</h2>
+
+      <div class="upload-box" id="dropZone">
+
+        <input type="file" id="resumeInput" hidden />
+
+        <button id="uploadBtn">
+          Upload Resume
         </button>
+
+        <p class="drag-text">
+          or drag & drop your resume here
+        </p>
+
+        <p id="fileName">
+          No file selected
+        </p>
+
       </div>
 
-      <h1><svg class="header-icon" viewBox="0 0 24 24"><path d="M12 2c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L4.35 19.4c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0l2.79-2.79C10.07 18.67 11.01 19 12 19c4.97 0 9-4.03 9-9s-4.03-9-9-9zm0 15c-3.86 0-7-3.14-7-7s3.14-7 7-7 7 3.14 7 7-3.14 7-7 7zm-3-8c-.83 0-1.5.67-1.5 1.5S8.17 12 9 12s1.5-.67 1.5-1.5S9.83 9 9 9zm6 0c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5S15.83 9 15 9z"/></svg> AI Resume Analyzer
-      </h1>
+    </div>
+
+  </section>
+
+  <section class="jd-section">
+
+    <div class="upload-card">
+
+      <h2>Paste Job Description</h2>
+
+      <textarea id="jobDescription" rows="8" placeholder="Paste the job description here..."></textarea>
+
+      <button id="matchBtn">
+        Match Resume with JD
+      </button>
+
+    </div>
+
+  </section>
+
+  <section class="stats-section">
+
+    <div class="stats-card">
+      <h2>Resume Statistics</h2>
+
+      <div class="stats-grid">
+
+        <div class="stat-item">
+          <span>File Type</span>
+          <strong id="statType">-</strong>
+        </div>
+
+        <div class="stat-item">
+          <span>File Size</span>
+          <strong id="statSize">-</strong>
+        </div>
+
+        <div class="stat-item">
+          <span>Last Modified</span>
+          <strong id="statModified">-</strong>
+        </div>
+        <div class="stat-item">
+          <span>Reading Time</span>
+          <strong id="statReadTime">-</strong>
+        </div>
+
+        <div class="stat-item">
+          <span>Word Count</span>
+          <strong id="statWords">-</strong>
+        </div>
+
+        <div class="stat-item">
+          <span>Characters</span>
+          <strong id="statCharacters">-</strong>
+        </div>
+      </div>
+    </div>
+
+  </section>
+  <section id="loadingSection" class="loading-section" style="display:none;">
+    <div class="loading-card">
+
+      <div class="loader"></div>
+
+      <h2>Analyzing Resume...</h2>
 
       <p>
-        Analyze your resume and improve your ATS score
+        Evaluating ATS compatibility,
+        skills, projects, and keywords.
       </p>
 
-    </header>
+    </div>
+  </section>
 
-    <section class="upload-section">
+  <section class="dashboard-grid" id="resultsSection" style="display:none;">
 
-      <div class="upload-card">
+    <div class="score-card">
 
-        <h2>Upload Resume</h2>
+      <h2>ATS Score</h2>
 
-        <div class="upload-box" id="dropZone">
+      <div class="meter-wrapper">
 
-          <input
-            type="file"
-            id="resumeInput"
-            hidden
-          />
+        <div class="progress-ring">
 
-          <button id="uploadBtn">
-            Upload Resume
-          </button>
+          <svg class="progress-svg" width="200" height="200">
 
-          <p class="drag-text">
-            or drag & drop your resume here
-          </p>
+            <circle class="progress-bg" cx="100" cy="100" r="85"></circle>
 
-          <p id="fileName">
-            No file selected
-          </p>
+            <circle class="progress-circle" id="progressCircle" cx="100" cy="100" r="85"></circle>
 
-        </div>
+          </svg>
 
-      </div>
+          <div class="meter-content">
 
-    </section>
+            <h2 id="meterScore">
+              0%
+            </h2>
 
-    <section class="stats-section">
-
-      <div class="stats-card">
-        <h2>Resume Statistics</h2>
-
-        <div class="stats-grid">
-
-          <div class="stat-item">
-            <span>File Type</span>
-            <strong id="statType">-</strong>
-          </div>
-
-          <div class="stat-item">
-            <span>File Size</span>
-            <strong id="statSize">-</strong>
-          </div>
-
-          <div class="stat-item">
-            <span>Last Modified</span>
-            <strong id="statModified">-</strong>
-          </div>
-
-          <div class="stat-item">
-            <span>Reading Time</span>
-            <strong id="statReadTime">-</strong>
-          </div>
-
-        </div>
-      </div>
-
-    </section>
-
-    <section class="dashboard-grid">
-
-      <div class="score-card">
-
-        <h2>ATS Score</h2>
-
-        <div class="meter-wrapper">
-
-          <div class="progress-ring">
-
-            <svg
-              class="progress-svg"
-              width="200"
-              height="200"
-            >
-
-              <circle
-                class="progress-bg"
-                cx="100"
-                cy="100"
-                r="85"
-              ></circle>
-
-              <circle
-                class="progress-circle"
-                id="progressCircle"
-                cx="100"
-                cy="100"
-                r="85"
-              ></circle>
-
-            </svg>
-
-            <div class="meter-content">
-
-              <h2 id="meterScore">
-                0%
-              </h2>
-
-              <p>
-                ATS Compatible
-              </p>
-
-            </div>
+            <p>
+              Compatible
+            </p>
 
           </div>
 
@@ -186,87 +383,156 @@
 
       </div>
 
-      <div class="chart-card">
+    </div>
 
-        <h2>Resume Analysis</h2>
+    <div class="chart-card">
 
-        <canvas id="skillsChart"></canvas>
+      <h2>Resume Analysis</h2>
 
+      <canvas id="skillsChart"></canvas>
+
+    </div>
+
+  </section>
+
+  <section class="insights-section" id="insightsSection" style="display:none;">
+
+    <h2><svg class="insight-icon" viewBox="0 0 24 24">
+        <path
+          d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" />
+      </svg> Resume Insights</h2>
+
+    <div class="insights-grid">
+
+      <div class="insight-card">
+        <h3>
+          Technical Skills
+          <span id="techScore">0%</span>
+        </h3>
+
+        <div class="progress-bar">
+          <div class="progress-fill tech" id="techBar"></div>
+        </div>
       </div>
 
-    </section>
+      <div class="insight-card">
+        <h3>
+          Projects
+          <span id="projectsScore">0%</span>
+        </h3>
 
-    <section class="insights-section">
-
-      <h2><svg class="insight-icon" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg> Resume Insights</h2>
-
-      <div class="insights-grid">
-
-        <div class="insight-card">
-          <h3>Technical Skills</h3>
-          <div class="progress-bar">
-            <div class="progress-fill tech"></div>
-          </div>
+        <div class="progress-bar">
+          <div class="progress-fill projects" id="projectsBar"></div>
         </div>
-
-        <div class="insight-card">
-          <h3>Projects</h3>
-          <div class="progress-bar">
-            <div class="progress-fill projects"></div>
-          </div>
-        </div>
-
-        <div class="insight-card">
-          <h3>Communication</h3>
-          <div class="progress-bar">
-            <div class="progress-fill communication"></div>
-          </div>
-        </div>
-
-        <div class="insight-card">
-          <h3>Experience</h3>
-          <div class="progress-bar">
-            <div class="progress-fill experience"></div>
-          </div>
-        </div>
-
       </div>
 
-    </section>
+      <div class="insight-card">
+        <h3>
+          Communication
+          <span id="communicationScore">0%</span>
+        </h3>
 
-    <section class="suggestions-section">
-
-      <h2><svg class="suggestion-icon-svg" viewBox="0 0 24 24"><path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7zm2.85 11.1l-.85.6V16h-4v-2.3l-.85-.6C7.8 12.16 7 10.63 7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.63-.8 3.16-2.15 4.1z"/></svg> AI Suggestions</h2>
-
-      <div class="suggestions-grid">
-
-        <div class="suggestion-card">
-          Add more quantified project achievements.
+        <div class="progress-bar">
+          <div class="progress-fill communication" id="communicationBar"></div>
         </div>
-
-        <div class="suggestion-card">
-          Include keywords like React, APIs, and Node.js.
-        </div>
-
-        <div class="suggestion-card">
-          Improve resume summary section.
-        </div>
-
-        <div class="suggestion-card">
-          Add GitHub and portfolio links.
-        </div>
-
       </div>
 
-      <button id="downloadReportBtn" class="download-btn">
-        Download Report
-      </button>
-      
-    </section>
+      <div class="insight-card">
+        <h3>
+          Experience
+          <span id="experienceScore">0%</span>
+        </h3>
+
+        <div class="progress-bar">
+          <div class="progress-fill experience" id="experienceBar"></div>
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+
+  <section class="suggestions-section" id="suggestionsSection" style="display:none;">
+
+    <h2><svg class="suggestion-icon-svg" viewBox="0 0 24 24">
+        <path
+          d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7zm2.85 11.1l-.85.6V16h-4v-2.3l-.85-.6C7.8 12.16 7 10.63 7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.63-.8 3.16-2.15 4.1z" />
+      </svg> AI Suggestions</h2>
+
+
+    <div class="suggestions-grid">
+
+      <div class="suggestion-card suggestion-text">
+        Add more quantified project achievements.
+      </div>
+
+      <div class="suggestion-card suggestion-text">
+        Include keywords like React, APIs, and Node.js.
+      </div>
+
+      <div class="suggestion-card suggestion-text">
+        Improve resume summary section.
+      </div>
+
+      <div class="suggestion-card suggestion-text">
+        Add GitHub and portfolio links.
+      </div>
+
+    </div>
+
+    <button id="downloadReportBtn" class="download-btn">
+      Download Report
+    </button>
+
+  </section>
+
+  <section class="jd-results-section" id="jdResults" style="display:none;">
+
+    <div class="stats-card">
+
+      <h2>Job Match Analysis</h2>
+
+      <h3>
+        Match Score:
+        <span id="matchScore">0%</span>
+      </h3>
+
+      <br>
+
+      <h3>Matched Skills ✅</h3>
+      <ul id="matchedSkills"></ul>
+
+      <br>
+
+      <h3>Missing Skills ❌</h3>
+      <ul id="missingSkills"></ul>
+
+    </div>
+
+  </section>
 
   </div>
-
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-left">
+      <p>100 Days 100 Web Projects</p>
+      <p>© 2026 AI Resume Analyzer. All rights reserved.</p>
+    </div>
+    <div class="footer-center">
+      <a href="#">GitHub Repository</a>
+      <a href="#">Privacy Policy</a>
+    </div>
+    <div class="footer-right">
+      <p>Follow Us</p>
+      <div class="social-icons">
+        <a href="#">🐦</a>
+        <a href="#">💼</a>
+        <a href="#">💻</a>
+      </div>
+    </div>
+  </footer>
   <script src="script.js"></script>
 
 </body>
+
 </html>

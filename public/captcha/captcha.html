@@ -3,53 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CAPTCHA</title>
+    <title>CAPTCHA Challenge</title>
     <link rel="stylesheet" href="captcha.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="icon" href="../favv.png" type="image/x-icon" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
 
-    <div class="container">
+    <nav class="navbar">
+        <a href="/" class="project-back-button">← Back to Home</a>
+
+        <a href="captcha.html" class="logo">
+            📖 Captcha
+        </a>
+
+        <ul class="nav-links">
+            <li>
+                <a href="captcha.html">Home</a>
+            </li>
+            <li>
+                <a href="generate.html">Generate Captcha</a>
+            </li>
+            <li>
+                <a href="dashboard.html">Dashboard</a>
+            </li>
+        </ul>
+
+        <button id="themeToggle" class="theme" aria-label="Toggle dark/light mode">
+            <span id="themeIcon" aria-hidden="true">☀️</span>
+        </button>
+    </nav>
+
+    <main class="container">
         <div class="hero">
             <span class="eyebrow">Interactive Security Check</span>
-            <header>CAPTCHA Challenge</header>
+            <h1>CAPTCHA Challenge</h1>
             <p class="intro">Choose a CAPTCHA mode, solve the challenge, and submit to verify you're human.</p>
+            <a href="generate.html" class="button">Generate Captcha</a>
         </div>
+    </main>
 
-        <div class="field">
-            <label for="captchaType">Select CAPTCHA type</label>
-            <select id="captchaType">
-                <option value="text">Text</option>
-                <option value="image">Image</option>
-                <option value="audio">Audio</option>
-                <option value="math">Math</option>
-            </select>
+    <footer class="footer">
+        <section id="footer-container">
+
+            <div class="footer-section">
+                <h4>Follow Us</h4>
+                <div class="social-links">
+                    <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" aria-label="Discord"><i class="fab fa-discord"></i></a>
+                </div>
+            </div>
+        </section>
+
+        <div class="footer-bottom">
+            <p>© 2025 Captcha is a modern, front-end verification demo.</p>
         </div>
+    </footer>
 
-        <div class="field voice-field hidden" id="voiceField">
-            <label for="voiceSelect">Select voice</label>
-            <select id="voiceSelect"></select>
-        </div>
-
-        <div id="captchaContainer" aria-live="polite"></div>
-
-        <div class="field textcaptcha">
-            <label for="captchaInput">Your answer</label>
-            <input id="captchaInput" type="text" placeholder="Enter CAPTCHA">
-        </div>
-
-        <div class="actions">
-            <button class="refresh" aria-label="Refresh CAPTCHA">↻</button>
-            <button class="submit" type="button">Submit CAPTCHA</button>
-        </div>
-
-        <p class="result" aria-live="assertive"></p>
-    </div>
     <script src="captcha.js"></script>
-</body> 
+</body>
 </html>

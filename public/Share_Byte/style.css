@@ -1,34 +1,224 @@
-/* Reset and Base Styles */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: Segoe UI, sans-serif
 }
 
 body {
-    background-color: #f4f7f6;
-    color: #333;
-    padding-bottom: 30px;
+    background: #0b6b2a;
+    color: #fff;
+    overflow-y: scroll;
 }
 
-/* Header */
-.app-header {
+.sidebar {
+    position: fixed;
+    width: 60px;
+    height: 100vh;
+    background: #115a25;
+    padding-top: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px
+}
+
+.sidebar a {
+    text-decoration: none;
+    color: #fff;
+    font-size: 12px;
+    text-align: center
+}
+
+header {
+    margin-left: 60px;
+    padding: 25px 50px;
     background: linear-gradient(135deg, #1e7e34, #28a745);
-    color: white;
-    text-align: center;
-    padding: 25px 15px;
-    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center
 }
 
-.app-header h1 span {
-    color: #ffc107;
+.logo {
+    font-size: 42px;
+    font-weight: 700
 }
+
+nav {
+    display: flex;
+    gap: 35px;
+    align-items: center
+}
+a{
+    text-decoration: none;
+    color: #fff;
+}
+a:hover{
+   height: 20px;
+   border-radius: 20px;
+   background :#eef6df ;
+   color:#145c26;
+}
+
+nav button,
+.orange {
+    background: #ff922d;
+    border: none;
+    cursor: pointer;
+    color: #fff;
+    padding: 14px 28px;
+    border-radius: 7px
+}
+
+.hero {
+    background: linear-gradient(
+                to right,
+                #008000 20%,         
+                transparent 50%       
+              ),
+              url("images/hero1.png"); 
+
+  background-size: cover;       
+  background-repeat: no-repeat;
+  background-position: right center; 
+  background-attachment: fixed;  
+  color: #fff;
+    margin-left: 60px;
+    padding: 40px 60px;
+    display: flex;
+}
+
+.left h1 {
+    font-size: 64px
+}
+
+.left p {
+    margin: 25px 0;
+    font-size: 24px
+}
+
+.green {
+    cursor: pointer;
+    background: #47a948;
+    border: none;
+    color: #fff;
+    padding: 14px 28px;
+    border-radius: 7px
+}
+.green:hover,
+.orange:hover{
+   background :#eef6df ;
+   color:#145c26;
+}
+.right {
+    flex: 1;
+    background: #8cc69a;
+    height: 340px;
+    border-radius: 20px
+}
+
+.cards {
+    margin: 40px 60px 0 120px;
+    background: #eef6df;
+    color: #194b20;
+    padding: 30px;
+    border-radius: 20px
+}
+.img{
+  width:90% ;
+  height: 300px; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  overflow: hidden; 
+  border-radius: 10px; 
+}
+.img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* fills box while keeping aspect ratio */
+  border-radius: inherit; /* matches parent’s rounded corners */
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
+    margin-top: 25px
+}
+
+.card {
+    background: white;
+    padding: 15px;
+    border-radius: 15px;
+    text-align: center
+}
+
+.img {
+    height: 140px;
+    background: #ddd;
+    border-radius: 10px
+}
+
+.card button {
+    margin-top: 15px;
+    background: #ff922d;
+    border: none;
+    cursor: pointer;
+    padding: 12px 20px;
+    color: #fff;
+    border-radius: 8px
+}
+
+.renew {
+    background: linear-gradient(
+                to right,
+                #008000 20%,       
+                transparent 50%     
+              ),
+              url("images/hero2.png"); 
+
+  background-size: cover;        
+  background-repeat: no-repeat;
+  background-position: right center;
+  background-attachment: fixed;  
+  color: #fff;
+    margin: 40px 60px 0 120px;
+    padding: 50px;
+  
+}
+
+.learn{
+     background: #eef6df;
+    color: #194b20;
+    cursor: pointer;
+    height: 40px;
+    width: 300px;
+    text-align: center;
+    border-radius: 4px;
+}
+.stats {
+    margin: 30px 60px 0 120px;
+    background: #eef6df;
+    color: #145c26;
+    display: flex;
+    justify-content: space-around;
+    padding: 40px
+}
+
+footer {
+    margin: 40px 60px 0 120px;
+    padding: 30px;
+    background: #0d5a23;
+    display: flex;
+    justify-content: space-around
+}
+
 
 /* Layout Container */
 .main-container {
     max-width: 1000px;
-    margin: 0 auto;
+    margin: 100px auto;
     padding: 0 15px;
     display: grid;
     grid-template-columns: 1fr;
