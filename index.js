@@ -1,3 +1,33 @@
+
+const COMPLETED_PROJECTS_KEY = "completedProjects";
+
+function getCompletedProjects() {
+  return JSON.parse(localStorage.getItem(COMPLETED_PROJECTS_KEY) || "[]");
+}
+
+function saveCompletedProjects(projects) {
+  localStorage.setItem(COMPLETED_PROJECTS_KEY, JSON.stringify(projects));
+}
+
+function isProjectCompleted(day) {
+  return getCompletedProjects().includes(day);
+}
+
+function toggleProjectCompletion(day) {
+  const completed = getCompletedProjects();
+
+  if (completed.includes(day)) {
+    saveCompletedProjects(completed.filter(d => d !== day));
+  } else {
+    completed.push(day);
+    saveCompletedProjects(completed);
+  }
+
+  updateProgressDashboard();
+  renderGrid();
+}
+
+
 /* ============================================================
    CONFIGURATION
    ============================================================ */
@@ -973,6 +1003,8 @@ const filtered = searchResults.filter((project) => {
     const url = project.projectPath;
     const tags = project.techStack;
 
+    const completed = isProjectCompleted(day);
+
     const category = getCategoryFromTags(tags, name);
     const card = document.createElement("div");
 
@@ -993,6 +1025,21 @@ const filtered = searchResults.filter((project) => {
       : "project-card visible";
 
     card.innerHTML = html;
+
+    const completeBtn = document.createElement("button");
+
+completeBtn.className = "complete-project-btn";
+completeBtn.textContent = completed
+  ? "✅ Completed"
+  : "✔ Mark Complete";
+
+completeBtn.addEventListener("click", (e) => {
+  e.stopPropagation();
+  toggleProjectCompletion(day);
+});
+
+
+card.appendChild(completeBtn);
     card.setAttribute("tabindex", "0");
     card.setAttribute("role", "button");
     attachProjectCardInteraction(card, demoUrl, project);

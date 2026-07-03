@@ -57,6 +57,35 @@
       href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Orbitron:wght@500;600;700&display=swap"
       rel="stylesheet"
     />
+
+
+    .progress-dashboard{
+  margin:20px 0;
+  padding:20px;
+  border-radius:12px;
+}
+
+.progress-bar-wrapper{
+  width:100%;
+  height:12px;
+  background:#ddd;
+  border-radius:10px;
+  overflow:hidden;
+}
+
+.progress-bar{
+  width:0%;
+  height:100%;
+  transition:0.3s ease;
+}
+
+.complete-project-btn{
+  margin-top:10px;
+  width:100%;
+  cursor:pointer;
+}
+
+
    <link
   rel="stylesheet"
   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
@@ -413,6 +442,20 @@
             <i class="fas fa-filter-circle-xmark" aria-hidden="true"></i> Clear Filters
           </button>
         </div>
+
+
+        <div class="progress-dashboard">
+  <h3>Learning Progress</h3>
+
+  <div class="progress-bar-wrapper">
+    <div id="progressBar" class="progress-bar"></div>
+  </div>
+
+  <p id="progressText">0 / 218 completed</p>
+
+  <div id="achievementBadges"></div>
+</div>
+
 
         <div class="project-grid" id="projectGrid"></div>
 
