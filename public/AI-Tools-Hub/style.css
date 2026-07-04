@@ -17,7 +17,18 @@
   --glass-border: rgba(255, 255, 255, 0.2);
   --shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
-
+.light-theme {
+  --text: #0f172a;
+  --text-muted: #475569;
+  --white: #1e293b;
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(15, 23, 42, 0.08);
+  --shadow: 0 8px 32px rgba(15, 23, 42, 0.05);
+}
+body.light-theme {
+  color: var(--text);
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 50%, #e2e8f0 100%);
+}
 body {
   font-family:
     'Inter',
@@ -841,4 +852,84 @@ a:focus-visible,
 button:focus-visible {
   outline: 3px solid rgba(99, 102, 241, 0.6);
   outline-offset: 2px;
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 10px;
+}
+
+.search-gradient {
+    position: relative;
+    padding: 3px;
+    border-radius: 50px;
+    background: linear-gradient(270deg,
+            #ff4d4d,
+            #ff9f43,
+            #7bed9f,
+            #70a1ff,
+            #a55eea);
+    background-size: 500% 500%;
+    animation: gradientMove 6s linear infinite;
+}
+
+.search-gradient input {
+    width: 100%;
+    padding: 15px 50px 15px 15px;
+    border: none;
+    border-radius: 50px;
+    outline: none;
+}
+
+.search-gradient i {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+@keyframes gradientMove {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    100% {
+        background-position: 100% 50%;
+    }
+}
+
+
+.filter {
+  flex: 0.4;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 8px;
+}
+
+.filter select{
+    height: 40px;
+  border-radius: 20px;
+  background-color: var(--accent) ;
+  border-color: #00f5ff;
+}
+
+.load-more {
+    display: block;
+    margin: 30px auto;
+    padding: 10px 20px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.load-more:hover {
+    background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
 }

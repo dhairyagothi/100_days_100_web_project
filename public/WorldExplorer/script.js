@@ -1,52 +1,51 @@
-
 // ─── State ───────────────────────────────────────────────────
-let allCountries   = [];          // raw data from API
-let filtered       = [];          // current filtered/sorted list
-let favorites      = new Set();   // stored in localStorage
-let showFavsOnly   = false;       // favourites filter toggle
-let currentCountry = null;        // country open in modal
-let comparisonList = [];        // countries to compare (max 2)
+let allCountries = []; // raw data from API
+let filtered = []; // current filtered/sorted list
+let favorites = new Set(); // stored in localStorage
+let showFavsOnly = false; // favourites filter toggle
+let currentCountry = null; // country open in modal
+let comparisonList = []; // countries to compare (max 2)
 
 // ─── DOM References ─────────────────────────────────────────
-const cardsGrid      = document.getElementById('cardsGrid');
-const favGrid        = document.getElementById('favGrid');
-const favSection     = document.getElementById('favorites-section');
-const spinnerWrap    = document.getElementById('spinnerWrap');
-const noResults      = document.getElementById('noResults');
-const countLabel     = document.getElementById('countLabel');
-const searchInput    = document.getElementById('searchInput');
-const searchClear    = document.getElementById('searchClear');
-const continentFilter= document.getElementById('continentFilter');
-const sortSelect     = document.getElementById('sortSelect');
-const showFavBtn     = document.getElementById('showFavBtn');
-const comparisonPanel= document.getElementById('comparisonPanel');
+const cardsGrid = document.getElementById('cardsGrid');
+const favGrid = document.getElementById('favGrid');
+const favSection = document.getElementById('favorites-section');
+const spinnerWrap = document.getElementById('spinnerWrap');
+const noResults = document.getElementById('noResults');
+const countLabel = document.getElementById('countLabel');
+const searchInput = document.getElementById('searchInput');
+const searchClear = document.getElementById('searchClear');
+const continentFilter = document.getElementById('continentFilter');
+const sortSelect = document.getElementById('sortSelect');
+const showFavBtn = document.getElementById('showFavBtn');
+const comparisonPanel = document.getElementById('comparisonPanel');
 const comparisonWrap = document.getElementById('comparisonWrap');
 const clearComparisonBtn = document.getElementById('clearComparisonBtn');
-const toast          = document.getElementById('toast');
+const toast = document.getElementById('toast');
 
 // Modal
-const modalOverlay   = document.getElementById('modalOverlay');
-const modalClose     = document.getElementById('modalClose');
-const modalFlag      = document.getElementById('modalFlag');
+const modalOverlay = document.getElementById('modalOverlay');
+const modalClose = document.getElementById('modalClose');
+const modalFlag = document.getElementById('modalFlag');
 const modalCountryName = document.getElementById('modalCountryName');
-const modalRegion    = document.getElementById('modalRegion');
-const modalFavBtn    = document.getElementById('modalFavBtn');
-const modalCapital   = document.getElementById('modalCapital');
-const modalPopulation= document.getElementById('modalPopulation');
+const modalRegion = document.getElementById('modalRegion');
+const modalFavBtn = document.getElementById('modalFavBtn');
+const modalCapital = document.getElementById('modalCapital');
+const modalPopulation = document.getElementById('modalPopulation');
 const modalSubregion = document.getElementById('modalSubregion');
-const modalArea      = document.getElementById('modalArea');
+const modalArea = document.getElementById('modalArea');
 const modalLanguages = document.getElementById('modalLanguages');
-const modalCurrency  = document.getElementById('modalCurrency');
+const modalCurrency = document.getElementById('modalCurrency');
 const modalTimezones = document.getElementById('modalTimezones');
-const modalTLD       = document.getElementById('modalTLD');
-const modalFacts     = document.getElementById('modalFacts');
-const modalMapsLink  = document.getElementById('modalMapsLink');
+const modalTLD = document.getElementById('modalTLD');
+const modalFacts = document.getElementById('modalFacts');
+const modalMapsLink = document.getElementById('modalMapsLink');
 
 // Nav
-const themeToggle    = document.getElementById('themeToggle');
-const themeIcon      = document.getElementById('themeIcon');
-const hamburger      = document.getElementById('hamburger');
-const navLinks       = document.getElementById('navLinks');
+const themeToggle = document.getElementById('themeToggle');
+const themeIcon = document.getElementById('themeIcon');
+const hamburger = document.getElementById('hamburger');
+const navLinks = document.getElementById('navLinks');
 
 // ─── Init ────────────────────────────────────────────────────
 (function init() {
@@ -64,15 +63,13 @@ async function fetchCountries() {
   try {
     const res = await fetch('./countries.json');
 
-    if (!res.ok)
-      throw new Error(`HTTP ${res.status}`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
     allCountries = await res.json();
     filtered = [...allCountries];
 
     applyFilters();
-  }
-  catch (err) {
+  } catch (err) {
     console.error('Failed to fetch countries:', err);
     showSpinner(false);
     countLabel.textContent = 'Failed to load data. Please refresh.';
@@ -100,15 +97,16 @@ function renderCards(list, container) {
  * Build a single country card element
  */
 function createCard(country, index = 0) {
-  const name    = country.name?.common || 'Unknown';
-  const flag    = country.flags?.svg || country.flags?.png || '';
+  const name = country.name?.common || 'Unknown';
+  const flag = country.flags?.svg || country.flags?.png || '';
   const capital = (country.capital && country.capital[0]) || 'N/A';
-  const region  = country.region || 'N/A';
-  const pop     = formatNumber(country.population);
-  const isFav   = favorites.has(country.cca2);
-  const isSelected = comparisonList.findIndex(c => c.cca2 === country.cca2) !== -1;
+  const region = country.region || 'N/A';
+  const pop = formatNumber(country.population);
+  const isFav = favorites.has(country.cca2);
+  const isSelected =
+    comparisonList.findIndex((c) => c.cca2 === country.cca2) !== -1;
 
-  const card    = document.createElement('div');
+  const card = document.createElement('div');
   card.className = `country-card ${isSelected ? 'selected' : ''}`;
   card.style.animationDelay = `${Math.min(index * 0.03, 0.6)}s`;
   card.setAttribute('role', 'button');
@@ -136,24 +134,27 @@ function createCard(country, index = 0) {
 
   // Click → open modal
   card.addEventListener('click', () => openModal(country));
-  card.addEventListener('keydown', e => {
-    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openModal(country); }
+  card.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      openModal(country);
+    }
   });
 
   // Favourite badge click (stop propagation so card click doesn't fire)
   const badge = card.querySelector('.card-fav-badge');
-  badge.addEventListener('click', e => {
+  badge.addEventListener('click', (e) => {
     e.stopPropagation();
     toggleFavorite(country.cca2);
     const isFavNow = favorites.has(country.cca2);
-    badge.textContent  = isFavNow ? '⭐' : '☆';
+    badge.textContent = isFavNow ? '⭐' : '☆';
     badge.classList.toggle('active', isFavNow);
     renderFavSection();
   });
 
   // Compare button click (stop propagation)
   const compareBtn = card.querySelector('.compare-btn');
-  compareBtn.addEventListener('click', e => {
+  compareBtn.addEventListener('click', (e) => {
     e.stopPropagation();
     toggleComparison(country);
   });
@@ -170,35 +171,42 @@ function openModal(country) {
   currentCountry = country;
   const name = country.name?.common || 'Unknown';
 
-  modalFlag.src   = country.flags?.svg || country.flags?.png || '';
-  modalFlag.alt   = `Flag of ${name}`;
+  modalFlag.src = country.flags?.svg || country.flags?.png || '';
+  modalFlag.alt = `Flag of ${name}`;
   modalCountryName.textContent = name;
-  modalRegion.textContent      = `${country.region || ''}${country.subregion ? ' · ' + country.subregion : ''}`;
+  modalRegion.textContent = `${country.region || ''}${country.subregion ? ' · ' + country.subregion : ''}`;
 
   // Populate info fields
-  modalCapital.textContent    = (country.capital && country.capital.join(', ')) || 'N/A';
+  modalCapital.textContent =
+    (country.capital && country.capital.join(', ')) || 'N/A';
   modalPopulation.textContent = formatNumber(country.population);
-  modalSubregion.textContent  = country.subregion || 'N/A';
-  modalArea.textContent       = country.area ? `${formatNumber(country.area)} km²` : 'N/A';
-  modalTimezones.textContent  = (country.timezones || []).join(', ') || 'N/A';
-  modalTLD.textContent        = (country.tld || []).join(', ') || 'N/A';
+  modalSubregion.textContent = country.subregion || 'N/A';
+  modalArea.textContent = country.area
+    ? `${formatNumber(country.area)} km²`
+    : 'N/A';
+  modalTimezones.textContent = (country.timezones || []).join(', ') || 'N/A';
+  modalTLD.textContent = (country.tld || []).join(', ') || 'N/A';
 
   // Languages
   const langs = country.languages ? Object.values(country.languages) : [];
-  modalLanguages.textContent  = langs.length ? langs.join(', ') : 'N/A';
+  modalLanguages.textContent = langs.length ? langs.join(', ') : 'N/A';
 
   // Currencies
   const currencies = country.currencies
-    ? Object.values(country.currencies).map(c => `${c.name} (${c.symbol || ''})`).join(', ')
+    ? Object.values(country.currencies)
+        .map((c) => `${c.name} (${c.symbol || ''})`)
+        .join(', ')
     : 'N/A';
   modalCurrency.textContent = currencies;
 
   // Google Maps
-  modalMapsLink.href = country.maps?.googleMaps || `https://www.google.com/maps/search/${encodeURIComponent(name)}`;
+  modalMapsLink.href =
+    country.maps?.googleMaps ||
+    `https://www.google.com/maps/search/${encodeURIComponent(name)}`;
 
   // Interesting Facts
   modalFacts.innerHTML = generateFacts(country)
-    .map(f => `<li>${f}</li>`)
+    .map((f) => `<li>${f}</li>`)
     .join('');
 
   // Favourite button state
@@ -224,37 +232,53 @@ function generateFacts(c) {
   const name = c.name?.common || 'This country';
 
   if (c.population)
-    facts.push(`${name} has a population of ${formatNumber(c.population)} people.`);
+    facts.push(
+      `${name} has a population of ${formatNumber(c.population)} people.`
+    );
 
   if (c.area)
-    facts.push(`It covers an area of ${formatNumber(c.area)} km², making it ${sizeCategory(c.area)}.`);
+    facts.push(
+      `It covers an area of ${formatNumber(c.area)} km², making it ${sizeCategory(c.area)}.`
+    );
 
   if (c.timezones && c.timezones.length > 1)
-    facts.push(`It spans ${c.timezones.length} timezones — from ${c.timezones[0]} to ${c.timezones[c.timezones.length - 1]}.`);
+    facts.push(
+      `It spans ${c.timezones.length} timezones — from ${c.timezones[0]} to ${c.timezones[c.timezones.length - 1]}.`
+    );
   else if (c.timezones && c.timezones.length === 1)
     facts.push(`The timezone is ${c.timezones[0]}.`);
 
   const langs = c.languages ? Object.values(c.languages) : [];
   if (langs.length > 1)
-    facts.push(`${langs.length} official languages are spoken: ${langs.join(', ')}.`);
+    facts.push(
+      `${langs.length} official languages are spoken: ${langs.join(', ')}.`
+    );
 
   if (c.currencies) {
-    const currNames = Object.values(c.currencies).map(x => x.name);
-    facts.push(`The official ${currNames.length > 1 ? 'currencies are' : 'currency is'} ${currNames.join(' and ')}.`);
+    const currNames = Object.values(c.currencies).map((x) => x.name);
+    facts.push(
+      `The official ${currNames.length > 1 ? 'currencies are' : 'currency is'} ${currNames.join(' and ')}.`
+    );
   }
 
   if (c.capital && c.capital.length > 1)
-    facts.push(`It has ${c.capital.length} capital cities: ${c.capital.join(', ')}.`);
+    facts.push(
+      `It has ${c.capital.length} capital cities: ${c.capital.join(', ')}.`
+    );
 
   if (c.tld && c.tld.length)
     facts.push(`Its internet domain extension is ${c.tld.join(' / ')}.`);
 
   if (c.subregion)
-    facts.push(`${name} is part of the ${c.subregion} subregion in ${c.region}.`);
+    facts.push(
+      `${name} is part of the ${c.subregion} subregion in ${c.region}.`
+    );
 
   // Always return at least 3 facts
   while (facts.length < 3)
-    facts.push('More detailed information is available on the Google Maps link below.');
+    facts.push(
+      'More detailed information is available on the Google Maps link below.'
+    );
 
   return facts.slice(0, 6);
 }
@@ -262,8 +286,8 @@ function generateFacts(c) {
 function sizeCategory(area) {
   if (area > 8_000_000) return 'one of the largest countries in the world';
   if (area > 1_000_000) return 'a very large country';
-  if (area > 100_000)   return 'a medium-sized country';
-  if (area > 10_000)    return 'a relatively small country';
+  if (area > 100_000) return 'a medium-sized country';
+  if (area > 10_000) return 'a relatively small country';
   return 'a small nation';
 }
 
@@ -274,27 +298,32 @@ function sizeCategory(area) {
  */
 function applyFilters() {
   showSpinner(false);
-  const query     = searchInput.value.trim().toLowerCase();
+  const query = searchInput.value.trim().toLowerCase();
   const continent = continentFilter.value;
-  const sort      = sortSelect.value;
+  const sort = sortSelect.value;
 
-  filtered = allCountries.filter(c => {
+  filtered = allCountries.filter((c) => {
     const name = (c.name?.common || '').toLowerCase();
-    const matchSearch   = !query || name.includes(query);
+    const matchSearch = !query || name.includes(query);
     const matchContinent = continent === 'all' || c.region === continent;
-const matchFavourite = !showFavsOnly || favorites.has(c.cca2);
+    const matchFavourite = !showFavsOnly || favorites.has(c.cca2);
 
-return matchSearch && matchContinent && matchFavourite;
+    return matchSearch && matchContinent && matchFavourite;
   });
 
   // Sort
   filtered.sort((a, b) => {
     switch (sort) {
-      case 'name-asc':  return (a.name?.common || '').localeCompare(b.name?.common || '');
-      case 'name-desc': return (b.name?.common || '').localeCompare(a.name?.common || '');
-      case 'pop-desc':  return (b.population || 0) - (a.population || 0);
-      case 'pop-asc':   return (a.population || 0) - (b.population || 0);
-      default:          return 0;
+      case 'name-asc':
+        return (a.name?.common || '').localeCompare(b.name?.common || '');
+      case 'name-desc':
+        return (b.name?.common || '').localeCompare(a.name?.common || '');
+      case 'pop-desc':
+        return (b.population || 0) - (a.population || 0);
+      case 'pop-asc':
+        return (a.population || 0) - (b.population || 0);
+      default:
+        return 0;
     }
   });
 
@@ -314,8 +343,10 @@ return matchSearch && matchContinent && matchFavourite;
 function loadFavorites() {
   try {
     const stored = JSON.parse(localStorage.getItem('wex_favorites') || '[]');
-    favorites    = new Set(stored);
-  } catch { favorites = new Set(); }
+    favorites = new Set(stored);
+  } catch {
+    favorites = new Set();
+  }
 }
 
 function saveFavorites() {
@@ -324,7 +355,7 @@ function saveFavorites() {
 
 function toggleFavorite(cca2) {
   if (favorites.has(cca2)) favorites.delete(cca2);
-  else                      favorites.add(cca2);
+  else favorites.add(cca2);
   saveFavorites();
   if (currentCountry?.cca2 === cca2) updateModalFavBtn(cca2);
 }
@@ -336,7 +367,7 @@ function updateModalFavBtn(cca2) {
 }
 
 function renderFavSection() {
-  const favCountries = allCountries.filter(c => favorites.has(c.cca2));
+  const favCountries = allCountries.filter((c) => favorites.has(c.cca2));
   if (!favCountries.length) {
     favSection.hidden = true;
     return;
@@ -354,7 +385,7 @@ function applyStoredTheme() {
 
 function toggleTheme() {
   const current = document.documentElement.getAttribute('data-theme');
-  const next    = current === 'dark' ? 'light' : 'dark';
+  const next = current === 'dark' ? 'light' : 'dark';
   document.documentElement.setAttribute('data-theme', next);
   localStorage.setItem('wex_theme', next);
   themeIcon.textContent = next === 'dark' ? '☀️' : '🌙';
@@ -398,20 +429,32 @@ function bindEvents() {
   // Show favourites toggle
   showFavBtn.addEventListener('click', () => {
     showFavsOnly = !showFavsOnly;
+
     showFavBtn.classList.toggle('active', showFavsOnly);
+    showFavBtn.textContent = showFavsOnly
+      ? '🌍 Show All Countries'
+      : '⭐ Show Favourites';
+
     applyFilters();
-});
+
+    if (showFavsOnly) {
+      cardsGrid.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    }
+  });
 
   // Modal close button
   modalClose.addEventListener('click', closeModal);
 
   // Close modal on overlay backdrop click
-  modalOverlay.addEventListener('click', e => {
+  modalOverlay.addEventListener('click', (e) => {
     if (e.target === modalOverlay) closeModal();
   });
 
   // Close modal on Escape key
-  document.addEventListener('keydown', e => {
+  document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && !modalOverlay.hidden) closeModal();
   });
 
@@ -434,7 +477,7 @@ function bindEvents() {
   });
 
   // Close mobile menu when a link is clicked
-  navLinks.querySelectorAll('.nav-link').forEach(link => {
+  navLinks.querySelectorAll('.nav-link').forEach((link) => {
     link.addEventListener('click', () => {
       hamburger.classList.remove('open');
       navLinks.classList.remove('open');
@@ -445,12 +488,15 @@ function bindEvents() {
   clearComparisonBtn.addEventListener('click', clearComparison);
 
   // Navbar background changes on scroll
-  window.addEventListener('scroll', () => {
-    const navbar = document.getElementById('navbar');
-    navbar.style.background = window.scrollY > 60
-      ? ''  /* let CSS handle it */
-      : '';
-  }, { passive: true });
+  window.addEventListener(
+    'scroll',
+    () => {
+      const navbar = document.getElementById('navbar');
+      navbar.style.background =
+        window.scrollY > 60 ? '' /* let CSS handle it */ : '';
+    },
+    { passive: true }
+  );
 }
 
 /**
@@ -471,7 +517,9 @@ function loadComparison() {
   try {
     const stored = JSON.parse(localStorage.getItem('wex_comparison') || '[]');
     comparisonList = stored;
-  } catch { comparisonList = []; }
+  } catch {
+    comparisonList = [];
+  }
 }
 
 function saveComparison() {
@@ -479,7 +527,7 @@ function saveComparison() {
 }
 
 function toggleComparison(country) {
-  const index = comparisonList.findIndex(c => c.cca2 === country.cca2);
+  const index = comparisonList.findIndex((c) => c.cca2 === country.cca2);
   if (index !== -1) {
     comparisonList.splice(index, 1);
   } else if (comparisonList.length >= 2) {
@@ -507,19 +555,26 @@ function renderComparisonPanel() {
     return;
   }
   comparisonPanel.hidden = false;
-  comparisonWrap.innerHTML = comparisonList.map(country => {
-    const name = country.name?.common || 'Unknown';
-    const flag = country.flags?.svg || country.flags?.png || '';
-    const capital = (country.capital && country.capital[0]) || 'N/A';
-    const region = country.region || 'N/A';
-    const subregion = country.subregion || 'N/A';
-    const pop = formatNumber(country.population);
-    const area = country.area ? `${formatNumber(country.area)} km²` : 'N/A';
-    const langs = country.languages ? Object.values(country.languages).join(', ') : 'N/A';
-    const currencies = country.currencies ? Object.values(country.currencies).map(c => `${c.name} (${c.symbol || ''})`).join(', ') : 'N/A';
-    const timezones = (country.timezones || []).join(', ') || 'N/A';
+  comparisonWrap.innerHTML = comparisonList
+    .map((country) => {
+      const name = country.name?.common || 'Unknown';
+      const flag = country.flags?.svg || country.flags?.png || '';
+      const capital = (country.capital && country.capital[0]) || 'N/A';
+      const region = country.region || 'N/A';
+      const subregion = country.subregion || 'N/A';
+      const pop = formatNumber(country.population);
+      const area = country.area ? `${formatNumber(country.area)} km²` : 'N/A';
+      const langs = country.languages
+        ? Object.values(country.languages).join(', ')
+        : 'N/A';
+      const currencies = country.currencies
+        ? Object.values(country.currencies)
+            .map((c) => `${c.name} (${c.symbol || ''})`)
+            .join(', ')
+        : 'N/A';
+      const timezones = (country.timezones || []).join(', ') || 'N/A';
 
-    return `
+      return `
       <div class="comparison-card">
         <img src="${flag}" alt="Flag of ${name}" class="comparison-flag" loading="lazy">
         <h3 class="comparison-name">${name}</h3>
@@ -583,12 +638,13 @@ function renderComparisonPanel() {
         </div>
       </div>
     `;
-  }).join('');
+    })
+    .join('');
 }
 
 function updateSelectedCards() {
-  const selectedCca2 = comparisonList.map(c => c.cca2);
-  document.querySelectorAll('.country-card').forEach(card => {
+  const selectedCca2 = comparisonList.map((c) => c.cca2);
+  document.querySelectorAll('.country-card').forEach((card) => {
     const cca2 = card.getAttribute('data-cca2');
     if (selectedCca2.includes(cca2)) {
       card.classList.add('selected');

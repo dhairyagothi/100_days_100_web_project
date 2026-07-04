@@ -218,6 +218,15 @@ const stopNote = (noteName) => {
   }
 };
 
+/**
+ * Stops every currently playing note.
+ */
+const stopAllNotes = () => {
+  Object.keys(state.activeOscillators).forEach((note) => {
+    stopNote(note);
+  });
+};
+
 // ===== Visualizer Rendering =====
 
 const initVisualizer = () => {
@@ -395,6 +404,21 @@ const initListeners = () => {
       stopNote(bind.note);
     }
   });
+
+  // Stop all notes if the browser loses focus
+  window.addEventListener('blur', () => {
+    stopAllNotes();
+  });
+
+  // Stop notes when switching tabs
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      stopAllNotes();
+    }
+  });
+
+  // Resize canvas event
+  window.addEventListener('resize', resizeCanvas);
 
   // Resize canvas event
   window.addEventListener('resize', resizeCanvas);
