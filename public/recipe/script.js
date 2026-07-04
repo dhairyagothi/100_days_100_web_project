@@ -21,8 +21,8 @@ function loadRecipes() {
     .then((res) => res.json())
     .then((data) => {
       allRecipes = Array.isArray(data)
-      ? data
-      : data.recipes || [];
+        ? data
+        : data.recipes || [];
       // Populate difficulty/category filter
       if (difficultySelect) {
         const categories = [...new Set(allRecipes.flatMap(r => r.tags || []))];
@@ -55,17 +55,38 @@ function renderRecipes(recipes) {
   }
 
   recipeGrid.innerHTML = recipes.map((recipe, index) => `
-    <div class="recipe-card" onclick="showRecipe(${index})">
-      ${recipe.img ? `<img src="${recipe.img}" alt="${recipe.name}" onerror="this.style.display='none'">` : ''}
-      <div class="recipe-info">
-        <h3>${recipe.name || recipe.title || "Recipe"}</h3>
-        <p>${(recipe.instructions || recipe.description || "").slice(0, 80)}...</p>
-        ${recipe.tags ? `<div class="tags">${recipe.tags.map(t => `<span class="tag">${t}</span>`).join("")}</div>` : ""}
-        <button class="view-btn">View Recipe</button>
-      </div>
+  <div class="recipe-card" onclick="showRecipe(${index})">
+
+    <!-- Favourite Badge -->
+    <button
+      class="recipe-fav-badge"
+      onclick="event.stopPropagation(); toggleFavorite(${index}, this)"
+      title="Add to Favorites">
+      ♡
+    </button>
+
+    ${recipe.image
+      ? `<img src="${recipe.image}" alt="${recipe.name || 'Recipe'}" class="recipe-img" onerror="this.style.display='none'">`
+      : ''}
+
+    <div class="recipe-info">
+      <h3>${recipe.name || recipe.title || "Recipe"}</h3>
+
+      <p>${(recipe.instructions || recipe.description || "").slice(0, 80)}...</p>
+
+      ${recipe.tags
+        ? `<div class="tags">
+            ${recipe.tags.map(t => `<span class="tag">${t}</span>`).join("")}
+          </div>`
+        : ""}
+
+      <button class="view-btn">View Recipe</button>
     </div>
-  `).join("");
+  </div>
+`).join("");
+
 }
+
 
 // Show single recipe detail
 function showRecipe(index) {
@@ -80,7 +101,7 @@ function showRecipe(index) {
 
   recipeGrid.innerHTML = `
     <div class="recipe-detail">
-      ${recipe.img ? `<img src="${recipe.img}" alt="${name}" style="width:100%;max-width:400px;border-radius:12px;margin-bottom:1rem">` : ""}
+      ${recipe.image ? `<img src="${recipe.image}" alt="${name}" style="width:100%;max-width:400px;border-radius:12px;margin-bottom:1rem">` : ""}
       <h2>${name}</h2>
       ${ingredients ? `<h3>🧂 Ingredients</h3>${ingredients}` : ""}
       ${instructions ? `<h3>📋 Instructions</h3><p>${instructions}</p>` : ""}
@@ -106,9 +127,9 @@ function filterRecipes() {
   const category = difficultySelect ? difficultySelect.value : "";
 
   const filtered = allRecipes.filter(recipe => {
-    const matchesSearch = !query || 
+    const matchesSearch = !query ||
       (recipe.name || recipe.title || "").toLowerCase().includes(query);
-    const matchesCategory = !category || 
+    const matchesCategory = !category ||
       (recipe.tags && recipe.tags.includes(category));
     return matchesSearch && matchesCategory;
   });
@@ -120,7 +141,7 @@ function filterRecipes() {
 if (startBtn) {
   startBtn.addEventListener("click", () => {
     const selected = difficultySelect ? difficultySelect.value : "";
-    const filtered = selected 
+    const filtered = selected
       ? allRecipes.filter(r => r.tags && r.tags.includes(selected))
       : allRecipes;
     if (filtered.length > 0) showRecipe(allRecipes.indexOf(filtered[0]));
@@ -148,3 +169,37 @@ if (restartBtn) {
 if (recipeGrid) {
   loadRecipes();
 }
+
+// ==========================
+// Theme Toggle (Global)
+// ==========================
+
+// Select all toggle buttons (use a common class)
+const themeToggles = document.querySelectorAll(".theme");
+const themeIcon = document.getElementById("themeIcon");
+
+// Default = DARK MODE
+let isLightMode = JSON.parse(localStorage.getItem("lightMode")) || false;
+
+// Apply theme on load
+function updateTheme() {
+  if (isLightMode) {
+    document.body.classList.add("light-theme");
+    themeIcon.textContent = "🌙"; // show moon when light mode active
+  } else {
+    document.body.classList.remove("light-theme");
+    themeIcon.textContent = "☀️"; // show sun when dark mode active
+  }
+}
+
+// Toggle theme on any button click
+themeToggles.forEach(btn => {
+  btn.addEventListener("click", () => {
+    isLightMode = !isLightMode;
+    localStorage.setItem("lightMode", JSON.stringify(isLightMode));
+    updateTheme();
+  });
+});
+
+// Initialize on page load
+updateTheme();

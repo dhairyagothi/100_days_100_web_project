@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const cssOutput = document.getElementById("css-output");
     const copyBtn = document.getElementById("copy-btn");
+    const themeToggle = document.getElementById("theme-toggle");
 
     // Helper: Convert HEX to RGB
     function hexToRgb(hex) {
@@ -79,6 +80,16 @@ box-shadow: 0 8px 32px 0 rgba(0, 0, 0, ${shadow});`;
             console.error("Failed to copy text: ", err);
         });
     });
+
+    themeToggle.addEventListener("click", () => {
+    document.body.classList.toggle("dark");
+
+    if (document.body.classList.contains("dark")) {
+        themeToggle.textContent = "☀️";
+    } else {
+        themeToggle.textContent = "🌙";
+    }
+});
 
     // Initial render
     updateGlass();

@@ -355,6 +355,7 @@ body.dark-mode .grey { background-color: #3a3a3c !important; border-color: #3a3a
 
 /* Game Over Modal & Overlay Styles */
 .modal-overlay {
+    z-index: 1000;
     position: fixed;
     top: 0;
     left: 0;
@@ -366,10 +367,14 @@ body.dark-mode .grey { background-color: #3a3a3c !important; border-color: #3a3a
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.3s ease;
+}
+
+#skip-btn-wrapper {
+    position: relative;
+    z-index: 10;
 }
 
 .modal-overlay:not(.hidden) {
@@ -481,4 +486,42 @@ body.dark-mode .modal-content .cross:hover {
 
 .nav-icon-btn:hover {
     opacity: 0.85;
+}
+
+/* skip confirmation toast */
+.skip-toast {
+    position: fixed;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #ffffff;
+    color: #0f172a;
+    border-radius: 16px;
+    padding: 18px 22px;
+    width: 90%;
+    max-width: 360px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+    z-index: 2000;
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.95rem;
+    animation: slideDown 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.skip-toast-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 14px;
+}
+
+/* Dark mode override */
+body.dark-mode .skip-toast {
+    background: #1e293b;
+    color: #f8fafc;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+    to   { opacity: 1; transform: translateX(-50%) translateY(0); }
 }
