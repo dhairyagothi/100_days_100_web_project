@@ -171,12 +171,15 @@ span{
     
 }
 .box{
-    height:400px;
+    min-height:300px;
+    height:auto;
     width: 23%;
     min-width: 160px;
     background-color: white;
     padding: 20px 0px 15px;
     margin-top: 10px;
+    overflow:visible;
+    padding-bottom:20px;
 }
 .box-image{
     height: 280px;
@@ -189,6 +192,12 @@ span{
     margin-left: 1rem;
     margin-right :1rem;
     color:#007185;
+}
+
+button{
+    position:relative;
+    margin-top:12px;
+    margin-top:auto;
 }
 a{
     color:#007185;
