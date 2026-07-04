@@ -996,3 +996,18 @@ body.dark-mode .hero-card {
 body.dark-mode .project-back-button {
   box-shadow: none;
 }
+
+body.dark .card{
+    background:#29294a;
+}
+
+body.dark .modal{
+    background:#2f2f4d;
+}
+
+body.dark input,
+body.dark textarea,
+body.dark select{
+    background:#3d3d60;
+    color:white;
+}

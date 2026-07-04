@@ -1,42 +1,44 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Rock, Paper, Scissors Game</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
     <div class="container">
-        <!-- Setup Screen -->
-        <div id="setup-screen" class="screen">
-            <h1>Welcome to Rock, Paper, Scissors!</h1>
-            <p>Enter the number of rounds you want to play:</p>
-            <input type="number" id="rounds-input" value="5" min="1">
-            <button id="start-btn" class="btn primary-btn">Start Game</button>
+      <!-- Setup Screen -->
+      <div id="setup-screen" class="screen">
+        <h1>Welcome to Rock, Paper, Scissors!</h1>
+        <p>Enter the number of rounds you want to play:</p>
+        <input type="number" id="rounds-input" value="5" min="1" />
+        <button id="start-btn" class="btn primary-btn">Start Game</button>
+      </div>
+
+      <!-- Game Screen -->
+      <div id="game-screen" class="hidden screen">
+        <h1>Choose your weapon!</h1>
+        <div id="score-label" class="score">Score: You 0 - 0 Computer</div>
+        <div id="round-label" class="round">Round: 0 / 0</div>
+
+        <div class="buttons-frame">
+          <button id="rock-btn" class="game-btn rock">ROCK</button>
+          <button id="paper-btn" class="game-btn paper">PAPER</button>
+          <button id="scissors-btn" class="game-btn scissors">SCISSORS</button>
         </div>
 
-        <!-- Game Screen -->
-        <div id="game-screen" class="screen hidden">
-            <h1>Choose your weapon!</h1>
-            <div id="score-label" class="score">Score: You 0 - 0 Computer</div>
-            <div id="round-label" class="round">Round: 0 / 0</div>
-            
-            <div class="buttons-frame">
-                <button id="rock-btn" class="game-btn rock">ROCK</button>
-                <button id="paper-btn" class="game-btn paper">PAPER</button>
-                <button id="scissors-btn" class="game-btn scissors">SCISSORS</button>
-            </div>
-
-            <div class="choices-display">
-                <p id="user-choice-label"></p>
-                <p id="computer-choice-label"></p>
-            </div>
-
-            <div id="result-label" class="result"></div>
-            <button id="play-again-btn" class="btn success-btn hidden">Play Again</button>
+        <div class="choices-display">
+          <p id="user-choice-label"></p>
+          <p id="computer-choice-label"></p>
         </div>
+
+        <div id="result-label" class="result"></div>
+        <button id="play-again-btn" class="hidden btn success-btn">
+          Play Again
+        </button>
+      </div>
     </div>
     <script src="script.js"></script>
-</body>
+  </body>
 </html>

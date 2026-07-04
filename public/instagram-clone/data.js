@@ -9,8 +9,8 @@ const INSTAGRAM_DB = {
         postsCount: 3,
         followersCount: "1.2K",
         followingCount: "394",
-        posts: [], // Dynamically populated below
-        saved: []  // Dynamically populated when user bookmarks
+        posts: [],
+        saved: []
     },
 
     // Feed Stories
@@ -59,7 +59,7 @@ const INSTAGRAM_DB = {
         }
     ],
 
-    // Feed / Explore / Profile Posts
+    // Feed / Explore / Profile Posts with enhanced comment structure
     posts: [
         {
             id: "post-101",
@@ -75,8 +75,27 @@ const INSTAGRAM_DB = {
             bookmarked: false,
             time: "2 hours ago",
             comments: [
-                { username: "cafe_lover", text: "Stunning! Added to my travel bucket list immediately." },
-                { username: "nature_wild", text: "The color of the water is absolutely mesmerizing! 🌊" }
+                { 
+                    id: "comment-1",
+                    username: "cafe_lover", 
+                    text: "Stunning! Added to my travel bucket list immediately.",
+                    timestamp: "2 hours ago",
+                    replies: [
+                        {
+                            id: "reply-1-1",
+                            username: "travel_guru",
+                            text: "You should definitely visit! I can share my itinerary.",
+                            timestamp: "1 hour ago"
+                        }
+                    ]
+                },
+                { 
+                    id: "comment-2",
+                    username: "nature_wild", 
+                    text: "The color of the water is absolutely mesmerizing! 🌊",
+                    timestamp: "1 hour ago",
+                    replies: []
+                }
             ]
         },
         {
@@ -93,8 +112,27 @@ const INSTAGRAM_DB = {
             bookmarked: false,
             time: "5 hours ago",
             comments: [
-                { username: "aesthetic_coder", text: "My absolute favorite routine! Enjoy that croissant." },
-                { username: "pixel_pioneer", text: "What editor are you using? Looks cozy!" }
+                { 
+                    id: "comment-3",
+                    username: "aesthetic_coder", 
+                    text: "My absolute favorite routine! Enjoy that croissant.",
+                    timestamp: "4 hours ago",
+                    replies: [
+                        {
+                            id: "reply-3-1",
+                            username: "cafe_lover",
+                            text: "Thanks! I'll save one for you next time 🥐",
+                            timestamp: "3 hours ago"
+                        }
+                    ]
+                },
+                { 
+                    id: "comment-4",
+                    username: "pixel_pioneer", 
+                    text: "What editor are you using? Looks cozy!",
+                    timestamp: "3 hours ago",
+                    replies: []
+                }
             ]
         },
         {
@@ -111,8 +149,33 @@ const INSTAGRAM_DB = {
             bookmarked: false,
             time: "1 day ago",
             comments: [
-                { username: "travel_guru", text: "banff is pure magic. Great shot!" },
-                { username: "emma_watson", text: "Breathtaking. Earth is beautiful." }
+                { 
+                    id: "comment-5",
+                    username: "travel_guru", 
+                    text: "banff is pure magic. Great shot!",
+                    timestamp: "23 hours ago",
+                    replies: []
+                },
+                { 
+                    id: "comment-6",
+                    username: "emma_watson", 
+                    text: "Breathtaking. Earth is beautiful.",
+                    timestamp: "20 hours ago",
+                    replies: [
+                        {
+                            id: "reply-6-1",
+                            username: "nature_wild",
+                            text: "Thank you Emma! It truly is a special place.",
+                            timestamp: "18 hours ago"
+                        },
+                        {
+                            id: "reply-6-2",
+                            username: "travel_guru",
+                            text: "I agree! Banff is a must-visit.",
+                            timestamp: "15 hours ago"
+                        }
+                    ]
+                }
             ]
         }
     ],
@@ -176,7 +239,6 @@ const INSTAGRAM_DB = {
                 { sender: "self", text: "Yes! The Amalfi Coast looks incredible." },
                 { sender: "other", text: "You should absolutely go! Let me know if you need any hotel recommendations." }
             ],
-            // Simulated replies engine
             replies: [
                 "Awesome! If you book, let me know. I've got some great coupons.",
                 "Let me send you my Google Maps saved pins. It has the best pizza spots!",
@@ -237,7 +299,7 @@ const INSTAGRAM_DB = {
     ]
 };
 
-// Initialize Current User default posts (simulate that user posted their avatar picture or similar three times)
+// Initialize Current User default posts
 INSTAGRAM_DB.currentUser.posts = [
     {
         id: "my-post-1",

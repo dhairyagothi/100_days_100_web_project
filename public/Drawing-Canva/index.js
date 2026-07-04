@@ -1,288 +1,416 @@
-// APPROACH TO MAKE THE APP WORK
-/*
-1. Make the canvas draw line from its previous position on canvas to its current position
-2. This happens for the event, mousemove
-3. To make sure user should also click, we set is_drawing variable to true when mouse is pressed.
-4. When mouse button is lifted, we set is_drawing to false.
-5. To make an eraser, simply set the color of line to the background color. 
-And make the option to change line color hidden when eraser is selected.
-6. Set the option back to visible when the user clicks on the brush option.
-7. For clear button, simply make a clearRect as big as canvas, with background color equal to bg color.
-*/
+// =====================================================================
+// ATELIER DRAWING STUDIO
+// New in this version: shape tools (line/rect/circle), text tool,
+// undo/redo history, opacity control, round/square brush tip,
+// filled shapes, color swatches, touch support, robust eraser
+// (transparent pixels over a CSS background layer instead of trying
+// to match a fixed color), auto-resize, and combined-background PNG export.
+// =====================================================================
 
-// -------------------------------------------------------------
-// Start the script only when entire DOM content is loaded
-// -------------------------------------------------------------
+document.addEventListener('DOMContentLoaded', startApp);
 
-document.addEventListener('DOMContentLoaded', start_script);
+function startApp(){
 
-// A function that manages working of the entire application.
+  // ---------------------------------------------------------------
+  // DOM REFERENCES
+  // ---------------------------------------------------------------
+  const wrapper   = document.getElementById('canvas-wrapper');
+  const canvas    = document.getElementById('canvas');
+  const preview   = document.getElementById('preview-canvas');
+  const ctx       = canvas.getContext('2d');
+  const pctx      = preview.getContext('2d');
+  const textInput = document.getElementById('text-input');
 
-function start_script(){
-    // -------------------------------------------------------------
-    // SELECTING OUR DOM CONTENTS
-    // -------------------------------------------------------------
+  const toolButtons   = document.querySelectorAll('.tool-btn');
+  const sizeRange      = document.getElementById('size-range');
+  const sizeVal         = document.getElementById('size-val');
+  const opacityRange   = document.getElementById('opacity-range');
+  const opacityVal      = document.getElementById('opacity-val');
+  const roundCapBox    = document.getElementById('round-cap');
+  const capRow          = document.getElementById('cap-row');
+  const fillShapeBox   = document.getElementById('fill-shape');
+  const fillRow         = document.getElementById('fill-row');
+  const colorPicker    = document.getElementById('color-picker');
+  const bgColorPicker  = document.getElementById('bg-color');
+  const swatches       = document.querySelectorAll('.swatch');
+  const undoBtn         = document.getElementById('undo-btn');
+  const redoBtn         = document.getElementById('redo-btn');
+  const clearBtn        = document.getElementById('clear-btn');
+  const downloadBtn    = document.getElementById('download-btn');
 
-    // SELECT THE DIV THAT REPRESENT BRUSH AND ERASER. ALSO SELECT THE ERASER ITSELF
+  // ---------------------------------------------------------------
+  // STATE
+  // ---------------------------------------------------------------
+  let tool = 'brush';
+  let brushColor = colorPicker.value;
+  let bgColor = bgColorPicker.value;
+  let brushSize = parseInt(sizeRange.value, 10);
+  let opacity = parseInt(opacityRange.value, 10) / 100;
+  let roundCap = roundCapBox.checked;
+  let fillShape = fillShapeBox.checked;
 
-    // the clickable div representing brush
-    const brush_icon = document.querySelector("#brush");
-    // the clickable div representing eraser
-    const eraser_icon = document.querySelector("#eraser");
-    // the actual eraser
-    const eraser = document.querySelector('.eraser')
+  let isDrawing = false;
+  let startX = 0, startY = 0;
+  let lastX = 0, lastY = 0;
 
-    // SELECT THE COLOR PICKERS OF OUR APP
+  let undoStack = [];
+  let redoStack = [];
+  const MAX_HISTORY = 30;
 
-    // select the container for showing and selecting line color
-    const line_color_container = document.querySelector('.line-color-container');
-    // brush color picker
-    const color = document.querySelector("#color-picker");
-    // canvas background color picker
-    const canvas_bg_color = document.querySelector("#bg-color")
+  const SHAPE_TOOLS = ['line', 'rect', 'circle'];
 
-    // SELECT THE TEXT THAT SHOWS THE CURRENT PEN AND ITS SIZE
-    const width_text = document.querySelector(".width-text")
-    const width_val = document.querySelector(".width-val");
+  // ---------------------------------------------------------------
+  // SETUP
+  // ---------------------------------------------------------------
+  wrapper.style.backgroundColor = bgColor;
 
-    // SELECT THE BUTTONS THAT MANIPULATE SIZE OF PEN
-    const inc_btn = document.querySelector("button.inc-width");
-    const dec_btn = document.querySelector("button.dec-width");
-
-    // SELECT THE MAJOR BUTTONS - CLEAR BUTTON AND DOWNLOAD BUTTON
-    const clear_btn = document.querySelector(".clear");
-    const download_btn = document.querySelector("#download");
-
-    // SELECT THE CANVAS ITSELF
-    const canvas = document.getElementById("canvas");
-    const ctx = canvas.getContext("2d");
-
-    // -------------------------------------------------------------
-    // SOME DEFAULT VALUES THAT WE BEGIN WITH
-    // -------------------------------------------------------------
-
-    let prevX = null;
-    let prevY = null;
-    let current_X = 0;
-    let current_Y = 0;
-    let mouse_coords = null;
-    let is_drawing = false;
-    let choice = "Brush";
-    const BG_COLOR = "#ffffff";
-    const PEN_COLOR = "#000000";
-
-    // Display the initial Values of pen and its size
-    setChoice()
-
-    // initial size display
-    if (choice === "Brush"){
-        ctx.lineWidth = 2;
-        width_val.textContent = `${ctx.lineWidth}`;
+  function resizeCanvases(preserve){
+    const rect = wrapper.getBoundingClientRect();
+    let saved = null;
+    if (preserve && canvas.width > 0 && canvas.height > 0){
+      saved = canvas.toDataURL();
     }
+    canvas.width = Math.round(rect.width);
+    canvas.height = Math.round(rect.height);
+    preview.width = Math.round(rect.width);
+    preview.height = Math.round(rect.height);
 
-    else{
-        ctx.lineWidth = 20;
-        width_val.textContent = `${eraser.offsetWidth}`;
+    if (saved){
+      const img = new Image();
+      img.onload = () => ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      img.src = saved;
     }
-    // set initial colors
-    color.value = PEN_COLOR;
-    canvas_bg_color.value = BG_COLOR;
+  }
 
-    console.log(color.value);
-    console.log(canvas_bg_color.value);
+  resizeCanvases(false);
+  saveHistory(); // initial blank state
 
-    // initial pen color
-    ctx.strokeStyle = PEN_COLOR;
-    // initial canvas background
-    canvas.style.backgroundColor = BG_COLOR;
+  let resizeTimer = null;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => resizeCanvases(true), 150);
+  });
 
-    // -------------------------------------------------------------
-    // DEFINING UTILITY FUNCTIONS
-    // -------------------------------------------------------------
+  // ---------------------------------------------------------------
+  // HISTORY (UNDO / REDO)
+  // ---------------------------------------------------------------
+  function saveHistory(){
+    if (undoStack.length >= MAX_HISTORY) undoStack.shift();
+    undoStack.push(canvas.toDataURL());
+    redoStack = [];
+    refreshHistoryButtons();
+  }
 
-    // Choose Brush or Eraser
+  function restore(dataUrl){
+    const img = new Image();
+    img.onload = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(img, 0, 0);
+    };
+    img.src = dataUrl;
+  }
 
-    // display or hide eraser. Display the pen and its size
-    function setChoice(){
-        width_text.textContent = `${choice} Size :`;
-        if (choice === "Eraser"){
-            eraser.style.display = "block";
-            width_val.textContent = eraser.offsetWidth;
-        } else{
-            eraser.style.display = "none";
-            width_val.textContent = ctx.lineWidth;
-        }
-    }
+  function undo(){
+    if (undoStack.length <= 1) return;
+    redoStack.push(undoStack.pop());
+    restore(undoStack[undoStack.length - 1]);
+    refreshHistoryButtons();
+  }
 
-    // get mouse coordinates inside the canvas
-    function getMousePos(canvas, evt) {
-        let rect = canvas.getBoundingClientRect();
-        scaleX = canvas.width / rect.width;
-        scaleY = canvas.height / rect.height;
-    
-        return {
-            x: (evt.clientX - rect.left) * scaleX,
-            y: (evt.clientY - rect.top) * scaleY
-        }
-    }
+  function redo(){
+    if (redoStack.length === 0) return;
+    const url = redoStack.pop();
+    undoStack.push(url);
+    restore(url);
+    refreshHistoryButtons();
+  }
 
-    // get eraser dimensions
-    function getEraserDimensions(){
-        let width = eraser.offsetWidth;
-        let height = eraser.offsetHeight;
-        return {w: width, h: height};
-    }
+  function refreshHistoryButtons(){
+    undoBtn.disabled = undoStack.length <= 1;
+    redoBtn.disabled = redoStack.length === 0;
+  }
 
+  // ---------------------------------------------------------------
+  // TOOL SELECTION
+  // ---------------------------------------------------------------
+  function setTool(name){
+    tool = name;
+    toolButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.tool === name));
 
-    // set the new values of eraser and display them
-    function setAndDisplayEraserDimensions(action){
-        eraser_dims = getEraserDimensions();
+    capRow.classList.toggle('hidden', !(tool === 'brush' || tool === 'eraser'));
+    fillRow.classList.toggle('hidden', !SHAPE_TOOLS.includes(tool));
 
-        if (action === "+"){
-            eraser_dims.w += 1;
-            eraser_dims.h += 1;
-        }
-        else if (action === "-"){
-            eraser_dims.w -= 1;
-            eraser_dims.h -= 1;
-            if(eraser_dims.w <= 0){ eraser_dims.w = 1}
-            if(eraser_dims.h <= 0){ eraser_dims.h = 1}
-        }
+    canvas.style.cursor = tool === 'text' ? 'text' : 'crosshair';
+    hideTextInput();
+  }
 
+  toolButtons.forEach(btn => {
+    btn.addEventListener('click', () => setTool(btn.dataset.tool));
+  });
 
-        ctx.lineWidth = eraser_dims.w;
-        // console.log("Eraser size is: ", ctx.lineWidth);
+  // ---------------------------------------------------------------
+  // OPTIONS
+  // ---------------------------------------------------------------
+  sizeRange.addEventListener('input', () => {
+    brushSize = parseInt(sizeRange.value, 10);
+    sizeVal.textContent = brushSize;
+  });
 
-        eraser.style.width = `${eraser_dims.w}px`;
-        eraser.style.height = `${eraser_dims.h}px`;
-        width_val.textContent = `${eraser_dims.w}`;
-    }
-    
+  opacityRange.addEventListener('input', () => {
+    opacity = parseInt(opacityRange.value, 10) / 100;
+    opacityVal.textContent = `${opacityRange.value}%`;
+  });
 
-    // function that draws on canvas
-    function drawLine(e){
-        mouse_coords = getMousePos(canvas, e)
+  roundCapBox.addEventListener('change', () => { roundCap = roundCapBox.checked; });
+  fillShapeBox.addEventListener('change', () => { fillShape = fillShapeBox.checked; });
 
-        // set the starting point of the line to draw
-        if(prevX == null || prevY == null || !is_drawing){
-            prevX = mouse_coords.x;
-            prevY = mouse_coords.y;
-            return;
-        }
-        
-        // set the current point, till which we draw line
-        current_X = mouse_coords.x;
-        current_Y = mouse_coords.y;
+  colorPicker.addEventListener('input', () => { brushColor = colorPicker.value; });
 
-        // draw line
-        ctx.beginPath();
-        ctx.moveTo(prevX, prevY);
-        ctx.lineTo(current_X, current_Y);
-        ctx.stroke();
+  bgColorPicker.addEventListener('input', () => {
+    bgColor = bgColorPicker.value;
+    wrapper.style.backgroundColor = bgColor;
+  });
 
-        // set prev point to current point for next points
-        prevX = current_X;
-        prevY = current_Y;
-    }
-
-    // -------------------------------------------------------------
-    // DEFINING EVENT LISTENERS
-    // -------------------------------------------------------------
-
-    // when brush icon is clicked, it should be shown as active
-    brush_icon.addEventListener('click', ()=>{
-        eraser_icon.classList.remove("active");
-        brush_icon.classList.add("active");
-        choice = "Brush";
-        ctx.strokeStyle = '#000000';
-        ctx.lineWidth = 4;
-        color.value = '#000000'
-        line_color_container.style.display = "block";
-        line_color_container.style.display = "flex";
-
-        // display the pen and its size
-        setChoice()
+  swatches.forEach(sw => {
+    sw.addEventListener('click', () => {
+      brushColor = sw.dataset.color;
+      colorPicker.value = brushColor;
     });
+  });
 
-    // when eraser icon is clicked, it should be shown as active
-    eraser_icon.addEventListener('click', ()=>{
-        brush_icon.classList.remove('active');
-        eraser_icon.classList.add("active");
-        choice = "Eraser";
-        color.value = canvas_bg_color.value;
-        ctx.strokeStyle = `${canvas_bg_color.value}`;
-        line_color_container.style.display = "none";
+  undoBtn.addEventListener('click', undo);
+  redoBtn.addEventListener('click', redo);
 
-        // display the pen and its size
-        setChoice()
+  clearBtn.addEventListener('click', () => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    saveHistory();
+  });
 
-        // make the eraser trace mouse coordinates
-    })
+  downloadBtn.addEventListener('click', () => {
+    const out = document.createElement('canvas');
+    out.width = canvas.width;
+    out.height = canvas.height;
+    const octx = out.getContext('2d');
+    octx.fillStyle = bgColor;
+    octx.fillRect(0, 0, out.width, out.height);
+    octx.drawImage(canvas, 0, 0);
+    const a = document.createElement('a');
+    a.href = out.toDataURL('image/png');
+    a.download = 'drawing.png';
+    a.click();
+  });
 
-    // Functionality of our Width Controller Buttons
-    inc_btn.addEventListener('click', ()=>{
-        if (choice === "Brush"){
-            ctx.lineWidth++;
-            width_val.textContent = `${ctx.lineWidth}`;
-        }
-        else{
-            setAndDisplayEraserDimensions("+")
-        }
-    })
+  // ---------------------------------------------------------------
+  // POINTER HELPERS (mouse + touch)
+  // ---------------------------------------------------------------
+  function getPos(evt){
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    const point = evt.touches && evt.touches.length ? evt.touches[0] : evt;
+    return {
+      x: (point.clientX - rect.left) * scaleX,
+      y: (point.clientY - rect.top) * scaleY
+    };
+  }
 
-    dec_btn.addEventListener('click', ()=>{
-        if (choice === "Brush"){
-            ctx.lineWidth--;
-            if (ctx.lineWidth <=0){ctx.lineWidth = 1}
-            width_val.textContent = `${ctx.lineWidth}`;
-        }
-        else{
-            setAndDisplayEraserDimensions("-")
-        }
-    })
+  function applyStrokeStyle(context){
+    context.lineCap = roundCap ? 'round' : 'square';
+    context.lineJoin = roundCap ? 'round' : 'miter';
+    context.lineWidth = brushSize;
+    context.globalAlpha = opacity;
+    context.strokeStyle = brushColor;
+    context.fillStyle = brushColor;
+  }
 
-    // Functionality to Change color of the brush
-    color.addEventListener('change', (e)=>{
-        if (choice === "Brush"){
-            ctx.strokeStyle = `${color.value}`;
-        }
-    })
+  // ---------------------------------------------------------------
+  // FREEHAND DRAWING (brush / eraser)
+  // ---------------------------------------------------------------
+  function drawSegment(x0, y0, x1, y1){
+    ctx.save();
+    applyStrokeStyle(ctx);
+    ctx.globalCompositeOperation = (tool === 'eraser') ? 'destination-out' : 'source-over';
+    ctx.beginPath();
+    ctx.moveTo(x0, y0);
+    ctx.lineTo(x1, y1);
+    ctx.stroke();
+    ctx.restore();
+  }
 
-    // functionality to add background color to canvas
-    canvas_bg_color.addEventListener('change', ()=>{
-        canvas.style.backgroundColor=`${canvas_bg_color.value}`;
-    })
+  // ---------------------------------------------------------------
+  // SHAPE PREVIEW + COMMIT
+  // ---------------------------------------------------------------
+  function drawShape(context, x0, y0, x1, y1, isPreview){
+    context.save();
+    applyStrokeStyle(context);
+    if (isPreview){
+      context.setLineDash([6, 4]);
+      context.globalAlpha = Math.min(opacity, 0.85);
+    }
 
-    // -------------------------------------------------------------
-    // DRAWING ON CANVAS
-    // -------------------------------------------------------------
+    if (tool === 'line'){
+      context.beginPath();
+      context.moveTo(x0, y0);
+      context.lineTo(x1, y1);
+      context.stroke();
+    } else if (tool === 'rect'){
+      const w = x1 - x0, h = y1 - y0;
+      if (fillShape) context.fillRect(x0, y0, w, h);
+      else context.strokeRect(x0, y0, w, h);
+    } else if (tool === 'circle'){
+      const rx = Math.abs(x1 - x0) / 2;
+      const ry = Math.abs(y1 - y0) / 2;
+      const cx = (x0 + x1) / 2;
+      const cy = (y0 + y1) / 2;
+      context.beginPath();
+      context.ellipse(cx, cy, rx, ry, 0, 0, Math.PI * 2);
+      if (fillShape) context.fill();
+      else context.stroke();
+    }
+    context.restore();
+  }
 
-    // 1. first see if we should draw or not
-    canvas.addEventListener("mousedown", (e) => {
-        is_drawing = true;
-    });
+  // ---------------------------------------------------------------
+  // TEXT TOOL
+  // ---------------------------------------------------------------
+  function showTextInput(x, y, rectX, rectY){
+    textInput.classList.remove('hidden');
+    textInput.style.left = `${rectX}px`;
+    textInput.style.top = `${rectY - 12}px`;
+    textInput.style.fontSize = `${Math.max(brushSize * 3, 14)}px`;
+    textInput.style.color = brushColor;
+    textInput.value = '';
+    textInput.dataset.canvasX = x;
+    textInput.dataset.canvasY = y;
+    setTimeout(() => textInput.focus(), 0);
+  }
 
-    canvas.addEventListener("mouseup", (e) => {
-        is_drawing = false
-    });
+  function hideTextInput(){
+    textInput.classList.add('hidden');
+  }
 
+  function commitTextInput(){
+    if (textInput.classList.contains('hidden')) return;
+    const value = textInput.value.trim();
+    if (value){
+      const x = parseFloat(textInput.dataset.canvasX);
+      const y = parseFloat(textInput.dataset.canvasY);
+      ctx.save();
+      ctx.globalAlpha = opacity;
+      ctx.fillStyle = brushColor;
+      ctx.font = `${Math.max(brushSize * 3, 14)}px Inter, sans-serif`;
+      ctx.textBaseline = 'middle';
+      ctx.fillText(value, x, y);
+      ctx.restore();
+      saveHistory();
+    }
+    hideTextInput();
+  }
 
-    // 2. now make a line wherever the mouse goes
-    canvas.addEventListener("mousemove", drawLine);
+  textInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter'){ e.preventDefault(); commitTextInput(); }
+    if (e.key === 'Escape'){ hideTextInput(); }
+  });
+  textInput.addEventListener('blur', commitTextInput);
 
+  // ---------------------------------------------------------------
+  // POINTER EVENT HANDLERS
+  // ---------------------------------------------------------------
+  function handleStart(evt){
+    evt.preventDefault();
+    const pos = getPos(evt);
 
-    // Adding functionality to our clear and download buttons
+    if (tool === 'text'){
+      const rect = canvas.getBoundingClientRect();
+      const scaleX = rect.width / canvas.width;
+      const scaleY = rect.height / canvas.height;
+      showTextInput(pos.x, pos.y, pos.x * scaleX, pos.y * scaleY);
+      return;
+    }
 
-    clear_btn.addEventListener("click", () => {
-        ctx.fillStyle = canvas_bg_color.value;
-        ctx.clearRect(0, 0, canvas.width, canvas.height)
-    })
+    isDrawing = true;
+    startX = lastX = pos.x;
+    startY = lastY = pos.y;
+  }
 
-    download_btn.addEventListener("click", () => {
-        let data = canvas.toDataURL("image/png")
-        let a = document.createElement("a")
-        a.href = data
-        a.download = "drawing.png"
-        a.click()
-    })
+  function handleMove(evt){
+    if (!isDrawing) return;
+    evt.preventDefault();
+    const pos = getPos(evt);
+
+    if (tool === 'brush' || tool === 'eraser'){
+      drawSegment(lastX, lastY, pos.x, pos.y);
+      lastX = pos.x;
+      lastY = pos.y;
+    } else if (SHAPE_TOOLS.includes(tool)){
+      pctx.clearRect(0, 0, preview.width, preview.height);
+      drawShape(pctx, startX, startY, pos.x, pos.y, true);
+    }
+  }
+
+  function handleEnd(evt){
+    if (!isDrawing) return;
+    isDrawing = false;
+
+    if (tool === 'brush' || tool === 'eraser'){
+      saveHistory();
+    } else if (SHAPE_TOOLS.includes(tool)){
+      const endPos = (evt.changedTouches && evt.changedTouches.length)
+        ? getPos({ touches: evt.changedTouches })
+        : getPos(evt);
+      pctx.clearRect(0, 0, preview.width, preview.height);
+      drawShape(ctx, startX, startY, endPos.x, endPos.y, false);
+      saveHistory();
+    }
+  }
+
+  canvas.addEventListener('mousedown', handleStart);
+  canvas.addEventListener('mousemove', handleMove);
+  window.addEventListener('mouseup', handleEnd);
+
+  canvas.addEventListener('touchstart', handleStart, { passive: false });
+  canvas.addEventListener('touchmove', handleMove, { passive: false });
+  window.addEventListener('touchend', handleEnd, { passive: false });
+
+  // ---------------------------------------------------------------
+  // KEYBOARD SHORTCUTS
+  // ---------------------------------------------------------------
+  const KEY_TOOL_MAP = { b: 'brush', e: 'eraser', l: 'line', r: 'rect', c: 'circle', t: 'text' };
+
+  document.addEventListener('keydown', (e) => {
+    const typing = document.activeElement === textInput;
+    if (typing) return;
+
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z'){
+      e.preventDefault();
+      if (e.shiftKey) redo(); else undo();
+      return;
+    }
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'y'){
+      e.preventDefault();
+      redo();
+      return;
+    }
+
+    if (e.key === '['){
+      brushSize = Math.max(1, brushSize - 1);
+      sizeRange.value = brushSize;
+      sizeVal.textContent = brushSize;
+    }
+    if (e.key === ']'){
+      brushSize = Math.min(80, brushSize + 1);
+      sizeRange.value = brushSize;
+      sizeVal.textContent = brushSize;
+    }
+
+    const mapped = KEY_TOOL_MAP[e.key.toLowerCase()];
+    if (mapped) setTool(mapped);
+  });
+
+  // ---------------------------------------------------------------
+  // INITIAL DISPLAY SYNC
+  // ---------------------------------------------------------------
+  sizeVal.textContent = brushSize;
+  opacityVal.textContent = `${opacityRange.value}%`;
+  setTool('brush');
 }
