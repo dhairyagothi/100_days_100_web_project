@@ -1,192 +1,393 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Roboto:wght@300&display=swap');
+:root{
+  --bg-app: #0f0f12;
+  --panel-bg: #18181c;
+  --panel-border: rgba(255,255,255,0.08);
+  --accent: #e0a458;
+  --accent-soft: rgba(224,164,88,0.16);
+  --text-primary: #f2f0ea;
+  --text-muted: #9a978f;
+  --danger: #c9564f;
+  --success: #6b8f71;
+  --canvas-shadow: 0 20px 50px rgba(0,0,0,0.45);
+  --radius-sm: 6px;
+  --radius-md: 10px;
+}
 
 *{
-    margin: 0%;
-    padding: 0%;
-    box-sizing: border-box;
-    font-family: 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body{
-    background-color: rgb(202, 200, 200);
-    min-height: 100vh;
-    display: grid;
-    grid-template-columns: 1fr 3fr;
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-app);
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  color: var(--text-primary);
 }
 
+/* ================= LEFT PANEL ================= */
 
-/* Styling the Left portion of the Application */
-
-/*Universal style of left*/
 #left{
-    background-color: #1e1e1e;
-    padding: 20px 10px;
-    color: white;
-    height: 100%;
+  background-color: var(--panel-bg);
+  border-right: 1px solid var(--panel-border);
+  padding: 28px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  overflow-y: auto;
 }
 
-
-/*general style for  a controller*/
-#left .controller{
-    border-bottom: 1px solid white;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    padding: 0 0 20px 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
+.brand h1{
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  font-size: 1.6rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-/* Style the Div to Choose the Pen or Eraser*/
-
-#left .choose-pen{
-    display: flex;
-    justify-content: start;
-    gap: 10px;
+.brand h1 i{
+  font-size: 1.1rem;
+  color: var(--accent);
 }
 
-#left .choose-pen .i-container{
-    width: 30px;
-    height: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 2px solid white;
-    border-radius: 50%;
+.brand-underline{
+  width: 130px;
+  height: 10px;
+  margin-top: 4px;
+  display: block;
 }
 
-#left .choose-pen .i-container:hover{
-    cursor: pointer;
+.brand-underline path{
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-dasharray: 260;
+  stroke-dashoffset: 260;
+  animation: draw-in 1.1s ease forwards 0.2s;
 }
 
-#left .choose-pen .i-container.active{
-    background-color: white;
-    color: #101010;
-    border: 1px solid #101010;
-    width: 50px;
-    height: 50px;
-    font-size: 30px;
-    box-shadow: 3px 3px 10px black;
+@keyframes draw-in{
+  to{ stroke-dashoffset: 0; }
 }
 
-#left .choose-pen i{
-    font-size: 20px;
+.tagline{
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  margin-top: 8px;
 }
 
-/* Style Eraser*/
-.eraser{
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    border: 2px solid #101010;
-    background-color: white;
+.panel-group{
+  border-bottom: 1px solid var(--panel-border);
+  padding: 18px 0;
 }
 
-/* Style the buttons of the left*/
-
-#left .btn:hover, #left #download:hover{
-    cursor: pointer;
-    background-color: #1e1e1e;
-    color: white;
-    border: 1px solid white;
+.panel-group:last-of-type{
+  border-bottom: none;
 }
 
-/*heading of left*/
-#left h1{
-    font-size: 1.5rem;
-    margin-bottom: 20px;
+.group-title{
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-weight: 600;
+  margin-bottom: 14px;
 }
 
-/*style of the width controller*/
-
-#left .width-control h3{
-    margin-right: 30px;
+/* Tools grid */
+.tool-grid{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
 }
 
-#left .width-control .btns button.inc-width, 
-#left .width-control .btns button.dec-width{
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    font-weight: bolder;
-    margin-left: 5px;
+.tool-btn{
+  background: transparent;
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius-md);
+  color: var(--text-muted);
+  padding: 10px 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.68rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
 }
 
-#left .width-control button.inc-width:hover, 
-#left .width-control button.dec-width:hover{
-    transform: scale(1.1);
+.tool-btn i{
+  font-size: 1rem;
 }
 
-/*style of the color controller*/
-.color-control{
-    display: flex;
+.tool-btn:hover{
+  border-color: var(--accent);
+  color: var(--text-primary);
 }
 
-.color-control input[type="color"]{
-    margin-left: 20px;
+.tool-btn.active{
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
-.color-control input[type="color"]:hover{
-    cursor: pointer;
+/* control rows */
+.control-row{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
 }
 
-/* style the download button and clear button*/ 
-#left #download, #left .clear{
-    width: 100%;
-    border: none;
-    padding: 10px 8px;
-    font-size: 1.2rem;
-    font-weight: bolder;
-    border-radius: 2px;
-    margin-bottom: 5px;
+.control-row label{
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  flex: 0 0 60px;
 }
 
-/* style the right portion of the main application */
+.control-row input[type="range"]{
+  flex: 1;
+  accent-color: var(--accent);
+}
 
-/* universal style of the left */
+.control-val{
+  font-size: 0.75rem;
+  color: var(--text-primary);
+  min-width: 34px;
+  text-align: right;
+}
+
+.control-row input[type="color"]{
+  width: 34px;
+  height: 28px;
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius-sm);
+  background: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.toggle-row{
+  justify-content: space-between;
+}
+
+.toggle-row label:first-child{
+  flex: 1;
+}
+
+.hidden{
+  display: none !important;
+}
+
+/* switch */
+.switch{
+  position: relative;
+  width: 36px;
+  height: 20px;
+  display: inline-block;
+  flex: 0 0 auto;
+}
+
+.switch input{
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider-pill{
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0.12);
+  border-radius: 20px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.slider-pill::before{
+  content: "";
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  left: 3px;
+  top: 3px;
+  background: var(--text-primary);
+  border-radius: 50%;
+  transition: 0.2s;
+}
+
+.switch input:checked + .slider-pill{
+  background: var(--accent);
+}
+
+.switch input:checked + .slider-pill::before{
+  transform: translateX(16px);
+  background: #1a1408;
+}
+
+/* swatches */
+.swatches{
+  display: flex;
+  gap: 8px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+.swatch{
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid var(--panel-border);
+  cursor: pointer;
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+
+.swatch:hover{
+  transform: scale(1.15);
+  border-color: var(--accent);
+}
+
+/* actions */
+.actions{
+  margin-top: auto;
+}
+
+.btn{
+  border: 1px solid var(--panel-border);
+  background: transparent;
+  color: var(--text-primary);
+  border-radius: var(--radius-md);
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+  padding: 10px 14px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  width: 100%;
+}
+
+.btn:hover:not(:disabled){
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.btn:disabled{
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.btn-pair{
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.icon-btn{
+  flex: 1;
+  padding: 8px;
+}
+
+.download{
+  margin-top: 8px;
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #1a1408;
+}
+
+.download:hover{
+  filter: brightness(1.08);
+  color: #1a1408;
+}
+
+.clear:hover{
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+.shortcuts{
+  margin-top: 16px;
+  color: var(--text-muted);
+  font-size: 0.68rem;
+  line-height: 1.7;
+}
+
+kbd{
+  background: rgba(255,255,255,0.08);
+  border: 1px solid var(--panel-border);
+  border-radius: 4px;
+  padding: 1px 5px;
+  font-family: inherit;
+}
+
+/* ================= RIGHT / CANVAS ================= */
+
 #right{
-    /* background-color: #2e2e2e; */
-    background-color: crimson;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  overflow: hidden;
 }
 
-/*give appropriate dimensions to the canvas in the right portion*/
-#right #canvas{
-    display: block;
-    width: 95%;
-    min-width: 95%;
-    height: 95%;
-    min-height: 95%;
-    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.521);
+#canvas-wrapper{
+  position: relative;
+  width: 100%;
+  height: 100%;
+  max-width: 1400px;
+  border-radius: var(--radius-md);
+  box-shadow: var(--canvas-shadow);
+  overflow: hidden;
 }
 
-/*Media Query for Responsiveness*/
+#canvas, #preview-canvas{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+#preview-canvas{
+  pointer-events: none;
+}
+
+#canvas{
+  cursor: crosshair;
+}
+
+#text-input{
+  position: absolute;
+  background: transparent;
+  border: 1px dashed var(--accent);
+  color: inherit;
+  font-family: 'Inter', sans-serif;
+  outline: none;
+  padding: 2px 4px;
+  min-width: 40px;
+}
+
+/* ================= RESPONSIVE ================= */
+
 @media (max-width: 900px){
-    body{
-        display: flex;
-        flex-direction: column-reverse;
-    }
+  body{
+    display: flex;
+    flex-direction: column-reverse;
+  }
 
-    #left{
-        height: 40%;
-    }
+  #left{
+    border-right: none;
+    border-top: 1px solid var(--panel-border);
+    height: auto;
+    max-height: 46vh;
+  }
 
-    #right{
-        min-height: 60vh;
-    }
-
-    #right #canvas{
-        height: 58vh;
-        width: 97%;
-    }
-}
-
-@media (max-width: 725px){
-    header h1{
-        font-size: 2rem;
-    }
+  #right{
+    min-height: 54vh;
+    padding: 16px;
+  }
 }
