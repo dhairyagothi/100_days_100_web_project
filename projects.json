@@ -385,6 +385,12 @@
       "api"
     ],
     "difficulty": "intermediate",
+
+    "apiRequired": true,
+    "apiName": "OpenWeatherMap",
+    "requiresApiKey": true,
+    "externalDependencies": ["OpenWeatherMap"],
+    "projectPath": "./public/Weather%20Forcasting/index.html"
     "projectPath": "./public/Weather Forcasting/index.html"
   },
   {
@@ -444,6 +450,12 @@
       "javascript"
     ],
     "difficulty": "intermediate",
+
+    "apiRequired": true,
+    "apiName": "GitHub API",
+    "requiresApiKey": false,
+    "externalDependencies": ["GitHub API"],
+
     "projectPath": "./public/github_profile_finder/index.html"
   },
   {
@@ -984,6 +996,12 @@
       "javascript"
     ],
     "difficulty": "intermediate",
+
+    "apiRequired": true,
+    "apiName": "Exchange Rate API",
+    "requiresApiKey": true,
+    "externalDependencies": ["Exchange Rate API"],
+
     "projectPath": "./public/Exchange_Currency/index.html"
   },
   {
@@ -1008,6 +1026,12 @@
       "javascript"
     ],
     "difficulty": "intermediate",
+
+    "apiRequired": true,
+    "apiName": "Unsplash API",
+    "requiresApiKey": true,
+    "externalDependencies": ["Unsplash API"],
+
     "projectPath": "./public/Image Search Engine/index.html"
   },
   {
@@ -1175,6 +1199,12 @@
       "javascript"
     ],
     "difficulty": "intermediate",
+
+    "apiRequired": true,
+    "apiName": "NASA APOD API",
+    "requiresApiKey": true,
+    "externalDependencies": ["NASA APOD API"],
+
     "projectPath": "./public/NASA-APOD/popup.html"
   },
   {
@@ -1304,6 +1334,12 @@
       "javascript"
     ],
     "difficulty": "intermediate",
+
+    "apiRequired": true,
+    "apiName": "CoinGecko API",
+    "requiresApiKey": false,
+    "externalDependencies": ["CoinGecko API"],
+
     "projectPath": "./public/CRYPTOSHOW/index.html"
   },
   {
@@ -2563,6 +2599,12 @@
       "api"
     ],
     "difficulty": "intermediate",
+
+    "apiRequired": true,
+    "apiName": "OMDb API",
+    "requiresApiKey": true,
+    "externalDependencies": ["OMDb API"],
+
     "projectPath": "./public/Movie-Search-App/index.html"
   },
   {

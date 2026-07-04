@@ -3446,6 +3446,39 @@ body.custom-cursor-active .cursor-ring.is-visible {
   width: 100%;
 }
 
+.metadata-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.meta-badge {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.api-required {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.api-key {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.external-service {
+  background: #ede9fe;
+  color: #6d28d9;
+}
+
+.offline-project {
+  background: #dcfce7;
+  color: #166534;
+}
 /* ============================================================
    SKELETON SHIMMER LOADER SYSTEM
    ============================================================ */
