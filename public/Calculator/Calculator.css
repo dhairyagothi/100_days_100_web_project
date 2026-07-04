@@ -402,3 +402,53 @@ input::placeholder {
     color: var(--accent-strong);
     box-shadow: 0 0 18px rgba(110, 222, 10, 0.25);
 }
+
+.history-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.close-history-btn{
+    width:30px;
+    height:30px;
+
+    border:none;
+    border-radius:50%;
+
+    background:rgba(168,85,247,0.1);
+
+    color:#a855f7;
+
+    cursor:pointer;
+
+    font-size:16px;
+
+    transition:
+        transform .25s ease,
+        background .25s ease;
+}
+
+.close-history-btn:hover{
+
+    background:rgba(168,85,247,.25);
+
+    transform:
+        rotate(90deg)
+        scale(1.08);
+
+}
+
+.close-history-btn:active{
+
+    transform:
+        scale(.9);
+
+}
+
+.close-history-btn:focus-visible{
+
+    outline:2px solid #a855f7;
+    outline-offset:2px;
+
+}

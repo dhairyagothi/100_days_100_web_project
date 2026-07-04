@@ -1,39 +1,50 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Interactive Wizarding World</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
     <div class="container" id="main-container">
-        <h1>Interactive Wizarding World</h1>
+      <h1>Interactive Wizarding World</h1>
 
-        <section class="spell-caster">
-            <h2>✨ Spell Caster</h2>
-            <p>Type a spell to change the UI: <strong>Lumos</strong> (Light), <strong>Nox</strong> (Dark), <strong>Reducto</strong> (Shake)</p>
-            <input type="text" id="spell-input" placeholder="Cast a spell..." autocomplete="off">
-        </section>
+      <section class="spell-caster">
+        <h2>✨ Spell Caster</h2>
+        <p>
+          Type a spell to change the UI: <strong>Lumos</strong> (Light),
+          <strong>Nox</strong> (Dark), <strong>Reducto</strong> (Shake)
+        </p>
+        <input
+          type="text"
+          id="spell-input"
+          placeholder="Cast a spell..."
+          autocomplete="off"
+        />
+      </section>
 
-        <section class="character-search">
-            <h2>🏰 House Sorter & Roster</h2>
-            <div class="filters">
-                <select id="house-filter">
-                    <option value="">All Houses</option>
-                    <option value="Gryffindor">Gryffindor</option>
-                    <option value="Slytherin">Slytherin</option>
-                    <option value="Hufflepuff">Hufflepuff</option>
-                    <option value="Ravenclaw">Ravenclaw</option>
-                </select>
-                <input type="text" id="char-search" placeholder="Search character by name...">
-            </div>
-            
-            <div id="character-list" class="character-grid">
-                </div>
-        </section>
+      <section class="character-search">
+        <h2>🏰 House Sorter & Roster</h2>
+        <div class="filters">
+          <select id="house-filter">
+            <option value="">All Houses</option>
+            <option value="Gryffindor">Gryffindor</option>
+            <option value="Slytherin">Slytherin</option>
+            <option value="Hufflepuff">Hufflepuff</option>
+            <option value="Ravenclaw">Ravenclaw</option>
+          </select>
+          <input
+            type="text"
+            id="char-search"
+            placeholder="Search character by name..."
+          />
+        </div>
+
+        <div id="character-list" class="character-grid"></div>
+      </section>
     </div>
 
     <script src="script.js"></script>
-</body>
+  </body>
 </html>

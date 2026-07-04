@@ -1,1718 +1,1323 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Color Sort Puzzle</title>
-    <style>
-      *,
-      *::before,
-      *::after {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
-      :root {
-        --bg: #0f0f1a;
-        --surface: #1a1a2e;
-        --surface2: #16213e;
-        --border: rgba(255, 255, 255, 0.08);
-        --text: #e8e8f0;
-        --muted: #888899;
-        --accent: #5b9bd5;
-        --success: #4dbfad;
-        --danger: #e8735a;
-        --tw: 52px;
-        --th: 220px;
-        --sh: 52px;
-      }
-      body {
-        background: var(--bg);
-        color: var(--text);
-        font-family: 'Segoe UI', system-ui, sans-serif;
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 20px 12px;
-      }
-      header {
-        width: 100%;
-        max-width: 760px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 14px;
-        flex-wrap: wrap;
-        gap: 8px;
-      }
-      h1 {
-        font-size: 22px;
-        font-weight: 600;
-        letter-spacing: -0.5px;
-      }
-      h1 span {
-        color: var(--accent);
-      }
-      .stats {
-        display: flex;
-        gap: 8px;
-      }
-      .pill {
-        background: var(--surface);
-        border: 1px solid var(--border);
-        border-radius: 20px;
-        padding: 5px 14px;
-        font-size: 13px;
-        color: var(--muted);
-      }
-      .pill b {
-        color: var(--text);
-        font-weight: 600;
-      }
-      #lvlrow {
-        width: 100%;
-        max-width: 760px;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        margin-bottom: 14px;
-        flex-wrap: wrap;
-      }
-      #lvlrow > span {
-        font-size: 13px;
-        color: var(--muted);
-      }
-      .lbtn {
-        background: var(--surface);
-        border: 1px solid var(--border);
-        color: var(--muted);
-        border-radius: 20px;
-        padding: 5px 14px;
-        font-size: 13px;
-        cursor: pointer;
-        transition: 0.15s;
-      }
-      .lbtn:hover {
-        border-color: var(--accent);
-        color: var(--text);
-      }
-      .lbtn.on {
-        background: rgba(91, 155, 213, 0.18);
-        border-color: var(--accent);
-        color: var(--accent);
-        font-weight: 600;
-      }
-      .ctrls {
-        margin-left: auto;
-        display: flex;
-        gap: 8px;
-        flex-wrap: wrap;
-      }
-      .cbtn {
-        background: var(--surface);
-        border: 1px solid var(--border);
-        color: var(--text);
-        border-radius: 8px;
-        padding: 6px 14px;
-        font-size: 13px;
-        cursor: pointer;
-        transition: 0.15s;
-      }
-      .cbtn:hover {
-        background: var(--surface2);
-        border-color: rgba(255, 255, 255, 0.2);
-      }
-      .cbtn.a {
-        background: rgba(91, 155, 213, 0.2);
-        border-color: var(--accent);
-        color: var(--accent);
-      }
-      #arena {
-        width: 100%;
-        max-width: 760px;
-        background: var(--surface);
-        border: 1px solid var(--border);
-        border-radius: 16px;
-        padding: 24px 16px;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 14px;
-        justify-content: center;
-        align-items: flex-end;
-        min-height: 300px;
-      }
-      #helpOverlay {
-        display: none;
-        position: fixed;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.65);
-        z-index: 250;
-        align-items: center;
-        justify-content: center;
-      }
-      #helpOverlay.show {
-        display: flex;
-      }
-      #helpCard {
-        background: var(--surface2);
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        padding: 2rem;
-        border-radius: 18px;
-        max-width: 420px;
-        width: 90%;
-      }
-      #helpCard h2 {
-        margin-bottom: 18px;
-      }
-      #helpCard ul {
-        color: var(--muted);
-        padding-left: 18px;
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-        margin-bottom: 20px;
-      }
-      .tw {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        cursor: pointer;
-        user-select: none;
-      }
-      .tube {
-        width: var(--tw);
-        height: var(--th);
-        border: 2px solid rgba(255, 255, 255, 0.15);
-        border-top: none;
-        border-radius: 0 0 26px 26px;
-        position: relative;
-        overflow: hidden;
-        background: rgba(255, 255, 255, 0.03);
-        transition:
-          transform 0.18s,
-          box-shadow 0.18s;
-      }
-      .seg {
-        position: absolute;
-        width: 100%;
-        height: var(--sh);
-        left: 0;
-      }
-      .seg::after {
-        content: '';
-        position: absolute;
-        top: 3px;
-        left: 5px;
-        width: 10px;
-        height: 45%;
-        border-radius: 5px;
-        background: rgba(255, 255, 255, 0.22);
-        pointer-events: none;
-      }
-      .seg-border-top {
-        border-top: 1px solid rgba(0, 0, 0, 0.28);
-      }
-      .tw.sel .tube {
-        transform: translateY(-12px) scale(1.03);
-        box-shadow:
-          0 0 0 2px var(--accent),
-          0 8px 24px rgba(91, 155, 213, 0.3);
-        border-color: var(--accent);
-      }
-      .tw.done .tube {
-        box-shadow:
-          0 0 0 2px var(--success),
-          0 4px 16px rgba(77, 191, 173, 0.25);
-        animation: donePulse 0.8s ease;
-      }
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Color Sort Puzzle</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
 
-      @keyframes donePulse {
-        0% {
-          transform: scale(1);
-        }
-        50% {
-          transform: scale(1.08);
-        }
-        100% {
-          transform: scale(1);
-        }
-      }
+<style>
+/* ========================= RESET & VARIABLES ========================= */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-      .tw:hover .tube {
-        transform: translateY(-4px);
-      }
+:root {
+  --bg: #0f0f1a;
+  --bg-card: rgba(255,255,255,0.04);
+  --bg-glass: rgba(255,255,255,0.06);
+  --text: #f0f0f5;
+  --text-secondary: #8888aa;
+  --text-muted: #555577;
+  --border: rgba(255,255,255,0.08);
+  --accent: #7c5cfc;
+  --accent-hover: #6a4de8;
+  --accent-light: rgba(124,92,252,0.15);
+  --accent-glow: rgba(124,92,252,0.35);
+  --success: #22c55e;
+  --success-glow: rgba(34,197,94,0.3);
+  --danger: #ef4444;
+  --warning: #f59e0b;
+  --radius: 16px;
+  --radius-sm: 10px;
+  --font: 'Inter', system-ui, sans-serif;
+  --shadow: 0 8px 32px rgba(0,0,0,0.3);
+  --transition: 0.25s cubic-bezier(0.4,0,0.2,1);
+}
 
-      .tw.hint-src .tube {
-        animation: hintGlowSrc 1s infinite;
-        box-shadow:
-          0 0 15px rgba(91, 155, 213, 0.6),
-          0 0 30px rgba(91, 155, 213, 0.3);
-        border-color: var(--accent);
-      }
-      .tw.hint-dst .tube {
-        animation: hintGlowDst 1s infinite;
-        box-shadow:
-          0 0 15px rgba(77, 191, 173, 0.6),
-          0 0 30px rgba(77, 191, 173, 0.3);
-        border-color: var(--success);
-      }
-      /* Clean up static stream definitions for dynamic scaling height */
-      .pour-stream {
-        position: fixed;
-        width: 8px;
-        border-radius: 4px;
-        transform-origin: top center;
-        z-index: 900;
-        opacity: 0;
+html, body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
 
-        .pour-stream.flowing {
-          animation: streamFlow 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-        }
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  position: relative;
+}
 
-        .seg {
-          position: absolute;
-          width: 100%;
-          height: var(--sh);
-          left: 0;
-          transition:
-            transform 0.4s ease-in-out,
-            opacity 0.3s ease;
-          /* Gives a subtle convex fluid meniscus to the surface of the liquid */
-          border-radius: 4px 4px 0 0;
-        }
+::selection { background: var(--accent); color: #fff; }
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 50px; }
 
-        /* Wet reflection and soft glowing edges */
-        box-shadow:
-          0 0 10px rgba(255, 255, 255, 0.2),
-          inset -2px 0 3px rgba(255, 255, 255, 0.4),
-          inset 2px 0 3px rgba(0, 0, 0, 0.15);
+/* ========================= ANIMATED BACKGROUND ========================= */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 600px 600px at 20% 20%, rgba(124,92,252,0.12) 0%, transparent 70%),
+    radial-gradient(ellipse 500px 500px at 80% 80%, rgba(236,72,153,0.08) 0%, transparent 70%),
+    radial-gradient(ellipse 400px 400px at 50% 50%, rgba(34,197,94,0.05) 0%, transparent 70%);
+  z-index: 0;
+  pointer-events: none;
+  animation: bgShift 15s ease-in-out infinite alternate;
+}
 
-        /* Smooth scale rendering to prevent the 'cube' flash look */
-        transition:
-          height 0.3s cubic-bezier(0.25, 1, 0.5, 1),
-          opacity 0.2s ease,
-          clip-path 0.3s ease;
+@keyframes bgShift {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(30deg); }
+}
 
-        /* Liquid teardrop shape using a clipping mask (tapers slightly at the bottom) */
-        clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);
-      }
+/* ========================= CONTAINER ========================= */
+.game-wrapper {
+  max-width: 900px;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+  animation: fadeInUp 0.6s ease both;
+}
 
-      @keyframes streamFlow {
-        0% {
-          height: 0px;
-          opacity: 0;
-          transform: scaleY(0);
-        }
-        20% {
-          opacity: 0.9;
-        }
-        85% {
-          opacity: 0.8;
-        }
-        100% {
-          opacity: 0;
-          transform: scaleY(1);
-        }
-      }
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
-      @keyframes liquidFlow {
-        0% {
-          opacity: 0;
-          transform: scaleY(0);
-        }
+/* ========================= HEADER ========================= */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
 
-        15% {
-          opacity: 1;
-        }
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 
-        100% {
-          opacity: 1;
-          transform: scaleY(1);
-        }
-      }
+.logo-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  box-shadow: 0 4px 16px var(--accent-glow);
+}
 
-      /* --- Remodelled Tube Animation Overrides --- */
-      .tube {
-        width: var(--tw);
-        height: var(--th);
-        border: 2px solid rgba(255, 255, 255, 0.15);
-        border-top: none;
-        border-radius: 0 0 26px 26px;
-        position: relative;
-        overflow: hidden;
-        background: rgba(255, 255, 255, 0.03);
-        /* Use a smooth transition for custom transform manipulations */
-        transition:
-          transform 0.4s cubic-bezier(0.42, 0, 0.58, 1),
-          box-shadow 0.18s;
-      }
+.logo h1 {
+  font-size: 1.4rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
 
-      /* Maintain custom z-indexing layout layers during motion */
-      .tw.moving-pour {
-        z-index: 999 !important;
-      }
+.logo h1 span { color: var(--accent); }
 
-      /* Ensure liquid segments smoothly slide down or up when altered */
-      .seg {
-        position: absolute;
-        width: 100%;
-        height: var(--sh);
-        left: 0;
-        transition:
-          transform 0.4s ease-in-out,
-          opacity 0.3s ease;
-      }
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
 
-      /* Clean up static stream definitions for dynamic scaling height */
-      .pour-stream {
-        position: fixed;
-        width: 8px; /* Slightly thinner for realism */
-        border-radius: 4px;
-        transform-origin: top center;
-        z-index: 900;
-        opacity: 0;
-        box-shadow:
-          0 0 8px rgba(255, 255, 255, 0.3),
-          inset -1px 0 2px rgba(255, 255, 255, 0.4);
-        transition:
-          height 0.25s cubic-bezier(0.25, 1, 0.5, 1),
-          opacity 0.15s ease;
-      }
+.icon-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--bg-glass);
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition);
+  font-size: 1rem;
+}
 
-      @keyframes tubeLift {
-        0% {
-          transform: translateY(0) rotateZ(0deg);
-        }
-        100% {
-          transform: translateY(-28px) rotateZ(0deg);
-        }
-      }
+.icon-btn:hover {
+  background: var(--accent-light);
+  color: var(--accent);
+  border-color: rgba(124,92,252,0.3);
+  transform: scale(1.08);
+}
 
-      @keyframes tubeTiltLeft {
-        0% {
-          transform: translateY(-28px) rotateZ(0deg);
-        }
-        100% {
-          transform: translateY(-18px) rotateZ(-38deg);
-        }
-      }
+/* ========================= STATS BAR ========================= */
+.stats-bar {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
 
-      @keyframes tubeTiltRight {
-        0% {
-          transform: translateY(-28px) rotateZ(0deg);
-        }
-        100% {
-          transform: translateY(-18px) rotateZ(38deg);
-        }
-      }
+.stat-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 50px;
+  background: var(--bg-glass);
+  border: 1px solid var(--border);
+  font-size: 0.82rem;
+  font-weight: 600;
+  backdrop-filter: blur(12px);
+  transition: all var(--transition);
+}
 
-      @keyframes tubeSettle {
-        0% {
-          transform: translateY(-18px) rotateZ(-38deg);
-        }
-        50% {
-          transform: translateY(-8px) rotateZ(-2deg);
-        }
-        100% {
-          transform: translateY(0) rotateZ(0deg);
-        }
-      }
+.stat-chip .stat-icon {
+  font-size: 1rem;
+}
 
-      @keyframes hintGlowSrc {
-        0%,
-        100% {
-          transform: translateY(-5px);
-        }
-        50% {
-          transform: translateY(-12px);
-        }
-      }
-      @keyframes hintGlowDst {
-        0%,
-        100% {
-          transform: scale(1);
-        }
-        50% {
-          transform: scale(1.03);
-        }
-      }
-      .tw.shake .tube {
-        animation: shake 0.4s ease;
-      }
-      @keyframes shake {
-        0%,
-        100% {
-          transform: translateX(0);
-        }
-        20% {
-          transform: translateX(-7px);
-        }
-        40% {
-          transform: translateX(7px);
-        }
-        60% {
-          transform: translateX(-4px);
-        }
-        80% {
-          transform: translateX(4px);
-        }
-      }
-      @keyframes pourIn {
-        0% {
-          transform: translateY(-30px) scaleY(0.2);
-          opacity: 0;
-        }
+.stat-chip .stat-value {
+  font-family: 'Inter', monospace;
+  font-weight: 800;
+  color: var(--accent);
+}
 
-        50% {
-          transform: translateY(6px) scaleY(1.05);
-          opacity: 1;
-        }
+/* ========================= DIFFICULTY / LEVEL SELECTOR ========================= */
+.controls-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  align-items: center;
+}
 
-        100% {
-          transform: translateY(0) scaleY(1);
-          opacity: 1;
-        }
-      }
-      .pour-in {
-        animation: pourIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-      }
-      @keyframes floatUp {
-        0% {
-          opacity: 0.7;
-          transform: translateY(0) scale(1);
-        }
-        100% {
-          opacity: 0;
-          transform: translateY(-50px) scale(0.4);
-        }
-      }
-      .bbl {
-        position: absolute;
-        border-radius: 50%;
-        pointer-events: none;
-        animation: floatUp 0.9s ease-out forwards;
-      }
-      .tlbl {
-        margin-top: 6px;
-        font-size: 11px;
-        color: var(--muted);
-        height: 14px;
-        text-align: center;
-      }
-      .tw.done .tlbl {
-        color: var(--success);
-      }
-      #msg {
-        margin-top: 12px;
-        font-size: 13px;
-        color: var(--muted);
-        min-height: 20px;
-        text-align: center;
-        max-width: 600px;
-      }
-      #msg.err {
-        color: var(--danger);
-      }
-      #overlay {
-        display: none;
-        position: fixed;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.65);
-        z-index: 200;
-        align-items: center;
-        justify-content: center;
-      }
-      #overlay.show {
-        display: flex;
-      }
-      #wcard {
-        background: var(--surface2);
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        border-radius: 18px;
-        padding: 2.2rem 2.5rem;
-        text-align: center;
-        max-width: 380px;
-        position: relative;
-        overflow: hidden;
-      }
-      #wcard h2 {
-        font-size: 24px;
-        margin-bottom: 8px;
-      }
-      #wcard .win-details {
-        color: var(--muted);
-        font-size: 14px;
-        margin-bottom: 1.2rem;
-        text-align: left;
-      }
-      #wcard .win-details p {
-        margin: 6px 0;
-      }
-      #wcard .rating {
-        font-size: 32px;
-        margin: 10px 0;
-      }
-      #wcard .wb {
-        display: flex;
-        gap: 10px;
-        justify-content: center;
-        margin-top: 1rem;
-      }
-      @keyframes cfall {
-        from {
-          transform: translateY(-20px) rotate(0deg);
-          opacity: 1;
-        }
-        to {
-          transform: translateY(380px) rotate(900deg);
-          opacity: 0;
-        }
-      }
-      .conf {
-        position: absolute;
-        width: 9px;
-        height: 9px;
-        border-radius: 2px;
-        animation: cfall 2s ease-in forwards;
-        pointer-events: none;
-      }
-      .home-btn {
-        background: var(--surface);
-        border: 1px solid var(--border);
-        padding: 8px 14px;
-        border-radius: 10px;
-        color: var(--text);
-        text-decoration: none;
-        font-size: 14px;
-        transition: 0.15s;
-      }
-      .home-btn:hover {
-        border-color: var(--accent);
-        color: var(--accent);
-      }
-      .toast-container {
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        z-index: 300;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-      }
-      .toast {
-        background: var(--surface2);
-        border: 1px solid rgba(255, 255, 255, 0.15);
-        padding: 12px 18px;
-        border-radius: 10px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-        animation: slideIn 0.3s ease forwards;
-        max-width: 320px;
-      }
-      .toast.success {
-        border-left: 4px solid var(--success);
-      }
-      .toast.info {
-        border-left: 4px solid var(--accent);
-      }
-      .toast.warning {
-        border-left: 4px solid var(--danger);
-      }
-      @keyframes slideIn {
-        from {
-          transform: translateX(120%);
-          opacity: 0;
-        }
-        to {
-          transform: translateX(0);
-          opacity: 1;
-        }
-      }
-      @keyframes fadeOut {
-        from {
-          opacity: 1;
-        }
-        to {
-          opacity: 0;
-        }
-      }
-      .toast.fadeOut {
-        animation: fadeOut 0.3s ease forwards;
-      }
-      #statsSection,
-      #achievementsSection {
-        width: 100%;
-        max-width: 760px;
-        margin-top: 20px;
-      }
-      .stats-grid,
-      .achievements-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-        gap: 12px;
-        margin-top: 10px;
-      }
-      .achievements-grid {
-        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      }
-      .stat-card,
-      .achievement-card {
-        background: var(--surface);
-        border: 1px solid var(--border);
-        border-radius: 12px;
-        padding: 14px;
-        text-align: center;
-      }
-      .stat-card b {
-        font-size: 20px;
-        display: block;
-        color: var(--accent);
-      }
-      .stat-card span {
-        font-size: 12px;
-        color: var(--muted);
-      }
-      .achievement-card {
-        padding: 12px;
-        transition: 0.2s;
-      }
-      .achievement-card.locked {
-        opacity: 0.5;
-        filter: grayscale(1);
-      }
-      .achievement-card.unlocked {
-        border-color: var(--success);
-        animation: achievementUnlock 0.5s ease;
-      }
-      @keyframes achievementUnlock {
-        0% {
-          transform: scale(1);
-        }
-        50% {
-          transform: scale(1.08);
-        }
-        100% {
-          transform: scale(1);
-        }
-      }
-      .achievement-icon {
-        font-size: 28px;
-        margin-bottom: 6px;
-      }
-      .achievement-name {
-        font-size: 13px;
-        font-weight: 600;
-        margin-bottom: 4px;
-      }
-      .achievement-desc {
-        font-size: 11px;
-        color: var(--muted);
-      }
-      .section-title {
-        font-size: 16px;
-        font-weight: 600;
-        color: var(--text);
-        margin-bottom: 6px;
-      }
+.control-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px;
+  background: var(--bg-glass);
+  border: 1px solid var(--border);
+  border-radius: 50px;
+  backdrop-filter: blur(12px);
+}
 
-      @keyframes liquidBounce {
-        0% {
-          transform: translateY(0);
-        }
-        40% {
-          transform: translateY(4px);
-        }
-        100% {
-          transform: translateY(0);
-        }
-      }
+.control-group label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  padding: 0 12px;
+}
 
-      .seg.pour-in {
-        animation:
-          pourIn 0.45s cubic-bezier(0.22, 1, 0.36, 1),
-          liquidBounce 0.25s ease-out 0.35s;
-      }
-    </style>
-  </head>
-  <body>
-    <header>
-      <a href="../../index.html" class="home-btn">← Home</a>
-      <h1>🧪 Color<span>Sort</span></h1>
-      <div class="stats">
-        <div class="pill">Moves: <b id="mc">0</b></div>
-        <div class="pill">Time: <b id="timer">00:00</b></div>
-        <div class="pill">Level: <b id="ld">1 — Easy</b></div>
+.diff-btn {
+  padding: 8px 18px;
+  border-radius: 50px;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  font-family: var(--font);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.diff-btn:hover {
+  color: var(--text);
+}
+
+.diff-btn.active {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 2px 12px var(--accent-glow);
+}
+
+.action-btn {
+  padding: 10px 22px;
+  border-radius: 50px;
+  border: none;
+  font-family: var(--font);
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all var(--transition);
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 4px 16px var(--accent-glow);
+}
+
+.btn-primary:hover {
+  background: var(--accent-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px var(--accent-glow);
+}
+
+.btn-ghost {
+  background: var(--bg-glass);
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+}
+
+.btn-ghost:hover {
+  background: var(--accent-light);
+  color: var(--accent);
+  border-color: rgba(124,92,252,0.3);
+}
+
+.btn-danger {
+  background: rgba(239,68,68,0.12);
+  color: var(--danger);
+  border: 1px solid rgba(239,68,68,0.2);
+}
+
+.btn-danger:hover {
+  background: rgba(239,68,68,0.2);
+}
+
+/* ========================= GAME BOARD ========================= */
+.game-board {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 18px;
+  padding: 32px 24px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  backdrop-filter: blur(16px);
+  box-shadow: var(--shadow);
+  min-height: 320px;
+  align-items: flex-end;
+  position: relative;
+  transition: all var(--transition);
+}
+
+/* ========================= TUBE ========================= */
+.tube-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.tube-wrapper:hover {
+  transform: translateY(-4px);
+}
+
+.tube-wrapper.selected {
+  transform: translateY(-14px);
+}
+
+.tube-wrapper.selected .tube {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-light), 0 8px 24px var(--accent-glow);
+}
+
+.tube-wrapper.shake .tube {
+  animation: tubeShake 0.4s ease;
+}
+
+@keyframes tubeShake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-6px) rotate(-2deg); }
+  40% { transform: translateX(6px) rotate(2deg); }
+  60% { transform: translateX(-4px) rotate(-1deg); }
+  80% { transform: translateX(4px) rotate(1deg); }
+}
+
+.tube-wrapper.complete .tube {
+  border-color: var(--success);
+  box-shadow: 0 0 0 3px rgba(34,197,94,0.15), 0 4px 20px var(--success-glow);
+}
+
+.tube {
+  width: 56px;
+  height: 180px;
+  border: 2px solid var(--border);
+  border-radius: 0 0 28px 28px;
+  border-top: none;
+  background: rgba(255,255,255,0.03);
+  display: flex;
+  flex-direction: column-reverse;
+  overflow: hidden;
+  position: relative;
+  transition: all var(--transition);
+}
+
+.tube::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  background: linear-gradient(90deg, rgba(255,255,255,0.06) 0%, transparent 40%, transparent 60%, rgba(255,255,255,0.03) 100%);
+  pointer-events: none;
+  z-index: 2;
+  border-radius: 0 0 28px 28px;
+}
+
+/* Top lip of the tube */
+.tube-lip {
+  width: 66px;
+  height: 6px;
+  border-radius: 4px 4px 0 0;
+  background: var(--border);
+  transition: background var(--transition);
+}
+
+.tube-wrapper.selected .tube-lip {
+  background: var(--accent);
+}
+
+.tube-wrapper.complete .tube-lip {
+  background: var(--success);
+}
+
+/* ========================= COLOR BLOCKS IN TUBE ========================= */
+.color-block {
+  width: 100%;
+  height: 25%;
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+}
+
+.color-block::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 2px;
+}
+
+/* Pour animation */
+.color-block.pouring-out {
+  animation: pourOut 0.3s ease forwards;
+}
+
+@keyframes pourOut {
+  0% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-30px); }
+}
+
+.color-block.pouring-in {
+  animation: pourIn 0.35s cubic-bezier(0.34,1.56,0.64,1) forwards;
+}
+
+@keyframes pourIn {
+  0% { opacity: 0; transform: translateY(-20px) scaleY(0.5); }
+  100% { opacity: 1; transform: translateY(0) scaleY(1); }
+}
+
+.tube-label {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+/* ========================= FLOATING COLOR BALL (pour animation) ========================= */
+.floating-block {
+  position: fixed;
+  width: 52px;
+  height: 44px;
+  border-radius: 0 0 26px 26px;
+  z-index: 100;
+  pointer-events: none;
+  transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+}
+
+/* ========================= MODALS ========================= */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(12px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.modal-overlay.show {
+  display: flex;
+  animation: modalBgIn 0.3s ease;
+}
+
+@keyframes modalBgIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal {
+  width: 100%;
+  max-width: 400px;
+  background: #1a1a2e;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 40px 32px;
+  text-align: center;
+  box-shadow: var(--shadow);
+  animation: modalPop 0.5s cubic-bezier(0.34,1.56,0.64,1);
+}
+
+@keyframes modalPop {
+  from { opacity: 0; transform: scale(0.85) translateY(20px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.modal-emoji {
+  font-size: 4rem;
+  display: block;
+  margin-bottom: 16px;
+  animation: emojiPop 0.6s cubic-bezier(0.34,1.56,0.64,1) 0.2s both;
+}
+
+@keyframes emojiPop {
+  0% { transform: scale(0) rotate(-20deg); }
+  60% { transform: scale(1.3) rotate(10deg); }
+  100% { transform: scale(1) rotate(0); }
+}
+
+.modal h2 {
+  font-size: 1.6rem;
+  font-weight: 800;
+  margin-bottom: 8px;
+  letter-spacing: -0.5px;
+}
+
+.modal p {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+
+.modal-stats {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-bottom: 28px;
+}
+
+.modal-stat {
+  text-align: center;
+}
+
+.modal-stat-value {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--accent);
+  display: block;
+}
+
+.modal-stat-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+}
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+/* ========================= HOW TO PLAY ========================= */
+.how-to-play {
+  margin-bottom: 20px;
+  padding: 20px 24px;
+  background: var(--bg-glass);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  backdrop-filter: blur(12px);
+  display: none;
+}
+
+.how-to-play.show { display: block; }
+
+.how-to-play h3 {
+  font-size: 0.9rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.how-to-play ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.how-to-play li {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  line-height: 1.4;
+}
+
+.step-num {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--accent-light);
+  color: var(--accent);
+  font-size: 0.7rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* ========================= TOAST ========================= */
+.toast-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.toast {
+  padding: 12px 20px;
+  border-radius: var(--radius-sm);
+  background: #1a1a2e;
+  color: var(--text);
+  font-size: 0.85rem;
+  font-weight: 600;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  pointer-events: auto;
+  animation: toastIn 0.4s cubic-bezier(0.34,1.56,0.64,1);
+}
+
+.toast.toast-out { animation: toastOut 0.3s ease forwards; }
+
+@keyframes toastIn {
+  from { opacity: 0; transform: translateX(40px) scale(0.9); }
+  to { opacity: 1; transform: translateX(0) scale(1); }
+}
+
+@keyframes toastOut {
+  to { opacity: 0; transform: translateX(40px) scale(0.9); }
+}
+
+/* ========================= CONFETTI ========================= */
+.confetti-piece {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  animation: confettiFall 2s ease-out forwards;
+}
+
+@keyframes confettiFall {
+  0% { opacity: 1; transform: translateY(0) rotate(0deg) scale(1); }
+  100% { opacity: 0; transform: translateY(600px) rotate(1080deg) scale(0.1); }
+}
+
+/* ========================= KEYBOARD HINTS ========================= */
+.keyboard-hint {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.kbd {
+  display: inline-block;
+  padding: 2px 7px;
+  border-radius: 4px;
+  background: var(--bg-glass);
+  border: 1px solid var(--border);
+  font-family: monospace;
+  font-weight: 600;
+  font-size: 0.68rem;
+}
+
+/* ========================= RESPONSIVE ========================= */
+@media (max-width: 600px) {
+  body { padding: 12px; }
+  .header { margin-bottom: 16px; }
+  .logo h1 { font-size: 1.15rem; }
+  .stats-bar { gap: 8px; }
+  .stat-chip { padding: 8px 12px; font-size: 0.75rem; }
+  .controls-row { gap: 8px; }
+  .diff-btn { padding: 7px 14px; font-size: 0.75rem; }
+  .game-board { padding: 20px 12px; gap: 10px; }
+  .tube { width: 44px; height: 145px; }
+  .tube-lip { width: 54px; }
+  .tube-wrapper.selected { transform: translateY(-10px); }
+  .action-btn { padding: 8px 16px; font-size: 0.78rem; }
+  .keyboard-hint { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="game-wrapper">
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="logo">
+      <div class="logo-icon">🧪</div>
+      <h1>Color<span>Sort</span></h1>
+    </div>
+    <div class="header-actions">
+      <button class="icon-btn" id="helpBtn" title="How to play">❓</button>
+      <button class="icon-btn" id="soundBtn" title="Toggle sound">🔊</button>
+    </div>
+  </header>
+
+  <!-- HOW TO PLAY -->
+  <div class="how-to-play" id="howToPlay">
+    <h3>📖 How to Play</h3>
+    <ul>
+      <li><span class="step-num">1</span> Click a tube to pick up the top color</li>
+      <li><span class="step-num">2</span> Click another tube to pour it in</li>
+      <li><span class="step-num">3</span> You can only pour onto the same color or into an empty tube</li>
+      <li><span class="step-num">4</span> Fill each tube with one single color to win!</li>
+    </ul>
+  </div>
+
+  <!-- STATS BAR -->
+  <div class="stats-bar">
+    <div class="stat-chip">
+      <span class="stat-icon">🏆</span>
+      <span>Level</span>
+      <span class="stat-value" id="levelDisplay">1</span>
+    </div>
+    <div class="stat-chip">
+      <span class="stat-icon">🔄</span>
+      <span>Moves</span>
+      <span class="stat-value" id="movesDisplay">0</span>
+    </div>
+    <div class="stat-chip">
+      <span class="stat-icon">⏱</span>
+      <span>Time</span>
+      <span class="stat-value" id="timerDisplay">0:00</span>
+    </div>
+    <div class="stat-chip">
+      <span class="stat-icon">⭐</span>
+      <span>Best</span>
+      <span class="stat-value" id="bestDisplay">—</span>
+    </div>
+  </div>
+
+  <!-- CONTROLS ROW -->
+  <div class="controls-row" id="lvlrow">
+    <div class="control-group">
+      <label>Difficulty</label>
+      <button class="diff-btn active" data-diff="easy">Easy</button>
+      <button class="diff-btn" data-diff="medium">Medium</button>
+      <button class="diff-btn" data-diff="hard">Hard</button>
+    </div>
+    <button class="action-btn btn-primary" id="newGameBtn">🎮 New Game</button>
+    <button class="action-btn btn-ghost" id="undoBtn">↩ Undo</button>
+    <button class="action-btn btn-ghost" id="restartBtn">🔁 Restart</button>
+  </div>
+
+  <!-- GAME BOARD -->
+  <div class="game-board" id="gameBoard"></div>
+
+  <!-- KEYBOARD HINTS -->
+  <div class="keyboard-hint">
+    <span class="kbd">U</span> undo &nbsp;·&nbsp;
+    <span class="kbd">R</span> restart &nbsp;·&nbsp;
+    <span class="kbd">N</span> new game &nbsp;·&nbsp;
+    <span class="kbd">1-9</span> select tube
+  </div>
+
+</div>
+
+<!-- WIN MODAL -->
+<div class="modal-overlay" id="winModal">
+  <div class="modal">
+    <span class="modal-emoji">🎉</span>
+    <h2>Puzzle Complete!</h2>
+    <p id="winMessage">Amazing work! You sorted all the colors.</p>
+    <div class="modal-stats">
+      <div class="modal-stat">
+        <span class="modal-stat-value" id="winMoves">0</span>
+        <span class="modal-stat-label">Moves</span>
       </div>
-    </header>
-
-    <div id="lvlrow">
-      <span>Difficulty:</span>
-      <button class="lbtn on" onclick="setLevel(1)">Easy</button>
-      <button class="lbtn" onclick="setLevel(2)">Medium</button>
-      <button class="lbtn" onclick="setLevel(3)">Hard</button>
-      <div class="ctrls">
-        <button class="cbtn" onclick="openHelp()">❔ How To Play</button>
-        <button class="cbtn" onclick="undo()">↩ Undo</button>
-        <button class="cbtn" id="mutebtn" onclick="toggleMute()">
-          🔊 Sound
-        </button>
-        <button class="cbtn" onclick="reset()">↺ Reset</button>
-        <button class="cbtn" onclick="showHint()">💡 Hint</button>
-        <button class="cbtn a" onclick="newGame()">New Game</button>
+      <div class="modal-stat">
+        <span class="modal-stat-value" id="winTime">0:00</span>
+        <span class="modal-stat-label">Time</span>
+      </div>
+      <div class="modal-stat">
+        <span class="modal-stat-value" id="winLevel">1</span>
+        <span class="modal-stat-label">Level</span>
       </div>
     </div>
-
-    <div id="arena"></div>
-    <div id="msg"></div>
-
-    <section id="statsSection">
-      <div class="section-title">📊 Statistics</div>
-      <div class="stats-grid" id="statsGrid"></div>
-    </section>
-
-    <section id="achievementsSection">
-      <div class="section-title">🏆 Achievements</div>
-      <div class="achievements-grid" id="achievementsGrid"></div>
-    </section>
-
-    <div id="overlay">
-      <div id="wcard">
-        <h2>🎉 Solved!</h2>
-        <div class="win-details" id="winDetails"></div>
-        <div class="rating" id="ratingStars"></div>
-        <div class="wb">
-          <button class="cbtn" onclick="newGame()">Play Again</button>
-          <button class="cbtn a" onclick="nextDifficulty()">
-            Next Difficulty
-          </button>
-        </div>
-      </div>
+    <div class="modal-actions">
+      <button class="action-btn btn-primary" id="nextLevelBtn">🚀 Next Level</button>
+      <button class="action-btn btn-ghost" id="replayBtn">🔁 Replay</button>
     </div>
+  </div>
+</div>
 
-    <div id="helpOverlay">
-      <div id="helpCard">
-        <h2>🎮 How To Play</h2>
-        <ul>
-          <li>Move colors between tubes.</li>
-          <li>You can only pour onto same-colored liquid or empty tubes.</li>
-          <li>Fill each tube with one color.</li>
-          <li>Use Undo to reverse moves.</li>
-          <li>Reset restarts current puzzle.</li>
-          <li>New Game creates a new puzzle.</li>
-        </ul>
-        <button class="cbtn a" onclick="closeHelp()">Close</button>
-      </div>
-    </div>
+<!-- TOAST CONTAINER -->
+<div class="toast-container" id="toastContainer"></div>
 
-    <div class="toast-container" id="toastContainer"></div>
+<script>
+/* =====================================
+   GAME CONFIG
+===================================== */
 
-    <script>
-      /*
-       * ════════════════════════════════════════════════
-       *  COLOR SORT PUZZLE — ENHANCED VERSION
-       * ════════════════════════════════════════════════
-       *
-       * ARRAY MODEL:
-       *   tube = [c0, c1, c2, c3]
-       *   tube[0]              → BOTTOM of tube
-       *   tube[tube.length-1]  → TOP of tube  ← the only color that can be poured
-       *
-       * VISUAL MODEL (absolute positioning):
-       *   segment i is placed at   bottom = i * SEG_H   pixels from tube floor
-       *   So tube[0] renders at bottom:0   (lowest visually)
-       *      tube[3] renders at bottom:156 (highest visually, i.e. the TOP)
-       *
-       * This means what you SEE at the top of the liquid
-       * is EXACTLY tube[tube.length-1] — the poured color.
-       * ════════════════════════════════════════════════
-       */
+const TUBE_CAPACITY = 4;
 
-      const SEG_H = 52;
-      const TUBE_CAP = 4;
+const COLORS = [
+  { name: 'Red',        hex: '#ef4444', dark: '#dc2626' },
+  { name: 'Blue',       hex: '#3b82f6', dark: '#2563eb' },
+  { name: 'Green',      hex: '#22c55e', dark: '#16a34a' },
+  { name: 'Yellow',     hex: '#facc15', dark: '#eab308' },
+  { name: 'Purple',     hex: '#a855f7', dark: '#9333ea' },
+  { name: 'Orange',     hex: '#f97316', dark: '#ea580c' },
+  { name: 'Pink',       hex: '#ec4899', dark: '#db2777' },
+  { name: 'Cyan',       hex: '#06b6d4', dark: '#0891b2' },
+  { name: 'Teal',       hex: '#14b8a6', dark: '#0d9488' },
+  { name: 'Indigo',     hex: '#6366f1', dark: '#4f46e5' },
+  { name: 'Rose',       hex: '#f43f5e', dark: '#e11d48' },
+  { name: 'Lime',       hex: '#84cc16', dark: '#65a30d' },
+];
 
-      const COLOR_NAMES = [
-        'Red',
-        'Blue',
-        'Teal',
-        'Amber',
-        'Purple',
-        'Green',
-        'Pink',
-        'Indigo',
-      ];
-      const PALETTE = [
-        { bg: '#e8735a', bdr: '#c44d34' },
-        { bg: '#5b9bd5', bdr: '#2e6dab' },
-        { bg: '#4dbfad', bdr: '#2a9082' },
-        { bg: '#f0a830', bdr: '#c07a10' },
-        { bg: '#9b7fd4', bdr: '#6b52a8' },
-        { bg: '#6dbf5a', bdr: '#419630' },
-        { bg: '#e870a0', bdr: '#b54578' },
-        { bg: '#6676d8', bdr: '#4050b0' },
-      ];
+const DIFFICULTY = {
+  easy:   { colors: 4, empty: 2 },
+  medium: { colors: 6, empty: 2 },
+  hard:   { colors: 9, empty: 2 },
+};
 
-      let NUM_C = 4,
-        NUM_E = 2;
-      let state = [],
-        sel = null,
-        moves = 0,
-        hist = [],
-        initSnap = null;
-      let timer = 0;
-      let timerInterval = null;
-      let gameRunning = false;
-      let currentDifficulty = 1;
-      let hintTimeout = null;
+/* =====================================
+   DOM
+===================================== */
 
-      /* ── Stats and Achievements Data ── */
-      let gameStats = {
-        gamesPlayed: 0,
-        gamesWon: 0,
-        bestTime: Infinity,
-        bestMoves: Infinity,
-        currentStreak: 0,
-        bestStreak: 0,
-      };
+const gameBoard    = document.getElementById('gameBoard');
+const movesDisplay = document.getElementById('movesDisplay');
+const timerDisplay = document.getElementById('timerDisplay');
+const levelDisplay = document.getElementById('levelDisplay');
+const bestDisplay  = document.getElementById('bestDisplay');
+const winModal     = document.getElementById('winModal');
+const newGameBtn   = document.getElementById('newGameBtn');
+const undoBtn      = document.getElementById('undoBtn');
+const restartBtn   = document.getElementById('restartBtn');
+const nextLevelBtn = document.getElementById('nextLevelBtn');
+const replayBtn    = document.getElementById('replayBtn');
+const helpBtn      = document.getElementById('helpBtn');
+const howToPlay    = document.getElementById('howToPlay');
+const soundBtn     = document.getElementById('soundBtn');
+const toastContainer = document.getElementById('toastContainer');
 
-      const ACHIEVEMENTS = [
-        {
-          id: 'firstWin',
-          name: 'First Victory',
-          desc: 'Win one game',
-          icon: '🏆',
-          check: () => gameStats.gamesWon >= 1,
-        },
-        {
-          id: 'speedSolver',
-          name: 'Speed Solver',
-          desc: 'Win in under 60 seconds',
-          icon: '⚡',
-          check: (time) => time < 60,
-        },
-        {
-          id: 'efficient',
-          name: 'Efficient Player',
-          desc: 'Win in under 20 moves',
-          icon: '🎯',
-          check: (m) => m < 20,
-        },
-        {
-          id: 'streakMaster',
-          name: 'Streak Master',
-          desc: 'Win 3 games consecutively',
-          icon: '🔥',
-          check: () => gameStats.currentStreak >= 3,
-        },
-        {
-          id: 'puzzleExpert',
-          name: 'Puzzle Expert',
-          desc: 'Complete Hard mode',
-          icon: '💎',
-          check: () => currentDifficulty === 3,
-        },
-      ];
+/* =====================================
+   STATE
+===================================== */
 
-      let unlockedAchievements = {};
+let tubes = [];
+let initialTubes = [];
+let selectedTube = null;
+let moves = 0;
+let level = parseInt(localStorage.getItem('csLevel')) || 1;
+let difficulty = localStorage.getItem('csDifficulty') || 'easy';
+let timerInterval = null;
+let secondsElapsed = 0;
+let gameActive = false;
+let moveHistory = [];
+let soundEnabled = true;
+let bestMoves = {};
 
-      /* ── LocalStorage Helpers ── */
-      function loadFromStorage() {
-        const savedStats = localStorage.getItem('colorSortStats');
-        const savedAchievements = localStorage.getItem('colorSortAchievements');
-        if (savedStats) gameStats = JSON.parse(savedStats);
-        if (savedAchievements)
-          unlockedAchievements = JSON.parse(savedAchievements);
+// Load best moves
+try { bestMoves = JSON.parse(localStorage.getItem('csBest')) || {}; } catch(e) { bestMoves = {}; }
+
+/* =====================================
+   AUDIO
+===================================== */
+
+let audioCtx = null;
+
+function initAudio() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+}
+
+function playSound(freq, dur, type='sine', vol=0.04) {
+  if (!soundEnabled || !audioCtx) return;
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+  osc.frequency.value = freq;
+  osc.type = type;
+  gain.gain.setValueAtTime(vol, audioCtx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
+  osc.start(audioCtx.currentTime);
+  osc.stop(audioCtx.currentTime + dur);
+}
+
+function playPick()  { playSound(520, 0.1); }
+function playPour()  { playSound(440, 0.15); playSound(660, 0.15); }
+function playError() { playSound(200, 0.15, 'square', 0.03); }
+function playWin()   { [523,659,784,1047].forEach((f,i) => setTimeout(() => playSound(f, 0.3), i*120)); }
+
+/* =====================================
+   TOAST
+===================================== */
+
+function showToast(msg, icon='ℹ️') {
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.innerHTML = `<span>${icon}</span><span>${msg}</span>`;
+  toastContainer.appendChild(t);
+  setTimeout(() => { t.classList.add('toast-out'); setTimeout(() => t.remove(), 300); }, 2500);
+}
+
+/* =====================================
+   CONFETTI
+===================================== */
+
+function triggerConfetti() {
+  const colors = ['#7c5cfc','#ec4899','#22c55e','#facc15','#3b82f6','#f97316','#ef4444'];
+  const shapes = ['●','■','▲','★','◆'];
+  for (let i = 0; i < 50; i++) {
+    const p = document.createElement('div');
+    p.className = 'confetti-piece';
+    p.textContent = shapes[Math.floor(Math.random()*shapes.length)];
+    p.style.left = Math.random()*100 + 'vw';
+    p.style.top = (-5 + Math.random()*20) + '%';
+    p.style.color = colors[Math.floor(Math.random()*colors.length)];
+    p.style.fontSize = (10+Math.random()*14) + 'px';
+    p.style.animationDuration = (1.2+Math.random()*1) + 's';
+    p.style.animationDelay = (Math.random()*0.5) + 's';
+    document.body.appendChild(p);
+    setTimeout(() => p.remove(), 2800);
+  }
+}
+
+/* =====================================
+   TIMER
+===================================== */
+
+function startTimer() {
+  stopTimer();
+  secondsElapsed = 0;
+  timerDisplay.textContent = '0:00';
+  timerInterval = setInterval(() => {
+    secondsElapsed++;
+    const m = Math.floor(secondsElapsed / 60);
+    const s = secondsElapsed % 60;
+    timerDisplay.textContent = `${m}:${s.toString().padStart(2, '0')}`;
+  }, 1000);
+}
+
+function stopTimer() {
+  if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+}
+
+function getTimeString() {
+  const m = Math.floor(secondsElapsed / 60);
+  const s = secondsElapsed % 60;
+  return `${m}:${s.toString().padStart(2, '0')}`;
+}
+
+/* =====================================
+   PUZZLE GENERATION
+===================================== */
+
+function generatePuzzle() {
+  const config = DIFFICULTY[difficulty];
+  const numColors = config.colors;
+  const numEmpty = config.empty;
+  const totalTubes = numColors + numEmpty;
+
+  // Pick random colors
+  const shuffledColors = [...COLORS].sort(() => Math.random() - 0.5).slice(0, numColors);
+
+  // Create color pool (4 of each)
+  let pool = [];
+  shuffledColors.forEach(c => {
+    for (let i = 0; i < TUBE_CAPACITY; i++) pool.push(c);
+  });
+
+  // Shuffle the pool (Fisher-Yates)
+  for (let i = pool.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [pool[i], pool[j]] = [pool[j], pool[i]];
+  }
+
+  // Fill tubes
+  tubes = [];
+  for (let t = 0; t < numColors; t++) {
+    tubes.push(pool.splice(0, TUBE_CAPACITY));
+  }
+
+  // Add empty tubes
+  for (let t = 0; t < numEmpty; t++) {
+    tubes.push([]);
+  }
+
+  // Check solvability — at least ensure it's not already solved and has some shuffling
+  // If any tube is already complete, reshuffle
+  const allComplete = tubes.every(t => isTubeComplete(t));
+  if (allComplete) return generatePuzzle();
+
+  // Deep copy for restart
+  initialTubes = tubes.map(t => [...t]);
+}
+
+/* =====================================
+   TUBE CHECKS
+===================================== */
+
+function isTubeComplete(tube) {
+  if (tube.length !== TUBE_CAPACITY) return false;
+  return tube.every(c => c.hex === tube[0].hex);
+}
+
+function isTubeEmpty(tube) {
+  return tube.length === 0;
+}
+
+function getTopColor(tube) {
+  return tube.length > 0 ? tube[tube.length - 1] : null;
+}
+
+function canPour(fromTube, toTube) {
+  if (fromTube.length === 0) return false;
+  if (toTube.length >= TUBE_CAPACITY) return false;
+  if (toTube.length === 0) return true;
+  return getTopColor(fromTube).hex === getTopColor(toTube).hex;
+}
+
+function checkWin() {
+  return tubes.every(t => isTubeComplete(t) || isTubeEmpty(t));
+}
+
+/* =====================================
+   RENDER
+===================================== */
+
+function renderBoard() {
+  gameBoard.innerHTML = '';
+
+  tubes.forEach((tube, idx) => {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'tube-wrapper';
+    wrapper.dataset.index = idx;
+
+    if (selectedTube === idx) wrapper.classList.add('selected');
+    if (isTubeComplete(tube)) wrapper.classList.add('complete');
+
+    // Tube lip
+    const lip = document.createElement('div');
+    lip.className = 'tube-lip';
+    wrapper.appendChild(lip);
+
+    // Tube body
+    const tubeEl = document.createElement('div');
+    tubeEl.className = 'tube';
+
+    // Color blocks (bottom to top)
+    tube.forEach((color, blockIdx) => {
+      const block = document.createElement('div');
+      block.className = 'color-block';
+      block.style.background = `linear-gradient(180deg, ${color.hex} 0%, ${color.dark} 100%)`;
+      tubeEl.appendChild(block);
+    });
+
+    wrapper.appendChild(tubeEl);
+
+    // Label
+    const label = document.createElement('div');
+    label.className = 'tube-label';
+    label.textContent = idx + 1;
+    wrapper.appendChild(label);
+
+    // Click handler
+    wrapper.addEventListener('click', () => handleTubeClick(idx));
+
+    gameBoard.appendChild(wrapper);
+  });
+}
+
+/* =====================================
+   GAME LOGIC
+===================================== */
+
+function handleTubeClick(idx) {
+  if (!gameActive) return;
+  initAudio();
+
+  if (selectedTube === null) {
+    // Select tube
+    if (tubes[idx].length === 0) return; // Can't select empty
+    if (isTubeComplete(tubes[idx])) return; // Can't select completed
+    selectedTube = idx;
+    playPick();
+    renderBoard();
+  } else if (selectedTube === idx) {
+    // Deselect
+    selectedTube = null;
+    renderBoard();
+  } else {
+    // Try to pour
+    if (canPour(tubes[selectedTube], tubes[idx])) {
+      // Save to history for undo
+      moveHistory.push(tubes.map(t => [...t]));
+
+      // Pour — move consecutive top colors of same color
+      const fromTube = tubes[selectedTube];
+      const toTube = tubes[idx];
+      const color = getTopColor(fromTube);
+
+      let count = 0;
+      while (
+        fromTube.length > 0 &&
+        toTube.length < TUBE_CAPACITY &&
+        getTopColor(fromTube).hex === color.hex
+      ) {
+        toTube.push(fromTube.pop());
+        count++;
       }
 
-      function saveToStorage() {
-        localStorage.setItem('colorSortStats', JSON.stringify(gameStats));
-        localStorage.setItem(
-          'colorSortAchievements',
-          JSON.stringify(unlockedAchievements)
-        );
-      }
+      moves++;
+      movesDisplay.textContent = moves;
 
-      /* ── Toast System ── */
-      function showToast(message, type = 'info', duration = 3000) {
-        const container = document.getElementById('toastContainer');
-        const toast = document.createElement('div');
-        toast.className = `toast ${type}`;
-        toast.textContent = message;
-        container.appendChild(toast);
+      selectedTube = null;
+      playPour();
 
-        setTimeout(() => {
-          toast.classList.add('fadeOut');
-          setTimeout(() => toast.remove(), 300);
-        }, duration);
-      }
+      // Animate pour
+      renderBoard();
 
-      /* ── Stats System ── */
-      function renderStats() {
-        const grid = document.getElementById('statsGrid');
-        const winRate =
-          gameStats.gamesPlayed > 0
-            ? Math.round((gameStats.gamesWon / gameStats.gamesPlayed) * 100)
-            : 0;
-
-        const statsHTML = `
-    <div class="stat-card"><b>${gameStats.gamesPlayed}</b><span>Games Played</span></div>
-    <div class="stat-card"><b>${gameStats.gamesWon}</b><span>Games Won</span></div>
-    <div class="stat-card"><b>${winRate}%</b><span>Win Rate</span></div>
-    <div class="stat-card"><b>${gameStats.bestTime === Infinity ? '--' : formatTime(gameStats.bestTime)}</b><span>Best Time</span></div>
-    <div class="stat-card"><b>${gameStats.bestMoves === Infinity ? '--' : gameStats.bestMoves}</b><span>Best Moves</span></div>
-    <div class="stat-card"><b>${gameStats.currentStreak}</b><span>Current Streak</span></div>
-  `;
-        grid.innerHTML = statsHTML;
-      }
-
-      function formatTime(seconds) {
-        const mins = String(Math.floor(seconds / 60)).padStart(2, '0');
-        const secs = String(seconds % 60).padStart(2, '0');
-        return `${mins}:${secs}`;
-      }
-
-      /* ── Achievements System ── */
-      function renderAchievements() {
-        const grid = document.getElementById('achievementsGrid');
-        grid.innerHTML = ACHIEVEMENTS.map((ach) => {
-          const isUnlocked = unlockedAchievements[ach.id];
-          return `
-      <div class="achievement-card ${isUnlocked ? 'unlocked' : 'locked'}" data-ach="${ach.id}">
-        <div class="achievement-icon">${ach.icon}</div>
-        <div class="achievement-name">${ach.name}</div>
-        <div class="achievement-desc">${ach.desc}</div>
-      </div>
-    `;
-        }).join('');
-      }
-
-      function unlockAchievement(id) {
-        if (unlockedAchievements[id]) return;
-        unlockedAchievements[id] = true;
-        const ach = ACHIEVEMENTS.find((a) => a.id === id);
-        showToast(`Achievement Unlocked: ${ach.name}!`, 'success', 4000);
-        renderAchievements();
-        saveToStorage();
-      }
-
-      function checkAchievements(timeTaken, moveCount, difficulty) {
-        if (!unlockedAchievements.firstWin) unlockAchievement('firstWin');
-        if (timeTaken < 60 && !unlockedAchievements.speedSolver)
-          unlockAchievement('speedSolver');
-        if (moveCount < 20 && !unlockedAchievements.efficient)
-          unlockAchievement('efficient');
-        if (gameStats.currentStreak >= 3 && !unlockedAchievements.streakMaster)
-          unlockAchievement('streakMaster');
-        if (difficulty === 3 && !unlockedAchievements.puzzleExpert)
-          unlockAchievement('puzzleExpert');
-      }
-
-      /* ── Accessors ── */
-      const topColor = (t) => (t.length ? t[t.length - 1] : null);
-      const empty = (t) => t.length === 0;
-      const full = (t) => t.length === TUBE_CAP;
-
-      function topRun(t) {
-        if (!t.length) return 0;
-        const c = t[t.length - 1];
-        let n = 0;
-        for (let i = t.length - 1; i >= 0 && t[i] === c; i--) n++;
-        return n;
-      }
-
-      function canPour(fi, ti) {
-        const f = state[fi],
-          t = state[ti];
-        if (empty(f)) return false;
-        if (full(t)) return false;
-        if (empty(t)) return true;
-        return topColor(f) === topColor(t);
-      }
-
-      function doPour(fi, ti) {
-        const f = state[fi],
-          t = state[ti];
-        const color = topColor(f);
-        const n = Math.min(topRun(f), TUBE_CAP - t.length);
-        for (let i = 0; i < n; i++) {
-          f.pop();
-          t.push(color);
-        }
-        return n;
-      }
-
-      const tubeDone = (t) =>
-        t.length === TUBE_CAP && t.every((c) => c === t[0]);
-      const gameDone = () => state.every((t) => empty(t) || tubeDone(t));
-
-      /* ── Setup ── */
-      function shuffle(a) {
-        for (let i = a.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [a[i], a[j]] = [a[j], a[i]];
-        }
-      }
-
-      function setLevel(l) {
-        currentDifficulty = l;
-        document
-          .querySelectorAll('.lbtn')
-          .forEach((b, i) => b.classList.toggle('on', i === l - 1));
-        const n = ['1 — Easy', '2 — Medium', '3 — Hard'];
-        document.getElementById('ld').textContent = n[l - 1];
-        if (l === 1) {
-          NUM_C = 4;
-          NUM_E = 2;
-        } else if (l === 2) {
-          NUM_C = 6;
-          NUM_E = 2;
-        } else {
-          NUM_C = 8;
-          NUM_E = 2;
-        }
-        newGame();
-      }
-
-      function nextDifficulty() {
-        let next = currentDifficulty + 1;
-        if (next > 3) next = 1;
-        setLevel(next);
-      }
-
-      function newGame() {
-        document.getElementById('overlay').classList.remove('show');
-        let pool = [];
-        for (let c = 0; c < NUM_C; c++)
-          for (let s = 0; s < TUBE_CAP; s++) pool.push(c);
-        shuffle(pool);
-        state = [];
-        for (let i = 0; i < NUM_C; i++)
-          state.push(pool.slice(i * TUBE_CAP, (i + 1) * TUBE_CAP));
-        for (let i = 0; i < NUM_E; i++) state.push([]);
-        sel = null;
-        moves = 0;
-        hist = [];
-        initSnap = JSON.stringify(state);
-        resetTimer();
-        startTimer();
-        setMsg('');
-        updM();
-        render();
-        clearHint();
-      }
-
-      function reset() {
-        if (!initSnap) return;
-        state = JSON.parse(initSnap);
-        sel = null;
-        moves = 0;
-        hist = [];
-        resetTimer();
-        startTimer();
-        setMsg('');
-        updM();
-        render();
-        clearHint();
-      }
-
-      function undo() {
-        if (!hist.length) {
-          setMsg('Nothing to undo.');
-          return;
-        }
-        state = JSON.parse(hist.pop());
-        moves = Math.max(0, moves - 1);
-        sel = null;
-        updM();
-        setMsg('');
-        render();
-        clearHint();
-      }
-
-      /* ── Interaction ── */
-      async function clickTube(idx) {
-        if (sel === null) {
-          if (empty(state[idx])) {
-            setMsg('Tube is empty!');
-            return;
-          }
-          sel = idx;
-          SFX.select();
-          setMsg(`Tube ${idx + 1} selected — click destination tube.`);
-          render();
-          return;
-        }
-        if (sel === idx) {
-          sel = null;
-          setMsg('');
-          render();
-          return;
-        }
-
-        if (canPour(sel, idx)) {
-          const sourceTube = sel;
-
-          await animatePourTube(sourceTube, idx);
-
-          hist.push(JSON.stringify(state));
-
-          const n = doPour(sourceTube, idx);
-
-          moves++;
-          sel = null;
-
-          updM();
-          setMsg('');
-
-          SFX.pour();
-
-          render(idx, n);
-          if (tubeDone(state[idx])) SFX.tubeDone();
-          if (gameDone()) setTimeout(showWin, 450);
-        } else {
-          shake(idx);
-          SFX.invalid();
-          setMsg(
-            '❌ Invalid — top colors must match, or pour into an empty tube!'
-          );
-          setTimeout(() => setMsg(''), 2500);
-          sel = null;
-          render();
-        }
-        clearHint();
-      }
-
-      function render(pourTo, pouredN) {
-        const arena = document.getElementById('arena');
-        arena.innerHTML = '';
-
-        state.forEach((tube, idx) => {
-          const wrap = document.createElement('div');
-          wrap.className =
-            'tw' +
-            (sel === idx ? ' sel' : '') +
-            (tubeDone(tube) ? ' done' : '');
-          wrap.setAttribute('data-idx', idx);
-          wrap.onclick = () => clickTube(idx);
-          wrap.setAttribute('role', 'button');
-          wrap.setAttribute('aria-label', `Tube ${idx + 1}`);
-
-          const tubeEl = document.createElement('div');
-          tubeEl.className = 'tube';
-
-          tube.forEach((colorIdx, arrayIdx) => {
-            const seg = document.createElement('div');
-            seg.className = 'seg';
-            seg.style.bottom = arrayIdx * SEG_H + 'px';
-            seg.style.background = PALETTE[colorIdx].bg;
-            if (arrayIdx > 0) seg.classList.add('seg-border-top');
-            seg.style.borderTopColor = PALETTE[colorIdx].bdr;
-            if (
-              idx === pourTo &&
-              pouredN &&
-              arrayIdx >= tube.length - pouredN
-            ) {
-              seg.classList.add('pour-in');
-              bubbles(seg, PALETTE[colorIdx].bg);
-            }
-            tubeEl.appendChild(seg);
-          });
-
-          const lbl = document.createElement('div');
-          lbl.className = 'tlbl';
-          lbl.textContent = tubeDone(tube) ? '✓ Done' : '';
-
-          wrap.appendChild(tubeEl);
-          wrap.appendChild(lbl);
-          arena.appendChild(wrap);
-        });
-      }
-
-      /* ── Hint System ── */
-      function findBestHint() {
-        let bestMove = null;
-        let bestScore = -Infinity;
-
-        for (let fi = 0; fi < state.length; fi++) {
-          for (let ti = 0; ti < state.length; ti++) {
-            if (fi === ti) continue;
-            if (!canPour(fi, ti)) continue;
-
-            let score = 0;
-            const f = state[fi];
-            const t = state[ti];
-            const tc = topColor(f);
-            const run = topRun(f);
-
-            if (tubeDone(t)) continue;
-
-            if (t.length > 0 && topColor(t) === tc) score += 10;
-            if (empty(t)) score += 5;
-            if (t.length + run === TUBE_CAP && t.every((c) => c === tc))
-              score += 50;
-            if (f.length - run === 0) score += 3;
-
-            score += run * 2;
-
-            if (score > bestScore) {
-              bestScore = score;
-              bestMove = { from: fi, to: ti, color: tc };
-            }
-          }
-        }
-
-        return bestMove;
-      }
-
-      function showHint() {
-        if (gameDone()) {
-          showToast('Game is already complete!', 'info');
-          return;
-        }
-
-        const move = findBestHint();
-
-        if (!move) {
-          showToast('No hint available', 'warning');
-          return;
-        }
-
-        highlightTubes(move.from, move.to);
-        const colorName = COLOR_NAMES[move.color];
-        showToast(
-          `Try moving ${colorName} from Tube ${move.from + 1} to Tube ${move.to + 1}`,
-          'info'
-        );
-
-        if (hintTimeout) clearTimeout(hintTimeout);
-        hintTimeout = setTimeout(clearHint, 4000);
-      }
-
-      function highlightTubes(fromIdx, toIdx) {
-        render();
-        const tubes = document.querySelectorAll('.tw');
-        if (tubes[fromIdx]) tubes[fromIdx].classList.add('hint-src');
-        if (tubes[toIdx]) tubes[toIdx].classList.add('hint-dst');
-      }
-
-      function clearHint() {
-        const tubes = document.querySelectorAll('.tw');
-        tubes.forEach((t) => {
-          t.classList.remove('hint-src');
-          t.classList.remove('hint-dst');
-        });
-        if (hintTimeout) {
-          clearTimeout(hintTimeout);
-          hintTimeout = null;
+      // Animate the new blocks
+      const targetWrapper = gameBoard.children[idx];
+      if (targetWrapper) {
+        const blocks = targetWrapper.querySelectorAll('.color-block');
+        for (let i = blocks.length - count; i < blocks.length; i++) {
+          if (blocks[i]) blocks[i].classList.add('pouring-in');
         }
       }
 
-      function shake(idx) {
-        const el = document.querySelector(`[data-idx="${idx}"]`);
-        if (!el) return;
-        el.classList.add('shake');
-        setTimeout(() => el.classList.remove('shake'), 450);
-      }
-
-      function bubbles(seg, color) {
-        for (let i = 0; i < 4; i++) {
-          const b = document.createElement('div');
-          b.className = 'bbl';
-          const sz = 3 + Math.random() * 6;
-          b.style.cssText =
-            `width:${sz}px;height:${sz}px;left:${6 + Math.random() * 32}px;` +
-            `bottom:${4 + Math.random() * 20}px;background:${color}99;animation-delay:${i * 0.13}s`;
-          seg.appendChild(b);
+      // Check complete tubes
+      setTimeout(() => {
+        if (isTubeComplete(tubes[idx])) {
+          renderBoard();
         }
-      }
+      }, 350);
 
-      /* ── Win Screen ── */
-      function showWin() {
-        stopTimer();
-        const timeTaken = timer;
-
-        gameStats.gamesPlayed++;
-        gameStats.gamesWon++;
-        gameStats.currentStreak++;
-        if (gameStats.currentStreak > gameStats.bestStreak)
-          gameStats.bestStreak = gameStats.currentStreak;
-        if (timeTaken < gameStats.bestTime) gameStats.bestTime = timeTaken;
-        if (moves < gameStats.bestMoves) gameStats.bestMoves = moves;
-
-        saveToStorage();
-        checkAchievements(timeTaken, moves, currentDifficulty);
-        renderStats();
-
-        const ov = document.getElementById('overlay'),
-          card = document.getElementById('wcard');
-        const details = document.getElementById('winDetails');
-        const stars = document.getElementById('ratingStars');
-
-        let rating = 1;
-        if (moves <= 15) rating = 3;
-        else if (moves <= 25) rating = 2;
-
-        details.innerHTML = `
-    <p><b>Completion Time:</b> ${formatTime(timeTaken)}</p>
-    <p><b>Total Moves:</b> ${moves}</p>
-    <p><b>Efficiency:</b> ${rating === 3 ? 'Perfect' : rating === 2 ? 'Great' : 'Good'}</p>
-  `;
-
-        stars.textContent = '⭐'.repeat(rating) + '☆'.repeat(3 - rating);
-
-        ov.classList.add('show');
-        SFX.win();
-        card.querySelectorAll('.conf').forEach((c) => c.remove());
-        PALETTE.forEach((c, i) => {
-          const el = document.createElement('div');
-          el.className = 'conf';
-          el.style.cssText =
-            `left:${Math.random() * 100}%;top:-12px;background:${c.bg};` +
-            `animation-delay:${Math.random() * 0.9}s;transform:rotate(${Math.random() * 360}deg)`;
-          card.appendChild(el);
-        });
-      }
-
-      function closeWin() {
-        document.getElementById('overlay').classList.remove('show');
-      }
-
-      /* ── Timer ── */
-      function startTimer() {
-        // Prevent multiple timer intervals
-        if (gameRunning && timerInterval !== null) {
-          return;
+      // Check win
+      setTimeout(() => {
+        if (checkWin()) {
+          handleWin();
         }
+      }, 500);
 
-        gameRunning = true;
-
-        timerInterval = setInterval(() => {
-          timer++;
-
-          const mins = String(Math.floor(timer / 60)).padStart(2, '0');
-          const secs = String(timer % 60).padStart(2, '0');
-
-          document.getElementById('timer').textContent = `${mins}:${secs}`;
-        }, 1000);
+    } else {
+      // Invalid move
+      playError();
+      const wrapper = gameBoard.children[idx];
+      if (wrapper) {
+        wrapper.classList.add('shake');
+        setTimeout(() => wrapper.classList.remove('shake'), 400);
       }
+      selectedTube = null;
+      renderBoard();
+    }
+  }
+}
 
-      function stopTimer() {
-        clearInterval(timerInterval);
-        timerInterval = null;
-        gameRunning = false;
-      }
+/* =====================================
+   WIN
+===================================== */
 
-      function resetTimer() {
-        stopTimer();
-        timer = 0;
-        document.getElementById('timer').textContent = '00:00';
-      }
+function handleWin() {
+  gameActive = false;
+  stopTimer();
 
-      function updM() {
-        document.getElementById('mc').textContent = moves;
-      }
-      function setMsg(t) {
-        const e = document.getElementById('msg');
-        e.textContent = t;
-        e.className = t.startsWith('❌') ? 'err' : '';
-      }
+  const timeStr = getTimeString();
+  const bestKey = `${difficulty}-${level}`;
 
-      /* ── Sound Engine ── */
-      const SFX = (() => {
-        let ctx = null;
-        let muted = false;
-        function getCtx() {
-          if (!ctx)
-            ctx = new (window.AudioContext || window.webkitAudioContext)();
-          if (ctx.state === 'suspended') ctx.resume();
-          return ctx;
-        }
-        function play(fn) {
-          if (muted) return;
-          try {
-            fn(getCtx());
-          } catch (e) {}
-        }
-        return {
-          pour() {
-            play((ctx) => {
-              const buf = ctx.createBuffer(
-                1,
-                ctx.sampleRate * 0.35,
-                ctx.sampleRate
-              );
-              const data = buf.getChannelData(0);
-              for (let i = 0; i < data.length; i++)
-                data[i] = Math.random() * 2 - 1;
-              const src = ctx.createBufferSource();
-              src.buffer = buf;
-              const filter = ctx.createBiquadFilter();
-              filter.type = 'bandpass';
-              filter.frequency.setValueAtTime(800, ctx.currentTime);
-              filter.frequency.linearRampToValueAtTime(
-                300,
-                ctx.currentTime + 0.35
-              );
-              filter.Q.value = 0.8;
-              const gain = ctx.createGain();
-              gain.gain.setValueAtTime(0.18, ctx.currentTime);
-              gain.gain.exponentialRampToValueAtTime(
-                0.001,
-                ctx.currentTime + 0.35
-              );
-              src.connect(filter);
-              filter.connect(gain);
-              gain.connect(ctx.destination);
-              src.start();
-              src.stop(ctx.currentTime + 0.35);
-            });
-          },
-          select() {
-            play((ctx) => {
-              const osc = ctx.createOscillator();
-              const gain = ctx.createGain();
-              osc.type = 'sine';
-              osc.frequency.setValueAtTime(520, ctx.currentTime);
-              osc.frequency.linearRampToValueAtTime(
-                640,
-                ctx.currentTime + 0.08
-              );
-              gain.gain.setValueAtTime(0.12, ctx.currentTime);
-              gain.gain.exponentialRampToValueAtTime(
-                0.001,
-                ctx.currentTime + 0.12
-              );
-              osc.connect(gain);
-              gain.connect(ctx.destination);
-              osc.start();
-              osc.stop(ctx.currentTime + 0.12);
-            });
-          },
-          invalid() {
-            play((ctx) => {
-              const osc = ctx.createOscillator();
-              const gain = ctx.createGain();
-              osc.type = 'sawtooth';
-              osc.frequency.setValueAtTime(180, ctx.currentTime);
-              osc.frequency.linearRampToValueAtTime(
-                120,
-                ctx.currentTime + 0.18
-              );
-              gain.gain.setValueAtTime(0.1, ctx.currentTime);
-              gain.gain.exponentialRampToValueAtTime(
-                0.001,
-                ctx.currentTime + 0.18
-              );
-              osc.connect(gain);
-              gain.connect(ctx.destination);
-              osc.start();
-              osc.stop(ctx.currentTime + 0.18);
-            });
-          },
-          tubeDone() {
-            play((ctx) => {
-              [523, 659, 784].forEach((freq, i) => {
-                const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
-                osc.type = 'triangle';
-                osc.frequency.value = freq;
-                const t = ctx.currentTime + i * 0.1;
-                gain.gain.setValueAtTime(0.18, t);
-                gain.gain.exponentialRampToValueAtTime(0.001, t + 0.4);
-                osc.connect(gain);
-                gain.connect(ctx.destination);
-                osc.start(t);
-                osc.stop(t + 0.4);
-              });
-            });
-          },
-          win() {
-            play((ctx) => {
-              [523, 659, 784, 1047, 1319].forEach((freq, i) => {
-                const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
-                osc.type = 'triangle';
-                osc.frequency.value = freq;
-                const t = ctx.currentTime + i * 0.13;
-                gain.gain.setValueAtTime(0.22, t);
-                gain.gain.exponentialRampToValueAtTime(0.001, t + 0.6);
-                osc.connect(gain);
-                gain.connect(ctx.destination);
-                osc.start(t);
-                osc.stop(t + 0.6);
-              });
-            });
-          },
-          toggleMute() {
-            muted = !muted;
-            return muted;
-          },
-          isMuted() {
-            return muted;
-          },
-        };
-      })();
+  // Check personal best
+  let isNewBest = false;
+  if (!bestMoves[bestKey] || moves < bestMoves[bestKey]) {
+    bestMoves[bestKey] = moves;
+    localStorage.setItem('csBest', JSON.stringify(bestMoves));
+    isNewBest = true;
+  }
 
-      function toggleMute() {
-        const m = SFX.toggleMute();
-        document.getElementById('mutebtn').textContent = m
-          ? '🔇 Muted'
-          : '🔊 Sound';
-      }
-      function openHelp() {
-        document.getElementById('helpOverlay').classList.add('show');
-        stopTimer();
-      }
+  bestDisplay.textContent = bestMoves[bestKey] || '—';
 
-      function closeHelp() {
-        document.getElementById('helpOverlay').classList.remove('show');
+  // Set modal
+  document.getElementById('winMoves').textContent = moves;
+  document.getElementById('winTime').textContent = timeStr;
+  document.getElementById('winLevel').textContent = level;
 
-        if (!gameDone() && !gameRunning) {
-          startTimer();
-        }
-      }
+  const msg = document.getElementById('winMessage');
+  if (isNewBest) {
+    msg.textContent = '⭐ New personal best! Incredible!';
+  } else if (moves <= (DIFFICULTY[difficulty].colors * 2)) {
+    msg.textContent = 'Outstanding efficiency! You\'re a master!';
+  } else {
+    msg.textContent = 'Great work! You sorted all the colors.';
+  }
 
-      function wait(ms) {
-        return new Promise((resolve) => setTimeout(resolve, ms));
-      }
+  winModal.classList.add('show');
+  playWin();
+  triggerConfetti();
+}
 
-      async function animatePourTube(fromIdx, toIdx) {
-        const sourceWrapper = document.querySelector(`[data-idx="${fromIdx}"]`);
-        const destWrapper = document.querySelector(`[data-idx="${toIdx}"]`);
+/* =====================================
+   GAME INIT
+===================================== */
 
-        if (!sourceWrapper || !destWrapper) return;
+function startNewGame() {
+  winModal.classList.remove('show');
+  selectedTube = null;
+  moves = 0;
+  moveHistory = [];
+  movesDisplay.textContent = '0';
+  levelDisplay.textContent = level;
+  gameActive = true;
 
-        const sourceTube = sourceWrapper.querySelector('.tube');
-        const destTube = destWrapper.querySelector('.tube');
+  const bestKey = `${difficulty}-${level}`;
+  bestDisplay.textContent = bestMoves[bestKey] || '—';
 
-        if (!sourceTube || !destTube) return;
+  generatePuzzle();
+  renderBoard();
+  startTimer();
+}
 
-        // Elevate active pouring structure layers
-        sourceWrapper.classList.add('moving-pour');
+function restartGame() {
+  if (!gameActive && !winModal.classList.contains('show')) return;
+  winModal.classList.remove('show');
+  selectedTube = null;
+  moves = 0;
+  moveHistory = [];
+  movesDisplay.textContent = '0';
+  gameActive = true;
 
-        // Extract precise element global positioning
-        const srcRect = sourceTube.getBoundingClientRect();
-        const dstRect = destTube.getBoundingClientRect();
+  tubes = initialTubes.map(t => [...t]);
+  renderBoard();
+  startTimer();
+  showToast('Puzzle restarted', '🔁');
+}
 
-        // Find target destination position relative to origin
-        const isMovingRight = toIdx > fromIdx;
+function undoMove() {
+  if (moveHistory.length === 0) {
+    showToast('Nothing to undo', '↩');
+    return;
+  }
+  tubes = moveHistory.pop();
+  moves = Math.max(0, moves - 1);
+  movesDisplay.textContent = moves;
+  selectedTube = null;
+  renderBoard();
+  playPick();
+}
 
-        // Calculate exact delta positions to align lip of source to mouth of target
-        // Offset horizontally so the spout hovers right over the target lip
-        const targetX =
-          dstRect.left - srcRect.left + (isMovingRight ? -24 : 24);
-        const targetY = dstRect.top - srcRect.top - 55; // Lift up and over
+function nextLevel() {
+  level++;
+  localStorage.setItem('csLevel', level);
+  startNewGame();
+  showToast(`Level ${level}!`, '🏆');
+}
 
-        // --- PHASE 1: Lift & Slide To Position ---
-        sourceTube.style.transformOrigin = 'center center';
-        sourceTube.style.transform = `translate3d(${targetX}px, ${targetY}px, 0)`;
-        await wait(400);
+/* =====================================
+   EVENTS
+===================================== */
 
-        // --- PHASE 2: Pivot & Dynamic Pour ---
-        // Change transform origin dynamically to look like it pours from the side lip
-        sourceTube.style.transformOrigin = isMovingRight
-          ? 'right top'
-          : 'left top';
-        const tiltAngle = isMovingRight ? 70 : -70;
-        sourceTube.style.transform = `translate3d(${targetX}px, ${targetY}px, 0) rotate(${tiltAngle}deg)`;
-        await wait(300);
+// Difficulty selection
+document.querySelectorAll('.diff-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    difficulty = btn.dataset.diff;
+    localStorage.setItem('csDifficulty', difficulty);
+    document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    level = 1;
+    localStorage.setItem('csLevel', 1);
+    startNewGame();
+    showToast(`Difficulty: ${difficulty.charAt(0).toUpperCase()+difficulty.slice(1)}`, '⚡');
+  });
+});
 
-        // --- PHASE 3: Generate and Connect Stream Flow ---
-        const pouringColor = state[fromIdx][state[fromIdx].length - 1];
-        const streamColor = PALETTE[pouringColor].bg;
+// Buttons
+newGameBtn.addEventListener('click', () => { startNewGame(); showToast('New game started!', '🎮'); });
+undoBtn.addEventListener('click', undoMove);
+restartBtn.addEventListener('click', restartGame);
+nextLevelBtn.addEventListener('click', nextLevel);
+replayBtn.addEventListener('click', () => { winModal.classList.remove('show'); restartGame(); });
 
-        // Re-read runtime positions for the stream after transformations have applied
-        const advancedSrcRect = sourceTube.getBoundingClientRect();
+// Help toggle
+helpBtn.addEventListener('click', () => {
+  howToPlay.classList.toggle('show');
+});
 
-        const startX = isMovingRight
-          ? advancedSrcRect.right - 8
-          : advancedSrcRect.left + 8;
-        const startY = advancedSrcRect.top + 14;
-        const endX = dstRect.left + dstRect.width / 2;
+// Sound toggle
+soundBtn.addEventListener('click', () => {
+  initAudio();
+  soundEnabled = !soundEnabled;
+  soundBtn.textContent = soundEnabled ? '🔊' : '🔇';
+  showToast(soundEnabled ? 'Sound on' : 'Sound off', soundEnabled ? '🔊' : '🔇');
+});
 
-        // Aim slightly lower into the tube for a seamless landing
-        const endY =
-          dstRect.top + (dstRect.height - state[toIdx].length * SEG_H) - 10;
+// Close modal on overlay click
+winModal.addEventListener('click', (e) => {
+  if (e.target === winModal) winModal.classList.remove('show');
+});
 
-        const distanceX = endX - startX;
-        const distanceY = endY - startY;
-        const streamLength = Math.sqrt(
-          distanceX * distanceX + distanceY * distanceY
-        );
-        const angle = Math.atan2(distanceY, distanceX) * (180 / Math.PI);
+// Keyboard shortcuts
+document.addEventListener('keydown', (e) => {
+  const key = e.key.toLowerCase();
 
-        const stream = document.createElement('div');
-        stream.className = 'pour-stream';
-        stream.style.background = streamColor;
-        stream.style.left = `${startX}px`;
-        stream.style.top = `${startY}px`;
-        stream.style.transform = `rotate(${angle}deg)`;
-        stream.style.height = '0px'; // Force start height to 0 for the liquid stretch effect
-        document.body.appendChild(stream);
+  if (key === 'u') undoMove();
+  if (key === 'r') restartGame();
+  if (key === 'n') { startNewGame(); showToast('New game started!', '🎮'); }
+  if (key === 'escape') { selectedTube = null; renderBoard(); winModal.classList.remove('show'); }
 
-        // Force system repaint layout, then smoothly extend stream downwards
-        stream.getBoundingClientRect();
-        stream.style.opacity = '1';
-        stream.style.height = `${streamLength}px`;
+  // Number keys to select tubes
+  const num = parseInt(key);
+  if (num >= 1 && num <= tubes.length) {
+    handleTubeClick(num - 1);
+  }
+});
 
-        await wait(250); // Wait for stream to gracefully hit fluid baseline
+/* =====================================
+   INIT
+===================================== */
 
-        // --- PHASE 4: Simulated Simultaneous Fluid Levels ---
-        // Fade out top segments being emptied from source wrapper visually
-        const activePourVolume = Math.min(
-          topRun(state[fromIdx]),
-          TUBE_CAP - state[toIdx].length
-        );
-        const sourceSegs = sourceTube.querySelectorAll('.seg');
+// Set active difficulty button
+document.querySelectorAll('.diff-btn').forEach(b => {
+  b.classList.toggle('active', b.dataset.diff === difficulty);
+});
 
-        for (let i = 0; i < activePourVolume; i++) {
-          const targetedSeg = sourceSegs[sourceSegs.length - 1 - i];
-          if (targetedSeg) {
-            targetedSeg.style.opacity = '0';
-            targetedSeg.style.transform = 'translateY(15px)';
-          }
-        }
+startNewGame();
+</script>
 
-        // Simultaneously build up the liquid in target element smoothly
-        for (let i = 0; i < activePourVolume; i++) {
-          const simulatedSeg = document.createElement('div');
-          simulatedSeg.className = 'seg pour-in';
-          simulatedSeg.style.bottom = (state[toIdx].length + i) * SEG_H + 'px';
-          simulatedSeg.style.background = streamColor;
-          simulatedSeg.style.borderTop = `1px solid ${PALETTE[pouringColor].bdr}`;
-          destTube.appendChild(simulatedSeg);
-          bubbles(simulatedSeg, streamColor);
-        }
-
-        await wait(600); // Wait for full fluid mass to complete cycling
-
-        // --- PHASE 5: Disconnect and Reset ---
-        // Instead of vanishing, make the stream collapse downward like real water ending
-        stream.style.clipPath =
-          'polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)';
-        stream.style.opacity = '0';
-
-        await wait(200);
-        stream.remove();
-
-        // Reset rotational values smoothly
-        sourceTube.style.transform = `translate3d(${targetX}px, ${targetY}px, 0) rotate(0deg)`;
-        await wait(250);
-
-        // Return to internal base row grid positioning
-        sourceTube.style.transform = 'translate3d(0, 0, 0)';
-        await wait(400);
-
-        // Clear runtime adjustments
-        sourceTube.style.transform = '';
-        sourceTube.style.transformOrigin = '';
-        sourceWrapper.classList.remove('moving-pour');
-      }
-
-      /* ── Initialize ── */
-      loadFromStorage();
-      renderStats();
-      renderAchievements();
-      newGame();
-    </script>
-  </body>
+</body>
 </html>

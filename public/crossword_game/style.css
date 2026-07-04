@@ -5,7 +5,7 @@
 }
 
 body {
- font-family: "Segoe UI", sans-serif;
+  font-family: "Segoe UI", sans-serif;
   background: #a98de3;
   padding: 20px;
 }
@@ -16,9 +16,7 @@ body {
   background: white;
   border-radius: 16px;
   padding: 25px;
-
   border: 3px solid #8b5cf6;
-
   box-shadow:
     0 0 10px rgba(193, 171, 244, 0.4),
     0 0 20px rgba(193, 171, 244, 0.3),
@@ -26,18 +24,17 @@ body {
 }
 
 h1 {
- 
   text-align: center;
   font-size: 2.4rem;
   font-weight: 700;
   color: #7c3aed;
   margin-bottom: 20px;
+}
 
 .puzzle-icon {
   color: #a855f7;
   margin-right: 8px;
   filter: drop-shadow(0 0 8px rgba(168, 85, 247, 0.5));
-}
 }
 
 .controls {
@@ -106,6 +103,19 @@ button:hover {
   background: #cec1e8;
 }
 
+/* Per-cell answer validation colours */
+.cell.cell-correct {
+  background: #d4edda;
+  color: #155724;
+  border-color: #27ae60;
+}
+
+.cell.cell-wrong {
+  background: #f8d7da;
+  color: #721c24;
+  border-color: #e74c3c;
+}
+
 .clues {
   min-width: 350px;
 }
@@ -119,12 +129,20 @@ ol {
   line-height: 1.8;
 }
 
+/* Clue lists: numbers are rendered explicitly in JS, so suppress ol auto-counter */
+#across-clues,
+#down-clues {
+  list-style: none;
+  padding-left: 0;
+}
+
 #status {
   margin-left: 15px;
   font-weight: bold;
   font-size: 18px;
 }
 
+/* Status text colours */
 .correct {
   color: #27ae60;
 }

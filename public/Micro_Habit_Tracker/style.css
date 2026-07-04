@@ -4,12 +4,24 @@
     --text-main: #c9d1d9;
     --text-muted: #8b949e;
     --accent: #58a6ff;
-    
-    /* Level Colors (GitHub style) */
     --lvl-0: #161b22;
     --lvl-1: #0e4429;
     --lvl-2: #006d32;
     --lvl-3: #26a641;
+    --toggle-color: #ffeaa7;
+}
+
+html[data-theme="light"] {
+    --bg-color: #f6f8fa;
+    --card-bg: #ffffff;
+    --text-main: #24292f;
+    --text-muted: #57606a;
+    --accent: #0969da;
+    --lvl-0: #ebedf0;
+    --lvl-1: #9be9a8;
+    --lvl-2: #40c463;
+    --lvl-3: #216e39;
+    --toggle-color: #4a5568;
 }
 
 body {
@@ -22,9 +34,12 @@ body {
     align-items: center;
     min-height: 100vh;
     padding: 20px;
+    transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+    color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .tracker-container {
+    position: relative;
     background-color: var(--card-bg);
     border: 1px solid #30363d;
     border-radius: 8px;
@@ -32,12 +47,71 @@ body {
     max-width: 850px;
     width: 100%;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+    border-color 0.4s ease;
+}
+
+html[data-theme="light"] .tracker-container {
+    border-color: #d0d7de;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+}
+
+.theme-button {
+    position: absolute;
+    top: 35px;
+    right: 35px;
+    background: none;
+    border: none;
+    padding: 0;
+    width: 28px;
+    height: 28px;
+    cursor: pointer;
+    outline: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--toggle-color);
+    overflow: hidden;
+}
+
+.theme-icon {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), 
+    opacity 0.4s ease;
+}
+
+html[data-theme="dark"] .sun-icon {
+    transform: translateY(40px) rotate(45deg);
+    opacity: 0;
+}
+
+html[data-theme="dark"] .moon-icon {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+}
+
+html[data-theme="light"] .sun-icon {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+    color: #ffb703;
+}
+
+html[data-theme="light"] .moon-icon {
+    transform: translateY(-40px) rotate(-45deg);
+    opacity: 0;
+}
+
+.theme-button:hover .theme-icon {
+    transform: scale(1.15) rotate(12deg);
 }
 
 header h1 {
     margin: 0 0 8px 0;
     font-size: 1.8rem;
-    color: #f0f6fc;
+    color: var(--text-main); 
+    transition: color 0.4s ease; 
 }
 
 header p {
