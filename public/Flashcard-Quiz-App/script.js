@@ -123,8 +123,13 @@ showBtn.onclick = function() {
 };
 checkBtn.onclick = function() {
     if (flashcards.length === 0) return;
-    let user = userAnswer.value.trim().toLowerCase();
-    let correct = flashcards[currentIndex].answer.trim().toLowerCase();
+
+    const normalize = (text) =>
+    text.trim().replace(/\s+/g, " ").toLowerCase();
+
+let user = normalize(userAnswer.value);
+let correct = normalize(flashcards[currentIndex].answer);
+
     if (user == "") {
         alert("Please type your answer.");
         return;
