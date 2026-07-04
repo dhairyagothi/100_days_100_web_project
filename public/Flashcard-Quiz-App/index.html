@@ -7,58 +7,39 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
+<nav class="navbar">
+    <button class="nav-tab active" data-subject="webdev">Web Dev</button>
+    <button class="nav-tab" data-subject="dbms">DBMS</button>
+    <button class="nav-tab" data-subject="cn">Computer Networks</button>
+    <button class="nav-tab" data-subject="os">Operating Systems</button>
+    <button class="nav-tab" data-subject="dsa">DSA</button>
+</nav>
 <div class="container">
-
-    <h1>FLASHCARD QUIZ</h1>
-
+    <h1 id="appTitle">FLASHCARD QUIZ</h1>
     <div class="card">
-
         <h2 id="question"></h2>
-
-        <input
-            type="text"
-            id="userAnswer"
-            placeholder="Type your answer here">
-
+        <input type="text" id="userAnswer" placeholder="Type your answer here">
         <div class="quiz-buttons">
             <button id="checkBtn">Check Answer</button>
             <button id="showBtn">Show Answer</button>
         </div>
-
         <p id="result"></p>
-
         <p id="answer" class="hidden"></p>
-
     </div>
-
     <div class="navigation">
         <button id="prevBtn">Previous</button>
         <button id="nextBtn">Next</button>
     </div>
-
     <hr>
-
     <h2>Add / Edit Flashcard</h2>
-
-    <input
-        type="text"
-        id="questionInput"
-        placeholder="Enter Question">
-
-    <textarea
-        id="answerInput"
-        placeholder="Enter Answer"></textarea>
-
+    <input type="text" id="questionInput" placeholder="Enter Question">
+    <textarea id="answerInput" placeholder="Enter Answer"></textarea>
     <div class="buttons">
         <button id="addBtn">Add Flashcard</button>
         <button id="editBtn">Edit Current</button>
         <button id="deleteBtn">Delete Current</button>
     </div>
-
 </div>
-
 <script src="script.js"></script>
-
 </body>
 </html>

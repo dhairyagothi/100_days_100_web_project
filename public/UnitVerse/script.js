@@ -803,3 +803,33 @@ function updateConversionsCounter() {
  * Initialize application when DOM is fully loaded
  */
 document.addEventListener('DOMContentLoaded', init);
+
+const button = document.createElement("button");
+button.id = "themeToggleBtn";
+button.style.position = "fixed";
+button.style.top = "15px";
+button.style.right = "15px";
+button.style.zIndex = "9999";
+button.style.cursor = "pointer";
+button.style.background = "none";
+button.style.border = "none";
+button.style.fontSize = "24px";
+button.style.padding = "5px";
+button.style.lineHeight = "1";
+document.body.appendChild(button);
+let isLightMode = JSON.parse(localStorage.getItem("lightMode")) || false;
+function updateTheme() {
+  if (isLightMode) {
+    document.body.classList.add("light-theme");
+    button.textContent = "🌙";
+  } else {
+    document.body.classList.remove("light-theme");
+    button.textContent = "☀️";
+  }
+}
+button.addEventListener("click", () => {
+  isLightMode = !isLightMode;
+  localStorage.setItem("lightMode", JSON.stringify(isLightMode));
+  updateTheme();
+});
+updateTheme();

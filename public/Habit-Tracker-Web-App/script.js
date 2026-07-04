@@ -31,6 +31,12 @@ const DEFAULT_SCHEDULE = [0, 1, 2, 3, 4, 5, 6];
 let habits = loadHabits();
 let pendingDeleteIndex = null;
 
+const savedTheme = localStorage.getItem("theme");
+
+if (savedTheme === "dark") {
+    document.body.classList.add("dark");
+}
+
 setupGoalField();
 setupValidationUI();
 migrateHabits();
@@ -576,4 +582,70 @@ function setupEventListeners() {
     document.body.classList.add('dark-mode');
     if (themeToggle) themeToggle.textContent = 'Light Mode';
   }
+}
+
+saveBtn.addEventListener("click", saveHabit);
+form.addEventListener("submit", saveHabit);
+function saveHabit(e){
+    e.preventDefault();
+
+    const habitName =
+document.getElementById("habitName").value.trim();
+
+const category =
+document.getElementById("category").value;
+
+const description =
+document.getElementById("description").value.trim();
+
+if(!habitName){
+
+    alert("Habit name is required.");
+
+    return;
+}
+const habit = {
+
+    id: Date.now(),
+
+    name: habitName,
+
+    category,
+
+    description,
+
+    completed:false,
+
+    streak:0
+};
+
+let habits = [];
+habits.push(habit);
+localStorage.setItem(
+    "habits",
+    JSON.stringify(habits)
+);
+
+const storedHabits =
+JSON.parse(localStorage.getItem("habits")) || [];
+
+habits = storedHabits;
+
+renderHabits();
+
+updateStats();
+
+function updateStats(){
+
+    totalHabits.textContent = habits.length;
+
+    completedToday.textContent =
+        habits.filter(h=>h.completed).length;
+
+    const best = Math.max(
+        0,
+        ...habits.map(h=>h.streak)
+    );
+
+    bestStreak.textContent = best;
 }

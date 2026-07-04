@@ -7,22 +7,22 @@
   --bg-card: #1b2330;
   --bg-card-alt: #1f2a3a;
   --bg-input: #1f2a3a;
-  
+
   --text-primary: #ffffff;
   --text-secondary: #93a3b2;
   --text-muted: #5e6f82;
-  
+
   --accent: #0095ff;
   --accent-hover: #0084e6;
   --accent-glow: rgba(0, 149, 255, 0.3);
-  
+
   --border-color: rgba(255, 255, 255, 0.05);
   --border-hover: rgba(255, 255, 255, 0.1);
   --card-radius: 24px;
   --item-radius: 16px;
   --font-display: 'Outfit', sans-serif;
   --font-body: 'Inter', sans-serif;
-  
+
   --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.5);
   --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.2);
   --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -30,24 +30,24 @@
 
 /* --- THEME VARIATIONS --- */
 /* Light Glass Theme */
-body[data-theme="light"] {
+body[data-theme='light'] {
   --bg-app: #f0f4f9;
   --bg-sidebar: #ffffff;
   --bg-card: #ffffff;
   --bg-card-alt: #e9ecef;
   --bg-input: #e2e8f0;
-  
+
   --text-primary: #1e293b;
   --text-secondary: #475569;
   --text-muted: #64748b;
-  
+
   --accent: #0084e6;
   --accent-hover: #006ebf;
   --accent-glow: rgba(0, 132, 230, 0.15);
-  
+
   --border-color: rgba(0, 0, 0, 0.08);
   --border-hover: rgba(0, 0, 0, 0.15);
-  
+
   --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.06);
   --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.04);
 }
@@ -863,9 +863,15 @@ body {
 }
 
 @keyframes float {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-6px); }
-  100% { transform: translateY(0px); }
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
 }
 
 /* Rotational animation for sun rays */
@@ -874,8 +880,12 @@ body {
 }
 
 @keyframes spin-slow {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* Rain droplet drop down */
@@ -884,9 +894,15 @@ body {
   animation: rain-drip 1.5s linear infinite;
 }
 
-.rain-drop-1 { animation-delay: 0s; }
-.rain-drop-2 { animation-delay: 0.3s; }
-.rain-drop-3 { animation-delay: 0.6s; }
+.rain-drop-1 {
+  animation-delay: 0s;
+}
+.rain-drop-2 {
+  animation-delay: 0.3s;
+}
+.rain-drop-3 {
+  animation-delay: 0.6s;
+}
 
 @keyframes rain-drip {
   0% {
@@ -903,11 +919,16 @@ body {
 }
 
 @keyframes lightning-flash {
-  0%, 90%, 94%, 98%, 100% {
+  0%,
+  90%,
+  94%,
+  98%,
+  100% {
     fill: #f5a623;
     filter: drop-shadow(0 0 0px rgba(245, 166, 35, 0));
   }
-  92%, 96% {
+  92%,
+  96% {
     fill: #ffffff;
     filter: drop-shadow(0 0 8px rgba(255, 255, 255, 1));
   }
@@ -919,13 +940,23 @@ body {
   animation: swoosh 3s linear infinite;
 }
 
-.wind-line-1 { animation-delay: 0s; }
-.wind-line-2 { animation-delay: 1s; }
-.wind-line-3 { animation-delay: 1.5s; }
+.wind-line-1 {
+  animation-delay: 0s;
+}
+.wind-line-2 {
+  animation-delay: 1s;
+}
+.wind-line-3 {
+  animation-delay: 1.5s;
+}
 
 @keyframes swoosh {
-  0% { stroke-dashoffset: 100; }
-  100% { stroke-dashoffset: -100; }
+  0% {
+    stroke-dashoffset: 100;
+  }
+  100% {
+    stroke-dashoffset: -100;
+  }
 }
 
 /* --- RESPONSIVENESS --- */
@@ -934,7 +965,7 @@ body {
     padding: 10px;
     align-items: flex-start;
   }
-  
+
   .dashboard-wrapper {
     flex-direction: column;
     height: auto;
@@ -942,7 +973,7 @@ body {
     border-radius: 24px;
     padding: 12px;
   }
-  
+
   .sidebar {
     width: 100%;
     height: auto;
@@ -951,24 +982,24 @@ body {
     padding: 12px 20px;
     gap: 12px;
   }
-  
+
   .logo-container {
     width: 44px;
     height: 44px;
   }
-  
+
   .logo-icon {
     width: 22px;
     height: 22px;
   }
-  
+
   .nav-menu {
     flex-direction: row;
     justify-content: space-around;
     gap: 0;
     flex: 1;
   }
-  
+
   .nav-item.active::after {
     left: 15%;
     bottom: 0;
@@ -977,7 +1008,7 @@ body {
     height: 3px;
     border-radius: 4px 4px 0 0;
   }
-  
+
   .forecast-panel {
     width: 100%;
     height: auto;
