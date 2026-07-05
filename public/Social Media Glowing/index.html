@@ -8,104 +8,216 @@
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   <script src="https://kit.fontawesome.com/" crossorigin="anonymous"></script>
- <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" href="glow.css">
-    <link rel="icon" href="Favicon.png">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="glow.css">
+  <link rel="icon" href="Favicon.png">
 </head>
 
-<body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
+<body class="light-theme">
 
- 
-<!-- Navbar -->
-<nav class="navbar">
+
+  <nav class="navbar">
+    <a href="/index.html" class="back">&lArr; Back</a>
+
+    <!-- Logo -->
     <div class="logo">
-        <i aria-hidden="true" class="fab fa-instagram"></i>
-        <h2>Glowing <span>Social</span> Icons</h2>
+      <i aria-hidden="true" class="fab fa-instagram"></i>
+      <h2>Glowing <span>Social</span> Icons</h2>
     </div>
+    <!-- Navigation Links -->
+    <ul class="nav-links">
+      <li>
+        <a href="index.html">Home</a>
+      </li>
+      <li>
+        <a href="icons.html">Icons</a>
+      </li>
+      <li>
+        <a href="contact.html">Contact</a>
+      </li>
 
-    <button class="nav-btn">Made with ❤️</button>
-</nav>
+    </ul>
+    <!-- Right Side -->
+    <div class="nav-right">
 
-<!-- Hero Section -->
-<section class="hero">
+      <button class="nav-btn">Made with ❤️</button>
+      <!-- Dark Mode Button -->
+      <button id="themeToggle" class="theme">
+        <span id="themeIcon">☀️</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
     <p class="hero-subtitle">
-        Connect • Share • Inspire
+      Connect • Share • Inspire
     </p>
-<h1 class="hero-title">
-        Glowing Social Media Icons
+    <h1 class="hero-title">
+      Glowing Social Media Icons
     </h1>
     <p class="hero-text">
-       Beautifully crafted glowing social media icons with smooth animations
+      Beautifully crafted glowing social media icons with smooth animations
     </p>
-</section>
+  </section>
 
-    <div class="icons">
-      <a href="#">
-        <div class="layer">
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span class="fab fa-facebook-f"></span>
-        </div>
-<div class="text">
-Facebook</div>
-</a>
-      <a href="#">
-        <div class="layer">
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span class="fab fa-twitter"></span>
-        </div>
-<div class="text">
-Twitter</div>
-</a>
-      <a href="#">
-        <div class="layer">
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span class="fab fa-instagram"></span>
-        </div>
-<div class="text">
-Instagram</div>
-</a>
-      <a href="#">
-        <div class="layer">
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span class="fab fa-linkedin-in"></span>
-        </div>
-<div class="text">
-Linkedin</div>
-</a>
-      <a href="#">
-        <div class="layer">
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span class="fab fa-youtube"></span>
-        </div>
-<div class="text">
-YouTube</div>
-</a>
-    </div>
+  <div class="icons">
+    <a href="#">
+      <div class="layer">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span class="fab fa-facebook-f"></span>
+      </div>
+      <div class="text">
+        Facebook</div>
+    </a>
+    <a href="#">
+      <div class="layer">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span class="fab fa-twitter"></span>
+      </div>
+      <div class="text">
+        Twitter</div>
+    </a>
+    <a href="#">
+      <div class="layer">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span class="fab fa-instagram"></span>
+      </div>
+      <div class="text">
+        Instagram</div>
+    </a>
+    <a href="#">
+      <div class="layer">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span class="fab fa-linkedin-in"></span>
+      </div>
+      <div class="text">
+        Linkedin</div>
+    </a>
+    <a href="#">
+      <div class="layer">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span class="fab fa-youtube"></span>
+      </div>
+      <div class="text">
+        YouTube</div>
+    </a>
+    <a href="#">
+      <div class="layer">
+        <span></span><span></span><span></span><span></span>
+        <span class="fab fa-whatsapp"></span>
+      </div>
+      <div class="text">WhatsApp</div>
+    </a>
+    <!-- GitHub -->
+    <a href="#">
+      <div class="layer">
+        <span></span><span></span><span></span><span></span>
+        <span class="fab fa-github"></span>
+      </div>
+      <div class="text">GitHub</div>
+    </a>
 
-<!-- Footer -->
-<footer class="footer">
-   <p>
-        © 2026 Glowing Social Media Icons | Designed with ❤️ 
+    <!-- Discord -->
+    <a href="#">
+      <div class="layer">
+        <span></span><span></span><span></span><span></span>
+        <span class="fab fa-discord"></span>
+      </div>
+      <div class="text">Discord</div>
+    </a>
+
+    <!-- Reddit -->
+    <a href="#">
+      <div class="layer">
+        <span></span><span></span><span></span><span></span>
+        <span class="fab fa-reddit-alien"></span>
+      </div>
+      <div class="text">Reddit</div>
+    </a>
+
+    <!-- Pinterest -->
+    <a href="#">
+      <div class="layer">
+        <span></span><span></span><span></span><span></span>
+        <span class="fab fa-pinterest-p"></span>
+      </div>
+      <div class="text">Pinterest</div>
+    </a>
+
+    <!-- Snapchat -->
+    <a href="#">
+      <div class="layer">
+        <span></span><span></span><span></span><span></span>
+        <span class="fab fa-snapchat-ghost"></span>
+      </div>
+      <div class="text">Snapchat</div>
+    </a>
+
+    <!-- TikTok -->
+    <a href="#">
+      <div class="layer">
+        <span></span><span></span><span></span><span></span>
+        <span class="fab fa-tiktok"></span>
+      </div>
+      <div class="text">TikTok</div>
+    </a>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>
+      © 2026 Glowing Social Media Icons | Designed with ❤️
     </p>
-</footer>
+  </footer>
+  <script>
+    const themeToggles = document.querySelectorAll(".theme");
+    const themeIcon = document.getElementById("themeIcon");
 
+    // Default = Light Mode
+    let isLightMode = localStorage.getItem("lightMode");
+
+    if (isLightMode === null) {
+      isLightMode = true;
+    } else {
+      isLightMode = JSON.parse(isLightMode);
+    }
+
+    function updateTheme() {
+      document.body.classList.toggle("light-theme", isLightMode);
+
+      if (themeIcon) {
+        themeIcon.textContent = isLightMode ? "🌙" : "☀️";
+      }
+    }
+
+    themeToggles.forEach(btn => {
+      btn.addEventListener("click", () => {
+        isLightMode = !isLightMode;
+        localStorage.setItem("lightMode", JSON.stringify(isLightMode));
+        updateTheme();
+      });
+    });
+
+    updateTheme();
+  </script>
 </body>
 
 </html>

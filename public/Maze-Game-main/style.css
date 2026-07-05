@@ -484,6 +484,60 @@ button:disabled {
 }
 
 
+.back-home-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 
+    padding: 12px 24px;
+
+    border-radius: 14px;
+
+    text-decoration: none;
+
+    font-weight: 600;
+
+    color: #fff;
+
+    background: linear-gradient(
+        135deg,
+        #55d6ff,
+        #7b61ff
+    );
+
+    border: none;
+
+    cursor: pointer;
+
+    transition: all .3s ease;
+
+    box-shadow:
+        0 0 18px rgba(85,214,255,.35);
+
+}
+
+.back-home-btn:hover{
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 0 22px rgba(123,97,255,.55);
+
+    filter: brightness(1.08);
+
+}
+
+.back-home-btn:active{
+
+    transform: scale(.97);
+
+}
+
+.back-home-btn:focus-visible{
+
+    outline:2px solid #6be7ff;
+    outline-offset:3px;
+
+}
 
 

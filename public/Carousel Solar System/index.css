@@ -34,6 +34,11 @@ body{
   --glass-bg: rgba(255,255,255,0.08);
   --border-color: rgba(255,255,255,0.1);
   --accent: #8ca8ff;
+  --logo-gradient-start: #ffffff;
+  --logo-gradient-end: #7aa7ff;
+  --control-btn-bg: rgba(255,255,255,0.08);
+  --control-btn-hover-bg: #ffffff;
+  --control-btn-hover-color: #020412;
 }
 
 body.light-theme{
@@ -46,6 +51,11 @@ body.light-theme{
   --glass-bg: rgba(255,255,255,0.85);
   --border-color: rgba(15,23,42,0.1);
   --accent: #2563eb;
+  --logo-gradient-start: #0f172a;
+  --logo-gradient-end: #2563eb;
+  --control-btn-bg: rgba(15,23,42,0.08);
+  --control-btn-hover-bg: #0f172a;
+  --control-btn-hover-color: #ffffff;
 }
 /* =========================
    MAIN CONTAINER
@@ -56,37 +66,18 @@ body.light-theme{
   position:relative;
   overflow:hidden;
 
-  background:
-    radial-gradient(circle at top,
-    var(--bg-secondary) 0%,
-    var(--bg-primary) 40%,
-    var(--bg-primary) 100%);
+  /* Background handled by Three.js canvas */
+  background: transparent;
 }
-/* animated stars */
+
+/* CSS star dots replaced by Three.js — kept as noop */
 .slider-container::before{
-  content:"";
-  position:absolute;
-  inset:0;
-
-  background-image:
-    radial-gradient(white 1px, transparent 1px),
-    radial-gradient(white 1px, transparent 1px);
-
-  background-size:80px 80px,120px 120px;
-  background-position:0 0,40px 40px;
-
-  opacity:0.18;
-  animation:starsMove 60s linear infinite;
-  z-index:0;
+  display:none;
 }
 
 @keyframes starsMove{
-  from{
-    transform:translateY(0);
-  }
-  to{
-    transform:translateY(-100px);
-  }
+  from{ transform:translateY(0); }
+  to{ transform:translateY(-100px); }
 }
 
 /* =========================
@@ -109,7 +100,7 @@ body.light-theme{
   font-weight:700;
   letter-spacing:4px;
 
-  background:linear-gradient(to right,#ffffff,#7aa7ff);
+  background:linear-gradient(to right, var(--logo-gradient-start), var(--logo-gradient-end));
   background-clip: text;
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
@@ -133,7 +124,7 @@ body.light-theme{
 
 .line{
   height:3px;
-  background:white;
+  background:var(--text-primary);
   border-radius:20px;
   transition:0.4s;
 }
@@ -244,7 +235,7 @@ body.light-theme{
 }
 
 .planet-item span{
-    color:white;
+    color:var(--text-primary);
 
     font-size:0.9rem;
     font-weight:500;
@@ -502,21 +493,24 @@ span{
 .control-btn{
   padding:14px 28px;
 
-  border:none;
+  border:1px solid var(--border-color);
   border-radius:50px;
 
-  background:rgba(255,255,255,0.08);
-  color:white;
+  background:var(--control-btn-bg);
+  color:var(--text-primary);
 
   backdrop-filter:blur(12px);
 
   cursor:pointer;
   transition:0.35s;
+
+  font-weight:600;
+  letter-spacing:1px;
 }
 
 .control-btn:hover{
-  background:white;
-  color:#020412;
+  background:var(--control-btn-hover-bg);
+  color:var(--control-btn-hover-color);
 
   transform:translateY(-3px);
 }
@@ -638,13 +632,32 @@ span{
   }
 
   .planet-mini-list{
-    flex-direction:row;
-    flex-wrap:wrap;
-    width:240px;
-    justify-content:center;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    width:220px;
     max-height:none;
     overflow-y:visible;
-    padding:18px;
+    padding:12px;
+    gap:8px;
+  }
+
+  .planet-item{
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+    padding:8px 6px;
+    text-align:center;
+  }
+
+  .planet-item span{
+    font-size:0.75rem;
+    letter-spacing:0.5px;
+  }
+
+  .mini-planet{
+    width:36px;
+    height:36px;
   }
 }
 

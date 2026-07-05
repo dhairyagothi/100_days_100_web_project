@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zen-Gochi // Absolute Stillness</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="matrix-bg" id="matrixBg"></div>
+
+    <div class="game-container">
+        <header>
+            <h1 class="title">ZEN-GOCHI</h1>
+            <p class="subtitle">Do absolutely nothing to let it live.</p>
+        </header>
+
+        <div class="creature-wrapper" id="creatureWrapper">
+            <svg id="creature" viewBox="0 0 200 200">
+                <circle id="bodyGlow" cx="100" cy="100" r="45" />
+                <circle id="bodyCore" cx="100" cy="100" r="40" />
+                <circle id="eye" cx="100" cy="100" r="8" />
+                <circle id="pupil" cx="100" cy="100" r="3" />
+            </svg>
+        </div>
+
+        <div class="stats-panel">
+            <div class="stat-box">
+                <span class="label">STABILITY</span>
+                <div class="bar-container">
+                    <div id="stabilityBar" class="bar stability" style="width: 100%;"></div>
+                </div>
+            </div>
+            
+            <div class="stat-box">
+                <span class="label">ZEN LEVEL</span>
+                <span id="levelDisplay" class="value">1</span>
+            </div>
+
+            <div class="stat-box">
+                <span class="label">EVOLUTION STAGE</span>
+                <span id="stageDisplay" class="value">The Seed</span>
+            </div>
+        </div>
+
+        <div id="statusMessage" class="status-msg">System stable. Maintain stillness...</div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

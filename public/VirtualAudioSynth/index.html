@@ -15,7 +15,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="style.css" />
-    <link rel="icon" href="image.png">
+    <link rel="icon" href="image.png" />
   </head>
   <body>
     <!-- Header -->
@@ -34,7 +34,11 @@
     <!-- Main Content -->
     <main class="main" id="synth-main">
       <!-- Visualizer Panel -->
-      <section class="visualizer-section" id="visualizer-section" aria-label="Audio Visualizer">
+      <section
+        class="visualizer-section"
+        id="visualizer-section"
+        aria-label="Audio Visualizer"
+      >
         <div class="visualizer-card">
           <canvas
             id="visualizer-canvas"
@@ -42,7 +46,11 @@
             aria-label="Real-time audio frequency visualizer"
           ></canvas>
           <div class="visualizer-overlay" id="visualizer-overlay">
-            <button class="btn btn--primary btn--large" id="btn-start-audio" type="button">
+            <button
+              class="btn btn--primary btn--large"
+              id="btn-start-audio"
+              type="button"
+            >
               <span class="btn__icon">🔊</span>
               <span>Enable Audio & Start Synthesizer</span>
             </button>
@@ -51,12 +59,20 @@
       </section>
 
       <!-- Controls Panel -->
-      <section class="controls-section" id="controls-section" aria-label="Synth Controls">
+      <section
+        class="controls-section"
+        id="controls-section"
+        aria-label="Synth Controls"
+      >
         <div class="controls-grid">
           <!-- Waveform Selector -->
           <div class="controls-card">
             <h2 class="card-title">Oscillator Waveform</h2>
-            <div class="toggle-group" role="radiogroup" aria-label="Waveform type selection">
+            <div
+              class="toggle-group"
+              role="radiogroup"
+              aria-label="Waveform type selection"
+            >
               <button
                 class="toggle-btn toggle-btn--active"
                 data-wave="sine"
@@ -103,7 +119,8 @@
               <!-- Volume Slider -->
               <div class="control-group">
                 <label class="control-label" for="volume-slider">
-                  Volume: <span class="control-value" id="volume-value">50%</span>
+                  Volume:
+                  <span class="control-value" id="volume-value">50%</span>
                 </label>
                 <input
                   type="range"
@@ -145,15 +162,20 @@
       </section>
 
       <!-- Keyboard Panel -->
-      <section class="keyboard-section" id="keyboard-section" aria-label="Virtual Keyboard">
+      <section
+        class="keyboard-section"
+        id="keyboard-section"
+        aria-label="Virtual Keyboard"
+      >
         <div class="keyboard-card">
           <div class="keyboard" id="piano-keyboard" role="none">
             <!-- Piano keys generated dynamically by JS for safety & responsiveness -->
           </div>
           <div class="keyboard-shortcuts-help">
             <p class="shortcuts-text">
-              🎹 Play using your computer keyboard: <strong>A S D F G H J K L ;</strong> (white
-              keys) and <strong>W E T Y U O P</strong> (black keys)
+              🎹 Play using your computer keyboard:
+              <strong>A S D F G H J K L ;</strong> (white keys) and
+              <strong>W E T Y U O P</strong> (black keys)
             </p>
           </div>
         </div>
@@ -167,7 +189,9 @@
 
     <!-- Footer -->
     <footer class="footer" id="synth-footer">
-      <p class="footer__text">Made with ❤️ by <strong>Omer</strong> &bull; GSSoC 2026</p>
+      <p class="footer__text">
+        Made with ❤️ by <strong>Omer</strong> &bull; GSSoC 2026
+      </p>
     </footer>
 
     <script src="script.js"></script>

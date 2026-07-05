@@ -1,59 +1,277 @@
 /* =============================================================
    BlackJack — Stylesheet
-   Theme  : Casino dark-green felt
+   Themes : 10 themes via data-theme attribute on <html>
    Fonts  : Playfair Display (headings) + Inter (UI)
    Layout : Mobile-first, single-column → desktop side-by-side
    ============================================================= */
 
-/* ── Design Tokens ─────────────────────────────────────────── */
-:root {
-  --felt:          #1a5c38;
-  --felt-dark:     #0f3d25;
-  --felt-border:   #2d7a50;
-  --gold:          #d4af37;
-  --gold-light:    #f0d060;
-  --card-bg:       #fdfaf3;
-  --bg:            #0b2819;
-  --surface:       #122e1e;
-  --text-primary:  #f5f0e8;
-  --text-muted:    #a8c4b0;
-  --win-green:     #4caf7d;
-  --loss-red:      #e05252;
-  --draw-amber:    #f0b429;
-
-  /* Chip colours */
+/* ── Design Tokens — Classic (default) ──────────────────────── */
+:root,
+[data-theme="classic"] {
+  --felt:         #1a5c38;
+  --felt-dark:    #0f3d25;
+  --felt-border:  #2d7a50;
+  --gold:         #d4af37;
+  --gold-light:   #f0d060;
+  --card-bg:      #fdfaf3;
+  --bg:           #0b2819;
+  --surface:      #122e1e;
+  --text-primary: #f5f0e8;
+  --text-muted:   #a8c4b0;
+  --win-green:    #4caf7d;
+  --loss-red:     #e05252;
+  --draw-amber:   #f0b429;
   --chip-5:   #e24b4a;
   --chip-10:  #378add;
   --chip-25:  #1d9e75;
   --chip-50:  #ba7517;
   --chip-100: #7f77dd;
+  --chip-custom: #c83daf;
+  --body-gradient: radial-gradient(ellipse at 50% 0%, rgba(26,92,56,0.45) 0%, transparent 60%);
+}
 
+/* ── Theme: Dark Mode ────────────────────────────────────────── */
+[data-theme="dark"] {
+  --felt:         #1e1e2e;
+  --felt-dark:    #111120;
+  --felt-border:  #3b3b5c;
+  --gold:         #c9b8ff;
+  --gold-light:   #e2d9ff;
+  --card-bg:      #f8f8ff;
+  --bg:           #0a0a14;
+  --surface:      #14141f;
+  --text-primary: #e8e8f8;
+  --text-muted:   #9090b8;
+  --win-green:    #50fa7b;
+  --loss-red:     #ff5555;
+  --draw-amber:   #ffb86c;
+  --chip-5:   #ff5555;
+  --chip-10:  #8be9fd;
+  --chip-25:  #50fa7b;
+  --chip-50:  #ffb86c;
+  --chip-100: #bd93f9;
+  --chip-custom: #ff79c6;
+  --body-gradient: radial-gradient(ellipse at 50% 0%, rgba(30,30,46,0.6) 0%, transparent 60%);
+}
+
+/* ── Theme: Neon ─────────────────────────────────────────────── */
+[data-theme="neon"] {
+  --felt:         #0d0d0d;
+  --felt-dark:    #050505;
+  --felt-border:  #00ff88;
+  --gold:         #00ffcc;
+  --gold-light:   #80ffdd;
+  --card-bg:      #f0fff8;
+  --bg:           #030303;
+  --surface:      #0a0a0a;
+  --text-primary: #e0ffe8;
+  --text-muted:   #44ff88;
+  --win-green:    #00ff88;
+  --loss-red:     #ff0066;
+  --draw-amber:   #ffff00;
+  --chip-5:   #ff0066;
+  --chip-10:  #00ccff;
+  --chip-25:  #00ff88;
+  --chip-50:  #ffcc00;
+  --chip-100: #cc00ff;
+  --chip-custom: #ff6600;
+  --body-gradient: radial-gradient(ellipse at 50% 0%, rgba(0,255,136,0.12) 0%, transparent 60%);
+}
+
+/* ── Theme: Red Velvet ───────────────────────────────────────── */
+[data-theme="velvet"] {
+  --felt:         #5a0a0a;
+  --felt-dark:    #3a0505;
+  --felt-border:  #8b1a1a;
+  --gold:         #ffc966;
+  --gold-light:   #ffe099;
+  --card-bg:      #fff8f3;
+  --bg:           #220000;
+  --surface:      #300505;
+  --text-primary: #fff0e8;
+  --text-muted:   #cc9988;
+  --win-green:    #66dd88;
+  --loss-red:     #ff4444;
+  --draw-amber:   #ffa040;
+  --chip-5:   #ff6644;
+  --chip-10:  #4488ff;
+  --chip-25:  #44cc77;
+  --chip-50:  #ffaa33;
+  --chip-100: #cc88ff;
+  --chip-custom: #ff44aa;
+  --body-gradient: radial-gradient(ellipse at 50% 0%, rgba(90,10,10,0.55) 0%, transparent 60%);
+}
+
+/* ── Theme: Blue Casino ──────────────────────────────────────── */
+[data-theme="blue"] {
+  --felt:         #0a2a5a;
+  --felt-dark:    #051535;
+  --felt-border:  #1a4a8b;
+  --gold:         #66aaff;
+  --gold-light:   #99ccff;
+  --card-bg:      #f3f8ff;
+  --bg:           #030a1a;
+  --surface:      #081428;
+  --text-primary: #e8f0ff;
+  --text-muted:   #6688cc;
+  --win-green:    #44ddaa;
+  --loss-red:     #ff5566;
+  --draw-amber:   #ffcc44;
+  --chip-5:   #ff5566;
+  --chip-10:  #44aaff;
+  --chip-25:  #44ddaa;
+  --chip-50:  #ffaa33;
+  --chip-100: #aa66ff;
+  --chip-custom: #ff66cc;
+  --body-gradient: radial-gradient(ellipse at 50% 0%, rgba(10,42,90,0.55) 0%, transparent 60%);
+}
+
+/* ── Theme: Midnight ─────────────────────────────────────────── */
+[data-theme="midnight"] {
+  --felt:         #1a1a2e;
+  --felt-dark:    #0d0d1a;
+  --felt-border:  #4a3f6b;
+  --gold:         #e0aaff;
+  --gold-light:   #f0ccff;
+  --card-bg:      #f8f0ff;
+  --bg:           #080812;
+  --surface:      #100e1e;
+  --text-primary: #f0e8ff;
+  --text-muted:   #8877aa;
+  --win-green:    #77ddbb;
+  --loss-red:     #ff6677;
+  --draw-amber:   #ffcc77;
+  --chip-5:   #ff6677;
+  --chip-10:  #88ccff;
+  --chip-25:  #77ddbb;
+  --chip-50:  #ffcc77;
+  --chip-100: #cc99ff;
+  --chip-custom: #ff99cc;
+  --body-gradient: radial-gradient(ellipse at 50% 0%, rgba(26,26,46,0.6) 0%, transparent 60%);
+}
+
+/* ── Theme: Pastel ───────────────────────────────────────────── */
+[data-theme="pastel"] {
+  --felt:         #d4eac8;
+  --felt-dark:    #b8d4aa;
+  --felt-border:  #88bb77;
+  --gold:         #b06090;
+  --gold-light:   #cc88aa;
+  --card-bg:      #fffdf8;
+  --bg:           #f0f7ee;
+  --surface:      #e8f5e2;
+  --text-primary: #334433;
+  --text-muted:   #779966;
+  --win-green:    #448855;
+  --loss-red:     #cc4455;
+  --draw-amber:   #bb8833;
+  --chip-5:   #e06070;
+  --chip-10:  #5588cc;
+  --chip-25:  #448855;
+  --chip-50:  #cc8833;
+  --chip-100: #8855cc;
+  --chip-custom: #aa4499;
+  --body-gradient: radial-gradient(ellipse at 50% 0%, rgba(200,230,190,0.4) 0%, transparent 60%);
+}
+
+/* ── Theme: High Contrast ────────────────────────────────────── */
+[data-theme="hc"] {
+  --felt:         #000000;
+  --felt-dark:    #000000;
+  --felt-border:  #ffffff;
+  --gold:         #ffff00;
+  --gold-light:   #ffff66;
+  --card-bg:      #ffffff;
+  --bg:           #000000;
+  --surface:      #111111;
+  --text-primary: #ffffff;
+  --text-muted:   #cccccc;
+  --win-green:    #00ff00;
+  --loss-red:     #ff0000;
+  --draw-amber:   #ffff00;
+  --chip-5:   #ff0000;
+  --chip-10:  #00ffff;
+  --chip-25:  #00ff00;
+  --chip-50:  #ffff00;
+  --chip-100: #ff00ff;
+  --chip-custom: #ff8800;
+  --body-gradient: none;
+}
+
+/* ── Theme: Gold Luxury ──────────────────────────────────────── */
+[data-theme="gold"] {
+  --felt:         #2a1a00;
+  --felt-dark:    #1a0f00;
+  --felt-border:  #8a6a10;
+  --gold:         #ffcc00;
+  --gold-light:   #ffe566;
+  --card-bg:      #fffcf0;
+  --bg:           #0f0800;
+  --surface:      #1a1000;
+  --text-primary: #fff8e0;
+  --text-muted:   #aa8833;
+  --win-green:    #88dd55;
+  --loss-red:     #ff5533;
+  --draw-amber:   #ffaa00;
+  --chip-5:   #ff5533;
+  --chip-10:  #33aaff;
+  --chip-25:  #88dd55;
+  --chip-50:  #ffaa00;
+  --chip-100: #cc77ff;
+  --chip-custom: #ff66aa;
+  --body-gradient: radial-gradient(ellipse at 50% 0%, rgba(42,26,0,0.7) 0%, transparent 60%);
+}
+
+/* ── Theme: Retro ────────────────────────────────────────────── */
+[data-theme="retro"] {
+  --felt:         #2d4a1e;
+  --felt-dark:    #1a2e10;
+  --felt-border:  #5a8a3a;
+  --gold:         #ffdd44;
+  --gold-light:   #ffee88;
+  --card-bg:      #fef9e7;
+  --bg:           #0e1a08;
+  --surface:      #162210;
+  --text-primary: #f5f0c0;
+  --text-muted:   #8aaa66;
+  --win-green:    #55cc44;
+  --loss-red:     #dd4444;
+  --draw-amber:   #ddaa22;
+  --chip-5:   #cc3333;
+  --chip-10:  #3366cc;
+  --chip-25:  #33aa44;
+  --chip-50:  #cc8822;
+  --chip-100: #8855bb;
+  --chip-custom: #cc4488;
+  --body-gradient: radial-gradient(ellipse at 50% 0%, rgba(45,74,30,0.5) 0%, transparent 60%);
+}
+
+/* ── Common variables (theme-invariant) ─────────────────────── */
+:root {
   --radius-sm: 0.4rem;
   --radius-md: 0.75rem;
   --radius-lg: 1.25rem;
   --radius-xl: 2rem;
-
   --shadow-card: 0 4px 16px rgba(0,0,0,0.55);
   --shadow-btn:  0 2px 8px rgba(0,0,0,0.4);
   --transition:  200ms cubic-bezier(0.16,1,0.3,1);
-
   --font-display: 'Playfair Display', Georgia, serif;
   --font-ui:      'Inter', system-ui, sans-serif;
 }
 
-/* ── Reset & Base ───────────────────────────────────────────── */
+/* ── Reset & Base ────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
 html { font-size: 16px; scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
 
 body {
   min-height: 100dvh;
   background-color: var(--bg);
-  background-image: radial-gradient(ellipse at 50% 0%, rgba(26,92,56,0.45) 0%, transparent 60%);
+  background-image: var(--body-gradient);
   color: var(--text-primary);
   font-family: var(--font-ui);
   font-size: 1rem;
   line-height: 1.5;
+  transition: background-color 0.4s ease, color 0.3s ease;
 }
 
 ul { list-style: none; padding: 0; }
@@ -65,13 +283,12 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   border-radius: var(--radius-sm);
 }
 
-/* Screen-reader only utility */
 .sr-only {
   position: absolute; width: 1px; height: 1px;
   overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap;
 }
 
-/* ── Back Button ─────────────────────────────────────────────── */
+/* ── Back Button ──────────────────────────────────────────────── */
 .back-btn {
   position: fixed; top: 1rem; left: 1rem; z-index: 100;
   padding: 8px 16px;
@@ -83,11 +300,110 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
 }
 .back-btn:hover { background: #3b82f6; color: #fff; }
 
-/* ── Site Header ─────────────────────────────────────────────── */
+/* ── Theme Switcher (inside site-header, right-aligned in strip) ── */
+.theme-switcher {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;    /* push button to the right corner */
+  padding: 1rem 1.5rem 1rem 0; /* right padding aligns with header content */
+  margin-top: 0.75rem;
+  border-top: 1px solid rgba(212,175,55,0.15);
+}
+
+/* Wrapper that acts as the positioning context for the panel */
+.theme-btn-wrap {
+  position: relative;
+  display: inline-flex;
+}
+
+.theme-toggle-btn {
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 14px;
+  background: var(--surface);
+  border: 1.5px solid var(--gold);
+  border-radius: var(--radius-md);
+  color: var(--gold);
+  font-size: 0.85rem; font-weight: 600;
+  font-family: var(--font-ui);
+  transition: background var(--transition), color var(--transition);
+}
+.theme-toggle-btn:hover { background: var(--felt); }
+.theme-toggle-btn i { font-size: 1.1rem; }
+
+.theme-panel {
+  position: fixed;              /* viewport-relative — bypasses ALL parent clipping */
+  /* top / right set dynamically by JS via getBoundingClientRect */
+  width: min(320px, calc(100vw - 2rem));
+  max-height: 75vh;
+  overflow-y: auto;
+  background: rgba(10,10,20,0.96);
+  border: 1.5px solid var(--gold);
+  border-radius: var(--radius-lg);
+  padding: 1rem;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.7);
+  animation: fadeSlideIn 0.22s ease;
+  z-index: 9999;
+}
+.theme-panel[hidden] { display: none; }
+
+.theme-panel-title {
+  font-family: var(--font-display);
+  color: var(--gold); font-size: 1rem;
+  letter-spacing: 0.05em; text-align: center;
+  margin-bottom: 0.75rem;
+}
+
+.theme-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 6px;
+  overflow: hidden;
+}
+
+.theme-swatch {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  padding: 6px 4px;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid transparent;
+  transition: border-color var(--transition), background var(--transition);
+  cursor: pointer;
+}
+.theme-swatch:hover      { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.2); }
+.theme-swatch--active    { border-color: var(--gold) !important; background: rgba(255,255,255,0.1); }
+
+.swatch-preview {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.2);
+  display: block; flex-shrink: 0;
+}
+.swatch-classic  { background: linear-gradient(135deg, #1a5c38 50%, #d4af37 50%); }
+.swatch-dark     { background: linear-gradient(135deg, #1e1e2e 50%, #c9b8ff 50%); }
+.swatch-neon     { background: linear-gradient(135deg, #030303 50%, #00ff88 50%); }
+.swatch-velvet   { background: linear-gradient(135deg, #5a0a0a 50%, #ffc966 50%); }
+.swatch-blue     { background: linear-gradient(135deg, #0a2a5a 50%, #66aaff 50%); }
+.swatch-midnight { background: linear-gradient(135deg, #1a1a2e 50%, #e0aaff 50%); }
+.swatch-pastel   { background: linear-gradient(135deg, #d4eac8 50%, #b06090 50%); }
+.swatch-hc       { background: linear-gradient(135deg, #000 50%, #ffff00 50%); }
+.swatch-gold     { background: linear-gradient(135deg, #2a1a00 50%, #ffcc00 50%); }
+.swatch-retro    { background: linear-gradient(135deg, #2d4a1e 50%, #ffdd44 50%); }
+
+.swatch-name {
+  font-size: 0.58rem; font-weight: 600;
+  color: rgba(255,255,255,0.7);
+  text-align: center;
+  word-break: break-word;
+  line-height: 1.2;
+  max-width: 100%;
+}
+
+/* ── Site Header ──────────────────────────────────────────────── */
 .site-header {
   text-align: center;
-  padding: 2rem 1.5rem 1.5rem;
+  padding: 2rem 1.5rem 0;       /* bottom-padding removed — theme strip provides it */
   border-bottom: 1px solid rgba(212,175,55,0.2);
+  overflow: visible;            /* allow theme panel dropdown to show outside header */
 }
 
 .game-title {
@@ -114,7 +430,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
 .rules-btn:hover,
 .rules-btn[aria-expanded="true"] { background: var(--gold); color: var(--bg); }
 
-/* ── Rules Popup ─────────────────────────────────────────────── */
+/* ── Rules Popup ──────────────────────────────────────────────── */
 .rules-box {
   position: absolute; top: 5.5rem; right: 1.5rem;
   width: clamp(18rem, 30vw, 24rem);
@@ -127,7 +443,6 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   animation: fadeSlideIn 0.22s ease;
 }
 .rules-box[hidden] { display: none; }
-
 .rules-box h3 {
   font-family: var(--font-display);
   color: var(--gold); font-size: 1.3rem;
@@ -147,14 +462,12 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* ── Game Board ─────────────────────────────────────────────── */
+/* ── Game Board ───────────────────────────────────────────────── */
 .game-board {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 1.5rem 1rem 3rem;
+  max-width: 900px; margin: 0 auto; padding: 1.5rem 1rem 3rem;
 }
 
-/* ── Status Message ─────────────────────────────────────────── */
+/* ── Status Message ───────────────────────────────────────────── */
 .status-msg {
   text-align: center;
   font-family: var(--font-display);
@@ -167,7 +480,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   transition: color var(--transition);
 }
 
-/* ── Card Table ─────────────────────────────────────────────── */
+/* ── Card Table ───────────────────────────────────────────────── */
 .card-table {
   display: flex; flex-direction: column; gap: 0;
   background: var(--felt);
@@ -179,6 +492,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   box-shadow: var(--shadow-card), inset 0 1px 0 rgba(255,255,255,0.08);
   overflow: hidden;
   margin-bottom: 1.5rem;
+  transition: background var(--transition), border-color var(--transition);
 }
 
 .table-divider {
@@ -187,7 +501,6 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   margin: 0 1rem;
 }
 
-/* ── Hand Areas ─────────────────────────────────────────────── */
 .hand-area { padding: 1.5rem 1.25rem 1.25rem; min-height: 14rem; }
 
 .hand-label {
@@ -212,7 +525,6 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
 .card-row {
   display: flex; flex-wrap: wrap; gap: 0.5rem; min-height: 8rem;
 }
-
 .card-row img {
   height: 9rem; width: auto;
   border-radius: var(--radius-sm);
@@ -233,22 +545,20 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   .hand-area     { flex: 1; }
 }
 
-/* ── BETTING SECTION ─────────────────────────────────────────── */
+/* ── BETTING SECTION ──────────────────────────────────────────── */
 .betting-section {
   background: var(--surface);
   border: 1px solid rgba(212,175,55,0.15);
   border-radius: var(--radius-lg);
   padding: 1.25rem 1.25rem 1rem;
   margin-bottom: 1.5rem;
+  transition: background var(--transition);
 }
 
 .betting-label {
-  font-size: 0.8rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin-bottom: 0.6rem;
+  font-size: 0.8rem; font-weight: 600;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--text-muted); margin-bottom: 0.6rem;
 }
 
 /* Chip Rail */
@@ -275,6 +585,67 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
 .chip--25  { background: var(--chip-25); }
 .chip--50  { background: var(--chip-50); }
 .chip--100 { background: var(--chip-100); }
+.chip--custom {
+  background: var(--chip-custom);
+  font-size: 1.1rem;
+  border-style: solid;
+}
+.chip--custom i { font-size: 1.2rem; }
+
+/* Custom chip wrapper + popup */
+.chip-custom-wrap {
+  position: relative;
+  display: flex; align-items: center;
+}
+
+.custom-chip-popup {
+  position: absolute;
+  /* Stable anchor: aligned to the left edge of the wrapper chip, opens below */
+  top: calc(100% + 8px);
+  left: 0;
+  /* No transform — eliminates the two-step visual jump */
+  background: rgba(10,10,20,0.97);
+  border: 1.5px solid var(--chip-custom);
+  border-radius: var(--radius-md);
+  padding: 0.7rem 0.75rem;
+  display: flex; align-items: center; gap: 6px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+  z-index: 250;
+  min-width: 230px;
+  animation: fadeSlideIn 0.18s ease;
+}
+.custom-chip-popup[hidden] { display: none; }
+
+.custom-chip-label {
+  font-size: 0.8rem; font-weight: 700;
+  color: var(--chip-custom);
+  white-space: nowrap;
+}
+
+.custom-chip-input {
+  flex: 1;
+  padding: 5px 8px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-family: var(--font-ui); font-size: 0.85rem;
+  outline: none;
+  min-width: 0;
+}
+.custom-chip-input::placeholder { color: var(--text-muted); opacity: 0.7; }
+.custom-chip-input:focus { border-color: var(--chip-custom); }
+
+.custom-chip-add {
+  padding: 5px 12px;
+  background: var(--chip-custom);
+  border-radius: var(--radius-sm);
+  color: #fff; font-size: 0.82rem; font-weight: 700;
+  font-family: var(--font-ui);
+  transition: filter var(--transition);
+  white-space: nowrap;
+}
+.custom-chip-add:hover { filter: brightness(1.15); }
 
 /* Bet Stats Row */
 .bet-row {
@@ -314,9 +685,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
 .bet-btn--danger:hover { background: rgba(224,82,82,0.15); }
 
 /* Special Actions */
-.special-actions {
-  display: flex; gap: 10px; flex-wrap: wrap;
-}
+.special-actions { display: flex; gap: 10px; flex-wrap: wrap; }
 
 .special-btn {
   display: flex; align-items: center; gap: 7px;
@@ -341,13 +710,9 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   background: rgba(127,119,221,0.2); border-color: var(--chip-100);
 }
 
-/* ── Split Section ───────────────────────────────────────────── */
+/* ── Split Section ────────────────────────────────────────────── */
 .split-section { margin-top: 1rem; }
-
-.split-layout {
-  display: flex; gap: 10px;
-}
-
+.split-layout  { display: flex; gap: 10px; }
 .split-hand {
   flex: 1;
   border: 1.5px solid rgba(255,255,255,0.12);
@@ -357,13 +722,11 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   transition: border-color var(--transition);
 }
 .split-hand--active { border-color: var(--gold); }
-
 .split-hand-label {
   font-size: 0.75rem; font-weight: 600;
   text-transform: uppercase; letter-spacing: 0.07em;
   color: var(--text-muted); margin-bottom: 8px;
 }
-
 .split-cards {
   display: flex; flex-wrap: wrap; gap: 6px;
   min-height: 60px; align-items: flex-start;
@@ -374,13 +737,9 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   box-shadow: 2px 3px 8px rgba(0,0,0,0.4);
   animation: cardDeal 0.25s cubic-bezier(0.22,1,0.36,1);
 }
+.split-score { font-size: 0.85rem; font-weight: 600; color: var(--gold-light); margin-top: 6px; }
 
-.split-score {
-  font-size: 0.85rem; font-weight: 600;
-  color: var(--gold-light); margin-top: 6px;
-}
-
-/* ── Action Buttons ──────────────────────────────────────────── */
+/* ── Action Buttons ───────────────────────────────────────────── */
 .action-buttons {
   display: flex; justify-content: center; flex-wrap: wrap; gap: 1rem;
   margin-bottom: 2rem;
@@ -405,13 +764,14 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
 .btn-deal  { background: #b03030; color: #fff; border-color: #d04040; }
 .btn-deal:hover { background: #c53838; }
 
-/* ── Scoreboard ──────────────────────────────────────────────── */
+/* ── Scoreboard ───────────────────────────────────────────────── */
 .scoreboard {
   background: var(--surface);
   border: 1px solid rgba(212,175,55,0.2);
   border-radius: var(--radius-lg);
   padding: 1.5rem 1.25rem;
   text-align: center;
+  transition: background var(--transition);
 }
 
 .scoreboard-title {
@@ -450,13 +810,15 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
 .draws  .score-num { color: var(--draw-amber); }
 
 .score-actions {
-  display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;
+  display: flex; justify-content: center; gap: 0.75rem; flex-wrap: wrap;
+  margin-bottom: 0;
 }
 
 .btn-play-again {
   background: var(--felt); color: var(--gold-light);
   border: 1.5px solid var(--gold); border-radius: var(--radius-md);
   padding: 0.5rem 1.5rem; font-size: 0.95rem; font-weight: 600;
+  transition: background var(--transition);
 }
 .btn-play-again:hover { background: var(--felt-dark); }
 
@@ -464,10 +826,124 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   background: transparent; color: var(--text-muted);
   border: 1.5px solid rgba(255,255,255,0.15); border-radius: var(--radius-md);
   padding: 0.5rem 1.5rem; font-size: 0.95rem; font-weight: 600;
+  transition: border-color var(--transition), color var(--transition);
 }
 .btn-reset:hover { border-color: var(--loss-red); color: var(--loss-red); }
 
-/* ── Toast ───────────────────────────────────────────────────── */
+.btn-history-toggle {
+  display: flex; align-items: center; gap: 6px;
+  background: transparent; color: var(--gold);
+  border: 1.5px solid var(--gold); border-radius: var(--radius-md);
+  padding: 0.5rem 1.2rem; font-size: 0.95rem; font-weight: 600;
+  font-family: var(--font-ui);
+  transition: background var(--transition), color var(--transition);
+}
+.btn-history-toggle:hover,
+.btn-history-toggle[aria-expanded="true"] { background: var(--gold); color: var(--bg); }
+
+/* ── History Panel ────────────────────────────────────────────── */
+.history-panel {
+  margin-top: 1.5rem;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  padding-top: 1rem;
+  text-align: left;
+}
+.history-panel[hidden] { display: none; }
+
+.history-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+.history-title {
+  font-family: var(--font-display);
+  font-size: 1rem; font-weight: 700;
+  color: var(--gold); letter-spacing: 0.05em;
+  display: flex; align-items: center; gap: 6px;
+}
+.history-clear-btn {
+  font-size: 0.78rem; font-weight: 600;
+  color: var(--text-muted);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: var(--radius-sm);
+  padding: 4px 10px;
+  transition: color var(--transition), border-color var(--transition);
+}
+.history-clear-btn:hover { color: var(--loss-red); border-color: var(--loss-red); }
+
+.history-list {
+  display: flex; flex-direction: column; gap: 10px;
+  max-height: 480px; overflow-y: auto;
+  padding-right: 4px;
+}
+.history-list::-webkit-scrollbar { width: 4px; }
+.history-list::-webkit-scrollbar-track { background: transparent; }
+.history-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 2px; }
+
+.history-empty {
+  text-align: center; color: var(--text-muted);
+  font-size: 0.9rem; padding: 1.5rem 0;
+}
+
+/* History card */
+.hist-card {
+  background: rgba(0,0,0,0.35);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: var(--radius-md);
+  padding: 0.75rem 1rem;
+  opacity: 0; transform: translateY(6px);
+  transition: opacity 0.28s ease, transform 0.28s ease;
+}
+.hist-card--visible { opacity: 1; transform: translateY(0); }
+
+.hist-top {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  margin-bottom: 0.5rem;
+}
+.hist-round {
+  font-size: 0.72rem; font-weight: 600;
+  color: var(--text-muted); letter-spacing: 0.06em;
+  text-transform: uppercase; white-space: nowrap;
+}
+.hist-result {
+  font-size: 0.78rem; font-weight: 700;
+  padding: 2px 8px; border-radius: 99px;
+  text-transform: uppercase; letter-spacing: 0.06em;
+}
+.hist-win  { background: rgba(76,175,125,0.2); color: var(--win-green); }
+.hist-loss { background: rgba(224,82,82,0.2);  color: var(--loss-red); }
+.hist-draw { background: rgba(240,180,41,0.2); color: var(--draw-amber); }
+.hist-split{ background: rgba(127,119,221,0.2);color: #9f97ee; }
+
+.hist-bet {
+  font-size: 0.75rem; color: var(--text-muted);
+}
+.hist-net {
+  font-size: 0.85rem; font-weight: 700; margin-left: auto;
+}
+.hist-scores {
+  font-size: 0.75rem; color: var(--text-muted);
+  width: 100%;
+}
+
+.hist-ai {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: var(--radius-sm);
+  padding: 0.55rem 0.75rem;
+}
+.hist-ai-label {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 0.68rem; font-weight: 700;
+  color: var(--gold); letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.3rem;
+}
+.hist-ai-text {
+  font-size: 0.82rem; color: var(--text-primary);
+  line-height: 1.5; opacity: 0.85;
+}
+
+/* ── Toast ────────────────────────────────────────────────────── */
 .bj-toast {
   position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%);
   background: rgba(10,26,17,0.95);
@@ -482,7 +958,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
 }
 .bj-toast.show { opacity: 1; }
 
-/* ── Reduced Motion ──────────────────────────────────────────── */
+/* ── Reduced Motion ───────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
@@ -490,7 +966,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   }
 }
 
-/* ── Mobile ──────────────────────────────────────────────────── */
+/* ── Mobile ───────────────────────────────────────────────────── */
 @media (max-width: 420px) {
   .game-title { letter-spacing: 0.1em; }
   .btn        { padding: 0.6rem 1.5rem; font-size: 0.95rem; }
@@ -498,16 +974,19 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   .card-row img { height: 7rem; }
   .chip       { width: 46px; height: 46px; font-size: 0.68rem; }
   .split-cards img { height: 4.5rem; }
+  .theme-toggle-btn span { display: none; }
 }
 
 @media (max-width: 768px) {
   .site-header {
     display: flex; flex-direction: column; align-items: center;
-    gap: 1rem; padding: 2rem 1rem 1.5rem;
+    gap: 0.75rem; padding: 2rem 1rem 0;
   }
   .rules-btn { position: static; transform: none; margin-top: 0.25rem; }
   .game-title { font-size: clamp(2rem, 10vw, 3.5rem); letter-spacing: 0.12em; text-align: center; line-height: 1.15; }
   .rules-box { top: auto; right: 50%; transform: translateX(50%); width: min(90vw, 22rem); }
   .bet-row   { flex-direction: column; align-items: flex-start; }
   .bet-actions { margin-left: 0; }
+  .custom-chip-popup { min-width: 200px; }
+  .theme-switcher { margin-top: 0.5rem; }
 }

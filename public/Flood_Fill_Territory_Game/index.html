@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Flood Fill Territory Game</title>
+  <title>Flood Fill Territory Game - Time Attack</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -14,9 +14,35 @@
         <h1>Flood Fill Strategy</h1>
       </div>
 
-      <div class="turn-card" id="turnCard">
-        <span class="turn-label">Current Turn</span>
-        <strong id="currentPlayer">Player 1</strong>
+      <div class="controls-group">
+        <div class="board-size-selector">
+          <label for="boardSize">Board Size</label>
+          <select id="boardSize">
+            <option value="6">6x6</option>
+            <option value="8">8x8</option>
+            <option value="10" selected>10x10</option>
+            <option value="12">12x12</option>
+            <option value="15">15x15</option>
+          </select>
+        </div>
+
+        <div class="game-mode-selector">
+          <label for="gameMode">Game Mode</label>
+          <select id="gameMode">
+            <option value="classic">Classic</option>
+            <option value="timeattack" selected>Time Attack</option>
+          </select>
+        </div>
+
+        <div class="turn-card" id="turnCard">
+          <span class="turn-label">Current Turn</span>
+          <strong id="currentPlayer">Player 1</strong>
+          <div class="timer-container" id="timerContainer">
+            <span class="timer-label">⏱️</span>
+            <span class="timer-display" id="timerDisplay">30</span>
+            <span class="timer-unit">s</span>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -25,24 +51,34 @@
         <div class="score-card player-one">
           <span>Player 1</span>
           <strong id="playerOneScore">0</strong>
+          <span class="score-percent" id="playerOnePercent">0%</span>
         </div>
 
         <div class="score-card player-two">
           <span>Player 2</span>
           <strong id="playerTwoScore">0</strong>
+          <span class="score-percent" id="playerTwoPercent">0%</span>
         </div>
 
         <div class="status-card">
           <span>Claimed Cells</span>
           <strong id="claimedCells">0 / 100</strong>
+          <span class="progress-bar">
+            <span class="progress-fill" id="progressFill"></span>
+          </span>
+        </div>
+
+        <div class="status-card">
+          <span>Move Count</span>
+          <strong id="moveCount">0</strong>
         </div>
 
         <p class="result-message" id="resultMessage" aria-live="polite">Choose an open cell to begin.</p>
 
-        <button class="restart-button" id="restartButton" type="button">Restart Game</button>
+        <button class="restart-button" id="restartButton" type="button">🔄 Restart Game</button>
       </aside>
 
-      <section class="board-card" aria-label="10 by 10 game board">
+      <section class="board-card" aria-label="Game board">
         <div class="grid-board" id="gridBoard"></div>
       </section>
 
@@ -53,6 +89,7 @@
           <li>Flood fill expands through open neighbors.</li>
           <li>Opponent territory blocks expansion.</li>
           <li>Most owned cells wins.</li>
+          <li id="timeRule"><strong>⏱️ Time Attack:</strong> 30 seconds per turn!</li>
         </ul>
       </aside>
     </section>
