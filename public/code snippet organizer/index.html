@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SnippetVault - Smart Code Organizer</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        <!-- Sidebar -->
+        <div
+          class="col-md-3 col-lg-2 sidebar p-3"
+          style="height: 100vh; overflow-y: auto"
+        >
+          <div class="d-flex align-items-center gap-2 mb-4">
+            <i class="bi bi-code-square fs-3 text-primary"></i>
+            <h4 class="mb-0 fw-bold">SnippetVault</h4>
+          </div>
+
+          <button class="btn btn-primary w-100 mb-3 py-2" id="add-snippet-btn">
+            <i class="bi bi-plus-circle me-2"></i>New Snippet
+          </button>
+
+          <ul class="nav flex-column mb-4">
+            <li class="nav-item">
+              <a
+                href="#"
+                class="nav-link active filter-link d-flex align-items-center gap-2"
+                data-filter="all"
+              >
+                <i class="bi bi-collection"></i> All Snippets
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                href="#"
+                class="nav-link filter-link d-flex align-items-center gap-2"
+                data-filter="favorites"
+              >
+                <i class="bi bi-star-fill"></i> Favorites
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                href="#"
+                class="nav-link filter-link d-flex align-items-center gap-2"
+                data-filter="recent"
+              >
+                <i class="bi bi-clock-history"></i> Recent
+              </a>
+            </li>
+          </ul>
+
+          <hr class="border-secondary" />
+
+          <h6 class="text-secondary mb-2 px-2">LANGUAGES</h6>
+          <div id="language-list" class="list-group list-group-flush"></div>
+
+          <hr class="border-secondary" />
+
+          <h6 class="text-secondary mb-2 px-2">TAGS</h6>
+          <div id="tag-cloud" class="tag-cloud d-flex flex-wrap gap-2"></div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-md-9 col-lg-10 main-content p-4">
+          <!-- Header -->
+          <div
+            class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3"
+          >
+            <div>
+              <h1 id="page-title" class="h2 mb-1 fw-bold">All Snippets</h1>
+              <p class="text-secondary mb-0" id="subtitle">
+                Your personal code library
+              </p>
+            </div>
+
+            <div class="d-flex align-items-center gap-3">
+              <div class="input-group" style="width: 340px">
+                <span
+                  class="input-group-text bg-dark border-secondary text-light"
+                  ><i class="bi bi-search"></i
+                ></span>
+                <input
+                  type="text"
+                  id="search-input"
+                  class="form-control bg-dark border-secondary text-light"
+                  placeholder="Search snippets..."
+                />
+              </div>
+
+              <div class="dropdown">
+                <button
+                  class="btn btn-dark border-secondary dropdown-toggle"
+                  type="button"
+                  data-bs-toggle="dropdown"
+                >
+                  <i class="bi bi-sort-down"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-dark" id="sort-options">
+                  <li>
+                    <a class="dropdown-item active" href="#" data-sort="newest"
+                      >Newest First</a
+                    >
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="#" data-sort="oldest"
+                      >Oldest First</a
+                    >
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="#" data-sort="title"
+                      >Title A-Z</a
+                    >
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="#" data-sort="language"
+                      >By Language</a
+                    >
+                  </li>
+                </ul>
+              </div>
+
+              <button
+                class="btn btn-dark border-secondary"
+                id="export-btn"
+                title="Export JSON"
+              >
+                <i class="bi bi-download"></i>
+              </button>
+              <button
+                class="btn btn-dark border-secondary"
+                id="import-btn"
+                title="Import JSON"
+              >
+                <i class="bi bi-upload"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Stats Row -->
+          <div class="row g-3 mb-4" id="stats-row"></div>
+
+          <!-- Snippets Grid -->
+          <div
+            id="snippets-grid"
+            class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4"
+          ></div>
+
+          <div id="no-results" class="text-center py-5 d-none">
+            <i class="bi bi-folder-x display-1 text-secondary"></i>
+            <h4 class="mt-3">No snippets found</h4>
+            <p class="text-secondary">Try different keywords or filters</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Snippet Modal -->
+    <div class="modal fade" id="snippet-modal" tabindex="-1">
+      <div class="modal-dialog modal-xl">
+        <div class="modal-content bg-dark border-secondary">
+          <div class="modal-header border-secondary">
+            <h5 class="modal-title" id="modal-title">New Snippet</h5>
+            <button
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="snippet-form">
+              <input type="hidden" id="snippet-id" />
+              <div class="row g-3">
+                <div class="col-md-7">
+                  <label class="form-label">Title</label>
+                  <input
+                    type="text"
+                    class="form-control bg-dark border-secondary text-light"
+                    id="snippet-title"
+                    required
+                  />
+                </div>
+                <div class="col-md-5">
+                  <label class="form-label">Language</label>
+                  <select
+                    class="form-select bg-dark border-secondary text-light"
+                    id="snippet-language"
+                    required
+                  >
+                    <option value="">Select Language</option>
+                    <option value="javascript">JavaScript</option>
+                    <option value="typescript">TypeScript</option>
+                    <option value="python">Python</option>
+                    <option value="java">Java</option>
+                    <option value="csharp">C#</option>
+                    <option value="php">PHP</option>
+                    <option value="go">Go</option>
+                    <option value="rust">Rust</option>
+                    <option value="html">HTML</option>
+                    <option value="css">CSS</option>
+                    <option value="sql">SQL</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="mt-3">
+                <label class="form-label">Description</label>
+                <textarea
+                  class="form-control bg-dark border-secondary text-light"
+                  id="snippet-description"
+                  rows="2"
+                ></textarea>
+              </div>
+
+              <div class="mt-3">
+                <label class="form-label">Tags (comma separated)</label>
+                <input
+                  type="text"
+                  class="form-control bg-dark border-secondary text-light"
+                  id="snippet-tags"
+                  placeholder="api, utility, react, auth"
+                />
+              </div>
+
+              <div class="mt-3">
+                <label class="form-label">Code</label>
+                <textarea
+                  class="form-control font-monospace bg-dark border-secondary text-light"
+                  id="snippet-code"
+                  rows="14"
+                  required
+                ></textarea>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer border-secondary">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary px-4"
+              id="save-snippet"
+            >
+              Save Snippet
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

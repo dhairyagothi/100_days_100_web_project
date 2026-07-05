@@ -1,50 +1,201 @@
-# Premium Analog Clock 🕒
+# Chronos+ 🕒
 
-A sleek, modern, and highly accurate interactive analog clock built using web technologies. This component features a smooth fluid design, polished UI animations, and dark-mode friendly aesthetics, making it a perfect addition to any modern web dashboard.
+### Premium Time Dashboard
+
+Chronos+ is a premium time management dashboard built using **HTML, CSS, and Vanilla JavaScript**. It combines a live analog clock, digital clock, world clocks, countdown timer, alarm system, interactive timezone map, and focus mode into a modern, responsive interface.
+
+Designed with a clean skeuomorphic-inspired UI and smooth animations, Chronos+ provides an elegant way to monitor multiple time zones, manage alarms, and stay productive.
+
+---
 
 ## ✨ Features
 
-* **Smooth Fluid Motion:** Realistic second-hand sweeping effect instead of rigid ticking.
-* **Responsive Layout:** Automatically scales beautifully across desktops, tablets, and mobile displays.
-* **Modern Aesthetic:** Features clean typography, subtle drop shadows, and a premium minimal user interface.
-* **Dynamic Time Sync:** Syncs perfectly with the user's local system time instantly upon loading.
+### 🕒 Live Local Clock
 
-### 🎨 Theme System (Auto Mode)
+* Real-time analog clock with smooth second-hand movement
+* Live digital clock
+* Automatic local timezone detection
+* Current date display
+* Responsive analog clock design
 
-This project now supports an enhanced theme system with three modes:
+### 🌍 World Clock Dashboard
+
+* Pin multiple world cities
+* Live analog and digital clocks for every pinned city
+* Search cities by:
+
+  * City name
+  * Country
+  * Timezone
+* Add and remove clocks instantly
+* Automatic timezone calculations
+* Real-time updates
+* Persistent pinned clocks using Local Storage
+
+### 🗺️ Interactive Timezone Map
+
+* Interactive world timezone visualization
+* Hover tooltips displaying:
+
+  * City
+  * Current time
+  * Current date
+  * Timezone
+* Pin cities directly from the map
+* Highlight active and pinned locations
+* Animated city markers
+
+### ⏱️ Countdown Timer
+
+* Hours, minutes, and seconds input
+* Circular SVG progress indicator
+* Smooth countdown animation
+* Start timer
+* Pause timer
+* Reset timer
+* Completion alert
+
+### ⏰ Alarm System
+
+* Create multiple alarms
+* View active alarms
+* Remove alarms
+* Animated fullscreen alarm notification
+* Persistent alarm management
+
+### 🎯 Focus Mode
+
+* Minimal distraction interface
+* Focus on essential time information
+* Quick exit button
+
+### 🎨 Theme System
+
+Supports three display modes:
 
 * ☀️ Light
 * 🌙 Dark
-* 🔄 Auto (sync with system)
+* 🔄 Auto (System Preference)
 
-  🔄 Auto Mode Behavior
+#### Auto Mode
 
-   * Automatically matches your OS/browser theme using `prefers-color-scheme`
-   * Updates instantly when system theme changes (no page reload required)
-   * Saves preference in `localStorage` (`chronos-theme`)
+* Automatically follows your operating system theme
+* Instantly updates when the system theme changes
+* No page refresh required
 
-  ⌨️ Keyboard Shortcut
+#### Theme Persistence
 
-   * Press **`T`** to cycle through:
-      Light → Dark → Auto
+Theme preference is stored using Local Storage.
 
-  🧠 Smart Behavior
+### 💾 Local Storage Support
 
-   * In **Auto mode** → follows system theme in real-time
-   * In **Light/Dark mode** → respects manual user choice
+Chronos+ remembers:
 
-This brings the app in line with modern UX standards seen in tools like Slack, Discord, and Figma.
+* Theme preference
+* Auto theme mode
+* Pinned world clocks
+
+### 📱 Responsive Design
+
+Optimized for:
+
+* Desktop
+* Laptop
+* Tablet
+* Mobile devices
+
+---
 
 ## 🚀 Technologies Used
 
-* **HTML5:** Semantic structure for the clock face and hands.
-* **CSS3:** Advanced styling, centering utilities, transitions, and custom animations.
-* **JavaScript (ES6):** Real-time DOM manipulation and mathematical rotation tracking for the clock hands.
+* HTML5
+* CSS3
+* Vanilla JavaScript (ES6)
+* SVG Graphics
+* Local Storage API
+* Intl DateTimeFormat API
+* requestAnimationFrame API
 
-## 🛠️ Installation & Usage
+---
 
-To run this project locally, simply clone the repository and open the entry HTML file:
+## 📂 Project Structure
 
-1. Clone the repository:
+```
+Chronos+
+│
+├── index.html
+├── index.css
+├── index.js
+├── README.md
+├── taj_mahal.png
+├── new_york.png
+├── london.png
+├── tokyo.png
+└── ...
+```
+
+---
+
+## 🛠️ Installation
+
+Clone the repository:
+
 ```bash
-   git clone [https://github.com/your-username/100_days_100_web_project.git](https://github.com/your-username/100_days_100_web_project.git)
+git clone https://github.com/your-username/100_days_100_web_project.git
+```
+
+Navigate to the project directory:
+
+```bash
+cd 100_days_100_web_project
+```
+
+Open the project by launching:
+
+```text
+index.html
+```
+
+No additional dependencies or build tools are required.
+
+---
+
+## ⌨️ Keyboard Shortcut
+
+| Key   | Action                            |
+| ----- | --------------------------------- |
+| **T** | Cycle Theme (Light → Dark → Auto) |
+
+---
+
+## 🌐 Browser Support
+
+Chronos+ works on all modern browsers:
+
+* Google Chrome
+* Microsoft Edge
+* Mozilla Firefox
+* Safari
+
+---
+
+## 🎯 Highlights
+
+* Premium skeuomorphic-inspired interface
+* Smooth 60 FPS clock animations
+* Interactive timezone visualization
+* Responsive layout
+* Modern typography
+* Persistent user preferences
+* Real-time clock synchronization
+* Lightweight and dependency-free
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+---
+
+

@@ -9,6 +9,136 @@
         .board { display: flex; gap: 20px; padding: 20px; }
         .column { background: #eee; width: 200px; min-height: 300px; padding: 10px; border-radius: 5px; }
         .task { background: white; margin: 10px 0; padding: 10px; cursor: grab; }
+        /* Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Inter',sans-serif;
+    background:linear-gradient(135deg,#eef2ff,#f8fafc);
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:40px;
+    color:#1e293b;
+}
+
+.board{
+    display:flex;
+    gap:30px;
+    width:100%;
+    max-width:900px;
+    justify-content:center;
+    align-items:flex-start;
+}
+
+/* Columns */
+
+.column{
+    flex:1;
+    min-height:500px;
+    background:#ffffff;
+    border-radius:18px;
+    padding:20px;
+    box-shadow:0 12px 35px rgba(0,0,0,.08);
+    border:1px solid #e2e8f0;
+    transition:.3s ease;
+}
+
+.column:hover{
+    transform:translateY(-5px);
+    box-shadow:0 18px 45px rgba(0,0,0,.12);
+}
+
+/* Colored Top Border */
+
+.column:nth-child(1){
+    border-top:6px solid #3b82f6;
+}
+
+.column:nth-child(2){
+    border-top:6px solid #10b981;
+}
+
+.column h3{
+    font-size:22px;
+    font-weight:700;
+    margin-bottom:22px;
+    color:#0f172a;
+}
+
+/* Task Card */
+
+.task{
+    background:#ffffff;
+    border-left:5px solid #3b82f6;
+    border-radius:12px;
+    padding:16px;
+    margin-bottom:16px;
+    font-size:15px;
+    font-weight:500;
+    cursor:grab;
+    transition:.25s ease;
+    box-shadow:0 5px 18px rgba(0,0,0,.08);
+}
+
+.task:hover{
+    transform:translateY(-3px) scale(1.02);
+    box-shadow:0 12px 30px rgba(59,130,246,.18);
+}
+
+.task:active{
+    cursor:grabbing;
+}
+
+/* Dragging */
+
+.task.dragging{
+    opacity:.6;
+    transform:rotate(3deg);
+}
+
+/* Drop Area */
+
+.column.drag-over{
+    background:#eff6ff;
+    border:2px dashed #2563eb;
+}
+
+/* Scroll */
+
+.column::-webkit-scrollbar{
+    width:8px;
+}
+
+.column::-webkit-scrollbar-thumb{
+    background:#cbd5e1;
+    border-radius:10px;
+}
+
+/* Responsive */
+
+@media(max-width:768px){
+
+body{
+    padding:20px;
+}
+
+.board{
+    flex-direction:column;
+}
+
+.column{
+    width:100%;
+    min-height:300px;
+}
+}
     </style>
 </head>
 <body>
