@@ -1,0 +1,23 @@
+{
+  "name": "smart-invoice-generator",
+  "version": "1.0.0",
+  "description": "A modern, SaaS-style client invoice builder with analytics, templates, PDF exports, and theme toggling.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "keywords": [
+    "invoice",
+    "generator",
+    "pdf",
+    "saas",
+    "dashboard",
+    "vanilla-js"
+  ],
+  "author": "BillFlow Team",
+  "license": "MIT",
+  "devDependencies": {
+    "vite": "^5.2.0"
+  }
+}

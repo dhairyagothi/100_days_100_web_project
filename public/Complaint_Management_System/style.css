@@ -15,7 +15,8 @@
     --primary: #000000;
     --primary-hover: #333333;
     --primary-foreground: #ffffff;
-    
+
+     
     /* Status Colors */
     --status-pending: #f59e0b;
     --status-progress: #3b82f6;
@@ -841,6 +842,12 @@ body {
 [data-theme="dark"] .admin-list-col {
     background: rgba(255,255,255,0.01);
 }
+/* Dark mode dropdown fix */
+[data-theme="dark"] select,
+[data-theme="dark"] select option {
+    background-color: #1e1e2e !important;
+    color: #ffffff !important;
+}
 
 .admin-complaints-list {
     display: flex;
@@ -981,4 +988,63 @@ body {
     .search-box {
         max-width: 100%;
     }
+
+
+}
+
+.user-profile {
+    cursor: pointer;
+}
+/* Profile Modal */
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.modal.hidden {
+    display: none;
+}
+
+.modal-content {
+    background: var(--surface-base);
+    color: var(--text-primary);
+    width: 420px;
+    padding: 24px;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    border: 1px solid var(--border-color);
+    position: relative;
+}
+
+.modal-content input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background: var(--surface-base);
+    color: var(--text-primary);
+}
+
+   
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    font-size: 24px;
+    cursor: pointer;
 }

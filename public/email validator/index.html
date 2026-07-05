@@ -1,57 +1,418 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Email Validator</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Email Validator</title>
 
-  <body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-    <div class="container">
-      <h1>Email Validator</h1>
-      <p class="subtitle">
-        Validate email addresses and check deliverability information.
-      </p>
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Arial,Helvetica,sans-serif;
+    }
 
-      <div class="input-group">
-        <input
-          type="text"
-          id="username"
-          placeholder="Enter email address"
-          autocomplete="email"
-        />
-        <button id="submitBtn" class="btn">Validate Email</button>
-      </div>
+    html{
+      scroll-behavior:smooth;
+    }
 
-      <!-- Typo suggestion banner -->
-      <div id="suggestionBanner" class="suggestion-banner" style="display:none" aria-live="polite">
-        <span class="suggestion-icon">💡</span>
-        <span id="suggestionText"></span>
-        <button id="suggestionBtn" class="suggestion-apply-btn">Use this</button>
-      </div>
+    body{
+      background:#0f172a;
+      color:#fff;
+      overflow-x:hidden;   /* Fix horizontal scrollbar */
+      min-height:100vh;
+    }
 
-      <!-- Format error details (shown before API call) -->
-      <div id="formatErrors" class="format-error-box" style="display:none" aria-live="polite">
-        <p class="format-error-title">⚠️ Please fix the following:</p>
-        <ul id="formatErrorList"></ul>
-      </div>
+    a{
+      text-decoration:none;
+      color:inherit;
+    }
 
-      <!-- Part breakdown badges -->
-      <div id="partBreakdown" class="part-breakdown" style="display:none">
-        <span class="part-label">Local:</span>
-        <span id="partLocal" class="part-badge"></span>
-        <span class="part-sep">@</span>
-        <span class="part-label">Domain:</span>
-        <span id="partDomain" class="part-badge"></span>
-      </div>
+    /* Navbar */
 
-      <!-- API results / loading / error -->
-      <div id="resultCont" class="result-container" aria-live="polite"></div>
+    .navbar{
+      width:100%;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      flex-direction:column;
+      gap:20px;
+      padding:25px 20px;
+      background:#0b1020;
+      border-bottom:1px solid rgba(255,255,255,.08);
+      position:sticky;
+      top:0;
+      z-index:100;
+    }
+
+    .logo{
+      font-size:2rem;
+      font-weight:bold;
+    }
+
+    .nav-links{
+      display:flex;
+      gap:35px;
+      list-style:none;
+      flex-wrap:wrap;
+      justify-content:center;
+    }
+
+    .nav-links a{
+      color:#d1d5db;
+      font-weight:600;
+      transition:.3s;
+    }
+
+    .nav-links a:hover{
+      color:#6d7cff;
+    }
+
+    .btn{
+      background:linear-gradient(135deg,#4f8cff,#7b2ff7);
+      color:#fff;
+      border:none;
+      padding:15px 28px;
+      border-radius:14px;
+      cursor:pointer;
+      font-size:1rem;
+      font-weight:700;
+      transition:.3s;
+    }
+
+    .btn:hover{
+      transform:translateY(-2px);
+      box-shadow:0 10px 25px rgba(91,114,255,.35);
+    }
+
+    /* Main */
+
+    .container{
+      width:min(92%,1000px);
+      margin:70px auto;
+      background:#131c35;
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:25px;
+      padding:50px;
+      text-align:center;
+      box-shadow:0 15px 35px rgba(0,0,0,.3);
+    }
+
+    .container h1{
+      font-size:3rem;
+      margin-bottom:18px;
+      color:#8fa0ff;
+    }
+
+    .subtitle{
+      font-size:1.2rem;
+      color:#cbd5e1;
+      margin-bottom:45px;
+    }
+
+    .input-group{
+      display:flex;
+      gap:18px;
+      justify-content:center;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+
+    .input-group input{
+      flex:1;
+      min-width:260px;
+      padding:18px 20px;
+      border-radius:14px;
+      border:1px solid #334155;
+      background:#1f2937;
+      color:#fff;
+      font-size:1rem;
+      outline:none;
+    }
+
+    .input-group input:focus{
+      border-color:#6366f1;
+    }
+
+    .result-container,
+    .suggestion-banner,
+    .format-error-box,
+    .part-breakdown,
+    .timestamp-box{
+      margin-top:25px;
+      width:100%;
+      background:#1f2937;
+      border-radius:12px;
+      padding:18px;
+      color:#fff;
+      word-wrap:break-word;
+    }
+
+    .action-buttons{
+      display:flex;
+      justify-content:center;
+      gap:15px;
+      flex-wrap:wrap;
+      margin-top:25px;
+    }
+
+    /* Footer */
+
+    .footer{
+      margin-top:70px;
+      background:#090f1f;
+      color:#cbd5e1;
+    }
+
+    #footer-container{
+      max-width:1200px;
+      margin:auto;
+      padding:50px 20px;
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+      gap:35px;
+    }
+
+    .footer-section h3,
+    .footer-section h4{
+      color:#fff;
+      margin-bottom:15px;
+    }
+
+    .footer-section p{
+      line-height:1.8;
+    }
+
+    .footer-section ul{
+      list-style:none;
+    }
+
+    .footer-section ul li{
+      margin:12px 0;
+    }
+
+    .footer-section ul li a{
+      color:#cbd5e1;
+      transition:.3s;
+    }
+
+    .footer-section ul li a:hover{
+      color:#6d7cff;
+    }
+
+    .social-links{
+      display:flex;
+      gap:18px;
+      margin-top:15px;
+    }
+
+    .social-links a{
+      width:45px;
+      height:45px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:#1f2937;
+      border-radius:50%;
+      color:#fff;
+      transition:.3s;
+      font-size:18px;
+    }
+
+    .social-links a:hover{
+      background:#6366f1;
+      transform:translateY(-4px);
+    }
+
+    .footer-bottom{
+      text-align:center;
+      padding:20px;
+      border-top:1px solid rgba(255,255,255,.08);
+    }
+
+    /* Responsive */
+
+    @media(max-width:768px){
+
+      .container{
+        padding:30px 20px;
+      }
+
+      .container h1{
+        font-size:2.2rem;
+      }
+
+      .subtitle{
+        font-size:1rem;
+      }
+
+      .input-group{
+        flex-direction:column;
+      }
+
+      .input-group input,
+      .input-group button{
+        width:100%;
+      }
+
+      .logo{
+        font-size:1.6rem;
+      }
+
+      .nav-links{
+        gap:20px;
+      }
+
+      #themeToggle{
+        position:static !important;
+      }
+
+      .project-back-button{
+        position:static !important;
+        display:inline-block;
+        margin-bottom:15px;
+      }
+    }
+  </style>
+</head>
+
+
+<body>
+  <a href="/" class="project-back-button"
+    style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;"
+    onmouseover="this.style.background='#3b82f6';this.style.color='#fff'"
+    onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">
+    Back to Home
+  </a>
+
+   <nav class="navbar">
+
+
+    <div class="logo">
+     📧Email Validator
     </div>
 
-    <script src="script.js"></script>
-  </body>
+    <ul class="nav-links">
+
+      <li>
+        <a href="index.html">
+          Home
+        </a>
+      </li>
+
+      <li>
+        <a href="index.html">
+         Validate Email
+        </a>
+      </li>
+
+      <li>
+        <a href="#footer-container">
+          About
+        </a>
+      </li>
+
+    </ul>
+    <button id="themeToggle" class="btn" style="position:fixed;right:18px;top:18px;">
+    Dark
+  </button>
+
+  </nav>
+
+  <main class="container">
+    <h1>Email Validator</h1>
+    <p class="subtitle">
+      Validate email addresses and check deliverability information.
+    </p>
+
+    <div class="input-group">
+      <input
+        type="text"
+        id="username"
+        placeholder="Enter email address"
+        autocomplete="email"
+      />
+      <button id="submitBtn" class="btn">Validate Email</button>
+    </div>
+
+    <div id="suggestionBanner" class="suggestion-banner" style="display:none" aria-live="polite">
+      <span class="suggestion-icon">Tip</span>
+      <span id="suggestionText"></span>
+      <button id="suggestionBtn" class="suggestion-apply-btn">Use this</button>
+    </div>
+
+    <div id="formatErrors" class="format-error-box" style="display:none" aria-live="polite">
+      <p class="format-error-title">Please fix the following:</p>
+      <ul id="formatErrorList"></ul>
+    </div>
+
+    <div id="partBreakdown" class="part-breakdown" style="display:none">
+      <span class="part-label">Local:</span>
+      <span id="partLocal" class="part-badge"></span>
+      <span class="part-sep">@</span>
+      <span class="part-label">Domain:</span>
+      <span id="partDomain" class="part-badge"></span>
+    </div>
+
+    <div id="resultCont" class="result-container" aria-live="polite"></div>
+    <div id="validationTimestamp" class="timestamp-box" style="display:none"></div>
+    <div class="action-buttons">
+      <button id="copyReportBtn" class="btn" style="display:none;">Copy Report</button>
+      <button id="downloadTxtBtn" class="btn" style="display:none;">Export TXT</button>
+    </div>
+  </main>
+
+
+
+    <footer class="footer">
+
+    <section id="footer-container">
+
+      <!-- Brand -->
+      <div class="footer-section">
+        <h3 >📧Email Validator </h3>
+        <p>
+        Email validation ensures that a user enters a properly formatted, real, and usable email address before submission.
+        </p>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="footer-section">
+        <h4>Quick Links</h4>
+
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="index.html">Validate</a></li>
+          <li><a href="#footer-container">Contact</a></li>
+        </ul>
+      </div>
+
+      <!-- Social Links -->
+      <div class="footer-section">
+        <h4>Follow Us</h4>
+
+        <div class="social-links">
+          <a href="#"><i class="fab fa-github"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-linkedin"></i></a>
+          <a href="#"><i class="fab fa-discord"></i></a>
+        </div>
+      </div>
+
+      </div>
+
+      <div class="footer-bottom">
+        <p>
+          © 2025 Finance Tracker — Take Control of Your Money. All Rights Reserved.
+        </p>
+      </div>
+    </section>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+
 </html>

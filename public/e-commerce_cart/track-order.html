@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Track Your Order — AeroStride</title>
+    <meta name="description" content="Track your AeroStride order in real-time. Enter your order number and email to see live shipping updates." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&family=Space+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="pages.css" />
+  </head>
+  <body>
+    <!-- NAVBAR -->
+    <header class="header">
+      <nav class="navbar">
+        <a href="index.html" class="logo">
+          <svg viewBox="0 0 220 36" height="30" class="logo-svg">
+            <defs>
+              <linearGradient id="lg" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#ff4500" />
+                <stop offset="100%" stop-color="#ff8c00" />
+              </linearGradient>
+            </defs>
+            <path d="M4 26 Q14 4 34 2 Q20 12 10 24 Z" fill="url(#lg)" />
+            <path d="M2 30 Q14 8 38 4 Q22 14 12 30 Z" fill="url(#lg)" opacity="0.45" />
+            <text x="44" y="27" fill="currentColor" font-family="'Bebas Neue',sans-serif" font-size="24" letter-spacing="6">AEROSTRIDE</text>
+          </svg>
+        </a>
+        <a href="index.html" class="back-btn">← Back to Shop</a>
+      </nav>
+    </header>
+
+    <main class="page-main">
+      <!-- Hero -->
+      <section class="page-hero">
+        <div class="page-hero-inner">
+          <span class="page-label">Live Updates</span>
+          <h1 class="page-title">Track Your Order</h1>
+          <p class="page-sub">Enter your order number and the email address used at checkout to see real-time shipping updates.</p>
+        </div>
+        <div class="page-hero-accent"></div>
+      </section>
+
+      <!-- Tracking Form -->
+      <section class="container track-section">
+        <div class="track-card">
+          <form class="track-form" id="track-form" novalidate>
+            <div class="form-group">
+              <label for="order-number" class="form-label">Order Number</label>
+              <input
+                type="text"
+                id="order-number"
+                class="form-input"
+                placeholder="e.g. AS-2024-00123"
+                autocomplete="off"
+                spellcheck="false"
+              />
+            </div>
+            <div class="form-group">
+              <label for="order-email" class="form-label">Email Address</label>
+              <input
+                type="email"
+                id="order-email"
+                class="form-input"
+                placeholder="yourname@email.com"
+                autocomplete="email"
+              />
+            </div>
+            <button type="submit" class="btn-primary btn-full" id="track-btn">
+              <span id="track-btn-text">Track My Order</span>
+              <svg id="track-spinner" style="display:none" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="spin"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+            </button>
+          </form>
+
+          <!-- Error -->
+          <div class="track-error" id="track-error" style="display:none">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <span id="track-error-msg">Order not found. Please check your details and try again.</span>
+          </div>
+
+          <!-- Result -->
+          <div class="track-result" id="track-result" style="display:none">
+            <div class="result-header">
+              <div class="result-order-num">Order <strong id="result-order-id"></strong></div>
+              <div class="result-badge" id="result-badge">In Transit</div>
+            </div>
+            <div class="result-meta">
+              <div class="meta-item">
+                <span class="meta-label">Shipped to</span>
+                <span class="meta-val" id="result-address"></span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Carrier</span>
+                <span class="meta-val" id="result-carrier"></span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Estimated Delivery</span>
+                <span class="meta-val" id="result-eta"></span>
+              </div>
+            </div>
+
+            <!-- Timeline -->
+            <div class="timeline" id="result-timeline"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Help Section -->
+      <section class="container" style="padding-top: 0; padding-bottom: 80px;">
+        <div class="help-grid">
+          <div class="help-card">
+            <div class="help-icon">📧</div>
+            <h3>Tracking email not arrived?</h3>
+            <p>Check your spam folder. Tracking emails are sent within 24 hours of dispatch. If you still can't find it, contact us.</p>
+          </div>
+          <div class="help-card">
+            <div class="help-icon">⏳</div>
+            <h3>Order not showing?</h3>
+            <p>It can take up to 24 hours after placing an order before tracking information is available in our system.</p>
+          </div>
+          <div class="help-card">
+            <div class="help-icon">📞</div>
+            <h3>Need more help?</h3>
+            <p>Call us at <a href="tel:+1234567890" class="inline-link">+123 456 7890</a> or email <a href="mailto:info@aerostride.com" class="inline-link">info@aerostride.com</a>. We're here Mon–Sat, 9am–6pm IST.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="page-footer">
+      <div class="page-footer-inner">
+        <span>© 2024 AeroStride. All rights reserved.</span>
+        <div class="footer-links">
+          <a href="size-guide.html">Size Guide</a>
+          <a href="returns.html">Returns</a>
+          <a href="faq.html">FAQ</a>
+          <a href="track-order.html">Track Order</a>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Demo order data
+      const DEMO_ORDERS = {
+        'AS-2024-00123': {
+          email: 'demo@aerostride.com',
+          status: 'delivered',
+          badge: 'Delivered',
+          address: 'Mumbai, Maharashtra, India',
+          carrier: 'BlueDart Express',
+          eta: 'June 22, 2024 — Delivered',
+          timeline: [
+            { date: 'Jun 18', label: 'Order Placed', desc: 'Your order was confirmed.', done: true },
+            { date: 'Jun 19', label: 'Processing', desc: 'Items picked and packed at our warehouse.', done: true },
+            { date: 'Jun 20', label: 'Shipped', desc: 'Package handed to BlueDart Express.', done: true },
+            { date: 'Jun 21', label: 'In Transit', desc: 'Package arrived at Mumbai sorting facility.', done: true },
+            { date: 'Jun 22', label: 'Delivered', desc: 'Package delivered to your address.', done: true },
+          ]
+        },
+        'AS-2024-00456': {
+          email: 'test@aerostride.com',
+          status: 'in-transit',
+          badge: 'In Transit',
+          address: 'Bangalore, Karnataka, India',
+          carrier: 'Delhivery',
+          eta: 'June 28, 2024',
+          timeline: [
+            { date: 'Jun 24', label: 'Order Placed', desc: 'Your order was confirmed.', done: true },
+            { date: 'Jun 25', label: 'Processing', desc: 'Items picked and packed at our warehouse.', done: true },
+            { date: 'Jun 26', label: 'Shipped', desc: 'Package handed to Delhivery.', done: true },
+            { date: 'Jun 27', label: 'In Transit', desc: 'Package in transit — Chennai hub.', done: false, active: true },
+            { date: 'Jun 28', label: 'Out for Delivery', desc: 'Expected delivery date.', done: false },
+          ]
+        }
+      };
+
+      const form = document.getElementById('track-form');
+      const resultEl = document.getElementById('track-result');
+      const errorEl = document.getElementById('track-error');
+      const spinner = document.getElementById('track-spinner');
+      const btnText = document.getElementById('track-btn-text');
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const orderNum = document.getElementById('order-number').value.trim().toUpperCase();
+        const email = document.getElementById('order-email').value.trim().toLowerCase();
+
+        if (!orderNum || !email) {
+          showError('Please fill in both fields.');
+          return;
+        }
+
+        // Simulate loading
+        spinner.style.display = 'inline-block';
+        btnText.textContent = 'Searching…';
+        resultEl.style.display = 'none';
+        errorEl.style.display = 'none';
+
+        setTimeout(() => {
+          spinner.style.display = 'none';
+          btnText.textContent = 'Track My Order';
+
+          const order = DEMO_ORDERS[orderNum];
+          if (order && order.email === email) {
+            showResult(orderNum, order);
+          } else if (order) {
+            showError('Email address does not match this order.');
+          } else {
+            showError('Order not found. Tip: Try "AS-2024-00123" with email "demo@aerostride.com"');
+          }
+        }, 1200);
+      });
+
+      function showError(msg) {
+        document.getElementById('track-error-msg').textContent = msg;
+        errorEl.style.display = 'flex';
+        resultEl.style.display = 'none';
+      }
+
+      function showResult(id, order) {
+        document.getElementById('result-order-id').textContent = id;
+        document.getElementById('result-badge').textContent = order.badge;
+        document.getElementById('result-badge').className = 'result-badge badge-' + order.status;
+        document.getElementById('result-address').textContent = order.address;
+        document.getElementById('result-carrier').textContent = order.carrier;
+        document.getElementById('result-eta').textContent = order.eta;
+
+        const timelineEl = document.getElementById('result-timeline');
+        timelineEl.innerHTML = order.timeline.map(step => `
+          <div class="tl-step ${step.done ? 'done' : ''} ${step.active ? 'active' : ''}">
+            <div class="tl-dot"></div>
+            <div class="tl-body">
+              <div class="tl-date">${step.date}</div>
+              <div class="tl-label">${step.label}</div>
+              <div class="tl-desc">${step.desc}</div>
+            </div>
+          </div>
+        `).join('');
+
+        errorEl.style.display = 'none';
+        resultEl.style.display = 'block';
+        resultEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    </script>
+  </body>
+</html>
