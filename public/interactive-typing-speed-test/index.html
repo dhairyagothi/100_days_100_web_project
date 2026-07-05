@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Typing Speed Test</title>
+    <!-- Use a modern monospace font, popular in typing tests like Fira Code or JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="dark-theme">
+    <div class="container">
+        
+        <header>
+            <div class="logo">
+                <i class="fa-solid fa-keyboard"></i> type<span>test</span>
+            </div>
+            <div class="header-controls">
+                <button id="theme-toggle" title="Toggle Theme" class="icon-btn">
+                    <i class="fa-solid fa-sun" id="theme-icon"></i>
+                </button>
+            </div>
+        </header>
+
+        <main>
+            <!-- Config Bar -->
+            <div class="config-bar">
+                <div class="time-options">
+                    <button class="time-btn" data-time="15">15s</button>
+                    <button class="time-btn active" data-time="30">30s</button>
+                    <button class="time-btn" data-time="60">60s</button>
+                    <button class="time-btn" data-time="120">120s</button>
+                </div>
+            </div>
+
+            <!-- Typing Area -->
+            <div class="typing-section">
+                <!-- Hidden input field to capture mobile and desktop typing -->
+                <input type="text" id="hidden-input" class="hidden-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" autofocus>
+                
+                <div class="stats-bar">
+                    <div class="stat time-left" id="time-left">30</div>
+                    <div class="stat live-wpm d-none" id="live-wpm-container">
+                        WPM: <span id="live-wpm">0</span>
+                    </div>
+                </div>
+
+                <div class="text-display" id="text-display">
+                    <!-- Words will be injected here via JavaScript -->
+                </div>
+                
+                <div class="restart-controls">
+                    <button id="restart-btn" class="restart-btn" title="Restart Test (Tab + Enter)">
+                        <i class="fa-solid fa-rotate-right"></i>
+                    </button>
+                    <p class="hint">Press <kbd>tab</kbd> + <kbd>enter</kbd> to restart</p>
+                </div>
+            </div>
+
+            <!-- Results Modal / Section (Hidden initially) -->
+            <div class="results-section d-none" id="results-section">
+                <div class="results-grid">
+                    <div class="result-box wpm-box">
+                        <div class="result-label">wpm</div>
+                        <div class="result-value" id="final-wpm">0</div>
+                    </div>
+                    <div class="result-box acc-box">
+                        <div class="result-label">acc</div>
+                        <div class="result-value" id="final-acc">0%</div>
+                    </div>
+                </div>
+                <div class="results-subgrid">
+                    <div class="sub-result">
+                        <div class="result-label">cpm</div>
+                        <div class="result-value" id="final-cpm">0</div>
+                    </div>
+                    <div class="sub-result">
+                        <div class="result-label">characters</div>
+                        <div class="result-value">
+                            <span class="correct-text" id="final-correct-chars">0</span>/<span class="incorrect-text" id="final-incorrect-chars">0</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <button id="results-restart-btn" class="restart-btn primary">
+                    <i class="fa-solid fa-angle-right"></i> Next Test
+                </button>
+            </div>
+        </main>
+        
+        <footer>
+            <div class="footer-links">
+                <span><i class="fa-solid fa-code"></i> Vanilla JS</span>
+                <span><i class="fa-solid fa-paint-roller"></i> CSS3</span>
+            </div>
+        </footer>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
