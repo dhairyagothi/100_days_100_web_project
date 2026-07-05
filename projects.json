@@ -3131,7 +3131,6 @@
     "projectPath": "./public/Flashcard-Quiz-App/index.html"
   },
   {
-    "projectNo": 246,
     "projectName": "Interactive Typing Speed Test",
     "projectType": "Tool",
     "projectDesc": "A minimalist typing speed tester tracking real-time WPM, CPM, and accuracy.",
@@ -3139,6 +3138,7 @@
       "javascript"
     ],
     "difficulty": "intermediate",
-    "projectPath": "./public/interactive-typing-speed-test/index.html"
+    "projectPath": "./public/interactive-typing-speed-test/index.html",
+    "projectNo": 246
   }
 ]

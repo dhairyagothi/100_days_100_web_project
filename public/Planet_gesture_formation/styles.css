@@ -12,12 +12,31 @@
 }
 
 /* ── Reset ── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html, body, #app { height: 100%; width: 100%; }
-html { overflow-x: hidden; }
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+html,
+body,
+#app {
+  height: 100%;
+  width: 100%;
+}
+html {
+  overflow-x: hidden;
+}
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family:
+    'Inter',
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    sans-serif;
   background: var(--bg-dark);
   color: var(--text-primary);
   overflow: hidden;
@@ -37,8 +56,10 @@ canvas#scene {
   display: block;
   background: var(--bg-gradient);
   position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   z-index: 1;
 }
 
@@ -47,7 +68,9 @@ canvas#scene {
    ============================================================ */
 #navbar {
   position: absolute;
-  top: 0; left: 0; right: 0;
+  top: 0;
+  left: 0;
+  right: 0;
   height: var(--navbar-h);
   display: flex;
   align-items: center;
@@ -129,26 +152,35 @@ canvas#scene {
   white-space: nowrap;
 }
 
-.nav-item:hover { color: var(--accent); }
+.nav-item:hover {
+  color: var(--accent);
+}
 
 /* ── Dropdown panel ── */
 .dropdown {
-  position: absolute;
-  top: var(--navbar-h);
-  right: 0;
-  background: var(--panel-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 0 0 12px 12px;
-  padding: 20px;
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(-10px);
-  transition: all 0.25s ease;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
-  cursor: default;
-  min-width: 220px;
+  position: static !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+  border-radius: 0 !important;
+  border: none !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
+  box-shadow: none !important;
+  width: 100% !important;
+  background: rgba(0, 0, 0, 0.25) !important;
+  min-width: 0 !important;
+
+  max-height: 0;
+  overflow: hidden;
+  padding: 0 16px !important;
+  transition:
+    max-height 0.3s ease,
+    padding 0.3s ease;
+}
+
+.nav-item.mobile-active .dropdown {
+  max-height: 600px;
+  padding: 14px 16px !important;
 }
 
 .nav-item:hover .dropdown,
@@ -158,7 +190,9 @@ canvas#scene {
   transform: translateY(0);
 }
 
-.instructions-dropdown { width: 300px; }
+.instructions-dropdown {
+  width: 300px;
+}
 
 /* Camera preview */
 .preview {
@@ -174,7 +208,8 @@ canvas#scene {
 }
 
 .preview video {
-  width: 100%; height: 100%;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   transform: scaleX(-1);
   display: block;
@@ -184,12 +219,16 @@ canvas#scene {
   content: '';
   position: absolute;
   inset: 0;
-  box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
   pointer-events: none;
 }
 
 /* Toggles */
-.toggles { display: flex; flex-direction: column; gap: 10px; }
+.toggles {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
 
 label {
   display: flex;
@@ -201,9 +240,10 @@ label {
   user-select: none;
 }
 
-label input[type="checkbox"] {
+label input[type='checkbox'] {
   appearance: none;
-  width: 20px; height: 20px;
+  width: 20px;
+  height: 20px;
   border: 1px solid var(--panel-border);
   border-radius: 5px;
   margin-right: 12px;
@@ -214,19 +254,20 @@ label input[type="checkbox"] {
   flex-shrink: 0;
 }
 
-label input[type="checkbox"]:checked {
+label input[type='checkbox']:checked {
   background: var(--accent);
   border-color: var(--accent);
   box-shadow: 0 0 10px var(--accent-glow);
 }
 
-label input[type="checkbox"]:checked::after {
+label input[type='checkbox']:checked::after {
   content: '✓';
   position: absolute;
   color: #000;
   font-size: 14px;
   font-weight: 900;
-  left: 3px; top: -1px;
+  left: 3px;
+  top: -1px;
 }
 
 /* Panel header */
@@ -267,7 +308,8 @@ label input[type="checkbox"]:checked::after {
 .gesture-icon {
   font-size: 20px;
   background: rgba(0, 0, 0, 0.3);
-  width: 38px; height: 38px;
+  width: 38px;
+  height: 38px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -324,15 +366,18 @@ kbd {
   backdrop-filter: blur(2px);
 }
 
-.mobile-overlay.active { display: block; }
+.mobile-overlay.active {
+  display: block;
+}
 
 /* ============================================================
    MOBILE — 768px and below
    Full hamburger menu with slide-down panel
    ============================================================ */
 @media (max-width: 768px) {
-
-  :root { --navbar-h: 56px; }
+  :root {
+    --navbar-h: 56px;
+  }
 
   #navbar {
     padding: 0 16px;
@@ -346,7 +391,9 @@ kbd {
     gap: 5px;
   }
 
-  .nav-subtitle { display: none; }
+  .nav-subtitle {
+    display: none;
+  }
 
   /* Status badge: stays visible */
   .nav-status {
@@ -388,7 +435,9 @@ kbd {
     height: 2px;
     background: var(--text-primary);
     border-radius: 2px;
-    transition: transform 0.25s ease, opacity 0.25s ease;
+    transition:
+      transform 0.25s ease,
+      opacity 0.25s ease;
   }
 
   /* Hamburger → X animation */
@@ -429,7 +478,10 @@ kbd {
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
-    transition: transform 0.25s ease, opacity 0.25s ease, visibility 0.25s ease;
+    transition:
+      transform 0.25s ease,
+      opacity 0.25s ease,
+      visibility 0.25s ease;
   }
 
   /* Open state */
@@ -455,7 +507,9 @@ kbd {
     transition: background 0.2s;
   }
 
-  .mobile-panel-close:hover { background: rgba(255, 255, 255, 0.12); }
+  .mobile-panel-close:hover {
+    background: rgba(255, 255, 255, 0.12);
+  }
 
   /* Nav items — full width, stacked */
   .nav-item {
@@ -480,7 +534,9 @@ kbd {
     transition: background 0.2s;
   }
 
-  .nav-item > span:hover { background: rgba(255, 255, 255, 0.06); }
+  .nav-item > span:hover {
+    background: rgba(255, 255, 255, 0.06);
+  }
 
   /* Dropdowns — static inside the panel, not positioned */
   .dropdown {
@@ -509,45 +565,84 @@ kbd {
   }
 
   /* Gesture list */
-  .gesture-list li { padding: 8px 10px; gap: 10px; }
-  .gesture-icon { width: 34px; height: 34px; font-size: 18px; }
-  .gesture-desc strong { font-size: 12px; }
-  .gesture-desc span { font-size: 11px; }
+  .gesture-list li {
+    padding: 8px 10px;
+    gap: 10px;
+  }
+  .gesture-icon {
+    width: 34px;
+    height: 34px;
+    font-size: 18px;
+  }
+  .gesture-desc strong {
+    font-size: 12px;
+  }
+  .gesture-desc span {
+    font-size: 11px;
+  }
 }
 
 /* ============================================================
    SMALL MOBILE — 480px and below
    ============================================================ */
 @media (max-width: 480px) {
-  :root { --navbar-h: 52px; }
+  :root {
+    --navbar-h: 52px;
+  }
 
-  #navbar { padding: 0 12px; }
+  #navbar {
+    padding: 0 12px;
+  }
 
-  .nav-brand { font-size: 10px; letter-spacing: 0.8px; }
+  .nav-brand {
+    font-size: 10px;
+    letter-spacing: 0.8px;
+  }
 
   /* Shrink status on very small screens */
-  .nav-status { font-size: 9px; }
-  .nav-status span { font-size: 9px; padding: 2px 6px; }
+  .nav-status {
+    font-size: 9px;
+  }
+  .nav-status span {
+    font-size: 9px;
+    padding: 2px 6px;
+  }
 
   .mobile-menu-btn {
     width: 34px;
     height: 34px;
   }
 
-  .nav-item > span { padding: 11px 14px; font-size: 12px; }
+  .nav-item > span {
+    padding: 11px 14px;
+    font-size: 12px;
+  }
 }
 
 /* ============================================================
    EXTRA SMALL — 360px and below
    ============================================================ */
 @media (max-width: 360px) {
-  :root { --navbar-h: 50px; }
+  :root {
+    --navbar-h: 50px;
+  }
 
-  #navbar { padding: 0 10px; gap: 6px; }
+  #navbar {
+    padding: 0 10px;
+    gap: 6px;
+  }
 
-  .nav-brand { font-size: 9px; letter-spacing: 0.5px; }
+  .nav-brand {
+    font-size: 9px;
+    letter-spacing: 0.5px;
+  }
 
   /* Hide "Status:" label, keep the badge only */
-  #gestureIndicator { font-size: 0; }
-  #gestureIndicator span { font-size: 9px; margin-left: 0; }
+  #gestureIndicator {
+    font-size: 0;
+  }
+  #gestureIndicator span {
+    font-size: 9px;
+    margin-left: 0;
+  }
 }

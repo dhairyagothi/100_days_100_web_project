@@ -17,6 +17,50 @@ const HISTORY_KEY = 'currencyConversionHistory';
 const historyList = document.querySelector('.history-list');
 const clearHistoryBtn = document.querySelector('.clear-history-btn');
 
+// Theme Toggle
+const themeToggle = document.getElementById('themeToggle');
+const themeIcon = themeToggle?.querySelector('i');
+const themeText = themeToggle?.querySelector('.theme-text');
+
+// Check for saved theme preference
+const savedTheme = localStorage.getItem('theme') || 'light';
+document.documentElement.setAttribute('data-theme', savedTheme);
+updateThemeUI(savedTheme);
+
+// Theme toggle function
+function toggleTheme() {
+  const currentTheme = document.documentElement.getAttribute('data-theme');
+  const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+  
+  document.documentElement.setAttribute('data-theme', newTheme);
+  localStorage.setItem('theme', newTheme);
+  updateThemeUI(newTheme);
+  
+  // Re-render chart with new theme colors
+  if (chartInstance) {
+    loadHistoricalChart();
+  }
+}
+
+function updateThemeUI(theme) {
+  if (!themeToggle) return;
+  
+  if (theme === 'dark') {
+    themeIcon.className = 'fas fa-sun';
+    themeText.textContent = 'Light';
+    themeToggle.setAttribute('aria-label', 'Switch to light theme');
+  } else {
+    themeIcon.className = 'fas fa-moon';
+    themeText.textContent = 'Dark';
+    themeToggle.setAttribute('aria-label', 'Switch to dark theme');
+  }
+}
+
+// Add theme toggle event listener
+if (themeToggle) {
+  themeToggle.addEventListener('click', toggleTheme);
+}
+
 let errorTimeout;
 
 const showError = (message) => {
@@ -143,7 +187,6 @@ const loadHistoricalChart = async () => {
     const fromTarget = fromCurr.value.toLowerCase();
     const toTarget = toCurr.value.toLowerCase();
 
-    // Switched to a CORS-friendly API endpoint that permits local address requests
     const historyURL = `https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/${fromTarget}.json`;
 
     const response = await fetch(historyURL);
@@ -156,8 +199,6 @@ const loadHistoricalChart = async () => {
 
     const data = await response.json();
 
-    // Since the standard fallback timeline data gives us the active rate snapshot,
-    // we build a simulated 7-day trend array using fractional variations so Chart.js can draw instantly.
     const activeRate = data[fromTarget][toTarget];
 
     const labels = [];
@@ -168,10 +209,16 @@ const loadHistoricalChart = async () => {
       d.setDate(today.getDate() - i);
       labels.push(d.toISOString().split('T')[0]);
 
-      // Adds a subtle realistic timeline variance around the base rate point
       const variance = 1 + Math.sin(i) * 0.002;
       values.push(activeRate * variance);
     }
+
+    // Get theme for chart colors
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    const textColor = isDark ? '#cbd5e1' : '#64748b';
+    const gridColor = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.05)';
+    const borderColor = isDark ? '#60a5fa' : '#2563eb';
+    const backgroundColor = isDark ? 'rgba(96, 165, 250, 0.1)' : 'rgba(37, 99, 235, 0.05)';
 
     if (chartInstance) {
       chartInstance.destroy();
@@ -185,12 +232,13 @@ const loadHistoricalChart = async () => {
           {
             label: `${fromCurr.value.toUpperCase()} to ${toCurr.value.toUpperCase()} Trend`,
             data: values,
-            borderColor: '#2563eb',
-            backgroundColor: 'rgba(37, 99, 235, 0.05)',
+            borderColor: borderColor,
+            backgroundColor: backgroundColor,
             borderWidth: 2,
             tension: 0.4,
             fill: true,
             pointRadius: 2,
+            pointBackgroundColor: borderColor,
           },
         ],
       },
@@ -198,16 +246,33 @@ const loadHistoricalChart = async () => {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
-          legend: { display: false },
+          legend: { 
+            display: false,
+            labels: {
+              color: textColor
+            }
+          },
         },
         scales: {
           x: {
-            grid: { display: false },
-            ticks: { maxTicksLimit: 4, font: { size: 10 } },
+            grid: { 
+              display: false,
+              color: gridColor
+            },
+            ticks: { 
+              maxTicksLimit: 4, 
+              font: { size: 10 },
+              color: textColor
+            },
           },
           y: {
-            grid: { color: 'rgba(0,0,0,0.03)' },
-            ticks: { font: { size: 10 } },
+            grid: { 
+              color: gridColor
+            },
+            ticks: { 
+              font: { size: 10 },
+              color: textColor
+            },
           },
         },
       },

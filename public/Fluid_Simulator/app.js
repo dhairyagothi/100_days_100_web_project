@@ -6,6 +6,11 @@ const iter = 4;  // Mathematical iterations for linear relaxation stability
 let s = new Float32Array(SIZE * SIZE);
 let density = new Float32Array(SIZE * SIZE);
 
+// Color channels for multi-color smoke
+let colorR = new Float32Array(SIZE * SIZE);
+let colorG = new Float32Array(SIZE * SIZE);
+let colorB = new Float32Array(SIZE * SIZE);
+
 let u = new Float32Array(SIZE * SIZE); // Horizontal velocity component
 let v = new Float32Array(SIZE * SIZE); // Vertical velocity component
 
@@ -18,19 +23,53 @@ const canvas = document.getElementById('fluid-canvas');
 const ctx = canvas.getContext('2d');
 const slideViscosity = document.getElementById('slide-viscosity');
 const slideDamping = document.getElementById('slide-damping');
+const slideStrength = document.getElementById('slide-strength');
 const valViscosity = document.getElementById('val-viscosity');
 const valDamping = document.getElementById('val-damping');
+const valStrength = document.getElementById('val-strength');
 const renderModeSelect = document.getElementById('render-mode');
 const btnClear = document.getElementById('btn-clear');
+const btnRainbow = document.getElementById('btn-rainbow');
+const colorPicker = document.getElementById('smoke-color');
+const fpsCounter = document.getElementById('fps-counter');
 
 let currentMode = 'smoke'; // Interaction tracker: 'smoke' or 'obstacle'
 let isMouseDown = false;
+let isRainbowMode = false;
+let rainbowHue = 0;
+let frameCount = 0;
+let lastFpsUpdate = performance.now();
 
 // UI Control sync hooks
 document.getElementById('btn-mode-smoke').addEventListener('click', (e) => { toggleMode('smoke', e.target); });
 document.getElementById('btn-mode-obstacle').addEventListener('click', (e) => { toggleMode('obstacle', e.target); });
 slideViscosity.addEventListener('input', () => valViscosity.textContent = slideViscosity.value);
 slideDamping.addEventListener('input', () => valDamping.textContent = slideDamping.value);
+slideStrength.addEventListener('input', () => valStrength.textContent = slideStrength.value);
+
+// Color preset buttons
+document.querySelectorAll('.color-preset').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const color = this.dataset.color;
+        colorPicker.value = color;
+        document.querySelectorAll('.color-preset').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        isRainbowMode = false;
+        btnRainbow.textContent = '🌈 Rainbow Mode';
+    });
+});
+
+// Rainbow mode toggle
+btnRainbow.addEventListener('click', function() {
+    isRainbowMode = !isRainbowMode;
+    this.textContent = isRainbowMode ? '🌈 Rainbow ON' : '🌈 Rainbow Mode';
+    if (isRainbowMode) {
+        document.querySelectorAll('.color-preset').forEach(b => b.classList.remove('active'));
+    }
+});
+
+// Set default active color preset
+document.querySelector('.color-preset[data-color="#38bdf8"]')?.classList.add('active');
 
 function toggleMode(mode, targetElement) {
     currentMode = mode;
@@ -43,6 +82,49 @@ function IX(x, y) {
     x = Math.max(0, Math.min(x, SIZE - 1));
     y = Math.max(0, Math.min(y, SIZE - 1));
     return x + y * SIZE;
+}
+
+// Get current smoke color as RGB components
+function getSmokeColor() {
+    if (isRainbowMode) {
+        // Cycle through rainbow colors
+        rainbowHue = (rainbowHue + 0.5) % 360;
+        const color = hslToRgb(rainbowHue, 100, 70);
+        return { r: color[0] * 255, g: color[1] * 255, b: color[2] * 255 };
+    }
+    
+    const hex = colorPicker.value;
+    return {
+        r: parseInt(hex.slice(1, 3), 16),
+        g: parseInt(hex.slice(3, 5), 16),
+        b: parseInt(hex.slice(5, 7), 16)
+    };
+}
+
+// Helper: HSL to RGB conversion
+function hslToRgb(h, s, l) {
+    h /= 360;
+    s /= 100;
+    l /= 100;
+    let r, g, b;
+    if (s === 0) {
+        r = g = b = l;
+    } else {
+        const hue2rgb = (p, q, t) => {
+            if (t < 0) t += 1;
+            if (t > 1) t -= 1;
+            if (t < 1/6) return p + (q - p) * 6 * t;
+            if (t < 1/2) return q;
+            if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+            return p;
+        };
+        const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+        const p = 2 * l - q;
+        r = hue2rgb(p, q, h + 1/3);
+        g = hue2rgb(p, q, h);
+        b = hue2rgb(p, q, h - 1/3);
+    }
+    return [r, g, b];
 }
 
 // --- MATHEMATICAL PHYSICS SIMULATION INTERFACES ---
@@ -62,7 +144,13 @@ function set_bnd(b, xArr) {
                 // Deflect fluid vectors depending on matching axis channels
                 if (b === 1) xArr[IX(x, y)] = -xArr[IX(x + (u[IX(x, y)] > 0 ? 1 : -1), y)];
                 if (b === 2) xArr[IX(x, y)] = -xArr[IX(x, y + (v[IX(x, y)] > 0 ? 1 : -1))];
-                if (b === 0) xArr[IX(x, y)] = 0; // Absorption for density tracking maps
+                if (b === 0) {
+                    xArr[IX(x, y)] = 0; // Absorption for density tracking maps
+                    // Also clear color for obstacles
+                    colorR[IX(x, y)] = 0;
+                    colorG[IX(x, y)] = 0;
+                    colorB[IX(x, y)] = 0;
+                }
             }
         }
     }
@@ -142,6 +230,54 @@ function advect(b, d, d0, velocityU, velocityV, dt) {
     set_bnd(b, d);
 }
 
+// Advect color channels separately
+function advectColor(d, d0, velocityU, velocityV, dt) {
+    let i0, i1, j0, j1;
+    let dtx = dt * (SIZE - 2);
+    let dty = dt * (SIZE - 2);
+    let s0, s1, t0, t1;
+    let tmp1, tmp2, x, y;
+    let ifloat = parseFloat(SIZE - 2);
+    let jfloat = parseFloat(SIZE - 2);
+
+    for (let j = 1; j < SIZE - 1; j++) {
+        for (let i = 1; i < SIZE - 1; i++) {
+            if (obstacles[IX(i, j)]) continue;
+
+            tmp1 = dtx * velocityU[IX(i, j)];
+            tmp2 = dty * velocityV[IX(i, j)];
+            x = parseFloat(i) - tmp1;
+            y = parseFloat(j) - tmp2;
+
+            if (x < 0.5) x = 0.5;
+            if (x > ifloat + 0.5) x = ifloat + 0.5;
+            i0 = Math.floor(x);
+            i1 = i0 + 1.0;
+
+            if (y < 0.5) y = 0.5;
+            if (y > jfloat + 0.5) y = jfloat + 0.5;
+            j0 = Math.floor(y);
+            j1 = j0 + 1.0;
+
+            s1 = x - i0;
+            s0 = 1.0 - s1;
+            t1 = y - j0;
+            t0 = 1.0 - t1;
+
+            let row1 = IX(i0, j0);
+            let row2 = IX(i0, j1);
+            let row3 = IX(i1, j0);
+            let row4 = IX(i1, j1);
+
+            // Advect each color channel
+            d[IX(i, j)] =
+                s0 * (t0 * d0[row1] + t1 * d0[row2]) +
+                s1 * (t0 * d0[row3] + t1 * d0[row4]);
+        }
+    }
+    set_bnd(0, d);
+}
+
 // Project step to enforce incompressibility (Mass Conservation alignment)
 function project(velocityU, velocityV, p, div) {
     for (let j = 1; j < SIZE - 1; j++) {
@@ -190,9 +326,18 @@ function stepSimulation() {
     diffuse(0, s, density, 0, dt);
     advect(0, density, s, u, v, dt);
 
+    // Advect color channels
+    advectColor(colorR, colorR, u, v, dt);
+    advectColor(colorG, colorG, u, v, dt);
+    advectColor(colorB, colorB, u, v, dt);
+
     // Apply global linear fade decay parameters to prevent overflow saturation
     for (let i = 0; i < density.length; i++) {
         density[i] *= damping;
+        // Fade color with density
+        colorR[i] *= damping;
+        colorG[i] *= damping;
+        colorB[i] *= damping;
     }
 }
 
@@ -219,9 +364,25 @@ function render() {
             if (dValue < 0.01) continue;
 
             if (activeViewMode === 'density') {
-                // Smoke trail matrix alpha mapping
-                ctx.fillStyle = `rgba(56, 189, 248, ${Math.min(dValue / 100, 1.0)})`;
+                // Multi-color smoke trail rendering
+                const r = Math.min(colorR[idx] / 100, 1.0);
+                const g = Math.min(colorG[idx] / 100, 1.0);
+                const b = Math.min(colorB[idx] / 100, 1.0);
+                const alpha = Math.min(dValue / 150, 1.0);
+                
+                ctx.fillStyle = `rgba(${r * 255 | 0}, ${g * 255 | 0}, ${b * 255 | 0}, ${alpha})`;
                 ctx.fillRect(x * cellWidth, y * cellHeight, cellWidth + 0.5, cellHeight + 0.5);
+            } else if (activeViewMode === 'color') {
+                // Pure color intensity view
+                const r = Math.min(colorR[idx] / 50, 1.0);
+                const g = Math.min(colorG[idx] / 50, 1.0);
+                const b = Math.min(colorB[idx] / 50, 1.0);
+                const intensity = (r + g + b) / 3;
+                
+                if (intensity > 0.05) {
+                    ctx.fillStyle = `rgba(${r * 255 | 0}, ${g * 255 | 0}, ${b * 255 | 0}, ${Math.min(intensity * 1.5, 1.0)})`;
+                    ctx.fillRect(x * cellWidth, y * cellHeight, cellWidth + 0.5, cellHeight + 0.5);
+                }
             } else {
                 // Velocity magnitude vectors rendering (Thermal spectrum format)
                 let speed = Math.sqrt(u[idx] * u[idx] + v[idx] * v[idx]);
@@ -230,6 +391,15 @@ function render() {
                 ctx.fillRect(x * cellWidth, y * cellHeight, cellWidth + 0.5, cellHeight + 0.5);
             }
         }
+    }
+
+    // Update FPS counter
+    frameCount++;
+    const now = performance.now();
+    if (now - lastFpsUpdate >= 1000) {
+        fpsCounter.textContent = `FPS: ${frameCount}`;
+        frameCount = 0;
+        lastFpsUpdate = now;
     }
 }
 
@@ -249,11 +419,21 @@ function handleMouseInteraction(e) {
     if (currentMode === 'obstacle') {
         obstacles[idx] = 1;
         density[idx] = 0;
+        colorR[idx] = 0;
+        colorG[idx] = 0;
+        colorB[idx] = 0;
         u[idx] = 0;
         v[idx] = 0;
     } else {
-        // Inject fluid mass velocity payload shifts directly into grid arrays
-        density[idx] += 350;
+        // Inject fluid mass with color
+        const strength = parseFloat(slideStrength.value);
+        const color = getSmokeColor();
+        
+        density[idx] += strength;
+        colorR[idx] += color.r * 1.5;
+        colorG[idx] += color.g * 1.5;
+        colorB[idx] += color.b * 1.5;
+        
         u[idx] += (e.movementX || 0) * 8;
         v[idx] += (e.movementY || 0) * 8;
     }
@@ -264,8 +444,16 @@ canvas.addEventListener('mousemove', (e) => { if (isMouseDown) handleMouseIntera
 window.addEventListener('mouseup', () => isMouseDown = false);
 
 btnClear.addEventListener('click', () => {
-    density.fill(0); u.fill(0); v.fill(0); u_prev.fill(0); v_prev.fill(0); s.fill(0);
+    density.fill(0); 
+    u.fill(0); 
+    v.fill(0); 
+    u_prev.fill(0); 
+    v_prev.fill(0); 
+    s.fill(0);
     obstacles.fill(0);
+    colorR.fill(0);
+    colorG.fill(0);
+    colorB.fill(0);
 });
 
 function resizeCanvas() {

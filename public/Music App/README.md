@@ -1,66 +1,116 @@
-# Pulse Music App
+# 🎵 Music App
 
-## Description
-Pulse Music App is a modern, responsive web-based music player that lets users browse songs by category, search the music library, play tracks, control playback, adjust volume, like favorite songs, and switch between dark and light themes.
+A modern and responsive Music Player built using HTML, CSS, and JavaScript. The application provides an intuitive interface for playing songs with essential playback controls and a clean user experience.
 
-## Features
-- Fully functional audio playback
-- Play, pause, next, and previous controls
-- Floating translucent music player bar
-- Progress bar with current time and duration
-- Volume and mute controls
-- Shuffle and repeat modes
-- 70-song catalog with 10 songs per category
-- Categories for Bollywood, Tollywood, Hollywood, Lo-fi, Pop, Classical, and Trending
-- Liked Songs section with persistent saved favorites
-- Search by song, artist, album, or category
-- Unique cover artwork for each song
-- Light and dark theme toggle with saved preference
-- Responsive design for desktop, tablet, and mobile screens
+---
 
-## Technologies Used
+## ✨ Features
+
+- 🎶 Play and pause music
+- ⏭️ Next and previous track controls
+- 🔊 Volume control
+- 📊 Interactive progress bar
+- ⏱️ Real-time playback duration
+- 📱 Responsive design for desktop and mobile
+- 🎨 Modern and user-friendly interface
+- ⚡ Smooth playback experience
+
+---
+
+## 🛠️ Technologies Used
+
 - HTML5
 - CSS3
-- JavaScript ES6
+- JavaScript (ES6)
 
-## Installation/Setup
-1. Clone or download the repository.
-2. Open the project folder.
-3. Navigate to `public/Music App`.
-4. Open `index.html` directly in a browser, or run a local server from the repository root:
+---
+
+## 📂 Project Structure
+
+```
+Music_App/
+├── index.html
+├── style.css
+├── script.js
+├── favicon.png
+└── README.md
+```
+
+---
+
+## 🚀 Getting Started
+
+1. Clone the repository.
 
 ```bash
-python -m http.server 8080
+git clone https://github.com/dhairyagothi/100_days_100_web_project.git
 ```
 
-5. Visit the app in your browser:
+2. Navigate to the project.
 
-```text
-http://localhost:8080/public/Music%20App/
+```bash
+cd public/Music_App
 ```
 
-## Usage
-Use the sidebar to filter songs by category. Search for tracks using the search bar, then click any song card to start playback. Use the floating player to play or pause music, skip tracks, seek through the song, adjust volume, enable shuffle or repeat, and like the current song. Use the theme toggle to switch between dark and light mode.
+3. Open `index.html` in your preferred web browser.
 
-## Screenshots
+No installation or additional dependencies are required.
 
-<img width="1898" height="949" alt="image" src="https://github.com/user-attachments/assets/b5f3532c-4d03-4dee-b462-fb453ebc667e" />
+---
 
-<img width="1890" height="943" alt="image" src="https://github.com/user-attachments/assets/b0ed2a56-1cba-42f4-9bed-aeabf72e2a8e" />
+## 🎧 How to Use
 
+1. Launch the application.
+2. Select a music track.
+3. Use the playback controls to:
+   - Play/Pause
+   - Next Track
+   - Previous Track
+   - Adjust Volume
+4. Drag the progress bar to seek through the current song.
 
+---
 
-## Contributing
-Contributions are welcome. To contribute:
+## 🌟 Highlights
+
+- Clean and responsive UI
+- Lightweight implementation
+- Beginner-friendly project
+- Easy to customize and extend
+
+---
+
+## 🔮 Future Improvements
+
+- Playlist support
+- Shuffle and repeat modes
+- Dark/Light theme
+- Keyboard shortcuts
+- Audio visualizer
+- Favorite songs
+- Search functionality
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome!
+
+If you'd like to improve this project:
 
 1. Fork the repository.
-2. Create a new branch for your feature or fix.
+2. Create a new branch.
 3. Make your changes.
-4. Test the project in a browser.
-5. Submit a pull request with a clear description of your changes.
+4. Submit a Pull Request.
 
-## License
-MIT License
+---
 
-## Author
-Created by Indrayani Verulkar
+## 📄 License
+
+This project is licensed under the MIT License.
+
+---
+
+## 👤 Author
+
+Made with ❤️ by the contributors of the **100 Days 100 Web Projects** repository.
