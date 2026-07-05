@@ -3104,6 +3104,34 @@
   },
   {
     "projectNo": 244,
+    "projectName": "Drawing Canva",
+    "projectType": "Tool",
+    "projectDesc": "A canvas for drawing built using HTML, CSS, and Vanilla JavaScript.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript",
+      "visualizer"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/Drawing-Canva/index.html"
+  },
+  {
+    "projectNo": 245,
+    "projectName": "Flashcard Quiz",
+    "projectType": "Tool",
+    "projectDesc": "A flashcard quiz app built using HTML, CSS, and Vanilla JavaScript.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript",
+      "visualizer"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/Flashcard-Quiz-App/index.html"
+  },
+  {
+    "projectNo": 246,
     "projectName": "Interactive Typing Speed Test",
     "projectType": "Tool",
     "projectDesc": "A minimalist typing speed tester tracking real-time WPM, CPM, and accuracy.",
