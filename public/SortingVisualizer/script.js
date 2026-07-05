@@ -679,6 +679,19 @@ const THEMES = {
   },
 };
 
+// Save all preferences
+function savePreferences() {
+  const preferences = {
+    theme: themeSelect.value,
+    algorithm: algorithmSelect.value,
+    arraySize: sizeSlider.value,
+    speed: speedSlider.value,
+    pattern: patternSelect.value,
+    isMuted: isMuted
+  };
+  localStorage.setItem("sortingPreferences", JSON.stringify(preferences));
+}
+
 function applyTheme(themeName) {
   const theme = THEMES[themeName];
   const root = document.documentElement;
@@ -695,8 +708,14 @@ function applyTheme(themeName) {
   root.style.setProperty("--bar-swapping", theme.barSwapping);
   root.style.setProperty("--bar-pivot", theme.barPivot);
   root.style.setProperty("--bar-sorted", theme.barSorted);
-  localStorage.setItem("sortingTheme", themeName);
   themeSelect.value = themeName;
+  savePreferences();
+}
+
+function toggleMute() {
+  isMuted = !isMuted;
+  muteBtn.textContent = isMuted ? "🔇" : "🔊";
+  savePreferences();
 }
 
 // ===== Summary Modal =====
@@ -720,6 +739,7 @@ function showSummary(algorithmKey, elapsedTime) {
   }
   sumRating.textContent = rating;
 
+  summaryModal.style.display = "flex";
   summaryModal.hidden = false;
   setTimeout(() => {
     summaryModal.classList.add("active");
@@ -729,6 +749,7 @@ function showSummary(algorithmKey, elapsedTime) {
 function hideSummary() {
   summaryModal.classList.remove("active");
   setTimeout(() => {
+    summaryModal.style.display = "none";
     summaryModal.hidden = true;
   }, 300);
 }
@@ -1140,17 +1161,23 @@ sizeSlider.addEventListener("input", () => {
   sizeValue.textContent = sizeSlider.value;
 });
 sizeSlider.addEventListener("change", () => {
+  savePreferences();
   generateNewArray();
 });
 
 speedSlider.addEventListener("input", () => {
   speedValue.textContent = speedSlider.value;
 });
+speedSlider.addEventListener("change", () => {
+  savePreferences();
+});
 
 algorithmSelect.addEventListener("change", () => {
   updateAlgorithmUI();
+  savePreferences();
 });
 patternSelect.addEventListener("change", () => {
+  savePreferences();
   generateNewArray();
 });
 
@@ -1186,10 +1213,26 @@ window.addEventListener("resize", () => {
 
 // ===== Init =====
 document.addEventListener("DOMContentLoaded", () => {
+  // Make sure modal is hidden initially
+  summaryModal.style.display = "none";
+  summaryModal.hidden = true;
+  summaryModal.classList.remove("active");
+  
   // Load saved preferences
-  const savedTheme = localStorage.getItem("sortingTheme");
-  if (savedTheme) {
-    applyTheme(savedTheme);
+  const savedPrefs = localStorage.getItem("sortingPreferences");
+  if (savedPrefs) {
+    const prefs = JSON.parse(savedPrefs);
+    if (prefs.theme) applyTheme(prefs.theme);
+    if (prefs.algorithm) algorithmSelect.value = prefs.algorithm;
+    if (prefs.arraySize) sizeSlider.value = prefs.arraySize;
+    if (prefs.speed) speedSlider.value = prefs.speed;
+    if (prefs.pattern) patternSelect.value = prefs.pattern;
+    if (typeof prefs.isMuted === "boolean") {
+      isMuted = prefs.isMuted;
+      muteBtn.textContent = isMuted ? "🔇" : "🔊";
+    }
+    sizeValue.textContent = sizeSlider.value;
+    speedValue.textContent = speedSlider.value;
   }
   updateAlgorithmUI();
   generateNewArray();

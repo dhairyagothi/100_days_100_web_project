@@ -392,16 +392,19 @@ body {
   right: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.75);
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
   z-index: 1000;
   opacity: 0;
+  pointer-events: none;
   transition: opacity 0.3s ease;
 }
 
 .modal-overlay.active {
+  display: flex;
   opacity: 1;
+  pointer-events: auto;
 }
 
 .modal-content {
