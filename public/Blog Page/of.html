@@ -3,95 +3,553 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Organic Farming</title>
+    <title>Organic Farming - GreenBlog</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="icon" href="../fav.ico" type="image/x-icon" />
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="blog.css">
 </head>
 <body class="transition-all duration-300">
 
+<!-- Reading Progress Bar -->
+<div class="reading-progress" id="readingProgress"></div>
+
+<!-- Navigation Navbar -->
 <nav class="navbar">
     <div class="nav-left-group">
-        <a href="index.html" class="project-back-button">
-            <i class="fa-solid fa-arrow-left"></i> Back to Blogs
+        <a href="./index.html" class="project-back-button" title="Back to all blogs">
+            <i class="fas fa-arrow-left"></i> Back to Blogs
         </a>
         <div class="logo">
-            GreenBlog
+            <i class="fas fa-leaf"></i> GreenBlog
         </div>
     </div>
     <ul class="nav-links">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="index.html">Categories</a></li>
-        <li><a href="index.html">Blogs</a></li>
-        <li><a href="index.html">About</a></li>
+        <li><a href="./index.html">Home</a></li>
+        <li><a href="./index.html#categories">Categories</a></li>
+        <li><a href="./index.html#blogs">Blogs</a></li>
+        <li><a href="./index.html#about">About</a></li>
     </ul>
     <div class="nav-right">
-        <button id="themeToggle">
+        <button id="themeToggle" title="Toggle dark mode">
             <span id="themeIcon">☀️</span>
         </button>
     </div>
 </nav>
 
+<!-- Breadcrumb Navigation -->
+<div class="breadcrumb">
+    <a href="./index.html">
+        <i class="fas fa-home"></i> Home
+    </a>
+    <span class="breadcrumb-separator">/</span>
+    <a href="./index.html#blogs">Blogs</a>
+    <span class="breadcrumb-separator">/</span>
+    <span>Organic Farming</span>
+</div>
+
+<!-- Main Blog Container -->
 <div class="blog-page-container">
     <div class="blog-page">
-        <img src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?q=80&w=1770&auto=format&fit=crop" alt="Organic Farming" class="blog-banner">
         
-        <h1>Organic Farming</h1>
-        
-        <div class="blog-author">
-            <h3>Eco Expert</h3>
-            <p class="blog-date">Posted on 10/10/2021</p>
+        <!-- Featured Image -->
+        <div class="blog-header-image">
+            <img 
+                src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?q=80&w=1770&auto=format&fit=crop" 
+                alt="Organic Farming" 
+                class="blog-banner"
+                loading="lazy"
+            >
         </div>
 
-        <div class="blog-content">
-            <p>
-                Organic farming is an ancient method of farming. It is a form of agriculture. Organic farming aims at cultivating land and raising crops by keeping the soil alive. Organic wastes are being used in organic farming. Organic farming increases sustainable agricultural production by following eco-friendly ways. It is a unique production management system. It promotes and enhances Argo system health. It is a key factor in maintaining natural and environmental balance. It helps protect the long-term fertility of soils. It is a safer and healthier option for us as well as for the environment. Organic farming is a need of time. It is a demand of time. Nowadays consumers are becoming highly conscious about their health and the foods they consume. Maximum people are opting for organic food. Organic farming is full of good things. It relies on the ecological processes, biodiversity and cycles adapted to local conditions. It ensures soil with fertility with the help of crop rotation. It enables healthy soil structure. It increases the ability of soil to hold water. It naturally prevents crops from iron pesticides and insecticides. Organic farming combines tradition, innovation and science to benefit the shared environment and promote fair relationships and good quality for all involved. Organic farming is a revolution against Green Revolution. There are many drawbacks found in Green Revolution. The Green Revolution leads soil erosion, loss of soil nutrients, loss of nutrition in food and the creation of human diseases. So organic farming is the best and safest option for all.
-            </p>
+        <!-- Blog Category & Title -->
+        <div class="blog-header">
+            <span class="blog-category">
+                <i class="fas fa-leaf"></i> Agriculture
+            </span>
+            
+            <h1>Organic Farming: Cultivating a Sustainable Future</h1>
+
+            <!-- Blog Metadata -->
+            <div class="blog-meta">
+                <div class="meta-item">
+                    <i class="fas fa-user-circle"></i>
+                    <span class="author-name">Sarah Johnson</span>
+                </div>
+                <div class="meta-item">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>June 10, 2026</span>
+                </div>
+                <div class="meta-item">
+                    <i class="fas fa-clock"></i>
+                    <span class="read-time">8 min read</span>
+                </div>
+                <div class="meta-item">
+                    <i class="fas fa-eye"></i>
+                    <span>1,200 views</span>
+                </div>
+            </div>
+
+            <!-- Author Card -->
+            <div class="blog-author">
+                <div class="author-avatar">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="author-info">
+                    <h3>Sarah Johnson</h3>
+                    <p>Agricultural Scientist & Sustainability Advocate | Dedicated to promoting eco-friendly farming practices and sustainable food systems.</p>
+                    <div class="author-social">
+                        <a href="#" title="Follow on Twitter">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" title="Follow on LinkedIn">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
+
+        <!-- Main Content -->
+        <div class="blog-content">
+            
+            <p>
+                Organic farming represents a fundamental shift in how we approach agriculture—moving away from chemical-dependent practices toward methods that work in harmony with nature. This ancient yet innovative approach to farming focuses on cultivating land and raising crops while keeping the soil alive, using natural processes to maintain ecosystem health and produce nutritious food.
+            </p>
+
+            <h2>Understanding Organic Farming</h2>
+
+            <p>
+                At its core, organic farming is a production management system that promotes and enhances agro-ecosystem health, including biodiversity, biological cycles, and soil biological activity. It emphasizes the use of renewable resources and the conservation of soil and water to enhance environmental quality for future generations.
+            </p>
+
+            <blockquote>
+                <p>"Organic farming is not just about what we don't use—it's about what we do use: natural processes, biodiversity, and ecological balance to create sustainable food systems."</p>
+            </blockquote>
+
+            <h2>Key Principles of Organic Agriculture</h2>
+
+            <h3>Soil Health & Fertility</h3>
+
+            <p>
+                Healthy soil is the foundation of organic farming. Organic farmers use crop rotation, green manures, compost, and biological pest control to maintain soil fertility naturally. This approach increases the soil's ability to hold water, prevents erosion, and creates a thriving ecosystem of beneficial microorganisms.
+            </p>
+
+            <h3>Biodiversity & Ecological Balance</h3>
+
+            <p>
+                Organic farms prioritize biodiversity by growing multiple crop varieties, maintaining natural habitats, and avoiding monocultures. This diversity creates resilient ecosystems that can better withstand pests, diseases, and climate variations while supporting pollinators and beneficial insects.
+            </p>
+
+            <h3>Natural Pest Management</h3>
+
+            <p>
+                Instead of synthetic pesticides, organic farming employs integrated pest management strategies. These include biological control (using natural predators), trap crops, resistant varieties, and physical barriers. This approach protects beneficial insects while keeping pest populations in check naturally.
+            </p>
+
+            <h2>Benefits of Organic Farming</h2>
+
+            <div class="highlight-box">
+                <strong>Environmental Impact:</strong> Organic farming reduces pollution, conserves water, reduces soil erosion, increases soil fertility, and uses less energy overall compared to conventional agriculture.
+            </div>
+
+            <h3>Healthier Food</h3>
+
+            <p>
+                Organic produce often contains higher levels of antioxidants and lower levels of pesticide residues. Studies suggest that organic foods may have nutritional benefits, including higher concentrations of certain vitamins and minerals. The absence of synthetic chemicals also reduces potential health risks associated with pesticide exposure.
+            </p>
+
+            <h3>Climate Change Mitigation</h3>
+
+            <p>
+                Organic farming practices can help combat climate change by sequestering carbon in the soil, reducing greenhouse gas emissions from synthetic fertilizers, and using less energy-intensive farming methods. Organic soils typically store more carbon, making agriculture part of the climate solution rather than part of the problem.
+            </p>
+
+            <h2>Organic Farming Practices</h2>
+
+            <h3>Crop Rotation</h3>
+
+            <p>
+                Rotating different crops in the same field across seasons helps break pest cycles, improves soil structure, and naturally replenishes nutrients. This practice reduces the need for external inputs while maintaining long-term soil health and preventing the buildup of pathogens.
+            </p>
+
+            <h3>Composting & Green Manures</h3>
+
+            <p>
+                Organic farmers transform plant and animal waste into nutrient-rich compost that feeds soil microorganisms and provides slow-release nutrients to crops. Green manures—crops grown specifically to be plowed back into the soil—add organic matter and fix nitrogen naturally.
+            </p>
+
+            <h3>Biological Pest Control</h3>
+
+            <p>
+                This involves introducing or encouraging natural predators, parasites, and pathogens that control pest populations. Examples include ladybugs for aphid control, beneficial nematodes for soil pests, and birds for insect control. This creates a natural balance that reduces the need for chemical interventions.
+            </p>
+
+            <h2>Challenges & Solutions</h2>
+
+            <h3>Transition Period</h3>
+
+            <p>
+                Converting conventional farms to organic requires a transition period of typically three years. During this time, farmers may face lower yields as soil health rebuilds and natural systems establish. Support programs, technical assistance, and premium prices for organic products help farmers through this challenging period.
+            </p>
+
+            <h3>Labor Intensity</h3>
+
+            <p>
+                Organic farming often requires more labor for activities like manual weeding, compost management, and monitoring for pests. However, this also creates more employment opportunities in rural communities and can be offset by the premium prices organic products command in the market.
+            </p>
+
+            <h3>Knowledge & Skills</h3>
+
+            <p>
+                Successful organic farming requires deep understanding of ecological systems, soil biology, and natural pest management. Extension services, farmer networks, and educational programs are essential for sharing knowledge and building capacity among organic farmers.
+            </p>
+
+            <h2>The Future of Organic Agriculture</h2>
+
+            <p>
+                The future of organic farming looks promising as consumer demand continues to grow and climate change makes sustainable practices increasingly necessary. Innovations in organic research, technology, and supply chains are making organic farming more efficient and accessible.
+            </p>
+
+            <ol>
+                <li><strong>Precision Agriculture</strong> – Using technology to optimize organic farming practices while maintaining ecological principles</li>
+                <li><strong>Regenerative Agriculture</strong> – Going beyond organic to actively restore soil health and sequester carbon</li>
+                <li><strong>Urban Organic Farming</strong> – Bringing organic production to cities through rooftop gardens and vertical farming</li>
+                <li><strong>Community-Supported Agriculture</strong> – Direct connections between farmers and consumers building local food systems</li>
+                <li><strong>Organic Seed Breeding</strong> – Developing crop varieties specifically adapted to organic conditions</li>
+                <li><strong>Policy Support</strong> – Government programs recognizing organic farming's environmental and social benefits</li>
+            </ol>
+
+            <h2>Conclusion</h2>
+
+            <p>
+                Organic farming offers a path toward sustainable food systems that nourish both people and the planet. By working with natural processes rather than against them, organic agriculture demonstrates that we can produce abundant, healthy food while protecting the environment for future generations.
+            </p>
+
+            <p>
+                As we face the dual challenges of feeding a growing population and addressing climate change, organic farming provides valuable lessons in ecological stewardship and sustainable production. Whether you're a farmer, consumer, or policymaker, supporting organic agriculture is an investment in a healthier, more sustainable future.
+            </p>
+
+        </div>
+
+        <!-- Tags Section -->
+        <div class="blog-tags">
+            <span style="font-weight: 600; color: var(--text-primary); margin-right: 1rem;">Tags:</span>
+            <a href="#" class="tag">
+                <i class="fas fa-tag"></i> Organic Farming
+            </a>
+            <a href="#" class="tag">
+                <i class="fas fa-tag"></i> Sustainable Agriculture
+            </a>
+            <a href="#" class="tag">
+                <i class="fas fa-tag"></i> Environment
+            </a>
+            <a href="#" class="tag">
+                <i class="fas fa-tag"></i> Health
+            </a>
+            <a href="#" class="tag">
+                <i class="fas fa-tag"></i> Sustainability
+            </a>
+        </div>
+
+        <!-- Social Sharing -->
+        <div class="social-share">
+            <span>Share this article:</span>
+            <a href="#" class="social-btn" title="Share on Twitter" style="background: #1DA1F2;">
+                <i class="fab fa-twitter"></i>
+            </a>
+            <a href="#" class="social-btn" title="Share on Facebook" style="background: #1877F2;">
+                <i class="fab fa-facebook"></i>
+            </a>
+            <a href="#" class="social-btn" title="Share on LinkedIn" style="background: #0A66C2;">
+                <i class="fab fa-linkedin"></i>
+            </a>
+            <a href="#" class="social-btn" title="Copy link" style="background: #10b981;" onclick="copyLink(event)">
+                <i class="fas fa-link"></i>
+            </a>
+        </div>
+
+        <!-- Related Posts Section -->
+        <div class="related-posts">
+            <h3>
+                <i class="fas fa-arrow-right"></i> Related Articles
+            </h3>
+            
+            <a href="./ai.html" class="related-post-card">
+                <img 
+                    src="https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=400&auto=format&fit=crop" 
+                    alt="Future of AI"
+                    class="related-post-img"
+                    loading="lazy"
+                >
+                <div class="related-post-content">
+                    <h4>AI in Agriculture</h4>
+                    <p>How artificial intelligence is optimizing farming practices for a sustainable future.</p>
+                </div>
+            </a>
+
+            <a href="./hl.html" class="related-post-card">
+                <img 
+                    src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?q=80&w=400&auto=format&fit=crop" 
+                    alt="Healthy Lifestyle"
+                    class="related-post-img"
+                    loading="lazy"
+                >
+                <div class="related-post-content">
+                    <h4>Organic Food & Health</h4>
+                    <p>The benefits of organic food for your health and well-being.</p>
+                </div>
+            </a>
+
+            <a href="./wd.html" class="related-post-card">
+                <img 
+                    src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=400&auto=format&fit=crop" 
+                    alt="Web Development"
+                    class="related-post-img"
+                    loading="lazy"
+                >
+                <div class="related-post-content">
+                    <h4>Tech for Sustainability</h4>
+                    <p>How technology is supporting sustainable agriculture and environmental protection.</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- Comments Section -->
+        <div class="comments-section">
+            <h3>
+                <i class="fas fa-comments"></i> Comments (2)
+            </h3>
+
+            <!-- Comment Form -->
+            <div class="comment-form">
+                <h4>Leave a Comment</h4>
+                <input 
+                    type="text" 
+                    placeholder="Your Name" 
+                    id="commentName"
+                    required
+                >
+                <input 
+                    type="email" 
+                    placeholder="Your Email (won't be published)" 
+                    id="commentEmail"
+                    required
+                >
+                <textarea 
+                    placeholder="Share your thoughts on organic farming..." 
+                    id="commentText"
+                    rows="5"
+                    required
+                ></textarea>
+                <button class="comment-btn" onclick="submitComment()">
+                    <i class="fas fa-paper-plane"></i> Post Comment
+                </button>
+            </div>
+
+            <!-- Comments List -->
+            <div class="comment-list" id="commentsList">
+                
+                <div class="comment-item">
+                    <div class="comment-author">
+                        <i class="fas fa-user-circle"></i> Michael Green
+                    </div>
+                    <div class="comment-date">June 11, 2026 at 9:15 AM</div>
+                    <div class="comment-text">
+                        This article perfectly captures why organic farming matters. I've been transitioning my small farm to organic practices over the past two years, and the improvement in soil health has been remarkable. It's more work, but worth it!
+                    </div>
+                </div>
+
+                <div class="comment-item">
+                    <div class="comment-author">
+                        <i class="fas fa-user-circle"></i> Lisa Martinez
+                    </div>
+                    <div class="comment-date">June 12, 2026 at 2:30 PM</div>
+                    <div class="comment-text">
+                        As a consumer, I've been trying to buy more organic products. This helps me understand the real benefits beyond just "no pesticides." The environmental impact section was particularly eye-opening. Thank you!
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Newsletter CTA -->
+        <div class="newsletter-cta">
+            <div class="newsletter-content">
+                <h3>
+                    <i class="fas fa-envelope"></i> Stay Updated on Sustainable Living
+                </h3>
+                <p>Subscribe to our newsletter for tips on organic living, sustainable practices, and environmental news.</p>
+            </div>
+            <form class="newsletter-form" onsubmit="handleNewsletterSignup(event)">
+                <input type="email" placeholder="Enter your email" required>
+                <button type="submit">Subscribe</button>
+            </form>
+        </div>
+
     </div>
 </div>
 
+<!-- Back to Top Button -->
+<button class="back-to-top" id="backToTop" onclick="scrollToTop()" title="Back to top">
+    <i class="fas fa-arrow-up"></i>
+</button>
+
+<!-- Footer -->
 <footer class="footer">
     <div class="footer-container">
         <div class="footer-section">
-            <h2 class="logo">GreenBlog</h2>
+            <h2 class="logo">
+                <i class="fas fa-leaf"></i> GreenBlog
+            </h2>
             <p>Discover inspiring articles on technology, lifestyle, travel, agriculture, and web development.</p>
         </div>
         <div class="footer-section">
             <h3>Quick Links</h3>
             <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="index.html">Blogs</a></li>
-                <li><a href="index.html">Categories</a></li>
-                <li><a href="index.html">About</a></li>
+                <li><a href="./index.html">Home</a></li>
+                <li><a href="./index.html#blogs">Blogs</a></li>
+                <li><a href="./index.html#categories">Categories</a></li>
+                <li><a href="./index.html#about">About</a></li>
             </ul>
         </div>
         <div class="footer-section">
             <h3>Categories</h3>
             <ul>
-                <li><a href="index.html">Technology</a></li>
-                <li><a href="index.html">Lifestyle</a></li>
-                <li><a href="index.html">Travel</a></li>
-                <li><a href="index.html">Agriculture</a></li>
+                <li><a href="./index.html">Technology</a></li>
+                <li><a href="./index.html">Lifestyle</a></li>
+                <li><a href="./index.html">Travel</a></li>
+                <li><a href="./index.html">Agriculture</a></li>
             </ul>
         </div>
         <div class="footer-section">
-            <h3>Subscribe</h3>
+            <h3>
+                <i class="fas fa-envelope"></i> Subscribe
+            </h3>
             <p>Get latest articles directly in your inbox.</p>
-            <form class="newsletter">
-                <input type="email" placeholder="Enter your email" />
+            <form class="newsletter" onsubmit="handleNewsletterFooter(event)">
+                <input type="email" placeholder="Enter your email" required />
                 <button type="submit">Subscribe</button>
             </form>
         </div>
     </div>
     <div class="footer-bottom">
         <p>© 2026 GreenBlog. All rights reserved.</p>
-        <p>created by palak verma</p>
     </div>
 </footer>
 
 <script src="script.js"></script>
+
+<script>
+    // Reading Progress Bar
+    window.addEventListener('scroll', function() {
+        const scrollTop = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPercent = (scrollTop / docHeight) * 100;
+        document.getElementById('readingProgress').style.width = scrollPercent + '%';
+    });
+
+    // Back to Top Button
+    window.addEventListener('scroll', function() {
+        const backToTopBtn = document.getElementById('backToTop');
+        if (window.pageYOffset > 300) {
+            backToTopBtn.classList.add('show');
+        } else {
+            backToTopBtn.classList.remove('show');
+        }
+    });
+
+    function scrollToTop() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
+
+    // Copy Link to Clipboard
+    function copyLink(event) {
+        event.preventDefault();
+        const link = window.location.href;
+        navigator.clipboard.writeText(link).then(() => {
+            alert('Article link copied to clipboard!');
+        });
+    }
+
+    // Submit Comment
+    function submitComment() {
+        const name = document.getElementById('commentName').value.trim();
+        const email = document.getElementById('commentEmail').value.trim();
+        const text = document.getElementById('commentText').value.trim();
+
+        if (name && email && text) {
+            const commentsList = document.getElementById('commentsList');
+            const newComment = document.createElement('div');
+            newComment.className = 'comment-item';
+            newComment.innerHTML = `
+                <div class="comment-author">
+                    <i class="fas fa-user-circle"></i> ${name}
+                </div>
+                <div class="comment-date">Just now</div>
+                <div class="comment-text">
+                    ${text}
+                </div>
+            `;
+            commentsList.appendChild(newComment);
+
+            // Reset form
+            document.getElementById('commentName').value = '';
+            document.getElementById('commentEmail').value = '';
+            document.getElementById('commentText').value = '';
+
+            alert('Thank you for your comment! It has been posted.');
+        } else {
+            alert('Please fill in all fields.');
+        }
+    }
+
+    // Newsletter Signup
+    function handleNewsletterSignup(event) {
+        event.preventDefault();
+        const email = event.target.querySelector('input[type="email"]').value;
+        alert('Thank you for subscribing! Check your email for confirmation.');
+        event.target.reset();
+    }
+
+    function handleNewsletterFooter(event) {
+        event.preventDefault();
+        const email = event.target.querySelector('input[type="email"]').value;
+        alert('Thank you for subscribing! Check your email for confirmation.');
+        event.target.reset();
+    }
+
+    // Dark Mode Toggle
+    const themeToggle = document.getElementById('themeToggle');
+    const htmlElement = document.documentElement;
+
+    themeToggle.addEventListener('click', function() {
+        const isDarkMode = htmlElement.classList.toggle('dark-mode');
+        const themeIcon = document.getElementById('themeIcon');
+        
+        if (isDarkMode) {
+            themeIcon.textContent = '🌙';
+            localStorage.setItem('theme', 'dark');
+        } else {
+            themeIcon.textContent = '☀️';
+            localStorage.setItem('theme', 'light');
+        }
+    });
+
+    // Load saved theme preference
+    window.addEventListener('DOMContentLoaded', function() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            htmlElement.classList.add('dark-mode');
+            document.getElementById('themeIcon').textContent = '🌙';
+        }
+    });
+</script>
+
 </body>
 </html>

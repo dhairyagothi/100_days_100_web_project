@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="../favv.png" type="image/x-icon" />
+    <link rel="icon" href="../fav.ico" type="image/x-icon" />
     <title>GreenBlog - Quality Content on Tech, Lifestyle & Travel</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -39,6 +39,29 @@
 
         .navbar:hover {
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+        }
+
+        .nav-links a {
+            color: var(--text-primary) !important;
+            font-weight: 600;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color) !important;
+        }
+
+        .logo {
+            color: var(--primary-color) !important;
+        }
+
+        .nav-search {
+            color: var(--text-primary) !important;
+            background: var(--light-bg) !important;
+        }
+
+        body.dark-mode .nav-search {
+            background: #334155 !important;
+            color: #f1f5f9 !important;
         }
 
         /* Back to Top Button */
@@ -106,6 +129,8 @@
             overflow: hidden;
             border: 1px solid var(--border-color);
             background: white;
+            display: flex;
+            flex-direction: column;
         }
 
         body.dark-mode .blog-card {
@@ -116,6 +141,12 @@
         .blog-card:hover {
             transform: translateY(-8px);
             box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .blog-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
         }
 
         .blog-image-wrapper {
@@ -180,6 +211,7 @@
             line-height: 1.4;
             display: -webkit-box;
             -webkit-line-clamp: 2;
+            line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
@@ -191,6 +223,7 @@
             margin-bottom: 1rem;
             display: -webkit-box;
             -webkit-line-clamp: 3;
+            line-clamp: 3;
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
@@ -403,6 +436,49 @@
             background: var(--primary-color);
             color: white;
             border-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        /* Responsive Grid */
+        @media (max-width: 768px) {
+            #blogCards {
+                grid-template-columns: 1fr !important;
+                gap: 1.5rem !important;
+            }
+        }
+
+        @media (min-width: 769px) and (max-width: 1024px) {
+            #blogCards {
+                grid-template-columns: repeat(2, 1fr) !important;
+            }
+        }
+
+        /* Read More Button */
+        .read-more-btn {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: auto;
+        }
+
+        .read-more-btn:hover {
+            transform: translateX(4px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+        }
+
+        .read-more-btn::after {
+            content: ' →';
+            margin-left: 0.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .read-more-btn:hover::after {
+            transform: translateX(4px);
         }
     </style>
 </head>
@@ -410,7 +486,7 @@
 
 <!-- Breadcrumb Navigation -->
 <nav class="breadcrumb" id="breadcrumb">
-    <a href="#home">
+    <a href="index.html">
         <i class="fas fa-home"></i> Home
     </a>
     <span class="breadcrumb-separator">/</span>
@@ -424,7 +500,7 @@
     </div>
     
     <ul class="nav-links">
-        <li><a href="#home">Home</a></li>
+        <li><a href="index.html">Home</a></li>
         <li><a href="#categories">Categories</a></li>
         <li><a href="#blogs">Blogs</a></li>
         <li><a href="#about">About</a></li>
@@ -507,8 +583,11 @@
             </div>
         </div>
 
+        <!-- Toast Notification Container -->
+        <div id="toastContainer" class="fixed top-4 right-4 z-50 flex flex-col gap-2"></div>
+
         <!-- Blog Cards Container -->
-        <div class="blog-container" id="blogCards">
+        <div class="blog-container" id="blogCards" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 2rem;">
 
             <!-- Organic Farming -->
             <div class="blog-card" data-category="Agriculture" data-title="Organic Farming" data-date="2026-06-10" data-popular="120">
@@ -549,7 +628,7 @@
                         Learn how organic farming improves soil fertility and supports sustainable, eco-friendly agriculture practices for a healthier planet.
                     </p>
 
-                    <a href="of.html" target="_blank" rel="noopener noreferrer">
+                    <a href="./of.html">
                         <button class="read-more-btn">
                             Read More
                         </button>
@@ -596,7 +675,7 @@
                         Explore how Artificial Intelligence is transforming industries, education, healthcare, and daily life in revolutionary ways.
                     </p>
 
-                    <a href="ai.html" target="_blank" rel="noopener noreferrer">
+                    <a href="./ai.html">
                         <button class="read-more-btn">
                             Read More
                         </button>
@@ -643,7 +722,7 @@
                         Simple habits and daily routines that can significantly improve your physical health and mental well-being.
                     </p>
 
-                    <a href="hl.html" target="_blank" rel="noopener noreferrer">
+                    <a href="./hl.html">
                         <button class="read-more-btn">
                             Read More
                         </button>
@@ -690,7 +769,7 @@
                         Discover modern frontend technologies, responsive design patterns, and full-stack development trends shaping the web today.
                     </p>
 
-                    <a href="wd.html" target="_blank" rel="noopener noreferrer">
+                    <a href="./wd.html">
                         <button class="read-more-btn">
                             Read More
                         </button>
@@ -737,7 +816,7 @@
                         Explore breathtaking destinations around the globe and discover practical tips for planning your next unforgettable adventure.
                     </p>
 
-                    <a href="top-travel-destinations.html" target="_blank" rel="noopener noreferrer">
+                    <a href="./top-travel-destinations.html">
                         <button class="read-more-btn">
                             Read More
                         </button>
@@ -937,51 +1016,44 @@
         </div>
     </div>
 </section>
-
-<!-- Footer Section -->
+<!-- Footer -->
 <footer class="footer">
     <div class="footer-container">
-        <div class="footer-section" id="categories">
+        <div class="footer-section">
             <h2 class="logo">
                 <i class="fas fa-leaf"></i> GreenBlog
             </h2>
-            <p>
-                Discover inspiring, high-quality articles on technology, lifestyle, travel, agriculture, and web development.
-            </p>
+            <p>Discover inspiring articles on technology, lifestyle, travel, agriculture, and web development.</p>
         </div>
-
         <div class="footer-section">
             <h3>Quick Links</h3>
             <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#blogs">Blogs</a></li>
-                <li><a href="#categories">Categories</a></li>
-                <li><a href="#about">About</a></li>
+                <li><a href="./index.html">Home</a></li>
+                <li><a href="./index.html#blogs">Blogs</a></li>
+                <li><a href="./index.html#categories">Categories</a></li>
+                <li><a href="./index.html#about">About</a></li>
             </ul>
         </div>
-
         <div class="footer-section">
             <h3>Categories</h3>
             <ul>
-                <li><a href="#" onclick="filterByCategory('Technology')">Technology</a></li>
-                <li><a href="#" onclick="filterByCategory('Lifestyle')">Lifestyle</a></li>
-                <li><a href="#" onclick="filterByCategory('Travel')">Travel</a></li>
-                <li><a href="#" onclick="filterByCategory('Agriculture')">Agriculture</a></li>
+                <li><a href="./index.html">Technology</a></li>
+                <li><a href="./index.html">Lifestyle</a></li>
+                <li><a href="./index.html">Travel</a></li>
+                <li><a href="./index.html">Agriculture</a></li>
             </ul>
         </div>
-
         <div class="footer-section">
             <h3>
                 <i class="fas fa-envelope"></i> Subscribe
             </h3>
             <p>Get latest articles directly in your inbox.</p>
-            <form class="newsletter" onsubmit="subscribeNewsletter(event)">
+            <form class="newsletter" onsubmit="handleNewsletterFooter(event)">
                 <input type="email" placeholder="Enter your email" required />
                 <button type="submit">Subscribe</button>
             </form>
         </div>
     </div>
-
     <div class="footer-bottom">
         <p>© 2026 GreenBlog. All rights reserved.</p>
     </div>
@@ -1016,7 +1088,10 @@
 
     // Filter and Search Functionality
     function applyFilters() {
-        const searchText = document.getElementById('filterSearch').value.toLowerCase();
+        const filterSearch = document.getElementById('filterSearch');
+        const sidebarSearch = document.getElementById('sidebarSearch');
+        const searchText = (filterSearch ? filterSearch.value.toLowerCase() : '') || 
+                         (sidebarSearch ? sidebarSearch.value.toLowerCase() : '');
         const category = document.getElementById('categoryFilter').value;
         const blogCards = document.querySelectorAll('.blog-card');
         let visibleCount = 0;
@@ -1162,8 +1237,9 @@
             commentsDiv.appendChild(commentElement);
             document.getElementById('username').value = '';
             document.getElementById('comment').value = '';
+            showToast('Comment added successfully!');
         } else {
-            alert('Please fill in both name and comment fields');
+            showToast('Please fill in both name and comment fields', 'error');
         }
     }
 
@@ -1174,41 +1250,53 @@
         const email = document.getElementById('newsletterEmail').value.trim();
         
         if (email && email.includes('@')) {
-            alert('Thank you for subscribing! Check your email for confirmation.');
+            showToast('Thank you for subscribing! Check your email for confirmation.');
             document.getElementById('newsletterEmail').value = '';
         } else {
-            alert('Please enter a valid email address');
+            showToast('Please enter a valid email address', 'error');
         }
     }
 
-    // Dark Mode Toggle
-    const themeToggle = document.getElementById('themeToggle');
-    const htmlElement = document.documentElement;
+    // Toast notification helper
+    function showToast(message, type = 'success') {
+        const toastContainer = document.getElementById('toastContainer');
+        if (!toastContainer) return;
 
-    themeToggle.addEventListener('click', function() {
-        const isDarkMode = htmlElement.classList.toggle('dark-mode');
-        const themeIcon = document.getElementById('themeIcon');
-        
-        if (isDarkMode) {
-            themeIcon.textContent = '🌙';
-            localStorage.setItem('theme', 'dark');
-        } else {
-            themeIcon.textContent = '☀️';
-            localStorage.setItem('theme', 'light');
-        }
-    });
+        const icons = {
+            success: '✅',
+            error: '❌',
+            info: 'ℹ️'
+        };
 
-    // Load saved theme preference
-    window.addEventListener('DOMContentLoaded', function() {
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'dark') {
-            htmlElement.classList.add('dark-mode');
-            document.getElementById('themeIcon').textContent = '🌙';
-        }
-    });
+        const toast = document.createElement('div');
+        toast.className = 'flex items-center gap-2 px-5 py-3 rounded-xl shadow-lg text-sm font-medium text-white bg-gray-800 dark:bg-gray-700 animate-[fadeInUp_0.3s_ease] transition-all duration-300';
+        toast.innerHTML = `
+            <span>${icons[type] || icons.success}</span>
+            <span>${message}</span>
+        `;
+
+        toastContainer.appendChild(toast);
+
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateY(8px)';
+            setTimeout(() => toast.remove(), 300);
+        }, 2800);
+    }
+
 
     // Initialize
-    updateResultsInfo(document.querySelectorAll('.blog-card').length);
+    window.addEventListener('DOMContentLoaded', function() {
+        updateResultsInfo(document.querySelectorAll('.blog-card').length);
+        
+        // Ensure theme is loaded on page load
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            document.body.classList.add('dark-mode');
+            const themeIcon = document.getElementById('themeIcon');
+            if (themeIcon) themeIcon.textContent = '🌙';
+        }
+    });
 </script>
 
 </body>

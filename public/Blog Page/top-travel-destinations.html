@@ -3,143 +3,618 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Top 10 Travel Destinations</title>
+    <title>Top 10 Travel Destinations - GreenBlog</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="icon" href="../fav.ico" type="image/x-icon" />
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="blog.css">
 </head>
 <body class="transition-all duration-300">
 
+<!-- Reading Progress Bar -->
+<div class="reading-progress" id="readingProgress"></div>
+
+<!-- Navigation Navbar -->
 <nav class="navbar">
     <div class="nav-left-group">
-        <a href="index.html" class="project-back-button">
-            <i class="fa-solid fa-arrow-left"></i> Back to Blogs
+        <a href="./index.html" class="project-back-button" title="Back to all blogs">
+            <i class="fas fa-arrow-left"></i> Back to Blogs
         </a>
         <div class="logo">
-            GreenBlog
+            <i class="fas fa-leaf"></i> GreenBlog
         </div>
     </div>
     <ul class="nav-links">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="index.html">Categories</a></li>
-        <li><a href="index.html">Blogs</a></li>
-        <li><a href="index.html">About</a></li>
+        <li><a href="./index.html">Home</a></li>
+        <li><a href="./index.html#categories">Categories</a></li>
+        <li><a href="./index.html#blogs">Blogs</a></li>
+        <li><a href="./index.html#about">About</a></li>
     </ul>
     <div class="nav-right">
-        <button id="themeToggle">
+        <button id="themeToggle" title="Toggle dark mode">
             <span id="themeIcon">☀️</span>
         </button>
     </div>
 </nav>
 
+<!-- Breadcrumb Navigation -->
+<div class="breadcrumb">
+    <a href="./index.html">
+        <i class="fas fa-home"></i> Home
+    </a>
+    <span class="breadcrumb-separator">/</span>
+    <a href="./index.html#blogs">Blogs</a>
+    <span class="breadcrumb-separator">/</span>
+    <span>Top 10 Travel Destinations</span>
+</div>
+
+<!-- Main Blog Container -->
 <div class="blog-page-container">
     <div class="blog-page">
-        <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1770&auto=format&fit=crop" alt="Top Travel Destinations" class="blog-banner">
         
-        <h1>Top 10 Travel Destinations</h1>
-        
-        <div class="blog-author">
-            <h3>Travel Guide</h3>
-            <p class="blog-date">Posted on 22/05/2026</p>
+        <!-- Featured Image -->
+        <div class="blog-header-image">
+            <img 
+                src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1770&auto=format&fit=crop" 
+                alt="Top Travel Destinations" 
+                class="blog-banner"
+                loading="lazy"
+            >
         </div>
 
-        <div class="blog-content">
-            <p>
-                Traveling allows people to explore new cultures, enjoy beautiful landscapes, and create unforgettable memories. From beaches to mountains, every destination offers a unique experience.
-            </p>
-            <p>
-                Here are the top 10 travel destinations that every traveler should visit at least once in their lifetime.
-            </p>
+        <!-- Blog Category & Title -->
+        <div class="blog-header">
+            <span class="blog-category">
+                <i class="fas fa-plane"></i> Travel
+            </span>
+            
+            <h1>Top 10 Travel Destinations: Your Ultimate Guide to Global Adventures</h1>
 
-            <p>
-                <b>1. Paris, France</b><br>
-                Paris is known as the city of love and is famous for the Eiffel Tower, art museums, cafes, and beautiful streets.
-            </p>
-            <p>
-                <b>2. Bali, Indonesia</b><br>
-                Bali offers stunning beaches, temples, waterfalls, and peaceful natural beauty perfect for relaxation.
-            </p>
-            <p>
-                <b>3. Dubai, UAE</b><br>
-                Dubai is popular for luxury shopping, modern architecture, desert safaris, and the tallest building in the world, Burj Khalifa.
-            </p>
-            <p>
-                <b>4. Switzerland</b><br>
-                Switzerland is famous for snowy mountains, beautiful lakes, and breathtaking train journeys.
-            </p>
-            <p>
-                <b>5. Tokyo, Japan</b><br>
-                Tokyo combines modern technology with traditional culture, offering amazing food, shopping, and entertainment.
-            </p>
-            <p>
-                <b>6. Maldives</b><br>
-                Maldives is a dream destination with crystal clear water, luxury resorts, and beautiful beaches.
-            </p>
-            <p>
-                <b>7. New York, USA</b><br>
-                New York is known for Times Square, Central Park, Broadway, and its fast-paced city life.
-            </p>
-            <p>
-                <b>8. Rome, Italy</b><br>
-                Rome is rich in history and famous for ancient architecture, delicious food, and cultural heritage.
-            </p>
-            <p>
-                <b>9. Santorini, Greece</b><br>
-                Santorini is loved for its white buildings, blue domes, sunsets, and scenic sea views.
-            </p>
-            <p>
-                <b>10. Goa, India</b><br>
-                Goa is one of India’s most popular tourist destinations known for beaches, nightlife, seafood, and Portuguese culture.
-            </p>
+            <!-- Blog Metadata -->
+            <div class="blog-meta">
+                <div class="meta-item">
+                    <i class="fas fa-user-circle"></i>
+                    <span class="author-name">Jessica Lee</span>
+                </div>
+                <div class="meta-item">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>May 29, 2026</span>
+                </div>
+                <div class="meta-item">
+                    <i class="fas fa-clock"></i>
+                    <span class="read-time">15 min read</span>
+                </div>
+                <div class="meta-item">
+                    <i class="fas fa-eye"></i>
+                    <span>1,980 views</span>
+                </div>
+            </div>
+
+            <!-- Author Card -->
+            <div class="blog-author">
+                <div class="author-avatar">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="author-info">
+                    <h3>Jessica Lee</h3>
+                    <p>Travel Writer & Adventure Enthusiast | Exploring the world one destination at a time and sharing authentic travel experiences.</p>
+                    <div class="author-social">
+                        <a href="#" title="Follow on Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" title="Follow on YouTube">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                        <a href="#" title="Follow on Twitter">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="blog-content">
             
             <p>
-                Traveling helps people learn about the world and refresh their minds. Exploring new places creates unforgettable experiences and brings happiness, adventure, and knowledge.
+                Traveling is one of life's greatest privileges—an opportunity to explore new cultures, witness breathtaking landscapes, and create memories that last a lifetime. Whether you're seeking adventure, relaxation, cultural immersion, or culinary delights, the world offers endless possibilities for every type of traveler.
             </p>
+
+            <p>
+                This curated list of the top 10 travel destinations combines iconic landmarks with hidden gems, ensuring your next adventure will be nothing short of extraordinary. From romantic European cities to tropical paradises, these destinations have captured the hearts of millions of travelers worldwide.
+            </p>
+
+            <h2>1. Paris, France – The City of Love</h2>
+
+            <p>
+                Paris needs no introduction. As the world's most visited city, it offers an unparalleled blend of art, history, romance, and gastronomy. The iconic Eiffel Tower, especially when illuminated at night, remains a symbol of eternal romance. But beyond the famous landmarks, Paris reveals its charm through charming neighborhood cafés, world-class museums like the Louvre and Musée d'Orsay, and the artistic heritage of Montmartre.
+            </p>
+
+            <blockquote>
+                <p>"Paris is always a good idea." – Audrey Hepburn</p>
+            </blockquote>
+
+            <h3>Must-See Highlights:</h3>
+            <ul>
+                <li><strong>Eiffel Tower</strong> – Visit at sunset for magical views of the city</li>
+                <li><strong>Louvre Museum</strong> – Home to the Mona Lisa and countless masterpieces</li>
+                <li><strong>Montmartre</strong> – Explore the artistic district where Picasso and Dalí once lived</li>
+                <li><strong>Seine River Cruise</strong> – See the city from a unique perspective</li>
+                <li><strong>French Cuisine</strong> – Indulge in croissants, macarons, and fine dining</li>
+            </ul>
+
+            <h2>2. Bali, Indonesia – Tropical Paradise</h2>
+
+            <p>
+                Bali offers the perfect escape from the ordinary with its stunning beaches, lush rice terraces, ancient temples, and spiritual atmosphere. This Indonesian island seamlessly blends natural beauty with rich cultural heritage, making it ideal for both adventure seekers and those seeking tranquility.
+            </p>
+
+            <h3>Must-See Highlights:</h3>
+            <ul>
+                <li><strong>Ubud Rice Terraces</strong> – UNESCO World Heritage site with breathtaking views</li>
+                <li><strong>Uluwatu Temple</strong> – Cliff-top temple with spectacular sunset views</li>
+                <li><strong>Tanah Lot</strong> – Iconic sea temple perched on a rock formation</li>
+                <li><strong>Beaches of Seminyak</strong> – Perfect for surfing and sunset watching</li>
+                <li><strong>Balinese Culture</strong> – Experience traditional dance ceremonies and local cuisine</li>
+            </ul>
+
+            <h2>3. Dubai, UAE – Modern Marvel</h2>
+
+            <p>
+                Dubai represents the pinnacle of modern architecture and luxury. From the world's tallest building to man-made islands, this city pushes the boundaries of what's possible. Yet beneath its futuristic skyline lies a rich Arab culture and warm hospitality that makes every visitor feel welcome.
+            </p>
+
+            <h3>Must-See Highlights:</h3>
+            <ul>
+                <li><strong>Burj Khalifa</strong> – The world's tallest building with observation decks</li>
+                <li><strong>Palm Jumeirah</strong> – Man-made island with luxury resorts</li>
+                <li><strong>Desert Safari</strong> – Experience dune bashing and traditional Bedouin camps</li>
+                <li><strong>Dubai Mall</strong> – One of the world's largest shopping destinations</li>
+                <li><strong>Old Dubai</strong> – Explore the historic Al Fahidi district and souks</li>
+            </ul>
+
+            <h2>4. Switzerland – Alpine Paradise</h2>
+
+            <p>
+                Switzerland is nature's masterpiece—snow-capped mountains, pristine lakes, charming villages, and some of the world's most scenic train journeys. Whether you're skiing in the Alps or hiking through meadows in summer, Switzerland offers unparalleled natural beauty and precision in everything from transportation to chocolate.
+            </p>
+
+            <h3>Must-See Highlights:</h3>
+            <ul>
+                <li><strong>Matterhorn</strong> – Iconic pyramid-shaped peak in Zermatt</li>
+                <li><strong>Jungfraujoch</strong> – "Top of Europe" railway station with glacier views</li>
+                <li><strong>Lake Geneva</strong> – Stunning lake surrounded by vineyards and castles</li>
+                <li><strong>Lucerne</strong> – Charming medieval city with covered bridges</li>
+                <li><strong>Swiss Chocolate</strong> – Visit chocolate factories and taste world-famous confections</li>
+            </ul>
+
+            <h2>5. Tokyo, Japan – Where Tradition Meets Future</h2>
+
+            <p>
+                Tokyo is a city of fascinating contrasts—ancient temples stand alongside futuristic skyscrapers, traditional tea ceremonies coexist with the latest technology. This dynamic metropolis offers incredible food, cutting-edge fashion, and a unique culture that seamlessly honors the past while embracing the future.
+            </p>
+
+            <h3>Must-See Highlights:</h3>
+            <ul>
+                <li><strong>Sensō-ji Temple</strong> – Tokyo's oldest and most significant Buddhist temple</li>
+                <li><strong>Shibuya Crossing</strong> – The world's busiest pedestrian crossing</li>
+                <li><strong>Mount Fuji</strong> – Day trip to Japan's iconic sacred mountain</li>
+                <li><strong>Tsukiji Market</strong> – Experience authentic Japanese cuisine and fresh seafood</li>
+                <li><strong>Akihabara</strong> – Electronics and anime culture district</li>
+            </ul>
+
+            <h2>6. Maldives – Island Paradise</h2>
+
+            <p>
+                The Maldives is the definition of tropical luxury—crystal-clear turquoise waters, pristine white sand beaches, and overwater bungalows that seem to float on the ocean. This archipelago of 26 coral atolls offers the ultimate escape for honeymooners, divers, and anyone seeking paradise on Earth.
+            </p>
+
+            <h3>Must-See Highlights:</h3>
+            <ul>
+                <li><strong>Overwater Bungalows</strong> – Stay in luxury villas with direct ocean access</li>
+                <li><strong>Snorkeling & Diving</strong> – Explore vibrant coral reefs and marine life</li>
+                <li><strong>Bioluminescent Beaches</strong> – Witness glowing plankton at night</li>
+                <li><strong>Sunset Cruises</strong> – Traditional dhoni boat rides at golden hour</li>
+                <li><strong>Underwater Restaurants</strong> – Dine surrounded by marine life</li>
+            </ul>
+
+            <h2>7. New York City, USA – The City That Never Sleeps</h2>
+
+            <p>
+                New York City is a melting pot of cultures, cuisines, and experiences. From the bright lights of Times Square to the peaceful greenery of Central Park, NYC offers endless possibilities. It's a city of dreams, ambition, and energy that has inspired countless stories and continues to captivate visitors from around the world.
+            </p>
+
+            <h3>Must-See Highlights:</h3>
+            <ul>
+                <li><strong>Statue of Liberty</strong> – Symbol of freedom and democracy</li>
+                <li><strong>Central Park</strong> – Urban oasis perfect for walking and picnicking</li>
+                <li><strong>Broadway</strong> – World-class theater and entertainment district</li>
+                <li><strong>Empire State Building</strong> – Iconic Art Deco skyscraper with city views</li>
+                <li><strong>Museums</strong> – The Met, MoMA, and American Museum of Natural History</li>
+            </ul>
+
+            <h2>8. Rome, Italy – Eternal City</h2>
+
+            <p>
+                Rome is an open-air museum where ancient history comes alive. Walking through its streets, you'll encounter remnants of the Roman Empire, Renaissance art, and vibrant modern Italian culture. The city's culinary scene, with its authentic pasta, gelato, and espresso, is reason enough to visit.
+            </p>
+
+            <h3>Must-See Highlights:</h3>
+            <ul>
+                <li><strong>Colosseum</strong> – Ancient amphitheater and symbol of Roman engineering</li>
+                <li><strong>Vatican City</strong> – Home to St. Peter's Basilica and the Sistine Chapel</li>
+                <li><strong>Trevi Fountain</strong> – Baroque masterpiece and good luck tradition</li>
+                <li><strong>Spanish Steps</strong> – Iconic gathering place with panoramic views</li>
+                <li><strong>Roman Cuisine</strong> – Authentic carbonara, pizza al taglio, and gelato</li>
+            </ul>
+
+            <h2>9. Santorini, Greece – Aegean Dream</h2>
+
+            <p>
+                Santorini is perhaps the most photogenic destination in the world, with its iconic white buildings with blue domes perched on volcanic cliffs overlooking the Aegean Sea. The island's dramatic landscape, stunning sunsets, and romantic atmosphere make it a favorite for honeymooners and romantics.
+            </p>
+
+            <h3>Must-See Highlights:</h3>
+            <ul>
+                <li><strong>Oia Sunset</strong> – Watch the famous sunset from the castle ruins</li>
+                <li><strong>Fira</strong> – Charming capital town with cliffside views</li>
+                <li><strong>Red Beach</strong> – Unique volcanic beach with dramatic red cliffs</li>
+                <li><strong>Ancient Akrotiri</strong> – Minoan Bronze Age settlement preserved in volcanic ash</li>
+                <li><strong>Greek Cuisine</strong> – Fresh seafood, feta, and local wines</li>
+            </ul>
+
+            <h2>10. Goa, India – Tropical Beach Paradise</h2>
+
+            <p>
+                Goa offers a unique blend of Indian and Portuguese cultures, stunning beaches, vibrant nightlife, and a laid-back atmosphere that's perfect for relaxation. From golden beaches to spice plantations, from ancient churches to bustling markets, Goa has something for every traveler.
+            </p>
+
+            <h3>Must-See Highlights:</h3>
+            <ul>
+                <li><strong>Palolem Beach</strong> – Pristine beach perfect for relaxation</li>
+                <li><strong>Old Goa Churches</strong> – UNESCO World Heritage basilicas and cathedrals</li>
+                <li><strong>Spice Plantations</strong> – Tour aromatic farms and learn about Indian spices</li>
+                <li><strong>Anjuna Market</strong> – Vibrant flea market with local crafts and food</li>
+                <li><strong>Goan Cuisine</strong> – Seafood curries, vindaloo, and feni</li>
+            </ul>
+
+            <h2>Planning Your Next Adventure</h2>
+
+            <div class="highlight-box">
+                <strong>Travel Tips:</strong> Research visa requirements, book accommodations in advance, learn basic phrases in the local language, and always have travel insurance. Respect local customs and be open to unexpected adventures—the best memories often come from spontaneous moments.
+            </div>
+
+            <h2>Conclusion</h2>
+
+            <p>
+                These ten destinations represent the incredible diversity our world has to offer—from ancient history to modern marvels, from tropical paradises to cosmopolitan cities. Each destination offers unique experiences that will broaden your perspective, create lasting memories, and perhaps change how you see the world.
+            </p>
+
+            <p>
+                Remember that the journey is just as important as the destination. Embrace the unexpected, connect with locals, try new foods, and allow yourself to be transformed by the places you visit. The world is waiting to be explored—where will your next adventure take you?
+            </p>
+
         </div>
+
+        <!-- Tags Section -->
+        <div class="blog-tags">
+            <span style="font-weight: 600; color: var(--text-primary); margin-right: 1rem;">Tags:</span>
+            <a href="#" class="tag">
+                <i class="fas fa-tag"></i> Travel
+            </a>
+            <a href="#" class="tag">
+                <i class="fas fa-tag"></i> Destinations
+            </a>
+            <a href="#" class="tag">
+                <i class="fas fa-tag"></i> Adventure
+            </a>
+            <a href="#" class="tag">
+                <i class="fas fa-tag"></i> Tourism
+            </a>
+            <a href="#" class="tag">
+                <i class="fas fa-tag"></i> Exploration
+            </a>
+        </div>
+
+        <!-- Social Sharing -->
+        <div class="social-share">
+            <span>Share this article:</span>
+            <a href="#" class="social-btn" title="Share on Twitter" style="background: #1DA1F2;">
+                <i class="fab fa-twitter"></i>
+            </a>
+            <a href="#" class="social-btn" title="Share on Facebook" style="background: #1877F2;">
+                <i class="fab fa-facebook"></i>
+            </a>
+            <a href="#" class="social-btn" title="Share on Pinterest" style="background: #E60023;">
+                <i class="fab fa-pinterest"></i>
+            </a>
+            <a href="#" class="social-btn" title="Copy link" style="background: #10b981;" onclick="copyLink(event)">
+                <i class="fas fa-link"></i>
+            </a>
+        </div>
+
+        <!-- Related Posts Section -->
+        <div class="related-posts">
+            <h3>
+                <i class="fas fa-arrow-right"></i> Related Articles
+            </h3>
+            
+            <a href="./hl.html" class="related-post-card">
+                <img 
+                    src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?q=80&w=400&auto=format&fit=crop" 
+                    alt="Healthy Lifestyle"
+                    class="related-post-img"
+                    loading="lazy"
+                >
+                <div class="related-post-content">
+                    <h4>Healthy Travel Habits</h4>
+                    <p>Stay healthy and energized while traveling with these wellness tips for globetrotters.</p>
+                </div>
+            </a>
+
+            <a href="./of.html" class="related-post-card">
+                <img 
+                    src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?q=80&w=400&auto=format&fit=crop" 
+                    alt="Organic Farming"
+                    class="related-post-img"
+                    loading="lazy"
+                >
+                <div class="related-post-content">
+                    <h4>Sustainable Tourism</h4>
+                    <p>How to travel responsibly and support local communities and environments.</p>
+                </div>
+            </a>
+
+            <a href="./ai.html" class="related-post-card">
+                <img 
+                    src="https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=400&auto=format&fit=crop" 
+                    alt="Future of AI"
+                    class="related-post-img"
+                    loading="lazy"
+                >
+                <div class="related-post-content">
+                    <h4>Tech for Travelers</h4>
+                    <p>Apps and tools that make planning and enjoying your travels easier than ever.</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- Comments Section -->
+        <div class="comments-section">
+            <h3>
+                <i class="fas fa-comments"></i> Comments (2)
+            </h3>
+
+            <!-- Comment Form -->
+            <div class="comment-form">
+                <h4>Leave a Comment</h4>
+                <input 
+                    type="text" 
+                    placeholder="Your Name" 
+                    id="commentName"
+                    required
+                >
+                <input 
+                    type="email" 
+                    placeholder="Your Email (won't be published)" 
+                    id="commentEmail"
+                    required
+                >
+                <textarea 
+                    placeholder="Share your travel experiences..." 
+                    id="commentText"
+                    rows="5"
+                    required
+                ></textarea>
+                <button class="comment-btn" onclick="submitComment()">
+                    <i class="fas fa-paper-plane"></i> Post Comment
+                </button>
+            </div>
+
+            <!-- Comments List -->
+            <div class="comment-list" id="commentsList">
+                
+                <div class="comment-item">
+                    <div class="comment-author">
+                        <i class="fas fa-user-circle"></i> Alex Thompson
+                    </div>
+                    <div class="comment-date">May 30, 2026 at 11:45 AM</div>
+                    <div class="comment-text">
+                        Amazing list! I've been to Paris and Bali, and both were incredible experiences. Your description of Bali's rice terraces brings back such wonderful memories. Can't wait to visit more of these destinations!
+                    </div>
+                </div>
+
+                <div class="comment-item">
+                    <div class="comment-author">
+                        <i class="fas fa-user-circle"></i> Maria Garcia
+                    </div>
+                    <div class="comment-date">May 31, 2026 at 3:20 PM</div>
+                    <div class="comment-text">
+                        This is exactly the inspiration I needed for my next vacation! I've always dreamed of visiting Santorini and the Maldives. Your practical tips about each destination are very helpful. Thank you for sharing!
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Newsletter CTA -->
+        <div class="newsletter-cta">
+            <div class="newsletter-content">
+                <h3>
+                    <i class="fas fa-envelope"></i> Get Travel Inspiration
+                </h3>
+                <p>Subscribe to our newsletter for travel tips, destination guides, and exclusive travel deals.</p>
+            </div>
+            <form class="newsletter-form" onsubmit="handleNewsletterSignup(event)">
+                <input type="email" placeholder="Enter your email" required>
+                <button type="submit">Subscribe</button>
+            </form>
+        </div>
+
     </div>
 </div>
 
+<!-- Back to Top Button -->
+<button class="back-to-top" id="backToTop" onclick="scrollToTop()" title="Back to top">
+    <i class="fas fa-arrow-up"></i>
+</button>
+
+<!-- Footer -->
 <footer class="footer">
     <div class="footer-container">
         <div class="footer-section">
-            <h2 class="logo">GreenBlog</h2>
+            <h2 class="logo">
+                <i class="fas fa-leaf"></i> GreenBlog
+            </h2>
             <p>Discover inspiring articles on technology, lifestyle, travel, agriculture, and web development.</p>
         </div>
         <div class="footer-section">
             <h3>Quick Links</h3>
             <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="index.html">Blogs</a></li>
-                <li><a href="index.html">Categories</a></li>
-                <li><a href="index.html">About</a></li>
+                <li><a href="./index.html">Home</a></li>
+                <li><a href="./index.html#blogs">Blogs</a></li>
+                <li><a href="./index.html#categories">Categories</a></li>
+                <li><a href="./index.html#about">About</a></li>
             </ul>
         </div>
         <div class="footer-section">
             <h3>Categories</h3>
             <ul>
-                <li><a href="index.html">Technology</a></li>
-                <li><a href="index.html">Lifestyle</a></li>
-                <li><a href="index.html">Travel</a></li>
-                <li><a href="index.html">Agriculture</a></li>
+                <li><a href="./index.html">Technology</a></li>
+                <li><a href="./index.html">Lifestyle</a></li>
+                <li><a href="./index.html">Travel</a></li>
+                <li><a href="./index.html">Agriculture</a></li>
             </ul>
         </div>
         <div class="footer-section">
-            <h3>Subscribe</h3>
+            <h3>
+                <i class="fas fa-envelope"></i> Subscribe
+            </h3>
             <p>Get latest articles directly in your inbox.</p>
-            <form class="newsletter">
-                <input type="email" placeholder="Enter your email" />
+            <form class="newsletter" onsubmit="handleNewsletterFooter(event)">
+                <input type="email" placeholder="Enter your email" required />
                 <button type="submit">Subscribe</button>
             </form>
         </div>
     </div>
     <div class="footer-bottom">
         <p>© 2026 GreenBlog. All rights reserved.</p>
-        <p>created by palak verma</p>
+        <p>Created with <i class="fas fa-heart" style="color: #ef4444;"></i> by Palak Verma</p>
     </div>
 </footer>
 
 <script src="script.js"></script>
+
+<script>
+    // Reading Progress Bar
+    window.addEventListener('scroll', function() {
+        const scrollTop = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPercent = (scrollTop / docHeight) * 100;
+        document.getElementById('readingProgress').style.width = scrollPercent + '%';
+    });
+
+    // Back to Top Button
+    window.addEventListener('scroll', function() {
+        const backToTopBtn = document.getElementById('backToTop');
+        if (window.pageYOffset > 300) {
+            backToTopBtn.classList.add('show');
+        } else {
+            backToTopBtn.classList.remove('show');
+        }
+    });
+
+    function scrollToTop() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
+
+    // Copy Link to Clipboard
+    function copyLink(event) {
+        event.preventDefault();
+        const link = window.location.href;
+        navigator.clipboard.writeText(link).then(() => {
+            alert('Article link copied to clipboard!');
+        });
+    }
+
+    // Submit Comment
+    function submitComment() {
+        const name = document.getElementById('commentName').value.trim();
+        const email = document.getElementById('commentEmail').value.trim();
+        const text = document.getElementById('commentText').value.trim();
+
+        if (name && email && text) {
+            const commentsList = document.getElementById('commentsList');
+            const newComment = document.createElement('div');
+            newComment.className = 'comment-item';
+            newComment.innerHTML = `
+                <div class="comment-author">
+                    <i class="fas fa-user-circle"></i> ${name}
+                </div>
+                <div class="comment-date">Just now</div>
+                <div class="comment-text">
+                    ${text}
+                </div>
+            `;
+            commentsList.appendChild(newComment);
+
+            // Reset form
+            document.getElementById('commentName').value = '';
+            document.getElementById('commentEmail').value = '';
+            document.getElementById('commentText').value = '';
+
+            alert('Thank you for your comment! It has been posted.');
+        } else {
+            alert('Please fill in all fields.');
+        }
+    }
+
+    // Newsletter Signup
+    function handleNewsletterSignup(event) {
+        event.preventDefault();
+        const email = event.target.querySelector('input[type="email"]').value;
+        alert('Thank you for subscribing! Check your email for confirmation.');
+        event.target.reset();
+    }
+
+    function handleNewsletterFooter(event) {
+        event.preventDefault();
+        const email = event.target.querySelector('input[type="email"]').value;
+        alert('Thank you for subscribing! Check your email for confirmation.');
+        event.target.reset();
+    }
+
+    // Dark Mode Toggle
+    const themeToggle = document.getElementById('themeToggle');
+    const htmlElement = document.documentElement;
+
+    themeToggle.addEventListener('click', function() {
+        const isDarkMode = htmlElement.classList.toggle('dark-mode');
+        const themeIcon = document.getElementById('themeIcon');
+        
+        if (isDarkMode) {
+            themeIcon.textContent = '🌙';
+            localStorage.setItem('theme', 'dark');
+        } else {
+            themeIcon.textContent = '☀️';
+            localStorage.setItem('theme', 'light');
+        }
+    });
+
+    // Load saved theme preference
+    window.addEventListener('DOMContentLoaded', function() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            htmlElement.classList.add('dark-mode');
+            document.getElementById('themeIcon').textContent = '🌙';
+        }
+    });
+</script>
+
 </body>
 </html>
