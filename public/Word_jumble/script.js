@@ -325,6 +325,60 @@ const modalFinalScore = document.getElementById('modal-final-score');
 const modalBestScore = document.getElementById('modal-best-score');
 const modalActionBtn = document.getElementById('modal-action-btn');
 
+const GAME_STATE_KEY = 'wordJumbleGameState';
+
+function saveGameState() {
+  const gameState = {
+    correctWord,
+    scrambledWord: scrambledWordEl.textContent,
+    hint: hintTextEl.textContent,
+    score,
+    highScore,
+    wrongGuesses,
+    skipsLeft,
+    timeLeft,
+    userInput: userInputEl.value,
+  };
+
+  localStorage.setItem(GAME_STATE_KEY, JSON.stringify(gameState));
+}
+
+function restoreGameState() {
+  const saved = localStorage.getItem(GAME_STATE_KEY);
+
+  if (!saved) return false;
+
+  const gameState = JSON.parse(saved);
+
+  correctWord = gameState.correctWord;
+  score = gameState.score;
+  highScore = gameState.highScore;
+  wrongGuesses = gameState.wrongGuesses;
+  skipsLeft = gameState.skipsLeft;
+  timeLeft = gameState.timeLeft;
+
+  scrambledWordEl.textContent = gameState.scrambledWord;
+  hintTextEl.textContent = gameState.hint;
+
+  userInputEl.value = gameState.userInput || '';
+
+  skipsEl.textContent = skipsLeft;
+  refreshBtn.disabled = skipsLeft <= 0;
+
+  updateLivesDisplay();
+  updateScoreDisplay();
+
+  timerEl.textContent = `${timeLeft}s`;
+
+  startTimer();
+
+  return true;
+}
+
+function clearGameState() {
+  localStorage.removeItem(GAME_STATE_KEY);
+}
+
 function initGame() {
   clearInterval(timer);
 
@@ -360,6 +414,7 @@ function initGame() {
   startTimer();
 
   userInputEl.focus();
+  saveGameState();
 }
 
 function startTimer() {
@@ -367,6 +422,7 @@ function startTimer() {
     if (timeLeft > 0) {
       timeLeft--;
       timerEl.textContent = `${timeLeft}s`;
+      saveGameState();
     } else {
       clearInterval(timer);
       handleTimeOut();
@@ -393,6 +449,7 @@ function checkWord() {
     }
 
     updateScoreDisplay();
+    saveGameState();
     showMessage(
       `🎉 Brilliant! Word was: ${correctWord.toUpperCase()}`,
       'correct'
@@ -419,6 +476,7 @@ function checkWord() {
 function handleSkip() {
   if (skipsLeft > 0) {
     skipsLeft--;
+    saveGameState();
     initGame();
   }
 }
@@ -426,6 +484,8 @@ function handleSkip() {
 function handleTimeOut() {
   wrongGuesses++;
   updateLivesDisplay();
+
+  saveGameState();
 
   if (wrongGuesses >= maxWrongAllowed) {
     triggerEndScreen(true); // Game Over by running out of time
@@ -471,6 +531,8 @@ function triggerEndScreen(isTimeoutReason) {
 
   // Bring up structural overlay
   modalOverlay.classList.remove('hidden');
+
+  clearGameState();
 }
 
 function closeEndScreen() {
@@ -515,10 +577,13 @@ function quitGame() {
 }
 
 function resetFullGame() {
+  clearGameState();
+
   score = 0;
   wrongGuesses = 0;
   skipsLeft = 3;
   isNewHighScore = false;
+
   initGame();
 }
 
@@ -529,13 +594,19 @@ resetBtn.addEventListener('click', resetFullGame);
 modalActionBtn.addEventListener('click', closeEndScreen);
 
 userInputEl.addEventListener('keyup', (e) => {
+  saveGameState();
+
   if (e.key === 'Enter' && !userInputEl.disabled) checkWord();
 });
 
-window.onload = initGame;
+window.onload = () => {
+  if (!restoreGameState()) {
+    initGame();
+  }
+};
 
 // Quit Game
-document.getElementById("quitBtn").addEventListener("click", quitGame);
+document.getElementById('quitBtn').addEventListener('click', quitGame);
 
 // ==========================
 // Theme Toggle
