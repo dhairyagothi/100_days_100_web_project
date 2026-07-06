@@ -517,3 +517,27 @@ document.addEventListener('keydown', (e) => {
         deleteButton?.click();
     }
 });
+
+// ===== Theme Toggle =====
+function toggleTheme() {
+    document.body.classList.toggle('light-theme');
+    const isLight = document.body.classList.contains('light-theme');
+    localStorage.setItem('calculatorTheme', isLight ? 'light' : 'dark');
+    updateToggleIcon(isLight);
+}
+
+function updateToggleIcon(isLight) {
+    const btn = document.getElementById('themeToggleBtn');
+    if (btn) btn.textContent = isLight ? '☀️' : '🌙';
+}
+
+// Run on page load, before anything else visible
+(function initTheme() {
+    const savedTheme = localStorage.getItem('calculatorTheme');
+    if (savedTheme === 'light') {
+        document.body.classList.add('light-theme');
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+        updateToggleIcon(document.body.classList.contains('light-theme'));
+    });
+})();
