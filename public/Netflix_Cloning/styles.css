@@ -856,9 +856,40 @@ footer {
 }
 
 .movies-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+display: flex !important; 
   gap: 20px;
+  overflow-x: auto;              
+  scroll-behavior: smooth;
+  width: 100%;
+  padding: 15px 0;   
+  flex-wrap: nowrap !important;
+}
+
+.movies-grid::-webkit-scrollbar {
+  display: none;
+}
+
+.movies-grid .movie-card {
+  width: 200px;            
+  min-width: 200px;             
+  max-width: 200px;   
+  flex-shrink: 0;
+  
+  aspect-ratio: 2 / 3;  
+  background: #2d2d2d;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+
+.movies-grid .movie-poster {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .movie-card {
@@ -1189,4 +1220,25 @@ width: 100%;
   margin-top: -3px;
   position: relative;
   z-index: 10;
+}
+
+/* Container rules to override standard block grids */
+.universal-slider {
+    display: flex !important;      /* Changes from grid to inline row layout */
+    gap: 20px;
+    overflow-x: auto;              /* Enables swipe/scroll tracks */
+    scroll-behavior: smooth;
+    padding: 15px 0;
+    width: 100%;
+}
+
+/* Hide raw webkit scrollbars for premium Netflix appearance */
+.universal-slider::-webkit-scrollbar {
+    display: none;
+}
+
+/* Ensure individual movie cards maintain width inside flex lines */
+.universal-slider .movie-card {
+    min-width: 200px;
+    flex-shrink: 0;
 }

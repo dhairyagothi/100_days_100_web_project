@@ -335,23 +335,36 @@ function initMovieSearch() {
     searchInput.addEventListener('input', (e) => {
         const query = e.target.value.toLowerCase();
         
+        // If search is cleared, just reload the default trending/genre lists
         if (query.length === 0) {
-            renderMovies();
+            Object.keys(GENRE_MAP).forEach(containerId => {
+                const genreId = GENRE_MAP[containerId];
+                loadMoviesByGenre(containerId, genreId);
+            });
             return;
         }
 
-        const filteredMovies = MOVIES_DATA.filter(m => 
-            m.title.toLowerCase().includes(query)
-        );
+        // Loop through each active genre track to filter its current contents on screen
+        Object.keys(GENRE_MAP).forEach(containerId => {
+            const container = document.getElementById(containerId);
+            if (!container) return;
 
-        const containers = {
-            // 'trendingMovies': filteredMovies.filter(m => m.genre === 'trending'),
-            'actionMovies': filteredMovies.filter(m => m.genre === 'action'),
-            'dramaMovies': filteredMovies.filter(m => m.genre === 'drama')
-        };
-
-        Object.keys(containers).forEach(key => {
-            document.getElementById(key).innerHTML = createMovieCards(containers[key]);
+            // Find all the current movie cards inside this specific row container
+            const cards = container.querySelectorAll('.movie-card');
+            
+            cards.forEach(card => {
+                const titleElement = card.querySelector('.movie-title');
+                if (!titleElement) return;
+                
+                const titleText = titleElement.textContent.toLowerCase();
+                
+                // Toggle visibility based on matching text search strings
+                if (titleText.includes(query)) {
+                    card.style.display = 'block'; // Show matching cards
+                } else {
+                    card.style.display = 'none';  // Hide non-matching cards
+                }
+            });
         });
     });
 }
@@ -512,5 +525,20 @@ if(slider && leftBtn && rightBtn){
         const maxScroll = slider.scrollWidth - slider.clientWidth;
         rightBtn.style.opacity = slider.scrollLeft >= maxScroll - 50 ? '0' : '1';
         rightBtn.style.pointerEvents = slider.scrollLeft >= maxScroll - 50 ? 'none' : 'auto';
+    });
+}
+
+// ============= DYNAMIC ROW SLIDER SCROLLERS =============
+function scrollRow(containerId, direction) {
+    const rowTrack = document.getElementById(containerId);
+    if (!rowTrack) return;
+
+    // Calculate dynamic scrolling distance based on a single visible card dimension
+    const firstCard = rowTrack.querySelector('.movie-card');
+    const scrollAmount = firstCard ? (firstCard.offsetWidth + 20) * 4 : 800; // Scrolls roughly 4 items
+
+    rowTrack.scrollBy({
+        left: scrollAmount * direction,
+        behavior: 'smooth'
     });
 }

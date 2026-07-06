@@ -466,18 +466,34 @@
                 <h2>Trending Now</h2>
                 <div class="movies-grid" id="trendingMovies"></div>
             </div> -->
+
+<div class="category-row-wrapper" style="position: relative;">
+    <button class="slider-btn left-btn" onclick="scrollRow('actionMovies', -1)">&#10094;</button>
         <div class="category">
           <h2>Action</h2>
           <div class="movies-grid" id="actionMovies"></div>
         </div>
+    <button class="slider-btn right-btn" onclick="scrollRow('actionMovies', 1)">&#10095;</button>
+</div>    
+
+<div class="category-row-wrapper" style="position: relative;">
+    <button class="slider-btn left-btn" onclick="scrollRow('dramaMovies', -1)">&#10094;</button>
         <div class="category">
           <h2>Drama</h2>
           <div class="movies-grid" id="dramaMovies"></div>
         </div>
+        <button class="slider-btn right-btn" onclick="scrollRow('dramaMovies', 1)">&#10095;</button>
+</div>
+
+<div class="category-row-wrapper" style="position: relative;">
+    <button class="slider-btn left-btn" onclick="scrollRow('romanceMovies', -1)">&#10094;</button>
         <div class="category">
           <h2>Romance</h2>
           <div class="movies-grid" id="romanceMovies"></div>
         </div>
+        <button class="slider-btn right-btn" onclick="scrollRow('romanceMovies', 1)">&#10095;</button>
+</div>
+
       </section>
 
       <!-- FOOTER -->
