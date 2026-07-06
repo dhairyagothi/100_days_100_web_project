@@ -391,8 +391,7 @@ arr.forEach(button => {
                 // Define the scope mapping so math.js uses the existing custom global functions
                 const scope = {
                     sin, cos, tan, sqrt, ln, log,
-                    asin, acos, atan, exp, tenPower, abs,
-                    pi: Math.PI, e: Math.E
+                    asin, acos, atan, exp, tenPower, abs
                 };
 
                 // Use Math.js evaluate with the custom scope
