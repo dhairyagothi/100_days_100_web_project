@@ -7,6 +7,15 @@ const nextBtn = document.getElementById('next-btn');
 
 let currentPokemonName = '';
 let score = 0;
+
+const SCORE_KEY = 'pokemon_score';
+
+const savedScore = localStorage.getItem(SCORE_KEY);
+
+if (savedScore !== null) {
+  score = parseInt(savedScore, 10);
+  scoreDisplay.textContent = score;
+}
 //fetch api
 async function fetchPokemon() {
   try {
@@ -64,6 +73,7 @@ function checkGuess() {
     messageDisplay.style.color = 'green';
     score++;
     scoreDisplay.textContent = score;
+    localStorage.setItem(SCORE_KEY, score);
 
     // Update UI states
     submitBtn.disabled = true;
