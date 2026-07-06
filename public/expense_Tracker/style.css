@@ -346,23 +346,23 @@ label {
     color: var(--text-secondary);
 }
 
+
 .input-group {
     position: relative;
-    display: flex;
-    align-items: center;
 }
 
 .currency-symbol {
     position: absolute;
-    left: 14px;
-    color: var(--text-muted);
-    font-weight: 600;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
     pointer-events: none;
-    font-size: 15px;
 }
 
-.input-group input {
-    padding-left: 28px;
+.input-group input[type="number"] {
+    width: 100%;
+    padding-left: 60px;
 }
 
 input[type="text"],

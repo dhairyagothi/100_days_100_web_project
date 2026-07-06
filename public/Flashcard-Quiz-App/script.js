@@ -1,194 +1,458 @@
-const defaultBank = {
-    webdev: [
-        { question: "What is HTML?", answer: "HyperText Markup Language" },
-        { question: "Which HTML tag is used to create a hyperlink?", answer: "<a>" },
-        { question: "Which CSS property changes the text color?", answer: "color" },
-        { question: "Which HTML tag is used to insert an image?", answer: "<img>" },
-        { question: "What does CSS stand for?", answer: "Cascading Style Sheets" },
-        { question: "Which JavaScript method is used to write text directly into the console?", answer: "console.log()" },
-        { question: "Which HTML element is used to define the title of a document?", answer: "<title>" },
-        { question: "Which CSS property controls the text size?", answer: "font-size" },
-        { question: "What is the correct HTML element for the largest heading?", answer: "<h1>" },
-        { question: "Which HTML attribute specifies an alternate text for an image?", answer: "alt" }
-    ],
-    dbms: [
-        { question: "What is DBMS?", answer: "Database Management System" },
-        { question: "What does SQL stand for?", answer: "Structured Query Language" },
-        { question: "What is a primary key?", answer: "A unique identifier for a record" },
-        { question: "What does ACID stand for in database systems?", answer: "Atomicity Consistency Isolation Durability" },
-        { question: "Which SQL constraint ensures that all values in a column are different?", answer: "UNIQUE" },
-        { question: "What is a foreign key?", answer: "A field that links two tables together" },
-        { question: "Which SQL command is used to remove all records from a table without removing the structure?", answer: "TRUNCATE" },
-        { question: "What type of join returns all rows when there is a match in either left or right table?", answer: "FULL JOIN" },
-        { question: "What is data redundancy?", answer: "The duplication of data across a database" },
-        { question: "Which SQL clause is used to filter groups based on aggregate functions?", answer: "HAVING" }
-    ],
-    cn: [
-        { question: "What does IP stand for?", answer: "Internet Protocol" },
-        { question: "Which layer of OSI model is responsible for routing?", answer: "Network Layer" },
-        { question: "What is the default port for HTTP?", answer: "80" },
-        { question: "What does DNS stand for?", answer: "Domain Name System" },
-        { question: "Which protocol is used for securely transmitting data over the web?", answer: "HTTPS" },
-        { question: "What is the default port for HTTPS?", answer: "443" },
-        { question: "How many layers are there in the standard OSI model?", answer: "7" },
-        { question: "What does MAC stand for in MAC address?", answer: "Media Access Control" },
-        { question: "Which transport layer protocol is connectionless and faster than TCP?", answer: "UDP" },
-        { question: "What is the primary function of a router?", answer: "To forward data packets between computer networks" }
-    ],
-    os: [
-        { question: "What is an Operating System?", answer: "A system software that manages hardware and software resources" },
-        { question: "What is a deadlock?", answer: "A situation where a set of processes are blocked because each holds a resource and waits for another" },
-        { question: "What is virtual memory?", answer: "Memory management technique that uses secondary storage as additional RAM" },
-        { question: "What is a process?", answer: "A program in execution" },
-        { question: "What is a thread?", answer: "A lightweight process or basic unit of CPU utilization" },
-        { question: "What is thrashing in OS?", answer: "A condition where the system spends more time swapping pages than executing processes" },
-        { question: "What does GUI stand for?", answer: "Graphical User Interface" },
-        { question: "What is a kernel?", answer: "The core component of an operating system that manages system operations" },
-        { question: "Which scheduling algorithm allocates the CPU to the process that requests it first?", answer: "First-Come First-Served" },
-        { question: "What is a semaphore?", answer: "An integer variable used to solve the critical section problem and synchronize processes" }
-    ],
-    dsa: [
-        { question: "What is a Stack?", answer: "A Last-In-First-Out linear data structure" },
-        { question: "What is the time complexity of binary search?", answer: "O(log n)" },
-        { question: "Which data structure uses FIFO?", answer: "Queue" },
-        { question: "What is the worst-case time complexity of Bubble Sort?", answer: "O(n^2)" },
-        { question: "Which data structure relies on a key-value pairing mechanism?", answer: "Hash Table" },
-        { question: "What is the time complexity of searching for an item in a balanced Binary Search Tree?", answer: "O(log n)" },
-        { question: "Which algorithm design technique does Quick Sort use?", answer: "Divide and Conquer" },
-        { question: "What is a linear data structure that allows elements to be added or removed from both ends?", answer: "Deque" },
-        { question: "What is the best-case time complexity of Merge Sort?", answer: "O(n log n)" },
-        { question: "Which node is the topmost node of a tree data structure?", answer: "Root node" }
-    ]
-};
-let currentSubject = "webdev";
-let flashcards = JSON.parse(localStorage.getItem(`flashcards_${currentSubject}`)) || defaultBank[currentSubject];
-let currentIndex = 0;
-const question = document.getElementById("question");
-const answer = document.getElementById("answer");
-const userAnswer = document.getElementById("userAnswer");
-const result = document.getElementById("result");
-const showBtn = document.getElementById("showBtn");
-const checkBtn = document.getElementById("checkBtn");
-const prevBtn = document.getElementById("prevBtn");
-const nextBtn = document.getElementById("nextBtn");
-const questionInput = document.getElementById("questionInput");
-const answerInput = document.getElementById("answerInput");
-const addBtn = document.getElementById("addBtn");
-const editBtn = document.getElementById("editBtn");
-const deleteBtn = document.getElementById("deleteBtn");
-const appTitle = document.getElementById("appTitle");
-const navTabs = document.querySelectorAll(".nav-tab");
-function saveCards() {
-    localStorage.setItem(`flashcards_${currentSubject}`, JSON.stringify(flashcards));
+let flashcards = JSON.parse(localStorage.getItem("flashcards")) || [
+
+{
+    question:"What is HTML?",
+    answer:"HyperText Markup Language",
+    hint:"Starts with 'H' and has 3 words."
+},
+
+{
+    question:"Which HTML tag is used to create a hyperlink?",
+    answer:"<a>",
+    hint:"Starts with '<a' and contains 3 characters."
+},
+
+{
+    question:"Which HTML tag is used to insert an image?",
+    answer:"<img>",
+    hint:"Starts with '<i' and contains 5 characters."
+},
+
+{
+    question:"Which HTML element is used to create a form?",
+    answer:"<form>",
+    hint:"Starts with '<f' and contains 6 characters."
+},
+
+{
+    question:"Which HTML tag is used for the largest heading?",
+    answer:"<h1>",
+    hint:"Starts with '<h' and contains 4 characters."
+},
+
+{
+    question:"What is CSS?",
+    answer:"Cascading Style Sheets",
+    hint:"Starts with 'C' and has 3 words."
+},
+
+{
+    question:"Which CSS property changes the text color?",
+    answer:"color",
+    hint:"Starts with 'c' and has 5 characters."
+},
+
+{
+    question:"Which CSS property changes the background color?",
+    answer:"background-color",
+    hint:"Starts with 'b' and has a hyphen."
+},
+
+{
+    question:"Which CSS property is used to make corners rounded?",
+    answer:"border-radius",
+    hint:"Starts with 'b' and has a hyphen."
+},
+
+{
+    question:"Which CSS property is used to align items horizontally in Flexbox?",
+    answer:"justify-content",
+    hint:"Starts with 'j' and has a hyphen."
+},
+
+{
+    question:"Which keyword is used to declare a variable in JavaScript?",
+    answer:"let",
+    hint:"Starts with 'l' and has 3 characters."
+},
+
+{
+    question:"Which function displays a popup message?",
+    answer:"alert()",
+    hint:"Starts with 'a' and ends with '()'."
+},
+
+{
+    question:"Which method is used to select an element by its ID?",
+    answer:"document.getElementById()",
+    hint:"Starts with 'document.' and contains 'get'."
+},
+
+{
+    question:"Which event occurs when a button is clicked?",
+    answer:"click",
+    hint:"Starts with 'c' and has 5 characters."
+},
+
+{
+    question:"Which object is used to store data in the browser permanently?",
+    answer:"localStorage",
+    hint:"Starts with 'l' and has 'Storage'."
 }
-function displayCard() {
-    if (!flashcards || flashcards.length === 0) {
-        question.innerText = "No flashcards available for this subject.";
-        answer.innerText = "";
-        answer.classList.add("hidden");
-        userAnswer.value = "";
-        result.innerHTML = "";
-        return;
+
+];
+
+let currentIndex = 0;
+
+// Timed Challenge Variables
+let isTimedMode = false;
+let timedInterval = null;
+let timeLeft = 60;
+let totalTime = 60;
+let startTime = 0;
+let timedCorrect = 0;
+let timedWrong = 0;
+let timedAttempted = 0;
+let isAnswered = false;
+
+const question=document.getElementById("question");
+const answer=document.getElementById("answer");
+const userAnswer=document.getElementById("userAnswer");
+const result=document.getElementById("result");
+const hintText = document.getElementById("hintText");
+
+const showBtn=document.getElementById("showBtn");
+const checkBtn=document.getElementById("checkBtn");
+const hintBtn=document.getElementById("hintBtn");
+
+const prevBtn=document.getElementById("prevBtn");
+const nextBtn=document.getElementById("nextBtn");
+
+const questionInput=document.getElementById("questionInput");
+const answerInput=document.getElementById("answerInput");
+const hintInput=document.getElementById("hintInput");
+
+const addBtn=document.getElementById("addBtn");
+const editBtn=document.getElementById("editBtn");
+const deleteBtn=document.getElementById("deleteBtn");
+
+// Timed Challenge Elements
+const timedSetup = document.getElementById("timed-setup");
+const timedStats = document.getElementById("timed-stats");
+const startTimedBtn = document.getElementById("start-timed-btn");
+const timerOptions = document.getElementById("timer-options");
+const countdownEl = document.getElementById("countdown");
+const timedCorrectEl = document.getElementById("timed-correct");
+const timedWrongEl = document.getElementById("timed-wrong");
+const timedAttemptedEl = document.getElementById("timed-attempted");
+const timedAccuracyEl = document.getElementById("timed-accuracy");
+const bestTimedScoreEl = document.getElementById("best-timed-score");
+const resultsModal = document.getElementById("results-modal");
+const finalScoreEl = document.getElementById("final-score");
+const finalCorrectEl = document.getElementById("final-correct");
+const finalWrongEl = document.getElementById("final-wrong");
+const finalAccuracyEl = document.getElementById("final-accuracy");
+const finalBestScoreEl = document.getElementById("final-best-score");
+const playAgainBtn = document.getElementById("play-again-btn");
+const closeModalBtn = document.getElementById("close-modal-btn");
+
+function saveCards(){
+    localStorage.setItem("flashcards",JSON.stringify(flashcards));
+}
+
+// Generate a hint from the answer
+function generateHint(answerText) {
+    const trimmedAnswer = answerText.trim();
+    const firstPart = trimmedAnswer.substring(0, Math.min(2, trimmedAnswer.length));
+    const length = trimmedAnswer.length;
+    return `Starts with "${firstPart}" and contains ${length} character${length !== 1 ? 's' : ''}.`;
+}
+
+// Get hint for current card
+function getHint() {
+    const card = flashcards[currentIndex];
+    if (card.hint && card.hint.trim() !== "") {
+        return card.hint;
+    } else {
+        return generateHint(card.answer);
     }
-    question.innerText = flashcards[currentIndex].question;
-    answer.innerText = "Correct Answer: " + flashcards[currentIndex].answer;
+}
+
+// Update card display logic
+function updateCardDisplay() {
+    isAnswered = false;
+    const card = flashcards[currentIndex];
+    question.innerText = card.question;
+    answer.innerText = "Correct Answer: " + card.answer;
     answer.classList.add("hidden");
+    hintText.classList.add("hidden");
     userAnswer.value = "";
     result.innerHTML = "";
-    showBtn.innerText = "Show Answer";
+    showBtn.classList.add("hidden");
+    checkBtn.disabled = false;
+    hintBtn.disabled = false;
+    userAnswer.disabled = false;
 }
-function switchSubject(subjectKey, tabElement) {
-    navTabs.forEach(tab => tab.classList.remove("active"));
-    tabElement.classList.add("active");
-    currentSubject = subjectKey;
-    flashcards = JSON.parse(localStorage.getItem(`flashcards_${currentSubject}`)) || defaultBank[currentSubject];
-    currentIndex = 0;
-    appTitle.innerText = `FLASHCARD QUIZ - ${tabElement.innerText.toUpperCase()}`;
-    displayCard();
-}
-navTabs.forEach(tab => {
-    tab.addEventListener("click", (e) => {
-        switchSubject(e.target.getAttribute("data-subject"), e.target);
-    });
-});
-showBtn.onclick = function() {
-    if (flashcards.length === 0) return;
-    if (answer.classList.contains("hidden")) {
-        answer.classList.remove("hidden");
-        showBtn.innerText = "Hide Answer";
+updateCardDisplay();
+
+// Load best timed score
+function loadBestTimedScore() {
+    const best = localStorage.getItem("bestTimedScore");
+    if (best) {
+        bestTimedScoreEl.textContent = best;
     } else {
+        bestTimedScoreEl.textContent = "0";
+    }
+}
+loadBestTimedScore();
+
+// Timed Challenge Functions
+function startTimedChallenge() {
+    isTimedMode = true;
+    timedCorrect = 0;
+    timedWrong = 0;
+    timedAttempted = 0;
+    shuffle(flashcards); // Shuffle the deck for timed challenge
+    currentIndex = 0;
+    
+    totalTime = parseInt(timerOptions.value);
+    timeLeft = totalTime;
+    startTime = Date.now();
+    
+    // Toggle UI elements
+    timedSetup.hidden = true;
+    timedStats.hidden = false;
+    // Disable editing during timed mode
+    disableEditing(true);
+    closeResultsModal();
+    
+    // Set initial stats display
+    countdownEl.textContent = timeLeft;
+    updateTimedStats();
+    updateCardDisplay();
+    
+    // Start timer
+    timedInterval = setInterval(() => {
+        timeLeft--;
+        countdownEl.textContent = timeLeft;
+        if (timeLeft <= 0) {
+            endTimedChallenge();
+        }
+    }, 1000);
+}
+
+function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
+
+function updateTimedStats() {
+    timedCorrectEl.textContent = timedCorrect;
+    timedWrongEl.textContent = timedWrong;
+    timedAttemptedEl.textContent = timedAttempted;
+    
+    const accuracy = timedAttempted > 0 
+        ? Math.round((timedCorrect / timedAttempted) * 100) 
+        : 0;
+    timedAccuracyEl.textContent = accuracy + "%";
+}
+
+function endTimedChallenge() {
+    isTimedMode = false;
+    clearInterval(timedInterval);
+    disableQuizButtons();
+    
+    // Calculate final score and stats
+    const finalScore = timedCorrect;
+    const accuracy = timedAttempted > 0 
+        ? Math.round((timedCorrect / timedAttempted) * 100) 
+        : 0;
+    
+    // Update best score
+    let bestScore = parseInt(localStorage.getItem("bestTimedScore") || 0);
+    if (finalScore > bestScore) {
+        bestScore = finalScore;
+        localStorage.setItem("bestTimedScore", bestScore);
+        bestTimedScoreEl.textContent = bestScore;
+    }
+    
+    finalScoreEl.textContent = finalScore;
+    finalCorrectEl.textContent = timedCorrect;
+    finalWrongEl.textContent = timedWrong;
+    finalAccuracyEl.textContent = accuracy + "%";
+    finalBestScoreEl.textContent = bestScore;
+    
+    showResultsModal();
+    disableEditing(false); // Re-enable editing
+}
+
+function disableQuizButtons() {
+    checkBtn.disabled = true;
+    hintBtn.disabled = true;
+    userAnswer.disabled = true;
+}
+
+function showResultsModal() {
+    resultsModal.classList.add("active");
+    resultsModal.hidden = false;
+}
+
+function closeResultsModal() {
+    resultsModal.classList.remove("active");
+    setTimeout(() => {
+        resultsModal.hidden = true;
+        // Reset UI to normal mode
+        timedSetup.hidden = false;
+        timedStats.hidden = true;
+        updateCardDisplay();
+    }, 300);
+}
+
+function disableEditing(isDisabled) {
+    questionInput.disabled = isDisabled;
+    answerInput.disabled = isDisabled;
+    hintInput.disabled = isDisabled;
+    addBtn.disabled = isDisabled;
+    editBtn.disabled = isDisabled;
+    deleteBtn.disabled = isDisabled;
+    prevBtn.disabled = isDisabled;
+    nextBtn.disabled = isDisabled;
+}
+
+// Event listeners for timed challenge
+startTimedBtn.addEventListener("click", startTimedChallenge);
+playAgainBtn.addEventListener("click", startTimedChallenge);
+closeModalBtn.addEventListener("click", closeResultsModal);
+resultsModal.addEventListener("click", (e) => {
+    if (e.target === resultsModal) {
+        closeResultsModal();
+    }
+});
+
+showBtn.onclick=function(){
+    if(answer.classList.contains("hidden")){
+        answer.classList.remove("hidden");
+        showBtn.innerText="Hide Answer";
+    }else{
         answer.classList.add("hidden");
-        showBtn.innerText = "Show Answer";
+        showBtn.innerText="Show Answer";
     }
 };
-checkBtn.onclick = function() {
-    if (flashcards.length === 0) return;
-    let user = userAnswer.value.trim().toLowerCase();
-    let correct = flashcards[currentIndex].answer.trim().toLowerCase();
-    if (user == "") {
+
+hintBtn.onclick = function() {
+    hintText.innerText = "💡 " + getHint();
+    hintText.classList.remove("hidden");
+};
+
+checkBtn.onclick=function(){
+    if (isAnswered) return;
+    let user=userAnswer.value.trim().toLowerCase();
+    let correct=flashcards[currentIndex].answer.trim().toLowerCase();
+    if(user==""){
         alert("Please type your answer.");
         return;
     }
-    if (user === correct) {
-        result.innerHTML = "✅ Correct!";
-        result.style.color = "green";
-    } else {
-        result.innerHTML = "❌ Incorrect!";
-        result.style.color = "red";
+    let isCorrect = (user === correct);
+    isAnswered = true;
+    checkBtn.disabled = true;
+    hintBtn.disabled = true;
+
+    if(isCorrect){
+        result.innerHTML="✅ Correct!";
+        result.style.color="green";
+        showBtn.classList.add("hidden");
+
+        if(isTimedMode){
+            timedCorrect++;
+            timedAttempted++;
+            updateTimedStats();
+        }
+        // Auto next card after 1 second
+        setTimeout(() => {
+            if(isTimedMode){
+                currentIndex++;
+                if(currentIndex >= flashcards.length){
+                    currentIndex = 0;
+                }
+            } else {
+                currentIndex++;
+                if(currentIndex >= flashcards.length){
+                    currentIndex = 0;
+                }
+            }
+            updateCardDisplay();
+        }, 1000);
+    }else{
+        result.innerHTML="❌ Incorrect! Try again or reveal the answer.";
+        result.style.color="red";
+        showBtn.classList.remove("hidden");
+        
+        if(isTimedMode){
+            timedWrong++;
+            timedAttempted++;
+            updateTimedStats();
+        }
     }
 };
-nextBtn.onclick = function() {
-    if (flashcards.length === 0) return;
+
+nextBtn.onclick=function(){
+    if(isTimedMode) return;
     currentIndex++;
-    if (currentIndex >= flashcards.length) {
-        currentIndex = 0;
+    if(currentIndex>=flashcards.length){
+        currentIndex=0;
     }
-    displayCard();
+    updateCardDisplay();
 };
-prevBtn.onclick = function() {
-    if (flashcards.length === 0) return;
+
+prevBtn.onclick=function(){
+    if(isTimedMode) return;
     currentIndex--;
-    if (currentIndex < 0) {
-        currentIndex = flashcards.length - 1;
+    if(currentIndex<0){
+        currentIndex=flashcards.length-1;
     }
-    displayCard();
+    updateCardDisplay();
 };
-addBtn.onclick = function() {
-    let q = questionInput.value.trim();
-    let a = answerInput.value.trim();
-    if (q == "" || a == "") {
+
+addBtn.onclick=function(){
+    let q=questionInput.value.trim();
+    let a=answerInput.value.trim();
+    let h=hintInput.value.trim();
+    if(q==""||a==""){
         alert("Please enter question and answer.");
         return;
     }
-    flashcards.push({ question: q, answer: a });
+    flashcards.push({
+        question:q,
+        answer:a,
+        hint:h
+    });
     saveCards();
-    questionInput.value = "";
-    answerInput.value = "";
-    currentIndex = flashcards.length - 1;
-    displayCard();
+    questionInput.value="";
+    answerInput.value="";
+    hintInput.value="";
+    currentIndex=flashcards.length-1;
+    updateCardDisplay();
 };
-editBtn.onclick = function() {
-    if (flashcards.length === 0) return;
-    let q = questionInput.value.trim();
-    let a = answerInput.value.trim();
-    if (q == "" || a == "") {
+
+editBtn.onclick=function(){
+    let q=questionInput.value.trim();
+    let a=answerInput.value.trim();
+    let h=hintInput.value.trim();
+    if(q==""||a==""){
         alert("Please enter updated question and answer.");
         return;
     }
-    flashcards[currentIndex].question = q;
-    flashcards[currentIndex].answer = a;
+    flashcards[currentIndex].question=q;
+    flashcards[currentIndex].answer=a;
+    flashcards[currentIndex].hint=h;
     saveCards();
-    displayCard();
-    questionInput.value = "";
-    answerInput.value = "";
+    updateCardDisplay();
+    questionInput.value="";
+    answerInput.value="";
+    hintInput.value="";
 };
-deleteBtn.onclick = function() {
-    if (flashcards.length === 0) return;
-    flashcards.splice(currentIndex, 1);
-    if (currentIndex >= flashcards.length) {
-        currentIndex = flashcards.length - 1;
+
+deleteBtn.onclick=function(){
+    if(flashcards.length==1){
+        alert("At least one flashcard is required.");
+        return;
+    }
+    flashcards.splice(currentIndex,1);
+    if(currentIndex>=flashcards.length){
+        currentIndex=flashcards.length-1;
     }
     saveCards();
-    displayCard();
+    updateCardDisplay();
 };
-switchSubject("webdev", document.querySelector('[data-subject="webdev"]'));
