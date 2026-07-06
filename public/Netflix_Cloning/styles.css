@@ -862,13 +862,16 @@ footer {
 }
 
 .movie-card {
-  background: #2d2d2d;
+background: #2d2d2d;
   border-radius: 8px;
   overflow: hidden;
   cursor: pointer;
   transition: all 0.3s ease;
   position: relative;
-  height: 300px;
+  height: auto;  
+  aspect-ratio: 2 / 3;
+  display: flex;          
+  flex-direction: column;
 }
 
 .movie-card:hover {
@@ -877,18 +880,11 @@ footer {
 }
 
 .movie-poster {
-  width: 100%;
+width: 100%;
   height: 100%;
-  object-fit: cover;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  object-fit: cover;      
+  display: block;    
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  font-size: 14px;
-  text-align: center;
-  padding: 20px;
-  font-weight: 600;
 }
 
 .movie-info {
