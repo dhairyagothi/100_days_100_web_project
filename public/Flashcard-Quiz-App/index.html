@@ -15,14 +15,61 @@
     <button class="nav-tab" data-subject="dsa">DSA</button>
 </nav>
 <div class="container">
-    <h1 id="appTitle">FLASHCARD QUIZ</h1>
+
+    <h1>FLASHCARD QUIZ</h1>
+
+    <!-- Timed Challenge Setup -->
+    <div id="timed-setup" class="timed-setup">
+        <h2>⚡ Timed Challenge Mode</h2>
+        <div class="timer-selector">
+            <label for="timer-options">Choose Duration:</label>
+            <select id="timer-options">
+                <option value="30">30 Seconds</option>
+                <option value="60" selected>60 Seconds</option>
+                <option value="120">120 Seconds</option>
+            </select>
+        </div>
+        <button id="start-timed-btn" class="success">Start Timed Challenge</button>
+    </div>
+
+    <!-- Timed Stats -->
+    <div id="timed-stats" class="timed-stats" hidden>
+        <div class="stat">
+            <h3>⏱️ Time Left</h3>
+            <span id="countdown">60</span>
+        </div>
+        <div class="stat">
+            <h3>✅ Correct</h3>
+            <span id="timed-correct">0</span>
+        </div>
+        <div class="stat">
+            <h3>❌ Wrong</h3>
+            <span id="timed-wrong">0</span>
+        </div>
+        <div class="stat">
+            <h3>📊 Attempted</h3>
+            <span id="timed-attempted">0</span>
+        </div>
+        <div class="stat">
+            <h3>🎯 Accuracy</h3>
+            <span id="timed-accuracy">0%</span>
+        </div>
+        <div class="stat">
+            <h3>🏆 Best Score</h3>
+            <span id="best-timed-score">0</span>
+        </div>
+    </div>
+
     <div class="card">
         <h2 id="question"></h2>
         <input type="text" id="userAnswer" placeholder="Type your answer here">
         <div class="quiz-buttons">
             <button id="checkBtn">Check Answer</button>
-            <button id="showBtn">Show Answer</button>
+            <button id="hintBtn">Hint</button>
+            <button id="showBtn" class="hidden">Show Answer</button>
         </div>
+
+        <p id="hintText" class="hidden"></p>
         <p id="result"></p>
         <p id="answer" class="hidden"></p>
     </div>
@@ -32,14 +79,61 @@
     </div>
     <hr>
     <h2>Add / Edit Flashcard</h2>
-    <input type="text" id="questionInput" placeholder="Enter Question">
-    <textarea id="answerInput" placeholder="Enter Answer"></textarea>
+
+    <input
+        type="text"
+        id="questionInput"
+        placeholder="Enter Question">
+
+    <input
+        type="text"
+        id="hintInput"
+        placeholder="Enter Hint (Optional)">
+
+    <textarea
+        id="answerInput"
+        placeholder="Enter Answer"></textarea>
+
     <div class="buttons">
         <button id="addBtn">Add Flashcard</button>
         <button id="editBtn">Edit Current</button>
         <button id="deleteBtn">Delete Current</button>
     </div>
 </div>
+
+<!-- Results Modal -->
+<div id="results-modal" class="modal-overlay" hidden>
+    <div class="modal-content">
+        <h2>🎉 Challenge Complete!</h2>
+        <div class="results-grid">
+            <div class="result-item">
+                <h3>Final Score</h3>
+                <span id="final-score">0</span>
+            </div>
+            <div class="result-item">
+                <h3>Correct Answers</h3>
+                <span id="final-correct">0</span>
+            </div>
+            <div class="result-item">
+                <h3>Wrong Answers</h3>
+                <span id="final-wrong">0</span>
+            </div>
+            <div class="result-item">
+                <h3>Accuracy</h3>
+                <span id="final-accuracy">0%</span>
+            </div>
+            <div class="result-item">
+                <h3>Best Score</h3>
+                <span id="final-best-score">0</span>
+            </div>
+        </div>
+        <div class="modal-controls">
+            <button id="play-again-btn" class="success">Play Again</button>
+            <button id="close-modal-btn" class="danger">Close</button>
+        </div>
+    </div>
+</div>
+
 <script src="script.js"></script>
 </body>
 </html>
