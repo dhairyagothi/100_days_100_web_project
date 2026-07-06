@@ -18,14 +18,10 @@ const bodyCore = document.getElementById('bodyCore');
 const bodyGlow = document.getElementById('bodyGlow');
 const pupil = document.getElementById('pupil');
 
-// Tracking variables for physics calculation
+// Tracking variables for physics calculation (Duplicates Removed)
 let lastMouseX = 0;
 let lastMouseY = 0;
 let lastMouseTime = Date.now();
-
-let lastMouseX = 0;
-let lastMouseY = 0;
-let lastMouseTime = 0;
 let mouseInitialized = false;
 
 // Prevent multiple penalties from stacking
@@ -183,7 +179,6 @@ function updateUI(msg, color) {
 }
 
 function animateCreaturePulse() {
-  // Basic parametric scaling to create a heart-beat look
   let baseRadius = 40 + level * 2;
   let pulseFactor = stability < 50 ? 6 : 2; // Shakes faster if dying
   let scale = baseRadius + Math.sin(Date.now() / 200) * pulseFactor;
@@ -193,7 +188,6 @@ function animateCreaturePulse() {
 }
 
 function triggerEvolutionVisuals() {
-  // Add visual fireworks or flash on transition threshold milestones
   bodyCore.style.transform = 'scale(1.3)';
   setTimeout(() => {
     bodyCore.style.transform = 'scale(1)';
