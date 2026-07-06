@@ -4,14 +4,15 @@ const TMDB_BASE_URL = "https://api.themoviedb.org/3";
 const TMDB_IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500/";
 const FALLBACK_POSTER = "https://placehold.co/500x750/2d2d2d/FFFFFF?text=No+Poster";
 
+// STEP 2: Map each category row to its TMDB genre ID
 const GENRE_MAP = {
     actionMovies: 28, 
+    romanceMovies: 10749, // <-- Added Romance category (TMDB ID 10749)
     dramaMovies: 18
 };
 
 // STEP 3: Function that fetches movies for ONE genre and renders them
 function loadMoviesByGenre(containerId, genreId) {
-    // Added certification constraints to exclude R, NC-17, and NR certifications if possible
     const url = `${TMDB_BASE_URL}/discover/movie?api_key=${TMDB_API_KEY}&with_genres=${genreId}&sort_by=popularity.desc&include_adult=false&certification_country=US&certification.lte=PG-13`;
 
     fetch(url)
@@ -26,14 +27,11 @@ function loadMoviesByGenre(containerId, genreId) {
 
             // Extra client-side filter layer to clear out any remaining explicit titles
             movies = movies.filter(movie => {
-                // Check if the movie is strictly marked as adult
                 if (movie.adult) return false;
 
-                // Block specific movie IDs that are slipping through
-                const blockedIds = [10731, 84317, 44260]; // IDs for Damage, Like a Brother, Rita
+                const blockedIds = [10731, 84317, 44260]; 
                 if (blockedIds.includes(movie.id)) return false;
 
-                // Keyword blocklist for overview descriptions or titles
                 const blocklistWords = ["erotic", "sensual", "softcore", "nudity"];
                 const titleText = (movie.title || "").toLowerCase();
                 const overviewText = (movie.overview || "").toLowerCase();
