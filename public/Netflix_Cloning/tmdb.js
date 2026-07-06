@@ -1,5 +1,5 @@
 // ============= TMDB API INTEGRATION =============
-const TMDB_API_KEY = "60c0d7270173c4a4c3ea15ccc1cbb4f0"; 
+const TMDB_API_KEY = "879672cbfc471f231f4989b4b693ddb9"; 
 const TMDB_BASE_URL = "https://api.themoviedb.org/3";
 const TMDB_IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500/";
 const FALLBACK_POSTER = "https://placehold.co/500x750/2d2d2d/FFFFFF?text=No+Poster";
@@ -29,10 +29,10 @@ function loadMoviesByGenre(containerId, genreId) {
             movies = movies.filter(movie => {
                 if (movie.adult) return false;
 
-                const blockedIds = [10731, 84317, 44260]; 
+                const blockedIds = [10731, 84317, 44260,921]; 
                 if (blockedIds.includes(movie.id)) return false;
 
-                const blocklistWords = ["erotic", "sensual", "softcore", "nudity"];
+                const blocklistWords = ["erotic", "sensual", "softcore", "nudity","9 songs"];
                 const titleText = (movie.title || "").toLowerCase();
                 const overviewText = (movie.overview || "").toLowerCase();
 
