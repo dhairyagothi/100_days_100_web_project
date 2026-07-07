@@ -314,6 +314,12 @@
                                 id="title"
                                 placeholder="Frontend Developer"
                             />
+                            <label style="margin-top:12px">
+                                Upload Profile Photo
+
+                            </label>
+                            <input type="file" id="profilePhoto" accept="image/*"/>
+                            <img id="photoPreview" style="display: none;"/>
 
                         </div>
 
@@ -483,6 +489,31 @@
                             placeholder="- Resume Studio Web App&#10;- E-commerce Website"
                         ></textarea>
 
+                        <label>
+                            Additional Sections 
+                        </label>
+
+                        <select id="selectionSelect">
+                            <option value="">Select a section</option>
+                            <option value="certifications">Certifications</option>
+                            <option value="Achievements">Achievements</option>
+                            <option value="Interests">Interests</option>
+                            <option value="Volunteer Experience">Volunteer Experience</option>
+                            <option value="Publications">Publications</option>
+                            <option value="Awards">Awards</option>
+
+                        </select>
+                        <button type="button" id="addSectionBtn">
+                                                    Add Section
+                                                </button>
+                        <div id="dynamicSections"></div>
+                        <div class="section-order-container">
+
+                    <h3>Resume Section Order</h3>
+
+                    <div id="sectionOrderList"></div>
+
+                </div>
                     </div>
 
                 </form>
@@ -494,7 +525,7 @@
         <!-- =========================================
              LIVE PREVIEW
         ========================================== -->
-
+                
         <section class="preview">
 
             <div class="preview-header">

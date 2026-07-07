@@ -91,6 +91,13 @@ document.addEventListener('DOMContentLoaded', () => {
     boardEl.style.gridTemplateColumns = `repeat(${boardSize}, ${cellPx}px)`;
     boardEl.style.setProperty('--cell-size', `${cellPx}px`);
 
+ fix-nqueen-input-validation
+function startGame() {
+    const n = parseInt(boardInput.value);
+    if (isNaN(n) || n < 4 || n > 12) {
+    alert("Please enter a valid board size between 4 and 12.");
+    return;
+}
     for (let r = 0; r < boardSize; r++) {
       for (let c = 0; c < boardSize; c++) {
         const sq = document.createElement('button');
@@ -100,10 +107,17 @@ document.addEventListener('DOMContentLoaded', () => {
         sq.dataset.col = String(c);
         sq.setAttribute('aria-label', `Row ${r + 1}, column ${c + 1}`);
         sq.addEventListener('click', () => handleClick(r, c));
+        sq.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            handleClick(r, c);
+            }
+          });
         boardEl.appendChild(sq);
       }
     }
   };
+ Main
 
   // ── Click handler ─────────────────────────────────────────────────
 
@@ -138,7 +152,11 @@ document.addEventListener('DOMContentLoaded', () => {
       renderBoard();
       return;
     }
-
+    // Prevent two queens in the same row
+    if (queens.some(([r]) => r === row)) {
+      showMsg("This row already has a queen.", "error");
+      return;
+    }
     // Attempt placement
     if (!isSafe(row, col)) {
       flashConflictingQueens(row, col);
@@ -151,10 +169,21 @@ document.addEventListener('DOMContentLoaded', () => {
     moveCount++;
     renderBoard();
 
-    if (queens.length === boardSize) {
-      showMsg(`Solved! All ${boardSize} queens placed.`, 'success');
-      stopTimer();
-    } else {
+    if (queens.length === boardSize && isBoardValid()) {
+    showMsg(`Solved! All ${boardSize} queens placed.`, "success");
+    stopTimer();
+    boardEl.classList.add("board-win");
+
+    setTimeout(() => {
+    boardEl.classList.remove("board-win");
+    }, 1500);
+
+    gameActive = false;
+
+    hintButton.disabled = true;
+    solveButton.disabled = true;
+    toggleMarkButton.disabled = true;
+} else {
       showMsg('');
     }
   };

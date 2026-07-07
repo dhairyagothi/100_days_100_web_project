@@ -240,7 +240,7 @@ const renderInputFields = () => {
         input.addEventListener('keydown', handleInputKeydown);
         input.addEventListener('focus', () => handleInputFocus(index));
         input.addEventListener('blur', () => {
-            if (input.value !== '') updateArrayValue(index, input.value);
+            updateArrayValue(index, input.value);
             handleInputBlur(index);
         });
         
@@ -555,14 +555,16 @@ const handleSort = async () => {
         
         const sortedBox = document.querySelector(`.array-box[data-index="${n - 1 - i}"]`);
         if (sortedBox) {
+            if (sortedBox && state.arrayData[n - 1 - i] !== null) {
             sortedBox.classList.add('sorted', 'pass-complete');
+        }
         }
         await sleep(360);
 
         if (!swapped) {
             for (let k = 0; k < n - i; k++) {
                 const sortedBox = document.querySelector(`.array-box[data-index="${k}"]`);
-                if (sortedBox) sortedBox.classList.add('sorted', 'pass-complete');
+                if (sortedBox && state.arrayData[k] !== null) sortedBox.classList.add('sorted', 'pass-complete');
             }
             break;
         }
@@ -572,7 +574,8 @@ const handleSort = async () => {
     renderArray(true);
     
     document.querySelectorAll('.array-box').forEach(box => {
-        if (box.querySelector('.array-box-value').textContent !== 'Empty') {
+        const idx = parseInt(box.dataset.index, 10);
+        if (state.arrayData[idx] !== null) {
             box.classList.add('sorted', 'pass-complete');
         }
     });
@@ -584,7 +587,6 @@ const handleSort = async () => {
     state.isRunning = false;
     sortBtn.disabled = false;
 };
-
 const isArraySorted = (array) => {
     for (let i = 0; i < array.length - 1; i++) {
         if (array[i] !== null && array[i + 1] !== null && array[i] > array[i + 1]) {
@@ -597,7 +599,10 @@ const isArraySorted = (array) => {
 
 const showAlreadySortedFeedback = () => {
     document.querySelectorAll('.array-box').forEach(box => {
-        box.classList.add('sorted', 'already-sorted');
+        const idx = parseInt(box.dataset.index, 10);
+        if (state.arrayData[idx] !== null) {
+            box.classList.add('sorted', 'already-sorted');
+        }
     });
 };
 
@@ -1804,22 +1809,22 @@ const handleLLDeleteAtIndex = async () => {
 
     const index = parseInt(indexRaw, 10);
 
-    if (index < 0 || index >= llState.nodes.length) {
-        const maxIndex = Math.max(0, llState.nodes.length - 1);
-        showLLFieldError(llDeleteIndexError, `Invalid index — valid range is 0 to ${maxIndex}`);
-        triggerLLErrorGlow();
-        setLLStatus(`Invalid index — valid range is 0 to ${maxIndex}`, 'failure');
-        resetLLInvalidInputs();
-        return;
-    }
-
     if (llState.nodes.length === 0) {
-        showLLFieldError(llDeleteIndexError, 'Cannot delete from empty list');
-        triggerLLErrorGlow();
-        setLLStatus('Cannot delete from an empty list', 'failure');
-        resetLLInvalidInputs();
-        return;
-    }
+            showLLFieldError(llDeleteIndexError, 'Cannot delete from empty list');
+            triggerLLErrorGlow();
+            setLLStatus('Cannot delete from an empty list', 'failure');
+            resetLLInvalidInputs();
+            return;
+        }
+
+        if (index < 0 || index >= llState.nodes.length) {
+            const maxIndex = Math.max(0, llState.nodes.length - 1);
+            showLLFieldError(llDeleteIndexError, `Invalid index — valid range is 0 to ${maxIndex}`);
+            triggerLLErrorGlow();
+            setLLStatus(`Invalid index — valid range is 0 to ${maxIndex}`, 'failure');
+            resetLLInvalidInputs();
+            return;
+        }
 
     llState.isRunning = true;
     setLLControlsDisabled(true);

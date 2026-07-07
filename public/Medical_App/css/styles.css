@@ -80,14 +80,11 @@ body {
     overflow-x: hidden;
 }
 
-<<<<<<< HEAD
 /* ============================================================================
    Typography
    ============================================================================ */
 
 
-=======
->>>>>>> 24d1af3976cd40c01b0d06805fdf5d4818189bb3
 h1, h2, h3, h4, h5, h6 {
     font-family: 'Poppins', sans-serif;
     font-weight: 600;
@@ -548,7 +545,23 @@ a:hover { color: var(--primary-dark); text-decoration: underline; }
 .info-item i { color: var(--primary); font-size: 1rem; }
 
 .doctor-services { display: flex; gap: var(--spacing-sm); flex-wrap: wrap; }
-.service-badge { background-color: var(--accent); color: var(--primary); padding: 4px 12px; border-radius: var(--radius-sm); font-size: 0.8rem; font-weight: 500; }
+/* Light Mode */
+.service-badge {
+    padding: 4px 12px;
+    border-radius: var(--radius-sm);
+    font-size: 0.8rem;
+    font-weight: 500;
+    background: #f3f4f6;
+    color: #374151;
+}
+
+/* Dark Mode */
+body.dark-mode .service-badge,
+[data-theme="dark"] .service-badge {
+    background: #065f46;
+    color: #ffffff;
+    border: 1px solid #10b981;
+}
 
 .doctor-card-footer { padding: var(--spacing-lg); border-top: 1px solid var(--border); background-color: var(--background-alt); }
 
@@ -727,7 +740,9 @@ a:hover { color: var(--primary-dark); text-decoration: underline; }
 
 .health-stats {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    /* grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-lg); */
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: var(--spacing-lg);
 }
 
@@ -794,7 +809,9 @@ a:hover { color: var(--primary-dark); text-decoration: underline; }
 
 .emergency-buttons {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    /* grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-lg); */
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: var(--spacing-lg);
 }
 
@@ -809,7 +826,9 @@ a:hover { color: var(--primary-dark); text-decoration: underline; }
 /* ============================================================================
    Quick Actions
    ============================================================================ */
-.quick-actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--spacing-lg); }
+.quick-actions { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: var(--spacing-lg);
+ }
 .quick-action-btn {
     display: flex; flex-direction: column; align-items: center; gap: var(--spacing-md); padding: var(--spacing-lg);
     background-color: var(--background); border: 1px solid var(--border); border-radius: var(--radius-md);
@@ -1307,3 +1326,96 @@ aside.sidebar:not(#sidebar) {
 }
 
 
+.user-actions-bar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:1rem;
+    width:90%;
+    max-width:1200px;
+    margin:20px auto;
+}
+
+
+
+.user-badge{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:10px 16px;
+    background:linear-gradient(135deg,#f0f9ff,#e0f2fe);
+    border:1px solid #bae6fd;
+    border-radius:12px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.08);
+}
+
+.user-avatar{
+    width:42px;
+    height:42px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:50%;
+    background:#2563eb;
+    color:white;
+    font-size:20px;
+    font-weight:600;
+}
+
+.user-meta{
+    display:flex;
+    flex-direction:column;
+}
+
+#userBadgeName{
+    font-weight:600;
+    color:#1e293b;
+}
+
+#userBadgeRole{
+    font-size:0.85rem;
+    color:#64748b;
+}
+#logoutBtn{
+    padding:10px 18px;
+    border:none;
+    border-radius:10px;
+    background:#ef4444;
+    color:white;
+    font-weight:600;
+    cursor:pointer;
+    transition:all 0.3s ease;
+}
+
+#logoutBtn:hover{
+    background:#dc2626;
+    transform:translateY(-2px);
+}
+
+@media (max-width:768px){
+    .user-actions-bar{
+        flex-direction:column;
+        align-items:stretch;
+    }
+
+    #logoutBtn{
+        width:100%;
+    }
+}
+
+
+/* .theme-toggle-btn {
+    background: #252b42;
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow:
+        0 4px 12px rgba(0,0,0,0.35),
+        0 0 10px rgba(59,130,246,0.25);
+}
+  */
+
+  .theme-toggle-btn {
+    background: #111827;
+    border: 1px solid #374151;
+    color: #f3f4f6;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.4);
+}

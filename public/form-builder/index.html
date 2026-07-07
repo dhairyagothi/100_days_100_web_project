@@ -19,12 +19,23 @@
       <div class="row vh-100">
         <!-- Sidebar -->
         <div
-          class="col-md-3 col-lg-2 bg-dark border-end p-3 overflow-auto"
+          class="col-md-3 col-lg-2 border-end p-3 overflow-auto"
           id="sidebar"
         >
-          <h4 class="text-light mb-4">
-            <i class="fas fa-wrench"></i> FormForge
-          </h4>
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4 class="mb-0" style="color: var(--text);">
+              <i class="fas fa-wrench"></i> FormForge
+            </h4>
+            <!-- Theme Toggle -->
+            <div class="theme-toggle-wrapper" id="themeToggle" role="button" tabindex="0" aria-label="Toggle theme">
+              <i class="fas fa-sun" id="themeIconSun"></i>
+              <div class="toggle-track">
+                <div class="toggle-thumb"></div>
+              </div>
+              <i class="fas fa-moon" id="themeIconMoon"></i>
+              <span class="theme-label" id="themeLabel">Dark</span>
+            </div>
+          </div>
           <p class="text-muted small mb-3">Drag or click to add fields</p>
 
           <div class="field-list">
@@ -60,11 +71,11 @@
 
         <!-- Canvas -->
         <div
-          class="col-md-6 col-lg-7 bg-secondary p-4 overflow-auto"
+          class="col-md-6 col-lg-7 p-4 overflow-auto"
           id="canvas-area"
         >
           <div class="d-flex justify-content-between align-items-center mb-4">
-            <h3 class="text-light mb-0">Form Canvas</h3>
+            <h3 class="mb-0" style="color: var(--text);">Form Canvas</h3>
             <div>
               <div class="dropdown d-inline-block me-2">
                 <button class="btn btn-outline-light btn-sm dropdown-toggle" data-bs-toggle="dropdown">
@@ -87,6 +98,8 @@
                 <i class="fas fa-history"></i> History
               </button>
               <button class="btn btn-success btn-sm" id="btn-export">
+                <i class="fas fa-download"></i> Export
+              </button>
             </div>
           </div>
 
@@ -99,7 +112,7 @@
 
           <div
             id="form-canvas"
-            class="bg-dark p-4 rounded border border-secondary min-vh-100"
+            class="p-4 rounded border min-vh-100"
           >
             <div class="text-center text-muted py-5" id="empty-state">
               <i class="fas fa-plus-circle fa-3x mb-3"></i>
@@ -112,10 +125,10 @@
 
         <!-- Properties Panel -->
         <div
-          class="col-md-3 col-lg-3 bg-dark border-start p-3 overflow-auto"
+          class="col-md-3 col-lg-3 border-start p-3 overflow-auto"
           id="properties-panel"
         >
-          <h5 class="text-light mb-3">Properties</h5>
+          <h5 class="mb-3">Properties</h5>
           <div id="properties-content">
             <p class="text-muted">Select a field to edit its properties</p>
           </div>
@@ -126,12 +139,12 @@
     <!-- Preview Modal -->
     <div class="modal fade" id="previewModal" tabindex="-1">
       <div class="modal-dialog modal-lg">
-        <div class="modal-content bg-dark text-light">
+        <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">Form Preview</h5>
             <button
               type="button"
-              class="btn-close btn-close-white"
+              class="btn-close"
               data-bs-dismiss="modal"
             ></button>
           </div>
@@ -150,24 +163,27 @@
         </div>
       </div>
     </div>
+    
+    <!-- Analytics Modal -->
     <div class="modal fade" id="analyticsModal" tabindex="-1">
       <div class="modal-dialog modal-lg">
-        <div class="modal-content bg-dark text-light">
+        <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">Form Analytics</h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
           </div>
           <div class="modal-body" id="analytics-body"></div>
         </div>
       </div>
     </div>
 
+    <!-- History Modal -->
     <div class="modal fade" id="historyModal" tabindex="-1">
       <div class="modal-dialog">
-        <div class="modal-content bg-dark text-light">
+        <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">Version History</h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
           </div>
           <div class="modal-body" id="history-body"></div>
         </div>

@@ -95,6 +95,7 @@ h1, h2, h3, h4 {
 .text-gradient {
   background: linear-gradient(135deg, var(--text-primary), var(--text-secondary));
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
@@ -808,23 +809,55 @@ h1, h2, h3, h4 {
 .toast {
   background: var(--bg-panel);
   border: 1px solid var(--border-strong);
+  border-left: 3px solid var(--text-tertiary);
   color: var(--text-primary);
-  padding: 12px 16px;
+  padding: 12px 14px 12px 16px;
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-lg);
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   font-size: 0.875rem;
   font-weight: 500;
+  min-width: 280px;
+  max-width: 360px;
   transform: translateX(100%);
   opacity: 0;
   animation: slideIn 0.3s var(--ease-spring) forwards;
 }
 
-.toast.success i { color: var(--success); }
-.toast.error i { color: var(--danger); }
-.toast.info i { color: var(--primary); }
+.toast-message {
+  flex: 1;
+  line-height: 1.4;
+}
+
+.toast-close {
+  background: transparent;
+  border: none;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  padding: 2px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  transition: color var(--duration-fast), background var(--duration-fast);
+}
+
+.toast-close:hover {
+  color: var(--text-primary);
+  background: var(--bg-elevated);
+}
+
+.toast.success { border-left-color: var(--success); }
+.toast.error { border-left-color: var(--danger); }
+.toast.info { border-left-color: var(--primary); }
+
+.toast.success .toast-icon { color: var(--success); }
+.toast.error .toast-icon { color: var(--danger); }
+.toast.info .toast-icon { color: var(--primary); }
 
 @keyframes slideIn {
   to { transform: translateX(0); opacity: 1; }
@@ -896,5 +929,19 @@ h1, h2, h3, h4 {
     width: 200px;
     position: absolute;
     right: var(--space-6);
+  }
+}
+
+@media (max-width: 480px) {
+  .toast-container {
+    left: var(--space-4);
+    right: var(--space-4);
+    bottom: var(--space-4);
+  }
+
+  .toast {
+    min-width: 0;
+    max-width: none;
+    width: 100%;
   }
 }

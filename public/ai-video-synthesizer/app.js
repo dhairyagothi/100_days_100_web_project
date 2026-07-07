@@ -17,62 +17,85 @@ let isPlaying = false;
 let animationFrameId = null;
 let currentFrameIndex = 0;
 const MAX_FRAMES_LIMIT = 1000;
+function startRenderLoop() {
+  if (animationFrameId !== null) return;
+
+  isPlaying = true;
+  renderBtn.textContent = 'Halt Synthesis Stream';
+
+  animationFrameId = requestAnimationFrame(executeRenderCycle);
+}
+
+function stopRenderLoop() {
+  isPlaying = false;
+
+  if (animationFrameId !== null) {
+    cancelAnimationFrame(animationFrameId);
+    animationFrameId = null;
+  }
+
+  renderBtn.textContent = 'Compile Live Sequence Stream';
+}
 
 function executeRenderCycle() {
-    const normalizedTime = currentFrameIndex / MAX_FRAMES_LIMIT;
-    const interpMode = interpSelect.value;
-    const frequencyFactor = parseFloat(freqSlider.value) / 10;
+  const normalizedTime = currentFrameIndex / MAX_FRAMES_LIMIT;
+  const interpMode = interpSelect.value;
+  const frequencyFactor = parseFloat(freqSlider.value) / 10;
 
-    // Track frame compilation duration down to fractions of milliseconds
-    const startTimestamp = performance.now();
+  // Track frame compilation duration down to fractions of milliseconds
+  const startTimestamp = performance.now();
 
-    // Command the kernel to compute and render the pixel matrix buffer
-    engine.synthesizeFrame(normalizedTime, interpMode, frequencyFactor);
+  // Command the kernel to compute and render the pixel matrix buffer
+  engine.synthesizeFrame(normalizedTime, interpMode, frequencyFactor);
 
-    const operationalLatency = performance.now() - startTimestamp;
+  const operationalLatency = performance.now() - startTimestamp;
 
-    // Update telemetry layout labels
-    telTime.textContent = `${(normalizedTime * 10).toFixed(2)}s`;
-    telLatency.textContent = `${operationalLatency.toFixed(4)} ms`;
-    scrubber.value = currentFrameIndex;
+  // Update telemetry layout labels
+  telTime.textContent = `${(normalizedTime * 10).toFixed(2)}s`;
+  telLatency.textContent = `${operationalLatency.toFixed(4)} ms`;
+  scrubber.value = currentFrameIndex;
 
-    if (isPlaying) {
-        currentFrameIndex++;
-        if (currentFrameIndex > MAX_FRAMES_LIMIT) currentFrameIndex = 0;
-        animationFrameId = requestAnimationFrame(executeRenderCycle);
+  if (isPlaying) {
+    currentFrameIndex++;
+
+    if (currentFrameIndex > MAX_FRAMES_LIMIT) {
+      currentFrameIndex = 0;
     }
+
+    animationFrameId = requestAnimationFrame(executeRenderCycle);
+  } else {
+    animationFrameId = null;
+  }
 }
 
 // Bind live timeline scrubbing interactions
 scrubber.addEventListener('input', (e) => {
-    if (isPlaying) {
-        isPlaying = false;
-        renderBtn.textContent = "Compile Live Sequence Stream";
-        cancelAnimationFrame(animationFrameId);
-    }
-    currentFrameIndex = parseInt(e.target.value);
-    executeRenderCycle();
-});
+  stopRenderLoop();
 
+  currentFrameIndex = parseInt(e.target.value, 10);
+
+  executeRenderCycle();
+});
+scrubber.addEventListener('change', () => {
+  if (!isPlaying && animationFrameId === null) {
+    startRenderLoop();
+  }
+});
 freqSlider.addEventListener('input', (e) => {
-    freqLbl.textContent = `${(parseFloat(e.target.value) / 10).toFixed(1)}x`;
-    if (!isPlaying) executeRenderCycle();
+  freqLbl.textContent = `${(parseFloat(e.target.value) / 10).toFixed(1)}x`;
+  if (!isPlaying) executeRenderCycle();
 });
 
 interpSelect.addEventListener('change', () => {
-    if (!isPlaying) executeRenderCycle();
+  if (!isPlaying) executeRenderCycle();
 });
 
 renderBtn.addEventListener('click', () => {
-    if (isPlaying) {
-        isPlaying = false;
-        renderBtn.textContent = "Compile Live Sequence Stream";
-        cancelAnimationFrame(animationFrameId);
-    } else {
-        isPlaying = true;
-        renderBtn.textContent = "Halt Synthesis Stream";
-        executeRenderCycle();
-    }
+  if (isPlaying) {
+    stopRenderLoop();
+  } else {
+    startRenderLoop();
+  }
 });
 
 // Render the baseline initial frame on workspace initialization
