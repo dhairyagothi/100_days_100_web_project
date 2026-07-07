@@ -517,3 +517,53 @@ document.addEventListener('keydown', (e) => {
         deleteButton?.click();
     }
 });
+
+const clearHistoryBtn =
+document.getElementById("clearHistoryBtn");
+
+clearHistoryBtn.addEventListener("click", () => {
+    showConfirmToast(
+        "Clear calculation history?",
+        clearAllHistory
+    );
+});
+
+function clearAllHistory() {
+
+    history = [];
+
+    localStorage.removeItem("calculatorHistory");
+
+    renderHistory();
+
+}
+saveHistory();
+function clearAllHistory() {
+
+    history.length = 0;
+
+    saveHistory();
+
+    renderHistory();
+
+}
+
+const clearHistoryBtn =
+document.getElementById("clearHistoryBtn");
+
+clearHistoryBtn.addEventListener("click", () => {
+
+    showConfirmToast(
+        "Are you sure you want to clear history?",
+        () => {
+
+            history = [];
+
+            localStorage.removeItem("calculatorHistory");
+
+            renderHistory();
+
+        }
+    );
+
+});
