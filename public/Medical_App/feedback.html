@@ -16,24 +16,55 @@
     >
 
     <link
+        rel="stylesheet"
+        href="css/toast.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="assets/css/auth.css"
+    >
+
+    <link
         rel="icon"
         href="assets/logo.png"
     >
 </head>
 <body>
+<div id="appShell">
+
+            <button
+    id="themeToggle"
+    class="theme-toggle"
+    aria-label="Toggle theme"
+>
+    🌙
+</button>
 
     <div class="feedbackmain">
 
+        <div class="auth-page-actions">
+            <div id="userBadge" class="user-badge compact hidden" aria-live="polite">
+                <span id="userAvatar" class="user-avatar" aria-hidden="true">👤</span>
+                <div class="user-meta">
+                    <span id="userBadgeName">Guest</span>
+                    <span id="userBadgeRole">Role: --</span>
+                </div>
+            </div>
+            <button id="logoutBtn" class="auth-btn secondary is-role-hidden" type="button">Logout</button>
+        </div>
+    <div class="feedback-card">
         <h2>⭐ Feedback</h2>
 
         <p>
             Help us improve your healthcare experience.
+           
         </p>
-
-        <form id="feedbackform">
+            <br>
+        <form id="feedbackform" data-role="patient,doctor">
 
             <label for="feedbackMessage">
-                Your Feedback
+                <br>
             </label>
 
             <textarea
@@ -58,12 +89,126 @@
         >
             ← Back To Dashboard
         </button>
+    </div>
+        <div class="role-note is-role-hidden" data-role-fallback="patient,doctor">
+            Feedback is available for signed-in patients and doctors.
+        </div>
 
     </div>
 
-    <div id="toast-container"></div>
+</div>
 
+<div id="authOverlay" class="auth-overlay" aria-hidden="true">
+    <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+        <div class="auth-brand">
+            <img src="assets/logo.png" alt="MedConsult logo">
+            <div>
+                <h2 id="authTitle">MedConsult Access</h2>
+                <p id="authSubtitle">Sign in to continue</p>
+            </div>
+        </div>
+
+        <section class="auth-panel" data-auth-panel="login">
+            <form id="loginForm">
+                <div class="auth-field">
+                    <label for="loginEmail">Email</label>
+                    <input id="loginEmail" class="auth-input" type="email" autocomplete="email" required>
+                </div>
+                <div class="auth-field">
+                    <label for="loginPassword">Password</label>
+                    <input id="loginPassword" class="auth-input" type="password" autocomplete="current-password" required>
+                </div>
+                <div class="auth-row">
+                    <label class="auth-remember">
+                        <input id="rememberMe" type="checkbox">
+                        Remember Me
+                    </label>
+                </div>
+                <p id="loginError" class="auth-error"></p>
+                <button type="submit" class="auth-submit">Login</button>
+                <div class="auth-footer">
+                    <span>Don't have an account?</span>
+                    <button type="button" data-auth-switch="signup">Sign Up</button>
+                </div>
+            </form>
+        </section>
+
+        <section class="auth-panel is-hidden" data-auth-panel="signup">
+            <form id="signupForm">
+                <div class="auth-field">
+                    <label for="signupName">Full Name</label>
+                    <input id="signupName" class="auth-input" type="text" autocomplete="name" required>
+                </div>
+                <div class="auth-field">
+                    <label for="signupEmail">Email</label>
+                    <input id="signupEmail" class="auth-input" type="email" autocomplete="email" required>
+                </div>
+                <div class="auth-field">
+                    <label for="signupPassword">Password</label>
+                    <input id="signupPassword" class="auth-input" type="password" autocomplete="new-password" required>
+                </div>
+                <div class="auth-field">
+                    <label for="signupConfirm">Confirm Password</label>
+                    <input id="signupConfirm" class="auth-input" type="password" autocomplete="new-password" required>
+                </div>
+                <div class="auth-field">
+                    <label for="signupRole">Role</label>
+                    <select id="signupRole" class="auth-select" required>
+                        <option value="">Select role</option>
+                        <option value="patient">Patient</option>
+                        <option value="doctor">Doctor</option>
+                    </select>
+                </div>
+                <p id="signupError" class="auth-error"></p>
+                <button type="submit" class="auth-submit">Create Account</button>
+                <div class="auth-footer">
+                    <span>Already have an account?</span>
+                    <button type="button" data-auth-switch="login">Login</button>
+                </div>
+                <p class="auth-note">
+                    Demo only: passwords are encoded for storage. Real apps require server-side hashing (e.g., bcrypt).
+                </p>
+            </form>
+        </section>
+    </div>
+</div>
+
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="assets/js/session.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/roleManager.js"></script>
+    <script src="js/toast.js"></script>
     <script src="js/feedback.js"></script>
+
+    <script>
+        // Theme Toggle Functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const themeToggle = document.getElementById('themeToggle');
+            const body = document.body;
+            
+            // Load saved theme preference
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            if (savedTheme === 'dark') {
+                body.classList.add('dark-mode');
+                themeToggle.textContent = '☀️';
+            }
+            
+            // Handle theme toggle click
+            themeToggle.addEventListener('click', function() {
+                body.classList.toggle('dark-mode');
+                
+                // Update button emoji
+                if (body.classList.contains('dark-mode')) {
+                    themeToggle.textContent = '☀️';
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    themeToggle.textContent = '🌙';
+                    localStorage.setItem('theme', 'light');
+                }
+            });
+        });
+    </script>
 
 </body>
 </html>

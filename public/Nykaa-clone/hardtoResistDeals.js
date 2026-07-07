@@ -9,3 +9,11 @@ export default [
     "https://images-static.nykaa.com/uploads/b165e0ed-b19a-41e0-bf76-9c12a2bdbd79.gif?tr=w-240,cm-pad_resize",
     "https://images-static.nykaa.com/uploads/3a838645-9dd0-450e-98a8-3d605eb81a8a.gif?tr=w-240,cm-pad_resize",
  ]
+const hardtoResistDeals = [
+  "https://plus.unsplash.com/premium_photo-1664202526075-7436b5325ef3?auto=format&fit=crop&w=1200&q=80",
+  "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=1200&q=80",
+  "https://images.unsplash.com/photo-1682823544362-b751e260e33c?auto=format&fit=crop&w=1200&q=80",
+  "https://images.unsplash.com/photo-1677922336239-d6978d0d2af2?auto=format&fit=crop&w=1200&q=80",
+];
+
+export default hardtoResistDeals;

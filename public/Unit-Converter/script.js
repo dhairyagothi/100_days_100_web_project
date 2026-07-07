@@ -1,239 +1,620 @@
+// ======================================
+// UNIT CONVERTER DATA
+// ======================================
+
 const categories = {
-    length :{
-        units :{
-            kilometer: { label: "Kilometer(km)", value: 1000 },
-            meter: { label: "Meter(m)", value: 1 },
-            centimeter: { label: "Centimeter(cm)", value: 0.01 },
-            millimeter: { label: "Millimeter(mm)", value: 0.001 },
-            mile: { label: "Mile(mi)", value: 1609.344 },
-            yard: { label: "Yard(yd)", value: 0.9144 },
-            foot: { label: "Foot(ft)", value: 0.3048 },
-            inch: { label: "Inch(in)", value: 0.0254 },
-        },
-        quick:[
-            ["1 km", "1000 m"],
-            ["1 m", "3.281 ft"],
-            ["1 cm", "0.01 m"],
-            ["1 m", "39.370 in"],
-            ["1 mi", "1609.344 m"],
-        ]
-    },
-    weight :{
-        units: {
-            kilogram: { label: "Kilogram (kg)", value: 1 },
-            gram: { label: "Gram (g)", value: 0.001 },
-            milligram: { label: "Milligram (mg)", value: 0.000001 },
-            pound: { label: "Pound (lb)", value: 0.45359237 },
-            ounce: { label: "Ounce (oz)", value: 0.0283495 },
-            ton: { label: "Metric Ton (t)", value: 1000 }
-        },
-        quick: [
-            ["1 kg", "1000 g"],
-            ["1 lb", "0.454 kg"],
-            ["1 oz", "28.35 g"],
-            ["1 t", "1000 kg"],
-            ["1 g", "1000 mg"]
-        ]
-    },
-    temperature :{
-        units: {
-            celsius: { label: "Celsius (°C)" },
-            fahrenheit: { label: "Fahrenheit (°F)" },
-            kelvin: { label: "Kelvin (K)" }
-        },
-        quick: [
-            ["0°C", "32°F"],
-            ["100°C", "212°F"],
-            ["37°C", "98.6°F"],
-            ["0°C", "273.15K"],
-            ["300K", "26.85°C"]
-        ]
-    },
-    time :{
-        units: {
-            minute: { label: "Minute (min)", value: 60 },
-            second: { label: "Second (s)", value: 1 },  
-            hour: { label: "Hour (hr)", value: 3600 },
-            day: { label: "Day", value: 86400 },
-            week: { label: "Week", value: 604800 },
-            month: { label: "Month", value: 2629800 },
-            year: { label: "Year", value: 31557600 }
-        },
-        quick: [
-            ["1 min", "60 sec"],
-            ["1 hr", "60 min"],
-            ["1 day", "24 hr"],
-            ["1 week", "7 days"],
-            ["1 year", "365 days"]
-        ]
-    },
-    speed :{
-        units: {
-            meterPerSecond: { label: "Meter/Second (m/s)", value: 1 },
-            kilometerPerHour: { label: "Kilometer/Hour (km/h)", value: 0.277778 },
-            milePerHour: { label: "Mile/Hour (mph)", value: 0.44704 },
-            footPerSecond: { label: "Foot/Second (ft/s)", value: 0.3048 },
-            knot: { label: "Knot", value: 0.514444 }
-        },
-        quick: [
-            ["1 m/s", "3.6 km/h"],
-            ["1 mph", "1.609 km/h"],
-            ["1 knot", "1.852 km/h"],
-            ["100 km/h", "62.137 mph"],
-            ["1 ft/s", "0.305 m/s"]
-        ]
+
+  length: {
+    allowNegative:false,
+    errorMessage:"Length cannot be negative",
+    units:{
+      kilometer:{label:"Kilometer (km)",value:1000},
+      meter:{label:"Meter (m)",value:1},
+      centimeter:{label:"Centimeter (cm)",value:0.01},
+      millimeter:{label:"Millimeter (mm)",value:0.001},
+      mile:{label:"Mile (mi)",value:1609.344},
+      yard:{label:"Yard (yd)",value:0.9144},
+      foot:{label:"Foot (ft)",value:0.3048},
+      inch:{label:"Inch (in)",value:0.0254}
     }
-
-}
-
-// DOM ITEMS //
-
-const categoryList = document.getElementById("category")
-
-const fromInput = document.getElementById("fromInput")
-const toInput = document.getElementById("toInput")
-
-const fromUnit = document.getElementById("fromUnit")
-const toUnit = document.getElementById("toUnit")
-
-const output = document.getElementById("output")
-
-let currentCategory = "length"
-
-function loadCategory(category) {
-    currentCategory = category;
-
-    const data = categories[category];
-
-    fromUnit.innerHTML = "";
-    toUnit.innerHTML = "";
-
-    Object.keys(data.units).forEach((unitKey) => {
-        const option1 = document.createElement("option")
-        option1.value = unitKey;
-        option1.textContent = data.units[unitKey].label;
-
-        const option2 = document.createElement("option");
-        option2.value = unitKey;
-        option2.textContent = data.units[unitKey].label;
-
-        fromUnit.appendChild(option1)
-        toUnit.appendChild(option2)
-    });
-
-    const unitKeys=Object.keys(data.units);
-    fromUnit.value = unitKeys[0];
-    toUnit.value = unitKeys[1] || unitKeys[0];
-
-    fromInput.value= 1;
-
-    convert();
-}
+  },
 
 
-// Convert Function //
-
-function convert(){
-    const val = parseFloat(fromInput.value);
-
-    if(isNaN(val)){
-        toInput.value ="";
-        output.innerHTML="Enter a valid number";
-        return;
+  weight:{
+    allowNegative:false,
+    errorMessage:"Weight cannot be negative",
+    units:{
+      kilogram:{label:"Kilogram (kg)",value:1},
+      gram:{label:"Gram (g)",value:0.001},
+      milligram:{label:"Milligram (mg)",value:0.000001},
+      pound:{label:"Pound (lb)",value:0.45359237},
+      ounce:{label:"Ounce (oz)",value:0.0283495},
+      ton:{label:"Metric Ton (t)",value:1000}
     }
+  },
 
-    const from = fromUnit.value;
-    const to = toUnit.value;
 
-    let result;
-
-    if(currentCategory === "temperature"){
-        result = convertTemperature(val, from, to);
-    } else{
-        const units = categories[currentCategory].units;
-        const baseValue = val*units[from].value;
-        result = baseValue / units[to].value;
+  temperature:{
+    allowNegative:true,
+    units:{
+      celsius:{label:"Celsius (°C)"},
+      fahrenheit:{label:"Fahrenheit (°F)"},
+      kelvin:{label:"Kelvin (K)"}
     }
-    result = formatNumber(result);
-    toInput.value = result;
+  },
 
-    const fromLabel = categories[currentCategory].units[from].label
-    const toLabel = categories[currentCategory].units[to].label
 
-    output.innerHTML = `
-        <span>${val} ${fromLabel}</span>
-        <strong>=</strong>
-        <span>${result} ${toLabel}</span>
-    `
+  time:{
+    allowNegative:false,
+    errorMessage:"Time cannot be negative",
+    units:{
+      second:{label:"Second (s)",value:1},
+      minute:{label:"Minute (min)",value:60},
+      hour:{label:"Hour (hr)",value:3600},
+      day:{label:"Day",value:86400}
+    }
+  },
 
-}
 
-// TEMPERATURE CONVERSION //
-
-function convertTemperature(value, from, to) {
-  let celsius;
-
-  if (from === "celsius") {
-    celsius = value;
-  } else if (from === "fahrenheit") {
-    celsius = (value - 32) * 5 / 9;
-  } else if (from === "kelvin") {
-    celsius = value - 273.15;
+  speed:{
+    allowNegative:false,
+    errorMessage:"Speed cannot be negative",
+    units:{
+      meterPerSecond:{label:"m/s",value:1},
+      kilometerPerHour:{label:"km/h",value:.277778},
+      milePerHour:{label:"mph",value:.44704}
+    }
   }
 
-  if (to === "celsius") {
-    return celsius;
-  } else if (to === "fahrenheit") {
-    return celsius * 9 / 5 + 32;
-  } else if (to === "kelvin") {
-    return celsius + 273.15;
-  }
+};
+
+
+
+// ======================================
+// DOM
+// ======================================
+
+const fromInput=document.getElementById("fromInput");
+const toInput=document.getElementById("toInput");
+
+const fromUnit=document.getElementById("fromUnit");
+const toUnit=document.getElementById("toUnit");
+
+const output=document.getElementById("output");
+
+const tabs=document.getElementById("tabs");
+const swapBtn=document.getElementById("swapBtn");
+
+const themeSelect=document.getElementById("themeSelect");
+
+const historyList=document.getElementById("historyList");
+const clearHistoryBtn=document.getElementById("clearHistoryBtn");
+
+
+
+// ======================================
+// STATE
+// ======================================
+
+let currentCategory="length";
+
+let typingTimer;
+
+
+let history=
+JSON.parse(localStorage.getItem("unitConverterHistory")) || [];
+
+
+
+// ======================================
+// THEME
+// ======================================
+
+function loadTheme(){
+
+let theme=
+localStorage.getItem("unitConverterTheme") || "aurora";
+
+document.body.className=theme;
+
+themeSelect.value=theme;
+
 }
 
 
-// FORMAR NUMBER //
-function formatNumber(num) {
-  if (num === 0) return 0;
+function applyTheme(theme){
 
-  if (Math.abs(num) >= 1000000 || Math.abs(num) < 0.0001) {
-    return Number(num).toExponential(4);
-  }
+document.body.className=theme;
 
-  return parseFloat(num.toFixed(6));
-}
-
-categoryList.addEventListener("change", () => {
-    loadCategory(categoryList.value)
-});
-
-
-// EVENT LISTENER //
-fromInput.addEventListener("input", convert);
-fromUnit.addEventListener("change", convert);
-toUnit.addEventListener("change", convert);
-
-
-document.getElementById('category').addEventListener('click', e => {
-    const btn = e.target.closest('.categories');
-    if (!btn) return;
-    document.querySelectorAll('.categories').forEach(t => t.classList.remove('active'));
-    btn.classList.add('active');
-    currentCat = btn.dataset.cat;
-    document.getElementById('fromInput').value = 1;
-    loadCategory(currentCat);
-    convert();
-});
-
-
-document.addEventListener("DOMContentLoaded", () => {
-  loadCategory(currentCategory);
-});
-
-const toggle = document.getElementById('themeToggle');
-    toggle.addEventListener('click', () => {
-      const html = document.documentElement;
-      const isDark = html.getAttribute('data-theme') === 'dark';
-      html.setAttribute('data-theme', isDark ? 'light' : 'dark');
-      toggle.textContent = isDark ? '🌙' : '☀️';
-    }
+localStorage.setItem(
+"unitConverterTheme",
+theme
 );
+
+}
+
+
+
+// ======================================
+// HISTORY
+// ======================================
+
+
+function saveHistory(){
+
+localStorage.setItem(
+"unitConverterHistory",
+JSON.stringify(history)
+);
+
+}
+
+
+
+function renderHistory(){
+
+if(!history.length){
+
+historyList.innerHTML=
+`
+<div class="history-empty">
+No conversions yet
+</div>
+`;
+
+return;
+
+}
+
+
+historyList.innerHTML=
+history.map(item=>
+`
+<div class="history-item">
+${item}
+</div>
+`
+).join("");
+
+}
+
+
+
+function addHistory(text){
+
+if(!text)return;
+
+
+if(history[0]===text)return;
+
+
+history.unshift(text);
+
+
+if(history.length>10)
+history.pop();
+
+
+saveHistory();
+
+renderHistory();
+
+}
+
+
+
+function clearHistory(){
+
+history=[];
+
+saveHistory();
+
+renderHistory();
+
+}
+
+
+
+// ======================================
+// CATEGORY
+// ======================================
+
+
+function loadCategory(category){
+
+currentCategory=category;
+
+
+fromUnit.innerHTML="";
+toUnit.innerHTML="";
+
+
+Object.entries(
+categories[category].units
+)
+.forEach(([key,value])=>{
+
+fromUnit.add(
+new Option(value.label,key)
+);
+
+toUnit.add(
+new Option(value.label,key)
+);
+
+
+});
+
+
+fromUnit.selectedIndex=0;
+toUnit.selectedIndex=1;
+
+
+convert(false);
+
+}
+
+
+
+// ======================================
+// VALIDATION
+// ======================================
+
+
+function validateInput(value){
+
+
+if(fromInput.value.trim()===""){
+
+return {
+valid:false,
+message:"Please enter a value"
+};
+
+}
+
+
+if(isNaN(value)){
+
+return {
+valid:false,
+message:"Please enter a valid number"
+};
+
+}
+
+
+let config=
+categories[currentCategory];
+
+
+if(!config.allowNegative && value<0){
+
+return{
+valid:false,
+message:config.errorMessage
+};
+
+}
+
+
+
+if(currentCategory==="temperature"){
+
+if(
+fromUnit.value==="kelvin" &&
+value<0
+){
+
+return{
+valid:false,
+message:"Temperature cannot be below 0 Kelvin"
+};
+
+}
+
+
+if(
+fromUnit.value==="celsius" &&
+value<-273.15
+){
+
+return{
+valid:false,
+message:"Temperature cannot be below -273.15°C"
+};
+
+}
+
+}
+
+
+return{
+valid:true
+};
+
+}
+
+
+
+// ======================================
+// CONVERSION
+// ======================================
+
+
+function convertTemperature(value,from,to){
+
+
+let c;
+
+
+if(from==="celsius")
+c=value;
+
+else if(from==="fahrenheit")
+c=(value-32)*5/9;
+
+else
+c=value-273.15;
+
+
+
+if(to==="celsius")
+return c;
+
+
+if(to==="fahrenheit")
+return c*9/5+32;
+
+
+return c+273.15;
+
+}
+
+
+
+
+function convert(addHistory=false){
+
+
+let value=
+parseFloat(fromInput.value);
+
+
+let check=
+validateInput(value);
+
+
+
+if(!check.valid){
+
+toInput.value="";
+
+output.innerHTML=check.message;
+
+return;
+
+}
+
+
+
+let from=fromUnit.value;
+let to=toUnit.value;
+
+
+let result;
+
+
+if(currentCategory==="temperature"){
+
+result=
+convertTemperature(
+value,
+from,
+to
+);
+
+}
+
+else{
+
+
+let units=
+categories[currentCategory].units;
+
+
+result=
+(value*units[from].value)/
+units[to].value;
+
+
+}
+
+
+
+result=
+Number(result.toFixed(6));
+
+
+toInput.value=result;
+
+
+let text=
+`${value} ${categories[currentCategory].units[from].label}
+=
+${result} ${categories[currentCategory].units[to].label}`;
+
+
+output.innerHTML=text;
+
+
+
+if(addHistory){
+
+addHistory(text);
+
+}
+
+
+}
+
+
+
+// ======================================
+// EVENTS
+// ======================================
+
+
+fromInput.addEventListener(
+"keypress",
+e=>{
+
+if(!/[0-9.\-]/.test(e.key)){
+
+e.preventDefault();
+
+}
+
+});
+
+
+
+fromInput.addEventListener(
+"input",
+()=>{
+
+clearTimeout(typingTimer);
+
+
+convert(false);
+
+
+typingTimer=setTimeout(()=>{
+
+if(validateInput(
+parseFloat(fromInput.value)
+).valid){
+
+convert(true);
+
+}
+
+},800);
+
+
+});
+
+
+
+fromUnit.addEventListener(
+"change",
+()=>convert(true)
+);
+
+
+toUnit.addEventListener(
+"change",
+()=>convert(true)
+);
+
+
+
+swapBtn.addEventListener(
+"click",
+()=>{
+
+let temp=fromUnit.value;
+
+fromUnit.value=toUnit.value;
+
+toUnit.value=temp;
+
+
+convert(true);
+
+});
+
+
+
+tabs.addEventListener(
+"click",
+e=>{
+
+let btn=e.target.closest(".tab-btn");
+
+if(!btn)return;
+
+
+document
+.querySelectorAll(".tab-btn")
+.forEach(b=>
+b.classList.remove("active")
+);
+
+
+btn.classList.add("active");
+
+
+loadCategory(btn.dataset.cat);
+
+
+});
+
+// ── Dark Mode Logic Block ──
+const themeToggleBtn = document.getElementById('themeToggle');
+const toggleIcon = document.getElementById('toggleIcon');
+
+// Load stored settings or default to device configuration
+const savedTheme = localStorage.getItem('theme');
+const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+const initialTheme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
+
+document.documentElement.setAttribute('data-theme', initialTheme);
+updateStarIcon(initialTheme);
+
+themeToggleBtn.addEventListener('click', () => {
+  const currentTheme = document.documentElement.getAttribute('data-theme');
+  const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+  document.documentElement.setAttribute('data-theme', newTheme);
+  localStorage.setItem('theme', newTheme);
+  updateStarIcon(newTheme);
+});
+
+function updateStarIcon(theme) {
+  if (theme === 'dark') {
+    toggleIcon.classList.remove('ti-star');
+    toggleIcon.classList.add('ti-star-filled');
+  } else {
+    toggleIcon.classList.remove('ti-star-filled');
+    toggleIcon.classList.add('ti-star');
+  }
+}
+
+
+// Theme dropdown
+themeSelect.addEventListener(
+  "change",
+  () => applyTheme(themeSelect.value)
+);
+
+
+// Clear history button
+clearHistoryBtn.addEventListener(
+  "click",
+  clearHistory
+);
+
+
+// ======================================
+// INIT
+// ======================================
+
+loadTheme();
+
+renderHistory();
+
+loadCategory("length");
+
+convert(false);
+

@@ -1,66 +1,183 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset= "UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SEND-MAIL</title>
-<link rel="stylesheet" href="mail.css">
-<link rel="icon" href="../../favv.png" type="image/x-icon" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SEND-MAIL</title>
+    <link rel="stylesheet" href="mail.css" />
+    <link rel="icon" href="../../favv.png" type="image/x-icon" />
+  </head>
+  <body>
+    <a href="/" class="project-back-button">← Back to Home</a>
 
-</head>
-<body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+    <div class="contact">
+      <h3>Subscribe to our emails</h3>
 
-
-<div class="contact">
-    <h3>Subscribe to our emails</h3>
-
-    <p class="form-subtitle">
+      <p class="form-subtitle">
         Stay updated with our latest news, updates, and exclusive content.
-    </p>
+      </p>
 
-    <form method="POST" action="/">
-
+      <form id="subscribeForm" novalidate>
         <div class="contact01">
+          <label for="name">Full Name</label>
 
-            <label for="name">Full Name</label>
+          <input
+            class="email"
+            id="name"
+            name="name"
+            type="text"
+            placeholder="Enter your full name"
+            required
+            autocomplete="off"
+          />
+          <span class="field-error" id="nameError">Please enter your full name.</span>
 
-            <input
-                class="email"
-                id="name"
-                name="name"
-                type="text"
-                placeholder="Enter your full name"
-                required
-                autocomplete="off"
-            >
+          <label for="email">Email Address</label>
 
-            <label for="email">Email Address</label>
-
-            <input
-                class="email"
-                id="email"
-                name="emailid"
-                type="email"
-                placeholder="Enter your email address"
-                required
-                autocomplete="off"
-            >
-
+          <input
+            class="email"
+            id="email"
+            name="emailid"
+            type="email"
+            placeholder="Enter your email address"
+            required
+            autocomplete="off"
+          />
+          <span class="field-error" id="emailError">Please enter a valid email address.</span>
         </div>
 
         <div class="contact02">
-            <input
-                class="submit"
-                type="submit"
-                name="submit"
-                value="Subscribe Now"
-            >
+          <button class="submit" type="submit" id="submitBtn">
+            <span class="spinner" id="spinner"></span>
+            <span id="submitLabel">Subscribe Now</span>
+          </button>
         </div>
+      </form>
+    </div>
 
-    </form>
-</div>
+    <div
+      id="toast"
+      class="toast"
+      role="alert"
+      aria-live="polite"
+      aria-atomic="true"
+    >
+      <div class="toast-content">
+        <span class="toast-icon"></span>
+        <span id="toast-message"></span>
+      </div>
 
+      <div class="toast-progress"></div>
+    </div>
 
-</body>
+    <script>
+      const form = document.getElementById('subscribeForm');
+      const submitBtn = document.getElementById('submitBtn');
+      const submitLabel = document.getElementById('submitLabel');
+      const spinner = document.getElementById('spinner');
+
+      const nameInput = document.getElementById('name');
+      const emailInput = document.getElementById('email');
+      const nameError = document.getElementById('nameError');
+      const emailError = document.getElementById('emailError');
+
+      function isValidEmail(email) {
+        if (typeof email !== 'string') return false;
+        if (email.length === 0 || email.length > 254) return false;
+
+        const atIndex = email.indexOf('@');
+        if (atIndex <= 0 || atIndex !== email.lastIndexOf('@')) return false;
+
+        const localPart = email.slice(0, atIndex);
+        const domainPart = email.slice(atIndex + 1);
+
+        if (localPart.length === 0 || localPart.length > 64) return false;
+        if (domainPart.length === 0 || domainPart.length > 255) return false;
+
+        const simpleEmailPattern = /^[A-Za-z0-9._%+-]+$/;
+        const simpleDomainPattern = /^[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+
+        return (
+          simpleEmailPattern.test(localPart) &&
+          simpleDomainPattern.test(domainPart)
+        );
+      }
+
+      function validateForm() {
+        let valid = true;
+
+        if (!nameInput.value.trim()) {
+          nameError.classList.add('show');
+          valid = false;
+        } else {
+          nameError.classList.remove('show');
+        }
+
+        if (!isValidEmail(emailInput.value.trim())) {
+          emailError.classList.add('show');
+          valid = false;
+        } else {
+          emailError.classList.remove('show');
+        }
+
+        return valid;
+      }
+
+      function setLoading(isLoading) {
+        submitBtn.disabled = isLoading;
+        spinner.classList.toggle('show', isLoading);
+        submitLabel.textContent = isLoading ? 'Sending...' : 'Subscribe Now';
+      }
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        if (!validateForm()) {
+          return;
+        }
+
+        setLoading(true);
+
+        const formData = new FormData(form);
+
+        try {
+          const response = await fetch('/subscribe', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams(formData),
+          });
+
+          const result = await response.json();
+
+          if (response.ok && result.success) {
+            showToast(result.message || 'Email sent successfully', 'success');
+            form.reset();
+          } else {
+            showToast(result.message || 'Failed to send email', 'error');
+          }
+        } catch (error) {
+          showToast('Something went wrong. Please try again.', 'error');
+        }
+
+        setLoading(false);
+      });
+
+      function showToast(message, type) {
+        const toast = document.getElementById('toast');
+        const toastMessage = document.getElementById('toast-message');
+        const toastIcon = document.querySelector('.toast-icon');
+
+        toastMessage.textContent = message;
+        toastIcon.innerHTML = type === 'success' ? '✓' : '✕';
+
+        toast.className = `toast ${type} show`;
+
+        setTimeout(() => {
+          toast.classList.remove('show');
+        }, 4000);
+      }
+    </script>
+  </body>
 </html>

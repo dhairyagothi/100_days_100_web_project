@@ -1,0 +1,67 @@
+[
+  {
+    "id": "hard_science",
+    "title": "Cosmic and Quantum Science",
+    "difficulty": "hard",
+    "category": "Science",
+    "gridSize": 12,
+    "clues": {
+      "across": [
+        { "number": 1, "row": 1, "col": 1, "answer": "ELECTRON", "clue": "Subatomic particle with a negative charge" },
+        { "number": 5, "row": 3, "col": 0, "answer": "GRAVITY", "clue": "Force that attracts a body toward the center of the earth" },
+        { "number": 7, "row": 5, "col": 4, "answer": "MUTATION", "clue": "A change in the DNA sequence of an organism" },
+        { "number": 8, "row": 7, "col": 2, "answer": "NEBULA", "clue": "Giant cloud of dust and gas in space" },
+        { "number": 9, "row": 9, "col": 0, "answer": "PHOTOSYNTHESIS", "clue": "Process by which green plants make food using sunlight" }
+      ],
+      "down": [
+        { "number": 2, "row": 1, "col": 1, "answer": "ENTROPY", "clue": "Measure of molecular disorder or randomness in a system" },
+        { "number": 3, "row": 1, "col": 4, "answer": "CATALYST", "clue": "Substance that speeds up a chemical reaction without being consumed" },
+        { "number": 4, "row": 1, "col": 8, "answer": "NUCLEUS", "clue": "The positively charged central core of an atom" },
+        { "number": 6, "row": 3, "col": 11, "answer": "GENOME", "clue": "The complete set of genetic material in an organism" }
+      ]
+    }
+  },
+  {
+    "id": "hard_history",
+    "title": "Ancient Civilizations",
+    "difficulty": "hard",
+    "category": "History",
+    "gridSize": 12,
+    "clues": {
+      "across": [
+        { "number": 1, "row": 1, "col": 2, "answer": "PHARAOH", "clue": "Ruler of ancient Egypt" },
+        { "number": 4, "row": 3, "col": 0, "answer": "GLADIATOR", "clue": "Armed combatant who entertained audiences in Roman arenas" },
+        { "number": 6, "row": 5, "col": 3, "answer": "CUNEIFORM", "clue": "One of the earliest systems of writing, invented by Sumerians" },
+        { "number": 8, "row": 7, "col": 1, "answer": "PARTHENON", "clue": "Former temple on the Athenian Acropolis dedicated to Athena" },
+        { "number": 9, "row": 9, "col": 4, "answer": "DYNASTY", "clue": "A succession of rulers from the same family line" }
+      ],
+      "down": [
+        { "number": 2, "row": 1, "col": 3, "answer": "AQUEDUCT", "clue": "Artificial channel for conveying water, built by Romans" },
+        { "number": 3, "row": 1, "col": 6, "answer": "HERODOTUS", "clue": "Greek historian known as 'The Father of History'" },
+        { "number": 5, "row": 3, "col": 1, "answer": "EMPIRE", "clue": "Extensive group of states or countries under a single supreme authority" },
+        { "number": 7, "row": 5, "col": 8, "answer": "OLYMPUS", "clue": "The highest mountain in Greece, mythical home of the gods" }
+      ]
+    }
+  },
+  {
+    "id": "hard_geography",
+    "title": "Extreme Earth Wonders",
+    "difficulty": "hard",
+    "category": "Geography",
+    "gridSize": 12,
+    "clues": {
+      "across": [
+        { "number": 1, "row": 1, "col": 1, "answer": "HIMALAYAS", "clue": "Highest mountain range in the world, stretching across Asia" },
+        { "number": 4, "row": 3, "col": 0, "answer": "AMAZON", "clue": "Largest river by discharge volume, flowing through South America" },
+        { "number": 6, "row": 5, "col": 3, "answer": "SAHARA", "clue": "Largest hot desert in the world, covering North Africa" },
+        { "number": 7, "row": 7, "col": 2, "answer": "MARIANA", "clue": "Deepest oceanic trench on Earth, located in the Pacific" },
+        { "number": 8, "row": 9, "col": 0, "answer": "GREENLAND", "clue": "The world's largest island, located between the Arctic and Atlantic" }
+      ],
+      "down": [
+        { "number": 2, "row": 1, "col": 3, "answer": "MAUNAKEA", "clue": "Inactive Hawaiian volcano that is the world's tallest mountain from base to peak" },
+        { "number": 3, "row": 1, "col": 7, "answer": "ATACAMA", "clue": "Hyper-arid plateau desert in South America, the driest non-polar place on Earth" },
+        { "number": 5, "row": 3, "col": 1, "answer": "MISSISSIPPI", "clue": "Major North American river flowing entirely in the United States" }
+      ]
+    }
+  }
+]
