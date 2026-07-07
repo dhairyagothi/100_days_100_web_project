@@ -898,6 +898,29 @@ button {
    QR PREVIEW
 ========================================================= */
 
+.score-row{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:24px;
+    font-weight:bold;
+}
+
+#scanLabel{
+    margin-top:6px;
+    font-weight:600;
+}
+
+#scoreReasons{
+    margin-top:12px;
+    padding-left:18px;
+    font-size:14px;
+}
+
+#scoreReasons li{
+    margin:4px 0;
+}
+
 .qr-preview-wrap {
   position: relative;
 
