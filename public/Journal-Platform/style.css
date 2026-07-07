@@ -125,7 +125,9 @@ body {
   color: var(--text-primary);
   height: 100vh;
   overflow: hidden;
-  transition: background-color 0.4s ease, color 0.4s ease;
+  transition:
+    background-color 0.4s ease,
+    color 0.4s ease;
   font-family: var(--font-body);
 }
 
@@ -145,8 +147,6 @@ body {
   background: var(--text-secondary);
 }
 
-
-
 /* --- App Container Grid --- */
 .app-container {
   display: flex;
@@ -154,10 +154,10 @@ body {
   height: 100vh;
   opacity: 1;
   visibility: visible;
-  transition: filter 0.3s ease, opacity 0.3s ease;
+  transition:
+    filter 0.3s ease,
+    opacity 0.3s ease;
 }
-
-
 
 /* --- Sidebar --- */
 .sidebar {
@@ -169,7 +169,9 @@ body {
   flex-direction: column;
   height: 100vh;
   z-index: 10;
-  transition: background-color 0.4s ease, border-color 0.4s ease;
+  transition:
+    background-color 0.4s ease,
+    border-color 0.4s ease;
 }
 
 .sidebar-header {
@@ -211,7 +213,9 @@ body {
   justify-content: center;
   gap: 8px;
   margin: 0 24px 20px;
-  transition: background-color 0.2s ease, transform 0.1s ease;
+  transition:
+    background-color 0.2s ease,
+    transform 0.1s ease;
 }
 
 /* Special text color handling for light themes */
@@ -541,11 +545,18 @@ body.theme-vintage-library .btn-primary {
   box-shadow: 0 0 8px rgba(var(--accent-rgb), 0.4);
 }
 
-.theme-dot.cozy-night { background-color: #ffb703; }
-.theme-dot.pastel-dream { background-color: #ff9f89; }
-.theme-dot.midnight-cyber { background-color: #f72585; }
-.theme-dot.vintage-library { background-color: #2d6a4f; }
-
+.theme-dot.cozy-night {
+  background-color: #ffb703;
+}
+.theme-dot.pastel-dream {
+  background-color: #ff9f89;
+}
+.theme-dot.midnight-cyber {
+  background-color: #f72585;
+}
+.theme-dot.vintage-library {
+  background-color: #2d6a4f;
+}
 
 /* --- Main Workspace --- */
 .workspace {
@@ -907,6 +918,14 @@ body.theme-vintage-library .btn-primary {
   gap: 4px;
 }
 
+.autosave-indicator.error {
+  color: var(--danger);
+}
+
+.autosave-indicator.error i {
+  color: var(--danger);
+} 
+
 .autosave-indicator i {
   width: 12px;
   height: 12px;
@@ -1021,9 +1040,17 @@ body.theme-vintage-library .btn-primary {
   font-weight: 700;
 }
 
-.markdown-body h1 { font-size: 24px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;}
-.markdown-body h2 { font-size: 20px; }
-.markdown-body h3 { font-size: 18px; }
+.markdown-body h1 {
+  font-size: 24px;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 8px;
+}
+.markdown-body h2 {
+  font-size: 20px;
+}
+.markdown-body h3 {
+  font-size: 18px;
+}
 
 .markdown-body p {
   margin-bottom: 16px;
@@ -1039,7 +1066,7 @@ body.theme-vintage-library .btn-primary {
   font-style: italic;
 }
 
-.markdown-body ul, 
+.markdown-body ul,
 .markdown-body ol {
   padding-left: 20px;
   margin-bottom: 16px;
@@ -1102,7 +1129,7 @@ body.theme-vintage-library .btn-primary {
   font-weight: 600;
 }
 
-.markdown-body input[type="checkbox"] {
+.markdown-body input[type='checkbox'] {
   margin-right: 8px;
   accent-color: var(--accent);
 }
@@ -1117,7 +1144,9 @@ body.theme-vintage-library .btn-primary {
   padding: 8px;
   border-radius: 8px;
   border: 1px dashed transparent;
-  transition: transform 0.1s ease, border-color 0.2s ease;
+  transition:
+    transform 0.1s ease,
+    border-color 0.2s ease;
   touch-action: none; /* Disables browser scrolling when dragging */
   display: inline-flex;
   align-items: center;
@@ -1134,7 +1163,7 @@ body.theme-vintage-library .btn-primary {
   opacity: 0.8;
   transform: scale(1.15);
   border-color: var(--accent);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
 }
 
 .sticker-delete-btn {
@@ -1277,7 +1306,7 @@ body.theme-vintage-library .btn-primary {
   .app-container {
     flex-direction: column;
   }
-  
+
   .sidebar {
     width: 100%;
     height: auto;
@@ -1288,7 +1317,7 @@ body.theme-vintage-library .btn-primary {
     overflow-y: auto;
     flex-shrink: 0;
   }
-  
+
   .entries-list-container {
     padding: 10px 16px;
   }
@@ -1323,7 +1352,7 @@ body.theme-vintage-library .btn-primary {
   .mood-filter-badges {
     overflow-x: visible;
   }
-  
+
   .sticker-canvas {
     padding: 20px;
   }
@@ -1376,7 +1405,7 @@ body.theme-vintage-library .btn-primary {
     width: 100%;
   }
 } */
- @media (max-width: 480px) {
+@media (max-width: 480px) {
   html,
   body {
     overflow-x: hidden;

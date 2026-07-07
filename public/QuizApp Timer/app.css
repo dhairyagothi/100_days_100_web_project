@@ -5,14 +5,79 @@
     font-family: 'Poppins', sans-serif;
 }
 
+:root {
+    --bg-1: #667eea;
+    --bg-2: #764ba2;
+    --card-bg: rgba(255,255,255,0.85);
+    --text: #1f2937;
+    --muted: #6b7280;
+    --accent: #667eea;
+}
+
+/* 🌌 Dark Theme */
+body.dark {
+    --bg-1: #0f172a;
+    --bg-2: #1e293b;
+    --card-bg: rgba(30, 41, 59, 0.6);
+    --text: #e5e7eb;
+    --muted: #94a3b8;
+    --accent: #38bdf8;
+}
+
+/* 🌊 Ocean Theme */
+body.ocean {
+    --bg-1: #0ea5e9;
+    --bg-2: #14b8a6;
+    --card-bg: rgba(255,255,255,0.75);
+    --text: #0f172a;
+    --muted: #334155;
+    --accent: #0ea5e9;
+}
+
+/* 🔥 Sunset Theme */
+body.sunset {
+    --bg-1: #f97316;
+    --bg-2: #ef4444;
+    --card-bg: rgba(255,255,255,0.8);
+    --accent: #f97316;
+}
+
 body {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, var(--bg-1), var(--bg-2));
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 20px;
+    overflow-x: hidden;
+    color: var(--text);
 }
+
+/* Theme switcher */
+.theme-switcher {
+    position: fixed;
+    top: 18px;
+    right: 18px;
+    display: flex;
+    gap: 8px;
+    z-index: 9999;
+}
+
+.theme-switcher button {
+    padding: 6px 10px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    background: var(--card-bg);
+    color: var(--text);
+    backdrop-filter: blur(10px);
+    transition: 0.2s;
+}
+
+.theme-switcher button:hover {
+    transform: translateY(-2px);
+}
+
 
 .container {
     background-color: transparent;
@@ -555,6 +620,7 @@ select:focus {
     font-size: 1.65rem;
     font-weight: 800;
     background: linear-gradient(135deg, #667eea, #764ba2);
+    background-clip: border-box;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
@@ -625,4 +691,136 @@ select:focus {
         text-align: center;
         padding: 1.25rem;
     }
+}
+
+/* ============================================
+   REVIEW DASHBOARD STYLES
+   ============================================ */
+
+.review-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 2000;
+    overflow-y: auto;
+    padding: 20px;
+    animation: fadeIn 0.3s ease;
+}
+
+.review-dashboard {
+    max-width: 800px;
+    margin: 40px auto;
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.review-header h2 {
+    margin: 0;
+    color: #333;
+    font-size: 24px;
+}
+
+.close-review-btn {
+    background: #667eea;
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+}
+
+.close-review-btn:hover {
+    background: #5a67d8;
+    transform: translateY(-2px);
+}
+
+.review-card {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 15px;
+    border-left: 4px solid;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease;
+}
+
+.review-card:hover {
+    transform: translateX(5px);
+}
+
+.review-card.correct {
+    border-left-color: #4caf50;
+    background: #f1f8e9;
+}
+
+.review-card.incorrect {
+    border-left-color: #f44336;
+    background: #ffebee;
+}
+
+.question-header {
+    font-size: 16px;
+    margin-bottom: 15px;
+    color: #333;
+    line-height: 1.5;
+}
+
+.answer-details {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #ddd;
+}
+
+.user-answer {
+    color: #f44336;
+    margin: 5px 0;
+    font-weight: 500;
+}
+
+.correct-answer {
+    color: #4caf50;
+    margin: 5px 0;
+    font-weight: 500;
+}
+
+.correct-feedback {
+    color: #4caf50;
+    margin: 5px 0;
+    font-weight: 500;
 }

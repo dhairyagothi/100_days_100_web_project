@@ -1,21 +1,8 @@
 /**
- * FocusForge — Pomodoro Focus Timer
+ * FocusForge — Pomodoro Focus Timer with Advanced Analytics
  * script.js
  *
  * Architecture: IIFE modules with a shared State object.
- *
- * Modules
- * -------
- *  State         – single source of truth for all runtime data
- *  Storage       – LocalStorage persistence (save / load)
- *  AudioEngine   – Web Audio API tones (no external files)
- *  BrowserNotif  – Notification API wrapper
- *  Quotes        – motivational quote bank + random picker
- *  Timer         – countdown logic, mode switching, completion
- *  UI            – DOM updates, animations, theme
- *  Settings      – settings panel open / apply / close
- *  Popup         – completion dialog show / close
- *  App           – bootstrap + global event wiring
  */
 
 'use strict';
@@ -25,11 +12,11 @@
    ============================================================ */
 const State = (() => {
   const DEFAULTS = {
-    focusDuration : 25,      // minutes
-    breakDuration : 5,       // minutes
-    currentMode   : 'focus', // 'focus' | 'break'
+    focusDuration : 25,
+    breakDuration : 5,
+    currentMode   : 'focus',
     sessionCount  : 0,
-    theme         : 'dark',  // 'dark' | 'light'
+    theme         : 'dark',
     autoSwitch    : true,
     soundEnabled  : true,
     browserNotif  : false,
@@ -48,9 +35,8 @@ const State = (() => {
    STORAGE — LocalStorage persistence
    ============================================================ */
 const Storage = (() => {
-  const KEY = 'focusforge_v1';
+  const KEY = 'focusforge_v2';
 
-  /** Persist user-configurable settings + session count. */
   function save() {
     try {
       const payload = {
@@ -61,12 +47,12 @@ const Storage = (() => {
         autoSwitch    : State.get('autoSwitch'),
         soundEnabled  : State.get('soundEnabled'),
         browserNotif  : State.get('browserNotif'),
+        stats         : Stats.getData(),
       };
       localStorage.setItem(KEY, JSON.stringify(payload));
-    } catch (_) { /* storage may be unavailable in private mode */ }
+    } catch (_) {}
   }
 
-  /** Restore persisted settings into State (with validation). */
   function load() {
     try {
       const raw = localStorage.getItem(KEY);
@@ -74,36 +60,191 @@ const Storage = (() => {
 
       const data = JSON.parse(raw);
 
-      // Validate & merge numeric fields
       ['focusDuration', 'breakDuration'].forEach(k => {
         const v = Number(data[k]);
         if (Number.isInteger(v) && v >= 1 && v <= 99) State.set(k, v);
       });
 
-      // Session count
       const sc = Number(data.sessionCount);
       if (Number.isInteger(sc) && sc >= 0) State.set('sessionCount', sc);
 
-      // Theme
       if (data.theme === 'dark' || data.theme === 'light') State.set('theme', data.theme);
 
-      // Boolean flags
       ['autoSwitch', 'soundEnabled', 'browserNotif'].forEach(k => {
         if (typeof data[k] === 'boolean') State.set(k, data[k]);
       });
-    } catch (_) { /* corrupt data — silently ignore, use defaults */ }
+
+      if (data.stats) {
+        Stats.importData(data.stats);
+      }
+    } catch (_) {}
   }
 
   return { save, load };
 })();
 
 /* ============================================================
-   AUDIO ENGINE — Web Audio API (no external audio files)
+   STATS — Analytics Module
+   ============================================================ */
+const Stats = (() => {
+  let _data = {
+    sessions: [],
+    dailyFocus: 0,
+    totalFocus: 0,
+  };
+
+  function getData() { return _data; }
+
+  function importData(data) {
+    if (data.sessions) _data.sessions = data.sessions;
+    if (data.dailyFocus) _data.dailyFocus = data.dailyFocus;
+    if (data.totalFocus) _data.totalFocus = data.totalFocus;
+  }
+
+  function recordSession(duration) {
+    const now = new Date();
+    const session = {
+      date: now.toISOString().split('T')[0],
+      timestamp: now.toISOString(),
+      duration: duration,
+      hour: now.getHours(),
+      day: now.getDay(),
+    };
+
+    _data.sessions.push(session);
+
+    const today = session.date;
+    const todaySessions = _data.sessions.filter(s => s.date === today);
+    _data.dailyFocus = todaySessions.reduce((sum, s) => sum + s.duration, 0);
+    _data.totalFocus = _data.sessions.reduce((sum, s) => sum + s.duration, 0);
+
+    Storage.save();
+    updateStatsDisplay();
+    updateChart();
+    updateHeatmap();
+    updateProductiveHours();
+  }
+
+  function getStreak() {
+    if (_data.sessions.length === 0) return 0;
+
+    const dates = _data.sessions.map(s => s.date);
+    const uniqueDates = [...new Set(dates)].sort();
+
+    let streak = 0;
+    let currentDate = new Date();
+    currentDate.setHours(0, 0, 0, 0);
+
+    // Check if today has sessions
+    const todayStr = currentDate.toISOString().split('T')[0];
+    const hasToday = uniqueDates.includes(todayStr);
+
+    if (!hasToday) {
+      // Check yesterday
+      currentDate.setDate(currentDate.getDate() - 1);
+    }
+
+    while (true) {
+      const dateStr = currentDate.toISOString().split('T')[0];
+      if (uniqueDates.includes(dateStr)) {
+        streak++;
+        currentDate.setDate(currentDate.getDate() - 1);
+      } else {
+        break;
+      }
+    }
+
+    return streak;
+  }
+
+  function getFocusScore() {
+    if (_data.sessions.length === 0) return 0;
+
+    const streak = getStreak();
+    const totalSessions = _data.sessions.length;
+    const avgDuration = _data.totalFocus / totalSessions / 60;
+
+    // Score components
+    const streakScore = Math.min(streak * 10, 40);
+    const consistencyScore = Math.min(totalSessions * 2, 30);
+    const durationScore = Math.min(avgDuration / 25 * 30, 30);
+
+    return Math.round(Math.min(streakScore + consistencyScore + durationScore, 100));
+  }
+
+  function getCompareData() {
+    const today = new Date();
+    const thisWeekStart = new Date(today);
+    thisWeekStart.setDate(today.getDate() - today.getDay());
+
+    const lastWeekStart = new Date(thisWeekStart);
+    lastWeekStart.setDate(lastWeekStart.getDate() - 7);
+
+    const thisWeekSessions = _data.sessions.filter(s => {
+      const date = new Date(s.date);
+      return date >= thisWeekStart && date < today;
+    });
+
+    const lastWeekSessions = _data.sessions.filter(s => {
+      const date = new Date(s.date);
+      return date >= lastWeekStart && date < thisWeekStart;
+    });
+
+    const thisWeekMinutes = Math.round(thisWeekSessions.reduce((sum, s) => sum + s.duration, 0) / 60);
+    const lastWeekMinutes = Math.round(lastWeekSessions.reduce((sum, s) => sum + s.duration, 0) / 60);
+
+    const change = lastWeekMinutes > 0
+      ? Math.round(((thisWeekMinutes - lastWeekMinutes) / lastWeekMinutes) * 100)
+      : thisWeekMinutes > 0 ? 100 : 0;
+
+    return {
+      thisWeek: thisWeekMinutes,
+      lastWeek: lastWeekMinutes,
+      change: change,
+    };
+  }
+
+  function exportCSV() {
+    if (_data.sessions.length === 0) {
+      alert('No data to export! Complete some focus sessions first.');
+      return;
+    }
+
+    const headers = ['Date', 'Time', 'Duration (min)', 'Hour'];
+    const rows = _data.sessions.map(s => [
+      s.date,
+      new Date(s.timestamp).toLocaleTimeString(),
+      Math.round(s.duration / 60),
+      s.hour + ':00',
+    ]);
+
+    const csv = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `focusforge_stats_${new Date().toISOString().split('T')[0]}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  return {
+    getData,
+    importData,
+    recordSession,
+    getStreak,
+    getFocusScore,
+    getCompareData,
+    exportCSV,
+  };
+})();
+
+/* ============================================================
+   AUDIO ENGINE — Web Audio API
    ============================================================ */
 const AudioEngine = (() => {
   let _ctx = null;
 
-  /** Lazily create / resume AudioContext (handles browser autoplay policy). */
   function _getCtx() {
     if (!_ctx) {
       _ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -112,39 +253,29 @@ const AudioEngine = (() => {
     return _ctx;
   }
 
-  /**
-   * Synthesise a short tone.
-   * @param {number} freq       – Hz
-   * @param {number} dur        – seconds
-   * @param {number} vol        – 0–1
-   * @param {OscillatorType} type
-   */
   function _tone(freq, dur, vol = 0.4, type = 'sine') {
     if (!State.get('soundEnabled')) return;
     try {
-      const ctx  = _getCtx();
-      const osc  = ctx.createOscillator();
+      const ctx = _getCtx();
+      const osc = ctx.createOscillator();
       const gain = ctx.createGain();
       osc.connect(gain);
       gain.connect(ctx.destination);
       osc.type = type;
       osc.frequency.setValueAtTime(freq, ctx.currentTime);
       gain.gain.setValueAtTime(vol, ctx.currentTime);
-      // Exponential fade to silence
       gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + dur);
       osc.start(ctx.currentTime);
       osc.stop(ctx.currentTime + dur + 0.02);
-    } catch (_) { /* AudioContext unavailable */ }
+    } catch (_) {}
   }
 
-  /** Three-tone ascending chime — played when a session ends. */
   function playChime() {
-    _tone(660,  0.18, 0.38);
-    setTimeout(() => _tone(880,  0.18, 0.38), 180);
+    _tone(660, 0.18, 0.38);
+    setTimeout(() => _tone(880, 0.18, 0.38), 180);
     setTimeout(() => _tone(1100, 0.28, 0.32), 360);
   }
 
-  /** Soft click — UI feedback. */
   function playClick() {
     _tone(440, 0.06, 0.18, 'square');
   }
@@ -153,10 +284,9 @@ const AudioEngine = (() => {
 })();
 
 /* ============================================================
-   BROWSER NOTIFICATIONS — Notification API wrapper
+   BROWSER NOTIFICATIONS
    ============================================================ */
 const BrowserNotif = (() => {
-  /** Request permission and return true if granted. */
   async function requestPermission() {
     if (!('Notification' in window)) return false;
     if (Notification.permission === 'granted') return true;
@@ -164,7 +294,6 @@ const BrowserNotif = (() => {
     return result === 'granted';
   }
 
-  /** Fire a desktop notification if permitted. */
   function send(title, body) {
     if (!State.get('browserNotif')) return;
     if (!('Notification' in window)) return;
@@ -176,39 +305,38 @@ const BrowserNotif = (() => {
 })();
 
 /* ============================================================
-   QUOTES — motivational quote bank
+   QUOTES
    ============================================================ */
 const Quotes = (() => {
   const BANK = [
-    { text: 'The secret of getting ahead is getting started.',                                    author: 'Mark Twain' },
-    { text: 'It does not matter how slowly you go as long as you do not stop.',                   author: 'Confucius' },
-    { text: 'Success is the sum of small efforts, repeated day in and day out.',                  author: 'Robert Collier' },
-    { text: 'Focus on being productive instead of busy.',                                         author: 'Tim Ferriss' },
-    { text: "You don't have to be great to start, but you have to start to be great.",            author: 'Zig Ziglar' },
-    { text: 'The way to get started is to quit talking and begin doing.',                         author: 'Walt Disney' },
-    { text: "Hard work beats talent when talent doesn't work hard.",                              author: 'Tim Notke' },
-    { text: "Believe you can and you're halfway there.",                                          author: 'Theodore Roosevelt' },
-    { text: 'Action is the foundational key to all success.',                                     author: 'Pablo Picasso' },
-    { text: 'An investment in knowledge pays the best interest.',                                 author: 'Benjamin Franklin' },
-    { text: 'What you do today can improve all your tomorrows.',                                  author: 'Ralph Marston' },
-    { text: 'The future depends on what you do today.',                                           author: 'Mahatma Gandhi' },
-    { text: 'Push yourself, because no one else is going to do it for you.',                     author: 'Unknown' },
-    { text: 'Great things never come from comfort zones.',                                        author: 'Unknown' },
-    { text: "Don't stop when you're tired. Stop when you're done.",                              author: 'Unknown' },
-    { text: 'Dream it. Wish it. Do it.',                                                          author: 'Unknown' },
-    { text: "Success doesn't just find you. You have to go out and get it.",                     author: 'Unknown' },
-    { text: 'The harder you work for something, the greater you\'ll feel when you achieve it.',  author: 'Unknown' },
-    { text: 'Little by little, a little becomes a lot.',                                          author: 'Tanzanian Proverb' },
-    { text: 'Deep work is the superpower of the 21st century.',                                   author: 'Cal Newport' },
-    { text: 'Energy and persistence conquer all things.',                                         author: 'Benjamin Franklin' },
-    { text: 'Either you run the day or the day runs you.',                                        author: 'Jim Rohn' },
+    { text: 'The secret of getting ahead is getting started.', author: 'Mark Twain' },
+    { text: 'It does not matter how slowly you go as long as you do not stop.', author: 'Confucius' },
+    { text: 'Success is the sum of small efforts, repeated day in and day out.', author: 'Robert Collier' },
+    { text: 'Focus on being productive instead of busy.', author: 'Tim Ferriss' },
+    { text: "You don't have to be great to start, but you have to start to be great.", author: 'Zig Ziglar' },
+    { text: 'The way to get started is to quit talking and begin doing.', author: 'Walt Disney' },
+    { text: "Hard work beats talent when talent doesn't work hard.", author: 'Tim Notke' },
+    { text: "Believe you can and you're halfway there.", author: 'Theodore Roosevelt' },
+    { text: 'Action is the foundational key to all success.', author: 'Pablo Picasso' },
+    { text: 'An investment in knowledge pays the best interest.', author: 'Benjamin Franklin' },
+    { text: 'What you do today can improve all your tomorrows.', author: 'Ralph Marston' },
+    { text: 'The future depends on what you do today.', author: 'Mahatma Gandhi' },
+    { text: 'Push yourself, because no one else is going to do it for you.', author: 'Unknown' },
+    { text: 'Great things never come from comfort zones.', author: 'Unknown' },
+    { text: "Don't stop when you're tired. Stop when you're done.", author: 'Unknown' },
+    { text: 'Dream it. Wish it. Do it.', author: 'Unknown' },
+    { text: "Success doesn't just find you. You have to go out and get it.", author: 'Unknown' },
+    { text: 'The harder you work for something, the greater you\'ll feel when you achieve it.', author: 'Unknown' },
+    { text: 'Little by little, a little becomes a lot.', author: 'Tanzanian Proverb' },
+    { text: 'Deep work is the superpower of the 21st century.', author: 'Cal Newport' },
+    { text: 'Energy and persistence conquer all things.', author: 'Benjamin Franklin' },
+    { text: 'Either you run the day or the day runs you.', author: 'Jim Rohn' },
     { text: 'Productivity is never an accident. It is always the result of a commitment to excellence.', author: 'Paul J. Meyer' },
     { text: "You've got to get up every morning with determination if you're going to go to bed with satisfaction.", author: 'George Lorimer' },
   ];
 
   let _lastIdx = -1;
 
-  /** Return a random quote, never repeating the previous one. */
   function getRandom() {
     let idx;
     do { idx = Math.floor(Math.random() * BANK.length); } while (idx === _lastIdx);
@@ -223,113 +351,98 @@ const Quotes = (() => {
    UI — DOM references & update helpers
    ============================================================ */
 const UI = (() => {
-  // Lazily populated on init()
   let $timerTime, $progressRing, $modeLabel, $modeDot,
       $sessionCount, $startBtn, $playIcon, $pauseIcon,
       $resetBtn, $skipBtn, $focusTab, $breakTab,
       $themeToggle, $themeIcon, $settingsToggle,
       $settingsPanel, $settingsClose, $quoteText,
-      $quoteAuthor, $timerCard;
+      $quoteAuthor, $timerCard, $statsPanel, $statsClose,
+      $statsToggle, $exportStats;
 
-  /** Cache all DOM references once the document is ready. */
   function init() {
-    $timerTime      = document.getElementById('timerTime');
-    $progressRing   = document.getElementById('progressRing');
-    $modeLabel      = document.getElementById('modeLabel');
-    $modeDot        = document.getElementById('modeDot');
-    $sessionCount   = document.getElementById('sessionCount');
-    $startBtn       = document.getElementById('startBtn');
-    $playIcon       = $startBtn.querySelector('.play-icon');
-    $pauseIcon      = $startBtn.querySelector('.pause-icon');
-    $resetBtn       = document.getElementById('resetBtn');
-    $skipBtn        = document.getElementById('skipBtn');
-    $focusTab       = document.getElementById('focusTab');
-    $breakTab       = document.getElementById('breakTab');
-    $themeToggle    = document.getElementById('themeToggle');
-    $themeIcon      = document.getElementById('themeIcon');
+    $timerTime = document.getElementById('timerTime');
+    $progressRing = document.getElementById('progressRing');
+    $modeLabel = document.getElementById('modeLabel');
+    $modeDot = document.getElementById('modeDot');
+    $sessionCount = document.getElementById('sessionCount');
+    $startBtn = document.getElementById('startBtn');
+    $playIcon = $startBtn.querySelector('.play-icon');
+    $pauseIcon = $startBtn.querySelector('.pause-icon');
+    $resetBtn = document.getElementById('resetBtn');
+    $skipBtn = document.getElementById('skipBtn');
+    $focusTab = document.getElementById('focusTab');
+    $breakTab = document.getElementById('breakTab');
+    $themeToggle = document.getElementById('themeToggle');
+    $themeIcon = document.getElementById('themeIcon');
     $settingsToggle = document.getElementById('settingsToggle');
-    $settingsPanel  = document.getElementById('settingsPanel');
-    $settingsClose  = document.getElementById('settingsClose');
-    $quoteText      = document.getElementById('quoteText');
-    $quoteAuthor    = document.getElementById('quoteAuthor');
-    $timerCard      = document.querySelector('.timer-card');
+    $settingsPanel = document.getElementById('settingsPanel');
+    $settingsClose = document.getElementById('settingsClose');
+    $quoteText = document.getElementById('quoteText');
+    $quoteAuthor = document.getElementById('quoteAuthor');
+    $timerCard = document.querySelector('.timer-card');
+    $statsPanel = document.getElementById('statsPanel');
+    $statsClose = document.getElementById('statsClose');
+    $statsToggle = document.getElementById('statsToggle');
+    $exportStats = document.getElementById('exportStats');
   }
 
-  /**
-   * Format seconds → "MM:SS" or "H:MM:SS" when ≥ 1 hour.
-   * Also toggles .hours-mode class on the timer element for font-size adjustment.
-   */
   function _fmt(seconds) {
     const s = Math.max(0, seconds);
     if (s >= 3600) {
-      const h  = Math.floor(s / 3600);
-      const m  = Math.floor((s % 3600) / 60).toString().padStart(2, '0');
+      const h = Math.floor(s / 3600);
+      const m = Math.floor((s % 3600) / 60).toString().padStart(2, '0');
       const ss = (s % 60).toString().padStart(2, '0');
       return `${h}:${m}:${ss}`;
     }
-    const m  = Math.floor(s / 60).toString().padStart(2, '0');
+    const m = Math.floor(s / 60).toString().padStart(2, '0');
     const ss = (s % 60).toString().padStart(2, '0');
     return `${m}:${ss}`;
   }
 
-  /** Update the visible timer and browser tab title. */
   function updateTimer(seconds) {
     const label = _fmt(Math.max(0, seconds));
     $timerTime.textContent = label;
-    // Switch font size class when hours are displayed
     $timerTime.classList.toggle('hours-mode', seconds >= 3600);
     document.title = `${label} — FocusForge`;
   }
 
-  /**
-   * Animate the SVG progress ring.
-   * @param {number} fraction – 0 (empty) to 1 (full)
-   */
   function updateRing(fraction) {
-    const CIRC = 2 * Math.PI * 96; // ≈ 603.19
+    const CIRC = 2 * Math.PI * 96;
     const offset = CIRC * (1 - Math.max(0, Math.min(1, fraction)));
     $progressRing.style.strokeDashoffset = offset;
   }
 
-  /** Sync all mode-dependent visuals (tabs, dot, label, ring colour). */
   function setMode(mode) {
     const isFocus = mode === 'focus';
-
     $modeLabel.textContent = isFocus ? 'Focus Time' : 'Break Time';
     $modeDot.classList.toggle('break-mode', !isFocus);
     $progressRing.classList.toggle('break-mode', !isFocus);
-
     $focusTab.classList.toggle('active', isFocus);
     $focusTab.setAttribute('aria-selected', String(isFocus));
     $breakTab.classList.toggle('active', !isFocus);
     $breakTab.setAttribute('aria-selected', String(!isFocus));
   }
 
-  /** Toggle Start ↔ Pause icon and aria-label. */
   function setRunning(isRunning) {
     $playIcon.classList.toggle('hidden', isRunning);
     $pauseIcon.classList.toggle('hidden', !isRunning);
     $startBtn.setAttribute('aria-label', isRunning ? 'Pause timer' : 'Start timer');
   }
 
-  /** Refresh session counter and trigger a brief scale-up. */
   function updateSessionCount() {
     $sessionCount.textContent = State.get('sessionCount');
     $sessionCount.classList.remove('bump');
-    // reflow so the animation restarts
     void $sessionCount.offsetWidth;
     $sessionCount.classList.add('bump');
     setTimeout(() => $sessionCount.classList.remove('bump'), 300);
   }
 
-  /** Rotate the ambient quote to a new random entry. */
   function updateQuote() {
     const q = Quotes.getRandom();
-    $quoteText.textContent   = `"${q.text}"`;
+    $quoteText.textContent = `"${q.text}"`;
     $quoteAuthor.textContent = `— ${q.author}`;
   }
 
-  /** Flash the card with a glow when a session completes. */
   function flashComplete() {
     $timerCard.classList.remove('flash-complete');
     void $timerCard.offsetWidth;
@@ -337,13 +450,11 @@ const UI = (() => {
     setTimeout(() => $timerCard.classList.remove('flash-complete'), 1400);
   }
 
-  /** Apply dark / light theme to <body> and update icon. */
   function applyTheme(theme) {
     document.body.classList.toggle('light', theme === 'light');
     $themeIcon.textContent = theme === 'light' ? '🌙' : '☀️';
   }
 
-  /** Shake an input element to signal invalid value. */
   function shakeEl(el) {
     el.classList.remove('shake');
     void el.offsetWidth;
@@ -351,54 +462,34 @@ const UI = (() => {
     setTimeout(() => el.classList.remove('shake'), 420);
   }
 
-  /**
-   * Parse a user-typed time string into total seconds.
-   * Accepts:
-   *   "90"       → 90 minutes = 5400s
-   *   "25:30"    → 25 min 30 sec = 1530s
-   *   "1:30:00"  → 1 h 30 min = 5400s
-   * Returns null if the format is unrecognised.
-   */
   function parseTimerInput(raw) {
     const str = raw.trim();
-    // Plain integer → minutes
     if (/^\d+$/.test(str)) {
       const mins = parseInt(str, 10);
       return isNaN(mins) ? null : mins * 60;
     }
-    // H:MM:SS
     const hms = str.match(/^(\d+):([0-5]\d):([0-5]\d)$/);
     if (hms) return +hms[1] * 3600 + +hms[2] * 60 + +hms[3];
-    // MM:SS
     const ms = str.match(/^(\d+):([0-5]\d)$/);
     if (ms) return +ms[1] * 60 + +ms[2];
     return null;
   }
 
-  /**
-   * Replace the timer display with an inline text input.
-   * On Enter / blur the new time is applied via Timer.setTime().
-   * If the timer is running it is paused first.
-   */
   function openTimerEdit() {
-    // Pause if running so the user edits a frozen value
     Timer.pause();
 
-    // Build input
     const $input = document.createElement('input');
     $input.type = 'text';
     $input.className = 'timer-edit-input' + ($timerTime.classList.contains('hours-mode') ? ' hours-mode' : '');
     $input.value = $timerTime.textContent;
-    $input.maxLength = 8; // "H:MM:SS" = 7 chars + breathing room
+    $input.maxLength = 8;
     $input.setAttribute('aria-label', 'Edit timer — type minutes, MM:SS or H:MM:SS, then press Enter');
     $input.setAttribute('spellcheck', 'false');
 
-    // Format hint shown below input
     const $hint = document.createElement('span');
     $hint.className = 'timer-edit-format';
     $hint.textContent = 'min  ·  MM:SS  ·  H:MM:SS';
 
-    // Hide original timer text, inject input + hint
     $timerTime.style.display = 'none';
     document.querySelector('.timer-edit-hint').style.display = 'none';
     $timerTime.parentNode.appendChild($input);
@@ -414,8 +505,8 @@ const UI = (() => {
       committed = true;
 
       const secs = parseTimerInput($input.value);
-      const MIN = 60;        // 1 minute floor
-      const MAX = 359_940;   // 99 h 59 m ceiling (edge case safety)
+      const MIN = 60;
+      const MAX = 359940;
 
       $input.remove();
       $hint.remove();
@@ -424,17 +515,15 @@ const UI = (() => {
 
       if (secs !== null && secs >= MIN && secs <= MAX) {
         Timer.setTime(secs);
-      } else if (secs !== null) {
-        shakeEl($timerTime); // out-of-range
       } else {
-        shakeEl($timerTime); // unrecognised format
+        shakeEl($timerTime);
       }
     }
 
     $input.addEventListener('keydown', e => {
-      if (e.key === 'Enter')  { e.preventDefault(); commit(); }
+      if (e.key === 'Enter') { e.preventDefault(); commit(); }
       if (e.key === 'Escape') {
-        committed = true; // cancel without applying
+        committed = true;
         $input.remove();
         $hint.remove();
         $timerTime.style.display = '';
@@ -445,46 +534,342 @@ const UI = (() => {
   }
 
   return {
-    init, updateTimer, updateRing, setMode,
-    setRunning, updateSessionCount, updateQuote,
-    flashComplete, applyTheme, shakeEl, openTimerEdit,
-    // Expose refs needed by other modules
+    init,
+    updateTimer,
+    updateRing,
+    setMode,
+    setRunning,
+    updateSessionCount,
+    updateQuote,
+    flashComplete,
+    applyTheme,
+    shakeEl,
+    openTimerEdit,
     get $settingsPanel() { return $settingsPanel; },
-    get $settingsClose()  { return $settingsClose; },
-    get $themeToggle()    { return $themeToggle; },
+    get $settingsClose() { return $settingsClose; },
+    get $themeToggle() { return $themeToggle; },
     get $settingsToggle() { return $settingsToggle; },
-    get $startBtn()       { return $startBtn; },
-    get $resetBtn()       { return $resetBtn; },
-    get $skipBtn()        { return $skipBtn; },
-    get $focusTab()       { return $focusTab; },
-    get $breakTab()       { return $breakTab; },
+    get $startBtn() { return $startBtn; },
+    get $resetBtn() { return $resetBtn; },
+    get $skipBtn() { return $skipBtn; },
+    get $focusTab() { return $focusTab; },
+    get $breakTab() { return $breakTab; },
+    get $statsToggle() { return $statsToggle; },
+    get $statsPanel() { return $statsPanel; },
+    get $statsClose() { return $statsClose; },
+    get $exportStats() { return $exportStats; },
   };
 })();
+
+/* ============================================================
+   STATS DISPLAY — Update all stats UI elements
+   ============================================================ */
+function updateStatsDisplay() {
+  const sessions = Stats.getData().sessions;
+  const today = new Date().toISOString().split('T')[0];
+  const todaySessions = sessions.filter(s => s.date === today);
+  const todayMinutes = Math.round(todaySessions.reduce((sum, s) => sum + s.duration, 0) / 60);
+
+  // Today's focus
+  document.getElementById('todayFocus').textContent = todayMinutes + ' min';
+
+  // Total focus
+  const totalMinutes = Math.round(Stats.getData().totalFocus / 60);
+  document.getElementById('totalFocus').textContent = totalMinutes > 60 ?
+    (totalMinutes / 60).toFixed(1) + ' hrs' :
+    totalMinutes + ' min';
+
+  // Average session
+  const avg = sessions.length > 0 ?
+    Math.round(sessions.reduce((sum, s) => sum + s.duration, 0) / sessions.length / 60) :
+    0;
+  document.getElementById('avgSession').textContent = avg + ' min';
+
+  // Best day
+  const dayMap = {};
+  sessions.forEach(s => {
+    dayMap[s.date] = (dayMap[s.date] || 0) + s.duration;
+  });
+  let best = 0;
+  for (const day in dayMap) {
+    if (dayMap[day] > best) best = dayMap[day];
+  }
+  document.getElementById('bestDay').textContent = Math.round(best / 60) + ' min';
+
+  // This week
+  const weekStart = new Date();
+  weekStart.setDate(weekStart.getDate() - weekStart.getDay());
+  const weekStartStr = weekStart.toISOString().split('T')[0];
+  const weekSessions = sessions.filter(s => s.date >= weekStartStr);
+  const weekMinutes = Math.round(weekSessions.reduce((sum, s) => sum + s.duration, 0) / 60);
+  document.getElementById('weekFocus').textContent = weekMinutes > 60 ?
+    (weekMinutes / 60).toFixed(1) + ' hrs' :
+    weekMinutes + ' min';
+
+  // Total sessions
+  document.getElementById('totalSessions').textContent = sessions.length;
+
+  // Streak
+  const streak = Stats.getStreak();
+  document.getElementById('streakCount').textContent = streak + ' day' + (streak !== 1 ? 's' : '');
+
+  // Focus Score
+  const score = Stats.getFocusScore();
+  document.getElementById('focusScore').textContent = score + '/100';
+  document.getElementById('scoreFill').style.width = score + '%';
+
+  // Compare data
+  const compare = Stats.getCompareData();
+  document.getElementById('thisWeek').textContent = compare.thisWeek + ' hrs';
+  document.getElementById('lastWeek').textContent = compare.lastWeek + ' hrs';
+
+  const changeEl = document.getElementById('weekChange');
+  const changeText = (compare.change >= 0 ? '+' : '') + compare.change + '%';
+  changeEl.textContent = changeText;
+  changeEl.className = 'compare-value' + (compare.change > 0 ? ' positive' : compare.change < 0 ? ' negative' : '');
+
+  // Update session badge
+  document.getElementById('sessionCount').textContent = sessions.length;
+}
+
+/* ============================================================
+   CHART — Canvas-based bar chart
+   ============================================================ */
+let currentChartPeriod = 'week';
+
+function updateChart(period = currentChartPeriod) {
+  currentChartPeriod = period;
+  const canvas = document.getElementById('statsChart');
+  if (!canvas) return;
+
+  const ctx = canvas.getContext('2d');
+  const rect = canvas.parentElement.getBoundingClientRect();
+  canvas.width = canvas.parentElement.clientWidth || 600;
+  canvas.height = 250;
+
+  const sessions = Stats.getData().sessions;
+
+  let days;
+  if (period === 'week') {
+    days = [];
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date();
+      d.setDate(d.getDate() - i);
+      days.push(d.toISOString().split('T')[0]);
+    }
+  } else if (period === 'month') {
+    days = [];
+    for (let i = 29; i >= 0; i--) {
+      const d = new Date();
+      d.setDate(d.getDate() - i);
+      days.push(d.toISOString().split('T')[0]);
+    }
+  } else {
+    // Year
+    days = [];
+    for (let i = 51; i >= 0; i--) {
+      const d = new Date();
+      d.setDate(d.getDate() - i * 7);
+      days.push(d.toISOString().split('T')[0]);
+    }
+  }
+
+  const data = days.map(day => {
+    return sessions
+      .filter(s => s.date === day)
+      .reduce((sum, s) => sum + s.duration, 0) / 60;
+  });
+
+  const maxVal = Math.max(...data, 1);
+  const padding = { top: 20, bottom: 30, left: 40, right: 20 };
+  const chartWidth = canvas.width - padding.left - padding.right;
+  const chartHeight = canvas.height - padding.top - padding.bottom;
+  const barWidth = Math.min(chartWidth / data.length * 0.6, 30);
+  const gap = Math.max((chartWidth / data.length) - barWidth, 2);
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  const isLight = document.body.classList.contains('light');
+  const textColor = isLight ? '#1a1a2e' : '#94a3b8';
+  const gridColor = isLight ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.1)';
+
+  // Grid lines
+  for (let i = 0; i <= 4; i++) {
+    const y = padding.top + chartHeight - (i / 4) * chartHeight;
+    ctx.beginPath();
+    ctx.moveTo(padding.left, y);
+    ctx.lineTo(canvas.width - padding.right, y);
+    ctx.strokeStyle = gridColor;
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    ctx.fillStyle = textColor;
+    ctx.font = '9px Inter, sans-serif';
+    ctx.textAlign = 'right';
+    ctx.fillText(Math.round((i / 4) * maxVal) + 'm', padding.left - 6, y + 3);
+  }
+
+  // Bars
+  data.forEach((value, index) => {
+    const x = padding.left + index * (barWidth + gap);
+    const height = (value / maxVal) * chartHeight;
+    const y = padding.top + chartHeight - height;
+
+    const gradient = ctx.createLinearGradient(x, y, x, padding.top + chartHeight);
+    gradient.addColorStop(0, '#7c5cfc');
+    gradient.addColorStop(1, '#fc5c7d');
+    ctx.fillStyle = gradient;
+
+    ctx.beginPath();
+    const radius = 4;
+    ctx.moveTo(x + radius, y);
+    ctx.lineTo(x + barWidth - radius, y);
+    ctx.quadraticCurveTo(x + barWidth, y, x + barWidth, y + radius);
+    ctx.lineTo(x + barWidth, padding.top + chartHeight);
+    ctx.lineTo(x, padding.top + chartHeight);
+    ctx.lineTo(x, y + radius);
+    ctx.quadraticCurveTo(x, y, x + radius, y);
+    ctx.fill();
+
+    if (value > 0) {
+      ctx.fillStyle = textColor;
+      ctx.font = '8px Inter, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(Math.round(value) + 'm', x + barWidth/2, y - 4);
+    }
+
+    const label = period === 'year' ?
+      days[index].split('-').slice(1).join('/') :
+      days[index].split('-').slice(1).join('/');
+    ctx.fillStyle = textColor;
+    ctx.font = '8px Inter, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(label, x + barWidth/2, canvas.height - 4);
+  });
+}
+
+/* ============================================================
+   HEATMAP — Productivity heat map
+   ============================================================ */
+function updateHeatmap() {
+  const grid = document.getElementById('heatmapGrid');
+  if (!grid) return;
+
+  const sessions = Stats.getData().sessions;
+  const today = new Date();
+
+  // Get last 30 days
+  const days = [];
+  for (let i = 29; i >= 0; i--) {
+    const d = new Date(today);
+    d.setDate(d.getDate() - i);
+    days.push(d);
+  }
+
+  // Calculate max focus for scaling
+  const dayMap = {};
+  sessions.forEach(s => {
+    dayMap[s.date] = (dayMap[s.date] || 0) + s.duration;
+  });
+
+  const values = days.map(d => {
+    const key = d.toISOString().split('T')[0];
+    return dayMap[key] || 0;
+  });
+
+  const maxVal = Math.max(...values, 1);
+
+  let html = '';
+  const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+  // Add day labels
+  for (let i = 0; i < 7; i++) {
+    html += `<div class="heatmap-label">${dayNames[i]}</div>`;
+  }
+
+  // Add cells
+  days.forEach((d, index) => {
+    const value = values[index];
+    const level = Math.min(Math.floor((value / maxVal) * 5), 5);
+    const dateStr = d.toISOString().split('T')[0];
+    const minutes = Math.round(value / 60);
+
+    html += `
+      <div class="heatmap-cell level-${level}">
+        ${minutes > 0 ? minutes : ''}
+        <div class="tooltip">${dateStr}: ${minutes} min</div>
+      </div>
+    `;
+  });
+
+  grid.innerHTML = html;
+}
+
+/* ============================================================
+   PRODUCTIVE HOURS — Most productive hours chart
+   ============================================================ */
+function updateProductiveHours() {
+  const grid = document.getElementById('hoursGrid');
+  if (!grid) return;
+
+  const sessions = Stats.getData().sessions;
+  const hourCounts = Array(24).fill(0);
+  sessions.forEach(s => {
+    hourCounts[s.hour] += s.duration;
+  });
+
+  const maxCount = Math.max(...hourCounts, 1);
+
+  // Show top 6 hours
+  const activeHours = hourCounts.map((count, i) => ({ hour: i, count }))
+    .filter(h => h.count > 0)
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 6);
+
+  if (activeHours.length === 0) {
+    grid.innerHTML = '<div style="grid-column: 1/-1; text-align:center; color:var(--text-muted); font-size:0.8rem; padding:10px;">Complete sessions to see your productive hours</div>';
+    return;
+  }
+
+  const labels = ['12a', '1a', '2a', '3a', '4a', '5a', '6a', '7a', '8a', '9a', '10a', '11a',
+                  '12p', '1p', '2p', '3p', '4p', '5p', '6p', '7p', '8p', '9p', '10p', '11p'];
+
+  let html = '';
+  activeHours.forEach(h => {
+    const percent = (h.count / maxCount) * 100;
+    const minutes = Math.round(h.count / 60);
+    html += `
+      <div class="hour-bar">
+        <div class="hour-bar-fill" title="${labels[h.hour]}: ${minutes} min">
+          <div class="fill" style="height: ${percent}%"></div>
+        </div>
+        <span class="hour-bar-label">${labels[h.hour]}</span>
+      </div>
+    `;
+  });
+
+  grid.innerHTML = html;
+}
 
 /* ============================================================
    TIMER — countdown logic & mode transitions
    ============================================================ */
 const Timer = (() => {
-  const CIRC = 2 * Math.PI * 96; // SVG ring circumference
+  let _intervalId = null;
+  let _totalSeconds = 0;
+  let _remaining = 0;
+  let _isRunning = false;
 
-  let _intervalId     = null;
-  let _totalSeconds   = 0;
-  let _remaining      = 0;
-  let _isRunning      = false;
-
-  /** Convert stored minutes to seconds for the given mode. */
   function _secondsFor(mode) {
     return (mode === 'focus' ? State.get('focusDuration') : State.get('breakDuration')) * 60;
   }
 
-  /** Stop the interval cleanly. */
   function _stop() {
     clearInterval(_intervalId);
     _intervalId = null;
-    _isRunning  = false;
+    _isRunning = false;
   }
 
-  /** Called every second while running. */
   function _tick() {
     _remaining = Math.max(0, _remaining - 1);
     UI.updateTimer(_remaining);
@@ -496,13 +881,12 @@ const Timer = (() => {
     }
   }
 
-  /** Handle session completion — sound, notify, popup, switch mode. */
   function _onComplete() {
     const finishedMode = State.get('currentMode');
 
-    // Increment counter only for completed focus sessions
     if (finishedMode === 'focus') {
       State.set('sessionCount', State.get('sessionCount') + 1);
+      Stats.recordSession(_totalSeconds);
       Storage.save();
       UI.updateSessionCount();
     }
@@ -512,10 +896,9 @@ const Timer = (() => {
 
     BrowserNotif.send(
       finishedMode === 'focus' ? '⚡ Focus session done!' : '☕ Break complete!',
-      finishedMode === 'focus' ? 'Time for a well-earned break.'  : 'Ready to focus again?'
+      finishedMode === 'focus' ? 'Time for a well-earned break.' : 'Ready to focus again?'
     );
 
-    // Show popup; when user dismisses it, switch mode (and auto-start if enabled)
     Popup.show(finishedMode, () => {
       const nextMode = finishedMode === 'focus' ? 'break' : 'focus';
       switchMode(nextMode);
@@ -525,70 +908,55 @@ const Timer = (() => {
     });
   }
 
-  /** Reset timer to beginning of current mode (does NOT auto-start). */
   function reset() {
     _stop();
-    const mode      = State.get('currentMode');
-    _totalSeconds   = _secondsFor(mode);
-    _remaining      = _totalSeconds;
+    const mode = State.get('currentMode');
+    _totalSeconds = _secondsFor(mode);
+    _remaining = _totalSeconds;
     UI.updateTimer(_remaining);
     UI.updateRing(1);
     UI.setRunning(false);
   }
 
-  /** Start (or resume) the countdown. */
   function start() {
     if (_isRunning) return;
     AudioEngine.playClick();
-    _isRunning  = true;
+    _isRunning = true;
     _intervalId = setInterval(_tick, 1000);
     UI.setRunning(true);
   }
 
-  /** Pause the countdown. */
   function pause() {
     if (!_isRunning) return;
     _stop();
     UI.setRunning(false);
   }
 
-  /** Toggle start / pause. */
   function toggle() {
     _isRunning ? pause() : start();
   }
 
-  /**
-   * Switch to a different mode without counting the current session.
-   * @param {string} mode – 'focus' | 'break'
-   */
   function switchMode(mode) {
     _stop();
     State.set('currentMode', mode);
     _totalSeconds = _secondsFor(mode);
-    _remaining    = _totalSeconds;
+    _remaining = _totalSeconds;
     UI.setMode(mode);
     UI.updateTimer(_remaining);
     UI.updateRing(1);
     UI.setRunning(false);
   }
 
-  /** Skip to the next mode (user-initiated, no session credit). */
   function skip() {
     AudioEngine.playClick();
     const next = State.get('currentMode') === 'focus' ? 'break' : 'focus';
     switchMode(next);
   }
 
-  /**
-   * Directly set the timer to a specific number of seconds.
-   * Called by the inline edit UI; pauses the timer first.
-   * Updates the stored duration so Reset restores the new value.
-   * @param {number} seconds – total seconds for the new duration
-   */
   function setTime(seconds) {
     _stop();
     _totalSeconds = seconds;
-    _remaining    = seconds;
+    _remaining = seconds;
 
     const durationKey = State.get('currentMode') === 'focus' ? 'focusDuration' : 'breakDuration';
     State.set(durationKey, Math.round(seconds / 60));
@@ -600,24 +968,16 @@ const Timer = (() => {
     AudioEngine.playClick();
   }
 
-  /**
-   * Add or subtract minutes from the current timer (works while paused or running).
-   * Clamps remaining time between 1 minute and 99 minutes.
-   * Also updates the stored duration setting so Reset restores the adjusted value.
-   * @param {number} deltaMinutes – positive or negative integer (e.g. +5 or -5)
-   */
   function adjustTime(deltaMinutes) {
-    const delta     = deltaMinutes * 60;
-    const MIN_SECS  = 60;           // 1 minute floor
-    const MAX_SECS  = 359_940;      // 99 h 59 m ceiling (H:MM:SS display safety)
+    const delta = deltaMinutes * 60;
+    const MIN_SECS = 60;
+    const MAX_SECS = 359940;
 
-    _remaining    = Math.min(MAX_SECS, Math.max(MIN_SECS, _remaining + delta));
+    _remaining = Math.min(MAX_SECS, Math.max(MIN_SECS, _remaining + delta));
     _totalSeconds = Math.min(MAX_SECS, Math.max(MIN_SECS, _totalSeconds + delta));
 
-    // Keep remaining ≤ total (e.g. after decrement)
     if (_remaining > _totalSeconds) _remaining = _totalSeconds;
 
-    // Persist the updated duration so Reset uses the new value
     const durationKey = State.get('currentMode') === 'focus' ? 'focusDuration' : 'breakDuration';
     State.set(durationKey, Math.round(_totalSeconds / 60));
     Storage.save();
@@ -631,38 +991,33 @@ const Timer = (() => {
 })();
 
 /* ============================================================
-   POPUP — session completion dialog
+   POPUP
    ============================================================ */
 const Popup = (() => {
   let _onCloseCb = null;
 
-  /**
-   * Display the completion popup.
-   * @param {string}   completedMode – 'focus' | 'break'
-   * @param {Function} onClose       – called when user dismisses
-   */
   function show(completedMode, onClose) {
     _onCloseCb = onClose;
 
-    const $overlay  = document.getElementById('popupOverlay');
-    const $icon     = document.getElementById('popupIcon');
-    const $title    = document.getElementById('popupTitle');
-    const $message  = document.getElementById('popupMessage');
-    const $quote    = document.getElementById('popupQuote');
+    const $overlay = document.getElementById('popupOverlay');
+    const $icon = document.getElementById('popupIcon');
+    const $title = document.getElementById('popupTitle');
+    const $message = document.getElementById('popupMessage');
+    const $quote = document.getElementById('popupQuote');
 
     const isFocus = completedMode === 'focus';
 
-    $icon.textContent    = isFocus ? '🎉' : '⚡';
-    $title.textContent   = isFocus ? 'Session Complete!' : 'Break Over!';
+    $icon.textContent = isFocus ? '🎉' : '⚡';
+    $title.textContent = isFocus ? 'Session Complete!' : 'Break Over!';
     $message.textContent = isFocus
       ? "Amazing work! You've earned a break. Keep the momentum going!"
       : 'Rest complete! Ready to dive back in?';
 
     if (isFocus) {
       const q = Quotes.getRandom();
-      $quote.textContent  = `“${q.text}” — ${q.author}`;
+      $quote.textContent = `“${q.text}” — ${q.author}`;
       $quote.style.display = '';
-      UI.updateQuote(); // also refresh background quote
+      UI.updateQuote();
     } else {
       $quote.style.display = 'none';
     }
@@ -684,25 +1039,22 @@ const Popup = (() => {
 })();
 
 /* ============================================================
-   SETTINGS — panel open / close / apply
+   SETTINGS
    ============================================================ */
 const Settings = (() => {
-  /** Open settings panel and sync inputs to current State. */
   function open() {
-    const $p = document.getElementById('settingsPanel');
-    document.getElementById('focusDuration').value  = State.get('focusDuration');
-    document.getElementById('breakDuration').value  = State.get('breakDuration');
-    document.getElementById('autoSwitch').checked   = State.get('autoSwitch');
+    document.getElementById('focusDuration').value = State.get('focusDuration');
+    document.getElementById('breakDuration').value = State.get('breakDuration');
+    document.getElementById('autoSwitch').checked = State.get('autoSwitch');
     document.getElementById('soundEnabled').checked = State.get('soundEnabled');
     document.getElementById('browserNotif').checked = State.get('browserNotif');
-    $p.removeAttribute('hidden');
+    document.getElementById('settingsPanel').removeAttribute('hidden');
   }
 
   function close() {
     document.getElementById('settingsPanel').setAttribute('hidden', '');
   }
 
-  /** Validate, commit to State, persist, reset timer if durations changed. */
   function apply() {
     const $focus = document.getElementById('focusDuration');
     const $break = document.getElementById('breakDuration');
@@ -712,19 +1064,20 @@ const Settings = (() => {
 
     let valid = true;
     if (!Number.isInteger(focusVal) || focusVal < 1 || focusVal > 99) {
-      UI.shakeEl($focus); valid = false;
+      UI.shakeEl($focus);
+      valid = false;
     }
     if (!Number.isInteger(breakVal) || breakVal < 1 || breakVal > 99) {
-      UI.shakeEl($break); valid = false;
+      UI.shakeEl($break);
+      valid = false;
     }
     if (!valid) return;
 
     State.set('focusDuration', focusVal);
     State.set('breakDuration', breakVal);
-    State.set('autoSwitch',    document.getElementById('autoSwitch').checked);
-    State.set('soundEnabled',  document.getElementById('soundEnabled').checked);
+    State.set('autoSwitch', document.getElementById('autoSwitch').checked);
+    State.set('soundEnabled', document.getElementById('soundEnabled').checked);
 
-    // Browser notifications require explicit permission
     const wantNotif = document.getElementById('browserNotif').checked;
     if (wantNotif && Notification.permission !== 'granted') {
       BrowserNotif.requestPermission().then(granted => {
@@ -737,17 +1090,16 @@ const Settings = (() => {
     }
 
     Storage.save();
-    Timer.reset();  // Apply new durations immediately
+    Timer.reset();
     AudioEngine.playClick();
     close();
   }
 
-  /** Increment / decrement a number input via the +/− buttons. */
   function step(targetId, action) {
     const $el = document.getElementById(targetId);
-    let val   = parseInt($el.value, 10) || 1;
+    let val = parseInt($el.value, 10) || 1;
     if (action === 'inc') val = Math.min(99, val + 1);
-    if (action === 'dec') val = Math.max(1,  val - 1);
+    if (action === 'dec') val = Math.max(1, val - 1);
     $el.value = val;
   }
 
@@ -758,34 +1110,35 @@ const Settings = (() => {
    APP — bootstrap & global event wiring
    ============================================================ */
 function App() {
-  // 1. Restore persisted settings
   Storage.load();
 
-  // 2. Initialise UI refs
   UI.init();
-
-  // 3. Apply persisted theme
   UI.applyTheme(State.get('theme'));
 
-  // 4. Render initial timer state
   Timer.reset();
   UI.setMode(State.get('currentMode'));
   UI.updateSessionCount();
   UI.updateQuote();
 
+  // Stats
+  updateStatsDisplay();
+  updateChart('week');
+  updateHeatmap();
+  updateProductiveHours();
+
   /* ── Timer Controls ── */
   UI.$startBtn.addEventListener('click', () => Timer.toggle());
-  UI.$resetBtn.addEventListener('click', () => { AudioEngine.playClick(); Timer.reset(); });
-  UI.$skipBtn.addEventListener('click',  () => Timer.skip());
+  UI.$resetBtn.addEventListener('click', () => { AudioEngine.playClick();
+    Timer.reset(); });
+  UI.$skipBtn.addEventListener('click', () => Timer.skip());
 
-  /* ── Quick Time Adjust (+5 / −5 min) ── */
   document.getElementById('decreaseTime').addEventListener('click', () => Timer.adjustTime(-5));
   document.getElementById('increaseTime').addEventListener('click', () => Timer.adjustTime(+5));
 
-  /* ── Click / Enter on timer display → inline edit ── */
   document.getElementById('timerTime').addEventListener('click', () => UI.openTimerEdit());
   document.getElementById('timerTime').addEventListener('keydown', e => {
-    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); UI.openTimerEdit(); }
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault();
+      UI.openTimerEdit(); }
   });
 
   /* ── Mode Tabs ── */
@@ -802,44 +1155,81 @@ function App() {
     }
   });
 
-  /* ── Theme Toggle ── */
+  /* ── Theme ── */
   UI.$themeToggle.addEventListener('click', () => {
     const next = State.get('theme') === 'dark' ? 'light' : 'dark';
     State.set('theme', next);
     UI.applyTheme(next);
     Storage.save();
     AudioEngine.playClick();
+    // Refresh charts with new colors
+    updateChart(currentChartPeriod);
+  });
+
+  /* ── Stats ── */
+  UI.$statsToggle.addEventListener('click', () => {
+    UI.$statsPanel.removeAttribute('hidden');
+    updateStatsDisplay();
+    updateChart(currentChartPeriod);
+    updateHeatmap();
+    updateProductiveHours();
+  });
+
+  UI.$statsClose.addEventListener('click', () => {
+    UI.$statsPanel.setAttribute('hidden', '');
+  });
+
+  UI.$exportStats.addEventListener('click', () => {
+    Stats.exportCSV();
+  });
+
+  // Close stats on backdrop click
+  UI.$statsPanel.addEventListener('click', e => {
+    if (e.target === UI.$statsPanel) {
+      UI.$statsPanel.setAttribute('hidden', '');
+    }
+  });
+
+  /* ── Chart Controls ── */
+  document.querySelectorAll('.chart-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.chart-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      updateChart(btn.dataset.period);
+    });
   });
 
   /* ── Settings ── */
   UI.$settingsToggle.addEventListener('click', () => Settings.open());
-  UI.$settingsClose.addEventListener('click',  () => Settings.close());
+  UI.$settingsClose.addEventListener('click', () => Settings.close());
   document.getElementById('applySettings').addEventListener('click', () => Settings.apply());
 
-  // +/− stepper buttons
   document.querySelectorAll('.stepper-btn').forEach(btn => {
     btn.addEventListener('click', () => Settings.step(btn.dataset.target, btn.dataset.action));
   });
 
-  // Reset session counter
   document.getElementById('resetSessions').addEventListener('click', () => {
-    State.set('sessionCount', 0);
-    Storage.save();
-    UI.updateSessionCount();
-    AudioEngine.playClick();
+    if (confirm('This will delete ALL your stats data. Are you sure?')) {
+      State.set('sessionCount', 0);
+      Stats.importData({ sessions: [], dailyFocus: 0, totalFocus: 0 });
+      Storage.save();
+      UI.updateSessionCount();
+      updateStatsDisplay();
+      updateChart(currentChartPeriod);
+      updateHeatmap();
+      updateProductiveHours();
+      AudioEngine.playClick();
+    }
   });
 
-  /* ── Popup close ── */
+  /* ── Popup ── */
   document.getElementById('popupClose').addEventListener('click', () => Popup.close());
-
-  // Close popup on backdrop click
   document.getElementById('popupOverlay').addEventListener('click', e => {
     if (e.target.id === 'popupOverlay') Popup.close();
   });
 
   /* ── Keyboard Shortcuts ── */
   document.addEventListener('keydown', e => {
-    // Skip shortcuts when focus is inside a form control
     if (['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName)) return;
 
     switch (e.key) {
@@ -859,21 +1249,21 @@ function App() {
       case 'Escape':
         Settings.close();
         Popup.close();
+        UI.$statsPanel.setAttribute('hidden', '');
         break;
     }
   });
 
-  /* ── Clamp numeric inputs on manual entry ── */
+  /* ── Input clamping ── */
   ['focusDuration', 'breakDuration'].forEach(id => {
     const $el = document.getElementById(id);
     if (!$el) return;
     $el.addEventListener('change', () => {
       const v = parseInt($el.value, 10);
       if (isNaN(v) || v < 1) $el.value = 1;
-      else if (v > 99)       $el.value = 99;
+      else if (v > 99) $el.value = 99;
     });
   });
 }
 
-/* ── Entry point ── */
 document.addEventListener('DOMContentLoaded', App);

@@ -3,101 +3,172 @@ const scoreBoard = document.getElementById('score');
 const startButton = document.getElementById('startButton');
 const whackSound = document.getElementById('whackSound');
 const gameContainer = document.querySelector('.game-container');
-const timerDisplay = document.getElementById('timer');  // FIX: wire up the timer element
+const timerDisplay = document.getElementById('timer'); // FIX: wire up the timer element
 
 let lastHole;
 let score = 0;
 let gameTime = false;
-let countdownInterval = null;  // FIX: track the interval so we can clear it
+let countdownInterval = null; // FIX: track the interval so we can clear it
+
+const difficultySelect = document.getElementById('difficulty');
+const difficultyText = document.getElementById('currentDifficulty');
+
+const DIFFICULTY = {
+  easy: {
+    min: 700,
+    max: 1200,
+  },
+  medium: {
+    min: 400,
+    max: 800,
+  },
+  hard: {
+    min: 150,
+    max: 450,
+  },
+};
+
+let currentDifficulty = 'medium';
+let gameTimeout = null;
 
 // function to randomly pick a hole for the mole to appear
 function RandomHole(holes) {
-    const index = Math.floor(Math.random() * holes.length);
-    const hole = holes[index];
-    if (hole === lastHole) {
-        // avoid showing in the same hole consecutively
-        return RandomHole(holes);
-    }
-    lastHole = hole;
-    return hole;
+  const index = Math.floor(Math.random() * holes.length);
+  const hole = holes[index];
+  if (hole === lastHole) {
+    // avoid showing in the same hole consecutively
+    return RandomHole(holes);
+  }
+  lastHole = hole;
+  return hole;
 }
 
 // function to make the mole pop up and hide
 function MolePopUp() {
-    // random pop up duration
-    const time = Math.random() * 800 + 200;
-    const hole = RandomHole(holes);
-    // show mole
-    hole.classList.add('active');
-    setTimeout(() => {
-        // hide mole after random time
-        hole.classList.remove('active');
-        // keep moles popping until game ends
-        if (gameTime) MolePopUp();
-    }, time);
+  const speed = DIFFICULTY[currentDifficulty];
+
+  const time = Math.random() * (speed.max - speed.min) + speed.min;
+
+  const hole = RandomHole(holes);
+  hole.classList.add('active');
+
+  setTimeout(() => {
+    hole.classList.remove('active');
+
+    if (gameTime) {
+      MolePopUp();
+    }
+  }, time);
 }
 
 // FIX: Countdown timer — counts down every second and updates the display
 function startCountdown(duration) {
-    let timeLeft = duration;
-    timerDisplay.textContent = timeLeft;   // show initial value immediately
+  let timeLeft = duration;
+  timerDisplay.textContent = timeLeft;
+  timerDisplay.classList.remove('urgent');
 
-    // Clear any leftover interval from a previous game
-    if (countdownInterval) clearInterval(countdownInterval);
+  // Clear any leftover interval from a previous game
+  if (countdownInterval) clearInterval(countdownInterval);
 
-    countdownInterval = setInterval(() => {
-        timeLeft--;
-        timerDisplay.textContent = timeLeft;
+  countdownInterval = setInterval(() => {
+    timeLeft--;
+    timerDisplay.textContent = timeLeft;
 
-        if (timeLeft <= 0) {
-            clearInterval(countdownInterval);
-            countdownInterval = null;
-        }
-    }, 1000);
+    // Highlight final 10 seconds
+    if (timeLeft <= 10) {
+      timerDisplay.classList.add('urgent');
+    } else {
+      timerDisplay.classList.remove('urgent');
+    }
+
+    if (timeLeft <= 0) {
+      clearInterval(countdownInterval);
+      countdownInterval = null;
+    }
+  }, 1000);
 }
 
 // function to start the game
 function StartGame() {
-    score = 0;
-    scoreBoard.textContent = score;
-    gameTime = true;
+  score = 0;
+  scoreBoard.textContent = score;
 
-    startButton.disabled = true;   // prevent double-start
+  gameTime = true;
 
-    const gameOver = document.getElementById('GameOver');
-    if (gameOver) gameOver.style.display = 'none';
+  startButton.disabled = true;
 
-    MolePopUp();
+  difficultyText.textContent =
+    currentDifficulty.charAt(0).toUpperCase() + currentDifficulty.slice(1);
 
-    // FIX: Start the visible countdown (50 seconds)
-    startCountdown(50);
+  const gameOver = document.getElementById('GameOver');
+  gameOver.style.display = 'none';
 
-    setTimeout(() => {
-        gameTime = false;
-        startButton.disabled = false;
+  MolePopUp();
 
-        // Show game over message if element exists
-        if (gameOver) gameOver.style.display = 'block';
+  startCountdown(50);
 
-        // Stop any remaining countdown (safety net)
-        if (countdownInterval) {
-            clearInterval(countdownInterval);
-            countdownInterval = null;
-        }
-        timerDisplay.textContent = '0';
-    }, 50000); // game duration of 50 seconds
+  gameTimeout = setTimeout(() => {
+    gameTime = false;
+
+    startButton.disabled = false;
+
+    gameOver.style.display = 'block';
+
+    if (countdownInterval) {
+      clearInterval(countdownInterval);
+      countdownInterval = null;
+    }
+
+    timerDisplay.textContent = '0';
+timerDisplay.classList.remove("urgent");
+  }, 50000);
 }
 
+function resetGame() {
+  gameTime = false;
+
+  score = 0;
+  scoreBoard.textContent = '0';
+
+  holes.forEach((hole) => hole.classList.remove('active'));
+
+  if (countdownInterval) {
+    clearInterval(countdownInterval);
+    countdownInterval = null;
+  }
+
+  if (gameTimeout) {
+    clearTimeout(gameTimeout);
+    gameTimeout = null;
+  }
+
+  timerDisplay.textContent = '50';
+timerDisplay.classList.remove("urgent");
+
+  document.getElementById('GameOver').style.display = 'none';
+
+  startButton.disabled = false;
+}
+
+difficultySelect.addEventListener('change', function () {
+  currentDifficulty = this.value;
+
+  difficultyText.textContent =
+    currentDifficulty.charAt(0).toUpperCase() + currentDifficulty.slice(1);
+
+  resetGame();
+});
+
 // function to whack a mole and increase score
-holes.forEach(hole => {
-    hole.addEventListener('click', () => {
-        // only whack active mole
-        if (!hole.classList.contains('active')) return;
-        score++;
-        scoreBoard.textContent = score;
-        hole.classList.remove('active');
-        whackSound.play();
-    });
+holes.forEach((hole) => {
+  hole.addEventListener('click', () => {
+    // only whack active mole
+    if (!hole.classList.contains('active')) return;
+    score++;
+    scoreBoard.textContent = score;
+    hole.classList.remove('active');
+    whackSound.play();
+  });
 });
 
 startButton.addEventListener('click', StartGame);

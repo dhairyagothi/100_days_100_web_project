@@ -122,8 +122,8 @@ body.light .theme-btn:hover {
 /* HUD */
 .hud {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.75rem;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
 }
 
 .stat-box {
@@ -174,150 +174,38 @@ body.light .theme-btn:hover {
   color: #ffffff;
 }
 
-body.light .stat-value {
-  text-shadow: none;
-}
-
-/* Side Panels */
-.side-panels {
-  display: grid;
-  gap: 1rem;
-  width: 300px;
-  flex-shrink: 0;
-}
-
-.panel {
-  background: var(--panel);
-  border: 1px solid var(--panel-border);
-  padding: 1rem;
-  border-radius: 18px;
-  backdrop-filter: blur(10px);
-  box-shadow: var(--shadow);
-}
-
-.panel-title {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 0.9rem;
-  letter-spacing: 0.18em;
-  color: var(--accent);
-  margin-bottom: 0.75rem;
-  text-transform: uppercase;
-}
-
-/* Statistics Grid */
-.stat-grid {
-  display: grid;
-  gap: 0.5rem;
-  margin-bottom: 0.75rem;
-}
-
-.stat-item {
+.color-box {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.5rem 0.75rem;
-  border-radius: 10px;
-  background: rgba(0, 0, 0, 0.12);
-  border: 1px solid rgba(57, 255, 20, 0.08);
-  transition: all 0.2s ease;
-}
-
-.stat-item:hover {
-  border-color: rgba(57, 255, 20, 0.3);
-  transform: translateY(-1px);
-}
-
-body.light .stat-item {
-  background: rgba(0, 0, 0, 0.04);
-  border-color: rgba(0, 143, 76, 0.08);
-}
-
-body.light .stat-item:hover {
-  border-color: rgba(0, 143, 76, 0.3);
-}
-
-.stat-item-label {
-  font-size: 0.7rem;
-  color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-.stat-item-value {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 1rem;
-  font-weight: 700;
-  color: var(--accent);
-}
-
-/* Achievements List */
-.achievements-list {
-  display: grid;
-  gap: 0.5rem;
-}
-
-.achievement {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.55rem 0.75rem;
-  border-radius: 10px;
-  background: rgba(0, 0, 0, 0.12);
-  border: 1px solid rgba(57, 255, 20, 0.08);
-  transition: all 0.3s ease;
-}
-
-body.light .achievement {
-  background: rgba(0, 0, 0, 0.04);
-  border-color: rgba(0, 143, 76, 0.08);
-}
-
-.achievement.locked {
-  opacity: 0.55;
-  filter: grayscale(0.7);
-}
-
-.achievement.unlocked {
-  border-color: var(--accent);
-  box-shadow: 0 0 18px rgba(57, 255, 20, 0.18);
-  background: rgba(57, 255, 20, 0.04);
-}
-
-.achievement:hover {
-  transform: translateY(-1px);
-}
-
-.achievement.unlocked:hover {
-  box-shadow: 0 0 28px rgba(57, 255, 20, 0.25);
-}
-
-.achievement-icon {
-  font-size: 1.8rem;
-  width: 36px;
-  height: 36px;
-  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s ease;
 }
 
-.achievement-info {
-  flex: 1;
+.snake-color-picker {
+  width: 3.2rem;
+  height: 2.1rem;
+  padding: 0.18rem;
+  border: 1px solid var(--accent);
+  border-radius: 12px;
+  background: var(--btn-bg);
+  box-shadow: 0 0 14px rgba(57, 255, 20, 0.16);
+  cursor: pointer;
 }
 
-.achievement-name {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 0.85rem;
-  color: var(--text);
-  margin-bottom: 0.2rem;
+.snake-color-picker::-webkit-color-swatch-wrapper {
+  padding: 0;
 }
 
-.achievement-desc {
-  font-size: 0.7rem;
-  color: var(--muted);
+.snake-color-picker::-webkit-color-swatch {
+  border: 0;
+  border-radius: 8px;
 }
 
-/* Canvas Wrapper */
+.snake-color-picker::-moz-color-swatch {
+  border: 0;
+  border-radius: 8px;
+}
+
 .canvas-wrapper {
   position: relative;
   border-radius: 22px;
@@ -615,6 +503,14 @@ body.light .key-symbol {
     padding-bottom: 7rem;
   }
 
+  .canvas-wrapper {
+    margin-bottom: 70px;
+  }
+
+  .hud {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
   .mobile-controls { display: flex; }
   .canvas-wrapper { margin-bottom: 0; }
 
@@ -636,6 +532,15 @@ body.light .key-symbol {
   to { transform: translateY(0); opacity: 1; }
 }
 
+body.light .snake-color-picker {
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: none;
+}
+
+body.light .key {
+  background: rgba(255, 255, 255, 0.85);
+  border-color: rgba(0, 143, 76, 0.4);
+  color: #007a40;
 @keyframes slideOutDown {
   from { transform: translateY(0); opacity: 1; }
   to { transform: translateY(120%); opacity: 0; }
@@ -659,4 +564,9 @@ body.light .key-symbol {
   .stat-value {
     font-size: 1.2rem;
   }
+}
+
+body.light .theme-btn:hover {
+  background: #007a40;
+  color: #fff;
 }

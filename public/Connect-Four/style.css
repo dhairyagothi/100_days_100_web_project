@@ -109,7 +109,7 @@ button {
 
 h1 {
   margin: 18px 0 18px;
-  font-size: clamp(3rem, 7vw, 5.8rem);
+  font-size: clamp(3rem, 6vw, 5rem);
   line-height: 0.95;
   letter-spacing: 0;
   text-transform: uppercase;

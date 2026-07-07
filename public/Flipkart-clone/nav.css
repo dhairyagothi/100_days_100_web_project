@@ -155,6 +155,45 @@ body {
   opacity: 0.75;
 }
 
+/* ─── WISHLIST BADGE ─── */
+.wishlist-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.wishlist-badge {
+  position: absolute;
+  top: -6px;
+  right: -8px;
+  background: #e53935;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+}
+
+.wishlist-badge.pulse {
+  animation: pulse 0.4s ease;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.5);
+  }
+  50% {
+    transform: scale(1.3);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
 /* ─── LOGIN BUTTON ─── */
 .login {
   background: #fff;
