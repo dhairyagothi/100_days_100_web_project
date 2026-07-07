@@ -3,126 +3,48 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cricket_Game</title>
+  <title>Cricket Game</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="../favv.png" type="image/x-icon" />
 </head>
 <body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
+<a href="/" class="project-back-button">← Back to Home</a>
 
   <div class="box1">
-    <h1 >Ball Bat Stump Game</h1>
-  <button  class="game_buttons"  onclick="
-  let usermsg='Bat';
+    <h1>Ball Bat Stump Game</h1>
+    
+    <div class="buttons-container">
+      <button class="game_buttons" onclick="playRound('Bat')">
+        <img src="bat.jpeg" class="game_image" alt="Bat button">
+      </button>
 
-  let computerchoice=computergeneratechoice();
+      <button class="game_buttons" onclick="playRound('Ball')">
+        <img src="ball.jpeg" class="game_image" alt="Ball button">
+      </button>
 
-  let cmpmsg=computerchoice;
+      <button class="game_buttons" onclick="playRound('stump')">
+        <img src="wickets.jpeg" class="game_image" alt="Wickets button">
+      </button>
+    </div>
 
+    <!-- Matchup Selection display -->
+    <div class="show">
+      <div class="matchup-container">
+        <div id="user-move" class="move-selection"></div>
+        <div class="vs-divider">VS</div>
+        <div id="computer-move" class="move-selection"></div>
+      </div>
 
-  let result=getresult(usermsg,computerchoice);
-  /*
-  if(computerchoice==='Bat'){
-    result='both are tie';
-  }
-  else if(computerchoice ==='Ball'){
-    result='user won';
-  }
-  else{
-    result='computer won';
-  }
-  */
+      <div id="result"></div>
+      <div id="score"></div>
+    </div>
 
-
-//  alert(`${usermsg} \n ${cmpmsg} \n the result is ${result}`);
-showresult(usermsg,cmpmsg,result);
-
-  
-  
-  
-  ">
-<img src="bat.jpeg"  class="game_image" alt="Bat_button">
-</button>
-
-  <button  class="game_buttons"   onclick="
-  usermsg='Ball';
-  computerchoice=computergeneratechoice();
-  cmpmsg=computerchoice;
-
-  result=getresult('Ball',computerchoice);
-
-  /*
-  if(computerchoice==='Bat'){
-    result='computer won';
-  }
-  else if(computerchoice ==='Ball'){
-    result='its a tie';
-  }
-  else{
-    result='user won';
-  }
-  */
-
-
- // alert(`${usermsg} \n ${cmpmsg} \n the result is ${result}`);
-
- showresult(usermsg,cmpmsg,result);
-  
-  
-  
-  ">  <img src="ball.jpeg"  class="game_image" alt="Ball_button">  </button>
-
-  <Button    class="game_buttons"  onclick="
-  usermsg='stump';
-
-  computerchoice=computergeneratechoice();
-  cmpmsg=computerchoice;
-
-  result=getresult('stump',computerchoice);
-
-  /*
-  if(computerchoice==='Bat'){
-    result='user won';
-  }
-  else if(computerchoice ==='Ball'){
-    result='computer won';
-  }
-  else{
-    result='tie';
-  }
-  */
-
-
-  //alert(`${usermsg} \n ${cmpmsg} \n the result is ${result}`);
-  showresult(usermsg,cmpmsg,result);
-  
-  
-  
-  ">  <img src="wickets.jpeg"   class="game_image" alt="wickets_button">  </Button>
-
-
-
-
-
-
-<!-- use moves and results in a heading type instead of using alert.. -->
-
-<div class="show">
-
-<h2 id="user-move"></h2>
-<h2 id="computer-move"></h2>
-<h2 id="result"></h2>
-<h2 id="score"></h2>
-
-</div>
-
-<!--Reset Button Working -->
-<button onclick="localStorage.clear(); resetscore();
-document.querySelector('#user-move').innerHTML = '';
-document.querySelector('#computer-move').innerHTML = '';
-document.querySelector('#result').innerHTML = '';
-document.querySelector('#score').innerHTML = score.display_results();
-" id="reset"> RESET </button>
+    <!--Reset Button Working -->
+    <button onclick="handleResetButton()" id="reset">RESET</button>
+  </div>
 
   
 

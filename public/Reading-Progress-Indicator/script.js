@@ -10,7 +10,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-window.addEventListener('scroll', () => {
+function updateReadingProgress() {
+    const scrollTop =
+        document.documentElement.scrollTop || document.body.scrollTop;
+
+    const scrollHeight =
+        document.documentElement.scrollHeight -
+        document.documentElement.clientHeight;
+
+    const progress =
+        scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+
+    progressBar.style.width = `${progress}%`;
+}
+window.addEventListener('scroll', updateReadingProgress);
     const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
     const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
     let scrollPercentage = 0;
@@ -65,5 +78,14 @@ loadTextBtn.addEventListener('click', () => {
             });
         localStorage.setItem('highlightedArticle', article.innerHTML);
         customTextInput.value = '';
+
+        // Reset reading position for the newly loaded article
+window.scrollTo({
+    top: 0,
+    behavior: "instant"
+});
+
+// Ensure the progress bar starts from 0%
+updateReadingProgress();
     }
 });

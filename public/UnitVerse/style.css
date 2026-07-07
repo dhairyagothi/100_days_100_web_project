@@ -1367,3 +1367,19 @@ CONVERSIONS COUNTER
         border: 1px solid #ccc;
     }
 }
+/* Light theme overrides */
+body.light-theme {
+  --bg-primary: #f1f5f9;
+  --bg-secondary: #e2e8f0;
+  --bg-tertiary: #cbd5e1;
+  --text-primary: #0f172a;
+  --text-secondary: #334155;
+  --border-color: #94a3b8;
+}
+
+/* Apply variables */
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}

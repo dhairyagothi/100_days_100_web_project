@@ -1,4 +1,7 @@
+/* Import custom font */
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap');
+
+/* Card container styling */
 .card {
   width: 100%;
   max-width: 450px; 
@@ -21,6 +24,7 @@
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
 }
 
+/* Page background and centering */
 .background {
   display: flex;
   justify-content: center;
@@ -30,6 +34,7 @@
   flex-direction: column;
   
 }
+/* Button styles */
 .btn{
   flex: 1; 
   max-width: 150px;
@@ -46,6 +51,7 @@
   transition: all 0.3s ease;
   
 }
+/* Button hover/active states */
 .btn:hover{
  background-color: #6a5acd;
   color: white;
@@ -57,6 +63,7 @@
   transform: translateY(2px);
 }
 
+/* Question text */
 .question {
   font-size: 28px;
   font-weight: 800;
@@ -66,11 +73,13 @@
   font-family: "cinzel", serif;
 }
 
+/* Reset body spacing */
 body {
   margin: 0;
   padding: 0;
 }
 
+/* Main title styling */
 .main-title{
   font-family: "cinzel", serif;
   font-size: 50px;
@@ -79,6 +88,7 @@ body {
 
 
  
+/* Loading spinner */
 .spinner {
   width: 50px;
   height: 50px;
@@ -95,6 +105,7 @@ body {
   }
 }
 
+/* Decorative genie image floating animation */
 .gennie{
  width: 10vw;
  animation: floating 3s ease-in-out 1s infinite ;
@@ -114,6 +125,7 @@ body {
   
  }
 
+/* Title box layout */
 .title-box{
   display: flex;
   flex-direction: row-reverse;

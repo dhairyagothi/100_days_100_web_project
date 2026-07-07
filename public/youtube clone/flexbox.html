@@ -1,127 +1,145 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Flexbox Practice</title>
-  </head>
-  <body style="padding-bottom: 1000px;">
-    <div style="
+  <title>Flexbox Demo</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      margin: 20px;
+      padding-bottom: 1000px;
+      background-color: #f5f5f5;
+    }
+
+    .demo {
       display: flex;
       flex-direction: row;
-    ">
-      <div style="background-color: lightblue;">div 1 text</div>
-      <div style="background-color: lightpink;">div 2 <p>text</p></div>
-    </div>
+      gap: 10px;
+      margin: 30px 0;
+    }
 
-    <div style="
-      margin-top: 30px;
+    .container {
       display: flex;
       flex-direction: row;
-    ">
-      <div style="
-        background-color: lightblue;
-        width: 100px;
-      ">100px</div>
-      <div style="
-        background-color: lightpink;
-        flex: 1;
-      ">flex: 1</div>
-    </div>
-
-    <div style="
-      margin-top: 30px;
-      display: flex;
-      flex-direction: row;
-    ">
-      <div style="
-        background-color: lightblue;
-        flex: 1;
-      ">flex: 1</div>
-      <div style="
-        background-color: lightpink;
-        width: 100px;
-      ">100px</div>
-      <div style="
-        background-color: lightblue;
-        flex: 2;
-      ">flex: 2</div>
-    </div>
-
-    <div style="
-      margin-top: 30px;
-      height: 70px;
-      border-width: 1px;
-      border-style: solid;
-      border-color: gray;
-
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-    ">
-      <div style="
-        background-color: lightblue;
-        width: 100px;
-      ">100px</div>
-      <div style="
-        background-color: lightpink;
-        width: 100px;
-      ">100px</div>
-      <div style="
-        background-color: lightblue;
-        width: 100px;
-      ">100px</div>
-    </div>
-
-    <div style="
-      margin-top: 30px;
-      height: 70px;
-      border-width: 1px;
-      border-style: solid;
-      border-color: gray;
-
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-    ">
-      <div style="
-        background-color: lightblue;
-        width: 100px;
-      ">100px</div>
-      <div style="
-        background-color: lightpink;
-        width: 100px;
-      ">100px</div>
-      <div style="
-        background-color: lightblue;
-        width: 100px;
-      ">100px</div>
-    </div>
-
-    <div style="
-      margin-top: 30px;
-      height: 70px;
-      border-width: 1px;
-      border-style: solid;
-      border-color: gray;
-
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
       align-items: center;
-    ">
-      <div style="
-        background-color: lightblue;
-        width: 100px;
-      ">100px</div>
-      <div style="
-        background-color: lightpink;
-        width: 100px;
-      ">100px</div>
-      <div style="
-        background-color: lightblue;
-        width: 100px;
-      ">100px</div>
+      height: 70px;
+      padding: 10px;
+      margin: 30px 0;
+      border: 1px solid #999;
+      gap: 10px;
+      background-color: white;
+    }
+
+    .blue {
+      background-color: lightblue;
+      padding: 10px;
+      overflow-wrap: break-word;
+    }
+
+    .pink {
+      background-color: lightpink;
+      padding: 10px;
+      overflow-wrap: break-word;
+    }
+
+    p {
+      margin-top: 8px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Basic Flex -->
+  <div class="demo">
+    <div class="blue">
+      div 1 text
     </div>
-  </body>
+
+    <div class="pink">
+      div 2
+      <p>text</p>
+    </div>
+  </div>
+
+  <!-- Fixed + Flexible -->
+  <div class="demo">
+    <div class="blue" style="width: 100px;">
+      100px
+    </div>
+
+    <div class="pink" style="flex: 1;">
+      flex: 1
+    </div>
+  </div>
+
+  <!-- Multiple Flex Items -->
+  <div class="demo">
+    <div class="blue" style="flex: 1;">
+      flex: 1
+    </div>
+
+    <div class="pink" style="width: 100px;">
+      100px
+    </div>
+
+    <div class="blue" style="flex: 2;">
+      flex: 2
+    </div>
+  </div>
+
+  <!-- justify-content: center -->
+  <div class="container" style="justify-content: center;">
+    <div class="blue" style="width: 100px;">
+      100px
+    </div>
+
+    <div class="pink" style="width: 100px;">
+      100px
+    </div>
+
+    <div class="blue" style="width: 100px;">
+      100px
+    </div>
+  </div>
+
+  <!-- justify-content: space-between -->
+  <div class="container" style="justify-content: space-between;">
+    <div class="blue" style="width: 100px;">
+      100px
+    </div>
+
+    <div class="pink" style="width: 100px;">
+      100px
+    </div>
+
+    <div class="blue" style="width: 100px;">
+      100px
+    </div>
+  </div>
+
+  <!-- Another Example -->
+  <div class="container" style="justify-content: space-between;">
+    <div class="blue" style="width: 100px;">
+      100px
+    </div>
+
+    <div class="pink" style="width: 100px;">
+      100px
+    </div>
+
+    <div class="blue" style="width: 100px;">
+      100px
+    </div>
+  </div>
+
+</body>
 </html>

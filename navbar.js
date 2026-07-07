@@ -37,7 +37,21 @@
     path.endsWith("/") || (path.endsWith("index.html") && !isSubfolder);
   const isLearn = path.includes("/learning/");
   const isContributors = path.includes("/contributors/");
+const currentPage = path.split("/").pop() || "index.html";
+const navLinks = container.querySelectorAll("a");
 
+navLinks.forEach(link => {
+    const href = link.getAttribute("href");
+    if (href) {
+        const linkPage = href.split("/").pop();
+        
+        if (linkPage === currentPage) {
+           link.classList.add("active");
+        } else {
+            link.classList.remove("active");
+        }
+    }
+});
   function escapeHTML(value) {
     return String(value)
       .replace(/&/g, "&amp;")
@@ -184,7 +198,7 @@
     `;
     navButtonsHTML = `${themeBtn} ${cursorBtn} ${homeBtn} ${learnBtn} ${contributorsBtn} ${readmeBtn} ${githubBtn} ${userSection}`;
   } else {
-    const signinBtn = `<a class="btn btn-primary btn-sm" id="navSignInCta" href="${base}public/Login.html">Sign in</a>`;
+    const signinBtn = `<button class="btn btn-primary btn-sm" id="navSignInCta">Sign in</button>`;
     navButtonsHTML = `${themeBtn} ${cursorBtn} ${homeBtn} ${learnBtn} ${contributorsBtn} ${readmeBtn} ${githubBtn} ${signinBtn}`;
   }
 
@@ -364,6 +378,25 @@
           `Toggle custom cursor (currently ${nextState ? "Custom" : "Default"})`,
         );
       });
+    }
+  });
+
+  // Sign In Click Logic
+  document.addEventListener("click", (event) => {
+    const signInBtn = event.target.closest("#navSignInCta");
+    if (!signInBtn) return;
+    event.preventDefault();
+    const name = prompt("Enter your name/nickname to personalize your experience:");
+    if (name && name.trim()) {
+      const trimmed = name.trim();
+      safeStorage.setItem("loggedInUser", trimmed);
+      safeStorage.setItem("loggedInUserData", JSON.stringify({
+        username: trimmed,
+        name: trimmed,
+        authAction: "login",
+        loginTime: Date.now()
+      }));
+      location.reload();
     }
   });
 })();

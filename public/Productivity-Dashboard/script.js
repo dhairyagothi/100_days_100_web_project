@@ -215,6 +215,7 @@ if (
 
 updateDarkButton();
 
+
 function render() {
 
     renderList("today");
@@ -222,6 +223,18 @@ function render() {
 
     updateTracker();
     loadNotes();
+}
+
+
+if(data.lastCompletedDate){
+    const today = new Date().toDateString();
+    const last = new Date(data.lastCompletedDate);
+    const diff = Math.floor((new Date(today) - last) / (1000 * 60 * 60 * 24));
+
+    if(diff > 1){
+        data.streak = 0;
+        saveData();
+    }
 }
 
 render();

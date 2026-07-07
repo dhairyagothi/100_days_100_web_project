@@ -7,10 +7,24 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="app.css">
-    <link rel="icon" href="favicon_quiz.png">
 </head>
 <body>
 <a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
+<!-- 🌊 Floating Background Blobs -->
+<div class="blobs">
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
+    <div class="blob b3"></div>
+</div>
+
+<!-- 🎛 Theme Switcher -->
+<div class="theme-switcher">
+    <button onclick="setTheme('default')">Default</button>
+    <button onclick="setTheme('dark')">Dark</button>
+    <button onclick="setTheme('ocean')">Ocean</button>
+    <button onclick="setTheme('sunset')">Sunset</button>
+</div>
+
 
     <div class="container">
         <div id="start-screen" class="screen">
@@ -159,6 +173,9 @@
                             <button id="home-btn" class="btn btn-secondary">
                                 <i aria-hidden="true" class="fas fa-home"></i> Home
                             </button>
+                             <button id="review-btn" class="btn" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin-top: 10px;">
+                        <i aria-hidden="true" class="fas fa-list"></i> Review All Answers
+                    </button>
                         </div>
                     </div>
                 </div>

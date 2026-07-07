@@ -264,6 +264,33 @@ body {
     opacity: 1;
     box-shadow: 0 6px 22px var(--accent-glow-lg);
 }
+.deep-focus-toggle {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+    display: flex;
+    justify-content: center;
+}
+
+.deep-focus-toggle label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.deep-focus-toggle label:hover {
+    color: var(--text);
+}
+
+.deep-focus-toggle input[type="checkbox"] {
+    accent-color: var(--accent);
+    cursor: pointer;
+    width: 14px;
+    height: 14px;
+}
 
 /* ── Session Pills & Custom Timer ────────────────────── */
 .session-picker {
