@@ -129,7 +129,7 @@ function loadProjects() {
       const isRoot = !window.location.pathname.includes("/contributors/");
       const base = isRoot ? "" : "../";
       const projectsUrl = new URL(
-        `${base}projects.json`,
+        `${base}projects.json?v=${Date.now()}`,
         window.location.href,
       ).toString();
       
@@ -1778,6 +1778,14 @@ function initFilterChips() {
       chip.classList.add("active");
       activeFilter = chip.dataset.filter;
       currentPage = 1;
+
+      // Clear search query when changing categories to prevent "no projects found" confusion
+      const searchInput = document.getElementById("searchInput") || document.getElementById("search") || document.querySelector(".search-input");
+      if (searchInput && searchQuery) {
+        searchInput.value = "";
+        searchQuery = "";
+      }
+
       renderGrid();
     });
   });

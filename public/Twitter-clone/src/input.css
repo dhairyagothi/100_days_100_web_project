@@ -1,1 +1,20 @@
 @import "tailwindcss";
+
+@variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-twitter-blue: #1d9bf0;
+  --color-twitter-blue-hover: #1a8cd8;
+  --color-twitter-dark: #15202b;
+  --color-twitter-border: #38444d;
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
