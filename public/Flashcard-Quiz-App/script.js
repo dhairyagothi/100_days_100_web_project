@@ -330,17 +330,16 @@ showBtn.onclick=function(){
         showBtn.innerText="Show Answer";
     }
 };
+checkBtn.onclick = function() {
+    if (flashcards.length === 0) return;
 
-hintBtn.onclick = function() {
-    hintText.innerText = "💡 " + getHint();
-    hintText.classList.remove("hidden");
-};
+    const normalize = (text) =>
+    text.trim().replace(/\s+/g, " ").toLowerCase();
 
-checkBtn.onclick=function(){
-    if (isAnswered) return;
-    let user=userAnswer.value.trim().toLowerCase();
-    let correct=flashcards[currentIndex].answer.trim().toLowerCase();
-    if(user==""){
+let user = normalize(userAnswer.value);
+let correct = normalize(flashcards[currentIndex].answer);
+
+    if (user == "") {
         alert("Please type your answer.");
         return;
     }

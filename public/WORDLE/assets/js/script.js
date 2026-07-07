@@ -1,373 +1,407 @@
-"use strict";
+'use strict';
 
 let playing = true;
 let row = 1;
 let col = 1;
-let inputWord = "";
+let inputWord = '';
 
 // Function to get a random word from the shuffledWords array
 function getRandomWord() {
-    const array = new Uint32Array(1);
-    window.crypto.getRandomValues(array);
-    const randomIndex = array[0] % allowedWords.length;
-    return allowedWords[randomIndex].toUpperCase();
+  const array = new Uint32Array(1);
+  window.crypto.getRandomValues(array);
+
+  const randomIndex = array[0] % validFiveLetterWords.length;
+  return validFiveLetterWords[randomIndex].toUpperCase();
 }
 
 let secretWord = getRandomWord();
-let currentBox = "b11";
+let currentBox = 'b11';
 
 // Selecting elements
-const enterButton = document.querySelector(".enter");
-const backButton = document.querySelector("#Backspace");
-const message = document.querySelector("#message");
-const closeInfo = document.querySelector("#closeInfo");
-const info = document.querySelector(".info");
-const closeStats = document.querySelector("#closeStats");
-const stats = document.querySelector(".stats");
-const closeResult = document.querySelector("#closeResult");
-const resetbutton=document.querySelector("#reset");
-const wordsTable = document.querySelector(".words");
-const gameOverModal = document.querySelector("#game-over-modal");
-const gameOverTitle = document.querySelector("#game-over-title");
-const gameOverDetails = document.querySelector("#game-over-details");
-const gameOverActions = document.querySelector("#game-over-actions");
-const closeGameOver = document.querySelector("#closeGameOver");
-const nextWordBtn = document.querySelector("#nextWordBtn");
-const persistentNextWordBtn = document.querySelector("#persistentNextWordBtn");
+const enterButton = document.querySelector('.enter');
+const backButton = document.querySelector('#Backspace');
+const message = document.querySelector('#message');
+const closeInfo = document.querySelector('#closeInfo');
+const info = document.querySelector('.info');
+const closeStats = document.querySelector('#closeStats');
+const stats = document.querySelector('.stats');
+const closeResult = document.querySelector('#closeResult');
+const resetbutton = document.querySelector('#reset');
+const wordsTable = document.querySelector('.words');
+const gameOverModal = document.querySelector('#game-over-modal');
+const gameOverTitle = document.querySelector('#game-over-title');
+const gameOverDetails = document.querySelector('#game-over-details');
+const gameOverActions = document.querySelector('#game-over-actions');
+const closeGameOver = document.querySelector('#closeGameOver');
+const nextWordBtn = document.querySelector('#nextWordBtn');
+const persistentNextWordBtn = document.querySelector('#persistentNextWordBtn');
 
 // Generate grid dynamically
 const generateGrid = function () {
-    wordsTable.innerHTML = "";
-    for (let r = 1; r <= 6; r++) {
-        const tr = document.createElement("tr");
-        tr.className = "inputRow";
-        for (let c = 1; c <= secretWord.length; c++) {
-            const td = document.createElement("td");
-            const input = document.createElement("input");
-            input.className = "inputBox";
-            input.id = `b${r}${c}`;
-            input.maxLength = 1;
-            input.autocomplete = "off"; // STOPS THE BROWSER AUTOCOMPLETE POPUP
-            td.appendChild(input);
-            tr.appendChild(td);
-        }
-        wordsTable.appendChild(tr);
+  wordsTable.innerHTML = '';
+  for (let r = 1; r <= 6; r++) {
+    const tr = document.createElement('tr');
+    tr.className = 'inputRow';
+    for (let c = 1; c <= secretWord.length; c++) {
+      const td = document.createElement('td');
+      const input = document.createElement('input');
+      input.className = 'inputBox';
+      input.id = `b${r}${c}`;
+      input.maxLength = 1;
+      input.autocomplete = 'off'; // STOPS THE BROWSER AUTOCOMPLETE POPUP
+      td.appendChild(input);
+      tr.appendChild(td);
     }
+    wordsTable.appendChild(tr);
+  }
 };
 generateGrid();
 
-
 // Function to change control based on input
 const changeControl = function (type) {
-    if (row === 7) {
-        playing = false;
-        gameOverTitle.textContent = "Game Over";
-        gameOverDetails.innerHTML = `The secret word was: <strong>${secretWord}</strong>`;
-        gameOverModal.classList.remove("hidden");
-        gameOverActions.classList.remove("hidden");
+  if (row === 7) {
+    playing = false;
+    gameOverTitle.textContent = 'Game Over';
+    gameOverDetails.innerHTML = `The secret word was: <strong>${secretWord}</strong>`;
+    gameOverModal.classList.remove('hidden');
+    gameOverActions.classList.remove('hidden');
+  } else {
+    const c = Number(currentBox.slice(2));
+    if (type < 0) {
+      if (c > 1) currentBox = `b${row}${c - 1}`;
     } else {
-        const c = Number(currentBox.slice(2));
-        if (type < 0) {
-            if (c > 1)
-                currentBox = `b${row}${c - 1}`;
-        } else {
-            if (c < secretWord.length)
-                currentBox = `b${row}${c + 1}`;
-        }
+      if (c < secretWord.length) currentBox = `b${row}${c + 1}`;
     }
+  }
 };
 
 // Function to get the value of a specific input box
 const getBoxValue = function (elementId) {
-    return document.querySelector(`#${elementId}`).value;
+  return document.querySelector(`#${elementId}`).value;
 };
 const checkWord = function (word) {
-    for (let i = 0; i < secretWord.length; i++) {
-        const box = document.querySelector(`#b${row}${i + 1}`);
-        const keyBtn = document.querySelector(`#${word[i]}`);
+  for (let i = 0; i < secretWord.length; i++) {
+    const box = document.querySelector(`#b${row}${i + 1}`);
+    const keyBtn = document.querySelector(`#${word[i]}`);
 
-        setTimeout(() => {
-            box.classList.add("flip");
+    setTimeout(() => {
+      box.classList.add('flip');
 
-            setTimeout(() => {
-                if (word[i] === secretWord[i]) {
-                    box.classList.add("green");
-                    keyBtn.classList.remove("yellow", "grey");
-                    keyBtn.classList.add("green");
-                } else if (secretWord.includes(word[i])) {
-                    box.classList.add("yellow");
-                    if (!keyBtn.classList.contains("green")) {
-                        keyBtn.classList.remove("grey");
-                        keyBtn.classList.add("yellow");
-                    }
-                } else {
-                    box.classList.add("grey");
-                    if (!keyBtn.classList.contains("green") && !keyBtn.classList.contains("yellow")) {
-                        keyBtn.classList.add("grey");
-                    }
-                }
-            }, 250); 
-        }, i * 300);
-    }
+      setTimeout(() => {
+        if (word[i] === secretWord[i]) {
+          box.classList.add('green');
+          keyBtn.classList.remove('yellow', 'grey');
+          keyBtn.classList.add('green');
+        } else if (secretWord.includes(word[i])) {
+          box.classList.add('yellow');
+          if (!keyBtn.classList.contains('green')) {
+            keyBtn.classList.remove('grey');
+            keyBtn.classList.add('yellow');
+          }
+        } else {
+          box.classList.add('grey');
+          if (
+            !keyBtn.classList.contains('green') &&
+            !keyBtn.classList.contains('yellow')
+          ) {
+            keyBtn.classList.add('grey');
+          }
+        }
+      }, 250);
+    }, i * 300);
+  }
 
-    // Wait until the very last box has finished animating before deciding if they won or lost
-    const totalAnimationTime = (secretWord.length * 300) + 250;
-    
-setTimeout(function () {
+  // Wait until the very last box has finished animating before deciding if they won or lost
+  const totalAnimationTime = secretWord.length * 300 + 250;
+
+  setTimeout(function () {
     if (word === secretWord) {
-        gameOverTitle.textContent = appreciation[row - 1] + "!";
-        gameOverDetails.innerHTML = "You guessed <strong>" + secretWord + "</strong> in " + row + (row === 1 ? " try!" : " tries!");
-        gameOverModal.classList.remove("hidden");
-        persistentNextWordBtn.classList.add("hidden"); // ← hide skip btn
-        updateStats(true);
-
+      gameOverTitle.textContent = appreciation[row - 1] + '!';
+      gameOverDetails.innerHTML =
+        'You guessed <strong>' +
+        secretWord +
+        '</strong> in ' +
+        row +
+        (row === 1 ? ' try!' : ' tries!');
+      gameOverModal.classList.remove('hidden');
+      persistentNextWordBtn.classList.add('hidden'); // ← hide skip btn
+      updateStats(true);
     } else if (row === 6) {
-        gameOverTitle.textContent = "Game Over";
-        gameOverDetails.innerHTML = "The secret word was: <strong>" + secretWord + "</strong>";
-        gameOverModal.classList.remove("hidden");
-        persistentNextWordBtn.classList.add("hidden"); // ← hide skip btn
-        updateStats(false);
-
+      gameOverTitle.textContent = 'Game Over';
+      gameOverDetails.innerHTML =
+        'The secret word was: <strong>' + secretWord + '</strong>';
+      gameOverModal.classList.remove('hidden');
+      persistentNextWordBtn.classList.add('hidden'); // ← hide skip btn
+      updateStats(false);
     } else {
-        row++;
-        currentBox = "b" + row + "1";
-        playing = true;
+      row++;
+      currentBox = 'b' + row + '1';
+      playing = true;
     }
-}, totalAnimationTime);
+  }, totalAnimationTime);
 };
 
 // Event listener for the enter button
-enterButton.addEventListener("click", function () {
-    if (playing) {
-        let inputWord = "";
-        for (let i = 1; i <= secretWord.length; i++) {
-            let boxId = `#b${row}${i}`;
-            if (document.querySelector(boxId).value !== "") {
-                inputWord += document.querySelector(boxId).value;
-            }
-        }
-
-        if (inputWord.length === secretWord.length) {
-            if (allowedWords.includes(inputWord.toLowerCase())) {
-                playing = false;
-                checkWord(inputWord);
-            } else {
-                message.textContent = "Word not in list";
-                const currentRowElem = document.querySelectorAll('.inputRow')[row - 1];
-                currentRowElem.classList.add('shake');
-                setTimeout(() => currentRowElem.classList.remove('shake'), 400);
-                message.classList.remove("hidden");
-                setTimeout(() => message.classList.add("hidden"), 1000);
-            }
-        } else {
-            message.textContent = "Not enough letters";
-            const currentRowElem = document.querySelectorAll('.inputRow')[row - 1];
-            currentRowElem.classList.add('shake');
-            setTimeout(() => currentRowElem.classList.remove('shake'), 400);
-            message.classList.remove("hidden");
-            setTimeout(() => message.classList.add("hidden"), 1000);
-        }
+enterButton.addEventListener('click', function () {
+  if (playing) {
+    let inputWord = '';
+    for (let i = 1; i <= secretWord.length; i++) {
+      let boxId = `#b${row}${i}`;
+      if (document.querySelector(boxId).value !== '') {
+        inputWord += document.querySelector(boxId).value;
+      }
     }
+
+    if (inputWord.length === secretWord.length) {
+      if (validFiveLetterWords.includes(inputWord.toLowerCase())) {
+        playing = false;
+        checkWord(inputWord);
+      } else {
+        message.textContent = 'Word not in list';
+        const currentRowElem = document.querySelectorAll('.inputRow')[row - 1];
+        currentRowElem.classList.add('shake');
+        setTimeout(() => currentRowElem.classList.remove('shake'), 400);
+        message.classList.remove('hidden');
+        setTimeout(() => message.classList.add('hidden'), 1000);
+      }
+    } else {
+      message.textContent = 'Not enough letters';
+      const currentRowElem = document.querySelectorAll('.inputRow')[row - 1];
+      currentRowElem.classList.add('shake');
+      setTimeout(() => currentRowElem.classList.remove('shake'), 400);
+      message.classList.remove('hidden');
+      setTimeout(() => message.classList.add('hidden'), 1000);
+    }
+  }
 });
 
 // Event listener for the back button
-backButton.addEventListener("click", function () {
-    if (!playing) return;
-    const boxValue = getBoxValue(currentBox);
-    if (boxValue === "") {
-        changeControl(-1);
-    }
-    document.querySelector(`#${currentBox}`).value = "";
+backButton.addEventListener('click', function () {
+  if (!playing) return;
+  const boxValue = getBoxValue(currentBox);
+  if (boxValue === '') {
+    changeControl(-1);
+  }
+  document.querySelector(`#${currentBox}`).value = '';
 });
 
 // Event listeners for virtual keyboard buttons
 for (const alphabet of alphabets) {
-    document.querySelector(`#${alphabet}`).addEventListener("click", function () {
-        if (Number(currentBox.slice(2)) <= secretWord.length && getBoxValue(currentBox) === "" && playing === true) {
-            const box = document.querySelector(`#${currentBox}`);
-            box.value = alphabet;
-            box.classList.add('filled');
-            setTimeout(() => box.classList.remove('filled'), 150);
-            changeControl(1);
-        }
-    });
+  document.querySelector(`#${alphabet}`).addEventListener('click', function () {
+    if (
+      Number(currentBox.slice(2)) <= secretWord.length &&
+      getBoxValue(currentBox) === '' &&
+      playing === true
+    ) {
+      const box = document.querySelector(`#${currentBox}`);
+      box.value = alphabet;
+      box.classList.add('filled');
+      setTimeout(() => box.classList.remove('filled'), 150);
+      changeControl(1);
+    }
+  });
 }
 
 // Event listener for physical keyboard input
-document.addEventListener("keydown", function (event) {
-    if (event.key === "Backspace") {
-        event.preventDefault();
-        backButton.click();
-        return;
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'Backspace') {
+    event.preventDefault();
+    backButton.click();
+    return;
+  }
+  if (event.key === 'Enter') {
+    event.preventDefault();
+    enterButton.click();
+    return;
+  }
+  const key = event.key.toUpperCase();
+  if (playing && key.length === 1 && key >= 'A' && key <= 'Z') {
+    event.preventDefault(); // Prevent lowercase letters if a user focuses on the input manually
+    if (
+      Number(currentBox.slice(2)) <= secretWord.length &&
+      getBoxValue(currentBox) === ''
+    ) {
+      const box = document.querySelector(`#${currentBox}`);
+      box.value = key;
+      box.classList.add('filled');
+      setTimeout(() => box.classList.remove('filled'), 150);
+      changeControl(1);
     }
-    if (event.key === "Enter") {
-        event.preventDefault();
-        enterButton.click();
-        return;
-    }
-    const key = event.key.toUpperCase();
-    if (playing && key.length === 1 && key >= 'A' && key <= 'Z') {
-        event.preventDefault(); // Prevent lowercase letters if a user focuses on the input manually
-        if (Number(currentBox.slice(2)) <= secretWord.length && getBoxValue(currentBox) === "") {
-            const box = document.querySelector(`#${currentBox}`);
-            box.value = key;
-            box.classList.add('filled');
-            setTimeout(() => box.classList.remove('filled'), 150);
-            changeControl(1);
-        }
-    }
+  }
 });
 
 // Show rules only on first ever visit
 if (!localStorage.getItem('visited')) {
-    document.querySelector("#rules").classList.remove("hidden");
-    localStorage.setItem('visited', 'true');
+  document.querySelector('#rules').classList.remove('hidden');
+  localStorage.setItem('visited', 'true');
 }
 
 // Event listener for closing the rules popup with X
-document.querySelector("#closeInfo").addEventListener("click", function () {
-    document.querySelector("#rules").classList.add("hidden");
+document.querySelector('#closeInfo').addEventListener('click', function () {
+  document.querySelector('#rules').classList.add('hidden');
 });
 
 // Click anywhere outside a popup to close it
-document.addEventListener("click", function(event) {
-    const rules = document.querySelector("#rules");
-    const statsPopup = document.querySelector("#stats");
-    const infoBtn = document.querySelector(".info");
-    const statsBtn = document.querySelector(".stats.nav__icon");
+document.addEventListener('click', function (event) {
+  const rules = document.querySelector('#rules');
+  const statsPopup = document.querySelector('#stats');
+  const infoBtn = document.querySelector('.info');
+  const statsBtn = document.querySelector('.stats.nav__icon');
 
-    if (!rules.classList.contains("hidden") && !rules.contains(event.target) && event.target !== infoBtn) {
-        rules.classList.add("hidden");
-    }
-    if (!statsPopup.classList.contains("hidden") && !statsPopup.contains(event.target) && event.target !== statsBtn) {
-        statsPopup.classList.add("hidden");
-    }
+  if (
+    !rules.classList.contains('hidden') &&
+    !rules.contains(event.target) &&
+    event.target !== infoBtn
+  ) {
+    rules.classList.add('hidden');
+  }
+  if (
+    !statsPopup.classList.contains('hidden') &&
+    !statsPopup.contains(event.target) &&
+    event.target !== statsBtn
+  ) {
+    statsPopup.classList.add('hidden');
+  }
 });
 
 // Event listener for showing the rules popup
-info.addEventListener("click", function () {
-    document.querySelector("#rules").classList.remove("hidden");
+info.addEventListener('click', function () {
+  document.querySelector('#rules').classList.remove('hidden');
 });
 
 // Event listener for closing the stats popup
-closeStats.addEventListener("click", function () {
-    document.querySelector("#stats").classList.add("hidden");
+closeStats.addEventListener('click', function () {
+  document.querySelector('#stats').classList.add('hidden');
 });
 
 // Event listener for showing the stats popup
-stats.addEventListener("click", function () {
-    showStatsPopup();
+stats.addEventListener('click', function () {
+  showStatsPopup();
 });
 
 // Event listener for closing the result popup
 if (closeResult) {
-    closeResult.addEventListener("click", function () {
-        document.querySelector("#result").classList.add("hidden");
-    });
+  closeResult.addEventListener('click', function () {
+    document.querySelector('#result').classList.add('hidden');
+  });
 }
 
 if (resetbutton) {
-    resetbutton.addEventListener("click", function () {
-        // Clear wins and losses statistics from localStorage
-        localStorage.removeItem("wins");
-        localStorage.removeItem("losses");
+  resetbutton.addEventListener('click', function () {
+    // Clear wins and losses statistics from localStorage
+    localStorage.removeItem('wins');
+    localStorage.removeItem('losses');
 
-        // Refresh the page
-        location.reload();
-    });
+    // Refresh the page
+    location.reload();
+  });
 }
 
-// adds a stats 
+// adds a stats
 // Updates the local storage numbers when a game officially concludes
 function updateStats(won) {
-    let stats = JSON.parse(localStorage.getItem('wordleStats')) || { played: 0, wins: 0, currentStreak: 0, maxStreak: 0 };
-    
-    stats.played++;
-    if (won) {
-        stats.wins++;
-        stats.currentStreak++;
-        if (stats.currentStreak > stats.maxStreak) stats.maxStreak = stats.currentStreak;
-    } else {
-        stats.currentStreak = 0;
-    }
-    localStorage.setItem('wordleStats', JSON.stringify(stats));
-    renderStatsUI(stats);
+  let stats = JSON.parse(localStorage.getItem('wordleStats')) || {
+    played: 0,
+    wins: 0,
+    currentStreak: 0,
+    maxStreak: 0,
+  };
+
+  stats.played++;
+  if (won) {
+    stats.wins++;
+    stats.currentStreak++;
+    if (stats.currentStreak > stats.maxStreak)
+      stats.maxStreak = stats.currentStreak;
+  } else {
+    stats.currentStreak = 0;
+  }
+  localStorage.setItem('wordleStats', JSON.stringify(stats));
+  renderStatsUI(stats);
 }
 
 // Handles ONLY updating the view box safely
 function showStatsPopup() {
-    let stats = JSON.parse(localStorage.getItem('wordleStats')) || { played: 0, wins: 0, currentStreak: 0, maxStreak: 0 };
-    renderStatsUI(stats);
-    document.querySelector("#stats").classList.remove("hidden");
+  let stats = JSON.parse(localStorage.getItem('wordleStats')) || {
+    played: 0,
+    wins: 0,
+    currentStreak: 0,
+    maxStreak: 0,
+  };
+  renderStatsUI(stats);
+  document.querySelector('#stats').classList.remove('hidden');
 }
 
 // Safely sets the inner HTML structural layout
 // Safely sets the inner HTML structural layout
 function renderStatsUI(stats) {
-    let winPct = stats.played > 0 ? Math.round((stats.wins / stats.played) * 100) : 0;
-    const statsHTML = `
+  let winPct =
+    stats.played > 0 ? Math.round((stats.wins / stats.played) * 100) : 0;
+  const statsHTML = `
         <p class='crossOuter'><button class='cross' id='closeStats'>&#9587</button></p>
         <p><strong>STATISTICS</strong></p>
         <p>${stats.played} &emsp;&emsp;&emsp;${winPct}% &emsp;&emsp;&emsp;${stats.currentStreak} &emsp;&emsp;&emsp;${stats.maxStreak}</p>
         <p class='mini'>Played - Win% - Current Streak - Max Streak</p>
     `;
-    const statsContainer = document.querySelector("#stats");
-    if (statsContainer) {
-        statsContainer.innerHTML = statsHTML;
-        
-        // FIX: Wrapped in a null check so it never crashes the script
-        const closeBtn = document.querySelector('#closeStats');
-        if (closeBtn) {
-            closeBtn.addEventListener('click', () => statsContainer.classList.add("hidden"));
-        }
+  const statsContainer = document.querySelector('#stats');
+  if (statsContainer) {
+    statsContainer.innerHTML = statsHTML;
+
+    // FIX: Wrapped in a null check so it never crashes the script
+    const closeBtn = document.querySelector('#closeStats');
+    if (closeBtn) {
+      closeBtn.addEventListener('click', () =>
+        statsContainer.classList.add('hidden')
+      );
     }
+  }
 }
 
 if (stats) {
-    stats.addEventListener("click", function() {
-        showStatsPopup();
-    });
+  stats.addEventListener('click', function () {
+    showStatsPopup();
+  });
 }
 
 // theme toggle
 
-const themeToggle = document.querySelector("#themeToggle");
+const themeToggle = document.querySelector('#themeToggle');
 
 // Check if they had dark mode on previously
-if (localStorage.getItem("darkMode") === "true") {
-    document.body.classList.add("dark-mode");
-    themeToggle.textContent = "☀️";
+if (localStorage.getItem('darkMode') === 'true') {
+  document.body.classList.add('dark-mode');
+  themeToggle.textContent = '☀️';
 }
 
 // Toggle on click (Safely guarded)
 if (themeToggle) {
-    themeToggle.addEventListener("click", () => {
-        document.body.classList.toggle("dark-mode");
-        if (document.body.classList.contains("dark-mode")) {
-            localStorage.setItem("darkMode", "true");
-            themeToggle.textContent = "☀️";
-        } else {
-            localStorage.setItem("darkMode", "false");
-            themeToggle.textContent = "🌙";
-        }
-    });
+  themeToggle.addEventListener('click', () => {
+    document.body.classList.toggle('dark-mode');
+    if (document.body.classList.contains('dark-mode')) {
+      localStorage.setItem('darkMode', 'true');
+      themeToggle.textContent = '☀️';
+    } else {
+      localStorage.setItem('darkMode', 'false');
+      themeToggle.textContent = '🌙';
+    }
+  });
 }
 
 // Close game over modal with close button
 // Close game over modal with close button (Only runs if the element exists)
 if (closeGameOver) {
-    closeGameOver.addEventListener("click", function () {
-        if (gameOverModal) gameOverModal.classList.add("hidden");
-    });
+  closeGameOver.addEventListener('click', function () {
+    if (gameOverModal) gameOverModal.classList.add('hidden');
+  });
 }
 
 // Click backdrop to close game over modal (Only runs if the modal exists)
 if (gameOverModal) {
-    gameOverModal.addEventListener("click", function (event) {
-        if (event.target === gameOverModal) {
-            gameOverModal.classList.add("hidden");
-        }
-    });
+  gameOverModal.addEventListener('click', function (event) {
+    if (event.target === gameOverModal) {
+      gameOverModal.classList.add('hidden');
+    }
+  });
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -375,59 +409,68 @@ if (gameOverModal) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 // 1. Modal "Next Word" button listener
-const modalNextBtn = document.querySelector("#nextWordBtn") || document.querySelector(".next-word-btn");
+const modalNextBtn =
+  document.querySelector('#nextWordBtn') ||
+  document.querySelector('.next-word-btn');
 
 if (modalNextBtn) {
-    modalNextBtn.addEventListener("click", function () {
-        location.reload();
-    });
+  modalNextBtn.addEventListener('click', function () {
+    location.reload();
+  });
 } else {
-    console.error("Debug Error: Could not find the Next Word button in your HTML using '#nextWordBtn' or '.next-word-btn'.");
+  console.error(
+    "Debug Error: Could not find the Next Word button in your HTML using '#nextWordBtn' or '.next-word-btn'."
+  );
 }
 
 // 2. Persistent "Skip Word" Toast Confirmation
-const skipToast      = document.querySelector("#skip-toast");
-const skipConfirmYes = document.querySelector("#skipConfirmYes");
-const skipConfirmNo  = document.querySelector("#skipConfirmNo");
+const skipToast = document.querySelector('#skip-toast');
+const skipConfirmYes = document.querySelector('#skipConfirmYes');
+const skipConfirmNo = document.querySelector('#skipConfirmNo');
 
 // Helper to show/hide the toast
 function showSkipToast() {
-    if (skipToast) skipToast.classList.remove("hidden");
+  if (skipToast) skipToast.classList.remove('hidden');
 }
 
 function hideSkipToast() {
-    if (skipToast) skipToast.classList.add("hidden");
+  if (skipToast) skipToast.classList.add('hidden');
 }
 
-const persistentSkipBtn = document.querySelector("#persistentNextWordBtn") || document.querySelector(".skip-btn-wrapper button") || document.querySelector("#skip-btn-wrapper button");
+const persistentSkipBtn =
+  document.querySelector('#persistentNextWordBtn') ||
+  document.querySelector('.skip-btn-wrapper button') ||
+  document.querySelector('#skip-btn-wrapper button');
 
 if (persistentSkipBtn) {
-    persistentSkipBtn.textContent = "SKIP WORD ➔";
-    persistentSkipBtn.addEventListener("click", function () {
-        if (!playing) {
-            // Game already over — just load the next word
-            location.reload();
-            return;
-        }
-        // Show our custom toast instead of confirm()
-        showSkipToast();
-    });
+  persistentSkipBtn.textContent = 'SKIP WORD ➔';
+  persistentSkipBtn.addEventListener('click', function () {
+    if (!playing) {
+      // Game already over — just load the next word
+      location.reload();
+      return;
+    }
+    // Show our custom toast instead of confirm()
+    showSkipToast();
+  });
 } else {
-    console.error("Debug Error: Could not find the persistent Skip Word button using '#persistentNextWordBtn'.");
+  console.error(
+    "Debug Error: Could not find the persistent Skip Word button using '#persistentNextWordBtn'."
+  );
 }
 
 // "Yes, give up" — record loss and reload
 if (skipConfirmYes) {
-    skipConfirmYes.addEventListener("click", function () {
-        hideSkipToast();
-        updateStats(false);
-        location.reload();
-    });
+  skipConfirmYes.addEventListener('click', function () {
+    hideSkipToast();
+    updateStats(false);
+    location.reload();
+  });
 }
 
 // "Cancel" — just close the toast
 if (skipConfirmNo) {
-    skipConfirmNo.addEventListener("click", function () {
-        hideSkipToast();
-    });
+  skipConfirmNo.addEventListener('click', function () {
+    hideSkipToast();
+  });
 }

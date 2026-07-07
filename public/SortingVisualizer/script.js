@@ -1144,11 +1144,6 @@ function handleKeydown(e) {
   }
 }
 
-function toggleMute() {
-  isMuted = !isMuted;
-  muteBtn.textContent = isMuted ? "🔇" : "🔊";
-}
-
 const THEME_ORDER = ["dark", "light", "ocean", "neon", "matrix"];
 function cycleThemes() {
   const currentIndex = THEME_ORDER.indexOf(themeSelect.value);

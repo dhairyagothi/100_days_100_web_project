@@ -292,37 +292,335 @@ function showCompareLoading() {
    CONTRIBUTION HEATMAP
 ========================================================= */
 
-function generateContributionHeatmap() {
+// Set this to a backend/serverless proxy URL to enable the
+// GraphQL path. Left empty because this project has no
+// backend yet - see comment block above.
+const GRAPHQL_PROXY_ENDPOINT = "";
 
-  if (!UI.heatmapGrid) return;
+const CONTRIBUTIONS_FALLBACK_API_URL =
+  "https://github-contributions-api.jogruber.de/v4";
+
+const CONTRIBUTIONS_FETCH_TIMEOUT_MS = 8000;
+const CONTRIBUTIONS_MAX_RETRIES = 2;
+const CONTRIBUTIONS_RETRY_BASE_DELAY_MS = 600;
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+/**
+ * Fetch wrapper with a timeout, since a hung request should
+ * never leave the heatmap stuck on "Loading...".
+ */
+async function fetchWithTimeout(url, timeoutMs) {
+
+  const controller = new AbortController();
+
+  const timer = setTimeout(
+    () => controller.abort(),
+    timeoutMs
+  );
+
+  try {
+
+    return await fetch(url, { signal: controller.signal });
+
+  } finally {
+
+    clearTimeout(timer);
+  }
+}
+
+/**
+ * Calls a backend proxy that is expected to run the GitHub
+ * GraphQL `contributionsCollection` query server-side (where a
+ * token can be kept secret) and return normalized
+ * { date, count, level } day objects. Only used when
+ * GRAPHQL_PROXY_ENDPOINT is configured.
+ */
+async function fetchContributionsFromGraphQLProxy(username) {
+
+  const response = await fetchWithTimeout(
+    `${GRAPHQL_PROXY_ENDPOINT}?username=${encodeURIComponent(username)}`,
+    CONTRIBUTIONS_FETCH_TIMEOUT_MS
+  );
+
+  if (!response.ok) {
+
+    const error = new Error(
+      "The contribution data proxy returned an error."
+    );
+    error.status = response.status;
+    throw error;
+  }
+
+  const data = await response.json();
+
+  if (!data || !Array.isArray(data.contributions)) {
+
+    throw new Error(
+      "The contribution data proxy returned an unexpected format."
+    );
+  }
+
+  return data.contributions;
+}
+
+/**
+ * Calls the public fallback contributions API with a timeout
+ * and retry/backoff for transient errors. Never returns
+ * fabricated data - any unrecoverable failure is thrown so the
+ * caller can show an honest error state.
+ */
+async function fetchContributionsFromFallbackApi(username) {
+
+  let lastError = null;
+
+  for (let attempt = 0; attempt <= CONTRIBUTIONS_MAX_RETRIES; attempt++) {
+
+    try {
+
+      const response = await fetchWithTimeout(
+        `${CONTRIBUTIONS_FALLBACK_API_URL}/${username}?y=last`,
+        CONTRIBUTIONS_FETCH_TIMEOUT_MS
+      );
+
+      if (response.status === 404) {
+
+        // Invalid/unknown username - retrying won't help.
+        const error = new Error(
+          "No GitHub user was found with that username."
+        );
+        error.status = 404;
+        throw error;
+      }
+
+      if (response.status === 429) {
+
+        const error = new Error(
+          "The contribution data provider is rate-limited right now."
+        );
+        error.status = 429;
+        throw error;
+      }
+
+      if (!response.ok) {
+
+        const error = new Error(
+          "Unable to fetch contribution activity for this user."
+        );
+        error.status = response.status;
+        throw error;
+      }
+
+      const data = await response.json();
+
+      if (!data || !Array.isArray(data.contributions)) {
+
+        throw new Error(
+          "Contribution data was returned in an unexpected format."
+        );
+      }
+
+      return data.contributions;
+
+    } catch (error) {
+
+      lastError = error;
+
+      const isAbort = error.name === "AbortError";
+      const isNotFound = error.status === 404;
+
+      // Don't retry on a bad username or an aborted/timed-out
+      // request that's already exhausted its own budget once;
+      // only retry genuinely transient failures.
+      const isRetryable =
+        !isNotFound &&
+        (isAbort ||
+          error.status === 429 ||
+          error.status >= 500 ||
+          error.status === undefined);
+
+      if (!isRetryable || attempt === CONTRIBUTIONS_MAX_RETRIES) {
+
+        if (isAbort) {
+
+          lastError = new Error(
+            "The request timed out while loading contribution activity."
+          );
+        }
+
+        break;
+      }
+
+      await sleep(
+        CONTRIBUTIONS_RETRY_BASE_DELAY_MS * Math.pow(2, attempt)
+      );
+    }
+  }
+
+  throw lastError;
+}
+
+/**
+ * Fetches the last 12 months of real contribution data for a
+ * GitHub username. Returns an array of
+ * { date, count, level } objects, oldest first. GraphQL (via a
+ * secure backend proxy) is preferred when configured; otherwise
+ * falls back to the public read-only contributions API. Never
+ * falls back to randomly generated or fake data.
+ */
+async function fetchContributionData(username) {
+
+  const cacheKey = `contributions_${username}`;
+
+  const cached = DataCacheEngine.get(cacheKey);
+
+  if (cached) return cached;
+
+  const contributions = GRAPHQL_PROXY_ENDPOINT
+    ? await fetchContributionsFromGraphQLProxy(username)
+    : await fetchContributionsFromFallbackApi(username);
+
+  DataCacheEngine.set(cacheKey, contributions);
+
+  return contributions;
+}
+
+/**
+ * Renders a GitHub-style calendar grid (7 rows x ~53 columns)
+ * from real contribution day objects. Leading blank cells are
+ * added so the first real day lines up with its correct
+ * day-of-week row, matching GitHub's own layout.
+ */
+function renderContributionHeatmap(contributions) {
 
   UI.heatmapGrid.innerHTML = "";
 
-  const totalDays = 365;
+  // Cap at 371 days (53 weeks) to mirror GitHub's ~12 month view.
+  const days = contributions.slice(-371);
 
-  for (let i = 0; i < totalDays; i++) {
+  if (!days.length) {
 
-    const level =
-      Math.floor(Math.random() * 5);
+    throw new Error("No contribution data available for this user.");
+  }
+
+  const firstDay = new Date(`${days[0].date}T00:00:00`);
+  const leadingBlankDays = firstDay.getDay(); // 0 = Sunday
+
+  for (let i = 0; i < leadingBlankDays; i++) {
+
+    const blankCell =
+      document.createElement("div");
+
+    blankCell.className = "heatmap-cell level-0";
+    blankCell.style.visibility = "hidden";
+
+    UI.heatmapGrid.appendChild(blankCell);
+  }
+
+  days.forEach((day) => {
 
     const cell =
       document.createElement("div");
 
     cell.className =
-      `heatmap-cell level-${level}`;
+      `heatmap-cell level-${day.level}`;
 
-    const contributions =
-      level === 0
-        ? 0
-        : Math.floor(
-            Math.random() * (level * 8)
-          ) + 1;
+    const formattedDate =
+      new Date(`${day.date}T00:00:00`).toLocaleDateString(
+        "en-US",
+        { year: "numeric", month: "long", day: "numeric" }
+      );
 
     cell.title =
-      `${contributions} contributions`;
+      `${day.count} contribution${day.count === 1 ? "" : "s"} on ${formattedDate}`;
 
     UI.heatmapGrid.appendChild(cell);
+  });
+}
+
+/**
+ * Displays a friendly, non-fake fallback when real contribution
+ * data can't be retrieved. Never falls back to random data.
+ */
+function showHeatmapError(message) {
+
+  UI.heatmapGrid.innerHTML = "";
+
+  const errorNode =
+    document.createElement("div");
+
+  errorNode.style.gridColumn = "1 / -1";
+  errorNode.style.color = "var(--muted)";
+  errorNode.style.fontSize = ".88rem";
+  errorNode.style.padding = "10px 0";
+
+  errorNode.textContent = message;
+
+  UI.heatmapGrid.appendChild(errorNode);
+}
+
+async function generateContributionHeatmap(username) {
+
+  if (!UI.heatmapGrid) return;
+
+  const loadingNode =
+    document.createElement("div");
+
+  loadingNode.style.gridColumn = "1 / -1";
+  loadingNode.style.color = "var(--muted)";
+  loadingNode.style.fontSize = ".88rem";
+  loadingNode.style.padding = "10px 0";
+  loadingNode.textContent = "Loading contribution activity...";
+
+  UI.heatmapGrid.innerHTML = "";
+  UI.heatmapGrid.appendChild(loadingNode);
+
+  try {
+
+    const contributions =
+      await fetchContributionData(username);
+
+    renderContributionHeatmap(contributions);
+
+  } catch (error) {
+
+    showHeatmapError(getContributionErrorMessage(error));
   }
+}
+
+/**
+ * Turns a raw fetch/parse error into a specific, human-readable
+ * message so the person searching a profile understands what
+ * went wrong (invalid username vs. rate limit vs. network vs.
+ * an unexpected failure) instead of one generic string.
+ */
+function getContributionErrorMessage(error) {
+
+  if (error?.status === 404) {
+
+    return "No contribution data found - check that the username is correct.";
+  }
+
+  if (error?.status === 429) {
+
+    return "Contribution data is temporarily rate-limited. Please try again in a moment.";
+  }
+
+  // A failed fetch (offline, DNS failure, blocked request, etc.)
+  // surfaces as a TypeError in browsers rather than a bad status.
+  if (error instanceof TypeError) {
+
+    return "Couldn't reach the contribution data source - check your connection and try again.";
+  }
+
+  if (typeof error?.status === "number" && error.status >= 500) {
+
+    return "The contribution data source is currently unavailable. Please try again later.";
+  }
+
+  return "Contribution activity couldn't be loaded for this user right now.";
 }
 
 /* =========================================================
@@ -689,7 +987,7 @@ async function fetchUser(username) {
 
     renderRepos(sortedRepos);
 
-    generateContributionHeatmap();
+    await generateContributionHeatmap(cleanName);
 
     await renderLanguageAnalytics(repos);
 

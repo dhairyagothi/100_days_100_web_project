@@ -55,20 +55,57 @@
 
         <!-- Main Content Section -->
         <div class="main-content">
-            <div class="sticky-nav">
-                <div class="sticky-nav-icons">
-                    <img alt="" src="backward_icon.png" width="32" height="32" loading="lazy">
-                    <img alt="" src="forward_icon.png" class="hide" width="32" height="32" loading="lazy">
-                </div>
-                <div class="sticky-nav-options" id="auth-container">
-                    <button class="badge nav-items hide">Explore Premium</button>
-                    <button class="badge nav-items dark-badge"><i aria-hidden="true" class="fa-regular fa-circle-down" style="margin-right: 3px;"></i>Install App</button>
-                    <!-- Dynamic Login Button -->
-                     
-                    <button class="badge login-btn" id="loginAuthBtn">Log in</button>
-                    <button class="badge signup-btn" id="signUpBtn">Sign Up</button>
-                </div>
-            </div>
+            
+<div class="sticky-nav">
+
+    <!-- Left Section -->
+    <div class="sticky-nav-left">
+
+
+        <!-- Spotify Logo -->
+        <div class="spotify-logo">
+            <i class="fa-brands fa-spotify"></i>
+        </div>
+
+            
+
+        <button class="home-btn">
+            <i class="fa-solid fa-house"></i>
+        </button>
+
+        <div class="search-bar">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input
+                type="text"
+                placeholder="What do you want to play?"
+            >
+        </div>
+
+    </div>
+
+    <!-- Right Section -->
+    <div class="sticky-nav-options" id="auth-container">
+
+        <button class="badge nav-items hide">
+            Explore Premium
+        </button>
+
+        <button class="badge nav-items dark-badge">
+            <i class="fa-regular fa-circle-down"></i>
+            Install App
+        </button>
+
+        <button class="badge signup-btn" id="signUpBtn">
+            Sign up
+        </button>
+
+        <button class="badge login-btn" id="loginAuthBtn">
+            Log in
+        </button>
+
+    </div>
+
+</div>
         
             <h2>Recently Played</h2>
             <div class="cards-container">

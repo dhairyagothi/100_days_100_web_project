@@ -1004,3 +1004,201 @@ body {
     height: 120px;
   }
 }
+
+.current-weather-card,
+.today-forecast-card,
+.air-conditions-card,
+.forecast-panel{
+
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+
+    background:rgba(28,34,48,.82);
+}
+.current-weather-card::before{
+
+content:"";
+
+position:absolute;
+
+width:280px;
+height:280px;
+
+background:#2196f3;
+
+opacity:.15;
+
+filter:blur(120px);
+
+top:-120px;
+right:-100px;
+
+border-radius:50%;
+}
+.current-temp{
+
+font-size:92px;
+
+font-weight:800;
+
+line-height:1;
+
+background:linear-gradient(
+white,
+#d9ecff
+);
+
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+
+text-shadow:
+0 8px 30px rgba(0,150,255,.25);
+}
+\.city-name{
+
+font-size:54px;
+
+font-weight:700;
+
+letter-spacing:-2px;
+}
+.hourly-item{
+
+background:rgba(255,255,255,.03);
+
+border-radius:18px;
+
+padding:20px 10px;
+
+border:none;
+
+transition:.35s;
+}
+.search-input{
+
+height:60px;
+
+font-size:16px;
+
+border-radius:20px;
+
+background:#171d29;
+
+padding-left:60px;
+
+box-shadow:inset 0 0 0 1px rgba(255,255,255,.04);
+}
+.search-input:focus{
+
+border-color:#3ea6ff;
+
+box-shadow:
+
+0 0 0 4px rgba(0,149,255,.18),
+0 15px 30px rgba(0,149,255,.18);
+}
+.nav-item.active{
+
+background:rgba(0,149,255,.15);
+
+padding:14px 18px;
+
+border-radius:18px;
+
+color:white;
+}
+.hero-icon-container{
+
+animation:float 5s ease infinite;
+}
+
+@keyframes float{
+
+0%{transform:translateY(0);}
+50%{transform:translateY(-12px);}
+100%{transform:translateY(0);}
+}
+body{
+
+background:
+radial-gradient(circle at top right,#244f86 0%,transparent 30%),
+
+radial-gradient(circle at bottom left,#11233d 0%,transparent 30%),
+
+#090d14;
+}
+.today-forecast-card{
+
+padding:28px;
+
+border-radius:28px;
+
+box-shadow:
+
+0 15px 40px rgba(0,0,0,.25);
+}
+.hourly-temp{
+
+font-size:22px;
+
+font-weight:700;
+}
+.city-weather-card,
+.hourly-item,
+.settings-card,
+.forecast-item{
+
+transition:
+transform .35s,
+box-shadow .35s,
+background .35s;
+}
+
+.city-weather-card:hover{
+
+transform:translateY(-8px);
+
+box-shadow:0 20px 40px rgba(0,0,0,.35);
+}
+::-webkit-scrollbar{
+
+width:8px;
+}
+
+::-webkit-scrollbar-thumb{
+
+background:#3b82f6;
+
+border-radius:20px;
+}
+.sunny{
+
+background:
+linear-gradient(
+135deg,
+#fcb045,
+#fd8f2b,
+#2c7be5
+);
+}
+
+.rain{
+
+background:
+linear-gradient(
+135deg,
+#2C5364,
+#203A43,
+#0F2027
+);
+}
+
+.cloudy{
+
+background:
+linear-gradient(
+135deg,
+#4B79A1,
+#283E51
+);
+}

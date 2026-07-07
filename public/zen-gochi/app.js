@@ -18,14 +18,10 @@ const bodyCore = document.getElementById('bodyCore');
 const bodyGlow = document.getElementById('bodyGlow');
 const pupil = document.getElementById('pupil');
 
-// Tracking variables for physics calculation
+// Tracking variables for physics calculation (Duplicates Removed)
 let lastMouseX = 0;
 let lastMouseY = 0;
 let lastMouseTime = Date.now();
-
-let lastMouseX = 0;
-let lastMouseY = 0;
-let lastMouseTime = 0;
 let mouseInitialized = false;
 
 // Prevent multiple penalties from stacking
@@ -36,13 +32,35 @@ let lastPenaltyTime = 0;
 const MIN_MOUSE_DT = 16;
 
 // Evolution mappings
-const stages = {
-  1: 'The Seed',
-  5: 'The Sprout',
-  15: 'The Core Orb',
-  30: 'The Awakened Entity',
-  50: 'Absolute Nothingness',
-};
+const stages = [
+  { score: 1, stage: 'The Seed' },
+  { score: 5, stage: 'The Sprout' },
+  { score: 15, stage: 'The Core Orb' },
+  { score: 30, stage: 'The Awakened Entity' },
+  { score: 50, stage: 'Absolute Nothingness' },
+];
+
+function updateEvolutionStage() {
+  let unlockedStage = stages[0];
+  let unlockedLevel = 1;
+
+  stages.forEach((milestone, index) => {
+    if (zenScore >= milestone.score) {
+      unlockedStage = milestone;
+      unlockedLevel = index + 1;
+    }
+  });
+
+  if (currentStage !== unlockedStage.stage) {
+    currentStage = unlockedStage.stage;
+    level = unlockedLevel;
+
+    levelDisplay.textContent = level;
+    stageDisplay.textContent = currentStage;
+
+    triggerEvolutionVisuals();
+  }
+}
 
 // Main game clock loop runs every 1 second
 setInterval(() => {
@@ -51,13 +69,7 @@ setInterval(() => {
     zenScore++;
 
     // Handle level ups based on zen score points
-    if (stages[zenScore]) {
-      level++;
-      currentStage = stages[zenScore];
-      levelDisplay.textContent = level;
-      stageDisplay.textContent = currentStage;
-      triggerEvolutionVisuals();
-    }
+    updateEvolutionStage();
 
     // Slowly heal stability if it was damaged
     if (stability < 100) {
@@ -103,7 +115,8 @@ function breakZen(penaltyAmount, message) {
 function resetZen() {
   zenScore = 0;
   level = 1;
-  currentStage = stages[1];
+  currentStage = stages[0].stage;
+
   levelDisplay.textContent = level;
   stageDisplay.textContent = currentStage;
   stability = 100;
@@ -183,7 +196,6 @@ function updateUI(msg, color) {
 }
 
 function animateCreaturePulse() {
-  // Basic parametric scaling to create a heart-beat look
   let baseRadius = 40 + level * 2;
   let pulseFactor = stability < 50 ? 6 : 2; // Shakes faster if dying
   let scale = baseRadius + Math.sin(Date.now() / 200) * pulseFactor;
@@ -193,7 +205,6 @@ function animateCreaturePulse() {
 }
 
 function triggerEvolutionVisuals() {
-  // Add visual fireworks or flash on transition threshold milestones
   bodyCore.style.transform = 'scale(1.3)';
   setTimeout(() => {
     bodyCore.style.transform = 'scale(1)';

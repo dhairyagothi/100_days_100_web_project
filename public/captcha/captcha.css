@@ -231,7 +231,7 @@ body .button {
 
 .intro {
     max-width: 550px;
-    margin: auto;
+    margin: 1rem;
     color: #94a3b8;
     line-height: 1.7;
 }
@@ -722,13 +722,13 @@ input[type="text"]:focus {
     align-items: center;
     gap: 10px;
     width: fit-content;
-    padding: 12px 20px;
+    padding: 10px 10px;
     border-radius: 16px;
     background: rgba(255, 255, 255, .05);
     border: 1px solid rgba(255, 255, 255, .08);
     color: #e2e8f0;
     text-decoration: none;
-    font-weight: 700;
+    font-weight: 600;
     transition: .25s ease;
 }
 
@@ -943,8 +943,8 @@ input[type="text"]:focus {
 }
 
 .button {
-    align-items: center;
-    margin-left: 250px;
+    text-align: center;
+    margin-left: auto;
     width: fit-content;
     padding: 12px 20px;
     border-radius: 16px;
@@ -1302,12 +1302,12 @@ body.light-theme .toast-warning .toast-icon {
     }
 
     .logo {
-        font-size: 1.8rem;
+        font-size: 1rem;
         margin-left: 0;
     }
 
     body {
-        padding: 70px 16px 32px;
+        padding: 140px 16px 32px;
     }
 
     .container {
@@ -1332,11 +1332,17 @@ body.light-theme .toast-warning .toast-icon {
         grid-template-columns: repeat(3, 1fr);
         gap: 10px;
     }
+
+    .button {
+        margin-left: 0;
+        width: 100%;
+        text-align: center;
+    }
 }
 
 @media (max-width: 480px) {
     body {
-        padding: 65px 12px 24px;
+        padding: 160px 12px 24px;
     }
 
     .container {

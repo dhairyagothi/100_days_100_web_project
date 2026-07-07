@@ -155,22 +155,43 @@ body{
 </main>
 
 <script>
-    function allowDrop(ev) { ev.preventDefault(); }
-    function drag(ev) { ev.dataTransfer.setData("text", ev.target.id); }
-    function drop(ev) {
-        ev.preventDefault();
-        const data = ev.dataTransfer.getData("text");
-        ev.currentTarget.appendChild(document.getElementById(data));
+document.addEventListener('DOMContentLoaded', () => {
+    // Ensure default columns/tasks exist so page doesn't render blank
+    const board = document.querySelector('.board');
+    if (!board) return;
+
+    if (board.querySelectorAll('.column').length === 0) {
+        const todo = document.createElement('div');
+        todo.className = 'column';
+        todo.innerHTML = '<h3>To Do</h3><div class="task" draggable="true" id="task1">Sample Task</div>';
+        const done = document.createElement('div');
+        done.className = 'column';
+        done.innerHTML = '<h3>Done</h3>';
+        board.appendChild(todo);
+        board.appendChild(done);
     }
 
-    document.querySelectorAll(".column").forEach(column => {
-        column.addEventListener("dragover", allowDrop);
-        column.addEventListener("drop", drop);
+    function allowDrop(ev) { ev.preventDefault(); }
+    function drag(ev) { ev.dataTransfer.setData('text', ev.target.id); }
+    function drop(ev) {
+        ev.preventDefault();
+        const data = ev.dataTransfer.getData('text');
+        const el = document.getElementById(data);
+        if (el && ev.currentTarget !== el.parentElement) ev.currentTarget.appendChild(el);
+    }
+
+    // Attach events to current columns and tasks
+    document.querySelectorAll('.column').forEach(column => {
+        column.addEventListener('dragover', allowDrop);
+        column.addEventListener('drop', drop);
     });
 
-    document.querySelectorAll(".task").forEach(task => {
-        task.addEventListener("dragstart", drag);
+    document.querySelectorAll('.task').forEach(task => {
+        // Ensure each task has an id for drag data
+        if (!task.id) task.id = 'task-' + Math.random().toString(36).slice(2, 9);
+        task.addEventListener('dragstart', drag);
     });
+});
 </script>
 </body>
 </html>
