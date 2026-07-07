@@ -420,3 +420,94 @@ button.active.hard { background: #e74c3c; }
         margin-top: 10px;
     }
 }
+
+.hints-box {
+    text-align: center;
+    padding: 8px 12px;
+    background: rgba(124, 99, 255, 0.1);
+    border-radius: 12px;
+}
+
+.hints-box .label {
+    font-size: 14px;
+    margin-right: 8px;
+}
+
+.hints-box span:last-child {
+    font-size: 20px;
+    font-weight: bold;
+    color: #7c63ff;
+}
+
+/* Hint Popup Modal */
+.hint-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    color: white;
+    padding: 20px 30px;
+    border-radius: 20px;
+    text-align: center;
+    z-index: 10001;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    animation: popupSlide 0.3s ease;
+    border: 1px solid rgba(124, 99, 255, 0.5);
+}
+
+.hint-popup p {
+    margin: 0 0 15px 0;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.hint-popup button {
+    background: #7c63ff;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 30px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.hint-popup button:hover {
+    background: #9b87ff;
+    transform: scale(1.05);
+}
+
+.hint-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 10000;
+    animation: fadeIn 0.2s ease;
+}
+
+@keyframes popupSlide {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Add this class to style.css */
+.hints-zero {
+    color: #ff4444 !important;
+    font-weight: bold;
+    text-shadow: 0 0 3px rgba(255, 68, 68, 0.5);
+}
