@@ -103,23 +103,25 @@ body.light-mode {
 }
 
 :root[data-theme="nord"] {
-  --bg-primary: #2e3440;
-  --bg-elevated: #3b4252;
-  --bg-surface: #434c5e;
+  --bg-primary: #2e3440;       
+  --bg-elevated: #3b4252;      
+  --bg-surface: #434c5e;       
 
-  --text-primary: #eceff4;
-  --text-secondary: #d8dee9;
-  --text-muted: #95a4ba;
-  --accent-color: #88c0d0;
-  --accent: #81a1c1;
+  --text-primary: #eceff4;     
+  --text-secondary: #e5e9f0;   
+  --text-muted: #d8dee9;       
+
+  --accent-color: #88c0d0;     
+  --accent: #81a1c1;           
   --accent-dim: rgba(129, 161, 193, 0.15);
   --accent-hover: #8fbcbb;
-  --border: #4c566a;
+
+  --border: #4c566a;           
   --border-hover: #5e81ac;
   --border-accent: rgba(136, 192, 208, 0.4);
   --accent-glow: rgba(136, 192, 208, 0.2);
   --glass-bg: rgba(236, 239, 244, 0.03);
-  --glass-border: rgba(236, 239, 244, 0.08);
+  --glass-border: rgba(236, 239, 244, 0.15); 
   --gradient-1: linear-gradient(135deg, #81a1c1, #5e81ac);
 }
 
@@ -3420,30 +3422,19 @@ body.custom-cursor-active .cursor-ring.is-visible {
 :root[data-theme="sepia"] [class*="footer"] {
   color: var(--text-muted-sepia) !important;
 }
+/* ------------------------------------------------------------------------
+ ADDITIONAL NORD FIXES 
+ ------------------------------------------------------------------------*/
 
-/* Custom Cursor System */
-.cursor-trail-dot {
-  pointer-events: none !important;
-  z-index: 999998 !important;
+[data-theme="nord"] .project-card .tag {
+  background: var(--bg-surface);
+  color: var(--text-primary); /* Overrides any dark inherited text */
+  border-color: var(--border);
 }
 
-@keyframes cursorNeonPulse {
-  0%, 100% { box-shadow: 0 0 10px #00ff88, 0 0 20px #00ff88; }
-  50% { box-shadow: 0 0 18px #00ff88, 0 0 36px #00ff88; }
-}
-
-@media (pointer: coarse) {
-  .cursor-switcher-container { display: none !important; }
-}
-.random-project-wrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  align-items: center;
-}
-
-#randomProjectResult {
-  width: 100%;
+[data-theme="nord"] .project-card .day-label,
+[data-theme="nord"] .project-card .project-card-description {
+  color: var(--text-secondary);
 }
 
 /* ============================================================
