@@ -1,74 +1,88 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Portfolio Studio</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="image.png">
-</head>
-<body>
-
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="image.png" />
+  </head>
+  <body>
     <!-- Top Application Control Bar -->
     <header class="app-header">
-        <div class="logo">Portfolio Studio</div>
-        <button id="download-btn" class="btn-download">Export Production HTML 🚀</button>
+      <div class="logo">Portfolio Studio</div>
+      <button id="download-btn" class="btn-download">
+        Export Production HTML 🚀
+      </button>
     </header>
 
     <!-- Core App Viewport Grid Partition -->
     <div class="app-container">
-        
-        <!-- LEFT PANEL: Dynamic Control Panel Config Forms -->
-        <aside class="control-panel">
-            <h2>Profile Setup</h2>
-            <div class="input-group">
-                <label>Full Name</label>
-                <input type="text" id="input-name" value="Dhairya Gothi">
-            </div>
-            <div class="input-group">
-                <label>Professional Sub-Heading</label>
-                <input type="text" id="input-title" value="Creative Systems Architect">
-            </div>
-            <div class="input-group">
-                <label>Animated Typing Phrases (Comma Separated)</label>
-                <input type="text" id="input-phrases" value="React Interfaces, Immersive Apps, Scalable Systems">
-            </div>
-            <div class="input-group">
-                <label>About Me Bio</label>
-                <textarea id="input-bio">Engineering low-latency web architecture mixed with hyper-smooth visual experiences and neon physics.</textarea>
-            </div>
-            <div class="input-group">
-                <label>Contact Email Link</label>
-                <input type="email" id="input-email" value="developer@example.com">
-            </div>
+      <!-- LEFT PANEL: Dynamic Control Panel Config Forms -->
+      <aside class="control-panel">
+        <h2>Profile Setup</h2>
+        <div class="input-group">
+          <label>Full Name</label>
+          <input type="text" id="input-name" value="Dhairya Gothi" />
+        </div>
+        <div class="input-group">
+          <label>Professional Sub-Heading</label>
+          <input
+            type="text"
+            id="input-title"
+            value="Creative Systems Architect"
+          />
+        </div>
+        <div class="input-group">
+          <label>Animated Typing Phrases (Comma Separated)</label>
+          <input
+            type="text"
+            id="input-phrases"
+            value="React Interfaces, Immersive Apps, Scalable Systems"
+          />
+        </div>
+        <div class="input-group">
+          <label>About Me Bio</label>
+          <textarea id="input-bio">
+Engineering low-latency web architecture mixed with hyper-smooth visual experiences and neon physics.</textarea
+          >
+        </div>
+        <div class="input-group">
+          <label>Contact Email Link</label>
+          <input type="email" id="input-email" value="developer@example.com" />
+        </div>
 
-            <!-- Dynamic UI Add Dashboard Node Row -->
-            <div class="project-management-header">
-                <h2>Projects Dashboard</h2>
-                <button id="add-project-btn" class="btn-small">+ Add Item</button>
-            </div>
-            <div id="projects-form-container">
-                <!-- JavaScript automatically maps iterative data blocks here -->
-            </div>
+        <!-- Dynamic UI Add Dashboard Node Row -->
+        <div class="project-management-header">
+          <h2>Projects Dashboard</h2>
+          <button id="add-project-btn" class="btn-small">+ Add Item</button>
+        </div>
+        <div id="projects-form-container">
+          <!-- JavaScript automatically maps iterative data blocks here -->
+        </div>
 
-            <h2>Visual Palettes</h2>
-            <div class="input-group">
-                <label>Aurora Glow Style</label>
-                <select id="input-theme">
-                    <option value="cyber-punk">Cyberpink Fusion (Magenta & Cyan)</option>
-                    <option value="electric-violet">Cosmic Grape (Violet & Amber)</option>
-                </select>
-            </div>
-        </aside>
+        <h2>Visual Palettes</h2>
+        <div class="input-group">
+          <label>Aurora Glow Style</label>
+          <select id="input-theme">
+            <option value="cyber-punk">
+              Cyberpink Fusion (Magenta & Cyan)
+            </option>
+            <option value="electric-violet">
+              Cosmic Grape (Violet & Amber)
+            </option>
+          </select>
+        </div>
+      </aside>
 
-        <!-- RIGHT PANEL: Live Real-Time Sandbox Preview Canvas Frame -->
-        <main class="preview-canvas">
-            <div class="preview-bar">Real-Time Animated Preview Playground</div>
-            <iframe id="preview-frame"></iframe>
-        </main>
+      <!-- RIGHT PANEL: Live Real-Time Sandbox Preview Canvas Frame -->
+      <main class="preview-canvas">
+        <div class="preview-bar">Real-Time Animated Preview Playground</div>
+        <iframe id="preview-frame"></iframe>
+      </main>
     </div>
 
     <script src="template.js"></script>
     <script src="script.js"></script>
-</body>
+  </body>
 </html>

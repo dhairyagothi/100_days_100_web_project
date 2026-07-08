@@ -19,12 +19,22 @@
   --success: #22c55e;
 }
 
-body.light {
-  --bg: #f4f7fb;
-  --card: rgba(255, 255, 255, 0.9);
-  --border: rgba(0, 0, 0, 0.08);
-  --text: #111827;
-  --text-secondary: #6b7280;
+
+/* ================= SIDEBAR ================= */
+.sidebar {
+  width: 280px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  overflow-y: auto;
+
+  background: rgba(15, 23, 42, 0.9);
+  backdrop-filter: blur(18px);
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+
+  box-shadow: 4px 0 25px rgba(0, 0, 0, 0.25);
+
 }
 
 body {

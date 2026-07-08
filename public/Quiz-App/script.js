@@ -1,15 +1,70 @@
 // --- Quiz Content Array ---
 const quizDataBase = [
-  { question: "Which language runs natively in a web browser?", options: ["Java", "C", "Python", "JavaScript"], correct: 3 },
-  { question: "What does CSS stand for?", options: ["Central Style Sheets", "Cascading Style Sheets", "Cascading System Sheets", "Cars SUVs Sailboats"], correct: 1 },
-  { question: "What does HTML stand for?", options: ["Hypertext Markup Language", "Hypertext Markdown Language", "Hyperloop Machine Language", "Helicopter Terminal Motor Language"], correct: 0 },
-  { question: "Which HTML5 element is used to embed self-contained executable logic?", options: ["<canvas>", "<code>", "<script>", "<embed>"], correct: 2 },
-  { question: "What year was JavaScript launched?", options: ["1996", "1995", "1994", "None of the above"], correct: 1 },
-  { question: "Which CSS property controls layout mechanics in two dimensions?", options: ["float", "grid", "position", "display"], correct: 1 },
-  { question: "Which attribute provides valid semantic alternatives text descriptions for images?", options: ["title", "alt", "desc", "aria-label"], correct: 1 },
-  { question: "Which method appends an element onto the terminal position of an array in JS?", options: ["push()", "pop()", "shift()", "unshift()"], correct: 0 },
-  { question: "Which HTTP status code signifies a Resource Not Found condition?", options: ["200", "301", "404", "500"], correct: 2 },
-  { question: "Which semantic element acts as a container for navigation links?", options: ["<nav>", "<section>", "<aside>", "<header>"], correct: 0 }
+  {
+    question: 'Which language runs natively in a web browser?',
+    options: ['Java', 'C', 'Python', 'JavaScript'],
+    correct: 3,
+  },
+  {
+    question: 'What does CSS stand for?',
+    options: [
+      'Central Style Sheets',
+      'Cascading Style Sheets',
+      'Cascading System Sheets',
+      'Cars SUVs Sailboats',
+    ],
+    correct: 1,
+  },
+  {
+    question: 'What does HTML stand for?',
+    options: [
+      'Hypertext Markup Language',
+      'Hypertext Markdown Language',
+      'Hyperloop Machine Language',
+      'Helicopter Terminal Motor Language',
+    ],
+    correct: 0,
+  },
+  {
+    question:
+      'Which HTML5 element is used to embed self-contained executable logic?',
+    options: ['<canvas>', '<code>', '<script>', '<embed>'],
+    correct: 2,
+  },
+  {
+    question: 'What year was JavaScript launched?',
+    options: ['1996', '1995', '1994', 'None of the above'],
+    correct: 1,
+  },
+  {
+    question: 'Which CSS property controls layout mechanics in two dimensions?',
+    options: ['float', 'grid', 'position', 'display'],
+    correct: 1,
+  },
+  {
+    question:
+      'Which attribute provides valid semantic alternatives text descriptions for images?',
+    options: ['title', 'alt', 'desc', 'aria-label'],
+    correct: 1,
+  },
+  {
+    question:
+      'Which method appends an element onto the terminal position of an array in JS?',
+    options: ['push()', 'pop()', 'shift()', 'unshift()'],
+    correct: 0,
+  },
+  {
+    question:
+      'Which HTTP status code signifies a Resource Not Found condition?',
+    options: ['200', '301', '404', '500'],
+    correct: 2,
+  },
+  {
+    question:
+      'Which semantic element acts as a container for navigation links?',
+    options: ['<nav>', '<section>', '<aside>', '<header>'],
+    correct: 0,
+  },
 ];
 
 // --- Engine State Management ---
@@ -57,7 +112,7 @@ const scrollUp = document.getElementById('scroll-up');
 const scrollDown = document.getElementById('scroll-down');
 
 // --- Utilities ---
-const shuffle = arr => arr.slice().sort(() => Math.random() - 0.5);
+const shuffle = (arr) => arr.slice().sort(() => Math.random() - 0.5);
 const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
 
 // --- Initialization Lifecycle ---
@@ -85,14 +140,20 @@ themeToggle.addEventListener('click', () => {
   applyTheme(isLight ? 'dark' : 'light');
 });
 
-applyTheme(localStorage.getItem('proquiz_theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'));
+applyTheme(
+  localStorage.getItem('proquiz_theme') ||
+    (window.matchMedia('(prefers-color-scheme: light)').matches
+      ? 'light'
+      : 'dark')
+);
 
 // --- User Scroll Indicator Mechanics ---
 window.addEventListener('scroll', () => {
   const doc = document.documentElement;
   const totalScroll = doc.scrollHeight - doc.clientHeight;
-  const scrolled = totalScroll > 0 ? (window.scrollY || doc.scrollTop) / totalScroll : 0;
-  
+  const scrolled =
+    totalScroll > 0 ? (window.scrollY || doc.scrollTop) / totalScroll : 0;
+
   scrollProgress.style.width = `${Math.min(100, Math.max(0, scrolled * 100))}%`;
 
   if (window.scrollY > 80) {
@@ -106,8 +167,15 @@ window.addEventListener('scroll', () => {
 
 window.dispatchEvent(new Event('scroll'));
 
-scrollUp.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-scrollDown.addEventListener('click', () => window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' }));
+scrollUp.addEventListener('click', () =>
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+);
+scrollDown.addEventListener('click', () =>
+  window.scrollTo({
+    top: document.documentElement.scrollHeight,
+    behavior: 'smooth',
+  })
+);
 
 questionCountRange.addEventListener('input', (e) => {
   questionCountOutput.value = e.target.value;
@@ -129,14 +197,18 @@ nextBtn.addEventListener('click', goToNext);
 skipBtn.addEventListener('click', handleSkip);
 restartBtn.addEventListener('click', resetToStart);
 shareBtn.addEventListener('click', () => {
-  alert(`🎯 Quiz Metric Record: Finished with score performance of ${score}/${quizData.length}! Can you beat this baseline?`);
+  alert(
+    `🎯 Quiz Metric Record: Finished with score performance of ${score}/${quizData.length}! Can you beat this baseline?`
+  );
 });
 
 optionList.addEventListener('keydown', (e) => {
-  const focusable = Array.from(optionList.querySelectorAll('.option:not(.disabled)'));
+  const focusable = Array.from(
+    optionList.querySelectorAll('.option:not(.disabled)')
+  );
   if (!focusable.length) return;
   const idx = focusable.indexOf(document.activeElement);
-  
+
   if (e.key === 'ArrowDown') {
     e.preventDefault();
     focusable[(idx + 1) % focusable.length].focus();
@@ -153,14 +225,17 @@ optionList.addEventListener('keydown', (e) => {
 function startQuiz() {
   const count = parseInt(questionCountRange.value, 10);
   const difficulty = isPracticeMode ? 'easy' : difficultySelect.value;
-  
-  quizData = shuffle(quizDataBase).slice(0, clamp(count, 3, quizDataBase.length));
+
+  quizData = shuffle(quizDataBase).slice(
+    0,
+    clamp(count, 3, quizDataBase.length)
+  );
   currentQuestionIndex = 0;
   score = 0;
   streak = 0;
-  
+
   updateStreakUI();
-  
+
   startBox.classList.add('hide');
   resultBox.classList.add('hide');
   quizBox.classList.remove('hide');
@@ -193,7 +268,7 @@ function showQuestion() {
   } else {
     document.querySelector('.timer').classList.add('hide');
   }
-  
+
   updateProgressRing();
 }
 
@@ -254,7 +329,7 @@ function selectAnswer(buttonEl, index) {
 function handleTimeout() {
   const correctIndex = quizData[currentQuestionIndex].correct;
   skipBtn.classList.add('hide');
-  
+
   Array.from(optionList.children).forEach((c, i) => {
     c.classList.add('disabled');
     if (i === correctIndex) {
@@ -262,7 +337,7 @@ function handleTimeout() {
       appendIcon(c, 'check');
     }
   });
-  
+
   streak = 0;
   updateStreakUI();
   nextBtn.classList.remove('hide');
@@ -272,17 +347,20 @@ function handleTimeout() {
 function appendIcon(el, type) {
   const meta = el.querySelector('.meta');
   if (meta) {
-    meta.innerHTML = type === 'check' 
-      ? '<i class="fas fa-check-circle" style="color:#10b981;"></i>' 
-      : '<i class="fas fa-times-circle" style="color:#ef4444;"></i>';
+    meta.innerHTML =
+      type === 'check'
+        ? '<i class="fas fa-check-circle" style="color:#10b981;"></i>'
+        : '<i class="fas fa-times-circle" style="color:#ef4444;"></i>';
   }
 }
 
 function goToNext() {
   currentQuestionIndex++;
+
   if (currentQuestionIndex < quizData.length) {
     showQuestion();
   } else {
+    updateProgressRing(quizData.length);
     showResults();
   }
 }
@@ -301,18 +379,21 @@ function showResults() {
   const percentage = Math.round((score / quizData.length) * 100);
   scorePercentage.innerText = `${percentage}%`;
   resultText.innerText = `You scored ${score} out of ${quizData.length}`;
-  
+
   if (percentage >= 80) {
-    resultBadge.innerText = "Elite Expert";
-    resultSub.innerText = "Excellent performance metrics tracking out optimally!";
+    resultBadge.innerText = 'Elite Expert';
+    resultSub.innerText =
+      'Excellent performance metrics tracking out optimally!';
     launchConfetti(45);
   } else if (percentage >= 50) {
-    resultBadge.innerText = "Solid Run";
-    resultSub.innerText = "Sufficient base framework evaluation. Continuous attempts suggested.";
+    resultBadge.innerText = 'Solid Run';
+    resultSub.innerText =
+      'Sufficient base framework evaluation. Continuous attempts suggested.';
     launchConfetti(20);
   } else {
-    resultBadge.innerText = "Apprentice";
-    resultSub.innerText = "Review targeted subject terminology to bolster baseline capabilities.";
+    resultBadge.innerText = 'Apprentice';
+    resultSub.innerText =
+      'Review targeted subject terminology to bolster baseline capabilities.';
   }
 
   if (percentage > bestScore) {
@@ -327,14 +408,23 @@ function resetToStart() {
   startBox.classList.remove('hide');
 }
 
-function updateProgressRing() {
-  const progress = Math.round((currentQuestionIndex / quizData.length) * 100);
-  const meter = document.querySelector('.circular-progress .meter');
+function updateProgressRing(completed = currentQuestionIndex) {
+  const progress = Math.round((completed / quizData.length) * 100);
+
+  const meter = document.querySelector(".circular-progress .meter");
+
   if (meter) {
     meter.style.strokeDashoffset = 100 - progress;
   }
+
   progressLabel.innerText = `${progress}%`;
-}
+
+  const progressBar = document.getElementById("circular-progress");
+  if (progressBar) {
+    progressBar.setAttribute("aria-valuenow", progress);
+  }
+} 
+
 
 function updateStreakUI() {
   streakCountEl.innerText = streak;
@@ -356,7 +446,8 @@ function launchConfetti(amount = 20) {
     const el = document.createElement('div');
     el.className = 'confetti-piece';
     el.style.left = `${Math.random() * 100}vw`;
-    el.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+    el.style.backgroundColor =
+      colors[Math.floor(Math.random() * colors.length)];
     el.style.transform = `rotate(${Math.random() * 360}deg)`;
     el.style.animationDelay = `${Math.random() * 300}ms`;
     el.style.animationDuration = `${1000 + Math.random() * 1000}ms`;
