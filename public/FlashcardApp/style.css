@@ -6,6 +6,52 @@
   --bg:#f4f7fb;
   --card:#ffffff;
   --text:#222;
+
+    --bg:#f4f4f4;
+    --card:#ffffff;
+
+    --text:#222;
+
+    --primary:#4CAF50;
+
+    --primaryText:#ffffff;
+
+    --border:#d8d8d8;
+
+    --input:#ffffff;
+
+    --correct:#2e7d32;
+
+    --wrong:#d32f2f;
+}
+
+body.dark{
+
+    --bg:#121212;
+
+    --card:#1f1f1f;
+
+    --text:#f1f1f1;
+
+    --primary:#5fa8ff;
+
+    --primaryText:#ffffff;
+
+    --border:#444;
+
+    --input:#2b2b2b;
+
+    --correct:#66bb6a;
+
+    --wrong:#ef5350;
+}
+body{
+
+    background:var(--bg);
+
+    color:var(--text);
+
+    transition:.3s;
 }
 
 .dark{

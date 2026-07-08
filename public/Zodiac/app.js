@@ -180,7 +180,11 @@ function handlePointerMove(event) {
 
 function handlePointerLeave() {
   isDragging = false;
+  hasDragged = false;
   hoveredConstellation = null;
+
+  canvas.style.cursor = 'default';
+
   updateTooltip(0, 0, null);
 }
 
@@ -199,7 +203,12 @@ function handlePointerDown(event) {
 }
 function handlePointerUp(event) {
   isDragging = false;
+
   canvas.releasePointerCapture?.(event.pointerId);
+
+  if (!canvas.matches(':hover')) {
+    handlePointerLeave();
+  }
 }
 
 function handleWheel(event) {
@@ -287,8 +296,11 @@ pollutionSlider.addEventListener('input', (event) => {
 
 window.addEventListener('resize', resizeCanvas);
 window.addEventListener('pointermove', handlePointerMove);
-window.addEventListener('pointerleave', handlePointerLeave);
 window.addEventListener('pointerup', handlePointerUp);
+
+canvas.addEventListener('pointerleave', handlePointerLeave);
+canvas.addEventListener('pointercancel', handlePointerLeave);
+
 canvas.addEventListener('pointerdown', handlePointerDown);
 canvas.addEventListener('wheel', handleWheel, { passive: false });
 canvas.addEventListener('click', handleCanvasClick);
