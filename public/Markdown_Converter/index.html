@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Real-Time Markdown to HTML Converter and Previewer">
+    <title>Markdown to HTML Converter</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <!-- DOMPurify for sanitization -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
+    <!-- Marked.js for markdown parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- Highlight.js for code block syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <!-- Phosphor Icons for UI buttons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="logo">
+                <i class="ph ph-markdown-logo"></i>
+                <h1>Markdown Previewer</h1>
+            </div>
+            <div class="actions">
+                <button id="download-md" class="btn btn-secondary">
+                    <i class="ph ph-file-text"></i> Download .md
+                </button>
+                <button id="download-html" class="btn btn-primary">
+                    <i class="ph ph-code"></i> Download .html
+                </button>
+            </div>
+        </header>
+
+        <main class="split-pane">
+            <!-- Left Pane: Editor -->
+            <section class="pane editor-pane">
+                <div class="pane-header">
+                    <h2><i class="ph ph-terminal-window"></i> Markdown Editor</h2>
+                </div>
+                <textarea id="markdown-input" placeholder="Type your markdown here..."></textarea>
+            </section>
+
+            <!-- Right Pane: Preview -->
+            <section class="pane preview-pane">
+                <div class="pane-header">
+                    <h2><i class="ph ph-browser"></i> Live Preview</h2>
+                </div>
+                <div id="html-preview" class="markdown-body"></div>
+            </section>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
