@@ -1,339 +1,245 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>PlaceMate Dashboard</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PlaceMate Dashboard</title>
 
-  <link rel="stylesheet" href="style.css"/>
-  <link rel="icon" href="Favicon.png">
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="Favicon.png" />
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
-<body>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <button id="themeToggle" class="theme-toggle">☀️</button>
 
-  <button id="themeToggle" class="theme-toggle">
-    ☀️
-  </button>
+    <div id="authContainer" class="auth-container">
+      <div class="auth-card">
+        <h2 id="authTitle">Login</h2>
 
-  <div id="authContainer" class="auth-container">
+        <input type="text" id="username" placeholder="Enter Username" />
 
-    <div class="auth-card">
+        <input type="password" id="password" placeholder="Enter Password" />
 
-      <h2 id="authTitle">Login</h2>
+        <button id="authBtn">Login</button>
 
-      <input
-        type="text"
-        id="username"
-        placeholder="Enter Username"
-      >
-
-      <input
-        type="password"
-        id="password"
-        placeholder="Enter Password"
-      >
-
-      <button id="authBtn">
-        Login
-      </button>
-
-      <p id="toggleAuth">
-        Don't have an account?
-        <span>Sign Up</span>
-      </p>
-
+        <p id="toggleAuth">
+          Don't have an account?
+          <span>Sign Up</span>
+        </p>
+      </div>
     </div>
 
-  </div>
-
-  <div
-  class="container"
-  id="mainApp"
-  style="display:none;"
->
-
-    <header class="hero">
-      <h1>🚀 PlaceMate</h1>
-
-      <p>
-        Track your interview preparation journey and become placement ready
-      </p>
-
-      <div class="hero-buttons">
-
-        <button>
-          Start Preparing
-        </button>
-
-        <button id="logoutBtn">
-          Logout
-        </button>
-
-      </div>
-
-    </header>
-
-    <section class="input-section">
-      <div class="input-card">
-        <h2>📊 Enter Your Preparation Data</h2>
-
-        <div class="input-grid">
-
-          <div class="input-group">
-            <label>DSA Solved</label>
-            <input type="number" id="dsaInput" value="240">
-          </div>
-
-          <div class="input-group">
-            <label>Mock Interviews</label>
-            <input type="number" id="mockInput" value="18">
-          </div>
-
-          <div class="input-group">
-            <label>Aptitude Score</label>
-            <input type="number" id="aptitudeInput" value="82">
-          </div>
-
-          <div class="input-group">
-            <label>Resume Score</label>
-            <input type="number" id="resumeInput" value="88">
-          </div>
-
-          <div class="input-group">
-            <label>Communication Skill</label>
-            <input type="number" id="communicationInput" value="72">
-          </div>
-
-          <div class="input-group">
-            <label>Development Skill</label>
-            <input type="number" id="developmentInput" value="78">
-          </div>
-
-        </div>
-
-        <button id="updateBtn">
-          Update Dashboard
-        </button>
-        
-        <button id="downloadReportBtn">
-          Download Report
-        </button>
-
-      </div>
-  </section>
-
-    <section class="stats-grid">
-
-      <div class="stat-card">
-        <h3>DSA Solved</h3>
-        <h2 id="dsaSolved">240</h2>
-      </div>
-
-      <div class="stat-card">
-        <h3>Mock Interviews</h3>
-        <h2 id="mockSolved">18</h2>
-      </div>
-
-      <div class="stat-card">
-        <h3>Aptitude Score</h3>
-        <h2 id="aptitudeScore">82%</h2>
-      </div>
-
-      <div class="stat-card">
-        <h3>Resume Score</h3>
-        <h2 id="resumeScore">88%</h2>
-      </div>
-
-    </section>
-
-    <section class="resume-section">
-
-      <div class="resume-card">
-
-        <h2>
-          📄 Resume Suggestions
-        </h2>
-
-        <div id="resumeSuggestions">
-
-          Update dashboard to view suggestions
-
-        </div>
-
-      </div>
-
-    </section>
-    <section class="dashboard-grid">
-
-      <div class="meter-card">
-
-        <h2>Interview Readiness</h2>
-
-        <div class="meter-wrapper">
-
-          <div class="progress-ring">
-
-            <svg class="progress-svg" width="200" height="200">
-
-              <circle
-                class="progress-bg"
-                cx="100"
-                cy="100"
-                r="85"
-              ></circle>
-
-              <circle
-                class="progress-circle"
-                id="progressCircle"
-                cx="100"
-                cy="100"
-                r="85"
-              ></circle>
-
-            </svg>
-
-            <div class="meter-content">
-              <h2 id="meterScore">82%</h2>
-              <p id="statusText">Placement Ready</p>
-            </div>
-
-          </div>
-
-        </div>
-
-      </div>
-
-      <div class="chart-card">
-
-        <h2>Skill Analysis</h2>
-
-        <canvas id="skillsChart"></canvas>
-
-      </div>
-
-    </section>
-
-    <section class="goals-section">
-
-      <h2>🎯 Daily Goals</h2>
-
-      <div class="goals-grid">
-
-        <div class="goal-card">
-          <input type="checkbox"/>
-          <span>Solve 3 DSA Questions</span>
-        </div>
-
-        <div class="goal-card">
-          <input type="checkbox"/>
-          <span>Revise DBMS Notes</span>
-        </div>
-
-        <div class="goal-card">
-          <input type="checkbox"/>
-          <span>Practice HR Questions</span>
-        </div>
-
-        <div class="goal-card">
-          <input type="checkbox"/>
-          <span>Complete Aptitude Quiz</span>
-        </div>
-
-      </div>
-
-    </section>
-
-    <section class="interview-section">
-
-      <h2>💬 Mock Interview Questions</h2>
-
-      <div class="question-card">
-
-        <h3 id="question">
-          Tell me about yourself.
-        </h3>
-
-        <button id="showAnswerBtn">
-          Show Answer
-        </button>
-
-        <p id="answer" class="hidden">
-          Give a concise introduction including education,
-          skills, projects, and career goals.
+    <div class="container" id="mainApp" style="display: none">
+      <header class="hero">
+        <h1>🚀 PlaceMate</h1>
+
+        <p>
+          Track your interview preparation journey and become placement ready
         </p>
 
-      </div>
+        <div class="hero-buttons">
+          <button>Start Preparing</button>
 
-    </section>
+          <button id="logoutBtn">Logout</button>
+        </div>
+      </header>
 
-    <section class="insights-section">
+      <section class="input-section">
+        <div class="input-card">
+          <h2>📊 Enter Your Preparation Data</h2>
 
-      <h2>🤖 Personalized AI Insights</h2>
+          <div class="input-grid">
+            <div class="input-group">
+              <label>DSA Solved</label>
+              <input type="number" id="dsaInput" value="240" />
+            </div>
 
-      <div class="insights-card">
+            <div class="input-group">
+              <label>Mock Interviews</label>
+              <input type="number" id="mockInput" value="18" />
+            </div>
 
-        <h3>Your Weak Areas</h3>
+            <div class="input-group">
+              <label>Aptitude Score</label>
+              <input type="number" id="aptitudeInput" value="82" />
+            </div>
 
-        <ul id="weakAreas">
-          <li>No analysis available</li>
-        </ul>
+            <div class="input-group">
+              <label>Resume Score</label>
+              <input type="number" id="resumeInput" value="88" />
+            </div>
 
-        <h3>Recommended Actions</h3>
+            <div class="input-group">
+              <label>Communication Skill</label>
+              <input type="number" id="communicationInput" value="72" />
+            </div>
 
-        <ul id="recommendedActions">
-          <li>Update dashboard data</li>
-        </ul>
+            <div class="input-group">
+              <label>Development Skill</label>
+              <input type="number" id="developmentInput" value="78" />
+            </div>
+          </div>
 
-      </div>
+          <button id="updateBtn">Update Dashboard</button>
 
-    </section>
+          <button id="downloadReportBtn">Download Report</button>
+        </div>
+      </section>
 
-    <section class="company-section">
-
-      <h2>🏢 Company Preparation</h2>
-
-      <div class="company-grid" id="companyGrid">
-
-        <div class="company-card">
-          <h3>Google</h3>
-          <p>Focus: DSA + System Design</p>
+      <section class="stats-grid">
+        <div class="stat-card">
+          <h3>DSA Solved</h3>
+          <h2 id="dsaSolved">240</h2>
         </div>
 
-        <div class="company-card">
-          <h3>Amazon</h3>
-          <p>Focus: DSA + Leadership Principles</p>
+        <div class="stat-card">
+          <h3>Mock Interviews</h3>
+          <h2 id="mockSolved">18</h2>
         </div>
 
-        <div class="company-card">
-          <h3>Microsoft</h3>
-          <p>Focus: Problem Solving + CS Fundamentals</p>
+        <div class="stat-card">
+          <h3>Aptitude Score</h3>
+          <h2 id="aptitudeScore">82%</h2>
         </div>
 
-      </div>
+        <div class="stat-card">
+          <h3>Resume Score</h3>
+          <h2 id="resumeScore">88%</h2>
+        </div>
+      </section>
 
-    </section>
+      <section class="resume-section">
+        <div class="resume-card">
+          <h2>📄 Resume Suggestions</h2>
 
-    <section class="badge-section">
-      <h2>🏅 Achievement Badges</h2>
+          <div id="resumeSuggestions">Update dashboard to view suggestions</div>
+        </div>
+      </section>
+      <section class="dashboard-grid">
+        <div class="meter-card">
+          <h2>Interview Readiness</h2>
 
-      <div
-        class="badge-grid"
-        id="badgeContainer"
-      >
+          <div class="meter-wrapper">
+            <div class="progress-ring">
+              <svg class="progress-svg" width="200" height="200">
+                <circle class="progress-bg" cx="100" cy="100" r="85"></circle>
 
-        <div class="badge-card">
-          No badges earned yet
+                <circle
+                  class="progress-circle"
+                  id="progressCircle"
+                  cx="100"
+                  cy="100"
+                  r="85"
+                ></circle>
+              </svg>
+
+              <div class="meter-content">
+                <h2 id="meterScore">82%</h2>
+                <p id="statusText">Placement Ready</p>
+              </div>
+            </div>
+          </div>
         </div>
 
-      </div>
-    </section>
+        <div class="chart-card">
+          <h2>Skill Analysis</h2>
 
-  </div>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+          <canvas id="skillsChart"></canvas>
+        </div>
+      </section>
 
-  <script src="script.js"></script>
+      <section class="goals-section">
+        <h2>🎯 Daily Goals</h2>
 
-</body>
+        <div class="goals-grid">
+          <div class="goal-card">
+            <input type="checkbox" />
+            <span>Solve 3 DSA Questions</span>
+          </div>
+
+          <div class="goal-card">
+            <input type="checkbox" />
+            <span>Revise DBMS Notes</span>
+          </div>
+
+          <div class="goal-card">
+            <input type="checkbox" />
+            <span>Practice HR Questions</span>
+          </div>
+
+          <div class="goal-card">
+            <input type="checkbox" />
+            <span>Complete Aptitude Quiz</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="interview-section">
+        <h2>💬 Mock Interview Questions</h2>
+
+        <div class="question-card">
+          <h3 id="question">Tell me about yourself.</h3>
+
+          <button id="showAnswerBtn">Show Answer</button>
+
+          <p id="answer" class="hidden">
+            Give a concise introduction including education, skills, projects,
+            and career goals.
+          </p>
+        </div>
+      </section>
+
+      <section class="insights-section">
+        <h2>🤖 Personalized AI Insights</h2>
+
+        <div class="insights-card">
+          <h3>Your Weak Areas</h3>
+
+          <ul id="weakAreas">
+            <li>No analysis available</li>
+          </ul>
+
+          <h3>Recommended Actions</h3>
+
+          <ul id="recommendedActions">
+            <li>Update dashboard data</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="company-section">
+        <h2>🏢 Company Preparation</h2>
+
+        <div class="company-grid" id="companyGrid">
+          <div class="company-card">
+            <h3>Google</h3>
+            <p>Focus: DSA + System Design</p>
+          </div>
+
+          <div class="company-card">
+            <h3>Amazon</h3>
+            <p>Focus: DSA + Leadership Principles</p>
+          </div>
+
+          <div class="company-card">
+            <h3>Microsoft</h3>
+            <p>Focus: Problem Solving + CS Fundamentals</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="badge-section">
+        <h2>🏅 Achievement Badges</h2>
+
+        <div class="badge-grid" id="badgeContainer">
+          <div class="badge-card">No badges earned yet</div>
+        </div>
+      </section>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <script src="script.js"></script>
+  </body>
 </html>

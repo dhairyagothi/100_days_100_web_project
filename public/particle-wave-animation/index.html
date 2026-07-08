@@ -9,11 +9,250 @@
 </head>
 
 <body>
-        <h1>Particle Wave Animation</h1>
-    
+    <nav class="navbar">
+        <a href="/" class="project-back-button"
+            style="height: 40px;text-align:center;margin:20px;border-radius:10px;width: 200px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;"
+            onmouseover="this.style.background='#3b82f6';this.style.color='#fff'"
+            onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
+        <!-- Logo -->
+        <div class="logo">
+            Particle Wave Animation
+        </div>
+        <!-- Navigation Links -->
+        <ul class="nav-links">
+            <li>
+                <a href="index.html">Home</a>
+            </li>
+            <li>
+                <a href="#">Cursors</a>
+            </li>
+            <li>
+                <a href="#footer-container">Contact</a>
+            </li>
+
+        </ul>
+        <!-- Right Side -->
+        <div class="nav-right">
+            <!-- Dark Mode Button -->
+            <button id="themeToggle" class="theme">
+                <span id="themeIcon">☀️</span>
+            </button>
+        </div>
+    </nav>
+
+    <h1>Particle Wave Animation</h1>
+
     <canvas id="canvas"></canvas>
 
-    <script>const canvas = document.getElementById('canvas'), ctx = canvas.getContext('2d'); canvas.width = window.innerWidth; canvas.height = window.innerHeight; const particles = []; for (let i = 0; i < 200; i++) { particles.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, vx: 0, vy: 0, size: Math.random() * 3 + 1 }) } let time = 0; function animate() { time += 0.02; ctx.fillStyle = 'rgba(0,0,0,0.1)'; ctx.fillRect(0, 0, canvas.width, canvas.height); particles.forEach(p => { p.vy += Math.sin(p.x * 0.01 + time) * 0.1; p.vx += Math.cos(p.y * 0.01 + time) * 0.1; p.x += p.vx; p.y += p.vy; if (p.x < 0) p.x = canvas.width; if (p.x > canvas.width) p.x = 0; if (p.y < 0) p.y = canvas.height; if (p.y > canvas.height) p.y = 0; const hue = (p.x / canvas.width * 360 + time * 50) % 360; ctx.fillStyle = `hsl(${hue},100%,50%)`; ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill() }); requestAnimationFrame(animate) } animate(); window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight })</script>
+    <script>
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+
+function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+
+resizeCanvas();
+
+const particles = [];
+const PARTICLE_COUNT = 200;
+
+for (let i = 0; i < PARTICLE_COUNT; i++) {
+    particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        vx: 0,
+        vy: 0,
+        size: Math.random() * 3 + 1
+    });
+}
+
+let time = 0;
+
+function itLightMode() {
+    return document.body.classList.contains("light-mode");
+}
+
+function animate() {
+
+    time += 0.02;
+
+    // Background Trail Effect
+    if (itLightMode()) {
+        ctx.fillStyle = "rgba(255,255,255,0.12)";
+    } else {
+        ctx.fillStyle = "rgba(0,0,0,0.10)";
+    }
+
+    ctx.fillRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+    particles.forEach((p) => {
+
+        p.vy += Math.sin(
+            p.x * 0.01 + time
+        ) * 0.1;
+
+        p.vx += Math.cos(
+            p.y * 0.01 + time
+        ) * 0.1;
+
+        p.x += p.vx;
+        p.y += p.vy;
+
+        // Wrap Screen
+        if (p.x < 0) p.x = canvas.width;
+        if (p.x > canvas.width) p.x = 0;
+
+        if (p.y < 0) p.y = canvas.height;
+        if (p.y > canvas.height) p.y = 0;
+
+        const hue =
+            (
+                (p.x / canvas.width) * 360 +
+                time * 50
+            ) % 360;
+
+        // Particle Colors
+        if (itLightMode()) {
+            ctx.fillStyle =
+                `hsl(${hue}, 80%, 40%)`;
+        } else {
+            ctx.fillStyle =
+                `hsl(${hue}, 100%, 50%)`;
+        }
+
+        ctx.beginPath();
+
+        ctx.arc(
+            p.x,
+            p.y,
+            p.size,
+            0,
+            Math.PI * 2
+        );
+
+        ctx.fill();
+    });
+
+    requestAnimationFrame(
+        animate
+    );
+}
+
+animate();
+
+window.addEventListener(
+    "resize",
+    resizeCanvas
+);
+</script>
+
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-column">
+                <h3>About Project</h3>
+                <p>Particle Wave Animation</p>
+            </div>
+
+            <div class="footer-column">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="animated-cursor.html">Home</a></li>
+                    <li><a href="projects.html">Projects</a></li>
+                    <li><a href="docs.html">Docs</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h3>Resources</h3>
+                <ul>
+                    <li><a href="#">GitHub Repository</a></li>
+                    <li><a href="design-assets.html">Design Assets</a></li>
+                    <li><a href="api-references.html">API References</a></li>
+                    <li><a href="community.html">Community Forum</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h3>Stay Connected</h3>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-github"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+                <p>© 2026 100 Web Projects</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+
+        
+        // ==========================
+        // Theme Toggle
+        // ==========================
+
+        const themeToggles = document.querySelectorAll(".theme");
+        const themeIcon = document.getElementById("themeIcon");
+
+        // Get saved theme
+        let isLightMode =
+            localStorage.getItem("theme") === "light";
+
+        // Apply theme
+        function updateTheme() {
+
+            if (isLightMode) {
+
+                document.body.classList.add("light-mode");
+
+                if (themeIcon) {
+                    themeIcon.textContent = "🌙";
+                }
+
+            } else {
+
+                document.body.classList.remove("light-mode");
+
+                if (themeIcon) {
+                    themeIcon.textContent = "☀️";
+                }
+            }
+
+            localStorage.setItem(
+                "theme",
+                isLightMode ? "light" : "dark"
+            );
+        }
+
+        // Toggle Theme
+        themeToggles.forEach(btn => {
+
+            btn.addEventListener("click", () => {
+
+                isLightMode = !isLightMode;
+
+                updateTheme();
+
+            });
+
+        });
+
+        // Initialize Theme
+        document.addEventListener("DOMContentLoaded", () => {
+
+            updateTheme();
+
+        });
+    </script>
 </body>
 
 </html>

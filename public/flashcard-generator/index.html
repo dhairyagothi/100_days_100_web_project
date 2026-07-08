@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlashForge - Premium Flashcard Generator & Study Suite</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <div class="brand-logo">
+                    <i class="fa-solid fa-layer-group"></i>
+                </div>
+                <h2>FlashForge</h2>
+            </div>
+            
+            <nav class="sidebar-menu">
+                <p class="menu-label">Study Rooms</p>
+                <ul>
+                    <li class="active" data-view="study">
+                        <a href="#"><i class="fa-solid fa-book-open-reader"></i><span>Study Mode</span></a>
+                    </li>
+                    <li data-view="quiz">
+                        <a href="#"><i class="fa-solid fa-stopwatch"></i><span>Quiz Arena</span></a>
+                    </li>
+                    <li data-view="manage">
+                        <a href="#"><i class="fa-solid fa-list-check"></i><span>Manage Decks</span></a>
+                    </li>
+                    <li data-view="ai-gen">
+                        <a href="#"><i class="fa-solid fa-wand-magic-sparkles"></i><span>AI Generator</span></a>
+                    </li>
+                </ul>
+
+                <p class="menu-label">Decks</p>
+                <ul class="deck-list" id="sidebar-decks-list">
+                    <!-- Dynamic List of Decks with active states -->
+                </ul>
+                <button class="btn btn-outline-primary btn-sm btn-block create-deck-btn" id="create-deck-btn-trigger">
+                    <i class="fa-solid fa-plus"></i> New Deck
+                </button>
+                <div class="sidebar-actions mt-15" style="display: flex; gap: 8px;">
+                    <button class="btn btn-outline btn-sm" id="import-deck-btn-trigger" style="flex: 1; padding: 8px 4px; font-size: 11px;" title="Import Deck">
+                        <i class="fa-solid fa-file-import"></i> Import
+                    </button>
+                    <button class="btn btn-outline btn-sm" id="export-deck-btn" style="flex: 1; padding: 8px 4px; font-size: 11px;" title="Export Deck">
+                        <i class="fa-solid fa-file-export"></i> Export
+                    </button>
+                </div>
+            </nav>
+
+            <!-- Sidebar Footer Stats Widget -->
+            <div class="sidebar-footer">
+                <div class="stats-widget">
+                    <h4>Overall Progress</h4>
+                    <div class="progress-info">
+                        <span id="stats-learned-count">0/0 Cards</span>
+                        <span id="stats-accuracy-percent">0% Accuracy</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar-fill" id="overall-progress-bar" style="width: 0%"></div>
+                    </div>
+                </div>
+                <div class="theme-toggle-btn" id="theme-toggle">
+                    <i class="fa-solid fa-moon"></i>
+                    <span>Dark Mode</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="main-header">
+                <div class="header-left">
+                    <button class="mobile-toggle" id="mobile-toggle">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <div class="active-deck-title">
+                        <h1 id="header-deck-name">JavaScript Basics</h1>
+                        <p id="header-deck-count">0 Cards total</p>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <button class="btn btn-primary" id="add-card-btn-trigger">
+                        <i class="fa-solid fa-plus"></i> Add Card
+                    </button>
+                </div>
+            </header>
+
+            <!-- Views Container -->
+            <div class="views-container">
+                <!-- VIEW 1: STUDY MODE -->
+                <section id="study-view" class="view-section active">
+                    <div class="study-container">
+                        <div class="study-tracker">
+                            <div class="tracker-meta">
+                                <span>Card <strong id="study-current-index">0</strong> of <strong id="study-total-cards">0</strong></span>
+                                <span class="badge" id="study-difficulty-badge">Medium</span>
+                            </div>
+                            <div class="progress-bar-container mt-10">
+                                <div class="progress-bar-fill" id="study-progress-bar" style="width: 0%"></div>
+                            </div>
+                        </div>
+
+                        <!-- 3D Flipping Flashcard Wrapper -->
+                        <div class="flashcard-wrapper">
+                            <div class="flashcard" id="study-flashcard">
+                                <!-- Card Front Face -->
+                                <div class="card-face card-front">
+                                    <div class="card-tag" id="study-card-category">Core</div>
+                                    <div class="card-content-text" id="study-card-question">
+                                        Click "+ Add Card" or run the AI generator to add questions!
+                                    </div>
+                                    <div class="card-hint">
+                                        <i class="fa-solid fa-rotate"></i> Click card or press Space to flip
+                                    </div>
+                                </div>
+                                <!-- Card Back Face -->
+                                <div class="card-face card-back">
+                                    <div class="card-tag answer-tag">Answer</div>
+                                    <div class="card-content-text" id="study-card-answer">
+                                        No answers configured yet.
+                                    </div>
+                                    
+                                    <!-- Spaced Repetition Buttons on Back -->
+                                    <div class="srs-container">
+                                        <p class="srs-label">How well did you know this?</p>
+                                        <div class="srs-actions">
+                                            <button class="srs-btn easy" data-level="easy">
+                                                <i class="fa-solid fa-face-smile"></i> Easy<span>(4d)</span>
+                                            </button>
+                                            <button class="srs-btn medium" data-level="medium">
+                                                <i class="fa-solid fa-face-meh"></i> Medium<span>(2d)</span>
+                                            </button>
+                                            <button class="srs-btn hard" data-level="hard">
+                                                <i class="fa-solid fa-face-frown"></i> Hard<span>(1d)</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Main Controls Navigation -->
+                        <div class="study-controls">
+                            <button class="action-btn" id="prev-card-btn" title="Previous Card">
+                                <i class="fa-solid fa-arrow-left"></i>
+                            </button>
+                            <button class="btn btn-outline btn-lg" id="flip-card-btn">
+                                <i class="fa-solid fa-arrows-rotate"></i> Flip Card
+                            </button>
+                            <button class="action-btn" id="next-card-btn" title="Next Card">
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                        </div>
+
+                        <!-- Card State Toggles -->
+                        <div class="card-extra-actions">
+                            <button class="btn btn-sm btn-outline" id="mark-learned-btn">
+                                <i class="fa-regular fa-circle-check"></i> Mark as Learned
+                            </button>
+                            <button class="btn btn-sm btn-outline text-warning" id="mark-difficult-btn">
+                                <i class="fa-solid fa-star"></i> Review Difficult Cards
+                            </button>
+                            <button class="btn btn-sm btn-outline text-secondary" id="shuffle-study-btn">
+                                <i class="fa-solid fa-shuffle"></i> Shuffle List
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- VIEW 2: QUIZ MODE -->
+                <section id="quiz-view" class="view-section">
+                    <div class="quiz-container">
+                        <!-- Setup Quiz Screen -->
+                        <div class="quiz-setup-card card-container active" id="quiz-setup-panel">
+                            <h3>Quiz Settings</h3>
+                            <p class="subtitle">Customize parameters to test your retention accuracy.</p>
+                            
+                            <div class="form-group mt-20">
+                                <label for="quiz-timer-select">Question Countdown Timer</label>
+                                <select id="quiz-timer-select" class="form-select">
+                                    <option value="none">No Timer (Self-paced)</option>
+                                    <option value="15">15 Seconds per card</option>
+                                    <option value="30">30 Seconds per card</option>
+                                    <option value="60">60 Seconds per card</option>
+                                </select>
+                            </div>
+                            
+                            <label class="form-check mt-25" for="quiz-shuffle-check">
+                                <input type="checkbox" id="quiz-shuffle-check" checked>
+                                <span class="form-check-custom"></span>
+                                <span>Shuffle questions order</span>
+                            </label>
+
+                            <label class="form-check mt-20" for="quiz-difficult-only">
+                                <input type="checkbox" id="quiz-difficult-only">
+                                <span class="form-check-custom"></span>
+                                <span>Quiz only difficult/starred cards</span>
+                            </label>
+
+                            <button class="btn btn-primary btn-block btn-lg mt-35" id="start-quiz-btn">
+                                Start Quiz Session <i class="fa-solid fa-play"></i>
+                            </button>
+                        </div>
+
+                        <!-- Active Quiz Screen -->
+                        <div class="quiz-play-panel card-container" id="quiz-play-panel">
+                            <div class="quiz-header-row">
+                                <div class="quiz-meta-stats">
+                                    <span>Question: <strong id="quiz-current-question">1</strong>/<strong id="quiz-total-questions">10</strong></span>
+                                    <span class="quiz-score-indicator"><i class="fa-solid fa-circle-check text-success"></i> <span id="quiz-correct-count">0</span></span>
+                                    <span class="quiz-score-indicator"><i class="fa-solid fa-circle-xmark text-danger"></i> <span id="quiz-incorrect-count">0</span></span>
+                                </div>
+                                <div class="quiz-timer" id="quiz-timer-display" style="display:none;">
+                                    <i class="fa-solid fa-clock"></i> <span id="timer-seconds">15s</span>
+                                </div>
+                            </div>
+                            
+                            <div class="quiz-timer-bar-container" id="quiz-timer-bar-container" style="display:none;">
+                                <div class="quiz-timer-bar-fill" id="quiz-timer-bar-fill" style="width: 100%"></div>
+                            </div>
+
+                            <!-- Quiz Flip Card Container -->
+                            <div class="flashcard-wrapper quiz-wrapper">
+                                <div class="flashcard" id="quiz-flashcard">
+                                    <!-- Quiz Front -->
+                                    <div class="card-face card-front">
+                                        <div class="card-tag" id="quiz-card-category">Quiz</div>
+                                        <div class="card-content-text" id="quiz-card-question">
+                                            Loading question text...
+                                        </div>
+                                        <button class="btn btn-outline btn-sm show-answer-quiz-btn" id="show-answer-quiz-btn">
+                                            Reveal Answer
+                                        </button>
+                                    </div>
+                                    <!-- Quiz Back -->
+                                    <div class="card-face card-back">
+                                        <div class="card-tag answer-tag">Answer Key</div>
+                                        <div class="card-content-text" id="quiz-card-answer">
+                                            Loading answer key...
+                                        </div>
+                                        <p class="quiz-instructions">Did you get the answer correct?</p>
+                                        
+                                        <!-- Assess controls -->
+                                        <div class="quiz-assess-actions">
+                                            <button class="btn btn-danger" id="quiz-btn-incorrect">
+                                                <i class="fa-solid fa-xmark"></i> Incorrect
+                                            </button>
+                                            <button class="btn btn-success" id="quiz-btn-correct">
+                                                <i class="fa-solid fa-check"></i> Correct
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="quiz-actions-footer">
+                                <button class="btn btn-outline" id="quit-quiz-btn">
+                                    <i class="fa-solid fa-arrow-left-long"></i> Quit Quiz
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Quiz Result/Summary Screen -->
+                        <div class="quiz-results-panel card-container" id="quiz-results-panel">
+                            <div class="results-badge-icon">🏆</div>
+                            <h2>Quiz Complete!</h2>
+                            <p class="subtitle">Review your diagnostic scores below.</p>
+
+                            <div class="score-breakdown">
+                                <div class="score-box">
+                                    <span class="score-val" id="results-score-percent">80%</span>
+                                    <span class="score-lbl">Accuracy</span>
+                                </div>
+                                <div class="score-box">
+                                    <span class="score-val text-success" id="results-correct-lbl">8</span>
+                                    <span class="score-lbl">Correct</span>
+                                </div>
+                                <div class="score-box">
+                                    <span class="score-val text-danger" id="results-incorrect-lbl">2</span>
+                                    <span class="score-lbl">Incorrect</span>
+                                </div>
+                            </div>
+
+                            <div class="results-actions mt-25">
+                                <button class="btn btn-primary" id="quiz-retry-btn">
+                                    <i class="fa-solid fa-redo"></i> Try Again
+                                </button>
+                                <button class="btn btn-outline" id="quiz-finish-btn">
+                                    <i class="fa-solid fa-circle-check"></i> Return to Study
+                                </button>
+                            </div>
+
+                            <div class="review-missed-section mt-25" id="review-missed-panel" style="display:none;">
+                                <h4>Questions to Review</h4>
+                                <ul class="missed-questions-list" id="results-missed-list">
+                                    <!-- Dynamic list of failed cards -->
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- VIEW 3: MANAGE DECKS & LIST CARDS -->
+                <section id="manage-view" class="view-section">
+                    <!-- Manage Header Filters -->
+                    <div class="manage-filters">
+                        <div class="filter-left">
+                            <div class="manage-search-wrapper">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                                <input type="text" id="manage-search" placeholder="Search cards in this deck...">
+                            </div>
+                            <select id="manage-category-filter" class="form-select">
+                                <option value="all">All Categories</option>
+                                <!-- Categories populated dynamically -->
+                            </select>
+                        </div>
+                        <div class="filter-right">
+                            <button class="btn btn-danger btn-outline" id="delete-deck-btn">
+                                <i class="fa-regular fa-trash-can"></i> Delete Deck
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Manage Decks Cards Table -->
+                    <div class="table-card card-container mt-20">
+                        <div class="table-responsive">
+                            <table class="cards-table">
+                                <thead>
+                                    <tr>
+                                        <th>Question</th>
+                                        <th>Answer</th>
+                                        <th>Category</th>
+                                        <th>Difficulty</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="cards-table-body">
+                                    <!-- Dynamic rows loaded here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- VIEW 4: AI FLASHCARD GENERATOR -->
+                <section id="ai-gen-view" class="view-section">
+                    <div class="ai-container card-container">
+                        <div class="ai-badge">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> AI Studio
+                        </div>
+                        <h2>Create Cards from Notes</h2>
+                        <p class="subtitle">Paste text from textbook notes, lectures, or summaries, and our processor will carve out card definitions.</p>
+
+                        <div class="form-group mt-20">
+                            <label for="ai-notes-input">Your Lecture Notes / Text Summary</label>
+                            <textarea id="ai-notes-input" placeholder="Paste your study materials here... E.g., 'An API, or Application Programming Interface, is a set of protocols for building software. REST stands for Representational State Transfer, utilizing HTTP methods like GET, POST, PUT, and DELETE...'" rows="8" class="form-textarea"></textarea>
+                        </div>
+
+                        <div class="ai-form-row">
+                            <div class="form-group">
+                                <label for="ai-card-count">Number of Flashcards</label>
+                                <div class="slider-wrapper">
+                                    <input type="range" id="ai-card-count" min="1" max="10" value="5" class="form-slider">
+                                    <span id="ai-slider-value">5 Cards</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="ai-target-deck">Save to Deck</label>
+                                <select id="ai-target-deck" class="form-select">
+                                    <!-- Decks selector dynamically populated -->
+                                </select>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary btn-block btn-lg mt-25" id="generate-ai-cards-btn">
+                            Generate Flashcards <i class="fa-solid fa-sparkles"></i>
+                        </button>
+                    </div>
+
+                    <!-- AI Loader ScreenOverlay -->
+                    <div class="ai-loader-overlay" id="ai-loader-overlay" style="display:none;">
+                        <div class="ai-loader-card">
+                            <div class="loader-spinner"></div>
+                            <h4>AI Engine is Analyzing Notes...</h4>
+                            <p>Extracting key concepts, questions, and matching answers.</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- MODAL 1: ADD / EDIT CARD MODAL -->
+        <div class="modal-overlay" id="card-modal">
+            <div class="modal-card">
+                <div class="modal-header">
+                    <h3 id="card-modal-title">Create Flashcard</h3>
+                    <button class="modal-close-btn" id="card-modal-close">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="card-form">
+                        <div class="form-group">
+                            <label for="card-deck-select">Target Deck</label>
+                            <select id="card-deck-select" class="form-select" required>
+                                <!-- Populate options -->
+                            </select>
+                        </div>
+                        <div class="form-group mt-15">
+                            <label for="card-question">Question</label>
+                            <textarea id="card-question" placeholder="E.g., What does DOM stand for?" rows="3" class="form-textarea" required></textarea>
+                        </div>
+                        <div class="form-group mt-15">
+                            <label for="card-answer">Answer</label>
+                            <textarea id="card-answer" placeholder="E.g., Document Object Model" rows="3" class="form-textarea" required></textarea>
+                        </div>
+                        <div class="form-row mt-15">
+                            <div class="form-group">
+                                <label for="card-category">Category / Tag</label>
+                                <input type="text" id="card-category" placeholder="E.g., DOM, WebDev" class="form-input">
+                            </div>
+                            <div class="form-group">
+                                <label for="card-difficulty">Difficulty</label>
+                                <select id="card-difficulty" class="form-select">
+                                    <option value="Easy">Easy</option>
+                                    <option value="Medium" selected>Medium</option>
+                                    <option value="Hard">Hard</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-outline" id="card-modal-cancel">Cancel</button>
+                    <button class="btn btn-primary" id="card-modal-submit-btn">Save Flashcard</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL 2: DECK CREATION MODAL -->
+        <div class="modal-overlay" id="deck-modal">
+            <div class="modal-card mini">
+                <div class="modal-header">
+                    <h3>Create New Deck</h3>
+                    <button class="modal-close-btn" id="deck-modal-close">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="new-deck-name">Subject / Deck Name</label>
+                        <input type="text" id="new-deck-name" placeholder="E.g., CSS Layouts, Python Prep" class="form-input">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-outline" id="deck-modal-cancel">Cancel</button>
+                    <button class="btn btn-primary" id="deck-modal-submit-btn">Create Deck</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL 3: IMPORT MODAL -->
+        <div class="modal-overlay" id="import-modal">
+            <div class="modal-card mini">
+                <div class="modal-header">
+                    <h3>Import Flashcards Deck</h3>
+                    <button class="modal-close-btn" id="import-modal-close">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p class="subtitle text-sm">Upload a previously exported JSON file to merge decks into your study workspace.</p>
+                    <div class="import-upload-zone mt-15" id="import-drop-zone">
+                        <i class="fa-solid fa-file-arrow-up icon-upload"></i>
+                        <p>Click to select JSON file</p>
+                        <input type="file" id="import-file-input" accept=".json" style="display:none;">
+                    </div>
+                    <div class="import-status mt-10" id="import-status-text" style="display:none; color: var(--success-color); font-weight:700;"></div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-outline" id="import-modal-cancel">Cancel</button>
+                    <button class="btn btn-primary" id="import-modal-submit-btn" disabled>Import Cards</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toast Alert Banner Container -->
+        <div class="toast-container" id="toast-container"></div>
+    </div>
+
+    <!-- App Script -->
+    <script src="app.js"></script>
+</body>
+</html>

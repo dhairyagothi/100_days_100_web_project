@@ -277,22 +277,27 @@ body {
 }
 
 /* ---- Random Suggestion Banner ---- */
+
 .random-suggestion {
-  display: grid;
-  grid-template-columns: 180px 1fr;
-  gap: 18px;
-  align-items: center;
-  background: linear-gradient(
-    90deg,
-    rgba(232, 71, 42, 0.12),
-    rgba(0, 212, 170, 0.08)
-  );
-  border: 1.5px solid rgba(232, 71, 42, 0.28);
-  border-radius: 18px;
-  padding: 18px;
-  margin: 0 auto 24px;
-  max-width: 820px;
+    grid-template-columns: 180px 1fr;
+    gap: 18px;
+    align-items: center;
+    background: linear-gradient(
+        90deg,
+        rgba(232, 71, 42, 0.12),
+        rgba(0, 212, 170, 0.08)
+    );
+    border: 1.5px solid rgba(232, 71, 42, 0.28);
+    border-radius: 18px;
+    padding: 18px;
+    margin: 0 auto 24px;
+    max-width: 820px;
 }
+
+.random-suggestion:not([hidden]) {
+    display: flex;
+}
+
 .random-suggestion__poster-wrap {
   width: 180px;
   aspect-ratio: 2 / 3;

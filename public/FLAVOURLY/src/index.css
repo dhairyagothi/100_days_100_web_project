@@ -1,4 +1,5 @@
 :root {
+  /* Theme colors */
   --primary: #d9534f;
   --secondary: #f0ad4e;
   --background: #fff;
@@ -23,25 +24,30 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Ensure full-height layout */
 html, body {
   height: 100%;
 }
 
+/* Reset box model and spacing */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
+/* Shared typography */
 body, h1, h2, h3, h4, h5, h6 {
   font-family: 'Amatic SC', sans-serif;
 }
 
+/* Main heading size */
 h1 {
   font-size: 5rem;
   letter-spacing: 2px;
 }
 
+/* Form and text elements */
 p, button, input {
   font-family: 'Amatic SC', sans-serif;
 }

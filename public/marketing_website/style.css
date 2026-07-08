@@ -163,6 +163,7 @@ body {
 
 .btn:hover {
     transform: translateY(-2px);
+    font-weight: 700;
 }
 
 .btn-primary {
@@ -187,6 +188,7 @@ body {
 
 .btn-secondary:hover {
     background: rgba(255,255,255,0.12);
+    color: #8b5cf6;
 }
 
 /* HERO STATS */
@@ -636,15 +638,15 @@ body {
     width: 45px;
     height: 45px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #1e1b4b, #312e81);
+    background: linear-gradient(292deg, #dac3f56b, #f2e2fca0);
     color: #ffffff;
     cursor: pointer;
     font-size: 18px;
     transition: all 0.3s ease;
     box-shadow:
-        0 0 12px rgba(139, 92, 246, 0.5),
-        0 0 24px rgba(99, 102, 241, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.15);
+        0 0 12px rgba(240, 229, 244, 0.345),
+        0 0 24px rgba(225, 201, 240, 0.519),
+        inset 0 1px 0 rgba(255, 255, 255, 0.567);
     position: relative;
     overflow: hidden;
     animation: themePulse 3s ease-in-out infinite;
@@ -662,21 +664,21 @@ body {
 #theme-toggle:hover {
     transform: scale(1.15) rotate(20deg);
     box-shadow:
-        0 0 20px rgba(139, 92, 246, 0.8),
-        0 0 40px rgba(99, 102, 241, 0.5),
-        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        0 0 20px rgba(172, 140, 248, 0.625),
+        0 0 40px rgba(134, 135, 243, 0.519),
+        inset 0 1px 0 rgba(255, 255, 255, 0.421);
 }
 
 @keyframes themePulse {
     0%, 100% {
         box-shadow:
-            0 0 12px rgba(139, 92, 246, 0.5),
-            0 0 24px rgba(99, 102, 241, 0.3);
+            0 0 12px rgba(165, 133, 242, 0.5),
+            0 0 24px rgba(131, 133, 241, 0.641);
     }
     50% {
         box-shadow:
-            0 0 20px rgba(139, 92, 246, 0.75),
-            0 0 40px rgba(99, 102, 241, 0.5);
+            0 0 20px rgba(165, 133, 242, 0.5),
+            0 0 40px rgba(131, 133, 241, 0.641);
     }
 }
 

@@ -1000,6 +1000,38 @@ function renderGenreAnalytics() {
   });
 }
 
+// --- FAVORITE TOGGLE FUNCTION ---
+function toggleFavorite(bookId) {
+  const book = state.books.find(b => b.id === bookId);
+  if (!book) return;
+  
+  book.favorite = !book.favorite;
+  saveBooks();
+  
+  // Find the badge element and add pulse animation
+  const cardContainer = document.querySelector(`.book-card-container[data-book-id="${bookId}"]`);
+  if (cardContainer) {
+    const badge = cardContainer.querySelector('.favorite-indicator-badge');
+    if (badge) {
+      badge.classList.remove('pulse');
+      // Trigger reflow
+      void badge.offsetWidth;
+      badge.classList.add('pulse');
+    }
+  }
+  
+  if (book.favorite) {
+    showToast(`❤️ "${book.title}" added to favorites!`);
+    playSound('chime');
+  } else {
+    showToast(`💔 "${book.title}" removed from favorites`);
+    playSound('write');
+  }
+  
+  renderBooksGrid();
+  renderStatsSummary();
+}
+
 // --- BOOK GRID RENDERER CORNER ---
 function renderBooksGrid() {
   const filtered = state.books.filter((book) => {
@@ -1047,10 +1079,27 @@ function renderBooksGrid() {
     const cardFront = document.createElement('div');
     cardFront.className = 'card-front';
 
-    // Favorite indicator badge
-    if (book.favorite) {
-      cardFront.innerHTML += `<div class="favorite-indicator-badge" title="Favorite">❤️</div>`;
-    }
+    // Favorite indicator badge (clickable)
+    const favBadge = document.createElement('div');
+    favBadge.className = 'favorite-indicator-badge';
+    favBadge.textContent = book.favorite ? '❤️' : '🤍';
+    favBadge.title = book.favorite ? 'Remove from favorites' : 'Add to favorites';
+    favBadge.style.cursor = 'pointer';
+    favBadge.style.transition = 'transform 0.2s ease';
+    favBadge.addEventListener('click', (e) => {
+      e.stopPropagation(); // Prevent card flip
+      toggleFavorite(book.id);
+    });
+
+    // Add hover effect
+    favBadge.addEventListener('mouseenter', () => {
+      favBadge.style.transform = 'scale(1.2)';
+    });
+    favBadge.addEventListener('mouseleave', () => {
+      favBadge.style.transform = 'scale(1)';
+    });
+
+    cardFront.appendChild(favBadge);
 
     // Status Indicator
     const statusLabels = {
@@ -1063,7 +1112,10 @@ function renderBooksGrid() {
       reading: 'reading',
       want: 'want',
     };
-    cardFront.innerHTML += `<div class="status-indicator-badge status-badge-${statusClasses[book.status]}">${statusLabels[book.status]}</div>`;
+    const statusBadge = document.createElement('div');
+    statusBadge.className = `status-indicator-badge status-badge-${statusClasses[book.status]}`;
+    statusBadge.textContent = statusLabels[book.status];
+    cardFront.appendChild(statusBadge);
 
     // Cover Graphics wrapper
     const coverWrapper = document.createElement('div');
@@ -1159,8 +1211,8 @@ function renderBooksGrid() {
 
     // Card Flipping Trigger logic
     cardContainer.addEventListener('click', (e) => {
-      // Prevent flipping if click originates from action buttons
-      if (e.target.closest('.btn-card-action')) {
+      // Prevent flipping if click originates from action buttons or favorite badge
+      if (e.target.closest('.btn-card-action') || e.target.closest('.favorite-indicator-badge')) {
         const action = e.target.dataset.action;
         if (action === 'edit') triggerEditBook(book.id);
         if (action === 'share') triggerShareBook(book.id);
@@ -1653,6 +1705,8 @@ function showToast(message) {
   if (message.includes('💌')) icon = '💌';
   if (message.includes('💬')) icon = '💬';
   if (message.includes('⚠️')) icon = '⚠️';
+  if (message.includes('❤️')) icon = '❤️';
+  if (message.includes('💔')) icon = '💔';
 
   // Clear safely
   toast.replaceChildren();
@@ -1663,7 +1717,7 @@ function showToast(message) {
 
   const messageSpan = document.createElement('span');
   messageSpan.className = 'toast-message';
-  messageSpan.textContent = message.replace(/[🎯📚✏️🗑️💌💬⚠️]/g, '').trim();
+  messageSpan.textContent = message.replace(/[🎯📚✏️🗑️💌💬⚠️❤️💔]/g, '').trim();
 
   toast.appendChild(iconSpan);
   toast.appendChild(messageSpan);

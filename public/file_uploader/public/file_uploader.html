@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FileDrop — Upload Files</title>
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="file_uploader.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -21,39 +21,19 @@
 <body>
   <a href="/" class="back-button" aria-label="Back to Home">← Back to Home</a>
 
-  
   <nav class="navbar">
-
     <div class="logonav">
       File Uploader 📁
     </div>
-
-   <ul class="nav-links">
-
-      <li>
-        <a href="file_uploader.html">
-          Home
-        </a>
-      </li>
-
-      <li>
-        <a href="file_uploader.html">
-       Upload file
-        </a>
-      </li>
-
-      <li>
-        <a href="#footer-container">
-          About
-        </a>
-      </li>
-
+    <ul class="nav-links">
+      <li><a href="file_uploader.html">Home</a></li>
+      <li><a href="file_uploader.html">Upload file</a></li>
+      <li><a href="#footer-container">About</a></li>
     </ul>
-   <button id="themeToggle" class="theme-toggle" aria-label="Toggle light/dark theme" title="Toggle theme">
-    <span class="theme-icon" id="themeIcon" aria-hidden="true">🌙</span>
-  </button>
+    <button id="themeToggle" class="theme-toggle" aria-label="Toggle light/dark theme" title="Toggle theme">
+      <span class="theme-icon" id="themeIcon" aria-hidden="true">🌙</span>
+    </button>
   </nav>
-
 
   <div class="container">
     <div class="main-content">
@@ -66,7 +46,7 @@
               <div class="logo-icon" aria-hidden="true">⬆</div>
               <h1>File<span>Drop</span></h1>
             </div>
-            <p>Securely upload images up to 2MB each</p>
+            <p>Upload images, documents, PDFs, and more — up to 10MB each</p>
           </div>
 
           <div class="divider" role="separator"></div>
@@ -83,35 +63,42 @@
 
           <div class="form-field">
             <label>Upload Files</label>
-
-            <!-- File input lives HERE, outside the drop zone, hidden via CSS -->
             <input
               type="file"
               id="myFile"
               name="myFile"
               multiple
-              accept=".jpg,.jpeg,.png,.webp"
+              accept=".jpg,.jpeg,.png,.webp,.pdf,.doc,.docx,.txt,.zip,.rar,.7z"
               aria-label="Choose files to upload"
               style="display:none;"
             />
 
-            <!-- Drop zone is now a plain div — no input inside it -->
             <div
               class="file-drop-zone"
               id="dropZone"
               role="button"
               tabindex="0"
-              aria-label="File upload area. Click or drag and drop image files here."
+              aria-label="File upload area. Click or drag and drop files here."
             >
               <span class="drop-icon" aria-hidden="true">📂</span>
               <div class="drop-text">
                 <strong>Click to browse or drag &amp; drop</strong>
-                Supported: .jpg, .jpeg, .png, .webp &mdash; Max 2MB each
+                Supported: Images, PDFs, Documents, Archives &mdash; Max 10MB each
               </div>
             </div>
 
-            <!-- File chips rendered here by JS -->
             <div id="file-preview" role="list" aria-label="Selected files"></div>
+            
+            <!-- Upload Progress Bar -->
+            <div id="uploadProgressContainer" style="display: none; margin-top: 12px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <span id="progressText" style="font-size: 0.85rem; color: var(--text-secondary);">Uploading...</span>
+                <span id="progressPercentage" style="font-size: 0.85rem; font-weight: 700; color: var(--accent);">0%</span>
+              </div>
+              <div style="width: 100%; height: 6px; background: var(--bg-input); border-radius: 4px; overflow: hidden;">
+                <div id="progressBar" style="width: 0%; height: 100%; background: var(--btn-gradient); border-radius: 4px; transition: width 0.3s ease;"></div>
+              </div>
+            </div>
           </div>
 
           <div class="divider" role="separator"></div>
@@ -144,14 +131,19 @@
               <div class="stat-label">Largest</div>
             </div>
             <div class="stat-card" role="listitem">
-              <div class="stat-value" id="statImageCount">0</div>
-              <div class="stat-label">Images</div>
+              <div class="stat-value" id="statFileTypes">0</div>
+              <div class="stat-label">File Types</div>
             </div>
           </div>
         </div>
 
         <div class="card history-panel">
-          <h2 class="panel-title"><span aria-hidden="true">📜</span> Recent Uploads</h2>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+            <h2 class="panel-title" style="margin-bottom: 0;"><span aria-hidden="true">📜</span> Recent Uploads</h2>
+            <button id="exportHistoryBtn" class="export-btn" title="Export history as CSV" aria-label="Export history">
+              <i class="fas fa-download"></i>
+            </button>
+          </div>
           <div id="historyList" class="history-list" role="list" aria-label="Recent upload history">
             <p class="empty-history">No uploads yet</p>
           </div>
@@ -161,35 +153,35 @@
     </div>
   </div>
 
+  <!-- Image Preview Modal -->
+  <div id="imagePreviewModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <span class="modal-close" id="modalClose">&times;</span>
+      <img id="modalImage" src="" alt="Preview" style="max-width: 100%; max-height: 80vh; display: block; margin: 0 auto;">
+      <div id="modalImageInfo" style="text-align: center; margin-top: 12px; color: var(--text-secondary); font-size: 0.9rem;"></div>
+    </div>
+  </div>
+
   <div class="toast-container" id="toastContainer" role="region" aria-live="polite" aria-label="Notifications"></div>
-   
+
   <footer class="footer">
-
     <section id="footer-container">
-
-      <!-- Brand -->
       <div class="footer-section">
-        <h3 >File Uploader 📁</h3>
+        <h3>File Uploader 📁</h3>
         <p>
-       A simple and efficient file upload backend built with Node.js and Express.js. This project demonstrates how to handle file uploads .
+          A simple and efficient file upload backend built with Node.js and Express.js. This project demonstrates how to handle file uploads.
         </p>
       </div>
-
-      <!-- Quick Links -->
       <div class="footer-section">
         <h4>Quick Links</h4>
-
         <ul>
           <li><a href="file_uploader.html">Home</a></li>
           <li><a href="file_uploader.html">Upload</a></li>
           <li><a href="#footer-container">Contact</a></li>
         </ul>
       </div>
-
-      <!-- Social Links -->
       <div class="footer-section">
         <h4>Follow Us</h4>
-
         <div class="social-links">
           <a href="#"><i class="fab fa-github"></i></a>
           <a href="#"><i class="fab fa-twitter"></i></a>
@@ -197,15 +189,10 @@
           <a href="#"><i class="fab fa-discord"></i></a>
         </div>
       </div>
-
-      </div>
-
-      <div class="footer-bottom">
-        <p>
-          © 2025 File Uploader 📁. All Rights Reserved.
-        </p>
-      </div>
     </section>
+    <div class="footer-bottom">
+      <p>© 2025 File Uploader 📁. All Rights Reserved.</p>
+    </div>
   </footer>
   <script src="index.js"></script>
 </body>
