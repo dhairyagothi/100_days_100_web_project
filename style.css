@@ -2466,6 +2466,84 @@ body.light-mode .footer.homepage-footer .social-btn {
   color: var(--accent-color);
 }
 
+
+@media (max-width: 768px) {
+  .navbar {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 60px !important;
+    padding: 0 1.5rem !important;
+    z-index: 99999 !important;
+  }
+
+  .menu-toggle {
+    display: block !important;
+    z-index: 100000 !important;
+  }
+
+  .menu-toggle.active i::before {
+    content: "\f00d" !important;
+  }
+
+  .nav-buttons {
+    display: none !important;
+  }
+
+  .nav-buttons.mobile-drawer-layer {
+    display: flex !important;
+    position: fixed !important;
+    top: 60px !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: calc(100vh - 60px) !important;
+    background-color: #0b0d0f !important;
+    padding: 3rem 2rem !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 1.5rem !important;
+    z-index: 99998 !important;
+    box-sizing: border-box !important;
+    overflow-y: auto !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    transform: translateY(-8px) !important;
+    transition:
+      opacity 0.2s var(--ease),
+      transform 0.2s var(--ease),
+      visibility 0.2s var(--ease) !important;
+  }
+
+  [data-theme="light"] .nav-buttons.mobile-drawer-layer {
+    background-color: #f4f6f9 !important;
+  }
+
+  .nav-buttons.mobile-drawer-layer.active {
+    display: flex !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    transform: translateY(0) !important;
+  }
+
+  .nav-buttons.mobile-drawer-layer .btn {
+    width: 100% !important;
+    max-width: 280px !important;
+    justify-content: center !important;
+    text-align: center !important;
+    padding: 0.8rem 1rem !important;
+  }
+
+  .nav-buttons.mobile-drawer-layer .welcome-text {
+    width: 100% !important;
+    text-align: center !important;
+    color: var(--text-primary) !important;
+    margin-bottom: 0.5rem !important;
+  }
+}
 /* ============================================================
    SCROLL TO TOP
    ============================================================ */
@@ -3086,6 +3164,65 @@ body.light-mode .noise-layer {
   background-color: #007bff;
   transform: scale(1.1);
 }
+
+
+/* Fix navbar/mobile extra left spacing issue */
+
+html,
+body {
+  overflow-x: hidden;
+  width: 100%;
+}
+
+.container,
+.navbar,
+.hero,
+section {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+@media screen and (max-width: 768px) {
+  body {
+    padding-left: 0;
+    margin-left: 0;
+  }
+}
+
+/* ============================================================
+   CANVAS FIX — particle canvas was pushing hero content down
+   ============================================================ */
+
+#particleCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ============================================================
+   POINTER-EVENTS STACKING FIX
+   ============================================================ */
+
+body::before,
+body::after {
+  pointer-events: none;
+}
+
+.ambient,
+.ambient::before,
+.noise-layer {
+  pointer-events: none;
+}
+
+.toast {
+  z-index: 100001;
+}
+
+
 /* Accessibility Focus Styles */
 
 a:focus-visible,
@@ -3320,15 +3457,28 @@ body.custom-cursor-active * {
   cursor: none !important;
 }
 
+@media (pointer: fine) {
+  .cursor-ring {
+    display: block !important;
+    opacity: 0;
+  }
+
+  .cursor-ring.is-visible {
+    opacity: 1 !important;
+  }
+}
+
 body.custom-cursor-active .cursor-ring {
   z-index: 999999 !important;
   pointer-events: none !important;
   display: block;
 }
+}
 
 body.custom-cursor-active .cursor-ring.is-visible {
   opacity: 1;
 }
+
 /* ============================================================
    SEPIA CONTRAST PATCH 
    ============================================================ */
@@ -3363,28 +3513,31 @@ body.custom-cursor-active .cursor-ring.is-visible {
   background: var(--bg-elevated) !important;
   border-color: var(--border) !important;
 }
+
 :root[data-theme="sepia"] .hero-terminal-text {
   color: var(--text-primary) !important;
 }
+
 /* ============================================================
    ADDITIONAL SEPIA FIXES (Stats Strip, Subheaders & Cards)
    ============================================================ */
 :root[data-theme="sepia"] {
-  --text-muted-sepia: #73624e; 
+  --text-muted-sepia: #73624e;
 }
+
 :root[data-theme="sepia"] .stats-strip {
-  background: #433422 !important;       /* sepia brown */
-  border-color: #5c4a37 !important;     /* lighter brown border */
+  background: #433422 !important;
+  border-color: #5c4a37 !important;
   box-shadow: 0 12px 40px rgba(67, 52, 34, 0.15) !important;
 }
 
 :root[data-theme="sepia"] .stat-item,
 :root[data-theme="sepia"] .stat-item strong,
 :root[data-theme="sepia"] .stat-divider {
-  color: #fdf6e3 !important;           
+  color: #fdf6e3 !important;
 }
 
-/* 2. Lighten the font color for  "100 Days · 100 Web Projects" */
+/* 2. Lighten the font color for "100 Days · 100 Web Projects" */
 :root[data-theme="sepia"] .hero-overline {
   color: var(--text-muted-sepia) !important;
   font-weight: 500;
@@ -3395,17 +3548,17 @@ body.custom-cursor-active .cursor-ring.is-visible {
 :root[data-theme="sepia"] .hero-extra,
 :root[data-theme="sepia"] .projects-header p,
 :root[data-theme="sepia"] p {
-  color: #5c4a37 !important; 
+  color: #5c4a37 !important;
 }
 
-/* 4. Fix the lower section blocks  */
+/* 4. Fix the lower section blocks */
 :root[data-theme="sepia"] h3,
 :root[data-theme="sepia"] .section-title,
 :root[data-theme="sepia"] .mobile-menu-title {
   color: var(--text-primary) !important;
 }
 
-/* 5. Fix the bottom grid details & lists (Browse all projects, Meet contributors, tags) */
+/* 5. Fix the bottom grid details & lists */
 :root[data-theme="sepia"] .nav-buttons.mobile-drawer-layer a.btn,
 :root[data-theme="sepia"] .explore-links a,
 :root[data-theme="sepia"] .connect-links,
