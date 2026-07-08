@@ -616,7 +616,6 @@ let showAllBookmarks = false;
 let showAllRecent = false;
 
 const INITIAL_VISIBLE_ITEMS = 3;
-const ONE_HOUR_MS = 60 * 60 * 1000;
 
 function migrateRecentProjects() {
   if (recentProjects.length === 0) return;
@@ -632,7 +631,7 @@ function migrateRecentProjects() {
         name: project[1],
         url: project[2],
         tags: project[3],
-        timestamp: Date.now() - ONE_HOUR_MS / 2,
+        timestamp: Date.now(),
       };
     }
     return project;
@@ -647,30 +646,6 @@ function migrateRecentProjects() {
 
 // Migrate on load
 migrateRecentProjects();
-
-function cleanupExpiredRecentProjects() {
-  const initialLength = recentProjects.length;
-  recentProjects = getRecentProjectsWithinWindow();
-
-  if (recentProjects.length !== initialLength) {
-    try {
-      localStorage.setItem("recentProjects", JSON.stringify(recentProjects));
-    } catch (error) {
-      console.warn("Could not save recent projects to localStorage:", error.message);
-    }
-    renderRecentProjects();
-  }
-}
-
-// Clean up every 5 minutes — clear previous interval to prevent timer leaks
-var recentProjectsTimer = null;
-function startRecentProjectsCleanup() {
-  if (recentProjectsTimer !== null) {
-    clearInterval(recentProjectsTimer);
-  }
-  recentProjectsTimer = setInterval(cleanupExpiredRecentProjects, 5 * 60 * 1000);
-}
-startRecentProjectsCleanup();
 
 const CATEGORY_LABEL = {
   beginner: "Beginner",
@@ -1315,17 +1290,6 @@ function loadBookmarksFromURL() {
   );
 }
 
-function getRecentProjectsWithinWindow() {
-  const now = Date.now();
-
-  return recentProjects.filter((item) => {
-    const timestamp = item.timestamp || Date.now();
-    const age = now - timestamp;
-
-    return age <= ONE_HOUR_MS;
-  });
-}
-
 function trackRecentProject(project) {
   let projectObj;
   if (Array.isArray(project)) {
@@ -1458,10 +1422,10 @@ function renderRecentProjects() {
 
   recentGrid.innerHTML = "";
 
-  const validRecent = getRecentProjectsWithinWindow();
+  const validRecent = recentProjects;
 
   if (validRecent.length === 0) {
-    recentGrid.innerHTML = `<p class="empty-state">No recently viewed projects within the last hour.</p>`;
+    recentGrid.innerHTML = `<p class="empty-state">No recently viewed projects yet.</p>`;
     return;
   }
 
@@ -1595,7 +1559,7 @@ function getRecommendations(project, allProjects) {
 }
 
 function renderRecommendationsForLatestRecentProject() {
-  const validRecent = getRecentProjectsWithinWindow();
+  const validRecent = recentProjects;
   if (validRecent.length === 0) {
     renderRecommendationsForProject(null);
     return;
@@ -1605,8 +1569,6 @@ function renderRecommendationsForLatestRecentProject() {
   renderRecommendationsForProject(latestProject);
 }
 
-// Clean up after grid references are initialized.
-cleanupExpiredRecentProjects();
 renderRecommendationsForLatestRecentProject();
 
 /* ============================================================
