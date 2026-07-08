@@ -172,6 +172,26 @@
       .cta-banner-btn:active {
         transform: translateY(0);
       }
+
+      /* ── Site-wide lightweight loader ── */
+      .site-loader {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(180deg, rgba(10,10,10,0.95), rgba(13,17,23,0.95));
+        z-index: 9999;
+        transition: opacity 0.35s ease, visibility 0.35s ease;
+      }
+      .site-loader-hidden { opacity: 0; visibility: hidden; }
+      .site-loader-inner { display: flex; align-items: center; gap: 12px; }
+      .loader-svg { width: 48px; height: 48px; display: block; }
+      .loader-track { stroke-width: 4; stroke: rgba(255,255,255,0.06); }
+      .loader-fill { stroke-width: 4; stroke: #0ff2c8; stroke-linecap: round; stroke-dasharray: 126; stroke-dashoffset: 94; transform-origin: 50% 50%; animation: spin 1s linear infinite, dash 1.2s ease-in-out infinite; }
+      @keyframes spin { to { transform: rotate(360deg); } }
+      @keyframes dash { 0% { stroke-dashoffset: 94; } 50% { stroke-dashoffset: 32; } 100% { stroke-dashoffset: 94; } }
+      .visually-hidden { position: absolute !important; height: 1px; width: 1px; overflow: hidden; clip: rect(1px,1px,1px,1px); white-space: nowrap; }
     </style>
   </head>
 
@@ -179,6 +199,17 @@
     <div class="ambient ambient-left" aria-hidden="true"></div>
     <div class="ambient ambient-right" aria-hidden="true"></div>
     <div class="noise-layer" aria-hidden="true"></div>
+    
+    <!-- Site-wide loader (shows until window 'load') -->
+    <div id="site-loader" class="site-loader" aria-hidden="true">
+      <div class="site-loader-inner" role="status" aria-live="polite">
+        <svg class="loader-svg" viewBox="0 0 50 50" aria-hidden="true">
+          <circle class="loader-track" cx="25" cy="25" r="20" fill="none"></circle>
+          <circle class="loader-fill" cx="25" cy="25" r="20" fill="none"></circle>
+        </svg>
+        <span class="visually-hidden">Loading…</span>
+      </div>
+    </div>
     
 
     <div id="navbar-container"></div>
@@ -591,6 +622,23 @@
       <span class="scroll-tooltip">Back to top</span>
     </button>
     <div class="toast" id="toast"></div>
+    <script>
+      (function(){
+        var loader = document.getElementById('site-loader');
+        if(!loader) return;
+        function hideLoader(){
+          loader.classList.add('site-loader-hidden');
+          setTimeout(function(){ if(loader && loader.parentNode) loader.parentNode.removeChild(loader); }, 450);
+        }
+        if(document.readyState === 'complete'){
+          hideLoader();
+        } else {
+          window.addEventListener('load', function(){ setTimeout(hideLoader, 2200); }, { once: true });
+          // fallback: ensure loader hides eventually
+          setTimeout(hideLoader, 6000);
+        }
+      })();
+    </script>
     <script type="module" src="hero-terminal.js" defer></script>
 
     <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0"></script>
