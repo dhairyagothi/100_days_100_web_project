@@ -3,233 +3,507 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Advanced Position Demo</title>
+
+<title>Modern Fixed Layout</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
+
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family:Arial, Helvetica, sans-serif;
+    font-family:'Poppins',sans-serif;
 }
 
 body{
-    height:3000px;
-    background:#f8f9fa;
-    padding-top:70px;
-    padding-left:90px;
+    background:#eef2f7;
+    min-height:100vh;
+    padding-top:80px;
+    padding-left:100px;
 }
 
-/* HEADER */
+/* ================= HEADER ================= */
+
 .header{
+
     position:fixed;
     top:0;
     left:0;
     right:0;
-    height:60px;
-    background:#0f0f0f;
-    color:white;
+
+    height:70px;
+
     display:flex;
-    align-items:center;
     justify-content:space-between;
-    padding:0 30px;
+    align-items:center;
+
+    padding:0 35px;
+
+    background:linear-gradient(90deg,#3b82f6,#6366f1);
+
+    color:white;
+
     z-index:1000;
-    box-shadow:0 2px 10px rgba(0,0,0,0.2);
+
+    box-shadow:0 8px 25px rgba(0,0,0,.18);
+
 }
 
 .logo{
-    font-size:22px;
-    font-weight:bold;
+
+    font-size:25px;
+    font-weight:700;
+
 }
 
-.search-box{
-    width:400px;
-    max-width:50%;
-    padding:10px 15px;
-    border-radius:20px;
+.search{
+
+    width:450px;
+    max-width:45%;
+
+    padding:12px 18px;
+
     border:none;
     outline:none;
+
+    border-radius:30px;
+
+    font-size:15px;
+
 }
 
-/* SIDEBAR */
-.sidebar{
-    position:fixed;
-    left:0;
-    top:60px;
-    bottom:0;
-    width:80px;
-    background:#0f8a0f;
-    color:white;
-    display:flex;
-    justify-content:center;
-    align-items:flex-start;
-    padding-top:20px;
-    z-index:999;
-}
+.profile{
 
-.sidebar-close{
-    position:absolute;
-    top:10px;
-    right:10px;
-    width:22px;
-    height:22px;
-    background:red;
+    width:45px;
+    height:45px;
+
     border-radius:50%;
+
+    background:white;
+
+    color:#4f46e5;
+
     display:flex;
     align-items:center;
     justify-content:center;
+
+    font-weight:700;
     cursor:pointer;
-    transition:0.3s;
+
+}
+
+/* ================= SIDEBAR ================= */
+
+.sidebar{
+
+    position:fixed;
+
+    left:0;
+    top:70px;
+    bottom:0;
+
+    width:90px;
+
+    background:linear-gradient(180deg,#16a34a,#15803d);
+
+    color:white;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+
+    padding-top:70px;
+
+    position:fixed;
+
+    z-index:999;
+
+}
+
+/* Important */
+.sidebar{
+    position:fixed;
+}
+
+.sidebar-inner{
+    position:relative;
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+
+.sidebar-close{
+
+    position:absolute;
+
+    top:-55px;
+    right:15px;
+
+    width:32px;
+    height:32px;
+
+    background:#ef4444;
+
+    border-radius:50%;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+    box-shadow:0 5px 12px rgba(0,0,0,.3);
+
 }
 
 .sidebar-close:hover{
-    transform:scale(1.1);
+
+    transform:scale(1.15);
+
 }
 
-/* ABSOLUTE LABEL */
-.absolute-label{
-    position:absolute;
-    top:80px;
-    right:20px;
-    background:#ff0000;
-    color:white;
-    padding:8px 15px;
-    border-radius:6px;
-    font-weight:bold;
-    box-shadow:0 4px 10px rgba(0,0,0,0.3);
-}
+.menu{
 
-/* CONTENT */
-.container{
     display:flex;
-    flex-wrap:wrap;
-    gap:30px;
-    padding:20px;
+    flex-direction:column;
+    gap:28px;
+
+    font-size:15px;
+    font-weight:500;
+
 }
 
-/* CARD 1 */
+.menu div{
+
+    cursor:pointer;
+    transition:.3s;
+
+}
+
+.menu div:hover{
+
+    transform:translateX(5px);
+
+}
+
+/* ================= FLOATING LABEL ================= */
+
+.absolute-label{
+
+    position:fixed;
+
+    top:90px;
+    right:25px;
+
+    background:#ef4444;
+
+    color:white;
+
+    padding:12px 20px;
+
+    border-radius:30px;
+
+    font-weight:600;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.2);
+
+}
+
+/* ================= CONTENT ================= */
+
+.container{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+
+    gap:30px;
+
+    padding:30px;
+
+}
+
+/* ================= CARD ================= */
+
 .card{
-    width:250px;
-    height:250px;
-    border-radius:12px;
-    overflow:hidden;
+
     position:relative;
-    box-shadow:0 5px 20px rgba(0,0,0,0.1);
-    transition:0.3s;
+
+    height:270px;
+
+    border-radius:20px;
+
+    overflow:hidden;
+
+    backdrop-filter:blur(15px);
+
+    background:rgba(255,255,255,.7);
+
+    box-shadow:0 15px 35px rgba(0,0,0,.08);
+
+    transition:.35s;
+
 }
 
 .card:hover{
-    transform:translateY(-5px);
+
+    transform:translateY(-10px);
+
+    box-shadow:0 20px 45px rgba(0,0,0,.18);
+
 }
 
-.card-blue{
-    background:lightblue;
+.blue{
+
+    background:linear-gradient(135deg,#93c5fd,#dbeafe);
+
 }
 
-.card-pink{
-    background:lightpink;
+.pink{
+
+    background:linear-gradient(135deg,#f9a8d4,#ffe4e6);
+
 }
 
 .card-title{
-    padding:15px;
-    font-size:24px;
-    font-weight:bold;
+
+    padding:25px;
+
+    font-size:30px;
+
+    font-weight:700;
+
 }
 
-/* VIDEO TIME */
-.video-time{
-    position:absolute;
-    bottom:10px;
-    right:10px;
-    background:black;
-    color:white;
-    padding:4px 8px;
-    border-radius:4px;
-    font-size:14px;
-    font-weight:bold;
+.card-content{
+
+    padding:0 25px;
+
+    color:#444;
+
+    line-height:1.7;
+
 }
 
-/* BADGE */
 .badge{
+
     position:absolute;
-    top:10px;
-    right:10px;
-    background:red;
+
+    top:20px;
+    right:20px;
+
+    background:#ef4444;
+
     color:white;
-    padding:5px 10px;
-    border-radius:20px;
+
+    padding:8px 14px;
+
+    border-radius:30px;
+
     font-size:12px;
+
+    font-weight:600;
+
 }
 
-/* RESPONSIVE */
+.video-time{
+
+    position:absolute;
+
+    right:20px;
+    bottom:20px;
+
+    background:black;
+
+    color:white;
+
+    padding:8px 12px;
+
+    border-radius:8px;
+
+    font-size:14px;
+
+}
+
+/* ================= RESPONSIVE ================= */
+
 @media(max-width:768px){
 
-    body{
-        padding-left:70px;
-    }
+body{
 
-    .search-box{
-        width:200px;
-    }
+padding-left:85px;
 
-    .container{
-        justify-content:center;
-    }
+}
 
-    .card{
-        width:90%;
-        max-width:300px;
-    }
+.search{
+
+max-width:180px;
+
+}
+
+.logo{
+
+font-size:20px;
+
+}
+
+.absolute-label{
+
+display:none;
+
+}
+
+}
+
+.sidebar{
+    position: fixed;
+    top: 70px;
+    left: 0;
+    width: 90px;
+    height: calc(100vh - 70px);
+    background: #16a34a;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+
+    /* IMPORTANT */
+    overflow: hidden;
+}
+.sidebar-close{
+    position:absolute;
+    top:12px;
+    right:12px;
+    width:32px;
+    height:32px;
+    border-radius:50%;
+}
+.menu{
+    margin-top:55px;
+    display:flex;
+    flex-direction:column;
+    gap:25px;
+}
+body{
+    padding-top:90px;
+    padding-left:110px;
+}
+.absolute-label{
+    position:absolute;
+    top:90px;
+    right:25px;
+}
+.container{
+    max-width:1400px;
+    margin:auto;
+
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+
+    gap:30px;
 }
 </style>
+
 </head>
+
 <body>
 
-<!-- HEADER -->
 <header class="header">
-    <div class="logo">YouTube Clone</div>
 
-    <input
-        type="text"
-        placeholder="Search"
-        class="search-box"
-    >
-
-    <div>Profile</div>
-</header>
-
-<!-- SIDEBAR -->
-<aside class="sidebar">
-    Sidebar
-
-    <div class="sidebar-close">
-        ✕
-    </div>
-</aside>
-
-<!-- ABSOLUTE POSITIONED ELEMENT -->
-<div class="absolute-label">
-    Absolute Element
+<div class="logo">
+▶ YouTube Clone
 </div>
 
-<!-- MAIN CONTENT -->
+<input
+class="search"
+type="text"
+placeholder="Search videos..."
+>
+
+<div class="profile">
+K
+</div>
+
+</header>
+
+<aside class="sidebar">
+
+<div class="sidebar-inner">
+
+<div class="sidebar-close">
+✕
+</div>
+
+<div class="menu">
+
+<div>🏠 Home</div>
+
+<div>🔥 Trending</div>
+
+<div>🎬 Shorts</div>
+
+<div>📺 Library</div>
+
+<div>❤️ Liked</div>
+
+<div>⚙ Settings</div>
+
+</div>
+
+</div>
+
+</aside>
+
+<div class="absolute-label">
+🔥 Trending Today
+</div>
+
 <div class="container">
 
-    <div class="card card-blue">
-        <div class="card-title">Div 1</div>
+<div class="card blue">
 
-        <div class="badge">
-            NEW
-        </div>
-    </div>
+<div class="card-title">
+Div 1
+</div>
 
-    <div class="card card-pink">
-        <div class="card-title">Div 2</div>
+<div class="card-content">
 
-        <div class="video-time">
-            5:00
-        </div>
-    </div>
+Beautiful modern card with smooth hover animation,
+glassmorphism effect and notification badge.
+
+</div>
+
+<div class="badge">
+NEW
+</div>
+
+</div>
+
+<div class="card pink">
+
+<div class="card-title">
+Div 2
+</div>
+
+<div class="card-content">
+
+Responsive layout with fixed header,
+sidebar and floating elements.
+
+</div>
+
+<div class="video-time">
+5:00
+</div>
+
+</div>
 
 </div>
 
