@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Offline - 100 Days 100 Web Projects</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .offline-container {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+      background: linear-gradient(135deg, #0a0a1a 0%, #1a1040 100%);
+      color: #f8fafc;
+      font-family: 'Inter', sans-serif;
+    }
+    .offline-icon {
+      font-size: 5rem;
+      margin-bottom: 1rem;
+    }
+    .offline-container h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .offline-container p {
+      font-size: 1.2rem;
+      color: #94a3b8;
+      margin-bottom: 2rem;
+      max-width: 500px;
+    }
+    .retry-btn {
+      padding: 12px 32px;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: white;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 4px 16px rgba(99, 102, 241, 0.3);
+    }
+    .retry-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4);
+    }
+    .retry-btn:active {
+      transform: translateY(0);
+    }
+    .offline-footer {
+      margin-top: 2rem;
+      color: #64748b;
+      font-size: 0.8rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="offline-container">
+    <div class="offline-icon">📡</div>
+    <h1>You're Offline</h1>
+    <p>It looks like you've lost your internet connection. Don't worry, you can try again when you're back online.</p>
+    <button class="retry-btn" onclick="location.reload()">🔄 Try Again</button>
+    <p class="offline-footer">100 Days 100 Web Projects · PWA</p>
+  </div>
+</body>
+</html>
