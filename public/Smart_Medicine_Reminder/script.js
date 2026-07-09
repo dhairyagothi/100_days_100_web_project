@@ -17,6 +17,17 @@ document.addEventListener('DOMContentLoaded', () => {
     let medicines = JSON.parse(localStorage.getItem('mediTrack_medicines')) || [];
     let notesTimeout;
 
+    // --- Utilities ---
+    function escapeHTML(str) {
+        if (!str) return '';
+        return String(str)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
+
     // --- Theme Management ---
     const currentTheme = localStorage.getItem('mediTrack_theme') || 'dark';
     document.documentElement.setAttribute('data-theme', currentTheme);
@@ -128,11 +139,11 @@ document.addEventListener('DOMContentLoaded', () => {
                             <span class="checkmark"></span>
                         </label>
                         <div class="med-details">
-                            <h3>${med.name}</h3>
+                            <h3>${escapeHTML(med.name)}</h3>
                             <p>
                                 <i class="ph ph-clock"></i> ${formatTime(med.time)} &bull; 
-                                <i class="ph ph-pill"></i> ${med.dosage}
-                                ${med.notes ? `&bull; <i class="ph ph-info"></i> ${med.notes}` : ''}
+                                <i class="ph ph-pill"></i> ${escapeHTML(med.dosage)}
+                                ${med.notes ? `&bull; <i class="ph ph-info"></i> ${escapeHTML(med.notes)}` : ''}
                             </p>
                         </div>
                     </div>
