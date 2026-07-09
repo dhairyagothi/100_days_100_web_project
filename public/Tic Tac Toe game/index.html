@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Tic Tac Toe | vs AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="app-container">
+        
+        <!-- Menu Screen -->
+        <div id="menuScreen" class="screen active">
+            <h1 class="game-title">TIC <span>TAC</span> TOE</h1>
+            <p class="subtitle">Man vs. Machine</p>
+            
+            <div class="menu-buttons">
+                <button id="btnStart" class="btn primary">
+                    <span class="icon">🤖</span> Challenge AI
+                </button>
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="gameScreen" class="screen">
+            <header class="game-header">
+                <button id="btnBack" class="icon-btn" title="Back to Menu">⬅</button>
+                <div class="score-board">
+                    <div class="score-card player-x">
+                        <span class="label">You (X)</span>
+                        <span id="scoreX" class="score">0</span>
+                    </div>
+                    <div class="score-card player-o">
+                        <span class="label">Bot (O)</span>
+                        <span id="scoreO" class="score">0</span>
+                    </div>
+                </div>
+                <button id="btnReset" class="icon-btn" title="Restart Match">↻</button>
+            </header>
+
+            <div class="turn-indicator" id="turnIndicatorContainer">
+                <span id="turnText">Your Turn</span>
+            </div>
+
+            <div class="board-container">
+                <div id="board" class="board">
+                    <div class="cell" data-index="0"></div>
+                    <div class="cell" data-index="1"></div>
+                    <div class="cell" data-index="2"></div>
+                    <div class="cell" data-index="3"></div>
+                    <div class="cell" data-index="4"></div>
+                    <div class="cell" data-index="5"></div>
+                    <div class="cell" data-index="6"></div>
+                    <div class="cell" data-index="7"></div>
+                    <div class="cell" data-index="8"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Result Modal -->
+        <div id="resultModal" class="modal hidden">
+            <div class="modal-content">
+                <h2 id="resultTitle">Game Over</h2>
+                <p id="resultMessage">The bot outsmarted you.</p>
+                <button id="btnPlayAgain" class="btn primary">Play Again</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<title>Atelier — Drawing Studio</title>
+</head>
+<body>
+
+  <aside id="left">
+    <header class="brand">
+      <h1>Atelier <i class="fa-solid fa-feather-pointer"></i></h1>
+      <svg class="brand-underline" viewBox="0 0 220 14" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M2 9 C 40 -2, 70 14, 108 6 S 180 -2, 218 8" />
+      </svg>
+      <p class="tagline">A small studio for quick sketches</p>
+    </header>
+
+    <!-- TOOLS -->
+    <section class="panel-group">
+      <h2 class="group-title">Tools</h2>
+      <div class="tool-grid">
+        <button class="tool-btn active" data-tool="brush" title="Brush (B)">
+          <i class="fa-solid fa-paintbrush"></i><span>Brush</span>
+        </button>
+        <button class="tool-btn" data-tool="eraser" title="Eraser (E)">
+          <i class="fa-solid fa-eraser"></i><span>Eraser</span>
+        </button>
+        <button class="tool-btn" data-tool="line" title="Line (L)">
+          <i class="fa-solid fa-slash"></i><span>Line</span>
+        </button>
+        <button class="tool-btn" data-tool="rect" title="Rectangle (R)">
+          <i class="fa-regular fa-square"></i><span>Rect</span>
+        </button>
+        <button class="tool-btn" data-tool="circle" title="Circle (C)">
+          <i class="fa-regular fa-circle"></i><span>Circle</span>
+        </button>
+        <button class="tool-btn" data-tool="text" title="Text (T)">
+          <i class="fa-solid fa-font"></i><span>Text</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- BRUSH OPTIONS -->
+    <section class="panel-group">
+      <h2 class="group-title">Options</h2>
+
+      <div class="control-row">
+        <label for="size-range">Size</label>
+        <input type="range" id="size-range" min="1" max="80" value="4">
+        <span class="control-val" id="size-val">4</span>
+      </div>
+
+      <div class="control-row">
+        <label for="opacity-range">Opacity</label>
+        <input type="range" id="opacity-range" min="5" max="100" value="100">
+        <span class="control-val" id="opacity-val">100%</span>
+      </div>
+
+      <div class="control-row toggle-row" id="cap-row">
+        <label for="round-cap">Round tip</label>
+        <label class="switch">
+          <input type="checkbox" id="round-cap" checked>
+          <span class="slider-pill"></span>
+        </label>
+      </div>
+
+      <div class="control-row toggle-row hidden" id="fill-row">
+        <label for="fill-shape">Fill shape</label>
+        <label class="switch">
+          <input type="checkbox" id="fill-shape">
+          <span class="slider-pill"></span>
+        </label>
+      </div>
+    </section>
+
+    <!-- COLOR -->
+    <section class="panel-group">
+      <h2 class="group-title">Color</h2>
+
+      <div class="control-row">
+        <label for="color-picker">Ink</label>
+        <input type="color" id="color-picker" value="#1f1f1f">
+      </div>
+
+      <div class="swatches" id="swatches">
+        <button class="swatch" style="background:#1f1f1f" data-color="#1f1f1f"></button>
+        <button class="swatch" style="background:#e0a458" data-color="#e0a458"></button>
+        <button class="swatch" style="background:#c9564f" data-color="#c9564f"></button>
+        <button class="swatch" style="background:#4d7c8a" data-color="#4d7c8a"></button>
+        <button class="swatch" style="background:#6b8f71" data-color="#6b8f71"></button>
+        <button class="swatch" style="background:#8c6bb1" data-color="#8c6bb1"></button>
+        <button class="swatch" style="background:#f2f0ea" data-color="#f2f0ea"></button>
+      </div>
+
+      <div class="control-row">
+        <label for="bg-color">Canvas</label>
+        <input type="color" id="bg-color" value="#f7f3ea">
+      </div>
+    </section>
+
+    <!-- ACTIONS -->
+    <section class="panel-group actions">
+      <div class="btn-pair">
+        <button class="btn icon-btn" id="undo-btn" title="Undo (Ctrl+Z)" disabled>
+          <i class="fa-solid fa-rotate-left"></i>
+        </button>
+        <button class="btn icon-btn" id="redo-btn" title="Redo (Ctrl+Shift+Z)" disabled>
+          <i class="fa-solid fa-rotate-right"></i>
+        </button>
+      </div>
+
+      <button class="btn clear" id="clear-btn">
+        Clear Canvas <i class="fa-solid fa-eraser"></i>
+      </button>
+
+      <button class="btn download" id="download-btn">
+        Download PNG <i class="fa-solid fa-arrow-down"></i>
+      </button>
+    </section>
+
+    <footer class="shortcuts">
+      <p><kbd>B</kbd> brush · <kbd>E</kbd> eraser · <kbd>L</kbd> line · <kbd>R</kbd> rect · <kbd>C</kbd> circle · <kbd>T</kbd> text</p>
+      <p><kbd>[</kbd> <kbd>]</kbd> size · <kbd>Ctrl</kbd>+<kbd>Z</kbd> undo · <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Z</kbd> redo</p>
+    </footer>
+  </aside>
+
+  <main id="right">
+    <div id="canvas-wrapper">
+      <canvas id="canvas"></canvas>
+      <canvas id="preview-canvas"></canvas>
+      <input type="text" id="text-input" class="hidden" autocomplete="off" spellcheck="false">
+    </div>
+  </main>
+
+  <script src="index.js"></script>
+</body>
+</html>

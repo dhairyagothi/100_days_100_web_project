@@ -380,3 +380,20 @@ input[type="text"], input[type="number"] {
     color: #888;
     padding: 40px 0;
 }
+
+.back-home{
+    display:inline-block;
+    padding:10px 18px;
+    margin-bottom:20px;
+    color:#e63946;
+    border:2px solid #e63946;
+    border-radius:8px;
+    text-decoration:none;
+    font-weight:bold;
+    transition:0.3s;
+}
+
+.back-home:hover{
+    background:#e63946;
+    color:white;
+}

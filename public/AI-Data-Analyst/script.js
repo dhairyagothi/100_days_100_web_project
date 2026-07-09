@@ -258,6 +258,7 @@ function onDatasetReady() {
   populateTable();
   populateNumericColumns();
   updateExecutiveSummary();
+  generateCleaningRecommendations();
 
   generateMLRecommendationWithGroq();
 
@@ -1486,5 +1487,561 @@ document
 document
   .getElementById("downloadInsightsBtn")
   ?.addEventListener("click", downloadInsights);
+
+// =============================================================
+// SMART DATA CLEANING RECOMMENDATIONS
+// Pure JavaScript · Rule-Based · No AI · No external APIs
+// =============================================================
+
+// --- Constants ---
+
+const MISSING_THRESHOLDS = { LOW: 0.05, HIGH: 0.30 };
+const HIGH_CARDINALITY_RATIO = 0.50;
+const HEALTH_DEDUCTIONS = {
+  DUPLICATE:        5,
+  HIGH_MISSING:     5,
+  CONSTANT_COL:     5,
+  CATEGORY_NORM:    4,
+  HIGH_CARDINALITY: 3,
+  OUTLIER_HEAVY:    2,
+};
+const MAX_VISIBLE_RECS = 6;
+
+// Severity sort order (lower = higher priority)
+const SEVERITY_ORDER = { Critical: 0, High: 1, Medium: 2, Low: 3 };
+
+// --- Helper: check if column is numeric ---
+function isNumericColumn(col) {
+  let numericCount = 0;
+  let nonEmptyCount = 0;
+  for (const row of dataset) {
+    const v = row[col];
+    if (v === null || v === undefined || v === '') continue;
+    nonEmptyCount++;
+    if (!isNaN(Number(v))) numericCount++;
+  }
+  return nonEmptyCount > 0 && numericCount / nonEmptyCount >= 0.80;
+}
+
+// --- Helper: get non-empty numeric values for a column ---
+function getNumericValuesForCol(col) {
+  return dataset
+    .map(r => Number(r[col]))
+    .filter(v => !isNaN(v));
+}
+
+// --- Helper: compute IQR outlier count ---
+function countOutliersIQR(values) {
+  const sorted = [...values].sort((a, b) => a - b);
+  const q1 = sorted[Math.floor(sorted.length * 0.25)];
+  const q3 = sorted[Math.floor(sorted.length * 0.75)];
+  const iqr = q3 - q1;
+  const lower = q1 - 1.5 * iqr;
+  const upper = q3 + 1.5 * iqr;
+  return sorted.filter(v => v < lower || v > upper).length;
+}
+
+// --- Helper: count missing values for a column ---
+function countMissingForCol(col) {
+  return dataset.filter(r => {
+    const v = r[col];
+    return v === null || v === undefined || v === '';
+  }).length;
+}
+
+// --- Helper: confidence stars (1-5 based on ratio) ---
+function getConfidenceStars(ratio) {
+  return Math.max(1, Math.min(5, Math.round(ratio * 5)));
+}
+
+// ---------------------------------------------------------------
+// DETECTOR 1: Missing Values
+// ---------------------------------------------------------------
+function detectMissingValueIssues() {
+  const issues = [];
+  const totalRows = dataset.length;
+
+  for (const col of headers) {
+    const missing = countMissingForCol(col);
+    if (missing === 0) continue;
+
+    const ratio = missing / totalRows;
+
+    // Empty columns are handled by detectEmptyColumns
+    if (ratio >= 1.0) continue;
+
+    let severity, recommendation, why;
+
+    if (ratio > MISSING_THRESHOLDS.HIGH) {
+      severity = 'Critical';
+      recommendation = `Drop or reconstruct "${col}". Over 30% missing makes imputation unreliable.`;
+      why = 'Columns with more than 30% missing values introduce heavy bias and noise regardless of imputation technique.';
+    } else if (ratio >= MISSING_THRESHOLDS.LOW) {
+      severity = 'High';
+      const numeric = isNumericColumn(col);
+      recommendation = numeric
+        ? `Impute "${col}" using median imputation to preserve distribution.`
+        : `Impute "${col}" using the most frequent category or a dedicated "Unknown" label.`;
+      why = numeric
+        ? 'Median is robust to outliers and does not distort the column distribution the way mean imputation does.'
+        : 'Mode imputation maintains the natural category balance; a dedicated label avoids creating a false majority.';
+    } else {
+      severity = 'Low';
+      recommendation = `Impute the ${missing} missing value(s) in "${col}" using mean or mode.`;
+      why = 'Less than 5% missing is minimal and safe to impute with simple strategies without biasing the model.';
+    }
+
+    issues.push({
+      icon: "triangle-alert",
+      title: 'Missing Values',
+      severity,
+      column: col,
+      recommendation,
+      why,
+      confidence: getConfidenceStars(1 - ratio),
+    });
+  }
+
+  return issues;
+}
+
+// ---------------------------------------------------------------
+// DETECTOR 2: Duplicate Rows
+// ---------------------------------------------------------------
+function detectDuplicateRows() {
+  const seen = new Set();
+  let duplicateCount = 0;
+
+  for (const row of dataset) {
+    const key = JSON.stringify(row);
+    if (seen.has(key)) {
+      duplicateCount++;
+    } else {
+      seen.add(key);
+    }
+  }
+
+  if (duplicateCount === 0) return [];
+
+  const ratio = duplicateCount / dataset.length;
+  const severity = ratio > 0.10 ? 'High' : 'Medium';
+
+  return [{
+    icon: "copy",
+    title: 'Duplicate Rows',
+    severity,
+    column: 'Entire Dataset',
+    recommendation: `Remove ${duplicateCount} duplicate row(s) before modeling.`,
+    why: 'Duplicate rows inflate training data artificially, causing the model to overfit to repeated examples and report overly optimistic evaluation metrics.',
+    confidence: 5,
+  }];
+}
+
+// ---------------------------------------------------------------
+// DETECTOR 3: Outliers (IQR method)
+// ---------------------------------------------------------------
+function detectOutlierIssues() {
+  const issues = [];
+
+  for (const col of headers) {
+    if (!isNumericColumn(col)) continue;
+
+    const values = getNumericValuesForCol(col);
+    if (values.length < 10) continue;
+
+    const outlierCount = countOutliersIQR(values);
+    if (outlierCount === 0) continue;
+
+    const ratio = outlierCount / values.length;
+    const severity = ratio > 0.10 ? 'High' : 'Medium';
+
+    issues.push({
+      icon: "chart-column",
+      title: 'Outliers Detected',
+      severity,
+      column: col,
+      recommendation: `Investigate ${outlierCount} outlier(s) in "${col}". Cap using IQR bounds or apply log transformation.`,
+      why: 'Outliers skew statistical summaries and mislead distance-based models (e.g. k-NN, SVM). Tree-based models are more tolerant but extreme outliers still hurt generalization.',
+      confidence: getConfidenceStars(1 - ratio),
+    });
+  }
+
+  return issues;
+}
+
+// ---------------------------------------------------------------
+// DETECTOR 4: Constant Columns
+// ---------------------------------------------------------------
+function detectConstantColumns() {
+  const issues = [];
+
+  for (const col of headers) {
+    const unique = new Set(dataset.map(r => r[col]));
+    if (unique.size !== 1) continue;
+
+    issues.push({
+      icon: "minus-circle",
+      title: 'Constant Column',
+      severity: 'High',
+      column: col,
+      recommendation: `Drop "${col}" — it contains only one unique value and provides zero predictive signal.`,
+      why: 'A column with a single value has zero variance. It cannot help any model distinguish between records and will waste memory and computation.',
+      confidence: 5,
+    });
+  }
+
+  return issues;
+}
+
+// ---------------------------------------------------------------
+// DETECTOR 5: High Cardinality
+// ---------------------------------------------------------------
+function detectHighCardinality() {
+  const issues = [];
+  const totalRows = dataset.length;
+
+  for (const col of headers) {
+    // Skip numeric columns
+    if (isNumericColumn(col)) continue;
+
+    const unique = new Set(dataset.map(r => r[col]));
+    const ratio = unique.size / totalRows;
+
+    if (ratio < HIGH_CARDINALITY_RATIO) continue;
+
+    issues.push({
+      icon: "hash",
+      title: 'High Cardinality',
+      severity: 'Medium',
+      column: col,
+      recommendation: `Check "${col}" — ${unique.size} unique values (${(ratio * 100).toFixed(0)}% of rows). Consider grouping rare categories or treating it as an identifier.`,
+      why: 'High-cardinality categorical columns create sparse one-hot encodings, leading to the curse of dimensionality and potential overfitting to low-frequency values.',
+      confidence: 4,
+    });
+  }
+
+  return issues;
+}
+
+// ---------------------------------------------------------------
+// DETECTOR 6: Category Normalization
+// ---------------------------------------------------------------
+function detectCategoryNormalizationIssues() {
+  const issues = [];
+
+  for (const col of headers) {
+    if (isNumericColumn(col)) continue;
+
+    const valuesRaw = dataset
+      .map(r => String(r[col] ?? '').trim())
+      .filter(v => v !== '');
+
+    const grouped = {};
+    for (const v of valuesRaw) {
+      const key = v.toLowerCase();
+      if (!grouped[key]) grouped[key] = new Set();
+      grouped[key].add(v);
+    }
+
+    // Find groups that have more than one case variant
+    const inconsistentGroups = Object.entries(grouped).filter(
+      ([, variants]) => variants.size > 1
+    );
+
+    if (inconsistentGroups.length === 0) continue;
+
+    const examples = inconsistentGroups
+      .slice(0, 3)
+      .map(([, variants]) => [...variants].join(' / '))
+      .join('; ');
+
+    issues.push({
+      icon: "case-sensitive",
+      title: 'Inconsistent Category Casing',
+      severity: 'Medium',
+      column: col,
+      recommendation: `Normalize all values in "${col}" to a consistent case. Examples: ${examples}.`,
+      why: 'Case differences cause the same logical category to appear as multiple distinct classes, inflating cardinality and producing incorrect groupings in aggregations and models.',
+      confidence: 4,
+    });
+  }
+
+  return issues;
+}
+
+// ---------------------------------------------------------------
+// DETECTOR 7: Empty Columns (100% missing)
+// ---------------------------------------------------------------
+function detectEmptyColumns() {
+  const issues = [];
+
+  for (const col of headers) {
+    const missing = countMissingForCol(col);
+    if (missing < dataset.length) continue;
+
+    issues.push({
+      icon: "trash-2",
+      title: 'Empty Column',
+      severity: 'Critical',
+      column: col,
+      recommendation: `Drop "${col}" immediately — it contains no data at all.`,
+      why: 'A fully empty column carries zero information. Retaining it wastes memory, may crash imputers that expect at least one valid value, and confuses feature selection algorithms.',
+      confidence: 5,
+    });
+  }
+
+  return issues;
+}
+
+// ---------------------------------------------------------------
+// DETECTOR 8: Potential Identifier Columns
+// ---------------------------------------------------------------
+function detectPotentialIdentifierColumns() {
+  const issues = [];
+  const idPatterns = /\b(id|_id|userid|user_id|customerid|customer_id|orderid|order_id|recordid|record_id|rowid|row_id|uuid|guid)\b/i;
+
+  for (const col of headers) {
+    const unique = new Set(dataset.map(r => r[col]));
+    const isAllUnique = unique.size === dataset.length;
+    const looksLikeId = idPatterns.test(col);
+
+    if (!isAllUnique && !looksLikeId) continue;
+
+    const reason = isAllUnique
+      ? `"${col}" has a unique value for every row (${unique.size}/${dataset.length}).`
+      : `"${col}" matches an identifier naming pattern.`;
+
+    issues.push({
+      icon: "fingerprint",
+      title: 'Potential Identifier Column',
+      severity: 'Low',
+      column: col,
+      recommendation: `Exclude "${col}" from ML feature sets. Use it only for row tracking and joins.`,
+      why: `${reason} Identifier columns memorize row positions rather than learning patterns, causing data leakage and poor generalization on unseen data.`,
+      confidence: isAllUnique ? 5 : 3,
+    });
+  }
+
+  return issues;
+}
+
+// ---------------------------------------------------------------
+// HEALTH SCORE CALCULATOR
+// ---------------------------------------------------------------
+function calculateDatasetHealth(allIssues) {
+  let score = 100;
+
+  const hasDuplicates = allIssues.some(i => i.title === 'Duplicate Rows');
+  if (hasDuplicates) score -= HEALTH_DEDUCTIONS.DUPLICATE;
+
+  const highMissingCols = allIssues.filter(
+    i => i.title === 'Missing Values' && (i.severity === 'High' || i.severity === 'Critical')
+  ).length;
+  score -= Math.min(highMissingCols * HEALTH_DEDUCTIONS.HIGH_MISSING, 20);
+
+  const constantCols = allIssues.filter(i => i.title === 'Constant Column').length;
+  score -= Math.min(constantCols * HEALTH_DEDUCTIONS.CONSTANT_COL, 15);
+
+  const normIssues = allIssues.filter(
+    i => i.title === 'Inconsistent Category Casing'
+  ).length;
+  score -= Math.min(normIssues * HEALTH_DEDUCTIONS.CATEGORY_NORM, 12);
+
+  const highCardCols = allIssues.filter(i => i.title === 'High Cardinality').length;
+  score -= Math.min(highCardCols * HEALTH_DEDUCTIONS.HIGH_CARDINALITY, 9);
+
+  const outlierCols = allIssues.filter(
+    i => i.title === 'Outliers Detected' && i.severity === 'High'
+  ).length;
+  score -= Math.min(outlierCols * HEALTH_DEDUCTIONS.OUTLIER_HEAVY, 10);
+
+  return Math.max(0, Math.min(100, Math.round(score)));
+}
+
+// ---------------------------------------------------------------
+// ASSESSMENT TEXT GENERATOR
+// ---------------------------------------------------------------
+function generateDatasetAssessment(healthScore, allIssues) {
+  const criticalCount = allIssues.filter(i => i.severity === 'Critical').length;
+  const highCount = allIssues.filter(i => i.severity === 'High').length;
+  const hasDuplicates = allIssues.some(i => i.title === 'Duplicate Rows');
+  const hasMissing = allIssues.some(i => i.title === 'Missing Values');
+  const hasOutliers = allIssues.some(i => i.title === 'Outliers Detected');
+
+  if (healthScore >= 90) {
+    return 'Your dataset is in excellent condition. Minor preprocessing may still improve model performance, but the data is largely clean and ready for machine learning workflows.';
+  }
+
+  if (healthScore >= 75) {
+    const priorities = [];
+    if (hasMissing) priorities.push('missing values');
+    if (hasDuplicates) priorities.push('duplicate rows');
+    if (hasOutliers) priorities.push('outliers');
+    const priorityText = priorities.length > 0
+      ? ` The highest priorities are addressing ${priorities.join(' and ')}.`
+      : '';
+    return `Your dataset is generally clean but requires preprocessing before machine learning.${priorityText} Once cleaned, the dataset will be suitable for exploratory analysis and predictive modeling.`;
+  }
+
+  if (criticalCount > 0) {
+    return `Your dataset has ${criticalCount} critical issue(s) that must be resolved before any analysis. Empty or near-empty columns and extreme missing value rates will severely degrade model quality. Address critical issues first, then revisit high-severity items.`;
+  }
+
+  if (highCount > 0) {
+    return `Your dataset requires significant preprocessing. ${highCount} high-severity issue(s) detected — including ${hasMissing ? 'missing values' : ''}${hasDuplicates ? (hasMissing ? ' and duplicates' : 'duplicates') : ''}. Resolving these issues before training will substantially improve model accuracy and reliability.`;
+  }
+
+  return `Your dataset has some medium and low-severity issues. While usable for initial exploration, addressing the recommendations below will produce cleaner, more reliable results.`;
+}
+
+// ---------------------------------------------------------------
+// MASTER ORCHESTRATOR
+// ---------------------------------------------------------------
+function generateCleaningRecommendations() {
+  if (!dataset || dataset.length === 0) return;
+
+  // Collect all issues from every detector
+  const allIssues = [
+    ...detectEmptyColumns(),
+    ...detectMissingValueIssues(),
+    ...detectDuplicateRows(),
+    ...detectConstantColumns(),
+    ...detectOutlierIssues(),
+    ...detectCategoryNormalizationIssues(),
+    ...detectHighCardinality(),
+    ...detectPotentialIdentifierColumns(),
+  ];
+
+  // Sort by severity priority
+  allIssues.sort(
+    (a, b) => (SEVERITY_ORDER[a.severity] ?? 9) - (SEVERITY_ORDER[b.severity] ?? 9)
+  );
+
+  const healthScore = calculateDatasetHealth(allIssues);
+  const assessment = generateDatasetAssessment(healthScore, allIssues);
+
+  renderCleaningRecommendations(allIssues, healthScore, assessment);
+}
+
+// ---------------------------------------------------------------
+// RENDERER
+// ---------------------------------------------------------------
+function renderCleaningRecommendations(issues, healthScore, assessment) {
+  // --- Metric cards ---
+  const criticalCount = issues.filter(i => i.severity === 'Critical').length;
+
+  document.getElementById('cleaningHealthScore').textContent =
+    `${healthScore}/100`;
+  document.getElementById('cleaningIssuesCount').textContent =
+    issues.length;
+  document.getElementById('cleaningCriticalCount').textContent =
+    criticalCount;
+  document.getElementById('cleaningSuggestionsCount').textContent =
+    issues.filter(i => i.severity === 'Low' || i.severity === 'Medium').length;
+
+  // --- Recommendation cards container ---
+  const container = document.getElementById('cleaningRecommendations');
+  container.innerHTML = '';
+
+  if (issues.length === 0) {
+    container.innerHTML = `
+      <div class="cleaning-empty-state">
+        <div class="cleaning-empty-icon">
+          <i data-lucide="check-circle-2"></i>
+        </div>
+        <p class="cleaning-empty-title">Dataset Looks Clean!</p>
+        <p class="cleaning-empty-desc">No significant data quality issues were detected. Your dataset appears ready for analysis and modeling.</p>
+      </div>`;
+    lucide.createIcons();
+    document.getElementById('cleaningAssessment').style.display = 'flex';
+    document.getElementById('cleaningAssessmentText').textContent = assessment;
+    document.getElementById('cleaningShowMore').style.display = 'none';
+    return;
+  }
+
+  // Render cards
+  issues.forEach((issue, idx) => {
+    const isHidden = idx >= MAX_VISIBLE_RECS;
+    const severityKey = issue.severity.toLowerCase();
+    const iconClass = `cleaning-rec-icon-${severityKey}`;
+    const badgeClass = `severity-${severityKey}`;
+
+    // Build confidence stars
+    let starsHtml = '';
+    for (let s = 1; s <= 5; s++) {
+      starsHtml += `<span class="confidence-star${s > issue.confidence ? ' empty' : ''}">★</span>`;
+    }
+
+    const card = document.createElement('div');
+    card.className = `cleaning-rec-card${isHidden ? ' hidden-rec' : ''}`;
+    if (isHidden) card.style.display = 'none';
+
+    card.innerHTML = `
+      <div class="cleaning-rec-header">
+        <div class="cleaning-rec-icon ${iconClass}">
+          <i data-lucide="${issue.icon}"></i>
+        </div>
+        <div class="cleaning-rec-title-row">
+          <span class="cleaning-rec-title">${issue.title}</span>
+          <div class="cleaning-rec-meta">
+            <span class="severity-badge ${badgeClass}">${issue.severity}</span>
+            <span class="cleaning-col-pill">${issue.column}</span>
+          </div>
+        </div>
+      </div>
+      <div class="cleaning-rec-body">
+        <div class="cleaning-rec-field">
+          <span class="cleaning-rec-field-label">Recommendation</span>
+          <span class="cleaning-rec-field-value">${issue.recommendation}</span>
+        </div>
+        <div class="cleaning-rec-field">
+          <span class="cleaning-rec-field-label">Why?</span>
+          <span class="cleaning-rec-field-value">${issue.why}</span>
+        </div>
+      </div>
+      <div class="cleaning-confidence">
+        <span class="cleaning-confidence-label">Confidence</span>
+        ${starsHtml}
+      </div>`;
+    container.appendChild(card);
+  });
+
+  // Show more / collapse button
+  const showMoreBtn = document.getElementById('cleaningShowMore');
+  if (issues.length > MAX_VISIBLE_RECS) {
+    showMoreBtn.style.display = 'flex';
+    showMoreBtn.classList.remove('expanded');
+    const extraCount = issues.length - MAX_VISIBLE_RECS;
+    showMoreBtn.innerHTML = `<i data-lucide="chevron-down"></i> Show ${extraCount} More Recommendations`;
+
+    showMoreBtn.onclick = () => {
+      const hiddenCards = container.querySelectorAll('.hidden-rec');
+      const isExpanded = showMoreBtn.classList.contains('expanded');
+
+      if (isExpanded) {
+        // Collapse
+        hiddenCards.forEach(card => { card.style.display = 'none'; });
+        showMoreBtn.classList.remove('expanded');
+        showMoreBtn.innerHTML = `<i data-lucide="chevron-down"></i> Show ${extraCount} More Recommendations`;
+      } else {
+        // Expand
+        container.querySelectorAll('[style*="display: none"]').forEach(card => {
+          card.style.display = 'block';
+        });
+        showMoreBtn.classList.add('expanded');
+        showMoreBtn.innerHTML = `<i data-lucide="chevron-up"></i> Show Less`;
+      }
+      lucide.createIcons();
+    };
+  } else {
+    showMoreBtn.style.display = 'none';
+  }
+
+  // Assessment note
+  document.getElementById('cleaningAssessment').style.display = 'flex';
+  document.getElementById('cleaningAssessmentText').textContent = assessment;
+
+  lucide.createIcons();
+}
 
 lucide.createIcons();

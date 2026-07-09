@@ -20,7 +20,9 @@ const emptyState = document.getElementById("emptyState");
 const charCounter = document.getElementById("char-counter");
 
 // Set minimum selectable date to today
-dueDateInput.min = new Date().toISOString().split("T")[0];
+if (dueDateInput) {
+  dueDateInput.min = new Date().toISOString().split("T")[0];
+}
 
 // ─── Priority helpers ──────────────────────────────────────────────────────
 function getPriorityClass(priority) {
@@ -37,28 +39,36 @@ function getPriorityEmoji(priority) {
 
 // ─── Render Kanban Board ───────────────────────────────────────────────────
 function renderKanban(filterQuery) {
-  document.querySelectorAll(".kanban-column-drop-zone").forEach(z => (z.innerHTML = ""));
+  // If no columns are present, we skip rendering tasks entirely
+  const dropZones = document.querySelectorAll(".kanban-column-drop-zone");
+  if (dropZones.length === 0) {
+    calculateSystemCounters(); // Still calculate numbers if stats elements exist on this page
+    return;
+  }
 
-  const query = (filterQuery || searchInput.value || "").trim().toLowerCase();
+  dropZones.forEach(z => (z.innerHTML = ""));
+
+  const query = (filterQuery || searchInput?.value || "").trim().toLowerCase();
   const visibleTasks = query
     ? tasks.filter(t => t.title.toLowerCase().includes(query))
     : tasks;
 
-  // Show/hide empty state
+  // Show/hide empty state safely
+  const kanbanBoardEl = document.getElementById("kanban-board");
   if (tasks.length === 0) {
-    emptyState.style.display = "flex";
-    document.getElementById("kanban-board").style.display = "none";
+    if (emptyState) emptyState.style.display = "flex";
+    if (kanbanBoardEl) kanbanBoardEl.style.display = "none";
   } else {
-    emptyState.style.display = "none";
-    document.getElementById("kanban-board").style.display = "flex";
+    if (emptyState) emptyState.style.display = "none";
+    if (kanbanBoardEl) kanbanBoardEl.style.display = "flex";
   }
 
-  // Show/hide no-results
+  // Show/hide no-results safely
   if (query && visibleTasks.length === 0) {
-    noResultsQuery.textContent = query;
-    noResultsMsg.style.display = "block";
+    if (noResultsQuery) noResultsQuery.textContent = query;
+    if (noResultsMsg) noResultsMsg.style.display = "block";
   } else {
-    noResultsMsg.style.display = "none";
+    if (noResultsMsg) noResultsMsg.style.display = "none";
   }
 
   const today = new Date().toISOString().split("T")[0];
@@ -160,7 +170,7 @@ function calculateSystemCounters() {
     if (el) el.textContent = val;
   });
 
-  // Hero progress bar
+  // Hero progress bar safely
   const heroFill = document.getElementById("heroProgressFill");
   const heroText = document.getElementById("progressText");
   if (tasks.length > 0) {
@@ -172,7 +182,7 @@ function calculateSystemCounters() {
     if (heroText) heroText.textContent = "0 / 0 tasks completed";
   }
 
-  // Show/hide "Clear Completed" button
+  // Show/hide "Clear Completed" button safely
   const ccBtn = document.getElementById("clearCompletedBtn");
   if (ccBtn) ccBtn.hidden = completedCount === 0;
 }
@@ -183,42 +193,48 @@ function saveTasks() {
 }
 
 // ─── Character Counter ─────────────────────────────────────────────────────
-taskInput.addEventListener("input", () => {
-  const currentLen = taskInput.value.length;
-  charCounter.textContent = `${currentLen} / 200`;
-  if (currentLen > 198) {
-    charCounter.classList.add("near-limit");
-  } else {
-    charCounter.classList.remove("near-limit");
-  }
-});
+if (taskInput && charCounter) {
+  taskInput.addEventListener("input", () => {
+    const currentLen = taskInput.value.length;
+    charCounter.textContent = `${currentLen} / 200`;
+    if (currentLen > 198) {
+      charCounter.classList.add("near-limit");
+    } else {
+      charCounter.classList.remove("near-limit");
+    }
+  });
+}
 
 // ─── Add task ──────────────────────────────────────────────────────────────
-taskForm.addEventListener("submit", e => {
-  e.preventDefault();
-  const title = taskInput.value.trim();
-  if (!title) return;
+if (taskForm && taskInput) {
+  taskForm.addEventListener("submit", e => {
+    e.preventDefault();
+    const title = taskInput.value.trim();
+    if (!title) return;
 
-  tasks.push({
-    id: "task_" + Date.now(),
-    title,
-    category: categorySelect.value || "Others",
-    priority: prioritySelect.value || "Medium",
-    dueDate: dueDateInput.value,
-    status: "pending",
+    tasks.push({
+      id: "task_" + Date.now(),
+      title,
+      category: categorySelect?.value || "Others",
+      priority: prioritySelect?.value || "Medium",
+      dueDate: dueDateInput?.value || "",
+      status: "pending",
+    });
+
+    saveTasks();
+    renderKanban();
+    showToast("✅ Task added!", "success");
+
+    taskInput.value = "";
+    if (charCounter) {
+      charCounter.textContent = "0 / 200";
+      charCounter.classList.remove("near-limit");
+    }
+    if (categorySelect) categorySelect.selectedIndex = 0;
+    if (prioritySelect) prioritySelect.selectedIndex = 0;
+    if (dueDateInput) dueDateInput.value = "";
   });
-
-  saveTasks();
-  renderKanban();
-  showToast("✅ Task added!", "success");
-
-  taskInput.value = "";
-  charCounter.textContent = "0 / 200";
-  charCounter.classList.remove("near-limit");
-  categorySelect.selectedIndex = 0;
-  prioritySelect.selectedIndex = 0;
-  dueDateInput.value = "";
-});
+}
 
 // ─── Delete ────────────────────────────────────────────────────────────────
 window.deleteTaskNode = function (id) {
@@ -269,11 +285,12 @@ document.querySelectorAll(".kanban-column-drop-zone").forEach(zone => {
 });
 
 // ─── Live search ───────────────────────────────────────────────────────────
-searchInput.addEventListener("input", () => renderKanban());
+if (searchInput) {
+  searchInput.addEventListener("input", () => renderKanban());
+}
 
 // ─── Toast ────────────────────────────────────────────────────────────────
 let _toastTimer = null;
-
 function showToast(message, type) {
   const el = document.getElementById("appToast");
   if (!el) return;
@@ -290,17 +307,27 @@ function showToast(message, type) {
 
 // ─── Tab navigation ────────────────────────────────────────────────────────
 window.showHome = function () {
-  document.getElementById("home-tab").className = "active-section";
-  document.getElementById("documents-tab").className = "inactive-section";
-  document.getElementById("nav-home").classList.add("active");
-  document.getElementById("nav-documents").classList.remove("active");
+  const homeTab = document.getElementById("home-tab");
+  const docsTab = document.getElementById("documents-tab");
+  const navHome = document.getElementById("nav-home");
+  const navDocs = document.getElementById("nav-documents");
+
+  if (homeTab) homeTab.className = "active-section";
+  if (docsTab) docsTab.className = "inactive-section";
+  if (navHome) navHome.classList.add("active");
+  if (navDocs) navDocs.classList.remove("active");
 };
 
 window.showDocuments = function () {
-  document.getElementById("home-tab").className = "inactive-section";
-  document.getElementById("documents-tab").className = "active-section";
-  document.getElementById("nav-home").classList.remove("active");
-  document.getElementById("nav-documents").classList.add("active");
+  const homeTab = document.getElementById("home-tab");
+  const docsTab = document.getElementById("documents-tab");
+  const navHome = document.getElementById("nav-home");
+  const navDocs = document.getElementById("nav-documents");
+
+  if (homeTab) homeTab.className = "inactive-section";
+  if (docsTab) docsTab.className = "active-section";
+  if (navHome) navHome.classList.remove("active");
+  if (navDocs) navDocs.classList.add("active");
   renderSavedDocuments();
 };
 
@@ -400,57 +427,60 @@ window.deleteDocEntry = function (id) {
 };
 
 // ─── Sidebar button wiring ─────────────────────────────────────────────────
-document.getElementById("savepdf").addEventListener("click", saveAsPDF);
+document.getElementById("savepdf")?.addEventListener("click", saveAsPDF);
 
-document.getElementById("cleardone").addEventListener("click", () => {
-  document.getElementById("clearModal").style.display = "flex";
-});
+const clearDoneEl = document.getElementById("cleardone");
+const clearModalEl = document.getElementById("clearModal");
+if (clearDoneEl && clearModalEl) {
+  clearDoneEl.addEventListener("click", () => {
+    clearModalEl.style.display = "flex";
+  });
 
-document.getElementById("modalCancelBtn").addEventListener("click", () => {
-  document.getElementById("clearModal").style.display = "none";
-});
+  document.getElementById("modalCancelBtn")?.addEventListener("click", () => {
+    clearModalEl.style.display = "none";
+  });
 
-document.getElementById("modalConfirmBtn").addEventListener("click", () => {
-  tasks = [];
-  saveTasks();
-  renderKanban();
-  document.getElementById("clearModal").style.display = "none";
-  showToast("🧹 Workspace cleared!", "info");
-});
+  document.getElementById("modalConfirmBtn")?.addEventListener("click", () => {
+    tasks = [];
+    saveTasks();
+    renderKanban();
+    clearModalEl.style.display = "none";
+    showToast("🧹 Workspace cleared!", "info");
+  });
 
-document.getElementById("clearModal").addEventListener("click", e => {
-  if (e.target === document.getElementById("clearModal"))
-    document.getElementById("clearModal").style.display = "none";
-});
+  clearModalEl.addEventListener("click", e => {
+    if (e.target === clearModalEl) clearModalEl.style.display = "none";
+  });
+}
 
 const clearCompletedBtn = document.getElementById("clearCompletedBtn");
 const clearCompletedModal = document.getElementById("clearCompletedModal");
+if (clearCompletedBtn && clearCompletedModal) {
+  clearCompletedBtn.addEventListener("click", () => {
+    const completedCount = tasks.filter(t => t.status === "completed").length;
+    if (completedCount === 0) { showToast("✨ No completed tasks to clear!", "info"); return; }
+    clearCompletedModal.style.display = "flex";
+  });
 
-clearCompletedBtn.addEventListener("click", () => {
-  const completedCount = tasks.filter(t => t.status === "completed").length;
-  if (completedCount === 0) { showToast("✨ No completed tasks to clear!", "info"); return; }
-  clearCompletedModal.style.display = "flex";
-});
+  document.getElementById("completedModalCancelBtn")?.addEventListener("click", () => {
+    clearCompletedModal.style.display = "none";
+  });
 
-document.getElementById("completedModalCancelBtn").addEventListener("click", () => {
-  clearCompletedModal.style.display = "none";
-});
+  document.getElementById("completedModalConfirmBtn")?.addEventListener("click", () => {
+    tasks = tasks.filter(t => t.status !== "completed");
+    saveTasks();
+    renderKanban();
+    clearCompletedModal.style.display = "none";
+    showToast("✅ Completed tasks cleared!", "success");
+  });
 
-document.getElementById("completedModalConfirmBtn").addEventListener("click", () => {
-  tasks = tasks.filter(t => t.status !== "completed");
-  saveTasks();
-  renderKanban();
-  clearCompletedModal.style.display = "none";
-  showToast("✅ Completed tasks cleared!", "success");
-});
-
-clearCompletedModal.addEventListener("click", e => {
-  if (e.target === clearCompletedModal) clearCompletedModal.style.display = "none";
-});
+  clearCompletedModal.addEventListener("click", e => {
+    if (e.target === clearCompletedModal) clearCompletedModal.style.display = "none";
+  });
+}
 
 // ─── Theme switching ───────────────────────────────────────────────────────
 const themeButtons = document.querySelectorAll(".theme-btn");
-
 function applyTheme(theme) {
   document.body.classList.remove("theme1", "theme2", "theme3", "theme4", "theme5");
   document.body.classList.add(theme);
