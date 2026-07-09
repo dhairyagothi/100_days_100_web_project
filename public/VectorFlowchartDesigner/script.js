@@ -623,7 +623,7 @@
 
     svgState.connectionElements = [];
   };
-git 
+
   const bindToolbar = () => {
     toolbarButtons.forEach((button) => {
       if (button === themeToggleBtn) {

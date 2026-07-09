@@ -1,89 +1,136 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Saturn Particle Gesture — Aevai</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css" />
-  <!-- Load MediaPipe Hands and camera utils from CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
-</head>
-<body>
-  <div id="app">
-    <canvas id="scene"></canvas>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Saturn Particle Gesture — Aevai</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+    <!-- Load MediaPipe Hands and camera utils from CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <canvas id="scene"></canvas>
 
-    <nav id="navbar">
-      <div class="nav-brand">AEVAI SYSTEMS <span class="nav-subtitle">/ Saturn Physics</span></div>
+      <nav id="navbar">
+        <div class="nav-brand">
+          AEVAI SYSTEMS <span class="nav-subtitle">/ Saturn Physics</span>
+        </div>
 
-      <!-- Gesture status badge — always visible on desktop, shown in mobile panel too -->
-      <div id="gestureIndicator" class="nav-status">Status: <span id="gesture">—</span></div>
+        <!-- Gesture status badge — always visible on desktop, shown in mobile panel too -->
+        <div id="gestureIndicator" class="nav-status">
+          Status: <span id="gesture">—</span>
+        </div>
 
-      <!-- Hamburger button — visible only on mobile -->
-      <button id="mobileMenuBtn" class="mobile-menu-btn" aria-label="Open menu" aria-expanded="false">
-        <span></span><span></span><span></span>
-      </button>
+        <!-- Hamburger button — visible only on mobile -->
+        <button
+          id="mobileMenuBtn"
+          class="mobile-menu-btn"
+          aria-label="Open menu"
+          aria-expanded="false"
+        >
+          <span></span><span></span><span></span>
+        </button>
 
-      <!-- Nav menu — desktop row / mobile slide-down panel -->
-      <div class="nav-menu" id="navMenu">
-        <!-- Close button inside panel (mobile only) -->
-        <button class="mobile-panel-close" id="mobilePanelClose" aria-label="Close menu">✕</button>
+        <!-- Nav menu — desktop row / mobile slide-down panel -->
+        <div class="nav-menu" id="navMenu">
+          <!-- Close button inside panel (mobile only) -->
+          <button
+            class="mobile-panel-close"
+            id="mobilePanelClose"
+            aria-label="Close menu"
+          >
+            ✕
+          </button>
 
-        <div class="nav-item" id="cameraNavItem">
-          <span>Camera &amp; Tracking ▾</span>
-          <div class="dropdown">
-            <div class="preview">
-              <video id="video" width="160" height="120" autoplay muted playsinline></video>
+          <div class="nav-item" id="cameraNavItem">
+            <span>Camera &amp; Tracking ▾</span>
+            <div class="dropdown">
+              <div class="preview">
+                <video
+                  id="video"
+                  width="160"
+                  height="120"
+                  autoplay
+                  muted
+                  playsinline
+                ></video>
+              </div>
+              <div class="toggles">
+                <label
+                  ><input id="trackingToggle" type="checkbox" checked /> Enable
+                  Hand Tracking</label
+                >
+              </div>
             </div>
-            <div class="toggles">
-              <label><input id="trackingToggle" type="checkbox" checked> Enable Hand Tracking</label>
+          </div>
+
+          <div id="instructionsNavItem" class="nav-item">
+            <span>Instructions ▾</span>
+            <div
+              id="instructionsDropdown"
+              class="dropdown instructions-dropdown"
+            >
+              <div class="panel-header">
+                <h3>Controls &amp; Gestures</h3>
+              </div>
+              <ul class="gesture-list">
+                <li>
+                  <div class="gesture-icon">🖐️</div>
+                  <div class="gesture-desc">
+                    <strong>Open Hand</strong><br /><span>Idle Scatter</span>
+                  </div>
+                </li>
+                <li>
+                  <div class="gesture-icon">✊</div>
+                  <div class="gesture-desc">
+                    <strong>Fist</strong><br /><span>Saturn Formation</span>
+                  </div>
+                </li>
+                <li>
+                  <div class="gesture-icon">↔️</div>
+                  <div class="gesture-desc">
+                    <strong>Move Fist L/R</strong><br /><span
+                      >Rotate Planet</span
+                    >
+                  </div>
+                </li>
+                <li>
+                  <div class="gesture-icon">↕️</div>
+                  <div class="gesture-desc">
+                    <strong>Hand Closer/Farther</strong><br /><span
+                      >Zoom In / Out</span
+                    >
+                  </div>
+                </li>
+                <li>
+                  <div class="gesture-icon">👍</div>
+                  <div class="gesture-desc">
+                    <strong>Thumbs Up</strong><br /><span
+                      >Charge Supernova!</span
+                    >
+                  </div>
+                </li>
+              </ul>
+              <div class="shortcuts">
+                <p>Shortcuts: <kbd>T</kbd> Toggle Tracking</p>
+              </div>
             </div>
           </div>
         </div>
+      </nav>
 
-        <div id="instructionsNavItem" class="nav-item">
-          <span>Instructions ▾</span>
-          <div id="instructionsDropdown" class="dropdown instructions-dropdown">
-            <div class="panel-header">
-              <h3>Controls &amp; Gestures</h3>
-            </div>
-            <ul class="gesture-list">
-              <li>
-                <div class="gesture-icon">🖐️</div>
-                <div class="gesture-desc"><strong>Open Hand</strong><br/><span>Idle Scatter</span></div>
-              </li>
-              <li>
-                <div class="gesture-icon">✊</div>
-                <div class="gesture-desc"><strong>Fist</strong><br/><span>Saturn Formation</span></div>
-              </li>
-              <li>
-                <div class="gesture-icon">↔️</div>
-                <div class="gesture-desc"><strong>Move Fist L/R</strong><br/><span>Rotate Planet</span></div>
-              </li>
-              <li>
-                <div class="gesture-icon">↕️</div>
-                <div class="gesture-desc"><strong>Hand Closer/Farther</strong><br/><span>Zoom In / Out</span></div>
-              </li>
-              <li>
-                <div class="gesture-icon">👍</div>
-                <div class="gesture-desc"><strong>Thumbs Up</strong><br/><span>Charge Supernova!</span></div>
-              </li>
-            </ul>
-            <div class="shortcuts">
-              <p>Shortcuts: <kbd>T</kbd> Toggle Tracking</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </nav>
+      <!-- Mobile overlay backdrop -->
+      <div id="mobileOverlay" class="mobile-overlay"></div>
+    </div>
 
-    <!-- Mobile overlay backdrop -->
-    <div id="mobileOverlay" class="mobile-overlay"></div>
-  </div>
-
-  <script src="./app.js" type="module"></script>
-</body>
+    <script src="./app.js" type="module"></script>
+  </body>
 </html>

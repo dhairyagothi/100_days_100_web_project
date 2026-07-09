@@ -1,3 +1,4 @@
+const NASA_API_KEY = "DEMO_KEY"; //add your api key. Get it from NASA APOD API(Its free!)
 const NASA_API_KEY =
   window.NASA_API_KEY ||
   (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_NASA_API_KEY) ||
@@ -22,7 +23,15 @@ async function fetchAPOD(date = null) {
     const response = await fetch(url);
 
     if (!response.ok) {
-      throw new Error(`NASA API Error: ${response.status}`);
+      if (response.status === 403) {
+        throw new Error("Access Forbidden (403): Invalid or missing NASA API key. If using the default key, the rate limit might have been exceeded, or the key might be blocked.");
+      } else if (response.status === 429) {
+        throw new Error("Rate Limit Exceeded (429): You have exceeded the hourly limit for the DEMO_KEY. Please sign up for a free NASA API key to continue.");
+      } else if (response.status === 503) {
+        throw new Error("Service Unavailable (503): NASA's APOD API is currently down or overloaded. Please try again later.");
+      } else {
+        throw new Error(`NASA API Error: ${response.status}`);
+      }
     }
 
     const data = await response.json();
@@ -42,16 +51,26 @@ async function fetchAPOD(date = null) {
       const img = new Image();
 
       await new Promise((resolve, reject) => {
-        img.onload = resolve;
-        img.onerror = reject;
-        img.src = data.url;
+        const timeoutId = setTimeout(() => {
+          img.onload = null;
+          img.onerror = null;
+          reject(new Error("Image load timed out"));
+        }, 15000);
 
-        setTimeout(reject, 10000);
+        img.onload = () => {
+          clearTimeout(timeoutId);
+          resolve();
+        };
+        img.onerror = () => {
+          clearTimeout(timeoutId);
+          reject(new Error("Failed to load image"));
+        };
+        img.src = data.url;
       });
 
       image.src = data.url;
     } else if (data.media_type === "video") {
-      image.src = "/api/placeholder/400/250";
+      image.src = "https://placehold.co/400x250/1e293b/94a3b8?text=Video+Content";
 
       document.getElementById("description").textContent =
         `${data.explanation}\n\nVideo URL: ${data.url}`;
@@ -66,15 +85,23 @@ async function fetchAPOD(date = null) {
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
-    image.classList.remove("loading");
-    contentContainer.classList.remove("loading");
   } catch (error) {
     console.error("Error fetching APOD:", error);
     document.getElementById("title").textContent = "Error Loading Content";
-    document.getElementById("image").src = "/api/placeholder/400/250";
-    document.getElementById("description").textContent =
-      "Unable to load APOD data. Please try again later.";
+    document.getElementById("image").src = "https://placehold.co/400x250/1e293b/94a3b8?text=Image+Unavailable";
+    
+    let errorMsg = "Unable to load APOD data. Please try again later.";
+    if (error.message.includes("403") || error.message.includes("429") || error.message.includes("503")) {
+      errorMsg = error.message;
+    } else if (error.message.includes("Failed to fetch")) {
+      errorMsg = "Network Error: Please check your internet connection.";
+    } else {
+      errorMsg = error.message || "An unexpected error occurred.";
+    }
+    document.getElementById("description").textContent = errorMsg;
   } finally {
+    image.classList.remove("loading");
+    contentContainer.classList.remove("loading");
     setTimeout(() => {
       loader.classList.remove("visible");
     }, 0);
@@ -86,8 +113,47 @@ document.getElementById("image").addEventListener("load", function () {
 });
 
 async function getBookmarks() {
-  const result = await chrome.storage.local.get("apodBookmarks");
-  return result.apodBookmarks || [];
+  if (typeof chrome !== "undefined" && chrome.storage && chrome.storage.local) {
+    try {
+      return await new Promise((resolve) => {
+        chrome.storage.local.get("apodBookmarks", (result) => {
+          if (chrome.runtime.lastError) {
+            resolve([]);
+          } else {
+            resolve(result.apodBookmarks || []);
+          }
+        });
+      });
+    } catch (error) {
+      console.warn("Failed to get bookmarks from chrome.storage.local:", error);
+    }
+  }
+  try {
+    const result = localStorage.getItem("apodBookmarks");
+    return result ? JSON.parse(result) : [];
+  } catch (e) {
+    console.error("Failed to read from localStorage:", e);
+    return [];
+  }
+}
+
+async function saveBookmarks(bookmarks) {
+  if (typeof chrome !== "undefined" && chrome.storage && chrome.storage.local) {
+    try {
+      return await new Promise((resolve) => {
+        chrome.storage.local.set({ apodBookmarks: bookmarks }, () => {
+          resolve();
+        });
+      });
+    } catch (error) {
+      console.warn("Failed to set bookmarks in chrome.storage.local:", error);
+    }
+  }
+  try {
+    localStorage.setItem("apodBookmarks", JSON.stringify(bookmarks));
+  } catch (e) {
+    console.error("Failed to write to localStorage:", e);
+  }
 }
 
 async function toggleBookmark() {
@@ -106,7 +172,7 @@ async function toggleBookmark() {
     bookmarks.splice(index, 1);
   }
 
-  await chrome.storage.local.set({ apodBookmarks: bookmarks });
+  await saveBookmarks(bookmarks);
   updateBookmarkButton(index === -1);
 
   if (document.getElementById("bookmarks-view").classList.contains("active")) {

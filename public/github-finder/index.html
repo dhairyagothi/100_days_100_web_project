@@ -32,21 +32,21 @@
           </p>
         </div>
 
-        <div id="loadingState" class="info-card hidden">
+        <div id="loadingState" class="hidden info-card">
           <div class="spinner"></div>
           <p>Querying GitHub API infrastructure...</p>
         </div>
 
-        <div id="errorState" class="info-card error-card hidden">
+        <div id="errorState" class="hidden info-card error-card">
           <div class="icon-avatar">⚠️</div>
-          <h3>No User Found</h3>
-          <p>
+          <h3 id="errorTitle">No User Found</h3>
+          <p id="errorMessage">
             We couldn't locate that specific profile. Check your spelling and
             try searching again.
           </p>
         </div>
 
-        <article id="profileResultCard" class="profile-layout hidden">
+        <article id="profileResultCard" class="hidden profile-layout">
           <section class="user-profile-card">
             <div class="profile-header">
               <img id="userAvatar" src="" alt="User Avatar Graphic" />

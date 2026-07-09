@@ -412,4 +412,19 @@ input[type="text"], input[type="number"] {
     margin: 0;
     color: #ddd;
     font-size: 14px;
+.back-home{
+    display:inline-block;
+    padding:10px 18px;
+    margin-bottom:20px;
+    color:#e63946;
+    border:2px solid #e63946;
+    border-radius:8px;
+    text-decoration:none;
+    font-weight:bold;
+    transition:0.3s;
+}
+
+.back-home:hover{
+    background:#e63946;
+    color:white;
 }

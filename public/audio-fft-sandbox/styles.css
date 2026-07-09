@@ -1,0 +1,184 @@
+:root {
+    --bg-dark: #06080c;
+    --panel-bg: rgba(11, 16, 26, 0.85);
+    --border-neon: #00f0ff;
+    /* Cyber Cyan */
+    --text-primary: #f8fafc;
+    --text-muted: #475569;
+    --neon-yellow: #ffaa00;
+    --neon-cyan: #00f0ff;
+    --neon-pink: #ff007f;
+    --neon-green: #39ff14;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    overflow: hidden;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.lab-container {
+    display: grid;
+    grid-template-columns: 290px 1fr;
+    width: 100vw;
+    height: 100vh;
+    background: radial-gradient(circle at center, #0b1329 0%, #02040a 100%);
+}
+
+/* Audio Laboratory Controls Sidebar Sidebar */
+.telemetry-panel {
+    background: var(--panel-bg);
+    border-right: 2px solid rgba(0, 240, 255, 0.15);
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    backdrop-filter: blur(12px);
+    box-shadow: 5px 0 25px rgba(0, 0, 0, 0.7);
+}
+
+.telemetry-panel h2 {
+    font-size: 1.15rem;
+    letter-spacing: 2px;
+    color: var(--neon-cyan);
+    text-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
+}
+
+.divider {
+    border: none;
+    height: 1px;
+    background: linear-gradient(to right, var(--neon-cyan), transparent);
+}
+
+.control-box button {
+    width: 100%;
+    padding: 12px;
+    background: transparent;
+    border: 1px solid var(--neon-cyan);
+    color: var(--neon-cyan);
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 4px;
+    box-shadow: inset 0 0 8px rgba(0, 240, 255, 0.1);
+    transition: all 0.2s ease;
+}
+
+.control-box button:hover {
+    background: var(--neon-cyan);
+    color: #000;
+    box-shadow: 0 0 15px var(--neon-cyan);
+}
+
+.metric-box {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    padding: 14px;
+    border-radius: 4px;
+}
+
+.metric-box .label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    display: block;
+    margin-bottom: 5px;
+    letter-spacing: 1px;
+}
+
+.metric-box .value {
+    font-size: 1.35rem;
+    font-weight: bold;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
+}
+
+.metric-box .value.warning {
+    color: var(--neon-yellow);
+    text-shadow: 0 0 10px rgba(255, 170, 0, 0.4);
+}
+
+.metric-box .value.safe {
+    color: var(--neon-green);
+    text-shadow: 0 0 10px rgba(57, 255, 20, 0.4);
+}
+
+.metric-box .value.accent {
+    color: var(--neon-cyan);
+    text-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
+}
+
+.instruction-pad {
+    margin-top: auto;
+    border-left: 2px solid var(--neon-pink);
+    padding-left: 12px;
+}
+
+.instruction-pad h3 {
+    font-size: 0.85rem;
+    color: var(--neon-pink);
+    margin-bottom: 5px;
+}
+
+.instruction-pad p {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+}
+
+/* Visualization Board Workspace Viewports */
+.viewport-area {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.viewport-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+}
+
+.status-dot {
+    width: 6px;
+    height: 6px;
+    background-color: var(--neon-cyan);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--neon-cyan);
+}
+
+.blinking {
+    animation: blink 2.2s infinite;
+}
+
+@keyframes blink {
+
+    0%,
+    100% {
+        opacity: 0.3;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+canvas {
+    flex-grow: 1;
+    background: #030407;
+    border: 1px solid rgba(0, 240, 255, 0.08);
+    border-radius: 4px;
+    cursor: crosshair;
+}
