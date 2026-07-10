@@ -3590,3 +3590,20 @@ body.custom-cursor-active .cursor-ring.is-visible {
   border-radius: 10px;
 }
 
+/* ============================================================
+   GLOBAL BOOKMARKS FILTER TOGGLE
+   ============================================================ */
+#toggleBookmarksOnlyBtn {
+  transition: all 0.3s ease;
+}
+#toggleBookmarksOnlyBtn.active {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+  box-shadow: 0 0 15px var(--accent-glow);
+}
+#toggleBookmarksOnlyBtn.active i {
+  color: #fcee0a; /* Optional: Yellow star color when active */
+}
+
+

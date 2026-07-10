@@ -872,6 +872,12 @@ if (searchQuery.trim() && fuse) {
 }
 
 const filtered = searchResults.filter((project) => {
+    if (window.showBookmarkedOnly) {
+      const isBookmarked = bookmarkedProjects.some(
+        (b) => normalizeProjectEntry(b).day === project.day
+      );
+      if (!isBookmarked) return false;
+    }
 
     const day = project.day;
     const name = project.projectName;
@@ -1268,6 +1274,7 @@ function toggleBookmark(project) {
   }
 
   updateBookmarkURL();
+  renderGrid();
 
   try {
     localStorage.setItem(
@@ -2626,3 +2633,22 @@ document
     "click",
     renderRandomProject
   );
+
+window.showBookmarkedOnly = false;
+document.addEventListener("DOMContentLoaded", () => {
+  const toggleBookmarksOnlyBtn = document.getElementById("toggleBookmarksOnlyBtn");
+  if (toggleBookmarksOnlyBtn) {
+    toggleBookmarksOnlyBtn.addEventListener("click", () => {
+      window.showBookmarkedOnly = !window.showBookmarkedOnly;
+      if (window.showBookmarkedOnly) {
+        toggleBookmarksOnlyBtn.classList.add("active");
+        toggleBookmarksOnlyBtn.innerHTML = '<i class="fas fa-star" aria-hidden="true"></i> Show All Projects';
+      } else {
+        toggleBookmarksOnlyBtn.classList.remove("active");
+        toggleBookmarksOnlyBtn.innerHTML = '<i class="far fa-star" aria-hidden="true"></i> Show Bookmarked Only ⭐';
+      }
+      currentPage = 1;
+      renderGrid();
+    });
+  }
+});
