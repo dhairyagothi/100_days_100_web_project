@@ -306,6 +306,173 @@
           <h2 class="section-title">Every experiment, catalogued.</h2>
         </div>
 
+        <!-- Learning Map Container -->
+        <div class="learning-map-container" id="learningMapContainer">
+          <div class="learning-map-header">
+            <h3><i class="fas fa-route"></i> Learning Path Map</h3>
+            <p>Select a learning track to filter the project archive by category and focus your skill building.</p>
+          </div>
+
+          <!-- SVG Visual Learning Map (Desktop/Tablet) -->
+          <div class="learning-map-svg-wrap">
+            <svg class="learning-map-svg" viewBox="0 0 1020 250" xmlns="http://www.w3.org/2000/svg">
+              <!-- Sequential paths connecting the nodes -->
+              <path d="M 120,120 C 220,120 220,70 320,70" class="map-connection-line" id="conn-ui-tool" />
+              <path d="M 320,70 C 420,70 420,170 520,170" class="map-connection-line" id="conn-tool-api" />
+              <path d="M 520,170 C 620,170 620,70 720,70" class="map-connection-line" id="conn-api-clone" />
+              <path d="M 720,70 C 810,70 810,120 900,120" class="map-connection-line" id="conn-clone-game" />
+
+              <!-- Node 1: UI/Animation (ui) -->
+              <g class="map-node" data-category="ui" tabindex="0" role="button" aria-label="Beginner HTML/CSS track: UI and layout projects">
+                <g transform="translate(120, 120)">
+                  <circle r="36" class="node-outer" />
+                  <circle r="26" class="node-inner" />
+                  <text class="node-text-num">01</text>
+                  <text y="54" class="node-title">Beginner HTML/CSS</text>
+                  <text y="70" class="node-subtitle">UI & Layouts</text>
+                </g>
+              </g>
+
+              <!-- Node 2: DOM & Interactive JS (tool) -->
+              <g class="map-node" data-category="tool" tabindex="0" role="button" aria-label="DOM and Interactive JavaScript track: tool and utility projects">
+                <g transform="translate(320, 70)">
+                  <circle r="36" class="node-outer" />
+                  <circle r="26" class="node-inner" />
+                  <text class="node-text-num">02</text>
+                  <text y="54" class="node-title">DOM & Interactive JS</text>
+                  <text y="70" class="node-subtitle">Dynamic Tools</text>
+                </g>
+              </g>
+
+              <!-- Node 3: API Integrations (api) -->
+              <g class="map-node" data-category="api" tabindex="0" role="button" aria-label="API Integrations track: API fetching and dashboard projects">
+                <g transform="translate(520, 170)">
+                  <circle r="36" class="node-outer" />
+                  <circle r="26" class="node-inner" />
+                  <text class="node-text-num">03</text>
+                  <text y="54" class="node-title">API Integrations</text>
+                  <text y="70" class="node-subtitle">Data & Services</text>
+                </g>
+              </g>
+
+              <!-- Node 4: Frontend Clones (clone) -->
+              <g class="map-node" data-category="clone" tabindex="0" role="button" aria-label="Frontend Clones track: Landing page and application clone projects">
+                <g transform="translate(720, 70)">
+                  <circle r="36" class="node-outer" />
+                  <circle r="26" class="node-inner" />
+                  <text class="node-text-num">04</text>
+                  <text y="54" class="node-title">Frontend Clones</text>
+                  <text y="70" class="node-subtitle">Replicating Designs</text>
+                </g>
+              </g>
+
+              <!-- Node 5: Advanced Canvas & Games (game) -->
+              <g class="map-node" data-category="game" tabindex="0" role="button" aria-label="Advanced Canvas and Games track: 2D game loops and audio visualizer projects">
+                <g transform="translate(900, 120)">
+                  <circle r="36" class="node-outer" />
+                  <circle r="26" class="node-inner" />
+                  <text class="node-text-num">05</text>
+                  <text y="54" class="node-title">Advanced Canvas & Games</text>
+                  <text y="70" class="node-subtitle">Complex Logic</text>
+                </g>
+              </g>
+            </svg>
+          </div>
+
+          <!-- Mobile Accordion (Switch for Mobile Breakpoint) -->
+          <div class="learning-map-mobile-accordion">
+            <!-- Step 1 -->
+            <div class="accordion-item" data-category="ui">
+              <div class="accordion-header" role="button" aria-expanded="false" aria-controls="acc-body-ui" tabindex="0">
+                <span class="track-num">01</span>
+                <div class="track-info">
+                  <h4>Beginner HTML/CSS</h4>
+                  <span class="track-tag">UI & Layouts</span>
+                </div>
+                <i class="fas fa-chevron-right arrow-icon" aria-hidden="true"></i>
+              </div>
+              <div class="accordion-content" id="acc-body-ui">
+                <div class="accordion-body">
+                  <p>Learn the foundations of web structure and design. Build responsive layout cards, profiles, navigation headers, and creative CSS transitions/animations.</p>
+                  <button class="accordion-btn" aria-label="Explore Beginner HTML/CSS projects"><i class="fas fa-filter" aria-hidden="true"></i> Explore Track</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="accordion-item" data-category="tool">
+              <div class="accordion-header" role="button" aria-expanded="false" aria-controls="acc-body-tool" tabindex="0">
+                <span class="track-num">02</span>
+                <div class="track-info">
+                  <h4>DOM & Interactive JS</h4>
+                  <span class="track-tag">Dynamic Tools</span>
+                </div>
+                <i class="fas fa-chevron-right arrow-icon" aria-hidden="true"></i>
+              </div>
+              <div class="accordion-content" id="acc-body-tool">
+                <div class="accordion-body">
+                  <p>Bring interfaces to life. Practice event listening, state management, and local storage by building calculators, notes apps, form builders, and other useful interactive tools.</p>
+                  <button class="accordion-btn" aria-label="Explore DOM & Interactive JS projects"><i class="fas fa-filter" aria-hidden="true"></i> Explore Track</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="accordion-item" data-category="api">
+              <div class="accordion-header" role="button" aria-expanded="false" aria-controls="acc-body-api" tabindex="0">
+                <span class="track-num">03</span>
+                <div class="track-info">
+                  <h4>API Integrations</h4>
+                  <span class="track-tag">Data & Services</span>
+                </div>
+                <i class="fas fa-chevron-right arrow-icon" aria-hidden="true"></i>
+              </div>
+              <div class="accordion-content" id="acc-body-api">
+                <div class="accordion-body">
+                  <p>Fetch, parse, and render live data from external services. Master async/await, promise chains, search debounce, and dashboard updates using REST APIs.</p>
+                  <button class="accordion-btn" aria-label="Explore API Integrations projects"><i class="fas fa-filter" aria-hidden="true"></i> Explore Track</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 4 -->
+            <div class="accordion-item" data-category="clone">
+              <div class="accordion-header" role="button" aria-expanded="false" aria-controls="acc-body-clone" tabindex="0">
+                <span class="track-num">04</span>
+                <div class="track-info">
+                  <h4>Frontend Clones</h4>
+                  <span class="track-tag">Replicating Designs</span>
+                </div>
+                <i class="fas fa-chevron-right arrow-icon" aria-hidden="true"></i>
+              </div>
+              <div class="accordion-content" id="acc-body-clone">
+                <div class="accordion-body">
+                  <p>Replicate popular application designs and standard features. Focus on layout accuracy, theme handling, side panels, and scaling components like search inputs and navigation tabs.</p>
+                  <button class="accordion-btn" aria-label="Explore Frontend Clones projects"><i class="fas fa-filter" aria-hidden="true"></i> Explore Track</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 5 -->
+            <div class="accordion-item" data-category="game">
+              <div class="accordion-header" role="button" aria-expanded="false" aria-controls="acc-body-game" tabindex="0">
+                <span class="track-num">05</span>
+                <div class="track-info">
+                  <h4>Advanced Canvas & Games</h4>
+                  <span class="track-tag">Complex Logic</span>
+                </div>
+                <i class="fas fa-chevron-right arrow-icon" aria-hidden="true"></i>
+              </div>
+              <div class="accordion-content" id="acc-body-game">
+                <div class="accordion-body">
+                  <p>Deep-dive into HTML5 Canvas, high-performance rendering, game loops, audio nodes, physics math, and complex visual graphics for maximum frontend capability.</p>
+                  <button class="accordion-btn" aria-label="Explore Advanced Canvas & Games projects"><i class="fas fa-filter" aria-hidden="true"></i> Explore Track</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div class="projects-header">
           <div
             class="filter-chips"

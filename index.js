@@ -1005,6 +1005,9 @@ const filtered = searchResults.filter((project) => {
 
   syncStateToURL();
   syncProjectCounts();
+  if (typeof syncLearningMapWithFilter === "function") {
+    syncLearningMapWithFilter(activeFilter);
+  }
 }
 console.log("===== RENDER GRID =====");
 console.log("PROJECTS:", PROJECTS.length);
@@ -2060,6 +2063,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   initSorting();
   initTechStackSearch();
   initClearAllFilters();
+  initLearningMap();
 
   //updateGamifiedUI();
 
@@ -2626,3 +2630,187 @@ document
     "click",
     renderRandomProject
   );
+
+/* ============================================================
+   LEARNING PATH MAP SYSTEM
+   ============================================================ */
+
+function initLearningMap() {
+  const mapContainer = document.getElementById("learningMapContainer");
+  if (!mapContainer) return;
+
+  const svgNodes = mapContainer.querySelectorAll(".map-node");
+  const accordionItems = mapContainer.querySelectorAll(".accordion-item");
+
+  // Helper to trigger the actual filter chip click
+  const selectCategory = (category) => {
+    const chip = document.querySelector(`.chip[data-filter="${category}"]`);
+    if (chip) {
+      chip.click();
+    } else {
+      // Fallback in case chip click doesn't bubble or is missing
+      activeFilter = category;
+      currentPage = 1;
+      renderGrid();
+    }
+  };
+
+  // SVG Nodes Clicks & Key events
+  svgNodes.forEach((node) => {
+    const category = node.getAttribute("data-category");
+    if (!category) return;
+
+    node.addEventListener("click", (e) => {
+      e.preventDefault();
+      selectCategory(category);
+      scrollToProjectSection();
+    });
+
+    node.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        selectCategory(category);
+        scrollToProjectSection();
+      }
+    });
+  });
+
+  // Mobile Accordion toggles
+  accordionItems.forEach((item) => {
+    const category = item.getAttribute("data-category");
+    const header = item.querySelector(".accordion-header");
+    const content = item.querySelector(".accordion-content");
+    const btn = item.querySelector(".accordion-btn");
+
+    if (!header || !content || !category) return;
+
+    const toggleAccordion = (expandOnly = false) => {
+      const isExpanded = item.classList.contains("expanded");
+      
+      // Collapse other items
+      accordionItems.forEach((otherItem) => {
+        if (otherItem !== item) {
+          otherItem.classList.remove("expanded");
+          const otherContent = otherItem.querySelector(".accordion-content");
+          if (otherContent) otherContent.style.maxHeight = null;
+          const otherHeader = otherItem.querySelector(".accordion-header");
+          if (otherHeader) otherHeader.setAttribute("aria-expanded", "false");
+        }
+      });
+
+      if (expandOnly || !isExpanded) {
+        item.classList.add("expanded");
+        content.style.maxHeight = content.scrollHeight + "px";
+        header.setAttribute("aria-expanded", "true");
+      } else {
+        item.classList.remove("expanded");
+        content.style.maxHeight = null;
+        header.setAttribute("aria-expanded", "false");
+      }
+    };
+
+    header.addEventListener("click", (e) => {
+      e.preventDefault();
+      toggleAccordion();
+    });
+
+    header.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        toggleAccordion();
+      }
+    });
+
+    // Explore Track Button inside accordion content
+    if (btn) {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        selectCategory(category);
+        scrollToProjectSection();
+      });
+    }
+  });
+
+  // Run initial sync
+  syncLearningMapWithFilter(activeFilter);
+}
+
+function syncLearningMapWithFilter(category) {
+  const mapContainer = document.getElementById("learningMapContainer");
+  if (!mapContainer) return;
+
+  const svgElement = mapContainer.querySelector(".learning-map-svg");
+  const svgNodes = mapContainer.querySelectorAll(".map-node");
+  const accordionItems = mapContainer.querySelectorAll(".accordion-item");
+
+  const connUiTool = document.getElementById("conn-ui-tool");
+  const connToolApi = document.getElementById("conn-tool-api");
+  const connApiClone = document.getElementById("conn-api-clone");
+  const connCloneGame = document.getElementById("conn-clone-game");
+
+  // Deactivate all connections first
+  [connUiTool, connToolApi, connApiClone, connCloneGame].forEach((conn) => {
+    if (conn) conn.classList.remove("active");
+  });
+
+  if (!category || category === "all") {
+    // Neutral state: no active node
+    if (svgElement) svgElement.classList.remove("has-active-node");
+    
+    svgNodes.forEach((node) => node.classList.remove("active"));
+    
+    accordionItems.forEach((item) => {
+      item.classList.remove("active", "expanded");
+      const content = item.querySelector(".accordion-content");
+      if (content) content.style.maxHeight = null;
+      const header = item.querySelector(".accordion-header");
+      if (header) header.setAttribute("aria-expanded", "false");
+    });
+    return;
+  }
+
+  // Active category node highlight
+  if (svgElement) svgElement.classList.add("has-active-node");
+
+  // Synchronize SVG nodes
+  svgNodes.forEach((node) => {
+    const nodeCat = node.getAttribute("data-category");
+    if (nodeCat === category) {
+      node.classList.add("active");
+    } else {
+      node.classList.remove("active");
+    }
+  });
+
+  // Synchronize mobile accordion items
+  accordionItems.forEach((item) => {
+    const itemCat = item.getAttribute("data-category");
+    const content = item.querySelector(".accordion-content");
+    const header = item.querySelector(".accordion-header");
+    
+    if (itemCat === category) {
+      item.classList.add("active", "expanded");
+      if (content) content.style.maxHeight = content.scrollHeight + "px";
+      if (header) header.setAttribute("aria-expanded", "true");
+    } else {
+      item.classList.remove("active", "expanded");
+      if (content) content.style.maxHeight = null;
+      if (header) header.setAttribute("aria-expanded", "false");
+    }
+  });
+
+  // Connect sequential lines based on the selected learning journey stage
+  if (category === "tool" || category === "api" || category === "clone" || category === "game") {
+    if (connUiTool) connUiTool.classList.add("active");
+  }
+  if (category === "api" || category === "clone" || category === "game") {
+    if (connToolApi) connToolApi.classList.add("active");
+  }
+  if (category === "clone" || category === "game") {
+    if (connApiClone) connApiClone.classList.add("active");
+  }
+  if (category === "game") {
+    if (connCloneGame) connCloneGame.classList.add("active");
+  }
+}
