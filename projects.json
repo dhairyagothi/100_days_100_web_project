@@ -3126,5 +3126,23 @@
     ],
    "difficulty": "advanced",
     "projectPath": "./public/Flashcard-Quiz-App/index.html"
-   } 
+   },
+  {
+    "projectNo": 246,
+    "projectName": "SnapScribe",
+    "projectType": "Game",
+    "projectDesc": "AI-powered social media caption generator with image upload, camera capture, platform-aware captions, tone selection, and user-provided API key support.",
+    "techStack": ["tool", "react", "javascript", "css", "ai", "vite"],
+    "difficulty": "advanced",
+    "projectPath": "./public/SnapScribe/dist/index.html"
+  },
+  {
+    "projectNo": 247,
+    "projectName": "PixelPulse",
+    "projectType": "Tool",
+    "projectDesc": "A full-featured browser-based image editor with adjustments, filters, crop & rotate, text overlay, and freehand drawing — all client-side with zero uploads.",
+    "techStack": ["tool", "react", "javascript", "css", "vite"],
+    "difficulty": "advanced",
+    "projectPath": "./public/PixelPulse/dist/index.html"
+  }
 ]
