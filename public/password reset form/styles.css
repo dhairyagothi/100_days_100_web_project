@@ -1,0 +1,197 @@
+/* styles.css - Modern Dark Mode Password Reset */
+
+:root {
+  --bg-primary: #0f172a;
+  --bg-card: rgba(30, 41, 55, 0.95);
+  --text-primary: #f1f5f9;
+  --text-muted: #94a3b8;
+  --accent: #6366f1;
+  --accent-hover: #4f46e5;
+}
+
+* {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family:
+    "Segoe UI",
+    system-ui,
+    -apple-system,
+    sans-serif;
+  min-height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Animated Background Canvas */
+.background-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  opacity: 0.18;
+  pointer-events: none;
+}
+
+/* Card */
+.card {
+  background: var(--bg-card);
+  border: 1px solid rgba(148, 163, 184, 0.1);
+  border-radius: 24px;
+  backdrop-filter: blur(16px);
+  box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.5);
+  max-width: 460px;
+  width: 100%;
+}
+
+.card-body {
+  padding: 2.75rem;
+}
+
+/* Header */
+.text-center i {
+  filter: drop-shadow(0 4px 6px rgba(99, 102, 241, 0.3));
+}
+
+/* Form Labels */
+.form-label {
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 8px;
+}
+
+/* Input Fields with Icons */
+.input-group-text {
+  background: #1e2937;
+  border: 2px solid #334155;
+  border-right: none;
+  color: var(--accent);
+  border-radius: 12px 0 0 12px;
+  padding: 0 18px;
+}
+
+.form-control {
+  background: #1e2937;
+  border: 2px solid #334155;
+  border-left: none;
+  border-radius: 0 12px 12px 0;
+  padding: 14px 16px;
+  color: var(--text-primary);
+  font-size: 1rem;
+}
+
+.form-control:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.25);
+  background: #1e2937;
+  outline: none;
+}
+
+/* Toggle Password Button */
+.toggle-password {
+  background: #1e2937;
+  border: 2px solid #334155;
+  border-left: none;
+  border-radius: 0 12px 12px 0;
+  color: var(--text-muted);
+}
+
+.toggle-password:hover {
+  color: var(--accent);
+  background: #334155;
+}
+
+/* Password Strength */
+.password-strength {
+  height: 8px;
+  background: #334155;
+  border-radius: 9999px;
+  overflow: hidden;
+  margin-top: 10px;
+}
+
+.strength-bar {
+  height: 100%;
+  width: 0%;
+  transition:
+    width 0.4s ease,
+    background-color 0.4s ease;
+  border-radius: 9999px;
+}
+
+.strength-weak {
+  background: #ef4444;
+}
+.strength-medium {
+  background: #eab308;
+}
+.strength-strong {
+  background: #22c55e;
+}
+
+/* Button */
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+  border: none;
+  border-radius: 12px;
+  padding: 14px 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.3);
+}
+
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 20px 25px -5px rgba(99, 102, 241, 0.4);
+}
+
+.btn-primary:disabled {
+  opacity: 0.75;
+}
+
+/* Success Message */
+.alert-success {
+  background: rgba(16, 83, 45, 0.9);
+  border: 1px solid #4ade80;
+  color: #86efac;
+  border-radius: 16px;
+}
+
+/* Back Link */
+a.text-muted:hover {
+  color: var(--accent) !important;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.card {
+  animation: fadeInUp 0.7s ease backwards;
+}
+
+/* Responsive */
+@media (max-width: 576px) {
+  .card-body {
+    padding: 2rem 1.5rem;
+  }
+
+  .card {
+    margin: 15px;
+    border-radius: 20px;
+  }
+}

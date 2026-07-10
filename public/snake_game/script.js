@@ -9,9 +9,12 @@ canvas.height = ROWS * CELL;
 // Target audio tags loaded from HTML
 const eatSound = document.getElementById('eatSound');
 const gameOverSound = document.getElementById('gameOverSound');
+const snakeColorPicker = document.getElementById('snakeColorPicker');
+const SNAKE_COLOR_STORAGE_KEY = 'snakeColor';
+const DEFAULT_SNAKE_COLOR = '#39ff14';
 
 let snake, dir, nextDir, food, score, level, speed, running, paused;
-let lastTickTime = 0; // For smooth modern frame accumulation tracking
+let snakeColor = DEFAULT_SNAKE_COLOR;
 
 let highScore = 0;
 let isGameOver = false;
@@ -21,6 +24,35 @@ let finalScore = 0;
 let rafId        = null;   // requestAnimationFrame handle (main loop)
 let lastTickTime = 0;      // timestamp of last logic tick
 let accumulator  = 0;      // ms accumulated since last tick
+// ──────────────────────────────────────────────────────────────────────────
+
+// ─── Page Visibility API — pause/resume on tab switch ─────────────────────
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) {
+    if (running && !paused) {
+      setPaused(true);
+      paused_by_visibility = true;
+    }
+  } else {
+    if (paused_by_visibility) {
+      setPaused(false);
+      paused_by_visibility = false;
+    }
+  }
+});
+let paused_by_visibility = false; // tracks auto-pause vs user-pause
+
+function setPaused(value) {
+  paused = value;
+  const overlay = document.getElementById('pauseOverlay');
+  if (overlay) {
+    value ? overlay.classList.remove('hidden') : overlay.classList.add('hidden');
+  }
+  if (!value) {
+    lastTickTime = performance.now();
+    accumulator  = 0;
+  }
+}
 // ──────────────────────────────────────────────────────────────────────────
 
 // ─── Web Audio sound engine ────────────────────────────────────────────────
@@ -78,6 +110,45 @@ function soundDie() {
   );
 }
 
+function isValidHexColor(color) {
+  return /^#[0-9a-f]{6}$/i.test(color);
+}
+
+function hexToRgb(hex) {
+  const value = hex.slice(1);
+  return {
+    r: parseInt(value.slice(0, 2), 16),
+    g: parseInt(value.slice(2, 4), 16),
+    b: parseInt(value.slice(4, 6), 16),
+  };
+}
+
+function getSnakeSegmentColor(t) {
+  const rgb = hexToRgb(snakeColor);
+  const shade = 1 - t * 0.65;
+
+  return `rgb(${Math.round(rgb.r * shade)}, ${Math.round(rgb.g * shade)}, ${Math.round(rgb.b * shade)})`;
+}
+
+function setupSnakeColorPicker() {
+  if (!snakeColorPicker) return;
+
+  // Restore the saved color before the first draw so refreshes keep the same snake.
+  const savedColor = localStorage.getItem(SNAKE_COLOR_STORAGE_KEY);
+  snakeColor = isValidHexColor(savedColor) ? savedColor : DEFAULT_SNAKE_COLOR;
+  snakeColorPicker.value = snakeColor;
+
+  // Save and apply color changes immediately; the RAF loop repaints the running game.
+  snakeColorPicker.addEventListener('input', (event) => {
+    const newColor = event.target.value;
+    if (!isValidHexColor(newColor)) return;
+
+    snakeColor = newColor;
+    localStorage.setItem(SNAKE_COLOR_STORAGE_KEY, snakeColor);
+    draw();
+  });
+}
+
 function initGame() {
   const startX = Math.floor(COLS / 2);
   const startY = Math.floor(ROWS / 2);
@@ -94,7 +165,7 @@ function initGame() {
   level = 1;
   speed = 160;
   running = false;
-  paused = false;
+  setPaused(false);
 
   placeFood();
   updateHUD();
@@ -160,8 +231,7 @@ function draw() {
     const isHead = i === 0;
     const t = i / (snake.length - 1 || 1);
 
-    const g = Math.round(255 * (1 - t * 0.65));
-    const color = isHead ? '#39ff14' : `rgb(0, ${g}, 0)`;
+    const color = isHead ? snakeColor : getSnakeSegmentColor(t);
 
     const padding = isHead ? 1 : Math.min(3, 1 + t * 2);
     const x = seg.x * CELL + padding;
@@ -170,14 +240,14 @@ function draw() {
 
     ctx.save();
     if (isHead) {
-      ctx.shadowColor = '#39ff14';
+      ctx.shadowColor = snakeColor;
       ctx.shadowBlur = 12;
     }
     ctx.fillStyle = color;
     ctx.fillRect(x, y, size, size);
     ctx.restore();
 
-    // Eyes
+    // Keep the eye color tied to the board so custom snake colors remain readable.
     if (isHead) {
       ctx.fillStyle = '#050a05';
       const eyeSize = 3;
@@ -249,7 +319,12 @@ function gameEngine(timestamp) {
 
   if (running && !paused) {
     const elapsed = timestamp - lastTickTime;
-    if (elapsed >= speed) {
+
+    // Guard: if the tab was hidden and visibility API didn't fire (edge case),
+    // a huge elapsed value would cause multiple rapid ticks. Cap it to one tick worth.
+    if (elapsed > speed * 3) {
+      lastTickTime = timestamp;
+    } else if (elapsed >= speed) {
       tick();
       lastTickTime = timestamp;
     }
@@ -353,13 +428,10 @@ function handleKeyDown(e) {
     }
   }
 
-  if (e.key === ' ' && running) {
-    paused = !paused;
-    if (!paused) {
-      lastTickTime = performance.now();
-      accumulator  = 0;
-    }
-  }
+  if ((e.key === 'p' || e.key === 'P') && running) {
+  e.preventDefault();
+  setPaused(!paused);
+ }
 }
 
 document.addEventListener('keydown', handleKeyDown);
@@ -375,10 +447,12 @@ function animateIdle() {
   }
 }
 
+setupSnakeColorPicker();
 initGame();
 requestAnimationFrame(gameEngine);
 
 // ========== MOBILE TOUCH CONTROLS ==========
+// Mobile controls
 (function () {
   const mobileCanvas = document.getElementById('gameCanvas');
   const controls = document.getElementById('mobileControls');
@@ -468,3 +542,25 @@ requestAnimationFrame(gameEngine);
   window.addEventListener('resize', toggle);
   console.log('✅ Mobile touch controls loaded');
 })();
+
+const themeToggle = document.getElementById("themeToggle");
+
+let isLight = localStorage.getItem("theme") === "light";
+
+function applyTheme() {
+  if (isLight) {
+    document.body.classList.add("light");
+    themeToggle.textContent = "☀️ Light Mode";
+  } else {
+    document.body.classList.remove("light");
+    themeToggle.textContent = "🌙 Dark Mode";
+  }
+}
+
+applyTheme();
+
+themeToggle.addEventListener("click", () => {
+  isLight = !isLight;
+  localStorage.setItem("theme", isLight ? "light" : "dark");
+  applyTheme();
+});

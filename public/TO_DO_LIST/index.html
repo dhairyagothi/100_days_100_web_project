@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My To-Do List | Homepage</title>
+  <link rel="stylesheet" href="todolist.css" />
+  <style>
+    .hero {
+      text-align: center;
+      padding: 5rem 2rem;
+      background:
+        linear-gradient(to bottom, rgba(109, 213, 250, 0.6), rgba(255, 255, 255, 0.6)),
+        url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_qGhOOYGXpGYV_GN6wVuF9X9e44FHoj0bf_0FjIB6HA&s=10") center/cover no-repeat;
+      color: #333;
+    }
+  </style>
+</head>
+
+<body class="theme1">
+
+  <!-- Header Navigation -->
+  <header class="navbar">
+    <div class="logo">My To-Do List</div>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="todolist.html">Dashboard</a></li>
+        <li><a href="todolist.html">About</a></li>
+      </ul>
+    </nav>
+    <div class="theme-swatches">
+      <button id="colour1" class="theme-btn" data-theme="theme1" aria-label="Theme 1 – Purple"></button>
+      <button id="colour2" class="theme-btn" data-theme="theme2" aria-label="Theme 2 – Blue"></button>
+      <button id="colour3" class="theme-btn" data-theme="theme3" aria-label="Theme 3 – Teal"></button>
+      <button id="colour4" class="theme-btn" data-theme="theme4" aria-label="Theme 4 – Amber"></button>
+      <button id="colour5" class="theme-btn" data-theme="theme5" aria-label="Theme 5 – Red"></button>
+    </div>
+    <div class="nav-buttons">
+      <button class="login-btn">Login</button>
+      <button class="signup-btn">Sign Up</button>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <h1>Organize your day, achieve more.</h1>
+    <p>Plan tasks, track progress, and stay motivated.</p>
+    <div class="cta-buttons">
+      <button class="get-started">Get Started</button>
+      <button class="view-projects">View Projects</button>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features">
+    <div class="feature-card">
+      🧠
+      <h3>Smart Task Management</h3>
+      <p>Easily organize and prioritize your tasks.</p>
+    </div>
+    <div class="feature-card">
+     🎨
+      <h3>Clean UI Design</h3>
+      <p>Simple and intuitive interface.</p>
+    </div>
+    <div class="feature-card">
+     🚀
+      <h3>Fast & Responsive</h3>
+      <p>Optimized for all devices.</p>
+    </div>
+  </section>
+  <script src="todolist.js"></script>
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-links">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms</a>
+      <a href="#">Contact</a>
+    </div>
+    <div class="social-icons">
+      <a href="#">LinkedIn</a>
+      <a href="#">GitHub</a>
+      <a href="#">Twitter</a>
+    </div>
+    <p>© 2026 My To-Do List</p>
+  </footer>
+</body>
+
+</html>

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Embark on a galactic knowledge quest with Cosmic Quiz Quest. Select your category, face the countdown, and test your stellar wisdom in this modern, neon dark-theme experience.">
+    <title>Cosmic Quiz Quest | Test Your Stellar Wisdom</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Space+Grotesk:wght@400;500;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Starfield Particles Canvas -->
+    <canvas id="starfield"></canvas>
+
+    <!-- Top Navigation / Header -->
+    <header class="app-header">
+        <div class="logo">
+            <i class="fa-solid fa-shuttle-space logo-icon"></i>
+            <span class="logo-text">Cosmic <span class="accent-text">Quiz Quest</span></span>
+        </div>
+        <div class="header-controls">
+            <!-- Audio Toggle Button -->
+            <button id="sound-toggle-btn" class="control-btn" aria-label="Toggle sound sfx" title="Toggle Sound">
+                <i class="fa-solid fa-volume-high"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Game Container -->
+    <main class="game-container">
+
+        <!-- ================= WELCOME / SETUP SCREEN ================= -->
+        <section id="setup-screen" class="screen active">
+            <div class="screen-content text-center">
+                <h1 class="hero-title">Prepare for Launch</h1>
+                <p class="hero-subtitle">Select your mission parameters to test your galactic intellect.</p>
+
+                <!-- Category Grid -->
+                <div class="settings-group">
+                    <h2 class="group-title"><i class="fa-solid fa-compass"></i> Select Category</h2>
+                    <div class="category-grid">
+                        <button class="category-card active" data-category="cosmos">
+                            <div class="card-icon-wrapper cosmos-theme">
+                                <i class="fa-solid fa-user-astronaut"></i>
+                            </div>
+                            <h3>Space & Cosmos</h3>
+                            <p>Nebulae, stars, and dark matter</p>
+                        </button>
+
+                        <button class="category-card" data-category="cyberpunk">
+                            <div class="card-icon-wrapper cyberpunk-theme">
+                                <i class="fa-solid fa-microchip"></i>
+                            </div>
+                            <h3>Tech & Cyberpunk</h3>
+                            <p>Code, hacking, and futuristic tech</p>
+                        </button>
+
+                        <button class="category-card" data-category="nature">
+                            <div class="card-icon-wrapper nature-theme">
+                                <i class="fa-solid fa-seedling"></i>
+                            </div>
+                            <h3>Science & Nature</h3>
+                            <p>Earth science, biology, and environment</p>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Difficulty Selector -->
+                <div class="settings-group">
+                    <h2 class="group-title"><i class="fa-solid fa-gauge-high"></i> Difficulty level</h2>
+                    <div class="difficulty-picker">
+                        <button class="diff-btn active easy" data-difficulty="easy">
+                            <span class="diff-dot"></span> Easy
+                        </button>
+                        <button class="diff-btn medium" data-difficulty="medium">
+                            <span class="diff-dot"></span> Medium
+                        </button>
+                        <button class="diff-btn hard" data-difficulty="hard">
+                            <span class="diff-dot"></span> Hard
+                        </button>
+                    </div>
+                </div>
+
+                <!-- High Score Dashboard -->
+                <div class="stats-panel glass-panel">
+                    <div class="stat-item">
+                        <span class="stat-label">Best Record for Selection</span>
+                        <span id="best-score-display" class="stat-value text-accent">0 / 10</span>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <span class="stat-label">Stellar Rank</span>
+                        <span id="rank-badge-display" class="stat-value">Novice Cadet</span>
+                    </div>
+                </div>
+
+                <!-- Action Button -->
+                <button id="start-quest-btn" class="btn btn-primary pulse-glow">
+                    <span>INITIATE QUEST</span>
+                    <i class="fa-solid fa-circle-play"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- ================= QUIZ PLAY SCREEN ================= -->
+        <section id="quiz-screen" class="screen">
+            <!-- Game Info & Progress -->
+            <div class="quiz-header">
+                <div class="progress-container">
+                    <div class="progress-meta">
+                        <span id="question-number">Question 1 of 10</span>
+                        <span id="running-score">Score: 00</span>
+                    </div>
+                    <div class="progress-bar-wrapper">
+                        <div id="progress-bar-fill" class="progress-bar-fill" style="width: 10%"></div>
+                    </div>
+                </div>
+
+                <!-- SVG Ring Countdown Timer -->
+                <div class="timer-wrapper">
+                    <svg class="timer-svg" viewBox="0 0 100 100">
+                        <circle class="timer-bg" cx="50" cy="50" r="45"></circle>
+                        <circle id="timer-fill" class="timer-fill" cx="50" cy="50" r="45"></circle>
+                    </svg>
+                    <div id="timer-text" class="timer-text">15</div>
+                </div>
+            </div>
+
+            <!-- Question Card -->
+            <div class="question-container glass-panel animate-fade-in">
+                <div class="category-tag-wrapper">
+                    <span id="quiz-category-tag" class="category-tag">Space & Cosmos</span>
+                    <span id="quiz-difficulty-tag" class="difficulty-tag easy">Easy</span>
+                </div>
+                <h2 id="question-text" class="question-text">Loading question...?</h2>
+            </div>
+
+            <!-- Multiple Choice Grid -->
+            <div id="options-container" class="options-grid">
+                <!-- Template Option Cards (Will be injected by JS) -->
+                <button class="option-card glass-panel" data-index="0">
+                    <span class="option-letter">A</span>
+                    <span class="option-value">Option loading...</span>
+                    <i class="fa-solid fa-circle-check feedback-icon"></i>
+                </button>
+                <button class="option-card glass-panel" data-index="1">
+                    <span class="option-letter">B</span>
+                    <span class="option-value">Option loading...</span>
+                    <i class="fa-solid fa-circle-xmark feedback-icon"></i>
+                </button>
+                <button class="option-card glass-panel" data-index="2">
+                    <span class="option-letter">C</span>
+                    <span class="option-value">Option loading...</span>
+                    <i class="fa-solid fa-circle-xmark feedback-icon"></i>
+                </button>
+                <button class="option-card glass-panel" data-index="3">
+                    <span class="option-letter">D</span>
+                    <span class="option-value">Option loading...</span>
+                    <i class="fa-solid fa-circle-xmark feedback-icon"></i>
+                </button>
+            </div>
+
+            <!-- Quiz Screen Footer / Navigation -->
+            <div class="quiz-footer">
+                <div id="answer-explanation" class="explanation-box hidden">
+                    <i class="fa-solid fa-circle-info info-icon"></i>
+                    <p id="explanation-text">Explanation details will go here to help the player learn.</p>
+                </div>
+                <button id="next-question-btn" class="btn btn-secondary" disabled>
+                    <span>NEXT QUESTION</span>
+                    <i class="fa-solid fa-chevron-right"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- ================= RESULTS SCREEN ================= -->
+        <section id="results-screen" class="screen">
+            <div class="screen-content text-center">
+                <!-- Win Animation Effect Container -->
+                <div class="stars-congratulations">
+                    <i class="fa-solid fa-trophy trophy-icon animate-bounce"></i>
+                </div>
+
+                <h1 class="hero-title">Mission Complete!</h1>
+                <p class="hero-subtitle">Your transmission has been processed. Here is your evaluation:</p>
+
+                <!-- Score Circular Gauge -->
+                <div class="result-gauge-wrapper">
+                    <svg class="gauge-svg" viewBox="0 0 100 100">
+                        <circle class="gauge-bg" cx="50" cy="50" r="42"></circle>
+                        <circle id="gauge-fill" class="gauge-fill" cx="50" cy="50" r="42"></circle>
+                    </svg>
+                    <div class="gauge-content">
+                        <span id="final-score-percent" class="gauge-percent">0%</span>
+                        <span id="final-score-fraction" class="gauge-fraction">0 / 0</span>
+                    </div>
+                </div>
+
+                <!-- Stellar Ranking -->
+                <div class="rank-result-box glass-panel">
+                    <span class="rank-label">Assigned Rank</span>
+                    <h2 id="final-rank-title" class="rank-title text-accent">Nebula Navigator</h2>
+                    <p id="final-rank-desc" class="rank-description">You navigated the interstellar queries with supreme
+                        ease!</p>
+                </div>
+
+                <!-- High Score Alert banner -->
+                <div id="new-high-score-banner" class="high-score-banner hidden">
+                    <i class="fa-solid fa-star star-spin-icon"></i>
+                    <span>NEW HIGH RECORD DETECTED!</span>
+                </div>
+
+                <!-- Action Button Cluster -->
+                <div class="action-cluster">
+                    <button id="share-score-btn" class="btn btn-secondary">
+                        <i class="fa-solid fa-share-nodes"></i>
+                        <span>Share Score</span>
+                    </button>
+                    <button id="restart-quest-btn" class="btn btn-primary pulse-glow">
+                        <i class="fa-solid fa-rotate-left"></i>
+                        <span>Quest Again</span>
+                    </button>
+                </div>
+
+                <!-- Breakdown Accordion Section -->
+                <div class="breakdown-container settings-group">
+                    <button id="toggle-breakdown-btn" class="breakdown-header-btn">
+                        <span><i class="fa-solid fa-clipboard-list"></i> Review Mission Log</span>
+                        <i class="fa-solid fa-chevron-down fold-arrow"></i>
+                    </button>
+                    <div id="mission-log-breakdown" class="mission-log-breakdown hidden">
+                        <!-- Breakdown cards will be dynamically injected here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Global Toast Notification System -->
+    <div id="toast-notification" class="toast-notification hidden">
+        <i class="fa-solid fa-check-circle toast-icon"></i>
+        <span id="toast-message">Score Copied to clipboard!</span>
+    </div>
+
+    <!-- Script Entry -->
+    <script src="script.js"></script>
+</body>
+
+</html>

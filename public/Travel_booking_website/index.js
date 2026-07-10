@@ -172,8 +172,11 @@ async function sendMessage() {
 
   chatMessages.scrollTop = chatMessages.scrollHeight;
 
+  const isLocalhost = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
+  const chatEndpoint = isLocalhost ? "http://localhost:5000/api/chat" : "/api/chat";
+
   try {
-    const response = await fetch("http://localhost:5000/api/chat", {
+    const response = await fetch(chatEndpoint, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -187,6 +190,20 @@ async function sendMessage() {
 
     const data = await response.json();
 
+    let reply = "";
+    if (data) {
+      if (data.choices && Array.isArray(data.choices) && data.choices.length > 0 &&
+          data.choices[0].message && typeof data.choices[0].message.content === "string") {
+        reply = data.choices[0].message.content;
+      } else if (typeof data.reply === "string") {
+        reply = data.reply;
+      }
+    }
+
+    if (!reply) {
+      throw new Error("Invalid or empty response format from API");
+    }
+
     loadingMessage.remove();
 
     // BOT RESPONSE
@@ -196,15 +213,15 @@ async function sendMessage() {
     botMessage.classList.add("bot-message");
 
     botMessage.innerHTML = `
-  ${formatResponse(data.choices[0].message.content)}
+  ${formatResponse(reply)}
   <div class="msg-timestamp">${getTime()}</div>
 `;
 
     chatMessages.appendChild(botMessage);
     localStorage.setItem(
-  "travel_chat",
-  chatMessages.innerHTML
-);
+      "travel_chat",
+      chatMessages.innerHTML
+    );
 
     // AUTO SCROLL
 
@@ -266,3 +283,59 @@ document
       localStorage.removeItem("travel_chat");
     }
 });
+
+const toggleBtn = document.getElementById("toggleServicesBtn");
+const cards = document.querySelectorAll(".service_card");
+let visibleCount = 3; // initially show 3
+
+toggleBtn.addEventListener("click", () => {
+  if (visibleCount < cards.length) {
+    // Show next 3
+    for (let i = visibleCount; i < visibleCount + 3 && i < cards.length; i++) {
+      cards[i].classList.remove("hidden");
+    }
+    visibleCount += 3;
+
+    // If all are visible, change button text
+    if (visibleCount >= cards.length) {
+      toggleBtn.textContent = "View Less Services";
+    }
+  } else {
+    // Collapse back to first 3
+    for (let i = 3; i < cards.length; i++) {
+      cards[i].classList.add("hidden");
+    }
+    visibleCount = 3;
+    toggleBtn.textContent = "Load More Services";
+    // Optional: scroll back to section top
+    document.getElementById("service").scrollIntoView({ behavior: "smooth" });
+  }
+});
+
+
+const themeToggles = document.querySelectorAll(".theme");
+const themeIcon = document.getElementById("themeIcon");
+
+
+let isDarkMode = JSON.parse(localStorage.getItem("DarkMode")) || false;
+
+function updateTheme() {
+  if (isDarkMode) {
+    document.body.classList.add("dark-theme");
+    themeIcon.textContent = "☀️"; 
+  } else {
+    document.body.classList.remove("dark-theme");
+    themeIcon.textContent = "🌙"; 
+  }
+}
+
+themeToggles.forEach(btn => {
+  btn.addEventListener("click", () => {
+    isDarkMode = !isDarkMode;
+    localStorage.setItem("DarkMode", JSON.stringify(isDarkMode));
+    updateTheme();
+  });
+});
+
+// Apply theme on page load
+updateTheme();

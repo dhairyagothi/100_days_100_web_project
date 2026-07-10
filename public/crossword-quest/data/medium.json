@@ -1,0 +1,65 @@
+[
+  {
+    "id": "medium_space",
+    "title": "Space Exploration",
+    "difficulty": "medium",
+    "category": "Space",
+    "gridSize": 10,
+    "clues": {
+      "across": [
+        { "number": 1, "row": 1, "col": 2, "answer": "ORBIT", "clue": "Curved path of a celestial body around a star or planet" },
+        { "number": 4, "row": 3, "col": 0, "answer": "MARS", "clue": "The Red Planet" },
+        { "number": 5, "row": 5, "col": 3, "answer": "COMET", "clue": "Icy body that releases gas and dust as it orbits the sun" },
+        { "number": 7, "row": 7, "col": 1, "answer": "MOON", "clue": "Earth's only natural satellite" }
+      ],
+      "down": [
+        { "number": 1, "row": 0, "col": 3, "answer": "PLANET", "clue": "Large celestial body orbiting a star (e.g., Earth)" },
+        { "number": 2, "row": 1, "col": 6, "answer": "STARS", "clue": "Luminous spheres of plasma held together by gravity" },
+        { "number": 3, "row": 3, "col": 0, "answer": "METEOR", "clue": "A streak of light in the sky produced by a burning space rock" },
+        { "number": 6, "row": 5, "col": 4, "answer": "ROVER", "clue": "Robotic space probe designed to explore planetary surfaces" }
+      ]
+    }
+  },
+  {
+    "id": "medium_countries",
+    "title": "World Tour",
+    "difficulty": "medium",
+    "category": "Geography",
+    "gridSize": 10,
+    "clues": {
+      "across": [
+        { "number": 1, "row": 1, "col": 1, "answer": "FRANCE", "clue": "European country famous for the Eiffel Tower and wine" },
+        { "number": 4, "row": 3, "col": 0, "answer": "EGYPT", "clue": "African nation home to the ancient pyramids" },
+        { "number": 6, "row": 5, "col": 3, "answer": "CANADA", "clue": "North American country with the maple leaf flag" },
+        { "number": 7, "row": 7, "col": 2, "answer": "BRAZIL", "clue": "South American giant renowned for Carnival and soccer" }
+      ],
+      "down": [
+        { "number": 1, "row": 1, "col": 1, "answer": "FIJI", "clue": "Pacific island nation famous for rugged landscapes and palm-lined beaches" },
+        { "number": 2, "row": 1, "col": 4, "answer": "NEPAL", "clue": "Asian nation containing Mount Everest" },
+        { "number": 3, "row": 3, "col": 0, "answer": "EUROPE", "clue": "Continent containing France, Germany, and Italy" },
+        { "number": 5, "row": 4, "col": 7, "answer": "ITALY", "clue": "Boot-shaped European nation famous for pizza and pasta" }
+      ]
+    }
+  },
+  {
+    "id": "medium_movies",
+    "title": "Hollywood & Beyond",
+    "difficulty": "medium",
+    "category": "Movies",
+    "gridSize": 10,
+    "clues": {
+      "across": [
+        { "number": 1, "row": 1, "col": 1, "answer": "OSCAR", "clue": "Prestigious golden statuette awarded for film excellence" },
+        { "number": 4, "row": 3, "col": 0, "answer": "AVATAR", "clue": "James Cameron sci-fi epic set on the moon Pandora" },
+        { "number": 6, "row": 5, "col": 3, "answer": "SCENE", "clue": "A single continuous sequence in a motion picture" },
+        { "number": 7, "row": 7, "col": 2, "answer": "BATMAN", "clue": "DC Comics superhero who protects Gotham City" }
+      ],
+      "down": [
+        { "number": 1, "row": 1, "col": 1, "answer": "ACTOR", "clue": "A person who portrays a character in a performance" },
+        { "number": 2, "row": 1, "col": 4, "answer": "RADIO", "clue": "Audio broadcast medium; or '___ Star' (1979 song)" },
+        { "number": 3, "row": 3, "col": 0, "answer": "ACTION", "clue": "Film genre characterized by stunts, chases, and explosions" },
+        { "number": 5, "row": 4, "col": 7, "answer": "MOVIE", "clue": "A motion picture; another word for film" }
+      ]
+    }
+  }
+]
