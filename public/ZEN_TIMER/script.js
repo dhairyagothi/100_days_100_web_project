@@ -179,6 +179,17 @@ function updateProgress() {
   progressCircle.style.strokeDashoffset = CIRCUMFERENCE - progress;
 }
 
+function resetProgressRing() {
+  progressCircle.style.transition = 'none';
+
+  updateProgress();
+
+  progressCircle.getBoundingClientRect();
+
+  progressCircle.style.transition =
+    'stroke-dashoffset 1s linear, stroke 0.3s ease';
+}
+
 function updateDisplay() {
   timeDisplay.textContent = formatTime(timeLeft);
   document.title = `${formatTime(timeLeft)} - Zen Timer`;
@@ -273,7 +284,10 @@ function setMode(mode) {
   });
 
   progressCircle.className = 'progress-ring-progress ' + MODES[mode].colorClass;
+
   resetTimer();
+  resetProgressRing();
+
   sessionCount.textContent = sessionsToday + 1;
 }
 
