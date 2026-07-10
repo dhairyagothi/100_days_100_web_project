@@ -3359,5 +3359,20 @@
     "difficulty": "advanced",
     "projectPath": "./public/Drawing-Canva/index.html",
     "previewImage": "./public/previews/Drawing-Canva.png"
+  },
+  {
+    "projectNo": 245,
+    "projectName": "Flashcard Quiz",
+    "projectType": "Tool",
+    "projectDesc": "A flashcard quiz app built using HTML, CSS, and Vanilla JavaScript.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript",
+      "visualizer"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/Flashcard-Quiz-App/index.html",
+    "previewImage": "./public/previews/Flashcard-Quiz-App.png"
   }
 ]
