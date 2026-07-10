@@ -1,40 +1,112 @@
-/* style.css - Dark Theme for FormForge */
+/* style.css - FormForge with Theme Toggle */
 
+/* ── Default: Dark Theme ── */
 :root {
   --primary: #6366f1;
   --primary-dark: #4f46e5;
   --primary-glow: rgba(99, 102, 241, 0.2);
-  --bg-dark: #0f172a;
-  --bg-card: #1e2937;
+  --bg-body: #0f172a;
+  --bg-surface: #1e2937;
   --bg-hover: #263348;
-  --text-light: #e2e8f0;
+  --bg-canvas: #162032;
+  --text: #e2e8f0;
   --text-muted: #94a3b8;
   --border: #334155;
-  --border-focus: #6366f1;
   --radius: 10px;
   --transition: 0.2s ease;
 }
 
+/* ── Light Theme ── */
+[data-theme="light"] {
+  --bg-body: #f1f5f9;
+  --bg-surface: #ffffff;
+  --bg-hover: #e9edf2;
+  --bg-canvas: #eef2f6;
+  --text: #0f172a;
+  --text-muted: #475569;
+  --border: #d1d9e6;
+  --primary-glow: rgba(99, 102, 241, 0.15);
+}
+
+/* ── Global Styles ── */
 body {
-  background-color: var(--bg-dark);
-  color: var(--text-light);
+  background-color: var(--bg-body);
+  color: var(--text);
   font-family: "Segoe UI", system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
+  transition: background-color var(--transition), color var(--transition);
 }
 
-.bg-dark {
-  background-color: var(--bg-dark) !important;
+/* ── Theme Toggle ── */
+.theme-toggle-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 12px 4px 8px;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 99px;
+  cursor: pointer;
+  transition: all var(--transition);
+  user-select: none;
+}
+.theme-toggle-wrapper:hover {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-glow);
+}
+.theme-toggle-wrapper i {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  transition: color var(--transition);
+}
+.theme-toggle-wrapper .toggle-track {
+  position: relative;
+  width: 36px;
+  height: 20px;
+  background-color: var(--border);
+  border-radius: 99px;
+  transition: background-color var(--transition);
+  flex-shrink: 0;
+}
+.theme-toggle-wrapper .toggle-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  transition: transform 0.3s ease, background-color var(--transition);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+}
+/* Dark mode toggle state (default) */
+.theme-toggle-wrapper .toggle-thumb {
+  transform: translateX(16px);
+  background-color: var(--primary);
+}
+/* Light mode toggle state */
+[data-theme="light"] .theme-toggle-wrapper .toggle-thumb {
+  transform: translateX(0px);
+  background-color: #ffffff;
+}
+[data-theme="light"] .theme-toggle-wrapper .toggle-track {
+  background-color: #cbd5e1;
+}
+.theme-toggle-wrapper .theme-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  min-width: 20px;
 }
 
-.bg-secondary {
-  background-color: #1e2937 !important;
-}
-
-/* Sidebar */
+/* ── Sidebar ── */
 #sidebar {
-  background-color: var(--bg-dark);
+  background-color: var(--bg-body);
   border-right: 1px solid var(--border);
+  transition: background-color var(--transition), border-color var(--transition);
 }
 
 .field-list {
@@ -44,8 +116,8 @@ body {
 }
 
 .field-item {
-  background-color: var(--bg-card);
-  color: var(--text-light);
+  background-color: var(--bg-surface);
+  color: var(--text);
   padding: 11px 16px;
   border-radius: var(--radius);
   border: 1px solid var(--border);
@@ -64,29 +136,34 @@ body {
   border-color: var(--primary);
   border-left: 3px solid var(--primary);
   padding-left: 14px;
-  color: #fff;
+  color: var(--text);
 }
 .field-item i {
   width: 20px;
   color: var(--primary);
 }
 
-/* Canvas */
+/* ── Canvas ── */
+#canvas-area {
+  background-color: var(--bg-body);
+  transition: background-color var(--transition);
+}
+
 #form-canvas {
   min-height: calc(100vh - 120px);
-  background-color: #162032;
-  border: 2px dashed #3b4f6b;
+  background-color: var(--bg-canvas);
+  border: 2px dashed var(--border);
   border-radius: var(--radius);
   transition: border-color var(--transition), background-color var(--transition);
 }
 
 #form-canvas.dragover {
   border-color: var(--primary);
-  background-color: #334155;
+  background-color: var(--bg-hover);
 }
 
 .form-field {
-  background-color: var(--bg-card);
+  background-color: var(--bg-surface);
   border: 1px solid var(--border);
   border-left: 3px solid transparent;
   border-radius: var(--radius);
@@ -113,7 +190,7 @@ body {
 .field-label {
   font-weight: 600;
   margin-bottom: 8px;
-  color: var(--text-light);
+  color: var(--text);
   display: block;
 }
 
@@ -141,30 +218,32 @@ body {
   transform: scale(1);
 }
 
-.form-field:hover .remove-btn {
-  opacity: 1;
+/* ── Properties Panel ── */
+#properties-panel {
+  background-color: var(--bg-body);
+  border-left: 1px solid var(--border);
+  transition: background-color var(--transition), border-color var(--transition);
 }
 
-/* Properties Panel */
-#properties-panel {
-  background-color: var(--bg-dark);
-  border-left: 1px solid var(--border);
+#properties-panel h5 {
+  color: var(--text);
 }
+
 .form-control,
 .form-select {
-  background-color: #162032;
+  background-color: var(--bg-surface);
   border: 1px solid var(--border);
-  color: var(--text-light);
+  color: var(--text);
   border-radius: 8px;
   transition: border-color var(--transition), box-shadow var(--transition);
 }
 
 .form-control:focus,
 .form-select:focus {
-  background-color: #162032;
+  background-color: var(--bg-surface);
   border-color: var(--primary);
   box-shadow: 0 0 0 3px var(--primary-glow);
-  color: var(--text-light);
+  color: var(--text);
   outline: none;
 }
 
@@ -173,16 +252,8 @@ body {
   opacity: 0.7;
 }
 
-.form-control:focus,
-.form-select:focus {
-  background-color: #1e2937;
-  border-color: var(--primary);
-  box-shadow: 0 0 0 0.25rem rgba(99, 102, 241, 0.25);
-  color: var(--text-light);
-}
-
 .form-check-input {
-  background-color: #334155;
+  background-color: var(--border);
   border-color: var(--border);
 }
 
@@ -191,28 +262,44 @@ body {
   border-color: var(--primary);
 }
 
-/* Empty State */
+.form-check-label {
+  color: var(--text);
+}
+
+/* ── Empty State ── */
 #empty-state {
   color: var(--text-muted);
   user-select: none;
 }
 
-/* Buttons */
+/* ── Buttons ── */
 .btn-outline-light {
-  border-color: #64748b;
-  color: #e2e8f0;
+  border-color: var(--border);
+  color: var(--text);
 }
 
 .btn-outline-light:hover {
-  background-color: #334155;
+  background-color: var(--bg-hover);
   border-color: var(--primary);
+  color: var(--text);
+}
+
+.btn-success {
+  background-color: #22c55e;
+  border-color: #22c55e;
+  color: white;
+}
+.btn-success:hover {
+  background-color: #16a34a;
+  border-color: #16a34a;
   color: white;
 }
 
-/* Modal */
+/* ── Modal ── */
 .modal-content {
-  background-color: #1e2937;
+  background-color: var(--bg-surface);
   border: 1px solid var(--border);
+  color: var(--text);
 }
 
 .modal-header,
@@ -220,7 +307,18 @@ body {
   border-color: var(--border);
 }
 
-/* Utility */
+.modal-header .btn-close {
+  filter: invert(1) brightness(200%);
+}
+[data-theme="light"] .modal-header .btn-close {
+  filter: none;
+}
+
+.modal-title {
+  color: var(--text);
+}
+
+/* ── Utility ── */
 .text-muted {
   color: var(--text-muted) !important;
 }
@@ -230,7 +328,7 @@ body {
 }
 
 .modal-content {
-  background-color: #162032;
+  background-color: var(--bg-surface);
   border: 1px solid var(--border);
   border-radius: 14px;
   overflow: hidden;
@@ -247,7 +345,8 @@ body {
   border-color: var(--border);
   padding: 1rem 1.5rem;
 }
-/* Step nav */
+
+/* ── Step nav ── */
 #step-nav .progress {
   background-color: var(--border);
   border-radius: 99px;
@@ -271,12 +370,12 @@ body {
   font-size: 0.8rem;
 }
 
-/* Scrollbar */
+/* ── Scrollbar ── */
 ::-webkit-scrollbar {
   width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--bg-dark);
+  background: var(--bg-body);
 }
 ::-webkit-scrollbar-thumb {
   background: var(--border);
@@ -286,9 +385,9 @@ body {
   background: var(--primary);
 }
 
-/* Dropdown */
+/* ── Dropdown ── */
 .dropdown-menu-dark {
-  background-color: var(--bg-card);
+  background-color: var(--bg-surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 6px;
@@ -296,7 +395,7 @@ body {
 
 .dropdown-menu-dark .dropdown-item {
   border-radius: 6px;
-  color: var(--text-light);
+  color: var(--text);
   font-size: 0.875rem;
   padding: 8px 12px;
   transition: background-color var(--transition);
@@ -304,20 +403,32 @@ body {
 
 .dropdown-menu-dark .dropdown-item:hover {
   background-color: var(--bg-hover);
-  color: #fff;
+  color: var(--text);
 }
 
-/* Field label */
-.field-label {
-  font-weight: 600;
-  margin-bottom: 8px;
-  color: var(--text-light);
-  display: block;
-  font-size: 0.875rem;
-  letter-spacing: 0.02em;
-}
-
-/* Canvas empty state icon */
+/* ── Canvas empty state icon ── */
 #empty-state i {
   color: var(--border);
+}
+
+/* ── Table for analytics ── */
+.table-dark {
+  background-color: var(--bg-surface);
+  color: var(--text);
+}
+.table-dark td, .table-dark th {
+  border-color: var(--border);
+}
+.table-dark thead th {
+  color: var(--text);
+}
+.bg-secondary {
+  background-color: var(--bg-surface) !important;
+}
+
+/* ── Fix for light mode headings ── */
+[data-theme="light"] h3,
+[data-theme="light"] h4,
+[data-theme="light"] h5 {
+  color: var(--text);
 }

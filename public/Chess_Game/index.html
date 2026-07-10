@@ -7,78 +7,190 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <main class="app">
-        <section class="game-shell" aria-labelledby="game-title">
-            <div class="header">
-                <div>
-                    <p class="eyebrow">Classic Strategy</p>
-                    <h1 id="game-title">Chess Game</h1>
-                    <div class="feature-chips" aria-label="Game features">
-                        <span>Legal Moves</span>
-                        <span>Checkmate</span>
-                        <span>Undo</span>
-                    </div>
-                </div>
-                <div class="turn-card" id="turnCard">
-                    <span>Turn</span>
-                    <strong id="turnLabel">White</strong>
+<main class="app">
+
+    <!-- ═══════════════ SETUP SCREEN ═══════════════ -->
+    <section id="setupScreen" class="game-shell setup-shell" aria-labelledby="setup-title">
+        <div class="setup-header">
+            <p class="eyebrow">Classic Strategy</p>
+            <h1 id="setup-title">Chess Game</h1>
+            <p class="setup-sub">Configure your match, then hit Start.</p>
+        </div>
+
+        <div class="setup-body">
+
+            <!-- Game Mode -->
+            <fieldset class="setup-group">
+                <legend>Game Mode</legend>
+                <label class="radio-card">
+                    <input type="radio" name="mode" value="2player" checked>
+                    <span class="radio-label">
+                        <strong>2 Player</strong>
+                        <small>Local hotseat — both players share this device</small>
+                    </span>
+                </label>
+                <label class="radio-card">
+                    <input type="radio" name="mode" value="vsAI">
+                    <span class="radio-label">
+                        <strong>vs Computer</strong>
+                        <small>Play against the built-in Minimax AI</small>
+                    </span>
+                </label>
+            </fieldset>
+
+            <!-- AI Options (hidden in 2-player mode) -->
+            <div id="aiOptions" class="setup-group hidden">
+                <label class="setup-label" for="difficulty">AI Difficulty</label>
+                <select id="difficulty" class="setup-select">
+                    <option value="easy">Easy — random moves</option>
+                    <option value="medium" selected>Medium — depth 2</option>
+                    <option value="hard">Hard — depth 4</option>
+                </select>
+
+                <p class="setup-label" style="margin-top:14px">Play as</p>
+                <div class="side-radios">
+                    <label class="radio-card compact">
+                        <input type="radio" name="side" value="white" checked>
+                        <span class="radio-label"><strong>♔ White</strong></span>
+                    </label>
+                    <label class="radio-card compact">
+                        <input type="radio" name="side" value="black">
+                        <span class="radio-label"><strong>♚ Black</strong></span>
+                    </label>
                 </div>
             </div>
 
-            <div class="layout">
-                <section class="board-panel" aria-label="Chess board area">
-                    <div class="player-strip top-player">
-                        <span>Black</span>
-                        <strong>♚</strong>
-                    </div>
-                    <div class="board-frame">
-                        <div id="board" class="board" role="grid" aria-label="Chess board"></div>
-                    </div>
-                    <div class="player-strip bottom-player">
-                        <span>White</span>
-                        <strong>♔</strong>
-                    </div>
-                </section>
-
-                <aside class="side-panel">
-                    <div class="status-card">
-                        <span>Game Status</span>
-                        <p id="status" class="status" role="status" aria-live="polite">White to move.</p>
-                    </div>
-
-                    <div class="controls" aria-label="Game controls">
-                          <button id="backHome" type="button">
-        <span aria-hidden="true"></span> Home
-    </button>
-
-                        <button id="newGame" type="button"><span aria-hidden="true">↻</span> New Game</button>
-                        <button id="undoMove" type="button"><span aria-hidden="true">↶</span> Undo</button>
-                        <button id="flipBoard" type="button"><span aria-hidden="true">⇅</span> Flip Board</button>
-                    </div>
-
-                    <div class="info-grid">
-                        <div>
-                            <span>White Captures</span>
-                            <p id="whiteCaptures" class="captures">None</p>
-                        </div>
-                        <div>
-                            <span>Black Captures</span>
-                            <p id="blackCaptures" class="captures">None</p>
-                        </div>
-                    </div>
-
-                    <div class="moves-box">
-                        <div class="moves-title">
-                            <span>Moves</span>
-                            <strong id="moveCount">0</strong>
-                        </div>
-                        <ol id="moveList" class="move-list"></ol>
-                    </div>
-                </aside>
+            <!-- Clock -->
+            <div class="setup-group">
+                <label class="setup-label" for="clockPreset">Clock (per player)</label>
+                <select id="clockPreset" class="setup-select">
+                    <option value="0">No clock</option>
+                    <option value="1">1 min — Bullet</option>
+                    <option value="3">3 min — Blitz</option>
+                    <option value="5" selected>5 min — Blitz</option>
+                    <option value="10">10 min — Rapid</option>
+                    <option value="15">15 min — Rapid</option>
+                    <option value="30">30 min — Classical</option>
+                </select>
             </div>
-        </section>
-    </main>
 
-    <script src="script.js"></script>
+            <button id="btnStart" class="btn-start" type="button">Start Game ♟</button>
+        </div>
+    </section>
+
+    <!-- ═══════════════ GAME SCREEN ═══════════════ -->
+    <section id="gameScreen" class="game-shell hidden" aria-labelledby="game-title">
+        <div class="header">
+            <div>
+                <p class="eyebrow">Classic Strategy</p>
+                <h1 id="game-title">Chess Game</h1>
+                <div class="feature-chips" aria-label="Game features">
+                    <span>Legal Moves</span>
+                    <span>AI Opponent</span>
+                    <span>Chess Clock</span>
+                    <span>Undo</span>
+                </div>
+            </div>
+            <div class="turn-card" id="turnCard">
+                <span>Turn</span>
+                <strong id="turnLabel">White</strong>
+            </div>
+        </div>
+
+        <div class="layout">
+            <!-- Board Panel -->
+            <section class="board-panel" aria-label="Chess board area">
+
+                <!-- Black clock + player strip -->
+                <div class="player-strip top-player">
+                    <span>Black ♚</span>
+                    <span id="clockBlack" class="clock-display">--:--</span>
+                </div>
+
+                <!-- Board with coordinate labels -->
+                <div class="board-frame" id="boardFrame">
+                    <div class="coordinates files top" id="filesTop">
+                        <span>a</span><span>b</span><span>c</span><span>d</span>
+                        <span>e</span><span>f</span><span>g</span><span>h</span>
+                    </div>
+                    <div class="coordinates ranks left" id="ranksLeft">
+                        <span>8</span><span>7</span><span>6</span><span>5</span>
+                        <span>4</span><span>3</span><span>2</span><span>1</span>
+                    </div>
+                    <div id="board" class="board" role="grid" aria-label="Chess board"></div>
+                    <div class="coordinates ranks right" id="ranksRight">
+                        <span>8</span><span>7</span><span>6</span><span>5</span>
+                        <span>4</span><span>3</span><span>2</span><span>1</span>
+                    </div>
+                    <div class="coordinates files bottom" id="filesBottom">
+                        <span>a</span><span>b</span><span>c</span><span>d</span>
+                        <span>e</span><span>f</span><span>g</span><span>h</span>
+                    </div>
+                </div>
+
+                <!-- White clock + player strip -->
+                <div class="player-strip bottom-player">
+                    <span>White ♔</span>
+                    <span id="clockWhite" class="clock-display">--:--</span>
+                </div>
+            </section>
+
+            <!-- Side Panel -->
+            <aside class="side-panel">
+
+                <!-- Mode label -->
+                <div class="mode-badge" id="modeLabel">2 Player</div>
+
+                <!-- Status -->
+                <div class="status-card">
+                    <span>Game Status</span>
+                    <p id="status" class="status" role="status" aria-live="polite">White to move.</p>
+                </div>
+
+                <!-- Controls -->
+                <div class="controls" aria-label="Game controls">
+                    <button id="backToSetup" type="button"><span aria-hidden="true">←</span> Setup</button>
+                    <button id="newGame"     type="button"><span aria-hidden="true">↻</span> New Game</button>
+                    <button id="undoMove"    type="button"><span aria-hidden="true">↶</span> Undo</button>
+                    <button id="flipBoard"   type="button"><span aria-hidden="true">⇅</span> Flip Board</button>
+                    <button id="backHome"    type="button"><span aria-hidden="true">⌂</span> Home</button>
+                </div>
+
+                <!-- Captures -->
+                <div class="info-grid">
+                    <div>
+                        <span>White Captures</span>
+                        <p id="whiteCaptures" class="captures">None</p>
+                    </div>
+                    <div>
+                        <span>Black Captures</span>
+                        <p id="blackCaptures" class="captures">None</p>
+                    </div>
+                </div>
+
+                <!-- Move list -->
+                <div class="moves-box">
+                    <div class="moves-title">
+                        <span>Moves</span>
+                        <strong id="moveCount">0</strong>
+                    </div>
+                    <ol id="moveList" class="move-list"></ol>
+                </div>
+            </aside>
+        </div>
+    </section>
+
+    <!-- ═══════════════ PAWN PROMOTION MODAL ═══════════════ -->
+    <div id="promotionModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="promoTitle">
+        <div class="modal-content">
+            <h2 id="promoTitle">Promote Pawn</h2>
+            <div class="promotion-options" id="promotionOptions">
+                <!-- Buttons injected by JS -->
+            </div>
+        </div>
+    </div>
+
+</main>
+<script src="script.js"></script>
 </body>
 </html>

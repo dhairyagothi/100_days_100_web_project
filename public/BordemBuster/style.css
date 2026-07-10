@@ -355,3 +355,20 @@ label {
     font-size: 0.8rem;
   }
 }
+
+/* ===============================
+   FIX: Dropdown text visibility in dark mode
+================================== */
+
+/* Fix for select dropdown text in dark mode */
+.glass-input option {
+    background: #1a1a2e;
+    color: #f0f0ff;
+    padding: 8px;
+}
+
+/* Light mode fix */
+[data-theme="light"] .glass-input option {
+    background: #ffffff;
+    color: #18182e;
+}

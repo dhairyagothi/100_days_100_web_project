@@ -3,6 +3,8 @@ let selectedImageAnswer = "";
 // Removed: resultMessage is replaced by toast notifications
 // const resultMessage = document.getElementById("resultMessage");
 
+document.getElementById('currentYear').textContent = new Date().getFullYear();
+
 const captchaContainer = document.getElementById("captchaContainer");
 const textInput = document.getElementById("captchaInput");
 

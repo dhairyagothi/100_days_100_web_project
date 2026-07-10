@@ -6,13 +6,14 @@ import RecipeDetailsModal from './components/RecipeDetailsModal';
 import './App.css';
 
 function App() {
+  // Search and recipe state
   const [searchQuery, setSearchQuery] = useState('chicken');
   const [debouncedQuery, setDebouncedQuery] = useState('chicken');
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // Initialize favorites from localStorage
+  // Restore favorites from localStorage
   const [favorites, setFavorites] = useState(() => {
     const savedFavs = localStorage.getItem('flavorly_favorites');
     if (savedFavs) {
@@ -28,15 +29,15 @@ function App() {
   const [expandedRecipeId, setExpandedRecipeId] = useState(null);
   const [showVegetarianOnly, setShowVegetarianOnly] = useState(false);
 
-  // View state: home or favorites
+  // Toggle between the menu view and favorites view
   const [showFavorites, setShowFavorites] = useState(false);
 
-  // Autocomplete state
+  // Ingredient autocomplete state
   const [allIngredients, setAllIngredients] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [suggestions, setSuggestions] = useState([]);
 
-  // Fetch all ingredients on mount
+  // Load ingredient names once for autocomplete suggestions
   useEffect(() => {
     const fetchIngredientsList = async () => {
       try {
@@ -53,7 +54,7 @@ function App() {
     fetchIngredientsList();
   }, []);
 
-  // Update suggestions when searchQuery changes
+  // Update suggestions whenever the search query changes
   useEffect(() => {
     if (!searchQuery.trim()) {
       setSuggestions([]);
@@ -64,11 +65,11 @@ function App() {
       ing.toLowerCase().includes(lowerQuery)
     );
 
-    // Hide if exact match
+    // Hide suggestions when the query already matches an ingredient exactly
     if (matched.length === 1 && matched[0].toLowerCase() === lowerQuery) {
       setSuggestions([]);
     } else {
-      setSuggestions(matched.slice(0, 8)); // Top 8 suggestions
+      setSuggestions(matched.slice(0, 8)); // Keep only the top 8 matches
     }
   }, [searchQuery, allIngredients]);
 
@@ -77,7 +78,7 @@ function App() {
     localStorage.setItem('flavorly_favorites', JSON.stringify(favorites));
   }, [favorites]);
 
-  // Debounce search query
+  // Debounce the search query before fetching recipes
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedQuery(searchQuery);
@@ -97,7 +98,7 @@ function App() {
       setError(null);
 
       try {
-        // Fetch both title and ingredient simultaneously
+        // Fetch title and ingredient matches in parallel
         const [titleRes, ingredientRes] = await Promise.all([
           fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${debouncedQuery}`).catch(() => null),
           fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${debouncedQuery}`).catch(() => null)
@@ -119,17 +120,17 @@ function App() {
           } catch (e) { /* ignore parse errors */ }
         }
 
-        // Avoid duplicates: filter out any ingredient meals that we already found by title
+        // Remove duplicate meals that appear in both result sets
         const titleMealIds = new Set(titleMeals.map(m => m.idMeal));
         const uniqueIngredientMeals = ingredientMealsRaw.filter(m => !titleMealIds.has(m.idMeal));
 
-        // Let's cap the total results at 24 to avoid crazy API spam
+        // Cap the total number of results
         const maxResults = 24;
         let finalRecipes = [...titleMeals];
         const remainingSlots = maxResults - finalRecipes.length;
 
         if (remainingSlots > 0 && uniqueIngredientMeals.length > 0) {
-          // We need full details for the ingredient matches since filter.php doesn't return instructions
+          // Fetch full meal details for ingredient matches
           const mealsToFetch = uniqueIngredientMeals.slice(0, remainingSlots);
           const fullMealsPromises = mealsToFetch.map(async (smallMeal) => {
             try {
@@ -157,7 +158,7 @@ function App() {
     fetchRecipes();
   }, [debouncedQuery]);
 
-  // Handlers
+  // Event handlers
   const handleToggleFavorite = (recipe) => {
     setFavorites(prev => {
       const isFavorite = prev.some(fav => fav.idMeal === recipe.idMeal);
@@ -195,7 +196,7 @@ function App() {
     return true;
   });
 
-  // Find the selected recipe for the modal
+  // Resolve the recipe shown in the details modal
   const selectedRecipe = expandedRecipeId
     ? (recipes.find(r => r.idMeal === expandedRecipeId) || favorites.find(r => r.idMeal === expandedRecipeId))
     : null;
