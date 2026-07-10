@@ -393,11 +393,11 @@ body {
   to { transform: translateY(-8px); }
 }
 @keyframes diceRoll {
-  0%,100% { transform: rotate(0deg) scale(1); }
-  20% { transform: rotate(-20deg) scale(1.1); }
-  40% { transform: rotate(15deg) scale(0.95); }
-  60% { transform: rotate(-10deg) scale(1.08); }
-  80% { transform: rotate(5deg) scale(0.97); }
+  0%   { transform: perspective(400px) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(1); }
+  25%  { transform: perspective(400px) rotateX(180deg) rotateY(90deg) rotateZ(45deg) scale(1.15); }
+  50%  { transform: perspective(400px) rotateX(360deg) rotateY(180deg) rotateZ(90deg) scale(0.9); }
+  75%  { transform: perspective(400px) rotateX(540deg) rotateY(270deg) rotateZ(135deg) scale(1.1); }
+  100% { transform: perspective(400px) rotateX(720deg) rotateY(360deg) rotateZ(180deg) scale(1); }
 }
 @keyframes safePulse {
   0%,100% { background: rgba(46,213,115,0.1); }
@@ -444,4 +444,39 @@ body {
   #board-grid { width: 360px; height: 360px; grid-template-columns: repeat(10, 36px); grid-template-rows: repeat(10, 36px); }
   .cell { width: 36px; height: 36px; }
   .token { width: 16px; height: 16px; font-size: 9px; }
+}
+#themeToggle {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid var(--border-color);
+
+  background: var(--card-bg);
+  color: var(--text-color);
+
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#themeToggle:hover {
+  transform: rotate(180deg);
+  border-color: var(--accent);
+}
+
+#themeIcon {
+  font-size: 1.2rem;
+}
+body.light-theme {
+  --bg-primary: #fff;
+}
+body.light-theme 
+{
+  background: var(--bg-primary);
+  background-attachment: fixed;
+
+  color: #000;
+}
+body.light-theme input
+{
+  color: #000;
 }

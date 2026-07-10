@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Virtual Playground</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <h1>Virtual Playground</h1>
+  <p>Click the ball to make it jump! Select a planet to change gravity.</p>
+
+  <div class="play-area" id="playArea">
+    <div class="ball" id="ball"></div>
+  </div>
+
+  <div class="controls">
+    <button onclick="resetBall()">Reset</button>
+  </div>
+
+  <div class="planet-selector">
+    <label>Planet:</label>
+
+    <button class="planet-btn" data-planet="moon">🌕 Moon</button>
+    <button class="planet-btn" data-planet="mars">🔴 Mars</button>
+    <button class="planet-btn active" data-planet="earth">🌍 Earth</button>
+    <button class="planet-btn" data-planet="saturn">🪐 Saturn</button>
+    <button class="planet-btn" data-planet="jupiter">🟠 Jupiter</button>
+  </div>
+
+  <div class="customise">
+    <label>
+      Color
+      <input type="color" id="ballColor" value="#ff6b6b">
+    </label>
+
+    <label>
+      Shape
+      <select id="ballShape">
+        <option value="circle">Circle</option>
+        <option value="square">Square</option>
+        <option value="triangle">Triangle</option>
+        <option value="star">Star</option>
+      </select>
+    </label>
+  </div>
+
+  <script src="script.js"></script>
+
+</body>
+</html>
