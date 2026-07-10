@@ -1,60 +1,82 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>High-Throughput AI Video Frame-Synthesizer</title>
-    <link rel="stylesheet" href="Style.css">
-    <link rel="icon" href="image.png">
-</head>
+    <link rel="stylesheet" href="Style.css" />
+    <link rel="icon" href="image.png" />
+  </head>
 
-<body>
-
-    <h2 style="color: #00ffaa; margin-bottom: 5px;">🎬 Procedural Chrono-Grid Video Director</h2>
-    <p style="font-size: 11px; color: #64748b; margin-top: 0; margin-bottom: 25px;">Mathematical video frame-synthesizer
-        generating dynamic pixel matrices from scratch.</p>
+  <body>
+    <h2 style="color: #00ffaa; margin-bottom: 5px">
+      🎬 Procedural Chrono-Grid Video Director
+    </h2>
+    <p
+      style="
+        font-size: 11px;
+        color: #64748b;
+        margin-top: 0;
+        margin-bottom: 25px;
+      "
+    >
+      Mathematical video frame-synthesizer generating dynamic pixel matrices
+      from scratch.
+    </p>
 
     <div id="dashboard-layout">
-        <div class="panel">
-            <canvas id="synthesisCanvas" width="480" height="360"></canvas>
-            <div class="metrics-hud">
-                ⚡ Render Latency: <span id="metric-latency">0.00</span> ms<br>
-                🎞️ Active Frame Index: <span id="metric-frame">0</span>
-            </div>
+      <div class="panel">
+        <canvas id="synthesisCanvas" width="480" height="360"></canvas>
+        <div class="metrics-hud">
+          ⚡ Render Latency: <span id="metric-latency">0.00</span> ms<br />
+          🎞️ Active Frame Index: <span id="metric-frame">0</span>
+        </div>
+      </div>
+
+      <div class="panel" style="flex: 1; min-width: 320px">
+        <h3
+          style="
+            margin-top: 0;
+            border-bottom: 1px solid #1e293b;
+            padding-bottom: 6px;
+            color: #38bdf8;
+          "
+        >
+          Control Console
+        </h3>
+
+        <div class="control-group">
+          <label>Timeline Interpolation Mode</label>
+          <select id="interpolationMode">
+            <option value="lerp">Linear Interpolation (Lerp)</option>
+            <option value="step">Procedural Step Function</option>
+            <option value="sine">Sinusoidal Waveform Transform</option>
+          </select>
         </div>
 
-        <div class="panel" style="flex: 1; min-width: 320px;">
-            <h3 style="margin-top: 0; border-bottom: 1px solid #1e293b; padding-bottom: 6px; color: #38bdf8;">Control
-                Console</h3>
-
-            <div class="control-group">
-                <label>Timeline Interpolation Mode</label>
-                <select id="interpolationMode">
-                    <option value="lerp">Linear Interpolation (Lerp)</option>
-                    <option value="step">Procedural Step Function</option>
-                    <option value="sine">Sinusoidal Waveform Transform</option>
-                </select>
-            </div>
-
-            <div class="control-group">
-                <label>Motion Vector Frequency</label>
-                <input type="range" id="motionFrequency" min="1" max="50" value="15">
-            </div>
-
-            <div class="control-group">
-                <label>Render Noise Density</label>
-                <input type="range" id="noiseDensity" min="0" max="100" value="20">
-            </div>
-
-            <div class="control-group">
-                <label>Timeline Timeline Scrub</label>
-                <input type="range" id="timelineScrub" min="0" max="1000" value="0">
-            </div>
+        <div class="control-group">
+          <label>Motion Vector Frequency</label>
+          <input
+            type="range"
+            id="motionFrequency"
+            min="1"
+            max="50"
+            value="15"
+          />
         </div>
+
+        <div class="control-group">
+          <label>Render Noise Density</label>
+          <input type="range" id="noiseDensity" min="0" max="100" value="20" />
+        </div>
+
+        <div class="control-group">
+          <label>Timeline Timeline Scrub</label>
+          <input type="range" id="timelineScrub" min="0" max="1000" value="0" />
+        </div>
+      </div>
     </div>
 
     <script src="synthesis-core.js"></script>
-</body>
-
+  </body>
 </html>
