@@ -629,3 +629,113 @@ input:checked:active+.slider:before {
 .hidden {
     display: none !important;
 }
+
+
+/* =========================
+   RESPONSIVE DESIGN
+   ========================= */
+
+@media (max-width: 1024px) {
+    .showcase-container {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        padding: 0 1rem;
+    }
+
+    .header-content {
+        gap: 1rem;
+    }
+
+    .search-bar {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .top-app-bar {
+        padding: 1rem;
+    }
+
+    .header-content {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+    }
+
+    .logo {
+        justify-content: center;
+        text-align: center;
+    }
+
+    .search-bar {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .showcase-container {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        margin: 2rem auto;
+    }
+
+    .component-card {
+        padding: 2rem 1rem;
+    }
+
+    .m3-card {
+        padding: 1.5rem;
+    }
+
+    .card-actions {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .chip-group {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .top-app-bar {
+        padding: 0.75rem;
+    }
+
+    .logo {
+        font-size: 1.2rem;
+    }
+
+    .search-bar input {
+        font-size: 0.9rem;
+        padding: 1rem 1rem 1rem 3rem;
+    }
+
+    .component-card {
+        border-radius: 20px;
+        padding: 1.5rem 1rem;
+    }
+
+    .m3-btn,
+    .m3-fab-extended {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .m3-fab {
+        width: 56px;
+        height: 56px;
+    }
+
+    .m3-bottom-nav {
+        padding: 0.5rem;
+    }
+
+    .nav-item {
+        font-size: 0.7rem;
+    }
+
+    .no-results {
+        padding: 2rem 1rem;
+    }
+}

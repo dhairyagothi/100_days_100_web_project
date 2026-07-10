@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Open Weather Forecast App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>🌤 Weather Forecast App</h1>
+            <p class="app-subtitle">Enter a city name below to discover real-time comprehensive atmospheric conditions, wind metrics, and solar schedules.</p>
+        </header>
+
+        <main>
+            <div class="search-box">
+                <input type="text" id="cityInput" placeholder="Enter city name (e.g., London, Tokyo)">
+                <button id="searchBtn">Search</button>
+            </div>
+
+            <div id="weatherData">
+                <div class="welcome-message">
+                    <p>Ready to check the weather conditions? Your detailed dashboard will appear right here after searching.</p>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>Data powered securely via OpenWeatherMap API proxy backend.</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
