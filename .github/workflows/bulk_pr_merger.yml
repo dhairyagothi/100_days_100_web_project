@@ -1,0 +1,173 @@
+name: bulk-pr-merger
+
+on:
+  workflow_dispatch:
+    inputs:
+      from_pr:
+        description: "Starting PR Number"
+        required: true
+        type: string
+      to_pr:
+        description: "Ending PR Number"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  merge-prs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Merge eligible PRs
+        uses: actions/github-script@v8
+        with:
+          github-token: ${{ secrets.PR_CHECKER }}
+
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+
+            let fromPR = parseInt('${{ inputs.from_pr }}', 10);
+            let toPR = parseInt('${{ inputs.to_pr }}', 10);
+
+            if (isNaN(fromPR) || isNaN(toPR)) {
+              core.setFailed("Invalid PR range.");
+              return;
+            }
+
+            if (fromPR > toPR) {
+              [fromPR, toPR] = [toPR, fromPR];
+            }
+
+            async function comment(prNumber, message) {
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number: prNumber,
+                body: message
+              });
+            }
+
+            async function getMergeState(prNumber) {
+              for (let i = 0; i < 5; i++) {
+
+                const pr = await github.rest.pulls.get({
+                  owner,
+                  repo,
+                  pull_number: prNumber
+                });
+
+                if (
+                  pr.data.mergeable_state &&
+                  pr.data.mergeable_state !== "unknown"
+                ) {
+                  return pr.data.mergeable_state;
+                }
+
+                await new Promise(
+                  r => setTimeout(r, 2000)
+                );
+              }
+
+              return null;
+            }
+
+            for (
+              let prNumber = fromPR;
+              prNumber <= toPR;
+              prNumber++
+            ) {
+
+              try {
+
+                const prResponse =
+                await github.rest.pulls.get({
+                  owner,
+                  repo,
+                  pull_number: prNumber
+                });
+
+                const pr = prResponse.data;
+
+                if (pr.state !== "open") {
+                  core.info(
+                    `PR #${prNumber} is not open. Skipping.`
+                  );
+                  continue;
+                }
+
+                const filesResponse =
+                await github.rest.pulls.listFiles({
+                  owner,
+                  repo,
+                  pull_number: prNumber
+                });
+
+                const files =
+                filesResponse.data.map(
+                  f => f.filename
+                );
+
+                const touchesRootFile =
+                files.some(
+                  file => !file.includes("/")
+                );
+
+                if (touchesRootFile) {
+
+                  core.info(
+                    `PR #${prNumber} modifies root files. Skipping.`
+                  );
+
+                  continue;
+                }
+
+                const mergeState =
+                await getMergeState(prNumber);
+
+                if (!mergeState) {
+
+                  core.info(
+                    `Could not determine mergeability for #${prNumber}`
+                  );
+
+                  continue;
+                }
+
+                if (mergeState === "dirty") {
+
+                  await comment(
+                    prNumber,
+                    "Please resolve merge conflicts before this PR can be merged."
+                  );
+
+                  core.info(
+                    `PR #${prNumber} has merge conflicts.`
+                  );
+
+                  continue;
+                }
+
+                await github.rest.pulls.merge({
+                  owner,
+                  repo,
+                  pull_number: prNumber,
+                  merge_method: "squash"
+                });
+
+                core.info(
+                  `Merged PR #${prNumber}`
+                );
+
+              } catch (error) {
+
+                core.warning(
+                  `Failed PR #${prNumber}: ${error.message}`
+                );
+
+              }
+            }

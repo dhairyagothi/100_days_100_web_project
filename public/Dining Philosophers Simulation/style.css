@@ -1,47 +1,364 @@
-body { font-family: Arial; background: #f4f4f9; text-align: center; }
-.main-container { display: flex; flex-direction: column; align-items: center; margin-top: 20px; }
-
-/* The Table */.table {    width: 350px; height: 350px; background: white;    border: 5px solid #333; border-radius: 50%;    position: relative; margin: 20px;    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+body {
+    font-family: system-ui, sans-serif;
+    background: #f9fafb;
+    text-align: center;
+    margin: 0;
+    padding-bottom: 40px;
+    color: #1f2937;
 }
 
-/* Every philosopher circle */.phil {    position: absolute; width: 70px; height: 70px;    border-radius: 50%; border: 3px solid #555;    display: flex; align-items: center; justify-content: center;    font-size: 12px; font-weight: bold;
+.header {
+    margin-top: 60px;
 }
 
-/* Every fork rectangle */.fork {    position: absolute; width: 8px; height: 35px;    background: #f1c40f; border-radius: 4px;
+.header h1 {
+    color: #111827;
+    font-weight: 700;
+    margin-bottom: 5px;
 }
 
-/* Philosopher positions */#p0 { left: 140px; top:  10px; }
-#p1 { left: 263px; top: 100px; }
-#p2 { left: 216px; top: 245px; }
-#p3 { left:  64px; top: 245px; }
-#p4 { left:  17px; top: 100px; }
-
-/* Forks positions */#f0 { left: 221px; top:  89px; transform: rotate(306deg); }
-#f1 { left: 252px; top: 184px; transform: rotate( 18deg); }
-#f2 { left: 171px; top: 243px; transform: rotate( 90deg); }
-#f3 { left:  90px; top: 184px; transform: rotate(162deg); }
-#f4 { left: 121px; top:  89px; transform: rotate(234deg); }
-
-/* State Colors */.thinking { background: #bdc3c7; color: black; }
-.hungry   { background: #e74c3c; color: white; }
-.eating   { background: #2ecc71; color: white; border-color: #27ae60; }
-
-/* Fork animation when picked up */.fork {    transition: opacity 0.5s;    opacity: 1;
-}
-.held {    opacity: 0.2;
+.main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 20px;
 }
 
-/* Hungry blinking animation */@keyframes blink {    0%   { border-color: red; }    50%  { border-color: white; }    100% { border-color: red; }
-}
-.hungry {    animation: blink 1s infinite;
-}
-
-/* Eating pulse animation */@keyframes pulse {    0%   { transform: scale(1); }    50%  { transform: scale(1.1); }    100% { transform: scale(1); }
-}
-.eating {    animation: pulse 1s infinite;
+/* The Table */
+.table-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
-.controls { background: white; padding: 15px; border-radius: 8px; width: 400px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-.log { margin-top: 15px; height: 120px; overflow-y: scroll; background: #eee; width: 400px; font-size: 12px; padding: 5px; text-align: left; }
-.deadlock-alert { color: red; font-weight: bold; display: none; margin-top: 10px; }
-.info { margin-top: 10px; background: #fffde7; border-left: 4px solid orange;        width: 400px; padding: 10px; font-size: 12px; text-align: left;        border-radius: 4px; line-height: 1.8; }
+.table {
+    width: 350px;
+    height: 350px;
+    background: white;
+    border: 5px solid #333;
+    border-radius: 50%;
+    position: relative;
+    margin: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    flex-shrink: 0;
+}
+
+/* Every philosopher circle */
+.phil {
+    position: absolute;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    border: 3px solid #555;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+/* Every fork rectangle */
+.fork {
+    position: absolute;
+    width: 8px;
+    height: 35px;
+    background: #f1c40f;
+    border-radius: 4px;
+}
+
+/* Philosopher positions (Strictly preserved) */
+#p0 {
+    left: 140px;
+    top: 10px;
+}
+
+#p1 {
+    left: 263px;
+    top: 100px;
+}
+
+#p2 {
+    left: 216px;
+    top: 245px;
+}
+
+#p3 {
+    left: 64px;
+    top: 245px;
+}
+
+#p4 {
+    left: 17px;
+    top: 100px;
+}
+
+/* Forks positions (Strictly preserved) */
+#f0 {
+    left: 221px;
+    top: 89px;
+    transform: rotate(306deg);
+}
+
+#f1 {
+    left: 252px;
+    top: 184px;
+    transform: rotate(18deg);
+}
+
+#f2 {
+    left: 171px;
+    top: 243px;
+    transform: rotate(90deg);
+}
+
+#f3 {
+    left: 90px;
+    top: 184px;
+    transform: rotate(162deg);
+}
+
+#f4 {
+    left: 121px;
+    top: 89px;
+    transform: rotate(234deg);
+}
+
+/* State Colors (Strictly preserved) */
+.thinking {
+    background: #bdc3c7;
+    color: black;
+}
+
+.hungry {
+    background: #e74c3c;
+    color: white;
+}
+
+.eating {
+    background: #2ecc71;
+    color: white;
+    border-color: #27ae60;
+}
+
+/* Fork animation when picked up */
+.fork {
+    transition: opacity 0.5s;
+    opacity: 1;
+}
+
+.held {
+    opacity: 0.2;
+}
+
+/* Hungry blinking animation */
+@keyframes blink {
+    0% {
+        border-color: red;
+    }
+
+    50% {
+        border-color: white;
+    }
+
+    100% {
+        border-color: red;
+    }
+}
+
+.hungry {
+    animation: blink 1s infinite;
+}
+
+/* Eating pulse animation */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.eating {
+    animation: pulse 1s infinite;
+}
+
+/* Reusable Cards for Sections */
+.card {
+    background: white;
+    padding: 24px;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 480px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    border: 1px solid #e5e7eb;
+    box-sizing: border-box;
+    text-align: left;
+}
+
+.section-title {
+    font-size: 1.15em;
+    font-weight: 600;
+    color: #374151;
+    margin-top: 0;
+    margin-bottom: 16px;
+    border-bottom: 2px solid #f3f4f6;
+    padding-bottom: 8px;
+}
+
+/* Controls */
+.controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+
+.button-group {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    width: 100%;
+}
+
+.btn {
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 140px;
+}
+
+.btn-primary {
+    background: #2563eb;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #1d4ed8;
+    transform: translateY(-1px);
+}
+
+.btn-secondary {
+    background: #f9fafb;
+    color: #4b5563;
+    border: 1px solid #d1d5db;
+}
+
+.btn-secondary:hover {
+    background: #f3f4f6;
+    transform: translateY(-1px);
+}
+
+.btn:focus-visible {
+    outline: 2px solid #2563eb;
+    outline-offset: 2px;
+}
+
+.toggle-group {
+    margin-top: 4px;
+    color: #4b5563;
+}
+
+.toggle-group strong {
+    font-weight: 600;
+}
+
+.checkbox-label input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: #2563eb;
+}
+
+.deadlock-alert {
+    color: #dc2626;
+    font-weight: 600;
+    display: none;
+    margin-top: 12px;
+    text-align: center;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    padding: 12px;
+    border-radius: 6px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Info */
+.info {
+    border-left: 4px solid #f59e0b;
+    background: #fffbeb;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #4b5563;
+}
+
+/* Log */
+.log {
+    height: 140px;
+    overflow-y: auto;
+    background: #f9fafb;
+    font-size: 13px;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #e5e7eb;
+    color: #374151;
+    font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+    line-height: 1.5;
+}
+
+.log::-webkit-scrollbar {
+    width: 8px;
+}
+
+.log::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.log::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 4px;
+}
+
+.log::-webkit-scrollbar-thumb:hover {
+    background: #9ca3af;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .header {
+        margin-top: 40px;
+    }
+
+    .header h1 {
+        font-size: 1.5rem;
+    }
+
+    .button-group {
+        flex-direction: column;
+    }
+
+    .btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 400px) {
+    .table-container {
+        transform: scale(0.85);
+        transform-origin: top center;
+        margin-bottom: -40px;
+    }
+}

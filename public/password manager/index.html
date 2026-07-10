@@ -1,310 +1,538 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8" />
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PassX-Pass</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .security-note {
+      margin-top: 1rem;
+      padding: 0.65rem 0.9rem;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 200, 60, 0.35);
+      background: rgba(255, 200, 60, 0.07);
+      color: #f0c44a;
+      font-size: 0.75rem;
+      line-height: 1.5;
+      text-align: left;
+    }
+    .security-note strong { font-weight: 700; }
 
-    <title>PassX - Password Manager</title>
-
-    <link rel="stylesheet" href="style.css" />
-
-    <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-    />
+    .demo-banner {
+      margin: 2rem auto 0;
+      max-width: 640px;
+      padding: 0.7rem 1rem;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 200, 60, 0.25);
+      background: rgba(255, 200, 60, 0.05);
+      color: #a0946a;
+      font-size: 0.72rem;
+      line-height: 1.55;
+      text-align: center;
+    }
+    .demo-banner strong { color: #f0c44a; font-weight: 700; }
+  </style>
 </head>
 
 <body>
 
-    <!-- Toast Notification -->
+  <!-- =========================================================
+       MASTER PASSWORD GATE
+  ========================================================== -->
 
-    <div id="toast"></div>
+  <div
+    id="gate-overlay"
+    class="gate-overlay"
+  >
 
-    <!-- Navbar -->
+    <div class="gate-card">
 
-    <nav class="navbar">
+      <div class="gate-icon">
+        <i class="fa-solid fa-shield-halved"></i>
+      </div>
 
-        <div class="logo">
-            <i class="fa-solid fa-shield-halved"></i>
-            <span>PassX</span>
+      <h1 class="gate-title">
+        Secure Vault
+      </h1>
+
+      <p
+        class="gate-sub"
+        id="gate-sub"
+      >
+        Enter your master password to unlock your vault.
+      </p>
+
+      <input
+        type="password"
+        id="master-input"
+        class="gate-input"
+        placeholder="Enter master password"
+        autocomplete="current-password"
+      />
+      <p class="gate-error" id="gate-error"></p>
+      <button class="gate-btn" id="gate-btn" onclick="unlockVault()">Unlock →</button>
+      <p class="gate-hint" id="gate-hint"></p>
+
+      <!-- Security disclaimer — fix for issue #6150 -->
+      <div class="security-note" role="note" aria-label="Security notice">
+        🔒 <strong>Client-side demo only.</strong> Passwords are encrypted with
+        AES-256-GCM before being saved to localStorage — they are never stored
+        as plain text. Your master password is never saved; it is used only to
+        derive the encryption key in-memory. Do not use this to store real
+        credentials on a shared or public device.
+      </div>
+
+      <p
+        class="gate-error"
+        id="gate-error"
+      ></p>
+
+      <button
+        class="gate-btn"
+        id="gate-btn"
+        onclick="unlockVault()"
+      >
+        <i class="fa-solid fa-lock-open"></i>
+        Unlock Vault
+      </button>
+
+      <p
+        class="gate-hint"
+        id="gate-hint"
+      ></p>
+
+    </div>
+
+  </div>
+
+  <!-- =========================================================
+       MAIN APP
+  ========================================================== -->
+
+  <div
+    id="app"
+    class="app hidden"
+  >
+
+    <!-- ================= HEADER ================= -->
+
+    <header class="header">
+
+      <div class="header-left">
+
+        <div class="header-logo">
+          <i class="fa-solid fa-vault"></i>
         </div>
 
-        <ul class="nav-links">
+        <div>
 
-            <li>
-                <a href="#home">Home</a>
-            </li>
+          <h1 class="header-title">
+            Vault Password Manager
+          </h1>
 
-            <li>
-                <a href="#features">Features</a>
-            </li>
+          <p class="header-subtitle">
+            Securely manage your passwords
+          </p>
 
-            <li>
-                <a href="#contact">Contact</a>
-            </li>
+        </div>
 
-        </ul>
+      </div>
 
-    </nav>
+      <div class="header-actions">
 
-    <!-- Main Container -->
+        <!-- Theme Toggle -->
+        <button
+          class="theme-btn"
+          onclick="toggleTheme()"
+          title="Toggle Theme"
+        >
+          <i class="fa-solid fa-moon"></i>
+          Theme
+        </button>
 
-    <main class="container">
+        <!-- Export -->
+        <button
+          class="export-btn"
+          onclick="exportVault()"
+          title="Export Vault"
+        >
+          <i class="fa-solid fa-file-export"></i>
+          Export
+        </button>
 
-        <!-- Hero Section -->
+        <!-- Lock -->
+        <button
+          class="lock-btn"
+          onclick="lockVault()"
+          title="Lock Vault"
+        >
+          <i class="fa-solid fa-lock"></i>
+          Lock
+        </button>
 
-        <section class="hero" id="home">
+      </div>
 
-            <h1>Password Manager</h1>
+    </header>
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="main">
+
+      <!-- =========================================================
+           STATS
+      ========================================================== -->
+
+      <section class="stats-grid">
+
+        <div class="stat-card">
+
+          <p>
+            Total Passwords
+          </p>
+
+          <h2 id="totalEntries">
+            0
+          </h2>
+
+        </div>
+
+        <div class="stat-card">
+
+          <p>
+            Strong Passwords
+          </p>
+
+          <h2 id="strongPasswords">
+            0
+          </h2>
+
+        </div>
+
+        <div class="stat-card">
+
+          <p>
+            Weak Passwords
+          </p>
+
+          <h2 id="weakPasswords">
+            0
+          </h2>
+
+        </div>
+
+        <div class="stat-card">
+
+          <p>
+            Vault Security
+          </p>
+
+          <h2 id="vaultHealth">
+            Safe
+          </h2>
+
+        </div>
+
+      </section>
+
+      <!-- =========================================================
+           ADD ENTRY SECTION
+      ========================================================== -->
+
+      <section class="form-section">
+
+        <h2 class="section-title">
+          <i class="fa-solid fa-plus"></i>
+          Add New Entry
+        </h2>
+
+        <div class="form-grid">
+
+          <!-- Website -->
+          <div class="field">
+
+            <label class="label">
+              Website / App
+            </label>
+
+            <input
+              type="text"
+              id="site"
+              class="input"
+              placeholder="github.com"
+            />
+
+          </div>
+
+          <!-- Username -->
+          <div class="field">
+
+            <label class="label">
+              Username / Email
+            </label>
+
+            <input
+              type="text"
+              id="username"
+              class="input"
+              placeholder="you@example.com"
+              autocomplete="off"
+            />
+
+          </div>
+
+          <!-- Category -->
+          <div class="field">
+
+            <label class="label">
+              Category
+            </label>
+
+            <select id="category">
+
+              <option value="Social">
+                Social
+              </option>
+
+              <option value="Work">
+                Work
+              </option>
+
+              <option value="Finance">
+                Finance
+              </option>
+
+              <option value="Shopping">
+                Shopping
+              </option>
+
+              <option value="Entertainment">
+                Entertainment
+              </option>
+
+              <option value="Other">
+                Other
+              </option>
+
+            </select>
+
+          </div>
+
+          <!-- Notes -->
+          <div class="field">
+
+            <label class="label">
+              Notes
+            </label>
+
+            <input
+              type="text"
+              id="notes"
+              class="input"
+              placeholder="Optional notes..."
+            />
+
+          </div>
+
+          <!-- Password -->
+          <div class="field full-width">
+
+            <label class="label">
+              Password
+            </label>
+
+            <div class="pw-input-wrap">
+
+              <input
+                type="password"
+                id="password"
+                class="input"
+                placeholder="Enter or generate password..."
+                autocomplete="new-password"
+                oninput="onPasswordInput(this.value)"
+              />
+
+              <!-- Show Password -->
+              <button
+                class="icon-btn"
+                onclick="togglePwVisibility()"
+                title="Show / Hide Password"
+              >
+                <i class="fa-solid fa-eye"></i>
+              </button>
+
+              <!-- Generate Password -->
+              <button
+                class="icon-btn"
+                onclick="generatePassword()"
+                title="Generate Password"
+              >
+                <i class="fa-solid fa-bolt"></i>
+              </button>
+
+            </div>
+
+            <!-- Strength Meter -->
+            <div
+              class="strength-wrap"
+              id="strength-wrap"
+            >
+
+              <div class="strength-bar">
+
+                <div
+                  class="strength-seg"
+                  id="s0"
+                ></div>
+
+                <div
+                  class="strength-seg"
+                  id="s1"
+                ></div>
+
+                <div
+                  class="strength-seg"
+                  id="s2"
+                ></div>
+
+                <div
+                  class="strength-seg"
+                  id="s3"
+                ></div>
+
+                <div
+                  class="strength-seg"
+                  id="s4"
+                ></div>
+
+              </div>
+
+              <span
+                class="strength-label"
+                id="strength-label"
+              >
+                —
+              </span>
+
+            </div>
+
+            <!-- Breach Warning -->
+            <div
+              class="breach-warn hidden"
+              id="breach-warn"
+            >
+
+              <i class="fa-solid fa-triangle-exclamation"></i>
+
+              <span id="breach-msg">
+                This password has appeared in known data breaches.
+              </span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- Save Button -->
+        <div class="form-actions">
+
+          <button
+            class="add-btn"
+            onclick="addEntry()"
+          >
+            <i class="fa-solid fa-floppy-disk"></i>
+            Save to Vault
+          </button>
+
+        </div>
+
+        <!-- Error -->
+        <p
+          class="form-error hidden"
+          id="form-error"
+        ></p>
+
+      </section>
+
+      <!-- =========================================================
+           SAVED ENTRIES
+      ========================================================== -->
+
+      <section class="list-section">
+
+        <div class="list-header">
+
+          <h2 class="section-title">
+
+            <i class="fa-solid fa-key"></i>
+
+            Saved Passwords
+
+            <span
+              class="count-badge"
+              id="count-badge"
+            >
+              0
+            </span>
+
+          </h2>
+
+          <!-- Search -->
+          <input
+            type="text"
+            class="search-input"
+            id="search"
+            placeholder="Search passwords..."
+            oninput="renderList()"
+          />
+
+        </div>
+
+        <!-- Entries -->
+        <div
+          id="entry-list"
+          class="entry-list"
+        >
+
+          <div class="empty-state">
+
+            <i
+              class="fa-solid fa-lock"
+              style="font-size: 42px; margin-bottom: 16px;"
+            ></i>
 
             <p>
-                Securely store, manage, and access your passwords in one place.
-                Fast, simple, and safe.
+              No passwords saved yet.
             </p>
 
-        </section>
+          </div>
 
-        <!-- Password List -->
+        </div>
 
-        <section class="password-section" id="features">
+      </section>
 
-            <div class="section-title">
-                <h2>Saved Passwords</h2>
-            </div>
-
-            <div class="table-container">
-
-                <table>
-
-                    <thead>
-
-                        <tr>
-                            <th>Website</th>
-                            <th>Username</th>
-                            <th>Password</th>
-                            <th>Actions</th>
-                        </tr>
-
-                    </thead>
-
-                    <tbody id="passwordTable">
-
-                        <!-- Dynamic Data -->
-
-                    </tbody>
-
-                </table>
-
-                <!-- Empty State -->
-
-                <div id="emptyState">
-
-                    <i class="fa-solid fa-lock"></i>
-
-                    <p>No passwords saved yet</p>
-
-                </div>
-
-            </div>
-
-        </section>
-
-        <!-- Add Password -->
-
-        <section class="form-section">
-
-            <div class="section-title">
-                <h2>Add Password</h2>
-            </div>
-
-            <form id="passwordForm">
-
-                <!-- Website -->
-
-                <div class="input-group">
-
-                    <label for="website">Website</label>
-
-                    <input
-                        type="text"
-                        id="website"
-                        placeholder="Enter website"
-                        required
-                    />
-
-                </div>
-
-                <!-- Username -->
-
-                <div class="input-group">
-
-                    <label for="username">Username</label>
-
-                    <input
-                        type="text"
-                        id="username"
-                        placeholder="Enter username"
-                        required
-                    />
-
-                </div>
-
-                <!-- Password -->
-
-                <div class="input-group">
-
-                    <label for="password">Password</label>
-
-                    <div class="password-wrapper">
-
-                        <input
-                            type="password"
-                            id="password"
-                            placeholder="Enter password"
-                            required
-                        />
-
-                        <span id="togglePassword">
-
-                            <i class="fa-solid fa-eye"></i>
-
-                        </span>
-
-                    </div>
-
-                </div>
-
-                <!-- Submit Button -->
-
-                <button type="submit" class="submit-btn">
-
-                    <i class="fa-solid fa-plus"></i>
-
-                    Save Password
-
-                </button>
-
-            </form>
-
-        </section>
+      <!-- Demo banner — fix for issue #6150 -->
+      <div class="demo-banner" role="note" aria-label="Demo project notice">
+        ⚠️ <strong>Learning Project:</strong> This is a client-side demo built
+        for educational purposes. Passwords are encrypted with AES-256-GCM via
+        the Web Crypto API and stored as encrypted blobs — never as plain text.
+        PBKDF2 (100,000 iterations) is used for key derivation. Not intended
+        for production use or storing real sensitive credentials.
+      </div>
 
     </main>
 
-    <!-- Footer -->
+  </div>
 
-    <footer class="footer" id="contact">
+  <!-- =========================================================
+       SCRIPT
+  ========================================================== -->
 
-        <div class="footer-content">
-
-            <!-- About -->
-
-            <div class="footer-section">
-
-                <h3>PassX</h3>
-
-                <p>
-                    Secure and modern password management experience.
-                </p>
-
-            </div>
-
-            <!-- Contact -->
-
-            <div class="footer-section">
-
-                <h3>Contact</h3>
-
-                <p>
-                    <a href="mailto:dhairyag31@gmail.com">
-
-                        <i class="fa-solid fa-envelope"></i>
-
-                        dhairyag31@gmail.com
-
-                    </a>
-                </p>
-
-                <p>
-                    <a
-                        href="https://www.dhairyagothiportfolio.live"
-                        target="_blank"
-                    >
-
-                        <i class="fa-solid fa-globe"></i>
-
-                        Portfolio Website
-
-                    </a>
-                </p>
-
-                <p>
-                    <a
-                        href="https://www.linkedin.com/in/dhairya-gothi-65945b288/"
-                        target="_blank"
-                    >
-
-                        <i class="fa-brands fa-linkedin"></i>
-
-                        LinkedIn
-
-                    </a>
-                </p>
-
-                <p>
-                    <a
-                        href="https://www.instagram.com/dhairyaa__31?igsh=MXNkZHg0ZzB4OGg1Mg=="
-                        target="_blank"
-                    >
-
-                        <i class="fa-brands fa-instagram"></i>
-
-                        Instagram
-
-                    </a>
-                </p>
-
-            </div>
-
-            <!-- Support -->
-
-            <div class="footer-section">
-
-                <h3>Support</h3>
-
-                <p>
-                    ⭐ Support this project by starring the repository
-                </p>
-
-                <a
-                    href="https://github.com/dhairyagothi/100_days_100_web_project"
-                    target="_blank"
-                    class="footer-btn"
-                >
-
-                    Star Repository
-
-                </a>
-
-            </div>
-
-        </div>
-
-        <!-- Bottom -->
-
-        <div class="footer-bottom">
-
-            <p>
-                Made with ❤️ for open source contributors
-            </p>
-
-        </div>
-
-    </footer>
-
-    <script src="script.js"></script>
+  <script src="script.js"></script>
 
 </body>
-
 </html>
