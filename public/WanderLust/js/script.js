@@ -63,7 +63,7 @@ const cardTexts = document.querySelectorAll('.card-text');
 
 // Save the original base price of every card when the page loads
 cardTexts.forEach(card => {
-    const parts = card.innerHTML.split('₹');
+   const parts = card.textContent.split('₹');
     if (parts.length > 1) {
         const titlePart = parts[0]; 
         const pricePart = parts[1].split('/')[0].replace(',', ''); 
@@ -98,7 +98,7 @@ if (currencySelector) {
                 const title = card.getAttribute('data-title-html');
                 const after = card.getAttribute('data-after-html');
                 
-                card.innerHTML = title + currentSymbol + formattedPrice + after;
+               card.textContent = title + currentSymbol + formattedPrice + after;
             }
         });
     });
