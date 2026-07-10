@@ -247,8 +247,24 @@ function playReturn() {
   playHeavyKey();
 }
 
-function playBackspace() {
-  playHeavyKey();
+function renderPaper() {
+    typewriterText.textContent = paperContent;
+
+    const paper = document.querySelector(".paper-sheet");
+    // Use requestAnimationFrame to ensure DOM is updated before scrolling
+    requestAnimationFrame(() => {
+        paper.scrollTop = paper.scrollHeight;
+    });
+}
+
+function syncInput() {
+    if (userInput.value !== paperContent) {
+        userInput.value = paperContent;
+        // Auto-scroll input area to show latest content
+        requestAnimationFrame(() => {
+            userInput.scrollTop = userInput.scrollHeight;
+        });
+    }
 }
 
 /* ---------- Typing ---------- */
@@ -398,6 +414,13 @@ document.addEventListener("keydown", (e) => {
     // Flash the matching on-screen key (keys store data-char in lowercase)
     flashKey(e.key.toLowerCase());
   }
+});
+
+userInput.addEventListener("input", () => {
+    paperContent = userInput.value;
+    renderPaper();
+    userInput.scrollTop = userInput.scrollHeight;
+
 });
 
 /* ---------- Sound Toggle ---------- */
@@ -1038,3 +1061,44 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
+const savedTheme = localStorage.getItem("theme");
+if (savedTheme === "light") {
+    document.body.classList.add("light-theme");
+    themeToggle.textContent = "☀️";
+}
+
+setCapsLockState(false);
+paperContent = userInput.value || "";
+renderPaper();
+syncInput();
+const paperSheet = document.querySelector(".paper-sheet");
+
+const scrollUpBtn = document.getElementById("scrollUp");
+const scrollDownBtn = document.getElementById("scrollDown");
+
+if (scrollUpBtn) {
+    scrollUpBtn.addEventListener("click", () => {
+        paperSheet.scrollBy({
+            top: -120,
+            behavior: "smooth"
+        });
+        userInput.scrollBy({
+            top: -120,
+            behavior: "smooth"
+        });
+    });
+}
+
+if (scrollDownBtn) {
+    scrollDownBtn.addEventListener("click", () => {
+        paperSheet.scrollBy({
+            top: 120,
+            behavior: "smooth"
+        });
+        userInput.scrollBy({
+            top: 120,
+            behavior: "smooth"
+        });
+    });
+}

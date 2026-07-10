@@ -37,6 +37,24 @@
           <label for="pdfTitle"><i aria-hidden="true" class="fas fa-feather"></i> Title</label>
           <input type="text" id="pdfTitle" placeholder="Doc Title..." maxlength="40" />
         </div>
+        <div class="typewriter-body">
+            <div class="input-area">
+                <textarea id="userInput" rows="1" placeholder="Type here or click the keys below…"
+                    aria-label="Typing input"></textarea>
+            </div>
+            <div class="keyboard">
+                <div class="keyboard-row" id="row-numbers">
+                    <button type="button" class="key" data-char="1">1</button>
+                    <button type="button" class="key" data-char="2">2</button>
+                    <button type="button" class="key" data-char="3">3</button>
+                    <button type="button" class="key" data-char="4">4</button>
+                    <button type="button" class="key" data-char="5">5</button>
+                    <button type="button" class="key" data-char="6">6</button>
+                    <button type="button" class="key" data-char="7">7</button>
+                    <button type="button" class="key" data-char="8">8</button>
+                    <button type="button" class="key" data-char="9">9</button>
+                    <button type="button" class="key" data-char="0">0</button>
+                </div>
         <div class="control-group">
           <label for="pdfAuthor"><i aria-hidden="true" class="fas fa-signature"></i> Author</label>
           <input type="text" id="pdfAuthor" placeholder="Byline..." maxlength="30" />
@@ -189,6 +207,18 @@
           <button type="button" class="key" data-char="m">M</button>
         </div>
 
+                <div class="keyboard-row keyboard-row--functions">
+                    <button type="button" class="key caps-lock" data-char="CAPSLOCK" aria-pressed="false">CAPS
+                        LOCK</button>
+                    <button type="button" class="key enter-key" data-char="ENTER">↵ RET</button>
+                    <button type="button" class="key space" data-char="SPACE">SPACE</button>
+                    <button type="button" class="key backspace" data-char="BACKSPACE">⌫ DEL</button>
+                </div>
+                <div class="paper-controls">
+                    <button class="scroll-btn" id="scrollUp">▲</button>
+                    <button class="scroll-btn" id="scrollDown">▼</button>
+                </div>
+            </div>
         <div class="keyboard-row keyboard-row--functions">
           <button type="button" class="key caps-lock" data-char="CAPSLOCK" aria-pressed="false">
             CAPS LOCK
