@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FlyTravel - Authentication</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css">
+  
+  <style>
+    /* Scoped layout rules dedicated entirely to the standalone Auth screen */
+    .auth-page {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-image: linear-gradient(rgba(17, 43, 90, 0.85), rgba(17, 43, 90, 0.85)), url("service1.jpg");
+      background-position: center;
+      background-size: cover;
+      padding: 1.5rem;
+    }
+
+    .auth-card {
+      background-color: var(--white);
+      width: 100%;
+      max-width: 440px;
+      padding: 2.5rem 2rem;
+      border-radius: var(--radius);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    }
+
+    .auth-back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #1e293b;
+      color: #3b82f6;
+      border: 1px solid #3b82f6;
+      border-radius: 8px;
+      padding: 8px 16px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .auth-back-btn:hover {
+      background: #3b82f6;
+      color: #fff;
+    }
+
+    .auth-tabs {
+      display: flex;
+      border-bottom: 2px solid var(--extra-light);
+      margin-bottom: 2rem;
+    }
+
+    .auth-tab {
+      flex: 1;
+      text-align: center;
+      padding-bottom: 0.75rem;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-light);
+      background: none;
+      border: none;
+      cursor: pointer;
+      position: relative;
+      transition: color 0.2s;
+    }
+
+    .auth-tab.active {
+      color: var(--primary-color);
+    }
+
+    .auth-tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background-color: var(--primary-color);
+    }
+
+    /* Form display management toggles */
+    .auth-view {
+      display: none;
+    }
+
+    .auth-view.active {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      animation: formFade 0.35s ease forwards;
+    }
+
+    @keyframes formFade {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .field-group label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-dark);
+    }
+
+    .field-group input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      font-size: 1rem;
+      font-family: 'Inter', sans-serif;
+      color: var(--text-dark);
+      border: 1px solid #d1d5db;
+      border-radius: var(--radius);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .field-group input:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(59, 125, 216, 0.15);
+    }
+
+    .checkbox-group {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+      color: var(--text-light);
+    }
+
+    .checkbox-group input {
+      margin-top: 0.2rem;
+      cursor: pointer;
+    }
+
+    .full-width-btn {
+      width: 100%;
+      justify-content: center;
+      margin-top: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="auth-page">
+    <div class="auth-card">
+      
+      <a href="index.html" class="auth-back-btn">
+        <i class="ri-arrow-left-line"></i> Back to Exploration
+      </a>
+
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tab-login">Sign In</button>
+        <button class="auth-tab" id="tab-register">Create Account</button>
+      </div>
+
+      <form id="form-login" class="auth-view active" autocomplete="on">
+        <div class="field-group">
+          <label for="login-email">Email Address</label>
+          <input type="email" id="login-email" placeholder="name@example.com" required>
+        </div>
+        <div class="field-group">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" placeholder="••••••••" required>
+        </div>
+        <button type="submit" class="btn full-width-btn">Sign In</button>
+      </form>
+
+      <form id="form-register" class="auth-view" autocomplete="off">
+        <div class="field-group">
+          <label for="register-name">Full Name</label>
+          <input type="text" id="register-name" placeholder="John Doe" required>
+        </div>
+        <div class="field-group">
+          <label for="register-email">Email Address</label>
+          <input type="email" id="register-email" placeholder="name@example.com" required>
+        </div>
+        <div class="field-group">
+          <label for="register-password">Password</label>
+          <input type="password" id="register-password" placeholder="Minimum 8 characters" minlength="8" required>
+        </div>
+        <div class="checkbox-group">
+          <input type="checkbox" id="register-terms" required>
+          <label for="register-terms">I read and accept the terms of data security metrics.</label>
+        </div>
+        <button type="submit" class="btn full-width-btn">Create Account</button>
+      </form>
+
+    </div>
+  </div>
+
+  <script src="auth.js"></script>
+</body>
+</html>

@@ -6,7 +6,7 @@ const { AppError } = require('../middlewares/errorHandler');
 
 exports.Response_POST_API = async (req, res) => {
 
-    const { originalURL, Password, expiryDate } = req.body;
+    const { originalURL, Password, expiryDate, customName } = req.body;
 
     const BASE_URL = process.env.SERVER_URL || "http://localhost:5000";
 
@@ -14,12 +14,42 @@ exports.Response_POST_API = async (req, res) => {
         throw new AppError("Enter URL first", 400);
     }
 
-    let Shortcode;
-    let RegisteredURL = true;
+    // Only allow http(s) URLs so javascript:, data:, file: and similar cannot be stored
+    let parsedURL;
+    try {
+        parsedURL = new URL(originalURL);
+    } catch (e) {
+        throw new AppError("Enter a valid URL starting with http:// or https://", 400);
+    }
+    if (parsedURL.protocol !== "http:" && parsedURL.protocol !== "https:") {
+        throw new AppError("Only http and https URLs can be shortened", 400);
+    }
 
-    while (RegisteredURL) {
-        Shortcode = nanoid(7);
-        RegisteredURL = await LinksData.findOne({ randomId: Shortcode });
+    let Shortcode;
+
+    if (customName) {
+        // Validate customName format (alphanumeric, dash, underscore)
+        const customNameRegex = /^[a-zA-Z0-9-_]+$/;
+        if (!customNameRegex.test(customName)) {
+            throw new AppError("Custom name can only contain letters, numbers, dashes, and underscores", 400);
+        }
+        if (customName.length > 50) {
+            throw new AppError("Custom name cannot exceed 50 characters", 400);
+        }
+        
+        // Check uniqueness
+        const existingName = await LinksData.findOne({ randomId: customName });
+        if (existingName) {
+            throw new AppError("Custom name already taken. Please choose another.", 400);
+        }
+        
+        Shortcode = customName;
+    } else {
+        let RegisteredURL = true;
+        while (RegisteredURL) {
+            Shortcode = nanoid(7);
+            RegisteredURL = await LinksData.findOne({ randomId: Shortcode });
+        }
     }
 
     const hashedPassword = Password ? await bcrypt.hash(Password, 10) : null;

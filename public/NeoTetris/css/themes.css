@@ -1,0 +1,220 @@
+/* ============================================================
+   NEOTRETIS — THEMES.CSS
+   4 complete visual themes via CSS custom properties
+   ============================================================ */
+
+/* ─── DEFAULT / NEON CYBERPUNK ─────────────────────────────── */
+[data-theme="neon-cyberpunk"],
+:root {
+    /* Core palette */
+    --clr-bg: #04040f;
+    --clr-bg-secondary: #07071a;
+    --clr-surface: rgba(6, 6, 26, 0.72);
+    --clr-surface-2: rgba(12, 12, 40, 0.85);
+    --clr-border: rgba(0, 245, 255, 0.18);
+    --clr-border-strong: rgba(0, 245, 255, 0.45);
+
+    /* Brand colors */
+    --clr-primary: #00f5ff;
+    --clr-primary-dim: rgba(0, 245, 255, 0.15);
+    --clr-secondary: #ff00ff;
+    --clr-secondary-dim: rgba(255, 0, 255, 0.12);
+    --clr-accent: #ff3cac;
+    --clr-accent-warm: #ffcc00;
+    --clr-success: #00ff88;
+    --clr-warning: #ffcc00;
+    --clr-danger: #ff3c5f;
+
+    /* Text */
+    --clr-text: #e0f0ff;
+    --clr-text-muted: rgba(160, 200, 230, 0.55);
+    --clr-text-dim: rgba(120, 160, 200, 0.35);
+
+    /* Glow effects */
+    --glow-primary: 0 0 20px rgba(0, 245, 255, 0.5), 0 0 60px rgba(0, 245, 255, 0.2);
+    --glow-secondary: 0 0 20px rgba(255, 0, 255, 0.5), 0 0 60px rgba(255, 0, 255, 0.2);
+    --glow-accent: 0 0 20px rgba(255, 60, 172, 0.4);
+    --glow-card: 0 8px 32px rgba(0, 0, 0, 0.6), 0 0 0 1px var(--clr-border);
+
+    /* Board */
+    --board-bg: #020209;
+    --board-cell-bg: rgba(0, 245, 255, 0.03);
+    --board-cell-border: rgba(0, 245, 255, 0.07);
+    --board-glow: 0 0 80px rgba(0, 245, 255, 0.15), inset 0 0 40px rgba(0, 0, 0, 0.8);
+
+    /* UI geometry */
+    --radius-sm: 6px;
+    --radius-md: 12px;
+    --radius-lg: 18px;
+    --radius-xl: 24px;
+
+    /* Typography */
+    --font-display: 'Orbitron', monospace;
+    --font-body: 'Rajdhani', sans-serif;
+    --font-mono: 'Share Tech Mono', monospace;
+
+    /* Backdrop blur */
+    --glass-blur: blur(16px) saturate(1.4);
+
+    /* Background gradient */
+    --bg-gradient: radial-gradient(ellipse 120% 80% at 20% 10%, rgba(0, 245, 255, 0.06) 0%, transparent 60%),
+        radial-gradient(ellipse 80% 100% at 80% 90%, rgba(255, 0, 255, 0.06) 0%, transparent 60%),
+        linear-gradient(180deg, #04040f 0%, #07071a 100%);
+
+    /* Grid overlay */
+    --grid-color: rgba(0, 245, 255, 0.04);
+
+    /* Animation speed */
+    --transition-theme: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* Piece colors */
+    --piece-I: #00f5ff;
+    --piece-O: #ffcc00;
+    --piece-T: #cc44ff;
+    --piece-S: #00ff88;
+    --piece-Z: #ff3c5f;
+    --piece-J: #4488ff;
+    --piece-L: #ff8800;
+}
+
+/* ─── CLASSIC RETRO ────────────────────────────────────────── */
+[data-theme="classic-retro"] {
+    --clr-bg: #0a0a1a;
+    --clr-bg-secondary: #12122a;
+    --clr-surface: rgba(18, 18, 42, 0.80);
+    --clr-surface-2: rgba(26, 26, 58, 0.90);
+    --clr-border: rgba(255, 204, 0, 0.20);
+    --clr-border-strong: rgba(255, 204, 0, 0.50);
+
+    --clr-primary: #ffcc00;
+    --clr-primary-dim: rgba(255, 204, 0, 0.15);
+    --clr-secondary: #ff6600;
+    --clr-secondary-dim: rgba(255, 102, 0, 0.12);
+    --clr-accent: #ff3300;
+    --clr-accent-warm: #ff9900;
+    --clr-success: #44ff88;
+    --clr-warning: #ffcc00;
+    --clr-danger: #ff3300;
+
+    --clr-text: #fff8e0;
+    --clr-text-muted: rgba(230, 210, 150, 0.55);
+    --clr-text-dim: rgba(200, 180, 100, 0.35);
+
+    --glow-primary: 0 0 20px rgba(255, 204, 0, 0.55), 0 0 60px rgba(255, 204, 0, 0.2);
+    --glow-secondary: 0 0 20px rgba(255, 102, 0, 0.55), 0 0 60px rgba(255, 102, 0, 0.2);
+    --glow-accent: 0 0 20px rgba(255, 51, 0, 0.4);
+    --glow-card: 0 8px 32px rgba(0, 0, 0, 0.7), 0 0 0 1px var(--clr-border);
+
+    --board-bg: #050510;
+    --board-cell-bg: rgba(255, 204, 0, 0.025);
+    --board-cell-border: rgba(255, 204, 0, 0.07);
+    --board-glow: 0 0 80px rgba(255, 204, 0, 0.12), inset 0 0 40px rgba(0, 0, 0, 0.9);
+
+    --bg-gradient: radial-gradient(ellipse 120% 80% at 20% 10%, rgba(255, 204, 0, 0.05) 0%, transparent 60%),
+        radial-gradient(ellipse 80% 100% at 80% 90%, rgba(255, 102, 0, 0.05) 0%, transparent 60%),
+        linear-gradient(180deg, #0a0a1a 0%, #12122a 100%);
+
+    --grid-color: rgba(255, 204, 0, 0.04);
+
+    --piece-I: #00ccff;
+    --piece-O: #ffcc00;
+    --piece-T: #cc44ff;
+    --piece-S: #44dd66;
+    --piece-Z: #ff3300;
+    --piece-J: #3366ff;
+    --piece-L: #ff8800;
+}
+
+/* ─── DARK MINIMAL ─────────────────────────────────────────── */
+[data-theme="dark-minimal"] {
+    --clr-bg: #0a0a0a;
+    --clr-bg-secondary: #111111;
+    --clr-surface: rgba(18, 18, 18, 0.85);
+    --clr-surface-2: rgba(24, 24, 24, 0.95);
+    --clr-border: rgba(255, 255, 255, 0.09);
+    --clr-border-strong: rgba(255, 255, 255, 0.22);
+
+    --clr-primary: #ffffff;
+    --clr-primary-dim: rgba(255, 255, 255, 0.08);
+    --clr-secondary: #aaaaaa;
+    --clr-secondary-dim: rgba(170, 170, 170, 0.10);
+    --clr-accent: #555555;
+    --clr-accent-warm: #dddddd;
+    --clr-success: #88ff88;
+    --clr-warning: #ffdd88;
+    --clr-danger: #ff8888;
+
+    --clr-text: #f0f0f0;
+    --clr-text-muted: rgba(180, 180, 180, 0.55);
+    --clr-text-dim: rgba(130, 130, 130, 0.40);
+
+    --glow-primary: 0 0 20px rgba(255, 255, 255, 0.15), 0 0 60px rgba(255, 255, 255, 0.06);
+    --glow-secondary: 0 0 20px rgba(170, 170, 170, 0.15);
+    --glow-accent: none;
+    --glow-card: 0 8px 40px rgba(0, 0, 0, 0.8), 0 0 0 1px var(--clr-border);
+
+    --board-bg: #060606;
+    --board-cell-bg: rgba(255, 255, 255, 0.015);
+    --board-cell-border: rgba(255, 255, 255, 0.05);
+    --board-glow: 0 0 40px rgba(255, 255, 255, 0.04), inset 0 0 40px rgba(0, 0, 0, 0.95);
+
+    --bg-gradient: linear-gradient(160deg, #0d0d0d 0%, #0a0a0a 100%);
+    --grid-color: rgba(255, 255, 255, 0.03);
+
+    --piece-I: #88ddff;
+    --piece-O: #ffdd88;
+    --piece-T: #cc88ff;
+    --piece-S: #88ffaa;
+    --piece-Z: #ff8888;
+    --piece-J: #88aaff;
+    --piece-L: #ffaa66;
+}
+
+/* ─── SPACE THEME ──────────────────────────────────────────── */
+[data-theme="space-theme"] {
+    --clr-bg: #030308;
+    --clr-bg-secondary: #050512;
+    --clr-surface: rgba(8, 8, 28, 0.75);
+    --clr-surface-2: rgba(14, 14, 44, 0.88);
+    --clr-border: rgba(123, 47, 255, 0.22);
+    --clr-border-strong: rgba(123, 47, 255, 0.50);
+
+    --clr-primary: #7b2fff;
+    --clr-primary-dim: rgba(123, 47, 255, 0.15);
+    --clr-secondary: #00d4ff;
+    --clr-secondary-dim: rgba(0, 212, 255, 0.12);
+    --clr-accent: #ff66cc;
+    --clr-accent-warm: #aaffee;
+    --clr-success: #44ffcc;
+    --clr-warning: #ffcc66;
+    --clr-danger: #ff4466;
+
+    --clr-text: #dde8ff;
+    --clr-text-muted: rgba(160, 180, 230, 0.55);
+    --clr-text-dim: rgba(110, 140, 200, 0.35);
+
+    --glow-primary: 0 0 20px rgba(123, 47, 255, 0.6), 0 0 80px rgba(123, 47, 255, 0.2);
+    --glow-secondary: 0 0 20px rgba(0, 212, 255, 0.5), 0 0 60px rgba(0, 212, 255, 0.15);
+    --glow-accent: 0 0 20px rgba(255, 102, 204, 0.4);
+    --glow-card: 0 8px 32px rgba(0, 0, 0, 0.7), 0 0 0 1px var(--clr-border);
+
+    --board-bg: #020208;
+    --board-cell-bg: rgba(123, 47, 255, 0.03);
+    --board-cell-border: rgba(123, 47, 255, 0.08);
+    --board-glow: 0 0 100px rgba(123, 47, 255, 0.18), inset 0 0 50px rgba(0, 0, 0, 0.9);
+
+    --bg-gradient: radial-gradient(ellipse 100% 60% at 30% 5%, rgba(123, 47, 255, 0.08) 0%, transparent 55%),
+        radial-gradient(ellipse 70% 80% at 75% 95%, rgba(0, 212, 255, 0.07) 0%, transparent 55%),
+        radial-gradient(ellipse 50% 50% at 50% 50%, rgba(40, 0, 80, 0.4) 0%, transparent 70%),
+        linear-gradient(180deg, #030308 0%, #050512 100%);
+
+    --grid-color: rgba(123, 47, 255, 0.05);
+
+    --piece-I: #00d4ff;
+    --piece-O: #ffcc66;
+    --piece-T: #bb44ff;
+    --piece-S: #44ffcc;
+    --piece-Z: #ff4466;
+    --piece-J: #4488ff;
+    --piece-L: #ffaa44;
+}

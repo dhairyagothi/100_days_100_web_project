@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sudoku - Minimalist Premium Game</title>
+  <meta name="description"
+    content="Play a clean, elegant, and minimalist Sudoku game. Features normal, medium, hard, and expert levels, notes, logic hints, and mistake checking.">
+
+  <!-- Inter Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="theme-notebook">
+
+  <!-- Grain overlay removed for minimalist style -->
+
+  <div class="app-container">
+
+
+
+    <!-- Header Section -->
+    <header class="game-header">
+      <div class="logo-area">
+        <h1 class="logo-text">Sudoku</h1>
+      </div>
+
+      <!-- Mode Selection Tabs (hidden via CSS for minimal layout) -->
+      <nav class="mode-tabs" style="display: none;">
+        <button id="mode-single-btn" class="tab-btn active">👤 Single Player</button>
+        <button id="mode-daily-btn" class="tab-btn">📅 Daily Challenge</button>
+        <button id="mode-multi-btn" class="tab-btn">🤖 Bot Race</button>
+      </nav>
+    </header>
+
+    <!-- Main Workspace Grid Layout -->
+    <main class="game-workspace">
+
+      <!-- Left Column: Controls & Game Board -->
+      <section class="board-column">
+
+        <!-- Status Panel -->
+        <div class="status-panel handdrawn-box">
+          <div class="status-item">
+            <span class="status-label">Difficulty:</span>
+            <span id="difficulty-display" class="status-val text-bold">EASY</span>
+          </div>
+          <div class="status-item">
+            <span class="status-label">Time:</span>
+            <span id="game-timer" class="status-val text-bold">00:00</span>
+          </div>
+          <div class="status-item">
+            <span class="status-label">Mistakes:</span>
+            <span class="status-val text-bold"><span id="mistakes-count">0</span>/<span
+                id="max-mistakes">3</span></span>
+          </div>
+          <div class="status-item">
+            <span class="status-label">Best:</span>
+            <span id="best-time" class="status-val">--:--</span>
+          </div>
+        </div>
+
+        <!-- The 9x9 Sudoku Board -->
+        <div class="board-wrapper">
+          <div id="sudoku-grid" class="sudoku-grid handdrawn-box">
+            <!-- 81 cells injected via app.js -->
+          </div>
+        </div>
+
+        <!-- Cute Picnic Doodle removed for minimal design -->
+
+      </section>
+
+      <!-- Right Column: Control Pad & Keypad -->
+      <section class="controls-column">
+
+        <!-- Multiplayer Racing Progress -->
+        <div id="multiplayer-race-panel" class="multiplayer-panel handdrawn-box" style="display: none;">
+          <h3 class="panel-title">🤖 Real-time Drafting Race</h3>
+
+          <div class="race-row">
+            <div class="race-label-wrapper">
+              <span class="race-label">You (Draftsman)</span>
+              <span id="player-percent" class="race-percent">0%</span>
+            </div>
+            <div class="bar-container">
+              <div id="player-progress-bar" class="progress-bar player-bar" style="width: 0%;"></div>
+            </div>
+          </div>
+
+          <div class="race-row">
+            <div class="race-label-wrapper">
+              <span class="race-label">🤖 <span id="bot-name">ScribbleBot</span></span>
+              <span id="bot-percent" class="race-percent">0%</span>
+            </div>
+            <div class="bar-container">
+              <div id="bot-progress-bar" class="progress-bar bot-bar" style="width: 0%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Pad Toolbar -->
+        <div class="action-pad handdrawn-box">
+          <button id="undo-btn" class="action-btn" title="Undo Move (Ctrl+Z)" disabled>
+            <span class="btn-icon">↩️</span>
+            <span class="btn-text">Undo</span>
+          </button>
+          <button id="redo-btn" class="action-btn" title="Redo Move (Ctrl+Y)" disabled>
+            <span class="btn-icon">↪️</span>
+            <span class="btn-text">Redo</span>
+          </button>
+          <button id="pencil-btn" class="action-btn" title="Toggle Pencil Notes (N)">
+            <span class="btn-icon">✏️</span>
+            <span class="btn-text">Notes</span>
+          </button>
+          <button id="eraser-btn" class="action-btn" title="Erase Number (Backspace)">
+            <span class="btn-icon">🧹</span>
+            <span class="btn-text">Erase</span>
+          </button>
+          <button id="hint-btn" class="action-btn" title="Request AI Explanation Hint (H)">
+            <span class="btn-icon">💡</span>
+            <span class="btn-text">AI Hint</span>
+          </button>
+        </div>
+
+        <!-- Numeric Keypad -->
+        <div class="keypad-panel handdrawn-box">
+          <div id="keypad" class="keypad-grid">
+            <button class="keypad-btn" data-number="1">1</button>
+            <button class="keypad-btn" data-number="2">2</button>
+            <button class="keypad-btn" data-number="3">3</button>
+            <button class="keypad-btn" data-number="4">4</button>
+            <button class="keypad-btn" data-number="5">5</button>
+            <button class="keypad-btn" data-number="6">6</button>
+            <button class="keypad-btn" data-number="7">7</button>
+            <button class="keypad-btn" data-number="8">8</button>
+            <button class="keypad-btn" data-number="9">9</button>
+            <button class="keypad-btn wide-btn" data-action="erase">🧹 Clear</button>
+            <button class="keypad-btn wide-btn" data-action="pencil">✏️ Note</button>
+            <button class="keypad-btn wide-btn" data-action="hint">💡 Logical Hint</button>
+          </div>
+        </div>
+
+        <!-- Quick Config Board Options -->
+        <div class="config-panel handdrawn-box">
+          <div class="config-group">
+            <button id="pause-btn" class="paper-btn"><span class="icon">⏸</span> Pause</button>
+            <button id="restart-btn" class="paper-btn"><span class="icon">🔄</span> Restart</button>
+            <button id="check-btn" class="paper-btn"><span class="icon">🔍</span> Check Board</button>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- Spiral Notebook spine binder (hidden for clean flat journal style) -->
+
+    </main>
+
+    <!-- Settings & Quick controls footer -->
+    <footer class="game-footer handdrawn-box">
+      <div class="footer-row main-options">
+        <div class="footer-control">
+          <label for="difficulty-select">Difficulty:</label>
+          <select id="difficulty-select" class="paper-input">
+            <option value="easy">Easy</option>
+            <option value="medium">Medium</option>
+            <option value="hard">Hard</option>
+            <option value="expert">Expert</option>
+          </select>
+        </div>
+        <div class="footer-control">
+          <button id="new-game-btn" class="paper-btn active-btn">New Game</button>
+        </div>
+      </div>
+
+      <div class="footer-row settings-row">
+        <div class="setting-item checkbox-group">
+          <label>
+            <input type="checkbox" id="mistake-checking-toggle" checked> Mistake Check
+          </label>
+          <label>
+            <input type="checkbox" id="sound-toggle" checked> Sound FX
+          </label>
+          <label>
+            <input type="checkbox" id="anim-toggle" checked> Animations
+          </label>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- Shared Popup Modal -->
+  <div id="modal-overlay" class="modal-overlay" style="display: none;">
+    <div class="modal-container handdrawn-box">
+      <div class="modal-header">
+        <h2 id="modal-title" class="modal-title-text">Drafting Title</h2>
+        <button id="modal-close" class="modal-close-btn">&times;</button>
+      </div>
+      <div id="modal-body" class="modal-content-body">
+        <!-- Content injected dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Game Finished Celebration Screen -->
+  <div id="celebration-overlay" class="celebration-overlay">
+    <canvas id="celebration-canvas" class="celebration-canvas"></canvas>
+    <div class="celebration-content handdrawn-box">
+      <div id="celebration-message">
+        <!-- Injected text -->
+      </div>
+      <div style="margin-top: 20px;">
+        <button id="celebration-close" class="paper-btn active-btn" style="padding: 10px 24px; font-size: 1.1em;">Close
+          Sheet</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Load Scripts -->
+  <script src="sudoku.js"></script>
+  <script src="app.js"></script>
+</body>
+
+</html>

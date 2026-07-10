@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interview Sphere</title>
+  <!-- SEO Tags -->
+  <meta name="description" content="A comprehensive, offline-first interview preparation platform featuring DSA trackers, company-wise questions, interactive mock interviews, markdown notes, and spaced-repetition flashcards.">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <svg class="logo-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="url(#logo-grad)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 6V12L16 14" stroke="url(#logo-grad)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <defs>
+              <linearGradient id="logo-grad" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#8b5cf6"/>
+                <stop offset="1" stop-color="#ec4899"/>
+              </linearGradient>
+            </defs>
+          </svg>
+          <span class="logo-text">Interview<span class="highlight">Sphere</span></span>
+        </div>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <button class="nav-item active" data-tab="dashboard" id="nav-dashboard">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg>
+          <span>Dashboard</span>
+        </button>
+        <button class="nav-item" data-tab="company-questions" id="nav-company">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+          <span>Company-wise</span>
+        </button>
+        <button class="nav-item" data-tab="dsa-tracker" id="nav-dsa">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
+          <span>DSA Tracker</span>
+        </button>
+        <button class="nav-item" data-tab="mock-interviews" id="nav-mock">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v1a7 7 0 0 1-14 0v-1"></path><line x1="12" y1="19" x2="12" y2="22"></line></svg>
+          <span>Mock Interview</span>
+        </button>
+        <button class="nav-item" data-tab="notes" id="nav-notes">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+          <span>Notes Manager</span>
+        </button>
+        <button class="nav-item" data-tab="flashcards" id="nav-flashcards">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+          <span>Flashcards</span>
+        </button>
+      </nav>
+      
+
+    </aside>
+
+    <!-- Main Workspace Area -->
+    <main class="main-content">
+      <!-- Top header bar -->
+      <header class="main-header">
+        <h1 id="page-title">Dashboard Overview</h1>
+        <div class="header-actions">
+          <span class="streak-badge" title="Consecutive days active">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fire-icon"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"></path></svg>
+            <span id="streak-count">1</span> Day Streak
+          </span>
+          <div class="theme-toggle-btn" id="theme-toggle" title="Toggle Light/Dark Theme">
+            <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+          </div>
+        </div>
+      </header>
+
+      <!-- Content Views Container -->
+      <div class="view-viewport">
+        
+        <!-- DASHBOARD VIEW -->
+        <section id="view-dashboard" class="content-view active">
+          <!-- Stats Summary Grid -->
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon-wrapper dsa">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
+              </div>
+              <div class="stat-info">
+                <h3>DSA Progress</h3>
+                <div class="stat-value" id="dashboard-dsa-count">0/0</div>
+                <div class="stat-progress-bar">
+                  <div class="fill" id="dashboard-dsa-fill" style="width: 0%"></div>
+                </div>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon-wrapper company">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+              </div>
+              <div class="stat-info">
+                <h3>Company Qs Solved</h3>
+                <div class="stat-value" id="dashboard-company-count">0/0</div>
+                <div class="stat-progress-bar">
+                  <div class="fill" id="dashboard-company-fill" style="width: 0%"></div>
+                </div>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon-wrapper mock">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v1a7 7 0 0 1-14 0v-1"></path><line x1="12" y1="19" x2="12" y2="22"></line></svg>
+              </div>
+              <div class="stat-info">
+                <h3>Mock Interviews</h3>
+                <div class="stat-value" id="dashboard-mock-count">0</div>
+                <div class="subtext">Completed evaluations</div>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon-wrapper deck">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line></svg>
+              </div>
+              <div class="stat-info">
+                <h3>Flashcards Mastered</h3>
+                <div class="stat-value" id="dashboard-flash-count">0</div>
+                <div class="subtext" id="dashboard-flash-sub">Total active cards in rotation</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="dashboard-details-row">
+            <!-- Left Pane: Chart and Streaks -->
+            <div class="details-left">
+              <div class="glass-card chart-container">
+                <div class="card-header">
+                  <h2>Overall Learning Curve</h2>
+                  <span class="subtext">Performance breakdown across domains</span>
+                </div>
+                <div class="chart-wrapper">
+                  <canvas id="dashboardChart"></canvas>
+                </div>
+              </div>
+              
+              <!-- Mini GitHub-like heat map streak tracker -->
+              <div class="glass-card streak-grid-card">
+                <div class="card-header">
+                  <h2>Activity Tracker</h2>
+                  <span class="subtext">Days logged in the past year</span>
+                </div>
+                <div class="streak-grid-wrapper">
+                  <div class="streak-months">
+                    <span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span><span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span>
+                  </div>
+                  <div class="streak-grid" id="streak-grid-tiles">
+                    <!-- Loaded dynamically via script -->
+                  </div>
+                  <div class="streak-legend">
+                    <span>Less</span>
+                    <div class="legend-tile" data-level="0"></div>
+                    <div class="legend-tile" data-level="1"></div>
+                    <div class="legend-tile" data-level="2"></div>
+                    <div class="legend-tile" data-level="3"></div>
+                    <span>More</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Pane: Recommended items & recent notes -->
+            <div class="details-right">
+              <div class="glass-card recommendation-card">
+                <div class="card-header">
+                  <h2>Recommended Focus</h2>
+                  <span class="subtext">Smart suggestions based on your trackers</span>
+                </div>
+                <div class="rec-list" id="dashboard-rec-list">
+                  <!-- Dynamically rendered -->
+                </div>
+              </div>
+
+              <div class="glass-card recent-notes-card">
+                <div class="card-header">
+                  <h2>Recent Notes</h2>
+                  <span class="subtext">Quick access to last updated files</span>
+                </div>
+                <div class="notes-mini-list" id="dashboard-recent-notes">
+                  <!-- Dynamically rendered -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- COMPANY QUESTIONS VIEW -->
+        <section id="view-company-questions" class="content-view">
+          <!-- Selection Screen -->
+          <div id="company-selection" class="company-grid-container">
+            <div class="company-intro">
+              <h2>Select a Target Company</h2>
+              <p>Practice standard, highly curated questions from top-tier interviews. Tracks are dynamically generated based on community reports.</p>
+              <button class="primary-btn" id="btn-add-custom-question">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-icon"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                Add Custom Question
+              </button>
+            </div>
+            
+            <div class="companies-grid" id="companies-cards-grid">
+              <!-- Dynamically populated cards -->
+            </div>
+          </div>
+
+          <!-- Specific Company Question List view (Hidden by default) -->
+          <div id="company-question-list" class="company-questions-detail hidden">
+            <div class="detail-header">
+              <button class="back-btn" id="btn-company-back">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-icon"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                Back to Companies
+              </button>
+              <div class="company-meta-info">
+                <h2 id="selected-company-title">Google Questions</h2>
+                <span id="company-progress-text">0 of 15 completed</span>
+              </div>
+            </div>
+
+            <!-- Filters -->
+            <div class="filters-row">
+              <div class="search-box">
+                <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <input type="text" id="company-q-search" placeholder="Search questions...">
+              </div>
+              <div class="filter-options">
+                <select id="company-q-difficulty">
+                  <option value="all">All Difficulties</option>
+                  <option value="Easy">Easy</option>
+                  <option value="Medium">Medium</option>
+                  <option value="Hard">Hard</option>
+                </select>
+                <select id="company-q-status">
+                  <option value="all">All Statuses</option>
+                  <option value="solved">Solved</option>
+                  <option value="unsolved">Unsolved</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Question list table -->
+            <div class="table-container">
+              <table class="questions-table">
+                <thead>
+                  <tr>
+                    <th width="80px">Status</th>
+                    <th>Question Name</th>
+                    <th>Category</th>
+                    <th width="120px">Difficulty</th>
+                    <th width="150px">Resource</th>
+                    <th width="120px">Action</th>
+                  </tr>
+                </thead>
+                <tbody id="company-questions-tbody">
+                  <!-- Loaded dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- DSA TRACKER VIEW -->
+        <section id="view-dsa-tracker" class="content-view">
+          <div class="dsa-layout-grid">
+            <!-- Left panel: Topics list -->
+            <div class="dsa-sidebar glass-card">
+              <h2>Syllabus Roadmap</h2>
+              <div class="dsa-topics-list" id="dsa-topics-list-container">
+                <!-- Dynamically populated -->
+              </div>
+            </div>
+            
+            <!-- Right panel: Specific topic tasks list -->
+            <div class="dsa-content-panel glass-card">
+              <div class="dsa-topic-header">
+                <div>
+                  <h2 id="dsa-topic-title">Arrays & Hashing</h2>
+                  <p id="dsa-topic-description">Understand foundational layout memory structures, hashes, hash functions, mapping, and array storage manipulation complexities.</p>
+                </div>
+                <div class="dsa-progress-display">
+                  <span id="dsa-topic-progress-text">0 / 8 solved</span>
+                  <div class="progress-bar-small">
+                    <div class="fill" id="dsa-topic-progress-fill" style="width: 0%"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Study guide note banner -->
+              <div class="study-cheat-sheet-banner" id="dsa-topic-cheat-sheet">
+                <strong>Core Pattern Cheat Sheet:</strong>
+                <p id="dsa-cheat-content">Two sum hash matching, sliding window bounds, two pointer extremes tracking.</p>
+              </div>
+
+              <!-- Question checklist -->
+              <div class="dsa-tasks-checklist" id="dsa-questions-list-container">
+                <!-- Checklist loaded dynamically -->
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- MOCK INTERVIEWS VIEW -->
+        <section id="view-mock-interviews" class="content-view">
+          <!-- Setup panel -->
+          <div class="mock-setup-container" id="mock-setup-pane">
+            <div class="setup-intro">
+              <h2>Virtual AI Interview Simulator</h2>
+              <p>Simulate a realistic interviewing session. Select a specific focus area, and our simulated interviewer will guide you step-by-step through standard interview questions, record your answers, and provide detailed evaluations of your coding structure, behavioral presentation, or system architecture depth.</p>
+            </div>
+            
+            <div class="setup-form-grid">
+              <div class="glass-card setup-card">
+                <h3>1. Select Session Style</h3>
+                <div class="radio-group-vertical">
+                  <label class="radio-card active">
+                    <input type="radio" name="mock-style" value="behavioral" checked>
+                    <div class="radio-info">
+                      <strong>Behavioral Interview</strong>
+                      <span>STAR framework (Situation, Task, Action, Result) focused leadership questions.</span>
+                    </div>
+                  </label>
+                  <label class="radio-card">
+                    <input type="radio" name="mock-style" value="dsa">
+                    <div class="radio-info">
+                      <strong>DSA Coding Interview</strong>
+                      <span>Realtime problem explanation, algorithmic complexities, and mock code design questions.</span>
+                    </div>
+                  </label>
+                  <label class="radio-card">
+                    <input type="radio" name="mock-style" value="system-design">
+                    <div class="radio-info">
+                      <strong>System Design</strong>
+                      <span>Scalability, load balancing, caching, database indexing, sharding, and architecture design.</span>
+                    </div>
+                  </label>
+                </div>
+              </div>
+
+              <div class="glass-card setup-card flex-col">
+                <h3>2. Configure Parameters</h3>
+                <div class="form-group">
+                  <label for="mock-company">Company Style</label>
+                  <select id="mock-company" class="form-input">
+                    <option value="StandardFAANG">Standard FAANG Style</option>
+                    <option value="Google">Google (Highly Algorithmic)</option>
+                    <option value="Meta">Meta (Fast Paced / Product)</option>
+                    <option value="Amazon">Amazon (Leadership Principles Heavy)</option>
+                  </select>
+                </div>
+                
+                <div class="form-group">
+                  <label for="mock-duration">Interview Mode</label>
+                  <select id="mock-duration" class="form-input">
+                    <option value="5">Short Blitz (1 Question - 5 mins)</option>
+                    <option value="15">Compact Session (2 Questions - 15 mins)</option>
+                    <option value="30">Standard Mock (3 Questions - 30 mins)</option>
+                  </select>
+                </div>
+
+                <div class="mic-status-check">
+                  <span class="indicator green" id="mic-status-dot"></span>
+                  <span id="mic-status-label">Voice dictation available (Supported by browser)</span>
+                </div>
+                
+                <button class="action-btn start-mock-btn" id="btn-start-mock">
+                  Launch Interview Session
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Active interview room (Hidden by default) -->
+          <div class="mock-interview-room hidden" id="mock-room-pane">
+            <div class="room-top-bar">
+              <div class="room-title">
+                <span class="badge live">LIVE SESSION</span>
+                <span id="mock-session-tag">Behavioral Track - Amazon Style</span>
+              </div>
+              <div class="room-timer" id="mock-session-timer">00:00</div>
+            </div>
+
+            <div class="room-grid">
+              <!-- Left pane: Interviewer, Waveform, Actions -->
+              <div class="room-control-pane glass-card">
+                <div class="interviewer-avatar-wrapper">
+                  <div class="interviewer-avatar">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                  </div>
+                  <div class="waveform" id="avatar-waveform">
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                  </div>
+                  <span class="interviewer-name">AI Interviewer</span>
+                </div>
+
+                <div class="interviewer-bubble">
+                  <p id="interviewer-speech">Click the start button to run the interface speech simulation or type your answers below.</p>
+                </div>
+
+                <div class="session-nav-actions">
+                  <button class="primary-btn" id="btn-speech-trigger">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-icon inline-mic-icon"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v1a7 7 0 0 1-14 0v-1"></path><line x1="12" y1="19" x2="12" y2="22"></line></svg>
+                    <span id="btn-speech-text">Start Speech Dictation</span>
+                  </button>
+                  <button class="secondary-btn" id="btn-next-mock-q" style="display: none;">Next Question</button>
+                  <button class="outline-btn danger" id="btn-quit-mock">Quit Session</button>
+                </div>
+              </div>
+
+              <!-- Right pane: User answer box & code workspace if coding -->
+              <div class="room-answer-pane glass-card">
+                <div class="pane-tab-header">
+                  <span class="active-tab">Your Answer Box</span>
+                  <span class="speech-dictation-live-tag" id="speech-live-status">Microphone Off</span>
+                </div>
+                
+                <textarea id="mock-user-answer" placeholder="Formulate your response here. If you chose speech dictation, speak clearly and your words will appear here in real-time. Use paragraphs to structure your thinking..."></textarea>
+                
+                <!-- Helper prompt based on style -->
+                <div class="answer-helper-prompt" id="mock-answer-hint">
+                  <strong>💡 Dynamic Evaluation Tip:</strong> For behavioral reviews, try structuring with the STAR model. Describe the Situation, the specific Task details, Actions you performed, and the final metric-backed Results.
+                </div>
+
+                <button class="action-btn submit-answer-btn" id="btn-submit-answer">
+                  Submit Final Answer
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Evaluation Report (Hidden by default) -->
+          <div class="mock-feedback-container hidden" id="mock-report-pane">
+            <div class="report-header glass-card">
+              <h2>Mock Session Evaluation Report</h2>
+              <p id="report-meta-details">Track: Behavioral | Company Style: Amazon | Duration: 15 mins</p>
+              <button class="primary-btn" id="btn-return-mock-setup">Start New Session</button>
+            </div>
+
+            <div class="report-dashboard-grid">
+              <!-- Score breakdown -->
+              <div class="glass-card report-card circular-score-card">
+                <h3>Overall Grade</h3>
+                <div class="score-circle-outer">
+                  <div class="score-circle-inner">
+                    <span class="score-percent" id="report-overall-grade">A-</span>
+                    <span class="score-value" id="report-overall-numeric">88/100</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Detailed categories -->
+              <div class="glass-card report-card text-report-card">
+                <h3>Performance Criteria Breakdown</h3>
+                <div class="criteria-bar-list">
+                  <div class="criteria-item">
+                    <div class="criteria-meta">
+                      <span>Structure & Organization</span>
+                      <strong id="report-score-struct">80%</strong>
+                    </div>
+                    <div class="criteria-progress"><div class="fill" id="report-fill-struct" style="width: 80%"></div></div>
+                  </div>
+                  <div class="criteria-item">
+                    <div class="criteria-meta">
+                      <span>Vocabulary & Technical Depth</span>
+                      <strong id="report-score-vocab">90%</strong>
+                    </div>
+                    <div class="criteria-progress"><div class="fill" id="report-fill-vocab" style="width: 90%"></div></div>
+                  </div>
+                  <div class="criteria-item">
+                    <div class="criteria-meta">
+                      <span>Completeness & Detail</span>
+                      <strong id="report-score-complete">85%</strong>
+                    </div>
+                    <div class="criteria-progress"><div class="fill" id="report-fill-complete" style="width: 85%"></div></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Feedback notes -->
+            <div class="glass-card feedback-notes-pane">
+              <h3>Detailed Evaluator Notes</h3>
+              <div class="eval-notes-content" id="report-evaluator-notes">
+                <!-- Dynamically rendered checklist recommendations -->
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- NOTES VIEW -->
+        <section id="view-notes" class="content-view">
+          <div class="notes-layout-grid">
+            <!-- Notes Sidebar: Folders and Lists -->
+            <div class="notes-sidebar glass-card">
+              <button class="primary-btn full-width" id="btn-new-note">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-icon"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                New Note
+              </button>
+
+              <div class="search-box note-search-box">
+                <input type="text" id="note-search-input" placeholder="Search notes...">
+              </div>
+
+              <div class="notes-folders">
+                <h3>Category Folders</h3>
+                <div class="folder-buttons-list">
+                  <button class="folder-btn active" data-folder="all">📁 All Notes</button>
+                  <button class="folder-btn" data-folder="DSA">📁 DSA Prep</button>
+                  <button class="folder-btn" data-folder="System Design">📁 System Design</button>
+                  <button class="folder-btn" data-folder="Behavioral">📁 Behavioral</button>
+                  <button class="folder-btn" data-folder="Company Questions">📁 Company Prep</button>
+                </div>
+              </div>
+
+              <div class="notes-records-list" id="notes-records-container">
+                <!-- Dynamically populated list of existing notes -->
+              </div>
+            </div>
+
+            <!-- Editor View -->
+            <div class="notes-editor-workspace glass-card" id="note-editor-wrapper">
+              <!-- Active editor tools -->
+              <div class="editor-header">
+                <div class="title-category-row">
+                  <input type="text" id="note-title-field" placeholder="Note Title...">
+                  <select id="note-folder-select">
+                    <option value="DSA">DSA Prep</option>
+                    <option value="System Design">System Design</option>
+                    <option value="Behavioral">Behavioral</option>
+                    <option value="Company Questions">Company Prep</option>
+                  </select>
+                </div>
+                <div class="editor-actions">
+                  <button class="outline-btn" id="btn-save-note">Save Changes</button>
+                  <button class="outline-btn" id="btn-download-note" title="Download markdown file">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" class="btn-icon"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                  </button>
+                  <button class="outline-btn danger" id="btn-delete-note">Delete</button>
+                </div>
+              </div>
+
+              <!-- Main typing space (Split panel: Left Markdown, Right Preview) -->
+              <div class="editor-body">
+                <div class="editor-text-pane">
+                  <div class="editor-pane-label">Markdown Source</div>
+                  <textarea id="note-markdown-textarea" placeholder="Type here using Markdown syntax. # Heading, **bold**, *italic*, `code`, etc..."></textarea>
+                </div>
+                <div class="editor-preview-pane">
+                  <div class="editor-pane-label">Live Preview</div>
+                  <div class="markdown-rendered-view" id="note-preview-html">
+                    <p class="empty-state-preview">Live preview will compile here as you type...</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Empty State Workspace -->
+            <div class="notes-editor-empty glass-card hidden" id="note-editor-empty-state">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="64" height="64"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+              <h2>No Note Selected</h2>
+              <p>Create a new note or click on an existing record in the sidebar list to modify details.</p>
+              <button class="primary-btn" id="btn-empty-new-note">New Note</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- FLASHCARDS VIEW -->
+        <section id="view-flashcards" class="content-view">
+          <div class="flashcards-container">
+            <!-- Sidebar: Available Decks -->
+            <div class="glass-card deck-sidebar">
+              <h2>Revision Decks</h2>
+              <p class="deck-desc">Revise core terminology and high-frequency concepts with spaced repetition card schedules.</p>
+              <div class="decks-selector-list" id="flash-decks-list">
+                <!-- Rendered dynamically -->
+              </div>
+            </div>
+
+            <!-- Main Workstation: Card, Actions, SRS buttons -->
+            <div class="glass-card flashcard-arena">
+              <div class="arena-header">
+                <span class="arena-deck-title" id="arena-deck-name">DSA Patterns Deck</span>
+                <span class="arena-card-counter" id="arena-deck-counter">Card 1 of 12</span>
+              </div>
+              
+              <!-- 3D Card wrapper -->
+              <div class="card-scene">
+                <div class="flip-card" id="flash-card-inner">
+                  <!-- Front Side -->
+                  <div class="card-face card-front">
+                    <span class="card-sub-category" id="card-front-category">Arrays</span>
+                    <div class="card-body-content" id="card-front-question">
+                      What is the average time complexity of searching in a Hash Map, and in what scenario does it degrade?
+                    </div>
+                    <span class="card-hint-text">Click anywhere to flip and reveal answer</span>
+                  </div>
+                  <!-- Back Side -->
+                  <div class="card-face card-reverse">
+                    <span class="card-sub-category" id="card-back-category">Answer Review</span>
+                    <div class="card-body-content" id="card-back-answer">
+                      <p><strong>Time Complexity:</strong> O(1) average, O(N) worst case.</p>
+                      <p><strong>Degradation Scenario:</strong> When hash collisions occur and items map to the same bucket. Elements inside the bucket are searched sequentially (via linked list or binary search tree depending on language version).</p>
+                    </div>
+                    <span class="card-hint-text">Click anywhere to flip back</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Rating Buttons (Hidden until card flips) -->
+              <div class="card-rating-footer hidden" id="card-rating-bar">
+                <p>How well did you recall this card?</p>
+                <div class="rating-buttons">
+                  <button class="rating-btn srs-forgot" data-srs="forgot">
+                    <span class="emoji">❌</span>
+                    <strong>Forgot</strong>
+                    <span>Show again soon</span>
+                  </button>
+                  <button class="rating-btn srs-review" data-srs="review">
+                    <span class="emoji">⏳</span>
+                    <strong>Review</strong>
+                    <span>Show in next loops</span>
+                  </button>
+                  <button class="rating-btn srs-gotit" data-srs="gotit">
+                    <span class="emoji">✅</span>
+                    <strong>Got It</strong>
+                    <span>Mark as mastered</span>
+                  </button>
+                </div>
+              </div>
+
+              <div class="card-action-bar" id="card-normal-actions">
+                <button class="secondary-btn" id="btn-flip-card">Reveal Answer</button>
+                <button class="outline-btn" id="btn-next-card">Skip Card</button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <!-- CODING WORKSPACE MODAL (SLIDE OVERLAY) -->
+  <div class="coding-workspace-overlay hidden" id="coding-workspace-overlay">
+    <div class="workspace-header">
+      <div class="workspace-meta">
+        <h2 id="coding-question-title">Solve: Two Sum</h2>
+        <span class="badge" id="coding-question-diff">Easy</span>
+        <span class="company-badge" id="coding-question-company">Google</span>
+      </div>
+      <button class="close-workspace-btn" id="btn-close-coding-workspace">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        Exit Workspace
+      </button>
+    </div>
+    <div class="workspace-layout">
+      <!-- Left Column: Problem Details, Examples, Custom notes -->
+      <div class="workspace-left-pane">
+        <div class="workspace-section">
+          <h3>Problem Statement</h3>
+          <p id="coding-question-desc">Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.</p>
+        </div>
+        
+        <div class="workspace-section">
+          <h3>Examples</h3>
+          <div class="example-box" id="coding-question-examples">
+            <pre><strong>Input:</strong> nums = [2,7,11,15], target = 9
+<strong>Output:</strong> [0,1]
+<strong>Explanation:</strong> Because nums[0] + nums[1] == 9, we return [0, 1].</pre>
+          </div>
+        </div>
+
+        <div class="workspace-section">
+          <h3>Constraints</h3>
+          <ul class="constraints-list" id="coding-question-constraints">
+            <li>2 <= nums.length <= 104</li>
+            <li>-109 <= nums[i] <= 109</li>
+          </ul>
+        </div>
+
+        <div class="workspace-section note-integration">
+          <h3>Private Solver Notes</h3>
+          <textarea id="coding-question-notes" placeholder="Jot down logical thoughts, edge cases, space/time complexities (e.g. O(N) time using Hash Map)..."></textarea>
+        </div>
+      </div>
+
+      <!-- Right Column: Interactive Simulator Editor & Output terminal -->
+      <div class="workspace-right-pane">
+        <div class="editor-header-bar">
+          <div class="editor-lang-picker">
+            <label for="editor-lang-select">Language:</label>
+            <select id="editor-lang-select">
+              <option value="javascript">JavaScript</option>
+              <option value="python">Python</option>
+              <option value="cpp">C++</option>
+              <option value="java">Java</option>
+            </select>
+          </div>
+          <button class="outline-btn" id="btn-reset-code">Reset Code</button>
+        </div>
+
+        <div class="editor-code-container">
+          <!-- Styled line numbers list -->
+          <div class="line-numbers" id="editor-line-numbers">
+            <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span><span>14</span><span>15</span>
+          </div>
+          <textarea id="editor-code-textarea" spellcheck="false">function twoSum(nums, target) {
+    // Write your code here
+    
+}</textarea>
+        </div>
+
+        <div class="terminal-container">
+          <div class="terminal-bar">
+            <span>Terminal Output</span>
+            <button class="action-btn run-code-btn" id="btn-run-code">Run Test Cases</button>
+          </div>
+          <div class="terminal-body" id="terminal-output-body">
+            <span class="stdout-msg">Compiler simulator ready. Press 'Run Test Cases' to validate code correctness.</span>
+          </div>
+        </div>
+
+        <div class="workspace-submit-row">
+          <button class="primary-btn full-width" id="btn-submit-code">Submit Solution & Mark Solved</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADD CUSTOM QUESTION MODAL (POPUP DIALOG) -->
+  <div class="modal-overlay hidden" id="custom-question-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2>Add Custom Interview Question</h2>
+        <button class="close-modal-btn" id="btn-close-custom-modal">&times;</button>
+      </div>
+      <form id="custom-question-form" class="modal-body flex-col">
+        <div class="form-group">
+          <label for="custom-q-name">Question Name *</label>
+          <input type="text" id="custom-q-name" required placeholder="e.g. Reverse a String, Top K Elements...">
+        </div>
+        <div class="form-row-2">
+          <div class="form-group">
+            <label for="custom-q-company">Target Company *</label>
+            <select id="custom-q-company" required>
+              <option value="Google">Google</option>
+              <option value="Meta">Meta</option>
+              <option value="Amazon">Amazon</option>
+              <option value="Microsoft">Microsoft</option>
+              <option value="Netflix">Netflix</option>
+              <option value="Apple">Apple</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="custom-q-difficulty">Difficulty *</label>
+            <select id="custom-q-difficulty" required>
+              <option value="Easy">Easy</option>
+              <option value="Medium">Medium</option>
+              <option value="Hard">Hard</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="custom-q-category">Algorithmic Category *</label>
+          <input type="text" id="custom-q-category" required placeholder="e.g. Dynamic Programming, Trees, Hashing...">
+        </div>
+        <div class="form-group">
+          <label for="custom-q-desc">Problem Statement</label>
+          <textarea id="custom-q-desc" placeholder="Details or constraints of the challenge..."></textarea>
+        </div>
+        <div class="form-group">
+          <label for="custom-q-link">Reference/Leetcode Link (Optional)</label>
+          <input type="url" id="custom-q-link" placeholder="https://leetcode.com/problems/...">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="outline-btn" id="btn-cancel-custom-q">Cancel</button>
+          <button type="submit" class="primary-btn">Save Question</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Custom Scripts -->
+  <script src="app.js"></script>
+</body>
+</html>

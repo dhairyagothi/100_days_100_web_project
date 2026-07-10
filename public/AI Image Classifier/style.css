@@ -9,7 +9,8 @@ body{
     display:flex;
     justify-content:center;
     align-items:center;
-    overflow:hidden;
+    overflow-x:hidden;
+    overflow-y:auto;
     padding:20px;
     font-family:'Poppins',sans-serif;
     background:
@@ -319,7 +320,8 @@ button:hover{
 @media(max-width:1300px){
 
     body{
-        overflow:auto;
+        overflow-y:auto;
+        overflow-x:hidden;
     }
 
     .main-layout{
