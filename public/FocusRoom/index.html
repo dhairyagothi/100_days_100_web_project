@@ -2,360 +2,284 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="FocusForge — Pomodoro Focus Timer with Advanced Analytics" />
-  <title>FocusForge — Pomodoro Focus Timer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FocusRoom | Stay in the Zone</title>
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
 </head>
 <body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
 
-  <!-- Ambient background blobs -->
-  <div class="bg-blob blob-1" aria-hidden="true"></div>
-  <div class="bg-blob blob-2" aria-hidden="true"></div>
-  <div class="bg-blob blob-3" aria-hidden="true"></div>
+  <!-- Background -->
+  <div class="bg-animation">
+    <div class="bg-circle c1"></div>
+    <div class="bg-circle c2"></div>
+    <div class="bg-circle c3"></div>
+  </div>
 
-  <div class="app-wrapper">
-
-    <!-- ── Header ── -->
-    <header class="app-header">
-      <div class="logo">
-        <span class="logo-icon" aria-hidden="true">⚡</span>
-        <span class="logo-text">FocusForge</span>
-      </div>
-      <div class="header-actions">
-        <button class="icon-btn" id="statsToggle" aria-label="Toggle statistics dashboard" title="Statistics">
-          <span aria-hidden="true">📊</span>
-        </button>
-        <div class="session-badge" title="Completed focus sessions" aria-label="Sessions completed">
-          <span aria-hidden="true">🎯</span>
-          <span class="session-label">Sessions</span>
-          <span class="session-count" id="sessionCount" aria-live="polite" aria-atomic="true">0</span>
-        </div>
-        <button class="icon-btn" id="themeToggle" aria-label="Toggle light/dark theme" title="Toggle theme">
-          <span id="themeIcon" aria-hidden="true">☀️</span>
-        </button>
-        <button class="icon-btn" id="settingsToggle" aria-label="Open settings" title="Settings (Ctrl+,)">
-          <span aria-hidden="true">⚙️</span>
-        </button>
-      </div>
-    </header>
-
-    <!-- ── Mode Tabs ── -->
-    <div class="mode-tabs" role="tablist" aria-label="Timer mode">
-      <button
-        class="mode-tab active"
-        id="focusTab"
-        role="tab"
-        aria-selected="true"
-        aria-controls="timerPanel"
-        data-mode="focus"
-      >Focus</button>
-      <button
-        class="mode-tab"
-        id="breakTab"
-        role="tab"
-        aria-selected="false"
-        aria-controls="timerPanel"
-        data-mode="break"
-      >Short Break</button>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="nav-brand">
+      <span class="brand-icon">🎯</span>
+      <span>FocusRoom</span>
     </div>
+    <div class="nav-actions">
+      <button class="btn-icon" id="themeToggle" title="Toggle Theme">
+        <i class="fas fa-moon"></i>
+      </button>
+      <button class="btn-icon" id="resetAllBtn" title="Reset All Data">
+        <i class="fas fa-trash-alt"></i>
+      </button>
+    </div>
+  </nav>
 
-    <!-- ── Main Timer Card ── -->
-    <main>
-      <section class="timer-card glass" id="timerPanel" role="tabpanel" aria-label="Timer panel">
+  <main class="container">
 
-        <!-- Mode indicator -->
-        <div class="mode-indicator">
-          <span class="mode-dot" id="modeDot" aria-hidden="true"></span>
-          <span class="mode-label" id="modeLabel" aria-live="polite">Focus Time</span>
+    <!-- Hero -->
+    <section class="hero">
+      <h1 class="hero-title">Stay in the <span class="gradient-text">Zone</span></h1>
+      <p class="hero-sub">Deep focus. Better work. One session at a time.</p>
+    </section>
+
+    <!-- Stats Row -->
+    <section class="stats-row">
+      <div class="stat-card">
+        <i class="fas fa-fire stat-icon streak"></i>
+        <div>
+          <div class="stat-value" id="streakCount">0</div>
+          <div class="stat-label">Day Streak</div>
         </div>
+      </div>
+      <div class="stat-card">
+        <i class="fas fa-clock stat-icon focus"></i>
+        <div>
+          <div class="stat-value" id="todayTime">0m</div>
+          <div class="stat-label">Today's Focus</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <i class="fas fa-check-circle stat-icon sessions"></i>
+        <div>
+          <div class="stat-value" id="totalSessions">0</div>
+          <div class="stat-label">Sessions Done</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <i class="fas fa-calendar-week stat-icon weekly"></i>
+        <div>
+          <div class="stat-value" id="weeklyTime">0m</div>
+          <div class="stat-label">This Week</div>
+        </div>
+      </div>
+    </section>
 
-        <!-- SVG Progress Ring + countdown display -->
-        <div class="timer-container" aria-label="Countdown timer" role="timer">
-          <svg class="progress-ring" viewBox="0 0 220 220" aria-hidden="true">
-            <circle class="progress-ring__track" cx="110" cy="110" r="96" />
-            <circle class="progress-ring__fill" id="progressRing" cx="110" cy="110" r="96" />
-          </svg>
-          <div class="timer-display">
-            <span
-              class="timer-time"
-              id="timerTime"
-              aria-atomic="true"
-              tabindex="0"
-              title="Click to edit time"
-              role="button"
-              aria-label="Timer display — click to edit"
-            >25:00</span>
-            <span class="timer-edit-hint" aria-hidden="true">✏️ click to edit</span>
+    <!-- Main Grid -->
+    <div class="main-grid">
+
+      <!-- LEFT PANEL -->
+      <div class="left-panel">
+
+        <!-- Mode Selector -->
+        <div class="card mode-card">
+          <div class="card-header">
+            <i class="fas fa-sliders-h"></i>
+            <h2>Session Mode</h2>
+          </div>
+          <div class="mode-tabs">
+            <button class="mode-tab active" data-mode="custom">
+              <i class="fas fa-stopwatch"></i> Custom
+            </button>
+            <button class="mode-tab" data-mode="pomodoro">
+              <i class="fas fa-tomato" style="color:#ff375f"></i> Pomodoro
+            </button>
+            <button class="mode-tab" data-mode="shortbreak">
+              <i class="fas fa-coffee"></i> Short Break
+            </button>
+            <button class="mode-tab" data-mode="longbreak">
+              <i class="fas fa-couch"></i> Long Break
+            </button>
+          </div>
+
+          <!-- Custom Duration -->
+          <div class="custom-duration" id="customDuration">
+            <label>Set Duration (minutes)</label>
+            <div class="duration-wrap">
+              <button class="dur-btn" id="durMinus"><i class="fas fa-minus"></i></button>
+              <input type="number" id="durationInput" value="25" min="1" max="180"/>
+              <button class="dur-btn" id="durPlus"><i class="fas fa-plus"></i></button>
+            </div>
+          </div>
+
+          <!-- Pomodoro Info -->
+          <div class="pomodoro-info hidden" id="pomodoroInfo">
+            <div class="pom-cycle">
+              <span id="pomCycleCount">0</span> Pomodoros completed
+            </div>
+            <div class="pom-phase" id="pomPhase">Focus Session</div>
           </div>
         </div>
 
-        <!-- Quick time adjust -->
-        <div class="time-adjust" role="group" aria-label="Adjust timer duration">
-          <button class="adjust-btn" id="decreaseTime" aria-label="Decrease time by 5 minutes" title="−5 min">
-            <span aria-hidden="true">−</span>5 min
-          </button>
-          <button class="adjust-btn" id="increaseTime" aria-label="Increase time by 5 minutes" title="+5 min">
-            <span aria-hidden="true">+</span>5 min
-          </button>
+        <!-- Ambient Sounds -->
+        <div class="card sound-card">
+          <div class="card-header">
+            <i class="fas fa-headphones"></i>
+            <h2>Ambient Sounds</h2>
+          </div>
+          <div class="sound-grid">
+            <button class="sound-btn" data-sound="rain" title="Rain">
+              🌧️ <span>Rain</span>
+            </button>
+            <button class="sound-btn" data-sound="lofi" title="Lo-Fi">
+              🎵 <span>Lo-Fi</span>
+            </button>
+            <button class="sound-btn" data-sound="forest" title="Forest">
+              🌿 <span>Forest</span>
+            </button>
+            <button class="sound-btn" data-sound="waves" title="Waves">
+              🌊 <span>Waves</span>
+            </button>
+            <button class="sound-btn" data-sound="fire" title="Fireplace">
+              🔥 <span>Fire</span>
+            </button>
+            <button class="sound-btn" data-sound="white" title="White Noise">
+              📡 <span>White</span>
+            </button>
+          </div>
+          <div class="volume-wrap">
+            <i class="fas fa-volume-down vol-icon"></i>
+            <input type="range" id="volumeSlider" min="0" max="1" step="0.05" value="0.5"/>
+            <i class="fas fa-volume-up vol-icon"></i>
+          </div>
         </div>
 
-        <!-- Controls -->
-        <div class="controls" role="group" aria-label="Timer controls">
-          <button class="ctrl-btn reset-btn" id="resetBtn" aria-label="Reset timer" title="Reset (R)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <polyline points="1 4 1 10 7 10"></polyline>
-              <path d="M3.51 15a9 9 0 1 0 .49-3.46"></path>
-            </svg>
-          </button>
-
-          <button class="ctrl-btn start-btn" id="startBtn" aria-label="Start timer" title="Start / Pause (Space)">
-            <svg class="play-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <polygon points="5 3 19 12 5 21 5 3"></polygon>
-            </svg>
-            <svg class="pause-icon hidden" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <rect x="6" y="4" width="4" height="16"></rect>
-              <rect x="14" y="4" width="4" height="16"></rect>
-            </svg>
-          </button>
-
-          <button class="ctrl-btn skip-btn" id="skipBtn" aria-label="Skip to next mode" title="Skip (S)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <polygon points="5 4 15 12 5 20 5 4"></polygon>
-              <line x1="19" y1="5" x2="19" y2="19"></line>
-            </svg>
-          </button>
-        </div>
-
-        <!-- Motivational quote -->
-        <div class="quote-section" id="quoteSection" aria-live="polite">
+        <!-- Motivational Quote -->
+        <div class="card quote-card">
+          <div class="card-header">
+            <i class="fas fa-quote-left"></i>
+            <h2>Quote</h2>
+          </div>
           <p class="quote-text" id="quoteText">"The secret of getting ahead is getting started."</p>
           <span class="quote-author" id="quoteAuthor">— Mark Twain</span>
-        </div>
-
-      </section>
-    </main>
-
-    <!-- ── Statistics Dashboard ── -->
-    <aside
-      class="stats-panel glass"
-      id="statsPanel"
-      aria-label="Statistics dashboard"
-      hidden
-    >
-      <div class="stats-header">
-        <h2 class="stats-title">📊 Focus Forge Analytics</h2>
-        <div class="stats-header-actions">
-          <button class="icon-btn" id="exportStats" aria-label="Export statistics as CSV" title="Export CSV">
-            <span aria-hidden="true">📥</span>
+          <button class="refresh-quote" id="refreshQuote">
+            <i class="fas fa-sync-alt"></i> New Quote
           </button>
-          <button class="icon-btn" id="statsClose" aria-label="Close statistics">✕</button>
+        </div>
+
+      </div>
+
+      <!-- CENTER PANEL: Timer -->
+      <div class="center-panel">
+        <div class="card timer-card">
+
+          <!-- Timer Ring -->
+          <div class="timer-ring-wrap">
+            <svg class="timer-svg" viewBox="0 0 200 200">
+              <circle class="ring-track" cx="100" cy="100" r="88"/>
+              <circle class="ring-progress" id="timerRing" cx="100" cy="100" r="88"
+                stroke-dasharray="553" stroke-dashoffset="0"/>
+            </svg>
+            <div class="timer-inner">
+              <div class="timer-display" id="timerDisplay">25:00</div>
+              <div class="timer-label" id="timerLabel">Ready to Focus</div>
+              <div class="timer-phase-dot" id="phaseDot"></div>
+            </div>
+          </div>
+
+          <!-- Timer Controls -->
+          <div class="timer-controls">
+            <button class="ctrl-btn secondary" id="resetBtn" title="Reset">
+              <i class="fas fa-redo"></i>
+            </button>
+            <button class="ctrl-btn primary" id="startBtn">
+              <i class="fas fa-play"></i>
+              <span>Start</span>
+            </button>
+            <button class="ctrl-btn secondary" id="skipBtn" title="Skip">
+              <i class="fas fa-forward"></i>
+            </button>
+          </div>
+
+          <!-- Session Tag -->
+          <div class="session-tag-wrap">
+            <input type="text" id="sessionTag" placeholder="What are you working on?"/>
+          </div>
+
         </div>
       </div>
 
-      <div class="stats-body">
-        <!-- Streak & Focus Score -->
-        <div class="stats-highlight">
-          <div class="highlight-card">
-            <span class="highlight-icon">🔥</span>
-            <div class="highlight-info">
-              <span class="highlight-label">Current Streak</span>
-              <span class="highlight-value" id="streakCount">0 days</span>
-            </div>
+      <!-- RIGHT PANEL -->
+      <div class="right-panel">
+
+        <!-- Task List -->
+        <div class="card task-card">
+          <div class="card-header">
+            <i class="fas fa-tasks"></i>
+            <h2>Tasks</h2>
+            <span class="task-count" id="taskCount">0/0</span>
           </div>
-          <div class="highlight-card">
-            <span class="highlight-icon">⭐</span>
-            <div class="highlight-info">
-              <span class="highlight-label">Focus Score</span>
-              <span class="highlight-value" id="focusScore">0/100</span>
-              <div class="score-bar">
-                <div class="score-fill" id="scoreFill" style="width: 0%"></div>
-              </div>
+          <div class="task-input-wrap">
+            <input type="text" id="taskInput" placeholder="Add a task..."/>
+            <button id="addTaskBtn"><i class="fas fa-plus"></i></button>
+          </div>
+          <ul class="task-list" id="taskList">
+            <li class="task-empty" id="taskEmpty">
+              <i class="fas fa-clipboard"></i>
+              <span>No tasks yet. Add one above!</span>
+            </li>
+          </ul>
+          <button class="clear-tasks" id="clearTasks">
+            <i class="fas fa-broom"></i> Clear Completed
+          </button>
+        </div>
+
+        <!-- Session History -->
+        <div class="card history-card">
+          <div class="card-header">
+            <i class="fas fa-history"></i>
+            <h2>Session History</h2>
+            <button class="clear-history-btn" id="clearHistory" title="Clear History">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div class="history-list" id="historyList">
+            <div class="history-empty" id="historyEmpty">
+              <i class="fas fa-inbox"></i>
+              <span>No sessions yet.</span>
             </div>
           </div>
         </div>
-
-        <!-- Stats Grid -->
-        <div class="stats-grid">
-          <div class="stat-card">
-            <span class="stat-icon">⏱️</span>
-            <div class="stat-info">
-              <span class="stat-label">Today's Focus</span>
-              <span class="stat-value" id="todayFocus">0 min</span>
-            </div>
-          </div>
-          <div class="stat-card">
-            <span class="stat-icon">📈</span>
-            <div class="stat-info">
-              <span class="stat-label">Total Focus</span>
-              <span class="stat-value" id="totalFocus">0 hrs</span>
-            </div>
-          </div>
-          <div class="stat-card">
-            <span class="stat-icon">🎯</span>
-            <div class="stat-info">
-              <span class="stat-label">Avg Session</span>
-              <span class="stat-value" id="avgSession">0 min</span>
-            </div>
-          </div>
-          <div class="stat-card">
-            <span class="stat-icon">🏆</span>
-            <div class="stat-info">
-              <span class="stat-label">Best Day</span>
-              <span class="stat-value" id="bestDay">0 min</span>
-            </div>
-          </div>
-          <div class="stat-card">
-            <span class="stat-icon">📅</span>
-            <div class="stat-info">
-              <span class="stat-label">This Week</span>
-              <span class="stat-value" id="weekFocus">0 hrs</span>
-            </div>
-          </div>
-          <div class="stat-card">
-            <span class="stat-icon">📊</span>
-            <div class="stat-info">
-              <span class="stat-label">Total Sessions</span>
-              <span class="stat-value" id="totalSessions">0</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Compare Mode -->
-        <div class="compare-section">
-          <h3>📊 Week Over Week Comparison</h3>
-          <div class="compare-grid">
-            <div class="compare-card">
-              <span class="compare-label">This Week</span>
-              <span class="compare-value" id="thisWeek">0 hrs</span>
-            </div>
-            <div class="compare-card">
-              <span class="compare-label">Last Week</span>
-              <span class="compare-value" id="lastWeek">0 hrs</span>
-            </div>
-            <div class="compare-card highlight-change">
-              <span class="compare-label">Change</span>
-              <span class="compare-value" id="weekChange">0%</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Chart Section -->
-        <div class="chart-section">
-          <div class="chart-header">
-            <h3>Focus Activity</h3>
-            <div class="chart-controls">
-              <button class="chart-btn active" data-period="week">Week</button>
-              <button class="chart-btn" data-period="month">Month</button>
-              <button class="chart-btn" data-period="year">Year</button>
-            </div>
-          </div>
-          <div class="chart-container">
-            <canvas id="statsChart" width="600" height="250"></canvas>
-          </div>
-        </div>
-
-        <!-- Heat Map -->
-        <div class="heatmap-section">
-          <h3>🔥 Productivity Heat Map</h3>
-          <div class="heatmap-grid" id="heatmapGrid">
-            <!-- Generated by JS -->
-          </div>
-        </div>
-
-        <!-- Most Productive Hours -->
-        <div class="productive-hours">
-          <h3>⏰ Most Productive Hours</h3>
-          <div class="hours-grid" id="hoursGrid">
-            <!-- Generated by JS -->
-          </div>
-        </div>
-      </div>
-    </aside>
-
-    <!-- ── Settings Panel ── -->
-    <aside
-      class="settings-panel glass"
-      id="settingsPanel"
-      aria-label="Timer settings"
-      hidden
-    >
-      <div class="settings-header">
-        <h2 class="settings-title">⚙️ Settings</h2>
-        <button class="icon-btn" id="settingsClose" aria-label="Close settings">✕</button>
-      </div>
-      <div class="settings-body">
-
-        <div class="setting-group">
-          <label class="setting-label" for="focusDuration">Focus Duration (minutes)</label>
-          <div class="setting-input-row">
-            <button class="stepper-btn" data-target="focusDuration" data-action="dec" aria-label="Decrease focus duration">−</button>
-            <input class="setting-input" type="number" id="focusDuration" min="1" max="99" value="25" />
-            <button class="stepper-btn" data-target="focusDuration" data-action="inc" aria-label="Increase focus duration">+</button>
-          </div>
-        </div>
-
-        <div class="setting-group">
-          <label class="setting-label" for="breakDuration">Break Duration (minutes)</label>
-          <div class="setting-input-row">
-            <button class="stepper-btn" data-target="breakDuration" data-action="dec" aria-label="Decrease break duration">−</button>
-            <input class="setting-input" type="number" id="breakDuration" min="1" max="99" value="5" />
-            <button class="stepper-btn" data-target="breakDuration" data-action="inc" aria-label="Increase break duration">+</button>
-          </div>
-        </div>
-
-        <div class="setting-group">
-          <label class="setting-label setting-checkbox">
-            <input type="checkbox" id="autoSwitch" checked />
-            <span class="checkmark"></span>
-            Auto-switch modes after completion
-          </label>
-        </div>
-
-        <div class="setting-group">
-          <label class="setting-label setting-checkbox">
-            <input type="checkbox" id="soundEnabled" checked />
-            <span class="checkmark"></span>
-            Sound notifications
-          </label>
-        </div>
-
-        <div class="setting-group">
-          <label class="setting-label setting-checkbox">
-            <input type="checkbox" id="browserNotif" />
-            <span class="checkmark"></span>
-            Browser notifications
-          </label>
-        </div>
-
-        <button class="apply-btn" id="applySettings">Apply Settings</button>
-        <button class="reset-sessions-btn" id="resetSessions">Reset All Data</button>
 
       </div>
-    </aside>
-
-  </div><!-- /.app-wrapper -->
-
-  <!-- ── Completion Popup ── -->
-  <div
-    class="popup-overlay"
-    id="popupOverlay"
-    hidden
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="popupTitle"
-    aria-describedby="popupMessage"
-  >
-    <div class="popup glass">
-      <div class="popup-icon" id="popupIcon" aria-hidden="true">🎉</div>
-      <h3 class="popup-title" id="popupTitle">Session Complete!</h3>
-      <p class="popup-message" id="popupMessage">Amazing work! Time for a break.</p>
-      <blockquote class="popup-quote" id="popupQuote"></blockquote>
-      <button class="popup-btn" id="popupClose">Continue</button>
     </div>
+
+  </main>
+
+  <!-- Session Complete Modal -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+      <div class="modal-emoji">🎉</div>
+      <h2 class="modal-title">Session Complete!</h2>
+      <p class="modal-sub" id="modalSub">Great work! You completed a 25 min focus session.</p>
+      <div class="modal-stats">
+        <div class="m-stat">
+          <span class="m-val" id="modalStreak">0</span>
+          <span class="m-label">Day Streak</span>
+        </div>
+        <div class="m-stat">
+          <span class="m-val" id="modalTotal">0</span>
+          <span class="m-label">Sessions Today</span>
+        </div>
+      </div>
+      <button class="btn-modal-close" id="modalClose">
+        <i class="fas fa-redo"></i> Start Another
+      </button>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast">
+    <i class="toast-icon fas fa-check-circle"></i>
+    <span id="toastMsg"></span>
   </div>
 
   <script src="script.js"></script>

@@ -9,9 +9,29 @@ html {
   scroll-behavior: smooth;
 }
 
+/* THEME: single soothing dark theme tokens */
+:root {
+  --bg: #0b1220; /* overall page base */
+  --bg-gradient: radial-gradient(circle at top, #142236 0%, #0b1220 60%);
+  --panel: rgba(18,24,38,0.85);
+  --text: #e6eef8;
+  --text-muted: #94a3b8;
+  --gold: #caa83a;
+  --gold-weak: rgba(202,168,58,0.12);
+  --border: rgba(255,255,255,0.06);
+  --success: #22c55e;
+  --danger: #ef4444;
+  --bezel-bg: radial-gradient(circle,#16202e,#08111b);
+  --face-bg: radial-gradient(circle,#0f1722,#020617);
+  --input-bg: #0f1722;
+  --map-bg: #071018;
+  --radius: 24px;
+  --shadow: 0 10px 30px rgba(0,0,0,.35), 0 0 40px rgba(202,168,58,.06);
+}
+
 body {
   font-family: 'Outfit', sans-serif;
-  background: radial-gradient(circle at top, #182338 0%, #0b0f17 60%);
+  background: var(--bg-gradient);
   color: var(--text);
   min-height: 100vh;
   overflow-x: hidden;
@@ -19,8 +39,8 @@ body {
 }
 
 /* ==========================
-   NOISE OVERLAY
-
+  NOISE OVERLAY
+*/
 .noise-overlay {
   position: fixed;
   inset: 0;
@@ -32,8 +52,8 @@ body {
 }
 
 /* ==========================
-   HEADER
-
+  HEADER
+*/
 .site-header {
   width: min(1400px, 95%);
   margin: auto;
@@ -112,8 +132,8 @@ body {
 }
 
 /* ==========================
-   WORKSPACE
-
+  WORKSPACE
+*/
 .workspace {
   width: min(1400px, 95%);
   margin: auto;
@@ -123,8 +143,8 @@ body {
 }
 
 /* ==========================
-   PANEL GRID
-
+  PANEL GRID
+*/
 .primary-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -143,8 +163,8 @@ body {
 }
 
 /* ==========================
-   LOCAL CLOCK
-
+  LOCAL CLOCK
+*/
 .panel-banner {
   height: 180px;
   background-size: cover;
@@ -198,17 +218,17 @@ body {
 }
 
 /* ==========================
-   ANALOG CLOCK
-
+  ANALOG CLOCK
+*/
 .clock-bezel {
   width: 280px;
   height: 280px;
   border-radius: 50%;
-  background: radial-gradient(circle, #1c2435, #0f172a);
+  background: var(--bezel-bg);
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 8px solid rgba(212,175,55,.15);
+  border: 8px solid var(--gold-weak);
 }
 
 .clock-face {
@@ -216,7 +236,7 @@ body {
   height: 240px;
   border-radius: 50%;
   position: relative;
-  background: radial-gradient(circle, #111827, #020617);
+  background: var(--face-bg);
 }
 
 .clock-glass-sheen {
@@ -283,8 +303,8 @@ body {
 }
 
 /* ==========================
-   DIGITAL READOUTS
-
+  DIGITAL READOUTS
+*/
 .clock-readouts {
   text-align: center;
 }
@@ -301,8 +321,8 @@ body {
 }
 
 /* ==========================
-   TIMER PANEL
-
+  TIMER PANEL
+*/
 .timer-panel {
   padding: 2rem;
 }
@@ -338,11 +358,11 @@ body {
 .time-input {
   width: 90px;
   height: 80px;
-  background: #111827;
+  background: var(--input-bg);
   border: 1px solid var(--border);
   border-radius: 18px;
   text-align: center;
-  color: white;
+  color: var(--text);
   font-size: 2rem;
   font-family: 'DM Mono', monospace;
   transition: all .35s ease;
@@ -373,8 +393,8 @@ body {
 }
 
 /* ==========================
-   COUNTDOWN DISPLAY
-
+  COUNTDOWN DISPLAY
+*/
 .countdown-display {
   display: flex;
   justify-content: center;
@@ -398,7 +418,7 @@ body {
 }
 
 .arc-fill {
-  stroke: url(#goldGrad);
+  stroke: var(--gold);
   transition: stroke-dashoffset 0.3s ease;
 }
 
@@ -414,8 +434,8 @@ body {
 }
 
 /* ==========================
-   BUTTONS
-
+  BUTTONS
+*/
 .timer-actions {
   display: flex;
   gap: 1rem;
@@ -470,8 +490,8 @@ body {
 }
 
 /* ==========================
-   TIMER ALERT
-
+  TIMER ALERT
+*/
 .timer-alert {
   display: none;
   margin-top: 1.5rem;
@@ -491,8 +511,8 @@ body {
 }
 
 /* ==========================
-   MAP PANEL
-
+  MAP PANEL
+*/
 .map-panel {
   margin-bottom: 2rem;
   padding: 2rem;
@@ -541,7 +561,7 @@ body {
 .map-container {
   height: 500px;
   border-radius: 20px;
-  background: #09111f;
+  background: var(--map-bg);
   border: 1px solid var(--border);
   position: relative;
   overflow: hidden;
@@ -714,8 +734,8 @@ body {
 }
 
 /* ==========================
-   WORLD CLOCKS
-
+  WORLD CLOCKS
+*/
 .world-section {
   margin-top: 2rem;
 }
@@ -936,8 +956,8 @@ body {
 }
 
 /* ==========================
-   EXIT FOCUS BUTTON
-
+  EXIT FOCUS BUTTON
+*/
 .exit-focus-btn {
   position: fixed;
   bottom: 24px;
@@ -964,8 +984,8 @@ body {
 }
 
 /* ==========================
-   ALARM SYSTEM
-
+  ALARM SYSTEM
+*/
 .alarm-panel {
   margin-bottom: 2rem;
   padding: 2rem;
@@ -2521,10 +2541,23 @@ body.dark-theme{
 
 /* ==========================
    LIGHT MODE
-
+*/
 body.light-theme .ghost-action {
   color: var(--text); /* Dynamically switches to dark slate text */
   border-color: var(--border);
+}
+
+body.light-theme .countdown-digits {
+  color: #0f172a;
+  text-shadow: 0 1px 2px rgba(255,255,255,.85), 0 0 8px rgba(255,255,255,.55);
+}
+
+body.light-theme .arc-bg {
+  stroke: rgba(15,23,42,.16);
+}
+
+body.light-theme .arc-fill {
+  stroke: #b8860b;
 }
 
 body.light-theme .secondary-action {
@@ -2638,4 +2671,59 @@ body,
 .custom-toast.show {
   transform: translateX(-50%) translateY(0);
   opacity: 1;
+}
+
+/* Final overrides for the timer console light theme */
+body.light-theme {
+  background: #ffffff;
+  color: #172033;
+}
+
+body.light-theme .panel,
+body.light-theme .world-clock-card,
+body.light-theme .search-results {
+  background: #ffffff;
+  border-color: rgba(15, 23, 42, 0.08);
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+}
+
+body.light-theme .time-input,
+body.light-theme .clock-search {
+  background: #111827;
+  color: #dbe4f0;
+  border-color: rgba(212, 175, 55, 0.85);
+}
+
+body.light-theme .clock-bezel {
+  background: radial-gradient(circle, #1f2937, #0f172a);
+  border-color: rgba(212, 175, 55, 0.18);
+}
+
+body.light-theme .clock-face {
+  background: radial-gradient(circle, #111827, #020617);
+}
+
+body.light-theme .digital-time,
+body.light-theme .countdown-digits,
+body.light-theme .tt-time,
+body.light-theme .alarm-item-time {
+  color: #d4af37;
+}
+
+body.light-theme .arc-bg {
+  stroke: rgba(15, 23, 42, 0.16);
+}
+
+body.light-theme .arc-fill {
+  stroke: #d4af37;
+}
+
+body.light-theme .secondary-action {
+  background: #e2e8f0;
+  color: #172033;
+}
+
+body.light-theme .ghost-action {
+  color: #172033;
+  border-color: rgba(15, 23, 42, 0.08);
 }

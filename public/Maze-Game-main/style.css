@@ -122,6 +122,81 @@ select {
   text-align: left;
 }
 
+.status-pill-best {
+  border-color: rgba(255, 214, 102, 0.35);
+}
+
+.status-pill-best span {
+  color: #ffd666;
+  font-weight: 700;
+}
+
+.record-banner {
+  display: none;
+  margin: -28px -28px 18px;
+  padding: 10px 20px;
+  border-radius: 24px 24px 0 0;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-align: center;
+  color: #1a1400;
+  background: linear-gradient(100deg, #ffd666, #ffb347, #ffd666);
+  background-size: 200% auto;
+  box-shadow: 0 4px 20px rgba(255, 179, 71, 0.35);
+  animation: bannerShine 2.2s linear infinite;
+}
+
+@keyframes bannerShine {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+.stats-grid {
+  display: flex;
+  gap: 10px;
+  margin: 18px 0 4px;
+}
+
+.stat-chip {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 12px 8px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(96, 212, 255, 0.14);
+}
+
+.stat-value {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.stat-label {
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.stat-chip-best {
+  border-color: rgba(255, 214, 102, 0.4);
+}
+
+.stat-chip-best .stat-value {
+  color: #ffd666;
+}
+
+.stat-chip-best.is-record {
+  background: rgba(255, 179, 71, 0.1);
+  box-shadow: 0 0 16px rgba(255, 179, 71, 0.25);
+}
+
 .game-controls {
   display: flex;
   align-items: center;
@@ -336,6 +411,7 @@ button:disabled {
   padding: 28px;
   max-width: 420px;
   width: min(100%, 440px);
+  overflow: hidden;
 }
 
 .modal-overlay.visible .modal-card {
@@ -482,62 +558,3 @@ button:disabled {
   pointer-events: none;
   transition: filter 0.8s ease, opacity 0.8s ease;
 }
-
-
-.back-home-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
-    padding: 12px 24px;
-
-    border-radius: 14px;
-
-    text-decoration: none;
-
-    font-weight: 600;
-
-    color: #fff;
-
-    background: linear-gradient(
-        135deg,
-        #55d6ff,
-        #7b61ff
-    );
-
-    border: none;
-
-    cursor: pointer;
-
-    transition: all .3s ease;
-
-    box-shadow:
-        0 0 18px rgba(85,214,255,.35);
-
-}
-
-.back-home-btn:hover{
-
-    transform: translateY(-2px);
-
-    box-shadow:
-        0 0 22px rgba(123,97,255,.55);
-
-    filter: brightness(1.08);
-
-}
-
-.back-home-btn:active{
-
-    transform: scale(.97);
-
-}
-
-.back-home-btn:focus-visible{
-
-    outline:2px solid #6be7ff;
-    outline-offset:3px;
-
-}
-
-

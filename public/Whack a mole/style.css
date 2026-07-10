@@ -1,16 +1,16 @@
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #eca9a9;
-    font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #eca9a9;
+  font-family: Arial, sans-serif;
 }
 
 /*
@@ -29,151 +29,154 @@ body {
 
 /* Shared cursor value — defined once as a custom property for easy maintenance */
 :root {
-    --hammer-cursor: url('hammer.png') 32 32, auto;
+  --hammer-cursor: url('hammer.png') 32 32, auto;
 
-    /*
+  /*
      * Base64 fallback (32×32 hammer icon) — used if hammer.png fails to load.
      * Remove this variable and the fallback rule below once you confirm
      * hammer.png loads correctly via your server.
      */
-    --hammer-cursor-b64: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAsElEQVR4nGNgGAUjHTBSakCAsvJ/dLFHHz8SpffcmzeMLJQ6gIGBgUFORGQrGh/OPnL3rjc+vUzUcAAlYNQBVEkDj968QYlnYhMhA8MgCIFRB4w6YNQBFFdGDAwMDKnOivAKafbe+ySZSXEIUGI5xQ6g1HKKHEANy8l2ALUsJ8sB1LScZAdQ23KSHEALy4l2AK0sJ8oBtLScoANobTleB9DDcpwOoJflWB1AT8sHBQAAd31JDHv98McAAAAASUVORK5CYII=') 16 16, auto;
+  --hammer-cursor-b64:
+    url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAsElEQVR4nGNgGAUjHTBSakCAsvJ/dLFHHz8SpffcmzeMLJQ6gIGBgUFORGQrGh/OPnL3rjc+vUzUcAAlYNQBVEkDj968QYlnYhMhA8MgCIFRB4w6YNQBFFdGDAwMDKnOivAKafbe+ySZSXEIUGI5xQ6g1HKKHEANy8l2ALUsJ8sB1LScZAdQ23KSHEALy4l2AK0sJ8oBtLScoANobTleB9DDcpwOoJflWB1AT8sHBQAAd31JDHv98McAAAAASUVORK5CYII=')
+      16 16,
+    auto;
 }
 
 .game-container {
-    text-align: center;
-    background-color: #854a4a;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(72, 21, 21, 0.1);
-    width: 500px;
-    max-width: 95vw;
+  text-align: center;
+  background-color: #854a4a;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(72, 21, 21, 0.1);
+  width: 500px;
+  max-width: 95vw;
 
-    /* Primary: use the local file */
-    cursor: var(--hammer-cursor);
+  /* Primary: use the local file */
+  cursor: var(--hammer-cursor);
 }
 
 h1 {
-    color: #fff;
-    margin-bottom: 10px;
+  color: #fff;
+  margin-bottom: 10px;
 }
 
 p {
-    color: #f5d5d5;
-    font-size: 18px;
+  color: #f5d5d5;
+  font-size: 18px;
 }
 
 #gameOver {
-    color: #ffdd57;
-    font-size: 22px;
-    font-weight: bold;
-    margin-top: 10px;
+  color: #ffdd57;
+  font-size: 22px;
+  font-weight: bold;
+  margin-top: 10px;
 }
 
 /* FIX: ensure the timer value stands out slightly when time is low */
 #timer {
-    transition: color 0.3s;
+  transition: color 0.3s;
 }
 
 #timer.urgent {
-    color: #ffdd57;
-    font-weight: bold;
+  color: #ffdd57;
+  font-weight: bold;
 }
 
 .grid {
-    justify-content: center;
-    display: grid;
-    grid-template-columns: repeat(3, 100px);
-    grid-gap: 20px;
-    margin-top: 20px;
-    justify-items: center;
+  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(3, 100px);
+  grid-gap: 20px;
+  margin-top: 20px;
+  justify-items: center;
 }
 
 .hole {
-    width: 100px;
-    height: 100px;
-    background-color: #5c3030;
-    border-radius: 50%;
-    overflow: hidden;
-    position: relative;
-    cursor: var(--hammer-cursor);
+  width: 100px;
+  height: 100px;
+  background-color: #5c3030;
+  border-radius: 50%;
+  overflow: hidden;
+  position: relative;
+  cursor: var(--hammer-cursor);
 }
 
 .mole {
-    width: 80%;
-    height: 80%;
-    background-color: #8b4513;
-    border-radius: 50% 50% 0 0;
-    position: absolute;
-    bottom: -100%;
-    left: 50%;
-    transform: translateX(-50%);
-    transition: bottom 0.1s ease;
-    pointer-events: none;
+  width: 80%;
+  height: 80%;
+  background-color: #8b4513;
+  border-radius: 50% 50% 0 0;
+  position: absolute;
+  bottom: -100%;
+  left: 50%;
+  transform: translateX(-50%);
+  transition: bottom 0.1s ease;
+  pointer-events: none;
 }
 
 .hole.active .mole {
-    bottom: 0;
+  bottom: 0;
 }
 
 button {
-    margin-top: 20px;
-    padding: 10px 24px;
-    background-color: #5c3030;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    cursor: var(--hammer-cursor);
+  margin-top: 20px;
+  padding: 10px 24px;
+  background-color: #5c3030;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: var(--hammer-cursor);
 }
 
 button:hover {
-    background-color: #3e1f1f;
+  background-color: #3e1f1f;
 }
 
 button:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 /* ===== Difficulty Selector ===== */
 
 .game-info {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    margin-bottom: 15px;
-    flex-wrap: wrap;
-    gap: 10px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 .difficulty-container {
-    margin: 15px 0;
-    color: #f5d5d5;
-    font-size: 18px;
+  margin: 15px 0;
+  color: #f5d5d5;
+  font-size: 18px;
 }
 
 .difficulty-container label {
-    margin-right: 8px;
-    font-weight: bold;
+  margin-right: 8px;
+  font-weight: bold;
 }
 
 #difficulty {
-    padding: 8px 12px;
-    border: none;
-    border-radius: 6px;
-    font-size: 16px;
-    background: #fff;
-    color: #5c3030;
-    outline: none;
-    cursor: pointer;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  background: #fff;
+  color: #5c3030;
+  outline: none;
+  cursor: pointer;
 }
 
 #difficulty:focus {
-    box-shadow: 0 0 5px rgba(255, 221, 87, 0.8);
+  box-shadow: 0 0 5px rgba(255, 221, 87, 0.8);
 }
 
 #currentDifficulty {
-    color: #ffdd57;
-    font-weight: bold;
-    text-transform: capitalize;
+  color: #ffdd57;
+  font-weight: bold;
+  text-transform: capitalize;
 }

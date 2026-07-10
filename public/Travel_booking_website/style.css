@@ -91,7 +91,7 @@ body {
 .header {
     padding-top: 4rem;
     background-image: linear-gradient(rgba(17, 43, 90, .7),
-            rgba(17, 43, 90, .7)), url("service1.jpg");
+            rgba(17, 43, 90, .7)), url("images/service1.jpg");
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;

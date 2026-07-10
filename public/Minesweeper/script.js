@@ -280,3 +280,6 @@ function initGame() {
 // Attach restart listener and start game
 restartBtn.addEventListener('click', initGame);
 initGame();
+
+restartBtn.addEventListener('click', initGame);
+initGame();
