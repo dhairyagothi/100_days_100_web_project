@@ -117,6 +117,28 @@ let state = {
 };
 
 // ==========================================================================
+// ADVANCED SEARCH & FILTERING STATE
+// ==========================================================================
+
+let filterState = {
+    status: 'All',
+    search: '',
+    dateFrom: '',
+    dateTo: '',
+    amountMin: '',
+    amountMax: '',
+    tags: [],
+    sortBy: 'issueDate',
+    sortOrder: 'desc',
+    currentPage: 1,
+    pageSize: 10
+};
+
+let savedSearches = [];
+let allTags = [];
+let filteredInvoicesCache = [];
+
+// ==========================================================================
 // LIFE CYCLE & INITIALIZATION
 // ==========================================================================
 
@@ -147,7 +169,6 @@ function initApp() {
     if (savedInvoices) {
         state.invoices = JSON.parse(savedInvoices);
     } else {
-        // Load default mock invoices for first-time premium demonstration
         state.invoices = [...MOCK_INVOICES];
         localStorage.setItem("bf_invoices", JSON.stringify(state.invoices));
     }
@@ -155,10 +176,13 @@ function initApp() {
     // 4. Setup Default Form values in settings view
     populateSettingsForm();
 
-    // 5. Initialize Listeners
+    // 5. Initialize Advanced Features
+    initAdvancedFeatures();
+
+    // 6. Initialize Listeners
     setupEventListeners();
 
-    // 6. Initial Render of current view (Dashboard)
+    // 7. Initial Render of current view (Dashboard)
     renderActiveView();
     showToast("Application loaded successfully", "success");
 }
@@ -171,7 +195,6 @@ function switchView(viewName) {
     state.currentView = viewName;
     renderActiveView();
 
-    // Update active state in sidebar menu
     document.querySelectorAll(".menu-item").forEach(item => {
         if (item.getAttribute("data-view") === viewName) {
             item.classList.add("active");
@@ -180,23 +203,19 @@ function switchView(viewName) {
         }
     });
 
-    // Close any modal just in case
     closeInvoiceModal();
 }
 
 function renderActiveView() {
-    // Hide all views
     document.querySelectorAll(".app-view").forEach(view => {
         view.classList.remove("active-view");
     });
 
-    // Show selected view
     const viewElement = document.getElementById(`view-${state.currentView}`);
     if (viewElement) {
         viewElement.classList.add("active-view");
     }
 
-    // Load dynamic view content
     if (state.currentView === "dashboard") {
         renderDashboard();
     } else if (state.currentView === "history") {
@@ -239,14 +258,13 @@ function toggleTheme() {
 // ==========================================================================
 
 function calculateAnalytics() {
-    let totalRevenue = 0; // sum of Paid
-    let totalBilled = 0;  // sum of Paid + Unpaid
-    let pendingCollection = 0; // sum of Unpaid
+    let totalRevenue = 0;
+    let totalBilled = 0;
+    let pendingCollection = 0;
     let paidCount = 0;
     let unpaidCount = 0;
     let draftCount = 0;
 
-    // Filter out drafts from revenue sums for accurate financial accounting
     state.invoices.forEach(inv => {
         const total = getInvoiceGrandTotal(inv);
         if (inv.status === "Paid") {
@@ -279,7 +297,6 @@ function calculateAnalytics() {
 function renderDashboard() {
     const analytics = calculateAnalytics();
     
-    // Update Stat Cards
     document.getElementById("stat-revenue").textContent = formatCurrency(analytics.totalRevenue, state.companySettings.currency);
     document.getElementById("stat-billed").textContent = formatCurrency(analytics.totalBilled, state.companySettings.currency);
     document.getElementById("stat-pending").textContent = formatCurrency(analytics.pendingCollection, state.companySettings.currency);
@@ -290,12 +307,10 @@ function renderDashboard() {
     document.getElementById("stat-rate").textContent = `${analytics.collectionRate}%`;
     document.getElementById("stat-rate-bar").style.width = `${analytics.collectionRate}%`;
 
-    // Populate Recent Invoices List (Max 5)
     const recentList = document.getElementById("recent-invoices-list");
     const emptyState = document.getElementById("dashboard-empty-state");
     recentList.innerHTML = "";
 
-    // Sort invoices: newest first (assume id order or simple sorting. Let's sort by issueDate desc)
     const sortedInvoices = [...state.invoices].sort((a, b) => new Date(b.issueDate) - new Date(a.issueDate));
     const recentInvoices = sortedInvoices.slice(0, 5);
 
@@ -339,7 +354,6 @@ function renderDashboard() {
         });
     }
 
-    // Set Top Header display currency
     document.getElementById("active-currency-display").textContent = `${state.companySettings.currency} (${getCurrencySymbol(state.companySettings.currency)})`;
 }
 
@@ -355,68 +369,162 @@ function renderHistory() {
     const statusFilter = document.getElementById("filter-status").value;
     const searchFilter = document.getElementById("filter-search").value.toLowerCase().trim();
 
-    // Filter logic
-    const filteredInvoices = state.invoices.filter(inv => {
-        // Status filter
+    filteredInvoicesCache = state.invoices.filter(inv => {
         if (statusFilter !== "All" && inv.status !== statusFilter) return false;
 
-        // Search text filter
         if (searchFilter) {
             const numMatch = inv.invoiceNumber.toLowerCase().includes(searchFilter);
             const clientMatch = (inv.clientName || "").toLowerCase().includes(searchFilter);
             const companyMatch = (inv.senderName || "").toLowerCase().includes(searchFilter);
-            return numMatch || clientMatch || companyMatch;
+            if (!numMatch && !clientMatch && !companyMatch) return false;
+        }
+
+        if (filterState.dateFrom) {
+            const issueDate = new Date(inv.issueDate);
+            const fromDate = new Date(filterState.dateFrom);
+            if (issueDate < fromDate) return false;
+        }
+        if (filterState.dateTo) {
+            const issueDate = new Date(inv.issueDate);
+            const toDate = new Date(filterState.dateTo);
+            toDate.setHours(23, 59, 59);
+            if (issueDate > toDate) return false;
+        }
+
+        const total = getInvoiceGrandTotal(inv);
+        if (filterState.amountMin) {
+            const min = parseFloat(filterState.amountMin);
+            if (total < min) return false;
+        }
+        if (filterState.amountMax) {
+            const max = parseFloat(filterState.amountMax);
+            if (total > max) return false;
+        }
+
+        if (filterState.tags.length > 0) {
+            const invTags = getInvoiceTags(inv);
+            const hasTag = filterState.tags.some(tag => invTags.includes(tag));
+            if (!hasTag) return false;
         }
 
         return true;
     });
 
-    // Sort: Newest first
-    filteredInvoices.sort((a, b) => new Date(b.issueDate) - new Date(a.issueDate));
+    filteredInvoicesCache.sort((a, b) => {
+        let aVal, bVal;
+        
+        switch (filterState.sortBy) {
+            case 'invoiceNumber':
+                aVal = a.invoiceNumber || '';
+                bVal = b.invoiceNumber || '';
+                break;
+            case 'clientName':
+                aVal = a.clientName || '';
+                bVal = b.clientName || '';
+                break;
+            case 'issueDate':
+                aVal = new Date(a.issueDate || 0);
+                bVal = new Date(b.issueDate || 0);
+                break;
+            case 'dueDate':
+                aVal = new Date(a.dueDate || 0);
+                bVal = new Date(b.dueDate || 0);
+                break;
+            case 'amount':
+                aVal = getInvoiceGrandTotal(a);
+                bVal = getInvoiceGrandTotal(b);
+                break;
+            default:
+                aVal = new Date(a.issueDate || 0);
+                bVal = new Date(b.issueDate || 0);
+        }
+        
+        if (aVal < bVal) return filterState.sortOrder === 'asc' ? -1 : 1;
+        if (aVal > bVal) return filterState.sortOrder === 'asc' ? 1 : -1;
+        return 0;
+    });
 
-    if (filteredInvoices.length === 0) {
+    const totalItems = filteredInvoicesCache.length;
+    const totalPages = Math.ceil(totalItems / filterState.pageSize);
+    const startIndex = (filterState.currentPage - 1) * filterState.pageSize;
+    const endIndex = Math.min(startIndex + filterState.pageSize, totalItems);
+    const pageItems = filteredInvoicesCache.slice(startIndex, endIndex);
+
+    document.getElementById('pagination-start').textContent = totalItems > 0 ? startIndex + 1 : 0;
+    document.getElementById('pagination-end').textContent = endIndex;
+    document.getElementById('pagination-total').textContent = totalItems;
+    document.getElementById('pagination-current').textContent = filterState.currentPage;
+    document.getElementById('pagination-prev').disabled = filterState.currentPage <= 1;
+    document.getElementById('pagination-next').disabled = filterState.currentPage >= totalPages;
+
+    if (pageItems.length === 0) {
         emptyState.style.display = "flex";
         listContainer.closest(".table-responsive").style.display = "none";
-    } else {
-        emptyState.style.display = "none";
-        listContainer.closest(".table-responsive").style.display = "block";
-
-        filteredInvoices.forEach(inv => {
-            const row = document.createElement("tr");
-            const total = getInvoiceGrandTotal(inv);
-            const statusClass = inv.status === "Paid" ? "badge-paid" : (inv.status === "Unpaid" ? "badge-unpaid" : "badge-draft");
-            
-            row.innerHTML = `
-                <td><strong>${inv.invoiceNumber}</strong></td>
-                <td>${inv.clientName || '<em class="text-muted">No Client</em>'}</td>
-                <td>${formatDate(inv.issueDate)}</td>
-                <td>${formatDate(inv.dueDate)}</td>
-                <td><strong>${formatCurrency(total, inv.currency)}</strong></td>
-                <td>
-                    <span class="badge ${statusClass} cursor-pointer" onclick="toggleInvoiceStatus('${inv.id}')" title="Click to cycle status">
-                        ${inv.status} <i class="fa-solid fa-arrows-spin margin-left-xs" style="font-size:10px;"></i>
-                    </span>
-                </td>
-                <td>
-                    <div class="table-actions">
-                        <button class="action-btn" onclick="openInvoiceDetailsModal('${inv.id}')" title="Quick View">
-                            <i class="fa-regular fa-eye"></i>
-                        </button>
-                        <button class="action-btn" onclick="triggerEditInvoice('${inv.id}')" title="Edit Invoice">
-                            <i class="fa-solid fa-pencil"></i>
-                        </button>
-                        <button class="action-btn" onclick="triggerDuplicateInvoice('${inv.id}')" title="Duplicate">
-                            <i class="fa-regular fa-copy"></i>
-                        </button>
-                        <button class="action-btn delete-btn" onclick="triggerDeleteInvoice('${inv.id}')" title="Delete">
-                            <i class="fa-regular fa-trash-can"></i>
-                        </button>
-                    </div>
-                </td>
-            `;
-            listContainer.appendChild(row);
-        });
+        document.getElementById('pagination-container').style.display = 'none';
+        return;
     }
+    
+    emptyState.style.display = "none";
+    listContainer.closest(".table-responsive").style.display = "block";
+    document.getElementById('pagination-container').style.display = 'flex';
+
+    pageItems.forEach(inv => {
+        const row = document.createElement("tr");
+        const total = getInvoiceGrandTotal(inv);
+        const statusClass = inv.status === "Paid" ? "badge-paid" : (inv.status === "Unpaid" ? "badge-unpaid" : "badge-draft");
+        const tags = getInvoiceTags(inv);
+        
+        row.innerHTML = `
+            <td><strong>${inv.invoiceNumber}</strong></td>
+            <td>${inv.clientName || '<em class="text-muted">No Client</em>'}</td>
+            <td>${formatDate(inv.issueDate)}</td>
+            <td>${formatDate(inv.dueDate)}</td>
+            <td><strong>${formatCurrency(total, inv.currency)}</strong></td>
+            <td>
+                <span class="badge ${statusClass} cursor-pointer" onclick="toggleInvoiceStatus('${inv.id}')" title="Click to cycle status">
+                    ${inv.status} <i class="fa-solid fa-arrows-spin" style="font-size:10px; margin-left: 4px;"></i>
+                </span>
+            </td>
+            <td>
+                ${tags.length > 0 ? tags.map(tag => 
+                    `<span style="display: inline-block; padding: 2px 8px; background: var(--bg-app); border-radius: 12px; font-size: 10px; color: var(--text-subtitle); margin: 2px;">${tag}</span>`
+                ).join('') : '<span style="color: var(--text-muted); font-size: 11px;">No tags</span>'}
+            </td>
+            <td>
+                <div class="table-actions">
+                    <button class="action-btn" onclick="openInvoiceDetailsModal('${inv.id}')" title="Quick View">
+                        <i class="fa-regular fa-eye"></i>
+                    </button>
+                    <button class="action-btn" onclick="triggerEditInvoice('${inv.id}')" title="Edit Invoice">
+                        <i class="fa-solid fa-pencil"></i>
+                    </button>
+                    <button class="action-btn" onclick="triggerDuplicateInvoice('${inv.id}')" title="Duplicate">
+                        <i class="fa-regular fa-copy"></i>
+                    </button>
+                    <button class="action-btn delete-btn" onclick="triggerDeleteInvoice('${inv.id}')" title="Delete">
+                        <i class="fa-regular fa-trash-can"></i>
+                    </button>
+                </div>
+            </td>
+        `;
+        listContainer.appendChild(row);
+    });
+}
+
+function getInvoiceTags(inv) {
+    if (inv.tags) return inv.tags;
+    
+    const tags = [];
+    if (inv.clientName) {
+        const name = inv.clientName.toLowerCase();
+        if (name.includes('design') || name.includes('creative')) tags.push('Design');
+        if (name.includes('tech') || name.includes('soft') || name.includes('dev')) tags.push('Development');
+        if (name.includes('consult') || name.includes('advis')) tags.push('Consulting');
+        if (name.includes('hard') || name.includes('equip')) tags.push('Hardware');
+    }
+    if (tags.length === 0) tags.push('General');
+    
+    return tags;
 }
 
 function toggleInvoiceStatus(id) {
@@ -432,6 +540,292 @@ function toggleInvoiceStatus(id) {
     localStorage.setItem("bf_invoices", JSON.stringify(state.invoices));
     renderHistory();
     showToast(`Invoice ${state.invoices[invIndex].invoiceNumber} set to ${nextStatus}`, "success");
+}
+
+// ==========================================================================
+// ADVANCED SEARCH & FILTERING FUNCTIONS
+// ==========================================================================
+
+function loadSavedSearches() {
+    const saved = localStorage.getItem('bf_saved_searches');
+    if (saved) {
+        savedSearches = JSON.parse(saved);
+    } else {
+        savedSearches = [];
+        localStorage.setItem('bf_saved_searches', JSON.stringify(savedSearches));
+    }
+}
+
+function loadTags() {
+    const tags = localStorage.getItem('bf_tags');
+    if (tags) {
+        allTags = JSON.parse(tags);
+    } else {
+        allTags = ['Design', 'Development', 'Consulting', 'Software', 'Hardware'];
+        localStorage.setItem('bf_tags', JSON.stringify(allTags));
+    }
+}
+
+function saveTags() {
+    localStorage.setItem('bf_tags', JSON.stringify(allTags));
+    populateTagDropdown();
+}
+
+function populateTagDropdown() {
+    const dropdown = document.getElementById('filter-tags');
+    if (!dropdown) return;
+    
+    dropdown.innerHTML = '<option value="All">All Tags</option>';
+    allTags.forEach(tag => {
+        const option = document.createElement('option');
+        option.value = tag;
+        option.textContent = tag;
+        dropdown.appendChild(option);
+    });
+}
+
+function addNewTag() {
+    const tagName = prompt('Enter new tag name:');
+    if (tagName && tagName.trim()) {
+        const trimmedTag = tagName.trim();
+        if (!allTags.includes(trimmedTag)) {
+            allTags.push(trimmedTag);
+            saveTags();
+            showToast(`Tag "${trimmedTag}" added successfully`, 'success');
+        } else {
+            showToast('Tag already exists', 'warning');
+        }
+    }
+}
+
+function toggleAdvancedFilters() {
+    const panel = document.getElementById('advanced-filters-panel');
+    const btn = document.getElementById('btn-toggle-advanced');
+    
+    if (panel.style.display === 'none') {
+        panel.style.display = 'block';
+        btn.innerHTML = '<i class="fa-solid fa-chevron-up"></i> Hide Advanced Filters';
+    } else {
+        panel.style.display = 'none';
+        btn.innerHTML = '<i class="fa-solid fa-chevron-down"></i> Advanced Filters';
+    }
+}
+
+function toggleSavedSearchesDropdown() {
+    const dropdown = document.getElementById('saved-searches-dropdown');
+    if (dropdown.style.display === 'none') {
+        dropdown.style.display = 'block';
+        renderSavedSearches();
+    } else {
+        dropdown.style.display = 'none';
+    }
+}
+
+function closeSavedSearchesDropdown() {
+    document.getElementById('saved-searches-dropdown').style.display = 'none';
+}
+
+function renderSavedSearches() {
+    const container = document.getElementById('saved-searches-list');
+    const emptyMsg = document.getElementById('no-saved-searches');
+    
+    container.innerHTML = '';
+    
+    if (savedSearches.length === 0) {
+        emptyMsg.style.display = 'block';
+        return;
+    }
+    
+    emptyMsg.style.display = 'none';
+    
+    savedSearches.forEach((search, index) => {
+        const tag = document.createElement('span');
+        tag.style.cssText = `
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        `;
+        tag.onmouseover = function() {
+            this.style.borderColor = 'var(--primary)';
+            this.style.boxShadow = 'var(--shadow-sm)';
+        };
+        tag.onmouseout = function() {
+            this.style.borderColor = 'var(--border-color)';
+            this.style.boxShadow = 'none';
+        };
+        
+        tag.innerHTML = `
+            <i class="fa-regular fa-bookmark" style="color: var(--primary);"></i>
+            ${search.name}
+            <span style="font-size: 10px; color: var(--text-muted);">(${search.filters.status || 'All'})</span>
+            <button onclick="event.stopPropagation(); deleteSavedSearch(${index})" 
+                    style="background: none; border: none; color: var(--danger); cursor: pointer; padding: 0 4px;">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        `;
+        
+        tag.onclick = function() {
+            applySavedSearch(search);
+        };
+        
+        container.appendChild(tag);
+    });
+}
+
+function saveCurrentSearch() {
+    const name = prompt('Enter a name for this search:');
+    if (!name || !name.trim()) return;
+    
+    const searchData = {
+        id: Date.now(),
+        name: name.trim(),
+        filters: {
+            status: document.getElementById('filter-status').value,
+            search: document.getElementById('filter-search').value,
+            dateFrom: document.getElementById('filter-date-from').value,
+            dateTo: document.getElementById('filter-date-to').value,
+            amountMin: document.getElementById('filter-amount-min').value,
+            amountMax: document.getElementById('filter-amount-max').value,
+            tags: [...filterState.tags]
+        }
+    };
+    
+    savedSearches.push(searchData);
+    localStorage.setItem('bf_saved_searches', JSON.stringify(savedSearches));
+    renderSavedSearches();
+    showToast(`Search "${searchData.name}" saved successfully`, 'success');
+}
+
+function deleteSavedSearch(index) {
+    if (confirm(`Delete saved search "${savedSearches[index].name}"?`)) {
+        const name = savedSearches[index].name;
+        savedSearches.splice(index, 1);
+        localStorage.setItem('bf_saved_searches', JSON.stringify(savedSearches));
+        renderSavedSearches();
+        showToast(`Search "${name}" deleted`, 'info');
+    }
+}
+
+function applySavedSearch(search) {
+    const filters = search.filters;
+    
+    document.getElementById('filter-status').value = filters.status || 'All';
+    document.getElementById('filter-search').value = filters.search || '';
+    document.getElementById('filter-date-from').value = filters.dateFrom || '';
+    document.getElementById('filter-date-to').value = filters.dateTo || '';
+    document.getElementById('filter-amount-min').value = filters.amountMin || '';
+    document.getElementById('filter-amount-max').value = filters.amountMax || '';
+    
+    filterState.tags = filters.tags || [];
+    renderTagFilters();
+    
+    filterState.currentPage = 1;
+    renderHistory();
+    closeSavedSearchesDropdown();
+    showToast(`Applied search: "${search.name}"`, 'success');
+}
+
+function renderTagFilters() {
+    const container = document.getElementById('tag-filters-container');
+    container.innerHTML = '';
+    
+    filterState.tags.forEach(tag => {
+        const badge = document.createElement('span');
+        badge.style.cssText = `
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            background: var(--primary);
+            color: white;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        `;
+        badge.innerHTML = `
+            ${tag}
+            <button onclick="removeTagFilter('${tag}')" 
+                    style="background: none; border: none; color: white; cursor: pointer; padding: 0 2px;">
+                <i class="fa-solid fa-xmark" style="font-size: 10px;"></i>
+            </button>
+        `;
+        container.appendChild(badge);
+    });
+}
+
+function removeTagFilter(tag) {
+    filterState.tags = filterState.tags.filter(t => t !== tag);
+    renderTagFilters();
+    filterState.currentPage = 1;
+    renderHistory();
+}
+
+function applyAdvancedFilters() {
+    const tagSelect = document.getElementById('filter-tags');
+    if (tagSelect && tagSelect.value !== 'All') {
+        if (!filterState.tags.includes(tagSelect.value)) {
+            filterState.tags.push(tagSelect.value);
+            renderTagFilters();
+        }
+        tagSelect.value = 'All';
+    }
+    
+    filterState.dateFrom = document.getElementById('filter-date-from').value;
+    filterState.dateTo = document.getElementById('filter-date-to').value;
+    filterState.amountMin = document.getElementById('filter-amount-min').value;
+    filterState.amountMax = document.getElementById('filter-amount-max').value;
+    
+    filterState.currentPage = 1;
+    renderHistory();
+    showToast('Filters applied', 'info');
+}
+
+function clearAdvancedFilters() {
+    document.getElementById('filter-date-from').value = '';
+    document.getElementById('filter-date-to').value = '';
+    document.getElementById('filter-amount-min').value = '';
+    document.getElementById('filter-amount-max').value = '';
+    document.getElementById('filter-tags').value = 'All';
+    filterState.tags = [];
+    renderTagFilters();
+    filterState.currentPage = 1;
+    renderHistory();
+    showToast('Advanced filters cleared', 'info');
+}
+
+function sortHistory(column) {
+    if (filterState.sortBy === column) {
+        filterState.sortOrder = filterState.sortOrder === 'asc' ? 'desc' : 'asc';
+    } else {
+        filterState.sortBy = column;
+        filterState.sortOrder = 'desc';
+    }
+    filterState.currentPage = 1;
+    renderHistory();
+}
+
+function changePage(delta) {
+    const totalPages = Math.ceil(filteredInvoicesCache.length / filterState.pageSize);
+    const newPage = filterState.currentPage + delta;
+    
+    if (newPage < 1 || newPage > totalPages) return;
+    
+    filterState.currentPage = newPage;
+    renderHistory();
+}
+
+function initAdvancedFeatures() {
+    loadSavedSearches();
+    loadTags();
+    populateTagDropdown();
+    renderTagFilters();
 }
 
 // ==========================================================================
@@ -492,7 +886,6 @@ function resetSettings() {
 // ==========================================================================
 
 function triggerNewInvoice() {
-    // Generate Invoice Number based on current invoices count
     const rand = Math.floor(1000 + Math.random() * 9000);
     const dateObj = new Date();
     const year = dateObj.getFullYear();
@@ -500,12 +893,10 @@ function triggerNewInvoice() {
 
     const issueDateStr = dateObj.toISOString().split('T')[0];
     
-    // Due Date 30 days out
     const dueObj = new Date();
     dueObj.setDate(dueObj.getDate() + 30);
     const dueDateStr = dueObj.toISOString().split('T')[0];
 
-    // Build fresh invoice template populated with defaults
     state.activeInvoice = {
         id: "inv_" + Date.now(),
         invoiceNumber: invNum,
@@ -543,7 +934,6 @@ function triggerEditInvoice(id) {
         return;
     }
 
-    // Deep clone the invoice to avoid editing state directly
     state.activeInvoice = JSON.parse(JSON.stringify(inv));
     
     document.getElementById("editor-title").textContent = `Edit Invoice ${inv.invoiceNumber}`;
@@ -558,7 +948,6 @@ function triggerDuplicateInvoice(id) {
         return;
     }
 
-    // Clone and generate new info
     const newInv = JSON.parse(JSON.stringify(inv));
     newInv.id = "inv_" + Date.now();
     newInv.invoiceNumber = `INV-${new Date().getFullYear()}-${state.invoices.length + 101}`;
@@ -598,7 +987,6 @@ function populateEditorForm() {
     const inv = state.activeInvoice;
     if (!inv) return;
 
-    // Set simple fields
     document.getElementById("editor-template").value = inv.template || "modern";
     document.getElementById("editor-currency").value = inv.currency || "USD";
     document.getElementById("editor-status").value = inv.status || "Unpaid";
@@ -621,10 +1009,7 @@ function populateEditorForm() {
     document.getElementById("editor-discount-rate").value = inv.discountRate ?? 0;
     document.getElementById("editor-notes").value = inv.notes || "";
 
-    // Load line items
     renderLineItemsEditor();
-    
-    // Refresh the live invoice preview HTML
     updateLivePreview();
 }
 
@@ -709,7 +1094,6 @@ function collectFormValues() {
     state.activeInvoice.discountRate = parseFloat(document.getElementById("editor-discount-rate").value) || 0;
     state.activeInvoice.notes = document.getElementById("editor-notes").value.trim();
 
-    // Read all line items
     const rows = document.querySelectorAll("#editor-items-list .line-item-row");
     state.activeInvoice.items = [];
     
@@ -729,13 +1113,9 @@ function updateLivePreview() {
     const previewContainer = document.getElementById("invoice-preview-container");
     if (!previewContainer) return;
 
-    // Clear class template overrides
     previewContainer.className = `invoice-preview-paper template-${state.activeInvoice.template}`;
-    
-    // Compile and set template HTML
     previewContainer.innerHTML = compileInvoiceHTML(state.activeInvoice);
 
-    // Update row totals text inside editor without rebuild to keep input focus
     const rows = document.querySelectorAll("#editor-items-list .line-item-row");
     rows.forEach((row, idx) => {
         const item = state.activeInvoice.items[idx];
@@ -794,9 +1174,8 @@ function compileInvoiceHTML(inv) {
     const taxVal = taxableVal * ((inv.taxRate || 0) / 100);
     const grandTotal = taxableVal + taxVal;
 
-    // Items table rows
     let tableRowsHTML = "";
-    inv.items.forEach((item, index) => {
+    inv.items.forEach((item) => {
         const total = (item.quantity || 0) * (item.price || 0);
         tableRowsHTML += `
             <tr>
@@ -811,14 +1190,12 @@ function compileInvoiceHTML(inv) {
         `;
     });
 
-    // Logo display
     let logoHTML = `<span class="ip-logo-text">${escapeHtml(inv.senderName || 'BillFlow')}</span>`;
     if (inv.senderLogo) {
         logoHTML = `<div class="ip-logo-container"><img src="${escapeHtml(inv.senderLogo)}" alt="logo"></div>`;
     }
 
     return `
-        <!-- Invoice Header -->
         <div class="ip-header">
             <div class="ip-title-section">
                 <div>
@@ -839,7 +1216,6 @@ function compileInvoiceHTML(inv) {
             </div>
         </div>
 
-        <!-- Address Grid -->
         <div class="ip-grid-addresses">
             <div class="ip-address-col">
                 <h4>Bill To:</h4>
@@ -860,7 +1236,6 @@ function compileInvoiceHTML(inv) {
             </div>
         </div>
 
-        <!-- Details Strip -->
         <div class="ip-details-strip">
             <div class="ip-strip-item">
                 <span>Issue Date</span>
@@ -880,7 +1255,6 @@ function compileInvoiceHTML(inv) {
             </div>
         </div>
 
-        <!-- Line Items Table -->
         <table class="ip-table">
             <thead>
                 <tr>
@@ -895,7 +1269,6 @@ function compileInvoiceHTML(inv) {
             </tbody>
         </table>
 
-        <!-- Calculations Summary -->
         <div class="ip-summary-section">
             <div class="ip-notes-box">
                 ${inv.notes ? `
@@ -927,7 +1300,6 @@ function compileInvoiceHTML(inv) {
             </div>
         </div>
 
-        <!-- Footer watermark -->
         <div class="ip-footer">
             Invoice generated automatically via BillFlow Invoice Portal. Page 1 of 1.
         </div>
@@ -952,7 +1324,6 @@ function downloadPDF(invoiceData, paperElementId) {
         jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
     };
 
-    // Run HTML to PDF conversion
     html2pdf().from(element).set(opt).save().then(() => {
         showToast("PDF downloaded successfully", "success");
     }).catch(err => {
@@ -962,16 +1333,13 @@ function downloadPDF(invoiceData, paperElementId) {
 }
 
 function printInvoice(invoiceData) {
-    // Generate beautiful clean markup
     const html = compileInvoiceHTML(invoiceData);
     
-    // Create temporary print container
     const printDiv = document.createElement("div");
     printDiv.id = "print-container-target";
     printDiv.className = `invoice-preview-paper template-${invoiceData.template}`;
     printDiv.innerHTML = html;
     
-    // Append, print, and remove
     document.body.appendChild(printDiv);
     window.print();
     document.body.removeChild(printDiv);
@@ -995,12 +1363,10 @@ function openInvoiceDetailsModal(id) {
     paper.className = `invoice-preview-paper template-${inv.template}`;
     paper.innerHTML = compileInvoiceHTML(inv);
 
-    // Set badge status in modal
     const badge = document.getElementById("modal-invoice-status-badge");
     badge.textContent = inv.status;
     badge.className = "badge " + (inv.status === 'Paid' ? 'badge-paid' : (inv.status === 'Unpaid' ? 'badge-unpaid' : 'badge-draft'));
 
-    // Open modal backdrop
     document.getElementById("invoice-modal").classList.add("active");
 }
 
@@ -1067,7 +1433,6 @@ function showToast(message, type = "success") {
 
     container.appendChild(toast);
 
-    // Auto fadeout and delete after 3s
     setTimeout(() => {
         toast.classList.add("fade-out");
         setTimeout(() => {
@@ -1107,7 +1472,7 @@ function setupEventListeners() {
     document.getElementById("global-search").addEventListener("input", (e) => {
         const query = e.target.value;
         document.getElementById("filter-search").value = query;
-        switchView("history");
+        filterState.currentPage = 1;
         renderHistory();
     });
 
@@ -1201,17 +1566,59 @@ function setupEventListeners() {
         }
     });
 
-    // 12. History Filters
-    document.getElementById("filter-status").addEventListener("change", renderHistory);
-    document.getElementById("filter-search").addEventListener("input", renderHistory);
+    // 12. History Filters with advanced filtering
+    document.getElementById("filter-status").addEventListener("change", () => {
+        filterState.currentPage = 1;
+        renderHistory();
+    });
+    
+    document.getElementById("filter-search").addEventListener("input", () => {
+        filterState.currentPage = 1;
+        renderHistory();
+    });
+    
     document.getElementById("btn-clear-filters").addEventListener("click", () => {
         document.getElementById("filter-status").value = "All";
         document.getElementById("filter-search").value = "";
+        document.getElementById("filter-date-from").value = "";
+        document.getElementById("filter-date-to").value = "";
+        document.getElementById("filter-amount-min").value = "";
+        document.getElementById("filter-amount-max").value = "";
+        document.getElementById("filter-tags").value = "All";
+        filterState.tags = [];
+        renderTagFilters();
+        filterState.currentPage = 1;
         renderHistory();
-        showToast("Filters reset", "info");
+        showToast("All filters reset", "info");
     });
 
     // 13. Settings Form Submit and Reset actions
     document.getElementById("settings-form").addEventListener("submit", saveSettings);
     document.getElementById("btn-reset-defaults").addEventListener("click", resetSettings);
+
+    // 14. Save Search button
+    document.getElementById("btn-save-search").addEventListener("click", saveCurrentSearch);
 }
+
+// ==========================================================================
+// EXPOSE GLOBAL FUNCTIONS
+// ==========================================================================
+
+window.saveCurrentSearch = saveCurrentSearch;
+window.toggleSavedSearchesDropdown = toggleSavedSearchesDropdown;
+window.closeSavedSearchesDropdown = closeSavedSearchesDropdown;
+window.deleteSavedSearch = deleteSavedSearch;
+window.applySavedSearch = applySavedSearch;
+window.toggleAdvancedFilters = toggleAdvancedFilters;
+window.applyAdvancedFilters = applyAdvancedFilters;
+window.clearAdvancedFilters = clearAdvancedFilters;
+window.sortHistory = sortHistory;
+window.changePage = changePage;
+window.addNewTag = addNewTag;
+window.removeTagFilter = removeTagFilter;
+window.openInvoiceDetailsModal = openInvoiceDetailsModal;
+window.triggerEditInvoice = triggerEditInvoice;
+window.triggerDuplicateInvoice = triggerDuplicateInvoice;
+window.triggerDeleteInvoice = triggerDeleteInvoice;
+window.toggleInvoiceStatus = toggleInvoiceStatus;
+window.removeEditorLineItem = removeEditorLineItem;

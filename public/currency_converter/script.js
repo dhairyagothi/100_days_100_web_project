@@ -94,7 +94,15 @@ async function getResults() {
 
   if (isNaN(amount) || amount <= 0) {
     showNotification("Please enter a valid amount.", "error");
+    if (amount < 0) {
+      amountInput.value = "";
+    }
+    return;
+  }
 
+  if (amount > 1000000000) {
+    showNotification("Amount cannot exceed 1,000,000,000.", "error");
+    amountInput.value = "";
     return;
   }
 
@@ -376,16 +384,16 @@ function updateCurrencySymbol() {
   
   // Animate the change
   symbolSpan.style.transition = 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)';
-  symbolSpan.style.transform = 'scale(0.8)';
+  symbolSpan.style.transform = 'translateY(-50%) scale(0.8)';
   symbolSpan.style.opacity = '0';
   
   setTimeout(() => {
     symbolSpan.textContent = symbol;
-    symbolSpan.style.transform = 'scale(1.2)';
+    symbolSpan.style.transform = 'translateY(-50%) scale(1.2)';
     symbolSpan.style.opacity = '1';
     
     setTimeout(() => {
-      symbolSpan.style.transform = 'scale(1)';
+      symbolSpan.style.transform = 'translateY(-50%) scale(1)';
     }, 150);
   }, 150);
 }

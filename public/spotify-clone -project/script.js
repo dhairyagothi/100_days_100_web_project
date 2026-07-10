@@ -125,6 +125,32 @@ document.querySelectorAll('.card').forEach(card => {
     });
 });
 
+if (signUpForm) {
+    signUpForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const username = document.getElementById("signUpUsername").value.trim();
+        const email = document.getElementById("signUpEmail").value.trim();
+        const password = document.getElementById("signUpPassword").value.trim();
+
+        if (!username || !email || !password) {
+            alert("Please fill in all fields.");
+            return;
+        }
+
+        const user = {
+            username,
+            email,
+            password
+        };
+
+        localStorage.setItem("spotifyUser", JSON.stringify(user));
+
+        alert("Signup successful! Please log in.");
+        signUpModel.classList.remove("active");
+    });
+}
+
 // 6. Login Modal Event Handlers
 if (loginAuthBtn) {
     loginAuthBtn.addEventListener('click', () => {
@@ -161,12 +187,31 @@ window.addEventListener('click', (e) => {
 if (loginForm) {
     loginForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        const userInputValue = document.getElementById('username').value;
-        
-        if (userInputValue.trim() !== "") {
-            if (loginModal) loginModal.classList.remove('active');
-            executeDynamicUserLoginState(userInputValue);
-        }
+const usernameOrEmail = document.getElementById("username").value.trim();
+const password = document.getElementById("password").value.trim();
+
+if (!usernameOrEmail || !password) {
+    alert("Please enter both username/email and password.");
+    return;
+}
+
+const storedUser = JSON.parse(localStorage.getItem("spotifyUser"));
+
+if (!storedUser) {
+    alert("No account found. Please sign up first.");
+    return;
+}
+
+if (
+    (usernameOrEmail === storedUser.username ||
+     usernameOrEmail === storedUser.email) &&
+    password === storedUser.password
+) {
+    loginModal.classList.remove("active");
+    executeDynamicUserLoginState(storedUser.username);
+} else {
+    alert("Invalid username/email or password.");
+}
     });
 }
 

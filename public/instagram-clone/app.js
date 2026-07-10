@@ -1,6 +1,5 @@
 /* GLOBAL CONTROLLERS & INITIALIZATION */
 document.addEventListener("DOMContentLoaded", () => {
-  // Initialize dashboard UI directly as there is no login portal
   initAppDashboard();
 });
 
@@ -9,14 +8,12 @@ function simulateLogout() {
   loader.classList.remove("hide");
 
   setTimeout(() => {
-    // Reloading the page resets the session data and simulates logging out cleanly
     location.reload();
   }, 1500);
 }
 
 /* 4. DASHBOARD RENDERERS */
 function initAppDashboard() {
-  // 1. Update Current User details in headers
   document
     .querySelectorAll("#logged-in-username")
     .forEach((el) => (el.textContent = INSTAGRAM_DB.currentUser.username));
@@ -27,25 +24,12 @@ function initAppDashboard() {
     .querySelectorAll("#logged-in-fullname")
     .forEach((el) => (el.textContent = INSTAGRAM_DB.currentUser.fullname));
 
-  // 2. Render Stories Tray
   renderStoriesTray();
-
-  // 3. Render Feed Posts
   renderFeedPosts();
-
-  // 4. Render Sidebar Suggestions
   renderSuggestions();
-
-  // 5. Render Explore Grid
   renderExploreGrid();
-
-  // 6. Render Reels
   renderReels();
-
-  // 7. Render Messaging Threads
   renderChatThreads();
-
-  // 8. Render Profile Grid
   renderProfilePosts();
 }
 
@@ -54,7 +38,6 @@ function renderStoriesTray() {
   const container = document.getElementById("stories-container");
   container.innerHTML = "";
 
-  // Render logged in user story creator first
   const myStoryItem = document.createElement("div");
   myStoryItem.className = "story-item viewed";
   myStoryItem.innerHTML = `
@@ -67,7 +50,6 @@ function renderStoriesTray() {
     alert("You don't have active stories. Click 'Create' to upload a post!");
   container.appendChild(myStoryItem);
 
-  // Render other stories
   INSTAGRAM_DB.stories.forEach((story, idx) => {
     const item = document.createElement("div");
     item.className = `story-item ${story.viewed ? "viewed" : ""}`;
@@ -132,7 +114,7 @@ function toggleFollowBtn(btn) {
   }
 }
 
-// Feed posts rendering
+// Feed posts rendering with enhanced comment system
 function renderFeedPosts() {
   const container = document.getElementById("feed-posts-container");
   container.innerHTML = "";
@@ -143,13 +125,10 @@ function renderFeedPosts() {
     card.dataset.postId = post.id;
 
     let commentsHTML = "";
-    post.comments.forEach((c) => {
-      commentsHTML += `
-                <div class="comment-line">
-                    <span class="username">${c.username}</span>
-                    <span>${c.text}</span>
-                </div>
-            `;
+    // Show last 3 comments (including replies collapsed)
+    const displayComments = post.comments.slice(-3);
+    displayComments.forEach((comment) => {
+      commentsHTML += renderCommentHTML(comment, post.id, false);
     });
 
     card.innerHTML = `
@@ -186,7 +165,7 @@ function renderFeedPosts() {
                     <span>${post.caption}</span>
                 </div>
                 <div class="comments-preview" id="comments-preview-${post.id}">
-                    ${post.comments.length > 2 ? `<div class="view-all-comments" onclick="openPostDetailsModal('${post.id}')">View all ${post.comments.length} comments</div>` : ""}
+                    ${post.comments.length > 3 ? `<div class="view-all-comments" onclick="openPostDetailsModal('${post.id}')">View all ${post.comments.length} comments</div>` : ""}
                     ${commentsHTML}
                 </div>
                 <div class="post-time">${post.time}</div>
@@ -202,306 +181,309 @@ function renderFeedPosts() {
   });
 }
 
-/* 5. USER TAB SWITCHER (SPA ROUTING) */
-function switchTab(tabName, event) {
-  if (event) event.preventDefault();
+/* ============================================
+   ENHANCED COMMENT SYSTEM WITH REPLIES & DELETION
+   ============================================ */
 
-  // Hide all views
-  document.querySelectorAll(".app-view").forEach((view) => {
-    view.classList.add("hide");
-  });
-
-  // Show target view
-  const targetView = document.getElementById(`view-${tabName}`);
-  if (targetView) targetView.classList.remove("hide");
-
-  // Update active nav link
-  document.querySelectorAll(".nav-item").forEach((item) => {
-    item.classList.remove("active");
-    // Update home/explore/reels/messages/profile icon classes if needed
-  });
-
-  const activeLink = document.querySelector(`.nav-item[data-tab="${tabName}"]`);
-  if (activeLink) activeLink.classList.add("active");
-
-  // Close drawers if switching tabs
-  closeAllDrawers();
-
-  // Scroll window back to top
-  window.scrollTo({ top: 0 });
-
-  // Specific tab activations
-  if (tabName === "profile") {
-    renderProfilePosts();
-  } else if (tabName === "explore") {
-    renderExploreGrid();
-  } else if (tabName === "messages") {
-    selectFirstChat();
-  }
-}
-
-/* 6. DRAWERS (Search & Notifications drawers) */
-let activeDrawer = null;
-
-function toggleDrawer(drawerName, event) {
-  if (event) event.preventDefault();
-
-  const drawer = document.getElementById(`${drawerName}-drawer`);
-
-  // If clicking already open drawer, close it
-  if (activeDrawer === drawerName) {
-    closeAllDrawers();
-    return;
-  }
-
-  // Close existing drawer first
-  closeAllDrawers();
-
-  // Open new drawer
-  drawer.classList.remove("hide");
-  activeDrawer = drawerName;
-
-  // Highlight sidebar icon
-  const activeLink = document.querySelector(
-    `.nav-item[data-drawer="${drawerName}"]`,
-  );
-  if (activeLink) activeLink.classList.add("active");
-
-  // Collapse sidebar for drawer visibility
-  document.querySelector(".sidebar").style.width = "72px";
-  document.querySelector(".sidebar-logo").style.display = "none";
-  document.querySelector(".sidebar-logo-icon").style.display = "inline-block";
-  document.querySelector(".app-main-content").style.marginLeft = "72px";
-  document.querySelectorAll(".nav-item span").forEach((span) => {
-    span.style.display = "none";
-  });
-
-  // Load drawer content
-  if (drawerName === "search") {
-    renderRecentSearches();
-    document.getElementById("drawer-search-input").focus();
-  } else if (drawerName === "notifications") {
-    renderNotifications();
-    // Remove badge dot
-    document.getElementById("notification-dot").classList.add("hide");
-  }
-}
-
-function closeAllDrawers() {
-  document.querySelectorAll(".sidebar-drawer").forEach((drawer) => {
-    drawer.classList.add("hide");
-  });
-  activeDrawer = null;
-
-  // Reset sidebar width unless screen size forces collapsed state
-  if (window.innerWidth > 1260) {
-    document.querySelector(".sidebar").style.width = "244px";
-    document.querySelector(".sidebar-logo").style.display = "block";
-    document.querySelector(".sidebar-logo-icon").style.display = "none";
-    document.querySelector(".app-main-content").style.marginLeft = "244px";
-    document.querySelectorAll(".nav-item span").forEach((span) => {
-      span.style.display = "flex";
+// Generate HTML for a comment with reply button and delete option
+function renderCommentHTML(comment, postId, isDetailView = false) {
+  const isOwner = comment.username === INSTAGRAM_DB.currentUser.username;
+  const repliesCount = comment.replies ? comment.replies.length : 0;
+  
+  let repliesHTML = '';
+  if (comment.replies && comment.replies.length > 0) {
+    // Show first 2 replies, rest with "View more" link
+    const displayReplies = comment.replies.slice(0, 2);
+    displayReplies.forEach(reply => {
+      repliesHTML += renderReplyHTML(reply, postId, comment.id, isDetailView);
     });
-  }
-  // Remove active link from drawer indicators
-  document.querySelectorAll(".nav-item[data-drawer]").forEach((item) => {
-    item.classList.remove("active");
-  });
-
-  // Re-active current view link
-  const currentView = document
-    .querySelector(".app-view:not(.hide)")
-    .id.replace("view-", "");
-  const activeLink = document.querySelector(
-    `.nav-item[data-tab="${currentView}"]`,
-  );
-  if (activeLink) activeLink.classList.add("active");
-}
-
-// Search actions
-function renderRecentSearches() {
-  const container = document.getElementById("search-recent-list");
-  container.innerHTML = "";
-
-  if (INSTAGRAM_DB.searchHistory.length === 0) {
-    container.innerHTML = `<p class="field-hint" style="padding: 20px; text-align:center;">No recent searches.</p>`;
-    return;
-  }
-
-  INSTAGRAM_DB.searchHistory.forEach((item, index) => {
-    const row = document.createElement("div");
-    row.className = "drawer-user-item";
-    row.innerHTML = `
-            <div class="user-item-info" onclick="viewUserProfile('${item.username}')">
-                <img src="${item.avatar}" alt="${item.username}">
-                <div class="names">
-                    <span class="username">${item.username}</span>
-                    <span class="fullname">${item.fullname}</span>
-                </div>
-            </div>
-            <button class="btn-remove-recent" onclick="removeRecentSearch(${index}, event)"><i class="fa-solid fa-xmark"></i></button>
-        `;
-    container.appendChild(row);
-  });
-}
-
-function handleSearchQuery(query) {
-  const listRecent = document.getElementById("search-recent-list");
-  const listResults = document.getElementById("search-results-list");
-  const container = document.getElementById("search-results-list");
-
-  if (!query.trim()) {
-    listRecent.classList.remove("hide");
-    listResults.classList.add("hide");
-    return;
-  }
-
-  listRecent.classList.add("hide");
-  listResults.classList.remove("hide");
-  container.innerHTML = "";
-
-  // Filter from users
-  const allUsers = [
-    {
-      username: "travel_guru",
-      fullname: "Marco Polo",
-      avatar: "assets/images/travel_amalfi.png",
-    },
-    {
-      username: "cafe_lover",
-      fullname: "Sophia Loren",
-      avatar: "assets/images/cafe_flatlay.png",
-    },
-    {
-      username: "nature_wild",
-      fullname: "Jane Goodall",
-      avatar: "assets/images/mountain_sunset.png",
-    },
-    {
-      username: "pixel_pioneer",
-      fullname: "Grace Hopper",
-      avatar: "assets/images/user_avatar.png",
-    },
-  ];
-
-  const filtered = allUsers.filter(
-    (u) =>
-      u.username.toLowerCase().includes(query.toLowerCase()) ||
-      u.fullname.toLowerCase().includes(query.toLowerCase()),
-  );
-
-  if (filtered.length === 0) {
-    container.innerHTML = `<p class="field-hint" style="padding: 20px; text-align:center;">No results found.</p>`;
-    return;
-  }
-
-  filtered.forEach((u) => {
-    const row = document.createElement("div");
-    row.className = "drawer-user-item";
-    row.innerHTML = `
-            <div class="user-item-info" onclick="addSearchHistory('${u.username}'); viewUserProfile('${u.username}')">
-                <img src="${u.avatar}" alt="${u.username}">
-                <div class="names">
-                    <span class="username">${u.username}</span>
-                    <span class="fullname">${u.fullname}</span>
-                </div>
-            </div>
-        `;
-    container.appendChild(row);
-  });
-}
-
-function addSearchHistory(username) {
-  const allUsers = [
-    {
-      username: "travel_guru",
-      fullname: "Marco Polo",
-      avatar: "assets/images/travel_amalfi.png",
-    },
-    {
-      username: "cafe_lover",
-      fullname: "Sophia Loren",
-      avatar: "assets/images/cafe_flatlay.png",
-    },
-    {
-      username: "nature_wild",
-      fullname: "Jane Goodall",
-      avatar: "assets/images/mountain_sunset.png",
-    },
-    {
-      username: "pixel_pioneer",
-      fullname: "Grace Hopper",
-      avatar: "assets/images/user_avatar.png",
-    },
-  ];
-
-  const matched = allUsers.find((u) => u.username === username);
-  if (!matched) return;
-
-  // Remove if already exists to push to top
-  INSTAGRAM_DB.searchHistory = INSTAGRAM_DB.searchHistory.filter(
-    (h) => h.username !== username,
-  );
-  INSTAGRAM_DB.searchHistory.unshift(matched);
-}
-
-function removeRecentSearch(index, event) {
-  if (event) event.stopPropagation();
-  INSTAGRAM_DB.searchHistory.splice(index, 1);
-  renderRecentSearches();
-}
-
-function clearAllRecentSearch() {
-  INSTAGRAM_DB.searchHistory = [];
-  renderRecentSearches();
-}
-
-function clearSearchInput() {
-  const inp = document.getElementById("drawer-search-input");
-  inp.value = "";
-  handleSearchQuery("");
-  inp.focus();
-}
-
-// Notifications Actions
-function renderNotifications() {
-  const containerWeek = document.getElementById("notification-list-week");
-  const containerEarlier = document.getElementById("notification-list-earlier");
-
-  containerWeek.innerHTML = "";
-  containerEarlier.innerHTML = "";
-
-  INSTAGRAM_DB.notifications.forEach((notif) => {
-    const item = document.createElement("div");
-    item.className = "notification-item";
-
-    let rightActionHTML = "";
-    if (notif.postImg) {
-      rightActionHTML = `<img src="${notif.postImg}" alt="Post thumbnail" class="notification-post-img">`;
-    } else if (notif.type === "follow") {
-      rightActionHTML = `<button class="btn-secondary" style="padding: 4px 12px; font-size:12px;" onclick="toggleFollowBtn(this)">Following</button>`;
+    
+    if (comment.replies.length > 2) {
+      const remaining = comment.replies.length - 2;
+      repliesHTML += `
+        <div class="view-more-replies" onclick="showAllReplies('${postId}', '${comment.id}')">
+          View ${remaining} more replies
+        </div>
+      `;
     }
+  }
 
-    item.innerHTML = `
-            <div class="user-item-info">
-                <img src="${notif.avatar}" alt="${notif.username}" style="width: 44px; height: 44px; border-radius:50%; object-fit:cover;">
-                <div class="notification-text">
-                    <strong>${notif.username}</strong> ${notif.text} <span style="color: var(--text-secondary); font-size:12px;">${notif.timeframe}</span>
-                </div>
-            </div>
-            ${rightActionHTML}
-        `;
-
-    // Distribute weekly vs earlier mockingly
-    if (notif.timeframe.includes("h")) {
-      containerWeek.appendChild(item);
-    } else {
-      containerEarlier.appendChild(item);
-    }
-  });
+  return `
+    <div class="comment-wrapper" id="comment-${comment.id}" data-comment-id="${comment.id}">
+      <div class="comment-line">
+        <span class="username" onclick="viewUserProfile('${comment.username}')">${comment.username}</span>
+        <span>${comment.text}</span>
+        ${isOwner ? `<button class="btn-delete-comment" onclick="deleteComment('${postId}', '${comment.id}')" title="Delete comment">
+          <i class="fa-regular fa-trash-can"></i>
+        </button>` : ''}
+      </div>
+      <div class="comment-actions">
+        <span class="comment-timestamp">${comment.timestamp || 'Just now'}</span>
+        <button class="btn-reply" onclick="showReplyInput('${postId}', '${comment.id}')">
+          <i class="fa-regular fa-comment"></i> Reply
+        </button>
+        ${repliesCount > 0 ? `<span class="reply-count">${repliesCount} ${repliesCount === 1 ? 'reply' : 'replies'}</span>` : ''}
+      </div>
+      <div class="replies-container" id="replies-${comment.id}">
+        ${repliesHTML}
+      </div>
+      <div class="reply-input-wrapper hide" id="reply-input-${comment.id}">
+        <input type="text" placeholder="Write a reply..." class="reply-input" 
+               onkeydown="handleReplyKeyDown(event, '${postId}', '${comment.id}')">
+        <button class="btn-text-send" onclick="submitReply(this, '${postId}', '${comment.id}')">Reply</button>
+        <button class="btn-cancel-reply" onclick="cancelReply('${comment.id}')">Cancel</button>
+      </div>
+    </div>
+  `;
 }
 
-/* 7. LIKE & COMMENT CORE INTERACTIONS */
+// Generate HTML for a reply
+function renderReplyHTML(reply, postId, commentId, isDetailView = false) {
+  const isOwner = reply.username === INSTAGRAM_DB.currentUser.username;
+  
+  return `
+    <div class="reply-wrapper" id="reply-${reply.id}" data-reply-id="${reply.id}">
+      <div class="reply-line">
+        <span class="username" onclick="viewUserProfile('${reply.username}')">${reply.username}</span>
+        <span>${reply.text}</span>
+        ${isOwner ? `<button class="btn-delete-reply" onclick="deleteReply('${postId}', '${commentId}', '${reply.id}')" title="Delete reply">
+          <i class="fa-regular fa-trash-can"></i>
+        </button>` : ''}
+      </div>
+      <div class="reply-timestamp">${reply.timestamp || 'Just now'}</div>
+    </div>
+  `;
+}
+
+// Submit a new comment
+function submitComment(btnOrInput, postId) {
+  let input;
+  if (btnOrInput.tagName === "INPUT") {
+    input = btnOrInput;
+  } else {
+    input = btnOrInput.previousElementSibling;
+  }
+
+  const text = input.value.trim();
+  if (!text) return;
+
+  const post = INSTAGRAM_DB.posts.find((p) => p.id === postId);
+  if (!post) return;
+
+  // Add comment with unique ID
+  const newComment = {
+    id: `comment-${Date.now()}`,
+    username: INSTAGRAM_DB.currentUser.username,
+    text: text,
+    timestamp: "Just now",
+    replies: []
+  };
+
+  post.comments.push(newComment);
+  input.value = "";
+
+  // Re-render comments
+  renderPostComments(postId);
+  updateCommentCount(postId);
+}
+
+// Submit a reply to a comment
+function submitReply(btn, postId, commentId) {
+  const wrapper = btn.closest('.reply-input-wrapper');
+  const input = wrapper.querySelector('.reply-input');
+  const text = input.value.trim();
+  if (!text) return;
+
+  const post = INSTAGRAM_DB.posts.find((p) => p.id === postId);
+  if (!post) return;
+
+  const comment = post.comments.find((c) => c.id === commentId);
+  if (!comment) return;
+
+  // Add reply with unique ID
+  const newReply = {
+    id: `reply-${Date.now()}`,
+    username: INSTAGRAM_DB.currentUser.username,
+    text: text,
+    timestamp: "Just now"
+  };
+
+  if (!comment.replies) comment.replies = [];
+  comment.replies.push(newReply);
+
+  input.value = "";
+  document.getElementById(`reply-input-${commentId}`).classList.add('hide');
+
+  // Re-render comments
+  renderPostComments(postId);
+  updateCommentCount(postId);
+}
+
+// Delete a comment
+function deleteComment(postId, commentId) {
+  if (!confirm('Are you sure you want to delete this comment?')) return;
+
+  const post = INSTAGRAM_DB.posts.find((p) => p.id === postId);
+  if (!post) return;
+
+  const index = post.comments.findIndex((c) => c.id === commentId);
+  if (index === -1) return;
+
+  // Check if user owns the comment
+  if (post.comments[index].username !== INSTAGRAM_DB.currentUser.username) {
+    alert('You can only delete your own comments!');
+    return;
+  }
+
+  post.comments.splice(index, 1);
+  
+  // Re-render comments
+  renderPostComments(postId);
+  updateCommentCount(postId);
+}
+
+// Delete a reply
+function deleteReply(postId, commentId, replyId) {
+  if (!confirm('Are you sure you want to delete this reply?')) return;
+
+  const post = INSTAGRAM_DB.posts.find((p) => p.id === postId);
+  if (!post) return;
+
+  const comment = post.comments.find((c) => c.id === commentId);
+  if (!comment) return;
+
+  const replyIndex = comment.replies.findIndex((r) => r.id === replyId);
+  if (replyIndex === -1) return;
+
+  // Check if user owns the reply
+  if (comment.replies[replyIndex].username !== INSTAGRAM_DB.currentUser.username) {
+    alert('You can only delete your own replies!');
+    return;
+  }
+
+  comment.replies.splice(replyIndex, 1);
+  
+  // Re-render comments
+  renderPostComments(postId);
+  updateCommentCount(postId);
+}
+
+// Show reply input
+function showReplyInput(postId, commentId) {
+  // Hide all other reply inputs first
+  document.querySelectorAll('.reply-input-wrapper').forEach(el => {
+    el.classList.add('hide');
+  });
+  
+  const inputWrapper = document.getElementById(`reply-input-${commentId}`);
+  if (inputWrapper) {
+    inputWrapper.classList.remove('hide');
+    inputWrapper.querySelector('.reply-input').focus();
+  }
+}
+
+// Cancel reply
+function cancelReply(commentId) {
+  const inputWrapper = document.getElementById(`reply-input-${commentId}`);
+  if (inputWrapper) {
+    inputWrapper.classList.add('hide');
+    inputWrapper.querySelector('.reply-input').value = '';
+  }
+}
+
+// Handle reply keydown (Enter to submit)
+function handleReplyKeyDown(event, postId, commentId) {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    const btn = event.target.closest('.reply-input-wrapper').querySelector('.btn-text-send');
+    submitReply(btn, postId, commentId);
+  }
+}
+
+// Show all replies for a comment
+function showAllReplies(postId, commentId) {
+  const post = INSTAGRAM_DB.posts.find((p) => p.id === postId);
+  if (!post) return;
+
+  const comment = post.comments.find((c) => c.id === commentId);
+  if (!comment || !comment.replies) return;
+
+  const container = document.getElementById(`replies-${commentId}`);
+  if (!container) return;
+
+  // Clear and show all replies
+  container.innerHTML = '';
+  comment.replies.forEach(reply => {
+    container.innerHTML += renderReplyHTML(reply, postId, commentId, false);
+  });
+
+  // Add a "Show less" option
+  const showLess = document.createElement('div');
+  showLess.className = 'view-more-replies';
+  showLess.textContent = 'Show less';
+  showLess.onclick = () => renderPostComments(postId);
+  container.appendChild(showLess);
+}
+
+// Render comments for a specific post
+function renderPostComments(postId) {
+  const post = INSTAGRAM_DB.posts.find((p) => p.id === postId);
+  if (!post) return;
+
+  const container = document.getElementById(`comments-preview-${postId}`);
+  if (!container) return;
+
+  let commentsHTML = '';
+  
+  // Show view all if more than 3 comments
+  if (post.comments.length > 3) {
+    commentsHTML += `<div class="view-all-comments" onclick="openPostDetailsModal('${postId}')">View all ${post.comments.length} comments</div>`;
+  }
+
+  // Show last 3 comments
+  const displayComments = post.comments.slice(-3);
+  displayComments.forEach(comment => {
+    commentsHTML += renderCommentHTML(comment, postId, false);
+  });
+
+  container.innerHTML = commentsHTML;
+}
+
+// Update comment count in UI
+function updateCommentCount(postId) {
+  const post = INSTAGRAM_DB.posts.find((p) => p.id === postId);
+  if (!post) return;
+
+  // Update in detail view if open
+  const detailModal = document.getElementById('post-detail-modal');
+  if (!detailModal.classList.contains('hide') && activeDetailPostId === postId) {
+    renderDetailCommentsLog(post);
+  }
+
+  // Update feed view
+  renderPostComments(postId);
+}
+
+// Focus comment input
+function focusCommentInput(btn) {
+  const postCard = btn.closest(".post-card");
+  const input = postCard.querySelector(".post-add-comment input");
+  input.focus();
+}
+
+// Handle comment keydown (Enter to submit)
+function handleCommentKeyDown(event, postId) {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    const input = event.target;
+    submitComment(input, postId);
+  }
+}
+
+/* ============================================
+   EXISTING FEED FUNCTIONS (Likes, Bookmarks, etc.)
+   ============================================ */
+
 function toggleLike(postId, btn) {
   const post = INSTAGRAM_DB.posts.find((p) => p.id === postId);
   if (!post) return;
@@ -517,7 +499,6 @@ function toggleLike(postId, btn) {
     btn.innerHTML = `<i class="fa-regular fa-heart"></i>`;
   }
 
-  // Update label count
   const likesLabel = document.getElementById(`likes-count-${postId}`);
   if (likesLabel)
     likesLabel.textContent = `${post.likes.toLocaleString()} likes`;
@@ -528,12 +509,10 @@ function triggerDoubleTapLike(container, postId) {
   const post = INSTAGRAM_DB.posts.find((p) => p.id === postId);
   if (!post) return;
 
-  // Only increment like if not already liked
   if (!post.liked) {
     post.liked = true;
     post.likes += 1;
 
-    // Find corresponding action buttons to update color
     const postCard = container.closest(".post-card");
     if (postCard) {
       const likeBtn = postCard.querySelector(
@@ -548,7 +527,6 @@ function triggerDoubleTapLike(container, postId) {
       likesLabel.textContent = `${post.likes.toLocaleString()} likes`;
   }
 
-  // Pop heart animation
   heart.classList.add("animate");
   setTimeout(() => {
     heart.classList.remove("animate");
@@ -562,77 +540,15 @@ function toggleBookmark(postId, btn) {
   post.bookmarked = !post.bookmarked;
   if (post.bookmarked) {
     btn.innerHTML = `<i class="fa-solid fa-bookmark"></i>`;
-    // Add to saved array
     if (!INSTAGRAM_DB.currentUser.saved.includes(post)) {
       INSTAGRAM_DB.currentUser.saved.push(post);
     }
   } else {
     btn.innerHTML = `<i class="fa-regular fa-bookmark"></i>`;
-    // Remove from saved array
     INSTAGRAM_DB.currentUser.saved = INSTAGRAM_DB.currentUser.saved.filter(
       (p) => p.id !== postId,
     );
   }
-}
-
-function focusCommentInput(btn) {
-  const postCard = btn.closest(".post-card");
-  const input = postCard.querySelector(".post-add-comment input");
-  input.focus();
-}
-
-function handleCommentKeyDown(event, postId) {
-  if (event.key === "Enter") {
-    event.preventDefault();
-    const input = event.target;
-    submitComment(input, postId);
-  }
-}
-
-function submitComment(btnOrInput, postId) {
-  let input;
-  if (btnOrInput.tagName === "INPUT") {
-    input = btnOrInput;
-  } else {
-    input = btnOrInput.previousElementSibling;
-  }
-
-  const text = input.value.trim();
-  if (!text) return;
-
-  const post = INSTAGRAM_DB.posts.find((p) => p.id === postId);
-  if (!post) return;
-
-  // Add comment to database
-  post.comments.push({
-    username: INSTAGRAM_DB.currentUser.username,
-    text: text,
-  });
-
-  // Clear input
-  input.value = "";
-
-  // Rerender specific comments block
-  const commentBox = document.getElementById(`comments-preview-${postId}`);
-  let commentsHTML = "";
-
-  // Show view all link if appropriate
-  if (post.comments.length > 2) {
-    commentsHTML += `<div class="view-all-comments" onclick="openPostDetailsModal('${post.id}')">View all ${post.comments.length} comments</div>`;
-  }
-
-  // Render last 3 comments
-  const sliceComments = post.comments.slice(-3);
-  sliceComments.forEach((c) => {
-    commentsHTML += `
-            <div class="comment-line">
-                <span class="username">${c.username}</span>
-                <span>${c.text}</span>
-            </div>
-        `;
-  });
-
-  commentBox.innerHTML = commentsHTML;
 }
 
 function sharePost(postId) {
@@ -644,7 +560,6 @@ function renderExploreGrid() {
   const grid = document.getElementById("explore-grid");
   grid.innerHTML = "";
 
-  // Mix and match posts to create a big grid
   const allItems = [
     ...INSTAGRAM_DB.posts,
     ...INSTAGRAM_DB.posts,
@@ -768,29 +683,24 @@ function selectChat(index) {
   const chat = INSTAGRAM_DB.chats[index];
   if (!chat) return;
 
-  chat.unread = false; // Mark read
+  chat.unread = false;
 
-  // Update thread items active background
   renderChatThreads();
 
-  // Show active panel
   document.getElementById("chat-empty-state").classList.add("hide");
   const activePanel = document.getElementById("chat-active-state");
   activePanel.classList.remove("hide");
 
-  // Mobile sliding view support
   if (window.innerWidth < 768) {
     document
       .querySelector(".chat-conversation-panel")
       .classList.add("open-mobile");
   }
 
-  // Header config
   document.getElementById("chat-header-avatar").src = chat.user.avatar;
   document.getElementById("chat-header-name").textContent = chat.user.fullname;
   document.getElementById("chat-header-status").textContent = chat.user.status;
 
-  // Clear & render messages
   const log = document.getElementById("chat-messages-log");
   log.innerHTML = "";
 
@@ -801,7 +711,6 @@ function selectChat(index) {
     log.appendChild(bubble);
   });
 
-  // Scroll to bottom
   scrollToChatBottom();
 }
 
@@ -810,7 +719,6 @@ function scrollToChatBottom() {
   log.scrollTop = log.scrollHeight;
 }
 
-// Typing Send toggles
 const chatInput = document.getElementById("chat-input-message");
 if (chatInput) {
   chatInput.addEventListener("input", () => {
@@ -836,17 +744,14 @@ function sendChatMessage() {
 
   const chat = INSTAGRAM_DB.chats[activeChatIndex];
 
-  // Push message to data
   chat.messages.push({
     sender: "self",
     text: text,
   });
 
-  // Clear input
   input.value = "";
   document.getElementById("btn-chat-send").classList.add("hide");
 
-  // Render immediately in chat panel
   const log = document.getElementById("chat-messages-log");
   const bubble = document.createElement("div");
   bubble.className = "message-bubble self";
@@ -854,30 +759,24 @@ function sendChatMessage() {
   log.appendChild(bubble);
 
   scrollToChatBottom();
-  renderChatThreads(); // update preview text in list
+  renderChatThreads();
 
-  // Simulate auto typing replies from mock user
   if (chat.replies && chat.replies.length > 0) {
-    // Show typing indicator in 800ms
     setTimeout(() => {
       document.getElementById("typing-indicator").classList.remove("hide");
       scrollToChatBottom();
     }, 800);
 
-    // Append reply in 2000ms
     setTimeout(() => {
       const nextReply = chat.replies.shift() || "Haha, nice!";
 
-      // Push reply to data
       chat.messages.push({
         sender: "other",
         text: nextReply,
       });
 
-      // Hide typing indicator
       document.getElementById("typing-indicator").classList.add("hide");
 
-      // Append bubble
       const replyBubble = document.createElement("div");
       replyBubble.className = "message-bubble other";
       replyBubble.textContent = nextReply;
@@ -893,7 +792,6 @@ function sendChatMessage() {
 let currentProfileTab = "posts";
 
 function renderProfilePosts() {
-  // 1. Configure user details in header
   document.getElementById("profile-page-avatar").src =
     INSTAGRAM_DB.currentUser.avatar;
   document.getElementById("profile-page-username").textContent =
@@ -903,11 +801,9 @@ function renderProfilePosts() {
   document.getElementById("profile-page-bio").textContent =
     INSTAGRAM_DB.currentUser.bio;
 
-  // Set posts count
   document.getElementById("profile-posts-count").textContent =
     INSTAGRAM_DB.currentUser.posts.length;
 
-  // 2. Render grids
   const grid = document.getElementById("profile-posts-grid");
   grid.innerHTML = "";
 
@@ -934,7 +830,7 @@ function renderProfilePosts() {
             <img src="${post.mediaUrl}" alt="Profile post">
             <div class="grid-item-overlay">
                 <div class="grid-overlay-stat"><i class="fa-solid fa-heart"></i> ${post.likes}</div>
-                <div class="grid-overlay-stat"><i class="fa-solid fa-comment"></i> ${post.commentsCount || post.comments.length}</div>
+                <div class="grid-overlay-stat"><i class="fa-solid fa-comment"></i> ${post.commentsCount || post.comments?.length || 0}</div>
             </div>
         `;
     grid.appendChild(item);
@@ -946,7 +842,6 @@ function switchProfileTab(tabType, event) {
 
   currentProfileTab = tabType;
 
-  // Active tabs class toggle
   document.querySelectorAll(".profile-tabs-bar .tab-item").forEach((tab) => {
     tab.classList.remove("active");
   });
@@ -957,13 +852,11 @@ function switchProfileTab(tabType, event) {
 }
 
 function viewUserProfile(username) {
-  // If username clicked is current user, direct to profile
   if (username === INSTAGRAM_DB.currentUser.username) {
     switchTab("profile");
     return;
   }
 
-  // Otherwise open a simulated alert profile view
   alert(
     `Viewing user profile: @${username}. In this mockup, profiles other than your own are summarized. Clicking their feed posts will open the Post Details View!`,
   );
@@ -978,7 +871,6 @@ function openModal(modalId, event) {
   if (modal) {
     modal.classList.remove("hide");
 
-    // Specific setups
     if (modalId === "create-post-modal") {
       resetCreatePostModal();
     }
@@ -1004,22 +896,17 @@ function resetCreatePostModal() {
 function selectStockCreateImage(imgUrl) {
   selectedFileUrl = imgUrl;
 
-  // Transition dropzone out, editor in
   document.getElementById("create-post-dropzone").classList.add("hide");
   const editor = document.getElementById("create-post-editor");
   editor.classList.remove("hide");
 
-  // Expand card width
   document.querySelector(".create-post-card").classList.add("expanded");
 
-  // Show Share button in header
   document.getElementById("btn-share-post").classList.remove("hide");
 
-  // Preview
   document.getElementById("create-post-preview-img").src = imgUrl;
-  document.getElementById("create-post-preview-img").className = "none"; // reset filter preview
+  document.getElementById("create-post-preview-img").className = "none";
 
-  // Update filter preview mini grids
   document.querySelectorAll(".filter-preview").forEach((preview) => {
     preview.style.backgroundImage = `url('${imgUrl}')`;
   });
@@ -1029,7 +916,6 @@ function applyCSSFilter(filterClass) {
   const previewImg = document.getElementById("create-post-preview-img");
   previewImg.className = filterClass;
 
-  // Toggle active filter button
   document.querySelectorAll(".filter-btn").forEach((btn) => {
     btn.classList.remove("active");
   });
@@ -1042,11 +928,7 @@ function submitCreatePost() {
   const caption = document.getElementById("create-post-caption").value.trim();
   const location =
     document.getElementById("create-post-location").value.trim() || "Earth";
-  const filterClass = document.getElementById(
-    "create-post-preview-img",
-  ).className;
 
-  // Create new post in DB
   const newPostId = `my-post-${Date.now()}`;
   const newPost = {
     id: newPostId,
@@ -1055,7 +937,6 @@ function submitCreatePost() {
       avatar: INSTAGRAM_DB.currentUser.avatar,
       location: location,
     },
-    // We will include the CSS filter style class directly in the post image
     mediaUrl: selectedFileUrl,
     caption: caption,
     likes: 0,
@@ -1065,10 +946,8 @@ function submitCreatePost() {
     comments: [],
   };
 
-  // Prepend to posts lists
   INSTAGRAM_DB.posts.unshift(newPost);
 
-  // Prepend to user profile posts
   INSTAGRAM_DB.currentUser.posts.unshift({
     id: newPostId,
     mediaUrl: selectedFileUrl,
@@ -1078,16 +957,10 @@ function submitCreatePost() {
     location: location,
   });
 
-  // Rerender feed
   renderFeedPosts();
-
-  // Rerender profile posts
   renderProfilePosts();
 
-  // Close modal
   closeModal("create-post-modal");
-
-  // Redirect to home feed
   switchTab("feed");
 }
 
@@ -1117,10 +990,8 @@ function saveProfileChanges() {
   INSTAGRAM_DB.currentUser.fullname = fullname;
   INSTAGRAM_DB.currentUser.bio = bio;
 
-  // Rerender profile page details
   renderProfilePosts();
 
-  // Rerender header profiles
   document
     .querySelectorAll("#logged-in-fullname")
     .forEach((el) => (el.textContent = fullname));
@@ -1132,7 +1003,7 @@ function simulateAvatarChange() {
   alert("Avatar updated with a random aesthetic coding profile template!");
 }
 
-/* 14. STORY VIEWER SYSTEM WITH ACTIVE PROGRESS BARS */
+/* 14. STORY VIEWER SYSTEM */
 let activeStoryIndex = 0;
 let activeSlideIndex = 0;
 let storyProgressTimer = null;
@@ -1147,8 +1018,8 @@ function openStoryViewer(storyIdx) {
   const story = INSTAGRAM_DB.stories[storyIdx];
   if (!story) return;
 
-  story.viewed = true; // Mark viewed
-  renderStoriesTray(); // Rerender circle rings
+  story.viewed = true;
+  renderStoriesTray();
 
   document.getElementById("story-viewer-modal").classList.remove("hide");
 
@@ -1159,13 +1030,11 @@ function loadStorySlide() {
   const story = INSTAGRAM_DB.stories[activeStoryIndex];
   const slide = story.slides[activeSlideIndex];
 
-  // Configure details
   document.getElementById("story-viewer-avatar").src = story.avatar;
   document.getElementById("story-viewer-username").textContent = story.username;
   document.getElementById("story-viewer-time").textContent = slide.time;
   document.getElementById("story-viewer-img").src = slide.url;
 
-  // Create progress bar layout
   const progressContainer = document.getElementById("story-progress-container");
   progressContainer.innerHTML = "";
 
@@ -1177,7 +1046,6 @@ function loadStorySlide() {
     fill.className = "story-progress-bar-fill";
     fill.id = `story-progress-fill-${idx}`;
 
-    // Mark previous bars as complete
     if (idx < activeSlideIndex) {
       fill.classList.add("complete");
     }
@@ -1186,7 +1054,6 @@ function loadStorySlide() {
     progressContainer.appendChild(wrapper);
   });
 
-  // Restart progression animation loop
   startStoryProgress();
 }
 
@@ -1199,8 +1066,8 @@ function startStoryProgress() {
   );
   if (!fillBar) return;
 
-  const slideDuration = 4000; // 4 seconds per slide
-  const interval = 40; // update fill every 40ms
+  const slideDuration = 4000;
+  const interval = 40;
   const increment = (interval / slideDuration) * 100;
 
   storyProgressTimer = setInterval(() => {
@@ -1210,7 +1077,7 @@ function startStoryProgress() {
         currentProgressFill = 100;
         fillBar.style.width = "100%";
         clearInterval(storyProgressTimer);
-        navigateStory(1); // auto advance
+        navigateStory(1);
       } else {
         fillBar.style.width = `${currentProgressFill}%`;
       }
@@ -1223,24 +1090,17 @@ function navigateStory(direction) {
 
   activeSlideIndex += direction;
 
-  // If reached end of slides in current story
   if (activeSlideIndex >= story.slides.length) {
-    // Switch to next user story
     if (activeStoryIndex + 1 < INSTAGRAM_DB.stories.length) {
       activeStoryIndex += 1;
       activeSlideIndex = 0;
       loadStorySlide();
     } else {
-      // No more stories
       closeStoryViewer();
     }
-  }
-  // If navigated backwards below 0
-  else if (activeSlideIndex < 0) {
-    // Go back to previous user story
+  } else if (activeSlideIndex < 0) {
     if (activeStoryIndex - 1 >= 0) {
       activeStoryIndex -= 1;
-      // Load last slide of previous story
       activeSlideIndex =
         INSTAGRAM_DB.stories[activeStoryIndex].slides.length - 1;
       loadStorySlide();
@@ -1248,9 +1108,7 @@ function navigateStory(direction) {
       activeSlideIndex = 0;
       loadStorySlide();
     }
-  }
-  // Normal slides navigation
-  else {
+  } else {
     loadStorySlide();
   }
 }
@@ -1266,7 +1124,6 @@ function toggleStoryPlayState(btn) {
 }
 
 function handleStoryModalClick(event) {
-  // If clicking right side of card, go next. If left, go back.
   const rect = event.currentTarget.getBoundingClientRect();
   const x = event.clientX - rect.left;
   const halfWidth = rect.width / 2;
@@ -1283,19 +1140,16 @@ function closeStoryViewer() {
   document.getElementById("story-viewer-modal").classList.add("hide");
 }
 
-/* 15. POST DETAILS VIEW MODAL (FOR SEARCH GRID / PROFILE GRID CLICKS) */
+/* 15. POST DETAILS VIEW MODAL WITH ENHANCED COMMENTS */
 let activeDetailPostId = "";
 
 function openPostDetailsModal(postId) {
   activeDetailPostId = postId;
 
-  // Find post in feed DB or user profile DB
   let post = INSTAGRAM_DB.posts.find((p) => p.id === postId);
   if (!post) {
-    // Try searching user own profile posts
     const myPost = INSTAGRAM_DB.currentUser.posts.find((p) => p.id === postId);
     if (myPost) {
-      // Convert simple post struct to detailed post struct
       post = {
         id: myPost.id,
         user: {
@@ -1319,17 +1173,14 @@ function openPostDetailsModal(postId) {
   const modal = document.getElementById("post-detail-modal");
   modal.classList.remove("hide");
 
-  // Image
   document.getElementById("detail-modal-img").src = post.mediaUrl;
 
-  // Header
   document.getElementById("detail-modal-avatar").src = post.user.avatar;
   document.getElementById("detail-modal-username").textContent =
     post.user.username;
   document.getElementById("detail-modal-location").textContent =
     post.user.location;
 
-  // Like button setup
   const likeBtn = document.getElementById("detail-like-btn");
   if (post.liked) {
     likeBtn.classList.add("liked");
@@ -1339,7 +1190,6 @@ function openPostDetailsModal(postId) {
     likeBtn.innerHTML = `<i class="fa-regular fa-heart"></i>`;
   }
 
-  // Bookmark setup
   const bookmarkBtn = document.getElementById("detail-bookmark-btn");
   if (post.bookmarked) {
     bookmarkBtn.innerHTML = `<i class="fa-solid fa-bookmark"></i>`;
@@ -1347,12 +1197,10 @@ function openPostDetailsModal(postId) {
     bookmarkBtn.innerHTML = `<i class="fa-regular fa-bookmark"></i>`;
   }
 
-  // Likes Count
   document.getElementById("detail-likes-count").textContent =
     `${post.likes.toLocaleString()} likes`;
   document.getElementById("detail-post-date").textContent = post.time;
 
-  // Populate comments log
   renderDetailCommentsLog(post);
 }
 
@@ -1374,30 +1222,63 @@ function renderDetailCommentsLog(post) {
     `;
   log.appendChild(captionItem);
 
-  // Render comments list
-  post.comments.forEach((c) => {
+  // Render all comments with replies
+  post.comments.forEach((comment) => {
     const item = document.createElement("div");
     item.className = "detail-comment-item";
 
-    // Find avatar for comments poster
     let posterAvatar = "assets/images/user_avatar.png";
     const commenter = INSTAGRAM_DB.stories.find(
-      (s) => s.username === c.username,
+      (s) => s.username === comment.username,
     );
     if (commenter) posterAvatar = commenter.avatar;
 
-    item.innerHTML = `
-            <img src="${posterAvatar}" alt="${c.username}">
-            <div class="comment-content">
-                <span class="comment-text"><strong>${c.username}</strong> ${c.text}</span>
-                <div class="comment-meta">
-                    <span>1h</span>
-                    <span style="cursor:pointer; font-weight:600;">Reply</span>
-                </div>
-            </div>
+    const isOwner = comment.username === INSTAGRAM_DB.currentUser.username;
+    const repliesCount = comment.replies ? comment.replies.length : 0;
+
+    let repliesHTML = '';
+    if (comment.replies && comment.replies.length > 0) {
+      comment.replies.forEach(reply => {
+        repliesHTML += `
+          <div class="detail-reply-item">
+            <strong>${reply.username}</strong> ${reply.text}
+            <span class="comment-meta">${reply.timestamp || 'Just now'}</span>
+          </div>
         `;
+      });
+    }
+
+    item.innerHTML = `
+      <img src="${posterAvatar}" alt="${comment.username}">
+      <div class="comment-content" style="width: 100%;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; width: 100%;">
+          <span class="comment-text"><strong>${comment.username}</strong> ${comment.text}</span>
+          ${isOwner ? `<button class="btn-delete-comment" onclick="deleteComment('${post.id}', '${comment.id}')" title="Delete comment" style="background: none; border: none; color: var(--text-secondary); cursor: pointer; padding: 4px;">
+            <i class="fa-regular fa-trash-can"></i>
+          </button>` : ''}
+        </div>
+        <div class="comment-meta">
+          <span>${comment.timestamp || 'Just now'}</span>
+          <span style="cursor:pointer; font-weight:600;" onclick="showReplyInput('${post.id}', '${comment.id}')">
+            <i class="fa-regular fa-comment"></i> Reply
+          </span>
+          ${repliesCount > 0 ? `<span>${repliesCount} ${repliesCount === 1 ? 'reply' : 'replies'}</span>` : ''}
+        </div>
+        ${repliesHTML ? `<div style="margin-top: 8px; padding-left: 12px; border-left: 2px solid var(--border-primary);">${repliesHTML}</div>` : ''}
+        <div class="reply-input-wrapper hide" id="reply-input-${comment.id}" style="margin-top: 8px;">
+          <input type="text" placeholder="Write a reply..." class="reply-input" 
+                 onkeydown="handleReplyKeyDown(event, '${post.id}', '${comment.id}')" 
+                 style="width: 70%; padding: 6px 12px; border: 1px solid var(--border-primary); border-radius: 8px; background: var(--bg-input); color: var(--text-primary);">
+          <button class="btn-text-send" onclick="submitReply(this, '${post.id}', '${comment.id}')" style="margin-left: 8px;">Reply</button>
+          <button class="btn-cancel-reply" onclick="cancelReply('${comment.id}')" style="margin-left: 4px; color: var(--text-secondary);">Cancel</button>
+        </div>
+      </div>
+    `;
     log.appendChild(item);
   });
+
+  // Scroll to bottom
+  log.scrollTop = log.scrollHeight;
 }
 
 function toggleDetailLike() {
@@ -1406,13 +1287,10 @@ function toggleDetailLike() {
 
   const btn = document.getElementById("detail-like-btn");
 
-  // Call existing toggleLike engine
   toggleLike(activeDetailPostId, btn);
 
-  // Update main feed posts buttons/counts
   renderFeedPosts();
 
-  // Rerender details card stats
   document.getElementById("detail-likes-count").textContent =
     `${post.likes.toLocaleString()} likes`;
   if (post.liked) {
@@ -1428,8 +1306,6 @@ function toggleDetailBookmark() {
 
   const btn = document.getElementById("detail-bookmark-btn");
   toggleBookmark(activeDetailPostId, btn);
-
-  // Update main feed posts buttons
   renderFeedPosts();
 }
 
@@ -1451,26 +1327,302 @@ function submitDetailComment() {
   const post = INSTAGRAM_DB.posts.find((p) => p.id === activeDetailPostId);
   if (!post) return;
 
-  // Add comment to data
-  post.comments.push({
+  const newComment = {
+    id: `comment-${Date.now()}`,
     username: INSTAGRAM_DB.currentUser.username,
     text: text,
-  });
+    timestamp: "Just now",
+    replies: []
+  };
 
-  // Clear input
+  post.comments.push(newComment);
   input.value = "";
 
-  // Rerender comments log inside details card
   renderDetailCommentsLog(post);
-
-  // Update comments on main feed posts
   renderFeedPosts();
 }
 
-/* 16. THEME TOGGLER (DARK / LIGHT MODE) */
+/* 16. USER TAB SWITCHER (SPA ROUTING) */
+function switchTab(tabName, event) {
+  if (event) event.preventDefault();
+
+  document.querySelectorAll(".app-view").forEach((view) => {
+    view.classList.add("hide");
+  });
+
+  const targetView = document.getElementById(`view-${tabName}`);
+  if (targetView) targetView.classList.remove("hide");
+
+  document.querySelectorAll(".nav-item").forEach((item) => {
+    item.classList.remove("active");
+  });
+
+  const activeLink = document.querySelector(`.nav-item[data-tab="${tabName}"]`);
+  if (activeLink) activeLink.classList.add("active");
+
+  closeAllDrawers();
+
+  window.scrollTo({ top: 0 });
+
+  if (tabName === "profile") {
+    renderProfilePosts();
+  } else if (tabName === "explore") {
+    renderExploreGrid();
+  } else if (tabName === "messages") {
+    selectFirstChat();
+  }
+}
+
+/* 17. DRAWERS */
+let activeDrawer = null;
+
+function toggleDrawer(drawerName, event) {
+  if (event) event.preventDefault();
+
+  const drawer = document.getElementById(`${drawerName}-drawer`);
+
+  if (activeDrawer === drawerName) {
+    closeAllDrawers();
+    return;
+  }
+
+  closeAllDrawers();
+
+  drawer.classList.remove("hide");
+  activeDrawer = drawerName;
+
+  const activeLink = document.querySelector(
+    `.nav-item[data-drawer="${drawerName}"]`,
+  );
+  if (activeLink) activeLink.classList.add("active");
+
+  document.querySelector(".sidebar").style.width = "72px";
+  document.querySelector(".sidebar-logo").style.display = "none";
+  document.querySelector(".sidebar-logo-icon").style.display = "inline-block";
+  document.querySelector(".app-main-content").style.marginLeft = "72px";
+  document.querySelectorAll(".nav-item span").forEach((span) => {
+    span.style.display = "none";
+  });
+
+  if (drawerName === "search") {
+    renderRecentSearches();
+    document.getElementById("drawer-search-input").focus();
+  } else if (drawerName === "notifications") {
+    renderNotifications();
+    document.getElementById("notification-dot").classList.add("hide");
+  }
+}
+
+function closeAllDrawers() {
+  document.querySelectorAll(".sidebar-drawer").forEach((drawer) => {
+    drawer.classList.add("hide");
+  });
+  activeDrawer = null;
+
+  if (window.innerWidth > 1260) {
+    document.querySelector(".sidebar").style.width = "244px";
+    document.querySelector(".sidebar-logo").style.display = "block";
+    document.querySelector(".sidebar-logo-icon").style.display = "none";
+    document.querySelector(".app-main-content").style.marginLeft = "244px";
+    document.querySelectorAll(".nav-item span").forEach((span) => {
+      span.style.display = "flex";
+    });
+  }
+
+  document.querySelectorAll(".nav-item[data-drawer]").forEach((item) => {
+    item.classList.remove("active");
+  });
+
+  const currentView = document
+    .querySelector(".app-view:not(.hide)")
+    .id.replace("view-", "");
+  const activeLink = document.querySelector(
+    `.nav-item[data-tab="${currentView}"]`,
+  );
+  if (activeLink) activeLink.classList.add("active");
+}
+
+function renderRecentSearches() {
+  const container = document.getElementById("search-recent-list");
+  container.innerHTML = "";
+
+  if (INSTAGRAM_DB.searchHistory.length === 0) {
+    container.innerHTML = `<p class="field-hint" style="padding: 20px; text-align:center;">No recent searches.</p>`;
+    return;
+  }
+
+  INSTAGRAM_DB.searchHistory.forEach((item, index) => {
+    const row = document.createElement("div");
+    row.className = "drawer-user-item";
+    row.innerHTML = `
+            <div class="user-item-info" onclick="viewUserProfile('${item.username}')">
+                <img src="${item.avatar}" alt="${item.username}">
+                <div class="names">
+                    <span class="username">${item.username}</span>
+                    <span class="fullname">${item.fullname}</span>
+                </div>
+            </div>
+            <button class="btn-remove-recent" onclick="removeRecentSearch(${index}, event)"><i class="fa-solid fa-xmark"></i></button>
+        `;
+    container.appendChild(row);
+  });
+}
+
+function handleSearchQuery(query) {
+  const listRecent = document.getElementById("search-recent-list");
+  const listResults = document.getElementById("search-results-list");
+  const container = document.getElementById("search-results-list");
+
+  if (!query.trim()) {
+    listRecent.classList.remove("hide");
+    listResults.classList.add("hide");
+    return;
+  }
+
+  listRecent.classList.add("hide");
+  listResults.classList.remove("hide");
+  container.innerHTML = "";
+
+  const allUsers = [
+    {
+      username: "travel_guru",
+      fullname: "Marco Polo",
+      avatar: "assets/images/travel_amalfi.png",
+    },
+    {
+      username: "cafe_lover",
+      fullname: "Sophia Loren",
+      avatar: "assets/images/cafe_flatlay.png",
+    },
+    {
+      username: "nature_wild",
+      fullname: "Jane Goodall",
+      avatar: "assets/images/mountain_sunset.png",
+    },
+    {
+      username: "pixel_pioneer",
+      fullname: "Grace Hopper",
+      avatar: "assets/images/user_avatar.png",
+    },
+  ];
+
+  const filtered = allUsers.filter(
+    (u) =>
+      u.username.toLowerCase().includes(query.toLowerCase()) ||
+      u.fullname.toLowerCase().includes(query.toLowerCase()),
+  );
+
+  if (filtered.length === 0) {
+    container.innerHTML = `<p class="field-hint" style="padding: 20px; text-align:center;">No results found.</p>`;
+    return;
+  }
+
+  filtered.forEach((u) => {
+    const row = document.createElement("div");
+    row.className = "drawer-user-item";
+    row.innerHTML = `
+            <div class="user-item-info" onclick="addSearchHistory('${u.username}'); viewUserProfile('${u.username}')">
+                <img src="${u.avatar}" alt="${u.username}">
+                <div class="names">
+                    <span class="username">${u.username}</span>
+                    <span class="fullname">${u.fullname}</span>
+                </div>
+            </div>
+        `;
+    container.appendChild(row);
+  });
+}
+
+function addSearchHistory(username) {
+  const allUsers = [
+    {
+      username: "travel_guru",
+      fullname: "Marco Polo",
+      avatar: "assets/images/travel_amalfi.png",
+    },
+    {
+      username: "cafe_lover",
+      fullname: "Sophia Loren",
+      avatar: "assets/images/cafe_flatlay.png",
+    },
+    {
+      username: "nature_wild",
+      fullname: "Jane Goodall",
+      avatar: "assets/images/mountain_sunset.png",
+    },
+    {
+      username: "pixel_pioneer",
+      fullname: "Grace Hopper",
+      avatar: "assets/images/user_avatar.png",
+    },
+  ];
+
+  const matched = allUsers.find((u) => u.username === username);
+  if (!matched) return;
+
+  INSTAGRAM_DB.searchHistory = INSTAGRAM_DB.searchHistory.filter(
+    (h) => h.username !== username,
+  );
+  INSTAGRAM_DB.searchHistory.unshift(matched);
+}
+
+function removeRecentSearch(index, event) {
+  if (event) event.stopPropagation();
+  INSTAGRAM_DB.searchHistory.splice(index, 1);
+  renderRecentSearches();
+}
+
+function clearAllRecentSearch() {
+  INSTAGRAM_DB.searchHistory = [];
+  renderRecentSearches();
+}
+
+function clearSearchInput() {
+  const inp = document.getElementById("drawer-search-input");
+  inp.value = "";
+  handleSearchQuery("");
+  inp.focus();
+}
+
+function renderNotifications() {
+  const containerWeek = document.getElementById("notification-list-week");
+  const containerEarlier = document.getElementById("notification-list-earlier");
+
+  containerWeek.innerHTML = "";
+  containerEarlier.innerHTML = "";
+
+  INSTAGRAM_DB.notifications.forEach((notif) => {
+    const item = document.createElement("div");
+    item.className = "notification-item";
+
+    let rightActionHTML = "";
+    if (notif.postImg) {
+      rightActionHTML = `<img src="${notif.postImg}" alt="Post thumbnail" class="notification-post-img">`;
+    } else if (notif.type === "follow") {
+      rightActionHTML = `<button class="btn-secondary" style="padding: 4px 12px; font-size:12px;" onclick="toggleFollowBtn(this)">Following</button>`;
+    }
+
+    item.innerHTML = `
+            <div class="user-item-info">
+                <img src="${notif.avatar}" alt="${notif.username}" style="width: 44px; height: 44px; border-radius:50%; object-fit:cover;">
+                <div class="notification-text">
+                    <strong>${notif.username}</strong> ${notif.text} <span style="color: var(--text-secondary); font-size:12px;">${notif.timeframe}</span>
+                </div>
+            </div>
+            ${rightActionHTML}
+        `;
+
+    if (notif.timeframe.includes("h")) {
+      containerWeek.appendChild(item);
+    } else {
+      containerEarlier.appendChild(item);
+    }
+  });
+}
+
+/* 18. THEME TOGGLER */
 function toggleTheme() {
   const body = document.body;
-  const btn = document.getElementById("more-menu-btn");
   const dropdown = document.getElementById("more-dropdown");
 
   if (body.classList.contains("dark-mode")) {
@@ -1481,7 +1633,6 @@ function toggleTheme() {
     body.classList.add("dark-mode");
   }
 
-  // Close dropdown
   dropdown.classList.add("hide");
 }
 
@@ -1491,7 +1642,6 @@ function toggleMoreMenu(event) {
   dropdown.classList.toggle("hide");
 }
 
-// Close more dropdown when clicking outside
 window.addEventListener("click", (e) => {
   const dropdown = document.getElementById("more-dropdown");
   const moreBtn = document.getElementById("more-menu-btn");
