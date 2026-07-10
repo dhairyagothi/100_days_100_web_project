@@ -21,6 +21,7 @@ body {
     height: 100vh;
     padding: 0.5rem;
 }
+
 .sidebar{
     width: 340px;
     border-radius: 1rem;
@@ -716,6 +717,75 @@ input:focus-visible,
     display:flex;
     align-items:center;
     gap:14px;
+}
+
+
+.library-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:8px 12px;
+}
+
+.library-filters{
+    display:flex;
+    gap:10px;
+    padding:12px;
+}
+
+.library-filters button{
+    background:#2a2a2a;
+    color:white;
+    border:none;
+    padding:8px 15px;
+    border-radius:20px;
+    cursor:pointer;
+}
+
+.library-toolbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:12px;
+}
+
+.library-search{
+    cursor:pointer;
+}
+
+.library-sort{
+    display:flex;
+    gap:8px;
+    align-items:center;
+    cursor:pointer;
+}
+
+.playlist-item{
+    display:flex;
+    gap:12px;
+    padding:10px 12px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.playlist-item:hover{
+    background:#242424;
+}
+
+.playlist-item img{
+    width:48px;
+    height:48px;
+    border-radius:4px;
+}
+
+.playlist-item h4{
+    color:white;
+    font-size:14px;
+}
+
+.playlist-item p{
+    color:#b3b3b3;
+    font-size:12px;
 }
 
 @media (max-width:900px){

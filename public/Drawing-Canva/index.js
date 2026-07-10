@@ -1,10 +1,5 @@
 // =====================================================================
-// ATELIER DRAWING STUDIO
-// New in this version: shape tools (line/rect/circle), text tool,
-// undo/redo history, opacity control, round/square brush tip,
-// filled shapes, color swatches, touch support, robust eraser
-// (transparent pixels over a CSS background layer instead of trying
-// to match a fixed color), auto-resize, and combined-background PNG export.
+// ATELIER DRAWING STUDIO - FIXED & OPTIMIZED VERSION
 // =====================================================================
 
 document.addEventListener('DOMContentLoaded', startApp);
@@ -60,7 +55,7 @@ function startApp(){
   const SHAPE_TOOLS = ['line', 'rect', 'circle'];
 
   // ---------------------------------------------------------------
-  // SETUP
+  // SETUP & AUTO-RESIZE
   // ---------------------------------------------------------------
   wrapper.style.backgroundColor = bgColor;
 
@@ -77,13 +72,18 @@ function startApp(){
 
     if (saved){
       const img = new Image();
-      img.onload = () => ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      img.onload = () => {
+        ctx.save();
+        ctx.globalAlpha = 1.0; // रीसाइज़ करते समय पुरानी ड्रॉइंग की ओपेसिटी खराब न हो
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        ctx.restore();
+      };
       img.src = saved;
     }
   }
 
   resizeCanvases(false);
-  saveHistory(); // initial blank state
+  saveHistory(); // Initial blank state
 
   let resizeTimer = null;
   window.addEventListener('resize', () => {
@@ -104,8 +104,11 @@ function startApp(){
   function restore(dataUrl){
     const img = new Image();
     img.onload = () => {
+      ctx.save();
+      ctx.globalAlpha = 1.0;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.drawImage(img, 0, 0);
+      ctx.restore();
     };
     img.src = dataUrl;
   }
@@ -149,7 +152,7 @@ function startApp(){
   });
 
   // ---------------------------------------------------------------
-  // OPTIONS
+  // OPTIONS EVENT LISTENERS
   // ---------------------------------------------------------------
   sizeRange.addEventListener('input', () => {
     brushSize = parseInt(sizeRange.value, 10);
@@ -194,6 +197,7 @@ function startApp(){
     octx.fillStyle = bgColor;
     octx.fillRect(0, 0, out.width, out.height);
     octx.drawImage(canvas, 0, 0);
+    
     const a = document.createElement('a');
     a.href = out.toDataURL('image/png');
     a.download = 'drawing.png';
@@ -201,16 +205,31 @@ function startApp(){
   });
 
   // ---------------------------------------------------------------
-  // POINTER HELPERS (mouse + touch)
+  // POINTER HELPERS (Mouse + Touch Coordinate Map)
   // ---------------------------------------------------------------
   function getPos(evt){
     const rect = canvas.getBoundingClientRect();
     const scaleX = canvas.width / rect.width;
     const scaleY = canvas.height / rect.height;
-    const point = evt.touches && evt.touches.length ? evt.touches[0] : evt;
+    
+    // Touch Events और Mouse Events दोनों को सही से हैंडल करने के लिए कंडीशन
+    let clientX = 0;
+    let clientY = 0;
+
+    if (evt.touches && evt.touches.length > 0) {
+      clientX = evt.touches[0].clientX;
+      clientY = evt.touches[0].clientY;
+    } else if (evt.changedTouches && evt.changedTouches.length > 0) {
+      clientX = evt.changedTouches[0].clientX;
+      clientY = evt.changedTouches[0].clientY;
+    } else {
+      clientX = evt.clientX;
+      clientY = evt.clientY;
+    }
+
     return {
-      x: (point.clientX - rect.left) * scaleX,
-      y: (point.clientY - rect.top) * scaleY
+      x: (clientX - rect.left) * scaleX,
+      y: (clientY - rect.top) * scaleY
     };
   }
 
@@ -224,7 +243,7 @@ function startApp(){
   }
 
   // ---------------------------------------------------------------
-  // FREEHAND DRAWING (brush / eraser)
+  // FREEHAND DRAWING (Brush / Eraser)
   // ---------------------------------------------------------------
   function drawSegment(x0, y0, x1, y1){
     ctx.save();
@@ -271,7 +290,7 @@ function startApp(){
   }
 
   // ---------------------------------------------------------------
-  // TEXT TOOL
+  // TEXT TOOL (Fixed Floating Coordinates)
   // ---------------------------------------------------------------
   function showTextInput(x, y, rectX, rectY){
     textInput.classList.remove('hidden');
@@ -317,14 +336,18 @@ function startApp(){
   // POINTER EVENT HANDLERS
   // ---------------------------------------------------------------
   function handleStart(evt){
+    // अगर इनपुट बॉक्स पर ही टच/क्लिक हुआ है तो डिफ़ॉल्ट एक्शन को न रोकें
+    if(evt.target === textInput) return;
+    
     evt.preventDefault();
     const pos = getPos(evt);
 
     if (tool === 'text'){
       const rect = canvas.getBoundingClientRect();
-      const scaleX = rect.width / canvas.width;
-      const scaleY = rect.height / canvas.height;
-      showTextInput(pos.x, pos.y, pos.x * scaleX, pos.y * scaleY);
+      // सही रेश्यो मैपिंग (Fixes Text placement displacement bug)
+      const rectX = (pos.x * (rect.width / canvas.width));
+      const rectY = (pos.y * (rect.height / canvas.height));
+      showTextInput(pos.x, pos.y, rectX, rectY);
       return;
     }
 
@@ -355,9 +378,7 @@ function startApp(){
     if (tool === 'brush' || tool === 'eraser'){
       saveHistory();
     } else if (SHAPE_TOOLS.includes(tool)){
-      const endPos = (evt.changedTouches && evt.changedTouches.length)
-        ? getPos({ touches: evt.changedTouches })
-        : getPos(evt);
+      const endPos = getPos(evt); // नए getPos लॉजिक से सही कोऑर्डिनेट्स मिलेंगे
       pctx.clearRect(0, 0, preview.width, preview.height);
       drawShape(ctx, startX, startY, endPos.x, endPos.y, false);
       saveHistory();

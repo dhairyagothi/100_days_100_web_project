@@ -7,6 +7,7 @@
     <title>Reschedule Appointment</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/darkmode.css">
+    <link rel="stylesheet" href="assets/css/auth.css">
     <link rel="icon" href="../favv.png" type="image/x-icon" />
     <style>
         body {
@@ -15,37 +16,95 @@
             color: var(--text-primary);
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            padding: var(--spacing-2xl) var(--spacing-md);
+            gap: var(--spacing-2xl);
+        }
+
+        /* Hide appShell when user is logged out (locked) */
+        body.auth-locked #appShell {
+            display: none !important;
+        }
+
+        #appShell {
+            display: flex;
             justify-content: center;
             align-items: center;
-            padding: var(--spacing-xl) var(--spacing-md);
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
         }
 
         .feedbackmain {
             width: 100%;
-            max-width: 550px;
             background-color: var(--surface);
             border: 1px solid var(--border);
             border-radius: var(--radius-lg);
             padding: var(--spacing-2xl);
             box-shadow: var(--shadow-lg);
             color: var(--text-primary);
-            text-align: center;
+            text-align: left;
             line-height: 1.6;
             height: auto;
         }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .card-theme-toggle {
+            background-color: var(--background-alt, #f1f5f9);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 4px 12px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .card-theme-toggle:hover {
+            background-color: var(--surface-hover);
+            border-color: var(--primary);
+        }
+
+        .card-logo {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+        }
+
+        .card-logo img {
+            height: 100px;
+            width: auto;
+        }
+
+       
 
         .feedbackmain h2 {
             font-family: 'Poppins', sans-serif;
             font-size: 2rem;
             font-weight: 600;
             color: var(--text-primary);
-            margin-bottom: var(--spacing-sm);
+            margin-bottom: var(--spacing-xs);
+            text-align: left;
         }
 
         .feedbackmain p {
             color: var(--text-secondary);
             font-size: 0.95rem;
             margin-bottom: var(--spacing-xl);
+            text-align: left;
         }
 
         form {
@@ -136,6 +195,53 @@
             border-color: var(--primary);
             color: var(--primary);
         }
+
+        /* Override authentication overlay to display it statically at the bottom */
+        #authOverlay {
+            position: static !important;
+            background: transparent !important;
+            backdrop-filter: none !important;
+            display: none !important; /* Managed by .is-open */
+            justify-content: center !important;
+            align-items: center !important;
+            width: 100% !important;
+            padding: 0 !important;
+            z-index: 10 !important;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        #authOverlay.is-open {
+            display: flex !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+
+        #authOverlay .auth-modal {
+            width: 100% !important;
+            max-width: 480px !important;
+            background: var(--surface) !important;
+            color: var(--text-primary) !important; /* Fixes dark mode text visibility */
+            border: 1px solid var(--border) !important;
+            box-shadow: var(--shadow-lg) !important;
+            border-radius: var(--radius-lg) !important;
+            padding: var(--spacing-xl) !important;
+            margin: 0 auto !important;
+            animation: none !important;
+            overflow: visible !important;
+        }
+
+        /* Hide the duplicate brand inside the login form modal */
+        #authOverlay .auth-brand {
+            display: none !important;
+        }
+
+        @media (max-width: 768px) {
+            #appShell {
+                max-width: 100%;
+                width: 100%;
+            }
+        }
     </style>
 </head>
 
@@ -143,6 +249,14 @@
 <div id="appShell">
 
     <div class="feedbackmain">
+        <div class="card-header">
+            <button id="themeToggle" class="theme-btn card-theme-toggle" aria-label="Toggle theme">🌙</button>
+            
+            <div class="card-logo">
+                <img src="assets/logo.png" alt="MedConsult logo">
+               
+            </div>
+        </div>
 
         <div class="auth-page-actions">
             <div id="userBadge" class="user-badge compact hidden" aria-live="polite">
@@ -158,7 +272,7 @@
         <h2>Reschedule Appointment</h2>
         <p>Update your appointment details.</p>
 
-        <form id="rescheduleForm" data-role="patient">
+        <form id="rescheduleForm">
 
             <label for="patientName">Patient Name:</label>
             <br><br>
@@ -192,8 +306,6 @@
         </div>
 
     </div>
-    <button id="themeToggle" class="theme-btn">🌙</button>
-
 
 </div>
 

@@ -27,6 +27,7 @@
         <div class="status-pill">Level: <span id="levelText">Easy</span></div>
         <div class="status-pill">Moves: <span id="moveCount">0</span></div>
         <div class="status-pill">Time: <span id="timerText">00:00</span></div>
+        <div class="status-pill status-pill-best">Best: <span id="bestMovesText">—</span></div>
       </div>
     </header>
 
@@ -64,14 +65,29 @@
 
   <div id="Message-Container" class="modal-overlay">
     <div id="message" class="modal-card">
-       <div class="modal-emoji" id="modalEmoji">🎊</div>
+      <div id="recordBadge" class="record-banner">🏆 New Personal Best!</div>
+      <div class="modal-emoji" id="modalEmoji">🎊</div>
       <h1 id="modalTitle">Victory</h1>
       <p id="modalText">You completed the maze.</p>
       <div id="modalDifficultyBadge" class="difficulty-badge"></div>
-      <p id="moves"></p>
+      <div class="stats-grid">
+        <div class="stat-chip">
+          <span class="stat-value" id="statMoves">0</span>
+          <span class="stat-label">Moves</span>
+        </div>
+        <div class="stat-chip">
+          <span class="stat-value" id="statTime">00:00</span>
+          <span class="stat-label">Time</span>
+        </div>
+        <div class="stat-chip stat-chip-best" id="statBestChip">
+          <span class="stat-value" id="statBest">—</span>
+          <span class="stat-label">Best</span>
+        </div>
+      </div>
       <button id="okBtn" type="button">Play Again!</button>
     </div>
   </div>
+
 
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.touchswipe/1.6.18/jquery.touchSwipe.min.js"></script>
@@ -79,4 +95,3 @@
   <script src="./script.js"></script>
 </body>
 </html>
-

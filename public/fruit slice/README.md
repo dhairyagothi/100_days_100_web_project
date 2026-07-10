@@ -1,245 +1,112 @@
-# 🍉 Fruit Slice Game
+# 🍉 Fruit Slice
 
-<p align="center">
-  <b>A modern, arcade-style fruit slicing game built using HTML, CSS, and JavaScript.</b><br>
-  Slice flying fruits, avoid dangerous bombs, build massive combos, and compete for the highest score—all directly in your browser with no installation required.
-</p>
+A fast-paced, browser-based fruit slicing game inspired by Fruit Ninja — built with pure HTML, CSS, and JavaScript using the Canvas API. Slice flying fruits, dodge bombs, chain combos, and chase the high score!
 
 ---
 
-# 🎮 Overview
+## 📌 Introduction
 
-Fruit Slice Game is a lightweight browser-based arcade game inspired by classic fruit slicing experiences. Players test their reaction speed by slicing fruits before they fall while avoiding bombs that instantly end the game.
-
-Designed with performance, responsiveness, and accessibility in mind, the project demonstrates modern front-end development using only Vanilla JavaScript without any frameworks or external libraries.
+Fruit Slice is a single-page arcade game where fruits are launched from the bottom of the screen and the player slices them by dragging the mouse (or finger, on touch devices) across them. Bombs are mixed in among the fruits — slicing one costs a life. The game features increasing difficulty, combo scoring, particle effects, and persistent high scores.
 
 ---
 
-# ✨ Features
+## ✨ Features
 
-## 🍎 Gameplay
-
-- Slice fruits using mouse or touch gestures
-- Avoid bombs to stay alive
-- Real-time score tracking
-- Combo multiplier system
-- Progressive gameplay difficulty
-- Lives management
-- Game Over screen
-- Restart gameplay instantly
-
----
-
-## 🎯 Scoring System
-
-- Earn points for every fruit sliced
-- Combo bonuses for consecutive slices
-- Higher scores for faster reactions
-- Persistent High Score using LocalStorage
+- 🍇 **8 unique fruit types** — watermelon, orange, lemon, grape, strawberry, peach, pineapple, and kiwi — each with its own color, emoji, and point value
+- 💣 **Bomb hazards** that increase in frequency as levels progress
+- 🔥 **Combo system** — slicing 3+ fruits in quick succession doubles points and triggers a "COMBO!" popup
+- 📈 **Progressive difficulty** — level increases every 30 points, spawning fruits faster and more frequently
+- ❤️ **Lives system** — 3 hearts, lost by missing a fruit or slicing a bomb; game ends at 0 lives
+- 🎯 **Line-circle collision detection** for accurate, fast-swipe slicing
+- 🧃 **Visual effects** — juice splatter particles, ground splat stains, sliced fruit halves with rotation physics, and floating score text
+- 🌌 **Animated starry background** with a radial gradient theme
+- ⏸️ **Pause/Resume** via on-screen button or keyboard shortcuts (`Space` / `P`)
+- 🏆 **High score tracking** using browser local storage
+- 📱 **Touch support** for mobile devices
+- 🖥️ **Fully responsive canvas** that adapts to window resizing
+- 🎬 **Start, Pause, and Game Over overlay screens** with smooth transitions and animations
 
 ---
 
-## 🎨 User Interface
+## 🛠️ Technologies Used
 
-- Modern responsive layout
-- Attractive game dashboard
-- Smooth animations
-- Interactive particle effects
-- Responsive controls
-- Mobile-friendly interface
-- Cross-browser compatibility
-
----
-
-## ⚙️ Performance
-
-- Lightweight architecture
-- Pure Vanilla JavaScript
-- No frameworks
-- No dependencies
-- Fast loading
-- Optimized rendering
+- **HTML5** — structure and Canvas element
+- **CSS3** — styling, gradients, animations, and responsive layout
+- **JavaScript (Vanilla)** — game logic, physics, rendering, and event handling
+- **Canvas API** — real-time 2D rendering of fruits, particles, and effects
+- **Google Fonts** — `Bangers` and `Nunito` for game-style typography
+- **LocalStorage API** — persisting high scores across sessions
 
 ---
 
-# 🛠️ Tech Stack
-
-| Technology | Purpose |
-|------------|---------|
-| HTML5 | Page Structure |
-| CSS3 | Styling & Animations |
-| JavaScript (ES6) | Game Logic |
-| LocalStorage API | High Score Storage |
-
----
-
-# 📂 Project Structure
+## 📂 Project Structure
 
 ```text
-Fruit-Slice-Game/
+Fruit_Slice/
 │
-├── index.html
-├── style.css
-├── script.js
-├── assets/
-│   ├── fruits/
-│   ├── sounds/
-│   ├── icons/
-│   └── preview.png
-│
-└── README.md
+├── index.html        # Main game file (HTML + CSS + JS combined)
+└── README.md          # Project documentation
 ```
 
 ---
 
-# 🚀 Getting Started
+## ⚙️ Installation
 
-## Prerequisites
+No build tools or dependencies required — this is a single self-contained HTML file.
 
-- Any modern web browser
-- No installation required
+1. Clone or download the repository:
+   ```bash
+   git clone https://github.com/dhairyagothi/100_days_100_web_project.git
+   ```
+2. Navigate to the Fruit Slice project folder.
+3. Open `index.html` directly in any modern web browser (Chrome, Edge, Firefox).
 
----
-
-## Installation
-
-Clone the repository
-
-```bash
-git clone https://github.com/username/Fruit-Slice-Game.git
-```
-
-Navigate into the project
-
-```bash
-cd Fruit-Slice-Game
-```
-
-Launch the game
-
-```bash
-Open index.html
-```
-
-or simply double-click **index.html**.
+That's it — no server or npm install needed!
 
 ---
 
-# 🎮 How to Play
+## 🎮 Usage
 
-1. Click **Start Game**
-2. Slice fruits by dragging your mouse or swiping on touch devices.
-3. Avoid bombs.
-4. Prevent fruits from falling unsliced.
-5. Build combos to maximize your score.
-6. Beat your personal best and challenge your friends.
-
----
-
-# 🎯 Game Controls
-
-| Action | Control |
-|---------|----------|
-| Slice Fruit | Mouse Drag / Touch Swipe |
-| Start Game | Start Button |
-| Pause | Pause Button |
-| Resume | Resume Button |
-| Restart | Restart Button |
+1. Open the game in your browser.
+2. Click **▶ PLAY NOW** on the start screen.
+3. Move your mouse (or swipe on touch devices) quickly across fruits to slice them.
+4. Avoid slicing 💣 bombs — each one costs a life.
+5. Chain multiple slices quickly to build a combo and earn double points.
+6. Survive as long as possible, level up, and beat your high score!
+7. Use the pause button (⏸) or press `Space`/`P` to pause/resume at any time.
 
 ---
 
-# 📱 Responsive Design
+## 🚀 Future Enhancements
 
-The application is optimized for:
-
-- Desktop
-- Laptop
-- Tablet
-- Mobile Devices
-
----
-
-# 📊 Performance Highlights
-
-- Zero external libraries
-- Instant loading
-- Responsive rendering
-- Optimized animations
-- Efficient collision detection
-- LocalStorage-based persistence
+- 🎵 Add background music and slicing/explosion sound effects
+- 🏅 Global/online leaderboard support
+- 🍎 Special power-up fruits (slow motion, double points, extra life)
+- 🎨 Multiple visual themes/skins
+- 📊 Post-game stats (accuracy, best combo, fruits sliced)
+- 🕹️ Difficulty selection (Easy/Medium/Hard) before starting
+- 📱 On-screen mobile control improvements for smaller screens
 
 ---
 
-# 📸 Screenshots
+## 🤝 Contributing
 
-## Home Screen
-
-```
-assets/preview.png
-```
-
-> Replace the placeholder with actual gameplay screenshots.
-
----
-
-# 🚀 Future Enhancements
-
-- Multiplayer Mode
-- Online Leaderboard
-- Difficulty Levels
-- Achievement System
-- Power-Ups
-- Daily Challenges
-- Custom Fruit Packs
-- Sound Controls
-- Background Music
-- Progressive Levels
-- Game Statistics Dashboard
-- PWA Support
-
----
-
-# 🤝 Contributing
-
-Contributions are always welcome!
+Contributions are welcome! To contribute:
 
 1. Fork the repository
-2. Create a new branch
-
-```bash
-git checkout -b feature/your-feature
-```
-
-3. Commit your changes
-
-```bash
-git commit -m "Add amazing feature"
-```
-
-4. Push your branch
-
-```bash
-git push origin feature/your-feature
-```
-
-5. Open a Pull Request
+2. Create a new branch (`git checkout -b feature/your-feature`)
+3. Make your changes and commit (`git commit -m "Add: your feature"`)
+4. Push to your branch (`git push origin feature/your-feature`)
+5. Open a Pull Request describing your changes
 
 ---
 
-# 📄 License
+## 📄 License
 
-This project is distributed under the MIT License.
-
----
-
-# ❤️ Acknowledgements
-
-Inspired by classic fruit slicing arcade games and built to demonstrate interactive front-end development using modern web technologies.
+This project is open-source and available under the [MIT License](LICENSE).
 
 ---
 
-# 👨‍💻 Author
+## 👩‍💻 Author
 
-Developed with ❤️ using HTML, CSS, and JavaScript.
-
-**Happy Slicing! 🍉⚡**
+**Documentation — Sanyogita Singh**
