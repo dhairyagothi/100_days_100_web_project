@@ -17,6 +17,7 @@ html,body{
 }
 
  .icons{
+  margin-bottom: 100px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -77,46 +78,93 @@ html,body{
   opacity: 1;
   transform: translate(20px, -20px);
 }
+/* ==========================
+   Brand Colors
+========================== */
+
 .icons a:nth-child(1) .layer span,
 .icons a:nth-child(1) .text{
-  color: #4267B2;
-  border-color: #4267B2;
+  color:#4267B2;
+  border-color:#4267B2;
 }
+
 .icons a:nth-child(2) .layer span,
 .icons a:nth-child(2) .text{
-  color: #1DA1F2;
-  border-color: #1DA1F2;
+  color:#1DA1F2;
+  border-color:#1DA1F2;
 }
+
 .icons a:nth-child(3) .layer span,
 .icons a:nth-child(3) .text{
-  color: #E1306C;
-  border-color: #E1306C;
+  color:#E1306C;
+  border-color:#E1306C;
 }
+
 .icons a:nth-child(4) .layer span,
 .icons a:nth-child(4) .text{
-  color: #2867B2;
-  border-color: #2867B2;
+  color:#2867B2;
+  border-color:#2867B2;
 }
+
 .icons a:nth-child(5) .layer span,
 .icons a:nth-child(5) .text{
-  color: #ff0000;
-  border-color: #ff0000;
+  color:#FF0000;
+  border-color:#FF0000;
 }
-.icons a:hover:nth-child(1) .layer span{
-  box-shadow: -1px 1px 3px #4267B2;
+
+.icons a:nth-child(6) .layer span,
+.icons a:nth-child(6) .text{
+  color:#25D366;
+  border-color:#25D366;
 }
-.icons a:hover:nth-child(2) .layer span{
-  box-shadow: -1px 1px 3px #1DA1F2;
+
+.icons a:nth-child(7) .layer span,
+.icons a:nth-child(7) .text{
+  color:#ffffff;
+  border-color:#ffffff;
 }
-.icons a:hover:nth-child(3) .layer span{
-  box-shadow: -1px 1px 3px #E1306C;
+
+.icons a:nth-child(8) .layer span,
+.icons a:nth-child(8) .text{
+  color:#5865F2;
+  border-color:#5865F2;
 }
-.icons a:hover:nth-child(4) .layer span{
-  box-shadow: -1px 1px 3px #2867B2;
+
+.icons a:nth-child(9) .layer span,
+.icons a:nth-child(9) .text{
+  color:#FF4500;
+  border-color:#FF4500;
 }
-.icons a:hover:nth-child(5) .layer span{
-  box-shadow: -1px 1px 3px #ff0000;
+
+.icons a:nth-child(10) .layer span,
+.icons a:nth-child(10) .text{
+  color:#E60023;
+  border-color:#E60023;
 }
+
+.icons a:nth-child(11) .layer span,
+.icons a:nth-child(11) .text{
+  color:#FFFC00;
+  border-color:#FFFC00;
+}
+
+.icons a:nth-child(12) .layer span,
+.icons a:nth-child(12) .text{
+  color:#00F2EA;
+  border-color:#00F2EA;
+}
+.icons a:hover:nth-child(1) .layer span{box-shadow:-1px 1px 3px #4267B2;}
+.icons a:hover:nth-child(2) .layer span{box-shadow:-1px 1px 3px #1DA1F2;}
+.icons a:hover:nth-child(3) .layer span{box-shadow:-1px 1px 3px #E1306C;}
+.icons a:hover:nth-child(4) .layer span{box-shadow:-1px 1px 3px #2867B2;}
+.icons a:hover:nth-child(5) .layer span{box-shadow:-1px 1px 3px #FF0000;}
+.icons a:hover:nth-child(6) .layer span{box-shadow:-1px 1px 3px #25D366;}
+.icons a:hover:nth-child(7) .layer span{box-shadow:-1px 1px 3px #ffffff;}
+.icons a:hover:nth-child(8) .layer span{box-shadow:-1px 1px 3px #5865F2;}
+.icons a:hover:nth-child(9) .layer span{box-shadow:-1px 1px 3px #FF4500;}
+.icons a:hover:nth-child(10) .layer span{box-shadow:-1px 1px 3px #E60023;}
+.icons a:hover:nth-child(11) .layer span{box-shadow:-1px 1px 3px #FFFC00;}
+.icons a:hover:nth-child(12) .layer span{box-shadow:-1px 1px 3px #00F2EA;}
 .icons a .text {
   position: absolute;
   left: 50%;

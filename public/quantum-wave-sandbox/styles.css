@@ -1,163 +1,162 @@
 :root {
-    --bg-dark: #0a0c10;
-    --panel-bg: rgba(16, 22, 32, 0.75);
-    --border-neon: #00ffcc;
-    --text-primary: #e2e8f0;
-    --text-muted: #64748b;
-    --neon-cyan: #00f0ff;
-    --neon-pink: #ff007f;
-    --neon-green: #39ff14;
+  --bg-dark: #0a0c10;
+  --panel-bg: rgba(16, 22, 32, 0.75);
+  --border-neon: #00ffcc;
+  --text-primary: #e2e8f0;
+  --text-muted: #64748b;
+  --neon-cyan: #00f0ff;
+  --neon-pink: #ff007f;
+  --neon-green: #39ff14;
 }
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Courier New', Courier, monospace;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Courier New', Courier, monospace;
 }
 
 body {
-    background-color: var(--bg-dark);
-    color: var(--text-primary);
-    overflow: hidden;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  background-color: var(--bg-dark);
+  color: var(--text-primary);
+  overflow: hidden;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .quantum-container {
-    display: grid;
-    grid-template-columns: 280px 1fr;
-    width: 100vw;
-    height: 100vh;
-    background: radial-gradient(circle at center, #111827 0%, #030712 100%);
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  width: 100vw;
+  height: 100vh;
+  background: radial-gradient(circle at center, #111827 0%, #030712 100%);
 }
 
 /* Telemetry Dashboard Panels */
 .telemetry-panel {
-    background: var(--panel-bg);
-    border-right: 2px solid rgba(0, 255, 204, 0.15);
-    padding: 25px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    backdrop-filter: blur(12px);
-    box-shadow: 5px 0 25px rgba(0, 0, 0, 0.5);
+  background: var(--panel-bg);
+  border-right: 2px solid rgba(0, 255, 204, 0.15);
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  backdrop-filter: blur(12px);
+  box-shadow: 5px 0 25px rgba(0, 0, 0, 0.5);
 }
 
 .telemetry-panel h2 {
-    font-size: 1.2rem;
-    letter-spacing: 2px;
-    color: var(--neon-cyan);
-    text-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
+  font-size: 1.2rem;
+  letter-spacing: 2px;
+  color: var(--neon-cyan);
+  text-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
 }
 
 .divider {
-    border: none;
-    height: 1px;
-    background: linear-gradient(to right, var(--border-neon), transparent);
+  border: none;
+  height: 1px;
+  background: linear-gradient(to right, var(--border-neon), transparent);
 }
 
 .metric-box {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    padding: 15px;
-    border-radius: 4px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 15px;
+  border-radius: 4px;
 }
 
 .metric-box .label {
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    display: block;
-    margin-bottom: 5px;
-    letter-spacing: 1px;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  display: block;
+  margin-bottom: 5px;
+  letter-spacing: 1px;
 }
 
 .metric-box .value {
-    font-size: 1.4rem;
-    font-weight: bold;
-    text-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
+  font-size: 1.4rem;
+  font-weight: bold;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
 }
 
 .metric-box .value.warning {
-    color: var(--neon-pink);
-    text-shadow: 0 0 10px rgba(255, 0, 127, 0.4);
+  color: var(--neon-pink);
+  text-shadow: 0 0 10px rgba(255, 0, 127, 0.4);
 }
 
 .metric-box .value.accent {
-    color: var(--border-neon);
-    text-shadow: 0 0 10px rgba(0, 255, 204, 0.4);
+  color: var(--border-neon);
+  text-shadow: 0 0 10px rgba(0, 255, 204, 0.4);
 }
 
 .metric-box .value.safe {
-    color: var(--neon-green);
-    text-shadow: 0 0 10px rgba(57, 255, 20, 0.4);
+  color: var(--neon-green);
+  text-shadow: 0 0 10px rgba(57, 255, 20, 0.4);
 }
 
 .instruction-pad {
-    margin-top: auto;
-    border-left: 2px solid var(--neon-pink);
-    padding-left: 12px;
+  margin-top: auto;
+  border-left: 2px solid var(--neon-pink);
+  padding-left: 12px;
 }
 
 .instruction-pad h3 {
-    font-size: 0.85rem;
-    color: var(--neon-pink);
-    margin-bottom: 5px;
+  font-size: 0.85rem;
+  color: var(--neon-pink);
+  margin-bottom: 5px;
 }
 
 .instruction-pad p {
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    line-height: 1.4;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  line-height: 1.4;
 }
 
 /* Canvas Viewport Space */
 .viewport-area {
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
 }
 
 .viewport-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 15px;
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  letter-spacing: 1px;
 }
 
 .status-dot {
-    width: 6px;
-    height: 6px;
-    background-color: var(--neon-green);
-    border-radius: 50%;
-    box-shadow: 0 0 8px var(--neon-green);
+  width: 6px;
+  height: 6px;
+  background-color: var(--neon-green);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--neon-green);
 }
 
 .blinking {
-    animation: blink 2s infinite;
+  animation: blink 2s infinite;
 }
 
 @keyframes blink {
+  0%,
+  100% {
+    opacity: 0.3;
+  }
 
-    0%,
-    100% {
-        opacity: 0.3;
-    }
-
-    50% {
-        opacity: 1;
-    }
+  50% {
+    opacity: 1;
+  }
 }
 
 canvas {
-    flex-grow: 1;
-    background: #04060a;
-    border: 1px solid rgba(0, 240, 255, 0.1);
-    border-radius: 4px;
-    cursor: crosshair;
+  flex-grow: 1;
+  background: #04060a;
+  border: 1px solid rgba(0, 240, 255, 0.1);
+  border-radius: 4px;
+  cursor: crosshair;
 }

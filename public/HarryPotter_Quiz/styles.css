@@ -1,6 +1,6 @@
 /* ====================== HARRY POTTER QUIZ - STYLES.CSS ====================== */
 
-@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Harry+Potter&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Harry+Potter&display=swap');
 
 :root {
   --hogwarts-gold: #d4af37;
@@ -14,7 +14,7 @@ body {
   background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
   color: #f0f0f0;
   min-height: 100vh;
-  font-family: "Playfair Display", serif;
+  font-family: 'Playfair Display', serif;
   overflow-x: hidden;
 }
 
@@ -27,7 +27,7 @@ body {
 h1,
 h2,
 h3 {
-  font-family: "Harry Potter", sans-serif;
+  font-family: 'Harry Potter', sans-serif;
   letter-spacing: 2px;
 }
 
@@ -150,7 +150,7 @@ h3 {
 
 /* Buttons */
 .btn {
-  font-family: "Harry Potter", sans-serif;
+  font-family: 'Harry Potter', sans-serif;
   letter-spacing: 1px;
   transition: all 0.3s ease;
 }

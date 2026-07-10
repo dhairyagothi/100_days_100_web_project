@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
 * {
     margin : 0;
     padding :0;
@@ -5,7 +7,7 @@
 }
 
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: 'Outfit', 'Arial', sans-serif;
     display : flex;
     justify-content: center;
     align-items: center;
@@ -20,15 +22,19 @@ body {
     border : 5px solid rgb(9, 5, 5);
     /* border: 5px solid rgba(255, 255, 255, 0.097); */
     border-radius: 2rem;
-    width : 20rem;
+    width : 90%;
+    max-width: 22rem;
     /* box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3); */
     box-shadow: 
             0 15px 40px rgba(0, 0, 0, 0.3),
             0 0 20px rgba(79, 70, 229, 0.4);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 .container:hover {
     transform: scale(1.02);
-    transition: 0.5s;
+    box-shadow: 
+            0 20px 45px rgba(0, 0, 0, 0.35),
+            0 0 25px rgba(79, 70, 229, 0.5);
 }
 form {
     margin : 2rem 0 2rem 0; /*top right bottom left*/
@@ -42,8 +48,28 @@ form select,input,button {
 form input {
     border : 1.5px solid black;
     font-size: 1rem;
-    height : 2rem;
+    height : 2.5rem;
     padding-left: 0.5rem;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+form input:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+}
+form input.error-input {
+    border-color: #dc2626 !important;
+    background-color: #fef2f2;
+}
+form input.error-input:focus {
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.3);
+}
+.error-text {
+    color: #dc2626;
+    font-size: 0.85rem;
+    margin-top: 0.4rem;
+    font-weight: 600;
+    display: none;
+    text-align: left;
 }
 .dropdown {
     display : flex;
@@ -75,10 +101,15 @@ form input {
     font-size: 1.2rem;
     font-style: italic;
     font-weight: bold;
+    text-align: center;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+    max-width: 100%;
 }
 form button {
-    height : 2rem;
-    width : auto;
+    height : 2.5rem;
+    width : 100%;
     justify-content: center;
     text-align: center;
     font-size: 1.15rem;
@@ -86,13 +117,17 @@ form button {
     background-color: rgb(58, 83, 124);
     color : white;
     cursor: pointer;
-    transition: 0.3s;
+    transition: background 0.3s ease, transform 0.2s ease;
 }
 button:hover {
     background: #3730a3;
-    transform: scale(1.05);
+    transform: scale(1.02);
 }    
+button:disabled {
+    background-color: #6b7280;
+    cursor: not-allowed;
+    transform: none;
+}
 p {
     font-size: 20px;
-
 }

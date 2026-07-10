@@ -1,77 +1,74 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pixel Art Maker</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="image.png">
-</head>
-<body>
-
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="image.png" />
+  </head>
+  <body>
     <h1>Pixel Art Maker</h1>
 
     <div class="controls">
-        <div class="control-group">
-            <label for="width-input">Width:</label>
-            <input type="number" id="width-input" value="16" min="1" max="64">
-        </div>
+      <div class="control-group">
+        <label for="width-input">Width:</label>
+        <input type="number" id="width-input" value="16" min="1" max="64" />
+      </div>
 
-        <div class="control-group">
-            <label for="height-input">Height:</label>
-            <input type="number" id="height-input" value="16" min="1" max="64">
-        </div>
+      <div class="control-group">
+        <label for="height-input">Height:</label>
+        <input type="number" id="height-input" value="16" min="1" max="64" />
+      </div>
 
-        <div class="control-group">
-            <button id="size-btn">Regenerate Grid</button>
-        </div>
+      <div class="control-group">
+        <button id="size-btn">Regenerate Grid</button>
+      </div>
 
-        <div class="control-group">
-            <label for="color-picker">Color:</label>
-            <input type="color" id="color-picker" value="#000000">
-        </div>
+      <div class="control-group">
+        <label for="color-picker">Color:</label>
+        <input type="color" id="color-picker" value="#000000" />
+      </div>
 
-        <div class="control-group">
-            <button id="rubber-btn" class="rubber-btn">Rubber</button>
-        </div>
+      <div class="control-group">
+        <button id="rubber-btn" class="rubber-btn">Rubber</button>
+      </div>
 
-        <div class="control-group">
-            <button id="clear-btn" class="clear-btn">Clear Canvas</button>
-        </div>
+      <div class="control-group">
+        <button id="clear-btn" class="clear-btn">Clear Canvas</button>
+      </div>
 
-        <div class="control-group">
-            <button id="toggle-grid-btn">Hide Grid Lines</button>
-        </div>
+      <div class="control-group">
+        <button id="toggle-grid-btn">Hide Grid Lines</button>
+      </div>
 
-        <div class="control-group">
-            <button id="download-btn">Download PNG</button>
-        </div>
+      <div class="control-group">
+        <button id="download-btn">Download PNG</button>
+      </div>
     </div>
 
     <div class="color-by-number-panel">
-        <h3>Color By Number</h3>
+      <h3>Color By Number</h3>
 
-        <select id="template-select">
-            <option value="">Choose Template</option>
-            <option value="flower">Flower</option>
-            <option value="heart">Heart</option>
-        </select>
+      <select id="template-select">
+        <option value="">Choose Template</option>
+        <option value="flower">Flower</option>
+        <option value="heart">Heart</option>
+      </select>
 
-        <button id="load-template-btn">
-            Load Template
-        </button>
+      <button id="load-template-btn">Load Template</button>
 
-        <div id="color-guide">
-            <p><span style="color:red">■</span> 1 = Red</p>
-            <p><span style="color:pink">■</span> 2 = Pink</p>
-            <p><span style="color:green">■</span> 3 = Green</p>
-        </div>
+      <div id="color-guide">
+        <p><span style="color: red">■</span> 1 = Red</p>
+        <p><span style="color: pink">■</span> 2 = Pink</p>
+        <p><span style="color: green">■</span> 3 = Green</p>
+      </div>
     </div>
 
     <div class="canvas-container">
-        <div id="pixel-grid"></div>
+      <div id="pixel-grid"></div>
     </div>
 
     <script src="script.js"></script>
-</body>
+  </body>
 </html>
