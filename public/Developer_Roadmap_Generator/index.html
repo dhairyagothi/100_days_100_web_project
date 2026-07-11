@@ -1,35 +1,70 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Developer Roadmap Generator</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Developer Roadmap Generator</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <script src="https://kit.fontawesome.com/4f3ce16e3e.js" crossorigin="anonymous"></script>
 </head>
+
 <body>
-  <main class="app" id="app">
-    <header class="app-header">
-      <h1>Developer Roadmap Generator</h1>
-      <div class="controls">
-        <label for="careerSelect" class="visually-hidden">Choose career</label>
-        <select id="careerSelect" aria-label="Choose career"></select>
-        <input id="searchInput" type="search" placeholder="Search roadmap..." aria-label="Search roadmap">
-        <button id="themeToggle" aria-pressed="false">Toggle Theme</button>
-        <button id="resetProgress">Reset Progress</button>
-      </div>
-      <div class="progress-wrap" aria-hidden="false">
-        <div class="progress-label"><span id="progressText">0%</span> Complete</div>
-        <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-          <div class="progress-fill" style="width:0%"></div>
-        </div>
-      </div>
+
+    <div class="background"></div>
+
+    <header class="hero">
+        <h1>Developer Roadmap Generator</h1>
+        <p>
+            Choose your career path and generate your personalized learning roadmap.
+        </p>
     </header>
 
-    <section id="roadmapContainer" class="roadmap" aria-live="polite"></section>
+    <section class="career-section">
 
-    <div id="toast" class="toast" role="status" aria-live="polite"></div>
-  </main>
+        <div class="career-card" data-role="frontend">
+            <i class="fa-solid fa-code"></i>
+            <h2>Frontend</h2>
+        </div>
 
-  <script src="script.js" defer></script>
+        <div class="career-card" data-role="backend">
+            <i class="fa-solid fa-server"></i>
+            <h2>Backend</h2>
+        </div>
+
+        <div class="career-card" data-role="fullstack">
+            <i class="fa-solid fa-layer-group"></i>
+            <h2>Full Stack</h2>
+        </div>
+
+        <div class="career-card" data-role="aiml">
+            <i class="fa-solid fa-robot"></i>
+            <h2>AI / ML</h2>
+        </div>
+
+        <div class="career-card" data-role="cyber">
+            <i class="fa-solid fa-shield-halved"></i>
+            <h2>Cybersecurity</h2>
+        </div>
+
+    </section>
+
+    <section class="roadmap-section">
+
+        <h2 id="title">
+            Select a Career Path
+        </h2>
+
+        <div id="roadmap-container">
+
+        </div>
+
+    </section>
+
+    <script src="script.js"></script>
+
 </body>
 </html>

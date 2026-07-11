@@ -283,3 +283,59 @@ document
       localStorage.removeItem("travel_chat");
     }
 });
+
+const toggleBtn = document.getElementById("toggleServicesBtn");
+const cards = document.querySelectorAll(".service_card");
+let visibleCount = 3; // initially show 3
+
+toggleBtn.addEventListener("click", () => {
+  if (visibleCount < cards.length) {
+    // Show next 3
+    for (let i = visibleCount; i < visibleCount + 3 && i < cards.length; i++) {
+      cards[i].classList.remove("hidden");
+    }
+    visibleCount += 3;
+
+    // If all are visible, change button text
+    if (visibleCount >= cards.length) {
+      toggleBtn.textContent = "View Less Services";
+    }
+  } else {
+    // Collapse back to first 3
+    for (let i = 3; i < cards.length; i++) {
+      cards[i].classList.add("hidden");
+    }
+    visibleCount = 3;
+    toggleBtn.textContent = "Load More Services";
+    // Optional: scroll back to section top
+    document.getElementById("service").scrollIntoView({ behavior: "smooth" });
+  }
+});
+
+
+const themeToggles = document.querySelectorAll(".theme");
+const themeIcon = document.getElementById("themeIcon");
+
+
+let isDarkMode = JSON.parse(localStorage.getItem("DarkMode")) || false;
+
+function updateTheme() {
+  if (isDarkMode) {
+    document.body.classList.add("dark-theme");
+    themeIcon.textContent = "☀️"; 
+  } else {
+    document.body.classList.remove("dark-theme");
+    themeIcon.textContent = "🌙"; 
+  }
+}
+
+themeToggles.forEach(btn => {
+  btn.addEventListener("click", () => {
+    isDarkMode = !isDarkMode;
+    localStorage.setItem("DarkMode", JSON.stringify(isDarkMode));
+    updateTheme();
+  });
+});
+
+// Apply theme on page load
+updateTheme();

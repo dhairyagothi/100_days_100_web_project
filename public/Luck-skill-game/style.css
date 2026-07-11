@@ -1,0 +1,117 @@
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+min-height:100vh;
+background:linear-gradient(
+135deg,
+#0f172a,
+#1e293b,
+#334155
+);
+font-family:'Segoe UI',sans-serif;
+color:white;
+}
+
+.game-card{
+max-width:850px;
+background:rgba(255,255,255,0.08);
+backdrop-filter:blur(15px);
+border-radius:25px;
+padding:35px;
+box-shadow:0 10px 30px rgba(0,0,0,0.35);
+}
+
+.subtitle{
+color:#d1d5db;
+}
+
+.stats{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:20px;
+margin-top:30px;
+}
+
+.stat-box{
+background:rgba(255,255,255,0.12);
+padding:20px;
+border-radius:18px;
+text-align:center;
+}
+
+.stat-box h6{
+color:#d1d5db;
+}
+
+.buttons{
+display:flex;
+gap:20px;
+justify-content:center;
+flex-wrap:wrap;
+}
+
+.buttons button{
+min-width:200px;
+}
+
+.message-box{
+min-height:90px;
+background:rgba(255,255,255,0.1);
+border-radius:15px;
+padding:20px;
+text-align:center;
+font-size:1.1rem;
+}
+
+.progress{
+height:30px;
+border-radius:15px;
+}
+
+.progress-bar{
+font-weight:bold;
+transition:0.4s ease;
+}
+
+.pulse{
+animation:pulse 0.4s ease;
+}
+
+@keyframes pulse{
+
+
+0%{
+    transform:scale(1);
+}
+
+50%{
+    transform:scale(1.1);
+}
+
+100%{
+    transform:scale(1);
+}
+
+
+}
+
+@media(max-width:768px){
+
+.stats{
+    grid-template-columns:1fr;
+}
+
+.buttons{
+    flex-direction:column;
+}
+
+.buttons button{
+    width:100%;
+}
+
+
+}

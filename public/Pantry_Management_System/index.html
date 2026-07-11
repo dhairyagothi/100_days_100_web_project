@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <script>
+        // Ensure trailing slash for local dev
+        if (!window.location.pathname.endsWith('/') && !window.location.pathname.endsWith('.html')) {
+            window.location.replace(window.location.pathname + '/');
+        }
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pantry Management System</title>
+    <meta name="description" content="Food Expiry & Pantry Management System">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web@2.0.3/src/index.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="animated-bg">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
+
+    <div class="app-container">
+        <header class="glass-header">
+            <div class="logo">
+                <i class="ph-fill ph-basket"></i>
+                <h1>Pantry Manager</h1>
+            </div>
+            <div class="header-actions">
+                <button id="add-item-btn" class="btn btn-primary"><i class="ph ph-plus"></i> Add Item</button>
+            </div>
+        </header>
+
+        <main class="dashboard">
+            <section class="controls-section glass-card">
+                <div class="search-bar">
+                    <i class="ph ph-magnifying-glass"></i>
+                    <input type="text" id="search-input" placeholder="Search pantry items...">
+                </div>
+                <div class="filters">
+                    <select id="category-filter" class="custom-select">
+                        <option value="all">All Categories</option>
+                        <option value="produce">Produce</option>
+                        <option value="dairy">Dairy</option>
+                        <option value="meat">Meat</option>
+                        <option value="pantry">Pantry/Dry</option>
+                        <option value="frozen">Frozen</option>
+                        <option value="other">Other</option>
+                    </select>
+                    <select id="sort-filter" class="custom-select">
+                        <option value="expiry-asc">Expiry: Soonest</option>
+                        <option value="expiry-desc">Expiry: Furthest</option>
+                        <option value="name-asc">Name: A-Z</option>
+                    </select>
+                </div>
+            </section>
+
+            <section class="pantry-grid" id="pantry-grid">
+                <!-- Items will be injected here via JS -->
+            </section>
+            
+            <div id="empty-state" class="empty-state hidden">
+                <i class="ph-fill ph-package"></i>
+                <h2>Your pantry is empty!</h2>
+                <p>Click "Add Item" to start managing your groceries.</p>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add/Edit Modal -->
+    <div id="item-modal" class="modal-overlay hidden">
+        <div class="modal glass-card">
+            <div class="modal-header">
+                <h3 id="modal-title">Add Pantry Item</h3>
+                <button id="close-modal" class="icon-btn"><i class="ph ph-x"></i></button>
+            </div>
+            <form id="item-form">
+                <input type="hidden" id="item-id">
+                <div class="form-group">
+                    <label for="item-name">Item Name</label>
+                    <input type="text" id="item-name" placeholder="e.g., Milk" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="item-category">Category</label>
+                        <select id="item-category" required>
+                            <option value="produce">Produce</option>
+                            <option value="dairy">Dairy</option>
+                            <option value="meat">Meat</option>
+                            <option value="pantry">Pantry/Dry</option>
+                            <option value="frozen">Frozen</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="item-quantity">Quantity</label>
+                        <input type="number" id="item-quantity" min="1" value="1" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="item-expiry">Expiry Date</label>
+                    <input type="date" id="item-expiry" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Save Item</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

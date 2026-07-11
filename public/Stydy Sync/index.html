@@ -17,13 +17,14 @@
             <ul>
                 <li><a href="#Home">Home</a></li>
                 <li><a href="#Features">Features</a></li>
+                <li><a href="#ai-planner">AI Planner</a></li>
                 <li><a href="#Prising">Prising</a></li>
                 <li><a href="#Blogs">Blogs</a></li>
                 <li><a href="#Contact">Contact</a></li>
             </ul>
             <div class="button">
-                <a href="#button" class="contact">
-                    Contact Us
+                <a href="#ai-planner" class="contact">
+                    Try AI Planner
                 </a>
             </div>
             <div class="menu">
@@ -44,10 +45,10 @@
                 </p>
                 <div class="b1">
                     <div class="s1">
-                        <a href="#start" id="p4">Start Now</a>
+                        <a href="#ai-planner" id="p4">Start Now</a>
                     </div>
                     <div class="s2">
-                        <a href="#tour" id="p5">Take tour</a>
+                        <a href="#Features" id="p5">Take tour</a>
                     </div>
                 </div>
             </div>
@@ -66,7 +67,7 @@
                 <div class="icon"><i aria-hidden="true" class="fas fa-envelope"></i>E-Mail</div>
             </div>
         </div>
-        <div class="foot">
+        <div class="foot" id="Features">
             <div class="card-section">
                 <div class="head">
                     <h3>Our Competitive Advantage</h3>
@@ -141,6 +142,129 @@
                 </div>
             </div>
         </div> 
+
+        <!-- ============================================================
+             AI STUDY PLANNER SECTION  — Issue #9526
+             ============================================================ -->
+        <section class="ai-planner-section" id="ai-planner">
+            <div class="ai-planner-inner">
+
+                <!-- Section Header -->
+                <div class="ai-planner-header">
+                    <span class="ai-badge"><i class="fa fa-brain"></i> Powered by Groq · Llama Instant</span>
+                    <h2 class="ai-planner-title">AI Study Planner</h2>
+                    <p class="ai-planner-subtitle">
+                        Enter your exam details and get a personalized day-wise study roadmap generated instantly by AI.
+                    </p>
+                </div>
+
+                <!-- API Key Setup Box -->
+                <div class="api-key-box" id="apiKeyBox">
+                    <div class="api-key-box-inner">
+                        <div class="api-key-icon"><i class="fa fa-key"></i></div>
+                        <div class="api-key-text">
+                            <h4>Setup your Groq API Key</h4>
+                            <p>Your key is saved in your browser only — never sent to any server except Groq.</p>
+                        </div>
+                        <div class="api-key-input-row">
+                            <input type="password" id="groqApiKeyInput" placeholder="gsk_..." autocomplete="off" />
+                            <button id="saveApiKeyBtn"><i class="fa fa-save"></i> Save Key</button>
+                        </div>
+                        <p class="api-key-hint">
+                            Get your free key at <a href="https://console.groq.com/keys" target="_blank" rel="noopener">console.groq.com/keys</a>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- API Key Saved Indicator -->
+                <div class="api-key-saved" id="apiKeySaved" style="display:none;">
+                    <span><i class="fa fa-check-circle"></i> Groq API Key saved</span>
+                    <button id="changeKeyBtn">Change Key</button>
+                </div>
+
+                <!-- Planner Form + Output -->
+                <div class="ai-planner-grid">
+                    <!-- LEFT: Input Form -->
+                    <div class="planner-form-card">
+                        <h3><i class="fa fa-pencil-square-o"></i> Your Study Details</h3>
+
+                        <div class="form-group">
+                            <label for="examName">Exam / Goal Name</label>
+                            <input type="text" id="examName" placeholder="e.g. GATE 2026, JEE Mains, Semester Finals" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="examDate">Exam Date</label>
+                            <input type="date" id="examDate" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="dailyHours">Daily Study Hours</label>
+                            <select id="dailyHours">
+                                <option value="1">1 hour/day</option>
+                                <option value="2">2 hours/day</option>
+                                <option value="3" selected>3 hours/day</option>
+                                <option value="4">4 hours/day</option>
+                                <option value="5">5 hours/day</option>
+                                <option value="6">6+ hours/day</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="subjects">Subjects / Topics</label>
+                            <textarea id="subjects" rows="4" placeholder="e.g.&#10;Mathematics - Calculus, Algebra&#10;Physics - Mechanics, Thermodynamics&#10;Chemistry - Organic, Inorganic"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Difficulty Level</label>
+                            <div class="difficulty-tabs">
+                                <button class="diff-btn active" data-diff="Beginner">Beginner</button>
+                                <button class="diff-btn" data-diff="Intermediate">Intermediate</button>
+                                <button class="diff-btn" data-diff="Advanced">Advanced</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="weakTopics">Weak Topics <span class="optional">(optional)</span></label>
+                            <input type="text" id="weakTopics" placeholder="e.g. Integration, Organic Chemistry" />
+                        </div>
+
+                        <button class="generate-btn" id="generateBtn">
+                            <i class="fa fa-magic"></i> Generate My Study Plan
+                        </button>
+
+                        <button class="clear-btn" id="clearPlanBtn" style="display:none;">
+                            <i class="fa fa-trash"></i> Clear Plan
+                        </button>
+                    </div>
+
+                    <!-- RIGHT: Output -->
+                    <div class="planner-output-card" id="plannerOutput">
+                        <div class="output-placeholder" id="outputPlaceholder">
+                            <div class="placeholder-icon"><i class="fa fa-calendar-check-o"></i></div>
+                            <h4>Your plan will appear here</h4>
+                            <p>Fill in your exam details and click <strong>Generate My Study Plan</strong></p>
+                        </div>
+
+                        <div class="output-loading" id="outputLoading" style="display:none;">
+                            <div class="loader-ring"></div>
+                            <p>Generating your personalized roadmap…</p>
+                        </div>
+
+                        <div class="output-content" id="outputContent" style="display:none;">
+                            <div class="output-toolbar">
+                                <span class="output-label"><i class="fa fa-map"></i> Your Study Roadmap</span>
+                                <button class="copy-btn" id="copyPlanBtn"><i class="fa fa-copy"></i> Copy</button>
+                            </div>
+                            <div class="plan-text" id="planText"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+        <!-- END AI STUDY PLANNER SECTION -->
+
         <div class="review-section">
             <div class="test">
                 <div class="h">

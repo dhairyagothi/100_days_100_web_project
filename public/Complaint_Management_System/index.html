@@ -68,11 +68,15 @@
                     <h1 id="page-title">Dashboard</h1>
                 </div>
                 <div class="header-actions">
-                    <div class="user-profile">
-                        <img src="https://ui-avatars.com/api/?name=User&background=6366f1&color=fff" alt="User">
-                        <span>Current User</span>
-                    </div>
-                </div>
+    <div class="user-profile" id="user-profile">
+        <img
+            id="profile-avatar"
+            src="https://ui-avatars.com/api/?name=User&background=6366f1&color=fff"
+            alt="User"
+        >
+        <span id="profile-name-display">Current User</span>
+    </div>
+</div>
             </header>
 
             <!-- Dashboard View -->
@@ -342,14 +346,17 @@
                                     <textarea id="admin-notes" rows="6" placeholder="Enter troubleshooting steps or resolution details..."></textarea>
                                 </div>
                                 
-                                <button class="btn btn-primary w-full mt-4" onclick="window.app.saveAdminChanges()">
-                                    <i class="ph ph-floppy-disk"></i> Save Changes
-                                </button>
+                                <button id="save-profile" class="btn btn-primary">
+    Save Changes
+</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
+
+            <!-- Profile View -->
+
             
         </main>
     </div>
@@ -365,6 +372,30 @@
     </div>
 
     <!-- Scripts -->
-    <script src="script.js" type="module"></script>
+    
+
+<div id="profile-modal" class="modal hidden">
+    <div class="modal-content">
+        <button id="close-profile" class="close-btn">&times;</button>
+
+        <h2>My Profile</h2>
+
+        <label>Name</label>
+        <input id="profile-name">
+
+        <label>Email</label>
+        <input id="profile-email">
+
+        <label>Phone Number (Optional)</label>
+        <input id="profile-phone">
+
+        <button id="save-profile-btn" class="btn btn-primary">
+    Save Changes
+</button>
+
+    </div>
+
+</div>
+<script src="script.js" type="module"></script>
 </body>
 </html>
