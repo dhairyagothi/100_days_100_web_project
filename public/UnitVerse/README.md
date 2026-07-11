@@ -23,12 +23,18 @@
 * 🌙 **Modern Dark UI with smooth animations**
 * 💾 **LocalStorage Persistence**
 
+### New Enhanced Features ✨
+
+* 📐 **Formula & Explanation Panel**: Shows conversion formula and step-by-step calculation details
+* 📋 **Unit Information Cards**: Display detailed information about selected units (name, symbol, description, applications)
+* 🔍 **Multi-Conversion Table**: Convert a single value to all units in the same category simultaneously
+
 ---
 
 ## Technologies Used
 
 * HTML5
-* CSS3 (Flexbox, Grid, Animations)
+* CSS3 (Flexbox, Grid, Animations, CSS Custom Properties)
 * JavaScript
 * LocalStorage API
 * Clipboard API
@@ -74,7 +80,7 @@ http://localhost:8000
 1. Select a category (Length, Weight, etc.)
 2. Enter the value
 3. Choose "From" and "To" units
-4. View instant conversion results
+4. View instant conversion results, formula explanation, unit info cards, and multi-conversion table
 
 ### Additional Functionalities
 
@@ -125,7 +131,6 @@ Feel free to fork this repo and submit a PR.
 ### Suggested Contributions
 
 * Add new unit categories (volume, area, etc.)
-* Implement dark/light mode toggle
 * Add keyboard shortcuts
 * Improve UI/UX
 * Add multi-language support
