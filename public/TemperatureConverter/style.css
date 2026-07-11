@@ -403,6 +403,48 @@ body::before {
   border-left: 3px solid var(--accent);
 }
 
+/* ── Real-World Temperature Reference ── */
+.reference-section {
+  border-top: 1px solid var(--border);
+  padding-top: 22px;
+  margin-top: 22px;
+}
+.reference-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 12px;
+}
+.reference-card {
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 12px;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+.reference-card.active {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  transform: scale(1.03);
+  box-shadow: 0 0 15px rgba(124, 111, 245, 0.25);
+}
+.reference-icon {
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+.reference-name {
+  font-family: 'Syne', sans-serif;
+  font-size: 13px;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+.reference-temp {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
 /* ── History Panel ── */
 .history-panel {
   max-height: 580px;

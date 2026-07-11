@@ -20,6 +20,7 @@ const formulaSection = document.getElementById('formulaSection');
 const fromToLabel    = document.getElementById('fromToLabel');
 const formulaText    = document.getElementById('formulaText');
 const calculationSteps = document.getElementById('calculationSteps');
+const referenceGrid  = document.getElementById('referenceGrid');
 
 // ── State ──
 let conversionHistory = [];
@@ -154,6 +155,15 @@ const conversionFormulas = {
     ]
   }
 };
+
+// ── Real-World Reference Points ──
+const referencePoints = [
+  { name: 'Absolute Zero', temp: -273.15, icon: '❄', tempDisplay: '-273.15°C' },
+  { name: 'Freezing Point', temp: 0, icon: '❄️', tempDisplay: '0°C' },
+  { name: 'Room Temperature', temp: 23, icon: '🌤', tempDisplay: '23°C' },
+  { name: 'Human Body Temperature', temp: 37, icon: '🌡', tempDisplay: '37°C' },
+  { name: 'Boiling Point', temp: 100, icon: '♨', tempDisplay: '100°C' }
+];
 
 // ── Init ──
 (function init() {
@@ -295,6 +305,62 @@ function updateFormulaPanel(value, fromUnit) {
     stepEl.textContent = stepText;
     calculationSteps.appendChild(stepEl);
   });
+}
+
+// ── Real-World Reference Functions ──
+function initReferenceGrid() {
+  referenceGrid.innerHTML = '';
+  referencePoints.forEach((point, index) => {
+    const card = document.createElement('div');
+    card.className = 'reference-card';
+    card.dataset.index = index;
+
+    const icon = document.createElement('div');
+    icon.className = 'reference-icon';
+    icon.textContent = point.icon;
+
+    const name = document.createElement('div');
+    name.className = 'reference-name';
+    name.textContent = point.name;
+
+    const temp = document.createElement('div');
+    temp.className = 'reference-temp';
+    temp.textContent = point.tempDisplay;
+
+    card.appendChild(icon);
+    card.appendChild(name);
+    card.appendChild(temp);
+    referenceGrid.appendChild(card);
+  });
+}
+
+function updateReferenceHighlight(celsiusTemp) {
+  const cards = referenceGrid.querySelectorAll('.reference-card');
+
+  // Reset all cards
+  cards.forEach(card => card.classList.remove('active'));
+
+  if (celsiusTemp === null || celsiusTemp === undefined || isNaN(celsiusTemp)) {
+    return;
+  }
+
+  // Find closest reference point
+  let closestIndex = 0;
+  let minDistance = Math.abs(referencePoints[0].temp - celsiusTemp);
+
+  for (let i = 1; i < referencePoints.length; i++) {
+    const distance = Math.abs(referencePoints[i].temp - celsiusTemp);
+    if (distance < minDistance) {
+      minDistance = distance;
+      closestIndex = i;
+    }
+  }
+
+  // Highlight closest card
+  const closestCard = cards[closestIndex];
+  if (closestCard) {
+    closestCard.classList.add('active');
+  }
 }
 
 // ── Input Listeners ──
