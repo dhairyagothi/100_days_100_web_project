@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Developer Roadmap Generator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app" id="app">
+    <header class="app-header">
+      <h1>Developer Roadmap Generator</h1>
+      <div class="controls">
+        <label for="careerSelect" class="visually-hidden">Choose career</label>
+        <select id="careerSelect" aria-label="Choose career"></select>
+        <input id="searchInput" type="search" placeholder="Search roadmap..." aria-label="Search roadmap">
+        <button id="themeToggle" aria-pressed="false">Toggle Theme</button>
+        <button id="resetProgress">Reset Progress</button>
+      </div>
+      <div class="progress-wrap" aria-hidden="false">
+        <div class="progress-label"><span id="progressText">0%</span> Complete</div>
+        <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+          <div class="progress-fill" style="width:0%"></div>
+        </div>
+      </div>
+    </header>
+
+    <section id="roadmapContainer" class="roadmap" aria-live="polite"></section>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  </main>
+
+  <script src="script.js" defer></script>
+</body>
+</html>

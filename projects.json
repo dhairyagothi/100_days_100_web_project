@@ -2891,6 +2891,19 @@
     ],
     "difficulty": "advanced",
     "projectPath": "./public/BeatMaker/demo.html"
+  },
+  {
+    "projectNo": 229,
+    "projectName": "Developer Roadmap Generator",
+    "projectType": "Tool",
+    "projectDesc": "Interactive developer career roadmaps with progress tracking, persistence, and search.",
+    "techStack": [
+      "javascript",
+      "tool",
+      "roadmap"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/Developer_Roadmap_Generator/index.html"
   }
 
 ]
