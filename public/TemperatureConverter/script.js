@@ -169,6 +169,7 @@ const referencePoints = [
 (function init() {
   loadTheme();
   loadHistory();
+  initReferenceGrid();
   setupPresets();
   setupInputListeners();
   setupClearHistory();
@@ -215,6 +216,7 @@ function setValues({ celsius, fahrenheit, kelvin }, skip) {
   if (skip !== 'kelvin')     kelvinEl.value     = isNaN(kelvin)     ? '' : +kelvin.toFixed(4);
   updateScaleBar(celsius);
   updateFactCard(celsius);
+  updateReferenceHighlight(celsius);
 }
 
 function clearValues() {
@@ -222,6 +224,7 @@ function clearValues() {
   updateScaleBar(null);
   updateFactCard(null);
   updateFormulaPanel(null, null);
+  updateReferenceHighlight(null);
 }
 
 // ── Scale Bar ──
@@ -429,6 +432,7 @@ function setupPresets() {
       updateScaleBar(c);
       updateFactCard(c);
       updateFormulaPanel(c, 'celsius');
+      updateReferenceHighlight(c);
       addHistoryEntry(c, btn.querySelector('.preset-name').textContent);
     });
   });
@@ -511,6 +515,7 @@ function renderHistory() {
       updateScaleBar(c);
       updateFactCard(c);
       updateFormulaPanel(c, 'celsius');
+      updateReferenceHighlight(c);
     });
     historyList.appendChild(item);
   });
