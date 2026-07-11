@@ -729,7 +729,7 @@ function syncStateToURL() {
   const url = new URL(window.location);
 
   if (searchQuery) {
-    url.searchParams.set("search", searchQuery);
+    url.searchParams.set("search", searchQuery.trim());
   } else {
     url.searchParams.delete("search");
   }
@@ -753,7 +753,7 @@ function readStateFromURL() {
   const urlParams = new URLSearchParams(window.location.search);
 
   if (urlParams.has("search")) {
-    searchQuery = urlParams.get("search");
+    searchQuery = urlParams.get("search").trim();
     const searchInput = document.getElementById("searchInput");
     if (searchInput) {
       searchInput.value = searchQuery;
