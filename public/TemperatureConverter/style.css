@@ -316,6 +316,33 @@ body::before {
 }
 .preset-btn > div { display: flex; flex-direction: column; }
 
+/* ── Facts Section ── */
+.facts-section {
+  border-top: 1px solid var(--border);
+  padding-top: 22px;
+  margin-top: 22px;
+}
+.fact-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--accent-soft);
+  border: 1px solid rgba(124,111,245,0.25);
+  border-radius: 14px;
+  padding: 18px 18px;
+  transition: var(--transition);
+}
+.fact-icon {
+  font-size: 32px;
+  flex-shrink: 0;
+}
+.fact-text {
+  font-family: 'Syne', sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-primary);
+}
+
 /* ── History Panel ── */
 .history-panel {
   max-height: 580px;

@@ -13,6 +13,9 @@ const themeToggle   = document.getElementById('themeToggle');
 const themeIcon     = themeToggle.querySelector('.theme-icon');
 const scaleFill     = document.getElementById('scaleFill');
 const scaleThumb    = document.getElementById('scaleThumb');
+const factCard      = document.getElementById('factCard');
+const factText      = document.getElementById('factText');
+const factIcon      = document.getElementById('factIcon');
 
 // ── State ──
 let conversionHistory = [];
@@ -24,6 +27,82 @@ const STORAGE_KEY_THEME   = 'tempconvert_theme';
 // ── Scale Config ──
 const SCALE_MIN = -273.15;  // Absolute zero
 const SCALE_MAX = 1000;     // °C
+
+// ── Temperature Facts Data ──
+const temperatureFacts = [
+  {
+    min: -273.15,
+    max: -200,
+    icon: '🥶',
+    text: 'Absolute zero (-273.15°C) is the coldest possible temperature, where all molecular motion stops.'
+  },
+  {
+    min: -199.99,
+    max: -78.5,
+    icon: '❄️',
+    text: 'Dry ice (solid CO₂) sublimates at -78.5°C and is used for keeping things cold without leaving residue.'
+  },
+  {
+    min: -78.49,
+    max: 0,
+    icon: '🌨️',
+    text: 'Water freezes at 0°C (32°F), turning into ice which is less dense than liquid water—so ice floats!'
+  },
+  {
+    min: 0.01,
+    max: 10,
+    icon: '🥤',
+    text: 'A typical refrigerator temperature is around 4°C, slowing bacterial growth to keep food fresh.'
+  },
+  {
+    min: 10.01,
+    max: 20,
+    icon: '🍂',
+    text: 'Room temperature is commonly defined as 20°C, a comfortable range for most people.'
+  },
+  {
+    min: 20.01,
+    max: 30,
+    icon: '🌤️',
+    text: '25°C is considered a pleasant room temperature, often used as a standard in scientific experiments.'
+  },
+  {
+    min: 30.01,
+    max: 40,
+    icon: '🌡️',
+    text: 'The average normal human body temperature is 37°C (98.6°F), though it can vary slightly.'
+  },
+  {
+    min: 40.01,
+    max: 70,
+    icon: '☕',
+    text: 'Hot coffee is typically served around 60-70°C, hot enough to be enjoyable without burning.'
+  },
+  {
+    min: 70.01,
+    max: 100,
+    icon: '♨️',
+    text: 'Water boils at 100°C (212°F) at standard atmospheric pressure, turning into steam.'
+  },
+  {
+    min: 100.01,
+    max: 200,
+    icon: '🍪',
+    text: 'A typical oven temperature for baking cookies is 180°C, allowing them to turn golden and crispy.'
+  },
+  {
+    min: 200.01,
+    max: 500,
+    icon: '🔥',
+    text: 'The flame of a candle burns at roughly 400°C, hot enough to melt many common materials.'
+  },
+  {
+    min: 500.01,
+    max: 1000,
+    icon: '☀️',
+    text: 'The surface of the Sun is about 5500°C, incredibly hot but much cooler than its core at 15 million°C!'
+  }
+];
 
 // ── Init ──
 (function init() {
@@ -74,11 +153,13 @@ function setValues({ celsius, fahrenheit, kelvin }, skip) {
   if (skip !== 'fahrenheit') fahrenheitEl.value = isNaN(fahrenheit) ? '' : +fahrenheit.toFixed(4);
   if (skip !== 'kelvin')     kelvinEl.value     = isNaN(kelvin)     ? '' : +kelvin.toFixed(4);
   updateScaleBar(celsius);
+  updateFactCard(celsius);
 }
 
 function clearValues() {
   celsiusEl.value = fahrenheitEl.value = kelvinEl.value = '';
   updateScaleBar(null);
+  updateFactCard(null);
 }
 
 // ── Scale Bar ──
@@ -92,6 +173,24 @@ function updateScaleBar(celsius) {
   const pct = ((clamped - SCALE_MIN) / (SCALE_MAX - SCALE_MIN)) * 100;
   scaleFill.style.width = pct + '%';
   scaleThumb.style.left = pct + '%';
+}
+
+// ── Temperature Facts Card ──
+function updateFactCard(celsius) {
+  if (celsius === null || celsius === undefined || isNaN(celsius)) {
+    factIcon.textContent = '🌡️';
+    factText.textContent = 'Enter a temperature to see an interesting fact!';
+    return;
+  }
+
+  const fact = temperatureFacts.find(f => celsius >= f.min && celsius <= f.max);
+  if (fact) {
+    factIcon.textContent = fact.icon;
+    factText.textContent = fact.text;
+  } else {
+    factIcon.textContent = '🌡️';
+    factText.textContent = 'That\'s an interesting temperature!';
+  }
 }
 
 // ── Input Listeners ──
