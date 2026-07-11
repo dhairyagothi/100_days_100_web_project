@@ -343,6 +343,66 @@ body::before {
   color: var(--text-primary);
 }
 
+/* ── Formula & Calculation Section ── */
+.formula-section {
+  border-top: 1px solid var(--border);
+  padding-top: 22px;
+  margin-top: 22px;
+}
+.formula-card {
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 18px;
+}
+.formula-header {
+  font-family: 'DM Mono', monospace;
+  font-size: 14px;
+  color: var(--accent);
+  margin-bottom: 14px;
+  font-weight: 500;
+}
+.formula-content {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.formula-block, .calculation-block {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.formula-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+#formulaText {
+  font-family: 'DM Mono', monospace;
+  font-size: 18px;
+  color: var(--text-primary);
+  background: var(--bg);
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+#calculationSteps {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.calculation-step {
+  font-family: 'DM Mono', monospace;
+  font-size: 15px;
+  color: var(--text-primary);
+  background: var(--accent-soft);
+  padding: 8px 12px;
+  border-radius: 8px;
+  border-left: 3px solid var(--accent);
+}
+
 /* ── History Panel ── */
 .history-panel {
   max-height: 580px;

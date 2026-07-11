@@ -16,10 +16,15 @@ const scaleThumb    = document.getElementById('scaleThumb');
 const factCard      = document.getElementById('factCard');
 const factText      = document.getElementById('factText');
 const factIcon      = document.getElementById('factIcon');
+const formulaSection = document.getElementById('formulaSection');
+const fromToLabel    = document.getElementById('fromToLabel');
+const formulaText    = document.getElementById('formulaText');
+const calculationSteps = document.getElementById('calculationSteps');
 
 // ── State ──
 let conversionHistory = [];
 let historyTimeout    = null;
+let lastInputUnit     = 'celsius';
 
 const STORAGE_KEY_HISTORY = 'tempconvert_history';
 const STORAGE_KEY_THEME   = 'tempconvert_theme';
@@ -104,6 +109,52 @@ const temperatureFacts = [
   }
 ];
 
+// ── Conversion Formulas & Step Generators ──
+const conversionFormulas = {
+  'celsius→fahrenheit': {
+    formula: '°F = (°C × 9/5) + 32',
+    getSteps: (value) => [
+      `${value} × 9/5 = ${(value * 9/5).toFixed(2)}`,
+      `${(value * 9/5).toFixed(2)} + 32 = ${((value * 9/5) + 32).toFixed(2)}°F`
+    ]
+  },
+  'celsius→kelvin': {
+    formula: 'K = °C + 273.15',
+    getSteps: (value) => [
+      `${value} + 273.15 = ${(value + 273.15).toFixed(2)}K`
+    ]
+  },
+  'fahrenheit→celsius': {
+    formula: '°C = (°F - 32) × 5/9',
+    getSteps: (value) => [
+      `${value} - 32 = ${(value - 32).toFixed(2)}`,
+      `${(value - 32).toFixed(2)} × 5/9 = ${((value - 32) * 5/9).toFixed(2)}°C`
+    ]
+  },
+  'fahrenheit→kelvin': {
+    formula: 'K = (°F - 32) × 5/9 + 273.15',
+    getSteps: (value) => [
+      `${value} - 32 = ${(value - 32).toFixed(2)}`,
+      `${(value - 32).toFixed(2)} × 5/9 = ${((value - 32) * 5/9).toFixed(2)}`,
+      `${((value - 32) * 5/9).toFixed(2)} + 273.15 = ${((value - 32) * 5/9 + 273.15).toFixed(2)}K`
+    ]
+  },
+  'kelvin→celsius': {
+    formula: '°C = K - 273.15',
+    getSteps: (value) => [
+      `${value} - 273.15 = ${(value - 273.15).toFixed(2)}°C`
+    ]
+  },
+  'kelvin→fahrenheit': {
+    formula: '°F = (K - 273.15) × 9/5 + 32',
+    getSteps: (value) => [
+      `${value} - 273.15 = ${(value - 273.15).toFixed(2)}`,
+      `${(value - 273.15).toFixed(2)} × 9/5 = ${((value - 273.15) * 9/5).toFixed(2)}`,
+      `${((value - 273.15) * 9/5).toFixed(2)} + 32 = ${((value - 273.15) * 9/5 + 32).toFixed(2)}°F`
+    ]
+  }
+};
+
 // ── Init ──
 (function init() {
   loadTheme();
@@ -160,6 +211,7 @@ function clearValues() {
   celsiusEl.value = fahrenheitEl.value = kelvinEl.value = '';
   updateScaleBar(null);
   updateFactCard(null);
+  updateFormulaPanel(null, null);
 }
 
 // ── Scale Bar ──
@@ -193,40 +245,101 @@ function updateFactCard(celsius) {
   }
 }
 
+// ── Formula & Calculation Panel ──
+function updateFormulaPanel(value, fromUnit) {
+  if (value === null || value === undefined || isNaN(value)) {
+    fromToLabel.textContent = 'Select units and enter a value';
+    formulaText.textContent = 'Enter a value to see the formula';
+    calculationSteps.innerHTML = '';
+    return;
+  }
+
+  // Determine target units (the other two units)
+  let toUnits = [];
+  if (fromUnit === 'celsius') {
+    toUnits = ['fahrenheit', 'kelvin'];
+  } else if (fromUnit === 'fahrenheit') {
+    toUnits = ['celsius', 'kelvin'];
+  } else { // kelvin
+    toUnits = ['celsius', 'fahrenheit'];
+  }
+
+  // For now, let's just use the first target unit for simplicity (matches original intent of showing one conversion)
+  const toUnit = toUnits[0];
+
+  const key = `${fromUnit}→${toUnit}`;
+  const formulaData = conversionFormulas[key];
+
+  if (!formulaData) {
+    fromToLabel.textContent = 'Select units and enter a value';
+    formulaText.textContent = 'Enter a value to see the formula';
+    calculationSteps.innerHTML = '';
+    return;
+  }
+
+  // Update the from-to label
+  const labels = {
+    celsius: 'Celsius',
+    fahrenheit: 'Fahrenheit',
+    kelvin: 'Kelvin'
+  };
+  fromToLabel.textContent = `${labels[fromUnit]} → ${labels[toUnit]}`;
+  formulaText.textContent = formulaData.formula;
+
+  // Render steps
+  calculationSteps.innerHTML = '';
+  const steps = formulaData.getSteps(value);
+  steps.forEach(stepText => {
+    const stepEl = document.createElement('div');
+    stepEl.className = 'calculation-step';
+    stepEl.textContent = stepText;
+    calculationSteps.appendChild(stepEl);
+  });
+}
+
 // ── Input Listeners ──
 function setupInputListeners() {
   celsiusEl.addEventListener('input', () => {
+    lastInputUnit = 'celsius';
     const c = parseFloat(celsiusEl.value);
     if (!isNaN(c)) {
       setValues(fromCelsius(c), 'celsius');
       scheduleHistoryEntry(c);
+      updateFormulaPanel(c, lastInputUnit);
     } else {
       clearValues();
       celsiusEl.value = '';
+      updateFormulaPanel(null, null);
     }
   });
 
   fahrenheitEl.addEventListener('input', () => {
+    lastInputUnit = 'fahrenheit';
     const f = parseFloat(fahrenheitEl.value);
     if (!isNaN(f)) {
       const c = celsiusFromFahrenheit(f);
       setValues(fromCelsius(c), 'fahrenheit');
       scheduleHistoryEntry(c, `${+f.toFixed(4)}°F`);
+      updateFormulaPanel(f, lastInputUnit);
     } else {
       clearValues();
       fahrenheitEl.value = '';
+      updateFormulaPanel(null, null);
     }
   });
 
   kelvinEl.addEventListener('input', () => {
+    lastInputUnit = 'kelvin';
     const k = parseFloat(kelvinEl.value);
     if (!isNaN(k)) {
       const c = celsiusFromKelvin(k);
       setValues(fromCelsius(c), 'kelvin');
       scheduleHistoryEntry(c, `${+k.toFixed(4)}K`);
+      updateFormulaPanel(k, lastInputUnit);
     } else {
       clearValues();
       kelvinEl.value = '';
+      updateFormulaPanel(null, null);
     }
   });
 }
@@ -237,6 +350,7 @@ function setupPresets() {
     btn.addEventListener('click', () => {
       const c = parseFloat(btn.dataset.celsius);
       const vals = fromCelsius(c);
+      lastInputUnit = 'celsius';
       // Animate inputs
       [celsiusEl, fahrenheitEl, kelvinEl].forEach(el => {
         el.classList.remove('pop');
@@ -247,6 +361,8 @@ function setupPresets() {
       fahrenheitEl.value = +vals.fahrenheit.toFixed(4);
       kelvinEl.value     = +vals.kelvin.toFixed(4);
       updateScaleBar(c);
+      updateFactCard(c);
+      updateFormulaPanel(c, 'celsius');
       addHistoryEntry(c, btn.querySelector('.preset-name').textContent);
     });
   });
@@ -322,10 +438,13 @@ function renderHistory() {
     item.addEventListener('click', () => {
       const c = entry.celsius;
       const vals = fromCelsius(c);
+      lastInputUnit = 'celsius';
       celsiusEl.value    = vals.celsius;
       fahrenheitEl.value = +vals.fahrenheit.toFixed(4);
       kelvinEl.value     = +vals.kelvin.toFixed(4);
       updateScaleBar(c);
+      updateFactCard(c);
+      updateFormulaPanel(c, 'celsius');
     });
     historyList.appendChild(item);
   });
