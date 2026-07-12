@@ -3432,3 +3432,15 @@ body.custom-cursor-active .cursor-ring.is-visible {
 #randomProjectResult {
   width: 100%;
 }
+
+.skeleton-card {
+  animation: pulse 1.5s infinite ease-in-out;
+  background-color: #e0e0e0;
+  height: 250px;
+  border-radius: 8px;
+}
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
