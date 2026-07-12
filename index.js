@@ -359,7 +359,7 @@ function buildProjectCardHTML({
             </div>
 
             <div class="card-preview-image-container" style="margin: 12px 0; border-radius: 8px; overflow: hidden; aspect-ratio: 16/9; background: #1a1a1a;">
-               <img src="${url && url.startsWith('./') ? url.substring(0, url.lastIndexOf('/')) : ''}/preview.png"alt="${safeName} preview" onerror="this.parentNode.style.display='none';" style="width: 100%; height: 100%; object-fit: cover;">
+               <img src="${url && url.startsWith('./') ? url.substring(0, url.lastIndexOf('/')) : ''}/preview.png"alt="${safeName} preview" onerror="this.onerror=null; this.src='./public/placeholder.png';" style="width: 100%; height: 100%; object-fit: cover;">
             </div>
 
             <h3 class="card-name">${safeName}</h3>
