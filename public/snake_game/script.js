@@ -5,6 +5,7 @@ const levelElement = document.querySelector(".level");
 const controls = document.querySelectorAll(".controls i");
 const newGameButton = document.querySelector(".new-game-button");
 const restartGameButton = document.querySelector(".restart-game-button");
+const pauseGameButton = document.querySelector(".pause-game-button");
 
 let gameOver = false;
 let foodX, foodY, bonusFoodX, bonusFoodY, powerUpX, powerUpY;
@@ -19,7 +20,7 @@ let gameSpeed = 300;
 let obstacles = [];
 let powerUpActive = false;
 let powerUpDuration = 5000; // Power-up lasts for 5 seconds
-
+let paused = false;
 // Getting high score from the local storage
 let highScore = localStorage.getItem("high-score") || 0;
 highScoreElement.innerText = `High Score: ${highScore}`;
@@ -89,6 +90,9 @@ const changeDirection = e => {
 controls.forEach(button => button.addEventListener("click", () => changeDirection({ key: button.dataset.key })));
 
 const initGame = () => {
+
+  if (paused) return;
+
   if (gameOver) return handleGameOver();
   let html = `<div class="food" style="grid-area: ${foodY} / ${foodX}"></div>`;
   if (bonusFoodVisible) {
@@ -161,6 +165,8 @@ const initGame = () => {
 }
 
 const startNewGame = () => {
+  paused = false;
+  pauseGameButton.innerText = "Pause";
   gameOver = false;
   score = 0;
   level = 1;
@@ -182,6 +188,8 @@ const startNewGame = () => {
 }
 
 const restartGame = () => {
+  paused = false;
+  pauseGameButton.innerText = "Pause";
   gameOver = false;
   score = 0;
   snakeBody = [];
@@ -196,9 +204,27 @@ const restartGame = () => {
   clearInterval(setIntervalId);
   setIntervalId = setInterval(initGame, gameSpeed);
 }
+const togglePause = () => {
+
+  if (!paused) {
+
+    paused = true;
+    clearInterval(setIntervalId);
+    pauseGameButton.innerText = "Resume";
+
+  } else {
+
+    paused = false;
+    setIntervalId = setInterval(initGame, gameSpeed);
+    pauseGameButton.innerText = "Pause";
+
+  }
+
+}
 
 newGameButton.addEventListener("click", startNewGame);
 restartGameButton.addEventListener("click", restartGame);
+pauseGameButton.addEventListener("click", togglePause);
 
 updateFoodPosition();
 updateObstacles();
