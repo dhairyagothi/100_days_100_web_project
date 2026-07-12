@@ -2505,3 +2505,13 @@ document
     "click",
     renderRandomProject
   );
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowRight') {
+    const nextBtn = document.querySelector('.next-btn');
+    if (nextBtn && !nextBtn.disabled) nextBtn.click();
+  } else if (e.key === 'ArrowLeft') {
+    const prevBtn = document.querySelector('.prev-btn');
+    if (prevBtn && !prevBtn.disabled) prevBtn.click();
+  }
+});
