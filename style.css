@@ -3432,3 +3432,13 @@ body.custom-cursor-active .cursor-ring.is-visible {
 #randomProjectResult {
   width: 100%;
 }
+
+@media (max-width: 320px) {
+  .navbar-container {
+    flex-direction: column;
+    padding: 10px;
+  }
+  .nav-links {
+    gap: 0.5rem;
+  }
+}
