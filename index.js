@@ -249,6 +249,93 @@ function escapeHTML(value) {
     .replace(/'/g, "&#39;");
 }
 
+function getProjectIdentifier(project) {
+  if (!project) return "";
+
+  if (project.projectNo != null) {
+    return String(project.projectNo);
+  }
+
+  if (project.day) {
+    return String(project.day);
+  }
+
+  if (project.projectName) {
+    return String(project.projectName);
+  }
+
+  return "";
+}
+
+function buildProjectShareUrl(project) {
+  const shareUrl = new URL(window.location.href);
+  const projectIdentifier = getProjectIdentifier(project);
+
+  if (projectIdentifier) {
+    shareUrl.searchParams.set("project", projectIdentifier);
+  }
+
+  return shareUrl.toString();
+}
+
+function copyProjectLink(project) {
+  const shareUrl = buildProjectShareUrl(project);
+  const copyText = async () => {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      await navigator.clipboard.writeText(shareUrl);
+      return true;
+    }
+
+    const textArea = document.createElement("textarea");
+    textArea.value = shareUrl;
+    textArea.setAttribute("readonly", "");
+    textArea.style.position = "fixed";
+    textArea.style.top = "-9999px";
+    document.body.appendChild(textArea);
+    textArea.select();
+    const copied = document.execCommand("copy");
+    textArea.remove();
+    return copied;
+  };
+
+  copyText()
+    .then(() => {
+      showToast("Project link copied!");
+    })
+    .catch(() => {
+      showToast("Project link copied!");
+    });
+}
+
+function getSharedProjectParam() {
+  return new URLSearchParams(window.location.search).get("project");
+}
+
+function highlightProjectCard(projectIdentifier) {
+  const identifier = String(projectIdentifier || "").trim();
+  if (!identifier) return false;
+
+  const cards = document.querySelectorAll(".project-card");
+  const targetCard = Array.from(cards).find((card) => {
+    const cardId = String(card.dataset.projectId || "").trim();
+    const cardDay = String(card.dataset.projectDay || "").trim();
+    const cardName = String(card.dataset.projectName || "").trim();
+
+    return cardId === identifier || cardDay === identifier || cardName === identifier;
+  });
+
+  if (!targetCard) return false;
+
+  targetCard.scrollIntoView({ behavior: "smooth", block: "center" });
+  targetCard.classList.add("project-card--highlighted");
+
+  window.setTimeout(() => {
+    targetCard.classList.remove("project-card--highlighted");
+  }, 2600);
+
+  return true;
+}
+
 function sanitizeUrl(url) {
   const raw = String(url || "").trim();
 
@@ -376,6 +463,15 @@ function buildProjectCardHTML({
                     ${primaryLink}
                 </div>
                 <div class="card-actions-right" style="display: flex; gap: 8px; align-items: center;">
+                    <button
+                        type="button"
+                        class="copy-link-btn"
+                        data-project-day="${safeDay}"
+                        aria-label="Copy link to ${safeName}"
+                        title="Copy project link"
+                    >
+                        <i class="fas fa-link" aria-hidden="true"></i>
+                    </button>
                     ${githubBtn}
                     <button class="bookmark-btn ${isBookmarked ? "active" : ""}" data-id="${safeDay}" aria-label="${isBookmarked ? `Remove ${safeName} from bookmarks` : `Bookmark ${safeName}`}">
                         <i class="${isBookmarked ? "fa-solid" : "fa-regular"} fa-bookmark" aria-hidden="true"></i>
@@ -727,6 +823,7 @@ let currentFilteredProjects = [];
 
 function syncStateToURL() {
   const url = new URL(window.location);
+  const sharedProject = getSharedProjectParam();
 
   if (searchQuery) {
     url.searchParams.set("search", searchQuery);
@@ -744,6 +841,12 @@ function syncStateToURL() {
     url.searchParams.set("page", currentPage);
   } else {
     url.searchParams.delete("page");
+  }
+
+  if (sharedProject) {
+    url.searchParams.set("project", sharedProject);
+  } else {
+    url.searchParams.delete("project");
   }
 
   window.history.replaceState({}, "", url);
@@ -832,6 +935,20 @@ function renderGrid() {
   });
   currentFilteredProjects = [...filtered];
 
+  const sharedProject = getSharedProjectParam();
+  if (sharedProject) {
+    const sharedProjectIndex = filtered.findIndex((projectEntry) => {
+      const projectId = getProjectIdentifier(projectEntry);
+      const projectDay = projectEntry.day;
+      const projectName = projectEntry.projectName;
+      return projectId === sharedProject || projectDay === sharedProject || projectName === sharedProject;
+    });
+
+    if (sharedProjectIndex >= 0) {
+      currentPage = Math.floor(sharedProjectIndex / itemsPerPage) + 1;
+    }
+  }
+
   // Apply sorting
   if (sortOption === "az") {
     filtered.sort((a, b) => a.projectName.localeCompare(b.projectName));
@@ -884,6 +1001,9 @@ function renderGrid() {
 
     const category = getCategoryFromTags(tags, name);
     const card = document.createElement("div");
+    card.dataset.projectDay = day;
+    card.dataset.projectId = getProjectIdentifier(project);
+    card.dataset.projectName = name;
 
     const isBookmarked = bookmarkedDays.has(day);
 
@@ -904,12 +1024,27 @@ function renderGrid() {
     card.innerHTML = html;
     card.setAttribute("tabindex", "0");
     card.setAttribute("role", "button");
+
+    const copyButton = card.querySelector(".copy-link-btn");
+    if (copyButton) {
+      copyButton.addEventListener("click", (event) => {
+        event.stopPropagation();
+        copyProjectLink(project);
+      });
+    }
+
     attachProjectCardInteraction(card, demoUrl, project);
 
     fragment.appendChild(card);
   });
 
   grid.appendChild(fragment);
+
+  if (sharedProject) {
+    window.requestAnimationFrame(() => {
+      highlightProjectCard(sharedProject);
+    });
+  }
   renderPagination(filtered.length, totalPages);
 
   syncStateToURL();

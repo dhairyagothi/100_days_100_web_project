@@ -2019,6 +2019,32 @@ input:focus {
   transform: translateY(-2px);
 }
 
+.copy-link-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: var(--t);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.copy-link-btn:hover {
+  background: var(--accent-dim);
+  border-color: var(--border-accent);
+  color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.copy-link-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
 .bookmark-btn.active {
   background: var(--accent-dim);
   border-color: var(--border-accent);
@@ -2033,6 +2059,12 @@ input:focus {
 .project-card:hover .card-link {
   color: var(--accent);
   transform: translateX(2px);
+}
+
+.project-card--highlighted {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px rgba(15, 242, 200, 0.28), 0 0 24px rgba(15, 242, 200, 0.22);
+  transform: translateY(-2px);
 }
 
 /* No results */
