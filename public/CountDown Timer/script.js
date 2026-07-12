@@ -226,7 +226,7 @@ function handleTimerComplete() {
   const session = {
     type: state.mode === 'pomodoro' ? `Pomodoro ${state.pomoPhase}` : 'Custom',
     duration: formatSeconds(state.totalSeconds),
-    completedAt: new Date().toLocaleString(),
+    completedAt: new Date().toLocaleString(undefined, { calendar: 'gregory' }),
     timestamp: Date.now()
   };
   sessionHistory.unshift(session);
