@@ -27,7 +27,8 @@ const undoBtn = document.getElementById("undoBtn");
 const resetBtn = document.getElementById("resetBtn");
 const downloadBtn = document.getElementById("downloadBtn");
 const compareBtn = document.getElementById("compareBtn");
-
+const blurBtn  = document.getElementById("blurBtn");
+const embossBtn = document.getElementById("embossBtn");
 // Sliders
 const brightnessSlider = document.getElementById("brightnessSlider");
 const contrastSlider = document.getElementById("contrastSlider");
@@ -141,7 +142,7 @@ function setupCanvas(img) {
 
 function enableControls(enable) {
   const tools = [
-    grayscaleBtn, edgeBtn, cartoonBtn, removeBgBtn, sepiaBtn, invertBtn, sharpenBtn,
+    grayscaleBtn, edgeBtn, cartoonBtn, removeBgBtn, sepiaBtn, invertBtn, sharpenBtn,blurBtn,embossBtn,
     resetBtn, downloadBtn, compareBtn, brightnessSlider, contrastSlider
   ];
   tools.forEach(btn => btn.disabled = !enable);
@@ -176,6 +177,10 @@ undoBtn.onclick = () => {
     const lastState = historyStack[historyStack.length - 1];
     ctx.putImageData(lastState, 0, 0);
     if (historyStack.length <= 1) undoBtn.disabled = true;
+    // reset slider
+    brightnessSlider.value = 0;
+    contrastSlider.value = 0;
+    baseStateForSlider = null;
   }
 };
 
@@ -183,6 +188,10 @@ resetBtn.onclick = () => {
   if (originalImageData) {
     ctx.putImageData(originalImageData, 0, 0);
     saveToHistory();
+    // reset slider
+    brightnessSlider.value = 0;
+    contrastSlider.value = 0;
+    baseStateForSlider = null;
   }
 };
 
@@ -339,53 +348,92 @@ removeBgBtn.onclick = () => applyFilter(async () => {
   ctx.putImageData(imgData, 0, 0);
 });
 
+blurBtn.onclick = () => applyFilter(async () =>{
+  const t = tf.browser.fromPixels(canvas).toFloat().expandDims(0);
+  const kernel = tf.tensor4d([1/9, 1/9, 1/9, 1/9, 1/9, 1/9, 1/9, 1/9, 1/9], [3, 3, 1, 1]).tile([1, 1, 3, 1]);
+  const blurred = tf.depthwiseConv2d(t,kernel,1,"same").clipByValue(0,255).squeeze();
+
+  const normalized = blurred.div(255);
+  await tf.browser.toPixels(normalized,canvas);
+
+  t.dispose();
+  kernel.dispose();
+  blurred.dispose();
+  normalized.dispose();
+});
+embossBtn.onclick = () => applyFilter(async () => {
+  const t = tf.browser.fromPixels(canvas).toFloat().expandDims(0);
+  const kernel = tf.tensor4d([-2, -1, 0, -1, 1, 1, 0, 1, 2], [3, 3, 1, 1]).tile([1, 1, 3, 1]);
+  const embossed = tf.depthwiseConv2d(t, kernel, 1, "same").add(128).clipByValue(0, 255).squeeze();
+  const normalized = embossed.div(255);
+  await tf.browser.toPixels(normalized, canvas);
+  t.dispose();
+  kernel.dispose();
+  embossed.dispose();
+  normalized.dispose();
+});
+
 /* =========================
    ADJUSTMENTS (SLIDERS)
 ========================= */
 
-async function applyAdjustment() {
-  if (!originalImageData || isProcessing) return;
+let baseStateForSlider = null;
+function startAdjustment(){
+  if (!baseStateForSlider){
+    baseStateForSlider = ctx.getImageData(0,0,canvas.width,canvas.height);
 
+  }
+}
+async function applyAdjustmet(){
+  if(!originalImageData || isProcessing) return;
   const b = parseFloat(brightnessSlider.value);
   const c = parseFloat(contrastSlider.value);
+  
+  let imgDatatoProcess = baseStateForSlider || ctx.getImageData(0,0,canvas.width,canvas.height);
 
-  // For sliders, we don't show the full loading overlay as it's meant to be fast-ish
-  // But we use TF.js for the heavy lifting
 
-  tf.tidy(() => {
-    const t = tf.browser.fromPixels(canvas); // Start from current state or original? 
-    // Usually adjustments are relative to the LAST state for interactive feel, 
-    // but here let's apply to the current state.
-
+  // prevent memory leaks
+  const finalTensor = tf.tidy(()=> {
+    const t = tf.browser.fromPixels(imgDatatoProcess);
     let processed = t.toFloat();
 
-    // Brightness: add value
-    if (b !== 0) {
+    if(b!= 0){
       processed = processed.add(tf.scalar(b));
-    }
 
-    // Contrast: factor
-    if (c !== 0) {
-      const factor = (259 * (c + 255)) / (255 * (259 - c));
+    }
+    if(c !== 0){
+      const factor = (259 *(c+255)) / (255 * (259 -c));
       processed = processed.sub(128).mul(factor).add(128);
     }
-
-    const final = processed.clipByValue(0, 255).div(255);
-    tf.browser.toPixels(final, canvas);
+    return processed.clipByValue(0,255).div(255)
   });
+
+  // await drawing outside the tf.tidy
+
+  await tf.browser.toPixels(finalTensor,canvas);
+  finalTensor.dispose();
 }
-
-// Debounce slider updates for smoother performance
+// debounce the slider
 let sliderTimeout;
-[brightnessSlider, contrastSlider].forEach(slider => {
-  slider.addEventListener("input", () => {
+
+[brightnessSlider,contrastSlider].forEach(slider => {
+  slider.addEventListener("mousedown",startAdjustment);
+  slider.addEventListener("touchstart",startAdjustment);
+
+  slider.addEventListener("input",() => {
     clearTimeout(sliderTimeout);
-    sliderTimeout = setTimeout(applyAdjustment, 50);
+    sliderTimeout = setTimeout(applyAdjustmet,50);
   });
 
-  slider.addEventListener("change", () => {
+  slider.addEventListener("change",() => {
     saveToHistory();
-  });
+    baseStateForSlider = null;
+    brightnessSlider.value = 0;
+    contrastSlider.value = 0;
+
+  })
+
+
 });
 
 /* =========================
