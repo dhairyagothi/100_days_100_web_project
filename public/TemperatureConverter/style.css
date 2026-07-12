@@ -316,6 +316,135 @@ body::before {
 }
 .preset-btn > div { display: flex; flex-direction: column; }
 
+/* ── Facts Section ── */
+.facts-section {
+  border-top: 1px solid var(--border);
+  padding-top: 22px;
+  margin-top: 22px;
+}
+.fact-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--accent-soft);
+  border: 1px solid rgba(124,111,245,0.25);
+  border-radius: 14px;
+  padding: 18px 18px;
+  transition: var(--transition);
+}
+.fact-icon {
+  font-size: 32px;
+  flex-shrink: 0;
+}
+.fact-text {
+  font-family: 'Syne', sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-primary);
+}
+
+/* ── Formula & Calculation Section ── */
+.formula-section {
+  border-top: 1px solid var(--border);
+  padding-top: 22px;
+  margin-top: 22px;
+}
+.formula-card {
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 18px;
+}
+.formula-header {
+  font-family: 'DM Mono', monospace;
+  font-size: 14px;
+  color: var(--accent);
+  margin-bottom: 14px;
+  font-weight: 500;
+}
+.formula-content {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.formula-block, .calculation-block {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.formula-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+#formulaText {
+  font-family: 'DM Mono', monospace;
+  font-size: 18px;
+  color: var(--text-primary);
+  background: var(--bg);
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+#calculationSteps {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.calculation-step {
+  font-family: 'DM Mono', monospace;
+  font-size: 15px;
+  color: var(--text-primary);
+  background: var(--accent-soft);
+  padding: 8px 12px;
+  border-radius: 8px;
+  border-left: 3px solid var(--accent);
+}
+
+/* ── Real-World Temperature Reference ── */
+.reference-section {
+  border-top: 1px solid var(--border);
+  padding-top: 22px;
+  margin-top: 22px;
+}
+.reference-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 12px;
+}
+.reference-card {
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 12px;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+.reference-card.active {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  transform: scale(1.03);
+  box-shadow: 0 0 15px rgba(124, 111, 245, 0.25);
+}
+.reference-icon {
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+.reference-name {
+  font-family: 'Syne', sans-serif;
+  font-size: 13px;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+.reference-temp {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
 /* ── History Panel ── */
 .history-panel {
   max-height: 580px;
