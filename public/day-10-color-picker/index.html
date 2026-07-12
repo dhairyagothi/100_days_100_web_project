@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 10 – Color Picker Tool</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+  <header>
+    <p class="day-tag">Day 10 · 100 Web Projects</p>
+    <h1>Color <span>Picker</span></h1>
+  </header>
+
+  <div class="layout">
+
+    <!-- LEFT PANEL -->
+    <div class="card">
+      <div class="preview-box" id="preview">
+        <span class="preview-hex" id="previewHex">#E94560</span>
+      </div>
+
+      <div class="picker-row">
+        <input type="color" id="colorInput" value="#e94560" />
+        <label>Pick any color →</label>
+      </div>
+
+      <!-- RGB Sliders -->
+      <div class="sliders-section">
+        <p class="section-label">RGB Sliders</p>
+        <div class="slider-row">
+          <span class="slider-label">R</span>
+          <input type="range" id="sliderR" min="0" max="255" value="233" class="slider red-slider"/>
+          <span class="slider-val" id="valR">233</span>
+        </div>
+        <div class="slider-row">
+          <span class="slider-label">G</span>
+          <input type="range" id="sliderG" min="0" max="255" value="69" class="slider green-slider"/>
+          <span class="slider-val" id="valG">69</span>
+        </div>
+        <div class="slider-row">
+          <span class="slider-label">B</span>
+          <input type="range" id="sliderB" min="0" max="255" value="96" class="slider blue-slider"/>
+          <span class="slider-val" id="valB">96</span>
+        </div>
+      </div>
+
+      <!-- HSL Sliders -->
+      <div class="sliders-section">
+        <p class="section-label">HSL Sliders</p>
+        <div class="slider-row">
+          <span class="slider-label">H</span>
+          <input type="range" id="sliderH" min="0" max="360" value="349" class="slider hue-slider"/>
+          <span class="slider-val" id="valH">349°</span>
+        </div>
+        <div class="slider-row">
+          <span class="slider-label">S</span>
+          <input type="range" id="sliderS" min="0" max="100" value="80" class="slider sat-slider"/>
+          <span class="slider-val" id="valS">80%</span>
+        </div>
+        <div class="slider-row">
+          <span class="slider-label">L</span>
+          <input type="range" id="sliderL" min="0" max="100" value="59" class="slider lig-slider"/>
+          <span class="slider-val" id="valL">59%</span>
+        </div>
+      </div>
+
+      <!-- Values Grid -->
+      <div class="values-grid">
+        <div class="value-block" data-copy="hex">
+          <div class="label">HEX</div>
+          <div class="val" id="hexVal">#E94560</div>
+          <span class="copy-hint">click to copy</span>
+        </div>
+        <div class="value-block" data-copy="rgb">
+          <div class="label">RGB</div>
+          <div class="val" id="rgbVal">233,69,96</div>
+          <span class="copy-hint">click to copy</span>
+        </div>
+        <div class="value-block" data-copy="hsl">
+          <div class="label">HSL</div>
+          <div class="val" id="hslVal">349°,80%,59%</div>
+          <span class="copy-hint">click to copy</span>
+        </div>
+      </div>
+
+      <button class="copy-btn" id="copyBtn">Copy HEX</button>
+
+      <!-- History -->
+      <p class="history-label">Recent Colors</p>
+      <div class="history" id="history"></div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="right-panel">
+
+      <!-- Contrast Checker -->
+      <div class="card">
+        <p class="section-label">Contrast Checker</p>
+        <div class="contrast-pair">
+          <div class="contrast-preview" id="contrastPreview">
+            <span id="contrastText">Aa</span>
+          </div>
+          <div class="contrast-info">
+            <div class="contrast-score" id="contrastScore">7.2 : 1</div>
+            <div class="contrast-badges" id="contrastBadges">
+              <span class="badge pass" id="badgeAA">AA ✓</span>
+              <span class="badge pass" id="badgeAAA">AAA ✓</span>
+            </div>
+            <div class="bg-toggle-row">
+              <span class="slider-label" style="font-size:0.65rem;">BG</span>
+              <input type="color" id="bgColorInput" value="#ffffff" class="mini-color"/>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Shades & Tints -->
+      <div class="card">
+        <p class="section-label">Shades &amp; Tints</p>
+        <div class="shades-row" id="shadesRow"></div>
+        <div class="tints-row" id="tintsRow"></div>
+      </div>
+
+      <!-- Palette Generator -->
+      <div class="card">
+        <p class="section-label">Color Palette</p>
+        <div class="palette-tabs">
+          <button class="tab-btn active" data-palette="complementary">Complementary</button>
+          <button class="tab-btn" data-palette="triadic">Triadic</button>
+          <button class="tab-btn" data-palette="analogous">Analogous</button>
+          <button class="tab-btn" data-palette="split">Split</button>
+        </div>
+        <div class="palette-swatches" id="paletteSatches"></div>
+        <button class="outline-btn" id="exportPaletteBtn">Export CSS Variables</button>
+      </div>
+
+      <!-- Saved Colors -->
+      <div class="card">
+        <p class="section-label">Saved Colors</p>
+        <div class="history" id="savedColors"></div>
+        <div style="display:flex;gap:0.5rem;margin-top:0.75rem;">
+          <button class="outline-btn" id="saveBtn">Save Current</button>
+          <button class="outline-btn danger" id="clearSavedBtn">Clear</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="toast" id="toast">Copied!</div>
+
+  <script src="script.js"></script>
+</body>
+</html>

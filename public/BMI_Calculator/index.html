@@ -1,81 +1,95 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>BMI Calculator</title>
-    <meta name="description" content="JS app to calculates Body Mass Index">
-    <meta name="author" content="Supritha">
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="../favv.png" type="image/x-icon" />
-     <!-- =====BOX ICONS===== -->
-     <link href='https://cdn.jsdelivr.net/npm/boxicons@2.0.5/css/boxicons.min.css' rel='stylesheet'>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  </head>
-  <body>
-    <div class="bmi">
-      <h2 style="color: azure;font-weight: bold;font-size:40px">Body Mass Index Calculator</h2>
-      <p class="text" style="font-weight: bold;font-size:20px">Height</p>
-        <select id="height-unit" style="text-align: center;">
-            <option value="cm" >Centimeter</option>
-            <option value="feet">Feet/Inches</option>
-        </select>
-        <input type="text" id="height" title="Enter your height" placeholder="Height">
-        <br>
-        <br>
-
-        <p class="text" style="font-weight: bold;font-size:20px">Weight</p>
-        <select id="weight-unit" style="text-align: center;">
-            <option value="kg">Kilogram</option>
-            <option value="lb">Pounds</option>
-        </select>
-        <input type="text" id="weight" title="Enter your weight" placeholder="Weight">
-        <p id="result"></p><button id="btn">Calculate</button>
-        <br>
-        <div id="result"></div>
-        <div id="category"></div>
-        <div id="tips"></div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BMI Calculator | Home</title>
+  
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+  
+  <nav class="navbar">
+    <div class="logo">
+      <i class="fas fa-heartbeat"></i>
+      <h2>BMI <span>CALCULATOR</span></h2>
     </div>
-    <div class="chart">
-
-      <table>
-        <thead>
-          <tr>
-            <th>BMI</th>
-            <th>Category</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td data-column="bmi">less than 18.5</td>
-            <td data-column="category">Underweight</td>
-          </tr>
-          <tr>
-            <td data-column="bmi">between 18.5 and 24.9</td>
-            <td data-column="category">Ideal</td>
-          </tr>
-          <tr>
-            <td data-column="bmi">between 25 and 29.9</td>
-            <td data-column="category">Overweight</td>
-          </tr>
-          <tr>
-            <td data-column="bmi">over 30 </td>
-            <td data-column="category">Obesity</td>
-          </tr>
-        </tbody>
-      </table>
-      <canvas id="bmiChart" style="background-color: black;"></canvas>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="bmi.html">Calculator</a></li>
+      <li><a href="#">About</a></li>
+    </ul>
+    <!-- ========================= -->
+    <!-- THEME SWITCHER -->
+    <!-- ========================= -->
+    <div class="theme-switcher">
+      <button
+        class="theme-btn purple"
+        onclick="changeTheme('theme-purple')"
+        title="Purple Theme"
+      ></button>
+      <button
+        class="theme-btn blue"
+        onclick="changeTheme('theme-blue')"
+        title="Blue Theme"
+      ></button>
+      <button
+        class="theme-btn green"
+        onclick="changeTheme('theme-green')"
+        title="Green Theme"
+      ></button>
+      <button
+        class="theme-btn orange"
+        onclick="changeTheme('theme-orange')"
+        title="Orange Theme"
+      ></button>
     </div>
-    <script src="script.js"></script>
-    <footer class="footer">
-      <p class="footer__title">Supritha Ravishankar</p>
-      <div class="footer__social">
-          <a href="https://de-de.facebook.com/supritha.ravishankar" class="footer__icon"><i class='bx bxl-facebook' ></i></a>
-          <a href="https://github.com/supzi-del" class="footer__icon"><i class='bx bxl-github' ></i></a>
-          <a href="https://twitter.com/SuprithaRavish1" class="footer__icon"><i class='bx bxl-twitter' ></i></a>
-          <a href="https://www.linkedin.com/in/supritha-ravishankar-560008216/" class="footer__icon"><i class='bx bxl-linkedin' ></i></a>
+    <button class="nav-btn">Get Started</button>
+  </nav>
+
+  <section class="hero">
+    <h4 class="hero-subtitle">WELCOME TO</h4>
+    <h1 class="hero-title">BMI CALCULATOR</h1>
+    <p class="hero-text">Know Your Health Status</p>
+    <button class="cta-btn">Start Now</button>
+  </section>
+
+  <section class="features">
+    <h2>Check Your Body Mass Index</h2>
+    <p>Calculate your BMI easily & quickly!</p>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <i class="fas fa-heart"></i>
+        <h3>Track Your BMI</h3>
+        <p>Monitor your Body Mass Index for better health.</p>
       </div>
-      <p>&#169; 2021 copyright all right reserved</p>
-     </footer>
-  </body>
+      <div class="feature-card">
+        <i class="fas fa-clipboard-list"></i>
+        <h3>Get Health Tips</h3>
+        <p>Receive useful advice for a healthier life.</p>
+      </div>
+      <div class="feature-card">
+        <i class="fas fa-shield-alt"></i>
+        <h3>Stay Fit & Healthy</h3>
+        <p>Understand your weight category and stay active.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="categories">
+    <h2>BMI Categories</h2>
+    <div class="category-grid">
+      <div class="card underweight">Underweight <span>BMI &lt; 18.5</span></div>
+      <div class="card normal">Normal <span>BMI 18.5 - 24.9</span></div>
+      <div class="card overweight">Overweight <span>BMI 25 - 29.9</span></div>
+      <div class="card obese">Obese <span>BMI ≥ 30</span></div>
+    </div>
+  </section>
+
+  <script src="script.js"></script>
+  <footer class="footer">
+    <p>© 2026 FitTrack Pro | Designed by Visionary Creators</p>
+  </footer>
+</body>
 </html>
