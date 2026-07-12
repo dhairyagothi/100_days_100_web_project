@@ -2505,3 +2505,15 @@ document
     "click",
     renderRandomProject
   );
+
+window.addEventListener('scroll', () => {
+  const scrollTopBtn = document.getElementById('scroll-top');
+  if(scrollTopBtn) {
+    scrollTopBtn.style.display = window.scrollY > 300 ? 'block' : 'none';
+  }
+});
+document.addEventListener('click', (e) => {
+  if(e.target.id === 'scroll-top' || e.target.closest('#scroll-top')) {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+});
