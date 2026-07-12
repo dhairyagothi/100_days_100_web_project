@@ -1,209 +1,114 @@
 # 🛒 Flipkart Clone
 
-A responsive Flipkart-inspired e-commerce landing page built using HTML, CSS, and JavaScript.
-
-The project recreates the modern Flipkart homepage with responsive layouts, promotional banners, product showcases, navigation menus, and authentication UI while providing a clean frontend development example.
+A responsive front-end clone of the Flipkart e-commerce website, built using **HTML**, **CSS**, and **JavaScript**. It replicates the core layout and visual experience of Flipkart, including the navbar, category bar, hero banner carousel, brand promotions, home decor section, footer, and a signup page.
 
 ---
 
-## 📌 Project Overview
+## 📖 Introduction
 
-This project demonstrates how to build a modern e-commerce user interface using only frontend technologies.
-
-It focuses on responsive design, reusable layouts, interactive UI components, and clean styling while maintaining a user experience similar to the Flipkart website.
+This project recreates the Flipkart homepage UI to practice and demonstrate front-end development skills — layout structuring, responsive design, carousel/slider logic, and component-based CSS styling. It is part of the **100 Days 100 Web Projects** challenge.
 
 ---
 
 ## ✨ Features
 
-### Navigation
-
-- Responsive navigation bar
-- Flipkart logo
-- Search bar
-- Login button
-- Become a Seller option
-- Cart button
-- Menu options
-
-### Categories
-
-- Horizontally scrollable categories
-- Fashion
-- Mobiles
-- Beauty
-- Electronics
-- Home
-- Appliances
-- Travel
-- Furniture
-- Sports
-- Toys
-- Food & Health
-- Books
-
-### Hero Section
-
-- Auto-sliding image carousel
-- Previous / Next controls
-- Clickable indicator dots
-- Responsive banners
-
-### Product Sections
-
-- Brands in Spotlight
-- Promotional brand cards
-- AD badges
-- Promotional labels
-- GRWM Sale Banner
-- Home Decor & Furnishing products
-- Product cards with offers
-
-### Authentication
-
-- Dedicated Signup page
-- Clean authentication form
-- Responsive layout
-
-### Footer
-
-- Multi-column footer
-- About
-- Group Companies
-- Help
-- Consumer Policy
-- Registered Office
-- Social Media Icons
-
-### Responsive Design
-
-- Desktop
-- Tablet
-- Mobile
+- **Sticky Navbar** with logo, menu items (Minutes, Travel, Grocery), and a functional search bar
+- **Right-side Navbar Section** with Login, Cart, Become a Seller, and additional options menu
+- **Horizontally Scrollable Categories Bar** covering Fashion, Mobiles, Beauty, Electronics, Home, Appliances, Travel, Furniture, Sports, Toys, Food & Health, and Books
+- **Auto-Sliding Hero Banner Carousel** with manual prev/next controls and clickable indicator dots
+- **Brands in Spotlight Section** showcasing featured brand cards with AD badges and promotional tags
+- **GRWM Sale Banner** — promotional sale image section
+- **Home Decor & Furnishing Section** with product cards, images, and offer tags
+- **Detailed Multi-Column Footer** with About, Group Companies, Help, Consumer Policy links, registered office address, and social media icons
+- **Dedicated Signup Page** (`signup.html`) with a styled authentication form
+- **Fully Responsive Design** across desktop, tablet, and mobile breakpoints
 
 ---
 
-## 🛠 Technologies Used
+## 🛠️ Technologies Used
 
-- HTML5
-- CSS3
-- JavaScript (Vanilla)
+- **HTML5** – Page structure and semantic markup
+- **CSS3** – Styling, Flexbox, Grid, media queries, hover effects and transitions
+- **JavaScript (Vanilla)** – Hero banner carousel/slider logic
+- **Font Awesome 6.5.1** – Icons (search, cart, category icons, social icons)
+- **Google Fonts (Poppins)** – Typography
 
 ---
 
-## 📁 Project Structure
+## 📂 Project Structure
 
-```
-Flipkart Clone/
+```text
+Flipkart-clone/
 │
-├── index.html
-├── signup.html
-├── style.css
-├── script.js
-├── assets/
-│   ├── images/
-│   └── icons/
-└── README.md
+├── index.html          # Main homepage (navbar, categories, hero, brands, decor, footer)
+├── signup.html          # Signup/authentication page
+├── nav.css              # Styles for navbar and categories bar
+├── style.css             # Styles for hero section, brands, banner, decor, and footer
+├── script.js             # Hero banner carousel logic
+├── logo.png              # Flipkart logo
+├── hero1.png             # Hero carousel image 1
+├── hero2.png             # Hero carousel image 2
+├── hero3.png             # Hero carousel image 3
+├── hero4.png             # Hero carousel image 4
+├── hero5.png             # Hero carousel image 5
+├── image1.png             # Brand card image (Bata)
+├── image2.png             # Brand card image (Kamiliant)
+├── image3.png             # Brand card image (Abros)
+├── image4.png             # Brand card image (Fire-Boltt)
+├── image5.png             # Brand card image (boAt Smartwatch)
+├── image6.png             # Brand card image (boAt Airdopes)
+├── grwm.png                # GRWM sale banner image
+└── README.md               # Project documentation
 ```
 
 ---
 
-## 🚀 Installation
+## ⚙️ Installation & Setup
 
-Clone the repository
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/dhairyagothi/100_days_100_web_project.git
+   ```
+2. Navigate to the Flipkart Clone project folder:
+   ```bash
+   cd 100_days_100_web_project/Flipkart-clone
+   ```
+3. Open `index.html` directly in your browser, or use the **Live Server** extension in VS Code for auto-reload.
 
-```bash
-git clone https://github.com/dhairyagothi/100_days_100_web_project.git
-```
-
-Navigate to the project
-
-```bash
-cd 100_days_100_web_project
-```
-
-Open the Flipkart Clone folder.
-
-Open `index.html` in your browser.
+No external installations or dependencies are required — the project uses only static HTML, CSS, and JS along with a CDN link for Font Awesome and Google Fonts.
 
 ---
 
-## ▶️ Usage
+## 🚀 Usage
 
-- Browse product categories
-- Use the search bar
-- Navigate through the hero slider
-- Explore promotional sections
-- Visit the Signup page
-- Experience the responsive design across different screen sizes
-
----
-
-## 📸 Screenshots
-
-Add screenshots of the application here.
-
-Example:
-
-```
-screenshots/
-├── homepage.png
-├── categories.png
-├── signup.png
-```
+- Open `index.html` to view the homepage with the navbar, categories, hero carousel, brand promotions, sale banner, and home decor section.
+- Click the **Login** button in the navbar to navigate to `signup.html` and view the signup form.
+- Use the **prev/next arrows** or the **indicator dots** on the hero banner to manually control the carousel, which also auto-slides every 4 seconds.
+- Resize the browser window to see the fully responsive layout adapt across desktop, tablet, and mobile views.
 
 ---
 
 ## 🔮 Future Enhancements
 
-- Shopping cart functionality
-- Product filtering
-- Wishlist
-- User authentication backend
-- Payment integration
-- Product details page
-- Dark Mode
-- Search suggestions
-- API integration
+- Add product listing pages with filtering and sorting
+- Implement a functional shopping cart with add/remove item logic
+- Add real backend authentication for login and signup
+- Integrate a search functionality that filters products dynamically
+- Add wishlist and product detail pages
+- Improve accessibility (ARIA labels, keyboard navigation)
 
 ---
 
 ## 🤝 Contributing
 
-Contributions are welcome.
-
-1. Fork the repository
-
-2. Create a feature branch
-
-```bash
-git checkout -b feature-name
-```
-
-3. Commit changes
-
-```bash
-git commit -m "Add feature"
-```
-
-4. Push the branch
-
-```bash
-git push origin feature-name
-```
-
-5. Open a Pull Request
+Contributions are welcome! Feel free to fork this repository, raise issues, or submit pull requests to improve features, fix bugs, or enhance documentation.
 
 ---
 
 ## 📄 License
 
-This project is part of the **100 Days 100 Web Projects** repository.
-
-Please follow the repository license and contribution guidelines.
+This project is open-source and available for learning and educational purposes as part of the **100 Days 100 Web Projects** challenge.
 
 ---
 
-## ⭐ Show your support
-
-If you found this project useful, consider giving the repository a ⭐.
+**App Development and Documentation — Sanyogita Singh**

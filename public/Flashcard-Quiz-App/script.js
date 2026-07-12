@@ -1,457 +1,485 @@
-let flashcards = JSON.parse(localStorage.getItem("flashcards")) || [
-
-{
-    question:"What is HTML?",
-    answer:"HyperText Markup Language",
-    hint:"Starts with 'H' and has 3 words."
-},
-
-{
-    question:"Which HTML tag is used to create a hyperlink?",
-    answer:"<a>",
-    hint:"Starts with '<a' and contains 3 characters."
-},
-
-{
-    question:"Which HTML tag is used to insert an image?",
-    answer:"<img>",
-    hint:"Starts with '<i' and contains 5 characters."
-},
-
-{
-    question:"Which HTML element is used to create a form?",
-    answer:"<form>",
-    hint:"Starts with '<f' and contains 6 characters."
-},
-
-{
-    question:"Which HTML tag is used for the largest heading?",
-    answer:"<h1>",
-    hint:"Starts with '<h' and contains 4 characters."
-},
-
-{
-    question:"What is CSS?",
-    answer:"Cascading Style Sheets",
-    hint:"Starts with 'C' and has 3 words."
-},
-
-{
-    question:"Which CSS property changes the text color?",
-    answer:"color",
-    hint:"Starts with 'c' and has 5 characters."
-},
-
-{
-    question:"Which CSS property changes the background color?",
-    answer:"background-color",
-    hint:"Starts with 'b' and has a hyphen."
-},
-
-{
-    question:"Which CSS property is used to make corners rounded?",
-    answer:"border-radius",
-    hint:"Starts with 'b' and has a hyphen."
-},
-
-{
-    question:"Which CSS property is used to align items horizontally in Flexbox?",
-    answer:"justify-content",
-    hint:"Starts with 'j' and has a hyphen."
-},
-
-{
-    question:"Which keyword is used to declare a variable in JavaScript?",
-    answer:"let",
-    hint:"Starts with 'l' and has 3 characters."
-},
-
-{
-    question:"Which function displays a popup message?",
-    answer:"alert()",
-    hint:"Starts with 'a' and ends with '()'."
-},
-
-{
-    question:"Which method is used to select an element by its ID?",
-    answer:"document.getElementById()",
-    hint:"Starts with 'document.' and contains 'get'."
-},
-
-{
-    question:"Which event occurs when a button is clicked?",
-    answer:"click",
-    hint:"Starts with 'c' and has 5 characters."
-},
-
-{
-    question:"Which object is used to store data in the browser permanently?",
-    answer:"localStorage",
-    hint:"Starts with 'l' and has 'Storage'."
-}
-
-];
-
+/* ============================================================
+                    FLASHCARD QUIZ APP
+============================================================ */
+/* ============================================================
+                    DEFAULT FLASHCARDS
+============================================================ */
+const defaultFlashcards = {
+    webdev: [
+        { question: "What does HTML stand for?", answer: "HyperText Markup Language", hint: "Starts with H" },
+        { question: "Which HTML tag creates a hyperlink?", answer: "<a>", hint: "Starts with <" },
+        { question: "Which CSS property changes text color?", answer: "color", hint: "Five letters" },
+        { question: "Which keyword declares a variable in JavaScript?", answer: "let", hint: "Three letters" },
+        { question: "Which browser storage persists after closing the browser?", answer: "localStorage", hint: "Starts with local" }
+    ],
+    dbms: [
+        { question: "What does DBMS stand for?", answer: "Database Management System", hint: "Starts with Database" },
+        { question: "Which SQL command retrieves data?", answer: "SELECT", hint: "Starts with S" },
+        { question: "Which key uniquely identifies a record?", answer: "Primary Key", hint: "Starts with Primary" },
+        { question: "Which SQL clause filters rows?", answer: "WHERE", hint: "Starts with W" },
+        { question: "Which SQL command removes a table?", answer: "DROP", hint: "Starts with D" }
+    ],
+    cn: [
+        { question: "What does TCP stand for?", answer: "Transmission Control Protocol", hint: "Starts with Transmission" },
+        { question: "What does IP stand for?", answer: "Internet Protocol", hint: "Starts with Internet" },
+        { question: "Which device forwards packets?", answer: "Router", hint: "Network device" },
+        { question: "What does DNS stand for?", answer: "Domain Name System", hint: "Starts with Domain" },
+        { question: "Which topology connects every node together?", answer: "Mesh", hint: "Starts with M" }
+    ],
+    os: [
+        { question: "What is an Operating System?", answer: "System software that manages computer hardware and software resources", hint: "System software" },
+        { question: "Which scheduling algorithm is First Come First Serve?", answer: "FCFS", hint: "Four letters" },
+        { question: "Fastest memory in a computer?", answer: "Cache Memory", hint: "Starts with Cache" },
+        { question: "Which memory is volatile?", answer: "RAM", hint: "Three letters" },
+        { question: "Which OS is open source?", answer: "Linux", hint: "Penguin" }
+    ],
+    dsa: [
+        { question: "What does DSA stand for?", answer: "Data Structures and Algorithms", hint: "Starts with Data" },
+        { question: "Which data structure follows FIFO?", answer: "Queue", hint: "Starts with Q" },
+        { question: "Which data structure follows LIFO?", answer: "Stack", hint: "Starts with S" },
+        { question: "Which traversal is Left Root Right?", answer: "Inorder", hint: "Binary Tree" },
+        { question: "Average complexity of Binary Search?", answer: "O(log n)", hint: "Starts with O" }
+    ]
+};
+/* ============================================================
+                    APP STATE
+============================================================ */
+let currentSubject = "webdev";
+let flashcards = [];
 let currentIndex = 0;
-
-// Timed Challenge Variables
 let isTimedMode = false;
-let timedInterval = null;
-let timeLeft = 60;
+let timer = null;
 let totalTime = 60;
-let startTime = 0;
+let timeLeft = 60;
 let timedCorrect = 0;
 let timedWrong = 0;
 let timedAttempted = 0;
-let isAnswered = false;
-
-const question=document.getElementById("question");
-const answer=document.getElementById("answer");
-const userAnswer=document.getElementById("userAnswer");
-const result=document.getElementById("result");
-const hintText = document.getElementById("hintText");
-
-const showBtn=document.getElementById("showBtn");
-const checkBtn=document.getElementById("checkBtn");
-const hintBtn=document.getElementById("hintBtn");
-
-const prevBtn=document.getElementById("prevBtn");
-const nextBtn=document.getElementById("nextBtn");
-
-const questionInput=document.getElementById("questionInput");
-const answerInput=document.getElementById("answerInput");
-const hintInput=document.getElementById("hintInput");
-
-const addBtn=document.getElementById("addBtn");
-const editBtn=document.getElementById("editBtn");
-const deleteBtn=document.getElementById("deleteBtn");
-
-// Timed Challenge Elements
-const timedSetup = document.getElementById("timed-setup");
-const timedStats = document.getElementById("timed-stats");
-const startTimedBtn = document.getElementById("start-timed-btn");
-const timerOptions = document.getElementById("timer-options");
-const countdownEl = document.getElementById("countdown");
-const timedCorrectEl = document.getElementById("timed-correct");
-const timedWrongEl = document.getElementById("timed-wrong");
-const timedAttemptedEl = document.getElementById("timed-attempted");
-const timedAccuracyEl = document.getElementById("timed-accuracy");
-const bestTimedScoreEl = document.getElementById("best-timed-score");
-const resultsModal = document.getElementById("results-modal");
-const finalScoreEl = document.getElementById("final-score");
-const finalCorrectEl = document.getElementById("final-correct");
-const finalWrongEl = document.getElementById("final-wrong");
-const finalAccuracyEl = document.getElementById("final-accuracy");
-const finalBestScoreEl = document.getElementById("final-best-score");
-const playAgainBtn = document.getElementById("play-again-btn");
-const closeModalBtn = document.getElementById("close-modal-btn");
-
-function saveCards(){
-    localStorage.setItem("flashcards",JSON.stringify(flashcards));
+let cardAttempted = false;
+let originalFlashcards = [];
+/* ============================================================
+                    LOCAL STORAGE
+============================================================ */
+function storageKey(subject) {
+    return `flashcards_${subject}`;
 }
-
-// Generate a hint from the answer
-function generateHint(answerText) {
-    const trimmedAnswer = answerText.trim();
-    const firstPart = trimmedAnswer.substring(0, Math.min(2, trimmedAnswer.length));
-    const length = trimmedAnswer.length;
-    return `Starts with "${firstPart}" and contains ${length} character${length !== 1 ? 's' : ''}.`;
+function loadFlashcards(subject) {
+    const saved = localStorage.getItem(storageKey(subject));
+    if (saved) return JSON.parse(saved);
+    return structuredClone(defaultFlashcards[subject]);
 }
-
-// Get hint for current card
-function getHint() {
-    const card = flashcards[currentIndex];
-    if (card.hint && card.hint.trim() !== "") {
-        return card.hint;
-    } else {
-        return generateHint(card.answer);
-    }
+function saveFlashcards() {
+    localStorage.setItem(storageKey(currentSubject), JSON.stringify(flashcards));
 }
-
-// Update card display logic
-function updateCardDisplay() {
-    isAnswered = false;
-    const card = flashcards[currentIndex];
-    question.innerText = card.question;
-    answer.innerText = "Correct Answer: " + card.answer;
-    answer.classList.add("hidden");
-    hintText.classList.add("hidden");
-    userAnswer.value = "";
-    result.innerHTML = "";
-    showBtn.classList.add("hidden");
-    checkBtn.disabled = false;
-    hintBtn.disabled = false;
-    userAnswer.disabled = false;
-}
-updateCardDisplay();
-
-// Load best timed score
-function loadBestTimedScore() {
-    const best = localStorage.getItem("bestTimedScore");
-    if (best) {
-        bestTimedScoreEl.textContent = best;
-    } else {
-        bestTimedScoreEl.textContent = "0";
-    }
-}
-loadBestTimedScore();
-
-// Timed Challenge Functions
-function startTimedChallenge() {
-    isTimedMode = true;
-    timedCorrect = 0;
-    timedWrong = 0;
-    timedAttempted = 0;
-    shuffle(flashcards); // Shuffle the deck for timed challenge
+/* ============================================================
+                    SUBJECT SWITCHING
+============================================================ */
+function switchSubject(subject) {
+    currentSubject = subject;
+    flashcards = loadFlashcards(subject);
     currentIndex = 0;
-    
-    totalTime = parseInt(timerOptions.value);
-    timeLeft = totalTime;
-    startTime = Date.now();
-    
-    // Toggle UI elements
-    timedSetup.hidden = true;
-    timedStats.hidden = false;
-    // Disable editing during timed mode
-    disableEditing(true);
-    closeResultsModal();
-    
-    // Set initial stats display
-    countdownEl.textContent = timeLeft;
-    updateTimedStats();
-    updateCardDisplay();
-    
-    // Start timer
-    timedInterval = setInterval(() => {
-        timeLeft--;
-        countdownEl.textContent = timeLeft;
-        if (timeLeft <= 0) {
-            endTimedChallenge();
-        }
-    }, 1000);
+    renderCard();
 }
-
+/* ============================================================
+                    NAVIGATION TABS
+============================================================ */
+const navTabs = document.querySelectorAll(".nav-tab");
+navTabs.forEach(tab => {
+    tab.addEventListener("click", () => {
+        navTabs.forEach(button => button.classList.remove("active"));
+        tab.classList.add("active");
+        switchSubject(tab.dataset.subject);
+    });
+});
+/* ============================================================
+                    INITIAL DATA
+============================================================ */
+flashcards = loadFlashcards(currentSubject);
+/* ============================================================
+                    DOM ELEMENTS
+============================================================ */
+const question = document.getElementById("question");
+const answer = document.getElementById("answer");
+const userAnswer = document.getElementById("userAnswer");
+const result = document.getElementById("result");
+const hintText = document.getElementById("hintText");
+const checkBtn = document.getElementById("checkBtn");
+const hintBtn = document.getElementById("hintBtn");
+const showBtn = document.getElementById("showBtn");
+const prevBtn = document.getElementById("prevBtn");
+const nextBtn = document.getElementById("nextBtn");
+const questionInput = document.getElementById("questionInput");
+const answerInput = document.getElementById("answerInput");
+const hintInput = document.getElementById("hintInput");
+const addBtn = document.getElementById("addBtn");
+const editBtn = document.getElementById("editBtn");
+const deleteBtn = document.getElementById("deleteBtn");
+/* ============================================================
+                    UTILITY FUNCTIONS
+============================================================ */
+function normalize(text) {
+    return text.trim().replace(/\s+/g, " ").toLowerCase();
+}
+function generateHint(answerText) {
+    if (!answerText) return "";
+    return `Starts with "${answerText.substring(0, 2)}" and contains ${answerText.length} characters.`;
+}
 function shuffle(array) {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [array[i], array[j]] = [array[j], array[i]];
     }
 }
-
-function updateTimedStats() {
-    timedCorrectEl.textContent = timedCorrect;
-    timedWrongEl.textContent = timedWrong;
-    timedAttemptedEl.textContent = timedAttempted;
-    
-    const accuracy = timedAttempted > 0 
-        ? Math.round((timedCorrect / timedAttempted) * 100) 
-        : 0;
-    timedAccuracyEl.textContent = accuracy + "%";
+/* ============================================================
+                    RESET CARD
+============================================================ */
+function resetCard() {
+    userAnswer.value = "";
+    result.textContent = "";
+    result.style.color = "";
+    answer.classList.add("hidden");
+    hintText.classList.add("hidden");
+    hintText.textContent = "";
+    answer.textContent = "";
+    showBtn.classList.add("hidden");
+    showBtn.textContent = "Show Answer";
+    checkBtn.disabled = false;
+    hintBtn.disabled = false;
+    userAnswer.disabled = false;
 }
-
-function endTimedChallenge() {
-    isTimedMode = false;
-    clearInterval(timedInterval);
-    disableQuizButtons();
-    
-    // Calculate final score and stats
-    const finalScore = timedCorrect;
-    const accuracy = timedAttempted > 0 
-        ? Math.round((timedCorrect / timedAttempted) * 100) 
-        : 0;
-    
-    // Update best score
-    let bestScore = parseInt(localStorage.getItem("bestTimedScore") || 0);
-    if (finalScore > bestScore) {
-        bestScore = finalScore;
-        localStorage.setItem("bestTimedScore", bestScore);
-        bestTimedScoreEl.textContent = bestScore;
+/* ============================================================
+                    RENDER CARD
+============================================================ */
+function renderCard() {
+    cardAttempted = false;
+    if (flashcards.length === 0) {
+        question.textContent = "No flashcards available.";
+        resetCard();
+        return;
     }
-    
-    finalScoreEl.textContent = finalScore;
-    finalCorrectEl.textContent = timedCorrect;
-    finalWrongEl.textContent = timedWrong;
-    finalAccuracyEl.textContent = accuracy + "%";
-    finalBestScoreEl.textContent = bestScore;
-    
-    showResultsModal();
-    disableEditing(false); // Re-enable editing
+    const card = flashcards[currentIndex];
+    question.textContent = card.question;
+    answer.textContent=`Correct Answer: ${card.answer}`;
+    questionInput.value = card.question;
+    answerInput.value = card.answer;
+    hintInput.value=card.hint || "";
+    resetCard();
 }
-
-function disableQuizButtons() {
+/* ============================================================
+                    MOVE CARDS
+============================================================ */
+function nextCard() {
+    currentIndex++;
+    if (currentIndex >= flashcards.length) currentIndex = 0;
+    renderCard();
+}
+function previousCard() {
+    currentIndex--;
+    if (currentIndex < 0) currentIndex = flashcards.length - 1;
+    renderCard();
+}
+/* ============================================================
+                    HINT
+============================================================ */
+hintBtn.addEventListener("click", () => {
+    const card = flashcards[currentIndex];
+    hintText.classList.remove("hidden");
+    hintText.textContent = card.hint?.trim() ? card.hint : generateHint(card.answer);
+});
+/* ============================================================
+                    SHOW ANSWER
+============================================================ */
+showBtn.addEventListener("click", () => {
+    answer.classList.toggle("hidden");
+    showBtn.textContent = answer.classList.contains("hidden") ? "Show Answer" : "Hide Answer";
+});
+/* ============================================================
+                    NAVIGATION
+============================================================ */
+nextBtn.addEventListener("click", () => {
+    if (isTimedMode) return;
+    nextCard();
+});
+prevBtn.addEventListener("click", () => {
+    if (isTimedMode) return;
+    previousCard();
+});
+/* ============================================================
+                KEYBOARD SUPPORT
+============================================================ */
+userAnswer.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+        e.preventDefault();
+        checkAnswer();
+    }
+});
+/* ============================================================
+                INITIAL RENDER
+============================================================ */
+renderCard();
+/* ============================================================
+                    QUIZ HELPERS
+============================================================ */
+function enableQuiz() {
+    checkBtn.disabled = false;
+    hintBtn.disabled = false;
+    userAnswer.disabled = false;
+}
+function disableQuiz() {
     checkBtn.disabled = true;
     hintBtn.disabled = true;
     userAnswer.disabled = true;
 }
-
-function showResultsModal() {
-    resultsModal.classList.add("active");
-    resultsModal.hidden = false;
-}
-
-function closeResultsModal() {
-    resultsModal.classList.remove("active");
+function updateCard() {
     setTimeout(() => {
-        resultsModal.hidden = true;
-        // Reset UI to normal mode
+        nextCard();
+    }, 800);
+}
+/* ============================================================
+                    ANSWER CHECKING
+============================================================ */
+function checkAnswer() {
+    if (flashcards.length === 0) return;
+    const user = normalize(userAnswer.value);
+    if (user === "") {
+        alert("Please enter your answer.");
+        return;
+    }
+    const correct = normalize(flashcards[currentIndex].answer);
+    if (user === correct) {
+        handleCorrect();
+    } else {
+        handleWrong();
+    }
+}
+/* ============================================================
+                    CORRECT ANSWER
+============================================================ */
+function handleCorrect() {
+    result.textContent = "✅ Correct!";
+    result.style.color = "#16a34a";
+    disableQuiz();
+    showBtn.classList.add("hidden");
+
+    if (isTimedMode && !cardAttempted) {
+        timedCorrect++;
+        timedAttempted++;
+        cardAttempted = true;
+        updateTimedStats();
+    }
+
+    updateCard();
+}
+/* ============================================================
+                    WRONG ANSWER
+============================================================ */
+function handleWrong() {
+    result.textContent = "❌ Incorrect!";
+    result.style.color = "#dc2626";
+    showBtn.classList.remove("hidden");
+
+    if (isTimedMode && !cardAttempted) {
+        timedWrong++;
+        timedAttempted++;
+        cardAttempted = true;
+        updateTimedStats();
+    }
+
+    disableQuiz();
+    setTimeout(() => {
+        updateCard();
+    }, 1200);
+}
+/* ============================================================
+                    BUTTON EVENT
+============================================================ */
+checkBtn.addEventListener("click", checkAnswer);
+/* ============================================================
+                    TIMED MODE ELEMENTS
+============================================================ */
+const timedSetup = document.getElementById("timed-setup");
+const timedStats = document.getElementById("timed-stats");
+const timerOptions = document.getElementById("timer-options");
+const startTimedBtn = document.getElementById("start-timed-btn");
+const countdown = document.getElementById("countdown");
+const timedCorrectText = document.getElementById("timed-correct");
+const timedWrongText = document.getElementById("timed-wrong");
+const timedAttemptedText = document.getElementById("timed-attempted");
+const timedAccuracyText = document.getElementById("timed-accuracy");
+const bestScoreText = document.getElementById("best-timed-score");
+const modal = document.getElementById("results-modal");
+const finalScore = document.getElementById("final-score");
+const finalCorrect = document.getElementById("final-correct");
+const finalWrong = document.getElementById("final-wrong");
+const finalAccuracy = document.getElementById("final-accuracy");
+const finalBest = document.getElementById("final-best-score");
+const playAgainBtn = document.getElementById("play-again-btn");
+const closeModalBtn = document.getElementById("close-modal-btn");
+/* ============================================================
+                    STATISTICS
+============================================================ */
+function updateTimedStats() {
+    timedCorrectText.textContent = timedCorrect;
+    timedWrongText.textContent = timedWrong;
+    timedAttemptedText.textContent = timedAttempted;
+    const accuracy = timedAttempted === 0 ? 0 : Math.round((timedCorrect / timedAttempted) * 100);
+    timedAccuracyText.textContent=`${accuracy}%`;
+}
+/* ============================================================
+                    BEST SCORE
+============================================================ */
+function getBestScore() {
+    return Number(localStorage.getItem("bestTimedScore") || 0);
+}
+function loadBestScore() {
+    bestScoreText.textContent = getBestScore();
+}
+function saveBestScore(score) {
+    if (score > getBestScore()) localStorage.setItem("bestTimedScore", score);
+}
+/* ============================================================
+                    TIMER
+============================================================ */
+function startTimer() {
+    timer = setInterval(() => {
+        timeLeft--;
+        countdown.textContent = timeLeft;
+        if (timeLeft <= 0) {
+            endTimedMode();
+        }
+    }, 1000);
+}
+/* ============================================================
+                    START TIMED MODE
+============================================================ */
+function startTimedMode() {
+    isTimedMode = true;
+    timedCorrect = 0;
+    timedWrong = 0;
+    timedAttempted = 0;
+    clearInterval(timer);
+    currentIndex = 0;
+    totalTime = Number(timerOptions.value);
+    timeLeft = totalTime;
+    countdown.textContent = timeLeft;
+    originalFlashcards = structuredClone(flashcards);
+    shuffle(flashcards);
+    timedSetup.hidden = true;
+    timedStats.hidden = false;
+    setEditingState(true);
+    updateTimedStats();
+    renderCard();
+    startTimer();
+}
+/* ============================================================
+                    END TIMED MODE
+============================================================ */
+function endTimedMode() {
+    clearInterval(timer);
+    isTimedMode = false;
+    disableQuiz();
+    const accuracy = timedAttempted === 0 ? 0 : Math.round((timedCorrect / timedAttempted) * 100);
+    saveBestScore(timedCorrect);
+    finalScore.textContent = timedCorrect;
+    finalCorrect.textContent = timedCorrect;
+    finalWrong.textContent = timedWrong;
+    finalAccuracy.textContent=`${accuracy}%`;
+    finalBest.textContent = getBestScore();
+    loadBestScore();
+    flashcards = structuredClone(originalFlashcards);
+    currentIndex = 0;
+    modal.hidden = false;
+    modal.classList.add("active");
+}
+/* ============================================================
+                    CLOSE MODAL
+============================================================ */
+function closeModal() {
+    modal.classList.remove("active");
+    setTimeout(() => {
+        modal.hidden = true;
         timedSetup.hidden = false;
         timedStats.hidden = true;
-        updateCardDisplay();
-    }, 300);
+        enableQuiz();
+        setEditingState(false);
+        renderCard();
+    }, 250);
 }
-
-function disableEditing(isDisabled) {
-    questionInput.disabled = isDisabled;
-    answerInput.disabled = isDisabled;
-    hintInput.disabled = isDisabled;
-    addBtn.disabled = isDisabled;
-    editBtn.disabled = isDisabled;
-    deleteBtn.disabled = isDisabled;
-    prevBtn.disabled = isDisabled;
-    nextBtn.disabled = isDisabled;
-}
-
-// Event listeners for timed challenge
-startTimedBtn.addEventListener("click", startTimedChallenge);
-playAgainBtn.addEventListener("click", startTimedChallenge);
-closeModalBtn.addEventListener("click", closeResultsModal);
-resultsModal.addEventListener("click", (e) => {
-    if (e.target === resultsModal) {
-        closeResultsModal();
+/* ============================================================
+                    TIMED EVENTS
+============================================================ */
+startTimedBtn.addEventListener("click", startTimedMode);
+playAgainBtn.addEventListener("click", () => {
+        closeModal();
+        startTimedMode();
+});
+closeModalBtn.addEventListener("click", closeModal);
+modal.addEventListener("click", (e) => {
+    if (e.target === modal) {
+        closeModal();
     }
 });
-
-showBtn.onclick=function(){
-    if(answer.classList.contains("hidden")){
-        answer.classList.remove("hidden");
-        showBtn.innerText="Hide Answer";
-    }else{
-        answer.classList.add("hidden");
-        showBtn.innerText="Show Answer";
+/* ============================================================
+                    CRUD
+============================================================ */
+function addFlashcard() {
+    const question = questionInput.value.trim();
+    const answer = answerInput.value.trim();
+    const hint = hintInput.value.trim();
+    if (!question || !answer) {
+        alert("Question and Answer are required.");
+        return;
     }
-};
-checkBtn.onclick = function() {
+    flashcards.push({ question, answer, hint });
+    saveFlashcards();
+    currentIndex = flashcards.length - 1;
+    renderCard();
+}
+function editFlashcard() {
     if (flashcards.length === 0) return;
-
-    const normalize = (text) =>
-    text.trim().replace(/\s+/g, " ").toLowerCase();
-
-let user = normalize(userAnswer.value);
-let correct = normalize(flashcards[currentIndex].answer);
-
-    if (user == "") {
-        alert("Please type your answer.");
+    const question = questionInput.value.trim();
+    const answer = answerInput.value.trim();
+    const hint = hintInput.value.trim();
+    if (!question || !answer) {
+        alert("Question and Answer are required.");
         return;
     }
-    let isCorrect = (user === correct);
-    isAnswered = true;
-    checkBtn.disabled = true;
-    hintBtn.disabled = true;
-
-    if(isCorrect){
-        result.innerHTML="✅ Correct!";
-        result.style.color="green";
-        showBtn.classList.add("hidden");
-
-        if(isTimedMode){
-            timedCorrect++;
-            timedAttempted++;
-            updateTimedStats();
-        }
-        // Auto next card after 1 second
-        setTimeout(() => {
-            if(isTimedMode){
-                currentIndex++;
-                if(currentIndex >= flashcards.length){
-                    currentIndex = 0;
-                }
-            } else {
-                currentIndex++;
-                if(currentIndex >= flashcards.length){
-                    currentIndex = 0;
-                }
-            }
-            updateCardDisplay();
-        }, 1000);
-    }else{
-        result.innerHTML="❌ Incorrect! Try again or reveal the answer.";
-        result.style.color="red";
-        showBtn.classList.remove("hidden");
-        
-        if(isTimedMode){
-            timedWrong++;
-            timedAttempted++;
-            updateTimedStats();
-        }
-    }
-};
-
-nextBtn.onclick=function(){
-    if(isTimedMode) return;
-    currentIndex++;
-    if(currentIndex>=flashcards.length){
-        currentIndex=0;
-    }
-    updateCardDisplay();
-};
-
-prevBtn.onclick=function(){
-    if(isTimedMode) return;
-    currentIndex--;
-    if(currentIndex<0){
-        currentIndex=flashcards.length-1;
-    }
-    updateCardDisplay();
-};
-
-addBtn.onclick=function(){
-    let q=questionInput.value.trim();
-    let a=answerInput.value.trim();
-    let h=hintInput.value.trim();
-    if(q==""||a==""){
-        alert("Please enter question and answer.");
+    flashcards[currentIndex] = { question, answer, hint };
+    saveFlashcards();
+    renderCard();
+}
+function deleteFlashcard() {
+    if (flashcards.length === 1) {
+        alert("At least one flashcard must exist.");
         return;
     }
-    flashcards.push({
-        question:q,
-        answer:a,
-        hint:h
-    });
-    saveCards();
-    questionInput.value="";
-    answerInput.value="";
-    hintInput.value="";
-    currentIndex=flashcards.length-1;
-    updateCardDisplay();
-};
-
-editBtn.onclick=function(){
-    let q=questionInput.value.trim();
-    let a=answerInput.value.trim();
-    let h=hintInput.value.trim();
-    if(q==""||a==""){
-        alert("Please enter updated question and answer.");
-        return;
-    }
-    flashcards[currentIndex].question=q;
-    flashcards[currentIndex].answer=a;
-    flashcards[currentIndex].hint=h;
-    saveCards();
-    updateCardDisplay();
-    questionInput.value="";
-    answerInput.value="";
-    hintInput.value="";
-};
-
-deleteBtn.onclick=function(){
-    if(flashcards.length==1){
-        alert("At least one flashcard is required.");
-        return;
-    }
-    flashcards.splice(currentIndex,1);
-    if(currentIndex>=flashcards.length){
-        currentIndex=flashcards.length-1;
-    }
-    saveCards();
-    updateCardDisplay();
-};
+    if (!confirm("Delete this flashcard?")) return;
+    flashcards.splice(currentIndex, 1);
+    if (currentIndex >= flashcards.length) currentIndex = flashcards.length - 1;
+    saveFlashcards();
+    renderCard();
+}
+/* ============================================================
+                    CRUD EVENTS
+============================================================ */
+addBtn.addEventListener("click", addFlashcard);
+editBtn.addEventListener("click", editFlashcard);
+deleteBtn.addEventListener("click", deleteFlashcard);
+/* ============================================================
+                    EDITING STATE
+============================================================ */
+function setEditingState(disabled) {
+    questionInput.disabled = disabled;
+    answerInput.disabled = disabled;
+    hintInput.disabled = disabled;
+    addBtn.disabled = disabled;
+    editBtn.disabled = disabled;
+    deleteBtn.disabled = disabled;
+    prevBtn.disabled = disabled;
+    nextBtn.disabled = disabled;
+}
+/* ============================================================
+                    INITIALIZATION
+============================================================ */
+loadBestScore();
+setEditingState(false);
+renderCard();
