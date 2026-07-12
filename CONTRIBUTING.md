@@ -730,3 +730,17 @@ We look forward to your contributions and appreciate your effort in helping us i
 By contributing, you agree that your contributions will be licensed under the same license as the project.
 
 Thank you for contributing to 100 Days 100 Web Projects!
+
+### Adding to projects.json
+Ensure your entry matches this format exactly:
+```json
+{
+  "projectNo": 101,
+  "projectName": "Your Awesome App",
+  "projectType": "Tool",
+  "projectDesc": "A brief 2 sentence description.",
+  "techStack": ["javascript", "css"],
+  "difficulty": "beginner",
+  "projectPath": "./public/your-app/index.html"
+}
+```
