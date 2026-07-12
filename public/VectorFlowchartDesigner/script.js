@@ -607,21 +607,36 @@
   };
 
   const clearWorkspace = () => {
+    // Remove all node elements
     state.nodes.forEach((node) => node.element?.remove());
 
+    // Clear application state
     state.nodes = [];
     state.connections = [];
 
     nodeLookup.clear();
 
+    // Reset selection
     clearWorkspaceTargets();
 
-    // Remove only dynamic SVG elements
+    // Fully reset connection interaction state
+    state.interaction.mode = null;
+    state.interaction.pointerId = null;
+    state.interaction.targetNodeId = null;
+    state.interaction.sourceNodeId = null;
+    state.interaction.tempLineEndX = 0;
+    state.interaction.tempLineEndY = 0;
+    state.interaction.moved = false;
+
+    // Remove every rendered connection
     svgEl
       .querySelectorAll('path:not(defs path)')
       .forEach((path) => path.remove());
 
     svgState.connectionElements = [];
+
+    // Force a fresh render cycle
+    scheduleRenderConnections();
   };
 
   const bindToolbar = () => {

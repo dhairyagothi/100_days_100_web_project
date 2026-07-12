@@ -1,4 +1,5 @@
 const PLANETS = {
+
   moon: {
     multiplier: 0.16,
     jump: -18,
@@ -24,6 +25,13 @@ const PLANETS = {
     jump: -7,
     color: "#FF8C42"
   }
+=======
+  moon: { multiplier: 0.16 },
+  mars: { multiplier: 0.38 },
+  earth: { multiplier: 1.0 },
+  saturn: { multiplier: 1.06 },
+  jupiter: { multiplier: 2.53 },
+
 };
 
 const BASE_GRAVITY = 0.5;
@@ -31,10 +39,10 @@ const BASE_GRAVITY = 0.5;
 let currentPlanet = PLANETS.earth;
 let gravity = BASE_GRAVITY * currentPlanet.multiplier;
 
-const ball = document.getElementById("ball");
-const area = document.getElementById("playArea");
-const colorPicker = document.getElementById("ballColor");
-const shapeSelect = document.getElementById("ballShape");
+const ball = document.getElementById('ball');
+const area = document.getElementById('playArea');
+const colorPicker = document.getElementById('ballColor');
+const shapeSelect = document.getElementById('ballShape');
 
 const BALL_SIZE = 40;
 
@@ -93,12 +101,18 @@ function update() {
   requestAnimationFrame(update);
 }
 
+
 // ----------------------
 // Ball Jump
 // ----------------------
 ball.addEventListener("click", () => {
 
   vy = currentPlanet.jump;
+
+=======
+// Ball jump
+ball.addEventListener('click', () => {
+  vy = -10;
 
   vx = (Math.random() - 0.5) * 8;
 
@@ -117,7 +131,19 @@ function resetBall() {
 
 }
 
+function keepBallInsideBounds() {
+  const areaWidth = area.clientWidth;
+  const areaHeight = area.clientHeight;
+
+  x = Math.min(Math.max(0, x), areaWidth - BALL_SIZE);
+  y = Math.min(Math.max(0, y), areaHeight - BALL_SIZE);
+
+  ball.style.left = `${x}px`;
+  ball.style.top = `${y}px`;
+}
+
 window.resetBall = resetBall;
+
 
 // ----------------------
 // Planet Selection
@@ -125,6 +151,16 @@ window.resetBall = resetBall;
 document.querySelectorAll(".planet-btn").forEach((btn) => {
 
   btn.addEventListener("click", () => {
+=======
+window.addEventListener('resize', () => {
+  keepBallInsideBounds();
+});
+
+// Planet selector
+document.querySelectorAll('.planet-btn').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    const planetName = btn.dataset.planet;
+
 
     const planet = btn.dataset.planet;
 
@@ -133,6 +169,7 @@ document.querySelectorAll(".planet-btn").forEach((btn) => {
     currentPlanet = PLANETS[planet];
 
     gravity = BASE_GRAVITY * currentPlanet.multiplier;
+
 
     document.querySelectorAll(".planet-btn").forEach(button => {
 
@@ -147,6 +184,13 @@ document.querySelectorAll(".planet-btn").forEach((btn) => {
 
     // Update Color Picker
     colorPicker.value = currentPlanet.color;
+
+=======
+    document.querySelectorAll('.planet-btn').forEach((button) => {
+      button.classList.remove('active');
+    });
+
+    btn.classList.add('active');
 
   });
 
@@ -175,7 +219,7 @@ function applyShape(shape) {
       ball.style.borderRadius = "50%";
       break;
 
-    case "square":
+    case 'square':
       break;
 
     case "triangle":
@@ -183,9 +227,9 @@ function applyShape(shape) {
         "polygon(50% 0%,0% 100%,100% 100%)";
       break;
 
-    case "star":
+    case 'star':
       ball.style.clipPath =
-        "polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)";
+        'polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)';
       break;
   }
 
