@@ -3126,5 +3126,16 @@
     ],
    "difficulty": "advanced",
     "projectPath": "./public/Flashcard-Quiz-App/index.html"
-   } 
+   },{
+     {
+      "projectNo": 246,
+    "projectName": "Bharatyatra",
+    "projectType": "Web Application",
+    "projectDesc": "travel booking website",
+      "Node.js",
+      "MongoDB"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/bharatyatra/frontend/public/index.html
+  }
 ]

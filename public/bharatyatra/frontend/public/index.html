@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="BharatYatra — India's premier global tourism platform. Discover spiritual sanctuaries, ancient heritage, and pristine eco-destinations." />
+  <meta property="og:title" content="BharatYatra — Discover Incredible India" />
+  <meta property="og:description" content="Journey to the soul of the world. Curated experiences across Spiritual India, Ancient Heritage & Carbon-neutral Eco-Tourism." />
+  <title>BharatYatra — Journey to the Soul of the World</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body>
+
+  <!-- ═══════════════════════ NAVIGATION ═══════════════════════ -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="#" class="nav-logo">
+        <span class="logo-icon">✦</span>
+        <span class="logo-text">BharatYatra</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#explore">Explore</a></li>
+        <li><a href="#about">Why India</a></li>
+        <li><a href="#booking" class="nav-cta">Book Journey</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Toggle navigation">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ═══════════════════════ HERO ═══════════════════════ -->
+  <section class="hero" id="hero">
+    <div class="hero-bg-overlay"></div>
+    <div class="hero-particles" id="heroParticles"></div>
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        Est. 3000 BCE · The World's Oldest Living Civilization
+      </div>
+      <h1 class="hero-title">
+        Journey to the<br />
+        <em>Soul of the World</em>
+      </h1>
+      <p class="hero-subtitle">
+        From sacred river ghats at dawn to mist-veiled rainforest canopies — India holds experiences that rewire your consciousness. We craft journeys that last a lifetime.
+      </p>
+      <div class="hero-actions">
+        <a href="#explore" class="btn btn-primary">
+          <span>Explore Destinations</span>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="#booking" class="btn btn-ghost">Book Your Journey</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-number">3,000+</span>
+          <span class="stat-label">Years of History</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-number">40+</span>
+          <span class="stat-label">UNESCO Sites</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-number">1M+</span>
+          <span class="stat-label">Global Travelers</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-scroll-hint">
+      <span>Scroll to Explore</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ CATEGORY FILTER ═══════════════════════ -->
+  <section class="filter-bar">
+    <div class="container">
+      <div class="filter-pills">
+        <button class="pill active" data-filter="all">All Experiences</button>
+        <button class="pill" data-filter="Spiritual">🕉 Spiritual</button>
+        <button class="pill" data-filter="Heritage">🏛 Heritage</button>
+        <button class="pill" data-filter="Eco-Tourism">🌿 Eco-Tourism</button>
+        <button class="pill" data-filter="Adventure">⛰ Adventure</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ EXPLORE SECTION ═══════════════════════ -->
+  <section class="explore" id="explore">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Curated for the World</span>
+        <h2 class="section-title">Explore India's <em>Sacred Landscapes</em></h2>
+        <p class="section-desc">Each destination is a chapter in an epic story. Choose your path.</p>
+      </div>
+
+      <!-- Loading Skeleton -->
+      <div class="destinations-grid" id="destinationsGrid">
+        <div class="card-skeleton"></div>
+        <div class="card-skeleton"></div>
+        <div class="card-skeleton"></div>
+      </div>
+
+      <!-- Error State -->
+      <div class="error-state" id="errorState" style="display:none;">
+        <div class="error-icon">⚠️</div>
+        <h3>Unable to Load Destinations</h3>
+        <p>Please ensure the backend server is running and MongoDB is connected.</p>
+        <button class="btn btn-primary" onclick="fetchDestinations()">Try Again</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ WHY INDIA SECTION ═══════════════════════ -->
+  <section class="about" id="about">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-text">
+          <span class="section-tag">Why Choose India</span>
+          <h2 class="section-title">The World's Most <em>Transformative</em> Destination</h2>
+          <p>India is not a country you visit. It is a country that visits you — reshaping your worldview, your sense of beauty, and your understanding of time itself.</p>
+          <div class="about-features">
+            <div class="feature">
+              <div class="feature-icon">🕉️</div>
+              <div>
+                <h4>Spiritual Wellness Capital</h4>
+                <p>India is the birthplace of Yoga, Ayurveda, and meditation — practices now embraced by 300 million people globally. Come to the source.</p>
+              </div>
+            </div>
+            <div class="feature">
+              <div class="feature-icon">🌿</div>
+              <div>
+                <h4>Carbon-Neutral Eco-Tourism</h4>
+                <p>India's biodiverse forest corridors and community-led lodges offer immersive nature experiences with minimal environmental impact.</p>
+              </div>
+            </div>
+            <div class="feature">
+              <div class="feature-icon">🏛️</div>
+              <div>
+                <h4>Living Ancient Heritage</h4>
+                <p>With 40+ UNESCO World Heritage Sites spanning 5,000 years, India's monuments are not ruins — they are still alive, still breathing, still sacred.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="about-visual">
+          <div class="mandala-container">
+            <svg class="mandala-svg" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+              <g transform="translate(200,200)">
+                <circle r="180" fill="none" stroke="var(--saffron)" stroke-width="0.5" opacity="0.3"/>
+                <circle r="140" fill="none" stroke="var(--saffron)" stroke-width="0.5" opacity="0.4"/>
+                <circle r="100" fill="none" stroke="var(--saffron)" stroke-width="1" opacity="0.5"/>
+                <circle r="60" fill="none" stroke="var(--saffron)" stroke-width="1.5" opacity="0.7"/>
+                <circle r="30" fill="var(--saffron)" opacity="0.15"/>
+                <circle r="10" fill="var(--saffron)" opacity="0.6"/>
+                <!-- Petals -->
+                <g opacity="0.5">
+                  <ellipse cx="0" cy="-110" rx="15" ry="40" fill="var(--saffron)" opacity="0.3" transform="rotate(0)"/>
+                  <ellipse cx="0" cy="-110" rx="15" ry="40" fill="var(--saffron)" opacity="0.3" transform="rotate(45)"/>
+                  <ellipse cx="0" cy="-110" rx="15" ry="40" fill="var(--saffron)" opacity="0.3" transform="rotate(90)"/>
+                  <ellipse cx="0" cy="-110" rx="15" ry="40" fill="var(--saffron)" opacity="0.3" transform="rotate(135)"/>
+                  <ellipse cx="0" cy="-110" rx="15" ry="40" fill="var(--saffron)" opacity="0.3" transform="rotate(180)"/>
+                  <ellipse cx="0" cy="-110" rx="15" ry="40" fill="var(--saffron)" opacity="0.3" transform="rotate(225)"/>
+                  <ellipse cx="0" cy="-110" rx="15" ry="40" fill="var(--saffron)" opacity="0.3" transform="rotate(270)"/>
+                  <ellipse cx="0" cy="-110" rx="15" ry="40" fill="var(--saffron)" opacity="0.3" transform="rotate(315)"/>
+                </g>
+                <g opacity="0.6">
+                  <ellipse cx="0" cy="-65" rx="8" ry="22" fill="var(--gold)" opacity="0.4" transform="rotate(22.5)"/>
+                  <ellipse cx="0" cy="-65" rx="8" ry="22" fill="var(--gold)" opacity="0.4" transform="rotate(67.5)"/>
+                  <ellipse cx="0" cy="-65" rx="8" ry="22" fill="var(--gold)" opacity="0.4" transform="rotate(112.5)"/>
+                  <ellipse cx="0" cy="-65" rx="8" ry="22" fill="var(--gold)" opacity="0.4" transform="rotate(157.5)"/>
+                  <ellipse cx="0" cy="-65" rx="8" ry="22" fill="var(--gold)" opacity="0.4" transform="rotate(202.5)"/>
+                  <ellipse cx="0" cy="-65" rx="8" ry="22" fill="var(--gold)" opacity="0.4" transform="rotate(247.5)"/>
+                  <ellipse cx="0" cy="-65" rx="8" ry="22" fill="var(--gold)" opacity="0.4" transform="rotate(292.5)"/>
+                  <ellipse cx="0" cy="-65" rx="8" ry="22" fill="var(--gold)" opacity="0.4" transform="rotate(337.5)"/>
+                </g>
+                <!-- Outer dots -->
+                <circle cx="0" cy="-180" r="4" fill="var(--saffron)" opacity="0.6"/>
+                <circle cx="0" cy="-180" r="4" fill="var(--saffron)" opacity="0.6" transform="rotate(45)"/>
+                <circle cx="0" cy="-180" r="4" fill="var(--saffron)" opacity="0.6" transform="rotate(90)"/>
+                <circle cx="0" cy="-180" r="4" fill="var(--saffron)" opacity="0.6" transform="rotate(135)"/>
+                <circle cx="0" cy="-180" r="4" fill="var(--saffron)" opacity="0.6" transform="rotate(180)"/>
+                <circle cx="0" cy="-180" r="4" fill="var(--saffron)" opacity="0.6" transform="rotate(225)"/>
+                <circle cx="0" cy="-180" r="4" fill="var(--saffron)" opacity="0.6" transform="rotate(270)"/>
+                <circle cx="0" cy="-180" r="4" fill="var(--saffron)" opacity="0.6" transform="rotate(315)"/>
+              </g>
+            </svg>
+            <div class="mandala-label">ॐ</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ BOOKING SECTION ═══════════════════════ -->
+  <section class="booking" id="booking">
+    <div class="container">
+      <div class="section-header section-header--light">
+        <span class="section-tag section-tag--light">Reserve Your Experience</span>
+        <h2 class="section-title">Begin Your <em>Indian Journey</em></h2>
+        <p class="section-desc section-desc--light">Curated itineraries for global travelers. Every booking is personally reviewed by our local experts.</p>
+      </div>
+
+      <div class="booking-wrapper">
+        <form class="booking-form" id="bookingForm" novalidate>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="userEmail">Your Email Address</label>
+              <input
+                type="email"
+                id="userEmail"
+                name="userEmail"
+                placeholder="your@email.com"
+                required
+                autocomplete="email"
+              />
+              <span class="field-hint">Confirmation & itinerary will be sent here</span>
+            </div>
+
+            <div class="form-group">
+              <label for="destinationSelect">Choose Destination</label>
+              <div class="select-wrapper">
+                <select id="destinationSelect" name="destinationId" required>
+                  <option value="">Loading destinations...</option>
+                </select>
+                <svg class="select-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="travelDate">Travel Date</label>
+              <input type="date" id="travelDate" name="travelDate" required />
+            </div>
+
+            <div class="form-group">
+              <label for="travelersCount">Number of Travelers</label>
+              <div class="counter-input">
+                <button type="button" class="counter-btn" id="decrementBtn">−</button>
+                <input type="number" id="travelersCount" name="travelersCount" value="2" min="1" max="50" readonly />
+                <button type="button" class="counter-btn" id="incrementBtn">+</button>
+              </div>
+            </div>
+
+            <div class="form-group form-group--full">
+              <label for="specialRequests">Special Requests <span class="optional">(Optional)</span></label>
+              <textarea
+                id="specialRequests"
+                name="specialRequests"
+                placeholder="Dietary requirements, accessibility needs, preferred travel style (luxury, backpacker, family), or any other details..."
+                rows="3"
+              ></textarea>
+            </div>
+          </div>
+
+          <!-- Alert area -->
+          <div class="form-alert" id="formAlert" role="alert" style="display:none;"></div>
+
+          <button type="submit" class="btn btn-primary btn-submit" id="submitBtn">
+            <span class="btn-text">Reserve My Journey</span>
+            <span class="btn-loader" style="display:none;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+            </span>
+          </button>
+          <p class="form-disclaimer">
+            🔒 No payment required now. Our team will contact you within 24 hours to personalise your itinerary.
+          </p>
+        </form>
+
+        <div class="booking-sidebar">
+          <div class="sidebar-card">
+            <h4>What's Included</h4>
+            <ul class="included-list">
+              <li>✓ Expert local guide assignment</li>
+              <li>✓ Curated accommodation options</li>
+              <li>✓ Cultural immersion experiences</li>
+              <li>✓ 24/7 traveler support</li>
+              <li>✓ Eco-responsible travel planning</li>
+            </ul>
+          </div>
+          <div class="sidebar-card sidebar-card--accent">
+            <div class="review-stars">★★★★★</div>
+            <p>"BharatYatra gave me the most transformative experience of my life. Varanasi at dawn — I will never be the same."</p>
+            <span class="reviewer">— Sofia Marchetti, Italy</span>
+          </div>
+          <div class="sidebar-card">
+            <h4>Need Help?</h4>
+            <p>Speak to a destination expert before booking.</p>
+            <a href="mailto:hello@bharatyatra.com" class="contact-link">hello@bharatyatra.com</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ FOOTER ═══════════════════════ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="#" class="nav-logo">
+            <span class="logo-icon">✦</span>
+            <span class="logo-text">BharatYatra</span>
+          </a>
+          <p>Connecting the world to India's timeless wonders since 2024. A journey to India is a journey within.</p>
+          <div class="footer-badges">
+            <span class="badge">🌍 Carbon Conscious</span>
+            <span class="badge">UNESCO Partner</span>
+          </div>
+        </div>
+        <div class="footer-links">
+          <h5>Explore</h5>
+          <ul>
+            <li><a href="#explore">Spiritual India</a></li>
+            <li><a href="#explore">Heritage Sites</a></li>
+            <li><a href="#explore">Eco-Tourism</a></li>
+            <li><a href="#explore">Adventure</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h5>Company</h5>
+          <ul>
+            <li><a href="#about">Why India</a></li>
+            <li><a href="#booking">Book Journey</a></li>
+            <li><a href="#">Our Story</a></li>
+            <li><a href="#">Responsible Travel</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h5>Contact</h5>
+          <ul>
+            <li><a href="mailto:hello@bharatyatra.com">hello@bharatyatra.com</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Service</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2024 BharatYatra. Made with ❤️ in India, for the World.</p>
+        <p class="footer-tagline">अतिथि देवो भव — <em>The Guest is God</em></p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/app.js"></script>
+</body>
+</html>
