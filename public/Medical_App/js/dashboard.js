@@ -38,3 +38,42 @@ function animateValue(id, start, end, duration) {
 if (document.getElementById("heartRate")) {
     animateValue("heartRate", 60, 78, 2000);
 }
+
+// Doctor Search
+const globalSearch = document.getElementById('globalSearch');
+if (globalSearch) {
+    globalSearch.addEventListener('input', function () {
+        const query = this.value.toLowerCase().trim();
+        const cards = document.querySelectorAll('.doctor-card');
+        let found = 0;
+
+        cards.forEach(card => {
+            const name = card.querySelector('.doctor-name')?.textContent.toLowerCase() || '';
+            const specialty = card.querySelector('.doctor-specialty')?.textContent.toLowerCase() || '';
+
+            if (name.includes(query) || specialty.includes(query)) {
+                card.style.display = '';
+                found++;
+            } else {
+                card.style.display = 'none';
+            }
+        });
+
+        if (query !== '') {
+            document.querySelector('.doctors-section')?.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        let noResult = document.getElementById('doctorNotFound');
+        if (!noResult) {
+            noResult = document.createElement('p');
+            noResult.id = 'doctorNotFound';
+            noResult.style.cssText = 'text-align:center; color:#888; padding:20px; width:100%;';
+            document.querySelector('.doctors-grid').appendChild(noResult);
+        }
+
+        noResult.style.display = (found === 0 && query !== '') ? 'block' : 'none';
+        if (found === 0 && query !== '') {
+            noResult.textContent = `No doctor found for "${this.value}"`;
+        }
+    });
+}

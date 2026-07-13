@@ -512,6 +512,45 @@ body {
     background: none;
     transition: transform 1s ease-in-out;
 }
+.random-mode-btn {
+    width: 24%;
+    height: 24%;
+    border: 0;
+    border-radius: 50%;
+    background: linear-gradient(25deg, rgb(50 55 64) 0%, rgb(20 23 29) 100%);
+    color: rgba(152, 243, 248, 0.85);
+    font-size: calc(var(--init-size) / 30);
+    line-height: 1;
+    cursor: pointer;
+    z-index: 4;
+    rotate: 180deg;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow:
+    -2px 2px 6px 0px rgba(0, 0, 0, 0.6),
+    2px -2px 4px 0px rgba(108, 115, 129, 0.35),
+    inset -3px 3px 4px 1px rgba(0, 0, 0, 0.45),
+    inset 3px -3px 8px 1px rgba(108, 115, 129, 0.28);
+    opacity: 0.45;
+    transition: scale 0.16s ease-in-out, opacity 0.5s ease-in-out, box-shadow 0.16s ease-in-out;
+}
+.power-on .random-mode-btn {
+    opacity: 1;
+    text-shadow: 0 0 6px rgba(152, 243, 248, 0.9);
+}
+.random-mode-btn:hover {
+    scale: 1.08;
+    box-shadow:
+    -1px 1px 4px 0px rgba(0, 0, 0, 0.55),
+    1px -1px 4px 0px rgba(108, 115, 129, 0.4),
+    inset -2px 2px 5px 1px rgba(0, 0, 0, 0.35),
+    inset 2px -2px 8px 1px rgba(108, 115, 129, 0.32);
+}
+.random-mode-btn:active,
+.random-mode-btn.is-choosing {
+    scale: 0.94;
+}
 .sixths {
     width: 24.3%;
     height: 100%;

@@ -283,24 +283,23 @@ h1 {
    BUTTONS & PLAYER CONTROLS
    ========================================== */
 .project-back-button {
-    position: absolute !important; /* Replaced fixed position with layout absolute to respect constraints */
-    top: -54px;                    /* Rests neatly outside the main text box bounds */
+    position: absolute !important;
+    top: -54px;
     left: 0;
     padding: 8px 16px !important;
     border-radius: 8px;
-    background: rgba(255, 255, 255, 0.08) !important;
-    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    background: #1e293b !important;
+    border: 1px solid #3b82f6 !important;
     text-decoration: none;
     font-weight: 700;
     font-family: system-ui, -apple-system, sans-serif;
-    color: var(--text) !important;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-    transition: all 0.2s ease-in-out;
+    color: #3b82f6 !important;
+    transition: all 0.2s ease;
 }
 
 .project-back-button:hover {
-    background: #ffffff !important;
-    color: #020617 !important;
+    background: #3b82f6 !important;
+    color: #fff !important;
     transform: translateY(-1px);
 }
 
@@ -384,12 +383,13 @@ button:disabled {
 #next,
 #prev,
 #back-btn {
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 10px;
-    padding: 11px 20px;
+    border: 1px solid #3b82f6;
+    border-radius: 8px;
+    padding: 8px 16px;
     font-weight: 600;
-    color: #e2e8f0;
-    background: rgba(255, 255, 255, 0.05);
+    color: #3b82f6;
+    background: #1e293b;
+    transition: all 0.2s ease;
 }
 
 #pause::before { content: "⏸ "; }
@@ -402,9 +402,9 @@ button:disabled {
 #next:hover:not(:disabled),
 #prev:hover:not(:disabled),
 #back-btn:hover:not(:disabled) {
-    background: rgba(255, 255, 255, 0.12);
-    border-color: rgba(255, 255, 255, 0.25);
-    color: #ffffff;
+    background: #3b82f6;
+    border-color: #3b82f6;
+    color: #fff;
     transform: translateY(-1px);
 }
 

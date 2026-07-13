@@ -31,28 +31,30 @@ body {
 
 /* Sidebar */
 .sidebar {
-    width: 320px;
-    background: var(--bg-glass);
-    backdrop-filter: blur(20px);
-    border-right: 1px solid var(--border);
-    padding: 2rem;
-    display: flex;
-    flex-direction: column;
-    z-index: 100;
-    overflow-y: auto;
+width: 320px;
+background: var(--bg-glass);
+backdrop-filter: blur(20px);
+border-right: 1px solid var(--border);
+padding: 2rem;
+display: flex;
+flex-direction: column;
+z-index: 100;
+overflow-y: auto;
 }
 
 .sidebar-header {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 2.5rem;
+   display: flex;
+   align-items: center;
+   gap: 1rem;
+   margin-bottom: 2.5rem;
+   position:relative;
+   top:25px;
 }
 
 .logo-icon {
-    font-size: 2.5rem;
-    color: var(--primary);
-    filter: drop-shadow(0 0 10px var(--primary-glow));
+   font-size: 2.5rem;
+   color: var(--primary);
+   filter: drop-shadow(0 0 10px var(--primary-glow));
 }
 
 h1 {
