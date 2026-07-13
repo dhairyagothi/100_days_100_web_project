@@ -3126,5 +3126,18 @@
     ],
    "difficulty": "advanced",
     "projectPath": "./public/Flashcard-Quiz-App/index.html"
-   } 
+   },{
+     {
+    "projectNo": 247,
+    "projectName": "Unit-Converter-2.0",
+    "projectType": "Tool",
+    "projectDesc": "converts units",
+    "techStack": [
+      "html",
+      "css",
+      "javascript",
+      "canvas"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/unit-converter/index.html"
 ]

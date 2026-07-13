@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Unit Converter</title>
+    <meta name="description" content="Convert weight, length, temperature and volume between common units." />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header class="header">
+        <h1>Unit Converter</h1>
+        <p class="subtitle">Pick a category, type a number, get an instant conversion.</p>
+      </header>
+
+      <nav class="tabs" id="tabs" role="tablist" aria-label="Unit category"></nav>
+
+      <form id="converter-form" autocomplete="off">
+        <div class="field-group">
+
+          <div class="field field-from">
+            <label for="from-value">From</label>
+            <div class="field-row">
+              <input
+                type="text"
+                id="from-value"
+                inputmode="decimal"
+                placeholder="0"
+                value="1"
+                aria-describedby="error-msg"
+              />
+              <select id="from-unit" aria-label="From unit"></select>
+            </div>
+          </div>
+
+          <button type="button" id="swap-btn" class="swap-btn" aria-label="Swap units">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+              <path d="M7 10L3 6L7 2" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M3 6H17" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+              <path d="M17 14L21 18L17 22" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M21 18H7" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+            </svg>
+          </button>
+
+          <div class="field field-to">
+            <label for="to-unit">To</label>
+            <div class="field-row">
+              <span class="result" id="to-value" aria-live="polite">2.205</span>
+              <select id="to-unit" aria-label="To unit"></select>
+            </div>
+          </div>
+
+        </div>
+
+        <p class="error" id="error-msg" role="alert" hidden>Enter a valid number to convert.</p>
+      </form>
+
+      <footer class="footer">
+        <span id="formula-note"></span>
+      </footer>
+    </div>
+
+    <script src="./js/app.js" defer></script>
+  </body>
+</html>
