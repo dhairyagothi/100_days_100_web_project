@@ -1365,6 +1365,114 @@ body.light-mode .hero-terminal-text {
   max-width: 650px;
 }
 
+.shortcut-help-btn {
+  width: 42px;
+  height: 42px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: var(--t);
+}
+
+.shortcut-help-btn:hover,
+.shortcut-help-btn:focus-visible {
+  background: var(--bg-surface);
+  border-color: var(--border-accent);
+  color: var(--accent);
+}
+
+.shortcut-help-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.shortcut-help-modal[hidden] {
+  display: none;
+}
+
+.shortcut-help-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(3, 8, 20, 0.7);
+  backdrop-filter: blur(8px);
+}
+
+.shortcut-help-panel {
+  position: relative;
+  width: min(100%, 440px);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  padding: 1.25rem;
+  z-index: 1;
+}
+
+.shortcut-help-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.shortcut-help-header h3 {
+  margin: 0.25rem 0 0;
+  color: var(--text-primary);
+  font-size: 1.05rem;
+}
+
+.shortcut-help-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.shortcut-help-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.75rem 0.85rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-muted);
+}
+
+.shortcut-key {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 42px;
+  padding: 0.35rem 0.55rem;
+  border-radius: 999px;
+  background: rgba(15, 242, 200, 0.14);
+  color: var(--accent);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.project-card.is-keyboard-selected {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 1px rgba(15, 242, 200, 0.2), 0 12px 28px rgba(15, 242, 200, 0.18);
+  transform: translateY(-2px);
+}
+
 #sortProjects,
 #difficultyFilter,
 #techStackFilter {

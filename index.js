@@ -777,6 +777,8 @@ function renderGrid() {
   const noResults = document.getElementById("noResults");
   if (!grid) return;
 
+  clearKeyboardSelection();
+
   if (typeof updateClearFiltersBtnVisibility === "function") {
     updateClearFiltersBtnVisibility();
   }
@@ -1779,6 +1781,122 @@ function initTechStackSearch() {
    ============================================================ */
 const searchInput = document.getElementById("searchInput");
 const clearSearchBtn = document.getElementById("clearSearch");
+const shortcutHelpBtn = document.getElementById("shortcutHelpBtn");
+const shortcutHelpModal = document.getElementById("shortcutHelpModal");
+const shortcutHelpCloseBtn = document.getElementById("shortcutHelpCloseBtn");
+let keyboardSelectedCard = null;
+let keyboardSelectionIndex = -1;
+let lastFocusedShortcutTrigger = null;
+
+function isEditableTarget(target) {
+  if (!target) return false;
+
+  const element = target instanceof Element ? target : target.parentElement;
+  if (!element) return false;
+
+  return Boolean(
+    element.closest("input, textarea, [contenteditable=''], [contenteditable='true']"),
+  );
+}
+
+function clearKeyboardSelection() {
+  if (keyboardSelectedCard) {
+    keyboardSelectedCard.classList.remove("is-keyboard-selected");
+    keyboardSelectedCard.removeAttribute("aria-selected");
+  }
+
+  keyboardSelectedCard = null;
+  keyboardSelectionIndex = -1;
+}
+
+function getVisibleProjectCards() {
+  const grid = document.getElementById("projectGrid");
+  if (!grid) return [];
+
+  return Array.from(grid.querySelectorAll(".project-card.visible"));
+}
+
+function selectVisibleProjectCard(direction) {
+  const cards = getVisibleProjectCards();
+  if (!cards.length) {
+    clearKeyboardSelection();
+    return;
+  }
+
+  if (!keyboardSelectedCard) {
+    keyboardSelectionIndex = direction > 0 ? -1 : cards.length;
+  }
+
+  const nextIndex = keyboardSelectionIndex + direction;
+  const validIndex = Math.min(Math.max(nextIndex, 0), cards.length - 1);
+  const nextCard = cards[validIndex];
+
+  if (!nextCard) return;
+
+  if (keyboardSelectedCard && keyboardSelectedCard !== nextCard) {
+    keyboardSelectedCard.classList.remove("is-keyboard-selected");
+    keyboardSelectedCard.removeAttribute("aria-selected");
+  }
+
+  keyboardSelectedCard = nextCard;
+  keyboardSelectionIndex = validIndex;
+  keyboardSelectedCard.classList.add("is-keyboard-selected");
+  keyboardSelectedCard.setAttribute("aria-selected", "true");
+  keyboardSelectedCard.scrollIntoView({
+    block: "nearest",
+    behavior: "smooth",
+  });
+}
+
+function openCurrentlySelectedProject() {
+  const card = keyboardSelectedCard || getVisibleProjectCards()[0];
+  if (!card) return;
+
+  const primaryLink = card.querySelector(".open-project");
+  if (primaryLink) {
+    primaryLink.click();
+  } else {
+    card.click();
+  }
+}
+
+function closeShortcutHelpModal() {
+  if (!shortcutHelpModal) return;
+
+  shortcutHelpModal.hidden = true;
+  if (shortcutHelpBtn) {
+    shortcutHelpBtn.setAttribute("aria-expanded", "false");
+  }
+
+  if (lastFocusedShortcutTrigger && typeof lastFocusedShortcutTrigger.focus === "function") {
+    lastFocusedShortcutTrigger.focus({ preventScroll: true });
+  }
+}
+
+function openShortcutHelpModal() {
+  if (!shortcutHelpModal) return;
+
+  lastFocusedShortcutTrigger =
+    document.activeElement instanceof HTMLElement ? document.activeElement : null;
+  shortcutHelpModal.hidden = false;
+  if (shortcutHelpBtn) {
+    shortcutHelpBtn.setAttribute("aria-expanded", "true");
+  }
+
+  shortcutHelpCloseBtn?.focus({ preventScroll: true });
+}
+
+function clearSearchInputAndApply() {
+  if (!searchInput) return;
+
+  searchInput.value = "";
+  searchQuery = "";
+  currentPage = 1;
+  clearKeyboardSelection();
+  renderGrid();
+  syncProjectCounts();
+  searchInput.focus();
+}
 
 function updateCategoryCounts(projects = PROJECTS) {
   const counts = {};
@@ -1848,19 +1966,78 @@ function syncProjectCounts() {
 
 if (searchInput && clearSearchBtn) {
   clearSearchBtn.addEventListener("click", () => {
-    searchInput.value = "";
-    searchInput.dispatchEvent(new Event("input"));
-    searchInput.focus();
+    clearSearchInputAndApply();
   });
 
   searchInput.addEventListener("keydown", (e) => {
     if (e.key === "Escape") {
-      searchInput.value = "";
-      searchInput.dispatchEvent(new Event("input"));
-      searchInput.focus();
+      e.preventDefault();
+      clearSearchInputAndApply();
     }
   });
 }
+
+if (shortcutHelpBtn && shortcutHelpModal) {
+  shortcutHelpBtn.addEventListener("click", () => {
+    if (shortcutHelpModal.hidden) {
+      openShortcutHelpModal();
+    } else {
+      closeShortcutHelpModal();
+    }
+  });
+
+  shortcutHelpCloseBtn?.addEventListener("click", closeShortcutHelpModal);
+
+  shortcutHelpModal.addEventListener("click", (e) => {
+    if (e.target instanceof HTMLElement && e.target.dataset.closeModal === "true") {
+      closeShortcutHelpModal();
+    }
+  });
+}
+
+document.addEventListener("keydown", (e) => {
+  const modalOpen = shortcutHelpModal && !shortcutHelpModal.hidden;
+
+  if (e.key === "Escape") {
+    if (modalOpen) {
+      e.preventDefault();
+      closeShortcutHelpModal();
+      return;
+    }
+
+    if (searchInput) {
+      e.preventDefault();
+      clearSearchInputAndApply();
+    }
+    return;
+  }
+
+  if (isEditableTarget(e.target)) return;
+
+  if (e.key === "/" && !e.metaKey && !e.ctrlKey && !e.altKey) {
+    e.preventDefault();
+    searchInput?.focus();
+    searchInput?.select?.();
+    return;
+  }
+
+  if (e.key === "ArrowDown") {
+    e.preventDefault();
+    selectVisibleProjectCard(1);
+    return;
+  }
+
+  if (e.key === "ArrowUp") {
+    e.preventDefault();
+    selectVisibleProjectCard(-1);
+    return;
+  }
+
+  if (e.key === "Enter" && keyboardSelectedCard) {
+    e.preventDefault();
+    openCurrentlySelectedProject();
+  }
+});
 
 /* ============================================================
    NAVBAR — dynamic based on login state
