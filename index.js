@@ -617,7 +617,18 @@ function buildProjectCardHTML({
     : `<a href="${safeDemoUrl}" target="_blank" class="card-link open-project" data-id="${safeDay}" rel="noopener noreferrer" onclick="event.stopPropagation()" aria-label="View demo of ${safeName} (opens in a new tab)">
                         Demo <i class="fas fa-arrow-right" aria-hidden="true"></i>
                     </a>`;
-
+  const openNewTabBtn = `
+<a
+    href="${safeDemoUrl}"
+    target="_blank"
+    rel="noopener noreferrer"
+    class="open-new-tab-btn"
+    onclick="event.stopPropagation()"
+    aria-label="Open ${safeName} in a new tab"
+>
+    <i class="fas fa-up-right-from-square"></i>
+</a>
+`;
   const githubBtn = sourceOnly
     ? ""
     : `<a href="${safeSourceUrl}" target="_blank" class="github-btn" rel="noopener noreferrer" onclick="event.stopPropagation()" aria-label="View source code of ${safeName} on GitHub (opens in a new tab)">
@@ -693,11 +704,30 @@ function buildProjectCardHTML({
                     ${primaryLink}
                 </div>
                 <div class="card-actions-right" style="display: flex; gap: 8px; align-items: center;">
-                    ${githubBtn}
-                    <button class="bookmark-btn ${isBookmarked ? "active" : ""}" data-id="${safeDay}" aria-label="${isBookmarked ? `Remove ${safeName} from bookmarks` : `Bookmark ${safeName}`}">
-                        <i class="${isBookmarked ? "fa-solid" : "fa-regular"} fa-bookmark" aria-hidden="true"></i>
-                    </button>
-                </div>
+
+    <a
+        href="${safeDemoUrl}"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="open-new-tab-btn"
+        onclick="event.stopPropagation()"
+        aria-label="Open ${safeName} in a new tab"
+        title="Open in New Tab"
+    >
+        <i class="fas fa-up-right-from-square" aria-hidden="true"></i>
+    </a>
+
+    ${githubBtn}
+
+    <button
+        class="bookmark-btn ${isBookmarked ? "active" : ""}"
+        data-id="${safeDay}"
+        aria-label="${isBookmarked ? `Remove ${safeName} from bookmarks` : `Bookmark ${safeName}`}"
+    >
+        <i class="${isBookmarked ? "fa-solid" : "fa-regular"} fa-bookmark" aria-hidden="true"></i>
+    </button>
+
+</div>
             </div>
         `,
     demoUrl: safeDemoUrl,
