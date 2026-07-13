@@ -174,15 +174,6 @@ navLinks.forEach(link => {
     Generate README
   </a>`;
 
-  const customCursorEnabled =
-    safeStorage.getItem("customCursorEnabled") !== "false";
-  const cursorBtn = `
-    <button class="btn btn-ghost btn-sm" id="cursorToggleNav" aria-label="Toggle custom cursor (currently ${customCursorEnabled ? "Custom" : "Default"})">
-      <span class="mobile-nav-icon"><i class="fas ${customCursorEnabled ? "fa-circle-notch" : "fa-mouse-pointer"}" aria-hidden="true"></i></span>
-      Cursor: ${customCursorEnabled ? "Custom" : "Default"}
-    </button>
-  `;
-
   let navButtonsHTML = "";
   if (session) {
     const userSection = `
@@ -196,10 +187,10 @@ navLinks.forEach(link => {
       </div>
       <button class="btn btn-ghost btn-sm" id="logoutBtn">Log out</button>
     `;
-    navButtonsHTML = `${themeBtn} ${cursorBtn} ${homeBtn} ${learnBtn} ${contributorsBtn} ${readmeBtn} ${githubBtn} ${userSection}`;
+    navButtonsHTML = `${themeBtn} ${homeBtn} ${learnBtn} ${contributorsBtn} ${readmeBtn} ${githubBtn} ${userSection}`;
   } else {
     const signinBtn = `<button class="btn btn-primary btn-sm" id="navSignInCta">Sign in</button>`;
-    navButtonsHTML = `${themeBtn} ${cursorBtn} ${homeBtn} ${learnBtn} ${contributorsBtn} ${readmeBtn} ${githubBtn} ${signinBtn}`;
+    navButtonsHTML = `${themeBtn} ${homeBtn} ${learnBtn} ${contributorsBtn} ${readmeBtn} ${githubBtn} ${signinBtn}`;
   }
 
   container.innerHTML = `
@@ -350,36 +341,6 @@ navLinks.forEach(link => {
       location.reload();
     });
   }
-
-  // Cursor Toggle Logic
-  document.addEventListener("click", (event) => {
-    const toggle = event.target.closest("#cursorToggleNav");
-    if (!toggle) return;
-    event.preventDefault();
-    const currentlyEnabled =
-      safeStorage.getItem("customCursorEnabled") !== "false";
-    const nextState = !currentlyEnabled;
-    safeStorage.setItem("customCursorEnabled", String(nextState));
-
-    // Call the cursor system to enable/disable
-    if (nextState && window.CursorSystem?.enable) {
-      window.CursorSystem.enable();
-    } else if (!nextState && window.CursorSystem?.disable) {
-      window.CursorSystem.disable();
-    } else {
-      // Fallback if cursor system not loaded yet
-      document.querySelectorAll("#cursorToggleNav").forEach((btn) => {
-        btn.innerHTML = `
-          <span class="mobile-nav-icon"><i class="fas ${nextState ? "fa-circle-notch" : "fa-mouse-pointer"}" aria-hidden="true"></i></span>
-          Cursor: ${nextState ? "Custom" : "Default"}
-        `;
-        btn.setAttribute(
-          "aria-label",
-          `Toggle custom cursor (currently ${nextState ? "Custom" : "Default"})`,
-        );
-      });
-    }
-  });
 
   // Sign In Click Logic
   document.addEventListener("click", (event) => {
