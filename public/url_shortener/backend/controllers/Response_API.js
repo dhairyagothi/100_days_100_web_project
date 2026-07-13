@@ -14,6 +14,17 @@ exports.Response_POST_API = async (req, res) => {
         throw new AppError("Enter URL first", 400);
     }
 
+    // Only allow http(s) URLs so javascript:, data:, file: and similar cannot be stored
+    let parsedURL;
+    try {
+        parsedURL = new URL(originalURL);
+    } catch (e) {
+        throw new AppError("Enter a valid URL starting with http:// or https://", 400);
+    }
+    if (parsedURL.protocol !== "http:" && parsedURL.protocol !== "https:") {
+        throw new AppError("Only http and https URLs can be shortened", 400);
+    }
+
     let Shortcode;
 
     if (customName) {

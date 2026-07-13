@@ -84,3 +84,21 @@ speedUnitSel.addEventListener('change', updateDashboard);
 
 // Run calculation loop once on load
 updateDashboard();
+const themeToggle = document.getElementById('theme-toggle');
+
+// Read existing user selection from storage
+const currentTheme = localStorage.getItem('theme');
+if (currentTheme === 'light') {
+    document.body.classList.add('light-theme');
+}
+
+// Handle instant button click toggles
+themeToggle.addEventListener('click', function () {
+    document.body.classList.toggle('light-theme');
+    
+    if (document.body.classList.contains('light-theme')) {
+        localStorage.setItem('theme', 'light');
+    } else {
+        localStorage.setItem('theme', 'dark');
+    }
+});

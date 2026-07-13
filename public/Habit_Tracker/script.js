@@ -1,222 +1,268 @@
-const habits = JSON.parse(localStorage.getItem("habits")) || [];
-let deleteHabitId = null;
+// ---------- State ----------
+let habits = JSON.parse(localStorage.getItem("habits")) || [];
 
 const quotes = [
   "Small habits create big results.",
   "Progress beats perfection.",
   "Stay consistent.",
   "You become what you repeat.",
-  "Success is built daily.",
+  "Success is built daily."
 ];
+
+// ---------- Elements ----------
+const habitList = document.getElementById("habitList");
+const emptyState = document.getElementById("emptyState");
+const habitModal = document.getElementById("habitModal");
+const addHabitBtn = document.getElementById("addHabitBtn");
+const closeModalBtn = document.getElementById("closeModalBtn");
+const saveHabitBtn = document.getElementById("saveHabitBtn");
+const habitNameInput = document.getElementById("habitName");
+const habitCategoryInput = document.getElementById("habitCategory");
+const habitColorInput = document.getElementById("habitColor");
+const habitNotesInput = document.getElementById("habitNotes");
+const formError = document.getElementById("formError");
+const searchInput = document.getElementById("searchHabit");
+const themeBtn = document.getElementById("themeBtn");
 
 document.getElementById("quote").textContent =
   quotes[Math.floor(Math.random() * quotes.length)];
 
-const habitList = document.getElementById("habitList");
+// ---------- Daily reset ----------
+// If a habit wasn't completed "today" (based on stored date), reset its
+// completedToday flag. If more than one day was missed entirely, the streak
+// resets to 0 instead of growing forever or staying stuck as "done".
+function todayKey() {
+  return new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+}
 
+function applyDailyReset() {
+  const today = todayKey();
+
+  habits.forEach(habit => {
+    if (habit.lastCompletedDate === today) {
+      // already handled today, keep as is
+      return;
+    }
+
+    if (habit.completedToday) {
+      // was completed on a previous day, day has rolled over
+      habit.completedToday = false;
+    }
+
+    if (habit.lastCompletedDate) {
+      const last = new Date(habit.lastCompletedDate);
+      const diffDays = Math.round(
+        (new Date(today) - last) / (1000 * 60 * 60 * 24)
+      );
+      // more than 1 day gap since last completion breaks the streak
+      if (diffDays > 1) {
+        habit.streak = 0;
+      }
+    }
+  });
+
+  saveHabits();
+}
+
+// ---------- Persistence ----------
 function saveHabits() {
   localStorage.setItem("habits", JSON.stringify(habits));
 }
 
+// ---------- Rendering ----------
 function renderStats() {
   document.getElementById("totalHabits").textContent = habits.length;
 
   let completed = 0;
   let bestStreak = 0;
 
-  habits.forEach((h) => {
+  habits.forEach(h => {
     if (h.completedToday) completed++;
-
     if (h.streak > bestStreak) bestStreak = h.streak;
   });
 
   document.getElementById("completedToday").textContent = completed;
-
   document.getElementById("bestStreak").textContent = bestStreak;
 }
 
 function renderHabits() {
   habitList.innerHTML = "";
 
-  const search = document.getElementById("searchHabit").value.toLowerCase();
+  const search = searchInput.value.toLowerCase();
 
-  habits
-    .filter((h) => h.name.toLowerCase().includes(search))
-    .forEach((habit) => {
-      const div = document.createElement("div");
+  const filtered = habits.filter(h =>
+    h.name.toLowerCase().includes(search)
+  );
 
-      div.className = "habit-card";
-      div.style.borderLeft = `6px solid ${habit.color}`;
+  emptyState.hidden = habits.length !== 0;
 
-      div.innerHTML = `
-<div class="habit-top">
+  if (habits.length !== 0 && filtered.length === 0) {
+    habitList.innerHTML = `<p class="empty-state">No habits match "${escapeHtml(search)}".</p>`;
+  }
 
-<div>
-<h3>${habit.name}</h3>
-<p>${habit.category}</p>
-</div>
+  filtered.forEach(habit => {
+    const div = document.createElement("div");
+    div.className = "habit-card";
+    div.style.setProperty("--habit-color", habit.color || "#22c55e");
 
-<div class="streak">
-🔥 ${habit.streak}
-</div>
+    div.innerHTML = `
+      <div class="habit-top">
+        <div>
+          <h3>${escapeHtml(habit.name)}</h3>
+          <span class="badge">${escapeHtml(habit.category)}</span>
+        </div>
+        <div class="streak">🔥 ${habit.streak}</div>
+      </div>
 
-</div>
+      ${habit.notes ? `<div class="notes">${escapeHtml(habit.notes)}</div>` : ""}
 
-<div class="notes">
-${habit.notes}
-</div>
+      <div class="actions">
+        <button class="completeBtn" data-id="${habit.id}" ${habit.completedToday ? "disabled" : ""}>
+          ${habit.completedToday ? "✅ Done" : "Mark Done"}
+        </button>
+        <button class="deleteBtn" data-id="${habit.id}">
+          Delete
+        </button>
+      </div>
+    `;
 
-<div class="actions">
-
-<button
-class="completeBtn"
-data-id="${habit.id}"
->
-${habit.completedToday ? "✅ Done" : "Mark Done"}
-</button>
-
-<button
-class="deleteBtn"
-data-id="${habit.id}"
->
-Delete
-</button>
-
-</div>
-`;
-
-      habitList.appendChild(div);
-    });
+    habitList.appendChild(div);
+  });
 
   attachEvents();
   renderStats();
 }
 
+function escapeHtml(str) {
+  const div = document.createElement("div");
+  div.textContent = str ?? "";
+  return div.innerHTML;
+}
+
 function attachEvents() {
-  document.querySelectorAll(".deleteBtn").forEach((btn) => {
-    btn.onclick = () => {
-  deleteHabitId = Number(btn.dataset.id);
-
-  document.getElementById("deleteModal").style.display = "flex";
-};
-  });
-
-  document.querySelectorAll(".completeBtn").forEach((btn) => {
+  document.querySelectorAll(".deleteBtn").forEach(btn => {
     btn.onclick = () => {
       const id = Number(btn.dataset.id);
+      const index = habits.findIndex(h => h.id === id);
+      if (index === -1) return;
 
-      const habit = habits.find((h) => h.id === id);
+      habits.splice(index, 1);
+      saveHabits();
+      renderHabits();
+    };
+  });
 
-      if (!habit.completedToday) {
-        habit.completedToday = true;
+  document.querySelectorAll(".completeBtn").forEach(btn => {
+    btn.onclick = () => {
+      const id = Number(btn.dataset.id);
+      const habit = habits.find(h => h.id === id);
+      if (!habit || habit.completedToday) return;
 
-        habit.streak += 1;
+      habit.completedToday = true;
+      habit.streak += 1;
+      habit.lastCompletedDate = todayKey();
 
-        saveHabits();
-
-        confetti();
-
-        renderHabits();
-      }
+      saveHabits();
+      confetti();
+      renderHabits();
     };
   });
 }
 
-document.getElementById("addHabitBtn").onclick = () => {
-  document.getElementById("habitModal").style.display = "flex";
-};
+// ---------- Modal ----------
+function openModal() {
+  habitModal.classList.add("open");
+  habitModal.style.display = "flex";
+  formError.hidden = true;
+  habitNameInput.focus();
+}
 
-document.getElementById("saveHabitBtn").onclick = () => {
-  const name = document.getElementById("habitName").value;
+function closeModal() {
+  habitModal.classList.remove("open");
+  habitModal.style.display = "none";
+  resetForm();
+}
 
-  if (!name) return;
+function resetForm() {
+  habitNameInput.value = "";
+  habitCategoryInput.value = "Health";
+  habitColorInput.value = "#22c55e";
+  habitNotesInput.value = "";
+  formError.hidden = true;
+}
+
+addHabitBtn.addEventListener("click", openModal);
+closeModalBtn.addEventListener("click", closeModal);
+
+// close when clicking the dark overlay (outside the modal box)
+habitModal.addEventListener("click", (e) => {
+  if (e.target === habitModal) closeModal();
+});
+
+// close on Escape
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && habitModal.classList.contains("open")) {
+    closeModal();
+  }
+});
+
+saveHabitBtn.addEventListener("click", () => {
+  const name = habitNameInput.value.trim();
+
+  if (!name) {
+    formError.hidden = false;
+    habitNameInput.focus();
+    return;
+  }
 
   habits.push({
     id: Date.now(),
-
     name,
-
-    category: document.getElementById("habitCategory").value,
-
-    color: document.getElementById("habitColor").value,
-
-    notes: document.getElementById("habitNotes").value,
-
+    category: habitCategoryInput.value,
+    color: habitColorInput.value,
+    notes: habitNotesInput.value.trim(),
     streak: 0,
-
     completedToday: false,
+    lastCompletedDate: null
   });
 
   saveHabits();
-
   renderHabits();
+  closeModal();
+});
 
-  document.getElementById("habitModal").style.display = "none";
-};
+searchInput.addEventListener("input", renderHabits);
 
-document.getElementById("searchHabit").addEventListener("input", renderHabits);
-
-const themeBtn = document.getElementById("themeBtn");
-
-themeBtn.onclick = () => {
-  document.body.classList.toggle("dark");
-
-  localStorage.setItem("theme", document.body.classList.contains("dark"));
-};
-
-if (localStorage.getItem("theme") === "true") {
-  document.body.classList.add("dark");
+// ---------- Theme ----------
+function applyTheme(isDark) {
+  document.body.classList.toggle("dark", isDark);
+  themeBtn.textContent = isDark ? "☀️" : "🌙";
 }
+
+themeBtn.addEventListener("click", () => {
+  const isDark = !document.body.classList.contains("dark");
+  applyTheme(isDark);
+  localStorage.setItem("theme", isDark ? "true" : "false");
+});
+
+applyTheme(localStorage.getItem("theme") === "true");
+
+// ---------- Confetti ----------
+const confettiColors = ["#22c55e", "#3b82f6", "#f59e0b", "#ef4444", "#a855f7", "#ec4899"];
 
 function confetti() {
   for (let i = 0; i < 40; i++) {
     const conf = document.createElement("div");
-
     conf.className = "confetti";
-
     conf.style.left = Math.random() * 100 + "vw";
-
+    conf.style.background = confettiColors[Math.floor(Math.random() * confettiColors.length)];
+    conf.style.animationDuration = (1.5 + Math.random()) + "s";
     document.body.appendChild(conf);
 
-    setTimeout(() => {
-      conf.remove();
-    }, 2000);
+    setTimeout(() => conf.remove(), 2500);
   }
 }
 
+// ---------- Init ----------
+applyDailyReset();
 renderHabits();
-
-document.getElementById("confirmDeleteBtn").onclick = () => {
-
-  const index = habits.findIndex(
-    (h) => h.id === deleteHabitId
-  );
-
-  if (index !== -1) {
-    habits.splice(index, 1);
-
-    saveHabits();
-    renderHabits();
-  }
-
-  deleteHabitId = null;
-
-  document.getElementById("deleteModal").style.display = "none";
-};
-
-document.getElementById("cancelDeleteBtn").onclick = () => {
-
-  deleteHabitId = null;
-
-  document.getElementById("deleteModal").style.display = "none";
-};
-
-document.getElementById("deleteModal")
-  .addEventListener("click", (e) => {
-
-    if (e.target.id === "deleteModal") {
-      deleteHabitId = null;
-
-      e.target.style.display = "none";
-    }
-});
