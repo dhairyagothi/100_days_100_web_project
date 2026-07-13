@@ -2050,8 +2050,59 @@ input:focus {
   opacity: 0.4;
 }
 
-.no-results p {
-  font-size: 0.9rem;
+.no-results-title {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  margin: 0 0 1rem;
+}
+
+.suggestions-panel {
+  max-width: 520px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.suggestions-title {
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.75rem;
+}
+
+.suggestions-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.65rem;
+}
+
+.suggestion-btn {
+  width: 100%;
+  border: 1px solid var(--border);
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  padding: 0.8rem 0.95rem;
+  border-radius: 12px;
+  text-align: left;
+  cursor: pointer;
+  transition: var(--t);
+}
+
+.suggestion-btn:hover,
+.suggestion-btn:focus-visible {
+  border-color: var(--border-accent);
+  background: var(--bg-surface);
+  transform: translateY(-1px);
+  color: var(--accent);
+}
+
+.suggestion-btn mark {
+  background: rgba(15, 242, 200, 0.2);
+  color: var(--accent);
+  padding: 0 0.2rem;
+  border-radius: 4px;
 }
 
 .toast {

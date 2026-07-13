@@ -399,9 +399,10 @@
 
         <div class="project-grid" id="projectGrid"></div>
 
-        <div class="no-results" id="noResults" role="status" aria-live="assertive">
+        <div class="no-results" id="noResults" role="status" aria-live="polite">
           <i class="fas fa-search" aria-hidden="true"></i>
-          <p>No projects match your search.</p>
+          <p class="no-results-title">No projects match your search.</p>
+          <div class="suggestions-panel" id="suggestionsPanel" hidden></div>
         </div>
       </div>
     </section>
