@@ -18,6 +18,9 @@ window.addEventListener("load", () => {
 // PREVIEW MODAL
 // ==========================
 
+const previewArea =
+  document.querySelector(".animation-demo-area");
+
 const previewButtons =
     document.querySelectorAll(".preview-btn");
 
@@ -29,13 +32,35 @@ const previewCloseButtons =
 
 previewButtons.forEach(button => {
 
-    button.addEventListener("click", () => {
+  button.addEventListener("click", () => {
 
-        if (previewModal) {
-            previewModal.style.display = "flex";
-        }
+    const card =
+      button.closest(".animation-card");
 
-    });
+    if (!card) return;
+
+    const animationKey =
+      card.dataset.animation;
+
+    const animation =
+      animationLibrary[animationKey];
+
+    if (!animation) return;
+
+    // Update title
+    if (modalTitle) {
+      modalTitle.textContent =
+        animation.title + " Preview";
+    }
+
+    // Insert animation HTML
+    previewArea.innerHTML =
+      animation.html;
+
+    // Show modal
+    previewModal.style.display = "flex";
+
+  });
 
 });
 

@@ -335,3 +335,35 @@
         margin-top: 15px;
       }
     }
+
+ .footer {
+    margin-top: 60px;
+    padding: 25px 20px;
+    text-align: center;
+    background: var(--card);
+    border-top: 1px solid var(--border);
+    color: var(--text);
+    backdrop-filter: blur(12px);
+}
+
+.footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin: 15px 0;
+}
+
+.footer-links a {
+    color: var(--muted);
+    text-decoration: none;
+}
+
+.footer-links a:hover {
+    color: var(--primary);
+}
+
+.copyright {
+    color: var(--muted);
+    font-size: 0.9rem;
+}

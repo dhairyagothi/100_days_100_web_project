@@ -598,21 +598,37 @@ let calculationHistory = [];
 let filteredHistory = [];
 
 function addToHistory(expression, result) {
-  let displayResult =
+  const displayResult =
     typeof result === 'number'
       ? Number.isInteger(result)
         ? result.toString()
         : parseFloat(result.toPrecision(12)).toString()
       : result.toString();
 
-  calculationHistory.unshift({ expression: expression, result: displayResult });
+  calculationHistory.unshift({
+    expression,
+    result: displayResult,
+    favorite: false,
+  });
 
-  if (calculationHistory.length > 20) calculationHistory.pop();
+  // Keep favorites at the top
+  sortHistory();
+
+  // Remove the oldest entry only after exceeding the limit
+  if (calculationHistory.length > 20) {
+    calculationHistory.pop();
+  }
 
   localStorage.setItem('calculatorHistory', JSON.stringify(calculationHistory));
+
   renderHistory();
 }
 
+function sortHistory() {
+  calculationHistory.sort((a, b) => {
+    return Number(b.favorite) - Number(a.favorite);
+  });
+}
 function renderHistory(historyData = calculationHistory) {
   const historyList = document.getElementById('history-list');
   if (!historyList) return;
@@ -634,16 +650,35 @@ function renderHistory(historyData = calculationHistory) {
   let html = '';
 
   for (let i = 0; i < historyData.length; i++) {
+    const item = historyData[i];
+
     html += `
-      <div class="history-item" data-expression="${encodeURIComponent(historyData[i].expression)}" data-result="${encodeURIComponent(historyData[i].result)}">
-        ${escapeHtml(historyData[i].expression)} = ${escapeHtml(historyData[i].result)}
+    <div
+      class="history-item ${item.favorite ? 'favorite' : ''}"
+      data-expression="${encodeURIComponent(item.expression)}"
+      data-result="${encodeURIComponent(item.result)}"
+    >
+
+      <div class="history-item-content">
+        ${escapeHtml(item.expression)} =
+        ${escapeHtml(item.result)}
       </div>
-    `;
+
+      <button
+        class="favorite-btn ${item.favorite ? 'active' : ''}"
+        data-expression="${encodeURIComponent(item.expression)}"
+      >
+        ${item.favorite ? '⭐' : '☆'}
+      </button>
+
+    </div>
+  `;
   }
 
   historyList.innerHTML = html;
 }
 function filterHistory(searchTerm) {
+  sortHistory();
   const term = searchTerm.toLowerCase().trim();
 
   if (!term) {
@@ -659,6 +694,29 @@ function filterHistory(searchTerm) {
   });
 
   renderHistory(filteredHistory);
+}
+function toggleFavorite(expression) {
+  const decodedExpression = decodeURIComponent(expression);
+
+  const item = calculationHistory.find(
+    (entry) => entry.expression === decodedExpression
+  );
+
+  if (!item) return;
+
+  item.favorite = !item.favorite;
+
+  sortHistory();
+
+  localStorage.setItem('calculatorHistory', JSON.stringify(calculationHistory));
+
+  const searchInput = document.getElementById('history-search');
+
+  if (searchInput && searchInput.value.trim()) {
+    filterHistory(searchInput.value);
+  } else {
+    renderHistory();
+  }
 }
 
 function escapeHtml(text) {
@@ -734,6 +792,7 @@ async function copyHistory() {
 
 function clearHistory() {
   calculationHistory = [];
+  filteredHistory = [];
   localStorage.removeItem('calculatorHistory');
   renderHistory();
 }
@@ -741,7 +800,17 @@ function clearHistory() {
 function loadHistoryFromStorage() {
   try {
     const saved = localStorage.getItem('calculatorHistory');
-    if (saved) calculationHistory = JSON.parse(saved);
+    if (saved) {
+      calculationHistory = JSON.parse(saved);
+
+      calculationHistory.forEach((item) => {
+        if (item.favorite === undefined) {
+          item.favorite = false;
+        }
+      });
+
+      sortHistory();
+    }
     renderHistory();
   } catch (e) {
     calculationHistory = [];
@@ -752,20 +821,30 @@ function loadHistoryFromStorage() {
 const historyListEl = document.getElementById('history-list');
 if (historyListEl) {
   historyListEl.onclick = function (e) {
+    const favoriteBtn = e.target.closest('.favorite-btn');
+
+    if (favoriteBtn) {
+      e.stopPropagation();
+
+      toggleFavorite(favoriteBtn.dataset.expression);
+
+      return;
+    }
+
     const item = e.target.closest('.history-item');
+
     if (item) {
-     
-     const result = decodeURIComponent(item.dataset.result);
+      const result = decodeURIComponent(item.dataset.result);
 
-const calc = activeCalculator();
+      const calc = activeCalculator();
 
-if (calc.expression === 'Error') {
-  calc.clear();
-}
+      if (calc.expression === 'Error') {
+        calc.clear();
+      }
 
-calc.expression = result;
-calc.currentOperand = result;
-calc.updateDisplay();
+      calc.expression = result;
+      calc.currentOperand = result;
+      calc.updateDisplay();
     }
   };
 }
@@ -805,31 +884,146 @@ if (historySearchInput) {
     filterHistory(e.target.value);
   });
 }
+const functionInfo = {
+  sin: {
+    title: 'sin',
+    description: 'Returns the sine of an angle.',
+    example: 'sin(30°) = 0.5',
+  },
+
+  cos: {
+    title: 'cos',
+    description: 'Returns the cosine of an angle.',
+    example: 'cos(60°) = 0.5',
+  },
+
+  tan: {
+    title: 'tan',
+    description: 'Returns the tangent of an angle.',
+    example: 'tan(45°) = 1',
+  },
+
+  ln: {
+    title: 'ln',
+    description: 'Returns the natural logarithm (base e).',
+    example: 'ln(e) = 1',
+  },
+
+  log: {
+    title: 'log',
+    description: 'Returns the common logarithm (base 10).',
+    example: 'log(100) = 2',
+  },
+
+  pi: {
+    title: 'π',
+    description: 'Mathematical constant pi.',
+    example: 'π ≈ 3.14159',
+  },
+
+  sqrt: {
+    title: '√',
+    description: 'Calculates the square root of a number.',
+    example: '√25 = 5',
+  },
+
+  e: {
+    title: 'e',
+    description: 'Euler’s number used in exponential growth.',
+    example: 'e ≈ 2.71828',
+  },
+
+  exp: {
+    title: 'EXP',
+    description: 'Raises e to the specified power.',
+    example: 'EXP(2) = e²',
+  },
+
+  percent: {
+    title: '%',
+    description: 'Converts a value into a percentage.',
+    example: '50% = 0.5',
+  },
+
+  deg: {
+    title: 'DEG',
+    description: 'Switches angle calculations to degrees.',
+    example: 'sin(90°) = 1',
+  },
+
+  rad: {
+    title: 'RAD',
+    description: 'Switches angle calculations to radians.',
+    example: 'sin(π/2) = 1',
+  },
+
+  factorial: {
+    title: 'x!',
+    description: 'Calculates the factorial of an integer.',
+    example: '5! = 120',
+  },
+
+  pow: {
+    title: 'x^y',
+    description: 'Raises a number to a power.',
+    example: '2^3 = 8',
+  },
+
+  delete: {
+    title: 'DEL',
+    description: 'Deletes the last entered character.',
+    example: '123 → DEL → 12',
+  },
+
+  clear: {
+    title: 'AC',
+    description: 'Clears the entire calculator.',
+    example: 'Resets current expression',
+  },
+
+  equals: {
+    title: '=',
+    description: 'Evaluates the current expression.',
+    example: '2 + 2 = 4',
+  },
+};
 // ========== END HISTORY FUNCTIONS ==========
 // ===== THEME TOGGLE =====
 
-const themeToggle = document.getElementById("theme-toggle");
+const themeToggle = document.getElementById('theme-toggle');
 
 function applyTheme(theme) {
-  document.documentElement.setAttribute("data-theme", theme);
+  document.documentElement.setAttribute('data-theme', theme);
 
   if (themeToggle) {
-    themeToggle.textContent = theme === "dark" ? "🌙" : "☀️";
+    themeToggle.textContent = theme === 'dark' ? '🌙' : '☀️';
   }
 
-  localStorage.setItem("calculatorTheme", theme);
+  localStorage.setItem('calculatorTheme', theme);
 }
 
-const savedTheme =
-  localStorage.getItem("calculatorTheme") || "dark";
+const savedTheme = localStorage.getItem('calculatorTheme') || 'dark';
 
 applyTheme(savedTheme);
 
 if (themeToggle) {
-  themeToggle.addEventListener("click", () => {
+  themeToggle.addEventListener('click', () => {
     const current =
-      document.documentElement.getAttribute("data-theme") || "dark";
+      document.documentElement.getAttribute('data-theme') || 'dark';
 
-    applyTheme(current === "dark" ? "light" : "dark");
+    applyTheme(current === 'dark' ? 'light' : 'dark');
   });
 }
+
+document.querySelectorAll('.shortcut-item').forEach((item) => {
+  const key = item.dataset.tooltip;
+  const tooltip = item.querySelector('.inline-tooltip');
+
+  if (!tooltip || !functionInfo[key]) return;
+
+  tooltip.innerHTML = `
+    <h4>${functionInfo[key].title}</h4>
+    <p>${functionInfo[key].description}</p>
+    <code>${functionInfo[key].example}</code>
+  `;
+});

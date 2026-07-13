@@ -37,7 +37,15 @@ h1 {
   line-height: 1.4;
 }
 
-/* ── Game Container ───────────────────────────────────────── */
+
+#score-board {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+
 #game-container {
   display: inline-block;
   /* Don't let it grow wider than the viewport */

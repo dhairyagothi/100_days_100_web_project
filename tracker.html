@@ -299,30 +299,61 @@
       return "Tools";
     }
 
+    function getLocalDateString(date) {
+      const y = date.getFullYear();
+      const m = String(date.getMonth() + 1).padStart(2, '0');
+      const d = String(date.getDate()).padStart(2, '0');
+      return `${y}-${m}-${d}`;
+    }
+
     function getStreakData() { try { return JSON.parse(localStorage.getItem("streakData") || "{}"); } catch { return {}; } }
     function saveStreakData(data) { try { localStorage.setItem("streakData", JSON.stringify(data)); } catch {} }
+    
     function touchStreak() {
       const data = getStreakData();
-      const today = new Date().toISOString().split("T")[0];
+      const today = getLocalDateString(new Date());
       const activeDays = new Set(data.activeDays || []);
       if (activeDays.has(today)) return;
       activeDays.add(today);
       let streak = 0, checkDate = new Date();
       while (true) {
-        const key = checkDate.toISOString().split("T")[0];
+        const key = getLocalDateString(checkDate);
         if (activeDays.has(key)) { streak++; checkDate.setDate(checkDate.getDate() - 1); } else break;
       }
       saveStreakData({ activeDays: Array.from(activeDays), currentStreak: streak, longestStreak: Math.max(streak, data.longestStreak || 0), lastActive: today });
     }
-    function getCurrentStreak() { return getStreakData().currentStreak || 0; }
+
+    function getCurrentStreak() {
+      const data = getStreakData();
+      if (!data.activeDays || data.activeDays.length === 0) return 0;
+      
+      const today = new Date();
+      const yesterday = new Date(today);
+      yesterday.setDate(today.getDate() - 1);
+      
+      const todayStr = getLocalDateString(today);
+      const yesterdayStr = getLocalDateString(yesterday);
+      const lastActive = data.lastActive;
+      
+      if (lastActive !== todayStr && lastActive !== yesterdayStr) {
+        if (data.currentStreak !== 0) {
+          data.currentStreak = 0;
+          saveStreakData(data);
+        }
+        return 0;
+      }
+      return data.currentStreak || 0;
+    }
+
     function getLongestStreak() { return getStreakData().longestStreak || 0; }
     function getTotalActiveDays() { return (getStreakData().activeDays || []).length; }
+    
     function getLast14Days() {
       const activeDays = new Set((getStreakData().activeDays || []));
       const result = [], today = new Date();
       for (let i = 13; i >= 0; i--) {
         const d = new Date(today); d.setDate(today.getDate() - i);
-        const key = d.toISOString().split("T")[0];
+        const key = getLocalDateString(d);
         result.push({ date: key, active: activeDays.has(key) });
       }
       return result;

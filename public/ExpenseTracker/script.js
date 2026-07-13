@@ -112,6 +112,10 @@ document.addEventListener("DOMContentLoaded", () => {
     setupEventListeners();
 
     updateUI();
+
+    if (window.lucide) {
+        window.lucide.createIcons();
+    }
 });
 
 /* ---------------- EVENT LISTENERS ---------------- */
@@ -216,19 +220,281 @@ function setupEventListeners() {
     }
 
     /* Theme Toggle */
-
     if (themeToggle) {
-
         themeToggle.addEventListener("click", () => {
+            if (document.body.classList.contains("light-theme") || document.body.classList.contains("theme-light-pro")) {
+                document.body.classList.remove("light-theme", "theme-light-pro");
+                document.body.classList.add("theme-dark-pro");
+                localStorage.setItem("theme", "theme-dark-pro");
+            } else {
+                document.body.classList.add("theme-light-pro");
+                localStorage.setItem("theme", "theme-light-pro");
+            }
+        });
+    }
 
-            document.body.classList.toggle("light-theme");
+    /* Sidebar Collapse */
+    const sidebarCollapseBtn = document.getElementById("sidebar-collapse-btn");
+    const sidebar = document.getElementById("app-sidebar");
+    const collapseIcon = document.getElementById("collapse-icon");
 
-            localStorage.setItem(
-                "theme",
-                document.body.classList.contains("light-theme")
-                    ? "light"
-                    : "dark"
-            );
+    if (sidebarCollapseBtn && sidebar) {
+        sidebarCollapseBtn.addEventListener("click", () => {
+            sidebar.classList.toggle("collapsed");
+            if (sidebar.classList.contains("collapsed")) {
+                if (collapseIcon) collapseIcon.setAttribute("data-lucide", "chevron-right");
+            } else {
+                if (collapseIcon) collapseIcon.setAttribute("data-lucide", "chevron-left");
+            }
+            if (window.lucide) window.lucide.createIcons();
+        });
+    }
+
+    /* Mobile Toggle */
+    const mobileNavToggle = document.getElementById("mobile-nav-toggle");
+    if (mobileNavToggle && sidebar) {
+        mobileNavToggle.addEventListener("click", () => {
+            sidebar.classList.toggle("mobile-open");
+        });
+    }
+
+    /* Navigation Tabs Switching */
+    const navItems = document.querySelectorAll(".nav-item");
+    const tabContents = document.querySelectorAll(".tab-content");
+    const pageTitle = document.getElementById("page-title");
+
+    navItems.forEach(item => {
+        item.addEventListener("click", () => {
+            const tab = item.dataset.tab;
+
+            navItems.forEach(nav => nav.classList.remove("active"));
+            item.classList.add("active");
+
+            // Map nav links to modals/drawers
+            if (tab === "income-nav") {
+                switchTab("dashboard");
+                openModal("income-modal");
+                return;
+            } else if (tab === "budgets-nav" || tab === "categories-nav") {
+                switchTab("dashboard");
+                openDrawer("budget-drawer");
+                return;
+            }
+
+            switchTab(tab);
+            if (sidebar) sidebar.classList.remove("mobile-open"); // Close on mobile navigation click
+        });
+    });
+
+    function switchTab(tabId) {
+        tabContents.forEach(content => {
+            if (content.id === `tab-${tabId}`) {
+                content.classList.add("active");
+            } else {
+                content.classList.remove("active");
+            }
+        });
+
+        if (pageTitle) {
+            const titleMap = {
+                dashboard: "Dashboard Overview",
+                expenses: "Expenses Ledger",
+                analytics: "Analytics & Trends",
+                settings: "System Settings"
+            };
+            pageTitle.textContent = titleMap[tabId] || "SpendWise Pro";
+        }
+    }
+
+    /* Modal & Drawer Logic */
+    const expenseModal = document.getElementById("expense-modal");
+    const incomeModal = document.getElementById("income-modal");
+    const budgetDrawer = document.getElementById("budget-drawer");
+    
+    function openModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.classList.add("active");
+            // Focus first input
+            const firstInput = modal.querySelector('input');
+            if (firstInput) setTimeout(() => firstInput.focus(), 100);
+        }
+    }
+
+    function closeModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.classList.remove("active");
+        }
+    }
+
+    function openDrawer(drawerId) {
+        const drawer = document.getElementById(drawerId);
+        if (drawer) drawer.classList.add("active");
+    }
+
+    function closeDrawer(drawerId) {
+        const drawer = document.getElementById(drawerId);
+        if (drawer) drawer.classList.remove("active");
+    }
+
+    // Close buttons
+    document.querySelectorAll(".btn-close-modal").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+            const modal = e.target.closest(".modal-overlay");
+            if (modal) modal.classList.remove("active");
+        });
+    });
+
+    document.querySelectorAll(".btn-close-drawer").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+            const drawer = e.target.closest(".side-drawer-overlay");
+            if (drawer) drawer.classList.remove("active");
+        });
+    });
+
+    // Close on click outside
+    document.querySelectorAll(".modal-overlay, .side-drawer-overlay").forEach(overlay => {
+        overlay.addEventListener("mousedown", (e) => {
+            if (e.target === overlay) {
+                overlay.classList.remove("active");
+            }
+        });
+    });
+
+    // ESC key to close
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+            document.querySelectorAll(".modal-overlay.active, .side-drawer-overlay.active, .command-palette-overlay.active")
+                .forEach(el => el.classList.remove("active"));
+        }
+    });
+
+    // Submitting a form closes its modal/drawer
+    if (expenseForm) expenseForm.addEventListener("submit", () => closeModal("expense-modal"));
+    if (incomeForm) incomeForm.addEventListener("submit", () => closeModal("income-modal"));
+    if (budgetForm) budgetForm.addEventListener("submit", () => closeDrawer("budget-drawer"));
+    if (categoryLimitsForm) categoryLimitsForm.addEventListener("submit", () => closeDrawer("budget-drawer"));
+
+    /* Quick Actions Links */
+    const quickAddBtn = document.getElementById("quick-add-expense-btn");
+    if (quickAddBtn) quickAddBtn.addEventListener("click", () => openModal("expense-modal"));
+
+    const btnAddExpense = document.getElementById("action-add-expense");
+    if (btnAddExpense) btnAddExpense.addEventListener("click", () => openModal("expense-modal"));
+
+    const btnAddIncome = document.getElementById("action-add-income");
+    if (btnAddIncome) btnAddIncome.addEventListener("click", () => openModal("income-modal"));
+
+    const btnSetBudget = document.getElementById("action-set-budget");
+    if (btnSetBudget) btnSetBudget.addEventListener("click", () => openDrawer("budget-drawer"));
+
+    const btnViewReports = document.getElementById("action-view-reports");
+    if (btnViewReports) {
+        btnViewReports.addEventListener("click", () => {
+            const nav = document.querySelector('.nav-item[data-tab="analytics"]');
+            if (nav) nav.click();
+        });
+    }
+
+    /* View All Transactions Link Shortcut */
+    const viewAllBtn = document.getElementById("view-all-transactions-btn");
+    if (viewAllBtn) {
+        viewAllBtn.addEventListener("click", () => {
+            const expNavItem = document.querySelector('.nav-item[data-tab="expenses"]');
+            if (expNavItem) {
+                expNavItem.click();
+            } else {
+                switchTab("expenses");
+            }
+        });
+    }
+
+    /* Command Palette (Ctrl+K) */
+    const cmdPaletteOverlay = document.getElementById("cmd-palette-overlay");
+    const cmdInput = document.getElementById("cmd-input");
+    const cmdItems = document.querySelectorAll(".cmd-item");
+    
+    // Ctrl+K Listener
+    document.addEventListener("keydown", (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key === "k") {
+            e.preventDefault();
+            if (cmdPaletteOverlay) {
+                cmdPaletteOverlay.classList.toggle("active");
+                if (cmdPaletteOverlay.classList.contains("active") && cmdInput) {
+                    setTimeout(() => cmdInput.focus(), 100);
+                }
+            }
+        }
+    });
+
+    const headerSearchTrigger = document.getElementById("header-search-trigger");
+    if (headerSearchTrigger) {
+        headerSearchTrigger.addEventListener("click", () => {
+            if (cmdPaletteOverlay) {
+                cmdPaletteOverlay.classList.add("active");
+                if (cmdInput) setTimeout(() => cmdInput.focus(), 100);
+            }
+        });
+    }
+
+    if (cmdPaletteOverlay) {
+        cmdPaletteOverlay.addEventListener("mousedown", (e) => {
+            if (e.target === cmdPaletteOverlay) {
+                cmdPaletteOverlay.classList.remove("active");
+            }
+        });
+    }
+
+    // Command Item Clicks
+    cmdItems.forEach(item => {
+        item.addEventListener("click", () => {
+            const action = item.dataset.action;
+            cmdPaletteOverlay.classList.remove("active");
+            
+            if (action === "open-expense-modal") openModal("expense-modal");
+            else if (action === "open-income-modal") openModal("income-modal");
+            else if (action === "open-budget-drawer") openDrawer("budget-drawer");
+            else if (action === "toggle-theme" && themeToggle) themeToggle.click();
+        });
+    });
+
+    // Arrow key navigation in Command Palette
+    if (cmdInput) {
+        cmdInput.addEventListener("keydown", (e) => {
+            const items = Array.from(document.querySelectorAll(".cmd-item"));
+            const currentIndex = items.findIndex(item => item.classList.contains("selected"));
+            
+            if (e.key === "ArrowDown") {
+                e.preventDefault();
+                const nextIndex = (currentIndex + 1) % items.length;
+                items.forEach(i => i.classList.remove("selected"));
+                items[nextIndex].classList.add("selected");
+                items[nextIndex].scrollIntoView({ block: "nearest" });
+            } else if (e.key === "ArrowUp") {
+                e.preventDefault();
+                const prevIndex = currentIndex <= 0 ? items.length - 1 : currentIndex - 1;
+                items.forEach(i => i.classList.remove("selected"));
+                items[prevIndex].classList.add("selected");
+                items[prevIndex].scrollIntoView({ block: "nearest" });
+            } else if (e.key === "Enter") {
+                e.preventDefault();
+                const selected = items.find(item => item.classList.contains("selected")) || items[0];
+                if (selected) selected.click();
+            }
+        });
+        
+        // Basic filtering for command palette
+        cmdInput.addEventListener("input", (e) => {
+            const val = e.target.value.toLowerCase();
+            items.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                if (text.includes(val)) {
+                    item.style.display = "flex";
+                } else {
+                    item.style.display = "none";
+                }
+            });
         });
     }
 }
@@ -236,11 +502,14 @@ function setupEventListeners() {
 /* ---------------- THEME ---------------- */
 
 function loadTheme() {
-
-    const savedTheme = localStorage.getItem("theme");
-
+    const savedTheme = localStorage.getItem("theme") || "theme-dark-pro";
+    document.body.className = "";
     if (savedTheme === "light") {
-        document.body.classList.add("light-theme");
+        document.body.classList.add("theme-light-pro");
+    } else if (savedTheme === "dark") {
+        document.body.classList.add("theme-dark-pro");
+    } else {
+        document.body.classList.add(savedTheme);
     }
 }
 
@@ -1119,6 +1388,102 @@ function updateUI() {
     renderExpenses();
 
     updateSummary();
+
+    updateInsights();
+}
+
+/* ---------------- SMART INSIGHTS ---------------- */
+
+function updateInsights() {
+    const insightsList = document.getElementById("smart-insights-list");
+    if (!insightsList) return;
+    
+    insightsList.innerHTML = "";
+    
+    if (expenses.length === 0) {
+        insightsList.innerHTML = `
+            <div class="insight-item">
+                <div class="insight-icon info"><i data-lucide="lightbulb"></i></div>
+                <div class="insight-content">
+                    <h4>Start Tracking</h4>
+                    <p>Add some transactions to receive personalized AI insights.</p>
+                </div>
+            </div>
+        `;
+        if (window.lucide) window.lucide.createIcons();
+        return;
+    }
+    
+    let html = "";
+    
+    const catTotals = {};
+    let totalExp = 0;
+    expenses.forEach(exp => {
+        catTotals[exp.category] = (catTotals[exp.category] || 0) + exp.amount;
+        totalExp += exp.amount;
+    });
+    
+    let highestCat = null;
+    let highestAmt = 0;
+    for (let cat in catTotals) {
+        if (catTotals[cat] > highestAmt) {
+            highestAmt = catTotals[cat];
+            highestCat = cat;
+        }
+    }
+    
+    if (highestCat && totalExp > 0) {
+        let pct = Math.round((highestAmt / totalExp) * 100);
+        html += `
+            <div class="insight-item">
+                <div class="insight-icon info"><i data-lucide="pie-chart"></i></div>
+                <div class="insight-content">
+                    <h4>Top Spending Area</h4>
+                    <p>You spend the most on <strong>${highestCat}</strong> (${pct}% of total expenses).</p>
+                </div>
+            </div>
+        `;
+    }
+    
+    if (monthlyBudget > 0) {
+        const spentPercent = (totalExp / monthlyBudget) * 100;
+        if (spentPercent > 90) {
+            html += `
+                <div class="insight-item">
+                    <div class="insight-icon warning" style="color: var(--danger); background: rgba(var(--danger), 0.1);"><i data-lucide="alert-triangle"></i></div>
+                    <div class="insight-content">
+                        <h4>Budget Critical</h4>
+                        <p>You've used ${Math.round(spentPercent)}% of your monthly budget.</p>
+                    </div>
+                </div>
+            `;
+        } else if (spentPercent > 75) {
+            html += `
+                <div class="insight-item">
+                    <div class="insight-icon warning"><i data-lucide="alert-triangle"></i></div>
+                    <div class="insight-content">
+                        <h4>Budget Warning</h4>
+                        <p>You've used ${Math.round(spentPercent)}% of your monthly budget.</p>
+                    </div>
+                </div>
+            `;
+        }
+    }
+    
+    if (html === "") {
+         html = `
+            <div class="insight-item">
+                <div class="insight-icon info" style="color: var(--success); background: rgba(var(--success), 0.1);"><i data-lucide="check-circle"></i></div>
+                <div class="insight-content">
+                    <h4>Looking Good</h4>
+                    <p>Your spending habits are well within normal limits. Keep it up!</p>
+                </div>
+            </div>
+        `;
+    }
+    
+    insightsList.innerHTML = html;
+    if (window.lucide) window.lucide.createIcons();
 }
 
 /* ---------------- ESCAPE HTML ---------------- */

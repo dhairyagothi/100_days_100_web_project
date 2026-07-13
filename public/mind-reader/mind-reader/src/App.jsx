@@ -10,24 +10,27 @@ import questions from "./data-set/questions.json"
 import { findchar, bestQues } from './utils/gameEngine.js'
 import BackButton from "./BackButton.jsx"
 
-
 // image imports
 import gennie from "./assets/gennie.png"
 import thinking_gennie from "./assets/thinking.png"
 import lastgennie from "./assets/ansfound.png"
 import gameover from "./assets/gameover.png"
 
-
-
 function App() {
-  let [curQue, setque] = useState(0); //stores index of current question
-  const [qcount, setqcount] = useState(0); //stores count of questions asked
-  let [remainingchar, setremainingchar] = useState(characters); //stores remaining characters
-  let [ans, setans] = useState(''); //stores answer
-  const [playstate, playset] = useState('notplaying'); //stores play state
-  const [gstate, setstate] = useState(gennie); //stores gennie image
+  // Index of the currently displayed question.
+  let [curQue, setque] = useState(0);
+  // Number of questions answered in the current round.
+  const [qcount, setqcount] = useState(0);
+  // Characters that still match the player's answers.
+  let [remainingchar, setremainingchar] = useState(characters);
+  // Final guessed answer once the game identifies a character.
+  let [ans, setans] = useState('');
+  // Current screen/state of the game flow.
+  const [playstate, playset] = useState('notplaying');
+  // Genie image shown for the current state.
+  const [gstate, setstate] = useState(gennie);
   let cardContent;
-  //when answer is found
+  // Winning state: a single character has been identified.
   if (ans !== '' && playstate == 'playing') {
     cardContent = (
       <div>
@@ -42,7 +45,7 @@ function App() {
       </div>
     )
   }
-  //when game ends in loss
+  // Losing state: no valid character could be found.
   else if (playstate == 'gameover') {
     cardContent = (
       <div>
@@ -58,7 +61,7 @@ function App() {
       </div>
     )
   }
-  //main playing screen
+  // Main gameplay screen with the active question and answers.
   else if (playstate == 'playing') {
     cardContent = (
       <div>
@@ -66,7 +69,7 @@ function App() {
         <p>remaining characters: {remainingchar.length}</p>
         <p>questions asked: {qcount}/20</p>
         <div className="btn-box">
-          {/* yes button */}
+          {/* Yes narrows the remaining characters using the current question. */}
           <button className='btn' onClick={() => {
             setqcount(qcount + 1);
             const newremainingchar = findchar(true, questions[curQue].key, remainingchar);
@@ -98,7 +101,7 @@ function App() {
             }
           }}>yes
           </button>
-          {/* no button */}
+          {/* No narrows the remaining characters using the opposite answer. */}
           <button className='btn' onClick={() => {
             setqcount(qcount + 1);
             const newremainingchar = findchar(false, questions[curQue].key, remainingchar);
@@ -113,6 +116,7 @@ function App() {
                 setque(nextQueIndex);
                 setremainingchar(newremainingchar)
                 playset('thinking');
+                // End the game if there are no candidates or no questions left.
                 if (remainingchar.length == 0 || qcount == questions.length) {
                   setstate(gameover)
                   playset('gameover')
@@ -135,7 +139,7 @@ function App() {
               setstate(lastgennie);
             }
           }}>no</button>
-          {/* dontknow button */}
+          {/* Don't know asks the engine to pick the best next question. */}
           <button className="btn" onClick={() => {
             setqcount(qcount + 1);
             let nextQue = bestQues(questions.slice(curQue + 1), remainingchar);
@@ -172,7 +176,7 @@ function App() {
       </div>
     )
   }
-  //how to play card
+  // Instructions screen describing how to play.
   else if (playstate == 'working') {
     cardContent = (
       <div>
@@ -188,14 +192,14 @@ function App() {
       </div>
     )
   }
-  //spinner card
+  // Spinner shown while the app is thinking.
   else if (playstate == 'thinking') {
     cardContent = (
       <div className='spinner'>
       </div>
     )
   }
-  //main screen
+  // Landing screen shown before gameplay starts.
   else {
     cardContent = (
       <div>
