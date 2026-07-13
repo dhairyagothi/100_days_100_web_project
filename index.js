@@ -891,8 +891,6 @@ let showAllBookmarks = false;
 let showAllRecent = false;
 
 const INITIAL_VISIBLE_ITEMS = 3;
-const ONE_HOUR_MS = 60 * 60 * 1000;
-
 function migrateRecentProjects() {
   if (recentProjects.length === 0) return;
 
@@ -1583,14 +1581,7 @@ function loadBookmarksFromURL() {
 }
 
 function getRecentProjectsWithinWindow() {
-  const now = Date.now();
-
-  return recentProjects.filter((item) => {
-    const timestamp = item.timestamp || Date.now();
-    const age = now - timestamp;
-
-    return age <= ONE_HOUR_MS;
-  });
+    return recentProjects;
 }
 
 function trackRecentProject(project) {
@@ -1609,14 +1600,21 @@ function trackRecentProject(project) {
       timestamp: Date.now(),
     };
   }
+function clearRecentHistory() {
+    recentProjects = [];
 
+    localStorage.removeItem("recentProjects");
+
+    renderRecentProjects();
+
+    showToast("Recent history cleared");
+}
   recentProjects = recentProjects.filter((item) => item.day !== projectObj.day);
   recentProjects.unshift(projectObj);
 
-  if (recentProjects.length > 20) {
+  if (recentProjects.length > 5) {
     recentProjects.pop();
-  }
-
+}
   try {
     localStorage.setItem("recentProjects", JSON.stringify(recentProjects));
   } catch (error) {
@@ -1779,7 +1777,7 @@ function renderRecentProjects() {
   const validRecent = getRecentProjectsWithinWindow();
 
   if (validRecent.length === 0) {
-    recentGrid.innerHTML = `<p class="empty-state">No recently viewed projects within the last hour.</p>`;
+    recentGrid.innerHTML = `<p class="empty-state">No recently viewed projects yet.</p>`;
     return;
   }
 
@@ -1938,7 +1936,11 @@ renderRecommendationsForLatestRecentProject();
 const bookmarkToggleBtn = document.getElementById("bookmarkToggleBtn");
 const recentToggleBtn = document.getElementById("recentToggleBtn");
 const copyBookmarksBtn = document.getElementById("copyBookmarksBtn");
+const clearRecentBtn = document.getElementById("clearRecentBtn");
 
+if (clearRecentBtn) {
+    clearRecentBtn.addEventListener("click", clearRecentHistory);
+}
 if (bookmarkToggleBtn) {
   bookmarkToggleBtn.addEventListener("click", () => {
     const projectsSection = document.getElementById("projects");

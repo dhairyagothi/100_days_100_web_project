@@ -1447,8 +1447,19 @@
                 <!-- Recently Viewed Section (Bottom of Account Page) -->
                 <div class="recently-viewed-section mt-5">
                     <div class="section-header">
-                        <h3>Recently Viewed</h3>
-                    </div>
+    <h3>Recently Viewed</h3>
+
+    <div class="header-actions">
+        <button id="viewAllRecentBtn" class="btn btn-sm btn-ghost">
+            View All
+        </button>
+
+        <button id="clearRecentBtn" class="btn btn-sm btn-ghost">
+            <i class="fas fa-trash"></i>
+            Clear History
+        </button>
+    </div>
+</div>
                     <div class="product-grid" id="recently-viewed-grid">
                         <!-- Populated dynamically via JS. For now, a fallback message: -->
                         <div class="empty-state w-100" id="recent-empty-state">
