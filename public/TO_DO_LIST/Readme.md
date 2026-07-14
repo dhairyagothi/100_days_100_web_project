@@ -38,10 +38,15 @@ TaskFlow is a modern and responsive To-Do List web application designed to help 
 - 🔔 Toast notifications for user actions
 - 📄 Export tasks as styled PDF using jsPDF
 - 📁 Document history for exported files
+<<<<<<< HEAD
+
+---
+=======
 - 🧩 Drag and Drop Kanban workflow:
   - Pending
   - In Progress
   - Completed
+>>>>>>> upstream/Main
 
 
 ## Technologies Used
