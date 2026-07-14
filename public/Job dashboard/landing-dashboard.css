@@ -449,3 +449,11 @@ img {
     text-align: center;
   }
 }
+
+.landing-footer {
+  text-align: center;
+  padding: 20px;
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin-top: 20px;
+}
