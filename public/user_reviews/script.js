@@ -282,10 +282,14 @@ function submitReview() {
   selectedStar = 0;
   highlightSelected();
 
-  // Switch to all/newest to show new card
+  // Reset filters so the new review is immediately visible
   activeFilter = 'all';
   activeSort = 'newest';
+  searchTerm = '';
+
   document.getElementById('sortSelect').value = 'newest';
+  document.getElementById('searchInput').value = '';
+
   document
     .querySelectorAll('.filter-btns button')
     .forEach((b, i) => b.classList.toggle('active', i === 0));

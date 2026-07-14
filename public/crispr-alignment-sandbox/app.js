@@ -496,5 +496,6 @@ window.addEventListener('DOMContentLoaded', () => {
     new CrisprAlignmentSandbox('crisprCanvas');
 });
 });
+});
   new CrisprAlignmentSandbox('crisprCanvas');
 });

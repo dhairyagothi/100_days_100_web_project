@@ -206,15 +206,6 @@ nav button,
     padding: 40px
 }
 
-footer {
-    margin: 40px 60px 0 120px;
-    padding: 30px;
-    background: #0d5a23;
-    display: flex;
-    justify-content: space-around
-}
-
-
 /* Layout Container */
 .main-container {
     max-width: 1000px;
@@ -381,6 +372,46 @@ input[type="text"], input[type="number"] {
     padding: 40px 0;
 }
 
+.footer {
+    background: #0b5d1e;
+    padding: 30px 20px;
+    text-align: center;
+}
+
+.footer-links {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 60px;
+    flex-wrap: wrap;
+}
+
+.footer-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.footer-links a:hover {
+    color: #ffb347;
+}
+
+.footer hr {
+    width: 80%;
+    margin: 25px auto;
+    border: none;
+    border-top: 1px solid rgba(255,255,255,0.3);
+}
+
+.footer-bottom {
+    text-align: center;
+}
+
+.footer-bottom p {
+    margin: 0;
+    color: #ddd;
+    font-size: 14px;
 .back-home{
     display:inline-block;
     padding:10px 18px;

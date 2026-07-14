@@ -46,15 +46,23 @@ body {
 body {
   margin: 0;
   color: var(--text-primary);
-  font-family: Inter, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  font-family: Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
   background:
-    radial-gradient(circle at top left, rgba(63, 224, 208, 0.16), transparent 30%),
-    radial-gradient(circle at top right, rgba(95, 192, 255, 0.18), transparent 28%),
+    radial-gradient(
+      circle at top left,
+      rgba(63, 224, 208, 0.16),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at top right,
+      rgba(95, 192, 255, 0.18),
+      transparent 28%
+    ),
     linear-gradient(180deg, #05101e 0%, #091726 100%);
 }
 
 button,
-[draggable="true"] {
+[draggable='true'] {
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -79,7 +87,11 @@ button {
   padding: 1rem 1.25rem;
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
-  background: linear-gradient(180deg, rgba(12, 26, 45, 0.94), rgba(8, 18, 33, 0.98));
+  background: linear-gradient(
+    180deg,
+    rgba(12, 26, 45, 0.94),
+    rgba(8, 18, 33, 0.98)
+  );
   box-shadow: var(--shadow-ambient);
   backdrop-filter: blur(16px);
 }
@@ -121,10 +133,17 @@ button {
   border-radius: 999px;
   padding: 0.78rem 1rem;
   color: var(--text-primary);
-  background: linear-gradient(180deg, rgba(20, 38, 64, 0.9), rgba(13, 28, 49, 0.9));
+  background: linear-gradient(
+    180deg,
+    rgba(20, 38, 64, 0.9),
+    rgba(13, 28, 49, 0.9)
+  );
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
   cursor: pointer;
-  transition: transform var(--transition-fast), border-color var(--transition-fast), background-color var(--transition-fast);
+  transition:
+    transform var(--transition-fast),
+    border-color var(--transition-fast),
+    background-color var(--transition-fast);
 }
 
 .toolbar-button:hover {
@@ -134,7 +153,11 @@ button {
 
 .toolbar-button--danger {
   border-color: rgba(255, 143, 107, 0.32);
-  background: linear-gradient(180deg, rgba(72, 32, 26, 0.94), rgba(51, 20, 18, 0.96));
+  background: linear-gradient(
+    180deg,
+    rgba(72, 32, 26, 0.94),
+    rgba(51, 20, 18, 0.96)
+  );
 }
 
 .toolbar-button:focus-visible,
@@ -162,7 +185,11 @@ button {
   padding: 1.1rem;
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
-  background: linear-gradient(180deg, rgba(12, 25, 43, 0.96), rgba(8, 18, 33, 0.98));
+  background: linear-gradient(
+    180deg,
+    rgba(12, 25, 43, 0.96),
+    rgba(8, 18, 33, 0.98)
+  );
   box-shadow: var(--shadow-panel);
 }
 
@@ -188,12 +215,19 @@ button {
   padding: 0.95rem 1rem;
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
-  background: linear-gradient(180deg, rgba(17, 35, 58, 0.96), rgba(10, 23, 42, 0.96));
+  background: linear-gradient(
+    180deg,
+    rgba(17, 35, 58, 0.96),
+    rgba(10, 23, 42, 0.96)
+  );
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
   color: var(--text-primary);
   user-select: none;
   cursor: grab;
-  transition: transform var(--transition-fast), border-color var(--transition-fast), background-color var(--transition-fast);
+  transition:
+    transform var(--transition-fast),
+    border-color var(--transition-fast),
+    background-color var(--transition-fast);
 }
 
 .shape-card:hover {
@@ -263,7 +297,7 @@ button {
 }
 
 .workspace__viewport::before {
-  content: "";
+  content: '';
   position: absolute;
   inset: 0;
   background-image:
@@ -283,13 +317,25 @@ button {
 }
 
 .workspace__viewport::after {
-  content: "";
+  content: '';
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 20% 20%, rgba(63, 224, 208, 0.12), transparent 18%),
-    radial-gradient(circle at 80% 30%, rgba(31, 143, 255, 0.11), transparent 22%),
-    radial-gradient(circle at 55% 75%, rgba(255, 227, 110, 0.06), transparent 18%);
+    radial-gradient(
+      circle at 20% 20%,
+      rgba(63, 224, 208, 0.12),
+      transparent 18%
+    ),
+    radial-gradient(
+      circle at 80% 30%,
+      rgba(31, 143, 255, 0.11),
+      transparent 22%
+    ),
+    radial-gradient(
+      circle at 55% 75%,
+      rgba(255, 227, 110, 0.06),
+      transparent 18%
+    );
   pointer-events: none;
 }
 
@@ -368,10 +414,12 @@ button {
   border-radius: 50%;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
   z-index: 10;
   cursor: crosshair;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 /* Show edge circles instantly when the box is selected */
@@ -386,10 +434,22 @@ button {
 }
 
 /* Coordinate mapping for the four side anchors */
-.shape-port--n { top: -7px; left: calc(50% - 7px); }
-.shape-port--s { bottom: -7px; left: calc(50% - 7px); }
-.shape-port--e { right: -7px; top: calc(50% - 7px); }
-.shape-port--w { left: -7px; top: calc(50% - 7px); }
+.shape-port--n {
+  top: -7px;
+  left: calc(50% - 7px);
+}
+.shape-port--s {
+  bottom: -7px;
+  left: calc(50% - 7px);
+}
+.shape-port--e {
+  right: -7px;
+  top: calc(50% - 7px);
+}
+.shape-port--w {
+  left: -7px;
+  top: calc(50% - 7px);
+}
 
 /* Hide the user cursor smoothly when actively dragging an element card */
 .shape-node.is-dragging,
@@ -397,7 +457,7 @@ button {
   cursor: none !important;
 }
 
-html[data-theme="light"] {
+html[data-theme='light'] {
   --grid-bg: #f8fafc;
   --grid-line-light: rgba(15, 23, 42, 0.04);
   --grid-line-bold: rgba(15, 23, 42, 0.08);
@@ -421,34 +481,47 @@ html[data-theme="light"] {
 }
 
 /* Body gradient adjustment for Light Mode background glow */
-html[data-theme="light"] body {
-  background: radial-gradient(circle at top left, rgba(13, 148, 136, 0.06), transparent 30%),
-              radial-gradient(circle at top right, rgba(2, 132, 199, 0.08), transparent 28%),
-              linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+html[data-theme='light'] body {
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(13, 148, 136, 0.06),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at top right,
+      rgba(2, 132, 199, 0.08),
+      transparent 28%
+    ),
+    linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
 }
 
 /* --- Light Mode UI Panel Overrides --- */
-html[data-theme="light"] .topbar,
-html[data-theme="light"] .sidebar__panel {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(248, 250, 252, 0.95));
+html[data-theme='light'] .topbar,
+html[data-theme='light'] .sidebar__panel {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.95),
+    rgba(248, 250, 252, 0.95)
+  );
 }
 
-html[data-theme="light"] .toolbar-button {
+html[data-theme='light'] .toolbar-button {
   background: linear-gradient(180deg, #ffffff, #f1f5f9);
 }
 
-html[data-theme="light"] .toolbar-button--danger {
+html[data-theme='light'] .toolbar-button--danger {
   background: linear-gradient(180deg, #fef2f2, #fee2e2);
   border-color: #fca5a5;
   color: #991b1b;
 }
 
-html[data-theme="light"] .shape-card {
+html[data-theme='light'] .shape-card {
   background: linear-gradient(180deg, #ffffff, #f8fafc);
 }
 
-html[data-theme="light"] .workspace__viewport {
-  background: 
+html[data-theme='light'] .workspace__viewport {
+  background:
     linear-gradient(180deg, rgba(248, 250, 252, 0.6), rgba(241, 245, 249, 0.8)),
     radial-gradient(circle at center, rgba(2, 132, 199, 0.04), transparent 58%);
 }

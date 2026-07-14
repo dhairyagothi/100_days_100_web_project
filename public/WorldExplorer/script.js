@@ -84,6 +84,7 @@ function renderCards(list, container) {
     if (container === cardsGrid) noResults.hidden = false;
     return;
   }
+
   noResults.hidden = true;
 
   // Add stagger delay for animation
@@ -91,6 +92,9 @@ function renderCards(list, container) {
     const card = createCard(country, i);
     container.appendChild(card);
   });
+
+  // Restore comparison highlights after cards are rendered
+  updateSelectedCards();
 }
 
 /**

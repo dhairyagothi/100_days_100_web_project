@@ -271,6 +271,7 @@ canvas {
     border-radius: 4px;
     cursor: crosshair;
 }
+}
   display: flex;
   flex-direction: column;
   padding: 20px;

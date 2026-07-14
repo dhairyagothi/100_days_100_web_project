@@ -3,7 +3,7 @@ const PLANETS = {
   mars: { multiplier: 0.38 },
   earth: { multiplier: 1.0 },
   saturn: { multiplier: 1.06 },
-  jupiter: { multiplier: 2.53 }
+  jupiter: { multiplier: 2.53 },
 };
 
 const BASE_GRAVITY = 0.5;
@@ -11,10 +11,10 @@ const BASE_GRAVITY = 0.5;
 let currentPlanet = PLANETS.earth;
 let gravity = BASE_GRAVITY * currentPlanet.multiplier;
 
-const ball = document.getElementById("ball");
-const area = document.getElementById("playArea");
-const colorPicker = document.getElementById("ballColor");
-const shapeSelect = document.getElementById("ballShape");
+const ball = document.getElementById('ball');
+const area = document.getElementById('playArea');
+const colorPicker = document.getElementById('ballColor');
+const shapeSelect = document.getElementById('ballShape');
 
 let x = 180;
 let y = 180;
@@ -71,7 +71,7 @@ function update() {
 }
 
 // Ball jump
-ball.addEventListener("click", () => {
+ball.addEventListener('click', () => {
   vy = -10;
   vx = (Math.random() - 0.5) * 8;
 });
@@ -84,11 +84,26 @@ function resetBall() {
   vy = 0;
 }
 
+function keepBallInsideBounds() {
+  const areaWidth = area.clientWidth;
+  const areaHeight = area.clientHeight;
+
+  x = Math.min(Math.max(0, x), areaWidth - BALL_SIZE);
+  y = Math.min(Math.max(0, y), areaHeight - BALL_SIZE);
+
+  ball.style.left = `${x}px`;
+  ball.style.top = `${y}px`;
+}
+
 window.resetBall = resetBall;
 
+window.addEventListener('resize', () => {
+  keepBallInsideBounds();
+});
+
 // Planet selector
-document.querySelectorAll(".planet-btn").forEach(btn => {
-  btn.addEventListener("click", () => {
+document.querySelectorAll('.planet-btn').forEach((btn) => {
+  btn.addEventListener('click', () => {
     const planetName = btn.dataset.planet;
 
     if (!PLANETS[planetName]) return;
@@ -96,50 +111,49 @@ document.querySelectorAll(".planet-btn").forEach(btn => {
     currentPlanet = PLANETS[planetName];
     gravity = BASE_GRAVITY * currentPlanet.multiplier;
 
-    document.querySelectorAll(".planet-btn").forEach(button => {
-      button.classList.remove("active");
+    document.querySelectorAll('.planet-btn').forEach((button) => {
+      button.classList.remove('active');
     });
 
-    btn.classList.add("active");
+    btn.classList.add('active');
   });
 });
 
 // Color picker
-colorPicker.addEventListener("input", () => {
+colorPicker.addEventListener('input', () => {
   ball.style.backgroundColor = colorPicker.value;
 });
 
 // Shape changer
 function applyShape(shape) {
-  ball.style.clipPath = "";
-  ball.style.borderRadius = "0";
+  ball.style.clipPath = '';
+  ball.style.borderRadius = '0';
 
   switch (shape) {
-    case "circle":
-      ball.style.borderRadius = "50%";
+    case 'circle':
+      ball.style.borderRadius = '50%';
       break;
 
-    case "square":
+    case 'square':
       break;
 
-    case "triangle":
+    case 'triangle':
+      ball.style.clipPath = 'polygon(50% 0%, 0% 100%, 100% 100%)';
+      break;
+
+    case 'star':
       ball.style.clipPath =
-        "polygon(50% 0%, 0% 100%, 100% 100%)";
-      break;
-
-    case "star":
-      ball.style.clipPath =
-        "polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)";
+        'polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)';
       break;
   }
 }
 
-shapeSelect.addEventListener("change", () => {
+shapeSelect.addEventListener('change', () => {
   applyShape(shapeSelect.value);
 });
 
 // Initial setup
 ball.style.backgroundColor = colorPicker.value;
-applyShape("circle");
+applyShape('circle');
 resetBall();
 update();

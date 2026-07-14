@@ -391,8 +391,7 @@ arr.forEach(button => {
                 // Define the scope mapping so math.js uses the existing custom global functions
                 const scope = {
                     sin, cos, tan, sqrt, ln, log,
-                    asin, acos, atan, exp, tenPower, abs,
-                    pi: Math.PI, e: Math.E
+                    asin, acos, atan, exp, tenPower, abs
                 };
 
                 // Use Math.js evaluate with the custom scope
@@ -518,6 +517,57 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
+ fix/calculator-clear-history
+const clearHistoryBtn =
+document.getElementById("clearHistoryBtn");
+
+clearHistoryBtn.addEventListener("click", () => {
+    showConfirmToast(
+        "Clear calculation history?",
+        clearAllHistory
+    );
+});
+
+function clearAllHistory() {
+
+    history = [];
+
+    localStorage.removeItem("calculatorHistory");
+
+    renderHistory();
+
+}
+saveHistory();
+function clearAllHistory() {
+
+    history.length = 0;
+
+    saveHistory();
+
+    renderHistory();
+
+}
+
+const clearHistoryBtn =
+document.getElementById("clearHistoryBtn");
+
+clearHistoryBtn.addEventListener("click", () => {
+
+    showConfirmToast(
+        "Are you sure you want to clear history?",
+        () => {
+
+            history = [];
+
+            localStorage.removeItem("calculatorHistory");
+
+            renderHistory();
+
+        }
+    );
+
+});
+
 // ===== Theme Toggle =====
 function toggleTheme() {
     document.body.classList.toggle('light-theme');
@@ -541,3 +591,4 @@ function updateToggleIcon(isLight) {
         updateToggleIcon(document.body.classList.contains('light-theme'));
     });
 })();
+
