@@ -1,201 +1,328 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
-  <link rel="icon" type="image/png" href="favicon.png">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Subscription Tracker | Premium Dashboard</title>
-  
-  <!-- Phosphor Icons -->
-  <script src="https://unpkg.com/@phosphor-icons/web"></script>
-  
-  <!-- CSS -->
-  <link rel="stylesheet" href="./tracker.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Subscription Tracker | Manage Your Subscriptions</title>
+  <link rel="stylesheet" href="tracker.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
 </head>
-
 <body>
-  
-  <div class="app-container">
-    <!-- Navbar -->
-    <nav class="navbar">
-      <div class="brand">
-        <div class="brand-icon"><i class="ph ph-infinity"></i></div>
-        <span>SubscriptionTracker</span>
-      </div>
-      <div class="nav-actions">
-        <select id="currency-select" class="form-select" style="width: auto; padding: 6px 30px 6px 12px; height: 36px; border-radius: var(--radius-full);">
-          <option value="USD">USD ($)</option>
-          <option value="INR">INR (₹)</option>
-        </select>
-        <div class="search-bar">
-          <i class="ph ph-magnifying-glass"></i>
-          <input type="text" id="search-input" placeholder="Search subscriptions...">
-        </div>
-        <button class="btn btn-primary" id="btn-add-sub">
-          <i class="ph ph-plus"></i> Add New
-        </button>
-      </div>
-    </nav>
 
-    <!-- Dashboard Grid -->
-    <div class="dashboard-grid">
-      
-      <!-- Left Main Area (70%) -->
-      <main class="main-area">
-        
-        <!-- Analytics Cards -->
-        <div class="analytics-grid">
-          <div class="stat-card active">
-            <div class="stat-header">
-              <span>Active Subscriptions</span>
-              <div class="stat-icon"><i class="ph ph-check-circle"></i></div>
-            </div>
-            <div class="stat-value" id="stat-active">0</div>
+  <!-- Background -->
+  <div class="bg-animation">
+    <div class="bg-circle c1"></div>
+    <div class="bg-circle c2"></div>
+    <div class="bg-circle c3"></div>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="nav-brand">
+      <span class="brand-icon">💳</span>
+      <span>SubTracker</span>
+    </div>
+    <div class="nav-actions">
+      <button class="btn-icon" id="themeToggle" title="Toggle Theme">
+        <i class="fas fa-moon"></i>
+      </button>
+      <button class="btn-icon" id="exportBtn" title="Export CSV">
+        <i class="fas fa-download"></i>
+      </button>
+      <button class="btn-icon" id="resetBtn" title="Reset All Data">
+        <i class="fas fa-trash-alt"></i>
+      </button>
+    </div>
+  </nav>
+
+  <main class="container">
+
+    <!-- Hero -->
+    <section class="hero">
+      <h1 class="hero-title">Manage Your <span class="gradient-text">Subscriptions</span></h1>
+      <p class="hero-sub">Track spending, renewals, and take control of your recurring costs.</p>
+    </section>
+
+    <!-- Stats Overview -->
+    <section class="stats-grid">
+      <div class="stat-card monthly">
+        <div class="stat-icon-wrap monthly-icon">
+          <i class="fas fa-calendar-day"></i>
+        </div>
+        <div class="stat-info">
+          <span class="stat-value" id="totalMonthly">$0.00</span>
+          <span class="stat-label">Monthly Spend</span>
+        </div>
+      </div>
+      <div class="stat-card yearly">
+        <div class="stat-icon-wrap yearly-icon">
+          <i class="fas fa-calendar-alt"></i>
+        </div>
+        <div class="stat-info">
+          <span class="stat-value" id="totalYearly">$0.00</span>
+          <span class="stat-label">Yearly Spend</span>
+        </div>
+      </div>
+      <div class="stat-card active">
+        <div class="stat-icon-wrap active-icon">
+          <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="stat-info">
+          <span class="stat-value" id="totalActive">0</span>
+          <span class="stat-label">Active Subs</span>
+        </div>
+      </div>
+      <div class="stat-card upcoming">
+        <div class="stat-icon-wrap upcoming-icon">
+          <i class="fas fa-bell"></i>
+        </div>
+        <div class="stat-info">
+          <span class="stat-value" id="totalUpcoming">0</span>
+          <span class="stat-label">Renewals This Week</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Upcoming Renewals Alert -->
+    <div class="renewal-alert" id="renewalAlert" style="display:none;">
+      <i class="fas fa-exclamation-triangle"></i>
+      <span id="renewalAlertText"></span>
+    </div>
+
+    <!-- Main Grid -->
+    <div class="main-grid">
+
+      <!-- LEFT: Add / Edit Form -->
+      <div class="left-panel">
+        <div class="card form-card" id="formCard">
+          <div class="card-header">
+            <i class="fas fa-plus-circle"></i>
+            <h2 id="formTitle">Add Subscription</h2>
           </div>
-          
-          <div class="stat-card monthly">
-            <div class="stat-header">
-              <span>Monthly Spend</span>
-              <div class="stat-icon"><i class="ph ph-currency-dollar"></i></div>
+
+          <form id="subForm" autocomplete="off">
+            <div class="form-group">
+              <label>Service Name</label>
+              <input type="text" id="subName" placeholder="e.g. Netflix" required/>
             </div>
-            <div class="stat-value" id="stat-monthly">$0.00</div>
-          </div>
-          
-          <div class="stat-card yearly">
-            <div class="stat-header">
-              <span>Yearly Projection</span>
-              <div class="stat-icon"><i class="ph ph-trend-up"></i></div>
+
+            <div class="form-row two-col">
+              <div class="form-group">
+                <label>Cost ($)</label>
+                <input type="number" id="subCost" placeholder="9.99" min="0" step="0.01" required/>
+              </div>
+              <div class="form-group">
+                <label>Billing Cycle</label>
+                <div class="custom-select-wrap">
+                  <select id="subCycle">
+                    <option value="monthly">Monthly</option>
+                    <option value="yearly">Yearly</option>
+                    <option value="weekly">Weekly</option>
+                  </select>
+                </div>
+              </div>
             </div>
-            <div class="stat-value" id="stat-yearly">$0.00</div>
-          </div>
+
+            <div class="form-row two-col">
+              <div class="form-group">
+                <label>Category</label>
+                <div class="custom-select-wrap">
+                  <select id="subCategory">
+                    <option value="Entertainment">🎬 Entertainment</option>
+                    <option value="Productivity">💼 Productivity</option>
+                    <option value="Health">❤️ Health</option>
+                    <option value="Education">📚 Education</option>
+                    <option value="Music">🎵 Music</option>
+                    <option value="Cloud">☁️ Cloud</option>
+                    <option value="Gaming">🎮 Gaming</option>
+                    <option value="News">📰 News</option>
+                    <option value="Finance">💰 Finance</option>
+                    <option value="Other">📦 Other</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Status</label>
+                <div class="custom-select-wrap">
+                  <select id="subStatus">
+                    <option value="active">✅ Active</option>
+                    <option value="paused">⏸️ Paused</option>
+                    <option value="cancelled">❌ Cancelled</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Next Renewal Date</label>
+              <input type="date" id="subRenewal" required/>
+            </div>
+
+            <div class="form-group">
+              <label>Notes (optional)</label>
+              <input type="text" id="subNotes" placeholder="e.g. Family plan, shared with 3 people"/>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn-primary" id="submitBtn">
+                <i class="fas fa-plus"></i> Add Subscription
+              </button>
+              <button type="button" class="btn-cancel hidden" id="cancelEdit">
+                <i class="fas fa-times"></i> Cancel
+              </button>
+            </div>
+          </form>
         </div>
 
-        <!-- Data Controls -->
-        <div class="controls-toolbar">
-          <div class="category-tabs" id="filter-tabs">
-            <button class="tab-btn active" data-filter="All">All Categories</button>
-            <button class="tab-btn" data-filter="Entertainment">Entertainment</button>
-            <button class="tab-btn" data-filter="Software">Software</button>
-            <button class="tab-btn" data-filter="Utility">Utility</button>
-            <button class="tab-btn" data-filter="Gaming">Gaming</button>
-            <button class="tab-btn" data-filter="Other">Other</button>
+        <!-- Category Breakdown -->
+        <div class="card category-card">
+          <div class="card-header">
+            <i class="fas fa-chart-pie"></i>
+            <h2>Category Breakdown</h2>
+          </div>
+          <div id="categoryChart" class="category-chart"></div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT: Subscription List -->
+      <div class="right-panel">
+
+        <!-- Filter & Search -->
+        <div class="card filter-card">
+          <div class="filter-bar">
+            <div class="search-wrap">
+              <i class="fas fa-search search-icon"></i>
+              <input type="text" id="searchInput" placeholder="Search subscriptions..."/>
+              <button class="clear-search" id="clearSearch">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+            <div class="filter-chips">
+              <button class="chip active" data-filter="all">All</button>
+              <button class="chip" data-filter="active">Active</button>
+              <button class="chip" data-filter="paused">Paused</button>
+              <button class="chip" data-filter="cancelled">Cancelled</button>
+            </div>
+            <div class="filter-row">
+              <div class="custom-select-wrap sort-wrap">
+                <select id="sortSelect">
+                  <option value="newest">Newest First</option>
+                  <option value="oldest">Oldest First</option>
+                  <option value="name">Name A–Z</option>
+                  <option value="cost-high">Cost: High → Low</option>
+                  <option value="cost-low">Cost: Low → High</option>
+                  <option value="renewal">Renewal Date</option>
+                </select>
+              </div>
+              <div class="custom-select-wrap category-wrap">
+                <select id="categoryFilter">
+                  <option value="all">All Categories</option>
+                  <option value="Entertainment">Entertainment</option>
+                  <option value="Productivity">Productivity</option>
+                  <option value="Health">Health</option>
+                  <option value="Education">Education</option>
+                  <option value="Music">Music</option>
+                  <option value="Cloud">Cloud</option>
+                  <option value="Gaming">Gaming</option>
+                  <option value="News">News</option>
+                  <option value="Finance">Finance</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+            </div>
           </div>
         </div>
 
         <!-- Subscription List -->
-        <div class="subs-container">
-          <div class="subs-header">
-            <div>Service Details</div>
-            <div>Billing Cycle</div>
-            <div>Cost</div>
-            <div>Next Renewal</div>
-            <div style="text-align: right;">Actions</div>
-          </div>
-          
-          <div class="subs-list" id="subs-list">
-            <!-- Populated via JS -->
-          </div>
-          
-          <div class="empty-state" id="empty-state" style="display: none;">
-            <div class="empty-icon"><i class="ph ph-ghost"></i></div>
-            <div class="empty-title">No subscriptions found</div>
-            <div class="empty-desc">You aren't tracking any subscriptions in this category. Add one to get started!</div>
-            <button class="btn btn-primary" id="btn-empty-add" style="margin-top: 10px;">
-              <i class="ph ph-plus"></i> Add Subscription
-            </button>
-          </div>
-        </div>
-        
-      </main>
-
-      <!-- Right Sidebar (30%) -->
-      <aside class="sidebar">
-        
-        <!-- Upcoming Renewals Widget -->
-        <div class="widget">
-          <div class="widget-header">
-            <i class="ph ph-calendar-blank"></i> Upcoming Renewals
-          </div>
-          <div class="renewal-list" id="renewals-list">
-            <!-- Populated via JS -->
-          </div>
-        </div>
-        
-        <!-- Insights Widget -->
-        <div class="widget">
-          <div class="widget-header">
-            <i class="ph ph-lightbulb"></i> Spending Insights
-          </div>
-          <div style="font-size: 0.875rem; color: var(--text-secondary); line-height: 1.6;">
-            Most of your tracked expenses are usually monthly. Switching to yearly billing can save you up to 20% on average.
+        <div id="subList" class="sub-list">
+          <div class="empty-state" id="emptyState">
+            <div class="empty-icon">💳</div>
+            <p>No subscriptions yet.</p>
+            <span>Add your first subscription using the form!</span>
           </div>
         </div>
 
-      </aside>
-      
-    </div>
-  </div>
+        <!-- Pagination -->
+        <div class="pagination" id="pagination"></div>
 
-  <!-- Add/Edit Modal -->
-  <div class="modal-overlay" id="sub-modal">
-    <div class="modal-card">
-      <div class="modal-header">
-        <h2 id="modal-title">Add Subscription</h2>
-        <button class="modal-close"><i class="ph ph-x"></i></button>
       </div>
-      
-      <form id="sub-form">
-        <div class="modal-body form-grid">
-          
-          <div class="form-group full">
-            <label class="form-label">Service Name</label>
-            <input type="text" id="sub-name" class="form-input" placeholder="e.g. Netflix, Spotify" required>
-          </div>
-          
-          <div class="form-group">
-            <label class="form-label">Cost Amount</label>
-            <input type="number" id="sub-cost" class="form-input" step="0.01" min="0" placeholder="0.00" required>
-          </div>
-          
-          <div class="form-group">
-            <label class="form-label">Billing Cycle</label>
-            <select id="sub-cycle" class="form-select">
-              <option value="Monthly">Monthly</option>
-              <option value="Yearly">Yearly</option>
-            </select>
-          </div>
-          
-          <div class="form-group">
-            <label class="form-label">First Billing Date</label>
-            <input type="date" id="sub-date" class="form-input" required>
-          </div>
-          
-          <div class="form-group">
-            <label class="form-label">Category</label>
-            <select id="sub-category" class="form-select">
-              <option value="Entertainment">Entertainment</option>
-              <option value="Software">Software</option>
-              <option value="Utility">Utility</option>
-              <option value="Gaming">Gaming</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
-          
+    </div>
+
+  </main>
+
+  <!-- Detail Modal -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal" id="subModal">
+      <button class="modal-close" id="modalClose">
+        <i class="fas fa-times"></i>
+      </button>
+      <div class="modal-header">
+        <div class="modal-emoji" id="modalEmoji"></div>
+        <div>
+          <h2 id="modalName"></h2>
+          <span class="modal-badge" id="modalStatus"></span>
         </div>
-        
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary modal-close">Cancel</button>
-          <button type="submit" class="btn btn-primary">Save Subscription</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-stats">
+          <div class="m-stat">
+            <i class="fas fa-dollar-sign"></i>
+            <div>
+              <span class="m-val" id="modalCost"></span>
+              <span class="m-label">Cost</span>
+            </div>
+          </div>
+          <div class="m-stat">
+            <i class="fas fa-sync-alt"></i>
+            <div>
+              <span class="m-val" id="modalCycle"></span>
+              <span class="m-label">Billing</span>
+            </div>
+          </div>
+          <div class="m-stat">
+            <i class="fas fa-calendar"></i>
+            <div>
+              <span class="m-val" id="modalRenewal"></span>
+              <span class="m-label">Next Renewal</span>
+            </div>
+          </div>
+          <div class="m-stat">
+            <i class="fas fa-tag"></i>
+            <div>
+              <span class="m-val" id="modalCategory"></span>
+              <span class="m-label">Category</span>
+            </div>
+          </div>
         </div>
-      </form>
+        <div class="modal-notes" id="modalNotesWrap">
+          <i class="fas fa-sticky-note"></i>
+          <span id="modalNotes"></span>
+        </div>
+        <div class="modal-yearly">
+          <i class="fas fa-calculator"></i>
+          <span>Annual Cost: </span>
+          <strong id="modalYearly"></strong>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-edit" id="modalEdit">
+          <i class="fas fa-pen"></i> Edit
+        </button>
+        <button class="btn-delete" id="modalDelete">
+          <i class="fas fa-trash"></i> Delete
+        </button>
+      </div>
     </div>
   </div>
 
-  <!-- Toasts Container -->
-  <div class="toast-container" id="toast-container"></div>
+  <!-- Toast -->
+  <div class="toast" id="toast">
+    <i class="toast-icon fas fa-check-circle"></i>
+    <span id="toastMsg"></span>
+  </div>
 
-  <!-- JS -->
-  <script src="./tracker.js"></script>
+  <script src="tracker.js"></script>
 </body>
 </html>

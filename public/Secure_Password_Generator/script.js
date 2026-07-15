@@ -42,17 +42,37 @@ const checkboxes = {
 };
 
 // ---------------------------------------------------------------------------
-// Cryptographically random integer in [0, max)
-// Uses crypto.getRandomValues when available, falls back to Math.random.
+// Cryptographically random integer in [0, max) — UNBIASED.
+//
+// The naive `arr[0] % max` version had textbook modulo bias: 2^32 is not
+// divisible by 26 (alphabet), 10 (digits), or 88 (full pool), so the lower
+// buckets picked up slightly more probability than the upper ones and every
+// generated password's effective entropy dropped a few bits — not great for
+// a component that literally advertises "cryptographically random"
+// (issue #10333).
+//
+// Rejection sampling fixes it: keep drawing until the raw Uint32 falls
+// below the largest multiple of `max` that fits in the 32-bit range, then
+// modulo. That's uniformly distributed by construction.
 // ---------------------------------------------------------------------------
 function secureRandom(max) {
   if (!window.crypto || typeof window.crypto.getRandomValues !== 'function') {
     throw new Error('Web Crypto API unavailable');
   }
+  if (max <= 0 || !Number.isInteger(max)) {
+    throw new RangeError('secureRandom(max): max must be a positive integer');
+  }
 
+  const limit = Math.floor(0x1_0000_0000 / max) * max;
   const arr = new Uint32Array(1);
-  window.crypto.getRandomValues(arr);
 
+  // In practice this loop terminates after ~1 iteration for common `max`
+  // values (26, 10, 88). Cap at 32 attempts as a defensive guard so a
+  // hypothetically broken RNG can't hang the tab.
+  for (let attempt = 0; attempt < 32; attempt++) {
+    window.crypto.getRandomValues(arr);
+    if (arr[0] < limit) return arr[0] % max;
+  }
   return arr[0] % max;
 }
 

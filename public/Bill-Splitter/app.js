@@ -829,21 +829,18 @@ $('it-calc').addEventListener('click', () => {
     bd.appendChild(card);
   });
 
-  // Settlement
-  const maxPayer = Object.entries(totals).reduce((a, b) =>
-    b[1].total > a[1].total ? b : a
-  );
-  const settlements = [];
-  Object.entries(totals).forEach(([pName, data]) => {
-    if (pName !== maxPayer[0] && data.total > 0.005) {
-      settlements.push({
-        from: pName,
-        to: maxPayer[0],
-        amount: +data.total.toFixed(2),
-      });
-    }
-  });
-
+  // Settlement — the Items tab currently has no "who paid the bill" input,
+  // so we can't derive real debtor→creditor settlements from item ownership
+  // alone. The previous implementation picked whoever OWED the most (biggest
+  // eater) and told everyone else to pay them, as if that person had
+  // bankrolled the meal — clearly wrong (issue #10337). It also threw
+  // `TypeError: Reduce of empty array with no initial value` when every
+  // sharer checkbox was cleared.
+  //
+  // Until a "who paid" selector lands (tracked as a follow-up), render a
+  // clear explanatory note instead of a misleading pay-A-B row so users
+  // don't act on bad settlement math. The per-person Item Breakdown above
+  // still shows what each person owes — that number is correct.
   const sl = $('it-settlement');
   sl.innerHTML = ''; // clearing container — safe
 
@@ -854,7 +851,9 @@ $('it-calc').addEventListener('click', () => {
   settleHeading.textContent = '💸 Settlement';
   sl.appendChild(settleHeading);
 
-  if (!settlements.length) {
+  const owingCount = Object.values(totals).filter((d) => d.total > 0.005).length;
+
+  if (owingCount <= 1) {
     const d = document.createElement('div');
     d.className = 'breakdown-item';
     const sp = document.createElement('span');
@@ -862,11 +861,20 @@ $('it-calc').addEventListener('click', () => {
     d.appendChild(sp);
     sl.appendChild(d);
   } else {
-    settlements.forEach((s) =>
-      sl.appendChild(makeSettleRow(s.from, s.to, s.amount))
-    );
+    const note = document.createElement('div');
+    note.className = 'breakdown-item';
+    note.style.lineHeight = '1.5';
+    const sp = document.createElement('span');
+    sp.textContent =
+      "Each person owes the amount shown in the Item Breakdown above. " +
+      "Settle it however works for your group — this tab doesn't yet " +
+      "track who paid the bill upfront. Use the Unequal Split tab if you " +
+      "want automatic debtor → creditor transactions.";
+    note.appendChild(sp);
+    sl.appendChild(note);
   }
 
+  const settlements = []; // empty until a "who paid" input lands
   $('it-results').style.display = 'block';
   $('it-results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   window._itResult = {

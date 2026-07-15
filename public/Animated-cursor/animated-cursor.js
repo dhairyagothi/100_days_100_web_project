@@ -331,78 +331,124 @@ if (canvas && ctx) {
 // Theme Toggle (Global)
 // ==========================
 
-// Select all toggle buttons (use a common class)
 const themeToggles = document.querySelectorAll(".theme");
 const themeIcon = document.getElementById("themeIcon");
 
-// Default = DARK MODE
-let isLightMode = JSON.parse(localStorage.getItem("lightMode")) || false;
+const STORAGE_KEY = "lightMode";
 
-// Apply theme on load
-function updateTheme() {
-  if (isLightMode) {
-    document.body.classList.add("light-theme");
-    themeIcon.textContent = "🌙"; // show moon when light mode active
-  } else {
-    document.body.classList.remove("light-theme");
-    themeIcon.textContent = "☀️"; // show sun when dark mode active
-  }
+// Default = DARK MODE
+let isLightMode = false;
+
+// Safely load theme preference
+try {
+    const savedTheme = localStorage.getItem(STORAGE_KEY);
+
+    if (savedTheme !== null) {
+        isLightMode = JSON.parse(savedTheme);
+    }
+} catch (error) {
+    console.warn("Unable to read saved theme preference.", error);
+    isLightMode = false;
 }
 
-// Toggle theme on any button click
-themeToggles.forEach(btn => {
-  btn.addEventListener("click", () => {
-    isLightMode = !isLightMode;
-    localStorage.setItem("lightMode", JSON.stringify(isLightMode));
-    updateTheme();
-  });
+// Apply theme
+function updateTheme() {
+    document.body.classList.toggle("light-theme", isLightMode);
+
+    if (themeIcon) {
+        themeIcon.textContent = isLightMode ? "🌙" : "☀️";
+    }
+}
+
+// Attach listeners
+themeToggles.forEach((button) => {
+    button.addEventListener("click", () => {
+        isLightMode = !isLightMode;
+
+        try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(isLightMode));
+        } catch (error) {
+            console.warn("Unable to save theme preference.", error);
+        }
+
+        updateTheme();
+    });
 });
 
-// Initialize on page load
+// Apply theme on page load
 updateTheme();
+
 
 // =========================
 // MOBILE SIDEBAR
 // =========================
 
 (function initMobileSidebar() {
-    const hamburger   = document.querySelector(".hamburger-btn");
-    const sidebar     = document.querySelector(".mobile-sidebar");
-    const overlay     = document.querySelector(".sidebar-overlay");
-    const closeBtn    = document.querySelector(".sidebar-close-btn");
+    const hamburger = document.querySelector(".hamburger-btn");
+    const sidebar = document.querySelector(".mobile-sidebar");
+    const overlay = document.querySelector(".sidebar-overlay");
+    const closeBtn = document.querySelector(".sidebar-close-btn");
 
     if (!hamburger || !sidebar || !overlay) return;
 
+    // Prevent duplicate initialization
+    if (sidebar.dataset.initialized === "true") return;
+    sidebar.dataset.initialized = "true";
+
+    let previousOverflow = "";
+
     function openSidebar() {
+        previousOverflow = document.body.style.overflow;
+
         sidebar.classList.add("is-open");
         hamburger.classList.add("is-open");
         overlay.classList.add("is-visible");
+
         document.body.style.overflow = "hidden";
+
         hamburger.setAttribute("aria-expanded", "true");
+        sidebar.setAttribute("aria-hidden", "false");
+
+        // Focus first interactive element
+        const firstFocusable = sidebar.querySelector(
+            'a, button, input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+
+        firstFocusable?.focus();
     }
 
     function closeSidebar() {
         sidebar.classList.remove("is-open");
         hamburger.classList.remove("is-open");
         overlay.classList.remove("is-visible");
-        document.body.style.overflow = "";
+
+        document.body.style.overflow = previousOverflow;
+
         hamburger.setAttribute("aria-expanded", "false");
+        sidebar.setAttribute("aria-hidden", "true");
+
+        // Return focus to toggle button
+        hamburger.focus();
     }
 
     hamburger.addEventListener("click", () => {
-        sidebar.classList.contains("is-open") ? closeSidebar() : openSidebar();
+        sidebar.classList.contains("is-open")
+            ? closeSidebar()
+            : openSidebar();
     });
 
-    if (closeBtn) closeBtn.addEventListener("click", closeSidebar);
+    closeBtn?.addEventListener("click", closeSidebar);
     overlay.addEventListener("click", closeSidebar);
 
-    // Close on Escape key
-    document.addEventListener("keydown", e => {
-        if (e.key === "Escape" && sidebar.classList.contains("is-open")) closeSidebar();
+    document.addEventListener("keydown", (e) => {
+        if (!sidebar.classList.contains("is-open")) return;
+
+        if (e.key === "Escape") {
+            closeSidebar();
+        }
     });
 
-    // Close sidebar when a nav link is clicked (SPA-friendly)
-    sidebar.querySelectorAll("a").forEach(link => {
+    sidebar.querySelectorAll("a").forEach((link) => {
         link.addEventListener("click", closeSidebar);
     });
 })();

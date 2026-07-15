@@ -247,7 +247,16 @@ body {
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
 }
+.project-card:focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 4px;
+    box-shadow: 0 0 0 4px var(--accent-dim);
+}
 
+.project-card:focus-within {
+    outline: 3px solid var(--accent);
+    outline-offset: 4px;
+}
 /* Light theme cards get a subtle shadow instead of glow */
 [data-theme="light"] .card {
     box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);

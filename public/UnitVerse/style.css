@@ -1399,6 +1399,134 @@ body.light-theme {
 
 /* Apply variables */
 body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* New features styles */
+.formula-panel {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.formula-panel h3 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+}
+
+.formula-text {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    background-color: var(--bg-tertiary);
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.steps-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.step-item {
+    background-color: var(--bg-tertiary);
+    padding: 1rem;
+    border-radius: 8px;
+    border-left: 4px solid var(--primary-color);
+}
+
+.unit-info-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.unit-info-card {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+}
+
+.unit-info-card h3 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+}
+
+.unit-info-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 0.95rem;
+}
+
+.unit-info-name {
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: var(--text-primary);
+}
+
+.unit-info-symbol {
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.unit-info-desc,
+.unit-info-apps {
+    color: var(--text-secondary);
+}
+
+.multi-conversion-panel {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.multi-conversion-panel h3 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+}
+
+.conversion-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.conversion-table th,
+.conversion-table td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.conversion-table th {
+    background-color: var(--bg-tertiary);
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.conversion-table tbody tr:hover {
+    background-color: var(--bg-tertiary);
+}
+
+.conversion-table tbody tr.highlighted-row {
+    background-color: rgba(99, 102, 241, 0.2);
+}
+/* Apply variables */
+body {
   background-color: var(--bg-primary);
   color: var(--text-primary);
   transition:

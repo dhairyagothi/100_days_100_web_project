@@ -66,7 +66,7 @@ function renderHistory() {
     // Group entries by date
     const groups = {};
     history.forEach(entry => {
-        const dateKey = new Date(entry.ts).toLocaleDateString(undefined, { weekday:'long', month:'short', day:'numeric' });
+        const dateKey = new Date(entry.ts).toLocaleDateString(undefined, { calendar: 'gregory', weekday:'long', month:'short', day:'numeric' });
         if (!groups[dateKey]) groups[dateKey] = [];
         groups[dateKey].push(entry);
     });
@@ -90,7 +90,7 @@ function renderHistory() {
 
             const typeEmoji = entry.type === 'pomodoro' ? '🍅' : entry.type === 'short' ? '☕' : '🌿';
             const typeLabel = entry.type === 'pomodoro' ? 'Focus' : entry.type === 'short' ? 'Short Break' : 'Long Break';
-            const time = new Date(entry.ts).toLocaleTimeString(undefined, { hour:'2-digit', minute:'2-digit' });
+            const time = new Date(entry.ts).toLocaleTimeString(undefined, { calendar: 'gregory', hour:'2-digit', minute:'2-digit' });
             const skippedTag = entry.skipped ? '<span class="history-tag-skipped">skipped</span>' : '';
             const taskTag = entry.taskName ? `<span class="history-task-name">${escHtml(entry.taskName)}</span>` : '';
 
