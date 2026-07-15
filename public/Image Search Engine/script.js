@@ -26,7 +26,7 @@ async function searchImages() {
         
         for (let i = 0; i < itemsPerPage; i++) {
             // Uses a zero-key open API that strictly matches the keyword entered
-            const accurateImageUrl = `https://loremflickr.com/500/400/${encodeURIComponent(keyword)}?random=${i + (page * itemsPerPage)}`;
+            const accurateImageUrl = `https://loremflickr.com/500/400/${encodeURIComponent(keyword)}?lock=${i + (page * itemsPerPage)}`;
 
             const image = document.createElement("img");
             image.src = accurateImageUrl;

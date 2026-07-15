@@ -1,3 +1,29 @@
+const themeToggleButton = document.getElementById("themeToggle");
+const themeToggleIcon = themeToggleButton?.querySelector(".theme-toggle-icon");
+const themeToggleLabel = themeToggleButton?.querySelector(".theme-toggle-label");
+
+function syncThemeToggleUI() {
+  const isLightTheme = document.body.classList.contains("light-mode");
+
+  if (themeToggleIcon) {
+    themeToggleIcon.textContent = isLightTheme ? "☀️" : "🌙";
+  }
+
+  if (themeToggleLabel) {
+    themeToggleLabel.textContent = isLightTheme ? "Light mode" : "Dark mode";
+  }
+
+  if (themeToggleButton) {
+    themeToggleButton.setAttribute(
+      "aria-label",
+      isLightTheme ? "Switch to dark mode" : "Switch to light mode"
+    );
+  }
+}
+
+window.addEventListener("themechange", syncThemeToggleUI);
+syncThemeToggleUI();
+
 const quotes = [
       {
         text: "Give me blood and I will give you freedom.",

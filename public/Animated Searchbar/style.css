@@ -7,9 +7,9 @@
 html,
 body {
   height: 100%;
-  margin: 0;
+  margin-top: 250px;
 }
-
+h1 { margin-top: 0; }
 
 body {
   min-height: 100vh;
@@ -18,7 +18,6 @@ body {
   align-items: center;
   flex-direction: column;
   background: linear-gradient(135deg, #1a1a2e, #16213e);
-  color: white;
   padding: 20px;
 }
 
@@ -144,7 +143,6 @@ body {
 
 
 h1 {
-  margin-top: 200px;
   color: #ffa31a;
   margin-bottom: 10px;
   font-size: clamp(1.5rem, 5vw, 2.5rem);
@@ -193,9 +191,7 @@ h1 {
   animation: pulse 1.5s infinite;
   box-shadow: 0 0 0 0 rgba(255, 163, 26, 0.7);
 }
-main{
-  margin-top: 500px;
-}
+
 .input {
   flex: 1;
   margin: 0 15px;
@@ -1146,5 +1142,6 @@ body.light-theme .social-links a:hover {
   padding:20px;
   flex-shrink:0;
 }
+
 
 /*  */
