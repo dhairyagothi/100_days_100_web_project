@@ -37,7 +37,21 @@
     path.endsWith("/") || (path.endsWith("index.html") && !isSubfolder);
   const isLearn = path.includes("/learning/");
   const isContributors = path.includes("/contributors/");
+const currentPage = path.split("/").pop() || "index.html";
+const navLinks = container.querySelectorAll("a");
 
+navLinks.forEach(link => {
+    const href = link.getAttribute("href");
+    if (href) {
+        const linkPage = href.split("/").pop();
+        
+        if (linkPage === currentPage) {
+           link.classList.add("active");
+        } else {
+            link.classList.remove("active");
+        }
+    }
+});
   function escapeHTML(value) {
     return String(value)
       .replace(/&/g, "&amp;")

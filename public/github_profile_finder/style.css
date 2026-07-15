@@ -831,6 +831,19 @@ body {
   padding-bottom: 8px;
 }
 
+.heatmap-grid{
+  display:grid;
+
+  grid-template-columns:repeat(53,12px);
+
+  /* Each column is one week (7 days), matching GitHub's real
+     calendar layout so cells map to the correct day/week. */
+  grid-template-rows:repeat(7,12px);
+  grid-auto-flow:column;
+
+  gap:5px;
+
+  min-width:900px;
 .heatmap-grid {
   display: grid;
   grid-template-columns: repeat(53, 12px);

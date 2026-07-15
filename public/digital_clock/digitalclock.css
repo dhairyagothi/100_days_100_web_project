@@ -960,61 +960,29 @@ body{
 
 /* =========================
    LIGHT MODE OVERRIDES
+========================= */
 
-body:not(.dark-mode) {
+body.light-mode {
     --bg: #f0f2ff;
     --card: #ffffff;
     --card-light: rgba(255, 255, 255, 0.85);
-
     --text: #1a1a2e;
     --text-muted: #5a6080;
-
     --border: rgba(0, 0, 0, 0.08);
-
     --shadow: 0 10px 30px rgba(0, 0, 0, 0.10);
-
     background:
         radial-gradient(circle at top left, #c9d0f5 0%, transparent 35%),
         radial-gradient(circle at bottom right, #d8c9f5 0%, transparent 35%),
-        var(--bg);
-
+        #f0f2ff !important;
     color: var(--text);
 }
 
-body:not(.dark-mode) .navbar {
-    background: rgba(240, 242, 255, 0.75);
-}
-
-body:not(.dark-mode) .form-field input,
-body:not(.dark-mode) .form-field select {
-    background: rgba(0, 0, 0, 0.05);
-    color: var(--text);
-    border-color: rgba(0, 0, 0, 0.1);
-}
-
-body:not(.dark-mode) .alarm-item {
-    background: rgba(0, 0, 0, 0.04);
-    border-color: rgba(0, 0, 0, 0.08);
-}
-
-body:not(.dark-mode) .history-header {
-    background: rgba(0, 0, 0, 0.05);
-}
-
-body:not(.dark-mode) .log-entry {
-    background: rgba(0, 0, 0, 0.03);
-    border-color: rgba(0, 0, 0, 0.07);
-}
-
-body:not(.dark-mode) .info-tag {
-    background: rgba(0, 0, 0, 0.06);
-}
-
-body:not(.dark-mode) .world-clock-row {
-    background: rgba(0, 0, 0, 0.04);
-}
-
-body:not(.dark-mode) .btn-outline {
-    color: var(--text);
-    border-color: rgba(0, 0, 0, 0.2);
-}
+body.light-mode .navbar { background: rgba(240, 242, 255, 0.75); }
+body.light-mode .form-field input,
+body.light-mode .form-field select { background: rgba(0,0,0,.05); color: var(--text); border-color: rgba(0,0,0,.1); }
+body.light-mode .alarm-item { background: rgba(0,0,0,.04); border-color: rgba(0,0,0,.08); }
+body.light-mode .history-header { background: rgba(0,0,0,.05); }
+body.light-mode .log-entry { background: rgba(0,0,0,.03); border-color: rgba(0,0,0,.07); }
+body.light-mode .info-tag { background: rgba(0,0,0,.06); }
+body.light-mode .world-clock-row { background: rgba(0,0,0,.04); }
+body.light-mode .btn-outline { color: var(--text); border-color: rgba(0,0,0,.2); }

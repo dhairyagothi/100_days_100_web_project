@@ -55,7 +55,9 @@ Enjoy writing!
 
     const updatePreview = () => {
         const content = editor.value;
-        preview.innerHTML = marked.parse(content);
+        const rawHtml = marked.parse(content);
+        // Sanitize the HTML to prevent XSS
+        preview.innerHTML = DOMPurify.sanitize(rawHtml);
         updateStats(content);
         localStorage.setItem('markdown_content', content);
     };
