@@ -1,5 +1,465 @@
 <!DOCTYPE html>
 <html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Virtual Playground</title>
+
+<link rel="icon" href="image.png">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+
+min-height:100vh;
+
+background:
+linear-gradient(135deg,#0f172a,#1e293b,#0f172a);
+
+display:flex;
+justify-content:center;
+align-items:center;
+
+padding:40px;
+}
+
+.container{
+
+width:100%;
+max-width:900px;
+
+background:rgba(255,255,255,.08);
+
+backdrop-filter:blur(18px);
+
+border:1px solid rgba(255,255,255,.15);
+
+border-radius:28px;
+
+padding:40px;
+
+box-shadow:
+0 25px 60px rgba(0,0,0,.45);
+
+}
+
+.header{
+
+text-align:center;
+margin-bottom:35px;
+
+}
+
+.header h1{
+
+font-size:42px;
+font-weight:700;
+
+color:white;
+
+margin-bottom:10px;
+
+}
+
+.header p{
+
+font-size:17px;
+
+color:#d9d9d9;
+
+}
+
+.play-area{
+
+position:relative;
+
+width:100%;
+
+height:420px;
+
+background:
+
+linear-gradient(180deg,#dbeafe,#bfdbfe,#93c5fd);
+
+border-radius:22px;
+
+overflow:hidden;
+
+border:3px solid rgba(255,255,255,.3);
+
+box-shadow:
+inset 0 8px 20px rgba(255,255,255,.25);
+
+margin:30px 0;
+
+}
+
+.ball{
+
+position:absolute;
+
+bottom:25px;
+
+left:70px;
+
+width:70px;
+
+height:70px;
+
+border-radius:50%;
+
+background:#ff6b6b;
+
+box-shadow:
+
+0 8px 18px rgba(0,0,0,.35);
+
+cursor:pointer;
+
+transition:
+background .3s,
+border-radius .3s,
+transform .3s;
+
+}
+
+.section-title{
+
+font-size:20px;
+
+color:white;
+
+margin-bottom:15px;
+
+font-weight:600;
+
+}
+
+.controls{
+
+display:flex;
+
+justify-content:center;
+
+margin-bottom:30px;
+
+}
+
+.controls button{
+
+padding:14px 35px;
+
+border:none;
+
+border-radius:12px;
+
+background:linear-gradient(135deg,#3b82f6,#2563eb);
+
+color:white;
+
+font-size:16px;
+
+font-weight:600;
+
+cursor:pointer;
+
+transition:.3s;
+
+box-shadow:
+
+0 10px 20px rgba(37,99,235,.4);
+
+}
+
+.controls button:hover{
+
+transform:translateY(-3px);
+
+}
+
+.planet-selector{
+
+display:flex;
+
+flex-wrap:wrap;
+
+justify-content:center;
+
+gap:14px;
+
+margin-bottom:35px;
+
+}
+
+.planet-selector label{
+
+width:100%;
+
+text-align:center;
+
+color:white;
+
+font-size:20px;
+
+font-weight:600;
+
+margin-bottom:8px;
+
+}
+
+.planet-btn{
+
+padding:12px 24px;
+
+border:none;
+
+border-radius:30px;
+
+background:rgba(255,255,255,.15);
+
+color:white;
+
+font-size:15px;
+
+cursor:pointer;
+
+transition:.3s;
+
+border:1px solid rgba(255,255,255,.2);
+
+}
+
+.planet-btn:hover{
+
+background:#2563eb;
+
+transform:translateY(-3px);
+
+}
+
+.planet-btn.active{
+
+background:#3b82f6;
+
+}
+
+.customise{
+
+display:grid;
+
+grid-template-columns:1fr 1fr;
+
+gap:25px;
+
+margin-top:20px;
+
+}
+
+.card{
+
+background:rgba(255,255,255,.08);
+
+padding:22px;
+
+border-radius:18px;
+
+border:1px solid rgba(255,255,255,.12);
+
+}
+
+.card label{
+
+display:block;
+
+color:white;
+
+font-weight:600;
+
+margin-bottom:12px;
+
+}
+
+input[type=color]{
+
+width:100%;
+
+height:55px;
+
+border:none;
+
+cursor:pointer;
+
+background:none;
+
+}
+
+select{
+
+width:100%;
+
+padding:14px;
+
+border-radius:10px;
+
+font-size:15px;
+
+border:none;
+
+outline:none;
+
+}
+
+.footer{
+
+margin-top:35px;
+
+text-align:center;
+
+color:#cbd5e1;
+
+font-size:14px;
+
+}
+
+@media(max-width:768px){
+
+.container{
+
+padding:25px;
+
+}
+
+.header h1{
+
+font-size:32px;
+
+}
+
+.play-area{
+
+height:330px;
+
+}
+
+.customise{
+
+grid-template-columns:1fr;
+
+}
+
+.ball{
+
+width:60px;
+height:60px;
+
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="header">
+
+<h1>🎮 Virtual Playground</h1>
+
+<p>
+Click the ball to make it jump and explore different planetary gravities.
+Customize its appearance for a fun interactive experience.
+</p>
+
+</div>
+
+<div class="play-area" id="playArea">
+
+<div class="ball" id="ball"></div>
+
+</div>
+
+<div class="controls">
+
+<button onclick="resetBall()">🔄 Reset Playground</button>
+
+</div>
+
+<div class="planet-selector" id="planetSelector">
+
+<label>Select Gravity</label>
+
+<button class="planet-btn" data-planet="moon">🌕 Moon</button>
+
+<button class="planet-btn" data-planet="mars">🔴 Mars</button>
+
+<button class="planet-btn active" data-planet="earth">🌍 Earth</button>
+
+<button class="planet-btn" data-planet="saturn">🪐 Saturn</button>
+
+<button class="planet-btn" data-planet="jupiter">🟠 Jupiter</button>
+
+</div>
+
+<div class="customise">
+
+<div class="card">
+
+<label>🎨 Ball Color</label>
+
+<input
+type="color"
+id="ballColor"
+value="#ff6b6b"
+/>
+
+</div>
+
+<div class="card">
+
+<label>⚽ Ball Shape</label>
+
+<select id="ballShape">
+
+<option value="circle">Circle</option>
+
+<option value="square">Square</option>
+
+<option value="triangle">Triangle</option>
+
+<option value="star">Star</option>
+
+</select>
+
+</div>
+
+</div>
+
+<div class="footer">
+
+Made with ❤️ for the Virtual Playground Project
+
+</div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+=======
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
@@ -57,4 +517,5 @@
 
     <script src="script.js"></script>
   </body>
+
 </html>

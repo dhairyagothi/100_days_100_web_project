@@ -28,7 +28,7 @@ A browser-based liquid color-sorting puzzle game where players pour colored liqu
 
 ---
 
-## 🛠️ Technologies Used
+## 📁 Folder Structure
 
 - **HTML5** — Page structure and semantic layout
 - **CSS3** — Styling, animations (pour, shake, confetti, bubbles), and responsive layout using CSS variables

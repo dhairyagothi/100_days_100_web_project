@@ -1,38 +1,260 @@
+/* ==========================================================
+   Global Styles
+   ========================================================== */
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
-
+/* Theme Colors */
+:root {
+    --primary: #0f2045;
+    --secondary: #000e3b;
+    --success: #16a34a;
+    --danger: #dc2626;
+    --danger-hover: #b91c1c;
+    --background: #eef2ff;
+    --card: rgba(255, 255, 255, 0.8);
+    --text: #1f2937;
+    --border: rgba(255, 255, 255, 0.35);
+    --shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+}
+/* ==========================================================
+   Body
+   ========================================================== */
 body {
-    font-family: Arial, sans-serif;
-    background: #0f0f0f;
-    color: #00ffe5;
+    font-family: "Poppins", sans-serif;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    padding: 40px 20px;
+    background: linear-gradient(135deg, #28246d, #112e6b, #033f49);
+    color: var(--text);
 }
 
+/* ==========================================================
+   Dashboard
+   ========================================================== */
 .dashboard {
+    width: 100%;
+    max-width: 900px;
+    background: var(--card);
+    backdrop-filter: blur(15px);
+    border-radius: 20px;
+    padding: 35px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+}
+
+/* ==========================================================
+   Header
+   ========================================================== */
+.dashboard-header {
     text-align: center;
-    border: 2px solid #00ffe5;
+    margin-bottom: 35px;
+}
+.dashboard-header h1 {
+    font-size: 2rem;
+    color: var(--primary);
+    margin-bottom: 12px;
+}
+.dashboard-header p {
+    color: #555;
+    line-height: 1.6;
+}
+
+/* ==========================================================
+   Statistics Cards
+   ========================================================== */
+
+.stats-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    margin-bottom: 35px;
+}
+
+.stat-card {
+    background: white;
+    border-radius: 16px;
     padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 0 20px #00ffe5;
+    transition: 0.3s ease;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
 }
 
-.card {
-    margin: 10px 0;
-    font-size: 18px;
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
 }
 
-button {
-    margin-top: 15px;
+.stat-card h3 {
+    text-align: center;
+    margin-bottom: 18px;
+    color: var(--secondary);
+}
+
+/* ==========================================================
+   Counter Controls
+   ========================================================== */
+
+.stat-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Number Input */
+
+.stat-controls input {
+    width: 80px;
     padding: 10px;
+    border-radius: 8px;
+    border: 2px solid #d1d5db;
+    font-size: 1rem;
+    text-align: center;
+    outline: none;
+    transition: 0.3s;
+}
+
+.stat-controls input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 8px rgba(37, 99, 235, 0.25);
+}
+/* Plus / Minus Buttons */
+.action-btn {
+    width: 40px;
+    height: 40px;
     border: none;
-    background: red;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: white;
+    transition: 0.25s;
+}
+.increase {
+    background: var(--success);
+}
+.decrease {
+    background: var(--danger);
+}
+.action-btn:hover {
+    transform: scale(1.08);
+}
+
+/* ==========================================================
+   Summary Card
+   ========================================================== */
+
+.summary-card {
+    background: white;
+    border-radius: 18px;
+    padding: 25px;
+    margin-bottom: 30px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+.summary-card h2 {
+    text-align: center;
+    color: var(--secondary);
+    margin-bottom: 20px;
+}
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px solid #ececec;
+    font-size: 1rem;
+}
+.summary-item:last-child {
+    border-bottom: none;
+}
+.highlight {
+    color: var(--success);
+
+    font-weight: 600;
+
+    font-size: 1.05rem;
+}
+
+/* ==========================================================
+   Buttons
+   ========================================================== */
+
+.button-group {
+    display: flex;
+
+    justify-content: center;
+
+    flex-wrap: wrap;
+
+    gap: 18px;
+}
+
+.primary-btn,
+.danger-btn {
+    border: none;
+    padding: 14px 28px;
+    border-radius: 10px;
     color: white;
     cursor: pointer;
-    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: 0.3s;
+}
+.primary-btn {
+    background: var(--primary);
+}
+.primary-btn:hover {
+    background: var(--secondary);
+}
+.danger-btn {
+    background: var(--danger);
+}
+.danger-btn:hover {
+    background: var(--danger-hover);
+}
+
+/* ==========================================================
+   Notification Box
+   ========================================================== */
+.message-box {
+    margin-top: 25px;
+    text-align: center;
+    font-weight: 600;
+    min-height: 24px;
+    color: var(--success);
+}
+/* ==========================================================
+   Responsive Design
+   ========================================================== */
+
+@media (max-width: 768px) {
+    .dashboard {
+        padding: 25px;
+    }
+    .dashboard-header h1 {
+        font-size: 1.7rem;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .primary-btn,
+    .danger-btn {
+        width: 100%;
+    }
+}
+@media (max-width: 480px) {
+    .stats-container {
+        grid-template-columns: 1fr;
+    }
+    .summary-item {
+        font-size: 0.95rem;
+    }
+    .stat-controls input {
+        width: 70px;
+    }
 }

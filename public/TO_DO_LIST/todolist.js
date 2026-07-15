@@ -482,7 +482,7 @@ if (clearCompletedBtn && clearCompletedModal) {
 // ─── Theme switching ───────────────────────────────────────────────────────
 const themeButtons = document.querySelectorAll(".theme-btn");
 function applyTheme(theme) {
-  document.body.classList.remove("theme1", "theme2", "theme3", "theme4", "theme5");
+  document.body.classList.remove("theme1", "theme2", "theme3", "theme4", "theme5", "theme6", "theme7");
   document.body.classList.add(theme);
   themeButtons.forEach(btn =>
     btn.classList.toggle("active", btn.dataset.theme === theme)
@@ -494,7 +494,7 @@ themeButtons.forEach(btn => {
     const theme = btn.dataset.theme;
     applyTheme(theme);
     localStorage.setItem("selectedTheme", theme);
-    showToast("🎨 Theme changed!", "success");
+    showToast("🎨 Workspace skin changed!", "success");
   });
 });
 

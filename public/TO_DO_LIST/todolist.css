@@ -38,6 +38,15 @@
   --card-border: rgba(12, 22, 48, 0.08);
   --card-radius: 24px;
 
+  --surface-soft: rgba(255, 255, 255, 0.06);
+  --surface-soft-hover: rgba(255, 255, 255, 0.09);
+  --surface-strong: rgba(255, 255, 255, 0.10);
+  --field-bg: rgba(255, 255, 255, 0.96);
+  --field-border: rgba(255, 255, 255, 0.14);
+  --field-text: #111827;
+  --field-placeholder: #8e8e9c;
+  --card-text: #ffffff;
+
   --success: #14b8a6;
   --danger: #ef4444;
   --warning: #f59e0b;
@@ -193,7 +202,7 @@ section {
 .sidebar-title {
   font-size: 1.1rem;
   font-weight: 800;
-  color: #f7f8ff;
+  color: var(--text-primary);
   display: flex;
   align-items: center;
   gap: 10px;
@@ -217,7 +226,7 @@ section {
   gap: 12px;
   padding: 12px 16px;
   border-radius: 12px;
-  color: rgba(240, 240, 245, 0.7);
+  color: var(--text-muted);
   text-decoration: none;
   font-weight: 600;
   font-size: 0.9rem;
@@ -227,8 +236,8 @@ section {
 
 .sidebar-nav-item:hover,
 .sidebar-nav-item.active {
-  background: rgba(124, 99, 255, 0.18);
-  color: #ffffff;
+  background: var(--accent-soft);
+  color: var(--text-primary);
   border-color: rgba(124, 99, 255, 0.35);
 }
 
@@ -279,7 +288,7 @@ section {
 .theme-label-txt {
   font-size: 0.7rem;
   font-weight: 700;
-  color: rgba(247, 248, 255, 0.40);
+  color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.06em;
 }
@@ -586,6 +595,15 @@ main {
   background: #ef4444;
 }
 
+#colour6 {
+  background: #000000;
+}
+
+#colour7 {
+  background: #ffffff;
+  border-color: #121212;
+}
+
 .theme-btn:hover {
   transform: scale(1.25);
   border-color: rgba(255, 255, 255, 0.80);
@@ -594,8 +612,8 @@ main {
 
 .theme-btn.active {
   transform: scale(1.15);
-  border-color: #ffffff;
-  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.35), 0 0 20px rgba(255, 255, 255, 0.20);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(124, 99, 255, 0.35), 0 0 20px rgba(124, 99, 255, 0.25);
   outline: none;
 }
 
@@ -624,14 +642,14 @@ main {
   font-weight: 800;
   letter-spacing: 0.07em;
   text-transform: uppercase;
-  color: rgba(247, 248, 255, 0.55);
+  color: var(--text-muted);
   margin-bottom: 6px;
 }
 
 .tasks-number {
   font-size: 1.6rem;
   font-weight: 850;
-  color: #ffffff;
+  color: var(--text-primary);
 }
 
 /* ============================================================
@@ -672,7 +690,7 @@ main {
   font-size: clamp(28px, 4vw, 48px);
   font-weight: 900;
   letter-spacing: -0.05em;
-  background: linear-gradient(135deg, #ffffff 0%, #c4b5ff 100%);
+  background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -681,7 +699,7 @@ main {
 
 .hero-subtitle {
   font-size: 14px;
-  color: rgba(247, 248, 255, 0.60);
+  color: var(--text-muted);
   margin-top: 6px;
 }
 
@@ -799,9 +817,9 @@ main {
   height: 50px;
   padding: 0 18px 0 44px;
   border-radius: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  background: rgba(255, 255, 255, 0.06);
-  color: #f7f8ff;
+  border: 1px solid var(--field-border);
+  background: var(--surface-soft);
+  color: var(--text-primary);
   font-size: 14px;
   font-family: var(--font-family);
   outline: none;
@@ -809,13 +827,13 @@ main {
 }
 
 #task-search::placeholder {
-  color: rgba(247, 248, 255, 0.35);
+  color: var(--field-placeholder);
 }
 
 #task-search:focus {
   border-color: rgba(124, 99, 255, 0.55);
   box-shadow: 0 0 0 3px rgba(124, 99, 255, 0.12);
-  background: rgba(255, 255, 255, 0.09);
+  background: var(--surface-soft-hover);
 }
 
 /* ============================================================
@@ -864,9 +882,9 @@ main {
   height: 50px;
   padding: 0 32px 0 14px;
   border-radius: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  background: rgba(255, 255, 255, 0.96);
-  color: #121212;
+  border: 1px solid var(--field-border);
+  background: var(--field-bg);
+  color: var(--field-text);
   font-size: 14px;
   font-weight: 600;
   font-family: var(--font-family);
@@ -877,7 +895,7 @@ main {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 12px center;
-  background-color: rgba(255, 255, 255, 0.96);
+  background-color: var(--field-bg);
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -930,9 +948,9 @@ input[type="date"].input-select {
   height: 50px;
   padding: 0 18px;
   border-radius: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  background: rgba(255, 255, 255, 0.96);
-  color: #121212;
+  border: 1px solid var(--field-border);
+  background: var(--field-bg);
+  color: var(--field-text);
   font-size: 15px;
   font-family: var(--font-family);
   outline: none;
@@ -956,7 +974,7 @@ input[type="date"].input-select {
 }
 
 #task::placeholder {
-  color: #8e8e9c;
+  color: var(--field-placeholder);
 }
 
 #task:focus,
@@ -999,9 +1017,9 @@ input[type="date"].input-select {
   height: 50px;
   padding: 0 64px 0 18px;
   border-radius: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  background: rgba(255, 255, 255, 0.96);
-  color: #121212;
+  border: 1px solid var(--field-border);
+  background: var(--field-bg);
+  color: var(--field-text);
   font-size: 15px;
   font-family: var(--font-family);
   outline: none;
@@ -1009,7 +1027,7 @@ input[type="date"].input-select {
 }
 
 .task-input::placeholder {
-  color: #8e8e9c;
+  color: var(--field-placeholder);
 }
 
 .task-input:focus {
@@ -1256,8 +1274,8 @@ input[type="date"].input-select {
 
 /* ── Kanban Task Card ─────────────────────────────────────── */
 .kanban-task-card {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.09);
+  background: var(--surface-soft);
+  border: 1px solid var(--glass-border);
   border-radius: 14px;
   padding: 14px 14px 10px;
   cursor: grab;
@@ -1268,7 +1286,7 @@ input[type="date"].input-select {
 .kanban-task-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--surface-soft-hover);
 }
 
 .kanban-task-card.dragging {
@@ -1290,7 +1308,7 @@ input[type="date"].input-select {
 
 .card-title-text {
   font-size: 0.875rem;
-  color: #fff;
+  color: var(--card-text);
   font-weight: 500;
   line-height: 1.4;
   word-break: break-word;
@@ -1662,7 +1680,7 @@ input[type="date"].input-select {
 .empty-title {
   font-size: 18px;
   font-weight: 700;
-  color: #f7f8ff;
+  color: var(--text-primary);
 }
 
 .empty-desc {
@@ -1912,15 +1930,15 @@ input[type="date"].input-select {
   gap: 10px;
   padding: 14px 22px;
   border-radius: 14px;
-  background: rgba(18, 24, 48, 0.96);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   font-size: 14px;
   font-weight: 600;
   font-family: var(--font-family);
-  color: #f7f8ff;
+  color: var(--text-primary);
   white-space: nowrap;
   pointer-events: none;
   transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.35s ease;
@@ -1973,13 +1991,13 @@ input[type="date"].input-select {
 }
 
 .modal-box {
-  background: rgba(18, 24, 48, 0.97);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
   border-radius: 24px;
   padding: 36px 32px 28px;
   max-width: 420px;
   width: calc(100% - 40px);
-  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.55);
+  box-shadow: var(--glass-shadow);
   animation: modalSlideUp 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
   text-align: center;
 }
@@ -2005,14 +2023,14 @@ input[type="date"].input-select {
 .modal-title {
   font-size: 22px;
   font-weight: 800;
-  color: #f7f8ff;
+  color: var(--text-primary);
   margin-bottom: 10px;
   letter-spacing: -0.02em;
 }
 
 .modal-desc {
   font-size: 14px;
-  color: rgba(247, 248, 255, 0.65);
+  color: var(--text-muted);
   line-height: 1.6;
   margin-bottom: 24px;
 }
@@ -2110,6 +2128,15 @@ input[type="date"].input-select {
   --glass-bg: rgba(18, 32, 58, 0.70);
   --glass-border: rgba(124, 99, 255, 0.15);
   --hero-tint: rgba(28, 20, 70, 0.72);
+  --text-primary: #f7f8ff;
+  --text-muted: rgba(247, 249, 255, 0.65);
+  --surface-soft: rgba(255, 255, 255, 0.06);
+  --surface-soft-hover: rgba(255, 255, 255, 0.09);
+  --field-bg: rgba(255, 255, 255, 0.96);
+  --field-border: rgba(255, 255, 255, 0.14);
+  --field-text: #111827;
+  --field-placeholder: #8e8e9c;
+  --card-text: #ffffff;
 }
 
 .theme2 {
@@ -2122,6 +2149,15 @@ input[type="date"].input-select {
   --glass-bg: rgba(6, 30, 55, 0.72);
   --glass-border: rgba(79, 141, 255, 0.18);
   --hero-tint: rgba(8, 38, 70, 0.75);
+  --text-primary: #f7f8ff;
+  --text-muted: rgba(247, 249, 255, 0.65);
+  --surface-soft: rgba(255, 255, 255, 0.06);
+  --surface-soft-hover: rgba(255, 255, 255, 0.09);
+  --field-bg: rgba(255, 255, 255, 0.96);
+  --field-border: rgba(255, 255, 255, 0.14);
+  --field-text: #111827;
+  --field-placeholder: #8e8e9c;
+  --card-text: #ffffff;
 }
 
 .theme3 {
@@ -2134,6 +2170,15 @@ input[type="date"].input-select {
   --glass-bg: rgba(5, 40, 22, 0.72);
   --glass-border: rgba(20, 184, 166, 0.18);
   --hero-tint: rgba(5, 50, 28, 0.76);
+  --text-primary: #f7f8ff;
+  --text-muted: rgba(247, 249, 255, 0.65);
+  --surface-soft: rgba(255, 255, 255, 0.06);
+  --surface-soft-hover: rgba(255, 255, 255, 0.09);
+  --field-bg: rgba(255, 255, 255, 0.96);
+  --field-border: rgba(255, 255, 255, 0.14);
+  --field-text: #111827;
+  --field-placeholder: #8e8e9c;
+  --card-text: #ffffff;
 }
 
 .theme4 {
@@ -2146,6 +2191,15 @@ input[type="date"].input-select {
   --glass-bg: rgba(90, 35, 8, 0.72);
   --glass-border: rgba(255, 184, 107, 0.20);
   --hero-tint: rgba(110, 42, 6, 0.75);
+  --text-primary: #f7f8ff;
+  --text-muted: rgba(247, 249, 255, 0.65);
+  --surface-soft: rgba(255, 255, 255, 0.06);
+  --surface-soft-hover: rgba(255, 255, 255, 0.09);
+  --field-bg: rgba(255, 255, 255, 0.96);
+  --field-border: rgba(255, 255, 255, 0.14);
+  --field-text: #111827;
+  --field-placeholder: #8e8e9c;
+  --card-text: #ffffff;
 }
 
 .theme5 {
@@ -2158,6 +2212,91 @@ input[type="date"].input-select {
   --glass-bg: rgba(90, 14, 14, 0.72);
   --glass-border: rgba(239, 68, 68, 0.22);
   --hero-tint: rgba(110, 10, 10, 0.76);
+  --text-primary: #f7f8ff;
+  --text-muted: rgba(247, 249, 255, 0.65);
+  --surface-soft: rgba(255, 255, 255, 0.06);
+  --surface-soft-hover: rgba(255, 255, 255, 0.09);
+  --field-bg: rgba(255, 255, 255, 0.96);
+  --field-border: rgba(255, 255, 255, 0.14);
+  --field-text: #111827;
+  --field-placeholder: #8e8e9c;
+  --card-text: #ffffff;
+}
+
+.theme6 {
+  --page-bg-start: #04070c;
+  --page-bg-mid: #0a0f1b;
+  --page-bg-end: #01030a;
+  --accent: #8b5cf6;
+  --accent-soft: rgba(139, 92, 246, 0.22);
+  --accent-gradient: linear-gradient(135deg, #8b5cf6, #4f8dff);
+  --glass-bg: rgba(3, 6, 12, 0.78);
+  --glass-border: rgba(255, 255, 255, 0.14);
+  --hero-tint: rgba(6, 10, 18, 0.86);
+  --text-primary: #f8fafc;
+  --text-muted: rgba(248, 250, 252, 0.68);
+  --surface-soft: rgba(255, 255, 255, 0.06);
+  --surface-soft-hover: rgba(255, 255, 255, 0.10);
+  --field-bg: rgba(255, 255, 255, 0.96);
+  --field-border: rgba(255, 255, 255, 0.12);
+  --field-text: #0f172a;
+  --field-placeholder: #64748b;
+  --card-text: #ffffff;
+}
+
+.theme7 {
+  --page-bg-start: #f8fbff;
+  --page-bg-mid: #eef4ff;
+  --page-bg-end: #ffffff;
+  --accent: #4f46e5;
+  --accent-soft: rgba(79, 70, 229, 0.14);
+  --accent-gradient: linear-gradient(135deg, #4f46e5, #2563eb);
+  --glass-bg: rgba(255, 255, 255, 0.93);
+  --glass-border: rgba(15, 23, 42, 0.13);
+  --hero-tint: rgba(255, 255, 255, 0.98);
+  --text-primary: #0f172a;
+  --text-muted: rgba(15, 23, 42, 0.68);
+  --surface-soft: rgba(15, 23, 42, 0.05);
+  --surface-soft-hover: rgba(15, 23, 42, 0.09);
+  --field-bg: #ffffff;
+  --field-border: rgba(15, 23, 42, 0.14);
+  --field-text: #0f172a;
+  --field-placeholder: #64748b;
+  --card-text: #0f172a;
+}
+
+body.theme7,
+body.theme7 .sidebar,
+body.theme7 .main-content,
+body.theme7 .input-panel,
+body.theme7 .dashboard-card,
+body.theme7 .kanban-task-card,
+body.theme7 .kanban-column-track,
+body.theme7 .modal-box,
+body.theme7 .toast-popup {
+  color: #0f172a;
+}
+
+body.theme7 .sidebar-title,
+body.theme7 .theme-label-txt,
+body.theme7 .sidebar-nav-item,
+body.theme7 .card-label,
+body.theme7 .tasks-number,
+body.theme7 .hero-title,
+body.theme7 .hero-subtitle,
+body.theme7 .hero-progress-text,
+body.theme7 #task-search,
+body.theme7 .task-input,
+body.theme7 .input-select,
+body.theme7 .char-counter,
+body.theme7 .kanban-column-title,
+body.theme7 .card-title-text,
+body.theme7 .empty-title,
+body.theme7 .empty-desc,
+body.theme7 .modal-title,
+body.theme7 .modal-desc,
+body.theme7 .toast-popup { 
+  color: #0f172a;
 }
 
 /* ============================================================

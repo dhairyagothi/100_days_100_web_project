@@ -98,34 +98,32 @@ function setIndicator(color) {
     indicator.style.boxShadow = `0px 0px 15px 5px ${color}`;
 }
 
+// Cryptographically secure integer in [min, max). Uses rejection sampling
+// on top of crypto.getRandomValues so we don't inherit modulo bias.
+// Fallback to Math.random ONLY in the unlikely case window.crypto is
+// unavailable — the surrounding UI warns the user via the strength meter.
+// Previously this file used bare `Math.random()` everywhere, which is
+// insecure and predictable; see issue #10336.
 function getRndInteger(min, max) {
-    return Math.floor(Math.random() * (max - min)) + min;
+    const range = max - min;
+    if (range <= 0) return min;
+    if (typeof window !== "undefined" && window.crypto && window.crypto.getRandomValues) {
+        // Rejection sampling: only accept values below the largest multiple
+        // of `range` that fits in a Uint32 to keep the distribution uniform.
+        const limit = Math.floor(0x1_0000_0000 / range) * range;
+        const arr = new Uint32Array(1);
+        // Loop cap so a broken RNG can't hang the tab.
+        for (let attempt = 0; attempt < 32; attempt++) {
+            window.crypto.getRandomValues(arr);
+            if (arr[0] < limit) return min + (arr[0] % range);
+        }
+        return min + (arr[0] % range);
+    }
+    return Math.floor(Math.random() * range) + min;
 }
 
 function generateRandomNumber() {
     return getRndInteger(0, 10).toString();
-}
-
-// ---------------------------------------------------------------------------
-// Get the list of active character types selected by the user
-// ---------------------------------------------------------------------------
-function getSelectedTypes() {
-  return Object.keys(checkboxes).filter(key => checkboxes[key].checked);
-}
-
-// ---------------------------------------------------------------------------
-// Determine password strength
-// Returns: 'weak' | 'medium' | 'strong'
-// Rules:
-//   Weak   — length < 8  OR  only 1 type selected
-//   Strong — length >= 16 AND all 4 types selected
-//   Medium — everything else
-// ---------------------------------------------------------------------------
-function getStrength(length, selectedTypes) {
-  const count = selectedTypes.length;
-  if (length < 8 || count === 1) return 'weak';
-  if (length >= 16 && count === 4) return 'strong';
-  return 'medium';
 }
 
 function generateLowerCase() {
@@ -149,11 +147,14 @@ function generateFromCustomWord(word) {
         'a': '@', 'e': '3', 'i': '!', 'o': '0',
         's': '$', 't': '7', 'l': '1', 'b': '8'
     };
+    // Coin-flip via crypto so the leet-substitution decisions and case
+    // toggles aren't seeded by Math.random either (issue #10336).
+    const coinFlip = () => getRndInteger(0, 2) === 1;
     let result = "";
     for (let char of word.toLowerCase()) {
-        if (leetMap[char] && Math.random() > 0.5) {
+        if (leetMap[char] && coinFlip()) {
             result += leetMap[char];
-        } else if (Math.random() > 0.5) {
+        } else if (coinFlip()) {
             result += char.toUpperCase();
         } else {
             result += char;
@@ -277,8 +278,10 @@ async function copyContent() {
 }
 
 function shufflePassword(array) {
+    // Fisher-Yates using the same crypto-backed getRndInteger so the shuffle
+    // is unbiased too, matching the character-selection path (issue #10336).
     for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
+        const j = getRndInteger(0, i + 1);
         [array[i], array[j]] = [array[j], array[i]];
     }
 
