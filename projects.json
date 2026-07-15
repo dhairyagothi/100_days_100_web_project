@@ -3126,5 +3126,18 @@
     ],
    "difficulty": "advanced",
     "projectPath": "./public/Flashcard-Quiz-App/index.html"
-   } 
+   },
+      {
+    "projectNo": 246,
+    "projectName": "Cache Commander",
+    "projectType": "Web Application",
+    "projectDesc": "A fast-paced memory optimization game where players act as a high-speed CPU Cache Controller managing a limited number of slots using LRU, FIFO, and LFU cache replacement strategies.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/cache_commander/index.html"
+  }
 ]

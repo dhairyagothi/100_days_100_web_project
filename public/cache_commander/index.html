@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cache Commander</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-container">
+        <header>
+            <h1>CACHE COMMANDER</h1>
+            <div id="hud">
+                <div>SCORE: <span id="score">0</span></div>
+                <div>HITS: <span id="hits">0</span></div>
+                <div>MISSES: <span id="misses">0</span></div>
+            </div>
+        </header>
+
+        <section id="strategy-selector">
+            <label>STRATEGY:</label>
+            <button id="btn-fifo" class="active" onclick="setStrategy('FIFO')">FIFO</button>
+            <button id="btn-lru" onclick="setStrategy('LRU')">LRU</button>
+            <button id="btn-lfu" onclick="setStrategy('LFU')">LFU</button>
+        </section>
+
+        <main id="workspace">
+            <div class="panel">
+                <h3>CONVEYOR QUEUE (INCOMING REQUESTS)</h3>
+                <div id="queue-container"></div>
+            </div>
+
+            <div class="panel">
+                <h3>CPU CACHE SLOTS (MAX CAPACITY: 4)</h3>
+                <div id="cache-container"></div>
+            </div>
+        </main>
+
+        <section id="controls">
+            <button id="btn-process" onclick="processNextRequest()">PROCESS NEXT PACKET</button>
+            <button id="btn-reset" onclick="resetGame()">RESET SYSTEM</button>
+        </section>
+
+        <div id="status-feed">System initialized. Awaiting packet transmissions...</div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
