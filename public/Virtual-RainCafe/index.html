@@ -452,13 +452,27 @@ body{
                 </div>
 
                 <!-- Seek Bar -->
-                <div class="progress-container">
-                  <span id="currentTime" class="time-stamp">0:00</span>
-                  <div class="progress-bar-bg" id="progressBarBg">
-                    <div class="progress-bar-fill" id="progressBarFill"></div>
-                  </div>
-                  <span id="totalTime" class="time-stamp">0:00</span>
-                </div>
+               <div class="progress-container">
+    <span id="currentTime" class="time-stamp">0:00</span>
+
+    <div
+        class="progress-bar-bg"
+        id="progressBarBg"
+        tabindex="0"
+        role="slider"
+        aria-label="Music Progress"
+        aria-valuemin="0"
+        aria-valuemax="100"
+        aria-valuenow="0"
+    >
+        <div
+            class="progress-bar-fill"
+            id="progressBarFill"
+        ></div>
+    </div>
+
+    <span id="totalTime" class="time-stamp">0:00</span>
+</div>
 
                 <!-- Controls -->
                 <div class="player-controls">

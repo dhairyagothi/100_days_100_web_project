@@ -1,505 +1,537 @@
-/**
- * Premium SaaS Subscription Tracker - Frontend Logic
- */
+/* ============================================================
+   SUBSCRIPTION TRACKER — Complete JS
+   ============================================================ */
+'use strict';
 
-// State Management
-let subscriptions = [];
-let editingId = null;
-let currentFilter = 'All';
-let currentSort = 'Date';
-let searchQuery = '';
-let currentCurrency = 'USD';
+// ── Constants ──────────────────────────────────────────────────
+const STORAGE_KEY  = 'subtracker_subs';
+const SETTINGS_KEY = 'subtracker_settings';
+const ITEMS_PER_PAGE = 8;
 
-// DOM Elements
-const els = {
-  // Lists & Containers
-  subsList: document.getElementById('subs-list'),
-  renewalsList: document.getElementById('renewals-list'),
-  emptyState: document.getElementById('empty-state'),
-  
-  // Analytics
-  statActive: document.getElementById('stat-active'),
-  statMonthly: document.getElementById('stat-monthly'),
-  statYearly: document.getElementById('stat-yearly'),
-  
-  // Controls
-  searchInput: document.getElementById('search-input'),
-  filterTabs: document.getElementById('filter-tabs'),
-  currencySelect: document.getElementById('currency-select'),
-  
-  // Modal
-  modal: document.getElementById('sub-modal'),
-  modalTitle: document.getElementById('modal-title'),
-  form: document.getElementById('sub-form'),
-  
-  // Form Inputs
-  inName: document.getElementById('sub-name'),
-  inCost: document.getElementById('sub-cost'),
-  inCycle: document.getElementById('sub-cycle'),
-  inDate: document.getElementById('sub-date'),
-  inCategory: document.getElementById('sub-category'),
-  
-  // Utilities
-  toastContainer: document.getElementById('toast-container')
+const CATEGORY_COLORS = {
+  Entertainment: '#f97316',
+  Productivity:  '#6366f1',
+  Health:        '#ef4444',
+  Education:     '#8b5cf6',
+  Music:         '#ec4899',
+  Cloud:         '#38bdf8',
+  Gaming:        '#22c55e',
+  News:          '#f59e0b',
+  Finance:       '#10b981',
+  Other:         '#94a3b8'
 };
 
-// ============================================================================
-// Initialization
-// ============================================================================
+const CATEGORY_EMOJI = {
+  Entertainment: '🎬',
+  Productivity:  '💼',
+  Health:        '❤️',
+  Education:     '📚',
+  Music:         '🎵',
+  Cloud:         '☁️',
+  Gaming:        '🎮',
+  News:          '📰',
+  Finance:       '💰',
+  Other:         '📦'
+};
+
+// ── State ──────────────────────────────────────────────────────
+let subs        = [];
+let settings    = { theme: 'dark' };
+let filter      = 'all';
+let categoryFilter = 'all';
+let searchQuery = '';
+let sortMode    = 'newest';
+let currentPage = 1;
+let editingId   = null;
+let currentModalId = null;
+
+// ── DOM ────────────────────────────────────────────────────────
+const $ = id => document.getElementById(id);
+
+// ── Init ───────────────────────────────────────────────────────
 function init() {
   loadData();
-  setupEventListeners();
-   renderAll();
-
-  requestNotificationPermission();
-  checkRenewalNotifications();
+  applyTheme();
+  setDefaultDate();
+  renderAll();
+  bindEvents();
 }
 
+// ── Storage ────────────────────────────────────────────────────
 function loadData() {
-  const saved = localStorage.getItem('subscription-tracker-data');
-  if (saved) {
-    try {
-      subscriptions = JSON.parse(saved);
-    } catch (e) {
-      console.error("Failed to parse data");
-      subscriptions = [];
-    }
-  }
-  
-  const savedCurr = localStorage.getItem('subscription-tracker-currency');
-  if (savedCurr) {
-    currentCurrency = savedCurr;
-  }
-  if (els.currencySelect) els.currencySelect.value = currentCurrency;
+  try {
+    subs     = JSON.parse(localStorage.getItem(STORAGE_KEY)  || '[]');
+    settings = { theme: 'dark', ...JSON.parse(localStorage.getItem(SETTINGS_KEY) || '{}') };
+  } catch(e) { subs = []; }
+}
+function saveSubs()     { localStorage.setItem(STORAGE_KEY,  JSON.stringify(subs)); }
+function saveSettings() { localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings)); }
+
+// ── Theme ──────────────────────────────────────────────────────
+function applyTheme() {
+  document.documentElement.setAttribute('data-theme', settings.theme);
+  const icon = $('themeToggle').querySelector('i');
+  icon.className = settings.theme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
+}
+function toggleTheme() {
+  settings.theme = settings.theme === 'dark' ? 'light' : 'dark';
+  applyTheme(); saveSettings();
 }
 
-function saveData() {
-  localStorage.setItem('subscription-tracker-data', JSON.stringify(subscriptions));
+// ── Default Date ───────────────────────────────────────────────
+function setDefaultDate() {
+  const d = new Date();
+  d.setMonth(d.getMonth() + 1);
+  $('subRenewal').value = d.toISOString().split('T')[0];
 }
 
-// ============================================================================
-// Core Logic & Data Processing
-// ============================================================================
+// ── Bind Events ────────────────────────────────────────────────
+function bindEvents() {
+  $('themeToggle').addEventListener('click', toggleTheme);
+  $('exportBtn').addEventListener('click', exportCSV);
+  $('resetBtn').addEventListener('click', resetAll);
+  $('subForm').addEventListener('submit', handleSubmit);
+  $('cancelEdit').addEventListener('click', cancelEdit);
 
-function generateId() {
-  return Math.random().toString(36).substr(2, 9);
+  $('searchInput').addEventListener('input', () => {
+    searchQuery = $('searchInput').value.trim().toLowerCase();
+    $('clearSearch').classList.toggle('visible', searchQuery.length > 0);
+    currentPage = 1; renderSubList();
+  });
+  $('clearSearch').addEventListener('click', () => {
+    $('searchInput').value = ''; searchQuery = '';
+    $('clearSearch').classList.remove('visible');
+    currentPage = 1; renderSubList();
+  });
+
+  document.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      filter = chip.dataset.filter;
+      currentPage = 1; renderSubList();
+    });
+  });
+
+  $('sortSelect').addEventListener('change', () => {
+    sortMode = $('sortSelect').value;
+    currentPage = 1; renderSubList();
+  });
+
+  $('categoryFilter').addEventListener('change', () => {
+    categoryFilter = $('categoryFilter').value;
+    currentPage = 1; renderSubList();
+  });
+
+  $('modalClose').addEventListener('click', closeModal);
+  $('modalOverlay').addEventListener('click', e => { if(e.target === $('modalOverlay')) closeModal(); });
+  $('modalEdit').addEventListener('click', startEdit);
+  $('modalDelete').addEventListener('click', deleteFromModal);
+  document.addEventListener('keydown', e => { if(e.key === 'Escape') closeModal(); });
 }
 
-function calculateNextRenewal(dateStr, cycle) {
-  const today = new Date();
-  today.setHours(0,0,0,0);
-  
-  let renewal = new Date(dateStr);
-  renewal.setHours(0,0,0,0);
-  
-  // A renewal is strictly AFTER the first billing date.
-  // We must always add at least one cycle initially.
-  if (cycle === 'Monthly') {
-    renewal.setMonth(renewal.getMonth() + 1);
+// ── Form Submit ────────────────────────────────────────────────
+function handleSubmit(e) {
+  e.preventDefault();
+  const name    = $('subName').value.trim();
+  const cost    = parseFloat($('subCost').value);
+  const cycle   = $('subCycle').value;
+  const category= $('subCategory').value;
+  const status  = $('subStatus').value;
+  const renewal = $('subRenewal').value;
+  const notes   = $('subNotes').value.trim();
+
+  if(!name || isNaN(cost)) { showToast('Please fill required fields.', 'error'); return; }
+
+  const sub = {
+    id: editingId || genId(),
+    name, cost, cycle, category, status, renewal, notes,
+    createdAt: editingId
+      ? (subs.find(s => s.id === editingId)?.createdAt || new Date().toISOString())
+      : new Date().toISOString()
+  };
+
+  if(editingId) {
+    const idx = subs.findIndex(s => s.id === editingId);
+    if(idx !== -1) subs[idx] = sub;
+    cancelEdit();
+    showToast('Subscription updated!', 'success');
   } else {
-    renewal.setFullYear(renewal.getFullYear() + 1);
-  }
-  
-  // Now, if this calculated renewal is still in the past, roll it forward until it is >= today
-  while (renewal < today) {
-    if (cycle === 'Monthly') {
-      renewal.setMonth(renewal.getMonth() + 1);
-    } else {
-      renewal.setFullYear(renewal.getFullYear() + 1);
-    }
-  }
-  return renewal;
-}
-
-function getDaysUntil(dateObj) {
-  const today = new Date();
-  today.setHours(0,0,0,0);
-  const diffTime = dateObj - today;
-  return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-}
-
-function formatDate(dateObj) {
-  return dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-}
-
-function getInitials(name) {
-  return name.substring(0, 2).toUpperCase();
-}
-
-function convertCurrency(amount) {
-  const rates = {
-    "INR": 1,
-    "USD": 0.012
+    subs.unshift(sub);
+    showToast('Subscription added!', 'success');
   }
 
-  return amount * rates[currentCurrency];
+  saveSubs();
+  $('subForm').reset();
+  setDefaultDate();
+  renderAll();
 }
 
-function formatCurrency(amount) {
-  let num = parseFloat(amount) || 0;
-  num = convertCurrency(num);
-  if (currentCurrency === 'INR') {
-    return num.toLocaleString('en-IN', { style: 'currency', currency: 'INR' });
-  }
-  
-  return num.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+function cancelEdit() {
+  editingId = null;
+  $('subForm').reset();
+  setDefaultDate();
+  $('formTitle').textContent = 'Add Subscription';
+  $('submitBtn').innerHTML = '<i class="fas fa-plus"></i> Add Subscription';
+  $('submitBtn').classList.remove('editing');
+  $('cancelEdit').classList.add('hidden');
+  $('formCard').style.borderColor = '';
 }
 
-// ============================================================================
-// Rendering
-// ============================================================================
-
+// ── Render All ─────────────────────────────────────────────────
 function renderAll() {
-  renderAnalytics();
-  renderSubscriptions();
-  renderRenewals();
+  renderStats();
+  renderSubList();
+  renderCategoryChart();
+  checkRenewals();
 }
 
-function getFilteredAndSorted() {
-  // Filter by search
-  let filtered = subscriptions.filter(sub => 
-    sub.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-  
-  // Filter by category
-  if (currentFilter !== 'All') {
-    filtered = filtered.filter(sub => sub.category === currentFilter);
-  }
-  
-  // Sort
-  if (currentSort === 'Date') {
-    filtered.sort((a, b) => {
-      const dateA = calculateNextRenewal(a.date, a.cycle);
-      const dateB = calculateNextRenewal(b.date, b.cycle);
-      return dateA - dateB;
-    });
-  } else if (currentSort === 'Price') {
-    filtered.sort((a, b) => b.cost - a.cost);
-  }
-  
-  return filtered;
+// ── Stats ──────────────────────────────────────────────────────
+function renderStats() {
+  const active = subs.filter(s => s.status === 'active');
+  let monthly = 0;
+
+  active.forEach(s => {
+    const c = parseFloat(s.cost) || 0;
+    if(s.cycle === 'monthly') monthly += c;
+    else if(s.cycle === 'yearly') monthly += c / 12;
+    else if(s.cycle === 'weekly') monthly += c * 4.33;
+  });
+
+  $('totalMonthly').textContent = `$${monthly.toFixed(2)}`;
+  $('totalYearly').textContent  = `$${(monthly * 12).toFixed(2)}`;
+  $('totalActive').textContent  = active.length;
+
+  const now  = new Date();
+  const week = new Date(now.getTime() + 7 * 86400000);
+  const upcoming = subs.filter(s => {
+    if(s.status !== 'active') return false;
+    const d = new Date(s.renewal);
+    return d >= now && d <= week;
+  }).length;
+  $('totalUpcoming').textContent = upcoming;
 }
 
-function requestNotificationPermission() {
-  if("Notification" in window) {
-    Notification.requestPermission();
-  }
+// ── Renewal Alerts ─────────────────────────────────────────────
+function checkRenewals() {
+  const now  = new Date();
+  const week = new Date(now.getTime() + 7 * 86400000);
+  const upcoming = subs.filter(s => {
+    if(s.status !== 'active') return false;
+    const d = new Date(s.renewal);
+    return d >= now && d <= week;
+  });
+
+  const alert = $('renewalAlert');
+  if(upcoming.length === 0) { alert.style.display = 'none'; return; }
+
+  alert.style.display = 'flex';
+  const names = upcoming.map(s => s.name).join(', ');
+  $('renewalAlertText').textContent =
+    `${upcoming.length} subscription${upcoming.length > 1 ? 's' : ''} renewing this week: ${names}`;
 }
 
-function checkRenewalNotifications() {
+// ── Category Chart ─────────────────────────────────────────────
+function renderCategoryChart() {
+  const chart = $('categoryChart');
+  chart.innerHTML = '';
+  const active = subs.filter(s => s.status === 'active');
 
-  if(Notification.permission !== "granted"){
+  if(active.length === 0) {
+    chart.innerHTML = '<p class="cat-empty">No active subscriptions.</p>';
     return;
   }
 
-  subscriptions.forEach(sub => {
+  const totals = {};
+  active.forEach(s => {
+    const cost = toMonthly(s);
+    totals[s.category] = (totals[s.category] || 0) + cost;
+  });
 
-    const nextRenewal = calculateNextRenewal(sub.date, sub.cycle);
-    const daysUntil = getDaysUntil(nextRenewal);
+  const sorted = Object.entries(totals).sort((a,b) => b[1] - a[1]);
+  const max    = sorted[0]?.[1] || 1;
 
-    if(daysUntil === 7) {
-      new Notification(`Upcoming Renewal: ${sub.name}`, {
-        body: `Your subscription will renew in 7 days on ${formatDate(nextRenewal)}.`
-      });
-    }
-
-      if(daysUntil === 3) {
-        new Notification(`Upcoming Renewal: ${sub.name}`, {
-          body: `Your subscription will renew in 3 days on ${formatDate(nextRenewal)}.`
-        });
-      }
-
-      if(daysUntil === 1) {
-        new Notification(`Upcoming Renewal: ${sub.name}`, {
-          body: `Your subscription will renew tomorrow on ${formatDate(nextRenewal)}.`
-        });
-      }
-  })
-}
-
-function renderSubscriptions() {
-  const filtered = getFilteredAndSorted();
-  
-  if (filtered.length === 0) {
-    els.subsList.innerHTML = '';
-    els.emptyState.style.display = 'flex';
-    return;
-  }
-  
-  els.emptyState.style.display = 'none';
-  
-  els.subsList.innerHTML = filtered.map(sub => {
-    const nextRenewal = calculateNextRenewal(sub.date, sub.cycle);
-    const daysUntil = getDaysUntil(nextRenewal);
-    
-    let statusClass = 'badge-active';
-    let statusText = 'Active';
-    
-    if (sub.cycle === 'Yearly' && daysUntil <= 30) {
-      statusClass = 'badge-danger';
-      statusText = 'Needs Renewal';
-    } else if (daysUntil <= 1) {
-      statusClass = 'badge-danger';
-      statusText = 'Renews Tomorrow';
-    }else if (daysUntil <= 3) {
-      statusClass = 'badge-warning';
-      statusText = 'Renews Soon';
-    }
-    else if (daysUntil <= 7) {
-      statusClass = 'badge-warning';
-      statusText = 'Renews in a Week';
-    }
-    
-    return `
-      <div class="sub-row">
-        <div class="sub-cell service-info">
-          <div class="service-logo">${getInitials(sub.name)}</div>
-          <div>
-            <div class="service-name">${sub.name}</div>
-            <div class="service-category">${sub.category}</div>
-          </div>
-        </div>
-        
-        <div class="sub-cell">
-          <span class="badge badge-outline">${sub.cycle}</span>
-        </div>
-        
-        <div class="sub-cell">
-          <div>
-            <div class="sub-cost">${formatCurrency(sub.cost)}</div>
-            <div class="sub-cycle">per ${sub.cycle.toLowerCase().replace('ly', '')}</div>
-          </div>
-        </div>
-        
-        <div class="sub-cell">
-          <div>
-            <div style="color: var(--text-primary); font-weight: 500;">${formatDate(nextRenewal)}</div>
-            <div class="badge ${statusClass}" style="margin-top: 4px;">${statusText}</div>
-          </div>
-        </div>
-        
-        <div class="sub-cell row-actions">
-          <button class="btn-icon" onclick="editSub('${sub.id}')" title="Edit">
-            <i class="ph ph-pencil-simple"></i>
-          </button>
-          <button class="btn-icon danger" onclick="deleteSub('${sub.id}')" title="Delete">
-            <i class="ph ph-trash"></i>
-          </button>
-        </div>
+  sorted.forEach(([cat, amount]) => {
+    const pct   = (amount / max) * 100;
+    const color = CATEGORY_COLORS[cat] || '#94a3b8';
+    const row   = document.createElement('div');
+    row.className = 'cat-row';
+    row.innerHTML = `
+      <div class="cat-dot" style="background:${color}"></div>
+      <span class="cat-name" title="${cat}">${cat}</span>
+      <div class="cat-bar-wrap">
+        <div class="cat-bar-fill" style="width:0%;background:${color}" data-pct="${pct}"></div>
       </div>
+      <span class="cat-amount">$${amount.toFixed(0)}/mo</span>
     `;
-  }).join('');
-}
-
-function renderAnalytics() {
-  const activeCount = subscriptions.length;
-  
-  let totalMonthly = 0;
-  let totalYearly = 0;
-  
-  subscriptions.forEach(sub => {
-    const cost = parseFloat(sub.cost) || 0;
-    if (sub.cycle === 'Monthly') {
-      totalMonthly += cost;
-      totalYearly += cost * 12;
-    } else {
-      totalMonthly += cost / 12;
-      totalYearly += cost;
-    }
+    chart.appendChild(row);
   });
-  
-  // Animate numbers (simple approach)
-  els.statActive.innerText = activeCount;
-  els.statMonthly.innerText = formatCurrency(totalMonthly);
-  els.statYearly.innerText = formatCurrency(totalYearly);
+
+  requestAnimationFrame(() => {
+    chart.querySelectorAll('.cat-bar-fill').forEach(bar => {
+      setTimeout(() => { bar.style.width = bar.dataset.pct + '%'; }, 80);
+    });
+  });
 }
 
-function renderRenewals() {
-  if (subscriptions.length === 0) {
-    els.renewalsList.innerHTML = '<div style="color: var(--text-tertiary); font-size: 0.875rem; text-align: center; padding: 20px 0;">No upcoming renewals</div>';
+// ── Sub List ───────────────────────────────────────────────────
+function getFiltered() {
+  let list = [...subs];
+
+  if(searchQuery) {
+    list = list.filter(s =>
+      s.name.toLowerCase().includes(searchQuery) ||
+      s.category.toLowerCase().includes(searchQuery) ||
+      (s.notes || '').toLowerCase().includes(searchQuery)
+    );
+  }
+  if(filter !== 'all')         list = list.filter(s => s.status === filter);
+  if(categoryFilter !== 'all') list = list.filter(s => s.category === categoryFilter);
+
+  if(sortMode === 'newest')    list.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
+  if(sortMode === 'oldest')    list.sort((a,b) => new Date(a.createdAt) - new Date(b.createdAt));
+  if(sortMode === 'name')      list.sort((a,b) => a.name.localeCompare(b.name));
+  if(sortMode === 'cost-high') list.sort((a,b) => toMonthly(b) - toMonthly(a));
+  if(sortMode === 'cost-low')  list.sort((a,b) => toMonthly(a) - toMonthly(b));
+  if(sortMode === 'renewal')   list.sort((a,b) => new Date(a.renewal) - new Date(b.renewal));
+
+  return list;
+}
+
+function renderSubList() {
+  const list  = getFiltered();
+  const total = Math.ceil(list.length / ITEMS_PER_PAGE);
+  if(currentPage > total) currentPage = 1;
+
+  const start = (currentPage - 1) * ITEMS_PER_PAGE;
+  const page  = list.slice(start, start + ITEMS_PER_PAGE);
+
+  const subList = $('subList');
+  subList.querySelectorAll('.sub-item').forEach(i => i.remove());
+
+  if(list.length === 0) {
+    $('emptyState').style.display = 'block';
+    $('pagination').innerHTML = '';
     return;
   }
-  
-  // Get all subs with their calculated next renewal date
-  const withDates = subscriptions.map(sub => ({
-    ...sub,
-    nextDate: calculateNextRenewal(sub.date, sub.cycle),
-    daysUntil: getDaysUntil(calculateNextRenewal(sub.date, sub.cycle))
-  }));
-  
-  // Sort by nearest date
-  withDates.sort((a, b) => a.daysUntil - b.daysUntil);
-  
-  // Take top 4
-  const upcoming = withDates.slice(0, 4);
-  
-  els.renewalsList.innerHTML = upcoming.map(sub => {
-    let dotClass = 'safe';
-    let countdownClass = '';
-    
-    if (sub.daysUntil <= 3) {
-      dotClass = 'urgent';
-      countdownClass = 'urgent';
-    } else if (sub.daysUntil <= 7) {
-      dotClass = 'warning';
-    }
-    
-    let timeText = sub.daysUntil === 0 ? 'Today' : 
-                   sub.daysUntil === 1 ? 'Tomorrow' : 
-                   `In ${sub.daysUntil} days`;
-                   
-    return `
-      <div class="renewal-item">
-        <div class="renewal-service">
-          <div class="renewal-dot ${dotClass}"></div>
-          <div>
-            <div class="renewal-name">${sub.name}</div>
-            <div class="renewal-cost">${formatCurrency(sub.cost)}</div>
-          </div>
-        </div>
-        <div class="renewal-countdown ${countdownClass}">${timeText}</div>
+  $('emptyState').style.display = 'none';
+
+  page.forEach((s, i) => {
+    const el = buildSubItem(s);
+    el.style.animationDelay = `${i * 40}ms`;
+    subList.appendChild(el);
+  });
+
+  renderPagination(total);
+}
+
+function buildSubItem(s) {
+  const el    = document.createElement('div');
+  el.className = 'sub-item';
+  el.dataset.id = s.id;
+
+  const color   = CATEGORY_COLORS[s.category] || '#94a3b8';
+  const emoji   = CATEGORY_EMOJI[s.category]  || '📦';
+  const renewal = new Date(s.renewal);
+  const now     = new Date();
+  const daysLeft = Math.ceil((renewal - now) / 86400000);
+  const soon    = daysLeft >= 0 && daysLeft <= 7;
+  const renewalStr = renewal.toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
+
+  el.style.setProperty('--item-color', color);
+  el.style.cssText += `--item-color:${color}`;
+  el.querySelector
+    ? null : null;
+  el.style.borderLeftColor = color;
+
+  el.innerHTML = `
+    <div class="sub-emoji">${emoji}</div>
+    <div class="sub-info">
+      <div class="sub-name">${escapeHTML(s.name)}</div>
+      <div class="sub-meta">
+        <span class="sub-category" style="background:${color}22;color:${color}">${s.category}</span>
+        <span class="sub-cycle">${cap(s.cycle)}</span>
+        <span class="sub-renewal ${soon ? 'renewal-soon' : ''}">
+          <i class="fas fa-calendar-alt"></i>
+          ${soon ? `⚠️ ${daysLeft === 0 ? 'Today' : `${daysLeft}d`}` : renewalStr}
+        </span>
       </div>
-    `;
-  }).join('');
+    </div>
+    <div class="sub-right">
+      <span class="sub-cost">${formatCost(s)}</span>
+      <span class="sub-status-badge status-${s.status}">${cap(s.status)}</span>
+    </div>
+  `;
+
+  el.style.borderLeft = `3px solid ${color}`;
+  el.addEventListener('click', () => openModal(s.id));
+  return el;
 }
 
-// ============================================================================
-// Actions & Events
-// ============================================================================
+// ── Pagination ─────────────────────────────────────────────────
+function renderPagination(total) {
+  const p = $('pagination');
+  p.innerHTML = '';
+  if(total <= 1) return;
 
-function setupEventListeners() {
-  // Modal toggles
-  document.getElementById('btn-add-sub').addEventListener('click', () => openModal());
-  document.getElementById('btn-empty-add').addEventListener('click', () => openModal());
-  document.querySelectorAll('.modal-close').forEach(btn => {
-    btn.addEventListener('click', closeModal);
-  });
-  
-  // Form Submit
-  els.form.addEventListener('submit', handleFormSubmit);
-  
-  // Search
-  els.searchInput.addEventListener('input', (e) => {
-    searchQuery = e.target.value;
-    renderSubscriptions();
-  });
-  
-  // Category Tabs
-  els.filterTabs.addEventListener('click', (e) => {
-    if (e.target.classList.contains('tab-btn')) {
-      // Remove active class from all
-      els.filterTabs.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-      // Add to clicked
-      e.target.classList.add('active');
-      // Update filter
-      currentFilter = e.target.dataset.filter;
-      renderSubscriptions();
-    }
-  });
-  
-  // Currency Toggle
-  if (els.currencySelect) {
-    els.currencySelect.addEventListener('change', (e) => {
-      currentCurrency = e.target.value;
-      localStorage.setItem('subscription-tracker-currency', currentCurrency);
-      renderAll();
-    });
+  const prev = document.createElement('button');
+  prev.className = 'page-btn';
+  prev.innerHTML = '<i class="fas fa-chevron-left"></i>';
+  prev.disabled  = currentPage === 1;
+  prev.addEventListener('click', () => { currentPage--; renderSubList(); });
+  p.appendChild(prev);
+
+  for(let i = 1; i <= total; i++) {
+    const btn = document.createElement('button');
+    btn.className = `page-btn${i === currentPage ? ' active' : ''}`;
+    btn.textContent = i;
+    btn.addEventListener('click', () => { currentPage = i; renderSubList(); });
+    p.appendChild(btn);
   }
+
+  const next = document.createElement('button');
+  next.className = 'page-btn';
+  next.innerHTML = '<i class="fas fa-chevron-right"></i>';
+  next.disabled  = currentPage === total;
+  next.addEventListener('click', () => { currentPage++; renderSubList(); });
+  p.appendChild(next);
 }
 
-function openModal(id = null) {
-  els.modal.classList.add('active');
-  editingId = id;
-  
-  if (id) {
-    els.modalTitle.innerText = 'Edit Subscription';
-    let sub = subscriptions.find(s => s.id === id);
-    
-    if (sub) {
-      els.inName.value = sub.name;
-      els.inCost.value = sub.cost;
-      els.inCycle.value = sub.cycle;
-      els.inDate.value = sub.date;
-      els.inCategory.value = sub.category;
-    }
+// ── Modal ──────────────────────────────────────────────────────
+function openModal(id) {
+  const s = subs.find(s => s.id === id);
+  if(!s) return;
+  currentModalId = id;
+
+  const color   = CATEGORY_COLORS[s.category] || '#94a3b8';
+  const emoji   = CATEGORY_EMOJI[s.category]  || '📦';
+  const renewal = new Date(s.renewal).toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' });
+  const yearly  = toYearly(s);
+
+  $('modalEmoji').textContent    = emoji;
+  $('modalName').textContent     = s.name;
+  $('modalStatus').textContent   = cap(s.status);
+  $('modalStatus').className     = `modal-badge status-${s.status}`;
+  $('modalCost').textContent     = formatCost(s);
+  $('modalCycle').textContent    = cap(s.cycle);
+  $('modalRenewal').textContent  = renewal;
+  $('modalCategory').textContent = s.category;
+  $('modalYearly').textContent   = `$${yearly.toFixed(2)}/yr`;
+
+  const notesWrap = $('modalNotesWrap');
+  if(s.notes) {
+    notesWrap.style.display = 'flex';
+    $('modalNotes').textContent = s.notes;
   } else {
-    els.modalTitle.innerText = 'Add Subscription';
-    els.form.reset();
-    // Default date to today
-    els.inDate.valueAsDate = new Date();
+    notesWrap.style.display = 'none';
   }
+
+  $('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
 }
 
 function closeModal() {
-  els.modal.classList.remove('active');
-  editingId = null;
+  $('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+  currentModalId = null;
 }
 
-function handleFormSubmit(e) {
-  e.preventDefault();
-  
-  const payload = {
-    name: els.inName.value.trim(),
-    cost: parseFloat(els.inCost.value),
-    cycle: els.inCycle.value,
-    date: els.inDate.value,
-    category: els.inCategory.value
-  };
-  
-  if (!payload.name || isNaN(payload.cost) || !payload.date) {
-    showToast('Please fill all required fields correctly', 'error');
-    return;
-  }
-  
-  if (editingId) {
-    // Update existing
-    subscriptions = subscriptions.map(sub => 
-      sub.id === editingId ? { ...sub, ...payload } : sub
-    );
-    showToast('Subscription updated successfully', 'success');
-  } else {
-    // Create new
-    subscriptions.push({ id: generateId(), ...payload });
-    showToast('Subscription added successfully', 'success');
-  }
-  
-  saveData();
-  renderAll();
+function startEdit() {
+  const s = subs.find(s => s.id === currentModalId);
+  if(!s) return;
   closeModal();
+  editingId = s.id;
+
+  $('subName').value     = s.name;
+  $('subCost').value     = s.cost;
+  $('subCycle').value    = s.cycle;
+  $('subCategory').value = s.category;
+  $('subStatus').value   = s.status;
+  $('subRenewal').value  = s.renewal;
+  $('subNotes').value    = s.notes || '';
+
+  $('formTitle').textContent = 'Edit Subscription';
+  $('submitBtn').innerHTML   = '<i class="fas fa-check"></i> Update Subscription';
+  $('submitBtn').classList.add('editing');
+  $('cancelEdit').classList.remove('hidden');
+  $('formCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-// Global functions for inline HTML event handlers
-window.editSub = (id) => openModal(id);
-window.deleteSub = (id) => {
-  if (confirm('Are you sure you want to delete this subscription?')) {
-    subscriptions = subscriptions.filter(sub => sub.id !== id);
-    saveData();
-    renderAll();
-    showToast('Subscription deleted', 'info');
-  }
-};
-
-// ============================================================================
-// UI Utilities
-// ============================================================================
-
-function showToast(message, type = 'info') {
-  const toast = document.createElement('div');
-  toast.className = `toast ${type}`;
-  
-  let icon = 'ph-info';
-  if (type === 'success') icon = 'ph-check-circle';
-  if (type === 'error') icon = 'ph-warning-circle';
-  
-  toast.innerHTML = `<i class="ph ${icon}"></i> ${message}`;
-  els.toastContainer.appendChild(toast);
-  
-  // Remove after 3 seconds
-  setTimeout(() => {
-    toast.style.animation = 'slideOut 0.3s forwards';
-    setTimeout(() => toast.remove(), 300);
-  }, 3000);
+function deleteFromModal() {
+  const s = subs.find(s => s.id === currentModalId);
+  if(!s) return;
+  if(!confirm(`Delete "${s.name}"? This cannot be undone.`)) return;
+  subs = subs.filter(s => s.id !== currentModalId);
+  saveSubs(); closeModal(); renderAll();
+  showToast('Subscription deleted.', 'error');
 }
 
-// Start app
+// ── Export CSV ─────────────────────────────────────────────────
+function exportCSV() {
+  if(subs.length === 0) { showToast('No data to export!', 'error'); return; }
+  const headers = ['Name','Cost','Cycle','Category','Status','Renewal Date','Monthly Cost','Notes'];
+  const rows = subs.map(s => [
+    `"${s.name.replace(/"/g,'""')}"`,
+    s.cost, s.cycle, s.category, s.status, s.renewal,
+    toMonthly(s).toFixed(2),
+    `"${(s.notes||'').replace(/"/g,'""')}"`
+  ]);
+  const csv  = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href = url; a.download = `subscriptions-${new Date().toISOString().slice(0,10)}.csv`;
+  a.click(); URL.revokeObjectURL(url);
+  showToast('Exported as CSV!', 'success');
+}
+
+// ── Reset ──────────────────────────────────────────────────────
+function resetAll() {
+  if(!confirm('Reset ALL subscription data? This cannot be undone!')) return;
+  subs = []; saveSubs(); renderAll();
+  showToast('All data reset.', 'error');
+}
+
+// ── Toast ──────────────────────────────────────────────────────
+let toastTimer;
+function showToast(msg, type = 'success') {
+  clearTimeout(toastTimer);
+  $('toastMsg').textContent = msg;
+  const icon = $('toast').querySelector('.toast-icon');
+  icon.className = `toast-icon fas ${
+    type === 'success' ? 'fa-check-circle' :
+    type === 'error'   ? 'fa-times-circle' : 'fa-info-circle'
+  }`;
+  const t = $('toast');
+  t.className = `toast ${type} show`;
+  toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ── Helpers ────────────────────────────────────────────────────
+function toMonthly(s) {
+  const c = parseFloat(s.cost) || 0;
+  if(s.cycle === 'monthly') return c;
+  if(s.cycle === 'yearly')  return c / 12;
+  if(s.cycle === 'weekly')  return c * 4.33;
+  return c;
+}
+function toYearly(s) {
+  const c = parseFloat(s.cost) || 0;
+  if(s.cycle === 'monthly') return c * 12;
+  if(s.cycle === 'yearly')  return c;
+  if(s.cycle === 'weekly')  return c * 52;
+  return c;
+}
+function formatCost(s) {
+  const suffix = s.cycle === 'monthly' ? '/mo' : s.cycle === 'yearly' ? '/yr' : '/wk';
+  return `$${parseFloat(s.cost).toFixed(2)}${suffix}`;
+}
+function genId()       { return '_' + Math.random().toString(36).slice(2,11); }
+function cap(str)      { return str.charAt(0).toUpperCase() + str.slice(1); }
+function escapeHTML(s) {
+  const el = document.createElement('div');
+  el.textContent = s || ''; return el.innerHTML;
+}
+
+// ── Start ──────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', init);

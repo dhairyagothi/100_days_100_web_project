@@ -4,22 +4,123 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Statistics Dashboard</title>
+    <!-- External Stylesheet -->
     <link rel="stylesheet" href="style.css">
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
 </head>
 <body>
-
-    <div class="dashboard">
-        <h1>📊 Statistics Dashboard</h1>
-
-        <div class="card">Total Games: <span id="totalGames">0</span></div>
-        <div class="card">X Wins: <span id="xWins">0</span></div>
-        <div class="card">O Wins: <span id="oWins">0</span></div>
-        <div class="card">Draws: <span id="draws">0</span></div>
-        <div class="card">Win Rate X: <span id="winRateX">0%</span></div>
-
-        <button id="resetStats">Reset Stats</button>
-    </div>
-
+    <!--Main Dashboard Container -->
+    <main class="dashboard">
+        <!-- Dashboard Header -->
+        <header class="dashboard-header">
+            <h1>📊 Statistics Dashboard</h1>
+            <p>
+                View, update and manage your game statistics.
+                All values are stored locally using
+                <strong>localStorage</strong>.
+            </p>
+        </header>
+        <!-- Statistics Cards Section -->
+        <section class="stats-container">
+            <!-- Total Games -->
+            <div class="stat-card">
+                <h3>Total Games</h3>
+                <div class="stat-controls">
+                    <button class="action-btn decrease" data-target="totalGamesInput">
+                        −
+                    </button>
+                    <input type="number" id="totalGamesInput" min="0" value="0">
+                    <button class="action-btn increase" data-target="totalGamesInput">
+                        +
+                    </button>
+                </div>
+            </div>
+            <!-- Player X Wins -->
+            <div class="stat-card">
+                <h3>Player X Wins</h3>
+                <div class="stat-controls">
+                    <button class="action-btn decrease" data-target="xWinsInput">
+                        −
+                    </button>
+                    <input type="number" id="xWinsInput" min="0" value="0">
+                    <button class="action-btn increase" data-target="xWinsInput">
+                        +
+                    </button>
+                </div>
+            </div>
+            <!-- Player O Wins -->
+            <div class="stat-card">
+                <h3>Player O Wins</h3>
+                <div class="stat-controls">
+                    <button class="action-btn decrease" data-target="oWinsInput">
+                        −
+                    </button>
+                    <input type="number" id="oWinsInput" min="0" value="0">
+                    <button class="action-btn increase" data-target="oWinsInput">
+                        +
+                    </button>
+                </div>
+            </div>
+            <!-- Draws -->
+            <div class="stat-card">
+                <h3>Draws</h3>
+                <div class="stat-controls">
+                    <button class="action-btn decrease" data-target="drawsInput">
+                        −
+                    </button>
+                    <input type="number" id="drawsInput" min="0" value="0">
+                    <button class="action-btn increase" data-target="drawsInput">
+                        +
+                    </button>
+                </div>
+            </div>
+        </section>
+        <!-- Statistics Summary -->
+        <section class="summary-card">
+            <h2>Statistics Summary</h2>
+            <div class="summary-item">
+                <span>Total Games</span>
+                <span id="totalGamesDisplay">0</span>
+            </div>
+            <div class="summary-item">
+                <span>Player X Wins</span>
+                <span id="xWinsDisplay">0</span>
+            </div>
+            <div class="summary-item">
+                <span>Player O Wins</span>
+                <span id="oWinsDisplay">0</span>
+            </div>
+            <div class="summary-item">
+                <span>Draws</span>
+                <span id="drawsDisplay">0</span>
+            </div>
+            <div class="summary-item highlight">
+                <span>Player X Win Rate</span>
+                <span id="winRateX">0%</span>
+            </div>
+        </section>
+        <!-- Dashboard Actions -->
+        <section class="button-group">
+            <!-- Save Button -->
+            <button id="saveStats" class="primary-btn">
+                💾 Save Statistics
+            </button>
+            <!-- Reset Button -->
+            <button id="resetStats" class="danger-btn">
+                🗑 Reset Statistics
+            </button>
+        </section>
+        <!-- Notification Area -->
+        <div id="messageBox" class="message-box"></div>
+    </main>
+    <!-- JavaScript -->
     <script src="script.js"></script>
 </body>
+
 </html>
