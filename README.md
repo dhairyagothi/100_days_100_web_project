@@ -80,6 +80,8 @@ The website features:
 - Beautiful dark/light theme toggle
 - Responsive design for all devices
 
+
+
 ## 📚 Projects Catalog
 
 > The full list of projects is organized by category below. You can also explore them on the **[Live Website](https://100-days-100-web-project.vercel.app/)** or browse the raw **[projects.json](./public/projects.json)** file.
