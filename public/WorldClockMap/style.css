@@ -1,0 +1,136 @@
+:root {
+    --bg-color: #0f172a;
+    --panel-bg: #1e293b;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --accent: #38bdf8;
+    --accent-glow: rgba(56, 189, 248, 0.5);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.app-container {
+    width: 100%;
+    max-width: 1000px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+header {
+    text-align: center;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+}
+
+header p {
+    color: var(--text-muted);
+}
+
+/* Map Styling */
+.map-container {
+    position: relative;
+    width: 100%;
+    height: 500px;
+    background-image: url('https://upload.wikimedia.org/wikipedia/commons/8/80/World_map_-_low_resolution.svg');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: var(--panel-bg);
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+}
+
+/* Map Pins */
+.pin {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    background-color: var(--accent);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    box-shadow: 0 0 10px var(--accent-glow);
+}
+
+.pin::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--accent);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+    z-index: -1;
+}
+
+.pin:hover, .pin.active {
+    transform: translate(-50%, -50%) scale(1.5);
+    background-color: #fff;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 0.8; }
+    100% { transform: scale(3); opacity: 0; }
+}
+
+/* Clock Panel Styling */
+.time-panel {
+    background-color: var(--panel-bg);
+    padding: 2rem;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+#cityName {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+}
+
+.clock {
+    font-size: 4rem;
+    font-weight: bold;
+    font-variant-numeric: tabular-nums;
+    color: var(--accent);
+    letter-spacing: 2px;
+    margin-bottom: 0.5rem;
+}
+
+.date {
+    font-size: 1.2rem;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+}
+
+.timezone {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    background: rgba(0,0,0,0.2);
+    display: inline-block;
+    padding: 0.2rem 0.8rem;
+    border-radius: 20px;
+}
