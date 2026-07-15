@@ -1,0 +1,302 @@
+/* Core Styling Matrix Variables */
+:root {
+    --bg-dark-main: #0b0f19;
+    --bg-dark-surface: #131a2c;
+    --bg-panel: #1e293b;
+    --border-slate: #334155;
+    --accent-cyan: #22d3ee;
+    --accent-green: #34d399;
+    --bg-green-alpha: rgba(52, 211, 153, 0.15);
+    --text-primary: #f1f5f9;
+    --text-muted: #64748b;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-dark-main);
+    color: var(--text-primary);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    min-height: 100vh;
+    padding-top: 60px;
+}
+
+/* Navbar Top Elements Styling Layout */
+.app-nav {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 24px;
+    background-color: rgba(11, 15, 25, 0.8);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border-slate);
+    z-index: 100;
+}
+
+.btn-home {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    transition: color 0.2s ease;
+}
+
+.btn-home:hover {
+    color: var(--accent-cyan);
+}
+
+.system-status {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.status-pulse {
+    width: 8px;
+    height: 8px;
+    background-color: var(--accent-green);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--accent-green);
+    animation: blink 2s infinite ease-in-out;
+}
+
+/* Master Container Grid Framework Panel Layouts */
+.dashboard-container {
+    width: 92%;
+    max-width: 960px;
+    margin: 40px auto;
+}
+
+.dashboard-header {
+    text-align: left;
+    margin-bottom: 30px;
+}
+
+.dashboard-header h1 {
+    color: var(--accent-cyan);
+    font-size: 2.2rem;
+    margin: 0 0 6px 0;
+    letter-spacing: 1px;
+}
+
+.dashboard-header .subtitle {
+    color: var(--text-muted);
+    margin: 0;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+}
+
+/* Control Panel Widgets Settings Module */
+.control-panel {
+    background-color: var(--bg-dark-surface);
+    border: 1px solid var(--border-slate);
+    border-radius: 8px;
+    padding: 24px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+@media (max-width: 768px) {
+    .control-panel { grid-template-columns: 1fr; }
+}
+
+.selector-group label, .slider-group .slider-header {
+    display: block;
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    font-weight: 500;
+    margin-bottom: 12px;
+}
+
+.input-row {
+    display: flex;
+    gap: 12px;
+}
+
+select {
+    flex: 1;
+    background-color: var(--bg-panel);
+    border: 1px solid var(--border-slate);
+    color: var(--text-primary);
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 0.95rem;
+}
+
+.btn-primary {
+    background-color: var(--accent-cyan);
+    color: var(--bg-dark-main);
+    border: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background-color 0.2s;
+}
+
+.btn-primary:hover {
+    background-color: #06b6d4;
+}
+
+.slider-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.time-badge {
+    background-color: var(--bg-panel);
+    color: var(--accent-cyan);
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-weight: bold;
+    font-family: monospace;
+}
+
+.matrix-slider {
+    width: 100%;
+    margin-top: 15px;
+    accent-color: var(--accent-cyan);
+}
+
+/* Matrix Visualization Track Content Slots UI Rules definitions */
+.matrix-board {
+    background-color: var(--bg-dark-surface);
+    border: 1px solid var(--border-slate);
+    border-radius: 8px;
+    padding: 24px;
+}
+
+.matrix-legend {
+    display: flex;
+    gap: 20px;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 25px;
+    border-bottom: 1px solid rgba(51, 65, 85, 0.4);
+    padding-bottom: 15px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.block {
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+    display: inline-block;
+}
+
+.block.overlap { background-color: var(--accent-green); }
+.block.offhours { background-color: var(--bg-panel); }
+
+/* Stack Layout Row Configurations Module elements rules */
+.rows-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.timezone-row {
+    background: rgba(30, 41, 59, 0.3);
+    border: 1px solid var(--border-slate);
+    border-radius: 6px;
+    padding: 16px;
+    display: grid;
+    grid-template-columns: 180px 1fr 40px;
+    align-items: center;
+    gap: 20px;
+}
+
+@media (max-width: 640px) {
+    .timezone-row { grid-template-columns: 1fr; gap: 10px; }
+    .btn-remove { justify-self: end; }
+}
+
+.location-meta h3 {
+    margin: 0 0 4px 0;
+    font-size: 1.05rem;
+    color: var(--text-primary);
+}
+
+.location-meta p {
+    margin: 0;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+/* Timeline Horizontal Blocks Pipeline Rules definitions */
+.timeline-track {
+    display: flex;
+    background-color: #090d16;
+    border-radius: 6px;
+    overflow: hidden;
+    height: 44px;
+    border: 1px solid rgba(51, 65, 85, 0.5);
+}
+
+.hour-node {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.75rem;
+    font-family: monospace;
+    color: var(--text-muted);
+    user-select: none;
+    border-right: 1px solid rgba(51, 65, 85, 0.2);
+}
+
+.hour-node:last-child { border-right: none; }
+
+/* Status State Class Alterations Rules mapping indicators */
+.hour-node.golden-zone {
+    background-color: var(--bg-green-alpha);
+    color: var(--accent-green);
+    font-weight: bold;
+}
+
+.hour-node.selected-active {
+    background-color: var(--accent-cyan) !important;
+    color: var(--bg-dark-main) !important;
+    font-weight: 900 !important;
+    box-shadow: 0 0 10px var(--accent-cyan);
+}
+
+/* Interaction Delete Actions styling options configurations */
+.btn-remove {
+    background: transparent;
+    border: none;
+    color: #ef4444;
+    font-size: 1.3rem;
+    cursor: pointer;
+    line-height: 1;
+    padding: 4px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.btn-remove:hover {
+    background-color: rgba(239, 68, 68, 0.1);
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+}
