@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mood Tracker Dashboard</title>
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="Favv.png">
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet" />
+</head>
+
+<body>
+
+  <div class="bg-circle one"></div>
+  <div class="bg-circle two"></div>
+  <div class="bg-circle three"></div>
+
+  <div class="container">
+
+    <h3>Mood Tracker</h3>
+
+    <h1>Monthly Report</h1>
+
+    <p class="subtitle">
+      The mood this month is mainly
+      <span id="mainMood">Great 😊</span>
+
+      <small id="totalEntries">
+        2 mood entries this month
+      </small>
+    </p>
+
+    <div class="dashboard">
+
+      <div class="jar-section">
+
+        <div class="jar">
+
+          <div class="mood-ball happy">😊</div>
+
+          <div class="mood-ball neutral">😐</div>
+
+        </div>
+
+      </div>
+
+      <div class="stats">
+
+        <div class="stat">
+          <span>😊</span>
+
+          <div>
+            <h2 id="greatCount">1</h2>
+            <p>Great</p>
+          </div>
+        </div>
+
+        <div class="stat">
+          <span>😄</span>
+
+          <div>
+            <h2 id="goodCount">0</h2>
+            <p>Good</p>
+          </div>
+        </div>
+
+        <div class="stat">
+          <span>😐</span>
+
+          <div>
+            <h2 id="neutralCount">1</h2>
+            <p>Neutral</p>
+          </div>
+        </div>
+
+        <div class="stat">
+          <span>😢</span>
+
+          <div>
+            <h2 id="badCount">0</h2>
+            <p>Bad</p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="buttons">
+
+      <button onclick="addMood('great')">
+        😊 Great
+      </button>
+
+      <button onclick="addMood('good')">
+        😄 Good
+      </button>
+
+      <button onclick="addMood('neutral')">
+        😐 Neutral
+      </button>
+
+      <button onclick="addMood('bad')">
+        😢 Bad
+      </button>
+
+    </div>
+
+    <div class="chart">
+
+      <h2>Mood Fluctuation Chart</h2>
+
+      <div id="chartData"></div>
+
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
+
+</body>
+
+</html>

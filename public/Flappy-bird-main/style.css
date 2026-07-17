@@ -1,0 +1,302 @@
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: radial-gradient(ellipse at 50% 40%, #1b2a3b 0%, #0d1117 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100dvh;
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+@font-face {
+  font-family: "Flappy";
+  src: url("FlappyBirdRegular.ttf") format("truetype");
+  font-display: swap;
+}
+
+#gameCanvas {
+  display: block;
+  border-radius: 10px;
+  border: 2px solid rgba(255, 255, 255, 0.10);
+  box-shadow:
+    0 0  0   1px rgba(255,255,255,0.04),
+    0 8px 32px rgba(0,0,0,0.70),
+    0 0 80px  rgba(100,200,255,0.07);
+  /* Responsive: shrink on small viewports without stretching */
+  max-width:  min(1000px, 100vw);
+  max-height: min(600px,  calc(100dvh - 52px));
+  aspect-ratio: 1000 / 600;
+  width: 100%;
+  touch-action: none;
+  cursor: pointer;
+  image-rendering: pixelated;
+}
+
+.hint {
+  margin-top: 10px;
+  color: rgba(255, 255, 255, 0.35);
+  font-family: "Flappy", sans-serif;
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-align: center;
+}
+
+/* Mobile: stack nicely */
+@media (max-width: 600px) {
+  .hint { font-size: 11px; margin-top: 6px; }
+}
+.back-home {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 1000;
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: #1e293b;
+  color: #3b82f6;
+  text-decoration: none;
+  font-weight: 600;
+  border: 1px solid #3b82f6;
+  transition: all 0.2s ease;
+}
+
+.back-home:hover {
+  background: #3b82f6;
+  color: #fff;
+}
+
+*, *::before, *::after { 
+  margin: 0; 
+  padding: 0; 
+  box-sizing: border-box; 
+}
+
+body {
+  background: radial-gradient(ellipse at 50% 40%, #1b2a3b 0%, #0d1117 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100dvh;
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+  font-family: 'Courier New', 'Arial', monospace;
+}
+
+/* Optional: Keep Flappy font only for game title, but not for UI */
+@font-face {
+  font-family: "Flappy";
+  src: url("FlappyBirdRegular.ttf") format("truetype");
+  font-display: swap;
+}
+
+#gameCanvas {
+  display: block;
+  border-radius: 10px;
+  border: 2px solid rgba(255, 255, 255, 0.10);
+  box-shadow:
+    0 0  0   1px rgba(255,255,255,0.04),
+    0 8px 32px rgba(0,0,0,0.70),
+    0 0 80px  rgba(100,200,255,0.07);
+  max-width:  min(1000px, 100vw);
+  max-height: min(600px,  calc(100dvh - 52px));
+  aspect-ratio: 1000 / 600;
+  width: 100%;
+  touch-action: none;
+  cursor: pointer;
+  image-rendering: pixelated;
+}
+
+/* Difficulty Panel - CLEAR AND VISIBLE */
+.difficulty-panel {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-top: 15px;
+  margin-bottom: 12px;
+  padding: 10px 20px;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 50px;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.difficulty-btn {
+  padding: 10px 24px;
+  font-size: 16px;
+  font-weight: bold;
+  font-family: 'Arial Black', 'Courier New', monospace;
+  border: none;
+  border-radius: 40px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  letter-spacing: 1px;
+  color: white;
+  text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+}
+
+.difficulty-btn.easy {
+  background: #2e7d32;
+  border-bottom: 3px solid #81c784;
+}
+
+.difficulty-btn.medium {
+  background: #e65100;
+  border-bottom: 3px solid #ffb74d;
+}
+
+.difficulty-btn.hard {
+  background: #c62828;
+  border-bottom: 3px solid #ef9a9a;
+}
+
+.difficulty-btn.active {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px currentColor;
+  filter: brightness(1.15);
+}
+
+.difficulty-btn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+}
+
+/* Stats Bar - CLEAR NUMBERS */
+.stats {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin: 8px 0;
+  padding: 10px 25px;
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 50px;
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  font-size: 18px;
+  color: white;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+.stats span:first-child {
+  color: #FFD700;
+  font-size: 20px;
+  margin-right: 5px;
+}
+
+.stats span:last-child {
+  color: #FF9800;
+  font-size: 20px;
+  margin-right: 5px;
+}
+
+#scoreDisplay, #modeDisplay {
+  background: rgba(0, 0, 0, 0.7);
+  padding: 4px 12px;
+  border-radius: 30px;
+  margin-left: 8px;
+  font-size: 22px;
+  font-weight: bold;
+  color: #FFD700;
+  display: inline-block;
+  min-width: 60px;
+  text-align: center;
+}
+
+/* Hint text - CLEAR */
+.hint {
+  margin-top: 12px;
+  color: rgba(255, 255, 255, 0.85);
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 8px 20px;
+  border-radius: 40px;
+  display: inline-block;
+  backdrop-filter: blur(4px);
+}
+
+/* Back Home Button */
+.back-home {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 1000;
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: #1e293b;
+  color: #3b82f6;
+  text-decoration: none;
+  font-weight: bold;
+  font-family: 'Courier New', monospace;
+  border: 1px solid #3b82f6;
+  transition: all 0.2s ease;
+  font-size: 14px;
+}
+
+.back-home:hover {
+  background: #3b82f6;
+  color: #fff;
+}
+
+/* Milestone Popup Animation */
+@keyframes fadeOut {
+  0% { 
+    opacity: 1; 
+    transform: translate(-50%, -50%) scale(0.9);
+  }
+  20% { 
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+  80% { 
+    opacity: 1;
+  }
+  100% { 
+    opacity: 0; 
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+/* Mobile Responsive */
+@media (max-width: 600px) {
+  .difficulty-panel {
+    gap: 8px;
+    padding: 6px 12px;
+  }
+  
+  .difficulty-btn {
+    padding: 6px 14px;
+    font-size: 12px;
+  }
+  
+  .stats {
+    gap: 15px;
+    padding: 6px 15px;
+    font-size: 14px;
+  }
+  
+  #scoreDisplay, #modeDisplay {
+    font-size: 16px;
+    padding: 2px 8px;
+    min-width: 45px;
+  }
+  
+  .stats span:first-child,
+  .stats span:last-child {
+    font-size: 14px;
+  }
+  
+  .hint {
+    font-size: 10px;
+    padding: 5px 12px;
+  }
+}

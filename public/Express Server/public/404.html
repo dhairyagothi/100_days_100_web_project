@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>404 — Page Not Found</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    :root {
+      --bg:#08090d; --surface:#0f1117; --border:#1e2130;
+      --accent:#00e5a0; --accent2:#7c6cfc; --text:#e8eaf2; --muted:#5a5f7a;
+      --font-head:'Syne',sans-serif; --font-mono:'JetBrains Mono',monospace;
+    }
+    body {
+      font-family:var(--font-mono); background:var(--bg); color:var(--text);
+      min-height:100vh; display:flex; flex-direction:column;
+      align-items:center; justify-content:center; text-align:center;
+      padding:32px; overflow:hidden;
+    }
+    body::before {
+      content:''; position:fixed; inset:0;
+      background-image:
+        linear-gradient(rgba(0,229,160,.03) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(0,229,160,.03) 1px,transparent 1px);
+      background-size:40px 40px; pointer-events:none;
+    }
+    .orb { position:fixed; border-radius:50%; filter:blur(120px); pointer-events:none; opacity:.18; }
+    .orb-1 { width:500px;height:500px;background:var(--accent2);top:-150px;left:-100px; }
+    .orb-2 { width:400px;height:400px;background:var(--accent);bottom:-100px;right:-80px; }
+
+    .wrap { position:relative; z-index:1; max-width:560px; }
+
+    /* Stars */
+    .stars { position:fixed; inset:0; pointer-events:none; overflow:hidden; }
+    .star {
+      position:absolute; width:2px; height:2px; border-radius:50%;
+      background:#fff; opacity:0;
+      animation:twinkle var(--d,3s) var(--del,0s) ease-in-out infinite;
+    }
+    @keyframes twinkle { 0%,100%{opacity:0} 50%{opacity:var(--op,.7)} }
+
+    .num-404 {
+      font-family:var(--font-head); font-size:clamp(6rem,20vw,9rem);
+      font-weight:800; line-height:1; letter-spacing:-.04em;
+      color:var(--accent2); text-shadow:0 0 80px rgba(124,108,252,.5);
+      animation:fadeUp .6s ease both;
+    }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:none} }
+
+    .rocket { font-size:2.8rem; margin:20px 0; display:block; animation:float 3s ease-in-out infinite; }
+    @keyframes float { 0%,100%{transform:translateY(0) rotate(-5deg)} 50%{transform:translateY(-16px) rotate(5deg)} }
+
+    h2 {
+      font-family:var(--font-head); font-size:1.6rem; font-weight:800;
+      margin-bottom:12px; animation:fadeUp .6s .1s ease both; opacity:0;
+    }
+    .sub {
+      color:var(--muted); font-size:.8rem; line-height:1.8; margin-bottom:28px;
+      animation:fadeUp .6s .2s ease both; opacity:0;
+    }
+    .quote {
+      padding:18px 24px; border-radius:14px; margin-bottom:28px;
+      background:rgba(124,108,252,.08); border:1px solid rgba(124,108,252,.2);
+      font-size:.78rem; color:var(--accent2); line-height:1.75; font-style:italic;
+      animation:fadeUp .6s .3s ease both; opacity:0;
+    }
+    .quote strong { font-style:normal; color:#fff; }
+
+    .btns { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; animation:fadeUp .6s .4s ease both; opacity:0; }
+    .btn-primary {
+      background:var(--accent2); color:#fff; border:none;
+      padding:12px 22px; border-radius:10px; font-family:var(--font-mono);
+      font-size:.78rem; cursor:pointer; font-weight:500;
+      transition:opacity .2s, transform .2s; text-decoration:none; display:inline-flex; align-items:center; gap:8px;
+    }
+    .btn-primary:hover { opacity:.85; transform:translateY(-2px); }
+    .btn-ghost {
+      background:transparent; color:var(--text); border:1px solid var(--border);
+      padding:12px 22px; border-radius:10px; font-family:var(--font-mono);
+      font-size:.78rem; cursor:pointer; transition:border-color .2s, transform .2s;
+      text-decoration:none; display:inline-flex; align-items:center; gap:8px;
+    }
+    .btn-ghost:hover { border-color:var(--accent); transform:translateY(-2px); }
+
+    footer {
+      position:fixed; bottom:24px; left:50%; transform:translateX(-50%);
+      font-size:.65rem; color:var(--muted); white-space:nowrap;
+    }
+  </style>
+</head>
+<body>
+
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="stars" id="stars"></div>
+
+<div class="wrap">
+  <div class="num-404">404</div>
+  <span class="rocket">🚀</span>
+  <h2>Page Not Found</h2>
+  <p class="sub">Looks like this route took a day off from the server.<br/>It may have been moved, deleted, or never existed.</p>
+  <div class="quote">
+    💡 <em>"This route doesn't exist yet…<br/>but maybe <strong>you</strong> could build it!"</em>
+  </div>
+  <div class="btns">
+    <a href="/" class="btn-primary">🏠 Back to Dashboard</a>
+    <a href="/api/health" class="btn-ghost">💚 API Health</a>
+  </div>
+</div>
+
+<footer>© 2026 Express Server</footer>
+
+<script>
+  // Generate twinkling stars
+  const container = document.getElementById('stars');
+  for (let i = 0; i < 80; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    s.style.cssText = `
+      left:${Math.random()*100}%;
+      top:${Math.random()*100}%;
+      --d:${2+Math.random()*4}s;
+      --del:${Math.random()*5}s;
+      --op:${.3+Math.random()*.7};
+      width:${1+Math.random()*2}px;
+      height:${1+Math.random()*2}px;
+    `;
+    container.appendChild(s);
+  }
+</script>
+</body>
+</html>
