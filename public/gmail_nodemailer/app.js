@@ -1,41 +1,107 @@
 require('dotenv').config();
 
 const express = require('express');
-const app = express();
-
 const bodyParser = require('body-parser');
 const path = require('path');
 const nodemailer = require('nodemailer');
 
-const port = 5500;
+const app = express();
+const port = process.env.PORT || 5500;
+
+// ---- Sanity check: make sure required env vars exist before starting ----
+const REQUIRED_ENV_VARS = ['EMAIL_USER', 'EMAIL_PASS'];
+const missingVars = REQUIRED_ENV_VARS.filter((key) => !process.env[key]);
+
+if (missingVars.length > 0) {
+  console.error(
+    `Missing required environment variable(s): ${missingVars.join(', ')}`
+  );
+  console.error(
+    'Create a .env file in the project root (see .env.example) and set these values.'
+  );
+  console.error(
+    'EMAIL_PASS must be a 16-character Gmail "App Password", NOT your normal Gmail password.'
+  );
+  process.exit(1);
+}
+
+function isValidEmail(email) {
+  if (typeof email !== 'string') return false;
+  if (email.length === 0 || email.length > 254) return false; // RFC 5321 max length
+
+  const atIndex = email.indexOf('@');
+  if (atIndex <= 0 || atIndex !== email.lastIndexOf('@')) return false;
+
+  const localPart = email.slice(0, atIndex);
+  const domainPart = email.slice(atIndex + 1);
+
+  if (localPart.length === 0 || localPart.length > 64) return false;
+  if (domainPart.length === 0 || domainPart.length > 255) return false;
+
+  // Simple, bounded, non-backtracking checks (no nested quantifiers)
+  const simpleEmailPattern = /^[A-Za-z0-9._%+-]+$/;
+  const simpleDomainPattern = /^[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+
+  return (
+    simpleEmailPattern.test(localPart) && simpleDomainPattern.test(domainPart)
+  );
+}
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
-
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/', function (req, res) {
+// ---- Create the transporter once and reuse it (instead of per-request) ----
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true,
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  },
+});
+
+// Verify the transporter config on startup so issues are caught early
+transporter.verify((error) => {
+  if (error) {
+    console.error('Nodemailer transporter verification failed:');
+    console.error(error.message);
+    console.error(
+      '👉 Double check EMAIL_USER / EMAIL_PASS in your .env file and that 2-Step Verification + App Password are enabled on the Gmail account.'
+    );
+  } else {
+    console.log('Nodemailer is configured correctly and ready to send emails.');
+  }
+});
+
+app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'mail.html'));
 });
 
-app.post('/', function (req, res) {
-  const transporter = nodemailer.createTransport({
-    service: 'Gmail',
-    host: 'smtp.gmail.com',
-    port: 465,
-    secure: true,
+app.post('/subscribe', async (req, res) => {
+  const { name, emailid } = req.body;
 
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
-    },
-  });
+  // ---- Basic server-side validation ----
+  if (!name || !emailid) {
+    return res.status(400).json({
+      success: false,
+      message: 'Name and email are required.',
+    });
+  }
+
+  if (!isValidEmail(emailid)) {
+    return res.status(400).json({
+      success: false,
+      message: 'Please enter a valid email address.',
+    });
+  }
 
   const mailOptions = {
-    from: process.env.EMAIL_USER,
-    to: req.body.emailid,
-    subject: 'Welcome to Our Newsletter 🎉',
-
+    from: `"Newsletter" <${process.env.EMAIL_USER}>`,
+    to: emailid,
+    subject: 'Welcome to Our Newsletter',
     html: `
   <!DOCTYPE html>
   <html>
@@ -54,7 +120,7 @@ app.post('/', function (req, res) {
               <td align="center"
                 style="background:linear-gradient(135deg,#00b6d1,#0077ff);padding:35px 20px;">
                 <h1 style="margin:0;color:#ffffff;font-size:28px;">
-                  Welcome 🎉
+                  Welcome 
                 </h1>
               </td>
             </tr>
@@ -62,7 +128,7 @@ app.post('/', function (req, res) {
             <tr>
               <td style="padding:35px 30px;color:#333333;">
                 <h2 style="margin-top:0;">
-                  Hi ${req.body.name},
+                  Hi ${name},
                 </h2>
 
                 <p style="font-size:16px;line-height:1.7;">
@@ -104,18 +170,22 @@ app.post('/', function (req, res) {
   `,
   };
 
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.error(error);
-      return res.status(500).send('Email failed');
-    }
-
+  try {
+    const info = await transporter.sendMail(mailOptions);
     console.log('Email sent:', info.response);
-
-    return res.send('Email sent successfully');
-  });
+    return res.status(200).json({
+      success: true,
+      message: 'Email sent successfully',
+    });
+  } catch (error) {
+    console.error('Email sending failed:', error.message);
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to send email. Please try again later.',
+    });
+  }
 });
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+  console.log(`Server running at http://localhost:${port}`);
 });

@@ -42,8 +42,16 @@ body {
   line-height: 1.6;
   overflow-x: hidden;
   background-image:
-    radial-gradient(circle at 10% 20%, rgba(155, 81, 224, 0.1) 0%, transparent 40%),
-    radial-gradient(circle at 90% 80%, rgba(0, 242, 254, 0.08) 0%, transparent 40%);
+    radial-gradient(
+      circle at 10% 20%,
+      rgba(155, 81, 224, 0.1) 0%,
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at 90% 80%,
+      rgba(0, 242, 254, 0.08) 0%,
+      transparent 40%
+    );
 }
 
 /* ===== Header ===== */
@@ -205,7 +213,11 @@ body {
 }
 
 .toggle-btn--active {
-  background: linear-gradient(135deg, rgba(0, 242, 254, 0.15), rgba(155, 81, 224, 0.15));
+  background: linear-gradient(
+    135deg,
+    rgba(0, 242, 254, 0.15),
+    rgba(155, 81, 224, 0.15)
+  );
   border-color: var(--accent-cyan);
   color: var(--accent-cyan);
   box-shadow: 0 0 16px rgba(0, 242, 254, 0.2);
@@ -452,6 +464,12 @@ body {
   background: rgba(255, 255, 255, 0.04);
   padding: 0.15rem 0.4rem;
   border-radius: 4px;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  pointer-events: none;
 }
 
 /* ===== Toast ===== */

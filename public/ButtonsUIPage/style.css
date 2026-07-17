@@ -1,3 +1,32 @@
+:root {
+    --bg-gradient: linear-gradient(200deg, #bb8bbbf3 0%, #bdb8bb 100%);
+    --section-bg: linear-gradient(135deg, #f5f4f452 0%, #ececec 100%);
+    --text-primary: #333;
+    --text-secondary: #666;
+    --heading-color: white;
+    --section-border: transparent;
+}
+
+body.dark-theme {
+    --bg-gradient: linear-gradient(
+        135deg,
+        #000000 0%,
+        #0a0a0a 50%,
+        #111111 100%
+    );
+
+    --section-bg: linear-gradient(
+        135deg,
+        #111111 0%,
+        #181818 100%
+    );
+
+    --text-primary: #ffffff;
+    --text-secondary: #b3b3b3;
+    --heading-color: #ffffff;
+    --section-border: #2a2a2a;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -5,10 +34,11 @@
 }
 
 body {
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(200deg, #bb8bbbf3 0%, #bdb8bb 100%);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: var(--bg-gradient);
     min-height: 100vh;
     padding: 40px 20px;
+    transition: background 0.4s ease;
 }
 
 .container {
@@ -18,9 +48,10 @@ body {
 
 h1 {
     text-align: center;
-    color: white;
+    color: var(--heading-color);
     font-size: 3em;
     margin-bottom: 20px;
+    margin-top: 80px;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
 }
 
@@ -32,16 +63,19 @@ h1 {
 }
 
 .section {
-    background: linear-gradient(135deg, #f5f4f452 0%, #ececec 100%);
+    background: var(--section-bg);
     border-radius: 10px;
     padding: 40px;
     margin-bottom: 30px;
     box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    border: 1px solid var(--section-border);
+    transition: all 0.4s ease;
+
 }
 
 .section-title {
     font-size: 1.8em;
-    color: #333;
+    color: var(--text-primary);
     margin-bottom: 30px;
     padding-bottom: 15px;
 }
@@ -61,8 +95,8 @@ h1 {
 }
 
 .button-label {
-    font-size: 0.9em;
-    color: #666;
+   font-size: 0.9em;
+    color: var(--text-secondary);
     font-weight: 500;
 }
 
@@ -426,4 +460,121 @@ button {
         grid-template-columns: 1fr;
         gap: 20px;
     }
+}
+
+.theme-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 10000;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 10px;
+    background: #1e293b;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+}
+
+.theme-toggle:hover {
+    transform: translateY(-2px);
+}
+
+body.dark-theme .theme-toggle {
+    background: #f8fafc;
+    color: #1e293b;
+}
+
+body.dark-theme .section {
+    background: #111111;
+    border: 1px solid #2f2f2f;
+    box-shadow:
+        0 0 0 1px rgba(255,255,255,0.03),
+        0 8px 24px rgba(0,0,0,0.5);
+}
+
+body.dark-theme .button-label {
+    color: #a1a1aa;
+}
+
+body.dark-theme .section-title {
+    color: #ffffff;
+}
+
+body.dark-theme h1 {
+    text-shadow: 0 0 20px rgba(255,255,255,0.15);
+}
+
+.theme-switch-wrapper {
+    position: fixed;
+    top: 18px;
+    right: 18px;
+    z-index: 9999;
+}
+
+.theme-switch {
+    display: none;
+}
+
+.theme-slider {
+    position: relative;
+    overflow: hidden;
+    display: block;
+    width: 70px;
+    height: 36px;
+    background: #2d2d2d;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.theme-slider::before {
+    content: "";
+    z-index: 2;
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    left: 4px;
+    top: 4px;
+    background: white;
+    border-radius: 50%;
+    transition: 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.theme-switch:checked + .theme-slider {
+    background: #ffffff;
+}
+
+.theme-switch:checked + .theme-slider::before {
+    background: #000000;
+    transform: translateX(34px);
+    z-index: 2;
+}
+
+.icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px;
+    pointer-events: none;
+}
+
+.sun {
+    left: 10px;
+}
+
+.moon {
+    right: 10px;
+}
+
+.icon {
+    position: absolute;
+    z-index: 5;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px;
+    pointer-events: none;
 }
