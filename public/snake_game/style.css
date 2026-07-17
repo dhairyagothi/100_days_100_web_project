@@ -75,13 +75,21 @@ body {
 }
 
 .controls i {
-  padding: 25px 0;
+  padding: 30px 0;
   text-align: center;
-  font-size: 1.3rem;
+  font-size: 1.6rem;
   color: #B8C6DC;
   width: calc(100% / 4);
   cursor: pointer;
   border-right: 1px solid #171B26;
+  transition: background 0.2s ease, transform 0.2s ease;
+  user-select: none;
+}
+.controls i:hover,
+.controls i.active {
+  background: #3457dc;
+  color: white;
+  transform: scale(0.95);
 }
 
 .button-container {
@@ -139,9 +147,9 @@ body {
   }
 
   .controls i {
-    padding: 15px 0;
-    font-size: 1rem;
-  }
+  padding: 22px 0;
+  font-size: 1.4rem;
+}
 }
 /* Improve mobile responsiveness */
 @media screen and (max-width: 500px) {
