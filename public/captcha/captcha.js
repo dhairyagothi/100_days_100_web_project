@@ -9,6 +9,10 @@ const submitButton = document.querySelector('.submit');
 const voiceField = document.getElementById('voiceField');
 const voiceSelect = document.getElementById('voiceSelect');
 
+// FIX: this was never defined before, so generateCaptcha() threw a
+// ReferenceError on the very first call and the CAPTCHA never rendered.
+const captchaTypeSelect = document.getElementById('captchaType');
+
 let currentCaptcha = null;
 let attempts = 0;
 const maxAttempts = 3;
@@ -156,6 +160,7 @@ const generateCaptcha = () => {
     resultMessage.className = 'result';
 
     const type = captchaTypeSelect.value;
+
     if (type === 'audio') {
         voiceField.classList.remove('hidden');
     } else {
@@ -219,6 +224,15 @@ const generateCaptcha = () => {
         }
     }
 };
+
+// FIX: keep selectedType in sync with the dropdown and regenerate on change,
+// otherwise switching CAPTCHA type from the <select> never re-renders.
+captchaTypeSelect.addEventListener('change', () => {
+    selectedType = captchaTypeSelect.value;
+    textInput.value = "";
+    selectedImageAnswer = "";
+    generateCaptcha();
+});
 
 //math captcha numeric input validation
 textInput.addEventListener("input", () => {
