@@ -178,6 +178,7 @@ section {
 /* ── Sidebar ──────────────────────────────────────────────── */
 .sidebar {
   width: 260px;
+  min-width: 260px;
   flex-shrink: 0;
   background: var(--glass-bg);
   border-right: 1px solid var(--glass-border);
@@ -298,10 +299,14 @@ section {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  padding: 24px 28px;
-  overflow-x: hidden;
+  align-items: stretch;
+  gap: 24px;
+  padding: 32px;
+  max-width: 1600px;
+  width: 100%;
+  margin: 0 auto;
 }
+
 
 /* ============================================================
    5. HEADER / LEGACY NAVBAR
@@ -622,8 +627,9 @@ main {
    ============================================================ */
 .productivity-dashboard {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  align-items: stretch;
+  gap: 18px;
   width: 100%;
 }
 
@@ -663,11 +669,14 @@ main {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 40px;
   position: relative;
   overflow: hidden;
+  width: 100%;
 }
 
 .hero-content {
+  flex: 1;
   z-index: 1;
 }
 
@@ -737,6 +746,9 @@ main {
 .hero-illustration {
   position: relative;
   flex-shrink: 0;
+  width: 120px;
+  display: flex;
+  justify-content: center;
 }
 
 .illustration-clipboard {
@@ -798,8 +810,8 @@ main {
    ============================================================ */
 .search-wrapper {
   width: 100%;
-  position: relative;
-  margin-bottom: 4px;
+  max-width: 900px;
+  margin: 20px auto;
 }
 
 .search-icon {
@@ -852,12 +864,12 @@ main {
 }
 
 /* Kanban input row */
-.input-row {
+.kanban-input-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  width: 100%;
   align-items: center;
+  gap: 12px;
+  width: 100%;
 }
 
 .input-select-wrapper {
@@ -912,6 +924,7 @@ input[type="date"].input-select {
 /* Kanban add-task button */
 .add-task-btn {
   height: 50px;
+  min-width: 150px;
   padding: 0 24px;
   border-radius: 14px;
   border: none;
@@ -1215,21 +1228,17 @@ input[type="date"].input-select {
    12. KANBAN BOARD
    ============================================================ */
 .kanban-wrapper-board {
-  display: flex;
-  gap: 16px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  align-items: start;
   width: 100%;
-  align-items: flex-start;
 }
 
 .kanban-column-track {
-  flex: 1;
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  border-radius: 18px;
-  overflow: hidden;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  min-width: 0;
+  min-height: 550px;
+  display: flex;
+  flex-direction: column;
 }
 
 .kanban-column-header {
@@ -2302,15 +2311,10 @@ body.theme7 .toast-popup {
 /* ============================================================
    21. RESPONSIVE
    ============================================================ */
-@media (max-width: 1200px) {
-  .productivity-dashboard {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
 @media (max-width: 900px) {
   .sidebar {
     width: 220px;
+    min-width: 220px;
   }
 
   .main-content {
@@ -2327,15 +2331,11 @@ body.theme7 .toast-popup {
     display: none;
   }
 
-  .productivity-dashboard {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
   .kanban-wrapper-board {
-    flex-direction: column;
+    grid-template-columns: 1fr;
   }
 
-  .input-row {
+  .kanban-input-row {
     flex-direction: column;
     align-items: stretch;
   }
@@ -2390,6 +2390,7 @@ body.theme7 .toast-popup {
 
   .sidebar {
     width: 100%;
+    min-width: 0;
     height: auto;
     position: relative;
     flex-direction: row;
@@ -2406,11 +2407,7 @@ body.theme7 .toast-popup {
     gap: 6px;
   }
 
-  .productivity-dashboard {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .input-row {
+  .kanban-input-row {
     flex-direction: column;
   }
 }
