@@ -1069,7 +1069,7 @@ function trackRecentProject(project) {
   recentProjects = recentProjects.filter((item) => item.day !== projectObj.day);
 
   // Add to front
-  recentProjects.unshift(projectObj);
+  recentProjects = [projectObj, ...recentProjects.slice(0, 3)];
 
   // Keep only a rigid maximum limit of 4 entries
   if (recentProjects.length > 4) {
