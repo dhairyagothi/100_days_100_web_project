@@ -1,150 +1,106 @@
+# 🎮 Word Scramble Game
 
-# 🔤 Word Jumble Game
+A fun and interactive Word Scramble game built using HTML, CSS, and JavaScript.
 
----
-
-## 🚀 Overview
-
-Word Jumble is a fun, interactive puzzle game built using **HTML, CSS, and JavaScript**.  
-Players are challenged to unscramble shuffled letters to form the correct word.
-
-This project demonstrates:
-- DOM manipulation  
-- Event handling  
-- Responsive UI design  
-
-in a beginner-friendly way.
+Players must guess the correct word from a shuffled version within limited attempts while using hints strategically to maximize their score.
 
 ---
 
 ## ✨ Features
 
-- ✅ Random word jumbling logic  
-- ✅ Input field for guesses  
-- ✅ Submit button with instant feedback  
-- ✅ Score tracking or attempt counter (optional)  
-- ✅ Responsive design for desktop, tablet, and mobile  
-- ✅ Clean UI with hover effects and smooth transitions  
-- ✅ Beginner-friendly implementation with modular code  
+- 🎯 Multiple difficulty levels
+- ⭐ Score tracking
+- 🔥 Winning streak counter
+- 💡 Hint system
+- 🔀 Random word generation
+- 📱 Responsive UI
+- ⚡ Instant answer validation
+- 🎮 Interactive gameplay
 
 ---
 
-## 🛠️ Technologies Used
+## 🎮 How to Play
 
-- HTML5  
-- CSS3  
-- JavaScript (ES6)  
+1. Start the game.
+2. A scrambled word appears.
+3. Type your guess.
+4. Press Submit.
+5. Use Hint if needed.
+6. Earn points for correct answers.
+7. Continue building your streak.
 
 ---
 
 ## 📂 Project Structure
 
-```text
-WordJumble/
+```
+word-scramble/
 │
-├── index.html        # Main game page
-├── style.css         # Styling and responsive design
-├── script.js         # Game logic (jumble + validation)
-└── README.md         # Project documentation
-````
+├── index.html
+├── style.css
+├── script.js
+├── words.js
+└── README.md
+```
 
 ---
 
-## 🎮 Gameplay Overview
+## 🛠️ Tech Stack
 
-* A random word is selected and jumbled
-* Player types their guess into the input field
-* On submission, the game checks correctness and displays feedback
-* Optionally, track score or number of attempts
-
----
-
-## 📸 Screenshots
-<img width="923" height="756" alt="image" src="https://github.com/user-attachments/assets/230286e7-eb79-4005-86e5-e629b261067c" />
-
+- HTML5
+- CSS3
+- JavaScript (ES6)
 
 ---
 
-## 🌐 Demo & Repository
+## 🚀 Run Locally
 
-* 🔗 Live Demo: [https://dhairyagothi.github.io/100_days_100_web_project/public/Word_Jumble/index.html](https://dhairyagothi.github.io/100_days_100_web_project/public/Word_Jumble/index.html)
-* 🔗 GitHub Repository:
-  [https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Word_jumble](https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Word_jumble)
-
----
-
-## 📱 Responsive Design
-
-* 💻 Desktop — Full game layout with centered puzzle
-* 🖥️ Laptop — Optimized spacing and input field
-* 📱 Mobile — Stacked layout with easy controls
-* 📲 Tablet — Balanced design with clear readability
-
----
-
-## ▶️ How to Run Locally
-
-### Clone the Repository
+Clone the repository
 
 ```bash
 git clone https://github.com/dhairyagothi/100_days_100_web_project.git
 ```
 
-### Navigate to Project Folder
+Move into the project
 
 ```bash
-cd 100_days_100_web_project/public/Word_jumble
+cd 100_days_100_web_project/public/word-scramble
 ```
 
-### Open in Browser
+Open
 
-Open the `index.html` file in your preferred browser.
+```
+index.html
+```
 
----
-
-## 🎨 UI Highlights
-
-* Centered puzzle layout
-* Input field with styled button
-* Feedback messages (correct/incorrect)
-* Smooth hover animations
-* Clean typography and layout
+or launch using VS Code Live Server.
 
 ---
 
-## 🔮 Future Enhancements
+## 📌 Future Improvements
 
-* Timer mode for added challenge
-* Difficulty levels (easy, medium, hard)
-* Word bank expansion
-* Hint system
-* Leaderboard with high scores
-* Multiplayer mode
+- Timer Mode
+- Leaderboard
+- Sound Effects
+- Dark Mode
+- More word categories
+- Multiplayer mode
 
 ---
 
-## 📚 Learning Outcomes
+## 🤝 Contributing
 
-Through this project, you can learn:
+Contributions are welcome.
 
-* DOM manipulation with JavaScript
-* Event handling and validation
-* Responsive web design basics
-* Game logic implementation
-* Beginner project structuring
+1. Fork the repository
+2. Create a new branch
+3. Make your changes
+4. Commit your work
+5. Push the branch
+6. Open a Pull Request
 
 ---
 
 ## 📄 License
 
-This project is created for **educational, learning, and portfolio purposes**.
-You are free to modify and use this project for personal development and practice.
-
----
-
-## ⭐ Support
-
-If you enjoyed this project, consider giving the repository a ⭐!
-
-```
-```
+This project is licensed under the MIT License.
