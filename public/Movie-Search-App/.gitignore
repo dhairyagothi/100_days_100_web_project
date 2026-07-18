@@ -4,6 +4,7 @@
 
 # ---- Environment / Secrets ----
 .env
+config.js
 .env.local
 .env.production
 .env.*.local

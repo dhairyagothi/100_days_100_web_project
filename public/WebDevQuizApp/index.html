@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Dev Quiz App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <main class="app-container">
+        <!-- Start Screen -->
+        <section id="start-screen" class="screen active">
+            <h1 class="title">Web Dev Master Quiz</h1>
+            <p class="description">Test your knowledge. You have 60 seconds per question. Unanswered questions deduct 1
+                point!</p>
+
+            <div class="settings-card">
+                <div class="settings-group">
+                    <label for="quiz-category">Select Difficulty / Section:</label>
+                    <select id="quiz-category" class="input-element">
+                        <option value="basic">Basic</option>
+                        <option value="intermediate">Intermediate</option>
+                        <option value="advanced">Advanced</option>
+                        <option value="miscellaneous">Miscellaneous</option>
+                    </select>
+                </div>
+
+                <div class="settings-group">
+                    <label for="question-count">Number of Questions (Min: 5):</label>
+                    <input type="number" id="question-count" class="input-element" min="5" value="5">
+                    <small id="count-warning" class="warning-text hidden">Max questions available for this section
+                        selected.</small>
+                </div>
+            </div>
+
+            <button id="start-btn" class="btn primary-btn">Start Quiz</button>
+        </section>
+
+        <!-- Quiz Screen -->
+        <section id="quiz-screen" class="screen hidden">
+            <div class="quiz-header">
+                <span id="question-tracker">Question 1/5</span>
+                <div class="timer-container">
+                    Time: <span id="time-left">60</span>s
+                </div>
+            </div>
+
+            <!-- NEW: Progress Bar Elements -->
+            <div class="progress-container">
+                <div id="progress-bar" class="progress-fill"></div>
+            </div>
+
+            <div class="card question-card">
+                <h2 id="question-text">Question goes here?</h2>
+                <div id="options-container" class="options-grid">
+                    <!-- Options injected via JS -->
+                </div>
+            </div>
+
+            <div class="action-container">
+                <button id="next-btn" class="btn secondary-btn hidden">Next Question</button>
+            </div>
+        </section>
+        <!-- Options injected via JS -->
+        </div>
+        </div>
+
+        <div class="action-container">
+            <button id="next-btn" class="btn secondary-btn hidden">Next Question</button>
+        </div>
+        </section>
+
+        <!-- End Screen -->
+        <section id="end-screen" class="screen hidden">
+            <h2 class="title">Quiz Complete!</h2>
+            <div class="score-card">
+                <p>Your Final Score</p>
+                <h3 id="final-score">0 / 5</h3>
+            </div>
+            <p id="feedback-message" class="feedback-msg"></p>
+            <button id="restart-btn" class="btn primary-btn">Play Again</button>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

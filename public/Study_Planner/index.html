@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>
+        if (!window.location.pathname.endsWith('/') && !window.location.pathname.endsWith('.html')) {
+            window.location.replace(window.location.pathname + '/');
+        }
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Study Planner</title>
+    <meta name="description" content="A blue and black themed student study planner and exam countdown.">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web@2.0.3/src/index.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Background Elements -->
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+    <div class="bg-grid"></div>
+
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar glass-panel">
+            <div class="logo">
+                <i class="ph-fill ph-student"></i>
+                <h2>StudyPro</h2>
+            </div>
+            
+            <div class="nav-links">
+                <button class="nav-btn active" data-target="dashboard"><i class="ph ph-squares-four"></i> Dashboard</button>
+                <button class="nav-btn" data-target="tasks"><i class="ph ph-check-square-offset"></i> Tasks</button>
+                <button class="nav-btn" data-target="exams"><i class="ph ph-timer"></i> Exams</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Exam Countdown Hero -->
+            <section class="hero-section glass-panel">
+                <div class="hero-text">
+                    <p class="subtitle">Next Major Exam</p>
+                    <h1 id="next-exam-title">No Exams Scheduled</h1>
+                </div>
+                <div class="countdown" id="countdown-display">
+                    <div class="time-box">
+                        <span id="cd-days">00</span>
+                        <small>Days</small>
+                    </div>
+                    <span class="colon">:</span>
+                    <div class="time-box">
+                        <span id="cd-hours">00</span>
+                        <small>Hours</small>
+                    </div>
+                    <span class="colon">:</span>
+                    <div class="time-box">
+                        <span id="cd-mins">00</span>
+                        <small>Mins</small>
+                    </div>
+                </div>
+            </section>
+
+            <div class="grid-layout">
+                <!-- Task Planner -->
+                <section class="tasks-section glass-panel">
+                    <div class="section-header">
+                        <h3><i class="ph ph-list-dashes"></i> Daily Tasks</h3>
+                        <button id="add-task-btn" class="icon-btn"><i class="ph ph-plus-circle"></i></button>
+                    </div>
+                    
+                    <div class="input-group hidden" id="task-input-group">
+                        <input type="text" id="new-task-input" placeholder="What to study today?">
+                        <button id="save-task-btn" class="btn btn-primary">Add</button>
+                    </div>
+
+                    <ul id="task-list" class="task-list">
+                        <!-- Tasks dynamically injected -->
+                    </ul>
+                    <div id="task-empty-state" class="empty-state">
+                        <i class="ph ph-coffee"></i>
+                        <p>All caught up! Time for a break.</p>
+                    </div>
+                </section>
+
+                <!-- Subject Progress -->
+                <section class="subjects-section glass-panel">
+                    <div class="section-header">
+                        <h3><i class="ph ph-books"></i> Subject Progress</h3>
+                    </div>
+                    <div class="subjects-grid" id="subjects-grid">
+                        <!-- Subject cards injected -->
+                        <div class="subject-card">
+                            <div class="sub-header">
+                                <h4>Mathematics</h4>
+                                <span>75%</span>
+                            </div>
+                            <div class="progress-bar"><div class="fill" style="width: 75%"></div></div>
+                        </div>
+                        <div class="subject-card">
+                            <div class="sub-header">
+                                <h4>Physics</h4>
+                                <span>40%</span>
+                            </div>
+                            <div class="progress-bar"><div class="fill" style="width: 40%"></div></div>
+                        </div>
+                        <div class="subject-card">
+                            <div class="sub-header">
+                                <h4>Computer Science</h4>
+                                <span>90%</span>
+                            </div>
+                            <div class="progress-bar"><div class="fill" style="width: 90%"></div></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Exam Manager -->
+                <section class="exams-manager glass-panel">
+                    <div class="section-header">
+                        <h3><i class="ph ph-calendar-check"></i> Upcoming Exams</h3>
+                        <button id="add-exam-btn" class="icon-btn"><i class="ph ph-plus-circle"></i></button>
+                    </div>
+
+                    <div class="input-group hidden" id="exam-input-group">
+                        <input type="text" id="new-exam-name" placeholder="Exam Name">
+                        <input type="datetime-local" id="new-exam-date">
+                        <button id="save-exam-btn" class="btn btn-primary">Save</button>
+                    </div>
+
+                    <div class="exam-list" id="exam-list">
+                        <!-- Exams injected -->
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

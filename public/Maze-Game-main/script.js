@@ -40,6 +40,37 @@ function updateMoveDisplay(count) {
   if (moveCount) moveCount.textContent = count;
 }
 
+// --- Personal Best (localStorage) ---------------------------------------
+const BEST_MOVES_PREFIX = 'mazeBest_';
+
+function getBestMoves(levelLabel) {
+  if (!levelLabel) return null;
+  let raw;
+  try {
+    raw = localStorage.getItem(BEST_MOVES_PREFIX + levelLabel);
+  } catch (err) {
+    return null; // localStorage unavailable (private mode, etc.)
+  }
+  const value = Number(raw);
+  return raw !== null && Number.isFinite(value) && value > 0 ? value : null;
+}
+
+function setBestMoves(levelLabel, moves) {
+  if (!levelLabel) return;
+  try {
+    localStorage.setItem(BEST_MOVES_PREFIX + levelLabel, String(moves));
+  } catch (err) {
+    console.warn('Could not save personal best (localStorage unavailable).', err);
+  }
+}
+
+function updateBestMovesDisplay(levelLabel) {
+  const bestMovesText = document.getElementById('bestMovesText');
+  if (!bestMovesText) return;
+  const best = getBestMoves(levelLabel);
+  bestMovesText.textContent = best !== null ? best : '—';
+}
+
 function formatTime(seconds) {
   const minutes = Math.floor(seconds / 60).toString().padStart(2, '0');
   const secs = (seconds % 60).toString().padStart(2, '0');
@@ -118,11 +149,20 @@ function fireWinConfetti() {
   }, 600);
 }
 
-function showModal(title, message, moves,difficulty) {
+function showModal(title, message, moves, difficulty, isNewRecord = false) {
   document.getElementById('modalTitle').textContent = title;
   document.getElementById('modalText').textContent = message;
-  document.getElementById('moves').textContent = `Moves: ${moves}  •  Time: ${formatTime(elapsedSeconds)}`;
-  
+
+  const best = getBestMoves(difficulty);
+  const statMoves = document.getElementById('statMoves');
+  const statTime = document.getElementById('statTime');
+  const statBest = document.getElementById('statBest');
+  const statBestChip = document.getElementById('statBestChip');
+  if (statMoves) statMoves.textContent = moves;
+  if (statTime) statTime.textContent = formatTime(elapsedSeconds);
+  if (statBest) statBest.textContent = best !== null ? best : '—';
+  if (statBestChip) statBestChip.classList.toggle('is-record', isNewRecord);
+
   const badge = document.getElementById('modalDifficultyBadge');
   if (badge) {
     if (difficulty) {
@@ -133,7 +173,17 @@ function showModal(title, message, moves,difficulty) {
       badge.style.display = 'none';
     }
   }
-  
+
+  const recordBadge = document.getElementById('recordBadge');
+  if (recordBadge) {
+    recordBadge.style.display = isNewRecord ? 'block' : 'none';
+  }
+
+  const modalEmoji = document.getElementById('modalEmoji');
+  if (modalEmoji) {
+    modalEmoji.textContent = isNewRecord ? '🏆' : '🎊';
+  }
+
   document.getElementById('Message-Container').classList.add('visible');
 }
 
@@ -524,6 +574,7 @@ function handleDifficultyChange() {
 
   currentLevel = diffSelect.options[diffSelect.selectedIndex].text;
   updateLevelText(currentLevel);
+  updateBestMovesDisplay(currentLevel);
   updateStatus(`Selected ${currentLevel}`);
   showToast(`Difficulty set to ${currentLevel}`, 'info');
 
@@ -545,10 +596,31 @@ function onMazeComplete(moves) {
   isGameOver = true;
   isGameActive = false;
   stopTimer();
+
+  // Retrieve -> Compare -> Update personal best for this difficulty
+  const previousBest = getBestMoves(currentLevel);
+  const isNewRecord = previousBest === null || moves < previousBest;
+  if (isNewRecord) {
+    setBestMoves(currentLevel, moves);
+  }
+  updateBestMovesDisplay(currentLevel);
+
   updateStatus('Maze completed! Ready for another run.');
   fireWinConfetti();
-  showModal('Maze Completed! 🎉', 'You escaped the neon labyrinth.', moves, currentLevel);
-  showToast(`${currentLevel} maze cleared! 🏆`, 'success', 3500);
+
+  if (isNewRecord) {
+    showModal(
+      'New Personal Best! 🏆',
+      `You escaped in ${moves} moves — a new record for ${currentLevel}.`,
+      moves,
+      currentLevel,
+      true
+    );
+    showToast(`🏆 New Personal Best: ${moves} moves (${currentLevel})!`, 'success', 4000);
+  } else {
+    showModal('Maze Completed! 🎉', 'You escaped the neon labyrinth.', moves, currentLevel, false);
+    showToast(`${currentLevel} maze cleared! 🏆`, 'success', 3500);
+  }
 }
 
 function cancelRenderLoop() {
@@ -599,6 +671,7 @@ function startGame() {
 
   currentLevel = diffSelect.options[diffSelect.selectedIndex].text;
   updateLevelText(currentLevel);
+  updateBestMovesDisplay(currentLevel);
   difficulty = selectedDifficulty;
   cellSize = mazeCanvas.width / difficulty;
 

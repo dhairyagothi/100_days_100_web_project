@@ -41,10 +41,12 @@ Dice Roller is a simple and interactive web application that simulates rolling a
 # 📂 Folder Structure
 
 ```
-Dice_Roller/
-│── index.html
+Dice-Roller/
+│── main.html
 │── style.css
 │── script.js
+│── dice-single.mp3
+│── dice-multi.mp3
 │── favicon.png
 └── README.md
 ```
@@ -62,7 +64,7 @@ git clone https://github.com/dhairyagothi/100_days_100_web_project.git
 ### Navigate to the project
 
 ```bash
-cd public/Dice_Roller
+cd public/Dice-Roller
 ```
 
 ### Run the project
@@ -70,7 +72,7 @@ cd public/Dice_Roller
 Simply open
 
 ```
-index.html
+main.html
 ```
 
 in your browser.
@@ -83,6 +85,12 @@ in your browser.
 2. Click the **Roll Dice** button.
 3. A random dice value will be generated.
 4. Roll as many times as you like.
+
+---
+
+# 🔗 Live Demo
+
+Part of the [100 Days 100 Web Projects](https://100-days-100-web-project.vercel.app) collection.
 
 ---
 
