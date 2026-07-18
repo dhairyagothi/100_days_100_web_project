@@ -6,6 +6,52 @@
   --bg:#f4f7fb;
   --card:#ffffff;
   --text:#222;
+
+    --bg:#f4f4f4;
+    --card:#ffffff;
+
+    --text:#222;
+
+    --primary:#4CAF50;
+
+    --primaryText:#ffffff;
+
+    --border:#d8d8d8;
+
+    --input:#ffffff;
+
+    --correct:#2e7d32;
+
+    --wrong:#d32f2f;
+}
+
+body.dark{
+
+    --bg:#121212;
+
+    --card:#1f1f1f;
+
+    --text:#f1f1f1;
+
+    --primary:#5fa8ff;
+
+    --primaryText:#ffffff;
+
+    --border:#444;
+
+    --input:#2b2b2b;
+
+    --correct:#66bb6a;
+
+    --wrong:#ef5350;
+}
+body{
+
+    background:var(--bg);
+
+    color:var(--text);
+
+    transition:.3s;
 }
 
 .dark{
@@ -37,30 +83,36 @@ body{
 }
 
 .top-bar{
+
   display:flex;
   left: 0;
-  background-color: #06b6d4;
+  background-color:  #99e2ef ;
+  border-radius: 20px;
   justify-content:space-between;
   align-items:center;
+  margin-top: 14px;
   margin-bottom:20px;
 }
-a{
+a{font-size: 18px;
+  font-weight: 600;
   margin-left: 20px;
   margin-right: 20px;
   text-decoration: none;
-  color: #fff;
+  color: #363636;
 }
 a:hover{
-  background-color: #4f46e5;
-  border-radius: 20px;
+  transform: scale(1.2, 1.2);
+  font-weight: 500;
+  color: #377c88;
 }
 #theme-toggle{
-  padding:10px 15px;
+  padding:10px 15px ;
+  margin-right: 15px;
   border:none;
   border-radius:10px;
   cursor:pointer;
 }
-
+#theme-toggle:hover{  transform: scale(1.2, 1.2);}
 .stats{
   display:grid;
   grid-template-columns:repeat(3,1fr);
@@ -185,7 +237,7 @@ h1 {
   text-align: center;
   font-size: 2rem;
   margin-bottom: 25px;
-  color: #0f172a;
+  color:  #377c88;
 }
 
 

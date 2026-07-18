@@ -12,6 +12,31 @@
   --card: rgba(255,255,255,0.08);
   --border: rgba(255,255,255,0.12);
   --text: #f5f7fb;
+  --text-soft: rgba(255,255,255,0.82);
+  --surface: rgba(255,255,255,0.07);
+  --surface-strong: rgba(255,255,255,0.09);
+  --shadow: rgba(0,0,0,0.35);
+  --button-glow: rgba(255,255,255,0.08);
+  --button-border: rgba(255,255,255,0.14);
+  --page-gradient-start: #07111f;
+  --page-gradient-end: #0b1728;
+  --page-glow-start: rgba(255,153,51,0.18);
+  --page-glow-end: rgba(19,136,8,0.15);
+}
+
+body.light-mode {
+  --text: #102038;
+  --text-soft: #475467;
+  --surface: rgba(255,255,255,0.9);
+  --surface-strong: rgba(255,255,255,0.96);
+  --border: rgba(8, 19, 37, 0.12);
+  --shadow: rgba(17, 44, 82, 0.12);
+  --button-glow: rgba(255,255,255,0.88);
+  --button-border: rgba(12, 27, 49, 0.12);
+  --page-gradient-start: #fff8ef;
+  --page-gradient-end: #f4f7fb;
+  --page-glow-start: rgba(255,153,51,0.22);
+  --page-glow-end: rgba(19,136,8,0.14);
 }
 
 html {
@@ -21,9 +46,9 @@ html {
 body {
   font-family: 'Inter', sans-serif;
   background:
-    radial-gradient(circle at top left, rgba(255,153,51,0.18), transparent 40%),
-    radial-gradient(circle at bottom right, rgba(19,136,8,0.15), transparent 40%),
-    linear-gradient(135deg, #07111f, #0b1728);
+    radial-gradient(circle at top left, var(--page-glow-start), transparent 40%),
+    radial-gradient(circle at bottom right, var(--page-glow-end), transparent 40%),
+    linear-gradient(135deg, var(--page-gradient-start), var(--page-gradient-end));
   color: var(--text);
   min-height: 100vh;
   overflow-x: hidden;
@@ -37,6 +62,10 @@ body {
   background:
     linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.45));
   z-index: -2;
+}
+
+body.light-mode .background-overlay {
+  background: linear-gradient(rgba(255,255,255,0.22), rgba(255,255,255,0.38));
 }
 
 .bg-wheel {
@@ -61,25 +90,47 @@ body {
 }
 
 /* BACK BUTTON */
-.project-back-button {
+.project-back-button,
+.theme-toggle-button {
   position: fixed;
   top: 18px;
-  left: 18px;
   padding: 12px 20px;
   border-radius: 14px;
   text-decoration: none;
-  color: white;
-  background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(255,255,255,0.14);
+  color: var(--text);
+  background: var(--button-glow);
+  border: 1px solid var(--button-border);
   backdrop-filter: blur(14px);
   z-index: 999;
   font-weight: 600;
   transition: 0.3s;
 }
 
+.project-back-button {
+  left: 18px;
+}
+
+.theme-toggle-button {
+  right: 18px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+}
+
+.theme-toggle-button:hover,
 .project-back-button:hover {
   transform: translateY(-3px);
-  background: rgba(255,255,255,0.15);
+  background: var(--surface-strong);
+}
+
+.theme-toggle-icon {
+  font-size: 1rem;
+}
+
+.theme-toggle-label {
+  font-size: 0.92rem;
 }
 
 /* HERO */
@@ -112,7 +163,7 @@ body {
   margin: auto;
   font-size: 1.1rem;
   line-height: 1.8;
-  color: rgba(255,255,255,0.82);
+  color: var(--text-soft);
 }
 
 /* MAIN */
@@ -217,10 +268,10 @@ body {
   width: 430px;
   padding: 28px;
   border-radius: 28px;
-  background: rgba(255,255,255,0.07);
-  border: 1px solid rgba(255,255,255,0.1);
+  background: var(--surface);
+  border: 1px solid var(--border);
   backdrop-filter: blur(18px);
-  box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+  box-shadow: 0 20px 60px var(--shadow);
 }
 
 .quote-top {
@@ -257,6 +308,7 @@ body {
 .quote {
   line-height: 1.7;
   font-size: 1.08rem;
+  color: var(--text);
 }
 
 .author {
@@ -299,9 +351,10 @@ body {
   text-align: center;
   padding: 28px;
   border-radius: 24px;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.1);
+  background: var(--surface);
+  border: 1px solid var(--border);
   backdrop-filter: blur(15px);
+  box-shadow: 0 14px 40px var(--shadow);
 }
 
 .music-card h3 {
@@ -330,7 +383,7 @@ audio {
 }
 
 .section-heading p {
-  color: rgba(255,255,255,0.7);
+  color: var(--text-soft);
 }
 
 .info-container {
@@ -342,9 +395,10 @@ audio {
 .info-card {
   padding: 30px;
   border-radius: 24px;
-  background: rgba(255,255,255,0.07);
-  border: 1px solid rgba(255,255,255,0.1);
+  background: var(--surface);
+  border: 1px solid var(--border);
   transition: 0.35s;
+  box-shadow: 0 14px 36px var(--shadow);
 }
 
 .info-card:hover {
@@ -358,6 +412,7 @@ audio {
 
 .info-card p {
   line-height: 1.8;
+  color: var(--text-soft);
 }
 
 .saffron {

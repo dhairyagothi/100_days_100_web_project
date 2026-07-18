@@ -164,6 +164,22 @@ git push origin feature/amazing-feature
 
 # 8. Open a Pull Request
 ```
+ ## ❓ Frequently Asked Questions (FAQ)
+
+### 1. What is this repository?
+
+This repository contains 100+ web development projects built using HTML, CSS, JavaScript, React, Node.js, and other technologies.
+
+### 2. How do I fork this repository?
+
+Click the **Fork** button at the top-right of the GitHub repository page. This creates your own copy of the project.
+
+### 3. How do I create a new branch?
+
+Run:
+
+```bash
+git checkout -b your-branch-name
 
 ### 📋 Contribution Guidelines
 - Follow existing code style

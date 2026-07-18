@@ -598,24 +598,32 @@ let calculationHistory = [];
 let filteredHistory = [];
 
 function addToHistory(expression, result) {
-  let displayResult =
+  const displayResult =
     typeof result === 'number'
       ? Number.isInteger(result)
         ? result.toString()
         : parseFloat(result.toPrecision(12)).toString()
       : result.toString();
 
-calculationHistory.unshift({
-  expression: expression,
-  result: displayResult,
-  favorite: false
-});
+  calculationHistory.unshift({
+    expression,
+    result: displayResult,
+    favorite: false,
+  });
 
-  if (calculationHistory.length > 20) sortHistory(); calculationHistory.pop();
+  // Keep favorites at the top
+  sortHistory();
+
+  // Remove the oldest entry only after exceeding the limit
+  if (calculationHistory.length > 20) {
+    calculationHistory.pop();
+  }
 
   localStorage.setItem('calculatorHistory', JSON.stringify(calculationHistory));
+
   renderHistory();
 }
+
 function sortHistory() {
   calculationHistory.sort((a, b) => {
     return Number(b.favorite) - Number(a.favorite);
@@ -641,10 +649,10 @@ function renderHistory(historyData = calculationHistory) {
 
   let html = '';
 
- for (let i = 0; i < historyData.length; i++) {
-  const item = historyData[i];
+  for (let i = 0; i < historyData.length; i++) {
+    const item = historyData[i];
 
-  html += `
+    html += `
     <div
       class="history-item ${item.favorite ? 'favorite' : ''}"
       data-expression="${encodeURIComponent(item.expression)}"
@@ -665,7 +673,7 @@ function renderHistory(historyData = calculationHistory) {
 
     </div>
   `;
-}
+  }
 
   historyList.innerHTML = html;
 }
@@ -700,10 +708,7 @@ function toggleFavorite(expression) {
 
   sortHistory();
 
-  localStorage.setItem(
-    'calculatorHistory',
-    JSON.stringify(calculationHistory)
-  );
+  localStorage.setItem('calculatorHistory', JSON.stringify(calculationHistory));
 
   const searchInput = document.getElementById('history-search');
 
@@ -795,17 +800,17 @@ function clearHistory() {
 function loadHistoryFromStorage() {
   try {
     const saved = localStorage.getItem('calculatorHistory');
-if (saved) {
-  calculationHistory = JSON.parse(saved);
+    if (saved) {
+      calculationHistory = JSON.parse(saved);
 
-  calculationHistory.forEach((item) => {
-    if (item.favorite === undefined) {
-      item.favorite = false;
+      calculationHistory.forEach((item) => {
+        if (item.favorite === undefined) {
+          item.favorite = false;
+        }
+      });
+
+      sortHistory();
     }
-  });
-
-  sortHistory();
-}
     renderHistory();
   } catch (e) {
     calculationHistory = [];
@@ -815,38 +820,33 @@ if (saved) {
 // Setup history click
 const historyListEl = document.getElementById('history-list');
 if (historyListEl) {
-historyListEl.onclick = function (e) {
+  historyListEl.onclick = function (e) {
+    const favoriteBtn = e.target.closest('.favorite-btn');
 
-  const favoriteBtn = e.target.closest('.favorite-btn');
+    if (favoriteBtn) {
+      e.stopPropagation();
 
-  if (favoriteBtn) {
-    e.stopPropagation();
+      toggleFavorite(favoriteBtn.dataset.expression);
 
-    toggleFavorite(
-      favoriteBtn.dataset.expression
-    );
-
-    return;
-  }
-
-  const item = e.target.closest('.history-item');
-
-  if (item) {
-
-    const result =
-      decodeURIComponent(item.dataset.result);
-
-    const calc = activeCalculator();
-
-    if (calc.expression === 'Error') {
-      calc.clear();
+      return;
     }
 
-    calc.expression = result;
-    calc.currentOperand = result;
-    calc.updateDisplay();
-  }
-};
+    const item = e.target.closest('.history-item');
+
+    if (item) {
+      const result = decodeURIComponent(item.dataset.result);
+
+      const calc = activeCalculator();
+
+      if (calc.expression === 'Error') {
+        calc.clear();
+      }
+
+      calc.expression = result;
+      calc.currentOperand = result;
+      calc.updateDisplay();
+    }
+  };
 }
 
 const exportTxtBtn = document.getElementById('export-txt');
@@ -990,29 +990,28 @@ const functionInfo = {
 // ========== END HISTORY FUNCTIONS ==========
 // ===== THEME TOGGLE =====
 
-const themeToggle = document.getElementById("theme-toggle");
+const themeToggle = document.getElementById('theme-toggle');
 
 function applyTheme(theme) {
-  document.documentElement.setAttribute("data-theme", theme);
+  document.documentElement.setAttribute('data-theme', theme);
 
   if (themeToggle) {
-    themeToggle.textContent = theme === "dark" ? "🌙" : "☀️";
+    themeToggle.textContent = theme === 'dark' ? '🌙' : '☀️';
   }
 
-  localStorage.setItem("calculatorTheme", theme);
+  localStorage.setItem('calculatorTheme', theme);
 }
 
-const savedTheme =
-  localStorage.getItem("calculatorTheme") || "dark";
+const savedTheme = localStorage.getItem('calculatorTheme') || 'dark';
 
 applyTheme(savedTheme);
 
 if (themeToggle) {
-  themeToggle.addEventListener("click", () => {
+  themeToggle.addEventListener('click', () => {
     const current =
-      document.documentElement.getAttribute("data-theme") || "dark";
+      document.documentElement.getAttribute('data-theme') || 'dark';
 
-    applyTheme(current === "dark" ? "light" : "dark");
+    applyTheme(current === 'dark' ? 'light' : 'dark');
   });
 }
 

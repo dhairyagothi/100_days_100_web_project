@@ -6,6 +6,24 @@
   --accent-glow: #38bdf8;
   --accent-glow-rgb: 56, 189, 248;
   --ui-border: rgba(255, 255, 255, 0.04);
+  --card-bg: rgba(255, 255, 255, 0.02);
+  --shadow-color: rgba(0, 0, 0, 0.5);
+  
+  /* Theme transition */
+  --theme-transition: 0.3s ease;
+}
+
+/* Light Theme */
+[data-theme="light"] {
+  --bg-dark: #f0f4f8;
+  --panel-bg: #ffffff;
+  --text-light: #1a202c;
+  --text-muted: #4a5568;
+  --ui-border: rgba(0, 0, 0, 0.08);
+  --card-bg: rgba(0, 0, 0, 0.03);
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --accent-glow: #0284c7;
+  --accent-glow-rgb: 2, 132, 199;
 }
 
 * {
@@ -27,6 +45,7 @@ body {
   justify-content: center;
   align-items: center;
   padding: 1.5rem;
+  transition: background-color var(--theme-transition), color var(--theme-transition);
 }
 
 .app-workspace {
@@ -36,12 +55,48 @@ body {
   border: 1px solid var(--ui-border);
   border-radius: 1.25rem;
   padding: 2.5rem;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 25px 50px -12px var(--shadow-color);
+  transition: background-color var(--theme-transition), border-color var(--theme-transition), box-shadow var(--theme-transition);
 }
 
 .app-header {
   text-align: center;
   margin-bottom: 3rem;
+  position: relative;
+}
+
+.header-controls {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.theme-toggle {
+  background: var(--card-bg);
+  border: 1px solid var(--ui-border);
+  color: var(--text-light);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: all var(--theme-transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-toggle:hover {
+  background: rgba(56, 189, 248, 0.1);
+  transform: rotate(20deg);
+}
+
+.theme-icon {
+  transition: transform var(--theme-transition);
+}
+
+[data-theme="light"] .theme-icon {
+  transform: rotate(180deg);
 }
 
 .app-header h1 {
@@ -68,7 +123,8 @@ body {
     margin-top: 20px;
     padding: 16px;
     border-radius: 12px;
-    background: rgba(255,255,255,.08);
+    background: var(--card-bg);
+    transition: background-color var(--theme-transition);
 }
 
 .input-group {
@@ -81,6 +137,12 @@ body {
 .input-group input {
     width: 70px;
     text-align: center;
+    background: var(--bg-dark);
+    color: var(--text-light);
+    border: 1px solid var(--ui-border);
+    border-radius: 4px;
+    padding: 4px 8px;
+    transition: background-color var(--theme-transition), color var(--theme-transition), border-color var(--theme-transition);
 }
 
 .validation-message {
@@ -130,7 +192,8 @@ body {
   transform-origin: center;
   transition:
     transform 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-    opacity 0.5s ease;
+    opacity 0.5s ease,
+    stroke var(--theme-transition);
 }
 
 .ring-outer {
@@ -177,15 +240,17 @@ body {
   margin-top: 2rem;
   font-size: 0.9rem;
   color: var(--text-muted);
-  background: rgba(0, 0, 0, 0.15);
+  background: var(--card-bg);
   padding: 0.4rem 1rem;
   border-radius: 1rem;
   border: 1px solid var(--ui-border);
+  transition: background-color var(--theme-transition), color var(--theme-transition), border-color var(--theme-transition);
 }
 
 #cycleCount {
   color: var(--text-light);
   font-weight: 700;
+  transition: color var(--theme-transition);
 }
 
 /* User Controls Panel Layout */
@@ -193,6 +258,137 @@ body {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+}
+
+/* Audio Controls */
+.audio-controls {
+  background: var(--card-bg);
+  border: 1px solid var(--ui-border);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  transition: background-color var(--theme-transition), border-color var(--theme-transition);
+}
+
+.audio-toggle-group {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.audio-toggle-btn {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--ui-border);
+  color: var(--text-muted);
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+}
+
+.audio-toggle-btn:hover {
+  color: var(--text-light);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.audio-toggle-btn.active {
+  background: rgba(56, 189, 248, 0.08);
+  border-color: rgba(56, 189, 248, 0.3);
+  color: var(--accent-glow);
+}
+
+.audio-icon {
+  font-size: 1rem;
+}
+
+.ambient-selector {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ambient-btn {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--ui-border);
+  color: var(--text-muted);
+  padding: 0.4rem;
+  border-radius: 0.5rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.ambient-btn:hover {
+  color: var(--text-light);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.ambient-btn.active {
+  background: rgba(56, 189, 248, 0.08);
+  border-color: rgba(56, 189, 248, 0.3);
+  color: var(--accent-glow);
+}
+
+.volume-control {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.volume-control label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  min-width: 60px;
+}
+
+.volume-control input[type="range"] {
+  flex: 1;
+  height: 4px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: var(--ui-border);
+  border-radius: 2px;
+  outline: none;
+  transition: background var(--theme-transition);
+}
+
+.volume-control input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--accent-glow);
+  cursor: pointer;
+  transition: background var(--theme-transition);
+}
+
+.volume-control input[type="range"]::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--accent-glow);
+  cursor: pointer;
+  border: none;
 }
 
 .preset-selector {
@@ -205,10 +401,18 @@ body {
   .preset-selector {
     grid-template-columns: 1fr;
   }
+  
+  .audio-toggle-group {
+    grid-template-columns: 1fr;
+  }
+  
+  .ambient-selector {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 .preset-btn {
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--card-bg);
   border: 1px solid var(--ui-border);
   color: var(--text-muted);
   padding: 0.65rem 0.5rem;

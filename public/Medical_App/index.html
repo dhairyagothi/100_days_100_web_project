@@ -26,9 +26,8 @@
 <body>
 
 
-    <link rel="stylesheet" href="css/animations.css">
-
     <link rel="stylesheet" href="css/animation.css">
+    
     <link rel="stylesheet" href="css/hero.css">
     <link rel="stylesheet" href="assets/css/auth.css">
 </head>
@@ -77,35 +76,16 @@
     </ul>
 </nav>
 
-        <div class="sidebar-footer" style="margin-top:auto; padding:16px; display:flex; flex-direction:column; gap:12px;">
-
-
         <div class="sidebar-footer">
-
             <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Theme">
                 <i class="ph ph-moon"></i>
                 <span>Dark Mode</span>
             </button>
 
-            <button class="btn btn-outline" id="logoutBtn">
+            <button class="btn btn-outline btn-logout" id="logoutBtn">
                 <i class="ph ph-sign-out"></i>
                 Logout
             </button>
-
-            <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Theme"
-                ></i>
-                <span style="color:#fff;">Dark Mode</span>
-            </button>
-
-            <button class="btn btn-outline" id="logoutBtn"
-                style="width:100%; padding:12px 14px; border-radius:12px; cursor:pointer;
-                border:1px solid #ff4d4f; background:transparent; color:#ff4d4f;
-                font-weight:600; display:flex; align-items:center; justify-content:center; gap:8px;
-                transition:all 0.2s ease; box-shadow:0 4px 14px rgba(255,77,79,0.15);">
-                <i class="ph ph-sign-out" style="font-size:18px;"></i>
-                Logout
-            </button>
-
         </div>
     </aside>
 
@@ -312,22 +292,27 @@
                     <section class="card" data-role="patient">
                         <div class="card-header">
                             <div class="card-icon primary"><i class="ph ph-stethoscope"></i></div>
-                            <h2>Request Consultation</h2>
+                            <div class="card-header-content">
+                                <h2>Request Consultation</h2>
+                                <p class="card-subtitle">Fast patient intake for secure specialist matching.</p>
+                            </div>
                         </div>
                         <form id="requestForm" class="modern-form" novalidate>
                             <div class="form-group">
-                                <div class="form-field">
-                                    <label for="patientName">Patient Full Name</label>
-                                    <div class="input-wrapper">
-                                        <i class="ph ph-user"></i>
-                                        <input type="text" id="patientName" name="patientName" placeholder="Enter your full name" required>
+                                <div class="form-row-2">
+                                    <div class="form-field">
+                                        <label for="patientName">Patient Full Name</label>
+                                        <div class="input-wrapper">
+                                            <i class="ph ph-user"></i>
+                                            <input type="text" id="patientName" name="patientName" placeholder="Enter your full name" required>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-field">
-                                    <label for="doctorName">Referring Doctor</label>
-                                    <div class="input-wrapper">
-                                        <i class="ph ph-user-md"></i>
-                                        <input type="text" id="doctorName" name="doctorName" placeholder="Doctor's name" required>
+                                    <div class="form-field">
+                                        <label for="doctorName">Referring Doctor</label>
+                                        <div class="input-wrapper">
+                                            <i class="ph ph-user-md"></i>
+                                            <input type="text" id="doctorName" name="doctorName" placeholder="Doctor's name" required>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-field">
@@ -337,15 +322,23 @@
                                         <textarea id="patientCondition" name="patientCondition" placeholder="Describe the condition briefly..." rows="3" required></textarea>
                                     </div>
                                 </div>
-                                <div class="form-field">
-                                    <label for="specialistSearch">Required Specialist</label>
-                                    <div class="input-wrapper">
-                                        <i class="ph ph-magnifying-glass"></i>
-                                        <input type="text" id="specialistSearch" placeholder="Search specialist...">
+                                <div class="form-row-2">
+                                    <div class="form-field">
+                                        <label for="specialistSearch">Required Specialist</label>
+                                        <div class="input-wrapper">
+                                            <i class="ph ph-magnifying-glass"></i>
+                                            <input type="text" id="specialistSearch" placeholder="Search specialist...">
+                                        </div>
                                     </div>
-                                    <select id="specialistType" name="specialistType" required class="mt-2">
-                                        <option value="">Select a specialist...</option>
-                                    </select>
+                                    <div class="form-field">
+                                        <label for="specialistType">Specialist Type</label>
+                                        <div class="input-wrapper">
+                                            <i class="ph ph-stethoscope"></i>
+                                            <select id="specialistType" name="specialistType" required>
+                                                <option value="">Select a specialist...</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <button type="button" class="btn-text advanced-toggle" id="toggleAdvancedBtn">
@@ -543,17 +536,7 @@
                         <div id="healthTip" class="health-tip-content"><p>Loading health tip...</p></div>
                     </section>
 
-                    <section class="card">
-                        <div class="card-header">
-                            <div class="card-icon primary"><i class="ph ph-lightning-bolt"></i></div>
-                            <h2>Quick Actions</h2>
-                        </div>
-                        <div class="quick-actions">
-                            <a href="feedback.html" class="quick-action-btn"><i class="ph ph-chat-circle-text"></i><span>Give Feedback</span></a>
-                            <button class="quick-action-btn"><i class="ph ph-download"></i><span>Download Records</span></button>
-                            <button class="quick-action-btn"><i class="ph ph-calendar"></i><span>Reschedule</span></button>
-                        </div>
-                    </section>
+
 
 
 

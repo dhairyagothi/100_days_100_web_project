@@ -9,6 +9,11 @@
   <body>
     <div class="app-workspace">
       <header class="app-header">
+        <div class="header-controls">
+          <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">
+            <span class="theme-icon">🌙</span>
+          </button>
+        </div>
         <h1>Zen Breathing Visualizer</h1>
         <p>Sync your breath with fluid geometric loops to alleviate stress</p>
       </header>
@@ -48,6 +53,33 @@
       </main>
 
       <footer class="controls-panel">
+        <!-- Audio Controls -->
+        <div class="audio-controls">
+          <div class="audio-toggle-group">
+            <button id="soundEffectsToggle" class="audio-toggle-btn active">
+              <span class="audio-icon">🔊</span> Sound FX
+            </button>
+            <button id="voiceGuidanceToggle" class="audio-toggle-btn">
+              <span class="audio-icon">🗣️</span> Voice Guide
+            </button>
+            <button id="ambientSoundToggle" class="audio-toggle-btn">
+              <span class="audio-icon">🌊</span> Ambient
+            </button>
+          </div>
+          
+          <div id="ambientSelector" class="ambient-selector hidden">
+            <button class="ambient-btn" data-sound="rain">🌧️ Rain</button>
+            <button class="ambient-btn" data-sound="ocean">🌊 Ocean</button>
+            <button class="ambient-btn" data-sound="forest">🌲 Forest</button>
+            <button class="ambient-btn" data-sound="fire">🔥 Fire</button>
+          </div>
+          
+          <div class="volume-control">
+            <label for="volumeSlider">Volume</label>
+            <input type="range" id="volumeSlider" min="0" max="100" value="50" />
+          </div>
+        </div>
+
         <div class="preset-selector">
           <button class="preset-btn active" data-preset="box">
             Box Breathing (4-4-4-4)
@@ -62,6 +94,7 @@
             Custom Pattern
           </button>
         </div>
+        
         <div id="customPatternPanel" class="custom-pattern-panel hidden">
           <h3>Custom Breathing Pattern</h3>
 
@@ -115,6 +148,7 @@
 
           <p id="validationMessage" class="validation-message"></p>
         </div>
+        
         <div class="action-row">
           <button id="startStopBtn" class="action-btn-primary">
             Begin Session

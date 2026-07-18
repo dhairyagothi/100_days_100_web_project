@@ -5,7 +5,7 @@ import zatImg from '../assets/zat.png';
 const RecipeList = ({ recipes, favorites, onToggleFavorite, onShowDetails, loading, error }) => {
   const emptyRef = useRef(null);
 
-  // Scroll so the full GIF + Zat panel is visible (100px below the GIF's bottom edge)
+  // Scroll the empty state into view so the full panel is visible.
   useEffect(() => {
     if (!loading && !error && recipes && recipes.length === 0) {
       const timer = setTimeout(() => {
@@ -21,6 +21,7 @@ const RecipeList = ({ recipes, favorites, onToggleFavorite, onShowDetails, loadi
 
   if (loading) {
     return (
+      // Show a loading indicator while recipes are being fetched.
       <div className="state-container">
         <div className="loader"></div>
         <p>Finding delicious recipes...</p>
@@ -30,6 +31,7 @@ const RecipeList = ({ recipes, favorites, onToggleFavorite, onShowDetails, loadi
 
   if (error) {
     return (
+      // Show the error state when the request fails.
       <div className="state-container error">
         <p>⚠️ {error}</p>
       </div>
@@ -38,9 +40,10 @@ const RecipeList = ({ recipes, favorites, onToggleFavorite, onShowDetails, loadi
 
   if (!recipes || recipes.length === 0) {
     return (
+      // Empty-state layout with illustration on the left and meme panel on the right.
       <div className="state-container empty" ref={emptyRef}>
 
-        {/* Left: glassmorphic GIF panel matching the red-box region */}
+        {/* Left-side GIF panel for the no-results state. */}
         <div className="empty-glass-panel">
           <img
             src="https://i.giphy.com/3o85g2ttYzgw6o661q.webp"
@@ -49,10 +52,10 @@ const RecipeList = ({ recipes, favorites, onToggleFavorite, onShowDetails, loadi
           />
         </div>
 
-        {/* Right: spacer so content doesn't overlap with fixed zat panel */}
+        {/* Spacer prevents overlap with the fixed meme panel. */}
         <div className="empty-spacer" />
 
-        {/* Fixed meme panel: slides in from the right */}
+        {/* Meme panel that stays visible beside the empty state. */}
         <div className="zat-meme-panel">
           <div className="speech-bubble">
             No recipezz, my friend? 😤 You search like ziz, how you expect to find shawarmazz, ha?

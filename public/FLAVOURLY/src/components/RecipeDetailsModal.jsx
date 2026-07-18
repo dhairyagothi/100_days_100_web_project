@@ -11,7 +11,7 @@ const RecipeDetailsModal = ({ recipe, onClose }) => {
 
   if (!recipe) return null;
 
-  // Extract ingredients for expanded view
+  // Build a cleaned ingredient list from the recipe data fields
   const ingredients = [];
   for (let i = 1; i <= 20; i++) {
     const ingredient = recipe[`strIngredient${i}`];
@@ -22,10 +22,14 @@ const RecipeDetailsModal = ({ recipe, onClose }) => {
   }
 
   return (
+    // Close the modal when clicking the overlay
     <div className="modal-overlay" onClick={onClose}>
+      {/* Stop clicks inside the modal from closing it */}
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+        {/* Manual close button for accessibility and convenience */}
         <button className="modal-close-btn" onClick={onClose}>&times;</button>
         
+        {/* Main recipe image and title area */}
         <div className="modal-hero">
           <img 
             src={recipe.strMealThumb} 
@@ -39,6 +43,7 @@ const RecipeDetailsModal = ({ recipe, onClose }) => {
         </div>
 
         <div className="modal-body readable-font">
+          {/* Ingredient list section */}
           <div className="modal-section">
             <h3>INGREDIENTS ({ingredients.length})</h3>
             <ul className="modal-ingredients">
@@ -50,6 +55,7 @@ const RecipeDetailsModal = ({ recipe, onClose }) => {
             </ul>
           </div>
           
+          {/* Step-by-step cooking instructions */}
           <div className="modal-section">
             <h3>INSTRUCTIONS</h3>
             <div className="modal-instructions">
