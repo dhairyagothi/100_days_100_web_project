@@ -20,6 +20,10 @@ const voiceField = document.getElementById('voiceField');
 const voiceSelect = document.getElementById('voiceSelect');
 const textCaptchaField = document.querySelector('.textcaptcha');
 
+// FIX: this was never defined before, so generateCaptcha() threw a
+// ReferenceError on the very first call and the CAPTCHA never rendered.
+const captchaTypeSelect = document.getElementById('captchaType');
+
 let currentCaptcha = null;
 let attempts = 0;
 const maxAttempts = 3;
@@ -235,6 +239,8 @@ const generateCaptcha = () => {
     // Normalize type string case to prevent logic matching bugs
     const type = selectedType.toLowerCase();
 
+    const type = captchaTypeSelect.value;
+
     if (type === 'audio') {
         voiceField.classList.remove('hidden');
     } else {
@@ -313,9 +319,17 @@ const generateCaptcha = () => {
     }
 };
 
-// ==========================
-// TOAST NOTIFICATION SYSTEM
-// ==========================
+// FIX: keep selectedType in sync with the dropdown and regenerate on change,
+// otherwise switching CAPTCHA type from the <select> never re-renders.
+captchaTypeSelect.addEventListener('change', () => {
+    selectedType = captchaTypeSelect.value;
+    textInput.value = "";
+    selectedImageAnswer = "";
+    generateCaptcha();
+});
+
+//math captcha numeric input validation
+textInput.addEventListener("input", () => {
 
 /**
  * Shows a toast notification outside the form.
@@ -571,91 +585,5 @@ if (dashboardAttempts) {
             }
         }
 
-        // --- Recent Activity List ---
-        const listEl = document.getElementById('activity-list');
-        if (listEl) {
-            if (stats.activity.length === 0) {
-                listEl.innerHTML = '<div class="empty-state">No activity yet</div>';
-            } else {
-                // Show most-recent first, up to 10 entries
-                listEl.innerHTML = [...stats.activity].reverse().slice(0, 10).map(entry => {
-                    const date = new Date(entry.time);
-                    const timeStr = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                    const dateStr = date.toLocaleDateString([], { month: 'short', day: 'numeric' });
-                    const icon   = entry.result === 'success'
-                        ? '<i class="fas fa-check-circle" style="color:#10b981"></i>'
-                        : '<i class="fas fa-times-circle" style="color:#ef4444"></i>';
-                    const typeName = (entry.type || 'text').charAt(0).toUpperCase() + (entry.type || 'text').slice(1);
-                    return `
-                        <div class="activity-item">
-                            <span class="activity-icon">${icon}</span>
-                            <span class="activity-type">${typeName} CAPTCHA</span>
-                            <span class="activity-result" style="color:${entry.result === 'success' ? '#10b981' : '#ef4444'};font-weight:600">
-                                ${entry.result === 'success' ? 'Passed' : 'Failed'}
-                            </span>
-                            <span class="activity-time">${dateStr}, ${timeStr}</span>
-                        </div>`;
-                }).join('');
-            }
-        }
-    };
-
-    renderDashboard();
-
-    // --- Reset Button ---
-    const resetBtn = document.getElementById('reset-btn');
-    if (resetBtn) {
-        resetBtn.addEventListener('click', () => {
-            if (!confirm('Reset all statistics? This cannot be undone.')) return;
-            ['captcha_attempts','captcha_success','captcha_fail',
-             'captcha_streak','captcha_best','captcha_activity'].forEach(k => localStorage.removeItem(k));
-            renderDashboard();
-        });
-    }
-}
-
-// ==========================
-// THEME TOGGLE - COMPLETE FIX
-// ==========================
-
-// Wait for DOM to load
-document.addEventListener('DOMContentLoaded', function() {
-    // Get elements
-    const toggleBtn = document.getElementById('themeToggle');
-    const themeIcon = document.getElementById('themeIcon');
-    
-    // If button doesn't exist, exit
-    if (!toggleBtn) return;
-    
-    // Get stored preference (default: true = dark mode)
-    let isDarkMode = localStorage.getItem('darkMode');
-    if (isDarkMode === null) {
-        isDarkMode = true;
-    } else {
-        isDarkMode = isDarkMode === 'true';
-    }
-    
-    // Apply theme function
-    function applyTheme(darkMode) {
-        if (darkMode) {
-            // Dark mode - remove light theme class
-            document.body.classList.remove('light-theme');
-            if (themeIcon) themeIcon.textContent = '☀️';
-        } else {
-            // Light mode - add light theme class
-            document.body.classList.add('light-theme');
-            if (themeIcon) themeIcon.textContent = '🌙';
-        }
-    }
-    
-    // Apply initial theme
-    applyTheme(isDarkMode);
-    
-    // Toggle on click
-    toggleBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        isDarkMode = !isDarkMode;
-        localStorage.setItem('darkMode', String(isDarkMode));
-        applyTheme(isDarkMode);
-    });
-});
+addDifficultySelector();
+generateCaptcha();

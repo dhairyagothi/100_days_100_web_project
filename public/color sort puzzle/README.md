@@ -1,62 +1,105 @@
-# Color Sort Puzzle
+# 🧪 ColorSort — Color Sort Puzzle Game
 
-A glassmorphism confirmation modal for EaseMotion CSS with a soft glow that follows the cursor inside it. Opening, closing, focus handling, and the blurred backdrop are all handled by the native **HTML Popover API** — no JavaScript required for the modal mechanics themselves.
+A browser-based liquid color-sorting puzzle game where players pour colored liquid between tubes until every tube contains a single, uniform color — built entirely with vanilla HTML, CSS, and JavaScript.
 
-## 🧩 Project Overview
+---
 
-Most modal components reach for JavaScript to handle opening, closing, backdrop clicks, and Escape-to-dismiss. This one uses the native `popover` / `popovertarget` / `popovertargetaction` attributes instead, which the browser implements for free — including light-dismiss (click outside to close) and Escape-key handling.
+## 📖 Introduction
 
-The one place JavaScript genuinely is necessary is the **cursor-following glow**: CSS has no way to read live pointer coordinates into a custom property, so a small, scoped `mousemove` listener updates `--glow-x` / `--glow-y` while the pointer moves inside the modal. If that script doesn't run for any reason, the modal still opens, closes, and functions normally — the glow simply stays at its default centered position.
+**ColorSort** is a relaxing yet challenging puzzle game inspired by the classic "water sort" genre. Players select a tube and pour its top liquid into another tube, following simple pouring rules, until all colors are perfectly sorted. The game features multiple difficulty levels, a move counter, a live timer, undo support, and dynamically generated sound effects — all without any external libraries or audio files.
+
+---
 
 ## ✨ Features
 
-- Modern glassmorphism modal (`backdrop-filter: blur()`, translucent surface, soft border)
-- Cursor-following radial glow, positioned via CSS custom properties
-- Native fade-in on open using `@starting-style` + CSS transitions (no keyframe hacks)
-- Blurred overlay behind the modal via the native `::backdrop` pseudo-element
-- Rounded corners and a soft, layered drop shadow
-- Accessible close button (circular icon button) plus Cancel/Confirm actions
-- Fully responsive: centered card on desktop/tablet, near-full-width with stacked buttons on mobile
-- `prefers-reduced-motion` support disables all transitions
-- Reuses EaseMotion CSS's `--ease-standard` / `--ease-emphasized` motion tokens for consistency with other components in the library
+- 🎚️ **Three Difficulty Levels** — Easy (4 colors), Medium (6 colors), and Hard (8 colors), each with adjustable tube counts.
+- ⏱️ **Live Timer & Move Counter** — Tracks elapsed time and number of moves for every puzzle attempt.
+- 🖱️ **Intuitive Pour Mechanics** — Select a tube, then click a destination tube; pouring is only allowed onto matching colors or into empty tubes.
+- ↩️ **Undo & Reset** — Undo reverses the last move, while Reset restarts the current puzzle from its original shuffled state.
+- 🔄 **New Game Generator** — Instantly creates a new, randomly shuffled puzzle at the selected difficulty.
+- 🎬 **Pour & Bubble Animations** — Smooth liquid pour-in animation with rising bubble effects for a satisfying visual experience.
+- ⚠️ **Invalid Move Feedback** — A shake animation and on-screen message alert the player when an illegal pour is attempted.
+- ✅ **Completed Tube Highlighting** — Finished tubes are visually highlighted with a glowing border and a "✓ Done" label.
+- 🏆 **Win Celebration** — A congratulatory modal appears on completion, showing total moves taken along with a confetti animation.
+- ❔ **How To Play Modal** — Built-in instructions overlay explaining the rules, accessible at any time (pauses the timer while open).
+- 🔊 **Custom Web Audio Sound Effects** — Pour, select, invalid move, tube-complete, and win sounds generated in real time using the Web Audio API, with a mute/unmute toggle.
+- 🏠 **Home Navigation** — Quick link back to the main project hub.
+- 📱 **Responsive Layout** — Flexbox-based arena and controls adapt cleanly to different screen sizes.
+
+---
 
 ## 📁 Folder Structure
 
-submissions/examples/cursor-glow-modal-santoshi/
-├── demo.html   # Trigger button, modal markup, and the minimal glow-tracking script
-├── style.css   # Design tokens, glassmorphism styling, glow layer, animations, responsive rules
-└── README.md   # This file
+- **HTML5** — Page structure and semantic layout
+- **CSS3** — Styling, animations (pour, shake, confetti, bubbles), and responsive layout using CSS variables
+- **JavaScript (Vanilla)** — Game logic, state management, pour validation, undo/history stack, and timer
+- **Web Audio API** — Procedurally generated sound effects with no external audio assets
 
-## 🛠 Technologies Used
+---
 
-- HTML5 **Popover API** (`popover`, `popovertarget`, `popovertargetaction`) for modal open/close behavior
-- CSS3 (`backdrop-filter`, `::backdrop`, `@starting-style`, custom properties, media queries)
-- A single small `<script>` block (~5 lines) solely to track cursor position for the glow effect
-- Google Fonts: Poppins (headings), Inter (body text)
+## 📁 Project Structure
 
-## 🚀 How to Run
+```text
+Color-Sort-Puzzle/
+│
+├── index.html    # Complete game — structure, styles, and logic in a single file
+```
 
-1. Make sure `demo.html` and `style.css` are in the same folder.
-2. Open `demo.html` in a recent version of Chrome, Edge, or Safari (browsers with Popover API and `@starting-style` support show the full fade-in and glow experience).
-3. Click **"Open Confirmation Modal"**, then move your cursor inside the modal to see the glow follow it.
-4. Close the modal via the **×** button, the **Cancel**/**Confirm** buttons, the Escape key, or by clicking outside it.
+---
 
-## 📸 Screenshots
+## ⚙️ Installation & Setup
 
-<details>
-<summary>🖼 Closed state (click to expand)</summary>
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/dhairyagothi/100_days_100_web_project.git
+   ```
+2. Navigate to the project folder:
+   ```bash
+   cd 100_days_100_web_project/Color-Sort-Puzzle
+   ```
+3. Open `index.html` directly in your browser — no build tools, dependencies, or server required.
 
-_Add a screenshot of the trigger button/page here._
+---
 
-</details>
+## 🎮 Usage Guide
 
-<details>
-<summary>🖼 Open modal with cursor glow (click to expand)</summary>
+1. Choose a difficulty level — **Easy**, **Medium**, or **Hard** — from the top control bar.
+2. Click a tube to select it (it lifts slightly with a highlighted border).
+3. Click a second tube to pour the selected tube's top color into it.
+4. Pouring succeeds only if the destination tube is empty or already has the same top color; otherwise an error message and shake animation appear.
+5. Use **Undo** to reverse your last move, or **Reset** to restart the puzzle from scratch.
+6. Click **New Game** at any time to generate a fresh, shuffled puzzle.
+7. Sort every color into its own tube to win — a celebration modal will display your total moves and elapsed time.
+8. Click **❔ How To Play** for in-game instructions, or toggle **🔊 Sound** to mute/unmute effects.
 
-_Add a screenshot of the open modal, cursor glow visible, here._
+---
 
-</details>
+## 🚀 Future Enhancements
+
+- Add a hint system to suggest the next valid move
+- Add a best-time and best-moves leaderboard per difficulty level
+- Add more difficulty tiers with larger tube counts
+- Add keyboard accessibility for tube selection and pouring
+- Add a daily-challenge mode with a fixed shuffle seed
+
+---
 
 ## 🤝 Contributing
 
-This component was built as an example page for the EaseMotion CSS repository, contributed as part of a GSSoC submission. Suggestions and improvements are welcome via Pull Request.
+Contributions are welcome! To contribute:
+1. Fork the repository
+2. Create a new branch (`git checkout -b feature-name`)
+3. Commit your changes
+4. Push to your branch and open a Pull Request
+
+---
+
+## 📄 License
+
+This project is open-source and available for learning and contribution purposes under the repository's existing license.
+
+---
+
+## ✍️ Author
+
+**Documentation by Sanyogita Singh**
