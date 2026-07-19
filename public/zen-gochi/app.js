@@ -1,15 +1,15 @@
-// State variables
+// Game State variables
 let stability = 100;
 let zenScore = 0;
 let level = 1;
 let currentStage = 'The Seed';
 
-// Configuration thresholds
-const DAMAGE_MOUSE_SPEED = 40; // Trigger penalty if mouse moves too fast
+// Rules Configuration
+const DAMAGE_MOUSE_SPEED = 40; 
 const STABILITY_DECREASE_STEP = 15;
 const STABILITY_RECOVERY_STEP = 2;
 
-// DOM Elements
+// DOM Hooking Elements
 const stabilityBar = document.getElementById('stabilityBar');
 const levelDisplay = document.getElementById('levelDisplay');
 const stageDisplay = document.getElementById('stageDisplay');
@@ -17,21 +17,25 @@ const statusMessage = document.getElementById('statusMessage');
 const bodyCore = document.getElementById('bodyCore');
 const bodyGlow = document.getElementById('bodyGlow');
 const pupil = document.getElementById('pupil');
+const themeToggle = document.getElementById('themeToggle');
 
-// Tracking variables for physics calculation (Duplicates Removed)
+// Theme toggle configuration (isolated from penalties)
+themeToggle.addEventListener('mousedown', (e) => e.stopPropagation());
+themeToggle.addEventListener('click', (e) => {
+  e.stopPropagation();
+  document.body.classList.toggle('light-theme');
+});
+
+// Tracking variables for physics logic
 let lastMouseX = 0;
 let lastMouseY = 0;
 let lastMouseTime = Date.now();
 let mouseInitialized = false;
 
-// Prevent multiple penalties from stacking
 const PENALTY_COOLDOWN = 300;
 let lastPenaltyTime = 0;
-
-// Ignore unrealistic mouse speed calculations
 const MIN_MOUSE_DT = 16;
 
-// Evolution mappings
 const stages = [
   { score: 1, stage: 'The Seed' },
   { score: 5, stage: 'The Sprout' },
@@ -57,45 +61,34 @@ function updateEvolutionStage() {
 
     levelDisplay.textContent = level;
     stageDisplay.textContent = currentStage;
-
     triggerEvolutionVisuals();
   }
 }
 
-// Main game clock loop runs every 1 second
+// Main Loop
 setInterval(() => {
   if (stability > 0) {
-    // If user was stable, gain zen points
     zenScore++;
-
-    // Handle level ups based on zen score points
     updateEvolutionStage();
 
-    // Slowly heal stability if it was damaged
     if (stability < 100) {
       stability = Math.min(100, stability + STABILITY_RECOVERY_STEP);
     }
 
-    updateUI('System stable. Energy accumulating...', '#64748b');
+    const standardText = document.body.classList.contains('light-theme') ? '#708090' : '#64748b';
+    updateUI('System stable. Energy accumulating...', standardText);
   } else {
-    updateUI('CRITICAL BRAINWAVES DETECTED! Zen broken.', '#ff0055');
+    updateUI('CRITICAL BRAINWAVES DETECTED! Zen broken.', 'var(--neon-magenta)');
     resetZen();
   }
-
   animateCreaturePulse();
 }, 1000);
 
-// Core function to penalize interaction
 function breakZen(penaltyAmount, message) {
   const now = Date.now();
-
-  // Cooldown to prevent stacked penalties
-  if (now - lastPenaltyTime < PENALTY_COOLDOWN) {
-    return;
-  }
+  if (now - lastPenaltyTime < PENALTY_COOLDOWN) return;
 
   lastPenaltyTime = now;
-
   stability = Math.max(0, stability - penaltyAmount);
   stabilityBar.style.width = `${stability}%`;
 
@@ -124,11 +117,11 @@ function resetZen() {
   bodyCore.setAttribute('r', '40');
 }
 
-// 1. Monitor Mouse Speed
+// Interaction listeners
 document.addEventListener('mousemove', (e) => {
-  const now = Date.now();
+  if (e.target.closest('#themeToggle')) return; // Ignore theme clicks
 
-  // Initialize on first real mouse movement
+  const now = Date.now();
   if (!mouseInitialized) {
     lastMouseX = e.clientX;
     lastMouseY = e.clientY;
@@ -138,24 +131,16 @@ document.addEventListener('mousemove', (e) => {
   }
 
   const dt = now - lastMouseTime;
-
-  // Ignore unrealistic frame timings
-  if (dt < MIN_MOUSE_DT) {
-    lastMouseX = e.clientX;
-    lastMouseY = e.clientY;
-    lastMouseTime = now;
-    return;
-  }
+  if (dt < MIN_MOUSE_DT) return;
 
   const dx = e.clientX - lastMouseX;
   const dy = e.clientY - lastMouseY;
-
   const distance = Math.sqrt(dx * dx + dy * dy);
   const speed = (distance / dt) * 100;
 
+  // Eye looking physics tracking
   const pupilX = 100 + dx * 0.05;
   const pupilY = 100 + dy * 0.05;
-
   pupil.setAttribute('cx', Math.max(95, Math.min(105, pupilX)));
   pupil.setAttribute('cy', Math.max(95, Math.min(105, pupilY)));
 
@@ -168,27 +153,21 @@ document.addEventListener('mousemove', (e) => {
   lastMouseTime = now;
 });
 
-// 2. Monitor Keypresses
 document.addEventListener('keydown', () => {
-  breakZen(
-    Math.round(STABILITY_DECREASE_STEP * 1.2),
-    'Input interference! Stop typing.'
-  );
+  breakZen(Math.round(STABILITY_DECREASE_STEP * 1.2), 'Input interference! Stop typing.');
 });
 
-// 3. Monitor Clicks
-document.addEventListener('mousedown', () => {
+document.addEventListener('mousedown', (e) => {
+  if (e.target.closest('#themeToggle')) return; 
   breakZen(STABILITY_DECREASE_STEP, 'Physical contact alert! Hands off.');
 });
 
-// 4. Monitor Tab Switching (Cheating protection)
 document.addEventListener('visibilitychange', () => {
-  if (document.hidden) {
+  if (typeof document.hidden !== 'undefined' && document.hidden) {
     breakZen(15, 'Focus lost. Stay present.');
   }
 });
 
-// Visual rendering logic
 function updateUI(msg, color) {
   stabilityBar.style.width = `${stability}%`;
   statusMessage.textContent = msg;
@@ -197,7 +176,7 @@ function updateUI(msg, color) {
 
 function animateCreaturePulse() {
   let baseRadius = 40 + level * 2;
-  let pulseFactor = stability < 50 ? 6 : 2; // Shakes faster if dying
+  let pulseFactor = stability < 50 ? 6 : 2; 
   let scale = baseRadius + Math.sin(Date.now() / 200) * pulseFactor;
 
   bodyCore.setAttribute('r', scale);
@@ -206,7 +185,5 @@ function animateCreaturePulse() {
 
 function triggerEvolutionVisuals() {
   bodyCore.style.transform = 'scale(1.3)';
-  setTimeout(() => {
-    bodyCore.style.transform = 'scale(1)';
-  }, 300);
+  setTimeout(() => { bodyCore.style.transform = 'scale(1)'; }, 300);
 }

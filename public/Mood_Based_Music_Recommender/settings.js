@@ -41,9 +41,21 @@ function loadSettings() {
     return { ...DEFAULTS };
   }
 }
-function saveSettings(cfg) {
+function saveSettings(cfgObj) {
   try {
-    localStorage.setItem(KEYS.settings, JSON.stringify(cfg));
+    localStorage.setItem(KEYS.settings, JSON.stringify(cfgObj));
+    
+    // Broadcast changes with a short debounce to coordinate across tabs
+    clearTimeout(window.syncDebounceTimer);
+    window.syncDebounceTimer = setTimeout(() => {
+      if (window.BroadcastChannel) {
+        new BroadcastChannel('moodmusic_sync_channel').postMessage({ 
+          type: 'SETTINGS_UPDATED', 
+          timestamp: Date.now() 
+        });
+      }
+    }, 300);
+    
     return true;
   } catch {
     return false;
@@ -671,3 +683,20 @@ window
    INIT
    ================================================================ */
 populateUI();
+
+/* ── Cross-tab Sync Listener ──────────────────────────────────── */
+if (window.BroadcastChannel) {
+  const syncChannel = new BroadcastChannel('moodmusic_sync_channel');
+  syncChannel.onmessage = (event) => {
+    if (event.data && event.data.type === 'SETTINGS_UPDATED') {
+      // Reload settings from localStorage
+      cfg = loadSettings();
+      artistList = [...(cfg.artists || [])];
+      
+      // Update UI to reflect the new settings from the other tab
+      populateUI();
+      applyTheme(cfg.theme);
+      applyAccent(cfg.accent);
+    }
+  };
+}
