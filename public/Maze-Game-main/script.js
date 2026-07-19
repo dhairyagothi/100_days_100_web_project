@@ -40,6 +40,37 @@ function updateMoveDisplay(count) {
   if (moveCount) moveCount.textContent = count;
 }
 
+// --- Personal Best (localStorage) ---------------------------------------
+const BEST_MOVES_PREFIX = 'mazeBest_';
+
+function getBestMoves(levelLabel) {
+  if (!levelLabel) return null;
+  let raw;
+  try {
+    raw = localStorage.getItem(BEST_MOVES_PREFIX + levelLabel);
+  } catch (err) {
+    return null; // localStorage unavailable (private mode, etc.)
+  }
+  const value = Number(raw);
+  return raw !== null && Number.isFinite(value) && value > 0 ? value : null;
+}
+
+function setBestMoves(levelLabel, moves) {
+  if (!levelLabel) return;
+  try {
+    localStorage.setItem(BEST_MOVES_PREFIX + levelLabel, String(moves));
+  } catch (err) {
+    console.warn('Could not save personal best (localStorage unavailable).', err);
+  }
+}
+
+function updateBestMovesDisplay(levelLabel) {
+  const bestMovesText = document.getElementById('bestMovesText');
+  if (!bestMovesText) return;
+  const best = getBestMoves(levelLabel);
+  bestMovesText.textContent = best !== null ? best : '—';
+}
+
 function formatTime(seconds) {
   const minutes = Math.floor(seconds / 60).toString().padStart(2, '0');
   const secs = (seconds % 60).toString().padStart(2, '0');
@@ -72,10 +103,87 @@ function startTimer() {
   }, 1000);
 }
 
-function showModal(title, message, moves) {
+function fireWinConfetti() {
+  if (typeof confetti !== 'function') return; // guard if CDN fails to load
+ 
+  const neonColors = ['#60d4ff', '#8c6cff', '#4ef0b8', '#ff6b6b', '#ffda59', '#ffffff'];
+ 
+  confetti({
+    particleCount: 120,
+    spread: 100,
+    startVelocity: 55,
+    origin: { x: 0.5, y: 0.15 },
+    colors: neonColors,
+    ticks: 200,
+  });
+ 
+  setTimeout(() => {
+    confetti({
+      particleCount: 70,
+      angle: 60,
+      spread: 65,
+      origin: { x: 0, y: 0.55 },
+      colors: neonColors,
+      ticks: 180,
+    });
+    confetti({
+      particleCount: 70,
+      angle: 120,
+      spread: 65,
+      origin: { x: 1, y: 0.55 },
+      colors: neonColors,
+      ticks: 180,
+    });
+  }, 250);
+ 
+  setTimeout(() => {
+    confetti({
+      particleCount: 60,
+      spread: 120,
+      startVelocity: 20,
+      origin: { x: 0.5, y: 0 },
+      gravity: 0.6,
+      colors: neonColors,
+      ticks: 160,
+    });
+  }, 600);
+}
+
+function showModal(title, message, moves, difficulty, isNewRecord = false) {
   document.getElementById('modalTitle').textContent = title;
   document.getElementById('modalText').textContent = message;
-  document.getElementById('moves').textContent = `Moves: ${moves}`;
+
+  const best = getBestMoves(difficulty);
+  const statMoves = document.getElementById('statMoves');
+  const statTime = document.getElementById('statTime');
+  const statBest = document.getElementById('statBest');
+  const statBestChip = document.getElementById('statBestChip');
+  if (statMoves) statMoves.textContent = moves;
+  if (statTime) statTime.textContent = formatTime(elapsedSeconds);
+  if (statBest) statBest.textContent = best !== null ? best : '—';
+  if (statBestChip) statBestChip.classList.toggle('is-record', isNewRecord);
+
+  const badge = document.getElementById('modalDifficultyBadge');
+  if (badge) {
+    if (difficulty) {
+      badge.textContent = difficulty;
+      badge.className = `difficulty-badge difficulty-${difficulty.toLowerCase()}`;
+      badge.style.display = 'inline-block';
+    } else {
+      badge.style.display = 'none';
+    }
+  }
+
+  const recordBadge = document.getElementById('recordBadge');
+  if (recordBadge) {
+    recordBadge.style.display = isNewRecord ? 'block' : 'none';
+  }
+
+  const modalEmoji = document.getElementById('modalEmoji');
+  if (modalEmoji) {
+    modalEmoji.textContent = isNewRecord ? '🏆' : '🎊';
+  }
+
   document.getElementById('Message-Container').classList.add('visible');
 }
 
@@ -466,6 +574,7 @@ function handleDifficultyChange() {
 
   currentLevel = diffSelect.options[diffSelect.selectedIndex].text;
   updateLevelText(currentLevel);
+  updateBestMovesDisplay(currentLevel);
   updateStatus(`Selected ${currentLevel}`);
   showToast(`Difficulty set to ${currentLevel}`, 'info');
 
@@ -487,9 +596,31 @@ function onMazeComplete(moves) {
   isGameOver = true;
   isGameActive = false;
   stopTimer();
+
+  // Retrieve -> Compare -> Update personal best for this difficulty
+  const previousBest = getBestMoves(currentLevel);
+  const isNewRecord = previousBest === null || moves < previousBest;
+  if (isNewRecord) {
+    setBestMoves(currentLevel, moves);
+  }
+  updateBestMovesDisplay(currentLevel);
+
   updateStatus('Maze completed! Ready for another run.');
-  showModal('Congratulations!', 'You escaped the maze.', moves);
-  showToast('Maze completed successfully 🎉', 'success');
+  fireWinConfetti();
+
+  if (isNewRecord) {
+    showModal(
+      'New Personal Best! 🏆',
+      `You escaped in ${moves} moves — a new record for ${currentLevel}.`,
+      moves,
+      currentLevel,
+      true
+    );
+    showToast(`🏆 New Personal Best: ${moves} moves (${currentLevel})!`, 'success', 4000);
+  } else {
+    showModal('Maze Completed! 🎉', 'You escaped the neon labyrinth.', moves, currentLevel, false);
+    showToast(`${currentLevel} maze cleared! 🏆`, 'success', 3500);
+  }
 }
 
 function cancelRenderLoop() {
@@ -540,6 +671,7 @@ function startGame() {
 
   currentLevel = diffSelect.options[diffSelect.selectedIndex].text;
   updateLevelText(currentLevel);
+  updateBestMovesDisplay(currentLevel);
   difficulty = selectedDifficulty;
   cellSize = mazeCanvas.width / difficulty;
 

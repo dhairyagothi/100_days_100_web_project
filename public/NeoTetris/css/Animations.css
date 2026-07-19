@@ -1,0 +1,694 @@
+/* ============================================================
+   NEOTRETIS — ANIMATIONS.CSS
+   All keyframes, transitions and entrance animations
+   ============================================================ */
+
+/* ─── KEYFRAMES ─────────────────────────────────────────────── */
+
+@keyframes float-y {
+
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+@keyframes float-y-slow {
+
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-14px);
+    }
+}
+
+@keyframes glow-pulse {
+
+    0%,
+    100% {
+        opacity: 0.6;
+        filter: brightness(1);
+    }
+
+    50% {
+        opacity: 1;
+        filter: brightness(1.4);
+    }
+}
+
+@keyframes glow-breathe {
+
+    0%,
+    100% {
+        box-shadow: var(--glow-card);
+    }
+
+    50% {
+        box-shadow: var(--glow-card), 0 0 40px var(--clr-primary-dim);
+    }
+}
+
+@keyframes scan-line {
+    0% {
+        transform: translateY(-100%);
+    }
+
+    100% {
+        transform: translateY(100vh);
+    }
+}
+
+@keyframes border-flow {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+@keyframes flicker {
+
+    0%,
+    94%,
+    98%,
+    100% {
+        opacity: 1;
+    }
+
+    95%,
+    97% {
+        opacity: 0.7;
+    }
+
+    96% {
+        opacity: 0.85;
+    }
+}
+
+@keyframes cube-spin {
+    0% {
+        transform: rotateX(-20deg) rotateY(0deg);
+    }
+
+    100% {
+        transform: rotateX(-20deg) rotateY(360deg);
+    }
+}
+
+@keyframes ticker-scroll {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+@keyframes entrance-up {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes entrance-left {
+    0% {
+        opacity: 0;
+        transform: translateX(-40px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes entrance-right {
+    0% {
+        opacity: 0;
+        transform: translateX(40px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes entrance-scale {
+    0% {
+        opacity: 0;
+        transform: scale(0.92);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes pulse-ring-anim {
+    0% {
+        transform: scale(0.8);
+        opacity: 0.9;
+    }
+
+    100% {
+        transform: scale(2.2);
+        opacity: 0;
+    }
+}
+
+@keyframes shine-sweep {
+    0% {
+        left: -100%;
+        opacity: 0;
+    }
+
+    20% {
+        opacity: 1;
+    }
+
+    100% {
+        left: 120%;
+        opacity: 0;
+    }
+}
+
+@keyframes btn-press {
+    0% {
+        transform: scale(1);
+    }
+
+    40% {
+        transform: scale(0.95);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes score-pop {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.12);
+        color: var(--clr-primary);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes toast-in {
+    0% {
+        opacity: 0;
+        transform: translateX(40px) scale(0.9);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+    }
+}
+
+@keyframes toast-out {
+    0% {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateX(40px) scale(0.9);
+    }
+}
+
+@keyframes status-blink {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.4;
+    }
+}
+
+@keyframes grid-fade-in {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes theme-flash {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
+}
+
+@keyframes logo-glow-ring {
+    0% {
+        transform: scale(1);
+        opacity: 0.6;
+    }
+
+    50% {
+        transform: scale(1.08);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 0.6;
+    }
+}
+
+@keyframes star-twinkle {
+
+    0%,
+    100% {
+        opacity: 0.3;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.5);
+    }
+}
+
+@keyframes combo-bounce {
+    0% {
+        transform: scale(1);
+    }
+
+    30% {
+        transform: scale(1.3) rotate(-5deg);
+    }
+
+    60% {
+        transform: scale(0.9) rotate(3deg);
+    }
+
+    100% {
+        transform: scale(1) rotate(0deg);
+    }
+}
+
+@keyframes achievement-unlock {
+    0% {
+        transform: scale(0.8) rotate(-10deg);
+        opacity: 0;
+    }
+
+    60% {
+        transform: scale(1.1) rotate(3deg);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+    }
+}
+
+@keyframes daily-timer-pulse {
+
+    0%,
+    100% {
+        color: var(--clr-warning);
+    }
+
+    50% {
+        color: var(--clr-danger);
+    }
+}
+
+/* ─── UTILITY CLASSES ───────────────────────────────────────── */
+
+.reveal-up {
+    animation: entrance-up 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.reveal-left {
+    animation: entrance-left 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: 0.05s;
+}
+
+.reveal-right {
+    animation: entrance-right 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: 0.1s;
+}
+
+.reveal-scale {
+    animation: entrance-scale 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ─── FLOATING GLOW ELEMENTS ────────────────────────────────── */
+.bg-glow-1 {
+    animation: float-y-slow 9s ease-in-out infinite;
+}
+
+.bg-glow-2 {
+    animation: float-y-slow 12s ease-in-out infinite reverse;
+}
+
+/* ─── LOGO ANIMATIONS ───────────────────────────────────────── */
+.logo-cube {
+    animation: cube-spin 8s linear infinite;
+}
+
+.logo-glow-ring {
+    animation: logo-glow-ring 3s ease-in-out infinite;
+}
+
+/* ─── TICKER ────────────────────────────────────────────────── */
+.header-ticker-inner {
+    animation: ticker-scroll 28s linear infinite;
+}
+
+/* ─── BOARD OVERLAY PULSES ──────────────────────────────────── */
+.pulse-ring-1 {
+    animation: pulse-ring-anim 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.pulse-ring-2 {
+    animation: pulse-ring-anim 2.4s cubic-bezier(0.4, 0, 0.6, 1) 0.6s infinite;
+}
+
+.pulse-ring-3 {
+    animation: pulse-ring-anim 2.4s cubic-bezier(0.4, 0, 0.6, 1) 1.2s infinite;
+}
+
+/* ─── STATUS DOT BLINK ──────────────────────────────────────── */
+.status-dot--idle {
+    animation: status-blink 2s ease-in-out infinite;
+}
+
+/* ─── CARDS HOVER TRANSITIONS ────────────────────────────────── */
+.card {
+    transition:
+        transform var(--transition-theme),
+        box-shadow var(--transition-theme),
+        border-color var(--transition-theme),
+        background var(--transition-theme);
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--glow-card), 0 0 30px var(--clr-primary-dim);
+    border-color: var(--clr-border-strong);
+}
+
+/* ─── BUTTON ANIMATIONS ─────────────────────────────────────── */
+.btn {
+    transition:
+        transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1),
+        box-shadow 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease,
+        opacity 0.2s ease;
+}
+
+.btn:hover:not(:disabled) {
+    transform: translateY(-3px) scale(1.03);
+}
+
+.btn:active:not(:disabled) {
+    animation: btn-press 0.25s ease;
+}
+
+.btn .btn-shine {
+    position: absolute;
+    inset: 0;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+    transform: skewX(-15deg);
+    pointer-events: none;
+}
+
+.btn:hover:not(:disabled) .btn-shine {
+    animation: shine-sweep 0.7s ease forwards;
+}
+
+/* ─── SCORE POP ─────────────────────────────────────────────── */
+.score-pop {
+    animation: score-pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ─── COMBO BOUNCE ──────────────────────────────────────────── */
+.combo-bounce {
+    animation: combo-bounce 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ─── ACHIEVEMENT UNLOCK ────────────────────────────────────── */
+.achievement-unlock {
+    animation: achievement-unlock 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* ─── THEME OPTIONS ─────────────────────────────────────────── */
+.theme-option {
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        border-color 0.2s ease,
+        background 0.2s ease;
+}
+
+.theme-option:hover {
+    transform: translateX(4px);
+}
+
+/* ─── GRID CELLS ────────────────────────────────────────────── */
+.board-cell {
+    transition: background 0.1s ease, box-shadow 0.1s ease;
+}
+
+/* ─── THEME TRANSITION ──────────────────────────────────────── */
+body.theme-transitioning * {
+    transition:
+        background-color var(--transition-theme),
+        border-color var(--transition-theme),
+        color var(--transition-theme),
+        box-shadow var(--transition-theme) !important;
+}
+
+/* ─── FLICKER (neon/retro themes only) ──────────────────────── */
+[data-theme="neon-cyberpunk"] .logo-title,
+[data-theme="classic-retro"] .logo-title {
+    animation: flicker 8s linear infinite 3s;
+}
+
+/* ─── DAILY TIMER WARNING ────────────────────────────────────── */
+.daily-timer.urgent {
+    animation: daily-timer-pulse 1s ease-in-out infinite;
+}
+
+/* ─── PIPs ──────────────────────────────────────────────────── */
+.pip {
+    transition: background 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* ─── CHALLENGE FILL ─────────────────────────────────────────── */
+.challenge-fill,
+.achv-fill {
+    transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ─── CARD STAGGER DELAYS ────────────────────────────────────── */
+.sidebar-left .card:nth-child(1) {
+    animation: entrance-left 0.7s ease both 0.05s;
+}
+
+.sidebar-left .card:nth-child(2) {
+    animation: entrance-left 0.7s ease both 0.12s;
+}
+
+.sidebar-left .card:nth-child(3) {
+    animation: entrance-left 0.7s ease both 0.19s;
+}
+
+.sidebar-left .card:nth-child(4) {
+    animation: entrance-left 0.7s ease both 0.26s;
+}
+
+.sidebar-right .card:nth-child(1) {
+    animation: entrance-right 0.7s ease both 0.05s;
+}
+
+.sidebar-right .card:nth-child(2) {
+    animation: entrance-right 0.7s ease both 0.12s;
+}
+
+.sidebar-right .card:nth-child(3) {
+    animation: entrance-right 0.7s ease both 0.19s;
+}
+
+.sidebar-right .card:nth-child(4) {
+    animation: entrance-right 0.7s ease both 0.26s;
+}
+
+.sidebar-right .card:nth-child(5) {
+    animation: entrance-right 0.7s ease both 0.33s;
+}
+
+.sidebar-right .card:nth-child(6) {
+    animation: entrance-right 0.7s ease both 0.40s;
+}
+
+.sidebar-right .card:nth-child(7) {
+    animation: entrance-right 0.7s ease both 0.47s;
+}
+
+/* ─── HOVER EFFECTS EXTENDED ────────────────────────────────── */
+.control-item:hover .key {
+    border-color: var(--clr-primary);
+    box-shadow: 0 0 8px var(--clr-primary-dim);
+    color: var(--clr-primary);
+}
+
+.achievement-item:hover {
+    transform: translateX(4px);
+    transition: transform 0.2s ease;
+}
+
+.challenge-item:hover {
+    transform: translateX(3px);
+    transition: transform 0.2s ease;
+}
+
+/* ─── NEW POLISH ANIMATIONS ─────────────────────────────────── */
+
+@keyframes clear-flash {
+    0% {
+        background: #ffffff;
+        box-shadow: 0 0 15px #ffffff, 0 0 30px var(--clr-primary);
+        filter: brightness(2);
+    }
+    50% {
+        background: var(--clr-primary);
+        box-shadow: 0 0 25px var(--clr-primary);
+        filter: brightness(1.5);
+    }
+    100% {
+        opacity: 0;
+        transform: scaleY(0);
+    }
+}
+
+.line-clear-flash {
+    animation: clear-flash 0.25s cubic-bezier(0.3, 0.8, 0.3, 1) forwards !important;
+}
+
+@keyframes float-combo-text {
+    0% {
+        opacity: 0;
+        transform: translateY(0) scale(0.6) rotate(-10deg);
+    }
+    20% {
+        opacity: 1;
+        transform: translateY(-20px) scale(1.1) rotate(5deg);
+    }
+    80% {
+        opacity: 1;
+        transform: translateY(-30px) scale(1.0) rotate(0deg);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-50px) scale(0.8);
+    }
+}
+
+.float-combo-animation {
+    position: absolute;
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 900;
+    color: var(--clr-secondary);
+    text-shadow: 0 0 10px var(--clr-secondary-dim), 0 0 3px #fff;
+    pointer-events: none;
+    z-index: 15;
+    animation: float-combo-text 1.2s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;
+}
+
+@keyframes modal-fade-in {
+    0% {
+        opacity: 0;
+        backdrop-filter: blur(0px);
+    }
+    100% {
+        opacity: 1;
+        backdrop-filter: blur(8px);
+    }
+}
+
+@keyframes modal-scale-in {
+    0% {
+        opacity: 0;
+        transform: scale(0.85) translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.animate-modal-overlay {
+    animation: modal-fade-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-modal-body {
+    animation: modal-scale-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes challenge-glow-pulse {
+    0%, 100% {
+        box-shadow: 0 0 5px var(--clr-success), inset 0 0 3px var(--clr-success);
+        border-color: var(--clr-success);
+    }
+    50% {
+        box-shadow: 0 0 15px var(--clr-success), inset 0 0 8px var(--clr-success);
+        border-color: #fff;
+    }
+}
+
+.challenge-done-glow {
+    animation: challenge-glow-pulse 1.8s ease-in-out infinite;
+}

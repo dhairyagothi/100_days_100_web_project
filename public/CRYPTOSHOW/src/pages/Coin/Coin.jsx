@@ -26,7 +26,13 @@ const Coin = () => {
       options
     )
       .then((res) => res.json())
-      .then((res) => setHistoricalData(res))
+      .then((res) => {
+        if (res.prices) {
+          setHistoricalData(res);
+        } else {
+          console.error("Historical data API error:", res);
+        }
+      })
       .catch((err) => console.error(err));
   };
 
@@ -40,7 +46,13 @@ const Coin = () => {
     };
     fetch(`https://api.coingecko.com/api/v3/coins/${coinId}`, options)
       .then((res) => res.json())
-      .then((res) => setCoinData(res))
+      .then((res) => {
+        if (res.market_data) {
+          setCoinData(res);
+        } else {
+          console.error("Coin data API error:", res);
+        }
+      })
       .catch((err) => console.error(err));
   };
 

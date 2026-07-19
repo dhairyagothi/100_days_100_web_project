@@ -3,58 +3,59 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>🎲 Ludo 4 Player</title>
+<title>Ludo 4 Player</title>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Nunito:wght@500;700&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
 <link rel="stylesheet" href="style.css">
+<link rel="icon" href="Favicon_ludo.png">
 <script src="script.js"></script>
 </head>
 <body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
-
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
 
 <h1>🎲 LUDO</h1>
 
 <!-- ① MODE SELECT -->
 <div id="mode-screen" class="screen active">
   <p>Choose the mode:</p>
-  <button class="mode-btn" id="btn-pvp" onclick="goToNames()">👥 4 players</button>
-  <button class="mode-btn" id="btn-pvc" onclick="startGame(true)">🤖 Player vs Computers</button>
+  <button class="mode-btn" id="btn-2p" onclick="goToNames(2)">👥 2 Players</button>
+  <button class="mode-btn" id="btn-3p" onclick="goToNames(3)">👥 3 Players</button>
+  <button class="mode-btn" id="btn-pvp" onclick="goToNames(4)">👥 4 Players</button>
+  <button class="mode-btn" id="btn-pvc" onclick="startGame(true,4)">🤖 Player vs Computers</button>
 </div>
 
-<!-- ② NAME ENTRY (only for 4-player) -->
+<!-- ② NAME ENTRY (for 2, 3, 4 player modes) -->
 <div id="name-screen" class="screen">
   <h2>✏️ Write the name of Players</h2>
 
-  <div class="name-card">
+  <div class="name-card" id="card-p1">
     <span class="name-dot nd-r"></span>
     <span class="name-label">P1 🔴</span>
     <input class="name-input" id="n0" type="text" maxlength="14" placeholder="Player 1 ka naam"/>
   </div>
-  <div class="name-card">
+  <div class="name-card" id="card-p2">
     <span class="name-dot nd-b"></span>
     <span class="name-label">P2 🔵</span>
     <input class="name-input" id="n1" type="text" maxlength="14" placeholder="Player 2 ka naam"/>
   </div>
-  <div class="name-card">
+  <div class="name-card" id="card-p3">
     <span class="name-dot nd-g"></span>
     <span class="name-label">P3 🟢</span>
     <input class="name-input" id="n2" type="text" maxlength="14" placeholder="Player 3 ka naam"/>
   </div>
-  <div class="name-card">
+  <div class="name-card" id="card-p4">
     <span class="name-dot nd-y"></span>
     <span class="name-label">P4 🟡</span>
     <input class="name-input" id="n3" type="text" maxlength="14" placeholder="Player 4 ka naam"/>
   </div>
 
-  <button id="name-start-btn" onclick="startGame(false)">🎲 Start the Game!</button>
+  <button id="name-start-btn" onclick="startGame(false, selectedPlayerCount)">🎲 Start the Game!</button>
   <button id="back-to-mode" onclick="showScreen('mode-screen')">← Return</button>
 </div>
 
 <!-- ③ GAME SCREEN -->
 <div id="game-screen" class="screen" style="gap:8px;max-width:540px;">
   <div id="layout">
-    <!-- Top-left = Red (matches board top-left red quadrant) -->
     <div id="p-red-wrap">
       <div class="pp pp-red" id="pp0">
         <div class="pp-name"><span class="pp-dot" style="background:#e53935"></span><span id="pp0name">Player 1</span> 🔴</div>
@@ -62,7 +63,6 @@
         <div class="turn-tag">TURN</div>
       </div>
     </div>
-    <!-- Top-right = Blue (matches board top-right blue quadrant) -->
     <div id="p-blue-wrap">
       <div class="pp pp-blue" id="pp1">
         <div class="pp-name"><span class="pp-dot" style="background:#1e88e5"></span><span id="pp1name">Player 2</span> 🔵</div>
@@ -71,7 +71,6 @@
       </div>
     </div>
     <div id="board-wrap"><div id="board"></div></div>
-    <!-- Bottom-left = Yellow (matches board bottom-left yellow quadrant) -->
     <div id="p-yellow-wrap">
       <div class="pp pp-yellow" id="pp3">
         <div class="pp-name"><span class="pp-dot" style="background:#f9a825"></span><span id="pp3name">Player 4</span> 🟡</div>
@@ -79,7 +78,6 @@
         <div class="turn-tag">TURN</div>
       </div>
     </div>
-    <!-- Bottom-right = Green (matches board bottom-right green quadrant) -->
     <div id="p-green-wrap">
       <div class="pp pp-green" id="pp2">
         <div class="pp-name"><span class="pp-dot" style="background:#43a047"></span><span id="pp2name">Player 3</span> 🟢</div>
@@ -108,13 +106,13 @@
   </div>
 </div>
 
-<!-- CONFETTI (always present) -->
+<!-- CONFETTI -->
 <div id="cfbox"></div>
 
 <!-- ④ WIN OVERLAY -->
 <div id="win-ov">
   <div id="wcard">
-    <span id="w-trophy"><i class="fas fa-trophy fa-bounce" style="color: #FFD700; font-size: 5rem; display: block; margin-bottom: 12px;"></i></span>
+    <span id="w-trophy"><i aria-hidden="true" class="fas fa-trophy fa-bounce" style="color: #FFD700; font-size: 5rem; display: block; margin-bottom: 12px;"></i></span>
     <div id="w-congrats">Congratulations!</div>
     <div id="w-name">Player 1</div>
     <span id="w-color-badge">🔴 Red</span>
