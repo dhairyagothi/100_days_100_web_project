@@ -12,6 +12,9 @@
   --line: rgba(255, 255, 255, 0.15);
   --cell: rgba(142, 158, 172, 0.35);
   --shadow: 0 26px 70px rgba(0, 0, 0, 0.38);
+  --success: #4caf50;
+  --warning: #ff9800;
+  --danger: #f44336;
 }
 
 * {
@@ -57,6 +60,7 @@ button {
   padding: 20px 24px;
   border-radius: 24px;
   margin-bottom: 22px;
+  flex-wrap: wrap;
 }
 
 .eyebrow,
@@ -75,6 +79,45 @@ h1 {
   margin: 4px 0 0;
   font-size: clamp(2rem, 5vw, 4rem);
   line-height: 1;
+}
+
+.controls-group {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.board-size-selector,
+.game-mode-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.board-size-selector label,
+.game-mode-selector label {
+  font-size: 0.7rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.board-size-selector select,
+.game-mode-selector select {
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--panel);
+  color: var(--ink);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: border-color 220ms ease;
+}
+
+.board-size-selector select:hover,
+.game-mode-selector select:hover {
+  border-color: rgba(255, 255, 255, 0.4);
 }
 
 .turn-card {
@@ -101,6 +144,48 @@ h1 {
 
 .turn-card.player-two-turn strong {
   color: var(--red);
+}
+
+.timer-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 8px;
+  padding: 6px 12px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.timer-label {
+  font-size: 1.2rem;
+}
+
+.timer-display {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--success);
+  transition: color 300ms ease;
+  min-width: 40px;
+}
+
+.timer-display.warning {
+  color: var(--warning);
+}
+
+.timer-display.danger {
+  color: var(--danger);
+  animation: pulse 600ms ease infinite;
+}
+
+.timer-unit {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
 }
 
 .game-layout {
@@ -132,11 +217,18 @@ h1 {
   border-radius: 16px;
   background: var(--panel-light);
   margin-bottom: 14px;
+  flex-wrap: wrap;
 }
 
 .score-card strong,
 .status-card strong {
   font-size: 2rem;
+}
+
+.score-percent {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-left: auto;
 }
 
 .player-one {
@@ -149,6 +241,23 @@ h1 {
 
 .status-card strong {
   font-size: 1.1rem;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 4px;
+  background: var(--panel-light);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-top: 4px;
+}
+
+.progress-fill {
+  display: block;
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--blue), var(--red));
+  transition: width 300ms ease;
 }
 
 .result-message {
@@ -181,7 +290,6 @@ h1 {
 
 .grid-board {
   display: grid;
-  grid-template-columns: repeat(10, 1fr);
   gap: clamp(4px, 0.8vw, 8px);
   width: min(72vh, 100%);
   max-width: 640px;
@@ -197,6 +305,7 @@ h1 {
   box-shadow: inset 0 0 18px rgba(255, 255, 255, 0.08);
   cursor: pointer;
   transition: transform 160ms ease, background 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+  aspect-ratio: 1;
 }
 
 .cell:hover:not(.owned):not(:disabled) {
@@ -224,6 +333,27 @@ h1 {
   animation: claimPop 260ms ease both;
 }
 
+.cell.highlight {
+  animation: highlightPulse 600ms ease 3;
+}
+
+@keyframes claimPop {
+  0% {
+    transform: scale(0.86);
+  }
+  70% {
+    transform: scale(1.06);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes highlightPulse {
+  0%, 100% { box-shadow: 0 0 10px rgba(255, 255, 255, 0.3); }
+  50% { box-shadow: 0 0 30px rgba(255, 255, 255, 0.8); }
+}
+
 .rules-panel h2 {
   margin: 0 0 12px;
   font-size: 1.1rem;
@@ -236,18 +366,8 @@ h1 {
   line-height: 1.75;
 }
 
-@keyframes claimPop {
-  0% {
-    transform: scale(0.86);
-  }
-
-  70% {
-    transform: scale(1.06);
-  }
-
-  100% {
-    transform: scale(1);
-  }
+.rules-panel ul li strong {
+  color: var(--ink);
 }
 
 @media (max-width: 900px) {
@@ -275,6 +395,11 @@ h1 {
   .rules-panel {
     order: 3;
   }
+
+  .controls-group {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 @media (max-width: 620px) {
@@ -287,6 +412,11 @@ h1 {
     align-items: stretch;
     flex-direction: column;
     padding: 18px;
+  }
+
+  .controls-group {
+    flex-direction: column;
+    align-items: stretch;
   }
 
   .turn-card {

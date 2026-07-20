@@ -1,4 +1,28 @@
+const themeToggle = document.getElementById("themeToggle");
 
+const savedTheme = localStorage.getItem("theme");
+
+if(savedTheme==="dark"){
+
+    document.body.classList.add("dark");
+
+    themeToggle.textContent="☀️";
+}
+
+themeToggle.addEventListener("click",()=>{
+
+    document.body.classList.toggle("dark");
+
+    const dark=document.body.classList.contains("dark");
+
+    themeToggle.textContent=dark ? "☀️" : "🌙";
+
+    localStorage.setItem(
+        "theme",
+        dark ? "dark" : "light"
+    );
+
+});
 let deck = [];
 let currentIndex = 0;
 
@@ -69,9 +93,7 @@ function initStudy(){
     if(currentIndex>0){ currentIndex--; renderCard(); }
   });
 
-  document.getElementById("theme-toggle").addEventListener("click",()=>{
-    document.body.classList.toggle("dark");
-  });
+
 
   document.getElementById("audio-btn").addEventListener("click",(e)=>{
     e.stopPropagation();
@@ -150,9 +172,6 @@ async function init(){
   }
 }
 
-init();
-
-
 const themeBtn = document.getElementById("theme-toggle");
 if (themeBtn) {
   themeBtn.addEventListener("click", () => {
@@ -170,3 +189,9 @@ if (themeBtn) {
     document.body.classList.add("dark");
   }
 }
+
+
+init();
+
+
+

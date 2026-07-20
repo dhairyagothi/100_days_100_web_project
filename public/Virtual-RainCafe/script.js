@@ -688,6 +688,16 @@ document.addEventListener('DOMContentLoaded', () => {
       const progress = (musicAudio.currentTime / musicAudio.duration) * 100;
       elements.progressBarFill.style.width = `${progress}%`;
 
+      elements.progressBarBg.setAttribute(
+        'aria-valuenow',
+        Math.round(progress)
+      );
+
+      elements.progressBarBg.setAttribute(
+        'aria-valuetext',
+        `${formatTime(musicAudio.currentTime)} of ${formatTime(musicAudio.duration)}`
+      );
+
       elements.currentTimeStamp.textContent = formatTime(
         musicAudio.currentTime
       );
@@ -719,6 +729,42 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  elements.progressBarBg.addEventListener("keydown", (e) => {
+
+    if (isNaN(musicAudio.duration)) return;
+
+    const step = 5;
+
+    switch (e.key) {
+
+        case "ArrowRight":
+            e.preventDefault();
+            musicAudio.currentTime = Math.min(
+                musicAudio.currentTime + step,
+                musicAudio.duration
+            );
+            break;
+
+        case "ArrowLeft":
+            e.preventDefault();
+            musicAudio.currentTime = Math.max(
+                musicAudio.currentTime - step,
+                0
+            );
+            break;
+
+        case "Home":
+            e.preventDefault();
+            musicAudio.currentTime = 0;
+            break;
+
+        case "End":
+            e.preventDefault();
+            musicAudio.currentTime = musicAudio.duration;
+            break;
+    }
+
+});
   // ==========================================
   // POMODORO TIMER SYSTEM
   // ==========================================
@@ -1151,13 +1197,14 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape' &&
-      elements.appContainer.classList.contains('ui-hidden')) {
-
-    elements.appContainer.classList.remove('ui-hidden');
-    elements.btnRestoreUI.classList.remove('visible');
-  }
-});
+    if (
+      e.key === 'Escape' &&
+      elements.appContainer.classList.contains('ui-hidden')
+    ) {
+      elements.appContainer.classList.remove('ui-hidden');
+      elements.btnRestoreUI.classList.remove('visible');
+    }
+  });
   // Double click anywhere on screen restores UI
   window.addEventListener('dblclick', (e) => {
     // Prevent double clicking textareas or inputs triggering this

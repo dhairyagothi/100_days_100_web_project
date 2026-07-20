@@ -70,6 +70,34 @@ body {
 }
 
 /* =========================
+  SEARCH BAR
+========================= */
+
+.search-container {
+  margin-bottom: 2rem;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.85rem 1.2rem;
+  border-radius: 25px;
+  border: 1px solid #e5e7eb;
+  font-size: 1rem;
+  background: var(--card-bg);
+  color: var(--text-main);
+  outline: none;
+  transition: box-shadow 0.25s ease, background-color 0.3s ease;
+}
+
+.search-input:focus {
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+}
+
+.search-input::placeholder {
+  color: var(--text-muted);
+}
+
+/* =========================
   THEME BUTTON
 ========================= */
 

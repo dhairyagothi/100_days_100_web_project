@@ -606,3 +606,101 @@ document.addEventListener('DOMContentLoaded', () => {
     .getElementById('tool-select-2')
     .addEventListener('change', renderComparison);
 });
+const button = document.createElement("button");
+button.id = "themeToggleBtn";
+button.style.position = "fixed";
+button.style.top = "15px";
+button.style.right = "15px";
+button.style.zIndex = "9999";
+button.style.cursor = "pointer";
+button.style.background = "none";
+button.style.border = "none";
+button.style.fontSize = "24px";
+button.style.padding = "5px";
+button.style.lineHeight = "1";
+document.body.appendChild(button);
+let isLightMode = JSON.parse(localStorage.getItem("lightMode")) || false;
+function updateTheme() {
+  if (isLightMode) {
+    document.body.classList.add("light-theme");
+    button.textContent = "🌙";
+  } else {
+    document.body.classList.remove("light-theme");
+    button.textContent = "☀️";
+  }
+}
+button.addEventListener("click", () => {
+  isLightMode = !isLightMode;
+  localStorage.setItem("lightMode", JSON.stringify(isLightMode));
+  updateTheme();
+});
+updateTheme();
+
+document.addEventListener("DOMContentLoaded", () => {
+  const cards = document.querySelectorAll(".tool-card");
+  const loadMoreBtn = document.getElementById("loadMoreBtn");
+
+  let visibleCount = 3; // initially show 3 cards
+
+  // Hide all cards beyond the initial count
+  function updateVisibility() {
+    cards.forEach((card, index) => {
+      if (index < visibleCount) {
+        card.style.display = "block";
+      } else {
+        card.style.display = "none";
+      }
+    });
+
+    // Update button text depending on state
+    if (visibleCount >= cards.length) {
+      loadMoreBtn.textContent = "View Less";
+    } else {
+      loadMoreBtn.textContent = "Load More";
+    }
+  }
+
+  // Button click handler
+  loadMoreBtn.addEventListener("click", () => {
+    if (visibleCount >= cards.length) {
+      // Reset back to 3 visible
+      visibleCount = 3;
+    } else {
+      // Show 3 more
+      visibleCount += 3;
+    }
+    updateVisibility();
+  });
+
+  // Initial setup
+  updateVisibility();
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const searchBox = document.getElementById("searchBox");
+  const categoryFilter = document.getElementById("categoryFilter");
+  const cards = document.querySelectorAll(".tool-card");
+
+  function filterTools() {
+    const searchText = searchBox.value.toLowerCase();
+    const category = categoryFilter.value.toLowerCase();
+
+    cards.forEach(card => {
+      const name = card.querySelector(".tool-name").textContent.toLowerCase();
+      const badge = card.querySelector(".tool-badge").textContent.toLowerCase();
+
+      const matchesSearch = name.includes(searchText);
+      const matchesCategory = category === "all" || badge.includes(category);
+
+      if (matchesSearch && matchesCategory) {
+        card.style.display = "block";
+      } else {
+        card.style.display = "none";
+      }
+    });
+  }
+
+  // Attach event listeners
+  searchBox.addEventListener("input", filterTools);
+  categoryFilter.addEventListener("change", filterTools);
+});
