@@ -25,7 +25,19 @@ const TYPE_TAGS = {
   checkbox: "CHK"
 };
 
+// ─── State ───────────────────────────────────────────────────────────
 let fields = [];
+let selectedType = "text";
+let editingFieldId = null;
+let formSettings = {
+  title: "Untitled Form",
+  description: "",
+  buttonText: "Submit",
+  theme: "dark",
+  primaryColor: "#6366f1",
+  borderRadius: 8,
+  fontSize: 15,
+};
 
 // Escape user input before it ever touches innerHTML, so labels/options
 // can't inject markup or break the layout.
@@ -149,18 +161,90 @@ function renderForm() {
     label.textContent = field.label + (field.required ? " *" : "");
     wrapper.appendChild(label);
 
-    let input;
+    if (!isChoice) {
+      const lbl = document.createElement("label");
+      lbl.className = "pf-label";
+      lbl.textContent = field.label;
+      if (field.required) {
+        const star = document.createElement("span");
+        star.className = "req-star";
+        star.textContent = " *";
+        lbl.appendChild(star);
+      }
+      group.appendChild(lbl);
+    }
 
+    // Build input element
     if (field.type === "select") {
-      input = document.createElement("select");
-      field.options.forEach(opt => {
-        const option = document.createElement("option");
-        option.textContent = opt;
-        input.appendChild(option);
-      });
+      const sel = document.createElement("select");
+      if (field.placeholder) {
+        const ph = document.createElement("option");
+        ph.value = "";
+        ph.disabled = true;
+        ph.selected = true;
+        ph.textContent = field.placeholder;
+        sel.appendChild(ph);
+      }
+      (field.options.length ? field.options : ["Option 1", "Option 2"]).forEach(
+        (opt) => {
+          const o = document.createElement("option");
+          o.textContent = opt;
+          if (opt === field.defaultVal) o.selected = true;
+          sel.appendChild(o);
+        },
+      );
+      group.appendChild(sel);
+    } else if (field.type === "radio") {
+      const lbl = document.createElement("label");
+      lbl.className = "pf-label";
+      lbl.textContent = field.label;
+      if (field.required) {
+        const s = document.createElement("span");
+        s.className = "req-star";
+        s.textContent = " *";
+        lbl.appendChild(s);
+      }
+      group.appendChild(lbl);
+      (field.options.length ? field.options : ["Option 1", "Option 2"]).forEach(
+        (opt) => {
+          const row = document.createElement("div");
+          row.className = "pf-radio-row";
+          const inp = document.createElement("input");
+          inp.type = "radio";
+          inp.name = "radio_" + field.id;
+          inp.value = opt;
+          if (opt === field.defaultVal) inp.checked = true;
+          row.appendChild(inp);
+          const span = document.createElement("span");
+          span.textContent = opt;
+          row.appendChild(span);
+          group.appendChild(row);
+        },
+      );
     } else if (field.type === "checkbox") {
-      input = document.createElement("input");
-      input.type = "checkbox";
+      const row = document.createElement("div");
+      row.className = "pf-checkbox-row";
+      const inp = document.createElement("input");
+      inp.type = "checkbox";
+      if (field.defaultVal === "true" || field.defaultVal === "1")
+        inp.checked = true;
+      row.appendChild(inp);
+      const span = document.createElement("span");
+      span.textContent = field.label;
+      if (field.required) {
+        const s = document.createElement("span");
+        s.style.color = "var(--danger)";
+        s.textContent = " *";
+        span.appendChild(s);
+      }
+      row.appendChild(span);
+      group.appendChild(row);
+    } else if (field.type === "textarea") {
+      const ta = document.createElement("textarea");
+      if (field.placeholder) ta.placeholder = field.placeholder;
+      if (field.defaultVal) ta.value = field.defaultVal;
+      if (field.required) ta.required = true;
+      group.appendChild(ta);
     } else {
       input = document.createElement("input");
       input.type = field.type;
@@ -172,6 +256,13 @@ function renderForm() {
     wrapper.appendChild(input);
     formPreview.appendChild(wrapper);
   });
+
+  // Submit button
+  const submitBtn = document.createElement("button");
+  submitBtn.className = "pf-submit";
+  submitBtn.textContent = formSettings.buttonText || "Submit";
+  submitBtn.type = "button";
+  formPreview.appendChild(submitBtn);
 }
 
 // Generate HTML code
