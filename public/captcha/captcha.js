@@ -30,6 +30,78 @@ const maxAttempts = 3;
 let lockoutEndTime = 0;
 let selectedDifficulty = "medium";
 
+const themeToggle = document.getElementById("themeToggle");
+
+if(themeToggle){
+    themeToggle.addEventListener("click",()=>{
+
+        document.body.classList.toggle("dark");
+
+        localStorage.setItem(
+            "theme",
+            document.body.classList.contains("dark")
+                ? "dark"
+                : "light"
+        );
+    });
+
+    if(localStorage.getItem("theme")==="dark"){
+        document.body.classList.add("dark");
+    }
+}
+
+let captchaLength = 4;
+
+const difficulty =
+    document.getElementById("difficulty");
+
+difficulty.addEventListener("change",()=>{
+
+    if(difficulty.value==="easy")
+        captchaLength=4;
+
+    else if(difficulty.value==="medium")
+        captchaLength=6;
+
+    else
+        captchaLength=8;
+});
+
+
+let time = 30;
+
+const interval = setInterval(()=>{
+
+    time--;
+
+    document.getElementById(
+        "timer"
+    ).innerText = time;
+
+    if(time===0){
+        alert("Time's up!");
+        clearInterval(interval);
+    }
+
+},1000);
+
+let attempts = 5;
+
+function wrongCaptcha(){
+
+    attempts--;
+
+    document.getElementById(
+        "attempts"
+    ).innerText = attempts;
+
+    if(attempts===0){
+        alert("Too many attempts!");
+    }
+}
+
+
+
 // Add difficulty selector UI dynamic attachment
 const addDifficultySelector = () => {
     const existing = document.getElementById('difficulty-selector');
