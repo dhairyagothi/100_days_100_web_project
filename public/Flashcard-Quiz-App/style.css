@@ -23,6 +23,17 @@
     --radius: 14px;
     --transition: .3s ease;
 }
+
+[data-theme="dark"] {
+    --background: #0f172a;
+    --surface: #1e293b;
+    --surface-light: #334155;
+    --text: #f1f5f9;
+    --text-light: #94a3b8;
+    --border: #475569;
+    --shadow-sm: 0 4px 10px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
 /* ======================================================
                     RESET
 ====================================================== */
@@ -102,6 +113,28 @@ header{
 .nav-tab.active{
     background:var(--primary);
     color:white;
+}
+
+.theme-toggle{
+    background:var(--surface-light);
+    color:var(--text);
+    border:1px solid var(--border);
+    border-radius:999px;
+    padding:10px 16px;
+    cursor:pointer;
+    transition:var(--transition);
+    font-weight:500;
+    display:flex;
+    align-items:center;
+    gap:6px;
+}
+.theme-toggle:hover{
+    background:var(--primary);
+    color:white;
+    border-color:var(--primary);
+}
+.theme-icon{
+    font-size:1.2rem;
 }
 /* ======================================================
                     MAIN CONTAINER
