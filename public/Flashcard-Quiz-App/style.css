@@ -518,12 +518,64 @@ button.danger:hover{
                     FOOTER
 ====================================================== */
 .footer{
-    text-align:center;
-    padding:40px 20px;
-    color:var(--text-light);
-    font-size:.95rem;
+    background:var(--surface);
+    border-top:1px solid var(--border);
+    padding:50px 0 30px;
+    margin-top:60px;
 }
-.footer strong{
+.footer-content{
+    width:min(1200px,92%);
+    margin:auto;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:40px;
+    padding-bottom:40px;
+    border-bottom:1px solid var(--border);
+}
+.footer-brand h2{
+    font-size:1.5rem;
+    color:var(--primary);
+    margin-bottom:15px;
+}
+.footer-brand p{
+    color:var(--text-light);
+    line-height:1.6;
+    max-width:400px;
+}
+.footer-links{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:30px;
+}
+.footer-section h3{
+    font-size:1.1rem;
+    color:var(--text);
+    margin-bottom:15px;
+}
+.footer-section ul{
+    list-style:none;
+}
+.footer-section li{
+    color:var(--text-light);
+    margin-bottom:10px;
+    font-size:.9rem;
+    transition:var(--transition);
+}
+.footer-section li:hover{
+    color:var(--primary);
+}
+.footer-bottom{
+    width:min(1200px,92%);
+    margin:auto;
+    padding-top:30px;
+    text-align:center;
+    color:var(--text-light);
+    font-size:.9rem;
+}
+.footer-bottom p{
+    margin-bottom:8px;
+}
+.footer-bottom strong{
     color:var(--primary);
 }
 /* ======================================================
@@ -579,6 +631,13 @@ button.danger:hover{
     }
     .hero h1{
         font-size:2.2rem;
+    }
+    .footer-content{
+        grid-template-columns:1fr;
+        gap:30px;
+    }
+    .footer-links{
+        grid-template-columns:1fr;
     }
 }
 @media (max-width:768px){
