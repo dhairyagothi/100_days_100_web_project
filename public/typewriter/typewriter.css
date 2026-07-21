@@ -180,10 +180,10 @@ body::after {
 }
 
 .typewriterText {
-  display: inline;
-  position: relative;
-  z-index: 2;
-  white-space: pre-wrap;
+    display: block;
+    white-space: pre-wrap;
+    line-height: 32px;
+    padding-top: 6px;
 }
 
 .cursor-paper {
@@ -407,10 +407,9 @@ body::after {
   }
 
   .paper-sheet {
-    padding: 18px;
-    min-height: 140px;
-    font-size: 1.1rem;
-  }
+    background-size: 100% 32px;
+    background-position-y: 6px;
+}
 
   .typewriter-body {
     padding: 18px;
