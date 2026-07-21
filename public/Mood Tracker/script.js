@@ -1,4 +1,11 @@
-let entries = JSON.parse(localStorage.getItem('moodEntries')) || [];
+let entries = [];
+
+try {
+  entries = JSON.parse(localStorage.getItem('moodEntries')) || [];
+} catch {
+  entries = [];
+  localStorage.removeItem('moodEntries');
+}
 
 let state = {
   filter: 'day',
@@ -26,9 +33,10 @@ window.onload = () => {
 function updateTime() {
   const now = new Date();
 
-  document.getElementById('currentDate').innerText = now.toDateString();
-
-  document.getElementById('currentTime').innerText = now.toLocaleTimeString();
+ const currentDate = document.getElementById('currentDate');
+ const currentTime = document.getElementById('currentTime');
+ if (currentDate) {currentDate.innerText = now.toDateString();}
+ if (currentTime) {currentTime.innerText = now.toLocaleTimeString();}
 }
 
 // ================= THEME =================

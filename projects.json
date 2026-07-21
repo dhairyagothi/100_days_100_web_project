@@ -3126,5 +3126,17 @@
     ],
    "difficulty": "advanced",
     "projectPath": "./public/Flashcard-Quiz-App/index.html"
-   } 
+   },
+   { "projectNo": 246,
+     "projectName": "WebDevQuizApp",
+    "projectType": "Tool",
+    "projectDesc": "A flashcard quiz app built using HTML, CSS, and Vanilla JavaScript.",
+       "techStack": [
+      "html",
+      "css",
+      "javascript"
+    ],
+   "difficulty": "intermediate",
+    "projectPath": "./public/WebDevQuizApp/index.html"
+  } 
 ]

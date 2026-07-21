@@ -110,6 +110,81 @@
               </button>
             </div>
 
+                    <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button class="favorite-btn" id="favorite-btn" title="Add to favorites">
+                        ⭐ Favorite
+                    </button>
+                    <button class="clear-btn" id="clear-btn" title="Clear all fields">
+                        🗑️ Clear
+                    </button>
+                </div>
+            </div>
+
+            <!-- Formula & Explanation Panel -->
+            <div class="formula-panel" id="formula-panel">
+                <h3>📐 Conversion Formula</h3>
+                <p class="formula-text" id="formula-text">Select units to see the conversion formula</p>
+                <div class="steps-container" id="steps-container">
+                    <!-- Steps will be added here -->
+                </div>
+            </div>
+
+            <!-- Unit Information Cards -->
+            <div class="unit-info-container">
+                <div class="unit-info-card" id="from-unit-info">
+                    <h3>From Unit</h3>
+                    <div class="unit-info-content">
+                        <p class="unit-info-name" id="from-unit-name">Select a unit</p>
+                        <p class="unit-info-symbol" id="from-unit-symbol"></p>
+                        <p class="unit-info-desc" id="from-unit-desc"></p>
+                        <p class="unit-info-apps" id="from-unit-apps"></p>
+                    </div>
+                </div>
+                <div class="unit-info-card" id="to-unit-info">
+                    <h3>To Unit</h3>
+                    <div class="unit-info-content">
+                        <p class="unit-info-name" id="to-unit-name">Select a unit</p>
+                        <p class="unit-info-symbol" id="to-unit-symbol"></p>
+                        <p class="unit-info-desc" id="to-unit-desc"></p>
+                        <p class="unit-info-apps" id="to-unit-apps"></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Multi-Conversion Table -->
+            <div class="multi-conversion-panel" id="multi-conversion-panel">
+                <h3>🔄 Convert to All Units</h3>
+                <table class="conversion-table" id="conversion-table">
+                    <thead>
+                        <tr>
+                            <th>Unit</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody id="conversion-table-body">
+                        <!-- Rows will be added here -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Notification Toast -->
+            <div class="toast" id="toast">
+                <span id="toast-message"></span>
+            </div>
+        </section>
+
+        <!-- Sidebar with History & Favorites -->
+        <aside class="sidebar sidebar--right">
+                <!-- Tab Navigation -->
+                <div class="sidebar__tabs">
+                    <button class="sidebar__tab active" data-tab="history">
+                        ⏰ History
+                    </button>
+                    <button class="sidebar__tab" data-tab="favorites">
+                        ⭐ Favorites
+                    </button>
+                </div>
             <!-- Action Buttons -->
             <div class="action-buttons">
               <button

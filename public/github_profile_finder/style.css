@@ -464,7 +464,7 @@ body {
 
 .dashboard-grid {
   display: grid;
-  grid-template-columns: 340px 1fr;
+  grid-template-columns: clamp(260px, 20%, 340px) 1fr; /* was: 340px 1fr */
   gap: 28px;
   align-items: start;
   width: 100%;
@@ -634,28 +634,33 @@ body {
    STATS - FULL WIDTH FIXED
 ========================================================= */
 
-.stats-overview {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-  width: 100%;
-  margin: 0;
-  padding: 0;
+.stats-overview{
+    display: grid;
+    grid-template-columns: repeat(4, minmax(240px, 1fr));
+    gap: 18px;
+    width: 100%;
 }
 
-.stat-box {
-  background: var(--card);
-  border: 1px solid var(--card-border);
-  border-radius: var(--radius-lg);
-  padding: 28px 20px;
-  backdrop-filter: blur(20px);
-  box-shadow: var(--shadow);
-  transition: var(--transition);
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-  width: 100%;
-  min-width: 0;
+.stat-box{
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-lg);
+
+    padding: 24px 30px;
+    min-height: 190px;
+
+    backdrop-filter: blur(20px);
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+
+    position: relative;
+    overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
 }
 
 .stat-box::before {
@@ -682,23 +687,23 @@ body {
 
 .stat-icon {
   font-size: 2rem;
-  margin-bottom: 10px;
-  display: block;
+  margin-bottom: 14px;
+  /* display: block; */
 }
 
 .stat-box span {
   display: block;
   color: var(--muted);
-  margin-bottom: 10px;
+  margin-bottom: 14px;
   font-weight: 600;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   text-transform: uppercase;
   letter-spacing: 0.8px;
   white-space: nowrap;
 }
 
 .stat-box strong {
-  font-size: clamp(2rem, 3vw, 3rem);
+  font-size: 3rem;
   font-weight: 800;
   display: block;
   background: linear-gradient(135deg, var(--primary), var(--secondary));
@@ -844,6 +849,8 @@ body {
   gap:5px;
 
   min-width:900px;
+}
+
 .heatmap-grid {
   display: grid;
   grid-template-columns: repeat(53, 12px);
