@@ -121,6 +121,9 @@ modeToggle.addEventListener('change', () => {
       ? 'Dark Mode Enabled 🌙'
       : 'Light Mode Enabled ☀️'
   );
+
+  // Redraw charts in new theme colours
+  drawCharts();
 });
 
 /* =========================================================
@@ -171,6 +174,8 @@ form.addEventListener('submit', (e) => {
 
   showLoader();
 
+  const recurringToggle = document.getElementById('recurringToggle');
+
   const transaction = {
     id: Date.now(),
 
@@ -183,6 +188,13 @@ form.addEventListener('submit', (e) => {
     type: categoryInput.value === 'income' ? 'income' : 'expense',
 
     date: dateInput.value,
+
+    recurring: recurringToggle ? recurringToggle.checked : false,
+
+    // Track which month this recurring entry was last auto-added (YYYY-MM)
+    lastAdded: recurringToggle && recurringToggle.checked
+      ? dateInput.value.slice(0, 7)
+      : null,
   };
 
   transactions.unshift(transaction);
@@ -191,9 +203,15 @@ form.addEventListener('submit', (e) => {
 
   successSound.play().catch(() => {});
 
-  showToast('Transaction Added Successfully 🚀');
+  showToast(
+    transaction.recurring
+      ? 'Recurring Transaction Added 🔁'
+      : 'Transaction Added Successfully 🚀'
+  );
 
   form.reset();
+
+  if (recurringToggle) recurringToggle.checked = false;
 
   const today = new Date().toISOString().split('T')[0];
 
@@ -201,9 +219,56 @@ form.addEventListener('submit', (e) => {
 
   hideLoader();
 
-  // Auto-update prediction when new transaction added
   updateMonthPrediction();
 });
+
+/* =========================================================
+   RECURRING TRANSACTIONS — AUTO-REPEAT ON PAGE LOAD
+   For every transaction with recurring: true, if the current
+   month (YYYY-MM) is newer than lastAdded, inject a copy.
+========================================================= */
+
+function applyRecurringTransactions() {
+  const now = new Date();
+  const currentMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+  const todayStr = now.toISOString().split('T')[0];
+
+  let added = 0;
+
+  // We only look at "seed" recurring entries (those that have a lastAdded field
+  // and whose lastAdded is earlier than the current month).
+  // To avoid duplicating duplicates we only operate on entries where
+  // recurring === true AND lastAdded < currentMonth.
+  const seeds = transactions.filter(
+    (txn) => txn.recurring && txn.lastAdded && txn.lastAdded < currentMonth
+  );
+
+  seeds.forEach((seed) => {
+    // Create a fresh entry for this month
+    const copy = {
+      id: Date.now() + Math.random(), // unique id
+      amount: seed.amount,
+      description: seed.description + ' (recurring)',
+      category: seed.category,
+      type: seed.type,
+      date: todayStr,
+      recurring: true,
+      lastAdded: currentMonth,
+    };
+
+    transactions.unshift(copy);
+
+    // Update the seed so it won't fire again this month
+    seed.lastAdded = currentMonth;
+
+    added++;
+  });
+
+  if (added > 0) {
+    localStorage.setItem('transactions', JSON.stringify(transactions));
+    showToast(`${added} recurring transaction${added > 1 ? 's' : ''} added for this month 🔁`);
+  }
+}
 
 /* =========================================================
    RENDER TRANSACTIONS
@@ -224,7 +289,6 @@ function renderTransactions() {
     row.style.animation = 'slideIn 0.5s ease';
 
     row.innerHTML = `
-
       <td>${formatDate(txn.date)}</td>
 
       <td>${txn.description}</td>
@@ -237,6 +301,12 @@ function renderTransactions() {
 
       <td class="${txn.type === 'income' ? 'income-text' : 'expense-text'}">
         ${txn.type === 'income' ? '+' : '-'}₹${txn.amount}
+      </td>
+
+      <td>
+        ${txn.recurring
+          ? '<span class="recurring-badge" title="Auto-repeats monthly">🔁 Yes</span>'
+          : '<span style="color:#94a3b8;font-size:0.8rem;">—</span>'}
       </td>
 
       <td>
@@ -294,8 +364,6 @@ function updateSummary() {
   animateNumber(balanceEl, balance);
   animateNumber(incomeEl, income);
   animateNumber(expenseEl, expense);
-
-  balanceEl.style.color = balance < 0 ? '#ff4d4d' : '#00c853';
 
   balanceEl.style.color = balance < 0 ? '#ff4d4d' : '#00c853';
 }
@@ -472,12 +540,11 @@ function updateInsights() {
       status = `Excellent! Saving ${savingsRate}% 🎉`;
       if (typeof confetti === 'function') {
         confetti({
-        particleCount: 150,
-        spread: 90,
-        origin: { y: 0.6 },
-      });
+          particleCount: 150,
+          spread: 90,
+          origin: { y: 0.6 },
+        });
       }
-      
     } else if (savingsRate >= 20) {
       status = `Good savings rate ${savingsRate}%`;
     } else {
@@ -503,7 +570,6 @@ resetBtn.addEventListener('click', () => {
   transactions = [];
   monthlyBudget = 0;
 
-  // Remove only Expense Tracker data
   localStorage.removeItem('transactions');
   localStorage.removeItem('budget');
   localStorage.removeItem('groqApiKey');
@@ -551,6 +617,7 @@ function renderAll() {
   updateCategories();
   updateBudget();
   updateInsights();
+  drawCharts();
 }
 
 /* =========================================================
@@ -622,6 +689,305 @@ buttons.forEach((button) => {
 });
 
 /* =========================================================
+   ✨ FEATURE: DONUT CHART — category spending breakdown
+========================================================= */
+
+function drawDonutChart() {
+  const canvas = document.getElementById('donutChart');
+  if (!canvas) return;
+
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width;
+  const H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+
+  const isDark = document.body.classList.contains('dark');
+  const textColor = isDark ? '#e2e8f0' : '#1e293b';
+
+  const catColors = {
+    food:     '#f59e0b',
+    travel:   '#6366f1',
+    shopping: '#ec4899',
+    other:    '#10b981',
+  };
+
+  const totals = { food: 0, travel: 0, shopping: 0, other: 0 };
+  transactions.forEach((txn) => {
+    if (txn.type === 'expense' && totals[txn.category] !== undefined) {
+      totals[txn.category] += txn.amount;
+    }
+  });
+
+  const entries = Object.entries(totals).filter(([, v]) => v > 0);
+  const total = entries.reduce((s, [, v]) => s + v, 0);
+
+  const cx = W / 2;
+  const cy = H / 2;
+  const outerR = Math.min(W, H) / 2 - 10;
+  const innerR = outerR * 0.55; // donut hole
+
+  if (total === 0) {
+    ctx.fillStyle = isDark ? '#475569' : '#cbd5e1';
+    ctx.beginPath();
+    ctx.arc(cx, cy, outerR, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = isDark ? '#1e293b' : '#f8fafc';
+    ctx.beginPath();
+    ctx.arc(cx, cy, innerR, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = textColor;
+    ctx.textAlign = 'center';
+    ctx.font = '13px Poppins, sans-serif';
+    ctx.fillText('No expenses', cx, cy + 5);
+
+    // Clear legend
+    const legend = document.getElementById('donutLegend');
+    if (legend) legend.innerHTML = '';
+    return;
+  }
+
+  let startAngle = -Math.PI / 2;
+
+  entries.forEach(([cat, val]) => {
+    const slice = (val / total) * Math.PI * 2;
+    const color = catColors[cat] || '#94a3b8';
+
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.arc(cx, cy, outerR, startAngle, startAngle + slice);
+    ctx.closePath();
+    ctx.fillStyle = color;
+    ctx.fill();
+
+    // Percentage label on slice if large enough
+    if (slice > 0.3) {
+      const midAngle = startAngle + slice / 2;
+      const labelR = (outerR + innerR) / 2;
+      const lx = cx + Math.cos(midAngle) * labelR;
+      const ly = cy + Math.sin(midAngle) * labelR;
+      ctx.fillStyle = '#fff';
+      ctx.font = 'bold 11px Poppins, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(`${Math.round((val / total) * 100)}%`, lx, ly);
+    }
+
+    startAngle += slice;
+  });
+
+  // Donut hole
+  ctx.beginPath();
+  ctx.arc(cx, cy, innerR, 0, Math.PI * 2);
+  ctx.fillStyle = isDark ? '#1e293b' : '#f8fafc';
+  ctx.fill();
+
+  // Centre total text
+  ctx.fillStyle = textColor;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.font = 'bold 14px Poppins, sans-serif';
+  ctx.fillText(`₹${total.toLocaleString('en-IN')}`, cx, cy - 8);
+  ctx.font = '11px Poppins, sans-serif';
+  ctx.fillStyle = isDark ? '#94a3b8' : '#64748b';
+  ctx.fillText('Total Spent', cx, cy + 10);
+
+  // Legend
+  const legend = document.getElementById('donutLegend');
+  if (legend) {
+    legend.innerHTML = entries
+      .map(
+        ([cat, val]) => `
+        <div class="legend-item">
+          <span class="legend-dot" style="background:${catColors[cat] || '#94a3b8'}"></span>
+          <span>${capitalize(cat)}</span>
+          <span class="legend-amount">₹${val.toLocaleString('en-IN')}</span>
+        </div>`
+      )
+      .join('');
+  }
+}
+
+/* =========================================================
+   ✨ FEATURE: BAR CHART — income vs expenses last 6 months
+========================================================= */
+
+function drawBarChart() {
+  const canvas = document.getElementById('barChart');
+  if (!canvas) return;
+
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width;
+  const H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+
+  const isDark = document.body.classList.contains('dark');
+  const textColor = isDark ? '#e2e8f0' : '#1e293b';
+  const gridColor = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.07)';
+
+  // Build last-6-months labels
+  const now = new Date();
+  const months = [];
+  for (let i = 5; i >= 0; i--) {
+    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    months.push({
+      key: `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`,
+      label: d.toLocaleDateString('en-IN', { month: 'short', year: '2-digit' }),
+      income: 0,
+      expense: 0,
+    });
+  }
+
+  transactions.forEach((txn) => {
+    const monthKey = txn.date ? txn.date.slice(0, 7) : '';
+    const bucket = months.find((m) => m.key === monthKey);
+    if (!bucket) return;
+    if (txn.type === 'income') bucket.income += txn.amount;
+    else bucket.expense += txn.amount;
+  });
+
+  const allValues = months.flatMap((m) => [m.income, m.expense]);
+  const maxVal = Math.max(...allValues, 1);
+
+  const PAD_LEFT = 60;
+  const PAD_RIGHT = 16;
+  const PAD_TOP = 20;
+  const PAD_BOT = 44;
+  const chartW = W - PAD_LEFT - PAD_RIGHT;
+  const chartH = H - PAD_TOP - PAD_BOT;
+
+  const barGroupW = chartW / months.length;
+  const barW = Math.min(barGroupW * 0.32, 24);
+  const gap = barW * 0.4;
+
+  // Y-axis grid + labels
+  const ySteps = 4;
+  for (let i = 0; i <= ySteps; i++) {
+    const y = PAD_TOP + chartH - (i / ySteps) * chartH;
+    const val = Math.round((i / ySteps) * maxVal);
+
+    ctx.strokeStyle = gridColor;
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(PAD_LEFT, y);
+    ctx.lineTo(W - PAD_RIGHT, y);
+    ctx.stroke();
+
+    ctx.fillStyle = isDark ? '#94a3b8' : '#64748b';
+    ctx.font = '10px Poppins, sans-serif';
+    ctx.textAlign = 'right';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(val >= 1000 ? `₹${(val / 1000).toFixed(0)}k` : `₹${val}`, PAD_LEFT - 6, y);
+  }
+
+  // Bars
+  months.forEach((m, i) => {
+    const groupX = PAD_LEFT + i * barGroupW + barGroupW / 2;
+
+    // Income bar (left of pair)
+    const incomeH = (m.income / maxVal) * chartH;
+    const incomeX = groupX - gap / 2 - barW;
+    const incomeY = PAD_TOP + chartH - incomeH;
+
+    const incomeGrad = ctx.createLinearGradient(0, incomeY, 0, incomeY + incomeH);
+    incomeGrad.addColorStop(0, '#34d399');
+    incomeGrad.addColorStop(1, '#059669');
+    ctx.fillStyle = incomeGrad;
+    ctx.beginPath();
+    ctx.roundRect
+      ? ctx.roundRect(incomeX, incomeY, barW, incomeH, [4, 4, 0, 0])
+      : ctx.rect(incomeX, incomeY, barW, incomeH);
+    ctx.fill();
+
+    // Expense bar (right of pair)
+    const expH = (m.expense / maxVal) * chartH;
+    const expX = groupX + gap / 2;
+    const expY = PAD_TOP + chartH - expH;
+
+    const expGrad = ctx.createLinearGradient(0, expY, 0, expY + expH);
+    expGrad.addColorStop(0, '#f87171');
+    expGrad.addColorStop(1, '#dc2626');
+    ctx.fillStyle = expGrad;
+    ctx.beginPath();
+    ctx.roundRect
+      ? ctx.roundRect(expX, expY, barW, expH, [4, 4, 0, 0])
+      : ctx.rect(expX, expY, barW, expH);
+    ctx.fill();
+
+    // X-axis label
+    ctx.fillStyle = textColor;
+    ctx.font = '10px Poppins, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'top';
+    ctx.fillText(m.label, groupX, PAD_TOP + chartH + 8);
+  });
+
+  // Legend
+  const legendY = H - 12;
+  const items = [
+    { label: 'Income', color: '#34d399' },
+    { label: 'Expenses', color: '#f87171' },
+  ];
+  const legendTotalW = items.length * 90;
+  let lx = W / 2 - legendTotalW / 2;
+
+  items.forEach(({ label, color }) => {
+    ctx.fillStyle = color;
+    ctx.fillRect(lx, legendY - 8, 12, 12);
+    ctx.fillStyle = textColor;
+    ctx.font = '11px Poppins, sans-serif';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(label, lx + 16, legendY - 2);
+    lx += 90;
+  });
+}
+
+/* =========================================================
+   DRAW BOTH CHARTS
+========================================================= */
+
+function drawCharts() {
+  drawDonutChart();
+  drawBarChart();
+}
+
+/* =========================================================
+   ✨ FEATURE: CSV EXPORT
+========================================================= */
+
+function exportCSV() {
+  if (transactions.length === 0) {
+    showToast('No transactions to export ⚠️');
+    return;
+  }
+
+  const headers = ['Date', 'Description', 'Category', 'Type', 'Amount (₹)', 'Recurring'];
+
+  const rows = transactions.map((txn) => [
+    txn.date,
+    `"${txn.description.replace(/"/g, '""')}"`,
+    capitalize(txn.category),
+    capitalize(txn.type),
+    txn.amount,
+    txn.recurring ? 'Yes' : 'No',
+  ]);
+
+  const csvContent = [headers.join(','), ...rows.map((r) => r.join(','))].join('\n');
+
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `transactions_${new Date().toISOString().split('T')[0]}.csv`;
+  a.click();
+
+  URL.revokeObjectURL(url);
+
+  showToast('CSV Exported Successfully 📥');
+}
+
+/* =========================================================
    INIT
 ========================================================= */
 function safeLoadJSON(key, fallback) {
@@ -636,6 +1002,7 @@ function safeLoadJSON(key, fallback) {
     return fallback;
   }
 }
+
 (function init() {
   transactions = safeLoadJSON('transactions', []);
 
@@ -653,6 +1020,9 @@ function safeLoadJSON(key, fallback) {
 
   dateInput.value = today;
 
+  // ✨ Apply recurring transactions before first render
+  applyRecurringTransactions();
+
   renderAll();
 
   // Load saved Groq key
@@ -661,14 +1031,11 @@ function safeLoadJSON(key, fallback) {
     document.getElementById('groqApiKey').value = savedKey;
   }
 
-  // Run prediction on load
   updateMonthPrediction();
 })();
 
 /* =========================================================
    AI ENGINE — GROQ POWERED
-   Uses Groq API (free) with LLaMA3 model
-   Get your free API key at: console.groq.com
 ========================================================= */
 
 const groqKeyInput = document.getElementById('groqApiKey');
@@ -818,7 +1185,6 @@ analyzeBtn.addEventListener('click', async () => {
   const { totals, totalIncome, totalExpense } = buildExpenseSummary();
   const income = Number(aiIncomeInput.value) || totalIncome;
 
-  // Disable button and show loading
   analyzeBtn.innerHTML =
     '<i class="fa-solid fa-spinner fa-spin"></i> Analyzing...';
   analyzeBtn.disabled = true;
@@ -828,7 +1194,6 @@ analyzeBtn.addEventListener('click', async () => {
     .map(([k, v]) => `${capitalize(k)}: ₹${v.toLocaleString('en-IN')}`)
     .join(', ');
 
-  // Build prompts
   const spendingPrompt = `My expense breakdown this month is: ${expenseBreakdown}. Total expenses: ₹${totalExpense.toLocaleString('en-IN')}. Monthly budget: ₹${monthlyBudget || 'not set'}. Give me 2-3 specific, actionable tips to reduce my spending. Be concise.`;
 
   const budgetPrompt =
@@ -836,7 +1201,6 @@ analyzeBtn.addEventListener('click', async () => {
       ? `My monthly income is ₹${income.toLocaleString('en-IN')}. Apply the 50/30/20 budgeting rule and tell me exactly: how much for needs (50%), wants (30%), and savings (20%). Then compare these targets with my actual spending: ${expenseBreakdown}. Keep it very brief.`
       : null;
 
-  // Run both API calls in parallel
   const [spendingAdvice, budgetAdvice] = await Promise.all([
     callGroq(spendingPrompt),
     budgetPrompt
@@ -846,7 +1210,6 @@ analyzeBtn.addEventListener('click', async () => {
         ),
   ]);
 
-  // Update cards
   if (spendingAdvice) {
     document.getElementById('aiSpendingText').textContent = spendingAdvice;
   }
@@ -854,10 +1217,8 @@ analyzeBtn.addEventListener('click', async () => {
     document.getElementById('aiBudgetText').textContent = budgetAdvice;
   }
 
-  // Always update month prediction (no API)
   updateMonthPrediction();
 
-  // Re-enable button
   analyzeBtn.innerHTML = '<i class="fa-solid fa-brain"></i> Analyze';
   analyzeBtn.disabled = false;
 
@@ -877,16 +1238,13 @@ async function sendAiMessage() {
       .map(([k, v]) => `${capitalize(k)}: ₹${v.toLocaleString('en-IN')}`)
       .join(', ') || 'No expenses logged yet';
 
-  // Append user bubble
   appendChatMessage(userMsg, 'user');
   aiChatInput.value = '';
 
-  // Append loading bubble
   const loadingId = 'loading-' + Date.now();
   appendChatMessage('Thinking...', 'loading', loadingId);
   aiChatMessages.scrollTop = aiChatMessages.scrollHeight;
 
-  // Build context-aware prompt
   const contextPrompt = `User's current financial data:
 - Total Income: ₹${totalIncome.toLocaleString('en-IN')}
 - Total Expenses: ₹${totalExpense.toLocaleString('en-IN')}
@@ -900,11 +1258,9 @@ Answer based on their actual data above. Be concise and friendly.`;
 
   const reply = await callGroq(contextPrompt);
 
-  // Remove loading bubble
   const loadingEl = document.getElementById(loadingId);
   if (loadingEl) loadingEl.remove();
 
-  // Append bot reply
   appendChatMessage(
     reply || "Sorry, I couldn't get a response. Please check your API key.",
     'bot'

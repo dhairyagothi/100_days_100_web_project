@@ -138,6 +138,202 @@ function updateInputFields() {
   updatePlaceholder(type);
 }
 
+function hexToRgb(hex){
+
+    hex=hex.replace("#","");
+
+    return{
+        r:parseInt(hex.substring(0,2),16),
+        g:parseInt(hex.substring(2,4),16),
+        b:parseInt(hex.substring(4,6),16)
+    };
+
+}
+
+function luminance(c){
+
+    const rgb=[c.r,c.g,c.b].map(v=>{
+
+        v/=255;
+
+        return v<=0.03928
+            ?v/12.92
+            :Math.pow((v+0.055)/1.055,2.4);
+
+    });
+
+    return 0.2126*rgb[0]+0.7152*rgb[1]+0.0722*rgb[2];
+
+}
+
+function contrastRatio(a,b){
+
+    const l1=luminance(hexToRgb(a));
+    const l2=luminance(hexToRgb(b));
+
+    return (Math.max(l1,l2)+0.05)/(Math.min(l1,l2)+0.05);
+
+}
+
+function calculateScannability(){
+
+    let score=100;
+
+    const reasons=[];
+
+    //----------------------------------
+    // Contrast
+    //----------------------------------
+
+    const contrast=contrastRatio(
+        foregroundColor.value,
+        backgroundColor.value
+    );
+
+    if(contrast<4.5){
+
+        score-=35;
+
+        reasons.push("Low foreground/background contrast.");
+
+    }
+
+    //----------------------------------
+    // Error correction
+    //----------------------------------
+
+    switch(errorCorrection.value){
+
+        case "L":
+
+            score-=10;
+            reasons.push("Low error correction.");
+            break;
+
+        case "M":
+
+            score-=5;
+            break;
+
+        case "Q":
+
+            score+=2;
+            break;
+
+        case "H":
+
+            score+=5;
+            break;
+    }
+
+    //----------------------------------
+    // Logo size
+    //----------------------------------
+
+    if(logoScale>0.30){
+
+        score-=25;
+        reasons.push("Logo is too large.");
+    }
+
+    //----------------------------------
+    // Data density
+    //----------------------------------
+
+    const len=qrText.value.length;
+
+    if(len>250){
+
+        score-=20;
+
+        reasons.push("QR contains a large amount of data.");
+
+    }else if(len>100){
+
+        score-=10;
+
+    }
+
+    //----------------------------------
+    // Quiet zone
+    //----------------------------------
+
+    if(marginSize<2){
+
+        score-=15;
+
+        reasons.push("Quiet zone is too small.");
+
+    }
+
+    //----------------------------------
+    // Module style
+    //----------------------------------
+
+    if(moduleShape==="dots"){
+
+        score-=5;
+
+    }
+
+    score=Math.max(0,Math.min(score,100));
+
+    return{
+        score,
+        reasons
+    };
+
+}
+
+function updateScannabilityScore(){
+
+    const result=calculateScannability();
+
+    const score=result.score;
+
+    const scoreEl=document.getElementById("scanScore");
+    const label=document.getElementById("scanLabel");
+    const icon=document.getElementById("scoreIcon");
+    const list=document.getElementById("scoreReasons");
+
+    scoreEl.textContent=`${score} / 100`;
+
+    list.innerHTML="";
+
+    result.reasons.forEach(r=>{
+
+        const li=document.createElement("li");
+
+        li.textContent=r;
+
+        list.appendChild(li);
+
+    });
+
+    if(score>=90){
+
+        icon.textContent="🟢";
+        label.textContent="Excellent";
+
+    }else if(score>=75){
+
+        icon.textContent="🟡";
+        label.textContent="Good";
+
+    }else if(score>=55){
+
+        icon.textContent="🟠";
+        label.textContent="Fair";
+
+    }else{
+
+        icon.textContent="🔴";
+        label.textContent="Poor";
+
+    }
+
+}
+
 /* =========================================================
    PLACEHOLDERS
 ========================================================= */
@@ -460,7 +656,6 @@ END:VCARD`,
   return {
     error: "Invalid QR type",
   };
-}
 
 /* =========================================================
    CLEAR QR
@@ -572,7 +767,6 @@ function generateQRCode() {
   animateQR();
 
   setStatus("QR generated successfully");
-}
 
 /* =========================================================
    LOGO OVERLAY (Canvas & Image Synchronized)
@@ -604,8 +798,7 @@ function addLogoToQR() {
     if (qrImg) {
       qrImg.src = qrCanvas.toDataURL("image/png");
     }
-  };
-}
+  
 /* =========================================================
    ANIMATE QR
 
@@ -1258,6 +1451,18 @@ resetBtn.addEventListener("click", resetApp);
 scanBtn.addEventListener("click", startScanner);
 
 qrColor.addEventListener("input", updateColorText);
+
+textInput.addEventListener("input", generateQRCode);
+
+foregroundColor.addEventListener("input", generateQRCode);
+
+backgroundColor.addEventListener("input", generateQRCode);
+
+errorCorrection.addEventListener("change", generateQRCode);
+
+logoUpload.addEventListener("change", generateQRCode);
+
+shapeSelect.addEventListener("change", generateQRCode);
 
 /* =========================================================
    KEYBOARD SHORTCUTS

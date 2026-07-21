@@ -3,21 +3,359 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Runway  Calculator</title>
-  <link rel="stylesheet" href="styles.css" />
+  <title>Runway Calculator | Startup Financial Planning</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
 </head>
 <body>
-  <!-- starthere -->
-  <div class="start">
-    <h1>Know Your Runway</h1>
-    <br></br>
-    <p>See how long your startup can survive before cash runs out.</p>
-    <a href="calculator.html">
-      <button class="cta">Get Started</button>
-    </a>
-    <br>
-    <img src="cash.jpg" class="img">
+
+  <!-- Background -->
+  <div class="bg-animation">
+    <div class="bg-circle c1"></div>
+    <div class="bg-circle c2"></div>
+    <div class="bg-circle c3"></div>
   </div>
-  
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="nav-brand">
+      <span class="brand-icon">🚀</span>
+      <span>Runway Calculator</span>
+    </div>
+    <div class="nav-actions">
+      <button class="btn-icon" id="themeToggle" title="Toggle Theme">
+        <i class="fas fa-moon"></i>
+      </button>
+      <button class="btn-icon" id="exportBtn" title="Export CSV">
+        <i class="fas fa-download"></i>
+      </button>
+      <button class="btn-icon" id="resetBtn" title="Reset All">
+        <i class="fas fa-trash-alt"></i>
+      </button>
+    </div>
+  </nav>
+
+  <main class="container">
+
+    <!-- Hero -->
+    <section class="hero">
+      <h1 class="hero-title">Know Your <span class="gradient-text">Runway</span></h1>
+      <p class="hero-sub">Plan your startup finances, model scenarios, and make smarter decisions.</p>
+    </section>
+
+    <!-- Health Banner -->
+    <div class="health-banner" id="healthBanner">
+      <div class="health-icon" id="healthIcon">🟢</div>
+      <div class="health-info">
+        <div class="health-title" id="healthTitle">Enter your financial data to get started</div>
+        <div class="health-sub"   id="healthSub">Fill in the form below to calculate your runway</div>
+      </div>
+      <div class="health-runway" id="healthRunway"></div>
+    </div>
+
+    <!-- Stats Row -->
+    <section class="stats-row">
+      <div class="stat-card">
+        <i class="fas fa-calendar-alt stat-icon runway-icon"></i>
+        <div>
+          <div class="stat-value" id="runwayMonths">—</div>
+          <div class="stat-label">Months Runway</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <i class="fas fa-fire-alt stat-icon burn-icon"></i>
+        <div>
+          <div class="stat-value" id="netBurnRate">—</div>
+          <div class="stat-label">Net Burn / Month</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <i class="fas fa-piggy-bank stat-icon cash-icon"></i>
+        <div>
+          <div class="stat-value" id="totalCash">—</div>
+          <div class="stat-label">Total Cash</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <i class="fas fa-flag-checkered stat-icon end-icon"></i>
+        <div>
+          <div class="stat-value" id="runwayEndDate">—</div>
+          <div class="stat-label">Cash Out Date</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Grid -->
+    <div class="main-grid">
+
+      <!-- LEFT: Inputs -->
+      <div class="left-panel">
+
+        <!-- Cash & Revenue -->
+        <div class="card input-card">
+          <div class="card-header">
+            <i class="fas fa-wallet"></i>
+            <h2>Cash & Revenue</h2>
+          </div>
+
+          <div class="form-group">
+            <label>Current Cash Balance ($)</label>
+            <div class="input-prefix-wrap">
+              <span class="prefix">$</span>
+              <input type="number" id="cashBalance" placeholder="500000" min="0"/>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Monthly Revenue / MRR ($)</label>
+            <div class="input-prefix-wrap">
+              <span class="prefix">$</span>
+              <input type="number" id="monthlyRevenue" placeholder="10000" min="0"/>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Monthly Revenue Growth (%)</label>
+            <div class="input-prefix-wrap">
+              <span class="prefix">%</span>
+              <input type="number" id="revenueGrowth" placeholder="5" min="0" max="100"/>
+            </div>
+          </div>
+        </div>
+
+        <!-- Expenses -->
+        <div class="card expense-card">
+          <div class="card-header">
+            <i class="fas fa-receipt"></i>
+            <h2>Monthly Expenses</h2>
+          </div>
+
+          <div class="expense-list">
+            <div class="expense-item">
+              <div class="expense-icon salaries">👥</div>
+              <div class="expense-info">
+                <label>Salaries & Payroll</label>
+                <div class="input-prefix-wrap">
+                  <span class="prefix">$</span>
+                  <input type="number" id="expSalaries" placeholder="30000" min="0"/>
+                </div>
+              </div>
+            </div>
+
+            <div class="expense-item">
+              <div class="expense-icon rent">🏢</div>
+              <div class="expense-info">
+                <label>Rent & Office</label>
+                <div class="input-prefix-wrap">
+                  <span class="prefix">$</span>
+                  <input type="number" id="expRent" placeholder="5000" min="0"/>
+                </div>
+              </div>
+            </div>
+
+            <div class="expense-item">
+              <div class="expense-icon marketing">📣</div>
+              <div class="expense-info">
+                <label>Marketing & Ads</label>
+                <div class="input-prefix-wrap">
+                  <span class="prefix">$</span>
+                  <input type="number" id="expMarketing" placeholder="8000" min="0"/>
+                </div>
+              </div>
+            </div>
+
+            <div class="expense-item">
+              <div class="expense-icon tools">🛠️</div>
+              <div class="expense-info">
+                <label>Tools & Software</label>
+                <div class="input-prefix-wrap">
+                  <span class="prefix">$</span>
+                  <input type="number" id="expTools" placeholder="2000" min="0"/>
+                </div>
+              </div>
+            </div>
+
+            <div class="expense-item">
+              <div class="expense-icon infra">☁️</div>
+              <div class="expense-info">
+                <label>Infrastructure</label>
+                <div class="input-prefix-wrap">
+                  <span class="prefix">$</span>
+                  <input type="number" id="expInfra" placeholder="1500" min="0"/>
+                </div>
+              </div>
+            </div>
+
+            <div class="expense-item">
+              <div class="expense-icon misc">📦</div>
+              <div class="expense-info">
+                <label>Miscellaneous</label>
+                <div class="input-prefix-wrap">
+                  <span class="prefix">$</span>
+                  <input type="number" id="expMisc" placeholder="1000" min="0"/>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="total-burn-row">
+            <span>Total Gross Burn</span>
+            <span class="total-burn-val" id="totalBurnDisplay">$0 / mo</span>
+          </div>
+        </div>
+
+        <!-- Headcount Planner -->
+        <div class="card headcount-card">
+          <div class="card-header">
+            <i class="fas fa-users"></i>
+            <h2>Headcount Planner</h2>
+          </div>
+          <div class="form-group">
+            <label>Planned New Hires</label>
+            <input type="number" id="newHires" placeholder="2" min="0" max="100"/>
+          </div>
+          <div class="form-group">
+            <label>Avg. Monthly Cost per Hire ($)</label>
+            <div class="input-prefix-wrap">
+              <span class="prefix">$</span>
+              <input type="number" id="costPerHire" placeholder="8000" min="0"/>
+            </div>
+          </div>
+          <div class="headcount-result" id="headcountResult">
+            Adding <strong id="hireImpact">0</strong> hires will increase burn by
+            <strong id="burnImpact">$0/mo</strong> and reduce runway by
+            <strong id="runwayImpact">0 months</strong>
+          </div>
+        </div>
+
+        <!-- Funding Goal -->
+        <div class="card funding-card">
+          <div class="card-header">
+            <i class="fas fa-hand-holding-usd"></i>
+            <h2>Funding Goal</h2>
+          </div>
+          <div class="form-group">
+            <label>Target Runway (months)</label>
+            <input type="number" id="targetRunway" placeholder="18" min="1" max="60"/>
+          </div>
+          <div class="funding-result" id="fundingResult">
+            <div class="fr-item">
+              <span>Amount to Raise</span>
+              <strong id="amountToRaise">$0</strong>
+            </div>
+            <div class="fr-item">
+              <span>Target Close Date</span>
+              <strong id="targetCloseDate">—</strong>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT: Results -->
+      <div class="right-panel">
+
+        <!-- Scenario Tabs -->
+        <div class="card scenario-card">
+          <div class="card-header">
+            <i class="fas fa-layer-group"></i>
+            <h2>Scenario Planning</h2>
+          </div>
+          <div class="scenario-tabs">
+            <button class="scenario-tab active" data-scenario="realistic">
+              📊 Realistic
+            </button>
+            <button class="scenario-tab" data-scenario="optimistic">
+              🚀 Optimistic
+            </button>
+            <button class="scenario-tab" data-scenario="pessimistic">
+              ⚠️ Pessimistic
+            </button>
+          </div>
+          <div class="scenario-desc" id="scenarioDesc">
+            Based on your exact inputs as entered.
+          </div>
+          <div class="scenario-compare">
+            <div class="sc-item realistic-sc">
+              <div class="sc-label">📊 Realistic</div>
+              <div class="sc-val" id="scRealistic">— mo</div>
+            </div>
+            <div class="sc-item optimistic-sc">
+              <div class="sc-label">🚀 Optimistic</div>
+              <div class="sc-val" id="scOptimistic">— mo</div>
+            </div>
+            <div class="sc-item pessimistic-sc">
+              <div class="sc-label">⚠️ Pessimistic</div>
+              <div class="sc-val" id="scPessimistic">— mo</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cash Flow Chart -->
+        <div class="card chart-card">
+          <div class="card-header">
+            <i class="fas fa-chart-line"></i>
+            <h2>Cash Flow Projection</h2>
+            <span class="chart-scenario-label" id="chartScenarioLabel">Realistic</span>
+          </div>
+          <div class="chart-wrap">
+            <canvas id="cashFlowChart"></canvas>
+            <div class="chart-empty" id="chartEmpty">
+              <i class="fas fa-chart-line"></i>
+              <span>Enter your data to see projections</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Expense Breakdown -->
+        <div class="card breakdown-card">
+          <div class="card-header">
+            <i class="fas fa-chart-pie"></i>
+            <h2>Expense Breakdown</h2>
+          </div>
+          <div id="expenseBreakdown" class="expense-breakdown"></div>
+        </div>
+
+        <!-- Monthly Projection Table -->
+        <div class="card table-card">
+          <div class="card-header">
+            <i class="fas fa-table"></i>
+            <h2>Monthly Projections</h2>
+          </div>
+          <div class="table-wrap">
+            <table id="projectionTable">
+              <thead>
+                <tr>
+                  <th>Month</th>
+                  <th>Revenue</th>
+                  <th>Burn</th>
+                  <th>Net</th>
+                  <th>Cash Balance</th>
+                </tr>
+              </thead>
+              <tbody id="projectionBody">
+                <tr>
+                  <td colspan="5" class="table-empty">
+                    Enter your data to see monthly projections
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Toast -->
+  <div class="toast" id="toast">
+    <i class="toast-icon fas fa-check-circle"></i>
+    <span id="toastMsg"></span>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>

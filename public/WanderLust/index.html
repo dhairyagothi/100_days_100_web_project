@@ -25,6 +25,11 @@
 
       <div class="nav-center">
         <input type="text" placeholder="Search" />
+        <select id="currency-selector" style="padding: 10px; border-radius: 10px; border: 1px solid var(--border); background: var(--input-bg); color: var(--text); cursor: pointer; margin-left: 10px; font-weight: bold;">
+          <option value="INR">₹ INR</option>
+          <option value="USD">$ USD</option>
+          <option value="EUR">€ EUR</option>
+        </select>
 
         <button>
           <i aria-hidden="true" class="fa-solid fa-magnifying-glass"></i>
@@ -32,8 +37,12 @@
         </button>
       </div>
 
-      <div class="nav-right">
-        <a href="#">Airbnb your home</a>
+            <button id="theme-toggle" onclick="toggleTheme()">
+        🌙
+    </button>
+
+
+            <a href="#">Airbnb your home</a>
 
         <a href="signup.html">Sign up</a>
 
@@ -310,7 +319,42 @@
         <a href="#">Support</a>
       </div>
     </footer>
+<script>
+const savedTheme = localStorage.getItem("theme") || "light";
+document.documentElement.setAttribute("data-theme", savedTheme);
 
-    <script src="js\script.js"></script> 
-    </body>
+updateIcon();
+
+function toggleTheme() {
+    const current =
+        document.documentElement.getAttribute("data-theme");
+
+    const next =
+        current === "dark" ? "light" : "dark";
+
+    document.documentElement.setAttribute(
+        "data-theme",
+        next
+    );
+
+    localStorage.setItem("theme", next);
+
+    updateIcon();
+}
+
+function updateIcon() {
+    const btn =
+        document.getElementById("theme-toggle");
+
+    const theme =
+        document.documentElement.getAttribute("data-theme");
+
+    btn.textContent =
+        theme === "dark" ? "☀️" : "🌙";
+}
+</script>
+
+
+<script src="js/script.js"></script>
+</body>
 </html>

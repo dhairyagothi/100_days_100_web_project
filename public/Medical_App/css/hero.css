@@ -1,7 +1,8 @@
-.hero {
+.hero-section {
     background:
     linear-gradient(
-        rgba(37,99,235,0.85),
+        135deg,
+        rgba(37,99,235,0.9),
         rgba(14,165,233,0.85)
     ),
     url("../assets/bg/hospital.png");
@@ -13,49 +14,103 @@
     color: white;
     text-align: center;
 
-    padding: 90px 20px;
+    padding: 40px 20px;
     position: relative;
     overflow: hidden;
+    border-radius: 16px;
+    margin: 20px;
+    box-shadow: 0 10px 40px rgba(37,99,235,0.2);
 }
 
-.hero::before {
+.hero-section::before {
     content: "";
-
     position: absolute;
     inset: 0;
-
     background: rgba(255,255,255,0.05);
-
     backdrop-filter: blur(1px);
+    border-radius: 16px;
 }
+
 .hero-content {
     position: relative;
     z-index: 2;
+    max-width: 800px;
+    margin: 0 auto;
 }
 
-.hero h1 {
-    font-size: 3rem;
-    margin-bottom: 15px;
-
-    font-weight: 800;
-    letter-spacing: 1px;
+.hero-text h1 {
+    font-size: 2.2rem;
+    margin-bottom: 12px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
 }
-.hero p {
-    font-size: 1.1rem;
+
+.hero-text p {
+    font-size: 1rem;
     opacity: 0.95;
+    margin-bottom: 8px;
+    line-height: 1.5;
+}
+
+.hero-stats {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    margin-top: 25px;
+    flex-wrap: wrap;
+}
+
+.stat-item {
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(10px);
+    padding: 15px 25px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.2);
+    min-width: 120px;
+}
+
+.stat-number {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.stat-label {
+    font-size: 0.85rem;
+    opacity: 0.9;
+    font-weight: 500;
 }
 
 @media (max-width:768px) {
-
-    .hero {
-        padding: 70px 15px;
+    .hero-section {
+        padding: 30px 15px;
+        margin: 15px;
+        border-radius: 12px;
     }
 
-    .hero h1 {
-        font-size: 2.2rem;
+    .hero-text h1 {
+        font-size: 1.8rem;
     }
 
-    .hero p {
-        font-size: 1rem;
+    .hero-text p {
+        font-size: 0.9rem;
+    }
+
+    .hero-stats {
+        gap: 15px;
+        margin-top: 20px;
+    }
+
+    .stat-item {
+        padding: 12px 20px;
+        min-width: 100px;
+    }
+
+    .stat-number {
+        font-size: 1.5rem;
+    }
+
+    .stat-label {
+        font-size: 0.75rem;
     }
 }
