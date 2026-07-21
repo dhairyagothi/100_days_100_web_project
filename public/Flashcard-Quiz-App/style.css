@@ -258,6 +258,13 @@ header{
     color:var(--text);
     line-height:1.5;
 }
+.card-body{
+    color:var(--text);
+    line-height:1.7;
+}
+.card-body p{
+    margin-bottom:15px;
+}
 /* ======================================================
                     INPUTS
 ====================================================== */
@@ -576,6 +583,99 @@ button.danger:hover{
     margin-bottom:8px;
 }
 .footer-bottom strong{
+    color:var(--primary);
+}
+/* ======================================================
+                    ABOUT PAGE STYLES
+====================================================== */
+.features-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:25px;
+    margin-top:20px;
+}
+.feature-item{
+    background:var(--surface-light);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:25px;
+    text-align:center;
+    transition:var(--transition);
+}
+.feature-item:hover{
+    transform:translateY(-4px);
+    box-shadow:var(--shadow-sm);
+}
+.feature-icon{
+    font-size:2.5rem;
+    margin-bottom:15px;
+}
+.feature-item h3{
+    font-size:1.1rem;
+    color:var(--text);
+    margin-bottom:10px;
+}
+.feature-item p{
+    font-size:.9rem;
+    color:var(--text-light);
+    line-height:1.5;
+}
+.tech-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+    gap:15px;
+    margin-top:20px;
+}
+.tech-item{
+    background:var(--surface-light);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:15px;
+    text-align:center;
+    transition:var(--transition);
+}
+.tech-item:hover{
+    background:var(--primary);
+    border-color:var(--primary);
+}
+.tech-item:hover .tech-name{
+    color:white;
+}
+.tech-name{
+    font-weight:600;
+    color:var(--primary);
+    font-size:.95rem;
+}
+.project-stats{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+    gap:20px;
+    margin-top:25px;
+}
+.stat-box{
+    background:var(--surface-light);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:20px;
+    text-align:center;
+}
+.stat-box .stat-number{
+    font-size:2rem;
+    font-weight:700;
+    color:var(--primary);
+    margin-bottom:5px;
+}
+.stat-box .stat-label{
+    font-size:.85rem;
+    color:var(--text-light);
+    font-weight:500;
+}
+.footer-section a{
+    color:var(--text-light);
+    text-decoration:none;
+    transition:var(--transition);
+}
+.footer-section a:hover{
     color:var(--primary);
 }
 /* ======================================================
