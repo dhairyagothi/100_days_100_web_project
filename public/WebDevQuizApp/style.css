@@ -17,6 +17,43 @@
     --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 }
 
+[data-theme="dark"] {
+    --bg-color: #0f172a;
+    --card-bg: #1e293b;
+    --text-main: #f1f5f9;
+    --text-muted: #94a3b8;
+    --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: var(--card-bg);
+    border: 2px solid #e5e7eb;
+    border-radius: 50px;
+    padding: 10px 16px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    box-shadow: var(--shadow);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1rem;
+}
+
+.theme-toggle:hover {
+    border-color: var(--primary);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(79, 70, 229, 0.2);
+}
+
+.theme-icon {
+    font-size: 1.2rem;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -91,7 +128,7 @@ body {
 }
 
 .timer-container {
-    background: #fff;
+    background: var(--card-bg);
     padding: 10px 18px;
     border-radius: 24px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
@@ -131,7 +168,7 @@ body {
     padding: 18px 20px;
     border: 2px solid #e5e7eb;
     border-radius: var(--radius);
-    background: #fff;
+    background: var(--card-bg);
     font-size: 1rem;
     text-align: left;
     cursor: pointer;
@@ -263,7 +300,8 @@ body {
     font-size: 1rem;
     outline: none;
     transition: all 0.25s ease;
-    background-color: white;
+    background-color: var(--card-bg);
+    color: var(--text-main);
 }
 
 .input-element:focus {
