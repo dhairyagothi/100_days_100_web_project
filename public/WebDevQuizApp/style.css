@@ -1,0 +1,270 @@
+/* CSS Custom Properties for consistency */
+:root {
+    --bg-color: #f3f4f6;
+    --card-bg: #ffffff;
+    --primary: #4f46e5;
+    --primary-hover: #4338ca;
+    --text-main: #1f2937;
+    --text-muted: #6b7280;
+    --correct-bg: #d1fae5;
+    --correct-border: #10b981;
+    --correct-text: #065f46;
+    --incorrect-bg: #fee2e2;
+    --incorrect-border: #ef4444;
+    --incorrect-text: #991b1b;
+    --warning: #f59e0b;
+    --radius: 12px;
+    --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+body {
+    background-color: var(--bg-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    color: var(--text-main);
+}
+
+.app-container {
+    width: 100%;
+    max-width: 600px;
+    padding: 20px;
+}
+
+/* Screen Visibility */
+.screen {
+    display: none;
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+.screen.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Typography & Layout */
+.title {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 1rem;
+    color: var(--primary);
+}
+
+.description {
+    text-align: center;
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+    line-height: 1.5;
+}
+
+.quiz-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+}
+
+.timer-container {
+    background: #fff;
+    padding: 8px 16px;
+    border-radius: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+#time-left {
+    color: var(--incorrect-border);
+    font-weight: bold;
+}
+
+/* Cards & Buttons */
+.card {
+    background: var(--card-bg);
+    padding: 2rem;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 1.5rem;
+}
+
+#question-text {
+    font-size: 1.25rem;
+    margin-bottom: 1.5rem;
+}
+
+.options-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.option-btn {
+    padding: 16px;
+    border: 2px solid #e5e7eb;
+    border-radius: var(--radius);
+    background: transparent;
+    font-size: 1rem;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--text-main);
+}
+
+.option-btn:hover:not(:disabled) {
+    border-color: var(--primary);
+    background-color: #f8fafc;
+}
+
+.option-btn:disabled {
+    cursor: not-allowed;
+}
+
+/* Feedback States */
+.option-btn.correct {
+    background-color: var(--correct-bg);
+    border-color: var(--correct-border);
+    color: var(--correct-text);
+}
+
+.option-btn.incorrect {
+    background-color: var(--incorrect-bg);
+    border-color: var(--incorrect-border);
+    color: var(--incorrect-text);
+}
+
+/* Action Buttons */
+.btn {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: var(--radius);
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.primary-btn {
+    background-color: var(--primary);
+    color: white;
+}
+
+.primary-btn:hover {
+    background-color: var(--primary-hover);
+}
+
+.secondary-btn {
+    background-color: var(--text-main);
+    color: white;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* End Screen */
+.score-card {
+    background: var(--card-bg);
+    padding: 2rem;
+    border-radius: var(--radius);
+    text-align: center;
+    box-shadow: var(--shadow);
+    margin-bottom: 2rem;
+}
+
+#final-score {
+    font-size: 3rem;
+    color: var(--primary);
+    margin-top: 0.5rem;
+}
+
+.feedback-msg {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-weight: 500;
+}
+
+.settings-card {
+    background: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 2rem;
+}
+
+.settings-group {
+    margin-bottom: 1.25rem;
+    text-align: left;
+}
+
+.settings-group:last-child {
+    margin-bottom: 0;
+}
+
+.settings-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+.input-element {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e5e7eb;
+    border-radius: var(--radius);
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s;
+    background-color: white;
+}
+
+.input-element:focus {
+    border-color: var(--primary);
+}
+
+.warning-text {
+    display: block;
+    color: var(--warning);
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+}
+
+/* Progress Bar Styles */
+.progress-container {
+    width: 100%;
+    height: 8px;
+    background-color: #e5e7eb;
+    /* Light gray background */
+    border-radius: 4px;
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background-color: var(--primary);
+    width: 0%;
+    /* Starts at 0, updated by JS */
+    border-radius: 4px;
+    transition: width 0.4s ease-in-out;
+    /* Smooth filling animation */
+}

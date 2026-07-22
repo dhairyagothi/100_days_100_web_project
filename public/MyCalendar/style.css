@@ -1,0 +1,225 @@
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --theme-color: #007bff; 
+    --bg-color: #f8fafc;
+    --card-bg: #ffffff;
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 2rem 1rem;
+    transition: background-color 0.8s ease;
+}
+
+.main-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    width: 100%;
+    max-width: 1100px;
+}
+
+.calendar-container {
+    background: var(--card-bg);
+    border-radius: 24px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+.month-image {
+    width: 100%;
+    height: 350px;
+    background-size: cover;
+    background-position: center;
+    border-bottom: 8px solid var(--theme-color);
+    transition: border-color 0.6s ease;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem;
+}
+
+.calendar-header h2 {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--theme-color);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    transition: color 0.6s ease;
+}
+
+.nav-btn {
+    background: #f1f5f9;
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 15px;
+    cursor: pointer;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+}
+
+.nav-btn:hover {
+    background: var(--theme-color);
+    color: white;
+    transform: translateY(-2px);
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    padding: 2rem;
+    gap: 12px;
+}
+
+.day-name {
+    font-weight: 700;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    padding-bottom: 1rem;
+}
+
+.day {
+    aspect-ratio: 1 / 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 16px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    background: #fdfdfd;
+    border: 2px solid transparent;
+    transition: var(--transition);
+    position: relative;
+}
+
+.day:hover {
+    border-color: var(--theme-color);
+    color: var(--theme-color);
+    transform: scale(1.1);
+    background: white;
+    z-index: 2;
+}
+
+.day.active {
+    background-color: var(--theme-color) !important;
+    color: white;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+}
+
+.day.festival-mark {
+    background-color: #ff7675 !important;
+    color: white !important;
+}
+
+.day.event-mark {
+    background-color: #a29bfe !important;
+    color: white !important;
+}
+
+.day.has-note::after {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background-color: white;
+    border-radius: 50%;
+    position: absolute;
+    bottom: 5px;
+}
+
+.note-section {
+    background: var(--card-bg);
+    padding: 2.5rem;
+    border-radius: 24px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    border-top: 10px solid var(--theme-color);
+    transition: border-color 0.6s ease;
+}
+
+#eventTag {
+    width: 100%;
+    padding: 0.8rem;
+    border-radius: 10px;
+    border: 2px solid #e2e8f0;
+    margin-bottom: 1rem;
+    font-family: inherit;
+    outline: none;
+    background: #f8fafc;
+}
+
+textarea {
+    width: 100%;
+    height: 200px;
+    border: 2px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    font-family: inherit;
+    font-size: 1.1rem;
+    outline: none;
+    transition: border-color 0.3s ease;
+    background: #f8fafc;
+}
+
+textarea:focus, #eventTag:focus {
+    border-color: var(--theme-color);
+    background: white;
+}
+
+#saveNote {
+    width: 100%;
+    padding: 1.2rem;
+    background: var(--theme-color);
+    color: white;
+    border: none;
+    border-radius: 16px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+#saveNote:hover {
+    filter: brightness(1.1);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+}
+
+@media (min-width: 850px) {
+    .main-wrapper {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+    .calendar-container {
+        flex: 1.6;
+    }
+    .note-section {
+        flex: 1;
+        position: sticky;
+        top: 2rem;
+    }
+}

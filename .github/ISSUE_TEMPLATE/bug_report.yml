@@ -1,0 +1,62 @@
+name: "🐛 Bug Report"
+description: "Report a bug or layout/responsiveness issue in a project"
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for reporting a bug! Please fill out the form below as completely as possible to help us resolve the issue quickly.
+  - type: input
+    id: project
+    attributes:
+      label: "Project Name / Day Number"
+      description: "Which project or day has this issue? (e.g. Day 29: Snake Game, or Landing Page)"
+      placeholder: "e.g. Day 29: Snake Game"
+    validations:
+      required: true
+  - type: textarea
+    id: bug-description
+    attributes:
+      label: "Bug Description"
+      description: "A clear and concise description of what the bug is."
+      placeholder: "Explain what is broken..."
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: "Steps to Reproduce"
+      description: "Explain how we can reproduce the bug step-by-step."
+      placeholder: |
+        1. Go to '...'
+        2. Click on '...'
+        3. Scroll down to '...'
+        4. See error
+    validations:
+      required: true
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: "Expected Behavior"
+      description: "A clear and concise description of what you expected to happen."
+      placeholder: "What should have happened?"
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: "Environment"
+      description: "What browser and OS are you using? (e.g. Chrome 120, Windows 11)"
+      placeholder: "e.g. Chrome 120, Windows 11"
+    validations:
+      required: false
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: "Checklist"
+      options:
+        - label: "I have checked that a similar issue does not already exist."
+          required: true
+        - label: "I have verified this issue on the latest main branch."
+          required: true
