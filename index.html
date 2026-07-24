@@ -29,9 +29,9 @@
       content="https://100-days-100-web-project.vercel.app/"
     />
     <link rel="canonical" href="https://100-days-100-web-project.vercel.app/" />
-   <meta
-  http-equiv="Content-Security-Policy"
-  content="
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="
   default-src 'self';
   script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://esm.sh;
   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com;
@@ -39,7 +39,7 @@
   img-src 'self' data: https:;
   connect-src 'self' https: http: ws: wss:;
 "
-  />
+    />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="100 Days · 100 Web Projects" />
@@ -57,17 +57,17 @@
       href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Orbitron:wght@500;600;700&display=swap"
       rel="stylesheet"
     />
-   <link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
-  integrity="..."
-  crossorigin="anonymous"
-  referrerpolicy="no-referrer"
-/>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+      integrity="..."
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
     <meta
-  http-equiv="Permissions-Policy"
-  content="camera=(), microphone=(), geolocation=()"
-/>
+      http-equiv="Permissions-Policy"
+      content="camera=(), microphone=(), geolocation=()"
+    />
     <link rel="stylesheet" href="style.css" />
 
     <style>
@@ -86,13 +86,19 @@
         letter-spacing: 0.02em;
         text-decoration: none;
         cursor: pointer;
-        transition: background 0.2s, box-shadow 0.2s, border-color 0.2s, transform 0.15s;
+        transition:
+          background 0.2s,
+          box-shadow 0.2s,
+          border-color 0.2s,
+          transform 0.15s;
         white-space: nowrap;
       }
       .btn-stats:hover {
         background: rgba(15, 242, 200, 0.15);
         border-color: rgba(15, 242, 200, 0.75);
-        box-shadow: 0 0 18px rgba(15, 242, 200, 0.22), 0 2px 8px rgba(0,0,0,0.3);
+        box-shadow:
+          0 0 18px rgba(15, 242, 200, 0.22),
+          0 2px 8px rgba(0, 0, 0, 0.3);
         transform: translateY(-1px);
         color: #0ff2c8;
       }
@@ -109,15 +115,24 @@
         overflow: hidden;
         padding: 5rem 1.5rem;
         text-align: center;
-        background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(15, 242, 200, 0.08) 0%, transparent 70%),
-                    linear-gradient(180deg, #0a0a1a 0%, #0d1117 100%);
+        background:
+          radial-gradient(
+            ellipse 80% 60% at 50% 50%,
+            rgba(15, 242, 200, 0.08) 0%,
+            transparent 70%
+          ),
+          linear-gradient(180deg, #0a0a1a 0%, #0d1117 100%);
         border-top: 1px solid rgba(15, 242, 200, 0.08);
       }
       .cta-banner::before {
-        content: '';
+        content: "";
         position: absolute;
         inset: 0;
-        background: radial-gradient(circle 600px at 50% 50%, rgba(15, 242, 200, 0.05), transparent 70%);
+        background: radial-gradient(
+          circle 600px at 50% 50%,
+          rgba(15, 242, 200, 0.05),
+          transparent 70%
+        );
         pointer-events: none;
       }
       .cta-banner-inner {
@@ -130,7 +145,7 @@
         gap: 1.25rem;
       }
       .cta-banner h2 {
-        font-family: 'Inter Tight', sans-serif;
+        font-family: "Inter Tight", sans-serif;
         font-size: clamp(1.75rem, 4vw, 2.5rem);
         font-weight: 800;
         color: #ffffff;
@@ -138,7 +153,7 @@
         margin: 0;
       }
       .cta-banner p {
-        font-family: 'Inter Tight', sans-serif;
+        font-family: "Inter Tight", sans-serif;
         font-size: 1rem;
         color: rgba(255, 255, 255, 0.55);
         line-height: 1.6;
@@ -153,14 +168,17 @@
         border-radius: 50px;
         background: #0ff2c8;
         color: #0a0a1a;
-        font-family: 'Inter Tight', sans-serif;
+        font-family: "Inter Tight", sans-serif;
         font-size: 1rem;
         font-weight: 700;
         text-decoration: none;
         cursor: pointer;
         border: none;
         letter-spacing: 0.01em;
-        transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+        transition:
+          background 0.2s,
+          transform 0.15s,
+          box-shadow 0.2s;
         box-shadow: 0 0 24px rgba(15, 242, 200, 0.35);
         margin-top: 0.5rem;
       }
@@ -179,7 +197,6 @@
     <div class="ambient ambient-left" aria-hidden="true"></div>
     <div class="ambient ambient-right" aria-hidden="true"></div>
     <div class="noise-layer" aria-hidden="true"></div>
-    
 
     <div id="navbar-container"></div>
     <section class="hero" id="hero">
@@ -206,11 +223,23 @@
           <a href="#projects" class="btn btn-primary" id="heroBrowseBtn">
             Browse Projects <i class="fas fa-arrow-down" aria-hidden="true"></i>
           </a>
-          <a href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank" rel="noopener noreferrer"
-            class="btn btn-ghost" id="heroGithubBtn" aria-label="GitHub Repository (opens in a new tab)">
+          <a
+            href="https://github.com/dhairyagothi/100_days_100_web_project"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-ghost"
+            id="heroGithubBtn"
+            aria-label="GitHub Repository (opens in a new tab)"
+          >
             <i class="fab fa-github" aria-hidden="true"></i> GitHub
           </a>
-          <a href="stats.html" class="btn-stats" id="heroStatsBtn" title="View Project Stats Dashboard" aria-label="View Project Stats Dashboard">
+          <a
+            href="stats.html"
+            class="btn-stats"
+            id="heroStatsBtn"
+            title="View Project Stats Dashboard"
+            aria-label="View Project Stats Dashboard"
+          >
             <i class="fas fa-chart-bar" aria-hidden="true"></i> Stats
           </a>
         </div>
@@ -242,6 +271,18 @@
     <section class="projects-section">
       <div class="projects-inner">
         <div class="projects-intro">
+          <p class="section-label">🆕 Recently Added</p>
+          <div class="section-heading-row">
+            <h2 class="section-title">Latest contributions to the archive</h2>
+          </div>
+        </div>
+        <div class="project-grid" id="recentlyAddedGrid"></div>
+      </div>
+    </section>
+
+    <section class="projects-section">
+      <div class="projects-inner">
+        <div class="projects-intro">
           <p class="section-label">Continue Exploring</p>
 
           <div class="section-heading-row">
@@ -263,7 +304,10 @@
 
     <section class="projects-section">
       <div class="projects-inner">
-        <div id="recommendationsContainer" class="recommendations-container"></div>
+        <div
+          id="recommendationsContainer"
+          class="recommendations-container"
+        ></div>
       </div>
     </section>
 
@@ -318,7 +362,10 @@
               id="filterAll"
               aria-label="Show all projects"
             >
-              All <span class="chip-count" id="allCount" aria-live="polite">Projects</span>
+              All
+              <span class="chip-count" id="allCount" aria-live="polite"
+                >Projects</span
+              >
             </button>
             <button
               class="chip"
@@ -409,14 +456,24 @@
             <option value="typescript">TypeScript</option>
             <option value="tailwindcss">Tailwind CSS</option>
           </select>
-          <button id="clearAllFiltersBtn" class="clear-filters-btn" aria-label="Clear all filters">
-            <i class="fas fa-filter-circle-xmark" aria-hidden="true"></i> Clear Filters
+          <button
+            id="clearAllFiltersBtn"
+            class="clear-filters-btn"
+            aria-label="Clear all filters"
+          >
+            <i class="fas fa-filter-circle-xmark" aria-hidden="true"></i> Clear
+            Filters
           </button>
         </div>
 
         <div class="project-grid" id="projectGrid"></div>
 
-        <div class="no-results" id="noResults" role="status" aria-live="assertive">
+        <div
+          class="no-results"
+          id="noResults"
+          role="status"
+          aria-live="assertive"
+        >
           <i class="fas fa-search" aria-hidden="true"></i>
           <p>No projects match your search.</p>
         </div>
@@ -424,39 +481,29 @@
     </section>
 
     <section class="projects-section" id="randomProjectSection">
-  <div class="projects-inner">
+      <div class="projects-inner">
+        <div class="projects-intro">
+          <p class="section-label">Need Inspiration?</p>
+          <h2 class="section-title">Can't decide what to build next?</h2>
+          <p class="hero-extra">
+            Generate a random project from the current archive.
+          </p>
+        </div>
 
-    <div class="projects-intro">
-      <p class="section-label">Need Inspiration?</p>
-      <h2 class="section-title">
-        Can't decide what to build next?
-      </h2>
-      <p class="hero-extra">
-        Generate a random project from the current archive.
-      </p>
-    </div>
+        <div class="random-project-wrapper">
+          <button id="randomProjectBtn" class="btn btn-primary">
+            🎲 Generate Random Project
+          </button>
 
-    <div class="random-project-wrapper">
-      <button
-        id="randomProjectBtn"
-        class="btn btn-primary"
-      >
-        🎲 Generate Random Project
-      </button>
-
-      <div
-        id="randomProjectResult"
-        class="project-grid"
-      ></div>
-    </div>
-
-  </div>
-</section>
+          <div id="randomProjectResult" class="project-grid"></div>
+        </div>
+      </div>
+    </section>
 
     <footer class="footer homepage-footer">
       <div class="homepage-footer-shell">
         <div class="homepage-footer-brand">
-    <p class="homepage-footer-kicker">100 Days · 100 Web Projects</p>
+          <p class="homepage-footer-kicker">100 Days · 100 Web Projects</p>
           <h2>
             Open-source builds for daily practice and creative frontend
             exploration.
@@ -594,7 +641,7 @@
     <script type="module" src="hero-terminal.js" defer></script>
 
     <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0"></script>
-    
+
     <script src="index.js?v=4" defer></script>
     <script src="navbar.js" defer></script>
     <script src="cursor.js" defer></script>

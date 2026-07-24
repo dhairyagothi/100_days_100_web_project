@@ -1707,7 +1707,7 @@
     "projectNo": 132,
     "projectName": "Pokedex",
     "projectType": "Tool",
-    "projectDesc": "Browse Pok\u00e9mon information through an interactive Pok\u00e9dex interface.",
+    "projectDesc": "Browse Pokémon information through an interactive Pokédex interface.",
     "techStack": [
       "utility"
     ],
@@ -2743,7 +2743,7 @@
     "projectNo": 203,
     "projectName": "Pomodoro With Miu",
     "projectType": "Tool",
-    "projectDesc": "A cute cat-themed Pomodoro timer built with Electron.js. Features 25/5 focus-break cycles, animated cat GIFs, meow sound notifications, and encouraging messages. Originally a desktop app \u2014 browser preview included.",
+    "projectDesc": "A cute cat-themed Pomodoro timer built with Electron.js. Features 25/5 focus-break cycles, animated cat GIFs, meow sound notifications, and encouraging messages. Originally a desktop app — browser preview included.",
     "projectPath": "./public/Pomodoro_With_Miu-Electronjs/index.html",
     "techStack": [
       "javascript",
@@ -3344,5 +3344,49 @@
     "difficulty": "advanced",
     "projectPath": "./public/Pokemon_Battle_Simulator/index.html",
     "contributor": "madhavcodes25"
+  },
+  {
+    "projectNo": 244,
+    "projectName": "Drawing Canva",
+    "projectType": "Tool",
+    "projectDesc": "A canvas for drawing built using HTML, CSS, and Vanilla JavaScript.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript",
+      "visualizer"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/Drawing-Canva/index.html",
+    "contributor": "vasudhaagrawal2024-byte"
+  },
+  {
+    "projectNo": 245,
+    "projectName": "Flashcard Quiz",
+    "projectType": "Tool",
+    "projectDesc": "A flashcard quiz app built using HTML, CSS, and Vanilla JavaScript.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript",
+      "visualizer"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/Flashcard-Quiz-App/index.html",
+    "contributor": "vasudhaagrawal2024-byte"
+  },
+  {
+    "projectNo": 246,
+    "projectName": "WebDevQuizApp",
+    "projectType": "Tool",
+    "projectDesc": "A flashcard quiz app built using HTML, CSS, and Vanilla JavaScript.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/WebDevQuizApp/index.html",
+    "contributor": "deorisoumya"
   }
 ]

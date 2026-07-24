@@ -1,441 +1,492 @@
 class ComplaintApp {
-  constructor() {
-    this.items = this.loadItems();
-    this.currentView = 'dashboard';
-    this.selectedAdminComplaint = null;
-    this.init();
-  }
-
-  // --- State Management ---
-  loadItems() {
-    const stored = localStorage.getItem('complaintSystemData');
-    if (stored) {
-      return JSON.parse(stored);
+    constructor() {
+        this.items = this.loadItems();
+        this.currentView = 'dashboard';
+        this.selectedAdminComplaint = null;
+        this.init();
     }
-    return [];
-  }
 
-  saveItems() {
-    localStorage.setItem('complaintSystemData', JSON.stringify(this.items));
-    this.updateDashboardStats();
-  }
-
-  // --- Initialization ---
-  init() {
-    this.cacheDOM();
-    this.bindEvents();
-    this.initTheme();
-
-    // Initial Renders
-    this.updateDashboardStats();
-    this.renderRecentComplaints();
-  }
-
-  cacheDOM() {
-    // Navigation
-    this.navItems = document.querySelectorAll('.nav-item[data-view]');
-    this.views = document.querySelectorAll('.view-section');
-    this.mobileToggle = document.querySelector('.mobile-toggle');
-    this.sidebar = document.querySelector('.sidebar');
-    this.pageTitle = document.getElementById('page-title');
-    this.themeToggle = document.getElementById('theme-toggle');
-
-    // Dashboard
-    this.statTotal = document.getElementById('stat-total');
-    this.statPending = document.getElementById('stat-pending');
-    this.statProgress = document.getElementById('stat-progress');
-    this.statUnresolved = document.getElementById('stat-unresolved');
-    this.statResolved = document.getElementById('stat-resolved');
-    this.recentTableBody = document.getElementById('recent-table-body');
-
-    // Forms
-    this.complaintForm = document.getElementById('complaint-form');
-    this.fileInput = document.getElementById('attachment');
-    this.fileDropArea = document.getElementById('file-drop-area');
-    this.filePreview = document.getElementById('file-preview');
-    this.fileName = document.getElementById('file-name');
-    this.removeFileBtn = document.getElementById('remove-file');
-
-    // Listings
-    this.searchInput = document.getElementById('search-input');
-    this.filterStatus = document.getElementById('filter-status');
-    this.filterPriority = document.getElementById('filter-priority');
-    this.filterUnresolved = document.getElementById('filter-unresolved');
-    this.listingsTableBody = document.getElementById('listings-table-body');
-    this.listingsEmpty = document.getElementById('listings-empty');
-    this.complaintsTable = document.getElementById('complaints-table');
-
-    // Details
-    this.detailsContent = document.getElementById('details-content');
-
-    // Admin
-    this.adminSearch = document.getElementById('admin-search');
-    this.adminComplaintsList = document.getElementById('admin-complaints-list');
-    this.adminEditorEmpty = document.getElementById('admin-editor-empty');
-    this.adminEditorForm = document.getElementById('admin-editor-form');
-
-    // Toast
-    this.toast = document.getElementById('toast');
-    this.toastTitle = document.getElementById('toast-title');
-    this.toastMessage = document.getElementById('toast-message');
-    this.toastIcon = document.getElementById('toast-icon');
-  }
-
-  bindEvents() {
-    // Navigation
-    this.navItems.forEach((item) => {
-      item.addEventListener('click', () => {
-        this.switchView(item.dataset.view);
-        if (window.innerWidth <= 768) {
-          this.sidebar.classList.remove('open');
+    // --- State Management ---
+    loadItems() {
+        const stored = localStorage.getItem('complaintSystemData');
+        if (stored) {
+            return JSON.parse(stored);
         }
-      });
-    });
-
-    this.mobileToggle.addEventListener('click', () => {
-      this.sidebar.classList.toggle('open');
-    });
-
-    this.themeToggle.addEventListener('click', () => this.toggleTheme());
-
-    // File Upload
-    this.fileDropArea.addEventListener('click', (e) => {
-      if (
-        e.target !== this.removeFileBtn &&
-        !this.removeFileBtn.contains(e.target)
-      ) {
-        this.fileInput.click();
-      }
-    });
-
-    this.fileInput.addEventListener('change', (e) => this.handleFileSelect(e));
-    this.removeFileBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      this.removeAttachment();
-    });
-
-    // Form Submit
-    this.complaintForm.addEventListener('submit', (e) =>
-      this.handleComplaintSubmit(e)
-    );
-
-    // Filters
-    this.searchInput.addEventListener('input', () => this.renderListings());
-    this.filterStatus.addEventListener('change', () => this.renderListings());
-    this.filterPriority.addEventListener('change', () => this.renderListings());
-    this.filterUnresolved.addEventListener('change', () => this.renderListings());
-
-    // Admin Search
-    this.adminSearch.addEventListener('input', () => this.renderAdminList());
-  }
-
-  // --- Theme & UI ---
-  initTheme() {
-    const storedTheme = localStorage.getItem('theme');
-    if (storedTheme === 'dark') {
-      document.body.setAttribute('data-theme', 'dark');
-    } else if (
-      !storedTheme &&
-      window.matchMedia &&
-      window.matchMedia('(prefers-color-scheme: dark)').matches
-    ) {
-      document.body.setAttribute('data-theme', 'dark');
+        return [];
     }
-  }
 
-  toggleTheme() {
+    saveItems() {
+        localStorage.setItem('complaintSystemData', JSON.stringify(this.items));
+        this.updateDashboardStats();
+    }
+
+    // --- Initialization ---
+    init() {
+        this.cacheDOM();
+        this.bindEvents();
+        this.initTheme();
+        this.loadProfile();
+    
+        // Initial Renders
+        this.updateDashboardStats();
+        this.renderRecentComplaints();
+    }
+
+    cacheDOM() {
+        this.closeProfileBtn =
+document.getElementById("close-profile");
+        // Navigation
+        this.navItems = document.querySelectorAll('.nav-item[data-view]');
+        this.views = document.querySelectorAll('.view-section');
+        this.mobileToggle = document.querySelector('.mobile-toggle');
+        this.sidebar = document.querySelector('.sidebar');
+        this.pageTitle = document.getElementById('page-title');
+        this.themeToggle = document.getElementById('theme-toggle');
+        this.userProfile = document.querySelector(".user-profile");
+this.userDropdown = document.getElementById("user-dropdown");
+this.profileBtn = document.getElementById("profile-btn");
+        
+        // Dashboard
+        this.statTotal = document.getElementById('stat-total');
+        this.statPending = document.getElementById('stat-pending');
+        this.statProgress = document.getElementById('stat-progress');
+        this.statResolved = document.getElementById('stat-resolved');
+        this.recentTableBody = document.getElementById('recent-table-body');
+        this.userProfile = document.getElementById("user-profile");
+
+this.profileModal = document.getElementById("profile-modal");
+
+this.profileName = document.getElementById("profile-name");
+
+this.profileEmail = document.getElementById("profile-email");
+
+this.profilePhone = document.getElementById("profile-phone");
+
+
+this.saveProfileBtn =
+document.getElementById("save-profile-btn");
+
+this.profileNameDisplay =
+document.getElementById("profile-name-display");
+
+this.profileAvatar =
+document.getElementById("profile-avatar");
+        
+        // Forms
+        this.complaintForm = document.getElementById('complaint-form');
+        this.fileInput = document.getElementById('attachment');
+        this.fileDropArea = document.getElementById('file-drop-area');
+        this.filePreview = document.getElementById('file-preview');
+        this.fileName = document.getElementById('file-name');
+        this.removeFileBtn = document.getElementById('remove-file');
+        
+        // Listings
+        this.searchInput = document.getElementById('search-input');
+        this.filterStatus = document.getElementById('filter-status');
+        this.filterPriority = document.getElementById('filter-priority');
+        this.listingsTableBody = document.getElementById('listings-table-body');
+        this.listingsEmpty = document.getElementById('listings-empty');
+        this.complaintsTable = document.getElementById('complaints-table');
+        
+        // Details
+        this.detailsContent = document.getElementById('details-content');
+        
+        // Admin
+        this.adminSearch = document.getElementById('admin-search');
+        this.adminComplaintsList = document.getElementById('admin-complaints-list');
+        this.adminEditorEmpty = document.getElementById('admin-editor-empty');
+        this.adminEditorForm = document.getElementById('admin-editor-form');
+        
+        // Toast
+        this.toast = document.getElementById('toast');
+        this.toastTitle = document.getElementById('toast-title');
+        this.toastMessage = document.getElementById('toast-message');
+        this.toastIcon = document.getElementById('toast-icon');
+    }
+
+    bindEvents() {
+        // Navigation
+        this.navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                this.switchView(item.dataset.view);
+                if(window.innerWidth <= 768) {
+                    this.sidebar.classList.remove('open');
+                }
+            });
+        });
+
+        if (this.closeProfileBtn) {
+    this.closeProfileBtn.addEventListener("click", () => {
+        this.profileModal.classList.add("hidden");
+    });
+}
+
+        console.log(this.userProfile);
+console.log(this.profileModal);
+console.log(this.saveProfileBtn);
+
+if (this.userProfile) {
+    this.userProfile.addEventListener("click", () => {
+        this.profileModal.classList.remove("hidden");
+console.log(this.profileModal);
+    });
+}
+
+if (this.saveProfileBtn) {
+    this.saveProfileBtn.addEventListener("click", () => {
+        this.saveProfile();
+    });
+}
+    
+
+        this.mobileToggle.addEventListener('click', () => {
+            this.sidebar.classList.toggle('open');
+        });
+
+        this.themeToggle.addEventListener('click', () => this.toggleTheme());
+
+        // File Upload
+        this.fileDropArea.addEventListener('click', (e) => {
+            if(e.target !== this.removeFileBtn && !this.removeFileBtn.contains(e.target)) {
+                this.fileInput.click();
+            }
+        });
+        
+        this.fileInput.addEventListener('change', (e) => this.handleFileSelect(e));
+        this.removeFileBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            this.removeAttachment();
+        });
+
+        // Form Submit
+        this.complaintForm.addEventListener('submit', (e) => this.handleComplaintSubmit(e));
+
+        // Filters
+        this.searchInput.addEventListener('input', () => this.renderListings());
+        this.filterStatus.addEventListener('change', () => this.renderListings());
+        this.filterPriority.addEventListener('change', () => this.renderListings());
+        
+        // Admin Search
+        this.adminSearch.addEventListener('input', () => this.renderAdminList());
+
+        if (this.saveProfileBtn) {
+    this.saveProfileBtn.addEventListener("click", () => {
+        this.saveProfile();
+    });
+}
+    }
+
+    // --- Theme & UI ---
+    initTheme() {
+        const storedTheme = localStorage.getItem('theme');
+        if (storedTheme === 'dark') {
+            document.body.setAttribute('data-theme', 'dark');
+        } else if (!storedTheme && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.body.setAttribute('data-theme', 'dark');
+        }
+    }
+
+    saveProfile() {
+
+    const profile = {
+
+        name: this.profileName.value,
+
+        email: this.profileEmail.value,
+
+        phone: this.profilePhone.value,
+
+
+    };
+
+    localStorage.setItem("profile", JSON.stringify(profile));
+
+    this.loadProfile();
+
+    this.profileModal.classList.add("hidden");
+
+    this.showToast(
+        "Success",
+        "Profile updated successfully."
+    );
+    this.profileNameDisplay.textContent = this.profileName.value;
+    this.profileAvatar.src =
+`https://ui-avatars.com/api/?name=${encodeURIComponent(this.profileName.value)}&background=6366f1&color=fff`;
+this.profileModal.classList.add("hidden");
+}
+
+loadProfile() {
+
+    const profile =
+    JSON.parse(localStorage.getItem("profile"));
+
+    if(!profile) return;
+
+    this.profileName.value = profile.name;
+
+    this.profileEmail.value = profile.email;
+
+    this.profilePhone.value = profile.phone;
+
+    this.profileNameDisplay.textContent =
+        profile.name || "Current User";
+
+        this.profileAvatar.src =
+`https://ui-avatars.com/api/?name=${encodeURIComponent(profile.name || "User")}&background=6366f1&color=fff`;
+
+}
+
+    toggleTheme() {
     const current = document.body.getAttribute('data-theme');
     const btn = document.getElementById('theme-toggle');
     if (current === 'dark') {
-      document.body.removeAttribute('data-theme');
-      localStorage.setItem('theme', 'light');
-      if (btn) btn.innerHTML = '<i class="ph ph-sun"></i> Dark Mode';
+        document.body.removeAttribute('data-theme');
+        localStorage.setItem('theme', 'light');
+        if (btn) btn.innerHTML = '<i class="ph ph-sun"></i> Dark Mode';
     } else {
-      document.body.setAttribute('data-theme', 'dark');
-      localStorage.setItem('theme', 'dark');
-      if (btn) btn.innerHTML = '<i class="ph ph-moon"></i> Light Mode';
+        document.body.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+        if (btn) btn.innerHTML = '<i class="ph ph-moon"></i> Light Mode';
     }
-  }
+}
 
-  showToast(title, message, type = 'success') {
-    this.toastTitle.textContent = title;
-    this.toastMessage.textContent = message;
-
-    if (type === 'success') {
-      this.toastIcon.innerHTML = '<i class="ph ph-check-circle"></i>';
-      this.toastIcon.style.color = 'var(--status-resolved)';
-    } else if (type === 'error') {
-      this.toastIcon.innerHTML = '<i class="ph ph-warning-circle"></i>';
-      this.toastIcon.style.color = 'var(--status-rejected)';
-    }
-
-    this.toast.classList.remove('hidden');
-    setTimeout(() => {
-      this.toast.classList.add('hidden');
-    }, 3000);
-  }
-
-  // --- Routing ---
-  switchView(viewId) {
-    this.currentView = viewId;
-
-    // Update nav UI
-    this.navItems.forEach((item) => {
-      if (item.dataset.view === viewId) item.classList.add('active');
-      else item.classList.remove('active');
-    });
-
-    // Update sections
-    this.views.forEach((section) => {
-      if (section.id === `view-${viewId}`) section.classList.add('active');
-      else section.classList.remove('active');
-    });
-
-    // Update Title
-    const titles = {
-      dashboard: 'Dashboard Overview',
-      submit: 'Submit Complaint',
-      listings: 'Complaint Directory',
-      details: 'Complaint Details',
-      admin: 'Admin Panel',
-    };
-    this.pageTitle.textContent = titles[viewId] || 'Portal';
-
-    // Trigger view-specific renders
-    if (viewId === 'dashboard') {
-      this.updateDashboardStats();
-      this.renderRecentComplaints();
-    } else if (viewId === 'listings') {
-      this.renderListings();
-    } else if (viewId === 'admin') {
-      this.selectedAdminComplaint = null;
-      this.renderAdminList();
-      this.renderAdminEditor();
+    showToast(title, message, type = 'success') {
+        this.toastTitle.textContent = title;
+        this.toastMessage.textContent = message;
+        
+        if (type === 'success') {
+            this.toastIcon.innerHTML = '<i class="ph ph-check-circle"></i>';
+            this.toastIcon.style.color = 'var(--status-resolved)';
+        } else if (type === 'error') {
+            this.toastIcon.innerHTML = '<i class="ph ph-warning-circle"></i>';
+            this.toastIcon.style.color = 'var(--status-rejected)';
+        }
+        
+        this.toast.classList.remove('hidden');
+        setTimeout(() => {
+            this.toast.classList.add('hidden');
+        }, 3000);
     }
 
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
+    // --- Routing ---
+    switchView(viewId) {
+        this.currentView = viewId;
+        
+        // Update nav UI
+        this.navItems.forEach(item => {
+            if(item.dataset.view === viewId) item.classList.add('active');
+            else item.classList.remove('active');
+        });
 
-  // --- Utilities ---
-  generateId() {
-    const prefix = 'CMP-';
-    const randomStr = Math.random().toString(36).substring(2, 6).toUpperCase();
-    const dateStr = new Date().toISOString().slice(2, 10).replace(/-/g, '');
-    return `${prefix}${dateStr}-${randomStr}`;
-  }
+        // Update sections
+        this.views.forEach(section => {
+            if(section.id === `view-${viewId}`) section.classList.add('active');
+            else section.classList.remove('active');
+        });
 
-  getStatusConfig(status) {
-    const config = {
-      pending: { text: 'Pending', class: 'badge-pending' },
-      in_progress: { text: 'In Progress', class: 'badge-in_progress' },
-      resolved: { text: 'Resolved', class: 'badge-resolved' },
-      rejected: { text: 'Rejected', class: 'badge-rejected' },
-    };
-    return config[status] || { text: 'Unknown', class: 'badge-pending' };
-  }
+        // Update Title
+        const titles = {
+            'dashboard': 'Dashboard Overview',
+            'submit': 'Submit Complaint',
+            'listings': 'Complaint Directory',
+            'details': 'Complaint Details',
+            'admin': 'Admin Panel',
+            'profile': 'My Profile'   // Add this
+        };
+        this.pageTitle.textContent = titles[viewId] || 'Portal';
 
-  getPriorityConfig(priority) {
-    const config = {
-      low: { text: 'Low', class: 'badge-pending' },
-      medium: { text: 'Medium', class: 'badge-in_progress' },
-      high: { text: 'High', class: 'badge-rejected' },
-    };
-    return config[priority] || { text: 'Normal', class: 'badge-pending' };
-  }
+        // Trigger view-specific renders
+        if (viewId === 'dashboard') {
+            this.updateDashboardStats();
+            this.renderRecentComplaints();
+        } else if (viewId === 'listings') {
+            this.renderListings();
+        } else if (viewId === 'admin') {
+            this.selectedAdminComplaint = null;
+            this.renderAdminList();
+            this.renderAdminEditor();
+        }
 
-  isUnresolved(item) {
-    if (!item || !['pending', 'in_progress'].includes(item.status)) {
-      return false;
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    const createdAt = new Date(item.createdAt);
-    if (Number.isNaN(createdAt.getTime())) {
-      return false;
+    // --- Utilities ---
+    generateId() {
+        const prefix = "CMP-";
+        const randomStr = Math.random().toString(36).substring(2, 6).toUpperCase();
+        const dateStr = new Date().toISOString().slice(2, 10).replace(/-/g, '');
+        return `${prefix}${dateStr}-${randomStr}`;
     }
 
-    const ageInDays =
-      (Date.now() - createdAt.getTime()) / (1000 * 60 * 60 * 24);
-    return ageInDays >= 1;
-  }
+    getStatusConfig(status) {
+        const config = {
+            'pending': { text: 'Pending', class: 'badge-pending' },
+            'in_progress': { text: 'In Progress', class: 'badge-in_progress' },
+            'resolved': { text: 'Resolved', class: 'badge-resolved' },
+            'rejected': { text: 'Rejected', class: 'badge-rejected' }
+        };
+        return config[status] || { text: 'Unknown', class: 'badge-pending' };
+    }
 
-  // --- File Handling ---
-  handleFileSelect(e) {
-    const file = e.target.files[0];
-    if (file) {
-      // Check size (5MB)
-      if (file.size > 5 * 1024 * 1024) {
-        this.showToast('File Too Large', 'Maximum file size is 5MB', 'error');
+    getPriorityConfig(priority) {
+        const config = {
+            'low': { text: 'Low', class: 'badge-pending' },
+            'medium': { text: 'Medium', class: 'badge-in_progress' },
+            'high': { text: 'High', class: 'badge-rejected' }
+        };
+        return config[priority] || { text: 'Normal', class: 'badge-pending' };
+    }
+
+    // --- File Handling ---
+    handleFileSelect(e) {
+        const file = e.target.files[0];
+        if (file) {
+            // Check size (5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                this.showToast('File Too Large', 'Maximum file size is 5MB', 'error');
+                this.fileInput.value = '';
+                return;
+            }
+            this.fileName.textContent = file.name;
+            document.querySelector('.upload-content').style.display = 'none';
+            this.filePreview.classList.remove('hidden');
+            this.filePreview.style.display = 'flex';
+        }
+    }
+
+    removeAttachment() {
         this.fileInput.value = '';
-        return;
-      }
-      this.fileName.textContent = file.name;
-      document.querySelector('.upload-content').style.display = 'none';
-      this.filePreview.classList.remove('hidden');
-      this.filePreview.style.display = 'flex';
-    }
-  }
-
-  removeAttachment() {
-    this.fileInput.value = '';
-    this.fileName.textContent = '';
-    document.querySelector('.upload-content').style.display = 'flex';
-    this.filePreview.classList.add('hidden');
-    this.filePreview.style.display = 'none';
-  }
-
-  // --- Submitting ---
-  handleComplaintSubmit(e) {
-    e.preventDefault();
-
-    const file = this.fileInput.files[0];
-    let fileDataUrl = '';
-
-    // If a file is attached, read it as Data URL to store in localStorage safely
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        fileDataUrl = event.target.result;
-        this.finalizeSubmission(fileDataUrl);
-      };
-      reader.readAsDataURL(file);
-    } else {
-      this.finalizeSubmission('');
-    }
-  }
-
-  finalizeSubmission(attachmentData) {
-    const newComplaint = {
-      id: this.generateId(),
-      title: document.getElementById('title').value,
-      category: document.getElementById('category').value,
-      priority: document.getElementById('priority').value,
-      department: document.getElementById('department').value,
-      location: document.getElementById('location').value,
-      description: document.getElementById('description').value,
-      contact: document.getElementById('contact').value,
-      attachment: attachmentData,
-      status: 'pending',
-      resolutionNotes: '',
-      createdAt: new Date().toISOString(),
-      timeline: [
-        {
-          status: 'pending',
-          date: new Date().toISOString(),
-          note: 'Complaint submitted by user.',
-        },
-      ],
-    };
-
-    this.items.unshift(newComplaint);
-    this.saveItems();
-
-    this.complaintForm.reset();
-    this.removeAttachment();
-
-    this.showToast(
-      'Complaint Submitted',
-      `Your Complaint ID is ${newComplaint.id}`
-    );
-    setTimeout(() => {
-      this.viewComplaintDetails(newComplaint.id);
-    }, 1500);
-  }
-
-  // --- Dashboard Rendering ---
-  updateDashboardStats() {
-    const total = this.items.length;
-    const pending = this.items.filter((i) => i.status === 'pending').length;
-    const progress = this.items.filter(
-      (i) => i.status === 'in_progress'
-    ).length;
-    const unresolved = this.items.filter((i) => this.isUnresolved(i)).length;
-    const resolved = this.items.filter((i) => i.status === 'resolved').length;
-
-    this.statTotal.textContent = total;
-    this.statPending.textContent = pending;
-    this.statProgress.textContent = progress;
-    this.statUnresolved.textContent = unresolved;
-    this.statResolved.textContent = resolved;
-  }
-
-  renderRecentComplaints() {
-    this.recentTableBody.innerHTML = '';
-    const recentItems = this.items.slice(0, 5);
-
-    if (recentItems.length === 0) {
-      this.recentTableBody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--text-muted); padding: 2rem;">No complaints found.</td></tr>`;
-      return;
+        this.fileName.textContent = '';
+        document.querySelector('.upload-content').style.display = 'flex';
+        this.filePreview.classList.add('hidden');
+        this.filePreview.style.display = 'none';
     }
 
-    recentItems.forEach((item) => {
-      const tr = document.createElement('tr');
-      const statusCfg = this.getStatusConfig(item.status);
-      const date = new Date(item.createdAt).toLocaleDateString('en-US', {
-        month: 'short',
-        day: 'numeric',
-      });
+    // --- Submitting ---
+    handleComplaintSubmit(e) {
+        e.preventDefault();
+        
+        const file = this.fileInput.files[0];
+        let fileDataUrl = '';
 
-      tr.innerHTML = `
+        // If a file is attached, read it as Data URL to store in localStorage safely
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                fileDataUrl = event.target.result;
+                this.finalizeSubmission(fileDataUrl);
+            };
+            reader.readAsDataURL(file);
+        } else {
+            this.finalizeSubmission('');
+        }
+    }
+
+    finalizeSubmission(attachmentData) {
+        const newComplaint = {
+            id: this.generateId(),
+            title: document.getElementById('title').value,
+            category: document.getElementById('category').value,
+            priority: document.getElementById('priority').value,
+            department: document.getElementById('department').value,
+            location: document.getElementById('location').value,
+            description: document.getElementById('description').value,
+            contact: document.getElementById('contact').value,
+            attachment: attachmentData,
+            status: 'pending',
+            createdAt: new Date().toISOString(),
+            timeline: [
+                {
+                    status: 'pending',
+                    date: new Date().toISOString(),
+                    note: 'Complaint submitted by user.'
+                }
+            ]
+        };
+
+        this.items.unshift(newComplaint);
+        this.saveItems();
+        
+        this.complaintForm.reset();
+        this.removeAttachment();
+        
+        this.showToast('Complaint Submitted', `Your Complaint ID is ${newComplaint.id}`);
+        setTimeout(() => {
+            this.viewComplaintDetails(newComplaint.id);
+        }, 1500);
+    }
+
+    // --- Dashboard Rendering ---
+    updateDashboardStats() {
+        const total = this.items.length;
+        const pending = this.items.filter(i => i.status === 'pending').length;
+        const progress = this.items.filter(i => i.status === 'in_progress').length;
+        const resolved = this.items.filter(i => i.status === 'resolved').length;
+
+        this.statTotal.textContent = total;
+        this.statPending.textContent = pending;
+        this.statProgress.textContent = progress;
+        this.statResolved.textContent = resolved;
+    }
+
+    renderRecentComplaints() {
+        this.recentTableBody.innerHTML = '';
+        const recentItems = this.items.slice(0, 5);
+
+        if (recentItems.length === 0) {
+            this.recentTableBody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--text-muted); padding: 2rem;">No complaints found.</td></tr>`;
+            return;
+        }
+
+        recentItems.forEach(item => {
+            const tr = document.createElement('tr');
+            const statusCfg = this.getStatusConfig(item.status);
+            const date = new Date(item.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+
+            tr.innerHTML = `
                 <td style="font-family: monospace; font-weight: 500;">${item.id}</td>
                 <td style="font-weight: 500;">${item.title}</td>
                 <td style="text-transform: capitalize;">${item.category}</td>
                 <td><span class="badge ${statusCfg.class}">${statusCfg.text}</span></td>
                 <td>${date}</td>
             `;
-      tr.style.cursor = 'pointer';
-      tr.onclick = () => this.viewComplaintDetails(item.id);
-      this.recentTableBody.appendChild(tr);
-    });
-  }
-
-  // --- Listings Rendering ---
-  renderListings() {
-    const query = this.searchInput.value.toLowerCase();
-    const statusFilter = this.filterStatus.value;
-    const priorityFilter = this.filterPriority.value;
-    const unresolvedFilter = this.filterUnresolved.value;
-
-    const filtered = this.items.filter((item) => {
-      const matchesSearch =
-        item.title.toLowerCase().includes(query) ||
-        item.id.toLowerCase().includes(query);
-      const matchesStatus =
-        statusFilter === 'all' || item.status === statusFilter;
-      const matchesPriority =
-        priorityFilter === 'all' || item.priority === priorityFilter;
-      const matchesUnresolved =
-        unresolvedFilter === 'all' ||
-        (unresolvedFilter === 'unresolved' && this.isUnresolved(item));
-      return (
-        matchesSearch &&
-        matchesStatus &&
-        matchesPriority &&
-        matchesUnresolved
-      );
-    });
-
-    this.listingsTableBody.innerHTML = '';
-
-    if (filtered.length === 0) {
-      this.complaintsTable.classList.add('hidden');
-      this.listingsEmpty.classList.remove('hidden');
-      return;
+            tr.style.cursor = 'pointer';
+            tr.onclick = () => this.viewComplaintDetails(item.id);
+            this.recentTableBody.appendChild(tr);
+        });
     }
 
-    this.complaintsTable.classList.remove('hidden');
-    this.listingsEmpty.classList.add('hidden');
+    // --- Listings Rendering ---
+    renderListings() {
+        const query = this.searchInput.value.toLowerCase();
+        const statusFilter = this.filterStatus.value;
+        const priorityFilter = this.filterPriority.value;
 
-    filtered.forEach((item) => {
-      const tr = document.createElement('tr');
-      const statusCfg = this.getStatusConfig(item.status);
-      const priorityCfg = this.getPriorityConfig(item.priority);
-      const date = new Date(item.createdAt).toLocaleDateString('en-US', {
-        month: 'short',
-        day: 'numeric',
-        year: 'numeric',
-      });
+        const filtered = this.items.filter(item => {
+            const matchesSearch = item.title.toLowerCase().includes(query) || item.id.toLowerCase().includes(query);
+            const matchesStatus = statusFilter === 'all' || item.status === statusFilter;
+            const matchesPriority = priorityFilter === 'all' || item.priority === priorityFilter;
+            return matchesSearch && matchesStatus && matchesPriority;
+        });
 
-      tr.innerHTML = `
+        this.listingsTableBody.innerHTML = '';
+
+        if (filtered.length === 0) {
+            this.complaintsTable.classList.add('hidden');
+            this.listingsEmpty.classList.remove('hidden');
+            return;
+        }
+
+        this.complaintsTable.classList.remove('hidden');
+        this.listingsEmpty.classList.add('hidden');
+
+        filtered.forEach(item => {
+            const tr = document.createElement('tr');
+            const statusCfg = this.getStatusConfig(item.status);
+            const priorityCfg = this.getPriorityConfig(item.priority);
+            const date = new Date(item.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+            tr.innerHTML = `
                 <td style="font-family: monospace; font-weight: 500;">${item.id}</td>
                 <td style="font-weight: 500; max-width: 250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${item.title}</td>
                 <td><span class="badge ${priorityCfg.class}">${priorityCfg.text}</span></td>
@@ -447,64 +498,57 @@ class ComplaintApp {
                     </button>
                 </td>
             `;
-      tr.style.cursor = 'pointer';
-      tr.onclick = () => this.viewComplaintDetails(item.id);
-      this.listingsTableBody.appendChild(tr);
-    });
-  }
+            tr.style.cursor = 'pointer';
+            tr.onclick = () => this.viewComplaintDetails(item.id);
+            this.listingsTableBody.appendChild(tr);
+        });
+    }
 
-  clearFilters() {
-    this.searchInput.value = '';
-    this.filterStatus.value = 'all';
-    this.filterPriority.value = 'all';
-    this.filterUnresolved.value = 'all';
-    this.renderListings();
-  }
+    clearFilters() {
+        this.searchInput.value = '';
+        this.filterStatus.value = 'all';
+        this.filterPriority.value = 'all';
+        this.renderListings();
+    }
 
-  // --- Details Rendering ---
-  viewComplaintDetails(id) {
-    const item = this.items.find((i) => i.id === id);
-    if (!item) return;
+    // --- Details Rendering ---
+    viewComplaintDetails(id) {
+        const item = this.items.find(i => i.id === id);
+        if (!item) return;
 
-    this.switchView('details');
+        this.switchView('details');
+        
+        const statusCfg = this.getStatusConfig(item.status);
+        const priorityCfg = this.getPriorityConfig(item.priority);
+        const date = new Date(item.createdAt).toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' });
 
-    const statusCfg = this.getStatusConfig(item.status);
-    const priorityCfg = this.getPriorityConfig(item.priority);
-    const date = new Date(item.createdAt).toLocaleString('en-US', {
-      dateStyle: 'medium',
-      timeStyle: 'short',
-    });
-
-    let attachmentHTML = '';
-    if (item.attachment) {
-      // Check if it's likely an image by data URL prefix
-      if (item.attachment.startsWith('data:image')) {
-        attachmentHTML = `
+        let attachmentHTML = '';
+        if (item.attachment) {
+            // Check if it's likely an image by data URL prefix
+            if (item.attachment.startsWith('data:image')) {
+                attachmentHTML = `
                     <div class="mt-4">
                         <h4>Attachment</h4>
                         <img src="${item.attachment}" class="attachment-img" alt="Attachment">
                     </div>
                 `;
-      } else {
-        attachmentHTML = `
+            } else {
+                attachmentHTML = `
                     <div class="mt-4">
                         <h4>Attachment</h4>
                         <a href="${item.attachment}" download="attachment" class="btn btn-secondary mt-2"><i class="ph ph-download-simple"></i> Download File</a>
                     </div>
                 `;
-      }
-    }
+            }
+        }
 
-    let timelineHTML = '';
-    item.timeline.forEach((event, idx) => {
-      const eventDate = new Date(event.date).toLocaleString('en-US', {
-        dateStyle: 'medium',
-        timeStyle: 'short',
-      });
-      const sCfg = this.getStatusConfig(event.status);
-      const isLast = idx === item.timeline.length - 1;
-
-      timelineHTML += `
+        let timelineHTML = '';
+        item.timeline.forEach((event, idx) => {
+            const eventDate = new Date(event.date).toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' });
+            const sCfg = this.getStatusConfig(event.status);
+            const isLast = idx === item.timeline.length - 1;
+            
+            timelineHTML += `
                 <div class="timeline-item">
                     <div class="timeline-dot ${isLast ? 'active' : ''}"></div>
                     <div class="timeline-content">
@@ -514,9 +558,9 @@ class ComplaintApp {
                     </div>
                 </div>
             `;
-    });
+        });
 
-    this.detailsContent.innerHTML = `
+        this.detailsContent.innerHTML = `
             <div class="details-main">
                 <div class="card details-info-card">
                     <div class="details-title-row">
@@ -572,127 +616,108 @@ class ComplaintApp {
                 </div>
             </div>
         `;
-  }
-
-  // --- Admin Rendering ---
-  renderAdminList() {
-    const query = this.adminSearch.value.toLowerCase();
-    // Only show pending or in_progress in the admin quick list, or all if searching
-    let filtered = this.items;
-    if (query) {
-      filtered = this.items.filter(
-        (item) =>
-          item.title.toLowerCase().includes(query) ||
-          item.id.toLowerCase().includes(query)
-      );
-    } else {
-      filtered = this.items.filter(
-        (item) => item.status === 'pending' || item.status === 'in_progress'
-      );
     }
 
-    this.adminComplaintsList.innerHTML = '';
+    // --- Admin Rendering ---
+    renderAdminList() {
+        const query = this.adminSearch.value.toLowerCase();
+        // Only show pending or in_progress in the admin quick list, or all if searching
+        let filtered = this.items;
+        if (query) {
+            filtered = this.items.filter(item => 
+                item.title.toLowerCase().includes(query) || 
+                item.id.toLowerCase().includes(query)
+            );
+        } else {
+            filtered = this.items.filter(item => item.status === 'pending' || item.status === 'in_progress');
+        }
 
-    if (filtered.length === 0) {
-      this.adminComplaintsList.innerHTML = `<p class="text-muted" style="padding: 1rem; text-align: center;">No active complaints found.</p>`;
-      return;
-    }
+        this.adminComplaintsList.innerHTML = '';
+        
+        if(filtered.length === 0) {
+            this.adminComplaintsList.innerHTML = `<p class="text-muted" style="padding: 1rem; text-align: center;">No active complaints found.</p>`;
+            return;
+        }
 
-    filtered.forEach((item) => {
-      const div = document.createElement('div');
-      const isSelected =
-        this.selectedAdminComplaint &&
-        this.selectedAdminComplaint.id === item.id;
-      const statusCfg = this.getStatusConfig(item.status);
-
-      div.className = `admin-list-item ${isSelected ? 'selected' : ''}`;
-      div.innerHTML = `
+        filtered.forEach(item => {
+            const div = document.createElement('div');
+            const isSelected = this.selectedAdminComplaint && this.selectedAdminComplaint.id === item.id;
+            const statusCfg = this.getStatusConfig(item.status);
+            
+            div.className = `admin-list-item ${isSelected ? 'selected' : ''}`;
+            div.innerHTML = `
                 <div class="admin-list-item-header">
                     <h4>${item.id}</h4>
                     <span class="badge ${statusCfg.class}" style="font-size: 0.6rem; padding: 0.1rem 0.4rem;">${statusCfg.text}</span>
                 </div>
                 <p class="text-muted" style="font-size: 0.75rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${item.title}</p>
             `;
-      div.onclick = () => this.selectAdminComplaint(item.id);
-      this.adminComplaintsList.appendChild(div);
-    });
-  }
-
-  selectAdminComplaint(id) {
-    this.selectedAdminComplaint = this.items.find((i) => i.id === id);
-    this.renderAdminList(); // update selected visual
-    this.renderAdminEditor();
-  }
-
-  renderAdminEditor() {
-    if (!this.selectedAdminComplaint) {
-      this.adminEditorEmpty.classList.remove('hidden');
-      this.adminEditorForm.classList.add('hidden');
-      return;
+            div.onclick = () => this.selectAdminComplaint(item.id);
+            this.adminComplaintsList.appendChild(div);
+        });
     }
 
-    this.adminEditorEmpty.classList.add('hidden');
-    this.adminEditorForm.classList.remove('hidden');
-
-    document.getElementById('admin-edit-title').textContent =
-      `Manage: ${this.selectedAdminComplaint.id}`;
-    document.getElementById('admin-status').value =
-      this.selectedAdminComplaint.status;
-    document.getElementById('admin-department').value =
-      this.selectedAdminComplaint.department;
-    document.getElementById('admin-notes').value =
-      this.selectedAdminComplaint.resolutionNotes || '';
-  }
-
-  saveAdminChanges() {
-    if (!this.selectedAdminComplaint) return;
-
-    const newStatus = document.getElementById('admin-status').value;
-    const newDept = document.getElementById('admin-department').value;
-    const notes = document.getElementById('admin-notes').value;
-    const trimmedNotes = notes.trim();
-    let changed = false;
-
-    if (this.selectedAdminComplaint.department !== newDept) {
-      this.selectedAdminComplaint.department = newDept;
-      changed = true;
+    selectAdminComplaint(id) {
+        this.selectedAdminComplaint = this.items.find(i => i.id === id);
+        this.renderAdminList(); // update selected visual
+        this.renderAdminEditor();
     }
 
-    if (this.selectedAdminComplaint.resolutionNotes !== trimmedNotes) {
-      this.selectedAdminComplaint.resolutionNotes = trimmedNotes;
-      changed = true;
+    renderAdminEditor() {
+        if (!this.selectedAdminComplaint) {
+            this.adminEditorEmpty.classList.remove('hidden');
+            this.adminEditorForm.classList.add('hidden');
+            return;
+        }
+
+        this.adminEditorEmpty.classList.add('hidden');
+        this.adminEditorForm.classList.remove('hidden');
+
+        document.getElementById('admin-edit-title').textContent = `Manage: ${this.selectedAdminComplaint.id}`;
+        document.getElementById('admin-status').value = this.selectedAdminComplaint.status;
+        document.getElementById('admin-department').value = this.selectedAdminComplaint.department;
+        document.getElementById('admin-notes').value = '';
     }
 
-    if (
-      this.selectedAdminComplaint.status !== newStatus ||
-      trimmedNotes !== ''
-    ) {
-      this.selectedAdminComplaint.status = newStatus;
+    
 
-      this.selectedAdminComplaint.timeline.push({
-        status: newStatus,
-        date: new Date().toISOString(),
-        note:
-          trimmedNotes !== ''
-            ? trimmedNotes
-            : `Status updated to ${this.getStatusConfig(newStatus).text} by Admin.`,
-      });
-      changed = true;
-    }
+    saveAdminChanges() {
+        if (!this.selectedAdminComplaint) return;
 
-    if (changed) {
-      this.saveItems();
-      this.showToast(
-        'Changes Saved',
-        `Complaint ${this.selectedAdminComplaint.id} has been updated.`
-      );
-      this.renderAdminList();
-      this.renderAdminEditor();
+        const newStatus = document.getElementById('admin-status').value;
+        const newDept = document.getElementById('admin-department').value;
+        const notes = document.getElementById('admin-notes').value;
+
+        let changed = false;
+
+        if (this.selectedAdminComplaint.department !== newDept) {
+            this.selectedAdminComplaint.department = newDept;
+            changed = true;
+        }
+
+        if (this.selectedAdminComplaint.status !== newStatus || notes.trim() !== '') {
+            this.selectedAdminComplaint.status = newStatus;
+            
+            this.selectedAdminComplaint.timeline.push({
+                status: newStatus,
+                date: new Date().toISOString(),
+                note: notes.trim() !== '' ? notes : `Status updated to ${this.getStatusConfig(newStatus).text} by Admin.`
+            });
+            changed = true;
+        }
+
+        if (changed) {
+            this.saveItems();
+            this.showToast('Changes Saved', `Complaint ${this.selectedAdminComplaint.id} has been updated.`);
+            this.renderAdminList();
+            this.renderAdminEditor(); // clear notes
+        }
     }
-  }
 }
+
+
 
 // Initialize Application
 document.addEventListener('DOMContentLoaded', () => {
-  window.app = new ComplaintApp();
+    window.app = new ComplaintApp();
 });

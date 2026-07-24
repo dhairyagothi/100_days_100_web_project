@@ -51,7 +51,7 @@ self.addEventListener('activate', (event) => {
             .then((keys) =>
                 Promise.all(
                     keys
-                        .filter((key) => key !== CACHE_VERSION)
+                        .filter((key) => key.startsWith('pg-') && key !== CACHE_VERSION)
                         .map((key) => caches.delete(key))
                 )
             )
@@ -69,51 +69,48 @@ self.addEventListener('fetch', (event) => {
 
     const url = new URL(request.url);
 
-    // Same-origin resources: cache-first
     if (url.origin === self.location.origin) {
         event.respondWith(
-            caches.match(request).then(async (cached) => {
-                if (cached) {
-                    return cached;
-                }
-
-                try {
-                    const response = await fetch(request);
-
-                    if (response && response.ok) {
-                        const cache = await caches.open(CACHE_VERSION);
-                        cache.put(request, response.clone());
+            caches.open(CACHE_VERSION).then((cache) =>
+                cache.match(request).then(async (cached) => {
+                    if (cached) {
+                        return cached;
                     }
 
-                    return response;
-                } catch (error) {
-                    console.error('Fetch failed:', error);
+                    try {
+                        const response = await fetch(request);
 
-                    if (request.mode === 'navigate') {
-                        return (
-                            (await caches.match('index.html')) ||
-                            new Response('Offline', {
-                                status: 503,
-                                statusText: 'Service Unavailable',
-                            })
-                        );
-                    }
+                        if (response && response.ok) {
+                            cache.put(request, response.clone());
+                        }
 
-                    return (
-                        cached ||
-                        new Response('Offline', {
+                        return response;
+                    } catch (error) {
+                        console.error('Fetch failed:', error);
+
+                        if (request.mode === 'navigate') {
+                            return (
+                                (await cache.match('index.html')) ||
+                                new Response('Offline', {
+                                    status: 503,
+                                    statusText: 'Service Unavailable',
+                                })
+                            );
+                        }
+
+                        return new Response('Offline', {
                             status: 503,
                             statusText: 'Service Unavailable',
-                        })
-                    );
-                }
-            }).catch((error) => {
-                console.error('Cache match failed:', error);
-                return new Response('Offline', {
-                    status: 503,
-                    statusText: 'Service Unavailable',
-                });
-            })
+                        });
+                    }
+                }).catch((error) => {
+                    console.error('Cache match failed:', error);
+                    return new Response('Offline', {
+                        status: 503,
+                        statusText: 'Service Unavailable',
+                    });
+                })
+            )
         );
 
         return;
@@ -133,7 +130,8 @@ self.addEventListener('fetch', (event) => {
             .catch(async (error) => {
                 console.error('Network request failed:', error);
 
-                const cached = await caches.match(request);
+                const cache = await caches.open(CACHE_VERSION);
+                const cached = await cache.match(request);
 
                 if (cached) {
                     return cached;

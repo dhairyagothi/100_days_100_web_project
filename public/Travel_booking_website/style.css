@@ -91,7 +91,7 @@ body {
 .header {
     padding-top: 4rem;
     background-image: linear-gradient(rgba(17, 43, 90, .7),
-            rgba(17, 43, 90, .7)), url("service1.jpg");
+            rgba(17, 43, 90, .7)), url("images/service1.jpg");
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -1000,5 +1000,308 @@ nav {
 .faq_item.active .faq_answer {
   max-height: 200px;
   padding: 0 1rem 1rem;
+}
+
+#themeToggle {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid var(--border-color);
+
+  background: var(--card-bg);
+  color: var(--text-color);
+
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#themeToggle:hover {
+  transform: rotate(180deg);
+  border-color: var(--accent);
+}
+
+#themeIcon {
+  font-size: 1.2rem;
+}
+body.dark-theme {
+  --bg-primary: #0a0909;
+}
+body.dark-theme
+{
+  background: var(--bg-primary);
+  background-attachment: fixed;
+
+  color: #fff;
+}
+body.dark-theme h2,
+body.dark-theme p
+{
+  color: #fff;
+}
+
+body.dark-theme .service_card,
+body.dark-theme .offer_card,
+body.dark-theme .client{
+    background-color: #222;
+    color: #fff;
+}
+body.dark-theme .client_card{
+   background-color: #0a0909;
+}
+
+body.dark-theme #faq{
+    background-color: #0a0909;
+    color: #fff;
+}
+.hidden {
+  display: none;
+}
+
+/* =========================
+   RESPONSIVE DESIGN
+========================= */
+
+/* Large Desktop */
+@media (min-width: 1200px) {
+
+  .section_container{
+      max-width:1200px;
+      margin:auto;
+  }
+
+  .service_grid{
+      grid-template-columns:repeat(3,1fr);
+  }
+
+  .offer_grid{
+      grid-template-columns:repeat(3,1fr);
+  }
+
+}
+
+/* Laptop */
+@media (max-width:1024px){
+
+.section_container{
+    padding:4rem 2rem;
+}
+
+.booking_form{
+    grid-template-columns:repeat(2,1fr);
+}
+
+.service_grid{
+    grid-template-columns:repeat(2,1fr);
+}
+
+.offer_grid{
+    grid-template-columns:repeat(2,1fr);
+}
+
+.footer_container{
+    grid-template-columns:repeat(2,1fr);
+}
+
+}
+@media (max-width:576px){
+
+.section_container{
+
+    padding:3rem 1rem;
+}
+
+.header_container h1{
+
+    font-size:1.8rem;
+}
+
+.header_container p{
+
+    font-size:.95rem;
+}
+
+.booking{
+
+    padding:1rem;
+}
+
+.booking_type{
+
+    display:flex;
+    flex-direction:column;
+    gap:.5rem;
+}
+
+.booking_form{
+
+    grid-template-columns:1fr;
+}
+
+.booking_input label{
+
+    font-size:.8rem;
+}
+
+.btn{
+
+    width:100%;
+}
+
+.service_grid{
+
+    grid-template-columns:1fr;
+}
+
+.offer_grid{
+
+    grid-template-columns:1fr;
+}
+
+.service_card{
+
+    margin:auto;
+}
+
+.offer_card{
+
+    margin:auto;
+}
+
+.client_card{
+
+    padding:1.5rem;
+}
+
+.footer_col{
+
+    text-align:center;
+}
+
+.footer_socials{
+
+    justify-content:center;
+}
+
+.about_links{
+
+    justify-content:center;
+}
+
+#toggleServicesBtn{
+
+    width:100%;
+    margin:2rem auto;
+}
+
+}
+.nav_bar{
+    width:100%;
+}
+
+.nav_links{
+    width:100%;
+}
+
+#toggleServicesBtn{
+    display:block;
+    margin:2rem auto;
+}
+
+.project-back-button {
+    position: fixed;
+    left: 18px;
+    top: 18px;
+}
+.project-back-button{
+    position:absolute;
+    left:20px;
+    top:50%;
+    transform:translateY(-50%);
+    z-index:100;
+}
+.project-back-button{
+    position:fixed;
+    top:20px;
+    left:20px;
+    z-index:9999;
+}
+
+@media (max-width:768px){
+
+    .project-back-button{
+        top:75px;
+        left:12px;
+        padding:10px 16px;
+        font-size:15px;
+    }
+
+    .logo{
+        margin-top:60px;
+        display:flex;
+        justify-content:center;
+    }
+}
+nav{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    position:relative;
+}
+
+.project-back-button{
+    position:absolute;
+    top:15px;
+    left:15px;
+}
+
+.logo{
+    margin-top:70px;
+}
+.project-back-button{
+    position:fixed;
+    top:18px;
+    left:18px;
+    padding:10px 18px;
+    border-radius:10px;
+    background:#1e293b;
+    color:#3b82f6;
+    border:1px solid #3b82f6;
+    text-decoration:none;
+    font-weight:700;
+    z-index:9999;
+    transition:.3s;
+}
+
+.project-back-button:hover{
+    background:#3b82f6;
+    color:#fff;
+
+}
+
+
+
+/* Back To Top Button */
+
+#backToTop {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    width: 50px;
+    height: 50px;
+    border: none;
+    border-radius: 50%;
+    background: #2563eb;
+    color: white;
+    font-size: 22px;
+    cursor: pointer;
+    display: none;
+    transition: 0.3s ease;
+    z-index: 999;
+    box-shadow: 0 5px 15px rgba(0,0,0,.2);
+}
+
+#backToTop:hover {
+    background: #1d4ed8;
+    transform: translateY(-3px);
 }
 

@@ -1,15 +1,15 @@
 //enhance: Code format and readability 
 import './App.css'
-import { useState } from 'react';
-
+import { useState, useEffect } from "react";
+import { updateStats } from "./utils/stats";
 // data imports
 import characters from "./data-set/characters.json";
 import questions from "./data-set/questions.json"
-
+import StatsDashboard from "./components/StatsDashboard";
 // function imports
 import { findchar, bestQues } from './utils/gameEngine.js'
 import BackButton from "./BackButton.jsx"
-
+import ThemeToggle from './components/ThemeToggle.jsx';
 
 // image imports
 import gennie from "./assets/gennie.png"
@@ -17,17 +17,29 @@ import thinking_gennie from "./assets/thinking.png"
 import lastgennie from "./assets/ansfound.png"
 import gameover from "./assets/gameover.png"
 
-
-
 function App() {
-  let [curQue, setque] = useState(0); //stores index of current question
-  const [qcount, setqcount] = useState(0); //stores count of questions asked
-  let [remainingchar, setremainingchar] = useState(characters); //stores remaining characters
-  let [ans, setans] = useState(''); //stores answer
-  const [playstate, playset] = useState('notplaying'); //stores play state
-  const [gstate, setstate] = useState(gennie); //stores gennie image
+  // Index of the currently displayed question.
+  let [curQue, setque] = useState(0);
+  // Number of questions answered in the current round.
+  const [qcount, setqcount] = useState(0);
+  // Characters that still match the player's answers.
+  let [remainingchar, setremainingchar] = useState(characters);
+  // Final guessed answer once the game identifies a character.
+  let [ans, setans] = useState('');
+  // Current screen/state of the game flow.
+  const [playstate, playset] = useState('notplaying');
+  // Genie image shown for the current state.
+  const [gstate, setstate] = useState(gennie);
   let cardContent;
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem("theme") || "light";
+});
+useEffect(() => {
+    document.body.className = theme;
+    localStorage.setItem("theme", theme);
+}, [theme]);
   //when answer is found
+  // Winning state: a single character has been identified.
   if (ans !== '' && playstate == 'playing') {
     cardContent = (
       <div>
@@ -38,11 +50,12 @@ function App() {
           setqcount(0)
           setremainingchar(characters)
           setstate(gennie)
+          playset("notplaying");
         }}>restart</button>
       </div>
     )
   }
-  //when game ends in loss
+  // Losing state: no valid character could be found.
   else if (playstate == 'gameover') {
     cardContent = (
       <div>
@@ -54,11 +67,12 @@ function App() {
           setqcount(0)
           setremainingchar(characters)
           setstate(gennie)
+          playset("notplaying");
         }}>restart</button>
       </div>
     )
   }
-  //main playing screen
+  // Main gameplay screen with the active question and answers.
   else if (playstate == 'playing') {
     cardContent = (
       <div>
@@ -66,13 +80,14 @@ function App() {
         <p>remaining characters: {remainingchar.length}</p>
         <p>questions asked: {qcount}/20</p>
         <div className="btn-box">
-          {/* yes button */}
+          {/* Yes narrows the remaining characters using the current question. */}
           <button className='btn' onClick={() => {
             setqcount(qcount + 1);
             const newremainingchar = findchar(true, questions[curQue].key, remainingchar);
             if (newremainingchar.length !== 1) {
               let nextQue = bestQues(questions, newremainingchar);
               if (nextQue === undefined) {
+                updateStats("genie", qcount + 1);
                 setans(newremainingchar[0].name);
                 setstate(lastgennie);
               }
@@ -84,6 +99,7 @@ function App() {
                 setstate(thinking_gennie);
                 setTimeout(() => {
                   if (newremainingchar.length == 0 || qcount + 1 == questions.length) {
+                    updateStats("player", qcount + 1);
                     setstate(gameover)
                     playset('gameover');
                   } else {
@@ -93,18 +109,20 @@ function App() {
                 }, 2000);
               }
             } else {
+              updateStats("genie", qcount + 1);
               setans(newremainingchar[0].name);
               setstate(lastgennie);
             }
           }}>yes
           </button>
-          {/* no button */}
+          {/* No narrows the remaining characters using the opposite answer. */}
           <button className='btn' onClick={() => {
             setqcount(qcount + 1);
             const newremainingchar = findchar(false, questions[curQue].key, remainingchar);
             if (newremainingchar.length !== 1) {
               let nextQue = bestQues(questions, newremainingchar);
               if (nextQue === undefined) {
+                updateStats("genie", qcount + 1);
                 setans(newremainingchar[0].name);
                 setstate(lastgennie);
               }
@@ -113,13 +131,16 @@ function App() {
                 setque(nextQueIndex);
                 setremainingchar(newremainingchar)
                 playset('thinking');
+                // End the game if there are no candidates or no questions left.
                 if (remainingchar.length == 0 || qcount == questions.length) {
+                  updateStats("player", qcount + 1);
                   setstate(gameover)
                   playset('gameover')
                 }
                 setstate(thinking_gennie);
                 setTimeout(() => {
                   if (newremainingchar.length == 0 || qcount + 1 == questions.length) {
+                    updateStats("player", qcount + 1);
                     setstate(gameover)
                     playset('gameover');
                   }
@@ -131,20 +152,23 @@ function App() {
                 // console.log(remainingchar) commented out for debugging purposes
               }
             } else {
+              updateStats("genie", qcount + 1);
               setans(newremainingchar[0].name);
               setstate(lastgennie);
             }
           }}>no</button>
-          {/* dontknow button */}
+          {/* Don't know asks the engine to pick the best next question. */}
           <button className="btn" onClick={() => {
             setqcount(qcount + 1);
             let nextQue = bestQues(questions.slice(curQue + 1), remainingchar);
             if (nextQue === undefined) {
               if (remainingchar.length === 1) {
+                updateStats("genie", qcount + 1);
                 setans(remainingchar[0].name);
                 setstate(lastgennie);
               }
               else {
+                updateStats("player", qcount + 1);
                 setstate(gameover);
                 playset('gameover');
               }
@@ -157,6 +181,7 @@ function App() {
               setstate(thinking_gennie);
               setTimeout(() => {
                 if (remainingchar.length == 0 || qcount + 1 == questions.length) {
+                  updateStats("player", qcount + 1);
                   setstate(gameover)
                   playset('gameover');
                 }
@@ -171,13 +196,21 @@ function App() {
         </div>
       </div>
     )
-  }
+  }else if (playstate === "stats") {
+  cardContent = (
+    <StatsDashboard
+      onBack={() => playset("notplaying")}
+    />
+  );
+}
   //how to play card
+  }
+  // Instructions screen describing how to play.
   else if (playstate == 'working') {
     cardContent = (
       <div>
         <h2 className='question'>How to Play</h2>
-        <p style={{ fontSize: '18px', color: '#2c2c2c', lineHeight: '1.8', marginBottom: '30px', textAlign: 'left', padding: '0 20px' }}>
+       <p className="instructions">
           <strong>1.</strong> Think of a character from the anime universe.<br />
           <strong>2.</strong> I will ask you a series of Yes or No questions.<br />
           <strong>3.</strong> Answer honestly to help me narrow down the list.<br />
@@ -187,15 +220,34 @@ function App() {
         <button className='btn' onClick={() => { playset('notplaying') }}>Back</button>
       </div>
     )
+  } else if (playstate === "thinking") {
+  cardContent = (
+    <div className='spinner'>
+    </div>
+  )
+} else {
+  cardContent = (
+          <div>
+            <p className='question'>Let's read your mind! </p>
+            <ThemeToggle
+            theme={theme}
+            setTheme={setTheme}
+          />
+            <button
+        className="btn"
+        onClick={() => playset("stats")}
+      >
+        Statistics
+      </button>
   }
-  //spinner card
+  // Spinner shown while the app is thinking.
   else if (playstate == 'thinking') {
     cardContent = (
       <div className='spinner'>
       </div>
     )
   }
-  //main screen
+  // Landing screen shown before gameplay starts.
   else {
     cardContent = (
       <div>

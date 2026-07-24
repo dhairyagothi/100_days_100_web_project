@@ -7,6 +7,7 @@ class LostAndFoundApp {
   constructor() {
     this.items = this.loadItems();
     this.currentView = 'home';
+    this.editingItemId = null; // Tracks if we are editing an active item
     this.init();
   }
 
@@ -399,21 +400,41 @@ class LostAndFoundApp {
 
     const defaultImage = '';
 
-    const newItem = {
-      id: Date.now().toString(),
-      type: type,
-      name: document.getElementById(`${type}-item-name`).value,
-      category: document.getElementById(`${type}-category`).value,
-      date: document.getElementById(`${type}-date`).value,
-      location: document.getElementById(`${type}-location`).value,
-      description: document.getElementById(`${type}-description`).value,
-      contact: document.getElementById(`${type}-contact`).value,
-      image: imageSrc || defaultImage,
-      reportedAt: new Date().toISOString(),
-      status: 'active',
-    };
+    if (this.editingItemId) {
+      // UPDATE WORKFLOW: Find the existing item and update its fields
+      const itemIndex = this.items.findIndex((item) => item.id === this.editingItemId);
+      if (itemIndex !== -1) {
+        this.items[itemIndex] = {
+          ...this.items[itemIndex],
+          name: document.getElementById(`${type}-item-name`).value,
+          category: document.getElementById(`${type}-category`).value,
+          date: document.getElementById(`${type}-date`).value,
+          location: document.getElementById(`${type}-location`).value,
+          description: document.getElementById(`${type}-description`).value,
+          contact: document.getElementById(`${type}-contact`).value,
+          // Only overwrite the image if a new one was uploaded via Canvas
+          image: imageSrc !== null ? imageSrc : this.items[itemIndex].image,
+        };
+      }
+      this.editingItemId = null; // Reset the state tracker
+    } else {
+      // CREATE WORKFLOW: Generate a brand new listing
+      const newItem = {
+        id: Date.now().toString(),
+        type: type,
+        name: document.getElementById(`${type}-item-name`).value,
+        category: document.getElementById(`${type}-category`).value,
+        date: document.getElementById(`${type}-date`).value,
+        location: document.getElementById(`${type}-location`).value,
+        description: document.getElementById(`${type}-description`).value,
+        contact: document.getElementById(`${type}-contact`).value,
+        image: imageSrc || defaultImage,
+        reportedAt: new Date().toISOString(),
+        status: 'active',
+      };
+      this.items.unshift(newItem);
+    }
 
-    this.items.unshift(newItem);
     this.saveItems();
 
     e.target.reset();
@@ -606,6 +627,14 @@ class LostAndFoundApp {
                         </div>
                     `
                     }
+                    <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+                        <button class="btn btn-secondary btn-full" onclick="window.app.editItem('${item.id}')">
+                            <i class="ph ph-pencil-simple"></i> Edit
+                        </button>
+                        <button class="btn btn-danger btn-full" onclick="window.app.deleteItem('${item.id}')">
+                            <i class="ph ph-trash"></i> Delete
+                        </button>
+                    </div>
                 </div>
             </div>
         `;
@@ -642,6 +671,54 @@ class LostAndFoundApp {
         'Failed to update item status. Please try again.'
       );
     }
+  }
+  
+  /**
+   * Deletes a report entirely from the state array
+   */
+  deleteItem(id) {
+    if (window.confirm('Are you sure you want to delete this report? This action cannot be undone.')) {
+      this.items = this.items.filter((item) => item.id !== id);
+      this.saveItems();
+      this.showToast('Success', 'Report has been permanently deleted.');
+      this.switchView('browse');
+    }
+  }
+
+  /**
+   * Routes user back to the form and populates it with existing data
+   */
+  editItem(id) {
+    const item = this.items.find((i) => i.id === id);
+    if (!item) return;
+
+    // 1. Set the active editing ID
+    this.editingItemId = id;
+
+    // 2. Switch to the appropriate form view
+    const viewId = item.type === 'lost' ? 'report-lost' : 'report-found';
+    this.switchView(viewId);
+
+    // 3. Populate form fields with existing data
+    document.getElementById(`${item.type}-item-name`).value = item.name;
+    document.getElementById(`${item.type}-category`).value = item.category;
+    document.getElementById(`${item.type}-date`).value = item.date;
+    document.getElementById(`${item.type}-location`).value = item.location;
+    document.getElementById(`${item.type}-description`).value = item.description;
+    document.getElementById(`${item.type}-contact`).value = item.contact;
+
+    // 4. Populate image preview if one exists
+    if (item.image && item.image.startsWith('data:image')) {
+      const previewImg = document.getElementById(`${item.type}-preview-img`);
+      const previewContainer = document.getElementById(`${item.type}-image-preview`);
+      const dropArea = document.getElementById(`${item.type}-drop-area`);
+      
+      previewImg.src = item.image;
+      previewContainer.classList.remove('hidden');
+      dropArea.classList.add('hidden');
+    }
+    
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   showToast(title, message) {

@@ -380,9 +380,33 @@
                             <h1>Invoice History</h1>
                             <p class="text-subtitle">Manage, duplicate, edit, or export your saved invoices</p>
                         </div>
+                        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                            <button class="btn btn-primary" id="btn-save-search" onclick="saveCurrentSearch()">
+                                <i class="fa-regular fa-bookmark"></i> Save Search
+                            </button>
+                            <button class="btn btn-outline" id="btn-manage-saved-searches" onclick="toggleSavedSearchesDropdown()">
+                                <i class="fa-solid fa-list"></i> Saved Searches
+                            </button>
+                        </div>
                     </div>
 
-                    <!-- Filter Options -->
+                    <!-- Saved Searches Dropdown -->
+                    <div id="saved-searches-dropdown" style="display: none; margin-bottom: 16px;">
+                        <div class="filters-card" style="padding: 12px 16px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <strong style="font-size: 13px;"><i class="fa-regular fa-bookmark"></i> Your Saved Searches</strong>
+                                <button class="btn btn-sm btn-text" onclick="closeSavedSearchesDropdown()">Close</button>
+                            </div>
+                            <div id="saved-searches-list" style="display: flex; flex-wrap: wrap; gap: 8px;">
+                                <!-- Dynamically populated -->
+                            </div>
+                            <div id="no-saved-searches" style="color: var(--text-muted); font-size: 13px; padding: 8px 0;">
+                                No saved searches yet. Create one using the "Save Search" button.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Advanced Filter Options -->
                     <div class="filters-card">
                         <div class="filters-grid">
                             <div class="form-group">
@@ -407,6 +431,70 @@
                                 </button>
                             </div>
                         </div>
+
+                        <!-- Advanced Filter Toggle -->
+                        <div style="margin-top: 16px;">
+                            <button class="btn btn-text" onclick="toggleAdvancedFilters()" id="btn-toggle-advanced">
+                                <i class="fa-solid fa-chevron-down"></i> Advanced Filters
+                            </button>
+                        </div>
+
+                        <!-- Advanced Filters Panel -->
+                        <div id="advanced-filters-panel" style="display: none; margin-top: 16px; border-top: 1px solid var(--border-color); padding-top: 16px;">
+                            <div class="form-grid-3">
+                                <!-- Date Range -->
+                                <div class="form-group">
+                                    <label>Date Range</label>
+                                    <div style="display: flex; gap: 8px;">
+                                        <input type="date" id="filter-date-from" placeholder="From" style="flex: 1;">
+                                        <span style="display: flex; align-items: center; color: var(--text-muted);">to</span>
+                                        <input type="date" id="filter-date-to" placeholder="To" style="flex: 1;">
+                                    </div>
+                                </div>
+
+                                <!-- Amount Range -->
+                                <div class="form-group">
+                                    <label>Amount Range</label>
+                                    <div style="display: flex; gap: 8px;">
+                                        <div style="flex: 1; position: relative;">
+                                            <span style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--text-muted);">$</span>
+                                            <input type="number" id="filter-amount-min" placeholder="Min" style="padding-left: 24px; width: 100%;">
+                                        </div>
+                                        <span style="display: flex; align-items: center; color: var(--text-muted);">to</span>
+                                        <div style="flex: 1; position: relative;">
+                                            <span style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--text-muted);">$</span>
+                                            <input type="number" id="filter-amount-max" placeholder="Max" style="padding-left: 24px; width: 100%;">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Tags/Categories -->
+                                <div class="form-group">
+                                    <label for="filter-tags">Tags / Categories</label>
+                                    <div style="display: flex; gap: 8px;">
+                                        <select id="filter-tags" style="flex: 1;">
+                                            <option value="All">All Tags</option>
+                                            <!-- Dynamic tags will be added here -->
+                                        </select>
+                                        <button class="btn btn-outline btn-sm" onclick="addNewTag()" title="Add New Tag">
+                                            <i class="fa-solid fa-plus"></i>
+                                        </button>
+                                    </div>
+                                    <div id="tag-filters-container" style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px;">
+                                        <!-- Selected tags will appear here -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="display: flex; gap: 12px; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border-color);">
+                                <button class="btn btn-primary" onclick="applyAdvancedFilters()">
+                                    <i class="fa-solid fa-filter"></i> Apply Filters
+                                </button>
+                                <button class="btn btn-outline" onclick="clearAdvancedFilters()">
+                                    <i class="fa-solid fa-xmark"></i> Clear Advanced
+                                </button>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- History Table Panel -->
@@ -415,12 +503,23 @@
                             <table class="app-table">
                                 <thead>
                                     <tr>
-                                        <th>Invoice #</th>
-                                        <th>Client</th>
-                                        <th>Issued Date</th>
-                                        <th>Due Date</th>
-                                        <th>Grand Total</th>
+                                        <th style="cursor: pointer;" onclick="sortHistory('invoiceNumber')">
+                                            Invoice # <i class="fa-solid fa-sort"></i>
+                                        </th>
+                                        <th style="cursor: pointer;" onclick="sortHistory('clientName')">
+                                            Client <i class="fa-solid fa-sort"></i>
+                                        </th>
+                                        <th style="cursor: pointer;" onclick="sortHistory('issueDate')">
+                                            Issued Date <i class="fa-solid fa-sort"></i>
+                                        </th>
+                                        <th style="cursor: pointer;" onclick="sortHistory('dueDate')">
+                                            Due Date <i class="fa-solid fa-sort"></i>
+                                        </th>
+                                        <th style="cursor: pointer;" onclick="sortHistory('amount')">
+                                            Grand Total <i class="fa-solid fa-sort"></i>
+                                        </th>
                                         <th>Status</th>
+                                        <th>Tags</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -435,6 +534,18 @@
                             </div>
                             <h4>No matching invoices found</h4>
                             <p>Try refining your filters or search terms.</p>
+                        </div>
+
+                        <!-- Pagination -->
+                        <div id="pagination-container" style="display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; border-top: 1px solid var(--border-color);">
+                            <div style="font-size: 13px; color: var(--text-muted);">
+                                Showing <span id="pagination-start">0</span>-<span id="pagination-end">0</span> of <span id="pagination-total">0</span> invoices
+                            </div>
+                            <div style="display: flex; gap: 8px;">
+                                <button class="btn btn-outline btn-sm" onclick="changePage(-1)" id="pagination-prev">Previous</button>
+                                <span id="pagination-current" style="display: flex; align-items: center; padding: 0 12px; font-weight: 500;">1</span>
+                                <button class="btn btn-outline btn-sm" onclick="changePage(1)" id="pagination-next">Next</button>
+                            </div>
                         </div>
                     </div>
                 </section>
