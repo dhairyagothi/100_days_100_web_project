@@ -483,3 +483,60 @@ function setEditingState(disabled) {
 loadBestScore();
 setEditingState(false);
 renderCard();
+
+/* ============================================================
+                    THEME TOGGLE (FIXED)
+============================================================ */
+
+// Wait for DOM to be fully loaded
+document.addEventListener('DOMContentLoaded', function() {
+    // Create theme toggle button
+    const themeToggleHTML = `
+        <div class="theme-toggle-wrapper">
+            <button class="theme-toggle-btn" id="themeToggle" aria-label="Toggle theme">
+                <span class="thumb" id="themeThumb">🌙</span>
+            </button>
+        </div>
+    `;
+
+    // Insert theme toggle after nav links
+    const navLinks = document.querySelector('.nav-links');
+    if (navLinks) {
+        // Create wrapper div
+        const wrapper = document.createElement('div');
+        wrapper.innerHTML = themeToggleHTML;
+        const toggleElement = wrapper.firstElementChild;
+        
+        // Insert after nav-links
+        navLinks.parentNode.insertBefore(toggleElement, navLinks.nextSibling);
+    }
+
+    // Get theme toggle elements
+    const themeToggle = document.getElementById('themeToggle');
+    const themeThumb = document.getElementById('themeThumb');
+
+    // Check for saved theme preference
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    
+    // Update thumb icon
+    if (themeThumb) {
+        themeThumb.textContent = savedTheme === 'dark' ? '🌙' : '☀️';
+    }
+
+    // Add click event
+    if (themeToggle) {
+        themeToggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            
+            if (themeThumb) {
+                themeThumb.textContent = newTheme === 'dark' ? '🌙' : '☀️';
+            }
+        });
+    }
+});
