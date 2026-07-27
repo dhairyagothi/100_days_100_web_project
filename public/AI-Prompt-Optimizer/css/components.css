@@ -1,70 +1,4 @@
-:root {
-  --bg: #0f172a;
-  --card: #1e293b;
-  --card-hover: #334155;
-  --text: #f8fafc;
-  --text-secondary: #cbd5e1;
-  --primary: #6366f1;
-  --primary-hover: #4f46e5;
-  --success: #22c55e;
-  --warning: #f59e0b;
-  --danger: #ef4444;
-  --border: #334155;
-  --shadow: 0 10px 30px rgba(0,0,0,0.25);
-}
-
-body.light {
-  --bg: #f8fafc;
-  --card: #ffffff;
-  --card-hover: #f1f5f9;
-  --text: #0f172a;
-  --text-secondary: #475569;
-  --primary: #4f46e5;
-  --primary-hover: #4338ca;
-  --border: #e2e8f0;
-  --shadow: 0 10px 25px rgba(0,0,0,0.08);
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
-body {
-  font-family: "Poppins", sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-  transition: 0.3s ease;
-}
-
-.container {
-  width: min(1200px, 92%);
-  margin: auto;
-  padding: 2rem 0 4rem;
-}
-
-header {
-  text-align: center;
-  margin-bottom: 2rem;
-}
-
-header h1 {
-  font-size: 2.8rem;
-  margin-bottom: 0.75rem;
-}
-
-header p {
-  color: var(--text-secondary);
-  max-width: 750px;
-  margin: auto;
-  line-height: 1.7;
-}
+/* ---- Theme Toggle ---- */
 
 .theme-toggle {
   position: fixed;
@@ -81,6 +15,8 @@ header p {
   box-shadow: var(--shadow);
   z-index: 999;
 }
+
+/* ---- Cards ---- */
 
 .prompt-section,
 .suggestions-section,
@@ -102,6 +38,8 @@ header p {
   margin-bottom: 1.5rem;
 }
 
+/* ---- Forms ---- */
+
 .prompt-section label {
   display: block;
   margin-bottom: 0.5rem;
@@ -113,27 +51,34 @@ select,
 textarea {
   width: 100%;
   border: 1px solid var(--border);
-  background: transparent;
+  background: var(--card);
   color: var(--text);
   border-radius: 12px;
   padding: 1rem;
   font-size: 0.95rem;
   resize: vertical;
+  font-family: inherit;
 }
 
 select {
   cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23a1a1aa' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+}
+
+select option {
+  background: var(--card);
+  color: var(--text);
 }
 
 textarea {
   min-height: 180px;
 }
 
-.button-group {
-  display: flex;
-  gap: 1rem;
-  margin-top: 1.2rem;
-}
+/* ---- Buttons ---- */
 
 button {
   border: none;
@@ -144,6 +89,12 @@ button {
 
 button:hover {
   transform: translateY(-2px);
+}
+
+.button-group {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.2rem;
 }
 
 .button-group button,
@@ -168,6 +119,28 @@ button:hover {
   background: var(--card-hover);
   color: var(--text);
 }
+
+.small-btn {
+  background: var(--primary);
+  color: white;
+  padding: 0.65rem 1rem;
+  border-radius: 8px;
+}
+
+.danger {
+  background: var(--danger);
+}
+
+/* ---- Section Header ---- */
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+/* ---- Score ---- */
 
 .results-section {
   display: grid;
@@ -237,6 +210,8 @@ button:hover {
   transition: width 0.7s ease;
 }
 
+/* ---- Suggestions ---- */
+
 .suggestions-section h2,
 .optimized-section h2,
 .history-section h2 {
@@ -252,23 +227,7 @@ button:hover {
   line-height: 1.6;
 }
 
-.section-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-}
-
-.small-btn {
-  background: var(--primary);
-  color: white;
-  padding: 0.65rem 1rem;
-  border-radius: 8px;
-}
-
-.danger {
-  background: var(--danger);
-}
+/* ---- Optimized Prompt ---- */
 
 #optimizedPrompt {
   margin-top: 1rem;
@@ -278,6 +237,8 @@ button:hover {
 .action-buttons {
   margin-top: 1rem;
 }
+
+/* ---- History ---- */
 
 .history-placeholder {
   color: var(--text-secondary);
@@ -309,105 +270,68 @@ button:hover {
   color: var(--text-secondary);
 }
 
-footer {
-  text-align: center;
-  color: var(--text-secondary);
-  margin-top: 2rem;
-}
+/* ---- Library ---- */
 
-@media (max-width: 900px) {
-  .results-section {
-    grid-template-columns: 1fr;
-  }
-
-  .score-circle {
-    width: 150px;
-    height: 150px;
-  }
-
-  .score-circle span {
-    font-size: 2.3rem;
-  }
-}
-
-@media (max-width: 600px) {
-  .button-group {
-    flex-direction: column;
-  }
-
-  .section-header {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  header h1 {
-    font-size: 2rem;
-  }
-
-  .theme-toggle {
-    width: 48px;
-    height: 48px;
-  }
-}
 .library-section {
-    background: var(--card);
-    border-radius: 18px;
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
-    border: 1px solid var(--border);
-    box-shadow: var(--shadow);
+  background: var(--card);
+  border-radius: 18px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
 }
 
 .library-controls {
-    display: flex;
-    gap: 1rem;
-    margin: 1rem 0;
+  display: flex;
+  gap: 1rem;
+  margin: 1rem 0;
 }
 
 .library-controls input {
-    flex: 1;
-    padding: 0.9rem;
-    border-radius: 10px;
-    border: 1px solid var(--border);
-    background: transparent;
-    color: var(--text);
+  flex: 1;
+  padding: 0.9rem;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  font-family: inherit;
 }
 
 #savePromptBtn {
-    background: var(--primary);
-    color: white;
-    padding: 0.9rem 1.2rem;
-    border-radius: 10px;
+  background: var(--primary);
+  color: white;
+  padding: 0.9rem 1.2rem;
+  border-radius: 10px;
 }
 
 .library-item {
-    background: var(--card-hover);
-    border-radius: 12px;
-    padding: 1rem;
-    margin-bottom: 1rem;
+  background: var(--card-hover);
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 1rem;
 }
 
 .library-item h4 {
-    margin-bottom: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
 .library-actions {
-    display: flex;
-    gap: 0.75rem;
-    margin-top: 1rem;
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1rem;
 }
 
 .library-actions button {
-    padding: 0.6rem 1rem;
-    border-radius: 8px;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
 }
 
 .load-btn {
-    background: var(--success);
-    color: white;
+  background: var(--success);
+  color: white;
 }
 
 .delete-btn {
-    background: var(--danger);
-    color: white;
+  background: var(--danger);
+  color: white;
 }
