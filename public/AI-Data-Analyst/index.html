@@ -1,6 +1,21 @@
 <!doctype html>
 <html lang="en" data-theme="dark">
   <head>
+    <script>
+      (function () {
+        try {
+          var KEY = "ai-data-analyst-theme";
+          var stored = localStorage.getItem(KEY);
+          var theme =
+            stored ||
+            (window.matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light");
+          document.documentElement.setAttribute("data-theme", theme);
+          document.documentElement.classList.add("theme-preload");
+        } catch (e) {}
+      })();
+    </script>
     <link rel="icon" type="image/png" href="./assets/icons/favicon.png" />
     <script src="https://unpkg.com/lucide@latest"></script>
     <meta charset="UTF-8" />
