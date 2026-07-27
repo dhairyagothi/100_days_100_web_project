@@ -1,0 +1,271 @@
+/* Base Reset and Typography */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Outfit', sans-serif;
+  display: flex;
+  height: 100vh;
+  background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+  color: #f8fafc;
+  overflow: hidden;
+}
+
+/* Sidebar Navigation */
+nav {
+  width: 280px;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 40px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+}
+
+nav h3 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 24px;
+  color: #fff;
+  padding-left: 12px;
+  letter-spacing: 0.5px;
+  background: linear-gradient(to right, #38bdf8, #818cf8);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+nav div {
+  padding: 14px 18px;
+  border-radius: 14px;
+  cursor: pointer;
+  color: #cbd5e1;
+  font-size: 1.05rem;
+  font-weight: 500;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  background: transparent;
+}
+
+nav div:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  transform: translateX(6px);
+}
+
+nav div:active {
+  transform: translateX(2px);
+}
+
+/* Main Content Area */
+main {
+  flex: 1;
+  padding: 60px 80px;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  position: relative;
+}
+
+/* Page Transitions */
+.page {
+  display: none;
+  animation: fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.page.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Typography in Main Content */
+h1 {
+  font-size: 3rem;
+  font-weight: 800;
+  margin-bottom: 24px;
+  color: #f8fafc;
+  letter-spacing: -0.5px;
+}
+
+h2 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-top: 40px;
+  margin-bottom: 20px;
+  color: #e2e8f0;
+}
+
+p {
+  font-size: 1.15rem;
+  line-height: 1.8;
+  color: #94a3b8;
+  margin-bottom: 20px;
+  max-width: 800px;
+}
+
+/* Welcome Page */
+#home p {
+  color: #cbd5e1;
+}
+
+#home ul {
+  color: #94a3b8;
+  list-style-type: none;
+  padding-left: 0;
+  max-width: 800px;
+}
+
+#home ul li {
+  margin-bottom: 14px;
+  padding: 20px 24px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  transition: all 0.3s ease;
+  font-size: 1.1rem;
+}
+
+#home ul li:hover {
+  transform: translateY(-4px);
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(56, 189, 248, 0.2);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+#home ul li strong {
+  color: #38bdf8;
+  margin-right: 12px;
+  font-weight: 600;
+}
+
+#home p.subtitle {
+  margin-top: 40px;
+  color: #64748b;
+  font-style: italic;
+  font-size: 1.05rem;
+}
+
+/* Focus List (To-Do) */
+.task-input-wrapper {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 40px;
+  max-width: 700px;
+}
+
+#taskInput {
+  flex: 1;
+  padding: 18px 24px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(15, 23, 42, 0.4);
+  color: #fff;
+  font-size: 1.15rem;
+  font-family: inherit;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+#taskInput::placeholder {
+  color: #64748b;
+}
+
+#taskInput:focus {
+  border-color: #38bdf8;
+  background: rgba(15, 23, 42, 0.6);
+  box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.15);
+}
+
+#todo button {
+  padding: 0 32px;
+  border-radius: 16px;
+  border: none;
+  background: linear-gradient(135deg, #38bdf8 0%, #2563eb 100%);
+  color: white;
+  font-size: 1.15rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(37, 99, 235, 0.3);
+}
+
+#todo button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(37, 99, 235, 0.5);
+  filter: brightness(1.1);
+}
+
+#todo button:active {
+  transform: translateY(1px);
+}
+
+#taskList {
+  list-style: none;
+  max-width: 700px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+#taskList li {
+  padding: 20px 24px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  font-size: 1.15rem;
+  color: #f1f5f9;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.3s ease;
+  animation: slideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+#taskList li:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateX(6px);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-15px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* Conway's Game of Life */
+#lifeCanvas {
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+  background: #0f172a;
+  margin-top: 10px;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}

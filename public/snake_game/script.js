@@ -88,6 +88,18 @@ const changeDirection = e => {
 }
 
 controls.forEach(button => {
+  button.addEventListener("click", () =>
+    changeDirection({ key: button.dataset.key })
+  );
+
+  button.addEventListener("touchstart", () => {
+    button.classList.add("active");
+  });
+
+  button.addEventListener("touchend", () => {
+    button.classList.remove("active");
+  });
+});
   button.addEventListener("click", () => changeDirection({ key: button.dataset.key }));
 
   button.addEventListener("touchstart", () => {

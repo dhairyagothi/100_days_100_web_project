@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact | AaharShare</title>
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .contact-container{
+            max-width:900px;
+            margin:40px auto;
+            padding:30px;
+            background:#fff;
+            border-radius:12px;
+            box-shadow:0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .contact-container h1{
+            color:#2e7d32;
+            margin-bottom:10px;
+        }
+
+        .contact-container p{
+            color:#555;
+            margin-bottom:20px;
+        }
+
+        .contact-info{
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+            gap:20px;
+            margin-bottom:30px;
+        }
+
+        .info-card{
+            padding:20px;
+            background:#f5f5f5;
+            border-radius:10px;
+        }
+
+        .info-card h3{
+            color:#2e7d32;
+            margin-bottom:10px;
+        }
+
+        .contact-form{
+            display:flex;
+            flex-direction:column;
+            gap:15px;
+        }
+
+        .contact-form input,
+        .contact-form textarea{
+            padding:12px;
+            border:1px solid #ccc;
+            border-radius:8px;
+            font-size:16px;
+        }
+
+        .contact-form textarea{
+            resize:vertical;
+            min-height:140px;
+        }
+
+        .contact-form button{
+            background:#2e7d32;
+            color:#fff;
+            border:none;
+            padding:12px;
+            border-radius:8px;
+            cursor:pointer;
+            font-size:16px;
+        }
+
+        .contact-form button:hover{
+            background:#256428;
+        }
+
+        .back-home{
+            display:inline-block;
+            margin:20px;
+            text-decoration:none;
+            color:#2e7d32;
+            font-weight:bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="sidebar">
+        <a href="index.html">Home</a>
+        <a href="donate.html">Donors</a>
+        <a href="#">Clothes</a>
+        <a href="#">Food</a>
+        <a href="#">Renew</a>
+        <a href="contact.html">Contact</a>
+    </div>
+
+    <a href="index.html" class="back-home">← Back to Home</a>
+
+    <div class="contact-container">
+
+        <h1>Contact AaharShare</h1>
+
+        <p>
+            We'd love to hear from you! Whether you have surplus food to donate,
+            want to volunteer, or have questions about our initiative, feel free
+            to reach out.
+        </p>
+
+        <div class="contact-info">
+
+            <div class="info-card">
+                <h3>📍 Address</h3>
+                <p>
+                    AaharShare Foundation<br>
+                    New Delhi, India
+                </p>
+            </div>
+
+            <div class="info-card">
+                <h3>📞 Phone</h3>
+                <p>+91 98765 43210</p>
+            </div>
+
+            <div class="info-card">
+                <h3>📧 Email</h3>
+                <p>support@aaharshare.org</p>
+            </div>
+
+            <div class="info-card">
+                <h3>🕒 Working Hours</h3>
+                <p>
+                    Monday - Saturday<br>
+                    9:00 AM - 6:00 PM
+                </p>
+            </div>
+
+        </div>
+
+        <h2>Send us a Message</h2>
+
+        <form class="contact-form">
+
+            <input
+                type="text"
+                placeholder="Your Name"
+                required
+            >
+
+            <input
+                type="email"
+                placeholder="Your Email"
+                required
+            >
+
+            <input
+                type="text"
+                placeholder="Subject"
+                required
+            >
+
+            <textarea
+                placeholder="Write your message here..."
+                required
+            ></textarea>
+
+            <button type="submit">
+                Send Message
+            </button>
+
+        </form>
+
+    </div>
+
+    <script>
+        document.querySelector(".contact-form").addEventListener("submit", function(e){
+            e.preventDefault();
+            alert("Thank you for contacting AaharShare! We will get back to you soon.");
+            this.reset();
+        });
+    </script>
+
+</body>
+</html>
