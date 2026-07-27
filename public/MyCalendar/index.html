@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,15 +8,29 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
     <div class="main-wrapper">
+        <!-- Calendar -->
         <div class="calendar-container">
+            <!-- Month Banner -->
             <div id="month-image" class="month-image"></div>
+            <!-- Header -->
             <div class="calendar-header">
-                <button type="button" id="prevMonth" class="nav-btn" aria-label="Previous Month">&lt;</button>
-                <p id="monthYearText" aria-live="polite"></p>
-                <button type="button" id="nextMonth" class="nav-btn" aria-label="Next Month">&gt;</button>
+                <button id="prevMonth" class="nav-btn" aria-label="Previous Month">
+                    &#10094;
+                </button>
+                <div class="header-center">
+                    <h2 id="monthYearText"></h2>
+                </div>
+                <div class="header-actions">
+                    <button id="themeToggle" class="theme-btn" aria-label="Toggle Theme">
+                        🌙
+                    </button>
+                    <button id="nextMonth" class="nav-btn" aria-label="Next Month">
+                        &#10095;
+                    </button>
+                </div>
             </div>
+            <!-- Calendar Grid -->
             <div class="calendar-grid">
                 <div class="day-name">Sun</div>
                 <div class="day-name">Mon</div>
@@ -26,20 +41,32 @@
                 <div class="day-name">Sat</div>
             </div>
         </div>
-
+        <!-- Notes -->
         <div id="noteArea" class="note-section">
-            <h3>Notes for <span id="selectedDateText" aria-live="polite">Select a day</span></h3>
+            <h3>
+                Notes for
+                <span id="selectedDateText">
+                    Select a day
+                </span>
+            </h3>
             <select id="eventTag" aria-label="Event Type">
-                <option value="none">Normal Day</option>
-                <option value="festival">Festival / Holiday</option>
-                <option value="event">Personal Event</option>
+                <option value="none">
+                    Normal Day
+                </option>
+                <option value="festival">
+                    Festival / Holiday
+                </option>
+                <option value="event">
+                    Personal Event
+                </option>
             </select>
-            <textarea id="noteInput" placeholder="Plan your festivals and events here..." aria-label="Notes"></textarea>
-            <button type="button" id="saveNote" aria-label="Save Note">Save Note</button>
+            <textarea id="noteInput" placeholder="Write your notes here..." aria-label="Notes"></textarea>
+            <button id="saveNote" aria-label="Save Note">
+                Save Note
+            </button>
         </div>
-
     </div>
-
     <script src="script.js"></script>
 </body>
+
 </html>
