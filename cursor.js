@@ -56,6 +56,12 @@
     try { localStorage.setItem(ENABLED_KEY, String(enabled)); } catch (_) {}
   }
 
+  function setNativeCursorVisibility(isCustomCursorActive) {
+    const cursorValue = isCustomCursorActive ? "none" : "auto";
+    document.body.style.cursor = cursorValue;
+    document.documentElement.style.cursor = cursorValue;
+  }
+
   /* ── Create cursor elements ── */
   function ensureCursorElements() {
     outerEl = document.querySelector(".cursor-ring--outer");
@@ -92,7 +98,7 @@
     // If disabled or default style, hide cursor elements and set standard cursor
     if (!isEnabled || id === "default") {
       document.body.classList.remove("custom-cursor-active");
-      document.body.style.cursor = "auto";
+      setNativeCursorVisibility(false);
       outerEl.classList.remove("is-visible");
       outerEl.style.display = "none";
       innerEl.classList.remove("is-visible");
@@ -101,7 +107,7 @@
     }
 
     document.body.classList.add("custom-cursor-active");
-    document.body.style.cursor = "none";
+    setNativeCursorVisibility(true);
     outerEl.classList.add("is-visible");
     outerEl.style.display = "block";
     innerEl.classList.add("is-visible");
@@ -445,7 +451,7 @@
   function disableCursorSystem() {
     isEnabled = false;
     saveEnabled(false);
-    document.body.style.cursor = "auto";
+    setNativeCursorVisibility(false);
     if (outerEl) {
       outerEl.classList.remove("is-visible");
       outerEl.style.display = "none";
@@ -459,16 +465,6 @@
   }
 
   function updateCursorToggleUI() {
-    document.querySelectorAll("#cursorToggleNav").forEach((btn) => {
-      btn.innerHTML = `
-        <span class="mobile-nav-icon"><i class="fas ${isEnabled ? "fa-circle-notch" : "fa-mouse-pointer"}" aria-hidden="true"></i></span>
-        Cursor: ${isEnabled ? "Custom" : "Default"}
-      `;
-      btn.setAttribute(
-        "aria-label",
-        `Toggle custom cursor (currently ${isEnabled ? "Custom" : "Default"})`,
-      );
-    });
   }
 
   init();
