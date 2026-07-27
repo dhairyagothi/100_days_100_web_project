@@ -15,7 +15,7 @@ let clearDialogClosing = false;
 let previousFocus = null;
 
 const HISTORY_STORAGE_KEY = "cuteCalculatorHistory";
-const dialogFocusableSelector = "button, [href], input, select, textarea, [tabindex]:not([tabindex='-1'])";
+const dialogFocusableSelector = "button, [href], input, select, textarea, [tabindex]:not([tabindex='-1']), [contenteditable]:not([contenteditable='false']), iframe";
  
 /* ── Ripple effect on every button click ── */
 document.querySelectorAll("button").forEach(btn => {

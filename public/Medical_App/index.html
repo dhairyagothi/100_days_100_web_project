@@ -131,14 +131,14 @@
         <div class="page-container">
 
             <!-- Hero Section -->
-            <section class="hero-section" style="min-height:100vh; display:flex; justify-content:center; align-items:center; text-align:center;">
-                <div class="hero-content" style="display:flex; flex-direction:column; align-items:center;">
+            <section class="hero-section">
+                <div class="hero-content">
                     <div class="hero-text">
                         <h1>🏥 Welcome to MedConsult</h1>
                         <p id="welcomeMessage">Connecting Local Doctors with Specialists</p>
                         <p>Connect with expert specialists for your healthcare needs</p>
                     </div>
-                    <div class="hero-stats" style="display:flex; gap:20px; justify-content:center; margin-top:20px;">
+                    <div class="hero-stats">
                         <div class="stat-item">
                             <div class="stat-number">500+</div>
                             <div class="stat-label">Specialists</div>
@@ -292,22 +292,27 @@
                     <section class="card" data-role="patient">
                         <div class="card-header">
                             <div class="card-icon primary"><i class="ph ph-stethoscope"></i></div>
-                            <h2>Request Consultation</h2>
+                            <div class="card-header-content">
+                                <h2>Request Consultation</h2>
+                                <p class="card-subtitle">Fast patient intake for secure specialist matching.</p>
+                            </div>
                         </div>
                         <form id="requestForm" class="modern-form" novalidate>
                             <div class="form-group">
-                                <div class="form-field">
-                                    <label for="patientName">Patient Full Name</label>
-                                    <div class="input-wrapper">
-                                        <i class="ph ph-user"></i>
-                                        <input type="text" id="patientName" name="patientName" placeholder="Enter your full name" required>
+                                <div class="form-row-2">
+                                    <div class="form-field">
+                                        <label for="patientName">Patient Full Name</label>
+                                        <div class="input-wrapper">
+                                            <i class="ph ph-user"></i>
+                                            <input type="text" id="patientName" name="patientName" placeholder="Enter your full name" required>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-field">
-                                    <label for="doctorName">Referring Doctor</label>
-                                    <div class="input-wrapper">
-                                        <i class="ph ph-user-md"></i>
-                                        <input type="text" id="doctorName" name="doctorName" placeholder="Doctor's name" required>
+                                    <div class="form-field">
+                                        <label for="doctorName">Referring Doctor</label>
+                                        <div class="input-wrapper">
+                                            <i class="ph ph-user-md"></i>
+                                            <input type="text" id="doctorName" name="doctorName" placeholder="Doctor's name" required>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-field">
@@ -317,15 +322,23 @@
                                         <textarea id="patientCondition" name="patientCondition" placeholder="Describe the condition briefly..." rows="3" required></textarea>
                                     </div>
                                 </div>
-                                <div class="form-field">
-                                    <label for="specialistSearch">Required Specialist</label>
-                                    <div class="input-wrapper">
-                                        <i class="ph ph-magnifying-glass"></i>
-                                        <input type="text" id="specialistSearch" placeholder="Search specialist...">
+                                <div class="form-row-2">
+                                    <div class="form-field">
+                                        <label for="specialistSearch">Required Specialist</label>
+                                        <div class="input-wrapper">
+                                            <i class="ph ph-magnifying-glass"></i>
+                                            <input type="text" id="specialistSearch" placeholder="Search specialist...">
+                                        </div>
                                     </div>
-                                    <select id="specialistType" name="specialistType" required class="mt-2">
-                                        <option value="">Select a specialist...</option>
-                                    </select>
+                                    <div class="form-field">
+                                        <label for="specialistType">Specialist Type</label>
+                                        <div class="input-wrapper">
+                                            <i class="ph ph-stethoscope"></i>
+                                            <select id="specialistType" name="specialistType" required>
+                                                <option value="">Select a specialist...</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <button type="button" class="btn-text advanced-toggle" id="toggleAdvancedBtn">

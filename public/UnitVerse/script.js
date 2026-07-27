@@ -4,58 +4,222 @@ UnitVerse - JavaScript Functionality
 
 // Conversion data with units and conversion rates
 const CONVERSION_DATA = {
-  length: {
-    name: 'Length',
-    units: {
-      mm: { name: 'Millimeter (mm)', toBase: 0.001 },
-      cm: { name: 'Centimeter (cm)', toBase: 0.01 },
-      m: { name: 'Meter (m)', toBase: 1 },
-      km: { name: 'Kilometer (km)', toBase: 1000 },
-      in: { name: 'Inch (in)', toBase: 0.0254 },
-      ft: { name: 'Foot (ft)', toBase: 0.3048 },
-      yd: { name: 'Yard (yd)', toBase: 0.9144 },
-      mi: { name: 'Mile (mi)', toBase: 1609.34 },
+    length: {
+        name: 'Length',
+        baseUnit: 'm',
+        units: {
+            mm: { 
+            name: 'Millimeter', 
+            symbol: 'mm', 
+            toBase: 0.001,
+            description: 'One thousandth of a meter.',
+            applications: 'Engineering, machining, small measurements'
+        },
+            cm: { 
+            name: 'Centimeter', 
+            symbol: 'cm', 
+            toBase: 0.01,
+            description: 'One hundredth of a meter.',
+            applications: 'Everyday measurements, clothing sizes'
+        },
+            m: { 
+            name: 'Meter', 
+            symbol: 'm', 
+            toBase: 1,
+            description: 'Base unit of length in the metric system.',
+            applications: 'Science, engineering, everyday measurements'
+        },
+            km: { 
+            name: 'Kilometer', 
+            symbol: 'km', 
+            toBase: 1000,
+            description: 'One thousand meters.',
+            applications: 'Road distances, travel'
+        },
+            in: { 
+            name: 'Inch', 
+            symbol: 'in', 
+            toBase: 0.0254,
+            description: 'Imperial unit, 1/12 of a foot.',
+            applications: 'Construction, screen sizes, height measurements'
+        },
+            ft: { 
+            name: 'Foot', 
+            symbol: 'ft', 
+            toBase: 0.3048,
+            description: '12 inches.',
+            applications: 'Height, construction'
+        },
+            yd: { 
+            name: 'Yard', 
+            symbol: 'yd', 
+            toBase: 0.9144,
+            description: '3 feet.',
+            applications: 'Sports fields, construction'
+        },
+            mi: { 
+            name: 'Mile', 
+            symbol: 'mi', 
+            toBase: 1609.34,
+            description: '5280 feet.',
+            applications: 'Road distances, US/UK'
+        },
+        }
     },
-  },
-  weight: {
-    name: 'Weight',
-    units: {
-      mg: { name: 'Milligram (mg)', toBase: 0.001 },
-      g: { name: 'Gram (g)', toBase: 1 },
-      kg: { name: 'Kilogram (kg)', toBase: 1000 },
-      oz: { name: 'Ounce (oz)', toBase: 28.3495 },
-      lb: { name: 'Pound (lb)', toBase: 453.592 },
+    weight: {
+        name: 'Weight',
+        baseUnit: 'g',
+        units: {
+            mg: { 
+            name: 'Milligram', 
+            symbol: 'mg', 
+            toBase: 0.001,
+            description: 'One thousandth of a gram.',
+            applications: 'Medicine, chemistry'
+        },
+            g: { 
+            name: 'Gram', 
+            symbol: 'g', 
+            toBase: 1,
+            description: 'Base unit of mass.',
+            applications: 'Cooking, science'
+        },
+            kg: { 
+            name: 'Kilogram', 
+            symbol: 'kg', 
+            toBase: 1000,
+            description: '1000 grams.',
+            applications: 'Body weight, groceries'
+        },
+            oz: { 
+            name: 'Ounce', 
+            symbol: 'oz', 
+            toBase: 28.3495,
+            description: '1/16 of a pound.',
+            applications: 'Cooking, food packaging'
+        },
+            lb: { 
+            name: 'Pound', 
+            symbol: 'lb', 
+            toBase: 453.592,
+            description: '16 ounces.',
+            applications: 'Body weight, shopping'
+        },
+        }
     },
-  },
-  temperature: {
-    name: 'Temperature',
-    units: {
-      celsius: { name: 'Celsius (°C)' },
-      fahrenheit: { name: 'Fahrenheit (°F)' },
-      kelvin: { name: 'Kelvin (K)' },
+    temperature: {
+        name: 'Temperature',
+        baseUnit: 'celsius',
+        units: {
+            celsius: { 
+            name: 'Celsius', 
+            symbol: '°C',
+            description: 'Water freezes at 0°C, boils at 100°C.',
+            applications: 'Everyday use, science'
+        },
+            fahrenheit: { 
+            name: 'Fahrenheit', 
+            symbol: '°F',
+            description: 'Water freezes at 32°F, boils at 212°F.',
+            applications: 'US weather, cooking in US'
+        },
+            kelvin: { 
+            name: 'Kelvin', 
+            symbol: 'K',
+            description: 'Absolute temperature scale.',
+            applications: 'Science, physics'
+        },
+        }
     },
-  },
-  time: {
-    name: 'Time',
-    units: {
-      s: { name: 'Second (s)', toBase: 1 },
-      min: { name: 'Minute (min)', toBase: 60 },
-      h: { name: 'Hour (h)', toBase: 3600 },
-      d: { name: 'Day (d)', toBase: 86400 },
-      wk: { name: 'Week (wk)', toBase: 604800 },
-      mo: { name: 'Month (mo)', toBase: 2592000 },
-      yr: { name: 'Year (yr)', toBase: 31536000 },
+    time: {
+        name: 'Time',
+        baseUnit: 's',
+        units: {
+            s: { 
+            name: 'Second', 
+            symbol: 's', 
+            toBase: 1,
+            description: 'Base unit of time.',
+            applications: 'Everyday, science'
+        },
+            min: { 
+            name: 'Minute', 
+            symbol: 'min', 
+            toBase: 60,
+            description: '60 seconds.',
+            applications: 'Everyday'
+        },
+            h: { 
+            name: 'Hour', 
+            symbol: 'h', 
+            toBase: 3600,
+            description: '60 minutes.',
+            applications: 'Everyday'
+        },
+            d: { 
+            name: 'Day', 
+            symbol: 'd', 
+            toBase: 86400,
+            description: '24 hours.',
+            applications: 'Everyday'
+        },
+            wk: { 
+            name: 'Week', 
+            symbol: 'wk', 
+            toBase: 604800,
+            description: '7 days.',
+            applications: 'Everyday scheduling'
+        },
+            mo: { 
+            name: 'Month', 
+            symbol: 'mo', 
+            toBase: 2592000,
+            description: 'Approximately 30 days.',
+            applications: 'Scheduling'
+        },
+            yr: { 
+            name: 'Year', 
+            symbol: 'yr', 
+            toBase: 31536000,
+            description: '365 days.',
+            applications: 'Age, long-term planning'
+        },
+        }
     },
-  },
-  speed: {
-    name: 'Speed',
-    units: {
-      ms: { name: 'Meter/Second (m/s)', toBase: 1 },
-      kmh: { name: 'Kilometer/Hour (km/h)', toBase: 0.27778 },
-      mph: { name: 'Mile/Hour (mph)', toBase: 0.44704 },
-      knot: { name: 'Knot (knot)', toBase: 0.51444 },
-    },
-  },
+    speed: {
+        name: 'Speed',
+        baseUnit: 'ms',
+        units: {
+            'ms': { 
+            name: 'Meter per Second', 
+            symbol: 'm/s', 
+            toBase: 1,
+            description: 'Distance in meters per second.',
+            applications: 'Science, physics'
+        },
+            'kmh': { 
+            name: 'Kilometer per Hour', 
+            symbol: 'km/h', 
+            toBase: 0.27778,
+            description: 'Distance in kilometers per hour.',
+            applications: 'Speed limits, everyday'
+        },
+            'mph': { 
+            name: 'Mile per Hour', 
+            symbol: 'mph', 
+            toBase: 0.44704,
+            description: 'Distance in miles per hour.',
+            applications: 'Speed limits US/UK'
+        },
+            'knot': { 
+            name: 'Knot', 
+            symbol: 'kn', 
+            toBase: 0.51444,
+            description: 'Nautical mile per hour.',
+            applications: 'Maritime, aviation'
+        },
+        }
+    }
 };
 
 // Get DOM elements
@@ -78,6 +242,19 @@ const toastMessage = document.getElementById('toast-message');
 const inputError = document.getElementById('input-error');
 const categoryCards = document.querySelectorAll('.category-card');
 const sidebarTabs = document.querySelectorAll('.sidebar__tab');
+
+// New elements references
+const formulaText = document.getElementById('formula-text');
+const stepsContainer = document.getElementById('steps-container');
+const fromUnitName = document.getElementById('from-unit-name');
+const fromUnitSymbol = document.getElementById('from-unit-symbol');
+const fromUnitDesc = document.getElementById('from-unit-desc');
+const fromUnitApps = document.getElementById('from-unit-apps');
+const toUnitName = document.getElementById('to-unit-name');
+const toUnitSymbol = document.getElementById('to-unit-symbol');
+const toUnitDesc = document.getElementById('to-unit-desc');
+const toUnitApps = document.getElementById('to-unit-apps');
+const conversionTableBody = document.getElementById('conversion-table-body');
 
 // State variables
 let currentCategory = 'length';
@@ -173,47 +350,47 @@ function handleCategoryChange(category) {
  * Populate unit select dropdowns with appropriate units for current category
  */
 function populateUnitSelects() {
-  const units = CONVERSION_DATA[currentCategory].units;
+    const units = CONVERSION_DATA[currentCategory].units;
 
-  // Clear existing options
-  fromUnit.innerHTML = '';
-  toUnit.innerHTML = '';
+    // Clear existing options
+    fromUnit.innerHTML = '';
+    toUnit.innerHTML = '';
 
-  // Add placeholder option for "From" select
-  const placeholderFrom = document.createElement('option');
-  placeholderFrom.value = '';
-  placeholderFrom.textContent = '-- Select unit --';
-  placeholderFrom.selected = true;
-  placeholderFrom.disabled = true;
-  fromUnit.appendChild(placeholderFrom);
+    // Add placeholder option for "From" select
+    const placeholderFrom = document.createElement('option');
+    placeholderFrom.value = '';
+    placeholderFrom.textContent = '-- Select unit --';
+    placeholderFrom.selected = true;
+    placeholderFrom.disabled = true;
+    fromUnit.appendChild(placeholderFrom);
 
-  // Add placeholder option for "To" select
-  const placeholderTo = document.createElement('option');
-  placeholderTo.value = '';
-  placeholderTo.textContent = '-- Select unit --';
-  placeholderTo.selected = true;
-  placeholderTo.disabled = true;
-  toUnit.appendChild(placeholderTo);
+    // Add placeholder option for "To" select
+    const placeholderTo = document.createElement('option');
+    placeholderTo.value = '';
+    placeholderTo.textContent = '-- Select unit --';
+    placeholderTo.selected = true;
+    placeholderTo.disabled = true;
+    toUnit.appendChild(placeholderTo);
 
-  // Get all unit keys
-  const unitKeys = Object.keys(units);
+    // Get all unit keys
+    const unitKeys = Object.keys(units);
 
-  // Populate options for both selects (without auto-selecting)
-  unitKeys.forEach((unitKey) => {
-    const unit = units[unitKey];
+    // Populate options for both selects (without auto-selecting)
+    unitKeys.forEach((unitKey) => {
+        const unit = units[unitKey];
 
-    // Create option for "From" select
-    const option1 = document.createElement('option');
-    option1.value = unitKey;
-    option1.textContent = unit.name;
-    fromUnit.appendChild(option1);
+        // Create option for "From" select
+        const option1 = document.createElement('option');
+        option1.value = unitKey;
+        option1.textContent = `${unit.name} (${unit.symbol})`;
+        fromUnit.appendChild(option1);
 
-    // Create option for "To" select
-    const option2 = document.createElement('option');
-    option2.value = unitKey;
-    option2.textContent = unit.name;
-    toUnit.appendChild(option2);
-  });
+        // Create option for "To" select
+        const option2 = document.createElement('option');
+        option2.value = unitKey;
+        option2.textContent = `${unit.name} (${unit.symbol})`;
+        toUnit.appendChild(option2);
+    });
 }
 
 /**
@@ -227,6 +404,19 @@ function populateUnitSelects() {
 function handleConversion() {
   const inputVal = parseFloat(inputValue.value);
 
+    // Update unit info always
+    updateUnitInfo();
+    
+    // Update multi-conversion table always
+    updateMultiConversionTable(inputVal);
+
+    // If input is empty, reset result
+    if (inputValue.value === '') {
+        resultValue.textContent = '0';
+        inputError.textContent = '';
+        updateFormulaAndSteps(0, 0); // Show placeholder or nothing
+        return;
+    }
   // If input is empty, reset result
   if (inputValue.value === '') {
     resultValue.textContent = '0';
@@ -265,9 +455,12 @@ function handleConversion() {
     result = convertUnits(inputVal, fromUnit.value, toUnit.value);
   }
 
-  // Display result
-  resultValue.textContent = formatResult(result);
-  updateResultUnit();
+    // Display result
+    resultValue.textContent = formatResult(result);
+    updateResultUnit();
+    
+    // Update formula and steps
+    updateFormulaAndSteps(inputVal, result);
 
   // Add to history (only if units are selected)
   addToHistory(inputVal, fromUnit.value, toUnit.value, result);
@@ -833,6 +1026,157 @@ function updateConversionsCounter() {
   const uniqueCount = getUniqueConversionsCount();
   const counterElement = document.getElementById('unique-conversions-count');
   counterElement.textContent = uniqueCount;
+}
+
+// New functions for enhanced features
+function updateUnitInfo() {
+    const units = CONVERSION_DATA[currentCategory].units;
+    
+    // Update From Unit Info
+    if (fromUnit.value) {
+        const from = units[fromUnit.value];
+        fromUnitName.textContent = from.name;
+        fromUnitSymbol.textContent = `Symbol: ${from.symbol}`;
+        fromUnitDesc.textContent = `Description: ${from.description}`;
+        fromUnitApps.textContent = `Applications: ${from.applications}`;
+    } else {
+        fromUnitName.textContent = 'Select a unit';
+        fromUnitSymbol.textContent = '';
+        fromUnitDesc.textContent = '';
+        fromUnitApps.textContent = '';
+    }
+    
+    // Update To Unit Info
+    if (toUnit.value) {
+        const to = units[toUnit.value];
+        toUnitName.textContent = to.name;
+        toUnitSymbol.textContent = `Symbol: ${to.symbol}`;
+        toUnitDesc.textContent = `Description: ${to.description}`;
+        toUnitApps.textContent = `Applications: ${to.applications}`;
+    } else {
+        toUnitName.textContent = 'Select a unit';
+        toUnitSymbol.textContent = '';
+        toUnitDesc.textContent = '';
+        toUnitApps.textContent = '';
+    }
+}
+
+function updateFormulaAndSteps(value, result) {
+    if (!fromUnit.value || !toUnit.value) {
+        formulaText.textContent = 'Select units to see the conversion formula';
+        stepsContainer.innerHTML = '';
+        return;
+    }
+    
+    const units = CONVERSION_DATA[currentCategory].units;
+    const from = units[fromUnit.value];
+    const to = units[toUnit.value];
+    
+    let formula = '';
+    let steps = [];
+    
+    if (currentCategory === 'temperature') {
+        // Temperature-specific formulas
+        if (fromUnit.value === 'celsius' && toUnit.value === 'fahrenheit') {
+            formula = '°F = (°C × 9/5) + 32';
+            steps = [
+                `Step 1: Multiply ${value} by 9/5: ${value} × (9/5) = ${(value * 9/5).toFixed(4)}`,
+                `Step 2: Add 32: ${(value * 9/5).toFixed(4)} + 32 = ${formatResult(result)}`
+            ];
+        } else if (fromUnit.value === 'fahrenheit' && toUnit.value === 'celsius') {
+            formula = '°C = (°F - 32) × 5/9';
+            steps = [
+                `Step 1: Subtract 32 from ${value}: ${value} - 32 = ${(value - 32).toFixed(4)}`,
+                `Step 2: Multiply by 5/9: ${(value - 32).toFixed(4)} × (5/9) = ${formatResult(result)}`
+            ];
+        } else if (fromUnit.value === 'celsius' && toUnit.value === 'kelvin') {
+            formula = 'K = °C + 273.15';
+            steps = [
+                `Step 1: Add 273.15 to ${value}: ${value} + 273.15 = ${formatResult(result)}`
+            ];
+        } else if (fromUnit.value === 'kelvin' && toUnit.value === 'celsius') {
+            formula = '°C = K - 273.15';
+            steps = [
+                `Step 1: Subtract 273.15 from ${value}: ${value} - 273.15 = ${formatResult(result)}`
+            ];
+        } else if (fromUnit.value === 'fahrenheit' && toUnit.value === 'kelvin') {
+            formula = 'K = (°F - 32) × 5/9 + 273.15';
+            steps = [
+                `Step 1: Subtract 32 from ${value}: ${value} - 32 = ${(value - 32).toFixed(4)}`,
+                `Step 2: Multiply by 5/9: ${(value - 32).toFixed(4)} × (5/9) = ${((value - 32) * 5/9).toFixed(4)}`,
+                `Step 3: Add 273.15: ${((value - 32) * 5/9).toFixed(4)} + 273.15 = ${formatResult(result)}`
+            ];
+        } else if (fromUnit.value === 'kelvin' && toUnit.value === 'fahrenheit') {
+            formula = '°F = (K - 273.15) × 9/5 + 32';
+            steps = [
+                `Step 1: Subtract 273.15 from ${value}: ${value} - 273.15 = ${(value - 273.15).toFixed(4)}`,
+                `Step 2: Multiply by 9/5: ${(value - 273.15).toFixed(4)} × (9/5) = ${((value - 273.15) * 9/5).toFixed(4)}`,
+                `Step 3: Add 32: ${((value - 273.15) * 9/5).toFixed(4)} + 32 = ${formatResult(result)}`
+            ];
+        } else {
+            formula = 'No conversion needed';
+            steps = [
+                `Step 1: Units are same! Value = ${formatResult(result)}`
+            ];
+        }
+    } else {
+        // Other categories
+        const conversionFactor = to.toBase / from.toBase;
+        formula = `${to.symbol} = ${from.symbol} × ${conversionFactor}`;
+        const baseValue = value * from.toBase;
+        steps = [
+            `Step 1: Convert to base unit: ${value} ${from.symbol} × ${from.toBase} = ${baseValue.toFixed(8)}`,
+            `Step 2: Convert base to ${to.symbol}: ${baseValue.toFixed(8)} / ${to.toBase} = ${formatResult(result)}`
+        ];
+    }
+    
+    formulaText.textContent = formula;
+    
+    // Render steps
+    stepsContainer.innerHTML = '';
+    steps.forEach((step, idx) => {
+        const stepEl = document.createElement('div');
+        stepEl.className = 'step-item';
+        stepEl.textContent = step;
+        stepsContainer.appendChild(stepEl);
+    });
+}
+
+function updateMultiConversionTable(value) {
+    if (!value || isNaN(value)) {
+        conversionTableBody.innerHTML = '';
+        return;
+    }
+    
+    const units = CONVERSION_DATA[currentCategory].units;
+    conversionTableBody.innerHTML = '';
+    
+    Object.keys(units).forEach((unitKey) => {
+        const unit = units[unitKey];
+        let convertedValue;
+        
+        if (currentCategory === 'temperature') {
+            // Use temperature conversion
+            if (fromUnit.value && unitKey !== fromUnit.value) {
+                convertedValue = convertTemperature(value, fromUnit.value, unitKey);
+            } else {
+                convertedValue = value;
+            }
+        } else {
+            // Use base unit conversion
+            const from = fromUnit.value ? units[fromUnit.value] : unit;
+            const baseValue = value * from.toBase;
+            convertedValue = baseValue / unit.toBase;
+        }
+        
+        const row = document.createElement('tr');
+        row.className = unitKey === fromUnit.value ? 'highlighted-row' : '';
+        row.innerHTML = `
+            <td>${unit.name} (${unit.symbol})</td>
+            <td>${formatResult(convertedValue)}</td>
+        `;
+        conversionTableBody.appendChild(row);
+    });
 }
 
 /**

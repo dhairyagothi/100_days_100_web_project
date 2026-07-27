@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dots and Boxes</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-container">
+    <header class="header">
+      <div class="logo-area">
+        <h1>Dots & Boxes</h1>
+        <p class="subtitle">Draw lines to claim boxes</p>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <div class="sidebar">
+        <!-- Game Settings -->
+        <section class="controls-panel">
+          <div class="control-group">
+            <label for="mode-select">Game Mode</label>
+            <select id="mode-select">
+              <option value="ai">vs. AI Opponent</option>
+              <option value="pvp">Two-Player (Local)</option>
+            </select>
+          </div>
+
+          <div class="control-group" id="difficulty-group">
+            <label for="difficulty-select">AI Level</label>
+            <select id="difficulty-select">
+              <option value="smart">Smart AI</option>
+              <option value="easy">Easy AI</option>
+            </select>
+          </div>
+
+          <div class="control-group">
+            <label for="size-select">Grid Size</label>
+            <select id="size-select">
+              <option value="3">3 x 3 Boxes</option>
+              <option value="4" selected>4 x 4 Boxes</option>
+              <option value="5">5 x 5 Boxes</option>
+            </select>
+          </div>
+
+          <button id="restart-btn" class="btn primary-btn">Restart Game</button>
+        </section>
+
+        <!-- Scoreboard -->
+        <section class="scoreboard">
+          <div id="player1-card" class="player-card p1-active">
+            <div class="player-indicator p1-dot"></div>
+            <div class="player-info">
+              <span class="player-name" id="p1-name-display">Player 1</span>
+              <span class="player-score" id="p1-score">0</span>
+            </div>
+          </div>
+
+          <div id="player2-card" class="player-card">
+            <div class="player-indicator p2-dot"></div>
+            <div class="player-info">
+              <span class="player-name" id="p2-name-display">AI Opponent</span>
+              <span class="player-score" id="p2-score">0</span>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <div class="board-area">
+        <!-- Game Board Container -->
+        <div class="board-wrapper">
+          <!-- Game Message / Status -->
+          <div id="status-message" class="status-message">
+            Player 1's turn
+          </div>
+          <div id="game-board" class="game-board"></div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Game Over Modal -->
+    <div id="game-over-modal" class="modal-overlay" style="display: none;">
+      <div class="modal-content">
+        <h2 id="modal-title">Game Over!</h2>
+        <p id="modal-result">Player 1 wins!</p>
+        <div class="modal-stats">
+          <div class="modal-stat">
+            <span class="stat-label" id="modal-p1-label">Player 1</span>
+            <span class="stat-value" id="modal-p1-score">0</span>
+          </div>
+          <div class="modal-divider">vs</div>
+          <div class="modal-stat">
+            <span class="stat-label" id="modal-p2-label">AI Opponent</span>
+            <span class="stat-value" id="modal-p2-score">0</span>
+          </div>
+        </div>
+        <button id="modal-play-again" class="btn primary-btn">Play Again</button>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <p>Dots & Boxes &bull; Simple & Minimalist Design</p>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
