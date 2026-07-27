@@ -32,6 +32,7 @@ const winModal   = document.getElementById('winModal');
 const toastEl    = document.getElementById('toast');
 const startBtn   = document.getElementById('startBtn');
 const hintBtn    = document.getElementById('hintBtn');
+const victorySound = document.getElementById('victorySound');
 
 // ── Event Listeners ───────────────────────────────────────
 document.querySelectorAll('.diff-btn').forEach(btn => {
@@ -45,10 +46,20 @@ document.querySelectorAll('.diff-btn').forEach(btn => {
   });
 });
 
-startBtn.addEventListener('click', startGame);
+// FIX 1: Updated event listener to handle both start and restart
+startBtn.addEventListener('click', () => {
+  if (gameActive) {
+    setupPreview();      // Restart completely if game is active
+  } else {
+    startGame();         // Skip preview / start game
+  }
+});
+
 hintBtn.addEventListener('click', useHint);
 
 document.getElementById('playAgainBtn').addEventListener('click', () => {
+  victorySound.pause();
+  victorySound.currentTime = 0;
   winModal.classList.remove('visible');
   setupPreview();
 });
@@ -160,7 +171,9 @@ function startPreviewCountdown() {
 
 function setupPreview() {
   const cfg = DIFFICULTIES[difficulty];
-
+  victorySound.pause();
+  victorySound.currentTime = 0;
+  
   // Cancel any running preview countdown or game timer
   if (previewInterval) {
      clearInterval(previewInterval);
@@ -176,11 +189,7 @@ function setupPreview() {
   moves = 0;
   seconds = 0;
   hintUsed = false;
-const hintBtn = document.getElementById('hintBtn');
-hintBtn.disabled = false;
-hintBtn.textContent = 'Hint';
-
-  gameActive = false;
+  gameActive = false;  // FIX 2: Set gameActive to false for restart
   lockBoard = true;
 
   movesEl.textContent = '0';
@@ -223,6 +232,7 @@ hintBtn.textContent = 'Hint';
   });
   startPreviewCountdown();
 }
+
 /**
  * Initialise and start a fresh game
  */
@@ -316,16 +326,16 @@ function checkMatch() {
  * Briefly reveal a matching pair (one use per game)
  */
 function useHint() {
- if (hintUsed) {
+  if (hintUsed) {
     showToast('💡 Hint already used!');
     return;
   }
   hintUsed = true;
-const hintBtn = document.getElementById('hintBtn');
-hintBtn.disabled = true;
-hintBtn.textContent = 'Hint Used';
+  const hintBtn = document.getElementById('hintBtn');
+  hintBtn.disabled = true;
+  hintBtn.textContent = 'Hint Used';
 
-  // Collect unmatched, unflipped cards
+  // Collect unmatched unflipped cards
   const unmatched = cards.filter(
     c => !c.classList.contains('matched') && !c.classList.contains('flipped')
   );
@@ -338,26 +348,25 @@ hintBtn.textContent = 'Hint Used';
     if (!emojiMap[e]) emojiMap[e] = [];
     emojiMap[e].push(c);
   }
- 
-  if (!validRows.length) return;   // nothing left to reveal
- 
-  // Pick one random valid row
-  const rowIdx   = validRows[Math.floor(Math.random() * validRows.length)];
-  const rowCards = cards
-    .slice(rowIdx * cols, (rowIdx + 1) * cols)
-    .filter(c => !c.classList.contains('matched') && !c.classList.contains('flipped'));
- 
-  // Briefly flip the row face-up
-  rowCards.forEach(c => c.classList.add('flipped'));
+
+  // Find a pair to reveal
+  const validPairs = Object.values(emojiMap).filter(group => group.length >= 2);
+  if (!validPairs.length) return;
+
+  // Pick one random pair
+  const pair = validPairs[Math.floor(Math.random() * validPairs.length)];
+  const cardA = pair[0];
+  const cardB = pair[1];
+
+  // Briefly flip the pair face-up
+  cardA.classList.add('flipped');
+  cardB.classList.add('flipped');
   showToast('💡 Hint used!');
- 
-  // Flip back after 1.5 seconds (skip already-matched cards)
+
+  // Flip back after 1.5 seconds
   setTimeout(() => {
-    rowCards.forEach(c => {
-      if (!c.classList.contains('matched')) {
-        c.classList.remove('flipped');
-      }
-    });
+    if (!cardA.classList.contains('matched')) cardA.classList.remove('flipped');
+    if (!cardB.classList.contains('matched')) cardB.classList.remove('flipped');
   }, 1500);
 }
 
@@ -392,6 +401,9 @@ function onWin() {
   document.getElementById('modalTime').textContent       = fmt(seconds);
   document.getElementById('newBest').style.display       = isNewBest ? 'block' : 'none';
 
+  victorySound.currentTime = 0;
+  victorySound.play();
+
   setTimeout(() => {
     winModal.classList.add('visible');
     launchConfetti();
@@ -404,23 +416,25 @@ function onWin() {
  * Spawn animated confetti particles on win
  */
 function launchConfetti() {
+  console.log("CONFETTI FIRED");
   const container = document.getElementById('confettiContainer');
   container.innerHTML = '';
 
   const colors = ['#7c3aed','#a855f7','#f59e0b','#10b981','#ef4444','#60a5fa','#f472b6'];
 
-  for (let i = 0; i < 70; i++) {
+  for (let i = 0; i < 180; i++) {
     const p = document.createElement('div');
     p.className  = 'confetti-particle';
     p.style.cssText = `
       left: ${Math.random() * 100}%;
       background: ${colors[Math.floor(Math.random() * colors.length)]};
-      width: ${4 + Math.random() * 8}px;
-      height: ${4 + Math.random() * 8}px;
+      width: ${10 + Math.random() * 12}px;
+      height: ${10 + Math.random() * 12}px;
       border-radius: ${Math.random() > 0.5 ? '50%' : '2px'};
       animation-duration: ${1.5 + Math.random() * 2}s;
       animation-delay: ${Math.random() * 0.8}s;
     `;
+    p.style.boxShadow = `0 0 10px ${colors[Math.floor(Math.random() * colors.length)]}`;
     container.appendChild(p);
   }
 

@@ -141,29 +141,54 @@ async function processQueue() {
         return;
     }
     
-    for (const item of fileQueue) {
-        if (item.status === 'compressing' && !item.result) {
-            try {
-                const result = await compressImage(item.file, targetBytes);
-                item.status = 'done';
-                item.result = result;
-                
-                if (result.hitUnsafeLimit) {
-                    showToast(`Unable to safely compress ${item.file.name} to target without major loss.`, 'error', 'ph-warning-circle');
-                }
-                
-                updateStats();
-                renderQueue(); // Re-render to show done state
-            } catch (err) {
-                console.error(err);
-                item.status = 'error';
-                showToast(`Failed to compress ${item.file.name}`, 'error', 'ph-warning');
-                renderQueue();
+    console.time('⏱️ Batch Compression Time');
+    
+    // Concurrency limit based on hardware cores, defaults to 4
+    const MAX_CONCURRENT = navigator.hardwareConcurrency || 4;
+    const pendingItems = fileQueue.filter(item => item.status === 'compressing' && !item.result);
+    
+    let currentIndex = 0;
+    
+    // Helper function to process items continuously up to the limit
+    async function processNext() {
+        if (currentIndex >= pendingItems.length) return; // All done
+        
+        const item = pendingItems[currentIndex++];
+        
+        try {
+            const result = await compressImage(item.file, targetBytes);
+            item.status = 'done';
+            item.result = result;
+            
+            if (result.hitUnsafeLimit) {
+                showToast(`Unable to safely compress ${item.file.name} to target without major loss.`, 'error', 'ph-warning-circle');
             }
+        } catch (err) {
+            console.error(err);
+            item.status = 'error';
+            showToast(`Failed to compress ${item.file.name}`, 'error', 'ph-warning');
         }
+        
+        updateStats();
+        renderQueue();
+        
+        // As soon as this image finishes, grab the next one in the queue
+        await processNext();
+    }
+    
+    // Start up to MAX_CONCURRENT async workers
+    const activeTasks = [];
+    for (let i = 0; i < Math.min(MAX_CONCURRENT, pendingItems.length); i++) {
+        activeTasks.push(processNext());
+    }
+    
+    // Wait for all queue items to finish
+    await Promise.all(activeTasks);
+    
+    if (pendingItems.length > 0) {
+        console.timeEnd('⏱️ Batch Compression Time');
     }
 }
-
 async function recompressAll() {
     const targetBytes = getTargetBytes();
     if (!targetBytes) return;

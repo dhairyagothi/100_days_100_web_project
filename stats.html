@@ -3,19 +3,71 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Real-time stats dashboard for 100 Days 100 Web Projects – category breakdown, project status, and contributor metrics.">
 <title>Project Stats — 100 Days 100 Web Projects</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script src="theme.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
-  :root{
-    --bg:#0a0a0f;--surface:#12121a;--surface2:#1a1a26;--border:rgba(255,255,255,.07);
-    --accent:#0ff2c8;--accent2:#7c3aed;--accent3:#f59e0b;--text:#e2e8f0;--muted:#64748b;
-    --font-head:'Orbitron',sans-serif;--font-body:'Exo 2',sans-serif;--radius:16px;
-    --glow:0 0 32px rgba(15,242,200,.18);
-  }
+  :root {
+    --bg-primary: #020617;
+    --bg-secondary: #0f172a;
+    --text-primary: #ffffff;
+    --text-secondary: #94a3b8;
+    --card-bg: #111827;
+     --bg:#020617;
+  --surface:#111827;
+  --surface2:#1a1a26;
+  --border:rgba(255,255,255,.07);
+
+  --accent:#0ff2c8;
+  --accent2:#7c3aed;
+  --accent3:#f59e0b;
+
+  --text:#e2e8f0;
+  --muted:#64748b;
+
+  --font-head:'Orbitron',sans-serif;
+  --font-body:'Exo 2',sans-serif;
+
+  --radius:16px;
+  --glow:0 32px 60px rgba(15,242,200,.18);
+}
+
+body.light-mode {
+    --bg-primary: #f8fafc;
+    --bg-secondary: #ffffff;
+    --text-primary: #111827;
+    --text-secondary: #475569;
+    --card-bg: #ffffff;
+}
+
+body.light-mode {
+  --bg: #eef2f7;
+  --surface: #ffffff;
+  --surface2: #f8fafc;
+}
+
+.theme-btn {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,.15);
+    color: white;
+    padding: 10px 16px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.theme-btn:hover {
+    background: rgba(255,255,255,0.1);
+}
+
   @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700&display=swap');
   *{box-sizing:border-box;margin:0;padding:0}
-  body{background:var(--bg);color:var(--text);font-family:var(--font-body);min-height:100vh;overflow-x:hidden}
+  .stat-card {
+    background: var(--card-bg);
+}
+  body{background: var(--bg-primary); color: var(--text-primary);;font-family:var(--font-body);min-height:100vh;overflow-x:hidden}
   .navbar{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:64px;background:rgba(10,10,15,.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
   .navbar-brand{display:flex;align-items:center;gap:12px;text-decoration:none}
   .navbar-brand span{font-family:var(--font-head);font-size:.75rem;letter-spacing:.12em;color:var(--accent);text-shadow:0 0 12px var(--accent)}
@@ -27,6 +79,9 @@
   .hero-eyebrow{font-size:.72rem;letter-spacing:.25em;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
   .hero h1{font-family:var(--font-head);font-size:clamp(1.8rem,4vw,3rem);font-weight:900;background:linear-gradient(135deg,#fff 30%,var(--accent) 70%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:12px}
   .hero p{color:var(--muted);font-size:1rem;max-width:560px;margin:0 auto 28px}
+  .hero-status{display:inline-flex;align-items:center;gap:8px;margin-top:-10px;margin-bottom:24px;padding:8px 14px;border:1px solid var(--border);border-radius:999px;background:rgba(255,255,255,.03);color:var(--muted);font-size:.8rem;font-weight:600;letter-spacing:.04em}
+  .hero-status[data-state="ready"]{color:var(--accent);border-color:rgba(15,242,200,.25);background:rgba(15,242,200,.08)}
+  .hero-status[data-state="error"]{color:#f87171;border-color:rgba(248,113,113,.25);background:rgba(248,113,113,.08)}
   .filter-row{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
   .pill{padding:7px 20px;border-radius:999px;border:1px solid var(--border);background:var(--surface2);color:var(--muted);font-size:.82rem;font-weight:600;cursor:pointer;transition:all .25s;user-select:none}
   .pill:hover{border-color:var(--accent);color:var(--accent)}
@@ -64,6 +119,7 @@
     <span>100 DAYS · 100 PROJECTS</span>
   </a>
   <div class="nav-actions">
+    <button id="themeToggle" class="theme-btn">☀️ Light</button>
     <a class="nav-btn" href="./index.html"><i class="fa-solid fa-house"></i> Home</a>
     <a class="nav-btn active" href="./stats.html"><i class="fa-solid fa-chart-line"></i> Stats</a>
   </div>
@@ -73,6 +129,7 @@
   <div class="hero-eyebrow"><span class="live-dot"></span>Live Dashboard</div>
   <h1>Project Stats</h1>
   <p>Real-time breakdown of <strong id="heroCount">…</strong> web projects — categories, technologies and difficulty curve. Auto-refreshes every 10s.</p>
+  <div class="hero-status" id="heroStatus" data-state="loading">Loading stats…</div>
   <div class="filter-row" id="filterRow">
     <div class="pill active" data-filter="all">All Projects</div>
   </div>
@@ -131,7 +188,7 @@
 
 <script>
 /* ---------- Config ---------- */
-const JSON_URL = './projects.json';
+const JSON_URL = 'projects.json';
 const REFRESH_MS = 10000;
 const PALETTE = ['#0ff2c8','#7c3aed','#f59e0b','#f87171','#22c55e','#3b82f6','#ec4899','#eab308','#14b8a6','#a78bfa','#fb923c','#38bdf8'];
 
@@ -154,6 +211,13 @@ function setMetric(el, val){
     el.textContent = val;
     el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash');
   }
+}
+
+function setStatus(message, state = 'ready'){
+  const el = $('heroStatus');
+  if (!el) return;
+  el.textContent = message;
+  el.dataset.state = state;
 }
 
 /* ---------- Charts ---------- */
@@ -255,6 +319,8 @@ function render(data){
   diffChart.data.datasets[2].data = aArr;
   diffChart.update();
   $('diffBadge').textContent = `Day 1 → ${labels[labels.length-1] || 0}`;
+
+  setStatus(`Showing ${total} of ${data.length} projects`, 'ready');
 }
 
 /* ---------- Filters ---------- */
@@ -288,14 +354,38 @@ async function load(){
       lastData = data;
       buildFilters(data);
       render(data);
+    } else {
+      setStatus(`Showing ${currentFilter === 'all' ? data.length : data.filter(p => classify(p.projectType) === currentFilter).length} projects`, 'ready');
     }
   }catch(err){
     console.error('Stats load failed:', err);
+    setStatus('Unable to load project stats', 'error');
   }
 }
 
 load();
 setInterval(load, REFRESH_MS);
 </script>
+<script>
+  // Sync the theme toggle button label/icon with the actual applied theme
+  const updateToggleBtn = (theme) => {
+    const toggleBtn = document.getElementById("themeToggle");
+    if (toggleBtn) {
+      toggleBtn.textContent = theme === "light" ? "🌙 Dark" : "☀️ Light";
+    }
+  };
+
+  // Sync on theme updates
+  window.addEventListener("themechange", (e) => {
+    updateToggleBtn(e.detail.theme);
+  });
+
+  // Sync on initial page load
+  document.addEventListener("DOMContentLoaded", () => {
+    const currentTheme = window.ThemeManager?.currentTheme() || "dark";
+    updateToggleBtn(currentTheme);
+  });
+</script>
+
 </body>
 </html>

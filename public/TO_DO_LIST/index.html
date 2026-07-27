@@ -1,0 +1,265 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My To-Do List | Organize Your Tasks</title>
+
+                    
+
+
+
+    <meta name="description"
+        content="Manage your daily tasks with a beautiful and responsive To-Do List application. Stay organized and productive.">
+
+    <meta name="keywords"
+        content="Todo List, Task Manager, Productivity, Daily Planner">
+
+    <meta name="author" content="My To-Do List">
+
+    <!-- Favicon -->
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="todolist.css">
+
+    <style>
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 120px 20px;
+            background:
+                linear-gradient(rgba(255, 255, 255, .55),
+                    rgba(255, 255, 255, .55)),
+                url("https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=1600")
+                center/cover no-repeat;
+
+            color: #222;
+        }
+
+        .hero h1 {
+            font-size: 3.8rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            margin-bottom: 35px;
+        }
+
+        .cta-buttons button {
+            padding: 15px 35px;
+            border: none;
+            border-radius: 35px;
+            cursor: pointer;
+            font-size: 17px;
+            margin: 10px;
+            transition: .3s;
+        }
+
+        .get-started {
+            background: #ff7b00;
+            color: white;
+        }
+
+        .get-started:hover {
+            transform: translateY(-4px);
+        }
+
+        .view-projects {
+            background: #7a3cff;
+            color: white;
+        }
+
+        .view-projects:hover {
+            transform: translateY(-4px);
+        }
+    </style>
+
+</head>
+
+<body class="theme1">
+
+    <!-- Navigation -->
+
+    <header class="navbar">
+
+        <div class="logo">
+            📝 My To-Do List
+        </div>
+
+        <nav>
+
+            <ul class="nav-links">
+
+                <li><a href="index.html" class="active">Home</a></li>
+
+                <li><a href="#features">Features</a></li>
+
+                <li><a href="todolist.html">Dashboard</a></li>
+
+                <li><a href="#about">About</a></li>
+
+            </ul>
+
+        </nav>
+
+        <div class="theme-swatches">
+
+            <button class="theme-btn" data-theme="theme1"></button>
+            <button class="theme-btn" data-theme="theme2"></button>
+            <button class="theme-btn" data-theme="theme3"></button>
+            <button class="theme-btn" data-theme="theme4"></button>
+            <button class="theme-btn" data-theme="theme5"></button>
+
+        </div>
+
+        <div class="nav-buttons">
+
+            <button class="login-btn">Login</button>
+
+            <button class="signup-btn">Sign Up</button>
+
+        </div>
+
+    </header>
+
+    <!-- Hero -->
+
+    <section class="hero">
+
+        <h1>Organize your day, achieve more.</h1>
+
+        <p>
+            Plan tasks, track progress, and stay motivated with a modern productivity app.
+        </p>
+
+        <div class="cta-buttons">
+
+            <button class="get-started"
+                onclick="window.location.href='todolist.html'">
+
+                Get Started
+
+            </button>
+
+            <button class="view-projects">
+
+                Learn More
+
+            </button>
+
+        </div>
+
+    </section>
+
+    <!-- Features -->
+
+    <section id="features" class="features">
+
+        <div class="feature-card">
+
+            🧠
+
+            <h3>Smart Task Management</h3>
+
+            <p>
+                Organize, edit, and prioritize your daily tasks with ease.
+            </p>
+
+        </div>
+
+        <div class="feature-card">
+
+            🎨
+
+            <h3>Beautiful Interface</h3>
+
+            <p>
+                Clean and minimal design for a distraction-free experience.
+            </p>
+
+        </div>
+
+        <div class="feature-card">
+
+            🚀
+
+            <h3>Fast & Responsive</h3>
+
+            <p>
+                Works seamlessly across desktop, tablet, and mobile devices.
+            </p>
+
+        </div>
+
+    </section>
+
+    <!-- About -->
+
+    <section id="about" class="about">
+
+        <h2>About This Project</h2>
+
+        <p>
+            My To-Do List is a productivity application that helps users
+            organize tasks, increase efficiency, and stay focused every day.
+        </p>
+
+    </section>
+
+    <!-- Footer -->
+
+    <footer class="footer">
+
+        <div class="footer-links">
+
+            <a href="#">Privacy Policy</a>
+
+            <a href="#">Terms & Conditions</a>
+
+            <a href="#">Contact Us</a>
+
+        </div>
+
+        <div class="social-icons">
+
+            <a href="#">LinkedIn</a>
+
+            <a href="#">GitHub</a>
+
+            <a href="#">Twitter</a>
+
+        </div>
+
+        <p>
+            © 2026 My To-Do List. All Rights Reserved.
+        </p>
+
+    </footer>
+
+    <script src="todolist.js"></script>
+
+</body>
+
+</html>

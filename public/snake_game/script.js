@@ -1,3 +1,137 @@
+const playBoard = document.querySelector(".play-board");
+const scoreElement = document.querySelector(".score");
+const highScoreElement = document.querySelector(".high-score");
+const levelElement = document.querySelector(".level");
+const controls = document.querySelectorAll(".controls i");
+const newGameButton = document.querySelector(".new-game-button");
+const restartGameButton = document.querySelector(".restart-game-button");
+const pauseGameButton = document.querySelector(".pause-game-button");
+
+let gameOver = false;
+let foodX, foodY, bonusFoodX, bonusFoodY, powerUpX, powerUpY;
+let bonusFoodVisible = false, powerUpVisible = false;
+let snakeX = 5, snakeY = 5;
+let velocityX = 0, velocityY = 0;
+let snakeBody = [];
+let setIntervalId, powerUpTimerId;
+let score = 0;
+let level = 1;
+let gameSpeed = 300;
+let obstacles = [];
+let powerUpActive = false;
+let powerUpDuration = 5000; // Power-up lasts for 5 seconds
+let paused = false;
+// Getting high score from the local storage
+let highScore = localStorage.getItem("high-score") || 0;
+highScoreElement.innerText = `High Score: ${highScore}`;
+
+const updateFoodPosition = () => {
+  foodX = Math.floor(Math.random() * 30) + 1;
+  foodY = Math.floor(Math.random() * 30) + 1;
+}
+
+const updateBonusFoodPosition = () => {
+  bonusFoodX = Math.floor(Math.random() * 30) + 1;
+  bonusFoodY = Math.floor(Math.random() * 30) + 1;
+  bonusFoodVisible = true;
+  setTimeout(() => {
+    bonusFoodVisible = false;
+  }, 5000);
+}
+
+const updatePowerUpPosition = () => {
+  powerUpX = Math.floor(Math.random() * 30) + 1;
+  powerUpY = Math.floor(Math.random() * 30) + 1;
+  powerUpVisible = true;
+  setTimeout(() => {
+    powerUpVisible = false;
+  }, 5000);
+}
+
+const activatePowerUp = () => {
+  powerUpActive = true;
+  setTimeout(() => {
+    powerUpActive = false;
+  }, powerUpDuration);
+}
+
+const updateObstacles = () => {
+  obstacles = [];
+  for (let i = 0; i < level; i++) {
+    let obstacleX = Math.floor(Math.random() * 30) + 1;
+    let obstacleY = Math.floor(Math.random() * 30) + 1;
+    obstacles.push([obstacleX, obstacleY]);
+  }
+}
+
+const handleGameOver = () => {
+  clearInterval(setIntervalId);
+  clearTimeout(powerUpTimerId);
+  alert("Game Over! Press OK to replay...");
+  location.reload();
+}
+
+const changeDirection = e => {
+  if (e.key === "ArrowUp" && velocityY != 1) {
+    velocityX = 0;
+    velocityY = -1;
+  } else if (e.key === "ArrowDown" && velocityY != -1) {
+    velocityX = 0;
+    velocityY = 1;
+  } else if (e.key === "ArrowLeft" && velocityX != 1) {
+    velocityX = -1;
+    velocityY = 0;
+  } else if (e.key === "ArrowRight" && velocityX != -1) {
+    velocityX = 1;
+    velocityY = 0;
+  }
+}
+
+controls.forEach(button => {
+  button.addEventListener("click", () =>
+    changeDirection({ key: button.dataset.key })
+  );
+
+  button.addEventListener("touchstart", () => {
+    button.classList.add("active");
+  });
+
+  button.addEventListener("touchend", () => {
+    button.classList.remove("active");
+  });
+});
+  button.addEventListener("click", () => changeDirection({ key: button.dataset.key }));
+
+  button.addEventListener("touchstart", () => {
+    button.classList.add("active");
+  });
+
+  button.addEventListener("touchend", () => {
+    button.classList.remove("active");
+  });
+});
+
+const initGame = () => {
+
+  if (paused) return;
+
+  if (gameOver) return handleGameOver();
+  let html = `<div class="food" style="grid-area: ${foodY} / ${foodX}"></div>`;
+  if (bonusFoodVisible) {
+    html += `<div class="bonus-food" style="grid-area: ${bonusFoodY} / ${bonusFoodX}"></div>`;
+  }
+  if (powerUpVisible) {
+    html += `<div class="power-up" style="grid-area: ${powerUpY} / ${powerUpX}"></div>`;
+  }
+
+  if (snakeX === foodX && snakeY === foodY) {
+    updateFoodPosition();
+    snakeBody.push([foodY, foodX]);
+    score++;
+    highScore = score >= highScore ? score : highScore;
+    localStorage.setItem("high-score", highScore);
+    scoreElement.innerText = `Score: ${score}`;
+    highScoreElement.innerText = `High Score: ${highScore}`;
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
@@ -9,9 +143,12 @@ canvas.height = ROWS * CELL;
 // Target audio tags loaded from HTML
 const eatSound = document.getElementById('eatSound');
 const gameOverSound = document.getElementById('gameOverSound');
+const snakeColorPicker = document.getElementById('snakeColorPicker');
+const SNAKE_COLOR_STORAGE_KEY = 'snakeColor';
+const DEFAULT_SNAKE_COLOR = '#39ff14';
 
 let snake, dir, nextDir, food, score, level, speed, running, paused;
-let lastTickTime = 0; // For smooth modern frame accumulation tracking
+let snakeColor = DEFAULT_SNAKE_COLOR;
 
 let highScore = 0;
 let isGameOver = false;
@@ -21,6 +158,35 @@ let finalScore = 0;
 let rafId        = null;   // requestAnimationFrame handle (main loop)
 let lastTickTime = 0;      // timestamp of last logic tick
 let accumulator  = 0;      // ms accumulated since last tick
+// ──────────────────────────────────────────────────────────────────────────
+
+// ─── Page Visibility API — pause/resume on tab switch ─────────────────────
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) {
+    if (running && !paused) {
+      setPaused(true);
+      paused_by_visibility = true;
+    }
+  } else {
+    if (paused_by_visibility) {
+      setPaused(false);
+      paused_by_visibility = false;
+    }
+  }
+});
+let paused_by_visibility = false; // tracks auto-pause vs user-pause
+
+function setPaused(value) {
+  paused = value;
+  const overlay = document.getElementById('pauseOverlay');
+  if (overlay) {
+    value ? overlay.classList.remove('hidden') : overlay.classList.add('hidden');
+  }
+  if (!value) {
+    lastTickTime = performance.now();
+    accumulator  = 0;
+  }
+}
 // ──────────────────────────────────────────────────────────────────────────
 
 // ─── Web Audio sound engine ────────────────────────────────────────────────
@@ -78,6 +244,45 @@ function soundDie() {
   );
 }
 
+function isValidHexColor(color) {
+  return /^#[0-9a-f]{6}$/i.test(color);
+}
+
+function hexToRgb(hex) {
+  const value = hex.slice(1);
+  return {
+    r: parseInt(value.slice(0, 2), 16),
+    g: parseInt(value.slice(2, 4), 16),
+    b: parseInt(value.slice(4, 6), 16),
+  };
+}
+
+function getSnakeSegmentColor(t) {
+  const rgb = hexToRgb(snakeColor);
+  const shade = 1 - t * 0.65;
+
+  return `rgb(${Math.round(rgb.r * shade)}, ${Math.round(rgb.g * shade)}, ${Math.round(rgb.b * shade)})`;
+}
+
+function setupSnakeColorPicker() {
+  if (!snakeColorPicker) return;
+
+  // Restore the saved color before the first draw so refreshes keep the same snake.
+  const savedColor = localStorage.getItem(SNAKE_COLOR_STORAGE_KEY);
+  snakeColor = isValidHexColor(savedColor) ? savedColor : DEFAULT_SNAKE_COLOR;
+  snakeColorPicker.value = snakeColor;
+
+  // Save and apply color changes immediately; the RAF loop repaints the running game.
+  snakeColorPicker.addEventListener('input', (event) => {
+    const newColor = event.target.value;
+    if (!isValidHexColor(newColor)) return;
+
+    snakeColor = newColor;
+    localStorage.setItem(SNAKE_COLOR_STORAGE_KEY, snakeColor);
+    draw();
+  });
+}
+
 function initGame() {
   const startX = Math.floor(COLS / 2);
   const startY = Math.floor(ROWS / 2);
@@ -94,7 +299,7 @@ function initGame() {
   level = 1;
   speed = 160;
   running = false;
-  paused = false;
+  setPaused(false);
 
   placeFood();
   updateHUD();
@@ -160,8 +365,7 @@ function draw() {
     const isHead = i === 0;
     const t = i / (snake.length - 1 || 1);
 
-    const g = Math.round(255 * (1 - t * 0.65));
-    const color = isHead ? '#39ff14' : `rgb(0, ${g}, 0)`;
+    const color = isHead ? snakeColor : getSnakeSegmentColor(t);
 
     const padding = isHead ? 1 : Math.min(3, 1 + t * 2);
     const x = seg.x * CELL + padding;
@@ -170,14 +374,14 @@ function draw() {
 
     ctx.save();
     if (isHead) {
-      ctx.shadowColor = '#39ff14';
+      ctx.shadowColor = snakeColor;
       ctx.shadowBlur = 12;
     }
     ctx.fillStyle = color;
     ctx.fillRect(x, y, size, size);
     ctx.restore();
 
-    // Eyes
+    // Keep the eye color tied to the board so custom snake colors remain readable.
     if (isHead) {
       ctx.fillStyle = '#050a05';
       const eyeSize = 3;
@@ -249,7 +453,12 @@ function gameEngine(timestamp) {
 
   if (running && !paused) {
     const elapsed = timestamp - lastTickTime;
-    if (elapsed >= speed) {
+
+    // Guard: if the tab was hidden and visibility API didn't fire (edge case),
+    // a huge elapsed value would cause multiple rapid ticks. Cap it to one tick worth.
+    if (elapsed > speed * 3) {
+      lastTickTime = timestamp;
+    } else if (elapsed >= speed) {
       tick();
       lastTickTime = timestamp;
     }
@@ -265,6 +474,72 @@ function gameEngine(timestamp) {
   requestAnimationFrame(gameEngine);
 }
 
+const startNewGame = () => {
+  paused = false;
+  pauseGameButton.innerText = "Pause";
+  gameOver = false;
+  score = 0;
+  level = 1;
+  gameSpeed = 300;
+  snakeBody = [];
+  velocityX = 0;
+  velocityY = 0;
+  snakeX = 5;
+  snakeY = 5;
+  highScore = 0;
+  localStorage.setItem("high-score", highScore);
+  highScoreElement.innerText = `High Score: ${highScore}`;
+  scoreElement.innerText = `Score: ${score}`;
+  levelElement.innerText = `Level: ${level}`;
+  updateFoodPosition();
+  updateObstacles();
+  clearInterval(setIntervalId);
+  setIntervalId = setInterval(initGame, gameSpeed);
+}
+
+const restartGame = () => {
+  paused = false;
+  pauseGameButton.innerText = "Pause";
+  gameOver = false;
+  score = 0;
+  snakeBody = [];
+  velocityX = 0;
+  velocityY = 0;
+  snakeX = 5;
+  snakeY = 5;
+  scoreElement.innerText = `Score: ${score}`;
+  levelElement.innerText = `Level: ${level}`;
+  updateFoodPosition();
+  updateObstacles();
+  clearInterval(setIntervalId);
+  setIntervalId = setInterval(initGame, gameSpeed);
+}
+const togglePause = () => {
+
+  if (!paused) {
+
+    paused = true;
+    clearInterval(setIntervalId);
+    pauseGameButton.innerText = "Resume";
+
+  } else {
+
+    paused = false;
+    setIntervalId = setInterval(initGame, gameSpeed);
+    pauseGameButton.innerText = "Pause";
+
+  }
+
+}
+
+newGameButton.addEventListener("click", startNewGame);
+restartGameButton.addEventListener("click", restartGame);
+pauseGameButton.addEventListener("click", togglePause);
+
+updateFoodPosition();
+updateObstacles();
+setIntervalId = setInterval(initGame, gameSpeed);
+document.addEventListener("keyup", changeDirection);
 function stopLoop() {
   if (rafId) cancelAnimationFrame(rafId);
   rafId = null;
@@ -353,13 +628,10 @@ function handleKeyDown(e) {
     }
   }
 
-  if (e.key === ' ' && running) {
-    paused = !paused;
-    if (!paused) {
-      lastTickTime = performance.now();
-      accumulator  = 0;
-    }
-  }
+  if ((e.key === 'p' || e.key === 'P') && running) {
+  e.preventDefault();
+  setPaused(!paused);
+ }
 }
 
 document.addEventListener('keydown', handleKeyDown);
@@ -375,10 +647,12 @@ function animateIdle() {
   }
 }
 
+setupSnakeColorPicker();
 initGame();
 requestAnimationFrame(gameEngine);
 
 // ========== MOBILE TOUCH CONTROLS ==========
+// Mobile controls
 (function () {
   const mobileCanvas = document.getElementById('gameCanvas');
   const controls = document.getElementById('mobileControls');
@@ -468,3 +742,25 @@ requestAnimationFrame(gameEngine);
   window.addEventListener('resize', toggle);
   console.log('✅ Mobile touch controls loaded');
 })();
+
+const themeToggle = document.getElementById("themeToggle");
+
+let isLight = localStorage.getItem("theme") === "light";
+
+function applyTheme() {
+  if (isLight) {
+    document.body.classList.add("light");
+    themeToggle.textContent = "☀️ Light Mode";
+  } else {
+    document.body.classList.remove("light");
+    themeToggle.textContent = "🌙 Dark Mode";
+  }
+}
+
+applyTheme();
+
+themeToggle.addEventListener("click", () => {
+  isLight = !isLight;
+  localStorage.setItem("theme", isLight ? "light" : "dark");
+  applyTheme();
+});
