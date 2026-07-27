@@ -485,58 +485,48 @@ setEditingState(false);
 renderCard();
 
 /* ============================================================
-                    THEME TOGGLE (FIXED)
-============================================================ */
+                      THEME TOGGLE
+ ============================================================*/
 
-// Wait for DOM to be fully loaded
-document.addEventListener('DOMContentLoaded', function() {
-    // Create theme toggle button
-    const themeToggleHTML = `
-        <div class="theme-toggle-wrapper">
-            <button class="theme-toggle-btn" id="themeToggle" aria-label="Toggle theme">
-                <span class="thumb" id="themeThumb">🌙</span>
-            </button>
-        </div>
-    `;
+const themeToggle = document.getElementById("themeToggle");
+const themeIcon = document.querySelector(".theme-icon");
 
-    // Insert theme toggle after nav links
-    const navLinks = document.querySelector('.nav-links');
-    if (navLinks) {
-        // Create wrapper div
-        const wrapper = document.createElement('div');
-        wrapper.innerHTML = themeToggleHTML;
-        const toggleElement = wrapper.firstElementChild;
-        
-        // Insert after nav-links
-        navLinks.parentNode.insertBefore(toggleElement, navLinks.nextSibling);
-    }
+// Check for saved theme preference or default to light
+const savedTheme = localStorage.getItem("theme") || "light";
+const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+const initialTheme = savedTheme === "dark" || (savedTheme === null && prefersDark) ? "dark" : "light";
 
-    // Get theme toggle elements
-    const themeToggle = document.getElementById('themeToggle');
-    const themeThumb = document.getElementById('themeThumb');
+// Apply initial theme
+document.documentElement.setAttribute("data-theme", initialTheme);
+updateThemeIcon(initialTheme);
 
-    // Check for saved theme preference
-    const savedTheme = localStorage.getItem('theme') || 'dark';
-    document.documentElement.setAttribute('data-theme', savedTheme);
+// Toggle theme function
+function toggleTheme() {
+    const currentTheme = document.documentElement.getAttribute("data-theme");
+    const newTheme = currentTheme === "dark" ? "light" : "dark";
     
-    // Update thumb icon
-    if (themeThumb) {
-        themeThumb.textContent = savedTheme === 'dark' ? '🌙' : '☀️';
-    }
+    document.documentElement.setAttribute("data-theme", newTheme);
+    localStorage.setItem("theme", newTheme);
+    updateThemeIcon(newTheme);
+}
 
-    // Add click event
-    if (themeToggle) {
-        themeToggle.addEventListener('click', function(e) {
-            e.preventDefault();
-            const currentTheme = document.documentElement.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            
-            document.documentElement.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-            
-            if (themeThumb) {
-                themeThumb.textContent = newTheme === 'dark' ? '🌙' : '☀️';
-            }
-        });
+// Update icon based on theme
+function updateThemeIcon(theme) {
+    if (themeIcon) {
+        themeIcon.textContent = theme === "dark" ? "☀️" : "🌙";
+    }
+}
+
+// Add event listener to toggle button
+if (themeToggle) {
+    themeToggle.addEventListener("click", toggleTheme);
+}
+
+// Listen for system theme changes
+window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) => {
+    if (!localStorage.getItem("theme")) {
+        const newTheme = e.matches ? "dark" : "light";
+        document.documentElement.setAttribute("data-theme", newTheme);
+        updateThemeIcon(newTheme);
     }
 });

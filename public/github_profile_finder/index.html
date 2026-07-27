@@ -424,7 +424,7 @@
 
       // Render heatmap
       function renderHeatmap() {
-        heatmapGrid.innerHTML = '';
+        heatmapGrid.replaceChildren();
         const levels = [0, 1, 2, 3, 4];
         for (let i = 0; i < 53 * 7; i++) {
           const span = document.createElement('span');
@@ -443,60 +443,106 @@
           languagePie.style.background = '#1a2536';
           topLanguagePercent.textContent = '0%';
           topLanguageName.textContent = '—';
-          languageLegend.innerHTML = '<div style="color: var(--muted);">No language data</div>';
+          const emptyNote = document.createElement('div');
+          emptyNote.style.color = 'var(--muted)';
+          emptyNote.textContent = 'No language data';
+          languageLegend.replaceChildren(emptyNote);
           return;
         }
 
         const colors = ['#7c3aed', '#06b6d4', '#22c55e', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#14b8a6'];
         let conic = '';
         let cum = 0;
-        const legendHtml = [];
+        const legendItems = [];
 
         entries.slice(0, 6).forEach(([lang, count], idx) => {
           const pct = (count / total) * 100;
           const color = colors[idx % colors.length];
           conic += `${color} ${cum}% ${cum + pct}%, `;
           cum += pct;
-          legendHtml.push(`
-            <div class="language-legend-item">
-              <div class="language-legend-left">
-                <span class="language-dot" style="background: ${color};"></span>
-                <span>${lang}</span>
-              </div>
-              <span>${pct.toFixed(1)}%</span>
-            </div>
-          `);
+
+          const item = document.createElement('div');
+          item.className = 'language-legend-item';
+
+          const left = document.createElement('div');
+          left.className = 'language-legend-left';
+
+          const dot = document.createElement('span');
+          dot.className = 'language-dot';
+          dot.style.background = color;
+
+          const langLabel = document.createElement('span');
+          langLabel.textContent = lang; // GitHub API value — rendered via textContent, never HTML
+
+          left.appendChild(dot);
+          left.appendChild(langLabel);
+
+          const pctLabel = document.createElement('span');
+          pctLabel.textContent = `${pct.toFixed(1)}%`;
+
+          item.appendChild(left);
+          item.appendChild(pctLabel);
+          legendItems.push(item);
         });
 
         languagePie.style.background = `conic-gradient(${conic.slice(0, -2)})`;
         const top = entries[0];
         topLanguagePercent.textContent = `${((top[1] / total) * 100).toFixed(0)}%`;
         topLanguageName.textContent = top[0];
-        languageLegend.innerHTML = legendHtml.join('');
+        languageLegend.replaceChildren(...legendItems);
       }
 
       // Render repos
       function renderRepos(repos) {
-        reposList.innerHTML = '';
+        reposList.replaceChildren();
         if (!repos.length) {
-          reposList.innerHTML = '<div style="color: var(--muted); grid-column: 1/-1; text-align: center; padding: 40px;">No repositories found</div>';
+          const empty = document.createElement('div');
+          empty.style.color = 'var(--muted)';
+          empty.style.gridColumn = '1/-1';
+          empty.style.textAlign = 'center';
+          empty.style.padding = '40px';
+          empty.textContent = 'No repositories found';
+          reposList.appendChild(empty);
           return;
         }
 
         repos.slice(0, 6).forEach(r => {
           const card = document.createElement('div');
           card.className = 'repo-card';
-          card.innerHTML = `
-            <div class="repo-top">
-              <h4 class="repo-name">${r.name}</h4>
-            </div>
-            <p class="repo-description">${r.description || 'No description available'}</p>
-            <div class="repo-meta">
-              <span class="pill">⭐ ${r.stargazers_count}</span>
-              <span class="pill">🍴 ${r.forks_count}</span>
-              <span class="badge">${r.language || 'N/A'}</span>
-            </div>
-          `;
+
+          const top = document.createElement('div');
+          top.className = 'repo-top';
+          const name = document.createElement('h4');
+          name.className = 'repo-name';
+          name.textContent = r.name; // GitHub API value — textContent, never HTML
+          top.appendChild(name);
+
+          const desc = document.createElement('p');
+          desc.className = 'repo-description';
+          desc.textContent = r.description || 'No description available';
+
+          const meta = document.createElement('div');
+          meta.className = 'repo-meta';
+
+          const stars = document.createElement('span');
+          stars.className = 'pill';
+          stars.textContent = `⭐ ${r.stargazers_count}`;
+
+          const forks = document.createElement('span');
+          forks.className = 'pill';
+          forks.textContent = `🍴 ${r.forks_count}`;
+
+          const lang = document.createElement('span');
+          lang.className = 'badge';
+          lang.textContent = r.language || 'N/A';
+
+          meta.appendChild(stars);
+          meta.appendChild(forks);
+          meta.appendChild(lang);
+
+          card.appendChild(top);
+          card.appendChild(desc);
+          card.appendChild(meta);
           reposList.appendChild(card);
         });
       }
@@ -589,10 +635,10 @@
           const reposA = await fetchRepos(usernameA);
           const reposB = await fetchRepos(usernameB);
 
-          comparisonContainer.innerHTML = `
-            ${createCompareCard(userA, reposA, 'left')}
-            ${createCompareCard(userB, reposB, 'right')}
-          `;
+          comparisonContainer.replaceChildren(
+            createCompareCard(userA, reposA, 'left'),
+            createCompareCard(userB, reposB, 'right')
+          );
 
           hideStatus();
           showStatus(`✅ Comparison complete!`, 'success');
@@ -604,42 +650,80 @@
         }
       }
 
+      function buildCompareStat(label, value) {
+        const stat = document.createElement('div');
+        stat.className = 'compare-stat';
+        const span = document.createElement('span');
+        span.textContent = label;
+        const strong = document.createElement('strong');
+        strong.textContent = value;
+        stat.appendChild(span);
+        stat.appendChild(strong);
+        return stat;
+      }
+
       function createCompareCard(user, repos, side) {
-        return `
-          <div class="compare-card">
-            <div class="compare-header">
-              <img src="${user.avatar_url}" alt="${user.login}" class="compare-avatar" />
-              <div>
-                <h3>${user.name || user.login}</h3>
-                <p>@${user.login}</p>
-              </div>
-            </div>
-            <p class="compare-bio">${user.bio || 'No bio available'}</p>
-            <div class="compare-stats">
-              <div class="compare-stat">
-                <span>📦 Repos</span>
-                <strong>${user.public_repos}</strong>
-              </div>
-              <div class="compare-stat">
-                <span>👥 Followers</span>
-                <strong>${user.followers}</strong>
-              </div>
-              <div class="compare-stat">
-                <span>👤 Following</span>
-                <strong>${user.following}</strong>
-              </div>
-            </div>
-            <div class="compare-repos">
-              <h4>Top Repositories</h4>
-              ${repos.slice(0, 3).map(r => `
-                <div class="mini-repo-card">
-                  <a href="${r.html_url}" target="_blank">${r.name}</a>
-                  <span>⭐ ${r.stargazers_count}</span>
-                </div>
-              `).join('')}
-            </div>
-          </div>
-        `;
+        const card = document.createElement('div');
+        card.className = 'compare-card';
+
+        const header = document.createElement('div');
+        header.className = 'compare-header';
+
+        const img = document.createElement('img');
+        img.src = user.avatar_url;
+        img.alt = user.login; // GitHub API value — set via setAttribute-equivalent property, never HTML
+        img.className = 'compare-avatar';
+
+        const identity = document.createElement('div');
+        const h3 = document.createElement('h3');
+        h3.textContent = user.name || user.login;
+        const handle = document.createElement('p');
+        handle.textContent = `@${user.login}`;
+        identity.appendChild(h3);
+        identity.appendChild(handle);
+
+        header.appendChild(img);
+        header.appendChild(identity);
+
+        const bio = document.createElement('p');
+        bio.className = 'compare-bio';
+        bio.textContent = user.bio || 'No bio available';
+
+        const stats = document.createElement('div');
+        stats.className = 'compare-stats';
+        stats.appendChild(buildCompareStat('📦 Repos', user.public_repos));
+        stats.appendChild(buildCompareStat('👥 Followers', user.followers));
+        stats.appendChild(buildCompareStat('👤 Following', user.following));
+
+        const repoWrap = document.createElement('div');
+        repoWrap.className = 'compare-repos';
+        const repoHeading = document.createElement('h4');
+        repoHeading.textContent = 'Top Repositories';
+        repoWrap.appendChild(repoHeading);
+
+        repos.slice(0, 3).forEach(r => {
+          const mini = document.createElement('div');
+          mini.className = 'mini-repo-card';
+
+          const a = document.createElement('a');
+          a.href = r.html_url;
+          a.target = '_blank';
+          a.rel = 'noreferrer';
+          a.textContent = r.name; // GitHub API value — textContent, never HTML
+
+          const starEl = document.createElement('span');
+          starEl.textContent = `⭐ ${r.stargazers_count}`;
+
+          mini.appendChild(a);
+          mini.appendChild(starEl);
+          repoWrap.appendChild(mini);
+        });
+
+        card.appendChild(header);
+        card.appendChild(bio);
+        card.appendChild(stats);
+        card.appendChild(repoWrap);
+        return card;
       }
 
       // Search form submit

@@ -14,10 +14,19 @@ function getStoredTheme() {
   return localStorage.getItem(THEME_KEY);
 }
 
+function updateThemeToggleAria(theme) {
+  const btn = document.getElementById("themeToggleBtn");
+  if (!btn) return;
+  const label = theme === "dark" ? "Switch to light mode" : "Switch to dark mode";
+  btn.setAttribute("aria-label", label);
+  btn.setAttribute("title", label);
+}
+
 function setTheme(theme) {
   document.documentElement.setAttribute("data-theme", theme);
   localStorage.setItem(THEME_KEY, theme);
   updateChartTheme(theme);
+  updateThemeToggleAria(theme);
 }
 
 function initTheme() {
@@ -27,8 +36,19 @@ function initTheme() {
   // Don't call updateChartTheme here; charts don't exist yet.
 }
 
-// Apply theme immediately (before DOM is fully ready to avoid flash)
+// Theme is already applied by the inline snippet in <head> before this
+// script loads. Re-running keeps state in sync without causing a flash.
 initTheme();
+
+// Re-enable transitions after the first paint so the initial theme
+// resolution doesn't animate.
+document.addEventListener("DOMContentLoaded", () => {
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      document.documentElement.classList.remove("theme-preload");
+    });
+  });
+});
 
 // Listen for OS-level theme changes (only if no stored preference)
 window
@@ -136,6 +156,10 @@ Chart.defaults.font.family = "'Plus Jakarta Sans', sans-serif";
 const themeToggleBtn = document.getElementById("themeToggleBtn");
 
 if (themeToggleBtn) {
+  updateThemeToggleAria(
+    document.documentElement.getAttribute("data-theme") || "dark",
+  );
+
   themeToggleBtn.addEventListener("click", () => {
     const current =
       document.documentElement.getAttribute("data-theme") || "dark";
