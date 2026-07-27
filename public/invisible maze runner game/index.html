@@ -1,53 +1,77 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>FOG RUNNER</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <!-- Start Screen -->
-    <div class="overlay" id="startScreen">
-      <h1>FOG RUNNER</h1>
-      <p>Find your way through the unknown.<br />Memory is your only guide.</p>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FOG RUNNER</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Start Screen -->
+  <div class="overlay" id="startScreen">
+    <h1>FOG RUNNER</h1>
+    <p>Find your way through the unknown.<br />Memory is your only guide.</p>
+    <div class="difficulty-buttons">
       <button onclick="startGame(1)">BEGINNER</button>
       <button onclick="startGame(2)">INTERMEDIATE</button>
       <button onclick="startGame(3)">EXPERT</button>
     </div>
+  </div>
 
-    <!-- HUD - Left Side -->
-    <div class="hud" id="hud" style="display: none">
-      <div>LEVEL <span id="level">1</span></div>
-      <div>TIME <span id="timer">0</span>s</div>
-      <div class="help-icon" onclick="toggleHelp()">?</div>
+  <!-- HUD -->
+  <div class="hud" id="hud" style="display: none">
+    <div>LEVEL <span id="level">1</span></div>
+    <div>ROUND <span id="round">1/10</span></div>
+    <div>TIME <span id="timer">0</span>s</div>
+    <div class="controls-info">
+      <div class="ctrl-title">CONTROLS</div>
+      <div class="ctrl-keys">
+        <span class="key">W</span> <span class="key">A</span> <span class="key">S</span> <span class="key">D</span>
+      </div>
+      <div class="ctrl-keys">
+        <span class="key">↑</span> <span class="key">←</span> <span class="key">↓</span> <span class="key">→</span>
+      </div>
+      <div class="ctrl-desc">to move</div>
+      <div class="extra-controls">
+        <div class="extra-ctrl"><span class="key">F</span> Fullscreen</div>
+        <div class="extra-ctrl"><span class="key">P</span> Pause</div>
+        <div class="extra-ctrl"><span class="key">R</span> Restart</div>
+      </div>
     </div>
+    <div class="help-icon" onclick="toggleHelp()">?</div>
+  </div>
 
-    <canvas id="gameCanvas" width="800" height="600"></canvas>
+  <canvas id="gameCanvas" width="800" height="600"></canvas>
 
-    <!-- Help Screen -->
-    <div class="overlay" id="helpScreen" style="display: none">
-      <h2>HOW TO PLAY</h2>
-      <p><strong>WASD</strong> or <strong>Arrow Keys</strong> — Move</p>
-      <p><strong>F</strong> — Fullscreen</p>
-      <p><strong>P</strong> — Pause</p>
-      <p><strong>R</strong> — Restart Level</p>
-      <button onclick="toggleHelp()">CLOSE</button>
-    </div>
+  <!-- Help Screen -->
+  <div class="overlay" id="helpScreen" style="display: none">
+    <h2>HOW TO PLAY</h2>
+    <p><strong>WASD</strong> or <strong>Arrow Keys</strong> — Move</p>
+    <p><strong>F</strong> — Fullscreen</p>
+    <p><strong>P</strong> — Pause</p>
+    <p><strong>R</strong> — Restart Level</p>
+    <button onclick="toggleHelp()">CLOSE</button>
+  </div>
 
-    <!-- Pause Screen -->
-    <div class="overlay" id="pauseScreen" style="display: none">
-      <h2>PAUSED</h2>
-      <button onclick="togglePause()">RESUME</button>
-    </div>
+  <!-- Pause Screen -->
+  <div class="overlay" id="pauseScreen" style="display: none">
+    <h2>PAUSED</h2>
+    <button onclick="togglePause()">RESUME</button>
+  </div>
 
-    <!-- Game Over Screen -->
-    <div class="game-over" id="gameOverScreen" style="display: none">
-      <h2>YOU ESCAPED THE FOG</h2>
-      <p id="finalStats"></p>
-      <button onclick="returnToHome()">BACK TO MENU</button>
-    </div>
+  <!-- Round Transition -->
+  <div class="round-transition" id="roundTransition" style="display: none">
+    <h2 id="roundTransitionText">ROUND 2</h2>
+  </div>
 
-    <script src="script.js"></script>
-  </body>
+  <!-- Game Over Screen -->
+  <div class="game-over" id="gameOverScreen" style="display: none">
+    <h2>YOU ESCAPED THE FOG</h2>
+    <p id="finalStats"></p>
+    <button onclick="returnToHome()">BACK TO MENU</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
 </html>
+
