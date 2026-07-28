@@ -35,8 +35,8 @@ body {
 
 .app-container {
     width: 100%;
-    max-width: 600px;
-    padding: 20px;
+    max-width: 700px;
+    padding: 24px;
 }
 
 /* Screen Visibility */
@@ -47,6 +47,8 @@ body {
 
 .screen.active {
     display: block;
+    position: relative;
+    z-index: 1;
 }
 
 @keyframes fadeIn {
@@ -63,78 +65,91 @@ body {
 
 /* Typography & Layout */
 .title {
-    font-size: 2rem;
+    font-size: 2.2rem;
     text-align: center;
-    margin-bottom: 1rem;
+    margin-bottom: 1.2rem;
     color: var(--primary);
+    font-weight: 700;
+    letter-spacing: -0.5px;
 }
 
 .description {
     text-align: center;
     color: var(--text-muted);
     margin-bottom: 2rem;
-    line-height: 1.5;
+    line-height: 1.6;
+    font-size: 1rem;
 }
 
 .quiz-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.8rem;
     font-weight: 600;
+    font-size: 1rem;
 }
 
 .timer-container {
     background: #fff;
-    padding: 8px 16px;
-    border-radius: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    padding: 10px 18px;
+    border-radius: 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    font-weight: 500;
 }
 
 #time-left {
     color: var(--incorrect-border);
-    font-weight: bold;
+    font-weight: 700;
+    font-size: 1.1rem;
 }
 
 /* Cards & Buttons */
 .card {
     background: var(--card-bg);
-    padding: 2rem;
+    padding: 2.5rem;
     border-radius: var(--radius);
     box-shadow: var(--shadow);
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.8rem;
+    border: 1px solid rgba(0,0,0,0.05);
 }
 
 #question-text {
-    font-size: 1.25rem;
-    margin-bottom: 1.5rem;
+    font-size: 1.35rem;
+    margin-bottom: 1.8rem;
+    line-height: 1.5;
+    font-weight: 600;
 }
 
 .options-grid {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 14px;
 }
 
 .option-btn {
-    padding: 16px;
+    padding: 18px 20px;
     border: 2px solid #e5e7eb;
     border-radius: var(--radius);
-    background: transparent;
+    background: #fff;
     font-size: 1rem;
     text-align: left;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.25s ease;
     color: var(--text-main);
+    font-weight: 500;
 }
 
 .option-btn:hover:not(:disabled) {
     border-color: var(--primary);
     background-color: #f8fafc;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.1);
 }
 
 .option-btn:disabled {
     cursor: not-allowed;
+    opacity: 0.7;
 }
 
 /* Feedback States */
@@ -153,13 +168,14 @@ body {
 /* Action Buttons */
 .btn {
     width: 100%;
-    padding: 14px;
+    padding: 16px 24px;
     border: none;
     border-radius: var(--radius);
     font-size: 1.1rem;
     font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: all 0.25s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .primary-btn {
@@ -169,11 +185,19 @@ body {
 
 .primary-btn:hover {
     background-color: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(79, 70, 229, 0.2);
 }
 
 .secondary-btn {
     background-color: var(--text-main);
     color: white;
+}
+
+.secondary-btn:hover {
+    background-color: #374151;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 }
 
 .hidden {
@@ -183,35 +207,39 @@ body {
 /* End Screen */
 .score-card {
     background: var(--card-bg);
-    padding: 2rem;
+    padding: 2.5rem;
     border-radius: var(--radius);
     text-align: center;
     box-shadow: var(--shadow);
     margin-bottom: 2rem;
+    border: 1px solid rgba(0,0,0,0.05);
 }
 
 #final-score {
-    font-size: 3rem;
+    font-size: 3.5rem;
     color: var(--primary);
     margin-top: 0.5rem;
+    font-weight: 700;
 }
 
 .feedback-msg {
     text-align: center;
     margin-bottom: 2rem;
     font-weight: 500;
+    font-size: 1.1rem;
 }
 
 .settings-card {
     background: var(--card-bg);
-    padding: 1.5rem;
+    padding: 2rem;
     border-radius: var(--radius);
     box-shadow: var(--shadow);
     margin-bottom: 2rem;
+    border: 1px solid rgba(0,0,0,0.05);
 }
 
 .settings-group {
-    margin-bottom: 1.25rem;
+    margin-bottom: 1.5rem;
     text-align: left;
 }
 
@@ -221,24 +249,26 @@ body {
 
 .settings-group label {
     display: block;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.6rem;
     font-weight: 600;
     color: var(--text-main);
+    font-size: 0.95rem;
 }
 
 .input-element {
     width: 100%;
-    padding: 12px;
+    padding: 14px 16px;
     border: 2px solid #e5e7eb;
     border-radius: var(--radius);
     font-size: 1rem;
     outline: none;
-    transition: border-color 0.2s;
+    transition: all 0.25s ease;
     background-color: white;
 }
 
 .input-element:focus {
     border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
 }
 
 .warning-text {
@@ -251,11 +281,10 @@ body {
 /* Progress Bar Styles */
 .progress-container {
     width: 100%;
-    height: 8px;
+    height: 10px;
     background-color: #e5e7eb;
-    /* Light gray background */
-    border-radius: 4px;
-    margin-bottom: 1.5rem;
+    border-radius: 6px;
+    margin-bottom: 1.8rem;
     overflow: hidden;
 }
 
@@ -263,8 +292,86 @@ body {
     height: 100%;
     background-color: var(--primary);
     width: 0%;
-    /* Starts at 0, updated by JS */
-    border-radius: 4px;
+    border-radius: 6px;
     transition: width 0.4s ease-in-out;
-    /* Smooth filling animation */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .app-container {
+        padding: 20px;
+    }
+
+    .title {
+        font-size: 1.8rem;
+    }
+
+    .description {
+        font-size: 0.95rem;
+    }
+
+    .card {
+        padding: 2rem;
+    }
+
+    #question-text {
+        font-size: 1.2rem;
+    }
+
+    .option-btn {
+        padding: 16px;
+        font-size: 0.95rem;
+    }
+
+    #final-score {
+        font-size: 2.8rem;
+    }
+
+    .quiz-header {
+        font-size: 0.9rem;
+    }
+
+    .timer-container {
+        padding: 8px 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .app-container {
+        padding: 16px;
+    }
+
+    .title {
+        font-size: 1.6rem;
+    }
+
+    .card {
+        padding: 1.5rem;
+    }
+
+    #question-text {
+        font-size: 1.1rem;
+    }
+
+    .option-btn {
+        padding: 14px;
+        font-size: 0.9rem;
+    }
+
+    .btn {
+        padding: 14px 20px;
+        font-size: 1rem;
+    }
+
+    .settings-card {
+        padding: 1.5rem;
+    }
+
+    .score-card {
+        padding: 2rem;
+    }
+
+    #final-score {
+        font-size: 2.5rem;
+    }
 }

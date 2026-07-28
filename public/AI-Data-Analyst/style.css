@@ -130,6 +130,14 @@
         box-shadow 0.25s ease;
 }
 
+/* Disable all transitions during initial theme resolution to prevent flicker */
+.theme-preload,
+.theme-preload *,
+.theme-preload *::before,
+.theme-preload *::after {
+    transition: none !important;
+}
+
 /* Don't transition transforms so hover effects still feel snappy */
 .upload-btn,
 .sample-btn,
@@ -307,6 +315,7 @@ body {
 [data-theme="light"] .section-icon {
     background: rgba(99, 102, 241, 0.08);
     border-color: rgba(99, 102, 241, 0.18);
+    color: #2563eb;
 }
 
 .section-icon svg,
@@ -329,6 +338,7 @@ body {
 [data-theme="light"] .section-col-tag {
     background: rgba(139, 92, 246, 0.08);
     border-color: rgba(139, 92, 246, 0.15);
+    color: #7c3aed;
 }
 
 /* ==================================
@@ -628,6 +638,7 @@ body {
 [data-theme="light"] .metric-icon {
     background: rgba(59, 130, 246, 0.08);
     border-color: rgba(59, 130, 246, 0.15);
+    color: #2563eb;
 }
 
 .metric-icon.quality-icon {
@@ -639,6 +650,7 @@ body {
 [data-theme="light"] .metric-icon.quality-icon {
     background: rgba(34, 197, 94, 0.08);
     border-color: rgba(34, 197, 94, 0.15);
+    color: #16a34a;
 }
 
 .metric-icon i { width: 14px; height: 14px; }
@@ -930,6 +942,10 @@ body {
     margin-top: 1px;
 }
 
+[data-theme="light"] .ai-note i {
+    color: #0e7490;
+}
+
 /* ==================================
    VISUALIZATIONS
 ================================== */
@@ -994,6 +1010,10 @@ body {
     text-align: left;
     border-bottom: 1px solid var(--border);
     white-space: nowrap;
+}
+
+[data-theme="light"] #datasetTable th {
+    color: #2563eb;
 }
 
 #datasetTable td {
@@ -1213,6 +1233,7 @@ body {
 [data-theme="light"] .correlation-card .insight-icon {
     background: radial-gradient(circle, rgba(99,102,241,0.12), rgba(99,102,241,0.02));
     border-color: rgba(99,102,241,0.2);
+    color: #2563eb;
 }
 
 .quality-card .insight-icon {
@@ -1224,6 +1245,7 @@ body {
 [data-theme="light"] .quality-card .insight-icon {
     background: radial-gradient(circle, rgba(34,197,94,0.12), rgba(34,197,94,0.02));
     border-color: rgba(34,197,94,0.18);
+    color: #16a34a;
 }
 
 .recommendation-card-insight .insight-icon {
@@ -1247,6 +1269,7 @@ body {
 [data-theme="light"] .trend-card .insight-icon {
     background: radial-gradient(circle, rgba(139,92,246,0.12), rgba(139,92,246,0.02));
     border-color: rgba(139,92,246,0.18);
+    color: #7c3aed;
 }
 
 .insight-content { flex: 1; min-width: 0; }
@@ -1323,6 +1346,10 @@ body {
     color: var(--purple-bright) !important;
     font-weight: 700;
     font-size: 0.95rem;
+}
+
+[data-theme="light"] .accent-text {
+    color: #7c3aed !important;
 }
 
 .recommendation-divider {
@@ -1432,6 +1459,7 @@ body {
 [data-theme="light"] .cleaning-section-icon {
     background: rgba(245, 158, 11, 0.08);
     border-color: rgba(245, 158, 11, 0.15);
+    color: #b45309;
 }
 
 .cleaning-badge-title {
@@ -1585,6 +1613,10 @@ body {
 }
 
 .cleaning-empty-icon i { width: 22px; height: 22px; }
+
+[data-theme="light"] .cleaning-empty-icon {
+    color: #2563eb;
+}
 
 .cleaning-empty-title {
     font-size: 0.95rem;
@@ -1915,6 +1947,10 @@ body {
     color: var(--cyan);
     flex-shrink: 0;
     margin-top: 1px;
+}
+
+[data-theme="light"] .cleaning-assessment i {
+    color: #0e7490;
 }
 
 /* ==================================
