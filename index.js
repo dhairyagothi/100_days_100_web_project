@@ -359,7 +359,7 @@ function buildProjectCardHTML({
             </div>
 
             <div class="card-preview-image-container" style="margin: 12px 0; border-radius: 8px; overflow: hidden; aspect-ratio: 16/9; background: #1a1a1a;">
-               <img src="${url && url.startsWith('./') ? url.substring(0, url.lastIndexOf('/')) : ''}/preview.png"alt="${safeName} preview" onerror="this.parentNode.style.display='none';" style="width: 100%; height: 100%; object-fit: cover;">
+               <img src="${url && url.startsWith('./') ? url.substring(0, url.lastIndexOf('/')) : ''}/preview.png"alt="${safeName} preview" onerror="this.onerror=null; this.src='./favv.png';" style="width: 100%; height: 100%; object-fit: cover;">
             </div>
 
             <h3 class="card-name">${safeName}</h3>
@@ -836,11 +836,9 @@ function renderGrid() {
   if (sortOption === "az") {
     filtered.sort((a, b) => a.projectName.localeCompare(b.projectName));
   } else if (sortOption === "latest") {
-    filtered.sort((a, b) => {
-      const dayA = parseInt(a.day.replace("Day ", ""));
-      const dayB = parseInt(b.day.replace("Day ", ""));
-      return dayB - dayA;
-    });
+    filtered.sort((a, b) => b.projectNo - a.projectNo);
+  } else if (sortOption === "oldest") {
+    filtered.sort((a, b) => a.projectNo - b.projectNo);
   } else if (sortOption === "difficulty") {
     const difficultyOrder = { beginner: 1, intermediate: 2, advanced: 3 };
     filtered.sort((a, b) => {
@@ -2505,3 +2503,18 @@ document
     "click",
     renderRandomProject
   );
+
+// Keyboard Navigation for Pagination
+document.addEventListener("keydown", (e) => {
+  if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
+  
+  if (e.key === "ArrowRight") {
+    if (currentPage < Math.ceil(currentFilteredProjects.length / itemsPerPage)) {
+      changePage(currentPage + 1);
+    }
+  } else if (e.key === "ArrowLeft") {
+    if (currentPage > 1) {
+      changePage(currentPage - 1);
+    }
+  }
+});

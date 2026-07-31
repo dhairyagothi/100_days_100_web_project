@@ -197,73 +197,72 @@ Brief description of your project.
 - Feature 2
 
 ## Technologies Used
-- HTML
-- CSS
-- JavaScript
-
-## How to Run
-1. Open index.html in a web browser
-2. Enjoy the project!
-
-## Screenshots
-Add screenshots of your project
-
-## Author
-Your Name
-```
-
 ### Step 3: Update Main Project List
-Add your project to the main website by editing `index.js`:
+Add your project to the main website by appending a JSON object to `projects.json`:
 
-```javascript
-// Find the data array and add your project
-```javascript
-["Day X", "Your Project Name", "./public/YourProjectName/index.html", ["javascript", "css"], "Beginner"]
+```json
+  {
+    "projectNo": 999,
+    "projectName": "Your Project Name",
+    "projectType": "Website",
+    "projectDesc": "Brief description of your project.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript"
+    ],
+    "difficulty": "beginner",
+    "projectPath": "./public/YourProjectName/index.html"
+  }
 ```
 
 ## ➕ Adding Your Project to the Project List
 
-Welcome! This section will walk you through how to correctly add your project to the main project list in `index.js`. Following this format carefully ensures your project shows up on the website, works with filters, and links correctly. Don't worry — it's simpler than it looks!
+Welcome! This section will walk you through how to correctly add your project to the main project list in `projects.json`. Following this format carefully ensures your project shows up on the website, works with filters, and links correctly.
 
 ---
 
 ### 📋 The Project Entry Format
 
-Each project is stored as a single line inside the `PROJECTS` array in `index.js`. Every entry follows this structure:
+Each project is stored as a single JSON object inside the main array in `projects.json`. Every entry follows this structure:
 
-```javascript
-["Day Number", "Project Name", "./public/FolderName/index.html", ["tag1", "tag2"], "Difficulty"]
-```
-
-Here's a real example of a valid entry:
-
-```javascript
-["Day 113", "Drawing Canvas", "./public/DrawingCanvas/index.html", ["javascript", "canvas"], "Beginner"]
+```json
+  {
+    "projectNo": 999,
+    "projectName": "Project Title",
+    "projectType": "Category",
+    "projectDesc": "Short summary",
+    "techStack": ["tag1", "tag2"],
+    "difficulty": "beginner|intermediate|advanced",
+    "projectPath": "./public/FolderName/index.html"
+  }
 ```
 
 ---
 
 ### 🗂️ What Each Field Means
 
-| Position | Field | Example | Description |
-|----------|-------|---------|-------------|
-| 1st | Day Number | `"Day 113"` | The day this project is assigned. Follow the existing numbering in the file. |
-| 2nd | Project Name | `"Drawing Canvas"` | The display name of your project. Use title case. Must match the key used in `PROJECT_DESCRIPTIONS` if you add a description. |
-| 3rd | File Path | `"./public/DrawingCanvas/index.html"` | The relative path to your project's `index.html`. Must start with `./public/`. |
-| 4th | Tags | `["javascript", "canvas"]` | An array of lowercase technology or category tags describing your project. |
-| 5th | Difficulty | `"Beginner"` | How challenging the project is. Must be one of the three allowed values (see below). |
+| Field | Example | Description |
+|-------|---------|-------------|
+| `projectNo` | `999` | The numeric ID. Increment the last project number. |
+| `projectName` | `"My Cool App"` | The title of your project. |
+| `projectType` | `"Game"` | The category of your project (e.g., Tool, Website, Game). |
+| `projectDesc` | `"A fun app"` | A short 1-2 sentence description. |
+| `techStack` | `["html", "css"]` | Array of lowercase tech tags for filtering. |
+| `difficulty`| `"beginner"` | Skill level required. `beginner`, `intermediate`, or `advanced`. |
+| `projectPath`| `"./public/App/index.html"` | The relative URL path to your project's main HTML file. |
 
 ---
 
 ### ✅ Allowed Difficulty Values
 
-The difficulty field accepts **only** these three values, spelled and capitalized exactly as shown:
+The difficulty field accepts **only** these three values, all in lowercase:
 
-- `"Beginner"`
-- `"Intermediate"`
-- `"Advanced"`
+- `"beginner"`
+- `"intermediate"`
+- `"advanced"`
 
-Using any other value (like `"Easy"`, `"Hard"`, or `"beginner"` in lowercase) will cause the difficulty filter to silently ignore your project.
+Using any other value or capitalization will cause the difficulty filter to silently ignore your project.
 
 ---
 
