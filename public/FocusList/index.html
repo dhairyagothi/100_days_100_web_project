@@ -2,59 +2,133 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>FocusList App</title>
-    <style>
-        body { font-family: sans-serif; display: flex; justify-content: center; padding-top: 50px; background: #f4f4f9; }
-        .container { background: white; padding: 2rem; width: 350px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        input { width: 70%; padding: 8px; }
-        button { padding: 8px; cursor: pointer; }
-        ul { list-style: none; padding: 0; margin-top: 20px; }
-        li { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #eee; }
-        .completed { text-decoration: line-through; color: gray; }
-        #progress { height: 10px; background: #4caf50; width: 0%; transition: width 0.3s; margin-top: 10px; }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FocusList</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<div class="container">
-    <h2>FocusList</h2>
-    <div id="progress"></div>
-    <input type="text" id="taskInput" placeholder="Add a task...">
-    <button onclick="addTask()">Add</button>
-    <ul id="taskList"></ul>
+<div class="wrapper">
+
+    <div class="hero">
+
+        <span class="badge">
+            Stay Productive ✨
+        </span>
+
+        <h1>FocusList</h1>
+
+        <p>
+            Organize your day, stay focused and accomplish every goal one task at a time.
+        </p>
+
+        <div class="features">
+
+            <div class="feature">
+                ✅ Easy Task Management
+            </div>
+
+            <div class="feature">
+                📊 Live Progress Tracking
+            </div>
+
+            <div class="feature">
+                💾 Saves Automatically
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>Today's Tasks</h2>
+
+        <p class="subtitle">
+            Add your daily goals and keep moving forward.
+        </p>
+
+        <div class="progress-box">
+
+            <div class="progress-bar">
+
+                <div id="progress"></div>
+
+            </div>
+
+            <span id="progressText">0%</span>
+
+        </div>
+
+
+        <div class="input-section">
+
+            <input
+                type="text"
+                id="taskInput"
+                placeholder="Add a new task..."
+            >
+
+            <button onclick="addTask()">
+                +
+            </button>
+
+        </div>
+
+
+        <ul id="taskList"></ul>
+
+
+        <div class="stats">
+
+            <div class="stat-card">
+
+                <h3 id="totalTasks">0</h3>
+
+                <span>Total</span>
+
+            </div>
+
+            <div class="stat-card">
+
+                <h3 id="completedTasks">0</h3>
+
+                <span>Completed</span>
+
+            </div>
+
+            <div class="stat-card">
+
+                <h3 id="pendingTasks">0</h3>
+
+                <span>Pending</span>
+
+            </div>
+
+        </div>
+
+
+        <button
+            class="delete-all-btn"
+            onclick="deleteAllTasks()">
+
+            🗑 Delete All Tasks
+
+        </button>
+
+    </div>
+
 </div>
 
-<script>
-    let tasks = [];
+<script src="script.js"></script>
 
-    function addTask() {
-        const input = document.getElementById('taskInput');
-        if (!input.value) return;
-        tasks.push({ text: input.value, done: false });
-        input.value = '';
-        render();
-    }
-
-    function toggleTask(index) {
-        tasks[index].done = !tasks[index].done;
-        render();
-    }
-
-    function render() {
-        const list = document.getElementById('taskList');
-        list.innerHTML = '';
-        let completedCount = 0;
-        
-        tasks.forEach((task, index) => {
-            if (task.done) completedCount++;
-            const li = document.createElement('li');
-            li.innerHTML = `<span class="${task.done ? 'completed' : ''}" onclick="toggleTask(${index})">${task.text}</span>
-                            <button onclick="tasks.splice(${index}, 1); render()">X</button>`;
-            list.appendChild(li);
-        });
-
-        const progress = (completedCount / tasks.length) * 100 || 0;
-        document.getElementById('progress').style.width = progress + '%';
-    }
-</script>
 </body>
+</html>
