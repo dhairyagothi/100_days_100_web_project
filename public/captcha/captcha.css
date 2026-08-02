@@ -40,6 +40,27 @@ body .container {
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
 }
 
+body.dark{
+    background:#121212;
+    color:white;
+}
+
+.difficulty-container,
+.timer,
+.attempts{
+    margin:10px 0;
+    font-weight:bold;
+}
+
+button{
+    transition:0.3s;
+}
+
+button:hover{
+    transform:scale(1.05);
+}
+
+
 /* Dark theme text colors */
 body .logo,
 body .nav-links a,
