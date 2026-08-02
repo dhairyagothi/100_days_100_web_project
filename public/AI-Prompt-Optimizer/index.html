@@ -4,7 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AI Prompt Optimizer</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/responsive.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -12,7 +15,7 @@
 
 <body>
 
-  <button id="themeToggle" class="theme-toggle">
+  <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">
     🌙
   </button>
 
@@ -36,6 +39,20 @@
         <option value="resume">📄 Resume</option>
         <option value="marketing">📢 Marketing</option>
         <option value="study">📚 Study</option>
+      </select>
+
+      <label for="tone">Tone</label>
+      <select id="tone">
+        <option value="Professional">👔 Professional</option>
+        <option value="Casual">😊 Casual</option>
+        <option value="Humorous">😂 Humorous</option>
+      </select>
+
+      <label for="length">Length</label>
+      <select id="length">
+        <option value="Short">⚡ Short</option>
+        <option value="Detailed">📝 Detailed</option>
+        <option value="Comprehensive">📚 Comprehensive</option>
       </select>
 
       <label for="promptInput">Enter Prompt</label>
@@ -167,6 +184,42 @@
 
     </section>
 
+  
+    <section class="library-section">
+
+      <div class="section-header">
+          <h2>📚 Prompt Library</h2>
+
+          <button id="clearLibraryBtn" class="small-btn danger">
+              Clear Library
+          </button>
+      </div>
+
+      <div class="library-controls">
+
+          <input
+              type="text"
+              id="librarySearch"
+              placeholder="Search saved prompts..."
+              aria-label="Search saved prompts"
+          >
+
+          <button id="savePromptBtn">
+              Save Current Prompt
+          </button>
+
+      </div>
+
+      <div id="libraryContainer">
+
+          <div class="history-placeholder">
+              No saved prompts.
+          </div>
+
+      </div>
+
+    </section>
+
     <footer>
       <p>
         Built with HTML, CSS & JavaScript • AI Prompt Optimizer
@@ -175,7 +228,7 @@
 
   </div>
 
-  <script src="script.js"></script>
+  <script type="module" src="js/app.js"></script>
 
 </body>
 </html>

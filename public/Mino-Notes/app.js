@@ -7,10 +7,10 @@ let folders = [];
 let notes = [];
 let calendarTasks = [];
 let activeFolderId = null; // Currently clicked folder filter
-let currentView = "all"; // all, calendar, archive, trash
-let activeNotesFilter = "today"; // today, week, month
-let activeFoldersFilter = "week"; // all, week, month
-let searchQuery = "";
+let currentView = 'all'; // all, calendar, archive, trash
+let activeNotesFilter = 'today'; // today, week, month
+let activeFoldersFilter = 'week'; // all, week, month
+let searchQuery = '';
 
 // Current date defaults
 const currentDate = new Date();
@@ -24,7 +24,9 @@ let calMonth = currentDate.getMonth();
 // --- DOM CACHE ---
 const sidebar = document.getElementById('sidebar');
 const mobileToggle = document.getElementById('mobile-toggle');
-const workspaceTitleDisplay = document.getElementById('workspace-title-display');
+const workspaceTitleDisplay = document.getElementById(
+  'workspace-title-display'
+);
 const searchInput = document.getElementById('search-input');
 const headerSettingsBtn = document.getElementById('header-settings-btn');
 
@@ -94,10 +96,10 @@ const viewArchiveBtn = document.getElementById('view-archive-btn');
 const viewDeleteBtn = document.getElementById('view-delete-btn');
 const closeViewNoteModal = document.getElementById('close-view-note-modal');
 
-
-
 // Theme Dots color selectors
-const themeColorDots = document.querySelectorAll('.color-indicators .color-dot');
+const themeColorDots = document.querySelectorAll(
+  '.color-indicators .color-dot'
+);
 
 // --- DATABASE LOGIC (LOCAL STORAGE) ---
 function loadData() {
@@ -133,13 +135,48 @@ function loadData() {
     // Seed default tasks for the current calendar month
     const currentMonthKey = `${calYear}-${String(calMonth + 1).padStart(2, '0')}`;
     calendarTasks = [
-      { id: 'task-1', monthKey: currentMonthKey, text: 'grocery shopping', completed: false },
-      { id: 'task-2', monthKey: currentMonthKey, text: 'dinner with Mark', completed: false },
-      { id: 'task-3', monthKey: currentMonthKey, text: 'read book', completed: true },
-      { id: 'task-4', monthKey: currentMonthKey, text: 'edit video', completed: true },
-      { id: 'task-5', monthKey: currentMonthKey, text: 'go to gym 7pm', completed: false },
-      { id: 'task-6', monthKey: currentMonthKey, text: 'morning yoga', completed: true },
-      { id: 'task-7', monthKey: currentMonthKey, text: 'publish blog post', completed: false }
+      {
+        id: 'task-1',
+        monthKey: currentMonthKey,
+        text: 'grocery shopping',
+        completed: false,
+      },
+      {
+        id: 'task-2',
+        monthKey: currentMonthKey,
+        text: 'dinner with Mark',
+        completed: false,
+      },
+      {
+        id: 'task-3',
+        monthKey: currentMonthKey,
+        text: 'read book',
+        completed: true,
+      },
+      {
+        id: 'task-4',
+        monthKey: currentMonthKey,
+        text: 'edit video',
+        completed: true,
+      },
+      {
+        id: 'task-5',
+        monthKey: currentMonthKey,
+        text: 'go to gym 7pm',
+        completed: false,
+      },
+      {
+        id: 'task-6',
+        monthKey: currentMonthKey,
+        text: 'morning yoga',
+        completed: true,
+      },
+      {
+        id: 'task-7',
+        monthKey: currentMonthKey,
+        text: 'publish blog post',
+        completed: false,
+      },
     ];
     saveCalendarTasks();
   }
@@ -159,43 +196,56 @@ function saveCalendarTasks() {
 
 // --- CALENDAR RENDER ENGINE ---
 const MONTH_NAMES = [
-  "January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December"
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
 ];
 
 function renderCalendar() {
   calMonthTitle.textContent = `${MONTH_NAMES[calMonth]} ${calYear}`;
-  
+
   // Left column titles
   const calLeftMonthName = document.getElementById('cal-left-month-name');
-  if (calLeftMonthName) calLeftMonthName.textContent = MONTH_NAMES[calMonth].toUpperCase();
+  if (calLeftMonthName)
+    calLeftMonthName.textContent = MONTH_NAMES[calMonth].toUpperCase();
   const calLeftYearDisplay = document.getElementById('cal-left-year-display');
   if (calLeftYearDisplay) calLeftYearDisplay.textContent = `♥ ${calYear} ♥`;
-  
+
   // Left column checklist notes
   const checklistUl = document.getElementById('calendar-checklist-ul');
   if (checklistUl) {
     checklistUl.innerHTML = '';
-    
+
     const currentMonthKey = `${calYear}-${String(calMonth + 1).padStart(2, '0')}`;
-    const monthTasks = calendarTasks.filter(t => t.monthKey === currentMonthKey);
-    
+    const monthTasks = calendarTasks.filter(
+      (t) => t.monthKey === currentMonthKey
+    );
+
     // Render existing tasks
-    monthTasks.forEach(task => {
+    monthTasks.forEach((task) => {
       const li = document.createElement('li');
       li.className = `lined-paper-item ${task.completed ? 'completed' : ''}`;
       li.dataset.id = task.id;
-      
+
       li.innerHTML = `
         <span class="checkbox-circle ${task.completed ? 'checked' : ''}"></span>
         <span class="task-text" contenteditable="true" spellcheck="false" placeholder="Empty task">${task.text}</span>
         <button class="delete-task-btn" title="Delete task">&times;</button>
       `;
-      
+
       const checkbox = li.querySelector('.checkbox-circle');
       const textSpan = li.querySelector('.task-text');
       const deleteBtn = li.querySelector('.delete-task-btn');
-      
+
       // Toggle complete state
       checkbox.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -203,38 +253,38 @@ function renderCalendar() {
         saveCalendarTasks();
         renderCalendar();
       });
-      
+
       // Inline edit task text
       textSpan.addEventListener('blur', () => {
         const newText = textSpan.textContent.trim();
         if (newText === '') {
           // If empty, delete it
-          calendarTasks = calendarTasks.filter(t => t.id !== task.id);
+          calendarTasks = calendarTasks.filter((t) => t.id !== task.id);
         } else {
           task.text = newText;
         }
         saveCalendarTasks();
         renderCalendar();
       });
-      
+
       textSpan.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
           e.preventDefault();
           textSpan.blur();
         }
       });
-      
+
       // Delete task
       deleteBtn.addEventListener('click', (e) => {
         e.stopPropagation();
-        calendarTasks = calendarTasks.filter(t => t.id !== task.id);
+        calendarTasks = calendarTasks.filter((t) => t.id !== task.id);
         saveCalendarTasks();
         renderCalendar();
       });
-      
+
       checklistUl.appendChild(li);
     });
-    
+
     // Render Add New Task Row
     const addLi = document.createElement('li');
     addLi.className = 'lined-paper-item add-task-row';
@@ -242,9 +292,9 @@ function renderCalendar() {
       <span class="checkbox-circle add-btn-circle" style="border-style: dashed; opacity: 0.5;">+</span>
       <span class="task-text new-task-input" contenteditable="true" spellcheck="false" placeholder="Add task..."></span>
     `;
-    
+
     const newInputSpan = addLi.querySelector('.new-task-input');
-    
+
     const handleAddNewTask = () => {
       const text = newInputSpan.textContent.trim();
       if (text !== '') {
@@ -252,7 +302,7 @@ function renderCalendar() {
           id: 'task-' + Date.now(),
           monthKey: currentMonthKey,
           text: text,
-          completed: false
+          completed: false,
         };
         calendarTasks.push(newTask);
         saveCalendarTasks();
@@ -261,7 +311,7 @@ function renderCalendar() {
         newInputSpan.textContent = ''; // clear any whitespace
       }
     };
-    
+
     newInputSpan.addEventListener('blur', handleAddNewTask);
     newInputSpan.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
@@ -269,9 +319,9 @@ function renderCalendar() {
         newInputSpan.blur();
       }
     });
-    
+
     checklistUl.appendChild(addLi);
-    
+
     // Fill remaining rows (total 13 rows to keep the lined notebook paper style looking full)
     const totalRendered = monthTasks.length + 1; // tasks + add task row
     const targetRows = 13;
@@ -284,53 +334,57 @@ function renderCalendar() {
           <span class="checkbox-circle" style="opacity: 0.15;"></span>
           <span class="task-text" style="pointer-events: none; opacity: 0.3;"></span>
         `;
-        
+
         // Focus the add-task-row when clicking an empty line
         emptyLi.addEventListener('click', () => {
           newInputSpan.focus();
         });
-        
+
         checklistUl.appendChild(emptyLi);
       }
     }
   }
-  
+
   // Clear day cells (keep header MON-SUN rows)
   const headerCells = calendarDaysGrid.querySelectorAll('.calendar-day-header');
   calendarDaysGrid.innerHTML = '';
-  headerCells.forEach(h => calendarDaysGrid.appendChild(h));
-  
+  headerCells.forEach((h) => calendarDaysGrid.appendChild(h));
+
   // Calculate Monday-start weekday offset
   let firstDay = new Date(calYear, calMonth, 1).getDay(); // 0 is Sunday, 1 is Monday...
-  firstDay = (firstDay === 0) ? 6 : firstDay - 1; // shift Sunday to 6, Monday to 0
-  
+  firstDay = firstDay === 0 ? 6 : firstDay - 1; // shift Sunday to 6, Monday to 0
+
   const totalDays = new Date(calYear, calMonth + 1, 0).getDate();
   const prevMonthTotalDays = new Date(calYear, calMonth, 0).getDate();
-  
+
   const todayDate = new Date();
-  
+
   // 1. Previous Month Days spacing
   for (let i = firstDay - 1; i >= 0; i--) {
     const dayVal = prevMonthTotalDays - i;
     const cell = createCalendarDayCell(dayVal, true);
     calendarDaysGrid.appendChild(cell);
   }
-  
+
   // 2. Current Month Days
   for (let d = 1; d <= totalDays; d++) {
     const cell = createCalendarDayCell(d, false);
-    
+
     // Check if cell is Today
-    if (todayDate.getDate() === d && todayDate.getMonth() === calMonth && todayDate.getFullYear() === calYear) {
+    if (
+      todayDate.getDate() === d &&
+      todayDate.getMonth() === calMonth &&
+      todayDate.getFullYear() === calYear
+    ) {
       cell.classList.add('today-cell');
     }
-    
+
     calendarDaysGrid.appendChild(cell);
   }
-  
+
   // 3. Next Month Days filling grid cells
   const totalRendered = firstDay + totalDays;
-  const remaining = (totalRendered % 7 === 0) ? 0 : 7 - (totalRendered % 7);
+  const remaining = totalRendered % 7 === 0 ? 0 : 7 - (totalRendered % 7);
   for (let n = 1; n <= remaining; n++) {
     const cell = createCalendarDayCell(n, true);
     calendarDaysGrid.appendChild(cell);
@@ -340,45 +394,47 @@ function renderCalendar() {
 function createCalendarDayCell(dayNum, isOtherMonth) {
   const cell = document.createElement('div');
   cell.className = `calendar-day-cell ${isOtherMonth ? 'other-month' : ''}`;
-  
+
   const numSpan = document.createElement('span');
   numSpan.className = 'calendar-day-num';
   numSpan.textContent = dayNum;
   cell.appendChild(numSpan);
-  
+
   if (!isOtherMonth) {
     const dateStr = `${calYear}-${String(calMonth + 1).padStart(2, '0')}-${String(dayNum).padStart(2, '0')}`;
-    const dateNotes = notes.filter(n => n.date === dateStr && !n.isDeleted && !n.isArchived);
-    
+    const dateNotes = notes.filter(
+      (n) => n.date === dateStr && !n.isDeleted && !n.isArchived
+    );
+
     if (dateNotes.length > 0) {
       const eventsContainer = document.createElement('div');
       eventsContainer.className = 'calendar-cell-events';
-      
-      dateNotes.forEach(note => {
+
+      dateNotes.forEach((note) => {
         const tag = document.createElement('div');
         tag.className = 'calendar-event-tag';
         tag.style.backgroundColor = note.color;
         tag.textContent = note.title;
         tag.title = note.title;
-        
+
         // Open Note Details View Modal on tag click
         tag.addEventListener('click', (e) => {
           e.stopPropagation(); // Stop opening note creation form
           openViewNoteModal(note);
         });
-        
+
         eventsContainer.appendChild(tag);
       });
-      
+
       cell.appendChild(eventsContainer);
     }
-    
+
     // Clicking empty cell space triggers Add Note form
     cell.addEventListener('click', () => {
       openAddNoteModal(dateStr);
     });
   }
-  
+
   return cell;
 }
 
@@ -388,19 +444,23 @@ function parseDateString(dateStr) {
 }
 
 function isSameDay(d1, d2) {
-  return d1.getFullYear() === d2.getFullYear() &&
-         d1.getMonth() === d2.getMonth() &&
-         d1.getDate() === d2.getDate();
+  return (
+    d1.getFullYear() === d2.getFullYear() &&
+    d1.getMonth() === d2.getMonth() &&
+    d1.getDate() === d2.getDate()
+  );
 }
 
 function getWeekNumber(d) {
   const onejan = new Date(d.getFullYear(), 0, 1);
-  return Math.ceil((((d - onejan) / 86400000) + onejan.getDay() + 1) / 7);
+  return Math.ceil(((d - onejan) / 86400000 + onejan.getDay() + 1) / 7);
 }
 
 function isThisWeek(d, referenceDate = new Date()) {
-  return d.getFullYear() === referenceDate.getFullYear() &&
-         getWeekNumber(d) === getWeekNumber(referenceDate);
+  return (
+    d.getFullYear() === referenceDate.getFullYear() &&
+    getWeekNumber(d) === getWeekNumber(referenceDate)
+  );
 }
 
 function isThisMonth(d, referenceYear, referenceMonth) {
@@ -410,34 +470,39 @@ function isThisMonth(d, referenceYear, referenceMonth) {
 // --- RENDER FOLDERS GRID ---
 function renderFolders() {
   foldersGrid.innerHTML = '';
-  
+
   let filteredFolders = [...folders];
-  
+
   // Filter search matches
-  if (searchQuery.trim() !== "") {
-    filteredFolders = filteredFolders.filter(f => f.title.toLowerCase().includes(searchQuery.toLowerCase()));
+  if (searchQuery.trim() !== '') {
+    filteredFolders = filteredFolders.filter((f) =>
+      f.title.toLowerCase().includes(searchQuery.toLowerCase())
+    );
   }
-  
+
   // Filter tabs: Week, Month, All
   const todayRef = new Date();
   if (activeFoldersFilter === 'week') {
-    filteredFolders = filteredFolders.filter(f => {
+    filteredFolders = filteredFolders.filter((f) => {
       const fDate = new Date(f.date);
       return isThisWeek(fDate, todayRef);
     });
   } else if (activeFoldersFilter === 'month') {
-    filteredFolders = filteredFolders.filter(f => {
+    filteredFolders = filteredFolders.filter((f) => {
       const fDate = new Date(f.date);
-      return fDate.getMonth() === todayRef.getMonth() && fDate.getFullYear() === todayRef.getFullYear();
+      return (
+        fDate.getMonth() === todayRef.getMonth() &&
+        fDate.getFullYear() === todayRef.getFullYear()
+      );
     });
   }
-  
+
   // Render Folder Cards
-  filteredFolders.forEach(folder => {
+  filteredFolders.forEach((folder) => {
     const card = document.createElement('div');
     card.className = `folder-card ${activeFolderId === folder.id ? 'active-folder' : ''}`;
     card.style.backgroundColor = folder.color;
-    
+
     card.innerHTML = `
       <div class="folder-header">
         <div class="folder-icon-wrap">
@@ -451,26 +516,32 @@ function renderFolders() {
         <h4 class="folder-title">${folder.title}</h4>
         <span class="folder-date">${(() => {
           const parts = folder.date.split('-');
-          return parts.length === 3 ? `${parts[2]}/${parts[1]}/${parts[0]}` : folder.date;
+          return parts.length === 3
+            ? `${parts[2]}/${parts[1]}/${parts[0]}`
+            : folder.date;
         })()}</span>
       </div>
     `;
-    
+
     // Click on folder to filter notes
     card.addEventListener('click', (e) => {
       if (e.target.closest('.folder-options-btn')) {
         e.stopPropagation();
-        if (confirm(`Delete folder "${folder.title}"? Notes inside will lose folder assignment.`)) {
+        if (
+          confirm(
+            `Delete folder "${folder.title}"? Notes inside will lose folder assignment.`
+          )
+        ) {
           deleteFolder(folder.id);
         }
         return;
       }
       toggleFolderFilter(folder.id);
     });
-    
+
     foldersGrid.appendChild(card);
   });
-  
+
   // Append Dashed New Folder Button Card
   const newFolderCard = document.createElement('div');
   newFolderCard.className = 'folder-card folder-create-card';
@@ -498,10 +569,10 @@ function toggleFolderFilter(folderId) {
 }
 
 function deleteFolder(folderId) {
-  folders = folders.filter(f => f.id !== folderId);
+  folders = folders.filter((f) => f.id !== folderId);
   // Reset notes assigned to this folder to no folder
-  notes.forEach(n => {
-    if (n.folderId === folderId) n.folderId = "";
+  notes.forEach((n) => {
+    if (n.folderId === folderId) n.folderId = '';
   });
   if (activeFolderId === folderId) activeFolderId = null;
   saveFolders();
@@ -513,59 +584,60 @@ function deleteFolder(folderId) {
 // --- RENDER NOTES GRID ---
 function renderNotes() {
   notesGrid.innerHTML = '';
-  
+
   // Format Month displaying header
   monthDisplay.textContent = `${MONTH_NAMES[displayMonth]} ${displayYear}`;
-  
-  let filteredNotes = notes.filter(n => {
-    if (currentView === "all") return !n.isArchived && !n.isDeleted;
-    if (currentView === "archive") return n.isArchived && !n.isDeleted;
-    if (currentView === "trash") return n.isDeleted;
+
+  let filteredNotes = notes.filter((n) => {
+    if (currentView === 'all') return !n.isArchived && !n.isDeleted;
+    if (currentView === 'archive') return n.isArchived && !n.isDeleted;
+    if (currentView === 'trash') return n.isDeleted;
     return true;
   });
-  
+
   // Filter search matches
-  if (searchQuery.trim() !== "") {
-    filteredNotes = filteredNotes.filter(n => 
-      n.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-      n.content.toLowerCase().includes(searchQuery.toLowerCase())
+  if (searchQuery.trim() !== '') {
+    filteredNotes = filteredNotes.filter(
+      (n) =>
+        n.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        n.content.toLowerCase().includes(searchQuery.toLowerCase())
     );
   }
-  
+
   // Filter by active folder click
   if (activeFolderId) {
-    filteredNotes = filteredNotes.filter(n => n.folderId === activeFolderId);
+    filteredNotes = filteredNotes.filter((n) => n.folderId === activeFolderId);
   }
-  
+
   // Filter notes by date selector (Today, Week, Month tabs)
-  if (currentView === "all") {
-    filteredNotes = filteredNotes.filter(n => {
+  if (currentView === 'all') {
+    filteredNotes = filteredNotes.filter((n) => {
       const nDate = new Date(n.date);
-      
-      if (activeNotesFilter === "today") {
+
+      if (activeNotesFilter === 'today') {
         return isSameDay(nDate, new Date());
-      } else if (activeNotesFilter === "week") {
+      } else if (activeNotesFilter === 'week') {
         return isThisWeek(nDate, new Date());
       } else {
         return isThisMonth(nDate, displayYear, displayMonth);
       }
     });
   }
-  
+
   // Render Cards
-  filteredNotes.forEach(note => {
+  filteredNotes.forEach((note) => {
     const card = document.createElement('div');
     card.className = 'note-card';
     card.style.backgroundColor = note.color;
-    
+
     // Format Display date (e.g. 12/12/2021)
     const dObj = new Date(note.date);
-    const displayDateStr = `${dObj.getDate()}/${dObj.getMonth()+1}/${dObj.getFullYear()}`;
-    
+    const displayDateStr = `${dObj.getDate()}/${dObj.getMonth() + 1}/${dObj.getFullYear()}`;
+
     // Get folder title
-    const folderObj = folders.find(f => f.id === note.folderId);
-    const folderName = folderObj ? folderObj.title : "Unassigned";
-    
+    const folderObj = folders.find((f) => f.id === note.folderId);
+    const folderName = folderObj ? folderObj.title : 'Unassigned';
+
     card.innerHTML = `
       <div class="note-card-header">
         <span class="note-card-date">${displayDateStr}</span>
@@ -579,10 +651,10 @@ function renderNotes() {
       </div>
       <div class="note-card-footer">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-        <span>${note.time ? formatTime(note.time) : "10:30 PM"}, ${note.day || "Monday"}</span>
+        <span>${note.time ? formatTime(note.time) : '10:30 PM'}, ${note.day || 'Monday'}</span>
       </div>
     `;
-    
+
     // Click note to view detail modal
     card.addEventListener('click', (e) => {
       if (e.target.closest('.note-edit-icon-btn')) {
@@ -592,12 +664,12 @@ function renderNotes() {
       }
       openViewNoteModal(note);
     });
-    
+
     notesGrid.appendChild(card);
   });
-  
+
   // Append Dashed New Note Button Card
-  if (currentView === "all") {
+  if (currentView === 'all') {
     const newNoteCard = document.createElement('div');
     newNoteCard.className = 'note-card note-create-card';
     newNoteCard.innerHTML = `
@@ -628,68 +700,73 @@ function formatTime(timeStr) {
 folderForm.addEventListener('submit', (e) => {
   e.preventDefault();
   const title = folderNameInput.value.trim();
-  const color = document.querySelector('input[name="folder-color"]:checked').value;
-  
+  const color = document.querySelector(
+    'input[name="folder-color"]:checked'
+  ).value;
+
   const dObj = new Date();
   const dateStr = dObj.toISOString().split('T')[0]; // Store as YYYY-MM-DD
-  
+
   const newFolder = {
     id: 'folder-' + Date.now(),
     title,
     color,
-    date: dateStr
+    date: dateStr,
   };
-  
+
   folders.push(newFolder);
   saveFolders();
-  
+
   folderModal.classList.remove('active');
   folderNameInput.value = '';
-  
+
   renderFolders();
   populateFolderDropdown();
 });
 
 function openAddNoteModal(targetDate = null) {
-  noteModalTitle.textContent = "Create Note";
-  editNoteId.value = "";
-  noteTitleInput.value = "";
-  noteContentInput.value = "";
-  noteTimeInput.value = "10:30";
-  noteDaySelect.value = "Monday";
-  
+  noteModalTitle.textContent = 'Create Note';
+  editNoteId.value = '';
+  noteTitleInput.value = '';
+  noteContentInput.value = '';
+  noteTimeInput.value = '10:30';
+  noteDaySelect.value = 'Monday';
+
   // Pre-populate target date in form dataset
-  noteForm.dataset.targetDate = targetDate || new Date().toISOString().split('T')[0];
-  
+  noteForm.dataset.targetDate =
+    targetDate || new Date().toISOString().split('T')[0];
+
   populateFolderDropdown();
   noteModal.classList.add('active');
 }
 
 function openEditNoteModal(noteId) {
-  const note = notes.find(n => n.id === noteId);
+  const note = notes.find((n) => n.id === noteId);
   if (!note) return;
-  
-  noteModalTitle.textContent = "Edit Note";
+
+  noteModalTitle.textContent = 'Edit Note';
   editNoteId.value = note.id;
   noteTitleInput.value = note.title;
   noteContentInput.value = note.content;
-  noteTimeInput.value = note.time || "10:30";
-  noteDaySelect.value = note.day || "Monday";
+  noteTimeInput.value = note.time || '10:30';
+  noteDaySelect.value = note.day || 'Monday';
   noteForm.dataset.targetDate = note.date;
-  
+
   populateFolderDropdown();
   noteFolderSelect.value = note.folderId;
-  
+
   // Highlight note color
-  const radio = document.querySelector(`input[name="note-color"][value="${note.color}"]`);
+  const radio = document.querySelector(
+    `input[name="note-color"][value="${note.color}"]`
+  );
   if (radio) radio.checked = true;
-  
+
   noteModal.classList.add('active');
 }
 
 function populateFolderDropdown() {
   noteFolderSelect.innerHTML = '<option value="">Unassigned Folder</option>';
-  folders.forEach(f => {
+  folders.forEach((f) => {
     const opt = document.createElement('option');
     opt.value = f.id;
     opt.textContent = f.title;
@@ -699,19 +776,21 @@ function populateFolderDropdown() {
 
 noteForm.addEventListener('submit', (e) => {
   e.preventDefault();
-  
+
   const id = editNoteId.value;
   const title = noteTitleInput.value.trim();
   const folderId = noteFolderSelect.value;
   const content = noteContentInput.value.trim();
   const time = noteTimeInput.value;
   const day = noteDaySelect.value;
-  const color = document.querySelector('input[name="note-color"]:checked').value;
+  const color = document.querySelector(
+    'input[name="note-color"]:checked'
+  ).value;
   const targetDate = noteForm.dataset.targetDate;
-  
+
   if (id) {
     // EDIT
-    const note = notes.find(n => n.id === id);
+    const note = notes.find((n) => n.id === id);
     if (note) {
       note.title = title;
       note.folderId = folderId;
@@ -732,11 +811,38 @@ noteForm.addEventListener('submit', (e) => {
       time,
       day,
       isArchived: false,
-      isDeleted: false
+      isDeleted: false,
     };
+
     notes.push(newNote);
+
+    /*
+     * Ensure the newly created note is immediately visible.
+     * If the current filter would hide the note,
+     * switch to Month view for the note's month.
+     */
+    const createdDate = new Date(targetDate);
+
+    if (
+      (activeNotesFilter === 'today' && !isSameDay(createdDate, new Date())) ||
+      (activeNotesFilter === 'week' && !isThisWeek(createdDate, new Date()))
+    ) {
+      activeNotesFilter = 'month';
+      displayYear = createdDate.getFullYear();
+      displayMonth = createdDate.getMonth();
+
+      document
+        .querySelectorAll('#notes-filter-tabs .filter-tab')
+        .forEach((tab) => {
+          tab.classList.toggle('active', tab.dataset.filter === 'month');
+        });
+
+      alert(
+        'Note saved successfully. The view has been switched to the appropriate month so the new note is visible.'
+      );
+    }
   }
-  
+
   saveNotes();
   noteModal.classList.remove('active');
   renderNotes();
@@ -750,23 +856,27 @@ function openViewNoteModal(note) {
   currentViewingNote = note;
   viewCardColor.style.backgroundColor = note.color;
   viewNoteTitle.textContent = note.title;
-  
-  const folderObj = folders.find(f => f.id === note.folderId);
-  viewNoteFolder.textContent = folderObj ? folderObj.title : "Unassigned";
-  
+
+  const folderObj = folders.find((f) => f.id === note.folderId);
+  viewNoteFolder.textContent = folderObj ? folderObj.title : 'Unassigned';
+
   const dObj = new Date(note.date);
-  viewNoteDate.textContent = dObj.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-  
-  viewReminderText.textContent = `${note.time ? formatTime(note.time) : "10:30 PM"}, ${note.day || "Monday"}`;
+  viewNoteDate.textContent = dObj.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+
+  viewReminderText.textContent = `${note.time ? formatTime(note.time) : '10:30 PM'}, ${note.day || 'Monday'}`;
   viewNoteContentText.textContent = note.content;
-  
+
   // Icon States depending on View mode (Archive / Trash actions)
   if (note.isDeleted) {
     viewArchiveBtn.style.display = 'none';
     viewEditBtn.style.display = 'none';
     // Delete icon acts as delete permanently, and we add restore icon
-    viewDeleteBtn.title = "Delete Permanently";
-    
+    viewDeleteBtn.title = 'Delete Permanently';
+
     // Add restore button if not exists
     let restoreBtn = document.getElementById('view-restore-btn');
     if (!restoreBtn) {
@@ -774,7 +884,8 @@ function openViewNoteModal(note) {
       restoreBtn.className = 'view-action-btn';
       restoreBtn.id = 'view-restore-btn';
       restoreBtn.title = 'Restore note';
-      restoreBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>';
+      restoreBtn.innerHTML =
+        '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>';
       restoreBtn.addEventListener('click', () => {
         restoreNote(currentViewingNote.id);
         viewNoteModal.classList.remove('active');
@@ -786,12 +897,12 @@ function openViewNoteModal(note) {
   } else {
     viewArchiveBtn.style.display = 'flex';
     viewEditBtn.style.display = 'flex';
-    viewDeleteBtn.title = "Move to Trash";
-    
+    viewDeleteBtn.title = 'Move to Trash';
+
     const restoreBtn = document.getElementById('view-restore-btn');
     if (restoreBtn) restoreBtn.style.display = 'none';
   }
-  
+
   viewNoteModal.classList.add('active');
 }
 
@@ -814,8 +925,10 @@ viewArchiveBtn.addEventListener('click', () => {
 viewDeleteBtn.addEventListener('click', () => {
   if (currentViewingNote) {
     if (currentViewingNote.isDeleted) {
-      if (confirm("Permanently delete this note? This action cannot be undone.")) {
-        notes = notes.filter(n => n.id !== currentViewingNote.id);
+      if (
+        confirm('Permanently delete this note? This action cannot be undone.')
+      ) {
+        notes = notes.filter((n) => n.id !== currentViewingNote.id);
       } else {
         return;
       }
@@ -831,7 +944,7 @@ viewDeleteBtn.addEventListener('click', () => {
 });
 
 function restoreNote(noteId) {
-  const note = notes.find(n => n.id === noteId);
+  const note = notes.find((n) => n.id === noteId);
   if (note) {
     note.isDeleted = false;
     saveNotes();
@@ -844,36 +957,36 @@ function restoreNote(noteId) {
 function switchView(viewName) {
   currentView = viewName;
   activeFolderId = null; // reset folder filter
-  
+
   // Manage active nav tab highlight
   navAllNotes.classList.toggle('active', viewName === 'all');
   navCalendar.classList.toggle('active', viewName === 'calendar');
   navArchive.classList.toggle('active', viewName === 'archive');
   navTrash.classList.toggle('active', viewName === 'trash');
-  
+
   // Toggle sections display
   if (viewName === 'calendar') {
     foldersSection.classList.add('hidden');
     notesSection.classList.add('hidden');
     calendarSection.classList.remove('hidden');
-    workspaceTitleDisplay.textContent = "CALENDAR";
+    workspaceTitleDisplay.textContent = 'CALENDAR';
     renderCalendar();
   } else {
     calendarSection.classList.add('hidden');
     foldersSection.classList.remove('hidden');
     notesSection.classList.remove('hidden');
-    
+
     if (viewName === 'all') {
-      workspaceTitleDisplay.textContent = "MY NOTES";
-      notesTitleHeading.textContent = "My Notes";
+      workspaceTitleDisplay.textContent = 'MY NOTES';
+      notesTitleHeading.textContent = 'My Notes';
       foldersSection.style.display = 'block';
     } else if (viewName === 'archive') {
-      workspaceTitleDisplay.textContent = "ARCHIVE";
-      notesTitleHeading.textContent = "Archived Notes";
+      workspaceTitleDisplay.textContent = 'ARCHIVE';
+      notesTitleHeading.textContent = 'Archived Notes';
       foldersSection.style.display = 'none'; // hide folders list in Archive
     } else if (viewName === 'trash') {
-      workspaceTitleDisplay.textContent = "TRASH";
-      notesTitleHeading.textContent = "Deleted Notes (Trash)";
+      workspaceTitleDisplay.textContent = 'TRASH';
+      notesTitleHeading.textContent = 'Deleted Notes (Trash)';
       foldersSection.style.display = 'none'; // hide folders in Trash
     }
     renderFolders();
@@ -887,33 +1000,40 @@ function bindEvents() {
   mobileToggle.addEventListener('click', () => {
     sidebar.classList.toggle('active');
   });
-  
+
   // Close mobile sidebar on outer clicks
   document.addEventListener('click', (e) => {
     if (window.innerWidth <= 768) {
-      if (!sidebar.contains(e.target) && !mobileToggle.contains(e.target) && sidebar.classList.contains('active')) {
+      if (
+        !sidebar.contains(e.target) &&
+        !mobileToggle.contains(e.target) &&
+        sidebar.classList.contains('active')
+      ) {
         sidebar.classList.remove('active');
       }
     }
-    
+
     // Close "+ Add new" dropdown on outer click
-    if (!addNewTrigger.contains(e.target) && !addDropdownMenu.contains(e.target)) {
+    if (
+      !addNewTrigger.contains(e.target) &&
+      !addDropdownMenu.contains(e.target)
+    ) {
       addDropdownMenu.classList.remove('active');
     }
   });
 
   // Header menu dummy alert
   headerSettingsBtn.addEventListener('click', () => {
-    alert("Mino Dashboard Settings Menu. Open source offline platform.");
+    alert('Mino Dashboard Settings Menu. Open source offline platform.');
   });
-  
+
   // Top bar search handler
   searchInput.addEventListener('input', (e) => {
     searchQuery = e.target.value;
     renderFolders();
     renderNotes();
   });
-  
+
   // Month selectors events
   prevMonthBtn.addEventListener('click', () => {
     displayMonth--;
@@ -923,7 +1043,7 @@ function bindEvents() {
     }
     renderNotes();
   });
-  
+
   nextMonthBtn.addEventListener('click', () => {
     displayMonth++;
     if (displayMonth > 11) {
@@ -942,7 +1062,7 @@ function bindEvents() {
     }
     renderCalendar();
   });
-  
+
   calNextMonth.addEventListener('click', () => {
     calMonth++;
     if (calMonth > 11) {
@@ -951,27 +1071,31 @@ function bindEvents() {
     }
     renderCalendar();
   });
-  
+
   // Nav buttons click binding
   navAllNotes.addEventListener('click', () => switchView('all'));
   navCalendar.addEventListener('click', () => switchView('calendar'));
   navArchive.addEventListener('click', () => switchView('archive'));
   navTrash.addEventListener('click', () => switchView('trash'));
-  
+
   // Folder filter tabs click
-  foldersFilterTabs.querySelectorAll('.filter-tab').forEach(tab => {
+  foldersFilterTabs.querySelectorAll('.filter-tab').forEach((tab) => {
     tab.addEventListener('click', () => {
-      foldersFilterTabs.querySelector('.filter-tab.active').classList.remove('active');
+      foldersFilterTabs
+        .querySelector('.filter-tab.active')
+        .classList.remove('active');
       tab.classList.add('active');
       activeFoldersFilter = tab.dataset.filter;
       renderFolders();
     });
   });
-  
+
   // Notes filter tabs click
-  notesFilterTabs.querySelectorAll('.filter-tab').forEach(tab => {
+  notesFilterTabs.querySelectorAll('.filter-tab').forEach((tab) => {
     tab.addEventListener('click', () => {
-      notesFilterTabs.querySelector('.filter-tab.active').classList.remove('active');
+      notesFilterTabs
+        .querySelector('.filter-tab.active')
+        .classList.remove('active');
       tab.classList.add('active');
       activeNotesFilter = tab.dataset.filter;
       renderNotes();
@@ -994,16 +1118,26 @@ function bindEvents() {
     addDropdownMenu.classList.remove('active');
     openAddNoteModal();
   });
-  
+
   // Close modals buttons events
-  closeFolderModal.addEventListener('click', () => folderModal.classList.remove('active'));
-  cancelFolderBtn.addEventListener('click', () => folderModal.classList.remove('active'));
-  
-  closeNoteModal.addEventListener('click', () => noteModal.classList.remove('active'));
-  cancelNoteBtn.addEventListener('click', () => noteModal.classList.remove('active'));
-  
-  closeViewNoteModal.addEventListener('click', () => viewNoteModal.classList.remove('active'));
-  
+  closeFolderModal.addEventListener('click', () =>
+    folderModal.classList.remove('active')
+  );
+  cancelFolderBtn.addEventListener('click', () =>
+    folderModal.classList.remove('active')
+  );
+
+  closeNoteModal.addEventListener('click', () =>
+    noteModal.classList.remove('active')
+  );
+  cancelNoteBtn.addEventListener('click', () =>
+    noteModal.classList.remove('active')
+  );
+
+  closeViewNoteModal.addEventListener('click', () =>
+    viewNoteModal.classList.remove('active')
+  );
+
   // Close modals on clicking outer dark space
   window.addEventListener('click', (e) => {
     if (e.target === folderModal) folderModal.classList.remove('active');
@@ -1012,12 +1146,14 @@ function bindEvents() {
   });
 
   // Color Accent quick pickers theme
-  themeColorDots.forEach(dot => {
+  themeColorDots.forEach((dot) => {
     dot.addEventListener('click', () => {
       const colorVal = dot.dataset.color;
       document.body.style.backgroundColor = colorVal;
       // Fade accent theme to scroll container too
-      document.getElementById('workspace-scroll-container').style.backgroundColor = colorVal;
+      document.getElementById(
+        'workspace-scroll-container'
+      ).style.backgroundColor = colorVal;
     });
   });
 }
@@ -1026,7 +1162,7 @@ function bindEvents() {
 function init() {
   loadData();
   bindEvents();
-  
+
   // Render default workspace views
   renderFolders();
   renderNotes();

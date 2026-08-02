@@ -24,52 +24,10 @@
 
 </head>
 <body>
-    <!-- Sidebar Navigation -->
-    <aside class="sidebar">
-        <div class="sidebar-header">
-            <div class="logo-wrapper">
-                <div class="logo-icon"></div>
-                <div class="logo-text">
-                    <h1>MedConsult</h1>
-                    <p>Dashboard</p>
-                </div>
-            </div>
-            <button class="sidebar-toggle" id="danglingSidebarToggle" aria-label="Toggle Sidebar">
-                <i class="ph ph-list"></i>
-            </button>
-        </div>
 
-        <nav class="sidebar-nav">
-            <ul>
-                <li>
-                    <a href="index.html" class="nav-item active" data-page="dashboard">
-                        <i class="ph ph-squares-four"></i>
-                        <span>Dashboard</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="remedies.html" class="nav-item" data-page="remedies">
-                        <i class="ph ph-leaf"></i>
-                        <span>Home Remedies</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="feedback.html" class="nav-item" data-page="feedback">
-                        <i class="ph ph-chat-circle-text"></i>
-                        <span>Feedback</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-
-        <div class="sidebar-footer">
-            <button class="theme-toggle-btn" id="danglingThemeToggleBtn" aria-label="Toggle Theme"></button>
-        </div>
-    </aside>
-
-    <link rel="stylesheet" href="css/animations.css">
 
     <link rel="stylesheet" href="css/animation.css">
+    
     <link rel="stylesheet" href="css/hero.css">
     <link rel="stylesheet" href="assets/css/auth.css">
 </head>
@@ -91,114 +49,43 @@
                 <i class="ph ph-list"></i>
             </button>
         </div>
-
         <nav class="sidebar-nav">
-            <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:10px;">
+    <ul>
 
-                <!-- DASHBOARD -->
-                <li>
-                    <a href="index.html" class="nav-item active"
-                        style="display:flex; align-items:center; gap:10px; padding:12px 14px;
-                        border-radius:12px; text-decoration:none;
-                        background:transparent;
-                        color:#333;
-                        border:1px solid rgba(0,0,0,0.08);
-                        transition:all 0.25s ease;"
-                        onmouseover="this.style.background='linear-gradient(135deg,#4f46e5,#3b82f6)'; this.style.color='#fff'; this.style.transform='translateX(4px)';"
-                        onmouseout="this.style.background='transparent'; this.style.color='#333'; this.style.transform='translateX(0px)';">
-                        <i class="ph ph-squares-four" style="font-size:18px;"></i>
-            <ul>
+        <li>
+            <a href="index.html" class="nav-item active">
+                <i class="ph ph-squares-four"></i>
+                <span>Dashboard</span>
+            </a>
+        </li>
 
-                <!-- DASHBOARD -->
-                <li>
-                    <a href="index.html" class="nav-item active">
-                        <i class="ph ph-squares-four"></i>
-                        <span>Dashboard</span>
-                    </a>
-                </li>
+        <li>
+            <a href="remedies.html" class="nav-item">
+                <i class="ph ph-leaf"></i>
+                <span>Home Remedies</span>
+            </a>
+        </li>
 
-                <!-- HOME REMEDIES -->
-                <li>
-                    <a href="remedies.html"
-                        style="display:flex; align-items:center; gap:10px; padding:12px 14px;
-                        border-radius:12px; text-decoration:none;
-                        background:transparent;
-                        color:#333;
-                        border:1px solid rgba(0,0,0,0.08);
-                        transition:all 0.25s ease;"
-                        onmouseover="this.style.background='linear-gradient(135deg,#4f46e5,#3b82f6)'; this.style.color='#fff'; this.style.transform='translateX(4px)';"
-                        onmouseout="this.style.background='transparent'; this.style.color='#333'; this.style.transform='translateX(0px)';">
-                        <i class="ph ph-leaf" style="font-size:18px;"></i>
-                    <a href="remedies.html" class="nav-item">
-                        <i class="ph ph-leaf"></i>
-                        <span>Home Remedies</span>
-                    </a>
-                </li>
+        <li>
+            <a href="feedback.html" class="nav-item">
+                <i class="ph ph-chat-circle-text"></i>
+                <span>Feedback</span>
+            </a>
+        </li>
 
-                <!-- FEEDBACK -->
-                <li>
-                    <a href="feedback.html"
-                        style="display:flex; align-items:center; gap:10px; padding:12px 14px;
-                        border-radius:12px; text-decoration:none;
-                        background:transparent;
-                        color:#333;
-                        border:1px solid rgba(0,0,0,0.08);
-                        transition:all 0.25s ease;"
-                        onmouseover="this.style.background='linear-gradient(135deg,#4f46e5,#3b82f6)'; this.style.color='#fff'; this.style.transform='translateX(4px)';"
-                        onmouseout="this.style.background='transparent'; this.style.color='#333'; this.style.transform='translateX(0px)';">
-                        <i class="ph ph-chat-circle-text" style="font-size:18px;"></i>
-                    <a href="feedback.html" class="nav-item">
-                        <i class="ph ph-chat-circle-text"></i>
-                        <span>Feedback</span>
-                    </a>
-                </li>
-
-            </ul>
-        </nav>
-
-        <div class="sidebar-footer" style="margin-top:auto; padding:16px; display:flex; flex-direction:column; gap:12px;">
-
-            <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Theme"
-                style="display:flex !important; visibility:visible !important; opacity:1 !important;
-                align-items:center; gap:10px; padding:12px 14px; border:none; border-radius:12px; cursor:pointer;
-                background:linear-gradient(135deg,#2b2d42,#1f2233); color:#fff !important; font-weight:500;
-                box-shadow:0 6px 18px;">
-                <i class="ph ph-moon" style="font-size:18px; color:#fff;"></i>
-                <span style="color:#fff;">Dark Mode</span>
-            </button>
-
-            <button class="btn btn-outline" id="logoutBtn"
-                style="width:100%; padding:12px 14px; border-radius:12px; cursor:pointer;
-                border:1px solid #ff4d4f; background:transparent; color:#ff4d4f;
-                font-weight:600; display:flex; align-items:center; justify-content:center; gap:8px;
-                transition:all 0.2s ease; box-shadow:0 4px 14px rgba(255,77,79,0.15);">
-                <i class="ph ph-sign-out" style="font-size:18px;"></i>
-                Logout
-            </button>
-
-
-            <button class="btn btn-outline" id="logoutBtn"
-                style="width:100%; padding:12px 14px; border-radius:12px; cursor:pointer;
-                border:1px solid #ff4d4f; background:transparent; color:#ff4d4f;
-                font-weight:600; display:flex; align-items:center; justify-content:center; gap:8px;
-                transition:all 0.2s ease; box-shadow:0 4px 14px rgba(255,77,79,0.15);">
-                <i class="ph ph-sign-out" style="font-size:18px;"></i>
-                Logout
-            </button>
-
+    </ul>
+</nav>
 
         <div class="sidebar-footer">
-
             <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Theme">
                 <i class="ph ph-moon"></i>
                 <span>Dark Mode</span>
             </button>
 
-            <button class="btn btn-outline" id="logoutBtn">
+            <button class="btn btn-outline btn-logout" id="logoutBtn">
                 <i class="ph ph-sign-out"></i>
                 Logout
             </button>
-
         </div>
     </aside>
 
@@ -244,14 +131,14 @@
         <div class="page-container">
 
             <!-- Hero Section -->
-            <section class="hero-section" style="min-height:100vh; display:flex; justify-content:center; align-items:center; text-align:center;">
-                <div class="hero-content" style="display:flex; flex-direction:column; align-items:center;">
+            <section class="hero-section">
+                <div class="hero-content">
                     <div class="hero-text">
                         <h1>🏥 Welcome to MedConsult</h1>
                         <p id="welcomeMessage">Connecting Local Doctors with Specialists</p>
                         <p>Connect with expert specialists for your healthcare needs</p>
                     </div>
-                    <div class="hero-stats" style="display:flex; gap:20px; justify-content:center; margin-top:20px;">
+                    <div class="hero-stats">
                         <div class="stat-item">
                             <div class="stat-number">500+</div>
                             <div class="stat-label">Specialists</div>
@@ -405,22 +292,27 @@
                     <section class="card" data-role="patient">
                         <div class="card-header">
                             <div class="card-icon primary"><i class="ph ph-stethoscope"></i></div>
-                            <h2>Request Consultation</h2>
+                            <div class="card-header-content">
+                                <h2>Request Consultation</h2>
+                                <p class="card-subtitle">Fast patient intake for secure specialist matching.</p>
+                            </div>
                         </div>
                         <form id="requestForm" class="modern-form" novalidate>
                             <div class="form-group">
-                                <div class="form-field">
-                                    <label for="patientName">Patient Full Name</label>
-                                    <div class="input-wrapper">
-                                        <i class="ph ph-user"></i>
-                                        <input type="text" id="patientName" name="patientName" placeholder="Enter your full name" required>
+                                <div class="form-row-2">
+                                    <div class="form-field">
+                                        <label for="patientName">Patient Full Name</label>
+                                        <div class="input-wrapper">
+                                            <i class="ph ph-user"></i>
+                                            <input type="text" id="patientName" name="patientName" placeholder="Enter your full name" required>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-field">
-                                    <label for="doctorName">Referring Doctor</label>
-                                    <div class="input-wrapper">
-                                        <i class="ph ph-user-md"></i>
-                                        <input type="text" id="doctorName" name="doctorName" placeholder="Doctor's name" required>
+                                    <div class="form-field">
+                                        <label for="doctorName">Referring Doctor</label>
+                                        <div class="input-wrapper">
+                                            <i class="ph ph-user-md"></i>
+                                            <input type="text" id="doctorName" name="doctorName" placeholder="Doctor's name" required>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-field">
@@ -430,15 +322,23 @@
                                         <textarea id="patientCondition" name="patientCondition" placeholder="Describe the condition briefly..." rows="3" required></textarea>
                                     </div>
                                 </div>
-                                <div class="form-field">
-                                    <label for="specialistSearch">Required Specialist</label>
-                                    <div class="input-wrapper">
-                                        <i class="ph ph-magnifying-glass"></i>
-                                        <input type="text" id="specialistSearch" placeholder="Search specialist...">
+                                <div class="form-row-2">
+                                    <div class="form-field">
+                                        <label for="specialistSearch">Required Specialist</label>
+                                        <div class="input-wrapper">
+                                            <i class="ph ph-magnifying-glass"></i>
+                                            <input type="text" id="specialistSearch" placeholder="Search specialist...">
+                                        </div>
                                     </div>
-                                    <select id="specialistType" name="specialistType" required class="mt-2">
-                                        <option value="">Select a specialist...</option>
-                                    </select>
+                                    <div class="form-field">
+                                        <label for="specialistType">Specialist Type</label>
+                                        <div class="input-wrapper">
+                                            <i class="ph ph-stethoscope"></i>
+                                            <select id="specialistType" name="specialistType" required>
+                                                <option value="">Select a specialist...</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <button type="button" class="btn-text advanced-toggle" id="toggleAdvancedBtn">
@@ -542,6 +442,27 @@
                             <button class="quick-action-btn"><i class="ph ph-calendar"></i><span>Reschedule</span></button>
                         </div>
                     </section>
+                    <section class="card emergency-card">
+
+                        <div class="card-header">
+
+                            <div class="card-icon danger"><i class="ph ph-warning"></i></div>
+
+                            <h2>Emergency Services</h2>
+
+                        </div>
+
+                        <div class="emergency-buttons">
+
+                            <button class="emergency-btn"><div class="emergency-icon">🚑</div><span>Ambulance</span></button>
+
+                            <button class="emergency-btn"><div class="emergency-icon">🏥</div><span>Nearby Hospital</span></button>
+
+                            <button class="emergency-btn"><div class="emergency-icon">🧑‍⚕️</div><span>Emergency Doctor</span></button>
+
+                        </div>
+
+                    </section>
 
                 </div>
 
@@ -615,29 +536,7 @@
                         <div id="healthTip" class="health-tip-content"><p>Loading health tip...</p></div>
                     </section>
 
-                    <section class="card emergency-card">
-                        <div class="card-header">
-                            <div class="card-icon danger"><i class="ph ph-warning"></i></div>
-                            <h2>Emergency Services</h2>
-                        </div>
-                        <div class="emergency-buttons">
-                            <button class="emergency-btn"><div class="emergency-icon">🚑</div><span>Ambulance</span></button>
-                            <button class="emergency-btn"><div class="emergency-icon">🏥</div><span>Nearby Hospital</span></button>
-                            <button class="emergency-btn"><div class="emergency-icon">🧑‍⚕️</div><span>Emergency Doctor</span></button>
-                        </div>
-                    </section>
 
-                    <section class="card">
-                        <div class="card-header">
-                            <div class="card-icon primary"><i class="ph ph-lightning-bolt"></i></div>
-                            <h2>Quick Actions</h2>
-                        </div>
-                        <div class="quick-actions">
-                            <a href="feedback.html" class="quick-action-btn"><i class="ph ph-chat-circle-text"></i><span>Give Feedback</span></a>
-                            <button class="quick-action-btn"><i class="ph ph-download"></i><span>Download Records</span></button>
-                            <button class="quick-action-btn"><i class="ph ph-calendar"></i><span>Reschedule</span></button>
-                        </div>
-                    </section>
 
 
 

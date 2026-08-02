@@ -1,41 +1,63 @@
 let score;
 let scorestr = localStorage.getItem('SCORE');
 
-// --- FIXED LOGIC FOR INITIAL LOAD ---
+// Define the modern grid display function
+const getScoreDashboardHtml = () => {
+  return `
+    <div class="score-grid">
+      <div class="score-card win">
+        <span class="score-label">Won</span>
+        <span class="score-value">${score.win}</span>
+      </div>
+      <div class="score-card lost">
+        <span class="score-label">Lost</span>
+        <span class="score-value">${score.lost}</span>
+      </div>
+      <div class="score-card tie">
+        <span class="score-label">Tie</span>
+        <span class="score-value">${score.tie}</span>
+      </div>
+      <div class="score-card total">
+        <span class="score-label">Total</span>
+        <span class="score-value">${score.win + score.lost + score.tie}</span>
+      </div>
+    </div>
+  `;
+};
+
 // If a score exists in localStorage, parse it. Otherwise, initialize a fresh one.
 if (scorestr) {
   score = JSON.parse(scorestr);
-  // Re-attach the display function to the parsed object
-  score.display_results = function () {
-    return `<br>Won: ${score.win}<br><span style="color:red"> Lost: ${score.lost}</span><br> Tie: ${score.tie} <br> <span style="color:purple;">Total Games: ${score.win + score.lost + score.tie}</span>`;
-  };
+  score.display_results = getScoreDashboardHtml;
 } else {
   resetscore();
 }
 
 function resetscore() {
-  // Explicitly reset the score to 0
   score = {
     win: 0,
     lost: 0,
     tie: 0,
   };
-  score.display_results = function () {
-    return `<br>Won: ${score.win}<br><span style="color:red"> Lost: ${score.lost}</span><br> Tie: ${score.tie} <br> <span style="color:purple;">Total Games: ${score.win + score.lost + score.tie}</span>`;
-  };
-  // Save the reset score back to localStorage
+  score.display_results = getScoreDashboardHtml;
   localStorage.setItem('SCORE', JSON.stringify(score));
 }
 
-// --- NEW FUNCTION FOR THE RESET BUTTON ---
+// --- RESET BUTTON HANDLER ---
 function handleResetButton() {
-  resetscore(); // Resets the data structures & localStorage
+  localStorage.clear();
+  resetscore();
 
-  // Clear the UI elements immediately so old results disappear
+  // Reset the UI elements and transitions
   document.querySelector('#user-move').innerHTML = '';
   document.querySelector('#computer-move').innerHTML = '';
   document.querySelector('#result').innerHTML = '';
   document.querySelector('#score').innerHTML = score.display_results();
+  
+  const matchup = document.querySelector('.matchup-container');
+  if (matchup) {
+    matchup.classList.remove('active');
+  }
 }
 
 function computergeneratechoice() {
@@ -50,63 +72,100 @@ function computergeneratechoice() {
 }
 
 function choiceimage(choice) {
+  let imgSrc = '';
   if (choice === 'Bat') {
-    return '<div style="display: flex; justify-content: center; align-items: center; height: 100px;"><img src="bat.jpeg" alt="Bat" class="game-image" style="width: 80px; height: 80px;"></div>';
+    imgSrc = 'bat.jpeg';
   } else if (choice === 'Ball') {
-    return '<div style="display: flex; justify-content: center; align-items: center; height: 100px;"><img src="ball.jpeg" alt="Ball" class="game-image" style="width: 80px; height: 80px;"></div>';
+    imgSrc = 'ball.jpeg';
   } else if (choice === 'stump') {
-    return '<div style="display: flex; justify-content: center; align-items: center; height: 100px;"><img src="wickets.jpeg" alt="Stump" class="game-image" style="width: 80px; height: 80px;"></div>';
+    imgSrc = 'wickets.jpeg';
   }
-  return '';
+  
+  return `
+    <div class="choice-container">
+      <img src="${imgSrc}" alt="${choice}" class="choice-image">
+    </div>
+  `;
 }
 
 function getresult(usermove, cmpchoice) {
   let resultMessage = '';
+  let resultClass = '';
+
   if (usermove === 'Bat') {
     if (cmpchoice === 'Bat') {
       score.tie += 1;
-      resultMessage = ` It's a tie.`;
+      resultMessage = "It's a tie! 🤝";
+      resultClass = 'tie';
     } else if (cmpchoice === 'Ball') {
       score.win++;
-      resultMessage = ` User won.`;
+      resultMessage = 'You Won! 🎉';
+      resultClass = 'win';
     } else {
       score.lost++;
-      resultMessage = `Computer won.`;
+      resultMessage = 'Computer Won! 🤖';
+      resultClass = 'lost';
     }
   } else if (usermove === 'Ball') {
     if (cmpchoice === 'Ball') {
       score.tie += 1;
-      resultMessage = ` It's a tie.`;
+      resultMessage = "It's a tie! 🤝";
+      resultClass = 'tie';
     } else if (cmpchoice === 'Bat') {
       score.lost += 1;
-      resultMessage = `Computer won.`;
+      resultMessage = 'Computer Won! 🤖';
+      resultClass = 'lost';
     } else {
       score.win += 1;
-      resultMessage = ` User won.`;
+      resultMessage = 'You Won! 🎉';
+      resultClass = 'win';
     }
   } else if (usermove === 'stump') {
     if (cmpchoice === 'stump') {
       score.tie += 1;
-      resultMessage = ` It's a tie.`;
+      resultMessage = "It's a tie! 🤝";
+      resultClass = 'tie';
     } else if (cmpchoice === 'Ball') {
       score.lost += 1;
-      resultMessage = ` Computer won.`;
+      resultMessage = 'Computer Won! 🤖';
+      resultClass = 'lost';
     } else {
       score.win += 1;
-      resultMessage = `User won.`;
+      resultMessage = 'You Won! 🎉';
+      resultClass = 'win';
     }
   }
-  return `<span style="color:gold">${resultMessage}</span>`;
+  return `<span class="result-badge ${resultClass}">${resultMessage}</span>`;
+}
+
+// Main round trigger called by index.html button onclicks
+function playRound(userChoice) {
+  const computerChoice = computergeneratechoice();
+  showresult(userChoice, computerChoice);
 }
 
 function showresult(usermove, cmpchoice) {
+  // getresult updates the scores internally and returns the badge html
   let result = getresult(usermove, cmpchoice);
   localStorage.setItem('SCORE', JSON.stringify(score));
 
-  document.querySelector('#user-move').innerHTML =
-    `User chose: ${choiceimage(usermove)}`;
-  document.querySelector('#computer-move').innerHTML =
-    `Computer chose: ${choiceimage(cmpchoice)}`;
+  // Render selections and result
+  document.querySelector('#user-move').innerHTML = `User chose: ${choiceimage(usermove)}`;
+  document.querySelector('#computer-move').innerHTML = `Computer chose: ${choiceimage(cmpchoice)}`;
   document.querySelector('#result').innerHTML = result;
-  document.querySelector('#score').innerHTML = `${score.display_results()}`;
+  document.querySelector('#score').innerHTML = score.display_results();
+
+  // Activate the matchup animation
+  const matchup = document.querySelector('.matchup-container');
+  if (matchup) {
+    matchup.classList.add('active');
+  }
 }
+
+// Render the score automatically on page load
+document.addEventListener('DOMContentLoaded', () => {
+  const scoreElement = document.querySelector('#score');
+  if (scoreElement) {
+    scoreElement.innerHTML = score.display_results();
+  }
+});

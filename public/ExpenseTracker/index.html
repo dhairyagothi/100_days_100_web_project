@@ -4,554 +4,613 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <title>SpendWise Pro - Expense Tracker</title>
+    <title>SpendWise Pro - Premium Fintech Dashboard</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap"
-        rel="stylesheet">
-
-    <link rel="stylesheet" href="style.css">
+    <!-- Styles -->
+    <link rel="stylesheet" href="./style.css">
 </head>
 
-<body>
+<body class="theme-dark-pro">
 
-    <!-- Floating Gradient Blobs -->
+    <!-- Floating Background Gradient Blobs -->
     <div class="blob blob-1"></div>
     <div class="blob blob-2"></div>
     <div class="blob blob-3"></div>
 
+    <!-- Command Palette (Ctrl+K) -->
+    <div class="command-palette-overlay" id="cmd-palette-overlay">
+        <div class="command-palette" id="cmd-palette">
+            <div class="cmd-header">
+                <i data-lucide="search"></i>
+                <input type="text" id="cmd-input" placeholder="Type a command or search..." autocomplete="off">
+                <div class="cmd-shortcut-hint">ESC to close</div>
+            </div>
+            <div class="cmd-body">
+                <div class="cmd-group-title">Quick Actions</div>
+                <ul class="cmd-list" id="cmd-list">
+                    <li class="cmd-item" data-action="open-expense-modal">
+                        <i data-lucide="plus-circle"></i> Add Expense
+                        <span class="cmd-item-shortcut">E</span>
+                    </li>
+                    <li class="cmd-item" data-action="open-income-modal">
+                        <i data-lucide="wallet"></i> Update Income
+                        <span class="cmd-item-shortcut">I</span>
+                    </li>
+                    <li class="cmd-item" data-action="open-budget-drawer">
+                        <i data-lucide="target"></i> Set Budget & Limits
+                        <span class="cmd-item-shortcut">B</span>
+                    </li>
+                    <li class="cmd-item" data-action="toggle-theme">
+                        <i data-lucide="moon"></i> Toggle Theme
+                        <span class="cmd-item-shortcut">T</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
     <div class="app-container">
 
-        <!-- ================= SIDEBAR ================= -->
-
-        <aside class="sidebar">
-
-            <!-- Brand -->
-            <div class="brand">
-
-                <div class="logo-icon">
-                    💸
-                </div>
-
-                <div>
+        <!-- ================= SIDEBAR NAVIGATION ================= -->
+        <aside class="sidebar" id="app-sidebar">
+            <a href="#" class="brand">
+                <div class="logo-icon">💸</div>
+                <div class="brand-details">
                     <h2>SpendWise Pro</h2>
                     <p>Smart Finance Tracker</p>
                 </div>
+            </a>
 
-            </div>
+            <!-- Navigation Links -->
+            <nav class="sidebar-nav">
+                <button class="nav-item active" data-tab="dashboard">
+                    <i data-lucide="layout-dashboard"></i>
+                    <span>Dashboard</span>
+                </button>
+                <button class="nav-item" data-tab="income-nav">
+                    <i data-lucide="wallet"></i>
+                    <span>Income</span>
+                </button>
+                <button class="nav-item" data-tab="expenses">
+                    <i data-lucide="receipt"></i>
+                    <span>Expenses</span>
+                </button>
+                <button class="nav-item" data-tab="analytics">
+                    <i data-lucide="pie-chart"></i>
+                    <span>Analytics</span>
+                </button>
+                <button class="nav-item" data-tab="budgets-nav">
+                    <i data-lucide="target"></i>
+                    <span>Budgets</span>
+                </button>
+                <button class="nav-item" data-tab="categories-nav">
+                    <i data-lucide="tags"></i>
+                    <span>Categories</span>
+                </button>
+                <button class="nav-item" data-tab="settings">
+                    <i data-lucide="settings"></i>
+                    <span>Settings</span>
+                </button>
+            </nav>
 
-            <!-- Theme Toggle -->
-            <button id="theme-toggle" class="theme-toggle-btn">
-                🌙 Toggle Theme
-            </button>
+            <!-- Sidebar Footer -->
+            <div class="sidebar-footer">
+                <button class="sidebar-toggle-btn" id="sidebar-collapse-btn" title="Toggle Sidebar">
+                    <i data-lucide="chevron-left" id="collapse-icon"></i>
+                </button>
 
-
-
-            <!-- Income Form -->
-            <div class="glass-panel">
-
-                <h3>Monthly Income</h3>
-
-                <form id="income-form">
-
-                    <div class="input-group">
-
-                        <span class="currency-symbol">$</span>
-
-                        <input type="number" id="income-input" placeholder="Enter monthly income" min="0" step="any"
-                            required />
-
+                <div class="sidebar-profile">
+                    <div class="avatar" id="profile-avatar-letters">SW</div>
+                    <div class="profile-details">
+                        <span class="profile-name" id="user-display-name">Guest User</span>
+                        <span class="profile-role">Premium Account</span>
                     </div>
+                </div>
+            </div>
+        </aside>
 
-                    <button type="submit" class="btn btn-primary">
-                        Update Income
+        <!-- ================= MAIN LAYOUT WRAPPER ================= -->
+        <div class="main-wrapper">
+
+            <!-- Shared Top Header Bar -->
+            <header class="main-header">
+                <div class="header-left">
+                    <button class="header-btn" id="mobile-nav-toggle" style="display: none;">
+                        <i data-lucide="menu"></i>
+                    </button>
+                    <h1 id="page-title">Dashboard Overview</h1>
+                    <div class="header-date-badge">
+                        <i data-lucide="calendar"></i>
+                        <span id="date-text">Loading date...</span>
+                    </div>
+                </div>
+
+                <div class="header-right">
+                    <!-- Global Search Button (triggers Command Palette) -->
+                    <button class="header-search-btn" id="header-search-trigger">
+                        <i data-lucide="search"></i>
+                        <span>Search...</span>
+                        <kbd>Ctrl+K</kbd>
                     </button>
 
-                </form>
-
-            </div>
-
-            <!-- Budget Form -->
-            <div class="glass-panel">
-
-                <h3>Monthly Budget</h3>
-
-                <form id="budget-form">
-
-                    <div class="input-group">
-
-                        <span class="currency-symbol">$</span>
-
-                        <input type="number" id="budget-input" placeholder="Set your budget" min="0" step="any"
-                            required />
-
-                    </div>
-
-                    <button type="submit" class="btn btn-secondary">
-                        Save Budget
+                    <!-- Notification Indicator -->
+                    <button class="header-btn" title="Notifications">
+                        <i data-lucide="bell"></i>
+                        <span class="notification-badge"></span>
                     </button>
 
-                </form>
-
-            </div>
-
-            <!-- Category Limits Form -->
-            <div class="glass-panel">
-
-                <h3>Category Limits</h3>
-
-                <form id="category-limits-form" class="category-limits-form">
-
-                    <div class="form-group">
-                        <label for="limit-food">Food</label>
-                        <div class="input-group">
-                            <span class="currency-symbol">$</span>
-                            <input type="number" id="limit-food" data-category="Food" placeholder="No limit" min="0"
-                                step="any" />
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="limit-travel">Travel</label>
-                        <div class="input-group">
-                            <span class="currency-symbol">$</span>
-                            <input type="number" id="limit-travel" data-category="Travel" placeholder="No limit" min="0"
-                                step="any" />
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="limit-shopping">Shopping</label>
-                        <div class="input-group">
-                            <span class="currency-symbol">$</span>
-                            <input type="number" id="limit-shopping" data-category="Shopping" placeholder="No limit"
-                                min="0" step="any" />
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="limit-bills">Bills</label>
-                        <div class="input-group">
-                            <span class="currency-symbol">$</span>
-                            <input type="number" id="limit-bills" data-category="Bills" placeholder="No limit" min="0"
-                                step="any" />
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="limit-other">Other</label>
-                        <div class="input-group">
-                            <span class="currency-symbol">$</span>
-                            <input type="number" id="limit-other" data-category="Other" placeholder="No limit" min="0"
-                                step="any" />
-                        </div>
-                    </div>
-
-                    <button type="submit" class="btn btn-secondary">
-                        Save Limits
+                    <!-- Theme Switcher Toggle -->
+                    <button class="header-btn" id="theme-toggle" title="Toggle Theme Mode">
+                        <i data-lucide="moon"></i>
                     </button>
 
-                </form>
+                    <!-- Quick Add Button -->
+                    <button class="btn-quick-add" id="quick-add-expense-btn">
+                        <i data-lucide="plus"></i>
+                        <span>Add Expense</span>
+                    </button>
+                </div>
+            </header>
 
+            <!-- ================= DYNAMIC TAB CONTENT ================= -->
+            <main class="main-content">
+
+                <!-- 1. DASHBOARD VIEW -->
+                <div class="tab-content active" id="tab-dashboard">
+                    <!-- Top stats summary grid -->
+                    <div class="stats-overview-grid" id="stats-grid">
+                        <!-- Card 1: Total Income -->
+                        <div class="stat-card income glass-panel">
+                            <div class="stat-header">
+                                <div class="stat-icon-wrapper"><i data-lucide="dollar-sign"></i></div>
+                                <span class="stat-label">Total Income</span>
+                                <span class="trend-badge positive" id="income-trend">+0.0%</span>
+                            </div>
+                            <div class="stat-body">
+                                <h2 class="stat-value" id="total-income">$0.00</h2>
+                                <div class="sparkline-container" id="income-sparkline"></div>
+                            </div>
+                        </div>
+
+                        <!-- Card 2: Total Expenses -->
+                        <div class="stat-card expenses glass-panel">
+                            <div class="stat-header">
+                                <div class="stat-icon-wrapper"><i data-lucide="credit-card"></i></div>
+                                <span class="stat-label">Total Expenses</span>
+                                <span class="trend-badge negative" id="expenses-trend">+0.0%</span>
+                            </div>
+                            <div class="stat-body">
+                                <h2 class="stat-value" id="total-expenses">$0.00</h2>
+                                <div class="sparkline-container" id="expenses-sparkline"></div>
+                            </div>
+                        </div>
+
+                        <!-- Card 3: Net Balance -->
+                        <div class="stat-card balance glass-panel">
+                            <div class="stat-header">
+                                <div class="stat-icon-wrapper"><i data-lucide="landmark"></i></div>
+                                <span class="stat-label">Net Balance</span>
+                                <span class="trend-badge neutral" id="balance-trend">Stable</span>
+                            </div>
+                            <div class="stat-body">
+                                <h2 class="stat-value" id="net-balance">$0.00</h2>
+                                <div class="sparkline-container" id="balance-sparkline"></div>
+                            </div>
+                        </div>
+
+                        <!-- Card 4: Monthly Budget -->
+                        <div class="stat-card budget glass-panel">
+                            <div class="stat-header">
+                                <div class="stat-icon-wrapper"><i data-lucide="target"></i></div>
+                                <span class="stat-label">Monthly Budget</span>
+                                <span class="trend-badge neutral" id="budget-trend">Planner</span>
+                            </div>
+                            <div class="stat-body">
+                                <h2 class="stat-value" id="monthly-budget">$0.00</h2>
+                                <div class="sparkline-container" id="budget-sparkline"></div>
+                            </div>
+                        </div>
+
+                        <!-- Card 5: Budget Left -->
+                        <div class="stat-card left glass-panel" id="budget-left-card">
+                            <div class="stat-header">
+                                <div class="stat-icon-wrapper" id="budget-left-icon"><i data-lucide="activity"></i></div>
+                                <span class="stat-label">Budget Left</span>
+                                <span class="budget-warning-message" id="budget-warning-message"></span>
+                            </div>
+                            <div class="stat-body">
+                                <h2 class="stat-value" id="budget-left">$0.00</h2>
+                                <div class="sparkline-container" id="left-sparkline"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bottom dashboard grid split -->
+                    <div class="dashboard-split-grid">
+                        
+                        <!-- Left Column: Quick Actions & Transactions -->
+                        <div class="dashboard-col-left">
+                            <div class="glass-panel quick-actions-panel">
+                                <h3>Quick Actions</h3>
+                                <div class="quick-actions-grid">
+                                    <button class="action-btn" id="action-add-expense">
+                                        <div class="action-icon expense"><i data-lucide="arrow-up-right"></i></div>
+                                        <span>Send Money</span>
+                                    </button>
+                                    <button class="action-btn" id="action-add-income">
+                                        <div class="action-icon income"><i data-lucide="arrow-down-left"></i></div>
+                                        <span>Receive Funds</span>
+                                    </button>
+                                    <button class="action-btn" id="action-set-budget">
+                                        <div class="action-icon budget"><i data-lucide="sliders"></i></div>
+                                        <span>Manage Budget</span>
+                                    </button>
+                                    <button class="action-btn" id="action-view-reports">
+                                        <div class="action-icon reports"><i data-lucide="file-text"></i></div>
+                                        <span>View Reports</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="glass-panel recent-transactions-panel">
+                                <div class="panel-header">
+                                    <h3>Recent Transactions</h3>
+                                    <button class="btn-text-action" id="view-all-transactions-btn">View All</button>
+                                </div>
+                                <div class="expense-list-container">
+                                    <div id="no-expenses" class="no-data-alert">
+                                        <div class="empty-state-icon">📂</div>
+                                        <h4>No Expenses Yet</h4>
+                                        <p>Start tracking your financial activity.</p>
+                                    </div>
+                                    <ul id="expense-list" class="expense-list"></ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Column: Analytics & Insights -->
+                        <div class="dashboard-col-right">
+                            <div class="glass-panel quick-chart-panel">
+                                <h3>Spending Breakdown</h3>
+                                <div class="insights-container">
+                                    <div class="chart-box">
+                                        <svg class="donut-chart" viewBox="0 0 100 100">
+                                            <circle class="donut-bg" cx="50" cy="50" r="40" fill="transparent" stroke-width="12"></circle>
+                                            <circle class="donut-fill" id="chart-progress" cx="50" cy="50" r="40" fill="transparent" stroke-width="12" stroke-dasharray="251.2" stroke-dashoffset="251.2" transform="rotate(-90 50 50)"></circle>
+                                        </svg>
+                                        <div class="chart-text">
+                                            <span class="chart-percentage" id="expense-ratio">0%</span>
+                                            <span class="chart-label">of Income</span>
+                                        </div>
+                                    </div>
+                                    <div class="legend" id="category-breakdown-legend">
+                                        <div class="legend-placeholder">No analytics available yet.</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="glass-panel insights-panel">
+                                <h3>Smart Insights</h3>
+                                <div class="insights-list" id="smart-insights-list">
+                                    <div class="insight-item">
+                                        <div class="insight-icon info"><i data-lucide="lightbulb"></i></div>
+                                        <div class="insight-content">
+                                            <h4>Start Tracking</h4>
+                                            <p>Add some transactions to receive personalized AI insights.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. EXPENSES VIEW -->
+                <div class="tab-content" id="tab-expenses">
+                    <div class="glass-panel table-panel">
+                        <div class="table-actions-bar">
+                            <div class="table-actions-left">
+                                <select id="category-filter">
+                                    <option value="All">All Categories</option>
+                                    <option value="Food">Food</option>
+                                    <option value="Travel">Travel</option>
+                                    <option value="Shopping">Shopping</option>
+                                    <option value="Bills">Bills</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                                <select id="sort-filter">
+                                    <option value="newest">Newest First</option>
+                                    <option value="oldest">Oldest First</option>
+                                    <option value="highest">Highest Amount</option>
+                                    <option value="lowest">Lowest Amount</option>
+                                </select>
+                            </div>
+                            <button id="export-csv" class="btn btn-secondary export-btn" type="button">
+                                <i data-lucide="download"></i> Export CSV
+                            </button>
+                        </div>
+                        <div class="table-container">
+                            <table class="transaction-table" id="transaction-table-el">
+                                <thead>
+                                    <tr>
+                                        <th>Details</th>
+                                        <th>Category</th>
+                                        <th>Date</th>
+                                        <th>Amount</th>
+                                        <th style="text-align: right;">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-expenses-body">
+                                    <!-- Dynamic rows loaded here -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- Pagination container -->
+                        <div class="pagination-container" id="pagination-controls">
+                            <!-- Page page numbers and controls generated via JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. ANALYTICS VIEW -->
+                <div class="tab-content" id="tab-analytics">
+                    <div class="analytics-grid">
+                        <div class="glass-panel chart-panel-large">
+                            <div class="chart-header">
+                                <h3>Spending Trend</h3>
+                                <button class="btn-chart-export" id="export-trend-chart">Export SVG</button>
+                            </div>
+                            <div class="canvas-wrapper">
+                                <canvas id="trendChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="glass-panel chart-panel-medium">
+                            <div class="chart-header">
+                                <h3>Category Distribution</h3>
+                                <button class="btn-chart-export" id="export-pie-chart">Export SVG</button>
+                            </div>
+                            <div class="canvas-wrapper">
+                                <canvas id="pieChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="glass-panel chart-panel-medium">
+                            <div class="chart-header">
+                                <h3>Income vs Expense</h3>
+                                <button class="btn-chart-export" id="export-bar-chart">Export SVG</button>
+                            </div>
+                            <div class="canvas-wrapper">
+                                <canvas id="barChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. SETTINGS VIEW -->
+                <div class="tab-content" id="tab-settings">
+                    <div class="settings-grid">
+                        <div class="glass-panel settings-section">
+                            <h3>Theme Manager</h3>
+                            <p class="settings-description">Select your workspace interface customization preset.</p>
+                            <div class="themes-grid" id="themes-selection-grid">
+                                <!-- Interactive Theme Cards -->
+                                <button class="theme-card active" data-theme="dark-pro">
+                                    <span class="theme-color-preview" style="background: linear-gradient(135deg, #030712, #8b5cf6);"></span>
+                                    <span class="theme-card-name">Dark Pro</span>
+                                </button>
+                                <button class="theme-card" data-theme="light-pro">
+                                    <span class="theme-color-preview" style="background: linear-gradient(135deg, #f3f4f6, #6366f1);"></span>
+                                    <span class="theme-card-name">Light Pro</span>
+                                </button>
+                                <button class="theme-card" data-theme="midnight">
+                                    <span class="theme-color-preview" style="background: linear-gradient(135deg, #050b18, #3b82f6);"></span>
+                                    <span class="theme-card-name">Midnight Blue</span>
+                                </button>
+                                <button class="theme-card" data-theme="cyberpunk">
+                                    <span class="theme-color-preview" style="background: linear-gradient(135deg, #000000, #f43f5e);"></span>
+                                    <span class="theme-card-name">Cyberpunk</span>
+                                </button>
+                                <button class="theme-card" data-theme="aurora">
+                                    <span class="theme-color-preview" style="background: linear-gradient(135deg, #020e0a, #10b981);"></span>
+                                    <span class="theme-card-name">Aurora</span>
+                                </button>
+                                <button class="theme-card" data-theme="emerald">
+                                    <span class="theme-color-preview" style="background: linear-gradient(135deg, #040f0c, #059669);"></span>
+                                    <span class="theme-card-name">Emerald</span>
+                                </button>
+                                <button class="theme-card" data-theme="minimal-white">
+                                    <span class="theme-color-preview" style="background: linear-gradient(135deg, #ffffff, #000000);"></span>
+                                    <span class="theme-card-name">Minimal White</span>
+                                </button>
+                                <button class="theme-card" data-theme="glass-frost">
+                                    <span class="theme-color-preview" style="background: linear-gradient(135deg, #e0f2fe, #f3e8ff);"></span>
+                                    <span class="theme-card-name">Glass Frost</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="glass-panel settings-section">
+                            <h3>Profile Settings</h3>
+                            <div class="profile-settings-form">
+                                <div class="form-group">
+                                    <label for="settings-username">Username</label>
+                                    <input type="text" id="settings-username" placeholder="Guest User" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="settings-currency">Currency Symbol</label>
+                                    <select id="settings-currency">
+                                        <option value="$">USD ($)</option>
+                                        <option value="€">EUR (€)</option>
+                                        <option value="£">GBP (£)</option>
+                                        <option value="₹">INR (₹)</option>
+                                        <option value="¥">JPY (¥)</option>
+                                    </select>
+                                </div>
+                                <button type="button" class="btn btn-primary" id="save-settings-btn">Save Configurations</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+
+    </div>
+
+    <!-- ================= MODALS & DRAWERS ================= -->
+    
+    <!-- Add Expense Modal -->
+    <div class="modal-overlay" id="expense-modal">
+        <div class="modal-content glass-panel">
+            <div class="modal-header">
+                <h3>Add New Expense</h3>
+                <button class="btn-close-modal"><i data-lucide="x"></i></button>
             </div>
-
-            <!-- Expense Form -->
-            <div class="glass-panel">
-
-                <h3>Add Expense</h3>
-
+            <div class="modal-body">
                 <form id="expense-form">
-
-                    <!-- Expense Name -->
                     <div class="form-group">
-
-                        <label for="expense-name">
-                            Expense Name
-                        </label>
-
+                        <label for="expense-name">Expense Name</label>
                         <input type="text" id="expense-name" placeholder="What did you buy?" required />
-
                     </div>
-
-                    <!-- Amount -->
                     <div class="form-group">
-
-                        <label for="expense-amount">
-                            Amount
-                        </label>
-
-                        <div class="input-group">
-
+                        <label for="expense-amount">Amount</label>
+                        <div class="input-wrapper">
                             <span class="currency-symbol">$</span>
-
-                            <input type="number" id="expense-amount" placeholder="0.00" min="0.01" step="any"
-                                required />
-
+                            <input type="number" id="expense-amount" placeholder="0.00" min="0.01" step="any" required />
                         </div>
-
                     </div>
-
-                    <!-- Category -->
                     <div class="form-group">
-
-                        <label for="expense-category">
-                            Category
-                        </label>
-
+                        <label for="expense-category">Category</label>
                         <select id="expense-category" required>
-
-                            <option value="" disabled selected>
-                                Select Category
-                            </option>
-
-                            <option value="Food">
-                                Food
-                            </option>
-
-                            <option value="Travel">
-                                Travel
-                            </option>
-
-                            <option value="Shopping">
-                                Shopping
-                            </option>
-
-                            <option value="Bills">
-                                Bills
-                            </option>
-
-                            <option value="Other">
-                                Other
-                            </option>
-
+                            <option value="" disabled selected>Select Category</option>
+                            <option value="Food">Food</option>
+                            <option value="Travel">Travel</option>
+                            <option value="Shopping">Shopping</option>
+                            <option value="Bills">Bills</option>
+                            <option value="Other">Other</option>
                         </select>
-
                     </div>
-                    <!-- Receipt Scan -->
                     <div class="form-group">
-                        <label for="receipt-upload">
-                            Scan Receipt (optional)
+                        <label for="receipt-upload" class="file-upload-label">
+                            <i data-lucide="upload-cloud"></i>
+                            <span>Scan Receipt (optional)</span>
                         </label>
-
-                        <input type="file" id="receipt-upload" accept="image/*" />
-
+                        <input type="file" id="receipt-upload" accept="image/*" style="display: none;" />
                         <span class="receipt-status" id="receipt-status"></span>
                     </div>
-                    <!-- Recurring -->
                     <label class="checkbox-group" for="expense-recurring">
                         <input type="checkbox" id="expense-recurring" />
                         <span>Recurring (monthly)</span>
                     </label>
-
-                    <button type="submit" class="btn btn-gradient">
-
-                        ➕ Add Expense
-
-                    </button>
-
+                    <button type="submit" class="btn btn-primary btn-gradient">Confirm Payment</button>
                 </form>
-
             </div>
-
-        </aside>
-
-        <!-- ================= MAIN CONTENT ================= -->
-
-        <main class="main-content">
-
-            <!-- Header -->
-            <header class="main-header">
-
-                <div>
-
-                    <h1>
-                        Expense Dashboard
-                    </h1>
-
-                    <p class="subtitle">
-                        Manage your money efficiently
-                    </p>
-
-                </div>
-
-                <div class="header-date">
-
-                    📅
-
-                    <span id="date-text">
-                        Loading...
-                    </span>
-
-                </div>
-
-            </header>
-
-            <!-- Dashboard Cards -->
-            <section class="dashboard-grid">
-
-                <!-- Income -->
-                <div class="stat-card income glass-panel">
-
-                    <div class="stat-icon">
-                        💰
-                    </div>
-
-                    <div class="stat-details">
-
-                        <span class="stat-label">
-                            Total Income
-                        </span>
-
-                        <h2 id="total-income">
-                            $0.00
-                        </h2>
-
-                    </div>
-
-                </div>
-
-                <!-- Expenses -->
-                <div class="stat-card expenses glass-panel">
-
-                    <div class="stat-icon">
-                        💳
-                    </div>
-
-                    <div class="stat-details">
-
-                        <span class="stat-label">
-                            Total Expenses
-                        </span>
-
-                        <h2 id="total-expenses">
-                            $0.00
-                        </h2>
-
-                    </div>
-
-                </div>
-
-                <!-- Balance -->
-                <div class="stat-card balance glass-panel">
-
-                    <div class="stat-icon">
-                        🏦
-                    </div>
-
-                    <div class="stat-details">
-
-                        <span class="stat-label">
-                            Net Balance
-                        </span>
-
-                        <h2 id="net-balance">
-                            $0.00
-                        </h2>
-
-                    </div>
-
-                </div>
-
-                <!-- Monthly Budget -->
-                <div class="stat-card budget glass-panel">
-
-                    <div class="stat-icon">
-                        🎯
-                    </div>
-
-                    <div class="stat-details">
-
-                        <span class="stat-label">
-                            Monthly Budget
-                        </span>
-
-                        <h2 id="monthly-budget">
-                            $0.00
-                        </h2>
-
-                    </div>
-
-                </div>
-
-                <!-- Budget Left -->
-                <div class="stat-card left glass-panel" id="budget-left-card">
-
-                    <div class="stat-icon" id="budget-left-icon">
-                        📊
-                    </div>
-
-                    <div class="stat-details">
-
-                        <span class="stat-label">
-                            Budget Left
-                        </span>
-
-                        <h2 id="budget-left">
-                            $0.00
-                        </h2>
-
-                        <span class="budget-warning-message" id="budget-warning-message">
-                        </span>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-            <!-- ================= TRANSACTIONS + ANALYTICS ================= -->
-
-            <div class="tracker-layout">
-
-                <!-- LEFT -->
-                <section class="history-section glass-panel">
-
-                    <div class="section-header">
-
-                        <h3>
-                            Transaction History
-                        </h3>
-
-                        <button id="export-csv" class="btn btn-secondary export-btn" type="button">
-                            Export CSV
-                        </button>
-
-                    </div>
-
-                    <!-- Search -->
-                    <div class="search-wrapper">
-
-                        <input type="text" id="search-transaction" placeholder="Search transaction..." />
-
-                    </div>
-
-                    <!-- Filter -->
-                    <div class="filter-wrapper">
-
-                        <select id="category-filter">
-
-                            <option value="All">
-                                All Categories
-                            </option>
-
-                            <option value="Food">
-                                Food
-                            </option>
-
-                            <option value="Travel">
-                                Travel
-                            </option>
-
-                            <option value="Shopping">
-                                Shopping
-                            </option>
-
-                            <option value="Bills">
-                                Bills
-                            </option>
-
-                            <option value="Other">
-                                Other
-                            </option>
-
-                        </select>
-
-                    </div>
-
-                    <!-- Expense List -->
-                    <div class="expense-list-container">
-
-                        <div id="no-expenses" class="no-data-alert">
-
-                            <h4>
-                                No Expenses Yet
-                            </h4>
-
-                            <p>
-                                Start adding your expenses.
-                            </p>
-
-                        </div>
-
-                        <ul id="expense-list" class="expense-list">
-
-                            <!-- JS -->
-
-                        </ul>
-
-                    </div>
-
-                </section>
-
-                <!-- RIGHT -->
-                <section class="insights-section glass-panel">
-
-                    <h3>
-                        Expense Analytics
-                    </h3>
-
-                    <div class="insights-container">
-
-                        <!-- Donut Chart -->
-                        <div class="chart-box">
-
-                            <svg class="donut-chart" viewBox="0 0 100 100">
-
-                                <!-- Background -->
-                                <circle class="donut-bg" cx="50" cy="50" r="40" fill="transparent" stroke-width="12">
-                                </circle>
-
-                                <!-- Progress -->
-                                <circle class="donut-fill" id="chart-progress" cx="50" cy="50" r="40" fill="transparent"
-                                    stroke-width="12" stroke-dasharray="251.2" stroke-dashoffset="251.2"
-                                    transform="rotate(-90 50 50)">
-                                </circle>
-
-                            </svg>
-
-                            <!-- Center Text -->
-                            <div class="chart-text">
-
-                                <span class="chart-percentage" id="expense-ratio">
-                                    0%
-                                </span>
-
-                                <span class="chart-label">
-                                    of Income
-                                </span>
-
-                            </div>
-
-                        </div>
-
-                        <!-- Legend -->
-                        <div class="legend" id="category-breakdown-legend">
-
-                            <div class="legend-placeholder">
-
-                                No analytics available yet.
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </section>
-
-            </div>
-
-        </main>
-
+        </div>
     </div>
+
+    <!-- Add Income Modal -->
+    <div class="modal-overlay" id="income-modal">
+        <div class="modal-content glass-panel">
+            <div class="modal-header">
+                <h3>Update Income</h3>
+                <button class="btn-close-modal"><i data-lucide="x"></i></button>
+            </div>
+            <div class="modal-body">
+                <form id="income-form">
+                    <div class="form-group">
+                        <label for="income-input">Monthly Income</label>
+                        <div class="input-wrapper">
+                            <span class="currency-symbol">$</span>
+                            <input type="number" id="income-input" placeholder="Enter monthly income" min="0" step="any" required />
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save Income</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Budget & Limits Side Drawer -->
+    <div class="side-drawer-overlay" id="budget-drawer">
+        <div class="side-drawer glass-panel">
+            <div class="drawer-header">
+                <h3>Budget & Limits</h3>
+                <button class="btn-close-drawer"><i data-lucide="x"></i></button>
+            </div>
+            <div class="drawer-body">
+                <div class="drawer-section">
+                    <h4>Monthly Budget</h4>
+                    <p class="drawer-desc">Set your total spending limit for the month.</p>
+                    <form id="budget-form">
+                        <div class="form-group">
+                            <div class="input-wrapper">
+                                <span class="currency-symbol">$</span>
+                                <input type="number" id="budget-input" placeholder="Set your budget" min="0" step="any" required />
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save Budget</button>
+                    </form>
+                </div>
+
+                <div class="drawer-divider"></div>
+
+                <div class="drawer-section">
+                    <h4>Category Limits</h4>
+                    <p class="drawer-desc">Get warned when you spend too much in a category.</p>
+                    <form id="category-limits-form" class="category-limits-form">
+                        <div class="form-group">
+                            <label for="limit-food">Food Limit</label>
+                            <div class="input-wrapper">
+                                <span class="currency-symbol">$</span>
+                                <input type="number" id="limit-food" data-category="Food" placeholder="No limit" min="0" step="any" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="limit-travel">Travel Limit</label>
+                            <div class="input-wrapper">
+                                <span class="currency-symbol">$</span>
+                                <input type="number" id="limit-travel" data-category="Travel" placeholder="No limit" min="0" step="any" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="limit-shopping">Shopping Limit</label>
+                            <div class="input-wrapper">
+                                <span class="currency-symbol">$</span>
+                                <input type="number" id="limit-shopping" data-category="Shopping" placeholder="No limit" min="0" step="any" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="limit-bills">Bills Limit</label>
+                            <div class="input-wrapper">
+                                <span class="currency-symbol">$</span>
+                                <input type="number" id="limit-bills" data-category="Bills" placeholder="No limit" min="0" step="any" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="limit-other">Other Limit</label>
+                            <div class="input-wrapper">
+                                <span class="currency-symbol">$</span>
+                                <input type="number" id="limit-other" data-category="Other" placeholder="No limit" min="0" step="any" />
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save Limits</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tesseract OCR Library -->
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
-    <script src="script.js"></script>
-
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- App Logic -->
+    <script src="./script.js"></script>
 </body>
-
 </html>

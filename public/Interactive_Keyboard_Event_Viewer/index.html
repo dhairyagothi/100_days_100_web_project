@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive JavaScript KeyCode Viewer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web@2.1.1" integrity="sha384-cPFV+/abYd3INVFHPmSKpBmcnH+Q+bTZW7dv/EiuShUNPkHyFmRF8PsL7Ibfvunk" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Initial State Screen -->
+        <div id="initial-state" class="state-container active">
+            <div class="pulse-ring"></div>
+            <h1>Press any key to get the JavaScript event keycode</h1>
+            <p>An interactive tool for developers to explore keyboard event properties.</p>
+        </div>
+
+        <!-- Active State Screen -->
+        <div id="active-state" class="state-container">
+            <div class="main-keycode">
+                <h1 id="big-keycode">0</h1>
+            </div>
+
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <span>event.key</span>
+                        <i class="ph ph-info" title="The value of the key pressed."></i>
+                    </div>
+                    <div class="card-value" id="val-key">-</div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <span>event.location</span>
+                        <i class="ph ph-info" title="The physical location of the key on the keyboard."></i>
+                    </div>
+                    <div class="card-value" id="val-location">-</div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <span>event.code</span>
+                        <i class="ph ph-info" title="The physical key on the keyboard."></i>
+                    </div>
+                    <div class="card-value" id="val-code">-</div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <span>event.which</span>
+                        <i class="ph ph-info" title="The numeric keyCode (Deprecated but still used)."></i>
+                    </div>
+                    <div class="card-value" id="val-which">-</div>
+                </div>
+            </div>
+
+            <!-- History Section -->
+            <div class="history-section">
+                <h3><i class="ph ph-clock-counter-clockwise"></i> Recent Keys</h3>
+                <div class="history-list" id="history-list">
+                    <!-- History items will be populated here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="./script.js"></script>
+</body>
+</html>

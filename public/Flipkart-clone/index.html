@@ -13,15 +13,15 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
     />
-    <link rel="stylesheet" href="/public/Flipkart-clone/nav.css" />
-    <link rel="stylesheet" href="/public/Flipkart-clone/style.css" />
+    <link rel="stylesheet" href="nav.css" />
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <!-- ─── NAVBAR ─── -->
     <nav class="navbar">
       <div class="nav-left">
-        <a href="/public/Flipkart-clone/index.html" class="logo-section">
-          <img src="/public/Flipkart-clone/logo.png" alt="Flipkart logo" />
+        <a href="index.html" class="logo-section">
+          <img src="logo.png" alt="Flipkart logo" />
           <div>
             <h2>Flipkart</h2>
             <span>Explore <em>Plus</em> ✦</span>
@@ -55,9 +55,20 @@
       </div>
 
       <div class="nav-right">
+        <a href="../../index.html" class="right-item">
+    <i aria-hidden="true" class="fa-solid fa-house"></i>
+    <span>Back to Home</span>
+  </a>
         <a href="signup.html" class="right-item login">
           <i aria-hidden="true" class="fa-regular fa-user"></i>
           <span>Login</span>
+        </a>
+
+        <!-- Wishlist with Badge -->
+        <a href="wishlist.html" class="right-item wishlist-wrapper">
+          <i aria-hidden="true" class="fa-regular fa-heart"></i>
+          <span>Wishlist</span>
+          <span class="wishlist-badge" id="wishlistBadge" style="display: none;">0</span>
         </a>
 
         <div class="right-item">
@@ -139,11 +150,11 @@
     <!-- ─── HERO SLIDER ─── -->
     <div class="hero-section">
       <div class="section-track">
-        <div class="section-item"><img src="/public/Flipkart-clone/hero1.png" alt="Offer 1" /></div>
-        <div class="section-item"><img src="/public/Flipkart-clone/hero2.png" alt="Offer 2" /></div>
-        <div class="section-item"><img src="/public/Flipkart-clone/hero3.png" alt="Offer 3" /></div>
-        <div class="section-item"><img src="/public/Flipkart-clone/hero4.png" alt="Offer 4" /></div>
-        <div class="section-item"><img src="/public/Flipkart-clone/hero5.png" alt="Offer 5" /></div>
+        <div class="section-item"><img src="hero1.png" alt="Offer 1" /></div>
+        <div class="section-item"><img src="hero2.png" alt="Offer 2" /></div>
+        <div class="section-item"><img src="hero3.png" alt="Offer 3" /></div>
+        <div class="section-item"><img src="hero4.png" alt="Offer 4" /></div>
+        <div class="section-item"><img src="hero5.png" alt="Offer 5" /></div>
       </div>
 
       <button
@@ -170,15 +181,13 @@
       </div>
     </div>
 
-    <script src="/public/Flipkart-clone/script.js"></script>
-
     <!-- ─── BRANDS IN SPOTLIGHT ─── -->
     <section class="brands-section">
       <h2 class="section-title">Brands in Spotlight</h2>
       <div class="brands-grid">
         <div class="brand-card">
           <div class="image-container">
-            <img src="/public/Flipkart-clone/image1.png" alt="Bata" />
+            <img src="image1.png" alt="Bata" />
             <span class="ad-badge">AD</span>
           </div>
           <div class="card-details">
@@ -189,7 +198,7 @@
 
         <div class="brand-card">
           <div class="image-container">
-            <img src="/public/Flipkart-clone/image2.png" alt="Kamiliant" />
+            <img src="image2.png" alt="Kamiliant" />
             <span class="ad-badge">AD</span>
           </div>
           <div class="card-details">
@@ -200,7 +209,7 @@
 
         <div class="brand-card">
           <div class="image-container">
-            <img src="/public/Flipkart-clone/image3.png" alt="Abros" />
+            <img src="image3.png" alt="Abros" />
             <span class="ad-badge">AD</span>
           </div>
           <div class="card-details">
@@ -211,7 +220,7 @@
 
         <div class="brand-card">
           <div class="image-container">
-            <img src="/public/Flipkart-clone/image4.png" alt="Fire-Boltt" />
+            <img src="image4.png" alt="Fire-Boltt" />
             <span class="ad-badge">AD</span>
           </div>
           <div class="card-details"></div>
@@ -219,7 +228,7 @@
 
         <div class="brand-card">
           <div class="image-container">
-            <img src="/public/Flipkart-clone/image5.png" alt="boAt Smartwatch" />
+            <img src="image5.png" alt="boAt Smartwatch" />
             <span class="ad-badge">AD</span>
           </div>
           <div class="card-details"></div>
@@ -227,7 +236,7 @@
 
         <div class="brand-card">
           <div class="image-container">
-            <img src="/public/Flipkart-clone/image6.png" alt="boAt Airdopes" />
+            <img src="image6.png" alt="boAt Airdopes" />
             <span class="ad-badge">AD</span>
           </div>
           <div class="card-details"></div>
@@ -243,7 +252,7 @@
         aria-label="Get Ready For The Hottest Sale"
       >
         <img
-          src="/public/Flipkart-clone/grwm.png"
+          src="grwm.png"
           alt="GRWM Sale - Starts 29th May. Get Ready For The Hottest Sale"
           class="banner-image"
         />
@@ -418,5 +427,7 @@
         </div>
       </div>
     </footer>
+
+    <script src="script.js"></script>
   </body>
 </html>

@@ -7,7 +7,8 @@
   padding: 0;
 }
 
-:root {--opp : white;
+:root {
+  --opp: white;
   --canvas: #090a0f;
   --panel-bg: rgba(255, 255, 255, 0.75);
   --panel-dark: rgba(15, 18, 28, 0.7);
@@ -35,7 +36,8 @@
   --font-sans: 'Plus Jakarta Sans', system-ui, sans-serif;
   --font-serif: 'Playfair Display', Georgia, serif;
 }
-:root.light-theme {--opp : black;
+:root.light-theme {
+  --opp: black;
   --canvas: #f8fafc;
   --panel-bg: rgba(255, 255, 255, 0.95);
   --panel-dark: rgba(250, 246, 246, 0.9);
@@ -43,7 +45,7 @@
   --text-primary: #111827;
   --text-muted: #4b5563;
   --text-soft: #6b7280;
---pagi: rgb(220, 220, 220);
+  --pagi: rgb(220, 220, 220);
   --border-glass: rgba(203, 213, 225, 0.8);
 
   /* Keep brand colors or slightly soften them */
@@ -135,22 +137,22 @@ body {
   font-weight: 700;
 }
 #theme {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    cursor: pointer;
-    font-size: 24px;
-    z-index: 1000;
-    padding: 10px;
-    border-radius: 50%;
-    transition: 0.3s ease;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+  font-size: 24px;
+  z-index: 1000;
+  padding: 10px;
+  border-radius: 50%;
+  transition: 0.3s ease;
 }
 
 #theme:hover {
-    transform: scale(1.1);
+  transform: scale(1.1);
 }
 #theme .fa-moon {
-    color: #312e81;
+  color: #312e81;
 }
 .app-container {
   position: relative;
@@ -205,7 +207,9 @@ body {
   font-family: monospace;
   color: var(--text-soft);
 }
-.meta-right kbd{ border-color: var(--text-soft);} 
+.meta-right kbd {
+  border-color: var(--text-soft);
+}
 .shortcut-pill {
   font-family: monospace;
   background: rgba(255, 255, 255, 0.06);
@@ -472,7 +476,7 @@ body {
 .luxury-result-card {
   display: flex;
   flex-direction: column;
-   background: var(--panel-dark);;
+  background: var(--panel-dark);
   border: 1px solid var(--border-glass);
   border-radius: var(--radius-card);
   box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.3);
@@ -768,7 +772,7 @@ body {
   cursor: pointer;
   font-size: 12px;
   font-weight: 600;
-  color:  #9ca3af;
+  color: #9ca3af;
   background: rgba(219, 39, 119, 0.12);
   border: 1px solid rgba(219, 39, 119, 0.25);
   transition: all 0.25s ease;

@@ -5,11 +5,6 @@ const STORAGE_KEYS = {
   plans: 'cgpa-planner-saved-plans',
 };
 
-const feasibility = getFeasibility(
-    requiredSgpa,
-    currentCgpa,
-    targetCgpa
-);
 
 let currentPlan = null;
 let cgpaChart = null;
@@ -45,22 +40,7 @@ function updateThemeIcon(theme) {
   $('.theme-icon').textContent = theme === 'dark' ? '🌙' : '☀️';
 }
 
-if (targetCgpa < currentCgpa) {
-    showError("Target CGPA cannot be less than current CGPA");
-    return false;
-}
 
-if (gapToClose === 0) {
-    badge.textContent =
-        "On Track — Maintain your current performance!";
-
-    badge.classList.remove(
-        "danger",
-        "warning"
-    );
-
-    badge.classList.add("success");
-}
 // ===== Validation =====
 function validateForm(data) {
   const errors = [];
@@ -78,7 +58,7 @@ function validateForm(data) {
     errors.push({ field: 'remainingSemesters', msg: 'At least 1 remaining semester required' });
   }
   if (data.targetCgpa < data.currentCgpa) {
-    errors.push({ field: 'targetCgpa', msg: 'Target CGPA should be higher than current CGPA' });
+    errors.push({ field: 'targetCgpa', msg: 'Target CGPA should be higher than or equal to current CGPA' });
   }
   if (data.creditsCompleted !== null && data.creditsCompleted < 0) {
     errors.push({ field: 'creditsCompleted', msg: 'Credits cannot be negative' });
@@ -164,6 +144,7 @@ function calculateRequiredSgpa(data, whatIfSgpas = {}) {
     });
 
     remainingNeeded = targetPoints - currentPoints - whatIfPoints;
+    runningPoints = currentPoints;
     remainingUnits = semestersLeftAfterWhatIf;
   }
 
@@ -182,27 +163,22 @@ function calculateRequiredSgpa(data, whatIfSgpas = {}) {
   };
 }
 
-function getFeasibility(requiredSgpa, currentCgpa, targetCgpa) {
+function getFeasibility(requiredSgpa, currentCgpa = null, targetCgpa = null) {
+  // Edge-case check for users maintaining an active target performance (e.g., 10.00 -> 10.00)
+  if (currentCgpa !== null && targetCgpa !== null && currentCgpa === targetCgpa && requiredSgpa <= currentCgpa) {
+    return { level: 'easy', dot: '🟢', text: 'On Track — Maintain your current performance!' };
+  }
 
-    // Already on target
-    if (
-        currentCgpa === targetCgpa &&
-        currentCgpa === 10
-    ) {
-        return {
-            label: "On Track — Maintain your current performance!",
-            type: "success"
-        };
-    }
-
-    if (requiredSgpa > 9.5) {
-        return {
-            label: "Nearly impossible — very demanding target",
-            type: "danger"
-        };
-    }
-
-    // existing logic...
+  if (requiredSgpa === null || requiredSgpa > 10) {
+    return { level: 'impossible', dot: '🔴', text: 'Nearly impossible — exceeds max SGPA of 10' };
+  }
+  if (requiredSgpa <= 8.0) {
+    return { level: 'easy', dot: '🟢', text: 'Easily achievable' };
+  }
+  if (requiredSgpa <= 9.5) {
+    return { level: 'challenging', dot: '🟡', text: 'Challenging — requires consistent high performance' };
+  }
+  return { level: 'impossible', dot: '🔴', text: 'Nearly impossible — very demanding target' };
 }
 
 function formatNum(n, decimals = 2) {
@@ -214,7 +190,9 @@ function formatNum(n, decimals = 2) {
 function renderResults(plan) {
   const { data, calc } = plan;
   const { requiredSgpa } = calc;
-  const feasibility = getFeasibility(requiredSgpa);
+  
+  // FIXED: Added missing data variables so the target tracking check functions properly
+  const feasibility = getFeasibility(requiredSgpa, data.currentCgpa, data.targetCgpa);
 
   $('#resultsPlaceholder').classList.add('hidden');
   $('#resultsContent').classList.remove('hidden');

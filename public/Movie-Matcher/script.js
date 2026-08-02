@@ -135,10 +135,16 @@ const renderMovies = (movies, g1, g2) => {
     return;
   }
 
-  const g1Name = GENRES[g1]?.name;
-  const g2Name = GENRES[g2]?.name;
-  resultsCount.textContent = `${movies.length} film${movies.length > 1 ? 's' : ''} matching ${g1Name} × ${g2Name}`;
-  resultsHeader.classList.remove('hidden');
+const g1Name = GENRES[g1]?.name;
+const g2Name = GENRES[g2]?.name;
+
+if (resultsHeader && resultsCount) {
+
+    resultsCount.textContent =
+        `${movies.length} film${movies.length > 1 ? "s" : ""} matching ${g1Name} × ${g2Name}`;
+
+    resultsHeader.classList.remove("hidden");
+}
 
   movies.forEach(movie => {
     const saved = isFavorite(movie.id);
@@ -238,18 +244,39 @@ const openTrailer = (title) => {
   modalClose.focus();
 };
 
-const closeTrailer = () => trailerModal.classList.add('hidden');
-modalClose.addEventListener('click', closeTrailer);
-modalBackdrop.addEventListener('click', closeTrailer);
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeTrailer(); });
+
+const closeTrailer = () => trailerModal?.classList.add("hidden");
+
+if (modalClose && modalBackdrop && trailerModal) {
+    modalClose.addEventListener("click", closeTrailer);
+    modalBackdrop.addEventListener("click", closeTrailer);
+
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+            closeTrailer();
+        }
+    });
+}
 
 // ─── Match button ─────────────────────────────────────────────────────────────
-matchBtn.addEventListener('click', () => {
-  const g1 = parseInt(genre1Select.value);
-  const g2 = parseInt(genre2Select.value);
-  if (g1 === g2) { alert('Pick two different genres!'); return; }
-  findMovies(g1, g2);
-});
+
+if (matchBtn && genre1Select && genre2Select) {
+
+    matchBtn.addEventListener("click", () => {
+
+        const g1 = parseInt(genre1Select.value);
+        const g2 = parseInt(genre2Select.value);
+
+        if (g1 === g2) {
+            alert("Pick two different genres!");
+            return;
+        }
+
+        findMovies(g1, g2);
+
+    });
+
+}
 
 function renderAllMovies() {
   renderMovies(MOVIES);
