@@ -372,6 +372,7 @@ body.dark-mode .badge-low { background-color: rgba(22, 163, 74, 0.2); color: #86
     margin-bottom: 12px;
     display: -webkit-box;
     -webkit-line-clamp: 2;
+    line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
