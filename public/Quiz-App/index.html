@@ -1,216 +1,389 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  
-  <!-- Primary SEO Metadata -->
-  <title>Pro Quiz — Interactive Web Development & Coding Quiz Challenge</title>
-  <meta name="description" content="Test your knowledge of HTML, CSS, JavaScript, and responsive design with Pro Quiz. Challenge your coding skills with multiple difficulty levels, streaks, and tracked high scores." />
-  <meta name="keywords" content="coding quiz, web development quiz, JavaScript quiz, learn HTML CSS, interactive programming quiz, front-end development challenge" />
-  <meta name="author" content="Pro Quiz Team" />
-  <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://yourdomain.com/" />
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- Open Graph / Facebook -->
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://yourdomain.com/" />
-  <meta property="og:title" content="Pro Quiz — Interactive Web Development & Coding Quiz" />
-  <meta property="og:description" content="Challenge your coding skills on an elegant, glassmorphic interactive engine. Track progress, hit streaks, and master HTML, CSS, and JavaScript." />
-  <meta property="og:image" content="https://yourdomain.com/assets/og-preview.jpg" />
+    <!-- Primary SEO Metadata -->
+    <title>
+      Pro Quiz — Interactive Web Development & Coding Quiz Challenge
+    </title>
+    <meta
+      name="description"
+      content="Test your knowledge of HTML, CSS, JavaScript, and responsive design with Pro Quiz. Challenge your coding skills with multiple difficulty levels, streaks, and tracked high scores."
+    />
+    <meta
+      name="keywords"
+      content="coding quiz, web development quiz, JavaScript quiz, learn HTML CSS, interactive programming quiz, front-end development challenge"
+    />
+    <meta name="author" content="Pro Quiz Team" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://yourdomain.com/" />
 
-  <!-- Twitter Meta Cards -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:url" content="https://yourdomain.com/" />
-  <meta name="twitter:title" content="Pro Quiz — Interactive Web Development & Coding Quiz" />
-  <meta name="twitter:description" content="Test your knowledge of foundational web development tools under customizable intervals." />
-  <meta name="twitter:image" content="https://yourdomain.com/assets/og-preview.jpg" />
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://yourdomain.com/" />
+    <meta
+      property="og:title"
+      content="Pro Quiz — Interactive Web Development & Coding Quiz"
+    />
+    <meta
+      property="og:description"
+      content="Challenge your coding skills on an elegant, glassmorphic interactive engine. Track progress, hit streaks, and master HTML, CSS, and JavaScript."
+    />
+    <meta
+      property="og:image"
+      content="https://yourdomain.com/assets/og-preview.jpg"
+    />
 
-  <!-- Structured Data JSON-LD (Google Rich Snippets for Educational WebApps) -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Quiz",
-    "name": "Pro Quiz Coding Challenge",
-    "description": "An interactive assessment testing proficiency in frontend technologies including HTML5, modern CSS layouts, and core JavaScript.",
-    "educationalUse": "Assessment",
-    "interactivityType": "interactive",
-    "learningResourceType": "Quiz",
-    "assesses": ["HTML", "CSS", "JavaScript", "Web Development"]
-  }
-  </script>
+    <!-- Twitter Meta Cards -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://yourdomain.com/" />
+    <meta
+      name="twitter:title"
+      content="Pro Quiz — Interactive Web Development & Coding Quiz"
+    />
+    <meta
+      name="twitter:description"
+      content="Test your knowledge of foundational web development tools under customizable intervals."
+    />
+    <meta
+      name="twitter:image"
+      content="https://yourdomain.com/assets/og-preview.jpg"
+    />
 
-  <!-- Fonts Optimization -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Poppins:wght@500;700&display=swap" rel="stylesheet">
+    <!-- Structured Data JSON-LD (Google Rich Snippets for Educational WebApps) -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Quiz",
+        "name": "Pro Quiz Coding Challenge",
+        "description": "An interactive assessment testing proficiency in frontend technologies including HTML5, modern CSS layouts, and core JavaScript.",
+        "educationalUse": "Assessment",
+        "interactivityType": "interactive",
+        "learningResourceType": "Quiz",
+        "assesses": ["HTML", "CSS", "JavaScript", "Web Development"]
+      }
+    </script>
 
-  <!-- Styles Sheet -->
-  <link rel="stylesheet" href="style.css">
+    <!-- Fonts Optimization -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Poppins:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
 
-  <!-- Icons Preload Interface -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" />
-</head>
-<body>
-  <div id="scroll-progress" aria-hidden="true"></div>
+    <!-- Styles Sheet -->
+    <link rel="stylesheet" href="style.css" />
 
-  <!-- Main structural layout optimized for search crawlers -->
-  <main class="app" id="app" aria-live="polite">
-    <header class="app-header">
-      <div class="brand" title="Pro Quiz home">
-        <svg class="logo" viewBox="0 0 48 48" aria-hidden="true">
-          <defs>
-            <linearGradient id="g1" x1="0" x2="1">
-              <stop offset="0" stop-color="#7c3aed"/>
-              <stop offset="1" stop-color="#06b6d4"/>
-            </linearGradient>
-          </defs>
-          <rect x="4" y="4" width="40" height="40" rx="10" fill="url(#g1)"></rect>
-          <path d="M14 32 L24 16 L34 32 Z" fill="rgba(255,255,255,0.95)"></path>
-        </svg>
-        <div class="brand-text">
-          <span class="title">Pro Quiz</span>
-          <span class="subtitle">Fast • Focused • Fun</span>
-        </div>
-      </div>
+    <!-- Icons Preload Interface -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <div id="scroll-progress" aria-hidden="true"></div>
 
-      <div class="header-actions">
-        <div class="streak" id="streak" title="Current correct streak" aria-hidden="true">
-          <i class="fas fa-fire"></i> <span id="streak-count">0</span>
-        </div>
-
-        <button id="theme-toggle" class="icon-btn" aria-pressed="false" aria-label="Toggle user theme">
-          <i class="fas fa-moon"></i>
-        </button>
-      </div>
-    </header>
-
-    <div class="layout">
-      <!-- Semantic aside with content valuable for non-JS scrapers -->
-      <aside class="panel panel-left" aria-label="Quiz Features and Information">
-        <section class="card card-visual">
-          <svg class="hero-illustration" viewBox="0 0 600 400" aria-hidden="true">
+    <!-- Main structural layout optimized for search crawlers -->
+    <main class="app" id="app" aria-live="polite">
+      <header class="app-header">
+        <div class="brand" title="Pro Quiz home">
+          <svg class="logo" viewBox="0 0 48 48" aria-hidden="true">
             <defs>
-              <linearGradient id="lg" x1="0" x2="1">
-                <stop offset="0" stop-color="#7c3aed" stop-opacity="0.95"/>
-                <stop offset="1" stop-color="#06b6d4" stop-opacity="0.95"/>
+              <linearGradient id="g1" x1="0" x2="1">
+                <stop offset="0" stop-color="#7c3aed" />
+                <stop offset="1" stop-color="#06b6d4" />
               </linearGradient>
             </defs>
-            <rect width="600" height="400" rx="24" fill="url(#lg)"></rect>
-            <g transform="translate(40,40)" fill="rgba(255,255,255,0.12)">
-              <rect x="0" y="0" width="220" height="120" rx="12"></rect>
-              <rect x="260" y="20" width="260" height="80" rx="12"></rect>
-              <circle cx="120" cy="220" r="60"></circle>
-              <rect x="260" y="160" width="260" height="120" rx="12"></rect>
-            </g>
+            <rect
+              x="4"
+              y="4"
+              width="40"
+              height="40"
+              rx="10"
+              fill="url(#g1)"
+            ></rect>
+            <path
+              d="M14 32 L24 16 L34 32 Z"
+              fill="rgba(255,255,255,0.95)"
+            ></path>
           </svg>
-
-          <div class="visual-meta">
-            <h2>Responsive • Animated • Accessible</h2>
-            <p>Our platform implements modern glassmorphic layouts, fluid typography variations, structural keyboard navigation sequences, and optimized assets ensuring high page performance and user engagement metrics.</p>
-            <div class="visual-stats">
-              <div><strong id="total-questions">5</strong><span>Questions</span></div>
-              <div><strong id="time-per-q">15s</strong><span>Per item</span></div>
-              <div><strong id="best-score">—</strong><span>Best Score</span></div>
-            </div>
+          <div class="brand-text">
+            <span class="title">Pro Quiz</span>
+            <span class="subtitle">Fast • Focused • Fun</span>
           </div>
+        </div>
+
+        <div class="header-actions">
+          <div
+            class="streak"
+            id="streak"
+            title="Current correct streak"
+            aria-hidden="true"
+          >
+            <i class="fas fa-fire"></i> <span id="streak-count">0</span>
+          </div>
+
+          <button
+            id="theme-toggle"
+            class="icon-btn"
+            aria-pressed="false"
+            aria-label="Toggle user theme"
+          >
+            <i class="fas fa-moon"></i>
+          </button>
+        </div>
+      </header>
+
+      <div class="layout">
+        <!-- Semantic aside with content valuable for non-JS scrapers -->
+        <aside
+          class="panel panel-left"
+          aria-label="Quiz Features and Information"
+        >
+          <section class="card card-visual">
+            <svg
+              class="hero-illustration"
+              viewBox="0 0 600 400"
+              aria-hidden="true"
+            >
+              <defs>
+                <linearGradient id="lg" x1="0" x2="1">
+                  <stop offset="0" stop-color="#7c3aed" stop-opacity="0.95" />
+                  <stop offset="1" stop-color="#06b6d4" stop-opacity="0.95" />
+                </linearGradient>
+              </defs>
+              <rect width="600" height="400" rx="24" fill="url(#lg)"></rect>
+              <g transform="translate(40,40)" fill="rgba(255,255,255,0.12)">
+                <rect x="0" y="0" width="220" height="120" rx="12"></rect>
+                <rect x="260" y="20" width="260" height="80" rx="12"></rect>
+                <circle cx="120" cy="220" r="60"></circle>
+                <rect x="260" y="160" width="260" height="120" rx="12"></rect>
+              </g>
+            </svg>
+
+            <div class="visual-meta">
+              <h2>Responsive • Animated • Accessible</h2>
+              <p>
+                Our platform implements modern glassmorphic layouts, fluid
+                typography variations, structural keyboard navigation sequences,
+                and optimized assets ensuring high page performance and user
+                engagement metrics.
+              </p>
+              <div class="visual-stats">
+                <div>
+                  <strong id="total-questions">5</strong><span>Questions</span>
+                </div>
+                <div>
+                  <strong id="time-per-q">15s</strong><span>Per item</span>
+                </div>
+                <div>
+                  <strong id="best-score">—</strong><span>Best Score</span>
+                </div>
+              </div>
+            </div>
+          </section>
+        </aside>
+
+        <!-- Primary Content Node -->
+        <section class="panel panel-right" aria-label="Quiz Dynamic Container">
+          <!-- H1 placement on home module satisfies algorithmic header mapping rules -->
+          <article id="start-box" class="card start-screen">
+            <div class="start-inner">
+              <div class="start-badge" aria-hidden="true">
+                Featured Challenge
+              </div>
+              <h1>Ready to challenge your coding capability?</h1>
+              <p class="muted">
+                Answer consecutive questions cleanly to earn multiplier streaks.
+                Choose your technical scale using options below.
+              </p>
+
+              <div class="controls">
+                <div class="select-row">
+                  <label for="difficulty">Select Difficulty Level</label>
+                  <select id="difficulty">
+                    <option value="easy">Easy (20s intervals)</option>
+                    <option value="normal" selected>
+                      Normal (15s intervals)
+                    </option>
+                    <option value="hard">Hard (10s intervals)</option>
+                  </select>
+                </div>
+
+                <div class="select-row">
+                  <label for="question-count">Number of Questions</label>
+                  <input
+                    id="question-count"
+                    type="range"
+                    min="3"
+                    max="12"
+                    value="5"
+                  />
+                  <output id="question-count-output" for="question-count"
+                    >5</output
+                  >
+                </div>
+              </div>
+
+              <div class="start-actions">
+                <button
+                  id="start-btn"
+                  class="btn btn-primary"
+                  aria-label="Start competitive quiz mode"
+                >
+                  Start Main Quiz
+                </button>
+                <button
+                  id="practice-btn"
+                  class="btn btn-ghost"
+                  aria-label="Start untimed practice learning mode"
+                >
+                  Untimed Practice
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Quiz Runtime Interface Template -->
+          <article id="quiz-box" class="card quiz-screen hide">
+            <div class="quiz-top">
+              <div class="meta-left">
+                <div id="question-counter" class="q-counter" aria-live="polite">
+                  Question 1 / 5
+                </div>
+                <h2 id="question-title" class="question-title">
+                  Loading Challenge Question...
+                </h2>
+              </div>
+
+              <div class="meta-right">
+                <div
+                  class="circular-progress"
+                  role="progressbar"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                  aria-valuenow="0"
+                  id="circular-progress"
+                  title="Quiz progress metric"
+                >
+                  <svg viewBox="0 0 36 36">
+                    <path
+                      class="bg"
+                      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                    />
+                    <path
+                      class="meter"
+                      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                    />
+                  </svg>
+                  <div class="progress-label" id="progress-label">0%</div>
+                </div>
+
+                <div class="timer">
+                  <i class="fas fa-stopwatch" aria-hidden="true"></i>
+                  <div id="time-left" class="time-left" aria-live="polite">
+                    15
+                  </div>
+                  <small class="muted">s</small>
+                </div>
+              </div>
+            </div>
+
+            <div
+              id="option-list"
+              class="option-list"
+              role="list"
+              tabindex="0"
+              aria-label="Possible Answers Select Menu"
+            ></div>
+
+            <div class="quiz-actions">
+              <button
+                id="next-btn"
+                class="btn btn-accent hide"
+                aria-hidden="true"
+              >
+                Proceed Next Question
+              </button>
+              <button
+                id="skip-btn"
+                class="btn btn-ghost"
+                aria-label="Skip current item without record points"
+              >
+                Skip Question
+              </button>
+            </div>
+          </article>
+
+          <!-- Evaluation Screen Template -->
+          <article id="result-box" class="card result-screen hide">
+            <div class="result-inner">
+              <div class="result-visual">
+                <div
+                  id="score-percentage"
+                  class="score-ring"
+                  aria-hidden="true"
+                >
+                  0%
+                </div>
+                <div class="result-badge" id="result-badge">
+                  Score Generated
+                </div>
+              </div>
+
+              <h2 id="result-text">Evaluation Complete</h2>
+              <p class="muted" id="result-sub">
+                Calculating metrics feedback recommendations.
+              </p>
+
+              <div class="result-actions">
+                <button
+                  id="restart-btn"
+                  class="btn btn-primary"
+                  aria-label="Restart application and try another setup"
+                >
+                  Play Again
+                </button>
+                <button
+                  id="share-btn"
+                  class="btn btn-ghost"
+                  aria-label="Share current ranking score value"
+                >
+                  Share Ranking
+                </button>
+              </div>
+            </div>
+          </article>
         </section>
-      </aside>
+      </div>
 
-      <!-- Primary Content Node -->
-      <section class="panel panel-right" aria-label="Quiz Dynamic Container">
-        <!-- H1 placement on home module satisfies algorithmic header mapping rules -->
-        <article id="start-box" class="card start-screen">
-          <div class="start-inner">
-            <div class="start-badge" aria-hidden="true">Featured Challenge</div>
-            <h1>Ready to challenge your coding capability?</h1>
-            <p class="muted">Answer consecutive questions cleanly to earn multiplier streaks. Choose your technical scale using options below.</p>
+      <footer class="app-footer">
+        <small class="muted"
+          >&copy; 2026 Pro Quiz Hub. Engineered for performance optimization,
+          semantic indexing, and search compliance.</small
+        >
+      </footer>
+    </main>
 
-            <div class="controls">
-              <div class="select-row">
-                <label for="difficulty">Select Difficulty Level</label>
-                <select id="difficulty">
-                  <option value="easy">Easy (20s intervals)</option>
-                  <option value="normal" selected>Normal (15s intervals)</option>
-                  <option value="hard">Hard (10s intervals)</option>
-                </select>
-              </div>
+    <button
+      id="scroll-up"
+      class="scroll-btn"
+      aria-label="Scroll frame window back to top view"
+    >
+      <i class="fas fa-chevron-up"></i>
+    </button>
+    <button
+      id="scroll-down"
+      class="scroll-btn"
+      aria-label="Scroll frame window to lower footer summary information"
+    >
+      <i class="fas fa-chevron-down"></i>
+    </button>
 
-              <div class="select-row">
-                <label for="question-count">Number of Questions</label>
-                <input id="question-count" type="range" min="3" max="12" value="5">
-                <output id="question-count-output" for="question-count">5</output>
-              </div>
-            </div>
-
-            <div class="start-actions">
-              <button id="start-btn" class="btn btn-primary" aria-label="Start competitive quiz mode">Start Main Quiz</button>
-              <button id="practice-btn" class="btn btn-ghost" aria-label="Start untimed practice learning mode">Untimed Practice</button>
-            </div>
-          </div>
-        </article>
-
-        <!-- Quiz Runtime Interface Template -->
-        <article id="quiz-box" class="card quiz-screen hide">
-          <div class="quiz-top">
-            <div class="meta-left">
-              <div id="question-counter" class="q-counter" aria-live="polite">Question 1 / 5</div>
-              <h2 id="question-title" class="question-title">Loading Challenge Question...</h2>
-            </div>
-
-            <div class="meta-right">
-              <div class="circular-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="circular-progress" title="Quiz progress metric">
-                <svg viewBox="0 0 36 36">
-                  <path class="bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                  <path class="meter" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                </svg>
-                <div class="progress-label" id="progress-label">0%</div>
-              </div>
-
-              <div class="timer">
-                <i class="fas fa-stopwatch" aria-hidden="true"></i>
-                <div id="time-left" class="time-left" aria-live="polite">15</div>
-                <small class="muted">s</small>
-              </div>
-            </div>
-          </div>
-
-          <div id="option-list" class="option-list" role="list" tabindex="0" aria-label="Possible Answers Select Menu"></div>
-
-          <div class="quiz-actions">
-            <button id="next-btn" class="btn btn-accent hide" aria-hidden="true">Proceed Next Question</button>
-            <button id="skip-btn" class="btn btn-ghost" aria-label="Skip current item without record points">Skip Question</button>
-          </div>
-        </article>
-
-        <!-- Evaluation Screen Template -->
-        <article id="result-box" class="card result-screen hide">
-          <div class="result-inner">
-            <div class="result-visual">
-              <div id="score-percentage" class="score-ring" aria-hidden="true">0%</div>
-              <div class="result-badge" id="result-badge">Score Generated</div>
-            </div>
-
-            <h2 id="result-text">Evaluation Complete</h2>
-            <p class="muted" id="result-sub">Calculating metrics feedback recommendations.</p>
-
-            <div class="result-actions">
-              <button id="restart-btn" class="btn btn-primary" aria-label="Restart application and try another setup">Play Again</button>
-              <button id="share-btn" class="btn btn-ghost" aria-label="Share current ranking score value">Share Ranking</button>
-            </div>
-          </div>
-        </article>
-      </section>
-    </div>
-
-    <footer class="app-footer">
-      <small class="muted">&copy; 2026 Pro Quiz Hub. Engineered for performance optimization, semantic indexing, and search compliance.</small>
-    </footer>
-  </main>
-
-  <button id="scroll-up" class="scroll-btn" aria-label="Scroll frame window back to top view"><i class="fas fa-chevron-up"></i></button>
-  <button id="scroll-down" class="scroll-btn" aria-label="Scroll frame window to lower footer summary information"><i class="fas fa-chevron-down"></i></button>
-
-  <script src="script.js" defer></script>
-</body>
+    <script src="script.js" defer></script>
+  </body>
 </html>

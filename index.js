@@ -96,12 +96,10 @@ function hydrateProjects(data) {
     keys: [
       { name: "projectName", weight: 0.5 },
       { name: "projectDesc", weight: 0.3 },
-      { name: "techStack", weight: 0.2 }
-    ]
+      { name: "techStack", weight: 0.2 },
+    ],
   });
 }
-
-
 
 function getPreloadedProjectsData() {
   return Array.isArray(window.PROJECTS_DATA) ? window.PROJECTS_DATA : null;
@@ -132,8 +130,8 @@ function loadProjects() {
         `${base}projects.json`,
         window.location.href,
       ).toString();
-      
-console.log("Projects URL:", projectsUrl);
+
+      console.log("Projects URL:", projectsUrl);
       try {
         const response = await fetch(projectsUrl);
         if (!response.ok) {
@@ -158,8 +156,8 @@ console.log("Projects URL:", projectsUrl);
 
 // Start fetching immediately
 loadProjects().catch((err) => {
-  console.error('Critical initialization error:', err);
-  const grid = document.getElementById('projectGrid');
+  console.error("Critical initialization error:", err);
+  const grid = document.getElementById("projectGrid");
   if (grid) {
     grid.innerHTML = `<div style="text-align:center; padding: 2rem; color: var(--text-color, #333);">
             <h2><i class="fas fa-exclamation-triangle"></i> Failed to Load Projects</h2>
@@ -198,8 +196,8 @@ function isSourceOnlyProject(day, tags) {
   const tagList = Array.isArray(tags)
     ? tags
     : String(tags || "")
-      .split(/\s+/)
-      .filter(Boolean);
+        .split(/\s+/)
+        .filter(Boolean);
   return tagList.includes(SOURCE_ONLY_TAG);
 }
 
@@ -242,7 +240,7 @@ function resolveProjectUrls(day, name, url, tags) {
       if (demoUrl.startsWith("./")) {
         demoUrl = basePrefix + demoUrl.substring(2);
       }
-    } catch (error) { }
+    } catch (error) {}
   }
 
   return { demoUrl, sourceUrl, sourceOnly };
@@ -269,11 +267,7 @@ function sanitizeUrl(url) {
 
   if (!raw || raw === "#") return raw || "#";
 
-  if (
-    raw.startsWith("./") ||
-    raw.startsWith("../") ||
-    raw.startsWith("/")
-  ) {
+  if (raw.startsWith("./") || raw.startsWith("../") || raw.startsWith("/")) {
     return raw;
   }
   if (
@@ -293,9 +287,277 @@ function sanitizeUrl(url) {
   return "#";
 }
 
-const WEBP_PREVIEWS = new Set(["2048_game","3d cards","3d profile Card","AdvancedFormBuilder","age-calculator","AI Image Classifier","AI-Data-Analyst","AI-Resume-Analyser","Amazon-App","AnalogClock","Animated Searchbar","Animated-cursor","AppPrivacyPolicyGenerator","Background-Image-sider","Blog Page","BMI_Calculator","BordemBuster","Breakout-game","bubble game","Budget_Tracker","ButtonsUIPage","Candy_Crush_Game","canvas_multitrack_sequencer","captcha","Carousel Solar System","Casino_Memory_Match","Chess_Game","Chronosphere","ClimaCode 2.0","code-execution-visualizer","code-visualizer-playground","Data Structures Visualizer","day-10-color-picker","Developer portfolio","digital_clock","dropdown_navbar","Flappy-bird-main","FocusRoom","focustimer","fruit slice","game","Gemini","indianflag","TO_DO_LIST","typewriter"]);
+const WEBP_PREVIEWS = new Set([
+  "2048_game",
+  "3d cards",
+  "3d profile Card",
+  "AdvancedFormBuilder",
+  "age-calculator",
+  "AI Image Classifier",
+  "AI-Data-Analyst",
+  "AI-Resume-Analyser",
+  "Amazon-App",
+  "AnalogClock",
+  "Animated Searchbar",
+  "Animated-cursor",
+  "AppPrivacyPolicyGenerator",
+  "Background-Image-sider",
+  "Blog Page",
+  "BMI_Calculator",
+  "BordemBuster",
+  "Breakout-game",
+  "bubble game",
+  "Budget_Tracker",
+  "ButtonsUIPage",
+  "Candy_Crush_Game",
+  "canvas_multitrack_sequencer",
+  "captcha",
+  "Carousel Solar System",
+  "Casino_Memory_Match",
+  "Chess_Game",
+  "Chronosphere",
+  "ClimaCode 2.0",
+  "code-execution-visualizer",
+  "code-visualizer-playground",
+  "Data Structures Visualizer",
+  "day-10-color-picker",
+  "Developer portfolio",
+  "digital_clock",
+  "dropdown_navbar",
+  "Flappy-bird-main",
+  "FocusRoom",
+  "focustimer",
+  "fruit slice",
+  "game",
+  "Gemini",
+  "indianflag",
+  "TO_DO_LIST",
+  "typewriter",
+]);
 
-const NO_PREVIEWS = new Set(["advanced-analytics-canvas","advice-generator","AI ChatBot","AI-Semiconductor-Circuit-Builder","AI-Tools-Hub","ai-video-synthesizer","Air-Typing-Keyboard","AmazonClone","api-batching-engine","AstronomyDashboard","AttendancePro","attendencePridictor","audio-physics-nebula","Audio_Spectrum_Visualizer","BeatMaker","BigSales-Prediction","Bill-Splitter","BlackJack","blinkit-clone","blog","boardgame-companion","Book-Nook","Bubble-Game","bus_game","Calculator","Calendar UI for service appointments with time slots","checkers game","code-jump-space-game","code-playground","Color-Pelette","columnar-data-engine","connect 4 game","Connect-Four","Contact Book","core-performance-utils","counter-app","Country Quiz Game","country-explorer","CPU_Emulator","Cricket-Scorecard","crispr-alignment-sandbox","crossword_game","Crypto Tracker & Market Analytics Dashboard","crypto-tracker","Crypto_Price_Tracker","CSSShadowGenerator","CYBER TYPE BATTLE","cyber-deflection-sandbox","dad-joke","Daily-Water-Intake-Tracker","Debug-Website","Dental Care Services","Diabetes-Health-Risk","Dice-Roller","dictionary-app","digital-analog-clock-combo","Digital-Planner","DinoGame","dom-virtualization-pipeline","Dots_And_Boxes","Download_Time_Estimator","EcoLint","eisenhower-matrix-tool","escape room","Escape The Matrix","event-registration-system","EveSparks","Express Server","file_uploader","FinanceTracker","Financial-Dashboard","FlashcardApp","FlashFocus-An_Observation_Game","flask_auth_app","Flip Clock","Flipkart-clone","flora-tracker","Fluid_Simulator","FocusList","form-builder","github-finder","Glassmorphism-Generator","gmail_nodemailer","GPA","GradientPaletteGenerator","gravity-well","guided-breathing-visualizer","Habit_Tracker","hand-gesture-controller","hangman-react-ts","Harry-Potter","Heart-Risk-Prediction","hft-liquidity-sandbox","Html_css_animation","images","instagram-clone","Interactive-Budget-Tracker","interview-prep-hub","invisible maze runner game","InvoiceGenretor","Ip_Address_tracker","Job dashboard","job-tracker-system","Journal-Platform","Kanban_Board","Lights_Out_Puzzle","Live-Editor","loginusingmern","lru-cache-engine","magic-8ball","Markdown to HTML","markdown-editor","Markdown_Editor","MEMO 2.0","Memory Card Matching Game","MemoryCard","Mern Login Form","MERN_Job_Board","Micro_Habit_Tracker","mind-reader","mini-postman","minimalist-kanban-board","Mino-Notes","Movie-Matcher","Movie-Search-App","movie-selector","movie-watchlist","MS-Paint-Clone","multi-threaded-data-engine","NASA-APOD","Naukri_Campus_Clone","NeoTetris","neutral-evolution-simulator","NeuralNetworkPlayground","Number Guessing Game","NumberGuessGame","OpenWeatherForecastApp","pacman","pageloader","Parallel-x website","particle-wave-animation","Photo Studio","pinspire","pixel-art","PixelArtCanvasEditor","Plant","plantwebsite","pokedex-app","pomodoro-timer-dashboard","Pomodoro_With_Miu-Electronjs","Pomodoro__Timer","Productivity-Dashboard","progress_bar","qr generator","qr_generator","quantum-wave-sandbox","Quantum_CodeBreaker","QuizApp Timer","QuizAppTimer","quote-generator","reaction-time-tester","reactive-state-dashboard","reactive-state-engine","Reading-Progress-Indicator","recipe","Recipe Genie","recipe-finder","RECIPE_Genie","Resume Previewer","Rock_Paper_Scissors","Runway-Calculator","secure-hashing-engine","Secure_Password_Generator","SkillBridge","slider box","sliding game","SnapScribe","Solar System Explorer in CSS only haml","space-tracker","Spectrogram_Studio","SQLVisulizer","StatisticsDashboard","Steganography_Tool","story","Stydy-Sync","subscriptiontracker","swiggy","Swiper API Slider","TerminalPortfolio","text-to-readme","Textutils","Text_Saver_Ext","Theme-Toggler","the_cube","time_rewind","Tower-of-Hanoi-Visualizer","tower_stacker","traffic_signal","Travelapp - Copy","trie-search-engine","TypeMuse","UnitVerse","url_shortener","user_reviews","video-synthesis-engine","virtual-playground","Virtual-RainCafe","VirtualAudioSynth","WanderLust","waterTracker","Weather App with AQI","weather-app","Weekend-Activity-Generator","Well","Whack a mole","WORDLE","Word_jumble","zen-breathing-visualizer","ZenSpace","Zodiac","zomato-clone"]);
+const NO_PREVIEWS = new Set([
+  "advanced-analytics-canvas",
+  "advice-generator",
+  "AI ChatBot",
+  "AI-Semiconductor-Circuit-Builder",
+  "AI-Tools-Hub",
+  "ai-video-synthesizer",
+  "Air-Typing-Keyboard",
+  "AmazonClone",
+  "api-batching-engine",
+  "AstronomyDashboard",
+  "AttendancePro",
+  "attendencePridictor",
+  "audio-physics-nebula",
+  "Audio_Spectrum_Visualizer",
+  "BeatMaker",
+  "BigSales-Prediction",
+  "Bill-Splitter",
+  "BlackJack",
+  "blinkit-clone",
+  "blog",
+  "boardgame-companion",
+  "Book-Nook",
+  "Bubble-Game",
+  "bus_game",
+  "Calculator",
+  "Calendar UI for service appointments with time slots",
+  "checkers game",
+  "code-jump-space-game",
+  "code-playground",
+  "Color-Pelette",
+  "columnar-data-engine",
+  "connect 4 game",
+  "Connect-Four",
+  "Contact Book",
+  "core-performance-utils",
+  "counter-app",
+  "Country Quiz Game",
+  "country-explorer",
+  "CPU_Emulator",
+  "Cricket-Scorecard",
+  "crispr-alignment-sandbox",
+  "crossword_game",
+  "Crypto Tracker & Market Analytics Dashboard",
+  "crypto-tracker",
+  "Crypto_Price_Tracker",
+  "CSSShadowGenerator",
+  "CYBER TYPE BATTLE",
+  "cyber-deflection-sandbox",
+  "dad-joke",
+  "Daily-Water-Intake-Tracker",
+  "Debug-Website",
+  "Dental Care Services",
+  "Diabetes-Health-Risk",
+  "Dice-Roller",
+  "dictionary-app",
+  "digital-analog-clock-combo",
+  "Digital-Planner",
+  "DinoGame",
+  "dom-virtualization-pipeline",
+  "Dots_And_Boxes",
+  "Download_Time_Estimator",
+  "EcoLint",
+  "eisenhower-matrix-tool",
+  "escape room",
+  "Escape The Matrix",
+  "event-registration-system",
+  "EveSparks",
+  "Express Server",
+  "file_uploader",
+  "FinanceTracker",
+  "Financial-Dashboard",
+  "FlashcardApp",
+  "FlashFocus-An_Observation_Game",
+  "flask_auth_app",
+  "Flip Clock",
+  "Flipkart-clone",
+  "flora-tracker",
+  "Fluid_Simulator",
+  "FocusList",
+  "form-builder",
+  "github-finder",
+  "Glassmorphism-Generator",
+  "gmail_nodemailer",
+  "GPA",
+  "GradientPaletteGenerator",
+  "gravity-well",
+  "guided-breathing-visualizer",
+  "Habit_Tracker",
+  "hand-gesture-controller",
+  "hangman-react-ts",
+  "Harry-Potter",
+  "Heart-Risk-Prediction",
+  "hft-liquidity-sandbox",
+  "Html_css_animation",
+  "images",
+  "instagram-clone",
+  "Interactive-Budget-Tracker",
+  "interview-prep-hub",
+  "invisible maze runner game",
+  "InvoiceGenretor",
+  "Ip_Address_tracker",
+  "Job dashboard",
+  "job-tracker-system",
+  "Journal-Platform",
+  "Kanban_Board",
+  "Lights_Out_Puzzle",
+  "Live-Editor",
+  "loginusingmern",
+  "lru-cache-engine",
+  "magic-8ball",
+  "Markdown to HTML",
+  "markdown-editor",
+  "Markdown_Editor",
+  "MEMO 2.0",
+  "Memory Card Matching Game",
+  "MemoryCard",
+  "Mern Login Form",
+  "MERN_Job_Board",
+  "Micro_Habit_Tracker",
+  "mind-reader",
+  "mini-postman",
+  "minimalist-kanban-board",
+  "Mino-Notes",
+  "Movie-Matcher",
+  "Movie-Search-App",
+  "movie-selector",
+  "movie-watchlist",
+  "MS-Paint-Clone",
+  "multi-threaded-data-engine",
+  "NASA-APOD",
+  "Naukri_Campus_Clone",
+  "NeoTetris",
+  "neutral-evolution-simulator",
+  "NeuralNetworkPlayground",
+  "Number Guessing Game",
+  "NumberGuessGame",
+  "OpenWeatherForecastApp",
+  "pacman",
+  "pageloader",
+  "Parallel-x website",
+  "particle-wave-animation",
+  "Photo Studio",
+  "pinspire",
+  "pixel-art",
+  "PixelArtCanvasEditor",
+  "Plant",
+  "plantwebsite",
+  "pokedex-app",
+  "pomodoro-timer-dashboard",
+  "Pomodoro_With_Miu-Electronjs",
+  "Pomodoro__Timer",
+  "Productivity-Dashboard",
+  "progress_bar",
+  "qr generator",
+  "qr_generator",
+  "quantum-wave-sandbox",
+  "Quantum_CodeBreaker",
+  "QuizApp Timer",
+  "QuizAppTimer",
+  "quote-generator",
+  "reaction-time-tester",
+  "reactive-state-dashboard",
+  "reactive-state-engine",
+  "Reading-Progress-Indicator",
+  "recipe",
+  "Recipe Genie",
+  "recipe-finder",
+  "RECIPE_Genie",
+  "Resume Previewer",
+  "Rock_Paper_Scissors",
+  "Runway-Calculator",
+  "secure-hashing-engine",
+  "Secure_Password_Generator",
+  "SkillBridge",
+  "slider box",
+  "sliding game",
+  "SnapScribe",
+  "Solar System Explorer in CSS only haml",
+  "space-tracker",
+  "Spectrogram_Studio",
+  "SQLVisulizer",
+  "StatisticsDashboard",
+  "Steganography_Tool",
+  "story",
+  "Stydy-Sync",
+  "subscriptiontracker",
+  "swiggy",
+  "Swiper API Slider",
+  "TerminalPortfolio",
+  "text-to-readme",
+  "Textutils",
+  "Text_Saver_Ext",
+  "Theme-Toggler",
+  "the_cube",
+  "time_rewind",
+  "Tower-of-Hanoi-Visualizer",
+  "tower_stacker",
+  "traffic_signal",
+  "Travelapp - Copy",
+  "trie-search-engine",
+  "TypeMuse",
+  "UnitVerse",
+  "url_shortener",
+  "user_reviews",
+  "video-synthesis-engine",
+  "virtual-playground",
+  "Virtual-RainCafe",
+  "VirtualAudioSynth",
+  "WanderLust",
+  "waterTracker",
+  "Weather App with AQI",
+  "weather-app",
+  "Weekend-Activity-Generator",
+  "Well",
+  "Whack a mole",
+  "WORDLE",
+  "Word_jumble",
+  "zen-breathing-visualizer",
+  "ZenSpace",
+  "Zodiac",
+  "zomato-clone",
+]);
 
 function buildProjectCardHTML({
   day,
@@ -305,6 +567,7 @@ function buildProjectCardHTML({
   category,
   isBookmarked = false,
   showDescription = true,
+  showNewBadge = false,
 }) {
   const { demoUrl, sourceUrl, sourceOnly } = resolveProjectUrls(
     day,
@@ -319,8 +582,8 @@ function buildProjectCardHTML({
   const tagsArray = Array.isArray(tags)
     ? tags.filter((t) => t !== SOURCE_ONLY_TAG)
     : String(tags || "")
-      .split(/\s+/)
-      .filter((t) => t && t !== SOURCE_ONLY_TAG);
+        .split(/\s+/)
+        .filter((t) => t && t !== SOURCE_ONLY_TAG);
 
   const tagsHTML = tagsArray
     .map((t) => `<span class="tag">${escapeHTML(t)}</span>`)
@@ -345,6 +608,8 @@ function buildProjectCardHTML({
     ? '<span class="source-only-badge" title="Requires local server setup">Source only</span>'
     : "";
 
+  const newBadge = showNewBadge ? `<span class="new-badge">NEW</span>` : "";
+
   const primaryLink = sourceOnly
     ? `<a href="${safeSourceUrl}" target="_blank" class="card-link open-project" data-id="${safeDay}" rel="noopener noreferrer" onclick="event.stopPropagation()" aria-label="View source of ${safeName} (opens in a new tab)">
                         <i class="fab fa-github" aria-hidden="true"></i> Source
@@ -363,7 +628,10 @@ function buildProjectCardHTML({
   const externalFolder = day && EXTERNAL_DEMO_SOURCE_FOLDERS[day];
   if (externalFolder) {
     projectFolder = externalFolder.replace(/^public\//, "");
-  } else if (url && (url.startsWith("./public/") || url.startsWith("public/"))) {
+  } else if (
+    url &&
+    (url.startsWith("./public/") || url.startsWith("public/"))
+  ) {
     const parts = url.split("/");
     projectFolder = url.startsWith("./") ? parts[2] : parts[1];
   } else if (url && isGithubTreeUrl(url)) {
@@ -399,6 +667,7 @@ function buildProjectCardHTML({
             <div class="card-meta">
                 <span class="card-day">${safeDay}</span>
                 <span class="card-category-wrap">
+                  ${newBadge}
                   <span class="card-category">${safeCategory}</span>
                   ${difficultyBadge}
                   ${sourceOnlyBadge}
@@ -411,12 +680,13 @@ function buildProjectCardHTML({
 
             <h3 class="card-name">${safeName}</h3>
 
-            ${showDescription
-        ? `<div class="card-description">
+            ${
+              showDescription
+                ? `<div class="card-description">
     ${description}
 </div>`
-        : ""
-      }
+                : ""
+            }
             <div class="card-tags">${tagsHTML}</div>
             <div class="card-footer">
                 <div class="card-actions-left">
@@ -471,7 +741,11 @@ function resolveProjectRecord(projectData) {
     return projectData;
   }
 
-  const day = projectData.day || projectData.projectName || projectData.name || projectData[0];
+  const day =
+    projectData.day ||
+    projectData.projectName ||
+    projectData.name ||
+    projectData[0];
   const name = projectData.projectName || projectData.name || projectData[1];
 
   if (day) {
@@ -488,7 +762,8 @@ function resolveProjectRecord(projectData) {
     ...projectData,
     projectName: name || projectData.projectName,
     projectPath: projectData.projectPath || projectData.url || projectData[2],
-    techStack: projectData.techStack || projectData.tags || projectData[3] || [],
+    techStack:
+      projectData.techStack || projectData.tags || projectData[3] || [],
   };
 }
 
@@ -641,7 +916,10 @@ function migrateRecentProjects() {
   try {
     localStorage.setItem("recentProjects", JSON.stringify(recentProjects));
   } catch (error) {
-    console.warn("Could not save recent projects to localStorage:", error.message);
+    console.warn(
+      "Could not save recent projects to localStorage:",
+      error.message,
+    );
   }
 }
 
@@ -656,7 +934,10 @@ function cleanupExpiredRecentProjects() {
     try {
       localStorage.setItem("recentProjects", JSON.stringify(recentProjects));
     } catch (error) {
-      console.warn("Could not save recent projects to localStorage:", error.message);
+      console.warn(
+        "Could not save recent projects to localStorage:",
+        error.message,
+      );
     }
     renderRecentProjects();
   }
@@ -668,7 +949,10 @@ function startRecentProjectsCleanup() {
   if (recentProjectsTimer !== null) {
     clearInterval(recentProjectsTimer);
   }
-  recentProjectsTimer = setInterval(cleanupExpiredRecentProjects, 5 * 60 * 1000);
+  recentProjectsTimer = setInterval(
+    cleanupExpiredRecentProjects,
+    5 * 60 * 1000,
+  );
 }
 startRecentProjectsCleanup();
 
@@ -867,12 +1151,11 @@ function renderGrid() {
 
   let searchResults = PROJECTS;
 
-if (searchQuery.trim() && fuse) {
-  searchResults = fuse.search(searchQuery).map(result => result.item);
-}
+  if (searchQuery.trim() && fuse) {
+    searchResults = fuse.search(searchQuery).map((result) => result.item);
+  }
 
-const filtered = searchResults.filter((project) => {
-
+  const filtered = searchResults.filter((project) => {
     const day = project.day;
     const name = project.projectName;
     const url = project.projectPath;
@@ -882,8 +1165,7 @@ const filtered = searchResults.filter((project) => {
     // Category filter
     const category = getCategoryFromTags(tags, name);
     const targetCategory = FILTER_CATEGORY_MAP[activeFilter] || "all";
-    const matchesFilter =
-      activeFilter === "all" || category === targetCategory;
+    const matchesFilter = activeFilter === "all" || category === targetCategory;
 
     // Search filter
     const q = searchQuery.toLowerCase().trim();
@@ -900,8 +1182,6 @@ const filtered = searchResults.filter((project) => {
               .toLowerCase()
               .includes(term),
         );
-
-       
 
     // Tech stack dropdown filter
     let matchesTech = true;
@@ -935,8 +1215,12 @@ const filtered = searchResults.filter((project) => {
   } else if (sortOption === "difficulty") {
     const difficultyOrder = { beginner: 1, intermediate: 2, advanced: 3 };
     filtered.sort((a, b) => {
-      const diffA = a.difficulty ? difficultyOrder[a.difficulty.toLowerCase()] || 0 : 0;
-      const diffB = b.difficulty ? difficultyOrder[b.difficulty.toLowerCase()] || 0 : 0;
+      const diffA = a.difficulty
+        ? difficultyOrder[a.difficulty.toLowerCase()] || 0
+        : 0;
+      const diffB = b.difficulty
+        ? difficultyOrder[b.difficulty.toLowerCase()] || 0
+        : 0;
       return diffA - diffB;
     });
   }
@@ -1013,58 +1297,40 @@ console.log("searchQuery:", searchQuery);
 console.log("techStackFilter:", techStackFilter);
 console.log("difficultyFilter:", difficultyFilter);
 function renderRandomProject() {
-  const result =
-    document.getElementById(
-      "randomProjectResult"
-    );
+  const result = document.getElementById("randomProjectResult");
 
   if (!result) return;
 
-  const source =
-    currentFilteredProjects.length
-      ? currentFilteredProjects
-      : PROJECTS;
+  const source = currentFilteredProjects.length
+    ? currentFilteredProjects
+    : PROJECTS;
 
-  const randomProject =
-    source[
-      Math.floor(
-        Math.random() * source.length
-      )
-    ];
+  const randomProject = source[Math.floor(Math.random() * source.length)];
 
   if (!randomProject) return;
 
-  const category =
-    getCategoryFromTags(
-      randomProject.techStack,
-      randomProject.projectName
-    );
-
-  const bookmarkedDays = new Set(
-    bookmarkedProjects.map(
-      (item) =>
-        normalizeProjectEntry(item).day
-    )
+  const category = getCategoryFromTags(
+    randomProject.techStack,
+    randomProject.projectName,
   );
 
-  const { html, sourceOnly } =
-    buildProjectCardHTML({
-      day: randomProject.day,
-      name: randomProject.projectName,
-      url: randomProject.projectPath,
-      tags: randomProject.techStack,
-      category,
-      isBookmarked:
-        bookmarkedDays.has(
-          randomProject.day
-        ),
-      showDescription: true
-    });
+  const bookmarkedDays = new Set(
+    bookmarkedProjects.map((item) => normalizeProjectEntry(item).day),
+  );
+
+  const { html, sourceOnly } = buildProjectCardHTML({
+    day: randomProject.day,
+    name: randomProject.projectName,
+    url: randomProject.projectPath,
+    tags: randomProject.techStack,
+    category,
+    isBookmarked: bookmarkedDays.has(randomProject.day),
+    showDescription: true,
+  });
 
   result.innerHTML = "";
 
-  const card =
-    document.createElement("div");
+  const card = document.createElement("div");
 
   card.className = sourceOnly
     ? "project-card source-only visible"
@@ -1280,6 +1546,7 @@ function toggleBookmark(project) {
   renderBookmarks();
   renderGrid();
   renderRecentProjects();
+  renderRecentlyAdded();
 }
 
 function updateBookmarkURL() {
@@ -1451,6 +1718,57 @@ function renderBookmarks() {
   });
 }
 
+const recentlyAddedGrid = document.getElementById("recentlyAddedGrid");
+
+function renderRecentlyAdded() {
+  if (!recentlyAddedGrid) return;
+
+  recentlyAddedGrid.innerHTML = "";
+
+  if (PROJECTS.length === 0) return;
+
+  // Sort by projectNo descending
+  const sorted = [...PROJECTS].sort((a, b) => b.projectNo - a.projectNo);
+  const latest = sorted.slice(0, 8);
+
+  const bookmarkedDays = new Set(
+    bookmarkedProjects.map((item) => normalizeProjectEntry(item).day),
+  );
+
+  latest.forEach((project) => {
+    const day = project.day;
+    const name = project.projectName;
+    const url = project.projectPath;
+    const tags = project.techStack;
+
+    const category = getCategoryFromTags(tags, name);
+    const isBookmarked = bookmarkedDays.has(day);
+
+    const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
+      day,
+      name,
+      url,
+      tags,
+      category,
+      isBookmarked,
+      showDescription: true,
+      showNewBadge: true,
+    });
+
+    const card = document.createElement("div");
+    card.className = sourceOnly
+      ? "project-card source-only visible"
+      : "project-card visible";
+    card.innerHTML = html;
+    card.setAttribute("tabindex", "0");
+    card.setAttribute("role", "button");
+
+    attachProjectCardInteraction(card, demoUrl, project);
+
+    recentlyAddedGrid.appendChild(card);
+  });
+}
+
 const recentGrid = document.getElementById("recentGrid");
 
 function renderRecentProjects() {
@@ -1522,9 +1840,13 @@ function renderRecommendationsForProject(project) {
   header.className = "projects-intro";
   header.innerHTML = `
     <p class="section-label">Build Similar Projects</p>
-    <h2 class="section-title">${project ? `Projects like ${escapeHTML(
-      project.projectName || project.name || "this project",
-    )}` : "Related Projects"}</h2>
+    <h2 class="section-title">${
+      project
+        ? `Projects like ${escapeHTML(
+            project.projectName || project.name || "this project",
+          )}`
+        : "Related Projects"
+    }</h2>
   `;
   container.appendChild(header);
 
@@ -1932,7 +2254,12 @@ function syncProjectCounts() {
         project.projectName.toLowerCase().includes(q) ||
         (project.projectDesc || "").toLowerCase().includes(q) ||
         project.day.toLowerCase().includes(q) ||
-        (Array.isArray(project.techStack) ? project.techStack.join(" ") : project.techStack || "").toLowerCase().includes(q),
+        (Array.isArray(project.techStack)
+          ? project.techStack.join(" ")
+          : project.techStack || ""
+        )
+          .toLowerCase()
+          .includes(q),
     );
   }
 
@@ -2045,14 +2372,14 @@ function hasProjectGrid() {
 document.addEventListener("DOMContentLoaded", async () => {
   readStateFromURL();
 
-      initTheme();
-      updateNavbar();
-      initScrollBtn();
-      window.addEventListener("load", () => {
-        setTimeout(() => {
-          fetchRepoStats();
-        }, 1000);
-      });
+  initTheme();
+  updateNavbar();
+  initScrollBtn();
+  window.addEventListener("load", () => {
+    setTimeout(() => {
+      fetchRepoStats();
+    }, 1000);
+  });
 
   initCurrentYear();
   initFilterChips();
@@ -2068,23 +2395,24 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   try {
-  await loadProjects();
+    await loadProjects();
 
-//updateGamifiedUI();
+    //updateGamifiedUI();
 
-restoreStateFromURL();
+    restoreStateFromURL();
 
-syncProjectCounts();
+    syncProjectCounts();
 
-if (hasProjectGrid()) {
-  loadBookmarksFromURL();
+    if (hasProjectGrid()) {
+      loadBookmarksFromURL();
 
-  renderGrid();
-  renderBookmarks();
-  renderRecentProjects();
-}
+      renderGrid();
+      renderBookmarks();
+      renderRecentProjects();
+      renderRecentlyAdded();
+    }
 
-syncProjectCounts();
+    syncProjectCounts();
     fetchRepoStats();
     initScrollBtn();
   } catch (error) {
@@ -2619,10 +2947,5 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("popstate", () => restoreStateFromURL());
 });
 document
-  .getElementById(
-    "randomProjectBtn"
-  )
-  ?.addEventListener(
-    "click",
-    renderRandomProject
-  );
+  .getElementById("randomProjectBtn")
+  ?.addEventListener("click", renderRandomProject);

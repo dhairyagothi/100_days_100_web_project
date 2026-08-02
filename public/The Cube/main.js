@@ -110,7 +110,12 @@ const animationEngine = ( () => {
       this.timer = new Timer( this );
       this.preferences = new Preferences( this );
       this.scores = new Scores( this );
-      this.history = new MoveHistoryManager( this );  
+     this.history = {
+    recordMove() {},
+    undo() {},
+    redo() {},
+    clear() {}
+};
   
       this.createLights();
   

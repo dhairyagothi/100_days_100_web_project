@@ -169,6 +169,22 @@ body.light .theme-btn:hover {
   transition: transform 0.15s ease, color 0.15s ease;
 }
 
+.controls i {
+  padding: 30px 0;
+  text-align: center;
+  font-size: 1.6rem;
+  color: #B8C6DC;
+  width: calc(100% / 4);
+  cursor: pointer;
+  border-right: 1px solid #171B26;
+  transition: background 0.2s ease, transform 0.2s ease;
+  user-select: none;
+}
+.controls i:hover,
+.controls i.active {
+  background: #3457dc;
+  color: white;
+  transform: scale(0.95);
 .stat-value.bump {
   transform: scale(1.16);
   color: #ffffff;
@@ -507,6 +523,11 @@ body.light .key-symbol {
     margin-bottom: 70px;
   }
 
+  .controls i {
+  padding: 22px 0;
+  font-size: 1.4rem;
+}
+}
   .hud {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }

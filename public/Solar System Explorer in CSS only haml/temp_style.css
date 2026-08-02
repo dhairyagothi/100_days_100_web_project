@@ -311,3 +311,16 @@
         transform:rotate(360deg);
     }
 }
+.back-home-btn {
+    color: #fff;
+    text-decoration: none;
+    padding: 8px 16px;
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 8px;
+    font-size: 0.9rem;
+    transition: background 0.3s;
+}
+
+.back-home-btn:hover {
+    background: rgba(255,255,255,0.1);
+}
