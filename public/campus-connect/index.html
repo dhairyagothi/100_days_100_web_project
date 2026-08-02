@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampusConnect | College Community Portal</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20M5 17V5a3 3 0 0 1 3-3h8a3 3 0 0 1 3 3v12M9 22V12h6v10M12 2v3M9 6v2M15 6v2"/></svg>
+                    <span>CampusConnect</span>
+                </div>
+                <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle navigation">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                </button>
+            </div>
+            
+            <nav class="nav-menu">
+                <a href="#dashboard" class="nav-item active" data-view="dashboard">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#clubs" class="nav-item" data-view="clubs">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                    <span>Clubs</span>
+                </a>
+                <a href="#events" class="nav-item" data-view="events">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                    <span>Events</span>
+                </a>
+                <a href="#notes" class="nav-item" data-view="notes">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                    <span>Notes Sharing</span>
+                </a>
+                <a href="#lost-found" class="nav-item" data-view="lost-found">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                    <span>Lost & Found</span>
+                </a>
+                <a href="#marketplace" class="nav-item" data-view="marketplace">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+                    <span>Marketplace</span>
+                </a>
+                <a href="#timetable" class="nav-item" data-view="timetable">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    <span>Timetable</span>
+                </a>
+                <a href="#placements" class="nav-item" data-view="placements">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path><line x1="12" y1="11" x2="12" y2="17"></line><line x1="9" y1="14" x2="15" y2="14"></line></svg>
+                    <span>Placements</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="user-profile clickable-profile" id="user-profile-trigger" title="Click to edit profile">
+                    <div class="avatar" id="sidebar-avatar">SS</div>
+                    <div class="user-info">
+                        <span class="user-name" id="sidebar-name">Sanjana Sharma</span>
+                        <span class="user-role" id="sidebar-role">Student, CS Dept</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <header class="top-header">
+                <div class="header-search">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    <input type="text" id="global-search" placeholder="Search notes, clubs, lost items...">
+                </div>
+                <div class="header-actions">
+                    <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sun-icon"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                    </button>
+                    <button class="icon-btn" id="notifications-btn" aria-label="Notifications">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                        <span class="notification-badge"></span>
+                    </button>
+                </div>
+            </header>
+
+            <div class="content-container">
+                <!-- VIEW: Dashboard -->
+                <section id="view-dashboard" class="view-section active">
+                    <div class="welcome-banner">
+                        <h1 id="welcome-title">Welcome back, Sanjana Sharma!</h1>
+                        <p>Here is what's happening today at campus.</p>
+                    </div>
+
+                    <div class="dashboard-grid">
+                        <!-- Widget: Timetable Quick Peek -->
+                        <div class="dashboard-card widget-timetable">
+                            <div class="card-header">
+                                <h3>Today's Schedule</h3>
+                                <a href="#timetable" class="view-all-link">Full Schedule</a>
+                            </div>
+                            <div class="card-body" id="widget-timetable-content">
+                                <!-- Dynamic loading -->
+                            </div>
+                        </div>
+
+                        <!-- Widget: Featured Events -->
+                        <div class="dashboard-card widget-events">
+                            <div class="card-header">
+                                <h3>Upcoming Events</h3>
+                                <a href="#events" class="view-all-link">All Events</a>
+                            </div>
+                            <div class="card-body" id="widget-events-content">
+                                <!-- Dynamic events list -->
+                            </div>
+                        </div>
+
+                        <!-- Widget: Placement Notices -->
+                        <div class="dashboard-card widget-placements">
+                            <div class="card-header">
+                                <h3>Placement Updates</h3>
+                                <a href="#placements" class="view-all-link">All Updates</a>
+                            </div>
+                            <div class="card-body" id="widget-placements-content">
+                                <!-- Dynamic placements timeline -->
+                            </div>
+                        </div>
+
+                        <!-- Widget: Quick Stats / Updates -->
+                        <div class="dashboard-card widget-overview">
+                            <div class="card-header">
+                                <h3>Campus Activities</h3>
+                            </div>
+                            <div class="card-body grid-2x2">
+                                <div class="stat-box">
+                                    <span class="stat-num" id="stat-clubs">0</span>
+                                    <span class="stat-lbl">My Clubs</span>
+                                </div>
+                                <div class="stat-box">
+                                    <span class="stat-num" id="stat-notes">0</span>
+                                    <span class="stat-lbl">Shared Notes</span>
+                                </div>
+                                <div class="stat-box">
+                                    <span class="stat-num" id="stat-lost">0</span>
+                                    <span class="stat-lbl">Lost & Found Items</span>
+                                </div>
+                                <div class="stat-box">
+                                    <span class="stat-num" id="stat-market">0</span>
+                                    <span class="stat-lbl">Market Items</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- VIEW: Clubs -->
+                <section id="view-clubs" class="view-section">
+                    <div class="section-header">
+                        <div>
+                            <h2>Campus Clubs</h2>
+                            <p>Discover, follow, and engage with college groups.</p>
+                        </div>
+                        <div class="action-group flex-actions">
+                            <select id="club-category-select" class="custom-select">
+                                <option value="all">All Categories</option>
+                                <option value="technical">Technical</option>
+                                <option value="cultural">Cultural</option>
+                                <option value="sports">Sports</option>
+                                <option value="academic">Academic</option>
+                            </select>
+                            <button class="btn btn-primary" id="btn-create-club">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                <span>Create Club</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="clubs-grid" id="clubs-list-container">
+                        <!-- Clubs rendered dynamically -->
+                    </div>
+                </section>
+
+                <!-- VIEW: Events -->
+                <section id="view-events" class="view-section">
+                    <div class="section-header">
+                        <div>
+                            <h2>Upcoming Events</h2>
+                            <p>Stay updated with workshops, hackathons, and cultural meets.</p>
+                        </div>
+                        <div class="action-group flex-actions">
+                            <select id="event-type-select" class="custom-select">
+                                <option value="all">All Events</option>
+                                <option value="hackathon">Hackathons</option>
+                                <option value="workshop">Workshops</option>
+                                <option value="fest">Cultural Fests</option>
+                                <option value="sports">Sports Meets</option>
+                            </select>
+                            <button class="btn btn-primary" id="btn-create-event">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                <span>Create Event</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="events-grid" id="events-list-container">
+                        <!-- Events loaded dynamically -->
+                    </div>
+                </section>
+
+                <!-- VIEW: Notes Sharing -->
+                <section id="view-notes" class="view-section">
+                    <div class="section-header">
+                        <div>
+                            <h2>Notes Sharing</h2>
+                            <p>Peer-sourced lecture notes, question papers, and references.</p>
+                        </div>
+                        <button class="btn btn-primary" id="btn-upload-note">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                            <span>Share a Note</span>
+                        </button>
+                    </div>
+
+                    <div class="notes-controls">
+                        <div class="search-bar-container">
+                            <input type="text" id="notes-search-input" class="form-control" placeholder="Search by subject or course code (e.g. CS101)...">
+                        </div>
+                        <div class="filter-group">
+                            <select id="notes-branch-select" class="custom-select">
+                                <option value="all">All Branches</option>
+                                <option value="CS">Computer Science</option>
+                                <option value="EC">Electronics</option>
+                                <option value="ME">Mechanical</option>
+                                <option value="EE">Electrical</option>
+                            </select>
+                            <select id="notes-sem-select" class="custom-select">
+                                <option value="all">All Semesters</option>
+                                <option value="1">Semester 1</option>
+                                <option value="2">Semester 2</option>
+                                <option value="3">Semester 3</option>
+                                <option value="4">Semester 4</option>
+                                <option value="5">Semester 5</option>
+                                <option value="6">Semester 6</option>
+                                <option value="7">Semester 7</option>
+                                <option value="8">Semester 8</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="notes-list" id="notes-list-container">
+                        <!-- Notes rendered dynamically -->
+                    </div>
+                </section>
+
+                <!-- VIEW: Lost & Found -->
+                <section id="view-lost-found" class="view-section">
+                    <div class="section-header">
+                        <div>
+                            <h2>Lost & Found</h2>
+                            <p>Did you lose or find something? List it here to notify everyone.</p>
+                        </div>
+                        <button class="btn btn-primary" id="btn-report-item">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                            <span>Report Item</span>
+                        </button>
+                    </div>
+
+                    <div class="tabs-navigation">
+                        <button class="tab-btn active" data-lf-filter="all">All Items</button>
+                        <button class="tab-btn" data-lf-filter="lost">Lost</button>
+                        <button class="tab-btn" data-lf-filter="found">Found</button>
+                    </div>
+
+                    <div class="lost-found-grid" id="lf-list-container">
+                        <!-- Lost and found cards dynamically -->
+                    </div>
+                </section>
+
+                <!-- VIEW: Marketplace -->
+                <section id="view-marketplace" class="view-section">
+                    <div class="section-header">
+                        <div>
+                            <h2>Campus Marketplace</h2>
+                            <p>Buy, sell, or trade items within your college community.</p>
+                        </div>
+                        <button class="btn btn-primary" id="btn-list-market">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                            <span>List Item</span>
+                        </button>
+                    </div>
+
+                    <div class="marketplace-controls">
+                        <div class="search-bar-container">
+                            <input type="text" id="market-search-input" class="form-control" placeholder="Search marketplace (e.g. cycle, textbooks)...">
+                        </div>
+                        <div class="filter-group">
+                            <select id="market-category-select" class="custom-select">
+                                <option value="all">All Categories</option>
+                                <option value="Books">Books & Notes</option>
+                                <option value="Electronics">Electronics</option>
+                                <option value="Bicycles">Bicycles</option>
+                                <option value="Clothing">Clothing</option>
+                                <option value="Others">Others</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="marketplace-grid" id="market-list-container">
+                        <!-- Marketplace listings dynamically loaded -->
+                    </div>
+                </section>
+
+                <!-- VIEW: Timetable -->
+                <section id="view-timetable" class="view-section">
+                    <div class="section-header">
+                        <div>
+                            <h2>Weekly Timetable</h2>
+                            <p>Keep track of your classes, lectures, and lab slots.</p>
+                        </div>
+                        <div class="action-group">
+                            <select id="timetable-preset-select" class="custom-select">
+                                <option value="custom">Custom Schedule</option>
+                                <option value="CS-3A">CS Section 3A</option>
+                                <option value="CS-3B">CS Section 3B</option>
+                                <option value="EC-2A">EC Section 2A</option>
+                            </select>
+                            <button class="btn btn-primary" id="btn-add-class">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                <span>Add Class</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="timetable-container">
+                        <div class="timetable-grid-header">
+                            <div class="time-col-header">Time</div>
+                            <div class="day-col-header">Monday</div>
+                            <div class="day-col-header">Tuesday</div>
+                            <div class="day-col-header">Wednesday</div>
+                            <div class="day-col-header">Thursday</div>
+                            <div class="day-col-header">Friday</div>
+                        </div>
+                        <div class="timetable-grid-body" id="timetable-slots-grid">
+                            <!-- Timetable slots rendered dynamically -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- VIEW: Placements -->
+                <section id="view-placements" class="view-section">
+                    <div class="section-header">
+                        <div>
+                            <h2>Placement & Internship Updates</h2>
+                            <p>Stay informed about on-campus recruitment and internships.</p>
+                        </div>
+                        <button class="btn btn-primary" id="btn-post-placement">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                            <span>Post Update</span>
+                        </button>
+                    </div>
+
+                    <div class="placements-layout">
+                        <div class="placements-feed" id="placements-feed-container">
+                            <!-- Placements notifications list -->
+                        </div>
+                        <aside class="interview-tips-card">
+                            <h3>Placement Preparation Tips</h3>
+                            <div class="tip-item">
+                                <span class="tip-badge dsa">DSA</span>
+                                <h4>Data Structures & Algorithms</h4>
+                                <p>Focus on Tree, Graph, Dynamic Programming, and System Design concepts. Practice regularly on LeetCode/GeeksforGeeks.</p>
+                            </div>
+                            <div class="tip-item">
+                                <span class="tip-badge resume">Resume</span>
+                                <h4>Resume Building</h4>
+                                <p>Highlight projects with clear bullet points explaining your impact and technology stack. Use bullet points structured as action verbs + task + outcome.</p>
+                            </div>
+                            <div class="tip-item">
+                                <span class="tip-badge hr">HR</span>
+                                <h4>HR & Behavioral Rounds</h4>
+                                <p>Use the STAR methodology (Situation, Task, Action, Result) to structure answers for situational questions.</p>
+                            </div>
+                        </aside>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- MODAL: Share Note -->
+    <div class="modal" id="modal-upload-note">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Share Study Material</h3>
+                <button class="close-modal-btn">&times;</button>
+            </div>
+            <form id="form-upload-note" class="modal-form">
+                <div class="form-group">
+                    <label for="note-title">Title / Topic Name</label>
+                    <input type="text" id="note-title" required placeholder="e.g. Memory Management Lecture Notes">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="note-course-code">Course Code</label>
+                        <input type="text" id="note-course-code" required placeholder="e.g. CS302">
+                    </div>
+                    <div class="form-group">
+                        <label for="note-branch">Branch</label>
+                        <select id="note-branch" class="form-control" required>
+                            <option value="CS">Computer Science</option>
+                            <option value="EC">Electronics</option>
+                            <option value="ME">Mechanical</option>
+                            <option value="EE">Electrical</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="note-sem">Semester</label>
+                        <select id="note-sem" class="form-control" required>
+                            <option value="1">Sem 1</option>
+                            <option value="2">Sem 2</option>
+                            <option value="3">Sem 3</option>
+                            <option value="4">Sem 4</option>
+                            <option value="5">Sem 5</option>
+                            <option value="6">Sem 6</option>
+                            <option value="7">Sem 7</option>
+                            <option value="8">Sem 8</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="note-author">Contributor Name</label>
+                        <input type="text" id="note-author" placeholder="Sanjana Sharma">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="note-file-name">Document Name / Link description</label>
+                    <input type="text" id="note-file-name" required placeholder="e.g. OS_Module3_Notes.pdf">
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary btn-close-modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Publish Note</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: Report Lost/Found Item -->
+    <div class="modal" id="modal-report-item">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Report Lost & Found Item</h3>
+                <button class="close-modal-btn">&times;</button>
+            </div>
+            <form id="form-report-item" class="modal-form">
+                <div class="form-group">
+                    <label>Report Type</label>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="item-status" value="Lost" checked> Lost
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="item-status" value="Found"> Found
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="item-title">Item Name</label>
+                    <input type="text" id="item-title" required placeholder="e.g. Blue Dell Laptop Charger">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="item-location">Location Last Seen / Found</label>
+                        <input type="text" id="item-location" required placeholder="e.g. Block B, Room 204">
+                    </div>
+                    <div class="form-group">
+                        <label for="item-contact">Contact Details</label>
+                        <input type="text" id="item-contact" required placeholder="e.g. Phone or Student ID">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="item-description">Description / Details</label>
+                    <textarea id="item-description" rows="3" placeholder="Provide details (color, brand, any special markings)"></textarea>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary btn-close-modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Report Item</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: Post Marketplace Listing -->
+    <div class="modal" id="modal-list-market">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Create Sale Listing</h3>
+                <button class="close-modal-btn">&times;</button>
+            </div>
+            <form id="form-list-market" class="modal-form">
+                <div class="form-group">
+                    <label for="market-title">Item for Sale</label>
+                    <input type="text" id="market-title" required placeholder="e.g. Hercules Gear Cycle">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="market-price">Price (₹)</label>
+                        <input type="number" id="market-price" required placeholder="e.g. 2500">
+                    </div>
+                    <div class="form-group">
+                        <label for="market-category">Category</label>
+                        <select id="market-category" class="form-control" required>
+                            <option value="Books">Books & Notes</option>
+                            <option value="Electronics">Electronics</option>
+                            <option value="Bicycles">Bicycles</option>
+                            <option value="Clothing">Clothing</option>
+                            <option value="Others">Others</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="market-contact">Seller Contact (WhatsApp / Call)</label>
+                        <input type="text" id="market-contact" required placeholder="e.g. 9876543210">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="market-description">Description & Condition</label>
+                    <textarea id="market-description" rows="3" placeholder="e.g. 1 year old, good condition, negotiable price"></textarea>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary btn-close-modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Publish Listing</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: Add Timetable Class -->
+    <div class="modal" id="modal-add-class">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add Custom Class</h3>
+                <button class="close-modal-btn">&times;</button>
+            </div>
+            <form id="form-add-class" class="modal-form">
+                <div class="form-group">
+                    <label for="class-name">Subject / Class Name</label>
+                    <input type="text" id="class-name" required placeholder="e.g. Web Technologies">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="class-day">Day</label>
+                        <select id="class-day" class="form-control" required>
+                            <option value="Monday">Monday</option>
+                            <option value="Tuesday">Tuesday</option>
+                            <option value="Wednesday">Wednesday</option>
+                            <option value="Thursday">Thursday</option>
+                            <option value="Friday">Friday</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="class-time">Time Slot</label>
+                        <select id="class-time" class="form-control" required>
+                            <option value="09:00 AM - 10:00 AM">09:00 AM - 10:00 AM</option>
+                            <option value="10:00 AM - 11:00 AM">10:00 AM - 11:00 AM</option>
+                            <option value="11:15 AM - 12:15 PM">11:15 AM - 12:15 PM</option>
+                            <option value="12:15 PM - 01:15 PM">12:15 PM - 01:15 PM</option>
+                            <option value="02:00 PM - 03:00 PM">02:00 PM - 03:00 PM</option>
+                            <option value="03:00 PM - 04:00 PM">03:00 PM - 04:00 PM</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="class-room">Room No / Lab</label>
+                        <input type="text" id="class-room" required placeholder="e.g. Lab 3 / B-301">
+                    </div>
+                    <div class="form-group">
+                        <label for="class-faculty">Professor / Instructor</label>
+                        <input type="text" id="class-faculty" placeholder="e.g. Dr. Jane Smith">
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary btn-close-modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Add Class</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: Club Info / Announcement View -->
+    <div class="modal" id="modal-club-details">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="club-detail-name">Club Name</h3>
+                <button class="close-modal-btn">&times;</button>
+            </div>
+            <div class="club-detail-body">
+                <div class="club-meta-desc">
+                    <span class="badge" id="club-detail-tag">Category</span>
+                    <p id="club-detail-desc">Club Description goes here.</p>
+                </div>
+                <hr>
+                <h4>Active Announcements</h4>
+                <div class="announcements-list" id="club-detail-announcements">
+                    <!-- Dynamic Announcements -->
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-secondary btn-close-modal">Close</button>
+                <button type="button" class="btn btn-primary" id="btn-toggle-join-club">Join Club</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- NEW MODAL: Create Club -->
+    <div class="modal" id="modal-create-club">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Create New Club</h3>
+                <button class="close-modal-btn">&times;</button>
+            </div>
+            <form id="form-create-club" class="modal-form">
+                <div class="form-group">
+                    <label for="new-club-name">Club Name</label>
+                    <input type="text" id="new-club-name" required placeholder="e.g. Photography Club">
+                </div>
+                <div class="form-group">
+                    <label for="new-club-category">Category</label>
+                    <select id="new-club-category" class="form-control" required>
+                        <option value="technical">Technical</option>
+                        <option value="cultural">Cultural</option>
+                        <option value="sports">Sports</option>
+                        <option value="academic">Academic</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="new-club-desc">Description</label>
+                    <textarea id="new-club-desc" rows="3" required placeholder="Explain club activities, meetings, goals..."></textarea>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary btn-close-modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Create Club</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- NEW MODAL: Create Event -->
+    <div class="modal" id="modal-create-event">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Create New Event</h3>
+                <button class="close-modal-btn">&times;</button>
+            </div>
+            <form id="form-create-event" class="modal-form">
+                <div class="form-group">
+                    <label for="new-event-title">Event Title</label>
+                    <input type="text" id="new-event-title" required placeholder="e.g. Android Development Bootcamp">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="new-event-type">Type</label>
+                        <select id="new-event-type" class="form-control" required>
+                            <option value="hackathon">Hackathon</option>
+                            <option value="workshop">Workshop</option>
+                            <option value="fest">Cultural Fest</option>
+                            <option value="sports">Sports Meet</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="new-event-venue">Venue</label>
+                        <input type="text" id="new-event-venue" required placeholder="e.g. Auditorium / Lab 1">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="new-event-day">Date (Day number)</label>
+                        <input type="number" id="new-event-day" min="1" max="31" required placeholder="e.g. 24">
+                    </div>
+                    <div class="form-group">
+                        <label for="new-event-month">Month (Abbr.)</label>
+                        <input type="text" id="new-event-month" maxlength="3" required placeholder="e.g. Aug">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="new-event-time">Time Slot</label>
+                    <input type="text" id="new-event-time" required placeholder="e.g. 10:00 AM - 01:00 PM">
+                </div>
+                <div class="form-group">
+                    <label for="new-event-desc">Description</label>
+                    <textarea id="new-event-desc" rows="2" required placeholder="Event details..."></textarea>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary btn-close-modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Create Event</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- NEW MODAL: Post Placement -->
+    <div class="modal" id="modal-post-placement">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Post Placement/Internship Update</h3>
+                <button class="close-modal-btn">&times;</button>
+            </div>
+            <form id="form-post-placement" class="modal-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="new-place-company">Company Name</label>
+                        <input type="text" id="new-place-company" required placeholder="e.g. Google">
+                    </div>
+                    <div class="form-group">
+                        <label for="new-place-role">Job Role</label>
+                        <input type="text" id="new-place-role" required placeholder="e.g. SDE Intern">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="new-place-ctc">Package / Stipend</label>
+                        <input type="text" id="new-place-ctc" required placeholder="e.g. ₹1,00,000 / month or ₹12 LPA">
+                    </div>
+                    <div class="form-group">
+                        <label for="new-place-cgpa">CGPA Eligibility</label>
+                        <input type="text" id="new-place-cgpa" required placeholder="e.g. 8.0 CGPA & above">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="new-place-branches">Eligible Branches</label>
+                        <input type="text" id="new-place-branches" required placeholder="e.g. CS, EC, EE">
+                    </div>
+                    <div class="form-group">
+                        <label for="new-place-deadline">Deadline</label>
+                        <input type="text" id="new-place-deadline" required placeholder="e.g. 26th Aug, 11:59 PM">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="new-place-desc">Hiring Details & Guidelines</label>
+                    <textarea id="new-place-desc" rows="3" required placeholder="Test patterns, reference links, etc."></textarea>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary btn-close-modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Post Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- NEW MODAL: Edit Profile -->
+    <div class="modal" id="modal-edit-profile">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Edit Profile Settings</h3>
+                <button class="close-modal-btn">&times;</button>
+            </div>
+            <form id="form-edit-profile" class="modal-form">
+                <div class="form-group">
+                    <label for="edit-profile-name">Full Name</label>
+                    <input type="text" id="edit-profile-name" required placeholder="Sanjana Sharma">
+                </div>
+                <div class="form-group">
+                    <label for="edit-profile-role">Role & Department</label>
+                    <input type="text" id="edit-profile-role" required placeholder="Student, CS Dept">
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary btn-close-modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Profile</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Script -->
+    <script src="app.js"></script>
+</body>
+</html>

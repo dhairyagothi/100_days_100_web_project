@@ -1,12 +1,14 @@
 /* ============================================================
    CONFIGURATION
    ============================================================ */
-if (typeof REPO_OWNER === 'undefined') {
-  window.REPO_OWNER = 'dhairyagothi';
-  window.REPO_NAME = '100_days_100_web_project';
+if (typeof REPO_OWNER === "undefined") {
+  window.REPO_OWNER = "dhairyagothi";
+  window.REPO_NAME = "100_days_100_web_project";
 }
-window.REPO_OWNER = window.REPO_OWNER || 'dhairyagothi';
-window.REPO_NAME = window.REPO_NAME || '100_days_100_web_project';
+window.REPO_OWNER = window.REPO_OWNER || "dhairyagothi";
+window.REPO_NAME = window.REPO_NAME || "100_days_100_web_project";
+
+let fuse;
 
 let currentPage = 1;
 //for the number of visible projects in one page.
@@ -14,34 +16,33 @@ let itemsPerPage = 9;
 let projectData = [];
 let filteredProjectData = [];
 
-
 /* ============================================================
    TECHNOLOGY STACK FILTERING VARIABLES
    ============================================================ */
 let techStackFilters = []; // Array of active tech filters
-let techSearchQuery = ''; // Current tech search input
+let techSearchQuery = ""; // Current tech search input
 
 // Technology normalization map (handles common variations)
 // Maps user input → actual tags in dataset
 const TECH_ALIASES = {
-  'js': 'javascript',
-  'react': 'javascript',
-  'node': 'javascript',
-  'vue': 'javascript',
-  'python': 'api',
-  'flask': 'api',
-  'game': 'game',
-  'games': 'game',
+  js: "javascript",
+  react: "javascript",
+  node: "javascript",
+  vue: "javascript",
+  python: "api",
+  flask: "api",
+  game: "game",
+  games: "game",
 };
 
 /* Maps data-filter values on chip buttons to display category names */
 const FILTER_CATEGORY_MAP = {
-  'all': 'all',
-  'game': 'Games',
-  'clone': 'Clones',
-  'tool': 'Tools',
-  'ui': 'UI / Animation',
-  'api': 'APIs',
+  all: "all",
+  game: "Games",
+  clone: "Clones",
+  tool: "Tools",
+  ui: "UI / Animation",
+  api: "APIs",
 };
 
 /**
@@ -49,852 +50,817 @@ const FILTER_CATEGORY_MAP = {
  * Uses the existing tag structure so no new data field is needed.
  */
 function getCategoryFromTags(tags, name) {
-  const tagStr = (Array.isArray(tags) ? tags.join(' ') : (tags || '')).toLowerCase();
-  const nameStr = (name || '').toLowerCase();
+  const tagStr = (
+    Array.isArray(tags) ? tags.join(" ") : tags || ""
+  ).toLowerCase();
+  const nameStr = (name || "").toLowerCase();
 
-  if (tagStr.includes('game')) return 'Games';
-  if (tagStr.includes('clone')) return 'Clones';
-  if (tagStr.includes('tool')) return 'Tools';
-  if (tagStr.includes('ui')) return 'UI / Animation';
-  if (tagStr.includes('api') || tagStr.includes('weather')) return 'APIs';
+  if (tagStr.includes("game")) return "Games";
+  if (tagStr.includes("clone")) return "Clones";
+  if (tagStr.includes("tool")) return "Tools";
+  if (tagStr.includes("ui")) return "UI / Animation";
+  if (tagStr.includes("api") || tagStr.includes("weather")) return "APIs";
 
-  if (nameStr.includes('clone')) return 'Clones';
-  if (nameStr.includes('game') || nameStr.includes('puzzle') || nameStr.includes('quiz')) return 'Games';
+  if (nameStr.includes("clone")) return "Clones";
+  if (
+    nameStr.includes("game") ||
+    nameStr.includes("puzzle") ||
+    nameStr.includes("quiz")
+  )
+    return "Games";
 
-  return 'Tools';
+  return "Tools";
 }
 
-const PROJECT_DATA = [
-['Day 1', 'To-Do List', './public/TO_DO_LIST/todolist.html', ['javascript', 'todo'], 'beginner'],
-  ['Day 2', 'Digital Clock', './public/digital_clock/digitalclock.html', ['javascript'], 'beginner'],
-  ['Day 3', 'Indian Flag', './public/indianflag/flag.html', ['css'], 'beginner'],
-  ['Day 4', 'Dropdown Nav Bar', './public/dropdown_navbar/index.html', ['css'], 'beginner'],
-  ['Day 5', 'Animated Cursor', './public/Animated-cursor/animated-cursor.html', ['ui', 'javascript', 'css'], 'beginner'],
-  ['Day 6', 'Auto Background Image Slider', './public/Background-Image-sider/slider.html', ['javascript'], 'beginner'],
-  ['Day 7', 'Typewriter', './public/typewriter/typewriter.html', ['html', 'css', 'javascript'], 'advanced'],
-  ['Day 8', 'Parallel-X Website', './public/Parallel-x%20website/parallal.html', ['css'], 'intermediate'],
-  ['Day 9', 'Captcha Generator', './public/captcha/captcha.html', ['javascript'], 'intermediate'],
-  ['Day 10', 'QR Code Generator', './public/qr%20generator/qr.html', ['api', 'javascript'], 'intermediate'],
-  ['Day 11', 'Serve Website Using Express', './public/index.html', ['javascript'], 'intermediate'],
-  ['Day 12', 'Nodemailer Contact Form', './public/gmail_nodemailer/public/mail.html', ['api', 'javascript'], 'intermediate'],
-  ['Day 13', 'Login Form Using MERN', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/loginusingmern', ['api', 'javascript'], 'intermediate'],
-  ['Day 14', 'File Uploader', './public/file_uploader/public/file_uploader.html', ['javascript'], 'intermediate'],
-  ['Day 15', 'Progress Bar', './public/progress_bar/progress_bar.html', ['ui', 'css', 'javascript'], 'beginner'],
-  ['Day 16', 'Scroll Bar CSS', './public/Custom Scroll Bar/index.html', ['css'], 'beginner'],
-  ['Day 17', 'Slider Using Swiper API', './public/slider%20box/index.html', ['api', 'javascript'], 'intermediate'],
-  ['Day 18', 'Carousel Solar System', './public/Carousel%20Solar%20System/index.html', ['css', 'canvas'], 'intermediate'],
-  ['Day 19', 'Planto', './public/plantwebsite/plant.html', ['css'], 'beginner'],
-  ['Day 20', 'EveSparks', 'https://evesparks.onrender.com/', ['javascript'], 'intermediate'],
-  ['Day 21', 'Video BG Slider Using React', './public/travel_website/index.html', ['javascript'], 'intermediate'],
-  ['Day 22', 'Page Loader', './public/pageloader/pageloader.html', ['ui', 'css'], 'beginner'],
-  ['Day 23', 'Jarvis Virtual Assistant', './public/Jarvis-AI-main/index.html', ['api', 'javascript'], 'intermediate'],
-  ['Day 24', 'Chat Bot', './public/AI%20ChatBot/chatbot.html', ['api', 'javascript'], 'intermediate'],
-  ['Day 25', 'Tic-Tac-Toe', './public/TicTacToe/index.html', ['game', 'javascript'], 'beginner'],
-  ['Day 26', 'Maze Game', './public/Maze-Game-main/index.html', ['game', 'javascript'], 'intermediate'],
-  ['Day 27', 'Memory Game', './public/MemoryGame/index.html', ['game', 'javascript'], 'beginner'],
-  ['Day 28', 'Wordle', './public/WORDLE/index.html', ['game', 'javascript'], 'intermediate'],
-  ['Day 29', 'Snake Game', './public/snake_game/index.html', ['game', 'javascript'], 'beginner'],
-  ['Day 30', 'Flappy-bird-game', './public/Flappy-bird-main/index.html', ['game', 'canvas'], 'intermediate'],
-  ['Day 31', 'Password Manager', './public/password%20manager/index.html', ['tool', 'javascript'], 'intermediate'],
-  ['Day 32', 'Missionaries & Cannibals', './public/Missionaries&Cannibals/index.html', ['game', 'javascript'], 'intermediate'],
-  ['Day 33', 'Weather Forecasting', './public/Weather%20Forcasting/index.html', ['weather', 'api'], 'intermediate'],
-  ['Day 34', 'Email Validator', './public/email%20validator/index.html', ['api', 'javascript'], 'beginner'],
-  ['Day 35', 'Vanilla-JavaScript-Calculator', './public/Vanilla-JavaScript-Calculator-master/index.html', ['tool', 'javascript'], 'beginner'],
-  ['Day 36', 'Medical App', './public/Medical_App/index.html', ['javascript'], 'intermediate'],
-  ['Day 37', '2048 Game', './public/2048_game/index.html', ['game', 'javascript'], 'intermediate'],
-  ['Day 38', 'Github Profile Finder', './public/github_profile_finder/index.html', ['api', 'javascript'], 'intermediate'],
-  ['Day 39', 'Notes App', './public/notes-app/index.html', ['todo', 'javascript'], 'beginner'],
-  ['Day 40', 'Analog Clock', './public/AnalogClock/index.html', ['javascript', 'css'], 'beginner'],
-  ['Day 41', 'Scroll Dark Game', './public/Scroll%20Game%20Dark%20Run/index.html', ['game', 'canvas'], 'intermediate'],
-  ['Day 42', 'Amazon App', './public/Amazon_Clone/index.html', ['clone', 'javascript'], 'intermediate'],
-  ['Day 43', 'Password Generator', './public/Password_Generator/index.html', ['tool', 'javascript'], 'beginner'],
-  ['Day 44', 'BMI Calculator', './public/BMI_Calculator/index.html', ['tool', 'javascript'], 'beginner'],
-  ['Day 45', 'Black Jack', './public/BlackJack/blackJ.html', ['game', 'javascript'], 'intermediate'],
-  ['Day 46', 'Palindrome Generator', './public/Palindrome_Generator/index.html', ['javascript'], 'beginner'],
-  ['Day 47', 'Ping Pong Game', './public/ping/index.html', ['game', 'canvas'], 'intermediate'],
-  ['Day 48', 'TextToVoiceConverter', './public/TextToVoiceConverter/index.html', ['api', 'javascript'], 'intermediate'],
-  ['Day 49', 'Url Shortener', './public/url_shortener/frontend/public/index.html', ['api', 'javascript'], 'intermediate'],
-  ['Day 50', 'Recipe Genie', './public/Recipe%20Genie/index.html', ['api', 'javascript'], 'intermediate'],
-  ['Day 51', 'Netflix Landing Page Clone', './public/Netflix_Cloning/Index.html', ['clone', 'css'], 'beginner'],
-  ['Day 52', 'ClimaCode', './public/ClimaCode%202.0/index.html', ['weather', 'api'], 'intermediate'],
-  ['Day 53', 'E-Commerce Website with Simple Cart Functionality', './public/e-commerce_cart/index.html', ['javascript'], 'intermediate'],
-  ['Day 54', 'Budget Tracker', './public/Budget%20Tracker/index.html', ['todo', 'javascript'], 'intermediate'],
-  ['Day 55', 'Cricket Game', './public/cricket/index.html', ['game', 'javascript'], 'intermediate'],
-  ['Day 56', 'Pastebin using svelte', './public/pastebin/src/app.html', ['javascript'], 'intermediate'],
-  ['Day 57', 'Glowing Social Media Icons', './public/Social%20Media%20Glowing/index.html', ['ui', 'css'], 'beginner'],
-  ['Day 58', 'Music App', './public/Music%20App/index.html', ['api', 'javascript'], 'intermediate'],
-  ['Day 59', 'Blog Page', './public/Blog%20Page/index.html', ['css'], 'beginner'],
-  ['Day 60', 'Marketing template website', './public/marketing_website/index.html', ['css'], 'beginner'],
-  ['Day 61', 'Hologram Button', './public/Holo%20Button/index.html', ['ui', 'css'], 'beginner'],
-  ['Day 62', 'Solar System Explorer', './public/Solar%20System%20Explorer%20in%20CSS%20only%20haml/template.html', ['css'], 'intermediate'],
-  ['Day 63', 'Image to Text App', './public/Image-To-Text-App/index.html', ['api', 'javascript'], 'intermediate'],
-  ['Day 64', 'Zomato-clone', './public/zomato-clone/zomato.html', ['clone', 'css'], 'beginner'],
-  ['Day 65', 'The Cube', './public/The%20Cube/index.html', ['ui', 'canvas', 'css'], 'intermediate'],
-  ['Day 66', 'Flask Authentication App', './public/flask_auth_app/explain.html', ['api', 'javascript'], 'intermediate'],
-  ['Day 67', 'Blog-Website', './public/blog/main.html', ['css'], 'beginner'],
-  ['Day 68', '3d Rotating Card', './public/3d%20cards/index.html', ['ui', 'css'], 'intermediate'],
-  ['Day 69', 'Spotify Clone Project', './public/spotify-clone%20-project/index.html', ['clone', 'api', 'javascript'], 'intermediate'],
-  ['Day 70', 'Insect-Catch_Game', './public/Insect-Catch-Game/index.html', ['game', 'canvas'], 'intermediate'],
-  ['Day 71', 'Quotely Laughs', './public/Quotely-Laughs/index.html', ['api', 'javascript'], 'beginner'],
-  ['Day 72', 'Contact Book', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Contact%20Book', ['todo', 'javascript'], 'intermediate'],
-  ['Day 73', 'Candy_Crush_Game', './public/Candy_Crush_Game/index.html', ['game', 'javascript'], 'intermediate'],
-  ['Day 74', 'Stock Profit Calculator', './public/Stock-Profit-Calculator/index.html', ['tool', 'javascript'], 'beginner'],
-  ['Day 75', 'code-space-game project', './public/code-jump-space-game/index.html', ['game', 'canvas'], 'intermediate'],
-  ['Day 76', 'Animated Searchbar', './public/Animated%20Searchbar/index.html', ['ui', 'css', 'javascript'], 'beginner'],
-  ['Day 77', 'Rock-Paper-Scissor-game project', './public/Stone-Paper-Scissor/index.html', ['game', 'javascript'], 'intermediate'],
-  ['Day 78', 'NPM Package Search', './public/NPM%20Package%20Search/index.html', ['tool', 'api', 'javascript'], 'intermediate'],
-  ['Day 79', 'Linkedin Homepage Clone', './public/Linkedin-Clone/index.html', ['clone', 'css'], 'intermediate'],
-  ['Day 80', 'Resume Studio', './public/ResumeStudio/index.html', ['tool', 'javascript'], 'intermediate'],
-  ['Day 81', 'Simon Says Game', './public/Simon_Says_Game/index.html', ['game', 'javascript'], 'intermediate'],
-  ['Day 82', 'Love Calculator Game', './public/Love-Calculator/index.html', ['game', 'javascript'], 'beginner'],
-  ['Day 83', 'Exchange Currency', './public/Exchange_Currency/index.html', ['tool', 'api', 'javascript'], 'intermediate'],
-  ['Day 84', 'Lights Out Puzzle', './public/Lights_Out_Puzzle/index.html', ['game', 'javascript'], 'intermediate'],
-  ['Day 85', 'Image Search Engine', './public/Image Search Engine/index.html', ['api', 'javascript'], 'intermediate'],
-  ['Day 86', 'Profile Card', './public/3d profile Card/index.html', ['ui', 'css'], 'beginner'],
-  ['Day 87', 'Breakout game', './public/Breakout game/index.html', ['game', 'canvas'], 'intermediate'],
-  ['Day 88', 'Job dashboard', './public/Job dashboard/jobs.html', ['tool', 'javascript'], 'intermediate'],
-  ['Day 89', 'N-Queen', './public/N_Queen/index.html', ['game', 'javascript'], 'intermediate'],
-  ['Day 90', 'Quiz App Timer', './public/QuizeApp Timer/index1.html', ['javascript'], 'beginner'],
-  ['Day 91', 'Voting Application Backend', 'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Voting_Application_Backend', ['api', 'javascript'], 'intermediate'],
-  ['Day 92', 'Slide puzzle Game', './public/Slide puzzle Game/index.html', ['game', 'javascript'], 'intermediate'],
-  ['Day 93', 'TextUtils', './public/Textutils/public/index.html', ['javascript'], 'beginner'],
-  ['Day 94', 'Hangman Game', './public/HangmanGame/index.html', ['game', 'javascript'], 'intermediate'],
-  ['Day 95', 'TodoList in React TS Tailwind', './public/TodoList-React-TS-Tailwind/index.html', ['todo', 'javascript'], 'intermediate'],
-  ['Day 96', 'HCL Color Generator', './public/HCL Color Generator/index.html', ['ui', 'css', 'javascript'], 'beginner'],
-  ['Day 97', 'Time Capsule', './public/Time-Capsule/index.html', ['javascript'], 'intermediate'],
-  ['Day 98', 'Virtual Piano', './public/Virtual Piano/index.html', ['css', 'javascript'], 'intermediate'],
-  ['Day 99', 'NASA-APOD Extension', './public/NASA-APOD/popup.html', ['api', 'javascript'], 'intermediate'],
-  ['Day 100', 'Text Saver Extension', './public/Text_Saver_Ext/popup.html', ['todo', 'javascript'], 'intermediate'],
-  ['Day 101', 'Personal Finance Tracker', './public/FinanceTracker/index.html', ['todo', 'javascript'], 'intermediate'],
-  ['Day 102', 'Travel Booking Website', './public/Travel_booking_website/index.html', ['javascript'], 'intermediate'],
-  ['Day 103', 'Drumkit Game', './public/Drumkit_Game/index.html', ['game', 'javascript'], 'beginner'],
-  ['Day 104', 'Debug-Website', './public/Debug-Website/index.html', ['css'], 'beginner'],
-  ['Day 105', 'Periodic Table', './public/Periodic Table/index.html', ['css', 'javascript'], 'beginner'],
-  ['Day 106', 'Plants Website', './public/Plants Website/index.html', ['css'], 'beginner'],
-  ['Day 107', 'DocNow', './public/DocNow/index.html', ['api', 'javascript'], 'intermediate'],
-  ['Day 108', 'expense_Tracker', './public/expense_Tracker/index.html', ['todo', 'javascript'], 'intermediate'],
-  ['Day 109', 'Mood Tracker', './public/Mood Tracker/index.html', ['todo', 'javascript'], 'intermediate'],
-  ['Day 110', 'CRYPTOSHOW', './public/CRYPTOSHOW/index.html', ['api', 'javascript'], 'intermediate'],
-  ['Day 111', 'Whack-a-Mole Game', './public/Whack-a-Mole Game/index.html', ['game', 'canvas'], 'intermediate'],
-  ['Day 112', 'Nykaa Clone Website', './public/Nykaa-clone/index.html', ['clone', 'css'], 'intermediate'],
-  ['Day 113', 'CPU Scheduler', './public/CpuScheduler/index.html', ['tool', 'javascript'], 'intermediate'],
-  ['Day 114', 'EchoNotes', './public/EchoNotes/index.html', ['todo', 'javascript'], 'intermediate'],
-  ['Day 115', 'Event Registration System', 'https://event-registration-system-w10a.onrender.com/', ['api', 'javascript'], 'intermediate'],
-  ['Day 116', 'AI Image Classifier', './public/AI%20Image%20Classifier/index.html', ['api', 'javascript'], 'intermediate'],
-  ['Day 117', 'Habit Tracker Web App', './public/Habit-Tracker-Web-App/index.html', ['ui', 'tool', 'html', 'css', 'js'], 'intermediate'],
-  ['Day 118', 'Particle Effect', './public/particle-effect/index.html', ['ui', 'html', 'css', 'js', 'canvas'], 'intermediate'],
-  ['Day 119', 'Virtual Playground', './playground.html', ['ui', 'game', 'html', 'css', 'js'], 'intermediate'],
-  ['Day 120', 'Typing Speed Test', './public/typing_test/index.html', ['html', 'css', 'js', 'game'], 'intermediate'],
-  ['Day 121', 'InterviewSimulator', './public/InterviewSimulator/index.html', ['tool'], 'intermediate'],
-  ['Day 122', 'AstronomyDashboard', './public/AstronomyDashboard/astro.html', ['html', 'css', 'javascript', 'api-javascript'], 'Advanced'],
-  ['Day 123', 'Pomodoro Timer', './public/Pomodoro_Timer/index.html', ['productivity', 'tool'], 'intermediate'],
-  ['Day 124', 'Hurdle Highway 2D', './public/Hurdle_Highway_2D/index.html', ['game'], 'intermediate'],
-  ['Day 125', 'Snakeladder', './public/snakeladder/index.html', ['game'], 'intermediate'],
-  ['Day 126', 'Temperature Converter', './public/TemperatureConverter/index.html', ['tool', 'javascript'], 'beginner'],
-  ['Day 127', 'Particle Wave Animation', './public/Particle Wave Animation/index.html', ['css', 'javascript'], 'intermediate'],
-  ['Day 128', 'Reaction Time Test', './public/reaction-time-tester/main.html', ['animation', 'simulation', 'html', 'css', 'js', 'javascript'], 'intermediate'],
-  ['Day 129', 'YouTube Clone', './public/youtube clone/index.html', ['Html', 'CSS'], 'beginner'],
-  ['Day 130', 'Dino Game', './public/DinoGame/DinoGame-main/index.html', ['game', 'javascript'], 'beginner'],
-  ['Day 131', 'Retro Highway Racer', './public/RetroHighwayRacer/index.html', ['game', 'javascript'], 'intermediate'],
-  ['Day 132', 'Pokedex', './public/Pokedex/index.html', ['utility'], 'intermediate'],
-  ['Day 133', 'Stock Market Simulator', './public/stock-market-simulator/index.html', ['simulator'], 'intermediate'],
-  ['Day 134', 'Coin Scratch', './public/Coin Scratch/index.html', ['asmr', 'game'], 'intermediate'],
-  ['Day 135', 'Shooting game', './public/shooting game/index.html', ['2d', 'game'], 'intermediate'],
-  ['Day 136', 'Sudoku Solver', './public/sudoku-solver/index.html', ['game', 'javascript'], 'intermediate'],
-  ['Day 137', 'Maths Quiz Game', './public/maths-quiz-game/index.html', ['game', 'javascript'], 'intermediate'],
-  ['Day 138', 'Age Calculator', './public/age-calculator/index.html', ['tool', 'javascript'], 'beginner'],
-  ['Day 139', 'Ludo game', './public/Ludo-game/index.html', ['Html', 'css', 'javascript'], 'intermediate'],
-  ['Day 140', 'Big Sales Prediction', './public/BigSales-Prediction/frontend/index.html', ['machine', 'learning', 'python', 'javascript'], 'advanced'],
-  ['Day 141', 'Dice Roller', './public/Dice-Roller/main.html', ['html', 'css', 'javascript'], 'intermediate'],
-  ['Day 142', 'Geo Guesser game', './public/geo-guesser/index.html', ['map', 'game'], 'intermediate'],
-  ['Day 143', 'Morse Code Translator', './public/MorseCodeTranslator/index.html', ['html', 'css', 'javascript'], 'beginner'],
-  ['Day 144', 'Car Racing game', './public/racing game/index.html', ['html', 'css', 'js'], 'intermediate'],
-  ['Day 145', 'Magic 8 Ball', './public/magic-8ball/main.html', ['simulation', 'html', 'css', 'javascript'], 'beginner'],
-  ['Day 146', 'Data Sructures Visualizer', './public/Data Structures Visualizer/index.html', ['visualizer'], 'intermediate'],
-  ['Day 147', 'Chronosphere', './public/Chronosphere/index.html', ['game', 'canvas'], 'intermediate'],
-  ['Day 148', 'Contest Tracker', './public/ContestTracker/index.html', ['tool', 'javascript'], 'advanced'],
-  ['Day 149', 'GitHub Profile Battle', './public/Github-Profile-Battle/index.html', ['tool', 'javascript'], 'advanced'],
-  ['Day 150', 'App Privacy Policy Generator', './public/AppPrivacyPolicyGenerator/index.html', ['tool', 'javascript'], 'intermediate'],
-  ['Day 151', 'Mini Carrom Game', './public/mini carrom/index.html', ['html', 'css', 'javascript'], 'intermediate'],
-  ['Day 152', 'Physics Ball Simulation', './public/PhysicsBallSimulation/index.html', ['html', 'css', 'javascript', 'canvas'], 'advanced'],
-  ['Day 153', 'Material3 Showcase', './public/Material3Showcase/index.html', ['tool', 'javascript'], 'intermediate'],
-  ['Day 154', 'FocusRoom', './public/FocusRoom/index.html', ['html', 'css', 'javascript', 'productivity', 'timer', 'tasks', 'ambient'], 'intermediate'],
-  ['Day 155', 'Hangman Game', './public/hangman-react-ts/HangmanGame/index.html', ['tool','react', 'typescript', 'game', 'hangman', 'vite'], 'advanced'],
-  ['Day 156', 'Placement Predictor', './public/Placement-Predictor/index.html', ['tool', 'javascript', 'html', 'css'], 'advanced'],
-  ['Day 157', 'Map Route Tracker', './public/Vector-Map-Route-Tracer/index.html', ['tool','html', 'css', 'javascript'], 'advanced'],
-  ['Day 158', 'GitHub Promo Maker', './public/GitHubPromoMaker/index.html', ['tool','html', 'css', 'javascript'], 'intermediate'],
-  ['Day 159', 'Dining Philosophers Simulation', './public/Dining Philosophers Simulation/index.html', ['simulation', 'algorithm', 'javascript'], 'intermediate'],
-  ['Day 160', 'Website Personalizer', './public/WebsitePersonalizer/index.html', ['tool','html', 'css', 'javascript'], 'intermediate'],
-  ['Day 161', 'Unit-Converter', './public/Unit-Converter/index.html', ['tool', 'javascript', 'html', 'css'], 'intermediate'],
-  ['Day 162', 'Color Palette From Art Generator', './public/ColorPaletteArtGenerator/index.html', ['tool','html', 'css', 'javascript'], 'intermediate'],
-  ['Day 163', 'Ai Image Editor', './public/image-editor/index.html', ['edits', 'images'], 'advanced'],
-  ['Day 164', 'Code Visualizer Playground', './public/code-visualizer-playground/index.html', ['tool', 'javascript', 'html', 'css'], 'advanced'],
-  ['Day 165', 'Amazon Clone', './public/AmazonClone/index.html', ['tool','Amazon', 'Clone', 'HTML', 'CSS', 'JavaScript'], 'beginner'],
-  ['Day 166', 'Boredom Buster', './public/BoredomBuster/index.html', ['tool','html', 'css', 'javascript'], 'advanced'],
-  ['Day 167', 'scam-sms-detector', '/public/scam-sms-detector/index.html', ['tool', 'api', 'javascript'], 'intermediate'],
-  ['Day 168', 'Color Sort Puzzle game','./public/color%20sort%20puzzle/index.html',['tool','html', 'css', 'javascript'],'advanced'],
-  ['Day 169', 'Subscription Tracker', './public/subscriptiontracker/tracker.html', ['tool','react', 'typescript', 'tailwindcss', 'ui'], 'advanced'],
-  ['Day 170', 'Vector Flowchart Designer', './public/VectorFlowchartDesigner/index.html', ['tool','html', 'css', 'javascript'], 'advanced'],
-  ["Day 171", "Glyph Pattern Maker", "./public/GlyphPatternMaker/index.html", ['tool','html','css' ,'javascript'],'advanced'],
-  ['Day 172', 'PlaceMate', './public/PlaceMate/index.html', ['tool', 'javascript', 'html', 'css'], 'advanced'],
-  ['Day 173', 'AI-Resume-Analyzer', './public/AI-Resume-Analyzer/index.html', ['tool', 'javascript', 'html', 'css'], 'advanced'],
-  ['Day 174', 'Unit Kitchen', './public/Unit-Kitchen/index.html', ['html', 'css', 'javascript','game'], 'intermediate'],
-   ['Day 175', 'Fruit Slice game', './public/fruitslice/index.html', ['html', 'css', 'javascript','game'], 'intermediate'],
-
-];
-const PROJECTS = PROJECT_DATA;
-const PROJECT_DESCRIPTIONS = {
-
-"To-Do List":
-"Manage daily tasks efficiently with an interactive checklist system. Add, track and organize activities using a simple productivity-focused interface.",
-
-"Digital Clock":
-"Real-time digital clock displaying current time updates instantly. A beginner-friendly project exploring JavaScript timing functions.",
-
-"Indian Flag":
-"CSS recreation of the Indian national flag using shapes and positioning. Demonstrates layout precision and styling fundamentals.",
-
-"Dropdown Nav Bar":
-"Responsive navigation bar with expandable dropdown interactions. Useful for understanding hover states and menu structures.",
-
-"Animated Cursor":
-"Custom cursor animation adding engaging movement effects across the page. Focuses on interactivity and modern UI enhancements.",
-
-"Auto Background Image Slider":
-"Automatically rotating image slider with smooth transitions. Introduces timing events and dynamic visual presentation.",
-
-"Typewriter":
-"Typing animation effect simulating text being written live. Great for learning intervals and DOM manipulation.",
-
-"Parallel-X Website":
-"Parallax-inspired website showcasing layered scrolling effects. Designed to improve frontend animation techniques.",
-
-"Captcha Generator":
-"Generates random captcha strings for validation practice. Demonstrates input checking and security concepts.",
-
-"QR Code Generator":
-"Converts text or links into downloadable QR codes instantly. Integrates APIs with practical utility functionality.",
-
-"Serve Website Using Express":
-"Basic Express server setup for hosting web applications. Introduces backend routing fundamentals.",
-
-"Nodemailer Contact Form":
-"Email contact form capable of sending messages directly. Uses Nodemailer for backend communication.",
-
-"Login Form Using MERN":
-"Authentication workflow using MongoDB, Express, React and Node. Covers login handling and user validation.",
-
-"File Uploader":
-"Upload and manage files through a simple interface. Useful for understanding forms and storage workflows.",
-
-"Progress Bar":
-"Animated progress indicator tracking completion visually. Focuses on UI feedback and transitions.",
-
-"Scroll Bar CSS":
-"Custom scrollbar styling improving overall aesthetics. Demonstrates advanced CSS customization.",
-
-"Slider Using Swiper API":
-"Interactive content slider built with Swiper integration. Supports responsive navigation effects.",
-
-"Carousel Solar System":
-"Solar system themed rotating carousel with visual motion effects. Combines creativity with CSS animation.",
-
-"Planto":
-"Nature-inspired landing page emphasizing clean layouts and styling. Designed for frontend practice.",
-
-"EveSparks":
-"Interactive web experience featuring modern interface components. Focuses on responsiveness and usability.",
-
-"Video BG Slider Using React":
-"React-based slider with dynamic video backgrounds. Explores multimedia integration in interfaces.",
-
-"Page Loader":
-"Animated loading screen improving perceived performance. Useful for polished UI experiences.",
-
-"Jarvis Virtual Assistant":
-"Voice-enabled assistant inspired by AI interactions. Combines speech recognition and automation concepts.",
-
-"Chat Bot":
-"Conversational chatbot interface supporting user interactions. Demonstrates API integration and messaging flow.",
-
-"Tic-Tac-Toe":
-"Classic two-player game built with JavaScript logic. Strengthens conditional rendering skills.",
-
-"Maze Game":
-"Navigate through a maze while avoiding obstacles. Focuses on movement controls and game mechanics.",
-
-"Memory Game":
-"Card matching challenge testing short-term memory skills. Introduces arrays and state tracking.",
-
-"Wordle":
-"Word guessing game inspired by the popular puzzle format. Practices input handling and logic.",
-
-"Snake Game":
-"Classic snake gameplay with score tracking mechanics. Useful for learning loops and collision detection.",
-
-"Flappy-bird-game":
-"Obstacle avoidance game inspired by Flappy Bird. Covers animation timing and physics simulation.",
-
-"Password Manager":
-"Secure utility for storing and organizing passwords efficiently. Helps explore data handling and user-focused productivity features.",
-
-"Missionaries & Cannibals":
-"Logic puzzle based on the classic river crossing challenge. Strengthens problem-solving and conditional programming skills.",
-
-"Weather Forecasting":
-"Fetches and displays real-time weather information dynamically. Demonstrates API usage and responsive UI updates.",
-
-"Email Validator":
-"Checks whether email inputs follow valid formatting rules. Useful for learning regex and form validation techniques.",
-
-"Vanilla-JavaScript-Calculator":
-"Fully functional calculator handling arithmetic operations interactively. Reinforces DOM manipulation and event handling.",
-
-"Medical App":
-"Healthcare-themed interface designed for information display and accessibility. Focuses on practical frontend implementation.",
-
-"2048 Game":
-"Number-merging puzzle game inspired by the popular 2048 challenge. Builds logic handling and game state management.",
-
-"Github Profile Finder":
-"Search GitHub users and display profile information instantly. Uses APIs to retrieve and present live data.",
-
-"Notes App":
-"Create, edit and manage notes in a lightweight productivity environment. Useful for local storage concepts.",
-
-"Analog Clock":
-"Animated analog clock displaying real-time updates with rotating hands. Demonstrates transformations and timing functions.",
-
-"Scroll Dark Game":
-"Endless scrolling game with dark-themed visuals and interactive mechanics. Introduces animation loops and collision logic.",
-
-"Amazon App":
-"Frontend clone inspired by Amazon layouts and shopping interfaces. Improves responsive design and UI structuring skills.",
-
-"Password Generator":
-"Automatically generates strong passwords for better security practices. Combines randomness with utility design.",
-
-"BMI Calculator":
-"Computes body mass index based on user input values. Demonstrates calculations and dynamic output rendering.",
-
-"Black Jack":
-"Card game recreation implementing score logic and gameplay rules. Strengthens decision-making algorithms.",
-
-"Palindrome Generator":
-"Checks whether words or phrases read the same backwards. Introduces string manipulation techniques.",
-
-"Ping Pong Game":
-"Arcade-style ping pong experience using movement and collision detection. Reinforces game physics concepts.",
-
-"TextToVoiceConverter":
-"Converts typed text into spoken audio using browser capabilities. Explores accessibility and speech APIs.",
-
-"Url Shortener":
-"Transforms long links into shorter manageable URLs. Demonstrates backend communication and API workflows.",
-
-"Recipe Genie":
-"Searches or suggests recipes through an interactive cooking assistant interface. Focuses on API integration.",
-
-"Netflix Landing Page Clone":
-"Replica of Netflix homepage design emphasizing layouts and responsiveness. Useful for frontend practice.",
-
-"ClimaCode":
-"Weather-focused application presenting climate information elegantly. Combines APIs with modern UI patterns.",
-
-"E-Commerce Website with Simple Cart Functionality":
-"Online shopping interface featuring product listings and cart management. Introduces state handling concepts.",
-
-"Budget Tracker":
-"Tracks expenses and income to monitor financial habits efficiently. Designed for productivity and calculations.",
-
-"Cricket Game":
-"Interactive cricket-inspired game with score handling mechanics. Helps practice JavaScript game logic.",
-
-"Pastebin using svelte":
-"Simple text sharing platform built with Svelte technologies. Explores modern frontend frameworks.",
-
-"Glowing Social Media Icons":
-"Animated glowing icon effects enhancing social media sections visually. Focuses on CSS transitions and styling.",
-
-"Music App":
-"Music-themed interface supporting playback and interactive controls. Demonstrates multimedia integration concepts.",
-
-"Blog Page":
-"Responsive blog layout designed for article presentation and readability. Reinforces UI structuring principles.",
-
-"Marketing template website":
-"Landing page template optimized for promotions and product showcases. Emphasizes modern web design patterns.",
-
-"Hologram Button":
-"Futuristic button design featuring glowing holographic effects. Explores advanced CSS styling and animations.",
-
-"Solar System Explorer":
-"Interactive visualization of planets and orbital layouts using CSS. Combines creativity with motion effects.",
-
-"Image to Text App":
-"Extracts text content from uploaded images automatically. Demonstrates OCR concepts and API integration.",
-
-"Zomato-clone":
-"Restaurant platform inspired interface replicating browsing and discovery layouts. Improves frontend structuring skills.",
-
-"The Cube":
-"3D cube animation showcasing depth and motion interactions. Focuses on transforms and visual effects.",
-
-"Flask Authentication App":
-"Authentication workflow built around secure login concepts. Introduces backend validation and user management.",
-
-"Blog-Website":
-"Responsive blogging interface optimized for publishing content cleanly. Emphasizes readability and layout design.",
-
-"3d Rotating Card":
-"Animated rotating card effect creating depth and interactivity. Useful for modern UI experimentation.",
-
-"Spotify Clone Project":
-"Music streaming inspired interface replicating playlists and navigation patterns. Reinforces responsive layouts.",
-
-"Insect-Catch_Game":
-"Fast-paced insect catching game with score mechanics and movement. Practices event handling and gameplay logic.",
-
-"Quotely Laughs":
-"Generates random humorous quotes to entertain users instantly. Uses APIs and dynamic rendering.",
-
-"Contact Book":
-"Store, organize and manage contacts within a simple interface. Focuses on CRUD operations.",
-
-"Candy_Crush_Game":
-"Puzzle matching game inspired by Candy Crush mechanics. Builds grid logic and state handling.",
-
-"Stock Profit Calculator":
-"Calculates gains or losses from stock investments interactively. Useful for financial utility development.",
-
-"code-space-game project":
-"Space-themed gameplay with obstacles and movement controls. Strengthens animation and collision detection skills.",
-
-"Animated Searchbar":
-"Expandable search component with smooth transition effects. Improves understanding of interactive UI design.",
-
-"Rock-Paper-Scissor-game project":
-"Classic decision game implemented with score tracking logic. Ideal for beginners learning conditions.",
-
-"NPM Package Search":
-"Search and explore NPM packages dynamically through APIs. Demonstrates practical developer utilities.",
-
-"Linkedin Homepage Clone":
-"Frontend recreation of LinkedIn’s homepage structure and styling. Improves layout accuracy and responsiveness.",
-
-"Resume Studio":
-"Tool for creating and managing resumes with structured formatting. Focuses on productivity-oriented interfaces.",
-
-"Simon Says Game":
-"Memory-based game requiring players to repeat patterns correctly. Reinforces arrays and event sequences.",
-
-"Love Calculator Game":
-"Fun calculator estimating compatibility scores between names. Designed as a lightweight interactive project.",
-
-"Exchange Currency":
-"Converts currencies using real-time exchange values. Combines APIs with practical financial utilities.",
-
-"Lights Out Puzzle":
-"Logic puzzle where players switch lights off strategically. Builds reasoning and state management skills.",
-
-"Image Search Engine":
-"Searches and displays images dynamically from external sources. Demonstrates API integration workflows.",
-
-"Profile Card":
-"Stylized profile card showcasing user information creatively. Focuses on clean UI presentation.",
-
-"Breakout game":
-"Brick-breaking arcade game featuring collision and scoring systems. Reinforces game development fundamentals.",
-
-"Job dashboard":
-"Dashboard interface for managing or exploring job opportunities efficiently. Emphasizes organization and usability.",
-
-"N-Queen":
-"Classic N-Queen problem visualized through interactive implementation. Strengthens algorithmic thinking.",
-
-"Quiz App Timer":
-"Timed quiz application combining countdown logic with question handling. Useful for event-driven programming.",
-
-"Voting Application Backend":
-"Backend-focused project handling votes and user interactions securely. Introduces server-side concepts.",
-
-"Slide puzzle Game":
-"Tile sliding puzzle requiring logical movement strategies. Reinforces grid manipulation skills.",
-
-"TextUtils":
-"Utility tool performing text formatting and transformation operations. Demonstrates string processing concepts.",
-
-"Hangman Game":
-"Word guessing game with progressive hints and challenge mechanics. Strengthens conditional logic.",
-
-"TodoList in React TS Tailwind":
-"Modern to-do application built with React, TypeScript and Tailwind. Explores scalable frontend architecture.",
-
-"HCL Color Generator":
-"Generate HCL color values for design experimentation and palettes. Useful for UI customization projects.",
-
-"Time Capsule":
-"Store messages or memories intended for future viewing. Combines creativity with local storage concepts.",
-
-"Virtual Piano":
-"Playable piano simulation responding to keyboard or click inputs. Demonstrates multimedia interactions.",
-
-"NASA-APOD Extension":
-"Displays NASA’s Astronomy Picture of the Day automatically. Integrates external APIs into browser extensions.",
-
-"Text Saver Extension":
-"Browser extension for quickly saving and organizing text snippets. Focuses on productivity workflows.",
-
-"Personal Finance Tracker":
-"Monitor expenses, savings and financial habits through interactive tracking tools. Designed to improve budgeting awareness.",
-
-"Travel Booking Website":
-"Travel-focused interface for exploring destinations and booking experiences. Emphasizes responsive layouts and usability.",
-
-"Drumkit Game":
-"Virtual drum kit producing sounds through keyboard interactions. Demonstrates event handling and audio APIs.",
-
-"Debug-Website":
-"Practice environment for identifying and fixing frontend issues efficiently. Useful for improving debugging skills.",
-
-"Periodic Table":
-"Interactive periodic table displaying chemical elements and information. Combines education with engaging design.",
-
-"Plants Website":
-"Nature-inspired website emphasizing clean visuals and aesthetic layouts. Focuses on frontend styling techniques.",
-
-"DocNow":
-"Document-focused utility designed for managing or interacting with information efficiently. Prioritizes usability.",
-
-"expense_Tracker":
-"Track spending habits and monitor expenses through simple visual summaries. Useful for productivity workflows.",
-
-"Mood Tracker":
-"Record emotions over time and observe personal mood patterns. Combines wellness concepts with data tracking.",
-
-"CRYPTOSHOW":
-"Displays cryptocurrency information dynamically with market-related insights. Introduces API usage and dashboards.",
-
-"Whack-a-Mole Game":
-"Fast-paced reaction game requiring players to hit appearing targets quickly. Reinforces timing and score logic.",
-
-"Nykaa Clone Website":
-"Beauty and shopping platform clone inspired by Nykaa layouts. Strengthens frontend replication skills.",
-
-"CPU Scheduler":
-"Visualizes CPU scheduling algorithms and execution behavior interactively. Useful for understanding operating system concepts.",
-
-"EchoNotes":
-"Note-taking application focused on organizing thoughts and quick information capture. Emphasizes productivity.",
-
-"Event Registration System":
-"Manage event signups and participant information efficiently. Demonstrates forms and backend interactions.",
-
-"AI Image Classifier":
-"Classifies uploaded images using AI-based prediction concepts. Introduces machine learning integrations.",
-
-"Habit Tracker Web App":
-"Track routines and monitor consistency across personal habits over time. Encourages productivity and discipline.",
-
-"Particle Effect":
-"Interactive particle animation creating visually engaging motion effects. Focuses on graphics and performance.",
-
-"Virtual Playground":
-"Experimental environment featuring playful interactions and frontend concepts. Designed for exploration.",
-
-"Typing Speed Test":
-"Measure typing speed and accuracy with real-time performance metrics. Useful for event-driven programming.",
-
-"InterviewSimulator":
-"Simulates interview experiences to practice responses and preparation strategies. Focuses on utility design.",
-
-"AstronomyDashboard":
-"Dashboard presenting astronomy-related information through organized visuals and APIs. Combines science with UI.",
-
-"Pomodoro Timer":
-"Productivity timer implementing focused work sessions and breaks. Encourages time management habits.",
-
-"Hurdle Highway 2D":
-"Obstacle avoidance game with side-scrolling movement mechanics. Strengthens animation and collision handling.",
-
-"Snakeladder":
-"Digital adaptation of the classic Snake and Ladder board game. Introduces turn-based logic implementation.",
-
-"Temperature Converter":
-"Convert temperature values between multiple units instantly. Practical utility for calculations and form handling.",
-
-"Particle Wave Animation":
-"Animated wave effects created through particle systems and motion. Demonstrates creative frontend experimentation.",
-
-"Reaction Time Test":
-"Measures how quickly users respond to visual prompts interactively. Useful for timing logic and events.",
-
-"YouTube Clone":
-"Frontend recreation of YouTube layouts including navigation and content sections. Improves responsive design skills.",
-
-"Dino Game":
-"Endless runner inspired by the offline Chrome dinosaur game. Builds movement and collision mechanics.",
-
-"Retro Highway Racer":
-"Retro-style racing game featuring speed and obstacle navigation. Reinforces animation loops and gameplay logic.",
-
-"Pokedex":
-"Browse Pokémon information through an interactive Pokédex interface. Combines APIs with engaging visuals.",
-
-"Stock Market Simulator":
-"Simulate investment decisions and market behaviors without real risk. Introduces finance-focused logic.",
-
-"Coin Scratch":
-"Interactive scratch-card experience with satisfying reveal mechanics. Focuses on effects and user engagement.",
-
-"Shooting game":
-"Action game involving aiming, shooting and score progression. Strengthens gameplay mechanics implementation.",
-
-"Sudoku Solver":
-"Automatically solves Sudoku puzzles while demonstrating algorithmic reasoning. Useful for logic practice.",
-
-"Maths Quiz Game":
-"Interactive quiz testing mathematical knowledge under game-like conditions. Combines learning with engagement.",
-
-"Age Calculator":
-"Calculates age instantly from user-entered birth dates. Demonstrates date handling and calculations.",
-
-"Ludo game":
-"Digital version of the classic Ludo board game with turn-based mechanics. Reinforces logic and interactions.",
-
-"Big Sales Prediction":
-"Machine learning project predicting sales trends from input data. Combines analytics with practical AI concepts.",
-
-"Dice Roller":
-"Virtual dice simulator generating random outcomes instantly. Useful for games and probability demonstrations.",
-
-"Geo Guesser game":
-"Location guessing challenge testing geographical knowledge interactively. Combines maps with gameplay mechanics.",
-
-"Morse Code Translator":
-"Convert text into Morse code and decode messages seamlessly. Demonstrates string transformations and utilities.",
-
-"Car Racing game":
-"Fast-paced racing experience with movement controls and obstacles. Reinforces animation and collision handling.",
-
-"Magic 8 Ball":
-"Digital version of the classic prediction toy offering random responses. Focuses on interactivity and randomness.",
-
-"Data Sructures Visualizer":
-"Visual representation of data structures and their operations. Useful for understanding algorithms conceptually.",
-
-"Chronosphere":
-"Time-themed interactive experience with dynamic gameplay mechanics. Blends creativity with animation concepts.",
-
-"Contest Tracker":
-"Track coding contests and upcoming competitive programming events efficiently. Designed for productivity.",
-
-"GitHub Profile Battle":
-"Compare GitHub profiles using metrics and statistics interactively. Integrates APIs with developer-focused utilities.",
-
-"App Privacy Policy Generator":
-"Generate privacy policies for applications through structured inputs. Practical productivity-oriented utility.",
-
-"Mini Carrom Game":
-"Digital carrom simulation recreating board-game mechanics interactively. Reinforces physics and collision handling.",
-
-"Physics Ball Simulation":
-"Ball movement simulation demonstrating gravity and physical interactions. Useful for learning physics concepts.",
-
-"Material3 Showcase":
-"Collection of Material Design inspired UI components and interactions. Focuses on modern interface patterns.",
-
-"FocusRoom":
-"Productivity environment designed to support concentration and task completion. Combines timers and ambience.",
-
-"Hangman Game":
-"Advanced Hangman implementation using React and TypeScript architecture. Strengthens component-based thinking.",
-
-"Placement Predictor":
-"Predicts placement possibilities using user-provided academic information. Demonstrates logic and analytics concepts.",
-
-"Map Route Tracker":
-"Visualize routes and track paths using interactive map elements. Combines location services with frontend development.",
-
-"GitHub Promo Maker":
-"Create promotional GitHub banners or visuals quickly. Designed as a developer productivity utility.",
-
-"Dining Philosophers Simulation":
-"Simulation of the classic synchronization problem in computer science. Useful for understanding concurrency concepts.",
-
-"Website Personalizer":
-"Customize website appearance and behavior through user preferences dynamically. Emphasizes personalization features.",
-
-"Unit-Converter":
-"Convert values across multiple measurement units instantly. Practical tool demonstrating calculations and form handling.",
-
-"Color Palette From Art Generator":
-"Extract color palettes from artwork automatically for design inspiration. Combines creativity with utility.",
-
-"Ai Image Editor":
-"Edit and manipulate images using AI-assisted functionality. Explores machine learning and visual processing concepts.",
-
-"Code Visualizer Playground":
-"Interactive environment visualizing code behavior and execution flow. Useful for learning programming concepts.",
-
-"Amazon Clone":
-"Beginner-friendly clone inspired by Amazon’s interface and layouts. Reinforces frontend structure and styling.",
-
-"Boredom Buster":
-"Suggests activities or interactive ideas to reduce boredom instantly. Designed as a fun productivity utility.",
-
-"scam-sms-detector":
-"Detect potentially fraudulent SMS messages using analysis techniques. Introduces AI and security-focused concepts.",
-
-"Color Sort Puzzle game":
-"Puzzle game requiring players to organize colors strategically. Builds logical thinking and state management.",
-
-"Subscription Tracker":
-"Track recurring subscriptions and monitor expenses efficiently. Useful for budgeting and organization.",
-
-"Vector Flowchart Designer":
-"Design editable flowcharts visually through interactive components. Focuses on productivity and diagram creation.",
-
-"Glyph Pattern Maker":
-"Generate creative symbol-based patterns with customizable outputs. Explores procedural visual generation.",
-
-"PlaceMate":
-"Utility designed to simplify location-related planning or organization tasks. Prioritizes usability and convenience.",
-
-"AI-Resume-Analyzer":
-"Analyze resumes using AI concepts to provide insights and feedback. Combines machine learning with productivity.",
-
-"Unit Kitchen":
-"Kitchen-focused converter simplifying ingredient and measurement transformations. Practical everyday utility.",
-
-};
+let PROJECTS = [];
+let PROJECTS_BY_NAME = new Map();
+let PROJECTS_BY_DAY = new Map();
+let projectsPromise = null;
+
+function hydrateProjects(data) {
+  PROJECTS = data.map((project) => ({
+    day: `Day ${project.projectNo}`,
+    projectNo: project.projectNo,
+    projectType: project.projectType,
+    projectName: project.projectName,
+    projectPath: project.projectPath,
+    techStack: project.techStack,
+    difficulty: project.difficulty,
+    projectDesc: project.projectDesc,
+  }));
+
+  fuse = new Fuse(PROJECTS, {
+    includeScore: true,
+    threshold: 0.4,
+    ignoreLocation: true,
+    keys: [
+      { name: "projectName", weight: 0.5 },
+      { name: "projectDesc", weight: 0.3 },
+      { name: "techStack", weight: 0.2 },
+    ],
+  });
+}
+
+function getPreloadedProjectsData() {
+  return Array.isArray(window.PROJECTS_DATA) ? window.PROJECTS_DATA : null;
+}
+
+function parseProjectsData(payload) {
+  try {
+    return JSON.parse(payload);
+  } catch (error) {
+    // Fallback for common malformed object separators in projects.json
+    const repairedPayload = String(payload).replace(/}\s*{/g, "},{");
+    return JSON.parse(repairedPayload);
+  }
+}
+
+function loadProjects() {
+  if (!projectsPromise) {
+    projectsPromise = (async () => {
+      const preloadedData = getPreloadedProjectsData();
+      if (preloadedData) {
+        hydrateProjects(preloadedData);
+        return PROJECTS;
+      }
+
+      const isRoot = !window.location.pathname.includes("/contributors/");
+      const base = isRoot ? "" : "../";
+      const projectsUrl = new URL(
+        `${base}projects.json`,
+        window.location.href,
+      ).toString();
+
+      console.log("Projects URL:", projectsUrl);
+      try {
+        const response = await fetch(projectsUrl);
+        if (!response.ok) {
+          throw new Error(`Failed to load projects: ${response.statusText}`);
+        }
+        const payload = await response.text();
+        const data = parseProjectsData(payload);
+        hydrateProjects(data);
+        return PROJECTS;
+      } catch (error) {
+        const fallbackData = getPreloadedProjectsData();
+        if (fallbackData) {
+          hydrateProjects(fallbackData);
+          return PROJECTS;
+        }
+        throw error;
+      }
+    })();
+  }
+  return projectsPromise;
+}
+
+// Start fetching immediately
+loadProjects().catch((err) => {
+  console.error("Critical initialization error:", err);
+  const grid = document.getElementById("projectGrid");
+  if (grid) {
+    grid.innerHTML = `<div style="text-align:center; padding: 2rem; color: var(--text-color, #333);">
+            <h2><i class="fas fa-exclamation-triangle"></i> Failed to Load Projects</h2>
+            <p>Please check your connection or try again later.</p>
+            <p style="font-family: monospace; color: red;">${escapeHTML(err.message)}</p>
+        </div>`;
+  }
+});
 
 /* ============================================================
-   SOURCE CODE URL GENERATOR
+   PROJECT LINK RESOLUTION (demo vs source / source-only)
    ============================================================ */
-function getSourceUrl(url) {
-  const trimmed = url.trim();
-  if (trimmed.startsWith('http')) return trimmed; // Already a full GitHub link
-  if (trimmed.startsWith('./')) {
-    // Converts "./public/folder/index.html" to "public/folder"
-    const folderPath = trimmed.substring(2, trimmed.lastIndexOf('/'));
+const SOURCE_ONLY_TAG = "source-only";
+
+/** Live demos hosted outside the repo — Code links point to in-repo source folders */
+const EXTERNAL_DEMO_SOURCE_FOLDERS = {
+  "Day 20": "public/EveSparks",
+  "Day 115": "public/event-registration-system",
+};
+
+function isGithubTreeUrl(url) {
+  return /^https:\/\/github\.com\/[^/]+\/[^/]+\/tree\/[^/]+\//i.test(
+    String(url || "").trim(),
+  );
+}
+
+function parseGithubTreePath(url) {
+  const match = String(url || "")
+    .trim()
+    .match(/\/tree\/[^/]+\/(.+?)(?:\?|#|$)/);
+  return match ? decodeURIComponent(match[1].replace(/\/$/, "")) : null;
+}
+
+function isSourceOnlyProject(day, tags) {
+  if (day === "Day 13" || day === "Day 72") return true;
+  const tagList = Array.isArray(tags)
+    ? tags
+    : String(tags || "")
+        .split(/\s+/)
+        .filter(Boolean);
+  return tagList.includes(SOURCE_ONLY_TAG);
+}
+
+function githubTreeToLocalDemo(url) {
+  const folderPath = parseGithubTreePath(url);
+  if (!folderPath) return null;
+  return `./${folderPath}/index.html`;
+}
+
+function getSourceUrl(url, day) {
+  const trimmed = (url || "").trim();
+  const repoSourceFolder = day && EXTERNAL_DEMO_SOURCE_FOLDERS[day];
+  if (repoSourceFolder) {
+    return `https://github.com/${window.REPO_OWNER}/${window.REPO_NAME}/tree/Main/${repoSourceFolder}`;
+  }
+  if (isGithubTreeUrl(trimmed)) return trimmed;
+  if (trimmed.startsWith("http")) return trimmed;
+  if (trimmed.startsWith("./")) {
+    const folderPath = trimmed.substring(2, trimmed.lastIndexOf("/"));
     return `https://github.com/${window.REPO_OWNER}/${window.REPO_NAME}/tree/Main/${folderPath}`;
   }
   return `https://github.com/${window.REPO_OWNER}/${window.REPO_NAME}/tree/Main`;
 }
 
+function resolveProjectUrls(day, name, url, tags) {
+  const trimmed = (url || "").trim();
+  const sourceOnly = isSourceOnlyProject(day, tags);
+  let demoUrl = trimmed;
+  let sourceUrl = getSourceUrl(trimmed, day);
+
+  if (isGithubTreeUrl(trimmed)) {
+    sourceUrl = trimmed;
+    demoUrl = sourceOnly ? trimmed : githubTreeToLocalDemo(trimmed) || trimmed;
+  }
+
+  if (!sourceOnly && demoUrl && !demoUrl.startsWith("http")) {
+    try {
+      const isRoot = !window.location.pathname.includes("/contributors/");
+      const basePrefix = isRoot ? "" : "../";
+      if (demoUrl.startsWith("./")) {
+        demoUrl = basePrefix + demoUrl.substring(2);
+      }
+    } catch (error) {}
+  }
+
+  return { demoUrl, sourceUrl, sourceOnly };
+}
+
+function getProjectDescription(project) {
+  return (
+    (project && project.projectDesc) ||
+    "Explore this project to discover interactive functionality."
+  );
+}
+
+function escapeHTML(value) {
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/\"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function sanitizeUrl(url) {
+  const raw = String(url || "").trim();
+
+  if (!raw || raw === "#") return raw || "#";
+
+  if (raw.startsWith("./") || raw.startsWith("../") || raw.startsWith("/")) {
+    return raw;
+  }
+  if (
+    !raw.includes(":") &&
+    (raw.includes(".html") ||
+      raw.startsWith("public/") ||
+      raw.startsWith("projects/"))
+  ) {
+    return raw;
+  }
+
+  if (/^https?:\/\//i.test(raw)) {
+    return raw;
+  }
+
+  console.warn("[XSS] Blocked unsafe URL scheme:", raw);
+  return "#";
+}
+
+const WEBP_PREVIEWS = new Set([
+  "2048_game",
+  "3d cards",
+  "3d profile Card",
+  "AdvancedFormBuilder",
+  "age-calculator",
+  "AI Image Classifier",
+  "AI-Data-Analyst",
+  "AI-Resume-Analyser",
+  "Amazon-App",
+  "AnalogClock",
+  "Animated Searchbar",
+  "Animated-cursor",
+  "AppPrivacyPolicyGenerator",
+  "Background-Image-sider",
+  "Blog Page",
+  "BMI_Calculator",
+  "BordemBuster",
+  "Breakout-game",
+  "bubble game",
+  "Budget_Tracker",
+  "ButtonsUIPage",
+  "Candy_Crush_Game",
+  "canvas_multitrack_sequencer",
+  "captcha",
+  "Carousel Solar System",
+  "Casino_Memory_Match",
+  "Chess_Game",
+  "Chronosphere",
+  "ClimaCode 2.0",
+  "code-execution-visualizer",
+  "code-visualizer-playground",
+  "Data Structures Visualizer",
+  "day-10-color-picker",
+  "Developer portfolio",
+  "digital_clock",
+  "dropdown_navbar",
+  "Flappy-bird-main",
+  "FocusRoom",
+  "focustimer",
+  "fruit slice",
+  "game",
+  "Gemini",
+  "indianflag",
+  "TO_DO_LIST",
+  "typewriter",
+]);
+
+const NO_PREVIEWS = new Set([
+  "advanced-analytics-canvas",
+  "advice-generator",
+  "AI ChatBot",
+  "AI-Semiconductor-Circuit-Builder",
+  "AI-Tools-Hub",
+  "ai-video-synthesizer",
+  "Air-Typing-Keyboard",
+  "AmazonClone",
+  "api-batching-engine",
+  "AstronomyDashboard",
+  "AttendancePro",
+  "attendencePridictor",
+  "audio-physics-nebula",
+  "Audio_Spectrum_Visualizer",
+  "BeatMaker",
+  "BigSales-Prediction",
+  "Bill-Splitter",
+  "BlackJack",
+  "blinkit-clone",
+  "blog",
+  "boardgame-companion",
+  "Book-Nook",
+  "Bubble-Game",
+  "bus_game",
+  "Calculator",
+  "Calendar UI for service appointments with time slots",
+  "checkers game",
+  "code-jump-space-game",
+  "code-playground",
+  "Color-Pelette",
+  "columnar-data-engine",
+  "connect 4 game",
+  "Connect-Four",
+  "Contact Book",
+  "core-performance-utils",
+  "counter-app",
+  "Country Quiz Game",
+  "country-explorer",
+  "CPU_Emulator",
+  "Cricket-Scorecard",
+  "crispr-alignment-sandbox",
+  "crossword_game",
+  "Crypto Tracker & Market Analytics Dashboard",
+  "crypto-tracker",
+  "Crypto_Price_Tracker",
+  "CSSShadowGenerator",
+  "CYBER TYPE BATTLE",
+  "cyber-deflection-sandbox",
+  "dad-joke",
+  "Daily-Water-Intake-Tracker",
+  "Debug-Website",
+  "Dental Care Services",
+  "Diabetes-Health-Risk",
+  "Dice-Roller",
+  "dictionary-app",
+  "digital-analog-clock-combo",
+  "Digital-Planner",
+  "DinoGame",
+  "dom-virtualization-pipeline",
+  "Dots_And_Boxes",
+  "Download_Time_Estimator",
+  "EcoLint",
+  "eisenhower-matrix-tool",
+  "escape room",
+  "Escape The Matrix",
+  "event-registration-system",
+  "EveSparks",
+  "Express Server",
+  "file_uploader",
+  "FinanceTracker",
+  "Financial-Dashboard",
+  "FlashcardApp",
+  "FlashFocus-An_Observation_Game",
+  "flask_auth_app",
+  "Flip Clock",
+  "Flipkart-clone",
+  "flora-tracker",
+  "Fluid_Simulator",
+  "FocusList",
+  "form-builder",
+  "github-finder",
+  "Glassmorphism-Generator",
+  "gmail_nodemailer",
+  "GPA",
+  "GradientPaletteGenerator",
+  "gravity-well",
+  "guided-breathing-visualizer",
+  "Habit_Tracker",
+  "hand-gesture-controller",
+  "hangman-react-ts",
+  "Harry-Potter",
+  "Heart-Risk-Prediction",
+  "hft-liquidity-sandbox",
+  "Html_css_animation",
+  "images",
+  "instagram-clone",
+  "Interactive-Budget-Tracker",
+  "interview-prep-hub",
+  "invisible maze runner game",
+  "InvoiceGenretor",
+  "Ip_Address_tracker",
+  "Job dashboard",
+  "job-tracker-system",
+  "Journal-Platform",
+  "Kanban_Board",
+  "Lights_Out_Puzzle",
+  "Live-Editor",
+  "loginusingmern",
+  "lru-cache-engine",
+  "magic-8ball",
+  "Markdown to HTML",
+  "markdown-editor",
+  "Markdown_Editor",
+  "MEMO 2.0",
+  "Memory Card Matching Game",
+  "MemoryCard",
+  "Mern Login Form",
+  "MERN_Job_Board",
+  "Micro_Habit_Tracker",
+  "mind-reader",
+  "mini-postman",
+  "minimalist-kanban-board",
+  "Mino-Notes",
+  "Movie-Matcher",
+  "Movie-Search-App",
+  "movie-selector",
+  "movie-watchlist",
+  "MS-Paint-Clone",
+  "multi-threaded-data-engine",
+  "NASA-APOD",
+  "Naukri_Campus_Clone",
+  "NeoTetris",
+  "neutral-evolution-simulator",
+  "NeuralNetworkPlayground",
+  "Number Guessing Game",
+  "NumberGuessGame",
+  "OpenWeatherForecastApp",
+  "pacman",
+  "pageloader",
+  "Parallel-x website",
+  "particle-wave-animation",
+  "Photo Studio",
+  "pinspire",
+  "pixel-art",
+  "PixelArtCanvasEditor",
+  "Plant",
+  "plantwebsite",
+  "pokedex-app",
+  "pomodoro-timer-dashboard",
+  "Pomodoro_With_Miu-Electronjs",
+  "Pomodoro__Timer",
+  "Productivity-Dashboard",
+  "progress_bar",
+  "qr generator",
+  "qr_generator",
+  "quantum-wave-sandbox",
+  "Quantum_CodeBreaker",
+  "QuizApp Timer",
+  "QuizAppTimer",
+  "quote-generator",
+  "reaction-time-tester",
+  "reactive-state-dashboard",
+  "reactive-state-engine",
+  "Reading-Progress-Indicator",
+  "recipe",
+  "Recipe Genie",
+  "recipe-finder",
+  "RECIPE_Genie",
+  "Resume Previewer",
+  "Rock_Paper_Scissors",
+  "Runway-Calculator",
+  "secure-hashing-engine",
+  "Secure_Password_Generator",
+  "SkillBridge",
+  "slider box",
+  "sliding game",
+  "SnapScribe",
+  "Solar System Explorer in CSS only haml",
+  "space-tracker",
+  "Spectrogram_Studio",
+  "SQLVisulizer",
+  "StatisticsDashboard",
+  "Steganography_Tool",
+  "story",
+  "Stydy-Sync",
+  "subscriptiontracker",
+  "swiggy",
+  "Swiper API Slider",
+  "TerminalPortfolio",
+  "text-to-readme",
+  "Textutils",
+  "Text_Saver_Ext",
+  "Theme-Toggler",
+  "the_cube",
+  "time_rewind",
+  "Tower-of-Hanoi-Visualizer",
+  "tower_stacker",
+  "traffic_signal",
+  "Travelapp - Copy",
+  "trie-search-engine",
+  "TypeMuse",
+  "UnitVerse",
+  "url_shortener",
+  "user_reviews",
+  "video-synthesis-engine",
+  "virtual-playground",
+  "Virtual-RainCafe",
+  "VirtualAudioSynth",
+  "WanderLust",
+  "waterTracker",
+  "Weather App with AQI",
+  "weather-app",
+  "Weekend-Activity-Generator",
+  "Well",
+  "Whack a mole",
+  "WORDLE",
+  "Word_jumble",
+  "zen-breathing-visualizer",
+  "ZenSpace",
+  "Zodiac",
+  "zomato-clone",
+]);
+
+function buildProjectCardHTML({
+  day,
+  name,
+  url,
+  tags,
+  category,
+  isBookmarked = false,
+  showDescription = true,
+  showNewBadge = false,
+}) {
+  const { demoUrl, sourceUrl, sourceOnly } = resolveProjectUrls(
+    day,
+    name,
+    url,
+    tags,
+  );
+
+  const safeDemoUrl = sanitizeUrl(demoUrl);
+  const safeSourceUrl = sanitizeUrl(sourceUrl);
+
+  const tagsArray = Array.isArray(tags)
+    ? tags.filter((t) => t !== SOURCE_ONLY_TAG)
+    : String(tags || "")
+        .split(/\s+/)
+        .filter((t) => t && t !== SOURCE_ONLY_TAG);
+
+  const tagsHTML = tagsArray
+    .map((t) => `<span class="tag">${escapeHTML(t)}</span>`)
+    .join("");
+
+  const project = PROJECTS_BY_NAME.get(name) || PROJECTS_BY_DAY.get(day);
+
+  const description = escapeHTML(getProjectDescription(project));
+  const safeDay = escapeHTML(day);
+  const safeName = escapeHTML(name);
+  const safeCategory = escapeHTML(category);
+
+  const difficulty = project ? project.difficulty || "" : "";
+  const difficultyKey = (difficulty || "").toLowerCase();
+  const difficultyLabel = CATEGORY_LABEL[difficultyKey] || difficulty;
+  const safeDifficultyLabel = escapeHTML(difficultyLabel);
+  const difficultyBadge = difficulty
+    ? `<span class="card-difficulty ${difficultyKey}">${safeDifficultyLabel}</span>`
+    : "";
+
+  const sourceOnlyBadge = sourceOnly
+    ? '<span class="source-only-badge" title="Requires local server setup">Source only</span>'
+    : "";
+
+  const newBadge = showNewBadge ? `<span class="new-badge">NEW</span>` : "";
+
+  const primaryLink = sourceOnly
+    ? `<a href="${safeSourceUrl}" target="_blank" class="card-link open-project" data-id="${safeDay}" rel="noopener noreferrer" onclick="event.stopPropagation()" aria-label="View source of ${safeName} (opens in a new tab)">
+                        <i class="fab fa-github" aria-hidden="true"></i> Source
+                    </a>`
+    : `<a href="${safeDemoUrl}" target="_blank" class="card-link open-project" data-id="${safeDay}" rel="noopener noreferrer" onclick="event.stopPropagation()" aria-label="View demo of ${safeName} (opens in a new tab)">
+                        Demo <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                    </a>`;
+
+  const githubBtn = sourceOnly
+    ? ""
+    : `<a href="${safeSourceUrl}" target="_blank" class="github-btn" rel="noopener noreferrer" onclick="event.stopPropagation()" aria-label="View source code of ${safeName} on GitHub (opens in a new tab)">
+                        <i class="fab fa-github" aria-hidden="true"></i>
+                    </a>`;
+
+  let projectFolder = "";
+  const externalFolder = day && EXTERNAL_DEMO_SOURCE_FOLDERS[day];
+  if (externalFolder) {
+    projectFolder = externalFolder.replace(/^public\//, "");
+  } else if (
+    url &&
+    (url.startsWith("./public/") || url.startsWith("public/"))
+  ) {
+    const parts = url.split("/");
+    projectFolder = url.startsWith("./") ? parts[2] : parts[1];
+  } else if (url && isGithubTreeUrl(url)) {
+    const path = parseGithubTreePath(url);
+    if (path) {
+      const parts = path.split("/");
+      projectFolder = parts[parts.length - 1];
+    }
+  } else {
+    projectFolder = name.replace(/\s+/g, "_");
+  }
+  const safeProjectFolder = encodeURIComponent(projectFolder);
+
+  const folderDecoded = decodeURIComponent(projectFolder);
+  let imageHTML = "";
+  if (NO_PREVIEWS.has(folderDecoded)) {
+    imageHTML = `<div class="preview-placeholder" style="width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; background: linear-gradient(135deg, #111827 0%, #0f172a 100%); border: 1px solid rgba(15, 242, 200, 0.15); border-radius: 8px; padding: 16px; text-align: center; box-sizing: border-box;">
+              <span style="font-size: 0.75rem; color: rgba(255, 255, 255, 0.5); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px;">${safeDay}</span>
+              <span style="font-size: 1.1rem; font-weight: 700; color: #ffffff;">${safeName}</span>
+            </div>`;
+  } else {
+    const ext = WEBP_PREVIEWS.has(folderDecoded) ? "webp" : "png";
+    imageHTML = `<img
+            src="./public/${safeProjectFolder}/preview.${ext}"
+            alt="${safeName} preview"
+            loading="lazy"
+            decoding="async"
+            style="width: 100%; height: 100%; object-fit: cover;">`;
+  }
+
+  return {
+    html: `
+            <div class="card-meta">
+                <span class="card-day">${safeDay}</span>
+                <span class="card-category-wrap">
+                  ${newBadge}
+                  <span class="card-category">${safeCategory}</span>
+                  ${difficultyBadge}
+                  ${sourceOnlyBadge}
+                </span>
+            </div>
+
+            <div class="card-preview-image-container" style="margin: 12px 0; border-radius: 8px; overflow: hidden; aspect-ratio: 16/9; background: #1a1a1a;">
+              ${imageHTML}
+            </div>
+
+            <h3 class="card-name">${safeName}</h3>
+
+            ${
+              showDescription
+                ? `<div class="card-description">
+    ${description}
+</div>`
+                : ""
+            }
+            <div class="card-tags">${tagsHTML}</div>
+            <div class="card-footer">
+                <div class="card-actions-left">
+                    ${primaryLink}
+                </div>
+                <div class="card-actions-right" style="display: flex; gap: 8px; align-items: center;">
+                    ${githubBtn}
+                    <button class="bookmark-btn ${isBookmarked ? "active" : ""}" data-id="${safeDay}" aria-label="${isBookmarked ? `Remove ${safeName} from bookmarks` : `Bookmark ${safeName}`}">
+                        <i class="${isBookmarked ? "fa-solid" : "fa-regular"} fa-bookmark" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+        `,
+    demoUrl: safeDemoUrl,
+    sourceOnly,
+  };
+}
+
+function attachProjectCardInteraction(card, demoUrl, projectData = null) {
+  card.style.cursor = "pointer";
+
+  const activateCard = (e) => {
+    if (e.target.closest("a, button")) return;
+    if (!demoUrl) return;
+
+    if (projectData) {
+      const project = resolveProjectRecord(projectData);
+      if (project) {
+        trackRecentProject(project);
+      }
+    }
+
+    window.open(sanitizeUrl(demoUrl), "_blank", "noopener");
+  };
+
+  card.onclick = activateCard;
+
+  card.onkeydown = (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      if (e.key === " ") {
+        e.preventDefault();
+      }
+      activateCard(e);
+    }
+  };
+}
+
+function resolveProjectRecord(projectData) {
+  if (!projectData) return null;
+
+  if (projectData.projectNo != null && projectData.projectType != null) {
+    return projectData;
+  }
+
+  const day =
+    projectData.day ||
+    projectData.projectName ||
+    projectData.name ||
+    projectData[0];
+  const name = projectData.projectName || projectData.name || projectData[1];
+
+  if (day) {
+    const project = PROJECTS_BY_DAY.get(day) || PROJECTS_BY_NAME.get(day);
+    if (project) return project;
+  }
+
+  if (name) {
+    const project = PROJECTS_BY_NAME.get(name);
+    if (project) return project;
+  }
+
+  return {
+    ...projectData,
+    projectName: name || projectData.projectName,
+    projectPath: projectData.projectPath || projectData.url || projectData[2],
+    techStack:
+      projectData.techStack || projectData.tags || projectData[3] || [],
+  };
+}
 
 /* ============================================================
    TECHNOLOGY STACK FILTERING FUNCTIONS
    ============================================================ */
 
-/**
- * Normalize technology name for consistent matching
- * SIMPLIFIED: Just lowercase, no complex aliases needed
- * @param {string} tech - Technology name to normalize
- * @returns {string} Normalized technology name
- */
 function normalizeTech(tech) {
   const lower = tech.toLowerCase().trim();
-  // Only handle common variations
   return TECH_ALIASES[lower] || lower;
 }
 
-/**
- * Check if project matches the active tech stack filters
- * EFFICIENT APPROACH: Direct string matching without complex transformations
- * @param {string|array} projectTags - Project tags (space-separated string or array)
- * @returns {boolean} True if project matches all active filters
- */
 function matchesTechStack(projectTags) {
-  // No filters = show all projects
   if (techStackFilters.length === 0) return true;
-
-  // Handle empty or missing tags
   if (!projectTags) return false;
 
-  // Convert to single lowercase string for efficient matching
-  const tagsLower = (typeof projectTags === 'string' ? projectTags : projectTags.join(' ')).toLowerCase();
+  const tagSet = new Set(
+    (Array.isArray(projectTags)
+      ? projectTags
+      : String(projectTags).split(/\s+/)
+    )
+      .map((t) => t.toLowerCase().trim())
+      .filter(Boolean),
+  );
 
-  // EFFICIENT: Check if ALL filters exist in tags (AND logic)
-  // Uses simple includes() - O(n*m) where n=filters, m=tag length
-  return techStackFilters.every(filter => tagsLower.includes(filter));
+  return techStackFilters.every((filter) => tagSet.has(filter.toLowerCase()));
 }
 
-
-/**
- * Remove a specific technology filter
- * @param {string} tech - Technology to remove from filters
- */
 function removeTechFilter(tech) {
-  techStackFilters = techStackFilters.filter(t => t !== tech);
+  techStackFilters = techStackFilters.filter((t) => t !== tech);
   updateTechFilterDisplay();
   renderGrid();
 }
 
-/**
- * Clear all technology filters
- */
 function clearAllTechFilters() {
   techStackFilters = [];
-  techSearchQuery = '';
+  techSearchQuery = "";
 
-  const input = document.getElementById('techStackSearch');
-  if (input) input.value = '';
+  const input = document.getElementById("techStackSearch");
+  if (input) input.value = "";
 
   updateTechFilterDisplay();
   renderGrid();
 }
 
-/**
- * Update the visual display of active tech filters
- */
 function updateTechFilterDisplay() {
-  const container = document.getElementById('activeTechFilters');
-  const tagsContainer = document.getElementById('techFilterTags');
-  const clearBtn = document.getElementById('clearTechFilter');
+  const container = document.getElementById("activeTechFilters");
+  const tagsContainer = document.getElementById("techFilterTags");
+  const clearBtn = document.getElementById("clearTechFilter");
 
   if (!container || !tagsContainer) return;
 
-  // Show/hide clear button in search input
   if (clearBtn) {
-    clearBtn.style.display = techStackFilters.length > 0 ? 'block' : 'none';
+    clearBtn.style.display = techStackFilters.length > 0 ? "block" : "none";
   }
 
-  // Show/hide active filters container
   if (techStackFilters.length === 0) {
-    container.style.display = 'none';
+    container.style.display = "none";
     return;
   }
 
-  container.style.display = 'flex';
+  container.style.display = "flex";
 
-  // Render filter tags with remove buttons
-  tagsContainer.innerHTML = techStackFilters.map(tech => `
-    <span class="tech-filter-tag">
-      ${tech}
-      <button onclick="removeTechFilter('${tech}')" aria-label="Remove ${tech} filter">
-        <i class="fas fa-times"></i>
-      </button>
-    </span>
-  `).join('');
+  tagsContainer.textContent = "";
+
+  techStackFilters.forEach((tech) => {
+    const span = document.createElement("span");
+    span.className = "tech-filter-tag";
+
+    const label = document.createTextNode(tech);
+    span.appendChild(label);
+
+    const btn = document.createElement("button");
+    btn.setAttribute("aria-label", `Remove ${tech} filter`);
+
+    const icon = document.createElement("i");
+    icon.className = "fas fa-times";
+    icon.setAttribute("aria-hidden", "true");
+    btn.appendChild(icon);
+
+    btn.addEventListener("click", () => removeTechFilter(tech));
+
+    span.appendChild(btn);
+    tagsContainer.appendChild(span);
+  });
 }
 
-/**
- * Get all unique technologies from projects (optional utility)
- * EFFICIENT: Uses Set for O(1) lookups
- * @returns {array} Sorted array of unique technologies
- */
 function getAllTechnologies() {
   const techSet = new Set();
 
-  PROJECTS.forEach(([, , , tags]) => {
+  PROJECTS.forEach((project) => {
+    const tags = project.techStack;
     if (tags) {
-      const tagArray = typeof tags === 'string'
-        ? tags.split(/\s+/).filter(t => t)
-        : tags;
+      const tagArray =
+        typeof tags === "string" ? tags.split(/\s+/).filter((t) => t) : tags;
 
-      tagArray.forEach(tag => {
+      tagArray.forEach((tag) => {
         techSet.add(tag.toLowerCase());
       });
     }
@@ -907,48 +873,124 @@ function getAllTechnologies() {
    BOOKMARK + RECENT SYSTEM
 ============================================================ */
 
-let bookmarkedProjects = JSON.parse(localStorage.getItem('bookmarkedProjects')) || [];
-let recentProjects = JSON.parse(localStorage.getItem('recentProjects')) || [];
+let bookmarkedProjects = [];
+let recentProjects = [];
+
+try {
+  bookmarkedProjects =
+    JSON.parse(localStorage.getItem("bookmarkedProjects")) || [];
+  recentProjects = JSON.parse(localStorage.getItem("recentProjects")) || [];
+} catch (error) {
+  console.warn(
+    "localStorage is not available or access is denied:",
+    error.message,
+  );
+}
 
 let showAllBookmarks = false;
 let showAllRecent = false;
 
 const INITIAL_VISIBLE_ITEMS = 3;
+const ONE_HOUR_MS = 60 * 60 * 1000;
+
+function migrateRecentProjects() {
+  if (recentProjects.length === 0) return;
+
+  if (typeof recentProjects[0] === "object" && recentProjects[0].timestamp) {
+    return;
+  }
+
+  recentProjects = recentProjects.map((project) => {
+    if (Array.isArray(project)) {
+      return {
+        day: project[0],
+        name: project[1],
+        url: project[2],
+        tags: project[3],
+        timestamp: Date.now() - ONE_HOUR_MS / 2,
+      };
+    }
+    return project;
+  });
+
+  try {
+    localStorage.setItem("recentProjects", JSON.stringify(recentProjects));
+  } catch (error) {
+    console.warn(
+      "Could not save recent projects to localStorage:",
+      error.message,
+    );
+  }
+}
+
+// Migrate on load
+migrateRecentProjects();
+
+function cleanupExpiredRecentProjects() {
+  const initialLength = recentProjects.length;
+  recentProjects = getRecentProjectsWithinWindow();
+
+  if (recentProjects.length !== initialLength) {
+    try {
+      localStorage.setItem("recentProjects", JSON.stringify(recentProjects));
+    } catch (error) {
+      console.warn(
+        "Could not save recent projects to localStorage:",
+        error.message,
+      );
+    }
+    renderRecentProjects();
+  }
+}
+
+// Clean up every 5 minutes — clear previous interval to prevent timer leaks
+var recentProjectsTimer = null;
+function startRecentProjectsCleanup() {
+  if (recentProjectsTimer !== null) {
+    clearInterval(recentProjectsTimer);
+  }
+  recentProjectsTimer = setInterval(
+    cleanupExpiredRecentProjects,
+    5 * 60 * 1000,
+  );
+}
+startRecentProjectsCleanup();
 
 const CATEGORY_LABEL = {
-  beginner: 'Beginner',
-  intermediate: 'Intermediate',
-  advanced: 'Advanced',
+  beginner: "Beginner",
+  intermediate: "Intermediate",
+  advanced: "Advanced",
 };
 
 /* ============================================================
    GITHUB REPO STATS
    ============================================================ */
 async function fetchRepoStats() {
-
   const set = (id, val) => {
     const el = document.getElementById(id);
     if (el) el.textContent = val;
   };
 
   const setFallback = () => {
-    set('starCount', 'N/A');
-    set('forkCount', 'N/A');
-    set('issueCount', 'N/A');
-    set('prCount', 'N/A');
+    set("starCount", "N/A");
+    set("forkCount", "N/A");
+    set("issueCount", "N/A");
+    set("prCount", "N/A");
   };
 
   try {
-
-    // Optional loading state
-    set('starCount', 'Loading...');
-    set('forkCount', 'Loading...');
-    set('issueCount', 'Loading...');
-    set('prCount', 'Loading...');
+    set("starCount", "Loading...");
+    set("forkCount", "Loading...");
+    set("issueCount", "Loading...");
+    set("prCount", "Loading...");
 
     const [repoRes, prRes] = await Promise.all([
-      fetch(`https://api.github.com/repos/${window.REPO_OWNER}/${window.REPO_NAME}`),
-      fetch(`https://api.github.com/search/issues?q=repo:${window.REPO_OWNER}/${window.REPO_NAME}+type:pr+state:open`)
+      fetch(
+        `https://api.github.com/repos/${window.REPO_OWNER}/${window.REPO_NAME}`,
+      ),
+      fetch(
+        `https://api.github.com/search/issues?q=repo:${window.REPO_OWNER}/${window.REPO_NAME}+type:pr+state:open`,
+      ),
     ]);
 
     if (!repoRes.ok || !prRes.ok) {
@@ -958,120 +1000,243 @@ async function fetchRepoStats() {
     const repo = await repoRes.json();
     const prs = await prRes.json();
 
-    set('starCount', repo.stargazers_count.toLocaleString());
-    set('forkCount', repo.forks_count.toLocaleString());
-    set('issueCount', (repo.open_issues_count - prs.total_count).toLocaleString());
-    set('prCount', prs.total_count.toLocaleString());
-
+    set("starCount", repo.stargazers_count.toLocaleString());
+    set("forkCount", repo.forks_count.toLocaleString());
+    set(
+      "issueCount",
+      Math.max(0, repo.open_issues_count - prs.total_count).toLocaleString(),
+    );
+    set("prCount", prs.total_count.toLocaleString());
   } catch (e) {
-
     console.warn("GitHub stats unavailable:", e.message);
-
-    // Show fallback text instead of permanent dashes
     setFallback();
   }
 }
+
 function generateReadme() {
   try {
     const lines = [];
-    lines.push('# 100 Days · 100 Web Projects');
-    lines.push('A curated archive of frontend experiments — browse, fork, contribute.');
-    lines.push('');
-    lines.push('## Projects');
-    PROJECTS.forEach(([day, name, url, tags]) => {
-      const safeUrl = url || '';
+    lines.push("# 100 Days · 100 Web Projects");
+    lines.push(
+      "A curated archive of frontend experiments — browse, fork, contribute.",
+    );
+    lines.push("");
+    lines.push("## Projects");
+    PROJECTS.forEach((project) => {
+      const day = project.day;
+      const name = project.projectName;
+      const url = project.projectPath;
+      const tags = project.techStack;
+      const { demoUrl } = resolveProjectUrls(day, name, url, tags);
       const category = getCategoryFromTags(tags, name);
-      lines.push(`- **${day} — ${name}** — ${safeUrl} — _${category}_`);
+      lines.push(`- **${day} — ${name}** — ${demoUrl} — _${category}_`);
     });
 
-    const blob = new Blob([lines.join('\n')], { type: 'text/markdown' });
-    const a = document.createElement('a');
+    const blob = new Blob([lines.join("\n")], { type: "text/markdown" });
+    const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
-    a.download = 'README.md';
+    a.download = "README.md";
     document.body.appendChild(a);
     a.click();
     a.remove();
     URL.revokeObjectURL(a.href);
   } catch (e) {
-    console.error('Failed to generate README:', e);
-    alert('Could not generate README. See console for details.');
+    console.error("Failed to generate README:", e);
+    alert("Could not generate README. See console for details.");
   }
 }
 
 /* ============================================================
    RENDER PROJECT GRID
    ============================================================ */
-let activeFilter = 'all';
-let searchQuery = '';
-let sortOption = 'default';
-let techStackFilter = 'all';
-let difficultyFilter = 'all';
+let activeFilter = "all";
+let searchQuery = "";
+let sortOption = "default";
+let techStackFilter = "all";
+let difficultyFilter = "all";
+let currentFilteredProjects = [];
 
-function renderGrid() {
-  const grid = document.getElementById('projectGrid');
-  const noResults = document.getElementById('noResults');
+function syncStateToURL() {
+  const url = new URL(window.location);
+
+  if (searchQuery) {
+    url.searchParams.set("search", searchQuery);
+  } else {
+    url.searchParams.delete("search");
+  }
+
+  if (activeFilter && activeFilter !== "all") {
+    url.searchParams.set("category", activeFilter);
+  } else {
+    url.searchParams.delete("category");
+  }
+
+  if (currentPage > 1) {
+    url.searchParams.set("page", currentPage);
+  } else {
+    url.searchParams.delete("page");
+  }
+
+  window.history.replaceState({}, "", url);
+}
+
+function readStateFromURL() {
+  const urlParams = new URLSearchParams(window.location.search);
+
+  if (urlParams.has("search")) {
+    searchQuery = urlParams.get("search");
+    const searchInput = document.getElementById("searchInput");
+    if (searchInput) {
+      searchInput.value = searchQuery;
+    }
+  }
+
+  if (urlParams.has("category")) {
+    activeFilter = urlParams.get("category");
+  }
+
+  if (urlParams.has("page")) {
+    const page = parseInt(urlParams.get("page"), 10);
+    if (!isNaN(page) && page > 0) {
+      currentPage = page;
+    }
+  }
+}
+
+function renderSkeletons() {
+  const grid = document.getElementById("projectGrid");
   if (!grid) return;
 
-  const filtered = PROJECTS.filter(([day, name, url, tags, difficulty = '']) => {
+  grid.innerHTML = "";
+  grid.style.display = "grid";
+
+  const fragment = document.createDocumentFragment();
+  for (let i = 0; i < itemsPerPage; i++) {
+    const card = document.createElement("div");
+    card.className = "project-card skeleton";
+    card.innerHTML = `
+      <div class="card-meta skeleton-meta">
+        <div class="skeleton-line skeleton-day"></div>
+        <div class="skeleton-line skeleton-category"></div>
+      </div>
+      <div class="skeleton-image"></div>
+      <div class="skeleton-line skeleton-title"></div>
+      <div class="skeleton-description">
+        <div class="skeleton-line skeleton-desc-line"></div>
+        <div class="skeleton-line skeleton-desc-line short"></div>
+      </div>
+      <div class="skeleton-tags">
+        <div class="skeleton-line skeleton-tag"></div>
+        <div class="skeleton-line skeleton-tag"></div>
+        <div class="skeleton-line skeleton-tag"></div>
+      </div>
+      <div class="card-footer skeleton-footer">
+        <div class="skeleton-line skeleton-button"></div>
+        <div class="skeleton-line skeleton-bookmark"></div>
+      </div>
+    `;
+    fragment.appendChild(card);
+  }
+  grid.appendChild(fragment);
+}
+
+function renderGrid() {
+  const grid = document.getElementById("projectGrid");
+  const noResults = document.getElementById("noResults");
+  if (!grid) return;
+
+  if (typeof updateClearFiltersBtnVisibility === "function") {
+    updateClearFiltersBtnVisibility();
+  }
+
+  let searchResults = PROJECTS;
+
+  if (searchQuery.trim() && fuse) {
+    searchResults = fuse.search(searchQuery).map((result) => result.item);
+  }
+
+  const filtered = searchResults.filter((project) => {
+    const day = project.day;
+    const name = project.projectName;
+    const url = project.projectPath;
+    const tags = project.techStack;
+    const difficulty = project.difficulty || "";
+
     // Category filter
     const category = getCategoryFromTags(tags, name);
-    const targetCategory = FILTER_CATEGORY_MAP[activeFilter] || 'all';
-    const matchesFilter = activeFilter === 'all' || category === targetCategory;
+    const targetCategory = FILTER_CATEGORY_MAP[activeFilter] || "all";
+    const matchesFilter = activeFilter === "all" || category === targetCategory;
 
     // Search filter
     const q = searchQuery.toLowerCase().trim();
-    const matchesSearch = !q || q.split(/\s+/).every(term =>
-      name.toLowerCase().includes(term) ||
-      day.toLowerCase().includes(term) ||
-      ((Array.isArray(tags) ? tags.join(' ') : (tags || '')).toLowerCase().includes(term))
-    );
+    const matchesSearch =
+      !q ||
+      q
+        .split(/\s+/)
+        .every(
+          (term) =>
+            name.toLowerCase().includes(term) ||
+            (project.projectDesc || "").toLowerCase().includes(term) ||
+            day.toLowerCase().includes(term) ||
+            (Array.isArray(tags) ? tags.join(" ") : tags || "")
+              .toLowerCase()
+              .includes(term),
+        );
 
     // Tech stack dropdown filter
     let matchesTech = true;
-    if (techStackFilter && techStackFilter !== 'all') {
-      const tagStr = (Array.isArray(tags) ? tags.join(' ') : (tags || '')).toLowerCase();
+    if (techStackFilter && techStackFilter !== "all") {
+      const tagStr = (
+        Array.isArray(tags) ? tags.join(" ") : tags || ""
+      ).toLowerCase();
       matchesTech = tagStr.includes(techStackFilter.toLowerCase());
     }
 
     // Difficulty filter
     let matchesDifficulty = true;
-    if (difficultyFilter && difficultyFilter !== 'all') {
-      matchesDifficulty = (difficulty || '').toLowerCase() === difficultyFilter.toLowerCase();
+    if (difficultyFilter && difficultyFilter !== "all") {
+      matchesDifficulty =
+        (difficulty || "").toLowerCase() === difficultyFilter.toLowerCase();
     }
 
     return matchesFilter && matchesSearch && matchesTech && matchesDifficulty;
   });
+  currentFilteredProjects = [...filtered];
 
   // Apply sorting
-  if (sortOption === 'az') {
-    filtered.sort((a, b) => a[1].localeCompare(b[1]));
-  } else if (sortOption === 'latest') {
+  if (sortOption === "az") {
+    filtered.sort((a, b) => a.projectName.localeCompare(b.projectName));
+  } else if (sortOption === "latest") {
     filtered.sort((a, b) => {
-      const dayA = parseInt(a[0].replace('Day ', ''));
-      const dayB = parseInt(b[0].replace('Day ', ''));
+      const dayA = parseInt(a.day.replace("Day ", ""));
+      const dayB = parseInt(b.day.replace("Day ", ""));
       return dayB - dayA;
     });
-  } else if (sortOption === 'difficulty') {
+  } else if (sortOption === "difficulty") {
     const difficultyOrder = { beginner: 1, intermediate: 2, advanced: 3 };
     filtered.sort((a, b) => {
-      const diffA = a[4] ? difficultyOrder[a[4].toLowerCase()] || 0 : 0;
-      const diffB = b[4] ? difficultyOrder[b[4].toLowerCase()] || 0 : 0;
+      const diffA = a.difficulty
+        ? difficultyOrder[a.difficulty.toLowerCase()] || 0
+        : 0;
+      const diffB = b.difficulty
+        ? difficultyOrder[b.difficulty.toLowerCase()] || 0
+        : 0;
       return diffA - diffB;
     });
   }
 
-  grid.innerHTML = '';
+  grid.replaceChildren();
 
   if (filtered.length === 0) {
-    grid.style.display = 'none';
-    if (noResults) noResults.style.display = 'block';
-    const container = document.getElementById('paginationContainer');
+    grid.style.display = "none";
+    if (noResults) noResults.style.display = "block";
+    const container = document.getElementById("paginationContainer");
     if (container) container.remove();
     return;
   }
 
-  grid.style.display = 'grid';
-  if (noResults) noResults.style.display = 'none';
+  grid.style.display = "grid";
+  if (noResults) noResults.style.display = "none";
 
   const totalPages = Math.ceil(filtered.length / itemsPerPage) || 1;
   if (currentPage > totalPages) currentPage = totalPages;
@@ -1082,74 +1247,112 @@ function renderGrid() {
   const pageItems = filtered.slice(startIndex, endIndex);
   const fragment = document.createDocumentFragment();
 
-  pageItems.forEach(([day, name, url, tags]) => {
+  const bookmarkedDays = new Set(
+    bookmarkedProjects.map((item) => normalizeProjectEntry(item).day),
+  );
+
+  pageItems.forEach((project) => {
+    const day = project.day;
+    const name = project.projectName;
+    const url = project.projectPath;
+    const tags = project.techStack;
+
     const category = getCategoryFromTags(tags, name);
-    const card = document.createElement('div');
+    const card = document.createElement("div");
 
-    // FIX PART 1: Add a pointer cursor so users know it's clickable
-    card.className = 'project-card';
-    card.style.cursor = 'pointer';
+    const isBookmarked = bookmarkedDays.has(day);
 
-    // FIX PART 2: Make the whole card clickable to open the demo in a new tab
-    card.onclick = () => window.open(url.trim(), '_blank');
+    const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
+      day,
+      name,
+      url,
+      tags,
+      category,
+      isBookmarked,
+      showDescription: true,
+    });
 
-    const isBookmarked = bookmarkedProjects.some((item) => item[0] === day);
-    const tagsArray = typeof tags === 'string' ? tags.split(/\s+/).filter((t) => t) : tags;
-    const tagsHTML = tagsArray.map((t) => `<span class="tag">${t}</span>`).join('');
-    const sourceUrl = getSourceUrl(url);
-    const description =
-  PROJECT_DESCRIPTIONS[name] ||
-  "Explore this project to discover interactive functionality, frontend concepts and implementation details.";
+    card.className = sourceOnly
+      ? "project-card source-only visible"
+      : "project-card visible";
 
-    // FIX PART 3: Add onclick="event.stopPropagation()" to the Demo, Code, and Bookmark buttons
-    // This stops the click from "bubbling up" to the main card, preventing double-opening!
-    card.innerHTML = `
-            <div class="card-meta">
-                <span class="card-day">${day}</span>
-                <span class="card-category">${category}</span>
-            </div>
-            <div class="card-name">${name}</div>
-
-<div class="card-description">
-    ${description}
-</div>
-
-<div class="card-tags">${tagsHTML}</div>
-            <div class="card-footer">
-                <div class="card-actions-left">
-                    <a href="${url.trim()}" target="_blank" class="card-link open-project" data-id="${day}" rel="noopener noreferrer">
-                        Demo <i class="fas fa-arrow-right"></i>
-                    </a>
-                    <a href="${sourceUrl}" target="_blank" class="card-link view-code-link" rel="noopener noreferrer">
-                        <i class="fab fa-github"></i> Code
-                    </a>
-                </div>
-                <button class="bookmark-btn ${isBookmarked ? 'active' : ''}" data-id="${day}">
-                    <i class="${isBookmarked ? 'fa-solid' : 'fa-regular'} fa-bookmark"></i>
-                </button>
-            </div>
-        `;
+    card.innerHTML = html;
+    card.setAttribute("tabindex", "0");
+    card.setAttribute("role", "button");
+    attachProjectCardInteraction(card, demoUrl, project);
 
     fragment.appendChild(card);
   });
+
   grid.appendChild(fragment);
   renderPagination(filtered.length, totalPages);
-}
 
+  syncStateToURL();
+  syncProjectCounts();
+}
+console.log("===== RENDER GRID =====");
+console.log("PROJECTS:", PROJECTS.length);
+console.log("activeFilter:", activeFilter);
+console.log("searchQuery:", searchQuery);
+console.log("techStackFilter:", techStackFilter);
+console.log("difficultyFilter:", difficultyFilter);
+function renderRandomProject() {
+  const result = document.getElementById("randomProjectResult");
+
+  if (!result) return;
+
+  const source = currentFilteredProjects.length
+    ? currentFilteredProjects
+    : PROJECTS;
+
+  const randomProject = source[Math.floor(Math.random() * source.length)];
+
+  if (!randomProject) return;
+
+  const category = getCategoryFromTags(
+    randomProject.techStack,
+    randomProject.projectName,
+  );
+
+  const bookmarkedDays = new Set(
+    bookmarkedProjects.map((item) => normalizeProjectEntry(item).day),
+  );
+
+  const { html, sourceOnly } = buildProjectCardHTML({
+    day: randomProject.day,
+    name: randomProject.projectName,
+    url: randomProject.projectPath,
+    tags: randomProject.techStack,
+    category,
+    isBookmarked: bookmarkedDays.has(randomProject.day),
+    showDescription: true,
+  });
+
+  result.innerHTML = "";
+
+  const card = document.createElement("div");
+
+  card.className = sourceOnly
+    ? "project-card source-only visible"
+    : "project-card visible";
+
+  card.innerHTML = html;
+
+  result.appendChild(card);
+}
 function renderPagination(totalItems, totalPages) {
-  const grid = document.getElementById('projectGrid');
+  const grid = document.getElementById("projectGrid");
   if (!grid) return;
 
-  let container = document.getElementById('paginationContainer');
+  let container = document.getElementById("paginationContainer");
   if (!container) {
-    container = document.createElement('div');
-    container.id = 'paginationContainer';
-    container.className = 'pagination-container';
+    container = document.createElement("div");
+    container.id = "paginationContainer";
+    container.className = "pagination-container";
   }
 
-  container.innerHTML = '';
+  container.innerHTML = "";
 
-  // If there is only 1 page of results, hide and detach the pagination block
   if (totalPages <= 1) {
     if (container.parentElement === grid) {
       grid.removeChild(container);
@@ -1157,28 +1360,42 @@ function renderPagination(totalItems, totalPages) {
     return;
   }
 
-  // Render showing info range (e.g. "Showing 1 to 9 of 100")
-  const infoDiv = document.createElement('div');
-  infoDiv.className = 'pagination-info';
+  const infoDiv = document.createElement("div");
+  infoDiv.className = "pagination-info";
   const startItem = (currentPage - 1) * itemsPerPage + 1;
   const endItem = Math.min(currentPage * itemsPerPage, totalItems);
   infoDiv.innerHTML = `Showing <strong>${startItem}</strong> to <strong>${endItem}</strong> of <strong>${totalItems}</strong> projects`;
   container.appendChild(infoDiv);
 
-  const controlsDiv = document.createElement('div');
-  controlsDiv.className = 'pagination-controls';
+  const controlsDiv = document.createElement("div");
+  controlsDiv.className = "pagination-controls";
 
-  const prevBtn = document.createElement('button');
-  prevBtn.className = 'prev-btn';
-  prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
+  const firstBtn = document.createElement("button");
+  firstBtn.className = "first-btn";
+  firstBtn.innerHTML = "⏮ First";
+  firstBtn.disabled = currentPage === 1;
+
+  firstBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    if (currentPage !== 1) {
+      currentPage = 1;
+      renderGrid();
+      setTimeout(() => scrollToProjectSection(), 50);
+    }
+  });
+
+  controlsDiv.appendChild(firstBtn);
+
+  const prevBtn = document.createElement("button");
+  prevBtn.className = "prev-btn";
+  prevBtn.innerHTML = '<i class="fas fa-chevron-left" aria-hidden="true"></i>';
   prevBtn.disabled = currentPage === 1;
-  prevBtn.setAttribute('aria-label', 'Previous Page');
-  prevBtn.addEventListener('click', (e) => {
+  prevBtn.setAttribute("aria-label", "Previous Page");
+  prevBtn.addEventListener("click", (e) => {
     e.preventDefault();
     if (currentPage > 1) {
       currentPage--;
       renderGrid();
-      // Delay scrolling by 50ms to allow DOM layout to recalculate and stabilize after cards redraw
       setTimeout(() => {
         scrollToProjectSection();
       }, 50);
@@ -1186,12 +1403,10 @@ function renderPagination(totalItems, totalPages) {
   });
   controlsDiv.appendChild(prevBtn);
 
-  // Initialize bounds for numeric pagination window (displays maximum of 4 page buttons)
   let startPage = 1;
   let endPage = totalPages;
   const maxVisible = 4;
 
-  // Sliding window pagination logic centering the active page
   if (totalPages > maxVisible) {
     if (currentPage <= 2) {
       startPage = 1;
@@ -1206,15 +1421,17 @@ function renderPagination(totalItems, totalPages) {
   }
 
   for (let i = startPage; i <= endPage; i++) {
-    const pageBtn = document.createElement('button');
-    pageBtn.className = `page-num ${currentPage === i ? 'active' : ''}`;
+    const pageBtn = document.createElement("button");
+    pageBtn.className = `page-num ${currentPage === i ? "active" : ""}`;
     pageBtn.textContent = i;
-    pageBtn.setAttribute('aria-label', `Page ${i}`);
-    pageBtn.addEventListener('click', (e) => {
+    pageBtn.setAttribute("aria-label", `Page ${i}`);
+    if (currentPage === i) {
+      pageBtn.setAttribute("aria-current", "page");
+    }
+    pageBtn.addEventListener("click", (e) => {
       e.preventDefault();
       currentPage = i;
       renderGrid();
-      // Delay scrolling by 50ms to allow DOM layout to recalculate and stabilize after cards redraw
       setTimeout(() => {
         scrollToProjectSection();
       }, 50);
@@ -1222,17 +1439,16 @@ function renderPagination(totalItems, totalPages) {
     controlsDiv.appendChild(pageBtn);
   }
 
-  const nextBtn = document.createElement('button');
-  nextBtn.className = 'next-btn';
-  nextBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
+  const nextBtn = document.createElement("button");
+  nextBtn.className = "next-btn";
+  nextBtn.innerHTML = '<i class="fas fa-chevron-right" aria-hidden="true"></i>';
   nextBtn.disabled = currentPage === totalPages;
-  nextBtn.setAttribute('aria-label', 'Next Page');
-  nextBtn.addEventListener('click', (e) => {
+  nextBtn.setAttribute("aria-label", "Next Page");
+  nextBtn.addEventListener("click", (e) => {
     e.preventDefault();
     if (currentPage < totalPages) {
       currentPage++;
       renderGrid();
-      // Delay scrolling by 50ms to allow DOM layout to recalculate and stabilize after cards redraw
       setTimeout(() => {
         scrollToProjectSection();
       }, 50);
@@ -1240,39 +1456,58 @@ function renderPagination(totalItems, totalPages) {
   });
   controlsDiv.appendChild(nextBtn);
 
+  const lastBtn = document.createElement("button");
+  lastBtn.className = "last-btn";
+  lastBtn.innerHTML = "Last ⏭";
+  lastBtn.disabled = currentPage === totalPages;
+
+  lastBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    if (currentPage !== totalPages) {
+      currentPage = totalPages;
+      renderGrid();
+      setTimeout(() => scrollToProjectSection(), 50);
+    }
+  });
+
+  controlsDiv.appendChild(lastBtn);
+
   container.appendChild(controlsDiv);
 
-  // Append container dynamically inside the projectGrid element to keep it attached
   grid.appendChild(container);
 }
 
 function scrollToProjectSection() {
-  const header = document.querySelector('.projects-header');
+  const header = document.querySelector(".projects-header");
   if (!header) return;
 
-  const navbar = document.querySelector('.navbar');
-  // Subtract height of fixed navbar with a 50px buffer to prevent overlaying the search bar
+  if (header.getBoundingClientRect().top < window.innerHeight) return;
+
+  const navbar = document.querySelector(".navbar");
   const offset = navbar ? navbar.offsetHeight - 50 : 30;
-  const targetY = header.getBoundingClientRect().top + window.pageYOffset - offset;
+  const targetY =
+    header.getBoundingClientRect().top + window.pageYOffset - offset;
   const startY = window.pageYOffset;
   const distance = targetY - startY;
 
-  // Custom snappy scroll duration (100ms matches the quick transitions in your CSS)
   const duration = 100;
   let startTime = null;
 
   function animation(currentTime) {
     if (startTime === null) startTime = currentTime;
     const timeElapsed = currentTime - startTime;
-    // Cap scroll position math exactly to distance to avoid landing slightly off target
-    const run = easeInOutQuad(Math.min(timeElapsed, duration), startY, distance, duration);
+    const run = easeInOutQuad(
+      Math.min(timeElapsed, duration),
+      startY,
+      distance,
+      duration,
+    );
     window.scrollTo(0, run);
     if (timeElapsed < duration) {
       requestAnimationFrame(animation);
     }
   }
 
-  // Mathematical Quadratic Ease-In-Out formula for momentum-like deceleration
   function easeInOutQuad(t, b, c, d) {
     t /= d / 2;
     if (t < 1) return (c / 2) * t * t + b;
@@ -1284,237 +1519,585 @@ function scrollToProjectSection() {
 }
 
 function toggleBookmark(project) {
-  const exists = bookmarkedProjects.find((item) => item[0] === project[0]);
+  const exists = bookmarkedProjects.find(
+    (item) => normalizeProjectEntry(item).day === project.day,
+  );
 
   if (exists) {
-    bookmarkedProjects = bookmarkedProjects.filter((item) => item[0] !== project[0]);
-    showToast('Bookmark removed');
+    bookmarkedProjects = bookmarkedProjects.filter(
+      (item) => normalizeProjectEntry(item).day !== project.day,
+    );
+    showToast("Bookmark removed");
   } else {
     bookmarkedProjects.push(project);
-    showToast('Project bookmarked');
+    showToast("Project bookmarked");
   }
 
-  localStorage.setItem('bookmarkedProjects', JSON.stringify(bookmarkedProjects));
+  updateBookmarkURL();
+
+  try {
+    localStorage.setItem(
+      "bookmarkedProjects",
+      JSON.stringify(bookmarkedProjects),
+    );
+  } catch (error) {
+    console.warn("Could not save bookmark due to localStorage restrictions");
+  }
   renderBookmarks();
   renderGrid();
   renderRecentProjects();
+  renderRecentlyAdded();
+}
+
+function updateBookmarkURL() {
+  const url = new URL(window.location);
+
+  if (bookmarkedProjects.length > 0) {
+    const bookmarkIds = bookmarkedProjects.map(
+      (project) => normalizeProjectEntry(project).day,
+    );
+    url.searchParams.set("bookmarks", bookmarkIds.join(","));
+  } else {
+    url.searchParams.delete("bookmarks");
+  }
+
+  window.history.replaceState({}, "", url);
+}
+
+function loadBookmarksFromURL() {
+  const params = new URLSearchParams(window.location.search);
+  const bookmarkParam = params.get("bookmarks");
+
+  if (!bookmarkParam) return;
+
+  const bookmarkIds = bookmarkParam.split(",").map((id) => id.trim());
+
+  bookmarkedProjects = PROJECTS.filter((project) =>
+    bookmarkIds.includes(project.day),
+  );
+
+  localStorage.setItem(
+    "bookmarkedProjects",
+    JSON.stringify(bookmarkedProjects),
+  );
+}
+
+function getRecentProjectsWithinWindow() {
+  const now = Date.now();
+
+  return recentProjects.filter((item) => {
+    const timestamp = item.timestamp || Date.now();
+    const age = now - timestamp;
+
+    return age <= ONE_HOUR_MS;
+  });
 }
 
 function trackRecentProject(project) {
-  recentProjects = recentProjects.filter((item) => item[0] !== project[0]);
-  recentProjects.unshift(project);
+  let projectObj;
+  if (Array.isArray(project)) {
+    projectObj = {
+      day: project[0],
+      name: project[1],
+      url: project[2],
+      tags: project[3],
+      timestamp: Date.now(),
+    };
+  } else {
+    projectObj = {
+      ...project,
+      timestamp: Date.now(),
+    };
+  }
 
-  if (recentProjects.length > 10) {
+  recentProjects = recentProjects.filter((item) => item.day !== projectObj.day);
+  recentProjects.unshift(projectObj);
+
+  if (recentProjects.length > 20) {
     recentProjects.pop();
   }
 
-  localStorage.setItem('recentProjects', JSON.stringify(recentProjects));
+  try {
+    localStorage.setItem("recentProjects", JSON.stringify(recentProjects));
+  } catch (error) {
+    console.warn(
+      "Could not save recent projects due to localStorage restrictions",
+    );
+  }
   renderRecentProjects();
 }
 
-const bookmarkGrid = document.getElementById('bookmarkGrid');
+const bookmarkGrid = document.getElementById("bookmarkGrid");
+
+function normalizeProjectEntry(project) {
+  if (!project) {
+    return {
+      day: "",
+      name: "",
+      url: "",
+      tags: [],
+    };
+  }
+
+  if (typeof project === "string") {
+    const dayStr = project.startsWith("Day ") ? project : `Day ${project}`;
+    return {
+      day: dayStr,
+      name: "",
+      url: "",
+      tags: [],
+    };
+  }
+
+  if (Array.isArray(project)) {
+    return {
+      day: project[0] || "",
+      name: project[1] || "",
+      url: project[2] || "",
+      tags: project[3] || [],
+    };
+  }
+
+  return {
+    day: project.day || "",
+    name: project.projectName || project.name || "",
+    url: project.projectPath || project.url || "",
+    tags: project.techStack || project.tags || [],
+  };
+}
 
 function renderBookmarks() {
   if (!bookmarkGrid) return;
 
-  bookmarkGrid.innerHTML = '';
+  bookmarkGrid.innerHTML = "";
 
   if (bookmarkedProjects.length === 0) {
     bookmarkGrid.innerHTML = `<p class="empty-state">No bookmarked projects yet.</p>`;
     return;
   }
 
-  const bookmarkToggleBtn = document.getElementById('bookmarkToggleBtn');
+  const bookmarkToggleBtn = document.getElementById("bookmarkToggleBtn");
   if (bookmarkToggleBtn) {
-    bookmarkToggleBtn.style.display = bookmarkedProjects.length <= INITIAL_VISIBLE_ITEMS ? 'none' : 'inline-flex';
+    bookmarkToggleBtn.style.display =
+      bookmarkedProjects.length <= INITIAL_VISIBLE_ITEMS
+        ? "none"
+        : "inline-flex";
   }
 
-  const visibleBookmarks = showAllBookmarks ? bookmarkedProjects : bookmarkedProjects.slice(0, INITIAL_VISIBLE_ITEMS);
+  const visibleBookmarks = showAllBookmarks
+    ? bookmarkedProjects
+    : bookmarkedProjects.slice(0, INITIAL_VISIBLE_ITEMS);
 
-  visibleBookmarks.forEach(([day, name, url, tags]) => {
+  visibleBookmarks.forEach((project) => {
+    const { day, name, url, tags } = normalizeProjectEntry(project);
+    if (!day || !name) return;
+
     const category = getCategoryFromTags(tags, name);
-    const card = document.createElement('div');
-    card.className = 'project-card';
-    const tagsArray = Array.isArray(tags) ? tags : (typeof tags === 'string' ? tags.split(/\s+/).filter(t => t) : []);
-    const tagsHTML = tagsArray.map((tag) => `<span class="tag">${tag}</span>`).join('');
-    const sourceUrl = getSourceUrl(url);
 
-    card.innerHTML = `
-            <div class="card-meta">
-                <span class="card-day">${day}</span>
-                <span class="card-category">${category}</span>
-            </div>
-           <div class="card-name">${name}</div>
+    const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
+      day,
+      name,
+      url,
+      tags,
+      category,
+      isBookmarked: true,
+      showDescription: true,
+    });
 
-<div class="card-description">
-    ${description}
-</div>
+    const card = document.createElement("div");
+    card.className = sourceOnly
+      ? "project-card source-only visible"
+      : "project-card visible";
+    card.innerHTML = html;
+    card.setAttribute("tabindex", "0");
+    card.setAttribute("role", "button");
 
-<div class="card-tags">
-    ${tagsHTML}
-</div>
-            <div class="card-footer">
-                <div class="card-actions-left">
-                    <a href="${url}" target="_blank" class="card-link open-project" data-id="${day}">
-                        Demo <i class="fas fa-arrow-right"></i>
-                    </a>
-                    <a href="${sourceUrl}" target="_blank" class="card-link view-code-link" rel="noopener noreferrer">
-                        <i class="fab fa-github"></i> Code
-                    </a>
-                </div>
-                <button class="bookmark-btn active" data-id="${day}">
-                    <i class="fa-solid fa-bookmark"></i>
-                </button>
-            </div>
-        `;
+    attachProjectCardInteraction(card, demoUrl, project);
 
     bookmarkGrid.appendChild(card);
   });
 }
 
-const recentGrid = document.getElementById('recentGrid');
+const recentlyAddedGrid = document.getElementById("recentlyAddedGrid");
+
+function renderRecentlyAdded() {
+  if (!recentlyAddedGrid) return;
+
+  recentlyAddedGrid.innerHTML = "";
+
+  if (PROJECTS.length === 0) return;
+
+  // Sort by projectNo descending
+  const sorted = [...PROJECTS].sort((a, b) => b.projectNo - a.projectNo);
+  const latest = sorted.slice(0, 8);
+
+  const bookmarkedDays = new Set(
+    bookmarkedProjects.map((item) => normalizeProjectEntry(item).day),
+  );
+
+  latest.forEach((project) => {
+    const day = project.day;
+    const name = project.projectName;
+    const url = project.projectPath;
+    const tags = project.techStack;
+
+    const category = getCategoryFromTags(tags, name);
+    const isBookmarked = bookmarkedDays.has(day);
+
+    const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
+      day,
+      name,
+      url,
+      tags,
+      category,
+      isBookmarked,
+      showDescription: true,
+      showNewBadge: true,
+    });
+
+    const card = document.createElement("div");
+    card.className = sourceOnly
+      ? "project-card source-only visible"
+      : "project-card visible";
+    card.innerHTML = html;
+    card.setAttribute("tabindex", "0");
+    card.setAttribute("role", "button");
+
+    attachProjectCardInteraction(card, demoUrl, project);
+
+    recentlyAddedGrid.appendChild(card);
+  });
+}
+
+const recentGrid = document.getElementById("recentGrid");
 
 function renderRecentProjects() {
   if (!recentGrid) return;
 
-  recentGrid.innerHTML = '';
+  recentGrid.innerHTML = "";
 
-  if (recentProjects.length === 0) {
-    recentGrid.innerHTML = `<p class="empty-state">No recently viewed projects.</p>`;
+  const validRecent = getRecentProjectsWithinWindow();
+
+  if (validRecent.length === 0) {
+    recentGrid.innerHTML = `<p class="empty-state">No recently viewed projects within the last hour.</p>`;
     return;
   }
 
-  const recentToggleBtn = document.getElementById('recentToggleBtn');
+  const recentToggleBtn = document.getElementById("recentToggleBtn");
   if (recentToggleBtn) {
-    recentToggleBtn.style.display = recentProjects.length <= INITIAL_VISIBLE_ITEMS ? 'none' : 'inline-flex';
+    recentToggleBtn.style.display =
+      validRecent.length <= INITIAL_VISIBLE_ITEMS ? "none" : "inline-flex";
   }
 
-  const visibleRecent = showAllRecent ? recentProjects : recentProjects.slice(0, INITIAL_VISIBLE_ITEMS);
+  const visibleRecent = showAllRecent
+    ? validRecent
+    : validRecent.slice(0, INITIAL_VISIBLE_ITEMS);
 
-  visibleRecent.forEach(([day, name, url, tags]) => {
+  visibleRecent.forEach((projectObj) => {
+    const day = projectObj.day || projectObj[0];
+    const name = projectObj.projectName || projectObj.name || projectObj[1];
+    const url = projectObj.projectPath || projectObj.url || projectObj[2];
+    const tags = projectObj.techStack || projectObj.tags || projectObj[3];
+
     const category = getCategoryFromTags(tags, name);
-    const card = document.createElement('div');
-    card.className = 'project-card';
-    const tagsArray = Array.isArray(tags) ? tags : (typeof tags === 'string' ? tags.split(/\s+/).filter(t => t) : []);
-    const tagsHTML = tagsArray.map((tag) => `<span class="tag">${tag}</span>`).join('');
-    const isBookmarked = bookmarkedProjects.some((item) => item[0] === day);
-    const sourceUrl = getSourceUrl(url);
+    const isBookmarked = bookmarkedProjects.some(
+      (item) => normalizeProjectEntry(item).day === day,
+    );
 
-    card.innerHTML = `
-            <div class="card-meta">
-                <span class="card-day">${day}</span>
-                <span class="card-category">${category}</span>
-            </div>
-            <div class="card-name">${name}</div>
-            <div class="card-tags">${tagsHTML}</div>
-            <div class="card-footer">
-                <div class="card-actions-left">
-                    <a href="${url}" target="_blank" class="card-link open-project" data-id="${day}">
-                        Demo <i class="fas fa-arrow-right"></i>
-                    </a>
-                    <a href="${sourceUrl}" target="_blank" class="card-link view-code-link" rel="noopener noreferrer">
-                        <i class="fab fa-github"></i> Code
-                    </a>
-                </div>
-                <button class="bookmark-btn ${isBookmarked ? 'active' : ''}" data-id="${day}">
-                    <i class="${isBookmarked ? 'fa-solid' : 'fa-regular'} fa-bookmark"></i>
-                </button>
-            </div>
-        `;
+    const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
+      day,
+      name,
+      url,
+      tags,
+      category,
+      isBookmarked,
+      showDescription: true,
+    });
+
+    const card = document.createElement("div");
+    card.className = sourceOnly
+      ? "project-card source-only visible"
+      : "project-card visible";
+    card.innerHTML = html;
+    card.setAttribute("tabindex", "0");
+    card.setAttribute("role", "button");
+
+    attachProjectCardInteraction(card, demoUrl, projectObj);
 
     recentGrid.appendChild(card);
   });
+
+  renderRecommendationsForLatestRecentProject();
 }
+
+function renderRecommendationsForProject(project) {
+  const container = document.getElementById("recommendationsContainer");
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  const header = document.createElement("div");
+  header.className = "projects-intro";
+  header.innerHTML = `
+    <p class="section-label">Build Similar Projects</p>
+    <h2 class="section-title">${
+      project
+        ? `Projects like ${escapeHTML(
+            project.projectName || project.name || "this project",
+          )}`
+        : "Related Projects"
+    }</h2>
+  `;
+  container.appendChild(header);
+
+  if (!project) {
+    const placeholder = document.createElement("p");
+    placeholder.className = "empty-state";
+    placeholder.textContent =
+      "Click a project card to discover related builds based on technologies and project type.";
+    container.appendChild(placeholder);
+    return;
+  }
+
+function getRecommendations(project, allProjects) {
+  if (!project || !allProjects) return [];
+  return allProjects
+    .filter(function (p) {
+      if (p.id === project.id) return false;
+      const shared = (p.techStack || []).filter(function (t) {
+        return (project.techStack || []).includes(t);
+      });
+      return shared.length > 0 || p.category === project.category;
+    })
+    .slice(0, 6);
+}
+
+  const recommendations = getRecommendations(project, PROJECTS);
+  if (!recommendations.length) {
+    const noRecommendations = document.createElement("p");
+    noRecommendations.className = "empty-state";
+    noRecommendations.textContent =
+      "No similar projects were found for this selection yet.";
+    container.appendChild(noRecommendations);
+    return;
+  }
+
+  const grid = document.createElement("div");
+  grid.className = "project-grid";
+
+  recommendations.forEach((recommendation) => {
+    const category = getCategoryFromTags(
+      recommendation.techStack,
+      recommendation.projectName,
+    );
+    const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
+      day: recommendation.day,
+      name: recommendation.projectName,
+      url: recommendation.projectPath,
+      tags: recommendation.techStack,
+      category,
+      isBookmarked: bookmarkedProjects.some(
+        (item) => normalizeProjectEntry(item).day === recommendation.day,
+      ),
+      showDescription: true,
+    });
+
+    const card = document.createElement("div");
+    card.className = sourceOnly
+      ? "project-card source-only visible"
+      : "project-card visible";
+    card.innerHTML = html;
+    card.setAttribute("tabindex", "0");
+    card.setAttribute("role", "button");
+    attachProjectCardInteraction(card, demoUrl, recommendation);
+    grid.appendChild(card);
+  });
+
+  container.appendChild(grid);
+}
+
+function renderRecommendationsForLatestRecentProject() {
+  const validRecent = getRecentProjectsWithinWindow();
+  if (validRecent.length === 0) {
+    renderRecommendationsForProject(null);
+    return;
+  }
+
+  const latestProject = resolveProjectRecord(validRecent[0]);
+  renderRecommendationsForProject(latestProject);
+}
+
+// Clean up after grid references are initialized.
+cleanupExpiredRecentProjects();
+renderRecommendationsForLatestRecentProject();
 
 /* ============================================================
    VIEW ALL TOGGLE
    ============================================================ */
 
-const bookmarkToggleBtn = document.getElementById('bookmarkToggleBtn');
-const recentToggleBtn = document.getElementById('recentToggleBtn');
-const copyBookmarksBtn = document.getElementById('copyBookmarksBtn');
+const bookmarkToggleBtn = document.getElementById("bookmarkToggleBtn");
+const recentToggleBtn = document.getElementById("recentToggleBtn");
+const copyBookmarksBtn = document.getElementById("copyBookmarksBtn");
 
 if (bookmarkToggleBtn) {
-  bookmarkToggleBtn.addEventListener('click', () => {
-    showAllBookmarks = !showAllBookmarks;
-    bookmarkToggleBtn.textContent = showAllBookmarks ? 'Show Less' : 'View All';
-    renderBookmarks();
+  bookmarkToggleBtn.addEventListener("click", () => {
+    const projectsSection = document.getElementById("projects");
+    if (projectsSection) {
+      projectsSection.scrollIntoView({ behavior: "smooth" });
+    }
   });
 }
 
 if (copyBookmarksBtn) {
-  copyBookmarksBtn.addEventListener('click', async () => {
+  copyBookmarksBtn.addEventListener("click", async () => {
     if (bookmarkedProjects.length === 0) {
-      showToast('No bookmarks to copy!');
+      showToast("No bookmarks to copy!");
       return;
     }
-    const textToCopy = bookmarkedProjects.map(p => {
-      const projectName = p[1];
-      const projectLink = new URL(p[2], window.location.href).href;
-      return `${projectName} - ${projectLink}`;
-    }).join('\n');
+    const textToCopy = bookmarkedProjects
+      .map((p) => {
+        const { day, name, url, tags } = normalizeProjectEntry(p);
+        const { demoUrl } = resolveProjectUrls(day, name, url, tags);
+        const projectLink = demoUrl.startsWith("http")
+          ? demoUrl
+          : new URL(demoUrl, window.location.href).href;
+        return `${name} - ${projectLink}`;
+      })
+      .join("\n");
 
     try {
       await navigator.clipboard.writeText(textToCopy);
-      showToast('Bookmarks copied to clipboard!');
+      showToast("Bookmarks copied to clipboard!");
     } catch (err) {
-      showToast('Failed to copy bookmarks.');
+      showToast("Failed to copy bookmarks.");
     }
   });
 }
 
 if (recentToggleBtn) {
-  recentToggleBtn.addEventListener('click', () => {
-    showAllRecent = !showAllRecent;
-    recentToggleBtn.textContent = showAllRecent ? 'Show Less' : 'View All';
-    renderRecentProjects();
+  recentToggleBtn.addEventListener("click", () => {
+    const projectsSection = document.getElementById("projects");
+    if (projectsSection) {
+      projectsSection.scrollIntoView({ behavior: "smooth" });
+    }
   });
 }
 
 function showToast(message) {
-  const toast = document.getElementById('toast');
+  const toast = document.getElementById("toast");
   if (!toast) return;
 
   toast.textContent = message;
-  toast.classList.add('show');
+  toast.classList.add("show");
 
   setTimeout(() => {
-    toast.classList.remove('show');
+    toast.classList.remove("show");
   }, 3000);
 }
 
-document.addEventListener('click', (e) => {
-  const bookmarkBtn = e.target.closest('.bookmark-btn');
+document.addEventListener("click", (e) => {
+  const bookmarkBtn = e.target.closest(".bookmark-btn");
   if (!bookmarkBtn) return;
 
   e.preventDefault();
   const projectDay = bookmarkBtn.dataset.id;
-  const project = PROJECTS.find((item) => item[0] === projectDay);
+  const project = PROJECTS.find((item) => item.day === projectDay);
   if (!project) return;
 
   toggleBookmark(project);
 });
 
-document.addEventListener('click', (e) => {
-  const projectLink = e.target.closest('.open-project');
+document.addEventListener("click", (e) => {
+  const projectLink = e.target.closest(".open-project");
   if (!projectLink) return;
 
   const projectDay = projectLink.dataset.id;
-  const project = PROJECTS.find((item) => item[0] === projectDay);
+  const project = PROJECTS.find((item) => item.day === projectDay);
   if (!project) return;
 
   trackRecentProject(project);
 });
 
 /* ============================================================
+   CLEAR ALL FILTERS SYSTEM
+   ============================================================ */
+function updateClearFiltersBtnVisibility() {
+  const btn = document.getElementById("clearAllFiltersBtn");
+  if (!btn) return;
+
+  const input = document.getElementById("searchInput");
+  const techStack = document.getElementById("techStackFilter");
+  const difficultyElement = document.getElementById("difficultyFilter");
+
+  const hasSearch = input && input.value.trim() !== "";
+  const hasTech = techStack && techStack.value !== "all";
+  const hasDiff = difficultyElement && difficultyElement.value !== "all";
+  const hasCategory = activeFilter && activeFilter !== "all";
+
+  if (hasSearch || hasTech || hasDiff || hasCategory) {
+    btn.style.display = "inline-flex";
+  } else {
+    btn.style.display = "none";
+  }
+}
+
+function resetAllFilters() {
+  const chips = document.querySelectorAll(".chip[data-filter]");
+  chips.forEach((c) => c.classList.remove("active"));
+  const allChip =
+    document.getElementById("filterAll") ||
+    document.querySelector('.chip[data-filter="all"]');
+  if (allChip) allChip.classList.add("active");
+  activeFilter = "all";
+
+  const input = document.getElementById("searchInput");
+  if (input) input.value = "";
+  searchQuery = "";
+
+  const techStack = document.getElementById("techStackFilter");
+  if (techStack) techStack.selectedIndex = 0;
+  techStackFilter = "all";
+
+  const difficultyElement = document.getElementById("difficultyFilter");
+  if (difficultyElement) difficultyElement.selectedIndex = 0;
+  difficultyFilter = "all";
+
+  const sortSelect = document.getElementById("sortProjects");
+  if (sortSelect) sortSelect.selectedIndex = 0;
+  sortOption = "default";
+
+  if (typeof updateURL === "function") {
+    updateURL("", "all");
+  }
+
+  currentPage = 1;
+  renderGrid();
+  syncProjectCounts();
+
+  showToast("Filters cleared!");
+}
+
+function initClearAllFilters() {
+  const btn = document.getElementById("clearAllFiltersBtn");
+  if (btn) {
+    btn.addEventListener("click", resetAllFilters);
+  }
+}
+
+/* ============================================================
    FILTER CHIPS
    ============================================================ */
 function initFilterChips() {
-  const chips = document.querySelectorAll('.chip[data-filter]');
+  const chips = document.querySelectorAll(".chip[data-filter]");
   chips.forEach((chip) => {
-    chip.addEventListener('click', () => {
-      chips.forEach((c) => c.classList.remove('active'));
-      chip.classList.add('active');
+    if (chip.dataset.filter === activeFilter) {
+      chips.forEach((c) => c.classList.remove("active"));
+      chip.classList.add("active");
+    }
+
+    chip.addEventListener("click", () => {
+      chips.forEach((c) => c.classList.remove("active"));
+      chip.classList.add("active");
       activeFilter = chip.dataset.filter;
       currentPage = 1;
       renderGrid();
@@ -1538,32 +2121,30 @@ function debounce(fn, delay = 300) {
 }
 
 function initSearch() {
-  const input = document.getElementById('searchInput');
+  const input = document.getElementById("searchInput");
   if (!input) return;
 
   input.addEventListener(
-    'input',
+    "input",
     debounce(() => {
       searchQuery = input.value.trim();
       currentPage = 1;
       renderGrid();
-    }, 180)
+    }, 180),
   );
 
-  // Tech stack dropdown filter listener
-  const techStack = document.getElementById('techStackFilter');
+  const techStack = document.getElementById("techStackFilter");
   if (techStack) {
-    techStack.addEventListener('change', () => {
+    techStack.addEventListener("change", () => {
       techStackFilter = techStack.value;
       currentPage = 1;
       renderGrid();
     });
   }
 
-  // Difficulty dropdown filter listener
-  const diffFilterElement = document.getElementById('difficultyFilter');
+  const diffFilterElement = document.getElementById("difficultyFilter");
   if (diffFilterElement) {
-    diffFilterElement.addEventListener('change', () => {
+    diffFilterElement.addEventListener("change", () => {
       difficultyFilter = diffFilterElement.value;
       currentPage = 1;
       renderGrid();
@@ -1572,10 +2153,10 @@ function initSearch() {
 }
 
 function initSorting() {
-  const sortSelect = document.getElementById('sortProjects');
+  const sortSelect = document.getElementById("sortProjects");
   if (!sortSelect) return;
 
-  sortSelect.addEventListener('change', (e) => {
+  sortSelect.addEventListener("change", (e) => {
     sortOption = e.target.value;
     currentPage = 1;
     renderGrid();
@@ -1586,20 +2167,18 @@ function initSorting() {
    TECH STACK SEARCH INITIALIZATION
    ============================================================ */
 function initTechStackSearch() {
-  const input = document.getElementById('techStackSearch');
-  const clearBtn = document.getElementById('clearTechFilter');
+  const input = document.getElementById("techStackSearch");
+  const clearBtn = document.getElementById("clearTechFilter");
 
   if (!input) return;
 
-  let debounceTimer;
-
-  input.addEventListener('input', (e) => {
-    clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(() => {
+  input.addEventListener(
+    "input",
+    debounce((e) => {
       const value = e.target.value.trim().toLowerCase();
 
       if (value) {
-        const techs = value.split(/[,\s]+/).filter(t => t.length > 0);
+        const techs = value.split(/[,\s]+/).filter((t) => t.length > 0);
         techStackFilters = [...new Set(techs)];
         updateTechFilterDisplay();
         currentPage = 1;
@@ -1607,17 +2186,17 @@ function initTechStackSearch() {
       } else {
         clearAllTechFilters();
       }
-    }, 300);
-  });
+    }, 300),
+  );
 
   if (clearBtn) {
-    clearBtn.addEventListener('click', () => {
+    clearBtn.addEventListener("click", () => {
       clearAllTechFilters();
     });
   }
 
-  input.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
+  input.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
       e.preventDefault();
       input.blur();
     }
@@ -1627,33 +2206,35 @@ function initTechStackSearch() {
 /* ============================================================
    SEARCH CONTROLS
    ============================================================ */
-const searchInput = document.getElementById('searchInput');
-const clearSearchBtn = document.getElementById('clearSearch');
+const searchInput = document.getElementById("searchInput");
+const clearSearchBtn = document.getElementById("clearSearch");
 
-function updateCategoryCounts() {
+function updateCategoryCounts(projects = PROJECTS) {
   const counts = {};
   for (const key of Object.keys(FILTER_CATEGORY_MAP)) {
-    if (key !== 'all') {
+    if (key !== "all") {
       counts[key] = 0;
     }
   }
 
-  PROJECTS.forEach(([day, name, url, tags]) => {
+  projects.forEach((project) => {
+    const name = project.projectName;
+    const tags = project.techStack;
     const category = getCategoryFromTags(tags, name);
     const filterKey = Object.keys(FILTER_CATEGORY_MAP).find(
-      (key) => FILTER_CATEGORY_MAP[key] === category
+      (key) => FILTER_CATEGORY_MAP[key] === category,
     );
-    if (filterKey && filterKey !== 'all') {
+    if (filterKey && filterKey !== "all") {
       counts[filterKey]++;
     }
   });
 
   const categorySpans = {
-    'game': document.getElementById('gameCount'),
-    'clone': document.getElementById('cloneCount'),
-    'tool': document.getElementById('toolCount'),
-    'ui': document.getElementById('uiCount'),
-    'api': document.getElementById('apiCount')
+    game: document.getElementById("gameCount"),
+    clone: document.getElementById("cloneCount"),
+    tool: document.getElementById("toolCount"),
+    ui: document.getElementById("uiCount"),
+    api: document.getElementById("apiCount"),
   };
 
   for (const [key, span] of Object.entries(categorySpans)) {
@@ -1666,16 +2247,27 @@ function updateCategoryCounts() {
 function syncProjectCounts() {
   let filtered = [...PROJECTS];
 
-  // Apply search filter
   if (searchQuery) {
-    filtered = filtered.filter(([day, name]) =>
-      name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      day.toLowerCase().includes(searchQuery.toLowerCase())
+    const q = searchQuery.toLowerCase();
+    filtered = filtered.filter(
+      (project) =>
+        project.projectName.toLowerCase().includes(q) ||
+        (project.projectDesc || "").toLowerCase().includes(q) ||
+        project.day.toLowerCase().includes(q) ||
+        (Array.isArray(project.techStack)
+          ? project.techStack.join(" ")
+          : project.techStack || ""
+        )
+          .toLowerCase()
+          .includes(q),
     );
   }
 
   const total = filtered.length.toLocaleString();
-  const countNodes = [document.getElementById('projectCount'), document.getElementById('allCount')];
+  const countNodes = [
+    document.getElementById("projectCount"),
+    document.getElementById("allCount"),
+  ];
 
   countNodes.forEach((node) => {
     if (node) node.textContent = total;
@@ -1685,10 +2277,9 @@ function syncProjectCounts() {
     searchInput.placeholder = `Search ${PROJECTS.length.toLocaleString()} projects…`;
   }
 
-  updateCategoryCounts();
+  updateCategoryCounts(filtered);
 }
 
-// Clear button functionality
 if (searchInput && clearSearchBtn) {
   clearSearchBtn.addEventListener("click", () => {
     searchInput.value = "";
@@ -1705,204 +2296,234 @@ if (searchInput && clearSearchBtn) {
   });
 }
 
-// Initialize
-syncProjectCounts();
-
 /* ============================================================
    NAVBAR — dynamic based on login state
    ============================================================ */
 function updateNavbar() {
-  const container = document.getElementById('navButtons');
-  if (!container) return;
-
-  const username = window.username || null;
-  const isRoot = !window.location.pathname.includes('/contributors/');
-  const base = isRoot ? '' : '../';
-  const isLight = document.body.classList.contains('light-mode');
-  const themeButton = `
-        <button class="btn btn-ghost btn-sm" id="themeToggleNav" aria-label="Toggle theme">
-          <i class="fas ${isLight ? 'fa-sun' : 'fa-moon'}"></i> Theme
-        </button>
-        `;
-  const otherLink = isRoot
-    ? `<a class="btn btn-ghost btn-sm" href="${base}contributors/contributor.html">Contributors</a>`
-    : `<a class="btn btn-ghost btn-sm" href="${base}index.html"><i class="fas fa-home"></i> Home</a>`;
-
-  if (username) {
-    container.innerHTML = `
-            ${themeButton}
-            <span class="welcome-text">Hi, ${username}</span>
-            <button class="btn btn-ghost btn-sm" id="logoutBtn">Log out</button>
-            <a class="btn btn-ghost btn-sm" href="https://www.github-readme.tech" target="_blank">Generate README</a>
-            <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank">
-              <i class="fab fa-github"></i> GitHub
-            </a>
-            ${otherLink}
-        `;
-    document.getElementById('logoutBtn').addEventListener('click', () => {
-      window.username = null;
-      updateNavbar();
-    });
-  } else {
-    container.innerHTML = `
-            ${themeButton}
-            ${otherLink}
-            <a class="btn btn-ghost btn-sm" href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank">
-                <i class="fab fa-github"></i> GitHub
-            </a>
-            <a class="btn btn-ghost btn-sm" href="https://www.github-readme.tech" target="_blank">Generate README</a>
-            <a class="btn btn-primary btn-sm" href="${base}public/Login.html">Sign in</a>
-        `;
-  }
+  // The navbar is now managed by navbar.js which creates the dropdowns properly.
+  // This function is kept empty to prevent legacy calls from breaking.
 }
 
 /* ============================================================
    THEME TOGGLE
    ============================================================ */
-function initTheme() {
-  const saved = localStorage.getItem('theme') || 'dark';
-  let transitionTimer = null;
-
-  const syncThemeIcons = () => {
-    const isLight = document.body.classList.contains('light-mode');
-    const iconClass = isLight ? 'fas fa-sun' : 'fas fa-moon';
-    document.querySelectorAll('#themeToggle i, #themeToggleNav i').forEach(icon => {
-      icon.className = iconClass;
-    });
-  };
-
-  if (saved === 'light') {
-    document.body.classList.add('light-mode');
-  }
-  syncThemeIcons();
-
-  document.body.addEventListener('click', (e) => {
-    const target = e.target.closest('#themeToggle') || e.target.closest('#themeToggleNav');
-    if (!target) return;
-
-    document.body.classList.toggle('light-mode');
-    const isLight = document.body.classList.contains('light-mode');
-    localStorage.setItem('theme', isLight ? 'light' : 'dark');
-    syncThemeIcons();
-
-    document.body.classList.add('theme-transitioning');
-    if (transitionTimer) clearTimeout(transitionTimer);
-    transitionTimer = setTimeout(() => {
-      document.body.classList.remove('theme-transitioning');
-    }, 400);
-  });
-}
+// Implemented by the shared ThemeManager in theme.js.
 
 /* ============================================================
    SCROLL TO TOP
    ============================================================ */
 function initScrollBtn() {
-  const btn = document.getElementById('scrollBtn');
-  const ring = document.getElementById('ringFill');
+  const btn = document.getElementById("scrollBtn");
+  const ring = document.getElementById("ringFill");
   if (!btn) return;
 
   const circumference = 2 * Math.PI * 22;
   const updateScrollProgress = () => {
     const scrollTop = window.scrollY;
-    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const docHeight =
+      document.documentElement.scrollHeight - window.innerHeight;
     const progress = docHeight > 0 ? scrollTop / docHeight : 0;
 
-    btn.classList.toggle('show', scrollTop > 400);
+    btn.classList.toggle("show", scrollTop > 400);
+    btn.classList.toggle("completed", progress >= 0.98);
 
     if (ring) {
       ring.style.strokeDashoffset = circumference * (1 - progress);
     }
+
+    const footer = document.querySelector(".footer");
+    if (footer) {
+      const footerRect = footer.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+
+      if (footerRect.top < windowHeight) {
+        const overlap = windowHeight - footerRect.top;
+        const maxOverlap = Math.min(overlap, 120);
+        btn.style.bottom = `calc(2rem + ${maxOverlap}px)`;
+      } else {
+        btn.style.bottom = "2rem";
+      }
+    }
   };
 
   updateScrollProgress();
-  window.addEventListener('scroll', updateScrollProgress, { passive: true });
+  window.addEventListener("scroll", updateScrollProgress, { passive: true });
 
-  btn.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  btn.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
   });
 }
 
 function initCurrentYear() {
-  document.querySelectorAll('[data-current-year], #Current-Year').forEach((node) => {
-    node.textContent = new Date().getFullYear();
-  });
+  document
+    .querySelectorAll("[data-current-year], #Current-Year")
+    .forEach((node) => {
+      node.textContent = new Date().getFullYear();
+    });
 }
 
 /* ============================================================
    INIT
    ============================================================ */
 function hasProjectGrid() {
-  return Boolean(document.getElementById('projectGrid'));
+  return Boolean(document.getElementById("projectGrid"));
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", async () => {
+  readStateFromURL();
+
   initTheme();
   updateNavbar();
+  initScrollBtn();
+  window.addEventListener("load", () => {
+    setTimeout(() => {
+      fetchRepoStats();
+    }, 1000);
+  });
 
   initCurrentYear();
   initFilterChips();
   initSearch();
   initSorting();
   initTechStackSearch();
+  initClearAllFilters();
 
-  syncProjectCounts();
-  fetchRepoStats();
-  initScrollBtn();
+  //updateGamifiedUI();
 
   if (hasProjectGrid()) {
-    renderGrid();
-    renderBookmarks();
-    renderRecentProjects();
+    renderSkeletons();
   }
+
+  try {
+    await loadProjects();
+
+    //updateGamifiedUI();
+
+    restoreStateFromURL();
+
+    syncProjectCounts();
+
+    if (hasProjectGrid()) {
+      loadBookmarksFromURL();
+
+      renderGrid();
+      renderBookmarks();
+      renderRecentProjects();
+      renderRecentlyAdded();
+    }
+
+    syncProjectCounts();
+    fetchRepoStats();
+    initScrollBtn();
+  } catch (error) {
+    console.error("Failed to load projects:", error);
+
+    const grid = document.getElementById("projectGrid");
+
+    if (grid) {
+      grid.innerHTML = `
+        <div class="error-message" style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--text-muted);">
+          Failed to load projects. Please try refreshing the page.
+        </div>
+      `;
+    }
+  }
+
+  const searchInput =
+    document.getElementById("search") ||
+    document.querySelector('input[type="text"]') ||
+    document.querySelector(".search-input");
+  if (searchInput) {
+    searchInput.addEventListener(
+      "input",
+      debounce(() => {
+        const { category } = getQueryParams();
+        updateURL(searchInput.value, category);
+        applyFilters(searchInput.value, category);
+      }, 200),
+    );
+  }
+  const categoryFilter = document.getElementById("category");
+  if (categoryFilter) {
+    categoryFilter.addEventListener("change", () => {
+      const { search } = getQueryParams();
+      updateURL(search, categoryFilter.value);
+      applyFilters(search, categoryFilter.value);
+    });
+  }
+  window.addEventListener("popstate", () => restoreStateFromURL());
 });
-
-
 
 (() => {
   const initDirectMobileMenu = () => {
-    const menuToggle = document.getElementById('menuToggle');
-    const navButtons = document.getElementById('navButtons');
+    const menuToggle = document.getElementById("menuToggle");
+    const navButtons = document.getElementById("navButtons");
 
     if (!menuToggle || !navButtons) return;
+    if (menuToggle.dataset.mobileNavBound === "true") return;
+    menuToggle.dataset.mobileNavBound = "true";
 
-    menuToggle.addEventListener('click', (e) => {
+    const closeMenu = () => {
+      menuToggle.classList.remove("active");
+      navButtons.classList.remove("active");
+      menuToggle.setAttribute("aria-expanded", "false");
+    };
+
+    const openMenu = () => {
+      menuToggle.classList.add("active");
+      navButtons.classList.add("active");
+      menuToggle.setAttribute("aria-expanded", "true");
+      const firstLink = navButtons.querySelector("a, button");
+      firstLink?.focus({ preventScroll: true });
+    };
+
+    menuToggle.addEventListener("click", (e) => {
       e.stopPropagation();
-      menuToggle.classList.toggle('active');
-      navButtons.classList.toggle('active');
-    });
-
-    document.addEventListener('click', (e) => {
-      if (!navButtons.contains(e.target) && !menuToggle.contains(e.target)) {
-        menuToggle.classList.remove('active');
-        navButtons.classList.remove('active');
+      if (navButtons.classList.contains("active")) {
+        closeMenu();
+      } else {
+        openMenu();
       }
     });
 
-    navButtons.addEventListener('click', (e) => {
-      if (e.target.closest('.btn') || e.target.closest('a') || e.target.closest('button')) {
-        menuToggle.classList.remove('active');
-        navButtons.classList.remove('active');
+    document.addEventListener("click", (e) => {
+      if (!navButtons.contains(e.target) && !menuToggle.contains(e.target)) {
+        closeMenu();
+      }
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && navButtons.classList.contains("active")) {
+        closeMenu();
+        menuToggle.focus();
+      }
+    });
+
+    navButtons.addEventListener("click", (e) => {
+      if (
+        e.target.closest(".btn") ||
+        e.target.closest("a") ||
+        e.target.closest("button")
+      ) {
+        closeMenu();
       }
     });
   };
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initDirectMobileMenu);
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initDirectMobileMenu);
   } else {
     initDirectMobileMenu();
   }
 })();
 
-
-
-// Re-render the grid when the browser window is resized to adapt pagination density instantly
 window.addEventListener(
-  'resize',
+  "resize",
   debounce(() => {
     if (hasProjectGrid()) {
       renderGrid();
     }
-  }, 180)
+  }, 180),
 );
 
 /* ============================================================
@@ -1912,18 +2533,159 @@ window.addEventListener(
 window.removeTechFilter = removeTechFilter;
 window.clearAllTechFilters = clearAllTechFilters;
 
+/* ============================================================
+   THEME CORE ENGINE (Fixes Issue #4359)
+   ============================================================ */
+function initTheme() {
+  window.ThemeManager?.init?.();
+}
+
+// Initialize the theme engine
+initTheme();
+
+// Custom cursor with accessibility, interactivity & fail-safe upgrades
+(function () {
+  const outerCursor = document.querySelector(".cursor-ring--outer");
+  const innerCursor = document.querySelector(".cursor-ring--inner");
+  if (!outerCursor || !innerCursor) return;
+
+  let isKeyboardNavigating = false;
+
+  const getActivationState = () => {
+    let cursorEnabled = true;
+    try {
+      cursorEnabled = localStorage.getItem("customCursorEnabled") !== "false";
+    } catch (_) {}
+    const coarsePointer = window.matchMedia("(pointer: coarse)").matches;
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    return cursorEnabled && !coarsePointer && !prefersReducedMotion;
+  };
+
+  const updateCursorActivationState = () => {
+    if (getActivationState() && !isKeyboardNavigating) {
+      document.body.classList.add("custom-cursor-active");
+    } else {
+      document.body.classList.remove("custom-cursor-active");
+      outerCursor.classList.remove("is-visible");
+      innerCursor.classList.remove("is-visible");
+    }
+  };
+
+  window.updateCustomCursorState = updateCursorActivationState;
+
+  const target = { x: 0, y: 0 };
+  const current = { x: 0, y: 0 };
+  const speed = 0.18;
+
+  const update = () => {
+    if (getActivationState() && !isKeyboardNavigating) {
+      current.x += (target.x - current.x) * speed;
+      current.y += (target.y - current.y) * speed;
+
+      outerCursor.style.transform = `translate3d(${current.x}px, ${current.y}px, 0) translate(-50%, -50%)`;
+      innerCursor.style.transform = `translate3d(${target.x}px, ${target.y}px, 0) translate(-50%, -50%)`;
+    }
+    requestAnimationFrame(update);
+  };
+
+  const showCursor = () => {
+    if (getActivationState() && !isKeyboardNavigating) {
+      outerCursor.classList.add("is-visible");
+      innerCursor.classList.add("is-visible");
+    }
+  };
+
+  const hideCursor = () => {
+    outerCursor.classList.remove("is-visible");
+    innerCursor.classList.remove("is-visible");
+  };
+
+  window.addEventListener(
+    "mousemove",
+    (event) => {
+      target.x = event.clientX;
+      target.y = event.clientY;
+      if (isKeyboardNavigating) {
+        isKeyboardNavigating = false;
+        updateCursorActivationState();
+      }
+      showCursor();
+    },
+    { passive: true },
+  );
+
+  window.addEventListener("mouseleave", hideCursor);
+  window.addEventListener("mouseenter", showCursor);
+
+  window.addEventListener("keydown", (event) => {
+    if (event.key === "Tab") {
+      isKeyboardNavigating = true;
+      updateCursorActivationState();
+    }
+  });
+
+  const reducedMotionQuery = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  );
+  const coarsePointerQuery = window.matchMedia("(pointer: coarse)");
+
+  const handleQueryChange = () => {
+    updateCursorActivationState();
+  };
+
+  if (typeof reducedMotionQuery.addEventListener === "function") {
+    reducedMotionQuery.addEventListener("change", handleQueryChange);
+    coarsePointerQuery.addEventListener("change", handleQueryChange);
+  } else if (typeof reducedMotionQuery.addListener === "function") {
+    reducedMotionQuery.addListener(handleQueryChange);
+    coarsePointerQuery.addListener(handleQueryChange);
+  }
+
+  const hoverTargets =
+    'a, button, [role="button"], input, select, .chip, .project-card, .bookmark-btn';
+
+  document.addEventListener("mouseover", (e) => {
+    if (!getActivationState() || isKeyboardNavigating) return;
+    const item = e.target.closest(hoverTargets);
+    if (item) {
+      outerCursor.style.borderColor = "rgba(59, 130, 246, 1)";
+      outerCursor.style.boxShadow = "0 0 18px rgba(59, 130, 246, 0.6)";
+      outerCursor.style.width = "52px";
+      outerCursor.style.height = "52px";
+    }
+  });
+
+  document.addEventListener("mouseout", (e) => {
+    if (!getActivationState() || isKeyboardNavigating) return;
+    const item = e.target.closest(hoverTargets);
+    if (item) {
+      outerCursor.style.borderColor = "rgba(59, 130, 246, 0.7)";
+      outerCursor.style.boxShadow = "0 0 12px rgba(59, 130, 246, 0.35)";
+      outerCursor.style.width = "36px";
+      outerCursor.style.height = "36px";
+    }
+  });
+
+  updateCursorActivationState();
+  requestAnimationFrame(update);
+})();
+
 // Particle Network Background
 (function () {
-  const canvas = document.getElementById('particleCanvas');
+  const canvas = document.getElementById("particleCanvas");
   if (!canvas) return;
 
-  const ctx = canvas.getContext('2d');
+  const ctx = canvas.getContext("2d");
   if (!ctx) return;
 
-  const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const coarsePointerQuery = window.matchMedia('(pointer: coarse)');
+  const reducedMotionQuery = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  );
+  const coarsePointerQuery = window.matchMedia("(pointer: coarse)");
   const palette = [220, 250, 280];
-  const DEFAULT_PARTICLE_FPS = 36;
+  const DEFAULT_PARTICLE_FPS = 24;
   let W = 0;
   let H = 0;
   let dpr = 1;
@@ -1940,16 +2702,17 @@ window.clearAllTechFilters = clearAllTechFilters;
     const smallScreen = window.innerWidth <= 768 || coarsePointerQuery.matches;
     const reducedMotion = reducedMotionQuery.matches;
     const disableAnimation = smallScreen || reducedMotion;
+    const largeScreen = window.innerWidth > 1280;
 
     return {
-      minParticles: reducedMotion ? 8 : smallScreen ? 12 : 24,
-      maxParticles: reducedMotion ? 18 : smallScreen ? 28 : 72,
-      areaPerParticle: reducedMotion ? 110000 : smallScreen ? 70000 : 26000,
-      linkDistance: reducedMotion ? 68 : smallScreen ? 84 : 120,
-      velocity: reducedMotion ? 0.12 : smallScreen ? 0.18 : 0.3,
-      radius: reducedMotion ? 1.8 : smallScreen ? 2.2 : 4,
-      fps: reducedMotion ? 14 : smallScreen ? 20 : 36,
-      showLinks: !reducedMotion && !smallScreen,
+      minParticles: reducedMotion ? 8 : smallScreen ? 12 : 18,
+      maxParticles: reducedMotion ? 18 : smallScreen ? 28 : 48,
+      areaPerParticle: reducedMotion ? 110000 : smallScreen ? 70000 : 32000,
+      linkDistance: reducedMotion ? 68 : smallScreen ? 84 : 100,
+      velocity: reducedMotion ? 0.12 : smallScreen ? 0.18 : 0.24,
+      radius: reducedMotion ? 1.8 : smallScreen ? 2.2 : 3.2,
+      fps: reducedMotion ? 14 : smallScreen ? 20 : 24,
+      showLinks: !reducedMotion && !smallScreen && largeScreen,
       disableAnimation,
     };
   };
@@ -1968,7 +2731,10 @@ window.clearAllTechFilters = clearAllTechFilters;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     particleCount = Math.min(
       profile.maxParticles,
-      Math.max(profile.minParticles, Math.round((W * H) / profile.areaPerParticle))
+      Math.max(
+        profile.minParticles,
+        Math.round((W * H) / profile.areaPerParticle),
+      ),
     );
     linkDistance = profile.linkDistance;
     maxDistanceSq = linkDistance * linkDistance;
@@ -2062,11 +2828,11 @@ window.clearAllTechFilters = clearAllTechFilters;
     if (profile.disableAnimation) {
       stopAnimation();
       ctx.clearRect(0, 0, W, H);
-      canvas.style.display = 'none';
+      canvas.style.display = "none";
       return;
     }
 
-    canvas.style.display = '';
+    canvas.style.display = "";
     init();
     startAnimation();
   };
@@ -2085,17 +2851,17 @@ window.clearAllTechFilters = clearAllTechFilters;
   };
 
   const bindMediaChange = (query, handler) => {
-    if (typeof query.addEventListener === 'function') {
-      query.addEventListener('change', handler);
+    if (typeof query.addEventListener === "function") {
+      query.addEventListener("change", handler);
       return;
     }
-    if (typeof query.addListener === 'function') {
+    if (typeof query.addListener === "function") {
       query.addListener(handler);
     }
   };
 
-  window.addEventListener('resize', handleResize, { passive: true });
-  document.addEventListener('visibilitychange', () => {
+  window.addEventListener("resize", handleResize, { passive: true });
+  document.addEventListener("visibilitychange", () => {
     if (!document.hidden) {
       lastFrameTime = 0;
     }
@@ -2107,75 +2873,79 @@ window.clearAllTechFilters = clearAllTechFilters;
 })();
 
 // =============================================
-// PERSISTENT FILTERS & SEARCH — Issue #3320
-// =============================================
 
 function getQueryParams() {
   const params = new URLSearchParams(window.location.search);
   return {
-    search: params.get('search') || '',
-    category: params.get('category') || 'all'
+    search: params.get("search") || "",
+    category: params.get("category") || "all",
   };
 }
 
 function updateURL(search, category) {
   const params = new URLSearchParams();
-  if (search) params.set('search', search);
-  if (category && category !== 'all') params.set('category', category);
+  if (search) params.set("search", search);
+  if (category && category !== "all") params.set("category", category);
   const newURL = params.toString()
     ? `${window.location.pathname}?${params.toString()}`
     : window.location.pathname;
-  history.pushState({ search, category }, '', newURL);
+  history.pushState({ search, category }, "", newURL);
 }
 
 function restoreStateFromURL() {
   const { search, category } = getQueryParams();
-  const searchInput = document.getElementById('searchInput') ||
+  const searchInput =
+    document.getElementById("searchInput") ||
     document.querySelector('input[type="text"]') ||
-    document.querySelector('.search-input');
+    document.querySelector(".search-input");
   if (searchInput && search) searchInput.value = search;
-  const categoryFilter = document.getElementById('category');
-  if (categoryFilter && category !== 'all') categoryFilter.value = category;
-  if (search || category !== 'all') applyFilters(search, category);
+  const categoryFilter = document.getElementById("category");
+  if (categoryFilter && category !== "all") categoryFilter.value = category;
+  if (search || category !== "all") applyFilters(search, category);
 }
 
 function applyFilters(search, category) {
-  searchQuery = search || '';
-  activeFilter = category || 'all';
+  searchQuery = search || "";
+  activeFilter = category || "all";
   currentPage = 1;
 
-  // Sync active chip selection with URL state
-  const chips = document.querySelectorAll('.chip[data-filter]');
+  const chips = document.querySelectorAll(".chip[data-filter]");
   chips.forEach((chip) => {
     if (chip.dataset.filter === activeFilter) {
-      chip.classList.add('active');
+      chip.classList.add("active");
     } else {
-      chip.classList.remove('active');
+      chip.classList.remove("active");
     }
   });
 
   renderGrid();
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  restoreStateFromURL();
-  const searchInput = document.getElementById('search') ||
+document.addEventListener("DOMContentLoaded", () => {
+  const searchInput =
+    document.getElementById("search") ||
     document.querySelector('input[type="text"]') ||
-    document.querySelector('.search-input');
+    document.querySelector(".search-input");
   if (searchInput) {
-    searchInput.addEventListener('input', () => {
-      const { category } = getQueryParams();
-      updateURL(searchInput.value, category);
-      applyFilters(searchInput.value, category);
-    });
+    searchInput.addEventListener(
+      "input",
+      debounce(() => {
+        const { category } = getQueryParams();
+        updateURL(searchInput.value, category);
+        applyFilters(searchInput.value, category);
+      }, 200),
+    );
   }
-  const categoryFilter = document.getElementById('category');
+  const categoryFilter = document.getElementById("category");
   if (categoryFilter) {
-    categoryFilter.addEventListener('change', () => {
+    categoryFilter.addEventListener("change", () => {
       const { search } = getQueryParams();
       updateURL(search, categoryFilter.value);
       applyFilters(search, categoryFilter.value);
     });
   }
-  window.addEventListener('popstate', () => restoreStateFromURL());
+  window.addEventListener("popstate", () => restoreStateFromURL());
 });
+document
+  .getElementById("randomProjectBtn")
+  ?.addEventListener("click", renderRandomProject);

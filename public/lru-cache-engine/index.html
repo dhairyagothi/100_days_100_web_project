@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <title>High-Throughput LRU Cache Engine Matrix</title>
+</head>
+
+<body>
+    <h2>Critical System Infrastructure: Low-Latency LRU Cache Pipeline</h2>
+
+    <pre id="cache-log"
+        style="background: #111; color: #00ffcc; padding: 12px; font-family: monospace; height: 120px; overflow-y: auto;">Cache Storage Kernel Initialized (Capacity Matrix: 3 Items)...</pre>
+
+    <fieldset style="margin-bottom: 20px; padding: 10px; width: 500px;">
+        <legend>Cache Execution Memory Interface</legend>
+        <input type="text" id="cache-key" placeholder="Key (e.g. lead_A)" style="width: 120px; padding: 5px;">
+        <input type="text" id="cache-value" placeholder="Value (e.g. Apple Inc)" style="width: 140px; padding: 5px;">
+        <button id="put-btn" style="padding: 5px;">Put Entry</button>
+        <button id="get-btn" style="padding: 5px;">Get/Query Key</button>
+    </fieldset>
+
+    <h4>Current Active RAM Structure States (Capacity Boundary: 3 Max):</h4>
+    <div id="cache-state"
+        style="border: 2px dashed #444; padding: 10px; width: 504px; min-height: 100px; font-family: monospace;">
+    </div>
+
+    <script type="module" src="app.js"></script>
+</body>
+
+</html>

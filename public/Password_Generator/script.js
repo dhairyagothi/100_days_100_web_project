@@ -5,109 +5,125 @@ const passwordDisplay = document.querySelector("[data-passwordDisplay]");
 const copyBtn = document.querySelector("[data-copy]");
 const copyMsg = document.querySelector("[data-copyMsg]");
 const hideTimerText = document.getElementById("hideTimer");
-const eyeBtn = document.querySelector("[data-eye]");
-const suggestionBox = document.getElementById("suggestionBox");
+const PASSWORD_HISTORY_KEY = "passwordHistory";
+
 const uppercaseCheck = document.querySelector("#uppercase");
 const lowercaseCheck = document.querySelector("#lowercase");
 const numbersCheck = document.querySelector("#numbers");
 const symbolsCheck = document.querySelector("#symbols");
+
 const indicator = document.querySelector("[data-indicator]");
 const strengthText = document.querySelector("[data-strengthText]");
 const generateBtn = document.querySelector(".generateButton");
-const allCheckBox = document.querySelectorAll("input[type=checkbox]");
-const historyList = document.querySelector("[data-history-list]");
-const clearHistoryBtn = document.querySelector("[data-clear-history]");
-const customWordCheck = document.getElementById("customWordMode");
-const customWordSection = document.getElementById("customWordSection");
+
+const allCheckBox = document.querySelectorAll(
+    ".check input[type=checkbox]:not(#useCustomWord)"
+);
+
+const suggestionsText = document.getElementById("suggestionsText");
+const useCustomWordCheck = document.getElementById("useCustomWord");
 const customWordInput = document.getElementById("customWordInput");
+
+const historyContainer = document.getElementById("historyContainer");
+const historyList = document.getElementById("historyList");
+const clearHistoryBtn = document.getElementById("clearHistoryBtn");
+
 const symbols = '~`!@#$%^&*()_-+={[}]|:;"<,>.?/';
 
-let passwordHistory = loadPasswordHistory();
-const PASSWORD_HISTORY_KEY = "passwordGeneratorHistory";
-
 let password = "";
+let passwordLength = 10;
 let checkCount = 0;
 let hideTimeout;
 let countdownInterval;
-setIndicator("#ccc");
-renderPasswordHistory();
+let passwordHistory = [];
 
-let passwordLength = 10;
-handleSlider();
-handleCheckBoxChange();
-calcStrength();
+init();
 
-function handleSlider() {
-    inputSlider.value = passwordLength;
-    lengthDisplay.innerText = passwordLength;
-    const min = Number(inputSlider.min);
-    const max = Number(inputSlider.max);
-    inputSlider.style.backgroundSize =
-        ((passwordLength - min) * 100 / (max - min)) + "% 100%";
-}
+function init() {
+    loadPasswordHistory();
+    handleSlider();
+    handleCheckBoxChange();
+    calcStrength();
+    updateSuggestions();
+    renderHistory();
 
-function setIndicator(color) {
-    indicator.style.backgroundColor = color;
-    indicator.style.boxShadow = `0px 0px 12px 1px ${color}`;
-    if (lengthDisplay) lengthDisplay.style.color = color;
+    customWordInput.style.display = useCustomWordCheck.checked ? "block" : "none";
 }
 
 function loadPasswordHistory() {
     try {
-        const storedHistory = localStorage.getItem(PASSWORD_HISTORY_KEY);
-        if (!storedHistory) return [];
-        const parsedHistory = JSON.parse(storedHistory);
-        if (!Array.isArray(parsedHistory)) return [];
-        return parsedHistory.filter((item) => typeof item === "string" && item.trim()).slice(0, 5);
+        const storedHistory =
+            localStorage.getItem(PASSWORD_HISTORY_KEY);
+
+        if (storedHistory) {
+            passwordHistory = JSON.parse(storedHistory);
+        }
     } catch (error) {
-        return [];
+        console.error(
+            "Failed to load password history",
+            error
+        );
+
+        passwordHistory = [];
     }
 }
 
 function savePasswordHistory() {
     try {
-        localStorage.setItem(PASSWORD_HISTORY_KEY, JSON.stringify(passwordHistory));
+        localStorage.setItem(
+            PASSWORD_HISTORY_KEY,
+            JSON.stringify(passwordHistory)
+        );
     } catch (error) {
-        return;
+        console.error(
+            "Failed to save password history",
+            error
+        );
     }
 }
 
-function renderPasswordHistory() {
-    historyList.innerHTML = "";
-    if (passwordHistory.length === 0) {
-        const emptyItem = document.createElement("li");
-        emptyItem.className = "history-empty";
-        emptyItem.textContent = "No recent passwords yet";
-        historyList.appendChild(emptyItem);
-        return;
-    }
-    passwordHistory.forEach((savedPassword) => {
-        const historyItem = document.createElement("li");
-        historyItem.className = "history-item";
-        historyItem.textContent = savedPassword;
-        historyList.appendChild(historyItem);
-    });
+function handleSlider() {
+    inputSlider.value = passwordLength;
+    lengthDisplay.innerText = passwordLength;
+
+    const min = inputSlider.min;
+    const max = inputSlider.max;
+
+    inputSlider.style.backgroundSize =
+        ((passwordLength - min) * 100) / (max - min) + "% 100%";
 }
 
-function addPasswordToHistory(newPassword) {
-    passwordHistory = [newPassword, ...passwordHistory];
-    if (passwordHistory.length > 5) passwordHistory = passwordHistory.slice(0, 5);
-    savePasswordHistory();
-    renderPasswordHistory();
+function setIndicator(color) {
+    indicator.style.backgroundColor = color;
+    indicator.style.boxShadow = `0px 0px 15px 5px ${color}`;
 }
 
-function clearPasswordHistory() {
-    passwordHistory = [];
-    savePasswordHistory();
-    renderPasswordHistory();
-}
-
+// Cryptographically secure integer in [min, max). Uses rejection sampling
+// on top of crypto.getRandomValues so we don't inherit modulo bias.
+// Fallback to Math.random ONLY in the unlikely case window.crypto is
+// unavailable — the surrounding UI warns the user via the strength meter.
+// Previously this file used bare `Math.random()` everywhere, which is
+// insecure and predictable; see issue #10336.
 function getRndInteger(min, max) {
-    return Math.floor(Math.random() * (max - min)) + min;
+    const range = max - min;
+    if (range <= 0) return min;
+    if (typeof window !== "undefined" && window.crypto && window.crypto.getRandomValues) {
+        // Rejection sampling: only accept values below the largest multiple
+        // of `range` that fits in a Uint32 to keep the distribution uniform.
+        const limit = Math.floor(0x1_0000_0000 / range) * range;
+        const arr = new Uint32Array(1);
+        // Loop cap so a broken RNG can't hang the tab.
+        for (let attempt = 0; attempt < 32; attempt++) {
+            window.crypto.getRandomValues(arr);
+            if (arr[0] < limit) return min + (arr[0] % range);
+        }
+        return min + (arr[0] % range);
+    }
+    return Math.floor(Math.random() * range) + min;
 }
 
 function generateRandomNumber() {
-    return getRndInteger(0, 10);
+    return getRndInteger(0, 10).toString();
 }
 
 function generateLowerCase() {
@@ -119,20 +135,26 @@ function generateUpperCase() {
 }
 
 function generateSymbol() {
-    const randNum = getRndInteger(0, symbols.length);
-    return symbols.charAt(randNum);
+    return symbols.charAt(getRndInteger(0, symbols.length));
 }
+
+
+
+
 
 function generateFromCustomWord(word) {
     const leetMap = {
         'a': '@', 'e': '3', 'i': '!', 'o': '0',
         's': '$', 't': '7', 'l': '1', 'b': '8'
     };
+    // Coin-flip via crypto so the leet-substitution decisions and case
+    // toggles aren't seeded by Math.random either (issue #10336).
+    const coinFlip = () => getRndInteger(0, 2) === 1;
     let result = "";
     for (let char of word.toLowerCase()) {
-        if (leetMap[char] && Math.random() > 0.5) {
+        if (leetMap[char] && coinFlip()) {
             result += leetMap[char];
-        } else if (Math.random() > 0.5) {
+        } else if (coinFlip()) {
             result += char.toUpperCase();
         } else {
             result += char;
@@ -145,14 +167,10 @@ function generateFromCustomWord(word) {
 }
 
 function calcStrength() {
-    let hasUpper = false;
-    let hasLower = false;
-    let hasNum = false;
-    let hasSym = false;
-    if (uppercaseCheck.checked) hasUpper = true;
-    if (lowercaseCheck.checked) hasLower = true;
-    if (numbersCheck.checked) hasNum = true;
-    if (symbolsCheck.checked) hasSym = true;
+    const hasUpper = uppercaseCheck.checked;
+    const hasLower = lowercaseCheck.checked;
+    const hasNum = numbersCheck.checked;
+    const hasSym = symbolsCheck.checked;
 
     if (hasUpper && hasLower && (hasNum || hasSym) && passwordLength >= 8) {
         setIndicator("#0f0");
@@ -164,180 +182,268 @@ function calcStrength() {
         setIndicator("#f00");
         strengthText.innerText = "Weak";
     }
-    updateSuggestions();
 }
 
 function updateSuggestions() {
-    if (!suggestionBox) return;
+    if (!suggestionsText) return;
+
     const hasUpper = uppercaseCheck.checked;
     const hasLower = lowercaseCheck.checked;
     const hasNum = numbersCheck.checked;
     const hasSym = symbolsCheck.checked;
     const suggestions = [];
-    const strength = (strengthText && strengthText.innerText) ? strengthText.innerText : '';
+    const strength = strengthText ? strengthText.innerText : "";
 
-    if (strength === 'Strong') {
-        suggestionBox.innerText = '';
+    if (strength === "Strong") {
+        suggestionsText.innerText = "Looking good! All options selected.";
+        suggestionsText.style.color = "#2dd4bf";
         return;
     }
-    if (strength === 'Medium') {
+
+    if (hasUpper && hasLower && hasNum && hasSym) {
+        suggestionsText.innerText = "Looking good! All options selected.";
+        suggestionsText.style.color = "#2dd4bf";
+        return;
+    }
+
+    if (strength === "Medium") {
         if (!(hasUpper && hasLower)) {
-            if (!hasUpper) suggestions.push('Include uppercase letters');
-            if (!hasLower) suggestions.push('Include lowercase letters');
+            if (!hasUpper) suggestions.push("Include uppercase letters");
+            if (!hasLower) suggestions.push("Include lowercase letters");
         }
-        if (!(hasNum || hasSym)) suggestions.push('Include numbers or symbols');
-        if (passwordLength < 8) suggestions.push('Increase length to at least 8');
+
+        if (!(hasNum || hasSym)) {
+            suggestions.push("Include numbers or symbols");
+        }
+
+        if (passwordLength < 8) {
+            suggestions.push("Increase length to at least 8");
+        }
     } else {
         if (!(hasLower || hasUpper)) {
-            suggestions.push('Include lowercase or uppercase letters');
+            suggestions.push("Include lowercase or uppercase letters");
         } else {
-            if (!hasLower) suggestions.push('Include lowercase letters');
-            if (!hasUpper) suggestions.push('Include uppercase letters');
+            if (!hasLower) suggestions.push("Include lowercase letters");
+            if (!hasUpper) suggestions.push("Include uppercase letters");
         }
-        if (!(hasNum || hasSym)) suggestions.push('Include numbers or symbols');
-        if (passwordLength < 6) suggestions.push('Increase length to at least 6');
+
+        if (!(hasNum || hasSym)) {
+            suggestions.push("Include numbers or symbols");
+        }
+
+        if (passwordLength < 6) {
+            suggestions.push("Increase length to at least 6");
+        }
     }
-    if (suggestions.length === 0) suggestionBox.innerText = '';
-    else suggestionBox.innerText = 'Suggestions: ' + suggestions.join(', ');
+
+    if (suggestions.length === 0) {
+        suggestionsText.innerText = "";
+    } else {
+        suggestionsText.innerText = "Suggestions: " + suggestions.join(", ");
+        suggestionsText.style.color = "var(--vb-yellow)";
+    }
 }
 
 async function copyContent() {
     try {
-        await navigator.clipboard.writeText(password);
-        copyMsg.innerText = "copied";
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            await navigator.clipboard.writeText(passwordDisplay.value);
+            copyMsg.innerText = "Copied!";
+        } else {
+            // Fallback for non-secure contexts (HTTP) or older/restricted browsers
+            const textarea = document.createElement("textarea");
+            textarea.value = passwordDisplay.value;
+            textarea.style.position = "fixed";
+            textarea.style.opacity = "0";
+            document.body.appendChild(textarea);
+            textarea.select();
+            textarea.setSelectionRange(0, 99999);
+            const success = document.execCommand("copy");
+            document.body.removeChild(textarea);
+            if (success) {
+                copyMsg.innerText = "Copied!";
+            } else {
+                throw new Error("Copy command failed");
+            }
+        }
     } catch (e) {
         copyMsg.innerText = "Failed";
     }
+
     copyMsg.classList.add("active");
+
     setTimeout(() => {
         copyMsg.classList.remove("active");
     }, 2000);
 }
 
 function shufflePassword(array) {
+    // Fisher-Yates using the same crypto-backed getRndInteger so the shuffle
+    // is unbiased too, matching the character-selection path (issue #10336).
     for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        const temp = array[i];
-        array[i] = array[j];
-        array[j] = temp;
+        const j = getRndInteger(0, i + 1);
+        [array[i], array[j]] = [array[j], array[i]];
     }
-    let str = "";
-    array.forEach((el) => (str += el));
-    return str;
+
+    return array.join("");
 }
 
 function handleCheckBoxChange() {
     checkCount = 0;
+
     allCheckBox.forEach((checkbox) => {
         if (checkbox.checked) checkCount++;
     });
-    if (passwordLength < checkCount) {
+
+    if (!useCustomWordCheck.checked && passwordLength < checkCount) {
         passwordLength = checkCount;
         handleSlider();
     }
+
+    calcStrength();
+    updateSuggestions();
 }
 
-allCheckBox.forEach((checkbox) => {
-    checkbox.addEventListener("change", () => {
-        handleCheckBoxChange();
-        calcStrength();
+function updateHistory(newPassword) {
+    if (
+        passwordHistory.length > 0 &&
+        passwordHistory[0] === newPassword
+    ) {
+        return;
+    }
+
+    passwordHistory.unshift(newPassword);
+
+    if (passwordHistory.length > 5) {
+        passwordHistory.pop();
+    }
+
+    savePasswordHistory();
+    renderHistory();
+}
+
+function renderHistory() {
+    historyList.innerHTML = "";
+
+    if (passwordHistory.length === 0) {
+        historyContainer.style.display = "none";
+        return;
+    }
+
+    historyContainer.style.display = "flex";
+
+    passwordHistory.forEach((pw) => {
+        const item = document.createElement("div");
+        item.classList.add("history-item");
+
+        const text = document.createElement("span");
+        text.textContent = pw;
+
+        const copyButton = document.createElement("button");
+        copyButton.classList.add("history-copy-btn");
+        copyButton.textContent = "Copy";
+
+        copyButton.addEventListener("click", async () => {
+            try {
+                await navigator.clipboard.writeText(pw);
+            } catch (err) {
+                console.error("Failed to copy password", err);
+            }
+        });
+
+        item.appendChild(text);
+        item.appendChild(copyButton);
+
+        historyList.appendChild(item);
     });
+}
+
+clearHistoryBtn.addEventListener("click", () => {
+    passwordHistory = [];
+
+    try {
+        localStorage.removeItem(PASSWORD_HISTORY_KEY);
+    } catch (error) {
+        console.error(
+            "Failed to clear password history",
+            error
+        );
+    }
+
+    renderHistory();
 });
 
-customWordCheck.addEventListener("change", () => {
-    customWordSection.style.display = customWordCheck.checked ? "block" : "none";
+allCheckBox.forEach((checkbox) => {
+    checkbox.addEventListener("change", handleCheckBoxChange);
+});
+
+useCustomWordCheck.addEventListener("change", () => {
+    customWordInput.style.display = useCustomWordCheck.checked ? "block" : "none";
+    handleCheckBoxChange();
 });
 
 inputSlider.addEventListener("input", (e) => {
     passwordLength = parseInt(e.target.value);
     handleSlider();
     calcStrength();
+    updateSuggestions();
 });
 
-copyBtn.addEventListener('click', () => {
-    if (password && passwordDisplay.value !== "********")
+copyBtn.addEventListener("click", () => {
+    if (passwordDisplay.value && passwordDisplay.value !== "********") {
         copyContent();
+    }
 });
 
-if (eyeBtn) {
-    eyeBtn.addEventListener('click', () => {
-        if (!password) return;
-        if (passwordDisplay.value === "********") {
-            passwordDisplay.value = password;
-            clearTimeout(hideTimeout);
-            clearInterval(countdownInterval);
-            let showLeft = 5;
-            hideTimerText.innerText = `Visible for ${showLeft}s`;
-            const tmpInterval = setInterval(() => {
-                showLeft--;
-                if (showLeft > 0) hideTimerText.innerText = `Visible for ${showLeft}s`;
-                else {
-                    clearInterval(tmpInterval);
-                    passwordDisplay.value = "********";
-                    hideTimerText.innerText = "Password hidden for security";
-                }
-            }, 1000);
-        } else {
-            passwordDisplay.value = "********";
-            hideTimerText.innerText = "Password hidden for security";
-            clearTimeout(hideTimeout);
-            clearInterval(countdownInterval);
-        }
-    });
-}
+generateBtn.addEventListener("click", () => {
+    const customWord = useCustomWordCheck.checked
+        ? customWordInput.value.trim()
+        : "";
 
-generateBtn.addEventListener('click', () => {
-    if (customWordCheck.checked) {
-        const word = customWordInput.value.trim();
-        if (!word) {
-            warningMsg.innerText = "Please enter a base word";
-            return;
-        }
-        warningMsg.innerText = "";
-        password = generateFromCustomWord(word);
-        passwordDisplay.value = password;
-        addPasswordToHistory(password);
-        calcStrength();
+    if (checkCount === 0 && customWord.length === 0) {
+        warningMsg.innerText = "⚠️ Please select options or enter a custom word.";
         return;
     }
 
-    if (checkCount == 0) {
-        warningMsg.innerText = "Please select at least one option";
-        return;
-    }
     warningMsg.innerText = "";
+    password = "";
 
-    if (passwordLength < checkCount) {
-        passwordLength = checkCount;
+    let randomCharsNeeded = passwordLength - customWord.length;
+    let randomPart = "";
+
+    if (randomCharsNeeded > 0 && checkCount > 0) {
+        let funcArr = [];
+
+        if (uppercaseCheck.checked) funcArr.push(generateUpperCase);
+        if (lowercaseCheck.checked) funcArr.push(generateLowerCase);
+        if (numbersCheck.checked) funcArr.push(generateRandomNumber);
+        if (symbolsCheck.checked) funcArr.push(generateSymbol);
+
+        for (let i = 0; i < randomCharsNeeded; i++) {
+            randomPart += funcArr[getRndInteger(0, funcArr.length)]();
+        }
+    }
+
+    const combinedString = customWord + randomPart;
+    password = shufflePassword(Array.from(combinedString));
+
+    if (password.length > passwordLength) {
+        passwordLength = password.length;
         handleSlider();
     }
 
-    password = "";
-    let funcArr = [];
-
-    if (uppercaseCheck.checked) funcArr.push(generateUpperCase);
-    if (lowercaseCheck.checked) funcArr.push(generateLowerCase);
-    if (numbersCheck.checked) funcArr.push(generateRandomNumber);
-    if (symbolsCheck.checked) funcArr.push(generateSymbol);
-
-    for (let i = 0; i < funcArr.length; i++) {
-        password += funcArr[i]();
-    }
-    for (let i = 0; i < passwordLength - funcArr.length; i++) {
-        let randIndex = getRndInteger(0, funcArr.length);
-        password += funcArr[randIndex]();
-    }
-
-    password = shufflePassword(Array.from(password));
     passwordDisplay.value = password;
-    addPasswordToHistory(password);
+    updateHistory(password);
 
     clearTimeout(hideTimeout);
     clearInterval(countdownInterval);
+
     let timeLeft = 10;
     hideTimerText.innerText = `Password will auto-hide in ${timeLeft}s`;
+
     countdownInterval = setInterval(() => {
         timeLeft--;
+
         if (timeLeft > 0) {
             hideTimerText.innerText = `Password will auto-hide in ${timeLeft}s`;
         } else {
@@ -352,8 +458,39 @@ generateBtn.addEventListener('click', () => {
     }, 10000);
 
     calcStrength();
+    updateSuggestions();
 });
 
-if (clearHistoryBtn) {
-    clearHistoryBtn.addEventListener('click', clearPasswordHistory);
+// ==========================
+// Theme Toggle (Global)
+// ==========================
+
+// Select all toggle buttons (use a common class)
+const themeToggles = document.querySelectorAll(".theme");
+const themeIcon = document.getElementById("themeIcon");
+
+// Default = DARK MODE
+let isLightMode = JSON.parse(localStorage.getItem("lightMode")) || false;
+
+// Apply theme on load
+function updateTheme() {
+  if (isLightMode) {
+    document.body.classList.add("light-theme");
+    themeIcon.textContent = "🌙"; // show moon when light mode active
+  } else {
+    document.body.classList.remove("light-theme");
+    themeIcon.textContent = "☀️"; // show sun when dark mode active
+  }
 }
+
+// Toggle theme on any button click
+themeToggles.forEach(btn => {
+  btn.addEventListener("click", () => {
+    isLightMode = !isLightMode;
+    localStorage.setItem("lightMode", JSON.stringify(isLightMode));
+    updateTheme();
+  });
+});
+
+// Initialize on page load
+updateTheme();

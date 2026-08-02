@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Snake & Ladder 🎮</title>
   <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="icon" href="favicon.png">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap"
+    rel="stylesheet" />
 </head>
-<body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg, rgba(124,99,255,0.14), rgba(79,141,255,0.10));color:#fff;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(12,18,40,0.35);">← Back to Home</a>
 
+<body>
 
   <!-- Confetti Container -->
   <div id="confetti-container"></div>
@@ -23,6 +25,8 @@
         <span class="logo-ladder">🪜</span>
       </div>
       <p class="subtitle">The Classic Board Game</p>
+
+      <!-- Player Inputs -->
       <div class="player-inputs">
         <div class="input-group">
           <label>🔴 Player 1 Name</label>
@@ -33,6 +37,15 @@
           <input type="text" id="p2-name" placeholder="Enter name..." maxlength="12" />
         </div>
       </div>
+
+      <!-- AI Play Mode -->
+      <div class="input-group">
+        <label>
+          <input type="checkbox" id="play-with-ai" />
+          🤖 Play against AI
+        </label>
+      </div>
+
       <button class="btn-start" onclick="startGame()">🎲 Start Game</button>
     </div>
   </div>
@@ -72,6 +85,11 @@
         </div>
 
         <button class="btn-restart" onclick="restartGame()">🔄 Restart</button>
+
+        <!-- Dark Theme Toggle -->
+        <button id="themeToggle" class="theme">
+          <span id="themeIcon">☀️</span>
+        </button>
       </div>
 
       <!-- Board -->
@@ -103,4 +121,5 @@
 
   <script src="script.js"></script>
 </body>
+
 </html>
