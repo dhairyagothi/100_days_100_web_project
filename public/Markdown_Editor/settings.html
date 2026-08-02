@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Markdown Editor - Settings</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="theme-light">
+    
+    <div class="app-layout">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fa-solid fa-pen-nib"></i> MarkItDown</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="index.html"><i class="fa-solid fa-folder"></i> Documents</a>
+                <a href="editor.html"><i class="fa-solid fa-file-pen"></i> Scratchpad</a>
+                <a href="settings.html" class="active"><i class="fa-solid fa-gear"></i> Settings</a>
+            </nav>
+            <div class="sidebar-footer">
+                <p>v1.0.0</p>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-header">
+                <h1>Settings</h1>
+            </header>
+
+            <div class="settings-content">
+                
+                <div class="settings-card">
+                    <div class="settings-card-header">
+                        <h3><i class="fa-solid fa-palette"></i> Appearance Theme</h3>
+                        <p>Choose how the editor and dashboard look.</p>
+                    </div>
+                    <div class="theme-options">
+                        <div class="theme-card" data-theme="theme-light">
+                            <div class="theme-preview" style="background: #ffffff; border: 1px solid #e2e8f0;"></div>
+                            <span>Light</span>
+                        </div>
+                        <div class="theme-card" data-theme="theme-dark">
+                            <div class="theme-preview" style="background: #1e293b; border: 1px solid #334155;"></div>
+                            <span>Dark</span>
+                        </div>
+                        <div class="theme-card" data-theme="theme-sepia">
+                            <div class="theme-preview" style="background: #fdf6e3; border: 1px solid #eee8d5;"></div>
+                            <span>Sepia</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-card">
+                    <div class="settings-card-header">
+                        <h3><i class="fa-solid fa-text-height"></i> Editor Font Size</h3>
+                        <p>Adjust the size of the text in the raw markdown editor.</p>
+                    </div>
+                    <div class="font-size-control">
+                        <button class="btn btn-secondary" id="font-dec"><i class="fa-solid fa-minus"></i></button>
+                        <span id="font-val">16px</span>
+                        <button class="btn btn-secondary" id="font-inc"><i class="fa-solid fa-plus"></i></button>
+                    </div>
+                </div>
+
+                <div class="settings-card danger-zone">
+                    <div class="settings-card-header">
+                        <h3><i class="fa-solid fa-triangle-exclamation"></i> Danger Zone</h3>
+                        <p>Permanently delete all your saved documents.</p>
+                    </div>
+                    <button class="btn btn-danger" id="btn-delete-all"><i class="fa-solid fa-trash-can"></i> Delete All Data</button>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

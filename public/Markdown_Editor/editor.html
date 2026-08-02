@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Markdown Editor - Workspace</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="theme-light">
+    
+    <div class="app-layout">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fa-solid fa-pen-nib"></i> MarkItDown</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="index.html"><i class="fa-solid fa-folder"></i> Documents</a>
+                <a href="editor.html" class="active"><i class="fa-solid fa-file-pen"></i> Scratchpad</a>
+                <a href="settings.html"><i class="fa-solid fa-gear"></i> Settings</a>
+            </nav>
+            <div class="sidebar-footer">
+                <p>v1.0.0</p>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="editor-header">
+                <div class="doc-title-container">
+                    <input type="text" id="doc-title" value="Untitled Document" placeholder="Enter document title...">
+                </div>
+                <div class="editor-actions">
+                    <span id="save-status">Saved</span>
+                    <button class="btn btn-primary" id="btn-save"><i class="fa-solid fa-floppy-disk"></i> Save</button>
+                    <button class="btn btn-secondary" id="btn-export"><i class="fa-solid fa-download"></i> Export HTML</button>
+                </div>
+            </header>
+
+            <div class="editor-toolbar">
+                <button class="toolbar-btn" data-action="bold" title="Bold (Ctrl+B)"><i class="fa-solid fa-bold"></i></button>
+                <button class="toolbar-btn" data-action="italic" title="Italic (Ctrl+I)"><i class="fa-solid fa-italic"></i></button>
+                <div class="toolbar-divider"></div>
+                <button class="toolbar-btn" data-action="h1" title="Heading 1"><i class="fa-solid fa-heading"></i>1</button>
+                <button class="toolbar-btn" data-action="h2" title="Heading 2"><i class="fa-solid fa-heading"></i>2</button>
+                <div class="toolbar-divider"></div>
+                <button class="toolbar-btn" data-action="ul" title="Unordered List"><i class="fa-solid fa-list-ul"></i></button>
+                <button class="toolbar-btn" data-action="ol" title="Ordered List"><i class="fa-solid fa-list-ol"></i></button>
+                <div class="toolbar-divider"></div>
+                <button class="toolbar-btn" data-action="link" title="Link (Ctrl+K)"><i class="fa-solid fa-link"></i></button>
+                <button class="toolbar-btn" data-action="image" title="Image"><i class="fa-regular fa-image"></i></button>
+                <div class="toolbar-divider"></div>
+                <button class="toolbar-btn" data-action="code" title="Inline Code"><i class="fa-solid fa-code"></i></button>
+                <button class="toolbar-btn" data-action="codeblock" title="Code Block"><i class="fa-solid fa-file-code"></i></button>
+            </div>
+
+            <div class="split-workspace">
+                <div class="editor-pane">
+                    <textarea id="markdown-input" spellcheck="false" placeholder="Write your markdown here..."></textarea>
+                </div>
+                <div class="preview-pane">
+                    <div id="html-output" class="markdown-body"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
