@@ -42,6 +42,7 @@ body {
     margin-bottom: 8px;
     background: linear-gradient(135deg, #38bdf8, #818cf8);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
@@ -71,12 +72,14 @@ body {
 
 input[type=range] {
     -webkit-appearance: none;
+    appearance: none;
     width: 100%;
     background: transparent;
 }
 
 input[type=range]::-webkit-slider-thumb {
     -webkit-appearance: none;
+    appearance: none;
     height: 16px;
     width: 16px;
     border-radius: 50%;
