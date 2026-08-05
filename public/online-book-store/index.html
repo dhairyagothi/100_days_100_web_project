@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookStore | Find Your Next Favorite Book</title>
+    <meta name="description" content="Discover and buy the best books across all genres at BookStore.">
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Icons: FontAwesome (using unpkg or cdnjs, here FontAwesome CDN) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <i class="fa-solid fa-book-open"></i> BookStore
+            </a>
+            
+            <div class="nav-links" id="nav-links">
+                <a href="#home">Home</a>
+                <a href="#books-section">Books</a>
+                <a href="#categories-section">Categories</a>
+            </div>
+
+            <div class="nav-actions">
+                <button id="theme-toggle" class="icon-btn" aria-label="Toggle dark mode">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+                <button id="wishlist-toggle" class="icon-btn" aria-label="Wishlist">
+                    <i class="fa-solid fa-heart"></i>
+                    <span class="badge" id="wishlist-badge">0</span>
+                </button>
+                <button id="cart-toggle" class="icon-btn" aria-label="Cart">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span class="badge" id="cart-badge">0</span>
+                </button>
+                <button class="mobile-menu-btn" id="mobile-menu-btn">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero" id="home">
+        <div class="hero-content">
+            <h1>Find Your Next <span class="highlight">Favorite Book</span></h1>
+            <p>Explore thousands of books in fiction, programming, history, and more. Your next adventure awaits.</p>
+            
+            <div class="search-container">
+                <input type="text" id="hero-search" placeholder="Search by title, author, or category...">
+                <button id="search-btn"><i class="fa-solid fa-search"></i></button>
+            </div>
+            
+            <div class="hero-buttons">
+                <a href="#books-section" class="btn btn-primary">Browse Books</a>
+                <a href="#categories-section" class="btn btn-secondary">Explore Categories</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Featured Books Section -->
+    <section class="section" id="featured-section">
+        <div class="section-header">
+            <h2>Featured Books</h2>
+            <p>Our top picks for the week</p>
+        </div>
+        <div class="featured-carousel" id="featured-books">
+            <!-- Featured books injected by JS -->
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="section bg-light" id="categories-section">
+        <div class="section-header">
+            <h2>Categories</h2>
+            <p>Browse books by your favorite genre</p>
+        </div>
+        <div class="category-filters" id="category-filters">
+            <button class="category-btn active" data-category="All">All</button>
+            <button class="category-btn" data-category="Fiction">Fiction</button>
+            <button class="category-btn" data-category="Programming">Programming</button>
+            <button class="category-btn" data-category="Business">Business</button>
+            <button class="category-btn" data-category="Self Help">Self Help</button>
+            <button class="category-btn" data-category="Fantasy">Fantasy</button>
+            <button class="category-btn" data-category="Science">Science</button>
+            <button class="category-btn" data-category="History">History</button>
+            <button class="category-btn" data-category="Biography">Biography</button>
+        </div>
+    </section>
+
+    <!-- All Books Section -->
+    <section class="section" id="books-section">
+        <div class="section-header">
+            <h2>All Books</h2>
+            <div class="toolbar">
+                <div class="search-bar">
+                    <i class="fa-solid fa-search"></i>
+                    <input type="text" id="main-search" placeholder="Search books...">
+                </div>
+                <div class="sort-dropdown">
+                    <select id="sort-select">
+                        <option value="default">Sort By</option>
+                        <option value="price-low">Price: Low to High</option>
+                        <option value="price-high">Price: High to Low</option>
+                        <option value="rating">Highest Rated</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+        <div class="books-grid" id="books-grid">
+            <!-- Books injected by JS -->
+        </div>
+        
+        <!-- Empty State UI -->
+        <div class="empty-state hidden" id="empty-state">
+            <i class="fa-solid fa-book-journal-whills"></i>
+            <h3>No books found</h3>
+            <p>Try adjusting your search or filters.</p>
+            <button class="btn btn-primary" id="reset-filters-btn">Reset Filters</button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-col">
+                <a href="#" class="logo footer-logo">
+                    <i class="fa-solid fa-book-open"></i> BookStore
+                </a>
+                <p>Your one-stop destination for discovering and buying the best books online. Read more, live more.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h3>Quick Links</h3>
+                <a href="#home">Home</a>
+                <a href="#books-section">Books</a>
+                <a href="#categories-section">Categories</a>
+            </div>
+            <div class="footer-col">
+                <h3>Customer Service</h3>
+                <a href="#">Contact Us</a>
+                <a href="#">Shipping Policy</a>
+                <a href="#">Returns & Exchanges</a>
+                <a href="#">FAQs</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 BookStore. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Overlay (for Modals and Sidebars) -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Book Details Modal -->
+    <div class="modal" id="book-modal">
+        <button class="close-modal icon-btn" id="close-book-modal"><i class="fa-solid fa-xmark"></i></button>
+        <div class="modal-content" id="book-modal-content">
+            <!-- Content injected by JS -->
+        </div>
+    </div>
+
+    <!-- Cart Sidebar -->
+    <div class="sidebar" id="cart-sidebar">
+        <div class="sidebar-header">
+            <h2><i class="fa-solid fa-cart-shopping"></i> Your Cart</h2>
+            <button class="close-sidebar icon-btn" id="close-cart"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="sidebar-body" id="cart-items">
+            <!-- Cart items injected by JS -->
+        </div>
+        <div class="sidebar-footer">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cart-total-price">$0.00</span>
+            </div>
+            <button class="btn btn-primary w-100" id="checkout-btn">Checkout</button>
+        </div>
+    </div>
+
+    <!-- Wishlist Sidebar -->
+    <div class="sidebar" id="wishlist-sidebar">
+        <div class="sidebar-header">
+            <h2><i class="fa-solid fa-heart"></i> Wishlist</h2>
+            <button class="close-sidebar icon-btn" id="close-wishlist"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="sidebar-body" id="wishlist-items">
+            <!-- Wishlist items injected by JS -->
+        </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div class="modal" id="checkout-modal">
+        <button class="close-modal icon-btn" id="close-checkout-modal"><i class="fa-solid fa-xmark"></i></button>
+        <div class="checkout-container">
+            <h2>Checkout</h2>
+            <form id="checkout-form">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="address">Shipping Address</label>
+                    <textarea id="address" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" required>
+                </div>
+                <div class="payment-options">
+                    <p class="payment-label">Payment Method</p>
+                    <div class="radio-group">
+                        <input type="radio" id="pay-card" name="payment" value="card" checked>
+                        <label for="pay-card"><i class="fa-regular fa-credit-card"></i> Credit Card</label>
+                    </div>
+                    <div class="radio-group">
+                        <input type="radio" id="pay-paypal" name="payment" value="paypal">
+                        <label for="pay-paypal"><i class="fa-brands fa-paypal"></i> PayPal</label>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary w-100" style="margin-top: 1rem;">Place Order</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- Scroll to Top Button -->
+    <button class="scroll-top" id="scroll-top">
+        <i class="fa-solid fa-arrow-up"></i>
+    </button>
+
+    <!-- Custom JS -->
+    <script src="script.js"></script>
+</body>
+</html>

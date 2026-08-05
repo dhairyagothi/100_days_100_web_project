@@ -4,85 +4,243 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Roboto:wght@300&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap"
+        rel="stylesheet">
+
     <link rel="stylesheet" href="style.css">
+
     <title>Drawing App</title>
 </head>
+
 <body>
-    <!-- <main id="main-app"> -->
-        <div id="left">
-            <h1>
-                Welcome to Drawing App
-                <i class="fa fa-paint-brush"></i>
 
-            </h1>
+<div id="app">
 
-            <hr>
+    <!-- LEFT TOOLBAR -->
 
-            <!-- Choose Brush or Eraser -->
-            <div class="controller choose-pen">
-                <div class="i-container active" id="brush">
-                    <i class="fa fa-brush"></i>
-                </div>
-                <div class="i-container" id="eraser">
-                    <i class="fa fa-eraser"></i>
-                </div>
-            </div>
+    <aside id="left">
 
-            <div class="eraser"></div>
+        <h1>
+            <i class="fa-solid fa-palette"></i>
+            Drawing App
+        </h1>
 
-            <!-- Change width of the brush -->
+        <hr>
 
-            <div class="controller width-control">
-                <h3>
-                    <span class="width-text">
-                        Line Width :  
-                    </span>
-                    <span class="width-val"></span>
-                </h3> 
-                <div class="btns">
-                    <button class="inc-width btn"> 
-                        <i class="fa-solid fa-arrow-up"></i> 
-                    </button>
-                    <button class="dec-width btn">
-                        <i class="fa-solid fa-arrow-down"></i>
-                    </button>
-                </div>
-            </div>
+        <!-- Drawing Tools -->
 
-            <!-- Change Color of the Brush -->
-            <div class="controller color-control line-color-container">
-                <h3>Line Color : </h3>
-                <input type="color" name="color-picker" id="color-picker">
-            </div>
+        <div class="section-title">
+            Tools
+        </div>
 
-            <!-- Change Background Color of the Canvas -->
-            <div class="controller color-control">
-                <h3>Background : </h3>
-                <input type="color" name="bg-color" id="bg-color">
-            </div>
+        <div class="tool-grid">
 
-            <button class="btn clear">
-                Erase All
-                <i class="fas fa-eraser"></i>
+            <button class="tool active" id="brush" title="Brush">
+                <i class="fa-solid fa-paintbrush"></i>
             </button>
-            <br>
-            <!-- Download Button -->
-            <button id="download" class="btn">
-                Download
-                <i class="fa-solid fa-arrow-down"></i>
+
+            <button class="tool" id="eraser" title="Eraser">
+                <i class="fa-solid fa-eraser"></i>
+            </button>
+
+            <button class="tool" id="lineTool" title="Line">
+                <i class="fa-solid fa-minus"></i>
+            </button>
+
+            <button class="tool" id="rectTool" title="Rectangle">
+                <i class="fa-regular fa-square"></i>
+            </button>
+
+            <button class="tool" id="circleTool" title="Circle">
+                <i class="fa-regular fa-circle"></i>
+            </button>
+
+            <button class="tool" id="pickerTool" title="Color Picker">
+                <i class="fa-solid fa-eye-dropper"></i>
             </button>
 
         </div>
-        <div id="right">
-            <canvas id="canvas"></canvas>
-        </div>
-        
-    <!-- </main> -->
 
-    <script src="index.js"></script>
+        <hr>
+
+        <!-- Brush -->
+
+        <div class="controller">
+
+            <label>
+
+                Brush Size
+
+                <span class="width-val">5</span>
+
+            </label>
+
+            <input
+                type="range"
+                id="brushSize"
+                min="1"
+                max="50"
+                value="5">
+
+        </div>
+
+        <!-- Line Color -->
+
+        <div class="controller">
+
+            <label>Primary Color</label>
+
+            <input
+                type="color"
+                id="color-picker"
+                value="#000000">
+
+        </div>
+
+        <!-- Background -->
+
+        <div class="controller">
+
+            <label>Canvas Background</label>
+
+            <input
+                type="color"
+                id="bg-color"
+                value="#ffffff">
+
+        </div>
+
+        <!-- Fill -->
+
+        <div class="controller">
+
+            <button class="btn" id="fillCanvas">
+                <i class="fa-solid fa-fill-drip"></i>
+                Fill Canvas
+            </button>
+
+        </div>
+
+        <!-- File -->
+
+        <div class="section-title">
+
+            File
+
+        </div>
+
+        <button class="btn clear">
+
+            <i class="fa-solid fa-trash"></i>
+
+            Clear Canvas
+
+        </button>
+
+        <button class="btn" id="undo">
+
+            <i class="fa-solid fa-rotate-left"></i>
+
+            Undo
+
+        </button>
+
+        <button class="btn" id="redo">
+
+            <i class="fa-solid fa-rotate-right"></i>
+
+            Redo
+
+        </button>
+
+        <button class="btn" id="download">
+
+            <i class="fa-solid fa-download"></i>
+
+            Download
+
+        </button>
+
+        <button class="btn" id="openImage">
+
+            <i class="fa-solid fa-folder-open"></i>
+
+            Open Image
+
+        </button>
+
+        <input
+            type="file"
+            id="imageLoader"
+            accept="image/*"
+            hidden>
+
+        <hr>
+
+        <div class="tips">
+
+            <strong>Shortcuts</strong>
+
+            <p>Ctrl + Z → Undo</p>
+
+            <p>Ctrl + Y → Redo</p>
+
+            <p>Ctrl + S → Download</p>
+
+        </div>
+
+    </aside>
+
+    <!-- RIGHT SIDE -->
+
+    <main id="right">
+
+        <div class="topbar">
+
+            <span id="currentTool">
+
+                Brush
+
+            </span>
+
+            <span id="mousePos">
+
+                X:0 Y:0
+
+            </span>
+
+        </div>
+
+        <canvas id="canvas"></canvas>
+
+        <div class="statusbar">
+
+            <span id="canvasSize">
+
+                Canvas
+
+            </span>
+
+            <span id="zoom">
+
+                100%
+
+            </span>
+
+        </div>
+
+    </main>
+
+</div>
+
+<script src="index.js"></script>
+
 </body>
 </html>

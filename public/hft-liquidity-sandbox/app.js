@@ -237,6 +237,7 @@ class HftOrderBookSandbox {
 window.addEventListener('DOMContentLoaded', () => {
     new HftOrderBookSandbox('tradingCanvas');
 });
+});
   constructor(canvasId) {
     this.canvas = document.getElementById(canvasId);
     this.ctx = this.canvas.getContext('2d');

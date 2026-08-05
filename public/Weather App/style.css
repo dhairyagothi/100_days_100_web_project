@@ -29,7 +29,23 @@ body.dark-theme {
     --shadow-sm: 0 1px 3px rgba(0,0,0,0.5);
     --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.4);
 }
+.back-home-btn {
+    background-color: var(--bg-body);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 8px 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.9rem;
+    text-decoration: none;
+    color: inherit;
+    transition: background-color 0.2s ease;
+}
 
+.back-home-btn:hover {
+    background-color: var(--border-color);
+}
 /* =========================================================
    RESET & TYPOGRAPHY
    ========================================================= */

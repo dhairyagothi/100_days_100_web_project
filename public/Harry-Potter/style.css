@@ -12,7 +12,14 @@ body {
   display: flex;
   justify-content: center;
 }
-
+#roster {
+  margin-top: 20px;
+  padding: 10px;
+  border-top: 2px solid #444;
+}
+#roster h3 {
+  color: gold;
+}
 .container {
   max-width: 900px;
   width: 100%;
@@ -35,6 +42,54 @@ body.lumos-mode {
 body.lumos-mode h1,
 body.lumos-mode h2 {
   border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+}
+
+button {
+  padding: 12px 18px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  color: white;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+  background: linear-gradient(135deg, #7b2ff7, #00c6ff);
+}
+#spell-list {
+  margin-top: 15px;
+  padding: 15px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  max-width: 420px;
+  text-align: left;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #e0e0e0;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+#spell-list strong {
+  display: block;
+  margin-bottom: 8px;
+  color: #f1c40f;
+  font-size: 15px;
+}
+
+#spell-list {
+  margin-bottom: 25px;  /* 👈 adds space below spell section */
+}
+
+button:active {
+  transform: scale(0.96);
 }
 
 /* Reducto State (Shake Animation) */

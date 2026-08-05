@@ -1,192 +1,196 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Roboto:wght@300&display=swap');
-
-*{
-    margin: 0%;
-    padding: 0%;
+:root {
+    --bg-app: #f4f5f7;
+    --bg-panel: #ffffff;
+    --bg-input: #f1f3f5;
+    --text-main: #2d3748;
+    --text-muted: #718096;
+    --accent: #4a5568;
+    --accent-hover: #2d3748;
+    --accent-active: #3182ce;
+    --border-color: #e2e8f0;
+}
+* {
     box-sizing: border-box;
-    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    font-family: 'Open Sans', sans-serif;
+    user-select: none;
 }
-
-body{
-    background-color: rgb(202, 200, 200);
-    min-height: 100vh;
-    display: grid;
-    grid-template-columns: 1fr 3fr;
+body {
+    background-color: var(--bg-app);
+    color: var(--text-main);
+    overflow: hidden;
+    height: 100vh;
 }
-
-
-/* Styling the Left portion of the Application */
-
-/*Universal style of left*/
-#left{
-    background-color: #1e1e1e;
-    padding: 20px 10px;
-    color: white;
-    height: 100%;
+#app {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
 }
-
-
-/*general style for  a controller*/
-#left .controller{
-    border-bottom: 1px solid white;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    padding: 0 0 20px 0;
+#left {
+    width: 300px;
+    background: var(--bg-panel);
+    border-right: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    overflow-y: auto;
+    gap: 15px;
+    flex-shrink: 0;
+}
+#left h1 {
+    font-size: 1.25rem;
+    font-weight: 700;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-}
-
-/* Style the Div to Choose the Pen or Eraser*/
-
-#left .choose-pen{
-    display: flex;
-    justify-content: start;
     gap: 10px;
+    color: var(--accent);
 }
-
-#left .choose-pen .i-container{
-    width: 30px;
-    height: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 2px solid white;
-    border-radius: 50%;
-}
-
-#left .choose-pen .i-container:hover{
-    cursor: pointer;
-}
-
-#left .choose-pen .i-container.active{
-    background-color: white;
-    color: #101010;
-    border: 1px solid #101010;
-    width: 50px;
-    height: 50px;
-    font-size: 30px;
-    box-shadow: 3px 3px 10px black;
-}
-
-#left .choose-pen i{
-    font-size: 20px;
-}
-
-/* Style Eraser*/
-.eraser{
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    border: 2px solid #101010;
-    background-color: white;
-}
-
-/* Style the buttons of the left*/
-
-#left .btn:hover, #left #download:hover{
-    cursor: pointer;
-    background-color: #1e1e1e;
-    color: white;
-    border: 1px solid white;
-}
-
-/*heading of left*/
-#left h1{
-    font-size: 1.5rem;
-    margin-bottom: 20px;
-}
-
-/*style of the width controller*/
-
-#left .width-control h3{
-    margin-right: 30px;
-}
-
-#left .width-control .btns button.inc-width, 
-#left .width-control .btns button.dec-width{
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    font-weight: bolder;
-    margin-left: 5px;
-}
-
-#left .width-control button.inc-width:hover, 
-#left .width-control button.dec-width:hover{
-    transform: scale(1.1);
-}
-
-/*style of the color controller*/
-.color-control{
-    display: flex;
-}
-
-.color-control input[type="color"]{
-    margin-left: 20px;
-}
-
-.color-control input[type="color"]:hover{
-    cursor: pointer;
-}
-
-/* style the download button and clear button*/ 
-#left #download, #left .clear{
-    width: 100%;
+hr {
     border: none;
-    padding: 10px 8px;
-    font-size: 1.2rem;
-    font-weight: bolder;
-    border-radius: 2px;
-    margin-bottom: 5px;
+    border-top: 1px solid var(--border-color);
 }
-
-/* style the right portion of the main application */
-
-/* universal style of the left */
-#right{
-    /* background-color: #2e2e2e; */
-    background-color: crimson;
+.section-title {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    font-weight: 700;
+}
+.tool-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+.tool {
+    background: var(--bg-input);
+    border: 1px solid transparent;
+    border-radius: 6px;
+    color: var(--text-main);
+    cursor: pointer;
+    font-size: 1.1rem;
+    height: 45px;
+    transition: all 0.2s ease;
+}
+.tool:hover {
+    background: var(--border-color);
+}
+.tool.active {
+    background: var(--accent-active);
+    color: #ffffff;
+    border-color: var(--accent-active);
+}
+.controller {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.controller label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    color: var(--accent);
+}
+.controller input[type="range"] {
+    width: 100%;
+    cursor: pointer;
+}
+.controller input[type="color"] {
+    -webkit-appearance: none;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    cursor: pointer;
+    height: 38px;
+    width: 100%;
+    background: none;
+}
+.controller input[type="color"]::-webkit-color-swatch-wrapper {
+    padding: 0;
+}
+.controller input[type="color"]::-webkit-color-swatch {
+    border: none;
+    border-radius: 5px;
+}
+.btn {
+    width: 100%;
+    background: var(--bg-input);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--text-main);
+    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 100%;
+    gap: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 10px;
+    transition: all 0.2s ease;
 }
-
-/*give appropriate dimensions to the canvas in the right portion*/
-#right #canvas{
+.btn:hover {
+    background: var(--accent);
+    color: #ffffff;
+    border-color: var(--accent);
+}
+.btn.clear:hover {
+    background: #e53e3e;
+    border-color: #e53e3e;
+    color: #ffffff;
+}
+.tips {
+    background: var(--bg-input);
+    border-radius: 6px;
+    padding: 12px;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+.tips strong {
     display: block;
-    width: 95%;
-    min-width: 95%;
-    height: 95%;
-    min-height: 95%;
-    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.521);
+    margin-bottom: 4px;
+    color: var(--text-main);
 }
-
-/*Media Query for Responsiveness*/
-@media (max-width: 900px){
-    body{
-        display: flex;
-        flex-direction: column-reverse;
-    }
-
-    #left{
-        height: 40%;
-    }
-
-    #right{
-        min-height: 60vh;
-    }
-
-    #right #canvas{
-        height: 58vh;
-        width: 97%;
-    }
+#right {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
-
-@media (max-width: 725px){
-    header h1{
-        font-size: 2rem;
-    }
+.topbar, .statusbar {
+    background: var(--bg-panel);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    flex-shrink: 0;
+}
+.topbar {
+    height: 45px;
+    border-bottom: 1px solid var(--border-color);
+}
+.statusbar {
+    height: 35px;
+    border-top: 1px solid var(--border-color);
+}
+#canvas {
+    flex-grow: 1;
+    cursor: crosshair;
+    display: block;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.02);
+}
+::-webkit-scrollbar {
+    width: 6px;
+}
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted);
 }
