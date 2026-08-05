@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <link rel="manifest" href="manifest.json" />
+    <link   rel="manifest"                  href="manifest.json" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
@@ -17,7 +17,7 @@
     <meta name="theme-color" content="#0a0a1a" />
     <script src="theme.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-
+                
     <meta property="og:type" content="website" />
     <meta property="og:title" content="100 Days · 100 Web Projects" />
     <meta
@@ -190,7 +190,85 @@
       .cta-banner-btn:active {
         transform: translateY(0);
       }
+
+      /* ==========================
+   HERO SECTION
+========================== */
+
+.hero {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 120px 20px 80px;
+    position: relative;
+}
+
+.hero-inner {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-overline {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.hero-headline {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    text-align: center;
+    width: 100%;
+}
+
+.hero-line {
+    display: block;
+    width: 100%;
+    text-align: center;
+    margin: 0;
+    line-height: 0.9;
+}
+
+.hero-line-accent {
+    text-align: center;
+}
+
+.hero-sub,
+.hero-extra {
+    max-width: 850px;
+    margin: 1.5rem auto 0;
+    text-align: center;
+}
+
+.hero-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.stats-strip {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 2rem;
+}
     </style>
+
+
   </head>
 
   <body>
@@ -479,7 +557,7 @@
         </div>
       </div>
     </section>
-
+                        
     <section class="projects-section" id="randomProjectSection">
       <div class="projects-inner">
         <div class="projects-intro">
@@ -647,3 +725,6 @@
     <script src="cursor.js" defer></script>
   </body>
 </html>
+
+
+           
