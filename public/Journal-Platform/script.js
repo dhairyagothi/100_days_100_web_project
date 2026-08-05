@@ -525,10 +525,11 @@ function renderMarkdownPreview() {
   const mdText = diaryTextarea.value || '*Write something beautiful today...*';
 
   // Render Markdown to HTML using Marked CDN
-  markdownRenderedContent.innerHTML = marked.parse(mdText, {
+  const rawHtml = marked.parse(mdText, {
     breaks: true,
     gfm: true,
   });
+  markdownRenderedContent.innerHTML = DOMPurify.sanitize(rawHtml);
 
   // Re-render placed stickers
   renderStickersCanvas();

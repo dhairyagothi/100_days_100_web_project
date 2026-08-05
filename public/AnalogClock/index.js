@@ -106,6 +106,51 @@ document.addEventListener("DOMContentLoaded", () => {
       lat: 34.0522,
       lon: -118.2437,
     },
+    seoul: {
+      id: "seoul",
+      name: "Seoul",
+      country: "South Korea",
+      timeZone: "Asia/Seoul",
+      sublabel: "KST",
+      lat: 37.5665,
+      lon: 126.978,
+    },
+    hongkong: {
+      id: "hongkong",
+      name: "Hong Kong",
+      country: "China",
+      timeZone: "Asia/Hong_Kong",
+      sublabel: "HKT",
+      lat: 22.3193,
+      lon: 114.1694,
+    },
+    johannesburg: {
+      id: "johannesburg",
+      name: "Johannesburg",
+      country: "South Africa",
+      timeZone: "Africa/Johannesburg",
+      sublabel: "SAST",
+      lat: -26.2041,
+      lon: 28.0473,
+    },
+    mexicoCity: {
+      id: "mexicoCity",
+      name: "Mexico City",
+      country: "Mexico",
+      timeZone: "America/Mexico_City",
+      sublabel: "CST",
+      lat: 19.4326,
+      lon: -99.1332,
+    },
+    istanbul: {
+      id: "istanbul",
+      name: "Istanbul",
+      country: "Turkey",
+      timeZone: "Europe/Istanbul",
+      sublabel: "TRT",
+      lat: 41.0082,
+      lon: 28.9784,
+    },
   };
 
   const timezoneSectors = [
@@ -269,7 +314,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (saved) {
     try {
       activePinnedClocks = JSON.parse(saved);
-    } catch (e) {}
+    } catch (e) { }
   }
 
   let dynamicClocks = [];
@@ -367,55 +412,55 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Global tracker to prevent overlapping dismiss timers
-let toastTimeoutReference;
+  let toastTimeoutReference;
 
-function showPremiumToast(message) {
-  let toast = document.querySelector('.custom-toast');
-  
-  if (!toast) {
-    toast = document.createElement('div');
-    toast.className = 'custom-toast';
-    toast.innerHTML = `<span>⚠️</span><span class="toast-message"></span>`;
-    document.body.appendChild(toast);
+  function showPremiumToast(message) {
+    let toast = document.querySelector('.custom-toast');
+
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.className = 'custom-toast';
+      toast.innerHTML = `<span>⚠️</span><span class="toast-message"></span>`;
+      document.body.appendChild(toast);
+    }
+
+    toast.querySelector('.toast-message').textContent = message;
+
+    clearTimeout(toastTimeoutReference);
+
+    toast.classList.add('show');
+
+    // smoothly slide down and hide after exactly 1.5 seconds
+    toastTimeoutReference = setTimeout(() => {
+      toast.classList.remove('show');
+    }, 1500);
   }
-  
-  toast.querySelector('.toast-message').textContent = message;
-  
-  clearTimeout(toastTimeoutReference);
-  
-  toast.classList.add('show');
-  
-  // smoothly slide down and hide after exactly 1.5 seconds
-  toastTimeoutReference = setTimeout(() => {
-    toast.classList.remove('show');
-  }, 1500);
-}
 
 
-function unpinClock(id) {
-  if (activePinnedClocks.length <= 1) {
-    // replacing the native alert() with the custom premium toast
-    showPremiumToast("Keep at least one world clock pinned!");
-    return;
+  function unpinClock(id) {
+    if (activePinnedClocks.length <= 1) {
+      // replacing the native alert() with the custom premium toast
+      showPremiumToast("Keep at least one world clock pinned!");
+      return;
+    }
+
+    activePinnedClocks = activePinnedClocks.filter((c) => c !== id);
+    localStorage.setItem(
+      "chronos_pinned_clocks",
+      JSON.stringify(activePinnedClocks),
+    );
+
+    const card = document.querySelector(`.world-clock-card[data-id="${id}"]`);
+    if (card) {
+      card.style.opacity = "0";
+      card.style.transform = "scale(0.94) translateY(12px)";
+      card.style.transition = "all 0.35s ease";
+      setTimeout(renderGrid, 360);
+    } else {
+      renderGrid();
+    }
+    updateTooltipBtn(id);
   }
-  
-  activePinnedClocks = activePinnedClocks.filter((c) => c !== id);
-  localStorage.setItem(
-    "chronos_pinned_clocks",
-    JSON.stringify(activePinnedClocks),
-  );
-
-  const card = document.querySelector(`.world-clock-card[data-id="${id}"]`);
-  if (card) {
-    card.style.opacity = "0";
-    card.style.transform = "scale(0.94) translateY(12px)";
-    card.style.transition = "all 0.35s ease";
-    setTimeout(renderGrid, 360);
-  } else {
-    renderGrid();
-  }
-  updateTooltipBtn(id);
-}
 
   // ─────────────────────────────────────────────
   // 7. SEARCH
@@ -650,7 +695,7 @@ function unpinClock(id) {
       tooltip.style.display = "none";
       if (ttInterval) clearInterval(ttInterval);
       hoveredCityId = null;
-    }, 200); 
+    }, 200);
   }
 
   // event bindings to keep the card alive when interacting with its buttons
@@ -685,8 +730,8 @@ function unpinClock(id) {
 
     // rebind listener directly to the newly mounted fresh button node
     freshBtn.addEventListener("click", (e) => {
-      e.stopPropagation(); 
-      cancelHide(); 
+      e.stopPropagation();
+      cancelHide();
 
       if (activePinnedClocks.includes(cityId)) {
         unpinClock(cityId);
@@ -754,10 +799,10 @@ function unpinClock(id) {
     const elementRect = element.getBoundingClientRect();
 
     //mathematically centers the tooltip right above the targeted asset dot
-    let leftPosition = elementRect.left - containerRect.left + (elementRect.width / 2) - 125; 
-    let topPosition = elementRect.top - containerRect.top - 155; 
+    let leftPosition = elementRect.left - containerRect.left + (elementRect.width / 2) - 125;
+    let topPosition = elementRect.top - containerRect.top - 155;
 
-    
+
     if (leftPosition < 10) leftPosition = 10;
     if (leftPosition + 250 > containerRect.width) leftPosition = containerRect.width - 260;
     if (topPosition < 10) topPosition = elementRect.bottom - containerRect.top + 15;
@@ -930,7 +975,7 @@ function unpinClock(id) {
       m.addEventListener("mouseleave", () => {
         hoveredCityId = null;
         sectors.forEach((s) => s.classList.remove("active-sector"));
-        scheduleHide(); 
+        scheduleHide();
       });
     });
 
@@ -1010,7 +1055,7 @@ function unpinClock(id) {
     if (timerUpMsg) timerUpMsg.style.display = "flex";
     if (timerSound) {
       timerSound.currentTime = 0;
-      timerSound.play().catch(() => {});
+      timerSound.play().catch(() => { });
     }
   }
 
@@ -1071,10 +1116,10 @@ function unpinClock(id) {
 
   renderTimer();
 
-//FOCUS MODE
+  //FOCUS MODE
 
   // Grab the two buttons
-  const focusBtn     = document.getElementById("focusModeBtn");   // header nav button
+  const focusBtn = document.getElementById("focusModeBtn");   // header nav button
   const focusBackBtn = document.getElementById("focusBackBtn");    // back arrow (top-left)
 
   // SVG icons reused for the header button label swap

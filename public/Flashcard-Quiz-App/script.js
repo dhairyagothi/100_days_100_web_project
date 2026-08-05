@@ -1,284 +1,531 @@
-let flashcards = JSON.parse(localStorage.getItem("flashcards")) || [
-
-{
-    question:"What is HTML?",
-    answer:"HyperText Markup Language"
-},
-
-{
-    question:"Which HTML tag is used to create a hyperlink?",
-    answer:"<a>"
-},
-
-{
-    question:"Which HTML tag is used to insert an image?",
-    answer:"<img>"
-},
-
-{
-    question:"Which HTML element is used to create a form?",
-    answer:"<form>"
-},
-
-{
-    question:"Which HTML tag is used for the largest heading?",
-    answer:"<h1>"
-},
-
-{
-    question:"What is CSS?",
-    answer:"Cascading Style Sheets"
-},
-
-{
-    question:"Which CSS property changes the text color?",
-    answer:"color"
-},
-
-{
-    question:"Which CSS property changes the background color?",
-    answer:"background-color"
-},
-
-{
-    question:"Which CSS property is used to make corners rounded?",
-    answer:"border-radius"
-},
-
-{
-    question:"Which CSS property is used to align items horizontally in Flexbox?",
-    answer:"justify-content"
-},
-
-{
-    question:"Which keyword is used to declare a variable in JavaScript?",
-    answer:"let"
-},
-
-{
-    question:"Which function displays a popup message?",
-    answer:"alert()"
-},
-
-{
-    question:"Which method is used to select an element by its ID?",
-    answer:"document.getElementById()"
-},
-
-{
-    question:"Which event occurs when a button is clicked?",
-    answer:"click"
-},
-
-{
-    question:"Which object is used to store data in the browser permanently?",
-    answer:"localStorage"
-}
-
-];
-
+/* ============================================================
+                    FLASHCARD QUIZ APP
+============================================================ */
+/* ============================================================
+                    DEFAULT FLASHCARDS
+============================================================ */
+const defaultFlashcards = {
+    webdev: [
+        { question: "What does HTML stand for?", answer: "HyperText Markup Language", hint: "Starts with H" },
+        { question: "Which HTML tag creates a hyperlink?", answer: "<a>", hint: "Starts with <" },
+        { question: "Which CSS property changes text color?", answer: "color", hint: "Five letters" },
+        { question: "Which keyword declares a variable in JavaScript?", answer: "let", hint: "Three letters" },
+        { question: "Which browser storage persists after closing the browser?", answer: "localStorage", hint: "Starts with local" }
+    ],
+    dbms: [
+        { question: "What does DBMS stand for?", answer: "Database Management System", hint: "Starts with Database" },
+        { question: "Which SQL command retrieves data?", answer: "SELECT", hint: "Starts with S" },
+        { question: "Which key uniquely identifies a record?", answer: "Primary Key", hint: "Starts with Primary" },
+        { question: "Which SQL clause filters rows?", answer: "WHERE", hint: "Starts with W" },
+        { question: "Which SQL command removes a table?", answer: "DROP", hint: "Starts with D" }
+    ],
+    cn: [
+        { question: "What does TCP stand for?", answer: "Transmission Control Protocol", hint: "Starts with Transmission" },
+        { question: "What does IP stand for?", answer: "Internet Protocol", hint: "Starts with Internet" },
+        { question: "Which device forwards packets?", answer: "Router", hint: "Network device" },
+        { question: "What does DNS stand for?", answer: "Domain Name System", hint: "Starts with Domain" },
+        { question: "Which topology connects every node together?", answer: "Mesh", hint: "Starts with M" }
+    ],
+    os: [
+        { question: "What is an Operating System?", answer: "System software that manages computer hardware and software resources", hint: "System software" },
+        { question: "Which scheduling algorithm is First Come First Serve?", answer: "FCFS", hint: "Four letters" },
+        { question: "Fastest memory in a computer?", answer: "Cache Memory", hint: "Starts with Cache" },
+        { question: "Which memory is volatile?", answer: "RAM", hint: "Three letters" },
+        { question: "Which OS is open source?", answer: "Linux", hint: "Penguin" }
+    ],
+    dsa: [
+        { question: "What does DSA stand for?", answer: "Data Structures and Algorithms", hint: "Starts with Data" },
+        { question: "Which data structure follows FIFO?", answer: "Queue", hint: "Starts with Q" },
+        { question: "Which data structure follows LIFO?", answer: "Stack", hint: "Starts with S" },
+        { question: "Which traversal is Left Root Right?", answer: "Inorder", hint: "Binary Tree" },
+        { question: "Average complexity of Binary Search?", answer: "O(log n)", hint: "Starts with O" }
+    ]
+};
+/* ============================================================
+                    APP STATE
+============================================================ */
+let currentSubject = "webdev";
+let flashcards = [];
 let currentIndex = 0;
-
-const question=document.getElementById("question");
-const answer=document.getElementById("answer");
-const userAnswer=document.getElementById("userAnswer");
-const result=document.getElementById("result");
-
-const showBtn=document.getElementById("showBtn");
-const checkBtn=document.getElementById("checkBtn");
-
-const prevBtn=document.getElementById("prevBtn");
-const nextBtn=document.getElementById("nextBtn");
-
-const questionInput=document.getElementById("questionInput");
-const answerInput=document.getElementById("answerInput");
-
-const addBtn=document.getElementById("addBtn");
-const editBtn=document.getElementById("editBtn");
-const deleteBtn=document.getElementById("deleteBtn");
-
-function saveCards(){
-
-localStorage.setItem("flashcards",JSON.stringify(flashcards));
-
+let isTimedMode = false;
+let timer = null;
+let totalTime = 60;
+let timeLeft = 60;
+let timedCorrect = 0;
+let timedWrong = 0;
+let timedAttempted = 0;
+let cardAttempted = false;
+let originalFlashcards = [];
+/* ============================================================
+                    LOCAL STORAGE
+============================================================ */
+function storageKey(subject) {
+    return `flashcards_${subject}`;
 }
-
-function displayCard(){
-
-question.innerText=flashcards[currentIndex].question;
-
-answer.innerText="Correct Answer: "+flashcards[currentIndex].answer;
-
-answer.classList.add("hidden");
-
-userAnswer.value="";
-
-result.innerHTML="";
-
-showBtn.innerText="Show Answer";
-
+function loadFlashcards(subject) {
+    const saved = localStorage.getItem(storageKey(subject));
+    if (saved) return JSON.parse(saved);
+    return structuredClone(defaultFlashcards[subject]);
 }
-
-displayCard();
-
-showBtn.onclick=function(){
-
-if(answer.classList.contains("hidden")){
-
-answer.classList.remove("hidden");
-
-showBtn.innerText="Hide Answer";
-
-}else{
-
-answer.classList.add("hidden");
-
-showBtn.innerText="Show Answer";
-
+function saveFlashcards() {
+    localStorage.setItem(storageKey(currentSubject), JSON.stringify(flashcards));
 }
-
-};
-
-checkBtn.onclick=function(){
-
-let user=userAnswer.value.trim().toLowerCase();
-
-let correct=flashcards[currentIndex].answer.trim().toLowerCase();
-
-if(user==""){
-
-alert("Please type your answer.");
-
-return;
-
+/* ============================================================
+                    SUBJECT SWITCHING
+============================================================ */
+function switchSubject(subject) {
+    currentSubject = subject;
+    flashcards = loadFlashcards(subject);
+    currentIndex = 0;
+    renderCard();
 }
-
-if(user===correct){
-
-result.innerHTML="✅ Correct!";
-
-result.style.color="green";
-
-}else{
-
-result.innerHTML="❌ Incorrect!";
-
-result.style.color="red";
-
-}
-
-};
-
-nextBtn.onclick=function(){
-
-currentIndex++;
-
-if(currentIndex>=flashcards.length){
-
-currentIndex=0;
-
-}
-
-displayCard();
-
-};
-
-prevBtn.onclick=function(){
-
-currentIndex--;
-
-if(currentIndex<0){
-
-currentIndex=flashcards.length-1;
-
-}
-
-displayCard();
-
-};
-
-addBtn.onclick=function(){
-
-let q=questionInput.value.trim();
-
-let a=answerInput.value.trim();
-
-if(q==""||a==""){
-
-alert("Please enter question and answer.");
-
-return;
-
-}
-
-flashcards.push({
-
-question:q,
-
-answer:a
-
+/* ============================================================
+                    NAVIGATION TABS
+============================================================ */
+const navTabs = document.querySelectorAll(".nav-tab");
+navTabs.forEach(tab => {
+    tab.addEventListener("click", () => {
+        navTabs.forEach(button => button.classList.remove("active"));
+        tab.classList.add("active");
+        switchSubject(tab.dataset.subject);
+    });
 });
+/* ============================================================
+                    INITIAL DATA
+============================================================ */
+flashcards = loadFlashcards(currentSubject);
+/* ============================================================
+                    DOM ELEMENTS
+============================================================ */
+const question = document.getElementById("question");
+const answer = document.getElementById("answer");
+const userAnswer = document.getElementById("userAnswer");
+const result = document.getElementById("result");
+const hintText = document.getElementById("hintText");
+const checkBtn = document.getElementById("checkBtn");
+const hintBtn = document.getElementById("hintBtn");
+const showBtn = document.getElementById("showBtn");
+const prevBtn = document.getElementById("prevBtn");
+const nextBtn = document.getElementById("nextBtn");
+const questionInput = document.getElementById("questionInput");
+const answerInput = document.getElementById("answerInput");
+const hintInput = document.getElementById("hintInput");
+const addBtn = document.getElementById("addBtn");
+const editBtn = document.getElementById("editBtn");
+const deleteBtn = document.getElementById("deleteBtn");
+/* ============================================================
+                    UTILITY FUNCTIONS
+============================================================ */
+function normalize(text) {
+    return text.trim().replace(/\s+/g, " ").toLowerCase();
+}
+function generateHint(answerText) {
+    if (!answerText) return "";
+    return `Starts with "${answerText.substring(0, 2)}" and contains ${answerText.length} characters.`;
+}
+function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
+/* ============================================================
+                    RESET CARD
+============================================================ */
+function resetCard() {
+    userAnswer.value = "";
+    result.textContent = "";
+    result.style.color = "";
+    answer.classList.add("hidden");
+    hintText.classList.add("hidden");
+    hintText.textContent = "";
+    answer.textContent = "";
+    showBtn.classList.add("hidden");
+    showBtn.textContent = "Show Answer";
+    checkBtn.disabled = false;
+    hintBtn.disabled = false;
+    userAnswer.disabled = false;
+}
+/* ============================================================
+                    RENDER CARD
+============================================================ */
+function renderCard() {
+    cardAttempted = false;
+    if (flashcards.length === 0) {
+        question.textContent = "No flashcards available.";
+        resetCard();
+        return;
+    }
+    const card = flashcards[currentIndex];
+    question.textContent = card.question;
+    answer.textContent=`Correct Answer: ${card.answer}`;
+    questionInput.value = card.question;
+    answerInput.value = card.answer;
+    hintInput.value=card.hint || "";
+    resetCard();
+}
+/* ============================================================
+                    MOVE CARDS
+============================================================ */
+function nextCard() {
+    currentIndex++;
+    if (currentIndex >= flashcards.length) currentIndex = 0;
+    renderCard();
+}
+function previousCard() {
+    currentIndex--;
+    if (currentIndex < 0) currentIndex = flashcards.length - 1;
+    renderCard();
+}
+/* ============================================================
+                    HINT
+============================================================ */
+hintBtn.addEventListener("click", () => {
+    const card = flashcards[currentIndex];
+    hintText.classList.remove("hidden");
+    hintText.textContent = card.hint?.trim() ? card.hint : generateHint(card.answer);
+});
+/* ============================================================
+                    SHOW ANSWER
+============================================================ */
+showBtn.addEventListener("click", () => {
+    answer.classList.toggle("hidden");
+    showBtn.textContent = answer.classList.contains("hidden") ? "Show Answer" : "Hide Answer";
+});
+/* ============================================================
+                    NAVIGATION
+============================================================ */
+nextBtn.addEventListener("click", () => {
+    if (isTimedMode) return;
+    nextCard();
+});
+prevBtn.addEventListener("click", () => {
+    if (isTimedMode) return;
+    previousCard();
+});
+/* ============================================================
+                KEYBOARD SUPPORT
+============================================================ */
+userAnswer.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+        e.preventDefault();
+        checkAnswer();
+    }
+});
+/* ============================================================
+                INITIAL RENDER
+============================================================ */
+renderCard();
+/* ============================================================
+                    QUIZ HELPERS
+============================================================ */
+function enableQuiz() {
+    checkBtn.disabled = false;
+    hintBtn.disabled = false;
+    userAnswer.disabled = false;
+}
+function disableQuiz() {
+    checkBtn.disabled = true;
+    hintBtn.disabled = true;
+    userAnswer.disabled = true;
+}
+function updateCard() {
+    setTimeout(() => {
+        nextCard();
+    }, 800);
+}
+/* ============================================================
+                    ANSWER CHECKING
+============================================================ */
+function checkAnswer() {
+    if (flashcards.length === 0) return;
+    const user = normalize(userAnswer.value);
+    if (user === "") {
+        alert("Please enter your answer.");
+        return;
+    }
+    const correct = normalize(flashcards[currentIndex].answer);
+    if (user === correct) {
+        handleCorrect();
+    } else {
+        handleWrong();
+    }
+}
+/* ============================================================
+                    CORRECT ANSWER
+============================================================ */
+function handleCorrect() {
+    result.textContent = "✅ Correct!";
+    result.style.color = "#16a34a";
+    disableQuiz();
+    showBtn.classList.add("hidden");
 
-saveCards();
+    if (isTimedMode && !cardAttempted) {
+        timedCorrect++;
+        timedAttempted++;
+        cardAttempted = true;
+        updateTimedStats();
+    }
 
-questionInput.value="";
+    updateCard();
+}
+/* ============================================================
+                    WRONG ANSWER
+============================================================ */
+function handleWrong() {
+    result.textContent = "❌ Incorrect!";
+    result.style.color = "#dc2626";
+    showBtn.classList.remove("hidden");
 
-answerInput.value="";
+    if (isTimedMode && !cardAttempted) {
+        timedWrong++;
+        timedAttempted++;
+        cardAttempted = true;
+        updateTimedStats();
+    }
 
-currentIndex=flashcards.length-1;
+    disableQuiz();
+    setTimeout(() => {
+        updateCard();
+    }, 1200);
+}
+/* ============================================================
+                    BUTTON EVENT
+============================================================ */
+checkBtn.addEventListener("click", checkAnswer);
+/* ============================================================
+                    TIMED MODE ELEMENTS
+============================================================ */
+const timedSetup = document.getElementById("timed-setup");
+const timedStats = document.getElementById("timed-stats");
+const timerOptions = document.getElementById("timer-options");
+const startTimedBtn = document.getElementById("start-timed-btn");
+const countdown = document.getElementById("countdown");
+const timedCorrectText = document.getElementById("timed-correct");
+const timedWrongText = document.getElementById("timed-wrong");
+const timedAttemptedText = document.getElementById("timed-attempted");
+const timedAccuracyText = document.getElementById("timed-accuracy");
+const bestScoreText = document.getElementById("best-timed-score");
+const modal = document.getElementById("results-modal");
+const finalScore = document.getElementById("final-score");
+const finalCorrect = document.getElementById("final-correct");
+const finalWrong = document.getElementById("final-wrong");
+const finalAccuracy = document.getElementById("final-accuracy");
+const finalBest = document.getElementById("final-best-score");
+const playAgainBtn = document.getElementById("play-again-btn");
+const closeModalBtn = document.getElementById("close-modal-btn");
+/* ============================================================
+                    STATISTICS
+============================================================ */
+function updateTimedStats() {
+    timedCorrectText.textContent = timedCorrect;
+    timedWrongText.textContent = timedWrong;
+    timedAttemptedText.textContent = timedAttempted;
+    const accuracy = timedAttempted === 0 ? 0 : Math.round((timedCorrect / timedAttempted) * 100);
+    timedAccuracyText.textContent=`${accuracy}%`;
+}
+/* ============================================================
+                    BEST SCORE
+============================================================ */
+function getBestScore() {
+    return Number(localStorage.getItem("bestTimedScore") || 0);
+}
+function loadBestScore() {
+    bestScoreText.textContent = getBestScore();
+}
+function saveBestScore(score) {
+    if (score > getBestScore()) localStorage.setItem("bestTimedScore", score);
+}
+/* ============================================================
+                    TIMER
+============================================================ */
+function startTimer() {
+    timer = setInterval(() => {
+        timeLeft--;
+        countdown.textContent = timeLeft;
+        if (timeLeft <= 0) {
+            endTimedMode();
+        }
+    }, 1000);
+}
+/* ============================================================
+                    START TIMED MODE
+============================================================ */
+function startTimedMode() {
+    isTimedMode = true;
+    timedCorrect = 0;
+    timedWrong = 0;
+    timedAttempted = 0;
+    clearInterval(timer);
+    currentIndex = 0;
+    totalTime = Number(timerOptions.value);
+    timeLeft = totalTime;
+    countdown.textContent = timeLeft;
+    originalFlashcards = structuredClone(flashcards);
+    shuffle(flashcards);
+    timedSetup.hidden = true;
+    timedStats.hidden = false;
+    setEditingState(true);
+    updateTimedStats();
+    renderCard();
+    startTimer();
+}
+/* ============================================================
+                    END TIMED MODE
+============================================================ */
+function endTimedMode() {
+    clearInterval(timer);
+    isTimedMode = false;
+    disableQuiz();
+    const accuracy = timedAttempted === 0 ? 0 : Math.round((timedCorrect / timedAttempted) * 100);
+    saveBestScore(timedCorrect);
+    finalScore.textContent = timedCorrect;
+    finalCorrect.textContent = timedCorrect;
+    finalWrong.textContent = timedWrong;
+    finalAccuracy.textContent=`${accuracy}%`;
+    finalBest.textContent = getBestScore();
+    loadBestScore();
+    flashcards = structuredClone(originalFlashcards);
+    currentIndex = 0;
+    modal.hidden = false;
+    modal.classList.add("active");
+}
+/* ============================================================
+                    CLOSE MODAL
+============================================================ */
+function closeModal() {
+    modal.classList.remove("active");
+    setTimeout(() => {
+        modal.hidden = true;
+        timedSetup.hidden = false;
+        timedStats.hidden = true;
+        enableQuiz();
+        setEditingState(false);
+        renderCard();
+    }, 250);
+}
+/* ============================================================
+                    TIMED EVENTS
+============================================================ */
+startTimedBtn.addEventListener("click", startTimedMode);
+playAgainBtn.addEventListener("click", () => {
+        closeModal();
+        startTimedMode();
+});
+closeModalBtn.addEventListener("click", closeModal);
+modal.addEventListener("click", (e) => {
+    if (e.target === modal) {
+        closeModal();
+    }
+});
+/* ============================================================
+                    CRUD
+============================================================ */
+function addFlashcard() {
+    const question = questionInput.value.trim();
+    const answer = answerInput.value.trim();
+    const hint = hintInput.value.trim();
+    if (!question || !answer) {
+        alert("Question and Answer are required.");
+        return;
+    }
+    flashcards.push({ question, answer, hint });
+    saveFlashcards();
+    currentIndex = flashcards.length - 1;
+    renderCard();
+}
+function editFlashcard() {
+    if (flashcards.length === 0) return;
+    const question = questionInput.value.trim();
+    const answer = answerInput.value.trim();
+    const hint = hintInput.value.trim();
+    if (!question || !answer) {
+        alert("Question and Answer are required.");
+        return;
+    }
+    flashcards[currentIndex] = { question, answer, hint };
+    saveFlashcards();
+    renderCard();
+}
+function deleteFlashcard() {
+    if (flashcards.length === 1) {
+        alert("At least one flashcard must exist.");
+        return;
+    }
+    if (!confirm("Delete this flashcard?")) return;
+    flashcards.splice(currentIndex, 1);
+    if (currentIndex >= flashcards.length) currentIndex = flashcards.length - 1;
+    saveFlashcards();
+    renderCard();
+}
+/* ============================================================
+                    CRUD EVENTS
+============================================================ */
+addBtn.addEventListener("click", addFlashcard);
+editBtn.addEventListener("click", editFlashcard);
+deleteBtn.addEventListener("click", deleteFlashcard);
+/* ============================================================
+                    EDITING STATE
+============================================================ */
+function setEditingState(disabled) {
+    questionInput.disabled = disabled;
+    answerInput.disabled = disabled;
+    hintInput.disabled = disabled;
+    addBtn.disabled = disabled;
+    editBtn.disabled = disabled;
+    deleteBtn.disabled = disabled;
+    prevBtn.disabled = disabled;
+    nextBtn.disabled = disabled;
+}
+/* ============================================================
+                    INITIALIZATION
+============================================================ */
+loadBestScore();
+setEditingState(false);
+renderCard();
 
-displayCard();
+/* ============================================================
+                    THEME TOGGLE
+============================================================ */
+const themeToggle = document.getElementById("themeToggle");
+const themeIcon = document.querySelector(".theme-icon");
 
-};
+// Check for saved theme preference or default to light
+const savedTheme = localStorage.getItem("theme") || "light";
+const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+const initialTheme = savedTheme === "dark" || (savedTheme === null && prefersDark) ? "dark" : "light";
 
-editBtn.onclick=function(){
+// Apply initial theme
+document.documentElement.setAttribute("data-theme", initialTheme);
+updateThemeIcon(initialTheme);
 
-let q=questionInput.value.trim();
-
-let a=answerInput.value.trim();
-
-if(q==""||a==""){
-
-alert("Please enter updated question and answer.");
-
-return;
-
+// Toggle theme function
+function toggleTheme() {
+    const currentTheme = document.documentElement.getAttribute("data-theme");
+    const newTheme = currentTheme === "dark" ? "light" : "dark";
+    
+    document.documentElement.setAttribute("data-theme", newTheme);
+    localStorage.setItem("theme", newTheme);
+    updateThemeIcon(newTheme);
 }
 
-flashcards[currentIndex].question=q;
-
-flashcards[currentIndex].answer=a;
-
-saveCards();
-
-displayCard();
-
-questionInput.value="";
-
-answerInput.value="";
-
-};
-
-deleteBtn.onclick=function(){
-
-if(flashcards.length==1){
-
-alert("At least one flashcard is required.");
-
-return;
-
+// Update icon based on theme
+function updateThemeIcon(theme) {
+    if (themeIcon) {
+        themeIcon.textContent = theme === "dark" ? "☀️" : "🌙";
+    }
 }
 
-flashcards.splice(currentIndex,1);
-
-if(currentIndex>=flashcards.length){
-
-currentIndex=flashcards.length-1;
-
+// Add event listener to toggle button
+if (themeToggle) {
+    themeToggle.addEventListener("click", toggleTheme);
 }
 
-saveCards();
-
-displayCard();
-
-};
+// Listen for system theme changes
+window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) => {
+    if (!localStorage.getItem("theme")) {
+        const newTheme = e.matches ? "dark" : "light";
+        document.documentElement.setAttribute("data-theme", newTheme);
+        updateThemeIcon(newTheme);
+    }
+});

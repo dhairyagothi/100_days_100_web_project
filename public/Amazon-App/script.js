@@ -788,25 +788,17 @@ document.addEventListener("DOMContentLoaded", () => {
     // BACK TO TOP
     // ==========================================
 
-    const topBtn =
-        document.createElement("button");
-
-    topBtn.innerHTML = "↑";
-
-    topBtn.classList.add("top-btn");
-
-    document.body.appendChild(topBtn);
+    const topBtn = document.getElementById("scrollToTopBtn");
 
     window.addEventListener("scroll", () => {
 
-        if (window.scrollY > 300) {
+    if (window.scrollY > 300) {
+        topBtn.style.display = "block";
+    } else {
+        topBtn.style.display = "none";
+    }
 
-            topBtn.style.display = "block";
-
-        }
-
-    });
-
+});
     topBtn.addEventListener("click", () => {
 
         window.scrollTo({

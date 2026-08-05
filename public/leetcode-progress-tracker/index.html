@@ -1,241 +1,420 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LeetCode Progress Tracker</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+</head>
+<body>
+  <!-- Animated Background -->
+  <div class="bg-animation">
+    <div class="bg-circle c1"></div>
+    <div class="bg-circle c2"></div>
+    <div class="bg-circle c3"></div>
+  </div>
 
-    <title>LeetCode Progress Tracker</title>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="nav-brand">
+      <img src="https://leetcode.com/favicon.ico" alt="LC" class="nav-logo"/>
+      <span>LeetCode Tracker</span>
+    </div>
+    <div class="nav-actions">
+      <button class="btn-icon" id="themeToggle" title="Toggle Theme">
+        <i class="fas fa-moon"></i>
+      </button>
+      <button class="btn-icon" id="exportBtn" title="Export Data">
+        <i class="fas fa-download"></i>
+      </button>
+      <button class="btn-icon" id="resetBtn" title="Reset All Data">
+        <i class="fas fa-trash-alt"></i>
+      </button>
+    </div>
+  </nav>
 
-    <link rel="stylesheet" href="style.css" />
+  <main class="container">
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Hero Section -->
+    <section class="hero">
+      <h1 class="hero-title">Track Your <span class="gradient-text">LeetCode</span> Journey</h1>
+      <p class="hero-sub">Monitor progress, set goals, and crush your coding interview prep.</p>
+    </section>
 
-    <link
-      href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
-      rel="stylesheet"
-    />
-  </head>
-
-  <body>
-    <!-- THEME TOGGLE -->
-
-    <button id="themeToggle" class="theme-toggle">
-      <i class="ri-moon-line"></i>
-    </button>
-
-    <div class="container">
-      <!-- HERO -->
-
-      <section class="hero">
-        <div class="hero-content">
-          <span class="badge"> DSA Analytics Dashboard </span>
-
-          <h1>LeetCode Progress Tracker</h1>
-
-          <p>
-            Track your coding journey, monitor streaks, analyze problem
-            difficulty and stay consistent with interview preparation.
-          </p>
+    <!-- Stats Overview Cards -->
+    <section class="stats-grid">
+      <div class="stat-card total">
+        <div class="stat-icon"><i class="fas fa-code"></i></div>
+        <div class="stat-info">
+          <span class="stat-number" id="totalSolved">0</span>
+          <span class="stat-label">Total Solved</span>
         </div>
-      </section>
-
-      <!-- LIVE SEARCH -->
-
-      <section class="username-section">
-        <div class="username-container">
-          <div class="input-wrapper">
-            <i class="ri-user-line"></i>
-            <input
-              type="text"
-              id="leetcodeUsername"
-              placeholder="Enter LeetCode username"
-              required
-            />
-          </div>
-          <button id="fetchStatsBtn">
-            <i class="ri-refresh-line"></i> Fetch Live Analytics
-          </button>
-        </div>
-        <div id="loadingIndicator" class="loading-indicator hidden">
-          <div class="spinner"></div>
-          <span>Fetching live LeetCode stats and skill analytics...</span>
-        </div>
-        <div id="errorMessage" class="error-message hidden"></div>
-      </section>
-
-      <!-- PROFILE DETAILS -->
-
-      <div id="userProfileCard" class="profile-card hidden">
-        <img id="userAvatar" src="" alt="Avatar" />
-        <div class="profile-info">
-          <h2 id="userRealName">User Real Name</h2>
-          <p id="userUsername">@username</p>
+        <div class="stat-ring">
+          <svg viewBox="0 0 36 36">
+            <path class="ring-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+            <path class="ring-fill total-ring" id="totalRing" stroke-dasharray="0, 100"
+              d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+          </svg>
+          <span class="ring-pct" id="totalPct">0%</span>
         </div>
       </div>
 
-      <!-- STATS -->
-
-      <section class="stats-grid">
-        <div class="stat-card">
-          <h3>Total Solved</h3>
-          <p id="totalSolved">0</p>
+      <div class="stat-card easy">
+        <div class="stat-icon"><i class="fas fa-seedling"></i></div>
+        <div class="stat-info">
+          <span class="stat-number" id="easySolved">0</span>
+          <span class="stat-label">Easy Solved</span>
+          <span class="stat-sub" id="easyGoalDisplay">/ 0 goal</span>
         </div>
-
-        <div class="stat-card easy">
-          <h3>Easy</h3>
-          <p id="easySolved">0</p>
+        <div class="stat-ring">
+          <svg viewBox="0 0 36 36">
+            <path class="ring-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+            <path class="ring-fill easy-ring" id="easyRing" stroke-dasharray="0, 100"
+              d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+          </svg>
+          <span class="ring-pct" id="easyPct">0%</span>
         </div>
+      </div>
 
-        <div class="stat-card medium">
-          <h3>Medium</h3>
-          <p id="mediumSolved">0</p>
+      <div class="stat-card medium">
+        <div class="stat-icon"><i class="fas fa-fire"></i></div>
+        <div class="stat-info">
+          <span class="stat-number" id="mediumSolved">0</span>
+          <span class="stat-label">Medium Solved</span>
+          <span class="stat-sub" id="mediumGoalDisplay">/ 0 goal</span>
         </div>
-
-        <div class="stat-card hard">
-          <h3>Hard</h3>
-          <p id="hardSolved">0</p>
+        <div class="stat-ring">
+          <svg viewBox="0 0 36 36">
+            <path class="ring-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+            <path class="ring-fill medium-ring" id="mediumRing" stroke-dasharray="0, 100"
+              d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+          </svg>
+          <span class="ring-pct" id="mediumPct">0%</span>
         </div>
+      </div>
 
-        <div class="stat-card streak">
-          <h3>Current Streak</h3>
-          <p id="streakCount">0</p>
+      <div class="stat-card hard">
+        <div class="stat-icon"><i class="fas fa-skull"></i></div>
+        <div class="stat-info">
+          <span class="stat-number" id="hardSolved">0</span>
+          <span class="stat-label">Hard Solved</span>
+          <span class="stat-sub" id="hardGoalDisplay">/ 0 goal</span>
         </div>
-
-        <div class="stat-card ranking">
-          <h3>Global Ranking</h3>
-          <p id="rankingCount">N/A</p>
+        <div class="stat-ring">
+          <svg viewBox="0 0 36 36">
+            <path class="ring-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+            <path class="ring-fill hard-ring" id="hardRing" stroke-dasharray="0, 100"
+              d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+          </svg>
+          <span class="ring-pct" id="hardPct">0%</span>
         </div>
+      </div>
+    </section>
 
-        <div class="stat-card acceptance">
-          <h3>Acceptance Rate</h3>
-          <p id="acceptanceRate">N/A</p>
+    <!-- Streak & Rank Row -->
+    <section class="meta-row">
+      <div class="meta-card streak-card">
+        <i class="fas fa-bolt meta-icon streak-icon"></i>
+        <div>
+          <div class="meta-value" id="streakCount">0</div>
+          <div class="meta-label">Day Streak</div>
         </div>
-      </section>
+        <div class="streak-flame" id="streakFlame">🔥</div>
+      </div>
 
-      <!-- SUBMISSION HEATMAP -->
+      <div class="meta-card rank-card">
+        <i class="fas fa-trophy meta-icon rank-icon"></i>
+        <div>
+          <div class="meta-value" id="userRank">—</div>
+          <div class="meta-label">Current Rank</div>
+        </div>
+      </div>
 
-      <section class="heatmap-section hidden" id="heatmapSection">
-        <h2>Submission Heatmap</h2>
+      <div class="meta-card acceptance-card">
+        <i class="fas fa-check-double meta-icon acc-icon"></i>
+        <div>
+          <div class="meta-value" id="acceptanceRate">0%</div>
+          <div class="meta-label">Acceptance Rate</div>
+        </div>
+      </div>
 
-        <div class="calendar-wrapper">
-          <div class="calendar-labels-y">
-            <span>Sun</span>
-            <span>Mon</span>
-            <span>Tue</span>
-            <span>Wed</span>
-            <span>Thu</span>
-            <span>Fri</span>
-            <span>Sat</span>
+      <div class="meta-card time-card">
+        <i class="fas fa-clock meta-icon time-icon"></i>
+        <div>
+          <div class="meta-value" id="avgTime">0 min</div>
+          <div class="meta-label">Avg. Time/Problem</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Content Grid -->
+    <div class="main-grid">
+
+      <!-- LEFT: Add Problem + Goals -->
+      <div class="left-panel">
+
+        <!-- Add Problem Form -->
+        <div class="card form-card">
+          <div class="card-header">
+            <i class="fas fa-plus-circle"></i>
+            <h2>Log a Problem</h2>
           </div>
-
-          <div class="calendar-container">
-            <div class="calendar-months" id="calendarMonths">
-              <!-- Month labels will be drawn dynamically -->
+          <form id="problemForm" autocomplete="off">
+            <div class="form-row">
+              <div class="form-group full">
+                <label for="problemName">Problem Name / Number</label>
+                <input type="text" id="problemName" placeholder="e.g. Two Sum (#1)" required />
+              </div>
             </div>
 
-            <div class="calendar-grid" id="calendarGrid">
-              <!-- Grid columns will be drawn dynamically -->
+            <div class="form-row two-col">
+              <div class="form-group">
+                <label for="difficulty">Difficulty</label>
+                <div class="custom-select-wrap">
+                  <select id="difficulty">
+                    <option value="easy">🟢 Easy</option>
+                    <option value="medium" selected>🟡 Medium</option>
+                    <option value="hard">🔴 Hard</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="topic">Topic / Tag</label>
+                <div class="custom-select-wrap">
+                  <select id="topic">
+                    <option value="Array">Array</option>
+                    <option value="String">String</option>
+                    <option value="Linked List">Linked List</option>
+                    <option value="Tree">Tree</option>
+                    <option value="Graph">Graph</option>
+                    <option value="DP">Dynamic Programming</option>
+                    <option value="Backtracking">Backtracking</option>
+                    <option value="Binary Search">Binary Search</option>
+                    <option value="Sliding Window">Sliding Window</option>
+                    <option value="Two Pointers">Two Pointers</option>
+                    <option value="Stack">Stack</option>
+                    <option value="Queue">Queue</option>
+                    <option value="Heap">Heap / Priority Queue</option>
+                    <option value="Hash Map">Hash Map</option>
+                    <option value="Math">Math</option>
+                    <option value="Greedy">Greedy</option>
+                    <option value="Bit Manipulation">Bit Manipulation</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row two-col">
+              <div class="form-group">
+                <label for="timeTaken">Time Taken (min)</label>
+                <input type="number" id="timeTaken" placeholder="e.g. 25" min="1" max="300"/>
+              </div>
+              <div class="form-group">
+                <label for="attempts">Attempts</label>
+                <input type="number" id="attempts" placeholder="e.g. 2" min="1" max="20"/>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group full">
+                <label for="problemLink">LeetCode URL (optional)</label>
+                <input type="url" id="problemLink" placeholder="https://leetcode.com/problems/..."/>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group full">
+                <label for="notes">Notes / Approach</label>
+                <textarea id="notes" rows="3" placeholder="Write your approach or key takeaways..."></textarea>
+              </div>
+            </div>
+
+            <div class="form-row two-col">
+              <div class="form-group checkbox-group">
+                <label class="toggle-label">
+                  <input type="checkbox" id="needsReview"/>
+                  <span class="toggle-switch"></span>
+                  Needs Review
+                </label>
+              </div>
+              <div class="form-group checkbox-group">
+                <label class="toggle-label">
+                  <input type="checkbox" id="isStarred"/>
+                  <span class="toggle-switch"></span>
+                  ⭐ Starred
+                </label>
+              </div>
+            </div>
+
+            <button type="submit" class="btn-primary" id="submitBtn">
+              <i class="fas fa-plus"></i> Add Problem
+            </button>
+          </form>
+        </div>
+
+        <!-- Goals Card -->
+        <div class="card goals-card">
+          <div class="card-header">
+            <i class="fas fa-bullseye"></i>
+            <h2>Set Goals</h2>
+          </div>
+          <div class="goals-grid">
+            <div class="goal-item">
+              <label>Easy Goal</label>
+              <div class="goal-input-wrap">
+                <input type="number" id="easyGoal" min="0" max="999" value="0"/>
+                <button class="goal-save" data-type="easy"><i class="fas fa-check"></i></button>
+              </div>
+              <div class="goal-bar-wrap">
+                <div class="goal-bar easy-bar" id="easyBar"></div>
+              </div>
+            </div>
+            <div class="goal-item">
+              <label>Medium Goal</label>
+              <div class="goal-input-wrap">
+                <input type="number" id="mediumGoal" min="0" max="999" value="0"/>
+                <button class="goal-save" data-type="medium"><i class="fas fa-check"></i></button>
+              </div>
+              <div class="goal-bar-wrap">
+                <div class="goal-bar medium-bar" id="mediumBar"></div>
+              </div>
+            </div>
+            <div class="goal-item">
+              <label>Hard Goal</label>
+              <div class="goal-input-wrap">
+                <input type="number" id="hardGoal" min="0" max="999" value="0"/>
+                <button class="goal-save" data-type="hard"><i class="fas fa-check"></i></button>
+              </div>
+              <div class="goal-bar-wrap">
+                <div class="goal-bar hard-bar" id="hardBar"></div>
+              </div>
             </div>
           </div>
         </div>
 
-        <div class="calendar-legend">
-          <span>Less</span>
-          <div class="legend-cells">
-            <div class="calendar-day level-0"></div>
-            <div class="calendar-day level-1"></div>
-            <div class="calendar-day level-2"></div>
-            <div class="calendar-day level-3"></div>
-            <div class="calendar-day level-4"></div>
+        <!-- Topic Heatmap -->
+        <div class="card topic-card">
+          <div class="card-header">
+            <i class="fas fa-tags"></i>
+            <h2>Topic Breakdown</h2>
           </div>
-          <span>More</span>
+          <div id="topicChart" class="topic-chart"></div>
         </div>
-      </section>
 
-      <!-- SMART INSIGHTS & RECOMMENDATIONS -->
+      </div>
 
-      <section class="insights-section hidden" id="insightsSection">
-        <h2>Smart Insights & Recommendations</h2>
+      <!-- RIGHT: Problem List -->
+      <div class="right-panel">
 
-        <div class="insights-grid">
-          <div class="insight-card strong-card">
-            <h3><i class="ri-checkbox-circle-fill"></i> Strongest Topics</h3>
-            <p id="strongAreas">Analyze stats to identify your strengths.</p>
+        <!-- Filter & Search Bar -->
+        <div class="card filter-card">
+          <div class="filter-bar">
+            <div class="search-wrap">
+              <i class="fas fa-search search-icon"></i>
+              <input type="text" id="searchInput" placeholder="Search problems..."/>
+              <button class="clear-search" id="clearSearch"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="filter-chips">
+              <button class="chip active" data-filter="all">All</button>
+              <button class="chip easy-chip" data-filter="easy">Easy</button>
+              <button class="chip medium-chip" data-filter="medium">Medium</button>
+              <button class="chip hard-chip" data-filter="hard">Hard</button>
+              <button class="chip review-chip" data-filter="review"><i class="fas fa-redo"></i> Review</button>
+              <button class="chip star-chip" data-filter="starred"><i class="fas fa-star"></i> Starred</button>
+            </div>
+            <div class="sort-wrap">
+              <select id="sortSelect">
+                <option value="newest">Newest First</option>
+                <option value="oldest">Oldest First</option>
+                <option value="name">Name A–Z</option>
+                <option value="difficulty">Difficulty</option>
+                <option value="time">Time Taken</option>
+              </select>
+            </div>
           </div>
+        </div>
 
-          <div class="insight-card weak-card">
-            <h3><i class="ri-error-warning-fill"></i> Focus Areas (Weakest)</h3>
-            <p id="weakAreas">
-              Analyze stats to identify topics needing practice.
-            </p>
+        <!-- Problem List -->
+        <div id="problemList" class="problem-list">
+          <div class="empty-state" id="emptyState">
+            <div class="empty-icon">📭</div>
+            <p>No problems logged yet.</p>
+            <span>Add your first problem using the form!</span>
           </div>
         </div>
 
-        <div class="recommendations-container">
-          <h3><i class="ri-lightbulb-fill"></i> Suggested Problems for You</h3>
+        <!-- Pagination -->
+        <div class="pagination" id="pagination"></div>
 
-          <div id="recommendationsList" class="recommendations-list">
-            <!-- Suggested problems will load dynamically here -->
-          </div>
-        </div>
-      </section>
-
-      <!-- ADD PROBLEM (MANUAL OVERRIDE) -->
-
-      <section class="form-section">
-        <h2>Manual Tracker Override</h2>
-
-        <form id="problemForm">
-          <input
-            type="text"
-            id="problemName"
-            placeholder="Enter problem name"
-            required
-          />
-
-          <select id="difficulty">
-            <option value="Easy">Easy</option>
-            <option value="Medium">Medium</option>
-            <option value="Hard">Hard</option>
-          </select>
-
-          <button type="submit">Add Problem</button>
-        </form>
-      </section>
-
-      <!-- CHARTS -->
-
-      <section class="charts-grid">
-        <div class="chart-card">
-          <h2>Difficulty Breakdown</h2>
-
-          <canvas id="difficultyChart"></canvas>
-        </div>
-
-        <div class="chart-card">
-          <h2>Topic Performance</h2>
-
-          <canvas id="topicChart"></canvas>
-        </div>
-
-        <div class="chart-card full-width">
-          <h2>Historical Progress Trends</h2>
-
-          <canvas id="progressChart"></canvas>
-        </div>
-      </section>
-
-      <!-- RECENT -->
-
-      <section class="recent-section">
-        <div class="recent-header">
-          <h2>Recent Problems</h2>
-        </div>
-
-        <div id="problemList" class="problem-list"></div>
-      </section>
+      </div>
     </div>
 
-    <script src="script.js"></script>
-  </body>
+    <!-- Activity Heatmap -->
+    <section class="card heatmap-card">
+      <div class="card-header">
+        <i class="fas fa-calendar-alt"></i>
+        <h2>Activity Heatmap <span class="heatmap-year" id="heatmapYear"></span></h2>
+      </div>
+      <div id="heatmapGrid" class="heatmap-grid"></div>
+      <div class="heatmap-legend">
+        <span>Less</span>
+        <div class="legend-box l0"></div>
+        <div class="legend-box l1"></div>
+        <div class="legend-box l2"></div>
+        <div class="legend-box l3"></div>
+        <div class="legend-box l4"></div>
+        <span>More</span>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Problem Detail Modal -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal" id="problemModal">
+      <button class="modal-close" id="modalClose"><i class="fas fa-times"></i></button>
+      <div class="modal-header">
+        <span class="modal-badge" id="modalDifficulty"></span>
+        <h2 id="modalTitle"></h2>
+        <div class="modal-meta">
+          <span id="modalTopic"></span>
+          <span id="modalDate"></span>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="modal-stats">
+          <div class="m-stat"><i class="fas fa-clock"></i><span id="modalTime"></span></div>
+          <div class="m-stat"><i class="fas fa-redo"></i><span id="modalAttempts"></span></div>
+          <div class="m-stat" id="modalStarWrap"><i class="fas fa-star"></i><span>Starred</span></div>
+          <div class="m-stat" id="modalReviewWrap"><i class="fas fa-bookmark"></i><span>Needs Review</span></div>
+        </div>
+        <div class="modal-notes" id="modalNotesWrap">
+          <h4><i class="fas fa-sticky-note"></i> Notes</h4>
+          <p id="modalNotes"></p>
+        </div>
+        <a class="btn-lc-link" id="modalLink" href="#" target="_blank">
+          <i class="fas fa-external-link-alt"></i> Open on LeetCode
+        </a>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-edit" id="modalEdit"><i class="fas fa-pen"></i> Edit</button>
+        <button class="btn-delete" id="modalDelete"><i class="fas fa-trash"></i> Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast">
+    <i class="toast-icon fas fa-check-circle"></i>
+    <span id="toastMsg"></span>
+  </div>
+
+  <!-- Confetti Canvas -->
+  <canvas id="confettiCanvas"></canvas>
+
+  <script src="script.js"></script>
+</body>
 </html>

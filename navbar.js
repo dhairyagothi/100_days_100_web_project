@@ -163,10 +163,6 @@
   const customCursorEnabled =
     safeStorage.getItem("customCursorEnabled") !== "false";
   const cursorBtn = `
-    <button class="btn btn-ghost btn-sm" id="cursorToggleNav" aria-label="Toggle custom cursor (currently ${customCursorEnabled ? "Custom" : "Default"})">
-      <span class="mobile-nav-icon"><i class="fas ${customCursorEnabled ? "fa-circle-notch" : "fa-mouse-pointer"}" aria-hidden="true"></i></span>
-      Cursor: ${customCursorEnabled ? "Custom" : "Default"}
-    </button>
   `;
 
   let navButtonsHTML = "";

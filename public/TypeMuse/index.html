@@ -1,6 +1,313 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:'Inter',sans-serif;
+    background:linear-gradient(-45deg,#0f172a,#1e293b,#312e81,#0f766e);
+    background-size:400% 400%;
+    animation:bg 12s ease infinite;
+    color:white;
+    overflow-x:hidden;
+}
+
+@keyframes bg{
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
+}
+
+.wrap{
+    width:90%;
+    max-width:1300px;
+    margin:auto;
+}
+
+.nav{
+    position:sticky;
+    top:20px;
+    z-index:100;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:18px 30px;
+    margin:25px 0;
+    border-radius:18px;
+    backdrop-filter:blur(20px);
+    background:rgba(255,255,255,.08);
+    border:1px solid rgba(255,255,255,.15);
+}
+
+.logo{
+    font-size:32px;
+    text-decoration:none;
+    color:white;
+    font-weight:800;
+}
+
+.nav-links{
+    display:flex;
+    gap:15px;
+    flex-wrap:wrap;
+}
+
+.pill{
+    padding:12px 22px;
+    border:none;
+    border-radius:50px;
+    background:rgba(255,255,255,.1);
+    color:white;
+    cursor:pointer;
+    transition:.35s;
+    text-decoration:none;
+}
+
+.pill:hover{
+    transform:translateY(-5px);
+    background:#7c3aed;
+    box-shadow:0 12px 30px rgba(124,58,237,.5);
+}
+
+.hero{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:60px;
+    align-items:center;
+    padding:80px 0;
+}
+
+.animated-title{
+    font-size:110px;
+    font-weight:900;
+    background:linear-gradient(90deg,#60a5fa,#a855f7,#ec4899);
+    -webkit-background-clip:text;
+    color:transparent;
+    animation:float 3s ease-in-out infinite;
+}
+
+@keyframes float{
+0%,100%{transform:translateY(0);}
+50%{transform:translateY(-10px);}
+}
+
+.subtitle{
+    margin-top:20px;
+    font-size:18px;
+    line-height:1.8;
+    color:#d1d5db;
+}
+
+.word-card{
+    margin-top:30px;
+    padding:30px;
+    border-radius:20px;
+    background:rgba(255,255,255,.08);
+    backdrop-filter:blur(18px);
+    border:1px solid rgba(255,255,255,.15);
+    transition:.4s;
+}
+
+.word-card:hover{
+    transform:translateY(-10px);
+}
+
+.section-head{
+    margin:80px 0 30px;
+}
+
+.section-head h2{
+    font-size:46px;
+    font-weight:800;
+    margin-bottom:10px;
+}
+
+.section-head p{
+    color:#cbd5e1;
+}
+
+.gallery{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:25px;
+}
+
+.card,
+.panel,
+.pair{
+    position:relative;
+    padding:30px;
+    border-radius:22px;
+    backdrop-filter:blur(18px);
+    background:rgba(255,255,255,.08);
+    border:1px solid rgba(255,255,255,.15);
+    transition:.4s;
+}
+
+.card:hover,
+.panel:hover,
+.pair:hover{
+    transform:translateY(-12px);
+    box-shadow:0 20px 50px rgba(0,0,0,.35);
+}
+
+.playground{
+    display:grid;
+    grid-template-columns:360px 1fr;
+    gap:30px;
+}
+
+.controls{
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+}
+
+.field{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+input,
+select{
+    padding:12px;
+    border:none;
+    border-radius:12px;
+    background:#ffffff15;
+    color:white;
+    outline:none;
+}
+
+.preview-box{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:420px;
+}
+
+#livePreview{
+    font-size:72px;
+    font-weight:700;
+    text-align:center;
+}
+
+.pairings{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:25px;
+}
+
+.animations{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:25px;
+}
+
+.anim-card{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:220px;
+}
+
+.about{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:25px;
+}
+
+.toast{
+    position:fixed;
+    bottom:30px;
+    right:30px;
+    background:#7c3aed;
+    padding:15px 25px;
+    border-radius:12px;
+    box-shadow:0 10px 30px rgba(0,0,0,.3);
+}
+
+.float-letter{
+    position:absolute;
+    font-size:140px;
+    font-weight:900;
+    opacity:.05;
+    animation:letters 15s linear infinite;
+}
+
+.float-letter:nth-child(1){left:5%;top:5%;}
+.float-letter:nth-child(2){right:10%;top:15%;}
+.float-letter:nth-child(3){left:20%;bottom:10%;}
+.float-letter:nth-child(4){right:15%;bottom:25%;}
+.float-letter:nth-child(5){left:50%;top:50%;}
+
+@keyframes letters{
+0%{transform:translateY(0) rotate(0);}
+50%{transform:translateY(-40px) rotate(10deg);}
+100%{transform:translateY(0) rotate(0);}
+}
+
+::-webkit-scrollbar{
+    width:10px;
+}
+
+::-webkit-scrollbar-track{
+    background:#111827;
+}
+
+::-webkit-scrollbar-thumb{
+    background:#8b5cf6;
+    border-radius:20px;
+}
+
+@media(max-width:900px){
+
+.hero{
+grid-template-columns:1fr;
+text-align:center;
+}
+
+.playground{
+grid-template-columns:1fr;
+}
+
+.animated-title{
+font-size:70px;
+}
+
+.nav{
+flex-direction:column;
+gap:20px;
+}
+
+.nav-links{
+justify-content:center;
+}
+
+}
+
+@media(max-width:600px){
+
+.animated-title{
+font-size:52px;
+}
+
+.section-head h2{
+font-size:34px;
+}
+
+#livePreview{
+font-size:42px;
+}
+
+}
+</style>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TypeMuse — Typography Showcase</title>
