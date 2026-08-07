@@ -260,7 +260,7 @@ function performGoogleSearch(query) {
     `<strong><i class="fa-brands fa-google"></i> Searching Google for:</strong><br>
     <span style="color:#ffa31a; font-size: 1.2em;">"${escapeHtml(query)}"</span><br><br>
     <small style="color: #888;">Opening in a new tab...</small><br><br>
-    <button onclick="performGoogleSearch('${escapeHtml(query)}')" style="background: #ffa31a; color: #1a1a2e; border: none; padding: 10px 20px; border-radius: 25px; cursor: pointer; font-weight: bold;">
+    <button class="search-again-btn" data-query="${escapeHtml(query)}" style="background: #ffa31a; color: #1a1a2e; border: none; padding: 10px 20px; border-radius: 25px; cursor: pointer; font-weight: bold;">
       <i class="fa-brands fa-google"></i> Search Again
     </button>`,
     'success'
@@ -312,7 +312,7 @@ function handleVoiceSearch() {
       `<strong><i class="fa-solid fa-microphone"></i> Voice Search Detected:</strong><br>
       You said: <span style="color:#ffa31a; font-size: 1.2em;">"${escapeHtml(transcript)}"</span><br>
       <small style="color: #888;">Confidence: ${(confidence * 100).toFixed(1)}%</small><br><br>
-      <button onclick="performGoogleSearch('${escapeHtml(transcript)}')" style="background: #ffa31a; color: #1a1a2e; border: none; padding: 10px 20px; border-radius: 25px; cursor: pointer; font-weight: bold; margin-top: 10px;">
+      <button class="search-again-btn" data-query="${escapeHtml(transcript)}" style="background: #ffa31a; color: #1a1a2e; border: none; padding: 10px 20px; border-radius: 25px; cursor: pointer; font-weight: bold; margin-top: 10px;">
         <i class="fa-brands fa-google"></i> Search on Google
       </button>`,
       'success'
@@ -420,6 +420,16 @@ function showResult(message, type = 'success') {
 `;
 
   document.getElementById('closeResult')?.addEventListener('click', hideResult);
+  
+  // Dynamically attach click event listener to search-again buttons
+  const searchAgainBtn = resultBox.querySelector('.search-again-btn');
+  if (searchAgainBtn) {
+    searchAgainBtn.addEventListener('click', () => {
+      const query = searchAgainBtn.getAttribute('data-query');
+      performGoogleSearch(query);
+    });
+  }
+
   resultBox.classList.add('visible');
   resultBox.style.display = 'block';
 
@@ -491,10 +501,14 @@ let isLightMode = JSON.parse(localStorage.getItem("lightMode")) || false;
 function updateTheme() {
   if (isLightMode) {
     document.body.classList.add("light-theme");
-    themeIcon.textContent = "🌙"; // show moon when light mode active
+    if (themeIcon) {
+      themeIcon.textContent = "🌙"; // show moon when light mode active
+    }
   } else {
     document.body.classList.remove("light-theme");
-    themeIcon.textContent = "☀️"; // show sun when dark mode active
+    if (themeIcon) {
+      themeIcon.textContent = "☀️"; // show sun when dark mode active
+    }
   }
 }
 
