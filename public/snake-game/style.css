@@ -1,0 +1,99 @@
+:root {
+    --bg:#0b1220;
+    --text:#ffffff;
+    --accent:#38bdf8;
+    --panel:rgba(255,255,255,0.06);
+}
+
+body.light {
+    --bg:#f1f5f9;
+    --text:#0f172a;
+    --accent:#2563eb;
+    --panel:rgba(0,0,0,0.06);
+}
+
+* {
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial;
+}
+
+body {
+    background:var(--bg);
+    color:var(--text);
+    display:flex;
+    justify-content:center;
+    min-height:100vh;
+}
+
+.game-wrapper {
+    width:100%;
+    max-width:600px;
+    text-align:center;
+    padding:15px;
+}
+
+/* TOP BAR */
+.topbar {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:10px;
+}
+
+.brand {
+    font-size:20px;
+    font-weight:bold;
+    color:var(--accent);
+}
+
+/* HUD */
+.hud {
+    display:flex;
+    justify-content:space-around;
+    background:var(--panel);
+    padding:10px;
+    border-radius:10px;
+    margin-bottom:10px;
+}
+
+/* CANVAS */
+canvas {
+    background:black;
+    border:2px solid var(--accent);
+    border-radius:10px;
+    display:block;
+    margin:0 auto;
+}
+
+/* BUTTONS */
+button {
+    margin:5px;
+    padding:10px 14px;
+    border:none;
+    border-radius:10px;
+    background:var(--accent);
+    color:white;
+    cursor:pointer;
+}
+
+button:hover {
+    transform:scale(1.05);
+}
+
+/* MENU */
+.menu {
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    background:rgba(0,0,0,0.85);
+    padding:25px;
+    border-radius:12px;
+    display:none;
+}
+
+.menu.show {
+    display:block;
+}

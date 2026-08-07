@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="digitalclock.css"/>
+  <script>
+      /* ── Dark-mode bootstrap (issue #8331) ──────────────────────────────
+         The platform sets [data-theme="dark"] on <html> or <body>.
+         This script syncs that attribute with the .dark-mode class so our
+         CSS variables work regardless of which mechanism triggers the change.
+      ──────────────────────────────────────────────────────────────────── */
+      (function () {
+        function applyTheme() {
+          var dark =
+            document.documentElement.getAttribute("data-theme") === "dark" ||
+            document.body.getAttribute("data-theme") === "dark";
+          document.body.classList.toggle("dark-mode", dark);
+          var btn = document.getElementById("dark-mode-toggle");
+          if (btn) btn.textContent = dark ? "☀️" : "🌙";
+        }
+
+        // Apply immediately on parse (before first paint)
+        if (document.body) applyTheme();
+
+        // Re-apply once DOM is ready (catches late body attribute)
+        document.addEventListener("DOMContentLoaded", applyTheme);
+
+        // Watch for the platform changing the attribute at runtime
+        var observer = new MutationObserver(applyTheme);
+        observer.observe(document.documentElement, {
+          attributes: true,
+          attributeFilter: ["data-theme"],
+        });
+        // Also watch body in case the platform targets it
+        document.addEventListener("DOMContentLoaded", function () {
+          observer.observe(document.body, {
+            attributes: true,
+            attributeFilter: ["data-theme"],
+          });
+        });
+      })();
+    </script>
+</head>
+  <body>
+
+    <nav class="navbar">
+      <a href="digitalclock.html">Home</a>
+      <a href="alarms.html">Alarms</a>
+      <a href="history.html">History</a>
+    </nav>
+
+    <main class="clock-app">
+
+      <section class="card" aria-labelledby="alarm-heading">
+
+        <header class="card-header">
+
+          <h2 id="alarm-heading">
+            Alarm Manager
+          </h2>
+
+        </header>
+
+        <form class="alarm-form" id="new-alarm-form">
+
+          <div class="form-field">
+            <label for="alarm-time">
+              Time
+            </label>
+
+            <input type="time" id="alarm-time">
+          </div>
+
+          <div class="form-field">
+
+            <label for="alarm-label">
+              Label
+            </label>
+
+            <input type="text" id="alarm-label" placeholder="Wake Up">
+
+          </div>
+
+          <div class="form-field">
+
+            <label for="alarm-snooze">
+              Snooze
+            </label>
+
+            <select id="alarm-snooze">
+              <option value="5">5 min</option>
+              <option value="10">10 min</option>
+              <option value="15">15 min</option>
+            </select>
+
+          </div>
+
+          <div class="form-actions">
+
+            <button type="button" id="add-alarm-btn" class="btn btn-primary">
+              Add Alarm
+            </button>
+
+            <button type="button" id="clear-all-btn" class="btn btn-danger">
+              Clear All
+            </button>
+
+          </div>
+
+        </form>
+
+        <section>
+
+          <h4>
+            Your Alarms
+          </h4>
+
+          <div class="alarms-list" id="alarms-list">
+          </div>
+
+        </section>
+
+      </section>
+
+    </main>
+
+    <footer class="site-footer">
+      Chronos+
+    </footer>
+
+    <div id="toast" class="toast"></div>
+
+    <div id="alarm-popup" class="alarm-popup hidden">
+
+      <div class="popup-card">
+
+        <h2 id="popup-alarm-title">
+          Alarm
+        </h2>
+
+        <p id="popup-alarm-time"></p>
+
+        <p id="popup-alarm-label"></p>
+
+        <div class="popup-actions">
+
+          <button onclick="snoozeActiveAlarm()">
+            Snooze
+          </button>
+
+          <button onclick="stopActiveAlarm()">
+            Stop
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <audio id="alarm-sound" src="alarm.mp3">
+    </audio>
+
+    <script src="digitalclock.js"></script>
+
+  </body>
+</html>

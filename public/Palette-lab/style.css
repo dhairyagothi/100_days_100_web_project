@@ -1,0 +1,116 @@
+:root{
+  --bg:#f5f7fb;
+  --card:#fff;
+  --text:#222;
+  --primary:#5b7cfa;
+  --border:#dfe5ef;
+  --shadow:0 12px 30px rgba(0,0,0,.08);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:Arial,sans-serif;
+  background:linear-gradient(135deg,#eef2ff,#f9fbff);
+  color:var(--text);
+  min-height:100vh;
+}
+.hero{
+  text-align:center;
+  padding:40px 20px;
+  position:relative;
+}
+.hero h1{font-size:3rem;margin-bottom:10px}
+.hero p{color:#666}
+#themeToggle{
+  position:absolute;right:25px;top:25px;
+  border:none;background:var(--card);padding:10px 14px;
+  border-radius:50%;cursor:pointer;box-shadow:var(--shadow);
+}
+.container{
+  width:min(1200px,92%);
+  margin:auto;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:30px;
+  padding-bottom:50px;
+}
+.upload-card,.palette-section{
+  background:var(--card);
+  border-radius:18px;
+  padding:25px;
+  box-shadow:var(--shadow);
+}
+.drop-zone{
+  border:2px dashed var(--primary);
+  border-radius:16px;
+  min-height:240px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  cursor:pointer;
+  transition:.3s;
+}
+.drop-zone:hover{background:#f4f7ff}
+.drop-zone input{
+  position:absolute;
+  inset:0;
+  opacity:0;
+  cursor:pointer;
+}
+.preview{
+  margin-top:20px;
+  display:flex;
+  justify-content:center;
+}
+.preview img{
+  max-width:100%;
+  max-height:320px;
+  border-radius:14px;
+  display:none;
+}
+.section-title{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+}
+.section-title button,
+.color-card button{
+  background:var(--primary);
+  color:#fff;
+  border:none;
+  padding:10px 16px;
+  border-radius:8px;
+  cursor:pointer;
+}
+.palette-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:18px;
+}
+.color-card{
+  background:#fafafa;
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:14px;
+  text-align:center;
+  transition:.3s;
+}
+.color-card:hover{
+  transform:translateY(-5px);
+  box-shadow:0 10px 20px rgba(0,0,0,.08);
+}
+.swatch{
+  height:90px;
+  border-radius:12px;
+  margin-bottom:12px;
+}
+.color-card p{
+  font-weight:bold;
+  margin-bottom:12px;
+}
+@media(max-width:900px){
+  .container{grid-template-columns:1fr}
+  .hero h1{font-size:2.2rem}
+}

@@ -1,169 +1,170 @@
-# 📖 Dictionary Search Space
+# 📖 Word Dictionary
 
-A modern, premium dictionary web application built with vanilla JavaScript, HTML, and CSS. The application provides fast word lookups, pronunciation playback, synonym and antonym discovery, speech recognition input, and local search history management.
-
-## ✨ Features
-
-### 🔍 Advanced Dictionary Search
-
-* Search any English word instantly.
-* Powered by the Dictionary API.
-* Displays multiple meanings and parts of speech.
-
-### 🎙 Voice Search
-
-* Native browser speech recognition.
-* Speak a word and automatically retrieve its definition.
-* One-click microphone activation.
-
-### 🔊 Pronunciation Audio
-
-* Play pronunciation audio when available.
-* Automatic audio detection from API results.
-
-### 📚 Multiple Meaning Navigation
-
-* Browse through all available meanings.
-* Previous/Next navigation controls.
-* Meaning indexing system.
-
-### 🏷 Linguistic Insights
-
-* Part of speech detection.
-* Phonetic transcription display.
-* Usage examples.
-* Synonyms and antonyms.
-
-### 🕘 Search History
-
-* Stores recent searches locally.
-* Quick re-search via history chips.
-* Clear history functionality.
-* Maximum history size: 15 entries.
-
-### ⌨ Productivity Features
-
-* Press `/` to instantly focus the search field.
-* Enter key support for quick searching.
-* Search term clearing button.
-
-### 🎨 Premium UI
-
-* Modern glassmorphism-inspired design.
-* Animated transitions.
-* Responsive layout.
-* Dynamic status indicators.
+<p align="center">
+  <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white">
+  <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white">
+  <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black">
+  <img src="https://img.shields.io/badge/API-Free%20Dictionary-blue?style=for-the-badge">
+  <img src="https://img.shields.io/badge/Open%20Source-GSSoC-green?style=for-the-badge">
+</p>
 
 ---
 
-## 🚀 Technologies Used
+# 📖 Overview
 
-* HTML5
-* CSS3
-* JavaScript (ES6+)
-* Web Speech API
-* Local Storage API
-* Dictionary API
+Word Dictionary is a responsive web application that allows users to search for English words and instantly view their meanings, phonetics, pronunciation, parts of speech, synonyms, and example sentences. The application fetches real-time data from a Dictionary API, making it a useful tool for students, language learners, and anyone looking to improve their vocabulary.
 
 ---
 
-## 📂 Project Structure
+# ✨ Features
+
+- 🔍 Search any English word
+- 📚 Word definitions
+- 🔊 Audio pronunciation
+- 📝 Example sentences
+- 🏷️ Parts of speech
+- 🔤 Phonetic transcription
+- 📖 Synonyms (if available)
+- ⚡ Fast API response
+- 📱 Responsive design
+- 🌐 Cross-browser compatible
+
+---
+
+# 🛠️ Tech Stack
+
+| Technology | Purpose |
+|------------|---------|
+| HTML5 | Structure |
+| CSS3 | Styling |
+| JavaScript | API Integration & Logic |
+| Free Dictionary API | Word definitions and pronunciation |
+
+---
+
+# 📂 Project Structure
 
 ```text
-dictionary-search-space/
-│
-├── index.html
-├── style.css
-├── script.js
-├── favicon_word_dictionary.png
-├── README.md
-
+Word_Dictionary/
+│── index.html
+│── style.css
+│── script.js
+│── favicon.png
+├── assets/
+│   └── screenshot.png
+└── README.md
 ```
 
 ---
 
-## 🔧 Installation
+# 🚀 Getting Started
 
-1. Clone the repository:
+### Clone the Repository
 
 ```bash
 git clone https://github.com/dhairyagothi/100_days_100_web_project.git
 ```
 
-2. Navigate to the project folder:
+### Navigate to the Project
 
 ```bash
-cd Word_dictionary
+cd public/Word_Dictionary
 ```
 
-3. Open `index.html` in your browser.
+### Run the Project
 
-No build tools or dependencies are required.
+Open the `index.html` file in your browser.
 
 ---
 
-## 🌐 API Reference
+# 🎮 How to Use
 
-This project uses:
+1. Open the application.
+2. Enter an English word in the search box.
+3. Click the **Search** button.
+4. View the word's meaning, pronunciation, phonetics, and other available information.
+5. Listen to the pronunciation if audio is available.
 
-**Dictionary API**
+---
 
-```text
-https://api.dictionaryapi.dev/api/v2/entries/en/
+# 📸 Screenshot
+
+<p align="center">
+  <img src="assets/screenshot.png" alt="Word Dictionary Screenshot" width="900">
+</p>
+
+---
+
+# 🌟 Use Cases
+
+- Improve English vocabulary
+- Learn word meanings
+- Check pronunciation
+- Practice spelling
+- Educational purposes
+- Quick reference while reading or writing
+
+---
+
+# 🔮 Future Enhancements
+
+- 🌙 Dark Mode
+- ❤️ Favorite Words
+- 📜 Search History
+- 🌍 Multiple Language Support
+- 📖 Daily Word Feature
+- 🧠 Vocabulary Quiz
+- 📤 Share Word Definitions
+- 🔍 Voice Search
+
+---
+
+# 🤝 Contributing
+
+Contributions are welcome!
+
+1. Fork the repository.
+2. Create a feature branch.
+
+```bash
+git checkout -b feature-name
 ```
 
-Example:
+3. Commit your changes.
 
-```text
-https://api.dictionaryapi.dev/api/v2/entries/en/example
+```bash
+git commit -m "Add feature"
 ```
 
----
+4. Push your branch.
 
-## 🎤 Browser Support
-
-Voice recognition requires browsers supporting:
-
-* Chrome
-* Edge
-* Opera
-
-Speech recognition may not be available in:
-
-* Firefox
-* Some mobile browsers
-* Privacy-focused browsers
-
----
-
-## 📸 Favicon Setup
-
-Add the following inside the `<head>` section of `index.html`:
-
-```html
-<link rel="icon" type="image/png" href="favicon_word_dictionary.png">
+```bash
+git push origin feature-name
 ```
 
----
-
-## 🎯 Future Improvements
-
-* Dark/Light mode toggle
-* Word-of-the-day feature
-* Favorites/bookmarks system
-* Offline dictionary caching
-* Search suggestions
-* Multi-language support
-* Export search history
+5. Open a Pull Request.
 
 ---
 
-## 📄 License
+# 📄 License
 
-This project is open source and available under the MIT License.
+This project is licensed under the MIT License.
 
 ---
 
-## 👨‍💻 Author
+# 🙏 Acknowledgements
 
-Built with HTML, CSS, and JavaScript to provide a modern dictionary experience with voice-powered search and linguistic exploration.
+- Free Dictionary API
+- HTML5
+- CSS3
+- JavaScript
+- GitHub
+- GirlScript Summer of Code (GSSoC)
+
+---
+
+# ⭐ Support
+
+If you found this project helpful, please consider giving it a ⭐ on GitHub.
+
+Happy Learning! 📖✨

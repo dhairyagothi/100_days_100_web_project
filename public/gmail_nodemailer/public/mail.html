@@ -8,12 +8,7 @@
     <link rel="icon" href="../../favv.png" type="image/x-icon" />
   </head>
   <body>
-    <a
-      href="/"
-      class="project-back-button"
-      style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'"
-      >← Back to Home</a
-    >
+    <a href="/" class="project-back-button">← Back to Home</a>
 
     <div class="contact">
       <h3>Subscribe to our emails</h3>
@@ -22,7 +17,7 @@
         Stay updated with our latest news, updates, and exclusive content.
       </p>
 
-      <form method="POST" action="/">
+      <form id="subscribeForm" novalidate>
         <div class="contact01">
           <label for="name">Full Name</label>
 
@@ -35,6 +30,7 @@
             required
             autocomplete="off"
           />
+          <span class="field-error" id="nameError">Please enter your full name.</span>
 
           <label for="email">Email Address</label>
 
@@ -47,15 +43,14 @@
             required
             autocomplete="off"
           />
+          <span class="field-error" id="emailError">Please enter a valid email address.</span>
         </div>
 
         <div class="contact02">
-          <input
-            class="submit"
-            type="submit"
-            name="submit"
-            value="Subscribe Now"
-          />
+          <button class="submit" type="submit" id="submitBtn">
+            <span class="spinner" id="spinner"></span>
+            <span id="submitLabel">Subscribe Now</span>
+          </button>
         </div>
       </form>
     </div>
@@ -76,37 +71,97 @@
     </div>
 
     <script>
-      const form = document.querySelector('form');
+      const form = document.getElementById('subscribeForm');
+      const submitBtn = document.getElementById('submitBtn');
+      const submitLabel = document.getElementById('submitLabel');
+      const spinner = document.getElementById('spinner');
+
+      const nameInput = document.getElementById('name');
+      const emailInput = document.getElementById('email');
+      const nameError = document.getElementById('nameError');
+      const emailError = document.getElementById('emailError');
+
+      function isValidEmail(email) {
+        if (typeof email !== 'string') return false;
+        if (email.length === 0 || email.length > 254) return false;
+
+        const atIndex = email.indexOf('@');
+        if (atIndex <= 0 || atIndex !== email.lastIndexOf('@')) return false;
+
+        const localPart = email.slice(0, atIndex);
+        const domainPart = email.slice(atIndex + 1);
+
+        if (localPart.length === 0 || localPart.length > 64) return false;
+        if (domainPart.length === 0 || domainPart.length > 255) return false;
+
+        const simpleEmailPattern = /^[A-Za-z0-9._%+-]+$/;
+        const simpleDomainPattern = /^[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+
+        return (
+          simpleEmailPattern.test(localPart) &&
+          simpleDomainPattern.test(domainPart)
+        );
+      }
+
+      function validateForm() {
+        let valid = true;
+
+        if (!nameInput.value.trim()) {
+          nameError.classList.add('show');
+          valid = false;
+        } else {
+          nameError.classList.remove('show');
+        }
+
+        if (!isValidEmail(emailInput.value.trim())) {
+          emailError.classList.add('show');
+          valid = false;
+        } else {
+          emailError.classList.remove('show');
+        }
+
+        return valid;
+      }
+
+      function setLoading(isLoading) {
+        submitBtn.disabled = isLoading;
+        spinner.classList.toggle('show', isLoading);
+        submitLabel.textContent = isLoading ? 'Sending...' : 'Subscribe Now';
+      }
 
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        const submitBtn = document.querySelector('.submit');
-        submitBtn.disabled = true;
-        submitBtn.value = 'Sending...';
+        if (!validateForm()) {
+          return;
+        }
+
+        setLoading(true);
 
         const formData = new FormData(form);
 
         try {
-          const response = await fetch('/', {
+          const response = await fetch('/subscribe', {
             method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+            },
             body: new URLSearchParams(formData),
           });
 
-          const result = await response.text();
+          const result = await response.json();
 
-          if (response.ok && result.includes('successfully')) {
-            showToast('Email sent successfully 🎉', 'success');
+          if (response.ok && result.success) {
+            showToast(result.message || 'Email sent successfully', 'success');
             form.reset();
           } else {
-            showToast('Failed to send email ❌', 'error');
+            showToast(result.message || 'Failed to send email', 'error');
           }
         } catch (error) {
-          showToast('Something went wrong ❌', 'error');
+          showToast('Something went wrong. Please try again.', 'error');
         }
 
-        submitBtn.disabled = false;
-        submitBtn.value = 'Subscribe Now';
+        setLoading(false);
       });
 
       function showToast(message, type) {
@@ -115,12 +170,7 @@
         const toastIcon = document.querySelector('.toast-icon');
 
         toastMessage.textContent = message;
-
-        if (type === 'success') {
-          toastIcon.innerHTML = '✓';
-        } else {
-          toastIcon.innerHTML = '✕';
-        }
+        toastIcon.innerHTML = type === 'success' ? '✓' : '✕';
 
         toast.className = `toast ${type} show`;
 
