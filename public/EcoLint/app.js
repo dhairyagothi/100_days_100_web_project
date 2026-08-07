@@ -33,6 +33,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const sizeDisplay = document.getElementById('size-val');
     const carbonDisplay = document.getElementById('carbon-val');
     const issuesContainer = document.getElementById('issues-list');
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const themeIcon = document.getElementById('theme-icon');
 
     const requiredElements = [
     inputArea,
@@ -41,11 +43,19 @@ document.addEventListener('DOMContentLoaded', () => {
     gaugeCircle,
     sizeDisplay,
     carbonDisplay,
-    issuesContainer];
+    issuesContainer,
+    themeToggleBtn, // Added safety check
+    themeIcon
+    ];
     
     if (requiredElements.some(el => !el)) {
     console.error("❌ Required DOM elements are missing.");
     return;
+}
+
+if (localStorage.getItem('theme') === 'light') {
+    document.body.classList.add('light-theme');
+    if (themeIcon) themeIcon.textContent = '☀️';
 }
 
 
@@ -153,7 +163,20 @@ function animateValue(start, end, duration, element, suffix = "", decimals = 2) 
             });
         }
     }
-
+    // Theme Switch Engine
+    if (themeToggleBtn) {
+        themeToggleBtn.addEventListener('click', () => {
+            document.body.classList.toggle('light-theme');
+            
+            const isLight = document.body.classList.contains('light-theme');
+            if (themeIcon) themeIcon.textContent = isLight ? '☀️' : '🌙';
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+            
+            // Force re-render of the gauge color to instantly match the light/dark background
+            const currentScore = Number.parseFloat(scoreDisplay.textContent) || 0;
+            updateGaugeVisuals(currentScore);
+        });
+    }
     if (analyzeBtn) {analyzeBtn.addEventListener('click', runAnalysis);}
     
     console.log("EcoLint Engine Ready!");

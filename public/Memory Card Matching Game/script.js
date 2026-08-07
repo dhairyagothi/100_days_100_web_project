@@ -2,117 +2,117 @@
 const emojiThemes = [
   // Theme 1: Animals
   [
-    "🐶",
-    "🐱",
-    "🐭",
-    "🐹",
-    "🐰",
-    "🦊",
-    "🐻",
-    "🐼",
-    "🐨",
-    "🐯",
-    "🦁",
-    "🐮",
-    "🐷",
-    "🐸",
-    "🐵",
-    "🐔",
+    '🐶',
+    '🐱',
+    '🐭',
+    '🐹',
+    '🐰',
+    '🦊',
+    '🐻',
+    '🐼',
+    '🐨',
+    '🐯',
+    '🦁',
+    '🐮',
+    '🐷',
+    '🐸',
+    '🐵',
+    '🐔',
   ],
   // Theme 2: Nature & Food
   [
-    "🍎",
-    "🍌",
-    "🍉",
-    "🍇",
-    "🍓",
-    "🍒",
-    "🥑",
-    "🥕",
-    "🌽",
-    "🍄",
-    "🌵",
-    "🌲",
-    "🌴",
-    "🍁",
-    "🌸",
-    "🌼",
+    '🍎',
+    '🍌',
+    '🍉',
+    '🍇',
+    '🍓',
+    '🍒',
+    '🥑',
+    '🥕',
+    '🌽',
+    '🍄',
+    '🌵',
+    '🌲',
+    '🌴',
+    '🍁',
+    '🌸',
+    '🌼',
   ],
   // Theme 3: Space & Fantasy
   [
-    "🚀",
-    "🪐",
-    "🌕",
-    "⭐",
-    "🌠",
-    "🛸",
-    "👽",
-    "🧙",
-    "🧝",
-    "🧚",
-    "🔮",
-    "⚡",
-    "🔥",
-    "❄️",
-    "🌊",
-    "🌪️",
+    '🚀',
+    '🪐',
+    '🌕',
+    '⭐',
+    '🌠',
+    '🛸',
+    '👽',
+    '🧙',
+    '🧝',
+    '🧚',
+    '🔮',
+    '⚡',
+    '🔥',
+    '❄️',
+    '🌊',
+    '🌪️',
   ],
   // Theme 4: Sports & Activities
   [
-    "⚽",
-    "🏀",
-    "🏈",
-    "🎾",
-    "🏓",
-    "🏸",
-    "🥊",
-    "🏄",
-    "🚴",
-    "🏊",
-    "🎸",
-    "🎨",
-    "📚",
-    "🎥",
-    "🎮",
-    "🎲",
+    '⚽',
+    '🏀',
+    '🏈',
+    '🎾',
+    '🏓',
+    '🏸',
+    '🥊',
+    '🏄',
+    '🚴',
+    '🏊',
+    '🎸',
+    '🎨',
+    '📚',
+    '🎥',
+    '🎮',
+    '🎲',
   ],
   // Theme 5: Emojis Mix
   [
-    "😀",
-    "😂",
-    "😍",
-    "🥰",
-    "😎",
-    "🤩",
-    "🤖",
-    "👻",
-    "👽",
-    "🦄",
-    "🍔",
-    "🍕",
-    "🚗",
-    "✈️",
-    "🎸",
-    "🏆",
+    '😀',
+    '😂',
+    '😍',
+    '🥰',
+    '😎',
+    '🤩',
+    '🤖',
+    '👻',
+    '👽',
+    '🦄',
+    '🍔',
+    '🍕',
+    '🚗',
+    '✈️',
+    '🎸',
+    '🏆',
   ],
   // Theme 6: Ocean & Sea
   [
-    "🐙",
-    "🐡",
-    "🐠",
-    "🐬",
-    "🐳",
-    "🦈",
-    "🐢",
-    "🦀",
-    "🐚",
-    "🌊",
-    "🪼",
-    "🦭",
-    "🐋",
-    "🦞",
-    "🐟",
-    "🦑",
+    '🐙',
+    '🐡',
+    '🐠',
+    '🐬',
+    '🐳',
+    '🦈',
+    '🐢',
+    '🦀',
+    '🐚',
+    '🌊',
+    '🪼',
+    '🦭',
+    '🐋',
+    '🦞',
+    '🐟',
+    '🦑',
   ],
 ];
 
@@ -126,23 +126,23 @@ let isProcessing = false;
 let gridSize = 6;
 let currentTheme = [];
 
-const grid = document.getElementById("grid");
-const movesEl = document.getElementById("moves");
-const timerEl = document.getElementById("timer");
-const progressEl = document.getElementById("progress");
-const difficultySelect = document.getElementById("difficulty");
-const newGameBtn = document.getElementById("new-game");
-const restartBtn = document.getElementById("restart");
-const winModal = new bootstrap.Modal(document.getElementById("winModal"));
-const finalMovesEl = document.getElementById("final-moves");
-const finalTimeEl = document.getElementById("final-time");
-const bestTimeEl = document.getElementById("best-time");
-const playAgainBtn = document.getElementById("play-again");
-const confettiCanvas = document.getElementById("confetti");
+const grid = document.getElementById('grid');
+const movesEl = document.getElementById('moves');
+const timerEl = document.getElementById('timer');
+const progressEl = document.getElementById('progress');
+const difficultySelect = document.getElementById('difficulty');
+const newGameBtn = document.getElementById('new-game');
+const restartBtn = document.getElementById('restart');
+const winModal = new bootstrap.Modal(document.getElementById('winModal'));
+const finalMovesEl = document.getElementById('final-moves');
+const finalTimeEl = document.getElementById('final-time');
+const bestTimeEl = document.getElementById('best-time');
+const playAgainBtn = document.getElementById('play-again');
+const confettiCanvas = document.getElementById('confetti');
 
 // Create confetti
 function launchConfetti() {
-  const ctx = confettiCanvas.getContext("2d");
+  const ctx = confettiCanvas.getContext('2d');
   confettiCanvas.width = window.innerWidth;
   confettiCanvas.height = window.innerHeight;
 
@@ -154,7 +154,7 @@ function launchConfetti() {
       this.size = Math.random() * 12 + 6;
       this.speed = Math.random() * 4 + 2;
       this.angle = Math.random() * 360;
-      this.color = ["#00ffcc", "#00ccff", "#ff00cc", "#ffff00"][
+      this.color = ['#00ffcc', '#00ccff', '#ff00cc', '#ffff00'][
         Math.floor(Math.random() * 4)
       ];
     }
@@ -190,34 +190,48 @@ function launchConfetti() {
   setTimeout(
     () =>
       confettiCanvas
-        .getContext("2d")
+        .getContext('2d')
         .clearRect(0, 0, confettiCanvas.width, confettiCanvas.height),
-    8000,
+    8000
   );
 }
 
 // Create board with random theme
 function createBoard(size) {
   gridSize = size;
-  grid.innerHTML = "";
+  grid.innerHTML = '';
   grid.className = `grid grid-${size}`;
 
   const totalPairs = (size * size) / 2;
 
   // Select random theme
-  currentTheme = [
-    ...emojiThemes[Math.floor(Math.random() * emojiThemes.length)],
-  ];
-  // Shuffle and take needed emojis
-  currentTheme.sort(() => Math.random() - 0.5);
-  const selectedEmojis = currentTheme.slice(0, totalPairs);
+  // Build a pool containing all unique emojis from every theme
+  const emojiPool = [...new Set(emojiThemes.flat())];
 
+  // Ensure enough unique emojis exist for the selected difficulty
+  if (emojiPool.length < totalPairs) {
+    console.error(
+      `Not enough unique emojis available. Required: ${totalPairs}, Available: ${emojiPool.length}`
+    );
+    return;
+  }
+
+  // Shuffle pool
+  const shuffledPool = [...emojiPool].sort(() => Math.random() - 0.5);
+
+  // Select required number of unique pairs
+  const selectedEmojis = shuffledPool.slice(0, totalPairs);
+
+  // Create matching pairs
   cards = [...selectedEmojis, ...selectedEmojis];
+
+  // Final shuffle
+  cards.sort(() => Math.random() - 0.5);
   cards.sort(() => Math.random() - 0.5); // Final shuffle
 
   cards.forEach((emoji, index) => {
-    const card = document.createElement("div");
-    card.classList.add("card");
+    const card = document.createElement('div');
+    card.classList.add('card');
     card.dataset.value = emoji;
     card.dataset.index = index;
 
@@ -226,7 +240,7 @@ function createBoard(size) {
             <div class="card-back">${emoji}</div>
         `;
 
-    card.addEventListener("click", handleCardClick);
+    card.addEventListener('click', handleCardClick);
     grid.appendChild(card);
   });
 
@@ -240,13 +254,13 @@ function handleCardClick(e) {
 
   if (
     isProcessing ||
-    card.classList.contains("flipped") ||
-    card.classList.contains("matched") ||
+    card.classList.contains('flipped') ||
+    card.classList.contains('matched') ||
     flippedCards.length >= 2
   )
     return;
 
-  card.classList.add("flipped");
+  card.classList.add('flipped');
   flippedCards.push(card);
 
   if (flippedCards.length === 2) {
@@ -257,8 +271,8 @@ function handleCardClick(e) {
     const [card1, card2] = flippedCards;
 
     if (card1.dataset.value === card2.dataset.value) {
-      card1.classList.add("matched");
-      card2.classList.add("matched");
+      card1.classList.add('matched');
+      card2.classList.add('matched');
       matchedPairs++;
       updateProgress();
 
@@ -270,8 +284,8 @@ function handleCardClick(e) {
       }
     } else {
       setTimeout(() => {
-        card1.classList.remove("flipped");
-        card2.classList.remove("flipped");
+        card1.classList.remove('flipped');
+        card2.classList.remove('flipped');
         flippedCards = [];
         isProcessing = false;
       }, 900);
@@ -288,7 +302,7 @@ function updateProgress() {
 function startTimer() {
   if (timerInterval) clearInterval(timerInterval);
   seconds = 0;
-  timerEl.textContent = "0s";
+  timerEl.textContent = '0s';
 
   timerInterval = setInterval(() => {
     seconds++;
@@ -300,10 +314,10 @@ function resetGameState() {
   flippedCards = [];
   matchedPairs = 0;
   moves = 0;
-  movesEl.textContent = "0";
+  movesEl.textContent = '0';
   if (timerInterval) clearInterval(timerInterval);
   seconds = 0;
-  timerEl.textContent = "0s";
+  timerEl.textContent = '0s';
   isProcessing = false;
 }
 
@@ -327,7 +341,7 @@ function endGame() {
 
   finalMovesEl.textContent = moves;
   finalTimeEl.textContent = `${seconds}s`;
-  bestTimeEl.textContent = `${bestTime}s ${isNewBest ? "(New Best!)" : ""}`;
+  bestTimeEl.textContent = `${bestTime}s ${isNewBest ? '(New Best!)' : ''}`;
 
   winModal.show();
   launchConfetti();
@@ -341,22 +355,22 @@ function newGame() {
 }
 
 // Event Listeners
-newGameBtn.addEventListener("click", newGame);
-restartBtn.addEventListener("click", () => {
+newGameBtn.addEventListener('click', newGame);
+restartBtn.addEventListener('click', () => {
   createBoard(gridSize);
   startTimer();
 });
 
-playAgainBtn.addEventListener("click", () => {
+playAgainBtn.addEventListener('click', () => {
   winModal.hide();
   newGame();
 });
 
-difficultySelect.addEventListener("change", newGame);
+difficultySelect.addEventListener('change', newGame);
 
 // Keyboard support
-document.addEventListener("keydown", (e) => {
-  if (e.key === "r" || e.key === "R") {
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'r' || e.key === 'R') {
     createBoard(gridSize);
     startTimer();
   }
@@ -368,7 +382,7 @@ window.onload = () => {
   startTimer();
 
   // Resize confetti canvas
-  window.addEventListener("resize", () => {
+  window.addEventListener('resize', () => {
     confettiCanvas.width = window.innerWidth;
     confettiCanvas.height = window.innerHeight;
   });

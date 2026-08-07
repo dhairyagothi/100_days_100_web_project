@@ -174,14 +174,14 @@
     </footer>
 
     <div id="profileModal" class="modal-overlay">
-      <div class="modal-content">
+      <div class="modal-content" role="dialog" aria-modal="true" aria-label="Contributor profile">
         <button id="closeModal" aria-label="Close profile modal">&times;</button>
         <div id="modalBody">Loading...</div>
       </div>
     </div>
 
     <div id="certificateModal" class="modal-overlay">
-      <div class="modal-content">
+      <div class="modal-content" role="dialog" aria-modal="true" aria-label="Certificate">
         <button id="closeCertificate" aria-label="Close certificate modal">&times;</button>
         <div id="certificateBody">Loading Certificate...</div>
       </div>
@@ -197,8 +197,6 @@
     </button>
     <div class="toast" id="toast"></div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     
 
     <!-- ── LOAD NAVBAR INJECTION SCRIPT LAST ── -->

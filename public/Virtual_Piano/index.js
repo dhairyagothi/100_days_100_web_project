@@ -2,6 +2,7 @@ var isRecording = false;
 var recordStart = null;
 var recording = [];
 var playbackTimers = [];
+var isPlayingBack = false;
 var keysHeld = {};
 var supportedKeys = [
   'a',
@@ -39,6 +40,7 @@ function handleKey(note) {
 
   playNote(note);
   pressAnimation(note);
+  announceKey(note);
 
   if (isRecording) {
     recording.push({
@@ -170,17 +172,32 @@ function pressAnimation(key) {
   key = key.toLowerCase();
 
   var inputKey = key === ';' ? '\\;' : key;
+  var $keyEl = $('#' + inputKey);
 
-  $('#' + inputKey).addClass('pressed');
+  $keyEl.addClass('pressed').attr('aria-pressed', 'true');
 
   setTimeout(function () {
-    $('#' + inputKey).removeClass('pressed');
+    $keyEl.removeClass('pressed').attr('aria-pressed', 'false');
   }, 100);
 }
+
+function announceKey(key) {
+  $('#now-playing').text('Key ' + key.toUpperCase() + ' played');
+}
+
+$('#toggle-labels').on('change', function () {
+  $('.piano').toggleClass('hide-labels', !this.checked);
+});
 
 function stopPlayback() {
   playbackTimers.forEach(clearTimeout);
   playbackTimers = [];
+
+  isPlayingBack = false;
+
+  $('#btn-play')
+    .prop('disabled', recording.length === 0)
+    .text('▶ Play');
 }
 
 // ── Record ────────────────────────────────────────────────
@@ -214,18 +231,45 @@ $('#btn-stop').on('click', function () {
 
 // ── Play ──────────────────────────────────────────────────
 $('#btn-play').on('click', function () {
+
+  if (isPlayingBack || recording.length === 0) return;
+
+  isPlayingBack = true;
+
+  $(this)
+    .prop('disabled', true)
+    .text('▶ Playing...');
+
   playbackTimers.forEach(clearTimeout);
   playbackTimers = [];
 
   var speed = parseFloat($('#speed-slider').val());
 
   recording.forEach(function (event) {
-    var t = setTimeout(function () {
+    var timer = setTimeout(function () {
       playNote(event.key);
       pressAnimation(event.key);
     }, event.time / speed);
-    playbackTimers.push(t);
+
+    playbackTimers.push(timer);
   });
+
+  var lastTime =
+    recording.length > 0
+      ? recording[recording.length - 1].time / speed
+      : 0;
+
+  var finishTimer = setTimeout(function () {
+    isPlayingBack = false;
+
+    $('#btn-play')
+      .prop('disabled', false)
+      .text('▶ Play');
+
+    playbackTimers = [];
+  }, lastTime + 250);
+
+  playbackTimers.push(finishTimer);
 });
 
 // ── Clear ─────────────────────────────────────────────────

@@ -4,6 +4,18 @@
     box-sizing: border-box;
 }
 
+:root {
+    --bg-color: #ffffff;
+    --card-color: #f4f4f4;
+    --text-color: #222222;
+}
+
+body.dark-mode {
+    --bg-color: #121212;
+    --card-color: #222222;
+    --text-color: #ffffff;
+}
+
 body {
     font-family: Arial, sans-serif;
     min-height: 100vh;
@@ -11,6 +23,10 @@ body {
     justify-content: center;
     align-items: center;
     background: linear-gradient(135deg, #667eea, #764ba2);
+    
+    background: var(--bg-color);
+    color: var(--text-color);
+    transition: all 0.3s ease;
 }
 
 .container {
@@ -76,4 +92,13 @@ h1 {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+}
+.card {
+    background: var(--card-color);
+    color: var(--text-color);
+    transition: all 0.3s ease;
+}
+
+span {
+    color: var(--text-color);
 }
