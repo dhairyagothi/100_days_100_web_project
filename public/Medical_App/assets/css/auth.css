@@ -188,6 +188,22 @@ body.auth-locked #appShell {
     color: var(--auth-muted);
 }
 
+.auth-link {
+    background: none;
+    border: none;
+    color: var(--auth-primary);
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    padding: 0;
+    transition: color 0.2s ease;
+}
+
+.auth-link:hover {
+    color: var(--auth-primary-hover);
+    text-decoration: underline;
+}
+
 .auth-submit {
     width: 100%;
     border: none;
@@ -270,6 +286,13 @@ body[data-theme="dark"] .auth-note {
 
 .auth-error {
     color: var(--auth-danger);
+    font-size: 0.85rem;
+    min-height: 18px;
+    margin-bottom: 10px;
+}
+
+.auth-success {
+    color: var(--auth-success);
     font-size: 0.85rem;
     min-height: 18px;
     margin-bottom: 10px;

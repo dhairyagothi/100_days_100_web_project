@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QuizCraft - Minimalist Quiz Builder & Player</title>
+  <meta name="description" content="A clean, interactive, and modern Quiz Builder and Player. Easily create custom quizzes, test your knowledge, and export or share quizzes.">
+  
+  <!-- Google Fonts: Inter & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Top Header -->
+    <header class="app-header">
+      <div class="brand" id="brandHomeBtn" style="cursor:pointer;">
+        <div class="logo-icon">
+          <i class="fa-solid fa-graduation-cap"></i>
+        </div>
+        <div class="brand-text">
+          <h1>QuizCraft</h1>
+          <span class="badge-tag">Minimal Quiz Builder</span>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <nav class="view-nav">
+        <button class="nav-btn active" data-view="dashboard" id="navDashboardView">
+          <i class="fa-solid fa-layer-group"></i> My Quizzes
+        </button>
+        <button class="nav-btn" data-view="editor" id="navEditorView">
+          <i class="fa-solid fa-plus-circle"></i> Create Quiz
+        </button>
+        <button class="nav-btn" data-view="templates" id="navTemplatesBtn">
+          <i class="fa-solid fa-wand-magic-sparkles"></i> Templates
+        </button>
+      </nav>
+
+      <!-- Action Items -->
+      <div class="header-actions">
+        <button id="quickCreateBtn" class="btn btn-primary">
+          <i class="fa-solid fa-plus"></i> New Quiz
+        </button>
+        <button id="themeToggleBtn" class="btn btn-icon theme-btn" title="Toggle Light/Dark Theme">
+          <i class="fa-solid fa-moon"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Workspace Content Area -->
+    <main class="main-content">
+
+      <!-- VIEW 1: QUIZ DASHBOARD / LIBRARY -->
+      <div id="dashboardView" class="view-panel active">
+        <!-- Controls & Filter Bar -->
+        <section class="controls-bar">
+          <div class="category-filters" id="categoryFilters">
+            <button class="filter-chip active" data-category="all">All Quizzes</button>
+            <button class="filter-chip" data-category="Technology">💻 Tech & Coding</button>
+            <button class="filter-chip" data-category="Science">🔬 Science & Nature</button>
+            <button class="filter-chip" data-category="General">💡 General Trivia</button>
+            <button class="filter-chip" data-category="Education">📚 Education</button>
+          </div>
+
+          <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input type="text" id="searchInput" placeholder="Search quizzes by title or category..." autocomplete="off">
+            <button id="clearSearchBtn" class="clear-btn hidden"><i class="fa-solid fa-xmark"></i></button>
+          </div>
+        </section>
+
+        <!-- Quiz Cards Grid -->
+        <div id="quizGrid" class="quiz-grid">
+          <!-- Dynamically populated quiz cards -->
+        </div>
+      </div>
+
+      <!-- VIEW 2: QUIZ CREATOR / EDITOR -->
+      <div id="editorView" class="view-panel">
+        <div class="editor-container">
+          <div class="editor-header-card">
+            <div class="editor-title-row">
+              <h2 id="editorHeading"><i class="fa-solid fa-pen-to-square"></i> Create New Quiz</h2>
+              <div class="editor-actions-top">
+                <button type="button" id="cancelEditorBtn" class="btn btn-secondary">Cancel</button>
+                <button type="button" id="saveQuizBtn" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Save Quiz</button>
+              </div>
+            </div>
+
+            <form id="quizMetadataForm" class="quiz-meta-form">
+              <input type="hidden" id="editingQuizId">
+
+              <div class="form-row">
+                <div class="form-group flex-2">
+                  <label for="quizTitle">Quiz Title <span class="required">*</span></label>
+                  <input type="text" id="quizTitle" placeholder="e.g. JavaScript ES6 Concepts Quiz" required>
+                </div>
+
+                <div class="form-group flex-1">
+                  <label for="quizCategory">Category</label>
+                  <select id="quizCategory">
+                    <option value="Technology">💻 Technology & Coding</option>
+                    <option value="Science">🔬 Science & Nature</option>
+                    <option value="General">💡 General Trivia</option>
+                    <option value="Education">📚 Education</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group flex-2">
+                  <label for="quizDescription">Description / Overview</label>
+                  <input type="text" id="quizDescription" placeholder="Brief summary of what this quiz covers...">
+                </div>
+
+                <div class="form-group flex-1">
+                  <label for="quizTimeLimit">Time Limit (Minutes)</label>
+                  <select id="quizTimeLimit">
+                    <option value="0">No Time Limit</option>
+                    <option value="3">3 Minutes</option>
+                    <option value="5" selected>5 Minutes</option>
+                    <option value="10">10 Minutes</option>
+                    <option value="15">15 Minutes</option>
+                  </select>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <!-- Questions Builder Section -->
+          <div class="questions-builder-header">
+            <h3>Questions (<span id="questionCountBadge">0</span>)</h3>
+            <div class="add-question-dropdown">
+              <button class="btn btn-secondary" id="addMcqBtn"><i class="fa-solid fa-list-check"></i> + Multiple Choice</button>
+              <button class="btn btn-secondary" id="addTfBtn"><i class="fa-solid fa-toggle-on"></i> + True / False</button>
+            </div>
+          </div>
+
+          <div id="questionsContainer" class="questions-list">
+            <!-- Dynamically injected question builder cards -->
+          </div>
+        </div>
+      </div>
+
+      <!-- VIEW 3: QUIZ PLAYER / TAKER -->
+      <div id="playerView" class="view-panel">
+        <div class="player-container">
+          <div class="player-header">
+            <div class="player-info-left">
+              <h3 id="playerQuizTitle">Quiz Title</h3>
+              <span id="playerQuestionCounter" class="question-pill">Question 1 of 5</span>
+            </div>
+            
+            <div id="playerTimerBadge" class="timer-badge">
+              <i class="fa-regular fa-clock"></i> <span id="playerTimerText">05:00</span>
+            </div>
+          </div>
+
+          <!-- Progress Bar -->
+          <div class="player-progress-bar-bg">
+            <div id="playerProgressFill" class="player-progress-fill" style="width: 20%;"></div>
+          </div>
+
+          <!-- Question Card -->
+          <div class="player-question-card">
+            <div class="player-question-prompt">
+              <span id="playerQuestionNumber" class="q-num">Q1</span>
+              <h2 id="playerQuestionText">Question text goes here?</h2>
+            </div>
+
+            <!-- Options Grid -->
+            <div id="playerOptionsGrid" class="options-grid">
+              <!-- Dynamically populated options -->
+            </div>
+          </div>
+
+          <!-- Player Controls Footer -->
+          <div class="player-footer">
+            <button id="playerPrevBtn" class="btn btn-secondary" disabled>
+              <i class="fa-solid fa-arrow-left"></i> Previous
+            </button>
+            <div class="player-footer-right">
+              <button id="playerNextBtn" class="btn btn-primary">
+                Next <i class="fa-solid fa-arrow-right"></i>
+              </button>
+              <button id="playerSubmitBtn" class="btn btn-primary hidden" style="background-color:var(--success);">
+                <i class="fa-solid fa-check-circle"></i> Submit Quiz
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIEW 4: QUIZ RESULTS SCREEN -->
+      <div id="resultsView" class="view-panel">
+        <div class="results-container">
+          <div class="results-score-card">
+            <div id="resultsBadgeIcon" class="results-icon pass"><i class="fa-solid fa-trophy"></i></div>
+            <h2 id="resultsGradeTitle">Great Job!</h2>
+            <p id="resultsSubtext">You completed the quiz successfully.</p>
+
+            <div class="results-stats-row">
+              <div class="result-stat-box">
+                <span class="stat-num" id="resultsPercentage">80%</span>
+                <span class="stat-lbl">Final Score</span>
+              </div>
+              <div class="result-stat-box">
+                <span class="stat-num" id="resultsScoreFraction">4 / 5</span>
+                <span class="stat-lbl">Correct Answers</span>
+              </div>
+              <div class="result-stat-box">
+                <span class="stat-num" id="resultsTimeTaken">01:45</span>
+                <span class="stat-lbl">Time Taken</span>
+              </div>
+            </div>
+
+            <div class="results-actions">
+              <button id="retakeQuizBtn" class="btn btn-secondary"><i class="fa-solid fa-rotate-right"></i> Retake Quiz</button>
+              <button id="backToDashboardBtn" class="btn btn-primary"><i class="fa-solid fa-house"></i> All Quizzes</button>
+            </div>
+          </div>
+
+          <!-- Answer Key Review Section -->
+          <div class="answer-review-card">
+            <h3><i class="fa-solid fa-list-check"></i> Answer Key & Review</h3>
+            <div id="answerReviewList" class="answer-review-list">
+              <!-- Dynamically populated answer reviews -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <div class="footer-left">
+        <span><i class="fa-solid fa-brain"></i> QuizCraft &bull; Simple & Minimalist Quiz Engine</span>
+      </div>
+      <div class="footer-right">
+        <span id="footerQuizCount">0 Quizzes Available</span>
+      </div>
+    </footer>
+  </div>
+
+  <!-- MODAL 1: PRESET TEMPLATES MODAL -->
+  <div id="templatesModal" class="modal-backdrop hidden">
+    <div class="modal-card modal-md">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-wand-magic-sparkles"></i> Quiz Templates</h3>
+        <button class="modal-close-btn" id="closeTemplatesModal"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-subtext">Click any template below to add it to your quiz library.</p>
+        <div class="templates-grid">
+          
+          <div class="template-card" data-template="web_dev">
+            <div class="template-icon"><i class="fa-solid fa-code"></i></div>
+            <div class="template-info">
+              <h4>Web Development Basics</h4>
+              <p>5 Questions on HTML5, CSS3, and JavaScript ES6 fundamentals.</p>
+            </div>
+            <button class="btn btn-sm btn-secondary">Load Quiz</button>
+          </div>
+
+          <div class="template-card" data-template="science">
+            <div class="template-icon"><i class="fa-solid fa-flask"></i></div>
+            <div class="template-info">
+              <h4>General Science & Universe</h4>
+              <p>5 Questions covering physics, astronomy, and biology facts.</p>
+            </div>
+            <button class="btn btn-sm btn-secondary">Load Quiz</button>
+          </div>
+
+          <div class="template-card" data-template="world_trivia">
+            <div class="template-icon"><i class="fa-solid fa-earth-americas"></i></div>
+            <div class="template-info">
+              <h4>World Geography & History</h4>
+              <p>5 Fun trivia questions on world capitals, oceans, and landmarks.</p>
+            </div>
+            <button class="btn btn-sm btn-secondary">Load Quiz</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

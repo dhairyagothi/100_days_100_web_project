@@ -128,7 +128,7 @@ body {
 }
 
 .timer-container {
-    background: var(--card-bg);
+
     padding: 10px 18px;
     border-radius: 24px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
@@ -168,7 +168,7 @@ body {
     padding: 18px 20px;
     border: 2px solid #e5e7eb;
     border-radius: var(--radius);
-    background: var(--card-bg);
+
     font-size: 1rem;
     text-align: left;
     cursor: pointer;
@@ -300,9 +300,7 @@ body {
     font-size: 1rem;
     outline: none;
     transition: all 0.25s ease;
-    background-color: var(--card-bg);
-    color: var(--text-main);
-}
+
 
 .input-element:focus {
     border-color: var(--primary);
