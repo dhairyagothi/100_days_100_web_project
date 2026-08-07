@@ -1,23 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>High-Throughput Columnar Aggregation Engine</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h2>Critical System Infrastructure: Columnar Data Matrix Pipeline</h2>
-    
-    <pre id="matrix-log" style="background: #111; color: #ffff00; padding: 12px; font-family: monospace;">Booting data vector transposer units...</pre>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="logo-area">
+                <div class="pulse-indicator"></div>
+                <h1>Columnar Aggregation Engine</h1>
+            </div>
+            <div class="system-status">
+                <span class="status-dot"></span>
+                <span class="status-text">PIPELINE: ACTIVE</span>
+            </div>
+        </header>
 
-    <fieldset style="margin-bottom: 20px; padding: 10px; width: 450px;">
-        <legend>Vector Reduction Control Hub</legend>
-        <button id="run-btn" style="padding: 8px 16px; font-size: 1rem; cursor: pointer;">Execute Targeted Analytical Aggregations</button>
-    </fieldset>
+        <main class="dashboard-grid">
+            <!-- Left Side / Top on Mobile: Control Hub & Metrics -->
+            <div class="control-and-metrics">
+                <section class="control-hub card">
+                    <h2>Vector Reduction Control Hub</h2>
+                    <p class="description">Execute sub-millisecond aggregations over columnar-vector partitioned datasets.</p>
+                    <div class="data-info">
+                        <div class="info-item">
+                            <span class="info-label">Mock Dataset</span>
+                            <span class="info-val">100,000 Records</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Fields Partitioned</span>
+                            <span class="info-val">id, leadValue, interviewScore</span>
+                        </div>
+                    </div>
+                    <button id="run-btn" class="glow-btn">
+                        <span>Execute Targeted Analytical Aggregations</span>
+                        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                    </button>
+                </section>
 
-    <h4>Computed Analytical Aggregation Metrics:</h4>
-    <div id="matrix-results" style="border: 2px dashed #444; padding: 10px; width: 454px; min-height: 120px;">
-        </div>
+                <section class="metrics-hub card">
+                    <h2>Computed Analytical Aggregation Metrics</h2>
+                    <div id="matrix-results" class="results-grid">
+                        <div class="no-results">
+                            <svg class="placeholder-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                            <p>Execute the vector pipeline to compute mathematical aggregates.</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Right Side / Bottom on Mobile: Terminal Logs -->
+            <section class="terminal-logs card">
+                <div class="terminal-header">
+                    <div class="terminal-buttons">
+                        <span class="dot red"></span>
+                        <span class="dot yellow"></span>
+                        <span class="dot green"></span>
+                    </div>
+                    <div class="terminal-title">Vector Storage Console</div>
+                </div>
+                <div class="terminal-body">
+                    <pre id="matrix-log">Booting data vector transposer units...</pre>
+                </div>
+            </section>
+        </main>
+    </div>
 
     <script type="module" src="app.js"></script>
 </body>

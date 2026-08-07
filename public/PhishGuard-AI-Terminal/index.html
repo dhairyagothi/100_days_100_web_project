@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>PhishGuard AI Terminal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=JetBrains+Mono:wght@400;500;700&family=VT323&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<canvas id="matrix-canvas"></canvas>
+<div class="crt-overlay" aria-hidden="true"></div>
+<div class="vignette" aria-hidden="true"></div>
+
+<main class="terminal-window">
+
+  <header class="terminal-header">
+    <div class="terminal-dots"><span></span><span></span><span></span></div>
+    <div class="terminal-title">PHISHGUARD<span class="cursor-block">_</span>AI <span class="version">v2.1</span></div>
+    <div class="terminal-status" id="connection-status">● ONLINE</div>
+  </header>
+
+  <section class="terminal-body">
+
+    <p class="boot-line">&gt; heuristic engine loaded. rule-based URL threat analysis ready.</p>
+
+    <form id="scan-form" class="scan-prompt" autocomplete="off">
+      <label for="url-input" class="prompt-label">root@phishguard:~$ scan_url</label>
+      <div class="input-row">
+        <span class="prompt-arrow">&gt;</span>
+        <input
+          id="url-input"
+          type="text"
+          name="url"
+          placeholder="paste a URL to analyze, e.g. http://secure-login-update.example.com"
+          required
+        />
+        <button type="submit" id="scan-btn">
+          <span class="btn-label">ANALYZE</span>
+        </button>
+      </div>
+    </form>
+
+    <div id="log-pane" class="log-pane" aria-live="polite"></div>
+
+    <section id="results" class="results-panel hidden" aria-live="polite">
+
+      <div class="results-grid">
+
+        <div class="result-card status-card">
+          <span class="card-label">VERDICT</span>
+          <div id="status-badge" class="status-badge">—</div>
+        </div>
+
+        <div class="result-card score-card">
+          <span class="card-label">THREAT SCORE</span>
+          <div class="score-readout">
+            <span id="score-number" class="score-number">0</span><span class="score-max">/100</span>
+          </div>
+          <div id="score-meter" class="score-meter"></div>
+        </div>
+
+        <div class="result-card confidence-card">
+          <span class="card-label">AI CONFIDENCE</span>
+          <div id="confidence-number" class="confidence-number">0%</div>
+          <div id="confidence-bar-track" class="confidence-bar-track">
+            <div id="confidence-bar-fill" class="confidence-bar-fill"></div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="ai-panel">
+        <div class="ai-panel-header">
+          <span class="ai-dot"></span> AI ANALYSIS
+        </div>
+        <p id="ai-explanation" class="ai-explanation"></p>
+        <ul id="indicator-list" class="indicator-list"></ul>
+      </div>
+
+    </section>
+
+  </section>
+
+  <footer class="terminal-footer">
+    ⚠ Educational tool only — uses simple heuristic rules and does not guarantee accurate phishing detection.
+  </footer>
+
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>

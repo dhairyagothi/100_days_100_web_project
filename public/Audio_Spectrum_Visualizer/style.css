@@ -217,3 +217,133 @@ body {
     background-color: var(--accent-success);
     box-shadow: 0 0 8px var(--accent-success);
 }
+
+/* --- PLAYBACK CONTROLS & DYNAMIC POSITIONING --- */
+
+.playback-actions {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.btn-control {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: var(--text-primary);
+    border-radius: 8px;
+    padding: 8px 4px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    outline: none;
+}
+
+.btn-control:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: var(--accent-glow);
+    box-shadow: 0 0 8px rgba(139, 92, 246, 0.25);
+    transform: translateY(-1px);
+}
+
+.btn-control:focus-visible {
+    border-color: var(--accent-glow);
+    box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.4);
+}
+
+.btn-control:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.btn-control:disabled {
+    opacity: 0.25;
+    cursor: not-allowed;
+    background: rgba(255, 255, 255, 0.01);
+    border-color: rgba(255, 255, 255, 0.03);
+}
+
+.btn-control.active {
+    background: var(--accent-glow);
+    color: white;
+    border-color: var(--accent-glow);
+    box-shadow: 0 0 12px rgba(139, 92, 246, 0.5);
+}
+
+/* Progress Bar Components */
+.progress-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 14px;
+}
+
+.time-label {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    min-width: 32px;
+    font-variant-numeric: tabular-nums;
+}
+
+.progress-bar-wrapper {
+    flex: 1;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+    outline: none;
+}
+
+.progress-bar-wrapper:focus-visible {
+    box-shadow: 0 0 0 2px var(--accent-glow);
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #6366f1, var(--accent-glow));
+    border-radius: 3px;
+    transition: width 0.1s linear;
+}
+
+/* Responsive Overrides to prevent overlap and align dashboard */
+@media (min-width: 768px) {
+    body {
+        justify-content: flex-start;
+        padding-left: 60px;
+    }
+}
+
+@media (max-width: 767px) {
+    body {
+        align-items: flex-end;
+        justify-content: center;
+        padding-bottom: 20px;
+    }
+    
+    .dashboard {
+        width: 92%;
+        max-width: none;
+        padding: 18px;
+    }
+    
+    .panel-header {
+        margin-bottom: 16px;
+    }
+    
+    .control-group {
+        padding: 12px;
+        margin-bottom: 12px;
+    }
+    
+    .btn-control {
+        padding: 6px 2px;
+        font-size: 0.75rem;
+    }
+}

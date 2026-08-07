@@ -9,11 +9,73 @@ const GITHUB_API_BASE = "https://api.github.com";
 const REQUEST_TIMEOUT = 10000;
 const MAX_RETRIES = 3;
 
-closeModal?.addEventListener("click", () => {
-  if (modal) {
-    modal.style.display = "none";
+function createModalA11y(modalEl, closeBtn) {
+  if (!modalEl) {
+    return { activate() {}, close() {} };
   }
-});
+
+  let lastFocused = null;
+  const focusableSelector =
+    'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+  const getFocusable = () =>
+    Array.from(modalEl.querySelectorAll(focusableSelector)).filter(
+      (el) => el.offsetParent !== null,
+    );
+
+  function close() {
+    modalEl.style.display = "none";
+    document.removeEventListener("keydown", onKeydown);
+    if (lastFocused && typeof lastFocused.focus === "function") {
+      lastFocused.focus();
+    }
+    lastFocused = null;
+  }
+
+  function onKeydown(e) {
+    if (e.key === "Escape") {
+      e.preventDefault();
+      close();
+      return;
+    }
+    if (e.key !== "Tab") {
+      return;
+    }
+    const focusable = getFocusable();
+    if (!focusable.length) {
+      e.preventDefault();
+      return;
+    }
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  }
+
+  function activate() {
+    lastFocused = document.activeElement;
+    document.addEventListener("keydown", onKeydown);
+    (closeBtn || getFocusable()[0] || modalEl).focus();
+  }
+
+  closeBtn?.addEventListener("click", close);
+  modalEl.addEventListener("click", (e) => {
+    if (e.target === modalEl) {
+      close();
+    }
+  });
+
+  return { activate, close };
+}
+
+const profileModalA11y = createModalA11y(modal, closeModal);
+// Certificate modal has no open trigger yet; wire its close and backdrop so it will not trap focus once one is added.
+createModalA11y(certificateModal, closeCertificate);
 
 async function githubFetch(url, options = {}, retries = MAX_RETRIES) {
   const controller = new AbortController();
@@ -66,12 +128,6 @@ async function githubFetch(url, options = {}, retries = MAX_RETRIES) {
   }
 }
 
-window.addEventListener("click", (e) => {
-  if (modal && e.target === modal) {
-    modal.style.display = "none";
-  }
-});
-
 function saveCache(key, data) {
   localStorage.setItem(
     key,
@@ -114,6 +170,7 @@ async function openProfile(username) {
   modal.style.alignItems = "center";
 
   modalBody.innerHTML = "<p>Loading...</p>";
+  profileModalA11y.activate();
 
   try {
     const response = await fetch(`https://api.github.com/users/${username}`);

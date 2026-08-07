@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker - History Log</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .history-table-container {
+            overflow-x: auto;
+            margin-top: 20px;
+        }
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+        .history-table th {
+            text-align: left;
+            padding: 12px 16px;
+            background: var(--panel-bg);
+            border-bottom: 2px solid var(--panel-border);
+            color: var(--text-secondary);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.7rem;
+            letter-spacing: 0.05em;
+        }
+        .history-table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--panel-border);
+            color: var(--text-primary);
+        }
+        .history-table tr:hover {
+            background: var(--hover-bg);
+        }
+        .badge-income { color: var(--success); font-weight: 600; }
+        .badge-expense { color: var(--danger); font-weight: 600; }
+        .search-box {
+            padding: 10px 16px;
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            width: 100%;
+            max-width: 300px;
+            font-size: 0.9rem;
+            outline: none;
+            transition: all var(--transition-fast);
+        }
+        .search-box:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-glow);
+        }
+        .history-controls {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .history-controls h2 {
+            margin: 0;
+            color: var(--text-primary);
+        }
+        .history-stats {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .history-stats span {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        .history-stats strong {
+            color: var(--text-primary);
+        }
+        .history-stats .stat-total-expenses strong { color: var(--danger); }
+        .history-stats .stat-total-income strong { color: var(--success); }
+        .history-stats .stat-count strong { color: var(--primary); }
+        .badge-category {
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+        .badge-food { background: rgba(16, 185, 129, 0.1); color: var(--color-food); }
+        .badge-travel { background: rgba(14, 165, 233, 0.1); color: var(--color-travel); }
+        .badge-shopping { background: rgba(139, 92, 246, 0.1); color: var(--color-shopping); }
+        .badge-bills { background: rgba(245, 158, 11, 0.1); color: var(--color-bills); }
+        .badge-other { background: rgba(100, 116, 139, 0.1); color: var(--color-other); }
+        
+        @media (max-width: 767px) {
+            .history-table thead {
+                display: none;
+            }
+            .history-table tbody tr {
+                display: block;
+                padding: 12px;
+                border-bottom: 1px solid var(--border-color);
+            }
+            .history-table td {
+                display: flex;
+                justify-content: space-between;
+                padding: 6px 0;
+                border-bottom: none;
+            }
+            .history-table td:last-child {
+                border-bottom: none;
+            }
+            .history-table td::before {
+                content: attr(data-label);
+                font-weight: 600;
+                color: var(--text-secondary);
+                font-size: 0.75rem;
+            }
+            .history-controls {
+                flex-direction: column;
+            }
+            .search-box {
+                max-width: 100%;
+            }
+            .history-stats {
+                flex-direction: column;
+                gap: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="bg-aura"></div>
+
+    <a href="index.html" class="project-back-button">← Back to App</a>
+
+    <div class="app-container">
+        <header class="app-header">
+            <div class="logo-group">
+                <h1>Expense <span class="logo-accent">Tracker</span></h1>
+                <p class="logo-subtext">Complete transaction history</p>
+            </div>
+            <div class="header-controls">
+                <nav class="nav-links-group">
+                    <a href="index.html" class="nav-link">Transactions</a>
+                    <a href="dashboard.html" class="nav-link">Dashboard</a>
+                    <a href="history.html" class="nav-link active">History Log</a>
+                </nav>
+                <div class="utility-buttons">
+                    <button id="btnExport" class="btn-secondary">📋 Export CSV</button>
+                    <button id="btnClear" class="btn-danger">🗑️ Clear All</button>
+                </div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="content-card">
+                <div class="history-controls">
+                    <h2>📜 Transaction History</h2>
+                    <input type="text" id="searchInput" class="search-box" placeholder="🔍 Search transactions...">
+                    <select id="typeFilter" class="search-box" style="max-width:150px;">
+                        <option value="all">All Types</option>
+                        <option value="expense">💳 Expenses</option>
+                    </select>
+                </div>
+
+                <div class="history-stats">
+                    <span class="stat-count">📊 Total Transactions: <strong id="totalCount">0</strong></span>
+                    <span class="stat-total-income">💰 Total Income: <strong id="totalIncomeStat">$0.00</strong></span>
+                    <span class="stat-total-expenses">💳 Total Expenses: <strong id="totalExpenseStat">$0.00</strong></span>
+                </div>
+
+                <div class="history-table-container">
+                    <table class="history-table" id="historyTable">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Description</th>
+                                <th>Category</th>
+                                <th>Type</th>
+                                <th>Amount</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="historyBody"></tbody>
+                    </table>
+                </div>
+                <div id="emptyState" class="empty-state" style="display:none;">
+                    📭 No transactions found. Start tracking your finances!
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <button id="themeToggle" class="floating-theme-btn" aria-label="Toggle dark and light mode">🌓</button>
+
+    <script>
+        var STORAGE_KEY = 'budgetbuddy_data';
+        var THEME_KEY = 'budgetbuddy_theme';
+
+        function updateThemeIcon() {
+            var btn = document.getElementById('themeToggle');
+            if (btn) {
+                var currentTheme = document.documentElement.getAttribute('data-theme');
+                btn.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
+            }
+        }
+
+        function initTheme() {
+            var savedTheme = localStorage.getItem(THEME_KEY);
+            if (!savedTheme) {
+                var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+                localStorage.setItem(THEME_KEY, prefersDark ? 'dark' : 'light');
+            } else {
+                document.documentElement.setAttribute('data-theme', savedTheme);
+            }
+            updateThemeIcon();
+        }
+
+        function toggleTheme() {
+            var currentTheme = document.documentElement.getAttribute('data-theme');
+            var newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem(THEME_KEY, newTheme);
+            updateThemeIcon();
+        }
+
+        function getTransactionData() {
+            var data = localStorage.getItem(STORAGE_KEY);
+            return data ? JSON.parse(data) : { expenses: [], income: 0 };
+        }
+
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD'
+            }).format(amount);
+        }
+
+        function formatDate(timestamp) {
+            var date = new Date(timestamp);
+            return date.toLocaleDateString('en-US', { 
+                month: 'short', 
+                day: 'numeric', 
+                year: 'numeric' 
+            });
+        }
+
+        function escapeHTML(str) {
+            if (!str) return '';
+            var map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                "'": '&#39;',
+                '"': '&quot;'
+            };
+            return String(str).replace(/[&<>'"]/g, function(m) { return map[m]; });
+        }
+
+        function getCategoryBadgeClass(category) {
+            var map = {
+                'Food': 'badge-food',
+                'Travel': 'badge-travel',
+                'Shopping': 'badge-shopping',
+                'Bills': 'badge-bills',
+                'Other': 'badge-other'
+            };
+            return map[category] || 'badge-other';
+        }
+
+        function renderHistory() {
+            var data = getTransactionData();
+            var expenses = data.expenses || [];
+            var income = data.income || 0;
+            
+            var search = document.getElementById('searchInput').value.toLowerCase();
+            var typeFilter = document.getElementById('typeFilter').value;
+            
+            var items = [];
+            
+            expenses.forEach(function(exp) {
+                items.push({ ...exp, type: 'expense' });
+            });
+            
+            items.sort(function(a, b) { 
+                return new Date(b.date) - new Date(a.date); 
+            });
+            
+            items = items.filter(function(item) {
+                var matchSearch = (item.name || '').toLowerCase().includes(search) || 
+                                 (item.category || '').toLowerCase().includes(search);
+                var matchType = typeFilter === 'all' || item.type === typeFilter;
+                return matchSearch && matchType;
+            });
+            
+            var tbody = document.getElementById('historyBody');
+            var emptyState = document.getElementById('emptyState');
+            
+            // Update stats
+            var totalExpenses = expenses.reduce(function(sum, e) { return sum + e.amount; }, 0);
+            document.getElementById('totalCount').textContent = expenses.length;
+            document.getElementById('totalIncomeStat').textContent = formatCurrency(income);
+            document.getElementById('totalExpenseStat').textContent = formatCurrency(totalExpenses);
+            
+            if (items.length === 0) {
+                tbody.innerHTML = '';
+                emptyState.style.display = 'block';
+                document.getElementById('historyTable').style.display = 'none';
+                return;
+            }
+            emptyState.style.display = 'none';
+            document.getElementById('historyTable').style.display = 'table';
+            
+            tbody.innerHTML = items.map(function(item) {
+                var badgeClass = getCategoryBadgeClass(item.category);
+                var typeClass = item.type === 'income' ? 'badge-income' : 'badge-expense';
+                var typeLabel = item.type === 'income' ? '💰 Income' : '💳 Expense';
+                var amountClass = item.type === 'income' ? 'row-inc' : 'row-exp';
+                var amountPrefix = item.type === 'income' ? '+' : '-';
+                
+                return '<tr>' +
+                    '<td data-label="Date">' + formatDate(item.date) + '</td>' +
+                    '<td data-label="Description">' + escapeHTML(item.name || '') + '</td>' +
+                    '<td data-label="Category"><span class="badge-category ' + badgeClass + '">' + (item.category || 'Other') + '</span></td>' +
+                    '<td data-label="Type"><span class="' + typeClass + '">' + typeLabel + '</span></td>' +
+                    '<td data-label="Amount" class="' + amountClass + '">' + amountPrefix + formatCurrency(item.amount || 0) + '</td>' +
+                    '<td data-label="Action"><button class="btn-delete-row" onclick="deleteItem(\'' + item.id + '\')">🗑️</button></td>' +
+                '</tr>';
+            }).join('');
+        }
+
+        function deleteItem(id) {
+            if (confirm('Delete this transaction?')) {
+                var data = getTransactionData();
+                data.expenses = data.expenses.filter(function(e) { return e.id !== id; });
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+                renderHistory();
+                if (typeof updateUI === 'function') updateUI();
+            }
+        }
+
+        function exportCSV() {
+            var data = getTransactionData();
+            var items = (data.expenses || []).map(function(e) {
+                return {
+                    Date: new Date(e.date).toLocaleDateString(),
+                    Description: e.name,
+                    Category: e.category,
+                    Type: 'Expense',
+                    Amount: e.amount
+                };
+            });
+            
+            if (items.length === 0) {
+                alert('📭 No data to export.');
+                return;
+            }
+            
+            var headers = Object.keys(items[0]);
+            var csvRows = [headers.join(',')];
+            
+            items.forEach(function(row) {
+                var values = headers.map(function(h) {
+                    var val = row[h] || '';
+                    return '"' + String(val).replace(/"/g, '""') + '"';
+                });
+                csvRows.push(values.join(','));
+            });
+            
+            var csv = csvRows.join('\n');
+            var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            var url = URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = 'expense_history_' + new Date().toISOString().split('T')[0] + '.csv';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function clearAllData() {
+            if (confirm('⚠️ Are you sure you want to delete ALL transaction data? This cannot be undone!')) {
+                localStorage.removeItem(STORAGE_KEY);
+                renderHistory();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            initTheme();
+            renderHistory();
+            
+            document.getElementById('searchInput').addEventListener('input', renderHistory);
+            document.getElementById('typeFilter').addEventListener('change', renderHistory);
+            document.getElementById('btnClear').addEventListener('click', clearAllData);
+            document.getElementById('btnExport').addEventListener('click', exportCSV);
+            document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+            
+            window.deleteItem = deleteItem;
+        });
+    </script>
+</body>
+</html>

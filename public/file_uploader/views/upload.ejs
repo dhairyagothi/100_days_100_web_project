@@ -1,465 +1,527 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>File Upload — Result</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>File Upload — Result</title>
 
+  <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
 
-    <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
+  <!-- Apply saved theme before paint — no flash -->
+  <script>
+    (function () {
+      var t = localStorage.getItem('fd-theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* ── Tokens — Dark ── */
+    :root {
+      --accent:        #63ffb4;
+      --accent-dim:    rgba(99,255,180,0.10);
+      --accent-glow:   rgba(99,255,180,0.28);
+      --accent-focus:  rgba(99,255,180,0.18);
 
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+      --bg-page:       #0b0c0f;
+      --bg-card:       rgba(14,16,21,0.97);
+      --bg-user:       rgba(255,255,255,0.04);
+      --bg-file:       rgba(99,255,180,0.05);
+      --bg-recent:     rgba(255,255,255,0.03);
+      --bg-toast:      rgba(14,16,21,0.97);
 
-        body {
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: #0a0a0a;
-            font-family: 'Syne', sans-serif;
-            overflow: hidden;
-        }
+      --border-card:   rgba(255,255,255,0.07);
+      --border-user:   rgba(255,255,255,0.07);
+      --border-file:   rgba(99,255,180,0.13);
+      --border-recent: rgba(255,255,255,0.06);
+      --border-toast:  rgba(99,255,180,0.35);
+      --border-back:   rgba(255,255,255,0.12);
 
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background-image:
-                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-            background-size: 40px 40px;
-            pointer-events: none;
-        }
+      --text-primary:  #ffffff;
+      --text-sub:      rgba(255,255,255,0.42);
+      --text-muted:    rgba(255,255,255,0.28);
+      --text-label:    rgba(255,255,255,0.35);
+      --text-fname:    #ffffff;
+      --text-fsize:    rgba(255,255,255,0.30);
+      --text-recent:   rgba(255,255,255,0.85);
+      --text-empty:    rgba(255,255,255,0.25);
+      --text-back:     #000000;
+      --text-toast:    rgba(255,255,255,0.90);
 
-        .result-card {
-            position: relative;
-            z-index: 1;
-            background: rgba(16, 18, 22, 0.97);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 16px;
-            padding: 44px 48px;
-            width: 480px;
-            max-width: 95vw;
-            box-shadow: 0 32px 80px rgba(0, 0, 0, 0.7);
-            animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
-        }
+      --shadow-card:   0 0 0 1px rgba(99,255,180,0.04), 0 40px 100px rgba(0,0,0,0.75), inset 0 1px 0 rgba(255,255,255,0.05);
+      --shadow-btn:    0 4px 20px rgba(99,255,180,0.22);
+      --shadow-btn-hover: 0 10px 32px rgba(99,255,180,0.38);
+      --shadow-toast:  0 0 0 1px rgba(99,255,180,0.04), 0 20px 48px rgba(0,0,0,0.55);
 
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(24px);
-            }
+      --toggle-bg:     rgba(255,255,255,0.08);
+      --toggle-border: rgba(255,255,255,0.13);
+      --toggle-color:  rgba(255,255,255,0.80);
+      --back-bg:       rgba(255,255,255,0.06);
 
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+      --btn-gradient:      linear-gradient(135deg,#63ffb4 0%,#3be8a0 100%);
+      --btn-gradient-hover:linear-gradient(135deg,#7fffca 0%,#63ffb4 100%);
+      --avatar-gradient:   linear-gradient(135deg,#63ffb4,#63b4ff);
 
-        .status-icon {
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.6rem;
-            margin: 0 auto 20px;
-        }
+      --font: 'Syne','Segoe UI',system-ui,sans-serif;
+      --transition: 0.22s ease;
+    }
 
-        .status-icon.success {
-            background: rgba(99, 255, 180, 0.12);
-        }
+    /* ── Tokens — Light ── */
+    [data-theme="light"] {
+      --accent:        #00a86b;
+      --accent-dim:    rgba(0,168,107,0.09);
+      --accent-glow:   rgba(0,168,107,0.24);
+      --accent-focus:  rgba(0,168,107,0.15);
 
-        .status-icon.error {
-            background: rgba(255, 99, 99, 0.12);
-        }
+      --bg-page:       #eef2f7;
+      --bg-card:       rgba(255,255,255,0.98);
+      --bg-user:       rgba(0,0,0,0.03);
+      --bg-file:       rgba(0,168,107,0.06);
+      --bg-recent:     rgba(0,0,0,0.025);
+      --bg-toast:      rgba(255,255,255,0.98);
 
-        h2 {
-            text-align: center;
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: #fff;
-            margin-bottom: 6px;
-        }
+      --border-card:   rgba(0,0,0,0.08);
+      --border-user:   rgba(0,0,0,0.08);
+      --border-file:   rgba(0,168,107,0.20);
+      --border-recent: rgba(0,0,0,0.07);
+      --border-toast:  rgba(0,168,107,0.35);
+      --border-back:   rgba(0,0,0,0.12);
 
-        #upload-status {
-            text-align: center;
-            font-size: 0.88rem;
-            color: rgba(255, 255, 255, 0.45);
-            margin-bottom: 28px;
-        }
+      --text-primary:  #111827;
+      --text-sub:      #6b7280;
+      --text-muted:    #9ca3af;
+      --text-label:    #6b7280;
+      --text-fname:    #111827;
+      --text-fsize:    #9ca3af;
+      --text-recent:   #1f2937;
+      --text-empty:    #9ca3af;
+      --text-back:     #000000;
+      --text-toast:    #111827;
 
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 14px 18px;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.07);
-            border-radius: 10px;
-            margin-bottom: 20px;
-        }
+      --shadow-card:   0 0 0 1px rgba(0,0,0,0.05), 0 24px 64px rgba(0,0,0,0.10), inset 0 1px 0 rgba(255,255,255,0.80);
+      --shadow-btn:    0 4px 20px rgba(0,168,107,0.20);
+      --shadow-btn-hover: 0 10px 32px rgba(0,168,107,0.32);
+      --shadow-toast:  0 0 0 1px rgba(0,0,0,0.05), 0 16px 40px rgba(0,0,0,0.12);
 
-        .avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #63ffb4, #63b4ff);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1rem;
-            font-weight: 700;
-            color: #000;
-            flex-shrink: 0;
-        }
+      --toggle-bg:     rgba(0,0,0,0.06);
+      --toggle-border: rgba(0,0,0,0.12);
+      --toggle-color:  #374151;
+      --back-bg:       rgba(0,0,0,0.04);
 
-        .user-name {
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: #fff;
-        }
+      --btn-gradient:      linear-gradient(135deg,#00c97a 0%,#00a86b 100%);
+      --btn-gradient-hover:linear-gradient(135deg,#00d882 0%,#00c97a 100%);
+      --avatar-gradient:   linear-gradient(135deg,#00c97a,#3b9eff);
+    }
 
-        .user-label {
-            font-size: 0.72rem;
-            color: rgba(255, 255, 255, 0.35);
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            margin-bottom: 2px;
-        }
+    /* ── Reset ── */
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 
-        .files-header {
-            font-size: 0.72rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: rgba(255, 255, 255, 0.35);
-            margin-bottom: 10px;
-        }
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: var(--bg-page);
+      font-family: var(--font);
+      color: var(--text-primary);
+      transition: background var(--transition), color var(--transition);
+      padding: 20px;
+    }
 
-        .files-list {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            max-height: 200px;
-            overflow-y: auto;
-            margin-bottom: 24px;
-        }
+    /* Background grid */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.055) 1px, transparent 1px);
+      background-size: 28px 28px;
+      pointer-events: none; z-index: 0;
+    }
+    [data-theme="light"] body::before {
+      background-image: radial-gradient(circle, rgba(0,0,0,0.04) 1px, transparent 1px);
+    }
+    body::after {
+      content: '';
+      position: fixed; inset: 0;
+      background:
+        radial-gradient(ellipse 600px 400px at 70% 30%, rgba(99,255,180,0.07) 0%, transparent 60%),
+        radial-gradient(ellipse 500px 300px at 20% 80%, rgba(120,160,255,0.05) 0%, transparent 55%);
+      pointer-events: none; z-index: 0;
+    }
+    [data-theme="light"] body::after {
+      background:
+        radial-gradient(ellipse 600px 400px at 70% 30%, rgba(0,168,107,0.05) 0%, transparent 60%),
+        radial-gradient(ellipse 500px 300px at 20% 80%, rgba(100,140,255,0.04) 0%, transparent 55%);
+    }
 
-        .files-list::-webkit-scrollbar {
-            width: 3px;
-        }
+    /* ── Theme Toggle ── */
+    .theme-toggle {
+      position: fixed;
+      top: 18px; right: 18px; z-index: 9999;
+      width: 44px; height: 44px;
+      border: 1px solid var(--toggle-border);
+      border-radius: 12px;
+      background: var(--toggle-bg);
+      color: var(--toggle-color);
+      font-size: 1.2rem;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all var(--transition);
+      backdrop-filter: blur(8px);
+      line-height: 1;
+    }
+    .theme-toggle:hover { background: var(--accent-dim); border-color: var(--accent); transform: scale(1.08) rotate(10deg); }
+    .theme-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
-        .files-list::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 2px;
-        }
+    /* ── Card ── */
+    .result-card {
+      position: relative; z-index: 1;
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: 20px;
+      padding: 44px 48px;
+      width: 500px;
+      max-width: 95vw;
+      box-shadow: var(--shadow-card);
+      animation: slideUp 0.55s cubic-bezier(0.16,1,0.3,1) both;
+      transition: background var(--transition), border-color var(--transition), box-shadow var(--transition);
+    }
+    @keyframes slideUp {
+      from { opacity:0; transform: translateY(28px) scale(0.97); }
+      to   { opacity:1; transform: translateY(0) scale(1); }
+    }
 
-        .file-row {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 10px 14px;
-            background: rgba(99, 255, 180, 0.05);
-            border: 1px solid rgba(99, 255, 180, 0.12);
-            border-radius: 8px;
-            animation: rowIn 0.3s ease both;
-        }
+    /* ── Status icon ── */
+    .status-icon {
+      width: 58px; height: 58px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem;
+      margin: 0 auto 20px;
+    }
+    .status-icon.success { background: rgba(99,255,180,0.12); }
+    .status-icon.error   { background: rgba(255,99,99,0.12); }
+    [data-theme="light"] .status-icon.success { background: rgba(0,168,107,0.12); }
 
-        .file-row:nth-child(1) {
-            animation-delay: 0.05s;
-        }
+    /* ── Headings & status ── */
+    h2 { text-align: center; font-size: 1.4rem; font-weight: 700; color: var(--text-primary); margin-bottom: 6px; }
+    #upload-status { text-align: center; font-size: 0.88rem; color: var(--text-sub); margin-bottom: 28px; }
 
-        .file-row:nth-child(2) {
-            animation-delay: 0.10s;
-        }
+    /* ── User info ── */
+    .user-info {
+      display: flex; align-items: center; gap: 14px;
+      padding: 14px 18px;
+      background: var(--bg-user);
+      border: 1px solid var(--border-user);
+      border-radius: 12px;
+      margin-bottom: 22px;
+      transition: background var(--transition), border-color var(--transition);
+    }
+    .avatar {
+      width: 42px; height: 42px;
+      border-radius: 50%;
+      background: var(--avatar-gradient);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.05rem; font-weight: 700; color: #000;
+      flex-shrink: 0;
+    }
+    .user-name { font-size: 0.95rem; font-weight: 600; color: var(--text-primary); }
+    .user-label { font-size: 0.7rem; color: var(--text-label); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 2px; }
 
-        .file-row:nth-child(3) {
-            animation-delay: 0.15s;
-        }
+    /* ── Section header ── */
+    .files-header {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-label);
+      margin-bottom: 10px;
+    }
 
-        .file-row:nth-child(4) {
-            animation-delay: 0.20s;
-        }
+    /* ── Files list ── */
+    .files-list {
+      display: flex; flex-direction: column; gap: 8px;
+      max-height: 200px; overflow-y: auto;
+      margin-bottom: 22px;
+    }
+    .files-list::-webkit-scrollbar { width: 3px; }
+    .files-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+    [data-theme="light"] .files-list::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.12); }
 
-        @keyframes rowIn {
-            from {
-                opacity: 0;
-                transform: translateX(-10px);
-            }
+    .file-row {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 14px;
+      background: var(--bg-file);
+      border: 1px solid var(--border-file);
+      border-radius: 10px;
+      animation: rowIn 0.3s ease both;
+      transition: background var(--transition), border-color var(--transition);
+    }
+    .file-row:nth-child(1) { animation-delay: 0.05s; }
+    .file-row:nth-child(2) { animation-delay: 0.10s; }
+    .file-row:nth-child(3) { animation-delay: 0.15s; }
+    .file-row:nth-child(4) { animation-delay: 0.20s; }
+    @keyframes rowIn {
+      from { opacity:0; transform: translateX(-10px); }
+      to   { opacity:1; transform: translateX(0); }
+    }
+    .file-emoji { font-size: 1.1rem; }
+    .file-meta { flex: 1; overflow: hidden; }
+    .file-meta .fname { font-size: 0.85rem; color: var(--text-fname); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .file-meta .fsize { font-size: 0.72rem; color: var(--text-fsize); }
+    .file-tick {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: rgba(99,255,180,0.18);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.65rem; color: var(--accent);
+      flex-shrink: 0;
+    }
+    [data-theme="light"] .file-tick { background: rgba(0,168,107,0.15); }
 
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
+    /* ── No files ── */
+    .no-files { text-align: center; padding: 20px; color: rgba(255,100,100,0.7); font-size: 0.88rem; margin-bottom: 22px; }
 
-        .file-emoji {
-            font-size: 1.1rem;
-        }
+    /* ── Recent uploads ── */
+    .recent-section {
+      border-top: 1px solid var(--border-card);
+      padding-top: 18px;
+      margin-bottom: 22px;
+      transition: border-color var(--transition);
+    }
+    .recent-list { display: flex; flex-direction: column; gap: 8px; }
+    .recent-row {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 14px;
+      background: var(--bg-recent);
+      border: 1px solid var(--border-recent);
+      border-radius: 10px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all var(--transition);
+      animation: rowIn 0.25s ease both;
+    }
+    .recent-row:hover { background: var(--accent-dim); border-color: var(--accent); transform: translateX(3px); }
+    .recent-row:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .recent-row .file-meta .fname { color: var(--text-recent); }
+    .recent-row .file-meta .fsize { color: var(--text-fsize); }
+    .recent-empty { font-size: 0.8rem; color: var(--text-empty); text-align: center; padding: 10px 0; }
 
-        .file-meta {
-            flex: 1;
-            overflow: hidden;
-        }
+    /* ── Back button ── */
+    .back-btn {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%;
+      padding: 14px;
+      background: var(--btn-gradient);
+      color: var(--text-back);
+      text-align: center;
+      text-decoration: none;
+      border-radius: 10px;
+      font-weight: 800;
+      font-size: 0.88rem;
+      font-family: var(--font);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      transition: all var(--transition);
+      box-shadow: var(--shadow-btn);
+    }
+    .back-btn:hover { background: var(--btn-gradient-hover); transform: translateY(-2px); box-shadow: var(--shadow-btn-hover); }
+    .back-btn:active { transform: translateY(0); }
+    .back-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
-        .file-meta .fname {
-            font-size: 0.85rem;
-            color: #fff;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
+    /* ── Toast ── */
+    .toast-container {
+      position: fixed;
+      bottom: 20px; right: 20px;
+      z-index: 9999;
+      display: flex; flex-direction: column; gap: 10px;
+      pointer-events: none;
+    }
+    .toast {
+      background: var(--bg-toast);
+      border: 1px solid var(--border-toast);
+      padding: 13px 18px;
+      border-radius: 13px;
+      display: flex; align-items: center; gap: 11px;
+      box-shadow: var(--shadow-toast);
+      animation: toastIn 0.32s cubic-bezier(0.16,1,0.3,1) both;
+      pointer-events: auto;
+      max-width: 300px;
+    }
+    @keyframes toastIn {
+      from { transform: translateY(20px); opacity:0; }
+      to   { transform: translateY(0);    opacity:1; }
+    }
+    .toast-icon { font-size: 1.2rem; flex-shrink: 0; }
+    .toast-message { color: var(--text-toast); font-size: 0.86rem; font-weight: 600; }
 
-        .file-meta .fsize {
-            font-size: 0.72rem;
-            color: rgba(255, 255, 255, 0.3);
-        }
+    /* ── Reduced motion ── */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    }
 
-        .file-tick {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: rgba(99, 255, 180, 0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.65rem;
-            color: #63ffb4;
-            flex-shrink: 0;
-        }
-
-        .back-btn {
-            display: block;
-            width: 100%;
-            padding: 13px;
-            background: #63ffb4;
-            color: #000;
-            text-align: center;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: 700;
-            font-size: 0.88rem;
-            font-family: inherit;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-            transition: all 0.2s ease;
-        }
-
-        .back-btn:hover {
-            background: #fff;
-            transform: translateY(-1px);
-            box-shadow: 0 8px 24px rgba(99, 255, 180, 0.2);
-        }
-
-        .no-files {
-            text-align: center;
-            padding: 20px;
-            color: rgba(255, 100, 100, 0.7);
-            font-size: 0.88rem;
-        }
-
-        /* ── ADDED: Recent uploads section ── */
-        .recent-section {
-            border-top: 1px solid rgba(255, 255, 255, 0.07);
-            padding-top: 18px;
-            margin-bottom: 24px;
-        }
-
-        .recent-list {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .recent-row {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 9px 14px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 8px;
-            text-decoration: none;
-            cursor: pointer;
-            transition: background 0.2s ease;
-        }
-
-        .recent-row:hover {
-            background: rgba(255, 255, 255, 0.07);
-
-        }
-
-        .recent-row .file-meta .fsize {
-            color: rgba(255, 255, 255, 0.25);
-        }
-
-        .recent-empty {
-            font-size: 0.8rem;
-            color: rgba(255, 255, 255, 0.25);
-            text-align: center;
-            padding: 10px 0;
-        }
-
-        /* ── END ADDED ── */
-    </style>
+    /* ── Mobile ── */
+    @media (max-width: 540px) {
+      .result-card { padding: 32px 22px; }
+    }
+  </style>
 </head>
 
 <body>
 
-    <div class="result-card">
+  <!-- Theme Toggle -->
+  <button
+    id="themeToggle"
+    class="theme-toggle"
+    aria-label="Toggle light/dark theme"
+    title="Toggle theme"
+  >
+    <span id="themeIcon" aria-hidden="true">🌙</span>
+  </button>
 
-        <div class="status-icon <%= files && files.length > 0 ? 'success' : 'error' %>">
-            <%= files && files.length> 0 ? '✓' : '✗' %>
-        </div>
+  <div class="result-card" role="main">
 
-        <h2>
-            <%= files && files.length> 0 ? 'Upload Complete!' : 'Upload Failed' %>
-        </h2>
-
-        <div id="upload-status">
-            <%= uploadStatus %>
-        </div>
-
-        <div class="user-info">
-            <div class="avatar">
-                <%= firstName ? firstName.charAt(0).toUpperCase() : '?' %>
-            </div>
-            <div>
-                <div class="user-label">Uploaded by</div>
-                <div class="user-name">
-                    <%= firstName %>
-                        <%= lastName %>
-                </div>
-            </div>
-        </div>
-
-        <% if (files && files.length> 0) { %>
-            <div class="files-header">
-                <%= files.length %> file<%= files.length> 1 ? 's' : '' %> uploaded
-            </div>
-            <div class="files-list">
-                <% files.forEach(function(file) { %>
-                    <% var ext=file.originalname.split('.').pop().toLowerCase(); var icons={ pdf:'📄', png:'🖼️',
-                        jpg:'🖼️', jpeg:'🖼️', mp4:'🎬', zip:'🗜️', docx:'📝', xlsx:'📊', txt:'📃' }; var
-                        icon=icons[ext] || '📎' ; var size=file.size < 1024 ? file.size + ' B' : file.size < 1048576 ?
-                        (file.size/1024).toFixed(1) + ' KB' : (file.size/1048576).toFixed(1) + ' MB' ; %>
-                        <div class="file-row">
-                            <span class="file-emoji">
-                                <%= icon %>
-                            </span>
-                            <div class="file-meta">
-                                <div class="fname">
-                                    <%= file.originalname %>
-                                </div>
-                                <div class="fsize">
-                                    <%= size %>
-                                </div>
-                            </div>
-                            <div class="file-tick">✓</div>
-                        </div>
-                        <% }) %>
-            </div>
-            <% } else { %>
-                <div class="no-files">No files were uploaded.</div>
-                <% } %>
-
-                    <!-- ── ADDED: Recent uploads section ── -->
-                    <div class="recent-section">
-                        <div class="files-header">🕐 Recent uploads</div>
-                        <div class="recent-list" id="recent-list">
-                            <div class="recent-empty" id="recent-empty">No recent uploads yet.</div>
-                        </div>
-                    </div>
-                    <!-- ── END ADDED ── -->
-
-                    <a href="/" class="back-btn">← Upload More Files</a>
-
+    <!-- Status icon -->
+    <div class="status-icon <%= files && files.length > 0 ? 'success' : 'error' %>" aria-hidden="true">
+      <%= files && files.length > 0 ? '✓' : '✗' %>
     </div>
-    <script id="files-data" type="application/json">
-        <%- JSON.stringify(files || []) %>
-    </script>
-    <script>
-    const currentFiles = JSON.parse(
-        document.getElementById('files-data').textContent
-    );
-    </script>
-    <script>
-        $(document).ready(function () {
-            // Professor ka original code — bilkul same
-            const message = $('#upload-status').text();
-            if (message) {
-                alert(message);
-            }
 
-            var iconsMap = { pdf: '📄', png: '🖼️', jpg: '🖼️', jpeg: '🖼️', mp4: '🎬', zip: '🗜️', docx: '📝', xlsx: '📊', txt: '📃' };
+    <h2><%= files && files.length > 0 ? 'Upload Complete!' : 'Upload Failed' %></h2>
+    <div id="upload-status"><%= uploadStatus %></div>
 
+    <!-- User info -->
+    <div class="user-info">
+      <div class="avatar" aria-hidden="true">
+        <%= firstName ? firstName.charAt(0).toUpperCase() : '?' %>
+      </div>
+      <div>
+        <div class="user-label">Uploaded by</div>
+        <div class="user-name"><%= firstName %> <%= lastName %></div>
+      </div>
+    </div>
 
-            if (currentFiles.length > 0) {
+    <!-- Uploaded files -->
+    <% if (files && files.length > 0) { %>
+      <div class="files-header">
+        <%= files.length %> file<%= files.length > 1 ? 's' : '' %> uploaded
+      </div>
+      <div class="files-list" role="list">
+        <% files.forEach(function(file) {
+          var ext  = file.originalname.split('.').pop().toLowerCase();
+          var icons = { pdf:'📄', png:'🖼️', jpg:'🖼️', jpeg:'🖼️', mp4:'🎬', zip:'🗜️', docx:'📝', xlsx:'📊', txt:'📃' };
+          var icon  = icons[ext] || '📎';
+          var size  = file.size < 1024 ? file.size + ' B'
+                    : file.size < 1048576 ? (file.size/1024).toFixed(1) + ' KB'
+                    : (file.size/1048576).toFixed(1) + ' MB';
+        %>
+          <div class="file-row" role="listitem">
+            <span class="file-emoji" aria-hidden="true"><%= icon %></span>
+            <div class="file-meta">
+              <div class="fname"><%= file.originalname %></div>
+              <div class="fsize"><%= size %></div>
+            </div>
+            <div class="file-tick" aria-label="Uploaded">✓</div>
+          </div>
+        <% }); %>
+      </div>
+    <% } else { %>
+      <div class="no-files">No files were uploaded.</div>
+    <% } %>
 
-                var history = [];
-                try { history = JSON.parse(localStorage.getItem('recentUploads') || '[]'); } catch (e) { }
+    <!-- Recent uploads -->
+    <div class="recent-section">
+      <div class="files-header">🕐 Recent uploads</div>
+      <div class="recent-list" id="recent-list" role="list">
+        <div class="recent-empty" id="recent-empty">No recent uploads yet.</div>
+      </div>
+    </div>
 
+    <a href="/" class="back-btn">← Upload More Files</a>
 
-                currentFiles.forEach(function (file) {
-                    var ext = file.originalname.split('.').pop().toLowerCase();
-                    history.unshift({
-                        name: file.originalname,
-                        size: file.size,
-                        icon: iconsMap[ext] || '📎',
-                        time: Date.now()
-                    });
-                });
+  </div>
 
+  <!-- Toast container -->
+  <div class="toast-container" id="toastContainer" role="region" aria-live="polite"></div>
 
-                history = history.slice(0, 3);
-                localStorage.setItem('recentUploads', JSON.stringify(history));
-            }
+  <script>
+    // ── Theme toggle (shared with main page via localStorage) ──
+    (function () {
+      function syncIcon() {
+        var theme = document.documentElement.getAttribute('data-theme') || 'dark';
+        var icon  = document.getElementById('themeIcon');
+        if (icon) icon.textContent = theme === 'dark' ? '🌙' : '☀️';
+      }
+      syncIcon();
 
-
-            var stored = [];
-            try { stored = JSON.parse(localStorage.getItem('recentUploads') || '[]'); } catch (e) { }
-
-            if (stored.length > 0) {
-                $('#recent-empty').hide();
-                stored.forEach(function (f) {
-                    var size = f.size < 1024
-                        ? f.size + ' B'
-                        : f.size < 1048576
-                            ? (f.size / 1024).toFixed(1) + ' KB'
-                            : (f.size / 1048576).toFixed(1) + ' MB';
-
-                    var mins = Math.floor((Date.now() - f.time) / 60000);
-                    var timeStr = mins < 1 ? 'Just now'
-                        : mins < 60 ? mins + ' min' + (mins > 1 ? 's' : '') + ' ago'
-                            : Math.floor(mins / 60) + ' hr' + (Math.floor(mins / 60) > 1 ? 's' : '') + ' ago';
-
-                    var row = $('<a class="recent-row">')
-                        .attr('href', '/uploads/' + encodeURIComponent(f.name))
-                        .attr('target', '_blank')   // new tab
-                        .append('<span class="file-emoji">' + f.icon + '</span>')
-                        .append(
-                            $('<div class="file-meta">')
-                                .append('<div class="fname">' + $('<span>').text(f.name).html() + '</div>')
-                                .append('<div class="fsize">' + size + ' &bull; ' + timeStr + '</div>')
-                        );
-                    $('#recent-list').append(row);
-                });
-            }
-            // ── END ADDED ──
+      var btn = document.getElementById('themeToggle');
+      if (btn) {
+        btn.addEventListener('click', function () {
+          var cur  = document.documentElement.getAttribute('data-theme');
+          var next = cur === 'dark' ? 'light' : 'dark';
+          document.documentElement.setAttribute('data-theme', next);
+          localStorage.setItem('fd-theme', next);
+          syncIcon();
         });
-    </script>
+        btn.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); btn.click(); }
+        });
+      }
+    })();
+
+    // ── Main page logic (original, preserved) ──
+    $(document).ready(function () {
+      // Professor's original alert
+      var message = $('#upload-status').text().trim();
+      if (message) { alert(message); }
+
+      var iconsMap = { pdf:'📄', png:'🖼️', jpg:'🖼️', jpeg:'🖼️', mp4:'🎬', zip:'🗜️', docx:'📝', xlsx:'📊', txt:'📃' };
+
+      var currentFiles = <%- JSON.stringify(files || []).replace(/</g,'\\u003C').replace(/>/g,'\\u003E').replace(/&/g,'\\u0026') %>;
+
+      if (currentFiles.length > 0) {
+        var history = [];
+        try { history = JSON.parse(localStorage.getItem('recentUploads') || '[]'); } catch (e) {}
+
+        currentFiles.forEach(function (file) {
+          var ext = file.originalname.split('.').pop().toLowerCase();
+          history.unshift({ name: file.originalname, size: file.size, icon: iconsMap[ext] || '📎', time: Date.now() });
+        });
+
+        history = history.slice(0, 3);
+        localStorage.setItem('recentUploads', JSON.stringify(history));
+      }
+
+      var stored = [];
+      try { stored = JSON.parse(localStorage.getItem('recentUploads') || '[]'); } catch (e) {}
+
+      if (stored.length > 0) {
+        $('#recent-empty').hide();
+        stored.forEach(function (f) {
+          var size = f.size < 1024 ? f.size + ' B'
+                   : f.size < 1048576 ? (f.size/1024).toFixed(1) + ' KB'
+                   : (f.size/1048576).toFixed(1) + ' MB';
+
+          var mins    = Math.floor((Date.now() - f.time) / 60000);
+          var timeStr = mins < 1  ? 'Just now'
+                      : mins < 60 ? mins + ' min' + (mins > 1 ? 's' : '') + ' ago'
+                      : Math.floor(mins/60) + ' hr' + (Math.floor(mins/60) > 1 ? 's' : '') + ' ago';
+
+          var row = $('<a class="recent-row" role="listitem">')
+            .attr('href', '/uploads/' + encodeURIComponent(f.name))
+            .attr('target', '_blank')
+            .append('<span class="file-emoji" aria-hidden="true">' + f.icon + '</span>')
+            .append(
+              $('<div class="file-meta">')
+                .append('<div class="fname">' + $('<span>').text(f.name).html() + '</div>')
+                .append('<div class="fsize">' + size + ' &bull; ' + timeStr + '</div>')
+            );
+          $('#recent-list').append(row);
+        });
+      }
+    });
+  </script>
 
 </body>
-
 </html>

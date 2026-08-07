@@ -1,153 +1,295 @@
-import listofProduct from "./listofProduct.js";
-import topbrands from "./topbrands.js";
-import hardtoResistDeals from "./hardtoResistDeals.js";
-
-// Slider
-const btnPreve = document.querySelector(".btn-container-prev");
-const btnNext = document.querySelector(".btn-container-next");
-const ImageContainerSlider = document.querySelector("#imageSlideContainer");
-
-if (btnNext && btnPreve && ImageContainerSlider) {
-  btnNext.addEventListener("click", () => {
-    ImageContainerSlider.scrollLeft += 200;
+// ==========================================================
+// NYKAA FASHION CLONE
+// Main Script
+// ==========================================================
+import products from "./listofProduct.js";
+import brands from "./topbrands.js";
+import deals from "./hardtoResistDeals.js";
+// ==========================================================
+// DOM ELEMENTS
+// ==========================================================
+const productContainer = document.querySelector(".listofProduct");
+const brandContainer = document.querySelector(".brandTopproduct");
+const dealsContainer = document.querySelector(".hardToResistDeals_image");
+const slider = document.getElementById("imageSlideContainer");
+const prevBtn = document.querySelector(".btn-container-prev");
+const nextBtn = document.querySelector(".btn-container-next");
+// ==========================================================
+// CREATE PRODUCT CARD
+// ==========================================================
+function createProductCard(product) {
+  return `
+    <div class="productCard">
+        <div class="productImage">
+            <img src="${product.image}" alt="${product.title}">
+            <span class="productBadge">
+                ${product.badge}
+            </span>
+        </div>
+        <div class="productContent">
+            <h4>
+                ${product.brand}
+            </h4>
+            <p>
+                ${product.title}
+            </p>
+            <div class="rating">
+                ⭐ ${product.rating}
+                <span>
+                    (${product.reviews})
+                </span>
+            </div>
+            <div class="priceBox">
+                <span class="price">
+                    ₹${product.price}
+                </span>
+                <span class="originalPrice">
+                    ₹${product.originalPrice}
+                </span>
+            </div>
+            <div class="discount">
+                ${product.discount}% OFF
+            </div>
+            <button class="bagButton">
+                Add to Bag
+            </button>
+        </div>
+    </div>
+    `;
+}
+// ==========================================================
+// RENDER PRODUCTS
+// ==========================================================
+function renderProducts() {
+  if (!productContainer) return;
+  productContainer.innerHTML = "";
+  products.forEach(product => {
+    productContainer.innerHTML += createProductCard(product);
   });
-  btnPreve.addEventListener("click", () => {
-    ImageContainerSlider.scrollLeft -= 200;
+}
+// ==========================================================
+// CREATE BRAND CARD
+// ==========================================================
+function createBrandCard(brand) {
+  return `
+    <div class="brandCard">
+        <div class="brandImage">
+            <img src="${brand.image}" alt="${brand.name}">
+        </div>
+        <div class="brandContent">
+            <h3>
+                ${brand.name}
+            </h3>
+            <p>
+                ${brand.offer}
+            </p>
+        </div>
+    </div>
+    `;
+}
+// ==========================================================
+// RENDER BRANDS
+// ==========================================================
+function renderBrands() {
+  if (!brandContainer) return;
+  brandContainer.innerHTML = "";
+  brands.forEach(brand => {
+    brandContainer.innerHTML += createBrandCard(brand);
   });
 }
-
-// Products
-const listofProductEL = document.querySelector(".listofProduct");
-let listofProductHTML = "";
-if (listofProductEL && Array.isArray(listofProduct)) {
-  for (let i = 0; i < listofProduct.length; i++) {
-    listofProductHTML += `
-      <a href="#">
-        <img src="${listofProduct[i].img}" alt="${listofProduct[i].dis}" />
-        <p>${listofProduct[i].dis}</p>
-      </a>`;
-  }
-  listofProductEL.innerHTML = listofProductHTML;
+// ==========================================================
+// CREATE DEAL CARD
+// ==========================================================
+function createDealCard(deal) {
+  return `
+    <div class="dealCard">
+        <img src="${deal.image}" alt="${deal.title}">
+        <div class="dealContent">
+            <h3>
+                ${deal.title}
+            </h3>
+            <p>
+                ${deal.subtitle}
+            </p>
+        </div>
+    </div>
+    `;
 }
-
-// Top Brands
-const brandTopproductEl = document.querySelector(".brandTopproduct");
-let brandTopproductHTML = "";
-if (brandTopproductEl && Array.isArray(topbrands)) {
-  for (let j = 0; j < topbrands.length; j++) {
-    brandTopproductHTML += `
-      <a href="#">
-        <img src="${topbrands[j].img}" alt="${topbrands[j].dis}" />
-        <p>${topbrands[j].dis}</p>
-      </a>`;
-  }
-  brandTopproductEl.innerHTML = brandTopproductHTML;
+// ==========================================================
+// RENDER DEALS
+// ==========================================================
+function renderDeals() {
+  if (!dealsContainer) return;
+  dealsContainer.innerHTML = "";
+  deals.forEach(deal => {
+    dealsContainer.innerHTML += createDealCard(deal);
+  });
 }
-
-// Hard to Resist Deals
-const hardToResistDeals_image = document.querySelector(".hardToResistDeals_image");
-let hardToResistDeals_imageHTML = "";
-if (hardToResistDeals_image && Array.isArray(hardtoResistDeals)) {
-  for (let k = 0; k < hardtoResistDeals.length; k++) {
-    hardToResistDeals_imageHTML += `
-      <a href="#">
-        <img src="${hardtoResistDeals[k]}" alt="Deal promo banner" />
-      </a>`;
-  }
-  hardToResistDeals_image.innerHTML = hardToResistDeals_imageHTML;
-}
-
-// ─── Search Autocomplete ───────────────────────────────────────────────
-const searchInput = document.getElementById("searchInput");
-const searchDropdown = document.getElementById("searchDropdown");
-
-// Suggestions data — products + brands + categories
-const suggestions = [
-  // From nav categories
-  "Indian Wear", "Western Wear", "Bags", "Jewellery", "Footwear",
-  "Active & Sports", "Sleep & Lounge", "Top Wear", "Bottom Wear", "Ethnic Wear",
-  // From popular links
-  "Lipstick", "Highlighter", "Hair Serum", "Face Wash", "Sunscreen",
-  "Eyeliner", "Perfume", "Mascara", "Cleanser", "Toner",
-  "Night Cream", "Hair Mask", "Serum", "Makeup Pouch",
-  // From brands in dropdown
-  "Biba", "Bewakoof", "Soch", "Koko", "La Vie En Rose",
-  // Product list names (add more from your listofProduct.js if needed)
-  "Smartserve", "Beambika", "Tikhiimli",
-  // Sale
-  "Sale", "What's New", "All Brands"
+// ==========================================================
+// INITIAL RENDER
+// ==========================================================
+renderProducts();
+renderBrands();
+renderDeals();
+// ==========================================================
+// HERO AUTO SLIDER
+// ==========================================================
+const heroImages = [
+  "https://images-static.nykaa.com/uploads/04bf8945-4cc5-4540-a06a-fee8ca30ceab.gif?tr=w-1200,cm-pad_resize",
+  "https://images-static.nykaa.com/uploads/2c5cfbd6-762d-47ec-8285-9cc718deb395.jpg?tr=w-1200,cm-pad_resize",
+  "https://images-static.nykaa.com/uploads/5d9eefb9-accf-45a4-b6b0-547e10f93386.jpg?tr=w-1200,cm-pad_resize"
 ];
-
-let activeIndex = -1;
-
-function highlightMatch(text, query) {
-  const regex = new RegExp(`(${query})`, "gi");
-  return text.replace(regex, '<span class="match">$1</span>');
+const heroImage = document.querySelector(".heroSlider img");
+let currentHero = 0;
+function changeHeroImage() {
+  if (!heroImage) return;
+  currentHero++;
+  if (currentHero >= heroImages.length) {
+    currentHero = 0;
+  }
+  heroImage.style.opacity = "0";
+  setTimeout(() => {
+    heroImage.src = heroImages[currentHero];
+    heroImage.style.opacity = "1";
+  }, 300);
 }
-
-function showSuggestions(query) {
-  searchDropdown.innerHTML = "";
-  activeIndex = -1;
-
-  if (!query.trim()) {
-    searchDropdown.classList.remove("active");
-    return;
-  }
-
-  const q = query.toLowerCase();
-  const matches = suggestions.filter((s) =>
-    s.toLowerCase().includes(q)
-  ).slice(0, 8);
-
-  if (matches.length === 0) {
-    searchDropdown.innerHTML = '<div class="no-results">No results found</div>';
-    searchDropdown.classList.add("active");
-    return;
-  }
-
-  matches.forEach((item) => {
-    const div = document.createElement("div");
-    div.className = "suggestion-item";
-    div.innerHTML = highlightMatch(item, query);
-    div.addEventListener("click", () => {
-      searchInput.value = item;
-      searchDropdown.classList.remove("active");
+setInterval(changeHeroImage, 4000);
+// ==========================================================
+// TRENDING SLIDER
+// ==========================================================
+if (slider && prevBtn && nextBtn) {
+  nextBtn.addEventListener("click", () => {
+    slider.scrollBy({
+      left: 300,
+      behavior: "smooth"
     });
-    searchDropdown.appendChild(div);
   });
-
-  searchDropdown.classList.add("active");
+  prevBtn.addEventListener("click", () => {
+    slider.scrollBy({
+      left: -300,
+      behavior: "smooth"
+    });
+  });
 }
-
-// Debounce 300ms
-let debounceTimer;
-searchInput.addEventListener("input", (e) => {
-  clearTimeout(debounceTimer);
-  debounceTimer = setTimeout(() => showSuggestions(e.target.value), 300);
+// ==========================================================
+// AUTO SCROLL TRENDING
+// ==========================================================
+let autoScroll;
+function startAutoScroll() {
+  if (!slider) return;
+  autoScroll = setInterval(() => {
+    if (
+      slider.scrollLeft + slider.clientWidth >=
+      slider.scrollWidth - 10
+    ) {
+      slider.scrollTo({
+        left: 0,
+        behavior: "smooth"
+      });
+    }
+    else {
+      slider.scrollBy({
+        left: 220,
+        behavior: "smooth"
+      });
+    }
+  }, 3500);
+}
+function stopAutoScroll() {
+  clearInterval(autoScroll);
+}
+if (slider) {
+  startAutoScroll();
+  slider.addEventListener("mouseenter", stopAutoScroll);
+  slider.addEventListener("mouseleave", startAutoScroll);
+}
+// ==========================================================
+// SEARCH FUNCTIONALITY
+// ==========================================================
+const searchInput = document.querySelector(".inputSearch input");
+if (searchInput) {
+  searchInput.addEventListener("keyup", (e) => {
+    const value = e.target.value.toLowerCase();
+    const cards = document.querySelectorAll(".productCard");
+    cards.forEach((card) => {
+      const text = card.innerText.toLowerCase();
+      if (text.includes(value)) {
+        card.style.display = "block";
+      } else {
+        card.style.display = "none";
+      }
+    });
+  });
+}
+// ==========================================================
+// PRODUCT HOVER EFFECT
+// ==========================================================
+document.addEventListener("mouseover", (e) => {
+  const card = e.target.closest(".productCard");
+  if (!card) return;
+  card.classList.add("active");
 });
-
-// Keyboard navigation
-searchInput.addEventListener("keydown", (e) => {
-  const items = searchDropdown.querySelectorAll(".suggestion-item");
-  if (e.key === "ArrowDown") {
-    activeIndex = Math.min(activeIndex + 1, items.length - 1);
-  } else if (e.key === "ArrowUp") {
-    activeIndex = Math.max(activeIndex - 1, 0);
-  } else if (e.key === "Enter" && activeIndex >= 0) {
-    items[activeIndex].click();
-    return;
-  } else if (e.key === "Escape") {
-    searchDropdown.classList.remove("active");
-    return;
-  }
-  items.forEach((item, i) =>
-    item.classList.toggle("highlighted", i === activeIndex)
-  );
+document.addEventListener("mouseout", (e) => {
+  const card = e.target.closest(".productCard");
+  if (!card) return;
+  card.classList.remove("active");
 });
-
-// Click bahar ho toh close
+// ==========================================================
+// ADD TO BAG
+// ==========================================================
 document.addEventListener("click", (e) => {
-  if (!searchInput.contains(e.target) && !searchDropdown.contains(e.target)) {
-    searchDropdown.classList.remove("active");
+  if (!e.target.classList.contains("bagButton")) return;
+  e.target.innerText = "Added ✓";
+  e.target.style.background = "#0a8f4d";
+  setTimeout(() => {
+    e.target.innerText = "Add to Bag";
+    e.target.style.background = "";
+  }, 1500);
+});
+// ==========================================================
+// NAVBAR SHADOW
+// ==========================================================
+const header = document.querySelector("header");
+window.addEventListener("scroll", () => {
+  if (!header) return;
+  if (window.scrollY > 40) {
+    header.style.boxShadow =
+      "0 8px 25px rgba(0,0,0,.12)";
+  } else {
+    header.style.boxShadow =
+      "0 2px 10px rgba(0,0,0,.08)";
   }
+});
+// ==========================================================
+// SCROLL REVEAL
+// ==========================================================
+const observer = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("fade");
+      }
+    });
+  },
+  {
+    threshold: 0.2
+  }
+);
+document
+  .querySelectorAll("section")
+  .forEach((section) => observer.observe(section));
+// ==========================================================
+// WISHLIST
+// ==========================================================
+document.addEventListener("click", (e) => {
+  const heart = e.target.closest(".wishlistBtn");
+  if (!heart) return;
+  heart.classList.toggle("liked");
+});
+// ==========================================================
+// PAGE LOADED
+// ==========================================================
+window.addEventListener("load", () => {
+  document.body.classList.add("loaded");
+  console.log("Nykaa Clone Loaded Successfully");
 });

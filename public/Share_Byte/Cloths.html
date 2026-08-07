@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clothes Donation</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    background:#0d6d22;
+}
+
+.container{
+    display:flex;
+    min-height:100vh;
+}
+
+/* Sidebar */
+
+.sidebar{
+    width:230px;
+    background:#0b4f17;
+    color:white;
+    padding-top:30px;
+}
+
+.sidebar h2{
+    text-align:center;
+    margin-bottom:40px;
+}
+
+.sidebar a{
+    display:block;
+    color:white;
+    text-decoration:none;
+    padding:16px 30px;
+    transition:.3s;
+}
+
+.sidebar a:hover,
+.sidebar a.active{
+    background:#ffffff;
+    color:#0b4f17;
+    border-radius:20px 0 0 20px;
+}
+
+/* Main */
+
+.main{
+    flex:1;
+    padding:50px;
+}
+
+.cards{
+    display:flex;
+    gap:30px;
+    flex-wrap:wrap;
+}
+
+/* Card */
+
+.card{
+    background:white;
+    border-radius:18px;
+    padding:30px;
+    flex:1;
+    min-width:360px;
+    box-shadow:0 8px 20px rgba(0,0,0,.2);
+}
+
+.card h2{
+    text-align:center;
+    margin-bottom:25px;
+    color:#1e3c5a;
+}
+
+input,
+select,
+textarea{
+    width:100%;
+    padding:14px;
+    margin:15px 0;
+    border:1px solid #ccc;
+    border-radius:8px;
+    font-size:16px;
+}
+
+textarea{
+    resize:none;
+}
+
+button{
+    width:100%;
+    padding:15px;
+    border:none;
+    border-radius:8px;
+    background:#ff932f;
+    color:white;
+    font-size:18px;
+    cursor:pointer;
+    margin-top:10px;
+    transition:.3s;
+}
+
+button:hover{
+    background:#e77813;
+}
+
+.list{
+    text-align:center;
+    color:gray;
+    margin-top:60px;
+    font-size:18px;
+}
+
+.item{
+    background:#f5f5f5;
+    padding:15px;
+    border-radius:10px;
+    margin-top:15px;
+    text-align:left;
+}
+
+.item h3{
+    color:#0b4f17;
+    margin-bottom:8px;
+}
+
+@media(max-width:900px){
+
+.sidebar{
+    width:180px;
+}
+
+.main{
+    padding:20px;
+}
+
+.cards{
+    flex-direction:column;
+}
+
+.card{
+    min-width:100%;
+}
+
+}
+
+@media(max-width:600px){
+
+.container{
+    flex-direction:column;
+}
+
+.sidebar{
+    width:100%;
+}
+
+.sidebar a{
+    border-radius:0;
+}
+
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="sidebar">
+
+<h2>Donors</h2>
+
+<a href="Food.html">Food</a>
+<a class="active" href="Cloths.html">Clothes</a>
+<a href="Renew.html">Renew</a>
+<a href="Contact.html">Contact</a>
+
+</div>
+
+<div class="main">
+
+<div class="cards">
+
+<div class="card">
+
+<h2>Donate Clothes</h2>
+
+<input
+type="text"
+placeholder="Clothing Type (Shirts, Jackets, Blankets...)">
+
+<input
+type="text"
+placeholder="Donor Name">
+
+<input
+type="number"
+placeholder="Number of Items">
+
+<select>
+<option>Select Condition</option>
+<option>New</option>
+<option>Like New</option>
+<option>Good</option>
+<option>Used</option>
+</select>
+
+<textarea
+rows="4"
+placeholder="Additional Description"></textarea>
+
+<button>📍 Get My Location</button>
+
+<button>Donate Clothes</button>
+
+</div>
+
+<div class="card">
+
+<h2>Available Clothes Nearby</h2>
+
+<div class="list">
+
+No clothes donations available.
+
+<!-- Example Card
+
+<div class="item">
+<h3>Winter Jackets</h3>
+<p>Donor: ABC Foundation</p>
+<p>Items: 20</p>
+<p>Condition: Good</p>
+</div>
+
+-->
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</body>
+</html>

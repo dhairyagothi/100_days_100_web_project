@@ -1,91 +1,92 @@
-# 🛡️ PhishGuard AI Terminal
+# 💰 Expense Tracker
 
-A cyber-themed URL analysis tool that detects potentially suspicious or phishing-like links using rule-based logic.  
-It features a hacker-style terminal UI with animated Matrix background and AI-style explanations.
-
----
-
-## 🚀 Features
-
-- URL safety analysis using rule-based scoring
-- Threat score calculation system
-- AI-style explanation of detected risks
-- Confidence percentage display
-- Real-time terminal log simulation
-- Matrix-style animated background
-- Hacker terminal UI design
+A modern and responsive Expense Tracker application that helps users efficiently manage their personal finances. Users can record income and expenses, monitor their financial health through an interactive dashboard, and visualize spending patterns with insightful charts and statistics.
 
 ---
 
-## 🧪 How It Works
+# ✨ Features
 
-The system analyzes a given URL based on simple patterns:
-
-- Presence of suspicious keywords (login, verify, bank)
-- Special characters like `@`
-- Use of HTTP instead of HTTPS
-- Multiple subdomains
-- Hyphenated domain patterns
-
-Each pattern increases a **threat score**, which determines the final result:
-
-- 🟢 Safe Signal
-- 🟡 Suspicious Activity
-- 🔴 Threat Detected
-
----
-
-## 🛠️ Tech Stack
-
-- HTML5
-- CSS3
-- JavaScript (Vanilla)
-- Canvas API (for Matrix animation)
+* Add income and expense transactions
+* Record amount, category, date, and description
+* Real-time balance calculation
+* Dashboard with financial summary
+* Total Income, Total Expenses, Savings Rate
+* Average transaction statistics
+* Category-wise expense breakdown
+* Circular indicator for highest spending category
+* Transaction history
+* Backup data option
+* Clear all data option
+* Fully responsive UI
+* Dark mode interface
 
 ---
 
-## 📁 Project Structure
-index.html
-style.css
-script.js
+# 🛠 Technologies Used
 
-
----
-
-## 🎮 UI Components
-
-- Matrix digital rain background
-- Terminal-style input interface
-- Threat score display panel
-- AI explanation panel
-- Confidence percentage display
-- Live scanning logs
+* HTML5
+* CSS3
+* JavaScript (ES6)
+* Local Storage API
 
 ---
 
-## 🤝 Contribution
+# 🚀 Installation
 
-This project can be extended by improving UI, logic, or adding new analysis rules.
+1. Clone the repository.
+2. Navigate to the `expense_Tracker` folder.
+3. Open `index.html` in your browser.
 
----
-
-## ⚠️ Disclaimer
-
-This tool is for educational purposes only and does not guarantee accurate phishing detection.
+No installation or dependencies are required.
 
 ---
 
+# 📖 Usage
 
-## 👩‍💻 Author
-
-**Sapna Jha**
-
-* GitHub: https://github.com/sapnajha757
-
-* LinkedIn: https://in.linkedin.com/in/sapna-jha-672598387 
+* Add income or expense entries.
+* View your updated balance instantly.
+* Monitor spending through charts and summaries.
+* Backup your data whenever needed.
+* Clear stored data if required.
 
 ---
 
-## ⭐ Support
+# 📁 Project Structure
 
-If you like this project, give it a ⭐ on GitHub.
+```text
+expense_Tracker/
+│── index.html
+│── style.css
+│── script.js
+└── README.md
+```
+
+---
+
+# 📸 Screenshots
+
+Add screenshots or GIFs of the application here.
+
+---
+
+# 🚀 Future Enhancements
+
+* Monthly analytics
+* Export to PDF/Excel
+* Authentication
+* Cloud synchronization
+* Budget planning
+* Multiple currencies
+* Expense reminders
+
+---
+
+# 🤝 Contributing
+
+Contributions are welcome. Feel free to fork the repository, create a feature branch, and submit a Pull Request.
+
+---
+
+# 📄 License
+
+This project is part of the **100 Days 100 Web Projects** collection.
