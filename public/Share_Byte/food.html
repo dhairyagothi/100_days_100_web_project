@@ -1,0 +1,450 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AaharShare | Food Donations</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:#f6f8fb;
+}
+
+/* NAVBAR */
+
+nav{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:18px 8%;
+background:#188038;
+color:white;
+position:sticky;
+top:0;
+z-index:100;
+}
+
+.logo{
+font-size:30px;
+font-weight:700;
+}
+
+nav ul{
+display:flex;
+gap:30px;
+list-style:none;
+}
+
+nav a{
+text-decoration:none;
+color:white;
+font-weight:500;
+transition:.3s;
+}
+
+nav a:hover{
+color:#ffe082;
+}
+
+/* HERO */
+
+.hero{
+height:55vh;
+background:linear-gradient(rgba(0,0,0,.45),rgba(0,0,0,.45)),
+url("https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1600&q=80");
+background-size:cover;
+background-position:center;
+display:flex;
+justify-content:center;
+align-items:center;
+text-align:center;
+color:white;
+padding:20px;
+}
+
+.hero h1{
+font-size:55px;
+margin-bottom:15px;
+}
+
+.hero p{
+font-size:18px;
+}
+
+/* SEARCH */
+
+.search{
+padding:40px 8%;
+display:flex;
+justify-content:center;
+gap:15px;
+flex-wrap:wrap;
+}
+
+.search input{
+width:400px;
+padding:15px;
+border-radius:30px;
+border:none;
+outline:none;
+box-shadow:0 5px 15px rgba(0,0,0,.1);
+font-size:16px;
+}
+
+.search button{
+padding:15px 35px;
+border:none;
+background:#188038;
+color:white;
+border-radius:30px;
+cursor:pointer;
+font-size:16px;
+}
+
+.search button:hover{
+background:#0d652d;
+}
+
+/* FILTERS */
+
+.filters{
+display:flex;
+justify-content:center;
+gap:15px;
+flex-wrap:wrap;
+padding-bottom:35px;
+}
+
+.filters button{
+padding:12px 25px;
+border:none;
+border-radius:25px;
+background:white;
+cursor:pointer;
+font-weight:500;
+box-shadow:0 3px 10px rgba(0,0,0,.08);
+transition:.3s;
+}
+
+.filters button:hover{
+background:#188038;
+color:white;
+}
+
+/* CARDS */
+
+.container{
+width:90%;
+max-width:1300px;
+margin:auto;
+padding-bottom:60px;
+}
+
+.cards{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+gap:30px;
+}
+
+.card{
+background:white;
+border-radius:15px;
+overflow:hidden;
+box-shadow:0 10px 25px rgba(0,0,0,.08);
+transition:.3s;
+}
+
+.card:hover{
+transform:translateY(-8px);
+}
+
+.card img{
+width:100%;
+height:220px;
+object-fit:cover;
+}
+
+.content{
+padding:20px;
+}
+
+.content h3{
+color:#188038;
+margin-bottom:12px;
+}
+
+.content p{
+margin:8px 0;
+color:#555;
+}
+
+button.request{
+margin-top:15px;
+width:100%;
+padding:13px;
+border:none;
+background:#188038;
+color:white;
+border-radius:8px;
+cursor:pointer;
+font-size:15px;
+}
+
+button.request:hover{
+background:#0d652d;
+}
+
+/* FOOTER */
+
+footer{
+background:#111;
+color:white;
+text-align:center;
+padding:30px;
+margin-top:50px;
+}
+
+@media(max-width:768px){
+
+.hero h1{
+font-size:40px;
+}
+
+.search input{
+width:100%;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<nav>
+
+<div class="logo">❤ AaharShare</div>
+
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="#">Food</a></li>
+<li><a href="#">Donors</a></li>
+<li><a href="#">Renew</a></li>
+<li><a href="#">Contact</a></li>
+</ul>
+
+</nav>
+
+<section class="hero">
+
+<div>
+
+<h1>Share Food, Spread Smiles</h1>
+
+<p>
+Browse available food donations and request meals for those in need.
+</p>
+
+</div>
+
+</section>
+
+<section class="search">
+
+<input type="text" placeholder="Search food...">
+
+<button>Search</button>
+
+</section>
+
+<section class="filters">
+
+<button>All</button>
+<button>Meals</button>
+<button>Fruits</button>
+<button>Vegetables</button>
+<button>Bakery</button>
+<button>Groceries</button>
+
+</section>
+
+<div class="container">
+
+<div class="cards">
+
+<div class="card">
+
+<img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80">
+
+<div class="content">
+
+<h3>Vegetable Meal</h3>
+
+<p><strong>Quantity:</strong> 20 Plates</p>
+
+<p><strong>Location:</strong> Delhi</p>
+
+<p><strong>Expiry:</strong> Today 9 PM</p>
+
+<p><strong>Donor:</strong> ABC Restaurant</p>
+
+<button class="request">
+Request Food
+</button>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=800&q=80">
+
+<div class="content">
+
+<h3>Fresh Salad</h3>
+
+<p><strong>Quantity:</strong> 15 Boxes</p>
+
+<p><strong>Location:</strong> Noida</p>
+
+<p><strong>Expiry:</strong> Tomorrow</p>
+
+<p><strong>Donor:</strong> Green Cafe</p>
+
+<button class="request">
+Request Food
+</button>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80">
+
+<div class="content">
+
+<h3>Mixed Food Pack</h3>
+
+<p><strong>Quantity:</strong> 30 Packs</p>
+
+<p><strong>Location:</strong> Lucknow</p>
+
+<p><strong>Expiry:</strong> Today</p>
+
+<p><strong>Donor:</strong> Food Bank</p>
+
+<button class="request">
+Request Food
+</button>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=800&q=80">
+
+<div class="content">
+
+<h3>Bakery Items</h3>
+
+<p><strong>Quantity:</strong> 50 Pieces</p>
+
+<p><strong>Location:</strong> Varanasi</p>
+
+<p><strong>Expiry:</strong> Today</p>
+
+<p><strong>Donor:</strong> Sweet Bakery</p>
+
+<button class="request">
+Request Food
+</button>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<img src="https://images.unsplash.com/photo-1473093295043-cdd812d0e601?auto=format&fit=crop&w=800&q=80">
+
+<div class="content">
+
+<h3>Fruit Basket</h3>
+
+<p><strong>Quantity:</strong> 10 Baskets</p>
+
+<p><strong>Location:</strong> Kanpur</p>
+
+<p><strong>Expiry:</strong> Tomorrow</p>
+
+<p><strong>Donor:</strong> Fresh Mart</p>
+
+<button class="request">
+Request Food
+</button>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<img src="https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?auto=format&fit=crop&w=800&q=80">
+
+<div class="content">
+
+<h3>Breakfast Pack</h3>
+
+<p><strong>Quantity:</strong> 40 Packs</p>
+
+<p><strong>Location:</strong> Ghaziabad</p>
+
+<p><strong>Expiry:</strong> Morning</p>
+
+<p><strong>Donor:</strong> Sunrise Hotel</p>
+
+<button class="request">
+Request Food
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<footer>
+
+<h3>AaharShare</h3>
+
+<p>
+Together we can reduce food waste and feed those in need.
+</p>
+
+<p style="margin-top:10px;">
+© 2026 AaharShare. All Rights Reserved.
+</p>
+
+</footer>
+
+</body>
+</html>
