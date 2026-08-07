@@ -1,6 +1,5 @@
 # 🚀 100 Days 100 Web Projects
 
-
 <div align="center">
 
 ![100 Days 100 Projects Banner](https://readme-typing-svg.demolab.com?font=Fira+Code&size=40&weight=900&pause=1000&color=0FF26C&center=true&width=800&lines=100+Days+100+Web+Projects;Learn+%26+Build+Amazing+Projects;HTML+%7C+CSS+%7C+JavaScript+%7C+React+%7C+Node.js)
@@ -23,8 +22,8 @@
 [![oosmetrics](https://api.oosmetrics.com/api/v1/badge/achievement/a3722273-95cf-4a9e-b9ae-5e241e148e86.svg)](https://oosmetrics.com/repo/dhairyagothi/100_days_100_web_project)
 
 [![oosmetrics](https://api.oosmetrics.com/api/v1/badge/achievement/504bb60b-df6f-4e90-94f7-123a64ba852d.svg)](https://oosmetrics.com/repo/dhairyagothi/100_days_100_web_project)
-</div>
 
+</div>
 
 ## Table of Contents
 
@@ -44,13 +43,12 @@
 - [⭐ Show Your Support](#-show-your-support)
 - [🏆 Contributors](#-contributors)
 
-
 ## 🌟 About This Project
 
 Welcome to **100 Days 100 Web Projects**! This is a comprehensive collection of **218+ web development projects** built using HTML, CSS, JavaScript, React, Node.js, and more.
 
-
 ### 🎯 What You'll Find Here:
+
 - **Frontend Projects**: HTML, CSS, JavaScript, React, Vue.js
 - **Backend Projects**: Node.js, Express.js, Flask, MERN Stack
 - **Full-Stack Applications**: Complete web applications with frontend and backend
@@ -59,6 +57,7 @@ Welcome to **100 Days 100 Web Projects**! This is a comprehensive collection of 
 - **UI Components**: Reusable components and design patterns
 
 ### 🔥 Featured Technologies:
+
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=html5&logoColor=white)
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=css3&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black)
@@ -74,6 +73,7 @@ Welcome to **100 Days 100 Web Projects**! This is a comprehensive collection of 
 **🌐 Visit the Live Website:** [100-days-100-web-project.vercel.app](https://100-days-100-web-project.vercel.app/)
 
 The website features:
+
 - Interactive project showcase
 - Search functionality to find specific projects
 - Direct links to all project demos
@@ -86,311 +86,311 @@ The website features:
 
 ### ⭐ Featured Projects
 
-| # | Project | Type | Difficulty | Demo |
-|---|---------|------|------------|------|
-| 1 | To-Do List | Tool | beginner | [View Demo](https://100-days-100-web-project.vercel.app/public/TO_DO_LIST/todolist.html) |
-| 10 | QR Code Generator | Tool | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/qr%20generator/qr.html) |
-| 30 | Flappy-bird-game | Game | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Flappy-bird-main/index.html) |
-| 50 | Recipe Genie | API | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/recipe/main.html) |
-| 80 | Resume Studio | Tool | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/ResumeStudio/index.html) |
-| 100 | Text Saver Extension | Tool | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Text_Saver_Ext/popup.html) |
-| 150 | App Privacy Policy Generator | Tool | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/AppPrivacyPolicyGenerator/index.html) |
-| 200 | Dual-Genre Movie Matcher | Web Application | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/Movie-Matcher/index.html) |
+| #   | Project                      | Type            | Difficulty   | Demo                                                                                                 |
+| --- | ---------------------------- | --------------- | ------------ | ---------------------------------------------------------------------------------------------------- |
+| 1   | To-Do List                   | Tool            | beginner     | [View Demo](https://100-days-100-web-project.vercel.app/public/TO_DO_LIST/todolist.html)             |
+| 10  | QR Code Generator            | Tool            | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/qr%20generator/qr.html)               |
+| 30  | Flappy-bird-game             | Game            | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Flappy-bird-main/index.html)          |
+| 50  | Recipe Genie                 | API             | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/recipe/main.html)                     |
+| 80  | Resume Studio                | Tool            | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/ResumeStudio/index.html)              |
+| 100 | Text Saver Extension         | Tool            | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Text_Saver_Ext/popup.html)            |
+| 150 | App Privacy Policy Generator | Tool            | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/AppPrivacyPolicyGenerator/index.html) |
+| 200 | Dual-Genre Movie Matcher     | Web Application | advanced     | [View Demo](https://100-days-100-web-project.vercel.app/public/Movie-Matcher/index.html)             |
 
 ### 📂 Browse by Category
 
 <details>
 <summary>🛠️ <strong>Tool</strong> (87 projects)</summary>
 
-| # | Project | Difficulty | Demo |
-|---|---------|------------|------|
-| 1 | To-Do List | beginner | [View Demo](https://100-days-100-web-project.vercel.app/public/TO_DO_LIST/todolist.html) |
-| 2 | Digital Clock | beginner | [View Demo](https://100-days-100-web-project.vercel.app/public/digital_clock/digitalclock.html) |
-| 9 | Captcha Generator | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/captcha/captcha.html) |
-| 10 | QR Code Generator | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/qr%20generator/qr.html) |
-| 14 | File Uploader | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/file_uploader/public/file_uploader.html) |
-| 31 | Password Manager | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/password%20manager/index.html) |
-| 34 | Email Validator | beginner | [View Demo](https://100-days-100-web-project.vercel.app/public/email%20validator/index.html) |
-| 35 | Vanilla-JavaScript-Calculator | beginner | [View Demo](https://100-days-100-web-project.vercel.app/public/Vanilla-JavaScript-Calculator-master/index.html) |
-| 39 | Notes App | beginner | [View Demo](https://100-days-100-web-project.vercel.app/public/notes-app/index.html) |
-| 40 | Analog Clock | beginner | [View Demo](https://100-days-100-web-project.vercel.app/public/AnalogClock/index.html) |
-| 43 | Password Generator | beginner | [View Demo](https://100-days-100-web-project.vercel.app/public/Password_Generator/index.html) |
-| 44 | BMI Calculator | beginner | [View Demo](https://100-days-100-web-project.vercel.app/public/BMI_Calculator/index.html) |
-| 46 | Palindrome Generator | beginner | [View Demo](https://100-days-100-web-project.vercel.app/public/Palindrome_Generator/index.html) |
-| 54 | Budget Tracker | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Budget%20Tracker/index.html) |
-| 56 | Pastebin using svelte | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/pastebin/src/app.html) |
-| 72 | Contact Book | intermediate | [View Demo](https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Contact%20Book) |
-| 74 | Stock Profit Calculator | beginner | [View Demo](https://100-days-100-web-project.vercel.app/public/Stock-Profit-Calculator/index.html) |
-| 78 | NPM Package Search | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/NPM%20Package%20Search/index.html) |
-| 80 | Resume Studio | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/ResumeStudio/index.html) |
-| 83 | Exchange Currency | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Exchange_Currency/index.html) |
-| 88 | Job dashboard | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Job%20dashboard/jobs.html) |
-| 90 | Quiz App Timer | beginner | [View Demo](https://100-days-100-web-project.vercel.app/public/QuizeApp%20Timer/index1.html) |
-| 93 | TextUtils | beginner | [View Demo](https://100-days-100-web-project.vercel.app/public/Textutils/public/index.html) |
-| 95 | TodoList in React TS Tailwind | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/TodoList-React-TS-Tailwind/index.html) |
-| 97 | Time Capsule | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Time-Capsule/index.html) |
-| 98 | Virtual Piano | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Virtual_Piano/index.html) |
-| 100 | Text Saver Extension | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Text_Saver_Ext/popup.html) |
-| 101 | Personal Finance Tracker | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/FinanceTracker/index.html) |
-| 105 | Periodic Table | beginner | [View Demo](https://100-days-100-web-project.vercel.app/public/Periodic%20Table/index.html) |
-| 107 | DocNow | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/DocNow/index.html) |
-| 108 | expense_Tracker | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/expense_Tracker/index.html) |
-| 109 | Mood Tracker | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Mood%20Tracker/index.html) |
-| 113 | CPU Scheduler | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/CpuScheduler/index.html) |
-| 114 | EchoNotes | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/EchoNotes/index.html) |
-| 117 | Habit Tracker Web App | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Habit-Tracker-Web-App/index.html) |
-| 121 | InterviewSimulator | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/InterviewSimulator/index.html) |
-| 123 | Pomodoro Timer | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Pomodoro_Timer/index.html) |
-| 126 | Temperature Converter | beginner | [View Demo](https://100-days-100-web-project.vercel.app/public/TemperatureConverter/index.html) |
-| 132 | Pokedex | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Pokedex/index.html) |
-| 138 | Age Calculator | beginner | [View Demo](https://100-days-100-web-project.vercel.app/public/age-calculator/index.html) |
-| 141 | Dice Roller | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Dice-Roller/main.html) |
-| 143 | Morse Code Translator | beginner | [View Demo](https://100-days-100-web-project.vercel.app/public/MorseCodeTranslator/index.html) |
-| 146 | Data Structures Visualizer | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Data%20Structures%20Visualizer/index.html) |
-| 148 | Contest Tracker | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/ContestTracker/index.html) |
-| 149 | GitHub Profile Battle | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/Github-Profile-Battle/index.html) |
-| 150 | App Privacy Policy Generator | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/AppPrivacyPolicyGenerator/index.html) |
-| 154 | FocusRoom | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/FocusRoom/index.html) |
-| 156 | Placement Predictor | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/Placement-Predictor/index.html) |
-| 157 | Map Route Tracker | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/Vector-Map-Route-Tracer/index.html) |
-| 158 | GitHub Promo Maker | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/GitHubPromoMaker/index.html) |
-| 160 | Website Personalizer | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/WebsitePersonalizer/index.html) |
-| 161 | Unit-Converter | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Unit-Converter/index.html) |
-| 162 | Color Palette From Art Generator | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/ColorPaletteArtGenerator/index.html) |
-| 164 | Code Visualizer Playground | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/code-visualizer-playground/index.html) |
-| 166 | Bordom Buster | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/BordemBuster/index.html) |
-| 169 | Subscription Tracker | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/subscriptiontracker/tracker.html) |
-| 170 | Vector Flowchart Designer | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/VectorFlowchartDesigner/index.html) |
-| 171 | Glyph Pattern Maker | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/GlyphPatternMaker/index.html) |
-| 172 | PlaceMate | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/PlaceMate/index.html) |
-| 174 | Smart Expense Splitter | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/SpendSense/index.html) |
-| 175 | Dev Portfolio Generator | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/Developer%20portfolio/index.html) |
-| 177 | Interview Prep Hub | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/interview-prep-hub/index.html) |
-| 180 | RouteMaster | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/RouteMaster/index.html) |
-| 181 | Aahar Share | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/Share_Byte/index.html) |
-| 182 | Code Execution Visualizer | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/code-execution-visualizer/index.html) |
-| 183 | LeetCode Progress Tracker | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/leetcode-progress-tracker/index.html) |
-| 185 | GitHub Repository Analyser | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/github-repository-analyser/index.html) |
-| 186 | Multi-Track Video and Audio Editor | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/canvas_multitrack_sequencer/index.html) |
-| 187 | Image Compressor Web App | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/ImageCompressor/index.html) |
-| 188 | Leetcode Streak Visualizer | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/Streak-Visualizer/index.html) |
-| 189 | PeerRTC Video Chat | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/webrtc-video-chat/index.html) |
-| 196 | AirCast | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Weather%20App%20with%20AQI/index.html) |
-| 200 | Dual-Genre Movie Matcher | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/Movie-Matcher/index.html) |
-| 203 | Pomodoro With Miu | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Pomodoro_With_Miu-Electronjs/index.html) |
-| 209 | Kanban Board | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Kanban_Board/index.html) |
-| 210 | IP Address Tracker | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Ip_Address_tracker/index.html) |
-| 211 | Cricket Scorecard | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/Cricket-Scorecard/index.html) |
-| 214 | AI Data Analyst | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/AI-Data-Analyst/) |
-| 215 | Mood-Based Music Recommender | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/Mood_Based_Music_Recommender/) |
-| 216 | Runway Calculator | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Runway-Calculator/index.html) |
-| 218 | SkillBridge Career Roadmap Explorer | advanced | [View Demo](https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/SkillBridge) |
+| #   | Project                             | Difficulty   | Demo                                                                                                            |
+| --- | ----------------------------------- | ------------ | --------------------------------------------------------------------------------------------------------------- |
+| 1   | To-Do List                          | beginner     | [View Demo](https://100-days-100-web-project.vercel.app/public/TO_DO_LIST/todolist.html)                        |
+| 2   | Digital Clock                       | beginner     | [View Demo](https://100-days-100-web-project.vercel.app/public/digital_clock/digitalclock.html)                 |
+| 9   | Captcha Generator                   | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/captcha/captcha.html)                            |
+| 10  | QR Code Generator                   | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/qr%20generator/qr.html)                          |
+| 14  | File Uploader                       | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/file_uploader/public/file_uploader.html)         |
+| 31  | Password Manager                    | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/password%20manager/index.html)                   |
+| 34  | Email Validator                     | beginner     | [View Demo](https://100-days-100-web-project.vercel.app/public/email%20validator/index.html)                    |
+| 35  | Vanilla-JavaScript-Calculator       | beginner     | [View Demo](https://100-days-100-web-project.vercel.app/public/Vanilla-JavaScript-Calculator-master/index.html) |
+| 39  | Notes App                           | beginner     | [View Demo](https://100-days-100-web-project.vercel.app/public/notes-app/index.html)                            |
+| 40  | Analog Clock                        | beginner     | [View Demo](https://100-days-100-web-project.vercel.app/public/AnalogClock/index.html)                          |
+| 43  | Password Generator                  | beginner     | [View Demo](https://100-days-100-web-project.vercel.app/public/Password_Generator/index.html)                   |
+| 44  | BMI Calculator                      | beginner     | [View Demo](https://100-days-100-web-project.vercel.app/public/BMI_Calculator/index.html)                       |
+| 46  | Palindrome Generator                | beginner     | [View Demo](https://100-days-100-web-project.vercel.app/public/Palindrome_Generator/index.html)                 |
+| 54  | Budget Tracker                      | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Budget%20Tracker/index.html)                     |
+| 56  | Pastebin using svelte               | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/pastebin/src/app.html)                           |
+| 72  | Contact Book                        | intermediate | [View Demo](https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Contact%20Book)           |
+| 74  | Stock Profit Calculator             | beginner     | [View Demo](https://100-days-100-web-project.vercel.app/public/Stock-Profit-Calculator/index.html)              |
+| 78  | NPM Package Search                  | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/NPM%20Package%20Search/index.html)               |
+| 80  | Resume Studio                       | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/ResumeStudio/index.html)                         |
+| 83  | Exchange Currency                   | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Exchange_Currency/index.html)                    |
+| 88  | Job dashboard                       | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Job%20dashboard/index.html)                      |
+| 90  | Quiz App Timer                      | beginner     | [View Demo](https://100-days-100-web-project.vercel.app/public/QuizeApp%20Timer/index1.html)                    |
+| 93  | TextUtils                           | beginner     | [View Demo](https://100-days-100-web-project.vercel.app/public/Textutils/public/index.html)                     |
+| 95  | TodoList in React TS Tailwind       | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/TodoList-React-TS-Tailwind/index.html)           |
+| 97  | Time Capsule                        | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Time-Capsule/index.html)                         |
+| 98  | Virtual Piano                       | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Virtual_Piano/index.html)                        |
+| 100 | Text Saver Extension                | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Text_Saver_Ext/popup.html)                       |
+| 101 | Personal Finance Tracker            | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/FinanceTracker/index.html)                       |
+| 105 | Periodic Table                      | beginner     | [View Demo](https://100-days-100-web-project.vercel.app/public/Periodic%20Table/index.html)                     |
+| 107 | DocNow                              | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/DocNow/index.html)                               |
+| 108 | expense_Tracker                     | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/expense_Tracker/index.html)                      |
+| 109 | Mood Tracker                        | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Mood%20Tracker/index.html)                       |
+| 113 | CPU Scheduler                       | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/CpuScheduler/index.html)                         |
+| 114 | EchoNotes                           | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/EchoNotes/index.html)                            |
+| 117 | Habit Tracker Web App               | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Habit-Tracker-Web-App/index.html)                |
+| 121 | InterviewSimulator                  | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/InterviewSimulator/index.html)                   |
+| 123 | Pomodoro Timer                      | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Pomodoro_Timer/index.html)                       |
+| 126 | Temperature Converter               | beginner     | [View Demo](https://100-days-100-web-project.vercel.app/public/TemperatureConverter/index.html)                 |
+| 132 | Pokedex                             | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Pokedex/index.html)                              |
+| 138 | Age Calculator                      | beginner     | [View Demo](https://100-days-100-web-project.vercel.app/public/age-calculator/index.html)                       |
+| 141 | Dice Roller                         | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Dice-Roller/main.html)                           |
+| 143 | Morse Code Translator               | beginner     | [View Demo](https://100-days-100-web-project.vercel.app/public/MorseCodeTranslator/index.html)                  |
+| 146 | Data Structures Visualizer          | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Data%20Structures%20Visualizer/index.html)       |
+| 148 | Contest Tracker                     | advanced     | [View Demo](https://100-days-100-web-project.vercel.app/public/ContestTracker/index.html)                       |
+| 149 | GitHub Profile Battle               | advanced     | [View Demo](https://100-days-100-web-project.vercel.app/public/Github-Profile-Battle/index.html)                |
+| 150 | App Privacy Policy Generator        | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/AppPrivacyPolicyGenerator/index.html)            |
+| 154 | FocusRoom                           | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/FocusRoom/index.html)                            |
+| 156 | Placement Predictor                 | advanced     | [View Demo](https://100-days-100-web-project.vercel.app/public/Placement-Predictor/index.html)                  |
+| 157 | Map Route Tracker                   | advanced     | [View Demo](https://100-days-100-web-project.vercel.app/public/Vector-Map-Route-Tracer/index.html)              |
+| 158 | GitHub Promo Maker                  | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/GitHubPromoMaker/index.html)                     |
+| 160 | Website Personalizer                | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/WebsitePersonalizer/index.html)                  |
+| 161 | Unit-Converter                      | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Unit-Converter/index.html)                       |
+| 162 | Color Palette From Art Generator    | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/ColorPaletteArtGenerator/index.html)             |
+| 164 | Code Visualizer Playground          | advanced     | [View Demo](https://100-days-100-web-project.vercel.app/public/code-visualizer-playground/index.html)           |
+| 166 | Bordom Buster                       | advanced     | [View Demo](https://100-days-100-web-project.vercel.app/public/BordemBuster/index.html)                         |
+| 169 | Subscription Tracker                | advanced     | [View Demo](https://100-days-100-web-project.vercel.app/public/subscriptiontracker/tracker.html)                |
+| 170 | Vector Flowchart Designer           | advanced     | [View Demo](https://100-days-100-web-project.vercel.app/public/VectorFlowchartDesigner/index.html)              |
+| 171 | Glyph Pattern Maker                 | advanced     | [View Demo](https://100-days-100-web-project.vercel.app/public/GlyphPatternMaker/index.html)                    |
+| 172 | PlaceMate                           | advanced     | [View Demo](https://100-days-100-web-project.vercel.app/public/PlaceMate/index.html)                            |
+| 174 | Smart Expense Splitter              | advanced     | [View Demo](https://100-days-100-web-project.vercel.app/public/SpendSense/index.html)                           |
+| 175 | Dev Portfolio Generator             | advanced     | [View Demo](https://100-days-100-web-project.vercel.app/public/Developer%20portfolio/index.html)                |
+| 177 | Interview Prep Hub                  | advanced     | [View Demo](https://100-days-100-web-project.vercel.app/public/interview-prep-hub/index.html)                   |
+| 180 | RouteMaster                         | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/RouteMaster/index.html)                          |
+| 181 | Aahar Share                         | advanced     | [View Demo](https://100-days-100-web-project.vercel.app/public/Share_Byte/index.html)                           |
+| 182 | Code Execution Visualizer           | advanced     | [View Demo](https://100-days-100-web-project.vercel.app/public/code-execution-visualizer/index.html)            |
+| 183 | LeetCode Progress Tracker           | advanced     | [View Demo](https://100-days-100-web-project.vercel.app/public/leetcode-progress-tracker/index.html)            |
+| 185 | GitHub Repository Analyser          | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/github-repository-analyser/index.html)           |
+| 186 | Multi-Track Video and Audio Editor  | advanced     | [View Demo](https://100-days-100-web-project.vercel.app/public/canvas_multitrack_sequencer/index.html)          |
+| 187 | Image Compressor Web App            | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/ImageCompressor/index.html)                      |
+| 188 | Leetcode Streak Visualizer          | advanced     | [View Demo](https://100-days-100-web-project.vercel.app/public/Streak-Visualizer/index.html)                    |
+| 189 | PeerRTC Video Chat                  | advanced     | [View Demo](https://100-days-100-web-project.vercel.app/public/webrtc-video-chat/index.html)                    |
+| 196 | AirCast                             | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Weather%20App%20with%20AQI/index.html)           |
+| 200 | Dual-Genre Movie Matcher            | advanced     | [View Demo](https://100-days-100-web-project.vercel.app/public/Movie-Matcher/index.html)                        |
+| 203 | Pomodoro With Miu                   | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Pomodoro_With_Miu-Electronjs/index.html)         |
+| 209 | Kanban Board                        | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Kanban_Board/index.html)                         |
+| 210 | IP Address Tracker                  | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Ip_Address_tracker/index.html)                   |
+| 211 | Cricket Scorecard                   | advanced     | [View Demo](https://100-days-100-web-project.vercel.app/public/Cricket-Scorecard/index.html)                    |
+| 214 | AI Data Analyst                     | advanced     | [View Demo](https://100-days-100-web-project.vercel.app/public/AI-Data-Analyst/)                                |
+| 215 | Mood-Based Music Recommender        | advanced     | [View Demo](https://100-days-100-web-project.vercel.app/public/Mood_Based_Music_Recommender/)                   |
+| 216 | Runway Calculator                   | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Runway-Calculator/index.html)                    |
+| 218 | SkillBridge Career Roadmap Explorer | advanced     | [View Demo](https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/SkillBridge)              |
 
 </details>
 
 <details>
 <summary>🎮 <strong>Game</strong> (66 projects)</summary>
 
-| # | Project | Difficulty | Demo |
-|---|---------|------------|------|
-| 25 | Tic-Tac-Toe | beginner | [View Demo](https://100-days-100-web-project.vercel.app/public/TicTacToe/index.html) |
-| 26 | Maze Game | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Maze-Game-main/index.html) |
-| 27 | Memory Game | beginner | [View Demo](https://100-days-100-web-project.vercel.app/public/MemoryGame/index.html) |
-| 28 | Wordle | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/WORDLE/index.html) |
-| 29 | Snake Game | beginner | [View Demo](https://100-days-100-web-project.vercel.app/public/snake_game/index.html) |
-| 30 | Flappy-bird-game | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Flappy-bird-main/index.html) |
-| 32 | Missionaries & Cannibals | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Missionaries&Cannibals/index.html) |
-| 37 | 2048 Game | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/2048_game/index.html) |
-| 41 | Scroll Dark Game | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Scroll%20Game%20Dark%20Run/index.html) |
-| 45 | Black Jack | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/BlackJack/blackJ.html) |
-| 47 | Ping Pong Game | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/ping/index.html) |
-| 55 | Cricket Game | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/cricket/index.html) |
-| 70 | Insect-Catch_Game | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Insect-Catch-Game/index.html) |
-| 73 | Candy_Crush_Game | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Candy_Crush_Game/index.html) |
-| 75 | code-space-game project | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/code-jump-space-game/index.html) |
-| 77 | Rock-Paper-Scissor-game project | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Stone-Paper-Scissor/index.html) |
-| 81 | Simon Says Game | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Simon_Says_Game/index.html) |
-| 82 | Love Calculator Game | beginner | [View Demo](https://100-days-100-web-project.vercel.app/public/Love-Calculator/index.html) |
-| 84 | Lights Out Puzzle | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Lights_Out_Puzzle/index.html) |
-| 87 | Breakout game | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Breakout-game/index.html) |
-| 89 | N-Queen | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/N_Queen/index.html) |
-| 92 | Slide puzzle Game | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Slide%20puzzle%20Game/index.html) |
-| 94 | Hangman Game | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/HangmanGame/index.html) |
-| 103 | Drumkit Game | beginner | [View Demo](https://100-days-100-web-project.vercel.app/public/Drumkit_Game/index.html) |
-| 111 | Whack-a-Mole Game | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Whack-a-Mole%20Game/index.html) |
-| 119 | Virtual Playground | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/virtual-playground/index.html) |
-| 120 | Typing Speed Test | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/typing_test/index.html) |
-| 124 | Hurdle Highway 2D | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Hurdle_Highway_2D/index.html) |
-| 125 | Snakeladder | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/snakeladder/index.html) |
-| 128 | Reaction Time Test | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/reaction-time-tester/main.html) |
-| 130 | Dino Game | beginner | [View Demo](https://100-days-100-web-project.vercel.app/public/DinoGame/DinoGame-main/index.html) |
-| 131 | Retro Highway Racer | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/RetroHighwayRacer/index.html) |
-| 133 | Stock Market Simulator | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/stock-market-simulator/index.html) |
-| 134 | Coin Scratch | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Coin%20Scratch/index.html) |
-| 135 | Shooting game | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/shooting%20game/index.html) |
-| 136 | Sudoku Solver | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/sudoku-solver/index.html) |
-| 137 | Maths Quiz Game | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/maths-quiz-game/index.html) |
-| 139 | Ludo game | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Ludo-game/index.html) |
-| 142 | Geo Guesser game | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/geo-guesser/index.html) |
-| 144 | Car Racing game | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/racing%20game/index.html) |
-| 145 | Magic 8 Ball | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/magic-8ball/main.html) |
-| 147 | Chronosphere | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Chronosphere/index.html) |
-| 151 | Mini Carrom Game | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/mini%20carrom/index.html) |
-| 152 | Physics Ball Simulation | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/PhysicsBallSimulation/index.html) |
-| 155 | Hangman Game (React TS) | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/hangman-react-ts/HangmanGame/index.html) |
-| 159 | Dining Philosophers Simulation | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Dining%20Philosophers%20Simulation/index.html) |
-| 168 | Color Sort Puzzle game | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/color%20sort%20puzzle/index.html) |
-| 179 | Cyber Type Battle | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/CYBER%20TYPE%20BATTLE/index.html) |
-| 184 | Minesweeper | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Minesweeper/index.html) |
-| 190 | Endless train game | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/endless_train_game/index.html) |
-| 193 | Escape Room | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Escape_Room/index.html) |
-| 199 | Pac-Man | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/pacman/index.html) |
-| 201 | Number Guesser Game | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/NumberGuessGame/index.html) |
-| 202 | Traffic Signal Game | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/traffic_signal/index.html) |
-| 205 | Escape the Matrix Game | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/Escape%20The%20Matrix/index.html) |
-| 208 | Crossword Puzzle Game | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/CrosswordPuzzleGame/index.html) |
-| 212 | Tower Blocks Stacker | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/tower_stacker/index.html) |
-| 220 | NeoTetris - Premium Edition | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/NeoTetris/index.html) |
-| 222 | Bus Game | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/bus_game/index.html) |
-| 224 | Bubble Game | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Bubble-Game/index.html) |
-| 226 | Mind Reader | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/mind-reader/mind-reader/dist/index.html) |
-| 227 | Word Jumble | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/Word_Jumble/index.html) |
+| #   | Project                         | Difficulty   | Demo                                                                                                          |
+| --- | ------------------------------- | ------------ | ------------------------------------------------------------------------------------------------------------- |
+| 25  | Tic-Tac-Toe                     | beginner     | [View Demo](https://100-days-100-web-project.vercel.app/public/TicTacToe/index.html)                          |
+| 26  | Maze Game                       | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Maze-Game-main/index.html)                     |
+| 27  | Memory Game                     | beginner     | [View Demo](https://100-days-100-web-project.vercel.app/public/MemoryGame/index.html)                         |
+| 28  | Wordle                          | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/WORDLE/index.html)                             |
+| 29  | Snake Game                      | beginner     | [View Demo](https://100-days-100-web-project.vercel.app/public/snake_game/index.html)                         |
+| 30  | Flappy-bird-game                | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Flappy-bird-main/index.html)                   |
+| 32  | Missionaries & Cannibals        | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Missionaries&Cannibals/index.html)             |
+| 37  | 2048 Game                       | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/2048_game/index.html)                          |
+| 41  | Scroll Dark Game                | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Scroll%20Game%20Dark%20Run/index.html)         |
+| 45  | Black Jack                      | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/BlackJack/blackJ.html)                         |
+| 47  | Ping Pong Game                  | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/ping/index.html)                               |
+| 55  | Cricket Game                    | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/cricket/index.html)                            |
+| 70  | Insect-Catch_Game               | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Insect-Catch-Game/index.html)                  |
+| 73  | Candy_Crush_Game                | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Candy_Crush_Game/index.html)                   |
+| 75  | code-space-game project         | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/code-jump-space-game/index.html)               |
+| 77  | Rock-Paper-Scissor-game project | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Stone-Paper-Scissor/index.html)                |
+| 81  | Simon Says Game                 | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Simon_Says_Game/index.html)                    |
+| 82  | Love Calculator Game            | beginner     | [View Demo](https://100-days-100-web-project.vercel.app/public/Love-Calculator/index.html)                    |
+| 84  | Lights Out Puzzle               | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Lights_Out_Puzzle/index.html)                  |
+| 87  | Breakout game                   | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Breakout-game/index.html)                      |
+| 89  | N-Queen                         | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/N_Queen/index.html)                            |
+| 92  | Slide puzzle Game               | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Slide%20puzzle%20Game/index.html)              |
+| 94  | Hangman Game                    | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/HangmanGame/index.html)                        |
+| 103 | Drumkit Game                    | beginner     | [View Demo](https://100-days-100-web-project.vercel.app/public/Drumkit_Game/index.html)                       |
+| 111 | Whack-a-Mole Game               | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Whack-a-Mole%20Game/index.html)                |
+| 119 | Virtual Playground              | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/virtual-playground/index.html)                 |
+| 120 | Typing Speed Test               | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/typing_test/index.html)                        |
+| 124 | Hurdle Highway 2D               | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Hurdle_Highway_2D/index.html)                  |
+| 125 | Snakeladder                     | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/snakeladder/index.html)                        |
+| 128 | Reaction Time Test              | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/reaction-time-tester/main.html)                |
+| 130 | Dino Game                       | beginner     | [View Demo](https://100-days-100-web-project.vercel.app/public/DinoGame/DinoGame-main/index.html)             |
+| 131 | Retro Highway Racer             | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/RetroHighwayRacer/index.html)                  |
+| 133 | Stock Market Simulator          | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/stock-market-simulator/index.html)             |
+| 134 | Coin Scratch                    | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Coin%20Scratch/index.html)                     |
+| 135 | Shooting game                   | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/shooting%20game/index.html)                    |
+| 136 | Sudoku Solver                   | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/sudoku-solver/index.html)                      |
+| 137 | Maths Quiz Game                 | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/maths-quiz-game/index.html)                    |
+| 139 | Ludo game                       | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Ludo-game/index.html)                          |
+| 142 | Geo Guesser game                | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/geo-guesser/index.html)                        |
+| 144 | Car Racing game                 | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/racing%20game/index.html)                      |
+| 145 | Magic 8 Ball                    | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/magic-8ball/main.html)                         |
+| 147 | Chronosphere                    | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Chronosphere/index.html)                       |
+| 151 | Mini Carrom Game                | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/mini%20carrom/index.html)                      |
+| 152 | Physics Ball Simulation         | advanced     | [View Demo](https://100-days-100-web-project.vercel.app/public/PhysicsBallSimulation/index.html)              |
+| 155 | Hangman Game (React TS)         | advanced     | [View Demo](https://100-days-100-web-project.vercel.app/public/hangman-react-ts/HangmanGame/index.html)       |
+| 159 | Dining Philosophers Simulation  | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Dining%20Philosophers%20Simulation/index.html) |
+| 168 | Color Sort Puzzle game          | advanced     | [View Demo](https://100-days-100-web-project.vercel.app/public/color%20sort%20puzzle/index.html)              |
+| 179 | Cyber Type Battle               | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/CYBER%20TYPE%20BATTLE/index.html)              |
+| 184 | Minesweeper                     | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Minesweeper/index.html)                        |
+| 190 | Endless train game              | advanced     | [View Demo](https://100-days-100-web-project.vercel.app/public/endless_train_game/index.html)                 |
+| 193 | Escape Room                     | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Escape_Room/index.html)                        |
+| 199 | Pac-Man                         | advanced     | [View Demo](https://100-days-100-web-project.vercel.app/public/pacman/index.html)                             |
+| 201 | Number Guesser Game             | advanced     | [View Demo](https://100-days-100-web-project.vercel.app/public/NumberGuessGame/index.html)                    |
+| 202 | Traffic Signal Game             | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/traffic_signal/index.html)                     |
+| 205 | Escape the Matrix Game          | advanced     | [View Demo](https://100-days-100-web-project.vercel.app/public/Escape%20The%20Matrix/index.html)              |
+| 208 | Crossword Puzzle Game           | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/CrosswordPuzzleGame/index.html)                |
+| 212 | Tower Blocks Stacker            | advanced     | [View Demo](https://100-days-100-web-project.vercel.app/public/tower_stacker/index.html)                      |
+| 220 | NeoTetris - Premium Edition     | advanced     | [View Demo](https://100-days-100-web-project.vercel.app/public/NeoTetris/index.html)                          |
+| 222 | Bus Game                        | advanced     | [View Demo](https://100-days-100-web-project.vercel.app/public/bus_game/index.html)                           |
+| 224 | Bubble Game                     | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Bubble-Game/index.html)                        |
+| 226 | Mind Reader                     | advanced     | [View Demo](https://100-days-100-web-project.vercel.app/public/mind-reader/mind-reader/dist/index.html)       |
+| 227 | Word Jumble                     | advanced     | [View Demo](https://100-days-100-web-project.vercel.app/public/Word_Jumble/index.html)                        |
 
 </details>
 
 <details>
 <summary><strong>UI Component</strong> (29 projects)</summary>
 
-| # | Project | Difficulty | Demo |
-|---|---------|------------|------|
-| 3 | Indian Flag | beginner | [View Demo](https://100-days-100-web-project.vercel.app/public/indianflag/flag.html) |
-| 4 | Dropdown Nav Bar | beginner | [View Demo](https://100-days-100-web-project.vercel.app/public/dropdown_navbar/index.html) |
-| 5 | Animated Cursor | beginner | [View Demo](https://100-days-100-web-project.vercel.app/public/Animated-cursor/animated-cursor.html) |
-| 6 | Auto Background Image Slider | beginner | [View Demo](https://100-days-100-web-project.vercel.app/public/Background-Image-sider/slider.html) |
-| 7 | Typewriter | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/typewriter/typewriter.html) |
-| 12 | Nodemailer Contact Form | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/gmail_nodemailer/public/mail.html) |
-| 15 | Progress Bar | beginner | [View Demo](https://100-days-100-web-project.vercel.app/public/progress_bar/progress_bar.html) |
-| 16 | Scroll Bar CSS | beginner | [View Demo](https://100-days-100-web-project.vercel.app/public/Custom%20Scroll%20Bar/index.html) |
-| 17 | Slider Using Swiper API | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/slider%20box/index.html) |
-| 18 | Carousel Solar System | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Carousel%20Solar%20System/index.html) |
-| 22 | Page Loader | beginner | [View Demo](https://100-days-100-web-project.vercel.app/public/pageloader/pageloader.html) |
-| 57 | Glowing Social Media Icons | beginner | [View Demo](https://100-days-100-web-project.vercel.app/public/Social%20Media%20Glowing/index.html) |
-| 61 | Hologram Button | beginner | [View Demo](https://100-days-100-web-project.vercel.app/public/Holo%20Button/index.html) |
-| 62 | Solar System Explorer | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Solar%20System%20Explorer%20in%20CSS%20only%20haml/template.html) |
-| 65 | The Cube | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/The%20Cube/index.html) |
-| 68 | 3d Rotating Card | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/3d%20cards/index.html) |
-| 76 | Animated Searchbar | beginner | [View Demo](https://100-days-100-web-project.vercel.app/public/Animated%20Searchbar/index.html) |
-| 86 | Profile Card | beginner | [View Demo](https://100-days-100-web-project.vercel.app/public/3d%20profile%20Card/index.html) |
-| 96 | HCL Color Generator | beginner | [View Demo](https://100-days-100-web-project.vercel.app/public/HCL%20Color%20Generator/index.html) |
-| 118 | Particle Effect | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Particle%20Wave%20Animation/index.html) |
-| 127 | Particle Wave Animation | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/particle-wave-animation/index.html) |
-| 153 | Material3 Showcase | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Material3Showcase/index.html) |
-| 178 | Plane Take Off Simulation | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Plane%20Take%20Off%20Simulation/index.html) |
-| 191 | Saturn Particle Gesture | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/Planet_gesture_formation/index.html) |
-| 192 | Interactive Story Player | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/story/story.html) |
-| 198 | Theme-Toggler | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/Theme-Toggler/index.html) |
-| 206 | Gravity Well | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/gravity-well/index.html) |
-| 223 | HTML & CSS Animation | beginner | [View Demo](https://100-days-100-web-project.vercel.app/public/Html_css_animation/index.html) |
+| #   | Project                      | Difficulty   | Demo                                                                                                                             |
+| --- | ---------------------------- | ------------ | -------------------------------------------------------------------------------------------------------------------------------- |
+| 3   | Indian Flag                  | beginner     | [View Demo](https://100-days-100-web-project.vercel.app/public/indianflag/flag.html)                                             |
+| 4   | Dropdown Nav Bar             | beginner     | [View Demo](https://100-days-100-web-project.vercel.app/public/dropdown_navbar/index.html)                                       |
+| 5   | Animated Cursor              | beginner     | [View Demo](https://100-days-100-web-project.vercel.app/public/Animated-cursor/animated-cursor.html)                             |
+| 6   | Auto Background Image Slider | beginner     | [View Demo](https://100-days-100-web-project.vercel.app/public/Background-Image-sider/slider.html)                               |
+| 7   | Typewriter                   | advanced     | [View Demo](https://100-days-100-web-project.vercel.app/public/typewriter/typewriter.html)                                       |
+| 12  | Nodemailer Contact Form      | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/gmail_nodemailer/public/mail.html)                                |
+| 15  | Progress Bar                 | beginner     | [View Demo](https://100-days-100-web-project.vercel.app/public/progress_bar/progress_bar.html)                                   |
+| 16  | Scroll Bar CSS               | beginner     | [View Demo](https://100-days-100-web-project.vercel.app/public/Custom%20Scroll%20Bar/index.html)                                 |
+| 17  | Slider Using Swiper API      | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/slider%20box/index.html)                                          |
+| 18  | Carousel Solar System        | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Carousel%20Solar%20System/index.html)                             |
+| 22  | Page Loader                  | beginner     | [View Demo](https://100-days-100-web-project.vercel.app/public/pageloader/pageloader.html)                                       |
+| 57  | Glowing Social Media Icons   | beginner     | [View Demo](https://100-days-100-web-project.vercel.app/public/Social%20Media%20Glowing/index.html)                              |
+| 61  | Hologram Button              | beginner     | [View Demo](https://100-days-100-web-project.vercel.app/public/Holo%20Button/index.html)                                         |
+| 62  | Solar System Explorer        | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Solar%20System%20Explorer%20in%20CSS%20only%20haml/template.html) |
+| 65  | The Cube                     | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/The%20Cube/index.html)                                            |
+| 68  | 3d Rotating Card             | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/3d%20cards/index.html)                                            |
+| 76  | Animated Searchbar           | beginner     | [View Demo](https://100-days-100-web-project.vercel.app/public/Animated%20Searchbar/index.html)                                  |
+| 86  | Profile Card                 | beginner     | [View Demo](https://100-days-100-web-project.vercel.app/public/3d%20profile%20Card/index.html)                                   |
+| 96  | HCL Color Generator          | beginner     | [View Demo](https://100-days-100-web-project.vercel.app/public/HCL%20Color%20Generator/index.html)                               |
+| 118 | Particle Effect              | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Particle%20Wave%20Animation/index.html)                           |
+| 127 | Particle Wave Animation      | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/particle-wave-animation/index.html)                               |
+| 153 | Material3 Showcase           | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Material3Showcase/index.html)                                     |
+| 178 | Plane Take Off Simulation    | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Plane%20Take%20Off%20Simulation/index.html)                       |
+| 191 | Saturn Particle Gesture      | advanced     | [View Demo](https://100-days-100-web-project.vercel.app/public/Planet_gesture_formation/index.html)                              |
+| 192 | Interactive Story Player     | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/story/story.html)                                                 |
+| 198 | Theme-Toggler                | advanced     | [View Demo](https://100-days-100-web-project.vercel.app/public/Theme-Toggler/index.html)                                         |
+| 206 | Gravity Well                 | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/gravity-well/index.html)                                          |
+| 223 | HTML & CSS Animation         | beginner     | [View Demo](https://100-days-100-web-project.vercel.app/public/Html_css_animation/index.html)                                    |
 
 </details>
 
 <details>
 <summary>🌐 <strong>Website & Clone</strong> (24 projects)</summary>
 
-| # | Project | Difficulty | Demo |
-|---|---------|------------|------|
-| 8 | Parallel-X Website | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Parallel-x%20website/parallal.html) |
-| 19 | Planto | beginner | [View Demo](https://100-days-100-web-project.vercel.app/public/plantwebsite/plant.html) |
-| 20 | EveSparks | intermediate | [View Demo](https://evesparks.onrender.com/) |
-| 21 | Video BG Slider Using React | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/travel_website/index.html) |
-| 36 | Medical App | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Medical_App/index.html) |
-| 42 | Amazon Clone | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Amazon-App/index.html) |
-| 51 | Netflix Landing Page Clone | beginner | [View Demo](https://100-days-100-web-project.vercel.app/public/Netflix_Cloning/Index.html) |
-| 53 | E-Commerce Website with Simple Cart Functionality | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/e-commerce_cart/index.html) |
-| 59 | Blog Page | beginner | [View Demo](https://100-days-100-web-project.vercel.app/public/Blog%20Page/index.html) |
-| 60 | Marketing template website | beginner | [View Demo](https://100-days-100-web-project.vercel.app/public/marketing_website/index.html) |
-| 64 | Zomato-clone | beginner | [View Demo](https://100-days-100-web-project.vercel.app/public/zomato-clone/zomato.html) |
-| 67 | Blog-Website | beginner | [View Demo](https://100-days-100-web-project.vercel.app/public/blog/main.html) |
-| 69 | Spotify Clone Project | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/spotify-clone%20-project/index.html) |
-| 79 | Linkedin Homepage Clone | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Linkedin-Clone/index.html) |
-| 102 | Travel Booking Website | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Travel_booking_website/index.html) |
-| 104 | Debug-Website | beginner | [View Demo](https://100-days-100-web-project.vercel.app/public/Debug-Website/index.html) |
-| 106 | Plants Website | beginner | [View Demo](https://100-days-100-web-project.vercel.app/public/Plants%20Website/index.html) |
-| 112 | Nykaa Clone Website | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Nykaa-clone/index.html) |
-| 115 | Event Registration System | intermediate | [View Demo](https://event-registration-system-w10a.onrender.com/) |
-| 129 | YouTube Clone | beginner | [View Demo](https://100-days-100-web-project.vercel.app/public/youtube%20clone/index.html) |
-| 165 | Amazon App | beginner | [View Demo](https://100-days-100-web-project.vercel.app/public/Amazon-App/index.html) |
-| 194 | Lost & Found Portal | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Lost_And_Found_Portal/index.html) |
-| 213 | Photo Studio | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Photo%20Studio/Project.html) |
+| #   | Project                                           | Difficulty   | Demo                                                                                                |
+| --- | ------------------------------------------------- | ------------ | --------------------------------------------------------------------------------------------------- |
+| 8   | Parallel-X Website                                | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Parallel-x%20website/parallal.html)  |
+| 19  | Planto                                            | beginner     | [View Demo](https://100-days-100-web-project.vercel.app/public/plantwebsite/plant.html)             |
+| 20  | EveSparks                                         | intermediate | [View Demo](https://evesparks.onrender.com/)                                                        |
+| 21  | Video BG Slider Using React                       | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/travel_website/index.html)           |
+| 36  | Medical App                                       | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Medical_App/index.html)              |
+| 42  | Amazon Clone                                      | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Amazon-App/index.html)               |
+| 51  | Netflix Landing Page Clone                        | beginner     | [View Demo](https://100-days-100-web-project.vercel.app/public/Netflix_Cloning/Index.html)          |
+| 53  | E-Commerce Website with Simple Cart Functionality | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/e-commerce_cart/index.html)          |
+| 59  | Blog Page                                         | beginner     | [View Demo](https://100-days-100-web-project.vercel.app/public/Blog%20Page/index.html)              |
+| 60  | Marketing template website                        | beginner     | [View Demo](https://100-days-100-web-project.vercel.app/public/marketing_website/index.html)        |
+| 64  | Zomato-clone                                      | beginner     | [View Demo](https://100-days-100-web-project.vercel.app/public/zomato-clone/zomato.html)            |
+| 67  | Blog-Website                                      | beginner     | [View Demo](https://100-days-100-web-project.vercel.app/public/blog/main.html)                      |
+| 69  | Spotify Clone Project                             | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/spotify-clone%20-project/index.html) |
+| 79  | Linkedin Homepage Clone                           | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Linkedin-Clone/index.html)           |
+| 102 | Travel Booking Website                            | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Travel_booking_website/index.html)   |
+| 104 | Debug-Website                                     | beginner     | [View Demo](https://100-days-100-web-project.vercel.app/public/Debug-Website/index.html)            |
+| 106 | Plants Website                                    | beginner     | [View Demo](https://100-days-100-web-project.vercel.app/public/Plants%20Website/index.html)         |
+| 112 | Nykaa Clone Website                               | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Nykaa-clone/index.html)              |
+| 115 | Event Registration System                         | intermediate | [View Demo](https://event-registration-system-w10a.onrender.com/)                                   |
+| 129 | YouTube Clone                                     | beginner     | [View Demo](https://100-days-100-web-project.vercel.app/public/youtube%20clone/index.html)          |
+| 165 | Amazon App                                        | beginner     | [View Demo](https://100-days-100-web-project.vercel.app/public/Amazon-App/index.html)               |
+| 194 | Lost & Found Portal                               | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Lost_And_Found_Portal/index.html)    |
+| 213 | Photo Studio                                      | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Photo%20Studio/Project.html)         |
 
 </details>
 
 <details>
 <summary>📱 <strong>Web Application</strong> (10 projects)</summary>
 
-| # | Project | Difficulty | Demo |
-|---|---------|------------|------|
-| 195 | Complaint Management System | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/Complaint_Management_System/index.html) |
-| 197 | Flipkart Clone | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Flipkart-clone/index.html) |
-| 200 | Dual-Genre Movie Matcher | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/Movie-Matcher/index.html) |
-| 204 | Movie Search App | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Movie-Search-App/index.html) |
-| 207 | AI Semiconductor Circuit Builder | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/AI-Semiconductor-Circuit-Builder/index.html) |
-| 215 | Mood-Based Music Recommender | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/Mood_Based_Music_Recommender/) |
-| 219 | The Cube - 3D Rubik's Cube Simulator | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/the_cube/index.html) |
-| 221 | AI Tools Hub | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/AI-Tools-Hub/index.html) |
+| #   | Project                              | Difficulty   | Demo                                                                                                        |
+| --- | ------------------------------------ | ------------ | ----------------------------------------------------------------------------------------------------------- |
+| 195 | Complaint Management System          | advanced     | [View Demo](https://100-days-100-web-project.vercel.app/public/Complaint_Management_System/index.html)      |
+| 197 | Flipkart Clone                       | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Flipkart-clone/index.html)                   |
+| 200 | Dual-Genre Movie Matcher             | advanced     | [View Demo](https://100-days-100-web-project.vercel.app/public/Movie-Matcher/index.html)                    |
+| 204 | Movie Search App                     | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Movie-Search-App/index.html)                 |
+| 207 | AI Semiconductor Circuit Builder     | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/AI-Semiconductor-Circuit-Builder/index.html) |
+| 215 | Mood-Based Music Recommender         | advanced     | [View Demo](https://100-days-100-web-project.vercel.app/public/Mood_Based_Music_Recommender/)               |
+| 219 | The Cube - 3D Rubik's Cube Simulator | advanced     | [View Demo](https://100-days-100-web-project.vercel.app/public/the_cube/index.html)                         |
+| 221 | AI Tools Hub                         | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/AI-Tools-Hub/index.html)                     |
 
 </details>
 
 <details>
 <summary>⚙️ <strong>API & Backend</strong> (18 projects)</summary>
 
-| # | Project | Difficulty | Demo |
-|---|---------|------------|------|
-| 11 | Serve Website Using Express | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Express%20Server/public/index.html) |
-| 13 | Login Form Using MERN | intermediate | [View Demo](https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/loginusingmern) |
-| 33 | Weather Forecasting | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Weather%20Forcasting/index.html) |
-| 38 | Github Profile Finder | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/github_profile_finder/index.html) |
-| 48 | TextToVoiceConverter | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/TextToVoiceConverter/index.html) |
-| 49 | Url Shortener | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/url_shortener/frontend/public/index.html) |
-| 50 | Recipe Genie | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/recipe/main.html) |
-| 52 | ClimaCode | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/ClimaCode%202.0/index.html) |
-| 58 | Music App | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Music%20App/index.html) |
-| 66 | Flask Authentication App | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/flask_auth_app/explain.html) |
-| 71 | Quotely Laughs | beginner | [View Demo](https://100-days-100-web-project.vercel.app/public/Quotely-Laughs/index.html) |
-| 85 | Image Search Engine | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Image%20Search%20Engine/index.html) |
-| 91 | Voting Application Backend | intermediate | [View Demo](https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Voting_Application_Backend) |
-| 99 | NASA-APOD Extension | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/NASA-APOD/popup.html) |
-| 110 | CRYPTOSHOW | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/CRYPTOSHOW/index.html) |
-| 122 | AstronomyDashboard | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/AstronomyDashboard/astro.html) |
-| 204 | Movie Search App | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Movie-Search-App/index.html) |
-| 225 | Harryy Potter Spellbook | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/Harry-Potter/index.html) |
+| #   | Project                     | Difficulty   | Demo                                                                                                              |
+| --- | --------------------------- | ------------ | ----------------------------------------------------------------------------------------------------------------- |
+| 11  | Serve Website Using Express | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Express%20Server/public/index.html)                |
+| 13  | Login Form Using MERN       | intermediate | [View Demo](https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/loginusingmern)             |
+| 33  | Weather Forecasting         | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Weather%20Forcasting/index.html)                   |
+| 38  | Github Profile Finder       | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/github_profile_finder/index.html)                  |
+| 48  | TextToVoiceConverter        | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/TextToVoiceConverter/index.html)                   |
+| 49  | Url Shortener               | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/url_shortener/frontend/public/index.html)          |
+| 50  | Recipe Genie                | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/recipe/main.html)                                  |
+| 52  | ClimaCode                   | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/ClimaCode%202.0/index.html)                        |
+| 58  | Music App                   | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Music%20App/index.html)                            |
+| 66  | Flask Authentication App    | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/flask_auth_app/explain.html)                       |
+| 71  | Quotely Laughs              | beginner     | [View Demo](https://100-days-100-web-project.vercel.app/public/Quotely-Laughs/index.html)                         |
+| 85  | Image Search Engine         | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Image%20Search%20Engine/index.html)                |
+| 91  | Voting Application Backend  | intermediate | [View Demo](https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/Voting_Application_Backend) |
+| 99  | NASA-APOD Extension         | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/NASA-APOD/popup.html)                              |
+| 110 | CRYPTOSHOW                  | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/CRYPTOSHOW/index.html)                             |
+| 122 | AstronomyDashboard          | advanced     | [View Demo](https://100-days-100-web-project.vercel.app/public/AstronomyDashboard/astro.html)                     |
+| 204 | Movie Search App            | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Movie-Search-App/index.html)                       |
+| 225 | Harryy Potter Spellbook     | advanced     | [View Demo](https://100-days-100-web-project.vercel.app/public/Harry-Potter/index.html)                           |
 
 </details>
 
 <details>
 <summary>🤖 <strong>AI Project</strong> (13 projects)</summary>
 
-| # | Project | Difficulty | Demo |
-|---|---------|------------|------|
-| 23 | Jarvis Virtual Assistant | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Jarvis-AI-main/index.html) |
-| 24 | Chat Bot | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/AI%20ChatBot/chatbot.html) |
-| 63 | Image to Text App | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Image-To-Text-App/index.html) |
-| 116 | AI Image Classifier | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/AI%20Image%20Classifier/index.html) |
-| 140 | Big Sales Prediction | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/BigSales-Prediction/frontend/index.html) |
-| 163 | Ai Image Editor | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/image-editor/index.html) |
-| 167 | scam-sms-detector | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/scam-sms-detector/index.html) |
-| 173 | AI-Resume-Analyzer | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/AI-Resume-Analyser/index.html) |
-| 176 | AI Story Generator | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/story/main.html) |
+| #   | Project                          | Difficulty   | Demo                                                                                                        |
+| --- | -------------------------------- | ------------ | ----------------------------------------------------------------------------------------------------------- |
+| 23  | Jarvis Virtual Assistant         | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Jarvis-AI-main/index.html)                   |
+| 24  | Chat Bot                         | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/AI%20ChatBot/chatbot.html)                   |
+| 63  | Image to Text App                | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Image-To-Text-App/index.html)                |
+| 116 | AI Image Classifier              | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/AI%20Image%20Classifier/index.html)          |
+| 140 | Big Sales Prediction             | advanced     | [View Demo](https://100-days-100-web-project.vercel.app/public/BigSales-Prediction/frontend/index.html)     |
+| 163 | Ai Image Editor                  | advanced     | [View Demo](https://100-days-100-web-project.vercel.app/public/image-editor/index.html)                     |
+| 167 | scam-sms-detector                | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/scam-sms-detector/index.html)                |
+| 173 | AI-Resume-Analyzer               | advanced     | [View Demo](https://100-days-100-web-project.vercel.app/public/AI-Resume-Analyser/index.html)               |
+| 176 | AI Story Generator               | advanced     | [View Demo](https://100-days-100-web-project.vercel.app/public/story/main.html)                             |
 | 207 | AI Semiconductor Circuit Builder | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/AI-Semiconductor-Circuit-Builder/index.html) |
-| 217 | Gemini Clone | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/Gemini/dist/index.html) |
-| 221 | AI Tools Hub | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/AI-Tools-Hub/index.html) |
+| 217 | Gemini Clone                     | advanced     | [View Demo](https://100-days-100-web-project.vercel.app/public/Gemini/dist/index.html)                      |
+| 221 | AI Tools Hub                     | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/AI-Tools-Hub/index.html)                     |
 
 </details>
-
 
 ## 📚 Progressive Learning Path
 
 ### 🟢 Beginner
+
 - AnalogClock
 - Age Calculator
 - Typing Test
@@ -398,6 +398,7 @@ The website features:
 - Dice Roller
 
 ### 🟡 Intermediate
+
 - Weather Forecasting
 - URL Shortener
 - Word Dictionary
@@ -405,6 +406,7 @@ The website features:
 - Pokedex
 
 ### 🔴 Advanced
+
 - AI ChatBot
 - AI Image Classifier
 - Amazon Clone
@@ -417,25 +419,28 @@ The website features:
 > Please read the latest contribution discussion before getting started:  
 > [Project Discussion #1028](https://github.com/dhairyagothi/100_days_100_web_project/discussions/1028)
 
-
 ## 🚀 Quick Start
 
 ### 🌐 View Projects Online
+
 The easiest way to explore all projects is through our **live website**:
+
 - **🔗 Visit:** [100-days-100-web-project.vercel.app](https://100-days-100-web-project.vercel.app/)
 - **✨ Features:** Search projects, view demos, dark/light theme
 
 ### 💻 Local Development
 
 1. **Clone the repository:**
+
    ```bash
    # Using Git
    git clone https://github.com/dhairyagothi/100_days_100_web_project.git
-   
+
    # Or use GitHub Desktop for GUI cloning
    ```
 
 2. **Navigate to project directory:**
+
    ```bash
    cd 100_days_100_web_project
    ```
@@ -443,13 +448,14 @@ The easiest way to explore all projects is through our **live website**:
 3. **Open the main website:**
    - Simply open `index.html` in your browser
    - Or use a local server (recommended):
+
    ```bash
    # Using Python
    python -m http.server 8000
-   
+
    # Using Node.js
    npx serve .
-   
+
    # Using VS Code Live Server extension
    ```
 
@@ -459,6 +465,7 @@ The easiest way to explore all projects is through our **live website**:
    - For Node.js projects, see individual README files
 
 ### 🧩 Project Structure
+
 ```
 100_days_100_web_project/
 ├── index.html              # Main showcase website
@@ -474,12 +481,12 @@ The easiest way to explore all projects is through our **live website**:
 └── README.md             # You are here!
 ```
 
-
 ## 🤝 Contributing
 
 We welcome contributions from developers of all skill levels! Here's how you can contribute:
 
 ### 🆕 Adding New Projects
+
 1. **Fork** the repository
 2. **Create** a new branch: `git checkout -b add-new-project`
 3. **Add** your project in the `public/` directory
@@ -490,6 +497,7 @@ We welcome contributions from developers of all skill levels! Here's how you can
 8. **Submit** a pull request
 
 ### 🐛 Bug Fixes & Improvements
+
 1. **Fork** the repository
 2. **Create** a new branch: `git checkout -b fix-bug-name`
 3. **Make** your changes
@@ -497,14 +505,16 @@ We welcome contributions from developers of all skill levels! Here's how you can
 5. **Submit** a pull request
 
 ### 📝 Documentation
+
 - Improve README files
 - Add project descriptions
 - Fix typos and formatting
 - Add setup instructions
 
 ### 📋 Contribution Guidelines
+
 - Follow existing code style and structure
-- Add appropriate comments to your code  
+- Add appropriate comments to your code
 - Test your changes before submitting
 - Include a clear commit message
 - Update documentation if needed
@@ -512,28 +522,36 @@ We welcome contributions from developers of all skill levels! Here's how you can
 **📖 For detailed guidelines, see [CONTRIBUTING.md](CONTRIBUTING.md)**
 
 ## 🌐 Browser Compatibility
+
 Most projects in this repository are designed to work across modern web browsers. Since rendering and feature support may vary slightly between browsers, contributors are encouraged to test projects across multiple environments.
 
 ### ✅ Recommended Browsers
+
 For the best development and testing experience, use the latest versions of:
+
 - Google Chrome
 - Mozilla Firefox
 - Microsoft Edge
 - Safari
 
 ### 📱 Responsive Testing Suggestions
+
 Before submitting a contribution, test your project on:
+
 - Desktop screens
 - Tablets
 - Mobile devices
 
 Recommended tools:
+
 - Chrome DevTools Device Toolbar
 - Firefox Responsive Design Mode
 - BrowserStack or similar browser testing platforms
 
 ### 🛠 Common Browser-Related Issues
+
 Some projects may behave differently because of:
+
 - Cached CSS or JavaScript files
 - Browser-specific rendering differences
 - Unsupported browser APIs
@@ -541,7 +559,9 @@ Some projects may behave differently because of:
 - Extension conflicts
 
 ### 🔍 Troubleshooting Tips
+
 If a project is not working correctly:
+
 1. Perform a hard refresh (`Ctrl + Shift + R`)
 2. Clear browser cache
 3. Test in Incognito/Private mode
@@ -550,29 +570,37 @@ If a project is not working correctly:
 6. Compare behavior across multiple browsers
 
 ### ✅ Suggested Testing Checklist
+
 Before creating a pull request, verify that:
+
 - The project loads without errors
 - Layouts remain responsive on different screen sizes
 - Buttons, forms, and navigation work properly
 - Animations and interactions function correctly
 - No major browser-specific UI issues are present
 
-##  🎯 Learning Path
+## 🎯 Learning Path
 
 ### 🌱 Beginner Projects (Days 1-30)
+
 Perfect for those just starting with web development:
+
 - HTML/CSS fundamentals
 - Basic JavaScript interactions
 - Simple animations and effects
 
 ### 🚀 Intermediate Projects (Days 31-70)
+
 For developers with some experience:
+
 - API integrations
 - Complex animations
 - Interactive games and applications
 
 ### 🔥 Advanced Projects (Days 71-218)
+
 Challenging projects for experienced developers:
+
 - Full-stack applications
 - Complex algorithms
 - Modern frameworks (React, Node.js)
@@ -599,12 +627,14 @@ Challenging projects for experienced developers:
 ## 📞 Support & Community
 
 ### 🆘 Need Help?
+
 - 💬 **Discussions**: [GitHub Discussions](https://github.com/dhairyagothi/100_days_100_web_project/discussions)
 - 🐛 **Bug Reports**: [Open an Issue](https://github.com/dhairyagothi/100_days_100_web_project/issues)
 - 📧 **Direct Contact**: Create an issue for any questions
 
 ### 🌟 Stay Connected
-- 📱 **Instagram**: [@dhairyaa__31](https://www.instagram.com/dhairyaa__31/)
+
+- 📱 **Instagram**: [@dhairyaa\_\_31](https://www.instagram.com/dhairyaa__31/)
 - 💼 **LinkedIn**: [Dhairya Gothi](https://www.linkedin.com/in/dhairya-gothi-65945b288/)
 - 🐙 **GitHub**: [@dhairyagothi](https://github.com/dhairyagothi)
 
@@ -622,6 +652,7 @@ Challenging projects for experienced developers:
 ## ⭐ Show Your Support
 
 If this project helped you, please consider:
+
 - ⭐ **Starring** this repository
 - 🍴 **Forking** it to contribute
 - 📢 **Sharing** it with others
@@ -3502,9 +3533,7 @@ Thanks to all these amazing people who have contributed to this project:
 
 > The contributors table above is auto-generated. Visit the [contributors page](https://github.com/dhairyagothi/100_days_100_web_project/graphs/contributors) to see the full list of amazing contributors!
 
-
 ---
-
 
 <div align="center">
 

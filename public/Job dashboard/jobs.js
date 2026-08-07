@@ -68,7 +68,8 @@ async function fetchJobsData() {
         return await response.json();
     } catch (error) {
         console.error('Data Fetch Error:', error);
-        return [];
+        console.log('Using static HTML jobs as fallback');
+        return null; // Return null to indicate fallback to static HTML
     }
 }
 
@@ -138,6 +139,13 @@ async function filterJobs() {
     };
 
     const allJobs = await fetchJobsData();
+    
+    // If JSON fetch failed, use static HTML fallback
+    if (allJobs === null) {
+        filterStaticJobs(filters);
+        return;
+    }
+    
     console.log(allJobs);
     const filtered = allJobs.filter(job => 
         (job.title.toLowerCase().includes(filters.title) || job.company.toLowerCase().includes(filters.title)) &&
@@ -249,4 +257,33 @@ function sortJobs(jobs, type) {
     if (type.includes('low to high')) jobs.sort((a,b) => getSalaryValue(a.salary) - getSalaryValue(b.salary));
     if (type.includes('high to low')) jobs.sort((a,b) => getSalaryValue(b.salary) - getSalaryValue(a.salary));
     if (type === 'title a-z') jobs.sort((a,b) => a.title.localeCompare(b.title));
+}
+
+function filterStaticJobs(filters) {
+    const jobBoxes = document.querySelectorAll('.job-container .box-container .box');
+    let visibleCount = 0;
+    
+    jobBoxes.forEach(box => {
+        const title = box.querySelector('.job-title')?.textContent.toLowerCase() || '';
+        const company = box.querySelector('.company h3')?.textContent.toLowerCase() || '';
+        const location = box.querySelector('.location span')?.textContent.toLowerCase() || '';
+        const tags = Array.from(box.querySelectorAll('.tags p')).map(p => p.textContent.toLowerCase());
+        
+        const matchesTitle = filters.title === '' || title.includes(filters.title) || company.includes(filters.title);
+        const matchesLocation = filters.location === '' || location.includes(filters.location);
+        const matchesType = filters.type === '' || tags.some(tag => tag.includes(filters.type));
+        const matchesShift = filters.shift === '' || tags.some(tag => tag.includes(filters.shift));
+        
+        if (matchesTitle && matchesLocation && matchesType && matchesShift) {
+            box.style.display = '';
+            visibleCount++;
+        } else {
+            box.style.display = 'none';
+        }
+    });
+    
+    const totalJobs = document.getElementById("total-jobs");
+    if (totalJobs) {
+        totalJobs.value = visibleCount + " Jobs Found";
+    }
 }

@@ -706,10 +706,59 @@ p {
 
 .nav{
     display: flex;
-    justify-content: center;
     align-items: center;
-    border-bottom: 1px solid gray;
-    padding: 20px;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 16px 18px;
+    position: sticky;
+    top: 10px;
+    z-index: 10;
+    background: rgba(248, 251, 255, 0.8);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(148, 163, 184, 0.28);
+    border-radius: 18px;
+    box-shadow: 0 14px 40px rgba(15, 23, 42, 0.08);
+    margin: 10px 5%;
+    max-width: 1240px;
+}
+
+.brand-mark {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: #0f172a;
+    font-size: 1.8rem;
+    font-weight: 800;
+}
+
+.brand-icon {
+    width: 40px;
+    height: 40px;
+    display: inline-grid;
+    place-items: center;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #2563eb, #60a5fa);
+    color: #fff;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #475569;
+    font-weight: 600;
+    font-size: 1.5rem;
+    transition: color 0.25s ease;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+    color: #2563eb;
 }
 
 .job-container input{
@@ -718,4 +767,13 @@ p {
     background-color: rgb(248, 250, 252);
     font-size: large;
     color: blue;
+}
+
+.dashboard-footer {
+    text-align: center;
+    padding: 20px;
+    color: #64748b;
+    font-size: 1.4rem;
+    margin-top: 20px;
+    border-top: 1px solid #e2e8f0;
 }
