@@ -29,6 +29,7 @@ let timeRemaining = 60;
 let gameInterval; // Stores the time interval
 let isGamePaused = false; // Helps pausing timer when user clicks 'End Game' button
 let gameEnded = false;
+let insectTimeouts = [];
 
 start_btn.addEventListener('click', () => screens[0].classList.add('up'));
 
@@ -61,6 +62,8 @@ timerBtns.forEach((btn) => {
 function startGame() {
   updateTimer();
   gameInterval = setInterval(updateTimer, 1000);
+  insectTimeouts.forEach(clearTimeout);
+  insectTimeouts = [];
 }
 
 function updateTimer() {
@@ -106,13 +109,13 @@ function getRandomLocation() {
 
   const x =
     Math.random() *
-      (rect.width - insectWidth - padding * 2) +
+    (rect.width - insectWidth - padding * 2) +
     insectWidth / 2 +
     padding;
 
   const y =
     Math.random() *
-      (rect.height - insectHeight - padding * 2) +
+    (rect.height - insectHeight - padding * 2) +
     insectHeight / 2 +
     padding;
 
@@ -131,8 +134,11 @@ function catchInsect() {
 }
 
 function addInsects() {
-  setTimeout(createInsect, 1000);
-  setTimeout(createInsect, 1500);
+  const timeout1 = setTimeout(createInsect, 1000);
+  const timeout2 = setTimeout(createInsect, 1500);
+
+  insectTimeouts.push(timeout1);
+  insectTimeouts.push(timeout2);
 }
 
 function increaseScore() {
@@ -179,6 +185,8 @@ function endGame() {
   isGamePaused = false;
   backgroundMusic.pause();
   backgroundMusic.currentTime = 0;
+  insectTimeouts.forEach((timeout) => clearTimeout(timeout));
+  insectTimeouts = [];
   document.querySelectorAll('.insect').forEach((insect) => {
     insect.remove();
   });

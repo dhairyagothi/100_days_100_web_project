@@ -527,6 +527,7 @@ body.light .key-symbol {
   padding: 22px 0;
   font-size: 1.4rem;
 }
+}
   .hud {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }

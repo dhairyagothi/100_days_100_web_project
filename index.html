@@ -433,6 +433,12 @@
               <option value="latest">Latest Day</option>
               <option value="difficulty">Difficulty</option>
             </select>
+            <select id="difficultyFilter" aria-label="Filter by difficulty">
+              <option value="all">All Difficulty</option>
+              <option value="beginner">Beginner</option>
+              <option value="intermediate">Intermediate</option>
+              <option value="advanced">Advanced</option>
+            </select>
             <select
               id="difficultyFilter"
               aria-label="Filter projects by difficulty"
@@ -468,12 +474,21 @@
 
         <div class="project-grid" id="projectGrid"></div>
 
-        <div
-          class="no-results"
-          id="noResults"
-          role="status"
-          aria-live="assertive"
-        >
+                <div class="comparison-section">
+          <div class="projects-intro">
+            <p class="section-label">Compare Projects</p>
+            <h2 class="section-title">Technology Overview Panel</h2>
+            <p>Select up to 3 projects to compare their technologies and difficulty.</p>
+          </div>
+
+          <div id="comparisonPanel" class="project-grid">
+            <p class="empty-state">
+              Select projects using the compare button to view comparison.
+            </p>
+          </div>
+        </div>
+
+        <div class="no-results" id="noResults" role="status" aria-live="assertive">
           <i class="fas fa-search" aria-hidden="true"></i>
           <p>No projects match your search.</p>
         </div>
