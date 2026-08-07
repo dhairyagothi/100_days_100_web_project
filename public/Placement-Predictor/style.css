@@ -46,7 +46,7 @@ body {
   background: var(--container-bg);
   border-radius: 24px;
   padding: 40px;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.12);
@@ -257,13 +257,13 @@ body.dark-mode .result-card h3 {
   justify-content: space-between;
   padding: 0 8px;
   border: 1.5px solid #e2e8f0;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 body.dark-mode .slider {
   background-color: rgba(30, 41, 59, 0.9);
   border-color: #475569;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 .slider .icon {
@@ -298,7 +298,7 @@ body.dark-mode .slider .moon {
   transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   width: 28px;
   border-radius: 50%;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
   z-index: 2;
 }
 
@@ -327,8 +327,14 @@ body.dark-mode .slider .ball {
 }
 
 @keyframes recFadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .recommendations-title {
@@ -488,7 +494,7 @@ body.dark-mode .rec-link:hover {
 
 .progress-bg {
   fill: none;
-  stroke: rgba(255,255,255,0.12);
+  stroke: rgba(255, 255, 255, 0.12);
   stroke-width: 12;
 }
 
@@ -505,7 +511,7 @@ body.dark-mode .rec-link:hover {
     stroke-dashoffset 1.5s ease,
     stroke 0.5s ease;
 
-  filter: drop-shadow(0 0 10px rgba(34,197,94,0.7));
+  filter: drop-shadow(0 0 10px rgba(34, 197, 94, 0.7));
 }
 
 .meter-content {
@@ -524,7 +530,6 @@ body.dark-mode .rec-link:hover {
   text-align: center;
 }
 
-
 .meter-content h2 {
   font-size: 36px;
   color: var(--heading-color);
@@ -537,6 +542,6 @@ body.dark-mode .rec-link:hover {
 }
 /* Fix: dropdown options in dark mode */
 body.dark-mode select option {
-    background-color: #1a1a2e;
-    color: #ffffff;
+  background-color: #1a1a2e;
+  color: #ffffff;
 }

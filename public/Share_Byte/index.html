@@ -1,53 +1,342 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AaharShare - Food Redistribution Portal</title>
+    <title>AaharShare</title>
+
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="image.png">
 </head>
+<style>
+    /* ================= HEADER ================= */
+
+.header{
+    position: sticky;
+    top:0;
+    width:100%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:16px 8%;
+    background:#ffffff;
+    box-shadow:0 2px 10px rgba(0,0,0,.08);
+    z-index:1000;
+}
+
+.logo{
+    font-size:30px;
+    font-weight:700;
+    color:#1b5e20;
+    white-space:nowrap;
+}
+
+.navbar{
+    display:flex;
+    align-items:center;
+    gap:28px;
+    flex-wrap:nowrap;
+}
+
+.navbar a{
+    text-decoration:none;
+    color:#333;
+    font-size:16px;
+    font-weight:600;
+    transition:.3s;
+    white-space:nowrap;
+}
+
+.navbar a:hover,
+.navbar .active{
+    color:#2e7d32;
+}
+
+.start-btn{
+    background:#2e7d32;
+    color:#fff !important;
+    padding:12px 22px;
+    border-radius:8px;
+    text-decoration:none;
+    transition:.3s;
+}
+
+.start-btn:hover{
+    background:#1b5e20;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width:992px){
+
+    .header{
+        flex-direction:column;
+        gap:18px;
+    }
+
+    .navbar{
+        flex-wrap:wrap;
+        justify-content:center;
+        gap:16px;
+    }
+}
+
+@media (max-width:600px){
+
+    .header{
+        padding:15px;
+    }
+
+    .logo{
+        font-size:24px;
+    }
+
+    .navbar{
+        flex-direction:column;
+        width:100%;
+    }
+
+    .navbar a{
+        width:100%;
+        text-align:center;
+    }
+
+    .start-btn{
+        width:100%;
+    }
+}
+</style>
 <body>
 
-    <header class="app-header">
-        <h1>Aahar<span>Share</span></h1>
-        <p>Connecting surplus food with those in need</p>
-    </header>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <a href="index.html" aria-current="page">Home</a>
+        <a href="donate.html">Donors</a>
+        <a href="#">Clothes</a>
+        <a href="#">Food</a>
+        <a href="#">Renew</a>
+        <a href="#">Contact</a>
+    </aside>
 
-    <main class="main-container">
-        <section class="card donor-section">
-            <h2>Donate Surplus Food</h2>
-            <form id="foodForm">
-                <div class="form-group">
-                    <label for="foodItem">Food Item(s)</label>
-                    <input type="text" id="foodItem" placeholder="e.g., Rice, Dal, Roti (for 50 people)" required>
+    <!-- Page Content -->
+    <div class="page">
+
+        <!-- Header -->
+        <header>
+
+            <div class="logo">❤ AaharShare</div>
+
+            <nav aria-label="Main Navigation">
+
+                <a href="index.html" class="active" aria-current="page">Home</a>
+
+                <a href="donate.html">Donate</a>
+
+                <a href="#">Renew</a>
+
+                <a href="#">About Us</a>
+
+                <a href="donate.html" class="btn start-btn">
+                    Start Donating
+                </a>
+
+            </nav>
+
+        </header>
+
+        <!-- Hero Section -->
+        <section class="hero">
+
+            <div class="left">
+
+                <h1>
+                    Share Food, Donate Essentials,<br>
+                    Renew Hope.
+                </h1>
+
+                <p>
+                    Give what you no longer need to those who need it most.
+                </p>
+
+                <div class="btns">
+
+                    <a href="donate.html" class="orange btn">
+                        Donate Food
+                    </a>
+
+                    <a href="donate.html" class="green btn">
+                        Donate Clothes &amp; Essentials
+                    </a>
+
                 </div>
-                
-                <div class="form-group">
-                    <label for="donorName">Your Name/Restaurant</label>
-                    <input type="text" id="donorName" placeholder="e.g., Taj Hotel / Sharma Weddings" required>
-                </div>
 
-                <div class="form-group">
-                    <label for="expiryHours">Freshness Window (in hours)</label>
-                    <input type="number" id="expiryHours" min="1" max="24" placeholder="e.g., 4" required>
-                </div>
+            </div>
 
-                <button type="button" id="geoBtn" class="btn btn-secondary">📍 Get My Location</button>
-                <input type="hidden" id="locationCoords">
-                <span id="locationStatus"></span>
-
-                <button type="submit" class="btn btn-primary">List Food Now</button>
-            </form>
         </section>
 
-        <section class="card dashboard-section">
-            <h2>Available Food Nearby</h2>
-            <div id="noFoodMessage" class="no-data">No active food donations right now.</div>
-            <div id="foodList" class="food-grid">
-                </div>
+        <!-- Donation Cards -->
+        <section class="cards">
+
+            <h2>Donate Items to Help Others</h2>
+
+            <div class="grid">
+
+                <article class="card">
+
+                    <figure class="img">
+                        <img
+                            src="images/food.PNG"
+                            alt="Food donation"
+                            loading="lazy">
+                    </figure>
+
+                    <h3>Donate Food</h3>
+
+                    <a href="donate.html" class="btn">
+                        Donate Now
+                    </a>
+
+                </article>
+
+                <article class="card">
+
+                    <figure class="img">
+                        <img
+                            src="images/Cloth.PNG"
+                            alt="Clothes donation"
+                            loading="lazy">
+                    </figure>
+
+                    <h3>Donate Clothes</h3>
+
+                    <a href="donate.html" class="btn">
+                        Donate Now
+                    </a>
+
+                </article>
+
+                <article class="card">
+
+                    <figure class="img">
+                        <img
+                            src="images/shoes.PNG"
+                            alt="Shoes donation"
+                            loading="lazy">
+                    </figure>
+
+                    <h3>Donate Shoes</h3>
+
+                    <a href="donate.html" class="btn">
+                        Donate Now
+                    </a>
+
+                </article>
+
+                <article class="card">
+
+                    <figure class="img">
+                        <img
+                            src="images/bags.PNG"
+                            alt="School bags donation"
+                            loading="lazy">
+                    </figure>
+
+                    <h3>Donate Bags</h3>
+
+                    <a href="donate.html" class="btn">
+                        Donate Now
+                    </a>
+
+                </article>
+
+                <article class="card">
+
+                    <figure class="img">
+                        <img
+                            src="images/blankets.PNG"
+                            alt="Blankets donation"
+                            loading="lazy">
+                    </figure>
+
+                    <h3>Donate Blankets</h3>
+
+                    <a href="donate.html" class="btn">
+                        Donate Now
+                    </a>
+
+                </article>
+
+            </div>
+
         </section>
-    </main>
+
+        <!-- Renew Section -->
+        <section class="renew">
+
+            <h2>Renew &amp; Reuse</h2>
+
+            <p>
+                We clean, renew, and deliver your donations to those in need.
+            </p>
+
+            <a href="#" class="learn btn">
+                Learn How We Renew
+            </a>
+
+        </section>
+
+        <!-- Statistics -->
+        <section class="stats">
+
+            <div>
+                <h2>500+</h2>
+                <p>Meals Shared</p>
+            </div>
+
+            <div>
+                <h2>200+</h2>
+                <p>Blankets Donated</p>
+            </div>
+
+            <div>
+                <h2>100+</h2>
+                <p>Families Helped</p>
+            </div>
+
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+
+            <nav class="footer-links" aria-label="Footer Navigation">
+
+                <a href="donate.html">Donate</a>
+
+                <a href="#">Volunteer</a>
+
+                <a href="#">FAQ</a>
+
+                <a href="#">Privacy Policy</a>
+
+            </nav>
+
+            <hr>
+
+            <div class="footer-bottom">
+
+                <p>
+                    &copy; 2026 AaharShare. All rights reserved.
+                </p>
+
+            </div>
+
+        </footer>
+
+    </div>
 
     <script src="script.js"></script>
+
 </body>
+
 </html>

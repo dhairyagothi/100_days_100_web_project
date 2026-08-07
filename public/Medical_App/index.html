@@ -24,52 +24,10 @@
 
 </head>
 <body>
-    <!-- Sidebar Navigation -->
-    <aside class="sidebar">
-        <div class="sidebar-header">
-            <div class="logo-wrapper">
-                <div class="logo-icon"></div>
-                <div class="logo-text">
-                    <h1>MedConsult</h1>
-                    <p>Dashboard</p>
-                </div>
-            </div>
-            <button class="sidebar-toggle" id="danglingSidebarToggle" aria-label="Toggle Sidebar">
-                <i class="ph ph-list"></i>
-            </button>
-        </div>
 
-        <nav class="sidebar-nav">
-            <ul>
-                <li>
-                    <a href="index.html" class="nav-item active" data-page="dashboard">
-                        <i class="ph ph-squares-four"></i>
-                        <span>Dashboard</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="remedies.html" class="nav-item" data-page="remedies">
-                        <i class="ph ph-leaf"></i>
-                        <span>Home Remedies</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="feedback.html" class="nav-item" data-page="feedback">
-                        <i class="ph ph-chat-circle-text"></i>
-                        <span>Feedback</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-
-        <div class="sidebar-footer">
-            <button class="theme-toggle-btn" id="danglingThemeToggleBtn" aria-label="Toggle Theme"></button>
-        </div>
-    </aside>
-
-    
 
     <link rel="stylesheet" href="css/animation.css">
+    
     <link rel="stylesheet" href="css/hero.css">
     <link rel="stylesheet" href="assets/css/auth.css">
 </head>
@@ -91,49 +49,43 @@
                 <i class="ph ph-list"></i>
             </button>
         </div>
-
         <nav class="sidebar-nav">
-            <ul>
+    <ul>
 
-                <!-- DASHBOARD -->
-                <li>
-                    <a href="index.html" class="nav-item active">
-                        <i class="ph ph-squares-four"></i>
-                        <span>Dashboard</span>
-                    </a>
-                </li>
+        <li>
+            <a href="index.html" class="nav-item active">
+                <i class="ph ph-squares-four"></i>
+                <span>Dashboard</span>
+            </a>
+        </li>
 
-                <!-- HOME REMEDIES -->
-                <li>
-                    <a href="remedies.html" class="nav-item">
-                        <i class="ph ph-leaf"></i>
-                        <span>Home Remedies</span>
-                    </a>
-                </li>
+        <li>
+            <a href="remedies.html" class="nav-item">
+                <i class="ph ph-leaf"></i>
+                <span>Home Remedies</span>
+            </a>
+        </li>
 
-                <!-- FEEDBACK -->
-                <li>
-                    <a href="feedback.html" class="nav-item">
-                        <i class="ph ph-chat-circle-text"></i>
-                        <span>Feedback</span>
-                    </a>
-                </li>
+        <li>
+            <a href="feedback.html" class="nav-item">
+                <i class="ph ph-chat-circle-text"></i>
+                <span>Feedback</span>
+            </a>
+        </li>
 
-            </ul>
-        </nav>
+    </ul>
+</nav>
 
         <div class="sidebar-footer">
-
             <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Theme">
                 <i class="ph ph-moon"></i>
                 <span>Dark Mode</span>
             </button>
 
-            <button class="btn btn-outline" id="logoutBtn">
+            <button class="btn btn-outline btn-logout" id="logoutBtn">
                 <i class="ph ph-sign-out"></i>
                 Logout
             </button>
-
         </div>
     </aside>
 
@@ -143,6 +95,7 @@
         <!-- Top Navigation Bar -->
         <nav class="top-navbar">
             <div class="navbar-left">
+                <img src="logo.png" alt="MedConsult Logo" class="navbar-logo">
                 <button class="sidebar-trigger" id="sidebarTrigger" aria-label="Toggle Sidebar">
                     <i class="ph ph-list"></i>
                 </button>
@@ -179,14 +132,14 @@
         <div class="page-container">
 
             <!-- Hero Section -->
-            <section class="hero-section" style="min-height:100vh; display:flex; justify-content:center; align-items:center; text-align:center;">
-                <div class="hero-content" style="display:flex; flex-direction:column; align-items:center;">
+            <section class="hero-section">
+                <div class="hero-content">
                     <div class="hero-text">
                         <h1>🏥 Welcome to MedConsult</h1>
                         <p id="welcomeMessage">Connecting Local Doctors with Specialists</p>
                         <p>Connect with expert specialists for your healthcare needs</p>
                     </div>
-                    <div class="hero-stats" style="display:flex; gap:20px; justify-content:center; margin-top:20px;">
+                    <div class="hero-stats">
                         <div class="stat-item">
                             <div class="stat-number">500+</div>
                             <div class="stat-label">Specialists</div>
@@ -340,22 +293,27 @@
                     <section class="card" data-role="patient">
                         <div class="card-header">
                             <div class="card-icon primary"><i class="ph ph-stethoscope"></i></div>
-                            <h2>Request Consultation</h2>
+                            <div class="card-header-content">
+                                <h2>Request Consultation</h2>
+                                <p class="card-subtitle">Fast patient intake for secure specialist matching.</p>
+                            </div>
                         </div>
                         <form id="requestForm" class="modern-form" novalidate>
                             <div class="form-group">
-                                <div class="form-field">
-                                    <label for="patientName">Patient Full Name</label>
-                                    <div class="input-wrapper">
-                                        <i class="ph ph-user"></i>
-                                        <input type="text" id="patientName" name="patientName" placeholder="Enter your full name" required>
+                                <div class="form-row-2">
+                                    <div class="form-field">
+                                        <label for="patientName">Patient Full Name</label>
+                                        <div class="input-wrapper">
+                                            <i class="ph ph-user"></i>
+                                            <input type="text" id="patientName" name="patientName" placeholder="Enter your full name" required>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-field">
-                                    <label for="doctorName">Referring Doctor</label>
-                                    <div class="input-wrapper">
-                                        <i class="ph ph-user-md"></i>
-                                        <input type="text" id="doctorName" name="doctorName" placeholder="Doctor's name" required>
+                                    <div class="form-field">
+                                        <label for="doctorName">Referring Doctor</label>
+                                        <div class="input-wrapper">
+                                            <i class="ph ph-user-md"></i>
+                                            <input type="text" id="doctorName" name="doctorName" placeholder="Doctor's name" required>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-field">
@@ -365,15 +323,23 @@
                                         <textarea id="patientCondition" name="patientCondition" placeholder="Describe the condition briefly..." rows="3" required></textarea>
                                     </div>
                                 </div>
-                                <div class="form-field">
-                                    <label for="specialistSearch">Required Specialist</label>
-                                    <div class="input-wrapper">
-                                        <i class="ph ph-magnifying-glass"></i>
-                                        <input type="text" id="specialistSearch" placeholder="Search specialist...">
+                                <div class="form-row-2">
+                                    <div class="form-field">
+                                        <label for="specialistSearch">Required Specialist</label>
+                                        <div class="input-wrapper">
+                                            <i class="ph ph-magnifying-glass"></i>
+                                            <input type="text" id="specialistSearch" placeholder="Search specialist...">
+                                        </div>
                                     </div>
-                                    <select id="specialistType" name="specialistType" required class="mt-2">
-                                        <option value="">Select a specialist...</option>
-                                    </select>
+                                    <div class="form-field">
+                                        <label for="specialistType">Specialist Type</label>
+                                        <div class="input-wrapper">
+                                            <i class="ph ph-stethoscope"></i>
+                                            <select id="specialistType" name="specialistType" required>
+                                                <option value="">Select a specialist...</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <button type="button" class="btn-text advanced-toggle" id="toggleAdvancedBtn">
@@ -477,6 +443,27 @@
                             <button class="quick-action-btn"><i class="ph ph-calendar"></i><span>Reschedule</span></button>
                         </div>
                     </section>
+                    <section class="card emergency-card">
+
+                        <div class="card-header">
+
+                            <div class="card-icon danger"><i class="ph ph-warning"></i></div>
+
+                            <h2>Emergency Services</h2>
+
+                        </div>
+
+                        <div class="emergency-buttons">
+
+                            <button class="emergency-btn"><div class="emergency-icon">🚑</div><span>Ambulance</span></button>
+
+                            <button class="emergency-btn"><div class="emergency-icon">🏥</div><span>Nearby Hospital</span></button>
+
+                            <button class="emergency-btn"><div class="emergency-icon">🧑‍⚕️</div><span>Emergency Doctor</span></button>
+
+                        </div>
+
+                    </section>
 
                 </div>
 
@@ -550,17 +537,7 @@
                         <div id="healthTip" class="health-tip-content"><p>Loading health tip...</p></div>
                     </section>
 
-                    <section class="card emergency-card">
-                        <div class="card-header">
-                            <div class="card-icon danger"><i class="ph ph-warning"></i></div>
-                            <h2>Emergency Services</h2>
-                        </div>
-                        <div class="emergency-buttons">
-                            <button class="emergency-btn"><div class="emergency-icon">🚑</div><span>Ambulance</span></button>
-                            <button class="emergency-btn"><div class="emergency-icon">🏥</div><span>Nearby Hospital</span></button>
-                            <button class="emergency-btn"><div class="emergency-icon">🧑‍⚕️</div><span>Emergency Doctor</span></button>
-                        </div>
-                    </section>
+
 
 
 
@@ -688,6 +665,7 @@
                     <label class="auth-remember">
                         <input id="rememberMe" type="checkbox"> Remember Me
                     </label>
+                    <button type="button" class="auth-link" data-auth-switch="forgot">Forgot Password?</button>
                 </div>
 
                 <p id="loginError" class="auth-error"></p>
@@ -706,13 +684,11 @@
                 <div class="auth-field">
                     <label for="signupName">Full Name</label>
                     <input id="signupName" class="auth-input" type="text" autocomplete="name" placeholder="Your full name" required>
-
                 </div>
 
                 <div class="auth-field">
                     <label for="signupEmail">Email</label>
                     <input id="signupEmail" class="auth-input" type="email" autocomplete="email" placeholder="you@example.com" required>
-
                 </div>
 
                 <div class="auth-field">
@@ -770,6 +746,25 @@
                     <button type="button" data-auth-switch="login">Login</button>
                 </div>
                 <p class="auth-note">Demo only: passwords are encoded for client-side storage. Real apps require server-side hashing.</p>
+            </form>
+        </section>
+
+        <!-- FORGOT PASSWORD PANEL -->
+        <section class="auth-panel is-hidden" data-auth-panel="forgot">
+            <form id="forgotForm">
+                <div class="auth-field">
+                    <label for="forgotEmail">Email Address</label>
+                    <input id="forgotEmail" class="auth-input" type="email" autocomplete="email" placeholder="Enter your email" required>
+                </div>
+
+                <p id="forgotError" class="auth-error"></p>
+                <p id="forgotSuccess" class="auth-success"></p>
+                <button type="submit" class="auth-submit">Send Reset Link</button>
+
+                <div class="auth-footer">
+                    <span>Remember your password?</span>
+                    <button type="button" data-auth-switch="login">Login</button>
+                </div>
             </form>
         </section>
     </div>

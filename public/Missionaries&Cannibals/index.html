@@ -1,126 +1,184 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Missionaries and Cannibals</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
+<a href="/" class="back-home-btn">← Back to Home</a>
 
+    <!-- TOP BAR -->
     <div class="top-bar">
-        <h1>MISSIONARIES AND CANNIBALS</h1>
-
-        <button id="instructions-btn" class="instructions-btn">
-            Instructions
-        </button>
+        <!-- Left spacer -->
+        <div class="top-bar-left"></div>
+        <!-- Center: Title -->
+        <h1>⛵ River Crossing</h1>
+        <!-- Right: controls -->
+        <div class="top-bar-right">
+            <button id="theme-toggle" class="icon-btn" title="Toggle theme">🌙</button>
+            <button id="instructions-btn" class="instructions-btn">Rules</button>
+        </div>
+        <!-- Mobile only back link (hidden on desktop via CSS) -->
+        <a href="/" class="back-home-mobile">← Back to Home</a>
     </div>
 
+    <!-- STATS BAR -->
+    <div class="stats-bar">
+        <div class="stat-chip">
+            <span class="stat-icon">🚣</span>
+            <span>Moves: <strong id="move-count">0</strong></span>
+        </div>
+        <div class="stat-chip" id="timer-chip">
+            <span class="stat-icon">⏱️</span>
+            <span>Time: <strong id="timer-display">0:00</strong></span>
+        </div>
+        <div class="stat-chip" id="best-chip">
+            <span class="stat-icon">🏅</span>
+            <span>Best: <strong id="best-display">—</strong></span>
+        </div>
+    </div>
 
-    <div class="game-container">
-        <!-- Left Bank -->
-        <div class="bank" id="left-bank">
-            <h2>Left Bank</h2>
-            <div class="people" id="left-people">
-                <!-- Missionaries and Cannibals -->
+    <!-- DIFFICULTY BAR -->
+    <div class="difficulty-bar">
+        <div class="difficulty-group">
+            <span class="difficulty-label">Difficulty:</span>
+            <div class="diff-buttons">
+                <button class="diff-btn active" data-diff="easy">Easy</button>
+                <button class="diff-btn" data-diff="medium">Medium</button>
+                <button class="diff-btn" data-diff="hard">Hard</button>
             </div>
         </div>
+    </div>
 
-        <!-- Boat -->
-        <div class="boat" id="boat">
-            <h2>Boat</h2>
-            <div class="people" id="boat-people">
-                <!-- Boat People -->
+    <!-- GAME AREA -->
+    <div class="game-wrapper">
+        <!-- Left Bank -->
+        <div class="bank" id="left-bank">
+            <div class="bank-label">Left Bank</div>
+            <div class="bank-count" id="left-count"></div>
+            <div class="people" id="left-people"></div>
+        </div>
+
+        <!-- River + Boat -->
+        <div class="river-zone">
+            <div class="river-bg">
+                <div class="wave"></div>
+                <div class="wave wave2"></div>
+            </div>
+            <div class="boat-track">
+                <div class="boat" id="boat">
+                    <div class="boat-label">⛵ Boat</div>
+                    <div class="people" id="boat-people"></div>
+                    <div class="boat-capacity" id="boat-capacity">0/2</div>
+                </div>
             </div>
         </div>
 
         <!-- Right Bank -->
         <div class="bank" id="right-bank">
-            <h2>Right Bank</h2>
-            <div class="people" id="right-people">
-                <!-- Missionaries and Cannibals -->
-            </div>
+            <div class="bank-label">Right Bank 🏁</div>
+            <div class="bank-count" id="right-count"></div>
+            <div class="people" id="right-people"></div>
         </div>
     </div>
 
-    <div class="controls">
-        <button id="start-reset">Start Game</button>
-        <button id="move-boat">Move Boat</button>
-        <button id="hint-btn" class="hint-btn">Hint (3 left)</button>
-    </div>
+    <!-- GUIDANCE -->
+    <p id="guidance" class="guidance-text">Click "Start Game" to begin your journey!</p>
 
-    <p id="hint-text" class="hint-display-text"></p>
+    <!-- ALERT MESSAGE -->
     <div id="message"></div>
 
-    <div class="stats-container">
-        <div class="move-counter">Moves: <span id="move-count">0</span></div>
+    <!-- CONTROLS -->
+    <div class="controls">
+        <button id="start-reset">🎮 Start Game</button>
+        <button id="undo-btn" class="undo-btn" disabled>↩️ Undo</button>
+        <button id="move-boat" disabled>⛵ Move Boat</button>
+        <button id="hint-btn" class="hint-btn" disabled>💡 Hint (<span id="hints-left">3</span>)</button>
     </div>
 
-    <div id="guidance" class="guidance-text">
-        Welcome! Move all Sheep and Tigers safely to the right bank.
-    </div>
+    <div id="hint-text" class="hint-display-text"></div>
 
-    <!-- Instructions/Welcome Modal -->
+    <!-- INSTRUCTIONS MODAL -->
     <div id="instructions-modal" class="modal">
         <div class="modal-content">
-            <span id="close-modal">&times;</span>
-
+            <span id="close-modal" class="close-btn">&times;</span>
             <div class="modal-header">
-                <h2>The River Crossing Challenge</h2>
-                <p class="story-text">Three <strong>Sheep (Missionaries)</strong> and three <strong>Tigers (Cannibals)</strong> must cross a dangerous river. Help them reach the other side safely!</p>
+                <h2>⛵ The River Crossing</h2>
+                <p class="story-text">Three <strong>Sheep 🐑</strong> and three <strong>Tigers 🐯</strong> must cross a river. The sheep trust you with their lives.</p>
             </div>
-
-            <div class="modal-section">
-                <h3><i class="icon">🎯</i> Objective</h3>
-                <p>Successfully move all <strong>6 travelers</strong> from the <strong>Left Bank</strong> to the <strong>Right Bank</strong>.</p>
-            </div>
-
             <div class="modal-grid">
                 <div class="modal-section">
-                    <h3><i class="icon">🎮</i> Characters</h3>
-                    <ul>
-                        <li><span class="emoji-legend">🐑</span> <strong>Sheep:</strong> Peaceful travelers.</li>
-                        <li><span class="emoji-legend">🐯</span> <strong>Tigers:</strong> Hungry predators.</li>
-                    </ul>
+                    <h3>🎯 Goal</h3>
+                    <p>Move everyone from the <strong>Left Bank</strong> to the <strong>Right Bank</strong> safely.</p>
                 </div>
-
                 <div class="modal-section">
-                    <h3><i class="icon">⚠️</i> Survival Rules</h3>
+                    <h3>⚠️ The Rule</h3>
+                    <p>Tigers must <strong>never outnumber</strong> Sheep on either bank — or the sheep get eaten!</p>
+                </div>
+                <div class="modal-section">
+                    <h3>⛵ Boat</h3>
+                    <p>Holds max <strong>2 passengers</strong>. Someone must pilot it back.</p>
+                </div>
+                <div class="modal-section">
+                    <h3>🎮 Difficulty</h3>
                     <ul>
-                        <li><strong>Safety:</strong> Never leave <strong>Sheep outnumbered</strong> by Tigers on either bank (unless no sheep are present).</li>
-                        <li><strong>Capacity:</strong> Max 2 people in the boat.</li>
+                        <li>🟢 <strong>Easy</strong> — 3+3 (classic)</li>
+                        <li>🟡 <strong>Medium</strong> — 4+4 (tricky)</li>
+                        <li>🔴 <strong>Hard</strong> — 5+5 (brutal)</li>
                     </ul>
                 </div>
             </div>
-
             <div class="modal-footer">
-                <button id="modal-start-btn" class="primary-btn">Begin Journey</button>
+                <button id="modal-start-btn" class="primary-btn">Begin Journey 🚀</button>
             </div>
         </div>
     </div>
 
-    <!-- Results Modal (Win/Loss) -->
+    <!-- WIN/LOSS MODAL -->
     <div id="results-modal" class="modal">
         <div class="modal-content result-content">
             <div id="result-icon" class="result-icon"></div>
-            <h2 id="result-title">Game Over</h2>
+            <h2 id="result-title"></h2>
             <p id="result-message"></p>
             <div class="result-stats">
-                <div class="stat-item">
-                    <span class="stat-label">Total Moves</span>
-                    <span id="final-move-count" class="stat-value">0</span>
+                <div class="stat-row">
+                    <span>Total Moves</span>
+                    <strong id="final-move-count">0</strong>
+                </div>
+                <div class="stat-row">
+                    <span>Time Taken</span>
+                    <strong id="final-time">0:00</strong>
+                </div>
+                <div class="stat-row" id="optimal-row">
+                    <span>Optimal</span>
+                    <strong id="optimal-moves">—</strong>
+                </div>
+                <div class="stat-row" id="efficiency-row">
+                    <span>Efficiency</span>
+                    <strong id="efficiency-score">—</strong>
+                </div>
+                <div class="stat-row stars-row">
+                    <span>Rating</span>
+                    <strong id="star-rating">—</strong>
+                </div>
+                <div class="stat-row" id="record-row" style="display:none">
+                    <span>🏅 New Record!</span>
+                    <strong id="record-value">—</strong>
                 </div>
             </div>
             <div class="modal-footer">
-                <button id="restart-btn" class="primary-btn">Try Again</button>
+                <button id="restart-btn" class="primary-btn">Play Again 🔄</button>
             </div>
         </div>
     </div>
 
     <script src="script.js"></script>
 </body>
-
 </html>

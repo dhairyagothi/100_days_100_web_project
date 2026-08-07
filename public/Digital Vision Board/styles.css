@@ -1,0 +1,252 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family:
+    "Segoe UI",
+    system-ui,
+    -apple-system,
+    sans-serif;
+  background: #0a0a0c;
+  color: #e0e0e0;
+  height: 100vh;
+  overflow: hidden;
+  margin: 0;
+}
+
+.navbar {
+  background: #111113;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.5);
+  border-bottom: 1px solid #222;
+}
+
+.navbar-brand {
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.sidebar {
+  height: calc(100vh - 56px);
+  overflow-y: auto;
+  background: #111113;
+  border-right: 1px solid #222;
+  color: #ccc;
+}
+
+.vision-board {
+  position: relative;
+  width: 100%;
+  height: calc(100vh - 56px);
+  background: #1a1a1f;
+  overflow: hidden;
+  box-shadow: inset 0 0 80px rgba(0, 0, 0, 0.7);
+}
+
+/* Subtle grid for precise alignment */
+.vision-board::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(#24242b 1px, transparent 1px),
+    linear-gradient(90deg, #24242b 1px, transparent 1px);
+  background-size: 50px 50px;
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.board-item {
+  position: absolute;
+  padding: 18px 20px;
+  border-radius: 16px;
+  background: #1f1f26;
+  border: 1px solid #33333d;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: move;
+  user-select: none;
+  min-width: 200px;
+  max-width: 310px;
+  color: #e0e0e0;
+  line-height: 1.45;
+  overflow: hidden;
+}
+
+.board-item:hover {
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.7);
+  transform: translateY(-5px) scale(1.035);
+  border-color: #555;
+  z-index: 30;
+}
+
+.board-item .delete-btn {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  width: 34px;
+  height: 34px;
+  background: #ef4444;
+  color: white;
+  border-radius: 50%;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+  border: 2px solid #1f1f26;
+}
+
+.board-item:hover .delete-btn {
+  display: flex;
+}
+
+/* Item Types */
+.goal-item {
+  border-left: 6px solid #60a5fa;
+}
+
+.quote-item {
+  border-left: 6px solid #c084fc;
+  font-style: italic;
+  background: #1f1f26;
+}
+
+.note-item {
+  border-left: 6px solid #fb923c;
+}
+
+.image-item {
+  padding: 10px;
+  background: #1c1c22;
+}
+
+.image-item img {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  object-fit: cover;
+  margin-bottom: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.board-item h6 {
+  margin: 0 0 12px 0;
+  font-weight: 600;
+  font-size: 1.12rem;
+  color: #ffffff;
+}
+
+.board-item p {
+  margin: 0 0 10px 0;
+  font-size: 0.96rem;
+  opacity: 0.9;
+}
+
+/* Category Tag */
+.category-tag {
+  font-size: 0.78rem;
+  padding: 4px 11px;
+  border-radius: 9999px;
+  display: inline-block;
+  margin-top: 8px;
+  font-weight: 500;
+  background: rgba(255, 255, 255, 0.08);
+  color: #d1d5db;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Sidebar Categories */
+.category-item {
+  padding: 12px 18px;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  margin-bottom: 3px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.category-item:hover,
+.category-item.active {
+  background: #3b82f6;
+  color: white;
+}
+
+.category-item .badge {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Empty State */
+.empty-state {
+  color: #777;
+  text-align: center;
+}
+
+.empty-state i {
+  font-size: 5rem;
+  opacity: 0.25;
+  margin-bottom: 1rem;
+}
+
+/* Modal Styling */
+.modal-content {
+  background: #18181b;
+  color: #e0e0e0;
+  border: 1px solid #3f3f46;
+  border-radius: 18px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+}
+
+.modal-header {
+  border-bottom: 1px solid #27272a;
+}
+
+.modal-title {
+  font-weight: 600;
+}
+
+.form-label {
+  color: #a1a1aa;
+}
+
+.form-control,
+.form-select {
+  background: #27272a;
+  border: 1px solid #3f3f46;
+  color: #e0e0e0;
+  border-radius: 10px;
+}
+
+.form-control:focus {
+  background: #27272a;
+  border-color: #60a5fa;
+  box-shadow: 0 0 0 0.25rem rgba(96, 165, 250, 0.3);
+  color: #fff;
+}
+
+.btn-check:checked + .btn {
+  background-color: #3b82f6;
+  color: white;
+  border-color: #3b82f6;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .sidebar {
+    height: auto;
+    max-height: 45vh;
+  }
+
+  .board-item {
+    min-width: 165px;
+    max-width: 260px;
+  }
+
+  .vision-board {
+    height: calc(100vh - 110px);
+  }
+}

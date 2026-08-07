@@ -47,6 +47,8 @@ const Nodes = {
 
 const CACHE_DURATION = 300000;
 
+const activeCounterIntervals = [];
+
 /* =========================================================
    CACHE ENGINE
 ========================================================= */
@@ -210,6 +212,46 @@ function animateCounter(element, targetValue) {
       current.toLocaleString();
 
   }, 20);
+
+  activeCounterIntervals.push(interval);
+}
+
+function stopActiveCounters() {
+
+  activeCounterIntervals.forEach(
+    (interval) => clearInterval(interval)
+  );
+
+  activeCounterIntervals.length = 0;
+}
+
+function resetStatCounters() {
+
+  stopActiveCounters();
+
+  if (Nodes.repoCount)
+    Nodes.repoCount.textContent = "0";
+
+  if (Nodes.followers)
+    Nodes.followers.textContent = "0";
+
+  if (Nodes.following)
+    Nodes.following.textContent = "0";
+
+  if (Nodes.gists)
+    Nodes.gists.textContent = "0";
+}
+
+function resetProfileUI() {
+
+  resetStatCounters();
+
+  UI.profileCard?.classList.add("hidden");
+  UI.reposSection?.classList.add("hidden");
+  UI.analyticsPanel?.classList.add("hidden");
+
+  if (UI.reposList)
+    UI.reposList.replaceChildren();
 }
 
 /* =========================================================
@@ -239,48 +281,345 @@ function showCompareLoading() {
     "hidden"
   );
 
-  UI.comparisonContainer.innerHTML = `
-    <div class="compare-loading">
-      Loading profile comparison...
-    </div>
-  `;
+  const loadingNote = document.createElement("div");
+  loadingNote.className = "compare-loading";
+  loadingNote.textContent = "Loading profile comparison...";
+  UI.comparisonContainer.replaceChildren(loadingNote);
 }
 
 /* =========================================================
    CONTRIBUTION HEATMAP
 ========================================================= */
 
-function generateContributionHeatmap() {
+// Set this to a backend/serverless proxy URL to enable the
+// GraphQL path. Left empty because this project has no
+// backend yet - see comment block above.
+const GRAPHQL_PROXY_ENDPOINT = "";
 
-  if (!UI.heatmapGrid) return;
+const CONTRIBUTIONS_FALLBACK_API_URL =
+  "https://github-contributions-api.jogruber.de/v4";
 
-  UI.heatmapGrid.innerHTML = "";
+const CONTRIBUTIONS_FETCH_TIMEOUT_MS = 8000;
+const CONTRIBUTIONS_MAX_RETRIES = 2;
+const CONTRIBUTIONS_RETRY_BASE_DELAY_MS = 600;
 
-  const totalDays = 365;
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
-  for (let i = 0; i < totalDays; i++) {
+/**
+ * Fetch wrapper with a timeout, since a hung request should
+ * never leave the heatmap stuck on "Loading...".
+ */
+async function fetchWithTimeout(url, timeoutMs) {
 
-    const level =
-      Math.floor(Math.random() * 5);
+  const controller = new AbortController();
+
+  const timer = setTimeout(
+    () => controller.abort(),
+    timeoutMs
+  );
+
+  try {
+
+    return await fetch(url, { signal: controller.signal });
+
+  } finally {
+
+    clearTimeout(timer);
+  }
+}
+
+/**
+ * Calls a backend proxy that is expected to run the GitHub
+ * GraphQL `contributionsCollection` query server-side (where a
+ * token can be kept secret) and return normalized
+ * { date, count, level } day objects. Only used when
+ * GRAPHQL_PROXY_ENDPOINT is configured.
+ */
+async function fetchContributionsFromGraphQLProxy(username) {
+
+  const response = await fetchWithTimeout(
+    `${GRAPHQL_PROXY_ENDPOINT}?username=${encodeURIComponent(username)}`,
+    CONTRIBUTIONS_FETCH_TIMEOUT_MS
+  );
+
+  if (!response.ok) {
+
+    const error = new Error(
+      "The contribution data proxy returned an error."
+    );
+    error.status = response.status;
+    throw error;
+  }
+
+  const data = await response.json();
+
+  if (!data || !Array.isArray(data.contributions)) {
+
+    throw new Error(
+      "The contribution data proxy returned an unexpected format."
+    );
+  }
+
+  return data.contributions;
+}
+
+/**
+ * Calls the public fallback contributions API with a timeout
+ * and retry/backoff for transient errors. Never returns
+ * fabricated data - any unrecoverable failure is thrown so the
+ * caller can show an honest error state.
+ */
+async function fetchContributionsFromFallbackApi(username) {
+
+  let lastError = null;
+
+  for (let attempt = 0; attempt <= CONTRIBUTIONS_MAX_RETRIES; attempt++) {
+
+    try {
+
+      const response = await fetchWithTimeout(
+        `${CONTRIBUTIONS_FALLBACK_API_URL}/${username}?y=last`,
+        CONTRIBUTIONS_FETCH_TIMEOUT_MS
+      );
+
+      if (response.status === 404) {
+
+        // Invalid/unknown username - retrying won't help.
+        const error = new Error(
+          "No GitHub user was found with that username."
+        );
+        error.status = 404;
+        throw error;
+      }
+
+      if (response.status === 429) {
+
+        const error = new Error(
+          "The contribution data provider is rate-limited right now."
+        );
+        error.status = 429;
+        throw error;
+      }
+
+      if (!response.ok) {
+
+        const error = new Error(
+          "Unable to fetch contribution activity for this user."
+        );
+        error.status = response.status;
+        throw error;
+      }
+
+      const data = await response.json();
+
+      if (!data || !Array.isArray(data.contributions)) {
+
+        throw new Error(
+          "Contribution data was returned in an unexpected format."
+        );
+      }
+
+      return data.contributions;
+
+    } catch (error) {
+
+      lastError = error;
+
+      const isAbort = error.name === "AbortError";
+      const isNotFound = error.status === 404;
+
+      // Don't retry on a bad username or an aborted/timed-out
+      // request that's already exhausted its own budget once;
+      // only retry genuinely transient failures.
+      const isRetryable =
+        !isNotFound &&
+        (isAbort ||
+          error.status === 429 ||
+          error.status >= 500 ||
+          error.status === undefined);
+
+      if (!isRetryable || attempt === CONTRIBUTIONS_MAX_RETRIES) {
+
+        if (isAbort) {
+
+          lastError = new Error(
+            "The request timed out while loading contribution activity."
+          );
+        }
+
+        break;
+      }
+
+      await sleep(
+        CONTRIBUTIONS_RETRY_BASE_DELAY_MS * Math.pow(2, attempt)
+      );
+    }
+  }
+
+  throw lastError;
+}
+
+/**
+ * Fetches the last 12 months of real contribution data for a
+ * GitHub username. Returns an array of
+ * { date, count, level } objects, oldest first. GraphQL (via a
+ * secure backend proxy) is preferred when configured; otherwise
+ * falls back to the public read-only contributions API. Never
+ * falls back to randomly generated or fake data.
+ */
+async function fetchContributionData(username) {
+
+  const cacheKey = `contributions_${username}`;
+
+  const cached = DataCacheEngine.get(cacheKey);
+
+  if (cached) return cached;
+
+  const contributions = GRAPHQL_PROXY_ENDPOINT
+    ? await fetchContributionsFromGraphQLProxy(username)
+    : await fetchContributionsFromFallbackApi(username);
+
+  DataCacheEngine.set(cacheKey, contributions);
+
+  return contributions;
+}
+
+/**
+ * Renders a GitHub-style calendar grid (7 rows x ~53 columns)
+ * from real contribution day objects. Leading blank cells are
+ * added so the first real day lines up with its correct
+ * day-of-week row, matching GitHub's own layout.
+ */
+function renderContributionHeatmap(contributions) {
+
+  UI.heatmapGrid.replaceChildren();
+
+  // Cap at 371 days (53 weeks) to mirror GitHub's ~12 month view.
+  const days = contributions.slice(-371);
+
+  if (!days.length) {
+
+    throw new Error("No contribution data available for this user.");
+  }
+
+  const firstDay = new Date(`${days[0].date}T00:00:00`);
+  const leadingBlankDays = firstDay.getDay(); // 0 = Sunday
+
+  for (let i = 0; i < leadingBlankDays; i++) {
+
+    const blankCell =
+      document.createElement("div");
+
+    blankCell.className = "heatmap-cell level-0";
+    blankCell.style.visibility = "hidden";
+
+    UI.heatmapGrid.appendChild(blankCell);
+  }
+
+  days.forEach((day) => {
 
     const cell =
       document.createElement("div");
 
     cell.className =
-      `heatmap-cell level-${level}`;
+      `heatmap-cell level-${day.level}`;
 
-    const contributions =
-      level === 0
-        ? 0
-        : Math.floor(
-            Math.random() * (level * 8)
-          ) + 1;
+    const formattedDate =
+      new Date(`${day.date}T00:00:00`).toLocaleDateString(
+        "en-US",
+        { year: "numeric", month: "long", day: "numeric" }
+      );
 
     cell.title =
-      `${contributions} contributions`;
+      `${day.count} contribution${day.count === 1 ? "" : "s"} on ${formattedDate}`;
 
     UI.heatmapGrid.appendChild(cell);
+  });
+}
+
+/**
+ * Displays a friendly, non-fake fallback when real contribution
+ * data can't be retrieved. Never falls back to random data.
+ */
+function showHeatmapError(message) {
+
+  UI.heatmapGrid.replaceChildren();
+
+  const errorNode =
+    document.createElement("div");
+
+  errorNode.style.gridColumn = "1 / -1";
+  errorNode.style.color = "var(--muted)";
+  errorNode.style.fontSize = ".88rem";
+  errorNode.style.padding = "10px 0";
+
+  errorNode.textContent = message;
+
+  UI.heatmapGrid.appendChild(errorNode);
+}
+
+async function generateContributionHeatmap(username) {
+
+  if (!UI.heatmapGrid) return;
+
+  const loadingNode =
+    document.createElement("div");
+
+  loadingNode.style.gridColumn = "1 / -1";
+  loadingNode.style.color = "var(--muted)";
+  loadingNode.style.fontSize = ".88rem";
+  loadingNode.style.padding = "10px 0";
+  loadingNode.textContent = "Loading contribution activity...";
+
+  UI.heatmapGrid.replaceChildren();
+  UI.heatmapGrid.appendChild(loadingNode);
+
+  try {
+
+    const contributions =
+      await fetchContributionData(username);
+
+    renderContributionHeatmap(contributions);
+
+  } catch (error) {
+
+    showHeatmapError(getContributionErrorMessage(error));
   }
+}
+
+/**
+ * Turns a raw fetch/parse error into a specific, human-readable
+ * message so the person searching a profile understands what
+ * went wrong (invalid username vs. rate limit vs. network vs.
+ * an unexpected failure) instead of one generic string.
+ */
+function getContributionErrorMessage(error) {
+
+  if (error?.status === 404) {
+
+    return "No contribution data found - check that the username is correct.";
+  }
+
+  if (error?.status === 429) {
+
+    return "Contribution data is temporarily rate-limited. Please try again in a moment.";
+  }
+
+  // A failed fetch (offline, DNS failure, blocked request, etc.)
+  // surfaces as a TypeError in browsers rather than a bad status.
+  if (error instanceof TypeError) {
+
+    return "Couldn't reach the contribution data source - check your connection and try again.";
+  }
+
+  if (typeof error?.status === "number" && error.status >= 500) {
+
+    return "The contribution data source is currently unavailable. Please try again later.";
+  }
+
+  return "Contribution activity couldn't be loaded for this user right now.";
 }
 
 /* =========================================================
@@ -340,7 +679,7 @@ async function renderLanguageAnalytics(repos) {
 
     const gradientParts = [];
 
-    UI.languageLegend.innerHTML = "";
+    UI.languageLegend.replaceChildren();
 
     sortedLanguages.forEach(
       ([language, bytes], index) => {
@@ -363,22 +702,35 @@ async function renderLanguageAnalytics(repos) {
         item.className =
           "language-legend-item";
 
-        item.innerHTML = `
-          <div class="language-legend-left">
+        const left =
+          document.createElement("div");
 
-            <span
-              class="language-dot"
-              style="background:${colors[index]}"
-            ></span>
+        left.className =
+          "language-legend-left";
 
-            <span>${language}</span>
+        const dot =
+          document.createElement("span");
 
-          </div>
+        dot.className = "language-dot";
+        dot.style.background = colors[index];
 
-          <strong>
-            ${percent.toFixed(1)}%
-          </strong>
-        `;
+        const langLabel =
+          document.createElement("span");
+
+        // GitHub API value — set via textContent, never HTML
+        langLabel.textContent = language;
+
+        left.appendChild(dot);
+        left.appendChild(langLabel);
+
+        const percentLabel =
+          document.createElement("strong");
+
+        percentLabel.textContent =
+          `${percent.toFixed(1)}%`;
+
+        item.appendChild(left);
+        item.appendChild(percentLabel);
 
         UI.languageLegend.appendChild(item);
       }
@@ -446,15 +798,41 @@ function renderProfile(user) {
         ? user.blog
         : `https://${user.blog}`;
 
-    Nodes.website.innerHTML = `
-      <a
-        href="${blogUrl}"
-        target="_blank"
-        class="repo-link"
-      >
-        ${user.blog}
-      </a>
-    `;
+    // Only build a link for http(s) URLs; otherwise show plain text.
+    // This avoids javascript:/data: URIs ending up in an href.
+    let isSafeUrl = false;
+
+    try {
+
+      isSafeUrl =
+        ["http:", "https:"].includes(
+          new URL(blogUrl).protocol
+        );
+
+    } catch {
+
+      isSafeUrl = false;
+    }
+
+    Nodes.website.replaceChildren();
+
+    if (isSafeUrl) {
+
+      const link =
+        document.createElement("a");
+
+      link.href = blogUrl;
+      link.target = "_blank";
+      link.rel = "noreferrer";
+      link.className = "repo-link";
+      link.textContent = user.blog; // GitHub API value — textContent, never HTML
+
+      Nodes.website.appendChild(link);
+
+    } else {
+
+      Nodes.website.textContent = user.blog;
+    }
 
   } else {
 
@@ -463,6 +841,8 @@ function renderProfile(user) {
 
   Nodes.profileLink.href =
     user.html_url;
+
+  stopActiveCounters();
 
   animateCounter(
     Nodes.repoCount,
@@ -495,15 +875,17 @@ function renderProfile(user) {
 
 function renderRepos(repos) {
 
-  UI.reposList.innerHTML = "";
+  UI.reposList.replaceChildren();
 
   if (!repos.length) {
 
-    UI.reposList.innerHTML = `
-      <div class="repo-card">
-        No repositories found.
-      </div>
-    `;
+    const empty =
+      document.createElement("div");
+
+    empty.className = "repo-card";
+    empty.textContent = "No repositories found.";
+
+    UI.reposList.appendChild(empty);
 
     return;
   }
@@ -515,54 +897,82 @@ function renderRepos(repos) {
 
     card.className = "repo-card";
 
-    card.innerHTML = `
-      <div class="repo-top">
+    const top =
+      document.createElement("div");
 
-        <h4 class="repo-name">
+    top.className = "repo-top";
 
-          <a
-            href="${repo.html_url}"
-            target="_blank"
-            class="repo-link"
-          >
-            ${repo.name}
-          </a>
+    const name =
+      document.createElement("h4");
 
-        </h4>
+    name.className = "repo-name";
 
-        <span class="badge">
-          ★ ${repo.stargazers_count}
-        </span>
+    const nameLink =
+      document.createElement("a");
 
-      </div>
+    nameLink.href = repo.html_url;
+    nameLink.target = "_blank";
+    nameLink.rel = "noreferrer";
+    nameLink.className = "repo-link";
+    nameLink.textContent = repo.name; // GitHub API value — textContent, never HTML
 
-      <p class="repo-description">
+    name.appendChild(nameLink);
 
-        ${safeText(
-          repo.description,
-          "No description available."
-        )}
+    const starBadge =
+      document.createElement("span");
 
-      </p>
+    starBadge.className = "badge";
+    starBadge.textContent =
+      `★ ${repo.stargazers_count}`;
 
-      <div class="repo-meta">
+    top.appendChild(name);
+    top.appendChild(starBadge);
 
-        ${
-          repo.language
-            ? `<span class="pill">${repo.language}</span>`
-            : ""
-        }
+    const description =
+      document.createElement("p");
 
-        <span class="pill">
-          Forks ${repo.forks_count}
-        </span>
+    description.className = "repo-description";
+    description.textContent = safeText(
+      repo.description,
+      "No description available."
+    );
 
-        <span class="pill">
-          Updated ${formatDate(repo.updated_at)}
-        </span>
+    const meta =
+      document.createElement("div");
 
-      </div>
-    `;
+    meta.className = "repo-meta";
+
+    if (repo.language) {
+
+      const languagePill =
+        document.createElement("span");
+
+      languagePill.className = "pill";
+      languagePill.textContent = repo.language; // GitHub API value — textContent
+
+      meta.appendChild(languagePill);
+    }
+
+    const forksPill =
+      document.createElement("span");
+
+    forksPill.className = "pill";
+    forksPill.textContent =
+      `Forks ${repo.forks_count}`;
+
+    const updatedPill =
+      document.createElement("span");
+
+    updatedPill.className = "pill";
+    updatedPill.textContent =
+      `Updated ${formatDate(repo.updated_at)}`;
+
+    meta.appendChild(forksPill);
+    meta.appendChild(updatedPill);
+
+    card.appendChild(top);
+    card.appendChild(description);
+    card.appendChild(meta);
 
     UI.reposList.appendChild(card);
   });
@@ -613,8 +1023,25 @@ async function fetchUser(username) {
       `https://api.github.com/users/${cleanName}/repos?per_page=100`
     );
 
+    if (!repoResponse.ok) {
+
+      const errorData =
+        await repoResponse.json().catch(() => ({}));
+
+      throw new Error(
+        errorData.message || "Failed to fetch repositories."
+      );
+    }
+
     const repos =
       await repoResponse.json();
+
+    if (!Array.isArray(repos)) {
+
+      throw new Error(
+        "Failed to fetch repositories."
+      );
+    }
 
     const sortedRepos = repos
       .sort(
@@ -628,7 +1055,7 @@ async function fetchUser(username) {
 
     renderRepos(sortedRepos);
 
-    generateContributionHeatmap();
+    await generateContributionHeatmap(cleanName);
 
     await renderLanguageAnalytics(repos);
 
@@ -639,6 +1066,8 @@ async function fetchUser(username) {
     hideStatus();
 
   } catch (error) {
+
+    resetProfileUI();
 
     showStatus(
       error.message,
@@ -692,8 +1121,25 @@ async function fetchProfileData(username) {
     `https://api.github.com/users/${cleanName}/repos?per_page=50`
   );
 
+  if (!repoResponse.ok) {
+
+    const errorData =
+      await repoResponse.json().catch(() => ({}));
+
+    throw new Error(
+      errorData.message || "Failed to fetch repositories."
+    );
+  }
+
   const repos =
     await repoResponse.json();
+
+  if (!Array.isArray(repos)) {
+
+    throw new Error(
+      "Failed to fetch repositories."
+    );
+  }
 
   const sortedRepos = repos
     .sort(
@@ -725,23 +1171,62 @@ async function fetchProfileData(username) {
 
 function buildRepoListSmall(repos) {
 
-  return repos.map((repo) => `
-    <div class="mini-repo-card">
+  const fragment =
+    document.createDocumentFragment();
 
-      <a
-        href="${repo.html_url}"
-        target="_blank"
-        class="repo-link"
-      >
-        ${repo.name}
-      </a>
+  repos.forEach((repo) => {
 
-      <span>
-        ★ ${repo.stargazers_count}
-      </span>
+    const mini =
+      document.createElement("div");
 
-    </div>
-  `).join("");
+    mini.className = "mini-repo-card";
+
+    const link =
+      document.createElement("a");
+
+    link.href = repo.html_url;
+    link.target = "_blank";
+    link.rel = "noreferrer";
+    link.className = "repo-link";
+    link.textContent = repo.name; // GitHub API value — textContent, never HTML
+
+    const stars =
+      document.createElement("span");
+
+    stars.textContent =
+      `★ ${repo.stargazers_count}`;
+
+    mini.appendChild(link);
+    mini.appendChild(stars);
+
+    fragment.appendChild(mini);
+  });
+
+  return fragment;
+}
+
+function buildComparisonStat(label, value, isWinner) {
+
+  const stat =
+    document.createElement("div");
+
+  stat.className =
+    `compare-stat ${isWinner ? "winner" : ""}`;
+
+  const label_ =
+    document.createElement("span");
+
+  label_.textContent = label;
+
+  const strong =
+    document.createElement("strong");
+
+  strong.textContent = value;
+
+  stat.appendChild(label_);
+  stat.appendChild(strong);
+
+  return stat;
 }
 
 function renderComparisonCard(
@@ -761,86 +1246,103 @@ function renderComparisonCard(
     data.user.following >
     opponent.user.following;
 
-  return `
-    <article class="compare-card">
+  const article =
+    document.createElement("article");
 
-      <div class="compare-header">
+  article.className = "compare-card";
 
-        <img
-          src="${data.user.avatar_url}"
-          class="compare-avatar"
-        />
+  const header =
+    document.createElement("div");
 
-        <div>
+  header.className = "compare-header";
 
-          <h3>
-            ${safeText(
-              data.user.name,
-              data.user.login
-            )}
-          </h3>
+  const img =
+    document.createElement("img");
 
-          <p>
-            @${data.user.login}
-          </p>
+  img.src = data.user.avatar_url;
+  img.className = "compare-avatar";
 
-        </div>
+  const identity =
+    document.createElement("div");
 
-      </div>
+  const h3 =
+    document.createElement("h3");
 
-      <p class="compare-bio">
+  h3.textContent = safeText(
+    data.user.name,
+    data.user.login
+  );
 
-        ${safeText(
-          data.user.bio,
-          "No bio available."
-        )}
+  const handle =
+    document.createElement("p");
 
-      </p>
+  handle.textContent = `@${data.user.login}`;
 
-      <div class="compare-stats">
+  identity.appendChild(h3);
+  identity.appendChild(handle);
 
-        <div class="compare-stat ${repoWinner ? "winner" : ""}">
+  header.appendChild(img);
+  header.appendChild(identity);
 
-          <span>Repositories</span>
+  const bio =
+    document.createElement("p");
 
-          <strong>
-            ${data.user.public_repos}
-          </strong>
+  bio.className = "compare-bio";
+  bio.textContent = safeText(
+    data.user.bio,
+    "No bio available."
+  );
 
-        </div>
+  const stats =
+    document.createElement("div");
 
-        <div class="compare-stat ${followerWinner ? "winner" : ""}">
+  stats.className = "compare-stats";
 
-          <span>Followers</span>
+  stats.appendChild(
+    buildComparisonStat(
+      "Repositories",
+      data.user.public_repos,
+      repoWinner
+    )
+  );
 
-          <strong>
-            ${data.user.followers.toLocaleString()}
-          </strong>
+  stats.appendChild(
+    buildComparisonStat(
+      "Followers",
+      data.user.followers.toLocaleString(),
+      followerWinner
+    )
+  );
 
-        </div>
+  stats.appendChild(
+    buildComparisonStat(
+      "Following",
+      data.user.following,
+      followingWinner
+    )
+  );
 
-        <div class="compare-stat ${followingWinner ? "winner" : ""}">
+  const repoWrap =
+    document.createElement("div");
 
-          <span>Following</span>
+  repoWrap.className = "compare-repos";
 
-          <strong>
-            ${data.user.following}
-          </strong>
+  const repoHeading =
+    document.createElement("h4");
 
-        </div>
+  repoHeading.textContent = "Top Repositories";
 
-      </div>
+  repoWrap.appendChild(repoHeading);
+  repoWrap.appendChild(
+    buildRepoListSmall(data.repos)
+  );
 
-      <div class="compare-repos">
+  article.appendChild(header);
+  article.appendChild(bio);
+  article.appendChild(stats);
+  article.appendChild(repoWrap);
 
-        <h4>Top Repositories</h4>
-
-        ${buildRepoListSmall(data.repos)}
-
-      </div>
-
-    </article>
-  `;
+  return article;
 }
 
 function renderComparison(
@@ -852,17 +1354,16 @@ function renderComparison(
     "hidden"
   );
 
-  UI.comparisonContainer.innerHTML = `
-    ${renderComparisonCard(
+  UI.comparisonContainer.replaceChildren(
+    renderComparisonCard(
       leftData,
       rightData
-    )}
-
-    ${renderComparisonCard(
+    ),
+    renderComparisonCard(
       rightData,
       leftData
-    )}
-  `;
+    )
+  );
 
   UI.comparisonPanel.scrollIntoView({
     behavior: "smooth"

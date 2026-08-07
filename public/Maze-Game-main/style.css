@@ -122,6 +122,81 @@ select {
   text-align: left;
 }
 
+.status-pill-best {
+  border-color: rgba(255, 214, 102, 0.35);
+}
+
+.status-pill-best span {
+  color: #ffd666;
+  font-weight: 700;
+}
+
+.record-banner {
+  display: none;
+  margin: -28px -28px 18px;
+  padding: 10px 20px;
+  border-radius: 24px 24px 0 0;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-align: center;
+  color: #1a1400;
+  background: linear-gradient(100deg, #ffd666, #ffb347, #ffd666);
+  background-size: 200% auto;
+  box-shadow: 0 4px 20px rgba(255, 179, 71, 0.35);
+  animation: bannerShine 2.2s linear infinite;
+}
+
+@keyframes bannerShine {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+.stats-grid {
+  display: flex;
+  gap: 10px;
+  margin: 18px 0 4px;
+}
+
+.stat-chip {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 12px 8px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(96, 212, 255, 0.14);
+}
+
+.stat-value {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.stat-label {
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.stat-chip-best {
+  border-color: rgba(255, 214, 102, 0.4);
+}
+
+.stat-chip-best .stat-value {
+  color: #ffd666;
+}
+
+.stat-chip-best.is-record {
+  background: rgba(255, 179, 71, 0.1);
+  box-shadow: 0 0 16px rgba(255, 179, 71, 0.25);
+}
+
 .game-controls {
   display: flex;
   align-items: center;
@@ -336,6 +411,7 @@ button:disabled {
   padding: 28px;
   max-width: 420px;
   width: min(100%, 440px);
+  overflow: hidden;
 }
 
 .modal-overlay.visible .modal-card {
@@ -483,7 +559,127 @@ button:disabled {
   transition: filter 0.8s ease, opacity 0.8s ease;
 }
 
+/* ========== THEME TOGGLE ========== */
+:root {
+  --bg: #0e1123;
+  --text: #e7f3ff;
+  --card: rgba(12,16,38,0.95);
+  --border: rgba(72,208,255,0.18);
+  --toggle-bg: rgba(255,255,255,0.15);
+  --maze-line: #7fd5ff;
+  --maze-bg: radial-gradient(circle at 30% 30%, rgba(96,212,255,0.12), transparent 25%),
+    linear-gradient(180deg, rgba(15,22,56,0.98), rgba(8,10,20,0.98));
+}
 
+[data-theme="light"] {
+  --bg: #dce3f5;
+  --text: #1a2332;
+  --card: rgba(255,255,255,0.95);
+  --border: rgba(59,130,246,0.2);
+  --toggle-bg: rgba(0,0,0,0.1);
+  --maze-line: #2563eb;
+  --maze-bg: radial-gradient(circle at 30% 30%, rgba(59,130,246,0.08), transparent 25%),
+    linear-gradient(180deg, rgba(240,244,255,0.98), rgba(220,227,245,0.98));
+}
 
+.theme-toggle-wrapper {
+  margin-left: auto;
+}
 
+.theme-toggle-btn {
+  width: 60px;
+  height: 32px;
+  border-radius: 32px;
+  border: 2px solid var(--border);
+  background: var(--toggle-bg);
+  cursor: pointer;
+  padding: 0;
+  min-width: unset;
+  position: relative;
+  transition: 0.3s ease;
+}
 
+.theme-toggle-btn .thumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #60d4ff, #9c6cff);
+  transition: 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+}
+
+[data-theme="dark"] .theme-toggle-btn .thumb {
+  transform: translateX(28px);
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+}
+
+[data-theme="light"] .theme-toggle-btn .thumb {
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+}
+
+body {
+  background: radial-gradient(circle at top left, rgba(96,212,255,0.14), transparent 22%),
+    linear-gradient(180deg, var(--bg), var(--bg));
+  color: var(--text);
+  transition: 0.3s ease;
+}
+
+.card, .modal-card, .toast, .game-controls, .custom-select select {
+  background: var(--card);
+  border-color: var(--border);
+  transition: 0.3s ease;
+}
+
+#mazeCanvas {
+  background: var(--maze-bg);
+}
+
+/* Fix maze line colors for light mode */
+[data-theme="light"] #mazeCanvas {
+  --maze-line-color: #2563eb;
+}
+
+.status-pill {
+  background: rgba(255,255,255,0.04);
+  border-color: var(--border);
+  color: var(--text);
+}
+
+[data-theme="light"] .status-pill {
+  background: rgba(0,0,0,0.04);
+}
+
+[data-theme="light"] button {
+  background: linear-gradient(135deg, #3b82f6, #7c3aed);
+  box-shadow: 0 18px 50px rgba(59,130,246,0.22);
+}
+
+@media (max-width: 920px) {
+  .theme-toggle-wrapper {
+    margin-left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+  }
+}
+
+@media (max-width: 720px) {
+  .theme-toggle-btn {
+    width: 52px;
+    height: 28px;
+  }
+  .theme-toggle-btn .thumb {
+    width: 18px;
+    height: 18px;
+    font-size: 10px;
+  }
+  [data-theme="dark"] .theme-toggle-btn .thumb {
+    transform: translateX(24px);
+  }
+}

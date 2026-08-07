@@ -12,13 +12,13 @@
   </head>
   <body>
     <div class="container py-4">
-      <header class="text-center mb-5">
+      <header class="mb-5 text-center">
         <h1 class="display-4 fw-bold neon-text">🧠 MEMORY MATCH</h1>
         <p class="lead text-muted">Match the pairs • Test your memory</p>
       </header>
 
       <!-- Controls -->
-      <div class="controls mb-4 p-3 rounded-4">
+      <div class="p-3 mb-4 controls rounded-4">
         <div class="row g-3 align-items-center">
           <div class="col-md-3">
             <select id="difficulty" class="form-select form-select-lg">
@@ -32,7 +32,7 @@
           </div>
           <div class="col-md-4">
             <div
-              class="stats d-flex justify-content-around bg-dark p-3 rounded-3"
+              class="p-3 stats d-flex justify-content-around bg-dark rounded-3"
             >
               <div>
                 Moves: <span id="moves" class="fw-bold text-info">0</span>
@@ -61,8 +61,8 @@
     <!-- Win Modal -->
     <div class="modal fade" id="winModal" tabindex="-1">
       <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content bg-dark text-light border-0">
-          <div class="modal-header border-0">
+        <div class="border-0 modal-content bg-dark text-light">
+          <div class="border-0 modal-header">
             <h3 class="modal-title">🎉 Victory!</h3>
             <button
               type="button"
@@ -70,9 +70,9 @@
               data-bs-dismiss="modal"
             ></button>
           </div>
-          <div class="modal-body text-center">
+          <div class="text-center modal-body">
             <h2 class="mb-4">Excellent Memory!</h2>
-            <div class="stats-final mb-4">
+            <div class="mb-4 stats-final">
               <p>Moves: <strong id="final-moves" class="text-info"></strong></p>
               <p>Time: <strong id="final-time" class="text-info"></strong></p>
               <p>
@@ -80,8 +80,8 @@
               </p>
             </div>
           </div>
-          <div class="modal-footer border-0">
-            <button id="play-again" class="btn btn-neon px-5">
+          <div class="border-0 modal-footer">
+            <button id="play-again" class="px-5 btn btn-neon">
               Play Again
             </button>
           </div>

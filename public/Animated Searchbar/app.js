@@ -1,4 +1,7 @@
+
+
 // DOM Elements
+
 const container = document.querySelector('.container');
 const magnifier = document.querySelector('.magnifier');
 const mic = document.querySelector('.mic-icon');
@@ -35,15 +38,20 @@ const searchSuggestions = [
 
 let selectedSuggestionIndex = -1;
 let currentSuggestions = [];
+let searchTimeoutId = null;
+let recognitionInstance = null;
 
-init();
+if (document.querySelector(".container")) {
 
-function init() {
-  setupEventListeners();
-  updateClearButton();
-  updateShortcutBadge();
-}
+  init();
 
+  function init() {
+    setupEventListeners();
+    updateClearButton();
+    updateShortcutBadge();
+  }
+
+  // ALL SEARCHBAR FUNCTIONS GO BELOW HERE
 function setupEventListeners() {
   // Magnifier click
   magnifier.addEventListener('click', handleSearch);
@@ -226,14 +234,20 @@ function handleSearch() {
     return;
   }
 
+  // Clear any existing search timeout
+  if (searchTimeoutId) {
+    clearTimeout(searchTimeoutId);
+  }
+
   // Show loading state
   showLoading();
   hideSuggestions();
 
   // Simulate processing then redirect to Google
-  setTimeout(() => {
+  searchTimeoutId = setTimeout(() => {
     hideLoading();
     performGoogleSearch(searchValue);
+    searchTimeoutId = null;
   }, 500);
 }
 
@@ -246,7 +260,7 @@ function performGoogleSearch(query) {
     `<strong><i class="fa-brands fa-google"></i> Searching Google for:</strong><br>
     <span style="color:#ffa31a; font-size: 1.2em;">"${escapeHtml(query)}"</span><br><br>
     <small style="color: #888;">Opening in a new tab...</small><br><br>
-    <button onclick="performGoogleSearch('${escapeHtml(query)}')" style="background: #ffa31a; color: #1a1a2e; border: none; padding: 10px 20px; border-radius: 25px; cursor: pointer; font-weight: bold;">
+    <button class="search-again-btn" data-query="${escapeHtml(query)}" style="background: #ffa31a; color: #1a1a2e; border: none; padding: 10px 20px; border-radius: 25px; cursor: pointer; font-weight: bold;">
       <i class="fa-brands fa-google"></i> Search Again
     </button>`,
     'success'
@@ -265,11 +279,11 @@ function handleVoiceSearch() {
     return;
   }
 
-  const recognition = new SpeechRecognition();
-  recognition.lang = 'en-US';
-  recognition.interimResults = false;
-  recognition.maxAlternatives = 1;
-  recognition.continuous = false;
+  recognitionInstance = new SpeechRecognition();
+  recognitionInstance.lang = 'en-US';
+  recognitionInstance.interimResults = false;
+  recognitionInstance.maxAlternatives = 1;
+  recognitionInstance.continuous = false;
 
   // Visual feedback
   mic.classList.add('listening');
@@ -277,7 +291,7 @@ function handleVoiceSearch() {
   input.placeholder = 'Listening...';
 
   try {
-    recognition.start();
+    recognitionInstance.start();
   } catch (error) {
     showResult(
       `<i class="fa-solid fa-triangle-exclamation"></i><br>Voice recognition is already active or unavailable.`,
@@ -287,7 +301,7 @@ function handleVoiceSearch() {
     return;
   }
 
-  recognition.onresult = function (event) {
+  recognitionInstance.onresult = function (event) {
     const transcript = event.results[0][0].transcript;
     const confidence = event.results[0][0].confidence;
 
@@ -298,7 +312,7 @@ function handleVoiceSearch() {
       `<strong><i class="fa-solid fa-microphone"></i> Voice Search Detected:</strong><br>
       You said: <span style="color:#ffa31a; font-size: 1.2em;">"${escapeHtml(transcript)}"</span><br>
       <small style="color: #888;">Confidence: ${(confidence * 100).toFixed(1)}%</small><br><br>
-      <button onclick="performGoogleSearch('${escapeHtml(transcript)}')" style="background: #ffa31a; color: #1a1a2e; border: none; padding: 10px 20px; border-radius: 25px; cursor: pointer; font-weight: bold; margin-top: 10px;">
+      <button class="search-again-btn" data-query="${escapeHtml(transcript)}" style="background: #ffa31a; color: #1a1a2e; border: none; padding: 10px 20px; border-radius: 25px; cursor: pointer; font-weight: bold; margin-top: 10px;">
         <i class="fa-brands fa-google"></i> Search on Google
       </button>`,
       'success'
@@ -307,7 +321,7 @@ function handleVoiceSearch() {
     resetVoiceUI();
   };
 
-  recognition.onerror = function (event) {
+  recognitionInstance.onerror = function (event) {
     let errorMessage = 'Could not recognize your voice. Please try again.';
 
     if (event.error === 'no-speech') {
@@ -329,7 +343,7 @@ function handleVoiceSearch() {
     resetVoiceUI();
   };
 
-  recognition.onend = function () {
+  recognitionInstance.onend = function () {
     resetVoiceUI();
   };
 }
@@ -338,9 +352,19 @@ function resetVoiceUI() {
   mic.classList.remove('listening');
   container.classList.remove('listening');
   input.placeholder = 'Type to search...';
+  recognitionInstance = null;
 }
 
 function clearSearch() {
+  if (searchTimeoutId) {
+    clearTimeout(searchTimeoutId);
+    searchTimeoutId = null;
+  }
+  if (recognitionInstance) {
+    recognitionInstance.abort();
+    recognitionInstance = null;
+  }
+  hideLoading();
   input.value = '';
   updateClearButton();
   updateShortcutBadge();
@@ -396,6 +420,16 @@ function showResult(message, type = 'success') {
 `;
 
   document.getElementById('closeResult')?.addEventListener('click', hideResult);
+  
+  // Dynamically attach click event listener to search-again buttons
+  const searchAgainBtn = resultBox.querySelector('.search-again-btn');
+  if (searchAgainBtn) {
+    searchAgainBtn.addEventListener('click', () => {
+      const query = searchAgainBtn.getAttribute('data-query');
+      performGoogleSearch(query);
+    });
+  }
+
   resultBox.classList.add('visible');
   resultBox.style.display = 'block';
 
@@ -437,8 +471,55 @@ function debounce(func, wait) {
 
 // Optional: Add keyboard shortcut (Ctrl/Cmd + K) to focus search
 document.addEventListener('keydown', (e) => {
+
   if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+
     e.preventDefault();
-    input.focus();
+
+    if(input){
+      input.focus();
+    }
+
   }
+
 });
+
+}
+
+// ==========================
+// Theme Toggle (Global)
+// ==========================
+
+// Select all toggle buttons (use a common class)
+const themeToggles = document.querySelectorAll(".theme");
+const themeIcon = document.getElementById("themeIcon");
+
+// Default = DARK MODE
+let isLightMode = JSON.parse(localStorage.getItem("lightMode")) || false;
+
+// Apply theme on load
+function updateTheme() {
+  if (isLightMode) {
+    document.body.classList.add("light-theme");
+    if (themeIcon) {
+      themeIcon.textContent = "🌙"; // show moon when light mode active
+    }
+  } else {
+    document.body.classList.remove("light-theme");
+    if (themeIcon) {
+      themeIcon.textContent = "☀️"; // show sun when dark mode active
+    }
+  }
+}
+
+// Toggle theme on any button click
+themeToggles.forEach(btn => {
+  btn.addEventListener("click", () => {
+    isLightMode = !isLightMode;
+    localStorage.setItem("lightMode", JSON.stringify(isLightMode));
+    updateTheme();
+  });
+});
+
+// Initialize on page load
+updateTheme();
