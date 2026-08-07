@@ -95,6 +95,7 @@
         <!-- Top Navigation Bar -->
         <nav class="top-navbar">
             <div class="navbar-left">
+                <img src="logo.png" alt="MedConsult Logo" class="navbar-logo">
                 <button class="sidebar-trigger" id="sidebarTrigger" aria-label="Toggle Sidebar">
                     <i class="ph ph-list"></i>
                 </button>
@@ -664,6 +665,7 @@
                     <label class="auth-remember">
                         <input id="rememberMe" type="checkbox"> Remember Me
                     </label>
+                    <button type="button" class="auth-link" data-auth-switch="forgot">Forgot Password?</button>
                 </div>
 
                 <p id="loginError" class="auth-error"></p>
@@ -744,6 +746,25 @@
                     <button type="button" data-auth-switch="login">Login</button>
                 </div>
                 <p class="auth-note">Demo only: passwords are encoded for client-side storage. Real apps require server-side hashing.</p>
+            </form>
+        </section>
+
+        <!-- FORGOT PASSWORD PANEL -->
+        <section class="auth-panel is-hidden" data-auth-panel="forgot">
+            <form id="forgotForm">
+                <div class="auth-field">
+                    <label for="forgotEmail">Email Address</label>
+                    <input id="forgotEmail" class="auth-input" type="email" autocomplete="email" placeholder="Enter your email" required>
+                </div>
+
+                <p id="forgotError" class="auth-error"></p>
+                <p id="forgotSuccess" class="auth-success"></p>
+                <button type="submit" class="auth-submit">Send Reset Link</button>
+
+                <div class="auth-footer">
+                    <span>Remember your password?</span>
+                    <button type="button" data-auth-switch="login">Login</button>
+                </div>
             </form>
         </section>
     </div>
