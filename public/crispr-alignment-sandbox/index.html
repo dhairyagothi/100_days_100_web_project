@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRISPR Genetic Strand Alignment Simulator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="lab-container">
+        <div class="telemetry-panel">
+            <h2>CRISPR SEQUENCER</h2>
+            <hr class="divider">
+
+            <div class="metric-box">
+                <span class="label">HOMOLOGY SCORE</span>
+                <div class="value safe" id="homologyMetric">00.0%</div>
+            </div>
+
+            <div class="metric-box">
+                <span class="label">CLEAVAGE ACCURACY</span>
+                <div class="value warning" id="accuracyMetric">0.00%</div>
+            </div>
+
+            <div class="metric-box">
+                <span class="label">NUCLEOTIDE COUNT</span>
+                <div class="value accent" id="nucleotideMetric">0</div>
+            </div>
+
+            <div class="metric-box">
+                <span class="label">SEQUENCE LATENCY</span>
+                <div class="value safe" id="latencyMetric">0.00 ms</div>
+            </div>
+
+            <div class="instruction-pad">
+                <h3>SEQUENCING CONTROLS</h3>
+                <p>Move your mouse horizontally across the sequencing field to position your <strong>gRNA Guide
+                        Strand</strong>. Align it perfectly with the scrolling target DNA strand to maximize homology
+                    and trigger a double-strand break (DSB) cleavage event.</p>
+            </div>
+        </div>
+
+        <div class="viewport-area">
+            <div class="viewport-header">
+                <span class="status-dot blinking"></span>
+                <span class="title-text">LABVIEW // CRISPR_ALIGNMENT_ENGINE</span>
+            </div>
+            <canvas id="crisprCanvas"></canvas>
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+
+</html>

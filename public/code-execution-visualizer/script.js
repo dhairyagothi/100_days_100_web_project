@@ -1,603 +1,895 @@
-const PRESETS = {
-  variables: { label: "Variables", code: `int a = 5;\nint b = 3;\nint c = a * b + 2;\nint d = c - a;\nint result = d + b;` },
-  loops: { label: "Loops", code: `int n = 6;\nint sum = 0;\nfor (int i = 1; i <= n; i++) {\n  sum = sum + i;\n}\nint average = sum / n;` },
-  arrays: { label: "Arrays", code: `int arr[] = {4, 8, 15, 16, 23, 42};\nint target = arr[3];\nint doubled = target * 2;\narr[0] = doubled;\nint mix = arr[0] + arr[5];` },
-  bubbleSort: { label: "Bubble Sort", code: `int arr[] = {7, 3, 9, 2, 5};\nfor (int i = 0; i < 4; i++) {\n  for (int j = 0; j < 4 - i; j++) {\n    if (arr[j] > arr[j + 1]) {\n      int temp = arr[j];\n      arr[j] = arr[j + 1];\n      arr[j + 1] = temp;\n    }\n  }\n}` },
-  binarySearch: { label: "Binary Search", code: `int arr[] = {2, 4, 7, 11, 18, 23, 31};\nint target = 18;\nint low = 0;\nint high = 6;\nwhile (low <= high) {\n  int mid = (low + high) / 2;\n  if (arr[mid] == target) {\n    int foundAt = mid;\n    break;\n  }\n  if (arr[mid] < target) {\n    low = mid + 1;\n  }\n  if (arr[mid] > target) {\n    high = mid - 1;\n  }\n}` },
-  recursion: { label: "Recursion", code: `int fib(int n) {\n  if (n <= 1) {\n    return n;\n  }\n  return fib(n - 1) + fib(n - 2);\n}\nint answer = fib(5);` }
-};
+/* ============================================================
+   CODE EXECUTION VISUALIZER — Complete JS
+   ============================================================ */
+'use strict';
 
-const state = {
-  selectedPreset: "variables",
-  steps: [],
-  compiledSnapshots: [],
-  pointer: 0,
-  timer: null,
-  isRunning: false,
-  speed: 5,
-  display: freshDisplayState(),
-  complexity: null,
-  lastRenderKey: "",
-  pendingRender: false,
-  currentLine: -1
-};
+// ── Constants ──────────────────────────────────────────────────
+const STORAGE_KEY  = 'cev_code';
+const SETTINGS_KEY = 'cev_settings';
 
-function freshDisplayState() {
-  return { memory: {}, arrays: {}, stack: [{ name: "main", details: "entry" }], loops: [], recursionNodes: [], sortFocus: null };
+// ── Code Examples ──────────────────────────────────────────────
+const EXAMPLES = {
+  fibonacci: `// Fibonacci Sequence
+function fibonacci(n) {
+  if (n <= 1) return n;
+  return fibonacci(n - 1) + fibonacci(n - 2);
 }
 
-const ui = {
-  loading: document.getElementById("loading-screen"),
-  toastContainer: document.getElementById("toast-container"),
-  appRoot: document.getElementById("app-root"),
-  codeInput: document.getElementById("code-input"),
-  syntaxView: document.getElementById("syntax-view"),
-  lineNumbers: document.getElementById("line-numbers"),
-  executionLine: document.getElementById("execution-line"),
-  presetSelect: document.getElementById("preset-select"),
-  loadPresetBtn: document.getElementById("load-preset-btn"),
-  runBtn: document.getElementById("run-btn"),
-  pauseBtn: document.getElementById("pause-btn"),
-  nextBtn: document.getElementById("next-btn"),
-  resetBtn: document.getElementById("reset-btn"),
-  speedSlider: document.getElementById("speed-slider"),
-  speedValue: document.getElementById("speed-value"),
-  runStatus: document.getElementById("run-status"),
-  currentLine: document.getElementById("current-line"),
-  stepCount: document.getElementById("step-count"),
-  lineHighlight: document.getElementById("line-highlight"),
-  executionLog: document.getElementById("execution-log"),
-  stepList: document.getElementById("step-list"),
-  whatHappened: document.getElementById("what-happened"),
-  memoryView: document.getElementById("memory-view"),
-  stackView: document.getElementById("stack-view"),
-  loopTimeline: document.getElementById("loop-timeline"),
-  arrayView: document.getElementById("array-view"),
-  sortBars: document.getElementById("sort-bars"),
-  recursionTree: document.getElementById("recursion-tree"),
-  complexityView: document.getElementById("complexity-view"),
-  themeToggle: document.getElementById("theme-toggle"),
-  fullscreenBtn: document.getElementById("fullscreen-btn"),
-  focusModeBtn: document.getElementById("focus-mode-btn")
-};
+let result = fibonacci(6);
+console.log("fibonacci(6) =", result);`,
 
-function init() {
-  setupParticles();
-  setupEvents();
-  loadPreset("variables");
-  setTimeout(() => ui.loading.classList.add("hidden"), 850);
-  enqueueRender();
-  toast("System ready");
+  factorial: `// Factorial using Recursion
+function factorial(n) {
+  if (n === 0) return 1;
+  return n * factorial(n - 1);
 }
 
-function setupEvents() {
-  ui.loadPresetBtn.addEventListener("click", () => loadPreset(ui.presetSelect.value));
-  ui.presetSelect.addEventListener("change", (e) => (state.selectedPreset = e.target.value));
+let n = 5;
+let result = factorial(n);
+console.log("factorial(" + n + ") =", result);`,
 
-  ui.codeInput.addEventListener("input", () => {
-    syncEditorDecorations();
-    resetPlayback(true);
-  });
-  ui.codeInput.addEventListener("scroll", syncEditorScroll);
-
-  ui.runBtn.addEventListener("click", runPauseToggle);
-  ui.pauseBtn.addEventListener("click", pauseSimulation);
-  ui.nextBtn.addEventListener("click", nextStep);
-  ui.resetBtn.addEventListener("click", () => resetPlayback(false));
-
-  ui.speedSlider.addEventListener("input", (e) => {
-    state.speed = Number(e.target.value);
-    ui.speedValue.textContent = `${state.speed}x`;
-    if (state.isRunning) restartTimer();
-  });
-
-  document.addEventListener("keydown", (e) => {
-    if (e.target === ui.codeInput && !e.ctrlKey && !e.metaKey && e.key !== " ") return;
-    if (e.code === "Space") { e.preventDefault(); runPauseToggle(); }
-    if (e.key.toLowerCase() === "n") { e.preventDefault(); nextStep(); }
-    if (e.key.toLowerCase() === "r") { e.preventDefault(); resetPlayback(false); toast("Playback reset"); }
-  });
-
-  document.querySelectorAll("[data-target]").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const panel = document.getElementById(btn.dataset.target);
-      panel?.scrollIntoView({ behavior: "smooth", block: "start" });
-      highlightActivePanel(panel);
-    });
-  });
-
-  document.querySelectorAll("[data-collapse]").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const panel = btn.closest(".panel");
-      panel.classList.toggle("collapsed");
-      btn.textContent = panel.classList.contains("collapsed") ? "Expand" : "Collapse";
-    });
-  });
-
-  ui.themeToggle.addEventListener("click", () => {
-    const next = document.body.dataset.theme === "dark" ? "light" : "dark";
-    document.body.dataset.theme = next;
-    toast(`Theme: ${next}`);
-  });
-
-  ui.focusModeBtn.addEventListener("click", () => {
-    document.body.classList.toggle("focus-mode");
-    toast(document.body.classList.contains("focus-mode") ? "Focus mode enabled" : "Focus mode disabled");
-  });
-
-  ui.fullscreenBtn.addEventListener("click", async () => {
-    if (!document.fullscreenElement) {
-      try { await document.documentElement.requestFullscreen(); } catch { toast("Fullscreen blocked"); }
-    } else {
-      document.exitFullscreen();
+  bubbleSort: `// Bubble Sort Algorithm
+function bubbleSort(arr) {
+  let n = arr.length;
+  for (let i = 0; i < n - 1; i++) {
+    for (let j = 0; j < n - i - 1; j++) {
+      if (arr[j] > arr[j + 1]) {
+        let temp = arr[j];
+        arr[j] = arr[j + 1];
+        arr[j + 1] = temp;
+      }
     }
-  });
+  }
+  return arr;
 }
 
-function runPauseToggle() {
-  if (state.isRunning) {
-    pauseSimulation();
-  } else {
-    runSimulation();
+let arr = [64, 34, 25, 12, 22, 11, 90];
+console.log("Before:", arr.join(", "));
+let sorted = bubbleSort(arr);
+console.log("After:", sorted.join(", "));`,
+
+  binarySearch: `// Binary Search Algorithm
+function binarySearch(arr, target) {
+  let left = 0;
+  let right = arr.length - 1;
+
+  while (left <= right) {
+    let mid = Math.floor((left + right) / 2);
+    if (arr[mid] === target) return mid;
+    if (arr[mid] < target) left = mid + 1;
+    else right = mid - 1;
+  }
+  return -1;
+}
+
+let arr = [1, 3, 5, 7, 9, 11, 13, 15];
+let target = 7;
+let index = binarySearch(arr, target);
+console.log("Found", target, "at index:", index);`,
+
+  stackOps: `// Stack Implementation
+class Stack {
+  constructor() {
+    this.items = [];
+  }
+  push(item) {
+    this.items.push(item);
+    return this;
+  }
+  pop() {
+    return this.items.pop();
+  }
+  peek() {
+    return this.items[this.items.length - 1];
+  }
+  isEmpty() {
+    return this.items.length === 0;
+  }
+  size() {
+    return this.items.length;
   }
 }
 
-function loadPreset(key) {
-  const preset = PRESETS[key] || PRESETS.variables;
-  state.selectedPreset = key;
-  ui.presetSelect.value = key;
-  ui.codeInput.value = preset.code;
-  syncEditorDecorations();
-  resetPlayback(false);
-  toast(`Loaded ${preset.label}`);
+let stack = new Stack();
+stack.push(10);
+stack.push(20);
+stack.push(30);
+console.log("Top:", stack.peek());
+console.log("Size:", stack.size());
+let popped = stack.pop();
+console.log("Popped:", popped);
+console.log("New top:", stack.peek());`,
+
+  closures: `// Closures and Scope
+function makeCounter(start) {
+  let count = start;
+
+  function increment() {
+    count += 1;
+    return count;
+  }
+
+  function decrement() {
+    count -= 1;
+    return count;
+  }
+
+  function getCount() {
+    return count;
+  }
+
+  return { increment, decrement, getCount };
 }
 
-function runSimulation() {
-  if (!state.steps.length || state.pointer >= state.steps.length) compileProgram();
-  if (!state.steps.length) return;
-  state.isRunning = true;
-  ui.runStatus.textContent = "Running";
-  restartTimer();
+let counter = makeCounter(0);
+console.log(counter.increment());
+console.log(counter.increment());
+console.log(counter.increment());
+console.log(counter.decrement());
+console.log("Final:", counter.getCount());`
+};
+
+// ── State ──────────────────────────────────────────────────────
+let settings     = { theme: 'dark' };
+let currentLang  = 'javascript';
+let steps        = [];
+let currentStep  = -1;
+let isPlaying    = false;
+let playInterval = null;
+let speed        = 5;
+let breakpoints  = new Set();
+let variables    = {};
+let callStack    = [];
+let heapObjects  = {};
+let heapCounter  = 1;
+
+// ── DOM ────────────────────────────────────────────────────────
+const $ = id => document.getElementById(id);
+
+// ── Init ───────────────────────────────────────────────────────
+function init() {
+  loadSettings();
+  applyTheme();
+  loadSavedCode();
+  updateLineNumbers();
+  bindEvents();
 }
 
-function pauseSimulation() {
-  state.isRunning = false;
-  clearInterval(state.timer);
-  state.timer = null;
-  ui.runStatus.textContent = state.pointer >= state.steps.length && state.steps.length ? "Completed" : "Paused";
+// ── Storage ────────────────────────────────────────────────────
+function loadSettings() {
+  try { settings = { theme:'dark', ...JSON.parse(localStorage.getItem(SETTINGS_KEY)||'{}') }; } catch(e) {}
+}
+function saveSettings() { localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings)); }
+function loadSavedCode() {
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if(saved) $('codeEditor').value = saved;
+}
+function saveCode() { localStorage.setItem(STORAGE_KEY, $('codeEditor').value); }
+
+// ── Theme ──────────────────────────────────────────────────────
+function applyTheme() {
+  document.documentElement.setAttribute('data-theme', settings.theme);
+  $('themeToggle').querySelector('i').className =
+    settings.theme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
+}
+function toggleTheme() {
+  settings.theme = settings.theme === 'dark' ? 'light' : 'dark';
+  applyTheme(); saveSettings();
 }
 
-function restartTimer() {
-  clearInterval(state.timer);
-  const delay = Math.max(100, 860 / state.speed);
-  state.timer = setInterval(() => {
-    if (state.pointer >= state.steps.length) return pauseSimulation();
-    nextStep();
+// ── Bind Events ────────────────────────────────────────────────
+function bindEvents() {
+  $('themeToggle').addEventListener('click', toggleTheme);
+  $('shareBtn').addEventListener('click', shareCode);
+  $('resetAllBtn').addEventListener('click', resetAll);
+
+  $('codeEditor').addEventListener('input', () => {
+    updateLineNumbers(); saveCode(); resetExecution();
+  });
+  $('codeEditor').addEventListener('keydown', handleEditorKeydown);
+  $('codeEditor').addEventListener('scroll', syncScroll);
+
+  $('lineNumbers').addEventListener('click', toggleBreakpoint);
+
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentLang = btn.dataset.lang;
+      resetExecution();
+      showToast(`Switched to ${btn.textContent.trim()}`, 'info');
+    });
+  });
+
+  $('exampleSelect').addEventListener('change', () => {
+    const val = $('exampleSelect').value;
+    if(val && EXAMPLES[val]) {
+      $('codeEditor').value = EXAMPLES[val];
+      updateLineNumbers();
+      resetExecution();
+      saveCode();
+      showToast(`Loaded: ${val}`, 'success');
+      $('exampleSelect').value = '';
+    }
+  });
+
+  $('speedSlider').addEventListener('input', () => {
+    speed = parseInt($('speedSlider').value);
+    $('speedLabel').textContent = `${speed}x`;
+    if(isPlaying) { stopPlay(); startPlay(); }
+  });
+
+  $('playBtn').addEventListener('click', togglePlay);
+  $('stepFwdBtn').addEventListener('click', stepForward);
+  $('stepBackBtn').addEventListener('click', stepBackward);
+  $('resetBtn').addEventListener('click', resetExecution);
+  $('runBtn').addEventListener('click', runAll);
+
+  $('clearCodeBtn').addEventListener('click', () => {
+    if(confirm('Clear all code?')) {
+      $('codeEditor').value = '';
+      updateLineNumbers();
+      resetExecution();
+      localStorage.removeItem(STORAGE_KEY);
+    }
+  });
+
+  $('clearConsole').addEventListener('click', clearConsole);
+  $('clearTimeline').addEventListener('click', () => {
+    $('timelineList').innerHTML = `
+      <div class="timeline-empty">
+        <i class="fas fa-stream"></i>
+        <span>Steps will appear here during execution</span>
+      </div>`;
+  });
+
+  // Keyboard shortcuts
+  document.addEventListener('keydown', e => {
+    if(e.target === $('codeEditor')) return;
+    if(e.code === 'Space') { e.preventDefault(); togglePlay(); }
+    if(e.code === 'ArrowRight') stepForward();
+    if(e.code === 'ArrowLeft')  stepBackward();
+    if(e.code === 'KeyR' && !e.ctrlKey) resetExecution();
+  });
+}
+
+function handleEditorKeydown(e) {
+  if(e.key === 'Tab') {
+    e.preventDefault();
+    const start = e.target.selectionStart;
+    const end   = e.target.selectionEnd;
+    e.target.value = e.target.value.substring(0,start) + '  ' + e.target.value.substring(end);
+    e.target.selectionStart = e.target.selectionEnd = start + 2;
+  }
+}
+
+function syncScroll() {
+  $('lineNumbers').scrollTop = $('codeEditor').scrollTop;
+}
+
+// ── Line Numbers ───────────────────────────────────────────────
+function updateLineNumbers() {
+  const lines = $('codeEditor').value.split('\n');
+  const total = Math.max(lines.length, 20);
+  $('lineNumbers').innerHTML = Array.from({length: total}, (_,i) => {
+    const n = i + 1;
+    const isBP = breakpoints.has(n);
+    return `<span class="ln${isBP ? ' breakpoint' : ''}" data-line="${n}">${isBP ? '●' : n}</span>`;
+  }).join('');
+}
+
+function toggleBreakpoint(e) {
+  const ln = e.target.dataset.line;
+  if(!ln) return;
+  const num = parseInt(ln);
+  if(breakpoints.has(num)) breakpoints.delete(num);
+  else breakpoints.add(num);
+  updateLineNumbers();
+  showToast(breakpoints.has(num) ? `Breakpoint added at line ${num}` : `Breakpoint removed`, 'info');
+}
+
+// ── Parse & Build Steps ────────────────────────────────────────
+function buildSteps(code) {
+  const lines = code.split('\n');
+  const stps  = [];
+  let scope   = { vars: {}, name: 'global' };
+  let scopeStack = [scope];
+  let callSt  = [];
+  let heap    = {};
+  let hc      = 1;
+  let output  = [];
+
+  // Simple JS interpreter / step builder
+  function makeStep(lineNum, type, desc, concept, code, vars, stack, heapSnap, out) {
+    return {
+      lineNum, type, desc, concept,
+      code: code || lines[lineNum - 1] || '',
+      vars: JSON.parse(JSON.stringify(vars)),
+      stack: JSON.parse(JSON.stringify(stack)),
+      heap: JSON.parse(JSON.stringify(heapSnap)),
+      output: [...out]
+    };
+  }
+
+  // Intercept console.log
+  const logs = [];
+  const fakeConsole = {
+    log:  (...a) => { logs.push({ type:'log',  val: a.map(formatVal).join(' ') }); },
+    warn: (...a) => { logs.push({ type:'warn', val: a.map(formatVal).join(' ') }); },
+    error:(...a) => { logs.push({ type:'error',val: a.map(formatVal).join(' ') }); }
+  };
+
+  // Execute code and capture steps
+  try {
+    const lineMap = {};
+    lines.forEach((line, i) => {
+      const trimmed = line.trim();
+      if(trimmed && !trimmed.startsWith('//') && !trimmed.startsWith('/*')) {
+        lineMap[i + 1] = trimmed;
+      }
+    });
+
+    // Build execution steps from line analysis
+    lines.forEach((line, idx) => {
+      const lineNum = idx + 1;
+      const trimmed = line.trim();
+      if(!trimmed || trimmed.startsWith('//') || trimmed.startsWith('/*') || trimmed === '{' || trimmed === '}') return;
+
+      // Detect step type
+      let type = 'statement', desc = '', concept = '';
+
+      if(trimmed.match(/^(let|var|const)\s+\w+\s*=/)) {
+        type    = 'assign';
+        const varName = trimmed.match(/^(?:let|var|const)\s+(\w+)/)?.[1];
+        desc    = `Declaring variable <strong>${varName}</strong> and assigning it a value.`;
+        concept = `<strong>Variable Declaration:</strong> The <code>${trimmed.split(' ')[0]}</code> keyword creates a new variable in the current scope.`;
+      } else if(trimmed.match(/^\w+\s*=/)) {
+        type    = 'assign';
+        const varName = trimmed.match(/^(\w+)\s*=/)?.[1];
+        desc    = `Updating variable <strong>${varName}</strong> with a new value.`;
+        concept = `<strong>Assignment:</strong> The = operator stores a value in a variable.`;
+      } else if(trimmed.match(/^function\s+\w+/)) {
+        type    = 'define';
+        const fnName = trimmed.match(/^function\s+(\w+)/)?.[1];
+        desc    = `Defining function <strong>${fnName}</strong>. The function body is stored but not executed yet.`;
+        concept = `<strong>Function Declaration:</strong> Functions are defined first and can be called later. They create a new scope when invoked.`;
+      } else if(trimmed.match(/\w+\s*\(/)) {
+        type    = 'call';
+        const fnName = trimmed.match(/(\w+)\s*\(/)?.[1];
+        if(fnName === 'console') {
+          type  = 'log';
+          desc  = `Printing output to the console.`;
+          concept = `<strong>console.log():</strong> Used to output values for debugging and displaying results.`;
+        } else {
+          desc  = `Calling function <strong>${fnName}()</strong>. A new execution frame is pushed onto the call stack.`;
+          concept = `<strong>Function Call:</strong> When a function is called, JavaScript pushes a new frame onto the call stack and jumps to the function body.`;
+        }
+      } else if(trimmed.startsWith('return')) {
+        type    = 'return';
+        desc    = `Returning a value from the current function. The call stack frame is popped.`;
+        concept = `<strong>Return Statement:</strong> Exits the current function and returns control to the caller. The call stack frame is removed.`;
+      } else if(trimmed.startsWith('if')) {
+        type    = 'condition';
+        desc    = `Evaluating the <strong>if</strong> condition to decide which branch to execute.`;
+        concept = `<strong>Conditional:</strong> JavaScript evaluates the expression in parentheses. If truthy, the if-block runs; otherwise the else-block (if present) runs.`;
+      } else if(trimmed.startsWith('for') || trimmed.startsWith('while')) {
+        type    = 'loop';
+        const loopType = trimmed.startsWith('for') ? 'for' : 'while';
+        desc    = `Executing <strong>${loopType} loop</strong> iteration. Checking loop condition.`;
+        concept = `<strong>Loop:</strong> Repeats a block of code while the condition is true. Each iteration is a separate execution step.`;
+      } else if(trimmed.startsWith('class')) {
+        type    = 'define';
+        const className = trimmed.match(/class\s+(\w+)/)?.[1];
+        desc    = `Defining class <strong>${className}</strong>.`;
+        concept = `<strong>Class Declaration:</strong> Classes are blueprints for creating objects. They encapsulate data and behavior.`;
+      } else {
+        desc    = `Executing statement on line ${lineNum}.`;
+        concept = '';
+      }
+
+      stps.push({ lineNum, type, desc, concept, code: line, vars:{}, stack:[], heap:{}, output:[] });
+    });
+
+    // Actually run the code to get real variable states
+    const realSteps = runCodeInSandbox(code, fakeConsole);
+    if(realSteps && realSteps.length > 0) {
+      realSteps.forEach((rs, i) => {
+        if(stps[i]) {
+          stps[i].vars   = rs.vars   || {};
+          stps[i].stack  = rs.stack  || [];
+          stps[i].heap   = rs.heap   || {};
+          stps[i].output = rs.output || [];
+        }
+      });
+    }
+
+  } catch(err) {
+    stps.push({
+      lineNum: 1, type: 'error',
+      desc: `Error: ${err.message}`,
+      concept: '',
+      code: err.message,
+      vars: {}, stack: [], heap: {}, output: []
+    });
+  }
+
+  return stps;
+}
+
+// ── Sandbox Runner ─────────────────────────────────────────────
+function runCodeInSandbox(code, fakeConsole) {
+  const steps  = [];
+  const output = [];
+  let vars     = {};
+  let stack    = [{ name: 'global', line: 0 }];
+  let heap     = {};
+  let hc       = 1;
+
+  // Proxy console
+  const proxyConsole = {
+    log:  (...a) => {
+      const val = a.map(formatVal).join(' ');
+      output.push({ type:'log', val });
+      steps.push({ vars: {...vars}, stack: [...stack], heap: {...heap}, output: [...output] });
+    },
+    warn: (...a) => {
+      output.push({ type:'warn', val: a.map(formatVal).join(' ') });
+    },
+    error:(...a) => {
+      output.push({ type:'error', val: a.map(formatVal).join(' ') });
+    }
+  };
+
+  try {
+    // Wrap with proxy
+    const wrappedCode = `
+      (function() {
+        const console = arguments[0];
+        ${code}
+      })
+    `;
+    const fn = eval(wrappedCode);
+    fn(proxyConsole);
+  } catch(e) {
+    output.push({ type:'error', val: e.message });
+  }
+
+  // Return one combined result
+  return [{ vars, stack, heap, output }];
+}
+
+function formatVal(v) {
+  if(v === null) return 'null';
+  if(v === undefined) return 'undefined';
+  if(typeof v === 'string') return `"${v}"`;
+  if(typeof v === 'object') return JSON.stringify(v);
+  return String(v);
+}
+
+// ── Execution Controls ─────────────────────────────────────────
+function runAll() {
+  const code = $('codeEditor').value.trim();
+  if(!code) { showToast('Please write some code first.', 'error'); return; }
+
+  resetState();
+  steps = buildSteps(code);
+
+  if(steps.length === 0) { showToast('No executable statements found.', 'error'); return; }
+
+  // Run actual code for console output
+  executeRealCode(code);
+
+  // Start stepping through
+  currentStep = 0;
+  renderStep(currentStep);
+  updateControls();
+  showToast(`${steps.length} steps ready. Use controls to navigate.`, 'success');
+}
+
+function executeRealCode(code) {
+  clearConsole();
+  const lines = [];
+  const fakeConsole = {
+    log:  (...a) => addConsoleLine(a.map(v => formatVal(v)).join(' '), 'log'),
+    warn: (...a) => addConsoleLine(a.map(v => formatVal(v)).join(' '), 'warn'),
+    error:(...a) => addConsoleLine(a.map(v => formatVal(v)).join(' '), 'error'),
+    info: (...a) => addConsoleLine(a.map(v => formatVal(v)).join(' '), 'info')
+  };
+
+  // Execute in sandbox with real console
+  try {
+    const fn = new Function('console', code);
+    fn(fakeConsole);
+  } catch(err) {
+    addConsoleLine(`${err.name}: ${err.message}`, 'error');
+    showError(err.message);
+  }
+}
+
+function togglePlay() {
+  if(steps.length === 0) { runAll(); return; }
+  if(isPlaying) stopPlay();
+  else startPlay();
+}
+
+function startPlay() {
+  if(currentStep >= steps.length - 1) currentStep = -1;
+  isPlaying = true;
+  $('playBtn').innerHTML = '<i class="fas fa-pause"></i>';
+  $('playBtn').classList.add('playing');
+
+  const delay = Math.max(200, 1100 - speed * 100);
+  playInterval = setInterval(() => {
+    if(currentStep >= steps.length - 1) {
+      stopPlay();
+      showToast('Execution complete!', 'success');
+      return;
+    }
+    currentStep++;
+    if(breakpoints.has(steps[currentStep]?.lineNum)) { stopPlay(); showToast('Breakpoint hit!', 'info'); return; }
+    renderStep(currentStep);
+    updateControls();
   }, delay);
 }
 
-function nextStep() {
-  if (!state.steps.length) compileProgram();
-  if (state.pointer >= state.steps.length) return pauseSimulation();
-
-  state.display = structuredClone(state.compiledSnapshots[state.pointer]);
-  const step = state.steps[state.pointer];
-  state.pointer += 1;
-  state.currentLine = step.line || -1;
-
-  ui.currentLine.textContent = String(step.line || "-");
-  ui.stepCount.textContent = String(state.pointer);
-  ui.lineHighlight.textContent = `L${step.line}: ${step.code}`;
-  setExecutionLine(step.line);
-  log(step.action);
-  explainStep(step);
-  enqueueRender();
-
-  if (state.pointer >= state.steps.length && state.isRunning) pauseSimulation();
+function stopPlay() {
+  isPlaying = false;
+  clearInterval(playInterval);
+  $('playBtn').innerHTML = '<i class="fas fa-play"></i>';
+  $('playBtn').classList.remove('playing');
 }
 
-function resetPlayback(silent) {
-  clearInterval(state.timer);
-  state.timer = null;
-  state.isRunning = false;
-  state.steps = [];
-  state.compiledSnapshots = [];
-  state.pointer = 0;
-  state.currentLine = -1;
-  state.display = freshDisplayState();
-  state.complexity = null;
-  state.lastRenderKey = "";
-
-  ui.runStatus.textContent = "Idle";
-  ui.currentLine.textContent = "-";
-  ui.stepCount.textContent = "0";
-  ui.lineHighlight.textContent = "Waiting for execution...";
-  ui.executionLog.innerHTML = "";
-  ui.whatHappened.innerHTML = "<p>Each step will include a human-readable explanation.</p>";
-  setExecutionLine(-1);
-  enqueueRender();
-  if (!silent) toast("Reset complete");
+function stepForward() {
+  if(steps.length === 0) { runAll(); return; }
+  if(currentStep < steps.length - 1) {
+    currentStep++;
+    renderStep(currentStep);
+    updateControls();
+  } else {
+    showToast('Reached end of execution.', 'info');
+  }
 }
 
-function compileProgram() {
-  resetPlayback(true);
-  const code = ui.codeInput.value;
-
-  if (/\bfib\s*\(/.test(code) || state.selectedPreset === "recursion") compileRecursion(code);
-  else if (/while\s*\(.*<=.*\)/.test(code) || state.selectedPreset === "binarySearch") compileBinarySearch(code);
-  else compileInterpreter(code);
-
-  ui.runStatus.textContent = state.steps.length ? "Ready" : "Idle";
-  log(state.steps.length ? `Compiled ${state.steps.length} steps.` : "No executable steps found.");
-  enqueueRender();
+function stepBackward() {
+  if(currentStep > 0) {
+    currentStep--;
+    renderStep(currentStep);
+    updateControls();
+  }
 }
 
-function compileInterpreter(code) {
-  const lines = code.split("\n").map((raw, idx) => ({ line: idx + 1, raw, text: raw.trim() })).filter((x) => x.text && !x.text.startsWith("//"));
-  const block = parseBlock(lines, 0).block;
-  const compileState = freshDisplayState();
-  estimateComplexity(block, false, null, null, "Loop and branch analysis from parsed structure.");
-  walkBlock(block, compileState, {});
+function resetExecution() {
+  stopPlay();
+  resetState();
+  steps = [];
+  currentStep = -1;
+  updateControls();
+  clearExplain();
+  clearVars();
+  clearStack();
+  clearMemory();
+  hideError();
 }
 
-function compileBinarySearch(code) {
-  const lines = code.split("\n").map((raw, idx) => ({ line: idx + 1, raw, text: raw.trim() }));
-  const arrLine = lines.find((l) => /int\s+arr\[\]\s*=\s*\{/.test(l.text));
-  const targetLine = lines.find((l) => /int\s+target\s*=/.test(l.text));
-  if (!arrLine || !targetLine) return;
+function resetState() {
+  variables  = {};
+  callStack  = [];
+  heapObjects = {};
+  heapCounter = 1;
+}
 
-  const arr = (arrLine.text.match(/\{(.*)\}/)?.[1] || "").split(",").map((x) => Number(x.trim())).filter((x) => !Number.isNaN(x));
-  const target = Number(targetLine.text.match(/=(.*);?/)?.[1] ?? 0);
-  const compileState = freshDisplayState();
-  compileState.arrays.arr = [...arr];
+function resetAll() {
+  resetExecution();
+  clearConsole();
+  clearTimeline();
+  updateLineNumbers();
+  showToast('Everything reset.', 'info');
+}
 
-  let low = 0; let high = arr.length - 1;
-  pushCompiledStep(compileState, { line: arrLine.line, code: arrLine.raw, action: `Declared sorted array of ${arr.length} elements`, explain: "Array is sorted, enabling binary elimination." });
-  pushCompiledStep(compileState, { line: targetLine.line, code: targetLine.raw, action: `Target set to ${target}`, explain: "Search value is loaded into memory." });
+function clearTimeline() {
+  $('timelineList').innerHTML = `
+    <div class="timeline-empty">
+      <i class="fas fa-stream"></i>
+      <span>Steps will appear here during execution</span>
+    </div>`;
+}
 
-  while (low <= high) {
-    const mid = Math.floor((low + high) / 2);
-    compileState.memory = { ...compileState.memory, low, high, mid, target };
-    compileState.loops.push({ line: targetLine.line, iteration: compileState.loops.length + 1, label: `range [${low}, ${high}]` });
-    pushCompiledStep(compileState, {
-      line: targetLine.line,
-      code: "while (low <= high)",
-      action: `Check mid=${mid}, value=${arr[mid]}`,
-      explain: "Window is halved by comparing middle element with target.",
-      sortFocus: { activeIndices: [mid], snapshot: [...arr], arrayName: "arr" }
+// ── Render Step ────────────────────────────────────────────────
+function renderStep(idx) {
+  const step = steps[idx];
+  if(!step) return;
+
+  // Highlight line
+  highlightLine(step.lineNum);
+
+  // Explain panel
+  renderExplain(step, idx);
+
+  // Variables
+  renderVars(step, idx);
+
+  // Call stack
+  renderCallStack(step, idx);
+
+  // Timeline
+  addTimelineItem(step, idx);
+}
+
+function highlightLine(lineNum) {
+  const editor   = $('codeEditor');
+  const lines    = editor.value.split('\n');
+  const lineHeight = 1.6 * 13.6; // approx px
+  const offset   = (lineNum - 1) * lineHeight;
+
+  const highlight = $('execHighlight');
+  highlight.style.display = 'block';
+  highlight.style.top     = `${offset + 16}px`;
+  highlight.style.height  = `${lineHeight}px`;
+
+  // Update line numbers
+  document.querySelectorAll('.ln').forEach(el => {
+    el.classList.toggle('executing', parseInt(el.dataset.line) === lineNum);
+  });
+}
+
+function renderExplain(step, idx) {
+  const el = $('explainContent');
+  el.innerHTML = `
+    <div class="explain-step">
+      <div class="explain-line-badge">
+        <i class="fas fa-map-marker-alt"></i> Line ${step.lineNum}
+      </div>
+      <div class="explain-code">${escapeHTML(step.code.trim())}</div>
+      <div class="explain-text">${step.desc}</div>
+      ${step.concept ? `<div class="explain-concept">💡 <strong>Concept:</strong> ${step.concept}</div>` : ''}
+    </div>
+  `;
+}
+
+function renderVars(step, idx) {
+  // Build vars from executed code context
+  const list  = $('varsList');
+  const empty = $('varsEmpty');
+
+  // Extract variable assignments from steps up to current
+  const currentVars = extractVarsFromSteps(idx);
+  const keys = Object.keys(currentVars);
+
+  $('varCount').textContent = keys.length;
+
+  if(keys.length === 0) {
+    empty.style.display = 'flex';
+    list.querySelectorAll('.var-item').forEach(i => i.remove());
+    return;
+  }
+  empty.style.display = 'none';
+  list.querySelectorAll('.var-item').forEach(i => i.remove());
+
+  keys.forEach(name => {
+    const { value, type, scope: sc } = currentVars[name];
+    const el = document.createElement('div');
+    el.className = 'var-item';
+    const scopeClass = sc === 'global' ? 'scope-global' : sc === 'local' ? 'scope-local' : 'scope-block';
+    el.innerHTML = `
+      <div class="var-scope ${scopeClass}" title="${sc}"></div>
+      <span class="var-name">${escapeHTML(name)}</span>
+      <span class="var-type">${escapeHTML(type)}</span>
+      <span class="var-value">${escapeHTML(String(value))}</span>
+    `;
+    list.appendChild(el);
+  });
+}
+
+function extractVarsFromSteps(upToIdx) {
+  const vars = {};
+  for(let i = 0; i <= upToIdx; i++) {
+    const step = steps[i];
+    if(!step) continue;
+    const code = step.code.trim();
+
+    // Match variable declarations
+    const declMatch = code.match(/^(?:let|var|const)\s+(\w+)\s*=\s*(.+?);?$/);
+    if(declMatch) {
+      const name = declMatch[1];
+      const raw  = declMatch[2].trim();
+      const val  = evalSimple(raw, vars);
+      vars[name] = { value: val, type: getType(val), scope: 'global' };
+    }
+
+    // Match assignments
+    const assignMatch = code.match(/^(\w+)\s*=\s*(.+?);?$/);
+    if(assignMatch && !code.startsWith('let') && !code.startsWith('const') && !code.startsWith('var')) {
+      const name = assignMatch[1];
+      const raw  = assignMatch[2].trim();
+      const val  = evalSimple(raw, vars);
+      if(vars[name]) vars[name].value = val;
+      else vars[name] = { value: val, type: getType(val), scope: 'local' };
+    }
+  }
+  return vars;
+}
+
+function evalSimple(expr, vars) {
+  try {
+    // Replace known var names
+    let e = expr;
+    Object.keys(vars).forEach(k => {
+      e = e.replace(new RegExp(`\\b${k}\\b`, 'g'), JSON.stringify(vars[k].value));
     });
-    if (arr[mid] === target) {
-      compileState.memory.foundAt = mid;
-      pushCompiledStep(compileState, { line: targetLine.line, code: "if (arr[mid] == target)", action: `Found at index ${mid}`, explain: "Match found, loop exits." });
-      break;
-    }
-    if (arr[mid] < target) {
-      low = mid + 1;
-      pushCompiledStep(compileState, { line: targetLine.line, code: "low = mid + 1", action: `Move low -> ${low}`, explain: "Discard left half including mid." });
-    } else {
-      high = mid - 1;
-      pushCompiledStep(compileState, { line: targetLine.line, code: "high = mid - 1", action: `Move high -> ${high}`, explain: "Discard right half including mid." });
-    }
-  }
-  estimateComplexity([], false, "O(log n)", "O(1)", "Binary search halves the range each iteration.");
+    return Function('"use strict"; return (' + e + ')')();
+  } catch { return expr; }
 }
 
-function compileRecursion(code) {
-  const lines = code.split("\n").map((raw, idx) => ({ line: idx + 1, raw, text: raw.trim() }));
-  const callLine = lines.find((l) => /fib\(\d+\)/.test(l.text));
-  const n = Number(callLine?.text.match(/fib\((\d+)\)/)?.[1] ?? 5);
-  const compileState = freshDisplayState();
-
-  function fib(x, depth, parentId = null) {
-    const nodeId = `${parentId || "root"}-${x}-${depth}-${compileState.recursionNodes.length}`;
-    compileState.recursionNodes.push({ id: nodeId, parentId, text: `fib(${x})`, depth, active: true });
-    compileState.stack.push({ name: `fib(${x})`, details: `depth ${depth}` });
-    pushCompiledStep(compileState, { line: callLine?.line || 1, code: `fib(${x})`, action: `Push fib(${x})`, explain: "Function call adds a new frame to stack." });
-
-    if (x <= 1) {
-      compileState.stack.pop();
-      const node = compileState.recursionNodes.find((t) => t.id === nodeId); if (node) node.active = false;
-      pushCompiledStep(compileState, { line: callLine?.line || 1, code: `return ${x}`, action: `Return ${x}`, explain: "Base case reached, recursion unwinds." });
-      return x;
-    }
-
-    const left = fib(x - 1, depth + 1, nodeId);
-    const right = fib(x - 2, depth + 1, nodeId);
-    const result = left + right;
-
-    compileState.stack.pop();
-    const node = compileState.recursionNodes.find((t) => t.id === nodeId); if (node) node.active = false;
-    pushCompiledStep(compileState, { line: callLine?.line || 1, code: `return fib(${x - 1}) + fib(${x - 2})`, action: `fib(${x}) = ${result}`, explain: "Two child results are combined into parent value.", memoryPatch: { [`fib_${x}`]: result } });
-    return result;
-  }
-
-  const answer = fib(n, 0);
-  pushCompiledStep(compileState, { line: callLine?.line || 1, code: `int answer = fib(${n});`, action: `Final answer ${answer}`, explain: "Root call returns final computed Fibonacci value.", memoryPatch: { answer } });
-  estimateComplexity([], true, "O(2^n)", "O(n)", "Naive recursion forms a binary call tree.");
+function getType(val) {
+  if(val === null)      return 'null';
+  if(Array.isArray(val))return 'array';
+  return typeof val;
 }
 
-function parseBlock(lines, start) {
-  const block = []; let i = start;
-  while (i < lines.length) {
-    const t = lines[i].text;
-    if (t === "}") return { block, next: i + 1 };
-    if (t.startsWith("for")) {
-      const m = t.match(/^for\s*\((.*);(.*);(.*)\)\s*\{?$/);
-      if (!m) { block.push({ type: "line", ...lines[i++] }); continue; }
-      const body = parseBlock(lines, i + 1);
-      block.push({ type: "for", line: lines[i].line, raw: lines[i].raw, init: m[1].trim(), cond: m[2].trim(), inc: m[3].trim(), body: body.block });
-      i = body.next; continue;
-    }
-    if (t.startsWith("if")) {
-      const m = t.match(/^if\s*\((.*)\)\s*\{?$/);
-      if (!m) { block.push({ type: "line", ...lines[i++] }); continue; }
-      const body = parseBlock(lines, i + 1);
-      block.push({ type: "if", line: lines[i].line, raw: lines[i].raw, cond: m[1].trim(), body: body.block });
-      i = body.next; continue;
-    }
-    block.push({ type: "line", ...lines[i++] });
-  }
-  return { block, next: i };
-}
+function renderCallStack(step, idx) {
+  const list  = $('stackList');
+  const empty = $('stackEmpty');
+  list.querySelectorAll('.stack-frame').forEach(f => f.remove());
 
-function walkBlock(block, compileState, scope) {
-  for (const node of block) {
-    if (node.type === "line") runMini(node.text, node.line, node.raw, compileState, scope);
-    if (node.type === "if") runIf(node, compileState, scope);
-    if (node.type === "for") runFor(node, compileState, scope);
-  }
-}
-function runIf(node, cs, scope) {
-  const result = Boolean(evalExpr(node.cond, scope, cs));
-  pushCompiledStep(cs, { line: node.line, code: node.raw, action: `IF ${node.cond} -> ${result}`, explain: "Condition decides whether branch executes." });
-  if (!result) return;
-  cs.stack.push({ name: `if@${node.line}`, details: "true branch" });
-  pushCompiledStep(cs, { line: node.line, code: node.raw, action: "Enter IF frame", explain: "Control enters branch scope." });
-  walkBlock(node.body, cs, scope);
-  cs.stack.pop();
-  pushCompiledStep(cs, { line: node.line, code: node.raw, action: "Exit IF frame", explain: "Branch scope ends and stack frame pops." });
-}
-function runFor(node, cs, scope) {
-  runMini(node.init, node.line, node.raw, cs, scope);
-  let iter = 0;
-  while (Boolean(evalExpr(node.cond, scope, cs)) && iter < 300) {
-    iter += 1;
-    cs.loops.push({ line: node.line, iteration: iter, label: node.cond });
-    pushCompiledStep(cs, { line: node.line, code: node.raw, action: `Loop iteration ${iter}`, explain: "Loop condition stayed true for another cycle." });
-    cs.stack.push({ name: `for@${node.line}`, details: `iter ${iter}` });
-    walkBlock(node.body, cs, scope);
-    cs.stack.pop();
-    runMini(node.inc, node.line, node.raw, cs, scope);
-  }
-}
+  // Build simple call stack from steps
+  const stack = buildCallStack(idx);
+  $('stackDepth').textContent = stack.length === 0 ? 'Empty' : `${stack.length} frame${stack.length>1?'s':''}`;
 
-function runMini(rawStmt, line, code, cs, scope) {
-  const stmt = rawStmt.replace(/;$/, "").trim();
-  if (!stmt || stmt === "{" || stmt === "break") return;
+  if(stack.length === 0) { empty.style.display = 'flex'; return; }
+  empty.style.display = 'none';
 
-  const arrDecl = stmt.match(/^int\s+([a-zA-Z_]\w*)\s*\[\]\s*=\s*\{(.*)\}$/);
-  if (arrDecl) {
-    const name = arrDecl[1];
-    const arr = arrDecl[2].split(",").map((x) => Number(evalExpr(x.trim(), scope, cs)));
-    cs.arrays[name] = arr;
-    pushCompiledStep(cs, { line, code, action: `Declare ${name}[${arr.length}]`, explain: "Contiguous array memory allocated.", arrayPatch: { [name]: [...arr] } });
-    return;
-  }
-
-  const decl = stmt.match(/^int\s+([a-zA-Z_]\w*)(\s*=\s*(.*))?$/);
-  if (decl) {
-    const name = decl[1];
-    const value = decl[3] ? Number(evalExpr(decl[3], scope, cs)) : 0;
-    scope[name] = value; cs.memory[name] = value;
-    pushCompiledStep(cs, { line, code, action: `Declare ${name} = ${value}`, explain: "A new scalar variable is allocated in local memory.", memoryPatch: { [name]: value } });
-    return;
-  }
-
-  if (/^\w+\+\+$/.test(stmt)) {
-    const name = stmt.replace("++", "").trim();
-    const value = Number(scope[name] ?? 0) + 1; scope[name] = value; cs.memory[name] = value;
-    pushCompiledStep(cs, { line, code, action: `${name}++ -> ${value}`, explain: "Post-increment updates variable by one.", memoryPatch: { [name]: value } });
-    return;
-  }
-
-  const assign = stmt.match(/^(.+?)\s*=\s*(.+)$/);
-  if (assign) {
-    const left = assign[1].trim();
-    const value = Number(evalExpr(assign[2], scope, cs));
-    const arrSet = left.match(/^([a-zA-Z_]\w*)\[(.+)\]$/);
-    if (arrSet) {
-      const arrName = arrSet[1];
-      const idx = Number(evalExpr(arrSet[2], scope, cs));
-      if (!cs.arrays[arrName]) cs.arrays[arrName] = [];
-      cs.arrays[arrName][idx] = value;
-      pushCompiledStep(cs, {
-        line, code, action: `${arrName}[${idx}] = ${value}`,
-        explain: "Array cell updated; visual bars and memory map refresh.",
-        arrayPatch: { [arrName]: [...cs.arrays[arrName]] },
-        sortFocus: { arrayName: arrName, activeIndices: [idx], snapshot: [...cs.arrays[arrName]] }
-      });
-      return;
-    }
-    scope[left] = value; cs.memory[left] = value;
-    pushCompiledStep(cs, { line, code, action: `${left} = ${value}`, explain: "Existing variable receives a new computed value.", memoryPatch: { [left]: value } });
-    return;
-  }
-
-  pushCompiledStep(cs, { line, code, action: `Skipped unsupported: ${stmt}`, explain: "This statement is outside the educational parser subset." });
-}
-
-function evalExpr(expr, scope, cs) {
-  let processed = expr;
-  processed = processed.replace(/([a-zA-Z_]\w*)\[(.*?)\]/g, (_, name, idxExpr) => cs.arrays[name]?.[Number(evalExpr(idxExpr, scope, cs))] ?? 0);
-  processed = processed.replace(/[a-zA-Z_]\w*/g, (token) => {
-    if (["true", "false"].includes(token)) return token;
-    if (Object.prototype.hasOwnProperty.call(scope, token)) return scope[token];
-    if (Object.prototype.hasOwnProperty.call(cs.memory, token)) return cs.memory[token];
-    return 0;
-  });
-  try { return Function(`"use strict"; return (${processed});`)(); } catch { return 0; }
-}
-
-function pushCompiledStep(cs, step) {
-  if (step.memoryPatch) cs.memory = { ...cs.memory, ...step.memoryPatch };
-  if (step.arrayPatch) Object.entries(step.arrayPatch).forEach(([k, v]) => { cs.arrays[k] = [...v]; });
-  if (step.sortFocus) cs.sortFocus = step.sortFocus;
-  state.steps.push(step);
-  state.compiledSnapshots.push(structuredClone(cs));
-}
-
-function estimateComplexity(block, recursion, forcedTime, forcedSpace, forcedExplain) {
-  if (forcedTime) {
-    state.complexity = { time: forcedTime, space: forcedSpace || "O(1)", explain: forcedExplain || "Preset complexity model.", notes: ["Educational estimate"] };
-    return;
-  }
-  let depth = 0;
-  const walk = (nodes, d) => nodes.forEach((n) => { if (n.type === "for") { depth = Math.max(depth, d + 1); walk(n.body, d + 1); } if (n.type === "if") walk(n.body, d); });
-  walk(block, 0);
-  let time = "O(1)"; if (depth === 1) time = "O(n)"; if (depth === 2) time = "O(n^2)"; if (depth > 2) time = `O(n^${depth})`; if (recursion) time = "O(2^n)";
-  state.complexity = { time, space: recursion ? "O(n)" : "O(1)", explain: recursion ? "Recursive depth grows call stack linearly while branching grows calls exponentially." : "Estimated from nested loop depth and branching.", notes: [`Loop depth: ${depth}`] };
-}
-
-function enqueueRender() {
-  if (state.pendingRender) return;
-  state.pendingRender = true;
-  requestAnimationFrame(() => {
-    state.pendingRender = false;
-    render();
+  stack.reverse().forEach((frame, i) => {
+    const el = document.createElement('div');
+    el.className = 'stack-frame';
+    el.innerHTML = `
+      <div class="sf-index">${stack.length - i}</div>
+      <div class="sf-info">
+        <div class="sf-name">${escapeHTML(frame.name)}()</div>
+        <div class="sf-line">Line ${frame.line}</div>
+      </div>
+    `;
+    list.appendChild(el);
   });
 }
 
-function render() {
-  const key = JSON.stringify({ p: state.pointer, d: state.display, c: state.complexity });
-  if (key === state.lastRenderKey) return;
-  state.lastRenderKey = key;
-  renderSteps(); renderMemory(); renderStack(); renderLoops(); renderArrays(); renderSorting(); renderRecursionTree(); renderComplexity();
-}
-
-function renderSteps() {
-  ui.stepList.innerHTML = state.steps.map((s, i) => `<li class="${i === state.pointer - 1 ? "active" : ""}">#${i + 1} [L${s.line}] ${escapeHtml(s.action)}<div class="step-note">${escapeHtml(s.explain || "")}</div></li>`).join("") || "<li>No steps yet.</li>";
-}
-function explainStep(step) {
-  ui.whatHappened.innerHTML = `<p><strong>Action:</strong> ${escapeHtml(step.action)}</p><p>${escapeHtml(step.explain || "Execution state transitioned.")}</p>`;
-}
-function renderMemory() {
-  ui.memoryView.innerHTML = Object.entries(state.display.memory).map(([k, v]) => `<div class="memory-cell flash"><strong>${escapeHtml(k)}</strong><p>${escapeHtml(v)}</p></div>`).join("") || "<p>No scalar variables yet.</p>";
-}
-function renderStack() {
-  ui.stackView.innerHTML = state.display.stack.slice().reverse().map((f) => `<div class="stack-frame flash"><strong>${escapeHtml(f.name)}</strong><p>${escapeHtml(f.details)}</p></div>`).join("") || "<p>Stack is empty.</p>";
-}
-function renderLoops() {
-  ui.loopTimeline.innerHTML = state.display.loops.slice(-24).map((l) => `<div class="timeline-event">L${l.line} � Iter ${l.iteration} <small>${escapeHtml(l.label || "")}</small></div>`).join("") || "<p>No loop events yet.</p>";
-}
-function renderArrays() {
-  const arrays = Object.entries(state.display.arrays);
-  if (!arrays.length) { ui.arrayView.innerHTML = "<p>No arrays declared.</p>"; return; }
-  ui.arrayView.innerHTML = arrays.map(([name, arr]) => `<div class="memory-cell"><strong>${escapeHtml(name)}</strong><div class="array-view">${arr.map((v, i) => `<div class="array-item">${i}:${v ?? 0}</div>`).join("")}</div></div>`).join("");
-}
-function renderSorting() {
-  const focus = state.display.sortFocus; const first = Object.keys(state.display.arrays)[0];
-  if (!first) { ui.sortBars.innerHTML = "<p>Bars appear when arrays are manipulated.</p>"; return; }
-  const arr = state.display.arrays[first]; const max = Math.max(...arr, 1);
-  ui.sortBars.innerHTML = arr.map((v, i) => `<div class="bar-wrap"><div class="bar ${focus?.activeIndices?.includes(i) ? "active" : ""}" style="height:${Math.max(14, Math.round((v / max) * 120))}px"></div><span>${v}</span></div>`).join("");
-}
-function renderRecursionTree() {
-  const nodes = state.display.recursionNodes;
-  if (!nodes.length) { ui.recursionTree.innerHTML = "<p>Recursion nodes appear for recursive presets.</p>"; return; }
-  ui.recursionTree.innerHTML = nodes.map((n) => `<div class="tree-node" style="margin-left:${n.depth * 14}px; border-left: 3px solid ${n.active ? "var(--blue)" : "var(--border)"};">${escapeHtml(n.text)}</div>`).join("");
-}
-function renderComplexity() {
-  if (!state.complexity) { ui.complexityView.innerHTML = "<p>Compile to estimate complexity.</p>"; return; }
-  ui.complexityView.innerHTML = `<div class="complexity-chip"><strong>Time:</strong> ${state.complexity.time}</div><div class="complexity-chip"><strong>Space:</strong> ${state.complexity.space}</div><div class="complexity-chip">${escapeHtml(state.complexity.explain)}</div>${state.complexity.notes.map((n) => `<div class="complexity-chip">${escapeHtml(n)}</div>`).join("")}`;
-}
-
-function syncEditorDecorations() {
-  const code = ui.codeInput.value;
-  ui.lineNumbers.innerHTML = code.split("\n").map((_, i) => `<div>${i + 1}</div>`).join("");
-  ui.syntaxView.innerHTML = code.split("\n").map((line) => syntaxHighlight(line)).join("\n");
-  syncEditorScroll();
-}
-function syncEditorScroll() {
-  ui.lineNumbers.scrollTop = ui.codeInput.scrollTop;
-  ui.syntaxView.scrollTop = ui.codeInput.scrollTop;
-  ui.syntaxView.scrollLeft = ui.codeInput.scrollLeft;
-}
-function setExecutionLine(lineNumber) {
-  if (lineNumber < 1) { ui.executionLine.classList.remove("live"); return; }
-  const lineHeight = 1.52 * 16;
-  ui.executionLine.classList.add("live");
-  ui.executionLine.style.transform = `translateY(${(lineNumber - 1) * lineHeight - ui.codeInput.scrollTop}px)`;
-}
-function syntaxHighlight(line) {
-  return escapeHtml(line)
-    .replace(/(\/\/.*)/g, '<span class="t-com">$1</span>')
-    .replace(/\b(int|for|if|while|return|break)\b/g, '<span class="t-key">$1</span>')
-    .replace(/\b(fib|main|arr|sum|low|high|mid|target)\b/g, '<span class="t-type">$1</span>')
-    .replace(/\b(\d+)\b/g, '<span class="t-num">$1</span>');
-}
-
-function highlightActivePanel(panel) {
-  document.querySelectorAll(".panel").forEach((p) => p.classList.remove("active-panel"));
-  if (panel?.classList.contains("panel")) panel.classList.add("active-panel");
-}
-
-function toast(message) {
-  const t = document.createElement("div");
-  t.className = "toast";
-  t.textContent = message;
-  ui.toastContainer.appendChild(t);
-  setTimeout(() => t.remove(), 1800);
-}
-
-function log(msg) {
-  const row = document.createElement("div");
-  row.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
-  ui.executionLog.prepend(row);
-}
-
-function escapeHtml(v) {
-  return String(v).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\"/g, "&quot;").replace(/'/g, "&#039;");
-}
-
-function setupParticles() {
-  const canvas = document.getElementById("particle-canvas");
-  const ctx = canvas.getContext("2d");
-  const particles = [];
-  const mouse = { x: -9999, y: -9999 };
-  const settings = { count: 100, linkDistance: 92, radius: 130 };
-
-  function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-  function seed() {
-    particles.length = 0;
-    for (let i = 0; i < settings.count; i += 1) particles.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, r: Math.random() * 1.7 + 0.5, vx: (Math.random() - 0.5) * 0.45, vy: (Math.random() - 0.5) * 0.45, hue: Math.random() > 0.5 ? 195 : 270 });
-  }
-
-  function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    for (let i = 0; i < particles.length; i += 1) {
-      const p = particles[i];
-      const mdx = mouse.x - p.x; const mdy = mouse.y - p.y; const md = Math.sqrt(mdx * mdx + mdy * mdy);
-      if (md < settings.radius) { p.vx += (mdx / settings.radius) * 0.004; p.vy += (mdy / settings.radius) * 0.004; }
-      p.x += p.vx; p.y += p.vy; p.vx *= 0.99; p.vy *= 0.99;
-      if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-      if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-
-      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fillStyle = `hsla(${p.hue},100%,72%,0.72)`; ctx.fill();
-      for (let j = i + 1; j < particles.length; j += 1) {
-        const q = particles[j]; const dx = p.x - q.x; const dy = p.y - q.y; const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < settings.linkDistance) {
-          ctx.strokeStyle = `rgba(106,176,255,${(1 - dist / settings.linkDistance) * 0.16})`;
-          ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y); ctx.stroke();
-        }
-      }
+function buildCallStack(upToIdx) {
+  const stack = [{ name: 'global', line: 1 }];
+  for(let i = 0; i <= upToIdx; i++) {
+    const step = steps[i];
+    if(!step) continue;
+    const code = step.code.trim();
+    if(step.type === 'call' && !code.includes('console')) {
+      const fn = code.match(/(\w+)\s*\(/)?.[1];
+      if(fn) stack.push({ name: fn, line: step.lineNum });
     }
-    requestAnimationFrame(draw);
+    if(step.type === 'return' && stack.length > 1) stack.pop();
   }
-
-  window.addEventListener("mousemove", (e) => { mouse.x = e.clientX; mouse.y = e.clientY; }, { passive: true });
-  window.addEventListener("mouseleave", () => { mouse.x = -9999; mouse.y = -9999; });
-  window.addEventListener("resize", () => { resize(); seed(); });
-
-  resize(); seed(); draw();
+  return stack;
 }
 
-init();
+function addTimelineItem(step, idx) {
+  const list = $('timelineList');
+  const empty = list.querySelector('.timeline-empty');
+  if(empty) empty.remove();
+
+  // Remove current highlight
+  list.querySelectorAll('.timeline-item').forEach(i => i.classList.remove('current'));
+
+  // Check if item exists
+  const existing = list.querySelector(`[data-step="${idx}"]`);
+  if(existing) { existing.classList.add('current'); return; }
+
+  const el = document.createElement('div');
+  el.className = 'timeline-item current';
+  el.dataset.step = idx;
+  el.innerHTML = `
+    <div class="tl-step">${idx + 1}</div>
+    <div class="tl-info">
+      <div class="tl-line">Line ${step.lineNum}</div>
+      <div class="tl-desc">${step.desc.replace(/<[^>]+>/g,'').substring(0,60)}...</div>
+    </div>
+    <span class="tl-type ${step.type}">${step.type}</span>
+  `;
+  el.addEventListener('click', () => { currentStep = idx; renderStep(idx); updateControls(); });
+  list.appendChild(el);
+  el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function updateControls() {
+  const total = steps.length;
+  const cur   = currentStep + 1;
+  $('stepCounter').textContent = `Step ${cur} / ${total}`;
+  const pct = total > 0 ? (cur / total) * 100 : 0;
+  $('stepProgFill').style.width = `${pct}%`;
+}
+
+// ── Console ────────────────────────────────────────────────────
+function addConsoleLine(val, type='log') {
+  const out = $('consoleOutput');
+  const ph  = out.querySelector('.console-placeholder');
+  if(ph) ph.remove();
+
+  const el = document.createElement('div');
+  el.className = `console-line ${type}`;
+  const icons = { log:'›', warn:'⚠', error:'✖', info:'ℹ' };
+  el.innerHTML = `<span class="console-prefix">${icons[type]||'›'}</span><span class="console-val">${escapeHTML(val)}</span>`;
+  out.appendChild(el);
+  out.scrollTop = out.scrollHeight;
+}
+
+function clearConsole() {
+  $('consoleOutput').innerHTML = `
+    <div class="console-placeholder">
+      <i class="fas fa-terminal"></i>
+      <span>Output will appear here...</span>
+    </div>`;
+}
+
+// ── Clear Helpers ──────────────────────────────────────────────
+function clearExplain() {
+  $('explainContent').innerHTML = `
+    <div class="explain-placeholder">
+      <div class="explain-icon">🎯</div>
+      <p>Press <strong>Run</strong> or <strong>Step Forward</strong> to start visualizing your code.</p>
+    </div>`;
+}
+
+function clearVars() {
+  $('varsList').querySelectorAll('.var-item').forEach(i => i.remove());
+  $('varsEmpty').style.display = 'flex';
+  $('varCount').textContent = '0';
+}
+
+function clearStack() {
+  $('stackList').querySelectorAll('.stack-frame').forEach(f => f.remove());
+  $('stackEmpty').style.display = 'flex';
+  $('stackDepth').textContent = 'Empty';
+}
+
+function clearMemory() {
+  $('memoryGrid').querySelectorAll('.memory-obj').forEach(o => o.remove());
+  $('memoryEmpty').style.display = 'flex';
+}
+
+function showError(msg) {
+  $('errorCard').classList.remove('hidden');
+  $('errorContent').innerHTML = `<i class="fas fa-times-circle"></i> ${escapeHTML(msg)}`;
+}
+
+function hideError() {
+  $('errorCard').classList.add('hidden');
+}
+
+// ── Share ──────────────────────────────────────────────────────
+function shareCode() {
+  const code = $('codeEditor').value;
+  if(!code.trim()) { showToast('No code to copy.', 'error'); return; }
+  navigator.clipboard.writeText(code).then(() => {
+    showToast('Code copied to clipboard!', 'success');
+  }).catch(() => {
+    showToast('Copy failed.', 'error');
+  });
+}
+
+// ── Toast ──────────────────────────────────────────────────────
+let toastTimer;
+function showToast(msg, type='success') {
+  clearTimeout(toastTimer);
+  $('toastMsg').textContent = msg;
+  const icon = $('toast').querySelector('.toast-icon');
+  icon.className = `toast-icon fas ${
+    type==='success' ? 'fa-check-circle' :
+    type==='error'   ? 'fa-times-circle' : 'fa-info-circle'
+  }`;
+  $('toast').className = `toast ${type} show`;
+  toastTimer = setTimeout(() => $('toast').classList.remove('show'), 3000);
+}
+
+// ── Helpers ────────────────────────────────────────────────────
+function escapeHTML(str) {
+  const el = document.createElement('div');
+  el.textContent = str || ''; return el.innerHTML;
+}
+
+// ── Start ──────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', init);

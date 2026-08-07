@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AaharShare | Donors</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    background:#0b6b24;
+}
+
+.container{
+    width:90%;
+    max-width:1200px;
+    margin:40px auto;
+}
+
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:30px;
+}
+
+.header h1{
+    color:white;
+    font-size:38px;
+}
+
+.back-btn{
+    text-decoration:none;
+    color:white;
+    font-size:18px;
+    font-weight:bold;
+}
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+    margin-bottom:35px;
+}
+
+.card{
+    background:white;
+    border-radius:12px;
+    padding:25px;
+    text-align:center;
+    box-shadow:0 5px 15px rgba(0,0,0,.2);
+}
+
+.card h2{
+    color:#1f7a32;
+    margin-bottom:10px;
+}
+
+.card h3{
+    font-size:34px;
+    color:#222;
+}
+
+.search-box{
+    margin-bottom:25px;
+}
+
+.search-box input{
+    width:100%;
+    padding:15px;
+    border-radius:8px;
+    border:none;
+    font-size:17px;
+}
+
+.table-box{
+    background:white;
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 5px 15px rgba(0,0,0,.2);
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th{
+    background:#228B22;
+    color:white;
+    padding:15px;
+}
+
+td{
+    padding:15px;
+    text-align:center;
+    border-bottom:1px solid #ddd;
+}
+
+tr:hover{
+    background:#f3f3f3;
+}
+
+.status{
+    padding:6px 14px;
+    border-radius:20px;
+    color:white;
+    font-size:14px;
+}
+
+.completed{
+    background:#28a745;
+}
+
+.pending{
+    background:#ff9800;
+}
+
+@media(max-width:768px){
+
+.header{
+    flex-direction:column;
+    gap:15px;
+}
+
+table{
+    font-size:14px;
+}
+
+}
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+<div class="header">
+<h1>❤️ AaharShare Donors</h1>
+
+<a href="index.html" class="back-btn">← Back to Home</a>
+</div>
+
+<div class="cards">
+
+<div class="card">
+<h2>Total Donors</h2>
+<h3>120</h3>
+</div>
+
+<div class="card">
+<h2>Today's Donations</h2>
+<h3>32</h3>
+</div>
+
+<div class="card">
+<h2>Completed</h2>
+<h3>95</h3>
+</div>
+
+<div class="card">
+<h2>Pending</h2>
+<h3>25</h3>
+</div>
+
+</div>
+
+<div class="search-box">
+<input type="text" placeholder="Search donor...">
+</div>
+
+<div class="table-box">
+
+<table>
+
+<thead>
+
+<tr>
+<th>Name</th>
+<th>Food Donated</th>
+<th>Location</th>
+<th>Status</th>
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+<td>Rahul Sharma</td>
+<td>Rice & Dal</td>
+<td>Delhi</td>
+<td><span class="status completed">Completed</span></td>
+</tr>
+
+<tr>
+<td>Priya Singh</td>
+<td>50 Meal Boxes</td>
+<td>Noida</td>
+<td><span class="status pending">Pending</span></td>
+</tr>
+
+<tr>
+<td>Amit Kumar</td>
+<td>Vegetables</td>
+<td>Lucknow</td>
+<td><span class="status completed">Completed</span></td>
+</tr>
+
+<tr>
+<td>Neha Verma</td>
+<td>Bread & Milk</td>
+<td>Kanpur</td>
+<td><span class="status completed">Completed</span></td>
+</tr>
+
+<tr>
+<td>Rohit Gupta</td>
+<td>Fruit Packets</td>
+<td>Ghaziabad</td>
+<td><span class="status pending">Pending</span></td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</body>
+</html>
+
+

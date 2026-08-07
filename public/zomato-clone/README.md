@@ -20,27 +20,43 @@ This is a Zomato Clone project built with a focus on modern web development prac
 ## 📁 Project Structure
 
 ```
-zomato-clone/
-│
-├── public/                # Frontend
-│   ├── index.html
-│   ├── login.html
-│   ├── signup.html
-│   ├── css/
-│   │   └── home.css
-│   ├── js/
-│   ├── images/
-│   └── assets/
-│
-├── server/                # Backend
-│   ├── config/
-│   ├── controllers/
-│   ├── models/
-│   ├── routes/
-│   └── server.js
-│
-├── package.json
-└── README.md
+```bash
+100_days_100_web_project/
+└── public/
+    └── zomato-clone/
+        ├── public/
+        │   ├── css/
+        │   │   ├── footer.css
+        │   │   ├── navbar.css
+        │   │   ├── restaurant.css
+        │   │   ├── restaurantDetail.css
+        │   │   └── index.css
+        │   ├── images/
+        │   ├── login.html
+        │   └── signup.html
+        │
+        ├── server/
+        │   ├── config/
+        │   ├── controllers/
+        │   ├── models/
+        │   ├── routes/
+        │   ├── seed/
+        │   ├── .env.example
+        │   └── server.js
+        │
+        ├── views/
+        │   ├── partials/
+        │   │   ├── footer.ejs
+        │   │   └── navbar.ejs
+        │   ├── index.ejs
+        │   ├── restaurant.ejs
+        │   └── restaurantDetail.ejs
+        │
+        ├── .gitignore
+        ├── package.json
+        ├── package-lock.json
+        ├── README.md
+        └── .env.example
 ```
 
 ---
@@ -71,7 +87,9 @@ npm install
 npm install mongoose
 npm install express
 npm install cors
-npm install dotenv
+npm install dotenv 
+npm  install ejs 
+
 ```
 
 ### 3️⃣ Run the server
@@ -98,6 +116,17 @@ http://localhost:3000
 | DELETE | /api/food/:id | Delete food      |
 
 ---
+## 🍽️ Restaurant Detail Page
+
+When a user clicks on a restaurant card, they are redirected to the detail page.
+
+* Displays restaurant name, ratings, address, and timings
+* Shows images and “View Gallery” option
+* Includes tabs: Overview, Order Online, Photos, and Menu
+* Menu and details are dynamically rendered using backend data
+
+This page allows users to explore restaurant details and view the menu easily.
+
 
 ## 📌 Notes
 

@@ -232,6 +232,18 @@ body.dark-theme .bubble:hover {
 /* Modal box */
 .modal-content {
   background: #fff;
+  color: #121212;
+  padding: 20px;
+  border-radius: 8px;
+  width: 300px;
+  max-width: 90%;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  animation: fadeIn 0.3s ease;
+}
+
+body.dark-theme .modal-content {
+  background: #121212;
+  color: #fff;
   padding: 20px;
   border-radius: 8px;
   width: 300px;
@@ -243,7 +255,7 @@ body.dark-theme .bubble:hover {
 .modal-content h2 {
   margin-bottom: 10px;
   font-size: 20px;
-  color: rgb(72, 104, 72);
+  color: rgb(172, 208, 172);
 }
 
 .modal-content ul {

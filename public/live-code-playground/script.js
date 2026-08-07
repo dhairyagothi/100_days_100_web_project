@@ -496,35 +496,35 @@ const setupEventListeners = () => {
     button.addEventListener('click', () => togglePanel(button.dataset.collapse, button));
   });
 
-window.addEventListener('message', (event) => {
-  const previewFrame = elements.previewFrame;
+  const handleMessage = (event) => {
+    const previewFrame = elements.previewFrame;
 
-  // Ensure iframe exists
-  if (!previewFrame?.contentWindow) return;
+    // Ensure iframe exists
+    if (!previewFrame?.contentWindow) return;
 
-  // Accept messages only from the sandbox preview iframe
-  if (event.source !== previewFrame.contentWindow) return;
+    // Accept messages only from the sandbox preview iframe
+    if (event.source !== previewFrame.contentWindow) return;
 
-  const data = event.data;
+    const data = event.data;
 
-  // Validate payload
-  if (!data || data.source !== 'live-code-playground') return;
+    // Validate payload
+    if (!data || data.source !== 'live-code-playground') return;
 
-  // Allow only expected console levels
-  const allowedLevels = ['log', 'warn', 'error', 'info'];
+    // Allow only expected console levels
+    const allowedLevels = ['log', 'warn', 'error', 'info'];
 
-  const level = allowedLevels.includes(data.level)
-    ? data.level
-    : 'log';
+    const level = allowedLevels.includes(data.level)
+      ? data.level
+      : 'log';
 
-  const values = Array.isArray(data.values)
-    ? data.values
-    : [];
+    const values = Array.isArray(data.values)
+      ? data.values
+      : [];
 
-  appendConsoleLine(level, values);
-});
+    appendConsoleLine(level, values);
+  };
 
-  window.addEventListener('keydown', (event) => {
+  const handleKeydown = (event) => {
     const modifierPressed = event.ctrlKey || event.metaKey;
     if (!modifierPressed) return;
 
@@ -538,9 +538,18 @@ window.addEventListener('message', (event) => {
       event.preventDefault();
       resetPlayground();
     }
-  });
+  };
 
+  window.addEventListener('message', handleMessage);
+  window.addEventListener('keydown', handleKeydown);
   window.addEventListener('beforeunload', saveState);
+
+  // Return a cleanup function to prevent memory leaks on unmount or route change
+  return () => {
+    window.removeEventListener('message', handleMessage);
+    window.removeEventListener('keydown', handleKeydown);
+    window.removeEventListener('beforeunload', saveState);
+  };
 };
 
 const cacheElements = () => {

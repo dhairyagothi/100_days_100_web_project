@@ -1,40 +1,87 @@
 body {
-  font-family: Arial, sans-serif;
-  background: #1e1e1e;
-  color: white;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: radial-gradient(circle at center, #2c2c2c 0%, #121212 100%);
+  color: #f0f0f0;
   text-align: center;
+  min-height: 100vh;
+  margin: 0;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .container {
-  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 600px;
+  width: 100%;
+}
+
+h1 {
+  font-size: 2.5rem;
+  margin: 0 0 10px 0;
+  background: linear-gradient(135deg, #ffcc00, #ff6600);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 .controls button {
-  margin: 5px;
-  padding: 10px 15px;
+  margin: 8px;
+  padding: 12px 24px;
   border: none;
   cursor: pointer;
-  background: #444;
-  color: white;
-  border-radius: 6px;
+  background: linear-gradient(135deg, #3a3a3a, #242424);
+  color: #fff;
+  font-weight: 600;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
 }
 
 .controls button:hover {
-  background: #666;
+  background: linear-gradient(135deg, #505050, #363636);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.controls button:active {
+  transform: translateY(0);
+}
+
+#status {
+  font-size: 1.1rem;
+  margin: 15px auto;
+  padding: 10px 24px;
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  min-width: 200px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  font-weight: 500;
+  letter-spacing: 0.5px;
 }
 
 #board {
-  width: 480px;
-  height: 480px;
+  width: min(90vw, 480px);
+  height: min(90vw, 480px);
   margin: 20px auto;
   display: grid;
   grid-template-columns: repeat(8, 1fr);
-  border: 3px solid #fff;
+  border: 4px solid #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
 }
 
 .square {
-  width: 60px;
-  height: 60px;
+  width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -49,24 +96,120 @@ body {
 }
 
 .piece {
-  width: 45px;
-  height: 45px;
+  width: 75%;
+  height: 75%;
   border-radius: 50%;
   cursor: pointer;
+  box-shadow: inset 0 4px 6px rgba(255, 255, 255, 0.3), 0 4px 8px rgba(0, 0, 0, 0.5);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.piece:hover {
+  transform: scale(1.08);
+  box-shadow: inset 0 4px 6px rgba(255, 255, 255, 0.4), 0 6px 12px rgba(0, 0, 0, 0.6);
 }
 
 .red {
-  background: red;
+  background: linear-gradient(135deg, #ff4d4d, #b30000);
+  border: 1px solid #800000;
 }
 
 .black {
-  background: black;
+  background: linear-gradient(135deg, #4d4d4d, #1a1a1a);
+  border: 1px solid #000;
 }
 
 .king {
-  border: 3px solid gold;
+  border: 3px solid #ffcc00;
+  box-shadow: inset 0 4px 6px rgba(255, 255, 255, 0.3), 0 0 15px #ffcc00;
 }
 
 .selected {
-  outline: 3px solid yellow;
+  outline: 3px solid #ffcc00;
+  outline-offset: 2px;
+}
+
+/* Modal Styles */
+.modal {
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.modal.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-content {
+  background: rgba(30, 30, 30, 0.95);
+  border: 2px solid #ffcc00;
+  border-radius: 12px;
+  padding: 30px;
+  max-width: 400px;
+  width: 80%;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+  text-align: center;
+  position: relative;
+  transform: scale(0.8);
+  transition: transform 0.3s ease;
+}
+
+.modal.show .modal-content {
+  transform: scale(1);
+}
+
+.modal-content h2 {
+  margin-top: 0;
+  color: #ffcc00;
+  font-size: 24px;
+}
+
+.modal-content p {
+  font-size: 18px;
+  margin: 20px 0;
+  line-height: 1.5;
+  color: #e0e0e0;
+}
+
+.modal-content button {
+  background: linear-gradient(135deg, #ffcc00, #ff9900);
+  color: #121212;
+  border: none;
+  padding: 10px 25px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
+}
+
+.modal-content button:hover {
+  background: linear-gradient(135deg, #ffe066, #ffb366);
+  transform: scale(1.05);
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 24px;
+  cursor: pointer;
+  color: #aaa;
+}
+
+.close-button:hover {
+  color: white;
 }

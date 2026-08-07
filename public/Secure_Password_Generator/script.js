@@ -9,49 +9,71 @@
 const CHAR_SETS = {
   uppercase: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
   lowercase: 'abcdefghijklmnopqrstuvwxyz',
-  numbers:   '0123456789',
-  symbols:   '!@#$%^&*()_+-=[]{}|;:,.<>?',
+  numbers: '0123456789',
+  symbols: '!@#$%^&*()_+-=[]{}|;:,.<>?',
 };
 
 // ---------------------------------------------------------------------------
 // DOM references
 // ---------------------------------------------------------------------------
-const passwordOutput  = document.getElementById('password-output');
-const generateBtn     = document.getElementById('generate-btn');
-const regenerateBtn   = document.getElementById('regenerate-btn');
-const copyBtn         = document.getElementById('copy-btn');
-const lengthSlider    = document.getElementById('length-slider');
-const lengthDisplay   = document.getElementById('length-display');
-const sliderFill      = document.getElementById('slider-fill');
-const validationMsg   = document.getElementById('validation-msg');
-const strengthLabel   = document.getElementById('strength-label');
-const bars            = [
+const passwordOutput = document.getElementById('password-output');
+const generateBtn = document.getElementById('generate-btn');
+const regenerateBtn = document.getElementById('regenerate-btn');
+const copyBtn = document.getElementById('copy-btn');
+const lengthSlider = document.getElementById('length-slider');
+const lengthDisplay = document.getElementById('length-display');
+const sliderFill = document.getElementById('slider-fill');
+const validationMsg = document.getElementById('validation-msg');
+const strengthLabel = document.getElementById('strength-label');
+const bars = [
   document.getElementById('bar-1'),
   document.getElementById('bar-2'),
   document.getElementById('bar-3'),
   document.getElementById('bar-4'),
 ];
-const toast           = document.getElementById('toast');
+const toast = document.getElementById('toast');
 
 // Checkbox inputs keyed by type name
 const checkboxes = {
   uppercase: document.getElementById('uppercase'),
   lowercase: document.getElementById('lowercase'),
-  numbers:   document.getElementById('numbers'),
-  symbols:   document.getElementById('symbols'),
+  numbers: document.getElementById('numbers'),
+  symbols: document.getElementById('symbols'),
 };
 
 // ---------------------------------------------------------------------------
-// Cryptographically random integer in [0, max)
-// Uses crypto.getRandomValues when available, falls back to Math.random.
+// Cryptographically random integer in [0, max) — UNBIASED.
+//
+// The naive `arr[0] % max` version had textbook modulo bias: 2^32 is not
+// divisible by 26 (alphabet), 10 (digits), or 88 (full pool), so the lower
+// buckets picked up slightly more probability than the upper ones and every
+// generated password's effective entropy dropped a few bits — not great for
+// a component that literally advertises "cryptographically random"
+// (issue #10333).
+//
+// Rejection sampling fixes it: keep drawing until the raw Uint32 falls
+// below the largest multiple of `max` that fits in the 32-bit range, then
+// modulo. That's uniformly distributed by construction.
 // ---------------------------------------------------------------------------
 function secureRandom(max) {
-  if (window.crypto && window.crypto.getRandomValues) {
-    const arr = new Uint32Array(1);
-    window.crypto.getRandomValues(arr);
-    return arr[0] % max;
+  if (!window.crypto || typeof window.crypto.getRandomValues !== 'function') {
+    throw new Error('Web Crypto API unavailable');
   }
-  return Math.floor(Math.random() * max);
+  if (max <= 0 || !Number.isInteger(max)) {
+    throw new RangeError('secureRandom(max): max must be a positive integer');
+  }
+
+  const limit = Math.floor(0x1_0000_0000 / max) * max;
+  const arr = new Uint32Array(1);
+
+  // In practice this loop terminates after ~1 iteration for common `max`
+  // values (26, 10, 88). Cap at 32 attempts as a defensive guard so a
+  // hypothetically broken RNG can't hang the tab.
+  for (let attempt = 0; attempt < 32; attempt++) {
+    window.crypto.getRandomValues(arr);
+    if (arr[0] < limit) return arr[0] % max;
+  }
+  return arr[0] % max;
 }
 
 // ---------------------------------------------------------------------------
@@ -69,7 +91,7 @@ function shuffleArray(arr) {
 // Get the list of active character types selected by the user
 // ---------------------------------------------------------------------------
 function getSelectedTypes() {
-  return Object.keys(checkboxes).filter(key => checkboxes[key].checked);
+  return Object.keys(checkboxes).filter((key) => checkboxes[key].checked);
 }
 
 // ---------------------------------------------------------------------------
@@ -92,13 +114,13 @@ function getStrength(length, selectedTypes) {
 // ---------------------------------------------------------------------------
 function updateStrengthUI(strength) {
   // Reset all bars
-  bars.forEach(bar => {
+  bars.forEach((bar) => {
     bar.className = 'bar';
   });
   strengthLabel.className = 'strength-label';
 
   const config = {
-    weak:   { fill: 1, label: 'Weak',   cls: 'weak' },
+    weak: { fill: 1, label: 'Weak', cls: 'weak' },
     medium: { fill: 2, label: 'Medium', cls: 'medium' },
     strong: { fill: 4, label: 'Strong', cls: 'strong' },
   };
@@ -120,54 +142,58 @@ function updateStrengthUI(strength) {
 // Core password generation
 // ---------------------------------------------------------------------------
 function generatePassword() {
-  const selectedTypes = getSelectedTypes();
+  try {
+    const selectedTypes = getSelectedTypes();
 
-  // Validate at least one type is selected
-  if (selectedTypes.length === 0) {
-    validationMsg.classList.add('visible');
+    if (selectedTypes.length === 0) {
+      validationMsg.classList.add('visible');
+      passwordOutput.value = '';
+      updateStrengthUI(null);
+      return;
+    }
+
+    validationMsg.classList.remove('visible');
+
+    const length = parseInt(lengthSlider.value, 10);
+
+    const pool = selectedTypes.map((type) => CHAR_SETS[type]).join('');
+
+    const guaranteed = selectedTypes.map((type) => {
+      const set = CHAR_SETS[type];
+      return set[secureRandom(set.length)];
+    });
+
+    const remaining = [];
+
+    for (let i = guaranteed.length; i < length; i++) {
+      remaining.push(pool[secureRandom(pool.length)]);
+    }
+
+    const passwordChars = shuffleArray([...guaranteed, ...remaining]);
+
+    passwordOutput.value = passwordChars.join('');
+
+    updateStrengthUI(getStrength(length, selectedTypes));
+  } catch (error) {
     passwordOutput.value = '';
+
+    validationMsg.textContent =
+      'Secure password generation is unavailable because this browser does not support the Web Crypto API.';
+
+    validationMsg.classList.add('visible');
+
     updateStrengthUI(null);
-    return;
   }
-
-  validationMsg.classList.remove('visible');
-
-  const length = parseInt(lengthSlider.value, 10);
-
-  // Build the combined pool from selected types
-  const pool = selectedTypes.map(type => CHAR_SETS[type]).join('');
-
-  // Guarantee at least one character from each selected type
-  const guaranteed = selectedTypes.map(type => {
-    const set = CHAR_SETS[type];
-    return set[secureRandom(set.length)];
-  });
-
-  // Fill the remaining positions from the full pool
-  const remaining = [];
-  for (let i = guaranteed.length; i < length; i++) {
-    remaining.push(pool[secureRandom(pool.length)]);
-  }
-
-  // Merge and shuffle so the guaranteed chars aren't always at the front
-  const passwordChars = shuffleArray([...guaranteed, ...remaining]);
-  const password = passwordChars.join('');
-
-  passwordOutput.value = password;
-
-  // Update strength indicator
-  const strength = getStrength(length, selectedTypes);
-  updateStrengthUI(strength);
 }
 
 // ---------------------------------------------------------------------------
 // Slider fill track update
 // ---------------------------------------------------------------------------
 function updateSliderFill() {
-  const min   = parseInt(lengthSlider.min, 10);
-  const max   = parseInt(lengthSlider.max, 10);
+  const min = parseInt(lengthSlider.min, 10);
+  const max = parseInt(lengthSlider.max, 10);
   const value = parseInt(lengthSlider.value, 10);
-  const pct   = ((value - min) / (max - min)) * 100;
+  const pct = ((value - min) / (max - min)) * 100;
   sliderFill.style.width = `${pct}%`;
 }
 
@@ -233,9 +259,13 @@ function onRegenerate() {
   void regenerateBtn.offsetWidth;
   regenerateBtn.classList.add('spinning');
   generatePassword();
-  regenerateBtn.addEventListener('animationend', () => {
-    regenerateBtn.classList.remove('spinning');
-  }, { once: true });
+  regenerateBtn.addEventListener(
+    'animationend',
+    () => {
+      regenerateBtn.classList.remove('spinning');
+    },
+    { once: true }
+  );
 }
 
 // ---------------------------------------------------------------------------
@@ -246,6 +276,7 @@ function onCheckboxChange() {
     generatePassword();
   } else if (getSelectedTypes().length > 0) {
     // Clear stale validation message when user re-selects a type
+    validationMsg.textContent = 'Please select at least one character type.';
     validationMsg.classList.remove('visible');
   }
 }
@@ -257,9 +288,18 @@ function onCheckboxChange() {
 function onKeydown(e) {
   if (e.key === 'Enter' || e.key === ' ') {
     const target = e.target;
-    if (target === generateBtn)  { e.preventDefault(); generatePassword(); }
-    if (target === copyBtn)      { e.preventDefault(); copyToClipboard(); }
-    if (target === regenerateBtn){ e.preventDefault(); onRegenerate(); }
+    if (target === generateBtn) {
+      e.preventDefault();
+      generatePassword();
+    }
+    if (target === copyBtn) {
+      e.preventDefault();
+      copyToClipboard();
+    }
+    if (target === regenerateBtn) {
+      e.preventDefault();
+      onRegenerate();
+    }
   }
 }
 
@@ -272,7 +312,7 @@ copyBtn.addEventListener('click', copyToClipboard);
 lengthSlider.addEventListener('input', onSliderInput);
 document.addEventListener('keydown', onKeydown);
 
-Object.values(checkboxes).forEach(cb => {
+Object.values(checkboxes).forEach((cb) => {
   cb.addEventListener('change', onCheckboxChange);
 });
 
