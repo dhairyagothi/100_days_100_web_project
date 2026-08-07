@@ -1,216 +1,368 @@
-<!doctype html>
-<html lang="en" data-theme="dark">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Interview Simulator - AI Voice Assist</title>
-    <link rel="stylesheet" href="style.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
-  </head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Interview Simulator | Ace Your Next Interview</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+</head>
+<body>
 
-  <body>
-    <div class="theme-toggle-container">
-      <button
-        id="theme-toggle"
-        class="theme-btn"
-        title="Toggle Display Theme"
-        aria-label="Toggle dark and light mode"
-      >
-        <i aria-hidden="true" class="fa-solid fa-sun"></i>
+  <!-- Background -->
+  <div class="bg-animation">
+    <div class="bg-circle c1"></div>
+    <div class="bg-circle c2"></div>
+    <div class="bg-circle c3"></div>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="nav-brand">
+      <span class="brand-icon">🎯</span>
+      <span>Interview Simulator</span>
+    </div>
+    <div class="nav-actions">
+      <button class="btn-icon" id="themeToggle" title="Toggle Theme">
+        <i class="fas fa-moon"></i>
+      </button>
+      <button class="btn-icon" id="historyBtn" title="View History">
+        <i class="fas fa-history"></i>
+      </button>
+      <button class="btn-icon" id="resetBtn" title="Reset All Data">
+        <i class="fas fa-trash-alt"></i>
       </button>
     </div>
+  </nav>
 
-    <div class="blob blob-1"></div>
-    <div class="blob blob-2"></div>
-    <div class="blob blob-3"></div>
+  <main class="container">
 
-    <div class="container glass-panel">
-      <div class="top-bar">
-        <h1>
-          <i aria-hidden="true" class="fa-solid fa-user-tie"></i>
-          AI Interview Simulator
-        </h1>
+    <!-- Hero -->
+    <section class="hero">
+      <h1 class="hero-title">Ace Your <span class="gradient-text">Interview</span></h1>
+      <p class="hero-sub">Practice, evaluate, and track your interview performance.</p>
+    </section>
 
-        <div class="stats">
-          <div class="card glass-card">
-            <div class="card-header">
-              <span>
-                <i aria-hidden="true" class="fa-solid fa-clipboard-list"></i>
-                Question Progress
-              </span>
-            </div>
-            <h2 id="question-count">0/0</h2>
-            <div class="progress-bar-container">
-              <div id="question-progress" class="progress-fill info"></div>
-            </div>
-          </div>
-
-          <div class="card glass-card">
-            <div class="card-header">
-              <span>
-                <i aria-hidden="true" class="fa-solid fa-heart-pulse"></i>
-                Stress Monitor
-              </span>
-            </div>
-            <h2 id="stress-level">0%</h2>
-            <div class="progress-bar-container">
-              <div id="stress-progress" class="progress-fill success"></div>
-            </div>
-          </div>
-
-          <div class="card glass-card">
-            <div class="card-header">
-              <span>
-                <i aria-hidden="true" class="fa-solid fa-stopwatch"></i>
-                Response Window
-              </span>
-            </div>
-            <h2 id="timer">60s</h2>
-            <div class="progress-bar-container">
-              <div id="timer-progress" class="progress-fill success"></div>
-            </div>
-          </div>
+    <!-- Stats Row -->
+    <section class="stats-row">
+      <div class="stat-card">
+        <i class="fas fa-question-circle stat-icon q-icon"></i>
+        <div>
+          <div class="stat-value" id="totalAttempted">0</div>
+          <div class="stat-label">Attempted</div>
         </div>
       </div>
-
-      <div class="role-selection glass-card">
-        <h3>Configure Your AI Interview</h3>
-        <div class="role-controls">
-          <select id="role-select" aria-label="Select Target Domain Role">
-            <option value="Frontend Developer">Frontend Developer</option>
-            <option value="Backend Developer">Backend Developer</option>
-            <option value="React Developer">React Developer</option>
-            <option value="Java Developer">Java Developer</option>
-            <option value="Python Developer">Python Developer</option>
-            <option value="AIML Engineer">AIML Engineer</option>
-            <option value="HR Interview">HR Interview</option>
-          </select>
-
-          <select
-            id="difficulty-select"
-            aria-label="Select Evaluation Challenge Tier"
-          >
-            <option value="Beginner">Beginner Tier</option>
-            <option value="Intermediate">Intermediate Tier</option>
-            <option value="Advanced">Advanced Challenge</option>
-          </select>
-
-          <select id="interview-type" aria-label="Select Focus Category">
-            <option value="Technical">Technical Execution</option>
-            <option value="HR">Human Resources Assessment</option>
-            <option value="Behavioral">Behavioral Performance Matrix</option>
-          </select>
-
-          <button id="start-ai-btn" class="btn primary-btn">
-            <i aria-hidden="true" class="fa-solid fa-wand-magic-sparkles"></i>
-            Initialize Simulator
-          </button>
+      <div class="stat-card">
+        <i class="fas fa-star stat-icon r-icon"></i>
+        <div>
+          <div class="stat-value" id="avgRating">0.0</div>
+          <div class="stat-label">Avg Rating</div>
         </div>
       </div>
-
-      <div class="hidden interview-box glass-card">
-        <div class="interviewer">
-          <div class="avatar-container">
-            <div class="avatar">
-              <i aria-hidden="true" class="fa-solid fa-robot"></i>
-            </div>
-            <div class="pulse-ring"></div>
-          </div>
-
-          <div class="dialogue">
-            <h3>AI System Interface</h3>
-            <div id="chat-container" class="chat-container"></div>
-          </div>
-        </div>
-
-        <div class="answer-section">
-          <div class="voice-controls">
-            <button
-              id="mic-btn"
-              class="mic-btn"
-              title="Toggle Voice Transcription Pipeline"
-              aria-label="Toggle microphone speech recognition"
-            >
-              <i aria-hidden="true" class="fa-solid fa-microphone"></i>
-            </button>
-            <span id="mic-status" class="mic-status"
-              >Audio input system currently passive</span
-            >
-            <div id="recording-indicator" class="hidden recording-indicator">
-              <span class="dot"></span>
-              <span class="dot"></span>
-              <span class="dot"></span>
-            </div>
-          </div>
-
-          <textarea
-            id="answer"
-            placeholder="Formulate structured context analysis here or use speech tracking..."
-            aria-label="Text response container block"
-          ></textarea>
-
-          <div class="counter-container">
-            <div id="char-counter" class="char-counter">
-              0 characters | 0 words
-            </div>
-          </div>
-        </div>
-
-        <div class="buttons">
-          <button id="restart-btn" class="btn secondary-btn">
-            <i aria-hidden="true" class="fa-solid fa-rotate-right"></i>
-            <span>Terminate & Re-initialize</span>
-          </button>
-          <div class="action-group">
-            <button id="prev-btn" class="btn secondary-btn" disabled>
-              <i aria-hidden="true" class="fa-solid fa-arrow-left"></i>
-              <span>Previous Context</span>
-            </button>
-            <button id="next-btn" class="btn primary-btn">
-              <span>Transmit Evaluation Context</span>
-              <i aria-hidden="true" class="fa-solid fa-paper-plane"></i>
-            </button>
-          </div>
+      <div class="stat-card">
+        <i class="fas fa-bookmark stat-icon b-icon"></i>
+        <div>
+          <div class="stat-value" id="totalBookmarks">0</div>
+          <div class="stat-label">Bookmarked</div>
         </div>
       </div>
-      <section class="history-section glass-card">
-        <div class="history-header">
-          <h3>
-            <i aria-hidden="true" class="fa-solid fa-clock-rotate-left"></i>
-            Interview History
-          </h3>
+      <div class="stat-card">
+        <i class="fas fa-fire stat-icon s-icon"></i>
+        <div>
+          <div class="stat-value" id="streakCount">0</div>
+          <div class="stat-label">Day Streak</div>
+        </div>
+      </div>
+    </section>
 
-          <button id="clear-history-btn" class="btn secondary-btn">
-            Clear History
+    <!-- Main Grid -->
+    <div class="main-grid">
+
+      <!-- LEFT PANEL -->
+      <div class="left-panel">
+
+        <!-- Session Setup -->
+        <div class="card setup-card">
+          <div class="card-header">
+            <i class="fas fa-sliders-h"></i>
+            <h2>Session Setup</h2>
+          </div>
+
+          <div class="form-group">
+            <label>Category</label>
+            <div class="custom-select-wrap">
+              <select id="categorySelect">
+                <option value="all">🎲 All Categories</option>
+                <option value="technical">💻 Technical</option>
+                <option value="behavioral">🧠 Behavioral</option>
+                <option value="hr">👔 HR</option>
+                <option value="dsa">📊 DSA</option>
+                <option value="system-design">🏗️ System Design</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Difficulty</label>
+            <div class="diff-tabs">
+              <button class="diff-tab active" data-diff="all">All</button>
+              <button class="diff-tab" data-diff="easy">Easy</button>
+              <button class="diff-tab" data-diff="medium">Medium</button>
+              <button class="diff-tab" data-diff="hard">Hard</button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Timer Mode</label>
+            <div class="timer-mode-tabs">
+              <button class="timer-tab active" data-time="0">No Timer</button>
+              <button class="timer-tab" data-time="60">1 min</button>
+              <button class="timer-tab" data-time="120">2 min</button>
+              <button class="timer-tab" data-time="300">5 min</button>
+            </div>
+          </div>
+
+          <button class="btn-primary" id="startSessionBtn">
+            <i class="fas fa-play"></i> Start Session
           </button>
         </div>
 
-        <div id="history-stats"></div>
+        <!-- Category Stats -->
+        <div class="card cat-stats-card">
+          <div class="card-header">
+            <i class="fas fa-chart-bar"></i>
+            <h2>Category Progress</h2>
+          </div>
+          <div id="catProgress" class="cat-progress"></div>
+        </div>
 
-        <div id="history-container"></div>
-      </section>
+        <!-- Tips Card -->
+        <div class="card tips-card">
+          <div class="card-header">
+            <i class="fas fa-lightbulb"></i>
+            <h2>Interview Tips</h2>
+          </div>
+          <div class="tip-content">
+            <p class="tip-text" id="tipText"></p>
+          </div>
+          <button class="refresh-tip" id="refreshTip">
+            <i class="fas fa-sync-alt"></i> New Tip
+          </button>
+        </div>
+
+      </div>
+
+      <!-- CENTER PANEL: Question -->
+      <div class="center-panel">
+
+        <!-- Welcome Screen -->
+        <div class="card welcome-card" id="welcomeCard">
+          <div class="welcome-emoji">🎯</div>
+          <h2>Ready to Practice?</h2>
+          <p>Set your preferences on the left and hit <strong>Start Session</strong> to begin.</p>
+          <div class="welcome-features">
+            <div class="wf-item"><i class="fas fa-check"></i> 50+ curated questions</div>
+            <div class="wf-item"><i class="fas fa-check"></i> Self-rating system</div>
+            <div class="wf-item"><i class="fas fa-check"></i> Model answers</div>
+            <div class="wf-item"><i class="fas fa-check"></i> Timer simulation</div>
+          </div>
+        </div>
+
+        <!-- Question Card -->
+        <div class="card question-card hidden" id="questionCard">
+
+          <!-- Question Header -->
+          <div class="q-header">
+            <div class="q-meta">
+              <span class="q-badge" id="qCategory"></span>
+              <span class="q-diff" id="qDifficulty"></span>
+              <span class="q-num" id="qNumber"></span>
+            </div>
+            <div class="q-actions">
+              <button class="q-action-btn" id="bookmarkBtn" title="Bookmark">
+                <i class="far fa-bookmark"></i>
+              </button>
+              <button class="q-action-btn" id="skipBtn" title="Skip Question">
+                <i class="fas fa-forward"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Timer Bar -->
+          <div class="timer-bar-wrap hidden" id="timerBarWrap">
+            <div class="timer-bar" id="timerBar"></div>
+            <span class="timer-text" id="timerText">0:00</span>
+          </div>
+
+          <!-- Question Text -->
+          <div class="question-text" id="questionText"></div>
+
+          <!-- Answer Area -->
+          <div class="answer-wrap">
+            <div class="answer-label-row">
+              <label>Your Answer</label>
+              <span class="word-count" id="wordCount">0 words</span>
+            </div>
+            <textarea id="answerInput" rows="6"
+              placeholder="Type your answer here... Think out loud, structure your thoughts.">
+            </textarea>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="q-btn-row">
+            <button class="btn-reveal" id="revealBtn">
+              <i class="fas fa-eye"></i> Show Model Answer
+            </button>
+            <button class="btn-submit" id="submitAnswerBtn">
+              <i class="fas fa-check"></i> Submit Answer
+            </button>
+          </div>
+
+          <!-- Model Answer -->
+          <div class="model-answer hidden" id="modelAnswer">
+            <div class="model-header">
+              <i class="fas fa-robot"></i>
+              <span>Model Answer</span>
+            </div>
+            <p id="modelAnswerText"></p>
+          </div>
+
+          <!-- Self Rating -->
+          <div class="rating-wrap hidden" id="ratingWrap">
+            <p class="rating-label">How well did you answer?</p>
+            <div class="stars" id="starRating">
+              <i class="fas fa-star" data-val="1"></i>
+              <i class="fas fa-star" data-val="2"></i>
+              <i class="fas fa-star" data-val="3"></i>
+              <i class="fas fa-star" data-val="4"></i>
+              <i class="fas fa-star" data-val="5"></i>
+            </div>
+            <div class="rating-labels">
+              <span>Poor</span><span>Average</span><span>Excellent</span>
+            </div>
+            <button class="btn-next" id="nextBtn">
+              <i class="fas fa-arrow-right"></i> Next Question
+            </button>
+          </div>
+
+        </div>
+
+        <!-- Session Complete Card -->
+        <div class="card session-complete hidden" id="sessionComplete">
+          <div class="complete-emoji">🏆</div>
+          <h2>Session Complete!</h2>
+          <p class="complete-sub" id="completeSub"></p>
+          <div class="complete-stats">
+            <div class="cs-stat">
+              <span class="cs-val" id="csAttempted">0</span>
+              <span class="cs-label">Answered</span>
+            </div>
+            <div class="cs-stat">
+              <span class="cs-val" id="csSkipped">0</span>
+              <span class="cs-label">Skipped</span>
+            </div>
+            <div class="cs-stat">
+              <span class="cs-val" id="csAvgRating">0.0</span>
+              <span class="cs-label">Avg Rating</span>
+            </div>
+          </div>
+          <div class="complete-rating-breakdown" id="ratingBreakdown"></div>
+          <div class="complete-actions">
+            <button class="btn-primary" id="restartBtn">
+              <i class="fas fa-redo"></i> New Session
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT PANEL -->
+      <div class="right-panel">
+
+        <!-- Session Progress -->
+        <div class="card progress-card" id="progressCard">
+          <div class="card-header">
+            <i class="fas fa-tasks"></i>
+            <h2>Session Progress</h2>
+          </div>
+          <div class="progress-ring-wrap">
+            <svg viewBox="0 0 100 100" class="progress-svg">
+              <circle class="prog-track" cx="50" cy="50" r="40"/>
+              <circle class="prog-fill" id="progressRing" cx="50" cy="50" r="40"
+                stroke-dasharray="251" stroke-dashoffset="251"/>
+            </svg>
+            <div class="progress-center">
+              <span class="prog-val" id="progVal">0</span>
+              <span class="prog-total" id="progTotal">/ 0</span>
+            </div>
+          </div>
+          <div class="progress-meta">
+            <div class="pm-item">
+              <span class="pm-dot answered"></span>
+              <span id="pmAnswered">0 Answered</span>
+            </div>
+            <div class="pm-item">
+              <span class="pm-dot skipped"></span>
+              <span id="pmSkipped">0 Skipped</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bookmarks -->
+        <div class="card bookmark-card">
+          <div class="card-header">
+            <i class="fas fa-bookmark"></i>
+            <h2>Bookmarks</h2>
+            <span class="bookmark-count" id="bookmarkCount">0</span>
+          </div>
+          <div class="bookmark-list" id="bookmarkList">
+            <div class="bm-empty" id="bmEmpty">
+              <i class="fas fa-bookmark"></i>
+              <span>No bookmarks yet.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent History -->
+        <div class="card history-card">
+          <div class="card-header">
+            <i class="fas fa-history"></i>
+            <h2>Recent Answers</h2>
+          </div>
+          <div class="history-list" id="historyList">
+            <div class="hist-empty" id="histEmpty">
+              <i class="fas fa-inbox"></i>
+              <span>No answers yet.</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </div>
 
-    <div id="completion-modal" class="modal" aria-hidden="true" role="dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3>Evaluation Performance Analysis</h3>
-          <button
-            id="modal-close"
-            class="close-btn"
-            aria-label="Dismiss metrics view"
-          >
-            &times;
-          </button>
-        </div>
-        <div id="summary-content"></div>
-      </div>
-    </div>
+  </main>
 
-    <script src="config.js"></script>
-    <script src="app.js"></script>
-  </body>
+  <!-- History Modal -->
+  <div class="modal-overlay" id="historyModal">
+    <div class="modal">
+      <button class="modal-close" id="historyModalClose">
+        <i class="fas fa-times"></i>
+      </button>
+      <div class="modal-header-title">
+        <i class="fas fa-history"></i>
+        <h2>Answer History</h2>
+      </div>
+      <div class="modal-body" id="historyModalBody"></div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast">
+    <i class="toast-icon fas fa-check-circle"></i>
+    <span id="toastMsg"></span>
+  </div>
+
+  <script src="app.js"></script>
+</body>
 </html>

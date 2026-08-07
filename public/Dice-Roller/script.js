@@ -40,16 +40,16 @@ const COLOR_PALETTE = [
   '#FFB3E6', '#B5EAD7', '#C9E4FF', '#FFD1DC', '#FFE5B4', '#D4F0C0',
   '#FFC8DD', '#BDE0FE', '#A2D2FF', '#CDB4DB', '#FFC6FF', '#CAFFBF',
   '#9BF6FF', '#FDFFB6', '#FFD6A5', '#FFADAD', '#BDB2FF', '#A0C4FF',
-  
+
   // Brighter colors
   '#FF6B6B', '#FF9F43', '#FECA57', '#48DBFB', '#0ABDE3', '#A29BFE',
   '#FD79A8', '#00B894', '#00CEC9', '#0984E3', '#6C5CE7', '#FDCB6E',
   '#E17055', '#00B894', '#2D3436', '#636E72', '#B2BEC3', '#DFE6E9',
-  
+
   // Classic colors
   '#FF0000', '#FF6600', '#FFCC00', '#33CC33', '#0066FF', '#9900CC',
   '#FF3399', '#00CC99', '#3399FF', '#FF9900', '#CC0066', '#00CCCC',
-  
+
   // Darker shades
   '#8B0000', '#CC5500', '#B8860B', '#006400', '#00008B', '#4B0082',
   '#8B008B', '#006B6B', '#2F4F4F', '#800000', '#556B2F', '#8B4513'
@@ -62,11 +62,10 @@ function buildDiceSVG(value, color) {
   const pip = "#222222";
   const pips = value
     ? (PIP_LAYOUTS[value] || [])
-        .map(([cx, cy]) => `<circle cx="${cx}" cy="${cy}" r="7" fill="${pip}"/>`)
-        .join("")
-    : `<text x="50" y="56" text-anchor="middle" font-size="30" fill="${
-        isDark ? "#555" : "#ccc"
-      }" font-family="sans-serif">?</text>`;
+      .map(([cx, cy]) => `<circle cx="${cx}" cy="${cy}" r="7" fill="${pip}"/>`)
+      .join("")
+    : `<text x="50" y="56" text-anchor="middle" font-size="30" fill="${isDark ? "#555" : "#ccc"
+    }" font-family="sans-serif">?</text>`;
   return `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
                 <rect x="3" y="3" width="94" height="94" rx="16" ry="16"
                     fill="${face}" stroke="${stroke}" stroke-width="3"/>
@@ -80,8 +79,21 @@ const state = {
   diceColor: "#FFB3BA",
   isRolling: false,
   soundEnabled: true,
-  rolls: [],
-  distribution: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 },
+
+  // Stores only the currently visible dice
+  currentRoll: [],
+
+  // Stores every dice value rolled during the session
+  rollHistory: [],
+
+  distribution: {
+    1: 0,
+    2: 0,
+    3: 0,
+    4: 0,
+    5: 0,
+    6: 0,
+  },
 };
 
 const soundSingle = document.getElementById("soundSingle");
@@ -91,7 +103,7 @@ function playDiceSound(count) {
   if (!state.soundEnabled) return;
   const audio = count === 1 ? soundSingle : soundMulti;
   audio.currentTime = 0;
-  audio.play().catch(() => {});
+  audio.play().catch(() => { });
 }
 
 // ── Theme toggle ──
@@ -106,7 +118,6 @@ document.getElementById("themeToggle").addEventListener("click", () => {
 document.getElementById("diceCount").addEventListener("change", (e) => {
   const error = document.getElementById("diceError");
   const value = parseInt(e.target.value, 10);
-
   if (value > 10) {
     error.textContent = "Maximum dice count is 10.";
     e.target.value = state.diceCount;
@@ -117,21 +128,19 @@ document.getElementById("diceCount").addEventListener("change", (e) => {
     e.target.value = state.diceCount;
     return;
   }
-
   error.textContent = "";
   state.diceCount = value;
-  state.rolls = [];
+  // Clear only the currently displayed dice
+  state.currentRoll = [];
   renderDice();
 });
-
 // ── Color Picker Setup ──
 function initializeColorPicker() {
   const picker = document.getElementById('colorPicker');
   const customPicker = document.getElementById('customColorPicker');
-  
+
   // Clear existing options
   picker.innerHTML = '';
-  
   // Add palette colors
   COLOR_PALETTE.forEach(color => {
     const option = document.createElement('div');
@@ -139,21 +148,16 @@ function initializeColorPicker() {
     option.dataset.color = color;
     option.style.background = color;
     option.title = color;
-    
     if (color === state.diceColor) {
       option.classList.add('selected');
     }
-    
     option.addEventListener('click', () => {
       selectColor(color);
     });
-    
     picker.appendChild(option);
   });
-  
   // Set custom picker to current color
   customPicker.value = state.diceColor;
-  
   // Handle custom color picker
   customPicker.addEventListener('input', (e) => {
     const color = e.target.value;
@@ -164,10 +168,8 @@ function initializeColorPicker() {
 function selectColor(color, isCustom = false) {
   // Update state
   state.diceColor = color;
-  
   // Update custom picker
   document.getElementById('customColorPicker').value = color;
-  
   // Update selection UI
   if (!isCustom) {
     document.querySelectorAll('.color-option').forEach(opt => {
@@ -179,7 +181,6 @@ function selectColor(color, isCustom = false) {
       opt.classList.remove('selected');
     });
   }
-  
   // Re-render dice
   renderDice();
 }
@@ -194,8 +195,19 @@ document.getElementById("soundToggle").addEventListener("click", () => {
 
 // ── Reset ──
 document.getElementById("resetBtn").addEventListener("click", () => {
-  state.rolls = [];
-  state.distribution = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 };
+  // Clear current dice
+  state.currentRoll = [];
+  // Clear complete roll history
+  state.rollHistory = [];
+  // Reset distribution counts
+  state.distribution = {
+    1: 0,
+    2: 0,
+    3: 0,
+    4: 0,
+    5: 0,
+    6: 0
+  };
   updateStats();
   renderDice();
   const rm = document.getElementById("resultMessage");
@@ -213,7 +225,10 @@ function renderDice() {
     const wrap = document.createElement("div");
     wrap.className = "dice-wrap";
     wrap.id = `dice-${i}`;
-    wrap.innerHTML = buildDiceSVG(state.rolls[i] || null, state.diceColor);
+    wrap.innerHTML = buildDiceSVG(
+      state.currentRoll[i] || null,
+      state.diceColor
+    );
     display.appendChild(wrap);
   }
 }
@@ -245,11 +260,17 @@ function rollDice() {
       newRolls.push(r);
       total += r;
       state.distribution[r]++;
-      wrap.innerHTML = buildDiceSVG(r, state.diceColor);
+      wrap.innerHTML = buildDiceSVG(
+        r,
+        state.diceColor
+      );
     });
-    state.rolls = newRolls;
+    // Display only the latest roll
+    state.currentRoll = newRolls;
+    // Store every rolled value in history
+    state.rollHistory.push(...newRolls);
+    // Update statistics
     updateStats();
-
     rm.textContent =
       newRolls.length === 1
         ? `You rolled a ${newRolls[0]}!`
@@ -304,31 +325,38 @@ function buildTallySVG(count) {
 }
 
 function updateStats() {
-  const n = state.rolls.length;
-  const sum = state.rolls.reduce((a, b) => a + b, 0);
-  document.getElementById("totalRolls").textContent = n;
-  document.getElementById("avgRoll").textContent = n
-    ? (sum / n).toFixed(2)
-    : "0";
-  document.getElementById("minRoll").textContent = n
-    ? Math.min(...state.rolls)
-    : "—";
-  document.getElementById("maxRoll").textContent = n
-    ? Math.max(...state.rolls)
-    : "—";
-
-  const dist = document.getElementById("distribution");
-  dist.innerHTML = "";
+  const history = state.rollHistory;
+  const totalRolls = history.length;
+  const sum = history.reduce((total, value) => {
+    return total + value;
+  }, 0);
+  document.getElementById("totalRolls").textContent = totalRolls;
+  document.getElementById("avgRoll").textContent =
+    totalRolls > 0
+      ? (sum / totalRolls).toFixed(2)
+      : "0";
+  document.getElementById("minRoll").textContent =
+    totalRolls > 0
+      ? Math.min(...history)
+      : "—";
+  document.getElementById("maxRoll").textContent =
+    totalRolls > 0
+      ? Math.max(...history)
+      : "—";
+  const distribution = document.getElementById("distribution");
+  distribution.innerHTML = "";
   for (let i = 1; i <= 6; i++) {
-    dist.innerHTML += `<div class="dist-item">
-                    <div class="dist-number">${i}</div>
-                    <div class="dist-tally">${buildTallySVG(
-                      state.distribution[i]
-                    )}</div>
-                </div>`;
+    const item = document.createElement("div");
+    item.className = "dist-item";
+    item.innerHTML = `
+            <div class="dist-number">${i}</div>
+            <div class="dist-tally">
+                ${buildTallySVG(state.distribution[i])}
+            </div>
+        `;
+    distribution.appendChild(item);
   }
 }
-
 // ── Initialize ──
 initializeColorPicker();
 renderDice();
