@@ -485,8 +485,9 @@ setEditingState(false);
 renderCard();
 
 /* ============================================================
-                    THEME TOGGLE
-============================================================ */
+                      THEME TOGGLE
+ ============================================================*/
+
 const themeToggle = document.getElementById("themeToggle");
 const themeIcon = document.querySelector(".theme-icon");
 

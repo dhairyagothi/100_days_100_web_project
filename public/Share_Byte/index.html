@@ -9,7 +9,104 @@
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="image.png">
 </head>
+<style>
+    /* ================= HEADER ================= */
 
+.header{
+    position: sticky;
+    top:0;
+    width:100%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:16px 8%;
+    background:#ffffff;
+    box-shadow:0 2px 10px rgba(0,0,0,.08);
+    z-index:1000;
+}
+
+.logo{
+    font-size:30px;
+    font-weight:700;
+    color:#1b5e20;
+    white-space:nowrap;
+}
+
+.navbar{
+    display:flex;
+    align-items:center;
+    gap:28px;
+    flex-wrap:nowrap;
+}
+
+.navbar a{
+    text-decoration:none;
+    color:#333;
+    font-size:16px;
+    font-weight:600;
+    transition:.3s;
+    white-space:nowrap;
+}
+
+.navbar a:hover,
+.navbar .active{
+    color:#2e7d32;
+}
+
+.start-btn{
+    background:#2e7d32;
+    color:#fff !important;
+    padding:12px 22px;
+    border-radius:8px;
+    text-decoration:none;
+    transition:.3s;
+}
+
+.start-btn:hover{
+    background:#1b5e20;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width:992px){
+
+    .header{
+        flex-direction:column;
+        gap:18px;
+    }
+
+    .navbar{
+        flex-wrap:wrap;
+        justify-content:center;
+        gap:16px;
+    }
+}
+
+@media (max-width:600px){
+
+    .header{
+        padding:15px;
+    }
+
+    .logo{
+        font-size:24px;
+    }
+
+    .navbar{
+        flex-direction:column;
+        width:100%;
+    }
+
+    .navbar a{
+        width:100%;
+        text-align:center;
+    }
+
+    .start-btn{
+        width:100%;
+    }
+}
+</style>
 <body>
 
     <!-- Sidebar -->
