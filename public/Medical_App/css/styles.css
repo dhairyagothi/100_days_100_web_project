@@ -278,6 +278,12 @@ a:hover { color: var(--primary-dark); text-decoration: underline; }
     gap: var(--spacing-lg);
 }
 
+.navbar-logo {
+    height: 40px;
+    width: auto;
+    object-fit: contain;
+}
+
 /* hamburger only shows on mobile */
 .sidebar-trigger {
     display: none;
