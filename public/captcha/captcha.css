@@ -1,15 +1,15 @@
 /* ==========================
-   DARK THEME (Default)
+   BASE STYLES (Light Theme Default)
    ========================== */
 body {
-    --bg-primary: linear-gradient(135deg, #0f172a, #111827, #1e293b);
-    --card-bg: rgba(15, 23, 42, 0.85);
-    --text-primary: #ffffff;
-    --text-secondary: #94a3b8;
-    --accent: #60a5fa;
-    --border: rgba(255, 255, 255, 0.08);
-    --navbar-bg: rgba(10, 10, 20, 0.85);
-    --footer-bg: rgba(6, 12, 35, 0.95);
+    --bg-primary: linear-gradient(135deg, #f8fafc, #e2e8f0, #f1f5f9);
+    --card-bg: rgba(255, 255, 255, 0.95);
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --accent: #2563eb;
+    --border: rgba(15, 23, 42, 0.08);
+    --navbar-bg: rgba(255, 255, 255, 0.95);
+    --footer-bg: rgba(241, 245, 249, 0.95);
 
     min-height: 100vh;
     background: var(--bg-primary);
@@ -25,8 +25,25 @@ body {
     margin: 0;
 }
 
+/* ==========================
+   DARK THEME
+   ========================== */
+body.dark {
+    --bg-primary: linear-gradient(135deg, #0f172a, #111827, #1e293b);
+    --card-bg: rgba(15, 23, 42, 0.85);
+    --text-primary: #ffffff;
+    --text-secondary: #94a3b8;
+    --accent: #60a5fa;
+    --border: rgba(255, 255, 255, 0.08);
+    --navbar-bg: rgba(10, 10, 20, 0.85);
+    --footer-bg: rgba(6, 12, 35, 0.95);
+
+    background: var(--bg-primary) !important;
+    color: var(--text-primary);
+}
+
 /* Dark theme navbar */
-body .navbar {
+body.dark .navbar {
     background: var(--navbar-bg);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
@@ -34,15 +51,77 @@ body .navbar {
 }
 
 /* Dark theme container */
-body .container {
+body.dark .container {
     background: var(--card-bg);
     border: 1px solid var(--border);
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
 }
 
-body.dark{
-    background:#121212;
-    color:white;
+/* ==========================
+   LIGHT THEME (Default)
+   ========================== */
+body:not(.dark) {
+    --bg-primary: linear-gradient(135deg, #f8fafc, #e2e8f0, #f1f5f9);
+    --card-bg: rgba(255, 255, 255, 0.95);
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --accent: #2563eb;
+    --border: rgba(15, 23, 42, 0.08);
+    --navbar-bg: rgba(255, 255, 255, 0.95);
+    --footer-bg: rgba(241, 245, 249, 0.95);
+
+    background: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+/* Light theme navbar */
+body:not(.dark) .navbar {
+    background: var(--navbar-bg);
+    border-bottom: 1px solid var(--border);
+}
+
+/* Light theme container */
+body:not(.dark) .container {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    box-shadow: 0 20px 60px rgba(15, 23, 42, 0.08);
+}
+
+
+body:not(.dark) .logo,
+body:not(.dark) .nav-links a,
+body:not(.dark) .hero header,
+body:not(.dark) .field label,
+body:not(.dark) select,
+body:not(.dark) input[type="text"] {
+    color: var(--text-primary);
+}
+
+body:not(.dark) .intro,
+body:not(.dark) .footer-section p,
+body:not(.dark) .footer-section a,
+body:not(.dark) .footer-bottom {
+    color: var(--text-secondary);
+}
+
+body:not(.dark) select option {
+    background: #ffffff;
+    color: #111827;
+}
+
+body:not(.dark) input[type="text"] {
+    background: #ffffff;
+    border: 1px solid rgba(15, 23, 42, 0.1);
+    color: var(--text-primary);
+}
+
+body:not(.dark) .button {
+    color: #111827;
+}
+
+body:not(.dark) footer {
+    background: var(--footer-bg);
+    border-top: 1px solid var(--border);
 }
 
 .difficulty-container,
@@ -62,23 +141,23 @@ button:hover{
 
 
 /* Dark theme text colors */
-body .logo,
-body .nav-links a,
-body .hero header,
-body .field label,
-body select,
-body input[type="text"] {
+body.dark .logo,
+body.dark .nav-links a,
+body.dark .hero header,
+body.dark .field label,
+body.dark select,
+body.dark input[type="text"] {
     color: var(--text-primary);
 }
 
-body .intro,
-body .footer-section p,
-body .footer-section a,
-body .footer-bottom {
+body.dark .intro,
+body.dark .footer-section p,
+body.dark .footer-section a,
+body.dark .footer-bottom {
     color: var(--text-secondary);
 }
 
-body footer {
+body.dark footer {
     background: var(--footer-bg);
     border-top: 1px solid var(--border);
     backdrop-filter: blur(10px);
@@ -86,20 +165,20 @@ body footer {
 }
 
 /* Dark theme select options */
-body select option {
+body.dark select option {
     background: #0f172a;
     color: white;
 }
 
 /* Dark theme input */
-body input[type="text"] {
+body.dark input[type="text"] {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.08);
     color: white;
 }
 
 /* Dark theme button */
-body .button {
+body.dark .button {
     color: #e2e8f0;
 }
 
@@ -138,8 +217,8 @@ body .button {
     box-sizing: border-box;
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    background: rgba(10, 10, 20, 0.85);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    background: var(--navbar-bg);
+    border-bottom: 1px solid var(--border);
 }
 
 .navbar ul {
@@ -152,7 +231,7 @@ body .button {
     font-family: "Bebas Neue", sans-serif;
     font-size: 2rem;
     letter-spacing: 1px;
-    color: #ffffff;
+    color: var(--text-primary);
     cursor: pointer;
     text-decoration: none;
 }
@@ -175,7 +254,7 @@ body .button {
     size: 2rem;
     height: 30px;
     width: 30px;
-    color: #d6d6d6;
+    color: var(--text-secondary);
     font-family: "Inter", sans-serif;
     font-size: 0.95rem;
     font-weight: 500;
@@ -183,7 +262,7 @@ body .button {
 }
 
 .nav-links a:hover {
-    color: #ffffff;
+    color: var(--text-primary);
 }
 
 /* Animated Underline */
@@ -216,9 +295,9 @@ body .button {
     margin: 40px auto;
     padding: 35px;
     border-radius: 24px;
-    background: rgba(15, 23, 42, .85);
+    background: var(--card-bg);
     backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, .08);
+    border: 1px solid var(--border);
     box-shadow: 0 20px 60px rgba(0, 0, 0, .35);
     display: flex;
     flex-direction: column;

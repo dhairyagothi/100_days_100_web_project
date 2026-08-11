@@ -20,10 +20,6 @@ const voiceField = document.getElementById('voiceField');
 const voiceSelect = document.getElementById('voiceSelect');
 const textCaptchaField = document.querySelector('.textcaptcha');
 
-// FIX: this was never defined before, so generateCaptcha() threw a
-// ReferenceError on the very first call and the CAPTCHA never rendered.
-const captchaTypeSelect = document.getElementById('captchaType');
-
 let currentCaptcha = null;
 let attempts = 0;
 const maxAttempts = 3;
@@ -31,41 +27,49 @@ let lockoutEndTime = 0;
 let selectedDifficulty = "medium";
 
 const themeToggle = document.getElementById("themeToggle");
+const themeIcon = document.getElementById("themeIcon");
+
+const updateThemeIcon = () => {
+    if (!themeIcon) return;
+    themeIcon.textContent = document.body.classList.contains("dark") ? "🌙" : "☀️";
+};
 
 if(themeToggle){
-    themeToggle.addEventListener("click",()=>{
-
+    themeToggle.addEventListener("click", () => {
         document.body.classList.toggle("dark");
-
         localStorage.setItem(
             "theme",
-            document.body.classList.contains("dark")
-                ? "dark"
-                : "light"
+            document.body.classList.contains("dark") ? "dark" : "light"
         );
+        updateThemeIcon();
     });
 
-    if(localStorage.getItem("theme")==="dark"){
+    // Initialize theme from localStorage or default to light
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "dark") {
         document.body.classList.add("dark");
+    } else {
+        // Default to light mode if no theme saved or if saved as light
+        document.body.classList.remove("dark");
     }
+
+    updateThemeIcon();
 }
 
 let captchaLength = 4;
 
-const difficulty =
-    document.getElementById("difficulty");
+const difficulty = document.getElementById("difficulty");
 
-difficulty.addEventListener("change",()=>{
-
-    if(difficulty.value==="easy")
-        captchaLength=4;
-
-    else if(difficulty.value==="medium")
-        captchaLength=6;
-
-    else
-        captchaLength=8;
-});
+if (difficulty) {
+    difficulty.addEventListener("change", () => {
+        if (difficulty.value === "easy")
+            captchaLength = 4;
+        else if (difficulty.value === "medium")
+            captchaLength = 6;
+        else
+            captchaLength = 8;
+    });
+}
 
 
 let time = 30;
@@ -84,8 +88,6 @@ const interval = setInterval(()=>{
     }
 
 },1000);
-
-let attempts = 5;
 
 function wrongCaptcha(){
 
@@ -308,10 +310,9 @@ const generateCaptcha = () => {
 
     selectedImageAnswer = '';
 
-    // Normalize type string case to prevent logic matching bugs
-    const type = selectedType.toLowerCase();
-
-    const type = captchaTypeSelect.value;
+    const type = (captchaTypeSelect && captchaTypeSelect.value)
+        ? captchaTypeSelect.value.toLowerCase()
+        : selectedType.toLowerCase();
 
     if (type === 'audio') {
         voiceField.classList.remove('hidden');
@@ -391,17 +392,9 @@ const generateCaptcha = () => {
     }
 };
 
-// FIX: keep selectedType in sync with the dropdown and regenerate on change,
-// otherwise switching CAPTCHA type from the <select> never re-renders.
-captchaTypeSelect.addEventListener('change', () => {
-    selectedType = captchaTypeSelect.value;
-    textInput.value = "";
-    selectedImageAnswer = "";
-    generateCaptcha();
-});
-
 //math captcha numeric input validation
-textInput.addEventListener("input", () => {
+if (textInput) {
+    textInput.addEventListener("input", () => {
 
 /**
  * Shows a toast notification outside the form.
