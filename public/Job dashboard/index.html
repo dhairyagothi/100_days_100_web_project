@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Responsive landing dashboard for discovering and filtering job openings." 
+    />
+    <title>Job Dashboard Landing</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <link rel="stylesheet" href="landing-dashboard.css" />
+    <link rel="icon" href="../favv.png" type="image/x-icon" />
+  </head>
+  <body>
+    <div class="landing-shell">
+      <header class="landing-topbar">
+        <a href="../../index.html" class="brand-mark">
+          <span class="brand-icon"><i class="fas fa-briefcase"></i></span>
+          <span>JobFlow</span>
+        </a>
+
+        <nav class="landing-nav" aria-label="Main navigation">
+          <a href="#overview">Overview</a>
+          <a href="#highlights">Highlights</a>
+          <a href="#workflow">Workflow</a>
+          <a href="#preview">Preview</a>
+        </nav>
+
+        <a href="jobs.html" class="landing-cta">Open Dashboard</a>
+      </header>
+
+      <main class="landing-main">
+        <section class="hero-panel" id="overview">
+          <div class="hero-copy">
+            <span class="pill">Responsive recruitment dashboard</span>
+            <h1>Land your next role with a dashboard built for speed.</h1>
+            <p>
+              Explore curated openings, filter by salary and work mode, and save
+              the roles that match your goals before you apply.
+            </p>
+
+            <div class="hero-actions">
+              <a href="jobs.html" class="primary-btn">Explore Jobs</a>
+              <a href="#highlights" class="secondary-btn">See Features</a>
+            </div>
+
+            <div class="hero-metrics">
+              <article>
+                <strong class="metric" data-target="28">0</strong>
+                <span>Curated openings</span>
+              </article>
+              <article>
+                <strong class="metric" data-target="12">0</strong>
+                <span>Specialized categories</span>
+              </article>
+              <article>
+                <strong class="metric" data-target="92">0</strong>
+                <span>Match satisfaction</span>
+              </article>
+            </div>
+          </div>
+
+          <div class="hero-card" aria-label="Dashboard preview card">
+            <div class="preview-top">
+              <span>Today’s spotlight</span>
+              <span class="status-pill">Live</span>
+            </div>
+
+            <div class="preview-job">
+              <div>
+                <h2>Senior Web Developer</h2>
+                <p>IT Infosy Co. · Mumbai, India</p>
+              </div>
+              <button class="mini-save"><i class="fas fa-heart"></i></button>
+            </div>
+
+            <div class="preview-tags">
+              <span><i class="fas fa-indian-rupee-sign"></i> 10k - 20k</span>
+              <span><i class="fas fa-briefcase"></i> Part-time</span>
+              <span><i class="fas fa-clock"></i> Day shift</span>
+            </div>
+
+            <div class="preview-grid">
+              <div class="stat-card">
+                <small>Applicants</small>
+                <strong>142</strong>
+              </div>
+              <div class="stat-card">
+                <small>Response rate</small>
+                <strong>86%</strong>
+              </div>
+              <div class="stat-card">
+                <small>Saved roles</small>
+                <strong>04</strong>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="feature-grid" id="highlights">
+          <article class="info-card">
+            <span class="icon-wrap"><i class="fas fa-filter"></i></span>
+            <h3>Smart filters</h3>
+            <p>
+              Narrow openings by title, location, salary, job type, shift, and
+              education level without losing the overview.
+            </p>
+          </article>
+
+          <article class="info-card">
+            <span class="icon-wrap"><i class="fas fa-bookmark"></i></span>
+            <h3>Saved roles</h3>
+            <p>
+              Keep your most promising opportunities in a dedicated save list
+              so you can revisit them at any time.
+            </p>
+          </article>
+
+          <article class="info-card">
+            <span class="icon-wrap"><i class="fas fa-mobile-alt"></i></span>
+            <h3>Responsive experience</h3>
+            <p>
+              The landing dashboard is optimized for desktop, tablet, and mobile
+              screens with a smooth, touch-friendly layout.
+            </p>
+          </article>
+        </section>
+
+        <section class="workflow-section" id="workflow">
+          <div class="section-heading">
+            <span class="pill">Job flow</span>
+            <h2>One clean path from discovery to application.</h2>
+          </div>
+
+          <div class="workflow-grid">
+            <article class="workflow-card">
+              <span class="step-number">01</span>
+              <h3>Discover</h3>
+              <p>Browse featured roles and trending positions from a focused overview.</p>
+            </article>
+            <article class="workflow-card">
+              <span class="step-number">02</span>
+              <h3>Refine</h3>
+              <p>Apply salary, experience, shift, and education filters instantly.</p>
+            </article>
+            <article class="workflow-card">
+              <span class="step-number">03</span>
+              <h3>Save & apply</h3>
+              <p>Bookmark the best matches and open the detailed listing when ready.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="preview-section" id="preview">
+          <div class="preview-copy">
+            <span class="pill">Beyond the landing page</span>
+            <h2>Move directly into the full dashboard without losing your context.</h2>
+            <p>
+              The new homepage is intentionally lightweight, while the original
+              filtering dashboard remains available for all existing workflows.
+            </p>
+            <a href="jobs.html" class="primary-btn">Continue to Dashboard</a>
+          </div>
+
+          <div class="mini-board">
+            <div class="board-card">
+              <span class="mini-label">Filters</span>
+              <div class="mini-pills">
+                <span>Title</span>
+                <span>Salary</span>
+                <span>Shift</span>
+              </div>
+            </div>
+            <div class="board-card">
+              <span class="mini-label">Saved</span>
+              <div class="mini-pills">
+                <span>4 roles</span>
+                <span>2 quick views</span>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <footer class="landing-footer">
+      <p>&copy; 2026 JobFlow. All rights reserved.</p>
+    </footer>
+
+    <script src="landing-dashboard.js"></script>
+  </body>
+</html>
