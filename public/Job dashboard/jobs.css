@@ -1,5 +1,38 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
+:root {
+    --bg-light: #f8fafc;
+    --bg-dark: #0f172a;
+    --surface-light: #ffffff;
+    --surface-dark: #1e293b;
+    --text-light: #0f172a;
+    --text-dark: #f1f5f9;
+    --muted-light: #475569;
+    --muted-dark: #94a3b8;
+    --border-light: #e2e8f0;
+    --border-dark: #334155;
+    --primary-light: #2563eb;
+    --primary-dark: #3b82f6;
+}
+
+[data-theme="dark"] {
+    --bg: var(--bg-dark);
+    --surface: var(--surface-dark);
+    --text: var(--text-dark);
+    --muted: var(--muted-dark);
+    --border: var(--border-dark);
+    --primary: var(--primary-dark);
+}
+
+[data-theme="light"] {
+    --bg: var(--bg-light);
+    --surface: var(--surface-light);
+    --text: var(--text-light);
+    --muted: var(--muted-light);
+    --border: var(--border-light);
+    --primary: var(--primary-light);
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -15,8 +48,8 @@ html {
 }
 
 body {
-    background-color: #f8fafc;
-    color: #0f172a;
+    background-color: var(--bg, #f8fafc);
+    color: var(--text, #0f172a);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
@@ -706,10 +739,79 @@ p {
 
 .nav{
     display: flex;
-    justify-content: center;
     align-items: center;
-    border-bottom: 1px solid gray;
-    padding: 20px;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 16px 18px;
+    position: sticky;
+    top: 10px;
+    z-index: 10;
+    background: rgba(248, 251, 255, 0.8);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(148, 163, 184, 0.28);
+    border-radius: 18px;
+    box-shadow: 0 14px 40px rgba(15, 23, 42, 0.08);
+    margin: 10px 5%;
+    max-width: 1240px;
+}
+
+.brand-mark {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: #0f172a;
+    font-size: 1.8rem;
+    font-weight: 800;
+}
+
+.brand-icon {
+    width: 40px;
+    height: 40px;
+    display: inline-grid;
+    place-items: center;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #2563eb, #60a5fa);
+    color: #fff;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #475569;
+    font-weight: 600;
+    font-size: 1.5rem;
+    transition: color 0.25s ease;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+    color: var(--primary, #2563eb);
+}
+
+.theme-toggle {
+    border: none;
+    background: rgba(37, 99, 235, 0.1);
+    color: var(--primary, #2563eb);
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    transition: all 0.2s ease;
+}
+
+.theme-toggle:hover {
+    background: rgba(37, 99, 235, 0.2);
+    transform: scale(1.05);
 }
 
 .job-container input{
@@ -718,4 +820,13 @@ p {
     background-color: rgb(248, 250, 252);
     font-size: large;
     color: blue;
+}
+
+.dashboard-footer {
+    text-align: center;
+    padding: 20px;
+    color: #64748b;
+    font-size: 1.4rem;
+    margin-top: 20px;
+    border-top: 1px solid #e2e8f0;
 }

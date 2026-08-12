@@ -8,6 +8,7 @@
   
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="jobs.css" />
+    <link rel="stylesheet" href="../landing-dashboard.css" />
     <link rel="icon" href="../favv.png" type="image/x-icon" />
   </head>
   <body>
@@ -17,9 +18,18 @@
 <!-- job filter section starts -->
 <div>
     <nav class="nav">
-        <h1>
-            All Jobs
-        </h1>
+        <a href="index.html" class="brand-mark">
+            <span class="brand-icon"><i class="fas fa-briefcase"></i></span>
+            <span>JobFlow</span>
+        </a>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="jobs.html" class="active">Jobs</a>
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
     </nav>
     
     <main class="job-main">
@@ -280,6 +290,11 @@
     </main>
 </div>
 
+<footer class="dashboard-footer">
+    <p>&copy; 2026 JobFlow. All rights reserved.</p>
+</footer>
+
 <script src="jobs.js"></script>
+<script src="theme.js"></script>
 </body>
 </html>
