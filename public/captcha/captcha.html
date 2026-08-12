@@ -64,24 +64,33 @@
 </div>
 
 
-    <footer class="footer">
-        <section id="footer-container">
+    <footer class="footer" role="contentinfo">
+        <div class="footer-inner">
+            <div class="footer-left">
+                <a href="/" class="footer-brand">Captcha</a>
+                <nav class="footer-nav" aria-label="Footer links">
+                    <a href="/">Home</a>
+                    <a href="generate.html">Generate</a>
+                    <a href="dashboard.html">Dashboard</a>
+                </nav>
+            </div>
 
-            <div class="footer-section">
-                <h4>Follow Us</h4>
-                <div class="social-links">
+            <div class="footer-right">
+                <div class="social-links" aria-label="Follow us">
                     <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
                     <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
                     <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
                     <a href="#" aria-label="Discord"><i class="fab fa-discord"></i></a>
                 </div>
             </div>
-        </section>
+        </div>
 
         <div class="footer-bottom">
-            <p>©<span id="currentYear"></span> Captcha is a modern, front-end verification demo.</p>
+            <p>©<span id="currentYear"></span> Captcha • Built for learning</p>
         </div>
     </footer>
+
+    <div id="toast-container" aria-live="polite" class="toast-container"></div>
 
     <script src="captcha.js"></script>
 </body>
