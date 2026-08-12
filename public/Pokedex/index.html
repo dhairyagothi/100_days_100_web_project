@@ -1,30 +1,61 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pokedex</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="image.png">
-</head>
-<body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="image.png" />
+  </head>
+  <body>
+    <a
+      href="/"
+      class="project-back-button"
+      style="
+        position: fixed;
+        left: 18px;
+        top: 18px;
+        padding: 8px 16px;
+        border-radius: 8px;
+        background: #1e293b;
+        color: #3b82f6;
+        border: 1px solid #3b82f6;
+        text-decoration: none;
+        z-index: 9999;
+        font-weight: 700;
+        font-family: Inter, system-ui, sans-serif;
+        transition: all 0.2s ease;
+      "
+      onmouseover="
+        this.style.background = '#3b82f6';
+        this.style.color = '#fff';
+      "
+      onmouseout="
+        this.style.background = '#1e293b';
+        this.style.color = '#3b82f6';
+      "
+      >← Back to Home</a
+    >
 
     <main class="pokedex-app">
-        <header class="pokedex-header">
-            <h1>Pokédex</h1>
-            <p>Search for any Pokémon by name or ID</p>
-        </header>
+      <header class="pokedex-header">
+        <h1>Pokédex</h1>
+        <p>Search for any Pokémon by name or ID</p>
+      </header>
 
-        <section class="search-section">
-            <input type="text" id="search-input" placeholder="e.g. pikachu or 25" autocomplete="off">
-            <button id="search-btn">Search</button>
-        </section>
+      <section class="search-section">
+        <input
+          type="text"
+          id="search-input"
+          placeholder="e.g. pikachu or 25"
+          autocomplete="off"
+        />
+        <button id="search-btn">Search</button>
+      </section>
 
-        <section id="pokemon-container" class="pokemon-display">
-            </section>
+      <section id="pokemon-container" class="pokemon-display"></section>
     </main>
 
     <script src="script.js"></script>
-</body>
+  </body>
 </html>

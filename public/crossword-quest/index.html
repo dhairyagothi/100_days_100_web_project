@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crossword Quest | Modern Interactive Crossword Puzzle</title>
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Play, create, and solve interactive crossword puzzles. Features dynamic generation, daily challenges, statistics, and multiplayer races.">
+  <meta name="keywords" content="crossword, game, online crossword, puzzle, crossword creator, Javascript crossword, responsive crossword">
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- CDNs for visual charts & confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <!-- jsPDF for downloading puzzles -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <!-- html2canvas for PDF export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header glass-card">
+      <div class="logo-area">
+        <svg class="logo-icon" viewBox="0 0 24 24" width="32" height="32">
+          <rect x="2" y="2" width="20" height="20" rx="4" fill="none" stroke="var(--primary)" stroke-width="2.5"/>
+          <line x1="8" y1="2" x2="8" y2="22" stroke="var(--primary)" stroke-width="1.5" stroke-dasharray="2,2"/>
+          <line x1="16" y1="2" x2="16" y2="22" stroke="var(--primary)" stroke-width="1.5" stroke-dasharray="2,2"/>
+          <line x1="2" y1="8" x2="22" y2="8" stroke="var(--primary)" stroke-width="1.5" stroke-dasharray="2,2"/>
+          <line x1="2" y1="16" x2="22" y2="16" stroke="var(--primary)" stroke-width="1.5" stroke-dasharray="2,2"/>
+          <rect x="8" y="2" width="8" height="6" fill="var(--primary-glow)"/>
+          <rect x="2" y="8" width="6" height="8" fill="var(--primary-glow)"/>
+          <text x="12" y="14" font-family="'Outfit', sans-serif" font-weight="900" font-size="10" fill="var(--primary)" text-anchor="middle" dominant-baseline="middle">C</text>
+        </svg>
+        <span class="logo-text">Crossword<span class="highlight">Quest</span></span>
+      </div>
+
+      <div class="header-controls">
+        <!-- Audio toggle -->
+        <button class="btn btn-secondary btn-icon" id="audio-toggle-btn" title="Toggle Sound FX">
+          <svg class="icon" id="audio-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="20" height="20">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072M18.364 5.636a9 9 0 010 12.728M12 18.75V5.25L7.75 9H4.5v6h3.25L12 18.75z" />
+          </svg>
+        </button>
+
+        <div class="user-profile-widget">
+          <div class="avatar">🏆</div>
+          <div class="profile-details">
+            <div class="username">Guest Solver</div>
+            <div class="user-stats"><span id="header-streak">🔥 0</span> day streak</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Core Layout Grid -->
+    <div class="main-layout">
+      <!-- Sidebar Navigation -->
+      <aside class="sidebar glass-card">
+        <nav class="nav-menu">
+          <button class="nav-item active" data-tab="dashboard">
+            <svg class="icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="18" height="18">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+            </svg>
+            <span>Home & Play</span>
+          </button>
+          <button class="nav-item" data-tab="editor">
+            <svg class="icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="18" height="18">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+            </svg>
+            <span>Puzzle Editor</span>
+          </button>
+          <button class="nav-item" data-tab="community">
+            <svg class="icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="18" height="18">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+            </svg>
+            <span>Local Library</span>
+          </button>
+          <button class="nav-item" data-tab="stats">
+            <svg class="icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="18" height="18">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10a2 2 0 01-2 2h-2a2 2 0 01-2-2zm9-1v-4a1 1 0 00-1-1h-2a1 1 0 00-1 1v4a1 1 0 001 1h2a1 1 0 001-1z" />
+            </svg>
+            <span>Statistics</span>
+          </button>
+          <button class="nav-item" data-tab="achievements">
+            <svg class="icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="18" height="18">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5a2 2 0 10-2 2h2zm-2 4h4m8-6a3 3 0 01-3 3H7a3 3 0 11-3-3m16 0a3 3 0 00-3-3H7a3 3 0 00-3 3" />
+            </svg>
+            <span>Badges</span>
+          </button>
+          <button class="nav-item" data-tab="leaderboard">
+            <svg class="icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="18" height="18">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span>Leaderboard</span>
+          </button>
+        </nav>
+        
+        <div class="sidebar-ad glass-card">
+          <h4>💡 Quick Hint</h4>
+          <p>Press <kbd>Tab</kbd> to cycle clues, and use <kbd>Arrow Keys</kbd> to traverse grids instantly.</p>
+        </div>
+      </aside>
+
+      <!-- Main Content Tabs -->
+      <main class="content-area">
+        
+        <!-- Tab 1: Dashboard -->
+        <section id="tab-dashboard" class="tab-panel active">
+          <div class="welcome-banner glass-card">
+            <div class="banner-text">
+              <h1>Begin Your Mental Workout</h1>
+              <p>Solve curated grids, challenge daily custom boards, or build your own. Persist stats & claim badges!</p>
+              <div class="action-buttons">
+                <button class="btn btn-primary" onclick="loadDailyChallenge()">
+                  ⚡ Play Daily Challenge
+                </button>
+                <button class="btn btn-secondary" onclick="openAIPromptModal()">
+                  🤖 AI Word Customizer
+                </button>
+              </div>
+            </div>
+            <div class="daily-widget glass-card">
+              <div class="widget-header">📆 Daily Crossword</div>
+              <div class="time-countdown" id="daily-countdown">23:59:59</div>
+              <div class="info-label">till next puzzle</div>
+              <div class="daily-streak">Current Streak: <strong id="daily-streak-val">🔥 0</strong> days</div>
+            </div>
+          </div>
+
+          <div class="dashboard-grid">
+            <!-- Search & Filters -->
+            <div class="dashboard-left glass-card">
+              <div class="section-title">
+                <h2>Browse Puzzles</h2>
+                <div class="search-box">
+                  <input type="text" id="puzzle-search" placeholder="Search categories..." oninput="filterPuzzles()">
+                </div>
+              </div>
+
+              <!-- Difficulty Filters -->
+              <div class="filter-chips">
+                <button class="chip active" onclick="setDifficultyFilter('all', this)">All</button>
+                <button class="chip" onclick="setDifficultyFilter('easy', this)">Easy</button>
+                <button class="chip" onclick="setDifficultyFilter('medium', this)">Medium</button>
+                <button class="chip" onclick="setDifficultyFilter('hard', this)">Hard</button>
+              </div>
+
+              <!-- Puzzles List Grid -->
+              <div class="puzzles-grid" id="puzzles-container">
+                <!-- Dynamically loaded -->
+              </div>
+            </div>
+
+            <!-- Stats & Quick Actions -->
+            <div class="dashboard-right">
+              <div class="stat-mini-card glass-card">
+                <div class="mini-icon">🏆</div>
+                <div class="mini-data">
+                  <span id="dash-solved">0</span>
+                  <p>Puzzles Solved</p>
+                </div>
+              </div>
+              <div class="stat-mini-card glass-card">
+                <div class="mini-icon">🎯</div>
+                <div class="mini-data">
+                  <span id="dash-accuracy">0%</span>
+                  <p>Average Accuracy</p>
+                </div>
+              </div>
+              <div class="stat-mini-card glass-card">
+                <div class="mini-icon">⏳</div>
+                <div class="mini-data">
+                  <span id="dash-total-time">0m</span>
+                  <p>Total Solve Time</p>
+                </div>
+              </div>
+
+              <!-- Multiplayer quick link -->
+              <div class="multiplayer-banner glass-card">
+                <h3>🏁 Crossword Racing</h3>
+                <p>Pit your speed against virtual opponent bots in a live puzzle solving race!</p>
+                <button class="btn btn-primary btn-full" onclick="startMultiplayerRace()">Start Race</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Tab 2: Game Board -->
+        <section id="tab-game" class="tab-panel">
+          <div class="game-top-bar glass-card">
+            <button class="btn btn-secondary" onclick="switchTab('dashboard')">
+              ← Back
+            </button>
+            <div class="puzzle-title-info">
+              <h2 id="game-puzzle-title">Select a Puzzle</h2>
+              <span class="badge" id="game-puzzle-difficulty">Easy</span>
+              <span class="badge category-badge" id="game-puzzle-category">Tech</span>
+            </div>
+
+            <!-- Game Stats Grid -->
+            <div class="game-stats">
+              <div class="game-stat">
+                <span class="stat-lbl">Time</span>
+                <span class="stat-val font-mono" id="game-timer">00:00</span>
+              </div>
+              <div class="game-stat">
+                <span class="stat-lbl">Mistakes</span>
+                <span class="stat-val font-mono error-text" id="game-mistakes">0</span>
+              </div>
+              <div class="game-stat">
+                <span class="stat-lbl">Hints</span>
+                <span class="stat-val font-mono" id="game-hints-used">0</span>
+              </div>
+            </div>
+
+            <div class="game-actions">
+              <button class="btn btn-secondary btn-icon" id="pause-btn" onclick="togglePause()" title="Pause/Resume">
+                <svg class="icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="18" height="18">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </button>
+              <button class="btn btn-secondary btn-icon" onclick="restartCurrentPuzzle()" title="Restart Puzzle">
+                <svg class="icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="18" height="18">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 8H18.2" />
+                </svg>
+              </button>
+              <button class="btn btn-secondary btn-icon" onclick="triggerPrint()" title="Print Crossword">
+                <svg class="icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="18" height="18">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                </svg>
+              </button>
+              <button class="btn btn-secondary btn-icon" onclick="downloadPDF()" title="Download PDF">
+                <svg class="icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="18" height="18">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+              </button>
+              <button class="btn btn-secondary btn-icon" onclick="sharePuzzle()" title="Share Link">
+                <svg class="icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="18" height="18">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 10.748a3.001 3.001 0 110 2.504l5.244 2.622a3 3 0 11-.83 1.662l-5.244-2.622a3 3 0 110-3.324l5.244-2.622a3 3 0 11.83 1.662L8.684 10.748z" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Multiplayer Progress Area (visible only during multiplayer races) -->
+          <div class="race-progress-container glass-card hidden" id="race-progress">
+            <div class="race-track">
+              <div class="runner" id="player-runner">
+                <span class="runner-icon">👤 You</span>
+                <div class="progress-bar-wrapper">
+                  <div class="progress-bar-fill" id="player-progress-fill" style="width: 0%"></div>
+                </div>
+                <span class="runner-percent" id="player-percent">0%</span>
+              </div>
+              <div class="runner" id="bot-runner">
+                <span class="runner-icon">🤖 Bot</span>
+                <div class="progress-bar-wrapper">
+                  <div class="progress-bar-fill bot" id="bot-progress-fill" style="width: 0%"></div>
+                </div>
+                <span class="runner-percent" id="bot-percent">0%</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="game-main-area">
+            <!-- Left Side: Crossword Board -->
+            <div class="board-column">
+              <div class="board-wrapper glass-card" id="printable-board-area">
+                <!-- The Crossword Grid elements will be rendered dynamically -->
+                <div class="crossword-grid" id="grid-container"></div>
+              </div>
+
+              <!-- Controls Toolbar -->
+              <div class="hint-toolbar glass-card">
+                <div class="toolbar-title">🛠️ Validation & Hints</div>
+                <div class="toolbar-buttons">
+                  <button class="btn btn-secondary" onclick="checkCurrentAnswers()">Validate Grid</button>
+                  <button class="btn btn-secondary dropdown-toggle" id="hint-dropdown-btn">
+                    💡 Get Hint
+                  </button>
+                  <div class="hint-menu glass-card hidden" id="hint-menu">
+                    <button onclick="revealLetter()">Reveal Selected Letter</button>
+                    <button onclick="revealWord()">Reveal Selected Word</button>
+                    <button onclick="revealPuzzle()">Reveal Entire Grid</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Side: Clues Panel -->
+            <div class="clues-column glass-card">
+              <div class="clues-panel-header">
+                <h3>📋 Active Clues</h3>
+              </div>
+              <div class="clues-lists">
+                <div class="clues-list-section">
+                  <h4 class="clue-direction-heading across">Across</h4>
+                  <div class="clues-container" id="clues-across">
+                    <!-- Across clues loaded dynamically -->
+                  </div>
+                </div>
+                <div class="clues-list-section">
+                  <h4 class="clue-direction-heading down">Down</h4>
+                  <div class="clues-container" id="clues-down">
+                    <!-- Down clues loaded dynamically -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Tab 3: Editor (Grid Builder) -->
+        <section id="tab-editor" class="tab-panel">
+          <div class="editor-header glass-card">
+            <h1>Crossword puzzle Creator</h1>
+            <p>Create your custom crossword puzzle. Enter words, clues, and difficulty, and our backtrack layout generator will build a clean playable puzzle grid.</p>
+          </div>
+
+          <div class="editor-body-grid">
+            <div class="editor-left-panel glass-card">
+              <h3>1. Puzzle Metadata</h3>
+              <div class="form-group">
+                <label for="edit-title">Puzzle Title</label>
+                <input type="text" id="edit-title" placeholder="e.g. My Cool Quiz" value="Custom Crossword">
+              </div>
+              <div class="form-group-row">
+                <div class="form-group">
+                  <label for="edit-difficulty">Difficulty</label>
+                  <select id="edit-difficulty">
+                    <option value="easy">Easy</option>
+                    <option value="medium" selected>Medium</option>
+                    <option value="hard">Hard</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="edit-category">Category</label>
+                  <input type="text" id="edit-category" placeholder="e.g. Science" value="General Knowledge">
+                </div>
+                <div class="form-group">
+                  <label for="edit-grid-size">Grid Size</label>
+                  <input type="number" id="edit-grid-size" min="6" max="16" value="10">
+                </div>
+              </div>
+
+              <h3>2. Word List & Clues</h3>
+              <p class="input-help">Enter one word & clue per line. Example: <code>HTML:Markup language for web structuring</code></p>
+              
+              <div class="form-group">
+                <textarea id="edit-words-clues" rows="8" placeholder="HTML:Markup language for websites&#10;CSS:Styling framework for web formatting&#10;JS:Dynamic frontend browser language&#10;DOM:Structured tree mapping pages&#10;API:Application interface protocol"></textarea>
+              </div>
+
+              <button class="btn btn-primary btn-full" onclick="generateCustomCrossword()">
+                ⚙️ Generate Crossword Grid
+              </button>
+            </div>
+
+            <div class="editor-right-panel glass-card">
+              <h3>3. Grid Layout Preview</h3>
+              <div class="editor-preview-container">
+                <div class="grid-preview-placeholder" id="grid-preview-placeholder">
+                  Enter words and click "Generate Crossword Grid" to preview the auto-positioned board here.
+                </div>
+                <div class="crossword-grid hidden" id="grid-preview"></div>
+              </div>
+              <div class="preview-actions hidden" id="preview-actions">
+                <button class="btn btn-secondary" onclick="playCustomCrossword()">Test Play Board</button>
+                <button class="btn btn-primary" onclick="saveCustomCrosswordToLibrary()">💾 Save to Local Library</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Tab 4: Local Library -->
+        <section id="tab-community" class="tab-panel">
+          <div class="library-header glass-card">
+            <div class="header-text">
+              <h1>Local Puzzle Library</h1>
+              <p>View custom puzzles you created or imported from files. Upload puzzle JSONs directly below.</p>
+            </div>
+            <div class="import-export-actions">
+              <label for="import-file" class="btn btn-secondary">
+                📤 Import JSON
+              </label>
+              <input type="file" id="import-file" accept=".json" style="display:none;" onchange="importPuzzleFile(event)">
+              <button class="btn btn-secondary" onclick="exportLocalLibrary()">📥 Export All Puzzles</button>
+            </div>
+          </div>
+
+          <div class="library-section">
+            <h2>Your Created Puzzles</h2>
+            <div class="puzzles-grid" id="community-puzzles-container">
+              <!-- Custom user generated puzzles go here -->
+            </div>
+          </div>
+        </section>
+
+        <!-- Tab 5: Statistics Dashboard -->
+        <section id="tab-stats" class="tab-panel">
+          <div class="stats-header glass-card">
+            <h1>Statistics & Analytics</h1>
+            <p>Analyze your solved history, average solve duration, hint reliance, and puzzle accuracies.</p>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stats-card glass-card span-2">
+              <h3>Accuracy and Play History</h3>
+              <div class="chart-container">
+                <canvas id="chart-solve-history"></canvas>
+              </div>
+            </div>
+            <div class="stats-card glass-card">
+              <h3>Category breakdown</h3>
+              <div class="chart-container">
+                <canvas id="chart-categories"></canvas>
+              </div>
+            </div>
+            <div class="stats-card glass-card">
+              <h3>Streak Tracker</h3>
+              <div class="streak-full-display">
+                <div class="streak-large-number" id="stats-streak-num">🔥 0</div>
+                <p class="streak-label">Active Solved Days Streak</p>
+                <hr class="divider">
+                <div class="streak-milestones" id="streak-milestone-list">
+                  <div class="milestone active"><span>1 Day</span> ✅</div>
+                  <div class="milestone"><span>3 Days</span> 🔒</div>
+                  <div class="milestone"><span>7 Days</span> 🔒</div>
+                  <div class="milestone"><span>30 Days</span> 🔒</div>
+                </div>
+              </div>
+            </div>
+            <div class="stats-card glass-card span-2">
+              <h3>Gameplay Metrics Table</h3>
+              <div class="table-wrapper">
+                <table class="metrics-table">
+                  <thead>
+                    <tr>
+                      <th>Metric</th>
+                      <th>All Difficulties</th>
+                      <th>Easy</th>
+                      <th>Medium</th>
+                      <th>Hard</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Puzzles Solved</td>
+                      <td id="table-solved-all">0</td>
+                      <td id="table-solved-easy">0</td>
+                      <td id="table-solved-medium">0</td>
+                      <td id="table-solved-hard">0</td>
+                    </tr>
+                    <tr>
+                      <td>Best Finish Time</td>
+                      <td id="table-best-all">-</td>
+                      <td id="table-best-easy">-</td>
+                      <td id="table-best-medium">-</td>
+                      <td id="table-best-hard">-</td>
+                    </tr>
+                    <tr>
+                      <td>Avg Finish Time</td>
+                      <td id="table-avg-all">-</td>
+                      <td id="table-avg-easy">-</td>
+                      <td id="table-avg-medium">-</td>
+                      <td id="table-avg-hard">-</td>
+                    </tr>
+                    <tr>
+                      <td>Average Hints Used</td>
+                      <td id="table-hints-all">0</td>
+                      <td id="table-hints-easy">0</td>
+                      <td id="table-hints-medium">0</td>
+                      <td id="table-hints-hard">0</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Tab 6: Achievements Badges -->
+        <section id="tab-achievements" class="tab-panel">
+          <div class="achievements-header glass-card">
+            <h1>Achievements & Badges</h1>
+            <p>Complete challenges to unlock unique mental badges. Keep solving to build your portfolio!</p>
+          </div>
+
+          <div class="badges-grid" id="badges-container">
+            <!-- Badges loaded dynamically -->
+          </div>
+        </section>
+
+        <!-- Tab 7: Leaderboard -->
+        <section id="tab-leaderboard" class="tab-panel">
+          <div class="leaderboard-header glass-card">
+            <h1>Global Leaderboard</h1>
+            <p>Compare your times and accuracy scores against simulated bot speeds and records!</p>
+          </div>
+
+          <div class="leaderboard-card glass-card">
+            <div class="leaderboard-selector">
+              <button class="tab-selector active" onclick="setLeaderboardDifficulty('easy', this)">Easy Mode</button>
+              <button class="tab-selector" onclick="setLeaderboardDifficulty('medium', this)">Medium Mode</button>
+              <button class="tab-selector" onclick="setLeaderboardDifficulty('hard', this)">Hard Mode</button>
+            </div>
+
+            <div class="table-wrapper">
+              <table class="leaderboard-table">
+                <thead>
+                  <tr>
+                    <th>Rank</th>
+                    <th>Competitor</th>
+                    <th>Finish Time</th>
+                    <th>Hints Used</th>
+                    <th>Accuracy</th>
+                  </tr>
+                </thead>
+                <tbody id="leaderboard-tbody">
+                  <!-- Loaded dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Dialog / Modals System -->
+  
+  <!-- Pause Modal Overlay -->
+  <div class="modal-overlay hidden" id="pause-modal">
+    <div class="modal-content glass-card animate-zoom">
+      <h2>Game Paused</h2>
+      <p>Your progress is safely saved. Take a deep breath before resuming!</p>
+      <button class="btn btn-primary btn-full" onclick="togglePause()">Resume Solving</button>
+    </div>
+  </div>
+
+  <!-- AI Custom Prompt Modal -->
+  <div class="modal-overlay hidden" id="ai-modal">
+    <div class="modal-content glass-card animate-zoom">
+      <div class="modal-header">
+        <h2>🤖 AI Crossword Generator</h2>
+        <button class="btn-close" onclick="closeAIPromptModal()">×</button>
+      </div>
+      <p>Specify a theme or prompt to automatically fetch/generate relevant terms and layout.</p>
+      <div class="form-group">
+        <label for="ai-theme-input">Prompt Theme</label>
+        <input type="text" id="ai-theme-input" placeholder="e.g. MCU Heroes, Ancient Rome, Disney Movies">
+      </div>
+      <div class="form-group">
+        <label for="ai-api-key">OpenAI / Gemini API Key (Optional)</label>
+        <input type="password" id="ai-api-key" placeholder="Enter key for live generation, leave blank for local synthesis simulation">
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" onclick="closeAIPromptModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="generateAICrossword()">Create Puzzle</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Victory Celebration Modal -->
+  <div class="modal-overlay hidden" id="victory-modal">
+    <div class="modal-content glass-card victory-card animate-zoom">
+      <div class="victory-header">🎉 Puzzle Complete! 🎉</div>
+      <h2 id="victory-puzzle-title">Fabulous Solve</h2>
+      
+      <div class="victory-stats">
+        <div class="victory-stat-item">
+          <span class="v-label">Time</span>
+          <span class="v-val" id="victory-time">00:00</span>
+        </div>
+        <div class="victory-stat-item">
+          <span class="v-label">Mistakes</span>
+          <span class="v-val error-text" id="victory-mistakes">0</span>
+        </div>
+        <div class="victory-stat-item">
+          <span class="v-label">Hints Used</span>
+          <span class="v-val" id="victory-hints">0</span>
+        </div>
+        <div class="victory-stat-item">
+          <span class="v-label">Accuracy</span>
+          <span class="v-val" id="victory-accuracy">0%</span>
+        </div>
+      </div>
+
+      <div class="achievements-unlocked" id="victory-achievements">
+        <!-- New achievement unlocks display here -->
+      </div>
+
+      <button class="btn btn-primary btn-full" onclick="closeVictoryModal()">Return to Dashboard</button>
+    </div>
+  </div>
+
+  <!-- JavaScript file integration -->
+  <script src="data/puzzles.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
