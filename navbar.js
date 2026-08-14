@@ -37,21 +37,7 @@
     path.endsWith("/") || (path.endsWith("index.html") && !isSubfolder);
   const isLearn = path.includes("/learning/");
   const isContributors = path.includes("/contributors/");
-const currentPage = path.split("/").pop() || "index.html";
-const navLinks = container.querySelectorAll("a");
 
-navLinks.forEach(link => {
-    const href = link.getAttribute("href");
-    if (href) {
-        const linkPage = href.split("/").pop();
-        
-        if (linkPage === currentPage) {
-           link.classList.add("active");
-        } else {
-            link.classList.remove("active");
-        }
-    }
-});
   function escapeHTML(value) {
     return String(value)
       .replace(/&/g, "&amp;")
@@ -177,10 +163,6 @@ navLinks.forEach(link => {
   const customCursorEnabled =
     safeStorage.getItem("customCursorEnabled") !== "false";
   const cursorBtn = `
-    <button class="btn btn-ghost btn-sm" id="cursorToggleNav" aria-label="Toggle custom cursor (currently ${customCursorEnabled ? "Custom" : "Default"})">
-      <span class="mobile-nav-icon"><i class="fas ${customCursorEnabled ? "fa-circle-notch" : "fa-mouse-pointer"}" aria-hidden="true"></i></span>
-      Cursor: ${customCursorEnabled ? "Custom" : "Default"}
-    </button>
   `;
 
   let navButtonsHTML = "";

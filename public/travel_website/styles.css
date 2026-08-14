@@ -24,6 +24,129 @@ body {
 }
 
 /* ============================================
+   Navbar
+   ============================================ */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background: transparent;
+  box-shadow: none;
+  transition: background 0.35s ease, box-shadow 0.35s ease, padding 0.35s ease;
+}
+
+.navbar.scrolled {
+  background: rgba(15, 23, 42, 0.92);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+}
+
+.navbar-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 22px 24px 22px 140px;
+  transition: padding 0.35s ease;
+}
+
+.navbar.scrolled .navbar-container {
+  padding-top: 14px;
+  padding-bottom: 14px;
+}
+
+.navbar-logo {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #ffffff;
+  text-decoration: none;
+  letter-spacing: -0.5px;
+  white-space: nowrap;
+}
+
+.navbar-links {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+  list-style: none;
+}
+
+.navbar-link {
+  position: relative;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 6px 0;
+  transition: color 0.3s ease;
+}
+
+.navbar-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #ff6b6b 0%, #ff1493 100%);
+  transition: width 0.3s ease;
+}
+
+.navbar-link:hover {
+  color: #ff8c42;
+}
+
+.navbar-link:hover::after {
+  width: 100%;
+}
+
+.navbar-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 8px;
+  z-index: 1001;
+}
+
+.navbar-toggle span {
+  display: block;
+  width: 100%;
+  height: 2.5px;
+  background: #ffffff;
+  border-radius: 2px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.navbar-toggle.active span:nth-child(1) {
+  transform: translateY(7.5px) rotate(45deg);
+}
+
+.navbar-toggle.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.navbar-toggle.active span:nth-child(3) {
+  transform: translateY(-7.5px) rotate(-45deg);
+}
+
+.navbar-link:focus-visible,
+.navbar-toggle:focus-visible {
+  outline: 2px solid #ff6b6b;
+  outline-offset: 3px;
+}
+
+/* ============================================
    Animated Background
    ============================================ */
 .animated-bg {
@@ -1355,6 +1478,76 @@ body {
 
   .blob-1, .blob-2, .blob-3 {
     filter: blur(60px);
+  }
+}
+
+/* ============================================
+   Responsive Design - Navbar (768px and below)
+   ============================================ */
+@media (max-width: 768px) {
+  .navbar-container {
+    padding: 18px 20px 18px 118px;
+  }
+
+  .navbar.scrolled .navbar-container {
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+
+  .navbar-logo {
+    font-size: 1.05rem;
+  }
+
+  .navbar-toggle {
+    display: flex;
+  }
+
+  .navbar-links {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    background: rgba(10, 14, 20, 0.97);
+    backdrop-filter: blur(12px);
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    padding: 0 24px;
+    transition: max-height 0.4s ease, opacity 0.3s ease, padding 0.4s ease;
+  }
+
+  .navbar-links.active {
+    max-height: 340px;
+    opacity: 1;
+    padding: 12px 24px 24px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+  }
+
+  .navbar-link {
+    width: 100%;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .navbar-links li:last-child .navbar-link {
+    border-bottom: none;
+  }
+
+  .navbar-link::after {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar-container {
+    padding-left: 102px;
+  }
+
+  .navbar-logo {
+    font-size: 0.9rem;
   }
 }
 
