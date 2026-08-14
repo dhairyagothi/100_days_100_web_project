@@ -719,3 +719,12 @@ p {
     font-size: large;
     color: blue;
 }
+
+.dashboard-footer {
+    text-align: center;
+    padding: 20px;
+    color: #64748b;
+    font-size: 1.4rem;
+    margin-top: 20px;
+    border-top: 1px solid #e2e8f0;
+}
