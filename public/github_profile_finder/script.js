@@ -105,6 +105,50 @@ class DataCacheEngine {
 }
 
 /* =========================================================
+   REQUEST LIFECYCLE (Bug #10505)
+========================================================= */
+
+// Only one profile search or comparison may be "in flight" at a
+// time. currentOperationController lets us abort whatever the
+// previous one was doing the moment a new one starts, and
+// currentOperationId is a generation counter so that async work
+// which can't be aborted (e.g. a fetch that already resolved, or
+// a loop that's mid-iteration) can still recognize it has become
+// stale and refuse to touch the UI.
+let currentOperationController = null;
+let currentOperationId = 0;
+
+// Call at the start of every profile search / comparison. Aborts
+// the previous operation (if any) so its in-flight requests stop
+// and its results can never overwrite what the user just asked
+// for, then hands back a fresh signal + id for the new operation.
+function beginOperation() {
+  if (currentOperationController) {
+    currentOperationController.abort();
+  }
+  currentOperationController = new AbortController();
+  currentOperationId += 1;
+
+  return {
+    signal: currentOperationController.signal,
+    operationId: currentOperationId
+  };
+}
+
+// True once a newer operation has started, meaning this one's
+// results are stale and must not be rendered.
+function isStaleOperation(operationId) {
+  return operationId !== currentOperationId;
+}
+
+// An AbortError means a request was cancelled on purpose (a newer
+// search/comparison took over) - it is not a real failure and
+// must never surface as an error banner to the user.
+function isAbortError(error) {
+  return Boolean(error) && error.name === "AbortError";
+}
+
+/* =========================================================
    UTILITIES
 ========================================================= */
 
@@ -309,9 +353,12 @@ function sleep(ms) {
 
 /**
  * Fetch wrapper with a timeout, since a hung request should
- * never leave the heatmap stuck on "Loading...".
+ * never leave the heatmap stuck on "Loading...". Also accepts the
+ * outer search/comparison operation's signal (externalSignal) so
+ * that cancelling the whole operation aborts this request
+ * immediately too, instead of waiting out its own timeout.
  */
-async function fetchWithTimeout(url, timeoutMs) {
+async function fetchWithTimeout(url, timeoutMs, externalSignal) {
 
   const controller = new AbortController();
 
@@ -320,6 +367,17 @@ async function fetchWithTimeout(url, timeoutMs) {
     timeoutMs
   );
 
+  const abortFromOutside = () => controller.abort();
+
+  if (externalSignal) {
+
+    if (externalSignal.aborted) {
+      controller.abort();
+    } else {
+      externalSignal.addEventListener("abort", abortFromOutside);
+    }
+  }
+
   try {
 
     return await fetch(url, { signal: controller.signal });
@@ -327,6 +385,10 @@ async function fetchWithTimeout(url, timeoutMs) {
   } finally {
 
     clearTimeout(timer);
+
+    if (externalSignal) {
+      externalSignal.removeEventListener("abort", abortFromOutside);
+    }
   }
 }
 
@@ -337,11 +399,12 @@ async function fetchWithTimeout(url, timeoutMs) {
  * { date, count, level } day objects. Only used when
  * GRAPHQL_PROXY_ENDPOINT is configured.
  */
-async function fetchContributionsFromGraphQLProxy(username) {
+async function fetchContributionsFromGraphQLProxy(username, signal) {
 
   const response = await fetchWithTimeout(
     `${GRAPHQL_PROXY_ENDPOINT}?username=${encodeURIComponent(username)}`,
-    CONTRIBUTIONS_FETCH_TIMEOUT_MS
+    CONTRIBUTIONS_FETCH_TIMEOUT_MS,
+    signal
   );
 
   if (!response.ok) {
@@ -371,7 +434,7 @@ async function fetchContributionsFromGraphQLProxy(username) {
  * fabricated data - any unrecoverable failure is thrown so the
  * caller can show an honest error state.
  */
-async function fetchContributionsFromFallbackApi(username) {
+async function fetchContributionsFromFallbackApi(username, signal) {
 
   let lastError = null;
 
@@ -381,7 +444,8 @@ async function fetchContributionsFromFallbackApi(username) {
 
       const response = await fetchWithTimeout(
         `${CONTRIBUTIONS_FALLBACK_API_URL}/${username}?y=last`,
-        CONTRIBUTIONS_FETCH_TIMEOUT_MS
+        CONTRIBUTIONS_FETCH_TIMEOUT_MS,
+        signal
       );
 
       if (response.status === 404) {
@@ -430,11 +494,20 @@ async function fetchContributionsFromFallbackApi(username) {
       const isAbort = error.name === "AbortError";
       const isNotFound = error.status === 404;
 
-      // Don't retry on a bad username or an aborted/timed-out
-      // request that's already exhausted its own budget once;
-      // only retry genuinely transient failures.
+      // If the *outer* search/comparison was cancelled (a newer one
+      // started), this AbortError is an intentional cancellation,
+      // not a transient failure - retrying it would just re-issue
+      // work nobody wants anymore. Only genuine timeouts (this
+      // request's own budget expiring) are retryable.
+      const isExternalCancel = Boolean(signal && signal.aborted);
+
+      // Don't retry on a bad username, an intentionally cancelled
+      // operation, or an aborted/timed-out request that's already
+      // exhausted its own budget once; only retry genuinely
+      // transient failures.
       const isRetryable =
         !isNotFound &&
+        !isExternalCancel &&
         (isAbort ||
           error.status === 429 ||
           error.status >= 500 ||
@@ -442,7 +515,7 @@ async function fetchContributionsFromFallbackApi(username) {
 
       if (!isRetryable || attempt === CONTRIBUTIONS_MAX_RETRIES) {
 
-        if (isAbort) {
+        if (isAbort && !isExternalCancel) {
 
           lastError = new Error(
             "The request timed out while loading contribution activity."
@@ -469,7 +542,7 @@ async function fetchContributionsFromFallbackApi(username) {
  * falls back to the public read-only contributions API. Never
  * falls back to randomly generated or fake data.
  */
-async function fetchContributionData(username) {
+async function fetchContributionData(username, signal) {
 
   const cacheKey = `contributions_${username}`;
 
@@ -478,8 +551,8 @@ async function fetchContributionData(username) {
   if (cached) return cached;
 
   const contributions = GRAPHQL_PROXY_ENDPOINT
-    ? await fetchContributionsFromGraphQLProxy(username)
-    : await fetchContributionsFromFallbackApi(username);
+    ? await fetchContributionsFromGraphQLProxy(username, signal)
+    : await fetchContributionsFromFallbackApi(username, signal);
 
   DataCacheEngine.set(cacheKey, contributions);
 
@@ -560,7 +633,7 @@ function showHeatmapError(message) {
   UI.heatmapGrid.appendChild(errorNode);
 }
 
-async function generateContributionHeatmap(username) {
+async function generateContributionHeatmap(username, signal, operationId) {
 
   if (!UI.heatmapGrid) return;
 
@@ -579,11 +652,20 @@ async function generateContributionHeatmap(username) {
   try {
 
     const contributions =
-      await fetchContributionData(username);
+      await fetchContributionData(username, signal);
+
+    // A newer search/comparison may have started while this was
+    // in flight; ignore the now-stale result instead of rendering
+    // over whatever the newer operation has already shown.
+    if (isStaleOperation(operationId)) return;
 
     renderContributionHeatmap(contributions);
 
   } catch (error) {
+
+    // Cancellation (this operation or the whole page's operation
+    // being superseded) is expected, not an error - stay silent.
+    if (isAbortError(error) || isStaleOperation(operationId)) return;
 
     showHeatmapError(getContributionErrorMessage(error));
   }
@@ -626,7 +708,7 @@ function getContributionErrorMessage(error) {
    LANGUAGE ANALYTICS
 ========================================================= */
 
-async function renderLanguageAnalytics(repos) {
+async function renderLanguageAnalytics(repos, signal, operationId) {
 
   if (!repos || !repos.length) return;
 
@@ -639,7 +721,7 @@ async function renderLanguageAnalytics(repos) {
       if (!repo.languages_url) continue;
 
       const response =
-        await fetch(repo.languages_url);
+        await fetch(repo.languages_url, { signal });
 
       if (!response.ok) continue;
 
@@ -661,6 +743,11 @@ async function renderLanguageAnalytics(repos) {
         .reduce((sum, value) => sum + value, 0);
 
     if (!totalBytes) return;
+
+    // A newer search/comparison may have started while these
+    // per-repo language requests were in flight; don't let a
+    // stale result overwrite the current UI.
+    if (isStaleOperation(operationId)) return;
 
     const sortedLanguages =
       Object.entries(languageBytes)
@@ -753,6 +840,10 @@ async function renderLanguageAnalytics(repos) {
       `${topPercent}%`;
 
   } catch (error) {
+
+    // Cancellation is expected here (a newer operation took over)
+    // and isn't a real failure worth logging.
+    if (isAbortError(error)) return;
 
     console.error(
       "Language analytics failed:",
@@ -1001,12 +1092,18 @@ async function fetchUser(username) {
     return;
   }
 
+  // Cancel any previous profile search/comparison so it can't
+  // finish late and clobber the UI with stale data (Bug #10505),
+  // then run this one under its own signal + generation id.
+  const { signal, operationId } = beginOperation();
+
   showLoading();
 
   try {
 
     const userResponse = await fetch(
-      `https://api.github.com/users/${cleanName}`
+      `https://api.github.com/users/${cleanName}`,
+      { signal }
     );
 
     if (!userResponse.ok) {
@@ -1020,7 +1117,8 @@ async function fetchUser(username) {
       await userResponse.json();
 
     const repoResponse = await fetch(
-      `https://api.github.com/users/${cleanName}/repos?per_page=100`
+      `https://api.github.com/users/${cleanName}/repos?per_page=100`,
+      { signal }
     );
 
     if (!repoResponse.ok) {
@@ -1051,13 +1149,22 @@ async function fetchUser(username) {
       )
       .slice(0, 6);
 
+    // A newer search/comparison may have started while the above
+    // requests were in flight; if so, this result is stale and
+    // must not be rendered over the newer one.
+    if (isStaleOperation(operationId)) return;
+
     renderProfile(user);
 
     renderRepos(sortedRepos);
 
-    await generateContributionHeatmap(cleanName);
+    await generateContributionHeatmap(cleanName, signal, operationId);
 
-    await renderLanguageAnalytics(repos);
+    if (isStaleOperation(operationId)) return;
+
+    await renderLanguageAnalytics(repos, signal, operationId);
+
+    if (isStaleOperation(operationId)) return;
 
     UI.analyticsPanel?.classList.remove(
       "hidden"
@@ -1066,6 +1173,12 @@ async function fetchUser(username) {
     hideStatus();
 
   } catch (error) {
+
+    // An aborted request means a newer search/comparison started
+    // and cancelled this one on purpose - that's not a failure, so
+    // don't show an error banner or reset UI the newer operation
+    // may already own.
+    if (isAbortError(error) || isStaleOperation(operationId)) return;
 
     resetProfileUI();
 
@@ -1080,7 +1193,7 @@ async function fetchUser(username) {
    FETCH PROFILE DATA
 ========================================================= */
 
-async function fetchProfileData(username) {
+async function fetchProfileData(username, signal) {
 
   const cleanName =
     username.trim().replace("@", "");
@@ -1104,7 +1217,8 @@ async function fetchProfileData(username) {
   }
 
   const userResponse = await fetch(
-    `https://api.github.com/users/${cleanName}`
+    `https://api.github.com/users/${cleanName}`,
+    { signal }
   );
 
   if (!userResponse.ok) {
@@ -1118,7 +1232,8 @@ async function fetchProfileData(username) {
     await userResponse.json();
 
   const repoResponse = await fetch(
-    `https://api.github.com/users/${cleanName}/repos?per_page=50`
+    `https://api.github.com/users/${cleanName}/repos?per_page=50`,
+    { signal }
   );
 
   if (!repoResponse.ok) {
@@ -1418,6 +1533,10 @@ if (UI.compareForm) {
         return;
       }
 
+      // Cancel any previous profile search/comparison so it can't
+      // finish late and clobber this comparison's UI (Bug #10505).
+      const { signal, operationId } = beginOperation();
+
       try {
 
         showCompareLoading();
@@ -1428,14 +1547,20 @@ if (UI.compareForm) {
         ] = await Promise.all([
 
           fetchProfileData(
-            leftUsername
+            leftUsername,
+            signal
           ),
 
           fetchProfileData(
-            rightUsername
+            rightUsername,
+            signal
           )
 
         ]);
+
+        // A newer search/comparison may have started while these
+        // requests were in flight; ignore this now-stale result.
+        if (isStaleOperation(operationId)) return;
 
         renderComparison(
           leftData,
@@ -1445,6 +1570,11 @@ if (UI.compareForm) {
         hideStatus();
 
       } catch (error) {
+
+        // An aborted request means a newer search/comparison
+        // started and cancelled this one on purpose - not a real
+        // failure, so stay silent rather than show an error banner.
+        if (isAbortError(error) || isStaleOperation(operationId)) return;
 
         showStatus(
           error.message,
