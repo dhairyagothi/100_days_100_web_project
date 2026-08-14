@@ -1,258 +1,318 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Clothes Donation</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clothes Donation - AaharShare</title>
 
-<style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial, Helvetica, sans-serif;
-}
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
 
-body{
-    background:#0d6d22;
-}
+        body {
+            background: #f7f7f7;
+            color: #333;
+        }
 
-.container{
-    display:flex;
-    min-height:100vh;
-}
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 180px;
+            height: 100vh;
+            background: #075f2b;
+            padding-top: 25px;
+        }
 
-/* Sidebar */
+        .sidebar a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 18px 25px;
+            font-size: 17px;
+        }
 
-.sidebar{
-    width:230px;
-    background:#0b4f17;
-    color:white;
-    padding-top:30px;
-}
+        .sidebar a:hover {
+            background: #0b7a38;
+        }
 
-.sidebar h2{
-    text-align:center;
-    margin-bottom:40px;
-}
+        /* Main content */
+        .main {
+            margin-left: 180px;
+        }
 
-.sidebar a{
-    display:block;
-    color:white;
-    text-decoration:none;
-    padding:16px 30px;
-    transition:.3s;
-}
+        /* Header */
+        .header {
+            height: 185px;
+            background: #24963d;
+            color: white;
+            text-align: center;
+            padding: 25px;
+            position: relative;
+        }
 
-.sidebar a:hover,
-.sidebar a.active{
-    background:#ffffff;
-    color:#0b4f17;
-    border-radius:20px 0 0 20px;
-}
+        .heart {
+            font-size: 55px;
+        }
 
-/* Main */
+        .header h1 {
+            font-size: 52px;
+            margin-top: 5px;
+        }
 
-.main{
-    flex:1;
-    padding:50px;
-}
+        .back {
+            position: absolute;
+            left: 60px;
+            top: 65px;
+            color: white;
+            text-decoration: none;
+            font-size: 20px;
+            line-height: 1.4;
+        }
 
-.cards{
-    display:flex;
-    gap:30px;
-    flex-wrap:wrap;
-}
+        .tagline {
+            position: absolute;
+            right: 60px;
+            top: 65px;
+            font-size: 20px;
+            text-align: left;
+        }
 
-/* Card */
+        /* Green banner */
+        .banner {
+            height: 125px;
+            background: #086c2d;
+        }
 
-.card{
-    background:white;
-    border-radius:18px;
-    padding:30px;
-    flex:1;
-    min-width:360px;
-    box-shadow:0 8px 20px rgba(0,0,0,.2);
-}
+        /* Content */
+        .content {
+            background: white;
+            min-height: 500px;
+            padding-bottom: 50px;
+        }
 
-.card h2{
-    text-align:center;
-    margin-bottom:25px;
-    color:#1e3c5a;
-}
+        .content h2 {
+            text-align: center;
+            padding: 30px 20px;
+            color: #234568;
+            font-size: 30px;
+            border-bottom: 1px solid #ddd;
+        }
 
-input,
-select,
-textarea{
-    width:100%;
-    padding:14px;
-    margin:15px 0;
-    border:1px solid #ccc;
-    border-radius:8px;
-    font-size:16px;
-}
+        .form-container {
+            max-width: 750px;
+            margin: 35px auto;
+            padding: 30px;
+        }
 
-textarea{
-    resize:none;
-}
+        .form-container h3 {
+            color: #075f2b;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
 
-button{
-    width:100%;
-    padding:15px;
-    border:none;
-    border-radius:8px;
-    background:#ff932f;
-    color:white;
-    font-size:18px;
-    cursor:pointer;
-    margin-top:10px;
-    transition:.3s;
-}
+        label {
+            display: block;
+            margin-top: 18px;
+            margin-bottom: 7px;
+            font-size: 16px;
+            font-weight: bold;
+        }
 
-button:hover{
-    background:#e77813;
-}
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
 
-.list{
-    text-align:center;
-    color:gray;
-    margin-top:60px;
-    font-size:18px;
-}
+        textarea {
+            height: 120px;
+            resize: vertical;
+        }
 
-.item{
-    background:#f5f5f5;
-    padding:15px;
-    border-radius:10px;
-    margin-top:15px;
-    text-align:left;
-}
+        .submit-btn {
+            margin-top: 25px;
+            background: #087a35;
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            font-size: 17px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
 
-.item h3{
-    color:#0b4f17;
-    margin-bottom:8px;
-}
+        .submit-btn:hover {
+            background: #055c28;
+        }
 
-@media(max-width:900px){
+        /* Mobile */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                display: flex;
+                overflow-x: auto;
+            }
 
-.sidebar{
-    width:180px;
-}
+            .sidebar a {
+                padding: 15px;
+                white-space: nowrap;
+            }
 
-.main{
-    padding:20px;
-}
+            .main {
+                margin-left: 0;
+            }
 
-.cards{
-    flex-direction:column;
-}
+            .header {
+                height: 220px;
+            }
 
-.card{
-    min-width:100%;
-}
+            .back {
+                left: 20px;
+                top: 20px;
+            }
 
-}
+            .tagline {
+                right: 20px;
+                top: 20px;
+                font-size: 15px;
+            }
 
-@media(max-width:600px){
+            .header h1 {
+                font-size: 40px;
+                margin-top: 50px;
+            }
 
-.container{
-    flex-direction:column;
-}
+            .banner {
+                height: 80px;
+            }
 
-.sidebar{
-    width:100%;
-}
-
-.sidebar a{
-    border-radius:0;
-}
-
-}
-</style>
-
+            .form-container {
+                padding: 20px;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-<div class="container">
+    <!-- Navigation -->
+    <div class="sidebar">
+        <a href="index.html">Home</a>
+        <a href="donors.html">Donors</a>
+        <a href="cloth.html">Clothes</a>
+        <a href="food.html">Food</a>
+        <a href="renew.html">Renew</a>
+        <a href="contact.html">Contact</a>
+    </div>
 
-<div class="sidebar">
+    <!-- Main -->
+    <div class="main">
 
-<h2>Donors</h2>
+        <!-- Header -->
+        <header class="header">
 
-<a href="Food.html">Food</a>
-<a class="active" href="Cloths.html">Clothes</a>
-<a href="Renew.html">Renew</a>
-<a href="Contact.html">Contact</a>
+            <a href="index.html" class="back">
+                ← Back to<br>Home
+            </a>
 
-</div>
+            <div class="heart">♥</div>
 
-<div class="main">
+            <h1>AaharShare</h1>
 
-<div class="cards">
+            <div class="tagline">
+                Connecting surplus<br>
+                with those in need
+            </div>
 
-<div class="card">
+        </header>
 
-<h2>Donate Clothes</h2>
+        <div class="banner"></div>
 
-<input
-type="text"
-placeholder="Clothing Type (Shirts, Jackets, Blankets...)">
+        <!-- Clothes Section -->
+        <section class="content">
 
-<input
-type="text"
-placeholder="Donor Name">
+            <h2>Donate Clothes</h2>
 
-<input
-type="number"
-placeholder="Number of Items">
+            <div class="form-container">
 
-<select>
-<option>Select Condition</option>
-<option>New</option>
-<option>Like New</option>
-<option>Good</option>
-<option>Used</option>
-</select>
+                <h3>Share Clothes With Someone in Need</h3>
 
-<textarea
-rows="4"
-placeholder="Additional Description"></textarea>
+                <form>
 
-<button>📍 Get My Location</button>
+                    <label for="name">Your Name</label>
+                    <input
+                        type="text"
+                        id="name"
+                        placeholder="Enter your name"
+                        required
+                    >
 
-<button>Donate Clothes</button>
+                    <label for="contact">Contact Number</label>
+                    <input
+                        type="tel"
+                        id="contact"
+                        placeholder="Enter your contact number"
+                        required
+                    >
 
-</div>
+                    <label for="clothes">Type of Clothes</label>
+                    <select id="clothes" required>
+                        <option value="">Select clothes type</option>
+                        <option>Shirts / T-Shirts</option>
+                        <option>Pants / Trousers</option>
+                        <option>Jackets</option>
+                        <option>Sarees</option>
+                        <option>Children's Clothes</option>
+                        <option>Winter Clothes</option>
+                        <option>Other</option>
+                    </select>
 
-<div class="card">
+                    <label for="quantity">Quantity</label>
+                    <input
+                        type="number"
+                        id="quantity"
+                        placeholder="Number of clothes"
+                        min="1"
+                        required
+                    >
 
-<h2>Available Clothes Nearby</h2>
+                    <label for="condition">Condition</label>
+                    <select id="condition" required>
+                        <option value="">Select condition</option>
+                        <option>New</option>
+                        <option>Gently Used</option>
+                        <option>Good Condition</option>
+                    </select>
 
-<div class="list">
+                    <label for="address">Pickup / Donation Address</label>
+                    <textarea
+                        id="address"
+                        placeholder="Enter your address"
+                        required
+                    ></textarea>
 
-No clothes donations available.
+                    <button type="submit" class="submit-btn">
+                        Donate Clothes
+                    </button>
 
-<!-- Example Card
+                </form>
 
-<div class="item">
-<h3>Winter Jackets</h3>
-<p>Donor: ABC Foundation</p>
-<p>Items: 20</p>
-<p>Condition: Good</p>
-</div>
+            </div>
 
--->
+        </section>
 
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
+    </div>
 
 </body>
 </html>
