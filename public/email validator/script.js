@@ -317,7 +317,14 @@ downloadTxtBtn.addEventListener("click", function () {
     URL.revokeObjectURL(link.href);
 });
 
+// Theme Toggle Functionality
+var currentTheme = localStorage.getItem("theme") || "dark";
+document.documentElement.setAttribute("data-theme", currentTheme);
+themeToggle.textContent = currentTheme === "light" ? "Dark" : "Light";
+
 themeToggle.addEventListener("click", function () {
-    document.body.classList.toggle("light");
-    themeToggle.textContent = document.body.classList.contains("light") ? "Light" : "Dark";
+    currentTheme = currentTheme === "dark" ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", currentTheme);
+    localStorage.setItem("theme", currentTheme);
+    themeToggle.textContent = currentTheme === "light" ? "Dark" : "Light";
 });

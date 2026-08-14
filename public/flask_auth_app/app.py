@@ -141,7 +141,7 @@ def logout():
 @app.route("/protected")
 @token_required
 def protected(current_user):
-    users = User.query.all()
+    users = [current_user]
     return render_template("protected.html", current_user=current_user, users=users)
 
 

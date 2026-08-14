@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>About Us | AaharShare</title>
 
     <link rel="stylesheet" href="style.css">
@@ -141,12 +142,175 @@
 
             .hero h1{
                 font-size:36px;
+
+
+    <title>About Us | Donation</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            color: #333;
+            background: #f7f9f7;
+        }
+
+        /* Navbar */
+        nav {
+            background: #209b3a;
+            height: 104px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 45px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        .donate-btn {
+            background: #267d32;
+            padding: 17px 28px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+
+        .donate-btn:hover {
+            text-decoration: none;
+            background: #1e6b29;
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 420px;
+            background: linear-gradient(
+                    rgba(0, 100, 30, 0.55),
+                    rgba(0, 100, 30, 0.55)
+                ),
+                url("images/about.jpg") center/cover no-repeat;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .hero h1 {
+            color: white;
+            font-size: 58px;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            color: white;
+            font-size: 21px;
+            max-width: 700px;
+            line-height: 1.6;
+        }
+
+        /* About Section */
+        .about {
+            max-width: 1100px;
+            margin: 60px auto;
+            padding: 0 25px;
+            text-align: center;
+        }
+
+        .about h2 {
+            color: #209b3a;
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        .about p {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        /* Mission Cards */
+        .cards {
+            max-width: 1100px;
+            margin: 40px auto 70px;
+            padding: 0 25px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        .card {
+            background: white;
+            padding: 35px 25px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .card h3 {
+            color: #209b3a;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        .card p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        footer {
+            background: #176f2b;
+            color: white;
+            text-align: center;
+            padding: 25px;
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            nav {
+                height: auto;
+                padding: 20px;
+                gap: 20px;
+                flex-wrap: wrap;
+            }
+
+            nav a {
+                font-size: 17px;
+            }
+
+            .hero h1 {
+                font-size: 40px;
+            }
+
+            .hero p {
+                font-size: 18px;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+
             }
         }
     </style>
 </head>
 
 <body>
+
 
 <header>
 
@@ -242,3 +406,78 @@ build a compassionate and sustainable society.
 
 </body>
 </html>
+
+    <!-- Navigation -->
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="donate.html">Donate</a>
+        <a href="renew.html">Renew</a>
+        <a href="about.html">About Us</a>
+        <a href="donate.html" class="donate-btn">Start Donating</a>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div>
+            <h1>About Us</h1>
+            <p>
+                Together, we can make a difference and create a better future
+                for those who need our support.
+            </p>
+        </div>
+    </section>
+
+    <!-- About -->
+    <section class="about">
+        <h2>Who We Are</h2>
+
+        <p>
+            We are a community-driven organization dedicated to helping people
+            and communities in need. Our mission is to connect generous donors
+            with meaningful causes and make every contribution count.
+        </p>
+
+        <p>
+            Through donations, awareness, and community participation, we work
+            towards creating positive and lasting change. Every small act of
+            kindness can make a big difference.
+        </p>
+    </section>
+
+    <!-- Mission Cards -->
+    <section class="cards">
+
+        <div class="card">
+            <h3>Our Mission</h3>
+            <p>
+                To support people in need and build stronger communities
+                through meaningful donations and collective action.
+            </p>
+        </div>
+
+        <div class="card">
+            <h3>Our Vision</h3>
+            <p>
+                A world where everyone has access to the resources and support
+                they need to live a better life.
+            </p>
+        </div>
+
+        <div class="card">
+            <h3>Our Impact</h3>
+            <p>
+                Every donation contributes towards creating opportunities,
+                supporting communities, and bringing hope to people.
+            </p>
+        </div>
+
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2026 Donation Platform. All Rights Reserved.</p>
+    </footer>
+
+</body>
+</html>
+
