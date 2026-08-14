@@ -82,15 +82,16 @@ box-shadow: 0 8px 32px 0 rgba(0, 0, 0, ${shadow});`;
     });
 
     themeToggle.addEventListener("click", () => {
-    document.body.classList.toggle("dark");
+        document.body.classList.toggle("dark");
 
-    if (document.body.classList.contains("dark")) {
-        themeToggle.textContent = "☀️";
-    } else {
-        themeToggle.textContent = "🌙";
-    }
-});
+        if (document.body.classList.contains("dark")) {
+            themeToggle.textContent = "☀️";
+        } else {
+            themeToggle.textContent = "🌙";
+        }
+    });
 
     // Initial render
     updateGlass();
+
 });
