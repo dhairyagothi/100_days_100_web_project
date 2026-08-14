@@ -79,31 +79,31 @@ let lastDetectedGesture = 'No Action / Neutral';
 let gestureReleased = true; // Limits events to once every 200ms to prevent game flooding
 
 function triggerSyntheticKey(keyCode) {
-  const now = performance.now();
-  if (now - lastTriggerTime < throttleDelay) return;
-  lastTriggerTime = now;
+    const now = performance.now();
+    if (now - lastTriggerTime < throttleDelay) return;
+    lastTriggerTime = now;
 
-  logKeystroke(`Dispatched Virtual Key: ${keyCode}`);
+    logKeystroke(`Dispatched Virtual Key: ${keyCode}`);
 
-  // Create and dispatch the "keydown" structural event natively
-  const keydownEvent = new KeyboardEvent('keydown', {
-    key: keyCode,
-    code: keyCode,
-    bubbles: true,
-    cancelable: true,
-  });
-  window.dispatchEvent(keydownEvent);
-
-  // Instantly fire the trailing "keyup" event to reset state
-  setTimeout(() => {
-    const keyupEvent = new KeyboardEvent('keyup', {
-      key: keyCode,
-      code: keyCode,
-      bubbles: true,
-      cancelable: true,
+    const keydownEvent = new KeyboardEvent('keydown', {
+        key: keyCode,
+        code: keyCode,
+        bubbles: true,
+        cancelable: true,
     });
-    window.dispatchEvent(keyupEvent);
-  }, 50);
+
+    document.dispatchEvent(keydownEvent);
+
+    setTimeout(() => {
+        const keyupEvent = new KeyboardEvent('keyup', {
+            key: keyCode,
+            code: keyCode,
+            bubbles: true,
+            cancelable: true,
+        });
+
+        document.dispatchEvent(keyupEvent);
+    }, 50);
 }
 
 // ========================================================
