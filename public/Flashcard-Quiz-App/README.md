@@ -18,7 +18,9 @@ A modern flashcard quiz application built with HTML, CSS and Vanilla JavaScript.
 - Add, edit and delete flashcards
 - Subject-wise flashcard support
 - Local Storage persistence
-- Responsive light-themed UI
+- Dark/Light theme toggle
+- About page with project information
+- Responsive design
 
 ## Technologies Used
 
@@ -33,6 +35,7 @@ A modern flashcard quiz application built with HTML, CSS and Vanilla JavaScript.
 ```
 Flashcard-Quiz/
 │── index.html
+│── about.html
 │── style.css
 │── script.js
 └── README.md
@@ -48,15 +51,17 @@ Flashcard-Quiz/
 6. Navigate using Previous/Next.
 7. Manage flashcards using Add, Edit and Delete.
 8. Start Timed Challenge to test your speed.
+9. Toggle between light and dark themes.
+10. Visit the About page to learn more about the project.
 
 ## Future Improvements
 
 - Search flashcards
 - Import/Export flashcards
 - Difficulty levels
-- Progress tracking
-- Dark mode
+- Enhanced progress tracking
 - Random quiz mode
+- Spaced repetition algorithm
 
 ## Creator
 
