@@ -6,12 +6,16 @@
 
   const loginPanel = overlay.querySelector('[data-auth-panel="login"]');
   const signupPanel = overlay.querySelector('[data-auth-panel="signup"]');
+  const forgotPanel = overlay.querySelector('[data-auth-panel="forgot"]');
 
   const loginForm = document.getElementById("loginForm");
   const signupForm = document.getElementById("signupForm");
+  const forgotForm = document.getElementById("forgotForm");
 
   const loginError = document.getElementById("loginError");
   const signupError = document.getElementById("signupError");
+  const forgotError = document.getElementById("forgotError");
+  const forgotSuccess = document.getElementById("forgotSuccess");
 
   const authSubtitle = document.getElementById("authSubtitle");
   const loginTrigger = document.getElementById("loginTrigger");
@@ -22,12 +26,21 @@
     if (mode === "signup") {
       loginPanel.classList.add("is-hidden");
       signupPanel.classList.remove("is-hidden");
+      forgotPanel.classList.add("is-hidden");
       if (authSubtitle) {
         authSubtitle.textContent = "Create your MedConsult account";
+      }
+    } else if (mode === "forgot") {
+      loginPanel.classList.add("is-hidden");
+      signupPanel.classList.add("is-hidden");
+      forgotPanel.classList.remove("is-hidden");
+      if (authSubtitle) {
+        authSubtitle.textContent = "Reset your password";
       }
     } else {
       loginPanel.classList.remove("is-hidden");
       signupPanel.classList.add("is-hidden");
+      forgotPanel.classList.add("is-hidden");
       if (authSubtitle) {
         authSubtitle.textContent = "Sign in to continue";
       }
@@ -35,6 +48,8 @@
 
     if (loginError) loginError.textContent = "";
     if (signupError) signupError.textContent = "";
+    if (forgotError) forgotError.textContent = "";
+    if (forgotSuccess) forgotSuccess.textContent = "";
   };
 
   const openAuth = (mode = "login") => {
@@ -43,7 +58,7 @@
     overlay.setAttribute("aria-hidden", "false");
 
     const firstInput = overlay.querySelector(
-      mode === "signup" ? "#signupName" : "#loginEmail",
+      mode === "signup" ? "#signupName" : mode === "forgot" ? "#forgotEmail" : "#loginEmail",
     );
     if (firstInput) {
       firstInput.focus();
@@ -242,6 +257,60 @@
         signupForm.reset();
         setPanel("login");
       }, 700);
+    });
+  }
+
+  if (forgotForm) {
+    forgotForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      const email = document.getElementById("forgotEmail").value.trim().toLowerCase();
+
+      showMessage(forgotError, "");
+      showMessage(forgotSuccess, "");
+
+      if (!email) {
+        showMessage(forgotError, "Please enter your email address.");
+        if (typeof showToast === "function") {
+          showToast("Please enter your email address.", "error");
+        }
+        return;
+      }
+
+      if (!window.medAuth.emailPattern.test(email)) {
+        showMessage(forgotError, "Please enter a valid email address.");
+        if (typeof showToast === "function") {
+          showToast("Please enter a valid email address.", "error");
+        }
+        return;
+      }
+
+      const submitBtn = forgotForm.querySelector("button[type='submit']");
+      setLoading(submitBtn, true, "Sending...");
+
+      setTimeout(() => {
+        const users = window.medAuth.getUsers();
+        const userExists = users.some((user) => user.email.toLowerCase() === email);
+
+        if (!userExists) {
+          setLoading(submitBtn, false);
+          showMessage(forgotError, "No account found with this email address.");
+          if (typeof showToast === "function") {
+            showToast("No account found with this email address.", "error");
+          }
+          return;
+        }
+
+        // Demo: In a real app, this would send an email with a reset link
+        // For demo purposes, we'll show a success message
+        setLoading(submitBtn, false);
+        showMessage(forgotSuccess, "Password reset link sent to your email. Check your inbox.");
+        if (typeof showToast === "function") {
+          showToast("Password reset link sent successfully", "success");
+        }
+
+        forgotForm.reset();
+      }, 800);
     });
   }
 

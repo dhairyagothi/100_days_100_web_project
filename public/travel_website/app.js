@@ -111,6 +111,60 @@ class ParticleSystem {
 const particleSystem = new ParticleSystem('particleCanvas');
 
 // ============================================
+// Navbar Functionality
+// ============================================
+
+const navbar = document.getElementById('navbar');
+const navbarToggle = document.getElementById('navbarToggle');
+const navbarLinks = document.getElementById('navbarLinks');
+const navbarLinkItems = document.querySelectorAll('.navbar-link');
+
+/**
+ * Toggle navbar background/shadow once the page scrolls past the hero
+ */
+function updateNavbarBackground() {
+  if (window.scrollY > 40) {
+    navbar.classList.add('scrolled');
+  } else {
+    navbar.classList.remove('scrolled');
+  }
+}
+
+function closeNavbarMenu() {
+  navbarToggle.classList.remove('active');
+  navbarLinks.classList.remove('active');
+  navbarToggle.setAttribute('aria-expanded', 'false');
+}
+
+navbarToggle.addEventListener('click', () => {
+  const isActive = navbarToggle.classList.toggle('active');
+  navbarLinks.classList.toggle('active');
+  navbarToggle.setAttribute('aria-expanded', String(isActive));
+});
+
+navbarLinkItems.forEach(link => {
+  link.addEventListener('click', (e) => {
+    const targetSection = document.querySelector(link.getAttribute('href'));
+
+    if (targetSection) {
+      e.preventDefault();
+      const targetPosition =
+        targetSection.getBoundingClientRect().top + window.pageYOffset - navbar.offsetHeight;
+
+      window.scrollTo({
+        top: targetPosition,
+        behavior: 'smooth'
+      });
+    }
+
+    closeNavbarMenu();
+  });
+});
+
+window.addEventListener('scroll', updateNavbarBackground);
+updateNavbarBackground();
+
+// ============================================
 // Search and Autocomplete Functionality
 // ============================================
 

@@ -1,4 +1,5 @@
 const PLANETS = {
+
   moon: {
     multiplier: 0.16,
     jump: -18,
@@ -100,6 +101,7 @@ function update() {
   requestAnimationFrame(update);
 }
 
+
 // ----------------------
 // Ball Jump
 // ----------------------
@@ -107,12 +109,10 @@ ball.addEventListener("click", () => {
 
   vy = currentPlanet.jump;
 
-=======
+
 // Ball jump
 ball.addEventListener('click', () => {
   vy = -10;
-
-
 
   vx = (Math.random() - 0.5) * 8;
 
@@ -166,6 +166,43 @@ document.querySelectorAll('.planet-btn').forEach((btn) => {
 
     if (!PLANETS[planet]) return;
 
+
+    currentPlanet = PLANETS[planet];
+
+    gravity = BASE_GRAVITY * currentPlanet.multiplier;
+
+
+    document.querySelectorAll(".planet-btn").forEach(button => {
+
+      button.classList.remove("active");
+
+    });
+
+    btn.classList.add("active");
+
+    // Change Ball Color
+    ball.style.background = currentPlanet.color;
+
+    // Update Color Picker
+    colorPicker.value = currentPlanet.color;
+
+
+    document.querySelectorAll('.planet-btn').forEach((button) => {
+      button.classList.remove('active');
+    });
+
+    btn.classList.add('active');
+
+  });
+
+});
+
+
+
+    const planet = btn.dataset.planet;
+
+    if (!PLANETS[planet]) return;
+
     currentPlanet = PLANETS[planet];
 
     gravity = BASE_GRAVITY * currentPlanet.multiplier;
@@ -200,6 +237,7 @@ document.querySelectorAll('.planet-btn').forEach((btn) => {
 
 });
 
+
 // ----------------------
 // Manual Color Picker
 // ----------------------
@@ -208,12 +246,17 @@ colorPicker.addEventListener("input", () => {
   ball.style.background = colorPicker.value;
 
 
+// Color picker
+colorPicker.addEventListener('input', () => {
+  ball.style.backgroundColor = colorPicker.value;
+
 });
 
 // ----------------------
 // Shape Changer
 // ----------------------
 function applyShape(shape) {
+
 
   ball.style.clipPath = "";
   ball.style.borderRadius = "0";
@@ -222,6 +265,13 @@ function applyShape(shape) {
 
     case "circle":
       ball.style.borderRadius = "50%";
+
+  ball.style.clipPath = '';
+  ball.style.borderRadius = '0';
+
+  switch (shape) {
+    case 'circle':
+      ball.style.borderRadius = '50%';
 
 
   ball.style.clipPath = "";
@@ -244,25 +294,36 @@ function applyShape(shape) {
 
     case 'star':
       ball.style.clipPath =
+
+
         "polygon(50% 0%,0% 100%,100% 100%)";
       break;
 
     case "star":
       ball.style.clipPath =
         "polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)";
+
       break;
   }
 
 }
 
+
+shapeSelect.addEventListener("change", () => {
+
+
+shapeSelect.addEventListener('change', () => {
+
 shapeSelect.addEventListener("change", () => {
 
 shapeSelect.addEventListener("change", () => {
+
 
 
   applyShape(shapeSelect.value);
 
 });
+
 
 // ----------------------
 // Initial Setup
@@ -273,6 +334,10 @@ colorPicker.value = currentPlanet.color;
 
 applyShape("circle");
 
+
+// Initial setup
+ball.style.backgroundColor = colorPicker.value;
+applyShape('circle');
 
 resetBall();
 

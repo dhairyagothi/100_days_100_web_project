@@ -150,6 +150,13 @@ h1 {
 .water-button {
   background: linear-gradient(135deg, rgba(56, 189, 248, 0.15), rgba(96, 165, 250, 0.16));
   color: #e8eef7;
+  font-weight: 600;
+  padding: 0.75rem 0.6rem;
+  min-width: 0;
+  min-height: 44px;
+  flex: 1 1 75px;
+  text-align: center;
+  white-space: nowrap;
 }
 
 .stats-grid {
@@ -287,10 +294,13 @@ input[type='number']:focus {
   gap: 0.75rem;
 }
 
-.button-group {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+.button-group,
+.quick-add-buttons {
+  display: flex;
+  flex-wrap: wrap;
   gap: 0.75rem;
+  justify-content: center;
+  width: 100%;
 }
 
 .hint-text {
@@ -302,6 +312,12 @@ input[type='number']:focus {
   .stats-grid,
   .controls-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .controls-grid {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -319,15 +335,21 @@ input[type='number']:focus {
     grid-template-columns: 1fr;
   }
 
-  .button-group {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .water-button,
   .ghost-btn,
   .primary-btn,
   .secondary-btn {
     min-width: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .quick-add-buttons {
+    gap: 0.6rem;
+  }
+
+  .quick-add-buttons .water-button {
+    flex: 1 1 calc(50% - 0.6rem);
+    min-width: 70px;
   }
 }
 
@@ -348,6 +370,13 @@ input[type='number']:focus {
   .progress-meta {
     flex-direction: column;
     align-items: flex-start;
+  }
+}
+
+@media (max-width: 340px) {
+  .quick-add-buttons .water-button {
+    flex: 1 1 100%;
+    width: 100%;
   }
 }
 
@@ -402,11 +431,11 @@ input[type='number']:focus {
   transition: 0.3s ease;
 }
 
-.switch input:checked + .slider {
+.switch input:checked+.slider {
   background: linear-gradient(135deg, #3b82f6, #60a5fa);
 }
 
-.switch input:checked + .slider:before {
+.switch input:checked+.slider:before {
   transform: translateX(22px);
 }
 

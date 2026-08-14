@@ -99,7 +99,7 @@ function handleFileSelection(file) {
         `;
     }
     processBtn.disabled = false;
-    
+
     if (previewPlaceholder) previewPlaceholder.classList.add("hidden");
     if (imagePreview) imagePreview.classList.add("hidden");
     if (pdfCanvas) pdfCanvas.classList.add("hidden");
@@ -140,23 +140,23 @@ processBtn.addEventListener("click", async () => {
     processBtn.disabled = true;
     if (progressFill) progressFill.value = 10;
     if (progressStatus) progressStatus.textContent = "10% (Initializing)";
-    
+
     try {
         if (selectedFile.type === "application/pdf") {
             if (progressStatus) progressStatus.textContent = "Parsing PDF structure...";
             if (progressFill) progressFill.value = 30;
-            
+
             const reader = new FileReader();
             reader.onload = function (e) {
                 const typedarray = new Uint8Array(e.target.result);
                 pdfjsLib.getDocument(typedarray).promise.then(async pdf => {
                     let compiledText = "";
                     let totalConfidence = 0;
-                    
+
                     for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
                         if (progressStatus) progressStatus.textContent = `Processing PDF page ${pageNum} of ${pdf.numPages}...`;
                         if (progressFill) progressFill.value = Math.floor((pageNum / pdf.numPages) * 60) + 30;
-                        
+
                         const page = await pdf.getPage(pageNum);
                         const viewport = page.getViewport({ scale: 2.0 });
                         const canvas = document.createElement("canvas");
@@ -164,20 +164,20 @@ processBtn.addEventListener("click", async () => {
                         canvas.height = viewport.height;
                         canvas.width = viewport.width;
                         await page.render({ canvasContext: context, viewport: viewport }).promise;
-                        
+
                         const worker = await Tesseract.createWorker(langSelect.value);
                         const { data: { text, confidence } } = await worker.recognize(canvas.toDataURL());
                         compiledText += `\n\n--- Page ${pageNum} ---\n\n` + text;
                         totalConfidence += confidence;
                         await worker.terminate();
                     }
-                    
+
                     if (progressFill) progressFill.value = 100;
                     if (progressStatus) progressStatus.textContent = "100% (Complete)";
-                    
+
                     if (outputTextarea) outputTextarea.value = compiledText;
                     if (outputDiv) outputDiv.innerText = compiledText;
-                    
+
                     if (ocrAccuracy) ocrAccuracy.textContent = `${Math.round(totalConfidence / pdf.numPages)}%`;
                     if (statsSection) statsSection.classList.remove("hidden");
                     updateAnalytics(compiledText);
@@ -191,15 +191,15 @@ processBtn.addEventListener("click", async () => {
         }
 
         const reader = new FileReader();
-        reader.onload = async function() {
+        reader.onload = async function () {
             const img = new Image();
-            img.onload = async function() {
+            img.onload = async function () {
                 const canvas = document.createElement("canvas");
                 const ctx = canvas.getContext("2d");
                 canvas.width = img.width * 2;
                 canvas.height = img.height * 2;
                 ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                
+
                 const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
                 const data = imgData.data;
                 for (let i = 0; i < data.length; i += 4) {
@@ -215,24 +215,24 @@ processBtn.addEventListener("click", async () => {
                 if (progressFill) progressFill.value = 40;
 
                 const worker = await Tesseract.createWorker(langSelect.value);
-                
+
                 if (progressStatus) progressStatus.textContent = "70% (Running Engine Recognition)";
                 if (progressFill) progressFill.value = 70;
 
                 const { data: { text, confidence } } = await worker.recognize(canvas.toDataURL());
-                
+
                 if (progressFill) progressFill.value = 100;
                 if (progressStatus) progressStatus.textContent = "100% (Complete)";
-                
+
                 if (outputTextarea) outputTextarea.value = text;
                 if (outputDiv) outputDiv.innerText = text;
-                
+
                 if (ocrAccuracy) ocrAccuracy.textContent = `${confidence}%`;
                 if (statsSection) statsSection.classList.remove("hidden");
                 updateAnalytics(text);
                 toggleTtsPanel(text);
                 if (downloadBtn) downloadBtn.classList.remove("hidden");
-                
+
                 await worker.terminate();
                 processBtn.disabled = false;
             };
@@ -241,8 +241,18 @@ processBtn.addEventListener("click", async () => {
         reader.readAsDataURL(selectedFile);
 
     } catch (error) {
-        if (progressStatus) progressStatus.textContent = "Error occurred during processing.";
+
+        if (progressStatus)
+            progressStatus.textContent = "Error occurred during processing.";
+
+        if (progressFill)
+            progressFill.value = 0;
+
+        if (ocrProgress)
+            ocrProgress.classList.add("hidden");
+
         processBtn.disabled = false;
+        console.error(error);
     }
 });
 
@@ -317,7 +327,7 @@ if (clearBtn) {
         const defaultMsg = "Upload a file and click Extract Text to begin...";
         if (outputTextarea) outputTextarea.value = "";
         if (outputDiv) outputDiv.innerText = defaultMsg;
-        
+
         selectedFile = null;
         fileInput.value = "";
         if (fileMetadata) fileMetadata.classList.add("hidden");
@@ -351,14 +361,14 @@ if (speakBtn) {
         const utterance = new SpeechSynthesisUtterance(val);
         const selectedOption = voiceSelect ? voiceSelect.selectedOptions[0] : null;
         const selectedVoiceName = selectedOption ? selectedOption.getAttribute("data-name") : null;
-        
+
         utterance.voice = voices.find(v => v.name === selectedVoiceName);
         if (rateSlider) utterance.rate = parseFloat(rateSlider.value);
         if (pitchSlider) utterance.pitch = parseFloat(pitchSlider.value);
-        
+
         utterance.onend = () => { if (speechStatus) speechStatus.textContent = "Ready to Speak"; };
         utterance.onerror = () => { if (speechStatus) speechStatus.textContent = "Ready to Speak"; };
-        
+
         if (speechStatus) speechStatus.textContent = "Speaking...";
         synth.speak(utterance);
     });
