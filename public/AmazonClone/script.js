@@ -1,42 +1,50 @@
-const imgs= document.querySelectorAll('.header-slider ul img');
-const prev_btn=document.querySelector('.control_prev');
-const next_btn=document.querySelector('.control_next');
+// ---------- Header banner slider ----------
+const sliderList = document.querySelector(".header-slider ul");
+const slides = document.querySelectorAll(".header-img");
+const prevBtn = document.querySelector(".control_prev");
+const nextBtn = document.querySelector(".control_next");
 
-let n=0 ;
+let currentIndex = 0;
+const totalSlides = slides.length;
 
-function changeSlide(){
-    for(let i=0; i<imgs.length; i++){
-        imgs[i].style.display='none';
-    }
-    imgs[n].style.display='block';
+function updateSlidePosition() {
+  if (sliderList) {
+    sliderList.style.transform = `translateX(-${currentIndex * 100}%)`;
+  }
 }
 
-changeSlide();
+function goToNextSlide() {
+  currentIndex = (currentIndex + 1) % totalSlides;
+  updateSlidePosition();
+}
 
-prev_btn.addEventListener('click', (e)=>{
-    if(n>0){
-        n--;
-    }
-    else{
-        n=imgs.length-1;
-    }
-    changeSlide();
-});
+function goToPrevSlide() {
+  currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+  updateSlidePosition();
+}
 
-next_btn.addEventListener('click', (e)=>{
-    if(n<imgs.length-1){
-        n++;
-    }
-    else{
-        n=0;
-    }
-    changeSlide();
-});
+if (nextBtn) {
+  nextBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    goToNextSlide();
+  });
+}
 
-const scroll=document.querySelector('.products');
-for(const item of scroll){
-    item.addEventListener('wheel', (evt)=>{
-        evt.preventDefault();
-        item.scrollLeft+=evt.deltaY;
-    });
-};
+if (prevBtn) {
+  prevBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    goToPrevSlide();
+  });
+}
+
+// Auto-play the slider every 4 seconds
+let autoSlide = setInterval(goToNextSlide, 4000);
+
+// Pause auto-play on hover, resume on mouse leave
+const headerSlider = document.querySelector(".header-slider");
+if (headerSlider) {
+  headerSlider.addEventListener("mouseenter", () => clearInterval(autoSlide));
+  headerSlider.addEventListener("mouseleave", () => {
+    autoSlide = setInterval(goToNextSlide, 4000);
+  });
+}

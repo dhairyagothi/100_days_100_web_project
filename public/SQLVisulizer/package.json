@@ -1,0 +1,11 @@
+{
+  "name": "sql-query-visualizer",
+  "version": "1.0.0",
+  "description": "Interactive web app for visualizing SQL query execution step-by-step",
+  "type": "module",
+  "scripts": {
+    "start": "npx --yes serve . -p 3000"
+  },
+  "keywords": ["sql", "visualizer", "education", "database"],
+  "license": "MIT"
+}

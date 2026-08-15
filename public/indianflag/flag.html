@@ -1,29 +1,70 @@
-<!DOCTYPE html>
+<!doctype html>
+
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>Jay Hind</title>
 
-    <link href="../indianflag/flag.css" rel="stylesheet" />
-    <link rel="icon" href="../favv.png" type="image/x-icon" />
-  </head>
+  <link rel="stylesheet" href="flag.css" />
+  <link rel="stylesheet" href="flag-history.css" />
+</head>
 
-  <body>
-    <div class="background-video">
-      <video autoplay muted loop id="bg-video">
-        <source
-          src="https://media.istockphoto.com/id/1503396346/video/happy-indian-republic-day-creative-flag-design-background.mp4?s=mp4-640x640-is&k=20&c=sScbw69iYMiOdC9_KZ2L12EL43ke3lsggE9aK7StIt4="
-          type="video/mp4"
-        />
-        Your browser does not support HTML5 video.
-      </video>
+<body>
+
+  <!-- Background Glow -->
+  <div class="background-overlay"></div>
+
+  <button
+    id="themeToggle"
+    class="theme-toggle-button"
+    type="button"
+    aria-label="Toggle light and dark theme"
+  >
+    <span class="theme-toggle-icon" aria-hidden="true">🌙</span>
+    <span class="theme-toggle-label">Dark mode</span>
+  </button>
+
+  <!-- Floating Ashoka Chakra -->
+  <svg class="bg-wheel" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="100" cy="100" r="92" fill="none" stroke="white" stroke-width="2"/>
+    <circle cx="100" cy="100" r="16" fill="none" stroke="white" stroke-width="2"/>
+    <circle cx="100" cy="100" r="6" fill="white"/>
+  </svg>
+
+  <!-- Back Button -->
+  <a href="/" class="project-back-button">← Back to Home</a>
+
+  <!-- HERO -->
+  <header class="hero-section">
+
+    <div class="hero-badge">
+      Proudly Indian
     </div>
 
-    <div class="wrapper">
+    <h1>
+      The Pride of India
+    </h1>
 
+    <p>
+      Celebrating the spirit, sacrifice, and sovereignty of the Indian National Flag.
+    </p>
+
+  </header>
+
+  <!-- MAIN -->
+  <main class="main-page">
+
+    <!-- FLAG + QUOTE -->
+    <section class="top-section">
+
+      <!-- FLAG -->
       <div class="flag-assembly">
+
         <div class="bar">
           <div class="bar-1"></div>
           <div class="bar-2"></div>
@@ -42,137 +83,152 @@
 
           <div class="bottom"></div>
         </div>
+
       </div>
 
+      <!-- QUOTE CARD -->
       <div class="quote-container">
-        <div class="image-wrapper">
-          <img id="patriot-image" src="" alt="Patriot Image" />
-        </div>
 
-        <div class="quote">
-          "Give me blood and I will give you freedom."
-        </div>
+        <div class="quote-top">
 
-        <div class="author">- Subhas Chandra Bose</div>
+          <div class="image-wrapper">
+            <img
+              id="patriot-image"
+              src="./img/subhas_bose.png"
+              alt="Freedom Fighter"
+            />
+          </div>
+
+          <div class="quote-content">
+            <div class="quote-mark">“</div>
+
+            <div class="quote" id="quote-text">
+              Give me blood and I will give you freedom.
+            </div>
+
+            <div class="author" id="quote-author">
+              — Subhas Chandra Bose
+            </div>
+          </div>
+
+        </div>
 
         <div class="quote-nav">
-          <button id="prev-quote">&#8592;</button>
-          <button id="next-quote">&#8594;</button>
+
+          <button id="prev-quote">
+            ← Previous
+          </button>
+
+          <button id="speak-quote">
+            🔊 Listen
+          </button>
+
+          <button id="next-quote">
+            Next →
+          </button>
+
         </div>
+
       </div>
-    </div>
 
-    <div class="music-controls">
-      <audio id="bgMusic" controls autoplay loop>
-        <source src="vande_mataram.mp3" type="audio/mpeg">
-      </audio>
-    </div>
+    </section>
 
-    <script>
-      // Quotes data
-      const quotes = [
-        {
-          text: '"Give me blood and I will give you freedom."',
-          author: "- Subhas Chandra Bose",
-          image: "./img/subhas_bose.png",
-        },
-        {
-          text: '"Swaraj is my birthright and I shall have it."',
-          author: "- Bal Gangadhar Tilak",
-          image: "./img/bal_tilak.png",
-        },
-        {
-          text: '"Inquilab Zindabad."',
-          author: "- Bhagat Singh",
-          image: "./img/bhagat_singh.jpg",
-        },
-        {
-          text: '"Jai Jawan Jai Kisan."',
-          author: "- Lal Bahadur Shastri",
-          image: "./img/lal_bahadur.png",
-        },
-        {
-          text: '"Jai Hind!"',
-          author: "- Netaji Subhas Chandra Bose",
-          image: "./img/subhas_bose.png",
-        },
-        {
-          text: '"Sarfaroshi ki tamanna ab hamare dil mein hai."',
-          author: "- Ram Prasad Bismil",
-          image: "./img/ram_prasad.png",
-        },
-        {
-          text:
-            '"Dushman ki goliyon ka hum samna karenge, Azad hee rahein hain, azad hee rahenge."',
-          author: "- Chandrashekhar Azad",
-          image: "./img/azad.png",
-        },
-        {
-          text: '"Satyameva Jayate."',
-          author: "- Pandit Madan Mohan Malaviya",
-          image: "./img/pandit_madan_mohan.webp",
-        },
-        {
-          text: '"Sarvodaya, Samaj Sudharak, Samaj Sevak."',
-          author: "- Mahatma Gandhi",
-          image: "./img/gandhi.png",
-        },
-        {
-          text: '"Karo ya maro."',
-          author: "- Mahatma Gandhi",
-          image: "./img/gandhi.png",
-        },
-      ];
+    <!-- MUSIC -->
+    <section class="music-section">
 
-      let currentQuoteIndex = 0;
+      <div class="music-card">
 
-      const quoteText = document.querySelector(".quote");
-      const quoteAuthor = document.querySelector(".author");
-      const patriotImage = document.getElementById("patriot-image");
+        <h3>🎵 Patriotic Music</h3>
 
-      function displayQuote() {
-  const currentQuote = quotes[currentQuoteIndex];
+        <audio id="bgMusic" controls autoplay loop>
+          <source src="vande_mataram.mp3" type="audio/mpeg" />
+        </audio>
 
-  // Preload image first
-  const img = new Image();
+      </div>
 
-  img.onload = () => {
-    patriotImage.src = currentQuote.image;
-    patriotImage.alt = currentQuote.author;
+    </section>
 
-    quoteText.textContent = currentQuote.text;
-    quoteAuthor.textContent = currentQuote.author;
-  };
+    <!-- KNOW MORE -->
+    <section class="know-more-section">
 
-  img.src = currentQuote.image;
-}
+      <div class="section-heading">
+        <h2>Know More About the Tiranga</h2>
+        <p>
+          Every color and symbol in our flag carries deep meaning and national pride.
+        </p>
+      </div>
 
-      displayQuote();
+      <div class="info-container">
 
-      setInterval(() => {
-        currentQuoteIndex = (currentQuoteIndex + 1) % quotes.length;
-        displayQuote();
-      }, 5000);
+        <div class="info-card saffron">
+          <h3>Saffron</h3>
 
-      document.getElementById("prev-quote").addEventListener("click", () => {
-        currentQuoteIndex =
-          (currentQuoteIndex - 1 + quotes.length) % quotes.length;
-        displayQuote();
-      });
+          <p>
+            Represents courage, sacrifice, leadership, and the spirit of selflessness.
+          </p>
+        </div>
 
-      document.getElementById("next-quote").addEventListener("click", () => {
-        currentQuoteIndex =
-          (currentQuoteIndex + 1) % quotes.length;
-        displayQuote();
-      });
+        <div class="info-card white">
+          <h3>White</h3>
 
-      const music = document.getElementById("bgMusic");
+          <p>
+            Symbolizes peace, truth, honesty, and the path of harmony.
+          </p>
+        </div>
 
-      window.addEventListener("load", () => {
-        music.play().catch(() => {
-          console.log("Autoplay blocked by browser");
-        });
-      });
-    </script>
-  </body>
+        <div class="info-card green">
+          <h3>Green</h3>
+
+          <p>
+            Represents growth, prosperity, nature, and faith in the future.
+          </p>
+        </div>
+
+        <div class="info-card chakra">
+          <h3>Ashoka Chakra</h3>
+
+          <p>
+            The wheel of dharma symbolizes progress, justice, and continuous motion.
+          </p>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- HISTORY -->
+    <section id="flag-history">
+
+      <div class="history-header">
+
+        <h2>Evolution of the Indian Flag</h2>
+
+        <p class="subtitle">
+          From resistance to freedom — the remarkable journey of India's national identity.
+        </p>
+
+      </div>
+
+      <div class="timeline-track" id="timelineTrack"></div>
+      <div id="flagCards"></div>
+      <div class="timeline-nav">
+
+        <button id="btnPrev">
+          ← Previous
+        </button>
+
+        <button id="btnNext">
+          Next →
+        </button>
+
+      </div>
+    </section>
+
+  </main>
+
+  <script src="../../theme.js"></script>
+  <script src="script.js"></script>
+  <script src="flag-history.js"></script>
+
+</body>
 </html>

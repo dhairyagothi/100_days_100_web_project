@@ -1,0 +1,32 @@
+# =============================================
+#  CineSearch — .gitignore
+# =============================================
+
+# ---- Environment / Secrets ----
+.env
+config.js
+.env.local
+.env.production
+.env.*.local
+
+# ---- Node (if applicable) ----
+node_modules/
+npm-debug.log*
+yarn-error.log*
+
+# ---- OS junk ----
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ---- Editor ----
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# ---- Build output ----
+dist/
+build/
