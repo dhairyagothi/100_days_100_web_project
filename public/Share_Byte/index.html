@@ -325,6 +325,32 @@ body{
         text-align:center;
     }
 }
+/* Volunteer link hover */
+.footer-links a {
+    position: relative;
+    color: #333;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-links a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+    width: 0;
+    height: 2px;
+    background: #2e7d32;
+    transition: width 0.3s ease;
+}
+
+.footer-links a:hover {
+    color: #2e7d32;
+}
+
+.footer-links a:hover::after {
+    width: 100%;
+}
 
 </style>
 <body>
