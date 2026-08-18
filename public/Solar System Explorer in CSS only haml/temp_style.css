@@ -1,0 +1,326 @@
+/* =========================
+   UNIVERSE CENTER
+========================= */
+.universe{
+    position: relative;
+    width: 2200px;
+    height: 2200px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    transform-style: preserve-3d;
+
+    /* rotate entire system */
+    animation: systemRotate 300s linear infinite;
+}
+
+
+/* Whole solar system rotates */
+@keyframes systemRotate{
+    from{
+        transform: rotate(0deg);
+    }
+
+    to{
+        transform: rotate(360deg);
+    }
+}
+/* =========================
+   SUN
+========================= */
+.sun{
+    position:absolute;
+    top:50%;
+    left:50%;
+    width:120px;
+    height:120px;
+    transform:translate(-50%,-50%);
+    border-radius:50%;
+    background:radial-gradient(circle,#fff9b0,#ffc400,#ff8c00);
+    box-shadow:
+        0 0 40px #ffb300,
+        0 0 80px #ff9900,
+        0 0 150px rgba(255,180,0,.6);
+}
+
+/* =========================
+   ORBITS
+========================= */
+.orbit{
+    position:absolute;
+    top:50%;
+    left:50%;
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:50%;
+    transform:translate(-50%,-50%);
+}
+
+.mercury-orbit{
+    width:220px;
+    height:220px;
+}
+
+.venus-orbit{
+    width:320px;
+    height:320px;
+}
+
+.earth-orbit{
+    width:450px;
+    height:450px;
+}
+
+.mars-orbit{
+    width:600px;
+    height:600px;
+}
+
+.jupiter-orbit{
+    width:900px;
+    height:900px;
+}
+
+.saturn-orbit{
+    width:1200px;
+    height:1200px;
+}
+
+.uranus-orbit{
+    width:1500px;
+    height:1500px;
+}
+
+.neptune-orbit{
+    width:1800px;
+    height:1800px;
+}
+
+/* =========================
+   ORBIT CONTAINERS
+========================= */
+.orbit-container{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform-origin:center center;
+}
+
+.mercury-container{
+    animation:spin 6s linear infinite;
+}
+
+.venus-container{
+    animation:spin 10s linear infinite;
+}
+
+.earth-container{
+    animation:spin 15s linear infinite;
+}
+
+.mars-container{
+    animation:spin 22s linear infinite;
+}
+
+.jupiter-container{
+    animation:spin 40s linear infinite;
+}
+
+.saturn-container{
+    animation:spin 55s linear infinite;
+}
+
+.uranus-container{
+    animation:spin 70s linear infinite;
+}
+
+.neptune-container{
+    animation:spin 90s linear infinite;
+}
+
+/* =========================
+   PLANETS
+========================= */
+.planet{
+    position:absolute;
+    border-radius:50%;
+}
+
+/* Mercury */
+.mercury{
+    width:10px;
+    height:10px;
+    background:#b5b5b5;
+    top:-110px;
+    left:-5px;
+}
+
+/* Venus */
+.venus{
+    width:18px;
+    height:18px;
+    background:#d5a253;
+    top:-160px;
+    left:-9px;
+}
+
+/* Earth */
+.earth{
+    width:22px;
+    height:22px;
+    background:linear-gradient(#2d7fff,#2ad35f);
+    top:-225px;
+    left:-11px;
+    box-shadow:0 0 15px #5ab3ff;
+}
+
+/* Mars */
+.mars{
+    width:16px;
+    height:16px;
+    background:#d75432;
+    top:-300px;
+    left:-8px;
+}
+
+/* Jupiter */
+.jupiter{
+    width:50px;
+    height:50px;
+    background:
+    repeating-linear-gradient(
+        0deg,
+        #cba178,
+        #cba178 6px,
+        #b9875f 12px
+    );
+    top:-450px;
+    left:-25px;
+}
+
+/* Saturn */
+.saturn{
+    width:42px;
+    height:42px;
+    background:#d9b97d;
+    top:-600px;
+    left:-21px;
+}
+
+/* Rings */
+.rings{
+    position:absolute;
+    width:70px;
+    height:70px;
+    left:-14px;
+    top:-14px;
+    border:3px solid rgba(255,255,255,.5);
+    border-radius:50%;
+    transform:rotateX(70deg);
+}
+
+/* Uranus */
+.uranus{
+    width:32px;
+    height:32px;
+    background:#6ce0f5;
+    top:-750px;
+    left:-16px;
+}
+
+/* Neptune */
+.neptune{
+    width:30px;
+    height:30px;
+    background:#2b57ff;
+    top:-900px;
+    left:-15px;
+}
+
+/* =========================
+   EARTH MOON
+========================= */
+.moon-orbit{
+    position:absolute;
+    width:50px;
+    height:50px;
+    left:-14px;
+    top:-14px;
+    border-radius:50%;
+    animation:spin 3s linear infinite;
+}
+
+.moon{
+    position:absolute;
+    width:6px;
+    height:6px;
+    background:#ddd;
+    border-radius:50%;
+    top:0;
+    left:22px;
+}
+
+/* =========================
+   ASTEROID BELT
+========================= */
+.asteroid-belt{
+    width:730px;
+    height:730px;
+}
+
+.asteroids{
+    position:absolute;
+    top:50%;
+    left:50%;
+    width:730px;
+    height:730px;
+    transform:translate(-50%,-50%);
+    border-radius:50%;
+}
+
+.asteroids::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    border-radius:50%;
+    border:2px dotted rgba(255,255,255,.1);
+}
+
+/* =========================
+   LABELS
+========================= */
+.label{
+    position:absolute;
+    top:-18px;
+    left:50%;
+    transform:translateX(-50%);
+    color:white;
+    font-size:11px;
+    white-space:nowrap;
+}
+
+/* =========================
+   ANIMATION
+========================= */
+@keyframes spin{
+    from{
+        transform:rotate(0deg);
+    }
+    to{
+        transform:rotate(360deg);
+    }
+}
+.back-home-btn {
+    color: #fff;
+    text-decoration: none;
+    padding: 8px 16px;
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 8px;
+    font-size: 0.9rem;
+    transition: background 0.3s;
+}
+
+.back-home-btn:hover {
+    background: rgba(255,255,255,0.1);
+}

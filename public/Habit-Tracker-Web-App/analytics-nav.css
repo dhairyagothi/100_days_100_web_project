@@ -1,0 +1,97 @@
+/* Shared top navigation for Habit Tracker pages */
+
+.top-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  margin-bottom: 22px;
+}
+
+.top-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.project-back-button,
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: #1e293b;
+  border: 1px solid #3b82f6;
+  color: #3b82f6;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 700;
+  box-shadow: 0 8px 18px rgba(21, 24, 30, 0.06);
+  transition: all 0.2s ease;
+}
+
+.project-back-button:hover,
+.back-btn:hover {
+  background: #3b82f6;
+  color: #fff;
+}
+
+#analytics-btn,
+#theme-toggle,
+.theme-btn {
+  min-height: 40px;
+  padding: 9px 14px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  border: 1px solid transparent;
+  box-shadow: none;
+}
+
+#analytics-btn {
+  position: static;
+  background: var(--accent, #1f9d55);
+  color: #ffffff;
+}
+
+#theme-toggle,
+.theme-btn {
+  background: #121212;
+  color: #ffffff;
+}
+
+body.dark-mode .project-back-button,
+body.dark-mode .back-btn {
+  background: #1e293b;
+  color: #3b82f6;
+  border-color: #3b82f6;
+}
+
+body.dark-mode #theme-toggle,
+body.dark-mode .theme-btn {
+  background: #f7f4ef;
+  color: #111418;
+}
+
+@media (max-width: 640px) {
+  .top-nav {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .top-actions {
+    width: 100%;
+  }
+
+  .project-back-button,
+  .back-btn,
+  #analytics-btn,
+  #theme-toggle,
+  .theme-btn {
+    justify-content: center;
+    flex: 1;
+  }
+}

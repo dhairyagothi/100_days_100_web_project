@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Help & Support – RouteMaster</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<link rel="stylesheet" href="./css/style.css"/>
+<style>
+  .faq-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px 0;
+  }
+  .faq-item {
+    background: var(--panel-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    margin-bottom: 16px;
+    padding: 20px;
+    transition: all 0.3s ease;
+  }
+  .faq-item:hover {
+    border-color: var(--accent1);
+  }
+  .faq-question {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: 12px;
+  }
+  .faq-question i {
+    color: var(--accent2);
+  }
+  .faq-answer {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    padding-left: 32px;
+  }
+  .contact-box {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background: linear-gradient(145deg, rgba(37,99,235,0.1), rgba(139,92,246,0.1));
+    border: 1px solid rgba(139,92,246,0.3);
+    border-radius: 16px;
+    padding: 24px;
+    margin-top: 40px;
+  }
+  .contact-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: rgba(139,92,246,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    color: #A78BFA;
+  }
+  .contact-info h3 {
+    margin: 0 0 8px 0;
+    color: var(--text-color);
+  }
+  .contact-info p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+  }
+  .contact-btn {
+    margin-left: auto;
+    background: var(--accent1);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .contact-btn:hover {
+    background: #2563EB;
+    transform: translateY(-2px);
+  }
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <a class="nav-logo" href="index.html">
+    <div class="logo-icon"><i aria-hidden="true" class="fas fa-location-crosshairs"></i></div>
+    <span class="brand">Route<span class="dot">Master</span></span>
+  </a>
+  <div class="nav-links">
+    <a href="index.html"><i aria-hidden="true" class="fas fa-house" style="margin-right:6px;font-size:0.75rem;"></i>Home</a>
+    <a href="map.html"><i aria-hidden="true" class="fas fa-map" style="margin-right:6px;font-size:0.75rem;"></i>Map</a>
+    <a href="explore.html"><i aria-hidden="true" class="fas fa-compass" style="margin-right:6px;font-size:0.75rem;"></i>Explore</a>
+    <a href="help.html" class="active"><i aria-hidden="true" class="fas fa-circle-question" style="margin-right:6px;font-size:0.75rem;"></i>Help</a>
+  </div>
+  <div class="nav-right">
+    <span class="live-badge"><span class="live-dot"></span>Campus Live</span>
+    <button class="nav-btn"><i aria-hidden="true" class="fas fa-route" style="margin-right:6px;"></i>Navigate Now</button>
+    <div class="nav-avatar">SU</div>
+  </div>
+</nav>
+
+<div class="page">
+  <!-- HERO -->
+  <section class="hero" style="min-height: auto; padding-bottom: 2rem;">
+    <div class="hero-badge"><i aria-hidden="true" class="fas fa-life-ring"></i> Support Center</div>
+    <h1>How can we help you?</h1>
+    <p>Find answers to common questions, navigation tips, and contact information.</p>
+  </section>
+
+  <!-- MAIN LAYOUT -->
+  <div class="main-layout" style="display: block;">
+    
+    <div class="faq-container">
+      
+      <div class="faq-item">
+        <div class="faq-question">
+          <i class="fas fa-location-arrow"></i> How do I get turn-by-turn navigation?
+        </div>
+        <div class="faq-answer">
+          You can use the search bar on the Home page to select your destination, or click on any location pin on the Map view. Click the "Navigate" button to generate the optimal route.
+        </div>
+      </div>
+      
+      <div class="faq-item">
+        <div class="faq-question">
+          <i class="fas fa-wifi"></i> Does navigation work offline?
+        </div>
+        <div class="faq-answer">
+          RouteMaster requires an internet connection for real-time occupancy updates, but base maps and pre-calculated routes will remain visible if you lose connection.
+        </div>
+      </div>
+      
+      <div class="faq-item">
+        <div class="faq-question">
+          <i class="fas fa-wheelchair"></i> Are accessible routes available?
+        </div>
+        <div class="faq-answer">
+          Yes! You can toggle accessibility settings in the route options to prioritize ramps and elevators instead of stairs across all buildings.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          <i class="fas fa-map-pin"></i> I found a closed path or wrong location.
+        </div>
+        <div class="faq-answer">
+          Campus layouts change. If you spot a locked door, construction zone, or missing room, please report it to us so we can update the live map.
+        </div>
+      </div>
+      
+      <div class="contact-box">
+        <div class="contact-icon">
+          <i class="fas fa-headset"></i>
+        </div>
+        <div class="contact-info">
+          <h3>Still need help?</h3>
+          <p>Reach out to the university support desk or map administration.</p>
+        </div>
+        <button class="contact-btn">Contact Support</button>
+      </div>
+
+    </div>
+    
+  </div>
+</div>
+
+<!-- FAB -->
+<button class="fab" title="Quick Navigate"><i aria-hidden="true" class="fas fa-location-crosshairs"></i></button>
+
+<script src="script.js"></script>
+</body>
+</html>
