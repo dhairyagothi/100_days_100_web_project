@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Grocery | ModernHub – Fresh Produce, Dairy & Beverages</title>
+    <meta name="description" content="Shop fresh produce, dairy, eggs, and premium beverages at ModernHub. Farm-to-table quality delivered to your door." />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              brand: { 50:"#f0f9ff",100:"#e0f2fe",200:"#bae6fd",300:"#7dd3fc",400:"#38bdf8",500:"#0ea5e9",600:"#0284c7",700:"#0369a1",800:"#075985",900:"#0c4a6e",950:"#082f49" },
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap");
+      body { font-family: "Plus Jakarta Sans", sans-serif; }
+      .glass { background: rgba(15,23,42,0.8); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); }
+      @keyframes slideInUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+      .animate-in { animation: slideInUp 0.5s ease-out forwards; opacity: 0; }
+      ::-webkit-scrollbar { width: 8px; }
+      ::-webkit-scrollbar-track { background: #0f172a; }
+      ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+      ::-webkit-scrollbar-thumb:hover { background: #475569; }
+    </style>
+  </head>
+  <body class="bg-slate-950 text-slate-200 min-h-screen selection:bg-brand-500/30 selection:text-brand-200">
+
+    <!-- NAVBAR -->
+    <nav id="navbar" class="fixed top-0 z-50 w-full glass border-b border-white/5">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
+        <div class="flex h-20 items-center justify-between">
+          <div class="flex flex-shrink-0 items-center gap-5">
+            <div class="h-10 w-10 rounded-xl bg-brand-500 flex items-center justify-center shadow-lg shadow-brand-500/20">
+              <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            </div>
+            <a href="index.html" class="text-xl font-bold tracking-tight text-white">ModernHub</a>
+          </div>
+          <div class="hidden md:block">
+            <div class="flex items-center space-x-1">
+              <a href="index.html" class="relative px-4 py-2 text-sm font-medium text-slate-300 hover:text-white transition-colors">Home</a>
+              <!-- Grocery -->
+              <div class="relative px-2">
+                <button id="grocery" class="flex items-center gap-1 rounded-lg px-4 py-2 text-sm font-medium text-brand-400 bg-white/5">Grocery <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></button>
+                <div id="grocery-dd" class="hidden invisible absolute left-0 top-full pt-2 opacity-0 transition-all z-50">
+                  <div class="w-56 overflow-hidden rounded-xl glass border border-white/10 p-2 shadow-2xl">
+                    <a href="grocery.html#fresh-produce" class="block rounded-lg px-4 py-2.5 text-sm hover:bg-white/5 hover:text-brand-400 transition-all">Fresh Produce</a>
+                    <a href="grocery.html#dairy-eggs" class="block rounded-lg px-4 py-2.5 text-sm hover:bg-white/5 hover:text-brand-400 transition-all">Dairy &amp; Eggs</a>
+                    <a href="grocery.html#beverages" class="block rounded-lg px-4 py-2.5 text-sm hover:bg-white/5 hover:text-brand-400 transition-all">Beverages</a>
+                  </div>
+                </div>
+              </div>
+              <!-- Mobiles -->
+              <div class="relative px-2">
+                <button id="mobile" class="flex items-center gap-1 rounded-lg px-4 py-2 text-sm font-medium text-slate-300 hover:bg-white/5 hover:text-white transition-all">Mobiles <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></button>
+                <div id="mobile-dd" class="hidden invisible absolute left-0 top-full pt-2 opacity-0 transition-all z-50">
+                  <div class="w-56 overflow-hidden rounded-xl glass border border-white/10 p-2 shadow-2xl">
+                    <a href="mobiles.html#smartphones" class="block rounded-lg px-4 py-2.5 text-sm hover:bg-white/5 hover:text-brand-400 transition-all">Smartphones</a>
+                    <a href="mobiles.html#accessories" class="block rounded-lg px-4 py-2.5 text-sm hover:bg-white/5 hover:text-brand-400 transition-all">Accessories</a>
+                    <a href="mobiles.html#tablets" class="block rounded-lg px-4 py-2.5 text-sm hover:bg-white/5 hover:text-brand-400 transition-all">Tablets</a>
+                  </div>
+                </div>
+              </div>
+              <!-- Appliances -->
+              <div class="relative px-2">
+                <button id="appliances" class="flex items-center gap-1 rounded-lg px-4 py-2 text-sm font-medium text-slate-300 hover:bg-white/5 hover:text-white transition-all">Appliances <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></button>
+                <div id="appliances-dd" class="hidden invisible absolute left-0 top-full pt-2 opacity-0 transition-all z-50">
+                  <div class="w-56 overflow-hidden rounded-xl glass border border-white/10 p-2 shadow-2xl">
+                    <a href="appliances.html#kitchen" class="block rounded-lg px-4 py-2.5 text-sm hover:bg-white/5 hover:text-brand-400 transition-all">Kitchen Tech</a>
+                    <a href="appliances.html#home-comfort" class="block rounded-lg px-4 py-2.5 text-sm hover:bg-white/5 hover:text-brand-400 transition-all">Home Comfort</a>
+                  </div>
+                </div>
+              </div>
+              <!-- Vehicle -->
+              <div class="relative px-2">
+                <button id="vehicle" class="flex items-center gap-1 rounded-lg px-4 py-2 text-sm font-medium text-slate-300 hover:bg-white/5 hover:text-white transition-all">Vehicle <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></button>
+                <div id="vehicle-dd" class="hidden invisible absolute left-0 top-full pt-2 opacity-0 transition-all z-50">
+                  <div class="w-56 overflow-hidden rounded-xl glass border border-white/10 p-2 shadow-2xl">
+                    <a href="vehicle.html#luxury-evs" class="block rounded-lg px-4 py-2.5 text-sm hover:bg-white/5 hover:text-brand-400 transition-all">Luxury EVs</a>
+                    <a href="vehicle.html#scooters" class="block rounded-lg px-4 py-2.5 text-sm hover:bg-white/5 hover:text-brand-400 transition-all">Urban Scooters</a>
+                    <a href="vehicle.html#bikes" class="block rounded-lg px-4 py-2.5 text-sm hover:bg-white/5 hover:text-brand-400 transition-all">Smart Bikes</a>
+                  </div>
+                </div>
+              </div>
+              <!-- Travel -->
+              <div class="relative px-2">
+                <button id="travel" class="flex items-center gap-1 rounded-lg px-4 py-2 text-sm font-medium text-slate-300 hover:bg-white/5 hover:text-white transition-all">Travel <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></button>
+                <div id="travel-dd" class="hidden invisible absolute left-0 top-full pt-2 opacity-0 transition-all z-50">
+                  <div class="w-56 overflow-hidden rounded-xl glass border border-white/10 p-2 shadow-2xl">
+                    <a href="travel.html#beach" class="block rounded-lg px-4 py-2.5 text-sm hover:bg-white/5 hover:text-brand-400 transition-all">Beach Escapes</a>
+                    <a href="travel.html#mountain" class="block rounded-lg px-4 py-2.5 text-sm hover:bg-white/5 hover:text-brand-400 transition-all">Mountain Retreats</a>
+                  </div>
+                </div>
+              </div>
+              <!-- Fashion -->
+              <div class="relative px-2">
+                <button id="fashion" class="flex items-center gap-1 rounded-lg px-4 py-2 text-sm font-medium text-slate-300 hover:bg-white/5 hover:text-white transition-all">Fashion <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></button>
+                <div id="fashion-dd" class="hidden invisible absolute left-0 top-full pt-2 opacity-0 transition-all z-50">
+                  <div class="w-56 overflow-hidden rounded-xl glass border border-white/10 p-2 shadow-2xl">
+                    <a href="fashion.html#mens" class="block rounded-lg px-4 py-2.5 text-sm hover:bg-white/5 hover:text-brand-400 transition-all">Men's Apparel</a>
+                    <a href="fashion.html#womens" class="block rounded-lg px-4 py-2.5 text-sm hover:bg-white/5 hover:text-brand-400 transition-all">Women's Apparel</a>
+                    <a href="fashion.html#kids" class="block rounded-lg px-4 py-2.5 text-sm hover:bg-white/5 hover:text-brand-400 transition-all">Kids' Wear</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="flex items-center gap-4">
+            <button id="notification-btn" class="relative rounded-full p-2 text-slate-400 hover:bg-white/5 hover:text-white transition-all">
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+              <span class="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-brand-500 text-[10px] font-bold text-white">3</span>
+            </button>
+            <div class="h-8 w-px bg-white/10 hidden sm:block"></div>
+            <div class="relative">
+              <button id="user-btn" class="flex items-center gap-2 rounded-full bg-white/5 p-1 px-3 hover:bg-white/10 border border-white/10 transition-all">
+                <div class="h-8 w-8 rounded-full bg-brand-500 flex items-center justify-center text-sm font-bold text-white">V</div>
+                <span class="text-sm font-medium hidden sm:inline">Vansh</span>
+              </button>
+              <div id="user-menu" class="hidden invisible absolute right-0 top-full mt-2 w-52 rounded-xl shadow-2xl py-2 bg-gray-800 ring-1 ring-gray-700 z-50">
+                <a href="#" class="block px-4 py-3 text-sm text-gray-200 hover:bg-gray-700 hover:text-cyan-400">Your Profile</a>
+                <a href="#" class="block px-4 py-3 text-sm text-gray-200 hover:bg-gray-700 hover:text-cyan-400">Settings</a>
+                <div class="my-1 h-px bg-white/5"></div>
+                <a href="#" class="block px-4 py-3 text-sm text-red-400 font-semibold hover:bg-gray-700">Sign out</a>
+              </div>
+            </div>
+          </div>
+          <div class="flex md:hidden">
+            <button id="mobile-menu-toggle" class="rounded-lg p-2 text-slate-400 hover:bg-white/5 hover:text-white">
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- Mobile Menu -->
+      <div id="mobile-menu-content" class="hidden border-t border-white/5 bg-slate-950/95 backdrop-blur-xl md:hidden">
+        <div class="space-y-1 px-4 py-6">
+          <a href="index.html" class="block rounded-lg px-4 py-3 text-base font-medium text-slate-300 hover:bg-white/5 hover:text-brand-400">Home</a>
+          <div><button id="mobile-grocery-btn" class="w-full text-left rounded-lg px-4 py-3 text-base font-medium text-brand-400 bg-white/5 flex justify-between items-center"><span>Grocery</span><svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></button>
+            <div id="mobile-grocery-dd" class="pl-6 space-y-1 bg-slate-900/50 rounded-lg py-2">
+              <a href="grocery.html#fresh-produce" class="block py-2 text-sm text-slate-400 hover:text-white">Fresh Produce</a>
+              <a href="grocery.html#dairy-eggs" class="block py-2 text-sm text-slate-400 hover:text-white">Dairy &amp; Eggs</a>
+              <a href="grocery.html#beverages" class="block py-2 text-sm text-slate-400 hover:text-white">Beverages</a>
+            </div>
+          </div>
+          <div><button id="mobile-mobile-btn" class="w-full text-left rounded-lg px-4 py-3 text-base font-medium text-slate-300 hover:bg-white/5 flex justify-between items-center"><span>Mobiles</span><svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></button>
+            <div id="mobile-mobile-dd" class="hidden pl-6 space-y-1 bg-slate-900/50 rounded-lg py-2">
+              <a href="mobiles.html#smartphones" class="block py-2 text-sm text-slate-400 hover:text-white">Smartphones</a>
+              <a href="mobiles.html#accessories" class="block py-2 text-sm text-slate-400 hover:text-white">Accessories</a>
+              <a href="mobiles.html#tablets" class="block py-2 text-sm text-slate-400 hover:text-white">Tablets</a>
+            </div>
+          </div>
+          <div><button id="mobile-appliances-btn" class="w-full text-left rounded-lg px-4 py-3 text-base font-medium text-slate-300 hover:bg-white/5 flex justify-between items-center"><span>Appliances</span><svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></button>
+            <div id="mobile-appliances-dd" class="hidden pl-6 space-y-1 bg-slate-900/50 rounded-lg py-2">
+              <a href="appliances.html#kitchen" class="block py-2 text-sm text-slate-400 hover:text-white">Kitchen Tech</a>
+              <a href="appliances.html#home-comfort" class="block py-2 text-sm text-slate-400 hover:text-white">Home Comfort</a>
+            </div>
+          </div>
+          <div><button id="mobile-vehicle-btn" class="w-full text-left rounded-lg px-4 py-3 text-base font-medium text-slate-300 hover:bg-white/5 flex justify-between items-center"><span>Vehicle</span><svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></button>
+            <div id="mobile-vehicle-dd" class="hidden pl-6 space-y-1 bg-slate-900/50 rounded-lg py-2">
+              <a href="vehicle.html#luxury-evs" class="block py-2 text-sm text-slate-400 hover:text-white">Luxury EVs</a>
+              <a href="vehicle.html#scooters" class="block py-2 text-sm text-slate-400 hover:text-white">Urban Scooters</a>
+              <a href="vehicle.html#bikes" class="block py-2 text-sm text-slate-400 hover:text-white">Smart Bikes</a>
+            </div>
+          </div>
+          <div><button id="mobile-travel-btn" class="w-full text-left rounded-lg px-4 py-3 text-base font-medium text-slate-300 hover:bg-white/5 flex justify-between items-center"><span>Travel</span><svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></button>
+            <div id="mobile-travel-dd" class="hidden pl-6 space-y-1 bg-slate-900/50 rounded-lg py-2">
+              <a href="travel.html#beach" class="block py-2 text-sm text-slate-400 hover:text-white">Beach Escapes</a>
+              <a href="travel.html#mountain" class="block py-2 text-sm text-slate-400 hover:text-white">Mountain Retreats</a>
+            </div>
+          </div>
+          <div><button id="mobile-fashion-btn" class="w-full text-left rounded-lg px-4 py-3 text-base font-medium text-slate-300 hover:bg-white/5 flex justify-between items-center"><span>Fashion</span><svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></button>
+            <div id="mobile-fashion-dd" class="hidden pl-6 space-y-1 bg-slate-900/50 rounded-lg py-2">
+              <a href="fashion.html#mens" class="block py-2 text-sm text-slate-400 hover:text-white">Men's Apparel</a>
+              <a href="fashion.html#womens" class="block py-2 text-sm text-slate-400 hover:text-white">Women's Apparel</a>
+              <a href="fashion.html#kids" class="block py-2 text-sm text-slate-400 hover:text-white">Kids' Wear</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- MAIN -->
+    <main class="relative pt-20">
+      <!-- Hero -->
+      <section class="relative overflow-hidden py-20">
+        <div class="pointer-events-none absolute inset-0 -z-10" style="background:radial-gradient(ellipse at 30% 60%,rgba(16,185,129,0.14) 0%,transparent 65%)"></div>
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <nav class="flex items-center gap-2 text-sm text-slate-500 mb-8" aria-label="Breadcrumb">
+            <a href="index.html" class="hover:text-white transition-colors">Home</a>
+            <span>›</span>
+            <span class="text-white font-medium">Grocery</span>
+          </nav>
+          <div class="flex flex-col sm:flex-row sm:items-center gap-5 mb-8">
+            <div class="h-16 w-16 rounded-2xl flex items-center justify-center text-3xl flex-shrink-0" style="background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.3)">🥦</div>
+            <div>
+              <div class="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold mb-2" style="background:rgba(16,185,129,0.1);color:#4ade80;border:1px solid rgba(16,185,129,0.2)">
+                <span class="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse inline-block"></span>Fresh Today
+              </div>
+              <h1 class="text-4xl lg:text-5xl font-extrabold text-white">Fresh Grocery</h1>
+              <p class="text-slate-400 mt-2 text-base">Farm-to-table quality, delivered to your door</p>
+            </div>
+          </div>
+          <div class="flex flex-wrap gap-3">
+            <a href="#fresh-produce" class="flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium border border-white/10 text-slate-300 hover:bg-emerald-500/10 hover:text-emerald-400 hover:border-emerald-500/30 transition-all">🍓 Fresh Produce</a>
+            <a href="#dairy-eggs" class="flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium border border-white/10 text-slate-300 hover:bg-emerald-500/10 hover:text-emerald-400 hover:border-emerald-500/30 transition-all">🥛 Dairy &amp; Eggs</a>
+            <a href="#beverages" class="flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium border border-white/10 text-slate-300 hover:bg-emerald-500/10 hover:text-emerald-400 hover:border-emerald-500/30 transition-all">🧃 Beverages</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Fresh Produce -->
+      <section id="fresh-produce" class="py-12 max-w-7xl mx-auto px-4">
+        <div class="flex items-center gap-3 mb-8">
+          <span class="text-2xl">🍓</span>
+          <h2 class="text-2xl font-bold text-white">Fresh Produce</h2>
+          <div class="flex-1 h-px bg-white/5 ml-2"></div>
+        </div>
+        <div id="fresh-produce-grid" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"></div>
+      </section>
+
+      <!-- Dairy & Eggs -->
+      <section id="dairy-eggs" class="py-12 max-w-7xl mx-auto px-4">
+        <div class="flex items-center gap-3 mb-8">
+          <span class="text-2xl">🥛</span>
+          <h2 class="text-2xl font-bold text-white">Dairy &amp; Eggs</h2>
+          <div class="flex-1 h-px bg-white/5 ml-2"></div>
+        </div>
+        <div id="dairy-eggs-grid" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"></div>
+      </section>
+
+      <!-- Beverages -->
+      <section id="beverages" class="py-12 max-w-7xl mx-auto px-4">
+        <div class="flex items-center gap-3 mb-8">
+          <span class="text-2xl">🧃</span>
+          <h2 class="text-2xl font-bold text-white">Beverages</h2>
+          <div class="flex-1 h-px bg-white/5 ml-2"></div>
+        </div>
+        <div id="beverages-grid" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"></div>
+      </section>
+    </main>
+
+    <footer class="bg-slate-950 border-t border-white/5 pt-12 pb-12 text-center text-slate-500 text-xs mt-12">
+      <p>© 2026 ModernHub Inc. All rights reserved.</p>
+      <p class="mt-2">Crafted with ❤️ by <b class="text-cyan-400">Jaymin Panchal</b></p>
+    </footer>
+
+    <script>
+      // Navbar dropdowns
+      const dropdowns = [
+        {button:"grocery",menu:"grocery-dd"},{button:"mobile",menu:"mobile-dd"},
+        {button:"appliances",menu:"appliances-dd"},{button:"vehicle",menu:"vehicle-dd"},
+        {button:"travel",menu:"travel-dd"},{button:"fashion",menu:"fashion-dd"},
+        {button:"user-btn",menu:"user-menu"},
+      ];
+      function closeAllDropdowns(){dropdowns.forEach(({menu,button})=>{const d=document.getElementById(menu),b=document.getElementById(button);if(d)d.classList.add("hidden","invisible","opacity-0");if(b)b.classList.remove("bg-white/5","text-white");});}
+      dropdowns.forEach(({button,menu})=>{const btn=document.getElementById(button),dd=document.getElementById(menu);if(btn&&dd){btn.addEventListener("click",(e)=>{e.stopPropagation();const h=dd.classList.contains("hidden");closeAllDropdowns();if(h){dd.classList.remove("hidden","invisible","opacity-0");btn.classList.add("bg-white/5","text-white");}});}});
+      document.addEventListener("click",()=>closeAllDropdowns());
+      const mb=document.getElementById("mobile-menu-toggle"),mm=document.getElementById("mobile-menu-content");
+      if(mb&&mm)mb.addEventListener("click",()=>mm.classList.toggle("hidden"));
+      [{btn:"mobile-mobile-btn",dd:"mobile-mobile-dd"},{btn:"mobile-appliances-btn",dd:"mobile-appliances-dd"},{btn:"mobile-vehicle-btn",dd:"mobile-vehicle-dd"},{btn:"mobile-travel-btn",dd:"mobile-travel-dd"},{btn:"mobile-fashion-btn",dd:"mobile-fashion-dd"}].forEach(({btn,dd})=>{const b=document.getElementById(btn),d=document.getElementById(dd);if(b&&d)b.addEventListener("click",(e)=>{e.stopPropagation();d.classList.toggle("hidden");});});
+
+      // Products
+      const data = {
+        "fresh-produce": [
+          {name:"Organic Strawberries",price:"$4.99",rating:5,desc:"Fresh, juicy farm-picked organic strawberries.",badge:"Organic",img:"https://images.unsplash.com/photo-1464965911861-746a04b4bca6?auto=format&fit=crop&w=600&q=80"},
+          {name:"Fresh Avocados",price:"$3.99",rating:4,desc:"Ripe and ready-to-eat premium Hass avocados.",img:"https://images.unsplash.com/photo-1519162808019-7de1683fa2ad?auto=format&fit=crop&w=600&q=80"},
+          {name:"Cherry Tomatoes",price:"$2.99",rating:5,desc:"Sweet and plump cherry tomatoes, locally sourced.",badge:"Local",img:"https://images.unsplash.com/photo-1592924357228-91a4daadcfea?auto=format&fit=crop&w=600&q=80"},
+          {name:"Baby Spinach",price:"$3.49",rating:4,desc:"Tender baby spinach leaves, triple washed and ready to eat.",img:"https://images.unsplash.com/photo-1576045057995-568f588f82fb?auto=format&fit=crop&w=600&q=80"},
+          {name:"Sweet Corn",price:"$1.99",rating:4,desc:"Farm-fresh sweet corn, perfect for grilling or boiling.",img:"https://images.unsplash.com/photo-1551754655-cd27e38d2076?auto=format&fit=crop&w=600&q=80"},
+          {name:"Fresh Blueberries",price:"$5.99",rating:5,desc:"Plump, antioxidant-rich blueberries from the Pacific Northwest.",badge:"Best Seller",img:"https://images.unsplash.com/photo-1498557850523-fd3d118b962e?auto=format&fit=crop&w=600&q=80"},
+        ],
+        "dairy-eggs": [
+          {name:"Organic Whole Milk",price:"$2.99",rating:5,desc:"Farm fresh organic whole milk, hormone-free and rich.",badge:"Organic",img:"https://images.unsplash.com/photo-1563636619-e9143da7973b?auto=format&fit=crop&w=600&q=80"},
+          {name:"Free-Range Eggs",price:"$4.49",rating:5,desc:"12 cage-free eggs from pasture-raised hens.",img:"https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?auto=format&fit=crop&w=600&q=80"},
+          {name:"Greek Yogurt",price:"$3.99",rating:4,desc:"Thick, creamy Greek yogurt packed with live cultures.",img:"https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=600&q=80"},
+          {name:"Aged Cheddar",price:"$6.99",rating:5,desc:"Sharp 2-year aged cheddar, perfect for snacking or cooking.",badge:"Premium",img:"https://images.unsplash.com/photo-1552767059-ce182ead6c1b?auto=format&fit=crop&w=600&q=80"},
+          {name:"Unsalted Butter",price:"$4.29",rating:4,desc:"Rich European-style unsalted butter, made from grass-fed cows.",img:"https://images.unsplash.com/photo-1589985270826-4b7bb135bc9d?auto=format&fit=crop&w=600&q=80"},
+          {name:"Cream Cheese",price:"$3.79",rating:4,desc:"Smooth, velvety cream cheese spread for bagels or baking.",img:"https://images.unsplash.com/photo-1558024920-b41e1887dc32?auto=format&fit=crop&w=600&q=80"},
+        ],
+        "beverages": [
+          {name:"Fresh Orange Juice",price:"$5.99",rating:5,desc:"Cold-pressed, 100% pure fresh-squeezed orange juice.",badge:"Cold Pressed",img:"https://images.unsplash.com/photo-1600271886742-f049cd451bba?auto=format&fit=crop&w=600&q=80"},
+          {name:"Cold Brew Coffee",price:"$7.99",rating:5,desc:"Slow-steeped 24-hour cold brew, smooth and naturally sweet.",img:"https://images.unsplash.com/photo-1461023058943-07fcbe16d735?auto=format&fit=crop&w=600&q=80"},
+          {name:"Sparkling Water",price:"$2.49",rating:4,desc:"Naturally carbonated mineral water, crisp and refreshing.",img:"https://images.unsplash.com/photo-1523362628745-0c100150b504?auto=format&fit=crop&w=600&q=80"},
+          {name:"Premium Green Tea",price:"$4.99",rating:4,desc:"Japanese matcha-grade loose leaf green tea, full of antioxidants.",img:"https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&w=600&q=80"},
+          {name:"Mango Smoothie",price:"$6.49",rating:5,desc:"All-natural mango smoothie, no added sugar or preservatives.",badge:"No Sugar",img:"https://images.unsplash.com/photo-1553530666-ba11a7da3888?auto=format&fit=crop&w=600&q=80"},
+          {name:"Coconut Water",price:"$3.99",rating:4,desc:"Natural electrolyte-rich coconut water, straight from young coconuts.",img:"https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=600&q=80"},
+        ],
+      };
+
+      function renderGrid(products, gridId) {
+        const grid = document.getElementById(gridId);
+        if (!grid) return;
+        grid.innerHTML = "";
+        products.forEach((p, i) => {
+          const stars = "★".repeat(p.rating) + "☆".repeat(5 - p.rating);
+          const card = document.createElement("div");
+          card.className = "group flex flex-col rounded-3xl bg-white/5 border border-white/10 p-6 glass hover:border-emerald-500/30 transition-all duration-300 animate-in";
+          card.style.animationDelay = `${i * 0.07}s`;
+          card.innerHTML = `
+            <div class="aspect-[4/3] w-full overflow-hidden rounded-2xl bg-slate-900/50 mb-4 relative">
+              <img src="${p.img}" alt="${p.name}" class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
+              ${p.badge ? `<span class="absolute top-3 left-3 bg-brand-500 text-white text-[10px] font-bold px-2.5 py-1 rounded-full">${p.badge}</span>` : ""}
+            </div>
+            <h3 class="text-lg font-bold text-white mb-1">${p.name}</h3>
+            <p class="text-slate-400 text-xs leading-relaxed mb-3 flex-1">${p.desc}</p>
+            <div class="flex items-center gap-1 mb-4">
+              <span class="text-yellow-400 text-sm">${stars}</span>
+              <span class="text-slate-500 text-xs ml-1">(${p.rating}.0)</span>
+            </div>
+            <div class="flex items-center justify-between pt-4 border-t border-white/5">
+              <span class="text-xl font-black text-white">${p.price}</span>
+              <button class="rounded-xl px-5 py-2.5 text-xs font-bold text-white bg-brand-500 hover:bg-brand-400 active:scale-95 transition-all shadow-lg shadow-brand-500/20">Add to Cart</button>
+            </div>`;
+          grid.appendChild(card);
+        });
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        Object.entries(data).forEach(([key, products]) => renderGrid(products, `${key}-grid`));
+      });
+    </script>
+  </body>
+</html>

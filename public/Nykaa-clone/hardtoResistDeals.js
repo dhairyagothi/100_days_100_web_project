@@ -1,11 +1,52 @@
-export default [
-    "https://images-static.nykaa.com/uploads/44dd0587-e3ee-4181-87e3-aa623ad09ecc.gif?tr=w-240,cm-pad_resize",
-    "https://images-static.nykaa.com/uploads/519b2575-0831-4b92-b530-caa43e2f77a0.gif?tr=w-240,cm-pad_resize",
-    "https://images-static.nykaa.com/uploads/84967e87-d680-4f2c-a014-1c1ec93a2c15.gif?tr=w-240,cm-pad_resize",
-    "https://images-static.nykaa.com/uploads/480adec8-0d45-4244-90b6-8b262cbd1e92.gif?tr=w-240,cm-pad_resize",
-    "https://images-static.nykaa.com/uploads/480adec8-0d45-4244-90b6-8b262cbd1e92.gif?tr=w-240,cm-pad_resize",
-    "https://images-static.nykaa.com/uploads/491bc884-2f46-4980-bbc3-5a1b814221c5.gif?tr=w-240,cm-pad_resize",
-    "https://images-static.nykaa.com/uploads/491bc884-2f46-4980-bbc3-5a1b814221c5.gif?tr=w-240,cm-pad_resize",
-    "https://images-static.nykaa.com/uploads/b165e0ed-b19a-41e0-bf76-9c12a2bdbd79.gif?tr=w-240,cm-pad_resize",
-    "https://images-static.nykaa.com/uploads/3a838645-9dd0-450e-98a8-3d605eb81a8a.gif?tr=w-240,cm-pad_resize",
- ]
+const deals = [
+  {
+    id: 1,
+    image: "https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=900",
+    title: "Flat 50% OFF",
+    subtitle: "On Women's Fashion"
+  },
+  {
+    id: 2,
+    image: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=900",
+    title: "Starting ₹499",
+    subtitle: "Trending Styles"
+  },
+  {
+    id: 3,
+    image: "https://images.unsplash.com/photo-1496747611176-843222e1e57c?w=900",
+    title: "Luxury Collection",
+    subtitle: "Premium Brands"
+  },
+  {
+    id: 4,
+    image: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=900",
+    title: "Buy 2 Get 1 Free",
+    subtitle: "Limited Time Offer"
+  },
+  {
+    id: 5,
+    image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=900",
+    title: "Sneaker Fest",
+    subtitle: "Up to 60% OFF"
+  },
+  {
+    id: 6,
+    image: "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?w=900",
+    title: "Fresh Arrivals",
+    subtitle: "New Season Collection"
+  },
+  {
+    id: 7,
+    image: "https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?w=900",
+    title: "Ethnic Edit",
+    subtitle: "Min. 40% OFF"
+  },
+  {
+    id: 8,
+    image: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=900",
+    title: "Accessories Sale",
+    subtitle: "Flat 35% OFF"
+  }
+];
+
+export default deals;
