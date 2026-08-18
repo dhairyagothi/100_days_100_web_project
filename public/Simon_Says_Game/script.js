@@ -270,7 +270,7 @@ function checkAns(idx) {
         setTimeout(playSequence, 1200);
       } else {
         gameOver();
-      }
+      
     } else {
       setStatus("❌ Oops! Try again…");
       userSeq = [];
@@ -279,6 +279,7 @@ function checkAns(idx) {
       setTimeout(playSequence, 1000);
     }
   }
+}
 }
 
 function stopGame() {

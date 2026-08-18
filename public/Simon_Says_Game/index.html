@@ -72,6 +72,42 @@
       <!-- Action buttons -->
       <div class="btn-group">
         <button class="action-btn primary" id="start-btn">▶ Start</button>
+
+        <div class="btn-row">
+          <button class="action-btn secondary" id="pause-btn">⏸ Pause</button>
+          <button class="action-btn secondary" id="stop-btn">⏹ Stop</button>
+        </div>
+
+        <button class="action-btn ghost" id="leaderboard-btn">
+          🏅 Leaderboard
+        </button>
+      </div>
+
+      <!-- Mode selector -->
+      <div class="mode-section">
+        <p class="section-label">Mode</p>
+
+        <div class="mode-picker" id="mode-picker">
+          <button class="mode-btn active" data-mode="normal">Normal</button>
+          <button class="mode-btn" data-mode="endless">♾️ Endless</button>
+          <button class="mode-btn" data-mode="strict">⚡ Strict</button>
+        </div>
+
+        <!-- Lives picker — only visible in strict mode -->
+        <div class="lives-row hidden" id="lives-row">
+          <span class="toggle-label">Lives</span>
+
+          <div class="lives-picker" id="lives-picker">
+            <button class="life-btn" data-lives="1">1</button>
+            <button class="life-btn active" data-lives="3">3</button>
+            <button class="life-btn" data-lives="5">5</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action buttons -->
+      <div class="btn-group">
+        <button class="action-btn primary" id="start-btn">▶ Start</button>
         <div class="btn-row">
           <button class="action-btn secondary" id="pause-btn">⏸ Pause</button>
           <button class="action-btn secondary" id="stop-btn">⏹ Stop</button>
