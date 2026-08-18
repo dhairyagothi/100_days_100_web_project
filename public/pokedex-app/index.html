@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pokédex | Explore All Pokémon</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+  <!-- Background -->
+  <div class="bg-animation">
+    <div class="bg-circle c1"></div>
+    <div class="bg-circle c2"></div>
+    <div class="bg-circle c3"></div>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="nav-brand">
+      <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png"
+        alt="Pokeball" class="nav-logo"/>
+      <span>Pokédex</span>
+    </div>
+    <div class="nav-actions">
+      <button class="btn-icon" id="themeToggle" title="Toggle Theme">
+        <i class="fas fa-moon"></i>
+      </button>
+      <button class="btn-icon" id="favBtn" title="Favorites">
+        <i class="fas fa-heart"></i>
+        <span class="fav-badge" id="favBadge">0</span>
+      </button>
+      <button class="btn-icon" id="compareBtn" title="Compare Mode">
+        <i class="fas fa-balance-scale"></i>
+      </button>
+    </div>
+  </nav>
+
+  <main class="container">
+
+    <!-- Hero -->
+    <section class="hero">
+      <h1 class="hero-title">Explore the <span class="gradient-text">Pokédex</span></h1>
+      <p class="hero-sub">Discover, search, and compare all Pokémon across every generation.</p>
+    </section>
+
+    <!-- Stats Row -->
+    <section class="stats-row">
+      <div class="stat-card">
+        <i class="fas fa-dragon stat-icon total-icon"></i>
+        <div>
+          <div class="stat-value" id="totalLoaded">0</div>
+          <div class="stat-label">Pokémon Loaded</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <i class="fas fa-heart stat-icon fav-icon"></i>
+        <div>
+          <div class="stat-value" id="totalFavs">0</div>
+          <div class="stat-label">Favorites</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <i class="fas fa-filter stat-icon filter-icon"></i>
+        <div>
+          <div class="stat-value" id="totalFiltered">0</div>
+          <div class="stat-label">Showing</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <i class="fas fa-layer-group stat-icon gen-icon"></i>
+        <div>
+          <div class="stat-value" id="currentGen">All</div>
+          <div class="stat-label">Generation</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Filter & Search -->
+    <div class="card filter-card">
+      <div class="filter-bar">
+
+        <!-- Search -->
+        <div class="search-wrap">
+          <i class="fas fa-search search-icon"></i>
+          <input type="text" id="searchInput" placeholder="Search by name or number..."/>
+          <button class="clear-search" id="clearSearch">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+
+        <!-- Generation Filter -->
+        <div class="gen-filter">
+          <div class="custom-select-wrap">
+            <select id="genSelect">
+              <option value="all">All Generations</option>
+              <option value="1">Gen I (1–151)</option>
+              <option value="2">Gen II (152–251)</option>
+              <option value="3">Gen III (252–386)</option>
+              <option value="4">Gen IV (387–493)</option>
+              <option value="5">Gen V (494–649)</option>
+              <option value="6">Gen VI (650–721)</option>
+              <option value="7">Gen VII (722–809)</option>
+              <option value="8">Gen VIII (810–905)</option>
+              <option value="9">Gen IX (906–1025)</option>
+            </select>
+          </div>
+          <div class="custom-select-wrap">
+            <select id="sortSelect">
+              <option value="id-asc">ID: Low to High</option>
+              <option value="id-desc">ID: High to Low</option>
+              <option value="name-asc">Name: A–Z</option>
+              <option value="name-desc">Name: Z–A</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- View Toggle -->
+        <div class="view-toggle">
+          <button class="view-btn active" id="gridView" title="Grid View">
+            <i class="fas fa-th"></i>
+          </button>
+          <button class="view-btn" id="listView" title="List View">
+            <i class="fas fa-list"></i>
+          </button>
+          <button class="view-btn" id="favFilter" title="Show Favorites">
+            <i class="fas fa-heart"></i>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Type Filters -->
+      <div class="type-filters" id="typeFilters">
+        <button class="type-chip active" data-type="all">All Types</button>
+        <button class="type-chip" data-type="fire">🔥 Fire</button>
+        <button class="type-chip" data-type="water">💧 Water</button>
+        <button class="type-chip" data-type="grass">🌿 Grass</button>
+        <button class="type-chip" data-type="electric">⚡ Electric</button>
+        <button class="type-chip" data-type="psychic">🔮 Psychic</button>
+        <button class="type-chip" data-type="ice">❄️ Ice</button>
+        <button class="type-chip" data-type="dragon">🐉 Dragon</button>
+        <button class="type-chip" data-type="dark">🌑 Dark</button>
+        <button class="type-chip" data-type="fairy">✨ Fairy</button>
+        <button class="type-chip" data-type="fighting">🥊 Fighting</button>
+        <button class="type-chip" data-type="poison">☠️ Poison</button>
+        <button class="type-chip" data-type="ground">🌍 Ground</button>
+        <button class="type-chip" data-type="rock">🪨 Rock</button>
+        <button class="type-chip" data-type="bug">🐛 Bug</button>
+        <button class="type-chip" data-type="ghost">👻 Ghost</button>
+        <button class="type-chip" data-type="steel">⚙️ Steel</button>
+        <button class="type-chip" data-type="normal">⭐ Normal</button>
+        <button class="type-chip" data-type="flying">🦅 Flying</button>
+      </div>
+    </div>
+
+    <!-- Compare Bar -->
+    <div class="compare-bar hidden" id="compareBar">
+      <div class="compare-slots">
+        <div class="compare-slot" id="slot1">
+          <span>Select Pokémon 1</span>
+        </div>
+        <div class="compare-vs">VS</div>
+        <div class="compare-slot" id="slot2">
+          <span>Select Pokémon 2</span>
+        </div>
+      </div>
+      <button class="btn-compare-now hidden" id="compareNowBtn">
+        <i class="fas fa-balance-scale"></i> Compare
+      </button>
+      <button class="btn-clear-compare" id="clearCompare">
+        <i class="fas fa-times"></i> Clear
+      </button>
+    </div>
+
+    <!-- Pokemon Grid -->
+    <div id="pokemonGrid" class="pokemon-grid"></div>
+
+    <!-- Loading -->
+    <div class="loading-wrap" id="loadingWrap">
+      <div class="pokeball-loader">
+        <div class="ball"></div>
+      </div>
+      <p>Loading Pokémon...</p>
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state hidden" id="emptyState">
+      <div class="empty-icon">🔍</div>
+      <p>No Pokémon found.</p>
+      <span>Try a different search or filter.</span>
+    </div>
+
+    <!-- Load More -->
+    <div class="load-more-wrap" id="loadMoreWrap">
+      <button class="btn-load-more" id="loadMoreBtn">
+        <i class="fas fa-plus"></i> Load More Pokémon
+      </button>
+    </div>
+
+  </main>
+
+  <!-- Pokemon Detail Modal -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal" id="pokemonModal">
+      <button class="modal-close" id="modalClose">
+        <i class="fas fa-times"></i>
+      </button>
+
+      <!-- Modal Header -->
+      <div class="modal-pokemon-header" id="modalHeader">
+        <div class="modal-sprites">
+          <img id="modalSprite" src="" alt="" class="modal-sprite-main"/>
+          <img id="modalShiny"  src="" alt="" class="modal-sprite-shiny" title="Shiny"/>
+        </div>
+        <div class="modal-basic">
+          <div class="modal-id" id="modalId">#001</div>
+          <h2 class="modal-name" id="modalName">Bulbasaur</h2>
+          <div class="modal-types" id="modalTypes"></div>
+          <div class="modal-measures">
+            <span><i class="fas fa-ruler-vertical"></i> <span id="modalHeight">—</span></span>
+            <span><i class="fas fa-weight"></i> <span id="modalWeight">—</span></span>
+            <span><i class="fas fa-star"></i> <span id="modalExp">—</span> XP</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal Tabs -->
+      <div class="modal-tabs">
+        <button class="modal-tab active" data-tab="stats">📊 Stats</button>
+        <button class="modal-tab" data-tab="abilities">✨ Abilities</button>
+        <button class="modal-tab" data-tab="moves">⚔️ Moves</button>
+        <button class="modal-tab" data-tab="evolution">🔄 Evolution</button>
+      </div>
+
+      <!-- Tab Contents -->
+      <div class="modal-tab-content" id="tabStats">
+        <div class="stats-list" id="statsList"></div>
+      </div>
+
+      <div class="modal-tab-content hidden" id="tabAbilities">
+        <div class="abilities-list" id="abilitiesList"></div>
+      </div>
+
+      <div class="modal-tab-content hidden" id="tabMoves">
+        <div class="moves-list" id="movesList"></div>
+      </div>
+
+      <div class="modal-tab-content hidden" id="tabEvolution">
+        <div class="evolution-chain" id="evolutionChain"></div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="modal-footer">
+        <button class="btn-cry" id="crybBtn">
+          <i class="fas fa-volume-up"></i> Play Cry
+        </button>
+        <button class="btn-fav-modal" id="favModalBtn">
+          <i class="far fa-heart"></i> Add to Favorites
+        </button>
+        <button class="btn-add-compare" id="addCompareBtn">
+          <i class="fas fa-balance-scale"></i> Compare
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Compare Modal -->
+  <div class="modal-overlay" id="compareOverlay">
+    <div class="modal compare-modal" id="compareModal">
+      <button class="modal-close" id="compareClose">
+        <i class="fas fa-times"></i>
+      </button>
+      <h2 class="compare-title">Pokémon Comparison</h2>
+      <div class="compare-content" id="compareContent"></div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast">
+    <i class="toast-icon fas fa-check-circle"></i>
+    <span id="toastMsg"></span>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

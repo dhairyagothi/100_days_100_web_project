@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker - Analytics Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --card-bg: #ffffff;
+            --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.08);
+            --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.08), 0 2px 4px -2px rgba(15, 23, 42, 0.04);
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --transition-smooth: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        [data-theme="dark"] {
+            --card-bg: rgba(22, 24, 37, 0.65);
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
+        }
+
+        .dashboard-layout-wrapper {
+            width: 100%;
+            margin-top: 24px;
+            box-sizing: border-box;
+            padding: 0 40px 40px 40px;
+        }
+
+        @media (max-width: 767px) {
+            .dashboard-layout-wrapper {
+                padding: 0 16px 16px 16px;
+            }
+        }
+
+        .stats-summary-row {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .premium-stat-box {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color, #e2e8f0);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition-smooth);
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .premium-stat-box:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 600;
+            color: var(--text-secondary, #64748B);
+        }
+
+        .stat-value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+            color: var(--text-primary, #0f172a);
+        }
+
+        .text-green { color: var(--success, #10b981); }
+        .text-red { color: var(--danger, #ef4444); }
+
+        .charts-responsive-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+            align-items: start;
+        }
+
+        @media (min-width: 768px) {
+            .charts-responsive-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .premium-chart-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color, #e2e8f0);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition-smooth);
+        }
+
+        .premium-chart-card h2 {
+            margin: 0 0 16px 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary, #0f172a);
+            letter-spacing: -0.01em;
+        }
+
+        .chart-viewport-box {
+            position: relative;
+            width: 100%;
+            height: 320px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .chart-viewport-box canvas {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .ux-empty-placeholder {
+            color: var(--text-secondary, #64748B);
+            font-size: 0.95rem;
+            text-align: center;
+            max-width: 280px;
+            line-height: 1.5;
+            padding: 48px 16px;
+            border: 2px dashed var(--border-color, #e2e8f0);
+            border-radius: var(--radius-md);
+            background: var(--input-bg, rgba(248, 250, 252, 0.05));
+        }
+
+        .nav-link.active {
+            background: var(--card-bg);
+            color: var(--text-primary);
+            font-weight: 600;
+            box-shadow: 0 1px 3px var(--shadow-color);
+        }
+    </style>
+</head>
+<body>
+    <div id="bg-aura"></div>
+
+    <a href="index.html" class="project-back-button">← Back to App</a>
+
+    <div class="app-container">
+        <header class="app-header">
+            <div class="logo-group">
+                <h1>Expense <span class="logo-accent">Tracker</span></h1>
+                <p class="logo-subtext">Your money, kept simple.</p>
+            </div>
+            
+            <div class="header-controls">
+                <nav class="nav-links-group">
+                    <a href="index.html" class="nav-link">Transactions</a>
+                    <a href="dashboard.html" class="nav-link active">Dashboard</a>
+                    <a href="history.html" class="nav-link">History Log</a>
+                </nav>
+                
+                <div class="utility-buttons">
+                    <button id="btnExport" class="btn-secondary" aria-label="Copy backup pack">📋 Backup</button>
+                    <button id="btnReset" class="btn-danger" aria-label="Reset database data">🗑️ Clear All</button>
+                </div>
+            </div>
+        </header>
+
+        <main class="dashboard-layout-wrapper">
+            <section class="stats-summary-row">
+                <div class="premium-stat-box" style="border-left: 4px solid var(--success, #10b981);">
+                    <div class="stat-label">💰 Total Income</div>
+                    <div id="totalIncome" class="stat-value text-green">$0.00</div>
+                </div>
+                <div class="premium-stat-box" style="border-left: 4px solid var(--danger, #ef4444);">
+                    <div class="stat-label">💳 Total Expenses</div>
+                    <div id="totalExpense" class="stat-value text-red">$0.00</div>
+                </div>
+            </section>
+
+            <div class="charts-responsive-grid">
+                <section class="premium-chart-card">
+                    <h2>📈 Cash Flow Trends</h2>
+                    <div class="chart-viewport-box" id="trendWrapper">
+                        <canvas id="trendChart"></canvas>
+                    </div>
+                </section>
+
+                <section class="premium-chart-card">
+                    <h2>🧩 Expense Allocation</h2>
+                    <div class="chart-viewport-box" id="categoryWrapper">
+                        <canvas id="categoryChart"></canvas>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <button id="themeToggle" class="floating-theme-btn" aria-label="Toggle dark and light mode">🌓</button>
+
+    <script>
+        var THEME_KEY = 'budgetbuddy_theme';
+        var STORAGE_KEY = 'budgetbuddy_data';
+
+        function updateThemeIcon() {
+            var btn = document.getElementById('themeToggle');
+            if (btn) {
+                var currentTheme = document.documentElement.getAttribute('data-theme');
+                btn.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
+            }
+        }
+
+        function initTheme() {
+            var savedTheme = localStorage.getItem(THEME_KEY);
+            if (!savedTheme) {
+                var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+                localStorage.setItem(THEME_KEY, prefersDark ? 'dark' : 'light');
+            } else {
+                document.documentElement.setAttribute('data-theme', savedTheme);
+            }
+            updateThemeIcon();
+        }
+
+        function toggleTheme() {
+            var currentTheme = document.documentElement.getAttribute('data-theme');
+            var newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem(THEME_KEY, newTheme);
+            updateThemeIcon();
+            compileAndBuildAnalyticsLayout();
+        }
+
+        var trendChartInstance = null;
+        var categoryChartInstance = null;
+
+        function fetchCSSColorToken(variableName, alternativeHex) {
+            var value = getComputedStyle(document.documentElement).getPropertyValue(variableName).trim();
+            return value || alternativeHex;
+        }
+
+        function compileAndBuildAnalyticsLayout() {
+            var savedData = localStorage.getItem(STORAGE_KEY);
+            var records = [];
+            var monthlyIncome = 0;
+            
+            if (savedData) {
+                try {
+                    var data = JSON.parse(savedData);
+                    records = data.expenses || [];
+                    monthlyIncome = data.income || 0;
+                } catch (e) {
+                    console.error('Error loading data:', e);
+                }
+            }
+
+            var earnedTotal = monthlyIncome;
+            var spentTotal = 0;
+            var categoryTotals = { Food: 0, Travel: 0, Shopping: 0, Bills: 0, Others: 0 };
+            var timelineMap = {};
+
+            records.forEach(function(item) {
+                var amount = parseFloat(item.amount) || 0;
+                var dateObj = new Date(item.date);
+                var formattedDate = dateObj.toISOString().split('T')[0];
+
+                if (!timelineMap[formattedDate]) {
+                    timelineMap[formattedDate] = { income: 0, expenses: 0 };
+                }
+
+                spentTotal += amount;
+                timelineMap[formattedDate].expenses += amount;
+                
+                if (categoryTotals.hasOwnProperty(item.category)) {
+                    categoryTotals[item.category] += amount;
+                } else {
+                    categoryTotals['Others'] += amount;
+                }
+            });
+
+            var rupeeFormatter = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
+            document.getElementById('totalIncome').textContent = rupeeFormatter.format(earnedTotal);
+            document.getElementById('totalExpense').textContent = rupeeFormatter.format(spentTotal);
+
+            var trendWrapper = document.getElementById('trendWrapper');
+            var categoryWrapper = document.getElementById('categoryWrapper');
+
+            if (records.length === 0) {
+                trendWrapper.innerHTML = '<div class="ux-empty-placeholder">📊 No transaction history found. Add some records to generate analytical trends!</div>';
+                categoryWrapper.innerHTML = '<div class="ux-empty-placeholder">📊 No category distributions available. Log an expense item to track.</div>';
+                return;
+            }
+
+            trendWrapper.innerHTML = '<canvas id="trendChart"></canvas>';
+            categoryWrapper.innerHTML = '<canvas id="categoryChart"></canvas>';
+
+            var textColorMain = fetchCSSColorToken('--text-primary', '#0f172a');
+            var textColorSub = fetchCSSColorToken('--text-secondary', '#64748b');
+            var borderColorGrid = fetchCSSColorToken('--border-color', '#e2e8f0');
+
+            var sortedDates = Object.keys(timelineMap).sort(function(a, b) { 
+                return new Date(a) - new Date(b); 
+            });
+            
+            var humanReadableDates = sortedDates.map(function(dateStr) {
+                var parts = dateStr.split('-');
+                if (parts.length !== 3) return dateStr;
+                var year = parts[0], month = parts[1], day = parts[2];
+                return new Date(year, month - 1, day).toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
+            });
+
+            var expenseTimelineValues = sortedDates.map(function(date) { 
+                return timelineMap[date].expenses; 
+            });
+            
+            var incomeTimelineValues = sortedDates.map(function() {
+                return records.length > 0 ? monthlyIncome / records.length : 0;
+            });
+
+            var ctxTrend = document.getElementById('trendChart').getContext('2d');
+            
+            if (trendChartInstance) {
+                trendChartInstance.destroy();
+            }
+            
+            trendChartInstance = new Chart(ctxTrend, {
+                type: 'line',
+                data: {
+                    labels: humanReadableDates,
+                    datasets: [
+                        { 
+                            label: 'Income', 
+                            data: incomeTimelineValues, 
+                            borderColor: '#10b981', 
+                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                            borderWidth: 2, 
+                            tension: 0.2, 
+                            pointRadius: 3,
+                            fill: true
+                        },
+                        { 
+                            label: 'Expenses', 
+                            data: expenseTimelineValues, 
+                            borderColor: '#ef4444', 
+                            backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                            borderWidth: 2, 
+                            tension: 0.2, 
+                            pointRadius: 3,
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { 
+                        legend: { 
+                            labels: { 
+                                color: textColorMain, 
+                                font: { family: 'inherit', size: 12, weight: '500' } 
+                            } 
+                        } 
+                    },
+                    scales: {
+                        x: { 
+                            grid: { color: borderColorGrid }, 
+                            ticks: { color: textColorSub } 
+                        },
+                        y: { 
+                            grid: { color: borderColorGrid }, 
+                            ticks: { color: textColorSub } 
+                        }
+                    }
+                }
+            });
+
+            var activeCategories = Object.keys(categoryTotals).filter(function(cat) { 
+                return categoryTotals[cat] > 0; 
+            });
+            var activeCategoryValues = activeCategories.map(function(cat) { 
+                return categoryTotals[cat]; 
+            });
+
+            if (activeCategoryValues.length === 0) {
+                categoryWrapper.innerHTML = '<div class="ux-empty-placeholder">📊 No categorical expense allocations available to chart yet.</div>';
+            } else {
+                var ctxCat = document.getElementById('categoryChart').getContext('2d');
+                
+                if (categoryChartInstance) {
+                    categoryChartInstance.destroy();
+                }
+                
+                var categoryColors = {
+                    Food: '#10b981',
+                    Travel: '#0ea5e9',
+                    Shopping: '#8b5cf6',
+                    Bills: '#f59e0b',
+                    Others: '#64748b'
+                };
+                
+                var backgroundColors = activeCategories.map(function(cat) { 
+                    return categoryColors[cat] || '#64748b'; 
+                });
+                
+                categoryChartInstance = new Chart(ctxCat, {
+                    type: 'doughnut',
+                    data: {
+                        labels: activeCategories,
+                        datasets: [{
+                            data: activeCategoryValues,
+                            backgroundColor: backgroundColors,
+                            borderWidth: 0,
+                            hoverOffset: 8
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: { 
+                                    color: textColorMain, 
+                                    padding: 16, 
+                                    font: { family: 'inherit', size: 12 },
+                                    usePointStyle: true,
+                                    pointStyle: 'circle'
+                                }
+                            }
+                        },
+                        cutout: '68%'
+                    }
+                });
+            }
+        }
+
+        function clearAllData() {
+            if (confirm('⚠️ Are you completely sure you want to delete all entries? This cannot be undone.')) {
+                localStorage.removeItem(STORAGE_KEY);
+                compileAndBuildAnalyticsLayout();
+            }
+        }
+
+        function copyBackup() {
+            var data = localStorage.getItem(STORAGE_KEY) || '{"expenses":[],"income":0}';
+            var parsed = JSON.parse(data);
+            if (parsed.expenses && parsed.expenses.length === 0 && parsed.income === 0) {
+                alert('📭 You do not have any data entries to backup yet!');
+                return;
+            }
+            navigator.clipboard.writeText(JSON.stringify(parsed, null, 2))
+                .then(function() { alert('✅ Data backup copied to clipboard! Paste it somewhere safe.'); })
+                .catch(function() { alert('❌ Could not copy. Please check browser permissions.'); });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            initTheme();
+            compileAndBuildAnalyticsLayout();
+
+            document.getElementById('btnReset').addEventListener('click', clearAllData);
+            document.getElementById('btnExport').addEventListener('click', copyBackup);
+            document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+
+            window.addEventListener('storage', function(e) {
+                if (e.key === THEME_KEY) {
+                    var newTheme = e.newValue;
+                    document.documentElement.setAttribute('data-theme', newTheme);
+                    updateThemeIcon();
+                    compileAndBuildAnalyticsLayout();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

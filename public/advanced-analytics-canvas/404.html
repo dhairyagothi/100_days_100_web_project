@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>404 - System Not Found</title>
+
+  <style>
+    :root {
+      --bg-base: #0a0e17;
+      --accent-neon: #00ffcc;
+      --accent-pink: #ff007f;
+      --text-dim: #707e94;
+      --border: #1f293d;
+    }
+
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: var(--bg-base);
+      color: white;
+      font-family: system-ui, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .box {
+      max-width: 600px;
+      padding: 30px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: rgba(18, 24, 36, 0.6);
+      box-shadow: 0 0 40px rgba(0, 255, 204, 0.08);
+    }
+
+    h1 {
+      font-size: 5rem;
+      margin: 0;
+      background: linear-gradient(45deg, var(--accent-neon), var(--accent-pink));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    h2 {
+      margin: 10px 0;
+      color: var(--text-dim);
+      font-weight: 600;
+    }
+
+    p {
+      color: var(--text-dim);
+      margin-bottom: 20px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 12px 18px;
+      border-radius: 6px;
+      background: linear-gradient(135deg, #00b3ff, #00ffcc);
+      color: black;
+      font-weight: bold;
+      text-decoration: none;
+      transition: 0.2s;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 12px rgba(0,255,204,0.3);
+    }
+
+    .terminal {
+      margin-top: 20px;
+      font-family: monospace;
+      font-size: 0.85rem;
+      color: var(--accent-neon);
+      opacity: 0.8;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="box">
+    <h1>404</h1>
+    <h2>DATA VECTOR NOT FOUND</h2>
+    <p>The requested simulation node does not exist in the system.</p>
+
+    <a class="btn" href="index.html">Return to Dashboard</a>
+
+    <div class="terminal">
+      [SYSTEM LOG] Route mismatch detected... redirect recommended.
+    </div>
+  </div>
+</body>
+</html>
