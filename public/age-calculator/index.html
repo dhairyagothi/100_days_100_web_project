@@ -1,66 +1,303 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Age Calculator</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Age Calculator | Know Your Age in Detail</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
 </head>
 <body>
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
 
-    <div class="container">
-        <h1>📅 Age Calculator</h1>
-        <p class="subtitle">Calculate your exact age in years, months, and days</p>
+  <!-- Background -->
+  <div class="bg-animation">
+    <div class="bg-circle c1"></div>
+    <div class="bg-circle c2"></div>
+    <div class="bg-circle c3"></div>
+  </div>
 
-        <div class="input-group">
-            <label for="dob">Date of Birth:</label>
-            <input type="date" id="dob" class="date-input">
-        </div>
-
-        <button id="calculate-btn" class="calculate-btn">Calculate Age</button>
-
-        <div class="result" id="result" style="display: none;">
-            <h2>Your Age</h2>
-            <div class="age-details">
-                <div class="age-card">
-                    <span class="age-number" id="years">0</span>
-                    <span class="age-label">Years</span>
-                </div>
-                <div class="age-card">
-                    <span class="age-number" id="months">0</span>
-                    <span class="age-label">Months</span>
-                </div>
-                <div class="age-card">
-                    <span class="age-number" id="days">0</span>
-                    <span class="age-label">Days</span>
-                </div>
-            </div>
-            
-            <div class="extra-info">
-                <div class="info-item">
-                    <span class="info-label">Next Birthday:</span>
-                    <span id="next-birthday">-</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Days Until Birthday:</span>
-                    <span id="days-until">-</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Zodiac Sign:</span>
-                    <span id="zodiac">-</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Total Weeks:</span>
-                    <span id="weeks">-</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Total Hours:</span>
-                    <span id="hours">-</span>
-                </div>
-            </div>
-        </div>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="nav-brand">
+      <span class="brand-icon">🎂</span>
+      <span>Age Calculator</span>
     </div>
-    <script src="script.js"></script>
+    <div class="nav-actions">
+      <button class="btn-icon" id="themeToggle" title="Toggle Theme">
+        <i class="fas fa-moon"></i>
+      </button>
+      <button class="btn-icon" id="copyBtn" title="Copy Result">
+        <i class="fas fa-copy"></i>
+      </button>
+      <button class="btn-icon" id="resetBtn" title="Reset">
+        <i class="fas fa-redo"></i>
+      </button>
+    </div>
+  </nav>
+
+  <main class="container">
+
+    <!-- Hero -->
+    <section class="hero">
+      <h1 class="hero-title">Discover Your <span class="gradient-text">Age</span></h1>
+      <p class="hero-sub">Know exactly how old you are down to the second.</p>
+    </section>
+
+    <!-- Input Card -->
+    <div class="card input-card">
+      <div class="card-header">
+        <i class="fas fa-calendar-alt"></i>
+        <h2>Enter Your Birth Date</h2>
+      </div>
+      <div class="input-row">
+        <div class="date-input-group">
+          <div class="form-group">
+            <label>Day</label>
+            <input type="number" id="dayInput" placeholder="DD"
+              min="1" max="31"/>
+          </div>
+          <div class="form-group">
+            <label>Month</label>
+            <div class="custom-select-wrap">
+              <select id="monthInput">
+                <option value="">Month</option>
+                <option value="1">January</option>
+                <option value="2">February</option>
+                <option value="3">March</option>
+                <option value="4">April</option>
+                <option value="5">May</option>
+                <option value="6">June</option>
+                <option value="7">July</option>
+                <option value="8">August</option>
+                <option value="9">September</option>
+                <option value="10">October</option>
+                <option value="11">November</option>
+                <option value="12">December</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Year</label>
+            <input type="number" id="yearInput" placeholder="YYYY"
+              min="1900" max="2024"/>
+          </div>
+        </div>
+        <button class="btn-calculate" id="calculateBtn">
+          <i class="fas fa-calculator"></i>
+          <span>Calculate</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Results Section -->
+    <div id="resultsSection" class="results-section hidden">
+
+      <!-- Main Age Display -->
+      <div class="card age-display-card">
+        <div class="age-hero">
+          <div class="age-avatar" id="ageAvatar">🎂</div>
+          <div class="age-main">
+            <div class="age-years" id="ageYears">0</div>
+            <div class="age-label">Years Old</div>
+          </div>
+          <div class="age-signs">
+            <div class="sign-item">
+              <span class="sign-emoji" id="zodiacEmoji">♈</span>
+              <span class="sign-label" id="zodiacSign">Aries</span>
+            </div>
+            <div class="sign-item">
+              <span class="sign-emoji" id="chineseEmoji">🐀</span>
+              <span class="sign-label" id="chineseZodiac">Rat</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Detailed Breakdown -->
+        <div class="breakdown-grid">
+          <div class="breakdown-item">
+            <div class="bd-value" id="bdMonths">0</div>
+            <div class="bd-label">Months</div>
+          </div>
+          <div class="breakdown-item">
+            <div class="bd-value" id="bdWeeks">0</div>
+            <div class="bd-label">Weeks</div>
+          </div>
+          <div class="breakdown-item">
+            <div class="bd-value" id="bdDays">0</div>
+            <div class="bd-label">Days</div>
+          </div>
+          <div class="breakdown-item">
+            <div class="bd-value" id="bdHours">0</div>
+            <div class="bd-label">Hours</div>
+          </div>
+          <div class="breakdown-item">
+            <div class="bd-value" id="bdMinutes">0</div>
+            <div class="bd-label">Minutes</div>
+          </div>
+          <div class="breakdown-item live">
+            <div class="bd-value" id="bdSeconds">0</div>
+            <div class="bd-label">Seconds <span class="live-dot"></span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Info Row -->
+      <div class="info-row">
+
+        <!-- Birthday Info -->
+        <div class="card info-card">
+          <div class="card-header">
+            <i class="fas fa-birthday-cake"></i>
+            <h2>Birthday Info</h2>
+          </div>
+          <div class="info-list">
+            <div class="info-item">
+              <span class="info-icon">📅</span>
+              <div>
+                <div class="info-label">Born On</div>
+                <div class="info-value" id="bornOn">—</div>
+              </div>
+            </div>
+            <div class="info-item">
+              <span class="info-icon">📆</span>
+              <div>
+                <div class="info-label">Day of Week</div>
+                <div class="info-value" id="dayOfWeek">—</div>
+              </div>
+            </div>
+            <div class="info-item">
+              <span class="info-icon">🎉</span>
+              <div>
+                <div class="info-label">Next Birthday</div>
+                <div class="info-value" id="nextBirthday">—</div>
+              </div>
+            </div>
+            <div class="info-item">
+              <span class="info-icon">⏳</span>
+              <div>
+                <div class="info-label">Days Until Birthday</div>
+                <div class="info-value" id="daysUntilBirthday">—</div>
+              </div>
+            </div>
+            <div class="info-item">
+              <span class="info-icon">🌍</span>
+              <div>
+                <div class="info-label">Generation</div>
+                <div class="info-value" id="generation">—</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Next Birthday Countdown -->
+        <div class="card countdown-card">
+          <div class="card-header">
+            <i class="fas fa-stopwatch"></i>
+            <h2>Next Birthday In</h2>
+          </div>
+          <div class="countdown-grid">
+            <div class="cd-item">
+              <div class="cd-value" id="cdDays">00</div>
+              <div class="cd-label">Days</div>
+            </div>
+            <div class="cd-sep">:</div>
+            <div class="cd-item">
+              <div class="cd-value" id="cdHours">00</div>
+              <div class="cd-label">Hours</div>
+            </div>
+            <div class="cd-sep">:</div>
+            <div class="cd-item">
+              <div class="cd-value" id="cdMins">00</div>
+              <div class="cd-label">Mins</div>
+            </div>
+            <div class="cd-sep">:</div>
+            <div class="cd-item">
+              <div class="cd-value" id="cdSecs">00</div>
+              <div class="cd-label">Secs</div>
+            </div>
+          </div>
+          <div class="birthday-wish" id="birthdayWish"></div>
+        </div>
+
+      </div>
+
+      <!-- Fun Facts -->
+      <div class="card facts-card">
+        <div class="card-header">
+          <i class="fas fa-heart"></i>
+          <h2>Fun Facts Since You Were Born</h2>
+        </div>
+        <div class="facts-grid">
+          <div class="fact-item">
+            <div class="fact-icon">❤️</div>
+            <div class="fact-value" id="heartbeats">0</div>
+            <div class="fact-label">Heartbeats</div>
+          </div>
+          <div class="fact-item">
+            <div class="fact-icon">🫁</div>
+            <div class="fact-value" id="breaths">0</div>
+            <div class="fact-label">Breaths</div>
+          </div>
+          <div class="fact-item">
+            <div class="fact-icon">😴</div>
+            <div class="fact-value" id="sleepHours">0</div>
+            <div class="fact-label">Hours Slept</div>
+          </div>
+          <div class="fact-item">
+            <div class="fact-icon">🍽️</div>
+            <div class="fact-value" id="meals">0</div>
+            <div class="fact-label">Meals Eaten</div>
+          </div>
+          <div class="fact-item">
+            <div class="fact-icon">🌍</div>
+            <div class="fact-value" id="earthTrips">0</div>
+            <div class="fact-label">Earth Trips Around Sun</div>
+          </div>
+          <div class="fact-item">
+            <div class="fact-icon">🌙</div>
+            <div class="fact-value" id="moonPhases">0</div>
+            <div class="fact-label">Moon Phases</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Milestones -->
+      <div class="card milestone-card">
+        <div class="card-header">
+          <i class="fas fa-trophy"></i>
+          <h2>Life Milestones</h2>
+        </div>
+        <div class="milestone-list" id="milestoneList"></div>
+      </div>
+
+      <!-- Birthday Message -->
+      <div class="card message-card">
+        <div class="card-header">
+          <i class="fas fa-envelope-open-text"></i>
+          <h2>Birthday Message</h2>
+        </div>
+        <div class="message-box" id="messageBox"></div>
+        <div class="message-actions">
+          <button class="btn-refresh-msg" id="refreshMsg">
+            <i class="fas fa-sync-alt"></i> New Message
+          </button>
+          <button class="btn-copy-msg" id="copyMsg">
+            <i class="fas fa-copy"></i> Copy
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Toast -->
+  <div class="toast" id="toast">
+    <i class="toast-icon fas fa-check-circle"></i>
+    <span id="toastMsg"></span>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>

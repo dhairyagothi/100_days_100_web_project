@@ -1,132 +1,142 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image to Text Conversion</title>
+    <title>OCR Studio - Extract, Listen & Download</title>
     <link rel="icon" href="../favv.png" type="image/x-icon" />
-    <!-- Include Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/tesseract.js@5.0.0/dist/tesseract.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 </head>
+<body>
 
-<body class="min-h-screen bg-[#0b1120] relative flex items-center justify-center px-4">
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
+    <header>
+        <p>AI Powered OCR + Text To Speech</p>
+        <h1>OCR Studio</h1>
+        <p>Extract text from Images & PDFs, listen using Text-to-Speech, copy results instantly, and download extracted content.</p>
+    </header>
 
-
-    <!-- Animated Background -->
-    <div class="absolute inset-0 overflow-hidden">
-
-        <div
-            class="absolute top-[-120px] left-[-120px] w-[320px] h-[320px] bg-cyan-500/30 rounded-full blur-3xl animate-pulse">
-        </div>
-
-        <div
-            class="absolute bottom-[-120px] right-[-120px] w-[320px] h-[320px] bg-emerald-500/30 rounded-full blur-3xl animate-pulse">
-        </div>
-
-        <div
-            class="absolute top-[40%] left-[60%] w-[220px] h-[220px] bg-purple-500/20 rounded-full blur-3xl animate-bounce">
-        </div>
-
+    <div class="theme-switcher-panel">
+        <button type="button" class="theme-btn active-theme" onclick="document.documentElement.removeAttribute('data-theme'); document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active-theme')); this.classList.add('active-theme')">Glass Dark</button>
+        <button type="button" class="theme-btn" onclick="document.documentElement.setAttribute('data-theme', 'light'); document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active-theme')); this.classList.add('active-theme')">Cyber Light</button>
+        <button type="button" class="theme-btn" onclick="document.documentElement.setAttribute('data-theme', 'emerald'); document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active-theme')); this.classList.add('active-theme')">Emerald Mint</button>
     </div>
 
-    <!-- Main Card -->
-    <div
-        class="relative z-10 w-full max-w-6xl rounded-3xl border border-white/10 bg-white/10 backdrop-blur-2xl shadow-2xl p-8 md:p-10">
+    <main>
+        <section>
+            <h2>Document Upload</h2>
+            <form id="uploadForm">
+                <label for="fileInput" class="hidden">Choose File</label>
+                <input type="file" id="fileInput" accept="image/*,.pdf">
+                
+                <label for="langSelect">OCR Language</label>
+                <select id="langSelect">
+                    <option value="eng">English</option>
+                    <option value="hin">Hindi</option>
+                    <option value="ben">Bengali</option>
+                    <option value="spa">Spanish</option>
+                    <option value="fra">French</option>
+                    <option value="deu">German</option>
+                </select>
+                
+                <button type="button" id="processBtn" disabled>Extract Text</button>
+            </form>
 
-        <!-- Heading -->
-        <div class="text-center mb-10">
-
-            <h1
-                class="text-[2.25rem] md:text-[3rem] font-extrabold bg-gradient-to-r from-green-400 via-blue-400 to-emerald-400 bg-clip-text text-transparent">
-                Image to Text
-            </h1>
-
-            <p class="text-gray-300 mt-4 text-sm md:text-base">
-                Upload your image and instantly extract text with AI OCR.
-            </p>
-
-        </div>
-
-        <!-- Upload Section -->
-        <div class="flex flex-col md:flex-row gap-4 mb-8">
-
-            <label
-                class="flex-1 flex items-center justify-center gap-3 px-6 py-5 rounded-2xl border border-dashed border-white/20 bg-white/5 hover:bg-white/10 transition-all duration-300 cursor-pointer">
-
-                <span class="text-3xl">📁</span>
-
-                <div>
-                    <p class="text-white font-medium">
-                        Choose an Image
-                    </p>
-
-                    <p class="text-xs text-gray-400">
-                        PNG, JPG, JPEG supported
-                    </p>
-                </div>
-
-                <input type="file" id="fileInput" accept="image/*" class="hidden">
-            </label>
-
-            <button onclick="convertImage()"
-                class="px-8 py-5 rounded-2xl bg-gradient-to-r from-cyan-500 to-emerald-500 text-white font-semibold hover:scale-105 hover:shadow-xl hover:shadow-cyan-500/30 transition-all duration-300">
-                Convert Image
-            </button>
-
-        </div>
-
-        <!-- Content Area -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-
-            <!-- OCR Output -->
-            <div class="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-6 min-h-[350px]">
-
-                <div class="flex items-center justify-between mb-5">
-
-                    <h2 class="text-xl font-semibold text-white">
-                        Extracted Text
-                    </h2>
-                    <button id="copyBtn"
-                        class="text-sm px-4 py-2 rounded-xl bg-white/10 text-gray-300 hover:bg-white/20 transition">
-                        Copy
-                    </button>
-
-                </div>
-
-                <div id="output" class="text-gray-300 leading-relaxed text-center overflow-y-auto max-h-[260px]">
-                    Select an image and get started...
-                </div>
-
+            <div id="fileMetadata" class="hidden">
+                <h3>File Information</h3>
+                <div id="fileDetails"></div>
             </div>
 
-            <!-- Image Preview -->
-            <div
-                class="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-6 flex items-center justify-center min-h-[350px]">
+            <div id="ocrProgress" class="hidden">
+                <h3>OCR Progress</h3>
+                <progress id="progressFill" max="100" value="0"></progress>
+                <span id="progressStatus">0%</span>
+            </div>
+        </section>
 
-                <img id="imagePreview" class="hidden rounded-2xl shadow-2xl max-h-[300px] object-contain" src="#"
-                    alt="Selected Image Preview">
+        <section id="statsSection" class="hidden">
+            <h2>Analytics Dashboard</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Words</th>
+                        <th>Characters</th>
+                        <th>Reading Time</th>
+                        <th>Accuracy</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td id="wordCount">0</td>
+                        <td id="charCount">0</td>
+                        <td id="readingTime">0m</td>
+                        <td id="ocrAccuracy">0%</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
 
-                <div id="placeholder" class="text-center">
-
-                    <div class="text-6xl mb-4">
-                        🖼️
-                    </div>
-
-                    <p class="text-gray-400">
-                        Image preview will appear here
-                    </p>
-
-                </div>
-
+        <section id="workspaceSection">
+            <h2>Workspace Execution</h2>
+            
+            <div class="workspace-actions">
+                <button type="button" id="copyBtn">Copy</button>
+                <button type="button" id="clearBtn">Clear</button>
             </div>
 
-        </div>
-    </div>
+            <label for="outputTextarea" class="hidden">Extracted Output</label>
+            <textarea id="outputTextarea" placeholder="Upload a file and click Extract Text to begin..."></textarea>
+            
+            <button type="button" id="downloadBtn" class="hidden">Download Text</button>
+        </section>
 
-    <script src="https://unpkg.com/tesseract.js@4.0.1/dist/tesseract.min.js"></script>
+        <section id="previewSection">
+            <h2>File Preview</h2>
+            <div class="preview-container">
+                <img id="imagePreview" src="#" alt="Preview content window" class="hidden">
+                <canvas id="pdfCanvas" class="hidden"></canvas>
+                <p id="previewPlaceholder">Upload a file to see preview</p>
+            </div>
+        </section>
+
+        <section id="ttsPanel" class="hidden">
+            <h2>Text To Speech</h2>
+            <p>Status: <span id="speechStatus">Ready to Speak</span></p>
+            
+            <form id="ttsForm">
+                <label for="voiceSelect">Select Voice</label>
+                <select id="voiceSelect"></select>
+                
+                <label for="rateSlider">Speech Rate</label>
+                <input id="rateSlider" type="range" min="0.5" max="2" step="0.1" value="1">
+                
+                <label for="pitchSlider">Pitch</label>
+                <input id="pitchSlider" type="range" min="0.5" max="2" step="0.1" value="1">
+                
+                <div class="button-group">
+                    <button type="button" id="speakBtn">Play</button>
+                    <button type="button" id="pauseBtn">Pause</button>
+                    <button type="button" id="stopBtn">Stop</button>
+                </div>
+            </form>
+        </section>
+    </main>
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2026 OCR Studio. All rights reserved.</p>
+    
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms</a>
+                <a href="https://github.com/dhairyagothi/100_days_100_web_project" target="_blank">GitHub</a>
+            </div>
+        </div>
+    </footer>
+
     <script src="script.js"></script>
 </body>
-
 </html>

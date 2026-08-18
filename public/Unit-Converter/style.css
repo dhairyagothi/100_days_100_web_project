@@ -1,61 +1,517 @@
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
+
+
+*,
+*::before,
+*::after{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
 }
 
-body {
-    background-color: #f4f7f6;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background: linear-gradient(to bottom right, #FF512F, #DD2476);
+
+/* =========================
+THEME VARIABLES
+========================= */
+
+:root{
+
+--bg1:#667eea;
+--bg2:#764ba2;
+--bg3:#f093fb;
+
+--text:#ffffff;
+--muted:rgba(255,255,255,.75);
+
+--card-bg:rgba(255,255,255,.15);
+--card-border:rgba(255,255,255,.25);
+
+--input-bg:rgba(255,255,255,.16);
+--input-border:rgba(255,255,255,.22);
+
+--shadow:0 20px 40px rgba(0,0,0,.20);
+
 }
 
-.converter-card {
-    background: #ffffff;
-    padding: 2rem;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-    width: 100%;
-    max-width: 400px;
+
+/* DARK MODE */
+
+[data-theme="dark"]{
+
+--bg1:#0f172a;
+--bg2:#1e1b4b;
+--bg3:#311042;
+
+--card-bg:rgba(15,23,42,.45);
+--card-border:rgba(255,255,255,.12);
+
+--input-bg:rgba(0,0,0,.25);
+
 }
 
-h2 {
-    color: #333;
-    margin-bottom: 1.5rem;
-    text-align: center;
+
+
+/* =========================
+BODY
+========================= */
+
+
+body{
+
+min-height:100vh;
+
+font-family:'DM Sans',sans-serif;
+
+color:var(--text);
+
+background:
+linear-gradient(
+135deg,
+var(--bg1),
+var(--bg2),
+var(--bg3)
+);
+
+transition:.5s ease;
+
 }
 
-.input-group {
-    margin-bottom: 1.25rem;
+
+
+/* =========================
+THEME TOGGLE
+========================= */
+
+
+.theme-toggle{
+
+position:fixed;
+
+top:20px;
+right:20px;
+
+width:44px;
+height:44px;
+
+border-radius:50%;
+
+border:1px solid var(--card-border);
+
+background:var(--card-bg);
+
+color:white;
+
+cursor:pointer;
+
+font-size:20px;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+z-index:1000;
+
 }
 
-label {
-    display: block;
-    margin-bottom: 0.5rem;
-    color: #666;
-    font-size: 0.9rem;
+
+
+/* =========================
+WRAPPER
+========================= */
+
+
+.uc-wrap{
+
+min-height:100vh;
+
+width:100%;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+padding:2rem;
+
+overflow:hidden;
+
+position:relative;
+
 }
 
-input, select {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    font-size: 1rem;
-    outline: none;
-    transition: border-color 0.2s;
+
+.uc-wrap::before{
+
+content:'';
+
+position:fixed;
+
+width:420px;
+height:420px;
+
+border-radius:50%;
+
+background:rgba(255,255,255,.08);
+
+top:-140px;
+left:-120px;
+
 }
 
-input:focus, select:focus {
-    border-color: #007bff;
+
+
+.uc-wrap::after{
+
+content:'';
+
+position:fixed;
+
+width:300px;
+height:300px;
+
+border-radius:50%;
+
+background:rgba(255,255,255,.05);
+
+bottom:-100px;
+right:-70px;
+
 }
 
-input[readonly] {
-    background-color: #e9ecef;
-    color: #495057;
-    cursor: not-allowed;
+
+
+/* =========================
+CARD
+========================= */
+
+
+.glass-card{
+
+width:100%;
+
+max-width:520px;
+
+background:var(--card-bg);
+
+backdrop-filter:blur(22px);
+
+-webkit-backdrop-filter:blur(22px);
+
+
+border:1px solid var(--card-border);
+
+border-radius:28px;
+
+padding:2rem;
+
+box-shadow:var(--shadow);
+
+position:relative;
+
+z-index:2;
+
+}
+
+
+
+/* =========================
+TITLE
+========================= */
+
+
+.card-title{
+
+display:flex;
+
+align-items:center;
+
+gap:10px;
+
+font-size:26px;
+
+font-weight:700;
+
+margin-bottom:1.5rem;
+
+}
+
+
+
+/* =========================
+TABS
+========================= */
+
+
+.tabs{
+
+display:flex;
+
+gap:6px;
+
+padding:6px;
+
+border-radius:14px;
+
+background:rgba(0,0,0,.12);
+
+margin-bottom:1.5rem;
+
+flex-wrap:wrap;
+
+}
+
+
+.tab-btn{
+
+flex:1;
+
+padding:10px;
+
+border:none;
+
+border-radius:10px;
+
+background:transparent;
+
+color:rgba(255,255,255,.7);
+
+cursor:pointer;
+
+font-weight:600;
+
+}
+
+
+
+.tab-btn.active{
+
+background:rgba(255,255,255,.22);
+
+color:white;
+
+}
+
+
+
+/* =========================
+INPUTS
+========================= */
+
+
+.field-group{
+
+margin-bottom:14px;
+
+}
+
+
+.field-label{
+
+font-size:11px;
+
+text-transform:uppercase;
+
+letter-spacing:1px;
+
+color:var(--muted);
+
+margin-bottom:8px;
+
+}
+
+
+
+.row{
+
+display:flex;
+
+gap:10px;
+
+}
+
+
+
+.glass-input{
+
+flex:1;
+
+padding:14px;
+
+border-radius:14px;
+
+border:1px solid var(--input-border);
+
+background:var(--input-bg);
+
+color:white;
+
+outline:none;
+
+font-family:'DM Mono',monospace;
+
+}
+
+
+
+.glass-input:focus{
+
+background:rgba(255,255,255,.25);
+
+}
+
+
+
+.glass-select{
+
+width:100%;
+
+padding:14px;
+
+border-radius:14px;
+
+border:1px solid var(--input-border);
+
+background:var(--input-bg);
+
+color:white;
+
+outline:none;
+
+}
+
+
+
+/* =========================
+SWAP
+========================= */
+
+
+.swap-row{
+
+display:flex;
+
+justify-content:center;
+
+margin:14px 0;
+
+}
+
+
+.swap-btn{
+
+width:46px;
+
+height:46px;
+
+border-radius:50%;
+
+border:1px solid rgba(255,255,255,.25);
+
+background:rgba(255,255,255,.15);
+
+color:white;
+
+cursor:pointer;
+
+font-size:18px;
+
+}
+
+
+
+.swap-btn:hover{
+
+transform:rotate(180deg);
+
+}
+
+
+
+/* =========================
+RESULT
+========================= */
+
+
+.result-banner{
+
+margin-top:1.2rem;
+
+padding:18px;
+
+border-radius:16px;
+
+background:rgba(0,0,0,.15);
+
+border:1px solid rgba(255,255,255,.15);
+
+text-align:center;
+
+font-family:'DM Mono',monospace;
+
+}
+
+
+
+/* =========================
+HISTORY
+========================= */
+
+
+.history-section{
+
+margin-top:1rem;
+
+background:rgba(0,0,0,.12);
+
+border-radius:16px;
+
+padding:14px;
+
+}
+
+
+.history-list{
+
+display:flex;
+
+flex-direction:column;
+
+gap:8px;
+
+}
+
+
+.history-item{
+
+background:rgba(255,255,255,.08);
+
+padding:10px;
+
+border-radius:10px;
+
+}
+
+
+
+/* =========================
+RESPONSIVE
+========================= */
+
+
+@media(max-width:600px){
+
+.glass-card{
+
+padding:1.4rem;
+
+}
+
+
+.row{
+
+flex-direction:column;
+
+}
+
 }

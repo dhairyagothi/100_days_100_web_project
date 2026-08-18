@@ -1,719 +1,1323 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Color Sort Puzzle</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#0f0f1a;--surface:#1a1a2e;--surface2:#16213e;
-  --border:rgba(255,255,255,0.08);--text:#e8e8f0;--muted:#888899;
-  --accent:#5b9bd5;--success:#4dbfad;--danger:#e8735a;
-  --tw:52px;--th:220px;--sh:52px;
-}
-body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;
-  min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:20px 12px}
-header{width:100%;max-width:760px;display:flex;align-items:center;
-  justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px}
-h1{font-size:22px;font-weight:600;letter-spacing:-0.5px}
-h1 span{color:var(--accent)}
-.stats{display:flex;gap:8px}
-.pill{background:var(--surface);border:1px solid var(--border);border-radius:20px;
-  padding:5px 14px;font-size:13px;color:var(--muted)}
-.pill b{color:var(--text);font-weight:600}
-#lvlrow{width:100%;max-width:760px;display:flex;align-items:center;
-  gap:8px;margin-bottom:14px;flex-wrap:wrap}
-#lvlrow>span{font-size:13px;color:var(--muted)}
-.lbtn{background:var(--surface);border:1px solid var(--border);color:var(--muted);
-  border-radius:20px;padding:5px 14px;font-size:13px;cursor:pointer;transition:.15s}
-.lbtn:hover{border-color:var(--accent);color:var(--text)}
-.lbtn.on{background:rgba(91,155,213,.18);border-color:var(--accent);color:var(--accent);font-weight:600}
-.ctrls{margin-left:auto;display:flex;gap:8px}
-.cbtn{background:var(--surface);border:1px solid var(--border);color:var(--text);
-  border-radius:8px;padding:6px 14px;font-size:13px;cursor:pointer;transition:.15s}
-.cbtn:hover{background:var(--surface2);border-color:rgba(255,255,255,.2)}
-.cbtn.a{background:rgba(91,155,213,.2);border-color:var(--accent);color:var(--accent)}
-#arena{width:100%;max-width:760px;background:var(--surface);border:1px solid var(--border);
-  border-radius:16px;padding:24px 16px;display:flex;flex-wrap:wrap;
-  gap:14px;justify-content:center;align-items:flex-end;min-height:300px}
-  #helpOverlay{
-display:none;
-position:fixed;
-inset:0;
-background:rgba(0,0,0,.65);
+/* ========================= RESET & VARIABLES ========================= */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-z-index:250;
-
-align-items:center;
-justify-content:center;
+:root {
+  --bg: #0f0f1a;
+  --bg-card: rgba(255,255,255,0.04);
+  --bg-glass: rgba(255,255,255,0.06);
+  --text: #f0f0f5;
+  --text-secondary: #8888aa;
+  --text-muted: #555577;
+  --border: rgba(255,255,255,0.08);
+  --accent: #7c5cfc;
+  --accent-hover: #6a4de8;
+  --accent-light: rgba(124,92,252,0.15);
+  --accent-glow: rgba(124,92,252,0.35);
+  --success: #22c55e;
+  --success-glow: rgba(34,197,94,0.3);
+  --danger: #ef4444;
+  --warning: #f59e0b;
+  --radius: 16px;
+  --radius-sm: 10px;
+  --font: 'Inter', system-ui, sans-serif;
+  --shadow: 0 8px 32px rgba(0,0,0,0.3);
+  --transition: 0.25s cubic-bezier(0.4,0,0.2,1);
 }
 
-#helpOverlay.show{
-display:flex;
+html, body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
 }
 
-#helpCard{
-
-background:var(--surface2);
-
-border:1px solid rgba(255,255,255,.12);
-
-padding:2rem;
-
-border-radius:18px;
-
-max-width:420px;
-
-width:90%;
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  position: relative;
 }
 
-#helpCard h2{
-margin-bottom:18px;
+::selection { background: var(--accent); color: #fff; }
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 50px; }
+
+/* ========================= ANIMATED BACKGROUND ========================= */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 600px 600px at 20% 20%, rgba(124,92,252,0.12) 0%, transparent 70%),
+    radial-gradient(ellipse 500px 500px at 80% 80%, rgba(236,72,153,0.08) 0%, transparent 70%),
+    radial-gradient(ellipse 400px 400px at 50% 50%, rgba(34,197,94,0.05) 0%, transparent 70%);
+  z-index: 0;
+  pointer-events: none;
+  animation: bgShift 15s ease-in-out infinite alternate;
 }
 
-#helpCard ul{
-
-color:var(--muted);
-
-padding-left:18px;
-
-display:flex;
-
-flex-direction:column;
-
-gap:12px;
-
-margin-bottom:20px;
+@keyframes bgShift {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(30deg); }
 }
 
-/* ── Tube shell ──
-   The tube is a POSITION:RELATIVE container.
-   We draw segments using ABSOLUTE positioning from the BOTTOM.
-   segment at array[0] → bottom:0
-   segment at array[1] → bottom:52px
-   segment at array[2] → bottom:104px
-   segment at array[3] → bottom:156px   ← visually topmost
-   This way array[last] is always at the TOP of the tube. No flex tricks needed.
-*/
-.tw{display:flex;flex-direction:column;align-items:center;cursor:pointer;user-select:none}
-.tube{
-  width:var(--tw);height:var(--th);
-  border:2px solid rgba(255,255,255,.15);border-top:none;
-  border-radius:0 0 26px 26px;
-  position:relative;           /* segments absolutely positioned inside */
-  overflow:hidden;
-  background:rgba(255,255,255,.03);
-  transition:transform .18s,box-shadow .18s;
-}
-.seg{
-  position:absolute;
-  width:100%;
-  height:var(--sh);
-  left:0;
-}
-/* glossy sheen */
-.seg::after{
-  content:'';position:absolute;
-  top:3px;left:5px;width:10px;height:45%;
-  border-radius:5px;background:rgba(255,255,255,.22);pointer-events:none;
-}
-/* separator line between adjacent segments */
-.seg-border-top{border-top:1px solid rgba(0,0,0,.28)}
-
-.tw.sel .tube{
-  transform:translateY(-10px);
-  box-shadow:0 0 0 2px var(--accent),0 8px 24px rgba(91,155,213,.3);
-  border-color:var(--accent);
-}
-.tw.done .tube{
-  box-shadow:0 0 0 2px var(--success),0 4px 16px rgba(77,191,173,.25);
-  border-color:var(--success);
-}
-.tw.shake .tube{animation:shake .4s ease}
-@keyframes shake{
-  0%,100%{transform:translateX(0)}
-  20%{transform:translateX(-7px)}40%{transform:translateX(7px)}
-  60%{transform:translateX(-4px)}80%{transform:translateX(4px)}
-}
-@keyframes pourIn{
-  from{transform:scaleY(0);transform-origin:top;opacity:.4}
-  to{transform:scaleY(1);transform-origin:top;opacity:1}
-}
-.pour-in{animation:pourIn .35s cubic-bezier(.4,0,.2,1) forwards}
-@keyframes floatUp{
-  0%{opacity:.7;transform:translateY(0) scale(1)}
-  100%{opacity:0;transform:translateY(-50px) scale(.4)}
-}
-.bbl{position:absolute;border-radius:50%;pointer-events:none;
-  animation:floatUp .9s ease-out forwards}
-
-.tlbl{margin-top:6px;font-size:11px;color:var(--muted);height:14px;text-align:center}
-.tw.done .tlbl{color:var(--success)}
-
-#msg{margin-top:12px;font-size:13px;color:var(--muted);min-height:20px;
-  text-align:center;max-width:600px}
-#msg.err{color:var(--danger)}
-
-#overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);
-  z-index:200;align-items:center;justify-content:center}
-#overlay.show{display:flex}
-#wcard{background:var(--surface2);border:1px solid rgba(255,255,255,.12);
-  border-radius:18px;padding:2.2rem 2.5rem;text-align:center;
-  max-width:340px;position:relative;overflow:hidden}
-#wcard h2{font-size:24px;margin-bottom:8px}
-#wcard p{color:var(--muted);font-size:14px;margin-bottom:1.6rem}
-#wcard .wb{display:flex;gap:10px;justify-content:center}
-@keyframes cfall{
-  from{transform:translateY(-20px) rotate(0deg);opacity:1}
-  to{transform:translateY(380px) rotate(900deg);opacity:0}
-}
-.conf{position:absolute;width:9px;height:9px;border-radius:2px;
-  animation:cfall 2s ease-in forwards;pointer-events:none}
-  .home-btn{
-
-background:var(--surface);
-
-border:1px solid var(--border);
-
-padding:8px 14px;
-
-border-radius:10px;
-
-color:var(--text);
-
-text-decoration:none;
-
-font-size:14px;
-
-transition:.15s;
+/* ========================= CONTAINER ========================= */
+.game-wrapper {
+  max-width: 900px;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+  animation: fadeInUp 0.6s ease both;
 }
 
-.home-btn:hover{
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
-border-color:var(--accent);
+/* ========================= HEADER ========================= */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
 
-color:var(--accent);
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  box-shadow: 0 4px 16px var(--accent-glow);
+}
+
+.logo h1 {
+  font-size: 1.4rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.logo h1 span { color: var(--accent); }
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.icon-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--bg-glass);
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition);
+  font-size: 1rem;
+}
+
+.icon-btn:hover {
+  background: var(--accent-light);
+  color: var(--accent);
+  border-color: rgba(124,92,252,0.3);
+  transform: scale(1.08);
+}
+
+/* ========================= STATS BAR ========================= */
+.stats-bar {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.stat-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 50px;
+  background: var(--bg-glass);
+  border: 1px solid var(--border);
+  font-size: 0.82rem;
+  font-weight: 600;
+  backdrop-filter: blur(12px);
+  transition: all var(--transition);
+}
+
+.stat-chip .stat-icon {
+  font-size: 1rem;
+}
+
+.stat-chip .stat-value {
+  font-family: 'Inter', monospace;
+  font-weight: 800;
+  color: var(--accent);
+}
+
+/* ========================= DIFFICULTY / LEVEL SELECTOR ========================= */
+.controls-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.control-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px;
+  background: var(--bg-glass);
+  border: 1px solid var(--border);
+  border-radius: 50px;
+  backdrop-filter: blur(12px);
+}
+
+.control-group label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  padding: 0 12px;
+}
+
+.diff-btn {
+  padding: 8px 18px;
+  border-radius: 50px;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  font-family: var(--font);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.diff-btn:hover {
+  color: var(--text);
+}
+
+.diff-btn.active {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 2px 12px var(--accent-glow);
+}
+
+.action-btn {
+  padding: 10px 22px;
+  border-radius: 50px;
+  border: none;
+  font-family: var(--font);
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all var(--transition);
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 4px 16px var(--accent-glow);
+}
+
+.btn-primary:hover {
+  background: var(--accent-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px var(--accent-glow);
+}
+
+.btn-ghost {
+  background: var(--bg-glass);
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+}
+
+.btn-ghost:hover {
+  background: var(--accent-light);
+  color: var(--accent);
+  border-color: rgba(124,92,252,0.3);
+}
+
+.btn-danger {
+  background: rgba(239,68,68,0.12);
+  color: var(--danger);
+  border: 1px solid rgba(239,68,68,0.2);
+}
+
+.btn-danger:hover {
+  background: rgba(239,68,68,0.2);
+}
+
+/* ========================= GAME BOARD ========================= */
+.game-board {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 18px;
+  padding: 32px 24px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  backdrop-filter: blur(16px);
+  box-shadow: var(--shadow);
+  min-height: 320px;
+  align-items: flex-end;
+  position: relative;
+  transition: all var(--transition);
+}
+
+/* ========================= TUBE ========================= */
+.tube-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.tube-wrapper:hover {
+  transform: translateY(-4px);
+}
+
+.tube-wrapper.selected {
+  transform: translateY(-14px);
+}
+
+.tube-wrapper.selected .tube {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-light), 0 8px 24px var(--accent-glow);
+}
+
+.tube-wrapper.shake .tube {
+  animation: tubeShake 0.4s ease;
+}
+
+@keyframes tubeShake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-6px) rotate(-2deg); }
+  40% { transform: translateX(6px) rotate(2deg); }
+  60% { transform: translateX(-4px) rotate(-1deg); }
+  80% { transform: translateX(4px) rotate(1deg); }
+}
+
+.tube-wrapper.complete .tube {
+  border-color: var(--success);
+  box-shadow: 0 0 0 3px rgba(34,197,94,0.15), 0 4px 20px var(--success-glow);
+}
+
+.tube {
+  width: 56px;
+  height: 180px;
+  border: 2px solid var(--border);
+  border-radius: 0 0 28px 28px;
+  border-top: none;
+  background: rgba(255,255,255,0.03);
+  display: flex;
+  flex-direction: column-reverse;
+  overflow: hidden;
+  position: relative;
+  transition: all var(--transition);
+}
+
+.tube::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  background: linear-gradient(90deg, rgba(255,255,255,0.06) 0%, transparent 40%, transparent 60%, rgba(255,255,255,0.03) 100%);
+  pointer-events: none;
+  z-index: 2;
+  border-radius: 0 0 28px 28px;
+}
+
+/* Top lip of the tube */
+.tube-lip {
+  width: 66px;
+  height: 6px;
+  border-radius: 4px 4px 0 0;
+  background: var(--border);
+  transition: background var(--transition);
+}
+
+.tube-wrapper.selected .tube-lip {
+  background: var(--accent);
+}
+
+.tube-wrapper.complete .tube-lip {
+  background: var(--success);
+}
+
+/* ========================= COLOR BLOCKS IN TUBE ========================= */
+.color-block {
+  width: 100%;
+  height: 25%;
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+}
+
+.color-block::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 2px;
+}
+
+/* Pour animation */
+.color-block.pouring-out {
+  animation: pourOut 0.3s ease forwards;
+}
+
+@keyframes pourOut {
+  0% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-30px); }
+}
+
+.color-block.pouring-in {
+  animation: pourIn 0.35s cubic-bezier(0.34,1.56,0.64,1) forwards;
+}
+
+@keyframes pourIn {
+  0% { opacity: 0; transform: translateY(-20px) scaleY(0.5); }
+  100% { opacity: 1; transform: translateY(0) scaleY(1); }
+}
+
+.tube-label {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+/* ========================= FLOATING COLOR BALL (pour animation) ========================= */
+.floating-block {
+  position: fixed;
+  width: 52px;
+  height: 44px;
+  border-radius: 0 0 26px 26px;
+  z-index: 100;
+  pointer-events: none;
+  transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+}
+
+/* ========================= MODALS ========================= */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(12px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.modal-overlay.show {
+  display: flex;
+  animation: modalBgIn 0.3s ease;
+}
+
+@keyframes modalBgIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal {
+  width: 100%;
+  max-width: 400px;
+  background: #1a1a2e;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 40px 32px;
+  text-align: center;
+  box-shadow: var(--shadow);
+  animation: modalPop 0.5s cubic-bezier(0.34,1.56,0.64,1);
+}
+
+@keyframes modalPop {
+  from { opacity: 0; transform: scale(0.85) translateY(20px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.modal-emoji {
+  font-size: 4rem;
+  display: block;
+  margin-bottom: 16px;
+  animation: emojiPop 0.6s cubic-bezier(0.34,1.56,0.64,1) 0.2s both;
+}
+
+@keyframes emojiPop {
+  0% { transform: scale(0) rotate(-20deg); }
+  60% { transform: scale(1.3) rotate(10deg); }
+  100% { transform: scale(1) rotate(0); }
+}
+
+.modal h2 {
+  font-size: 1.6rem;
+  font-weight: 800;
+  margin-bottom: 8px;
+  letter-spacing: -0.5px;
+}
+
+.modal p {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+
+.modal-stats {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-bottom: 28px;
+}
+
+.modal-stat {
+  text-align: center;
+}
+
+.modal-stat-value {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--accent);
+  display: block;
+}
+
+.modal-stat-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+}
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+/* ========================= HOW TO PLAY ========================= */
+.how-to-play {
+  margin-bottom: 20px;
+  padding: 20px 24px;
+  background: var(--bg-glass);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  backdrop-filter: blur(12px);
+  display: none;
+}
+
+.how-to-play.show { display: block; }
+
+.how-to-play h3 {
+  font-size: 0.9rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.how-to-play ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.how-to-play li {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  line-height: 1.4;
+}
+
+.step-num {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--accent-light);
+  color: var(--accent);
+  font-size: 0.7rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* ========================= TOAST ========================= */
+.toast-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.toast {
+  padding: 12px 20px;
+  border-radius: var(--radius-sm);
+  background: #1a1a2e;
+  color: var(--text);
+  font-size: 0.85rem;
+  font-weight: 600;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  pointer-events: auto;
+  animation: toastIn 0.4s cubic-bezier(0.34,1.56,0.64,1);
+}
+
+.toast.toast-out { animation: toastOut 0.3s ease forwards; }
+
+@keyframes toastIn {
+  from { opacity: 0; transform: translateX(40px) scale(0.9); }
+  to { opacity: 1; transform: translateX(0) scale(1); }
+}
+
+@keyframes toastOut {
+  to { opacity: 0; transform: translateX(40px) scale(0.9); }
+}
+
+/* ========================= CONFETTI ========================= */
+.confetti-piece {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  animation: confettiFall 2s ease-out forwards;
+}
+
+@keyframes confettiFall {
+  0% { opacity: 1; transform: translateY(0) rotate(0deg) scale(1); }
+  100% { opacity: 0; transform: translateY(600px) rotate(1080deg) scale(0.1); }
+}
+
+/* ========================= KEYBOARD HINTS ========================= */
+.keyboard-hint {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.kbd {
+  display: inline-block;
+  padding: 2px 7px;
+  border-radius: 4px;
+  background: var(--bg-glass);
+  border: 1px solid var(--border);
+  font-family: monospace;
+  font-weight: 600;
+  font-size: 0.68rem;
+}
+
+/* ========================= RESPONSIVE ========================= */
+@media (max-width: 600px) {
+  body { padding: 12px; }
+  .header { margin-bottom: 16px; }
+  .logo h1 { font-size: 1.15rem; }
+  .stats-bar { gap: 8px; }
+  .stat-chip { padding: 8px 12px; font-size: 0.75rem; }
+  .controls-row { gap: 8px; }
+  .diff-btn { padding: 7px 14px; font-size: 0.75rem; }
+  .game-board { padding: 20px 12px; gap: 10px; }
+  .tube { width: 44px; height: 145px; }
+  .tube-lip { width: 54px; }
+  .tube-wrapper.selected { transform: translateY(-10px); }
+  .action-btn { padding: 8px 16px; font-size: 0.78rem; }
+  .keyboard-hint { display: none; }
 }
 </style>
 </head>
 <body>
 
-<header>
+<div class="game-wrapper">
 
-<a href="../../index.html"
-class="home-btn">
+  <!-- HEADER -->
+  <header class="header">
+    <div class="logo">
+      <div class="logo-icon">🧪</div>
+      <h1>Color<span>Sort</span></h1>
+    </div>
+    <div class="header-actions">
+      <button class="icon-btn" id="helpBtn" title="How to play">❓</button>
+      <button class="icon-btn" id="soundBtn" title="Toggle sound">🔊</button>
+    </div>
+  </header>
 
-← Home
-
-</a>
-
-<h1>
-🧪 Color<span>Sort</span>
-</h1>
- <div class="stats">
-  <div class="pill">Moves: <b id="mc">0</b></div>
-
-  <div class="pill">
-      Time:
-      <b id="timer">00:00</b>
+  <!-- HOW TO PLAY -->
+  <div class="how-to-play" id="howToPlay">
+    <h3>📖 How to Play</h3>
+    <ul>
+      <li><span class="step-num">1</span> Click a tube to pick up the top color</li>
+      <li><span class="step-num">2</span> Click another tube to pour it in</li>
+      <li><span class="step-num">3</span> You can only pour onto the same color or into an empty tube</li>
+      <li><span class="step-num">4</span> Fill each tube with one single color to win!</li>
+    </ul>
   </div>
 
-  <div class="pill">Level: <b id="ld">1 — Easy</b></div>
-</div>
-</header>
-
-<div id="lvlrow">
-  <span>Difficulty:</span>
-  <button class="lbtn on" onclick="setLevel(1)">Easy</button>
-  <button class="lbtn"    onclick="setLevel(2)">Medium</button>
-  <button class="lbtn"    onclick="setLevel(3)">Hard</button>
-  <div class="ctrls">
-    <button class="cbtn" onclick="openHelp()">❔ How To Play</button>
-    <button class="cbtn" onclick="undo()">↩ Undo</button>
-    <button class="cbtn" id="mutebtn" onclick="toggleMute()">🔊 Sound</button>
-    <button class="cbtn" onclick="reset()">↺ Reset</button>
-    <button class="cbtn a" onclick="newGame()">New Game</button>
+  <!-- STATS BAR -->
+  <div class="stats-bar">
+    <div class="stat-chip">
+      <span class="stat-icon">🏆</span>
+      <span>Level</span>
+      <span class="stat-value" id="levelDisplay">1</span>
+    </div>
+    <div class="stat-chip">
+      <span class="stat-icon">🔄</span>
+      <span>Moves</span>
+      <span class="stat-value" id="movesDisplay">0</span>
+    </div>
+    <div class="stat-chip">
+      <span class="stat-icon">⏱</span>
+      <span>Time</span>
+      <span class="stat-value" id="timerDisplay">0:00</span>
+    </div>
+    <div class="stat-chip">
+      <span class="stat-icon">⭐</span>
+      <span>Best</span>
+      <span class="stat-value" id="bestDisplay">—</span>
+    </div>
   </div>
+
+  <!-- CONTROLS ROW -->
+  <div class="controls-row" id="lvlrow">
+    <div class="control-group">
+      <label>Difficulty</label>
+      <button class="diff-btn active" data-diff="easy">Easy</button>
+      <button class="diff-btn" data-diff="medium">Medium</button>
+      <button class="diff-btn" data-diff="hard">Hard</button>
+    </div>
+    <button class="action-btn btn-primary" id="newGameBtn">🎮 New Game</button>
+    <button class="action-btn btn-ghost" id="undoBtn">↩ Undo</button>
+    <button class="action-btn btn-ghost" id="restartBtn">🔁 Restart</button>
+  </div>
+
+  <!-- GAME BOARD -->
+  <div class="game-board" id="gameBoard"></div>
+
+  <!-- KEYBOARD HINTS -->
+  <div class="keyboard-hint">
+    <span class="kbd">U</span> undo &nbsp;·&nbsp;
+    <span class="kbd">R</span> restart &nbsp;·&nbsp;
+    <span class="kbd">N</span> new game &nbsp;·&nbsp;
+    <span class="kbd">1-9</span> select tube
+  </div>
+
 </div>
 
-<div id="arena"></div>
-<div id="msg"></div>
-
-<div id="overlay">
-  <div id="wcard">
-    <h2>🎉 Solved!</h2>
-    <p id="wmsg"></p>
-    <div class="wb">
-      <button class="cbtn a" onclick="newGame()">Next Puzzle</button>
-      <button class="cbtn"   onclick="closeWin()">Close</button>
+<!-- WIN MODAL -->
+<div class="modal-overlay" id="winModal">
+  <div class="modal">
+    <span class="modal-emoji">🎉</span>
+    <h2>Puzzle Complete!</h2>
+    <p id="winMessage">Amazing work! You sorted all the colors.</p>
+    <div class="modal-stats">
+      <div class="modal-stat">
+        <span class="modal-stat-value" id="winMoves">0</span>
+        <span class="modal-stat-label">Moves</span>
+      </div>
+      <div class="modal-stat">
+        <span class="modal-stat-value" id="winTime">0:00</span>
+        <span class="modal-stat-label">Time</span>
+      </div>
+      <div class="modal-stat">
+        <span class="modal-stat-value" id="winLevel">1</span>
+        <span class="modal-stat-label">Level</span>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="action-btn btn-primary" id="nextLevelBtn">🚀 Next Level</button>
+      <button class="action-btn btn-ghost" id="replayBtn">🔁 Replay</button>
     </div>
   </div>
 </div>
-<div id="helpOverlay">
 
-<div id="helpCard">
-
-<h2>🎮 How To Play</h2>
-
-<ul>
-<li>Move colors between tubes.</li>
-
-<li>You can only pour onto
-same-colored liquid or empty tubes.</li>
-
-<li>Fill each tube with one color.</li>
-
-<li>Use Undo to reverse moves.</li>
-
-<li>Reset restarts current puzzle.</li>
-
-<li>New Game creates a new puzzle.</li>
-
-</ul>
-
-<button
-class="cbtn a"
-onclick="closeHelp()">
-
-Close
-
-</button>
-
-</div>
-</div>
+<!-- TOAST CONTAINER -->
+<div class="toast-container" id="toastContainer"></div>
 
 <script>
-/*
- * ════════════════════════════════════════════════
- *  COLOR SORT PUZZLE — corrected top-color logic
- * ════════════════════════════════════════════════
- *
- * ARRAY MODEL:
- *   tube = [c0, c1, c2, c3]
- *   tube[0]              → BOTTOM of tube
- *   tube[tube.length-1]  → TOP of tube  ← the only color that can be poured
- *
- * VISUAL MODEL (absolute positioning):
- *   segment i is placed at   bottom = i * SEG_H   pixels from tube floor
- *   So tube[0] renders at bottom:0   (lowest visually)
- *      tube[3] renders at bottom:156 (highest visually, i.e. the TOP)
- *
- * This means what you SEE at the top of the liquid
- * is EXACTLY tube[tube.length-1] — the poured color.
- * ════════════════════════════════════════════════
- */
+/* =====================================
+   GAME CONFIG
+===================================== */
 
-const SEG_H    = 52;   // px per segment — must match --sh CSS var
-const TUBE_CAP = 4;    // max segments per tube
+const TUBE_CAPACITY = 4;
 
-const PALETTE = [
-  {bg:'#e8735a',bdr:'#c44d34'},  // coral
-  {bg:'#5b9bd5',bdr:'#2e6dab'},  // blue
-  {bg:'#4dbfad',bdr:'#2a9082'},  // teal
-  {bg:'#f0a830',bdr:'#c07a10'},  // amber
-  {bg:'#9b7fd4',bdr:'#6b52a8'},  // purple
-  {bg:'#6dbf5a',bdr:'#419630'},  // green
-  {bg:'#e870a0',bdr:'#b54578'},  // pink
-  {bg:'#6676d8',bdr:'#4050b0'},  // indigo
+const COLORS = [
+  { name: 'Red',        hex: '#ef4444', dark: '#dc2626' },
+  { name: 'Blue',       hex: '#3b82f6', dark: '#2563eb' },
+  { name: 'Green',      hex: '#22c55e', dark: '#16a34a' },
+  { name: 'Yellow',     hex: '#facc15', dark: '#eab308' },
+  { name: 'Purple',     hex: '#a855f7', dark: '#9333ea' },
+  { name: 'Orange',     hex: '#f97316', dark: '#ea580c' },
+  { name: 'Pink',       hex: '#ec4899', dark: '#db2777' },
+  { name: 'Cyan',       hex: '#06b6d4', dark: '#0891b2' },
+  { name: 'Teal',       hex: '#14b8a6', dark: '#0d9488' },
+  { name: 'Indigo',     hex: '#6366f1', dark: '#4f46e5' },
+  { name: 'Rose',       hex: '#f43f5e', dark: '#e11d48' },
+  { name: 'Lime',       hex: '#84cc16', dark: '#65a30d' },
 ];
 
-let NUM_C = 4, NUM_E = 2;
-let state=[],
-sel=null,
-moves=0,
-hist=[],
-initSnap=null;
+const DIFFICULTY = {
+  easy:   { colors: 4, empty: 2 },
+  medium: { colors: 6, empty: 2 },
+  hard:   { colors: 9, empty: 2 },
+};
 
-let timer=0;
+/* =====================================
+   DOM
+===================================== */
 
-let timerInterval=null;
+const gameBoard    = document.getElementById('gameBoard');
+const movesDisplay = document.getElementById('movesDisplay');
+const timerDisplay = document.getElementById('timerDisplay');
+const levelDisplay = document.getElementById('levelDisplay');
+const bestDisplay  = document.getElementById('bestDisplay');
+const winModal     = document.getElementById('winModal');
+const newGameBtn   = document.getElementById('newGameBtn');
+const undoBtn      = document.getElementById('undoBtn');
+const restartBtn   = document.getElementById('restartBtn');
+const nextLevelBtn = document.getElementById('nextLevelBtn');
+const replayBtn    = document.getElementById('replayBtn');
+const helpBtn      = document.getElementById('helpBtn');
+const howToPlay    = document.getElementById('howToPlay');
+const soundBtn     = document.getElementById('soundBtn');
+const toastContainer = document.getElementById('toastContainer');
 
-let gameRunning=false;
+/* =====================================
+   STATE
+===================================== */
 
-/* ── accessors ── */
-const topColor = t => t.length ? t[t.length - 1] : null;
-const empty = t => t.length === 0;
-const full  = t => t.length === TUBE_CAP;
+let tubes = [];
+let initialTubes = [];
+let selectedTube = null;
+let moves = 0;
+let level = parseInt(localStorage.getItem('csLevel')) || 1;
+let difficulty = localStorage.getItem('csDifficulty') || 'easy';
+let timerInterval = null;
+let secondsElapsed = 0;
+let gameActive = false;
+let moveHistory = [];
+let soundEnabled = true;
+let bestMoves = {};
 
-function topRun(t) {
-  // count of consecutive same-color segs at the TOP (end of array)
-  if (!t.length) return 0;
-  const c = t[t.length - 1];
-  let n = 0;
-  for (let i = t.length - 1; i >= 0 && t[i] === c; i--) n++;
-  return n;
+// Load best moves
+try { bestMoves = JSON.parse(localStorage.getItem('csBest')) || {}; } catch(e) { bestMoves = {}; }
+
+/* =====================================
+   AUDIO
+===================================== */
+
+let audioCtx = null;
+
+function initAudio() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 }
 
-function canPour(fi, ti) {
-  const f = state[fi], t = state[ti];
-  if (empty(f)) return false;
-  if (full(t))  return false;
-  if (empty(t)) return true;
-  return topColor(f) === topColor(t);
+function playSound(freq, dur, type='sine', vol=0.04) {
+  if (!soundEnabled || !audioCtx) return;
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+  osc.frequency.value = freq;
+  osc.type = type;
+  gain.gain.setValueAtTime(vol, audioCtx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
+  osc.start(audioCtx.currentTime);
+  osc.stop(audioCtx.currentTime + dur);
 }
 
-function doPour(fi, ti) {
-  const f = state[fi], t = state[ti];
-  const color = topColor(f);
-  const n = Math.min(topRun(f), TUBE_CAP - t.length);
-  for (let i = 0; i < n; i++) { f.pop(); t.push(color); }
-  return n;   // number of segments moved (for animation)
+function playPick()  { playSound(520, 0.1); }
+function playPour()  { playSound(440, 0.15); playSound(660, 0.15); }
+function playError() { playSound(200, 0.15, 'square', 0.03); }
+function playWin()   { [523,659,784,1047].forEach((f,i) => setTimeout(() => playSound(f, 0.3), i*120)); }
+
+/* =====================================
+   TOAST
+===================================== */
+
+function showToast(msg, icon='ℹ️') {
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.innerHTML = `<span>${icon}</span><span>${msg}</span>`;
+  toastContainer.appendChild(t);
+  setTimeout(() => { t.classList.add('toast-out'); setTimeout(() => t.remove(), 300); }, 2500);
 }
 
-const tubeDone  = t => t.length === TUBE_CAP && t.every(c => c === t[0]);
-const gameDone  = ()=> state.every(t => empty(t) || tubeDone(t));
+/* =====================================
+   CONFETTI
+===================================== */
 
-/* ── setup ── */
-function shuffle(a) {
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]];
+function triggerConfetti() {
+  const colors = ['#7c5cfc','#ec4899','#22c55e','#facc15','#3b82f6','#f97316','#ef4444'];
+  const shapes = ['●','■','▲','★','◆'];
+  for (let i = 0; i < 50; i++) {
+    const p = document.createElement('div');
+    p.className = 'confetti-piece';
+    p.textContent = shapes[Math.floor(Math.random()*shapes.length)];
+    p.style.left = Math.random()*100 + 'vw';
+    p.style.top = (-5 + Math.random()*20) + '%';
+    p.style.color = colors[Math.floor(Math.random()*colors.length)];
+    p.style.fontSize = (10+Math.random()*14) + 'px';
+    p.style.animationDuration = (1.2+Math.random()*1) + 's';
+    p.style.animationDelay = (Math.random()*0.5) + 's';
+    document.body.appendChild(p);
+    setTimeout(() => p.remove(), 2800);
   }
 }
 
-function setLevel(l) {
-  document.querySelectorAll('.lbtn').forEach((b,i)=>b.classList.toggle('on',i===l-1));
-  const n=['1 — Easy','2 — Medium','3 — Hard'];
-  document.getElementById('ld').textContent = n[l-1];
-  if(l===1){NUM_C=4;NUM_E=2}else if(l===2){NUM_C=6;NUM_E=2}else{NUM_C=8;NUM_E=2}
-  newGame();
+/* =====================================
+   TIMER
+===================================== */
+
+function startTimer() {
+  stopTimer();
+  secondsElapsed = 0;
+  timerDisplay.textContent = '0:00';
+  timerInterval = setInterval(() => {
+    secondsElapsed++;
+    const m = Math.floor(secondsElapsed / 60);
+    const s = secondsElapsed % 60;
+    timerDisplay.textContent = `${m}:${s.toString().padStart(2, '0')}`;
+  }, 1000);
 }
 
-function newGame() {
-  document.getElementById('overlay').classList.remove('show');
-  let pool=[];
-  for(let c=0;c<NUM_C;c++) for(let s=0;s<TUBE_CAP;s++) pool.push(c);
-  shuffle(pool);
-  state=[];
-  for(let i=0;i<NUM_C;i++) state.push(pool.slice(i*TUBE_CAP,(i+1)*TUBE_CAP));
-  for(let i=0;i<NUM_E;i++) state.push([]);
-  sel=null; moves=0; hist=[];
-  initSnap=JSON.stringify(state);
-  resetTimer();
-
-startTimer();
-
-setMsg('');
-
-updM();
-
-render();
+function stopTimer() {
+  if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
 }
 
-function reset() {
-  if(!initSnap) return;
-  state=JSON.parse(initSnap); sel=null; moves=0; hist=[];
- resetTimer();
-
-startTimer();
-
-setMsg('');
-
-updM();
-
-render();
+function getTimeString() {
+  const m = Math.floor(secondsElapsed / 60);
+  const s = secondsElapsed % 60;
+  return `${m}:${s.toString().padStart(2, '0')}`;
 }
 
-function undo() {
-  if(!hist.length){setMsg('Nothing to undo.');return}
-  state=JSON.parse(hist.pop()); moves=Math.max(0,moves-1);
-  sel=null; updM(); setMsg(''); render();
-}
+/* =====================================
+   PUZZLE GENERATION
+===================================== */
 
-/* ── interaction ── */
-function clickTube(idx) {
-  if (sel === null) {
-    if (empty(state[idx])) { setMsg('Tube is empty!'); return; }
-    sel = idx;
-    SFX.select();
-    setMsg(`Tube ${idx+1} selected — click destination tube.`);
-    render(); return;
+function generatePuzzle() {
+  const config = DIFFICULTY[difficulty];
+  const numColors = config.colors;
+  const numEmpty = config.empty;
+  const totalTubes = numColors + numEmpty;
+
+  // Pick random colors
+  const shuffledColors = [...COLORS].sort(() => Math.random() - 0.5).slice(0, numColors);
+
+  // Create color pool (4 of each)
+  let pool = [];
+  shuffledColors.forEach(c => {
+    for (let i = 0; i < TUBE_CAPACITY; i++) pool.push(c);
+  });
+
+  // Shuffle the pool (Fisher-Yates)
+  for (let i = pool.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [pool[i], pool[j]] = [pool[j], pool[i]];
   }
-  if (sel === idx) { sel=null; setMsg(''); render(); return; }
 
-  if (canPour(sel, idx)) {
-    hist.push(JSON.stringify(state));
-    const n = doPour(sel, idx);
-    moves++; sel=null; updM(); setMsg('');
-    SFX.pour();
-    render(idx, n);
-    if (tubeDone(state[idx])) SFX.tubeDone();
-    if (gameDone()) setTimeout(showWin, 450);
-  } else {
-    shake(idx);
-    SFX.invalid();
-    setMsg('❌ Invalid — top colors must match, or pour into an empty tube!');
-    setTimeout(()=>setMsg(''), 2500);
-    sel=null; render();
+  // Fill tubes
+  tubes = [];
+  for (let t = 0; t < numColors; t++) {
+    tubes.push(pool.splice(0, TUBE_CAPACITY));
   }
+
+  // Add empty tubes
+  for (let t = 0; t < numEmpty; t++) {
+    tubes.push([]);
+  }
+
+  // Check solvability — at least ensure it's not already solved and has some shuffling
+  // If any tube is already complete, reshuffle
+  const allComplete = tubes.every(t => isTubeComplete(t));
+  if (allComplete) return generatePuzzle();
+
+  // Deep copy for restart
+  initialTubes = tubes.map(t => [...t]);
 }
 
-function render(pourTo, pouredN) {
-  const arena = document.getElementById('arena');
-  arena.innerHTML = '';
+/* =====================================
+   TUBE CHECKS
+===================================== */
 
-  state.forEach((tube, idx) => {
-    const wrap = document.createElement('div');
-    wrap.className = 'tw'
-      + (sel===idx      ? ' sel'  : '')
-      + (tubeDone(tube) ? ' done' : '');
-    wrap.setAttribute('data-idx', idx);
-    wrap.onclick = () => clickTube(idx);
-    wrap.setAttribute('role','button');
-    wrap.setAttribute('aria-label',`Tube ${idx+1}`);
+function isTubeComplete(tube) {
+  if (tube.length !== TUBE_CAPACITY) return false;
+  return tube.every(c => c.hex === tube[0].hex);
+}
 
+function isTubeEmpty(tube) {
+  return tube.length === 0;
+}
+
+function getTopColor(tube) {
+  return tube.length > 0 ? tube[tube.length - 1] : null;
+}
+
+function canPour(fromTube, toTube) {
+  if (fromTube.length === 0) return false;
+  if (toTube.length >= TUBE_CAPACITY) return false;
+  if (toTube.length === 0) return true;
+  return getTopColor(fromTube).hex === getTopColor(toTube).hex;
+}
+
+function checkWin() {
+  return tubes.every(t => isTubeComplete(t) || isTubeEmpty(t));
+}
+
+/* =====================================
+   RENDER
+===================================== */
+
+function renderBoard() {
+  gameBoard.innerHTML = '';
+
+  tubes.forEach((tube, idx) => {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'tube-wrapper';
+    wrapper.dataset.index = idx;
+
+    if (selectedTube === idx) wrapper.classList.add('selected');
+    if (isTubeComplete(tube)) wrapper.classList.add('complete');
+
+    // Tube lip
+    const lip = document.createElement('div');
+    lip.className = 'tube-lip';
+    wrapper.appendChild(lip);
+
+    // Tube body
     const tubeEl = document.createElement('div');
     tubeEl.className = 'tube';
 
-    tube.forEach((colorIdx, arrayIdx) => {
-      const seg = document.createElement('div');
-      seg.className = 'seg';
-
-      // KEY: position each segment by its array index FROM THE BOTTOM
-      // arrayIdx 0 → bottom:0 (lowest)
-      // arrayIdx 3 → bottom:156px (highest = top of liquid)
-      seg.style.bottom     = (arrayIdx * SEG_H) + 'px';
-      seg.style.background = PALETTE[colorIdx].bg;
-
-      // draw a separator line on top of every segment except the bottom-most
-      if (arrayIdx > 0) seg.classList.add('seg-border-top');
-      seg.style.borderTopColor = PALETTE[colorIdx].bdr;
-
-      // pour animation: the newly-arrived segments are the top `pouredN` entries
-      if (idx === pourTo && pouredN && arrayIdx >= tube.length - pouredN) {
-        seg.classList.add('pour-in');
-        bubbles(seg, PALETTE[colorIdx].bg);
-      }
-
-      tubeEl.appendChild(seg);
+    // Color blocks (bottom to top)
+    tube.forEach((color, blockIdx) => {
+      const block = document.createElement('div');
+      block.className = 'color-block';
+      block.style.background = `linear-gradient(180deg, ${color.hex} 0%, ${color.dark} 100%)`;
+      tubeEl.appendChild(block);
     });
 
-    const lbl = document.createElement('div');
-    lbl.className = 'tlbl';
-    lbl.textContent = tubeDone(tube) ? '✓ Done' : '';
+    wrapper.appendChild(tubeEl);
 
-    wrap.appendChild(tubeEl);
-    wrap.appendChild(lbl);
-    arena.appendChild(wrap);
+    // Label
+    const label = document.createElement('div');
+    label.className = 'tube-label';
+    label.textContent = idx + 1;
+    wrapper.appendChild(label);
+
+    // Click handler
+    wrapper.addEventListener('click', () => handleTubeClick(idx));
+
+    gameBoard.appendChild(wrapper);
   });
 }
 
-function shake(idx) {
-  const el = document.querySelector(`[data-idx="${idx}"]`);
-  if (!el) return;
-  el.classList.add('shake');
-  setTimeout(()=>el.classList.remove('shake'), 450);
-}
+/* =====================================
+   GAME LOGIC
+===================================== */
 
-function bubbles(seg, color) {
-  for(let i=0;i<4;i++){
-    const b=document.createElement('div');
-    b.className='bbl';
-    const sz=3+Math.random()*6;
-    b.style.cssText=`width:${sz}px;height:${sz}px;left:${6+Math.random()*32}px;`
-      +`bottom:${4+Math.random()*20}px;background:${color}99;animation-delay:${i*.13}s`;
-    seg.appendChild(b);
+function handleTubeClick(idx) {
+  if (!gameActive) return;
+  initAudio();
+
+  if (selectedTube === null) {
+    // Select tube
+    if (tubes[idx].length === 0) return; // Can't select empty
+    if (isTubeComplete(tubes[idx])) return; // Can't select completed
+    selectedTube = idx;
+    playPick();
+    renderBoard();
+  } else if (selectedTube === idx) {
+    // Deselect
+    selectedTube = null;
+    renderBoard();
+  } else {
+    // Try to pour
+    if (canPour(tubes[selectedTube], tubes[idx])) {
+      // Save to history for undo
+      moveHistory.push(tubes.map(t => [...t]));
+
+      // Pour — move consecutive top colors of same color
+      const fromTube = tubes[selectedTube];
+      const toTube = tubes[idx];
+      const color = getTopColor(fromTube);
+
+      let count = 0;
+      while (
+        fromTube.length > 0 &&
+        toTube.length < TUBE_CAPACITY &&
+        getTopColor(fromTube).hex === color.hex
+      ) {
+        toTube.push(fromTube.pop());
+        count++;
+      }
+
+      moves++;
+      movesDisplay.textContent = moves;
+
+      selectedTube = null;
+      playPour();
+
+      // Animate pour
+      renderBoard();
+
+      // Animate the new blocks
+      const targetWrapper = gameBoard.children[idx];
+      if (targetWrapper) {
+        const blocks = targetWrapper.querySelectorAll('.color-block');
+        for (let i = blocks.length - count; i < blocks.length; i++) {
+          if (blocks[i]) blocks[i].classList.add('pouring-in');
+        }
+      }
+
+      // Check complete tubes
+      setTimeout(() => {
+        if (isTubeComplete(tubes[idx])) {
+          renderBoard();
+        }
+      }, 350);
+
+      // Check win
+      setTimeout(() => {
+        if (checkWin()) {
+          handleWin();
+        }
+      }, 500);
+
+    } else {
+      // Invalid move
+      playError();
+      const wrapper = gameBoard.children[idx];
+      if (wrapper) {
+        wrapper.classList.add('shake');
+        setTimeout(() => wrapper.classList.remove('shake'), 400);
+      }
+      selectedTube = null;
+      renderBoard();
+    }
   }
 }
 
-/* ── win ── */
-function showWin() {
+/* =====================================
+   WIN
+===================================== */
+
+function handleWin() {
+  gameActive = false;
   stopTimer();
-  const ov=document.getElementById('overlay'), card=document.getElementById('wcard');
-  document.getElementById('wmsg').textContent =
-    `All tubes sorted in ${moves} move${moves!==1?'s':''}! 🏆`;
-  ov.classList.add('show');
-  SFX.win();
-  card.querySelectorAll('.conf').forEach(c=>c.remove());
-  PALETTE.forEach((c,i)=>{
-    const el=document.createElement('div');
-    el.className='conf';
-    el.style.cssText=`left:${Math.random()*100}%;top:-12px;background:${c.bg};`
-      +`animation-delay:${Math.random()*.9}s;transform:rotate(${Math.random()*360}deg)`;
-    card.appendChild(el);
+
+  const timeStr = getTimeString();
+  const bestKey = `${difficulty}-${level}`;
+
+  // Check personal best
+  let isNewBest = false;
+  if (!bestMoves[bestKey] || moves < bestMoves[bestKey]) {
+    bestMoves[bestKey] = moves;
+    localStorage.setItem('csBest', JSON.stringify(bestMoves));
+    isNewBest = true;
+  }
+
+  bestDisplay.textContent = bestMoves[bestKey] || '—';
+
+  // Set modal
+  document.getElementById('winMoves').textContent = moves;
+  document.getElementById('winTime').textContent = timeStr;
+  document.getElementById('winLevel').textContent = level;
+
+  const msg = document.getElementById('winMessage');
+  if (isNewBest) {
+    msg.textContent = '⭐ New personal best! Incredible!';
+  } else if (moves <= (DIFFICULTY[difficulty].colors * 2)) {
+    msg.textContent = 'Outstanding efficiency! You\'re a master!';
+  } else {
+    msg.textContent = 'Great work! You sorted all the colors.';
+  }
+
+  winModal.classList.add('show');
+  playWin();
+  triggerConfetti();
+}
+
+/* =====================================
+   GAME INIT
+===================================== */
+
+function startNewGame() {
+  winModal.classList.remove('show');
+  selectedTube = null;
+  moves = 0;
+  moveHistory = [];
+  movesDisplay.textContent = '0';
+  levelDisplay.textContent = level;
+  gameActive = true;
+
+  const bestKey = `${difficulty}-${level}`;
+  bestDisplay.textContent = bestMoves[bestKey] || '—';
+
+  generatePuzzle();
+  renderBoard();
+  startTimer();
+}
+
+function restartGame() {
+  if (!gameActive && !winModal.classList.contains('show')) return;
+  winModal.classList.remove('show');
+  selectedTube = null;
+  moves = 0;
+  moveHistory = [];
+  movesDisplay.textContent = '0';
+  gameActive = true;
+
+  tubes = initialTubes.map(t => [...t]);
+  renderBoard();
+  startTimer();
+  showToast('Puzzle restarted', '🔁');
+}
+
+function undoMove() {
+  if (moveHistory.length === 0) {
+    showToast('Nothing to undo', '↩');
+    return;
+  }
+  tubes = moveHistory.pop();
+  moves = Math.max(0, moves - 1);
+  movesDisplay.textContent = moves;
+  selectedTube = null;
+  renderBoard();
+  playPick();
+}
+
+function nextLevel() {
+  level++;
+  localStorage.setItem('csLevel', level);
+  startNewGame();
+  showToast(`Level ${level}!`, '🏆');
+}
+
+/* =====================================
+   EVENTS
+===================================== */
+
+// Difficulty selection
+document.querySelectorAll('.diff-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    difficulty = btn.dataset.diff;
+    localStorage.setItem('csDifficulty', difficulty);
+    document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    level = 1;
+    localStorage.setItem('csLevel', 1);
+    startNewGame();
+    showToast(`Difficulty: ${difficulty.charAt(0).toUpperCase()+difficulty.slice(1)}`, '⚡');
   });
-}
-function closeWin(){document.getElementById('overlay').classList.remove('show')}
-function startTimer(){
+});
 
-clearInterval(timerInterval);
+// Buttons
+newGameBtn.addEventListener('click', () => { startNewGame(); showToast('New game started!', '🎮'); });
+undoBtn.addEventListener('click', undoMove);
+restartBtn.addEventListener('click', restartGame);
+nextLevelBtn.addEventListener('click', nextLevel);
+replayBtn.addEventListener('click', () => { winModal.classList.remove('show'); restartGame(); });
 
-gameRunning=true;
+// Help toggle
+helpBtn.addEventListener('click', () => {
+  howToPlay.classList.toggle('show');
+});
 
-timerInterval=setInterval(()=>{
+// Sound toggle
+soundBtn.addEventListener('click', () => {
+  initAudio();
+  soundEnabled = !soundEnabled;
+  soundBtn.textContent = soundEnabled ? '🔊' : '🔇';
+  showToast(soundEnabled ? 'Sound on' : 'Sound off', soundEnabled ? '🔊' : '🔇');
+});
 
-timer++;
+// Close modal on overlay click
+winModal.addEventListener('click', (e) => {
+  if (e.target === winModal) winModal.classList.remove('show');
+});
 
-const mins=
-String(
-Math.floor(timer/60)
-).padStart(2,"0");
+// Keyboard shortcuts
+document.addEventListener('keydown', (e) => {
+  const key = e.key.toLowerCase();
 
-const secs=
-String(
-timer%60
-).padStart(2,"0");
+  if (key === 'u') undoMove();
+  if (key === 'r') restartGame();
+  if (key === 'n') { startNewGame(); showToast('New game started!', '🎮'); }
+  if (key === 'escape') { selectedTube = null; renderBoard(); winModal.classList.remove('show'); }
 
-document
-.getElementById("timer")
-.textContent=
-`${mins}:${secs}`;
-
-},1000);
-}
-
-
-function stopTimer(){
-
-clearInterval(
-timerInterval
-);
-
-gameRunning=false;
-}
-
-
-function resetTimer(){
-
-stopTimer();
-
-timer=0;
-
-document
-.getElementById("timer")
-.textContent=
-"00:00";
-}
-function updM(){document.getElementById('mc').textContent=moves}
-function setMsg(t){const e=document.getElementById('msg');e.textContent=t;e.className=t.startsWith('❌')?'err':''}
-
-/* ── Sound Engine (Web Audio API — no external files needed) ── */
-const SFX = (() => {
-  let ctx = null;
-  let muted = false;
-  function getCtx() {
-    if (!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)();
-    if (ctx.state === 'suspended') ctx.resume();
-    return ctx;
+  // Number keys to select tubes
+  const num = parseInt(key);
+  if (num >= 1 && num <= tubes.length) {
+    handleTubeClick(num - 1);
   }
-  function play(fn) {
-    if (muted) return;
-    try { fn(getCtx()); } catch(e) {}
-  }
-  return {
-    pour() {
-      play(ctx => {
-        const buf = ctx.createBuffer(1, ctx.sampleRate * 0.35, ctx.sampleRate);
-        const data = buf.getChannelData(0);
-        for (let i = 0; i < data.length; i++) data[i] = (Math.random()*2-1);
-        const src = ctx.createBufferSource();
-        src.buffer = buf;
-        const filter = ctx.createBiquadFilter();
-        filter.type = 'bandpass';
-        filter.frequency.setValueAtTime(800, ctx.currentTime);
-        filter.frequency.linearRampToValueAtTime(300, ctx.currentTime + 0.35);
-        filter.Q.value = 0.8;
-        const gain = ctx.createGain();
-        gain.gain.setValueAtTime(0.18, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.35);
-        src.connect(filter); filter.connect(gain); gain.connect(ctx.destination);
-        src.start(); src.stop(ctx.currentTime + 0.35);
-      });
-    },
-    select() {
-      play(ctx => {
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(520, ctx.currentTime);
-        osc.frequency.linearRampToValueAtTime(640, ctx.currentTime + 0.08);
-        gain.gain.setValueAtTime(0.12, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.12);
-        osc.connect(gain); gain.connect(ctx.destination);
-        osc.start(); osc.stop(ctx.currentTime + 0.12);
-      });
-    },
-    invalid() {
-      play(ctx => {
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.type = 'sawtooth';
-        osc.frequency.setValueAtTime(180, ctx.currentTime);
-        osc.frequency.linearRampToValueAtTime(120, ctx.currentTime + 0.18);
-        gain.gain.setValueAtTime(0.1, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.18);
-        osc.connect(gain); gain.connect(ctx.destination);
-        osc.start(); osc.stop(ctx.currentTime + 0.18);
-      });
-    },
-    tubeDone() {
-      play(ctx => {
-        [523, 659, 784].forEach((freq, i) => {
-          const osc = ctx.createOscillator();
-          const gain = ctx.createGain();
-          osc.type = 'triangle';
-          osc.frequency.value = freq;
-          const t = ctx.currentTime + i * 0.1;
-          gain.gain.setValueAtTime(0.18, t);
-          gain.gain.exponentialRampToValueAtTime(0.001, t + 0.4);
-          osc.connect(gain); gain.connect(ctx.destination);
-          osc.start(t); osc.stop(t + 0.4);
-        });
-      });
-    },
-    win() {
-      play(ctx => {
-        [523, 659, 784, 1047, 1319].forEach((freq, i) => {
-          const osc = ctx.createOscillator();
-          const gain = ctx.createGain();
-          osc.type = 'triangle';
-          osc.frequency.value = freq;
-          const t = ctx.currentTime + i * 0.13;
-          gain.gain.setValueAtTime(0.22, t);
-          gain.gain.exponentialRampToValueAtTime(0.001, t + 0.6);
-          osc.connect(gain); gain.connect(ctx.destination);
-          osc.start(t); osc.stop(t + 0.6);
-        });
-      });
-    },
-    toggleMute() { muted = !muted; return muted; },
-    isMuted() { return muted; }
-  };
-})();
+});
 
+/* =====================================
+   INIT
+===================================== */
 
-function toggleMute(){
-  const m=SFX.toggleMute();
-  document.getElementById("mutebtn").textContent=m?"🔇 Muted":"🔊 Sound";
-}
-function openHelp(){
+// Set active difficulty button
+document.querySelectorAll('.diff-btn').forEach(b => {
+  b.classList.toggle('active', b.dataset.diff === difficulty);
+});
 
-document
-.getElementById(
-"helpOverlay"
-)
-.classList.add(
-"show"
-);
-
-stopTimer();
-}
-
-
-function closeHelp(){
-
-document
-.getElementById(
-"helpOverlay"
-)
-.classList.remove(
-"show"
-);
-
-if(!gameDone())
-startTimer();
-}
-newGame();
+startNewGame();
 </script>
+
 </body>
 </html>
