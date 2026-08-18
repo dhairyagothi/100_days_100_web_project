@@ -1620,6 +1620,25 @@ function toggleCompletion(project) {
   renderGrid();
 }
 
+function updateProgressTracker() {
+  const totalProjects = PROJECTS.length;
+  const completedCount = completedProjects.length;
+
+  const progressPercentage =
+    totalProjects > 0 ? (completedCount / totalProjects) * 100 : 0;
+
+  const progressText = document.getElementById("progressText");
+  const progressBar = document.getElementById("progressBar");
+
+  if (progressText) {
+    progressText.textContent = `${completedCount} / ${totalProjects} completed`;
+  }
+
+  if (progressBar) {
+    progressBar.style.width = `${progressPercentage}%`;
+  }
+}
+
 function updateBookmarkURL() {
   const url = new URL(window.location);
 
