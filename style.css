@@ -1727,6 +1727,11 @@ input:focus {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1px;
+  width: 100%;
+ max-width: 100%;
+
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+
   background:
     linear-gradient(
       180deg,
@@ -2695,6 +2700,11 @@ body.light-mode .footer.homepage-footer .social-btn {
     grid-template-columns: repeat(2, 1fr);
   }
 
+  .project-grid:has(.project-card:only-child) {
+    grid-template-columns: 1fr;
+    width: 1fr;
+  }
+
   .footer-inner {
     grid-template-columns: 1fr 1fr;
   }
@@ -2768,6 +2778,7 @@ body.light-mode .footer.homepage-footer .social-btn {
 
   .project-grid {
     grid-template-columns: 1fr;
+    width: 100%;
   }
 
   .footer-inner {
@@ -3042,7 +3053,7 @@ body.light-mode .noise-layer {
   .projects-header {
     align-items: stretch;
   }
-
+  
   [data-theme="light"] .stats-strip,
   body.light-mode .stats-strip {
     background: rgba(255, 255, 255, 0.85);
