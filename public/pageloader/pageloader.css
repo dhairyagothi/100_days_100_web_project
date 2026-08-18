@@ -135,6 +135,29 @@ body::before {
   animation: progress-slide 1.5s linear infinite;
 }
 
+
+    body{
+        font-family: 'Poppins', sans-serif;
+        line-height: 1.6;
+        background-color: #000000;
+        color: #ffffff;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        overflow-x: hidden;
+        }
+    
+
+    
+    #container {
+        margin: auto;
+        width: 80%;
+        max-width: 800px;
+        padding: 20px;
+        background-color: #000000;
+        border-radius: 8px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+
 .loading-text {
   font-family: var(--font-display);
   font-size: 0.9rem;
@@ -155,6 +178,7 @@ body::before {
   display: flex;
   flex-direction: column;
   gap: 10px;
+
 }
 
 .toast {
@@ -1149,6 +1173,7 @@ h3 {
   }
 }
 
+ 
 @keyframes bounce {
   0% {
     transform: translateY(0);
