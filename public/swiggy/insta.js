@@ -1,46 +1,91 @@
-
 document.body.style.margin = "0";
 
+// Single root container everything mounts into
+const appRoot = document.createElement("div");
+appRoot.classList.add("app_root");
+document.body.appendChild(appRoot);
+
+// ============================================================
+// HERO / TOP MENU
+// ============================================================
 
 const topMenu = document.createElement("div");
 topMenu.classList.add("top_menu");
 
+const heroTop = document.createElement("div");
+heroTop.classList.add("hero_top");
+
+const brandMark = document.createElement("div");
+brandMark.classList.add("brand_mark");
+brandMark.textContent = "instamart";
 
 const loginCircle = document.createElement("div");
 loginCircle.classList.add("login_circle");
-
 const userIcon = document.createElement("i");
-userIcon.classList.add("fa", "fa-pet");
+userIcon.classList.add("fa", "fa-user"); // fixed: was "fa-pet"
 loginCircle.appendChild(userIcon);
+
+heroTop.appendChild(brandMark);
+heroTop.appendChild(loginCircle);
+
+const tagline = document.createElement("p");
+tagline.classList.add("tagline");
+tagline.textContent = "Groceries, snacks and everyday essentials, delivered to your door.";
+
+const deliveryBadge = document.createElement("div");
+deliveryBadge.classList.add("delivery_badge");
+const pulseDot = document.createElement("span");
+pulseDot.classList.add("pulse_dot");
+deliveryBadge.appendChild(pulseDot);
+deliveryBadge.appendChild(document.createTextNode("Delivery in 10 minutes"));
+
+const searchRow = document.createElement("div");
+searchRow.classList.add("search_row");
 
 const searchIcon = document.createElement("i");
 searchIcon.classList.add("fa", "fa-search");
 
 const searchInput = document.createElement("input");
 searchInput.setAttribute("type", "search");
-searchInput.setAttribute("placeholder", "Search for 'diapers'");
+searchInput.setAttribute("placeholder", "Search for atta, dals, cold drinks...");
+searchInput.setAttribute("aria-label", "Search categories");
 
+searchRow.appendChild(searchIcon);
+searchRow.appendChild(searchInput);
 
-topMenu.appendChild(loginCircle);
-topMenu.appendChild(searchIcon);
-topMenu.appendChild(searchInput);
+topMenu.appendChild(heroTop);
+topMenu.appendChild(tagline);
+topMenu.appendChild(deliveryBadge);
+topMenu.appendChild(searchRow);
 
-document.body.appendChild(topMenu);
+appRoot.appendChild(topMenu);
 
+const searchEmptyMsg = document.createElement("p");
+searchEmptyMsg.classList.add("search_empty_msg");
+searchEmptyMsg.textContent = "No categories match your search.";
+appRoot.appendChild(searchEmptyMsg);
+
+// ============================================================
+// CATEGORIES
+// ============================================================
 
 const shopDiv = document.createElement("div");
 shopDiv.classList.add("shop");
 
+const shopEyebrow = document.createElement("p");
+shopEyebrow.classList.add("eyebrow");
+shopEyebrow.textContent = "BROWSE";
+
 const shopHeading = document.createElement("h3");
-shopHeading.textContent = "SHOP BY CATEGORY";
+shopHeading.textContent = "Shop by category";
+
+shopDiv.appendChild(shopEyebrow);
 shopDiv.appendChild(shopHeading);
-
-document.body.appendChild(shopDiv);
-
+appRoot.appendChild(shopDiv);
 
 const lineDiv = document.createElement("div");
 lineDiv.classList.add("line");
-document.body.appendChild(lineDiv);
+appRoot.appendChild(lineDiv);
 
 const itemsDiv = document.createElement("div");
 itemsDiv.classList.add("items");
@@ -75,33 +120,47 @@ const categories = [
 categories.forEach((category) => {
   const box = document.createElement("div");
   box.classList.add("box");
+  box.dataset.label = category.text.toLowerCase();
 
   const img = document.createElement("img");
   img.src = category.src;
+  img.alt = category.text;
+  img.loading = "lazy";
   box.appendChild(img);
 
   const heading = document.createElement("h2");
   heading.textContent = category.text;
-  heading.style.fontWeight = "bold";
-  heading.style.fontSize = "15px";
 
   box.appendChild(heading);
   itemsDiv.appendChild(box);
 });
 
-document.body.appendChild(itemsDiv);
+appRoot.appendChild(itemsDiv);
 
-// COMMENTS SECTION
+// Live search: filter category cards as the user types
+searchInput.addEventListener("input", () => {
+  const query = searchInput.value.trim().toLowerCase();
+  let visibleCount = 0;
+
+  document.querySelectorAll(".box").forEach((box) => {
+    const matches = query === "" || box.dataset.label.includes(query);
+    box.classList.toggle("hidden", !matches);
+    if (matches) visibleCount++;
+  });
+
+  searchEmptyMsg.style.display = visibleCount === 0 ? "block" : "none";
+});
+
+// ============================================================
+// COMMENTS / REVIEWS SECTION
+// ============================================================
 
 const commentsSection = document.createElement("div");
 commentsSection.classList.add("comments_section");
 
 const commentsTitle = document.createElement("h2");
-commentsTitle.textContent = "Customer Reviews";
-
+commentsTitle.textContent = "Customer reviews";
 commentsSection.appendChild(commentsTitle);
-
-// INPUT BOX
 
 const commentBox = document.createElement("div");
 commentBox.classList.add("comment_box");
@@ -109,120 +168,90 @@ commentBox.classList.add("comment_box");
 const nameInput = document.createElement("input");
 nameInput.type = "text";
 nameInput.placeholder = "Enter your name";
+nameInput.setAttribute("aria-label", "Your name");
 
 const commentInput = document.createElement("textarea");
 commentInput.placeholder = "Write your review...";
+commentInput.setAttribute("aria-label", "Your review");
 
 const commentButton = document.createElement("button");
-commentButton.textContent = "Post Comment";
+commentButton.textContent = "Post review";
 
 commentBox.appendChild(nameInput);
 commentBox.appendChild(commentInput);
 commentBox.appendChild(commentButton);
-
 commentsSection.appendChild(commentBox);
-
-// COMMENTS DISPLAY AREA
 
 const commentsContainer = document.createElement("div");
 commentsContainer.classList.add("comments_container");
-
 commentsSection.appendChild(commentsContainer);
-// DEFAULT CUSTOMER REVIEWS
 
 const defaultReviews = [
-    {
-        name: "Aarav",
-        review: "Very fast delivery and fresh products!"
-    },
-    {
-        name: "Diya",
-        review: "The vegetables were fresh and nicely packed."
-    },
-    {
-        name: "Rahul",
-        review: "Amazing discounts and smooth experience."
-    },
-    {
-        name: "Sneha",
-        review: "Loved the dairy products quality."
-    }
+  { name: "Aarav", review: "Very fast delivery and fresh products!" },
+  { name: "Diya", review: "The vegetables were fresh and nicely packed." },
+  { name: "Rahul", review: "Amazing discounts and smooth experience." },
+  { name: "Sneha", review: "Loved the dairy products quality." },
 ];
 
-defaultReviews.forEach((item) => {
+function buildReviewCard(name, review, removable) {
+  const commentCard = document.createElement("div");
+  commentCard.classList.add("comment_card");
 
-    const commentCard = document.createElement("div");
-    commentCard.classList.add("comment_card");
+  const userName = document.createElement("h3");
+  userName.textContent = name;
 
-    const userName = document.createElement("h3");
-    userName.textContent = item.name;
+  const userComment = document.createElement("p");
+  userComment.textContent = review;
 
-    const userComment = document.createElement("p");
-    userComment.textContent = item.review;
+  commentCard.appendChild(userName);
+  commentCard.appendChild(userComment);
 
-    commentCard.appendChild(userName);
-    commentCard.appendChild(userComment);
-
-    commentsContainer.appendChild(commentCard);
-
-});
-
-// BUTTON FUNCTIONALITY
-
-commentButton.addEventListener("click", () => {
-
-    const name = nameInput.value.trim();
-    const comment = commentInput.value.trim();
-
-    if(name === "" || comment === ""){
-        alert("Please fill all fields");
-        return;
-    }
-
-    const commentCard = document.createElement("div");
-    commentCard.classList.add("comment_card");
-
-    const userName = document.createElement("h3");
-    userName.textContent = name;
-
-    const userComment = document.createElement("p");
-    userComment.textContent = comment;
-
-    // DELETE BUTTON
-
+  if (removable) {
     const deleteBtn = document.createElement("button");
     deleteBtn.textContent = "Delete";
     deleteBtn.classList.add("delete_btn");
-
-    deleteBtn.addEventListener("click", () => {
-        commentCard.remove();
-    });
-
-    commentCard.appendChild(userName);
-    commentCard.appendChild(userComment);
+    deleteBtn.addEventListener("click", () => commentCard.remove());
     commentCard.appendChild(deleteBtn);
+  }
 
-    commentsContainer.prepend(commentCard);
+  return commentCard;
+}
 
-    // CLEAR INPUTS
-
-    nameInput.value = "";
-    commentInput.value = "";
+defaultReviews.forEach((item) => {
+  commentsContainer.appendChild(buildReviewCard(item.name, item.review, false));
 });
 
-document.body.appendChild(commentsSection);
+commentButton.addEventListener("click", () => {
+  const name = nameInput.value.trim();
+  const comment = commentInput.value.trim();
 
+  if (name === "" || comment === "") {
+    alert("Please fill all fields");
+    return;
+  }
 
+  commentsContainer.prepend(buildReviewCard(name, comment, true));
+
+  nameInput.value = "";
+  commentInput.value = "";
+});
+
+appRoot.appendChild(commentsSection);
+
+// ============================================================
+// FOOTER
+// ============================================================
 
 const footer = document.createElement("div");
 footer.classList.add("footer");
 
 const appBanner = document.createElement("img");
 appBanner.src = "image/App_download_banner.avif";
+appBanner.alt = "Download the app";
 
 const footerLogo = document.createElement("img");
 footerLogo.src = "image/swiggy_name.avif";
-footerLogo.style.width = "30vh";
+footerLogo.alt = "Instamart";
 footerLogo.classList.add("footer_logo");
 
 footer.appendChild(appBanner);
@@ -260,7 +289,6 @@ footerColumns.forEach((column) => {
 
   const columnTitle = document.createElement("h3");
   columnTitle.textContent = column.title;
-  columnTitle.style.color = "white";
   columnDiv.appendChild(columnTitle);
 
   column.items.forEach((item) => {
@@ -274,9 +302,6 @@ footerColumns.forEach((column) => {
 
 footer.appendChild(footerContainer);
 
-document.body.appendChild(footer);
-
-
 const iconsDiv = document.createElement("div");
 iconsDiv.classList.add("icons");
 
@@ -284,11 +309,10 @@ const icons = ["bxl-facebook", "fa-shopping-cart", "bxl-twitter", "bxl-linkedin"
 icons.forEach((icon) => {
   const i = document.createElement("i");
   i.className = `bx ${icon}`;
-  i.style.color = "aliceblue";
   iconsDiv.appendChild(i);
 });
 
 footer.appendChild(iconsDiv);
 
-
-document.body.appendChild(footer);
+// fixed: footer was being appended twice in the original script
+appRoot.appendChild(footer);

@@ -1,0 +1,328 @@
+/**
+ * Secure Password Generator
+ * Pure vanilla JS — no dependencies, no frameworks.
+ */
+
+// ---------------------------------------------------------------------------
+// Character sets
+// ---------------------------------------------------------------------------
+const CHAR_SETS = {
+  uppercase: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+  lowercase: 'abcdefghijklmnopqrstuvwxyz',
+  numbers: '0123456789',
+  symbols: '!@#$%^&*()_+-=[]{}|;:,.<>?',
+};
+
+// ---------------------------------------------------------------------------
+// DOM references
+// ---------------------------------------------------------------------------
+const passwordOutput = document.getElementById('password-output');
+const generateBtn = document.getElementById('generate-btn');
+const regenerateBtn = document.getElementById('regenerate-btn');
+const copyBtn = document.getElementById('copy-btn');
+const lengthSlider = document.getElementById('length-slider');
+const lengthDisplay = document.getElementById('length-display');
+const sliderFill = document.getElementById('slider-fill');
+const validationMsg = document.getElementById('validation-msg');
+const strengthLabel = document.getElementById('strength-label');
+const bars = [
+  document.getElementById('bar-1'),
+  document.getElementById('bar-2'),
+  document.getElementById('bar-3'),
+  document.getElementById('bar-4'),
+];
+const toast = document.getElementById('toast');
+
+// Checkbox inputs keyed by type name
+const checkboxes = {
+  uppercase: document.getElementById('uppercase'),
+  lowercase: document.getElementById('lowercase'),
+  numbers: document.getElementById('numbers'),
+  symbols: document.getElementById('symbols'),
+};
+
+// ---------------------------------------------------------------------------
+// Cryptographically random integer in [0, max) — UNBIASED.
+//
+// The naive `arr[0] % max` version had textbook modulo bias: 2^32 is not
+// divisible by 26 (alphabet), 10 (digits), or 88 (full pool), so the lower
+// buckets picked up slightly more probability than the upper ones and every
+// generated password's effective entropy dropped a few bits — not great for
+// a component that literally advertises "cryptographically random"
+// (issue #10333).
+//
+// Rejection sampling fixes it: keep drawing until the raw Uint32 falls
+// below the largest multiple of `max` that fits in the 32-bit range, then
+// modulo. That's uniformly distributed by construction.
+// ---------------------------------------------------------------------------
+function secureRandom(max) {
+  if (!window.crypto || typeof window.crypto.getRandomValues !== 'function') {
+    throw new Error('Web Crypto API unavailable');
+  }
+  if (max <= 0 || !Number.isInteger(max)) {
+    throw new RangeError('secureRandom(max): max must be a positive integer');
+  }
+
+  const limit = Math.floor(0x1_0000_0000 / max) * max;
+  const arr = new Uint32Array(1);
+
+  // In practice this loop terminates after ~1 iteration for common `max`
+  // values (26, 10, 88). Cap at 32 attempts as a defensive guard so a
+  // hypothetically broken RNG can't hang the tab.
+  for (let attempt = 0; attempt < 32; attempt++) {
+    window.crypto.getRandomValues(arr);
+    if (arr[0] < limit) return arr[0] % max;
+  }
+  return arr[0] % max;
+}
+
+// ---------------------------------------------------------------------------
+// Fisher-Yates shuffle (in-place, returns same array)
+// ---------------------------------------------------------------------------
+function shuffleArray(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = secureRandom(i + 1);
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+// ---------------------------------------------------------------------------
+// Get the list of active character types selected by the user
+// ---------------------------------------------------------------------------
+function getSelectedTypes() {
+  return Object.keys(checkboxes).filter((key) => checkboxes[key].checked);
+}
+
+// ---------------------------------------------------------------------------
+// Determine password strength
+// Returns: 'weak' | 'medium' | 'strong'
+// Rules:
+//   Weak   — length < 8  OR  only 1 type selected
+//   Strong — length >= 16 AND all 4 types selected
+//   Medium — everything else
+// ---------------------------------------------------------------------------
+function getStrength(length, selectedTypes) {
+  const count = selectedTypes.length;
+  if (length < 8 || count === 1) return 'weak';
+  if (length >= 16 && count === 4) return 'strong';
+  return 'medium';
+}
+
+// ---------------------------------------------------------------------------
+// Update the strength meter UI
+// ---------------------------------------------------------------------------
+function updateStrengthUI(strength) {
+  // Reset all bars
+  bars.forEach((bar) => {
+    bar.className = 'bar';
+  });
+  strengthLabel.className = 'strength-label';
+
+  const config = {
+    weak: { fill: 1, label: 'Weak', cls: 'weak' },
+    medium: { fill: 2, label: 'Medium', cls: 'medium' },
+    strong: { fill: 4, label: 'Strong', cls: 'strong' },
+  };
+
+  if (!strength) {
+    strengthLabel.textContent = '—';
+    return;
+  }
+
+  const { fill, label, cls } = config[strength];
+  for (let i = 0; i < fill; i++) {
+    bars[i].classList.add(cls, 'active');
+  }
+  strengthLabel.classList.add(cls);
+  strengthLabel.textContent = label;
+}
+
+// ---------------------------------------------------------------------------
+// Core password generation
+// ---------------------------------------------------------------------------
+function generatePassword() {
+  try {
+    const selectedTypes = getSelectedTypes();
+
+    if (selectedTypes.length === 0) {
+      validationMsg.classList.add('visible');
+      passwordOutput.value = '';
+      updateStrengthUI(null);
+      return;
+    }
+
+    validationMsg.classList.remove('visible');
+
+    const length = parseInt(lengthSlider.value, 10);
+
+    const pool = selectedTypes.map((type) => CHAR_SETS[type]).join('');
+
+    const guaranteed = selectedTypes.map((type) => {
+      const set = CHAR_SETS[type];
+      return set[secureRandom(set.length)];
+    });
+
+    const remaining = [];
+
+    for (let i = guaranteed.length; i < length; i++) {
+      remaining.push(pool[secureRandom(pool.length)]);
+    }
+
+    const passwordChars = shuffleArray([...guaranteed, ...remaining]);
+
+    passwordOutput.value = passwordChars.join('');
+
+    updateStrengthUI(getStrength(length, selectedTypes));
+  } catch (error) {
+    passwordOutput.value = '';
+
+    validationMsg.textContent =
+      'Secure password generation is unavailable because this browser does not support the Web Crypto API.';
+
+    validationMsg.classList.add('visible');
+
+    updateStrengthUI(null);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Slider fill track update
+// ---------------------------------------------------------------------------
+function updateSliderFill() {
+  const min = parseInt(lengthSlider.min, 10);
+  const max = parseInt(lengthSlider.max, 10);
+  const value = parseInt(lengthSlider.value, 10);
+  const pct = ((value - min) / (max - min)) * 100;
+  sliderFill.style.width = `${pct}%`;
+}
+
+// ---------------------------------------------------------------------------
+// Slider input handler — live display + re-generate if a password exists
+// ---------------------------------------------------------------------------
+function onSliderInput() {
+  const val = lengthSlider.value;
+
+  // Animate the length display number
+  lengthDisplay.classList.remove('pop');
+  void lengthDisplay.offsetWidth; // reflow to restart animation
+  lengthDisplay.classList.add('pop');
+
+  lengthDisplay.textContent = val;
+  lengthSlider.setAttribute('aria-valuenow', val);
+  updateSliderFill();
+
+  // Regenerate if there's already a password on screen
+  if (passwordOutput.value) {
+    generatePassword();
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Copy to clipboard
+// ---------------------------------------------------------------------------
+async function copyToClipboard() {
+  const password = passwordOutput.value;
+  if (!password) return;
+
+  try {
+    await navigator.clipboard.writeText(password);
+  } catch {
+    // Fallback for older browsers
+    passwordOutput.select();
+    document.execCommand('copy');
+    window.getSelection()?.removeAllRanges();
+  }
+
+  showToast();
+}
+
+// ---------------------------------------------------------------------------
+// Toast notification
+// ---------------------------------------------------------------------------
+let toastTimer = null;
+
+function showToast() {
+  if (toastTimer) clearTimeout(toastTimer);
+  toast.classList.add('show');
+  toastTimer = setTimeout(() => {
+    toast.classList.remove('show');
+    toastTimer = null;
+  }, 2200);
+}
+
+// ---------------------------------------------------------------------------
+// Regenerate button — spin animation + new password
+// ---------------------------------------------------------------------------
+function onRegenerate() {
+  regenerateBtn.classList.remove('spinning');
+  void regenerateBtn.offsetWidth;
+  regenerateBtn.classList.add('spinning');
+  generatePassword();
+  regenerateBtn.addEventListener(
+    'animationend',
+    () => {
+      regenerateBtn.classList.remove('spinning');
+    },
+    { once: true }
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Checkbox change — re-validate and regenerate if a password exists
+// ---------------------------------------------------------------------------
+function onCheckboxChange() {
+  if (passwordOutput.value) {
+    generatePassword();
+  } else if (getSelectedTypes().length > 0) {
+    // Clear stale validation message when user re-selects a type
+    validationMsg.textContent = 'Please select at least one character type.';
+    validationMsg.classList.remove('visible');
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Keyboard accessibility — generate/copy with Enter/Space on buttons
+// (buttons already handle this natively, but we keep it explicit)
+// ---------------------------------------------------------------------------
+function onKeydown(e) {
+  if (e.key === 'Enter' || e.key === ' ') {
+    const target = e.target;
+    if (target === generateBtn) {
+      e.preventDefault();
+      generatePassword();
+    }
+    if (target === copyBtn) {
+      e.preventDefault();
+      copyToClipboard();
+    }
+    if (target === regenerateBtn) {
+      e.preventDefault();
+      onRegenerate();
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Event listeners
+// ---------------------------------------------------------------------------
+generateBtn.addEventListener('click', generatePassword);
+regenerateBtn.addEventListener('click', onRegenerate);
+copyBtn.addEventListener('click', copyToClipboard);
+lengthSlider.addEventListener('input', onSliderInput);
+document.addEventListener('keydown', onKeydown);
+
+Object.values(checkboxes).forEach((cb) => {
+  cb.addEventListener('change', onCheckboxChange);
+});
+
+// ---------------------------------------------------------------------------
+// Initialise on page load
+// ---------------------------------------------------------------------------
+function init() {
+  updateSliderFill();
+  lengthDisplay.textContent = lengthSlider.value;
+  generatePassword();
+}
+
+init();

@@ -1,0 +1,265 @@
+:root {
+  --bg-dark: #0b0f19;
+  --card-bg: #161f32;
+  --neon-blue: #00e5ff;
+  --neon-green: #39ff14;
+  --text-main: #f0f4f8;
+  --text-muted: #8da2bb;
+  --border-color: #24344d;
+}
+
+body {
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 20px;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.dashboard {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 30px;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 20px;
+}
+
+h1 {
+  margin: 0 0 5px 0;
+  font-size: 2.5rem;
+  letter-spacing: 1px;
+  background: linear-gradient(to right, #f0f4f8, #00e5ff);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* Grid Layout Architecture */
+.grid-layout {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 450px), 1fr));
+  gap: 25px;
+}
+
+.card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+h2 {
+  margin-top: 0;
+  color: var(--neon-blue);
+  font-size: 1.5rem;
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: 10px;
+}
+
+/* ISS Dashboard Layout */
+.iss-row {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.metric-box {
+  flex: 1;
+  background: rgba(0, 229, 255, 0.05);
+  border: 1px solid rgba(0, 229, 255, 0.2);
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.metric-box .label {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-bottom: 5px;
+}
+
+.metric-box .value {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: var(--text-main);
+}
+
+.astronaut-section h3 {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+}
+
+.astronaut-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.astronaut-list li {
+  background: rgba(255, 255, 255, 0.03);
+  padding: 10px 15px;
+  margin-bottom: 8px;
+  border-radius: 6px;
+  border-left: 3px solid var(--neon-blue);
+  font-size: 1rem;
+}
+
+.update-stamp {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 20px;
+  text-align: right;
+  font-style: italic;
+}
+
+/* Launch Feed Styles */
+.launch-item {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
+}
+
+.launch-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.mission-name {
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: var(--text-main);
+}
+
+.rocket-tag {
+  background: rgba(0, 229, 255, 0.15);
+  color: var(--neon-blue);
+  padding: 3px 8px;
+  font-size: 0.75rem;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.launch-details p {
+  margin: 5px 0;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.countdown-wrapper {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px dotted var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.countdown-label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.countdown-clock {
+  font-family: "Courier New", Courier, monospace;
+  color: var(--neon-green);
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.loading-placeholder {
+  color: var(--text-muted);
+  font-style: italic;
+  padding: 20px 0;
+}
+
+/* Responsive adjustments across breakpoints */
+
+/* Tablet Layout (768px - 1024px) */
+@media (max-width: 1024px) {
+  h1 {
+    font-size: 2.2rem;
+  }
+
+  .grid-layout {
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 20px;
+  }
+
+  body {
+    padding: 15px;
+  }
+
+  .card {
+    padding: 20px;
+  }
+}
+
+/* Mobile Layout (<768px) */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2rem;
+  }
+
+  .grid-layout {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+/* Small Mobile Layout (<480px) */
+@media (max-width: 480px) {
+  body {
+    padding: 10px;
+  }
+
+  .card {
+    padding: 15px;
+  }
+
+  h1 {
+    font-size: 1.6rem;
+  }
+
+  .iss-row {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .metric-box .value {
+    font-size: 1.3rem;
+  }
+
+  .launch-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .countdown-wrapper {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+}

@@ -1,130 +1,643 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="2048 — A beautiful, feature-rich tile puzzle game." />
-  <title>2048</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
-</head>
-
-<body class="light">
-<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:white;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(0, 0, 0);">← Back to Home</a>
-
-
-  <div id="g">
-    <!-- Animated background blobs -->
-    <div class="blobs" aria-hidden="true">
-      <div class="blob b1"></div>
-      <div class="blob b2"></div>
-      <div class="blob b3"></div>
-      <div class="blob b4"></div>
-    </div>
-
-    <!-- Confetti canvas -->
-    <canvas id="confetti-canvas" aria-hidden="true"></canvas>
-
-    <div id="inner">
-
-      <!-- Header: logo + scores -->
-      <header class="hdr">
-        <h1 class="logo" aria-label="2048">2048</h1>
-        <div class="score-row" role="status" aria-live="polite" aria-label="Scores">
-          <div class="sc" id="sc">
-            <div class="sc-lbl">score</div>
-            <div class="sc-val" id="sv">0</div>
-          </div>
-          <div class="sc" id="bc">
-            <div class="sc-lbl">best</div>
-            <div class="sc-val" id="bv">0</div>
-          </div>
-        </div>
-      </header>
-
-      <!-- Controls -->
-      <div class="ctrl">
-        <div class="btns">
-          <button class="btn" id="nb" aria-label="New Game">New Game</button>
-          <button class="btn sm" id="ub" aria-label="Undo last move">↩ Undo</button>
-        </div>
-        <div class="top-icons">
-          <button class="icon-btn" id="stbtn" title="View Stats" aria-label="View Stats">📊</button>
-          <button class="icon-btn" id="sdbtn" title="Toggle Sound" aria-label="Toggle Sound">🔊</button>
-          <button class="icon-btn" id="tb" title="Toggle Theme" aria-label="Toggle Theme">☀</button>
-        </div>
-      </div>
-
-      <!-- Mode selector -->
-      <div class="mode-row" role="group" aria-label="Game mode">
-  <button class="mode-btn active" data-mode="classic">Classic</button>
-  <button class="mode-btn" data-mode="timed">⏱ 60s</button>
-  <button class="mode-btn" data-mode="zen">Zen 5×5</button>
-</div>
-
-      <!-- Timer bar (timed mode only) -->
-      <div class="timer-bar" id="tbar" aria-hidden="true">
-        <div class="timer-fill" id="tfill" style="width:100%"></div>
-      </div>
-
-      <!-- Live metadata -->
-      <div class="meta-row" role="status" aria-live="polite">
-        <div class="meta-item">Moves: <span id="moves-val">0</span></div>
-        <div class="meta-item">Tiles: <span id="tiles-val">2</span></div>
-        <div class="meta-item">Best tile: <span id="btile-val">2</span></div>
-      </div>
-
-      <!-- Combo streak -->
-      <div class="streak" id="streak" role="status" aria-live="polite"></div>
-
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="2048 — A beautiful, feature-rich tile puzzle game. Slide tiles, merge numbers, and reach the 2048 tile!"
+    />
+    <title>2048</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <style id="theme-style"></style>
+    <!-- MINIMAL FIX: Only what's needed to fix overflow -->
+    <style>
+      /* ===== CRITICAL FIX: Keep everything inside the box ===== */
       
-   <!-- Game board wrapper -->
-<div class="wrap" id="wr">
-  <div class="board" id="bd" role="grid" aria-label="Game board"></div>
-  <div class="tiles-layer" id="tl" aria-hidden="true"></div>
+      /* Fix main container overflow */
+      #g {
+        overflow: hidden !important;
+        position: relative;
+      }
 
-  <!-- Game-over / win overlay -->
-  <div id="ov" style="display:none" role="dialog" aria-modal="true" aria-label="Game result"></div>
+      /* Fix board wrapper */
+      .wrap {
+        position: relative;
+        overflow: hidden;
+        padding: 10px;
+      }
 
-  <!-- Achievement pop-up -->
-  <div class="achievement" id="ach" role="alert">
-    <div class="ach-title">Achievement Unlocked</div>
-    <div id="ach-msg"></div>
-  </div>
+      /* Fix board */
+      .board {
+        display: grid;
+        gap: 8px;
+        padding: 10px;
+        margin: 0 auto;
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        position: relative;
+      }
 
-  <!-- Toast notification -->
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <div class="hint-arrow" id="hint-arrow"></div>
+      /* Fix cells */
+      .cell {
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        border-radius: 8px;
+      }
 
-  <!-- Stats modal -->
-  <div class="stats-modal" id="stats-modal" role="dialog" aria-modal="true" aria-label="Your Statistics">
-    <div class="stats-inner">
-      <h2 class="stats-title">Your Stats</h2>
+      /* Fix tiles layer - exact match to board padding */
+      .tiles-layer {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        right: 10px;
+        bottom: 10px;
+        pointer-events: none;
+        z-index: 5;
+        overflow: hidden;
+      }
 
-      <div class="stats-grid">
-        <div class="stat-card"><div class="lbl">Best Score</div><div class="val" id="st-best">0</div></div>
-        <div class="stat-card"><div class="lbl">Games Played</div><div class="val" id="st-games">0</div></div>
-        <div class="stat-card"><div class="lbl">Wins</div><div class="val" id="st-wins">0</div></div>
-        <div class="stat-card"><div class="lbl">Best Tile</div><div class="val" id="st-tile">2</div></div>
+      /* Fix tiles - ensure they stay inside */
+      .tile {
+        position: absolute;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 900;
+        transition: top 0.15s ease, left 0.15s ease;
+        user-select: none;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        box-sizing: border-box;
+      }
+
+      /* Fix game over overlay */
+      #ov {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        right: 10px;
+        bottom: 10px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        margin: 0;
+        overflow: hidden;
+      }
+
+      .game-over-content {
+        text-align: center;
+        padding: 20px;
+        max-width: 280px;
+        width: 100%;
+      }
+
+      .final-stats {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        margin: 16px 0;
+        padding: 12px;
+        border-radius: 10px;
+      }
+
+      .stat-item {
+        text-align: center;
+      }
+
+      .stat-label {
+        display: block;
+        font-size: 9px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        opacity: 0.6;
+      }
+
+      .stat-value {
+        display: block;
+        font-size: 20px;
+        font-weight: 900;
+        margin-top: 2px;
+      }
+
+      /* Fix hint arrow */
+      #hint-arrow {
+        position: absolute;
+        pointer-events: none;
+        z-index: 30;
+        font-size: 40px;
+        color: #ffd700;
+        text-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+        animation: hintPulse 1s ease-in-out infinite;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      #hint-arrow.show {
+        opacity: 1;
+      }
+
+      @keyframes hintPulse {
+        0%, 100% { transform: scale(1) translateY(0); }
+        50% { transform: scale(1.2) translateY(-10px); }
+      }
+
+      /* Fix mobile responsiveness */
+      @media (max-width: 520px) {
+        .wrap { padding: 8px; }
+        .board { padding: 8px; gap: 6px; }
+        .tiles-layer { top: 8px; left: 8px; right: 8px; bottom: 8px; }
+        #ov { top: 8px; left: 8px; right: 8px; bottom: 8px; }
+        
+        /* Smaller tile text */
+        .tile[data-val="2"],
+        .tile[data-val="4"],
+        .tile[data-val="8"],
+        .tile[data-val="16"],
+        .tile[data-val="32"],
+        .tile[data-val="64"] { font-size: 22px !important; }
+        .tile[data-val="128"],
+        .tile[data-val="256"],
+        .tile[data-val="512"] { font-size: 18px !important; }
+        .tile[data-val="1024"],
+        .tile[data-val="2048"] { font-size: 15px !important; }
+      }
+
+      @media (max-width: 420px) {
+        .wrap { padding: 6px; }
+        .board { padding: 6px; gap: 5px; }
+        .tiles-layer { top: 6px; left: 6px; right: 6px; bottom: 6px; }
+        #ov { top: 6px; left: 6px; right: 6px; bottom: 6px; }
+        
+        .tile[data-val="2"],
+        .tile[data-val="4"],
+        .tile[data-val="8"],
+        .tile[data-val="16"],
+        .tile[data-val="32"],
+        .tile[data-val="64"] { font-size: 18px !important; }
+        .tile[data-val="128"],
+        .tile[data-val="256"],
+        .tile[data-val="512"] { font-size: 14px !important; }
+        .tile[data-val="1024"],
+        .tile[data-val="2048"] { font-size: 12px !important; }
+        .tile[data-val="big"] { font-size: 11px !important; }
+      }
+
+      @media (max-width: 360px) {
+        .wrap { padding: 4px; }
+        .board { padding: 4px; gap: 4px; }
+        .tiles-layer { top: 4px; left: 4px; right: 4px; bottom: 4px; }
+        
+        .tile[data-val="2"],
+        .tile[data-val="4"],
+        .tile[data-val="8"],
+        .tile[data-val="16"],
+        .tile[data-val="32"],
+        .tile[data-val="64"] { font-size: 14px !important; }
+        .tile[data-val="128"],
+        .tile[data-val="256"],
+        .tile[data-val="512"] { font-size: 11px !important; }
+        .tile[data-val="1024"],
+        .tile[data-val="2048"] { font-size: 10px !important; }
+      }
+    </style>
+  </head>
+  <body class="light">
+    <div id="g">
+      <!-- Animated background blobs -->
+      <div class="blobs" aria-hidden="true">
+        <div class="blob b1"></div>
+        <div class="blob b2"></div>
+        <div class="blob b3"></div>
+        <div class="blob b4"></div>
       </div>
+      <!-- Confetti canvas -->
+      <canvas id="confetti-canvas" aria-hidden="true"></canvas>
 
-      <div class="ach-list">
-        <div class="ach-list-title">Achievements</div>
-        <div id="ach-badges"></div>
+      <div id="inner">
+        <!-- HEADER -->
+        <header class="hdr">
+          <div class="logo-section">
+            <h1 class="logo">2048</h1>
+            <span class="logo-subtitle">Join the numbers!</span>
+          </div>
+          <div class="score-section">
+            <div class="score-badge" id="sc">
+              <span class="score-label">SCORE</span>
+              <span class="score-value" id="sv">0</span>
+            </div>
+            <div class="score-badge best" id="bc">
+              <span class="score-label">BEST</span>
+              <span class="score-value" id="bv">0</span>
+            </div>
+          </div>
+        </header>
+
+        <!-- CONTROLS -->
+        <div class="ctrl">
+          <button class="btn btn-primary" id="nb">
+            <span class="icon">🔄</span> New Game
+          </button>
+          <div class="ctrl-actions">
+            <button class="btn btn-icon" id="ub" title="Undo (Ctrl+Z)">
+              <span class="icon">↩️</span>
+              <span class="btn-label">Undo</span>
+            </button>
+            <button class="btn btn-icon" id="hintbtn" title="Get a hint">
+              <span class="icon">💡</span>
+              <span class="btn-label">Hint</span>
+            </button>
+            <button class="btn btn-icon" id="settings-btn" title="Settings">
+              <span class="icon">⚙️</span>
+              <span class="btn-label">Settings</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- MODE SELECTOR -->
+        <div class="mode-selector" role="group" aria-label="Game mode">
+          <button class="mode-btn active" data-mode="classic">
+            <span class="mode-icon">🎯</span> Classic
+          </button>
+          <button class="mode-btn" data-mode="timed">
+            <span class="mode-icon">⏱️</span> Timed
+          </button>
+          <button class="mode-btn" data-mode="zen">
+            <span class="mode-icon">🧘</span> Zen
+          </button>
+        </div>
+
+        <!-- Timer bar -->
+        <div class="timer-bar" id="tbar" aria-hidden="true">
+          <div class="timer-fill" id="tfill" style="width: 100%"></div>
+        </div>
+        <div
+          class="meta-row"
+          id="timer-label-row"
+          style="display: none; justify-content: center; margin-bottom: 7px"
+        >
+          <div class="meta-item">Time Left: <span id="timer-val">60</span>s</div>
+        </div>
+
+        <!-- Live metadata -->
+        <div
+          class="meta-row"
+          role="status"
+          aria-live="polite"
+          style="justify-content: center; font-size: 0.95rem; gap: 24px"
+        >
+          <div class="meta-item">Moves: <span id="moves-val">0</span></div>
+          <div class="meta-item">Best: <span id="btile-val">2</span></div>
+        </div>
+
+        <!-- Combo streak -->
+        <div class="streak" id="streak" role="status" aria-live="polite"></div>
+
+        <!-- Game board wrapper -->
+        <div class="wrap" id="wr">
+          <div class="board" id="bd" role="grid" aria-label="Game board"></div>
+          <div class="tiles-layer" id="tl" aria-hidden="true"></div>
+
+          <!-- Game-over overlay -->
+          <div id="ov" style="display: none" role="dialog" aria-modal="true">
+            <div class="game-over-content">
+              <div class="game-over-icon" id="ov-icon">🎉</div>
+              <h2 id="ov-title" class="game-over-title">You Win!</h2>
+              <p id="ov-subtitle" class="game-over-subtitle">Amazing! You reached 2048!</p>
+              
+              <div class="final-stats">
+                <div class="stat-item">
+                  <span class="stat-label">Score</span>
+                  <span class="stat-value" id="final-score">0</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-label">Best Tile</span>
+                  <span class="stat-value" id="final-tile">2</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-label">Moves</span>
+                  <span class="stat-value" id="final-moves">0</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-label">Time</span>
+                  <span class="stat-value" id="final-time">0s</span>
+                </div>
+              </div>
+              
+              <button class="btn btn-primary btn-large" id="play-again-btn">
+                🔄 Play Again
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <p
+          style="
+            margin-top: 12px;
+            color: #374151;
+            text-align: center;
+            font-size: 15px;
+            font-weight: 600;
+          "
+        >
+          Arrow keys · WASD · Swipe ·
+          <button
+            id="howto-inline-btn"
+            style="
+              background: #eef2ff;
+              color: #4f46e5;
+              border: 1px solid #c7d2fe;
+              padding: 4px 10px;
+              border-radius: 999px;
+              font-size: 12px;
+              font-weight: 700;
+              cursor: pointer;
+              margin-left: 4px;
+            "
+          >
+            🎮 How to Play
+          </button>
+        </p>
       </div>
-
-      <button class="btn" id="close-stats">Close</button>
     </div>
-  </div>
 
-</div><!-- /.wrap -->
+    <!-- Settings Panel -->
+    <div class="settings-panel" id="settings-panel">
+      <div class="settings-header">
+        <h2 style="margin: 0">Settings</h2>
+        <button
+          id="close-settings"
+          style="
+            background: none;
+            border: none;
+            font-size: 1.6rem;
+            cursor: pointer;
+          "
+        >
+          ✕
+        </button>
+      </div>
 
-    </div><!-- /#inner -->
-  </div><!-- /#g -->
+      <div
+        class="theme-row"
+        role="group"
+        aria-label="Tile theme"
+        style="margin-bottom: 32px"
+      >
+        <span
+          class="theme-label"
+          style="display: block; margin-bottom: 8px; font-weight: 700"
+          >Tile Theme</span
+        >
+        <div style="display: flex; gap: 8px; flex-wrap: wrap">
+          <button class="theme-btn active" data-theme="classic">Classic</button>
+          <button class="theme-btn" data-theme="ocean">🌊 Ocean</button>
+          <button class="theme-btn" data-theme="neon">⚡ Neon</button>
+          <button class="theme-btn" data-theme="retro">🎮 Retro</button>
+        </div>
+      </div>
 
-  <script src="script.js"></script>
-</body>
+      <div style="margin-bottom: 32px">
+        <span style="display: block; margin-bottom: 8px; font-weight: 700"
+          >Sound</span
+        >
+        <button class="btn" id="sdbtn-panel" style="width: 100%">
+          🔊 Sound On
+        </button>
+      </div>
 
+      <div>
+        <span style="display: block; margin-bottom: 8px; font-weight: 700"
+          >Statistics</span
+        >
+        <button class="btn" id="stbtn-panel">📊 View Full Stats</button>
+      </div>
+    </div>
+
+    <!-- Achievement pop-up -->
+    <div class="achievement" id="ach" role="alert">
+      <div class="ach-title">Achievement Unlocked</div>
+      <div id="ach-msg"></div>
+    </div>
+
+    <!-- Toast notification -->
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <div class="hint-arrow" id="hint-arrow"></div>
+
+    <!-- Stats modal -->
+    <div
+      class="stats-modal"
+      id="stats-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Your Statistics"
+    >
+      <div class="stats-inner">
+        <h2 class="stats-title">Your Stats</h2>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="lbl">Best Score</div>
+            <div class="val" id="st-best">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="lbl">Games Played</div>
+            <div class="val" id="st-games">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="lbl">Wins</div>
+            <div class="val" id="st-wins">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="lbl">Best Tile</div>
+            <div class="val" id="st-tile">2</div>
+          </div>
+        </div>
+        <div class="graph-section">
+          <div class="ach-list-title">Last 10 Games</div>
+          <canvas id="score-graph" style="width: 100%; height: 80px"></canvas>
+        </div>
+        <div class="ach-list">
+          <div class="ach-list-title">Achievements</div>
+          <div id="ach-badges"></div>
+        </div>
+        <button class="btn" id="close-stats">Close</button>
+      </div>
+    </div>
+
+    <!-- How to Play Modal -->
+    <div
+      id="howto-modal"
+      class="howto-overlay"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="howto-title"
+      style="display: none"
+    >
+      <div class="howto-card">
+        <button
+          class="howto-close"
+          id="howto-close"
+          aria-label="Close How to Play"
+        >
+          ✕
+        </button>
+        <div class="howto-header">
+          <span class="howto-icon">🎮</span>
+          <h2 class="howto-title" id="howto-title">How to Play 2048</h2>
+        </div>
+        <!-- Goal -->
+        <div class="howto-section">
+          <h3 class="howto-section-title">🏆 Goal</h3>
+          <p class="howto-text">
+            Slide the tiles on the grid. When two tiles with the
+            <strong>same number</strong> collide, they
+            <strong>merge into one</strong>. Reach the
+            <strong class="howto-highlight">2048</strong> tile to win!
+          </p>
+        </div>
+        <!-- Controls -->
+        <div class="howto-section">
+          <h3 class="howto-section-title">🕹️ Controls</h3>
+          <div class="howto-controls-grid">
+            <div class="howto-control-block">
+              <p class="howto-control-label">⌨️ Keyboard</p>
+              <div class="howto-keys">
+                <div class="key-row">
+                  <kbd class="key">↑</kbd>
+                </div>
+                <div class="key-row">
+                  <kbd class="key">←</kbd>
+                  <kbd class="key">↓</kbd>
+                  <kbd class="key">→</kbd>
+                </div>
+                <p class="key-note">Arrow Keys or WASD</p>
+              </div>
+            </div>
+            <div class="howto-control-block">
+              <p class="howto-control-label">📱 Mobile</p>
+              <div class="howto-swipe">
+                <div class="swipe-icon" aria-hidden="true">
+                  <svg
+                    width="52"
+                    height="52"
+                    viewBox="0 0 48 48"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <circle
+                      cx="24"
+                      cy="24"
+                      r="10"
+                      stroke="rgba(255,255,255,0.6)"
+                      stroke-width="2"
+                      fill="none"
+                    />
+                    <line
+                      x1="24"
+                      y1="4"
+                      x2="24"
+                      y2="14"
+                      stroke="rgba(255,255,255,0.8)"
+                      stroke-width="2.5"
+                      stroke-linecap="round"
+                    />
+                    <line
+                      x1="24"
+                      y1="34"
+                      x2="24"
+                      y2="44"
+                      stroke="rgba(255,255,255,0.8)"
+                      stroke-width="2.5"
+                      stroke-linecap="round"
+                    />
+                    <line
+                      x1="4"
+                      y1="24"
+                      x2="14"
+                      y2="24"
+                      stroke="rgba(255,255,255,0.8)"
+                      stroke-width="2.5"
+                      stroke-linecap="round"
+                    />
+                    <line
+                      x1="34"
+                      y1="24"
+                      x2="44"
+                      y2="24"
+                      stroke="rgba(255,255,255,0.8)"
+                      stroke-width="2.5"
+                      stroke-linecap="round"
+                    />
+                    <polygon
+                      points="24,4 21,10 27,10"
+                      fill="rgba(255,255,255,0.8)"
+                    />
+                    <polygon
+                      points="24,44 21,38 27,38"
+                      fill="rgba(255,255,255,0.8)"
+                    />
+                    <polygon
+                      points="4,24 10,21 10,27"
+                      fill="rgba(255,255,255,0.8)"
+                    />
+                    <polygon
+                      points="44,24 38,21 38,27"
+                      fill="rgba(255,255,255,0.8)"
+                    />
+                  </svg>
+                </div>
+                <p class="key-note">Swipe in any direction</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Pro Tips -->
+        <div class="howto-section">
+          <h3 class="howto-section-title">💡 Pro Tips</h3>
+          <ul class="howto-tips">
+            <li>Keep your <strong>highest tile</strong> in a corner.</li>
+            <li>Build a <strong>snake chain</strong> of descending values.</li>
+            <li>Use <strong>↩ Undo</strong> to recover from a bad move.</li>
+            <li>Try <strong>💡 Hint</strong> when you are stuck!</li>
+          </ul>
+        </div>
+        <!-- Game Modes -->
+        <div class="howto-section">
+          <h3 class="howto-section-title">⚙️ Game Modes</h3>
+          <div class="howto-modes">
+            <div class="howto-mode-card">
+              <span class="mode-emoji">🎯</span>
+              <strong>Classic</strong>
+              <span>4×4 grid, no time limit</span>
+            </div>
+            <div class="howto-mode-card">
+              <span class="mode-emoji">⏱️</span>
+              <strong>Timed 60s</strong>
+              <span>Race against the clock</span>
+            </div>
+            <div class="howto-mode-card">
+              <span class="mode-emoji">🧘</span>
+              <strong>Zen 5×5</strong>
+              <span>Bigger grid, relaxed play</span>
+            </div>
+          </div>
+        </div>
+        <button class="btn howto-start-btn" id="howto-close2">
+          Got it — Let's Play! 🚀
+        </button>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
 </html>

@@ -28,49 +28,57 @@ const MOVIES_DATA = [
         id: 5,
         title: "Mission Impossible",
         genre: "action",
-        rating: "7.7/10"
+        rating: "7.7/10",
+        image: "missionimpossible2.jpg"
     },
     {
         id: 6,
         title: "John Wick",
         genre: "action",
-        rating: "7.4/10"
+        rating: "7.4/10",
+        image : "johnwick2.jpg"
     },
     {
         id: 7,
         title: "Mad Max",
         genre: "action",
-        rating: "8.1/10"
+        rating: "8.1/10",
+        image: "madmax.jpg"
     },
     {
         id: 8,
         title: "Top Gun",
         genre: "action",
-        rating: "8.0/10"
+        rating: "8.0/10",
+        image:"topgun.jpg"
     },
     {
         id: 9,
         title: "The Handmaid's Tale",
         genre: "drama",
-        rating: "8.4/10"
+        rating: "8.4/10",
+        image: "thehandmaidtale.jpg"
     },
     {
         id: 10,
         title: "Chernobyl",
         genre: "drama",
-        rating: "9.3/10"
+        rating: "9.3/10",
+        image: "chernobyl.jpg"
     },
     {
         id: 11,
         title: "The Irishman",
         genre: "drama",
-        rating: "8.2/10"
+        rating: "8.2/10",
+        image: "theirishman4.jpg"
     },
     {
         id: 12,
         title: "Ozark",
         genre: "drama",
-        rating: "8.5/10"
+        rating: "8.5/10",
+        image : "ozark.png"
     }
 ];
 
@@ -301,15 +309,15 @@ function showMoviesPage() {
 }
 
 function renderMovies() {
-    const trendingContainer = document.getElementById('trendingMovies');
+    // const trendingContainer = document.getElementById('trendingMovies');
     const actionContainer = document.getElementById('actionMovies');
     const dramaContainer = document.getElementById('dramaMovies');
 
-    const trendingMovies = MOVIES_DATA.filter(m => m.genre === 'trending');
+    // const trendingMovies = MOVIES_DATA.filter(m => m.genre === 'trending');
     const actionMovies = MOVIES_DATA.filter(m => m.genre === 'action');
     const dramaMovies = MOVIES_DATA.filter(m => m.genre === 'drama');
 
-    trendingContainer.innerHTML = createMovieCards(trendingMovies);
+    // trendingContainer.innerHTML = createMovieCards(trendingMovies);
     actionContainer.innerHTML = createMovieCards(actionMovies);
     dramaContainer.innerHTML = createMovieCards(dramaMovies);
 }
@@ -318,7 +326,7 @@ function createMovieCards(movies) {
     return movies.map(movie => `
         <div class="movie-card">
             <div class="movie-poster">
-                <span style="font-size: 12px;">🎬 ${movie.title}</span>
+                <img src="img/${movie.image}" alt="${movie.title}">
             </div>
             <div class="movie-info">
                 <div class="movie-title">${movie.title}</div>
@@ -345,7 +353,7 @@ function initMovieSearch() {
         );
 
         const containers = {
-            'trendingMovies': filteredMovies.filter(m => m.genre === 'trending'),
+            // 'trendingMovies': filteredMovies.filter(m => m.genre === 'trending'),
             'actionMovies': filteredMovies.filter(m => m.genre === 'action'),
             'dramaMovies': filteredMovies.filter(m => m.genre === 'drama')
         };
@@ -454,3 +462,63 @@ document.addEventListener('DOMContentLoaded', () => {
         showMoviesPage();
     }
 });
+// LANGUAGE DROPDOWN
+
+const languageToggle = document.getElementById("languageToggle");
+const languageDropdown = document.querySelector(".language-dropdown");
+const languageText = document.getElementById("languageText");
+
+if(languageToggle){
+
+    // open dropdown
+    languageToggle.addEventListener("click", (e) => {
+        e.stopPropagation();
+        languageDropdown.classList.toggle("active");
+    });
+
+    // select language
+    document.querySelectorAll(".language-menu div").forEach(option => {
+        option.addEventListener("click", () => {
+            languageText.textContent = option.textContent;
+            languageDropdown.classList.remove("active");
+        });
+    });
+
+    // close when clicking outside
+    window.addEventListener("click", () => {
+        languageDropdown.classList.remove("active");
+    });
+
+}
+// ============= TRENDING SLIDER BUTTONS =============
+const slider = document.querySelector('.trending-slider');
+const leftBtn = document.querySelector('.left-btn');
+const rightBtn = document.querySelector('.right-btn');
+
+if(slider && leftBtn && rightBtn){
+
+    const getScrollAmount = () => {
+        const card = document.querySelector('.trend-card');
+        return card ? (card.offsetWidth + 8) * 5 : 800; // scroll 5 cards
+    };
+
+    rightBtn.addEventListener('click', () => {
+        slider.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
+    });
+
+    leftBtn.addEventListener('click', () => {
+        slider.scrollBy({ left: -getScrollAmount(), behavior: 'smooth' });
+    });
+
+    leftBtn.style.opacity = '0';
+    leftBtn.style.pointerEvents = 'none';
+
+    slider.addEventListener('scroll', () => {
+        leftBtn.style.opacity = slider.scrollLeft > 50 ? '1' : '0';
+        leftBtn.style.pointerEvents = slider.scrollLeft > 50 ? 'auto' : 'none';
+
+        const maxScroll = slider.scrollWidth - slider.clientWidth;
+        rightBtn.style.opacity = slider.scrollLeft >= maxScroll - 50 ? '0' : '1';
+        rightBtn.style.pointerEvents = slider.scrollLeft >= maxScroll - 50 ? 'none' : 'auto';
+    });
+}
