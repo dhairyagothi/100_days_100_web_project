@@ -35,42 +35,39 @@ jobs:
 
             core.info(`Assignment request detected on issue #${issueNumber}`);
 
+            const issue = await github.rest.issues.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issueNumber
+            });
 
-            core.info(`Assignment request detected on issue #${issueNumber}`);
+            const assignees = issue.data.assignees || [];
+            const requester = context.payload.comment.user.login;
 
-const issue = await github.rest.issues.get({
-  owner: context.repo.owner,
-  repo: context.repo.repo,
-  issue_number: issueNumber
-});
+            if (assignees.some(a => a.login === requester)) {
+              return;
+            }
 
-const assignees = issue.data.assignees || [];
-const requester = context.payload.comment.user.login;
+            if (assignees.length >= 3) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issueNumber,
+                body: `Sorry @${requester}, all assignment slots are currently filled.`
+              });
+              return;
+            }
 
-if (assignees.some(a => a.login === requester)) {
-  return;
-}
+            await github.rest.issues.addAssignees({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issueNumber,
+              assignees: [requester]
+            });
 
-if (assignees.length >= 3) {
-  await github.rest.issues.createComment({
-    owner: context.repo.owner,
-    repo: context.repo.repo,
-    issue_number: issueNumber,
-    body: `Sorry @${requester}, all assignment slots are currently filled.`
-  });
-  return;
-}
-
-await github.rest.issues.addAssignees({
-  owner: context.repo.owner,
-  repo: context.repo.repo,
-  issue_number: issueNumber,
-  assignees: [requester]
-});
-
-await github.rest.issues.createComment({
-  owner: context.repo.owner,
-  repo: context.repo.repo,
-  issue_number: issueNumber,
-  body: `✅ @${requester} has been assigned to this issue.`
-});
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issueNumber,
+              body: `✅ @${requester} has been assigned to this issue.`
+            });
