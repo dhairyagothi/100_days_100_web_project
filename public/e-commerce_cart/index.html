@@ -4,13 +4,13 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AeroStride — Premium Footwear</title>
+    <title>AeroStride</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&family=Space+Mono:wght@400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap"
       rel="stylesheet"
     />
+    <link rel="icon" href="../favv.png" type="image/x-icon" />
     <link rel="stylesheet" href="index.css" />
 </head>
   <body>
@@ -68,7 +68,7 @@
             </svg>
           </button>
         </div>
-      </nav>
+      </div>
     </header>
 
 
@@ -128,11 +128,13 @@
 
     <!-- ===== CART SIDEBAR ===== -->
     <div class="cart-overlay" id="cart-overlay"></div>
-    <aside class="cart" id="cart">
+
+    <!-- Cart panel — lives outside header so z-index stacking is clean -->
+    <div class="cart-panel" id="cart-panel">
       <div class="cart-header">
-        <div class="cart-title-wrap">
-          <h2 class="cart-title">Your Cart</h2>
-          <span class="cart-item-count" id="cart-item-label">0 items</span>
+        <div class="cart-header-left">
+          <span class="cart-title">Your Cart</span>
+          <span class="cart-badge" id="cart-badge">0</span>
         </div>
         <button class="cart-close-btn" id="cart-close" aria-label="Close cart">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -382,13 +384,15 @@
             </svg>
           </button>
         </div>
-      </div>
-    </section>
+        <form class="search-form trending-search" role="search">
+          <label for="search-input" class="sr-only">Search products</label>
+          <input id="search-input" type="search" placeholder="Search shoes..." />
+        </form>
+      </section>
 
-    <!-- ===== SECTION DIVIDER ===== -->
-    <div class="section-divider" id="shop">
-      <span class="divider-tag">TRENDING RIGHT NOW</span>
-    </div>
+      <!-- Shop -->
+      <section class="container shop-section">
+        <p id="no-products-message" class="no-products-message" hidden>No products found</p>
 
     <!-- ===== FILTER BAR ===== -->
     <div class="filter-bar">
@@ -420,13 +424,9 @@
             <div class="card-overlay">
               <button class="btn-quick-view" data-name="GOAT" data-price="5000" data-img="images_used/messi shoes 0.png">Quick View</button>
             </div>
-          </figure>
-          <div class="card-body">
-            <span class="card-brand-tag">AeroStride</span>
-            <h3 class="card-title">GOAT</h3>
-            <div class="card-rating">
-              <span class="stars">★★★★★</span>
-              <span class="review-count">(128)</span>
+            <div class="shoe-info">
+              <h2 class="shoe-title">GOAT</h2>
+              <div class="shoe-price">Rs.5000</div>
             </div>
             <div class="card-footer">
               <div class="card-price-wrap">
@@ -441,7 +441,228 @@
                 </svg>
               </button>
             </div>
-          </div>
+          </article>
+
+          <article class="shoe-box" data-price="3000">
+            <div class="pic">
+              <img
+                src="images_used/cristiano ronal 1.png"
+                class="shoe-img"
+                alt="CR7"
+                loading="lazy"
+              />
+              <button
+                class="wishlist-btn wishlist-fab"
+                type="button"
+                aria-label="Add CR7 to wishlist"
+              >
+                ❤
+              </button>
+            </div>
+            <div class="shoe-info">
+              <h2 class="shoe-title">CR7</h2>
+              <div class="shoe-price">Rs.3000</div>
+            </div>
+            <div class="product-actions">
+              <button class="add-cart" type="button" aria-label="Add CR7 to cart">
+                <img
+                  src="images_used/cart_icon.png"
+                  class="action-icon"
+                  alt=""
+                  aria-hidden="true"
+                />
+                <span>Add to Cart</span>
+              </button>
+            </div>
+          </article>
+
+          <article class="shoe-box" data-price="2500">
+            <div class="pic">
+              <img
+                src="images_used/giannis antetok 1.png"
+                class="shoe-img"
+                alt="The Greek Freak"
+                loading="lazy"
+              />
+              <button
+                class="wishlist-btn wishlist-fab"
+                type="button"
+                aria-label="Add The Greek Freak to wishlist"
+              >
+                ❤
+              </button>
+            </div>
+            <div class="shoe-info">
+              <h2 class="shoe-title">The Greek Freak</h2>
+              <div class="shoe-price">Rs.2500</div>
+            </div>
+            <div class="product-actions">
+              <button class="add-cart" type="button" aria-label="Add The Greek Freak to cart">
+                <img
+                  src="images_used/cart_icon.png"
+                  class="action-icon"
+                  alt=""
+                  aria-hidden="true"
+                />
+                <span>Add to Cart</span>
+              </button>
+            </div>
+          </article>
+
+          <article class="shoe-box" data-price="1500">
+            <div class="pic">
+              <img
+                src="images_used/ishowspeed shoe 1.png"
+                class="shoe-img"
+                alt="Sewy"
+                loading="lazy"
+              />
+              <button
+                class="wishlist-btn wishlist-fab"
+                type="button"
+                aria-label="Add Sewy to wishlist"
+              >
+                ❤
+              </button>
+            </div>
+            <div class="shoe-info">
+              <h2 class="shoe-title">Sewy</h2>
+              <div class="shoe-price">Rs.1500</div>
+            </div>
+            <div class="product-actions">
+              <button class="add-cart" type="button" aria-label="Add Sewy to cart">
+                <img
+                  src="images_used/cart_icon.png"
+                  class="action-icon"
+                  alt=""
+                  aria-hidden="true"
+                />
+                <span>Add to Cart</span>
+              </button>
+            </div>
+          </article>
+
+          <article class="shoe-box" data-price="3000">
+            <div class="pic">
+              <img
+                src="images_used/kobe bryant sho 0.png"
+                class="shoe-img"
+                alt="Black Mamba"
+                loading="lazy"
+              />
+              <button
+                class="wishlist-btn wishlist-fab"
+                type="button"
+                aria-label="Add Black Mamba to wishlist"
+              >
+                ❤
+              </button>
+            </div>
+            <div class="shoe-info">
+              <h2 class="shoe-title">Black Mamba</h2>
+              <div class="shoe-price">Rs.3000</div>
+            </div>
+            <div class="product-actions">
+              <button class="add-cart" type="button" aria-label="Add Black Mamba to cart">
+                <img
+                  src="images_used/cart_icon.png"
+                  class="action-icon"
+                  alt=""
+                  aria-hidden="true"
+                />
+                <span>Add to Cart</span>
+              </button>
+            </div>
+          </article>
+
+          <article class="shoe-box" data-price="2500">
+            <div class="pic">
+              <img
+                src="images_used/nike jordans 0.png"
+                class="shoe-img"
+                alt="Jordan X"
+                loading="lazy"
+              />
+              <button
+                class="wishlist-btn wishlist-fab"
+                type="button"
+                aria-label="Add Jordan X to wishlist"
+              >
+                ❤
+              </button>
+            </div>
+            <div class="shoe-info">
+              <h2 class="shoe-title">Jordan X</h2>
+              <div class="shoe-price">Rs.2500</div>
+            </div>
+            <div class="product-actions">
+              <button class="add-cart" type="button" aria-label="Add Jordan X to cart">
+                <img
+                  src="images_used/cart_icon.png"
+                  class="action-icon"
+                  alt=""
+                  aria-hidden="true"
+                />
+                <span>Add to Cart</span>
+              </button>
+            </div>
+          </article>
+
+          <article class="shoe-box" data-price="5000">
+            <div class="pic">
+              <img src="images_used/virat_kohli.png" class="shoe-img" alt="KING" loading="lazy" />
+              <button
+                class="wishlist-btn wishlist-fab"
+                type="button"
+                aria-label="Add KING to wishlist"
+              >
+                ❤
+              </button>
+            </div>
+            <div class="shoe-info">
+              <h2 class="shoe-title">KING</h2>
+              <div class="shoe-price">Rs.5000</div>
+            </div>
+            <div class="product-actions">
+              <button class="add-cart" type="button" aria-label="Add KING to cart">
+                <img
+                  src="images_used/cart_icon.png"
+                  class="action-icon"
+                  alt=""
+                  aria-hidden="true"
+                />
+                <span>Add to Cart</span>
+              </button>
+            </div>
+          </article>
+
+          <article class="shoe-box" data-price="5000">
+            <div class="pic">
+              <img src="images_used/abd.png" class="shoe-img" alt="Mr.360" loading="lazy" />
+              <button
+                class="wishlist-btn wishlist-fab"
+                type="button"
+                aria-label="Add Mr.360 to wishlist"
+              >
+                ❤
+              </button>
+            </div>
+            <div class="shoe-info">
+              <h2 class="shoe-title">Mr.360</h2>
+              <div class="shoe-price">Rs.5000</div>
+            </div>
+            <div class="product-actions">
+              <button class="add-cart" type="button" aria-label="Add Mr.360 to cart">
+                <img
+                  src="images_used/cart_icon.png"
+                  class="action-icon"
+                  alt=""
+                  aria-hidden="true"
+                />
+                <span>Add to Cart</span>
+              </button>
+            </div>
+          </article>
         </div>
 
         <!-- 2 CR7 -->
@@ -959,6 +1180,38 @@
             </button>
           </div>
         </div>
+        <div class="footer-links">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="#hero">Home</a></li>
+            <li><a href="#trending-section">Shoes</a></li>
+          </ul>
+        </div>
+        <div class="footer-contact">
+          <h3>Contact Us</h3>
+          <p>Email: info@aerostride.com</p>
+          <p>Phone: +123 456 7890</p>
+        </div>
+      </div>
+      <div class="footer-divider"></div>
+      <div class="copyright_part">&copy; AeroStride 2024</div>
+    </footer>
+
+    <!-- Modals -->
+    <div class="checkout-modal">
+      <div class="checkout-content">
+        <span class="close-checkout">&times;</span>
+        <h2>Checkout</h2>
+        <input type="text" id="full-name" placeholder="Full Name" />
+        <input type="text" id="address" placeholder="Address" />
+        <input type="text" id="phone" placeholder="Phone Number" />
+        <select id="payment-method">
+          <option value="">Select Payment Method</option>
+          <option>UPI</option>
+          <option>Cash on Delivery</option>
+          <option>Card</option>
+        </select>
+        <button id="submit-order" type="button">Submit Order</button>
       </div>
     </div>
 
