@@ -87,21 +87,44 @@
     <div id="toast-container" aria-live="polite"></div>
 
     <footer class="footer">
-        <section id="footer-container">
-            <div class="footer-section">
-                <h4>Follow Us</h4>
-                <div class="social-links">
-                    <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
-                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                    <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
-                    <a href="#" aria-label="Discord"><i class="fab fa-discord"></i></a>
-                </div>
-            </div>
-        </section>
-        <div class="footer-bottom">
-            <p>©<span id="currentYear"></span> Captcha is a modern front-end verification demo.</p>
+    <div id="footer-container">
+
+        <div class="footer-brand footer-section">
+            <h3>CAPTCHA</h3>
+            <p>
+                A modern front-end verification demo with multiple
+                CAPTCHA challenges and analytics.
+            </p>
         </div>
-    </footer>
+
+        <div class="footer-section">
+            <h4>Quick Links</h4>
+            <nav class="footer-links" aria-label="Footer navigation">
+                <a href="captcha.html">Home</a>
+                <a href="generate.html">Generate CAPTCHA</a>
+                <a href="dashboard.html">Dashboard</a>
+            </nav>
+        </div>
+
+        <div class="footer-section">
+            <h4>Follow Us</h4>
+            <div class="social-links">
+                <a href="https://github.com/dhairyagothi/100_days_100_web_project"
+                   aria-label="GitHub repository">
+                    <i class="fab fa-github"></i>
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="footer-bottom">
+        <p>
+            &copy; <span id="currentYear"></span>
+            CAPTCHA. All rights reserved.
+        </p>
+    </div>
+</footer>
 
     <script src="captcha.js"></script>
 </body>
