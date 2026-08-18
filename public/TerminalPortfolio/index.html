@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terminal Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="background-animation" aria-hidden="true"></div>
+
+    <main class="terminal-container">
+        <header class="terminal-header">
+            <div class="mac-buttons">
+                <span class="close" title="Close"></span>
+                <span class="minimize" title="Minimize"></span>
+                <span class="maximize" title="Maximize"></span>
+            </div>
+            <div class="terminal-title">visitor@portfolio:~</div>
+        </header>
+
+        <section class="terminal-body" id="terminal-body" tabindex="0" aria-label="Terminal output area">
+            <div id="output-container" aria-live="polite"></div>
+            
+            <div class="input-line" id="input-line" style="display: none;">
+                <span class="prompt">visitor@portfolio:~$</span>
+                <span id="input-mirror" aria-hidden="true"></span><span class="cursor" aria-hidden="true"></span>
+            </div>
+        </section>
+
+        <input type="text" id="hidden-input" autocomplete="off" spellcheck="false" autofocus aria-label="Terminal command input">
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

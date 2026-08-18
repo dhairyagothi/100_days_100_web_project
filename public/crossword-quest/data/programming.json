@@ -1,0 +1,68 @@
+[
+  {
+    "id": "prog_webdev",
+    "title": "Web Development Basics",
+    "difficulty": "easy",
+    "category": "Programming",
+    "gridSize": 10,
+    "clues": {
+      "across": [
+        { "number": 1, "row": 0, "col": 2, "answer": "HTML", "clue": "HyperText Markup Language used for web page structure" },
+        { "number": 4, "row": 2, "col": 0, "answer": "STYLES", "clue": "CSS rules applied to change the look of elements" },
+        { "number": 5, "row": 4, "col": 3, "answer": "SCRIPT", "clue": "HTML tag used to embed executable client-side code" },
+        { "number": 7, "row": 6, "col": 1, "answer": "DOM", "clue": "Document Object Model, representing the structured page hierarchy" },
+        { "number": 8, "row": 8, "col": 2, "answer": "CSS", "clue": "Cascading Style Sheets, used to style documents" }
+      ],
+      "down": [
+        { "number": 1, "row": 0, "col": 2, "answer": "HEADER", "clue": "Semantic HTML element representing introductory content" },
+        { "number": 2, "row": 0, "col": 5, "answer": "LINK", "clue": "HTML element connecting stylesheets or external resources" },
+        { "number": 3, "row": 2, "col": 0, "answer": "SERVER", "clue": "Computer program that provides data to client requests" },
+        { "number": 6, "row": 4, "col": 7, "answer": "TAGS", "clue": "HTML elements enclosed in angle brackets (e.g. <div>)" }
+      ]
+    }
+  },
+  {
+    "id": "prog_javascript",
+    "title": "JavaScript Wizardry",
+    "difficulty": "medium",
+    "category": "Programming",
+    "gridSize": 11,
+    "clues": {
+      "across": [
+        { "number": 1, "row": 1, "col": 1, "answer": "PROMISE", "clue": "Object representing eventual completion or failure of an async operation" },
+        { "number": 4, "row": 3, "col": 0, "answer": "CLOSURE", "clue": "A function bundled together with references to its surrounding state" },
+        { "number": 5, "row": 5, "col": 3, "answer": "CALLBACK", "clue": "A function passed into another function as an argument" },
+        { "number": 7, "row": 7, "col": 2, "answer": "ARRAY", "clue": "Ordered list of values represented by square brackets" },
+        { "number": 8, "row": 9, "col": 1, "answer": "VANILLA", "clue": "Plain, library-free JavaScript code" }
+      ],
+      "down": [
+        { "number": 1, "row": 1, "col": 1, "answer": "PROTOTYPE", "clue": "Mechanism by which JavaScript objects inherit features from one another" },
+        { "number": 2, "row": 1, "col": 4, "answer": "SCOPE", "clue": "Context in which values and expressions are visible or referenced" },
+        { "number": 3, "row": 3, "col": 0, "answer": "CONST", "clue": "Keyword to declare block-scoped variables that cannot be reassigned" },
+        { "number": 6, "row": 5, "col": 7, "answer": "ARRAY", "clue": "Wait, let's make it UNIQUE: AWAIT (row 5, col 7, clue: 'Operator used to wait for a Promise')" }
+      ]
+    }
+  },
+  {
+    "id": "prog_architecture",
+    "title": "Software Architecture",
+    "difficulty": "hard",
+    "category": "Programming",
+    "gridSize": 12,
+    "clues": {
+      "across": [
+        { "number": 1, "row": 1, "col": 2, "answer": "MICROSERVICES", "clue": "Architectural style structuring an app as highly decoupled services" },
+        { "number": 4, "row": 3, "col": 0, "answer": "DATABASE", "clue": "Systematic collection of data that is electronically stored" },
+        { "number": 6, "row": 5, "col": 4, "answer": "MIDDLEWARE", "clue": "Software that acts as a bridge between OS/database and applications" },
+        { "number": 8, "row": 7, "col": 1, "answer": "CONTAINER", "clue": "Standard unit of software packaging code and all its dependencies (e.g. Docker)" },
+        { "number": 9, "row": 9, "col": 3, "answer": "GATEWAY", "clue": "API endpoint acting as a single entry point for microservices" }
+      ],
+      "down": [
+        { "number": 2, "row": 1, "col": 3, "answer": "REPOSITORY", "clue": "Central location where data is stored and managed, e.g. Git or DB abstraction" },
+        { "number": 3, "row": 1, "col": 7, "answer": "CONTROLLER", "clue": "MVC component that accepts input and converts it to commands" },
+        { "number": 5, "row": 3, "col": 1, "answer": "CACHING", "clue": "Storing copies of data in temporary storage for faster access" },
+        { "number": 7, "row": 5, "col": 9, "answer": "ROUTER", "clue": "Mechanism directing client requests to specific handler functions" }
+      ]
+    }
+  }
+]

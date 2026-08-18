@@ -1,22 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Saved Texts</title>
-  <style>
-    body { font-family: Arial, sans-serif; padding: 10px; width: 300px; }
-    .text-entry { margin-bottom: 10px; padding: 5px; border-bottom: 1px solid #ccc; }
-    .url { color: blue; font-size: 0.9em; }
-    #clearButton, #downloadButton { margin-top: 10px; padding: 5px; cursor: pointer; background-color: #4CAF50; color: white; border: none; width: 100%; }
-    #clearButton { background-color: #f44336; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Text Saver Pro</title>
+
+<link rel="stylesheet" href="popup.css">
 </head>
+
 <body>
-  <h2>Saved Texts</h2>
-  <div id="textList"></div>
-  <button id="downloadButton">Download as File</button>
-  <button id="clearButton">Clear Saved Texts</button>
-  <script src="popup.js"></script>
+
+  <a href="https://100-days-100-web-project.vercel.app" class="back-home-btn">⬅ Back to Home</a>
+
+<div class="header">
+  <div class="logo">
+    <div class="logo-icon">🚀</div>
+    <h2>Text Saver Pro</h2>
+  </div>
+
+  <span id="itemCount">0</span>
+</div>
+
+<div class="search-box">
+  <input
+    type="text"
+    id="searchInput"
+    placeholder="Search saved snippets..."
+  >
+</div>
+
+<div class="stats">
+  <span>Research Assistant</span>
+  <span>v1.0</span>
+</div>
+
+<div id="textList"></div>
+
+<div class="actions">
+  <button id="downloadButton">
+    📥 Export
+  </button>
+
+  <button id="clearButton">
+    🗑 Clear
+  </button>
+</div>
+<script src="popup.js"></script>
+
 </body>
 </html>

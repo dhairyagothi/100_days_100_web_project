@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Connect Four</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="game-container">
+      <header class="game-header">
+        <h1>Connect Four</h1>
+        <div id="status">Red's Turn</div>
+      </header>
+
+      <div class="game-area">
+        <div id="preview-row">
+          <div id="preview-disc"></div>
+        </div>
+        <div id="board"></div>
+      </div>
+
+      <div class="controls-group">
+        <div class="mode-selection">
+          <button id="pvpBtn" class="btn active">Player vs Player</button>
+          <button id="pveBtn" class="btn">Player vs Bot</button>
+        </div>
+        <button id="restartBtn" class="btn btn-restart">Restart Game</button>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

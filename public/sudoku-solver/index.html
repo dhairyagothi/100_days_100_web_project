@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sudoku Solver</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+    <div class="header-actions">
+        <button id="themeToggleBtn" class="theme-toggle-btn" onclick="toggleTheme()">🌙</button>
+    </div>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
+
+    <div class="container">
+        <div class="left-panel">
+            <h1>Sudoku Game</h1>
+            <div id="board" class="board"></div>
+        </div>
+
+        <div class="right-panel">
+            <div class="stats">
+                <div class="mistakes-box">
+                    <span class="label">Mistakes</span>
+                    <span id="mistakeCount">0/3</span>
+                </div>
+                <div class="timer-box">
+                    <span class="label">Time</span>
+                    <span id="timer">00:00</span>
+                </div>
+                <div class="hints-box">
+                    <span class="label">💡 Hints left</span>
+                    <span id="hintsRemaining">0</span>
+                </div>
+            </div>
+
+            <div class="tools">
+                <button class="tool-btn" onclick="undoMove()">↩</button>
+                <button class="tool-btn" onclick="giveHint()">💡</button>
+                <button class="tool-btn" onclick="togglePause()" id="pauseBtn">⏸</button>
+            </div>
+
+            <div class="difficulty">
+                <button id="easyBtn" onclick="newGame('easy')">Easy</button>
+                <button id="mediumBtn" onclick="newGame('medium')">Medium</button>
+                <button id="hardBtn" onclick="newGame('hard')">Hard</button>
+            </div>
+
+            <div class="number-pad" id="numberPad"></div>
+
+            <button class="new-game-btn" onclick="newGame(currentDifficulty)">
+                New Game
+            </button>
+        </div>
+    </div>
+
+    <div id="resultModal" class="result-modal hidden">
+        <div class="result-card">
+            <h2 id="resultTitle">Game Over</h2>
+            <p id="resultMessage"></p>
+            <button onclick="closeModalAndNewGame()">New Game</button>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>

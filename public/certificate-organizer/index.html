@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CertiKeep // Certificate Organizer & Showcase</title>
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="A clean, secure, and modern digital portfolio to organize, showcase, and share your professional certificates and credentials.">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+  
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <!-- MAIN APP CONTAINER -->
+  <div id="app" class="app-layout">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-logo">
+        <div class="logo-icon">
+          <i data-lucide="award"></i>
+        </div>
+        <div class="logo-text">
+          <h1>CertiKeep</h1>
+          <span class="sub-text">Credential Organizer</span>
+        </div>
+      </div>
+      
+      <div class="header-actions">
+        <button id="btn-export" class="btn btn-secondary" title="Backup all certificates to a JSON file">
+          <i data-lucide="download"></i>
+          <span>Backup</span>
+        </button>
+        <button id="btn-import" class="btn btn-secondary" title="Restore certificates from a JSON backup">
+          <i data-lucide="upload"></i>
+          <span>Restore</span>
+        </button>
+        <input type="file" id="import-file-input" accept=".json" style="display: none;">
+        
+        <button id="btn-add-cert" class="btn btn-primary">
+          <i data-lucide="plus"></i>
+          <span>Add Certificate</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Dashboard stats -->
+    <section class="dashboard-stats">
+      <div class="stat-card">
+        <div class="stat-icon icon-blue">
+          <i data-lucide="scroll"></i>
+        </div>
+        <div class="stat-info">
+          <span class="stat-value" id="stat-total">0</span>
+          <span class="stat-label">Total Certificates</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon icon-purple">
+          <i data-lucide="folder"></i>
+        </div>
+        <div class="stat-info">
+          <span class="stat-value" id="stat-categories">0</span>
+          <span class="stat-label">Categories</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon icon-green">
+          <i data-lucide="tag"></i>
+        </div>
+        <div class="stat-info">
+          <span class="stat-value" id="stat-tags">0</span>
+          <span class="stat-label">Unique Skills</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Filters Section -->
+    <section class="filters-container">
+      <div class="search-box">
+        <i data-lucide="search" class="search-icon"></i>
+        <input type="text" id="search-input" placeholder="Search by name, issuer, skill...">
+      </div>
+      
+      <div class="filter-controls">
+        <div class="filter-group">
+          <label for="filter-category">Category</label>
+          <select id="filter-category">
+            <option value="all">All Categories</option>
+            <!-- Categories will be dynamically populated -->
+          </select>
+        </div>
+        
+        <div class="filter-group">
+          <label for="sort-by">Sort By</label>
+          <select id="sort-by">
+            <option value="newest">Newest Issued</option>
+            <option value="oldest">Oldest Issued</option>
+            <option value="title-asc">Title (A-Z)</option>
+            <option value="issuer-asc">Issuer (A-Z)</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <!-- Category Pills Quick Filter -->
+    <div class="category-pills" id="category-pills-container">
+      <!-- Generated dynamically -->
+    </div>
+
+    <!-- Certificates Grid / List -->
+    <main class="showcase-area">
+      <div id="certificates-grid" class="certificates-grid">
+        <!-- Certificate cards dynamically loaded here -->
+      </div>
+      
+      <!-- Empty State -->
+      <div id="empty-state" class="empty-state hidden">
+        <div class="empty-illustration">
+          <i data-lucide="shield-alert"></i>
+        </div>
+        <h3>No Certificates Found</h3>
+        <p>Start organizing your credentials by clicking the "Add Certificate" button above.</p>
+        <button id="empty-state-add-btn" class="btn btn-primary">
+          <i data-lucide="plus"></i> Add Your First Certificate
+        </button>
+      </div>
+    </main>
+    
+    <footer class="app-footer">
+      <p>CertiKeep is a client-side certificate showcase. Your data is stored locally in your browser and never sent to a server.</p>
+    </footer>
+  </div>
+
+  <!-- SINGLE CERTIFICATE SHARE VIEWER (Shown only when shared parameter is in URL) -->
+  <div id="share-viewer" class="share-viewer-layout hidden">
+    <div class="viewer-container">
+      <header class="viewer-header">
+        <div class="viewer-logo">
+          <i data-lucide="award"></i>
+          <span>CertiKeep Verified Credentials</span>
+        </div>
+        <a href="index.html" class="btn btn-secondary btn-sm">
+          <i data-lucide="plus-circle"></i> Create Your Own Portfolio
+        </a>
+      </header>
+      
+      <div class="viewer-content">
+        <div class="viewer-preview-pane">
+          <div class="viewer-image-wrapper">
+            <img id="viewer-cert-img" src="" alt="Certificate Preview">
+          </div>
+        </div>
+        
+        <div class="viewer-info-pane">
+          <div class="badge badge-primary" id="viewer-cert-category">Category</div>
+          <h2 id="viewer-cert-title" class="viewer-title">Certificate Title</h2>
+          <p class="viewer-issuer" id="viewer-cert-issuer">Issued by Organization</p>
+          
+          <hr class="divider">
+          
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="info-label">Issue Date</span>
+              <span class="info-val" id="viewer-cert-date">January 2026</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Expiration Date</span>
+              <span class="info-val" id="viewer-cert-expiry">Permanent</span>
+            </div>
+            <div class="info-item" id="viewer-id-container">
+              <span class="info-label">Credential ID</span>
+              <span class="info-val font-mono" id="viewer-cert-id">N/A</span>
+            </div>
+          </div>
+
+          <div class="viewer-skills">
+            <span class="info-label block">Associated Skills</span>
+            <div class="skills-flex" id="viewer-cert-skills">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+          <div class="viewer-actions">
+            <a href="" id="viewer-verify-btn" target="_blank" rel="noopener" class="btn btn-primary btn-block">
+              <i data-lucide="external-link"></i> Verify Credential
+            </a>
+            <button id="viewer-download-btn" class="btn btn-secondary btn-block">
+              <i data-lucide="download"></i> Download Image
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADD / EDIT CERTIFICATE MODAL -->
+  <div id="modal-cert-form" class="modal-overlay hidden">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2 id="modal-form-title">Add Certificate</h2>
+        <button class="btn-close-modal" id="btn-close-form-modal">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+      
+      <form id="cert-form" class="modal-form">
+        <input type="hidden" id="form-cert-id">
+        
+        <div class="form-grid">
+          <div class="form-group col-span-2">
+            <label for="form-title" class="required-label">Certificate Title</label>
+            <input type="text" id="form-title" required placeholder="e.g. AWS Certified Solutions Architect">
+          </div>
+          
+          <div class="form-group">
+            <label for="form-issuer" class="required-label">Issuing Organization</label>
+            <input type="text" id="form-issuer" required placeholder="e.g. Amazon Web Services">
+          </div>
+
+          <div class="form-group">
+            <label for="form-category" class="required-label">Category</label>
+            <select id="form-category" required>
+              <option value="">Select Category</option>
+              <option value="Professional">Professional</option>
+              <option value="Academic">Academic</option>
+              <option value="Technical">Technical/Development</option>
+              <option value="Creative">Creative Arts</option>
+              <option value="Language">Languages</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="form-issue-date" class="required-label">Issue Date</label>
+            <input type="date" id="form-issue-date" required>
+          </div>
+
+          <div class="form-group">
+            <label for="form-expiry-date">Expiration Date (Optional)</label>
+            <input type="date" id="form-expiry-date">
+          </div>
+          
+          <div class="form-group">
+            <label for="form-credential-id">Credential ID (Optional)</label>
+            <input type="text" id="form-credential-id" placeholder="e.g. AWS-SEC-12345">
+          </div>
+
+          <div class="form-group">
+            <label for="form-credential-url">Credential URL (Optional)</label>
+            <input type="url" id="form-credential-url" placeholder="e.g. https://verify.aws/cert/12345">
+          </div>
+
+          <div class="form-group col-span-2">
+            <label for="form-skills">Associated Skills (Comma-separated)</label>
+            <input type="text" id="form-skills" placeholder="e.g. Cloud Computing, IAM, AWS Security, Network Design">
+          </div>
+
+          <div class="form-group col-span-2">
+            <label class="required-label">Certificate File / Image</label>
+            <div class="upload-dropzone" id="upload-zone">
+              <i data-lucide="cloud-upload" class="upload-icon"></i>
+              <p class="upload-text">Drag & drop your certificate image, or <span class="highlight">browse</span></p>
+              <p class="upload-subtext">Supports PNG, JPG, JPEG, SVG, WebP. Recommended max 2MB.</p>
+              <input type="file" id="form-file" accept="image/*" class="file-input">
+            </div>
+            
+            <div id="file-preview-container" class="file-preview-container hidden">
+              <img id="file-preview-img" src="" alt="File preview">
+              <div class="preview-details">
+                <span class="preview-name" id="preview-file-name">filename.png</span>
+                <button type="button" class="btn-remove-preview" id="btn-remove-preview" title="Remove image">
+                  <i data-lucide="trash-2"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" id="btn-cancel-form">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="btn-submit-form">Save Certificate</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- CERTIFICATE DETAILS / PREVIEW MODAL -->
+  <div id="modal-cert-details" class="modal-overlay hidden">
+    <div class="modal-box modal-box-lg">
+      <div class="modal-header">
+        <h2>Certificate Showcase</h2>
+        <button class="btn-close-modal" id="btn-close-details-modal">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+      
+      <div class="details-layout">
+        <!-- Visual Certificate Pane -->
+        <div class="details-visual">
+          <div class="certificate-frame">
+            <img id="detail-cert-img" src="" alt="Certificate Document">
+          </div>
+        </div>
+
+        <!-- Details Info Pane -->
+        <div class="details-info">
+          <div>
+            <div class="badge badge-primary" id="detail-cert-category">Category</div>
+            <h2 id="detail-cert-title" class="detail-title">Certificate Title</h2>
+            <p class="detail-issuer-line">Issued by <strong id="detail-cert-issuer">Organization</strong></p>
+            
+            <hr class="divider">
+            
+            <div class="info-grid">
+              <div class="info-item">
+                <span class="info-label">Issue Date</span>
+                <span class="info-val" id="detail-cert-date">January 2026</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Expiration Date</span>
+                <span class="info-val" id="detail-cert-expiry">Permanent</span>
+              </div>
+              <div class="info-item" id="detail-id-container">
+                <span class="info-label">Credential ID</span>
+                <span class="info-val font-mono" id="detail-cert-id">N/A</span>
+              </div>
+            </div>
+
+            <div class="detail-skills-section">
+              <span class="info-label block">Skills Associated</span>
+              <div class="skills-flex" id="detail-cert-skills">
+                <!-- skills pills -->
+              </div>
+            </div>
+          </div>
+
+          <div class="detail-actions">
+            <div class="action-buttons-group">
+              <a href="" id="detail-verify-btn" target="_blank" rel="noopener" class="btn btn-primary">
+                <i data-lucide="external-link"></i> Verify
+              </a>
+              <button id="detail-share-btn" class="btn btn-secondary" title="Share credential">
+                <i data-lucide="share-2"></i> Share
+              </button>
+              <button id="detail-download-btn" class="btn btn-secondary" title="Download certificate file">
+                <i data-lucide="download"></i> Download
+              </button>
+            </div>
+            
+            <div class="edit-delete-group">
+              <button id="detail-edit-btn" class="btn btn-secondary btn-icon-only" title="Edit Certificate">
+                <i data-lucide="edit"></i>
+              </button>
+              <button id="detail-delete-btn" class="btn btn-danger btn-icon-only" title="Delete Certificate">
+                <i data-lucide="trash-2"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SHARE GENERATED LINK MODAL -->
+  <div id="modal-share" class="modal-overlay hidden">
+    <div class="modal-box modal-box-sm">
+      <div class="modal-header">
+        <h2>Share Certificate</h2>
+        <button class="btn-close-modal" id="btn-close-share-modal">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+      
+      <div class="share-modal-body">
+        <p class="share-desc">Generate a direct, secure share link for this certificate. Anyone with this link can view the certificate details and verified credential.</p>
+        
+        <div class="share-input-group">
+          <input type="text" id="share-link-input" readonly value="">
+          <button id="btn-copy-share-link" class="btn btn-primary btn-icon-only" title="Copy to clipboard">
+            <i data-lucide="copy"></i>
+          </button>
+        </div>
+        
+        <div id="share-copy-toast" class="share-copy-toast hidden">
+          <i data-lucide="check"></i> Copied to clipboard!
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification Toast -->
+  <div id="toast" class="toast hidden">
+    <span id="toast-message">Message here</span>
+  </div>
+
+  <!-- App Main Logic Scripts -->
+  <script src="db.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
