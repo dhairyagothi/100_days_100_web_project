@@ -1,137 +1,91 @@
-# 🌱 Habit Tracker Pro
+# 🌱 Habit Tracker
 
-A modern, responsive, and interactive habit-tracking web application that helps users build consistency, monitor daily progress, and maintain productive routines. Habit Tracker Pro provides an intuitive dashboard with streak tracking, completion statistics, motivational quotes, dark mode support, and local data persistence — all without requiring any backend or account creation.
-
-##
+A clean, glassmorphism-styled habit tracking web app that helps you build and maintain daily habits with streak tracking, category organization, and a satisfying completion experience.
 
 ---
 
-## 📖 Overview
+## 📌 Introduction
 
-Habit Tracker Pro is designed to make habit building simple and engaging. Users can create personalized habits, categorize them, track daily completion, maintain streaks, and stay motivated through progress insights and encouraging quotes.
-
-The application stores all data locally in the browser, ensuring fast performance and complete privacy.
+Habit Tracker Pro is a lightweight, browser-based habit tracker built with plain HTML, CSS, and JavaScript. It lets users add daily habits, mark them as done, and automatically tracks streaks — all without needing a backend, since data is stored locally in the browser.
 
 ---
 
 ## ✨ Features
 
-### 📝 Habit Management
-
-* Add new habits with custom names
-* Organize habits using categories
-* Attach personal notes to habits
-* Delete habits anytime
-
-### 🔍 Smart Search
-
-* Instantly search habits by name
-* Real-time filtering as you type
-
-### 📊 Progress Analytics
-
-* View total habits count
-* Track habits completed today
-* Monitor highest streak achieved
-* Automatic statistics updates
-
-### 🔥 Streak Tracking
-
-* Build consistency with streak counters
-* Increase streaks when habits are completed
-* Visual streak indicators for motivation
-
-### 🎉 Completion Celebration
-
-* Confetti animation when completing a habit
-* Interactive and rewarding user experience
-
-### 💡 Motivation System
-
-* Random motivational quote displayed on each visit
-* Encourages daily consistency and progress
-
-### 🌙 Dark Mode
-
-* Toggle between light and dark themes
-* Theme preference saved automatically
-
-### 💾 Local Storage Support
-
-* Habits persist across browser sessions
-* No account or backend required
-* Fast and secure client-side storage
-
-### 📱 Fully Responsive Design
-
-* Optimized for desktop devices
-* Tablet-friendly layouts
-* Mobile-responsive interface
+- **Add, complete, and delete habits** with a name, category, custom color, and optional notes
+- **Live stats dashboard** showing Total Habits, Completed Today, and Best Streak
+- **Search/filter** habits by name in real time
+- **Daily streak tracking** with automatic daily reset and streak-decay if a day is missed
+- **Motivational quote box** that displays a random quote on every load
+- **Dark mode / light mode toggle**, with the selected theme persisted across sessions
+- **Confetti celebration animation** when a habit is marked as done
+- **Local storage based persistence** — no backend or database required
+- **Responsive UI** that works smoothly on both desktop and mobile
+- **Empty-state and no-results messaging** for a polished user experience
 
 ---
 
 ## 🛠️ Technologies Used
 
-* HTML5
-* CSS3
-* Vanilla JavaScript
-* Local Storage API
+- **HTML5** — semantic structure and markup
+- **CSS3** — glassmorphism design, responsive layout, dark mode theming, animations
+- **JavaScript (Vanilla ES6)** — app logic, DOM manipulation, and state management
+- **Web Storage API (`localStorage`)** — client-side data persistence
 
 ---
 
-## 📂 Project Structure
+## 📁 Project Structure
 
 ```text
-Habit-Tracker-Pro/
+Habit_Tracker/
 │
-├── index.html      # Application structure
-├── styles.css      # Styling and responsiveness
-├── script.js       # Application logic
-└── README.md
+├── index.html      # App markup — header, stats, habit list, and Add Habit modal
+├── script.js       # App logic — habits state, rendering, streaks, theme, confetti
+└── styles.css      # Styling — layout, glassmorphism cards, dark mode, animations
+└── README.md       # Documentation 
 ```
 
 ---
 
-## 🎯 How It Works
+## ⚙️ Installation and Setup
 
-1. Click **Add Habit**.
-2. Enter the habit details:
+No build tools or dependencies are required.
 
-   * Habit name
-   * Category
-   * Color
-   * Notes
-3. Save the habit.
-4. Mark habits as completed throughout the day.
-5. Build streaks and track progress.
-6. Search habits instantly using the search bar.
-7. Switch between light and dark themes.
-8. Return anytime—your data remains saved locally.
+1. Clone or download this repository:
+   ```bash
+   git clone https://github.com/<your-username>/Habit_Tracker.git
+   ```
+2. Navigate into the project folder:
+   ```bash
+   cd Habit_Tracker
+   ```
+3. Open `index.html` directly in your browser, or serve it locally:
+   ```bash
+   npx serve .
+   ```
 
 ---
 
-## 📸 Key Highlights
+## 🚀 Usage
 
-* Beautiful glassmorphism-inspired UI
-* Dynamic statistics dashboard
-* Streak-based progress tracking
-* Motivational quote generator
-* Theme persistence
-* Confetti completion effects
-* Search functionality
-* Fully responsive design
+1. Click **+ Add Habit** to open the modal.
+2. Enter a habit name, choose a category, pick a color, and optionally add notes.
+3. Click **Save Habit** to add it to your list.
+4. Click **Mark Done** on a habit card once you've completed it for the day — this updates your streak and triggers a confetti animation.
+5. Use the **search bar** to quickly filter habits by name.
+6. Toggle the 🌙 / ☀️ button in the header to switch between dark and light mode.
+7. Delete a habit anytime using the **Delete** button on its card.
 
 ---
 
 ## 🔮 Future Enhancements
 
-* Habit editing functionality
-* Calendar-based habit history
-* Weekly and monthly analytics
-* Habit completion reminders
-* Export and import habit data
-* Achievement badges and rewards
-* Progress charts and visual reports
+- Edit existing habits instead of only add/delete
+- Weekly/monthly habit completion history and charts
+- Habit reminders/notifications
+- Export/import habit data (backup and restore)
+- Cloud sync/account support for multi-device access
+- Accessibility improvements (ARIA roles, focus trapping in modal)
 
 ---
 
@@ -139,19 +93,22 @@ Habit-Tracker-Pro/
 
 Contributions are welcome!
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Commit your work
-5. Push to your fork
-6. Open a Pull Request
+1. Fork this repository
+2. Create a new branch: `git checkout -b feature/your-feature-name`
+3. Make your changes and commit: `git commit -m "Add: your feature description"`
+4. Push to your fork: `git push origin feature/your-feature-name`
+5. Open a Pull Request describing your changes
+
+Please follow the existing code style and test your changes across browsers before submitting a PR.
 
 ---
 
-## 📜 License
+## 📄 License
 
-This project is open-source and available under the MIT License.
+This project is open-source and available for learning and contribution purposes. Add your preferred license (e.g., MIT License) here.
 
 ---
 
-### 🌟 Build Better Habits, One Day at a Time!
+## 👩‍💻 Author
+
+**App Development and Documentation** — Sanyogita Singh

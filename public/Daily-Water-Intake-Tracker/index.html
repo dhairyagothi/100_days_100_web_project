@@ -1,21 +1,18 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Daily Water Intake Tracker</title>
-  <meta
-    name="description"
-    content="Track your daily water intake with goal setting, quick add buttons, progress visualization, and persistent storage."
-  />
+  <meta name="description"
+    content="Track your daily water intake with goal setting, quick add buttons, progress visualization, and persistent storage." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
-    rel="stylesheet"
-  />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
   <div class="page-shell">
     <header class="site-header">
@@ -66,34 +63,55 @@
             <p class="progress-label">Daily hydration progress</p>
             <span id="percentageLabel">0%</span>
           </div>
-          <div
-            class="progress-bar"
-            role="progressbar"
-            aria-labelledby="percentageLabel"
-            aria-valuemin="0"
-            aria-valuemax="100"
-            aria-valuenow="0"
-            id="progressBar"
-          >
+          <div class="progress-bar" role="progressbar" aria-labelledby="percentageLabel" aria-valuemin="0"
+            aria-valuemax="100" aria-valuenow="0" id="progressBar">
             <div class="progress-fill" id="progressFill"></div>
           </div>
           <p class="completion-message" id="completionMessage" aria-live="polite"></p>
         </div>
 
+        <!-- Add this before the closing </div> of .controls-grid -->
+        <section class="control-panel" aria-labelledby="reminder-heading">
+          <h3 id="reminder-heading">Hydration Reminders</h3>
+          <div class="reminder-controls">
+            <div class="reminder-toggle">
+              <label class="switch">
+                <input type="checkbox" id="reminderToggle">
+                <span class="slider"></span>
+              </label>
+              <span id="reminderStatus">Reminders off</span>
+            </div>
+
+            <div class="reminder-interval" id="intervalControls" style="display: none;">
+              <label for="intervalSelect">Remind every:</label>
+              <select id="intervalSelect">
+                <option value="30">30 minutes</option>
+                <option value="45">45 minutes</option>
+                <option value="60" selected>1 hour</option>
+                <option value="90">1.5 hours</option>
+                <option value="120">2 hours</option>
+                <option value="180">3 hours</option>
+                <option value="240">4 hours</option>
+              </select>
+            </div>
+
+            <div class="reminder-actions" id="reminderActions" style="display: none;">
+              <button type="button" id="snoozeBtn" class="secondary-btn">Snooze 15 min</button>
+              <button type="button" id="testReminderBtn" class="ghost-btn">Test</button>
+            </div>
+          </div>
+          <p class="hint-text" id="reminderHint">Get notified when it's time to hydrate.</p>
+          <div id="snoozeInfo" style="display: none;" class="snooze-info">
+            ⏰ Snoozed until: <span id="snoozeTime"></span>
+          </div>
+        </section>
         <div class="controls-grid">
           <section class="control-panel" aria-labelledby="goal-form-heading">
             <h3 id="goal-form-heading">Set daily goal</h3>
             <form id="goalForm" class="goal-form">
               <label for="goalInput">Goal in milliliters</label>
-              <input
-                type="number"
-                id="goalInput"
-                name="goalInput"
-                min="100"
-                step="100"
-                placeholder="e.g. 2000"
-                aria-describedby="goalHelp"
-              />
+              <input type="number" id="goalInput" name="goalInput" min="100" step="100" placeholder="e.g. 2000"
+                aria-describedby="goalHelp" />
               <small id="goalHelp">Choose a goal that matches your daily hydration plan.</small>
               <button type="submit" class="primary-btn">Save goal</button>
             </form>
@@ -113,14 +131,7 @@
             <form id="customForm" class="custom-form">
               <label for="customInput">Custom amount</label>
               <div class="custom-input-group">
-                <input
-                  type="number"
-                  id="customInput"
-                  name="customInput"
-                  min="1"
-                  step="50"
-                  placeholder="100 ml"
-                />
+                <input type="number" id="customInput" name="customInput" min="1" step="50" placeholder="100 ml" />
                 <button type="submit" class="secondary-btn">Add</button>
               </div>
               <p class="hint-text">Add any amount not covered by quick buttons.</p>
@@ -133,4 +144,5 @@
 
   <script src="script.js"></script>
 </body>
+
 </html>

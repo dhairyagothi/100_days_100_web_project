@@ -21,6 +21,18 @@ Captcha is a modern, front-end verification demo with custom styling, JavaScript
 - **LocalStorage Persistence**:
 - **Reset Functionality**:
 
+
+## New Features
+
+- Dark/Light Mode
+- Difficulty Levels
+- CAPTCHA Timer
+- Attempt Limiting
+- Responsive UI
+- localStorage Theme Persistence
+
+
+
 ## 🛠️ Technologies Used
 
 - HTML5

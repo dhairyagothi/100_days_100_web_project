@@ -5,32 +5,38 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <meta name="theme-color" content="#050a05">
   <title>SNAKE GAME</title>
-  <link rel="stylesheet" href="./style.css?v=4" />
+  <link rel="stylesheet" href="./style.css">
+  <link rel="icon" href="favicon.png">
 </head>
 <body>
   <!-- Back Button -->
   <a href="/" class="project-back-button">← Back to Home</a>
   <!-- Theme Toggle -->
   <button id="themeToggle" class="theme-btn">🌙 Dark Mode</button>
-  
-  <!-- Main Game Container -->
-  <main class="game-container">
-    <section class="game-main">
-      <!-- HUD: Statistics -->
-      <div class="hud">
-        <div class="stat-box">
-          <span class="stat-label">Score</span>
-          <div class="stat-value" id="score">0</div>
-        </div>
-        <div class="stat-box">
-          <span class="stat-label">High Score</span>
-          <div class="stat-value" id="highscore">0</div>
-        </div>
-        <div class="stat-box">
-          <span class="stat-label">Level</span>
-          <div class="stat-value" id="level">1</div>
-        </div>
-      </div>
+  <div class="overlay-title">SNAKE GAME</div>
+  <div class="overlay-sub">
+    PRESS START TO BEGIN YOUR JOURNEY<br>
+    EAT • GROW • SURVIVE
+  </div>
+  <main class="game-shell">
+    <div class="hud">
+    <div class="stat-box">
+      <span class="stat-label">Score</span>
+      <div class="stat-value" id="score">0</div>
+    </div>
+    <div class="stat-box">
+      <span class="stat-label">High Score</span>
+      <div class="stat-value" id="highscore">0</div>
+    </div>
+    <div class="stat-box">
+      <span class="stat-label">Level</span>
+      <div class="stat-value" id="level">1</div>
+    </div>
+    <div class="stat-box color-box">
+      <label class="stat-label" for="snakeColorPicker">Snake Color</label>
+      <input type="color" id="snakeColorPicker" class="snake-color-picker" value="#39ff14" aria-label="Snake Color">
+    </div>
+  </div>
 
       <!-- Canvas Wrapper -->
       <div class="canvas-wrapper">
@@ -105,15 +111,22 @@
     </aside>
   </main>
 
-  <!-- Achievement Notification -->
-  <div class="achievement-notification hidden" id="achievement-notification"></div>
-
   <!-- Mobile Controls -->
   <div class="mobile-controls" id="mobileControls">
     <div class="dpad">
       <div class="dpad-row top-row">
         <button class="dpad-btn" aria-label="Move Up" data-dir="up">▲</button>
       </div>
+      <div class="button-container">
+  <button class="new-game-button">New Game</button>
+  <button class="restart-game-button">Restart Game</button>
+  <button class="pause-game-button">Pause</button>
+</div>
+<div class="button-container">
+  <button class="new-game-button">New Game</button>
+  <button class="restart-game-button">Restart Game</button>
+  <button class="pause-game-button">Pause</button>
+</div>
       <div class="dpad-row bottom-row">
         <button class="dpad-btn" aria-label="Move Left" data-dir="left">◀</button>
         <button class="dpad-btn" aria-label="Move Down" data-dir="down">▼</button>
@@ -127,6 +140,7 @@
   <audio id="gameOverSound" src="./assets/gameover.mp3" preload="auto"></audio>
 
   <!-- Script -->
-  <script src="./script.js?v=4"></script>
+<script src="./script.js"></script>
 </body>
+
 </html>

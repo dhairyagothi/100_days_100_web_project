@@ -41,11 +41,7 @@ function toggleTimer() {
     if (!running) {
         timer = setInterval(updateTimer, 1000);
         running = true;
-        document.getElementById("timer-btn").innerText = "⏸ Pause";
-    } else {
-        clearInterval(timer);
-        running = false;
-        document.getElementById("timer-btn").innerText = "▶ Resume";
+        document.getElementById("timer-btn").innerText = "started";
     }
 }
 
