@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SVG Sprite Namespace Utility</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: #0d1117;
+            color: #c9d1d9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 2rem;
+            box-sizing: border-box;
+        }
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: #161b22;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            border: 1px solid #30363d;
+        }
+        h1 {
+            color: #58a6ff;
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+        }
+        p {
+            color: #8b949e;
+            line-height: 1.5;
+            margin-bottom: 2rem;
+        }
+        .widgets {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+        .widget {
+            flex: 1;
+            min-width: 250px;
+            background: #21262d;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+        .widget h3 {
+            margin: 0;
+            color: #f0f6fc;
+        }
+        /* Icon styles */
+        .icon {
+            width: 64px;
+            height: 64px;
+            fill: currentColor;
+            display: inline-block;
+        }
+        .widget-a .icon { color: #3fb950; }
+        .widget-b .icon { color: #f85149; }
+        .description {
+            font-size: 0.875rem;
+            color: #8b949e;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>SVG Sprite Namespace Loader</h1>
+        <p>This demo solves the common <strong>ID collision bug</strong> when multiple components inject SVG sprites containing symbols with identical IDs (e.g., <code>id="icon-check"</code>). The utility dynamically namespaces IDs based on the component name.</p>
+        
+        <div class="widgets">
+            <!-- Widget A -->
+            <div class="widget widget-a" id="widget-a">
+                <h3>Widget A (Success)</h3>
+                <div class="icon-container" id="icon-container-a">
+                    <!-- Icon will be injected here -->
+                </div>
+                <div class="description">Should render a checkmark inside a circle.</div>
+            </div>
+
+            <!-- Widget B -->
+            <div class="widget widget-b" id="widget-b">
+                <h3>Widget B (Alert)</h3>
+                <div class="icon-container" id="icon-container-b">
+                    <!-- Icon will be injected here -->
+                </div>
+                <div class="description">Should render a warning triangle.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- The utility script -->
+    <script src="svg-loader.js" type="module"></script>
+    
+    <!-- Application script -->
+    <script type="module">
+        import { loadAndNamespaceSVG } from './svg-loader.js';
+
+        async function init() {
+            // Both SVGs internally have a symbol with id="icon-check"!
+            // But we will namespace them as 'widget-a' and 'widget-b'.
+
+            // 1. Load Widget A's SVG Sprite
+            await loadAndNamespaceSVG('icons-a.svg', 'widget-a');
+            const containerA = document.getElementById('icon-container-a');
+            containerA.innerHTML = `
+                <svg class="icon" role="img" aria-label="Success">
+                    <use href="#widget-a-icon-check"></use>
+                </svg>
+            `;
+
+            // 2. Load Widget B's SVG Sprite
+            await loadAndNamespaceSVG('icons-b.svg', 'widget-b');
+            const containerB = document.getElementById('icon-container-b');
+            containerB.innerHTML = `
+                <svg class="icon" role="img" aria-label="Alert">
+                    <use href="#widget-b-icon-check"></use>
+                </svg>
+            `;
+        }
+
+        init();
+    </script>
+</body>
+</html>

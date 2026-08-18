@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorting Algorithm Visualizer</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div class="app">
+        <header class="header">
+            <h1 class="header-title">Sorting Algorithm Visualizer</h1>
+            <p class="header-subtitle">Watch how different sorting algorithms compare, swap, and settle into order.</p>
+        </header>
+
+        <section class="controls" aria-label="Controls">
+            <div class="control-group">
+                <label for="algorithm-select" class="control-label">Algorithm</label>
+                <select id="algorithm-select" class="control-select">
+                    <option value="bubble">Bubble Sort</option>
+                    <option value="selection">Selection Sort</option>
+                    <option value="insertion">Insertion Sort</option>
+                    <option value="merge">Merge Sort</option>
+                    <option value="quick">Quick Sort</option>
+                    <option value="heap">Heap Sort</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label for="pattern-select" class="control-label">Pattern</label>
+                <select id="pattern-select" class="control-select">
+                    <option value="random">Random</option>
+                    <option value="nearlySorted">Nearly Sorted</option>
+                    <option value="reverseSorted">Reverse Sorted</option>
+                    <option value="fewUnique">Few Unique</option>
+                    <option value="mountain">Mountain</option>
+                    <option value="valley">Valley</option>
+                    <option value="wave">Wave</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label for="size-slider" class="control-label">Array Size: <span id="size-value">40</span></label>
+                <input type="range" id="size-slider" class="control-slider" min="10" max="200" value="40">
+            </div>
+
+            <div class="control-group">
+                <label for="speed-slider" class="control-label">Speed: <span id="speed-value">5</span></label>
+                <input type="range" id="speed-slider" class="control-slider" min="1" max="10" value="5">
+            </div>
+
+            <div class="control-group">
+                <label for="theme-select" class="control-label">Theme</label>
+                <select id="theme-select" class="control-select">
+                    <option value="dark">Dark</option>
+                    <option value="light">Light</option>
+                    <option value="ocean">Ocean</option>
+                    <option value="neon">Neon</option>
+                    <option value="matrix">Matrix</option>
+                </select>
+            </div>
+
+            <div class="control-group control-buttons">
+                <button id="mute-btn" class="btn btn-secondary" aria-label="Toggle sound">🔊</button>
+                <button id="new-array-btn" class="btn btn-secondary">New Array</button>
+                <button id="start-btn" class="btn btn-primary">Start</button>
+                <button id="reset-btn" class="btn btn-secondary">Reset</button>
+            </div>
+        </section>
+
+        <section class="legend" aria-label="Legend">
+            <span class="legend-item"><span class="legend-swatch swatch-default"></span>Unsorted</span>
+            <span class="legend-item"><span class="legend-swatch swatch-comparing"></span>Comparing</span>
+            <span class="legend-item"><span class="legend-swatch swatch-swapping"></span>Swapping</span>
+            <span class="legend-item"><span class="legend-swatch swatch-pivot"></span>Pivot</span>
+            <span class="legend-item"><span class="legend-swatch swatch-sorted"></span>Sorted</span>
+        </section>
+
+        <main class="visualizer" id="visualizer" aria-label="Sorting visualization"></main>
+
+        <section class="explanation-panel" aria-label="Live Explanation">
+            <div class="explanation-header">
+                <h3>Live Explanation</h3>
+            </div>
+            <p id="explanation-text" class="explanation-text">Select an algorithm and start sorting to see live explanations.</p>
+        </section>
+
+        <section class="stats" aria-label="Statistics">
+            <div class="stat-card">
+                <span class="stat-label">Comparisons</span>
+                <span class="stat-value" id="comparisons-value">0</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">Swaps / Writes</span>
+                <span class="stat-value" id="swaps-value">0</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">Array Reads</span>
+                <span class="stat-value" id="reads-value">0</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">Array Writes</span>
+                <span class="stat-value" id="writes-value">0</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">Current Pass</span>
+                <span class="stat-value" id="pass-value">0</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">Time Elapsed</span>
+                <span class="stat-value" id="time-value">0.0s</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">Sorting Speed</span>
+                <span class="stat-value" id="speed-display">0 ops/s</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">Total Operations</span>
+                <span class="stat-value" id="ops-value">0</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">Status</span>
+                <span class="stat-value" id="status-value">Idle</span>
+            </div>
+        </section>
+
+        <section class="algorithm-info" aria-label="Algorithm Information">
+            <h2 id="algo-name">Bubble Sort</h2>
+            <div class="info-grid">
+                <div class="info-item">
+                    <span class="info-label">Best Case</span>
+                    <span class="info-value" id="algo-best">O(n)</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Average Case</span>
+                    <span class="info-value" id="algo-average">O(n²)</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Worst Case</span>
+                    <span class="info-value" id="algo-worst">O(n²)</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Space</span>
+                    <span class="info-value" id="algo-space">O(1)</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Stable</span>
+                    <span class="info-value" id="algo-stable">Yes</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">In-place</span>
+                    <span class="info-value" id="algo-inplace">Yes</span>
+                </div>
+            </div>
+            <p id="algo-desc" class="info-desc">Bubble Sort repeatedly steps through the list, compares adjacent elements, and swaps them if they are in the wrong order.</p>
+            <div class="info-applications">
+                <strong>Applications:</strong> <span id="algo-applications">Educational purposes, small datasets, checking if array is already sorted.</span>
+            </div>
+        </section>
+
+        <section class="code-viewer" aria-label="Pseudocode Viewer">
+            <h3>Pseudocode</h3>
+            <pre id="pseudocode" class="pseudocode"></pre>
+        </section>
+
+        <section class="education-section" aria-label="Educational Section">
+            <h2>Learn More About This Algorithm</h2>
+            <div class="education-grid">
+                <div class="education-card">
+                    <h3>How It Works</h3>
+                    <p id="edu-how"></p>
+                </div>
+                <div class="education-card">
+                    <h3>Advantages</h3>
+                    <ul id="edu-advantages"></ul>
+                </div>
+                <div class="education-card">
+                    <h3>Disadvantages</h3>
+                    <ul id="edu-disadvantages"></ul>
+                </div>
+                <div class="education-card">
+                    <h3>When To Use</h3>
+                    <p id="edu-when"></p>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <p>Built with vanilla HTML, CSS &amp; JavaScript — no frameworks, no dependencies.</p>
+        </footer>
+    </div>
+
+    <!-- Summary Modal -->
+    <div id="summary-modal" class="modal-overlay" hidden>
+        <div class="modal-content">
+            <span class="modal-close" id="modal-close">&times;</span>
+            <h2>Sorting Complete!</h2>
+            <div class="summary-grid">
+                <div class="summary-item">
+                    <span class="summary-label">Algorithm Used</span>
+                    <span class="summary-value" id="sum-algo">Bubble Sort</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Array Size</span>
+                    <span class="summary-value" id="sum-size">40</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Comparisons</span>
+                    <span class="summary-value" id="sum-comp">0</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Swaps</span>
+                    <span class="summary-value" id="sum-swaps">0</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Elapsed Time</span>
+                    <span class="summary-value" id="sum-time">0s</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Complexity</span>
+                    <span class="summary-value" id="sum-complexity">O(n²)</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Efficiency Rating</span>
+                    <span class="summary-value" id="sum-rating">⭐</span>
+                </div>
+            </div>
+            <div class="modal-buttons">
+                <button id="sum-new-array" class="btn btn-secondary">New Array</button>
+                <button id="sum-run-again" class="btn btn-primary">Run Again</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="./script.js"></script>
+</body>
+</html>

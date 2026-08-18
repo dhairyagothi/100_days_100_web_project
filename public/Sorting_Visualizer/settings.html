@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - Sorting Visualizer</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="app-mode theme-dark">
+    
+    <div class="app-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <i class="fa-solid fa-chart-column"></i>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="index.html" title="Home"><i class="fa-solid fa-house"></i></a>
+                <a href="visualizer.html" title="Visualizer"><i class="fa-solid fa-desktop"></i></a>
+                <a href="settings.html" class="active" title="Settings"><i class="fa-solid fa-gear"></i></a>
+            </nav>
+        </aside>
+
+        <!-- Main Workspace -->
+        <main class="workspace settings-workspace">
+            
+            <header class="settings-header">
+                <h1>Theme Configuration</h1>
+            </header>
+
+            <div class="settings-content">
+                
+                <div class="settings-card">
+                    <h3><i class="fa-solid fa-palette"></i> Bar Colors</h3>
+                    
+                    <div class="setting-group">
+                        <label>Primary Color</label>
+                        <input type="color" id="color-primary" value="#3b82f6">
+                    </div>
+                    
+                    <div class="setting-group">
+                        <label>Comparison Color</label>
+                        <input type="color" id="color-compare" value="#ff0055">
+                    </div>
+
+                    <div class="setting-group">
+                        <label>Swap/Overwrite Color</label>
+                        <input type="color" id="color-swap" value="#ffcc00">
+                    </div>
+                    
+                    <div class="setting-group">
+                        <label>Sorted Color</label>
+                        <input type="color" id="color-sorted" value="#00ff99">
+                    </div>
+                </div>
+
+                <div class="settings-actions">
+                    <button id="btn-reset-colors" class="btn btn-secondary">Reset to Defaults</button>
+                </div>
+
+            </div>
+            
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

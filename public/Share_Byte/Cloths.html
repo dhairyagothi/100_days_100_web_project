@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clothes Donation - AaharShare</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f7f7f7;
+            color: #333;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 180px;
+            height: 100vh;
+            background: #075f2b;
+            padding-top: 25px;
+        }
+
+        .sidebar a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 18px 25px;
+            font-size: 17px;
+        }
+
+        .sidebar a:hover {
+            background: #0b7a38;
+        }
+
+        /* Main content */
+        .main {
+            margin-left: 180px;
+        }
+
+        /* Header */
+        .header {
+            height: 185px;
+            background: #24963d;
+            color: white;
+            text-align: center;
+            padding: 25px;
+            position: relative;
+        }
+
+        .heart {
+            font-size: 55px;
+        }
+
+        .header h1 {
+            font-size: 52px;
+            margin-top: 5px;
+        }
+
+        .back {
+            position: absolute;
+            left: 60px;
+            top: 65px;
+            color: white;
+            text-decoration: none;
+            font-size: 20px;
+            line-height: 1.4;
+        }
+
+        .tagline {
+            position: absolute;
+            right: 60px;
+            top: 65px;
+            font-size: 20px;
+            text-align: left;
+        }
+
+        /* Green banner */
+        .banner {
+            height: 125px;
+            background: #086c2d;
+        }
+
+        /* Content */
+        .content {
+            background: white;
+            min-height: 500px;
+            padding-bottom: 50px;
+        }
+
+        .content h2 {
+            text-align: center;
+            padding: 30px 20px;
+            color: #234568;
+            font-size: 30px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .form-container {
+            max-width: 750px;
+            margin: 35px auto;
+            padding: 30px;
+        }
+
+        .form-container h3 {
+            color: #075f2b;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-top: 18px;
+            margin-bottom: 7px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        textarea {
+            height: 120px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            margin-top: 25px;
+            background: #087a35;
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            font-size: 17px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .submit-btn:hover {
+            background: #055c28;
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                display: flex;
+                overflow-x: auto;
+            }
+
+            .sidebar a {
+                padding: 15px;
+                white-space: nowrap;
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            .header {
+                height: 220px;
+            }
+
+            .back {
+                left: 20px;
+                top: 20px;
+            }
+
+            .tagline {
+                right: 20px;
+                top: 20px;
+                font-size: 15px;
+            }
+
+            .header h1 {
+                font-size: 40px;
+                margin-top: 50px;
+            }
+
+            .banner {
+                height: 80px;
+            }
+
+            .form-container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <div class="sidebar">
+        <a href="index.html">Home</a>
+        <a href="donors.html">Donors</a>
+        <a href="cloth.html">Clothes</a>
+        <a href="food.html">Food</a>
+        <a href="renew.html">Renew</a>
+        <a href="contact.html">Contact</a>
+    </div>
+
+    <!-- Main -->
+    <div class="main">
+
+        <!-- Header -->
+        <header class="header">
+
+            <a href="index.html" class="back">
+                ← Back to<br>Home
+            </a>
+
+            <div class="heart">♥</div>
+
+            <h1>AaharShare</h1>
+
+            <div class="tagline">
+                Connecting surplus<br>
+                with those in need
+            </div>
+
+        </header>
+
+        <div class="banner"></div>
+
+        <!-- Clothes Section -->
+        <section class="content">
+
+            <h2>Donate Clothes</h2>
+
+            <div class="form-container">
+
+                <h3>Share Clothes With Someone in Need</h3>
+
+                <form>
+
+                    <label for="name">Your Name</label>
+                    <input
+                        type="text"
+                        id="name"
+                        placeholder="Enter your name"
+                        required
+                    >
+
+                    <label for="contact">Contact Number</label>
+                    <input
+                        type="tel"
+                        id="contact"
+                        placeholder="Enter your contact number"
+                        required
+                    >
+
+                    <label for="clothes">Type of Clothes</label>
+                    <select id="clothes" required>
+                        <option value="">Select clothes type</option>
+                        <option>Shirts / T-Shirts</option>
+                        <option>Pants / Trousers</option>
+                        <option>Jackets</option>
+                        <option>Sarees</option>
+                        <option>Children's Clothes</option>
+                        <option>Winter Clothes</option>
+                        <option>Other</option>
+                    </select>
+
+                    <label for="quantity">Quantity</label>
+                    <input
+                        type="number"
+                        id="quantity"
+                        placeholder="Number of clothes"
+                        min="1"
+                        required
+                    >
+
+                    <label for="condition">Condition</label>
+                    <select id="condition" required>
+                        <option value="">Select condition</option>
+                        <option>New</option>
+                        <option>Gently Used</option>
+                        <option>Good Condition</option>
+                    </select>
+
+                    <label for="address">Pickup / Donation Address</label>
+                    <textarea
+                        id="address"
+                        placeholder="Enter your address"
+                        required
+                    ></textarea>
+
+                    <button type="submit" class="submit-btn">
+                        Donate Clothes
+                    </button>
+
+                </form>
+
+            </div>
+
+        </section>
+
+    </div>
+
+</body>
+</html>
