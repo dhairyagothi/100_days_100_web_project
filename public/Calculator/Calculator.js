@@ -391,8 +391,7 @@ arr.forEach(button => {
                 // Define the scope mapping so math.js uses the existing custom global functions
                 const scope = {
                     sin, cos, tan, sqrt, ln, log,
-                    asin, acos, atan, exp, tenPower, abs,
-                    pi: Math.PI, e: Math.E
+                    asin, acos, atan, exp, tenPower, abs
                 };
 
                 // Use Math.js evaluate with the custom scope
@@ -517,3 +516,79 @@ document.addEventListener('keydown', (e) => {
         deleteButton?.click();
     }
 });
+
+ fix/calculator-clear-history
+const clearHistoryBtn =
+document.getElementById("clearHistoryBtn");
+
+clearHistoryBtn.addEventListener("click", () => {
+    showConfirmToast(
+        "Clear calculation history?",
+        clearAllHistory
+    );
+});
+
+function clearAllHistory() {
+
+    history = [];
+
+    localStorage.removeItem("calculatorHistory");
+
+    renderHistory();
+
+}
+saveHistory();
+function clearAllHistory() {
+
+    history.length = 0;
+
+    saveHistory();
+
+    renderHistory();
+
+}
+
+const clearHistoryBtn =
+document.getElementById("clearHistoryBtn");
+
+clearHistoryBtn.addEventListener("click", () => {
+
+    showConfirmToast(
+        "Are you sure you want to clear history?",
+        () => {
+
+            history = [];
+
+            localStorage.removeItem("calculatorHistory");
+
+            renderHistory();
+
+        }
+    );
+
+});
+
+// ===== Theme Toggle =====
+function toggleTheme() {
+    document.body.classList.toggle('light-theme');
+    const isLight = document.body.classList.contains('light-theme');
+    localStorage.setItem('calculatorTheme', isLight ? 'light' : 'dark');
+    updateToggleIcon(isLight);
+}
+
+function updateToggleIcon(isLight) {
+    const btn = document.getElementById('themeToggleBtn');
+    if (btn) btn.textContent = isLight ? '☀️' : '🌙';
+}
+
+// Run on page load, before anything else visible
+(function initTheme() {
+    const savedTheme = localStorage.getItem('calculatorTheme');
+    if (savedTheme === 'light') {
+        document.body.classList.add('light-theme');
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+        updateToggleIcon(document.body.classList.contains('light-theme'));
+    });
+})();
+

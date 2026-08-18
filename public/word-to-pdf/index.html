@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WordyPDF - Minimal Word to PDF Converter</title>
+  
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Convert Word (.docx) documents to PDF directly in your browser. Private, secure, and offline-ready with premium layouts.">
+  <meta name="keywords" content="Word to PDF, docx to pdf, client-side converter, private document converter, clean pdf generator">
+  <meta name="author" content="WordyPDF">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- docx-preview Styles -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docx-preview@0.4.0/dist/docx-preview.css">
+  
+  <!-- Core Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Ambient background glow elements -->
+  <div class="ambient-bg"></div>
+
+  <div class="app-wrapper">
+    <!-- Header -->
+    <header class="app-header no-print">
+      <div class="brand">
+        <i class="fa-solid fa-file-word logo-icon"></i>
+        <h1>WordyPDF<span>.</span></h1>
+      </div>
+      <div class="header-actions">
+        <button id="themeToggle" class="icon-btn" aria-label="Toggle Theme">
+          <i class="fa-solid fa-moon"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="converter-container">
+      
+      <!-- Left Column: Controls & Upload -->
+      <section class="workspace-left no-print">
+        <!-- Upload Card -->
+        <div class="card upload-card">
+          <div class="upload-dropzone" id="dropzone">
+            <input type="file" id="fileInput" accept=".docx" class="file-input-hidden">
+            <div class="dropzone-content">
+              <div class="upload-icon-wrapper">
+                <i class="fa-solid fa-file-arrow-up"></i>
+              </div>
+              <h2>Drag & drop your Word document here</h2>
+              <p>Supports .docx files up to 25MB</p>
+              <button type="button" class="btn-browse" id="btnBrowse">Browse File</button>
+            </div>
+          </div>
+          
+          <!-- File info display -->
+          <div id="fileDetails" class="file-details-card hidden">
+            <div class="file-icon-box">
+              <i class="fa-solid fa-file-word"></i>
+            </div>
+            <div class="file-metadata">
+              <h4 id="fileName">document.docx</h4>
+              <p id="fileSize">0 KB</p>
+            </div>
+            <button id="btnRemoveFile" class="btn-remove" title="Remove file">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Settings & Conversion Card -->
+        <div class="card settings-card" id="settingsCard">
+          <h3 class="card-title"><i class="fa-solid fa-sliders"></i> Export Options</h3>
+          
+          <!-- File name config -->
+          <div class="setting-group filename-group">
+            <label for="pdfFilename">Output PDF Name</label>
+            <div class="input-wrapper">
+              <input type="text" id="pdfFilename" class="text-input" placeholder="converted_document" value="converted_document">
+              <span class="file-ext">.pdf</span>
+            </div>
+          </div>
+
+          <!-- Document stats -->
+          <div class="summary-list">
+            <div class="summary-item">
+              <span>Privacy Guard</span>
+              <span class="summary-val text-success"><i class="fa-solid fa-shield-halved"></i> 100% Local</span>
+            </div>
+            <div class="summary-item">
+              <span>Status</span>
+              <span id="docStatus" class="summary-val">No file loaded</span>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="actions-wrapper">
+            <!-- Print to PDF (Recommended Vector version) -->
+            <button type="button" id="btnPrintPdf" class="btn-primary" disabled>
+              <i class="fa-solid fa-print"></i> Save as PDF (Vector)
+            </button>
+            
+            <!-- Direct download fallback -->
+            <button type="button" id="btnDownloadPdf" class="btn-secondary" disabled>
+              <i class="fa-solid fa-download"></i> Direct Download (Image PDF)
+            </button>
+          </div>
+          
+          <div class="conversion-note">
+            <p><i class="fa-solid fa-circle-info"></i> <strong>Save as PDF (Vector)</strong> is highly recommended. It opens the browser print engine to generate searchable text, clickable links, and razor-sharp printing.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right Column: Document Preview Workspace -->
+      <section class="workspace-right">
+        <div class="preview-panel">
+          <div class="preview-header no-print">
+            <h3><i class="fa-solid fa-eye"></i> Document Preview</h3>
+            <div class="preview-controls">
+              <button id="btnZoomOut" class="btn-icon" title="Zoom Out" disabled><i class="fa-solid fa-minus"></i></button>
+              <span id="zoomLevel" class="zoom-value">100%</span>
+              <button id="btnZoomIn" class="btn-icon" title="Zoom In" disabled><i class="fa-solid fa-plus"></i></button>
+              <div class="divider"></div>
+              <button id="btnToggleWidth" class="btn-icon" title="Fit to Width" disabled><i class="fa-solid fa-arrows-left-right"></i></button>
+            </div>
+          </div>
+          
+          <div class="preview-body" id="previewBody">
+            <div class="empty-state no-print" id="emptyState">
+              <i class="fa-regular fa-file-word"></i>
+              <h4>Document Preview Workspace</h4>
+              <p>Upload a .docx file to view its formatting, page structure, and layout before converting.</p>
+            </div>
+            <!-- Element where docx-preview renders standard HTML -->
+            <div id="docxContainer" class="docx-container"></div>
+          </div>
+        </div>
+      </section>
+      
+    </main>
+
+    <!-- Overlay Loader -->
+    <div class="overlay hidden no-print" id="loaderOverlay">
+      <div class="loader-card">
+        <div class="spinner"></div>
+        <h3 id="loaderTitle">Reading document...</h3>
+        <p id="loaderMessage">Extracting file packages locally.</p>
+      </div>
+    </div>
+
+    <!-- Instruction Overlay for Print-to-PDF -->
+    <div class="overlay hidden no-print" id="printGuideOverlay">
+      <div class="guide-card">
+        <div class="guide-icon"><i class="fa-solid fa-print"></i></div>
+        <h3>Preparing PDF...</h3>
+        <p>We are opening the browser print system to export your PDF.</p>
+        
+        <div class="instructions-steps">
+          <div class="step-item">
+            <span class="step-num">1</span>
+            <p>Set <strong>Destination</strong> to <strong>"Save as PDF"</strong> or <strong>"Microsoft Print to PDF"</strong>.</p>
+          </div>
+          <div class="step-item">
+            <span class="step-num">2</span>
+            <p>Turn on <strong>Background graphics</strong> (under More settings) to preserve background colors/images.</p>
+          </div>
+          <div class="step-item">
+            <span class="step-num">3</span>
+            <p>Click <strong>Save</strong> and choose your local folder!</p>
+          </div>
+        </div>
+        
+        <button id="btnGotIt" class="btn-primary">Got it, proceed</button>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="app-footer no-print">
+      <p>WordyPDF &bull; Offline Privacy First. All rendering and generation occurs locally.</p>
+    </footer>
+  </div>
+
+  <!-- Dependencies -->
+  <!-- JSZip (Required for docx-preview) -->
+  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+  <!-- docx-preview -->
+  <script src="https://cdn.jsdelivr.net/npm/docx-preview@0.4.0/dist/docx-preview.min.js"></script>
+  <!-- html2pdf.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+  <!-- Main Logic -->
+  <script src="script.js"></script>
+</body>
+</html>

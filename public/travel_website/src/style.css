@@ -50,8 +50,39 @@ html, body, #app {
   top: 0;
   left: 0;
   width: 100%;
+ fix/travel-landing-page-ui
+  height: 100%;
+  object-fit: cover;
+  margin: 0;
+    padding: 0; 
+    
+
+}
+.video :before{
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;    
+    height: 100%;
+    z-index: 111;
+    background-color: rgb(3 5 7 / 52%);
+}
+
+
+.content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 50px 20px;
+    background: #004d7d;
+    color: white;
+    text-align: center;
+
   z-index: 1001;
   background: linear-gradient(to bottom, rgba(0,0,0,0.6), transparent);
+ Main
 }
 
 .navbar {
@@ -95,6 +126,41 @@ html, body, #app {
 .nav-item::after {
   content: '';
   position: absolute;
+ fix/travel-landing-page-ui
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  color: white;
+  font-size: 50px;
+  font-weight: 700;
+  text-align: center;
+}
+@media screen and (max-width: 768px){
+  video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    margin: 0;
+      padding: 0; 
+      
+  
+  }
+  ul {
+    display: none;
+  }
+  .navbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:20px 50px;
+    position:absolute;
+    width:100%;
+    top:0;
+    left:0;
+    z-index:100;
+    box-sizing:border-box;
+
   bottom: 0;
   left: 0;
   width: 0;
@@ -112,12 +178,26 @@ html, body, #app {
   width: 100%;
   height: 100vh;
   position: relative;
+ Main
 }
 
 .swiper {
   width: 100%;
   height: 100%;
 }
+ fix/travel-landing-page-ui
+.head{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  margin: 0;
+  padding: 0;
+  font-size: 32px;
+  text-align: center;
+  color: white;
+
 
 .swiper-slide {
   position: relative;
@@ -172,6 +252,7 @@ video {
 .swiper-button-prev:hover {
   background: rgba(255, 255, 255, 0.3);
   transform: scale(1.1);
+ Main
 }
 
 .swiper-button-next::after,

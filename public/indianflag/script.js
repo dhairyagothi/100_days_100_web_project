@@ -1,97 +1,129 @@
-const quotes = [
-      {
-        text: "Give me blood and I will give you freedom.",
-        author: "— Subhas Chandra Bose",
-        image: "./img/subhas_bose.png",
-      },
-      {
-        text: "Swaraj is my birthright and I shall have it.",
-        author: "— Bal Gangadhar Tilak",
-        image: "./img/bal_tilak.png",
-      },
-      {
-        text: "Inquilab Zindabad.",
-        author: "— Bhagat Singh",
-        image: "./img/bhagat_singh.jpg",
-      },
-      {
-        text: "Jai Hind!",
-        author: "— Netaji Subhas Chandra Bose",
-        image: "./img/subhas_bose.png",
-      },
-      {
-        text: "Karo ya maro.",
-        author: "— Mahatma Gandhi",
-        image: "./img/gandhi.png",
-      },
-    ];
+const themeToggleButton = document.getElementById("themeToggle");
+const themeToggleIcon = themeToggleButton?.querySelector(".theme-toggle-icon");
+const themeToggleLabel = themeToggleButton?.querySelector(".theme-toggle-label");
+let quoteInterval;
+function syncThemeToggleUI() {
+  const isLightTheme = document.body.classList.contains("light-mode");
 
-    let currentQuoteIndex = 0;
+  if (themeToggleIcon) {
+    themeToggleIcon.textContent = isLightTheme ? "☀️" : "🌙";
+  }
 
-    const quoteText = document.getElementById("quote-text");
-    const quoteAuthor = document.getElementById("quote-author");
-    const patriotImage = document.getElementById("patriot-image");
+  if (themeToggleLabel) {
+    themeToggleLabel.textContent = isLightTheme ? "Light mode" : "Dark mode";
+  }
 
-    function displayQuote() {
-      const currentQuote = quotes[currentQuoteIndex];
+  if (themeToggleButton) {
+    themeToggleButton.setAttribute(
+      "aria-label",
+      isLightTheme ? "Switch to dark mode" : "Switch to light mode"
+    );
+  }
+}
+function startQuoteRotation() {
+  clearInterval(quoteInterval);
 
-      quoteText.textContent = currentQuote.text;
-      quoteAuthor.textContent = currentQuote.author;
-      patriotImage.src = currentQuote.image;
-    }
+  quoteInterval = setInterval(() => {
+    currentQuoteIndex =
+      (currentQuoteIndex + 1) % quotes.length;
 
     displayQuote();
+  }, 5000);
+}
 
-    setInterval(() => {
-      currentQuoteIndex =
-        (currentQuoteIndex + 1) % quotes.length;
+window.addEventListener("themechange", syncThemeToggleUI);
+syncThemeToggleUI();
 
-      displayQuote();
-    }, 5000);
+const quotes = [
+  {
+    text: "Give me blood and I will give you freedom.",
+    author: "— Subhas Chandra Bose",
+    image: "./img/subhas_bose.png",
+  },
+  {
+    text: "Swaraj is my birthright and I shall have it.",
+    author: "— Bal Gangadhar Tilak",
+    image: "./img/bal_tilak.png",
+  },
+  {
+    text: "Inquilab Zindabad.",
+    author: "— Bhagat Singh",
+    image: "./img/bhagat_singh.jpg",
+  },
+  {
+    text: "Jai Hind!",
+    author: "— Netaji Subhas Chandra Bose",
+    image: "./img/subhas_bose.png",
+  },
+  {
+    text: "Karo ya maro.",
+    author: "— Mahatma Gandhi",
+    image: "./img/gandhi.png",
+  },
+];
 
-    document
-      .getElementById("prev-quote")
-      .addEventListener("click", () => {
+let currentQuoteIndex = 0;
 
-        currentQuoteIndex =
-          (currentQuoteIndex - 1 + quotes.length) %
-          quotes.length;
+const quoteText = document.getElementById("quote-text");
+const quoteAuthor = document.getElementById("quote-author");
+const patriotImage = document.getElementById("patriot-image");
 
-        displayQuote();
-      });
+function displayQuote() {
+  const currentQuote = quotes[currentQuoteIndex];
 
-    document
-      .getElementById("next-quote")
-      .addEventListener("click", () => {
+  quoteText.textContent = currentQuote.text;
+  quoteAuthor.textContent = currentQuote.author;
+  patriotImage.src = currentQuote.image;
+}
 
-        currentQuoteIndex =
-          (currentQuoteIndex + 1) %
-          quotes.length;
+displayQuote();
 
-        displayQuote();
-      });
+startQuoteRotation();
 
-    // Text to Speech
-    document
-      .getElementById("speak-quote")
-      .addEventListener("click", () => {
+document
+  .getElementById("prev-quote")
+  .addEventListener("click", () => {
 
-        const speech = new SpeechSynthesisUtterance(
-          `${quotes[currentQuoteIndex].text} by ${quotes[currentQuoteIndex].author}`
-        );
+    currentQuoteIndex =
+      (currentQuoteIndex - 1 + quotes.length) %
+      quotes.length;
 
-        speech.rate = 0.95;
-        speech.pitch = 1;
+    displayQuote();
+  });
 
-        window.speechSynthesis.cancel();
-        window.speechSynthesis.speak(speech);
-      });
+document
+  .getElementById("next-quote")
+  .addEventListener("click", () => {
 
-    // Music autoplay fallback
-    const music = document.getElementById("bgMusic");
+    currentQuoteIndex =
+      (currentQuoteIndex + 1) %
+      quotes.length;
 
-    window.addEventListener("load", () => {
-      music.play().catch(() => {
-        console.log("Autoplay blocked");
-      });
-    });
+    displayQuote();
+    startQuoteRotation();
+  });
+
+// Text to Speech
+document
+  .getElementById("speak-quote")
+  .addEventListener("click", () => {
+
+    const speech = new SpeechSynthesisUtterance(
+      `${quotes[currentQuoteIndex].text} by ${quotes[currentQuoteIndex].author}`
+    );
+
+    speech.rate = 0.95;
+    speech.pitch = 1;
+
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(speech);
+  });
+
+// Music autoplay fallback
+const music = document.getElementById("bgMusic");
+
+window.addEventListener("load", () => {
+  music.play().catch(() => {
+    console.log("Autoplay blocked");
+  });
+});

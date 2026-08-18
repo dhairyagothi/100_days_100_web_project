@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const navItems = document.querySelectorAll('.nav-item');
     navItems.forEach(item => {
         item.addEventListener('click', () => {
-            if (window.innerWidth < 768) {
+            if (window.innerWidth < 768 && sidebar) {
                 sidebar.classList.remove('open');
             }
         });
@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Close sidebar when clicking outside on mobile
     document.addEventListener('click', (e) => {
-        if (window.innerWidth < 768) {
+        if (window.innerWidth < 768 && sidebar && sidebarTrigger) {
             if (!sidebar.contains(e.target) && !sidebarTrigger.contains(e.target)) {
                 sidebar.classList.remove('open');
             }

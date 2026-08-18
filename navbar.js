@@ -163,10 +163,6 @@
   const customCursorEnabled =
     safeStorage.getItem("customCursorEnabled") !== "false";
   const cursorBtn = `
-    <button class="btn btn-ghost btn-sm" id="cursorToggleNav" aria-label="Toggle custom cursor (currently ${customCursorEnabled ? "Custom" : "Default"})">
-      <span class="mobile-nav-icon"><i class="fas ${customCursorEnabled ? "fa-circle-notch" : "fa-mouse-pointer"}" aria-hidden="true"></i></span>
-      Cursor: ${customCursorEnabled ? "Custom" : "Default"}
-    </button>
   `;
 
   let navButtonsHTML = "";
@@ -184,7 +180,7 @@
     `;
     navButtonsHTML = `${themeBtn} ${cursorBtn} ${homeBtn} ${learnBtn} ${contributorsBtn} ${readmeBtn} ${githubBtn} ${userSection}`;
   } else {
-    const signinBtn = `<a class="btn btn-primary btn-sm" id="navSignInCta" href="${base}public/Login.html">Sign in</a>`;
+    const signinBtn = `<button class="btn btn-primary btn-sm" id="navSignInCta">Sign in</button>`;
     navButtonsHTML = `${themeBtn} ${cursorBtn} ${homeBtn} ${learnBtn} ${contributorsBtn} ${readmeBtn} ${githubBtn} ${signinBtn}`;
   }
 
@@ -364,6 +360,25 @@
           `Toggle custom cursor (currently ${nextState ? "Custom" : "Default"})`,
         );
       });
+    }
+  });
+
+  // Sign In Click Logic
+  document.addEventListener("click", (event) => {
+    const signInBtn = event.target.closest("#navSignInCta");
+    if (!signInBtn) return;
+    event.preventDefault();
+    const name = prompt("Enter your name/nickname to personalize your experience:");
+    if (name && name.trim()) {
+      const trimmed = name.trim();
+      safeStorage.setItem("loggedInUser", trimmed);
+      safeStorage.setItem("loggedInUserData", JSON.stringify({
+        username: trimmed,
+        name: trimmed,
+        authAction: "login",
+        loginTime: Date.now()
+      }));
+      location.reload();
     }
   });
 })();

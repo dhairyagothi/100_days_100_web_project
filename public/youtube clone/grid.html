@@ -1,62 +1,208 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Grid</title>
-  </head>
-  <body style="padding-bottom: 1000px;">
-    <div style="
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS Grid Demo</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: #f4f7fc;
+      padding: 40px;
+      color: #333;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 40px;
+      color: #1e293b;
+      font-size: 2.5rem;
+    }
+
+    .section {
+      background: white;
+      padding: 25px;
+      margin-bottom: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .section-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+      color: #475569;
+    }
+
+    .grid {
       display: grid;
+    }
+
+    .card {
+      padding: 20px;
+      border-radius: 10px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    }
+
+    .blue {
+      background: #cfe8ff;
+      color: #0f172a;
+    }
+
+    .pink {
+      background: #ffd6e5;
+      color: #0f172a;
+    }
+
+    /* Example 1 */
+    .grid-1 {
       grid-template-columns: 100px 100px;
-    ">
-      <div style="background-color: lightblue;">div 1</div>
-      <div style="background-color: lightpink;">div 2<p>text</p></div>
-    </div>
+    }
 
-    <div style="
-      margin-top: 30px;
-      display: grid;
+    /* Example 2 */
+    .grid-2 {
       grid-template-columns: 100px 100px 200px;
-    ">
-      <div style="background-color: lightblue;">100px</div>
-      <div style="background-color: lightpink;">100px<p>text</p></div>
-      <div style="background-color: lightblue;">200px</div>
-      <div style="background-color: lightpink;">100px</div>
-    </div>
+    }
 
-    <div style="
-      margin-top: 30px;
-      display: grid;
+    /* Example 3 */
+    .grid-3 {
       grid-template-columns: 100px 1fr;
-    ">
-      <div style="background-color: lightblue;">100px</div>
-      <div style="background-color: lightpink;">1fr</div>
-    </div>
+    }
 
-    <div style="
-      margin-top: 30px;
-      display: grid;
+    /* Example 4 */
+    .grid-4 {
       grid-template-columns: 100px 1fr 2fr;
-    ">
-      <div style="background-color: lightblue;">100px</div>
-      <div style="background-color: lightpink;">1fr</div>
-      <div style="background-color: lightblue;">2fr</div>
+    }
+
+    /* Example 5 */
+    .grid-5 {
+      grid-template-columns: repeat(3, 1fr);
+      column-gap: 20px;
+      row-gap: 30px;
+    }
+
+    .tall {
+      height: 200px;
+    }
+
+    p {
+      margin-top: 10px;
+      font-weight: normal;
+    }
+
+    @media (max-width: 768px) {
+      .grid-5,
+      .grid-4,
+      .grid-3,
+      .grid-2,
+      .grid-1 {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <h1>CSS Grid Layout Examples</h1>
+
+    <!-- Example 1 -->
+    <div class="section">
+      <div class="section-title">
+        grid-template-columns: 100px 100px
+      </div>
+
+      <div class="grid grid-1">
+        <div class="card blue">div 1</div>
+        <div class="card pink">
+          div 2
+          <p>Text content</p>
+        </div>
+      </div>
     </div>
 
-    <div style="
-      margin-top: 30px;
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      column-gap: 20px;
-      row-gap: 40px;
-    ">
-      <div style="background-color: lightblue; height: 200px;">1fr</div>
-      <div style="background-color: lightpink; height: 200px;">1fr</div>
-      <div style="background-color: lightblue; height: 200px;">1fr</div>
-      <div style="background-color: lightpink; height: 200px;">1fr</div>
-      <div style="background-color: lightblue; height: 200px;">1fr</div>
-      <div style="background-color: lightpink; height: 200px;">1fr</div>
+    <!-- Example 2 -->
+    <div class="section">
+      <div class="section-title">
+        grid-template-columns: 100px 100px 200px
+      </div>
+
+      <div class="grid grid-2">
+        <div class="card blue">100px</div>
+
+        <div class="card pink">
+          100px
+          <p>Text content</p>
+        </div>
+
+        <div class="card blue">200px</div>
+
+        <div class="card pink">Next Row Item</div>
+      </div>
     </div>
-  </body>
+
+    <!-- Example 3 -->
+    <div class="section">
+      <div class="section-title">
+        grid-template-columns: 100px 1fr
+      </div>
+
+      <div class="grid grid-3">
+        <div class="card blue">100px</div>
+        <div class="card pink">1fr</div>
+      </div>
+    </div>
+
+    <!-- Example 4 -->
+    <div class="section">
+      <div class="section-title">
+        grid-template-columns: 100px 1fr 2fr
+      </div>
+
+      <div class="grid grid-4">
+        <div class="card blue">100px</div>
+        <div class="card pink">1fr</div>
+        <div class="card blue">2fr</div>
+      </div>
+    </div>
+
+    <!-- Example 5 -->
+    <div class="section">
+      <div class="section-title">
+        3 Equal Columns with Gap
+      </div>
+
+      <div class="grid grid-5">
+        <div class="card blue tall">1fr</div>
+        <div class="card pink tall">1fr</div>
+        <div class="card blue tall">1fr</div>
+        <div class="card pink tall">1fr</div>
+        <div class="card blue tall">1fr</div>
+        <div class="card pink tall">1fr</div>
+      </div>
+    </div>
+
+  </div>
+
+</body>
 </html>

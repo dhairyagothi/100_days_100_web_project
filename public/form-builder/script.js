@@ -1,4 +1,4 @@
-// script.js - FormForge Dark Form Builder
+// script.js - FormForge Dark Form Builder with Theme Toggle
 
 const TEMPLATES = {
   contact: [
@@ -38,6 +38,42 @@ document.addEventListener("DOMContentLoaded", () => {
   let analytics = { errors: {}, interactions: {}, submissions: 0, starts: 0 };
   let versions = [];
   const MAX_VERSIONS = 20;
+
+  // ── Theme Toggle ──────────────────────────────────────────────────────────
+  const themeToggle = document.getElementById('themeToggle');
+  const themeLabel = document.getElementById('themeLabel');
+  const htmlEl = document.documentElement;
+
+  function setTheme(theme) {
+    if (theme === 'light') {
+      htmlEl.setAttribute('data-theme', 'light');
+      themeLabel.textContent = 'Light';
+      localStorage.setItem('formforge-theme', 'light');
+    } else {
+      htmlEl.removeAttribute('data-theme');
+      themeLabel.textContent = 'Dark';
+      localStorage.setItem('formforge-theme', 'dark');
+    }
+  }
+
+  // Load saved theme (default to dark)
+  const savedTheme = localStorage.getItem('formforge-theme') || 'dark';
+  setTheme(savedTheme);
+
+  themeToggle.addEventListener('click', function(e) {
+    e.stopPropagation();
+    // Check if light theme is currently active
+    const isLight = htmlEl.getAttribute('data-theme') === 'light';
+    setTheme(isLight ? 'dark' : 'light');
+  });
+
+  // Keyboard support for toggle
+  themeToggle.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      themeToggle.click();
+    }
+  });
 
   // ── Wizard helpers ──────────────────────────────────────────────────────────
   function getSteps() {
@@ -216,7 +252,10 @@ document.addEventListener("DOMContentLoaded", () => {
   // ── Properties panel ────────────────────────────────────────────────────────
   function showProperties() {
     const field = fields.find(f => f.id === selectedFieldId);
-    if (!field) return;
+    if (!field) {
+      propertiesContent.innerHTML = `<p class="text-muted">Select a field to edit its properties</p>`;
+      return;
+    }
 
     let html = `
       <div class="mb-3">

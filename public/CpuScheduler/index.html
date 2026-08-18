@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CPU Scheduler Simulator</title>
-  <link rel="stylesheet" href="/public/CpuScheduler/style.css" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
@@ -135,6 +135,17 @@
           <div class="legend-wrap" id="ganttLegend"></div>
         </div>
 
+        function showError(message) {
+            elements.errorText.textContent = message;
+            elements.errorMessage.classList.remove('hidden');
+            elements.results.style.display = 'none';
+            elements.outputTable.innerHTML = '';
+            elements.ganttChart.innerHTML = '';
+            elements.processLegend.innerHTML = '';
+            elements.metricsPanel.innerHTML = '';
+            elements.analysisContent.innerHTML = '';
+            elements.errorMessage.scrollIntoView({ behavior: 'smooth' });
+        }
         <!-- Process results table -->
         <div class="section">
           <div class="section-title">Process Results</div>
@@ -197,6 +208,6 @@
 <!-- Toast notification -->
 <div class="toast" id="toast"></div>
 
-<script src="/public/CpuScheduler/script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
