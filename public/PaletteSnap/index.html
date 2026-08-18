@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PaletteSnap</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="container">
+    <div class="hero">
+      <h1>🎨 PaletteSnap</h1>
+      <p>
+        Upload any image and instantly extract beautiful dominant colors,
+        gradients, and hex palettes.
+      </p>
+
+      <label class="upload-btn">
+        <input type="file" id="imageInput" accept="image/*" />
+        Upload Image
+      </label>
+    </div>
+
+    <div class="image-wrapper">
+      <img id="previewImage" alt="Preview Image" />
+    </div>
+
+    <section class="palette-section">
+      <div class="section-title">
+        <h2>Dominant Colors</h2>
+      </div>
+
+      <div id="paletteContainer"></div>
+    </section>
+
+    <section class="gradient-section">
+      <div class="section-title">
+        <h2>Gradient Suggestion</h2>
+      </div>
+
+      <div id="gradientPreview"></div>
+      <p id="gradientCode"></p>
+    </section>
+
+    <canvas id="canvas"></canvas>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
