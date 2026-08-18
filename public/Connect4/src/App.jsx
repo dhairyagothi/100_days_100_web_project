@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 
 const ROWS = 6;
@@ -15,6 +15,16 @@ export default function App() {
   const [winner, setWinner] = useState(null);
   const [gameMode, setGameMode] = useState("pvp");
   const [aiThinking, setAiThinking] = useState(false);
+
+  const aiTimeoutRef = useRef(null);
+
+  useEffect(() => {
+    return () => {
+      if (aiTimeoutRef.current) {
+        clearTimeout(aiTimeoutRef.current);
+      }
+    };
+  }, []);
 
   const checkWinner = (grid, row, col, color) => {
     const directions = [
@@ -107,7 +117,11 @@ export default function App() {
     ) {
       setAiThinking(true);
 
-      setTimeout(() => {
+      if (aiTimeoutRef.current) {
+        clearTimeout(aiTimeoutRef.current);
+      }
+
+      aiTimeoutRef.current = setTimeout(() => {
         aiMove(newBoard);
         setAiThinking(false);
       }, 500);
@@ -193,6 +207,10 @@ export default function App() {
   };
 
   const resetGame = () => {
+    if (aiTimeoutRef.current) {
+      clearTimeout(aiTimeoutRef.current);
+      aiTimeoutRef.current = null;
+    }
     setBoard(createBoard());
     setWinner(null);
     setPlayer("red");

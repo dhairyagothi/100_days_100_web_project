@@ -82,14 +82,50 @@ function analyzeSMS() {
   }
 
   // normalize score
-  let risk = Math.min((score / 14) * 100, 100);
+  // normalize score
+let risk = Math.min((score / 14) * 100, 100);
 
+// Build explanation
+let explanation = [];
+
+if (tags.includes("Urgency tactic")) {
+  explanation.push(
+    "This message uses urgency-based language to pressure the recipient into acting quickly."
+  );
+}
+
+if (tags.includes("Suspicious link prompt") || tags.includes("URL / Link presence")) {
+  explanation.push(
+    "The message contains a link, which is a common technique used in phishing and scam campaigns."
+  );
+}
+
+if (tags.includes("Bank impersonation")) {
+  explanation.push(
+    "The message references banking-related terms that are frequently used in financial phishing attacks."
+  );
+}
+
+if (tags.includes("Fake verification attempt")) {
+  explanation.push(
+    "Requests to verify account information are often used to steal credentials."
+  );
+}
+
+if (!explanation.length) {
+  explanation.push(
+    "No major scam indicators were detected based on the current analysis rules."
+  );
+}
   // UI updates
   document.getElementById("score").innerText =
     `Risk Score: ${Math.round(risk)}%`;
 
   document.getElementById("tags").innerText =
     tags.length ? "Detected: " + tags.join(" • ") : "No suspicious patterns detected";
+
+  document.getElementById("analysis").innerText =
+  "Analysis: " + explanation.join(" ");
 
   let bar = document.getElementById("bar");
   bar.style.width = risk + "%";

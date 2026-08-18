@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Core8 - 8-Bit Virtual Machine CPU Emulator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="emulator-container">
+        <main class="ide-panel">
+            <header class="panel-header">
+                <h2>🛠️ Assembly Editor</h2>
+                <div class="execution-controls">
+                    <button id="btn-assemble" class="btn primary-btn">⚡ Compile</button>
+                    <button id="btn-step" class="btn secondary-btn" disabled>🎬 Step</button>
+                    <button id="btn-run" class="btn success-btn" disabled>▶️ Run Machine</button>
+                    <button id="btn-reset" class="btn danger-btn">🔄 Reset</button>
+                </div>
+            </header>
+
+            <div class="editor-area">
+                <textarea id="assembly-input" spellcheck="false" autocomplete="off"
+                    placeholder="; Write 8-bit Assembly code here...&#10;MOV A, 5       ; Load 5 into Register A&#10;MOV B, 3       ; Load 3 into Register B&#10;ADD A, B       ; Add B to A (A = A + B)&#10;HALT           ; Terminate execution loop"></textarea>
+            </div>
+
+            <footer class="console-log">
+                <div class="console-title">🖥️ Compiler Output Logs</div>
+                <div id="console-output">System idle. Awaiting compilation pass...</div>
+            </footer>
+        </main>
+
+        <aside class="hardware-panel">
+            <section class="hardware-section">
+                <h3>💾 CPU Registers</h3>
+                <div class="registers-grid">
+                    <div class="register-card"><span class="reg-label">Reg A (Accumulator)</span><span class="reg-val"
+                            id="reg-a">00</span></div>
+                    <div class="register-card"><span class="reg-label">Reg B</span><span class="reg-val"
+                            id="reg-b">00</span></div>
+                    <div class="register-card"><span class="reg-label">Reg C</span><span class="reg-val"
+                            id="reg-c">00</span></div>
+                    <div class="register-card"><span class="reg-label">Reg D</span><span class="reg-val"
+                            id="reg-d">00</span></div>
+                    <div class="register-card highlighted"><span class="reg-label">Program Counter (PC)</span><span
+                            class="reg-val" id="reg-pc">00</span></div>
+                    <div class="register-card"><span class="reg-label">Status Flags (Z | C)</span><span class="reg-val"
+                            id="reg-flags">Z:0 C:0</span></div>
+                </div>
+            </section>
+
+            <section class="hardware-section">
+                <h3>🧠 Virtual System RAM Array</h3>
+                <div class="ram-grid" id="ram-matrix">
+                </div>
+            </section>
+        </aside>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

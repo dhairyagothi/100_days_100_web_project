@@ -1,79 +1,41 @@
 // js/savingsManager.js
+import { saveData, loadData } from './storage.js';
 
-import {
-  saveGoals,
-} from "./storage.js";
+let savingsGoals = loadData('savingsGoals');
 
-export const renderGoals = (
-  goals
-) => {
+export function addGoal(goal) {
+    if (!goal.id) {
+        goal.id = Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    }
+    if (!goal.saved) goal.saved = 0;
+    if (!goal.createdAt) goal.createdAt = new Date().toISOString();
+    savingsGoals.push(goal);
+    saveData('savingsGoals', savingsGoals);
+    return goal;
+}
 
-  const container =
-    document.getElementById(
-      "goalsContainer"
-    );
+export function getGoals() {
+    return savingsGoals;
+}
 
-  if (!container) return;
+export function deleteGoal(index) {
+    if (index >= 0 && index < savingsGoals.length) {
+        savingsGoals.splice(index, 1);
+        saveData('savingsGoals', savingsGoals);
+        return true;
+    }
+    return false;
+}
 
-  container.innerHTML = "";
+export function updateGoalProgress(index, savedAmount) {
+    if (index >= 0 && index < savingsGoals.length) {
+        savingsGoals[index].saved = savedAmount;
+        saveData('savingsGoals', savingsGoals);
+        return savingsGoals[index];
+    }
+    return null;
+}
 
-  goals.forEach((goal) => {
-
-    const percentage =
-      Math.min(
-        (
-          goal.saved
-          / goal.target
-        ) * 100,
-        100
-      );
-
-    const card =
-      document.createElement("div");
-
-    card.className =
-      "goal-card";
-
-    card.innerHTML = `
-
-      <h3>${goal.name}</h3>
-
-      <div class="goal-progress">
-
-        <div
-          class="goal-progress-fill"
-          style="width:${percentage}%"
-        ></div>
-
-      </div>
-
-      <div class="goal-meta">
-
-        <span>
-          Saved:
-          $${goal.saved}
-        </span>
-
-        <span>
-          Goal:
-          $${goal.target}
-        </span>
-
-      </div>
-    `;
-
-    container.appendChild(card);
-  });
-};
-
-export const addGoal = (
-  goals,
-  goal
-) => {
-
-  goals.push(goal);
-
-  saveGoals(goals);
-
-  return goals;
-};
+export function getGoalById(id) {
+    return savingsGoals.find(g => g.id === id);
+}
