@@ -1494,3 +1494,38 @@ button, input, select {
   from { transform: translateX(-100%); }
   to { transform: translateX(0); }
 }
+
+/* ==========================================================
+   Back to Home Button
+   ========================================================== */
+
+.editor-header-actions {
+  display: flex;
+  justify-content: flex-start;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-editor);
+}
+
+.project-back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  border-radius: var(--radius-md);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  text-decoration: none;
+  font-weight: 600;
+  transition: var(--transition);
+}
+
+.project-back-button:hover {
+  background: var(--bg-card-hover);
+  transform: translateY(-2px);
+}
+
+.app-container.distraction-free .editor-header-actions {
+    padding-left: 65px;
+}

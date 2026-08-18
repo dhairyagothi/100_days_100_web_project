@@ -1,18 +1,27 @@
 const UI = {
-  form: document.getElementById("searchForm") || document.querySelector(".modern-search-form"),
-  input: document.getElementById("usernameInput") || document.querySelector(".search-input-container input"),
-  statusBox: document.getElementById("statusBox") || document.querySelector(".status-banner"),
+  form: document.getElementById("searchForm"),
+  input: document.getElementById("usernameInput"),
+  statusBox: document.getElementById("statusBox"),
+
   profileCard: document.getElementById("profileCard"),
-  metricsPanel: document.getElementById("metricsPanel"),
   reposSection: document.getElementById("reposSection"),
   reposList: document.getElementById("reposList"),
+
+  analyticsPanel: document.getElementById("analyticsPanel"),
+  heatmapGrid: document.getElementById("heatmapGrid"),
+  languageLegend: document.getElementById("languageLegend"),
+  languagePie: document.querySelector(".language-pie"),
+  topLanguagePercent: document.getElementById("topLanguagePercent"),
+  topLanguageName: document.getElementById("topLanguageName"),
+
   themeToggle: document.getElementById("themeToggle"),
   themeIcon: document.getElementById("themeIcon"),
   offlineIndicator: document.getElementById("offlineIndicator"),
-  exportPdfBtn: document.getElementById("exportPdfBtn"),
+
   compareForm: document.getElementById("compareForm"),
   compareA: document.getElementById("compareA"),
   compareB: document.getElementById("compareB"),
+
   comparisonPanel: document.getElementById("comparisonPanel"),
   comparisonContainer: document.getElementById("comparisonContainer")
 };
@@ -22,644 +31,1665 @@ const Nodes = {
   name: document.getElementById("name"),
   username: document.getElementById("username"),
   bio: document.getElementById("bio"),
+
   location: document.getElementById("location"),
   company: document.getElementById("company"),
   website: document.getElementById("website"),
   joined: document.getElementById("joined"),
+
   repoCount: document.getElementById("repoCount"),
   followers: document.getElementById("followers"),
   following: document.getElementById("following"),
   gists: document.getElementById("gists"),
+
   profileLink: document.getElementById("profileLink")
 };
 
-let searchResultsContainer = document.getElementById("searchResultsContainer");
-if (!searchResultsContainer) {
-  searchResultsContainer = document.createElement("div");
-  searchResultsContainer.id = "searchResultsContainer";
-  searchResultsContainer.style.cssText = `
-    display: none;
-    margin-top: 1rem;
-    border-radius: var(--radius-md, 16px);
-    overflow: hidden;
-    background: var(--card);
-    border: 1px solid var(--card-border);
-    box-shadow: var(--shadow);
-  `;
-  
-  const targetWorkspace = document.querySelector(".search-workspace");
-  if (targetWorkspace) {
-    targetWorkspace.appendChild(searchResultsContainer);
-  } else if (UI.form && UI.form.parentNode) {
-    UI.form.parentNode.appendChild(searchResultsContainer);
-  } else {
-    document.body.appendChild(searchResultsContainer);
-  }
-}
-
 const CACHE_DURATION = 300000;
-let liveSearchDebounceTimer = null;
 
-// Removed inlined worker and synthetic analytics to keep comparisons data-driven
+const activeCounterIntervals = [];
+
+/* =========================================================
+   CACHE ENGINE
+========================================================= */
 
 class DataCacheEngine {
+
   static get(storageKey) {
+
     try {
-      const entry = localStorage.getItem(`gh_dash_${storageKey}`);
+
+      const entry =
+        localStorage.getItem(`gh_dash_${storageKey}`);
+
       if (!entry) return null;
-      
+
       const payload = JSON.parse(entry);
+
       if (Date.now() > payload.expiresAt) {
-        localStorage.removeItem(`gh_dash_${storageKey}`);
+
+        localStorage.removeItem(
+          `gh_dash_${storageKey}`
+        );
+
         return null;
       }
+
       return payload.data;
-    } catch (error) {
+
+    } catch {
+
       return null;
     }
   }
 
   static set(storageKey, dataValue) {
+
     try {
+
       const payload = {
         data: dataValue,
         expiresAt: Date.now() + CACHE_DURATION
       };
-      localStorage.setItem(`gh_dash_${storageKey}`, JSON.stringify(payload));
+
+      localStorage.setItem(
+        `gh_dash_${storageKey}`,
+        JSON.stringify(payload)
+      );
+
     } catch (error) {
-      console.error("Cache serialization limit exceeded", error);
+
+      console.error(error);
     }
   }
 }
 
-function syncNetworkStatus() {
-  const isOnline = navigator.onLine;
-  if (UI.offlineIndicator) {
-    UI.offlineIndicator.classList.toggle("hidden", isOnline);
+/* =========================================================
+   REQUEST LIFECYCLE (Bug #10505)
+========================================================= */
+
+// Only one profile search or comparison may be "in flight" at a
+// time. currentOperationController lets us abort whatever the
+// previous one was doing the moment a new one starts, and
+// currentOperationId is a generation counter so that async work
+// which can't be aborted (e.g. a fetch that already resolved, or
+// a loop that's mid-iteration) can still recognize it has become
+// stale and refuse to touch the UI.
+let currentOperationController = null;
+let currentOperationId = 0;
+
+// Call at the start of every profile search / comparison. Aborts
+// the previous operation (if any) so its in-flight requests stop
+// and its results can never overwrite what the user just asked
+// for, then hands back a fresh signal + id for the new operation.
+function beginOperation() {
+  if (currentOperationController) {
+    currentOperationController.abort();
   }
-  if (!isOnline && UI.statusBox) {
-    showStatus("Offline state detected. Serving data exclusively from client memory layers.", "offline");
-  } else if (isOnline && UI.statusBox && !UI.statusBox.classList.contains("hidden") && UI.statusBox.classList.contains("offline")) {
-    hideStatus();
-  }
+  currentOperationController = new AbortController();
+  currentOperationId += 1;
+
+  return {
+    signal: currentOperationController.signal,
+    operationId: currentOperationId
+  };
 }
 
-function updateThemeIcon() {
-  const isDark = document.documentElement.getAttribute("data-theme") === "dark" || !document.documentElement.hasAttribute("data-theme");
-  if (UI.themeIcon) {
-    UI.themeIcon.textContent = isDark ? "☀" : "☾";
-  }
+// True once a newer operation has started, meaning this one's
+// results are stale and must not be rendered.
+function isStaleOperation(operationId) {
+  return operationId !== currentOperationId;
 }
 
-function initTheme() {
-  const savedTheme = localStorage.getItem("theme");
-  if (savedTheme) {
-    document.documentElement.setAttribute("data-theme", savedTheme);
-  } else {
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    document.documentElement.setAttribute("data-theme", prefersDark ? "dark" : "light");
-  }
-  updateThemeIcon();
+// An AbortError means a request was cancelled on purpose (a newer
+// search/comparison took over) - it is not a real failure and
+// must never surface as an error banner to the user.
+function isAbortError(error) {
+  return Boolean(error) && error.name === "AbortError";
+}
+
+/* =========================================================
+   UTILITIES
+========================================================= */
+
+function safeText(value, fallback = "—") {
+
+  return value && String(value).trim()
+    ? value
+    : fallback;
+}
+
+function formatDate(dateString) {
+
+  return new Date(dateString).toLocaleDateString(
+    undefined,
+    {
+      year: "numeric",
+      month: "short",
+      day: "numeric"
+    }
+  );
 }
 
 function showStatus(message, type = "success") {
+
   if (!UI.statusBox) return;
+
   UI.statusBox.textContent = message;
-  UI.statusBox.className = `status-banner ${type}`;
+
+  UI.statusBox.className =
+    `status-banner ${type}`;
+
   UI.statusBox.classList.remove("hidden");
 }
 
 function hideStatus() {
-  if (UI.statusBox) UI.statusBox.classList.add("hidden");
+
+  UI.statusBox?.classList.add("hidden");
 }
 
+function syncNetworkStatus() {
+
+  if (!UI.offlineIndicator) return;
+
+  UI.offlineIndicator.classList.toggle(
+    "hidden",
+    navigator.onLine
+  );
+}
+
+function updateThemeIcon() {
+
+  const isDark =
+    document.documentElement.getAttribute(
+      "data-theme"
+    ) === "dark";
+
+  UI.themeIcon.textContent =
+    isDark ? "☀" : "☾";
+}
+
+function initTheme() {
+
+  const savedTheme =
+    localStorage.getItem("theme");
+
+  if (savedTheme) {
+
+    document.documentElement.setAttribute(
+      "data-theme",
+      savedTheme
+    );
+
+  } else {
+
+    document.documentElement.setAttribute(
+      "data-theme",
+      "dark"
+    );
+  }
+
+  updateThemeIcon();
+}
+
+function animateCounter(element, targetValue) {
+
+  if (!element) return;
+
+  const target =
+    parseInt(targetValue, 10) || 0;
+
+  let current = 0;
+
+  const interval = setInterval(() => {
+
+    current += Math.ceil(target / 40);
+
+    if (current >= target) {
+
+      current = target;
+
+      clearInterval(interval);
+    }
+
+    element.textContent =
+      current.toLocaleString();
+
+  }, 20);
+
+  activeCounterIntervals.push(interval);
+}
+
+function stopActiveCounters() {
+
+  activeCounterIntervals.forEach(
+    (interval) => clearInterval(interval)
+  );
+
+  activeCounterIntervals.length = 0;
+}
+
+function resetStatCounters() {
+
+  stopActiveCounters();
+
+  if (Nodes.repoCount)
+    Nodes.repoCount.textContent = "0";
+
+  if (Nodes.followers)
+    Nodes.followers.textContent = "0";
+
+  if (Nodes.following)
+    Nodes.following.textContent = "0";
+
+  if (Nodes.gists)
+    Nodes.gists.textContent = "0";
+}
+
+function resetProfileUI() {
+
+  resetStatCounters();
+
+  UI.profileCard?.classList.add("hidden");
+  UI.reposSection?.classList.add("hidden");
+  UI.analyticsPanel?.classList.add("hidden");
+
+  if (UI.reposList)
+    UI.reposList.replaceChildren();
+}
+
+/* =========================================================
+   LOADING
+========================================================= */
+
 function showLoading() {
-  showStatus("Syncing workspace records and evaluating analytics models...", "success");
-  document.body.classList.remove("compare-mode");
-  if (UI.profileCard) UI.profileCard.classList.add("hidden");
-  if (UI.metricsPanel) UI.metricsPanel.classList.add("hidden");
-  if (UI.reposSection) UI.reposSection.classList.add("hidden");
-  if (UI.comparisonPanel) UI.comparisonPanel.classList.add("hidden");
-  searchResultsContainer.style.display = "none";
+
+  showStatus(
+    "Fetching GitHub profile analytics...",
+    "success"
+  );
+
+  UI.profileCard?.classList.add("hidden");
+  UI.analyticsPanel?.classList.add("hidden");
+  UI.reposSection?.classList.add("hidden");
 }
 
 function showCompareLoading() {
-  document.body.classList.add("compare-mode");
-  if (UI.profileCard) UI.profileCard.classList.add("hidden");
-  if (UI.metricsPanel) UI.metricsPanel.classList.add("hidden");
-  if (UI.reposSection) UI.reposSection.classList.add("hidden");
-  if (UI.comparisonPanel) UI.comparisonPanel.classList.remove("hidden");
-  if (UI.comparisonContainer) {
-    UI.comparisonContainer.innerHTML = `
-      <div class="compare-loading-state" role="status" aria-live="polite">
-        <div class="spinner" aria-hidden="true"></div>
-        <div>
-          <strong>Preparing comparison</strong>
-          <p>Loading both profiles and repository summaries.</p>
-        </div>
-      </div>`;
-  }
-  UI.comparisonPanel?.scrollIntoView({ behavior: "smooth", block: "start" });
+
+  showStatus(
+    "Comparing GitHub profiles...",
+    "success"
+  );
+
+  UI.comparisonPanel?.classList.remove(
+    "hidden"
+  );
+
+  const loadingNote = document.createElement("div");
+  loadingNote.className = "compare-loading";
+  loadingNote.textContent = "Loading profile comparison...";
+  UI.comparisonContainer.replaceChildren(loadingNote);
 }
 
-// computeMetricsForRepos removed — no derived/fake analytics required
+/* =========================================================
+   CONTRIBUTION HEATMAP
+========================================================= */
 
-async function fetchProfileData(username) {
-  const cleanName = username.trim().replace(/^@/, "");
+// Set this to a backend/serverless proxy URL to enable the
+// GraphQL path. Left empty because this project has no
+// backend yet - see comment block above.
+const GRAPHQL_PROXY_ENDPOINT = "";
 
-  if (!cleanName) {
-    throw new Error("A GitHub username is required.");
-  }
+const CONTRIBUTIONS_FALLBACK_API_URL =
+  "https://github-contributions-api.jogruber.de/v4";
 
-  const cachedProfile = DataCacheEngine.get(`profile_${cleanName}`);
-  const cachedRepos = DataCacheEngine.get(`repos_${cleanName}`);
+const CONTRIBUTIONS_FETCH_TIMEOUT_MS = 8000;
+const CONTRIBUTIONS_MAX_RETRIES = 2;
+const CONTRIBUTIONS_RETRY_BASE_DELAY_MS = 600;
 
-  if (cachedProfile && cachedRepos) {
-    return { user: cachedProfile, repos: cachedRepos };
-  }
-
-  if (!navigator.onLine) {
-    throw new Error(`Offline mode cannot fetch ${cleanName}.`);
-  }
-
-  const userResponse = await fetch(`https://api.github.com/users/${encodeURIComponent(cleanName)}`);
-  if (!userResponse.ok) {
-    throw new Error(`GitHub user not found: ${cleanName}`);
-  }
-
-  const user = await userResponse.json();
-  const repoResponse = await fetch(`https://api.github.com/users/${encodeURIComponent(cleanName)}/repos?per_page=50&sort=updated`);
-  const repos = await repoResponse.json();
-  const verifiedRepos = Array.isArray(repos) ? repos : [];
-  const sortedRepos = verifiedRepos.sort((alpha, beta) => beta.stargazers_count - alpha.stargazers_count).slice(0, 6);
-
-  DataCacheEngine.set(`profile_${cleanName}`, user);
-  DataCacheEngine.set(`repos_${cleanName}`, sortedRepos);
-
-  return { user, repos: sortedRepos };
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-function buildRepoListSmall(repos) {
-  if (!Array.isArray(repos) || repos.length === 0) {
-    return '<div class="empty-state-inline">No repositories available.</div>';
+/**
+ * Fetch wrapper with a timeout, since a hung request should
+ * never leave the heatmap stuck on "Loading...". Also accepts the
+ * outer search/comparison operation's signal (externalSignal) so
+ * that cancelling the whole operation aborts this request
+ * immediately too, instead of waiting out its own timeout.
+ */
+async function fetchWithTimeout(url, timeoutMs, externalSignal) {
+
+  const controller = new AbortController();
+
+  const timer = setTimeout(
+    () => controller.abort(),
+    timeoutMs
+  );
+
+  const abortFromOutside = () => controller.abort();
+
+  if (externalSignal) {
+
+    if (externalSignal.aborted) {
+      controller.abort();
+    } else {
+      externalSignal.addEventListener("abort", abortFromOutside);
+    }
   }
 
-  return `
-    <div class="repo-mini-list">
-      ${repos.map((repo) => `
-        <article class="repo-mini-card">
-          <div class="repo-mini-title-row">
-            <a class="repo-link" href="${repo.html_url}" target="_blank" rel="noreferrer">${repo.name}</a>
-            <span class="repo-mini-stars">★ ${repo.stargazers_count}</span>
-          </div>
-          <p class="repo-mini-description">${safeText(repo.description, "No description provided.")}</p>
-          <div class="repo-mini-meta">
-            ${repo.language ? `<span class="badge-chip">${repo.language}</span>` : ""}
-            <span class="badge-chip">Forks ${repo.forks_count}</span>
-          </div>
-        </article>
-      `).join("")}
-    </div>
-  `;
+  try {
+
+    return await fetch(url, { signal: controller.signal });
+
+  } finally {
+
+    clearTimeout(timer);
+
+    if (externalSignal) {
+      externalSignal.removeEventListener("abort", abortFromOutside);
+    }
+  }
 }
 
-function renderComparisonCard(profileData, compareType, peerData) {
-  const leadFollowers = profileData.user.followers > peerData.user.followers;
-  const leadRepos = profileData.user.public_repos > peerData.user.public_repos;
-  const primaryBadge = leadFollowers ? "Leader in followers" : leadRepos ? "Leader in repos" : "Balanced profile";
-  return `
-    <article class="compare-panel compare-panel-${compareType}">
-      <div class="compare-panel-top">
-        <div class="panel-head">
-          <img src="${profileData.user.avatar_url}" alt="${profileData.user.login} avatar" loading="lazy" />
-          <div class="compare-identity">
-            <div class="compare-title-row">
-              <strong class="compare-name">${safeText(profileData.user.name, profileData.user.login)}</strong>
-              <span class="badge-strong">${primaryBadge}</span>
-            </div>
-            <p class="compare-handle">@${profileData.user.login}</p>
-          </div>
-        </div>
-        <p class="compare-bio">${safeText(profileData.user.bio, "—")}</p>
+/**
+ * Calls a backend proxy that is expected to run the GitHub
+ * GraphQL `contributionsCollection` query server-side (where a
+ * token can be kept secret) and return normalized
+ * { date, count, level } day objects. Only used when
+ * GRAPHQL_PROXY_ENDPOINT is configured.
+ */
+async function fetchContributionsFromGraphQLProxy(username, signal) {
 
-        <div class="compare-badges">
-          <span class="badge-chip ${leadRepos ? "badge-chip-accent" : ""}">Repos ${profileData.user.public_repos}</span>
-          <span class="badge-chip ${leadFollowers ? "badge-chip-accent" : ""}">Followers ${profileData.user.followers}</span>
-          <span class="badge-chip">Following ${profileData.user.following}</span>
-          <span class="badge-chip">Joined ${formatDate(profileData.user.created_at)}</span>
-        </div>
+  const response = await fetchWithTimeout(
+    `${GRAPHQL_PROXY_ENDPOINT}?username=${encodeURIComponent(username)}`,
+    CONTRIBUTIONS_FETCH_TIMEOUT_MS,
+    signal
+  );
 
-        <div class="compare-actions">
-          <a class="compare-action-btn" href="${profileData.user.html_url}" target="_blank" rel="noreferrer">
-            View GitHub Profile
-          </a>
-        </div>
-      </div>
-      
-      <div class="compare-section">
-        <div class="section-title-row">
-          <h4>Top Repositories</h4>
-          <span class="section-subtitle">Sorted by stars and update activity</span>
-        </div>
-        ${buildRepoListSmall(profileData.repos)}
-      </div>
-    </article>
-  `;
+  if (!response.ok) {
+
+    const error = new Error(
+      "The contribution data proxy returned an error."
+    );
+    error.status = response.status;
+    throw error;
+  }
+
+  const data = await response.json();
+
+  if (!data || !Array.isArray(data.contributions)) {
+
+    throw new Error(
+      "The contribution data proxy returned an unexpected format."
+    );
+  }
+
+  return data.contributions;
 }
 
-function renderComparison(leftData, rightData) {
-  if (!UI.comparisonContainer) return;
+/**
+ * Calls the public fallback contributions API with a timeout
+ * and retry/backoff for transient errors. Never returns
+ * fabricated data - any unrecoverable failure is thrown so the
+ * caller can show an honest error state.
+ */
+async function fetchContributionsFromFallbackApi(username, signal) {
 
-  document.body.classList.add("compare-mode");
-  if (UI.profileCard) UI.profileCard.classList.add("hidden");
-  if (UI.metricsPanel) UI.metricsPanel.classList.add("hidden");
-  if (UI.reposSection) UI.reposSection.classList.add("hidden");
+  let lastError = null;
 
-  UI.comparisonContainer.innerHTML = `
-    ${renderComparisonCard(leftData, "left", rightData)}
-    ${renderComparisonCard(rightData, "right", leftData)}
-  `;
+  for (let attempt = 0; attempt <= CONTRIBUTIONS_MAX_RETRIES; attempt++) {
 
-  UI.comparisonPanel?.classList.remove("hidden");
-  UI.comparisonPanel?.scrollIntoView({ behavior: "smooth", block: "start" });
+    try {
+
+      const response = await fetchWithTimeout(
+        `${CONTRIBUTIONS_FALLBACK_API_URL}/${username}?y=last`,
+        CONTRIBUTIONS_FETCH_TIMEOUT_MS,
+        signal
+      );
+
+      if (response.status === 404) {
+
+        // Invalid/unknown username - retrying won't help.
+        const error = new Error(
+          "No GitHub user was found with that username."
+        );
+        error.status = 404;
+        throw error;
+      }
+
+      if (response.status === 429) {
+
+        const error = new Error(
+          "The contribution data provider is rate-limited right now."
+        );
+        error.status = 429;
+        throw error;
+      }
+
+      if (!response.ok) {
+
+        const error = new Error(
+          "Unable to fetch contribution activity for this user."
+        );
+        error.status = response.status;
+        throw error;
+      }
+
+      const data = await response.json();
+
+      if (!data || !Array.isArray(data.contributions)) {
+
+        throw new Error(
+          "Contribution data was returned in an unexpected format."
+        );
+      }
+
+      return data.contributions;
+
+    } catch (error) {
+
+      lastError = error;
+
+      const isAbort = error.name === "AbortError";
+      const isNotFound = error.status === 404;
+
+      // If the *outer* search/comparison was cancelled (a newer one
+      // started), this AbortError is an intentional cancellation,
+      // not a transient failure - retrying it would just re-issue
+      // work nobody wants anymore. Only genuine timeouts (this
+      // request's own budget expiring) are retryable.
+      const isExternalCancel = Boolean(signal && signal.aborted);
+
+      // Don't retry on a bad username, an intentionally cancelled
+      // operation, or an aborted/timed-out request that's already
+      // exhausted its own budget once; only retry genuinely
+      // transient failures.
+      const isRetryable =
+        !isNotFound &&
+        !isExternalCancel &&
+        (isAbort ||
+          error.status === 429 ||
+          error.status >= 500 ||
+          error.status === undefined);
+
+      if (!isRetryable || attempt === CONTRIBUTIONS_MAX_RETRIES) {
+
+        if (isAbort && !isExternalCancel) {
+
+          lastError = new Error(
+            "The request timed out while loading contribution activity."
+          );
+        }
+
+        break;
+      }
+
+      await sleep(
+        CONTRIBUTIONS_RETRY_BASE_DELAY_MS * Math.pow(2, attempt)
+      );
+    }
+  }
+
+  throw lastError;
 }
 
-function formatDate(dateString) {
-  return new Date(dateString).toLocaleDateString(undefined, {
-    year: "numeric",
-    month: "short",
-    day: "numeric"
+/**
+ * Fetches the last 12 months of real contribution data for a
+ * GitHub username. Returns an array of
+ * { date, count, level } objects, oldest first. GraphQL (via a
+ * secure backend proxy) is preferred when configured; otherwise
+ * falls back to the public read-only contributions API. Never
+ * falls back to randomly generated or fake data.
+ */
+async function fetchContributionData(username, signal) {
+
+  const cacheKey = `contributions_${username}`;
+
+  const cached = DataCacheEngine.get(cacheKey);
+
+  if (cached) return cached;
+
+  const contributions = GRAPHQL_PROXY_ENDPOINT
+    ? await fetchContributionsFromGraphQLProxy(username, signal)
+    : await fetchContributionsFromFallbackApi(username, signal);
+
+  DataCacheEngine.set(cacheKey, contributions);
+
+  return contributions;
+}
+
+/**
+ * Renders a GitHub-style calendar grid (7 rows x ~53 columns)
+ * from real contribution day objects. Leading blank cells are
+ * added so the first real day lines up with its correct
+ * day-of-week row, matching GitHub's own layout.
+ */
+function renderContributionHeatmap(contributions) {
+
+  UI.heatmapGrid.replaceChildren();
+
+  // Cap at 371 days (53 weeks) to mirror GitHub's ~12 month view.
+  const days = contributions.slice(-371);
+
+  if (!days.length) {
+
+    throw new Error("No contribution data available for this user.");
+  }
+
+  const firstDay = new Date(`${days[0].date}T00:00:00`);
+  const leadingBlankDays = firstDay.getDay(); // 0 = Sunday
+
+  for (let i = 0; i < leadingBlankDays; i++) {
+
+    const blankCell =
+      document.createElement("div");
+
+    blankCell.className = "heatmap-cell level-0";
+    blankCell.style.visibility = "hidden";
+
+    UI.heatmapGrid.appendChild(blankCell);
+  }
+
+  days.forEach((day) => {
+
+    const cell =
+      document.createElement("div");
+
+    cell.className =
+      `heatmap-cell level-${day.level}`;
+
+    const formattedDate =
+      new Date(`${day.date}T00:00:00`).toLocaleDateString(
+        "en-US",
+        { year: "numeric", month: "long", day: "numeric" }
+      );
+
+    cell.title =
+      `${day.count} contribution${day.count === 1 ? "" : "s"} on ${formattedDate}`;
+
+    UI.heatmapGrid.appendChild(cell);
   });
 }
 
-function safeText(value, fallback = "—") {
-  return value && String(value).trim() ? value : fallback;
+/**
+ * Displays a friendly, non-fake fallback when real contribution
+ * data can't be retrieved. Never falls back to random data.
+ */
+function showHeatmapError(message) {
+
+  UI.heatmapGrid.replaceChildren();
+
+  const errorNode =
+    document.createElement("div");
+
+  errorNode.style.gridColumn = "1 / -1";
+  errorNode.style.color = "var(--muted)";
+  errorNode.style.fontSize = ".88rem";
+  errorNode.style.padding = "10px 0";
+
+  errorNode.textContent = message;
+
+  UI.heatmapGrid.appendChild(errorNode);
 }
 
-// Removed synthetic analytics chart rendering — charts are not populated here to keep UI simple
+async function generateContributionHeatmap(username, signal, operationId) {
 
-function animateCounter(element, targetValue) {
-  if (!element) return;
-  const target = parseInt(targetValue, 10) || 0;
-  if (target === 0) {
-    element.textContent = "0";
-    return;
+  if (!UI.heatmapGrid) return;
+
+  const loadingNode =
+    document.createElement("div");
+
+  loadingNode.style.gridColumn = "1 / -1";
+  loadingNode.style.color = "var(--muted)";
+  loadingNode.style.fontSize = ".88rem";
+  loadingNode.style.padding = "10px 0";
+  loadingNode.textContent = "Loading contribution activity...";
+
+  UI.heatmapGrid.replaceChildren();
+  UI.heatmapGrid.appendChild(loadingNode);
+
+  try {
+
+    const contributions =
+      await fetchContributionData(username, signal);
+
+    // A newer search/comparison may have started while this was
+    // in flight; ignore the now-stale result instead of rendering
+    // over whatever the newer operation has already shown.
+    if (isStaleOperation(operationId)) return;
+
+    renderContributionHeatmap(contributions);
+
+  } catch (error) {
+
+    // Cancellation (this operation or the whole page's operation
+    // being superseded) is expected, not an error - stay silent.
+    if (isAbortError(error) || isStaleOperation(operationId)) return;
+
+    showHeatmapError(getContributionErrorMessage(error));
   }
-  
-  let start = 0;
-  const duration = 1000;
-  const startTime = performance.now();
-  
-  function updateNumber(currentTime) {
-    const elapsedTime = currentTime - startTime;
-    if (elapsedTime >= duration) {
-      element.textContent = target.toLocaleString();
-      return;
+}
+
+/**
+ * Turns a raw fetch/parse error into a specific, human-readable
+ * message so the person searching a profile understands what
+ * went wrong (invalid username vs. rate limit vs. network vs.
+ * an unexpected failure) instead of one generic string.
+ */
+function getContributionErrorMessage(error) {
+
+  if (error?.status === 404) {
+
+    return "No contribution data found - check that the username is correct.";
+  }
+
+  if (error?.status === 429) {
+
+    return "Contribution data is temporarily rate-limited. Please try again in a moment.";
+  }
+
+  // A failed fetch (offline, DNS failure, blocked request, etc.)
+  // surfaces as a TypeError in browsers rather than a bad status.
+  if (error instanceof TypeError) {
+
+    return "Couldn't reach the contribution data source - check your connection and try again.";
+  }
+
+  if (typeof error?.status === "number" && error.status >= 500) {
+
+    return "The contribution data source is currently unavailable. Please try again later.";
+  }
+
+  return "Contribution activity couldn't be loaded for this user right now.";
+}
+
+/* =========================================================
+   LANGUAGE ANALYTICS
+========================================================= */
+
+async function renderLanguageAnalytics(repos, signal, operationId) {
+
+  if (!repos || !repos.length) return;
+
+  const languageBytes = {};
+
+  try {
+
+    for (const repo of repos.slice(0, 10)) {
+
+      if (!repo.languages_url) continue;
+
+      const response =
+        await fetch(repo.languages_url, { signal });
+
+      if (!response.ok) continue;
+
+      const data =
+        await response.json();
+
+      Object.entries(data).forEach(
+        ([language, bytes]) => {
+
+          languageBytes[language] =
+            (languageBytes[language] || 0)
+            + bytes;
+        }
+      );
     }
-    const progress = elapsedTime / duration;
-    const easeOutQuad = progress * (2 - progress);
-    const currentValue = Math.floor(easeOutQuad * target);
-    element.textContent = currentValue.toLocaleString();
-    requestAnimationFrame(updateNumber);
+
+    const totalBytes =
+      Object.values(languageBytes)
+        .reduce((sum, value) => sum + value, 0);
+
+    if (!totalBytes) return;
+
+    // A newer search/comparison may have started while these
+    // per-repo language requests were in flight; don't let a
+    // stale result overwrite the current UI.
+    if (isStaleOperation(operationId)) return;
+
+    const sortedLanguages =
+      Object.entries(languageBytes)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 5);
+
+    const colors = [
+      "#8b5cf6",
+      "#06b6d4",
+      "#3b82f6",
+      "#10b981",
+      "#f59e0b"
+    ];
+
+    let currentDeg = 0;
+
+    const gradientParts = [];
+
+    UI.languageLegend.replaceChildren();
+
+    sortedLanguages.forEach(
+      ([language, bytes], index) => {
+
+        const percent =
+          (bytes / totalBytes) * 100;
+
+        const deg =
+          (percent / 100) * 360;
+
+        gradientParts.push(
+          `${colors[index]} ${currentDeg}deg ${currentDeg + deg}deg`
+        );
+
+        currentDeg += deg;
+
+        const item =
+          document.createElement("div");
+
+        item.className =
+          "language-legend-item";
+
+        const left =
+          document.createElement("div");
+
+        left.className =
+          "language-legend-left";
+
+        const dot =
+          document.createElement("span");
+
+        dot.className = "language-dot";
+        dot.style.background = colors[index];
+
+        const langLabel =
+          document.createElement("span");
+
+        // GitHub API value — set via textContent, never HTML
+        langLabel.textContent = language;
+
+        left.appendChild(dot);
+        left.appendChild(langLabel);
+
+        const percentLabel =
+          document.createElement("strong");
+
+        percentLabel.textContent =
+          `${percent.toFixed(1)}%`;
+
+        item.appendChild(left);
+        item.appendChild(percentLabel);
+
+        UI.languageLegend.appendChild(item);
+      }
+    );
+
+    UI.languagePie.style.background =
+      `conic-gradient(${gradientParts.join(",")})`;
+
+    const [topLanguage, topBytes] =
+      sortedLanguages[0];
+
+    const topPercent =
+      ((topBytes / totalBytes) * 100)
+      .toFixed(0);
+
+    UI.topLanguageName.textContent =
+      topLanguage;
+
+    UI.topLanguagePercent.textContent =
+      `${topPercent}%`;
+
+  } catch (error) {
+
+    // Cancellation is expected here (a newer operation took over)
+    // and isn't a real failure worth logging.
+    if (isAbortError(error)) return;
+
+    console.error(
+      "Language analytics failed:",
+      error
+    );
   }
-  requestAnimationFrame(updateNumber);
 }
 
-function renderProfile(user, repos = []) {
-  document.body.classList.remove("compare-mode");
-  if (UI.comparisonPanel) UI.comparisonPanel.classList.add("hidden");
-  Nodes.avatar.src = user.avatar_url;
-  Nodes.avatar.alt = `${user.login} avatar`;
-  Nodes.name.textContent = safeText(user.name, user.login);
-  Nodes.username.textContent = `@${user.login}`;
+/* =========================================================
+   PROFILE
+========================================================= */
 
-  Nodes.bio.textContent = safeText(user.bio, "—");
-  Nodes.location.textContent = safeText(user.location, "—");
-  Nodes.company.textContent = safeText(user.company, "—");
+function renderProfile(user) {
+
+  Nodes.avatar.src =
+    user.avatar_url;
+
+  Nodes.name.textContent =
+    safeText(user.name, user.login);
+
+  Nodes.username.textContent =
+    `@${user.login}`;
+
+  Nodes.bio.textContent =
+    safeText(
+      user.bio,
+      "No bio available."
+    );
+
+  Nodes.location.textContent =
+    safeText(user.location);
+
+  Nodes.company.textContent =
+    safeText(user.company);
+
+  Nodes.joined.textContent =
+    formatDate(user.created_at);
 
   if (user.blog) {
-    const blogUrl = user.blog.startsWith("http") ? user.blog : `https://${user.blog}`;
-    Nodes.website.innerHTML = `<a href="${blogUrl}" target="_blank" rel="noreferrer" class="repo-link">${user.blog.replace(/^https?:\/\//, "")}</a>`;
+
+    const blogUrl =
+      user.blog.startsWith("http")
+        ? user.blog
+        : `https://${user.blog}`;
+
+    // Only build a link for http(s) URLs; otherwise show plain text.
+    // This avoids javascript:/data: URIs ending up in an href.
+    let isSafeUrl = false;
+
+    try {
+
+      isSafeUrl =
+        ["http:", "https:"].includes(
+          new URL(blogUrl).protocol
+        );
+
+    } catch {
+
+      isSafeUrl = false;
+    }
+
+    Nodes.website.replaceChildren();
+
+    if (isSafeUrl) {
+
+      const link =
+        document.createElement("a");
+
+      link.href = blogUrl;
+      link.target = "_blank";
+      link.rel = "noreferrer";
+      link.className = "repo-link";
+      link.textContent = user.blog; // GitHub API value — textContent, never HTML
+
+      Nodes.website.appendChild(link);
+
+    } else {
+
+      Nodes.website.textContent = user.blog;
+    }
+
   } else {
+
     Nodes.website.textContent = "—";
   }
 
-  Nodes.joined.textContent = formatDate(user.created_at);
-  Nodes.profileLink.href = user.html_url;
+  Nodes.profileLink.href =
+    user.html_url;
 
-  animateCounter(Nodes.repoCount, user.public_repos);
-  animateCounter(Nodes.followers, user.followers);
-  animateCounter(Nodes.following, user.following);
-  animateCounter(Nodes.gists, user.public_gists);
+  stopActiveCounters();
 
-  // Keep profile and metrics panels visible
-  if (UI.profileCard) UI.profileCard.classList.remove("hidden");
-  if (UI.metricsPanel) UI.metricsPanel.classList.remove("hidden");
+  animateCounter(
+    Nodes.repoCount,
+    user.public_repos
+  );
+
+  animateCounter(
+    Nodes.followers,
+    user.followers
+  );
+
+  animateCounter(
+    Nodes.following,
+    user.following
+  );
+
+  animateCounter(
+    Nodes.gists,
+    user.public_gists
+  );
+
+  UI.profileCard?.classList.remove(
+    "hidden"
+  );
 }
 
+/* =========================================================
+   REPOSITORIES
+========================================================= */
+
 function renderRepos(repos) {
-  UI.reposList.innerHTML = "";
+
+  UI.reposList.replaceChildren();
 
   if (!repos.length) {
-    UI.reposList.innerHTML = `<div class="repo-card"><p class="repo-description">No active repositories mapped inside this execution ring.</p></div>`;
-    if (UI.reposSection) UI.reposSection.classList.remove("hidden");
+
+    const empty =
+      document.createElement("div");
+
+    empty.className = "repo-card";
+    empty.textContent = "No repositories found.";
+
+    UI.reposList.appendChild(empty);
+
     return;
   }
 
   repos.forEach((repo) => {
-    const card = document.createElement("article");
-    card.className = "repo-card";
-    
-    const operationalIndex = repo.stargazers_count + (repo.forks_count * 2);
-    const engineeringStatus = operationalIndex > 100 ? "Production System" : "Stable Archive";
 
-    card.innerHTML = `
-      <div class="repo-top">
-        <h4 class="repo-name">
-          <a class="repo-link" href="${repo.html_url}" target="_blank" rel="noreferrer">
-            ${repo.name}
-          </a>
-        </h4>
-        <span class="badge" style="margin:0; padding:2px 8px; font-size:0.7rem;">${engineeringStatus}</span>
-      </div>
-      <p class="repo-description">${repo.description || "No description."}</p>
-      <div class="repo-meta">
-        ${repo.language ? `<span class="pill">● ${repo.language}</span>` : ""}
-        <span class="pill">★ ${repo.stargazers_count}</span>
-        <span class="pill">⑂ ${repo.forks_count}</span>
-        <span class="pill">Sync: ${formatDate(repo.updated_at)}</span>
-      </div>
-    `;
+    const card =
+      document.createElement("article");
+
+    card.className = "repo-card";
+
+    const top =
+      document.createElement("div");
+
+    top.className = "repo-top";
+
+    const name =
+      document.createElement("h4");
+
+    name.className = "repo-name";
+
+    const nameLink =
+      document.createElement("a");
+
+    nameLink.href = repo.html_url;
+    nameLink.target = "_blank";
+    nameLink.rel = "noreferrer";
+    nameLink.className = "repo-link";
+    nameLink.textContent = repo.name; // GitHub API value — textContent, never HTML
+
+    name.appendChild(nameLink);
+
+    const starBadge =
+      document.createElement("span");
+
+    starBadge.className = "badge";
+    starBadge.textContent =
+      `★ ${repo.stargazers_count}`;
+
+    top.appendChild(name);
+    top.appendChild(starBadge);
+
+    const description =
+      document.createElement("p");
+
+    description.className = "repo-description";
+    description.textContent = safeText(
+      repo.description,
+      "No description available."
+    );
+
+    const meta =
+      document.createElement("div");
+
+    meta.className = "repo-meta";
+
+    if (repo.language) {
+
+      const languagePill =
+        document.createElement("span");
+
+      languagePill.className = "pill";
+      languagePill.textContent = repo.language; // GitHub API value — textContent
+
+      meta.appendChild(languagePill);
+    }
+
+    const forksPill =
+      document.createElement("span");
+
+    forksPill.className = "pill";
+    forksPill.textContent =
+      `Forks ${repo.forks_count}`;
+
+    const updatedPill =
+      document.createElement("span");
+
+    updatedPill.className = "pill";
+    updatedPill.textContent =
+      `Updated ${formatDate(repo.updated_at)}`;
+
+    meta.appendChild(forksPill);
+    meta.appendChild(updatedPill);
+
+    card.appendChild(top);
+    card.appendChild(description);
+    card.appendChild(meta);
+
     UI.reposList.appendChild(card);
   });
 
-  if (UI.reposSection) UI.reposSection.classList.remove("hidden");
+  UI.reposSection?.classList.remove(
+    "hidden"
+  );
 }
 
-function renderSearchResults(users) {
-  searchResultsContainer.innerHTML = "";
-
-  if (!users.length) {
-    searchResultsContainer.style.display = "none";
-    return;
-  }
-
-  const heading = document.createElement("p");
-  heading.textContent = `${users.length} unique indices discovered. Select terminal connection:`;
-  heading.style.cssText = "padding: 1rem; font-weight: 700; margin: 0; color: var(--muted); font-size: 0.9rem;";
-  searchResultsContainer.appendChild(heading);
-
-  users.forEach((user) => {
-    const item = document.createElement("div");
-    item.style.cssText = `
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0.75rem 1rem;
-      cursor: pointer;
-      border-top: 1px solid var(--card-border);
-      transition: background 0.2s;
-      color: var(--text);
-      font-weight: 600;
-    `;
-    item.innerHTML = `
-      <div style="display: flex; align-items: center; gap: 1rem;">
-        <img src="${user.avatar_url}" alt="${user.login}" style="width:28px;height:28px;border-radius:8px;object-fit:cover;">
-        <span>${user.login}</span>
-      </div>
-      <span class="badge" style="margin:0; font-size:0.65rem;">Connect</span>
-    `;
-    item.addEventListener("mouseover", () => item.style.background = "var(--bg-secondary)");
-    item.addEventListener("mouseout", () => item.style.background = "");
-    item.addEventListener("click", () => {
-      if (UI.input) UI.input.value = user.login;
-      searchResultsContainer.style.display = "none";
-      fetchUser(user.login);
-    });
-    searchResultsContainer.appendChild(item);
-  });
-
-  searchResultsContainer.style.display = "block";
-}
-
-async function executeTypeaheadLookup(queryString) {
-  if (!navigator.onLine) return;
-  const query = queryString.trim();
-  if (query.length < 2) {
-    searchResultsContainer.style.display = "none";
-    return;
-  }
-
-  const typedCache = DataCacheEngine.get(`lookup_${query}`);
-  if (typedCache) {
-    renderSearchResults(typedCache);
-    return;
-  }
-
-  try {
-    const response = await fetch(`https://api.github.com/search/users?q=${encodeURIComponent(query)}&per_page=5`);
-    if (response.ok) {
-      const searchData = await response.json();
-      const outputItems = searchData.items || [];
-      DataCacheEngine.set(`lookup_${query}`, outputItems);
-      renderSearchResults(outputItems);
-    }
-  } catch (error) {
-    console.error("Typeahead stream generation interrupted:", error);
-  }
-}
+/* =========================================================
+   FETCH USER
+========================================================= */
 
 async function fetchUser(username) {
-  const cleanName = username.trim().replace(/^@/, "");
+
+  const cleanName =
+    username.trim().replace("@", "");
 
   if (!cleanName) {
-    showStatus("Operational exception parameter failure: target handle required.", "error");
+
+    showStatus(
+      "Please enter a GitHub username.",
+      "error"
+    );
+
     return;
   }
+
+  // Cancel any previous profile search/comparison so it can't
+  // finish late and clobber the UI with stale data (Bug #10505),
+  // then run this one under its own signal + generation id.
+  const { signal, operationId } = beginOperation();
 
   showLoading();
-  searchResultsContainer.style.display = "none";
-
-  const cachedProfile = DataCacheEngine.get(`profile_${cleanName}`);
-  const cachedRepos = DataCacheEngine.get(`repos_${cleanName}`);
-  const cachedMetrics = DataCacheEngine.get(`metrics_${cleanName}`);
-
-  if (cachedProfile && cachedRepos && cachedMetrics) {
-    renderProfile(cachedProfile, cachedMetrics);
-    renderRepos(cachedRepos);
-    hideStatus();
-    return;
-  }
-
-  if (!navigator.onLine) {
-    if (UI.profileCard) UI.profileCard.classList.add("hidden");
-    if (UI.metricsPanel) UI.metricsPanel.classList.add("hidden");
-    if (UI.reposSection) UI.reposSection.classList.add("hidden");
-    showStatus("Identity registry mapping unavailable while completely disconnected from remote tracking cluster.", "error");
-    return;
-  }
 
   try {
-    const userResponse = await fetch(`https://api.github.com/users/${encodeURIComponent(cleanName)}`);
 
-    if (userResponse.ok) {
-      const user = await userResponse.json();
-      const repoResponse = await fetch(
-        `https://api.github.com/users/${encodeURIComponent(cleanName)}/repos?per_page=50&sort=updated`
+    const userResponse = await fetch(
+      `https://api.github.com/users/${cleanName}`,
+      { signal }
+    );
+
+    if (!userResponse.ok) {
+
+      throw new Error(
+        "GitHub user not found."
       );
-      const repos = await repoResponse.json();
-      const verifiedRepos = Array.isArray(repos) ? repos : [];
-      
-      const sortedRepos = verifiedRepos
-        .sort((alpha, beta) => beta.stargazers_count - alpha.stargazers_count)
-        .slice(0, 6);
+    }
 
-      DataCacheEngine.set(`profile_${cleanName}`, user);
-      DataCacheEngine.set(`repos_${cleanName}`, sortedRepos);
+    const user =
+      await userResponse.json();
 
-      renderProfile(user, sortedRepos);
-      renderRepos(sortedRepos);
-      hideStatus();
-    } else {
-      const searchResponse = await fetch(
-        `https://api.github.com/search/users?q=${encodeURIComponent(cleanName)}&per_page=10`
+    const repoResponse = await fetch(
+      `https://api.github.com/users/${cleanName}/repos?per_page=100`,
+      { signal }
+    );
+
+    if (!repoResponse.ok) {
+
+      const errorData =
+        await repoResponse.json().catch(() => ({}));
+
+      throw new Error(
+        errorData.message || "Failed to fetch repositories."
       );
-
-      if (!searchResponse.ok) {
-        throw new Error("Unable to parse identity coordinates over upstream paths.");
-      }
-
-      const searchData = await searchResponse.json();
-
-      if (!searchData.items || searchData.items.length === 0) {
-        throw new Error("No architectural records match search conditions.");
-      }
-
-      if (searchData.items.length === 1) {
-        await fetchUser(searchData.items[0].login);
-      } else {
-        hideStatus();
-        if (UI.profileCard) UI.profileCard.classList.add("hidden");
-        if (UI.metricsPanel) UI.metricsPanel.classList.add("hidden");
-        if (UI.reposSection) UI.reposSection.classList.add("hidden");
-        renderSearchResults(searchData.items);
-      }
     }
-  } catch (error) {
-    if (UI.profileCard) UI.profileCard.classList.add("hidden");
-    if (UI.metricsPanel) UI.metricsPanel.classList.add("hidden");
-    if (UI.reposSection) UI.reposSection.classList.add("hidden");
-    searchResultsContainer.style.display = "none";
-    showStatus(error.message || "An unexpected cluster mapping event occurred.", "error");
-  }
-}
 
-if (UI.form) {
-  UI.form.addEventListener("submit", (event) => {
-    event.preventDefault();
-    if (UI.input) {
-      fetchUser(UI.input.value);
+    const repos =
+      await repoResponse.json();
+
+    if (!Array.isArray(repos)) {
+
+      throw new Error(
+        "Failed to fetch repositories."
+      );
     }
-  });
-}
 
-if (UI.input) {
-  UI.input.addEventListener("input", (event) => {
-    clearTimeout(liveSearchDebounceTimer);
-    liveSearchDebounceTimer = setTimeout(() => {
-      executeTypeaheadLookup(event.target.value);
-    }, 300);
-  });
-}
+    const sortedRepos = repos
+      .sort(
+        (a, b) =>
+          b.stargazers_count -
+          a.stargazers_count
+      )
+      .slice(0, 6);
 
-document.querySelectorAll(".tag-btn").forEach((btn) => {
-  btn.addEventListener("click", () => {
-    if (!btn.dataset.user) return;
-    if (UI.input) {
-      UI.input.value = btn.dataset.user;
-    }
-    fetchUser(btn.dataset.user);
-  });
-});
+    // A newer search/comparison may have started while the above
+    // requests were in flight; if so, this result is stale and
+    // must not be rendered over the newer one.
+    if (isStaleOperation(operationId)) return;
 
-document.addEventListener("click", (event) => {
-  if (UI.form && !UI.form.contains(event.target) && !searchResultsContainer.contains(event.target)) {
-    searchResultsContainer.style.display = "none";
-  }
-});
+    renderProfile(user);
 
-document.querySelectorAll(".workspace-tabs-nav .tab-nav-item").forEach(tabBtn => {
-  tabBtn.addEventListener("click", () => {
-    const activePaneId = tabBtn.getAttribute("data-pane");
-    
-    document.querySelectorAll(".workspace-tabs-nav .tab-nav-item").forEach(b => b.classList.remove("active"));
-    document.querySelectorAll(".tab-pane").forEach(p => p.classList.remove("active"));
-    
-    tabBtn.classList.add("active");
-    const targetPane = document.getElementById(activePaneId);
-    if (targetPane) targetPane.classList.add("active");
-  });
-});
+    renderRepos(sortedRepos);
 
-if (UI.compareForm) {
-  UI.compareForm.addEventListener("submit", async (event) => {
-    event.preventDefault();
+    await generateContributionHeatmap(cleanName, signal, operationId);
 
-    const leftUsername = UI.compareA ? UI.compareA.value : "";
-    const rightUsername = UI.compareB ? UI.compareB.value : "";
+    if (isStaleOperation(operationId)) return;
 
-    if (!leftUsername.trim() || !rightUsername.trim()) {
-      showStatus("Enter two GitHub usernames to compare.", "error");
-      return;
-    }
+    await renderLanguageAnalytics(repos, signal, operationId);
+
+    if (isStaleOperation(operationId)) return;
+
+    UI.analyticsPanel?.classList.remove(
+      "hidden"
+    );
 
     hideStatus();
-    showCompareLoading();
 
-    try {
-      const [leftData, rightData] = await Promise.all([
-        fetchProfileData(leftUsername),
-        fetchProfileData(rightUsername)
-      ]);
+  } catch (error) {
 
-      renderComparison(leftData, rightData);
-    } catch (error) {
-      document.body.classList.add("compare-mode");
-      if (UI.profileCard) UI.profileCard.classList.add("hidden");
-      if (UI.metricsPanel) UI.metricsPanel.classList.add("hidden");
-      if (UI.reposSection) UI.reposSection.classList.add("hidden");
-      if (UI.comparisonPanel) UI.comparisonPanel.classList.remove("hidden");
-      if (UI.comparisonContainer) {
-        UI.comparisonContainer.innerHTML = `<div class="status-banner error">${safeText(error.message, "Unable to compare profiles.")}</div>`;
-      }
-      UI.comparisonPanel?.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
+    // An aborted request means a newer search/comparison started
+    // and cancelled this one on purpose - that's not a failure, so
+    // don't show an error banner or reset UI the newer operation
+    // may already own.
+    if (isAbortError(error) || isStaleOperation(operationId)) return;
+
+    resetProfileUI();
+
+    showStatus(
+      error.message,
+      "error"
+    );
+  }
+}
+
+/* =========================================================
+   FETCH PROFILE DATA
+========================================================= */
+
+async function fetchProfileData(username, signal) {
+
+  const cleanName =
+    username.trim().replace("@", "");
+
+  const cachedProfile =
+    DataCacheEngine.get(
+      `profile_${cleanName}`
+    );
+
+  const cachedRepos =
+    DataCacheEngine.get(
+      `repos_${cleanName}`
+    );
+
+  if (cachedProfile && cachedRepos) {
+
+    return {
+      user: cachedProfile,
+      repos: cachedRepos
+    };
+  }
+
+  const userResponse = await fetch(
+    `https://api.github.com/users/${cleanName}`,
+    { signal }
+  );
+
+  if (!userResponse.ok) {
+
+    throw new Error(
+      `GitHub user not found: ${cleanName}`
+    );
+  }
+
+  const user =
+    await userResponse.json();
+
+  const repoResponse = await fetch(
+    `https://api.github.com/users/${cleanName}/repos?per_page=50`,
+    { signal }
+  );
+
+  if (!repoResponse.ok) {
+
+    const errorData =
+      await repoResponse.json().catch(() => ({}));
+
+    throw new Error(
+      errorData.message || "Failed to fetch repositories."
+    );
+  }
+
+  const repos =
+    await repoResponse.json();
+
+  if (!Array.isArray(repos)) {
+
+    throw new Error(
+      "Failed to fetch repositories."
+    );
+  }
+
+  const sortedRepos = repos
+    .sort(
+      (a, b) =>
+        b.stargazers_count -
+        a.stargazers_count
+    )
+    .slice(0, 4);
+
+  DataCacheEngine.set(
+    `profile_${cleanName}`,
+    user
+  );
+
+  DataCacheEngine.set(
+    `repos_${cleanName}`,
+    sortedRepos
+  );
+
+  return {
+    user,
+    repos: sortedRepos
+  };
+}
+
+/* =========================================================
+   COMPARISON UI
+========================================================= */
+
+function buildRepoListSmall(repos) {
+
+  const fragment =
+    document.createDocumentFragment();
+
+  repos.forEach((repo) => {
+
+    const mini =
+      document.createElement("div");
+
+    mini.className = "mini-repo-card";
+
+    const link =
+      document.createElement("a");
+
+    link.href = repo.html_url;
+    link.target = "_blank";
+    link.rel = "noreferrer";
+    link.className = "repo-link";
+    link.textContent = repo.name; // GitHub API value — textContent, never HTML
+
+    const stars =
+      document.createElement("span");
+
+    stars.textContent =
+      `★ ${repo.stargazers_count}`;
+
+    mini.appendChild(link);
+    mini.appendChild(stars);
+
+    fragment.appendChild(mini);
+  });
+
+  return fragment;
+}
+
+function buildComparisonStat(label, value, isWinner) {
+
+  const stat =
+    document.createElement("div");
+
+  stat.className =
+    `compare-stat ${isWinner ? "winner" : ""}`;
+
+  const label_ =
+    document.createElement("span");
+
+  label_.textContent = label;
+
+  const strong =
+    document.createElement("strong");
+
+  strong.textContent = value;
+
+  stat.appendChild(label_);
+  stat.appendChild(strong);
+
+  return stat;
+}
+
+function renderComparisonCard(
+  data,
+  opponent
+) {
+
+  const repoWinner =
+    data.user.public_repos >
+    opponent.user.public_repos;
+
+  const followerWinner =
+    data.user.followers >
+    opponent.user.followers;
+
+  const followingWinner =
+    data.user.following >
+    opponent.user.following;
+
+  const article =
+    document.createElement("article");
+
+  article.className = "compare-card";
+
+  const header =
+    document.createElement("div");
+
+  header.className = "compare-header";
+
+  const img =
+    document.createElement("img");
+
+  img.src = data.user.avatar_url;
+  img.className = "compare-avatar";
+
+  const identity =
+    document.createElement("div");
+
+  const h3 =
+    document.createElement("h3");
+
+  h3.textContent = safeText(
+    data.user.name,
+    data.user.login
+  );
+
+  const handle =
+    document.createElement("p");
+
+  handle.textContent = `@${data.user.login}`;
+
+  identity.appendChild(h3);
+  identity.appendChild(handle);
+
+  header.appendChild(img);
+  header.appendChild(identity);
+
+  const bio =
+    document.createElement("p");
+
+  bio.className = "compare-bio";
+  bio.textContent = safeText(
+    data.user.bio,
+    "No bio available."
+  );
+
+  const stats =
+    document.createElement("div");
+
+  stats.className = "compare-stats";
+
+  stats.appendChild(
+    buildComparisonStat(
+      "Repositories",
+      data.user.public_repos,
+      repoWinner
+    )
+  );
+
+  stats.appendChild(
+    buildComparisonStat(
+      "Followers",
+      data.user.followers.toLocaleString(),
+      followerWinner
+    )
+  );
+
+  stats.appendChild(
+    buildComparisonStat(
+      "Following",
+      data.user.following,
+      followingWinner
+    )
+  );
+
+  const repoWrap =
+    document.createElement("div");
+
+  repoWrap.className = "compare-repos";
+
+  const repoHeading =
+    document.createElement("h4");
+
+  repoHeading.textContent = "Top Repositories";
+
+  repoWrap.appendChild(repoHeading);
+  repoWrap.appendChild(
+    buildRepoListSmall(data.repos)
+  );
+
+  article.appendChild(header);
+  article.appendChild(bio);
+  article.appendChild(stats);
+  article.appendChild(repoWrap);
+
+  return article;
+}
+
+function renderComparison(
+  leftData,
+  rightData
+) {
+
+  UI.comparisonPanel?.classList.remove(
+    "hidden"
+  );
+
+  UI.comparisonContainer.replaceChildren(
+    renderComparisonCard(
+      leftData,
+      rightData
+    ),
+    renderComparisonCard(
+      rightData,
+      leftData
+    )
+  );
+
+  UI.comparisonPanel.scrollIntoView({
+    behavior: "smooth"
   });
 }
 
-document.querySelectorAll(".compare-tag-btn").forEach((button) => {
-  button.addEventListener("click", () => {
-    const [leftUsername, rightUsername] = String(button.dataset.compare || "").split(",");
-    if (UI.compareA) UI.compareA.value = leftUsername || "";
-    if (UI.compareB) UI.compareB.value = rightUsername || "";
-    UI.compareForm?.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
-  });
-});
+/* =========================================================
+   SEARCH FORM
+========================================================= */
 
-// Export functionality removed — keep UI focused on fetched data only
+if (UI.form) {
+
+  UI.form.addEventListener(
+    "submit",
+    (event) => {
+
+      event.preventDefault();
+
+      fetchUser(UI.input.value);
+    }
+  );
+}
+
+/* =========================================================
+   COMPARE FORM
+========================================================= */
+
+if (UI.compareForm) {
+
+  UI.compareForm.addEventListener(
+    "submit",
+    async (event) => {
+
+      event.preventDefault();
+
+      const leftUsername =
+        UI.compareA.value.trim();
+
+      const rightUsername =
+        UI.compareB.value.trim();
+
+      if (
+        !leftUsername ||
+        !rightUsername
+      ) {
+
+        showStatus(
+          "Enter two GitHub usernames.",
+          "error"
+        );
+
+        return;
+      }
+
+      // Cancel any previous profile search/comparison so it can't
+      // finish late and clobber this comparison's UI (Bug #10505).
+      const { signal, operationId } = beginOperation();
+
+      try {
+
+        showCompareLoading();
+
+        const [
+          leftData,
+          rightData
+        ] = await Promise.all([
+
+          fetchProfileData(
+            leftUsername,
+            signal
+          ),
+
+          fetchProfileData(
+            rightUsername,
+            signal
+          )
+
+        ]);
+
+        // A newer search/comparison may have started while these
+        // requests were in flight; ignore this now-stale result.
+        if (isStaleOperation(operationId)) return;
+
+        renderComparison(
+          leftData,
+          rightData
+        );
+
+        hideStatus();
+
+      } catch (error) {
+
+        // An aborted request means a newer search/comparison
+        // started and cancelled this one on purpose - not a real
+        // failure, so stay silent rather than show an error banner.
+        if (isAbortError(error) || isStaleOperation(operationId)) return;
+
+        showStatus(
+          error.message,
+          "error"
+        );
+      }
+    }
+  );
+}
+
+/* =========================================================
+   QUICK TAGS
+========================================================= */
+
+document
+  .querySelectorAll(".tag-btn")
+  .forEach((btn) => {
+
+    btn.addEventListener(
+      "click",
+      () => {
+
+        const user =
+          btn.dataset.user;
+
+        if (!user) return;
+
+        UI.input.value = user;
+
+        fetchUser(user);
+      }
+    );
+  });
+
+/* =========================================================
+   COMPARE TAGS
+========================================================= */
+
+document
+  .querySelectorAll(".compare-tag-btn")
+  .forEach((btn) => {
+
+    btn.addEventListener(
+      "click",
+      () => {
+
+        const compare =
+          btn.dataset.compare.split(",");
+
+        UI.compareA.value =
+          compare[0];
+
+        UI.compareB.value =
+          compare[1];
+
+        UI.compareForm.dispatchEvent(
+          new Event("submit")
+        );
+      }
+    );
+  });
+
+/* =========================================================
+   THEME TOGGLE
+========================================================= */
 
 if (UI.themeToggle) {
-  UI.themeToggle.addEventListener("click", () => {
-    const currentTheme = document.documentElement.getAttribute("data-theme");
-    const newTheme = currentTheme === "dark" ? "light" : "dark";
-    document.documentElement.setAttribute("data-theme", newTheme);
-    localStorage.setItem("theme", newTheme);
-    updateThemeIcon();
-  });
+
+  UI.themeToggle.addEventListener(
+    "click",
+    () => {
+
+      const currentTheme =
+        document.documentElement.getAttribute(
+          "data-theme"
+        );
+
+      const newTheme =
+        currentTheme === "dark"
+          ? "light"
+          : "dark";
+
+      document.documentElement.setAttribute(
+        "data-theme",
+        newTheme
+      );
+
+      localStorage.setItem(
+        "theme",
+        newTheme
+      );
+
+      updateThemeIcon();
+    }
+  );
 }
 
-window.addEventListener("online", syncNetworkStatus);
-window.addEventListener("offline", syncNetworkStatus);
+/* =========================================================
+   NETWORK
+========================================================= */
+
+window.addEventListener(
+  "online",
+  syncNetworkStatus
+);
+
+window.addEventListener(
+  "offline",
+  syncNetworkStatus
+);
+
+/* =========================================================
+   INIT
+========================================================= */
 
 initTheme();
+
 syncNetworkStatus();
