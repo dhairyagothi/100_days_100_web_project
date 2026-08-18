@@ -10,8 +10,8 @@ const CoinContextProvider = (props) => {
   });
 
   // Use the API key from environment variables
-  const apiKey = process.env.REACT_APP_CG_API_KEY;
-
+  // const apiKey = process.env.REACT_APP_CG_API_KEY;
+  const apiKey = import.meta.env.VITE_CG_API_KEY;
   const fetchAllCoins = async () => {
     const options = {
       method: "GET",
@@ -26,7 +26,13 @@ const CoinContextProvider = (props) => {
       options
     )
       .then((response) => response.json())
-      .then((response) => setAllCoins(response))
+      .then((response) => {
+        if (Array.isArray(response)) {
+          setAllCoins(response);
+        } else {
+          console.error("CoinGecko API error:", response);
+        }
+      })
       .catch((err) => console.error(err));
   };
 

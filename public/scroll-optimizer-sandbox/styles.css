@@ -1,0 +1,177 @@
+:root {
+    --bg-dark: #030508;
+    --panel-bg: rgba(8, 11, 18, 0.92);
+    --neon-blue: #00f0ff;
+    --neon-purple: #bd00ff;
+    --text-primary: #f8fafc;
+    --text-muted: #475569;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    overflow: hidden;
+    height: 100vh;
+    display: flex;
+}
+
+.perf-container {
+    display: grid;
+    grid-template-columns: 290px 1fr;
+    width: 100vw;
+    height: 100vh;
+}
+
+.telemetry-panel {
+    background: var(--panel-bg);
+    border-right: 2px solid rgba(189, 0, 255, 0.15);
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    z-index: 10;
+}
+
+.telemetry-panel h2 {
+    font-size: 1.1rem;
+    color: var(--neon-purple);
+    letter-spacing: 2px;
+}
+
+.divider {
+    border: none;
+    height: 1px;
+    background: linear-gradient(to right, var(--neon-purple), transparent);
+}
+
+.metric-box {
+    background: rgba(255, 255, 255, 0.01);
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    padding: 12px;
+    border-radius: 4px;
+}
+
+.metric-box .label {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    display: block;
+    margin-bottom: 4px;
+}
+
+.metric-box .value {
+    font-weight: bold;
+    font-size: 1.15rem;
+}
+
+.metric-box .value.safe {
+    color: #10b981;
+}
+
+.metric-box .value.accent {
+    color: var(--neon-blue);
+}
+
+.instruction-pad {
+    margin-top: auto;
+    border-left: 2px solid var(--neon-blue);
+    padding-left: 10px;
+}
+
+.instruction-pad h3 {
+    font-size: 0.8rem;
+    color: var(--neon-blue);
+    margin-bottom: 4px;
+}
+
+.instruction-pad p {
+    font-size: 0.68rem;
+    color: var(--text-muted);
+    line-height: 1.4;
+}
+
+.viewport-area {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    height: 100%;
+}
+
+.viewport-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-bottom: 15px;
+}
+
+.status-dot {
+    width: 6px;
+    height: 6px;
+    background-color: var(--neon-purple);
+    border-radius: 50%;
+}
+
+/* Thread Container Layout Grid */
+.scroll-container {
+    flex-grow: 1;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+    border: 1px solid rgba(189, 0, 255, 0.05);
+    border-radius: 4px;
+}
+
+.scroll-panel {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+}
+
+.unique-1 {
+    background: #05070c;
+}
+
+.unique-2 {
+    background: #07050c;
+}
+
+.unique-3 {
+    background: #050c0b;
+}
+
+/* CRITICAL PERFORMANCE OPTIMIZATION:
+   Leveraging transform properties and will-change tells the browser 
+   to promote elements to an isolated layer on the GPU matrix. */
+.parallax-element {
+    position: absolute;
+    font-size: 3.5rem;
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.03);
+    user-select: none;
+    will-change: transform;
+    transform: translateZ(0);
+}
+
+.content-card {
+    background: rgba(255, 255, 255, 0.01);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    padding: 30px 60px;
+    border-radius: 4px;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    color: #94a3b8;
+    z-index: 2;
+    backdrop-filter: blur(5px);
+}

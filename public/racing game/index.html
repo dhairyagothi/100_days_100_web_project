@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2D Car Racing</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="image.png">
+
+</head>
+
+<body>
+
+  <canvas id="starfield"></canvas>
+
+  <div id="game-wrapper">
+    <!-- HUD -->
+    <div id="hud">
+      <div class="hud-block">
+        <span class="hud-label">SCORE</span>
+        <span class="hud-value" id="scoreDisplay">0</span>
+      </div>
+
+      <div id="combo-display">
+        <span class="hud-label">COMBO</span>
+        <span id="combo-count">×0</span>
+      </div>
+
+      <div id="powerup-hud">
+        <div class="pu-icon shield" id="pu-shield-icon">🛡️</div>
+        <div class="pu-icon slow" id="pu-slow-icon">🐌</div>
+        <div class="pu-icon multi" id="pu-multi-icon">✖️</div>
+      </div>
+
+      <div class="hud-block" id="boost-bar-wrap">
+        <span class="hud-label">BOOST</span>
+        <div id="boost-bar">
+          <div id="boost-fill"></div>
+        </div>
+      </div>
+
+      <div class="hud-block">
+        <span class="hud-label">BEST</span>
+        <span class="hud-value" id="bestDisplay">0</span>
+      </div>
+
+      <button id="daynight-btn">🌙 NIGHT</button>
+    </div>
+
+    <!-- Color picker -->
+    <div id="color-picker-row">
+      <span>CAR COLOR:</span>
+    </div>
+
+    <!-- Canvas -->
+    <div id="canvas-container">
+      <canvas id="gameCanvas" width="420" height="580"></canvas>
+      <div id="scanlines"></div>
+      <div id="crash-flash"></div>
+      <div id="boost-flash"></div>
+      <div id="pu-toast"></div>
+      <div id="multi-badge">×2</div>
+      <div id="nearmiss-splash">NEAR MISS!</div>
+
+      <!-- Start overlay -->
+      <div class="overlay" id="startOverlay">
+        <div class="logo-line1">TURBO</div>
+        <div class="logo-line2">DASH</div>
+        <div class="overlay-sub">ARCADE RACING</div>
+        <div class="controls-hint">
+          <div class="key-hint">
+            <div class="key-box">←</div>LEFT
+          </div>
+          <div class="key-hint">
+            <div class="key-box">→</div>RIGHT
+          </div>
+          <div class="key-hint">
+            <div class="key-box" style="font-size:11px;color:#ff6a00;border-color:rgba(255,106,0,0.6);">⇧</div><span
+              style="color:#ff6a00;">BOOST</span>
+          </div>
+        </div>
+        <button class="race-btn" id="startBtn">START ENGINE</button>
+        <div class="overlay-sub" style="font-size:10px;">NEAR-MISS COMBOS · TURBO BOOST · POWER-UPS</div>
+      </div>
+
+      <!-- Game Over overlay -->
+      <div class="overlay hidden" id="gameOverOverlay">
+        <div class="overlay-title glow-red">CRASH!</div>
+        <div class="overlay-score-display">
+          <div class="overlay-score-label">FINAL SCORE</div>
+          <div class="overlay-score-value" id="finalScore">0</div>
+          <div class="overlay-best" id="bestLabel">BEST: 0</div>
+          <div id="new-record">★ NEW RECORD ★</div>
+        </div>
+        <div class="stat-row">
+          <div class="stat-cell">
+            <span class="stat-label">BOOSTS USED</span>
+            <span class="stat-val" id="stat-boosts">0</span>
+          </div>
+          <div class="stat-cell">
+            <span class="stat-label">NEAR MISSES</span>
+            <span class="stat-val" id="stat-nearMiss">0</span>
+          </div>
+          <div class="stat-cell">
+            <span class="stat-label">MAX COMBO</span>
+            <span class="stat-val" id="stat-maxCombo">0</span>
+          </div>
+        </div>
+        <button class="race-btn" id="restartBtn">RACE AGAIN</button>
+      </div>
+    </div>
+
+    <!-- Mobile controls -->
+    <div id="mobile-controls">
+      <button class="mob-btn" id="leftBtn">◀</button>
+      <button id="boostBtn">⚡BOOST</button>
+      <button class="mob-btn" id="rightBtn">▶</button>
+    </div>
+  </div>
+  <script src="script.js"></script>
+
+</body>
+
+</html>
