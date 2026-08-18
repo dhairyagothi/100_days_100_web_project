@@ -1,3 +1,9 @@
+<<<<<<< HEAD
+<body id="top">
+
+  <!-- Background layers -->
+
+=======
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,10 +18,14 @@
 </head>
 <body id="top">
 
+>>>>>>> upstream/Main
   <div id="wl-bg" aria-hidden="true"></div>
   <div id="wl-bg-next" aria-hidden="true"></div>
   <div class="wl-overlay" aria-hidden="true"></div>
 
+<<<<<<< HEAD
+  <!-- Header -->
+=======
   <div id="panelOverlay"></div>
 
   <div class="feature-panel" id="ratingPanel" role="dialog" aria-modal="true">
@@ -64,18 +74,40 @@
       <button class="trip-clear-btn" id="clearTrip" style="margin-top:14px;">Clear All</button>
     </div>
   </div>
+>>>>>>> upstream/Main
 
   <header class="wl-header">
     <a href="/" class="project-back-button">← Back to Home</a>
     <div class="wl-logo">✈ Wanderlust <span>· Discover</span></div>
-    <nav class="wl-nav" aria-label="Site navigation">
-      <a href="#top" id="homeLink">Home</a>
-      <a href="#about">About</a>
-      <a href="#contact">Contact</a>
-      <a href="#services">Services</a>
-    </nav>
+
+```
+<nav class="wl-nav" aria-label="Site navigation">
+  <a href="#top" id="homeLink">Home</a>
+  <a href="#about">About</a>
+  <a href="#contact">Contact</a>
+  <a href="#services">Services</a>
+</nav>
+```
+
   </header>
 
+<<<<<<< HEAD
+  <!-- Hero -->
+
+  <div class="wl-hero">
+    <div class="wl-card">
+
+```
+  <div class="wl-country-label" id="placeRegion">
+    Europe · Destination 1 of 14
+  </div>
+
+  <h1 class="wl-place-title" id="placeTitle">Iceland</h1>
+
+  <p class="wl-place-desc" id="placeDescription">
+    Explore glaciers, geysers, and the ethereal Northern Lights across volcanic landscapes.
+  </p>
+=======
   <main class="wl-hero">
     <section class="wl-card" role="region" aria-live="polite" aria-label="Destination information">
 
@@ -107,9 +139,17 @@
       </div>
 
       <div id="destinationIndicators" class="destination-indicators" role="tablist" aria-label="Destination navigation"></div>
+>>>>>>> upstream/Main
 
-      <button class="booking" id="bookingButton">Book a Trip to Iceland</button>
 
+<<<<<<< HEAD
+  <div class="wl-controls-row">
+    <button class="wl-nav-btn" id="prevBtn">&#8592;</button>
+
+    <div class="wl-select-wrap">
+      <select id="placeSelector"></select>
+      <span class="wl-select-arrow">▾</span>
+=======
       <div class="wl-feature-bar">
         <button class="feature-btn" id="openRatings" title="Rate & Review"><span class="fb-icon">⭐</span> Rate</button>
         <button class="feature-btn" id="openWeather" title="Live Weather"><span class="fb-icon">🌤</span> Weather</button>
@@ -128,10 +168,112 @@
       <div class="wl-progress">
         <div class="wl-progress-bar" id="progressBar"></div>
       </div>
+>>>>>>> upstream/Main
 
     </section>
   </main>
 
+<<<<<<< HEAD
+        placeSelector.addEventListener('change', function () {
+            updatePlace(placeSelector.value);
+        });
+
+
+    // Booking button functionality
+bookingButton.addEventListener('click', function () {
+    const selectedPlace = placeSelector.value;
+
+    alert(`Your trip to ${selectedPlace} has been booked successfully!`);
+
+    bookingButton.textContent = `Trip Booked to ${selectedPlace} ✓`;
+
+    bookingButton.classList.add("booked");
+});
+
+    
+    window.onload = function () {
+        const defaultPlace = "Iceland";
+        updatePlace(defaultPlace);
+        placeSelector.value = defaultPlace;
+    };
+</script>
+
+</body>
+
+</html>
+
+    </div>
+
+    <button class="wl-nav-btn" id="nextBtn">&#8594;</button>
+  </div>
+
+  <div
+    id="destinationIndicators"
+    class="destination-indicators">
+  </div>
+
+  <button class="booking" id="bookingButton">
+    Book a Trip to Iceland
+  </button>
+
+  <div class="wl-autoplay-row">
+    <button class="wl-autoplay-btn" id="autoplayBtn">
+      <span id="autoplayIcon">▶</span>
+      <span id="autoplayLabel">Autoplay</span>
+    </button>
+
+    <span class="wl-counter" id="wlCounter">
+      1 / 14
+    </span>
+  </div>
+
+  <div class="wl-progress">
+    <div class="wl-progress-bar" id="progressBar"></div>
+  </div>
+
+</div>
+```
+
+  </div>
+
+  <!-- Footer -->
+
+  <footer id="contact">
+
+```
+<div class="footer-grid">
+
+  <div>
+    <h3>Contact Us</h3>
+    <p>📧 contact@wanderlust.com</p>
+    <p>📞 +1 800 123 4567</p>
+    <p>🕐 Mon–Fri, 9am–6pm</p>
+  </div>
+
+  <div id="about">
+    <h3>About Us</h3>
+    <p>
+      We are a travel platform helping you discover the most beautiful
+      destinations around the world.
+    </p>
+  </div>
+
+  <div id="services">
+    <h3>Services</h3>
+    <p>✈️ Flight Booking</p>
+    <p>🏨 Hotel Reservations</p>
+    <p>🗺️ Tour Packages</p>
+    <p>🚗 Car Rentals</p>
+  </div>
+
+</div>
+
+<div class="footer-bottom">
+  &copy; 2026 Wanderlust. All rights reserved.
+</div>
+```
+
+=======
   <footer id="contact">
     <div class="footer-grid">
       <div>
@@ -153,8 +295,16 @@
       </div>
     </div>
     <div class="footer-bottom">&copy; 2026 Wanderlust. All rights reserved.</div>
+>>>>>>> upstream/Main
   </footer>
 
   <script src="script.js"></script>
+
 </body>
+<<<<<<< HEAD
+
 </html>
+
+=======
+</html>
+>>>>>>> upstream/Main
