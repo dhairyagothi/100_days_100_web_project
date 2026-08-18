@@ -1,46 +1,515 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" href="./image/evesparks.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#fff7f3" />
-    <meta
-      name="description"
-      content="EveSparks helps you discover event packages, planners, decorators, caterers, and complete celebration services."
-    />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-    
-    <!--
-      manifest.json provides metadata used when your web app is installed on a
-      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
-    -->
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EveSparks – Organise Your Dream Event</title>
+  <meta name="description" content="EveSparks – Book weddings, corporate events, birthday parties & more. Premium event planning at every budget." />
 
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
-    <title>EveSparks - Event Planning App</title>
-  </head>
-  <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
+  <!-- Bootstrap 5 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="style.css" />
 
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
+  <style>
+    /* ── Hero Slider ── */
+    #heroSlider { position: relative; height: 480px; overflow: hidden; border-radius: 18px; }
+    .slide { position: absolute; inset: 0; opacity: 0; transition: opacity .8s ease; }
+    .slide.slide-active { opacity: 1; z-index: 1; }
+    .slide img { width: 100%; height: 100%; object-fit: cover; }
+    .slide-content {
+      position: absolute; bottom: 30px; left: 30px; right: 30px;
+      background: rgba(255,255,255,.88);
+      backdrop-filter: blur(8px);
+      border-radius: 14px;
+      padding: 22px 28px;
+      z-index: 2;
+    }
+    body.dark .slide-content { background: rgba(6,18,41,.85); }
+    .slide-content .tag { color: #ff7b9c; font-size: .78rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px; }
+    .slide-content h2 { font-size: clamp(1.4rem,3vw,2rem); font-weight: 800; color: #1e293b; margin-bottom: 6px; }
+    body.dark .slide-content h2 { color: #f1f5f9; }
+    .slide-content p { font-size: .9rem; color: #475569; margin-bottom: 14px; }
+    body.dark .slide-content p { color: #94a3b8; }
 
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
-  </body>
+    /* ── Category Pills ── */
+    .cat-scroll { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 8px; }
+    .cat-scroll::-webkit-scrollbar { display: none; }
+    .cat-pill {
+      flex-shrink: 0; padding: 10px 20px;
+      border-radius: 30px; font-size: .82rem; font-weight: 600;
+      background: var(--card); border: 1px solid var(--border); color: var(--text);
+      cursor: pointer; transition: all .25s;
+    }
+    .cat-pill:hover, .cat-pill.active { background: #ff7b9c; border-color: #ff7b9c; color: #fff; }
+
+    /* ── Feature strip ── */
+    .feature-strip { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); }
+    .feature-item { display: flex; gap: 14px; align-items: flex-start; }
+    .feature-icon {
+      width: 44px; height: 44px; flex-shrink: 0;
+      border-radius: 12px; background: rgba(255,123,156,.12);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; color: #ff7b9c;
+    }
+
+    /* ── Stats bar ── */
+    .stats-bar { background: linear-gradient(135deg, #e8506b, #ff7b9c); border-radius: var(--radius); }
+    .stat-item h3 { font-size: 2rem; font-weight: 800; }
+
+    /* ── Testimonials ── */
+    .testimonial-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 28px;
+      transition: transform .3s, box-shadow .3s;
+    }
+    .testimonial-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,.1); }
+    .avatar { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; }
+
+    @media (max-width: 768px) {
+      #heroSlider { height: 300px; }
+      .slide-content { padding: 14px 16px; bottom: 16px; left: 12px; right: 12px; }
+    }
+  </style>
+</head>
+<body class="light">
+
+  <!-- ANNOUNCEMENT BAR -->
+  <div class="announce-bar">
+    🎉 &nbsp;ORGANISE YOUR EVENT WITH US &nbsp;|&nbsp; Book your first event and get <strong>extra discount!</strong>
+  </div>
+
+  <!-- ═══ HEADER ═══════════════════════════════════════ -->
+  <header class="site-header">
+    <!-- Desktop top row -->
+    <div class="header-inner">
+      <a href="index.html" class="brand">
+        <img src="image/evesparks.png" alt="EveSparks Logo" />
+      </a>
+      <div class="search-wrap">
+        <input type="text" id="searchInput" placeholder="Search for services..." />
+        <button aria-label="Search"><i class="bi bi-search"></i></button>
+      </div>
+      <div class="header-actions">
+        <button class="hdr-btn theme-btn" aria-label="Toggle theme"><i class="bi bi-moon-fill"></i></button>
+        <button class="hdr-btn" aria-label="Account"><i class="bi bi-person-circle"></i></button>
+        <button class="hdr-btn" aria-label="Wishlist"><i class="bi bi-heart"></i><span class="badge">5</span></button>
+        <button class="hdr-btn" aria-label="Cart"><i class="bi bi-cart3"></i><span class="badge">0</span></button>
+      </div>
+    </div>
+
+    <!-- Mobile bar -->
+    <div class="mobile-bar">
+      <a href="index.html" class="brand"><img src="image/evesparks.png" alt="EveSparks" style="height:38px" /></a>
+      <div style="display:flex;gap:6px">
+        <button class="hdr-btn theme-btn" aria-label="Toggle theme"><i class="bi bi-moon-fill"></i></button>
+        <button class="hdr-btn" id="hamburger" aria-label="Menu"><i class="bi bi-list" style="font-size:1.7rem"></i></button>
+      </div>
+    </div>
+
+    <!-- Desktop nav strip -->
+    <nav class="navbar-strip">
+      <div class="navbar-inner">
+        <div class="nav-item"><a href="index.html" class="nav-link active">Home</a></div>
+        <div class="nav-item">
+          <a href="categories.html" class="nav-link">Categories</a>
+          <div class="dropdown">
+            <a href="categories.html#decoration">Decoration</a>
+            <a href="categories.html#event">Event Type</a>
+            <a href="categories.html#catering">Catering Services</a>
+            <a href="categories.html#photo">Photography</a>
+          </div>
+        </div>
+        <div class="nav-item">
+          <a href="corporate-events.html" class="nav-link">Corporate Events</a>
+          <div class="dropdown">
+            <a href="corporate-events.html#seminars">Seminars</a>
+            <a href="corporate-events.html#conferences">Conferences</a>
+            <a href="corporate-events.html#product-launch">Product Launch</a>
+          </div>
+        </div>
+        <div class="nav-item">
+          <a href="social-events.html" class="nav-link">Social Events</a>
+          <div class="dropdown">
+            <a href="social-events.html#birthday">Birthday Parties</a>
+            <a href="social-events.html#wedding">Weddings</a>
+            <a href="social-events.html#concert">Concerts</a>
+          </div>
+        </div>
+        <div class="nav-item"><a href="complete-package.html" class="nav-link">Complete Package</a></div>
+        <div class="nav-item"><a href="budget-planner.html" class="nav-link">Budget Planner</a></div>
+        <div class="nav-item"><a href="other-services.html" class="nav-link">Other Services</a></div>
+        <div class="nav-item"><a href="hot-offers.html" class="nav-link">Hot Offers 🔥</a></div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Mobile Drawer -->
+  <div class="drawer-overlay" id="drawerOverlay"></div>
+  <nav class="mobile-drawer" id="mobileDrawer">
+    <div class="drawer-header">
+      <span style="font-weight:800;font-size:1.1rem;color:var(--accent)">EveSparks</span>
+      <button class="drawer-close" id="drawerClose"><i class="bi bi-x-lg"></i></button>
+    </div>
+    <a href="index.html" class="mobile-nav-link">🏠 Home</a>
+    <a href="categories.html" class="mobile-nav-link">📋 Categories</a>
+    <a href="corporate-events.html" class="mobile-nav-link">🏢 Corporate Events</a>
+    <a href="social-events.html" class="mobile-nav-link">🎉 Social Events</a>
+    <a href="complete-package.html" class="mobile-nav-link">📦 Complete Package</a>
+    <a href="budget-planner.html" class="mobile-nav-link">💰 Budget Planner</a>
+    <a href="other-services.html" class="mobile-nav-link">🛎️ Other Services</a>
+    <a href="hot-offers.html" class="mobile-nav-link">🔥 Hot Offers</a>
+  </nav>
+
+  <!-- ═══ HERO SLIDER ════════════════════════════════════ -->
+  <div class="section" style="padding-top:32px;padding-bottom:0">
+    <div id="heroSlider">
+      <div class="slide slide-active">
+        <img src="image/b1.jpg" alt="Wedding Season Sale" />
+        <div class="slide-content">
+          <p class="tag">✨ Trending Offers</p>
+          <h2>Wedding Season Sale</h2>
+          <p><b>Extra 20% off</b> on <b>Complete Wedding Package</b></p>
+          <a href="complete-package.html" class="btn-primary">Get Quote Now <i class="bi bi-arrow-right"></i></a>
+        </div>
+      </div>
+      <div class="slide">
+        <img src="image/b2.jpg" alt="Concert Events" />
+        <div class="slide-content">
+          <p class="tag">✨ Trending Offers</p>
+          <h2>Concerts &amp; Live Events</h2>
+          <p>Get extra <b>10% off</b> on Concert Events</p>
+          <a href="social-events.html#concert" class="btn-primary">Book Now <i class="bi bi-arrow-right"></i></a>
+        </div>
+      </div>
+      <div class="slide">
+        <img src="image/b3.png" alt="Customized Events" />
+        <div class="slide-content">
+          <p class="tag">🎯 Organise in Your Budget</p>
+          <h2>Customized Event Planner</h2>
+          <p>Build your event pack according to your budget</p>
+          <a href="budget-planner.html" class="btn-primary">Plan Now <i class="bi bi-arrow-right"></i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ CATEGORY PILLS ════════════════════════════════ -->
+  <div class="section" style="padding-top:36px;padding-bottom:0">
+    <h2 class="section-title reveal">Browse by Category</h2>
+    <p class="section-sub reveal">Find the perfect service for your occasion</p>
+    <div class="cat-scroll reveal">
+      <a href="social-events.html#wedding" class="cat-pill active">💍 Weddings</a>
+      <a href="social-events.html#birthday" class="cat-pill">🎂 Birthdays</a>
+      <a href="corporate-events.html" class="cat-pill">🏢 Corporate</a>
+      <a href="social-events.html#concert" class="cat-pill">🎵 Concerts</a>
+      <a href="categories.html#catering" class="cat-pill">🍽️ Catering</a>
+      <a href="categories.html#decoration" class="cat-pill">🌸 Decoration</a>
+      <a href="categories.html#photo" class="cat-pill">📷 Photography</a>
+      <a href="other-services.html" class="cat-pill">✨ More</a>
+    </div>
+  </div>
+
+  <!-- ═══ STATS BAR ══════════════════════════════════════ -->
+  <div class="section" style="padding-top:40px;padding-bottom:0">
+    <div class="stats-bar text-white px-5 py-4 reveal">
+      <div class="row text-center g-4">
+        <div class="col-6 col-md-3 stat-item">
+          <h3>2,500+</h3><p class="text-white/80 text-sm">Events Organised</p>
+        </div>
+        <div class="col-6 col-md-3 stat-item">
+          <h3>450+</h3><p class="text-white/80 text-sm">Verified Vendors</p>
+        </div>
+        <div class="col-6 col-md-3 stat-item">
+          <h3>98%</h3><p class="text-white/80 text-sm">Client Satisfaction</p>
+        </div>
+        <div class="col-6 col-md-3 stat-item">
+          <h3>15+</h3><p class="text-white/80 text-sm">Cities Covered</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ EVENT PACKS ════════════════════════════════════ -->
+  <div class="section">
+    <h2 class="section-title reveal">Popular Event Packages</h2>
+    <p class="section-sub reveal">Premium packages crafted for every occasion</p>
+    <div class="card-grid">
+      <div class="eve-card reveal">
+        <img src="image/b3.png" class="card-img" alt="Wedding" />
+        <div class="card-body">
+          <p class="card-sub">💍 Wedding</p>
+          <h3 class="card-title">Wedding Event Pack</h3>
+          <p class="card-desc">Decor · Catering · Photography · Planner & more</p>
+          <div class="card-footer-row">
+            <span class="price-tag">Find Best Price</span>
+            <a href="complete-package.html" class="btn-sm">GET QUOTE</a>
+          </div>
+        </div>
+      </div>
+      <div class="eve-card reveal">
+        <img src="image/birthday.jpg" class="card-img" alt="Birthday" />
+        <div class="card-body">
+          <p class="card-sub">🎂 Birthday</p>
+          <h3 class="card-title">Birthday Event Pack</h3>
+          <p class="card-desc">Decor · Catering · Photography · Planner & more</p>
+          <div class="card-footer-row">
+            <span class="price-tag">Find Best Price</span>
+            <a href="social-events.html#birthday" class="btn-sm">GET QUOTE</a>
+          </div>
+        </div>
+      </div>
+      <div class="eve-card reveal">
+        <img src="image/concert.jpg" class="card-img" alt="Concert" />
+        <div class="card-body">
+          <p class="card-sub">🎵 Concert</p>
+          <h3 class="card-title">Concert Pack</h3>
+          <p class="card-desc">Stage · Sound · Lighting · Security & more</p>
+          <div class="card-footer-row">
+            <span class="price-tag">Find Best Price</span>
+            <a href="social-events.html#concert" class="btn-sm">GET QUOTE</a>
+          </div>
+        </div>
+      </div>
+      <div class="eve-card reveal">
+        <img src="image/corporate.jpg" class="card-img" alt="Corporate" />
+        <div class="card-body">
+          <p class="card-sub">🏢 Corporate</p>
+          <h3 class="card-title">Corporate Event Pack</h3>
+          <p class="card-desc">Venue · AV Setup · Catering · Planner & more</p>
+          <div class="card-footer-row">
+            <span class="price-tag">Find Best Price</span>
+            <a href="corporate-events.html" class="btn-sm">GET QUOTE</a>
+          </div>
+        </div>
+      </div>
+      <div class="eve-card reveal">
+        <img src="image/festival.jpeg" class="card-img" alt="Festival" />
+        <div class="card-body">
+          <p class="card-sub">🎊 Festival</p>
+          <h3 class="card-title">Festival Event Pack</h3>
+          <p class="card-desc">Decor · Catering · Entertainment & more</p>
+          <div class="card-footer-row">
+            <span class="price-tag">Find Best Price</span>
+            <a href="other-services.html" class="btn-sm">GET QUOTE</a>
+          </div>
+        </div>
+      </div>
+      <div class="eve-card reveal">
+        <img src="image/customized.jpg" class="card-img" alt="Customized" />
+        <div class="card-body">
+          <p class="card-sub">✨ Custom</p>
+          <h3 class="card-title">Customized Event Pack</h3>
+          <p class="card-desc">Build your own package per your budget & preferences</p>
+          <div class="card-footer-row">
+            <span class="price-tag">Find Best Price</span>
+            <a href="budget-planner.html" class="btn-sm">BUILD PACK</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ TOP ORGANISERS ═════════════════════════════════ -->
+  <div style="background:var(--card);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+    <div class="section">
+      <h2 class="section-title reveal">Top Rated Organisers</h2>
+      <p class="section-sub reveal">Best event packages in Bhopal</p>
+      <div class="row g-4">
+        <div class="col-md-6 col-lg-3 reveal">
+          <div class="info-card h-100">
+            <div style="flex:1">
+              <h3>The Wedding Rituals</h3>
+              <div class="stars">★★★★★</div>
+              <p>Zone-II, Maharana Pratap Nagar, Bhopal</p>
+            </div>
+            <a href="complete-package.html" class="btn-sm" style="white-space:nowrap">Details</a>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 reveal">
+          <div class="info-card h-100">
+            <div style="flex:1">
+              <h3>AMG EVENT &amp; Entertainment</h3>
+              <div class="stars">★★★★½</div>
+              <p>Near Axis Bank, Zone-I, Bhopal</p>
+            </div>
+            <a href="complete-package.html" class="btn-sm" style="white-space:nowrap">Details</a>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 reveal">
+          <div class="info-card h-100">
+            <div style="flex:1">
+              <h3>Luxury Event Management</h3>
+              <div class="stars">★★★★½</div>
+              <p>M.P Nagar, Bhopal, Madhya Pradesh</p>
+            </div>
+            <a href="complete-package.html" class="btn-sm" style="white-space:nowrap">Details</a>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 reveal">
+          <div class="info-card h-100">
+            <div style="flex:1">
+              <h3>Dream World Events</h3>
+              <div class="stars">★★★★½</div>
+              <p>Maharana Pratap Nagar, Bhopal</p>
+            </div>
+            <a href="complete-package.html" class="btn-sm" style="white-space:nowrap">Details</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ FEATURES ════════════════════════════════════════ -->
+  <div class="section">
+    <h2 class="section-title reveal">Why Choose EveSparks?</h2>
+    <p class="section-sub reveal">We make event planning effortless and memorable</p>
+    <div class="row g-4">
+      <div class="col-sm-6 col-lg-3 reveal">
+        <div class="feature-strip p-4 rounded-3 h-100">
+          <div class="feature-item">
+            <div class="feature-icon"><i class="bi bi-shield-check"></i></div>
+            <div>
+              <h5 style="font-size:.95rem;font-weight:700;margin-bottom:4px">Verified Vendors</h5>
+              <p style="font-size:.82rem;color:var(--muted)">All vendors are background-checked and rated by real customers.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3 reveal">
+        <div class="feature-strip p-4 rounded-3 h-100">
+          <div class="feature-item">
+            <div class="feature-icon"><i class="bi bi-currency-rupee"></i></div>
+            <div>
+              <h5 style="font-size:.95rem;font-weight:700;margin-bottom:4px">Best Price</h5>
+              <p style="font-size:.82rem;color:var(--muted)">Competitive pricing with budget-friendly packages for all events.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3 reveal">
+        <div class="feature-strip p-4 rounded-3 h-100">
+          <div class="feature-item">
+            <div class="feature-icon"><i class="bi bi-headset"></i></div>
+            <div>
+              <h5 style="font-size:.95rem;font-weight:700;margin-bottom:4px">24/7 Support</h5>
+              <p style="font-size:.82rem;color:var(--muted)">Our dedicated team is available round the clock before your event.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3 reveal">
+        <div class="feature-strip p-4 rounded-3 h-100">
+          <div class="feature-item">
+            <div class="feature-icon"><i class="bi bi-star"></i></div>
+            <div>
+              <h5 style="font-size:.95rem;font-weight:700;margin-bottom:4px">Premium Quality</h5>
+              <p style="font-size:.82rem;color:var(--muted)">Hand-picked organisers with a 98% satisfaction rate.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ TESTIMONIALS ════════════════════════════════════ -->
+  <div style="background:var(--card);border-top:1px solid var(--border)">
+    <div class="section">
+      <h2 class="section-title reveal">What Our Clients Say</h2>
+      <p class="section-sub reveal">Real stories from happy customers</p>
+      <div class="row g-4">
+        <div class="col-md-4 reveal">
+          <div class="testimonial-card">
+            <div class="stars mb-2">★★★★★</div>
+            <p style="font-size:.88rem;color:var(--muted);margin-bottom:16px;line-height:1.7">"EveSparks made our wedding absolutely magical. Every detail was perfect and stress-free!"</p>
+            <div class="d-flex align-items-center gap-3">
+              <div style="width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#ff7b9c,#e8506b);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700">P</div>
+              <div><strong style="font-size:.9rem">Priya Sharma</strong><br><span style="font-size:.78rem;color:var(--muted)">Wedding – Bhopal</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 reveal">
+          <div class="testimonial-card">
+            <div class="stars mb-2">★★★★★</div>
+            <p style="font-size:.88rem;color:var(--muted);margin-bottom:16px;line-height:1.7">"Our annual corporate conference was flawlessly managed. Highly recommend EveSparks!"</p>
+            <div class="d-flex align-items-center gap-3">
+              <div style="width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#3b82f6,#2563eb);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700">R</div>
+              <div><strong style="font-size:.9rem">Rahul Verma</strong><br><span style="font-size:.78rem;color:var(--muted)">Corporate – Indore</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 reveal">
+          <div class="testimonial-card">
+            <div class="stars mb-2">★★★★★</div>
+            <p style="font-size:.88rem;color:var(--muted);margin-bottom:16px;line-height:1.7">"The birthday surprise was beyond expectations! The team was professional and creative."</p>
+            <div class="d-flex align-items-center gap-3">
+              <div style="width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#10b981,#059669);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700">A</div>
+              <div><strong style="font-size:.9rem">Ananya Gupta</strong><br><span style="font-size:.78rem;color:var(--muted)">Birthday – Bhopal</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ FOOTER ════════════════════════════════════════ -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-col">
+        <img src="image/evesparks.png" alt="EveSparks" style="height:44px;margin-bottom:14px" />
+        <p style="font-size:.84rem;line-height:1.7;margin-bottom:12px">Your trusted partner for unforgettable events in Bhopal &amp; beyond.</p>
+        <div class="social-row">
+          <a href="#" class="social-icon"><i class="bi bi-facebook"></i></a>
+          <a href="#" class="social-icon"><i class="bi bi-twitter-x"></i></a>
+          <a href="#" class="social-icon"><i class="bi bi-instagram"></i></a>
+          <a href="#" class="social-icon"><i class="bi bi-linkedin"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Categories</h4>
+        <a href="categories.html#decoration">Decoration</a>
+        <a href="categories.html#catering">Catering</a>
+        <a href="categories.html#photo">Photography</a>
+        <a href="categories.html#event">Event Type</a>
+        <a href="categories.html">DJ Services</a>
+      </div>
+      <div class="footer-col">
+        <h4>Events</h4>
+        <a href="social-events.html#wedding">Weddings</a>
+        <a href="social-events.html#birthday">Birthday Parties</a>
+        <a href="corporate-events.html">Corporate Events</a>
+        <a href="social-events.html#concert">Concerts</a>
+        <a href="other-services.html">Festivals</a>
+      </div>
+      <div class="footer-col">
+        <h4>Services</h4>
+        <a href="complete-package.html">Complete Package</a>
+        <a href="budget-planner.html">Budget Planner</a>
+        <a href="hot-offers.html">Hot Offers</a>
+        <a href="other-services.html">Other Services</a>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <a href="#">📍 123, XYZ Road, Bhopal MP</a>
+        <a href="tel:+919424065768">📞 +91 94240 65768</a>
+        <a href="mailto:evesparks@gmail.com">✉️ evesparks@gmail.com</a>
+        <a href="#">🕘 Mon–Sat: 9AM – 8PM</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <img src="image/payment.png" alt="Payment Methods" style="height:28px;margin:0 auto 12px;opacity:.7" />
+      <p>Copyright © <a href="index.html">EveSparks</a> 2024. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="main.js"></script>
+</body>
 </html>

@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Case Studies — Real Results for Real Businesses | SEO Agency</title>
+    <meta name="description" content="Explore our client success stories and see exactly how we helped businesses achieve massive growth through SEO, Google Ads, and digital marketing.">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* HERO */
+        .page-hero {
+            background: linear-gradient(135deg, #0f172a, #1e293b, #0f172a);
+            color: white; padding: 130px 0 100px;
+            position: relative; overflow: hidden;
+        }
+        .page-hero::before {
+            content: ''; position: absolute;
+            width: 500px; height: 500px;
+            background: rgba(245,158,11,0.15); filter: blur(120px);
+            top: -100px; left: 50%; transform: translateX(-50%);
+        }
+        .page-hero-content { position: relative; z-index: 2; text-align: center; }
+        .page-badge {
+            display: inline-block; padding: 8px 20px; border-radius: 30px;
+            background: rgba(245,158,11,0.15); border: 1px solid rgba(245,158,11,0.3);
+            color: #fcd34d; font-size: 14px; font-weight: 600;
+            margin-bottom: 24px; letter-spacing: 1px;
+        }
+        .page-hero h1 { font-size: 58px; font-weight: 800; line-height: 1.15; margin-bottom: 20px; }
+        .page-hero h1 span { color: #f59e0b; }
+        .page-hero p { font-size: 18px; color: #cbd5e1; max-width: 650px; margin: 0 auto; line-height: 1.8; }
+
+        /* RESULTS BAND */
+        .results-band { background: white; padding: 60px 0; border-bottom: 1px solid #e2e8f0; }
+        .results-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 30px; text-align: center;
+        }
+        .result-item h3 { font-size: 42px; font-weight: 800; color: #f59e0b; margin-bottom: 6px; }
+        .result-item p  { color: #64748b; font-size: 15px; margin: 0; }
+
+        /* SECTION */
+        .section-label {
+            display: inline-block; padding: 8px 18px; border-radius: 30px;
+            background: rgba(245,158,11,0.1); color: #f59e0b;
+            font-size: 13px; font-weight: 700; letter-spacing: 1px; margin-bottom: 20px;
+        }
+        .section-title { font-size: 44px; font-weight: 800; color: #111827; margin-bottom: 18px; line-height: 1.2; }
+
+        /* CASE STUDY CARDS */
+        .cases-section { padding: 90px 0; background: #f8fafc; }
+        .case-card {
+            background: white; border-radius: 24px; overflow: hidden;
+            border: 1px solid #e2e8f0; margin-bottom: 32px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            display: flex; flex-wrap: wrap;
+            transition: all 0.35s ease;
+        }
+        .case-card:hover {
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            transform: translateY(-4px);
+        }
+        .case-card.reverse { flex-direction: row-reverse; }
+        .case-visual {
+            flex: 0 0 380px; min-height: 320px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 80px; position: relative;
+        }
+        .cv-1 { background: linear-gradient(135deg, #7c3aed, #2563eb); }
+        .cv-2 { background: linear-gradient(135deg, #059669, #0284c7); }
+        .cv-3 { background: linear-gradient(135deg, #dc2626, #ea580c); }
+        .cv-4 { background: linear-gradient(135deg, #db2777, #9333ea); }
+        .case-industry {
+            position: absolute; top: 20px; left: 20px;
+            background: rgba(255,255,255,0.2); color: white;
+            padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 700;
+            backdrop-filter: blur(10px);
+        }
+        .case-body { flex: 1; min-width: 280px; padding: 44px; display: flex; flex-direction: column; justify-content: center; }
+        .case-body h3 { font-size: 26px; font-weight: 800; color: #111827; margin-bottom: 14px; line-height: 1.3; }
+        .case-body .challenge { font-size: 15px; color: #64748b; line-height: 1.8; margin-bottom: 24px; }
+        .case-metrics {
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            gap: 16px; margin-bottom: 28px;
+        }
+        .metric-box {
+            background: #f8fafc; border-radius: 14px; padding: 16px 12px;
+            text-align: center; border: 1px solid #e2e8f0;
+        }
+        .metric-box .metric-val { font-size: 26px; font-weight: 800; color: #f59e0b; }
+        .metric-box .metric-lbl { font-size: 11px; color: #64748b; font-weight: 600; }
+        .services-used { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
+        .svc-tag {
+            padding: 5px 14px; border-radius: 20px;
+            background: rgba(139,92,246,0.1); color: #8b5cf6;
+            font-size: 12px; font-weight: 700;
+        }
+        .case-read-more {
+            display: inline-flex; align-items: center; gap: 8px;
+            color: #f59e0b; font-weight: 700; text-decoration: none; font-size: 15px;
+            transition: gap 0.3s;
+        }
+        .case-read-more:hover { gap: 14px; color: #d97706; }
+
+        /* TESTIMONIAL */
+        .case-testimonial-section { padding: 90px 0; background: white; }
+        .testimonial-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 28px; margin-top: 50px;
+        }
+        .t-card {
+            background: #f8fafc; border-radius: 20px; padding: 32px;
+            border: 1px solid #e2e8f0; transition: 0.3s;
+        }
+        .t-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 50px rgba(245,158,11,0.1);
+            border-color: #fcd34d;
+        }
+        .t-stars { color: #f59e0b; font-size: 18px; margin-bottom: 16px; }
+        .t-quote { font-size: 15px; color: #374151; line-height: 1.8; margin-bottom: 24px; font-style: italic; }
+        .t-author { display: flex; align-items: center; gap: 12px; }
+        .t-author img { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; }
+        .t-author h6 { font-size: 15px; font-weight: 700; color: #111827; margin: 0; }
+        .t-author span { font-size: 13px; color: #94a3b8; }
+
+        /* CTA */
+        .cta-strip {
+            background: linear-gradient(135deg, #92400e, #b45309, #d97706);
+            padding: 90px 0; text-align: center;
+        }
+        .cta-strip h2 { font-size: 44px; font-weight: 800; color: white; margin-bottom: 18px; }
+        .cta-strip p  { color: rgba(255,255,255,0.85); font-size: 17px; margin-bottom: 36px; max-width: 600px; margin-left: auto; margin-right: auto; }
+        .btn-white { background: white; color: #b45309; padding: 15px 32px; border-radius: 12px; font-weight: 700; text-decoration: none; transition: 0.3s; display: inline-block; }
+        .btn-white:hover { box-shadow: 0 12px 30px rgba(0,0,0,0.2); transform: translateY(-2px); color: #b45309; }
+
+        /* FOOTER */
+        .footer-section { background: linear-gradient(135deg, #020617, #0f172a, #111827); color: white; padding: 50px 0 25px; }
+        .footer-section h5 { font-size: 20px; font-weight: 700; margin-bottom: 20px; }
+        .footer-section p, .footer-section a { color: #cbd5e1; line-height: 1.9; text-decoration: none; }
+        .footer-section a:hover { color: #8b5cf6; }
+        .social-icons { display: flex; justify-content: center; gap: 15px; margin-top: 20px; }
+        .social-icons a { width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); color: white; transition: 0.3s; }
+        .social-icons a:hover { background: #f59e0b; transform: translateY(-3px); }
+
+        @media (max-width: 768px) {
+            .page-hero h1 { font-size: 36px; }
+            .case-visual { flex: 0 0 auto; width: 100%; min-height: 200px; font-size: 60px; }
+            .case-metrics { grid-template-columns: repeat(3, 1fr); }
+            .case-card.reverse { flex-direction: column; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top" id="navbar">
+        <a class="navbar-brand" href="index.html">WEB TEMPLATE</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="servicesDropdown" role="button" data-toggle="dropdown">Service List</a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="seo.html">SEO Optimization</a>
+                        <a class="dropdown-item" href="cm.html">Content Marketing</a>
+                        <a class="dropdown-item" href="google-ads.html">Google Ads</a>
+                        <a class="dropdown-item" href="web-development.html">Web Development</a>
+                    </div>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="blog.html">Blog</a></li>
+                <li class="nav-item"><a class="nav-link active" href="case-study.html">Case Study</a></li>
+                <li class="nav-item"><a class="nav-link" href="contact.html">Contact Us</a></li>
+                <li class="nav-item"><a class="nav-link" href="styleguide.html">Styleguide</a></li>
+                <li class="nav-item ml-3"><button id="theme-toggle">🌙</button></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <header class="page-hero">
+        <div class="container page-hero-content">
+            <span class="page-badge">🏆 CASE STUDIES</span>
+            <h1>Real Businesses.<br><span>Real Results.</span></h1>
+            <p>See exactly how we've helped our clients grow — with transparent numbers, proven strategies, and measurable outcomes.</p>
+        </div>
+    </header>
+
+    <!-- Results Band -->
+    <div class="results-band">
+        <div class="container">
+            <div class="results-grid">
+                <div class="result-item"><h3>500+</h3><p>Happy Clients</p></div>
+                <div class="result-item"><h3>230%</h3><p>Avg. Traffic Growth</p></div>
+                <div class="result-item"><h3>3.5x</h3><p>Average ROI</p></div>
+                <div class="result-item"><h3>$12M+</h3><p>Revenue Generated</p></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Case Studies -->
+    <section class="cases-section">
+        <div class="container">
+            <div class="text-center mb-5">
+                <span class="section-label">SUCCESS STORIES</span>
+                <h2 class="section-title">How We Delivered Results</h2>
+            </div>
+
+            <!-- Case 1 -->
+            <div class="case-card">
+                <div class="case-visual cv-1">
+                    🛍️
+                    <span class="case-industry">E-Commerce</span>
+                </div>
+                <div class="case-body">
+                    <h3>FashionHub Grew Organic Traffic by 320% in 6 Months</h3>
+                    <p class="challenge">FashionHub was struggling with low search visibility and poor rankings despite having a great product catalog. They needed a complete SEO overhaul to compete in a saturated market.</p>
+                    <div class="case-metrics">
+                        <div class="metric-box"><div class="metric-val">320%</div><div class="metric-lbl">Traffic Increase</div></div>
+                        <div class="metric-box"><div class="metric-val">#1</div><div class="metric-lbl">Google Rankings</div></div>
+                        <div class="metric-box"><div class="metric-val">$280K</div><div class="metric-lbl">Revenue Added</div></div>
+                    </div>
+                    <div class="services-used">
+                        <span class="svc-tag">SEO Optimization</span>
+                        <span class="svc-tag">Content Marketing</span>
+                        <span class="svc-tag">Link Building</span>
+                    </div>
+                    <a href="#" class="case-read-more">Read Full Case Study <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+
+            <!-- Case 2 -->
+            <div class="case-card reverse">
+                <div class="case-visual cv-2">
+                    🏥
+                    <span class="case-industry">Healthcare</span>
+                </div>
+                <div class="case-body">
+                    <h3>MedCare Clinic Reduced Cost-Per-Patient by 58% with Google Ads</h3>
+                    <p class="challenge">MedCare was spending $15,000/month on Google Ads with poor returns. Their campaigns were poorly structured, targeting the wrong keywords and reaching unqualified audiences.</p>
+                    <div class="case-metrics">
+                        <div class="metric-box"><div class="metric-val">58%</div><div class="metric-lbl">Lower CPA</div></div>
+                        <div class="metric-box"><div class="metric-val">4.2x</div><div class="metric-lbl">ROAS Achieved</div></div>
+                        <div class="metric-box"><div class="metric-val">210</div><div class="metric-lbl">New Patients/mo</div></div>
+                    </div>
+                    <div class="services-used">
+                        <span class="svc-tag">Google Ads</span>
+                        <span class="svc-tag">Landing Pages</span>
+                        <span class="svc-tag">Conversion Optimization</span>
+                    </div>
+                    <a href="#" class="case-read-more">Read Full Case Study <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+
+            <!-- Case 3 -->
+            <div class="case-card">
+                <div class="case-visual cv-3">
+                    🍕
+                    <span class="case-industry">Restaurant</span>
+                </div>
+                <div class="case-body">
+                    <h3>PizzaKing Dominated Local Search & Increased Orders by 175%</h3>
+                    <p class="challenge">PizzaKing had 8 locations but barely appeared in local search results. Competitors were dominating Google Maps and their online ordering was suffering as a result.</p>
+                    <div class="case-metrics">
+                        <div class="metric-box"><div class="metric-val">175%</div><div class="metric-lbl">More Orders</div></div>
+                        <div class="metric-box"><div class="metric-val">#1</div><div class="metric-lbl">Google Maps</div></div>
+                        <div class="metric-box"><div class="metric-val">8x</div><div class="metric-lbl">Review Growth</div></div>
+                    </div>
+                    <div class="services-used">
+                        <span class="svc-tag">Local SEO</span>
+                        <span class="svc-tag">Google My Business</span>
+                        <span class="svc-tag">Reputation Management</span>
+                    </div>
+                    <a href="#" class="case-read-more">Read Full Case Study <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+
+            <!-- Case 4 -->
+            <div class="case-card reverse">
+                <div class="case-visual cv-4">
+                    💻
+                    <span class="case-industry">SaaS</span>
+                </div>
+                <div class="case-body">
+                    <h3>TechStart SaaS Hit 10K Monthly Signups with Content-Led Growth</h3>
+                    <p class="challenge">TechStart was burning through paid ads with low retention. We pivoted their strategy to a content-led SEO approach — building organic authority and reducing dependency on ad spend.</p>
+                    <div class="case-metrics">
+                        <div class="metric-box"><div class="metric-val">10K</div><div class="metric-lbl">Monthly Signups</div></div>
+                        <div class="metric-box"><div class="metric-val">67%</div><div class="metric-lbl">Lower CAC</div></div>
+                        <div class="metric-box"><div class="metric-val">450%</div><div class="metric-lbl">Organic Growth</div></div>
+                    </div>
+                    <div class="services-used">
+                        <span class="svc-tag">Content Strategy</span>
+                        <span class="svc-tag">SEO</span>
+                        <span class="svc-tag">Link Building</span>
+                    </div>
+                    <a href="#" class="case-read-more">Read Full Case Study <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Client Testimonials -->
+    <section class="case-testimonial-section">
+        <div class="container">
+            <div class="text-center">
+                <span class="section-label">CLIENT VOICES</span>
+                <h2 class="section-title">What Our Clients Say</h2>
+            </div>
+            <div class="testimonial-grid">
+                <div class="t-card">
+                    <div class="t-stars">★★★★★</div>
+                    <p class="t-quote">"The SEO results were beyond what we expected. Our organic traffic tripled and we're getting leads we never thought possible. Truly transformational for our business."</p>
+                    <div class="t-author">
+                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Client">
+                        <div><h6>Sarah Mitchell</h6><span>CEO, FashionHub</span></div>
+                    </div>
+                </div>
+                <div class="t-card">
+                    <div class="t-stars">★★★★★</div>
+                    <p class="t-quote">"They completely turned around our Google Ads account. We went from losing money on ads to 4x ROAS. The expertise and transparency they bring is unmatched."</p>
+                    <div class="t-author">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Client">
+                        <div><h6>Dr. Michael Ross</h6><span>Owner, MedCare Clinic</span></div>
+                    </div>
+                </div>
+                <div class="t-card">
+                    <div class="t-stars">★★★★★</div>
+                    <p class="t-quote">"Local SEO has been a game-changer for our restaurant chain. We now dominate Google Maps for all our locations and our delivery orders have never been higher."</p>
+                    <div class="t-author">
+                        <img src="https://randomuser.me/api/portraits/men/67.jpg" alt="Client">
+                        <div><h6>Antonio Ricci</h6><span>Founder, PizzaKing</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-strip">
+        <div class="container">
+            <h2>Ready to Be Our Next Success Story?</h2>
+            <p>Let's discuss your goals and create a tailored strategy that delivers measurable results for your business.</p>
+            <a href="contact.html" class="btn-white">Start Your Growth Journey</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer-section">
+        <div class="container text-center">
+            <div class="row">
+                <div class="col-md-4"><h5>About Us</h5><p>We transform businesses through data-driven digital marketing strategies and proven SEO techniques.</p></div>
+                <div class="col-md-4"><h5>Contact Info</h5><p><i class="fas fa-envelope mr-2"></i>info@seoagency.com</p><p><i class="fas fa-phone mr-2"></i>+123-456-7890</p></div>
+                <div class="col-md-4"><h5>Follow Us</h5><div class="social-icons mt-3"><a href="#"><i class="fab fa-facebook-f"></i></a><a href="#"><i class="fab fa-twitter"></i></a><a href="#"><i class="fab fa-linkedin-in"></i></a></div></div>
+            </div>
+            <p class="mt-4">&copy; 2026 SEO Agency. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

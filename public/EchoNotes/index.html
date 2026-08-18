@@ -2,9 +2,15 @@
 <html lang="en" data-theme="light">
   <head>
     <script>
-      if (!window.location.pathname.endsWith('/') && !window.location.pathname.endsWith('.html')) {
+      if (
+        !window.location.pathname.endsWith("/") &&
+        !window.location.pathname.endsWith(".html")
+      ) {
         window.location.replace(
-          window.location.pathname + '/' + window.location.search + window.location.hash
+          window.location.pathname +
+            "/" +
+            window.location.search +
+            window.location.hash,
         );
       }
     </script>
@@ -28,7 +34,7 @@
     <link rel="stylesheet" href="styles.css?v=final" />
     <!-- jsPDF for PDF generation -->
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha384-JcnsjUPPylna1s1fvi1u12X5qjY5OL56iySh75FdtrwhO/SWXgMjoVqcKyIIWOLk" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   </head>
 
   <body data-mobile-view="list">
@@ -60,7 +66,6 @@
             class="sidebar-collapse-btn"
             onclick="toggleSidebar()"
             title="Collapse Sidebar"
-            aria-label="Collapse sidebar"
           >
             <svg
               width="18"
@@ -101,32 +106,9 @@
             <input
               type="text"
               id="searchInput"
-              placeholder="Search notes, tags..."
+              placeholder="Search..."
               oninput="filterNotes(this.value)"
             />
-          </div>
-          <div style="padding: 0 16px 8px; display: flex; gap: 6px; flex-wrap: wrap">
-            <button class="tag-pill" style="cursor: pointer" onclick="toggleFilter('favorites')">
-              ⭐ Fav
-            </button>
-            <button class="tag-pill" style="cursor: pointer" onclick="toggleFilter('pinned')">
-              📌 Pinned
-            </button>
-            <select
-              id="folderFilter"
-              onchange="filterNotes(document.getElementById('searchInput').value)"
-              style="
-                font-size: 11px;
-                border: 1px solid var(--border);
-                border-radius: 12px;
-                background: var(--bg-card-hover);
-                color: var(--text-secondary);
-                padding: 2px 8px;
-                outline: none;
-              "
-            >
-              <option value="">All Folders</option>
-            </select>
           </div>
           <button
             class="sidebar-theme-toggle"
@@ -150,7 +132,11 @@
           <div class="sidebar-section">
             <div class="sidebar-section-header">
               <span>Folders</span>
-              <button class="add-folder-btn" onclick="showFolderInput()" title="Add Custom Folder">
+              <button
+                class="add-folder-btn"
+                onclick="showFolderInput()"
+                title="Add Custom Folder"
+              >
                 +
               </button>
             </div>
@@ -174,7 +160,6 @@
               class="mobile-menu-btn"
               onclick="toggleMobileSidebar()"
               style="margin-right: 8px"
-              aria-label="Toggle sidebar menu"
             >
               <svg
                 width="20"
@@ -191,7 +176,11 @@
                 <line x1="3" y1="18" x2="21" y2="18" />
               </svg>
             </button>
-            <button class="new-note-btn" onclick="createNewNote()" title="Create New Note">
+            <button
+              class="new-note-btn"
+              onclick="createNewNote()"
+              title="Create New Note"
+            >
               <svg
                 width="16"
                 height="16"
@@ -216,7 +205,6 @@
                 border-radius: var(--radius-sm);
                 color: var(--text-secondary);
               "
-              aria-label="Filter and sort notes"
             >
               <svg
                 width="16"
@@ -249,7 +237,6 @@
           class="distraction-toggle-floating"
           onclick="exitDistractionFree()"
           title="Show Panels"
-          aria-label="Show panels"
         >
           <svg
             width="18"
@@ -266,6 +253,12 @@
           </svg>
         </button>
 
+        <div class="editor-header-actions">
+          <a href="/" class="project-back-button">
+            ← Back to Home
+          </a>
+        </div>
+
         <!-- Welcome Screen (Visible when no note is open) -->
         <div class="welcome-screen" id="welcomeScreen">
           <div class="welcome-illustration">
@@ -280,7 +273,9 @@
               stroke-linejoin="round"
               style="opacity: 0.8"
             >
-              <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
+              <path
+                d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"
+              />
               <polyline points="14 2 14 8 20 8" />
               <line x1="16" y1="13" x2="8" y2="13" />
               <line x1="16" y1="17" x2="8" y2="17" />
@@ -291,7 +286,10 @@
           <p>Select a note from the sidebar or start writing something new.</p>
 
           <div class="welcome-actions">
-            <button class="welcome-action-btn primary" onclick="createNewNote()">
+            <button
+              class="welcome-action-btn primary"
+              onclick="createNewNote()"
+            >
               <svg
                 width="18"
                 height="18"
@@ -337,19 +335,25 @@
               <div class="step-card">
                 <div class="step-icon">📁</div>
                 <div class="step-text">
-                  Organize your work<br /><span>Create folders in the sidebar</span>
+                  Organize your work<br /><span
+                    >Create folders in the sidebar</span
+                  >
                 </div>
               </div>
               <div class="step-card">
                 <div class="step-icon">✨</div>
                 <div class="step-text">
-                  Format with rich text<br /><span>Use the sticky toolbar above</span>
+                  Format with rich text<br /><span
+                    >Use the sticky toolbar above</span
+                  >
                 </div>
               </div>
               <div class="step-card">
                 <div class="step-icon">📄</div>
                 <div class="step-text">
-                  Share your documents<br /><span>Export to clean PDF or TXT</span>
+                  Share your documents<br /><span
+                    >Export to clean PDF or TXT</span
+                  >
                 </div>
               </div>
             </div>
@@ -359,7 +363,12 @@
         <!-- Active Editor wrapper -->
         <div
           id="editorWrapper"
-          style="display: none; flex-direction: column; flex: 1; overflow: hidden"
+          style="
+            display: none;
+            flex-direction: column;
+            flex: 1;
+            overflow: hidden;
+          "
         >
           <!-- Top Title Bar & Note Metadata / Save Status -->
           <div class="editor-topbar">
@@ -370,7 +379,6 @@
                 onclick="backToNotesList()"
                 title="Back to List"
                 style="margin-right: 4px"
-                aria-label="Back to notes list"
               >
                 <svg
                   width="20"
@@ -398,6 +406,9 @@
                   oninput="markUnsaved()"
                 />
               </div>
+              <a href="/" class="project-back-button">
+                ← Back to Home
+              </a>
             </div>
 
             <div class="editor-topbar-right">
@@ -424,13 +435,6 @@
               >
                 ⭐
               </button>
-              <button
-                class="editor-action-btn icon-btn"
-                onclick="openVersionHistory()"
-                title="Version History"
-              >
-                🕐
-              </button>
 
               <!-- Save status indicator -->
               <div class="save-status-wrap">
@@ -445,17 +449,24 @@
               >
                 Save
               </button>
-              <button class="editor-action-btn" onclick="exportPDF()" title="Export PDF">
+              <button
+                class="editor-action-btn"
+                onclick="exportPDF()"
+                title="Export PDF"
+              >
                 PDF
               </button>
-              <button class="editor-action-btn" onclick="exportTXT()" title="Export TXT">
+              <button
+                class="editor-action-btn"
+                onclick="exportTXT()"
+                title="Export TXT"
+              >
                 TXT
               </button>
               <button
                 class="editor-action-btn danger icon-btn"
                 onclick="confirmClear()"
                 title="Clear note content"
-                aria-label="Clear note content"
               >
                 <svg
                   width="15"
@@ -477,7 +488,6 @@
                 class="editor-action-btn icon-btn"
                 onclick="toggleDistractionFree()"
                 title="Toggle Distraction-free"
-                aria-label="Toggle distraction-free mode"
               >
                 <svg
                   width="15"
@@ -866,53 +876,7 @@
         </div>
       </div>
     </div>
-    <!-- VERSION HISTORY MODAL -->
-    <div class="modal-overlay" id="versionModal">
-      <div class="modal" style="width: 480px; max-height: 80vh; overflow-y: auto">
-        <h3>🕐 Version History</h3>
-        <p id="versionModalSub" style="margin-bottom: 12px"></p>
-        <div id="versionList"></div>
-        <div class="modal-actions" style="margin-top: 16px">
-          <button class="btn" onclick="closeVersionModal()">Close</button>
-        </div>
-      </div>
-    </div>
 
-    <!-- ANALYTICS MODAL -->
-    <div class="modal-overlay" id="analyticsModal">
-      <div class="modal" style="width: 520px; max-height: 85vh; overflow-y: auto">
-        <h3>📊 Workspace Analytics</h3>
-        <div id="analyticsContent" style="margin-top: 16px"></div>
-        <div class="modal-actions" style="margin-top: 16px">
-          <button class="btn" onclick="closeAnalytics()">Close</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- BACKUP MODAL -->
-    <div class="modal-overlay" id="backupModal">
-      <div class="modal" style="width: 420px">
-        <h3>☁️ Backup & Restore</h3>
-        <p style="margin-bottom: 16px">Export your full workspace or restore from a backup file.</p>
-        <div style="display: flex; flex-direction: column; gap: 10px">
-          <button class="btn" style="justify-content: center" onclick="exportBackup()">
-            ⬇️ Export Workspace JSON
-          </button>
-          <label class="btn" style="justify-content: center; cursor: pointer">
-            ⬆️ Import Backup JSON
-            <input
-              type="file"
-              accept=".json"
-              style="display: none"
-              onchange="importBackup(event)"
-            />
-          </label>
-        </div>
-        <div class="modal-actions" style="margin-top: 16px">
-          <button class="btn" onclick="closeBackupModal()">Close</button>
-        </div>
-      </div>
-    </div>
     <script src="./script.js"></script>
   </body>
 </html>
