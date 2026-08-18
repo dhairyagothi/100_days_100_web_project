@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FlashLearn - Smart Flashcard Learning App</title>
+
+    <link rel="stylesheet" href="style.css" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Navbar -->
+    <header class="navbar">
+      <div class="logo">📚 FlashLearn</div>
+
+      <div class="nav-actions">
+        <button id="themeToggle" class="theme-btn">🌙</button>
+      </div>
+    </header>
+
+    <!-- Dashboard -->
+    <section class="dashboard">
+      <div class="stat-card">
+        <h3>Total Cards</h3>
+        <p id="totalCards">0</p>
+      </div>
+
+      <div class="stat-card">
+        <h3>Subjects</h3>
+        <p id="totalSubjects">0</p>
+      </div>
+
+      <div class="stat-card">
+        <h3>Reviewed</h3>
+        <p id="reviewedCards">0</p>
+      </div>
+
+      <div class="stat-card">
+        <h3>🔥 Streak</h3>
+        <p id="streakCount">0 Days</p>
+      </div>
+    </section>
+
+    <!-- Create Flashcard -->
+    <section class="container glass">
+      <h2>Create Flashcard</h2>
+
+      <form id="flashcardForm">
+        <div class="form-group">
+          <label>Subject</label>
+
+          <select id="subject">
+            <option>Mathematics</option>
+            <option>Science</option>
+            <option>History</option>
+            <option>Geography</option>
+            <option>English</option>
+            <option>Computer Science</option>
+            <option>Programming</option>
+            <option>General Knowledge</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Question</label>
+          <textarea
+            id="question"
+            required
+            placeholder="Enter question..."
+          ></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Answer</label>
+          <textarea
+            id="answer"
+            required
+            placeholder="Enter answer..."
+          ></textarea>
+        </div>
+
+        <button type="submit" class="primary-btn">➕ Add Flashcard</button>
+      </form>
+    </section>
+
+    <!-- Search -->
+    <section class="container">
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="🔍 Search flashcards..."
+        class="search-box"
+      />
+    </section>
+
+    <!-- Flashcards List -->
+    <section class="container">
+      <div class="section-header">
+        <h2>Your Flashcards</h2>
+
+        <button id="exportBtn" class="secondary-btn">⬇ Export</button>
+
+        <label class="secondary-btn">
+          ⬆ Import
+          <input type="file" id="importFile" hidden accept=".json" />
+        </label>
+      </div>
+
+      <div id="flashcardsContainer" class="cards-grid"></div>
+    </section>
+
+    <!-- Study Mode -->
+    <section class="container glass study-section">
+      <div class="study-header">
+        <h2>Study Mode</h2>
+
+        <button id="shuffleBtn" class="secondary-btn">🔀 Shuffle</button>
+      </div>
+
+      <div class="study-card" id="studyCard">
+        <div class="study-card-inner">
+          <div class="study-front">Click Start Study</div>
+
+          <div class="study-back">Answer Appears Here</div>
+        </div>
+      </div>
+
+      <div class="study-controls">
+        <button id="prevBtn">⬅ Previous</button>
+
+        <button id="flipBtn">🔄 Flip</button>
+
+        <button id="nextBtn">Next ➡</button>
+      </div>
+
+      <button id="startStudy" class="primary-btn">
+        🚀 Start Study Session
+      </button>
+    </section>
+
+    <!-- Progress -->
+    <section class="container">
+      <h2>Learning Progress</h2>
+
+      <div class="progress-wrapper">
+        <div class="progress-bar">
+          <div id="progressFill" class="progress-fill"></div>
+        </div>
+
+        <p id="progressText">0%</p>
+      </div>
+    </section>
+
+    <!-- Achievements -->
+    <section class="container glass">
+      <h2>🏆 Achievements</h2>
+
+      <div id="achievements" class="badges">
+        <div class="badge">🎯 Beginner Learner</div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <p>Made with ❤️ using HTML, CSS & JavaScript</p>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
