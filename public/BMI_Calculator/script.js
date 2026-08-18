@@ -520,7 +520,6 @@ function clearActiveRows() {
 
 /* =========================================================
    RESET ALL
-========================================================= */
 
 function resetAll() {
   if(document.getElementById("height")) document.getElementById("height").value = "";
