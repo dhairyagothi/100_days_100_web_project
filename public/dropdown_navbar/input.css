@@ -4,5 +4,5 @@
 
 
 .label {
-    height: 80vh;
+    min-height: auto;
 }

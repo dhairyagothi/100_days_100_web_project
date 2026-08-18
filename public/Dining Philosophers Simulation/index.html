@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dining Philosophers Simulation - OS Assignment</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <a href="/" class="project-back-button"
+        style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;"
+        onmouseover="this.style.background='#3b82f6';this.style.color='#fff'"
+        onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
+
+    <header class="header">
+        <h1>Dining Philosophers Simulation</h1>
+    </header>
+
+    <div class="main-container">
+
+        <!-- Section 1: Controls -->
+        <div class="controls card">
+            <div class="button-group">
+                <button class="btn btn-primary" onclick="startSim()">Start Simulation</button>
+                <button class="btn btn-secondary" onclick="window.location.reload()">Reset</button>
+            </div>
+            <div class="toggle-group">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="deadlockMode"> <strong>Force Deadlock Mode</strong>
+                </label>
+            </div>
+            <p id="alert" class="deadlock-alert">⚠ DEADLOCK DETECTED! Everyone is waiting forever.</p>
+        </div>
+
+        <!-- Section 2: Simulation Area -->
+        <div class="table-container">
+            <div class="table" id="table">
+                <!-- 5 Philosophers -->
+                <div id="p0" class="phil thinking">P0<br>Think</div>
+                <div id="p1" class="phil thinking">P1<br>Think</div>
+                <div id="p2" class="phil thinking">P2<br>Think</div>
+                <div id="p3" class="phil thinking">P3<br>Think</div>
+                <div id="p4" class="phil thinking">P4<br>Think</div>
+
+                <!-- 5 Forks -->
+                <div id="f0" class="fork"></div>
+                <div id="f1" class="fork"></div>
+                <div id="f2" class="fork"></div>
+                <div id="f3" class="fork"></div>
+                <div id="f4" class="fork"></div>
+            </div>
+        </div>
+
+        <!-- Section 3: Event Log -->
+        <div class="log-section card">
+            <h3 class="section-title">Event Log</h3>
+            <div class="log" id="statusLog">Simulation Log: Ready...<br></div>
+        </div>
+
+        <!-- Section 4: Information Panel -->
+        <div class="info card">
+            <h3 class="section-title">Simulation Rules</h3>
+            <p><b>Normal Mode:</b> P0–P3 pick left fork first, then right. P4 picks right first, then left. This breaks
+                circular wait → no deadlock.</p>
+            <p><b>Deadlock Mode:</b> Everyone picks only left fork and waits. Circular wait happens → deadlock!</p>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

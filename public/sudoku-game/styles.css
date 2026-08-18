@@ -1,0 +1,813 @@
+/* 
+ * Minimalist Premium Sudoku Stylesheet
+ * A clean, modern, and high-quality user interface.
+ */
+
+/* Import Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* Color Variables and Palette */
+:root {
+  --ink-color: #1f2937;       /* Slate 800 */
+  --bg-color: #ffffff;        /* Crisp White */
+  --desk-color: #f8fafc;      /* Slate 50 (Page background) */
+  
+  --highlight-cell: #dbeafe;   /* Blue 100 (Selected cell) */
+  --highlight-peer: #f3f4f6;   /* Gray 100 (Row, column, box peers) */
+  --highlight-match: #bfdbfe;  /* Blue 200 (Matching numbers) */
+  
+  --correct-color: #2563eb;    /* Blue 600 */
+  --incorrect-color: #dc2626;  /* Red 600 */
+  --note-color: #6b7280;       /* Gray 500 */
+  
+  --font-main: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-notes: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* Global resets */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: var(--desk-color);
+  color: var(--ink-color);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 30px 20px;
+  position: relative;
+  overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Base Container */
+.app-container {
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Header Section */
+.game-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 0 20px 0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.logo-text {
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: #111827;
+}
+
+/* Hide tabs and multiplayer selections from UI */
+.mode-tabs {
+  display: none !important;
+}
+
+/* Main Workspace Grid */
+.game-workspace {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 40px;
+  align-items: start;
+  padding: 10px 0;
+}
+
+/* Columns */
+.board-column,
+.controls-column {
+  min-height: auto;
+  position: relative;
+}
+
+/* Status / Dashboard Panel */
+.status-panel {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 25px;
+  border: 1px solid #e2e8f0;
+  background-color: var(--bg-color);
+  padding: 12px 16px;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+}
+
+.status-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.status-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.status-val {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+/* Sudoku Board Wrapper */
+.board-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+/* Sudoku 9x9 Grid */
+.sudoku-grid {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  grid-template-rows: repeat(9, 1fr);
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  max-width: 440px;
+  border: 2px solid #111827;
+  border-radius: 8px;
+  background-color: var(--bg-color);
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+/* Sudoku Cell */
+.sudoku-cell {
+  background-color: var(--bg-color);
+  aspect-ratio: 1 / 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+  border: none !important;
+  box-shadow: inset -1px -1px 0 0 #e2e8f0;
+  transition: background-color 0.15s ease;
+}
+
+/* Thick subgrid divisions (3x3 blocks) */
+.sudoku-cell.border-right-thick {
+  box-shadow: inset -3px 0 0 0 #111827, inset 0 -1px 0 0 #e2e8f0 !important;
+}
+
+.sudoku-cell.border-bottom-thick {
+  box-shadow: inset 0 -3px 0 0 #111827, inset -1px 0 0 0 #e2e8f0 !important;
+}
+
+.sudoku-cell.border-right-thick.border-bottom-thick {
+  box-shadow: inset -3px -3px 0 0 #111827 !important;
+}
+
+/* Selected cell state */
+.sudoku-cell.selected {
+  background-color: var(--highlight-cell) !important;
+}
+
+/* Row, column, and box peers highlight */
+.sudoku-cell.highlight-peer {
+  background-color: var(--highlight-peer);
+}
+
+/* Same-value cell highlight */
+.sudoku-cell.highlight-match {
+  background-color: var(--highlight-match);
+}
+
+/* Disable paper diagonal hatches overlay completely */
+.sudoku-cell.selected::after,
+.sudoku-cell.highlight-peer::after,
+.sudoku-cell.highlight-match::after {
+  content: none !important;
+}
+
+/* Cell Values typography */
+.cell-value {
+  font-family: var(--font-main);
+  font-size: 1.85rem;
+  font-weight: 500;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* Prefilled clue values */
+.sudoku-cell.prefilled .cell-value {
+  font-weight: 700;
+  color: #0f172a; /* Deeper black-blue */
+}
+
+/* Correctly placed cell */
+.sudoku-cell.correct .cell-value {
+  color: var(--correct-color);
+}
+
+/* Incorrect placement */
+.sudoku-cell.incorrect {
+  background-color: #fee2e2 !important; /* Soft light red background */
+}
+
+.sudoku-cell.incorrect .cell-value {
+  color: var(--incorrect-color);
+  font-weight: 600;
+}
+
+/* Notes / Pencil entries */
+.notes-grid {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  right: 4px;
+  bottom: 4px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.note-value {
+  font-family: var(--font-notes);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--note-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  line-height: 1;
+}
+
+/* Pause Screen overlay inside grid */
+.sudoku-grid.paused::before {
+  content: "GAME PAUSED";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--bg-color);
+  color: var(--ink-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  z-index: 10;
+}
+
+/* Action Pad Toolbar (Undo, Redo, Notes, Erase, AI Hint) */
+.action-pad {
+  display: flex;
+  justify-content: space-around;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 8px !important;
+  padding: 10px 6px !important;
+  background: var(--bg-color) !important;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05) !important;
+  margin-bottom: 20px;
+}
+
+.action-btn {
+  background: none;
+  border: none;
+  color: #4b5563;
+  font-family: var(--font-main);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.action-btn:hover:not(:disabled) {
+  background-color: #f3f4f6;
+  color: #111827;
+}
+
+.action-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.action-btn.active {
+  background-color: #eff6ff !important;
+  color: #2563eb !important;
+  font-weight: 600;
+}
+
+.btn-icon {
+  font-size: 1.4rem;
+}
+
+.btn-text {
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+/* Number Pad Panel */
+.keypad-panel {
+  border: none !important;
+  padding: 0 0 20px 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.keypad-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.keypad-btn {
+  background-color: var(--bg-color);
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-family: var(--font-main);
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #1f2937;
+  height: 54px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  transition: all 0.15s ease;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.keypad-btn:hover {
+  background-color: #f8fafc;
+  border-color: #cbd5e1;
+  transform: translateY(-1px);
+}
+
+.keypad-btn:active {
+  transform: translateY(0);
+  background-color: #f1f5f9;
+}
+
+.keypad-btn.completed {
+  opacity: 0.35;
+  background-color: #f1f5f9;
+  border-color: #e2e8f0;
+}
+
+/* Hide keypad counts (e.g. 4/9) */
+.num-count {
+  display: none !important;
+}
+
+.wide-btn {
+  display: none;
+}
+
+/* Config & Utilities Buttons (Pause, Restart, Check Board) */
+.config-panel {
+  border: none !important;
+  padding: 20px 0 0 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  border-top: 1px solid #e2e8f0 !important;
+  border-radius: 0 !important;
+}
+
+.config-group {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.paper-btn {
+  flex: 1;
+  background-color: var(--bg-color);
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-family: var(--font-main);
+  font-weight: 500;
+  color: #374151;
+  padding: 10px 16px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.paper-btn:hover {
+  background-color: #f9fafb;
+  border-color: #cbd5e1;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05);
+}
+
+.paper-btn:active {
+  transform: translateY(0);
+}
+
+.paper-btn.active-btn {
+  background-color: #2563eb;
+  border-color: #2563eb;
+  color: #ffffff;
+}
+
+.paper-btn.active-btn:hover {
+  background-color: #1d4ed8;
+  border-color: #1d4ed8;
+}
+
+/* Inputs styling */
+.paper-input {
+  background-color: var(--bg-color);
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-family: var(--font-main);
+  color: var(--ink-color);
+  padding: 6px 12px;
+  font-size: 0.9rem;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.paper-input:focus {
+  border-color: #2563eb;
+}
+
+/* Multiplayer specific progress widget styling (if ever visible) */
+.multiplayer-panel {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 15px;
+  background-color: var(--bg-color);
+  margin-bottom: 20px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+}
+
+.panel-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.race-row {
+  margin-bottom: 12px;
+}
+
+.race-label-wrapper {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.bar-container {
+  height: 10px;
+  border: 1px solid #e2e8f0;
+  border-radius: 5px;
+  overflow: hidden;
+  background-color: #f3f4f6;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0%;
+  transition: width 0.4s ease;
+}
+
+.player-bar {
+  background-color: #2563eb;
+}
+
+.bot-bar {
+  background-color: #9ca3af;
+}
+
+/* Footer Section styling */
+.game-footer {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  background: transparent;
+  padding: 20px 0 0 0 !important;
+  border-top: 1px solid #e2e8f0 !important;
+  border-radius: 0 !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.footer-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.footer-row.main-options {
+  justify-content: center;
+  gap: 20px;
+}
+
+.footer-control {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.footer-control label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #4b5563;
+}
+
+/* Hide redundant details (drawers, spine bindings) */
+.notebook-spine,
+.ring,
+.utility-drawer {
+  display: none !important;
+}
+
+/* Settings Checkboxes Row */
+.settings-row {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+.checkbox-group {
+  display: flex;
+  gap: 20px;
+}
+
+.checkbox-group label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #6b7280;
+}
+
+.checkbox-group input[type="checkbox"] {
+  accent-color: #2563eb;
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+}
+
+/* Modal dialogs */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(15, 23, 42, 0.4); /* soft slate shadow overlay */
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-container {
+  width: 90%;
+  max-width: 460px;
+  padding: 24px;
+  background-color: var(--bg-color);
+  color: var(--ink-color);
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  position: relative;
+  animation: modalDraw 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 10px;
+}
+
+.modal-title-text {
+  font-family: var(--font-main);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.modal-close-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #9ca3af;
+  cursor: pointer;
+  line-height: 1;
+  transition: color 0.2s ease;
+}
+
+.modal-close-btn:hover {
+  color: #374151;
+}
+
+.modal-content-body {
+  font-family: var(--font-main);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #4b5563;
+}
+
+/* Achievement Toast */
+.achievement-toast {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 340px;
+  background-color: var(--bg-color);
+  color: var(--ink-color);
+  border: 1px solid #e2e8f0;
+  padding: 12px 18px !important;
+  border-radius: 8px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  transform: translateY(150px);
+  opacity: 0;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+}
+
+.achievement-toast.visible {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* Celebration Screen overlay */
+.celebration-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 2000;
+  background: rgba(15, 23, 42, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.celebration-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.celebration-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.celebration-content {
+  position: relative;
+  z-index: 2;
+  width: 90%;
+  max-width: 420px;
+  text-align: center;
+  padding: 30px;
+  background-color: var(--bg-color);
+  border-radius: 12px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  animation: paperChime 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Clean up banner notifications */
+.resume-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  background-color: #fef08a; /* soft amber yellow warning style */
+  border: 1px solid #fde047;
+  border-radius: 8px;
+  padding: 12px 18px;
+  animation: slideDown 0.3s ease;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #854d0e;
+  margin-bottom: 10px;
+}
+
+.resume-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* Override handwritten fonts globally for inline or dynamic JS items */
+h1, h2, h3, h4, h5, h6, p, span, button, select, option, label, div, body, td, th {
+  font-family: var(--font-main) !important;
+}
+
+textarea, input, code, pre, [style*="font-family: monospace"] {
+  font-family: monospace !important;
+}
+
+/* Animations */
+@keyframes modalDraw {
+  0% {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes paperChime {
+  0% {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes slideDown {
+  0% {
+    transform: translateY(-40px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Responsive layout configuration */
+@media (max-width: 768px) {
+  body {
+    padding: 15px 10px;
+  }
+  
+  .game-workspace {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .status-panel {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    padding: 10px;
+  }
+
+  .logo-text {
+    font-size: 1.8rem;
+  }
+
+  .game-header,
+  .game-footer {
+    padding: 10px 0;
+  }
+}

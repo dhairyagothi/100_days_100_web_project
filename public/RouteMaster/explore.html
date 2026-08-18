@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Explore – RouteMaster</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<link rel="stylesheet" href="./css/style.css"/>
+<style>
+  .explore-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    padding: 20px 0;
+  }
+  .explore-card {
+    background: var(--panel-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 24px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+  .explore-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    border-color: var(--accent1);
+  }
+  .explore-card-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin-bottom: 16px;
+  }
+  .explore-card h3 {
+    margin: 0 0 8px 0;
+    font-size: 1.1rem;
+    color: var(--text-color);
+  }
+  .explore-card p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+  .blue-grad { background: rgba(37,99,235,0.15); color: #60A5FA; }
+  .purple-grad { background: rgba(139,92,246,0.15); color: #A78BFA; }
+  .green-grad { background: rgba(16,185,129,0.15); color: #34D399; }
+  .orange-grad { background: rgba(245,158,11,0.15); color: #FCD34D; }
+  .cyan-grad { background: rgba(6,182,212,0.15); color: #22D3EE; }
+  .red-grad { background: rgba(239,68,68,0.15); color: #FCA5A5; }
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <a class="nav-logo" href="index.html">
+    <div class="logo-icon"><i aria-hidden="true" class="fas fa-location-crosshairs"></i></div>
+    <span class="brand">Route<span class="dot">Master</span></span>
+  </a>
+  <div class="nav-links">
+    <a href="index.html"><i aria-hidden="true" class="fas fa-house" style="margin-right:6px;font-size:0.75rem;"></i>Home</a>
+    <a href="map.html"><i aria-hidden="true" class="fas fa-map" style="margin-right:6px;font-size:0.75rem;"></i>Map</a>
+    <a href="explore.html" class="active"><i aria-hidden="true" class="fas fa-compass" style="margin-right:6px;font-size:0.75rem;"></i>Explore</a>
+    <a href="help.html"><i aria-hidden="true" class="fas fa-circle-question" style="margin-right:6px;font-size:0.75rem;"></i>Help</a>
+  </div>
+  <div class="nav-right">
+    <span class="live-badge"><span class="live-dot"></span>Campus Live</span>
+    <button class="nav-btn"><i aria-hidden="true" class="fas fa-route" style="margin-right:6px;"></i>Navigate Now</button>
+    <div class="nav-avatar">SU</div>
+  </div>
+</nav>
+
+<div class="page">
+  <!-- HERO -->
+  <section class="hero" style="min-height: auto; padding-bottom: 2rem;">
+    <div class="hero-badge"><i aria-hidden="true" class="fas fa-compass"></i> Explore Campus</div>
+    <h1>Discover Hidden Gems &<br/>Popular Spots</h1>
+    <p>Find what's happening around campus, places to eat, relax, and study.</p>
+  </section>
+
+  <!-- MAIN LAYOUT -->
+  <div class="main-layout" style="display: block; max-width: 1200px; margin: 0 auto;">
+    
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+      <h2><i class="fas fa-fire" style="color:var(--accent2); margin-right:8px;"></i> Trending Categories</h2>
+    </div>
+
+    <div class="explore-grid">
+      <div class="explore-card">
+        <div class="explore-card-icon blue-grad"><i class="fas fa-book-open"></i></div>
+        <h3>Study Areas</h3>
+        <p>Quiet zones, library reading rooms, and collaborative study spaces.</p>
+      </div>
+      
+      <div class="explore-card">
+        <div class="explore-card-icon red-grad"><i class="fas fa-utensils"></i></div>
+        <h3>Food & Dining</h3>
+        <p>Cafeterias, food courts, coffee shops, and snack kiosks across campus.</p>
+      </div>
+      
+      <div class="explore-card">
+        <div class="explore-card-icon green-grad"><i class="fas fa-tree"></i></div>
+        <h3>Green Zones</h3>
+        <p>Parks, lawns, and shaded areas to relax between classes.</p>
+      </div>
+      
+      <div class="explore-card">
+        <div class="explore-card-icon orange-grad"><i class="fas fa-futbol"></i></div>
+        <h3>Sports Facilities</h3>
+        <p>Gymnasium, tennis courts, football ground, and indoor games.</p>
+      </div>
+      
+      <div class="explore-card">
+        <div class="explore-card-icon purple-grad"><i class="fas fa-calendar-alt"></i></div>
+        <h3>Events Hub</h3>
+        <p>Auditoriums, seminar halls, and open-air theaters hosting activities.</p>
+      </div>
+      
+      <div class="explore-card">
+        <div class="explore-card-icon cyan-grad"><i class="fas fa-first-aid"></i></div>
+        <h3>Essentials</h3>
+        <p>Medical center, stationary shops, ATM, and utility stores.</p>
+      </div>
+    </div>
+    
+  </div>
+</div>
+
+<!-- FAB -->
+<button class="fab" title="Quick Navigate"><i aria-hidden="true" class="fas fa-location-crosshairs"></i></button>
+
+<script src="script.js"></script>
+</body>
+</html>

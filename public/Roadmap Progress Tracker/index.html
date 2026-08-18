@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Roadmap Progress Tracker</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3 col-lg-2 sidebar bg-dark text-white">
+          <div class="p-3">
+            <h4 class="mb-4"><i class="bi bi-map"></i> Roadmap Tracker</h4>
+            <ul class="nav flex-column">
+              <li class="nav-item mb-2">
+                <a
+                  href="#"
+                  onclick="showSection('dashboard')"
+                  class="nav-link text-white active"
+                  id="nav-dashboard"
+                >
+                  <i class="bi bi-house-door"></i> Dashboard
+                </a>
+              </li>
+              <li class="nav-item mb-2">
+                <a
+                  href="#"
+                  onclick="showSection('roadmaps')"
+                  class="nav-link text-white"
+                  id="nav-roadmaps"
+                >
+                  <i class="bi bi-list-task"></i> My Roadmaps
+                </a>
+              </li>
+              <li class="nav-item mb-2">
+                <a
+                  href="#"
+                  onclick="showCreateModal()"
+                  class="nav-link text-white"
+                >
+                  <i class="bi bi-plus-circle"></i> New Roadmap
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-md-9 col-lg-10 main-content p-4">
+          <!-- Dashboard Section -->
+          <div id="dashboard-section">
+            <h2 class="mb-4">Dashboard</h2>
+            <div class="row">
+              <div class="col-md-4">
+                <div class="card text-center mb-4">
+                  <div class="card-body">
+                    <h5 class="card-title">Total Progress</h5>
+                    <h2 id="overall-progress" class="display-4 text-primary">
+                      0%
+                    </h2>
+                    <div class="progress mt-3" style="height: 20px">
+                      <div
+                        id="overall-progress-bar"
+                        class="progress-bar bg-primary"
+                        role="progressbar"
+                        style="width: 0%"
+                        aria-valuenow="0"
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="card text-center mb-4">
+                  <div class="card-body">
+                    <h5 class="card-title">Active Roadmaps</h5>
+                    <h2 id="active-roadmaps" class="display-4 text-success">
+                      0
+                    </h2>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="card text-center mb-4">
+                  <div class="card-body">
+                    <h5 class="card-title">Completed Topics</h5>
+                    <h2 id="completed-topics" class="display-4 text-info">0</h2>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <h4 class="mt-5 mb-3">Your Roadmaps</h4>
+            <div id="dashboard-roadmaps" class="row"></div>
+          </div>
+
+          <!-- Roadmaps Section -->
+          <div id="roadmaps-section" class="d-none">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <h2>My Roadmaps</h2>
+              <button class="btn btn-primary" onclick="showCreateModal()">
+                <i class="bi bi-plus"></i> New Roadmap
+              </button>
+            </div>
+            <div id="roadmaps-list" class="row"></div>
+          </div>
+
+          <!-- Roadmap Detail View -->
+          <div id="roadmap-detail" class="d-none">
+            <button onclick="backToRoadmaps()" class="btn btn-secondary mb-3">
+              <i class="bi bi-arrow-left"></i> Back to Roadmaps
+            </button>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <div>
+                <h2 id="detail-title"></h2>
+                <p id="detail-desc" class="text-muted"></p>
+              </div>
+              <div class="text-end">
+                <div class="progress" style="width: 250px; height: 25px">
+                  <div
+                    id="detail-progress-bar"
+                    class="progress-bar"
+                    role="progressbar"
+                    style="width: 0%"
+                  ></div>
+                </div>
+                <small id="detail-progress-text" class="text-muted"></small>
+              </div>
+            </div>
+
+            <div id="categories-container"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Create/Edit Roadmap Modal -->
+    <div class="modal fade" id="createModal" tabindex="-1">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalTitle">Create New Roadmap</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="roadmapForm">
+              <div class="mb-3">
+                <label class="form-label">Roadmap Title</label>
+                <input
+                  type="text"
+                  id="roadmapTitle"
+                  class="form-control"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Description</label>
+                <textarea
+                  id="roadmapDesc"
+                  class="form-control"
+                  rows="3"
+                ></textarea>
+              </div>
+
+              <h6>Categories & Topics</h6>
+              <div id="modal-categories" class="mb-3"></div>
+
+              <button
+                type="button"
+                class="btn btn-outline-primary mb-3"
+                onclick="addCategoryModal()"
+              >
+                <i class="bi bi-plus"></i> Add Category
+              </button>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              class="btn btn-success"
+              onclick="saveRoadmap()"
+            >
+              Save Roadmap
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

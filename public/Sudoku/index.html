@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Sudoku Game</title>
+
+    <link rel="icon" type="image/png" href="favicon.png">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main class="app-shell">
+        <section class="game-panel" aria-labelledby="game-title">
+            <div class="topbar">
+                <div>
+                    <p class="eyebrow">Logic Puzzle</p>
+                    <h1 id="game-title">Sudoku</h1>
+                </div>
+
+                <div class="stats" aria-label="Game stats">
+                    <div>
+                        <span>Time</span>
+                        <strong id="timer">00:00</strong>
+                    </div>
+                    <div>
+                        <span>Mistakes</span>
+                        <strong><span id="mistakes">0</span>/3</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="toolbar" aria-label="Game controls">
+                <label class="select-wrap">
+                    <span>Difficulty</span>
+                    <select id="difficulty">
+                        <option value="easy">Easy</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="hard">Hard</option>
+                    </select>
+                </label>
+
+                <button id="themeToggle" type="button" aria-label="Toggle dark mode">
+        <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+        <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+    </button>
+    
+                <button id="newGame" type="button">New Game</button>
+                <button id="resetGame" type="button">Reset</button>
+                <button id="hintButton" type="button">Hint</button>
+                <button id="notesButton" type="button" aria-pressed="false">Notes</button>
+            </div>
+
+            <p id="message" class="message" role="status" aria-live="polite">Select a blank cell and fill the board.</p>
+
+            <div class="board-wrap">
+                <div id="board" class="board" role="grid" aria-label="Sudoku board"></div>
+            </div>
+
+            <div id="numberPad" class="number-pad" aria-label="Number pad"></div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

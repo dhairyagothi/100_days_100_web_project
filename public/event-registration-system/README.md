@@ -295,6 +295,8 @@ Create a `.env` file in the project root:
 ```env
 DATABASE_URL=postgresql://user:password@localhost:5432/zenith
 SESSION_SECRET=your_super_secret_jwt_key
+ADMIN_EMAIL=admin@example.com
+ADMIN_PASSWORD=choose_a_strong_password
 ```
 
 ### Push the database schema
@@ -303,7 +305,7 @@ SESSION_SECRET=your_super_secret_jwt_key
 npm run db:push
 ```
 
-This creates the `users` and `registrations` tables. The admin seed user (`adminzen@event.com` / `admin123zen`) is created automatically when the server first starts.
+This creates the `users` and `registrations` tables. The admin user is created automatically on first boot from the `ADMIN_EMAIL` and `ADMIN_PASSWORD` environment variables. If either variable is not set, admin seeding is skipped.
 
 ### Start the development server
 
@@ -315,12 +317,12 @@ This starts both the Express backend (port 5000) and the Vite frontend dev serve
 
 ### Seed admin credentials
 
-The admin user is seeded automatically on startup if it does not already exist:
+The admin user is seeded automatically on startup from environment variables if it does not already exist. Set `ADMIN_EMAIL` and `ADMIN_PASSWORD` before the first boot to choose the credentials. If either is missing, admin seeding is skipped.
 
-| Field | Value |
-|-------|-------|
-| Email | `adminzen@event.com` |
-| Password | `admin123zen` |
+| Variable | Description |
+|----------|-------------|
+| `ADMIN_EMAIL` | Email for the initial admin login |
+| `ADMIN_PASSWORD` | Password for the initial admin login |
 
 ---
 
@@ -346,6 +348,8 @@ The Express server serves the compiled React app as static files and handles all
 |----------|-------------|
 | `DATABASE_URL` | PostgreSQL connection string |
 | `SESSION_SECRET` | Secret key for JWT signing (use a long random string) |
+| `ADMIN_EMAIL` | Email for the initial admin login |
+| `ADMIN_PASSWORD` | Password for the initial admin login |
 | `NODE_ENV` | Set to `production` |
 
 ---
@@ -493,7 +497,7 @@ Import the JSON into Postman and use the token returned from `POST /api/admin/lo
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"adminzen@event.com\",\n  \"password\": \"admin123zen\"\n}",
+              "raw": "{\n  \"email\": \"admin@example.com\",\n  \"password\": \"your_admin_password\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
