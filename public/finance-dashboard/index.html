@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finance Dashboard</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="brand">
+                <div class="logo-icon">
+                    <i data-lucide="wallet"></i>
+                </div>
+                <div>
+                    <h1>Minimalist Finance</h1>
+                    <p class="subtitle" id="current-date">July 25, 2026</p>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Dashboard Layout -->
+        <main class="dashboard-grid">
+            <!-- Left Side: Balances & Stats & Goals -->
+            <section class="overview-section">
+                <!-- Balance Card -->
+                <div class="balance-card">
+                    <div class="balance-label">Total Balance</div>
+                    <div class="balance-amount" id="total-balance">$0.00</div>
+                    <div class="balance-footer">
+                        <span class="status-indicator"></span> Current Available Funds
+                    </div>
+                </div>
+
+                <!-- Stats Grid -->
+                <div class="stats-grid">
+                    <div class="stat-card income-card">
+                        <div class="stat-icon">
+                            <i data-lucide="arrow-down-left"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">Income</span>
+                            <span class="stat-value" id="total-income">$0.00</span>
+                        </div>
+                    </div>
+                    <div class="stat-card expense-card">
+                        <div class="stat-icon">
+                            <i data-lucide="arrow-up-right"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">Expenses</span>
+                            <span class="stat-value" id="total-expense">$0.00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Savings Goal Card -->
+                <div class="goal-card">
+                    <div class="goal-header">
+                        <div class="goal-title-group">
+                            <div class="goal-icon">
+                                <i data-lucide="target"></i>
+                            </div>
+                            <div>
+                                <h3 class="goal-title" id="goal-name">Savings Goal</h3>
+                                <p class="goal-subtitle">Emergency Fund</p>
+                            </div>
+                        </div>
+                        <button class="btn-text" id="edit-goal-btn">
+                            <i data-lucide="edit-3"></i>
+                        </button>
+                    </div>
+                    <div class="goal-progress-container">
+                        <div class="goal-progress-bar">
+                            <div class="goal-progress-fill" id="goal-progress-fill"></div>
+                        </div>
+                        <div class="goal-numbers">
+                            <span id="goal-current">$0</span>
+                            <span class="goal-target-text">target <strong id="goal-target">$0</strong></span>
+                        </div>
+                    </div>
+                    <!-- Quick Goal Contribution -->
+                    <form id="goal-contribution-form" class="goal-contribution-form">
+                        <input type="number" step="any" placeholder="Amount to add" id="goal-contrib-amount" required>
+                        <button type="submit" class="btn btn-sm">Add Savings</button>
+                    </form>
+                </div>
+
+                <!-- Quick Transaction Form -->
+                <div class="form-card">
+                    <h2>New Transaction</h2>
+                    <form id="transaction-form" class="minimal-form">
+                        <div class="form-group">
+                            <label for="tx-description">Description</label>
+                            <input type="text" id="tx-description" placeholder="e.g. Weekly Groceries" required>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="tx-amount">Amount</label>
+                                <input type="number" id="tx-amount" step="any" placeholder="0.00" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="tx-type">Type</label>
+                                <select id="tx-type" required>
+                                    <option value="expense">Expense</option>
+                                    <option value="income">Income</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="tx-category">Category</label>
+                            <select id="tx-category" required>
+                                <option value="Salary">Salary</option>
+                                <option value="Investments">Investments</option>
+                                <option value="Food">Food & Dining</option>
+                                <option value="Rent">Rent & Housing</option>
+                                <option value="Utilities">Utilities</option>
+                                <option value="Entertainment">Entertainment</option>
+                                <option value="Transport">Transportation</option>
+                                <option value="Other">Other / Misc</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">
+                            Add Transaction
+                        </button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Right Side: Transactions Ledger -->
+            <section class="ledger-section">
+                <div class="ledger-card">
+                    <div class="ledger-header">
+                        <h2>History</h2>
+                        <div class="ledger-actions">
+                            <button id="export-btn" class="btn-text-icon" title="Export to CSV">
+                                <i data-lucide="download"></i>
+                                <span>CSV</span>
+                            </button>
+                            <button id="clear-all-btn" class="btn-text-icon danger-hover" title="Clear all transactions">
+                                <i data-lucide="trash-2"></i>
+                                <span>Clear</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Search and Filters -->
+                    <div class="filters-container">
+                        <div class="search-box">
+                            <i data-lucide="search" class="search-icon"></i>
+                            <input type="text" id="search-input" placeholder="Search description...">
+                        </div>
+                        <div class="filter-buttons">
+                            <button class="filter-btn active" data-filter="all">All</button>
+                            <button class="filter-btn" data-filter="income">Income</button>
+                            <button class="filter-btn" data-filter="expense">Expenses</button>
+                        </div>
+                    </div>
+
+                    <!-- List of Transactions -->
+                    <div class="transactions-list-wrapper">
+                        <div class="empty-state" id="empty-state">
+                            <i data-lucide="inbox"></i>
+                            <p>No transactions yet</p>
+                            <span>Add your first income or expense to see it here.</span>
+                        </div>
+                        <ul class="transactions-list" id="transactions-list">
+                            <!-- Dynamic items will go here -->
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Edit Savings Goal Modal -->
+    <div id="goal-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Configure Savings Goal</h2>
+                <button class="btn-icon" id="close-goal-modal">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <form id="edit-goal-form" class="minimal-form">
+                <div class="form-group">
+                    <label for="input-goal-title">Goal Name</label>
+                    <input type="text" id="input-goal-title" placeholder="e.g. Emergency Fund" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="input-goal-target">Target Amount ($)</label>
+                        <input type="number" id="input-goal-target" min="1" step="any" placeholder="10000" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="input-goal-current">Current Balance ($)</label>
+                        <input type="number" id="input-goal-current" min="0" step="any" placeholder="2500" required>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" id="cancel-goal-modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="app.js"></script>
+</body>
+</html>

@@ -1,249 +1,512 @@
-// ─── DOM References ────────────────────────────────────────────────────────────
-const notesContainer = document.getElementById("notes-container");
-const documentsList  = document.querySelector(".documents-list");
-const pdfMessage     = document.getElementById("pdfMessage");
-const taskInput      = document.getElementById("task-input");
-const taskTypeSelect = document.getElementById("task-type");
+// ─── State ────────────────────────────────────────────────────────────────
+let tasks = JSON.parse(localStorage.getItem("kanban-board-tasks")) || [
+  { id: "k-task-1", title: "Review Open-Source Pull Requests", category: "Work", priority: "High", status: "pending", dueDate: "" },
+  { id: "k-task-2", title: "Refactor Theme Style Overlap Rules", category: "Study", priority: "Medium", status: "inprogress", dueDate: "" },
+  { id: "k-task-3", title: "Verify Grid Layout Persistence", category: "Personal", priority: "Low", status: "completed", dueDate: "" },
+];
 
-// ─── Theme State ───────────────────────────────────────────────────────────────
-// Maps theme id → gradient for body + card fallback colour for default cards
-const THEMES = {
-  theme1: {
-    body: "linear-gradient(135deg, rgba(232,221,227,1) 0%, rgba(219,185,200,1) 55%, rgba(227,230,235,1) 100%)",
-    card: "rgba(232, 221, 227, 1)",
-  },
-  theme2: {
-    body: "linear-gradient(135deg, #e4afcb 0%, #e2c58b 50%, #7edbdc 100%)",
-    card: "#e4afcb",
-  },
-  theme3: {
-    body: "linear-gradient(135deg, #39db8c 0%, #a0c559 30%, #d1ab51 55%, #e6936b 80%, #df868d 100%)",
-    card: "#df868d",
-  },
-  theme4: {
-    body: "linear-gradient(135deg, rgb(120,25,105) 0%, rgb(197,211,201) 100%)",
-    card: "rgb(197, 211, 201)",
-  },
-  theme5: {
-    body: "linear-gradient(135deg, #b92b27 0%, #1565c0 100%)",
-    card: "#c0cfe8",
-  },
-};
+let savedDocs = JSON.parse(localStorage.getItem("kanban-saved-docs-meta")) || [];
 
-let currentTheme = "theme1"; // default
+// ─── DOM refs ─────────────────────────────────────────────────────────────
+const taskForm = document.getElementById("task-form");
+const taskInput = document.getElementById("task");
+const categorySelect = document.getElementById("task-category");
+const prioritySelect = document.getElementById("task-priority");
+const dueDateInput = document.getElementById("task-date");
+const searchInput = document.getElementById("task-search");
+const noResultsMsg = document.getElementById("no-results-msg");
+const noResultsQuery = document.getElementById("no-results-query");
+const emptyState = document.getElementById("emptyState");
+const charCounter = document.getElementById("char-counter");
 
-// ─── Task Type colour map ──────────────────────────────────────────────────────
-// Keeps track of user-chosen type colours so they survive theme switches
-const TYPE_COLORS = {
-  "":              null,           // → use theme colour
-  "Work":          "#FFDE59",
-  "Personal":      "#FFC0CB",
-  "Professional":  "#B0BEC5",
-  "Fitness":       "#B1EE99",
-  "Miscellaneous": "#CAB9F5",
-};
+// Set minimum selectable date to today
+if (dueDateInput) {
+  dueDateInput.min = new Date().toISOString().split("T")[0];
+}
 
-// ─── Add Task ──────────────────────────────────────────────────────────────────
-function Add() {
-  const text = taskInput.value.trim();
+// ─── Priority helpers ──────────────────────────────────────────────────────
+function getPriorityClass(priority) {
+  if (priority === "High") return "priority-high";
+  if (priority === "Medium") return "priority-medium";
+  return "priority-low";
+}
 
-  if (text === "") {
-    taskInput.focus();
-    taskInput.style.borderColor = "rgba(255, 80, 80, 0.8)";
-    setTimeout(() => { taskInput.style.borderColor = ""; }, 1200);
+function getPriorityEmoji(priority) {
+  if (priority === "High") return "🔴";
+  if (priority === "Medium") return "🟡";
+  return "🟢";
+}
+
+// ─── Render Kanban Board ───────────────────────────────────────────────────
+function renderKanban(filterQuery) {
+  // If no columns are present, we skip rendering tasks entirely
+  const dropZones = document.querySelectorAll(".kanban-column-drop-zone");
+  if (dropZones.length === 0) {
+    calculateSystemCounters(); // Still calculate numbers if stats elements exist on this page
     return;
   }
 
-  const notes = document.querySelectorAll(".notes");
+  dropZones.forEach(z => (z.innerHTML = ""));
 
-  if (notes.length > 0) {
-    const lastNote = notes[notes.length - 1];
-    const taskText = lastNote.querySelector("span");
+  const query = (filterQuery || searchInput?.value || "").trim().toLowerCase();
+  const visibleTasks = query
+    ? tasks.filter(t => t.title.toLowerCase().includes(query))
+    : tasks;
 
-    if (taskText && (taskText.innerText.trim() === "Click here to add a task..." || taskText.innerText.trim() === "")) {
-      alert("Please add a task to the previous note before creating a new one!");
-      return;
-    }
+  // Show/hide empty state safely
+  const kanbanBoardEl = document.getElementById("kanban-board");
+  if (tasks.length === 0) {
+    if (emptyState) emptyState.style.display = "flex";
+    if (kanbanBoardEl) kanbanBoardEl.style.display = "none";
+  } else {
+    if (emptyState) emptyState.style.display = "none";
+    if (kanbanBoardEl) kanbanBoardEl.style.display = "flex";
   }
 
-  const selectedType  = taskTypeSelect.value;
-  const typeColor     = TYPE_COLORS[selectedType] ?? null;
-  const isDefaultCard = !typeColor; // no type selected → follows theme
-
-  // Card container
-  const note = document.createElement("div");
-  note.classList.add("notes");
-  note.dataset.defaultCard = isDefaultCard ? "true" : "false";
-
-  // Apply colour
-  note.style.backgroundColor = isDefaultCard
-    ? THEMES[currentTheme].card
-    : typeColor;
-
-  // Inner layout
-  const noteWrapper = document.createElement("div");
-  noteWrapper.style.cssText = "display:flex; align-items:flex-start; justify-content:space-between; width:100%; gap:8px;";
-
-  // Task text
-  const taskText = document.createElement("span");
-  taskText.className = "task-text";
-  taskText.innerText = text;
-  taskText.style.cssText = "flex:1; line-height:1.4; word-break:break-word;";
-
-  // Actions column
-  const actions = document.createElement("div");
-  actions.style.cssText = "display:flex; flex-direction:column; align-items:center; gap:6px; flex-shrink:0;";
-
-  // Tick / complete toggle
-  const tickBtn = document.createElement("button");
-  tickBtn.innerHTML = "&#10003;";
-  tickBtn.title = "Mark complete";
-  tickBtn.style.cssText = [
-    "background:none", "border:1.5px solid #555", "border-radius:50%",
-    "width:26px", "height:26px", "cursor:pointer", "font-size:14px",
-    "display:flex", "align-items:center", "justify-content:center",
-    "transition:background 0.2s, color 0.2s", "color:#333",
-  ].join(";");
-
-  tickBtn.addEventListener("click", (e) => {
-    e.stopPropagation();
-    taskText.classList.toggle("completed");
-    tickBtn.style.background = taskText.classList.contains("completed") ? "#4caf50" : "none";
-    tickBtn.style.color      = taskText.classList.contains("completed") ? "white"   : "#333";
-    tickBtn.style.borderColor= taskText.classList.contains("completed") ? "#4caf50" : "#555";
-  });
-
-  // Delete button
-  const delBtn = document.createElement("button");
-  delBtn.innerHTML = '<i class="fa-solid fa-trash"></i>';
-  delBtn.title = "Delete task";
-  delBtn.style.cssText = [
-    "background:none", "border:none", "cursor:pointer",
-    "font-size:13px", "color:#c0392b", "padding:2px",
-    "transition:transform 0.2s",
-  ].join(";");
-  delBtn.addEventListener("mouseenter", () => { delBtn.style.transform = "scale(1.25)"; });
-  delBtn.addEventListener("mouseleave", () => { delBtn.style.transform = "scale(1)"; });
-  delBtn.addEventListener("click", (e) => {
-    e.stopPropagation();
-    note.style.animation = "none";
-    note.style.transition = "opacity 0.25s, transform 0.25s";
-    note.style.opacity = "0";
-    note.style.transform = "scale(0.92)";
-    setTimeout(() => note.remove(), 250);
-  });
-
-  // Type badge (only if type was selected)
-  if (selectedType) {
-    const badge = document.createElement("span");
-    badge.innerText = selectedType;
-    badge.style.cssText = [
-      "font-size:10px", "font-weight:700", "padding:2px 7px",
-      "border-radius:20px", "background:rgba(0,0,0,0.12)",
-      "color:#333", "white-space:nowrap", "margin-top:4px",
-      "align-self:flex-end",
-    ].join(";");
-    note.appendChild(badge);
+  // Show/hide no-results safely
+  if (query && visibleTasks.length === 0) {
+    if (noResultsQuery) noResultsQuery.textContent = query;
+    if (noResultsMsg) noResultsMsg.style.display = "block";
+  } else {
+    if (noResultsMsg) noResultsMsg.style.display = "none";
   }
 
-  actions.appendChild(tickBtn);
-  actions.appendChild(delBtn);
-  noteWrapper.appendChild(taskText);
-  noteWrapper.appendChild(actions);
-  note.insertBefore(noteWrapper, note.firstChild);
-  notesContainer.appendChild(note);
+  const today = new Date().toISOString().split("T")[0];
 
-  // Reset inputs
-  taskInput.value = "";
-  taskTypeSelect.value = "";
-  taskInput.focus();
+  visibleTasks.forEach(task => {
+    const laneDropTarget = document.getElementById(task.status);
+    if (!laneDropTarget) return;
+
+    const isOverdue = task.dueDate && task.dueDate < today && task.status !== "completed";
+    const isDueToday = task.dueDate === today && task.status !== "completed";
+    const isCompleted = task.status === "completed";
+    const isInProgress = task.status === "inprogress";
+
+    const card = document.createElement("div");
+    card.id = task.id;
+    card.setAttribute("draggable", "true");
+    card.setAttribute("data-taskid", task.id);
+    card.setAttribute("role", "listitem");
+
+    let cardClass = "kanban-task-card";
+    if (isCompleted) cardClass += " task-completed";
+    else if (isOverdue) cardClass += " overdue-task";
+    else if (isDueToday) cardClass += " due-today-task";
+    card.className = cardClass;
+
+    const priorityClass = getPriorityClass(task.priority || "Medium");
+    const priorityEmoji = getPriorityEmoji(task.priority || "Medium");
+
+    card.innerHTML = `
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+        <span style="font-size:0.65rem; padding:2px 8px; border-radius:4px; background:rgba(255,255,255,0.06); color:rgba(240,240,245,0.7); font-weight:700;">${task.category || "General"}</span>
+        <span class="priority-badge ${priorityClass}" aria-label="Priority: ${task.priority || 'Medium'}">${priorityEmoji} ${task.priority || "Medium"}</span>
+      </div>
+      <p class="card-title-text" aria-label="Task: ${task.title}">${task.title}</p>
+      ${task.dueDate ? `<p style="font-size:0.75rem; color:#94a3b8; margin-top:4px;">📅 ${task.dueDate}</p>` : ""}
+      ${isOverdue ? `<span class="overdue-badge" aria-label="Overdue">⚠️ Overdue</span>` : ""}
+      <div class="card-actions">
+        <button
+          class="card-action-btn btn-complete ${isCompleted ? "btn-active-complete" : ""}"
+          onclick="markTaskCompleted('${task.id}')"
+          title="${isCompleted ? "Unmark Completed" : "Mark as Completed"}"
+          aria-label="${isCompleted ? "Unmark Completed" : "Mark as Completed"}"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </button>
+        <button
+          class="card-action-btn btn-inprogress ${isInProgress ? "btn-active-inprogress" : ""}"
+          onclick="markTaskInProgress('${task.id}')"
+          title="${isInProgress ? "Back to Pending" : "Mark as In Progress"}"
+          aria-label="${isInProgress ? "Back to Pending" : "Mark as In Progress"}"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </button>
+        <button
+          class="card-action-btn btn-delete"
+          onclick="deleteTaskNode('${task.id}')"
+          title="Delete Task"
+          aria-label="Delete Task"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+        </button>
+      </div>
+    `;
+
+    // Drag events
+    card.addEventListener("dragstart", e => {
+      card.classList.add("dragging");
+      e.dataTransfer.setData("text/plain", task.id);
+    });
+    card.addEventListener("dragend", () => card.classList.remove("dragging"));
+
+    laneDropTarget.appendChild(card);
+  });
+
+  calculateSystemCounters();
 }
 
-// Allow pressing Enter in the input to add a task
-taskInput.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") Add();
+// ─── Dashboard counters ────────────────────────────────────────────────────
+function calculateSystemCounters() {
+  const pendingCount = tasks.filter(t => t.status === "pending").length;
+  const progressCount = tasks.filter(t => t.status === "inprogress").length;
+  const completedCount = tasks.filter(t => t.status === "completed").length;
+  const today = new Date().toISOString().split("T")[0];
+  const overdueCount = tasks.filter(t => t.dueDate && t.dueDate < today && t.status !== "completed").length;
+
+  const statEls = {
+    "count-pending": pendingCount,
+    "count-inprogress": progressCount,
+    "count-completed": completedCount,
+    "totalTasks": tasks.length,
+    "dashboardPending": pendingCount,
+    "dashboardInProgress": progressCount,
+    "dashboardTotalCompleted": completedCount,
+    "dashboardOverdue": overdueCount,
+  };
+
+  Object.entries(statEls).forEach(([id, val]) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = val;
+  });
+
+  // Hero progress bar safely
+  const heroFill = document.getElementById("heroProgressFill");
+  const heroText = document.getElementById("progressText");
+  if (tasks.length > 0) {
+    const pct = Math.round((completedCount / tasks.length) * 100);
+    if (heroFill) heroFill.style.width = `${pct}%`;
+    if (heroText) heroText.textContent = `${completedCount} / ${tasks.length} tasks finished (${pct}%)`;
+  } else {
+    if (heroFill) heroFill.style.width = "0%";
+    if (heroText) heroText.textContent = "0 / 0 tasks completed";
+  }
+
+  // Show/hide "Clear Completed" button safely
+  const ccBtn = document.getElementById("clearCompletedBtn");
+  if (ccBtn) ccBtn.hidden = completedCount === 0;
+}
+
+// ─── Persist ───────────────────────────────────────────────────────────────
+function saveTasks() {
+  localStorage.setItem("kanban-board-tasks", JSON.stringify(tasks));
+}
+
+// ─── Character Counter ─────────────────────────────────────────────────────
+if (taskInput && charCounter) {
+  taskInput.addEventListener("input", () => {
+    const currentLen = taskInput.value.length;
+    charCounter.textContent = `${currentLen} / 200`;
+    if (currentLen > 198) {
+      charCounter.classList.add("near-limit");
+    } else {
+      charCounter.classList.remove("near-limit");
+    }
+  });
+}
+
+// ─── Add task ──────────────────────────────────────────────────────────────
+if (taskForm && taskInput) {
+  taskForm.addEventListener("submit", e => {
+    e.preventDefault();
+    const title = taskInput.value.trim();
+    if (!title) return;
+
+    tasks.push({
+      id: "task_" + Date.now(),
+      title,
+      category: categorySelect?.value || "Others",
+      priority: prioritySelect?.value || "Medium",
+      dueDate: dueDateInput?.value || "",
+      status: "pending",
+    });
+
+    saveTasks();
+    renderKanban();
+    showToast("✅ Task added!", "success");
+
+    taskInput.value = "";
+    if (charCounter) {
+      charCounter.textContent = "0 / 200";
+      charCounter.classList.remove("near-limit");
+    }
+    if (categorySelect) categorySelect.selectedIndex = 0;
+    if (prioritySelect) prioritySelect.selectedIndex = 0;
+    if (dueDateInput) dueDateInput.value = "";
+  });
+}
+
+// ─── Delete ────────────────────────────────────────────────────────────────
+window.deleteTaskNode = function (id) {
+  tasks = tasks.filter(t => t.id !== id);
+  saveTasks();
+  renderKanban();
+  showToast("🗑️ Task removed!", "info");
+};
+
+// ─── Toggle completed ──────────────────────────────────────────────────────
+window.markTaskCompleted = function (id) {
+  tasks = tasks.map(t =>
+    t.id === id ? { ...t, status: t.status === "completed" ? "pending" : "completed" } : t
+  );
+  saveTasks();
+  renderKanban();
+  const t = tasks.find(t => t.id === id);
+  showToast(t && t.status === "completed" ? "✅ Marked as Completed!" : "🔄 Moved back to Pending!", "success");
+};
+
+// ─── Toggle in-progress ────────────────────────────────────────────────────
+window.markTaskInProgress = function (id) {
+  tasks = tasks.map(t =>
+    t.id === id ? { ...t, status: t.status === "inprogress" ? "pending" : "inprogress" } : t
+  );
+  saveTasks();
+  renderKanban();
+  const t = tasks.find(t => t.id === id);
+  showToast(t && t.status === "inprogress" ? "⚡ Marked as In Progress!" : "🔄 Moved back to Pending!", "info");
+};
+
+// ─── Drag-and-drop between columns ────────────────────────────────────────
+document.querySelectorAll(".kanban-column-drop-zone").forEach(zone => {
+  zone.addEventListener("dragover", e => {
+    e.preventDefault();
+    zone.classList.add("drag-over");
+  });
+  zone.addEventListener("dragleave", () => zone.classList.remove("drag-over"));
+  zone.addEventListener("drop", e => {
+    e.preventDefault();
+    zone.classList.remove("drag-over");
+    const droppedId = e.dataTransfer.getData("text/plain");
+    const newStatus = zone.id;
+    tasks = tasks.map(t => t.id === droppedId ? { ...t, status: newStatus } : t);
+    saveTasks();
+    renderKanban();
+  });
 });
 
-// ─── Theme Switching ───────────────────────────────────────────────────────────
-function applyTheme(themeKey) {
-  const theme = THEMES[themeKey];
-  document.body.style.background = theme.body;
-  currentTheme = themeKey;
-
-  // Update CSS custom property → auto-updates all default cards via var()
-  document.documentElement.style.setProperty("--theme-card-bg", theme.card);
-
-  // Also imperatively update existing default cards
-  const cards = document.querySelectorAll(".notes[data-default-card='true']");
-  cards.forEach((card) => {
-    card.style.backgroundColor = theme.card;
-  });
+// ─── Live search ───────────────────────────────────────────────────────────
+if (searchInput) {
+  searchInput.addEventListener("input", () => renderKanban());
 }
 
-function c1() { applyTheme("theme1"); }
-function c2() { applyTheme("theme2"); }
-function c3() { applyTheme("theme3"); }
-function c4() { applyTheme("theme4"); }
-function c5() { applyTheme("theme5"); }
+// ─── Toast ────────────────────────────────────────────────────────────────
+let _toastTimer = null;
+function showToast(message, type) {
+  const el = document.getElementById("appToast");
+  if (!el) return;
+  el.textContent = message;
+  el.className = "toast-popup toast-show";
+  if (type === "success") el.classList.add("toast-success");
+  else if (type === "error") el.classList.add("toast-error");
+  else el.classList.add("toast-info");
+  clearTimeout(_toastTimer);
+  _toastTimer = setTimeout(() => {
+    el.classList.remove("toast-show", "toast-success", "toast-error", "toast-info");
+  }, 3000);
+}
 
-// ─── PDF Export ────────────────────────────────────────────────────────────────
+// ─── Tab navigation ────────────────────────────────────────────────────────
+window.showHome = function () {
+  const homeTab = document.getElementById("home-tab");
+  const docsTab = document.getElementById("documents-tab");
+  const navHome = document.getElementById("nav-home");
+  const navDocs = document.getElementById("nav-documents");
+
+  if (homeTab) homeTab.className = "active-section";
+  if (docsTab) docsTab.className = "inactive-section";
+  if (navHome) navHome.classList.add("active");
+  if (navDocs) navDocs.classList.remove("active");
+};
+
+window.showDocuments = function () {
+  const homeTab = document.getElementById("home-tab");
+  const docsTab = document.getElementById("documents-tab");
+  const navHome = document.getElementById("nav-home");
+  const navDocs = document.getElementById("nav-documents");
+
+  if (homeTab) homeTab.className = "inactive-section";
+  if (docsTab) docsTab.className = "active-section";
+  if (navHome) navHome.classList.remove("active");
+  if (navDocs) navDocs.classList.add("active");
+  renderSavedDocuments();
+};
+
+// ─── Save as PDF ───────────────────────────────────────────────────────────
 function saveAsPDF() {
+  if (tasks.length === 0) { showToast("❌ No tasks to export!", "info"); return; }
+  if (!window.jspdf) { showToast("⏳ PDF library loading, try again!", "info"); return; }
+
   const { jsPDF } = window.jspdf;
-  const doc  = new jsPDF();
-  const cards = document.querySelectorAll(".notes");
+  const doc = new jsPDF();
 
-  doc.setFontSize(18);
-  doc.text("My To-Do List", 20, 18);
+  doc.setFont("Helvetica", "bold");
+  doc.setFontSize(22);
+  doc.text("To-Do List Report", 20, 24);
+  doc.setFont("Helvetica", "normal");
+  doc.setFontSize(10);
+  doc.text(`Generated on: ${new Date().toLocaleString()}`, 20, 32);
+
+  const completedCount = tasks.filter(t => t.status === "completed").length;
+  const inProgressCount = tasks.filter(t => t.status === "inprogress").length;
+  const pendingCount = tasks.filter(t => t.status === "pending").length;
+  doc.text(`Total: ${tasks.length}  |  Completed: ${completedCount}  |  In Progress: ${inProgressCount}  |  Pending: ${pendingCount}`, 20, 38);
+  doc.line(20, 42, 190, 42);
+
+  let y = 52;
   doc.setFontSize(12);
-
-  let y = 30;
-  cards.forEach((card, i) => {
-    const textNode = card.querySelector(".task-text");
-    const text = textNode ? textNode.innerText.trim() : card.innerText.trim();
-    if (text) {
-      doc.text(`${i + 1}. ${text}`, 20, y);
-      y += 10;
-      if (y > 270) { doc.addPage(); y = 20; }
-    }
+  tasks.forEach((task, i) => {
+    if (y > 270) { doc.addPage(); y = 20; }
+    const rawStatus = task.status || "pending";
+    const status = rawStatus === "inprogress" ? "IN PROGRESS" : rawStatus.toUpperCase();
+    doc.text(`${i + 1}. [${status}] [${task.priority || "Medium"}] [${task.category || "General"}] - ${task.title}`, 20, y);
+    y += 10;
   });
 
-  const fileName = `ToDoList_${Date.now()}.pdf`;
-  const fileURL  = URL.createObjectURL(doc.output("blob"));
-  saveDocument(fileName, fileURL);
-  showPDFMessage();
+  const fileName = `TodoList_${Date.now()}.pdf`;
+  const pdfBlob = doc.output("blob");
+  const fileURL = URL.createObjectURL(pdfBlob);
+
+  const docEntry = {
+    id: Date.now(),
+    name: fileName,
+    url: fileURL,
+    total: tasks.length,
+    completed: completedCount,
+    time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+    date: new Date().toLocaleDateString(),
+  };
+
+  savedDocs.unshift(docEntry);
+  const meta = savedDocs.map(({ url, ...rest }) => rest);
+  localStorage.setItem("kanban-saved-docs-meta", JSON.stringify(meta));
+  showToast("📥 PDF saved! Go to Documents to download.", "success");
+  renderSavedDocuments();
 }
 
-function saveDocument(fileName, fileURL) {
-  const docItem = document.createElement("div");
-  docItem.className = "document-item";
-  docItem.innerHTML = `
-    <span>${fileName}</span>
-    <button onclick="viewPDF('${fileURL}')">View</button>
-    <button onclick="downloadPDF('${fileURL}', '${fileName}')">Download</button>
-    <button onclick="deletePDF(this)">Delete</button>
-  `;
-  documentsList.appendChild(docItem);
+// ─── Render saved documents ────────────────────────────────────────────────
+function renderSavedDocuments() {
+  const docEmptyState = document.getElementById("emptyDocsState");
+  const docsList = document.querySelector(".documents-list");
+  if (!docsList) return;
+  docsList.innerHTML = "";
+
+  if (savedDocs.length === 0) {
+    if (docEmptyState) docEmptyState.style.display = "flex";
+  } else {
+    if (docEmptyState) docEmptyState.style.display = "none";
+    savedDocs.forEach(docEntry => {
+      const item = document.createElement("li");
+      item.className = "doc-item";
+      const hasUrl = !!docEntry.url;
+      item.innerHTML = `
+        <div class="doc-info">
+          <div class="doc-name">📄 ${docEntry.name}</div>
+          <div class="doc-meta">
+            <span class="doc-date">${docEntry.date} ${docEntry.time}</span>
+            <span class="doc-task-count">${docEntry.total} tasks · ${docEntry.completed} completed</span>
+          </div>
+          ${!hasUrl ? '<div class="doc-stale">⚠️ File unavailable after reload — re-export to download again.</div>' : ""}
+        </div>
+        <div class="doc-actions">
+          ${hasUrl ? `<button class="doc-btn" onclick="window.open('${docEntry.url}', '_blank')">View</button>` : ""}
+          ${hasUrl ? `<a class="doc-btn" href="${docEntry.url}" download="${docEntry.name}">Download</a>` : ""}
+          <button class="doc-btn doc-btn-del" onclick="deleteDocEntry('${docEntry.id}')">Delete</button>
+        </div>
+      `;
+      docsList.appendChild(item);
+    });
+  }
 }
 
-function viewPDF(fileURL)                  { window.open(fileURL, "_blank"); }
-function downloadPDF(fileURL, fileName)    {
-  const a = document.createElement("a");
-  a.href = fileURL; a.download = fileName; a.click();
-}
-function deletePDF(button)                 { button.parentElement.remove(); }
+window.deleteDocEntry = function (id) {
+  savedDocs = savedDocs.filter(d => String(d.id) !== String(id));
+  const meta = savedDocs.map(({ url, ...rest }) => rest);
+  localStorage.setItem("kanban-saved-docs-meta", JSON.stringify(meta));
+  renderSavedDocuments();
+  showToast("🗑️ Document removed!", "info");
+};
 
-function showPDFMessage() {
-  pdfMessage.style.display = "flex";
-  setTimeout(() => { pdfMessage.style.display = "none"; }, 3000);
+// ─── Sidebar button wiring ─────────────────────────────────────────────────
+document.getElementById("savepdf")?.addEventListener("click", saveAsPDF);
+
+const clearDoneEl = document.getElementById("cleardone");
+const clearModalEl = document.getElementById("clearModal");
+if (clearDoneEl && clearModalEl) {
+  clearDoneEl.addEventListener("click", () => {
+    clearModalEl.style.display = "flex";
+  });
+
+  document.getElementById("modalCancelBtn")?.addEventListener("click", () => {
+    clearModalEl.style.display = "none";
+  });
+
+  document.getElementById("modalConfirmBtn")?.addEventListener("click", () => {
+    tasks = [];
+    saveTasks();
+    renderKanban();
+    clearModalEl.style.display = "none";
+    showToast("🧹 Workspace cleared!", "info");
+  });
+
+  clearModalEl.addEventListener("click", e => {
+    if (e.target === clearModalEl) clearModalEl.style.display = "none";
+  });
 }
 
-// ─── Tab Navigation ────────────────────────────────────────────────────────────
-function showHome() {
-  document.getElementById("home-tab").style.display      = "block";
-  document.getElementById("documents-tab").style.display = "none";
+const clearCompletedBtn = document.getElementById("clearCompletedBtn");
+const clearCompletedModal = document.getElementById("clearCompletedModal");
+if (clearCompletedBtn && clearCompletedModal) {
+  clearCompletedBtn.addEventListener("click", () => {
+    const completedCount = tasks.filter(t => t.status === "completed").length;
+    if (completedCount === 0) { showToast("✨ No completed tasks to clear!", "info"); return; }
+    clearCompletedModal.style.display = "flex";
+  });
+
+  document.getElementById("completedModalCancelBtn")?.addEventListener("click", () => {
+    clearCompletedModal.style.display = "none";
+  });
+
+  document.getElementById("completedModalConfirmBtn")?.addEventListener("click", () => {
+    tasks = tasks.filter(t => t.status !== "completed");
+    saveTasks();
+    renderKanban();
+    clearCompletedModal.style.display = "none";
+    showToast("✅ Completed tasks cleared!", "success");
+  });
+
+  clearCompletedModal.addEventListener("click", e => {
+    if (e.target === clearCompletedModal) clearCompletedModal.style.display = "none";
+  });
 }
 
-function showDocuments() {
-  document.getElementById("home-tab").style.display      = "none";
-  document.getElementById("documents-tab").style.display = "block";
+// ─── Theme switching ───────────────────────────────────────────────────────
+const themeButtons = document.querySelectorAll(".theme-btn");
+function applyTheme(theme) {
+  document.body.classList.remove("theme1", "theme2", "theme3", "theme4", "theme5", "theme6", "theme7");
+  document.body.classList.add(theme);
+  themeButtons.forEach(btn =>
+    btn.classList.toggle("active", btn.dataset.theme === theme)
+  );
+}
+
+themeButtons.forEach(btn => {
+  btn.addEventListener("click", () => {
+    const theme = btn.dataset.theme;
+    applyTheme(theme);
+    localStorage.setItem("selectedTheme", theme);
+    showToast("🎨 Workspace skin changed!", "success");
+  });
+});
+
+// ─── Init ─────────────────────────────────────────────────────────────────
+function init() {
+  const savedTheme = localStorage.getItem("selectedTheme") || "theme1";
+  applyTheme(savedTheme);
+  renderKanban();
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", init);
+} else {
+  init();
 }

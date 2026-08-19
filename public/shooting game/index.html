@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Target Shooter</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 16px;border-radius:8px;background:#1e293b;color:#3b82f6;border:1px solid #3b82f6;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;transition:all 0.2s ease;" onmouseover="this.style.background='#3b82f6';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#3b82f6'">← Back to Home</a>
+
+
+  <!-- Start Screen -->
+  <div id="startScreen" class="screen">
+    <h1>🎯 TARGET SHOOTER</h1>
+    <p>Hit the center and score maximum points</p>
+    <button id="startBtn">PLAY GAME</button>
+  </div>
+
+  <!-- HUD -->
+  <div class="hud">
+    <div>Score: <span id="score">0</span></div>
+    <div>High Score: <span id="highScore">0</span></div>
+    <div>Time: <span id="timer">15</span>s</div>
+  </div>
+
+  <!-- Game Area -->
+  <div id="gameArea">
+
+    <div class="bgGlow"></div>
+
+    <!-- Target -->
+    <div id="target">
+      <div class="ring outer"></div>
+      <div class="ring ring2"></div>
+      <div class="ring ring3"></div>
+      <div class="ring center"></div>
+    </div>
+
+    <!-- Gun -->
+    <div id="gun">
+      <div class="gunBody"></div>
+      <div class="gunBarrel"></div>
+      <div class="gunHandle"></div>
+    </div>
+
+    <!-- Score Popup -->
+    <div id="scorePopup"></div>
+
+  </div>
+
+  <!-- Controls -->
+  <div class="controls">
+    <button id="pauseBtn">Pause</button>
+    <button onclick="location.reload()">Restart</button>
+  </div>
+
+  <script src="script.js"></script>
+
+</body>
+</html>

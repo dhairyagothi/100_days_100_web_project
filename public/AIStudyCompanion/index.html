@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>NeuroDesk AI</title>
+
+  <link rel="stylesheet" href="style.css" />
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+  />
+</head>
+
+<body>
+
+<div class="dashboard">
+
+  <!-- SIDEBAR -->
+
+  <aside class="sidebar">
+
+    <div class="logo">
+      🧠 NeuroDesk
+    </div>
+
+    <nav>
+
+      <a href="#" class="nav-link active" data-section="dashboard-section">
+        <i class="fa-solid fa-house"></i>
+        Dashboard
+      </a>
+
+      <a href="#" class="nav-link" data-section="tasks-section">
+        <i class="fa-solid fa-list-check"></i>
+        Tasks
+      </a>
+
+      <a href="#" class="nav-link" data-section="focus-section">
+        <i class="fa-solid fa-clock"></i>
+        Focus
+      </a>
+
+      <a href="#" class="nav-link" data-section="analytics-section">
+        <i class="fa-solid fa-chart-line"></i>
+        Analytics
+      </a>
+
+      <a href="#" class="nav-link" data-section="settings-section">
+        <i class="fa-solid fa-gear"></i>
+        Settings
+      </a>
+
+    </nav>
+
+  </aside>
+
+  <!-- MAIN -->
+
+  <main class="main-content">
+
+    <header class="topbar">
+
+      <div>
+        <h1>Welcome Back 👋</h1>
+        <p>Stay productive and focused today.</p>
+      </div>
+
+      <button class="theme-btn">
+        🌙 Theme
+      </button>
+
+    </header>
+
+    <!-- DASHBOARD -->
+
+    <section id="dashboard-section" class="content-section active-section">
+
+      <div class="cards">
+
+        <div class="card">
+          <h3>🎯 Today's Goal</h3>
+          <p id="todayGoal">No Task Added</p>
+        </div>
+
+        <div class="card">
+          <h3>⏳ Focus Time</h3>
+          <p id="focusHours">0 Minutes</p>
+        </div>
+
+        <div class="card">
+          <h3>🔥 Streak</h3>
+          <p id="streakCount">0 Sessions</p>
+        </div>
+
+        <div class="card">
+          <h3>✅ Completed</h3>
+          <p id="completedDashboard">0 Tasks</p>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- TASKS -->
+
+    <section id="tasks-section" class="content-section">
+
+      <div class="task-section">
+
+        <h2>Study Tasks</h2>
+
+        <div class="task-input">
+
+          <input
+            type="text"
+            id="taskInput"
+            placeholder="Enter study task"
+          />
+
+          <input
+            type="date"
+            id="taskDate"
+          />
+
+          <input
+            type="number"
+            id="taskMinutes"
+            placeholder="Focus Minutes"
+          />
+
+          <button onclick="addTask()">
+            Add Task
+          </button>
+
+        </div>
+
+        <ul id="taskList"></ul>
+
+      </div>
+
+    </section>
+
+    <!-- FOCUS -->
+
+    <section id="focus-section" class="content-section">
+
+      <div class="focus-box">
+
+        <h2>Focus Session</h2>
+
+        <div id="currentTaskName">
+          No Task Selected
+        </div>
+
+        <div id="timer">
+          00:00
+        </div>
+
+        <div class="timer-buttons">
+
+          <button onclick="startTimer()">
+            Start
+          </button>
+
+          <button onclick="pauseTimer()">
+            Pause
+          </button>
+
+          <button onclick="resetTimer()">
+            Reset
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ANALYTICS -->
+
+    <section id="analytics-section" class="content-section">
+
+      <div class="analytics-box">
+
+        <h2>Analytics</h2>
+
+        <div class="analytics-grid">
+
+          <div class="analytics-card">
+            <h3>Total Tasks</h3>
+            <p id="analyticsTasks">0</p>
+          </div>
+
+          <div class="analytics-card">
+            <h3>Completed Tasks</h3>
+            <p id="completedTasks">0</p>
+          </div>
+
+          <div class="analytics-card">
+            <h3>Focus Sessions</h3>
+            <p id="totalFocusSessions">0</p>
+          </div>
+
+        </div>
+
+        <h3 class="history-title">
+          📅 Productivity History
+        </h3>
+
+        <div id="historyList"></div>
+
+      </div>
+
+    </section>
+
+    <!-- SETTINGS -->
+
+    <section id="settings-section" class="content-section">
+
+      <div class="settings-box">
+
+        <h2>Settings</h2>
+
+        <button onclick="clearAllTasks()">
+          Clear All Tasks
+        </button>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
