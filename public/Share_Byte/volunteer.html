@@ -1,0 +1,470 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Volunteer | Get Involved</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            color: #222;
+            line-height: 1.6;
+        }
+
+        /* Navbar */
+        nav {
+            background: #ffffff;
+            padding: 18px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2563eb;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+        }
+
+        nav ul li a:hover {
+            color: #2563eb;
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 420px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(135deg, #2563eb, #4f46e5);
+            color: white;
+        }
+
+        .hero-content {
+            max-width: 750px;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 13px 28px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .primary-btn {
+            background: white;
+            color: #2563eb;
+        }
+
+        .primary-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+
+        /* Section */
+        .section {
+            padding: 70px 8%;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 45px;
+        }
+
+        .section-title h2 {
+            font-size: 34px;
+            margin-bottom: 10px;
+        }
+
+        .section-title p {
+            color: #666;
+        }
+
+        /* Cards */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 14px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-7px);
+        }
+
+        .icon {
+            font-size: 45px;
+            margin-bottom: 15px;
+        }
+
+        .card h3 {
+            margin-bottom: 12px;
+            color: #2563eb;
+        }
+
+        .card p {
+            color: #666;
+        }
+
+        /* Form */
+        .form-container {
+            max-width: 750px;
+            margin: auto;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #ddd;
+            border-radius: 7px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #2563eb;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            border: none;
+            background: #2563eb;
+            color: white;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .submit-btn:hover {
+            background: #1d4ed8;
+        }
+
+        /* Footer */
+        footer {
+            background: #111827;
+            color: white;
+            text-align: center;
+            padding: 25px;
+            margin-top: 30px;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .cards {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            nav {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            nav ul {
+                gap: 12px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .hero h1 {
+                font-size: 35px;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .form-container {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav>
+        <div class="logo">VolunteerHub</div>
+
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="volunteer.html">Volunteer</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Make a Difference</h1>
+
+            <p>
+                Your time, skills, and passion can create a positive impact.
+                Join our volunteer community and help build a better future.
+            </p>
+
+            <a href="#volunteer-form" class="btn primary-btn">
+                Become a Volunteer
+            </a>
+        </div>
+    </section>
+
+    <!-- Why Volunteer -->
+    <section class="section">
+
+        <div class="section-title">
+            <h2>Why Volunteer?</h2>
+            <p>Small actions can create meaningful change.</p>
+        </div>
+
+        <div class="cards">
+
+            <div class="card">
+                <div class="icon">❤️</div>
+                <h3>Help Communities</h3>
+                <p>
+                    Support communities and contribute your time
+                    towards meaningful social causes.
+                </p>
+            </div>
+
+            <div class="card">
+                <div class="icon">🌱</div>
+                <h3>Create Impact</h3>
+                <p>
+                    Participate in initiatives that create positive
+                    environmental and social impact.
+                </p>
+            </div>
+
+            <div class="card">
+                <div class="icon">🤝</div>
+                <h3>Meet People</h3>
+                <p>
+                    Connect with like-minded people and build
+                    valuable relationships.
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- Volunteer Opportunities -->
+    <section class="section">
+
+        <div class="section-title">
+            <h2>Volunteer Opportunities</h2>
+            <p>Choose an area where you would like to contribute.</p>
+        </div>
+
+        <div class="cards">
+
+            <div class="card">
+                <div class="icon">📚</div>
+                <h3>Education</h3>
+                <p>
+                    Help students through teaching, mentoring,
+                    and educational programs.
+                </p>
+            </div>
+
+            <div class="card">
+                <div class="icon">🌳</div>
+                <h3>Environment</h3>
+                <p>
+                    Participate in tree plantation, clean-up drives,
+                    and sustainability programs.
+                </p>
+            </div>
+
+            <div class="card">
+                <div class="icon">🏥</div>
+                <h3>Community Support</h3>
+                <p>
+                    Help organize community events and support
+                    people who need assistance.
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- Volunteer Form -->
+    <section class="section" id="volunteer-form">
+
+        <div class="section-title">
+            <h2>Become a Volunteer</h2>
+            <p>Fill in the form and join our volunteer community.</p>
+        </div>
+
+        <div class="form-container">
+
+            <form id="volunteerForm">
+
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        placeholder="Enter your full name"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="Enter your email"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input
+                        type="tel"
+                        id="phone"
+                        name="phone"
+                        placeholder="Enter your phone number"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="interest">Area of Interest</label>
+
+                    <select id="interest" name="interest" required>
+                        <option value="">Select an area</option>
+                        <option value="education">Education</option>
+                        <option value="environment">Environment</option>
+                        <option value="community">Community Support</option>
+                        <option value="healthcare">Healthcare</option>
+                        <option value="technology">Technology</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="message">Why do you want to volunteer?</label>
+
+                    <textarea
+                        id="message"
+                        name="message"
+                        placeholder="Tell us a little about yourself..."
+                    ></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn">
+                    Submit Application
+                </button>
+
+            </form>
+
+        </div>
+
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2026 VolunteerHub. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        document
+            .getElementById("volunteerForm")
+            .addEventListener("submit", function(event) {
+
+                event.preventDefault();
+
+                alert(
+                    "Thank you for volunteering! Your application has been submitted."
+                );
+
+                this.reset();
+            });
+    </script>
+
+</body>
+</html>
