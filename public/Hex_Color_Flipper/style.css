@@ -1,0 +1,7 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Arial', sans-serif; background-color: #FFFFFF; display: flex; align-items: center; justify-content: center; height: 100vh; transition: background-color 0.3s ease; }
+.container { text-align: center; background-color: #222; padding: 2rem 4rem; border-radius: 10px; color: white; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
+h2 { margin-bottom: 1.5rem; font-size: 2rem; letter-spacing: 2px; }
+.color { color: #0FF26C; }
+.btn { padding: 0.75rem 1.5rem; font-size: 1.2rem; background-color: transparent; color: white; border: 2px solid white; border-radius: 5px; cursor: pointer; transition: all 0.3s ease; }
+.btn:hover { background-color: white; color: #222; }
