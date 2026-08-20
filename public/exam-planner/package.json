@@ -1,0 +1,13 @@
+{
+  "name": "aether-exam-planner",
+  "version": "1.0.0",
+  "description": "Premium Exam Planner & Study Tracker",
+  "main": "app.js",
+  "scripts": {
+    "start": "npx http-server -p 8080"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
+}
