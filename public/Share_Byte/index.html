@@ -93,17 +93,20 @@
     }
 
     .navbar{
-        flex-direction:column;
-        width:100%;
+    flex-direction:row;
+    flex-wrap:wrap;
+    justify-content:center;
+    width:100%;
+    gap:10px;
     }
 
     .navbar a{
-        width:100%;
-        text-align:center;
+    width:auto;
+    text-align:center;
     }
 
     .start-btn{
-        width:100%;
+    width:auto;
     }
 }
 
@@ -299,10 +302,7 @@ body{
 @media(max-width:768px){
 
     .sidebar{
-        position:relative;
-        width:100%;
-        height:auto;
-        padding-top:0;
+        display: none;
     }
 
     .page{
@@ -315,16 +315,18 @@ body{
     }
 
     .navbar{
-        flex-direction:column;
-        width:100%;
+    flex-direction:row;
+    flex-wrap:wrap;
+    justify-content:center;
+    width:100%;
+    gap:10px;
     }
 
     .navbar a,
     .start-btn{
-        width:100%;
-        text-align:center;
+    width:auto;
+    text-align:center;
     }
-}
 
 </style>
 <body>
