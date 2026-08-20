@@ -318,7 +318,314 @@ body{
         flex-direction:column;
         width:100%;
     }
+/* =========================================
+   FINAL RESPONSIVE CSS
+   Add this at the END of your <style>
+========================================= */
 
+/* ---------- Desktop ---------- */
+
+@media (min-width: 769px) {
+    .page {
+        margin-left: 220px;
+    }
+
+    .sidebar {
+        display: block;
+    }
+
+    .header {
+        flex-direction: row;
+    }
+
+    .navbar {
+        flex-direction: row;
+        width: auto;
+    }
+}
+
+
+/* ---------- Tablet ---------- */
+
+@media (max-width: 992px) {
+
+    .header {
+        padding: 16px 4%;
+    }
+
+    .logo {
+        font-size: 26px;
+    }
+
+    .navbar {
+        gap: 15px;
+    }
+
+    .navbar a {
+        font-size: 14px;
+    }
+
+    .start-btn {
+        padding: 10px 16px;
+    }
+
+    .hero {
+        padding: 50px 5%;
+    }
+
+    .hero h1 {
+        font-size: 38px;
+    }
+
+    .cards {
+        padding: 40px 5%;
+    }
+
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+
+/* ---------- Mobile ---------- */
+
+@media (max-width: 768px) {
+
+    /* Sidebar becomes top menu */
+    .sidebar {
+        position: relative;
+        top: auto;
+        left: auto;
+        width: 100%;
+        height: auto;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .sidebar a {
+        padding: 12px 15px;
+        font-size: 14px;
+    }
+
+    /* Remove sidebar spacing */
+    .page {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    /* Header */
+    .header {
+        position: sticky;
+        top: 0;
+        padding: 15px 20px;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .logo {
+        font-size: 25px;
+    }
+
+    .navbar {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .navbar a {
+        font-size: 14px;
+        padding: 8px 10px;
+    }
+
+    .start-btn {
+        width: auto !important;
+        padding: 10px 16px !important;
+    }
+
+    /* Hero */
+    .hero {
+        min-height: auto;
+        padding: 60px 20px;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .hero .left {
+        width: 100%;
+    }
+
+    .hero h1 {
+        font-size: 34px;
+        line-height: 1.25;
+    }
+
+    .hero p {
+        font-size: 16px;
+        line-height: 1.6;
+        margin-top: 15px;
+    }
+
+    /* Hero buttons */
+    .btns {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        align-items: center;
+        margin-top: 25px;
+    }
+
+    .btns .btn {
+        width: 100%;
+        max-width: 320px;
+        text-align: center;
+    }
+
+    /* Donation cards */
+    .cards {
+        padding: 40px 20px;
+    }
+
+    .cards h2 {
+        font-size: 28px;
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
+
+    .card {
+        width: 100%;
+    }
+
+    .card img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+    }
+
+    /* Renew */
+    .renew {
+        padding: 50px 20px;
+        text-align: center;
+    }
+
+    .renew h2 {
+        font-size: 30px;
+    }
+
+    .renew p {
+        font-size: 16px;
+        line-height: 1.6;
+    }
+
+    /* Statistics */
+    .stats {
+        padding: 40px 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 30px;
+    }
+
+    .stats h2 {
+        font-size: 32px;
+    }
+
+    /* Footer */
+    .footer {
+        padding: 35px 20px;
+    }
+
+    .footer-links {
+        flex-direction: column;
+        align-items: center;
+        gap: 18px;
+    }
+}
+
+
+/* ---------- Small Mobile ---------- */
+
+@media (max-width: 480px) {
+
+    .sidebar a {
+        font-size: 13px;
+        padding: 10px 9px;
+    }
+
+    .header {
+        padding: 12px 15px;
+    }
+
+    .logo {
+        font-size: 22px;
+    }
+
+    .navbar {
+        gap: 5px;
+    }
+
+    .navbar a {
+        font-size: 13px;
+        padding: 6px 7px;
+    }
+
+    .start-btn {
+        padding: 9px 12px !important;
+    }
+
+    .hero {
+        padding: 45px 15px;
+    }
+
+    .hero h1 {
+        font-size: 28px;
+    }
+
+    .hero p {
+        font-size: 15px;
+    }
+
+    .cards {
+        padding: 35px 15px;
+    }
+
+    .cards h2 {
+        font-size: 24px;
+    }
+
+    .renew h2 {
+        font-size: 26px;
+    }
+
+    .stats h2 {
+        font-size: 28px;
+    }
+}
+
+
+/* ---------- Prevent horizontal overflow ---------- */
+
+html,
+body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
     .navbar a,
     .start-btn{
         width:100%;
