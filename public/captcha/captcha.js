@@ -271,6 +271,15 @@ function generateCaptcha() {
             }
             const { images, correct } = generateImageCaptcha();
             currentCaptcha = correct.name;
+<<<<<<< HEAD
+<<<<<<< Updated upstream
+            textInput.disabled = true;
+=======
+            textInput.disabled=true
+>>>>>>> Stashed changes
+            textInput.placeholder = `Select the ${correct.name}`;
+=======
+>>>>>>> upstream/main
             captchaContainer.innerHTML = `
                 <div class="image-grid">
                     ${images.map((img) => `<button type="button" class="image-option">${img.emoji}</button>`).join('')}

@@ -1,7 +1,359 @@
+
+/* ---------- ROOT THEME ---------- */
+:root {
+  --bg: #0f0f18;
+  --surface: rgba(255, 255, 255, 0.06);
+  --surface-strong: rgba(255, 255, 255, 0.1);
+  --text: #f4f4ff;
+  --muted: #a0a0c0;
+  --border: rgba(255, 255, 255, 0.12);
+
+  --accent: #7c6cfc;
+  --accent2: #e84393;
+
+  --success: #4ade80;
+  --danger: #ff6b6b;
+
+  --blur: 18px;
+  --radius: 18px;
+}
+
+/* ---------- LIGHT THEME ---------- */
+[data-theme="light"] {
+  --bg: #f4f5ff;
+  --surface: rgba(255, 255, 255, 0.7);
+  --surface-strong: rgba(255, 255, 255, 0.9);
+  --text: #1a1a2e;
+  --muted: #4b4b6a;
+  --border: rgba(0, 0, 0, 0.08);
+}
+
+/* ---------- RESET ---------- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+  font-weight: 400;
+  font-family: "DM Sans", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+  display: flex;
+  justify-content: center;
+  padding: 80px 16px;
+  position: relative;
+}
+
+/* ===============================
+   FLOATING BLOBS BACKGROUND
+
+.bg-orb {
+  position: fixed;
+  width: 420px;
+  height: 420px;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.5;
+  z-index: 0;
+  animation: floatBlob 18s infinite ease-in-out;
+}
+
+.bg-orb:nth-child(1) {
+  background: #7c6cfc;
+  top: -100px;
+  left: -120px;
+  animation-duration: 20s;
+}
+
+.bg-orb:nth-child(2) {
+  background: #e84393;
+  bottom: -120px;
+  right: -120px;
+  animation-duration: 24s;
+}
+
+.bg-orb:nth-child(3) {
+  background: #4ade80;
+  top: 40%;
+  left: 60%;
+  animation-duration: 26s;
+}
+
+@keyframes floatBlob {
+  0%   { transform: translate(0, 0) scale(1); }
+  25%  { transform: translate(60px, -40px) scale(1.1); }
+  50%  { transform: translate(-40px, 60px) scale(0.95); }
+  75%  { transform: translate(30px, 30px) scale(1.05); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+
+/* ---------- BACK BUTTON ---------- */
+.back-btn {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  padding: 8px 14px;
+  border-radius: 10px;
+  text-decoration: none;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(var(--blur));
+  z-index: 999;
+  transition: 0.2s;
+}
+
+.back-btn:hover {
+  transform: translateY(-2px);
+}
+
+/* ---------- THEME BUTTON ---------- */
+.theme-btn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 10px 14px;
+  border-radius: 50px;
+  cursor: pointer;
+  backdrop-filter: blur(var(--blur));
+  transition: 0.2s;
+}
+
+.theme-btn:hover {
+  transform: scale(1.05);
+}
+
+/* ---------- MAIN WRAPPER ---------- */
+.page-wrap {
+  width: 100%;
+  max-width: 520px;
+  z-index: 2;
+}
+
+/* ---------- GLASS CARD ---------- */
+.card {
+  background: var(--surface);
+  backdrop-filter: blur(var(--blur));
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+}
+
+/* ---------- HEADER ---------- */
+.app-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.app-title {
+  font-family: "Syne", sans-serif;
+  font-size: 2rem;
+}
+
+.app-tagline {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+/* ---------- INPUTS ---------- */
+.field {
+  margin-bottom: 12px;
+}
+
+label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.glass-input {
+  width: 100%;
+  padding: 12px;
+  margin-top: 6px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface-strong);
+  color: var(--text);
+  outline: none;
+}
+
+.glass-input:focus {
+  border-color: var(--accent);
+}
+
+/* ---------- BUTTON ---------- */
+.primary-btn {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.primary-btn:hover {
+  transform: translateY(-2px);
+}
+
+/* ---------- RESULT CARD ---------- */
+.result-box {
+  margin-top: 18px;
+  padding: 18px;
+  background: var(--surface-strong);
+  border-radius: var(--radius);
+  display: none;
+}
+
+.activity-name {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+/* ---------- PILLS ---------- */
+.pills {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.pill {
+  padding: 6px 10px;
+  font-size: 0.75rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* ---------- ACTION BUTTONS ---------- */
+.result-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.icon-btn {
+  flex: 1;
+  padding: 8px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.icon-btn:hover {
+  background: var(--surface);
+}
+
+/* ---------- EXTRA CARDS ---------- */
+.extra-card {
+  margin-top: 18px;
+  padding: 16px;
+  background: var(--surface);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+}
+
+/* ---------- TABS ---------- */
+.tabs {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.tab {
+  flex: 1;
+  padding: 10px;
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.tab.active {
+  color: var(--text);
+  border-bottom: 2px solid var(--accent);
+}
+
+/* ---------- LIST ---------- */
+.item-list {
+  list-style: none;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.item-list li {
+  padding: 10px;
+  margin-bottom: 6px;
+  border-radius: 10px;
+  background: var(--surface-strong);
+}
+
+/* ---------- PROGRESS ---------- */
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.badge {
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  border: 1px dashed var(--border);
+}
+
+.badge.unlocked {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: white;
+  border: none;
+}
+
+/* ---------- TOAST ---------- */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  right: -300px;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 12px 18px;
+  border-radius: 10px;
+  color: white;
+  transition: 0.3s;
+}
+
+.toast.show {
+  right: 20px;
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 480px) {
+  .card {
+    padding: 20px;
+  }
+
+  .app-title {
+    font-size: 1.6rem;
+  }
+
+  .icon-btn {
+    font-size: 0.8rem;
+  }
 /* ===============================
    BOREDOM BUSTER — STYLE.CSS
    Glassmorphism + Floating Blobs UI
-================================== */
 
 /* ---------- ROOT THEME ---------- */
 :root {
@@ -53,7 +405,6 @@ body {
 
 /* ===============================
    FLOATING BLOBS BACKGROUND
-================================== */
 
 .bg-orb {
   position: fixed;
@@ -358,7 +709,6 @@ label {
 
 /* ===============================
    FIX: Dropdown text visibility in dark mode
-================================== */
 
 /* Fix for select dropdown text in dark mode */
 .glass-input option {
