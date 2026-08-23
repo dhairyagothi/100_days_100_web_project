@@ -1,14 +1,16 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>BMI Calculator</title>
+    <title>BMI Calculator - Track Your BMI and Body Fat History</title>
+    <meta name="description" content="Calculate your Body Mass Index (BMI) and estimated body fat percentage. Track your health progress over time with our persistent history tracker." />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <div class="page">
       <div class="bmi-grid">
+        
         <!-- Left: Calculator -->
         <div class="card">
           <div class="top-bar">
@@ -20,45 +22,25 @@
               aria-label="Toggle dark mode"
             >
               <!-- Sun icon (visible in dark mode → click to go light) -->
-              <svg
-                class="icon-sun"
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <circle cx="12" cy="12" r="5" />
-                <line x1="12" y1="1" x2="12" y2="3" />
-                <line x1="12" y1="21" x2="12" y2="23" />
-                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
-                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
-                <line x1="1" y1="12" x2="3" y2="12" />
-                <line x1="21" y1="12" x2="23" y2="12" />
-                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
-                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+              <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                   viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="5"/>
+                <line x1="12" y1="1" x2="12" y2="3"/>
+                <line x1="12" y1="21" x2="12" y2="23"/>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                <line x1="1" y1="12" x2="3" y2="12"/>
+                <line x1="21" y1="12" x2="23" y2="12"/>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
               </svg>
               <!-- Moon icon (visible in light mode → click to go dark) -->
-              <svg
-                class="icon-moon"
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path
-                  d="M21 12.79A9 9 0 1 1 11.21 3
-                         a7 7 0 0 0 9.79 9.79z"
-                />
+              <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                   viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3
+                         a7 7 0 0 0 9.79 9.79z"/>
               </svg>
             </button>
           </div>
@@ -71,9 +53,18 @@
                 <option value="feet">Feet / inches</option>
               </select>
             </div>
-            <div class="field">
+            <!-- Centimetres input -->
+            <div class="field" id="height-cm-container">
               <div class="field-label" id="height-lbl">Height (cm)</div>
-              <input type="text" id="height" placeholder="e.g. 170" />
+              <input type="number" id="height" placeholder="e.g. 170" min="50" max="280" />
+            </div>
+            <!-- Feet/Inches input -->
+            <div class="field hidden" id="height-ft-in-container">
+              <div class="field-label">Height (ft & in)</div>
+              <div class="side-by-side-inputs">
+                <input type="number" id="height-ft" placeholder="ft" min="1" max="9" />
+                <input type="number" id="height-in" placeholder="in" min="0" max="11" />
+              </div>
             </div>
           </div>
 
@@ -94,13 +85,7 @@
           <div class="field-row">
             <div class="field">
               <div class="field-label">Age (years)</div>
-              <input
-                type="number"
-                id="age"
-                placeholder="e.g. 25"
-                min="2"
-                max="120"
-              />
+              <input type="number" id="age" placeholder="e.g. 25" min="2" max="120" />
             </div>
             <div class="field">
               <div class="field-label">Gender</div>
@@ -111,7 +96,10 @@
             </div>
           </div>
 
-          <button id="btn">Calculate</button>
+          <div class="button-group">
+            <button id="btn">Calculate</button>
+            <button id="btn-reset">Reset</button>
+          </div>
           <div id="error-msg" class="error-msg hidden"></div>
 
           <div class="result-row hidden" id="results">
@@ -152,45 +140,16 @@
             <div class="bf-body">
               <div class="bf-gauge-wrap">
                 <svg class="bf-gauge" viewBox="0 0 120 120">
-                  <circle
-                    class="bf-track"
-                    cx="60"
-                    cy="60"
-                    r="52"
-                    stroke-width="7"
-                    fill="none"
-                  />
-                  <circle
-                    class="bf-fill"
-                    id="bf-arc"
-                    cx="60"
-                    cy="60"
-                    r="52"
-                    stroke-width="7"
-                    fill="none"
-                    stroke-dasharray="326.73"
-                    stroke-dashoffset="326.73"
-                    stroke-linecap="round"
-                  />
-                  <text
-                    class="bf-pct-text"
-                    x="60"
-                    y="56"
-                    text-anchor="middle"
-                    dominant-baseline="central"
-                    id="bf-pct"
-                  >
-                    —
-                  </text>
-                  <text
-                    class="bf-pct-unit"
-                    x="60"
-                    y="74"
-                    text-anchor="middle"
-                    dominant-baseline="central"
-                  >
-                    % body fat
-                  </text>
+                  <circle class="bf-track" cx="60" cy="60" r="52"
+                          stroke-width="7" fill="none"/>
+                  <circle class="bf-fill" id="bf-arc" cx="60" cy="60" r="52"
+                          stroke-width="7" fill="none"
+                          stroke-dasharray="326.73" stroke-dashoffset="326.73"
+                          stroke-linecap="round" />
+                  <text class="bf-pct-text" x="60" y="56" text-anchor="middle"
+                        dominant-baseline="central" id="bf-pct">—</text>
+                  <text class="bf-pct-unit" x="60" y="74" text-anchor="middle"
+                        dominant-baseline="central">% body fat</text>
                 </svg>
               </div>
               <div class="bf-info">
@@ -228,59 +187,61 @@
             <p class="card-title">Reference chart</p>
           </div>
 
-          <table class="bmi-table">
+  <section class="hero">
+    <h4 class="hero-subtitle">WELCOME TO</h4>
+    <h1 class="hero-title">BMI CALCULATOR</h1>
+    <p class="hero-text">Know Your Health Status</p>
+    <button class="cta-btn">Start Now</button>
+  </section>
+
+  <section class="features">
+    <h2>Check Your Body Mass Index</h2>
+    <p>Calculate your BMI easily & quickly!</p>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <i class="fas fa-heart"></i>
+        <h3>Track Your BMI</h3>
+        <p>Monitor your Body Mass Index for better health.</p>
+      </div>
+      <div class="feature-card">
+        <i class="fas fa-clipboard-list"></i>
+        <h3>Get Health Tips</h3>
+        <p>Receive useful advice for a healthier life.</p>
+      </div>
+ 
+      <!-- History Section -->
+      <div class="card history-card" id="history-section">
+        <div class="top-bar" style="margin-bottom: 20px;">
+          <p class="card-title">Calculation History</p>
+          <button id="btn-clear-history" class="clear-history-btn hidden">Delete All History</button>
+        </div>
+        <div id="history-empty" class="history-empty">
+          No history recorded yet. Calculate your BMI to start tracking.
+        </div>
+        <div class="history-table-wrap hidden" id="history-table-wrap">
+          <table class="history-table">
             <thead>
               <tr>
+                <th>Date & Time</th>
+                <th>Height</th>
+                <th>Weight</th>
                 <th>BMI</th>
                 <th>Category</th>
-                <th></th>
+                <th style="text-align: right;">Action</th>
               </tr>
             </thead>
-            <tbody>
-              <tr id="underweight-row">
-                <td>&lt; 18.5</td>
-                <td>Underweight</td>
-                <td><span class="dot dot-blue"></span></td>
-              </tr>
-              <tr id="normal-row">
-                <td>18.5 – 24.9</td>
-                <td>Normal weight</td>
-                <td><span class="dot dot-green"></span></td>
-              </tr>
-              <tr id="overweight-row">
-                <td>25.0 – 29.9</td>
-                <td>Overweight</td>
-                <td><span class="dot dot-amber"></span></td>
-              </tr>
-              <tr id="obese1-row">
-                <td>30.0 – 34.9</td>
-                <td>Obese (Class I)</td>
-                <td><span class="dot dot-red1"></span></td>
-              </tr>
-              <tr id="obese2-row">
-                <td>35.0 – 39.9</td>
-                <td>Obese (Class II)</td>
-                <td><span class="dot dot-red2"></span></td>
-              </tr>
-              <tr id="obese3-row">
-                <td>≥ 40.0</td>
-                <td>Obese (Class III)</td>
-                <td><span class="dot dot-red3"></span></td>
-              </tr>
+            <tbody id="history-list">
+              <!-- Dynamically populated -->
             </tbody>
           </table>
-
-          <div class="chart-wrap">
-            <canvas id="bmiChart"></canvas>
-          </div>
-          <p class="chart-hint">
-            BMI history — calculate multiple times to track changes.
-          </p>
         </div>
       </div>
     </div>
+  </section>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-    <script src="script.js"></script>
-  </body>
+  <script src="script.js"></script>
+  <footer class="footer">
+    <p>© 2026 FitTrack Pro | Designed by Visionary Creators</p>
+  </footer>
+</body>
 </html>

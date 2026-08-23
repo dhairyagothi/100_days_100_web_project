@@ -129,75 +129,137 @@ pauseResumeButton.addEventListener("click", () => {
     } else {
         clearTimeout(typingTimeout);
     }
-
-    playKeyClick();
-    if (shouldFlash) flashKey(text);
+  }, 400);
 }
 
-function deleteCharFromPaper() {
-    if (paperContent.length === 0) return;
+// ── Export button → format picker modal ────────────────────────────────────
+const exportModal        = document.getElementById("exportModal");
+const exportModalCancel  = document.getElementById("exportModalCancel");
+const exportAsPdfBtn     = document.getElementById("exportAsPdfBtn");
+const exportAsTxtBtn     = document.getElementById("exportAsTxtBtn");
 
-    paperContent = paperContent.slice(0, -1);
-    renderPaper();
-    syncInput();
-    playBackspace();
-    flashKey("BACKSPACE");
+function openExportModal()  { if (exportModal) exportModal.classList.add("is-open");    }
+function closeExportModal() { if (exportModal) exportModal.classList.remove("is-open"); }
+
+function exportAsTxt() {
+  const text = getAllTextFromAllPages();
+  if (!text.trim()) {
+    showPdfToast("Type some text first before exporting!", false);
+    return;
+  }
+  const titleEl = document.getElementById("pdfTitle");
+  const baseName = (titleEl && titleEl.value.trim())
+    ? titleEl.value.trim().toLowerCase().replace(/[^a-z0-9]+/g, "_")
+    : "manuscript";
+  const blob = new Blob([text], { type: "text/plain" });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement("a");
+  a.href     = url;
+  a.download = baseName + ".txt";
+  a.click();
+  URL.revokeObjectURL(url);
+  showPdfToast("Plain-text file downloaded!");
 }
 
-function handleButtonPress(char) {
-    if (char === "CAPSLOCK") {
-        toggleCapsLock();
-        return;
-    }
+const exportPdfBtn = document.getElementById("exportPdfBtn");
+if (exportPdfBtn) exportPdfBtn.onclick = openExportModal;
+if (exportModalCancel) exportModalCancel.addEventListener("click", closeExportModal);
+if (exportAsPdfBtn) exportAsPdfBtn.addEventListener("click", () => { closeExportModal(); exportThemedPDF(); });
+if (exportAsTxtBtn) exportAsTxtBtn.addEventListener("click", () => { closeExportModal(); exportAsTxt(); });
+if (exportModal) exportModal.addEventListener("click", (e) => { if (e.target === exportModal) closeExportModal(); });
 
-    if (char === "BACKSPACE") {
-        deleteCharFromPaper();
-        userInput.focus();
-        return;
-    }
+// ── Download PDF button → always downloads PDF directly ────────────────────
+downloadPDF.onclick = exportThemedPDF;
 
-    if (char === "ENTER") {
-        insertText("\n");
-        userInput.focus();
-        return;
-    }
+/* ---------- Theme ---------- */
 
-    if (char === "SPACE") {
-        insertText(" ");
-        userInput.focus();
-        return;
-    }
+themeToggle.onclick = () => {
+  document.body.classList.toggle("light-theme");
+  const isLight = document.body.classList.contains("light-theme");
+  themeToggle.textContent = isLight ? "☀️" : "🌙";
+  localStorage.setItem("theme", isLight ? "light" : "dark");
+};
 
-    if (isLetter(char)) {
-        insertText(transformLetter(char, false));
-        userInput.focus();
-        return;
-    }
-
-    insertText(char);
-    userInput.focus();
+const savedTheme = localStorage.getItem("theme");
+if (savedTheme === "light") {
+  document.body.classList.add("light-theme");
+  themeToggle.textContent = "☀️";
 }
 
-function toggleTheme() {
-    const isLight = document.body.classList.toggle("light-theme");
-    themeToggle.textContent = isLight ? "☀️" : "🌙";
-    localStorage.setItem("theme", isLight ? "light" : "dark");
+/* ---------- Style Switcher — live paper font & appearance ---------- */
+const pdfThemeSelect = document.getElementById("pdfTheme");
+if (pdfThemeSelect) {
+  // Apply on change
+  pdfThemeSelect.addEventListener("change", () => {
+    pagesContainer.setAttribute("data-style", pdfThemeSelect.value);
+  });
+  // Apply initial value on load (default in HTML select is "vintage")
+  pagesContainer.setAttribute("data-style", pdfThemeSelect.value);
 }
 
-document.querySelectorAll(".key").forEach((key) => {
-    const trigger = (event) => {
-        event.preventDefault();
-        handleButtonPress(key.dataset.char);
-    };
+/* ---------- Word & Character Counters ---------- */
 
-    key.addEventListener("mousedown", trigger);
-    key.addEventListener("touchstart", trigger, { passive: false });
+function updateCounters() {
+  const fullText = getAllTextFromAllPages();
+  const charCount = fullText.length;
+  const words = fullText
+    .trim()
+    .split(/\s+/)
+    .filter((word) => word.length > 0);
+  const wordCount = words.length;
+
+  wordCountEl.textContent = `Words: ${wordCount}`;
+  charCountEl.textContent = `Characters: ${charCount}`;
+}
+
+/* ---------- Copy to Clipboard ---------- */
+
+function getAllTextFromAllPages() {
+  const allPages = document.querySelectorAll(".typewriterText");
+  let fullText = "";
+  allPages.forEach((pageText, index) => {
+    if (index > 0) {
+      fullText += "\n";
+    }
+    fullText += pageText.textContent;
+  });
+  return fullText;
+}
+
+function updateCopyButtonState() {
+  const fullText = getAllTextFromAllPages();
+  copyBtn.disabled = fullText.trim() === "";
+}
+
+copyBtn.onclick = async () => {
+  try {
+    const fullText = getAllTextFromAllPages();
+    await navigator.clipboard.writeText(fullText);
+
+    const originalText = copyBtn.textContent;
+    copyBtn.textContent = "✅ Copied!";
+    copyBtn.disabled = true;
+
+    setTimeout(() => {
+      copyBtn.textContent = originalText;
+      updateCopyButtonState();
+    }, 2000);
+  } catch (err) {
+    console.error("Copy failed:", err);
+  }
+};
+
+document.addEventListener("DOMContentLoaded", () => {
+  updateCopyButtonState();
+  updateCounters();
+  renderPaper();
 });
 
-userInput.addEventListener("input", () => {
-    paperContent = userInput.value;
-    renderPaper();
-});
+// Paste Text Feature
+if (pasteBtn) {
+  pasteBtn.addEventListener("click", async () => {
+    try {
+      const text = await navigator.clipboard.readText();
 
 toggleThemeButton.addEventListener("click", () => {
 

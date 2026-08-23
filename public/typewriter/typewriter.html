@@ -1,13 +1,23 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Typewriter by @tanyaroy00</title>
-    <link rel="icon" href="data:," />
-    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="typewriter.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Typewrites </title>
+  <link rel="stylesheet" href="typewriter.css" />
+
+
+
+
+
+  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"
+    integrity="sha512-qZvrmS2ekKPF2mSznTQsxqPgnpkI4DNTlrdUmTzrDgektczlKNRRhy5X5AAOnx5S09ydFYWWNSfcEqDTTHgtNA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 
 <body>
@@ -44,6 +54,30 @@
         <button id="toggleTheme">Toggle Theme</button>
         <button id="changeBackground">Change Background</button>
     </div>
+  </div>
+
+  <!-- ── Export Format Picker Modal ─────────────────────────────────── -->
+  <div id="exportModal" class="export-modal-overlay" role="dialog" aria-modal="true"
+    aria-labelledby="exportModalTitle">
+    <div class="export-modal-box">
+          <div class="export-modal-icon">📤</div>
+          <h2 class="export-modal-title" id="exportModalTitle">Export Document</h2>
+          <p class="export-modal-desc">Choose the format you want to export your typed document as.</p>
+          <div class="export-modal-options">
+            <button id="exportAsPdfBtn" class="export-option-btn">
+              <i class="fas fa-file-pdf" aria-hidden="true"></i>
+              <span class="export-option-label">PDF</span>
+              <span class="export-option-desc">Styled, themed document</span>
+            </button>
+            <button id="exportAsTxtBtn" class="export-option-btn">
+              <i class="fas fa-file-alt" aria-hidden="true"></i>
+              <span class="export-option-label">Plain Text</span>
+              <span class="export-option-desc">Raw .txt file download</span>
+            </button>
+          </div>
+          <button id="exportModalCancel" class="export-modal-cancel">Cancel</button>
+        </div>
+      </div>
 
 <script src="typewriter.js"></script>
 </body>

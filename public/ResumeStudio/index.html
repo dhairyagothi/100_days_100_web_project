@@ -1,13 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resume Studio</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <meta charset="UTF-8" />
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    />
+
+    <title>Resume Studio Pro</title>
+
+    <!-- MAIN CSS -->
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    />
+
+    <!-- GOOGLE FONTS -->
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    />
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    />
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    />
+
+    <!-- FONT AWESOME -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        integrity="sha512-d0WK8+YdT2PzYDs2fzGEylh4G6dkprdFM5lTyTX0bY4Z1cdq9VHtV6nRvWmvMRGsiE232zraFMvx6bMpiKFF9g=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"
+    />
+
+    <!-- HTML2CANVAS -->
+
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"
+        integrity="sha512-BNa5AEr0sYj7FpC18JNpDutLCRa14Q6gttxyPjdvVSdGInxjeRGna43EIBgzHuLlHotE5RX7V6czS4EzFqqpwQ=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"
+    ></script>
+
+    <!-- JSPDF -->
+
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"
+        integrity="sha512-qZvrbM4xXHzkwmo7aX6ixkmKuuNHYsYvwdivgLPgAvFp8ZUBKbjsggssp09uXBJgp7wa9u0edPFsKnz03Wx/juw=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"
+    ></script>
+
+    <!-- MAIN SCRIPT -->
+
+    <script
+        src="script.js"
+        defer
+    ></script>
+
 </head>
+
 <body>
     <header class="header">
         <div class="header-left"></div>
@@ -60,58 +126,304 @@
                         <input type="text" id="name" placeholder="Enter your name" maxlength="60">
                         <span class="char-count" id="nameCount">0/60</span>
                     </div>
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" placeholder="Enter your email" maxlength="80">
-                        <span class="char-count" id="emailCount">0/80</span>
+
+                    <div class="template-buttons">
+
+                        <button
+                            class="template active"
+                            data-template="modern"
+                        >
+                            Modern
+                        </button>
+
+                        <button
+                            class="template"
+                            data-template="classic"
+                        >
+                            Classic
+                        </button>
+
+                        <button
+                            class="template"
+                            data-template="minimal"
+                        >
+                            Minimal
+                        </button>
+
                     </div>
+
                 </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="phone">Phone</label>
-                        <input type="tel" id="phone" placeholder="Enter your phone number" maxlength="15">
-                        <span class="char-count" id="phoneCount">0/15</span>
+
+                <!-- FORM -->
+
+                <form id="resumeForm">
+
+                    <!-- ROW -->
+
+                    <div class="form-row">
+
+                        <div class="form-group">
+
+                            <label>
+                                Full Name
+                            </label>
+
+                            <input
+                                type="text"
+                                id="name"
+                                placeholder="John Doe"
+                            />
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label>
+                                Professional Title
+                            </label>
+
+                            <input
+                                type="text"
+                                id="title"
+                                placeholder="Frontend Developer"
+                            />
+                            <label style="margin-top:12px">
+                                Upload Profile Photo
+
+                            </label>
+                            <input type="file" id="profilePhoto" accept="image/*"/>
+                            <img id="photoPreview" style="display: none;"/>
+
+                        </div>
+
                     </div>
-                    <div class="form-group">
-                        <label for="education">Education</label>
-                        <input type="text" id="education" placeholder="Enter your education details" maxlength="120">
-                        <span class="char-count" id="educationCount">0/120</span>
+
+                    <!-- ROW -->
+
+                    <div class="form-row">
+
+                        <div class="form-group">
+
+                            <label>
+                                Email Address
+                            </label>
+
+                            <input
+                                type="email"
+                                id="email"
+                                placeholder="john@example.com"
+                            />
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label>
+                                Phone Number
+                            </label>
+
+                            <input
+                                type="text"
+                                id="phone"
+                                placeholder="+91 9876543210"
+                            />
+
+                        </div>
+
                     </div>
+
+                    <!-- ROW -->
+
+                    <div class="form-row">
+
+                        <div class="form-group">
+
+                            <label>
+                                Location
+                            </label>
+
+                            <input
+                                type="text"
+                                id="location"
+                                placeholder="Mumbai, India"
+                            />
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label>
+                                Education
+                            </label>
+
+                            <input
+                                type="text"
+                                id="education"
+                                placeholder="B.Tech in Computer Science"
+                            />
+
+                        </div>
+
+                    </div>
+
+                    <!-- ROW -->
+
+                    <div class="form-row">
+
+                        <div class="form-group">
+
+                            <label>
+                                LinkedIn URL
+                            </label>
+
+                            <input
+                                type="text"
+                                id="linkedin"
+                                placeholder="linkedin.com/in/johndoe"
+                            />
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label>
+                                GitHub URL
+                            </label>
+
+                            <input
+                                type="text"
+                                id="github"
+                                placeholder="github.com/johndoe"
+                            />
+
+                        </div>
+
+                    </div>
+
+                    <!-- SUMMARY -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Professional Summary
+                        </label>
+
+                        <textarea
+                            id="summary"
+                            rows="4"
+                            placeholder="Write a short professional summary..."
+                        ></textarea>
+
+                    </div>
+
+                    <!-- SKILLS -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Skills (comma separated)
+                        </label>
+
+                        <textarea
+                            id="skills"
+                            rows="3"
+                            placeholder="HTML, CSS, JavaScript, React.js..."
+                        ></textarea>
+
+                    </div>
+
+                    <!-- EXPERIENCE -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Experience (use - for bullet points)
+                        </label>
+
+                        <textarea
+                            id="experience"
+                            rows="5"
+                            placeholder="- Frontend Developer Intern at XYZ Company&#10;- Built responsive web apps"
+                        ></textarea>
+
+                    </div>
+
+                    <!-- PROJECTS -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Projects (use - for bullet points)
+                        </label>
+
+                        <textarea
+                            id="projects"
+                            rows="5"
+                            placeholder="- Resume Studio Web App&#10;- E-commerce Website"
+                        ></textarea>
+
+                        <label>
+                            Additional Sections 
+                        </label>
+
+                        <select id="selectionSelect">
+                            <option value="">Select a section</option>
+                            <option value="certifications">Certifications</option>
+                            <option value="Achievements">Achievements</option>
+                            <option value="Interests">Interests</option>
+                            <option value="Volunteer Experience">Volunteer Experience</option>
+                            <option value="Publications">Publications</option>
+                            <option value="Awards">Awards</option>
+
+                        </select>
+                        <button type="button" id="addSectionBtn">
+                                                    Add Section
+                                                </button>
+                        <div id="dynamicSections"></div>
+                        <div class="section-order-container">
+
+                    <h3>Resume Section Order</h3>
+
+                    <div id="sectionOrderList"></div>
+
                 </div>
-                <div class="form-group">
-                    <label for="summary">Summary</label>
-                    <textarea id="summary" placeholder="Brief about yourself" maxlength="300"></textarea>
-                    <span class="char-count" id="summaryCount">0/300</span>
-                </div>
-                <div class="form-group">
-                    <label for="projects">Projects</label>
-                    <textarea id="projects" placeholder="Brief about projects developed by you" maxlength="400"></textarea>
-                    <span class="char-count" id="projectsCount">0/400</span>
-                </div>
-                <div class="form-group">
-                    <label for="skills">Skills</label>
-                    <textarea id="skills" placeholder="Separate skills with commas" maxlength="200"></textarea>
-                    <span class="char-count" id="skillsCount">0/200</span>
-                </div>
-                <div class="form-group">
-                    <label for="experience">Experience</label>
-                    <textarea id="experience" placeholder="Describe your past experiences" maxlength="400"></textarea>
-                    <span class="char-count" id="experienceCount">0/400</span>
-                </div>
-                <p class="error-msg" id="errorMsg">&#9888; Please fill in all fields before previewing.</p>
-                <div class="btn-row">
-                    <button type="button" id="previewBtn">Live Preview</button>
-                    <button type="button" id="downloadBtn">⬇ Download PDF</button>
-                </div>
-            </form>
-        </section>
-        <section class="preview-section">
-            <h2>Live Preview</h2>
-            <div id="resumePreview">
-                <p class="placeholder">Fill the form to see live preview...</p>
+                    </div>
+
+                </form>
+
             </div>
+
         </section>
-    </main>
-    <script src="script.js"></script>
+
+        <!-- =========================================
+             LIVE PREVIEW
+        ========================================== -->
+                
+        <section class="preview">
+
+            <div class="preview-header">
+
+                <h2>
+                    Live Resume Preview
+                </h2>
+
+                <p>
+                    Your resume updates in real-time
+                </p>
+
+            </div>
+
+            <div
+                id="resumePreview"
+                class="resume-sheet modern-template"
+            >
+
+            </div>
+
+        </section>
+
+    </div>
+
 </body>
+
 </html>

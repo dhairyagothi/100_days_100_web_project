@@ -1,51 +1,244 @@
-export default [
-    {
-        img : "https://images-static.nykaa.com/uploads/beb9fdeb-e96c-4c55-9138-ba487e5800aa.jpg?tr=w-200,cm-pad_resize",
-        dis : "Up to 60% off",
-    },
-    {
-        img : "https://images-static.nykaa.com/uploads/228bcd54-9099-4998-b4c3-777f77e592f6.jpg?tr=w-200,cm-pad_resize",
-        dis : "Up to 50% off",
-    },
-    {
-        img : "https://images-static.nykaa.com/uploads/5c50557a-cf1e-4500-8b0f-4b9321fce87e.jpg?tr=w-200,cm-pad_resize",
-        dis : "Up to 70% off"
-    },
-    {
-        img : "https://images-static.nykaa.com/uploads/6529686c-e1f9-4c33-98e8-d146493424db.jpg?tr=w-200,cm-pad_resize",
-        dis : "Up to 50% off",
-    },
-    {
-        img : "https://images-static.nykaa.com/uploads/6529686c-e1f9-4c33-98e8-d146493424db.jpg?tr=w-200,cm-pad_resize",
-        dis : "Up to 70% off",
-    },
-    {
-        img : "https://images-static.nykaa.com/uploads/9bf0f694-34b5-4960-9f0a-a6069445532d.jpg?tr=w-200,cm-pad_resize",
-        dis : "Up to 70% off",
-    },
-    {
-        img : "https://images-static.nykaa.com/uploads/1ee17084-9905-4921-ab01-9fb174d727ee.jpg?tr=w-200,cm-pad_resize",
-        dis : "Up to 50% off",
-    },
-    {
-        img : "https://images-static.nykaa.com/uploads/1ee17084-9905-4921-ab01-9fb174d727ee.jpg?tr=w-200,cm-pad_resize",
-        dis : "Exciting offers",
-    },
-    {
-        img : "https://images-static.nykaa.com/uploads/bc749a66-166c-464d-b1c6-71a64d5c64e1.jpg?tr=w-200,cm-pad_resize",
-        dis : "Up to 50% off",
-    },
-    {
-        img : "https://images-static.nykaa.com/uploads/fbc882ec-ed72-4d57-845b-4811136c85de.jpg?tr=w-200,cm-pad_resize",
-        dis : "Up to 40% off",
-    },
-    {
-        img : "https://images-static.nykaa.com/uploads/5474f425-87ad-4ba4-bede-3bdf693f64a3.jpg?tr=w-200,cm-pad_resize",
-        dis : "Up to 40% off",
-    },
-    {
-        img : "https://images-static.nykaa.com/uploads/f33c088a-b73d-4c13-9741-874e91e6a466.jpg?tr=w-200,cm-pad_resize",
-        dis : "min 10% off",
-    }
-]
-    
+const products = [
+  {
+    id: 1,
+    image: "https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=600",
+    brand: "Forever New",
+    title: "Floral Printed Maxi Dress",
+    rating: 4.6,
+    reviews: 1234,
+    price: 1899,
+    originalPrice: 3299,
+    discount: 42,
+    badge: "BESTSELLER"
+  },
+  {
+    id: 2,
+    image: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=600",
+    brand: "ONLY",
+    title: "Slim Fit Denim Jacket",
+    rating: 4.5,
+    reviews: 954,
+    price: 1699,
+    originalPrice: 2799,
+    discount: 39,
+    badge: "TRENDING"
+  },
+  {
+    id: 3,
+    image: "https://images.unsplash.com/photo-1496747611176-843222e1e57c?w=600",
+    brand: "H&M",
+    title: "Solid Casual Shirt",
+    rating: 4.4,
+    reviews: 841,
+    price: 999,
+    originalPrice: 1699,
+    discount: 41,
+    badge: "NEW"
+  },
+  {
+    id: 4,
+    image: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600",
+    brand: "Zara",
+    title: "Elegant Evening Dress",
+    rating: 4.8,
+    reviews: 2156,
+    price: 2999,
+    originalPrice: 4999,
+    discount: 40,
+    badge: "HOT"
+  },
+  {
+    id: 5,
+    image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600",
+    brand: "Nike",
+    title: "Air Max Sneakers",
+    rating: 4.7,
+    reviews: 4320,
+    price: 5499,
+    originalPrice: 7999,
+    discount: 31,
+    badge: "BESTSELLER"
+  },
+  {
+    id: 6,
+    image: "https://images.unsplash.com/photo-1595950653106-d6c9ebd614d3?w=600",
+    brand: "Puma",
+    title: "Running Shoes",
+    rating: 4.6,
+    reviews: 2194,
+    price: 3999,
+    originalPrice: 6499,
+    discount: 38,
+    badge: "SALE"
+  },
+  {
+    id: 7,
+    image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=600",
+    brand: "Baggit",
+    title: "Women's Handbag",
+    rating: 4.5,
+    reviews: 1120,
+    price: 1599,
+    originalPrice: 2699,
+    discount: 41,
+    badge: "TRENDING"
+  },
+  {
+    id: 8,
+    image: "https://images.unsplash.com/photo-1617038220319-276d3cfab638?w=600",
+    brand: "Titan",
+    title: "Classic Wrist Watch",
+    rating: 4.8,
+    reviews: 1985,
+    price: 4899,
+    originalPrice: 6999,
+    discount: 30,
+    badge: "NEW"
+  },
+  {
+    id: 9,
+    image: "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=600",
+    brand: "Levi's",
+    title: "Slim Fit Jeans",
+    rating: 4.6,
+    reviews: 2475,
+    price: 1999,
+    originalPrice: 3499,
+    discount: 43,
+    badge: "BESTSELLER"
+  },
+  {
+    id: 10,
+    image: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=600",
+    brand: "Roadster",
+    title: "Cotton Graphic T-Shirt",
+    rating: 4.3,
+    reviews: 1760,
+    price: 699,
+    originalPrice: 1299,
+    discount: 46,
+    badge: "HOT"
+  },
+  {
+    id: 11,
+    image: "https://images.unsplash.com/photo-1603252109303-2751441dd157?w=600",
+    brand: "Adidas",
+    title: "Sports Hoodie",
+    rating: 4.7,
+    reviews: 1408,
+    price: 2799,
+    originalPrice: 4599,
+    discount: 39,
+    badge: "TRENDING"
+  },
+  {
+    id: 12,
+    image: "https://images.unsplash.com/photo-1506629905607-d9d1c64f1f6b?w=600",
+    brand: "Aurelia",
+    title: "Printed Kurta Set",
+    rating: 4.5,
+    reviews: 1280,
+    price: 1499,
+    originalPrice: 2599,
+    discount: 42,
+    badge: "NEW"
+  },
+  {
+    id: 13,
+    image: "https://images.unsplash.com/photo-1611312449408-fcece27cdbb7?w=600",
+    brand: "Mochi",
+    title: "Block Heel Sandals",
+    rating: 4.4,
+    reviews: 860,
+    price: 1799,
+    originalPrice: 2999,
+    discount: 40,
+    badge: "SALE"
+  },
+  {
+    id: 14,
+    image: "https://images.unsplash.com/photo-1560243563-062bfc001d68?w=600",
+    brand: "Fastrack",
+    title: "Polarized Sunglasses",
+    rating: 4.5,
+    reviews: 1102,
+    price: 1199,
+    originalPrice: 1999,
+    discount: 40,
+    badge: "HOT"
+  },
+  {
+    id: 15,
+    image: "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?w=600",
+    brand: "AND",
+    title: "Office Wear Blazer",
+    rating: 4.7,
+    reviews: 904,
+    price: 3499,
+    originalPrice: 5499,
+    discount: 36,
+    badge: "BESTSELLER"
+  },
+  {
+    id: 16,
+    image: "https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?w=600",
+    brand: "Biba",
+    title: "Festive Ethnic Wear",
+    rating: 4.8,
+    reviews: 1886,
+    price: 2299,
+    originalPrice: 3899,
+    discount: 41,
+    badge: "NEW"
+  },
+  {
+    id: 17,
+    image: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=600",
+    brand: "Van Heusen",
+    title: "Formal Trousers",
+    rating: 4.4,
+    reviews: 775,
+    price: 1599,
+    originalPrice: 2699,
+    discount: 41,
+    badge: "SALE"
+  },
+  {
+    id: 18,
+    image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=600",
+    brand: "Global Desi",
+    title: "Boho Printed Dress",
+    rating: 4.6,
+    reviews: 1345,
+    price: 1899,
+    originalPrice: 3299,
+    discount: 42,
+    badge: "TRENDING"
+  },
+  {
+    id: 19,
+    image: "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=600",
+    brand: "US Polo",
+    title: "Classic Polo T-Shirt",
+    rating: 4.5,
+    reviews: 1654,
+    price: 1299,
+    originalPrice: 2199,
+    discount: 41,
+    badge: "BESTSELLER"
+  },
+  {
+    id: 20,
+    image: "https://images.unsplash.com/photo-1556906781-9a412961c28c?w=600",
+    brand: "Woodland",
+    title: "Leather Backpack",
+    rating: 4.8,
+    reviews: 1022,
+    price: 3199,
+    originalPrice: 5199,
+    discount: 38,
+    badge: "HOT"
+  }
+];
+
+export default products;

@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Advanced Form Builder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <span class="eyebrow">SCHEMATIC 01 &mdash; FORM ASSEMBLY</span>
+  <h1>Advanced Form Builder</h1>
+  <p class="subtitle">Draft a field, drop it on the sheet, ship the markup.</p>
+</header>
+
+<main class="container">
+
+  <!-- Builder Panel -->
+  <section class="panel builder">
+    <div class="panel-corner tl"></div>
+    <div class="panel-corner tr"></div>
+    <div class="panel-corner bl"></div>
+    <div class="panel-corner br"></div>
+
+    <h2><span class="tag">ADD</span> Field</h2>
+
+    <label class="field-label" for="labelInput">Label</label>
+    <input type="text" id="labelInput" placeholder="e.g. Full Name">
+
+    <label class="field-label" for="typeInput">Type</label>
+    <select id="typeInput">
+      <option value="text">Text</option>
+      <option value="email">Email</option>
+      <option value="number">Number</option>
+      <option value="select">Select</option>
+      <option value="checkbox">Checkbox</option>
+    </select>
+
+    <div id="optionsGroup" class="options-group">
+      <label class="field-label" for="optionsInput">Options</label>
+      <input type="text" id="optionsInput" placeholder="comma, separated, values">
+    </div>
+
+    <label class="required-row" for="requiredInput">
+      <input type="checkbox" id="requiredInput">
+      <span>Mark as required</span>
+    </label>
+
+    <button id="addField" type="button">+ Add Field</button>
+
+    <div class="builder-list">
+      <div class="builder-list-head">
+        <span>Fields on sheet</span>
+        <span id="fieldCount">0</span>
+      </div>
+      <ul id="fieldList" class="field-list"></ul>
+      <p id="emptyState" class="empty-state">No fields yet. Add your first one above.</p>
+    </div>
+  </section>
+
+  <!-- Live Preview -->
+  <section class="panel preview">
+    <div class="panel-corner tl"></div>
+    <div class="panel-corner tr"></div>
+    <div class="panel-corner bl"></div>
+    <div class="panel-corner br"></div>
+
+    <div class="panel-heading-row">
+      <h2><span class="tag">02</span> Live Form Preview</h2>
+      <button id="generateCode" type="button">Generate HTML</button>
+    </div>
+
+    <form id="formPreview" class="form-preview">
+      <p id="previewEmpty" class="empty-state">Your form will render here as you add fields.</p>
+    </form>
+  </section>
+
+</main>
+
+<!-- Output -->
+<section class="output">
+  <div class="output-head">
+    <h2><span class="tag">03</span> Generated HTML</h2>
+    <button id="copyCode" type="button">Copy</button>
+  </div>
+  <textarea id="codeOutput" readonly placeholder="Click &quot;Generate HTML&quot; to see the markup for your form."></textarea>
+  <span id="copyStatus" class="copy-status" aria-live="polite"></span>
+</section>
+
+<footer class="site-footer">App Development and Documentation &mdash; Sanyogita Singh</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
