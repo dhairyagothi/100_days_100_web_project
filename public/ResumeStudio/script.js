@@ -1,40 +1,7 @@
-﻿// ===============================
-// Resume Studio Pro Script
-// ===============================
 
-document.addEventListener("DOMContentLoaded", () => {
 
-    // ===============================
-    // ELEMENTS
-    // ===============================
-
-    const form = document.getElementById("resumeForm");
-
-    const nameInput = document.getElementById("name");
-    const profilePhotoInput = document.getElementById("profilePhoto");
-    const photoPreview = document.getElementById("photoPreview");
-    const titleInput = document.getElementById("title");
-    const emailInput = document.getElementById("email");
-    const phoneInput = document.getElementById("phone");
-    const locationInput = document.getElementById("location");
-    const educationInput = document.getElementById("education");
-    const linkedinInput = document.getElementById("linkedin");
-    const githubInput = document.getElementById("github");
-
-    const summaryInput = document.getElementById("summary");
-    const skillsInput = document.getElementById("skills");
-    const experienceInput = document.getElementById("experience");
-    const projectsInput = document.getElementById("projects");
-    const sectionSelect = document.getElementById("selectionSelect");
-    const addSectionBtn = document.getElementById("addSectionBtn");
-    let sectionOrder = [
-    "summary",
-    "skills",
-    "experience",
-    "projects",
-    "education"
-];
-    const dynamicSections = document.getElementById("dynamicSections");
+    document.addEventListener("DOMContentLoaded", () => {
+    const themeSwitcher = document.getElementById("themeSwitcher");
     const resumePreview = document.getElementById("resumePreview");
 
     const atsScoreValue = document.getElementById("atsScoreValue");
@@ -95,17 +62,15 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
 
-        html += "</ul>";
-
-        return html;
-    }
-
-    function createSkills(text) {
-
-        const skills = text
-            .split(",")
-            .map(skill => skill.trim())
-            .filter(skill => skill !== "");
+    // Theme switcher
+    themeSwitcher.addEventListener("click", () => {
+        document.body.classList.toggle("dark");
+        themeSwitcher.textContent =
+            document.body.classList.contains("dark") ? "☀️" : "🌙";
+        const isDark = document.body.classList.contains("dark");
+        document.getElementById("themeIcon").innerHTML = isDark ? "&#9728;" : "&#9790;";
+        themeSwitcher.setAttribute("aria-label", isDark ? "Switch to light mode" : "Switch to dark mode");
+    });
 
         if (skills.length === 0) {
             return "<p>No skills added</p>";
@@ -160,19 +125,151 @@ document.addEventListener("DOMContentLoaded", () => {
         atsScoreValue.textContent = score;
     }
 
-    // ===============================
-    // TEMPLATE CLASSES
-    // ===============================
+    // Build preview HTML
+    function buildPreview() {
+        const name       = document.getElementById("name").value;
+        const email      = document.getElementById("email").value;
+        const phone      = document.getElementById("phone").value;
+        const education  = document.getElementById("education").value;
+        const summary    = document.getElementById("summary").value;
+        const projects   = document.getElementById("projects").value;
+        const skills     = document.getElementById("skills").value;
+        const experience = document.getElementById("experience").value;
 
-    function applyTemplateClass() {
+        resumePreview.innerHTML = `
+            <h3>${name}</h3>
+            <p><strong>Email:</strong> ${email}</p>
+            <p><strong>Phone:</strong> ${phone}</p>
 
-        resumePreview.classList.remove(
-            "modern-template",
-            "classic-template",
-            "minimal-template"
-        );
+            <h4>Education</h4>
+            <p>${education}</p>
 
-        resumePreview.classList.add(`${currentTemplate}-template`);
+            <h4>Summary</h4>
+            <p>${summary}</p>
+
+            <h4>Projects</h4>
+            <p>${projects}</p>
+
+            <h4>Skills</h4>
+            <ul>
+                ${skills
+                    .split(",")
+                    .map(skill => `<li>${skill.trim()}</li>`)
+                    .join("")}
+            </ul>
+
+            <h4>Experience</h4>
+            <p>${experience}</p>
+        `;
+    };
+
+    // Validate form before preview/download
+    const validateForm = () => {
+    const fields = [
+        {
+            id: "name",
+            message: "Please enter your name."
+        },
+        {
+            id: "email",
+            message: "Please enter a valid email address."
+        },
+        {
+            id: "phone",
+            message: "Please enter your phone number."
+        },
+        {
+            id: "education",
+            message: "Please enter your education details."
+        },
+        {
+            id: "summary",
+            message: "Please write a short summary."
+        },
+        {
+            id: "projects",
+            message: "Please add your projects."
+        },
+        {
+            id: "skills",
+            message: "Please enter your skills."
+        },
+        {
+            id: "experience",
+            message: "Please add your experience."
+        }
+    ];
+
+    for (let field of fields) {
+        const input = document.getElementById(field.id);
+
+        if (!input.value.trim()) {
+
+            // Custom alert message
+            alert(field.message);
+
+            // Smooth scroll to field
+            input.scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
+
+            // Focus field
+            input.focus();
+
+            // Add error effect
+            input.classList.add("error");
+
+            // Remove error class after typing
+            input.addEventListener("input", () => {
+                input.classList.remove("error");
+            });
+
+            return false;
+        }
+
+        // Email validation
+        if (field.id === "email" && !input.checkValidity()) {
+            alert("Please enter a valid email address.");
+            input.focus();
+            return false;
+        }
+
+        // Phone validation
+        if (field.id === "phone" && !/^[0-9]{10}$/.test(input.value.trim())) {
+            alert("Phone number must be 10 digits.");
+            input.focus();
+            return false;
+        }
+    }
+
+    return true;
+};
+
+    // Live Preview Button
+    previewBtn.addEventListener("click", () => {
+        if (validateForm()) {
+            updatePreview();
+        }
+    });
+
+    // Download Button
+    downloadBtn.addEventListener("click", () => {
+        if (validateForm()) {
+            updatePreview();
+            window.print();
+        }
+        return `
+            <h3>${name}</h3>
+            <p><strong>Email:</strong> ${email}</p>
+            <p><strong>Phone:</strong> ${phone}</p>
+            <h4>Education</h4><p>${education}</p>
+            <h4>Summary</h4><p>${summary}</p>
+            <h4>Projects</h4><p>${projects}</p>
+            <h4>Skills</h4>
+            <ul>${skills.split(",").map(s => `<li>${s.trim()}</li>`).join("")}</ul>
+            <h4>Experience</h4><p>${experience}</p>
+        `;
     }
 
     // ===============================
@@ -541,85 +638,40 @@ document.addEventListener("DOMContentLoaded", () => {
         dynamicSections.appendChild(div);
 
     });
-
-}
-function renderSectionOrder(){
-
-    const container = document.getElementById("sectionOrderList");
-
-    container.innerHTML = "";
-
-    sectionOrder.forEach((section,index)=>{
-
-        const item=document.createElement("div");
-
-        item.className="section-order-item";
-
-        item.draggable=true;
-
-        item.dataset.index=index;
-
-        item.textContent=section.charAt(0).toUpperCase()+section.slice(1);
-
-        container.appendChild(item);
-
-    });
-
-}
-renderSectionOrder();
-updatePreview();
-let dragIndex = null;
-
-document.addEventListener("dragstart", (e) => {
-
-    if (!e.target.classList.contains("section-order-item")) return;
-
-    dragIndex = Number(e.target.dataset.index);
-
-    e.target.classList.add("dragging");
-
 });
+    // Update live preview
+//     const updatePreview = () => {
+//         const name = document.getElementById("name").value;
+//         const email = document.getElementById("email").value;
+//         const phone = document.getElementById("phone").value;
+//         const education = document.getElementById("education").value;
+//         const summary = document.getElementById("summary").value;
+//         const projects = document.getElementById("projects").value;
+//         const skills = document.getElementById("skills").value;
+//         const experience = document.getElementById("experience").value;
 
-document.addEventListener("dragover", (e) => {
-    e.preventDefault();
-});
+//         resumePreview.innerHTML = `
+//             <h3>${name || "Your Name"}</h3>
+//             <p><strong>Email:</strong> ${email || "your.email@example.com"}</p>
+//             <p><strong>Phone:</strong> ${phone || "123-456-7890"}</p>
+//             <h4>Education</h4>
+//             <p>${education || "State your educational details."}</p>
+//             <h4>Summary</h4>
+//             <p>${summary || "Write a brief summary about yourself."}</p>
+//             <h4>Projects</h4>
+//             <p>${projects || "write about projects developed by you."}</p>
+//             <h4>Skills</h4>
+//             ${skills ? `<ul>${skills.split(",").map(skill => `<li>${skill.trim()}</li>`).join("")}</ul>` : "<p>No Skills added.</p>"}
+//             <h4>Experience</h4>
+//             <p>${experience || "Add your work experience here."}</p>
+//         `;
+//     };
 
-document.addEventListener("drop", (e) => {
+//    previewBtn.addEventListener("click", updatePreview);
 
-    const target = e.target.closest(".section-order-item");
-
-    if (!target || dragIndex === null) return;
-
-    const dropIndex = Number(target.dataset.index);
-
-    if (dragIndex === dropIndex) return;
-
-    const draggedItem = sectionOrder.splice(dragIndex, 1)[0];
-
-    sectionOrder.splice(dropIndex, 0, draggedItem);
-
-    dragIndex = null;
-
-    renderSectionOrder();
-
-    updatePreview();
-
-});
-
-document.addEventListener("dragend", (e) => {
-
-    if (e.target.classList.contains("section-order-item")) {
-
-        e.target.classList.remove("dragging");
-    }
-
-    dragIndex = null;
-
-});
-    // ===============================
-    // INITIAL PREVIEW
-    // ===============================
-
-    updatePreview();
-
-});
+// // Download resume as PDF
+// downloadBtn.addEventListener("click", () => {
+//     updatePreview(); // ensure latest data is shown
+//     window.print();
+// });
+// });

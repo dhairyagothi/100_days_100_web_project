@@ -75,183 +75,56 @@
 </head>
 
 <body>
-
-    <!-- BACKGROUND -->
-
-    <div class="bg-glow"></div>
-
-    <div class="animated-bg">
-
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-
-    </div>
-
-    <!-- APP -->
-
-    <div class="app">
-
-        <!-- =========================================
-             SIDEBAR
-        ========================================== -->
-
-        <aside class="sidebar glass">
-
-            <!-- LOGO -->
-
-            <div class="logo">
-
-                <div class="logo-box">
-                    RS
-                </div>
-
-                <div>
-
-                    <h2>
-                        Resume Studio
-                    </h2>
-
-                    <p>
-                        ATS Resume Builder
-                    </p>
-
-                </div>
-
-            </div>
-
-            <!-- ATS SCORE -->
-
-            <div class="ats-card glass">
-
-                <h3>
-                    ATS Score
-                </h3>
-
-                <div class="score-circle">
-
-                    <span id="atsScoreValue">
-                        0
-                    </span>
-
-                    <span>%</span>
-
-                </div>
-
-                <p id="atsText">
-                    Start building your resume
-                </p>
-
-                <div class="progress-line">
-
-                    <div
-                        class="progress-fill"
-                        id="progressFill"
-                    ></div>
-
-                </div>
-
-            </div>
-
-            <!-- QUICK ACTIONS -->
-
-            <div class="quick-actions glass">
-
-                <h4>
-                    Quick Actions
-                </h4>
-
-                <button
-                    type="button"
-                    id="fillDemoBtn"
-                    class="action-btn blue"
-                >
-                    <i class="fa-solid fa-wand-magic-sparkles"></i>
-                    Fill Demo Data
-                </button>
-
-                <button
-                    type="button"
-                    id="clearFormBtn"
-                    class="action-btn red"
-                >
-                    <i class="fa-solid fa-trash"></i>
-                    Clear Form
-                </button>
-
-                <button
-                    type="button"
-                    id="saveResumeBtn"
-                    class="action-btn blue"
-                >
-                    <i class="fa-solid fa-floppy-disk"></i>
-                    Save Resume
-                </button>
-
-                <button
-                    type="button"
-                    id="loadResumeBtn"
-                    class="action-btn blue"
-                >
-                    <i class="fa-solid fa-folder-open"></i>
-                    Load Resume
-                </button>
-
-                <button
-                    type="button"
-                    id="printBtn"
-                    class="action-btn green"
-                >
-                    <i class="fa-solid fa-print"></i>
-                    Print / Save PDF
-                </button>
-
-                <button
-                    type="button"
-                    id="downloadBtn"
-                    class="action-btn purple"
-                >
-                    <i class="fa-solid fa-file-arrow-down"></i>
-                    Download PDF
-                </button>
-
-            </div>
-
-            <!-- THEME -->
-
-            <button
-                id="themeSwitcher"
-                class="theme-btn"
-            >
-                🌙 Dark Mode
+    <header class="header">
+        <div class="header-left"></div>
+        <h1>Resume Studio</h1>
+        <div class="header-right">
+            <button id="themeSwitcher" title="Switch Theme" aria-label="Switch to dark mode">
+                <span id="themeIcon">&#9790;</span>
             </button>
-
-        </aside>
-
-        <!-- =========================================
-             EDITOR
-        ========================================== -->
-
-        <section class="editor">
-
-            <div class="form-card glass">
-
-                <!-- TOP BAR -->
-
-                <div class="top-bar">
-
-                    <div>
-
-                        <h1>
-                            Build Your Resume
-                        </h1>
-
-                        <p>
-                            Create a professional ATS-ready resume instantly
-                        </p>
-
+        </div>
+    </header>
+    <main>
+        <section class="builder">
+            <h2>Resume Builder</h2>
+            <form id="resumeForm" novalidate>
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" placeholder="Enter your name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone:</label>
+                    <input type="tel" id="phone" placeholder="Enter your phone number" required>
+                </div>
+                <div class="form-group">
+                    <label for="education">Education:</label>
+                    <input type="text" id="education" placeholder="Enter your education details" required>
+                </div>
+                <div class="form-group">
+                    <label for="summary">Summary:</label>
+                    <textarea id="summary" placeholder="Brief about yourself" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="projects">Projects:</label>
+                    <textarea id="projects" placeholder="Brief about projects develope by you" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="skills">Skills:</label>
+                    <textarea id="skills" placeholder="Separate skills with commas" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="experience">Experience:</label>
+                    <textarea id="experience" placeholder="Describe your past experiences" required></textarea>
+            <form id="resumeForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" placeholder="Enter your name" maxlength="60">
+                        <span class="char-count" id="nameCount">0/60</span>
                     </div>
 
                     <div class="template-buttons">
