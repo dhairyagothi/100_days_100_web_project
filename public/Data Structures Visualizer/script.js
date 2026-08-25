@@ -1938,3 +1938,35 @@ document.addEventListener('DOMContentLoaded', () => {
     setupLLEventListeners();
     renderLinkedList(); // draw empty state
 });
+
+// ==========================
+// Theme Toggle (Light/Dark)
+// ==========================
+(function initThemeToggle() {
+    const themeToggle = document.getElementById('themeToggle');
+    if (!themeToggle) return;
+
+    // Load saved theme preference (default to dark)
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    if (savedTheme === 'light') {
+        document.body.classList.add('light-theme');
+        themeToggle.textContent = '🌙'; // Show moon icon when in light mode
+    } else {
+        document.body.classList.remove('light-theme');
+        themeToggle.textContent = '☀️'; // Show sun icon when in dark mode
+    }
+
+    // Toggle theme on button click
+    themeToggle.addEventListener('click', () => {
+        const isCurrentlyLight = document.body.classList.contains('light-theme');
+        if (isCurrentlyLight) {
+            document.body.classList.remove('light-theme');
+            themeToggle.textContent = '☀️';
+            localStorage.setItem('theme', 'dark');
+        } else {
+            document.body.classList.add('light-theme');
+            themeToggle.textContent = '🌙';
+            localStorage.setItem('theme', 'light');
+        }
+    });
+})();

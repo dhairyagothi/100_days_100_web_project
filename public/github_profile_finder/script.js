@@ -105,6 +105,50 @@ class DataCacheEngine {
 }
 
 /* =========================================================
+   REQUEST LIFECYCLE (Bug #10505)
+========================================================= */
+
+// Only one profile search or comparison may be "in flight" at a
+// time. currentOperationController lets us abort whatever the
+// previous one was doing the moment a new one starts, and
+// currentOperationId is a generation counter so that async work
+// which can't be aborted (e.g. a fetch that already resolved, or
+// a loop that's mid-iteration) can still recognize it has become
+// stale and refuse to touch the UI.
+let currentOperationController = null;
+let currentOperationId = 0;
+
+// Call at the start of every profile search / comparison. Aborts
+// the previous operation (if any) so its in-flight requests stop
+// and its results can never overwrite what the user just asked
+// for, then hands back a fresh signal + id for the new operation.
+function beginOperation() {
+  if (currentOperationController) {
+    currentOperationController.abort();
+  }
+  currentOperationController = new AbortController();
+  currentOperationId += 1;
+
+  return {
+    signal: currentOperationController.signal,
+    operationId: currentOperationId
+  };
+}
+
+// True once a newer operation has started, meaning this one's
+// results are stale and must not be rendered.
+function isStaleOperation(operationId) {
+  return operationId !== currentOperationId;
+}
+
+// An AbortError means a request was cancelled on purpose (a newer
+// search/comparison took over) - it is not a real failure and
+// must never surface as an error banner to the user.
+function isAbortError(error) {
+  return Boolean(error) && error.name === "AbortError";
+}
+
+/* =========================================================
    UTILITIES
 ========================================================= */
 
@@ -251,7 +295,7 @@ function resetProfileUI() {
   UI.analyticsPanel?.classList.add("hidden");
 
   if (UI.reposList)
-    UI.reposList.innerHTML = "";
+    UI.reposList.replaceChildren();
 }
 
 /* =========================================================
@@ -281,11 +325,10 @@ function showCompareLoading() {
     "hidden"
   );
 
-  UI.comparisonContainer.innerHTML = `
-    <div class="compare-loading">
-      Loading profile comparison...
-    </div>
-  `;
+  const loadingNote = document.createElement("div");
+  loadingNote.className = "compare-loading";
+  loadingNote.textContent = "Loading profile comparison...";
+  UI.comparisonContainer.replaceChildren(loadingNote);
 }
 
 /* =========================================================
@@ -310,9 +353,12 @@ function sleep(ms) {
 
 /**
  * Fetch wrapper with a timeout, since a hung request should
- * never leave the heatmap stuck on "Loading...".
+ * never leave the heatmap stuck on "Loading...". Also accepts the
+ * outer search/comparison operation's signal (externalSignal) so
+ * that cancelling the whole operation aborts this request
+ * immediately too, instead of waiting out its own timeout.
  */
-async function fetchWithTimeout(url, timeoutMs) {
+async function fetchWithTimeout(url, timeoutMs, externalSignal) {
 
   const controller = new AbortController();
 
@@ -321,6 +367,17 @@ async function fetchWithTimeout(url, timeoutMs) {
     timeoutMs
   );
 
+  const abortFromOutside = () => controller.abort();
+
+  if (externalSignal) {
+
+    if (externalSignal.aborted) {
+      controller.abort();
+    } else {
+      externalSignal.addEventListener("abort", abortFromOutside);
+    }
+  }
+
   try {
 
     return await fetch(url, { signal: controller.signal });
@@ -328,6 +385,10 @@ async function fetchWithTimeout(url, timeoutMs) {
   } finally {
 
     clearTimeout(timer);
+
+    if (externalSignal) {
+      externalSignal.removeEventListener("abort", abortFromOutside);
+    }
   }
 }
 
@@ -338,11 +399,12 @@ async function fetchWithTimeout(url, timeoutMs) {
  * { date, count, level } day objects. Only used when
  * GRAPHQL_PROXY_ENDPOINT is configured.
  */
-async function fetchContributionsFromGraphQLProxy(username) {
+async function fetchContributionsFromGraphQLProxy(username, signal) {
 
   const response = await fetchWithTimeout(
     `${GRAPHQL_PROXY_ENDPOINT}?username=${encodeURIComponent(username)}`,
-    CONTRIBUTIONS_FETCH_TIMEOUT_MS
+    CONTRIBUTIONS_FETCH_TIMEOUT_MS,
+    signal
   );
 
   if (!response.ok) {
@@ -372,7 +434,7 @@ async function fetchContributionsFromGraphQLProxy(username) {
  * fabricated data - any unrecoverable failure is thrown so the
  * caller can show an honest error state.
  */
-async function fetchContributionsFromFallbackApi(username) {
+async function fetchContributionsFromFallbackApi(username, signal) {
 
   let lastError = null;
 
@@ -382,7 +444,8 @@ async function fetchContributionsFromFallbackApi(username) {
 
       const response = await fetchWithTimeout(
         `${CONTRIBUTIONS_FALLBACK_API_URL}/${username}?y=last`,
-        CONTRIBUTIONS_FETCH_TIMEOUT_MS
+        CONTRIBUTIONS_FETCH_TIMEOUT_MS,
+        signal
       );
 
       if (response.status === 404) {
@@ -431,11 +494,20 @@ async function fetchContributionsFromFallbackApi(username) {
       const isAbort = error.name === "AbortError";
       const isNotFound = error.status === 404;
 
-      // Don't retry on a bad username or an aborted/timed-out
-      // request that's already exhausted its own budget once;
-      // only retry genuinely transient failures.
+      // If the *outer* search/comparison was cancelled (a newer one
+      // started), this AbortError is an intentional cancellation,
+      // not a transient failure - retrying it would just re-issue
+      // work nobody wants anymore. Only genuine timeouts (this
+      // request's own budget expiring) are retryable.
+      const isExternalCancel = Boolean(signal && signal.aborted);
+
+      // Don't retry on a bad username, an intentionally cancelled
+      // operation, or an aborted/timed-out request that's already
+      // exhausted its own budget once; only retry genuinely
+      // transient failures.
       const isRetryable =
         !isNotFound &&
+        !isExternalCancel &&
         (isAbort ||
           error.status === 429 ||
           error.status >= 500 ||
@@ -443,7 +515,7 @@ async function fetchContributionsFromFallbackApi(username) {
 
       if (!isRetryable || attempt === CONTRIBUTIONS_MAX_RETRIES) {
 
-        if (isAbort) {
+        if (isAbort && !isExternalCancel) {
 
           lastError = new Error(
             "The request timed out while loading contribution activity."
@@ -470,7 +542,7 @@ async function fetchContributionsFromFallbackApi(username) {
  * falls back to the public read-only contributions API. Never
  * falls back to randomly generated or fake data.
  */
-async function fetchContributionData(username) {
+async function fetchContributionData(username, signal) {
 
   const cacheKey = `contributions_${username}`;
 
@@ -479,8 +551,8 @@ async function fetchContributionData(username) {
   if (cached) return cached;
 
   const contributions = GRAPHQL_PROXY_ENDPOINT
-    ? await fetchContributionsFromGraphQLProxy(username)
-    : await fetchContributionsFromFallbackApi(username);
+    ? await fetchContributionsFromGraphQLProxy(username, signal)
+    : await fetchContributionsFromFallbackApi(username, signal);
 
   DataCacheEngine.set(cacheKey, contributions);
 
@@ -495,7 +567,7 @@ async function fetchContributionData(username) {
  */
 function renderContributionHeatmap(contributions) {
 
-  UI.heatmapGrid.innerHTML = "";
+  UI.heatmapGrid.replaceChildren();
 
   // Cap at 371 days (53 weeks) to mirror GitHub's ~12 month view.
   const days = contributions.slice(-371);
@@ -546,7 +618,7 @@ function renderContributionHeatmap(contributions) {
  */
 function showHeatmapError(message) {
 
-  UI.heatmapGrid.innerHTML = "";
+  UI.heatmapGrid.replaceChildren();
 
   const errorNode =
     document.createElement("div");
@@ -561,7 +633,7 @@ function showHeatmapError(message) {
   UI.heatmapGrid.appendChild(errorNode);
 }
 
-async function generateContributionHeatmap(username) {
+async function generateContributionHeatmap(username, signal, operationId) {
 
   if (!UI.heatmapGrid) return;
 
@@ -574,17 +646,26 @@ async function generateContributionHeatmap(username) {
   loadingNode.style.padding = "10px 0";
   loadingNode.textContent = "Loading contribution activity...";
 
-  UI.heatmapGrid.innerHTML = "";
+  UI.heatmapGrid.replaceChildren();
   UI.heatmapGrid.appendChild(loadingNode);
 
   try {
 
     const contributions =
-      await fetchContributionData(username);
+      await fetchContributionData(username, signal);
+
+    // A newer search/comparison may have started while this was
+    // in flight; ignore the now-stale result instead of rendering
+    // over whatever the newer operation has already shown.
+    if (isStaleOperation(operationId)) return;
 
     renderContributionHeatmap(contributions);
 
   } catch (error) {
+
+    // Cancellation (this operation or the whole page's operation
+    // being superseded) is expected, not an error - stay silent.
+    if (isAbortError(error) || isStaleOperation(operationId)) return;
 
     showHeatmapError(getContributionErrorMessage(error));
   }
@@ -627,7 +708,7 @@ function getContributionErrorMessage(error) {
    LANGUAGE ANALYTICS
 ========================================================= */
 
-async function renderLanguageAnalytics(repos) {
+async function renderLanguageAnalytics(repos, signal, operationId) {
 
   if (!repos || !repos.length) return;
 
@@ -640,7 +721,7 @@ async function renderLanguageAnalytics(repos) {
       if (!repo.languages_url) continue;
 
       const response =
-        await fetch(repo.languages_url);
+        await fetch(repo.languages_url, { signal });
 
       if (!response.ok) continue;
 
@@ -663,6 +744,11 @@ async function renderLanguageAnalytics(repos) {
 
     if (!totalBytes) return;
 
+    // A newer search/comparison may have started while these
+    // per-repo language requests were in flight; don't let a
+    // stale result overwrite the current UI.
+    if (isStaleOperation(operationId)) return;
+
     const sortedLanguages =
       Object.entries(languageBytes)
         .sort((a, b) => b[1] - a[1])
@@ -680,7 +766,7 @@ async function renderLanguageAnalytics(repos) {
 
     const gradientParts = [];
 
-    UI.languageLegend.innerHTML = "";
+    UI.languageLegend.replaceChildren();
 
     sortedLanguages.forEach(
       ([language, bytes], index) => {
@@ -703,22 +789,35 @@ async function renderLanguageAnalytics(repos) {
         item.className =
           "language-legend-item";
 
-        item.innerHTML = `
-          <div class="language-legend-left">
+        const left =
+          document.createElement("div");
 
-            <span
-              class="language-dot"
-              style="background:${colors[index]}"
-            ></span>
+        left.className =
+          "language-legend-left";
 
-            <span>${language}</span>
+        const dot =
+          document.createElement("span");
 
-          </div>
+        dot.className = "language-dot";
+        dot.style.background = colors[index];
 
-          <strong>
-            ${percent.toFixed(1)}%
-          </strong>
-        `;
+        const langLabel =
+          document.createElement("span");
+
+        // GitHub API value — set via textContent, never HTML
+        langLabel.textContent = language;
+
+        left.appendChild(dot);
+        left.appendChild(langLabel);
+
+        const percentLabel =
+          document.createElement("strong");
+
+        percentLabel.textContent =
+          `${percent.toFixed(1)}%`;
+
+        item.appendChild(left);
+        item.appendChild(percentLabel);
 
         UI.languageLegend.appendChild(item);
       }
@@ -741,6 +840,10 @@ async function renderLanguageAnalytics(repos) {
       `${topPercent}%`;
 
   } catch (error) {
+
+    // Cancellation is expected here (a newer operation took over)
+    // and isn't a real failure worth logging.
+    if (isAbortError(error)) return;
 
     console.error(
       "Language analytics failed:",
@@ -786,15 +889,41 @@ function renderProfile(user) {
         ? user.blog
         : `https://${user.blog}`;
 
-    Nodes.website.innerHTML = `
-      <a
-        href="${blogUrl}"
-        target="_blank"
-        class="repo-link"
-      >
-        ${user.blog}
-      </a>
-    `;
+    // Only build a link for http(s) URLs; otherwise show plain text.
+    // This avoids javascript:/data: URIs ending up in an href.
+    let isSafeUrl = false;
+
+    try {
+
+      isSafeUrl =
+        ["http:", "https:"].includes(
+          new URL(blogUrl).protocol
+        );
+
+    } catch {
+
+      isSafeUrl = false;
+    }
+
+    Nodes.website.replaceChildren();
+
+    if (isSafeUrl) {
+
+      const link =
+        document.createElement("a");
+
+      link.href = blogUrl;
+      link.target = "_blank";
+      link.rel = "noreferrer";
+      link.className = "repo-link";
+      link.textContent = user.blog; // GitHub API value — textContent, never HTML
+
+      Nodes.website.appendChild(link);
+
+    } else {
+
+      Nodes.website.textContent = user.blog;
+    }
 
   } else {
 
@@ -837,15 +966,17 @@ function renderProfile(user) {
 
 function renderRepos(repos) {
 
-  UI.reposList.innerHTML = "";
+  UI.reposList.replaceChildren();
 
   if (!repos.length) {
 
-    UI.reposList.innerHTML = `
-      <div class="repo-card">
-        No repositories found.
-      </div>
-    `;
+    const empty =
+      document.createElement("div");
+
+    empty.className = "repo-card";
+    empty.textContent = "No repositories found.";
+
+    UI.reposList.appendChild(empty);
 
     return;
   }
@@ -857,54 +988,82 @@ function renderRepos(repos) {
 
     card.className = "repo-card";
 
-    card.innerHTML = `
-      <div class="repo-top">
+    const top =
+      document.createElement("div");
 
-        <h4 class="repo-name">
+    top.className = "repo-top";
 
-          <a
-            href="${repo.html_url}"
-            target="_blank"
-            class="repo-link"
-          >
-            ${repo.name}
-          </a>
+    const name =
+      document.createElement("h4");
 
-        </h4>
+    name.className = "repo-name";
 
-        <span class="badge">
-          ★ ${repo.stargazers_count}
-        </span>
+    const nameLink =
+      document.createElement("a");
 
-      </div>
+    nameLink.href = repo.html_url;
+    nameLink.target = "_blank";
+    nameLink.rel = "noreferrer";
+    nameLink.className = "repo-link";
+    nameLink.textContent = repo.name; // GitHub API value — textContent, never HTML
 
-      <p class="repo-description">
+    name.appendChild(nameLink);
 
-        ${safeText(
-          repo.description,
-          "No description available."
-        )}
+    const starBadge =
+      document.createElement("span");
 
-      </p>
+    starBadge.className = "badge";
+    starBadge.textContent =
+      `★ ${repo.stargazers_count}`;
 
-      <div class="repo-meta">
+    top.appendChild(name);
+    top.appendChild(starBadge);
 
-        ${
-          repo.language
-            ? `<span class="pill">${repo.language}</span>`
-            : ""
-        }
+    const description =
+      document.createElement("p");
 
-        <span class="pill">
-          Forks ${repo.forks_count}
-        </span>
+    description.className = "repo-description";
+    description.textContent = safeText(
+      repo.description,
+      "No description available."
+    );
 
-        <span class="pill">
-          Updated ${formatDate(repo.updated_at)}
-        </span>
+    const meta =
+      document.createElement("div");
 
-      </div>
-    `;
+    meta.className = "repo-meta";
+
+    if (repo.language) {
+
+      const languagePill =
+        document.createElement("span");
+
+      languagePill.className = "pill";
+      languagePill.textContent = repo.language; // GitHub API value — textContent
+
+      meta.appendChild(languagePill);
+    }
+
+    const forksPill =
+      document.createElement("span");
+
+    forksPill.className = "pill";
+    forksPill.textContent =
+      `Forks ${repo.forks_count}`;
+
+    const updatedPill =
+      document.createElement("span");
+
+    updatedPill.className = "pill";
+    updatedPill.textContent =
+      `Updated ${formatDate(repo.updated_at)}`;
+
+    meta.appendChild(forksPill);
+    meta.appendChild(updatedPill);
+
+    card.appendChild(top);
+    card.appendChild(description);
+    card.appendChild(meta);
 
     UI.reposList.appendChild(card);
   });
@@ -933,12 +1092,18 @@ async function fetchUser(username) {
     return;
   }
 
+  // Cancel any previous profile search/comparison so it can't
+  // finish late and clobber the UI with stale data (Bug #10505),
+  // then run this one under its own signal + generation id.
+  const { signal, operationId } = beginOperation();
+
   showLoading();
 
   try {
 
     const userResponse = await fetch(
-      `https://api.github.com/users/${cleanName}`
+      `https://api.github.com/users/${cleanName}`,
+      { signal }
     );
 
     if (!userResponse.ok) {
@@ -952,7 +1117,8 @@ async function fetchUser(username) {
       await userResponse.json();
 
     const repoResponse = await fetch(
-      `https://api.github.com/users/${cleanName}/repos?per_page=100`
+      `https://api.github.com/users/${cleanName}/repos?per_page=100`,
+      { signal }
     );
 
     if (!repoResponse.ok) {
@@ -983,13 +1149,22 @@ async function fetchUser(username) {
       )
       .slice(0, 6);
 
+    // A newer search/comparison may have started while the above
+    // requests were in flight; if so, this result is stale and
+    // must not be rendered over the newer one.
+    if (isStaleOperation(operationId)) return;
+
     renderProfile(user);
 
     renderRepos(sortedRepos);
 
-    await generateContributionHeatmap(cleanName);
+    await generateContributionHeatmap(cleanName, signal, operationId);
 
-    await renderLanguageAnalytics(repos);
+    if (isStaleOperation(operationId)) return;
+
+    await renderLanguageAnalytics(repos, signal, operationId);
+
+    if (isStaleOperation(operationId)) return;
 
     UI.analyticsPanel?.classList.remove(
       "hidden"
@@ -998,6 +1173,12 @@ async function fetchUser(username) {
     hideStatus();
 
   } catch (error) {
+
+    // An aborted request means a newer search/comparison started
+    // and cancelled this one on purpose - that's not a failure, so
+    // don't show an error banner or reset UI the newer operation
+    // may already own.
+    if (isAbortError(error) || isStaleOperation(operationId)) return;
 
     resetProfileUI();
 
@@ -1012,7 +1193,7 @@ async function fetchUser(username) {
    FETCH PROFILE DATA
 ========================================================= */
 
-async function fetchProfileData(username) {
+async function fetchProfileData(username, signal) {
 
   const cleanName =
     username.trim().replace("@", "");
@@ -1036,7 +1217,8 @@ async function fetchProfileData(username) {
   }
 
   const userResponse = await fetch(
-    `https://api.github.com/users/${cleanName}`
+    `https://api.github.com/users/${cleanName}`,
+    { signal }
   );
 
   if (!userResponse.ok) {
@@ -1050,7 +1232,8 @@ async function fetchProfileData(username) {
     await userResponse.json();
 
   const repoResponse = await fetch(
-    `https://api.github.com/users/${cleanName}/repos?per_page=50`
+    `https://api.github.com/users/${cleanName}/repos?per_page=50`,
+    { signal }
   );
 
   if (!repoResponse.ok) {
@@ -1103,23 +1286,62 @@ async function fetchProfileData(username) {
 
 function buildRepoListSmall(repos) {
 
-  return repos.map((repo) => `
-    <div class="mini-repo-card">
+  const fragment =
+    document.createDocumentFragment();
 
-      <a
-        href="${repo.html_url}"
-        target="_blank"
-        class="repo-link"
-      >
-        ${repo.name}
-      </a>
+  repos.forEach((repo) => {
 
-      <span>
-        ★ ${repo.stargazers_count}
-      </span>
+    const mini =
+      document.createElement("div");
 
-    </div>
-  `).join("");
+    mini.className = "mini-repo-card";
+
+    const link =
+      document.createElement("a");
+
+    link.href = repo.html_url;
+    link.target = "_blank";
+    link.rel = "noreferrer";
+    link.className = "repo-link";
+    link.textContent = repo.name; // GitHub API value — textContent, never HTML
+
+    const stars =
+      document.createElement("span");
+
+    stars.textContent =
+      `★ ${repo.stargazers_count}`;
+
+    mini.appendChild(link);
+    mini.appendChild(stars);
+
+    fragment.appendChild(mini);
+  });
+
+  return fragment;
+}
+
+function buildComparisonStat(label, value, isWinner) {
+
+  const stat =
+    document.createElement("div");
+
+  stat.className =
+    `compare-stat ${isWinner ? "winner" : ""}`;
+
+  const label_ =
+    document.createElement("span");
+
+  label_.textContent = label;
+
+  const strong =
+    document.createElement("strong");
+
+  strong.textContent = value;
+
+  stat.appendChild(label_);
+  stat.appendChild(strong);
+
+  return stat;
 }
 
 function renderComparisonCard(
@@ -1139,86 +1361,103 @@ function renderComparisonCard(
     data.user.following >
     opponent.user.following;
 
-  return `
-    <article class="compare-card">
+  const article =
+    document.createElement("article");
 
-      <div class="compare-header">
+  article.className = "compare-card";
 
-        <img
-          src="${data.user.avatar_url}"
-          class="compare-avatar"
-        />
+  const header =
+    document.createElement("div");
 
-        <div>
+  header.className = "compare-header";
 
-          <h3>
-            ${safeText(
-              data.user.name,
-              data.user.login
-            )}
-          </h3>
+  const img =
+    document.createElement("img");
 
-          <p>
-            @${data.user.login}
-          </p>
+  img.src = data.user.avatar_url;
+  img.className = "compare-avatar";
 
-        </div>
+  const identity =
+    document.createElement("div");
 
-      </div>
+  const h3 =
+    document.createElement("h3");
 
-      <p class="compare-bio">
+  h3.textContent = safeText(
+    data.user.name,
+    data.user.login
+  );
 
-        ${safeText(
-          data.user.bio,
-          "No bio available."
-        )}
+  const handle =
+    document.createElement("p");
 
-      </p>
+  handle.textContent = `@${data.user.login}`;
 
-      <div class="compare-stats">
+  identity.appendChild(h3);
+  identity.appendChild(handle);
 
-        <div class="compare-stat ${repoWinner ? "winner" : ""}">
+  header.appendChild(img);
+  header.appendChild(identity);
 
-          <span>Repositories</span>
+  const bio =
+    document.createElement("p");
 
-          <strong>
-            ${data.user.public_repos}
-          </strong>
+  bio.className = "compare-bio";
+  bio.textContent = safeText(
+    data.user.bio,
+    "No bio available."
+  );
 
-        </div>
+  const stats =
+    document.createElement("div");
 
-        <div class="compare-stat ${followerWinner ? "winner" : ""}">
+  stats.className = "compare-stats";
 
-          <span>Followers</span>
+  stats.appendChild(
+    buildComparisonStat(
+      "Repositories",
+      data.user.public_repos,
+      repoWinner
+    )
+  );
 
-          <strong>
-            ${data.user.followers.toLocaleString()}
-          </strong>
+  stats.appendChild(
+    buildComparisonStat(
+      "Followers",
+      data.user.followers.toLocaleString(),
+      followerWinner
+    )
+  );
 
-        </div>
+  stats.appendChild(
+    buildComparisonStat(
+      "Following",
+      data.user.following,
+      followingWinner
+    )
+  );
 
-        <div class="compare-stat ${followingWinner ? "winner" : ""}">
+  const repoWrap =
+    document.createElement("div");
 
-          <span>Following</span>
+  repoWrap.className = "compare-repos";
 
-          <strong>
-            ${data.user.following}
-          </strong>
+  const repoHeading =
+    document.createElement("h4");
 
-        </div>
+  repoHeading.textContent = "Top Repositories";
 
-      </div>
+  repoWrap.appendChild(repoHeading);
+  repoWrap.appendChild(
+    buildRepoListSmall(data.repos)
+  );
 
-      <div class="compare-repos">
+  article.appendChild(header);
+  article.appendChild(bio);
+  article.appendChild(stats);
+  article.appendChild(repoWrap);
 
-        <h4>Top Repositories</h4>
-
-        ${buildRepoListSmall(data.repos)}
-
-      </div>
-
-    </article>
-  `;
+  return article;
 }
 
 function renderComparison(
@@ -1230,17 +1469,16 @@ function renderComparison(
     "hidden"
   );
 
-  UI.comparisonContainer.innerHTML = `
-    ${renderComparisonCard(
+  UI.comparisonContainer.replaceChildren(
+    renderComparisonCard(
       leftData,
       rightData
-    )}
-
-    ${renderComparisonCard(
+    ),
+    renderComparisonCard(
       rightData,
       leftData
-    )}
-  `;
+    )
+  );
 
   UI.comparisonPanel.scrollIntoView({
     behavior: "smooth"
@@ -1295,6 +1533,10 @@ if (UI.compareForm) {
         return;
       }
 
+      // Cancel any previous profile search/comparison so it can't
+      // finish late and clobber this comparison's UI (Bug #10505).
+      const { signal, operationId } = beginOperation();
+
       try {
 
         showCompareLoading();
@@ -1305,14 +1547,20 @@ if (UI.compareForm) {
         ] = await Promise.all([
 
           fetchProfileData(
-            leftUsername
+            leftUsername,
+            signal
           ),
 
           fetchProfileData(
-            rightUsername
+            rightUsername,
+            signal
           )
 
         ]);
+
+        // A newer search/comparison may have started while these
+        // requests were in flight; ignore this now-stale result.
+        if (isStaleOperation(operationId)) return;
 
         renderComparison(
           leftData,
@@ -1322,6 +1570,11 @@ if (UI.compareForm) {
         hideStatus();
 
       } catch (error) {
+
+        // An aborted request means a newer search/comparison
+        // started and cancelled this one on purpose - not a real
+        // failure, so stay silent rather than show an error banner.
+        if (isAbortError(error) || isStaleOperation(operationId)) return;
 
         showStatus(
           error.message,

@@ -384,6 +384,31 @@ The website features:
 | 207 | AI Semiconductor Circuit Builder | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/AI-Semiconductor-Circuit-Builder/index.html) |
 | 217 | Gemini Clone | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/Gemini/dist/index.html) |
 | 221 | AI Tools Hub | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/AI-Tools-Hub/index.html) |
+| 221 | AI Tools Hub | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/AI-Tools-Hub/index.html) |
+| 222 | Bus Game | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/bus_game/index.html) |
+| 223 | HTML & CSS Animation | beginner | [View Demo](https://100-days-100-web-project.vercel.app/public/Html_css_animation/index.html) |
+| 224 | Bubble Game | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/Bubble-Game/index.html) |
+| 225 | Harry Potter Spellbook | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/Harry-Potter/index.html) |
+| 226 | Mind Reader | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/mind-reader/mind-reader/index.html) |
+| 227 | Word Jumble | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/Word_jumble/index.html) |
+| 228 | Beat Maker | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/BeatMaker/demo.html) |
+| 229 | MEMO 2.0 | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/MEMO%202.0/index.html) |
+| 230 | Statistics Dashboard | beginner | [View Demo](https://100-days-100-web-project.vercel.app/public/StatisticsDashboard/index.html) |
+| 231 | MyCalendar | beginner | [View Demo](https://100-days-100-web-project.vercel.app/public/MyCalendar/index.html) |
+| 232 | Dad Jokes Generator | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/dad-joke/index.html) |
+| 233 | UnitVerse - Interactive Unit Converter Web App | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/UnitVerse/index.html) |
+| 234 | AI-Prompt-Optimizer | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/AI-Prompt-Optimizer/index.html) |
+| 235 | World Explorer | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/WorldExplorer/index.html) |
+| 236 | FLAVOURLY | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/FLAVOURLY/index.html) |
+| 237 | Whos's That Pokemon Game | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/WhosThatPokemon/index.html) |
+| 238 | Red-Black Tree Visualizer | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/RedBlackTreeVisualizer/index.html) |
+| 239 | LayerText | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/css-animation/index.html) |
+| 240 | Color Jump Game | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/ColorJumpGame/index.html) |
+| 241 | PhishGuard AI Terminal | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/PhishGuard-AI-Terminal/index.html) |
+| 242 | Sorting Algorithm Visualizer | intermediate | [View Demo](https://100-days-100-web-project.vercel.app/public/SortingVisualizer/index.html) |
+| 243 | Pokemon Battle Simulator | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/Pokemon_Battle_Simulator/index.html) |
+| 244 | Drawing Canva | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/Drawing-Canva/index.html) |
+| 245 | Flashcard Quiz | advanced | [View Demo](https://100-days-100-web-project.vercel.app/public/Flashcard-Quiz-App/index.html) |
 
 </details>
 
