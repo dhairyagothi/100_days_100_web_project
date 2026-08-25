@@ -1,3 +1,17 @@
+// Global event listener to hide broken preview images (CSP-compliant alternative to inline onerror)
+window.addEventListener(
+  "error",
+  (event) => {
+    if (event.target && event.target.tagName === "IMG") {
+      const container = event.target.closest(".card-preview-image-container");
+      if (container) {
+        container.style.display = "none";
+      }
+    }
+  },
+  true
+);
+
 /* ============================================================
    CONFIGURATION
    ============================================================ */
@@ -87,6 +101,7 @@ function hydrateProjects(data) {
     techStack: project.techStack,
     difficulty: project.difficulty,
     projectDesc: project.projectDesc,
+    previewImage: project.previewImage,
   }));
 
   fuse = new Fuse(PROJECTS, {
@@ -591,10 +606,40 @@ function buildProjectCardHTML({
 
   const project = PROJECTS_BY_NAME.get(name) || PROJECTS_BY_DAY.get(day);
 
+  const isRoot = !window.location.pathname.includes("/contributors/");
+  const basePrefix = isRoot ? "" : "../";
+
   const description = escapeHTML(getProjectDescription(project));
   const safeDay = escapeHTML(day);
   const safeName = escapeHTML(name);
   const safeCategory = escapeHTML(category);
+
+  let safePreviewUrl = "";
+  const resolvedPreview = project && project.previewImage;
+  if (resolvedPreview) {
+    if (resolvedPreview.startsWith("./")) {
+      safePreviewUrl = basePrefix + resolvedPreview.substring(2);
+    } else {
+      safePreviewUrl = basePrefix + resolvedPreview;
+    }
+  } else if (url && (url.startsWith('./') || url.startsWith('public/'))) {
+    const parts = url.split('/');
+    const folder = parts[parts.length - 2];
+    if (folder) {
+      safePreviewUrl = `${basePrefix}public/previews/${folder}.png`;
+    }
+  }
+
+  const previewImageHTML = safePreviewUrl
+    ? `<div class="card-preview-image-container">
+         <img
+           src="${safePreviewUrl}"
+           alt="${safeName} preview"
+           loading="lazy"
+           decoding="async"
+         >
+       </div>`
+    : "";
 
   const difficulty = project ? project.difficulty || "" : "";
   const difficultyKey = (difficulty || "").toLowerCase();
@@ -674,9 +719,7 @@ function buildProjectCardHTML({
                 </span>
             </div>
 
-            <div class="card-preview-image-container" style="margin: 12px 0; border-radius: 8px; overflow: hidden; aspect-ratio: 16/9; background: #1a1a1a;">
-              ${imageHTML}
-            </div>
+            ${previewImageHTML}
 
             <h3 class="card-name">${safeName}</h3>
 
