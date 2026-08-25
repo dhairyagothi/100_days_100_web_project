@@ -1012,3 +1012,307 @@ body {
     padding-left: 1rem !important;
   }
 }
+
+/* ── LEADERBOARD SECTION ── */
+.leaderboard-section {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  margin-bottom: 6rem;
+  width: 100%;
+}
+
+/* Podium Container */
+.podium-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 2rem;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+/* Individual Podium Card */
+.podium-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: 28px;
+  padding: 2.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  transition: var(--transition);
+  text-align: center;
+  width: 280px;
+}
+
+/* Heights & orders for podium ranking (Silver, Gold, Bronze) */
+.podium-card.rank-1 {
+  height: 380px;
+  order: 2;
+  border-color: rgba(212, 175, 55, 0.4);
+  box-shadow: 0 10px 30px rgba(212, 175, 55, 0.1);
+}
+.podium-card.rank-2 {
+  height: 330px;
+  order: 1;
+  border-color: rgba(192, 192, 192, 0.4);
+  box-shadow: 0 10px 30px rgba(192, 192, 192, 0.1);
+}
+.podium-card.rank-3 {
+  height: 300px;
+  order: 3;
+  border-color: rgba(205, 127, 50, 0.4);
+  box-shadow: 0 10px 30px rgba(205, 127, 50, 0.1);
+}
+
+/* Hover effects */
+.podium-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+}
+.podium-card.rank-1:hover {
+  border-color: #d4af37;
+  box-shadow: 0 20px 50px rgba(212, 175, 55, 0.25);
+}
+.podium-card.rank-2:hover {
+  border-color: #c0c0c0;
+  box-shadow: 0 20px 50px rgba(192, 192, 192, 0.25);
+}
+.podium-card.rank-3:hover {
+  border-color: #cd7f32;
+  box-shadow: 0 20px 50px rgba(205, 127, 50, 0.25);
+}
+
+/* Avatar styling */
+.podium-avatar-container {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+.podium-avatar {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid transparent;
+  transition: var(--transition);
+}
+.podium-card.rank-1 .podium-avatar {
+  width: 110px;
+  height: 110px;
+  border-color: #d4af37;
+}
+.podium-card.rank-2 .podium-avatar {
+  border-color: #c0c0c0;
+}
+.podium-card.rank-3 .podium-avatar {
+  border-color: #cd7f32;
+}
+
+/* Crown / Medals */
+.podium-badge {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 2rem;
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5));
+  animation: float 3s ease-in-out infinite;
+}
+.podium-card.rank-1 .podium-badge {
+  font-size: 2.5rem;
+  top: -30px;
+}
+
+@keyframes float {
+  0%, 100% { transform: translate(-50%, 0); }
+  50% { transform: translate(-50%, -5px); }
+}
+
+.podium-username {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+  word-break: break-all;
+}
+.podium-project-count {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--accent-color);
+  margin-top: auto;
+}
+.podium-card.rank-1 .podium-project-count {
+  color: #d4af37;
+}
+.podium-card.rank-2 .podium-project-count {
+  color: #c0c0c0;
+}
+.podium-card.rank-3 .podium-project-count {
+  color: #cd7f32;
+}
+
+.podium-label {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+
+/* Leaderboard List (Ranks 4-10) */
+.leaderboard-list {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  padding: 1rem;
+  max-width: 800px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.leaderboard-row {
+  display: grid;
+  grid-template-columns: 60px 50px 1fr 120px;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-radius: 16px;
+  transition: var(--transition);
+}
+.leaderboard-row:not(:last-child) {
+  border-bottom: 1px solid var(--glass-border);
+}
+.leaderboard-row:hover {
+  background: rgba(255, 255, 255, 0.03);
+  transform: translateX(5px);
+}
+
+.leaderboard-row .rank-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+.leaderboard-row .avatar-img {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1.5px solid var(--glass-border);
+}
+.leaderboard-row .username {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  padding-left: 0.5rem;
+  word-break: break-all;
+}
+.leaderboard-row .count-col {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.leaderboard-row .project-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--accent-color);
+}
+.leaderboard-row .label-val {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Toggle / Show All Button */
+.leaderboard-show-all-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+.show-all-btn {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  color: var(--text-primary);
+  padding: 0.8rem 2rem;
+  border-radius: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+}
+.show-all-btn:hover {
+  background: var(--accent-color);
+  color: #fff;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 20px var(--accent-glow);
+  transform: translateY(-2px);
+}
+
+/* Responsiveness for Podium */
+@media (max-width: 900px) {
+  .podium-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  .podium-card.rank-1,
+  .podium-card.rank-2,
+  .podium-card.rank-3 {
+    height: auto;
+    width: 90%;
+    max-width: 320px;
+    order: unset !important;
+    padding: 2rem;
+  }
+  .podium-card.rank-1 .podium-avatar {
+    width: 90px;
+    height: 90px;
+  }
+}
+
+/* Maintainer Badge Styling */
+.maintainer-badge {
+  background: rgba(59, 130, 246, 0.15);
+  color: var(--accent-color);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  padding: 0.2rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 0.25rem;
+  margin-bottom: 0.5rem;
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.1);
+  display: inline-block;
+}
+
+.maintainer-badge-mini {
+  background: rgba(59, 130, 246, 0.15);
+  color: var(--accent-color);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  padding: 0.1rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-left: 0.5rem;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.username-container {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}

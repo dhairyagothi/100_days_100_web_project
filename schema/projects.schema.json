@@ -10,7 +10,8 @@
       "projectDesc",
       "techStack",
       "difficulty",
-      "projectPath"
+      "projectPath",
+      "contributor"
     ],
     "properties": {
       "projectNo": { "type": "number" },
@@ -38,7 +39,8 @@
       "projectDesc": { "type": "string" },
       "techStack": { "type": "array", "items": { "type": "string" } },
       "difficulty": { "type": "string", "enum": ["beginner", "intermediate", "advanced"] },
-      "projectPath": { "type": "string" }
+      "projectPath": { "type": "string" },
+      "contributor": { "type": "string" }
     }
   }
 }
