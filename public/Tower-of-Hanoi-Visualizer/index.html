@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tower of Hanoi Visualizer</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon_tower_hanoi_visualizer.png">
+</head>
+<body>
+  <main class="app-shell">
+    <header class="hero">
+      <h1>TOWER OF HANOI</h1>
+      <p>Move all disks from Tower A to Tower C</p>
+    </header>
+
+    <section class="control-panel" aria-label="Game controls">
+      <label class="control-group" for="disk-count">
+        <span>Disks</span>
+        <select id="disk-count">
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5" selected>5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+        </select>
+      </label>
+
+      <button class="action-button start" id="start-button" type="button">
+        <span aria-hidden="true">&#9654;</span> Start
+      </button>
+      <button class="action-button reset" id="reset-button" type="button">
+        <span aria-hidden="true">&#9675;</span> Reset
+      </button>
+      <button class="action-button step" id="step-button" type="button">
+        <span aria-hidden="true">&#8811;</span> Step
+      </button>
+      <button class="action-button auto" id="auto-button" type="button">
+        <span aria-hidden="true">&#9654;&#9654;</span> Auto
+      </button>
+
+      <div class="stat-card" aria-live="polite">
+        <span>Moves</span>
+        <strong id="move-count">0</strong>
+      </div>
+      <div class="stat-card">
+        <span>Best</span>
+        <strong id="minimum-moves">31</strong>
+      </div>
+    </section>
+
+    <p class="message" id="message" aria-live="polite">Click a tower to pick up the top disk.</p>
+
+    <section class="board" aria-label="Tower of Hanoi board">
+      <button class="tower-zone" data-tower="0" type="button" aria-label="Tower A">
+        <span class="peg"></span>
+        <span class="base"></span>
+        <span class="disk-stack" id="tower-0"></span>
+        <span class="tower-label">A</span>
+      </button>
+
+      <button class="tower-zone" data-tower="1" type="button" aria-label="Tower B">
+        <span class="peg"></span>
+        <span class="base"></span>
+        <span class="disk-stack" id="tower-1"></span>
+        <span class="tower-label">B</span>
+      </button>
+
+      <button class="tower-zone" data-tower="2" type="button" aria-label="Tower C">
+        <span class="peg"></span>
+        <span class="base"></span>
+        <span class="disk-stack" id="tower-2"></span>
+        <span class="tower-label">C</span>
+      </button>
+    </section>
+
+    <section class="rules" aria-labelledby="rules-title">
+      <div class="info-icon" aria-hidden="true">i</div>
+      <div>
+        <h2 id="rules-title">Rules</h2>
+        <ul>
+          <li>Move only one disk at a time.</li>
+          <li>Each move takes the top disk from one tower and places it on another tower.</li>
+          <li>No larger disk may be placed on top of a smaller disk.</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

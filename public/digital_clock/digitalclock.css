@@ -43,18 +43,342 @@
     }
 }
 
-/* Button hover scale animation */
-@keyframes buttonHoverScale {
-    to {
-        transform: scale(1.05);
-    }
+/* =========================
+   NAVBAR
+========================= */
+
+.navbar{
+    width:100%;
+    display:flex;
+    justify-content:center;
+    gap:20px;
+
+    padding:18px;
+
+    position:sticky;
+    top:0;
+
+    backdrop-filter:blur(18px);
+
+    background:rgba(10,10,20,.65);
+
+    border-bottom:1px solid var(--border);
+
+    z-index:100;
 }
 
-/* Success pulse animation for alarm confirmation */
-@keyframes successPulse {
-    0% {
-        transform: scale(1);
-        opacity: 1;
+.navbar a{
+    color:var(--text-muted);
+    text-decoration:none;
+
+    padding:10px 18px;
+
+    border-radius:10px;
+
+    transition:.3s;
+}
+
+.navbar a:hover{
+    color:white;
+
+    background:rgba(255,255,255,.08);
+}
+
+/* =========================
+   APP LAYOUT
+========================= */
+
+.clock-app{
+    width:min(1200px,92%);
+    margin:auto;
+
+    padding:40px 0;
+
+    display:flex;
+    flex-direction:column;
+    gap:24px;
+}
+
+/* =========================
+   HERO CLOCK CARD
+========================= */
+
+.clock-card{
+    position:relative;
+
+    background:var(--card-light);
+
+    backdrop-filter:blur(18px);
+
+    border:1px solid var(--border);
+
+    border-radius:24px;
+
+    padding:40px;
+
+    text-align:center;
+
+    box-shadow:var(--shadow);
+}
+
+.theme-badge{
+    display:inline-block;
+
+    padding:8px 18px;
+
+    border-radius:999px;
+
+    background:rgba(108,99,255,.15);
+
+    color:#bdb8ff;
+
+    font-size:.8rem;
+    letter-spacing:2px;
+
+    margin-bottom:20px;
+}
+
+.date-block{
+    margin-bottom:20px;
+}
+
+#day-name{
+    font-size:1.3rem;
+    font-weight:600;
+}
+
+#full-date{
+    color:var(--text-muted);
+}
+
+/* =========================
+   DIGITAL CLOCK
+========================= */
+
+.clock-time{
+    font-family:'Orbitron',sans-serif;
+
+    font-size:clamp(3rem,10vw,6rem);
+
+    font-weight:700;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    gap:8px;
+
+    margin:20px 0;
+}
+
+.colon{
+    color:var(--primary);
+}
+
+#ampm{
+    font-size:1.4rem;
+    margin-left:10px;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+.dark-mode-btn{
+    position:absolute;
+
+    right:20px;
+    top:20px;
+
+    width:48px;
+    height:48px;
+
+    border:none;
+    border-radius:50%;
+
+    cursor:pointer;
+
+    background:rgba(255,255,255,.08);
+    color:white;
+
+    font-size:1.2rem;
+}
+
+#format-toggle{
+    border:none;
+
+    padding:10px 18px;
+
+    border-radius:10px;
+
+    background:var(--primary);
+
+    color:white;
+
+    cursor:pointer;
+}
+
+.btn{
+    border:none;
+    cursor:pointer;
+
+    border-radius:12px;
+
+    padding:12px 18px;
+
+    font-weight:600;
+}
+
+.btn-primary{
+    background:var(--primary);
+    color:white;
+}
+
+.btn-danger{
+    background:var(--danger);
+    color:white;
+}
+
+.btn-outline{
+    background:transparent;
+    color:white;
+
+    border:1px solid rgba(255,255,255,.15);
+}
+
+.btn:hover{
+    transform:translateY(-2px);
+}
+
+/* =========================
+   BOTTOM INFO
+========================= */
+
+.bottom-info{
+    margin-top:25px;
+
+    display:flex;
+    justify-content:center;
+    gap:15px;
+
+    flex-wrap:wrap;
+}
+
+.info-tag{
+    background:rgba(255,255,255,.06);
+
+    padding:10px 16px;
+
+    border-radius:12px;
+
+    color:var(--text-muted);
+}
+
+/* =========================
+   GENERIC CARD
+========================= */
+
+.card{
+    background:var(--card-light);
+
+    backdrop-filter:blur(18px);
+
+    border:1px solid var(--border);
+
+    border-radius:24px;
+
+    padding:25px;
+
+    box-shadow:var(--shadow);
+}
+
+.card-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    margin-bottom:20px;
+}
+
+.card-header h2{
+    font-size:1.3rem;
+}
+
+/* =========================
+   WORLD CLOCKS
+========================= */
+
+.world-clocks-grid{
+    display:grid;
+
+    grid-template-columns:
+        repeat(auto-fit,minmax(260px,1fr));
+
+    gap:15px;
+}
+
+.world-clock-row{
+    background:rgba(255,255,255,.05);
+
+    border-radius:14px;
+
+    padding:15px;
+}
+
+/* =========================
+   POMODORO
+========================= */
+
+.pomodoro-display{
+    text-align:center;
+}
+
+#pomodoro-time{
+    font-family:'Orbitron',sans-serif;
+
+    font-size:4rem;
+
+    color:var(--primary);
+
+    text-shadow:
+        0 0 20px var(--primary-glow);
+}
+
+.pomodoro-controls{
+    display:flex;
+    justify-content:center;
+    gap:12px;
+
+    margin:20px 0;
+}
+
+#pomodoro-status{
+    text-align:center;
+    color:var(--text-muted);
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+.site-footer{
+    text-align:center;
+
+    padding:30px;
+
+    color:var(--text-muted);
+
+    border-top:1px solid var(--border);
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:768px){
+
+    .clock-card{
+        padding:25px;
     }
 
     50% {
@@ -66,14 +390,9 @@
         transform: scale(1);
         opacity: 1;
     }
-}
 
-/* Smooth slide-down animation for dropdown */
-@keyframes slideDown {
-    from {
-        opacity: 0;
-        max-height: 0;
-        overflow: hidden;
+    .btn{
+        width:100%;
     }
 
     to {
@@ -81,6 +400,9 @@
         max-height: 300px;
     }
 }
+/* =========================
+   ALARM PAGE
+========================= */
 
 /* Alarm popup entrance animation */
 @keyframes alarmEntrance {
@@ -112,26 +434,72 @@
     }
 }
 
-body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Courier New', Courier, monospace;
+.popup-actions button:first-child{
+    background:#f59e0b;
+    color:white;
 }
 
-#clock-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.popup-actions button:last-child{
+    background:var(--danger);
+    color:white;
 }
 
-#display {
-    font-family: 'Courier New', Courier, monospace;
-    animation: glowPulse 3s ease-in-out infinite;
-    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width:768px){
+
+    .form-actions{
+        flex-direction:column;
+    }
+
+    .alarm-item{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:15px;
+    }
+
+    .alarm-item-right{
+        width:100%;
+        justify-content:space-between;
+    }
+
+    .popup-actions{
+        flex-direction:column;
+    }
 }
 
-#clock {
-    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+/* ==========================
+   HISTORY PAGE
+========================== */
+
+/* FIXED: removed .card,span rule that was hardcoding colors and breaking dark mode */
+
+.history-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    padding:16px 20px;
+
+    border-radius:12px;
+    background:rgba(255,255,255,.05);
+
+    cursor:pointer;
+
+    font-weight:600;
+
+    transition:.25s;
+}
+
+.history-header:hover{
+    background:rgba(255,255,255,.08);
+}
+
+#history-chevron{
+    transition:.3s;
+    font-size:14px;
 }
 
 .classic,
@@ -142,96 +510,145 @@ body {
     transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.classic {
-    color: white;
-    border-color: green;
-    animation: glowPulse 3s ease-in-out infinite;
+/* custom scrollbar */
+.history-logs::-webkit-scrollbar{
+    width:8px;
 }
 
-.classic #display {
-    animation: glowPulse 3s ease-in-out infinite;
+.history-logs::-webkit-scrollbar-track{
+    background:transparent;
 }
 
-.modern {
-    color: white;
-    border-color: blue;
-    animation: glowPulseModern 3s ease-in-out infinite;
+.history-logs::-webkit-scrollbar-thumb{
+    background:rgba(255,255,255,.15);
+    border-radius:20px;
 }
 
-.modern #display {
-    animation: glowPulseModern 3s ease-in-out infinite;
+.history-logs::-webkit-scrollbar-thumb:hover{
+    background:rgba(255,255,255,.25);
 }
 
-.futuristic {
-    color: white;
-    border-color: red;
-    animation: glowPulseFuturistic 3s ease-in-out infinite;
+/* ==========================
+   LOG ENTRY
+========================== */
+
+.log-entry{
+    padding:14px 18px;
+
+    border-radius:12px;
+
+    background:rgba(255,255,255,.04);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    display:flex;
+    align-items:center;
+
+    transition:.25s;
 }
 
-.futuristic #display {
-    animation: glowPulseFuturistic 3s ease-in-out infinite;
+.log-entry:hover{
+    transform:translateX(4px);
+
+    background:rgba(255,255,255,.07);
+
+    border-color:rgba(255,255,255,.12);
 }
 
-select {
-    background-color: black;
-    color: green;
-    transition: all 0.3s ease;
+.log-entry span{
+    font-size:.95rem;
+    line-height:1.5;
+}
+.stopwatch-display {
+  text-align: center;
+  margin-bottom: 20px;
 }
 
-select:focus {
-    outline: none;
-    box-shadow: 0 0 15px rgba(34, 197, 94, 0.6);
-    animation: slideDown 0.3s ease-out;
+#stopwatch-time {
+  font-family: var(--font-mono);
+  font-size: 2.5rem;
+  font-weight: 600;
+  letter-spacing: 2px;
 }
 
-.date-size {
-    font-size: 1.5rem;
+.stopwatch-controls {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
 }
 
-.clock-face-btn {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    overflow: hidden;
+.stopwatch-controls .btn {
+  flex: 1;
 }
 
-.clock-face-btn:hover {
-    cursor: pointer;
-    animation: buttonHoverScale 0.3s ease-out forwards;
-    transform: scale(1.05);
+.laps-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 250px;
+  overflow-y: auto;
 }
 
-.clock-face-btn:active {
-    transform: scale(0.98);
+.lap-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  background: var(--bg);
 }
 
-.hidden {
-    display: none;
+.fastest-lap {
+  border-left: 4px solid #22c55e;
 }
 
-#alarm-container input {
-    background-color: black;
-    color: yellow;
-    transition: all 0.3s ease;
-    border-radius: 8px;
+.slowest-lap {
+  border-left: 4px solid #ef4444;
+}
+/* ==========================
+   EMPTY HISTORY
+========================== */
+
+.history-logs .log-entry:only-child{
+    justify-content:center;
+    opacity:.75;
 }
 
-#alarm-container input:focus {
-    outline: none;
-    box-shadow: 0 0 15px rgba(234, 179, 8, 0.6);
+/* ==========================
+   RESPONSIVE
+========================== */
+
+@media (max-width:768px){
+
+    .history-header{
+        padding:14px 16px;
+    }
+
+    .log-entry{
+        padding:12px 14px;
+    }
+
+    .log-entry span{
+        font-size:.9rem;
+    }
 }
 
-#alarm-popup {
-    z-index: 1000;
-    padding: 1rem;
-    font-size: 1.5rem;
-    animation: alarmEntrance 0.4s ease-out, alarmShake 0.5s ease-in-out 0.4s;
-    border-radius: 16px;
-    box-shadow: 0 0 30px rgba(234, 179, 8, 0.8);
-}
+/* =========================
+   LIGHT MODE OVERRIDES
+========================= */
 
-/* Success notification for alarm setting */
-.success-animation {
-    animation: successPulse 0.6s ease-in-out;
+body.light-mode {
+    --bg: #f0f2ff;
+    --card: #ffffff;
+    --card-light: rgba(255, 255, 255, 0.85);
+    --text: #1a1a2e;
+    --text-muted: #5a6080;
+    --border: rgba(0, 0, 0, 0.08);
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.10);
+    background:
+        radial-gradient(circle at top left, #c9d0f5 0%, transparent 35%),
+        radial-gradient(circle at bottom right, #d8c9f5 0%, transparent 35%),
+        #f0f2ff !important;
+    color: var(--text);
 }
 
 #timezone {

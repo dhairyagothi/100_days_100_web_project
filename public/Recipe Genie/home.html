@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recipe Genie — Discover Delicious Recipes</title>
+  
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shepherd.js@11.2.0/dist/css/shepherd.css">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-[#fffaf5] text-stone-800 antialiased selection:bg-orange-100 selection:text-orange-800 min-h-screen flex flex-col">
+
+  <header class="sticky top-0 z-50 w-full bg-white/75 backdrop-blur-md border-b border-stone-200/60 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4 md:gap-8">
+      
+      <a href="home.html" id="main" class="flex items-center space-x-2.5 md:space-x-3 group shrink-0 no-underline" aria-label="Recipe Genie Home">
+        <span class="text-2xl md:text-3xl transform group-hover:rotate-12 transition-transform duration-300 ease-out">🍱</span>
+        <span class="text-xl md:text-2xl font-black bg-gradient-to-r from-orange-500 via-amber-500 to-amber-600 bg-clip-text text-transparent tracking-tight">
+          Recipe Genie
+        </span>
+      </a>
+
+      <div id="searchBar" class="flex flex-col relative w-full max-w-xs sm:max-w-md">
+        <div class="flex items-center gap-2.5 rounded-2xl border border-stone-200 bg-white px-3.5 py-2.5 md:px-4 md:py-3 shadow-sm focus-within:border-orange-300 focus-within:ring-4 focus-within:ring-orange-500/10 transition-all duration-200">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 md:w-5 md:h-5 text-stone-400 shrink-0">
+            <path fill-rule="evenodd" d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z" clip-rule="evenodd" />
+          </svg>
+          <input 
+            type="text" 
+            id="searchInput"
+            class="grow bg-transparent text-stone-800 placeholder-stone-400 outline-none text-xs md:text-sm font-medium" 
+            placeholder="Search recipes or ingredients..."
+            autocomplete="off"
+            aria-label="Search recipes"
+          />
+          <button id="clearSearch" class="hidden text-stone-400 hover:text-stone-600 transition-colors p-0.5 cursor-pointer" aria-label="Clear Search Input">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" class="w-3.5 h-3.5 md:w-4 md:h-4" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        <div id="searchResultsDropdown" class="hidden w-full max-h-80 overflow-y-auto bg-white/95 backdrop-blur-md shadow-[0_20px_50px_rgba(0,0,0,0.12)] rounded-2xl p-2 flex flex-col gap-1 absolute top-14 z-50 border border-stone-100 transition-all duration-200">
+          </div>
+      </div>
+
+    </div>
+  </header>
+
+  <main id="mainContent" class="blur-transition flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 xl:py-16">
+    
+    <section class="relative overflow-hidden bg-gradient-to-br from-stone-900 via-stone-800 to-orange-950 text-white rounded-[2rem] md:rounded-[2.5rem] shadow-2xl shadow-stone-900/20 mb-12 md:mb-20 group">
+      <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(249,115,22,0.15),transparent_50%)]"></div>
+      <div class="relative max-w-3xl mx-auto text-center px-4 sm:px-6 py-14 sm:py-20 md:py-28 flex flex-col items-center">
+        
+        <div class="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-md px-3.5 py-1.5 md:px-4 md:py-2 rounded-full border border-white/10 mb-6 md:mb-8 transform hover:scale-102 transition-all duration-300">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-3.5 h-3.5 md:w-4 md:h-4 text-orange-400 animate-pulse">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
+          </svg>
+          <span class="text-[10px] md:text-xs font-semibold tracking-wide uppercase text-stone-200">New to the kitchen?</span>
+        </div>
+
+        <h1 class="text-3xl sm:text-4xl md:text-6xl font-black tracking-tight leading-[1.15] md:leading-[1.1] mb-4 md:mb-6">
+          Discover Delicious Recipes & <span class="bg-gradient-to-r from-orange-400 via-amber-400 to-orange-400 bg-clip-text text-transparent">Culinary Ideas</span> 🍜
+        </h1>
+        
+        <p class="text-sm md:text-xl text-stone-300 max-w-xl mx-auto font-normal leading-relaxed mb-8 md:mb-12">
+          Explore thousands of recipes from around the world and seamlessly discover your next signature home-cooked dinner.
+        </p>
+
+        <div class="flex flex-col sm:flex-row items-center gap-3.5 md:gap-4 w-full justify-center max-w-sm sm:max-w-none">
+          <button id="startTourBtn" class="w-full sm:w-auto bg-orange-500 hover:bg-orange-400 text-white font-semibold px-6 py-3.5 md:px-8 md:py-4 rounded-xl md:rounded-2xl shadow-xl shadow-orange-500/20 hover:shadow-orange-400/30 active:scale-[0.98] transition-all duration-200 flex items-center justify-center space-x-2 text-sm md:text-base border-none cursor-pointer">
+            <span>Start Guided Tour</span>
+            <span class="transform transition-transform duration-200">✨</span>
+          </button>
+
+          <a href="meal.html?id=random" id="randomMeal" class="w-full sm:w-auto no-underline">
+            <button class="w-full sm:w-auto bg-white/10 hover:bg-white/15 text-white font-semibold px-6 py-3.5 md:px-8 md:py-4 rounded-xl md:rounded-2xl shadow-lg border border-white/10 backdrop-blur-sm active:scale-[0.98] transition-all duration-200 flex items-center justify-center space-x-2 text-sm md:text-base cursor-pointer">
+              <span>🎲 Surprise Meal Selection</span>
+            </button>
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="relative">
+      <div class="flex flex-col items-center text-center mb-10 md:mb-14">
+        <h2 class="categories text-2xl sm:text-3xl md:text-4xl font-extrabold text-stone-900 tracking-tight mb-3 md:mb-4">
+          🍽️ Browse Curated Collections
+        </h2>
+        <div class="h-1 w-12 bg-orange-500 rounded-full"></div>
+      </div>
+
+      <div id="categoriesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 md:gap-10">
+        <div class="animate-pulse bg-white border border-stone-200/60 rounded-[2rem] md:rounded-[2.5rem] h-96 w-full"></div>
+        <div class="animate-pulse bg-white border border-stone-200/60 rounded-[2rem] md:rounded-[2.5rem] h-96 w-full hidden sm:block"></div>
+        <div class="animate-pulse bg-white border border-stone-200/60 rounded-[2rem] md:rounded-[2.5rem] h-96 w-full hidden lg:block"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/shepherd.js@11.2.0/dist/js/shepherd.min.js"></script>
+  
+  <script src="script.js"></script>
+</body>
+</html>

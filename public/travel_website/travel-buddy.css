@@ -1,0 +1,594 @@
+/* ============================================
+   Find a Travel Buddy - Page Styles
+   Extends styles.css (navbar, gradient-text, planner-btn)
+   with the same colors, radii and shadows.
+   ============================================ */
+
+/* ============================================
+   Utility
+   ============================================ */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.hidden {
+  display: none !important;
+}
+
+body.modal-open {
+  overflow: hidden;
+}
+
+/* ============================================
+   Buddy Hero
+   ============================================ */
+.buddy-hero {
+  position: relative;
+  background: linear-gradient(135deg, #0f2027 0%, #2c5364 40%, #d91e63 100%);
+  padding: 160px 20px 90px;
+  text-align: center;
+  color: #ffffff;
+}
+
+.buddy-hero-inner {
+  max-width: 780px;
+  margin: 0 auto;
+}
+
+.demo-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(250, 204, 21, 0.15);
+  border: 1px solid rgba(250, 204, 21, 0.5);
+  color: #facc15;
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 8px 18px;
+  border-radius: 999px;
+  margin-bottom: 24px;
+  letter-spacing: 0.3px;
+}
+
+.buddy-hero-title {
+  font-size: 3rem;
+  font-weight: 900;
+  margin-bottom: 18px;
+  line-height: 1.15;
+  letter-spacing: -1px;
+}
+
+.buddy-hero-subtitle {
+  font-size: 1.05rem;
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.7;
+}
+
+/* Highlight the current page in the navbar on this page */
+.navbar-link.active {
+  color: #ff8c42;
+}
+
+.navbar-link.active::after {
+  width: 100%;
+}
+
+/* ============================================
+   Main / Sections
+   ============================================ */
+.buddy-main {
+  background: linear-gradient(to bottom, #ffffff 0%, #f5f7fa 100%);
+}
+
+.buddy-filters-section {
+  padding: 60px 20px 20px;
+}
+
+.buddy-results-section {
+  padding: 20px 20px 100px;
+}
+
+/* ============================================
+   Filter Form
+   ============================================ */
+.buddy-filter-form {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 22px;
+  background: #ffffff;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 24px;
+  padding: 32px;
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.06);
+}
+
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.filter-field label,
+.filter-interests legend {
+  font-weight: 600;
+  color: #0f172a;
+  font-size: 0.9rem;
+  padding: 0;
+}
+
+.filter-field input[type='text'],
+.filter-field input[type='date'],
+.filter-field select {
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  border-radius: 14px;
+  padding: 12px 14px;
+  font-size: 0.95rem;
+  color: #0f172a;
+  background: #ffffff;
+  font-family: inherit;
+}
+
+.filter-field input:focus,
+.filter-field select:focus {
+  outline: none;
+  border-color: rgba(255, 107, 107, 0.6);
+  box-shadow: 0 0 0 4px rgba(255, 107, 107, 0.12);
+}
+
+.filter-interests {
+  grid-column: 1 / -1;
+}
+
+.interest-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.interest-chip {
+  position: relative;
+  cursor: pointer;
+}
+
+.interest-chip input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+
+.interest-chip span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1.5px solid rgba(15, 23, 42, 0.12);
+  background: rgba(255, 255, 255, 0.9);
+  color: #475569;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.interest-chip input:checked + span {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ff1493 100%);
+  color: #ffffff;
+  border-color: transparent;
+  box-shadow: 0 8px 20px rgba(255, 107, 107, 0.25);
+}
+
+.interest-chip input:focus-visible + span {
+  outline: 2px solid #ff6b6b;
+  outline-offset: 2px;
+}
+
+.filter-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
+/* ============================================
+   Results
+   ============================================ */
+.buddy-results-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 50px 0 30px;
+}
+
+.section-title-sm {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #1e293b;
+}
+
+.results-count {
+  color: #64748b;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.buddy-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 26px;
+}
+
+.buddy-card {
+  background: #ffffff;
+  border-radius: 22px;
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: fadeIn 0.4s ease-out;
+}
+
+.buddy-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 45px rgba(255, 107, 107, 0.18);
+}
+
+.buddy-card-header {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+
+.buddy-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(255, 107, 107, 0.3);
+  flex-shrink: 0;
+}
+
+.buddy-name {
+  font-weight: 800;
+  color: #0f172a;
+  font-size: 1.1rem;
+}
+
+.buddy-age {
+  color: #64748b;
+  font-size: 0.85rem;
+}
+
+.buddy-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.9rem;
+  color: #475569;
+}
+
+.buddy-style-badge {
+  align-self: flex-start;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: rgba(255, 107, 107, 0.12);
+  color: #ff1493;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.buddy-interests {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.buddy-tag {
+  background: rgba(15, 23, 42, 0.06);
+  color: #334155;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.buddy-bio {
+  color: #475569;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  flex: 1;
+}
+
+.buddy-connect-btn {
+  border: none;
+  border-radius: 999px;
+  padding: 12px 20px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  background: linear-gradient(135deg, #ff6b6b 0%, #ff1493 100%);
+  color: #ffffff;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.buddy-connect-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 25px rgba(255, 107, 107, 0.3);
+}
+
+.buddy-connect-btn:focus-visible,
+.modal-close:focus-visible,
+.resetFiltersBtn:focus-visible {
+  outline: 2px solid #ff6b6b;
+  outline-offset: 2px;
+}
+
+.no-results {
+  text-align: center;
+  color: #64748b;
+  font-size: 1rem;
+  padding: 40px 0;
+}
+
+/* ============================================
+   Chat Modal
+   ============================================ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 20px;
+}
+
+.modal-dialog {
+  background: #ffffff;
+  border-radius: 24px;
+  max-width: 480px;
+  width: 100%;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  padding: 28px;
+  position: relative;
+  box-shadow: 0 30px 80px rgba(15, 23, 42, 0.3);
+  animation: modalPop 0.25s ease;
+}
+
+@keyframes modalPop {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(15, 23, 42, 0.06);
+  font-size: 1.3rem;
+  line-height: 1;
+  cursor: pointer;
+  color: #0f172a;
+}
+
+.modal-close:hover {
+  background: rgba(255, 107, 107, 0.15);
+  color: #ff1493;
+}
+
+.modal-header {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-right: 30px;
+}
+
+.modal-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.modal-title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.modal-subtitle {
+  font-size: 0.8rem;
+  color: #94a3b8;
+  font-weight: 600;
+}
+
+.modal-messages {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 6px 2px 16px;
+  max-height: 320px;
+}
+
+.chat-bubble {
+  max-width: 80%;
+  padding: 10px 16px;
+  border-radius: 18px;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.chat-bubble.them {
+  align-self: flex-start;
+  background: rgba(15, 23, 42, 0.06);
+  color: #0f172a;
+  border-bottom-left-radius: 4px;
+}
+
+.chat-bubble.you {
+  align-self: flex-end;
+  background: linear-gradient(135deg, #ff6b6b 0%, #ff1493 100%);
+  color: #ffffff;
+  border-bottom-right-radius: 4px;
+}
+
+.modal-input-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.modal-input-row input {
+  flex: 1;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  border-radius: 999px;
+  padding: 12px 16px;
+  font-size: 0.9rem;
+  background: rgba(15, 23, 42, 0.03);
+  color: #64748b;
+  font-family: inherit;
+}
+
+.modal-input-row input:disabled {
+  cursor: not-allowed;
+}
+
+.modal-input-row button {
+  border: none;
+  border-radius: 999px;
+  padding: 12px 20px;
+  font-weight: 700;
+  background: rgba(15, 23, 42, 0.08);
+  color: #94a3b8;
+  cursor: not-allowed;
+}
+
+.modal-disabled-note {
+  margin-top: 10px;
+  font-size: 0.78rem;
+  color: #94a3b8;
+  text-align: center;
+}
+
+/* ============================================
+   Responsive
+   ============================================ */
+@media (max-width: 900px) {
+  .buddy-filter-form {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .buddy-hero {
+    padding: 130px 20px 70px;
+  }
+
+  .buddy-hero-title {
+    font-size: 2.2rem;
+  }
+
+  .buddy-hero-subtitle {
+    font-size: 0.95rem;
+  }
+
+  .buddy-filters-section {
+    padding: 40px 20px 10px;
+  }
+
+  .buddy-filter-form {
+    padding: 24px;
+  }
+
+  .buddy-grid {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .buddy-hero {
+    padding: 110px 16px 50px;
+  }
+
+  .buddy-hero-title {
+    font-size: 1.75rem;
+  }
+
+  .demo-badge {
+    font-size: 0.75rem;
+    padding: 6px 14px;
+  }
+
+  .buddy-filter-form {
+    grid-template-columns: 1fr;
+    padding: 20px;
+  }
+
+  .filter-actions {
+    flex-direction: column;
+  }
+
+  .filter-actions .planner-btn {
+    width: 100%;
+  }
+
+  .buddy-results-header {
+    margin: 34px 0 20px;
+  }
+
+  .buddy-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-dialog {
+    padding: 22px;
+    max-height: 90vh;
+  }
+}
+
+/* ============================================
+   Accessibility
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  .buddy-card,
+  .modal-dialog {
+    animation: none !important;
+    transition: none !important;
+  }
+}

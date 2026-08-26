@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <title>Advanced Kanban Pipeline Systems Engine</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h2>🚀 Advanced Job Tracking & Analytical Workspace Engine</h2>
+            <div class="header-actions">
+                <button class="btn-clear" id="clear-all-btn">🗑️ Clear All Jobs</button>
+            </div>
+        </header>
+
+        <!-- Stats Bar -->
+        <div class="stats-bar">
+            <div class="stat-item">
+                <span class="stat-label">Total Active Leads:</span>
+                <span class="stat-value" id="stat-total">0</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Interview Conversion Rate:</span>
+                <span class="stat-value" id="stat-rate">0%</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">📌 Applied:</span>
+                <span class="stat-value applied" id="stat-applied">0</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">📞 Interviewing:</span>
+                <span class="stat-value interviewing" id="stat-interviewing">0</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">✅ Offered:</span>
+                <span class="stat-value offered" id="stat-offered">0</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">❌ Rejected:</span>
+                <span class="stat-value rejected" id="stat-rejected">0</span>
+            </div>
+        </div>
+
+        <!-- Add Job Form -->
+        <div class="add-job-form">
+            <div class="form-group">
+                <label>Company</label>
+                <input type="text" id="company-input" placeholder="e.g., Google" />
+            </div>
+            <div class="form-group">
+                <label>Role</label>
+                <input type="text" id="role-input" placeholder="e.g., Frontend Engineer" />
+            </div>
+            <div class="form-group">
+                <label>Stage</label>
+                <select id="stage-select">
+                    <option value="Applied">Applied</option>
+                    <option value="Interviewing">Interviewing</option>
+                    <option value="Offered">Offered</option>
+                    <option value="Rejected">Rejected</option>
+                </select>
+            </div>
+            <button class="btn" id="add-job-btn">➕ Add Job</button>
+        </div>
+
+        <!-- Kanban Board -->
+        <div class="kanban-board">
+            <div class="kanban-column" data-stage="Applied">
+                <div class="column-header">
+                    <h3>📌 Applied</h3>
+                    <span class="column-count" id="count-applied">0</span>
+                </div>
+            </div>
+
+            <div class="kanban-column" data-stage="Interviewing">
+                <div class="column-header">
+                    <h3>📞 Interviewing</h3>
+                    <span class="column-count" id="count-interviewing">0</span>
+                </div>
+            </div>
+
+            <div class="kanban-column" data-stage="Offered">
+                <div class="column-header">
+                    <h3>✅ Offered</h3>
+                    <span class="column-count" id="count-offered">0</span>
+                </div>
+            </div>
+
+            <div class="kanban-column" data-stage="Rejected">
+                <div class="column-header">
+                    <h3>❌ Rejected</h3>
+                    <span class="column-count" id="count-rejected">0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- System Log -->
+        <div class="system-log">
+            <div class="system-log-header">
+                <h4>💻 Global System Diagnostics Streams:</h4>
+                <button class="btn-clear-log" id="clear-log-btn">Clear Log</button>
+            </div>
+            <pre id="system-log">Pipeline Interface Ready...</pre>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <script type="module" src="main.js"></script>
+</body>
+
+</html>
