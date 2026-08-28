@@ -267,7 +267,17 @@ function sanitizeUrl(url) {
 
   if (!raw || raw === "#") return raw || "#";
 
-  if (raw.startsWith("./") || raw.startsWith("../") || raw.startsWith("/")) {
+  // Block protocol-relative bypasses
+  if (raw.startsWith("//") || raw.startsWith("/\\") || raw.startsWith("\\\\")) {
+    console.warn("[XSS] Blocked protocol-relative URL:", raw);
+    return "#";
+  }
+
+  if (
+    raw.startsWith("./") ||
+    raw.startsWith("../") ||
+    raw.startsWith("/")
+  ) {
     return raw;
   }
   if (
