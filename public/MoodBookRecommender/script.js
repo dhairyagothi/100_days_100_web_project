@@ -20,7 +20,7 @@ function renderBooks(books) {
   }
 
   resultsGrid.innerHTML = books.map(book => `
-    <div class="bg-white rounded-lg shadow p-4 flex flex-col">
+    <div class="book-card bg-white rounded-lg shadow p-4 flex flex-col">
       <img src="${book.cover}" alt="${book.title} cover" 
            onload="if(this.naturalWidth < 50){ this.src='https://placehold.co/300x450/e2e8f0/64748b?text=No+Cover'; }" 
            onerror="this.onerror=null; this.src='https://placehold.co/300x450/e2e8f0/64748b?text=No+Cover';" 
@@ -46,7 +46,7 @@ function renderShelf() {
   }
 
   shelfGrid.innerHTML = savedBooks.map(book => `
-    <div class="bg-white rounded-lg shadow p-4 flex flex-col">
+    <div class="book-card bg-white rounded-lg shadow p-4 flex flex-col">
       <img src="${book.cover}" alt="${book.title} cover" 
            onload="if(this.naturalWidth < 50){ this.src='https://placehold.co/300x450/e2e8f0/64748b?text=No+Cover'; }" 
            onerror="this.onerror=null; this.src='https://placehold.co/300x450/e2e8f0/64748b?text=No+Cover';" 
@@ -82,12 +82,10 @@ const moodButtonsContainer = document.getElementById('mood-buttons');
 moodButtonsContainer.addEventListener('click', (event) => {
   if (!event.target.classList.contains('mood-btn')) return;
 
-  // remove active styling from all buttons
   document.querySelectorAll('.mood-btn').forEach(btn => {
     btn.classList.remove('bg-indigo-600', 'text-white', 'border-indigo-600');
   });
 
-  // add active styling to the clicked button
   event.target.classList.add('bg-indigo-600', 'text-white', 'border-indigo-600');
 
   currentMood = event.target.dataset.mood;
