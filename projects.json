@@ -3138,5 +3138,20 @@
     ],
    "difficulty": "intermediate",
     "projectPath": "./public/WebDevQuizApp/index.html"
-  } 
+  },
+  {
+    "projectNo": 247,
+    "projectName": "MoodBookRecommender",
+    "projectType": "Tool",
+    "projectDesc": "Get personalized book recommendations based on your mood, with cover images, descriptions, and save-to-shelf functionality using localStorage.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript",
+      "tailwind"
+    ],
+    "difficulty": "beginner",
+    "projectPath": "./public/MoodBookRecommender/index.html"
+  }
+ 
 ]
