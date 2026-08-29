@@ -82,6 +82,14 @@ const moodButtonsContainer = document.getElementById('mood-buttons');
 moodButtonsContainer.addEventListener('click', (event) => {
   if (!event.target.classList.contains('mood-btn')) return;
 
+  // remove active styling from all buttons
+  document.querySelectorAll('.mood-btn').forEach(btn => {
+    btn.classList.remove('bg-indigo-600', 'text-white', 'border-indigo-600');
+  });
+
+  // add active styling to the clicked button
+  event.target.classList.add('bg-indigo-600', 'text-white', 'border-indigo-600');
+
   currentMood = event.target.dataset.mood;
   updateResults();
 });
