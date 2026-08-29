@@ -105,6 +105,12 @@ resultsGrid.addEventListener('click', (event) => {
     savedIds.push(bookId);
     localStorage.setItem('savedBookIds', JSON.stringify(savedIds));
     renderShelf();
+
+    // give immediate visual feedback on the clicked button
+    event.target.textContent = 'Saved ✓';
+    event.target.disabled = true;
+    event.target.classList.remove('bg-indigo-600', 'hover:bg-indigo-700');
+    event.target.classList.add('bg-green-600', 'cursor-not-allowed');
   }
 });
 
