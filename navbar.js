@@ -168,6 +168,7 @@
   let navButtonsHTML = "";
   if (session) {
     const userSection = `
+      <!-- Security Fix: Using escapeHTML to prevent DOM XSS vulnerabilities from localStorage user data (Issue #8671) -->
       <div class="welcome-text" id="navWelcomeCopy">${escapeHTML(greetingCopy)}</div>
       <div class="mobile-user-strip">
         <div class="mobile-user-avatar">${escapeHTML(displayName.slice(0, 2).toUpperCase())}</div>
