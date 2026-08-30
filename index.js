@@ -2231,19 +2231,39 @@ function debounce(fn, delay = 300) {
     }, delay);
   };
 }
-
+/**
+ * Initializes real-time search functionality on the search input field.
+ * Handles both continuous typing and clearing the field via the native (x) button.
+ */
 function initSearch() {
-  const input = document.getElementById("searchInput");
-  if (!input) return;
+  const input = document.getElementById('searchInput');
+  if (!input) return;  // Safeguard against null errors if element is missing
 
-  input.addEventListener(
-    "input",
-    debounce(() => {
-      searchQuery = input.value.trim();
+  // Limit grid filtering frequency during quick keystrokes
+  const debouncedFilter = debounce(() => {
+    searchQuery = input.value.trim();
+    currentPage = 1;  // Reset to the first page for fresh search result
+    renderGrid();
+  }, 300);
+  
+ // Fallback to instantly reset or process the query on field changes
+  const handleSearch = () => {
+    const value = input.value.trim();
+    if (value === '') {
+      searchQuery = '';
       currentPage = 1;
       renderGrid();
-    }, 180),
-  );
+    } else {
+      debouncedFilter();
+    }
+  };
+
+  // Bind listeners to respond dynamically to user input and clearing events
+  input.addEventListener('input', handleSearch);
+  input.addEventListener('search', handleSearch);
+  
+  
+  // Tech stack dropdown filter listener
 
   const techStack = document.getElementById("techStackFilter");
   if (techStack) {
@@ -2419,7 +2439,53 @@ function updateNavbar() {
 /* ============================================================
    THEME TOGGLE
    ============================================================ */
-// Implemented by the shared ThemeManager in theme.js.
+
+function initTheme() {
+    // 1. Get user manual preference from localStorage (could be null, 'light', or 'dark')
+    const saved = localStorage.getItem('theme');
+    
+    // 2. Query the operating system/browser preference (returns true if system is in Light Mode)
+    const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+    
+    // 3. Resolve theme: Use manual preference if saved, otherwise default to OS preference
+    const isLightMode = saved === 'light' || (!saved && prefersLight);
+    
+    let transitionTimer = null;
+
+    // Helper function to sync all theme icons across the page
+    const syncThemeIcons = () => {
+        const isLight = document.body.classList.contains('light-mode');
+        const iconClass = isLight ? 'fas fa-sun' : 'fas fa-moon';
+        document.querySelectorAll('#themeToggle i, #themeToggleNav i').forEach(icon => {
+            icon.className = iconClass;
+        });
+    };
+
+    // 4. Apply the resolved theme to the body initially
+    if (isLightMode) {
+        document.body.classList.add('light-mode');
+    } else {
+        document.body.classList.remove('light-mode');
+    }
+    syncThemeIcons();
+
+    // 5. Click listener for toggle buttons with your transition classes
+    document.body.addEventListener('click', (e) => {
+        const target = e.target.closest('#themeToggle') || e.target.closest('#themeToggleNav');
+        if (!target) return;
+
+        document.body.classList.toggle('light-mode');
+        const isLight = document.body.classList.contains('light-mode');
+        localStorage.setItem('theme', isLight ? 'light' : 'dark');
+        syncThemeIcons();
+
+        document.body.classList.add('theme-transitioning');
+        if (transitionTimer) clearTimeout(transitionTimer);
+        transitionTimer = setTimeout(() => {
+            document.body.classList.remove('theme-transitioning');
+        }, 400);
+    });
+}
 
 /* ============================================================
    SCROLL TO TOP
