@@ -1,0 +1,42 @@
+name: Secret Detection (Gitleaks)
+
+on:
+  push:
+    branches:
+      - Main
+  pull_request:
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  gitleaks:
+    name: Scan Repository for Secrets
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run Gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Generate workflow summary
+        if: always()
+        run: |
+          {
+            echo "## 🔐 Gitleaks Secret Scan"
+            echo ""
+            echo "- Event: ${{ github.event_name }}"
+            echo "- Repository: ${{ github.repository }}"
+            echo "- Ref: ${{ github.ref }}"
+            echo "- Commit: ${{ github.sha }}"
+            echo ""
+            echo "Review the job logs for detailed scan results."
+          } >> $GITHUB_STEP_SUMMARY
