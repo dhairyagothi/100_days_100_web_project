@@ -133,6 +133,82 @@ npm run validate:projects # Runs projects registry JSON validation checks
 └── vercel.json           # Vercel deployment configuration
 ```
 
+## 📛 Project Naming Conventions
+
+### Folder Naming
+
+- Use PascalCase.
+- Avoid spaces and special characters.
+
+Examples:
+
+✅ WeatherDashboard
+
+✅ ExpenseTracker
+
+❌ weather dashboard
+
+❌ weather_dashboard
+
+### File Naming
+
+Use standard filenames:
+
+- index.html
+- style.css
+- script.js
+- README.md
+
+Avoid:
+
+- new.html
+- final.js
+- test.css
+
+### Project Title
+
+Good:
+
+- Weather Dashboard
+- AI Resume Analyzer
+
+Avoid:
+
+- weather dashboard
+- PROJECT123
+
+### Tags
+
+Use lowercase tags.
+
+Examples:
+
+- javascript
+- css
+- api
+
+Avoid:
+
+- JavaScript
+- CSS
+- Api
+
+### Difficulty
+
+Only use:
+
+- Beginner
+- Intermediate
+- Advanced
+
+### Checklist
+
+- Folder follows naming convention
+- Files use standard names
+- Title is readable
+- Tags are lowercase
+- Difficulty is valid
+
 ## ➕ Adding New Projects
 
 ### Step 1: Create Project Folder
