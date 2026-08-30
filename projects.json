@@ -3138,5 +3138,19 @@
     ],
    "difficulty": "intermediate",
     "projectPath": "./public/WebDevQuizApp/index.html"
-  } 
+  },
+  {
+    "projectNo": 247,
+    "projectName": "Pathfinding Algorithm Visualizer",
+    "projectType": "Tool",
+    "projectDesc": "An interactive tool to visualize graph traversal algorithms like Dijkstra's, A* Search, and BFS with dynamic walls and draggable nodes.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript",
+      "algorithms"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/Pathfinding_Visualizer/index.html"
+  }
 ]
