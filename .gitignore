@@ -180,3 +180,17 @@ dmypy.json
 *.tar
 docker-compose.override.yml
 .vercel
+
+# Machine learning model artifacts (regenerate or use Git LFS instead of committing large binaries)
+*.pkl
+*.pickle
+*.joblib
+*.h5
+*.hdf5
+*.pt
+*.pth
+*.onnx
+*.pb
+*.tflite
+*.ckpt
+*.weights
