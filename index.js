@@ -2500,7 +2500,20 @@ document.addEventListener("DOMContentLoaded", async () => {
   initTechStackSearch();
   initClearAllFilters();
 
-  //updateGamifiedUI();
+
+// Before
+
+
+// After
+initClearAllFilters();
+
+if (typeof initStreak === "function") {
+    initStreak();
+}
+
+updateGamifiedUI();
+
+
 
   if (hasProjectGrid()) {
     renderSkeletons();
