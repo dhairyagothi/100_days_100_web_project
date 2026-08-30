@@ -3138,5 +3138,20 @@
     ],
    "difficulty": "intermediate",
     "projectPath": "./public/WebDevQuizApp/index.html"
-  } 
+  },
+  {
+    "projectNo": 247,
+    "projectName": "Interactive Physics Particle Simulator",
+    "projectType": "Tool",
+    "projectDesc": "An interactive 2D physics particle simulator where users can click to spawn particles that bounce off walls and each other.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript",
+      "physics",
+      "canvas"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/Physics_Particle_Simulator/index.html"
+  }
 ]
