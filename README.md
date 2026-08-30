@@ -534,7 +534,7 @@ We welcome contributions from developers of all skill levels! Here's how you can
 - Include a clear commit message
 - Update documentation if needed
 
-**📖 For detailed guidelines, see [CONTRIBUTING.md](CONTRIBUTING.md)**
+**📖 For detailed guidelines, explore [CONTRIBUTING.md](CONTRIBUTING.md)**
 
 ## 🌐 Browser Compatibility
 Most projects in this repository are designed to work across modern web browsers. Since rendering and feature support may vary slightly between browsers, contributors are encouraged to test projects across multiple environments.
