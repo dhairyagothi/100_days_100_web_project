@@ -1530,8 +1530,6 @@ function scrollToProjectSection() {
   const header = document.querySelector(".projects-header");
   if (!header) return;
 
-  if (header.getBoundingClientRect().top < window.innerHeight) return;
-
   const navbar = document.querySelector(".navbar");
   const offset = navbar ? navbar.offsetHeight - 50 : 30;
   const targetY =
