@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carbon Footprint Tracker</title>
+    <link rel="stylesheet" href="./style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="background">
+        <div class="circle circle-1"></div>
+        <div class="circle circle-2"></div>
+        <div class="circle circle-3"></div>
+    </div>
+
+    <div class="container">
+        <header class="header">
+            <h1 class="logo">
+                <span class="logo-icon">🌱</span>
+                Carbon Footprint Tracker
+            </h1>
+            <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark/light mode">
+                <span class="sun-icon">☀️</span>
+                <span class="moon-icon">🌙</span>
+            </button>
+        </header>
+
+        <main class="main">
+            <section class="input-section glass-card">
+                <h2 class="section-title">Calculate Your Footprint</h2>
+                
+                <div class="form-group">
+                    <label for="travel" class="input-label">
+                        <span class="icon">🚗</span>
+                        Daily Travel Distance (km)
+                    </label>
+                    <input type="number" id="travel" class="input-field" min="0" step="0.1" placeholder="e.g. 25">
+                </div>
+
+                <div class="form-group">
+                    <label for="electricity" class="input-label">
+                        <span class="icon">💡</span>
+                        Electricity Usage (kWh)
+                    </label>
+                    <input type="number" id="electricity" class="input-field" min="0" step="0.1" placeholder="e.g. 10">
+                </div>
+
+                <div class="form-group">
+                    <label for="waste" class="input-label">
+                        <span class="icon">🗑️</span>
+                        Waste Generated (kg)
+                    </label>
+                    <input type="number" id="waste" class="input-field" min="0" step="0.1" placeholder="e.g. 1.5">
+                </div>
+
+                <div class="button-group">
+                    <button id="calculate-btn" class="btn-primary">Calculate</button>
+                    <button id="reset-btn" class="btn-secondary">Reset</button>
+                </div>
+            </section>
+
+            <section class="result-section glass-card">
+                <h2 class="section-title">Your Results</h2>
+                
+                <div class="result-display">
+                    <div class="result-value">
+                        <span class="value-label">Total CO₂ Emissions</span>
+                        <span class="value" id="co2-value">0.00</span>
+                        <span class="value-unit">kg/day</span>
+                    </div>
+
+                    <div class="result-level" id="carbon-level">
+                        <span class="level-badge">Low</span>
+                        <p class="level-message" id="level-message">Great job! Your carbon footprint is very low.</p>
+                    </div>
+                </div>
+
+                <div class="progress-section">
+                    <div class="progress-header">
+                        <span class="progress-label">Carbon Impact</span>
+                        <span class="progress-percent" id="progress-percent">0%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-fill"></div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="history-section glass-card">
+                <h2 class="section-title">Calculation History</h2>
+                <div id="history-list" class="history-list">
+                    <div class="empty-history">
+                        <span class="empty-icon">📊</span>
+                        <p>No calculations yet. Start tracking your footprint!</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p>© 2026 Carbon Footprint Tracker. Track, Reduce, Sustain.</p>
+        </footer>
+    </div>
+
+    <script src="./script.js"></script>
+</body>
+</html>
