@@ -219,6 +219,13 @@ function getSourceUrl(url, day) {
     const folderPath = trimmed.substring(2, trimmed.lastIndexOf("/"));
     return `https://github.com/${window.REPO_OWNER}/${window.REPO_NAME}/tree/Main/${folderPath}`;
   }
+  // Handle absolute paths such as /public/project/index.html.
+  // These fall through the ./ branch and previously returned the bare repo root,
+  // making the Code button link to the repository root instead of the project folder.
+  if (trimmed.startsWith("/")) {
+    const folderPath = trimmed.substring(1, trimmed.lastIndexOf("/"));
+    return `https://github.com/${window.REPO_OWNER}/${window.REPO_NAME}/tree/Main/${folderPath}`;
+  }
   return `https://github.com/${window.REPO_OWNER}/${window.REPO_NAME}/tree/Main`;
 }
 
