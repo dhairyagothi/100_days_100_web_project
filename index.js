@@ -1152,6 +1152,197 @@ function readStateFromURL() {
   }
 }
 
+function normalizeSearchText(value) {
+  return String(value || "").toLowerCase().trim();
+}
+
+function levenshteinDistance(a, b) {
+  const left = a || "";
+  const right = b || "";
+  const dp = Array.from({ length: left.length + 1 }, () => new Array(right.length + 1).fill(0));
+
+  for (let i = 0; i <= left.length; i += 1) {
+    dp[i][0] = i;
+  }
+
+  for (let j = 0; j <= right.length; j += 1) {
+    dp[0][j] = j;
+  }
+
+  for (let i = 1; i <= left.length; i += 1) {
+    for (let j = 1; j <= right.length; j += 1) {
+      const cost = left[i - 1] === right[j - 1] ? 0 : 1;
+      dp[i][j] = Math.min(
+        dp[i - 1][j] + 1,
+        dp[i][j - 1] + 1,
+        dp[i - 1][j - 1] + cost,
+      );
+    }
+  }
+
+  return dp[left.length][right.length];
+}
+
+function getSimilarityScore(query, value) {
+  const normalizedQuery = normalizeSearchText(query);
+  const normalizedValue = normalizeSearchText(value);
+
+  if (!normalizedQuery || !normalizedValue) return 0;
+  if (normalizedQuery === normalizedValue) return 1;
+  if (normalizedValue.includes(normalizedQuery)) return 0.95;
+  if (normalizedQuery.includes(normalizedValue)) return 0.9;
+
+  const startsWithQuery = normalizedValue.startsWith(normalizedQuery) || normalizedQuery.startsWith(normalizedValue);
+  if (startsWithQuery) return 0.78;
+
+  const queryWords = normalizedQuery.split(/\s+/).filter(Boolean);
+  const valueWords = normalizedValue.split(/\s+/).filter(Boolean);
+  const sharedWords = queryWords.filter((word) => valueWords.includes(word)).length;
+  const wordBoost = sharedWords > 0 ? 0.22 * sharedWords : 0;
+
+  const queryChars = normalizedQuery.split("");
+  let orderedMatches = 0;
+  let valueIndex = 0;
+  queryChars.forEach((char) => {
+    const nextIndex = normalizedValue.indexOf(char, valueIndex);
+    if (nextIndex >= 0) {
+      orderedMatches += 1;
+      valueIndex = nextIndex + 1;
+    }
+  });
+  const charBoost = queryChars.length > 0 ? 0.1 * (orderedMatches / queryChars.length) : 0;
+
+  const maxLength = Math.max(normalizedQuery.length, normalizedValue.length);
+  const distance = levenshteinDistance(normalizedQuery, normalizedValue);
+  const editScore = maxLength > 0 ? 1 - distance / maxLength : 0;
+
+  return Math.max(0, Math.min(1, wordBoost + charBoost + editScore * 0.7));
+}
+
+function getBestMatchRange(name, query) {
+  const normalizedName = normalizeSearchText(name);
+  const normalizedQuery = normalizeSearchText(query);
+
+  if (!normalizedQuery || !normalizedName) return null;
+
+  const exactIndex = normalizedName.indexOf(normalizedQuery);
+  if (exactIndex >= 0) {
+    return [exactIndex, exactIndex + normalizedQuery.length];
+  }
+
+  let bestRange = null;
+  let bestLength = 0;
+
+  for (let start = 0; start < normalizedName.length; start += 1) {
+    for (let end = start + bestLength + 1; end <= normalizedName.length; end += 1) {
+      const segment = normalizedName.slice(start, end);
+      if (segment.length > bestLength && segment.length <= normalizedQuery.length && normalizedQuery.includes(segment)) {
+        bestRange = [start, end];
+        bestLength = segment.length;
+      }
+    }
+  }
+
+  return bestRange;
+}
+
+function buildHighlightedName(name, query) {
+  const matchRange = getBestMatchRange(name, query);
+  if (!matchRange) return escapeHTML(name);
+
+  const [start, end] = matchRange;
+  const before = name.slice(0, start);
+  const match = name.slice(start, end);
+  const after = name.slice(end);
+
+  return `${escapeHTML(before)}<mark>${escapeHTML(match)}</mark>${escapeHTML(after)}`;
+}
+
+function renderSearchSuggestions(query) {
+  const panel = document.getElementById("suggestionsPanel");
+  if (!panel) return;
+
+  const normalizedQuery = normalizeSearchText(query);
+  if (!normalizedQuery) {
+    panel.innerHTML = "";
+    panel.hidden = true;
+    return;
+  }
+
+  const hasDirectMatch = PROJECTS.some((project) => {
+    const nameMatch = normalizeSearchText(project.projectName);
+    return nameMatch.includes(normalizedQuery) || normalizedQuery.includes(nameMatch);
+  });
+
+  if (hasDirectMatch) {
+    panel.innerHTML = "";
+    panel.hidden = true;
+    return;
+  }
+
+  const suggestions = PROJECTS
+    .map((project) => ({
+      project,
+      score: getSimilarityScore(normalizedQuery, project.projectName),
+    }))
+    .filter(({ project, score }) => {
+      const nameMatch = normalizeSearchText(project.projectName);
+      const normalizedName = nameMatch.replace(/[^a-z0-9]+/g, "");
+      const normalizedQueryChars = normalizedQuery.replace(/[^a-z0-9]+/g, "");
+      const sharesPrefix = normalizedName.startsWith(normalizedQueryChars) || normalizedQueryChars.startsWith(normalizedName);
+      const isCloseMatch = score >= 0.36 || (normalizedQueryChars.length >= 4 && normalizedName.includes(normalizedQueryChars));
+      return (isCloseMatch || sharesPrefix) && nameMatch !== normalizedQuery;
+    })
+    .sort((a, b) => {
+      const scoreDelta = b.score - a.score;
+      if (scoreDelta !== 0) return scoreDelta;
+      return a.project.projectName.localeCompare(b.project.projectName);
+    })
+    .slice(0, 5);
+
+  if (!suggestions.length) {
+    panel.innerHTML = "";
+    panel.hidden = true;
+    return;
+  }
+
+  const items = suggestions
+    .map(({ project }) => {
+      const highlightedName = buildHighlightedName(project.projectName, query);
+      return `
+        <li class="suggestion-item">
+          <button
+            type="button"
+            class="suggestion-btn"
+            data-project-name="${escapeHTML(project.projectName)}"
+            aria-label="Search for ${escapeHTML(project.projectName)}"
+          >
+            ${highlightedName}
+          </button>
+        </li>
+      `;
+    })
+    .join("");
+
+  panel.innerHTML = `
+    <p class="suggestions-title">Did you mean?</p>
+    <ul class="suggestions-list" role="list">${items}</ul>
+  `;
+
+  panel.hidden = false;
+
+  panel.querySelectorAll(".suggestion-btn").forEach((button) => {
+    button.addEventListener("click", () => {
+      const selectedName = button.getAttribute("data-project-name") || "";
+      if (!searchInput) return;
+
+      searchInput.value = selectedName;
+      searchQuery = selectedName.trim();
+      currentPage = 1;
+      renderGrid();
+      searchInput.focus();
+    });
+  });
 function renderSkeletons() {
   const grid = document.getElementById("projectGrid");
   if (!grid) return;
@@ -1278,14 +1469,20 @@ function renderGrid() {
 
   if (filtered.length === 0) {
     grid.style.display = "none";
-    if (noResults) noResults.style.display = "block";
+    if (noResults) {
+      noResults.style.display = "block";
+      renderSearchSuggestions(searchQuery);
+    }
     const container = document.getElementById("paginationContainer");
     if (container) container.remove();
     return;
   }
 
   grid.style.display = "grid";
-  if (noResults) noResults.style.display = "none";
+  if (noResults) {
+    noResults.style.display = "none";
+    renderSearchSuggestions("");
+  }
 
   const totalPages = Math.ceil(filtered.length / itemsPerPage) || 1;
   if (currentPage > totalPages) currentPage = totalPages;
