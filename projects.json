@@ -730,16 +730,13 @@
     "projectPath": "./public/Solar System Explorer in CSS only haml/template.html"
   },
   {
-    "projectNo": 63,
-    "projectName": "Image to Text App",
-    "projectType": "AI",
-    "projectDesc": "Extracts text content from uploaded images automatically.",
-    "techStack": [
-      "api",
-      "javascript"
-    ],
-    "difficulty": "intermediate",
-    "projectPath": "./public/Image-To-Text-App/index.html"
+    "projectNo":63,
+    "projectName":"Image to Text App",
+    "projectType":"AI",
+    "projectDesc":"Extracts text content from uploaded images automatically.",
+    "techStack":["HTML","CSS","JavaScript","Canvas API","Ollama","Moondream AI"],
+    "difficulty":"intermediate",
+    "projectPath":"./public/Image-To-Text-App/ai image prediction"
   },
   {
     "projectNo": 64,
